@@ -144,5 +144,27 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems"
+    },
+    {
+      "targetId": "erdos-202",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems"
+    },
+    {
+      "targetId": "erdos-543",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, group-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-202",
+    "erdos-543"
+  ]
 }

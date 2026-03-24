@@ -51,33 +51,6 @@
         "module": "Mathlib.Data.Finset.Card"
       }
     ],
-    "crossReferences": [
-      {
-        "id": "erdos-535",
-        "title": "GCD-Free r-Subsets",
-        "relationship": "Complementary problem: #535 studies sets avoiding r elements with equal pairwise gcds, while #534 requires all pairs to have gcd > 1"
-      },
-      {
-        "id": "erdos-56",
-        "title": "Weakly Divisible Sets",
-        "relationship": "Direct dual: #56 asks about sets avoiding k+1 pairwise coprime elements (also disproved by Ahlswede-Khachatrian, 1994)"
-      },
-      {
-        "id": "erdos-701",
-        "title": "Chvátal's Conjecture on Intersecting Families",
-        "relationship": "Generalization of Erdős-Ko-Rado to hereditary families; #534 is the arithmetic analog using gcd intersection"
-      },
-      {
-        "id": "erdos-702",
-        "title": "Singleton Intersections in k-Uniform Families",
-        "relationship": "Studies forbidden intersection patterns in set families using Frankl's shifting; parallel to #534's intersection constraints"
-      },
-      {
-        "id": "erdos-703",
-        "title": "Forbidden r-Intersection Families",
-        "relationship": "Studies maximum family size avoiding r-intersections (Frankl-Rödl 1987); analog of #534 in set-theoretic framework"
-      }
-    ],
     "originalContributions": [
       "interval, IsGCDIntersecting, ContainsN, maxGCDIntersecting definitions",
       "multiplesOfSmallestPrime construction with size and intersecting axioms",
@@ -206,5 +179,27 @@
       "author": "Thomas Bloom",
       "url": "https://erdosproblems.com/534"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-844",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, intersecting-families, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-402",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gcd, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-433",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-844",
+    "erdos-402",
+    "erdos-433"
   ]
 }

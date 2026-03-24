@@ -171,5 +171,27 @@
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, extremal-combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distances, solved"
+    },
+    {
+      "targetId": "erdos-756",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, point-sets, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-466",
+    "erdos-605",
+    "erdos-756"
+  ]
 }

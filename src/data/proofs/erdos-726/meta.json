@@ -18,10 +18,6 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/726",
     "erdosUrl": "https://erdosproblems.com/726",
-    "relatedProofs": [
-      "erdos-725",
-      "erdos-727"
-    ],
     "axiomCount": 6,
     "badge": "axiom",
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
@@ -142,5 +138,27 @@
       "Mathlib.Tactic"
     ],
     "opens": []
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-386",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1065",
+    "erdos-1072",
+    "erdos-386"
+  ]
 }

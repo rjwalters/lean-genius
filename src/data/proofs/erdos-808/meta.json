@@ -156,5 +156,27 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, graph-theory"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, graph-theory"
+    },
+    {
+      "targetId": "erdos-110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1067",
+    "erdos-1080",
+    "erdos-110"
+  ]
 }

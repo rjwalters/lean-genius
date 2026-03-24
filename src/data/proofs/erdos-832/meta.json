@@ -140,5 +140,27 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-833",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, extremal-combinatorics, hypergraphs"
+    },
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, disproved"
+    },
+    {
+      "targetId": "erdos-1076",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, hypergraphs"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-833",
+    "erdos-1067",
+    "erdos-1076"
+  ]
 }

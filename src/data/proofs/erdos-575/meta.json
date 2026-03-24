@@ -104,5 +104,21 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-574",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-576",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-574",
+    "erdos-576"
+  ]
 }

@@ -92,34 +92,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1065",
       "relationship": "companion",
-      "description": "Erdős #1065 asks whether there are infinitely many primes of the form 2^k · q + 1, directly related to class-1 primes in the #1055 classification (those with p+1 being 2-smooth times a prime). Both problems study primes whose successor has constrained prime factors."
+      "description": "Erdős #1065 asks whether there are infinitely many primes of the form 2^k · q + 1, directly related to class-1 primes in the #1055 classification (those with p+1 being 2-smooth times a prime). Both problems study primes whose successor has constrained prime factors.",
+      "targetId": "erdos-1065"
     },
     {
-      "target": "erdos-1146",
       "relationship": "companion",
-      "description": "Erdős #1146 studies whether the 3-smooth numbers {2^m · 3^n} form an essential component, exactly the set adjacent to class-1 primes in #1055. The counting function of 3-smooth numbers up to N (~C·(log N)²) directly governs the density of class-1 primes."
+      "description": "Erdős #1146 studies whether the 3-smooth numbers {2^m · 3^n} form an essential component, exactly the set adjacent to class-1 primes in #1055. The counting function of 3-smooth numbers up to N (~C·(log N)²) directly governs the density of class-1 primes.",
+      "targetId": "erdos-1146"
     },
     {
-      "target": "erdos-1095",
       "relationship": "companion",
-      "description": "Erdős #1095 involves the Erdős–Selfridge function and smooth prime factors of binomial coefficients. Both #1055 and #1095 stem from collaborative Erdős–Selfridge work on smooth numbers and prime factorization structure."
+      "description": "Erdős #1095 involves the Erdős–Selfridge function and smooth prime factors of binomial coefficients. Both #1055 and #1095 stem from collaborative Erdős–Selfridge work on smooth numbers and prime factorization structure.",
+      "targetId": "erdos-1095"
     },
     {
-      "target": "bertrands-postulate",
       "relationship": "prerequisite",
-      "description": "Bertrand's Postulate guarantees at least one prime between n and 2n, providing the density lower bound used to argue that each class in the #1055 classification is non-empty. The infinitude question for each class requires understanding prime gaps."
+      "description": "Bertrand's Postulate guarantees at least one prime between n and 2n, providing the density lower bound used to argue that each class in the #1055 classification is non-empty. The infinitude question for each class requires understanding prime gaps.",
+      "targetId": "bertrands-postulate"
     },
     {
-      "target": "infinitude-primes",
       "relationship": "prerequisite",
-      "description": "The Euclid infinitude-of-primes result is the baseline: #1055 asks whether each subclass (classified by factorization depth of p+1) is itself infinite. The class-1 case follows from Størmer's theorem on smooth numbers."
+      "description": "The Euclid infinitude-of-primes result is the baseline: #1055 asks whether each subclass (classified by factorization depth of p+1) is itself infinite. The class-1 case follows from Størmer's theorem on smooth numbers.",
+      "targetId": "infinitude-primes"
     },
     {
-      "target": "prime-number-theorem",
       "relationship": "related",
-      "description": "The Prime Number Theorem governs the overall density of primes; the #1055 density result (class-r primes have density n^{o(1)}) is proved by combining PNT with the counting function of smooth numbers."
+      "description": "The Prime Number Theorem governs the overall density of primes; the #1055 density result (class-r primes have density n^{o(1)}) is proved by combining PNT with the counting function of smooth numbers.",
+      "targetId": "prime-number-theorem"
     }
   ],
   "relatedProofs": [

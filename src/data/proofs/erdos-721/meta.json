@@ -169,5 +169,27 @@
     "axiomCount": 16,
     "theoremCount": 4,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-187",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-645",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, ramsey-theory, solved, van-der-waerden"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-179",
+    "erdos-187",
+    "erdos-645"
+  ]
 }

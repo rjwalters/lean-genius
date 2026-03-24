@@ -20,16 +20,6 @@
     "sourceUrl": "https://erdosproblems.com/761",
     "erdosUrl": "https://erdosproblems.com/761",
     "erdosProblemStatus": "open",
-    "relatedProofs": [
-      {
-        "id": "erdos-760",
-        "relationship": "Problem #760 provides the bound ζ(G) ≤ χ(G) used to show that Question 2 of #761 implies Question 1"
-      },
-      {
-        "id": "erdos-735",
-        "relationship": "Both involve incidence-geometric or combinatorial structures on finite configurations; #735 classifies magic configurations while #761 studies orientation-coloring duality"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -153,5 +143,27 @@
       "citation": "Erdős Problems, Problem #761, https://erdosproblems.com/761",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1104",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1092",
+    "erdos-1104",
+    "erdos-111"
   ]
 }

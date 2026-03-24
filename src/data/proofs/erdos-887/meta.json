@@ -149,5 +149,27 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-450",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisors, number-theory, short-intervals"
+    },
+    {
+      "targetId": "erdos-462",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, short-intervals"
+    },
+    {
+      "targetId": "erdos-673",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, divisors, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-450",
+    "erdos-462",
+    "erdos-673"
+  ]
 }

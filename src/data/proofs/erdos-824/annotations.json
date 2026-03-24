@@ -15,7 +15,8 @@
       "Sum of divisors",
       "Coprimality",
       "Counting functions"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e824-sigma",
@@ -33,7 +34,8 @@
       "Nat.divisors",
       "Multiplicative functions",
       "Perfect numbers"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e824-sigma-props",
@@ -50,7 +52,8 @@
     "relatedConcepts": [
       "Finset.sum_le_sum_of_subset",
       "Prime characterization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e824-counting",
@@ -68,7 +71,8 @@
       "Nat.Coprime",
       "Finset.filter",
       "Pair counting"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e824-known",
@@ -86,7 +90,8 @@
       "Filter.Tendsto",
       "Superlinear growth",
       "Limsup vs limit"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e824-conjecture",
@@ -103,7 +108,8 @@
     "relatedConcepts": [
       "Near-quadratic growth",
       "Asymptotic exponent"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e824-example",
@@ -120,7 +126,8 @@
     "relatedConcepts": [
       "native_decide",
       "Concrete verification"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e824-summary",
@@ -137,6 +144,7 @@
     "relatedConcepts": [
       "Summary theorem",
       "State of knowledge"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

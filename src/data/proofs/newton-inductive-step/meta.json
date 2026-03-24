@@ -36,14 +36,6 @@
       "binom_ineq: bc^3 + adc^2 + ac^3 >= 2b^2cd + b^3d for consecutive binomial coefficients C(m, k-2), C(m, k-1), C(m, k), C(m, k+1)",
       "Key technique: absorption identities k*c = r*b, (k+1)*d = (r-1)*c, (k-1)*b = (r+1)*a reduce the inequality to D*(target) = r*(k+r)^2*b^4 >= 0 where D = k^3*(k+1)*(r+1) > 0"
     ],
-    "relatedProofs": [
-      "amgm-inequality",
-      "amgm-inequality-oq-02",
-      "amgm-inequality-oq-03",
-      "binomial-theorem",
-      "binomial-theorem-oq-02",
-      "combinations-formula"
-    ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "lineCount": 152,

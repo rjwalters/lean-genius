@@ -161,5 +161,27 @@
     "axiomCount": 0,
     "theoremCount": 25,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, number-theory"
+    },
+    {
+      "targetId": "erdos-363",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, number-theory"
+    },
+    {
+      "targetId": "erdos-373",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-242",
+    "erdos-363",
+    "erdos-373"
+  ]
 }

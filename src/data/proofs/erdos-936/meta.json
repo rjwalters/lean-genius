@@ -164,5 +164,27 @@
     "axiomCount": 3,
     "theoremCount": 27,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: abc-conjecture, number-theory, open"
+    },
+    {
+      "targetId": "erdos-68",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorial, number-theory, open"
+    },
+    {
+      "targetId": "erdos-937",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: abc-conjecture, number-theory, powerful-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-368",
+    "erdos-68",
+    "erdos-937"
+  ]
 }

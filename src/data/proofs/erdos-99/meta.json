@@ -163,5 +163,27 @@
     "axiomCount": 5,
     "theoremCount": 1,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, open, packing"
+    },
+    {
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: open, packing"
+    },
+    {
+      "targetId": "erdos-106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, packing"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1084",
+    "erdos-103",
+    "erdos-106"
+  ]
 }

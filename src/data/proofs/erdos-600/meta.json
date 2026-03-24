@@ -170,5 +170,27 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-graph-theory, open"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1075",
+    "erdos-533",
+    "erdos-1014"
+  ]
 }

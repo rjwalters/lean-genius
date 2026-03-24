@@ -144,5 +144,27 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1069",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: incidence-geometry, solved, szemeredi-trotter"
+    },
+    {
+      "targetId": "erdos-733",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, solved, szemeredi-trotter"
+    },
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, incidence-geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1069",
+    "erdos-733",
+    "erdos-1086"
+  ]
 }

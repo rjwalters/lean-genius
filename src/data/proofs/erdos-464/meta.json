@@ -49,12 +49,6 @@
       "Axiomatization of de Mathan-Pollington theorem and Peres-Schlag bound"
     ],
     "mathContext": "Diophantine Approximation — Lacunary Sequences and Equidistribution",
-    "crossReferences": [
-      {
-        "targetId": "erdos-466",
-        "relationship": "Related problem on lacunary sums modulo 1"
-      }
-    ],
     "axiomCount": 2,
     "lineCount": 83,
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -180,5 +174,27 @@
       "year": 2004,
       "journal": "Doklady Mathematics"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1002",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, fractional-parts"
+    },
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, equidistribution"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, fractional-parts"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1002",
+    "erdos-335",
+    "erdos-466"
   ]
 }

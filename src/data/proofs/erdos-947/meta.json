@@ -60,12 +60,6 @@
       "Verified exactCoveringWithRepeats: {0 mod 2, 1 mod 2} is an exact covering",
       "Proved erdos_947_summary combining impossibility and existence"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-9",
-        "relationship": "Both problems concern structural properties of integers under modular arithmetic and combinatorial number theory"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 208,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -177,5 +171,27 @@
       "citation": "Erdős, P. (1977). Problems and results on combinatorial number theory III. In Number Theory Day, Springer Lecture Notes in Mathematics 626, 43-72.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-273",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-275",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, covering-systems, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-273",
+    "erdos-275"
   ]
 }

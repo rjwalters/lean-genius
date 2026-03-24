@@ -135,5 +135,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-182",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-1092",
+    "erdos-182"
+  ]
 }

@@ -168,5 +168,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-315",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences, solved"
+    },
+    {
+      "targetId": "erdos-823",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences, solved"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-315",
+    "erdos-823",
+    "erdos-1050"
+  ]
 }

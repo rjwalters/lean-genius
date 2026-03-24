@@ -191,5 +191,27 @@
     "axiomCount": 19,
     "theoremCount": 1,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, trees"
+    },
+    {
+      "targetId": "erdos-549",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, trees"
+    },
+    {
+      "targetId": "erdos-557",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, trees"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-547",
+    "erdos-549",
+    "erdos-557"
+  ]
 }

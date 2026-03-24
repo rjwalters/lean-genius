@@ -159,11 +159,9 @@
     ]
   },
   "relatedProofs": [
-    {
-      "id": "erdos-714",
-      "relationship": "specialization",
-      "description": "The $t = 2$ case of Problem #1158 is exactly the Zarankiewicz problem (Problem #714). The exponent $t - r^{1-t}$ reduces to $2 - 1/r$."
-    }
+    "erdos-1020",
+    "erdos-1021",
+    "erdos-1076"
   ],
   "leanFile": {
     "imports": [
@@ -179,5 +177,22 @@
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1020",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, turan-type"
+    },
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, turan-type"
+    },
+    {
+      "targetId": "erdos-1076",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, hypergraphs"
+    }
+  ]
 }

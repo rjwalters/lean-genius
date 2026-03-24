@@ -58,18 +58,6 @@
       "cubes_subset_cubefull: proved cubes ⊆ cubefull",
       "status_summary: proved conjunction of known results"
     ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-941",
-        "relationship": "companion",
-        "description": "Problem #941 focuses specifically on Heath-Brown's theorem that all large integers are sums of ≤3 squarefull numbers, which is axiomatized in this formalization"
-      },
-      {
-        "targetId": "erdos-935",
-        "relationship": "complementary",
-        "description": "Problem #935 examines the 'powerful part' (r-powerful component) of consecutive products, while #940 studies sums of r-powerful numbers — both probe the additive/multiplicative structure of powerful numbers"
-      }
-    ],
     "axiomCount": 2,
     "lineCount": 339,
     "assumptions": "2 axiom(s) and 2 sorry(s). See the Lean source for details.",
@@ -202,5 +190,27 @@
     "axiomCount": 2,
     "theoremCount": 10,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1107",
+    "erdos-1110",
+    "erdos-1136"
+  ]
 }

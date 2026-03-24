@@ -149,5 +149,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-857",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, open"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
+    },
+    {
+      "targetId": "erdos-1023",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-857",
+    "erdos-1014",
+    "erdos-1023"
+  ]
 }

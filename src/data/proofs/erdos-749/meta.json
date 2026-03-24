@@ -42,24 +42,6 @@
       ],
       "significance": "Probes the exact threshold of the Erdős-Turán phenomenon. Sidon sets show bounded r(n) is compatible with sparse sumsets. The Erdős-Turán conjecture asserts full bases must have unbounded r(n). Problem #749 asks about the boundary: can near-bases (density close to 1) still have bounded r(n)? The answer determines whether the Erdős-Turán obstruction is a sharp phase transition at density 1 or a gradual phenomenon."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-28",
-        "relationship": "Problem #28 (Erdős-Turán conjecture, $500): if A+A has density 1, then r(n) must be unbounded. Problem #749 asks about density 1-ε, probing the exact threshold of the Erdős-Turán obstruction"
-      },
-      {
-        "id": "erdos-40",
-        "relationship": "Problem #40 asks for which growth rates g(N) does |A ∩ [1,N]| ≫ √N/g(N) imply lim sup r(n) = ∞. Both study the density-representation tradeoff, with #40 implying #28"
-      },
-      {
-        "id": "erdos-55",
-        "relationship": "Problem #55 (Ramsey r-complete sets) studies additive completeness under colorings. Both involve sumset structure and density of representable integers"
-      },
-      {
-        "id": "erdos-484",
-        "relationship": "Problem #484 proves density lower bounds for monochromatic sumsets in colorings. Both study how constrained sumset structures affect density coverage"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset.filter",
@@ -200,5 +182,27 @@
       "citation": "Erdős Problems, Problem #749, https://erdosproblems.com/749",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, open, sumsets"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, open, sumsets"
+    },
+    {
+      "targetId": "erdos-741",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, open, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-335",
+    "erdos-432",
+    "erdos-741"
   ]
 }

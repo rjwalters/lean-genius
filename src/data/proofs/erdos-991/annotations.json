@@ -15,7 +15,8 @@
       "Potential theory",
       "Discrepancy theory",
       "Fekete points"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-unit-sphere",
@@ -32,7 +33,8 @@
       "Euclidean space",
       "Manifolds"
     ],
-    "mathContext": "See annotation content for formal details of unit sphere"
+    "mathContext": "See annotation content for formal details of unit sphere",
+    "prerequisites": []
   },
   {
     "id": "ann-e991-sphere-dist",
@@ -49,7 +51,8 @@
       "Euclidean distance",
       "Geodesic distance"
     ],
-    "mathContext": "See annotation content for formal details of chordal distance"
+    "mathContext": "See annotation content for formal details of chordal distance",
+    "prerequisites": []
   },
   {
     "id": "ann-e991-log-energy",
@@ -67,7 +70,8 @@
       "Potential theory",
       "Electrostatics",
       "Riesz energy"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-optimal-config",
@@ -84,7 +88,8 @@
       "Fekete points",
       "Approximation theory"
     ],
-    "mathContext": "See annotation content for formal details of optimal configurations"
+    "mathContext": "See annotation content for formal details of optimal configurations",
+    "prerequisites": []
   },
   {
     "id": "ann-e991-spherical-cap",
@@ -101,7 +106,8 @@
       "Spherical geometry",
       "Geodesic balls"
     ],
-    "mathContext": "See annotation content for formal details of spherical caps"
+    "mathContext": "See annotation content for formal details of spherical caps",
+    "prerequisites": []
   },
   {
     "id": "ann-e991-cap-area",
@@ -118,7 +124,8 @@
       "Spherical area",
       "Solid angle"
     ],
-    "mathContext": "See annotation content for formal details of normalized cap area"
+    "mathContext": "See annotation content for formal details of normalized cap area",
+    "prerequisites": []
   },
   {
     "id": "ann-e991-cap-count",
@@ -131,7 +138,9 @@
     "title": "Cap Count",
     "content": "**capCount:**\n\nThe number of points from a configuration that fall within a cap:\n```lean\ndef capCount (points : Finset (Fin 3 → ℝ)) (cap : Set (Fin 3 → ℝ)) : ℕ :=\n  (points.filter (· ∈ cap)).card\n```\n\nFor uniform distribution, we expect capCount ≈ αC · n where αC is the cap's normalized area and n is the total number of points.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of cap count"
+    "mathContext": "See annotation content for formal details of cap count",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-small-discrepancy",
@@ -148,7 +157,8 @@
       "Discrepancy theory",
       "Uniform distribution"
     ],
-    "mathContext": "See annotation content for formal details of small discrepancy property"
+    "mathContext": "See annotation content for formal details of small discrepancy property",
+    "prerequisites": []
   },
   {
     "id": "ann-e991-brauchart",
@@ -161,7 +171,9 @@
     "title": "Brauchart's Bound (2008)",
     "content": "**brauchart_bound:**\n\nFor optimal logarithmic energy points, the cap discrepancy is O(n^{3/4}):\n```lean\naxiom brauchart_bound :\n  ∀ points, IsOptimalConfig points →\n  ∃ C > 0, ∀ cap, ||A ∩ cap| - αC · n| ≤ C · n^(3/4)\n```\n\n**Publication:** Brauchart (2008), \"Optimal logarithmic energy points on the unit sphere\", Math. Comp.\n\nThis was the first quantitative bound, improving on the qualitative o(n) from classical potential theory.",
     "mathContext": "The proof uses estimates from logarithmic potential theory and properties of the equilibrium measure.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-marzo-mas",
@@ -174,7 +186,9 @@
     "title": "Marzo-Mas Improvement (2021)",
     "content": "**marzo_mas_bound:**\n\nImproved bound: discrepancy is O(n^{2/3}):\n```lean\naxiom marzo_mas_bound :\n  ∀ points, IsOptimalConfig points →\n  ∃ C > 0, ∀ cap, ||A ∩ cap| - αC · n| ≤ C · n^(2/3)\n```\n\n**Publication:** Marzo-Mas (2021), \"Discrepancy of minimal Riesz energy points\", Constr. Approx.\n\nThis matches an earlier unpublished bound by Wolff. The result is proved for general Riesz s-energy, with logarithmic energy as the s → 0 limit.",
     "mathContext": "The improvement from 3/4 to 2/3 is a factor of n^{1/12}, significant for large n.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-main-theorem",
@@ -187,7 +201,9 @@
     "title": "Main Theorem: Erdős #991",
     "content": "**erdos_991:**\n\nOptimal logarithmic energy points have o(n) discrepancy:\n```lean\ntheorem erdos_991 :\n    ∀ points, IsOptimalConfig points →\n    HasSmallDiscrepancy points\n```\n\n**Answer to Erdős:** YES, optimal configurations distribute uniformly.\n\n**Proof sketch:** Uses marzo_mas_bound to get O(n^{2/3}), which is o(n) since 2/3 < 1.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of main theorem: erdős #991"
+    "mathContext": "See annotation content for formal details of main theorem: erdős #991",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-fekete",
@@ -204,7 +220,8 @@
       "Polynomial interpolation",
       "Quadrature"
     ],
-    "mathContext": "See annotation content for formal details of fekete points"
+    "mathContext": "See annotation content for formal details of fekete points",
+    "prerequisites": []
   },
   {
     "id": "ann-e991-riesz",
@@ -221,7 +238,8 @@
     "relatedConcepts": [
       "Coulomb energy",
       "Potential theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-equidistribution",
@@ -234,7 +252,9 @@
     "title": "Equidistribution from Potential Theory",
     "content": "**potential_theory_equidistribution:**\n\nFekete points equidistribute in the limit:\n```lean\naxiom potential_theory_equidistribution :\n  ∀ ε > 0, ∃ N, ∀ n ≥ N, ∀ points ∈ FeketePoints n,\n  ∀ cap, ||A ∩ cap|/n - αC| < ε\n```\n\n**Classical result:** This is the qualitative o(n) statement from classical potential theory. Fekete points converge weakly to the uniform measure on the sphere.\n\n**Attribution:** The exact origin is unclear; Brauchart cites it as following from 'classical potential theory'.",
     "mathContext": "This is a weak-* convergence result: the empirical measures of Fekete points converge to the uniform measure.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-hemisphere",
@@ -247,7 +267,9 @@
     "title": "Hemisphere Approximation",
     "content": "**hemisphere_approx:**\n\nFor the hemisphere (cosAngle = 0), approximately half the points fall in each half:\n```lean\ntheorem hemisphere_approx : ... →\n  ||A ∩ hemisphere| - n/2| ≤ C · n^(2/3)\n```\n\n**Proof:** Follows from marzo_mas_bound with cosAngle = 0, since normalizedCapArea(0) = 1/2.\n\n**Intuition:** Optimal points are roughly symmetric - you can't bunch too many on one side without increasing energy.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of hemisphere approximation"
+    "mathContext": "See annotation content for formal details of hemisphere approximation",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-improvement",
@@ -260,7 +282,9 @@
     "title": "Improvement Factor",
     "content": "**improvement_factor:**\n\nMerge-Mas improves on Brauchart by n^{1/12}:\n```lean\ntheorem improvement_factor :\n  n^(3/4) / n^(2/3) = n^(1/12)\n```\n\n**Verification:** 3/4 - 2/3 = 9/12 - 8/12 = 1/12.\n\n**Significance:** For n = 10^12 points, this is a factor of 10 improvement. For practical n, the improvement is modest but theoretically significant.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of improvement factor"
+    "mathContext": "See annotation content for formal details of improvement factor",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e991-summary",
@@ -273,6 +297,8 @@
     "title": "Summary: Erdős #991 SOLVED",
     "content": "**erdos_991_summary:**\n\nCombines the main results into one theorem:\n1. Qualitative: optimal points have o(n) discrepancy (erdos_991)\n2. Quantitative: the bound is O(n^{2/3}) (marzo_mas_bound)\n\nThe answer to Erdős Problem #991 is **YES**: optimal logarithmic energy point configurations on S² distribute uniformly in the limit, with quantitative bounds of O(n^{2/3}).",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary: erdős #991 solved"
+    "mathContext": "See annotation content for formal details of summary: erdős #991 solved",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

@@ -152,5 +152,21 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, unit-distances"
+    },
+    {
+      "targetId": "erdos-93",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convex-polygons, discrete-geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1084",
+    "erdos-93"
+  ]
 }

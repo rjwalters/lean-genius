@@ -134,5 +134,27 @@
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-208",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+    },
+    {
+      "targetId": "erdos-489",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, squarefree"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-208",
+    "erdos-489",
+    "erdos-11"
+  ]
 }

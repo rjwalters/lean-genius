@@ -55,12 +55,6 @@
       "lower_bound: R(Q_n) ≥ 2^n from vertex count",
       "bound_gap_description: 2^n ≤ 2^{2n} proved (gap illustration)"
     ],
-    "relatedProofs": [
-      {
-        "id": "ramseys-theorem",
-        "relationship": "The classical Ramsey theorem R(s,t) < ∞ provides the trivial upper bound R(Q_n) ≤ R(K_{2^n}) used as the starting point for this problem"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 211,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -166,5 +160,27 @@
       "citation": "Erdős, P. (1993). On some of my problems in graph theory. Combinatorics, Graph Theory, and Algorithms, Vol. I, 365-377.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1029",
+    "erdos-1030"
   ]
 }

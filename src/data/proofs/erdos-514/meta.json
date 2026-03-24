@@ -187,5 +187,27 @@
     "axiomCount": 13,
     "theoremCount": 3,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1117",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions, maximum-modulus"
+    },
+    {
+      "targetId": "erdos-1115",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions"
+    },
+    {
+      "targetId": "erdos-1116",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, entire-functions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1117",
+    "erdos-1115",
+    "erdos-1116"
+  ]
 }

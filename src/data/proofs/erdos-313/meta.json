@@ -56,24 +56,6 @@
       "at_least_eight: lower bound on known solutions",
       "egyptian_fraction_form: connection to Egyptian fractions of 1"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-282",
-        "relationship": "Greedy algorithm for Egyptian fractions — algorithmic approach to unit fraction decomposition, the same framework in which primary pseudoperfect numbers arise"
-      },
-      {
-        "proofId": "erdos-283",
-        "relationship": "Egyptian fractions with polynomial denominators — extends unit fraction theory to polynomial-valued denominator sets"
-      },
-      {
-        "proofId": "erdos-284",
-        "relationship": "Maximum first denominator for Egyptian fractions of 1 — quantitative structure of unit fraction decompositions of 1, directly related to the Egyptian fraction form of primary pseudoperfect numbers"
-      },
-      {
-        "proofId": "erdos-285",
-        "relationship": "Egyptian fractions asymptotics — counting representations as sums of unit fractions"
-      }
-    ],
     "axiomCount": 11,
     "lineCount": 104,
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -173,5 +155,27 @@
     "Fibonacci (1202): 'Liber Abaci', greedy algorithm for Egyptian fractions",
     "Graham (1964): 'On finite sums of unit fractions', Proceedings of the London Mathematical Society (3) 14, 193–207",
     "https://erdosproblems.com/313"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+    },
+    {
+      "targetId": "erdos-320",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+    },
+    {
+      "targetId": "erdos-321",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-320",
+    "erdos-321"
   ]
 }

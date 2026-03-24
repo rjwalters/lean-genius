@@ -136,5 +136,27 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-321",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, subset-sums"
+    },
+    {
+      "targetId": "erdos-345",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, subset-sums"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-321",
+    "erdos-345",
+    "erdos-432"
+  ]
 }

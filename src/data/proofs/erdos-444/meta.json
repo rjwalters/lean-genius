@@ -56,20 +56,6 @@
       "Stated exponential_lower_bound and no_uniform_bound structural properties",
       "Proved erdos_444_summary and limsup_infinite from axiomatized result"
     ],
-    "crossReferences": [
-      {
-        "id": "erdos-414",
-        "relationship": "Studies h(n) = n + τ(n); the divisor function τ is the case A = ℕ of the generalized divisor function d_A."
-      },
-      {
-        "id": "erdos-381",
-        "relationship": "Counting highly composite numbers; directly related to the extremal numbers achieving large d_A values."
-      },
-      {
-        "id": "erdos-1057",
-        "relationship": "Carmichael number counting uses divisor structure; the divisor function behavior connects to generalized divisor extrema."
-      }
-    ],
     "axiomCount": 6,
     "assumptions": "erdos_graham_conjecture_true (the Erdos-Sarkozy 1980 proof that lim sup M_A(x)/H_A(x)^k = infinity for all infinite A and k >= 1), case_all_naturals (specialization to A = N: d_A = tau, max d(n) grows like exp(c log x / log log x)), case_primes (specialization to A = primes: d_A = omega, max omega(n) ~ log x / log log x), highly_composite_relative (existence of A-highly composite numbers achieving large d_A values for any infinite A), exponential_lower_bound (M_A(x) >= exp(c * H_A(x)) for some c > 0), no_uniform_bound (no single function f bounds M_A(x) in terms of H_A(x) for all infinite A)",
     "lineCount": 160,

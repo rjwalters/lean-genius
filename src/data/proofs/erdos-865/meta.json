@@ -167,5 +167,27 @@
     "axiomCount": 15,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, density, open"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, density"
+    },
+    {
+      "targetId": "erdos-330",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1075",
+    "erdos-109",
+    "erdos-330"
+  ]
 }

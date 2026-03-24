@@ -149,5 +149,27 @@
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1062",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, extremal-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-301",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-302",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1062",
+    "erdos-301",
+    "erdos-302"
+  ]
 }

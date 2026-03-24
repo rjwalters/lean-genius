@@ -126,11 +126,9 @@
     ]
   },
   "relatedProofs": [
-    "four-color-theorem",
-    "erdos-87",
-    "erdos-60",
-    "randomized-maxcut",
-    "ramseys-theorem"
+    "erdos-630",
+    "erdos-111",
+    "erdos-631"
   ],
   "leanFile": {
     "imports": [
@@ -176,5 +174,22 @@
     "axiomCount": 0,
     "theoremCount": 37,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-630",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, chromatic-number, graph-theory, list-coloring"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, chromatic-number, graph-theory"
+    },
+    {
+      "targetId": "erdos-631",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, list-coloring"
+    }
+  ]
 }

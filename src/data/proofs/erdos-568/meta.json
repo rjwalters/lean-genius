@@ -16,10 +16,6 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/568",
     "erdosUrl": "https://erdosproblems.com/568",
-    "relatedProofs": [
-      "erdos-566",
-      "erdos-567"
-    ],
     "axiomCount": 3,
     "badge": "axiom",
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
@@ -134,5 +130,27 @@
       "Mathlib.Data.Real.Basic"
     ],
     "opens": []
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1105",
+    "erdos-1169"
+  ]
 }

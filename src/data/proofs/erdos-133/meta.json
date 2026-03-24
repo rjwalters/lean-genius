@@ -169,5 +169,27 @@
     "axiomCount": 13,
     "theoremCount": 1,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diameter, extremal-combinatorics, graph-theory, triangle-free"
+    },
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangle-free"
+    },
+    {
+      "targetId": "erdos-581",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangle-free"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-134",
+    "erdos-23",
+    "erdos-581"
+  ]
 }

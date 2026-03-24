@@ -17,10 +17,6 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/566",
     "erdosUrl": "https://erdosproblems.com/566",
-    "relatedProofs": [
-      "erdos-567",
-      "erdos-565"
-    ],
     "axiomCount": 4,
     "badge": "axiom",
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
@@ -142,5 +138,27 @@
       "Mathlib.Tactic"
     ],
     "opens": []
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-567",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory, size-ramsey"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-567",
+    "erdos-1014",
+    "erdos-1105"
+  ]
 }

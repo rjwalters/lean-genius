@@ -169,5 +169,27 @@
     "axiomCount": 13,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-446",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-728",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-784",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-446",
+    "erdos-728",
+    "erdos-784"
+  ]
 }

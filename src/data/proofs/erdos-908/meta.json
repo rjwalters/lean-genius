@@ -68,16 +68,6 @@
       "de_bruijn_erdos_conjecture theorem",
       "erdos_908_summary comprehensive theorem"
     ],
-    "crossReferences": [
-      {
-        "targetProof": "erdos-907",
-        "relationship": "Problem #907 asks when additive functions must be continuous. This is directly connected: the additive component h in Problem #908's decomposition may be discontinuous, and Problem #907's criterion (bounded on an interval implies continuous) characterizes when the decomposition simplifies."
-      },
-      {
-        "targetProof": "lebesgue-measure",
-        "relationship": "The Lebesgue measure is fundamental to Problem #908: 'measurable differences' means Lebesgue measurability of difference functions, 'rigid' means a.e. equality with respect to Lebesgue measure, and the key tool (Steinhaus's theorem) concerns sets of positive Lebesgue measure."
-      }
-    ],
     "axiomCount": 11,
     "lineCount": 258,
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -192,5 +182,27 @@
     "axiomCount": 11,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1126",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, functional-equations, measure-theory, solved"
+    },
+    {
+      "targetId": "erdos-1125",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, functional-equations, solved"
+    },
+    {
+      "targetId": "erdos-907",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-functions, analysis, functional-equations"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1126",
+    "erdos-1125",
+    "erdos-907"
+  ]
 }

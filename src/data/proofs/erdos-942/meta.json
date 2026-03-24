@@ -198,5 +198,27 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, density, number-theory"
+    },
+    {
+      "targetId": "erdos-222",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, density, number-theory"
+    },
+    {
+      "targetId": "erdos-371",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1102",
+    "erdos-222",
+    "erdos-371"
+  ]
 }

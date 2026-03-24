@@ -177,5 +177,27 @@
     "axiomCount": 10,
     "theoremCount": 10,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, squarefree"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1102",
+    "erdos-1136",
+    "erdos-144"
+  ]
 }

@@ -132,5 +132,21 @@
     "axiomCount": 10,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1023",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: antichains, combinatorics"
+    },
+    {
+      "targetId": "erdos-776",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: antichains, combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1023",
+    "erdos-776"
+  ]
 }

@@ -179,5 +179,27 @@
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1116",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, solved"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, solved"
+    },
+    {
+      "targetId": "erdos-226",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1116",
+    "erdos-1118",
+    "erdos-226"
+  ]
 }

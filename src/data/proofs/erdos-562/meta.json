@@ -108,13 +108,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-564",
-    "ramseys-theorem",
-    "erdos-546",
-    "erdos-545",
-    "erdos-szekeres",
-    "erdos-55",
-    "erdos-500"
+    "erdos-1014",
+    "erdos-1105",
+    "erdos-112"
   ],
   "references": [
     "Erdős, P., Hajnal, A., and Rado, R. (1965). 'Partition relations for cardinal numbers.' Acta Math. Acad. Sci. Hungar., 16, 93–196.",
@@ -148,5 +144,22 @@
       "Mathlib.Tactic"
     ],
     "opens": []
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-112",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    }
+  ]
 }

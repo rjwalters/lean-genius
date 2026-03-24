@@ -157,5 +157,27 @@
     "axiomCount": 15,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-187",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, van-der-waerden"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-160",
+    "erdos-187",
+    "erdos-721"
+  ]
 }

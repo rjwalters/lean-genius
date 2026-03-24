@@ -20,11 +20,6 @@
     "erdosNumber": 730,
     "erdosUrl": "https://erdosproblems.com/730",
     "erdosProblemStatus": "open",
-    "relatedProofs": [
-      "erdos-726",
-      "erdos-728",
-      "erdos-175"
-    ],
     "axiomCount": 10,
     "lineCount": 118,
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
@@ -144,5 +139,21 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-729",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-731",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-729",
+    "erdos-731"
+  ]
 }

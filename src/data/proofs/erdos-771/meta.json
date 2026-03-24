@@ -24,7 +24,6 @@
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
     "mathlib_version": "4.26.0",
-    "relatedProofs": [],
     "relatedProblems": [],
     "mathlibDependencies": [
       {
@@ -202,5 +201,27 @@
     "axiomCount": 6,
     "theoremCount": 11,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, primes, solved"
+    },
+    {
+      "targetId": "erdos-473",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, primes, solved"
+    },
+    {
+      "targetId": "erdos-874",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, subset-sums"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-237",
+    "erdos-473",
+    "erdos-874"
+  ]
 }

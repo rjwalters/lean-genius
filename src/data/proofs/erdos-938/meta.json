@@ -179,5 +179,27 @@
     "axiomCount": 3,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-177",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-936",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, powerful-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-177",
+    "erdos-200",
+    "erdos-936"
+  ]
 }

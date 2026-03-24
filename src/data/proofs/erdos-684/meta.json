@@ -175,5 +175,27 @@
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-683",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, open, primes"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, smooth-numbers"
+    },
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-683",
+    "erdos-1055",
+    "erdos-1063"
+  ]
 }

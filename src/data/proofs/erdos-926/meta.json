@@ -132,9 +132,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-146",
-    "erdos-1021",
-    "erdos-166"
+    "erdos-180",
+    "erdos-574",
+    "erdos-576"
   ],
   "leanFile": {
     "imports": [
@@ -152,5 +152,22 @@
     "axiomCount": 14,
     "theoremCount": 6,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-180",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, turan-number"
+    },
+    {
+      "targetId": "erdos-574",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, turan-number"
+    },
+    {
+      "targetId": "erdos-576",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, turan-number"
+    }
+  ]
 }

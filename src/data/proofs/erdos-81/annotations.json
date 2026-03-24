@@ -17,7 +17,8 @@
       "Perfect elimination ordering",
       "Intersection number"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-induced-cycle",
@@ -36,7 +37,8 @@
       "SimpleGraph.Adj",
       "induced subgraph"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-chordal",
@@ -55,7 +57,8 @@
       "Interval graphs",
       "Clique tree"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-clique-partition",
@@ -75,7 +78,8 @@
       "chromatic number",
       "complement graph"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-split-graph",
@@ -94,7 +98,8 @@
       "Finset.univ",
       "Földes-Hammer characterization"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-split-chordal",
@@ -112,7 +117,8 @@
       "IsChordal",
       "bipartition"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-81-extremal",
@@ -131,7 +137,8 @@
       "cliquePartitionNumber",
       "complete bipartite graph"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-eoz",
@@ -149,7 +156,8 @@
       "cliquePartitionNumber",
       "perfect elimination ordering"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-ceo",
@@ -167,7 +175,8 @@
       "cliquePartitionNumber",
       "bipartite edges"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-conjecture",
@@ -185,7 +194,8 @@
       "IsChordal",
       "cliquePartitionNumber"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-gap-analysis",
@@ -203,7 +213,8 @@
       "norm_num",
       "gap analysis"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-81-simplicial",
@@ -222,7 +233,8 @@
       "perfect elimination ordering",
       "Dirac's theorem"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-peo",
@@ -242,7 +254,8 @@
       "Lex-BFS",
       "Fulkerson-Gross theorem"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-peo-partition",
@@ -260,7 +273,8 @@
       "cliquePartitionNumber",
       "approximation algorithm"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-optimal-partition",
@@ -279,7 +293,8 @@
       "NP-hardness",
       "chordal recognition"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-81-intersection",
@@ -299,7 +314,8 @@
       "clique cover",
       "edge cover"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-81-summary",
@@ -318,7 +334,8 @@
       "And.intro",
       "existential quantification"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-81-main",
@@ -337,6 +354,7 @@
       "IsChordal",
       "And.intro"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   }
 ]

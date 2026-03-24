@@ -153,5 +153,27 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-254",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory, open"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory, open"
+    },
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-254",
+    "erdos-997",
+    "erdos-1000"
+  ]
 }

@@ -160,10 +160,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-86",
-    "erdos-146",
-    "erdos-533",
-    "erdos-365"
+    "erdos-982",
+    "erdos-605",
+    "erdos-654"
   ],
   "leanFile": {
     "imports": [
@@ -183,5 +182,22 @@
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-982",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convex, discrete-geometry, distances, geometry"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distances, geometry"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distances, geometry"
+    }
+  ]
 }

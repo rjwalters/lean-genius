@@ -131,12 +131,9 @@
     }
   ],
   "relatedProofs": [
-    "erdos-622",
-    "erdos-570",
-    "erdos-572",
-    "erdos-599",
-    "erdos-546",
-    "erdos-579"
+    "erdos-64",
+    "erdos-1035",
+    "erdos-1080"
   ],
   "references": [
     "Wang, H. (2010). 'Proof of the Erdős-Faudree conjecture on quadrilaterals.' Graphs and Combinatorics, 26(6), 833–877.",
@@ -171,5 +168,22 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-64",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-graph-theory, graph-theory, minimum-degree"
+    },
+    {
+      "targetId": "erdos-1035",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, minimum-degree"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-graph-theory, graph-theory"
+    }
+  ]
 }

@@ -156,5 +156,27 @@
     "axiomCount": 13,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-557",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, trees"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-557",
+    "erdos-1014",
+    "erdos-1105"
+  ]
 }

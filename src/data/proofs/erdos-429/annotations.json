@@ -15,7 +15,8 @@
       "Prime tuples conjecture",
       "Admissible sets",
       "Covering congruences"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e429-covers-residue",
@@ -32,7 +33,8 @@
       "Modular arithmetic",
       "Residue classes"
     ],
-    "mathContext": "See annotation content for formal details of residue class coverage"
+    "mathContext": "See annotation content for formal details of residue class coverage",
+    "prerequisites": []
   },
   {
     "id": "ann-e429-admissible",
@@ -50,7 +52,8 @@
       "Sieve theory",
       "Hardy-Littlewood conjecture",
       "Prime k-tuples"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e429-admissible-equiv",
@@ -68,7 +71,8 @@
       "Logical equivalence",
       "Constructive proof",
       "Classical logic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e429-prime-shift",
@@ -86,7 +90,8 @@
       "Prime constellations",
       "Green-Tao theorem"
     ],
-    "mathContext": "See annotation content for formal details of prime shifts"
+    "mathContext": "See annotation content for formal details of prime shifts",
+    "prerequisites": []
   },
   {
     "id": "ann-e429-zero-density",
@@ -103,7 +108,8 @@
     "relatedConcepts": [
       "Asymptotic density",
       "Prime number theorem"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e429-lacunary",
@@ -121,7 +127,8 @@
       "Lacunary series",
       "Super-exponential growth",
       "Gap sequences"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e429-conjecture",
@@ -134,7 +141,9 @@
     "title": "The Erdős Conjecture",
     "content": "**ErdosConjecture429**:\n\nFormalizes the conjecture as: ∀ A, HasZeroDensity A → IsAdmissible A → HasPrimeShift A.\n\nThis states that any set which is both sparse and admissible must have a prime shift. The conjecture seemed plausible because both conditions are favorable: admissibility removes the obvious mod-p obstruction, and sparsity means fewer primality constraints to satisfy simultaneously.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of the erdős conjecture"
+    "mathContext": "See annotation content for formal details of the erdős conjecture",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e429-weisenberg",
@@ -152,7 +161,8 @@
       "Covering systems",
       "Chinese Remainder Theorem",
       "Constructive counterexamples"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e429-disproof",
@@ -169,7 +179,8 @@
     "relatedConcepts": [
       "Proof by contradiction",
       "Modus tollens"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e429-covering",
@@ -187,7 +198,8 @@
       "Erdős covering systems",
       "Chinese Remainder Theorem",
       "Modular arithmetic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e429-necessity",
@@ -204,7 +216,8 @@
       "Necessary conditions",
       "Contrapositive"
     ],
-    "mathContext": "See annotation content for formal details of admissibility is necessary"
+    "mathContext": "See annotation content for formal details of admissibility is necessary",
+    "prerequisites": []
   },
   {
     "id": "ann-e429-summary",
@@ -221,6 +234,7 @@
     "relatedConcepts": [
       "Complete resolution",
       "Counterexample hierarchy"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

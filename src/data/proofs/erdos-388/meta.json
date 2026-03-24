@@ -21,10 +21,6 @@
     "erdosNumber": 388,
     "erdosUrl": "https://erdosproblems.com/388",
     "erdosProblemStatus": "open",
-    "relatedProofs": [
-      "erdos-363",
-      "erdos-931"
-    ],
     "axiomCount": 4,
     "lineCount": 110,
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
@@ -124,5 +120,27 @@
     "Obláth (1956): early results on products of consecutive integers equaling perfect powers",
     "Tijdeman (1992): survey of problems on products of consecutive integers",
     "https://erdosproblems.com/388"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, open"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, open"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1056",
+    "erdos-1072",
+    "erdos-369"
   ]
 }

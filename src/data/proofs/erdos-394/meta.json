@@ -183,5 +183,27 @@
     "axiomCount": 13,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-768",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, divisibility, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-400",
+    "erdos-708",
+    "erdos-768"
+  ]
 }

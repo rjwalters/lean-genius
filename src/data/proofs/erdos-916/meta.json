@@ -165,5 +165,27 @@
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-767",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-graphs, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-1079",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graphs, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-767",
+    "erdos-1079",
+    "erdos-57"
+  ]
 }

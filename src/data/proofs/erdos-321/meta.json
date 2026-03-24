@@ -126,5 +126,27 @@
       "Classical",
       "in"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+    },
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, subset-sums, unit-fractions"
+    },
+    {
+      "targetId": "erdos-313",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-300",
+    "erdos-313"
+  ]
 }

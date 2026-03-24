@@ -151,5 +151,27 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, incidence-geometry"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, incidence-geometry"
+    },
+    {
+      "targetId": "erdos-1069",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, incidence-geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-101",
+    "erdos-102",
+    "erdos-1069"
+  ]
 }

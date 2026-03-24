@@ -146,5 +146,27 @@
     "Erdős–Hajnal (1967): c > 1/4 case via shift graphs",
     "Erdős–Hajnal–Szemerédi (1982): all ε > 0 via Lovász Local Lemma",
     "https://erdosproblems.com/750"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-920",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-920",
+    "erdos-1014",
+    "erdos-108"
   ]
 }

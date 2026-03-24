@@ -15,7 +15,8 @@
       "Extremal graph theory",
       "Turan's theorem",
       "Forbidden subgraphs"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-cycle-def",
@@ -28,7 +29,9 @@
     "title": "Cycle Detection",
     "content": "**hasCycleOfLength:**\n\nA graph G contains a cycle of length k if there exist k distinct vertices v_0, ..., v_{k-1} with edges v_i ~ v_{i+1 mod k}.\n\n```lean\ndef hasCycleOfLength (G : SimpleGraph V) (k : N) [Fintype V] : Prop :=\n  exists (vertices : Fin k -> V), Function.Injective vertices and\n    (forall i : Fin k, G.Adj (vertices i) (vertices ((i+1) % k)))\n```",
     "significance": "key",
-    "mathContext": "Formal statement of cycle detection as described in the annotation content"
+    "mathContext": "Formal statement of cycle detection as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-cycle-free",
@@ -41,7 +44,9 @@
     "title": "Cycle-Free Graphs",
     "content": "**isCycleFree:**\n\nA graph is C_{2k}-free if it contains no cycle of length 2k.\n\n```lean\ndef isCycleFree (G : SimpleGraph V) (length : N) [Fintype V] : Prop :=\n  not hasCycleOfLength G length\n```\n\nThis is the key constraint for the extremal problem.",
     "significance": "key",
-    "mathContext": "Formal statement of cycle-free graphs as described in the annotation content"
+    "mathContext": "Formal statement of cycle-free graphs as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-edge-count",
@@ -54,7 +59,9 @@
     "title": "Edge Count",
     "content": "**edgeCount:**\n\nThe number of edges in a simple graph.\n\n```lean\nnoncomputable def edgeCount (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] : N :=\n  G.edgeFinset.card\n```\n\nWe maximize this subject to the cycle-free constraint.",
     "significance": "supporting",
-    "mathContext": "Formal statement of edge count as described in the annotation content"
+    "mathContext": "Formal statement of edge count as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-extremal-func",
@@ -67,7 +74,9 @@
     "title": "The Extremal Function",
     "content": "**exCycle:**\n\nex(n; C_{2k}) = max{|E(G)| : G has n vertices, no C_{2k}}\n\n```lean\nnoncomputable def exCycle (n k : N) : N :=\n  sSup {m : N | exists V G, card V = n and isCycleFree G (2*k) and edgeCount G = m}\n```\n\nThis is the central object of study in the problem.",
     "mathContext": "The extremal function measures the densest possible graph avoiding a specific substructure.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-bondy-simonovits",
@@ -84,7 +93,8 @@
     "relatedConcepts": [
       "Random graph methods",
       "Cycle counting"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-benson-k3",
@@ -97,7 +107,9 @@
     "title": "Benson's Theorem for k=3",
     "content": "**benson_k3:**\n\nex(n; C_6) >= c * n^{4/3}\n\nBenson (1966) constructed explicit C_6-free graphs with n^{4/3} edges using generalized hexagons.\n\n```lean\naxiom benson_k3 :\n  exists c : R, c > 0 and forall n >= 1,\n    (exCycle n 3 : R) >= c * n^(4/3)\n```\n\nThe exponent 4/3 = 1 + 1/3 matches the conjecture.",
     "mathContext": "Uses generalized polygons from incidence geometry.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-benson-k5",
@@ -110,7 +122,9 @@
     "title": "Benson's Theorem for k=5",
     "content": "**benson_k5:**\n\nex(n; C_{10}) >= c * n^{6/5}\n\nSimilar construction using generalized decagons.\nThe exponent 6/5 = 1 + 1/5 matches the conjecture.",
     "significance": "key",
-    "mathContext": "Formal statement of benson's theorem for k=5 as described in the annotation content"
+    "mathContext": "Formal statement of benson's theorem for k=5 as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-luw",
@@ -127,7 +141,8 @@
     "relatedConcepts": [
       "Algebraic graphs",
       "Finite fields"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-conjecture",
@@ -140,7 +155,9 @@
     "title": "The Erdos Conjecture",
     "content": "**erdosConjectureLowerBound:**\n\nThe conjecture states ex(n; C_{2k}) >> n^{1+1/k}.\n\n```lean\ndef erdosConjectureLowerBound (k : N) : Prop :=\n  exists c : R, c > 0 and forall n >= 1,\n    (exCycle n k : R) >= c * n^(1 + 1/k)\n```\n\nThis would match the Bondy-Simonovits upper bound up to constants.",
     "significance": "key",
-    "mathContext": "Formal statement of the erdos conjecture as described in the annotation content"
+    "mathContext": "Formal statement of the erdos conjecture as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-k3-proof",
@@ -153,7 +170,9 @@
     "title": "Conjecture Proved for k=3",
     "content": "**erdos_572_k3:**\n\nThe conjecture holds for k=3.\n\n```lean\ntheorem erdos_572_k3 : erdosConjectureLowerBound 3 := by\n  unfold erdosConjectureLowerBound\n  obtain (c, hc_pos, hc) := benson_k3\n  use c\n  ...\n```\n\nFollows from Benson's theorem since 4/3 = 1 + 1/3.",
     "significance": "key",
-    "mathContext": "Formal statement of conjecture proved for k=3 as described in the annotation content"
+    "mathContext": "Formal statement of conjecture proved for k=3 as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-k5-proof",
@@ -166,7 +185,9 @@
     "title": "Conjecture Proved for k=5",
     "content": "**erdos_572_k5:**\n\nThe conjecture holds for k=5.\n\nFollows from Benson's theorem since 6/5 = 1 + 1/5.",
     "significance": "key",
-    "mathContext": "Formal statement of conjecture proved for k=5 as described in the annotation content"
+    "mathContext": "Formal statement of conjecture proved for k=5 as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-exponents",
@@ -179,7 +200,9 @@
     "title": "Exponent Definitions",
     "content": "**conjecturedExponent:**\n\nThe conjectured exponent is 1 + 1/k.\n\n```lean\ndef conjecturedExponent (k : N) : R := 1 + 1 / k\n```\n\nCompare with luwExponent which is weaker for most k.",
     "significance": "key",
-    "mathContext": "Formal statement of exponent definitions as described in the annotation content"
+    "mathContext": "Formal statement of exponent definitions as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-luw-matches-k3",
@@ -192,7 +215,9 @@
     "title": "LUW Matches Conjecture for k=3",
     "content": "**luw_matches_k3:**\n\nFor k=3 (odd), the LUW exponent equals the conjectured exponent.\n\nluwExponent 3 = 1 + 2/6 = 4/3 = 1 + 1/3 = conjecturedExponent 3\n\nThis is why LUW gives the optimal bound for k=3.",
     "significance": "key",
-    "mathContext": "Formal statement of luw matches conjecture for k=3 as described in the annotation content"
+    "mathContext": "Formal statement of luw matches conjecture for k=3 as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-gap-k4",
@@ -205,7 +230,9 @@
     "title": "Gap for k=4",
     "content": "**luw_gap_k4:**\n\nFor k=4, there is a gap:\n- LUW gives 1 + 2/10 = 1.2\n- Conjecture is 1 + 1/4 = 1.25\n\nThe k=4 case remains open.",
     "significance": "key",
-    "mathContext": "Formal statement of gap for k=4 as described in the annotation content"
+    "mathContext": "Formal statement of gap for k=4 as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-erdos-klein",
@@ -222,7 +249,8 @@
     "relatedConcepts": [
       "Zarankiewicz problem",
       "Projective planes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-odd-cycles",
@@ -235,7 +263,9 @@
     "title": "Odd Cycle Extremal Function",
     "content": "**odd_cycle_extremal:**\n\nFor odd cycles: ex(n; C_{2k+1}) = floor(n^2/4)\n\nThe extremal graphs are complete bipartite K_{n/2, n/2}.\n\nThis is because bipartite graphs contain no odd cycles.\n\nOdd cycles are much easier than even cycles!",
     "mathContext": "Bipartite graphs are exactly those with no odd cycles.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-summary",
@@ -248,7 +278,9 @@
     "title": "Summary Theorem",
     "content": "**erdos_572_summary:**\n\nCombines the partial results:\n\n```lean\ntheorem erdos_572_summary :\n    erdosConjectureLowerBound 3 and\n    erdosConjectureLowerBound 5 and\n    luwExponent 3 = conjecturedExponent 3\n```\n\n1. Conjecture proved for k=3\n2. Conjecture proved for k=5\n3. LUW bound optimal for k=3",
     "significance": "key",
-    "mathContext": "Formal statement of summary theorem as described in the annotation content"
+    "mathContext": "Formal statement of summary theorem as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e572-best-bounds",
@@ -261,6 +293,8 @@
     "title": "Best Known Lower Bounds",
     "content": "**best_known_lower_bounds:**\n\nSummarizes all known lower bounds:\n\n1. k=3: n^{4/3} (Benson, optimal)\n2. k=5: n^{6/5} (Benson, optimal)\n3. General k: n^{1+2/(3k-3+v)} (LUW, suboptimal)\n\nThe gap between LUW and the conjecture grows with k.",
     "significance": "key",
-    "mathContext": "Formal statement of best known lower bounds as described in the annotation content"
+    "mathContext": "Formal statement of best known lower bounds as described in the annotation content",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

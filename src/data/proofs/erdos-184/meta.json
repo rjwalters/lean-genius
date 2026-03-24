@@ -55,16 +55,6 @@
       "Dense graph result (Conlon-Fox-Sudakov)",
       "Lower bound from bipartite graph K_{3,n-3}"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-583",
-        "relationship": "Related Erdős problem on decomposition into paths"
-      },
-      {
-        "id": "erdos-1017",
-        "relationship": "Related Erdős problem on complete graph decomposition"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 251,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -184,5 +174,27 @@
     "Bucić–Montgomery (2022): O(n log* n) bound, arXiv:2209.01051",
     "Erdős (1971): 'Some unsolved problems in graph theory'",
     "https://erdosproblems.com/184"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-574",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-64",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-574",
+    "erdos-64",
+    "erdos-1008"
   ]
 }

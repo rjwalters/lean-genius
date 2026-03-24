@@ -59,28 +59,6 @@
       "erdos486_conjecture: The main open conjecture — every modular avoidance set has a logarithmic density",
       "davenport_erdos_theorem: The proven special case (Xₙ = {0}) — stated as axiom pending Mathlib formalization",
       "besicovitch_counterexample: Existence of a set with logarithmic but not natural density — stated as axiom pending formalization"
-    ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-25",
-        "relationship": "generalization",
-        "description": "Problem #486 generalizes #25 (which restricts to |Xₙ| = 1 per modulus) to arbitrary forbidden residue sets"
-      },
-      {
-        "targetId": "harmonic-divergence",
-        "relationship": "foundational",
-        "description": "Logarithmic density is built on harmonic sums Σ 1/n; the divergence of the harmonic series is why log(x) normalization yields a nontrivial density"
-      },
-      {
-        "targetId": "erdos-1134",
-        "relationship": "thematic",
-        "description": "Both problems investigate density properties of number-theoretic sets defined by modular/affine conditions"
-      }
-    ],
-    "relatedProofs": [
-      "erdos-25",
-      "harmonic-divergence",
-      "erdos-1134"
     ]
   },
   "overview": {
@@ -190,5 +168,27 @@
       "venue": "Mathematische Annalen, 110, pp. 336-341",
       "note": "Showed natural density can fail for zero-avoidance sets, justifying the use of logarithmic density"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-25",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-697",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, modular-arithmetic, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1074",
+    "erdos-25",
+    "erdos-697"
   ]
 }

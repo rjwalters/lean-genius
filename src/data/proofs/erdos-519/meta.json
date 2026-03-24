@@ -170,7 +170,7 @@
   },
   "relatedProofs": [
     "erdos-973",
-    "de-moivre"
+    "erdos-974"
   ],
   "leanFile": {
     "imports": [
@@ -188,5 +188,17 @@
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-973",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, power-sums"
+    },
+    {
+      "targetId": "erdos-974",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, power-sums"
+    }
+  ]
 }

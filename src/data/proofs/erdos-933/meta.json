@@ -55,23 +55,6 @@
       "Fully proved: `consecutive_coprime` (via Nat.coprime_self_add_one), `steinerberger_n_plus_1` (rfl), examples by native_decide",
       "Three equivalent main statements: `erdos_933`, `erdos_933_main`, `erdos_933_solved`"
     ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-931",
-        "relationship": "companion",
-        "description": "Companion problem on same prime factor sets in products of consecutive integers. Both analyze prime factorization structure of n(n+1)...(n+k); #931 asks when consecutive blocks share the same set of prime factors, while #933 measures the {2,3}-smooth part's growth."
-      },
-      {
-        "targetId": "erdos-935",
-        "relationship": "complementary",
-        "description": "Complementary study: #935 examines the 'powerful part' (r-powerful component) of consecutive products, while #933 examines the 'smooth part'. Both ask how large specific multiplicative components of n(n+1) can grow relative to n."
-      },
-      {
-        "targetId": "kummer-theorem",
-        "relationship": "technique",
-        "description": "Provides p-adic valuation techniques applicable to products of consecutive integers. The Lifting the Exponent Lemma used in #933 is closely related to Kummer's carry-counting approach for computing v_p of binomial coefficients."
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 230,
     "assumptions": "6 axiom(s) and 5 sorry(s). See the Lean source for details."
@@ -194,5 +177,27 @@
     "axiomCount": 6,
     "theoremCount": 9,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, smooth-numbers, solved"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, smooth-numbers"
+    },
+    {
+      "targetId": "erdos-370",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, smooth-numbers, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-240",
+    "erdos-369",
+    "erdos-370"
+  ]
 }

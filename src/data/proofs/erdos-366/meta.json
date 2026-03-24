@@ -160,5 +160,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-365",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, powerful-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-137",
+    "erdos-365",
+    "erdos-367"
+  ]
 }

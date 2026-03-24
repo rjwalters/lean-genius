@@ -53,24 +53,6 @@
       "Odd numbers construction as fundamental extremal example",
       "Four open problems formalized as Lean propositions"
     ],
-    "crossReferences": [
-      {
-        "id": "erdos-394",
-        "relationship": "Both study threshold phenomena in number-theoretic/combinatorial settings; erdos-394 examines divisibility thresholds while this examines pairwise sum thresholds"
-      },
-      {
-        "id": "erdos-932",
-        "relationship": "Connected through density and threshold concepts; erdos-932 studies natural density of smooth numbers, while this studies density thresholds for sumset configurations"
-      },
-      {
-        "id": "erdos-486",
-        "relationship": "Both involve extremal set theory with number-theoretic flavor; dense subsets of integers forced to contain specific arithmetic patterns"
-      },
-      {
-        "id": "subset-count",
-        "relationship": "Subset counting is foundational to analyzing which subsets can form pairwise sum configurations"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 274,
     "assumptions": "7 axiom(s) and 6 sorry(s). See the Lean source for details."
@@ -201,5 +183,27 @@
     "axiomCount": 7,
     "theoremCount": 12,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sumsets"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sumsets"
+    },
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-1103",
+    "erdos-1109"
+  ]
 }

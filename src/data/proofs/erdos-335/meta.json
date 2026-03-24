@@ -66,28 +66,6 @@
       "Basic properties: density_nonneg, density_le_one, additive_sum_le_one, plunnecke_ruzsa_lower",
       "additive_implies_tight: PROVED — density additivity implies Plünnecke–Ruzsa is tight"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-337",
-        "relationship": "Additive bases and sumset growth — both study sumsets with the Plünnecke–Ruzsa inequality as a central tool"
-      },
-      {
-        "proofId": "erdos-343",
-        "relationship": "Subcompleteness of dense multisets — studies density and sumset structure using Freiman-type results"
-      },
-      {
-        "proofId": "erdos-336",
-        "relationship": "Additive bases and exact order — explores the structure of bases and representation functions"
-      },
-      {
-        "proofId": "erdos-322",
-        "relationship": "Sums of k-th powers — representation functions and additive structure of special sequences"
-      },
-      {
-        "proofId": "erdos-66",
-        "relationship": "Representation function asymptotics — asymptotic behavior of sumset representation functions r_A(n)"
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 180,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."

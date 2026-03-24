@@ -152,5 +152,27 @@
     "axiomCount": 10,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-175",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, prime-powers"
+    },
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+    },
+    {
+      "targetId": "erdos-1093",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-175",
+    "erdos-1063",
+    "erdos-1093"
+  ]
 }

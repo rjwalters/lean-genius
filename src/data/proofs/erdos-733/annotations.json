@@ -15,7 +15,8 @@
       "Incidences",
       "Point-line geometry",
       "Szemeredi-Trotter"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-pointset",
@@ -34,7 +35,8 @@
       "Sylvester-Gallai theorem",
       "combinatorial geometry"
     ],
-    "mathContext": "See annotation content for formal details of point configuration"
+    "mathContext": "See annotation content for formal details of point configuration",
+    "prerequisites": []
   },
   {
     "id": "ann-e733-line",
@@ -51,7 +53,8 @@
       "Collinearity",
       "Incidence geometry"
     ],
-    "mathContext": "See annotation content for formal details of lines and incidences"
+    "mathContext": "See annotation content for formal details of lines and incidences",
+    "prerequisites": []
   },
   {
     "id": "ann-e733-line-compatible",
@@ -64,7 +67,9 @@
     "title": "Line-Compatible Sequences",
     "content": "**isLineCompatible:**\n\nA sorted sequence [X_1, ..., X_m] with 2 <= X_i <= n is line-compatible if some n-point configuration has m lines with exactly these point counts.\n\n**Example:** [2, 2, 3] means 2 lines with 2 points each and 1 line with 3 points.",
     "mathContext": "The central definition of the problem.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-count",
@@ -77,7 +82,9 @@
     "title": "Counting Function f(n)",
     "content": "**countLineCompatible f(n):**\n\nThe number of distinct line-compatible sequences for n points.\n\nThe problem asks for bounds on f(n).",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of counting function f(n)"
+    "mathContext": "See annotation content for formal details of counting function f(n)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-szemeredi-trotter",
@@ -94,7 +101,8 @@
     "relatedConcepts": [
       "Incidence bounds",
       "Crossing number inequality"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-rich-lines",
@@ -107,7 +115,9 @@
     "title": "Rich Lines Bound",
     "content": "**rich_lines_bound:**\n\nThe number of k-rich lines (lines with >= k points) is O(n^2/k^3 + n/k).\n\nThis is a corollary of Szemeredi-Trotter and controls the possible sequence patterns.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of rich lines bound"
+    "mathContext": "See annotation content for formal details of rich lines bound",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-lower",
@@ -120,7 +130,9 @@
     "title": "Lower Bound (Erdos)",
     "content": "**lower_bound:**\n\nf(n) >= exp(c * sqrt(n))\n\nErdos considered this 'easy'.\n\n**Construction:** A sqrt(n) x sqrt(n) grid has Theta(n) lines through it. Selecting different subsets of lines gives exponentially many sequences.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of lower bound (erdos)"
+    "mathContext": "See annotation content for formal details of lower bound (erdos)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-grid",
@@ -133,7 +145,9 @@
     "title": "Grid Construction",
     "content": "**grid_gives_lower:**\n\nA sqrt(n) x sqrt(n) integer grid has:\n- n points total\n- Theta(sqrt(n)) horizontal lines\n- Theta(sqrt(n)) vertical lines\n- Many diagonal lines\n\nTotal: Theta(n) lines, giving 2^{Theta(sqrt(n))} subsequences.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of grid construction"
+    "mathContext": "See annotation content for formal details of grid construction",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-upper",
@@ -146,7 +160,9 @@
     "title": "Upper Bound (Szemeredi-Trotter)",
     "content": "**upper_bound:**\n\nf(n) <= exp(C * sqrt(n))\n\nProved by Szemeredi and Trotter (1983) using their incidence theorem.\n\nThe proof controls the number of possible sequence patterns by bounding incidences.",
     "mathContext": "This was the 'difficult' direction that Erdos anticipated.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-tight",
@@ -159,7 +175,9 @@
     "title": "Tight Bounds",
     "content": "**tight_bounds:**\n\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nCombines lower and upper bounds to show f(n) = exp(Theta(sqrt(n))).",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of tight bounds"
+    "mathContext": "See annotation content for formal details of tight bounds",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-main",
@@ -172,7 +190,9 @@
     "title": "Erdos Problem #733: SOLVED",
     "content": "**erdos_733:**\n\nComplete solution: f(n) = exp(Theta(sqrt(n)))\n\nFor n >= 4, there exist c, C > 0 such that:\nexp(c*sqrt(n)) <= f(n) <= exp(C*sqrt(n))\n\nThe Szemeredi-Trotter theorem is the key tool.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of erdos problem #733: solved"
+    "mathContext": "See annotation content for formal details of erdos problem #733: solved",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-limit",
@@ -185,7 +205,9 @@
     "title": "The Limit Question",
     "content": "**limitConstant:**\n\nErdos asked: Does lim log(f(n)) / sqrt(n) exist?\n\nIf so, what is its value?\n\nBy the tight bounds, any limit must lie between c and C. The exact value remains of interest.",
     "mathContext": "An open follow-up question posed by Erdos.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e733-summary",
@@ -198,6 +220,8 @@
     "title": "Complete Summary",
     "content": "**erdos_733_summary:**\n\n1. Line-compatible sequences counted by f(n)\n2. Lower: f(n) >= exp(c*sqrt(n)) (grid construction)\n3. Upper: f(n) <= exp(C*sqrt(n)) (Szemeredi-Trotter)\n4. Together: f(n) = exp(Theta(sqrt(n)))\n\n**erdos_733_answer:** Confirms the complete bounds.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of complete summary"
+    "mathContext": "See annotation content for formal details of complete summary",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

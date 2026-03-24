@@ -148,5 +148,27 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-558",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, odd-cycles, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-925",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-558",
+    "erdos-569",
+    "erdos-925"
+  ]
 }

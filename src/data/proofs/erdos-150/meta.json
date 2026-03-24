@@ -194,5 +194,27 @@
     "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-581",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-134",
+    "erdos-565",
+    "erdos-581"
+  ]
 }

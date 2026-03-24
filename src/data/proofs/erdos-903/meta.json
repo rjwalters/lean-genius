@@ -54,38 +54,6 @@
       "Connected to Fisher's inequality for 2-designs",
       "Stated stronger bound: t ≥ n + 1.148p unless broken projective plane"
     ],
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-734",
-        "relationship": "generalizes",
-        "description": "Studies PBDs with bounded block frequencies, directly generalizing the pair-coverage block designs here"
-      },
-      {
-        "targetProofId": "erdos-732",
-        "relationship": "related",
-        "description": "Characterizes which block-size sequences are compatible with valid PBD structure"
-      },
-      {
-        "targetProofId": "erdos-722",
-        "relationship": "specializes",
-        "description": "Steiner systems S(r,k,n) are the uniform specialization of block designs; projective planes are S(2, q+1, q²+q+1)"
-      },
-      {
-        "targetProofId": "erdos-664",
-        "relationship": "related",
-        "description": "Blocking sets in PG(2,q) use the same projective plane structure formalized here"
-      },
-      {
-        "targetProofId": "erdos-905",
-        "relationship": "analogous",
-        "description": "Studies a similar gap/rigidity phenomenon for edge-triangle multiplicities above the Turán threshold"
-      },
-      {
-        "targetProofId": "erdos-901",
-        "relationship": "related",
-        "description": "Uses the Fano plane (PG(2,2), order 2 projective plane) as the extremal example for m(3) = 7"
-      }
-    ],
     "axiomCount": 9,
     "lineCount": 228,
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -189,5 +157,27 @@
     "axiomCount": 9,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1159",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, finite-geometry, projective-planes"
+    },
+    {
+      "targetId": "erdos-664",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, finite-geometry, projective-planes"
+    },
+    {
+      "targetId": "erdos-665",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: block-designs, combinatorics, projective-planes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1159",
+    "erdos-664",
+    "erdos-665"
+  ]
 }

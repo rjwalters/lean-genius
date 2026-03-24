@@ -142,5 +142,27 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: collinearity, combinatorial-geometry"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: collinearity, combinatorial-geometry"
+    },
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-101",
+    "erdos-102",
+    "erdos-107"
+  ]
 }

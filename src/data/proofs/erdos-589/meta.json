@@ -149,5 +149,27 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1070",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, discrete-geometry"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, discrete-geometry"
+    },
+    {
+      "targetId": "erdos-185",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, hales-jewett"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1070",
+    "erdos-1088",
+    "erdos-185"
+  ]
 }

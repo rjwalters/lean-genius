@@ -149,29 +149,29 @@
   },
   "crossReferences": [
     {
-      "target": "euler-totient",
       "relationship": "foundational",
-      "description": "Euler's totient function φ is the central object of this problem; the euler-totient entry formalizes its definition and multiplicativity."
+      "description": "Euler's totient function φ is the central object of this problem; the euler-totient entry formalizes its definition and multiplicativity.",
+      "targetId": "euler-totient"
     },
     {
-      "target": "erdos-1004",
       "relationship": "companion",
-      "description": "Erdős Problem #1004 studies distinct consecutive totient values from the same 1987 Erdős-Pomerance-Sárközy paper that provides the upper bound used here."
+      "description": "Erdős Problem #1004 studies distinct consecutive totient values from the same 1987 Erdős-Pomerance-Sárközy paper that provides the upper bound used here.",
+      "targetId": "erdos-1004"
     },
     {
-      "target": "fundamental-arithmetic",
       "relationship": "dependency",
-      "description": "The totient formula φ(n) = n·Π(1 - 1/p) relies on unique prime factorization; this entry formalizes the fundamental theorem of arithmetic underlying that computation."
+      "description": "The totient formula φ(n) = n·Π(1 - 1/p) relies on unique prime factorization; this entry formalizes the fundamental theorem of arithmetic underlying that computation.",
+      "targetId": "fundamental-arithmetic"
     },
     {
-      "target": "infinitude-primes",
       "relationship": "analogy",
-      "description": "The infinitude-of-solutions argument mirrors the infinitude-of-primes style: both assert an infinite set exists within the positive integers via density or constructive arguments."
+      "description": "The infinitude-of-solutions argument mirrors the infinitude-of-primes style: both assert an infinite set exists within the positive integers via density or constructive arguments.",
+      "targetId": "infinitude-primes"
     },
     {
-      "target": "erdos-1053",
       "relationship": "related",
-      "description": "Erdős Problem #1053 concerns the growth rate of k-perfect numbers via σ(n); like Problem #1003, it studies asymptotic behavior of a classical multiplicative arithmetic function."
+      "description": "Erdős Problem #1053 concerns the growth rate of k-perfect numbers via σ(n); like Problem #1003, it studies asymptotic behavior of a classical multiplicative arithmetic function.",
+      "targetId": "erdos-1053"
     }
   ],
   "relatedProofs": [

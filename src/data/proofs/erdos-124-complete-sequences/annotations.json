@@ -15,7 +15,8 @@
       "AI theorem proving",
       "formal verification"
     ],
-    "mathContext": "See annotation content for formal details of the first ai-solved open problem"
+    "mathContext": "See annotation content for formal details of the first ai-solved open problem",
+    "prerequisites": []
   },
   {
     "id": "ann-problem-statement",
@@ -33,7 +34,8 @@
       "digit representation",
       "bases",
       "complete sequences"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-two-versions",
@@ -51,7 +53,8 @@
       "problem formulation",
       "ambiguity",
       "strong conjecture"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-ai-story",
@@ -69,7 +72,8 @@
       "Aristotle",
       "AI mathematics"
     ],
-    "mathContext": "See annotation content for formal details of the ai story"
+    "mathContext": "See annotation content for formal details of the ai story",
+    "prerequisites": []
   },
   {
     "id": "ann-proof-strategy",
@@ -87,7 +91,8 @@
       "proof structure",
       "Brown's criterion",
       "greedy algorithm"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-namespace",
@@ -105,7 +110,8 @@
       "Lean syntax",
       "Mathlib imports",
       "namespaces"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-algebraic-gap",
@@ -123,7 +129,8 @@
       "algebraic inequality",
       "reciprocal condition",
       "gap bound"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-reciprocal-condition",
@@ -141,7 +148,8 @@
       "density",
       "gap control",
       "necessity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-browns-criterion",
@@ -159,7 +167,8 @@
       "subset sums",
       "complete sequences",
       "gap condition"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-browns-proof-structure",
@@ -177,7 +186,8 @@
       "induction",
       "partial sums",
       "case analysis"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-min-index",
@@ -195,7 +205,8 @@
       "minimum selection",
       "Classical.choose",
       "noncomputable"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-next-e",
@@ -213,7 +224,8 @@
       "Function.update",
       "exponent tracking",
       "state update"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e-seq",
@@ -231,7 +243,8 @@
       "recursion",
       "state sequence",
       "exponent tracking"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-u-seq",
@@ -249,7 +262,8 @@
       "greedy sequence",
       "power selection",
       "Brown's criterion input"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-greedy-construction",
@@ -267,7 +281,8 @@
       "greedy algorithm",
       "sequence construction",
       "power selection"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-u-seq-monotone",
@@ -285,7 +300,8 @@
       "monotonicity",
       "Brown's criterion",
       "greedy property"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-u-seq-gap",
@@ -303,7 +319,8 @@
       "gap analysis",
       "reciprocal sum",
       "bound propagation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-chosen-index-exponent",
@@ -321,7 +338,8 @@
       "index tracking",
       "exponent recording",
       "provenance"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-u-seq-eq-power",
@@ -338,7 +356,8 @@
     "relatedConcepts": [
       "definitional equality",
       "power representation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-chosen-pair-injective",
@@ -356,7 +375,8 @@
       "injectivity",
       "uniqueness",
       "digit constraint"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-digit-decomposition",
@@ -374,7 +394,8 @@
       "digit representation",
       "unique exponents",
       "base decomposition"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-u-seq-zero",
@@ -392,7 +413,8 @@
       "initial condition",
       "Brown's criterion",
       "d^0 = 1"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-k-nonzero",
@@ -410,7 +432,8 @@
       "non-emptiness",
       "bound tactic",
       "hypothesis derivation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-main-theorem-structure",
@@ -428,7 +451,8 @@
       "main theorem",
       "proof assembly",
       "Brown's criterion"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-erdos-124-strengthened",
@@ -446,7 +470,8 @@
       "strengthening",
       "unnecessary hypotheses",
       "clean statement"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-formal-conjectures",
@@ -465,7 +490,8 @@
       "typo detection",
       "DeepMind",
       "filters"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-worked-example",
@@ -483,6 +509,7 @@
       "concrete example",
       "representation",
       "digit check"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

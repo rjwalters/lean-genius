@@ -164,5 +164,27 @@
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved, triangle-free"
+    },
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory, triangle-free"
+    },
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-134",
+    "erdos-23",
+    "erdos-1021"
+  ]
 }

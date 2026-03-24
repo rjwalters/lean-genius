@@ -147,5 +147,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distances, open"
+    },
+    {
+      "targetId": "erdos-661",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distances, open"
+    },
+    {
+      "targetId": "erdos-662",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distances, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1087",
+    "erdos-661",
+    "erdos-662"
+  ]
 }

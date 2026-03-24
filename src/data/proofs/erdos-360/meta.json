@@ -164,5 +164,27 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-328",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, partition, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1136",
+    "erdos-179",
+    "erdos-328"
+  ]
 }

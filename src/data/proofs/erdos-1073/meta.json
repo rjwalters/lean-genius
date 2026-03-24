@@ -91,28 +91,28 @@
   },
   "crossReferences": [
     {
-      "target": "wilsons-theorem",
-      "relationship": "Wilson's theorem is the key tool: every prime p divides (p-1)!+1, and this characterises primes completely, making the composite case the surprising exception that Problem 1073 studies."
+      "relationship": "Wilson's theorem is the key tool: every prime p divides (p-1)!+1, and this characterises primes completely, making the composite case the surprising exception that Problem 1073 studies.",
+      "targetId": "wilsons-theorem"
     },
     {
-      "target": "erdos-1072",
-      "relationship": "Sibling problem: Erdős #1072 asks for the least n with n! ≡ -1 (mod p) for a prime p, studying the same factorial-plus-one divisibility condition from the prime side that #1073 examines from the composite side."
+      "relationship": "Sibling problem: Erdős #1072 asks for the least n with n! ≡ -1 (mod p) for a prime p, studying the same factorial-plus-one divisibility condition from the prime side that #1073 examines from the composite side.",
+      "targetId": "erdos-1072"
     },
     {
-      "target": "erdos-1074",
-      "relationship": "Erdős #1074 studies EHS numbers and Pillai primes, objects introduced by Erdős-Hardy-Subbarao in the same body of work that motivates the composite factorial-divisibility question of #1073."
+      "relationship": "Erdős #1074 studies EHS numbers and Pillai primes, objects introduced by Erdős-Hardy-Subbarao in the same body of work that motivates the composite factorial-divisibility question of #1073.",
+      "targetId": "erdos-1074"
     },
     {
-      "target": "erdos-728-factorial-divisibility",
-      "relationship": "Erdős #728 studies a related factorial divisibility problem whose Lean formalization uses overlapping techniques for counting composites with special divisibility properties."
+      "relationship": "Erdős #728 studies a related factorial divisibility problem whose Lean formalization uses overlapping techniques for counting composites with special divisibility properties.",
+      "targetId": "erdos-728-factorial-divisibility"
     },
     {
-      "target": "bertrands-postulate",
-      "relationship": "Bertrand's Postulate guarantees primes between n and 2n; the coprimality constraint that forces prime factors of any composite u | n!+1 to exceed n relies on the same density-of-primes reasoning."
+      "relationship": "Bertrand's Postulate guarantees primes between n and 2n; the coprimality constraint that forces prime factors of any composite u | n!+1 to exceed n relies on the same density-of-primes reasoning.",
+      "targetId": "bertrands-postulate"
     },
     {
-      "target": "infinitude-primes",
-      "relationship": "The infinitude of primes underpins the argument that the set of composites dividing some n!+1 is sparse: the coprimality constraint forces each such composite to be built from primes in an increasingly restricted range."
+      "relationship": "The infinitude of primes underpins the argument that the set of composites dividing some n!+1 is sparse: the coprimality constraint forces each such composite to be built from primes in an increasingly restricted range.",
+      "targetId": "infinitude-primes"
     }
   ],
   "relatedProofs": [

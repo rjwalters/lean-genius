@@ -16,7 +16,8 @@
       "abbrev",
       "function type"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-neighbors",
@@ -35,7 +36,8 @@
       "Manhattan distance",
       "lattice adjacency"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-walk",
@@ -53,7 +55,8 @@
       "function type",
       "LatticePoint"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-saw",
@@ -72,7 +75,8 @@
       "isSelfAvoiding",
       "polymer model"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-sawcount",
@@ -91,7 +95,8 @@
       "#P-completeness",
       "exponential growth"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-submult",
@@ -110,7 +115,8 @@
       "Nat.mul",
       "Nat.le"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-limitexists",
@@ -130,7 +136,8 @@
       "Real.rpow",
       "Fekete's lemma"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-connective",
@@ -149,7 +156,8 @@
       "dite",
       "notation"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-trivialbounds",
@@ -167,7 +175,8 @@
       "connective_upper_bound",
       "And.intro"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-kesten",
@@ -186,7 +195,8 @@
       "abs",
       "Real.div"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-2dbounds",
@@ -205,7 +215,8 @@
       "jsg_computation",
       "two_d_bounds"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-largek",
@@ -224,7 +235,8 @@
       "nhds",
       "kesten_asymptotic"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-honeycomb",
@@ -243,7 +255,8 @@
       "discrete holomorphicity",
       "parafermionic observables"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-conjectures",
@@ -262,7 +275,8 @@
       "Classical.em",
       "mu_honeycomb"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-counts2d",
@@ -281,7 +295,8 @@
       "Filter.Tendsto",
       "OEIS A001411"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-critical",
@@ -300,7 +315,8 @@
       "universality",
       "conformal field theory"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e528-summary",
@@ -319,6 +335,7 @@
       "two_d_bounds",
       "And.intro"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   }
 ]

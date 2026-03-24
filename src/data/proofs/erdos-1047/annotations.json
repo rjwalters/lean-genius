@@ -15,7 +15,8 @@
       "Level sets",
       "Sublevel sets",
       "Complex analysis"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1047-strict",
@@ -141,7 +142,8 @@
       "Convex sets",
       "Convex hull",
       "Hahn-Banach theorem"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1047-grunsky",
@@ -154,7 +156,9 @@
     "title": "The Grunsky Conjecture",
     "content": "**Grunsky's Question (1958):**\n\nFor any monic polynomial f with distinct roots, do small lemniscates have all convex components?\n\nThe intuition: near a simple root z₀, we have |f(z)| ≈ |f'(z₀)| · |z - z₀|, so the component is approximately a disk (definitely convex).",
     "mathContext": "The conjecture is formalized as a universally quantified statement over all monic polynomials.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e1047-grunsky-false",
@@ -189,7 +193,9 @@
     "title": "Pommerenke's Polynomial",
     "content": "**Pommerenke's family (1961):**\n\nf(z) = z^k(z - a)\n\nThis has a root of multiplicity k at 0 and a simple root at a. For large k and carefully chosen a, the component around 0 becomes non-convex.",
     "mathContext": "The high multiplicity at 0 creates a 'flat' region where |f| grows slowly, allowing the simple root at a to distort the shape.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e1047-pommerenke-param",

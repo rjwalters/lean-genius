@@ -161,5 +161,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-methods"
+    },
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-methods"
+    },
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-369",
+    "erdos-976",
+    "erdos-1053"
+  ]
 }

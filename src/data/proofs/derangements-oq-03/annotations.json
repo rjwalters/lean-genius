@@ -16,7 +16,8 @@
       "numDerangements_add_two",
       "strong induction",
       "factorial"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-exp-tsum",
@@ -35,7 +36,8 @@
       "Real.exp_eq_exp_ℝ",
       "Taylor series",
       "altFactTerm"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-tail-bound",
@@ -54,7 +56,8 @@
       "alt_partial_sum_le_first",
       "le_of_tendsto",
       "tsum_mul_left"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-convergence-rate",
@@ -73,7 +76,8 @@
       "exp_neg_one_eq_tsum_alt",
       "alternating_tail_bound",
       "abs_neg"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-tendsto",
@@ -92,7 +96,8 @@
       "summable_altFactTerm.tendsto_atTop_zero",
       "derangements_convergence_rate",
       "factorial"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-alternating",
@@ -111,7 +116,8 @@
       "Odd.neg_one_pow",
       "Even.neg_one_pow",
       "tsum_mul_left"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-induction-pairs",
@@ -130,7 +136,8 @@
       "factorial_le",
       "Finset.sum_range_succ",
       "div_le_div_of_nonneg_left"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-tsum-decompose",
@@ -149,6 +156,7 @@
       "Function.Injective.hasSum_iff",
       "HasSum",
       "tsum"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

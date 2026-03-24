@@ -173,5 +173,27 @@
     "axiomCount": 3,
     "theoremCount": 8,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, probability, random-polynomials"
+    },
+    {
+      "targetId": "erdos-395",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, probability"
+    },
+    {
+      "targetId": "erdos-521",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: probability, random-polynomials"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-525",
+    "erdos-395",
+    "erdos-521"
+  ]
 }

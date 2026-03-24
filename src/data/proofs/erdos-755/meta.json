@@ -161,5 +161,27 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-223",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, discrete-geometry, solved"
+    },
+    {
+      "targetId": "erdos-224",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, geometry, solved"
+    },
+    {
+      "targetId": "erdos-507",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, discrete-geometry, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-223",
+    "erdos-224",
+    "erdos-507"
+  ]
 }

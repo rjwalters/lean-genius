@@ -21,24 +21,6 @@
     "erdosNumber": 949,
     "erdosUrl": "https://erdosproblems.com/949",
     "erdosProblemStatus": "open",
-    "crossReferences": [
-      {
-        "proofId": "erdos-948",
-        "relationship": "Companion problem: Hindman's theorem on monochromatic IP sets and subset sum colorings, sharing the theme of additive structure under combinatorial constraints"
-      },
-      {
-        "proofId": "erdos-795",
-        "relationship": "Studies multiplicative Sidon sets (distinct subset products); the multiplicative analogue of the additive Sidon property central to this problem"
-      },
-      {
-        "proofId": "erdos-950",
-        "relationship": "Adjacent problem studying sum of reciprocal prime gaps; both explore additive structure in different number-theoretic contexts"
-      },
-      {
-        "proofId": "zorns-lemma",
-        "relationship": "Foundation: Zorn's lemma is the key tool in the small-cardinality case of the Sidon variant proof"
-      }
-    ],
     "axiomCount": 2,
     "lineCount": 120,
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
@@ -142,5 +124,27 @@
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cardinal-arithmetic, open, set-theory"
+    },
+    {
+      "targetId": "erdos-788",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: open, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1167",
+    "erdos-788",
+    "erdos-111"
+  ]
 }

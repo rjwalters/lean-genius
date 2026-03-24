@@ -149,5 +149,27 @@
     "axiomCount": 1,
     "theoremCount": 17,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-384",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, prime-divisors"
+    },
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-397",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-384",
+    "erdos-387",
+    "erdos-397"
+  ]
 }

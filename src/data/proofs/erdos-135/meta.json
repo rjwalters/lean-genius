@@ -131,5 +131,27 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, disproved"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distinct-distances"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distinct-distances"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-105",
+    "erdos-1088",
+    "erdos-1089"
+  ]
 }

@@ -195,5 +195,27 @@
     "axiomCount": 18,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convex-geometry, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-651",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convex-geometry, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-986",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: partially-solved, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-651",
+    "erdos-986"
+  ]
 }

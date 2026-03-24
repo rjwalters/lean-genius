@@ -21,38 +21,6 @@
     "erdosNumber": 123,
     "erdosUrl": "https://erdosproblems.com/123",
     "erdosProblemStatus": "open",
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-124",
-        "relationship": "related",
-        "description": "Complete sequences from digit-restricted sums — the sibling problem studying when multi-base digit sets form complete sequences (with a reciprocal sum threshold)"
-      },
-      {
-        "targetProofId": "erdos-125",
-        "relationship": "related",
-        "description": "Positive density of digit-restricted sumsets — studies sumsets A + B where A,B are digit-restricted in different bases, sharing the 'powers form structured sets' theme"
-      },
-      {
-        "targetProofId": "erdos-1",
-        "relationship": "related",
-        "description": "Distinct subset sums (Conway-Guy conjecture) — studies additive structure of exponentially-growing sets, with powers of 2 as extremal examples"
-      },
-      {
-        "targetProofId": "erdos-12",
-        "relationship": "related",
-        "description": "Divisibility-free sets — studies sets where no element divides the sum of two larger elements, mixing divisibility constraints with additive structure"
-      },
-      {
-        "targetProofId": "fundamental-arithmetic",
-        "relationship": "uses-result",
-        "description": "Unique prime factorization — the Powers23_dvd_iff characterization (2^k₁·3^l₁ | 2^k₂·3^l₂ iff k₁≤k₂ ∧ l₁≤l₂) relies on fundamental theorem of arithmetic"
-      },
-      {
-        "targetProofId": "bezout-identity",
-        "relationship": "uses-result",
-        "description": "Bézout's identity — the coprimality condition gcd(a,b) = 1 that enables the parity argument and is necessary for the general conjecture"
-      }
-    ],
     "axiomCount": 3,
     "lineCount": 318,
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
@@ -152,5 +120,27 @@
     "axiomCount": 3,
     "theoremCount": 22,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-11",
+    "erdos-1103",
+    "erdos-1107"
+  ]
 }

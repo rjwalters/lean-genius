@@ -119,5 +119,27 @@
     "axiomCount": 3,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, sumsets"
+    },
+    {
+      "targetId": "erdos-31",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, sumsets"
+    },
+    {
+      "targetId": "erdos-333",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-31",
+    "erdos-333"
+  ]
 }

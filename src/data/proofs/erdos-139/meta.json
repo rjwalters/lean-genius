@@ -117,5 +117,27 @@
     "axiomCount": 4,
     "theoremCount": 8,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, density"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, density"
+    },
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1075",
+    "erdos-109",
+    "erdos-138"
+  ]
 }

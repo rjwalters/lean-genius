@@ -15,7 +15,8 @@
       "Distance frequency",
       "Extreme distances",
       "Point configurations"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e957-distance-freq",
@@ -32,7 +33,8 @@
     "relatedConcepts": [
       "Distance counting",
       "Unit distance problem"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e957-conjecture",
@@ -49,7 +51,8 @@
     "relatedConcepts": [
       "Extremal combinatorics",
       "Asymptotic bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e957-dumitrescu",
@@ -66,7 +69,8 @@
     "relatedConcepts": [
       "Extremal geometry",
       "Distance bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e957-tightness",
@@ -83,7 +87,8 @@
     "relatedConcepts": [
       "Tight bounds",
       "Extremal constructions"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e957-sum",
@@ -100,7 +105,8 @@
     "relatedConcepts": [
       "Linear bounds",
       "Sum vs product"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e957-polygon",
@@ -117,7 +123,8 @@
     "relatedConcepts": [
       "Symmetric point sets",
       "Distance structure"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e957-summary",
@@ -130,6 +137,8 @@
     "title": "Problem Summary",
     "content": "**Erdos Problem #957: SOLVED**\n\n**Result:** f(d_1)f(d_k) <= (9/8)n^2 + O(n) (Dumitrescu 2019)\n\n**Tightness:** Makai's construction shows 9/8 is optimal\n\n**Also:** f(d_1) + f(d_k) <= 3n - c*sqrt(n)",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of problem summary"
+    "mathContext": "See annotation content for formal details of problem summary",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

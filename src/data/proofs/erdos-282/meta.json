@@ -57,28 +57,6 @@
       "perfectSquares and erdos_graham_squares_conjecture for sparse denominators",
       "greedy_implies_representable connecting termination to representability"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-283",
-        "relationship": "Egyptian fractions with polynomial denominators — extends the denominator restriction from arithmetic progressions to polynomial values"
-      },
-      {
-        "proofId": "erdos-284",
-        "relationship": "Maximum first denominator in Egyptian fractions of 1 — quantitative structure of greedy decompositions"
-      },
-      {
-        "proofId": "erdos-285",
-        "relationship": "Egyptian fractions asymptotics — counting the number of representations, complementary to the termination question"
-      },
-      {
-        "proofId": "erdos-280",
-        "relationship": "Covering congruences and sieve methods — related Erdős problem on modular structure"
-      },
-      {
-        "proofId": "erdos-281",
-        "relationship": "Covering congruences and density — adjacent problem in the Erdős-Graham collection"
-      }
-    ],
     "axiomCount": 8,
     "lineCount": 112,
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -176,5 +154,27 @@
     "Stein (unpublished): odd greedy conjecture for Egyptian fractions with odd denominators",
     "Vose (1985): 'Egyptian fractions', Bulletin of the London Mathematical Society 17, 21–24",
     "https://erdosproblems.com/282"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-283",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-313",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-283",
+    "erdos-313"
   ]
 }

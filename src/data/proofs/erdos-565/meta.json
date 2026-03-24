@@ -175,5 +175,27 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-814",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, induced-subgraphs, solved"
+    },
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, induced-subgraphs, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1036",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, induced-subgraphs, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-814",
+    "erdos-88",
+    "erdos-1036"
+  ]
 }

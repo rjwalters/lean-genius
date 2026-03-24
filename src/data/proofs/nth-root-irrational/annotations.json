@@ -15,7 +15,8 @@
       "rpow",
       "irrational_nrt_of_notint_nrt"
     ],
-    "mathContext": "See annotation content for formal details of mathlib imports"
+    "mathContext": "See annotation content for formal details of mathlib imports",
+    "prerequisites": []
   },
   {
     "id": "ann-nrt-def",
@@ -33,7 +34,8 @@
       "rpow",
       "noncomputable",
       "nth root"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-nrt-pow",
@@ -51,7 +53,8 @@
       "rpow_mul",
       "rpow_natCast",
       "positivity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-nrt-not-int",
@@ -113,7 +116,8 @@
       "ring",
       "bounds checking",
       "interval analysis"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-nrt-sq-pattern",
@@ -132,7 +136,8 @@
       "interval_cases",
       "omega",
       "natAbs reduction"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-nrt-corollaries",

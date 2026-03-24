@@ -48,16 +48,6 @@
       "Stated Isaacs lower bound: c^n ≤ h(n) for some c > 1",
       "Proved trivial case h(1) = 1 (n-commuting with n=1 implies Abelian)"
     ],
-    "relatedProofs": [
-      {
-        "id": "ramseys-theorem",
-        "relationship": "The n-commuting property is a Ramsey-type condition: large subsets must contain structured pairs, analogous to Ramsey's guarantee of monochromatic cliques"
-      },
-      {
-        "id": "lagrange-theorem",
-        "relationship": "Lagrange's theorem on subgroup orders underlies the covering number analysis, since the index of each Abelian subgroup constrains how many are needed"
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 79,
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -157,5 +147,21 @@
       "citation": "Isaacs, I.M. (1976). Character Theory of Finite Groups. Academic Press (Dover reprint 1994).",
       "type": "book"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-116",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-118",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-116",
+    "erdos-118"
   ]
 }

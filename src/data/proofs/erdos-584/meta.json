@@ -154,5 +154,27 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, subgraphs"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1066",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1008",
+    "erdos-1014",
+    "erdos-1066"
+  ]
 }

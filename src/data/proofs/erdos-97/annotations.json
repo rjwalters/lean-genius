@@ -16,7 +16,8 @@
       "convex-polygon",
       "equidistant",
       "danzer"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e97-background",
@@ -34,7 +35,8 @@
       "convex",
       "equidistant",
       "vertex"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e97-equidistant-def",
@@ -52,7 +54,8 @@
       "equidistant",
       "filter",
       "cardinality"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e97-unit-def",
@@ -69,7 +72,8 @@
     "relatedConcepts": [
       "unit-distance",
       "fixed-distance"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e97-convex-def",
@@ -87,7 +91,8 @@
       "convex-hull",
       "polygon",
       "vertices"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e97-question",
@@ -105,7 +110,8 @@
       "open-problem",
       "convex",
       "equidistant"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e97-danzer",
@@ -124,7 +130,8 @@
       "danzer",
       "counterexample",
       "9-gon"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e97-fishburn",
@@ -143,7 +150,8 @@
       "fishburn-reeds",
       "unit-distance",
       "20-gon"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e97-general",
@@ -161,7 +169,8 @@
       "open-problem",
       "universal",
       "existence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e97-hypercube",
@@ -180,6 +189,7 @@
       "hypercube",
       "non-convex",
       "embedding"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

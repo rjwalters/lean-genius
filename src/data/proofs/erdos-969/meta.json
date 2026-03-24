@@ -145,5 +145,21 @@
     "axiomCount": 9,
     "theoremCount": 11,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, squarefree"
+    },
+    {
+      "targetId": "erdos-233",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, riemann-hypothesis"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1102",
+    "erdos-233"
+  ]
 }

@@ -17,7 +17,8 @@
       "List.head?",
       "List.getLast?"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-vertex-disjoint",
@@ -37,7 +38,8 @@
       "Menger's theorem",
       "vertex cut"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-edge-disjoint",
@@ -56,7 +58,8 @@
       "edge cut",
       "Menger's theorem (edge version)"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-m-vertex-disjoint",
@@ -75,7 +78,8 @@
       "existential quantification",
       "pairwise property"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-k-function",
@@ -94,7 +98,8 @@
       "ex(n, H)",
       "Ramsey theory"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-ell-function",
@@ -112,7 +117,8 @@
       "leonard_small_m",
       "monotonicity of extremal functions"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-conjecture",
@@ -131,7 +137,8 @@
       "extremal construction",
       "Turán-type conjecture"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-extremal",
@@ -150,7 +157,8 @@
       "ContainsMVertexDisjointPair",
       "complete graph"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-k2",
@@ -168,7 +176,8 @@
       "tree",
       "Euler's formula for trees"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-bartfai",
@@ -186,7 +195,8 @@
       "bollobas_k4",
       "conjecture_m3"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-bollobas-k4",
@@ -204,7 +214,8 @@
       "conjecture_m4",
       "extremal graph theory"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-conjecture-small-m",
@@ -224,7 +235,8 @@
       "conjecture_m3",
       "conjecture_m4"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-leonard-counterexample",
@@ -243,7 +255,8 @@
       "edgeFinset.card",
       "conjecture_false_m5"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-leonard-lower-bound",
@@ -262,7 +275,8 @@
       "Rat",
       "sorensen_thomassen_k5"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-sorensen-thomassen",
@@ -280,7 +294,8 @@
       "leonard_counterexample",
       "conjecture_false_m5"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-mader-disproof",
@@ -299,7 +314,8 @@
       "conjecture_false_m5",
       "conjecture_false_large_m"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-mader-edge",
@@ -318,7 +334,8 @@
       "edge_disjoint_solved",
       "minimum degree"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-edge-conjecture",
@@ -336,7 +353,8 @@
       "EdgeDisjointConjecture",
       "function application"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-leonard-ell-values",
@@ -354,7 +372,8 @@
       "ell_le_k",
       "mader_edge_disjoint"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-degree-condition",
@@ -374,7 +393,8 @@
       "Finset.range",
       "ContainsMEdgeDisjointPair"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-three-connected",
@@ -394,7 +414,8 @@
       "vertex separator",
       "k-connectivity"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "ann-e915-summary",
@@ -413,6 +434,7 @@
       "And.intro",
       "conjunction"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   }
 ]

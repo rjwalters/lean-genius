@@ -65,38 +65,6 @@
       "sharp_erdos_turan axiom: optimal constant exists",
       "erdelyi_one_sided axiom: one-sided improvement"
     ],
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-987",
-        "relationship": "uses-same-technique",
-        "description": "Uses the Erdős-Turán exponential sum method for sequence discrepancy — the same framework applied to integer sequences"
-      },
-      {
-        "targetProofId": "erdos-988",
-        "relationship": "related",
-        "description": "Discrepancy on the sphere (Schmidt 1969) — the higher-dimensional analogue of angular root discrepancy"
-      },
-      {
-        "targetProofId": "erdos-989",
-        "relationship": "related",
-        "description": "Circle discrepancy via Fourier analysis and Bessel functions — the same harmonic analysis toolkit"
-      },
-      {
-        "targetProofId": "erdos-991",
-        "relationship": "related",
-        "description": "Applies discrepancy bounds to logarithmic energy minimizers and Fekete points on the sphere"
-      },
-      {
-        "targetProofId": "erdos-992",
-        "relationship": "related",
-        "description": "Discrepancy of sequences mod 1 (Baker 1981) — connected via Weyl's criterion and exponential sums"
-      },
-      {
-        "targetProofId": "erdos-994",
-        "relationship": "related",
-        "description": "Khintchine's equidistribution conjecture — explores limits of equidistribution theory"
-      }
-    ],
     "axiomCount": 22,
     "lineCount": 285,
     "assumptions": "22 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -287,5 +255,27 @@
       "venue": "Annals of Probability",
       "description": "Root distribution of random polynomials, providing context for the lower bound construction"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, complex-analysis, polynomials"
+    },
+    {
+      "targetId": "erdos-994",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, discrepancy, equidistribution"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, discrepancy, equidistribution"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1048",
+    "erdos-994",
+    "erdos-997"
   ]
 }

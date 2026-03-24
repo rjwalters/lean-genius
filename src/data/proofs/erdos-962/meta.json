@@ -166,5 +166,27 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-394",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-708",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-1052",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-394",
+    "erdos-708",
+    "erdos-1052"
+  ]
 }

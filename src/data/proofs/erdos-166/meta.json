@@ -69,16 +69,6 @@
       "current_bounds: Combined sandwich inequality packaging both bounds",
       "logarithmic_gap: Verified analysis of remaining gap in log k exponent (2 ≤ α ≤ 4)"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-9",
-        "relationship": "Related Ramsey theory problem; both study growth rates of Ramsey numbers"
-      },
-      {
-        "proofId": "subset-count",
-        "relationship": "Foundational Finset counting techniques used in clique cardinality arguments"
-      }
-    ],
     "dateAdded": "2026-01-19",
     "axiomCount": 7,
     "lineCount": 285,
@@ -188,5 +178,27 @@
     "axiomCount": 7,
     "theoremCount": 7,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-812",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-165",
+    "erdos-812",
+    "erdos-1014"
+  ]
 }

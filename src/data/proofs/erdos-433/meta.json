@@ -172,5 +172,27 @@
     "axiomCount": 13,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-435",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: frobenius-number, number-theory, numerical-semigroups, solved"
+    },
+    {
+      "targetId": "erdos-434",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, numerical-semigroups"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-435",
+    "erdos-434",
+    "erdos-466"
+  ]
 }

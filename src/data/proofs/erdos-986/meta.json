@@ -160,5 +160,27 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1105"
+  ]
 }

@@ -158,5 +158,27 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1128",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cardinals, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-118",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-781",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: colorings, disproved, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1128",
+    "erdos-118",
+    "erdos-781"
+  ]
 }

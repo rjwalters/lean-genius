@@ -15,7 +15,8 @@
       "Abelian square",
       "Combinatorics on words",
       "String avoidance"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-231-parikh",
@@ -33,7 +34,8 @@
       "Character count",
       "Permutation",
       "Word equivalence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-231-abelianeq",
@@ -50,7 +52,8 @@
       "Parikh vector",
       "Commutative closure"
     ],
-    "mathContext": "$x \\sim_{\\text{ab}} y \\iff \\text{parikhVector}(x) = \\text{parikhVector}(y)$, i.e., $x$ and $y$ are anagrams"
+    "mathContext": "$x \\sim_{\\text{ab}} y \\iff \\text{parikhVector}(x) = \\text{parikhVector}(y)$, i.e., $x$ and $y$ are anagrams",
+    "prerequisites": []
   },
   {
     "id": "ann-231-absquare",
@@ -68,7 +71,8 @@
       "Square",
       "Permutation",
       "Consecutive blocks"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-231-contains",
@@ -86,7 +90,8 @@
       "Subword",
       "Avoidance"
     ],
-    "mathContext": "$w$ contains an abelian square if $\\exists i, j$ with $w[i..j] = xy$ where $\\text{parikhVector}(x) = \\text{parikhVector}(y)$"
+    "mathContext": "$w$ contains an abelian square if $\\exists i, j$ with $w[i..j] = xy$ where $\\text{parikhVector}(x) = \\text{parikhVector}(y)$",
+    "prerequisites": []
   },
   {
     "id": "ann-231-asfree",
@@ -103,7 +108,8 @@
       "Avoidance",
       "Pattern-free"
     ],
-    "mathContext": "$w$ is abelian-square-free if no consecutive factor $w[i..j]$ can be split into two halves with equal Parikh vectors"
+    "mathContext": "$w$ is abelian-square-free if no consecutive factor $w[i..j]$ can be split into two halves with equal Parikh vectors",
+    "prerequisites": []
   },
   {
     "id": "ann-231-square",
@@ -120,7 +126,8 @@
       "Repetition",
       "Pattern"
     ],
-    "mathContext": "$w = xx$ for some nonempty $x$. Every square is an abelian square (since $\\text{parikhVector}(x) = \\text{parikhVector}(x)$), but not conversely"
+    "mathContext": "$w = xx$ for some nonempty $x$. Every square is an abelian square (since $\\text{parikhVector}(x) = \\text{parikhVector}(x)$), but not conversely",
+    "prerequisites": []
   },
   {
     "id": "ann-231-hierarchy",
@@ -138,7 +145,8 @@
       "Hierarchy",
       "Implication",
       "Pattern avoidance"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-231-question",
@@ -155,7 +163,8 @@
       "Main question",
       "Conjecture"
     ],
-    "mathContext": "Must every string of length $2^k - 1$ over a $k$-letter alphabet contain an abelian square? Erdős conjectured YES (disproved for $k \\geq 4$)"
+    "mathContext": "Must every string of length $2^k - 1$ over a $k$-letter alphabet contain an abelian square? Erdős conjectured YES (disproved for $k \\geq 4$)",
+    "prerequisites": []
   },
   {
     "id": "ann-231-thue",
@@ -173,7 +182,8 @@
       "Thue",
       "Squarefree",
       "3 letters"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-231-3notenough",
@@ -190,7 +200,8 @@
       "Lower bound",
       "Alphabet size"
     ],
-    "mathContext": "Over $\\{a, b, c\\}$: every sufficiently long word contains an abelian square. The threshold is $|w| \\geq 8$ (proved by Dekking 1979)"
+    "mathContext": "Over $\\{a, b, c\\}$: every sufficiently long word contains an abelian square. The threshold is $|w| \\geq 8$ (proved by Dekking 1979)",
+    "prerequisites": []
   },
   {
     "id": "ann-231-keranen",
@@ -208,7 +219,8 @@
       "Keränen 1992",
       "Infinite string",
       "4 letters"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-231-morphism",
@@ -226,7 +238,8 @@
       "Morphism",
       "Substitution",
       "85 letters"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-231-disproved",
@@ -243,7 +256,8 @@
       "Disproof",
       "k ≥ 4"
     ],
-    "mathContext": "For $k \\geq 4$: $\\exists w \\in \\{1,2,3,4\\}^{2^k-1}$ with no abelian square factors. Proved by Keränen's 85-uniform morphism"
+    "mathContext": "For $k \\geq 4$: $\\exists w \\in \\{1,2,3,4\\}^{2^k-1}$ with no abelian square factors. Proved by Keränen's 85-uniform morphism",
+    "prerequisites": []
   },
   {
     "id": "ann-231-k2",
@@ -260,7 +274,8 @@
       "Binary",
       "Small k"
     ],
-    "mathContext": "Over $\\{0, 1\\}$: every string of length $\\geq 4$ contains an abelian square. Erdős's conjecture holds for $k = 2$ ($2^2 - 1 = 3$, length 3 is trivially short)"
+    "mathContext": "Over $\\{0, 1\\}$: every string of length $\\geq 4$ contains an abelian square. Erdős's conjecture holds for $k = 2$ ($2^2 - 1 = 3$, length 3 is trivially short)",
+    "prerequisites": []
   },
   {
     "id": "ann-231-k3",
@@ -277,7 +292,8 @@
       "Ternary",
       "Small k"
     ],
-    "mathContext": "Over $\\{a, b, c\\}$: every string of length $7 = 2^3 - 1$ contains an abelian square. Erdős's conjecture holds for $k = 3$"
+    "mathContext": "Over $\\{a, b, c\\}$: every string of length $7 = 2^3 - 1$ contains an abelian square. Erdős's conjecture holds for $k = 3$",
+    "prerequisites": []
   },
   {
     "id": "ann-231-example",
@@ -294,7 +310,8 @@
       "Concrete example",
       "Verification"
     ],
-    "mathContext": "$\\text{abba} = \\text{ab} \\cdot \\text{ba}$ where $\\text{parikhVector}(\\text{ab}) = \\text{parikhVector}(\\text{ba}) = (1, 1)$"
+    "mathContext": "$\\text{abba} = \\text{ab} \\cdot \\text{ba}$ where $\\text{parikhVector}(\\text{ab}) = \\text{parikhVector}(\\text{ba}) = (1, 1)$",
+    "prerequisites": []
   },
   {
     "id": "ann-231-counterex",
@@ -311,7 +328,8 @@
     "relatedConcepts": [
       "Counterexample",
       "k = 4"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-231-192",
@@ -328,7 +346,8 @@
       "Problem #192",
       "Related problems"
     ],
-    "mathContext": "Erdős #192: do infinite abelian-square-free sequences over a finite alphabet exist? YES (Keränen 1992, 4-letter alphabet)"
+    "mathContext": "Erdős #192: do infinite abelian-square-free sequences over a finite alphabet exist? YES (Keränen 1992, 4-letter alphabet)",
+    "prerequisites": []
   },
   {
     "id": "ann-231-summary",
@@ -345,7 +364,8 @@
       "Main result",
       "Summary"
     ],
-    "mathContext": "Erdős's conjecture fails for $k \\geq 4$: Keränen's morphism generates infinite abelian-square-free words over 4 letters"
+    "mathContext": "Erdős's conjecture fails for $k \\geq 4$: Keränen's morphism generates infinite abelian-square-free words over 4 letters",
+    "prerequisites": []
   },
   {
     "id": "ann-231-solved",
@@ -362,6 +382,7 @@
       "Resolved",
       "1992"
     ],
-    "mathContext": "Problem #231 resolved: conjecture holds for $k \\leq 3$, fails for $k \\geq 4$ (Keränen 1992)"
+    "mathContext": "Problem #231 resolved: conjecture holds for $k \\leq 3$, fails for $k \\geq 4$ (Keränen 1992)",
+    "prerequisites": []
   }
 ]

@@ -18,10 +18,6 @@
     "badge": "wip",
     "sourceUrl": "https://erdosproblems.com/662",
     "erdosUrl": "https://erdosproblems.com/662",
-    "relatedProofs": [
-      "erdos-660",
-      "erdos-661"
-    ],
     "axiomCount": 3,
     "assumptions": "3 axiom declarations. 4 sorry(s) remain in the formalization.",
     "proofRepoPath": "Proofs/Erdos662Problem.lean",
@@ -138,5 +134,27 @@
       "Finset",
       "Classical"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, open, packing"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open, packing"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distances, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-103",
+    "erdos-1084",
+    "erdos-1087"
+  ]
 }

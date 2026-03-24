@@ -42,20 +42,6 @@
       ],
       "significance": "Resolves the Erdős-Sós conjecture on singleton intersection avoidance: the maximum k-uniform family avoiding |A ∩ B| = 1 has exactly C(n-2, k-2) sets (achieved by fixing two common elements). Frankl's proof via shifting established a paradigm for extremal set theory. The sharp threshold at k = 4 reveals a structural boundary — the theorem fails for k = 3 due to designs like Steiner triple systems."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-703",
-        "relationship": "Companion problem: #703 generalizes to r-intersection avoidance in non-uniform families, solved by Frankl-Rödl (1987). Both use Frankl's shifting technique"
-      },
-      {
-        "id": "erdos-644",
-        "relationship": "Both study extremal properties of k-uniform families; #644 asks about covering numbers under r-wise pair coherence, #702 asks about maximum family size avoiding singleton intersections"
-      },
-      {
-        "id": "erdos-59",
-        "relationship": "Both are extremal counting problems; #59 counts H-free graphs (forbidden subgraph), #702 counts families without singleton intersections (forbidden intersection pattern)"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -209,5 +195,27 @@
       "citation": "Erdős Problems, Problem #702, https://erdosproblems.com/702",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-21",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, intersecting-families, solved"
+    },
+    {
+      "targetId": "erdos-272",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, solved"
+    },
+    {
+      "targetId": "erdos-701",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, intersecting-families"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-21",
+    "erdos-272",
+    "erdos-701"
   ]
 }

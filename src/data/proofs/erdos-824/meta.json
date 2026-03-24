@@ -165,5 +165,27 @@
     "axiomCount": 3,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counting-functions, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1049",
+    "erdos-1053",
+    "erdos-1057"
+  ]
 }

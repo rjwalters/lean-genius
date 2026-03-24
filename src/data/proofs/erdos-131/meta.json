@@ -65,16 +65,6 @@
       "erdos_131_open_question: formal statement of remaining open problem"
     ],
     "dateAdded": "2026-01-19",
-    "crossReferences": [
-      {
-        "proofId": "erdos-186",
-        "relationship": "Non-dividing implies non-averaging (verified); F(N) ≤ g(N) allows Pham-Zakharov bounds to transfer from Problem #186"
-      },
-      {
-        "proofId": "subset-count",
-        "relationship": "Both use Finset.powerset and Finset.filter for counting extremal subsets"
-      }
-    ],
     "axiomCount": 0,
     "lineCount": 477,
     "assumptions": "No axioms. 5 sorry(s) remain in the formalization.",
@@ -179,5 +169,27 @@
     "axiomCount": 0,
     "theoremCount": 27,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-13",
+    "erdos-387",
+    "erdos-400"
+  ]
 }

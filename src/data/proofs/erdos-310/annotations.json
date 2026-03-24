@@ -15,7 +15,8 @@
       "Egyptian fractions",
       "Density arguments",
       "Unit fractions"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-unit-fraction-sum",
@@ -33,7 +34,8 @@
       "Egyptian fractions",
       "Rational arithmetic",
       "Finset.sum"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-is-dense",
@@ -51,7 +53,8 @@
       "Density",
       "Subset cardinality",
       "Additive combinatorics"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-bounded-denom",
@@ -68,7 +71,8 @@
       "Rational arithmetic",
       "Denominator bounds"
     ],
-    "mathContext": "See annotation content for formal details of bounded denominator property"
+    "mathContext": "See annotation content for formal details of bounded denominator property",
+    "prerequisites": []
   },
   {
     "id": "ann-e310-conjecture",
@@ -86,7 +90,8 @@
       "Erdos problems",
       "Unit fractions",
       "Density methods"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-liu-sawhney",
@@ -104,7 +109,8 @@
       "Bloom's theorem",
       "Optimal bounds",
       "Unit fractions"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-bloom",
@@ -122,7 +128,8 @@
       "Egyptian fractions",
       "Density",
       "Number representation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-classic-egyptian",
@@ -139,7 +146,8 @@
       "Egyptian fractions",
       "Unit fraction sums"
     ],
-    "mathContext": "See annotation content for formal details of classic egyptian fraction"
+    "mathContext": "See annotation content for formal details of classic egyptian fraction",
+    "prerequisites": []
   },
   {
     "id": "ann-e310-examples",
@@ -156,7 +164,8 @@
       "Rational arithmetic",
       "Unit fractions"
     ],
-    "mathContext": "See annotation content for formal details of unit fraction sum examples"
+    "mathContext": "See annotation content for formal details of unit fraction sum examples",
+    "prerequisites": []
   },
   {
     "id": "ann-e310-full-density",
@@ -169,7 +178,9 @@
     "title": "Full Density Trivial Case",
     "content": "**full_density_trivial:**\n\nIf A = {1, 2, ..., N} (the full set with density 1), then S = {1} gives unit fraction sum 1/1 = 1.\n\nThis shows the problem is trivial for density 1. The interesting case is when alpha < 1.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of full density trivial case"
+    "mathContext": "See annotation content for formal details of full density trivial case",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-sharpness",
@@ -186,7 +197,8 @@
     "relatedConcepts": [
       "Lower bounds",
       "Optimal results"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-egyptian-exists",
@@ -203,7 +215,8 @@
     "relatedConcepts": [
       "Greedy algorithm",
       "Rational representation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-erdos-straus",
@@ -221,7 +234,8 @@
       "Open problems",
       "Unit fractions",
       "Number theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-straus-examples",
@@ -234,7 +248,9 @@
     "title": "Erdos-Straus Examples",
     "content": "**Verified cases of Erdos-Straus:**\n\n- n = 3: 4/3 = 1/1 + 1/3\n- n = 5: 4/5 = 1/2 + 1/4 + 1/20\n\nThese demonstrate the conjecture for small values. The proofs use norm_num for computational verification.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of erdos-straus examples"
+    "mathContext": "See annotation content for formal details of erdos-straus examples",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-main-theorem",
@@ -251,7 +267,8 @@
     "relatedConcepts": [
       "Problem resolution",
       "Case analysis"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-answer",
@@ -264,7 +281,9 @@
     "title": "The Answer is YES",
     "content": "**erdos_310_answer:**\n\nExistential witness that erdosGrahamConjecture holds.\n\n```lean\ntheorem erdos_310_answer :\n  exists _ : erdosGrahamConjecture, True :=\n  (erdos_310, trivial)\n```\n\nThis packages the result as an existence statement.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of the answer is yes"
+    "mathContext": "See annotation content for formal details of the answer is yes",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-croot",
@@ -282,7 +301,8 @@
       "Density",
       "Egyptian fractions",
       "Sum equals 1"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e310-summary",
@@ -295,6 +315,8 @@
     "title": "Summary Theorem",
     "content": "**erdos_310_summary:**\n\nCombines the main results:\n\n1. erdosGrahamConjecture holds (the main theorem)\n2. For any alpha in (0, 1/2], there exists C such that alpha-dense sets have subsets with bounded denominator unit fraction sums\n\nThis provides a complete summary of what was proved about Erdos #310.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

@@ -124,5 +124,27 @@
     "axiomCount": 1,
     "theoremCount": 2,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1063",
+    "erdos-13",
+    "erdos-131"
+  ]
 }

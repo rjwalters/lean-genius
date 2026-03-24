@@ -21,10 +21,6 @@
     "erdosNumber": 690,
     "erdosUrl": "https://erdosproblems.com/690",
     "erdosProblemStatus": "open",
-    "relatedProofs": [
-      "erdos-689",
-      "erdos-691"
-    ],
     "axiomCount": 10,
     "lineCount": 134,
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
@@ -136,5 +132,27 @@
     "Erdős & Kac (1940): The Gaussian law of errors in the theory of additive number theoretic functions",
     "Mertens (1874): prime reciprocal sum asymptotics",
     "https://erdosproblems.com/690"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    },
+    {
+      "targetId": "erdos-488",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-10",
+    "erdos-281",
+    "erdos-488"
   ]
 }

@@ -192,5 +192,21 @@
     "axiomCount": 14,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, primitive-sets"
+    },
+    {
+      "targetId": "erdos-892",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, primitive-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-793",
+    "erdos-892"
+  ]
 }

@@ -150,5 +150,27 @@
     "axiomCount": 4,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, littlewood, polynomials"
+    },
+    {
+      "targetId": "erdos-1039",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials"
+    },
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-525",
+    "erdos-1039",
+    "erdos-1040"
+  ]
 }

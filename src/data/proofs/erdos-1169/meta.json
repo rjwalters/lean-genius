@@ -183,5 +183,27 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1174",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1176",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1174",
+    "erdos-1176",
+    "erdos-1014"
+  ]
 }

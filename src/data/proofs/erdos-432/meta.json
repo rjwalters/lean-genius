@@ -50,20 +50,6 @@
       "Axiomatized prime_divides_at_most_one and coprime_set_bound (π(n)+1)",
       "Noted Ostmann connection and Tao's assessment of difficulty"
     ],
-    "crossReferences": [
-      {
-        "id": "erdos-431",
-        "relationship": "Ostmann's companion problem on additive complements — the opposite end of sumset density constraints."
-      },
-      {
-        "id": "erdos-36",
-        "relationship": "Minimum overlap problem for set partitions; related extremal question about additive structure of set systems."
-      },
-      {
-        "id": "erdos-30",
-        "relationship": "Sidon sets study unique pairwise sums; coprime sumsets impose a complementary multiplicative uniqueness condition."
-      }
-    ],
     "axiomCount": 3,
     "assumptions": "3 axiom declarations: (1) prime_divides_at_most_one — genuine mathematical content: each prime divides at most one element of a pairwise coprime sumset, (2) coprime_set_bound — TRIVIAL: states countingFn S n ≤ n (true for any set), does NOT formalize the intended π(n)+1 bound, (3) ostmann_connection — PLACEHOLDER: declares True, contributes no content",
     "relatedProblems": [

@@ -159,5 +159,27 @@
     "axiomCount": 17,
     "theoremCount": 8,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-205",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, disproved"
+    },
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-205",
+    "erdos-105",
+    "erdos-1056"
+  ]
 }

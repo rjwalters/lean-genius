@@ -141,34 +141,34 @@
   },
   "crossReferences": [
     {
-      "target": "ramseys-theorem",
       "relationship": "Ramsey's theorem guarantees complete subgraphs in dense graphs via pigeonhole arguments; the BES problem studies the sharper question of forcing K_r through a minimum degree condition in structured r-partite graphs.",
-      "significance": "high"
+      "significance": "high",
+      "targetId": "ramseys-theorem"
     },
     {
-      "target": "erdos-1079",
       "relationship": "Turán density in neighborhoods (Problem #1079) studies extremal densities for induced substructures in graph neighborhoods, a closely related minimum-degree / density threshold framework.",
-      "significance": "high"
+      "significance": "high",
+      "targetId": "erdos-1079"
     },
     {
-      "target": "erdos-1077",
       "relationship": "Problem #1077 on balanced subgraphs in dense graphs shares the theme of forcing structured subgraphs via degree conditions, complementing the multipartite setting of Problem #1078.",
-      "significance": "high"
+      "significance": "high",
+      "targetId": "erdos-1077"
     },
     {
-      "target": "erdos-1075",
       "relationship": "Dense subgraphs in r-uniform hypergraphs (Problem #1075) generalises the bipartite Kővári–Sós–Turán approach to higher uniformity; the r-partite graph setting of Problem #1078 is the graph-level analogue.",
-      "significance": "medium"
+      "significance": "medium",
+      "targetId": "erdos-1075"
     },
     {
-      "target": "erdos-1017",
       "relationship": "Clique partition of graphs (Problem #1017) addresses decomposing graphs into complete subgraphs; Problem #1078 forces a single K_r via a minimum degree threshold in the r-partite setting.",
-      "significance": "medium"
+      "significance": "medium",
+      "targetId": "erdos-1017"
     },
     {
-      "target": "erdos-1076",
       "relationship": "Extremal numbers for 3-uniform hypergraphs (Problem #1076) and the Steiner system constructions used there exhibit the same interplay between density/degree thresholds and the existence of complete sub-structures.",
-      "significance": "medium"
+      "significance": "medium",
+      "targetId": "erdos-1076"
     }
   ],
   "relatedProofs": [

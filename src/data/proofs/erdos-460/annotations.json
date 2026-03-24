@@ -16,7 +16,8 @@
       "Brun's theorem",
       "sieve of Eratosthenes",
       "greedy algorithms"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-sieve-def",
@@ -35,7 +36,8 @@
       "greedy sequence",
       "Nat.Coprime",
       "sieve sequence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-sieve-initial",
@@ -48,7 +50,9 @@
     "title": "Initial Values: $a_0 = 0, a_1 = 1$",
     "content": "The sieve starts with $a_0 = 0$ and $a_1 = 1$ for any $n \\geq 2$. The choice $a_0 = 0$ means $n - a_0 = n$, and $a_1 = 1$ gives $n - a_1 = n - 1$. Since $\\gcd(n, n-1) = 1$ always holds, the greedy condition is satisfied.",
     "significance": "key",
-    "mathContext": "a_0 = 0, \\quad a_1 = 1: Initial conditions for the greedy sieve. The coprimality gcd(n, n-1) = 1 holds for all n, so the first step is always valid. Requires n ≥ 2 to ensure both terms are less than n."
+    "mathContext": "a_0 = 0, \\quad a_1 = 1: Initial conditions for the greedy sieve. The coprimality gcd(n, n-1) = 1 holds for all n, so the first step is always valid. Requires n ≥ 2 to ensure both terms are less than n.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-sieve-greedy",
@@ -61,7 +65,9 @@
     "title": "Greedy Selection Property",
     "content": "For $k \\geq 2$, the axiom captures three properties: (1) $a_k > a_{k-1}$ (strict increase), (2) $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$ (pairwise coprimality of shifted values), and (3) minimality — every integer between $a_{k-1}$ and $a_k$ fails the coprimality condition for some earlier term.",
     "significance": "key",
-    "mathContext": "a_k > a_{k-1}, \\quad \\gcd(n - a_k, n - a_i) = 1 \\; \\forall i < k, \\quad \\nexists\\, m \\in (a_{k-1}, a_k) \\text{ satisfying coprimality}: The minimality clause is crucial: it ensures the sequence is uniquely defined by the greedy rule, not just any coprime subsequence. Without minimality, many sequences would satisfy the other two conditions."
+    "mathContext": "a_k > a_{k-1}, \\quad \\gcd(n - a_k, n - a_i) = 1 \\; \\forall i < k, \\quad \\nexists\\, m \\in (a_{k-1}, a_k) \\text{ satisfying coprimality}: The minimality clause is crucial: it ensures the sequence is uniquely defined by the greedy rule, not just any coprime subsequence. Without minimality, many sequences would satisfy the other two conditions.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-sieve-count",
@@ -74,7 +80,9 @@
     "title": "Sieve Count",
     "content": "`sieveCount n` counts how many terms of the sieve sequence are less than $n$. Since the sequence is increasing and bounded by $n$, this is finite. The count determines the range of summation for the reciprocal sum.",
     "significance": "key",
-    "mathContext": "\\text{sieveCount}(n) = \\#\\{k : a_k < n\\}: Computed via Finset.card on Finset.range n filtered by existence of a preimage in the sieve. This finiteness is essential for the well-definedness of the reciprocal sum."
+    "mathContext": "\\text{sieveCount}(n) = \\#\\{k : a_k < n\\}: Computed via Finset.card on Finset.range n filtered by existence of a preimage in the sieve. This finiteness is essential for the well-definedness of the reciprocal sum.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-reciprocal-sum",
@@ -87,7 +95,9 @@
     "title": "Reciprocal Sum $\\sum 1/a_i$",
     "content": "The sum $\\sum_{0 < a_i < n} 1/a_i$ is computed over positive sieve terms less than $n$. This is a finite sum for each $n$. The central question is whether this sum diverges as $n \\to \\infty$. If the Eggleton-Erdős-Selfridge conjectured bound $a_k \\ll k \\log k$ holds, then the reciprocal sum would be $\\gg \\sum 1/(k \\log k) = \\infty$.",
     "significance": "key",
-    "mathContext": "S(n) = \\sum_{\\substack{k : a_k > 0 \\\\ a_k < n}} \\frac{1}{a_k}: The conditional summation excludes a_0 = 0 (which would give 1/0) and terms ≥ n. The quadratic bound a_k < k^{2+ε} gives Σ 1/k^{2+ε} which converges, so the known bound is insufficient; the conjectured k log k bound would give Σ 1/(k log k) which diverges."
+    "mathContext": "S(n) = \\sum_{\\substack{k : a_k > 0 \\\\ a_k < n}} \\frac{1}{a_k}: The conditional summation excludes a_0 = 0 (which would give 1/0) and terms ≥ n. The quadratic bound a_k < k^{2+ε} gives Σ 1/k^{2+ε} which converges, so the known bound is insufficient; the conjectured k log k bound would give Σ 1/(k log k) which diverges.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-conjecture",
@@ -105,7 +115,8 @@
       "divergence of series",
       "Filter.Tendsto",
       "reciprocal sum criteria"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-ees-bound",
@@ -118,7 +129,9 @@
     "title": "Eggleton-Erdős-Selfridge Bound: $a_k < k^{2+o(1)}$",
     "content": "Eggleton, Erdős, and Selfridge proved that the sieve sequence satisfies $a_k < k^{2+\\varepsilon}$ for any $\\varepsilon > 0$ and all sufficiently large $k$. This quadratic-type growth is the best known upper bound. It means the sieve doesn't grow too fast, but is insufficient for reciprocal sum divergence (since $\\sum 1/k^{2+\\varepsilon}$ converges).",
     "significance": "key",
-    "mathContext": "\\forall \\varepsilon > 0,\\; \\exists K_0,\\; \\forall k \\geq K_0,\\; a_k < k^{2+\\varepsilon}: The proof uses the fact that primes up to k have product ~ e^k (by PNT), so the sieve can find coprime elements within roughly k² steps. The o(1) formulation captures that the exponent 2 is optimal."
+    "mathContext": "\\forall \\varepsilon > 0,\\; \\exists K_0,\\; \\forall k \\geq K_0,\\; a_k < k^{2+\\varepsilon}: The proof uses the fact that primes up to k have product ~ e^k (by PNT), so the sieve can find coprime elements within roughly k² steps. The o(1) formulation captures that the exponent 2 is optimal.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-conjectured-bound",
@@ -131,7 +144,9 @@
     "title": "Conjectured Bound: $a_k \\ll k \\log k$",
     "content": "It is conjectured that $a_k \\leq C \\cdot k \\log k$ for some constant $C > 0$. If true, this would immediately imply Problem #460 since $\\sum_{k=2}^{N} 1/(k \\log k)$ diverges (by the integral test, as $\\int dx/(x \\ln x) = \\ln \\ln x \\to \\infty$).",
     "significance": "key",
-    "mathContext": "a_k \\leq C \\cdot k \\log k: The bound k log k is natural: it matches the typical spacing between integers whose shifted values avoid small primes (cf. Mertens' theorem Σ 1/p ~ log log x). This would close the gap between the known quadratic bound and the divergence question."
+    "mathContext": "a_k \\leq C \\cdot k \\log k: The bound k log k is natural: it matches the typical spacing between integers whose shifted values avoid small primes (cf. Mertens' theorem Σ 1/p ~ log log x). This would close the gap between the known quadratic bound and the divergence question.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-least-prime",
@@ -144,7 +159,9 @@
     "title": "Least Prime Factor",
     "content": "The least prime factor $P^-(n)$ of $n$ is defined as `Nat.minFac n` for $n > 1$, and 0 for $n \\leq 1$. This function appears in the sufficient condition for Problem #460: the filtered sum over $a$ where $P^-(n-a) > a$.",
     "significance": "key",
-    "mathContext": "P^-(n) = \\min\\{p \\text{ prime} : p \\mid n\\}: Implemented via Nat.minFac which returns the smallest factor ≥ 2. The case n ≤ 1 returns 0 to handle degenerate inputs. Central to the smooth number connection."
+    "mathContext": "P^-(n) = \\min\\{p \\text{ prime} : p \\mid n\\}: Implemented via Nat.minFac which returns the smallest factor ≥ 2. The case n ≤ 1 returns 0 to handle degenerate inputs. Central to the smooth number connection.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-filtered-sum",
@@ -163,7 +180,8 @@
       "Dickman–de Bruijn function",
       "Ψ(x,y) counting function",
       "rough numbers"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-filtered-implies",
@@ -176,7 +194,9 @@
     "title": "Filtered Sum Implies Full Divergence",
     "content": "If $f(n) \\to \\infty$ then Problem #460 holds. This is because the greedy coprime sieve must include at least the terms counted by the filtered sum — if $P^-(n-a) > a$, then $n - a$ is automatically coprime to all $n - a_i$ for $a_i < a$ (since $n - a$ has no prime factors $\\leq a$).",
     "significance": "key",
-    "mathContext": "f(n) \\to \\infty \\implies \\text{ErdosProblem460}: If P⁻(n-a) > a, then for any a' < a, gcd(n-a, n-a') cannot share a prime ≤ a since all prime factors of n-a exceed a. So the coprimality condition is automatically satisfied, meaning the greedy sieve includes these terms."
+    "mathContext": "f(n) \\to \\infty \\implies \\text{ErdosProblem460}: If P⁻(n-a) > a, then for any a' < a, gcd(n-a, n-a') cannot share a prime ≤ a since all prime factors of n-a exceed a. So the coprimality condition is automatically satisfied, meaning the greedy sieve includes these terms.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-small-prime-sum",
@@ -189,7 +209,9 @@
     "title": "Small Prime Divisible Sum",
     "content": "The sum restricted to sieve terms $a_k$ where $n - a_k$ has a prime factor $p \\leq a_k$. These are the 'easy' terms to include in the sieve — their coprimality follows from avoiding specific small primes.",
     "significance": "key",
-    "mathContext": "\\sum_{\\substack{a_k \\in \\text{sieve} \\\\ \\exists p \\leq a_k,\\; p \\mid (n - a_k)}} \\frac{1}{a_k}: The 'small prime' contribution to the reciprocal sum. These terms require explicit avoidance of small prime factors, making their analysis more combinatorial in nature."
+    "mathContext": "\\sum_{\\substack{a_k \\in \\text{sieve} \\\\ \\exists p \\leq a_k,\\; p \\mid (n - a_k)}} \\frac{1}{a_k}: The 'small prime' contribution to the reciprocal sum. These terms require explicit avoidance of small prime factors, making their analysis more combinatorial in nature.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-large-prime-sum",
@@ -202,7 +224,9 @@
     "title": "Large Prime Sum",
     "content": "The complementary sum over sieve terms where $P^-(n - a_k) > a_k$ — all prime factors of $n - a_k$ exceed $a_k$. These are the 'hard' terms where coprimality is automatic but the contribution to the reciprocal sum depends on the distribution of smooth numbers.",
     "significance": "key",
-    "mathContext": "\\sum_{\\substack{a_k \\in \\text{sieve} \\\\ P^-(n - a_k) > a_k}} \\frac{1}{a_k}: The 'large prime' or 'rough number' contribution. Analysis requires understanding Ψ(x,y) — the count of y-smooth numbers up to x — since P⁻(n-a) > a means n-a is not a-smooth."
+    "mathContext": "\\sum_{\\substack{a_k \\in \\text{sieve} \\\\ P^-(n - a_k) > a_k}} \\frac{1}{a_k}: The 'large prime' or 'rough number' contribution. Analysis requires understanding Ψ(x,y) — the count of y-smooth numbers up to x — since P⁻(n-a) > a means n-a is not a-smooth.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "erdos-460-restricted-question",
@@ -215,6 +239,8 @@
     "title": "Restricted Sum Divergence Question",
     "content": "Erdős asked whether the two restricted sums (small-prime and large-prime) individually diverge. If either one diverges, Problem #460 follows since the full sum dominates each restricted sum. This splits the divergence question into two potentially easier subproblems with different flavors: the small-prime case is combinatorial, while the large-prime case involves smooth number estimates.",
     "significance": "key",
-    "mathContext": "\\bigl(\\text{smallPrimeDivisibleSum}(n) \\to \\infty\\bigr) \\vee \\bigl(\\text{largePrimeSum}(n) \\to \\infty\\bigr) \\implies \\text{ErdosProblem460}: A disjunctive sufficient condition. The small-prime and large-prime sums partition the full sieve reciprocal sum, so divergence of either part suffices. This decomposition separates combinatorial (small prime) from analytic (smooth number) aspects."
+    "mathContext": "\\bigl(\\text{smallPrimeDivisibleSum}(n) \\to \\infty\\bigr) \\vee \\bigl(\\text{largePrimeSum}(n) \\to \\infty\\bigr) \\implies \\text{ErdosProblem460}: A disjunctive sufficient condition. The small-prime and large-prime sums partition the full sieve reciprocal sum, so divergence of either part suffices. This decomposition separates combinatorial (small prime) from analytic (smooth number) aspects.",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

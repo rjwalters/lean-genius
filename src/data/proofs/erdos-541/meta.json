@@ -61,28 +61,6 @@
       "erdos_szemeredi_large_primes: Graham's conjecture holds for sufficiently large primes (Erdős-Szemerédi 1976)",
       "gao_hamidoune_wang: Graham's conjecture holds for all moduli n (Gao-Hamidoune-Wang 2010)",
       "erdos_ginzburg_ziv: Among 2n-1 integers, some n have sum ≡ 0 mod n (Erdős-Ginzburg-Ziv 1961)"
-    ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-1",
-        "relationship": "thematic",
-        "description": "Both concern structural constraints on subset sums — #1 asks when all 2^n subset sums are distinct, #541 asks what happens when all zero-sum subsets have the same cardinality"
-      },
-      {
-        "targetId": "erdos-1179",
-        "relationship": "thematic",
-        "description": "Both study uniform subset sum properties in abelian groups — #1179 estimates the threshold for uniform representations"
-      },
-      {
-        "targetId": "erdos-109",
-        "relationship": "thematic",
-        "description": "Both involve additive structure in integer sequences — #109 concerns sumsets B+C from dense sets, #541 concerns zero-sum subsequences with uniform cardinality"
-      }
-    ],
-    "relatedProofs": [
-      "erdos-1",
-      "erdos-1179",
-      "erdos-109"
     ]
   },
   "overview": {
@@ -191,5 +169,27 @@
       "venue": "Bulletin of the Research Council of Israel, 10F, pp. 41-43",
       "note": "Foundational result: 2n-1 integers contain n summing to 0 mod n"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1056",
+    "erdos-1074",
+    "erdos-11"
   ]
 }

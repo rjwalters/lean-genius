@@ -163,5 +163,27 @@
     "axiomCount": 13,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, point-configurations"
+    },
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, point-configurations"
+    },
+    {
+      "targetId": "erdos-846",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, general-position"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1087",
+    "erdos-653",
+    "erdos-846"
+  ]
 }

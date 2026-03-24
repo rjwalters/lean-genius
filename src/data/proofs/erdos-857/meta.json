@@ -60,24 +60,6 @@
       "union_formulation_equivalent axiom: intersection/union equivalence",
       "erdos_857 theorem: combines EKR + Naslund-Sawin"
     ],
-    "crossReferences": [
-      {
-        "targetProof": "erdos-20",
-        "relationship": "The strong sunflower problem (Erdős #20) asks for the maximum size of ℓ-uniform sunflower-free families, which is the uniform-size restriction of this weak version"
-      },
-      {
-        "targetProof": "ramseys-theorem",
-        "relationship": "Both are Ramsey-type results: Ramsey theory guarantees monochromatic structure in large colored objects, while the sunflower lemma guarantees structured subfamilies in large set systems"
-      },
-      {
-        "targetProof": "combinations-formula",
-        "relationship": "Binomial coefficients appear in the Erdős-Ko-Rado sunflower bound and in counting ℓ-element subsets of {1,...,n}"
-      },
-      {
-        "targetProof": "inclusion-exclusion",
-        "relationship": "The inclusion-exclusion principle underlies the counting arguments that bound sunflower-free family sizes"
-      }
-    ],
     "axiomCount": 11,
     "lineCount": 324,
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -191,5 +173,27 @@
     "axiomCount": 11,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-20",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, sunflower"
+    },
+    {
+      "targetId": "erdos-535",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, open, sunflower"
+    },
+    {
+      "targetId": "erdos-790",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-20",
+    "erdos-535",
+    "erdos-790"
+  ]
 }

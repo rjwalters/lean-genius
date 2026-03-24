@@ -110,5 +110,27 @@
     "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, primitive-sets"
+    },
+    {
+      "targetId": "erdos-786",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, multiplicative-structure, number-theory"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-143",
+    "erdos-786",
+    "erdos-1054"
+  ]
 }

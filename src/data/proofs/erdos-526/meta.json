@@ -163,5 +163,21 @@
     "axiomCount": 18,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-527",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-525",
+    "erdos-527"
+  ]
 }

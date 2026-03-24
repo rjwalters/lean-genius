@@ -24,9 +24,6 @@
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.26.0",
-    "relatedProofs": [
-      "erdos-763"
-    ],
     "relatedProblems": [],
     "mathlibDependencies": [
       {
@@ -177,5 +174,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-763",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, analytic-number-theory, representation-functions"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-763",
+    "erdos-1136",
+    "erdos-1179"
+  ]
 }

@@ -15,7 +15,8 @@
       "divergent series",
       "zeta function",
       "analytic continuation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-tsum",
@@ -33,7 +34,8 @@
       "tsum",
       "Summable",
       "convergence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-naturals-def",
@@ -50,7 +52,8 @@
       "natural numbers",
       "sequences"
     ],
-    "mathContext": "We define `naturals n = n + 1` to get the sequence $1, 2, 3, 4, \\ldots$ (offset by 1 because $\\mathbb{N}$ starts at 0 in Lean)."
+    "mathContext": "We define `naturals n = n + 1` to get the sequence $1, 2, 3, 4, \\ldots$ (offset by 1 because $\\mathbb{N}$ starts at 0 in Lean).",
+    "prerequisites": []
   },
   {
     "id": "ann-false-claim",
@@ -67,7 +70,8 @@
     "relatedConcepts": [
       "vacuous truth",
       "impossible hypothesis"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-grandi",
@@ -85,7 +89,8 @@
       "partial sums",
       "Cesaro mean",
       "divergence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-grandi-half-impossible",
@@ -102,7 +107,8 @@
     "relatedConcepts": [
       "tsum convention",
       "proof failure"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-shift-concept",
@@ -120,7 +126,8 @@
       "Riemann series theorem",
       "rearrangement",
       "absolute convergence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-alternating-not-summable",
@@ -137,7 +144,8 @@
       "divergence",
       "partial sums"
     ],
-    "mathContext": "The series $1-2+3-4+5-6+\\cdots$ also diverges."
+    "mathContext": "The series $1-2+3-4+5-6+\\cdots$ also diverges.",
+    "prerequisites": []
   },
   {
     "id": "ann-shift-requires-summable",
@@ -154,7 +162,8 @@
     "relatedConcepts": [
       "typeclass constraints",
       "proof obligations"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-shift-blocked",
@@ -171,7 +180,8 @@
       "type checking",
       "blocked proof"
     ],
-    "mathContext": "When we try to apply the shift-and-add manipulation to our divergent series, **Lean blocks us**."
+    "mathContext": "When we try to apply the shift-and-add manipulation to our divergent series, **Lean blocks us**.",
+    "prerequisites": []
   },
   {
     "id": "ann-unbounded",
@@ -188,7 +198,8 @@
     "relatedConcepts": [
       "divergence to infinity",
       "triangle numbers"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-main-theorem",
@@ -205,7 +216,8 @@
     "relatedConcepts": [
       "tsum_eq_zero_of_not_summable",
       "norm_num"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-zeta-distinction",
@@ -223,7 +235,8 @@
       "Riemann zeta function",
       "analytic continuation",
       "regularization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-step2",
@@ -240,7 +253,8 @@
       "second fallacy",
       "manipulation blocked"
     ],
-    "mathContext": "The second step uses the shift-and-add manipulation."
+    "mathContext": "The second step uses the shift-and-add manipulation.",
+    "prerequisites": []
   },
   {
     "id": "ann-step3",
@@ -257,7 +271,8 @@
     "relatedConcepts": [
       "vacuous truth",
       "zero convention"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-conclusion",
@@ -275,6 +290,7 @@
       "type safety",
       "mathematical rigor"
     ],
-    "mathContext": "Lean's type system and Mathlib's design choices enforce mathematical rigor automatically:\n\n1."
+    "mathContext": "Lean's type system and Mathlib's design choices enforce mathematical rigor automatically:\n\n1.",
+    "prerequisites": []
   }
 ]

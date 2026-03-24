@@ -156,5 +156,27 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-82",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, induced-subgraphs, open"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-82",
+    "erdos-1075",
+    "erdos-1092"
+  ]
 }

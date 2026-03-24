@@ -161,5 +161,27 @@
       "venue": "Oxford University Press",
       "note": "Contains Rogers' theorem used in the uniformization step"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-688",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, covering systems, number theory"
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    },
+    {
+      "targetId": "erdos-278",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, density"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-688",
+    "erdos-10",
+    "erdos-278"
   ]
 }

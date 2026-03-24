@@ -129,5 +129,27 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-125",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, base-representations, number-theory"
+    },
+    {
+      "targetId": "erdos-246",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, complete-sequences, number-theory"
+    },
+    {
+      "targetId": "erdos-348",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, complete-sequences, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-125",
+    "erdos-246",
+    "erdos-348"
+  ]
 }

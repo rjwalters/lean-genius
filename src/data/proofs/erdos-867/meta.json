@@ -154,11 +154,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-839",
-    "erdos-533",
-    "erdos-347",
-    "erdos-28",
-    "erdos-106"
+    "erdos-1136",
+    "erdos-198",
+    "erdos-32"
   ],
   "leanFile": {
     "imports": [
@@ -179,5 +177,22 @@
     "axiomCount": 9,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, disproved"
+    },
+    {
+      "targetId": "erdos-32",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density-bounds"
+    }
+  ]
 }

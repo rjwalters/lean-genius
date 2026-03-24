@@ -15,7 +15,8 @@
       "prime distribution",
       "number theory"
     ],
-    "mathContext": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime."
+    "mathContext": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime.",
+    "prerequisites": []
   },
   {
     "id": "ann-historical",
@@ -32,7 +33,8 @@
     "relatedConcepts": [
       "history of mathematics",
       "analytic number theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-main-theorem",
@@ -49,7 +51,8 @@
     "relatedConcepts": [
       "prime numbers",
       "existence proofs"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-prime-gaps",
@@ -66,7 +69,8 @@
     "relatedConcepts": [
       "prime gaps",
       "consecutive primes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-infinitude",
@@ -83,7 +87,8 @@
       "infinitude of primes",
       "Euclid's theorem"
     ],
-    "mathContext": "Bertrand's Postulate provides yet another proof that there are infinitely many primes:\n\n1."
+    "mathContext": "Bertrand's Postulate provides yet another proof that there are infinitely many primes:\n\n1.",
+    "prerequisites": []
   },
   {
     "id": "ann-erdos-proof",
@@ -100,7 +105,8 @@
     "relatedConcepts": [
       "binomial coefficients",
       "prime factorization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-small-cases",
@@ -117,7 +123,8 @@
       "constructive proofs",
       "explicit bounds"
     ],
-    "mathContext": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime."
+    "mathContext": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime.",
+    "prerequisites": []
   },
   {
     "id": "ann-pnt-connection",
@@ -135,6 +142,7 @@
       "Prime Number Theorem",
       "asymptotic analysis",
       "Riemann Hypothesis"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

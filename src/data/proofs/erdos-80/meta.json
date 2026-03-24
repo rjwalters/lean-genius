@@ -170,5 +170,27 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-621",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangles"
+    },
+    {
+      "targetId": "erdos-813",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangles"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, triangles"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-621",
+    "erdos-813",
+    "erdos-1009"
+  ]
 }

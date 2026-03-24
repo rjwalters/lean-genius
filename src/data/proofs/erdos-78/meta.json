@@ -16,28 +16,6 @@
       "probabilistic-method",
       "open"
     ],
-    "crossReferences": [
-      {
-        "id": "ramseys-theorem",
-        "relationship": "foundational",
-        "description": "Ramsey's theorem proves the existence of R(k); Problem #78 asks for constructive lower bounds on its growth rate"
-      },
-      {
-        "id": "erdos-szekeres",
-        "relationship": "related",
-        "description": "The Erdős–Szekeres theorem provides the upper bound R(k) < 4^k and uses Ramsey-type pigeonhole arguments"
-      },
-      {
-        "id": "erdos-79",
-        "relationship": "related",
-        "description": "Problem #79 studies Ramsey-size-linear graphs, a sister problem concerning Ramsey number growth rates"
-      },
-      {
-        "id": "erdos-986",
-        "relationship": "related",
-        "description": "Problem #986 concerns off-diagonal Ramsey lower bounds R(k,n), a generalization of the diagonal case"
-      }
-    ],
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/78",
     "erdosUrl": "https://erdosproblems.com/78",
@@ -143,5 +121,27 @@
     "Li (2023): improved to (log n)^C, current state of the art",
     "Campos–Griffiths–Morris–Sahasrabudhe (2023): R(k) ≤ (4-ε)^k, breaking the 4^k barrier",
     "https://erdosproblems.com/78"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-77",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, probabilistic-method, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-77",
+    "erdos-1014",
+    "erdos-1029"
   ]
 }

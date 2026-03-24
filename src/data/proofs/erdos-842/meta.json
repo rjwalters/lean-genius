@@ -148,5 +148,27 @@
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-508",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-coloring"
+    },
+    {
+      "targetId": "erdos-704",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-coloring"
+    },
+    {
+      "targetId": "erdos-762",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-coloring"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-508",
+    "erdos-704",
+    "erdos-762"
+  ]
 }

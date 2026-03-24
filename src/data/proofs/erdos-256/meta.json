@@ -65,28 +65,6 @@
       "primitive_root_lower_bound axiom",
       "bounds_summary axiom"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-510",
-        "relationship": "directly-related",
-        "description": "The Chowla cosine problem — Atkinson showed log f*(n) ≤ C·M·log n when min cosine sum < −M, giving a direct bridge between the two problems"
-      },
-      {
-        "id": "erdos-228",
-        "relationship": "related",
-        "description": "Flat Littlewood polynomials: another problem about controlling polynomial values on the unit circle, with ±1 coefficients instead of product factors"
-      },
-      {
-        "id": "erdos-230",
-        "relationship": "related",
-        "description": "Ultraflat unimodular polynomials on the unit circle — studies how uniformly bounded polynomial values on |z|=1 can be"
-      },
-      {
-        "id": "erdos-512",
-        "relationship": "related",
-        "description": "Littlewood's conjecture on L¹ norms of exponential sums — another extremal problem about oscillatory sums on the circle"
-      }
-    ],
     "axiomCount": 10,
     "prerequisites": [
       "Complex analysis (unit circle, modulus, roots of unity)",
@@ -235,5 +213,27 @@
       "citation": "Bourgain, J. and Chang, M.-C., On a multilinear character sum of Burgess, Comptes Rendus Mathématique (2018). Bounds for distinct exponents case.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1150",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, harmonic-analysis, unit-circle"
+    },
+    {
+      "targetId": "erdos-225",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved, unit-circle"
+    },
+    {
+      "targetId": "erdos-1114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1150",
+    "erdos-225",
+    "erdos-1114"
   ]
 }

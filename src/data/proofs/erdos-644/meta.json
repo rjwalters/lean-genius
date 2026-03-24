@@ -42,16 +42,6 @@
       ],
       "significance": "Determines the precise covering efficiency of k-uniform set families under r-wise pair coherence. The known exact values f(k,3)=2k through f(k,6)=k reveal a decreasing coefficient sequence c₃=2, c₄=3/2, c₅=5/4, c₆=1. The open questions ask whether c₇=3/4 (crossing below the natural barrier c=1) and whether the linear-in-k behavior persists for all r."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-621",
-        "relationship": "Both study covering/transversal problems in combinatorial structures; #621 covers triangles in graphs, #644 covers sets in families"
-      },
-      {
-        "id": "erdos-23",
-        "relationship": "Both involve covering problems with structural constraints; #23 asks about bipartite edge deletion, #644 about set piercing"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -223,5 +213,27 @@
       "citation": "Erdős Problems, Problem #644, https://erdosproblems.com/644",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1075",
+    "erdos-1088"
   ]
 }

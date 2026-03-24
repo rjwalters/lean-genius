@@ -152,5 +152,27 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-564",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, hypergraphs, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1022",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, hypergraphs"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-564",
+    "erdos-1014",
+    "erdos-1022"
+  ]
 }

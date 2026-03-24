@@ -160,5 +160,27 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory, solved, transcendence"
+    },
+    {
+      "targetId": "erdos-68",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: infinite-series, irrationality, number-theory, transcendence"
+    },
+    {
+      "targetId": "erdos-250",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory, transcendence"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1050",
+    "erdos-68",
+    "erdos-250"
+  ]
 }

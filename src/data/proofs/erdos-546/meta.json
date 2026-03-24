@@ -20,32 +20,6 @@
     "erdosNumber": 546,
     "erdosUrl": "https://erdosproblems.com/546",
     "erdosProblemStatus": "solved",
-    "relatedProofs": [
-      {
-        "id": "erdos-545",
-        "relationship": "Companion problem asking whether Ramsey numbers are maximized by 'as complete as possible' graphs with m edges"
-      },
-      {
-        "id": "ramseys-theorem",
-        "relationship": "The foundational Ramsey theorem guaranteeing R(H) < ∞ for all finite H, on which this problem builds"
-      },
-      {
-        "id": "erdos-549",
-        "relationship": "Ramsey numbers for bipartite trees — a specific graph family where the bound simplifies"
-      },
-      {
-        "id": "erdos-550",
-        "relationship": "Ramsey numbers for trees vs multipartite graphs, another edge-count-based Ramsey bound"
-      },
-      {
-        "id": "erdos-551",
-        "relationship": "Ramsey numbers for cycles vs complete graphs, connecting sparse graph Ramsey theory"
-      },
-      {
-        "id": "erdos-548",
-        "relationship": "The Erdős-Sós conjecture on tree containment from edge density, a related extremal problem"
-      }
-    ],
     "axiomCount": 0,
     "lineCount": 238,
     "assumptions": "No axioms. 10 sorry(s) remain in the formalization.",
@@ -177,5 +151,27 @@
     "Gerencsér-Gyárfás (1967): On Ramsey-type problems, Annales Univ. Sci. Budapest",
     "Conlon-Fox-Sudakov (2015): Recent developments in graph Ramsey theory, Surveys in Combinatorics",
     "https://erdosproblems.com/546"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1105"
   ]
 }

@@ -42,24 +42,6 @@
       ],
       "significance": "Probes the simultaneous distribution of ω across arithmetic progressions n-k. The main conjecture is open after 45+ years and cannot be resolved by finite computation. The disproved stronger version (O(1) error) shows the (1+ε) multiplicative slack is essential. Resolution would reveal deep structure in the correlation of prime factor counts across consecutive differences."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-248",
-        "relationship": "Both study ω bounds on consecutive integers; #248 asks about forward shifts ω(n+k), #679 about backward shifts ω(n-k). #248 solved by Tao-Teräväinen"
-      },
-      {
-        "id": "erdos-413",
-        "relationship": "Both study structural constraints on ω; #413 formalizes ω-barriers (m + ω(m) ≤ n), #679 asks about simultaneous smallness of ω(n-k)"
-      },
-      {
-        "id": "erdos-690",
-        "relationship": "Both study prime factor distribution; #690 examines k-th prime factor density and unimodality, #679 examines total prime factor count bounds"
-      },
-      {
-        "id": "erdos-673",
-        "relationship": "Both involve arithmetic functions of divisors; #673 studies G(n) via τ(n), #679 studies ω(n) which counts distinct prime divisors"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",

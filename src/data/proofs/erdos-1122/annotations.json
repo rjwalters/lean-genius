@@ -15,7 +15,8 @@
       "Mathlib imports",
       "namespace scoping",
       "open declarations"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-additive",
@@ -33,7 +34,8 @@
       "Nat.gcd",
       "coprimality",
       "multiplicative number theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-completely-additive",
@@ -50,7 +52,8 @@
     "relatedConcepts": [
       "IsAdditive",
       "function classification"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-log-additive",
@@ -68,7 +71,8 @@
       "Nat.cast_mul",
       "Real.log_mul",
       "positivity tactic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-value-primes",
@@ -86,7 +90,8 @@
       "Nat.primeFactors",
       "Nat.factorization",
       "Finset.sum"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-defect-set",
@@ -105,7 +110,8 @@
       "Finset.filter",
       "Finset.card",
       "noncomputable"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-littleo",
@@ -123,7 +129,8 @@
       "asymptotic notation",
       "ε-N definition",
       "Nat to Real coercion"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-empty-increasing",
@@ -141,7 +148,8 @@
       "by_contra",
       "push_neg",
       "Set.mem_empty_iff_false"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-logarithmic-form",
@@ -159,7 +167,8 @@
       "obtain tactic",
       "ring tactic",
       "Real.log_mul"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-erdos-results",
@@ -178,7 +187,8 @@
       "atTop filter",
       "nhds",
       "axiom pattern"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-mangerel-density",
@@ -196,7 +206,8 @@
       "Nat.Prime",
       "Real.log power",
       "nested existentials"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-mangerel-thm",
@@ -214,7 +225,8 @@
       "Ramanujan Journal",
       "partial progress",
       "axiom for deep result"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-conjecture",
@@ -232,7 +244,8 @@
       "open problem",
       "axiom for conjecture",
       "erdos1122Conjecture"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-hierarchy",
@@ -250,7 +263,8 @@
       "Finset.card_eq_zero",
       "Finset.filter_eq_empty_iff",
       "Set.not_mem_empty"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-log-example",
@@ -268,7 +282,8 @@
       "Set.ext",
       "Real.log_le_log",
       "positivity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-omega",
@@ -286,7 +301,8 @@
       "Nat.primeFactors",
       "Finset.card",
       "counterexample pattern"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-summary",
@@ -304,6 +320,7 @@
       "refine tactic",
       "anonymous constructor",
       "conjunction introduction"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

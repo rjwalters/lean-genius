@@ -151,5 +151,27 @@
     "axiomCount": 15,
     "theoremCount": 44,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    },
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1004",
+    "erdos-1102",
+    "erdos-1106"
+  ]
 }

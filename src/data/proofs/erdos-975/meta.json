@@ -153,5 +153,27 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-448",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, polynomials"
+    },
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-448",
+    "erdos-976",
+    "erdos-1004"
+  ]
 }

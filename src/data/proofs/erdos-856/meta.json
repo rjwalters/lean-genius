@@ -126,11 +126,8 @@
     ]
   },
   "relatedProofs": [
-    "erdos-839",
-    "erdos-533",
-    "erdos-347",
-    "erdos-182",
-    "erdos-321"
+    "erdos-855",
+    "erdos-857"
   ],
   "leanFile": {
     "imports": [
@@ -152,5 +149,17 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-855",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-857",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ]
 }

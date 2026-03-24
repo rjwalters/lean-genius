@@ -140,5 +140,21 @@
     "axiomCount": 1,
     "theoremCount": 21,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-121",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: multiplicative number theory, number theory"
+    },
+    {
+      "targetId": "erdos-690",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number theory, prime factors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-121",
+    "erdos-690"
+  ]
 }

@@ -168,5 +168,27 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, probability, solved"
+    },
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, probability, solved"
+    },
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, probability, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1166",
+    "erdos-1179",
+    "erdos-523"
+  ]
 }

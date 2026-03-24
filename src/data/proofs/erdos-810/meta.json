@@ -54,24 +54,6 @@
       "dense_graph_has_C4: Ω(n²) edges implies C₄ exists (axiom)",
       "c4_free_vacuously_rainbow: proved C₄-free satisfies rainbow condition"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-809",
-        "relationship": "Companion problem explicitly referenced in the statement; both concern rainbow structures in edge-colored graphs"
-      },
-      {
-        "proofId": "erdos-811",
-        "relationship": "Related edge-coloring problem in the Erdős collection"
-      },
-      {
-        "proofId": "erdos-129",
-        "relationship": "Edge-coloring problem with connections to rainbow subgraph theory"
-      },
-      {
-        "proofId": "erdos-76",
-        "relationship": "Related edge-coloring and Ramsey-type problem"
-      }
-    ],
     "axiomCount": 2,
     "lineCount": 121,
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -164,5 +146,27 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: edge-coloring, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-76",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: edge-coloring, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-129",
+    "erdos-76",
+    "erdos-1014"
+  ]
 }

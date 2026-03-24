@@ -176,5 +176,27 @@
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 22
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: coloring, combinatorics, open"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, set-theory"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1105",
+    "erdos-1167",
+    "erdos-1169"
+  ]
 }

@@ -53,23 +53,6 @@
       "CRT injectivity as foundation for ring isomorphism",
       "Modular arithmetic preservation (add, mul, pow)"
     ],
-    "crossReferences": [
-      {
-        "proofId": "bezout-identity",
-        "relationship": "uses",
-        "description": "Bezout's identity provides the coefficients mu + nv = 1 that give the constructive CRT solution formula"
-      },
-      {
-        "proofId": "chinese-remainder-non-coprime",
-        "relationship": "extends",
-        "description": "Generalizes CRT to non-coprime moduli where solutions exist iff the remainders are compatible: a = b (mod gcd(m,n))"
-      },
-      {
-        "proofId": "fermats-last-theorem",
-        "relationship": "related",
-        "description": "Modular arithmetic and CRT are fundamental tools in the theory of Diophantine equations; Wiles's proof uses CRT-related techniques in the study of Galois representations"
-      }
-    ],
     "dateAdded": "2025-12-31",
     "axiomCount": 0,
     "lineCount": 416,

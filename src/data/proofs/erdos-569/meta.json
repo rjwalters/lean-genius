@@ -157,5 +157,27 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-159",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-554",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, odd-cycles, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-159",
+    "erdos-554",
+    "erdos-620"
+  ]
 }

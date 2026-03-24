@@ -124,5 +124,27 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1121",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: circles, geometry"
+    },
+    {
+      "targetId": "erdos-502",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial geometry, geometry"
+    },
+    {
+      "targetId": "erdos-505",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial geometry, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1121",
+    "erdos-502",
+    "erdos-505"
+  ]
 }

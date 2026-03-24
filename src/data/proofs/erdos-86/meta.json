@@ -95,9 +95,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-117",
-    "erdos-182",
-    "erdos-533"
+    "erdos-1008",
+    "erdos-666",
+    "erdos-1010"
   ],
   "leanFile": {
     "imports": [
@@ -111,5 +111,22 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal, graph-theory"
+    },
+    {
+      "targetId": "erdos-666",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, hypercube"
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal, graph-theory"
+    }
+  ]
 }

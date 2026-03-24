@@ -15,7 +15,8 @@
       "Distinct distances",
       "General position",
       "Incidence geometry"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-point2d",
@@ -28,7 +29,9 @@
     "title": "Points and Distances",
     "content": "**Point2D, distSq, dist':**\n\nPoints in R^2 are represented as EuclideanSpace R (Fin 2).\n\n**Distance functions:**\n- distSq(p, q) = (p.x - q.x)^2 + (p.y - q.y)^2\n- dist'(p, q) = sqrt(distSq(p, q))\n\nUsing squared distance avoids sqrt complications in some contexts.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of points and distances"
+    "mathContext": "See annotation content for formal details of points and distances",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-collinear",
@@ -46,7 +49,8 @@
       "Cross product",
       "Determinant",
       "General position"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-distinct-distances",
@@ -59,7 +63,9 @@
     "title": "Counting Distances",
     "content": "**distinctDistances, distancesFromPoint, numDistancesFromPoint:**\n\n- distinctDistances(S) = set of all pairwise distances in S\n- distancesFromPoint(p, S) = distances from p to all other points in S\n- numDistancesFromPoint(p, S) = cardinality of distancesFromPoint\n\nThe two conjectures differ: total distinct distances vs. single-point view.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of counting distances"
+    "mathContext": "See annotation content for formal details of counting distances",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-szemeredi",
@@ -76,7 +82,8 @@
     "relatedConcepts": [
       "Incidence geometry",
       "Distinct distances"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-conjecture1",
@@ -89,7 +96,9 @@
     "title": "Conjecture 1: Total Distances",
     "content": "**Conjecture1:**\n\nIf S has n points in general position, then S determines at least n/2 distinct distances.\n\nThis is OPEN. The gap between n/3 (proven) and n/2 (conjectured) is significant.\n\nNote: This is weaker than Conjecture 2 - total distances could be n/2 even if no single point achieves it.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of conjecture 1: total distances"
+    "mathContext": "See annotation content for formal details of conjecture 1: total distances",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-conjecture2",
@@ -102,7 +111,9 @@
     "title": "Conjecture 2: Single Point",
     "content": "**Conjecture2:**\n\nIf S has n points in general position, then some point determines at least n/2 distinct distances to other points.\n\nThis is a STRONGER form: it implies Conjecture 1.\n\nStatus: DISPROVED by Xichuan's counterexample.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of conjecture 2: single point"
+    "mathContext": "See annotation content for formal details of conjecture 2: single point",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-xichuan",
@@ -119,7 +130,8 @@
     "relatedConcepts": [
       "Counterexamples",
       "Symmetric point sets"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-false",
@@ -132,7 +144,9 @@
     "title": "Conjecture 2 is False",
     "content": "**conjecture2_false:**\n\n```lean\ntheorem conjecture2_false : not Conjecture2\n```\n\n**Proof idea:**\n1. Assume Conjecture2\n2. Apply to Xichuan's 42-point set\n3. Get a point p with at least 21 distances\n4. But Xichuan says every point has at most 20\n5. Contradiction via omega\n\nThis is a formal disproof using the axiomatized counterexample.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of conjecture 2 is false"
+    "mathContext": "See annotation content for formal details of conjecture 2 is false",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-status",
@@ -145,7 +159,9 @@
     "title": "Problem Status",
     "content": "**erdos_1082_status:**\n\nCombines the current state of knowledge:\n1. Szemeredi's n/3 bound is proven\n2. Conjecture 2 (single point n/2) is FALSE\n3. Conjecture 1 (total n/2) remains OPEN\n\nThe problem represents a gap in our understanding of distance patterns.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of problem status"
+    "mathContext": "See annotation content for formal details of problem status",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-guth-katz",
@@ -162,7 +178,8 @@
     "relatedConcepts": [
       "Polynomial partitioning",
       "Incidence bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-3d",
@@ -179,7 +196,8 @@
       "Higher dimensions",
       "Convex position"
     ],
-    "mathContext": "See annotation content for formal details of 3d generalizations"
+    "mathContext": "See annotation content for formal details of 3d generalizations",
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-gap",
@@ -192,7 +210,9 @@
     "title": "The 42-Point Gap",
     "content": "**counterexample_gap:**\n\nShows explicitly that Xichuan's 42 points satisfy:\n- Every point has < 21 = floor(42/2) distances\n\nThe gap 20 < 21 is tight - the counterexample is minimally failing the conjecture.\n\nFinding the minimum n with such a counterexample is an interesting question.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of the 42-point gap"
+    "mathContext": "See annotation content for formal details of the 42-point gap",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e1082-summary",
@@ -205,6 +225,8 @@
     "title": "Summary Theorem",
     "content": "**erdos_1082_summary:**\n\nFinal statement:\n1. Szemeredi's n/3 bound holds\n2. Conjecture 2 is false\n3. Conjecture 1 (total n/2 distances) remains open\n\nThe problem represents the boundary of our knowledge about distance patterns in general position point sets.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

@@ -22,7 +22,6 @@
     "erdosNumber": 225,
     "erdosUrl": "https://erdosproblems.com/225",
     "erdosProblemStatus": "solved",
-    "relatedProofs": [],
     "axiomCount": 2,
     "lineCount": 243,
     "assumptions": "2 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
@@ -148,5 +147,27 @@
     "McGehee–Pigno–Smith (1981): Littlewood's conjecture (related result)",
     "Fejér–Riesz (1915): non-negative trig polynomials as |g|²",
     "https://erdosproblems.com/225"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-256",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved, unit-circle"
+    },
+    {
+      "targetId": "erdos-1114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved"
+    },
+    {
+      "targetId": "erdos-1125",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-256",
+    "erdos-1114",
+    "erdos-1125"
   ]
 }

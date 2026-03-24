@@ -142,5 +142,27 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-260",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-263",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-265",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory, sequences"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-260",
+    "erdos-263",
+    "erdos-265"
+  ]
 }

@@ -57,12 +57,6 @@
       "Proved maxNonRepr_ge_one: lower bound ≥ 1 for c ≥ 1, n ≥ 2",
       "Fixed incorrect maxNonRepr_large_n (was false) with correct conditional theorem"
     ],
-    "relatedProofs": [
-      {
-        "id": "ramseys-theorem",
-        "relationship": "Both problems involve extremal combinatorial structures—Ramsey theory guarantees structure in large systems, while this problem asks how large a structure can avoid a given property"
-      }
-    ],
     "axiomCount": 2,
     "assumptions": "2 axiom declarations: maxNonRepr_bigO_bound (asymptotic upper bound exists), maxNonRepr_plausible_theta (Theta(sqrt n) growth conjecture)",
     "lineCount": 146
@@ -168,5 +162,27 @@
       "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
       "type": "book"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-253",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, subset-sums"
+    },
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, subset-sums"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-253",
+    "erdos-300",
+    "erdos-400"
   ]
 }

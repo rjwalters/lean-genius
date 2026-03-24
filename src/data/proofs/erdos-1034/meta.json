@@ -154,28 +154,28 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-905",
-      "relationship": "The book lemma underlying the $h(n) \\ge n/6$ lower bound in #1034 is equivalent to the edge-triangle multiplicity result of #905: every above-Turán graph has an edge in $\\ge n/6$ triangles, which directly yields the common-neighbor lower bound."
+      "relationship": "The book lemma underlying the $h(n) \\ge n/6$ lower bound in #1034 is equivalent to the edge-triangle multiplicity result of #905: every above-Turán graph has an edge in $\\ge n/6$ triangles, which directly yields the common-neighbor lower bound.",
+      "targetId": "erdos-905"
     },
     {
-      "target": "erdos-1033",
-      "relationship": "Companion problem: #1033 asks for the maximum triangle degree sum in above-Turán graphs; #1034 asks for the maximum good-neighbor count. Both set up analogous extremal functions $h(n)$ with the same Turán threshold $n^2/4$ and similar gap phenomena between lower (book lemma) and upper (Ma-Tang-style constructions) bounds."
+      "relationship": "Companion problem: #1033 asks for the maximum triangle degree sum in above-Turán graphs; #1034 asks for the maximum good-neighbor count. Both set up analogous extremal functions $h(n)$ with the same Turán threshold $n^2/4$ and similar gap phenomena between lower (book lemma) and upper (Ma-Tang-style constructions) bounds.",
+      "targetId": "erdos-1033"
     },
     {
-      "target": "erdos-1010",
-      "relationship": "Triangle supersaturation (#1010) quantifies how many triangles appear once the Turán threshold is exceeded. Problem #1034 studies the neighborhood structure of those forced triangles; together they describe both the abundance and the reach of triangles in dense graphs."
+      "relationship": "Triangle supersaturation (#1010) quantifies how many triangles appear once the Turán threshold is exceeded. Problem #1034 studies the neighborhood structure of those forced triangles; together they describe both the abundance and the reach of triangles in dense graphs.",
+      "targetId": "erdos-1010"
     },
     {
-      "target": "erdos-904",
-      "relationship": "Bollobás-Erdős problem #904 proves that above-Turán graphs contain a triangle with degree sum $\\ge (3/2)n$. High degree sum is a prerequisite for having many good neighbors, making #904 a structural precursor to the bounds studied in #1034."
+      "relationship": "Bollobás-Erdős problem #904 proves that above-Turán graphs contain a triangle with degree sum $\\ge (3/2)n$. High degree sum is a prerequisite for having many good neighbors, making #904 a structural precursor to the bounds studied in #1034.",
+      "targetId": "erdos-904"
     },
     {
-      "target": "erdos-80",
-      "relationship": "The book lemma used for the $h(n) \\ge n/6$ lower bound in #1034 is closely related to the book-size questions in #80. Both study how large the common neighborhood of a triangle edge must be in a dense graph, differing only in the density regime (all above-Turán vs. triangle-saturated)."
+      "relationship": "The book lemma used for the $h(n) \\ge n/6$ lower bound in #1034 is closely related to the book-size questions in #80. Both study how large the common neighborhood of a triangle edge must be in a dense graph, differing only in the density regime (all above-Turán vs. triangle-saturated).",
+      "targetId": "erdos-80"
     },
     {
-      "target": "erdos-1009",
-      "relationship": "Edge-disjoint triangle packing (#1009) and triangle neighborhood structure (#1034) both operate at the same $\\lfloor n^2/4 \\rfloor + k$ edge density. The Györi packing result and the Ma-Tang neighborhood bound together constrain the combinatorial geometry of triangles just above the Turán threshold."
+      "relationship": "Edge-disjoint triangle packing (#1009) and triangle neighborhood structure (#1034) both operate at the same $\\lfloor n^2/4 \\rfloor + k$ edge density. The Györi packing result and the Ma-Tang neighborhood bound together constrain the combinatorial geometry of triangles just above the Turán threshold.",
+      "targetId": "erdos-1009"
     }
   ],
   "relatedProofs": [

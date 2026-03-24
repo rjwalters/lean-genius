@@ -61,47 +61,8 @@
       "Proved powers of 3 are lacunary",
       "Noted connection to Strong Law of Large Numbers"
     ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-996",
-        "relationship": "related",
-        "description": "Companion problem on the Strong Law of Large Numbers for lacunary sums — same setup ∑f({αn_k}) but studies almost sure convergence of ergodic averages"
-      },
-      {
-        "targetId": "erdos-992",
-        "relationship": "uses-same-technique",
-        "description": "Discrepancy of sequences mod 1 — the Erdős-Gál theorem gives discrepancy bounds for lacunary sequences, directly measuring equidistribution of fractional parts"
-      },
-      {
-        "targetId": "erdos-987",
-        "relationship": "uses-same-technique",
-        "description": "Exponential sums and sequence discrepancy — Erdős-Turán inequality controls equidistribution via Weyl sums, the main analytic tool for lacunary sequence problems"
-      },
-      {
-        "targetId": "erdos-994",
-        "relationship": "related",
-        "description": "Khintchine's equidistribution conjecture (disproved) — explores limits of equidistribution theory for fractional parts {αn_k}"
-      },
-      {
-        "targetId": "erdos-999",
-        "relationship": "related",
-        "description": "Duffin-Schaeffer conjecture (solved 2020) — metric Diophantine approximation for almost all α, connected through the measure-theoretic framework of fractional part distribution"
-      },
-      {
-        "targetId": "laws-of-large-numbers",
-        "relationship": "generalizes",
-        "description": "Classical Strong Law of Large Numbers — lacunary sums satisfy analogous laws due to quasi-independence of {αn_k} terms"
-      }
-    ],
     "axiomCount": 5,
     "lineCount": 232,
-    "relatedProofs": [
-      "erdos-996",
-      "erdos-992",
-      "erdos-987",
-      "erdos-994",
-      "erdos-999"
-    ],
     "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -301,5 +262,27 @@
       "description": "Most recent significant progress on the gap: improved upper bounds under additional conditions on the lacunary sequence and the function f",
       "relevance": "supporting"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1002",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, diophantine-approximation"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, probability"
+    },
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, probability"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1002",
+    "erdos-1138",
+    "erdos-1144"
   ]
 }

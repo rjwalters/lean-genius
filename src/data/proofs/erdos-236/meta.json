@@ -132,5 +132,27 @@
     "axiomCount": 7,
     "theoremCount": 8,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-141",
+    "erdos-200",
+    "erdos-237"
+  ]
 }

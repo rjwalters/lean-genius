@@ -159,5 +159,27 @@
     "axiomCount": 13,
     "theoremCount": 15,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics"
+    },
+    {
+      "targetId": "erdos-397",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics"
+    },
+    {
+      "targetId": "erdos-698",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, pascal-triangle"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-387",
+    "erdos-397",
+    "erdos-698"
+  ]
 }

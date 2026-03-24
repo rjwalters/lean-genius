@@ -48,12 +48,6 @@
       "Stated erdos_422_growth: linear growth bound f(n) ≤ (1+ε)n",
       "Axiomatized initial_values: f(1)=1, f(2)=1, ..., f(6)=4"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-424",
-        "relationship": "Both problems concern iteratively defined sequences whose basic properties (well-definedness, density/surjectivity) remain open"
-      }
-    ],
     "axiomCount": 5,
     "assumptions": "5 axiom declarations: erdos_422_well_defined (well-definedness for all n), erdos_422_misses_infinitely (infinitely many missing values), erdos_422_surjectivity (non-surjectivity conjecture), erdos_422_growth (linear growth bound), initial_values (first six computed values)",
     "lineCount": 77
@@ -153,5 +147,27 @@
       "citation": "OEIS Foundation. A005185: Hofstadter-Maler-Mitchell (or Hofstadter-Conway) $10,000 sequence. The On-Line Encyclopedia of Integer Sequences.",
       "type": "database"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-243",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-255",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1101",
+    "erdos-243",
+    "erdos-255"
   ]
 }

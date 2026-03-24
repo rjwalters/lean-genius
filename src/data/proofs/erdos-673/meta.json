@@ -41,24 +41,6 @@
       ],
       "significance": "Characterizes the sum of consecutive divisor ratios G(n), showing it is controlled by τ(n) via Tao's bounds τ(n/m)/m ≤ G(n) ≤ τ(n). The Erdős-Tenenbaum theorem that G(n)/τ(n) has a continuous distribution function reveals deep statistical structure in divisor sequences. The asymptotic formula Σ G(n) ~ c X log X parallels the classical Dirichlet divisor sum."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-693",
-        "relationship": "Both study divisor distribution in intervals; #693 examines integers with divisors in (n, 2n), while #673 sums ratios of consecutive divisors"
-      },
-      {
-        "id": "erdos-650",
-        "relationship": "Both involve divisibility structure and counting arguments; #650 studies divisibility covering in intervals, #673 studies divisor ratio sums"
-      },
-      {
-        "id": "erdos-690",
-        "relationship": "Both involve distribution functions of divisor-related quantities; #690 studies density of k-th prime factor, #673 studies distribution of G(n)/τ(n)"
-      },
-      {
-        "id": "perfect-numbers",
-        "relationship": "Both study arithmetic functions of divisors; perfect numbers use σ(n), while #673 introduces the non-multiplicative function G(n) controlled by τ(n)"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -234,5 +216,27 @@
       "citation": "Erdős Problems, Problem #673, https://erdosproblems.com/673",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-122",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-functions, distribution, number-theory"
+    },
+    {
+      "targetId": "erdos-887",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-897",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, arithmetic-functions, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-122",
+    "erdos-887",
+    "erdos-897"
   ]
 }

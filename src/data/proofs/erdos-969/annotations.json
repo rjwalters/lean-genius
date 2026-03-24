@@ -15,7 +15,8 @@
       "Möbius function",
       "Multiplicative functions",
       "Prime factorization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-squarefree-examples",
@@ -28,7 +29,9 @@
     "title": "Squarefree Examples",
     "content": "**Verified examples:**\n\n- Squarefree 1, 2, 3, 6, 10, 30 (verified by decide)\n- ¬Squarefree 4, 12 (contain 2²)\n\nPrimes are always squarefree. Products of distinct primes are squarefree.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of squarefree examples"
+    "mathContext": "See annotation content for formal details of squarefree examples",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-counting-function",
@@ -46,7 +49,8 @@
       "Prime counting function",
       "Asymptotic analysis",
       "Analytic number theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-Q-examples",
@@ -59,7 +63,9 @@
     "title": "Computed Values of Q(x)",
     "content": "**Q_one, Q_ten, Q_twenty:**\n\n- Q(1) = 1\n- Q(10) = 7 (squarefree: 1,2,3,5,6,7,10)\n- Q(20) = 13\n\nVerified using native_decide for exact computation.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of computed values of q(x)"
+    "mathContext": "See annotation content for formal details of computed values of q(x)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-density",
@@ -77,7 +83,8 @@
       "Basel problem",
       "Riemann zeta function",
       "Euler's work"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-density-approx",
@@ -90,7 +97,9 @@
     "title": "Density Approximation",
     "content": "**density_approx:**\n\n0.607 < 6/π² < 0.609\n\nProved using bounds 3.14 < π < 3.15 from Mathlib.\n\nAbout 60.8% of all positive integers are squarefree!",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of density approximation"
+    "mathContext": "See annotation content for formal details of density approximation",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-error-term",
@@ -108,7 +117,8 @@
       "Prime number theorem error",
       "Explicit formulas",
       "Oscillation behavior"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-elementary-bound",
@@ -121,7 +131,9 @@
     "title": "Elementary Upper Bound",
     "content": "**elementary_upper_bound:**\n\n|E(x)| ≪ x^(1/2)\n\nProved by elementary counting methods.\n\n**Idea:** Each prime p contributes ≤ x/p² terms to exclude. Sum over primes gives O(√x).",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of elementary upper bound"
+    "mathContext": "See annotation content for formal details of elementary upper bound",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-pnt-improvement",
@@ -134,7 +146,9 @@
     "title": "Prime Number Theorem Improvement",
     "content": "**pnt_improvement:**\n\nE(x) = o(x^(1/2))\n\nThe PNT provides cancellation in the Möbius sum, improving the bound to little-o.\n\nThis is stronger than O(x^(1/2)) but still far from the truth.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of prime number theorem improvement"
+    "mathContext": "See annotation content for formal details of prime number theorem improvement",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-walfisz",
@@ -147,7 +161,9 @@
     "title": "Walfisz Bound (1963)",
     "content": "**walfisz_bound:**\n\n|E(x)| ≪ x^(1/2 - o(1))\n\nThe best known unconditional upper bound.\n\nThe exponent 1/2 - o(1) means the bound beats x^(1/2-ε) for any fixed ε > 0, but the improvement vanishes as x → ∞.",
     "mathContext": "Walfisz's book on exponential sums (1963) contains this and many related results.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-evelyn-linfoot",
@@ -160,7 +176,9 @@
     "title": "Evelyn-Linfoot Lower Bound (1931)",
     "content": "**evelyn_linfoot_lower_bound:**\n\n|E(x)| ≫ x^(1/4)\n\nThis lower bound is believed to be tight: the true order is conjectured to be x^(1/4).\n\n**Key insight:** The oscillations in E(x) are controlled by zeros of ζ(s), and the critical line contributes x^(1/4).",
     "mathContext": "Evelyn and Linfoot's 1931 paper was a breakthrough in understanding the true size of E(x).",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-conjecture",
@@ -173,7 +191,9 @@
     "title": "The Main Conjecture",
     "content": "**errorTermConjecture:**\n\nE(x) ≍ x^(1/4)\n\nThis states that both the upper and lower bounds have exponent 1/4.\n\n**Status:** OPEN - not proved even under the Riemann Hypothesis!",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of the main conjecture"
+    "mathContext": "See annotation content for formal details of the main conjecture",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-rh-connection",
@@ -191,7 +211,8 @@
       "Riemann Hypothesis",
       "Millennium Problems",
       "Explicit formulas"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-liu-bound",
@@ -204,7 +225,9 @@
     "title": "Liu's Conditional Bound (2016)",
     "content": "**liu_conditional_bound:**\n\nUnder RH: |E(x)| ≪ x^(11/35 + o(1))\n\n**Exponent:** 11/35 ≈ 0.314\n\nEven assuming RH, this is still far from the conjectured 1/4 = 0.25.\n\nThe gap 11/35 - 1/4 = 9/140 ≈ 0.064 remains open.",
     "mathContext": "Liu's 2016 paper in J. Number Theory achieved the best known conditional bound.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-exponent-comparison",
@@ -217,7 +240,9 @@
     "title": "Exponent Comparisons",
     "content": "**liu_exponent, exponent_gap:**\n\n- 11/35 > 1/4 (Liu's bound exceeds conjecture)\n- Gap: 11/35 - 1/4 = 9/140 ≈ 0.064\n\nEven with RH, we cannot reach the conjectured bound.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of exponent comparisons"
+    "mathContext": "See annotation content for formal details of exponent comparisons",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-mobius",
@@ -235,7 +260,8 @@
       "Inclusion-exclusion",
       "Dirichlet series",
       "Möbius inversion"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-mobius-formula",
@@ -248,7 +274,9 @@
     "title": "Squarefree Counting via Möbius",
     "content": "**squarefree_mobius_formula:**\n\nQ(x) = Σ_{d² ≤ x} μ(d) · ⌊x/d²⌋\n\n**Derivation:**\n- n is squarefree iff Σ_{d²|n} μ(d) = 1\n- Sum over n ≤ x and swap order\n- Result follows from inclusion-exclusion",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of squarefree counting via möbius"
+    "mathContext": "See annotation content for formal details of squarefree counting via möbius",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-zero-free",
@@ -266,7 +294,8 @@
       "Zeta zeros",
       "Zero-free regions",
       "Explicit formulas"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-summary",
@@ -279,7 +308,9 @@
     "title": "Summary of Known Bounds",
     "content": "**erdos_969_summary:**\n\nWhat we know:\n1. Upper bound: |E(x)| ≤ C·x^(1/2) (elementary)\n2. Lower bound: |E(x)| ≥ c·x^(1/4) (Evelyn-Linfoot)\n3. Gap: 1/2 - 1/4 = 1/4 in the exponent\n\n**Status:** OPEN for nearly 100 years!",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary of known bounds"
+    "mathContext": "See annotation content for formal details of summary of known bounds",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e969-open-problem",
@@ -292,6 +323,8 @@
     "title": "The Open Problem",
     "content": "**erdos_969_open_problem:**\n\nIs E(x) ≍ x^(1/4)?\n\nThis remains one of the major open problems in analytic number theory, with profound connections to the Riemann Hypothesis.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of the open problem"
+    "mathContext": "See annotation content for formal details of the open problem",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

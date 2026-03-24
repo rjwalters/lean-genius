@@ -50,16 +50,6 @@
         "module": "Mathlib.Data.Nat.Basic"
       }
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-181",
-        "relationship": "Ramsey number of the hypercube — graph-theoretic Ramsey theory using `SimpleGraph`"
-      },
-      {
-        "id": "ramseys-theorem",
-        "relationship": "Classical Ramsey theorem — the independence/clique duality underlying Alon's proof"
-      }
-    ],
     "axiomCount": 3,
     "prerequisites": [
       "Graph theory fundamentals (vertices, edges, adjacency)",
@@ -161,12 +151,12 @@
   ],
   "crossReferences": [
     {
-      "target": "ramseys-theorem",
-      "context": "The independence/clique duality underlying Alon's proof — α(G) ≤ √n is a Ramsey-type constraint"
+      "targetId": "ramseys-theorem",
+      "description": "The independence/clique duality underlying Alon's proof — α(G) ≤ √n is a Ramsey-type constraint"
     },
     {
-      "target": "erdos-806",
-      "context": "Both are Erdős problems about structural graph-theoretic properties"
+      "targetId": "erdos-806",
+      "description": "Both are Erdős problems about structural graph-theoretic properties"
     }
   ],
   "leanFile": {

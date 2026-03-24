@@ -56,22 +56,6 @@
         "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
       }
     ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-535",
-        "relationship": "related",
-        "description": "Both study extremal problems with pairwise constraints; #549 uses edge-coloring Ramsey, #535 uses GCD structure"
-      },
-      {
-        "targetId": "erdos-1020",
-        "relationship": "related",
-        "description": "Parallel extremal hypergraph problem: #1020 studies maximum edges avoiding k independent edges, #549 studies tree Ramsey numbers"
-      }
-    ],
-    "relatedProofs": [
-      "erdos-535",
-      "erdos-1020"
-    ],
     "originalContributions": [
       "Formal definition of BipartiteTree structure with (k, 2k) partition",
       "Definition of graph Ramsey numbers R(H) via Nat.find",
@@ -231,5 +215,27 @@
       "venue": "Pacific Journal of Mathematics, 41(2), pp. 335-345",
       "note": "Proved R(T) ≤ 2n - 2 for any tree on n vertices"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1037",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, trees"
+    },
+    {
+      "targetId": "erdos-550",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, trees"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1037",
+    "erdos-547",
+    "erdos-550"
   ]
 }

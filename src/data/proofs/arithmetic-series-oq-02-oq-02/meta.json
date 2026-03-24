@@ -45,32 +45,6 @@
       "Pascal's identity",
       "Simplicial numbers"
     ],
-    "crossReferences": [
-      {
-        "proofId": "arithmetic-series-oq-02",
-        "title": "Simplicial Numbers: Higher-Dimensional Arithmetic Series",
-        "relationship": "extends",
-        "note": "The parent formalization defining simplicial numbers and the 1D hockey stick identity"
-      },
-      {
-        "proofId": "binomial-theorem",
-        "title": "The Binomial Theorem",
-        "relationship": "related",
-        "note": "Both results are consequences of the algebraic properties of binomial coefficients; the binomial theorem gives (1+x)^n while Vandermonde gives the convolution structure"
-      },
-      {
-        "proofId": "combinations-formula",
-        "title": "Formula for the Number of Combinations",
-        "relationship": "uses",
-        "note": "The foundation — C(n,k) = n!/(k!(n-k)!) — upon which simplicial numbers are built"
-      },
-      {
-        "proofId": "pascals-hexagon",
-        "title": "Pascal's Hexagon Theorem",
-        "relationship": "related",
-        "note": "Another deep property of Pascal's triangle, connecting products of alternating entries in a hexagonal pattern"
-      }
-    ],
     "lineCount": 154,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0"

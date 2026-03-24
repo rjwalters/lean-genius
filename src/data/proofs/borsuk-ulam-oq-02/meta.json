@@ -85,34 +85,6 @@
     ],
     "dateAdded": "2026-02-24",
     "axiomCount": 1,
-    "crossReferences": [
-      {
-        "proofId": "borsuk-ulam",
-        "relationship": "extends",
-        "description": "Base Borsuk-Ulam formalization that this entry generalizes to other group actions"
-      },
-      {
-        "proofId": "brouwer-fixed-point",
-        "relationship": "related",
-        "description": "Brouwer fixed-point theorem is a consequence of Borsuk-Ulam"
-      },
-      {
-        "proofId": "intermediate-value-theorem",
-        "relationship": "related",
-        "description": "The 1-dimensional foundation: IVT is the n=1 case of Borsuk-Ulam"
-      },
-      {
-        "proofId": "borsuk-ulam-oq-03",
-        "relationship": "related",
-        "description": "Constructive Borsuk-Ulam and equivalences with other topological results"
-      }
-    ],
-    "relatedProofs": [
-      "borsuk-ulam",
-      "brouwer-fixed-point",
-      "intermediate-value-theorem",
-      "borsuk-ulam-oq-03"
-    ],
     "lineCount": 389,
     "assumptions": "1 axiom encoding the core ℤ/2 equivariant Borsuk-Ulam vanishing result (z2_equivariant_borsuk_ulam). No structure-encoded assumptions.",
     "mathlib_version": "4.26.0"

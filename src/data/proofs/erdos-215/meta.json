@@ -161,5 +161,21 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1127",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: geometry, set-theory"
+    },
+    {
+      "targetId": "erdos-798",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: geometry, lattice-points"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1127",
+    "erdos-798"
+  ]
 }

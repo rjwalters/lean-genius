@@ -59,36 +59,6 @@
       "Stability: structural characterization placeholder",
       "countC5: C₅ subgraph count"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-60",
-        "relationship": "C₄ supersaturation — analogous problem for 4-cycles instead of 5-cycles"
-      },
-      {
-        "id": "erdos-572",
-        "relationship": "extremal even cycle theory — lower bounds for ex(n; C_{2k})"
-      },
-      {
-        "id": "erdos-577",
-        "relationship": "vertex-disjoint C₄ partitions under minimum degree conditions"
-      },
-      {
-        "id": "erdos-570",
-        "relationship": "cycle Ramsey numbers — R(C_k, H) bounds sharing cycle-theoretic framework"
-      },
-      {
-        "id": "erdos-765",
-        "relationship": "Turán-type graph density problems"
-      },
-      {
-        "id": "erdos-59",
-        "relationship": "extremal graph theory for forbidden subgraphs"
-      },
-      {
-        "id": "erdos-65",
-        "relationship": "graph Ramsey problems involving cycle structure"
-      }
-    ],
     "axiomCount": 0,
     "lineCount": 270,
     "assumptions": "No axioms. 13 sorry(s) remain in the formalization."
@@ -256,5 +226,27 @@
       "citation": "Erdős Problems, Problem #608, https://erdosproblems.com/608.",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-622",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-72",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-622",
+    "erdos-72",
+    "erdos-134"
   ]
 }

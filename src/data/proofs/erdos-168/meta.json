@@ -145,5 +145,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory"
+    },
+    {
+      "targetId": "erdos-1062",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-1062",
+    "erdos-1064"
+  ]
 }

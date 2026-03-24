@@ -164,5 +164,27 @@
     "axiomCount": 0,
     "theoremCount": 26,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-570",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-720",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-570",
+    "erdos-720",
+    "erdos-1008"
+  ]
 }

@@ -171,7 +171,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-620"
+    "erdos-501",
+    "erdos-603",
+    "erdos-739"
   ],
   "leanFile": {
     "imports": [
@@ -190,5 +192,22 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-501",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, independence, set-theory"
+    },
+    {
+      "targetId": "erdos-603",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cardinals, combinatorics, set-theory"
+    },
+    {
+      "targetId": "erdos-739",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cardinals, independence, set-theory"
+    }
+  ]
 }

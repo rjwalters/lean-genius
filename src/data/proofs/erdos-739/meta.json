@@ -164,5 +164,27 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-736",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, independence, set-theory"
+    },
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1068",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-736",
+    "erdos-1067",
+    "erdos-1068"
+  ]
 }

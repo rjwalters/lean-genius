@@ -136,5 +136,27 @@
     "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-functions, density, number-theory, totient-function"
+    },
+    {
+      "targetId": "erdos-415",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-functions, number-theory, totient-function"
+    },
+    {
+      "targetId": "erdos-955",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-functions, density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1064",
+    "erdos-415",
+    "erdos-955"
+  ]
 }

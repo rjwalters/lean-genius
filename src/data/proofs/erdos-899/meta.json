@@ -128,5 +128,27 @@
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, density"
+    },
+    {
+      "targetId": "erdos-332",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, difference-sets"
+    },
+    {
+      "targetId": "erdos-865",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, density"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-332",
+    "erdos-865"
+  ]
 }

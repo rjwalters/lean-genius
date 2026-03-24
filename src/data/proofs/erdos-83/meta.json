@@ -71,20 +71,6 @@
       "erdos_83_summary: both directions (bound + tightness)",
       "erdos_83: final theorem statement"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-857",
-        "relationship": "Both involve the EKR framework; #857 studies sunflowers (systems where every pair shares the same core), which is a structured special case of intersection constraints. The Erdős-Ko-Rado authors appear in both problems."
-      },
-      {
-        "proofId": "erdos-644",
-        "relationship": "Both concern set families with intersection constraints; #644 studies covering families where every r sets share a common pair, connecting pairwise and higher-order intersection structure."
-      },
-      {
-        "proofId": "erdos-776",
-        "relationship": "Both involve extremal problems on set families over [n]; #776 studies antichains with set-size multiplicity in 2^[n], sharing the theme of structural constraints on families of finite sets."
-      }
-    ],
     "axiomCount": 9,
     "lineCount": 289,
     "assumptions": "9 axiom(s) and 3 sorry(s). See the Lean source for details."
@@ -229,5 +215,27 @@
       "citation": "Frankl, P., 'The shifting technique in extremal set theory,' in Surveys in Combinatorics (1987), London Math. Soc. Lecture Note Ser. 123, 81–110.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-447",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-862",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-1023",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-447",
+    "erdos-862",
+    "erdos-1023"
   ]
 }

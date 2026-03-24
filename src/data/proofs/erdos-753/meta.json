@@ -25,7 +25,6 @@
     "erdosUrl": "https://erdosproblems.com/753",
     "erdosProblemStatus": "solved",
     "mathlib_version": "4.26.0",
-    "relatedProofs": [],
     "relatedProblems": [],
     "mathlibDependencies": [
       {
@@ -177,5 +176,27 @@
     "axiomCount": 15,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-630",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, list-coloring, solved"
+    },
+    {
+      "targetId": "erdos-631",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, list-coloring, solved"
+    },
+    {
+      "targetId": "erdos-797",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, probabilistic-method, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-630",
+    "erdos-631",
+    "erdos-797"
+  ]
 }

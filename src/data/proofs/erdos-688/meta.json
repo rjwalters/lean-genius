@@ -21,10 +21,6 @@
     "erdosNumber": 688,
     "erdosUrl": "https://erdosproblems.com/688",
     "erdosProblemStatus": "open",
-    "relatedProofs": [
-      "erdos-687",
-      "erdos-689"
-    ],
     "axiomCount": 6,
     "lineCount": 120,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses (conjecture, lower bound, upper bound, coverage, Mertens, full covering). 2 former axioms proved: sieve_duality (trivially True), exponent_monotone_coverage (monotonicity via rpow)."
@@ -138,5 +134,21 @@
     "Halberstam & Richert (1974): Sieve Methods (sieve-covering duality)",
     "Ford (2015): Covering systems with restricted divisors (related techniques)",
     "https://erdosproblems.com/688"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, covering systems, number theory"
+    },
+    {
+      "targetId": "erdos-687",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering systems, number theory, sieve theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-281",
+    "erdos-687"
   ]
 }

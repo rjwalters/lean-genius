@@ -170,5 +170,27 @@
     "axiomCount": 16,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1105",
+    "erdos-111"
+  ]
 }

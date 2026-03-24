@@ -119,5 +119,27 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-147",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1080",
+    "erdos-147",
+    "erdos-1011"
+  ]
 }

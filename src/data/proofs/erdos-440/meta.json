@@ -147,5 +147,27 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-873",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: lcm, multiplicative-structure, number-theory"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counting-functions, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-873",
+    "erdos-1050",
+    "erdos-1057"
+  ]
 }

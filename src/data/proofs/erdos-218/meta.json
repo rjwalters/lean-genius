@@ -165,5 +165,27 @@
     "axiomCount": 22,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-932",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: natural-density, number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-932",
+    "erdos-1055",
+    "erdos-1137"
+  ]
 }

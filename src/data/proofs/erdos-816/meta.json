@@ -174,5 +174,27 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, graph-theory, turan-type"
+    },
+    {
+      "targetId": "erdos-1079",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graphs, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-581",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1021",
+    "erdos-1079",
+    "erdos-581"
+  ]
 }

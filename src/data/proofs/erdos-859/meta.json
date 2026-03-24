@@ -48,32 +48,6 @@
       "Subset sum perspective bridging number theory and combinatorics",
       "Divisor function properties (σ, τ) and multiplicative structure"
     ],
-    "crossReferences": [
-      {
-        "id": "erdos-449",
-        "relationship": "Both study density properties of divisor-related sets; erdos-449 examines divisor distribution while this studies divisor subset sum density"
-      },
-      {
-        "id": "erdos-945",
-        "relationship": "Related through divisor structure of consecutive integers; erdos-945 studies divisor properties of consecutive n while this studies which n can represent t"
-      },
-      {
-        "id": "erdos-932",
-        "relationship": "Both involve natural density of number-theoretic sets; erdos-932 studies density of smooth numbers while this studies density of divisor-representable numbers"
-      },
-      {
-        "id": "erdos-394",
-        "relationship": "Connected through asymptotic analysis of divisibility properties; both formalize results about how divisibility conditions affect integer density"
-      },
-      {
-        "id": "erdos-486",
-        "relationship": "Both study natural density of sets defined by number-theoretic conditions"
-      },
-      {
-        "id": "subset-count",
-        "relationship": "Directly related: the subset counting formalization provides combinatorial foundations used in analyzing DivisorSumSet"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 307,
     "assumptions": "6 axiom(s) and 7 sorry(s). See the Lean source for details."
@@ -216,5 +190,27 @@
     "axiomCount": 6,
     "theoremCount": 13,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, density, divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-449",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-144",
+    "erdos-449"
+  ]
 }

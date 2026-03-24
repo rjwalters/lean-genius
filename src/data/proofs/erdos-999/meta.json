@@ -169,5 +169,27 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-206",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, measure-theory, solved"
+    },
+    {
+      "targetId": "erdos-1001",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, measure-theory"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: measure-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-206",
+    "erdos-1001",
+    "erdos-1118"
+  ]
 }

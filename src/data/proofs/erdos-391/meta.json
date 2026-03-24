@@ -174,5 +174,27 @@
     "axiomCount": 11,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-392",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, factorial, factorization, number-theory"
+    },
+    {
+      "targetId": "erdos-419",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorial, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-933",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorization, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-392",
+    "erdos-419",
+    "erdos-933"
+  ]
 }

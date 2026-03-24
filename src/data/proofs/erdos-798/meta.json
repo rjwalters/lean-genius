@@ -168,5 +168,27 @@
     "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+    },
+    {
+      "targetId": "erdos-733",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1090",
+    "erdos-1166",
+    "erdos-733"
+  ]
 }

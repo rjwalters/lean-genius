@@ -65,16 +65,6 @@
       "green_tao_quantitative: Axiom encoding triple-exponential effective bounds",
       "ap_difference_primorial: Axiom encoding the primorial divisibility constraint on AP differences"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-15",
-        "relationship": "Related prime distribution problem; both study structure of primes in arithmetic progressions"
-      },
-      {
-        "proofId": "erdos-1",
-        "relationship": "Both involve prime gaps and distribution; Erdős #1 concerns gaps while #200 concerns long progressions"
-      }
-    ],
     "dateAdded": "2026-01-19",
     "axiomCount": 11,
     "lineCount": 125,
@@ -174,5 +164,27 @@
     "axiomCount": 11,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-971",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, arithmetic-progressions, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-141",
+    "erdos-971",
+    "erdos-1113"
+  ]
 }

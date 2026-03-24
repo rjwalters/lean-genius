@@ -137,5 +137,27 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open, sidon-sets"
+    },
+    {
+      "targetId": "erdos-782",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open, squares"
+    },
+    {
+      "targetId": "erdos-1148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-340",
+    "erdos-782",
+    "erdos-1148"
+  ]
 }

@@ -163,5 +163,27 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-321",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, subset-sums, unit-fractions"
+    },
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-310",
+    "erdos-321",
+    "erdos-148"
+  ]
 }

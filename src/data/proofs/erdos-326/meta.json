@@ -135,5 +135,27 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, growth-rates, number-theory"
+    },
+    {
+      "targetId": "erdos-336",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, bases, number-theory"
+    },
+    {
+      "targetId": "erdos-868",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, bases, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1103",
+    "erdos-336",
+    "erdos-868"
+  ]
 }

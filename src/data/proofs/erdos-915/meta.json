@@ -195,5 +195,27 @@
     "axiomCount": 24,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1033",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1034",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-1033",
+    "erdos-1034"
+  ]
 }
