@@ -90,7 +90,8 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix meta.json: (1) change originalContributions #6 from 'verified' to 'axiomatized', (2) list all 8 axioms in assumptions field, (3) remove empty strings from relatedProofs, (4) add qualifier to keyInsight #5 about intermediate computation.",
-      "status": "open"
+      "status": "done",
+      "resolution": "Fixed in PR #5961 (merged)"
     },
     {
       "id": "ai-3",
