@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-58-header",
+    "proofId": "erdos-58",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "context",
+    "title": "Chromatic Number and Odd Cycle Lengths",
+    "content": "Module docstring for Erdős Problem #58: if a graph $G$ has $k$ distinct odd cycle lengths, what is the maximum chromatic number? Gyárfás (1992) proved $\\chi(G) \\leq 2k + 2$, with equality iff $G$ contains $K_{2k+2}$. The problem relates odd cycle structure to coloring, connecting graph structure theory to chromatic graph theory.",
+    "mathContext": "Erdős #58: $k = |\\{\\ell \\text{ odd} : G \\text{ has a cycle of length } \\ell\\}| \\Rightarrow \\chi(G) \\leq 2k + 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "odd cycles",
+      "graph coloring",
+      "Gyárfás theorem"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "cycle structure",
+      "SimpleGraph"
+    ]
+  },
+  {
     "id": "ann-58-defs",
     "proofId": "erdos-58",
     "range": {
@@ -97,7 +121,7 @@
     "proofId": "erdos-58",
     "range": {
       "startLine": 131,
-      "endLine": 148
+      "endLine": 165
     },
     "type": "technique",
     "title": "Corollaries: χ ≥ 5 Forces Two Odd Lengths, Equality Implies Clique",

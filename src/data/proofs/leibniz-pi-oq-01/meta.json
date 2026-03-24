@@ -18,7 +18,7 @@
       "open-question"
     ],
     "badge": "open",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Real.tendsto_sum_pi_div_four",
@@ -144,5 +144,15 @@
     "axiomCount": 0,
     "theoremCount": 14,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "leibniz-pi"
+  ]
 }

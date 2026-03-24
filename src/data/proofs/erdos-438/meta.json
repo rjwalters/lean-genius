@@ -214,5 +214,21 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-439",
+      "relationship": "related",
+      "description": "Similar question for kth powers"
+    },
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Variant with A-A instead of A+A"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-439",
+    "erdos-587"
+  ]
 }

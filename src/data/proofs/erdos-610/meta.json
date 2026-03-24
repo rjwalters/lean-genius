@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "conjecture",
-    "sorries": 17,
+    "sorries": 11,
     "erdosNumber": 610,
     "erdosUrl": "https://erdosproblems.com/610",
     "erdosProblemStatus": "open",
@@ -198,5 +198,51 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-611",
+      "relationship": "related",
+      "description": "Direct refinement: constrains maximal clique sizes (all ≥ k), giving τ(G) ≤ n - √(kn) and asking whether the dependence on k can be improved"
+    },
+    {
+      "targetId": "erdos-151",
+      "relationship": "related",
+      "description": "Related via triangle-free independence: conjectures τ(G) ≤ n - H(n) where H(n) is the triangle-free independence number, sharing the core connection to Kim's theorem"
+    },
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Ramsey numbers avoiding monochromatic cliques: foundational Ramsey theory underlying the clique/independent set duality in the EGT conjecture"
+    },
+    {
+      "targetId": "erdos-128",
+      "relationship": "related",
+      "description": "Triangle-free graphs with dense subgraphs: structural results on triangle-free graphs, related to the f(n) function central to the EGT conjecture"
+    },
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "High chromatic subgraphs with large girth: chromatic number and clique/color structure, related to the interplay between cliques and independent sets"
+    },
+    {
+      "targetId": "erdos-612",
+      "relationship": "related",
+      "description": "Sister problem: diameter bounds for K_r-free graphs, extending clique-free constraints to diameter properties of graphs"
+    },
+    {
+      "targetId": "erdos-54",
+      "relationship": "related",
+      "description": "Foundational Ramsey theory (2-complete sets): the Ramsey-theoretic framework underpinning Kim's theorem R(3,k) = Θ(k²/log k)"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-611",
+    "erdos-151",
+    "erdos-129",
+    "erdos-128",
+    "erdos-108",
+    "erdos-612",
+    "erdos-54"
+  ]
 }

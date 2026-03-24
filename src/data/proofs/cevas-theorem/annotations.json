@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-cevas-header",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 41
+    },
+    "type": "context",
+    "title": "Ceva's Theorem: Concurrent Cevians",
+    "content": "Module docstring for Ceva's Theorem (Wiedijk #61): in triangle $ABC$ with points $D, E, F$ on sides $BC, CA, AB$, the cevians $AD, BE, CF$ are concurrent iff $(AF/FB) \\cdot (BD/DC) \\cdot (CE/EA) = 1$ (signed ratios). The formalization uses a direct algebraic approach with parameter conditions: if $D = (1-d)B + dC$ etc., then concurrency is equivalent to $def = (1-d)(1-e)(1-f)$. Published by Giovanni Ceva in 1678.",
+    "mathContext": "Ceva's Theorem: $\\frac{AF}{FB} \\cdot \\frac{BD}{DC} \\cdot \\frac{CE}{EA} = 1 \\iff AD, BE, CF$ concurrent. Parametric form: $def = (1-d)(1-e)(1-f)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle geometry",
+      "concurrent lines",
+      "signed ratios",
+      "Menelaus' theorem",
+      "Wiedijk 100"
+    ],
+    "prerequisites": [
+      "affine combinations",
+      "real arithmetic",
+      "triangle geometry"
+    ]
+  },
+  {
     "id": "signed-ratio-def",
     "proofId": "cevas-theorem",
     "range": {

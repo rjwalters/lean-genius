@@ -31,12 +31,11 @@
     "phase": "ACT",
     "since": "2026-03-23T18:00:00Z",
     "iteration": 4,
-    "focus": "Proved fourierCoeff_difference_formula. 6 axioms, 2 sorries remain.",
+    "focus": "Proved quotient norm bound. 6 axioms, 1 sorry remain.",
     "blockers": [
-      "holder_translation_bound needs QuotientAddGroup distance API (dist on AddCircle)",
-      "fourierCoeff_difference_formula needs Haar measure translation invariance"
+      "fourierCoeff_difference_formula non-integrable edge case (line 159) - needs integrability hypothesis or different proof strategy"
     ],
-    "nextAction": "Prove holder_translation_bound using HolderWith.dist_le_of_le + quotient distance bound",
+    "nextAction": "Add Continuous f hypothesis to fourierCoeff_difference_formula to eliminate last sorry, then prove riemannLebesgue_of_holder and fourierCoeff_sq_summable_of_holder axioms from main theorem",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,12 +43,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved fourierCoeff_difference_formula (critical path axiom). Axiom count: 7→6. 2 sorries remain (integrability edge case + quotient norm API).",
+    "progressSummary": "PROGRESS: Proved quotient norm bound via QuotientAddGroup.norm_mk_le_norm. 6 axioms, 1 sorry remain (non-integrable edge case in fourierCoeff_difference_formula).",
     "builtItems": [
       "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
       "Proved fourierCoeff_Cinfty_rapid_decay: C^∞ ⟹ rapid decay, trivially from fourierCoeff_smooth_decay (C^∞ ⟹ C^k for all k)",
-      "fourierCoeff_difference_formula: proved via half-period identity + Haar measure translation invariance + integral splitting"
+      "fourierCoeff_difference_formula: proved via half-period identity + Haar measure translation invariance + integral splitting",
+      "Proved quotient norm bound: ‖(↑r : AddCircle T)‖ ≤ ‖r‖ via QuotientAddGroup.norm_mk_le_norm"
     ],
     "insights": [
       "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
@@ -60,7 +60,9 @@
       "integral_product_bound needs norm_integral_le + fourier_norm_one + holder_bound + probability measure",
       "fourierCoeff_Cinfty_rapid_decay is a trivial consequence of fourierCoeff_smooth_decay — C^∞ means C^k for all k",
       "MeasurePreserving.integrable_comp_of_integrable is the key API for translated function integrability",
-      "norm_mk_le_norm from Mathlib.Analysis.Normed.Group.Quotient exists but may need explicit import or @-notation to resolve"
+      "norm_mk_le_norm from Mathlib.Analysis.Normed.Group.Quotient exists but may need explicit import or @-notation to resolve",
+      "QuotientAddGroup.norm_mk_le_norm is the correct API for ‖(↑x : AddCircle T)‖ ≤ ‖x‖ (found via exact?)",
+      "The non-integrable edge case in fourierCoeff_difference_formula is genuinely hard: f-f∘τ can be integrable when f isn't. Needs Continuous f hypothesis."
     ],
     "mathlibGaps": [
       "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
@@ -116,7 +118,7 @@
       "theoremCount": 13,
       "axiomCount": 6,
       "defCount": 3,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     },

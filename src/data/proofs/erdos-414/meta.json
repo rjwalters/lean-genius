@@ -46,7 +46,7 @@
         "relation": "The Collatz conjecture: canonical example of orbit coalescence for an iterated function, but with non-monotone dynamics"
       }
     ],
-    "axiomCount": 14,
+    "axiomCount": 4,
     "assumptions": [
       "h_strictly_increasing: h(n) > n for n ≥ 1",
       "orbit_strictly_increasing: orbits are strictly increasing sequences",
@@ -63,7 +63,7 @@
       "orbit_linear_lower: orbit values grow at least linearly",
       "orbits_get_close: weaker statement that orbits get arbitrarily close"
     ],
-    "lineCount": 109
+    "lineCount": 145
   },
   "sections": [
     {
@@ -209,8 +209,8 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 109,
-    "axiomCount": 14,
+    "lineCount": 145,
+    "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 2
   },

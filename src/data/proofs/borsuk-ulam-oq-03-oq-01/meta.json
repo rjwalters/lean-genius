@@ -22,7 +22,7 @@
       "research"
     ],
     "badge": "open",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "LipschitzWith.sub",
@@ -200,5 +200,15 @@
       "venue": "Fundamenta Mathematicae",
       "note": "Original Borsuk-Ulam theorem"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "borsuk-ulam-oq-03"
   ]
 }

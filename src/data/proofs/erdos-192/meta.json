@@ -136,5 +136,15 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-231",
+      "relationship": "related",
+      "description": "Equivalent problem: #231 asks directly about abelian squares over d-letter alphabets, which is the combinatorial reformulation of #192"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-231"
+  ]
 }

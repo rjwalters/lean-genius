@@ -164,24 +164,24 @@
   ],
   "crossReferences": [
     {
-      "id": "erdos-64",
-      "relationship": "Direct companion problem: asks whether minimum-degree-3 graphs contain power-of-2 cycles, sharing the same central set A = {2^k} with Problem #72's Liu-Montgomery answer"
+      "relationship": "Direct companion problem: asks whether minimum-degree-3 graphs contain power-of-2 cycles, sharing the same central set A = {2^k} with Problem #72's Liu-Montgomery answer",
+      "targetId": "erdos-64"
     },
     {
-      "id": "erdos-65",
-      "relationship": "Sibling problem on cycle lengths in dense graphs: asks about the reciprocal sum of cycle lengths, complementing Problem #72's existence question for unavoidable sets"
+      "relationship": "Sibling problem on cycle lengths in dense graphs: asks about the reciprocal sum of cycle lengths, complementing Problem #72's existence question for unavoidable sets",
+      "targetId": "erdos-65"
     },
     {
-      "id": "erdos-1012",
-      "relationship": "Related extremal result: characterizes graphs with long cycles via edge density, using similar density-threshold techniques to Problem #72's unavoidability framework"
+      "relationship": "Related extremal result: characterizes graphs with long cycles via edge density, using similar density-threshold techniques to Problem #72's unavoidability framework",
+      "targetId": "erdos-1012"
     },
     {
-      "id": "szemeredi-regularity",
-      "relationship": "Core technique in the Liu-Montgomery (2020) proof: the regularity lemma is used to decompose dense graphs into structured pieces where cycle detection proceeds"
+      "relationship": "Core technique in the Liu-Montgomery (2020) proof: the regularity lemma is used to decompose dense graphs into structured pieces where cycle detection proceeds",
+      "targetId": "szemeredi-regularity"
     },
     {
-      "id": "ramseys-theorem",
-      "relationship": "Foundational combinatorics result underpinning extremal graph theory; the density-forcing philosophy of Ramsey theory informs why high average degree compels specific substructures"
+      "relationship": "Foundational combinatorics result underpinning extremal graph theory; the density-forcing philosophy of Ramsey theory informs why high average degree compels specific substructures",
+      "targetId": "ramseys-theorem"
     }
   ],
   "relatedProofs": [

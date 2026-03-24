@@ -230,5 +230,15 @@
     "axiomCount": 3,
     "theoremCount": 55,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    }
+  ],
+  "relatedProofs": [
+    "central-limit-theorem-oq-01"
+  ]
 }

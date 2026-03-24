@@ -9,21 +9,6 @@
     "date": "1980",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1059Problem.lean",
-    "leanFile": {
-      "lineCount": 143,
-      "structureCount": 0,
-      "axiomCount": 3,
-      "theoremCount": 6,
-      "lemmaCount": 0,
-      "defCount": 1,
-      "imports": [
-        "Mathlib.Data.Nat.Prime.Basic",
-        "Mathlib.Data.Nat.Factorial.Basic",
-        "Mathlib.Data.Set.Basic",
-        "Mathlib.Data.Finset.Basic",
-        "Mathlib.Tactic"
-      ]
-    },
     "tags": [
       "erdos",
       "number-theory",
@@ -214,27 +199,7 @@
     {
       "targetId": "stirling-formula",
       "relationship": "foundational",
-      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ quantifies the super-exponential growth of factorials that makes the factorial-subtraction condition mild: only $O(\\log n / \\log \\log n)$ factorials lie below $n$. The probabilistic heuristic for the conjecture explicitly uses the inverse Stirling bound to count the number of factorial subtractions that need checking, and the sparsity of factorials is the key structural feature making the conjecture plausible"
-    },
-    {
-      "targetId": "twin-primes-special",
-      "relationship": "thematic",
-      "description": "Both concern open problems about special subsets of primes: the twin prime conjecture asks whether $\\{p : p, p+2 \\text{ both prime}\\}$ is infinite, while Erdős #1059 asks whether $\\{p : p - k! \\text{ composite for all } k! < p\\}$ is infinite. Both have compelling probabilistic heuristics (density arguments from the prime number theorem) but resist rigorous proof — illustrating the general difficulty of proving infinitude for structured prime subsets"
-    },
-    {
-      "targetId": "derangements",
-      "relationship": "related",
-      "description": "The derangement formula $D(n) = n! \\sum_{k=0}^{n} (-1)^k/k! \\approx n!/e$ provides another perspective on factorial arithmetic: the ratio $D(n)/n! \\to 1/e$ shows how inclusion-exclusion interacts with factorial growth. This combinatorial aspect of factorials complements the number-theoretic factorial-prime interactions studied in Erdős #1059"
-    },
-    {
-      "targetId": "bounded-prime-gaps",
-      "relationship": "thematic",
-      "description": "Zhang's theorem (2013) and Maynard-Tao improvements prove infinitely many bounded prime gaps. Both concern the fine structure of prime distribution: bounded gaps asks whether primes cluster, while Erdős #1059 asks whether primes avoid factorial offsets. The sieve methods used for bounded gaps (GPY sieve, Maynard-Tao weights) may be relevant to the smooth-number variant of this problem"
-    },
-    {
-      "targetId": "prime-reciprocal-divergence",
-      "relationship": "foundational",
-      "description": "The divergence of $\\sum 1/p$ (Euler 1737) quantifies the abundance of primes and underpins the probabilistic heuristic for this problem: the expected number of prime factorial subtractions $\\sum_{k! < p} 1/\\ln(p - k!)$ diverges logarithmically, but with only $O(\\log p / \\log \\log p)$ terms, each individual sum is bounded — explaining why the conjecture predicts density 1 among primes"
+      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ quantifies the super-exponential growth of factorials that makes the factorial-subtraction condition mild: only $O(\\log n / \\log \\log n)$ factorials lie below $n$"
     }
   ],
   "relatedProofs": [
@@ -247,11 +212,7 @@
     "erdos-728-factorial-divisibility",
     "fundamental-arithmetic",
     "prime-number-theorem",
-    "stirling-formula",
-    "twin-primes-special",
-    "derangements",
-    "bounded-prime-gaps",
-    "prime-reciprocal-divergence"
+    "stirling-formula"
   ],
   "leanFile": {
     "imports": [

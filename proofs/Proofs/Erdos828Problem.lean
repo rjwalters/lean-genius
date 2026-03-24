@@ -60,12 +60,16 @@ private lemma totient_dvd_two_pow_mul_three_pow (a : ℕ) (ha : 0 < a) (b : ℕ)
         Nat.totient_prime_pow Nat.prime_three (by omega : 0 < b + 1)]
     simp only [show (2 : ℕ) - 1 = 1 from rfl, mul_one, show (3 : ℕ) - 1 = 2 from rfl]
     -- Goal: 2^(a-1) * (3^b * 2) | 2^a * 3^(b+1)
-    -- = 2^a * 3^b | 2^a * 3^(b+1)
+    -- Rewrite 2^(a-1) * 2 = 2^a using pow_succ
+    have h2a : 2 ^ (a - 1) * 2 = 2 ^ a := by
+      nth_rewrite 2 [show (2 : ℕ) = 2 ^ 1 from rfl]
+      rw [← pow_add, Nat.sub_add_cancel (by omega : 1 ≤ a)]
+    -- 2^(a-1) * (3^b * 2) = 2^a * 3^b, which divides 2^a * 3^(b+1)
     calc 2 ^ (a - 1) * (3 ^ b * 2)
-        = 2 ^ a * 3 ^ b := by ring_nf; rw [show a - 1 + 1 = a from by omega]
-      _ ∣ 2 ^ a * 3 ^ (b + 1) := by
-          apply Nat.mul_dvd_mul_left
-          exact pow_dvd_pow 3 (by omega)
+        = 2 ^ (a - 1) * 2 * 3 ^ b := by ring
+      _ = 2 ^ a * 3 ^ b := by rw [h2a]
+      _ ∣ 2 ^ a * 3 ^ (b + 1) :=
+          Nat.mul_dvd_mul_left _ (pow_dvd_pow 3 (by omega))
 
 /-- Characterization: φ(n) | n iff n ≤ 1 or n = 2^a · 3^b for some a > 0.
     Backward direction proved. Forward direction (the hard part) requires showing

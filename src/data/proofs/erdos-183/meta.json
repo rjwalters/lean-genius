@@ -16,7 +16,7 @@
       "extremal-combinatorics"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 1,
     "erdosNumber": 183,
     "erdosUrl": "https://erdosproblems.com/183",
     "erdosProblemStatus": "open",
@@ -175,19 +175,19 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-165",
       "title": "Erdős Problem #165: Asymptotic Formula for R(3,k)",
-      "relationship": "Both concern triangle Ramsey numbers — #165 studies the two-color R(3,k), while #183 generalizes to the k-color R(3;k)"
+      "relationship": "Both concern triangle Ramsey numbers — #165 studies the two-color R(3,k), while #183 generalizes to the k-color R(3;k)",
+      "targetId": "erdos-165"
     },
     {
-      "id": "erdos-166",
       "title": "Erdős Problem #166: Ramsey Number R(4,k) Lower Bound",
-      "relationship": "Both study growth rates of Ramsey numbers; #166 concerns R(4,k) lower bounds while #183 concerns the multicolor triangle Ramsey number R(3;k)"
+      "relationship": "Both study growth rates of Ramsey numbers; #166 concerns R(4,k) lower bounds while #183 concerns the multicolor triangle Ramsey number R(3;k)",
+      "targetId": "erdos-166"
     },
     {
-      "id": "ramseys-theorem",
       "title": "Ramsey's Theorem",
-      "relationship": "Ramsey's theorem guarantees the finiteness of R(3;k); the multicolor generalization of Ramsey's theorem is the starting point for #183"
+      "relationship": "Ramsey's theorem guarantees the finiteness of R(3;k); the multicolor generalization of Ramsey's theorem is the starting point for #183",
+      "targetId": "ramseys-theorem"
     }
   ]
 }

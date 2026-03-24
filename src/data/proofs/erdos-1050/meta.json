@@ -170,19 +170,19 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1049",
       "relationship": "sibling",
-      "description": "Problem #1049 asks about irrationality of ∑ 1/(t^n - 1) for rational t > 1. This is the special case T(t, -1) of the family T(q, r) studied here. Borwein's theorem resolves both problems simultaneously, and the formalization proves T_eq_S_1049 making the connection explicit."
+      "description": "Problem #1049 asks about irrationality of ∑ 1/(t^n - 1) for rational t > 1. This is the special case T(t, -1) of the family T(q, r) studied here. Borwein's theorem resolves both problems simultaneously, and the formalization proves T_eq_S_1049 making the connection explicit.",
+      "targetId": "erdos-1049"
     },
     {
-      "id": "erdos-1051",
       "relationship": "related",
-      "description": "Problem #1051 studies irrationality of ∑ 1/(aₙ·aₙ₊₁) for rapidly growing sequences — a different family of irrationality problems where the denominators grow super-exponentially rather than exponentially as in T(q, r)."
+      "description": "Problem #1051 studies irrationality of ∑ 1/(aₙ·aₙ₊₁) for rapidly growing sequences — a different family of irrationality problems where the denominators grow super-exponentially rather than exponentially as in T(q, r).",
+      "targetId": "erdos-1051"
     },
     {
-      "id": "erdos-257",
       "relationship": "related",
-      "description": "Problem #257 asks whether ∑_{n∈A} 1/(2^n - 1) is irrational for every infinite set A of positive integers. This is a 'subset selection' variant of the Lambert series that Erdős proved irrational in 1948 (the case A = ℕ), which is T(2, -1) in our framework."
+      "description": "Problem #257 asks whether ∑_{n∈A} 1/(2^n - 1) is irrational for every infinite set A of positive integers. This is a 'subset selection' variant of the Lambert series that Erdős proved irrational in 1948 (the case A = ℕ), which is T(2, -1) in our framework.",
+      "targetId": "erdos-257"
     }
   ],
   "relatedProofs": [

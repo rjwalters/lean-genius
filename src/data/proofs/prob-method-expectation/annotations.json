@@ -4,7 +4,7 @@
     "proofId": "prob-method-expectation",
     "range": {
       "startLine": 1,
-      "endLine": 11
+      "endLine": 14
     },
     "type": "context",
     "title": "The Probabilistic Method: Historical Origins",
@@ -26,12 +26,12 @@
     "id": "ann-first-moment",
     "proofId": "prob-method-expectation",
     "range": {
-      "startLine": 18,
-      "endLine": 20
+      "startLine": 20,
+      "endLine": 37
     },
     "type": "technique",
-    "title": "First Moment Principle (Discrete Pigeonhole)",
-    "content": "The first moment principle is a discrete pigeonhole argument: if the average of $f$ over a nonempty Finset exceeds $t$, then some element must exceed $t$ (if all were $\\leq t$, the average would be $\\leq t$). The formalization uses $\\mathbb{Q}$ (rationals) rather than $\\mathbb{R}$ for exact arithmetic, avoiding the overhead of real analysis. This is mathematically equivalent for the finite combinatorial applications. The proof approach would be by contradiction: assume $f(a) \\leq t$ for all $a \\in s$, then bound the sum.",
+    "title": "First Moment Principle (Upper Bound)",
+    "content": "The first moment principle is a discrete pigeonhole argument: if the average of $f$ over a nonempty Finset exceeds $t$, then some element must exceed $t$ (if all were $\\leq t$, the average would be $\\leq t$). The formalization uses $\\mathbb{Q}$ (rationals) rather than $\\mathbb{R}$ for exact arithmetic, avoiding the overhead of real analysis. The proof works by contradiction: assume $f(a) \\leq t$ for all $a \\in s$, bound the sum by $t \\cdot |s|$, and derive a contradiction with the average exceeding $t$ via `linarith`.",
     "mathContext": "$\\frac{\\sum_{a \\in s} f(a)}{|s|} > t \\implies \\exists a \\in s,\\; f(a) > t$",
     "significance": "key",
     "relatedConcepts": [
@@ -47,15 +47,37 @@
     ]
   },
   {
+    "id": "ann-first-moment-dual",
+    "proofId": "prob-method-expectation",
+    "range": {
+      "startLine": 39,
+      "endLine": 50
+    },
+    "type": "technique",
+    "title": "First Moment Principle (Lower Bound / Dual)",
+    "content": "The dual of the first moment principle: if the average is less than $t$, some element is less than $t$. The proof is symmetric to the upper bound case, using `push_neg` to convert the negation and `linarith` to close the contradiction. Together, the upper and lower bounds establish that the range of $f$ straddles the average — the most basic form of the probabilistic method.",
+    "mathContext": "$\\frac{\\sum_{a \\in s} f(a)}{|s|} < t \\implies \\exists a \\in s,\\; f(a) < t$",
+    "significance": "key",
+    "relatedConcepts": [
+      "dual argument",
+      "first moment method",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "first_moment_principle",
+      "Finset.sum_le_sum"
+    ]
+  },
+  {
     "id": "ann-linearity",
     "proofId": "prob-method-expectation",
     "range": {
-      "startLine": 23,
-      "endLine": 25
+      "startLine": 52,
+      "endLine": 61
     },
     "type": "technique",
     "title": "Linearity of Expectation",
-    "content": "Linearity of expectation — $E[f + g] = E[f] + E[g]$ — is arguably the single most useful fact in the probabilistic method. Crucially, it holds without any independence assumptions. This is what allows counting arguments to work: to bound $E[\\sum_i X_i]$, just sum $E[X_i]$ for each indicator, regardless of correlations. In Mathlib, this is essentially `Finset.sum_add_distrib`, making the sorry likely a one-liner.",
+    "content": "Linearity of expectation — $E[f + g] = E[f] + E[g]$ — is arguably the single most useful fact in the probabilistic method. Crucially, it holds without any independence assumptions. This is what allows counting arguments to work: to bound $E[\\sum_i X_i]$, just sum $E[X_i]$ for each indicator, regardless of correlations. The proof is a one-liner via `Finset.sum_add_distrib`.",
     "mathContext": "$\\sum_{a \\in s} (f+g)(a) = \\sum_{a \\in s} f(a) + \\sum_{a \\in s} g(a)$",
     "significance": "key",
     "relatedConcepts": [
@@ -72,12 +94,12 @@
     "id": "ann-mono-cliques",
     "proofId": "prob-method-expectation",
     "range": {
-      "startLine": 30,
-      "endLine": 31
+      "startLine": 63,
+      "endLine": 76
     },
     "type": "technique",
     "title": "Expected Monochromatic Cliques Count",
-    "content": "In a random 2-coloring of $K_n$, each $k$-subset has probability $2 \\cdot 2^{-\\binom{k}{2}} = 2^{1-\\binom{k}{2}}$ of being monochromatic (all edges the same color). By linearity, the expected total is $\\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}}$. The current formalization only states non-negativity of this expression, not the full bound. The key application would show this is $< 1$ when $n < 2^{k/2}$, implying a good coloring exists. Note: the exponent uses $\\mathbb{Z}$ since $1 - \\binom{k}{2}$ can be negative.",
+    "content": "In a random 2-coloring of $K_n$, each $k$-subset has probability $2 \\cdot 2^{-\\binom{k}{2}} = 2^{1-\\binom{k}{2}}$ of being monochromatic (all edges the same color). By linearity, the expected total is $\\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}}$. The formalization proves non-negativity of this expression. The key application shows this is $< 1$ when $n < 2^{k/2}$, implying a good coloring exists. The exponent uses $\\mathbb{Z}$ since $1 - \\binom{k}{2}$ is negative for $k \\geq 2$.",
     "mathContext": "$E[\\text{mono } K_k] = \\binom{n}{k} \\cdot 2^{1 - \\binom{k}{2}}$; this is $< 1$ when $n < 2^{k/2}$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -95,12 +117,12 @@
     "id": "ann-ramsey-bound",
     "proofId": "prob-method-expectation",
     "range": {
-      "startLine": 35,
-      "endLine": 36
+      "startLine": 77,
+      "endLine": 80
     },
     "type": "technique",
     "title": "Erdős Ramsey Lower Bound (1947)",
-    "content": "Erdős's 1947 result: $R(k,k) \\geq 2^{k/2}$. This means that for $n < 2^{k/2}$, the edges of $K_n$ can be 2-colored with no monochromatic $K_k$. The current formalization is simplified to an existential statement about the existence of a large enough $n$. A full formalization would combine the expected monochromatic clique count with the first moment principle's dual (if $E[X] < 1$ for a non-negative integer $X$, then $\\Pr[X = 0] > 0$). The bound $2^{k/2}$ was the best known for over 75 years until Campos et al. (2023) improved the upper bound.",
+    "content": "Erdős's 1947 result: $R(k,k) \\geq 2^{k/2}$. This means that for $n < 2^{k/2}$, the edges of $K_n$ can be 2-colored with no monochromatic $K_k$. The formalization provides a simplified existential statement. A full proof would combine the expected monochromatic clique count with the first moment principle: if $E[X] < 1$ for a non-negative integer $X$, then $\\Pr[X = 0] > 0$. The bound $2^{k/2}$ stood for over 75 years until Campos, Griffiths, Morris, and Sahasrabudhe (2023) improved the upper bound to $R(k,k) \\leq (4 - \\varepsilon)^k$.",
     "mathContext": "$R(k,k) \\geq 2^{k/2}$; equivalently, $\\binom{n}{k} \\cdot 2^{1-\\binom{k}{2}} < 1$ when $n < 2^{k/2}$",
     "significance": "key",
     "relatedConcepts": [
@@ -113,6 +135,30 @@
       "first moment principle",
       "expected monochromatic cliques",
       "Nat.choose bounds"
+    ]
+  },
+  {
+    "id": "ann-part-iv-applications",
+    "proofId": "prob-method-expectation",
+    "range": {
+      "startLine": 81,
+      "endLine": 136
+    },
+    "type": "technique",
+    "title": "Stronger First Moment Applications",
+    "content": "Three additional first moment applications over $\\mathbb{N}$:\n\n1. **Probabilistic existence** (`exists_zero_of_sum_lt_card`): if a nonneg function sums to less than $|S|$, some element maps to 0. This is the key tool for 'bad event' counting: show the expected number of bad events is $< 1$ to guarantee a good outcome exists.\n\n2. **Maximum exceeds average** (`exists_ge_avg_nat`): some element achieves at least the average value.\n\n3. **Minimum at most average** (`exists_le_avg_nat`): some element is at most the average.\n\nAll three are proved by contradiction, using `Finset.sum_le_sum` or `Finset.sum_lt_sum` to derive contradictions with the sum bound.",
+    "mathContext": "Three discrete averaging principles: (1) $\\sum f < |S| \\Rightarrow \\exists a,\\, f(a) = 0$; (2) $\\exists a,\\, f(a) \\cdot |S| \\geq \\sum f$; (3) $\\exists a,\\, f(a) \\cdot |S| \\leq \\sum f$",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic existence",
+      "pigeonhole principle",
+      "averaging argument",
+      "Finset.sum_lt_sum"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Nat arithmetic",
+      "contradiction proof strategy"
     ]
   }
 ]

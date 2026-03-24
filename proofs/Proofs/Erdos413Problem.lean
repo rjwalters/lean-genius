@@ -152,7 +152,6 @@ theorem omega_upper_bound (n : ℕ) (hn : n ≥ 2) :
   calc (omega n : ℝ) * Real.log 2
       = Real.log (2 ^ (omega n : ℕ)) := by
         rw [Real.log_pow]
-        ring
     _ ≤ Real.log n := by
         apply Real.log_le_log
         · positivity

@@ -100,18 +100,7 @@
       "Topological convergence (Filter.Tendsto, nhds)",
       "Asymptotic notation (Θ, O, Ω)"
     ],
-    "lineCount": 489,
-    "leanFile": {
-      "lineCount": 489,
-      "structureCount": 0,
-      "axiomCount": 5,
-      "theoremCount": 20,
-      "lemmaCount": 0,
-      "defCount": 6,
-      "imports": [
-        "Mathlib"
-      ]
-    }
+    "lineCount": 489
   },
   "sections": [
     {
@@ -262,29 +251,9 @@
       "description": "Szemerédi's theorem on arithmetic progressions in dense sets is a cornerstone of additive combinatorics. The triangle removal lemma (a key consequence of Szemerédi regularity) states that graphs with few triangles can be made triangle-free by removing few edges — the deterministic counterpart to the random triangle removal process studied here"
     },
     {
-      "targetId": "szemeredi-counting",
-      "relationship": "related",
-      "description": "The counting lemma complements the regularity lemma: it counts subgraph copies (including triangles) in regular partitions. Triangle counting governs the rate at which the random removal process depletes triangles, connecting the regularity-based counting to the process dynamics"
-    },
-    {
       "targetId": "roth-theorem-k3",
       "relationship": "related",
       "description": "The triangle removal lemma — a key consequence of Szemerédi regularity — states that graphs with o(n³) triangles can be made triangle-free by removing o(n²) edges. Ruzsa and Szemerédi (1978) used this to prove Roth's theorem (no 3-AP in dense sets) via a graph construction where triangles encode 3-term arithmetic progressions. The triangle removal *process* studied here is the random greedy counterpart: rather than removing a minimal edge set to destroy all triangles, it removes edges of uniformly random triangles one at a time. The connection raises the question of whether the triangle removal lemma's quantitative bounds (recently improved by Fox 2011) can constrain the process's terminal edge count"
-    },
-    {
-      "targetId": "prob-method-alteration",
-      "relationship": "related",
-      "description": "The alteration method (random construction + deterministic fix-up) is a simpler version of the strategy underlying the triangle removal process analysis. BFL's proof uses a random process whose trajectory is tracked via differential equations, with 'alteration' occurring when the process is stopped at the critical density threshold $e \\approx n^{3/2}$. The alteration method's existence proofs (e.g., for Ramsey bounds) operate in the same probabilistic-combinatorial framework"
-    },
-    {
-      "targetId": "prob-method-lovasz-local",
-      "relationship": "related",
-      "description": "The Lovász Local Lemma (LLL) provides tools for avoiding bad events in dependent random experiments — the same probabilistic framework used by BFL to control the triangle removal process. The process requires martingale concentration (tracking edge and triangle counts as the process evolves), and the LLL's focus on bounded dependency neighborhoods parallels how BFL handles correlations between triangle deletions. Both represent the modern arsenal of probabilistic combinatorics that Erdős pioneered"
-    },
-    {
-      "targetId": "prob-method-second-moment",
-      "relationship": "related",
-      "description": "The second moment method (Chebyshev/Paley-Zygmund inequalities) provides concentration bounds central to analyzing random graph processes. BFL's proof of $f(n) = n^{3/2+o(1)}$ uses martingale concentration — a refinement of second-moment methods — to track edge and triangle densities through the critical regime where the triangle count transitions from polynomial to near-zero. The second moment method is the foundational tool in this concentration hierarchy"
     }
   ],
   "references": [
@@ -395,10 +364,6 @@
     "erdos-1010",
     "erdos-1104",
     "szemeredi-theorem",
-    "szemeredi-counting",
-    "roth-theorem-k3",
-    "prob-method-alteration",
-    "prob-method-lovasz-local",
-    "prob-method-second-moment"
+    "roth-theorem-k3"
   ]
 }

@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 1,
     "erdosNumber": 746,
     "erdosUrl": "https://erdosproblems.com/746",
     "erdosProblemStatus": "solved",
@@ -240,5 +240,27 @@
       "citation": "Erdős Problems. Problem #746.",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-47",
+      "relationship": "related",
+      "description": "thematic"
+    },
+    {
+      "targetId": "erdos-73",
+      "relationship": "related",
+      "description": "thematic"
+    },
+    {
+      "targetId": "erdos-106",
+      "relationship": "related",
+      "description": "thematic"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-47",
+    "erdos-73",
+    "erdos-106"
   ]
 }
