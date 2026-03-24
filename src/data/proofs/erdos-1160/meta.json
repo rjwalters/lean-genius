@@ -1,0 +1,100 @@
+{
+  "id": "erdos-1160",
+  "title": "Erdős Problem #1160: Group Counting Function Maximized at Powers of 2",
+  "slug": "erdos-1160",
+  "description": "Let g(n) denote the number of non-isomorphic groups of order n. Conjecture: if n ≤ 2^m then g(n) ≤ g(2^m). Powers of 2 maximize the group-counting function.",
+  "meta": {
+    "author": "Erdős (conjecture), Blackburn-Neumann-Venkataraman (2007 survey), Pantelidakis (2003 partial result)",
+    "sourceUrl": "https://erdosproblems.com/1160",
+    "date": "2007",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1160Problem.lean",
+    "tags": [
+      "erdos",
+      "group-theory",
+      "enumeration",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 11,
+    "erdosNumber": 1160,
+    "erdosUrl": "https://erdosproblems.com/1160",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "numGroups axiomatization: group counting function g(n) with known values",
+      "erdos_1160 conjecture: formal statement that 2^m maximizes g(n) for n ≤ 2^m",
+      "erdos_1160_strong: stronger conjecture about sum of g(n) for n < 2^m",
+      "erdos_1160_equiv: proved equivalence of two formulations",
+      "strong_implies_original: proved stronger conjecture implies original",
+      "erdos_1160_n_eq_one: proved conjecture for n=1",
+      "erdos_1160_prime: proved conjecture for prime n",
+      "pantelidakis_odd: axiomatized partial result for odd n"
+    ],
+    "assumptions": [
+      "numGroups is axiomatized (Lean/Mathlib lacks group enumeration)",
+      "Known values g(1)=1, g(2)=1, g(4)=2, g(8)=5, g(16)=14, g(32)=51 are axiomatized",
+      "Pantelidakis's result for odd n (m ≥ 3619) is axiomatized",
+      "Asymptotic growth formula log₂(g(2^m)) ~ (2/27)m³ is axiomatized"
+    ],
+    "historicalContext": "The problem of which integer orders maximize the group counting function has been studied since at least the 1960s. The conjecture that powers of 2 are the maximizers is attributed variously to Erdős, Higman, and others. The super-exponential growth of g(2^m), approximately 2^{(2/27)m³}, arises from the rich structure of p-groups: as the exponent m grows, the number of non-isomorphic 2-groups explodes due to the combinatorial explosion of possible commutator structures.\n\nPantelidakis (2003) made the first major progress by proving the conjecture for odd n when m is sufficiently large (m ≥ 3619). The stronger conjecture of Blackburn-Neumann-Venkataraman (2007) asserts that the sum of g(n) for all n < 2^m is dominated by g(2^m) alone, reflecting how overwhelmingly 2-groups dominate the landscape of finite group theory.\n\nThe asymptotic formula g(2^m) ~ 2^{(2/27)m³ + O(m^{8/3})} was established by Sims (1965) and refined by others. By contrast, g(n) for non-prime-power n grows much more slowly, governed by Sylow theory constraints."
+  },
+  "sections": [
+    {
+      "id": "group-counting",
+      "title": "The Group Counting Function",
+      "lineStart": 30,
+      "lineEnd": 60,
+      "description": "Axiomatization of numGroups and known values"
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "lineStart": 62,
+      "lineEnd": 77,
+      "description": "Positivity and monotonicity for prime powers"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "lineStart": 79,
+      "lineEnd": 97,
+      "description": "Formal statement and equivalent formulations"
+    },
+    {
+      "id": "stronger-conjecture",
+      "title": "Stronger Conjecture",
+      "lineStart": 99,
+      "lineEnd": 114,
+      "description": "BNV07 stronger form and implication"
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "lineStart": 116,
+      "lineEnd": 138,
+      "description": "Proved cases: n=1, prime n, odd n (Pantelidakis)"
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Growth",
+      "lineStart": 140,
+      "lineEnd": 152,
+      "description": "Super-exponential growth of g(2^m)"
+    }
+  ]
+}

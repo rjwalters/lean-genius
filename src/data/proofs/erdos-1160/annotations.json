@@ -1,0 +1,58 @@
+[
+  {
+    "id": "numGroups-axiom",
+    "lineStart": 37,
+    "lineEnd": 40,
+    "type": "definition",
+    "title": "The Group Counting Function",
+    "content": "We axiomatize g(n) = numGroups(n), the number of non-isomorphic groups of order n (OEIS A000001). This function is not computable in Lean/Mathlib since it requires enumerating all group structures of a given order up to isomorphism. The function grows erratically: g(p) = 1 for any prime p, but g(2^m) grows super-exponentially."
+  },
+  {
+    "id": "known-values",
+    "lineStart": 42,
+    "lineEnd": 55,
+    "type": "context",
+    "title": "Known Values of g(n) at Powers of 2",
+    "content": "The sequence g(2^m) for m = 0, 1, 2, ... is: 1, 1, 2, 5, 14, 51, 267, 2328, 56092, 10494213, ... This explosive growth reflects the combinatorial richness of 2-groups. The dominant contribution comes from groups whose commutator structure can be encoded by nilpotent Lie algebras over GF(2), giving the asymptotic g(2^m) ~ 2^{(2/27)m³}."
+  },
+  {
+    "id": "erdos-1160-statement",
+    "lineStart": 83,
+    "lineEnd": 86,
+    "type": "conjecture",
+    "title": "Erdős Problem #1160: Powers of 2 Maximize g(n)",
+    "content": "The conjecture states that for any n ≤ 2^m, the number of groups of order n is at most the number of groups of order 2^m. Intuitively, 2-groups are by far the most numerous among groups of comparable size. This is because p-groups (for p = 2) have the most flexible internal structure: every possible pattern of commutativity relations gives a distinct group."
+  },
+  {
+    "id": "equiv-proof",
+    "lineStart": 88,
+    "lineEnd": 96,
+    "type": "proof",
+    "title": "Equivalence of Two Formulations",
+    "content": "We prove that the universally quantified form (∀ m n, n ≤ 2^m → g(n) ≤ g(2^m)) is equivalent to the Finset-based form (∀ m, ∀ n ∈ range(2^m + 1), g(n) ≤ g(2^m)). This is straightforward but establishes that the conjecture can be checked computationally for any fixed m."
+  },
+  {
+    "id": "strong-conjecture",
+    "lineStart": 103,
+    "lineEnd": 107,
+    "type": "conjecture",
+    "title": "BNV07 Stronger Conjecture",
+    "content": "Blackburn, Neumann, and Venkataraman (2007) proposed the stronger conjecture that the total number of groups of ALL orders below 2^m is still at most g(2^m). This dramatically strengthens the original: not just each individual g(n), but their entire sum is dominated by g(2^m). The sum is expected to be dominated for m ≥ 7."
+  },
+  {
+    "id": "pantelidakis",
+    "lineStart": 120,
+    "lineEnd": 123,
+    "type": "context",
+    "title": "Pantelidakis's Result for Odd Orders",
+    "content": "Pantelidakis (2003) proved that when n is odd and m ≥ 3619, then g(n) ≤ g(2^m). The key insight is that odd-order groups are all solvable (Feit-Thompson theorem) and their enumeration is controlled by Sylow theory, which provides much tighter bounds than for 2-groups. The threshold m ≥ 3619 is likely not optimal."
+  },
+  {
+    "id": "growth-rate",
+    "lineStart": 141,
+    "lineEnd": 149,
+    "type": "context",
+    "title": "The (2/27)m³ Growth Rate",
+    "content": "The asymptotic formula log₂(g(2^m)) ~ (2/27)m³ was established by Sims (1965). The constant 2/27 arises from counting nilpotent Lie algebras over GF(2): the number of such algebras of dimension m grows as 2^{(2/27)m³}, and most 2-groups of order 2^m correspond to such algebras via the Lazard correspondence. This super-exponential growth is why powers of 2 are conjectured to maximize g(n)."
+  }
+]
