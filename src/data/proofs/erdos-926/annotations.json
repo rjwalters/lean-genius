@@ -49,7 +49,7 @@
       "startLine": 56,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Vertex Count Examples (Proved)",
     "content": "Two proved theorems computing vertex counts: `h4_vertex_count : hkVertexCount 4 = 11` and `h5_vertex_count : hkVertexCount 5 = 16`. Both proved by `native_decide`, which evaluates the computable expression.",
     "mathContext": "$|V(H_4)| = 11$ and $|V(H_5)| = 16$, verified computationally.",
@@ -111,7 +111,7 @@
       "startLine": 92,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "concept",
     "title": "2-Degeneracy of $H_k$",
     "content": "A graph is $d$-degenerate if every subgraph has a vertex of degree $\\leq d$. $H_k$ is 2-degenerate because all $z_{ij}$ vertices have degree exactly 2, so we can always find such a low-degree vertex. This structural property connects to the general 2-degenerate conjecture (Problem 146).",
     "mathContext": "$H_k$ is 2-degenerate: every subgraph of $H_k$ has a vertex of degree $\\leq 2$ (the $z_{ij}$ vertices).",
@@ -153,7 +153,7 @@
       "startLine": 111,
       "endLine": 111
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Extremal Number $\\mathrm{ex}(n; H)$",
     "content": "Axiomatizes the extremal number function: $\\mathrm{ex}(n; H)$ is the maximum number of edges in an $n$-vertex $H$-free graph. This is one of the most fundamental concepts in extremal graph theory, originating with Turán's theorem (1941) for complete graphs.",
     "mathContext": "$\\mathrm{ex}(n; H) = \\max\\{|E(G)| : |V(G)| = n,\\, H \\not\\subseteq G\\}$.",
@@ -174,7 +174,7 @@
       "startLine": 120,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Kővári-Sós-Turán Theorem",
     "content": "A foundational result (1954): for complete bipartite graphs, $\\mathrm{ex}(n; K_{r,s}) \\leq \\frac{1}{2}(s-1)^{1/r} n^{2-1/r} + \\frac{r-1}{2}n$. For $C_4 = K_{2,2}$: $\\mathrm{ex}(n; C_4) \\leq \\frac{1}{2}n^{3/2} + \\frac{n}{2} \\sim \\frac{1}{2}n^{3/2}$. Matching lower bounds from polarity graphs show this is tight.",
     "mathContext": "$\\mathrm{ex}(n; K_{r,s}) \\leq \\frac{1}{2}(s-1)^{1/r} n^{2-1/r} + O(n)$. For $r = s = 2$: $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$.",
@@ -195,7 +195,7 @@
       "startLine": 142,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Lower Bound via Subgraph Monotonicity",
     "content": "Since $C_4 \\subseteq H_k$ for $k \\geq 3$, any $C_4$-free graph is $H_k$-free. Therefore $\\mathrm{ex}(n; C_4) \\leq \\mathrm{ex}(n; H_k)$, giving $\\mathrm{ex}(n; H_k) \\gg n^{3/2}$. This elegant argument uses subgraph monotonicity: if $F \\subseteq H$, then $\\mathrm{ex}(n; F) \\leq \\mathrm{ex}(n; H)$.",
     "mathContext": "$C_4 \\subseteq H_k \\implies \\mathrm{ex}(n; C_4) \\leq \\mathrm{ex}(n; H_k)$. Since $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$, we get $\\mathrm{ex}(n; H_k) \\gg n^{3/2}$.",
@@ -216,7 +216,7 @@
       "startLine": 155,
       "endLine": 156
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Füredi's Theorem (1991)",
     "content": "**Füredi (1991, Combinatorica)**: $\\mathrm{ex}(n; H_k) \\leq C \\cdot (kn)^{3/2} = C k^{3/2} n^{3/2}$ for $k \\geq 3$. This was the first proof of the upper bound, using dependent random choice: select a random $r$-tuple, examine its common neighborhood to find a set with controlled size and high codegree, then embed the forbidden subgraph.",
     "mathContext": "$\\mathrm{ex}(n; H_k) \\leq C (kn)^{3/2}$ for an absolute constant $C$.",
@@ -238,7 +238,7 @@
       "startLine": 168,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Alon-Krivelevich-Sudakov (2003)",
     "content": "**AKS (2003, Combin. Probab. Comput.)**: improved Füredi's bound to $\\mathrm{ex}(n; H_k) \\leq C \\cdot k \\cdot n^{3/2}$, saving a factor of $\\sqrt{k}$. The improvement came from a more refined analysis of the embedding process within the dependent random choice framework.",
     "mathContext": "$\\mathrm{ex}(n; H_k) \\leq C k n^{3/2}$, improving Füredi's $Ck^{3/2} n^{3/2}$ by a factor of $\\sqrt{k}$.",
@@ -259,7 +259,7 @@
       "startLine": 175,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Problem Solved (Proved)",
     "content": "**Proved theorem** `erdos_926`: states that the problem is solved for $k \\geq 4$. The proof is `trivial` since the statement is `True` — the mathematical content is captured by the axioms. A placeholder proving the problem's resolution.",
     "mathContext": "$\\mathrm{ex}(n; H_k) \\ll_k n^{3/2}$ for all $k \\geq 4$.",
@@ -280,7 +280,7 @@
       "startLine": 189,
       "endLine": 198
     },
-    "type": "technique",
+    "type": "concept",
     "title": "2-Degenerate Conjecture (Problem 146)",
     "content": "Axiomatizes the 2-degenerate conjecture: $\\mathrm{ex}(n; H) \\ll n^{3/2}$ for all 2-degenerate graphs $H$. Problem 926 is a special case since $H_k$ is 2-degenerate. Also axiomatizes the general $d$-degenerate bound: $\\mathrm{ex}(n; H) = O(n^{2-1/d})$ for $d$-degenerate $H$.",
     "mathContext": "Conjecture: $\\mathrm{ex}(n; H) \\ll n^{3/2}$ for all 2-degenerate $H$. Known: $\\mathrm{ex}(n; H) = O(n^{2-1/d})$ for $d$-degenerate $H$.",
@@ -302,7 +302,7 @@
       "startLine": 233,
       "endLine": 234
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Dependent Random Choice",
     "content": "The key probabilistic technique used in both Füredi's and AKS's proofs. Choose a random $r$-tuple of vertices, then examine their common neighborhood $S$. This set $S$ has: (1) controlled expected size $\\sim n \\cdot (\\bar{d}/n)^r$ where $\\bar{d}$ is average degree, and (2) high codegree properties — most $t$-tuples in $S$ have large common neighborhoods. This makes $S$ useful for embedding the forbidden subgraph $H_k$.",
     "mathContext": "Select $T = \\{v_1, \\ldots, v_r\\}$ uniformly. Let $S = N(v_1) \\cap \\cdots \\cap N(v_r)$. Then $\\mathbb{E}[|S|] = \\sum_w (d_w/n)^r \\geq n(2e(G)/n^2)^r$.",
@@ -323,7 +323,7 @@
       "startLine": 261,
       "endLine": 265
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Summary Theorem (Proved)",
     "content": "**Proved theorem** `erdos_926_summary`: packages three conclusions as a conjunction of `True` values: (1) $\\mathrm{ex}(n; H_k) \\ll_k n^{3/2}$, (2) the lower bound $n^{3/2}$ is tight, (3) the problem is a special case of the 2-degenerate conjecture. Proved by `⟨trivial, trivial, trivial⟩`.",
     "mathContext": "Combined: $\\mathrm{ex}(n; H_k) = \\Theta_k(n^{3/2})$ and $H_k$ is 2-degenerate.",
@@ -345,7 +345,7 @@
       "startLine": 270,
       "endLine": 272
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Tight Order of Magnitude (Proved)",
     "content": "**Proved theorem** `erdos_926_order`: the order of magnitude $\\mathrm{ex}(n; H_k) = \\Theta_k(n^{3/2})$ holds for all $k \\geq 3$. The lower bound comes from $C_4$-containment and polarity graph constructions achieving $\\mathrm{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$.",
     "mathContext": "$\\mathrm{ex}(n; H_k) = \\Theta_k(n^{3/2})$ for all $k \\geq 3$.",

@@ -25,8 +25,8 @@
     "id": "erdos-409-ann-map",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 36,
-      "endLine": 36
+      "startLine": 35,
+      "endLine": 35
     },
     "type": "definition",
     "title": "Totient-Plus-One Map",
@@ -48,8 +48,8 @@
     "id": "erdos-409-ann-iterate",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 39,
-      "endLine": 40
+      "startLine": 38,
+      "endLine": 39
     },
     "type": "definition",
     "title": "Iterated Totient-Plus-One",
@@ -70,8 +70,8 @@
     "id": "erdos-409-ann-fn",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 44,
-      "endLine": 45
+      "startLine": 43,
+      "endLine": 44
     },
     "type": "definition",
     "title": "$F(n)$ — Iteration Count to First Prime",
@@ -92,10 +92,10 @@
     "id": "erdos-409-ann-terminate",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 52,
+      "startLine": 51,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Termination Guarantee",
     "content": "For any $n > 0$, the iteration reaches a prime. The proof is elementary: since $\\varphi(n) + 1 < n$ for composite $n > 1$, the orbit $n, T(n), T^2(n), \\ldots$ is a strictly decreasing sequence of positive integers, which must terminate at a prime (every positive integer $> 1$ is either prime or has a smaller value under $T$).",
     "mathContext": "$\\forall n > 0,\\; \\exists k,\\; T^k(n) \\text{ is prime}$. Proof: the sequence $(T^j(n))_j$ is eventually decreasing and bounded below by 2.",
@@ -114,10 +114,10 @@
     "id": "erdos-409-ann-decreasing",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 57,
-      "endLine": 58
+      "startLine": 107,
+      "endLine": 108
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Strict Decrease for Composites",
     "content": "For composite $n > 1$, $\\varphi(n) + 1 < n$. This follows from $\\varphi(n) \\leq n - \\sqrt{n}$ for composites (since $n$ has a prime factor $p \\leq \\sqrt{n}$, and at least $n/p$ multiples of $p$ are not coprime to $n$). The strict decrease ensures the orbit descends.",
     "mathContext": "$n > 1,\\; n \\text{ composite} \\Rightarrow \\varphi(n) + 1 < n$. In fact $\\varphi(n) \\leq n(1 - 1/p)$ for any prime $p \\mid n$.",
@@ -136,10 +136,10 @@
     "id": "erdos-409-ann-upper",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 65,
-      "endLine": 67
+      "startLine": 138,
+      "endLine": 140
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Part (i): $F(n) = o(n)$",
     "content": "The trivial bound: $F(n) = o(n)$ since each iteration reduces $n$ by at least 1 (for composites). Cambie observed this is easy; the real question is whether $F(n) = O(\\log n)$ or $F(n) = O(\\log \\log n)$. Since $\\varphi(n) \\approx n/e^\\gamma \\cdot \\prod_{p|n}(1-1/p)$, each step typically reduces $n$ by a constant factor, suggesting $F(n) = O(\\log n)$.",
     "mathContext": "$F(n) = o(n)$ as $n \\to \\infty$. Heuristically, $F(n) = O(\\log n)$ since $\\varphi(n)/n$ has average value $6/\\pi^2 \\approx 0.608$.",
@@ -158,10 +158,10 @@
     "id": "erdos-409-ann-same",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 72,
-      "endLine": 74
+      "startLine": 145,
+      "endLine": 147
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Part (ii): Infinitely Many to Same Prime",
     "content": "Can infinitely many starting values $n$ reach the same prime $p$ under iteration of $T$? The set $\\{n : \\exists k,\\; T^k(n) = p\\}$ is the 'basin of attraction' of $p$. For $p = 2$, this includes all even composites and many odd values. The question is whether any prime has an infinite basin — which seems likely for small primes like 2 and 3.",
     "mathContext": "$\\exists p \\text{ prime},\\; |\\{n \\in \\mathbb{N} : \\exists k,\\; T^k(n) = p\\}| = \\infty$?",
@@ -180,10 +180,10 @@
     "id": "erdos-409-ann-density",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 78,
-      "endLine": 80
+      "startLine": 151,
+      "endLine": 153
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Part (iii): Density of Basin",
     "content": "For each prime $p$, does the set $\\{n : \\exists k,\\; T^k(n) = p\\}$ have a natural density? If so, what is it? The density measures the 'probability' that a random large integer eventually reaches $p$ under the totient-plus-one iteration. Understanding these densities would give a complete picture of the global dynamics of $T$.",
     "mathContext": "$\\alpha(p) = \\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : \\exists k,\\; T^k(n) = p\\}|}{N}$ exists?",
@@ -202,10 +202,10 @@
     "id": "erdos-409-ann-prime-zero",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 85,
-      "endLine": 86
+      "startLine": 158,
+      "endLine": 159
     },
-    "type": "technique",
+    "type": "concept",
     "title": "$F(p) = 0$ for Primes",
     "content": "Primes are already at the target: $F(p) = 0$ since $T^0(p) = p$ is prime. This is the base case for the iteration.",
     "mathContext": "$p$ prime $\\Rightarrow F(p) = 0$.",
@@ -222,10 +222,10 @@
     "id": "erdos-409-ann-one-step",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 90,
-      "endLine": 92
+      "startLine": 163,
+      "endLine": 165
     },
-    "type": "technique",
+    "type": "concept",
     "title": "$F(n) = 1$ Criterion",
     "content": "$F(n) = 1$ when $\\varphi(n) + 1$ is prime. This happens for $n = 4$ ($\\varphi(4)+1 = 3$), $n = 6$ ($\\varphi(6)+1 = 3$), $n = 8$ ($\\varphi(8)+1 = 5$), $n = 12$ ($\\varphi(12)+1 = 5$), etc. The set of such $n$ is infinite (related to Goldbach-type questions about which primes are of the form $\\varphi(n) + 1$).",
     "mathContext": "$F(n) = 1 \\iff \\varphi(n) + 1$ is prime. Examples: $n \\in \\{4, 6, 8, 12, 14, 18, 20, \\ldots\\}$.",
@@ -243,10 +243,10 @@
     "id": "erdos-409-ann-odd",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 96,
-      "endLine": 97
+      "startLine": 170,
+      "endLine": 174
     },
-    "type": "technique",
+    "type": "concept",
     "title": "$\\varphi(n) + 1$ is Odd for $n \\geq 3$",
     "content": "For $n \\geq 3$, $\\varphi(n)$ is even (a well-known property: if $n$ has an odd prime factor $p$, then $p-1 \\mid \\varphi(n)$; if $n = 2^k$ with $k \\geq 2$, then $\\varphi(n) = 2^{k-1}$ is even). Thus $\\varphi(n) + 1$ is odd, making it a candidate for odd primality. This means the orbit enters the odd integers after at most one step.",
     "mathContext": "$n \\geq 3 \\Rightarrow 2 \\mid \\varphi(n) \\Rightarrow \\varphi(n) + 1$ is odd.",
@@ -265,8 +265,8 @@
     "id": "erdos-409-ann-sigma",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 104,
-      "endLine": 106
+      "startLine": 181,
+      "endLine": 183
     },
     "type": "concept",
     "title": "Sigma Variant: $n \\mapsto \\sigma(n) - 1$",
@@ -287,10 +287,10 @@
     "id": "erdos-409-ann-sigma-grow",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 110,
-      "endLine": 112
+      "startLine": 187,
+      "endLine": 189
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Sigma Iteration Grows",
     "content": "For composite $n > 1$, $\\sigma(n) - 1 \\geq n$ since $\\sigma(n) \\geq 1 + n$ (the divisors include at least 1 and $n$ itself, plus others for composites). This makes the sigma variant grow rather than shrink, with no guarantee of reaching a prime.",
     "mathContext": "$n$ composite $\\Rightarrow \\sigma(n) \\geq 1 + d + n > n + 1$ for some divisor $d > 1$, so $\\sigma(n) - 1 > n$.",
@@ -309,10 +309,10 @@
     "id": "erdos-409-ann-fixed2",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 117,
-      "endLine": 118
+      "startLine": 194,
+      "endLine": 195
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Fixed Point: $\\varphi(2) + 1 = 2$",
     "content": "The prime 2 is a fixed point of the totient-plus-one map: $\\varphi(2) + 1 = 1 + 1 = 2$. This is the unique even fixed point. All orbits that pass through an even composite will eventually reach 2 (since 2 is the only even prime). Proved directly by $\\texttt{simp}$.",
     "mathContext": "$T(2) = \\varphi(2) + 1 = 1 + 1 = 2$. The only even prime is a fixed point.",
@@ -330,10 +330,10 @@
     "id": "erdos-409-ann-infinite",
     "proofId": "erdos-409",
     "range": {
-      "startLine": 126,
-      "endLine": 127
+      "startLine": 204,
+      "endLine": 205
     },
-    "type": "technique",
+    "type": "concept",
     "title": "$F(n) = 1$ Infinitely Often",
     "content": "The set $\\{n > 1 : \\varphi(n) + 1 \\text{ is prime}\\}$ is infinite. This follows because there are infinitely many $n$ with $\\varphi(n) = p - 1$ for some prime $p$ (e.g., $n = 2(p-1)$ gives $\\varphi(n) = p - 1$ when $p - 1$ is even, which is always for $p > 2$). The result shows the iteration frequently terminates in a single step.",
     "mathContext": "$|\\{n > 1 : \\varphi(n) + 1 \\text{ is prime}\\}| = \\infty$.",
