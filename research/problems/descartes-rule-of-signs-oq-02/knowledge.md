@@ -80,7 +80,38 @@ evaluation sequence [p(x), p'(x), ..., p^(n)(x)].
 - 4 remaining: descartes_from_budan, budanCount_smul, budanCount_zero_eq_coeff_sign_changes, chainVariation_budanChain
 
 ### Next Steps
-- Prove `descartes_from_budan`: bound positive roots using Multiset finiteness, then V(B)=0
-- Prove `budanCount_smul`: need positive-scaling-preserves-sign-changes lemma
-- Prove `budanCount_zero_eq_coeff_sign_changes`: use iterDeriv_eval_zero + positive scaling
-- Prove `chainVariation_budanChain`: List.finRange ↔ List.range conversion
+- Prove `budanCount_smul`: need signChangesInList invariance under uniform nonzero scaling
+- Prove `budanCount_zero_eq_coeff_sign_changes`: need signChangesInList invariance under element-wise positive scaling
+- Both sorries reduce to the same core problem: proving signChangesInList is invariant when list elements are scaled by (positive) factors. Key blocker: List.filter with decide predicates on ℝ is hard to manipulate in Lean 4. Consider defining a recursive signList that avoids filter+map composition.
+
+## Session 2026-03-24 (Session 3) — Proving 2 More Sorries (4→2)
+
+**Mode**: REVISIT
+**Outcome**: progress (2 sorries eliminated, 4→2 remaining)
+
+### What I Did
+- Proved `chainVariation_budanChain`: Budan chain's variation equals budanCount, via List.ext_getElem converting List.finRange ↔ List.range
+- Proved `descartes_from_budan`: Descartes' rule as special case of Budan
+  - Built `list_bounded` + `multiset_bounded`: every multiset of reals has an upper bound
+  - Used `Multiset.filter_congr` to show filter (0 < ·) = filter (0 < · ∧ · ≤ B) when all positive roots ≤ B
+  - Applied `budan_upper_bound` with V(B)=0 for large B
+- Attempted `budanCount_smul` and `budanCount_zero_eq_coeff_sign_changes` — both need signChangesInList scaling invariance
+  - Wrote `countAdjacentDiffs_neg`, `filter_sign_pos_mul`, `filter_sign_neg_mul` helpers
+  - Hit blocker: List.filter in Lean 4 uses Bool predicates via decide, making filter_cons manipulation with noncomputable DecidableEq ℝ very difficult
+  - Left as documented sorries with clear proof sketches
+
+### Key Findings
+- `Multiset.induction` has implicit args ⦃a⦄ {s} — cannot use `fun a _ ih =>` in lambda; must use list-based approach
+- Pattern-matched variables from `| a :: t =>` not available in `by` blocks in recursive defs
+- `List.filter_cons` in Lean 4 uses `Bool` predicates; `decide` on `(x : ℝ) ≠ 0` is noncomputable, making simp manipulation of filter results very difficult
+- `Multiset.filter_congr` works well for showing predicate equivalence on filter
+
+### Files Modified
+- `proofs/Proofs/DescartesRuleOfSignsOQ02.lean` (502→552 lines, 4→2 sorries)
+- `src/data/proofs/descartes-rule-of-signs-oq-02/meta.json` (updated stats)
+- `src/data/research/problems/descartes-rule-of-signs-oq-02.json` (updated knowledge)
+
+### Stats
+- 552 lines, 36 theorems, 8 definitions, 3 axioms, 2 sorries
+- 2 sorries eliminated: descartes_from_budan, chainVariation_budanChain
+- 2 remaining: budanCount_zero_eq_coeff_sign_changes, budanCount_smul (both need sign scaling invariance)

@@ -313,6 +313,23 @@ theorem budanCount_eventually_zero (p : ℝ[X]) (hp : p ≠ 0) :
     ∃ M : ℝ, ∀ x, x > M → budanCount p x = 0 :=
   budanCount_large_axiom p hp
 
+/-- Every element of a multiset of reals has an upper bound. -/
+private lemma list_bounded (l : List ℝ) : ∃ B : ℝ, ∀ r ∈ l, r ≤ B := by
+  induction l with
+  | nil => exact ⟨0, by simp⟩
+  | cons hd tl ih =>
+    obtain ⟨B, hB⟩ := ih
+    refine ⟨max hd B, ?_⟩
+    intro r hr
+    simp only [List.mem_cons] at hr
+    rcases hr with rfl | hmem
+    · exact le_max_left _ _
+    · exact le_trans (hB r hmem) (le_max_right _ _)
+
+private lemma multiset_bounded (s : Multiset ℝ) : ∃ B : ℝ, ∀ r ∈ s, r ≤ B := by
+  obtain ⟨B, hB⟩ := list_bounded s.toList
+  exact ⟨B, fun r hr => hB r (by rwa [Multiset.mem_toList])⟩
+
 /-- **Descartes' Rule from Budan's Theorem**
 
 Taking a = 0 and b large enough that V_p(b) = 0 and all positive roots
@@ -321,12 +338,31 @@ theorem descartes_from_budan (p : ℝ[X]) (hp : p ≠ 0) :
     ∃ B : ℝ, 0 < B ∧
       Multiset.card (p.roots.filter (0 < ·)) ≤ budanCount p 0 := by
   obtain ⟨M, hM⟩ := budanCount_eventually_zero p hp
-  -- Take B large enough for all positive roots and for V(B) = 0
-  use max 1 (M + 1)
-  refine ⟨by positivity, ?_⟩
-  -- The number of positive roots ≤ rootsInInterval p 0 B' for large B'
-  -- and rootsInInterval p 0 B' ≤ V(0) - V(B') = V(0) - 0 = V(0)
-  sorry
+  obtain ⟨R, hR⟩ := multiset_bounded p.roots
+  -- B large enough for V(B) = 0 and all positive roots ≤ B
+  set B := max 1 (max (M + 1) (R + 1))
+  refine ⟨B, by positivity, ?_⟩
+  -- V(B) = 0 since B > M
+  have hBM : B > M := calc
+    M < M + 1 := lt_add_one M
+    _ ≤ max (M + 1) (R + 1) := le_max_left _ _
+    _ ≤ B := le_max_right 1 _
+  have hVB : budanCount p B = 0 := hM B hBM
+  -- All positive roots ≤ B since all roots ≤ R and B > R
+  have hle : ∀ r ∈ p.roots, 0 < r → r ≤ B := fun r hr _ => calc
+    r ≤ R := hR r hr
+    _ ≤ R + 1 := le_of_lt (lt_add_one R)
+    _ ≤ max (M + 1) (R + 1) := le_max_right _ _
+    _ ≤ B := le_max_right 1 _
+  -- Filter equality: adding ∧ r ≤ B is redundant when all pos roots ≤ B
+  have hfc : p.roots.filter (fun r => (0 : ℝ) < r) =
+      p.roots.filter (fun r => (0 : ℝ) < r ∧ r ≤ B) :=
+    Multiset.filter_congr fun r hr =>
+      ⟨fun h => ⟨h, hle r hr h⟩, fun ⟨h, _⟩ => h⟩
+  -- Apply Budan bound: rootsInInterval p 0 B ≤ V(0) - V(B) = V(0)
+  have hbound := budan_upper_bound p hp 0 B (by positivity : (0 : ℝ) < B)
+  simp only [rootsInInterval, hp, ↓reduceIte] at hbound
+  rw [hfc]; omega
 
 /-
 ## Part VIII: Connection to Coefficient Sign Variations
@@ -386,7 +422,12 @@ theorem iterDeriv_eval_zero (p : ℝ[X]) (k : ℕ) :
   simp [Nat.descFactorial_self]
 
 /-- Since k! > 0, the sign of p⁽ᵏ⁾(0) equals the sign of aₖ.
-    Therefore V_p(0) = signVariations of the coefficient sequence. -/
+    Therefore V_p(0) = signVariations of the coefficient sequence.
+
+    Proof sketch: (iterDeriv p k).eval 0 = k! * p.coeff k by iterDeriv_eval_zero.
+    Since k! > 0, each entry has the same sign as the coefficient.
+    Therefore signChangesInList produces the same count.
+    Requires: signChangesInList invariance under element-wise positive scaling. -/
 theorem budanCount_zero_eq_coeff_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :
     budanCount p 0 = signChangesInList
       ((List.range (p.natDegree + 1)).map p.coeff) := by
@@ -413,7 +454,11 @@ theorem iterDeriv_C_mul (c : ℝ) (p : ℝ[X]) (k : ℕ) :
   | succ k ih => simp only [iterDeriv_succ, ih, derivative_C_mul]
 
 /-- Scaling by a nonzero constant preserves the Budan count.
-    Since (c·p)⁽ᵏ⁾ = c·p⁽ᵏ⁾ and c ≠ 0 preserves all signs. -/
+    Since (c·p)⁽ᵏ⁾ = c·p⁽ᵏ⁾ and c ≠ 0, all evaluations are scaled by c.
+    For c > 0, signs are preserved; for c < 0, all signs flip but
+    countAdjacentDiffs is invariant under negation.
+    Requires: signChangesInList invariance under constant nonzero scaling
+    (filter+sign on List ℝ with decide predicates). -/
 theorem budanCount_smul (p : ℝ[X]) (c : ℝ) (hc : c ≠ 0) (x : ℝ) :
     budanCount (C c * p) x = budanCount p x := by
   sorry
@@ -497,6 +542,11 @@ noncomputable def budanChain (p : ℝ[X]) : PolyChain p.natDegree where
 /-- The Budan chain's variation equals budanCount. -/
 theorem chainVariation_budanChain (p : ℝ[X]) (x : ℝ) :
     chainVariation (budanChain p) x = budanCount p x := by
-  sorry -- Definitionally equal up to List.finRange ↔ List.range conversion
+  simp only [chainVariation, budanChain, budanCount, budanSequence]
+  congr 1
+  apply List.ext_getElem
+  · simp [List.length_finRange]
+  · intro i hi1 hi2
+    simp [List.getElem_map, List.getElem_finRange, List.getElem_range]
 
 end BudanTheorem
