@@ -13,7 +13,7 @@ integers with lim inf aₙ^{1/2ⁿ} > 1, then Σ 1/(aₙ · aₙ₊₁) is irrat
 
 import Mathlib.Data.Int.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Irrational
+import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Tactic
@@ -71,10 +71,24 @@ axiom series_converges (a : ℕ → ℤ) (h_mono : StrictMono a)
     (h_growth : GrowthCondition a) :
     Summable (fun n => (1 : ℝ) / ((a n : ℝ) * (a (n + 1) : ℝ)))
 
-/-- The series is positive when all aₙ > 0. -/
-axiom series_positive (a : ℕ → ℤ) (h_mono : StrictMono a)
+/-- The series is positive when all aₙ > 0.
+
+Each term 1/(aₙ · aₙ₊₁) > 0 since aₙ > 0, and the sum of positive
+summable terms is positive. Uses series_converges for summability. -/
+theorem series_positive (a : ℕ → ℤ) (h_mono : StrictMono a)
     (h_pos : ∀ n, a n > 0) (h_growth : GrowthCondition a) :
-    erdosSeries a > 0
+    erdosSeries a > 0 := by
+  unfold erdosSeries
+  have h_summable := series_converges a h_mono h_growth
+  apply tsum_pos h_summable
+  · intro n
+    apply le_of_lt
+    apply div_pos one_pos
+    apply mul_pos
+    · exact Int.cast_pos.mpr (h_pos n)
+    · exact Int.cast_pos.mpr (h_pos (n + 1))
+  · exact ⟨0, div_pos one_pos (mul_pos
+      (Int.cast_pos.mpr (h_pos 0)) (Int.cast_pos.mpr (h_pos 1)))⟩
 
 /-
 ## Section VI: Related Series
