@@ -78,7 +78,8 @@
       "Open and closed disks have the same area because the boundary circle has Lebesgue measure zero — a fundamental property of lower-dimensional manifolds in measure theory",
       "The general $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2 + 1)$ specializes to $\\pi r^2$ for $n = 2$ via $\\Gamma(2) = 1$",
       "Archimedes' method of exhaustion — approximating the disk by inscribed/circumscribed polygons — is the historical precursor to the Riemann integral, which in turn is subsumed by the Lebesgue integral used in this formalization",
-      "The area formula explains why $\\pi$ appears in the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$: squaring and converting to polar coordinates gives $\\iint e^{-(x^2+y^2)} dx\\,dy = \\int_0^{2\\pi}\\int_0^{\\infty} e^{-r^2} r\\,dr\\,d\\theta = \\pi$, where the Jacobian factor $r$ is exactly $dA/dr\\,d\\theta = r$ from the polar form of $A = \\pi r^2$"
+      "The area formula explains why $\\pi$ appears in the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$: squaring and converting to polar coordinates gives $\\iint e^{-(x^2+y^2)} dx\\,dy = \\int_0^{2\\pi}\\int_0^{\\infty} e^{-r^2} r\\,dr\\,d\\theta = \\pi$, where the Jacobian factor $r$ is exactly $dA/dr\\,d\\theta = r$ from the polar form of $A = \\pi r^2$",
+      "**Scaling and dimensional analysis**: $A = \\pi r^2$ encodes the fact that area scales quadratically with length. Under a dilation $z \\mapsto cz$, the Lebesgue measure transforms as $\\lambda^2(cS) = c^2 \\lambda^2(S)$ (since $\\lambda^2$ is the product measure $\\lambda \\otimes \\lambda$ and each factor scales linearly). The formula $A = \\pi r^2 = \\pi \\cdot (\\text{radius})^2$ thus separates into a shape factor ($\\pi$, encoding the specific geometry of a circle vs a square) and a scale factor ($r^2$, universal for any 2D shape). In Lean, this separation is implicit: `ENNReal.ofReal r ^ 2` captures the scale and `NNReal.pi` captures the shape"
     ],
     "prerequisites": [
       "Real analysis (integration, limits)",
@@ -220,6 +221,11 @@
       "targetId": "e-transcendental",
       "relationship": "related",
       "description": "The transcendence of $e$ connects to the circle area formula through the Gaussian integral: $\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$, proved by squaring and converting to polar coordinates where the area element $r\\, dr\\, d\\theta$ derives from $A = \\pi r^2$. The appearance of both $e$ and $\\pi$ in this integral reflects their deep algebraic independence (both transcendental) and analytic interconnection via the complex exponential $e^{i\\theta}$"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} = -1$ connects to the circle area formula through the complex plane: this formalization uses $\\mathbb{C}$ as its ambient space precisely because the unit circle $\\{z : |z| = 1\\}$ is parameterized by $e^{i\\theta}$ for $\\theta \\in [0, 2\\pi)$. The area enclosed by this exponential curve is $\\pi \\cdot 1^2 = \\pi$ (the `area_unit_disk` corollary). More deeply, $e^{i\\pi} = -1$ encodes the half-turn symmetry of the circle, and the appearance of $\\pi$ in both the area formula and the exponential reflects $\\pi$'s dual role as a geometric constant (area-to-radius-squared ratio) and an analytic period (half-period of $e^{i\\theta}$)"
     }
   ],
   "relatedProofs": [
@@ -238,7 +244,8 @@
     "lebesgue-measure",
     "fundamental-theorem-calculus",
     "stirling-formula",
-    "e-transcendental"
+    "e-transcendental",
+    "euler-identity"
   ],
   "leanFile": {
     "imports": [

@@ -273,6 +273,16 @@
       "targetId": "dirichlets-theorem",
       "relationship": "extends",
       "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) uses Dirichlet $L$-functions $L(s, \\chi) = \\sum \\chi(n) n^{-s}$, which generalize the Riemann zeta function $\\zeta(s) = \\sum n^{-s}$ whose simplest non-trivial value is the Basel identity $\\zeta(2) = \\pi^2/6$. Euler's product formula for $\\zeta$ inspired Dirichlet's product formula for $L$-functions, extending the connection between arithmetic and analysis that the Basel problem first revealed"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula $A = \\pi r^2$ and the Basel identity $\\zeta(2) = \\pi^2/6$ both reveal $\\pi$ in seemingly unrelated contexts. The connection runs deep: the Gaussian integral $\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$ (proved via the area formula's polar coordinate change of variables) is closely related to the functional equation of $\\zeta(s)$, which maps $\\zeta(2) = \\pi^2/6$ to the behavior of $\\zeta$ at negative integers via $\\Gamma(s/2)\\pi^{-s/2}\\zeta(s)$"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The Central Limit Theorem's Gaussian density $\\frac{1}{\\sqrt{2\\pi}} e^{-x^2/2}$ contains $\\pi$ for the same deep reason as the Basel identity: the Fourier transform of the Gaussian is itself Gaussian, and $\\zeta(2) = \\pi^2/6$ emerges from Parseval's theorem applied to periodic functions — both results flow from the self-duality of the Gaussian under Fourier analysis"
     }
   ],
   "relatedProofs": [
@@ -290,7 +300,9 @@
     "prime-number-theorem",
     "e-transcendental",
     "stirling-formula",
-    "dirichlets-theorem"
+    "dirichlets-theorem",
+    "area-of-circle",
+    "central-limit-theorem"
   ],
   "leanFile": {
     "imports": [
