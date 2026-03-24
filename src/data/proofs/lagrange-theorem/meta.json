@@ -55,8 +55,8 @@
       }
     ],
     "originalContributions": [
-      "Corollaries about element order",
-      "Connection to Euler's theorem"
+      "Pedagogical wrapper: delegates core |H| | |G| to Mathlib's Subgroup.card_subgroup_dvd_card, then derives 6 corollaries (element order, g^|G|=1, Fermat, index properties, prime-order simplicity/cyclicity)",
+      "Euler's theorem connection via ZMod.pow_totient, bridging group theory to number theory"
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 71,
@@ -179,11 +179,6 @@
       "description": "The Chinese Remainder Theorem and unique factorization in Z connect to Lagrange via the structure of cyclic groups: Z/nZ decomposes as a product of Z/p^k Z (one for each prime power in the factorization of n)"
     },
     {
-      "targetId": "cayley-hamilton",
-      "relationship": "related",
-      "description": "Both are foundational results about algebraic structures: Lagrange constrains subgroup orders in groups, Cayley-Hamilton constrains the minimal polynomial of a matrix. Cayley's theorem (every group embeds in a symmetric group) directly uses Lagrange's coset partition"
-    },
-    {
       "targetId": "euler-totient",
       "relationship": "extends",
       "description": "Euler's theorem (a^φ(n) ≡ 1 mod n) is a direct corollary of Lagrange applied to (Z/nZ)× of order φ(n). The formalization derives Fermat's little theorem (the prime case); Euler's theorem is the general case"
@@ -212,33 +207,19 @@
       "targetId": "primitive-roots",
       "relationship": "related",
       "description": "The existence of primitive roots modulo $p$ — generators of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — is a consequence of the structure theorem for finite abelian groups combined with Lagrange's theorem. By Lagrange, the polynomial $x^d - 1$ has at most $d$ roots in $\\mathbb{Z}/p\\mathbb{Z}$, which forces $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ to be cyclic"
-    },
-    {
-      "targetId": "mathematical-induction",
-      "relationship": "foundational",
-      "description": "Lagrange's theorem is typically proved by establishing that cosets partition the group, then counting. The well-ordering principle and induction on group order are used in many extensions (Cauchy's theorem, Sylow's theorems) that build on Lagrange's foundational partition argument"
-    },
-    {
-      "targetId": "infinitude-primes",
-      "relationship": "related",
-      "description": "Lagrange's theorem applied to $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ gives $a^{p-1} \\equiv 1$ (Fermat's Little Theorem), which provides a primality test. The infinitude of primes ensures this test applies to infinitely many moduli, and Dirichlet used it as a key tool in proving infinitely many primes in arithmetic progressions"
     }
   ],
   "relatedProofs": [
     "sylow-theorems",
     "abel-ruffini",
-    "abel-ruffini-oq-04",
     "fermats-last-theorem",
     "fundamental-arithmetic",
-    "cayley-hamilton",
     "euler-totient",
     "angle-trisection",
     "inverse-galois",
     "wilsons-theorem",
     "quadratic-reciprocity",
-    "primitive-roots",
-    "mathematical-induction",
-    "infinitude-primes"
+    "primitive-roots"
   ],
   "references": [
     {
