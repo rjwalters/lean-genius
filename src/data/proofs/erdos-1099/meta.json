@@ -59,9 +59,9 @@
       "sum_divisor_ratios_lower_bound axiom: Σ(d_{i+1}/dᵢ) > τ(n) + log(n)",
       "Examples for primes, powers of 2, and highly composite numbers"
     ],
-    "axiomCount": 9,
-    "lineCount": 320,
-    "assumptions": "9 axioms: first_divisor_is_one, last_divisor_is_n, first_ratio_ge_two, and 6 more. See Lean source for complete statements."
+    "axiomCount": 6,
+    "lineCount": 443,
+    "assumptions": "6 axioms: h_alpha_ge_one, vose_bounded_sequence, vose_liminf_bounded, sum_divisor_ratios_lower_bound, prime_h_alpha_unbounded, power_of_two_h_alpha. See Lean source for complete statements."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1099** was posed by Erdős in 1981 as part of his study of divisor structure. The problem asks about the regularity of divisor gaps: can we find integers whose consecutive divisor ratios are all close to 1?\n\n**Historical Development:**\n- **1981 (Erdős [Er81h]):** Posed the problem, noting that n! and lcm{1,...,n} seem like good candidates.\n- **1984 (Vose [Vo84]):** Resolved the problem affirmatively by constructing a specific sequence with bounded h_α.\n\n**Key Insight:** The question is about how \"smooth\" the divisor structure of integers can be. While primes have terrible divisor gaps (ratio = p), and even powers of 2 grow linearly in h_α, Vose showed there exist numbers with much smoother divisor distributions.",
@@ -289,9 +289,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos1099",
-    "lineCount": 320,
-    "axiomCount": 9,
-    "theoremCount": 3,
+    "lineCount": 443,
+    "axiomCount": 6,
+    "theoremCount": 19,
     "definitionCount": 7
   }
 }
