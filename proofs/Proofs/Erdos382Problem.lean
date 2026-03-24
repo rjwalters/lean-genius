@@ -82,17 +82,77 @@ noncomputable def largestPrimeDivisor (n : ℕ) : ℕ :=
     n.primeFactorsList.foldl max 0
   else 0
 
+/-- Helper: foldl max is ≥ init. -/
+private lemma foldl_max_ge_init : ∀ (l : List ℕ) (init : ℕ),
+    l.foldl max init ≥ init
+  | [], init => le_refl init
+  | _ :: as, init => le_trans (le_max_left init _) (foldl_max_ge_init as _)
+
+/-- Helper: foldl max is ≥ any member. -/
+private lemma foldl_max_ge_of_mem : ∀ {l : List ℕ} {x : ℕ}, x ∈ l →
+    ∀ (init : ℕ), l.foldl max init ≥ x
+  | _ :: _, _, List.Mem.head _, init =>
+    le_trans (le_max_right init _) (foldl_max_ge_init _ _)
+  | _ :: _, _, List.Mem.tail _ hx, init =>
+    foldl_max_ge_of_mem hx _
+
+/-- Helper: foldl max result equals init or is a member of the list. -/
+private lemma foldl_max_eq_init_or_mem : ∀ (l : List ℕ) (init : ℕ),
+    l.foldl max init = init ∨ l.foldl max init ∈ l
+  | [], init => Or.inl rfl
+  | a :: as, init => by
+    simp only [List.foldl_cons]
+    rcases foldl_max_eq_init_or_mem as (max init a) with h | h
+    · rw [h]
+      rcases le_or_lt a init with hle | hlt
+      · left; exact max_eq_left hle
+      · right; rw [max_eq_right (le_of_lt hlt)]; exact List.mem_cons_self a as
+    · right; exact List.mem_cons_of_mem a h
+
+/-- primeFactorsList is nonempty for n > 1. -/
+private lemma primeFactorsList_ne_nil (n : ℕ) (hn : n > 1) :
+    n.primeFactorsList ≠ [] := by
+  intro h
+  have := Nat.prod_primeFactorsList (show n ≠ 0 by omega)
+  rw [h, List.prod_nil] at this
+  omega
+
+/-- The foldl max 0 of primeFactorsList is a member for n > 1. -/
+private lemma foldl_max_mem_primeFactorsList (n : ℕ) (hn : n > 1) :
+    n.primeFactorsList.foldl max 0 ∈ n.primeFactorsList := by
+  have hne := primeFactorsList_ne_nil n hn
+  rcases foldl_max_eq_init_or_mem n.primeFactorsList 0 with h | h
+  · exfalso
+    obtain ⟨x, hx⟩ : ∃ a, a ∈ n.primeFactorsList := by
+      cases hl : n.primeFactorsList with
+      | nil => exact absurd hl hne
+      | cons a l => exact ⟨a, List.mem_cons_self a l⟩
+    have h1 := foldl_max_ge_of_mem hx 0
+    rw [h] at h1
+    have h2 := (Nat.prime_of_mem_primeFactorsList hx).two_le
+    omega
+  · exact h
+
 /-- The largest prime divisor divides n. -/
-axiom largestPrimeDivisor_dvd (n : ℕ) (hn : n > 1) :
-    largestPrimeDivisor n ∣ n
+theorem largestPrimeDivisor_dvd (n : ℕ) (hn : n > 1) :
+    largestPrimeDivisor n ∣ n := by
+  simp only [largestPrimeDivisor, dif_pos hn]
+  exact Nat.dvd_of_mem_primeFactorsList (foldl_max_mem_primeFactorsList n hn)
 
 /-- The largest prime divisor is prime (if n > 1). -/
-axiom largestPrimeDivisor_prime (n : ℕ) (hn : n > 1) :
-    (largestPrimeDivisor n).Prime
+theorem largestPrimeDivisor_prime (n : ℕ) (hn : n > 1) :
+    (largestPrimeDivisor n).Prime := by
+  simp only [largestPrimeDivisor, dif_pos hn]
+  exact Nat.prime_of_mem_primeFactorsList (foldl_max_mem_primeFactorsList n hn)
 
 /-- Any prime divisor is ≤ the largest. -/
-axiom prime_le_largestPrimeDivisor (n p : ℕ) (hn : n > 1) (hp : p.Prime) (hdiv : p ∣ n) :
-    p ≤ largestPrimeDivisor n
+theorem prime_le_largestPrimeDivisor (n p : ℕ) (hn : n > 1) (hp : p.Prime) (hdiv : p ∣ n) :
+    p ≤ largestPrimeDivisor n := by
+  simp only [largestPrimeDivisor, dif_pos hn]
+  have hmem : p ∈ n.primeFactorsList := by
+    rw [Nat.mem_primeFactorsList (show n ≠ 0 by omega)]
+    exact ⟨hp, hdiv⟩
+  exact foldl_max_ge_of_mem hmem 0
 
 /- ## Part III: Exponent of Prime in Product -/
 
