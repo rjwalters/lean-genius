@@ -50,7 +50,7 @@
       "Proved membership examples for factorial sums",
       "Proved 1 is both a square factorial sum and powerful"
     ],
-    "axiomCount": 7,
+    "axiomCount": 5,
     "lineCount": 193,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -260,12 +260,7 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Factorial.Basic",
-      "Mathlib.Data.Nat.Prime.Defs",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Algebra.BigOperators.Ring.Finset",
-      "Mathlib.Data.Set.Finite.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [
       "Nat",
@@ -274,8 +269,8 @@
     ],
     "namespace": "Erdos1108",
     "lineCount": 193,
-    "axiomCount": 7,
-    "theoremCount": 11,
+    "axiomCount": 5,
+    "theoremCount": 13,
     "definitionCount": 5
   }
 }
