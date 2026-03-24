@@ -180,6 +180,16 @@
       "id": "primitive-roots",
       "relationship": "foundational",
       "description": "Primitive roots establish that (ℤ/pℤ)* is cyclic, fundamental to the Legendre symbol: a is a QR mod p iff a^((p-1)/2) ≡ "
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) connects to the first supplement of QR: (-1/p) = (-1)^((p-1)/2). Both characterize "
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem (p = a² + b² iff p ≡ 1 mod 4) follows from (-1/p) = 1 iff p ≡ 1 mod 4, the first supplement"
     }
   ],
   "references": [

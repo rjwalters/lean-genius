@@ -79,77 +79,88 @@
       "title": "Graph Dimension",
       "summary": "Defines unit distance embeddings (structure `UnitDistanceEmbedding'`) with the condition $\\sqrt{\\sum_i (f(u)_i - f(v)_i)^2} = 1$ for all edges, and the graph dimension function (`graphDimension'`) as the minimum embedding dimension via `Nat.find`.",
       "startLine": 41,
-      "endLine": 56
+      "endLine": 56,
+      "mathContext": "Defines unit distance embeddings (structure `UnitDistanceEmbedding'`) with the condition $\\sqrt{\\sum_i (f(u)_i - f(v)_i)^2} = 1$ for all edges, and the graph dimension function (`graphDimension'`) as "
     },
     {
       "id": "min-edge-function",
       "title": "Minimum Edge Function",
       "summary": "Axiomatizes minEdges(d) as the minimum edge count among graphs of dimension d. Three axioms: the function, the lower bound property, and the achievability.",
       "startLine": 62,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "Axiomatizes minEdges(d) as the minimum edge count among graphs of dimension d. Three axioms: the function, the lower bound property, and the achievability."
     },
     {
       "id": "known-values",
       "title": "Known Values",
       "summary": "Records $\\text{minEdges}(0..5) = (0, 1, 3, 6, 9, 15)$ as six axioms. For $d \\le 3$ and $d=5$, these match $\\binom{d+1}{2}$; the $d=4$ value of 9 (from $K_{3,3}$) is the sole exception.",
       "startLine": 83,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "Records $\\text{minEdges}(0..5) = (0, 1, 3, 6, 9, 15)$ as six axioms. For $d \\le 3$ and $d=5$, these match $\\binom{d+1}{2}$; the $d=4$ value of 9 (from $K_{3,3}$) is the sole exception."
     },
     {
       "id": "structural-results",
       "title": "Structural Results",
       "summary": "Three theorems: $K_{d+1}$ optimality for $d \\le 3$ (via `interval_cases`), the $d=4$ surprise ($9 < \\binom{5}{2} = 10$), and $d=5$ matching ($15 = \\binom{6}{2}$).",
       "startLine": 105,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "Three theorems: $K_{d+1}$ optimality for $d \\le 3$ (via `interval_cases`), the $d=4$ surprise ($9 < \\binom{5}{2} = 10$), and $d=5$ matching ($15 = \\binom{6}{2}$)."
     },
     {
       "id": "general-bounds",
       "title": "General Bounds",
       "summary": "Linear lower bound $d \\le \\text{minEdges}(d)$ (from rigidity) and quadratic upper bound $\\text{minEdges}(d) \\le \\binom{d+1}{2}$ (from complete graphs). Includes real-valued versions via `Nat.cast_le` and verified monotonicity for $d = 1..5$.",
       "startLine": 128,
-      "endLine": 186
+      "endLine": 186,
+      "mathContext": "Linear lower bound $d \\le \\text{minEdges}(d)$ (from rigidity) and quadratic upper bound $\\text{minEdges}(d) \\le \\binom{d+1}{2}$ (from complete graphs). Includes real-valued versions via `Nat.cast_le` "
     },
     {
       "id": "conjectures",
       "title": "Open Questions and Conjectures",
       "summary": "Three Prop-valued definitions: monotonicity conjecture, quadratic growth conjecture (Θ(d²)), and complete graph optimality conjecture (K_{d+1} optimal for d ≠ 4).",
       "startLine": 150,
-      "endLine": 166
+      "endLine": 166,
+      "mathContext": "Three Prop-valued definitions: monotonicity conjecture, quadratic growth conjecture (Θ(d²)), and complete graph optimality conjecture (K_{d+1} optimal for d ≠ 4)."
     },
     {
       "id": "simplex-embedding",
       "title": "Simplex Embedding Construction",
       "summary": "Constructive proof that $K_n$ embeds as unit distances in $\\mathbb{R}^n$ via $v_i = \\frac{1}{\\sqrt{2}} e_i$. Key lemma: $(1/\\sqrt{2})^2 = 1/2$. Distance computation uses `Finset.add_sum_erase` to isolate the $i$-th and $j$-th terms. Corollary: $\\dim(K_n) \\le n$.",
       "startLine": 190,
-      "endLine": 265
+      "endLine": 265,
+      "mathContext": "Constructive proof that $K_n$ embeds as unit distances in $\\mathbb{R}^n$ via $v_i = \\frac{1}{\\sqrt{2}} e_i$. Key lemma: $(1/\\sqrt{2})^2 = 1/2$. Distance computation uses `Finset.add_sum_erase` to isol"
     },
     {
       "id": "irrefl-embedding",
       "title": "Embedding Existence for Irreflexive Graphs",
       "startLine": 272,
       "endLine": 317,
-      "summary": "Constructive proof of `hasUnitEmbedding_exists_irrefl`: every finite irreflexive graph embeds in some $\\mathbb{R}^n$ via the simplex construction. Uses `Fintype.truncEquivFin` to reduce to `Fin |V|`."
+      "summary": "Constructive proof of `hasUnitEmbedding_exists_irrefl`: every finite irreflexive graph embeds in some $\\mathbb{R}^n$ via the simplex construction. Uses `Fintype.truncEquivFin` to reduce to `Fin |V|`.",
+      "mathContext": "Constructive proof of `hasUnitEmbedding_exists_irrefl`: every finite irreflexive graph embeds in some $\\mathbb{R}^n$ via the simplex construction. Uses `Fintype.truncEquivFin` to reduce to `Fin |V|`."
     },
     {
       "id": "conjecture-relationships",
       "title": "Conjecture Relationships",
       "summary": "Proves $K_{d+1}$ optimality implies monotonicity via 4-way case analysis on $d_1, d_2$ being 4. Building blocks: $\\binom{n}{2}$ monotonicity via `Nat.choose_le_choose` and the inequality $\\binom{d+1}{2} \\ge d$.",
       "startLine": 318,
-      "endLine": 377
+      "endLine": 377,
+      "mathContext": "Proves $K_{d+1}$ optimality implies monotonicity via 4-way case analysis on $d_1, d_2$ being 4. Building blocks: $\\binom{n}{2}$ monotonicity via `Nat.choose_le_choose` and the inequality $\\binom{d+1}{"
     },
     {
       "id": "growth-rate",
       "title": "Growth Rate Analysis",
       "summary": "Successive differences $\\Delta(d) = \\text{minEdges}(d+1) - \\text{minEdges}(d)$ for $d=1..4$. The $d=3 \\to 4$ anomaly: $\\Delta(3) = 3 < 4$. Under the optimality conjecture, $\\Delta(d) = d+1$ (proved via $\\binom{d+2}{2} - \\binom{d+1}{2} = d+1$).",
       "startLine": 330,
-      "endLine": 371
+      "endLine": 371,
+      "mathContext": "Successive differences $\\Delta(d) = \\text{minEdges}(d+1) - \\text{minEdges}(d)$ for $d=1..4$. The $d=3 \\to 4$ anomaly: $\\Delta(3) = 3 < 4$. Under the optimality conjecture, $\\Delta(d) = d+1$ (proved vi"
     },
     {
       "id": "deficiency",
       "title": "Deficiency Function",
       "summary": "Deficiency $\\delta(d) = \\binom{d+1}{2} - \\text{minEdges}(d)$. Computed: $\\delta = 0$ for $d \\in \\{1,2,3,5\\}$, $\\delta(4) = 1$. Proves the equivalence: optimality conjecture $\\iff$ $\\delta(d) = 0$ for all $d \\neq 4$. Confirms $d = 4$ is the unique anomaly for $d \\le 5$ via `interval_cases`.",
       "startLine": 375,
-      "endLine": 1337
+      "endLine": 1337,
+      "mathContext": "Deficiency $\\delta(d) = \\binom{d+1}{2} - \\text{minEdges}(d)$. Computed: $\\delta = 0$ for $d \\in \\{1,2,3,5\\}$, $\\delta(4) = 1$. Proves the equivalence: optimality conjecture $\\iff$ $\\delta(d) = 0$ for "
     }
   ],
   "overview": {

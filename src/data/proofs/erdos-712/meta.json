@@ -85,77 +85,88 @@
       "title": "r-Uniform Hypergraphs",
       "summary": "Hypergraph structure, edgeCount, formsClique, isCliqueFree definitions",
       "startLine": 38,
-      "endLine": 64
+      "endLine": 64,
+      "mathContext": "Hypergraph structure, edgeCount, formsClique, isCliqueFree definitions"
     },
     {
       "id": "turan-number",
       "title": "Hypergraph Turán Numbers",
       "summary": "turanNumber definition using sSup, turanNumberDef, turan_upper_trivial axiom",
       "startLine": 65,
-      "endLine": 83
+      "endLine": 83,
+      "mathContext": "turanNumber definition using sSup, turanNumberDef, turan_upper_trivial axiom"
     },
     {
       "id": "turan-density",
       "title": "The Turán Density",
       "summary": "turanDensity, turan_density_exists, turan_density_bounds",
       "startLine": 84,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "turanDensity, turan_density_exists, turan_density_bounds"
     },
     {
       "id": "turan-theorem",
       "title": "Classical Turán Theorem (r=2)",
       "summary": "turanGraphDensity, turan_theorem, turan_graph_extremal",
       "startLine": 102,
-      "endLine": 119
+      "endLine": 119,
+      "mathContext": "turanGraphDensity, turan_theorem, turan_graph_extremal"
     },
     {
       "id": "k43-conjecture",
       "title": "The Case r=3, k=4 (Turán's Conjecture)",
       "summary": "turanConjectureK43 = 5/9, turanHypergraph34_is_clique_free, K43 bounds",
       "startLine": 120,
-      "endLine": 146
+      "endLine": 146,
+      "mathContext": "turanConjectureK43 = 5/9, turanHypergraph34_is_clique_free, K43 bounds"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds and Results",
       "summary": "turan_density_positive, de_caen_lower_bound, kruskal_katona_upper, flag_algebras_upper",
       "startLine": 147,
-      "endLine": 166
+      "endLine": 166,
+      "mathContext": "turan_density_positive, de_caen_lower_bound, kruskal_katona_upper, flag_algebras_upper"
     },
     {
       "id": "general-problem",
       "title": "The General Problem Statement",
       "summary": "erdos_712_problem, erdos_712_open, erdos_712 theorem with full proof",
       "startLine": 167,
-      "endLine": 202
+      "endLine": 202,
+      "mathContext": "erdos_712_problem, erdos_712_open, erdos_712 theorem with full proof"
     },
     {
       "id": "conjectures",
       "title": "Related Conjectures",
       "summary": "extremal_structure_conjecture, mubayi_K53_conjecture",
       "startLine": 203,
-      "endLine": 219
+      "endLine": 219,
+      "mathContext": "extremal_structure_conjecture, mubayi_K53_conjecture"
     },
     {
       "id": "computational",
       "title": "Computational Approaches",
       "summary": "flag_algebra_method, computed_bounds for small cases",
       "startLine": 220,
-      "endLine": 234
+      "endLine": 234,
+      "mathContext": "flag_algebra_method, computed_bounds for small cases"
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "summary": "ramsey_connection, coding_connection",
       "startLine": 235,
-      "endLine": 252
+      "endLine": 252,
+      "mathContext": "ramsey_connection, coding_connection"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_712_summary: graph case solved, hypergraph case open, K_4^3 bounds",
       "startLine": 253,
-      "endLine": 273
+      "endLine": 273,
+      "mathContext": "erdos_712_summary: graph case solved, hypergraph case open, K_4^3 bounds"
     }
   ],
   "conclusion": {

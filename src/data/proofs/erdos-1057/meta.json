@@ -106,70 +106,80 @@
       "title": "Definitions: Korselt and Carmichael",
       "summary": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theorem.",
       "startLine": 39,
-      "endLine": 60
+      "endLine": 60,
+      "mathContext": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theore"
     },
     {
       "id": "small",
       "title": "Verified Small Carmichael Numbers",
       "summary": "Formally verifies $561, 1105, 1729, 2465, 2821, 6601, 8911$ as Carmichael numbers using `native_decide` for primality checks and `norm_num` for Korselt divisibility. Each proof follows the same pattern: squarefreeness via `Nat.squarefree_iff_prime_squarefree`, then Korselt divisibility by enumerating prime factors.",
       "startLine": 61,
-      "endLine": 230
+      "endLine": 230,
+      "mathContext": "Formally verifies $561, 1105, 1729, 2465, 2821, 6601, 8911$ as Carmichael numbers using `native_decide` for primality checks and `norm_num` for Korselt divisibility. Each proof follows the same patter"
     },
     {
       "id": "counting",
       "title": "Counting Function C(x)",
       "summary": "Defines $C(x)$ via `Finset.filter` and proves monotonicity $x \\leq y \\implies C(x) \\leq C(y)$ using Mathlib's `Finset.card_le_card` and `Finset.range_mono`.",
       "startLine": 231,
-      "endLine": 249
+      "endLine": 249,
+      "mathContext": "Defines $C(x)$ via `Finset.filter` and proves monotonicity $x \\leq y \\implies C(x) \\leq C(y)$ using Mathlib's `Finset.card_le_card` and `Finset.range_mono`."
     },
     {
       "id": "bounds",
       "title": "Known Bounds on C(x)",
       "summary": "Axiomatizes Erdős's 1956 upper bound, Lichtman's 2022 lower bound ($x^{0.3389}$), Harman's 2008 bound ($x^{0.33336704}$), the AGP infinitude theorem, and AGP's quantitative $x^{2/7}$ bound.",
       "startLine": 250,
-      "endLine": 277
+      "endLine": 277,
+      "mathContext": "Axiomatizes Erdős's 1956 upper bound, Lichtman's 2022 lower bound ($x^{0.3389}$), Harman's 2008 bound ($x^{0.33336704}$), the AGP infinitude theorem, and AGP's quantitative $x^{2/7}$ bound."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture and Pomerance Prediction",
       "summary": "Formalizes $C(x) = x^{1-o(1)}$ as `erdos1057Conjecture`, the log-ratio formulation via `Filter.Tendsto`, and Pomerance's heuristic as `pomeranceConjecture`.",
       "startLine": 278,
-      "endLine": 301
+      "endLine": 301,
+      "mathContext": "Formalizes $C(x) = x^{1-o(1)}$ as `erdos1057Conjecture`, the log-ratio formulation via `Filter.Tendsto`, and Pomerance's heuristic as `pomeranceConjecture`."
     },
     {
       "id": "structural",
       "title": "Structural Theorems (Verified)",
       "summary": "Three fully verified structural results: (1) Carmichael numbers are odd (parity-squarefreeness argument), (2) not semiprimes (coprimality argument via $\\mathbb{Z}$ lifting), (3) have $\\geq 3$ prime factors (case analysis on factorization cardinality). Also proves no Carmichael is a prime power.",
       "startLine": 302,
-      "endLine": 518
+      "endLine": 518,
+      "mathContext": "Three fully verified structural results: (1) Carmichael numbers are odd (parity-squarefreeness argument), (2) not semiprimes (coprimality argument via $\\mathbb{Z}$ lifting), (3) have $\\geq 3$ prime fa"
     },
     {
       "id": "gap",
       "title": "The Exponent Gap",
       "summary": "Defines `upperExponent(x) = 1 - \\log\\log\\log x / \\log\\log x` and `lowerExponent = 0.3389`. Proves the lower bound exponent is $< 1$. Packages the open problem as `erdos1057OpenProblem`.",
       "startLine": 519,
-      "endLine": 538
+      "endLine": 538,
+      "mathContext": "Defines `upperExponent(x) = 1 - \\log\\log\\log x / \\log\\log x` and `lowerExponent = 0.3389`. Proves the lower bound exponent is $< 1$. Packages the open problem as `erdos1057OpenProblem`."
     },
     {
       "id": "utilities",
       "title": "Utility Lemmas and Extractors",
       "summary": "Accessor lemmas extracting individual components from `IsCarmichael`: `carmichael_gt_one`, `carmichael_composite`, `carmichael_squarefree`, `carmichael_korselt_dvd`. Plus lower bound comparison theorems proving $2/7 < 0.33336704 < 0.3389 < 1$.",
       "startLine": 539,
-      "endLine": 575
+      "endLine": 575,
+      "mathContext": "Accessor lemmas extracting individual components from `IsCarmichael`: `carmichael_gt_one`, `carmichael_composite`, `carmichael_squarefree`, `carmichael_korselt_dvd`. Plus lower bound comparison theore"
     },
     {
       "id": "counting-properties",
       "title": "Counting Function Properties",
       "summary": "Proves $C(0) = C(1) = 0$, $C(560) = 0$ (via decidable checking), $C(561) \\geq 1$, $C(2821) \\geq 5$, $C(8911) \\geq 7$ (by constructing explicit witness sets), and $C$ unbounded (inductive construction from AGP).",
       "startLine": 576,
-      "endLine": 727
+      "endLine": 727,
+      "mathContext": "Proves $C(0) = C(1) = 0$, $C(560) = 0$ (via decidable checking), $C(561) \\geq 1$, $C(2821) \\geq 5$, $C(8911) \\geq 7$ (by constructing explicit witness sets), and $C$ unbounded (inductive construction "
     },
     {
       "id": "deeper-structure",
       "title": "Deeper Structural Properties",
       "summary": "Additional verified results: minimum prime $\\geq 3$, distinct prime factors (from squarefree), product-of-primes decomposition, multiplicity-one factorization, Korselt congruence $n \\equiv 1 \\pmod{p-1}$, double congruence, and all seven small Carmichaels have exactly 3 prime factors.",
       "startLine": 728,
-      "endLine": 1113
+      "endLine": 1113,
+      "mathContext": "Additional verified results: minimum prime $\\geq 3$, distinct prime factors (from squarefree), product-of-primes decomposition, multiplicity-one factorization, Korselt congruence $n \\equiv 1 \\pmod{p-1"
     }
   ],
   "conclusion": {
@@ -234,6 +244,16 @@
       "id": "dirichlets-theorem",
       "relationship": "key construction tool",
       "description": "Dirichlet's theorem on primes in arithmetic progressions is used in the AGP construction; finding sufficiently many primes $p$ with $(p-1) \\mid L$ for a suitable $L$ is the core step in building large sets of Carmichael numbers."
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "structural prerequisite",
+      "description": "The Fundamental Theorem of Arithmetic underpins both Korselt's criterion and the squarefreeness requirement: Carmichael "
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "sieve-method context",
+      "description": "Bertrand's postulate (a prime between $n$ and $2n$) and the AGP Carmichael lower bound both use sieve-theoretic and anal"
     }
   ],
   "references": [

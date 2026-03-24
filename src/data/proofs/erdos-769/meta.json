@@ -76,63 +76,72 @@
       "title": "Decomposability Predicate",
       "summary": "CanDecomposeCubeIntoKCubes definition",
       "startLine": 34,
-      "endLine": 42
+      "endLine": 42,
+      "mathContext": "CanDecomposeCubeIntoKCubes definition"
     },
     {
       "id": "c-function",
       "title": "Cube Dissection Function",
       "summary": "cubeDissectionNumber axiom with spec and minimality",
       "startLine": 43,
-      "endLine": 57
+      "endLine": 57,
+      "mathContext": "cubeDissectionNumber axiom with spec and minimality"
     },
     {
       "id": "dimension-2",
       "title": "The Dimension 2 Case",
       "summary": "c(2) = 6: impossible for k = 2,3,4,5; achievable for k = 6",
       "startLine": 58,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "c(2) = 6: impossible for k = 2,3,4,5; achievable for k = 6"
     },
     {
       "id": "hadwiger",
       "title": "Hadwiger's Lower Bound",
       "summary": "c(n) ≥ 3·2^{n-1}, proved theorem hadwiger_explicit",
       "startLine": 72,
-      "endLine": 84
+      "endLine": 84,
+      "mathContext": "c(n) ≥ 3·2^{n-1}, proved theorem hadwiger_explicit"
     },
     {
       "id": "connor-marmorino-lower",
       "title": "Connor-Marmorino Lower Bound",
       "summary": "c(n) ≥ 2^{n+1} - 1, proved connor_vs_hadwiger comparison",
       "startLine": 85,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "c(n) ≥ 2^{n+1} - 1, proved connor_vs_hadwiger comparison"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Burgess-Erdős, Hudelson, Connor-Marmorino upper bounds",
       "startLine": 97,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "Burgess-Erdős, Hudelson, Connor-Marmorino upper bounds"
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture",
       "summary": "c(n) > n^n when n+1 is prime; main open question",
       "startLine": 124,
-      "endLine": 135
+      "endLine": 135,
+      "mathContext": "c(n) > n^n when n+1 is prime; main open question"
     },
     {
       "id": "packing-volume",
       "title": "Packing vs Volume",
       "summary": "packing_beyond_volume axiom",
       "startLine": 136,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "packing_beyond_volume axiom"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_769_summary theorem combining key results",
       "startLine": 146,
-      "endLine": 158
+      "endLine": 158,
+      "mathContext": "erdos_769_summary theorem combining key results"
     }
   ],
   "conclusion": {

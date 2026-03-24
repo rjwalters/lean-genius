@@ -66,56 +66,64 @@
       "title": "Imports and Module Documentation",
       "startLine": 1,
       "endLine": 56,
-      "summary": "Imports `Mathlib.NumberTheory.SumPrimeReciprocals` for the main theorem and `Topology.Algebra.InfiniteSum.Basic` for summability. Documents the historical context (Euler 1737), proof strategy (Erdős's elementary argument), and the comparison $H_n \\sim \\ln(n)$ vs $\\sum_{p \\leq n} 1/p \\sim \\ln(\\ln(n))$."
+      "summary": "Imports `Mathlib.NumberTheory.SumPrimeReciprocals` for the main theorem and `Topology.Algebra.InfiniteSum.Basic` for summability. Documents the historical context (Euler 1737), proof strategy (Erdős's elementary argument), and the comparison $H_n \\sim \\ln(n)$ vs $\\sum_{p \\leq n} 1/p \\sim \\ln(\\ln(n))$.",
+      "mathContext": "Imports `Mathlib.NumberTheory.SumPrimeReciprocals` for the main theorem and `Topology.Algebra.InfiniteSum.Basic` for summability. Documents the historical context (Euler 1737), proof strategy (Erdős's"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: $\\sum 1/p$ Diverges",
       "startLine": 57,
       "endLine": 77,
-      "summary": "Proves `¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))` via `Nat.Primes.not_summable_one_div`, plus an alternative formulation using inverse notation `(p : ℝ)⁻¹`."
+      "summary": "Proves `¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))` via `Nat.Primes.not_summable_one_div`, plus an alternative formulation using inverse notation `(p : ℝ)⁻¹`.",
+      "mathContext": "Proves `¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))` via `Nat.Primes.not_summable_one_div`, plus an alternative formulation using inverse notation `(p : ℝ)⁻¹`."
     },
     {
       "id": "indicator-formulation",
       "title": "Indicator Function Formulation",
       "startLine": 78,
       "endLine": 90,
-      "summary": "Expresses the prime reciprocal sum as a sub-sum of the harmonic series using `Set.indicator`: for each $n$, the term is $1/n$ if $n$ is prime, else $0$. Proved via `not_summable_one_div_on_primes`."
+      "summary": "Expresses the prime reciprocal sum as a sub-sum of the harmonic series using `Set.indicator`: for each $n$, the term is $1/n$ if $n$ is prime, else $0$. Proved via `not_summable_one_div_on_primes`.",
+      "mathContext": "Expresses the prime reciprocal sum as a sub-sum of the harmonic series using `Set.indicator`: for each $n$, the term is $1/n$ if $n$ is prime, else $0$. Proved via `not_summable_one_div_on_primes`."
     },
     {
       "id": "p-series-criterion",
       "title": "The $p$-Series over Primes",
       "startLine": 91,
       "endLine": 110,
-      "summary": "Proves the sharp convergence criterion: $\\sum_p p^r$ converges iff $r < -1$ via `Nat.Primes.summable_rpow`. The critical exponent $r = -1$ is recovered as a special case."
+      "summary": "Proves the sharp convergence criterion: $\\sum_p p^r$ converges iff $r < -1$ via `Nat.Primes.summable_rpow`. The critical exponent $r = -1$ is recovered as a special case.",
+      "mathContext": "Proves the sharp convergence criterion: $\\sum_p p^r$ converges iff $r < -1$ via `Nat.Primes.summable_rpow`. The critical exponent $r = -1$ is recovered as a special case."
     },
     {
       "id": "significance",
       "title": "Significance for Prime Distribution",
       "startLine": 111,
       "endLine": 127,
-      "summary": "Documents connections to analytic number theory: Basel problem ($\\sum 1/n^2 = \\pi^2/6$), harmonic series ($\\sum 1/n \\sim \\ln n$), Prime Number Theorem ($\\pi(n) \\sim n/\\ln n$), Mertens' theorems, and the Riemann zeta function."
+      "summary": "Documents connections to analytic number theory: Basel problem ($\\sum 1/n^2 = \\pi^2/6$), harmonic series ($\\sum 1/n \\sim \\ln n$), Prime Number Theorem ($\\pi(n) \\sim n/\\ln n$), Mertens' theorems, and the Riemann zeta function.",
+      "mathContext": "Documents connections to analytic number theory: Basel problem ($\\sum 1/n^2 = \\pi^2/6$), harmonic series ($\\sum 1/n \\sim \\ln n$), Prime Number Theorem ($\\pi(n) \\sim n/\\ln n$), Mertens' theorems, and t"
     },
     {
       "id": "convergent-cases",
       "title": "Convergent Cases: $\\sum 1/p^2$",
       "startLine": 128,
       "endLine": 146,
-      "summary": "Proves $\\sum_p 1/p^2$ converges by converting to the $r = -2$ case of the general criterion. Uses `Real.rpow_neg` and `Real.rpow_two` for the algebraic manipulation. The prime zeta values $P(2) \\approx 0.4522$ and $P(3) \\approx 0.1747$ are noted."
+      "summary": "Proves $\\sum_p 1/p^2$ converges by converting to the $r = -2$ case of the general criterion. Uses `Real.rpow_neg` and `Real.rpow_two` for the algebraic manipulation. The prime zeta values $P(2) \\approx 0.4522$ and $P(3) \\approx 0.1747$ are noted.",
+      "mathContext": "Proves $\\sum_p 1/p^2$ converges by converting to the $r = -2$ case of the general criterion. Uses `Real.rpow_neg` and `Real.rpow_two` for the algebraic manipulation. The prime zeta values $P(2) \\appro"
     },
     {
       "id": "erdos-proof-strategy",
       "title": "Erdős's Proof Strategy",
       "startLine": 147,
       "endLine": 159,
-      "summary": "Documents Erdős's elementary proof from \"Proofs from THE BOOK\": assume convergence, count $k$-smooth numbers ($\\leq 2^k \\sqrt{n}$), bound non-smooth numbers ($< n/2$), derive contradiction $n \\leq 4^k$ for all $n$."
+      "summary": "Documents Erdős's elementary proof from \"Proofs from THE BOOK\": assume convergence, count $k$-smooth numbers ($\\leq 2^k \\sqrt{n}$), bound non-smooth numbers ($< n/2$), derive contradiction $n \\leq 4^k$ for all $n$.",
+      "mathContext": "Documents Erdős's elementary proof from \"Proofs from THE BOOK\": assume convergence, count $k$-smooth numbers ($\\leq 2^k \\sqrt{n}$), bound non-smooth numbers ($< n/2$), derive contradiction $n \\leq 4^k"
     },
     {
       "id": "final-checks",
       "title": "Verification and Namespace",
       "startLine": 160,
       "endLine": 164,
-      "summary": "Type-checks the three main results: `prime_reciprocal_not_summable`, `indicator_primes_not_summable`, and `prime_power_summable_iff`. Closes the `PrimeReciprocalDivergence` namespace."
+      "summary": "Type-checks the three main results: `prime_reciprocal_not_summable`, `indicator_primes_not_summable`, and `prime_power_summable_iff`. Closes the `PrimeReciprocalDivergence` namespace.",
+      "mathContext": "Type-checks the three main results: `prime_reciprocal_not_summable`, `indicator_primes_not_summable`, and `prime_power_summable_iff`. Closes the `PrimeReciprocalDivergence` namespace."
     }
   ],
   "conclusion": {
@@ -197,6 +205,36 @@
       "id": "",
       "relationship": "related",
       "description": "Related gallery proof"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "strengthens",
+      "description": "The divergence of $\\sum 1/p$ is a quantitative strengthening of Euclid's theorem: not only infinitely many primes, but d"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The prime reciprocal sum is a sparse sub-sum of the harmonic series; both diverge but $\\sum 1/p \\sim \\ln \\ln n$ grows fa"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem ($\\sum 1/n^2 = \\pi^2/6$) connects to the prime zeta function $P(2) = \\sum 1/p^2 \\approx 0.4522$; both "
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The PNT ($\\pi(n) \\sim n/\\ln n$) is equivalent to Mertens-type estimates; prime reciprocal divergence is a weaker consequ"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) and prime reciprocal divergence both quantify how dense primes are; "
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions uses similar analytic techniques; the divergence of $\\sum 1/p$ "
     }
   ],
   "references": [

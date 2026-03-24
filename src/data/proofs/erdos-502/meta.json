@@ -30,56 +30,64 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Module docstring stating the problem, its solved status, and references. Imports `Analysis.InnerProductSpace.Basic` for the metric structure on $\\mathbb{R}^n$, `Combinatorics.Choose.Basic` for binomial coefficients, and `Data.Finset.Card` for finite set cardinalities."
+      "summary": "Module docstring stating the problem, its solved status, and references. Imports `Analysis.InnerProductSpace.Basic` for the metric structure on $\\mathbb{R}^n$, `Combinatorics.Choose.Basic` for binomial coefficients, and `Data.Finset.Card` for finite set cardinalities.",
+      "mathContext": "Module docstring stating the problem, its solved status, and references. Imports `Analysis.InnerProductSpace.Basic` for the metric structure on $\\mathbb{R}^n$, `Combinatorics.Choose.Basic` for binomia"
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 24,
       "endLine": 36,
-      "summary": "Defines `IsTwoDistanceSet n A` requiring exactly two distinct positive distances $d_1 \\neq d_2$ among all pairs in $A \\subseteq \\mathbb{R}^n$, and `maxTwoDistSize n = \\sup\\{|A| : A \\text{ is a two-distance set in } \\mathbb{R}^n\\}$."
+      "summary": "Defines `IsTwoDistanceSet n A` requiring exactly two distinct positive distances $d_1 \\neq d_2$ among all pairs in $A \\subseteq \\mathbb{R}^n$, and `maxTwoDistSize n = \\sup\\{|A| : A \\text{ is a two-distance set in } \\mathbb{R}^n\\}$.",
+      "mathContext": "Defines `IsTwoDistanceSet n A` requiring exactly two distinct positive distances $d_1 \\neq d_2$ among all pairs in $A \\subseteq \\mathbb{R}^n$, and `maxTwoDistSize n = \\sup\\{|A| : A \\text{ is a two-dis"
     },
     {
       "id": "binary-construction",
       "title": "The Binary Vector Construction",
       "startLine": 37,
       "endLine": 50,
-      "summary": "Constructs `binaryTwoVec n i j` — indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ — forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom{n}{2}$ points."
+      "summary": "Constructs `binaryTwoVec n i j` — indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ — forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom{n}{2}$ points.",
+      "mathContext": "Constructs `binaryTwoVec n i j` — indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ — forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bounds",
       "startLine": 51,
       "endLine": 60,
-      "summary": "Basic lower bound $f(n) \\geq \\binom{n}{2}$ from binary vectors, improved to $f(n) \\geq \\binom{n+1}{2}$ via projection into a suitable $(n-1)$-dimensional affine subspace."
+      "summary": "Basic lower bound $f(n) \\geq \\binom{n}{2}$ from binary vectors, improved to $f(n) \\geq \\binom{n+1}{2}$ via projection into a suitable $(n-1)$-dimensional affine subspace.",
+      "mathContext": "Basic lower bound $f(n) \\geq \\binom{n}{2}$ from binary vectors, improved to $f(n) \\geq \\binom{n+1}{2}$ via projection into a suitable $(n-1)$-dimensional affine subspace."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound — Bannai–Bannai–Stanton",
       "startLine": 61,
       "endLine": 68,
-      "summary": "The BBS theorem: $f(n) \\leq \\binom{n+2}{2}$. The proof associates to each point a polynomial vanishing on the other distance, bounding the dimension of the resulting polynomial space by $\\binom{n+2}{2}$."
+      "summary": "The BBS theorem: $f(n) \\leq \\binom{n+2}{2}$. The proof associates to each point a polynomial vanishing on the other distance, bounding the dimension of the resulting polynomial space by $\\binom{n+2}{2}$.",
+      "mathContext": "The BBS theorem: $f(n) \\leq \\binom{n+2}{2}$. The proof associates to each point a polynomial vanishing on the other distance, bounding the dimension of the resulting polynomial space by $\\binom{n+2}{2"
     },
     {
       "id": "main-result",
       "title": "Main Combined Bounds",
       "startLine": 69,
       "endLine": 76,
-      "summary": "The sandwich theorem: $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$, establishing $f(n) = \\Theta(n^2)$ with an additive gap of at most $n+1$."
+      "summary": "The sandwich theorem: $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$, establishing $f(n) = \\Theta(n^2)$ with an additive gap of at most $n+1$.",
+      "mathContext": "The sandwich theorem: $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$, establishing $f(n) = \\Theta(n^2)$ with an additive gap of at most $n+1$."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "startLine": 77,
       "endLine": 84,
-      "summary": "Exact values: $f(2) = 5$ (vertices of a regular pentagon) and $f(3) = 6$. These match the lower bound $\\binom{3}{2} = 3$ and $\\binom{4}{2} = 6$ respectively, with the planar case being exceptional."
+      "summary": "Exact values: $f(2) = 5$ (vertices of a regular pentagon) and $f(3) = 6$. These match the lower bound $\\binom{3}{2} = 3$ and $\\binom{4}{2} = 6$ respectively, with the planar case being exceptional.",
+      "mathContext": "Exact values: $f(2) = 5$ (vertices of a regular pentagon) and $f(3) = 6$. These match the lower bound $\\binom{3}{2} = 3$ and $\\binom{4}{2} = 6$ respectively, with the planar case being exceptional."
     },
     {
       "id": "coxeter-question",
       "title": "Coxeter's Original Question and Historical Context",
       "startLine": 85,
       "endLine": 97,
-      "summary": "Coxeter's question — is $f(n)$ polynomial? — answered affirmatively by BBS. Erdős's original weaker bound $f(n) \\leq n!$ (exponential) is stated as a historical record of the pre-BBS state of knowledge."
+      "summary": "Coxeter's question — is $f(n)$ polynomial? — answered affirmatively by BBS. Erdős's original weaker bound $f(n) \\leq n!$ (exponential) is stated as a historical record of the pre-BBS state of knowledge.",
+      "mathContext": "Coxeter's question — is $f(n)$ polynomial? — answered affirmatively by BBS. Erdős's original weaker bound $f(n) \\leq n!$ (exponential) is stated as a historical record of the pre-BBS state of knowledg"
     }
   ],
   "overview": {

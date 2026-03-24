@@ -74,91 +74,104 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 39,
-      "summary": "Module docstring with Barbeau (1976) attribution and Cambie's coprime solution. Imports `Nat.Prime.Basic`, `Data.Rat.Basic` ($\\mathbb{Q}$), `BigOperators` ($\\sum$ notation). Works over $\\mathbb{Q}$ for exact arithmetic."
+      "summary": "Module docstring with Barbeau (1976) attribution and Cambie's coprime solution. Imports `Nat.Prime.Basic`, `Data.Rat.Basic` ($\\mathbb{Q}$), `BigOperators` ($\\sum$ notation). Works over $\\mathbb{Q}$ for exact arithmetic.",
+      "mathContext": "Module docstring with Barbeau (1976) attribution and Cambie's coprime solution. Imports `Nat.Prime.Basic`, `Data.Rat.Basic` ($\\mathbb{Q}$), `BigOperators` ($\\sum$ notation). Works over $\\mathbb{Q}$ fo"
     },
     {
       "id": "problem-statement",
       "title": "Problem Statement",
       "startLine": 40,
       "endLine": 59,
-      "summary": "Defines `reciprocalSum` ($\\sum_{n \\in S} 1/n \\in \\mathbb{Q}$), `reciprocalProduct` (product of two sums), `IsSetOfPrimes` ($\\forall p \\in S, \\text{Nat.Prime}(p)$), and `IsPairwiseCoprime` (uses `Set.Pairwise Nat.Coprime`)."
+      "summary": "Defines `reciprocalSum` ($\\sum_{n \\in S} 1/n \\in \\mathbb{Q}$), `reciprocalProduct` (product of two sums), `IsSetOfPrimes` ($\\forall p \\in S, \\text{Nat.Prime}(p)$), and `IsPairwiseCoprime` (uses `Set.Pairwise Nat.Coprime`).",
+      "mathContext": "Defines `reciprocalSum` ($\\sum_{n \\in S} 1/n \\in \\mathbb{Q}$), `reciprocalProduct` (product of two sums), `IsSetOfPrimes` ($\\forall p \\in S, \\text{Nat.Prime}(p)$), and `IsPairwiseCoprime` (uses `Set.P"
     },
     {
       "id": "open-problem",
       "title": "The Open Problem (Prime Version)",
       "startLine": 60,
       "endLine": 74,
-      "summary": "States `ErdosProblem307`: $\\exists P, Q \\subseteq \\text{Primes}$ with $(\\sum_P 1/p)(\\sum_Q 1/q) = 1$. This remains OPEN after nearly 50 years — no solution found, no impossibility proof known."
+      "summary": "States `ErdosProblem307`: $\\exists P, Q \\subseteq \\text{Primes}$ with $(\\sum_P 1/p)(\\sum_Q 1/q) = 1$. This remains OPEN after nearly 50 years — no solution found, no impossibility proof known.",
+      "mathContext": "States `ErdosProblem307`: $\\exists P, Q \\subseteq \\text{Primes}$ with $(\\sum_P 1/p)(\\sum_Q 1/q) = 1$. This remains OPEN after nearly 50 years — no solution found, no impossibility proof known."
     },
     {
       "id": "solved-coprime",
       "title": "The Solved Coprime Version",
       "startLine": 75,
       "endLine": 146,
-      "summary": "Defines `ErdosProblem307Coprime` and provides two verified Cambie examples: $\\{1,5\\}, \\{2,3\\}$ giving $(6/5)(5/6) = 1$ and $\\{1,41\\}, \\{2,3,7\\}$ giving $(42/41)(41/42) = 1$. All coprimality, sum, and product verifications are fully proved via `norm_num` and `decide`."
+      "summary": "Defines `ErdosProblem307Coprime` and provides two verified Cambie examples: $\\{1,5\\}, \\{2,3\\}$ giving $(6/5)(5/6) = 1$ and $\\{1,41\\}, \\{2,3,7\\}$ giving $(42/41)(41/42) = 1$. All coprimality, sum, and product verifications are fully proved via `norm_num` and `decide`.",
+      "mathContext": "Defines `ErdosProblem307Coprime` and provides two verified Cambie examples: $\\{1,5\\}, \\{2,3\\}$ giving $(6/5)(5/6) = 1$ and $\\{1,41\\}, \\{2,3,7\\}$ giving $(42/41)(41/42) = 1$. All coprimality, sum, and "
     },
     {
       "id": "strengthened-coprime",
       "title": "Strengthened Coprime Version",
       "startLine": 147,
       "endLine": 159,
-      "summary": "Defines `ErdosProblem307CoprimeStrengthened`: require $1 \\notin P \\cup Q$. No examples known — all Cambie solutions use the $1 + 1/n = (n+1)/n$ trick. This is an intermediate open problem."
+      "summary": "Defines `ErdosProblem307CoprimeStrengthened`: require $1 \\notin P \\cup Q$. No examples known — all Cambie solutions use the $1 + 1/n = (n+1)/n$ trick. This is an intermediate open problem.",
+      "mathContext": "Defines `ErdosProblem307CoprimeStrengthened`: require $1 \\notin P \\cup Q$. No examples known — all Cambie solutions use the $1 + 1/n = (n+1)/n$ trick. This is an intermediate open problem."
     },
     {
       "id": "constraints",
       "title": "Constraints on Prime Solutions",
       "startLine": 160,
       "endLine": 197,
-      "summary": "Three sorry theorems: (1) $P \\cap Q = \\emptyset$ via $p$-adic valuation, (2) $\\sum_{P \\cup Q} 1/p \\geq 2$ via AM-GM ($xy = 1 \\implies x+y \\geq 2$), (3) $|P \\cup Q| \\geq 60$ via Mertens' theorem ($\\sum_{p \\leq 281} 1/p \\approx 2.009$)."
+      "summary": "Three sorry theorems: (1) $P \\cap Q = \\emptyset$ via $p$-adic valuation, (2) $\\sum_{P \\cup Q} 1/p \\geq 2$ via AM-GM ($xy = 1 \\implies x+y \\geq 2$), (3) $|P \\cup Q| \\geq 60$ via Mertens' theorem ($\\sum_{p \\leq 281} 1/p \\approx 2.009$).",
+      "mathContext": "Three sorry theorems: (1) $P \\cap Q = \\emptyset$ via $p$-adic valuation, (2) $\\sum_{P \\cup Q} 1/p \\geq 2$ via AM-GM ($xy = 1 \\implies x+y \\geq 2$), (3) $|P \\cup Q| \\geq 60$ via Mertens' theorem ($\\sum"
     },
     {
       "id": "hardness",
       "title": "Why the Problem is Hard",
       "startLine": 198,
       "endLine": 220,
-      "summary": "Defines `primeReciprocalPartialSum` via Finset filter. Axiomatizes divergence of $\\sum 1/p$ (Euler 1737) and product rigidity: most prime sets $P$ have no matching $Q$ because $(\\sum_P)^{-1}$ is rarely a sum of prime reciprocals."
+      "summary": "Defines `primeReciprocalPartialSum` via Finset filter. Axiomatizes divergence of $\\sum 1/p$ (Euler 1737) and product rigidity: most prime sets $P$ have no matching $Q$ because $(\\sum_P)^{-1}$ is rarely a sum of prime reciprocals.",
+      "mathContext": "Defines `primeReciprocalPartialSum` via Finset filter. Axiomatizes divergence of $\\sum 1/p$ (Euler 1737) and product rigidity: most prime sets $P$ have no matching $Q$ because $(\\sum_P)^{-1}$ is rarel"
     },
     {
       "id": "egyptian",
       "title": "Related Egyptian Fraction Problems",
       "startLine": 221,
       "endLine": 242,
-      "summary": "Defines `IsEgyptianOne` ($\\sum_S 1/n = 1$ with all $n > 0$). Proves $1 = 1/2 + 1/3 + 1/6$ via `norm_num`. Connects to the Erdős-Graham conjecture (Croot 2003) on unit fraction representations."
+      "summary": "Defines `IsEgyptianOne` ($\\sum_S 1/n = 1$ with all $n > 0$). Proves $1 = 1/2 + 1/3 + 1/6$ via `norm_num`. Connects to the Erdős-Graham conjecture (Croot 2003) on unit fraction representations.",
+      "mathContext": "Defines `IsEgyptianOne` ($\\sum_S 1/n = 1$ with all $n > 0$). Proves $1 = 1/2 + 1/3 + 1/6$ via `norm_num`. Connects to the Erdős-Graham conjecture (Croot 2003) on unit fraction representations."
     },
     {
       "id": "computational",
       "title": "Computational Approaches",
       "startLine": 243,
       "endLine": 256,
-      "summary": "Defines `searchSpaceSize = 2^{60}$. With 60 primes minimum, the $\\sim 10^{18}$ partitions are computationally infeasible (36+ years at $10^9$ checks/sec). Smart pruning helps but doesn't overcome the exponential barrier."
+      "summary": "Defines `searchSpaceSize = 2^{60}$. With 60 primes minimum, the $\\sim 10^{18}$ partitions are computationally infeasible (36+ years at $10^9$ checks/sec). Smart pruning helps but doesn't overcome the exponential barrier.",
+      "mathContext": "Defines `searchSpaceSize = 2^{60}$. With 60 primes minimum, the $\\sim 10^{18}$ partitions are computationally infeasible (36+ years at $10^9$ checks/sec). Smart pruning helps but doesn't overcome the "
     },
     {
       "id": "why-one",
       "title": "Why 1 Appears in Coprime Examples",
       "startLine": 257,
       "endLine": 275,
-      "summary": "Proves `pair_with_one`: $\\sum_{\\{1,n\\}} = (n+1)/n$ via `field_simp; ring`. States `one_helps_balance` (sorry): $1 \\in P \\implies \\sum_P > 1$. The $1 + 1/n$ identity provides a balancing lever when $n+1$ is smooth."
+      "summary": "Proves `pair_with_one`: $\\sum_{\\{1,n\\}} = (n+1)/n$ via `field_simp; ring`. States `one_helps_balance` (sorry): $1 \\in P \\implies \\sum_P > 1$. The $1 + 1/n$ identity provides a balancing lever when $n+1$ is smooth.",
+      "mathContext": "Proves `pair_with_one`: $\\sum_{\\{1,n\\}} = (n+1)/n$ via `field_simp; ring`. States `one_helps_balance` (sorry): $1 \\in P \\implies \\sum_P > 1$. The $1 + 1/n$ identity provides a balancing lever when $n+"
     },
     {
       "id": "alternative",
       "title": "Alternative Formulations",
       "startLine": 276,
       "endLine": 294,
-      "summary": "Multiplicative form via clearing denominators: the product equals 1 iff $\\prod P \\cdot \\prod Q = (\\sum_{S \\subseteq P} \\prod_{P \\setminus S} p)(\\sum_{T \\subseteq Q} \\prod_{Q \\setminus T} q)$. Connects to elementary symmetric polynomials."
+      "summary": "Multiplicative form via clearing denominators: the product equals 1 iff $\\prod P \\cdot \\prod Q = (\\sum_{S \\subseteq P} \\prod_{P \\setminus S} p)(\\sum_{T \\subseteq Q} \\prod_{Q \\setminus T} q)$. Connects to elementary symmetric polynomials.",
+      "mathContext": "Multiplicative form via clearing denominators: the product equals 1 iff $\\prod P \\cdot \\prod Q = (\\sum_{S \\subseteq P} \\prod_{P \\setminus S} p)(\\sum_{T \\subseteq Q} \\prod_{Q \\setminus T} q)$. Connects"
     },
     {
       "id": "partial",
       "title": "Partial Non-Existence Results",
       "startLine": 295,
       "endLine": 314,
-      "summary": "Two sorry theorems ruling out small cases: no prime solution with $|P| = |Q| = 2$ (since $(p_1+p_2)(q_1+q_2) < p_1 p_2 q_1 q_2$ for primes $\\geq 2$) and no solution with $|P| = 2, |Q| = 3$."
+      "summary": "Two sorry theorems ruling out small cases: no prime solution with $|P| = |Q| = 2$ (since $(p_1+p_2)(q_1+q_2) < p_1 p_2 q_1 q_2$ for primes $\\geq 2$) and no solution with $|P| = 2, |Q| = 3$.",
+      "mathContext": "Two sorry theorems ruling out small cases: no prime solution with $|P| = |Q| = 2$ (since $(p_1+p_2)(q_1+q_2) < p_1 p_2 q_1 q_2$ for primes $\\geq 2$) and no solution with $|P| = 2, |Q| = 3$."
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
       "startLine": 315,
       "endLine": 375,
-      "summary": "Proves `erdos_307_summary`: conjunction of (1) coprime version solved (`erdos_307_coprime_solved`) and (2) prime solutions need $|P \\cup Q| \\geq 60$. File ends with comprehensive post-namespace summary comment."
+      "summary": "Proves `erdos_307_summary`: conjunction of (1) coprime version solved (`erdos_307_coprime_solved`) and (2) prime solutions need $|P \\cup Q| \\geq 60$. File ends with comprehensive post-namespace summary comment.",
+      "mathContext": "Proves `erdos_307_summary`: conjunction of (1) coprime version solved (`erdos_307_coprime_solved`) and (2) prime solutions need $|P \\cup Q| \\geq 60$. File ends with comprehensive post-namespace summar"
     }
   ],
   "crossReferences": [

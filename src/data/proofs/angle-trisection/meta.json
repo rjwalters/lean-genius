@@ -14,7 +14,8 @@
       "field-theory",
       "classic",
       "impossibility",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/AngleTrisection.lean",
     "badge": "verified",
@@ -276,6 +277,46 @@
       "id": "pi-transcendental",
       "relationship": "uses",
       "description": "This file directly imports the pi transcendence proof to establish that squaring the circle is impossible — Lindemann's "
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The tower law for field extensions (a consequence of Lagrange's theorem on subgroup indices) underpins the degree divisi"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's proof that e is transcendental uses the same Lindemann-Weierstrass framework that proves π transcendental — "
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "complementary",
+      "description": "√2 IS constructible (as the diagonal of a unit square, a basic compass-and-straightedge construction) because its minima"
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's formula solves the general cubic by radicals — the trisection polynomial 8x³-6x-1 is a specific cubic whose ro"
+    },
+    {
+      "id": "angle-trisection-oq-02",
+      "relationship": "extended-by",
+      "description": "OQ-02 extends the degree argument to a complete Galois characterization: α is constructible iff Gal(minpoly(α)/ℚ) is a 2"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Proves the Wantzel-Galois characterization connecting Polynomial.Gal to constructibility — strengthening the degree crit"
+    },
+    {
+      "id": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt[3]{2}$ (a special case of the $n$-th root irrationality) is the simplest instance of the deg"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-03",
+      "relationship": "extended-by",
+      "description": "Extends the constructibility framework to the Gauss-Wantzel theorem for regular polygons: the regular $n$-gon is constru"
     }
   ],
   "references": [

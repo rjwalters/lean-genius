@@ -48,63 +48,72 @@
       "title": "Problem Statement",
       "summary": "Erdős-Hajnal problem: edge density vs cycle length variety, GKS theorem, minimization question",
       "startLine": 1,
-      "endLine": 23
+      "endLine": 23,
+      "mathContext": "Erdős-Hajnal problem: edge density vs cycle length variety, GKS theorem, minimization question"
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "ContainsCycleLength, CycleLengthSet, cycleLengthFinset, Fin.succMod for cycles",
       "startLine": 44,
-      "endLine": 68
+      "endLine": 68,
+      "mathContext": "ContainsCycleLength, CycleLengthSet, cycleLengthFinset, Fin.succMod for cycles"
     },
     {
       "id": "edge-density",
       "title": "Edge Density and Reciprocal Sum",
       "summary": "edgeCount, edgeDensity, cycleLengthReciprocalSum definitions",
       "startLine": 69,
-      "endLine": 86
+      "endLine": 86,
+      "mathContext": "edgeCount, edgeDensity, cycleLengthReciprocalSum definitions"
     },
     {
       "id": "gks-theorem",
       "title": "GKS Theorem (1984)",
       "summary": "Gyárfás-Komlós-Szemerédi: Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges on n vertices",
       "startLine": 87,
-      "endLine": 108
+      "endLine": 108,
+      "mathContext": "Gyárfás-Komlós-Szemerédi: Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges on n vertices"
     },
     {
       "id": "open-question",
       "title": "Open Minimization Question",
       "summary": "Erdos65Question: is the reciprocal sum minimized by complete bipartite graphs?",
       "startLine": 109,
-      "endLine": 131
+      "endLine": 131,
+      "mathContext": "Erdos65Question: is the reciprocal sum minimized by complete bipartite graphs?"
     },
     {
       "id": "bipartite-structure",
       "title": "Complete Bipartite Cycle Structure",
       "summary": "complete_bipartite_cycle_lengths, bipartiteCycleSum, bipartiteCycleSum_eq",
       "startLine": 132,
-      "endLine": 160
+      "endLine": 160,
+      "mathContext": "complete_bipartite_cycle_lengths, bipartiteCycleSum, bipartiteCycleSum_eq"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds on Cycle Variety",
       "summary": "min_degree_implies_short_cycle, high_avg_to_min_degree, Zarankiewicz connection",
       "startLine": 161,
-      "endLine": 202
+      "endLine": 202,
+      "mathContext": "min_degree_implies_short_cycle, high_avg_to_min_degree, Zarankiewicz connection"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "density_one_has_cycle, triangle_free_larger_sum, bipartite parity",
       "startLine": 203,
-      "endLine": 263
+      "endLine": 263,
+      "mathContext": "density_one_has_cycle, triangle_free_larger_sum, bipartite parity"
     },
     {
       "id": "summary",
       "title": "Summary and References",
       "summary": "Partial resolution status, GKS proved, minimization open, Liu-Montgomery sharp constant",
       "startLine": 264,
-      "endLine": 287
+      "endLine": 287,
+      "mathContext": "Partial resolution status, GKS proved, minimization open, Liu-Montgomery sharp constant"
     }
   ],
   "conclusion": {

@@ -12,7 +12,8 @@
       "algebra",
       "combinatorics",
       "classic",
-      "beginner"
+      "beginner",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/BinomialTheorem.lean",
     "badge": "mathlib",
@@ -284,6 +285,56 @@
       "id": "binomial-theorem-oq-02",
       "relationship": "extended-by",
       "description": "Generalizes $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ to the multinomial theorem $(x_1 + \\cdots + x_m)^n = \\sum \\frac{n!"
+    },
+    {
+      "id": "binomial-theorem-oq-04",
+      "relationship": "parent",
+      "description": "Sub-entry on advanced binomial coefficient properties."
+    },
+    {
+      "id": "binomial-theorem-oq-03",
+      "relationship": "extended-by",
+      "description": "Derives the binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$ as a probabilistic interpretation of the bin"
+    },
+    {
+      "id": "binomial-theorem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Newton's generalized binomial theorem extends to non-integer exponents: $(1+x)^\\alpha = \\sum_{k=0}^\\infty \\binom{\\alpha}"
+    },
+    {
+      "id": "binomial-theorem-oq-04-oq-02",
+      "relationship": "extended-by",
+      "description": "Proves the Vandermonde identity $\\binom{m+n}{r} = \\sum_{k=0}^r \\binom{m}{k}\\binom{n}{r-k}$ via algebraic coefficient com"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "Mathematical induction is the standard proof technique for the binomial theorem: the inductive step uses Pascal's identi"
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "foundational",
+      "description": "The geometric series $\\sum_{k=0}^n r^k = (1-r^{n+1})/(1-r)$ is the $y = 1$ special case of the binomial theorem when $x "
+    },
+    {
+      "id": "taylor-theorem",
+      "relationship": "extends",
+      "description": "Taylor's theorem provides the framework for Newton's generalized binomial series: $(1+x)^\\alpha = \\sum_{k=0}^\\infty \\fra"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "related",
+      "description": "The birthday problem's exact probability $1 - \\frac{365!}{365^n (365-n)!}$ involves the same factorial and combinatorial"
+    },
+    {
+      "id": "derangements",
+      "relationship": "related",
+      "description": "The derangement formula $D_n = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!}$ uses inclusion-exclusion with binomial coefficients $\\"
+    },
+    {
+      "id": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Faulhaber's formulas for $\\sum_{i=1}^n i^k$ use the binomial theorem in their derivation via the telescoping identity $("
     }
   ],
   "references": [

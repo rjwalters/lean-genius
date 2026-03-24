@@ -92,84 +92,96 @@
       "title": "Basic Definitions",
       "startLine": 44,
       "endLine": 60,
-      "summary": "Defines $\\text{PowersOfTwo} = \\{n \\mid \\exists k,\\; n = 2^k\\}$, the additive complement predicate $\\text{IsAdditiveComplementForLarge}(A, B)$, and specializes to $\\text{IsComplementToPowersOfTwo}(A)$."
+      "summary": "Defines $\\text{PowersOfTwo} = \\{n \\mid \\exists k,\\; n = 2^k\\}$, the additive complement predicate $\\text{IsAdditiveComplementForLarge}(A, B)$, and specializes to $\\text{IsComplementToPowersOfTwo}(A)$.",
+      "mathContext": "Defines $\\text{PowersOfTwo} = \\{n \\mid \\exists k,\\; n = 2^k\\}$, the additive complement predicate $\\text{IsAdditiveComplementForLarge}(A, B)$, and specializes to $\\text{IsComplementToPowersOfTwo}(A)$."
     },
     {
       "id": "counting-functions",
       "title": "Counting Functions and Density Bounds",
       "startLine": 61,
       "endLine": 84,
-      "summary": "Defines $\\text{countingFunction}(A, N) = |A \\cap \\{1,\\ldots,N\\}|$ via `Finset.filter`, the density bound $\\text{HasDensityNOverLogN}$ requiring $\\leq C \\cdot N/\\log N$, Lorentz's weaker bound $O(N \\log\\log N / \\log N)$, and Ruzsa's optimal asymptotic density $\\sim N/\\log_2 N$."
+      "summary": "Defines $\\text{countingFunction}(A, N) = |A \\cap \\{1,\\ldots,N\\}|$ via `Finset.filter`, the density bound $\\text{HasDensityNOverLogN}$ requiring $\\leq C \\cdot N/\\log N$, Lorentz's weaker bound $O(N \\log\\log N / \\log N)$, and Ruzsa's optimal asymptotic density $\\sim N/\\log_2 N$.",
+      "mathContext": "Defines $\\text{countingFunction}(A, N) = |A \\cap \\{1,\\ldots,N\\}|$ via `Finset.filter`, the density bound $\\text{HasDensityNOverLogN}$ requiring $\\leq C \\cdot N/\\log N$, Lorentz's weaker bound $O(N \\lo"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Problem Statement",
       "startLine": 85,
       "endLine": 92,
-      "summary": "States $\\text{Erdos221Conjecture} : \\exists A,\\; \\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasDensityNOverLogN}(A)$."
+      "summary": "States $\\text{Erdos221Conjecture} : \\exists A,\\; \\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasDensityNOverLogN}(A)$.",
+      "mathContext": "States $\\text{Erdos221Conjecture} : \\exists A,\\; \\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasDensityNOverLogN}(A)$."
     },
     {
       "id": "lorentz-1954",
       "title": "Lorentz's Result (1954)",
       "startLine": 93,
       "endLine": 100,
-      "summary": "Axiomatizes `lorentz_1954`: $\\exists A$ with $\\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasLorentzDensity}(A)$. The first positive answer, but with the suboptimal density $O(N \\log\\log N / \\log N)$."
+      "summary": "Axiomatizes `lorentz_1954`: $\\exists A$ with $\\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasLorentzDensity}(A)$. The first positive answer, but with the suboptimal density $O(N \\log\\log N / \\log N)$.",
+      "mathContext": "Axiomatizes `lorentz_1954`: $\\exists A$ with $\\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasLorentzDensity}(A)$. The first positive answer, but with the suboptimal density $O(N \\log\\log N / \\log"
     },
     {
       "id": "ruzsa-construction",
       "title": "Ruzsa's Construction (1972)",
       "startLine": 101,
       "endLine": 131,
-      "summary": "Defines $C = 1/(5 \\log 2)$, the core set $\\{5^n \\cdot m : 5^n \\geq C \\log m\\}$, and $\\text{RuzsaSet} = \\text{Core} + \\{0,1\\}$. Axiomatizes the primitive root property, complement property, and density bound. Proves `ruzsa_1972 : Erdos221Conjecture` from axioms."
+      "summary": "Defines $C = 1/(5 \\log 2)$, the core set $\\{5^n \\cdot m : 5^n \\geq C \\log m\\}$, and $\\text{RuzsaSet} = \\text{Core} + \\{0,1\\}$. Axiomatizes the primitive root property, complement property, and density bound. Proves `ruzsa_1972 : Erdos221Conjecture` from axioms.",
+      "mathContext": "Defines $C = 1/(5 \\log 2)$, the core set $\\{5^n \\cdot m : 5^n \\geq C \\log m\\}$, and $\\text{RuzsaSet} = \\text{Core} + \\{0,1\\}$. Axiomatizes the primitive root property, complement property, and density"
     },
     {
       "id": "solved",
       "title": "Problem #221 — SOLVED",
       "startLine": 132,
       "endLine": 138,
-      "summary": "States `erdos_221_answer : Erdos221Conjecture := ruzsa_1972`. The answer is YES."
+      "summary": "States `erdos_221_answer : Erdos221Conjecture := ruzsa_1972`. The answer is YES.",
+      "mathContext": "States `erdos_221_answer : Erdos221Conjecture := ruzsa_1972`. The answer is YES."
     },
     {
       "id": "optimal-construction",
       "title": "Ruzsa's Exact Complement (2001)",
       "startLine": 139,
       "endLine": 149,
-      "summary": "Defines $\\text{ExactComplementExists}$ requiring asymptotic density $\\sim N/\\log_2 N$, and axiomatizes `ruzsa_2001_exact_complement`. This is the sharpest known result."
+      "summary": "Defines $\\text{ExactComplementExists}$ requiring asymptotic density $\\sim N/\\log_2 N$, and axiomatizes `ruzsa_2001_exact_complement`. This is the sharpest known result.",
+      "mathContext": "Defines $\\text{ExactComplementExists}$ requiring asymptotic density $\\sim N/\\log_2 N$, and axiomatizes `ruzsa_2001_exact_complement`. This is the sharpest known result."
     },
     {
       "id": "optimality",
       "title": "Why $N/\\log N$ is Optimal",
       "startLine": 150,
       "endLine": 169,
-      "summary": "Axiomatizes `density_lower_bound`: any complement requires $\\Omega(N/\\log N)$ elements. Proves `optimal_density` combining the upper bound (Ruzsa) and lower bound to show $N/\\log N$ is tight up to constants."
+      "summary": "Axiomatizes `density_lower_bound`: any complement requires $\\Omega(N/\\log N)$ elements. Proves `optimal_density` combining the upper bound (Ruzsa) and lower bound to show $N/\\log N$ is tight up to constants.",
+      "mathContext": "Axiomatizes `density_lower_bound`: any complement requires $\\Omega(N/\\log N)$ elements. Proves `optimal_density` combining the upper bound (Ruzsa) and lower bound to show $N/\\log N$ is tight up to con"
     },
     {
       "id": "primitive-roots",
       "title": "Connection to Primitive Roots",
       "startLine": 170,
       "endLine": 189,
-      "summary": "Axiomatizes `primitive_root_order`: $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and `powers_cover_residues`: $\\forall r$ coprime to $5^n$, $\\exists k$ with $2^k \\equiv r \\pmod{5^n}$. These are the algebraic foundations of Ruzsa's construction."
+      "summary": "Axiomatizes `primitive_root_order`: $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and `powers_cover_residues`: $\\forall r$ coprime to $5^n$, $\\exists k$ with $2^k \\equiv r \\pmod{5^n}$. These are the algebraic foundations of Ruzsa's construction.",
+      "mathContext": "Axiomatizes `primitive_root_order`: $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and `powers_cover_residues`: $\\forall r$ coprime to $5^n$, $\\exists k$ with $2^k \\equiv r \\pmod{5^n}$. These"
     },
     {
       "id": "generalizations",
       "title": "Generalizations to Other Bases",
       "startLine": 190,
       "endLine": 205,
-      "summary": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and axiomatizes `generalization_to_any_base`: for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $O(N/\\log N)$."
+      "summary": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and axiomatizes `generalization_to_any_base`: for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $O(N/\\log N)$.",
+      "mathContext": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and axiomatizes `generalization_to_any_base`: for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $O(N/\\log N)$."
     },
     {
       "id": "related",
       "title": "Related Sumset Problems",
       "startLine": 206,
       "endLine": 226,
-      "summary": "Axiomatizes `sumset_covering` ($A + \\{2^k\\}$ covers all large integers) and `additive_basis_order_two` ($A \\cup \\text{PowersOfTwo}$ forms a thin additive basis of order 2). Connects to the broader theory of additive bases."
+      "summary": "Axiomatizes `sumset_covering` ($A + \\{2^k\\}$ covers all large integers) and `additive_basis_order_two` ($A \\cup \\text{PowersOfTwo}$ forms a thin additive basis of order 2). Connects to the broader theory of additive bases.",
+      "mathContext": "Axiomatizes `sumset_covering` ($A + \\{2^k\\}$ covers all large integers) and `additive_basis_order_two` ($A \\cup \\text{PowersOfTwo}$ forms a thin additive basis of order 2). Connects to the broader the"
     },
     {
       "id": "summary",
       "title": "Summary and Main Theorems",
       "startLine": 227,
       "endLine": 274,
-      "summary": "Proves `erdos_221_summary` (conjecture + construction + exact complement), `erdos_221_main` (explicit representation statement), and `erdos_221` (conjecture + optimality). The problem is fully resolved."
+      "summary": "Proves `erdos_221_summary` (conjecture + construction + exact complement), `erdos_221_main` (explicit representation statement), and `erdos_221` (conjecture + optimality). The problem is fully resolved.",
+      "mathContext": "Proves `erdos_221_summary` (conjecture + construction + exact complement), `erdos_221_main` (explicit representation statement), and `erdos_221` (conjecture + optimality). The problem is fully resolve"
     }
   ],
   "crossReferences": [

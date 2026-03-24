@@ -113,56 +113,64 @@
       "title": "Volume and Surface Area Functions",
       "startLine": 33,
       "endLine": 50,
-      "summary": "Defines unit ball volume ω_n = π^(n/2)/Γ(n/2+1), n-ball volume V_n(r) = ω_n·r^n, and sphere surface area S_n(r) = n·ω_n·r^(n-1)."
+      "summary": "Defines unit ball volume ω_n = π^(n/2)/Γ(n/2+1), n-ball volume V_n(r) = ω_n·r^n, and sphere surface area S_n(r) = n·ω_n·r^(n-1).",
+      "mathContext": "Defines unit ball volume ω_n = π^(n/2)/Γ(n/2+1), n-ball volume V_n(r) = ω_n·r^n, and sphere surface area S_n(r) = n·ω_n·r^(n-1)."
     },
     {
       "id": "unit-ball-properties",
       "title": "Unit Ball Volume Properties",
       "startLine": 51,
       "endLine": 105,
-      "summary": "Proves ω_n ≥ 0 and explicit values ω_0=1, ω_1=2, ω_2=π, ω_3=4π/3 via Gamma function identities Γ(1/2) = √π, Γ(3/2) = √π/2, Γ(5/2) = 3√π/4."
+      "summary": "Proves ω_n ≥ 0 and explicit values ω_0=1, ω_1=2, ω_2=π, ω_3=4π/3 via Gamma function identities Γ(1/2) = √π, Γ(3/2) = √π/2, Γ(5/2) = 3√π/4.",
+      "mathContext": "Proves ω_n ≥ 0 and explicit values ω_0=1, ω_1=2, ω_2=π, ω_3=4π/3 via Gamma function identities Γ(1/2) = √π, Γ(3/2) = √π/2, Γ(5/2) = 3√π/4."
     },
     {
       "id": "derivative-relation",
       "title": "The Derivative Relation",
       "startLine": 106,
       "endLine": 132,
-      "summary": "d/dr[V_n(r)] = S_n(r) via the power rule (hasDerivAt_pow), plus continuity of V_n and S_n. This is the n-dimensional 'onion peeling' principle."
+      "summary": "d/dr[V_n(r)] = S_n(r) via the power rule (hasDerivAt_pow), plus continuity of V_n and S_n. This is the n-dimensional 'onion peeling' principle.",
+      "mathContext": "d/dr[V_n(r)] = S_n(r) via the power rule (hasDerivAt_pow), plus continuity of V_n and S_n. This is the n-dimensional 'onion peeling' principle."
     },
     {
       "id": "integral-formula",
       "title": "The Integral Formula (Main Theorem)",
       "startLine": 133,
       "endLine": 166,
-      "summary": "V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2, using V_n(0) = 0. Also proves FTC Part 1 recovery: d/dr[∫₀ʳ S_n] = S_n(r)."
+      "summary": "V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2, using V_n(0) = 0. Also proves FTC Part 1 recovery: d/dr[∫₀ʳ S_n] = S_n(r).",
+      "mathContext": "V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2, using V_n(0) = 0. Also proves FTC Part 1 recovery: d/dr[∫₀ʳ S_n] = S_n(r)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 167,
       "endLine": 212,
-      "summary": "n=1,2,3 special cases recovering classical formulas. Explicit formulas S₂=2πr, S₃=4πr², V₂=πr², V₃=(4π/3)r³ confirmed by substituting ω_n values."
+      "summary": "n=1,2,3 special cases recovering classical formulas. Explicit formulas S₂=2πr, S₃=4πr², V₂=πr², V₃=(4π/3)r³ confirmed by substituting ω_n values.",
+      "mathContext": "n=1,2,3 special cases recovering classical formulas. Explicit formulas S₂=2πr, S₃=4πr², V₂=πr², V₃=(4π/3)r³ confirmed by substituting ω_n values."
     },
     {
       "id": "shell-volumes",
       "title": "Shell/Annulus Generalization",
       "startLine": 213,
       "endLine": 231,
-      "summary": "∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) for shells. The 3D spherical shell formula is given as a corollary."
+      "summary": "∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) for shells. The 3D spherical shell formula is given as a corollary.",
+      "mathContext": "∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) for shells. The 3D spherical shell formula is given as a corollary."
     },
     {
       "id": "scaling",
       "title": "Scaling Properties and Surface-to-Volume Ratio",
       "startLine": 232,
       "endLine": 263,
-      "summary": "Scaling laws V_n(cr) = c^n·V_n(r), S_n(cr) = c^(n-1)·S_n(r), and the key ratio S_n/V_n = n/r explaining concentration of measure in high dimensions."
+      "summary": "Scaling laws V_n(cr) = c^n·V_n(r), S_n(cr) = c^(n-1)·S_n(r), and the key ratio S_n/V_n = n/r explaining concentration of measure in high dimensions.",
+      "mathContext": "Scaling laws V_n(cr) = c^n·V_n(r), S_n(cr) = c^(n-1)·S_n(r), and the key ratio S_n/V_n = n/r explaining concentration of measure in high dimensions."
     },
     {
       "id": "summary",
       "title": "Summary and Open Question Chain",
       "startLine": 264,
       "endLine": 290,
-      "summary": "Recapitulates all results and traces the open question chain: Wiedijk #9 (A=πr²) → OQ01 (C=dA/dr) → OQ02 (A=∫C) → this file (V_n=∫S_n)."
+      "summary": "Recapitulates all results and traces the open question chain: Wiedijk #9 (A=πr²) → OQ01 (C=dA/dr) → OQ02 (A=∫C) → this file (V_n=∫S_n).",
+      "mathContext": "Recapitulates all results and traces the open question chain: Wiedijk #9 (A=πr²) → OQ01 (C=dA/dr) → OQ02 (A=∫C) → this file (V_n=∫S_n)."
     }
   ],
   "conclusion": {
@@ -231,6 +239,11 @@
       "id": "stirling-formula",
       "relationship": "related",
       "description": "Stirling's approximation for Γ(n/2+1) determines the asymptotic behavior of ω_n → 0 as n → ∞, explaining the 'thin shell' phenomenon in high dimensions"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling entry on integration by parts for Fourier coefficients — both extend the circumference integration approach from"
     }
   ],
   "leanFile": {

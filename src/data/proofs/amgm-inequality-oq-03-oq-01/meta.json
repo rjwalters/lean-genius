@@ -229,6 +229,31 @@
       "id": "cauchy-schwarz",
       "relationship": "related",
       "description": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The Bunyakovsky-Schwarz integral inequality is the continuous/L² analog of the discrete M₁ ≤ M₂ power mean inequality"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "For p ≥ 1, power mean monotonicity M₁ ≤ M_p implies Minkowski's inequality (the L^p triangle inequality), connecting the"
+    },
+    {
+      "id": "shannon-entropy",
+      "relationship": "related",
+      "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1"
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "related",
+      "description": "The mean value theorem underpins the r→0 limit case: proving lim_{r→0} M_r = GM requires L'Hôpital's rule (which depends"
+    },
+    {
+      "id": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (p_k/n)^(1/k) for equal weights. The "
     }
   ],
   "references": [

@@ -65,56 +65,64 @@
       "title": "Imports and Module Documentation",
       "startLine": 1,
       "endLine": 108,
-      "summary": "Imports Mathlib algebraic, exponential, and linear algebra modules. Extensive documentation covers the theorem statements, historical context (Hermite 1873, Lindemann 1882, Weierstrass 1885), proof outline, and connections to Wiedijk #53, #56, #67."
+      "summary": "Imports Mathlib algebraic, exponential, and linear algebra modules. Extensive documentation covers the theorem statements, historical context (Hermite 1873, Lindemann 1882, Weierstrass 1885), proof outline, and connections to Wiedijk #53, #56, #67.",
+      "mathContext": "Imports Mathlib algebraic, exponential, and linear algebra modules. Extensive documentation covers the theorem statements, historical context (Hermite 1873, Lindemann 1882, Weierstrass 1885), proof ou"
     },
     {
       "id": "definitions-background",
       "title": "Part I: Basic Definitions and Background",
       "startLine": 109,
       "endLine": 126,
-      "summary": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental ℤ x ⟺ Transcendental ℚ x` by clearing denominators."
+      "summary": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental ℤ x ⟺ Transcendental ℚ x` by clearing denominators.",
+      "mathContext": "Documents key Mathlib definitions: `IsAlgebraic R x`, `Transcendental R x`, `LinearIndependent R v`. Notes that `Transcendental ℤ x ⟺ Transcendental ℚ x` by clearing denominators."
     },
     {
       "id": "hermite-lindemann-theorem",
       "title": "Part II: The Hermite-Lindemann Theorem",
       "startLine": 127,
       "endLine": 159,
-      "summary": "Axiomatizes the main theorem: $\\alpha \\neq 0$ algebraic $\\Rightarrow e^\\alpha$ transcendental. Also states the contrapositive: $e^\\alpha$ algebraic $\\Rightarrow \\alpha$ transcendental."
+      "summary": "Axiomatizes the main theorem: $\\alpha \\neq 0$ algebraic $\\Rightarrow e^\\alpha$ transcendental. Also states the contrapositive: $e^\\alpha$ algebraic $\\Rightarrow \\alpha$ transcendental.",
+      "mathContext": "Axiomatizes the main theorem: $\\alpha \\neq 0$ algebraic $\\Rightarrow e^\\alpha$ transcendental. Also states the contrapositive: $e^\\alpha$ algebraic $\\Rightarrow \\alpha$ transcendental."
     },
     {
       "id": "lindemann-weierstrass",
       "title": "Part III: The Lindemann-Weierstrass Theorem",
       "startLine": 160,
       "endLine": 206,
-      "summary": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials)."
+      "summary": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials).",
+      "mathContext": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly ind"
     },
     {
       "id": "fundamental-corollaries",
       "title": "Part IV: Fundamental Corollaries",
       "startLine": 207,
       "endLine": 282,
-      "summary": "Derives transcendence of $e$ (Wiedijk #67), $\\pi$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\alpha}$ for algebraic $\\alpha$."
+      "summary": "Derives transcendence of $e$ (Wiedijk #67), $\\pi$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\alpha}$ for algebraic $\\alpha$.",
+      "mathContext": "Derives transcendence of $e$ (Wiedijk #67), $\\pi$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\alpha}$ for algebraic $\\alpha$."
     },
     {
       "id": "applications",
       "title": "Part V: Applications",
       "startLine": 283,
       "endLine": 318,
-      "summary": "Axiomatizes $\\sqrt{\\pi}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties."
+      "summary": "Axiomatizes $\\sqrt{\\pi}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties.",
+      "mathContext": "Axiomatizes $\\sqrt{\\pi}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties."
     },
     {
       "id": "connections",
       "title": "Part VI: Connections to Other Results",
       "startLine": 319,
       "endLine": 353,
-      "summary": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental? Describes Schanuel's conjecture."
+      "summary": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental? Describes Schanuel's conjecture.",
+      "mathContext": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental? De"
     },
     {
       "id": "proof-techniques",
       "title": "Part VII: Proof Techniques (Pedagogical)",
       "startLine": 354,
       "endLine": 374,
-      "summary": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = e^k F(0) - F(k)$, and the integer-vs-small contradiction."
+      "summary": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = e^k F(0) - F(k)$, and the integer-vs-small contradiction.",
+      "mathContext": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = "
     }
   ],
   "conclusion": {

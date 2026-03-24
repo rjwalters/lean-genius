@@ -128,56 +128,64 @@
       "title": "Basic Definitions",
       "startLine": 40,
       "endLine": 79,
-      "summary": "Defines `nonCommuting g h` as `g * h ≠ h * g`, `commuting g h` as `g * h = h * g`. Proves `nonCommuting_symm` via simp and constructor. Defines `centerDef := Subgroup.center G` and proves `mem_center_iff` characterizing center membership via `commuting`."
+      "summary": "Defines `nonCommuting g h` as `g * h ≠ h * g`, `commuting g h` as `g * h = h * g`. Proves `nonCommuting_symm` via simp and constructor. Defines `centerDef := Subgroup.center G` and proves `mem_center_iff` characterizing center membership via `commuting`.",
+      "mathContext": "Defines `nonCommuting g h` as `g * h ≠ h * g`, `commuting g h` as `g * h = h * g`. Proves `nonCommuting_symm` via simp and constructor. Defines `centerDef := Subgroup.center G` and proves `mem_center_"
     },
     {
       "id": "non-commuting-graph",
       "title": "Non-Commuting Graph",
       "startLine": 80,
       "endLine": 120,
-      "summary": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆` over finite cliques, `hasFiniteCliqueNumber` (∃ n bounding all cliques), `noInfiniteClique` (all cliques finite)."
+      "summary": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆` over finite cliques, `hasFiniteCliqueNumber` (∃ n bounding all cliques), `noInfiniteClique` (all cliques finite).",
+      "mathContext": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆` over finite cliques, `hasFinite"
     },
     {
       "id": "finite-index",
       "title": "Finite Index Center",
       "startLine": 121,
       "endLine": 137,
-      "summary": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index ≠ ⊤` and `centerIndex G` as the `ℕ∞`-valued index."
+      "summary": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index ≠ ⊤` and `centerIndex G` as the `ℕ∞`-valued index.",
+      "mathContext": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index ≠ ⊤` and `centerIndex G` as the `ℕ∞`-valued index."
     },
     {
       "id": "neumann-theorem",
       "title": "Neumann's Theorem",
       "startLine": 138,
       "endLine": 171,
-      "summary": "Axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` and `neumann_bound` (clique size ≤ index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered` by rewriting with `neumann_theorem`."
+      "summary": "Axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` and `neumann_bound` (clique size ≤ index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered` by rewriting with `neumann_theorem`.",
+      "mathContext": "Axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` and `neumann_bound` (clique size ≤ index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered`"
     },
     {
       "id": "coset-structure",
       "title": "Coset Structure",
       "startLine": 172,
       "endLine": 200,
-      "summary": "States `same_coset_commute` (sorry), `clique_different_cosets` (sorry using quotient.mk), and `clique_size_bound` (sorry). These form the heart of the coset argument: clique members lie in distinct Z(G)-cosets."
+      "summary": "States `same_coset_commute` (sorry), `clique_different_cosets` (sorry using quotient.mk), and `clique_size_bound` (sorry). These form the heart of the coset argument: clique members lie in distinct Z(G)-cosets.",
+      "mathContext": "States `same_coset_commute` (sorry), `clique_different_cosets` (sorry using quotient.mk), and `clique_size_bound` (sorry). These form the heart of the coset argument: clique members lie in distinct Z("
     },
     {
       "id": "infinite-groups",
       "title": "Infinite Groups and Examples",
       "startLine": 201,
       "endLine": 250,
-      "summary": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry)."
+      "summary": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry).",
+      "mathContext": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). Axiomatizes `infinite_clique_example`, `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_f"
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "startLine": 251,
       "endLine": 280,
-      "summary": "Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and axiomatizes `bfc_center_connection`."
+      "summary": "Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and axiomatizes `bfc_center_connection`.",
+      "mathContext": "Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and axiomatizes `bfc_center_connection`."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 281,
       "endLine": 319,
-      "summary": "Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence ∧ finite clique implication), and `erdos_1098_status := neumann_theorem`."
+      "summary": "Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence ∧ finite clique implication), and `erdos_1098_status := neumann_theorem`.",
+      "mathContext": "Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence ∧ finite clique implication), and `erdos_1098_status := neumann_theorem`."
     }
   ],
   "conclusion": {

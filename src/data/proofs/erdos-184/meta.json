@@ -65,63 +65,72 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 32,
-      "summary": "Docstring stating Erdős Problem #184: the Erdős–Gallai conjecture on $O(n)$ cycle/edge decomposition, with references to Erdős (1971), Bucić–Montgomery (2022), and Conlon–Fox–Sudakov (2014)."
+      "summary": "Docstring stating Erdős Problem #184: the Erdős–Gallai conjecture on $O(n)$ cycle/edge decomposition, with references to Erdős (1971), Bucić–Montgomery (2022), and Conlon–Fox–Sudakov (2014).",
+      "mathContext": "Docstring stating Erdős Problem #184: the Erdős–Gallai conjecture on $O(n)$ cycle/edge decomposition, with references to Erdős (1971), Bucić–Montgomery (2022), and Conlon–Fox–Sudakov (2014)."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 33,
       "endLine": 42,
-      "summary": "Imports Mathlib's `SimpleGraph`, `Subgraph`, `Finset`, and `Real.log` modules. Opens `Finset` namespace."
+      "summary": "Imports Mathlib's `SimpleGraph`, `Subgraph`, `Finset`, and `Real.log` modules. Opens `Finset` namespace.",
+      "mathContext": "Imports Mathlib's `SimpleGraph`, `Subgraph`, `Finset`, and `Real.log` modules. Opens `Finset` namespace."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 43,
       "endLine": 81,
-      "summary": "Defines `Graph V` (alias for `SimpleGraph V`), `numVertices`, `Cycle G` (structure with $\\geq 3$ distinct adjacent vertices in cyclic order), and `SingleEdge G` (pair with adjacency proof)."
+      "summary": "Defines `Graph V` (alias for `SimpleGraph V`), `numVertices`, `Cycle G` (structure with $\\geq 3$ distinct adjacent vertices in cyclic order), and `SingleEdge G` (pair with adjacency proof).",
+      "mathContext": "Defines `Graph V` (alias for `SimpleGraph V`), `numVertices`, `Cycle G` (structure with $\\geq 3$ distinct adjacent vertices in cyclic order), and `SingleEdge G` (pair with adjacency proof)."
     },
     {
       "id": "decomposition",
       "title": "Decomposition Framework",
       "startLine": 82,
       "endLine": 120,
-      "summary": "Defines `DecompPiece G` (sum type: cycle or edge), `edgesOfPiece` (extracts edge set via `Sym2 V`), `IsValidDecomposition` (edge coverage + disjointness), and `decompNumber G` (axiomatized minimum piece count)."
+      "summary": "Defines `DecompPiece G` (sum type: cycle or edge), `edgesOfPiece` (extracts edge set via `Sym2 V`), `IsValidDecomposition` (edge coverage + disjointness), and `decompNumber G` (axiomatized minimum piece count).",
+      "mathContext": "Defines `DecompPiece G` (sum type: cycle or edge), `edgesOfPiece` (extracts edge set via `Sym2 V`), `IsValidDecomposition` (edge coverage + disjointness), and `decompNumber G` (axiomatized minimum pie"
     },
     {
       "id": "conjecture",
       "title": "The Erdős–Gallai Conjecture",
       "startLine": 121,
       "endLine": 132,
-      "summary": "States the conjecture as a `Prop`: $\\exists C > 0$ such that $\\text{dec}(G) \\leq C \\cdot n$ for all $G$ on $n$ vertices."
+      "summary": "States the conjecture as a `Prop`: $\\exists C > 0$ such that $\\text{dec}(G) \\leq C \\cdot n$ for all $G$ on $n$ vertices.",
+      "mathContext": "States the conjecture as a `Prop`: $\\exists C > 0$ such that $\\text{dec}(G) \\leq C \\cdot n$ for all $G$ on $n$ vertices."
     },
     {
       "id": "known-bounds",
       "title": "Known Upper and Lower Bounds",
       "startLine": 133,
       "endLine": 173,
-      "summary": "Axiomatizes three bounds: Erdős–Gallai's $O(n \\log n)$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Bucić–Montgomery's $O(n \\log^* n)$, and defines the iterated logarithm `logStar`."
+      "summary": "Axiomatizes three bounds: Erdős–Gallai's $O(n \\log n)$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Bucić–Montgomery's $O(n \\log^* n)$, and defines the iterated logarithm `logStar`.",
+      "mathContext": "Axiomatizes three bounds: Erdős–Gallai's $O(n \\log n)$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Bucić–Montgomery's $O(n \\log^* n)$, and defines the iterated logarithm `logStar`."
     },
     {
       "id": "dense-graphs",
       "title": "Dense Graph Result",
       "startLine": 174,
       "endLine": 193,
-      "summary": "Defines `minDegree G` and axiomatizes Conlon–Fox–Sudakov (2014): when $\\delta(G) \\geq \\varepsilon n$, $O(n)$ pieces suffice. The dense case is **fully resolved**."
+      "summary": "Defines `minDegree G` and axiomatizes Conlon–Fox–Sudakov (2014): when $\\delta(G) \\geq \\varepsilon n$, $O(n)$ pieces suffice. The dense case is **fully resolved**.",
+      "mathContext": "Defines `minDegree G` and axiomatizes Conlon–Fox–Sudakov (2014): when $\\delta(G) \\geq \\varepsilon n$, $O(n)$ pieces suffice. The dense case is **fully resolved**."
     },
     {
       "id": "non-disjoint",
       "title": "Non-Disjoint Covering",
       "startLine": 194,
       "endLine": 217,
-      "summary": "Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erdős's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty."
+      "summary": "Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erdős's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty.",
+      "mathContext": "Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erdős's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty."
     },
     {
       "id": "summary",
       "title": "Summary and Verification",
       "startLine": 218,
       "endLine": 251,
-      "summary": "Combines all three bounds into `erdos_184_summary`. Computationally verifies $\\log^*(65536) = 4$ and $\\log^*(4) = 2$ via `native_decide`."
+      "summary": "Combines all three bounds into `erdos_184_summary`. Computationally verifies $\\log^*(65536) = 4$ and $\\log^*(4) = 2$ via `native_decide`.",
+      "mathContext": "Combines all three bounds into `erdos_184_summary`. Computationally verifies $\\log^*(65536) = 4$ and $\\log^*(4) = 2$ via `native_decide`."
     }
   ],
   "overview": {

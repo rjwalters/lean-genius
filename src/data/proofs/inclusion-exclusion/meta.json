@@ -204,6 +204,21 @@
       "id": "subset-count",
       "relationship": "related",
       "description": "The number of subsets of a finite set connects to inclusion-exclusion through the power set structure"
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "applies",
+      "description": "The birthday problem can be solved via inclusion-exclusion: P(at least one shared birthday) = 1 - P(all distinct), where"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "The sieve of Eratosthenes is an inclusion-exclusion argument: count integers not divisible by any prime up to √n by alte"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization enables inclusion-exclusion over prime divisors: φ(n) = n·∏(1-1/p) uses I-E with sets A_p = {"
     }
   ],
   "leanFile": {

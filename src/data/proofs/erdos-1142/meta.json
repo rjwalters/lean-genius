@@ -99,70 +99,80 @@
       "title": "Problem Statement and Context",
       "summary": "Header documentation stating the open problem: are there infinitely many $n$ with $n - 2^k$ prime for all $1 < 2^k < n$? Lists known values from OEIS A039669 and references to Mientka, Weitzenkamp, and Vaughan.",
       "startLine": 1,
-      "endLine": 23
+      "endLine": 23,
+      "mathContext": "Header documentation stating the open problem: are there infinitely many $n$ with $n - 2^k$ prime for all $1 < 2^k < n$? Lists known values from OEIS A039669 and references to Mientka, Weitzenkamp, an"
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports `Mathlib.Tactic` and `Mathlib.Data.Nat.Prime.Basic` for primality testing and decidability. Opens `Finset` namespace for finite set operations.",
       "startLine": 24,
-      "endLine": 28
+      "endLine": 28,
+      "mathContext": "Imports `Mathlib.Tactic` and `Mathlib.Data.Nat.Prime.Basic` for primality testing and decidability. Opens `Finset` namespace for finite set operations."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "Defines `powersOfTwoBetween n` as the finset of powers of two in $(1, n)$, and `SatisfiesErdos1142 n` requiring this set to be nonempty with all $n - m$ prime. Includes a Boolean version `satisfiesErdos1142Bool` for computation and a `Decidable` instance.",
       "startLine": 29,
-      "endLine": 51
+      "endLine": 51,
+      "mathContext": "Defines `powersOfTwoBetween n` as the finset of powers of two in $(1, n)$, and `SatisfiesErdos1142 n` requiring this set to be nonempty with all $n - m$ prime. Includes a Boolean version `satisfiesErd"
     },
     {
       "id": "known-values",
       "title": "Verification of Known Values",
       "summary": "Proves all seven known solutions via `native_decide`: $n = 4$ (one condition: $4 - 2 = 2$), $n = 7$ (two: $5, 3$), $n = 15$ (three: $13, 11, 7$), $n = 21$ (four: $19, 17, 13, 5$), $n = 45$ (five: $43, 41, 37, 29, 13$), $n = 75$ (six: $73, 71, 67, 59, 43, 11$), $n = 105$ (six: $103, 101, 97, 89, 73, 41$).",
       "startLine": 52,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "Proves all seven known solutions via `native_decide`: $n = 4$ (one condition: $4 - 2 = 2$), $n = 7$ (two: $5, 3$), $n = 15$ (three: $13, 11, 7$), $n = 21$ (four: $19, 17, 13, 5$), $n = 45$ (five: $43,"
     },
     {
       "id": "non-examples",
       "title": "Non-Examples",
       "summary": "Verifies $n = 6$ fails ($6 - 2 = 4$ is composite), $n = 9$ fails ($9 - 8 = 1$ is not prime), and $n = 10$ fails ($10 - 2 = 8$ is composite), demonstrating that the property is rare.",
       "startLine": 82,
-      "endLine": 92
+      "endLine": 92,
+      "mathContext": "Verifies $n = 6$ fails ($6 - 2 = 4$ is composite), $n = 9$ fails ($9 - 8 = 1$ is not prime), and $n = 10$ fails ($10 - 2 = 8$ is composite), demonstrating that the property is rare."
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
       "summary": "Establishes key constraints: solutions with $n > 4$ must be odd (`erdos1142_odd_or_4`), all solutions satisfy $n \\geq 4$ (`erdos1142_ge_4`), $n - 2$ is always prime (`erdos1142_n_minus_2_prime`), and $n \\equiv 1 \\pmod{2}$ for $n > 4$ (`erdos1142_mod2`). These are stated with sorry placeholders.",
       "startLine": 93,
-      "endLine": 128
+      "endLine": 128,
+      "mathContext": "Establishes key constraints: solutions with $n > 4$ must be odd (`erdos1142_odd_or_4`), all solutions satisfy $n \\geq 4$ (`erdos1142_ge_4`), $n - 2$ is always prime (`erdos1142_n_minus_2_prime`), and "
     },
     {
       "id": "cardinality",
       "title": "Logarithmic Cardinality",
       "summary": "States that $|\\text{powersOfTwoBetween}(n)| = \\lfloor \\log_2 n \\rfloor$ for $n \\geq 4$, formalizing the logarithmic growth of the number of primality conditions imposed on each candidate $n$.",
       "startLine": 129,
-      "endLine": 134
+      "endLine": 134,
+      "mathContext": "States that $|\\text{powersOfTwoBetween}(n)| = \\lfloor \\log_2 n \\rfloor$ for $n \\geq 4$, formalizing the logarithmic growth of the number of primality conditions imposed on each candidate $n$."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "summary": "States the main conjecture `erdos_1142_conjecture`: the set $\\{n : \\text{SatisfiesErdos1142}(n)\\}$ is infinite. Also formalizes the stronger conjecture that the count of prime differences is $o(\\log n)$.",
       "startLine": 135,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "States the main conjecture `erdos_1142_conjecture`: the set $\\{n : \\text{SatisfiesErdos1142}(n)\\}$ is infinite. Also formalizes the stronger conjecture that the count of prime differences is $o(\\log n"
     },
     {
       "id": "completeness",
       "title": "Exhaustive Verification up to 105",
       "summary": "The theorem `erdos1142_complete_le_105` uses `native_decide` to verify that exactly the seven known values satisfy the property among $n \\leq 105$, giving computational certainty matching the OEIS sequence.",
       "startLine": 158,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "The theorem `erdos1142_complete_le_105` uses `native_decide` to verify that exactly the seven known values satisfy the property among $n \\leq 105$, giving computational certainty matching the OEIS seq"
     },
     {
       "id": "implication",
       "title": "Stronger Conjecture Implies Finiteness",
       "summary": "Formalizes the logical chain: if the $o(\\log n)$ conjecture holds, then for sufficiently large $n$, the fraction of prime differences drops below 1, so not all $\\lfloor \\log_2 n \\rfloor$ conditions can hold simultaneously.",
       "startLine": 166,
-      "endLine": 192
+      "endLine": 192,
+      "mathContext": "Formalizes the logical chain: if the $o(\\log n)$ conjecture holds, then for sufficiently large $n$, the fraction of prime differences drops below 1, so not all $\\lfloor \\log_2 n \\rfloor$ conditions ca"
     }
   ],
   "conclusion": {

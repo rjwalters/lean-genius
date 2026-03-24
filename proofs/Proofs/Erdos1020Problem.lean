@@ -109,10 +109,19 @@ axiom erdos_gallai_graphs :
   ∀ n k : ℕ, k ≥ 1 → n ≥ 2 * k →
     f n 2 k = max (Nat.choose (2 * k - 1) 2) (Nat.choose n 2 - Nat.choose (n - k + 1) 2)
 
-/-- Explicit formula for r = 2: f(n; 2, k) = max((k-1)(2k-1), kn - k² - k + 1) -/
+/-- Explicit formula for r = 2: C(2k-1,2) = (k-1)(2k-1) and
+    C(n,2) - C(n-k+1,2) = (k-1)(2n-k)/2. -/
 theorem f_2_explicit (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ 2 * k) :
-    f n 2 k = max ((k - 1) * (2 * k - 1)) (k * n - k^2 - k + 1) := by
-  sorry
+    f n 2 k = max ((k - 1) * (2 * k - 1)) ((k - 1) * (2 * n - k) / 2) := by
+  have h := erdos_gallai_graphs n k hk hn
+  rw [h]
+  congr 1
+  · -- C(2k-1, 2) = (k-1)(2k-1) = (2k-1)(2k-2)/2
+    rw [Nat.choose_two_right]
+    omega
+  · -- C(n,2) - C(n-k+1,2) = (k-1)(2n-k)/2
+    rw [Nat.choose_two_right, Nat.choose_two_right]
+    omega
 
 /-
 ## The Case r = 3 (3-uniform Hypergraphs)

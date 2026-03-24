@@ -62,91 +62,104 @@
       "title": "Graph Setup",
       "summary": "$|E(G)|$, $\\lfloor n^2/4 \\rfloor$ Turán threshold, and `isAboveTuran` predicate",
       "startLine": 27,
-      "endLine": 45
+      "endLine": 45,
+      "mathContext": "$|E(G)|$, $\\lfloor n^2/4 \\rfloor$ Turán threshold, and `isAboveTuran` predicate"
     },
     {
       "id": "triangles",
       "title": "Triangles",
       "summary": "Triangle $T = (v_1, v_2, v_3)$ structure with pairwise adjacency and vertex set of cardinality 3",
       "startLine": 46,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "Triangle $T = (v_1, v_2, v_3)$ structure with pairwise adjacency and vertex set of cardinality 3"
     },
     {
       "id": "triangle-neighbors",
       "title": "Triangle Neighbors",
       "summary": "$\\text{goodNeighbors}(G, T) = \\{y \\notin T : |\\{v \\in T : y \\sim v\\}| \\ge 2\\}$ and cardinality",
       "startLine": 72,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "$\\text{goodNeighbors}(G, T) = \\{y \\notin T : |\\{v \\in T : y \\sim v\\}| \\ge 2\\}$ and cardinality"
     },
     {
       "id": "h-function",
       "title": "The Function h(n)",
       "summary": "$h(n) = \\max\\{k : \\forall G \\text{ above Turán}, \\exists T, |\\text{goodNeighbors}| \\ge k\\}$",
       "startLine": 102,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "$h(n) = \\max\\{k : \\forall G \\text{ above Turán}, \\exists T, |\\text{goodNeighbors}| \\ge k\\}$"
     },
     {
       "id": "conjecture",
       "title": "The Original Conjecture (DISPROVED)",
       "summary": "$\\neg\\,\\text{erdos\\_faudree\\_conjecture}$: conjecture $h(n) > (1/2)n$ is FALSE (Aristotle-proved negation)",
       "startLine": 124,
-      "endLine": 142
+      "endLine": 142,
+      "mathContext": "$\\neg\\,\\text{erdos\\_faudree\\_conjecture}$: conjecture $h(n) > (1/2)n$ is FALSE (Aristotle-proved negation)"
     },
     {
       "id": "ma-tang",
       "title": "Ma-Tang Counterexample",
       "summary": "$h(n) \\le (2 - \\sqrt{5/2})n \\approx 0.419n$ from Ma-Tang construction (axiomatized)",
       "startLine": 143,
-      "endLine": 168
+      "endLine": 168,
+      "mathContext": "$h(n) \\le (2 - \\sqrt{5/2})n \\approx 0.419n$ from Ma-Tang construction (axiomatized)"
     },
     {
       "id": "book-lower",
       "title": "Lower Bound via Books",
       "summary": "$h(n) \\ge n/6$ from book lemma: dense graphs have triangles with $\\ge n/6$ common neighbors",
       "startLine": 169,
-      "endLine": 200
+      "endLine": 200,
+      "mathContext": "$h(n) \\ge n/6$ from book lemma: dense graphs have triangles with $\\ge n/6$ common neighbors"
     },
     {
       "id": "gap",
       "title": "The Gap",
       "summary": "$n/6 \\le h(n) \\le (2 - \\sqrt{5/2})n$ with gap $\\approx 0.252n$ (Aristotle-verified)",
       "startLine": 201,
-      "endLine": 218
+      "endLine": 218,
+      "mathContext": "$n/6 \\le h(n) \\le (2 - \\sqrt{5/2})n$ with gap $\\approx 0.252n$ (Aristotle-verified)"
     },
     {
       "id": "k4-free",
       "title": "K₄-free Variant",
       "summary": "$K_4$-free bound: $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ (counterintuitively larger)",
       "startLine": 219,
-      "endLine": 248
+      "endLine": 248,
+      "mathContext": "$K_4$-free bound: $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ (counterintuitively larger)"
     },
     {
       "id": "problem-905",
       "title": "Comparison with Problem 905",
       "summary": "Problem #1034 $\\implies$ Problem #905: good neighbors $\\implies$ high-degree triangle vertices",
       "startLine": 249,
-      "endLine": 267
+      "endLine": 267,
+      "mathContext": "Problem #1034 $\\implies$ Problem #905: good neighbors $\\implies$ high-degree triangle vertices"
     },
     {
       "id": "maximum",
       "title": "Maximum Good Neighbor Count",
       "summary": "$\\max_T |\\text{goodNeighbors}(G, T)|$ and Ma-Tang extremal graph characterization",
       "startLine": 268,
-      "endLine": 284
+      "endLine": 284,
+      "mathContext": "$\\max_T |\\text{goodNeighbors}(G, T)|$ and Ma-Tang extremal graph characterization"
     },
     {
       "id": "resolved",
       "title": "The Resolved Question",
       "summary": "Complete resolution: bounds $n/6 \\le h(n) \\le (2 - \\sqrt{5/2})n$, conjecture DISPROVED",
       "startLine": 285,
-      "endLine": 304
+      "endLine": 304,
+      "mathContext": "Complete resolution: bounds $n/6 \\le h(n) \\le (2 - \\sqrt{5/2})n$, conjecture DISPROVED"
     },
     {
       "id": "properties",
       "title": "Good Neighbor Properties",
       "summary": "$T.\\text{vertices} \\subseteq \\text{goodNeighbors}$ and $\\text{bookPages} \\subseteq \\text{goodNeighbors}$ structural lemmas",
       "startLine": 305,
-      "endLine": 744
+      "endLine": 744,
+      "mathContext": "$T.\\text{vertices} \\subseteq \\text{goodNeighbors}$ and $\\text{bookPages} \\subseteq \\text{goodNeighbors}$ structural lemmas"
     }
   ],
   "conclusion": {

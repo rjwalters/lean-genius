@@ -86,8 +86,9 @@ theorem one_is_totient_value : IsTotientValue 1 := by
 /-- 2 is a totient value (φ(3) = 2, φ(4) = 2, φ(6) = 2). -/
 theorem two_is_totient_value : IsTotientValue 2 := by
   use 3
-  simp [totient]
-  sorry
+  constructor
+  · omega
+  · native_decide
 
 /-- Odd numbers > 1 are not totient values. -/
 theorem odd_gt_one_not_totient (n : ℕ) (hn : n > 1) (hodd : Odd n) :
@@ -155,8 +156,8 @@ theorem pow_two_totient_value (k : ℕ) : IsTotientValue (2^k) := by
   use 2^(k+1)
   constructor
   · exact Nat.pos_pow_of_pos (k+1) (by norm_num)
-  · simp [totient_prime_pow Nat.prime_two]
-    sorry
+  · rw [Nat.totient_prime_pow_succ Nat.prime_two]
+    ring
 
 /-- For prime p, p-1 is a totient value: φ(p) = p-1. -/
 theorem prime_pred_totient_value (p : ℕ) (hp : p.Prime) : IsTotientValue (p - 1) := by

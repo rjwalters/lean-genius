@@ -85,63 +85,72 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 3,
-      "summary": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$ for $\\texttt{Nat.minFac}$ and $\\texttt{Nat.Prime}$, plus $\\texttt{Mathlib.Tactic}$ for proof automation ($\\texttt{omega}$, $\\texttt{norm\\_num}$, $\\texttt{ring}$)."
+      "summary": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$ for $\\texttt{Nat.minFac}$ and $\\texttt{Nat.Prime}$, plus $\\texttt{Mathlib.Tactic}$ for proof automation ($\\texttt{omega}$, $\\texttt{norm\\_num}$, $\\texttt{ring}$).",
+      "mathContext": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$ for $\\texttt{Nat.minFac}$ and $\\texttt{Nat.Prime}$, plus $\\texttt{Mathlib.Tactic}$ for proof automation ($\\texttt{omega}$, $\\texttt{norm\\_num}$, $\\textt"
     },
     {
       "id": "docstring",
       "title": "Problem Context and References",
       "startLine": 4,
       "endLine": 28,
-      "summary": "Documents the open conjecture: $\\exists f(n) \\to \\infty$ with composites $m$ satisfying $n + f(n) < m < n + p(m)$. References Erdős–Graham (1980) and Erdős (1992). States the related asymptotic question $n - F(n) \\sim c\\sqrt{n}$."
+      "summary": "Documents the open conjecture: $\\exists f(n) \\to \\infty$ with composites $m$ satisfying $n + f(n) < m < n + p(m)$. References Erdős–Graham (1980) and Erdős (1992). States the related asymptotic question $n - F(n) \\sim c\\sqrt{n}$.",
+      "mathContext": "Documents the open conjecture: $\\exists f(n) \\to \\infty$ with composites $m$ satisfying $n + f(n) < m < n + p(m)$. References Erdős–Graham (1980) and Erdős (1992). States the related asymptotic questi"
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 32,
       "endLine": 34,
-      "summary": "Defines $\\texttt{leastPrimeGap}(m) = m - \\texttt{Nat.minFac}(m) = m - p(m)$, measuring the distance between a composite and its least prime factor."
+      "summary": "Defines $\\texttt{leastPrimeGap}(m) = m - \\texttt{Nat.minFac}(m) = m - p(m)$, measuring the distance between a composite and its least prime factor.",
+      "mathContext": "Defines $\\texttt{leastPrimeGap}(m) = m - \\texttt{Nat.minFac}(m) = m - p(m)$, measuring the distance between a composite and its least prime factor."
     },
     {
       "id": "minFac-bounds",
       "title": "Least Prime Factor Bounds",
       "startLine": 38,
       "endLine": 57,
-      "summary": "Three proved theorems: $p(m) \\geq 2$ for composites ($\\texttt{minFac\\_ge\\_two}$), gap $= m - 2$ for even composites ($\\texttt{even\\_composite\\_gap}$), and $p(m) \\geq 3$ for odd composites ($\\texttt{odd\\_composite\\_minFac\\_ge\\_three}$)."
+      "summary": "Three proved theorems: $p(m) \\geq 2$ for composites ($\\texttt{minFac\\_ge\\_two}$), gap $= m - 2$ for even composites ($\\texttt{even\\_composite\\_gap}$), and $p(m) \\geq 3$ for odd composites ($\\texttt{odd\\_composite\\_minFac\\_ge\\_three}$).",
+      "mathContext": "Three proved theorems: $p(m) \\geq 2$ for composites ($\\texttt{minFac\\_ge\\_two}$), gap $= m - 2$ for even composites ($\\texttt{even\\_composite\\_gap}$), and $p(m) \\geq 3$ for odd composites ($\\texttt{od"
     },
     {
       "id": "nine-bound",
       "title": "Odd Composite Lower Bound",
       "startLine": 58,
       "endLine": 73,
-      "summary": "Proves $m \\geq 9$ for odd composites via $p(m) \\geq 3$ and $p(m)^2 \\leq m$ ($\\texttt{Nat.minFac\\_sq\\_le\\_self}$). Uses a $\\texttt{calc}$ chain: $9 = 3 \\times 3 \\leq p(m)^2 \\leq m$."
+      "summary": "Proves $m \\geq 9$ for odd composites via $p(m) \\geq 3$ and $p(m)^2 \\leq m$ ($\\texttt{Nat.minFac\\_sq\\_le\\_self}$). Uses a $\\texttt{calc}$ chain: $9 = 3 \\times 3 \\leq p(m)^2 \\leq m$.",
+      "mathContext": "Proves $m \\geq 9$ for odd composites via $p(m) \\geq 3$ and $p(m)^2 \\leq m$ ($\\texttt{Nat.minFac\\_sq\\_le\\_self}$). Uses a $\\texttt{calc}$ chain: $9 = 3 \\times 3 \\leq p(m)^2 \\leq m$."
     },
     {
       "id": "composite-existence",
       "title": "Composite Existence Above $n$",
       "startLine": 74,
       "endLine": 90,
-      "summary": "Proves $\\forall n \\geq 1,\\; \\exists m > n$ composite, using the witness $m = 2(n+1)$. Shows $2 \\mid m$ and $m \\geq 4$, so $m$ is not prime."
+      "summary": "Proves $\\forall n \\geq 1,\\; \\exists m > n$ composite, using the witness $m = 2(n+1)$. Shows $2 \\mid m$ and $m \\geq 4$, so $m$ is not prime.",
+      "mathContext": "Proves $\\forall n \\geq 1,\\; \\exists m > n$ composite, using the witness $m = 2(n+1)$. Shows $2 \\mid m$ and $m \\geq 4$, so $m$ is not prime."
     },
     {
       "id": "even-insufficient",
       "title": "Even Composites Are Insufficient",
       "startLine": 91,
       "endLine": 98,
-      "summary": "Proves $\\neg\\exists m$ with $p(m) = 2$ and $n + 2 < m < n + 2$ simultaneously (empty interval). Formalizes why even composites cannot satisfy the sandwiching condition."
+      "summary": "Proves $\\neg\\exists m$ with $p(m) = 2$ and $n + 2 < m < n + 2$ simultaneously (empty interval). Formalizes why even composites cannot satisfy the sandwiching condition.",
+      "mathContext": "Proves $\\neg\\exists m$ with $p(m) = 2$ and $n + 2 < m < n + 2$ simultaneously (empty interval). Formalizes why even composites cannot satisfy the sandwiching condition."
     },
     {
       "id": "structural",
       "title": "Key Structural Constraint",
       "startLine": 99,
       "endLine": 107,
-      "summary": "The critical structural insight: $n + f(n) < m < n + p(m) \\Rightarrow p(m) > f(n)$. The conjecture requires $(f(n)+1)$-rough composites in short intervals—connecting to sieve theory."
+      "summary": "The critical structural insight: $n + f(n) < m < n + p(m) \\Rightarrow p(m) > f(n)$. The conjecture requires $(f(n)+1)$-rough composites in short intervals—connecting to sieve theory.",
+      "mathContext": "The critical structural insight: $n + f(n) < m < n + p(m) \\Rightarrow p(m) > f(n)$. The conjecture requires $(f(n)+1)$-rough composites in short intervals—connecting to sieve theory."
     },
     {
       "id": "gap-bounds",
       "title": "Gap Bounds",
       "startLine": 108,
       "endLine": 118,
-      "summary": "Two final bounds: $\\texttt{leastPrimeGap}(m) \\leq m$ (trivial upper bound) and $\\texttt{leastPrimeGap}(m) > 0$ for composites (gap is positive since $p(m) < m$)."
+      "summary": "Two final bounds: $\\texttt{leastPrimeGap}(m) \\leq m$ (trivial upper bound) and $\\texttt{leastPrimeGap}(m) > 0$ for composites (gap is positive since $p(m) < m$).",
+      "mathContext": "Two final bounds: $\\texttt{leastPrimeGap}(m) \\leq m$ (trivial upper bound) and $\\texttt{leastPrimeGap}(m) > 0$ for composites (gap is positive since $p(m) < m$)."
     }
   ],
   "conclusion": {

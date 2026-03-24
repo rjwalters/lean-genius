@@ -86,56 +86,64 @@
       "title": "Core Definitions",
       "summary": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum via negated Summable).",
       "startLine": 33,
-      "endLine": 58
+      "endLine": 58,
+      "mathContext": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum vi"
     },
     {
       "id": "roth-number",
       "title": "Roth Number r_k(N)",
       "summary": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = o(N/\\log N)$.",
       "startLine": 59,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = "
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "summary": "States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$.",
       "startLine": 71,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$."
     },
     {
       "id": "historical",
       "title": "Historical Results",
       "summary": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Leng-Sah-Sawhney (2024, $r_k \\ll N/\\exp((\\log \\log N)^c)$).",
       "startLine": 82,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Len"
     },
     {
       "id": "gap",
       "title": "The Critical Gap",
       "summary": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation). Explains the exponential gap between current bounds and the conjecture threshold.",
       "startLine": 115,
-      "endLine": 135
+      "endLine": 135,
+      "mathContext": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation). Explains the exponential gap between current bounds and the conjectu"
     },
     {
       "id": "constructions",
       "title": "AP-Free Constructions",
       "summary": "Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$).",
       "startLine": 136,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$)."
     },
     {
       "id": "green-tao",
       "title": "Green-Tao Connection",
       "summary": "Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary.",
       "startLine": 156,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary."
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "Concludes with `erdos_3_open` via `Classical.em`, plus references documenting the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024).",
       "startLine": 184,
-      "endLine": 214
+      "endLine": 214,
+      "mathContext": "Concludes with `erdos_3_open` via `Classical.em`, plus references documenting the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024)."
     }
   ],
   "conclusion": {

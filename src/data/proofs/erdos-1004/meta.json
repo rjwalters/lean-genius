@@ -48,84 +48,96 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 1,
-      "summary": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for `Filter.atTop`."
+      "summary": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for `Filter.atTop`.",
+      "mathContext": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for"
     },
     {
       "id": "totient",
       "title": "Euler's Totient Function",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$."
+      "summary": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$.",
+      "mathContext": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$."
     },
     {
       "id": "distinct-runs",
       "title": "Distinct Totient Runs",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved."
+      "summary": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved.",
+      "mathContext": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved."
     },
     {
       "id": "max-length",
       "title": "Maximum Run Length Function",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$."
+      "summary": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$.",
+      "mathContext": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$."
     },
     {
       "id": "eps87",
       "title": "EPS87 Upper Bound",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth)."
+      "summary": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth).",
+      "mathContext": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth)."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture and Variants",
       "startLine": 1,
       "endLine": 1,
-      "summary": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constraint heuristic $c \\leq 1/3$."
+      "summary": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constraint heuristic $c \\leq 1/3$.",
+      "mathContext": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constra"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points."
+      "summary": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points.",
+      "mathContext": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points."
     },
     {
       "id": "collisions",
       "title": "Totient Value Collisions",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $< j$."
+      "summary": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $< j$.",
+      "mathContext": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $"
     },
     {
       "id": "divisor",
       "title": "Connection to Problem 945 (Divisor Function)",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$."
+      "summary": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$.",
+      "mathContext": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$."
     },
     {
       "id": "heuristics",
       "title": "Birthday Problem Heuristics",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should exist."
+      "summary": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should exist.",
+      "mathContext": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should ex"
     },
     {
       "id": "bounds",
       "title": "Run Length Bounds",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image)."
+      "summary": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image).",
+      "mathContext": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image)."
     },
     {
       "id": "special",
       "title": "Special Totient Values",
       "startLine": 1,
       "endLine": 1,
-      "summary": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture."
+      "summary": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture.",
+      "mathContext": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture."
     }
   ],
   "conclusion": {
@@ -182,6 +194,36 @@
     {
       "id": "erdos-1",
       "description": "Erdős Problem 1 is a canonical example of an Erdős conjecture with elementary statement and deep analytic content, sharing with Problem 1004 the feature that birthday-paradox and probabilistic heuristics strongly support the conjecture while rigorous proof remains elusive."
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "foundation",
+      "description": "The Euler totient function $\\varphi(n)$ is the central object in Problem 1004. The euler-totient proof establishes its c"
+    },
+    {
+      "id": "erdos-1003",
+      "relationship": "sibling",
+      "description": "Erdős Problem 1003 studies locally repeated values of arithmetic functions, the direct predecessor of Problem 1004 in th"
+    },
+    {
+      "id": "erdos-1005",
+      "relationship": "sibling",
+      "description": "Erdős Problem 1005 is the next problem in the EPS series on locally repeated values, studying further properties of toti"
+    },
+    {
+      "id": "erdos-1049",
+      "relationship": "analogy",
+      "description": "Erdős Problem 1049 concerns the divisor function $\\tau(n)$, which appears explicitly in the Problem 1004 formalization a"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "dependency",
+      "description": "The EPS upper bound on distinct totient runs relies on smooth number estimates, which in turn depend on the distribution"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "dependency",
+      "description": "The unique factorization theorem is essential for totient calculations: $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$ uses "
     }
   ],
   "references": [

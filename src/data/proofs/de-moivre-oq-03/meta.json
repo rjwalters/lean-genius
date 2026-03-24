@@ -86,77 +86,88 @@
       "title": "Preamble and Problem Statement",
       "summary": "Module docstring establishing the problem: extend De Moivre's theorem to fractional exponents $z^{p/q}$, with key results and references",
       "startLine": 1,
-      "endLine": 36
+      "endLine": 36,
+      "mathContext": "Module docstring establishing the problem: extend De Moivre's theorem to fractional exponents $z^{p/q}$, with key results and references"
     },
     {
       "id": "definitions",
       "title": "Root Definitions",
       "summary": "Defines $\\texttt{qthRoot}(\\theta, p, q, k) = \\exp(i(p\\theta + 2\\pi k)/q)$, the $k$-th candidate $q$-th root of $(e^{i\\theta})^p$",
       "startLine": 37,
-      "endLine": 40
+      "endLine": 40,
+      "mathContext": "Defines $\\texttt{qthRoot}(\\theta, p, q, k) = \\exp(i(p\\theta + 2\\pi k)/q)$, the $k$-th candidate $q$-th root of $(e^{i\\theta})^p$"
     },
     {
       "id": "root-verification",
       "title": "Part I: Root Verification",
       "summary": "Proves $\\zeta_k^q = (e^{i\\theta})^p$ by cancelling the $q$ denominator and applying $e^{2\\pi ik} = 1$",
       "startLine": 41,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "Proves $\\zeta_k^q = (e^{i\\theta})^p$ by cancelling the $q$ denominator and applying $e^{2\\pi ik} = 1$"
     },
     {
       "id": "roots-of-unity",
       "title": "Part II: Roots of Unity and Factorization",
       "summary": "Defines $\\omega_k = e^{2\\pi ik/q}$, proves $\\omega_k^q = 1$, and shows the factorization $\\zeta_k = \\zeta_0 \\cdot \\omega_k$",
       "startLine": 71,
-      "endLine": 97
+      "endLine": 97,
+      "mathContext": "Defines $\\omega_k = e^{2\\pi ik/q}$, proves $\\omega_k^q = 1$, and shows the factorization $\\zeta_k = \\zeta_0 \\cdot \\omega_k$"
     },
     {
       "id": "distinctness",
       "title": "Part III: Root Distinctness",
       "summary": "Proves $j \\neq k$ with $0 \\leq j,k < q$ implies $\\zeta_j \\neq \\zeta_k$ via a pigeonhole argument on $|j - k| < q$",
       "startLine": 98,
-      "endLine": 148
+      "endLine": 148,
+      "mathContext": "Proves $j \\neq k$ with $0 \\leq j,k < q$ implies $\\zeta_j \\neq \\zeta_k$ via a pigeonhole argument on $|j - k| < q$"
     },
     {
       "id": "principal-value",
       "title": "Part IV: Principal Value via cpow",
       "summary": "Connects Mathlib's $\\texttt{cpow}(e^{i\\theta}, p/q)$ to $\\zeta_0 = \\exp(ip\\theta/q)$ using `log_exp` for $-\\pi < \\theta \\leq \\pi$; includes trigonometric form $\\cos(p\\theta/q) + i\\sin(p\\theta/q)$",
       "startLine": 149,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "Connects Mathlib's $\\texttt{cpow}(e^{i\\theta}, p/q)$ to $\\zeta_0 = \\exp(ip\\theta/q)$ using `log_exp` for $-\\pi < \\theta \\leq \\pi$; includes trigonometric form $\\cos(p\\theta/q) + i\\sin(p\\theta/q)$"
     },
     {
       "id": "consistency",
       "title": "Part V: Consistency with Integer De Moivre",
       "summary": "Shows $z^{p/1} = z^p$ and $(z^{p/q})^q = z^p$, confirming the principal value is a genuine $q$-th root of $z^p$",
       "startLine": 185,
-      "endLine": 200
+      "endLine": 200,
+      "mathContext": "Shows $z^{p/1} = z^p$ and $(z^{p/q})^q = z^p$, confirming the principal value is a genuine $q$-th root of $z^p$"
     },
     {
       "id": "sqrt-case",
       "title": "Part VI: Square Root Special Case",
       "summary": "Proves both square roots satisfy $\\zeta_k^2 = e^{i\\theta}$ and that $\\zeta_1 = -\\zeta_0$ via Euler's identity $e^{i\\pi} = -1$",
       "startLine": 201,
-      "endLine": 224
+      "endLine": 224,
+      "mathContext": "Proves both square roots satisfy $\\zeta_k^2 = e^{i\\theta}$ and that $\\zeta_1 = -\\zeta_0$ via Euler's identity $e^{i\\pi} = -1$"
     },
     {
       "id": "cube-root-case",
       "title": "Part VII: Cube Root Special Case",
       "summary": "Verifies all three cube roots satisfy $\\zeta_k^3 = e^{i\\theta}$ and factor as $\\zeta_k = \\zeta_0 \\cdot \\omega_k$ with $\\omega_k \\in \\mu_3$",
       "startLine": 225,
-      "endLine": 237
+      "endLine": 237,
+      "mathContext": "Verifies all three cube roots satisfy $\\zeta_k^3 = e^{i\\theta}$ and factor as $\\zeta_k = \\zeta_0 \\cdot \\omega_k$ with $\\omega_k \\in \\mu_3$"
     },
     {
       "id": "examples",
       "title": "Part VIII: Verified Examples",
       "summary": "Concrete computations: $\\zeta_0(0,1,2) = 1$, $\\zeta_0(0,1,3) = 1$, and $\\zeta_1(0,1,4) = i$ (the fourth root $e^{i\\pi/2}$)",
       "startLine": 238,
-      "endLine": 256
+      "endLine": 256,
+      "mathContext": "Concrete computations: $\\zeta_0(0,1,2) = 1$, $\\zeta_0(0,1,3) = 1$, and $\\zeta_1(0,1,4) = i$ (the fourth root $e^{i\\pi/2}$)"
     },
     {
       "id": "summary",
       "title": "Part IX: Summary Theorem",
       "summary": "Bundles all four main results into a single conjunction: root verification, unity factorization, principal value identification, and consistency",
       "startLine": 257,
-      "endLine": 275
+      "endLine": 275,
+      "mathContext": "Bundles all four main results into a single conjunction: root verification, unity factorization, principal value identification, and consistency"
     }
   ],
   "conclusion": {

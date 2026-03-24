@@ -49,84 +49,96 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's `SimpleGraph`, `Clique`, `Fintype`, and tactic libraries. Opens the `SimpleGraph`, `Finset`, and `Classical` namespaces and enables classical decidability for propositions.",
       "startLine": 22,
-      "endLine": 31
+      "endLine": 31,
+      "mathContext": "Imports Mathlib's `SimpleGraph`, `Clique`, `Fintype`, and tactic libraries. Opens the `SimpleGraph`, `Finset`, and `Classical` namespaces and enables classical decidability for propositions."
     },
     {
       "id": "triangles",
       "title": "Part I: Triangle Definitions",
       "summary": "Defines `IsTriangle G a b c` (three pairwise-adjacent vertices), `HitsTriangle S a b c` (edge set $S$ shares an edge with triangle $abc$), `IsTriangleEdgeCover` (hits every triangle), and `IsTriangleSparse` (at most one edge per triangle).",
       "startLine": 35,
-      "endLine": 59
+      "endLine": 59,
+      "mathContext": "Defines `IsTriangle G a b c` (three pairwise-adjacent vertices), `HitsTriangle S a b c` (edge set $S$ shares an edge with triangle $abc$), `IsTriangleEdgeCover` (hits every triangle), and `IsTriangleS"
     },
     {
       "id": "structural-lemmas",
       "title": "Part II: Structural Lemmas",
       "summary": "Proves that the full edge set $E(G)$ is always a triangle edge cover (`edgeFinset_is_cover`), the empty set is vacuously triangle-sparse (`empty_is_sparse`), and every triangle contributes three edges to $E(G)$ (`triangle_edges_in_graph`).",
       "startLine": 60,
-      "endLine": 83
+      "endLine": 83,
+      "mathContext": "Proves that the full edge set $E(G)$ is always a triangle edge cover (`edgeFinset_is_cover`), the empty set is vacuously triangle-sparse (`empty_is_sparse`), and every triangle contributes three edges"
     },
     {
       "id": "tau1-alpha1",
       "title": "Part III: The $\\tau_1$ and $\\alpha_1$ Functions",
       "summary": "Defines $\\tau_1(G)$ as the minimum cardinality among all triangle edge covers that are subsets of $E(G)$ (via `Finset.inf'`), and $\\alpha_1(G)$ as the maximum cardinality among all triangle-sparse subsets of $E(G)$ (via `Finset.sup'`). Well-definedness relies on the structural lemmas from Part II.",
       "startLine": 84,
-      "endLine": 107
+      "endLine": 107,
+      "mathContext": "Defines $\\tau_1(G)$ as the minimum cardinality among all triangle edge covers that are subsets of $E(G)$ (via `Finset.inf'`), and $\\alpha_1(G)$ as the maximum cardinality among all triangle-sparse sub"
     },
     {
       "id": "bipartite-removal",
       "title": "Part IV: Bipartite Removal",
       "summary": "Axiomatizes $\\tau_B(G)$, the minimum number of edge removals to make $G$ bipartite (the odd cycle transversal number for edges). Also axiomatizes $\\tau_B(G) \\le |E(G)|$.",
       "startLine": 108,
-      "endLine": 120
+      "endLine": 120,
+      "mathContext": "Axiomatizes $\\tau_B(G)$, the minimum number of edge removals to make $G$ bipartite (the odd cycle transversal number for edges). Also axiomatizes $\\tau_B(G) \\le |E(G)|$."
     },
     {
       "id": "bipartite-triangles",
       "title": "Part V: Bipartite Graphs and Triangles",
       "summary": "Proves `bipartite_triangle_free`: bipartite graphs contain no triangles, using a 2-coloring pigeonhole argument on `Bool`. Axiomatizes $\\tau_1 \\le \\tau_B$: any bipartite-making deletion set hits all triangles.",
       "startLine": 121,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "Proves `bipartite_triangle_free`: bipartite graphs contain no triangles, using a 2-coloring pigeonhole argument on `Bool`. Axiomatizes $\\tau_1 \\le \\tau_B$: any bipartite-making deletion set hits all t"
     },
     {
       "id": "main-conjecture",
       "title": "Part VI: The Main Conjecture",
       "summary": "Defines `EGTConjecture` ($\\alpha_1 + \\tau_1 \\le n^2/4$) and `NorinSunResult` ($\\alpha_1 + \\tau_B \\le n^2/4$). Axiomatizes Norin-Sun 2016. Proves `egt_conjecture_resolved`: the EGT conjecture follows from Norin-Sun via $\\tau_1 \\le \\tau_B$ and `linarith`.",
       "startLine": 146,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "Defines `EGTConjecture` ($\\alpha_1 + \\tau_1 \\le n^2/4$) and `NorinSunResult` ($\\alpha_1 + \\tau_B \\le n^2/4$). Axiomatizes Norin-Sun 2016. Proves `egt_conjecture_resolved`: the EGT conjecture follows f"
     },
     {
       "id": "triangle-free",
       "title": "Part VII: Triangle-Free Graphs",
       "summary": "Proves four results for triangle-free graphs: the empty set is a valid cover, $\\tau_1(G) = 0$, the full edge set is sparse, and $\\alpha_1(G) = |E(G)|$. Axiomatizes Mantel's theorem ($|E(G)| \\le n^2/4$ for triangle-free $G$) and derives `triangle_free_egt`.",
       "startLine": 171,
-      "endLine": 230
+      "endLine": 230,
+      "mathContext": "Proves four results for triangle-free graphs: the empty set is a valid cover, $\\tau_1(G) = 0$, the full edge set is sparse, and $\\alpha_1(G) = |E(G)|$. Axiomatizes Mantel's theorem ($|E(G)| \\le n^2/4$"
     },
     {
       "id": "bounds",
       "title": "Part VIII: Bounds and Estimates",
       "summary": "Proves $\\tau_1(G) \\le |E(G)|$ and $\\alpha_1(G) \\le |E(G)|$ from definitions, then derives $\\alpha_1(G) \\le n^2/4$ from Norin-Sun via nonnegativity of $\\tau_B$.",
       "startLine": 231,
-      "endLine": 257
+      "endLine": 257,
+      "mathContext": "Proves $\\tau_1(G) \\le |E(G)|$ and $\\alpha_1(G) \\le |E(G)|$ from definitions, then derives $\\alpha_1(G) \\le n^2/4$ from Norin-Sun via nonnegativity of $\\tau_B$."
     },
     {
       "id": "triangle-free-sum",
       "title": "Part IX: Triangle-Free Sum Identity",
       "summary": "Proves $\\alpha_1(G) + \\tau_1(G) = |E(G)|$ for triangle-free graphs, combining the results $\\tau_1 = 0$ and $\\alpha_1 = |E|$ with `omega`.",
       "startLine": 258,
-      "endLine": 266
+      "endLine": 266,
+      "mathContext": "Proves $\\alpha_1(G) + \\tau_1(G) = |E(G)|$ for triangle-free graphs, combining the results $\\tau_1 = 0$ and $\\alpha_1 = |E|$ with `omega`."
     },
     {
       "id": "equality-cases",
       "title": "Part X: Equality Cases",
       "summary": "Axiomatizes that equality $\\alpha_1(G) + \\tau_1(G) = \\lfloor n^2/4 \\rfloor$ is achievable for every $n \\ge 2$, realized by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$.",
       "startLine": 267,
-      "endLine": 277
+      "endLine": 277,
+      "mathContext": "Axiomatizes that equality $\\alpha_1(G) + \\tau_1(G) = \\lfloor n^2/4 \\rfloor$ is achievable for every $n \\ge 2$, realized by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$."
     },
     {
       "id": "problem23",
       "title": "Part XI: Problem #23 Connection",
       "summary": "Defines `Problem23Conjecture` ($\\tau_B(G) \\le n^2/25$) and proves that if Problem #23 holds, then $\\tau_1(G) \\le n^2/25$ via the chain $\\tau_1 \\le \\tau_B \\le n^2/25$.",
       "startLine": 278,
-      "endLine": 335
+      "endLine": 335,
+      "mathContext": "Defines `Problem23Conjecture` ($\\tau_B(G) \\le n^2/25$) and proves that if Problem #23 holds, then $\\tau_1(G) \\le n^2/25$ via the chain $\\tau_1 \\le \\tau_B \\le n^2/25$."
     }
   ],
   "conclusion": {

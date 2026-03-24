@@ -79,56 +79,64 @@
       "title": "Problem Statement",
       "startLine": 1,
       "endLine": 24,
-      "summary": "The Deaconescu conjecture on primorial plus prime"
+      "summary": "The Deaconescu conjecture on primorial plus prime",
+      "mathContext": "The Deaconescu conjecture on primorial plus prime"
     },
     {
       "id": "primorial",
       "title": "The Primorial Function",
       "startLine": 32,
       "endLine": 49,
-      "summary": "Definitions of nthPrime and primorial"
+      "summary": "Definitions of nthPrime and primorial",
+      "mathContext": "Definitions of nthPrime and primorial"
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 50,
       "endLine": 70,
-      "summary": "Primorial positivity and divisibility properties"
+      "summary": "Primorial positivity and divisibility properties",
+      "mathContext": "Primorial positivity and divisibility properties"
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 71,
       "endLine": 97,
-      "summary": "Defines validPrimes(n) and states the Deaconescu conjecture as set-nonemptiness"
+      "summary": "Defines validPrimes(n) and states the Deaconescu conjecture as set-nonemptiness",
+      "mathContext": "Defines validPrimes(n) and states the Deaconescu conjecture as set-nonemptiness"
     },
     {
       "id": "polynomial-bound",
       "title": "Erdős's Polynomial Bound Conjecture",
       "startLine": 98,
       "endLine": 109,
-      "summary": "Erdős's quantitative strengthening: the smallest valid prime is O(n^c)"
+      "summary": "Erdős's quantitative strengthening: the smallest valid prime is O(n^c)",
+      "mathContext": "Erdős's quantitative strengthening: the smallest valid prime is O(n^c)"
     },
     {
       "id": "verified-cases",
       "title": "Verified Small Cases",
       "startLine": 110,
       "endLine": 173,
-      "summary": "Explicit witness primes for n = 2, 3, 4, 5 verified by norm_num"
+      "summary": "Explicit witness primes for n = 2, 3, 4, 5 verified by norm_num",
+      "mathContext": "Explicit witness primes for n = 2, 3, 4, 5 verified by norm_num"
     },
     {
       "id": "heuristic",
       "title": "Heuristic Analysis",
       "startLine": 174,
       "endLine": 191,
-      "summary": "Cramér-model probabilistic argument and primorial_growth_heuristic theorem"
+      "summary": "Cramér-model probabilistic argument and primorial_growth_heuristic theorem",
+      "mathContext": "Cramér-model probabilistic argument and primorial_growth_heuristic theorem"
     },
     {
       "id": "connections",
       "title": "Connection to Other Problems",
       "startLine": 192,
       "endLine": 230,
-      "summary": "Primorial primes, OEIS A005235, computational verification axioms"
+      "summary": "Primorial primes, OEIS A005235, computational verification axioms",
+      "mathContext": "Primorial primes, OEIS A005235, computational verification axioms"
     }
   ],
   "crossRefs": [

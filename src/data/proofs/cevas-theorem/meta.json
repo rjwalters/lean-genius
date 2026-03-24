@@ -13,7 +13,8 @@
       "triangle",
       "concurrency",
       "signed-ratios",
-      "classic"
+      "classic",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/CevasTheorem.lean",
     "badge": "original",
@@ -218,6 +219,11 @@
       "id": "feuerbachs-theorem",
       "relationship": "related",
       "description": "Both are classical triangle geometry results: Ceva's theorem concerns cevian concurrency, while Feuerbach's theorem concerns the tangency of the nine-point circle and incircle — both reveal deep structure in triangle configurations"
+    },
+    {
+      "id": "isosceles-triangle",
+      "relationship": "foundational",
+      "description": "The isosceles triangle theorem is the simplest symmetry result in triangle geometry, while Ceva's theorem handles the ge"
     }
   ]
 }

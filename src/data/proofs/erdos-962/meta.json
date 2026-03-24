@@ -84,56 +84,64 @@
       "title": "Basic Definitions",
       "summary": "lpf, HasLargePrimeFactor",
       "startLine": 38,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "lpf, HasLargePrimeFactor"
     },
     {
       "id": "k-function",
       "title": "The k(n) Function",
       "summary": "IsValidInterval, k_func, k_bounded, k_monotone, k_pos, k_small_values",
       "startLine": 56,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "IsValidInterval, k_func, k_bounded, k_monotone, k_pos, k_small_values"
     },
     {
       "id": "erdos-lower",
       "title": "Erdős's Lower Bound",
       "summary": "erdos_lower_bound axiom",
       "startLine": 102,
-      "endLine": 115
+      "endLine": 115,
+      "mathContext": "erdos_lower_bound axiom"
     },
     {
       "id": "tang-lower",
       "title": "Tang's Improved Lower Bound",
       "summary": "tang_lower_bound axiom, tangConstant",
       "startLine": 116,
-      "endLine": 136
+      "endLine": 136,
+      "mathContext": "tang_lower_bound axiom, tangConstant"
     },
     {
       "id": "tao-upper",
       "title": "Tao's Upper Bound",
       "summary": "tao_upper_bound axiom",
       "startLine": 137,
-      "endLine": 149
+      "endLine": 149,
+      "mathContext": "tao_upper_bound axiom"
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture",
       "summary": "ErdosConjecture definition (OPEN)",
       "startLine": 150,
-      "endLine": 164
+      "endLine": 164,
+      "mathContext": "ErdosConjecture definition (OPEN)"
     },
     {
       "id": "smooth",
       "title": "Smooth Numbers Connection",
       "summary": "IsSmooth, not_smooth_iff_large_prime",
       "startLine": 165,
-      "endLine": 182
+      "endLine": 182,
+      "mathContext": "IsSmooth, not_smooth_iff_large_prime"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_962_summary, erdos_962",
       "startLine": 183,
-      "endLine": 208
+      "endLine": 208,
+      "mathContext": "erdos_962_summary, erdos_962"
     }
   ],
   "conclusion": {

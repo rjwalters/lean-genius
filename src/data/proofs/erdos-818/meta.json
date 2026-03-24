@@ -90,63 +90,72 @@
       "title": "Basic Definitions",
       "startLine": 46,
       "endLine": 77,
-      "summary": "Sumset, product set, additive doubling, small sumset condition"
+      "summary": "Sumset, product set, additive doubling, small sumset condition",
+      "mathContext": "Sumset, product set, additive doubling, small sumset condition"
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "startLine": 78,
       "endLine": 105,
-      "summary": "Elementary bounds on sumset and product set sizes"
+      "summary": "Elementary bounds on sumset and product set sizes",
+      "mathContext": "Elementary bounds on sumset and product set sizes"
     },
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture",
       "startLine": 106,
       "endLine": 121,
-      "summary": "Erdős's question about product sets under small sumset hypothesis"
+      "summary": "Erdős's question about product sets under small sumset hypothesis",
+      "mathContext": "Erdős's question about product sets under small sumset hypothesis"
     },
     {
       "id": "solymosi-theorem",
       "title": "Solymosi's Theorem",
       "startLine": 122,
       "endLine": 155,
-      "summary": "The main result: |AA| ≥ c·|A|²/log|A|"
+      "summary": "The main result: |AA| ≥ c·|A|²/log|A|",
+      "mathContext": "The main result: |AA| ≥ c·|A|²/log|A|"
     },
     {
       "id": "multiplicative-energy",
       "title": "Multiplicative Energy",
       "startLine": 156,
       "endLine": 190,
-      "summary": "Energy definitions and key bounds"
+      "summary": "Energy definitions and key bounds",
+      "mathContext": "Energy definitions and key bounds"
     },
     {
       "id": "proof-sketch",
       "title": "Proof Sketch",
       "startLine": 191,
       "endLine": 229,
-      "summary": "How energy bounds combine to prove the theorem, log tightness"
+      "summary": "How energy bounds combine to prove the theorem, log tightness",
+      "mathContext": "How energy bounds combine to prove the theorem, log tightness"
     },
     {
       "id": "sum-product-connection",
       "title": "Connection to Sum-Product",
       "startLine": 230,
       "endLine": 260,
-      "summary": "Relation to Problem 52 and sum-product dichotomy"
+      "summary": "Relation to Problem 52 and sum-product dichotomy",
+      "mathContext": "Relation to Problem 52 and sum-product dichotomy"
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 261,
       "endLine": 291,
-      "summary": "Arithmetic and geometric progressions as extremes"
+      "summary": "Arithmetic and geometric progressions as extremes",
+      "mathContext": "Arithmetic and geometric progressions as extremes"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 292,
       "endLine": 325,
-      "summary": "Main results and key insight"
+      "summary": "Main results and key insight",
+      "mathContext": "Main results and key insight"
     }
   ],
   "conclusion": {
@@ -272,6 +281,31 @@
       "id": "roth-theorem-k3",
       "relationship": "technique",
       "description": "Roth's theorem on 3-term arithmetic progressions shares additive combinatorics foundations; Fourier-analytic and energy "
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "context",
+      "description": "The Erdős multiplication table problem (which proves the log factor in Problem #818 is tight) uses the prime number theo"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "context",
+      "description": "The logarithmic factor in Solymosi's bound reflects the same log-growth that appears in the harmonic series; the multipl"
+    },
+    {
+      "id": "prob-method-second-moment",
+      "relationship": "technique",
+      "description": "The energy method in Problem #818 is analogous to second-moment arguments: multiplicative energy counts pair collisions,"
+    },
+    {
+      "id": "erdos-801",
+      "relationship": "related",
+      "description": "Both are Erdős problems in combinatorial number theory concerning expansion properties of finite sets"
+    },
+    {
+      "id": "erdos-4",
+      "relationship": "context",
+      "description": "Problem #4 on prime gaps uses analytic number theory tools; the multiplication table problem connecting to Problem #818'"
     }
   ],
   "leanFile": {

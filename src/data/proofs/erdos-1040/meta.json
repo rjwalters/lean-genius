@@ -212,6 +212,11 @@
       "id": "lebesgue-measure",
       "relationship": "foundational",
       "description": "The definition of μ(F) as the Lebesgue measure of sublevel sets in the complex plane relies directly on MeasureTheory.volume, the Lebesgue measure formalized in Mathlib."
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Algebra underpins the polynomial infrastructure, ensuring that monic polynomials with roots i"
     }
   ],
   "references": [

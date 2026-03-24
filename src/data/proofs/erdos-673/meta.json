@@ -110,63 +110,72 @@
       "title": "Divisor Definitions",
       "summary": "Defines `sortedDivisors` (ordered divisor list via `Finset.sort`), `tau` ($\\tau(n) = |\\{d : d \\mid n\\}|$), and `divisorAt` (0-indexed access). Proves boundary properties: $d_0 = 1$ and $d_{\\tau(n)-1} = n$.",
       "startLine": 33,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "Defines `sortedDivisors` (ordered divisor list via `Finset.sort`), `tau` ($\\tau(n) = |\\{d : d \\mid n\\}|$), and `divisorAt` (0-indexed access). Proves boundary properties: $d_0 = 1$ and $d_{\\tau(n)-1} "
     },
     {
       "id": "g-function",
       "title": "The Function G(n)",
       "summary": "Defines $G(n) = \\sum_i d_i/d_{i+1}$ as a sum over `Finset.range (tau n - 1)`. Computes $G(1) = 0$, $G(p) = 1/p$ for primes, and $G(p^2) = 2/p$.",
       "startLine": 56,
-      "endLine": 74
+      "endLine": 74,
+      "mathContext": "Defines $G(n) = \\sum_i d_i/d_{i+1}$ as a sum over `Finset.range (tau n - 1)`. Computes $G(1) = 0$, $G(p) = 1/p$ for primes, and $G(p^2) = 2/p$."
     },
     {
       "id": "bounds",
       "title": "Bounds on G(n)",
       "summary": "Establishes $G(n) \\le \\tau(n) - 1$ (trivial), Tao's $G(n) \\le \\tau(n)$, Tao's $G(n) \\ge \\tau(n/m)/m$ for $m \\mid n$, and the even-number corollary $G(n) \\ge \\tau(n)/4$.",
       "startLine": 75,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "Establishes $G(n) \\le \\tau(n) - 1$ (trivial), Tao's $G(n) \\le \\tau(n)$, Tao's $G(n) \\ge \\tau(n/m)/m$ for $m \\mid n$, and the even-number corollary $G(n) \\ge \\tau(n)/4$."
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
       "summary": "Proves average $(1/X) \\sum G(n) \\to \\infty$ and formalizes $G(n) \\to \\infty$ for density 1 of integers (`AlmostAllGToInfinity`), trivially answering Erdős's first question.",
       "startLine": 97,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Proves average $(1/X) \\sum G(n) \\to \\infty$ and formalizes $G(n) \\to \\infty$ for density 1 of integers (`AlmostAllGToInfinity`), trivially answering Erdős's first question."
     },
     {
       "id": "distribution",
       "title": "Distribution of G(n)/τ(n)",
       "summary": "Defines $\\text{GRatio}(n) = G(n)/\\tau(n)$, proves it is bounded in $[0,1]$, and formalizes the Erdős-Tenenbaum theorem: $G(n)/\\tau(n)$ has a continuous distribution function $F$.",
       "startLine": 115,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "Defines $\\text{GRatio}(n) = G(n)/\\tau(n)$, proves it is bounded in $[0,1]$, and formalizes the Erdős-Tenenbaum theorem: $G(n)/\\tau(n)$ has a continuous distribution function $F$."
     },
     {
       "id": "specific",
       "title": "Specific Values",
       "summary": "Computes $G(6) = 1/2 + 2/3 + 1/2$ and $G(12) = 1/2 + 2/3 + 3/4 + 4/6 + 6/12$ from the divisor sequences. Shows highly composite numbers satisfy $G(n) \\ge \\tau(n)/4$.",
       "startLine": 140,
-      "endLine": 156
+      "endLine": 156,
+      "mathContext": "Computes $G(6) = 1/2 + 2/3 + 1/2$ and $G(12) = 1/2 + 2/3 + 3/4 + 4/6 + 6/12$ from the divisor sequences. Shows highly composite numbers satisfy $G(n) \\ge \\tau(n)/4$."
     },
     {
       "id": "multiplicative",
       "title": "Multiplicative Properties",
       "summary": "Proves $G$ is not multiplicative (exhibits coprime $a, b$ with $G(ab) \\neq G(a)G(b)$) but is superadditive: $G(mn) \\ge G(m) + G(n)$ for coprime $m, n$.",
       "startLine": 157,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "Proves $G$ is not multiplicative (exhibits coprime $a, b$ with $G(ab) \\neq G(a)G(b)$) but is superadditive: $G(mn) \\ge G(m) + G(n)$ for coprime $m, n$."
     },
     {
       "id": "formula",
       "title": "Asymptotic Formula",
       "summary": "States $\\sum_{n \\le X} G(n) \\sim c X \\log X$ for some $c > 0$, both as a limit and as an $\\varepsilon$-$N$ formalization (`AsymptoticFormula`).",
       "startLine": 170,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "States $\\sum_{n \\le X} G(n) \\sim c X \\log X$ for some $c > 0$, both as a limit and as an $\\varepsilon$-$N$ formalization (`AsymptoticFormula`)."
     },
     {
       "id": "tau-connection",
       "title": "Connection to τ(n)",
       "summary": "Proves Dirichlet's $\\sum \\tau(n) \\sim X \\log X$ and the sandwich $c_1 \\sum \\tau(n) \\le \\sum G(n) \\le c_2 \\sum \\tau(n)$, confirming $G$ and $\\tau$ have comparable average order.",
       "startLine": 184,
-      "endLine": 233
+      "endLine": 233,
+      "mathContext": "Proves Dirichlet's $\\sum \\tau(n) \\sim X \\log X$ and the sandwich $c_1 \\sum \\tau(n) \\le \\sum G(n) \\le c_2 \\sum \\tau(n)$, confirming $G$ and $\\tau$ have comparable average order."
     }
   ],
   "conclusion": {

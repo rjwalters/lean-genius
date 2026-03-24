@@ -130,7 +130,14 @@ def IsCunninghamChainFirst (p : ℕ → ℕ) : Prop :=
 -- Cunningham chains are prime chains (since 2p+1 ≡ 1 (mod p) when p is odd)
 theorem cunningham_is_prime_chain (p : ℕ → ℕ) (h : IsCunninghamChainFirst p)
     (hodd : ∀ i, p i > 2) : StrictMono p ∧ (∀ i, p (i + 1) % p i = 1) := by
-  sorry
+  obtain ⟨_, hsucc⟩ := h
+  constructor
+  · -- p(i+1) = 2*p(i)+1 > p(i) since p(i) > 2
+    exact strictMono_nat_of_lt_succ (fun k => by rw [hsucc k]; have := hodd k; omega)
+  · -- (2*p(i)+1) % p(i) = 1 since p(i) > 1
+    intro i
+    rw [hsucc i, show 2 * p i + 1 = 1 + p i * 2 from by ring,
+        Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (by have := hodd i; omega)]
 
 /-
 # Part 5: The Ford-Konyagin-Luca Analysis

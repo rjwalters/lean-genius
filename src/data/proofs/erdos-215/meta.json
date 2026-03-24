@@ -84,56 +84,64 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 31,
-      "summary": "Module documentation with problem statement, history (Steinhaus question, Jackson-Mauldin 2002 solution), and references; imports EuclideanDist, Isometry, and Set.Card; opens Set and Function"
+      "summary": "Module documentation with problem statement, history (Steinhaus question, Jackson-Mauldin 2002 solution), and references; imports EuclideanDist, Isometry, and Set.Card; opens Set and Function",
+      "mathContext": "Module documentation with problem statement, history (Steinhaus question, Jackson-Mauldin 2002 solution), and references; imports EuclideanDist, Isometry, and Set.Card; opens Set and Function"
     },
     {
       "id": "lattice",
       "title": "Part I: The Integer Lattice",
       "startLine": 32,
       "endLine": 63,
-      "summary": "Defines integerLattice as {p | ∀ i, ∃ n : ℤ, p i = n} in EuclideanSpace ℝ (Fin 2); isLatticePoint via explicit (m, n) coordinates; equivalence proved by fin_cases"
+      "summary": "Defines integerLattice as {p | ∀ i, ∃ n : ℤ, p i = n} in EuclideanSpace ℝ (Fin 2); isLatticePoint via explicit (m, n) coordinates; equivalence proved by fin_cases",
+      "mathContext": "Defines integerLattice as {p | ∀ i, ∃ n : ℤ, p i = n} in EuclideanSpace ℝ (Fin 2); isLatticePoint via explicit (m, n) coordinates; equivalence proved by fin_cases"
     },
     {
       "id": "congruence",
       "title": "Part II: Isometries and Congruence",
       "startLine": 64,
       "endLine": 94,
-      "summary": "Defines IsCongruent S T via isometric image T = f '' S; proves isCongruent_refl via identity; axiomatizes isCongruent_symm"
+      "summary": "Defines IsCongruent S T via isometric image T = f '' S; proves isCongruent_refl via identity; axiomatizes isCongruent_symm",
+      "mathContext": "Defines IsCongruent S T via isometric image T = f '' S; proves isCongruent_refl via identity; axiomatizes isCongruent_symm"
     },
     {
       "id": "steinhaus",
       "title": "Part III: The Steinhaus Property",
       "startLine": 95,
       "endLine": 116,
-      "summary": "Defines HasSteinhausProperty: ∀ congruent T, ∃! p ∈ T ∩ integerLattice; defines latticePointCount via Set.ncard"
+      "summary": "Defines HasSteinhausProperty: ∀ congruent T, ∃! p ∈ T ∩ integerLattice; defines latticePointCount via Set.ncard",
+      "mathContext": "Defines HasSteinhausProperty: ∀ congruent T, ∃! p ∈ T ∩ integerLattice; defines latticePointCount via Set.ncard"
     },
     {
       "id": "jackson-mauldin",
       "title": "Part IV: Jackson-Mauldin Theorem",
       "startLine": 117,
       "endLine": 147,
-      "summary": "Axiom jackson_mauldin_theorem: ∃ S with Steinhaus property; theorem erdos_215_answer: YES, the answer is affirmative"
+      "summary": "Axiom jackson_mauldin_theorem: ∃ S with Steinhaus property; theorem erdos_215_answer: YES, the answer is affirmative",
+      "mathContext": "Axiom jackson_mauldin_theorem: ∃ S with Steinhaus property; theorem erdos_215_answer: YES, the answer is affirmative"
     },
     {
       "id": "properties",
       "title": "Part V: Properties of Steinhaus Sets",
       "startLine": 148,
       "endLine": 165,
-      "summary": "Axiom steinhaus_set_unbounded: Steinhaus sets are unbounded; axiom steinhaus_set_measure_pathological: not measure-theoretically nice; ConstructiveSteinhausQuestion placeholder"
+      "summary": "Axiom steinhaus_set_unbounded: Steinhaus sets are unbounded; axiom steinhaus_set_measure_pathological: not measure-theoretically nice; ConstructiveSteinhausQuestion placeholder",
+      "mathContext": "Axiom steinhaus_set_unbounded: Steinhaus sets are unbounded; axiom steinhaus_set_measure_pathological: not measure-theoretically nice; ConstructiveSteinhausQuestion placeholder"
     },
     {
       "id": "selector",
       "title": "Part VI: The Lattice Point Selector",
       "startLine": 166,
       "endLine": 193,
-      "summary": "Noncomputable steinhausSelector extracts unique lattice point from congruent copies; steinhausSelector_mem and steinhausSelector_unique theorems proved from ∃! API"
+      "summary": "Noncomputable steinhausSelector extracts unique lattice point from congruent copies; steinhausSelector_mem and steinhausSelector_unique theorems proved from ∃! API",
+      "mathContext": "Noncomputable steinhausSelector extracts unique lattice point from congruent copies; steinhausSelector_mem and steinhausSelector_unique theorems proved from ∃! API"
     },
     {
       "id": "higher-dim",
       "title": "Part VII: Higher Dimensions",
       "startLine": 194,
       "endLine": 201,
-      "summary": "Defines HigherDimensionalSteinhaus n for ℤⁿ ⊂ ℝⁿ; axiom jackson_mauldin_general: true for n ≥ 2"
+      "summary": "Defines HigherDimensionalSteinhaus n for ℤⁿ ⊂ ℝⁿ; axiom jackson_mauldin_general: true for n ≥ 2",
+      "mathContext": "Defines HigherDimensionalSteinhaus n for ℤⁿ ⊂ ℝⁿ; axiom jackson_mauldin_general: true for n ≥ 2"
     }
   ],
   "conclusion": {

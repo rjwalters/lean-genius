@@ -84,84 +84,96 @@
       "title": "Problem Header and Imports",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Documentation header with references to Salem-Zygmund (1954), Halasz (1973), and Erdos (1961). Imports Mathlib modules for $\\mathbb{C}$, $\\mathbb{R}$, logarithms, finite sets, and big operators."
+      "summary": "Documentation header with references to Salem-Zygmund (1954), Halasz (1973), and Erdos (1961). Imports Mathlib modules for $\\mathbb{C}$, $\\mathbb{R}$, logarithms, finite sets, and big operators.",
+      "mathContext": "Documentation header with references to Salem-Zygmund (1954), Halasz (1973), and Erdos (1961). Imports Mathlib modules for $\\mathbb{C}$, $\\mathbb{R}$, logarithms, finite sets, and big operators."
     },
     {
       "id": "random-polynomials",
       "title": "Random Polynomials",
       "startLine": 42,
       "endLine": 59,
-      "summary": "Defines `SignVector n` ($\\pm 1$ coefficient vectors), `IsValidSign` (validity predicate), `randomPolynomial` ($f(z) = \\sum \\varepsilon_k z^k$), `maxModulus` ($\\sup_{|z|=1} |f(z)|$), and `evalOnCircle` ($f(e^{i\\theta})$)."
+      "summary": "Defines `SignVector n` ($\\pm 1$ coefficient vectors), `IsValidSign` (validity predicate), `randomPolynomial` ($f(z) = \\sum \\varepsilon_k z^k$), `maxModulus` ($\\sup_{|z|=1} |f(z)|$), and `evalOnCircle` ($f(e^{i\\theta})$).",
+      "mathContext": "Defines `SignVector n` ($\\pm 1$ coefficient vectors), `IsValidSign` (validity predicate), `randomPolynomial` ($f(z) = \\sum \\varepsilon_k z^k$), `maxModulus` ($\\sup_{|z|=1} |f(z)|$), and `evalOnCircle`"
     },
     {
       "id": "scaling",
       "title": "The Scaling Function",
       "startLine": 65,
       "endLine": 71,
-      "summary": "Defines `expectedScale n` $= \\sqrt{n \\log n}$ and `scaledMaxModulus` $= M_n / \\sqrt{n \\log n}$, the normalized ratio whose convergence is the central question."
+      "summary": "Defines `expectedScale n` $= \\sqrt{n \\log n}$ and `scaledMaxModulus` $= M_n / \\sqrt{n \\log n}$, the normalized ratio whose convergence is the central question.",
+      "mathContext": "Defines `expectedScale n` $= \\sqrt{n \\log n}$ and `scaledMaxModulus` $= M_n / \\sqrt{n \\log n}$, the normalized ratio whose convergence is the central question."
     },
     {
       "id": "salem-zygmund",
       "title": "Salem-Zygmund Result (1954)",
       "startLine": 79,
       "endLine": 87,
-      "summary": "Axiomatizes the Salem-Zygmund theorem: $\\exists c_1, c_2 > 0$ bounding $\\max |f(z)|$ between $c_1 \\sqrt{n \\log n}$ and $c_2 \\sqrt{n \\log n}$ with high probability. Establishes the order but not the exact constant."
+      "summary": "Axiomatizes the Salem-Zygmund theorem: $\\exists c_1, c_2 > 0$ bounding $\\max |f(z)|$ between $c_1 \\sqrt{n \\log n}$ and $c_2 \\sqrt{n \\log n}$ with high probability. Establishes the order but not the exact constant.",
+      "mathContext": "Axiomatizes the Salem-Zygmund theorem: $\\exists c_1, c_2 > 0$ bounding $\\max |f(z)|$ between $c_1 \\sqrt{n \\log n}$ and $c_2 \\sqrt{n \\log n}$ with high probability. Establishes the order but not the ex"
     },
     {
       "id": "erdos-question",
       "title": "The Erdos Question (1961)",
       "startLine": 93,
       "endLine": 99,
-      "summary": "Formalizes Erdos's question: does $\\max |f(z)| = (C + o(1))\\sqrt{n \\log n}$ almost surely for some $C > 0$?"
+      "summary": "Formalizes Erdos's question: does $\\max |f(z)| = (C + o(1))\\sqrt{n \\log n}$ almost surely for some $C > 0$?",
+      "mathContext": "Formalizes Erdos's question: does $\\max |f(z)| = (C + o(1))\\sqrt{n \\log n}$ almost surely for some $C > 0$?"
     },
     {
       "id": "halasz-theorem",
       "title": "Halasz's Theorem (1973)",
       "startLine": 107,
       "endLine": 121,
-      "summary": "The definitive answer: YES with $C = 1$. Axiomatizes `halasz_theorem`, defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential."
+      "summary": "The definitive answer: YES with $C = 1$. Axiomatizes `halasz_theorem`, defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential.",
+      "mathContext": "The definitive answer: YES with $C = 1$. Axiomatizes `halasz_theorem`, defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential."
     },
     {
       "id": "probabilistic-framework",
       "title": "Probabilistic Framework",
       "startLine": 128,
       "endLine": 142,
-      "summary": "Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and axiomatizes `halasz_almost_sure` (a.s. convergence to $C = 1$)."
+      "summary": "Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and axiomatizes `halasz_almost_sure` (a.s. convergence to $C = 1$).",
+      "mathContext": "Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and axiomatizes `halasz_almost_sure` (a.s. convergence to $C = 1$)."
     },
     {
       "id": "l2-analysis",
       "title": "$L^2$ Analysis and Maximum-to-$L^2$ Gap",
       "startLine": 148,
       "endLine": 164,
-      "summary": "Defines `L2Norm` via integration over the circle. Axiomatizes $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and the lower bound $M \\geq \\sqrt{n \\log n}/2$, quantifying the $\\sqrt{\\log n}$ gap between $L^2$ and $L^\\infty$ norms."
+      "summary": "Defines `L2Norm` via integration over the circle. Axiomatizes $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and the lower bound $M \\geq \\sqrt{n \\log n}/2$, quantifying the $\\sqrt{\\log n}$ gap between $L^2$ and $L^\\infty$ norms.",
+      "mathContext": "Defines `L2Norm` via integration over the circle. Axiomatizes $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and the lower bound $M \\geq \\sqrt{n \\log n}/2$, quantifying the $\\sqrt{\\log n}$ gap between $L^2$ and $L"
     },
     {
       "id": "littlewood",
       "title": "Littlewood Polynomials",
       "startLine": 170,
       "endLine": 183,
-      "summary": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and axiomatizes `typical_littlewood` (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$)."
+      "summary": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and axiomatizes `typical_littlewood` (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$).",
+      "mathContext": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and axiomatizes `typical_littlewood` (most Littlewood polynomials have $\\max \\app"
     },
     {
       "id": "bounds",
       "title": "Upper and Lower Bounds",
       "startLine": 189,
       "endLine": 203,
-      "summary": "Matching bounds: `upper_bound_high_prob` ($\\max \\leq (1+\\varepsilon)\\sqrt{n \\log n}$ w.h.p.) and `lower_bound_high_prob` ($\\max \\geq (1-\\varepsilon)\\sqrt{n \\log n}$ w.h.p.). Notes proof techniques: chaining for upper, second moment for lower."
+      "summary": "Matching bounds: `upper_bound_high_prob` ($\\max \\leq (1+\\varepsilon)\\sqrt{n \\log n}$ w.h.p.) and `lower_bound_high_prob` ($\\max \\geq (1-\\varepsilon)\\sqrt{n \\log n}$ w.h.p.). Notes proof techniques: chaining for upper, second moment for lower.",
+      "mathContext": "Matching bounds: `upper_bound_high_prob` ($\\max \\leq (1+\\varepsilon)\\sqrt{n \\log n}$ w.h.p.) and `lower_bound_high_prob` ($\\max \\geq (1-\\varepsilon)\\sqrt{n \\log n}$ w.h.p.). Notes proof techniques: ch"
     },
     {
       "id": "related",
       "title": "Related Problems",
       "startLine": 210,
       "endLine": 222,
-      "summary": "Defines `RudinConjecture` (minimum max over Littlewood polynomials), `mahlerMeasure` (geometric mean on circle), and `szegoConnection` (Toeplitz determinant link)."
+      "summary": "Defines `RudinConjecture` (minimum max over Littlewood polynomials), `mahlerMeasure` (geometric mean on circle), and `szegoConnection` (Toeplitz determinant link).",
+      "mathContext": "Defines `RudinConjecture` (minimum max over Littlewood polynomials), `mahlerMeasure` (geometric mean on circle), and `szegoConnection` (Toeplitz determinant link)."
     },
     {
       "id": "summary",
       "title": "Summary: SOLVED",
       "startLine": 238,
       "endLine": 255,
-      "summary": "Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**"
+      "summary": "Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**",
+      "mathContext": "Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**"
     }
   ],
   "conclusion": {

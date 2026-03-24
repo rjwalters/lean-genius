@@ -53,56 +53,64 @@
       "title": "Imports and Setup",
       "startLine": 23,
       "endLine": 25,
-      "summary": "Imports `Mathlib.SetTheory.Ordinal.Arithmetic` for ordinal exponentiation $\\omega^\\beta$ and `Mathlib.SetTheory.Cardinal.Basic` for countability predicates."
+      "summary": "Imports `Mathlib.SetTheory.Ordinal.Arithmetic` for ordinal exponentiation $\\omega^\\beta$ and `Mathlib.SetTheory.Cardinal.Basic` for countability predicates.",
+      "mathContext": "Imports `Mathlib.SetTheory.Ordinal.Arithmetic` for ordinal exponentiation $\\omega^\\beta$ and `Mathlib.SetTheory.Cardinal.Basic` for countability predicates."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 27,
       "endLine": 44,
-      "summary": "Defines `IsCountableOrdinal` ($|\\beta| \\leq \\aleph_0$), `ordinalPartition` ($\\alpha \\to (\\alpha, k)^2$), `IsPartitionOrdinal` ($\\alpha \\to (\\alpha, 3)^2$), and `HasPartitionProperty` ($\\omega^\\beta \\to (\\omega^\\beta, 3)^2$)."
+      "summary": "Defines `IsCountableOrdinal` ($|\\beta| \\leq \\aleph_0$), `ordinalPartition` ($\\alpha \\to (\\alpha, k)^2$), `IsPartitionOrdinal` ($\\alpha \\to (\\alpha, 3)^2$), and `HasPartitionProperty` ($\\omega^\\beta \\to (\\omega^\\beta, 3)^2$).",
+      "mathContext": "Defines `IsCountableOrdinal` ($|\\beta| \\leq \\aleph_0$), `ordinalPartition` ($\\alpha \\to (\\alpha, k)^2$), `IsPartitionOrdinal` ($\\alpha \\to (\\alpha, 3)^2$), and `HasPartitionProperty` ($\\omega^\\beta \\t"
     },
     {
       "id": "specker-results",
       "title": "Specker's Results (1957)",
       "startLine": 46,
       "endLine": 53,
-      "summary": "Axiomatizes Specker's two results: $\\omega^2 \\to (\\omega^2, 3)^2$ (positive) and $\\omega^n \\not\\to (\\omega^n, 3)^2$ for finite $n \\geq 3$ (negative), establishing the surprising non-monotonicity of the partition property."
+      "summary": "Axiomatizes Specker's two results: $\\omega^2 \\to (\\omega^2, 3)^2$ (positive) and $\\omega^n \\not\\to (\\omega^n, 3)^2$ for finite $n \\geq 3$ (negative), establishing the surprising non-monotonicity of the partition property.",
+      "mathContext": "Axiomatizes Specker's two results: $\\omega^2 \\to (\\omega^2, 3)^2$ (positive) and $\\omega^n \\not\\to (\\omega^n, 3)^2$ for finite $n \\geq 3$ (negative), establishing the surprising non-monotonicity of th"
     },
     {
       "id": "chang-theorem",
       "title": "Chang's Theorem (1972)",
       "startLine": 55,
       "endLine": 58,
-      "summary": "Axiomatizes Chang's theorem: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, showing the partition property recovers at the first limit ordinal exponent."
+      "summary": "Axiomatizes Chang's theorem: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, showing the partition property recovers at the first limit ordinal exponent.",
+      "mathContext": "Axiomatizes Chang's theorem: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, showing the partition property recovers at the first limit ordinal exponent."
     },
     {
       "id": "galvin-larson",
       "title": "Galvin-Larson Necessary Condition (1974)",
       "startLine": 60,
       "endLine": 71,
-      "summary": "Defines `IsAdditivelyIndecomposable` ($\\beta = \\omega^\\gamma$) and axiomatizes the Galvin-Larson theorem: partition ordinals $\\beta \\geq 3$ must be additively indecomposable, reducing the classification to powers of $\\omega$."
+      "summary": "Defines `IsAdditivelyIndecomposable` ($\\beta = \\omega^\\gamma$) and axiomatizes the Galvin-Larson theorem: partition ordinals $\\beta \\geq 3$ must be additively indecomposable, reducing the classification to powers of $\\omega$.",
+      "mathContext": "Defines `IsAdditivelyIndecomposable` ($\\beta = \\omega^\\gamma$) and axiomatizes the Galvin-Larson theorem: partition ordinals $\\beta \\geq 3$ must be additively indecomposable, reducing the classificati"
     },
     {
       "id": "schipperus-classification",
       "title": "Schipperus Classification (2010)",
       "startLine": 73,
       "endLine": 89,
-      "summary": "Defines `cantorNFLength` and axiomatizes Schipperus's classification: CNF-length $\\leq 2$ implies partition property (positive), CNF-length $\\geq 4$ implies failure (negative)."
+      "summary": "Defines `cantorNFLength` and axiomatizes Schipperus's classification: CNF-length $\\leq 2$ implies partition property (positive), CNF-length $\\geq 4$ implies failure (negative).",
+      "mathContext": "Defines `cantorNFLength` and axiomatizes Schipperus's classification: CNF-length $\\leq 2$ implies partition property (positive), CNF-length $\\geq 4$ implies failure (negative)."
     },
     {
       "id": "open-case",
       "title": "The Open Case: CNF-Length 3",
       "startLine": 91,
       "endLine": 98,
-      "summary": "States the critical open case: does $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$ hold when $\\text{cantorNFLength}(\\gamma) = 3$? This is the \\$1,000 bounty problem."
+      "summary": "States the critical open case: does $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$ hold when $\\text{cantorNFLength}(\\gamma) = 3$? This is the \\$1,000 bounty problem.",
+      "mathContext": "States the critical open case: does $\\omega^{\\omega^\\gamma} \\to (\\omega^{\\omega^\\gamma}, 3)^2$ hold when $\\text{cantorNFLength}(\\gamma) = 3$? This is the \\$1,000 bounty problem."
     },
     {
       "id": "classification-summary",
       "title": "Classification Summary",
       "startLine": 100,
       "endLine": 114,
-      "summary": "Axiomatizes the complete classification table: $\\beta = 0, 1, 2$ positive, $3 \\leq n < \\omega$ negative, with the Schipperus boundary at CNF-length 2/4 and the open gap at CNF-length 3."
+      "summary": "Axiomatizes the complete classification table: $\\beta = 0, 1, 2$ positive, $3 \\leq n < \\omega$ negative, with the Schipperus boundary at CNF-length 2/4 and the open gap at CNF-length 3.",
+      "mathContext": "Axiomatizes the complete classification table: $\\beta = 0, 1, 2$ positive, $3 \\leq n < \\omega$ negative, with the Schipperus boundary at CNF-length 2/4 and the open gap at CNF-length 3."
     }
   ],
   "overview": {

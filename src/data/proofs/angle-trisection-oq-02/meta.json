@@ -284,27 +284,72 @@
     {
       "id": "angle-trisection",
       "relationship": "extends",
-      "description": "Parent file with the degree criterion (necessary condition) — this file upgrades it to a biconditional via Galois groups"
+      "description": "Parent file with the degree criterion — this file upgrades it to a biconditional via Galois groups"
     },
     {
       "id": "abel-ruffini",
       "relationship": "related",
-      "description": "Both use Galois groups to prove impossibility: Abel-Ruffini via solvable groups, constructibility via 2-groups"
+      "description": "Both use Galois groups for impossibility: Abel-Ruffini via solvable groups, constructibility via 2-groups"
     },
     {
       "id": "inverse-galois",
       "relationship": "related",
-      "description": "The Galois group realizations (S₃ for x³-2, D₄ for x⁴-2) are concrete instances of the inverse Galois problem"
+      "description": "S₃ and D₄ realizations are concrete instances of the inverse Galois problem"
     },
     {
       "id": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "The tower law [K:ℚ] = ∏[Kᵢ₊₁:Kᵢ] — a consequence of Lagrange's theorem — underpins galois_2group_implies_degree_pow2: the minimal polynomial degree divides |Gal| = 2^k"
+      "description": "Tower law underpins galois_2group_implies_degree_pow2"
     },
     {
       "id": "sqrt2-irrational",
       "relationship": "complementary",
-      "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationality is the first step beyond ℚ in the constructible tower"
+      "description": "√2 is the canonical constructible irrational with |Gal(x²-2/ℚ)| = 2 = 2¹"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the 2-group characterization with additional constructibility examples"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-03",
+      "relationship": "extended-by",
+      "description": "Connects to the Gauss-Wantzel theorem for regular polygon constructibility"
+    },
+    {
+      "id": "angle-trisection-oq-02-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Bridges Gauss-Wantzel to Mathlib's cyclotomic field infrastructure"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "foundational",
+      "description": "(ℤ/pℤ)× is cyclic of order p-1; regular p-gon constructible iff p-1 = 2^k (Fermat prime)"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "foundational",
+      "description": "φ(n) bridges number theory and constructibility: n-gon constructible iff φ(n) = 2^k"
+    },
+    {
+      "id": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "ⁿ√m constructible iff Gal(xⁿ-m/ℚ) is a 2-group: √m always, ∛m never"
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "S₃ is solvable but not a 2-group: cos(20°) is solvable by radicals but not constructible"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "complementary",
+      "description": "Squaring the circle fails by transcendence, not the 2-group criterion — a different impossibility mechanism"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees roots exist in ℂ; constructibility is about which geometric operations can produce them"
     }
   ],
   "references": [

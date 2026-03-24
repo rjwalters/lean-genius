@@ -14,7 +14,8 @@
       "primes",
       "classic",
       "euclid",
-      "beginner-friendly"
+      "beginner-friendly",
+      "wiedijk-100"
     ],
     "badge": "original",
     "sorries": 0,
@@ -247,6 +248,51 @@
       "id": "prime-reciprocal-divergence",
       "relationship": "extends",
       "description": "Euler's proof that Σ 1/p diverges gives an analytic proof of infinitely many primes and shows primes are 'denser' than perfect squares"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "extends",
+      "description": "Dirichlet's theorem shows infinitely many primes in arithmetic progressions a, a+d, a+2d, ... when gcd(a,d)=1 — a vast g"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function φ(n) counts integers coprime to n; its relationship to primes via φ(p) = p-1 connects to the in"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem — $(p-1)! \\equiv -1 \\pmod{p}$ iff $p$ is prime — is the factorial-based primality criterion. Both resul"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "Both are foundational proofs by contradiction from ancient Greek mathematics: the irrationality of $\\sqrt{2}$ (attribute"
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "thematic",
+      "description": "Primes play a central role in FLT: Kummer's proof for regular primes (1847) was the deepest 19th-century progress, and W"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's quadratic reciprocity law governs which primes are squares modulo other primes: $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4"
+    },
+    {
+      "id": "basel-problem",
+      "relationship": "related",
+      "description": "Euler connected the Basel problem ($\\sum 1/n^2 = \\pi^2/6$) to primes via his product formula: $\\zeta(s) = \\sum 1/n^s = \\"
+    },
+    {
+      "id": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The GCD algorithm (Euclid's algorithm) is the computational tool underlying the proof: the key step $\\gcd(n!+1, p) = 1$ "
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "Euclid's proof uses a form of infinite descent: given any finite list of primes, construct a number not divisible by any"
     }
   ],
   "leanFile": {

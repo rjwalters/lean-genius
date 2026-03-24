@@ -67,70 +67,80 @@
       "title": "Divisibility (Built from Scratch)",
       "startLine": 48,
       "endLine": 83,
-      "summary": "Defines `Divides p n` as $\\exists k, n = p \\cdot k$ with basic lemmas: every number divides 0 and itself, divisibility through multiplication, and small numbers less than $p$ are not divisible by $p$"
+      "summary": "Defines `Divides p n` as $\\exists k, n = p \\cdot k$ with basic lemmas: every number divides 0 and itself, divisibility through multiplication, and small numbers less than $p$ are not divisible by $p$",
+      "mathContext": "Defines `Divides p n` as $\\exists k, n = p \\cdot k$ with basic lemmas: every number divides 0 and itself, divisibility through multiplication, and small numbers less than $p$ are not divisible by $p$"
     },
     {
       "id": "primality",
       "title": "Primality via Euclid's Criterion",
       "startLine": 84,
       "endLine": 97,
-      "summary": "Defines `EuclidPrime p` as $p > 1$ and $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$. This is the exact property needed for irrationality proofs, equivalent to classical primality via Bezout's identity"
+      "summary": "Defines `EuclidPrime p` as $p > 1$ and $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$. This is the exact property needed for irrationality proofs, equivalent to classical primality via Bezout's identity",
+      "mathContext": "Defines `EuclidPrime p` as $p > 1$ and $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$. This is the exact property needed for irrationality proofs, equivalent to classical primality via Bezout's identi"
     },
     {
       "id": "small-primes",
       "title": "Verifying Small Primes",
       "startLine": 98,
       "endLine": 153,
-      "summary": "Proves 2, 3, and 5 satisfy Euclid's criterion using modular arithmetic (`Nat.mul_mod`). For prime $p$, the verification reduces to checking that $\\mathbb{Z}/p\\mathbb{Z}$ has no zero divisors"
+      "summary": "Proves 2, 3, and 5 satisfy Euclid's criterion using modular arithmetic (`Nat.mul_mod`). For prime $p$, the verification reduces to checking that $\\mathbb{Z}/p\\mathbb{Z}$ has no zero divisors",
+      "mathContext": "Proves 2, 3, and 5 satisfy Euclid's criterion using modular arithmetic (`Nat.mul_mod`). For prime $p$, the verification reduces to checking that $\\mathbb{Z}/p\\mathbb{Z}$ has no zero divisors"
     },
     {
       "id": "bridge",
       "title": "Bridge to Mathlib",
       "startLine": 154,
       "endLine": 173,
-      "summary": "Proves every `Nat.Prime` is an `EuclidPrime`, connecting our from-axioms development to Mathlib's library for users who need the classical definition"
+      "summary": "Proves every `Nat.Prime` is an `EuclidPrime`, connecting our from-axioms development to Mathlib's library for users who need the classical definition",
+      "mathContext": "Proves every `Nat.Prime` is an `EuclidPrime`, connecting our from-axioms development to Mathlib's library for users who need the classical definition"
     },
     {
       "id": "key-lemma",
       "title": "Key Lemma: Prime Divides Square Implies Divides Base",
       "startLine": 174,
       "endLine": 195,
-      "summary": "Proves $p$ prime and $p \\mid n^2 \\Rightarrow p \\mid n$. With Euclid's criterion as definition, this is a two-line proof: $p \\mid n \\cdot n$ gives $p \\mid n \\lor p \\mid n$, so $p \\mid n$"
+      "summary": "Proves $p$ prime and $p \\mid n^2 \\Rightarrow p \\mid n$. With Euclid's criterion as definition, this is a two-line proof: $p \\mid n \\cdot n$ gives $p \\mid n \\lor p \\mid n$, so $p \\mid n$",
+      "mathContext": "Proves $p$ prime and $p \\mid n^2 \\Rightarrow p \\mid n$. With Euclid's criterion as definition, this is a two-line proof: $p \\mid n \\cdot n$ gives $p \\mid n \\lor p \\mid n$, so $p \\mid n$"
     },
     {
       "id": "coprimality",
       "title": "Coprimality Modulo p",
       "startLine": 192,
       "endLine": 199,
-      "summary": "Defines \\ as ¬(p | a ∧ p | b)—a weaker form of coprimality that generalizes \"not both even\" from the √2 proof. Full coprimality (gcd = 1) would require building GCD from scratch"
+      "summary": "Defines \\ as ¬(p | a ∧ p | b)—a weaker form of coprimality that generalizes \"not both even\" from the √2 proof. Full coprimality (gcd = 1) would require building GCD from scratch",
+      "mathContext": "Defines \\ as ¬(p | a ∧ p | b)—a weaker form of coprimality that generalizes \"not both even\" from the √2 proof. Full coprimality (gcd = 1) would require building GCD from scratch"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: √p is Irrational",
       "startLine": 197,
       "endLine": 261,
-      "summary": "Proves that for any Euclid prime $p$, if $a^2 = p \\cdot b^2$ with $b > 0$, then $p$ divides both $a$ and $b$. Includes helper lemmas for the arithmetic cancellation step ($p^2k^2 = pb^2 \\Rightarrow pk^2 = b^2$)"
+      "summary": "Proves that for any Euclid prime $p$, if $a^2 = p \\cdot b^2$ with $b > 0$, then $p$ divides both $a$ and $b$. Includes helper lemmas for the arithmetic cancellation step ($p^2k^2 = pb^2 \\Rightarrow pk^2 = b^2$)",
+      "mathContext": "Proves that for any Euclid prime $p$, if $a^2 = p \\cdot b^2$ with $b > 0$, then $p$ divides both $a$ and $b$. Includes helper lemmas for the arithmetic cancellation step ($p^2k^2 = pb^2 \\Rightarrow pk"
     },
     {
       "id": "instances",
       "title": "Concrete Instances and Applications",
       "startLine": 262,
       "endLine": 300,
-      "summary": "Derives $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt{5}$ irrationality as immediate corollaries, plus a general bridge theorem for any Mathlib-certified prime"
+      "summary": "Derives $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt{5}$ irrationality as immediate corollaries, plus a general bridge theorem for any Mathlib-certified prime",
+      "mathContext": "Derives $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt{5}$ irrationality as immediate corollaries, plus a general bridge theorem for any Mathlib-certified prime"
     },
     {
       "id": "alt-formulation",
       "title": "Alternative Contrapositive Formulation",
       "startLine": 258,
       "endLine": 277,
-      "summary": "Restates the main theorem without coprimality: if $a^2 = pb^2$, then either $b = 0$ or $p$ divides both $a$ and $b$. This contrapositive form eliminates the need for a CoprimeMod hypothesis"
+      "summary": "Restates the main theorem without coprimality: if $a^2 = pb^2$, then either $b = 0$ or $p$ divides both $a$ and $b$. This contrapositive form eliminates the need for a CoprimeMod hypothesis",
+      "mathContext": "Restates the main theorem without coprimality: if $a^2 = pb^2$, then either $b = 0$ or $p$ divides both $a$ and $b$. This contrapositive form eliminates the need for a CoprimeMod hypothesis"
     },
     {
       "id": "educational-notes",
       "title": "Educational Notes and Extensions",
       "startLine": 304,
       "endLine": 365,
-      "summary": "Documents the correspondence between the √2 and √p proofs, explains the relationship between Euclid's criterion and the classical prime definition via Bézout's identity, and discusses limitations for non-prime radicands like √6"
+      "summary": "Documents the correspondence between the √2 and √p proofs, explains the relationship between Euclid's criterion and the classical prime definition via Bézout's identity, and discusses limitations for non-prime radicands like √6",
+      "mathContext": "Documents the correspondence between the √2 and √p proofs, explains the relationship between Euclid's criterion and the classical prime definition via Bézout's identity, and discusses limitations for "
     }
   ],
   "conclusion": {

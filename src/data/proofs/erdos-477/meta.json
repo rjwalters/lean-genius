@@ -47,56 +47,64 @@
       "title": "Header, Imports, and Namespace",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Module documentation, Mathlib import, and Erdos477 namespace opening."
+      "summary": "Module documentation, Mathlib import, and Erdos477 namespace opening.",
+      "mathContext": "Module documentation, Mathlib import, and Erdos477 namespace opening."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 24,
       "endLine": 36,
-      "summary": "Defines polyImage (range of $f$) and IsPerfectComplement ($\\mathbb{Z} = A \\oplus B$)."
+      "summary": "Defines polyImage (range of $f$) and IsPerfectComplement ($\\mathbb{Z} = A \\oplus B$).",
+      "mathContext": "Defines polyImage (range of $f$) and IsPerfectComplement ($\\mathbb{Z} = A \\oplus B$)."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties of Perfect Complements",
       "startLine": 37,
       "endLine": 95,
-      "summary": "Proved: non-emptiness of $A$ and $B$, singleton characterization ($\\{0\\} \\oplus B = \\mathbb{Z} \\iff B = \\mathbb{Z}$), linear case trivial, covering and uniqueness lemmas."
+      "summary": "Proved: non-emptiness of $A$ and $B$, singleton characterization ($\\{0\\} \\oplus B = \\mathbb{Z} \\iff B = \\mathbb{Z}$), linear case trivial, covering and uniqueness lemmas.",
+      "mathContext": "Proved: non-emptiness of $A$ and $B$, singleton characterization ($\\{0\\} \\oplus B = \\mathbb{Z} \\iff B = \\mathbb{Z}$), linear case trivial, covering and uniqueness lemmas."
     },
     {
       "id": "symmetries",
       "title": "Commutativity and Shift Invariance",
       "startLine": 96,
       "endLine": 120,
-      "summary": "Proved: $A \\oplus B = \\mathbb{Z} \\iff B \\oplus A = \\mathbb{Z}$ and shifting preserves the complement relation."
+      "summary": "Proved: $A \\oplus B = \\mathbb{Z} \\iff B \\oplus A = \\mathbb{Z}$ and shifting preserves the complement relation.",
+      "mathContext": "Proved: $A \\oplus B = \\mathbb{Z} \\iff B \\oplus A = \\mathbb{Z}$ and shifting preserves the complement relation."
     },
     {
       "id": "polynomial-images",
       "title": "Properties of Polynomial Images",
       "startLine": 121,
       "endLine": 160,
-      "summary": "Proved: $f(0) \\in f(\\mathbb{Z})$, injectivity gives infinite images, squares are non-negative, and element distinctness via $B$."
+      "summary": "Proved: $f(0) \\in f(\\mathbb{Z})$, injectivity gives infinite images, squares are non-negative, and element distinctness via $B$.",
+      "mathContext": "Proved: $f(0) \\in f(\\mathbb{Z})$, injectivity gives infinite images, squares are non-negative, and element distinctness via $B$."
     },
     {
       "id": "difference-constraints",
       "title": "Difference Set Constraints",
       "startLine": 161,
       "endLine": 199,
-      "summary": "Proved: $(A-A) \\cap (B-B) = \\{0\\}$ and finiteness obstruction (finite $B$ forces infinite $A$)."
+      "summary": "Proved: $(A-A) \\cap (B-B) = \\{0\\}$ and finiteness obstruction (finite $B$ forces infinite $A$).",
+      "mathContext": "Proved: $(A-A) \\cap (B-B) = \\{0\\}$ and finiteness obstruction (finite $B$ forces infinite $A$)."
     },
     {
       "id": "squares-analysis",
       "title": "Structural Analysis for Squares",
       "startLine": 200,
       "endLine": 241,
-      "summary": "Proved: gap structure between consecutive squares, specific elements in square image, square complement must cover all negatives."
+      "summary": "Proved: gap structure between consecutive squares, specific elements in square image, square complement must cover all negatives.",
+      "mathContext": "Proved: gap structure between consecutive squares, specific elements in square image, square complement must cover all negatives."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures (Open)",
       "startLine": 242,
       "endLine": 273,
-      "summary": "Axioms: Erdős-Graham conjecture (no degree $\\geq 2$ polynomial tiles $\\mathbb{Z}$), monomial conjecture, and main statement."
+      "summary": "Axioms: Erdős-Graham conjecture (no degree $\\geq 2$ polynomial tiles $\\mathbb{Z}$), monomial conjecture, and main statement.",
+      "mathContext": "Axioms: Erdős-Graham conjecture (no degree $\\geq 2$ polynomial tiles $\\mathbb{Z}$), monomial conjecture, and main statement."
     }
   ],
   "conclusion": {

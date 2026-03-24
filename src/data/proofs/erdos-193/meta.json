@@ -49,56 +49,64 @@
       "title": "Library Imports",
       "startLine": 14,
       "endLine": 16,
-      "summary": "Imports Mathlib for $\\mathbb{Z}$-arithmetic, $\\text{Finset}$ for finite step sets $S \\subseteq \\mathbb{Z}^d$, and general tactics."
+      "summary": "Imports Mathlib for $\\mathbb{Z}$-arithmetic, $\\text{Finset}$ for finite step sets $S \\subseteq \\mathbb{Z}^d$, and general tactics.",
+      "mathContext": "Imports Mathlib for $\\mathbb{Z}$-arithmetic, $\\text{Finset}$ for finite step sets $S \\subseteq \\mathbb{Z}^d$, and general tactics."
     },
     {
       "id": "lattice-points",
       "title": "Lattice Points and Walks",
       "startLine": 20,
       "endLine": 28,
-      "summary": "Defines $\\text{LatticePoint}\\,d = \\text{Fin}\\,d \\to \\mathbb{Z}$, $\\text{Walk}\\,d = \\mathbb{N} \\to \\mathbb{Z}^d$, and $\\text{StepSet}\\,d = \\text{Finset}(\\mathbb{Z}^d)$ — dimension-generic setup."
+      "summary": "Defines $\\text{LatticePoint}\\,d = \\text{Fin}\\,d \\to \\mathbb{Z}$, $\\text{Walk}\\,d = \\mathbb{N} \\to \\mathbb{Z}^d$, and $\\text{StepSet}\\,d = \\text{Finset}(\\mathbb{Z}^d)$ — dimension-generic setup.",
+      "mathContext": "Defines $\\text{LatticePoint}\\,d = \\text{Fin}\\,d \\to \\mathbb{Z}$, $\\text{Walk}\\,d = \\mathbb{N} \\to \\mathbb{Z}^d$, and $\\text{StepSet}\\,d = \\text{Finset}(\\mathbb{Z}^d)$ — dimension-generic setup."
     },
     {
       "id": "step-walk",
       "title": "S-Walk and Injectivity",
       "startLine": 29,
       "endLine": 35,
-      "summary": "Defines IsStepWalk$(S, w)$: $\\forall i, w(i+1) - w(i) \\in S$, and IsInjective$(w)$: $w$ is injective. Together these define the self-avoiding lattice walk."
+      "summary": "Defines IsStepWalk$(S, w)$: $\\forall i, w(i+1) - w(i) \\in S$, and IsInjective$(w)$: $w$ is injective. Together these define the self-avoiding lattice walk.",
+      "mathContext": "Defines IsStepWalk$(S, w)$: $\\forall i, w(i+1) - w(i) \\in S$, and IsInjective$(w)$: $w$ is injective. Together these define the self-avoiding lattice walk."
     },
     {
       "id": "collinearity-def",
       "title": "Collinearity via Integer Parallelism",
       "startLine": 39,
       "endLine": 45,
-      "summary": "Defines AreCollinear$(p, q, r)$ via $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq 0, \\forall j: a(q_j - p_j) = b(r_j - p_j)$ — the integer cross product condition."
+      "summary": "Defines AreCollinear$(p, q, r)$ via $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq 0, \\forall j: a(q_j - p_j) = b(r_j - p_j)$ — the integer cross product condition.",
+      "mathContext": "Defines AreCollinear$(p, q, r)$ via $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq 0, \\forall j: a(q_j - p_j) = b(r_j - p_j)$ — the integer cross product condition."
     },
     {
       "id": "three-collinear",
       "title": "Walk Contains Three Collinear Points",
       "startLine": 46,
       "endLine": 49,
-      "summary": "HasThreeCollinear$(w)$: $\\exists i < j < k$ with $w(i), w(j), w(k)$ collinear. Strict ordering ensures distinct visit times."
+      "summary": "HasThreeCollinear$(w)$: $\\exists i < j < k$ with $w(i), w(j), w(k)$ collinear. Strict ordering ensures distinct visit times.",
+      "mathContext": "HasThreeCollinear$(w)$: $\\exists i < j < k$ with $w(i), w(j), w(k)$ collinear. Strict ordering ensures distinct visit times."
     },
     {
       "id": "main-conjecture",
       "title": "The Open 3D Conjecture",
       "startLine": 53,
       "endLine": 57,
-      "summary": "ErdosProblem193: $\\forall S \\subseteq \\mathbb{Z}^3$ finite, every infinite injective $S$-walk has three collinear points. Open since 1979."
+      "summary": "ErdosProblem193: $\\forall S \\subseteq \\mathbb{Z}^3$ finite, every infinite injective $S$-walk has three collinear points. Open since 1979.",
+      "mathContext": "ErdosProblem193: $\\forall S \\subseteq \\mathbb{Z}^3$ finite, every infinite injective $S$-walk has three collinear points. Open since 1979."
     },
     {
       "id": "gerver-ramsey",
       "title": "Gerver–Ramsey Theorem (ℤ² Case)",
       "startLine": 61,
       "endLine": 65,
-      "summary": "The known 2D result: every infinite injective $S$-walk in $\\mathbb{Z}^2$ contains three collinear points. Proved by pigeonhole on step directions."
+      "summary": "The known 2D result: every infinite injective $S$-walk in $\\mathbb{Z}^2$ contains three collinear points. Proved by pigeonhole on step directions.",
+      "mathContext": "The known 2D result: every infinite injective $S$-walk in $\\mathbb{Z}^2$ contains three collinear points. Proved by pigeonhole on step directions."
     },
     {
       "id": "collinearity-properties",
       "title": "Basic Collinearity Properties",
       "startLine": 69,
       "endLine": 80,
-      "summary": "Proves collinearity reflexivity (via `ring`), axiomatizes symmetry in the outer points, and derives collinearity for constant walks — validating the definition and motivating injectivity."
+      "summary": "Proves collinearity reflexivity (via `ring`), axiomatizes symmetry in the outer points, and derives collinearity for constant walks — validating the definition and motivating injectivity.",
+      "mathContext": "Proves collinearity reflexivity (via `ring`), axiomatizes symmetry in the outer points, and derives collinearity for constant walks — validating the definition and motivating injectivity."
     }
   ],
   "conclusion": {

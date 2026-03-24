@@ -52,7 +52,7 @@
       "Generalization framework for cardinal parameters"
     ],
     "axiomCount": 4,
-    "lineCount": 258,
+    "lineCount": 246,
     "assumptions": "4 axiom(s) and 2 sorry(s). The Erdős-Hajnal graph is now explicitly defined (was previously axiomatized). The 2 sorries relate to connecting the order-type formulation (Question1/Question2) with a cardinality-based generalization."
   },
   "overview": {
@@ -78,55 +78,64 @@
       "title": "Basic Definitions",
       "startLine": 31,
       "endLine": 54,
-      "summary": "Defines ordinal products ω₁², ω₂² and graphs on vertex sets"
+      "summary": "Defines ordinal products ω₁², ω₂² and graphs on vertex sets",
+      "mathContext": "Defines ordinal products ω₁², ω₂² and graphs on vertex sets"
     },
     {
       "title": "Chromatic Number",
       "startLine": 55,
       "endLine": 73,
-      "summary": "Proper colorings and chromatic number for infinite graphs"
+      "summary": "Proper colorings and chromatic number for infinite graphs",
+      "mathContext": "Proper colorings and chromatic number for infinite graphs"
     },
     {
       "title": "Order Type and Subgraphs",
       "startLine": 74,
       "endLine": 89,
-      "summary": "Order type of subsets and induced subgraphs"
+      "summary": "Order type of subsets and induced subgraphs",
+      "mathContext": "Order type of subsets and induced subgraphs"
     },
     {
       "title": "Erdős-Hajnal Construction",
       "startLine": 90,
       "endLine": 108,
-      "summary": "The counterexample graph on ω₁² with χ = ℵ₁"
+      "summary": "The counterexample graph on ω₁² with χ = ℵ₁",
+      "mathContext": "The counterexample graph on ω₁² with χ = ℵ₁"
     },
     {
       "title": "Main Questions",
       "startLine": 109,
       "endLine": 130,
-      "summary": "Question1 (χ = ℵ₂) and Question2 (χ = ℵ₁) for ω₂²"
+      "summary": "Question1 (χ = ℵ₂) and Question2 (χ = ℵ₁) for ω₂²",
+      "mathContext": "Question1 (χ = ℵ₂) and Question2 (χ = ℵ₁) for ω₂²"
     },
     {
       "title": "Partial Results",
       "startLine": 131,
       "endLine": 148,
-      "summary": "Construction with ℵ₁ bound (not ℵ₀)"
+      "summary": "Construction with ℵ₁ bound (not ℵ₀)",
+      "mathContext": "Construction with ℵ₁ bound (not ℵ₀)"
     },
     {
       "title": "Generalization",
       "startLine": 149,
       "endLine": 171,
-      "summary": "General question for cardinals κ, λ, μ"
+      "summary": "General question for cardinals κ, λ, μ",
+      "mathContext": "General question for cardinals κ, λ, μ"
     },
     {
       "title": "Babai Connection",
       "startLine": 172,
       "endLine": 193,
-      "summary": "Babai's theorem and why it fails at ω₁"
+      "summary": "Babai's theorem and why it fails at ω₁",
+      "mathContext": "Babai's theorem and why it fails at ω₁"
     },
     {
       "title": "Formal Statement",
       "startLine": 224,
       "endLine": 241,
-      "summary": "Main theorem combining both questions"
+      "summary": "Main theorem combining both questions",
+      "mathContext": "Main theorem combining both questions"
     }
   ],
   "conclusion": {

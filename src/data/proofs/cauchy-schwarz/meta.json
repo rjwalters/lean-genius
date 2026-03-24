@@ -12,7 +12,8 @@
       "analysis",
       "linear-algebra",
       "classic",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/CauchySchwarz.lean",
     "badge": "mathlib",
@@ -256,6 +257,51 @@
       "id": "cauchy-schwarz-oq-03-oq-01",
       "relationship": "related",
       "description": "Related gallery proof"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "proves",
+      "description": "The triangle inequality ‖u+v‖ ≤ ‖u‖+‖v‖ is derived as a direct corollary of Cauchy-Schwarz in both formalizations, demon"
+    },
+    {
+      "id": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM and Cauchy-Schwarz are the two most fundamental inequalities in analysis. Cauchy-Schwarz for n=2 can be derived fr"
+    },
+    {
+      "id": "hurwitz-theorem",
+      "relationship": "foundational",
+      "description": "Hurwitz's theorem on normed division algebras (ℝ, ℂ, ℍ, 𝕆) relies on the inner product space structure where Cauchy-Schw"
+    },
+    {
+      "id": "yang-mills",
+      "relationship": "foundational",
+      "description": "The Yang-Mills formalization uses Hilbert spaces and inner products (Wightman axioms) where Cauchy-Schwarz underpins the"
+    },
+    {
+      "id": "amgm-inequality-oq-03",
+      "relationship": "related",
+      "description": "For equal weights, the power mean inequality M₁ ≤ M₂ is equivalent to Cauchy-Schwarz: (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ². Cauchy-Schwarz "
+    },
+    {
+      "id": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz sum n·∑xᵢ² ≥ (∑xᵢ)² is the key engine in the Maclaurin M₁²≥M₂ proof — directly connecting Cauchy-Schw"
+    },
+    {
+      "id": "cauchy-schwarz-oq-04",
+      "relationship": "extended-by",
+      "description": "Strengthens the equality characterization to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ wh"
+    },
+    {
+      "id": "randomized-maxcut",
+      "relationship": "related",
+      "description": "The randomized MAX-CUT approximation algorithm uses semidefinite programming relaxations where Cauchy-Schwarz bounds con"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "Cauchy-Schwarz underpins key steps in proving the Central Limit Theorem: bounding characteristic function differences $|"
     }
   ],
   "references": [

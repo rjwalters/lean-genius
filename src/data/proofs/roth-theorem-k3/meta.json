@@ -220,6 +220,26 @@
       "id": "szemeredi-theorem",
       "relationship": "extends",
       "description": "Roth's theorem is the k=3 base case of Szemerédi's theorem (1975): every set of positive upper density contains arithmetic progressions of every length. The density increment strategy introduced by Roth was a precursor to Szemerédi's far more complex regularity-based proof"
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "related",
+      "description": "Both use counting arguments over structured combinatorial objects"
+    },
+    {
+      "id": "erdos-1155-oq-01",
+      "relationship": "related",
+      "description": "The triangle removal process (Erdős #1155) is connected through the triangle removal lemma: Ruzsa-Szemerédi (1978) showe"
+    },
+    {
+      "id": "erdos-1155",
+      "relationship": "related",
+      "description": "Parent formalization of the triangle removal process — connected via the triangle removal lemma which provides an altern"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "thematic",
+      "description": "Both are landmark results in analytic/additive number theory about structure in the integers. The Green-Tao theorem (200"
     }
   ],
   "leanFile": {

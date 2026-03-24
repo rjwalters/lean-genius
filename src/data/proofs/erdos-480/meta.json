@@ -79,63 +79,72 @@
       "title": "Problem Documentation",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Problem statement, history, and references including Chung-Graham citation."
+      "summary": "Problem statement, history, and references including Chung-Graham citation.",
+      "mathContext": "Problem statement, history, and references including Chung-Graham citation."
     },
     {
       "id": "main-statement",
       "title": "Main Definitions",
       "startLine": 32,
       "endLine": 46,
-      "summary": "Defines IsUnitIntervalSeq and GoodPairs for the approximation inequality."
+      "summary": "Defines IsUnitIntervalSeq and GoodPairs for the approximation inequality.",
+      "mathContext": "Defines IsUnitIntervalSeq and GoodPairs for the approximation inequality."
     },
     {
       "id": "chung-graham-constant",
       "title": "The Chung-Graham Constant",
       "startLine": 47,
       "endLine": 59,
-      "summary": "Defines c = 1 + Σ 1/F_{2k} and states its approximate value."
+      "summary": "Defines c = 1 + Σ 1/F_{2k} and states its approximate value.",
+      "mathContext": "Defines c = 1 + Σ 1/F_{2k} and states its approximate value."
     },
     {
       "id": "newman-conjecture",
       "title": "Newman's Conjecture",
       "startLine": 60,
       "endLine": 74,
-      "summary": "States the original conjecture with √5 bound."
+      "summary": "States the original conjecture with √5 bound.",
+      "mathContext": "States the original conjecture with √5 bound."
     },
     {
       "id": "chung-graham-theorem",
       "title": "Chung-Graham Theorem",
       "startLine": 75,
       "endLine": 99,
-      "summary": "The main theorem with optimal constant and its optimality."
+      "summary": "The main theorem with optimal constant and its optimality.",
+      "mathContext": "The main theorem with optimal constant and its optimality."
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio Properties",
       "startLine": 100,
       "endLine": 150,
-      "summary": "Defines φ, ψ and proves algebraic identities: φ² = φ + 1, φψ = -1, etc."
+      "summary": "Defines φ, ψ and proves algebraic identities: φ² = φ + 1, φψ = -1, etc.",
+      "mathContext": "Defines φ, ψ and proves algebraic identities: φ² = φ + 1, φψ = -1, etc."
     },
     {
       "id": "comparison",
       "title": "Constant Comparison",
       "startLine": 151,
       "endLine": 168,
-      "summary": "Proves √5 < chungGrahamConstant showing the stronger bound."
+      "summary": "Proves √5 < chungGrahamConstant showing the stronger bound.",
+      "mathContext": "Proves √5 < chungGrahamConstant showing the stronger bound."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 169,
       "endLine": 194,
-      "summary": "Properties of constant and harmonic sequences in [0,1]."
+      "summary": "Properties of constant and harmonic sequences in [0,1].",
+      "mathContext": "Properties of constant and harmonic sequences in [0,1]."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 195,
       "endLine": 215,
-      "summary": "Combines Newman's conjecture and Chung-Graham theorem."
+      "summary": "Combines Newman's conjecture and Chung-Graham theorem.",
+      "mathContext": "Combines Newman's conjecture and Chung-Graham theorem."
     }
   ],
   "conclusion": {

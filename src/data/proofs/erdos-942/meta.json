@@ -90,84 +90,96 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Problem statement, main question, known results, and references."
+      "summary": "Problem statement, main question, known results, and references.",
+      "mathContext": "Problem statement, main question, known results, and references."
     },
     {
       "id": "background",
       "title": "Background: Powerful Numbers",
       "startLine": 35,
       "endLine": 49,
-      "summary": "Definition, examples, non-examples, and density of powerful numbers."
+      "summary": "Definition, examples, non-examples, and density of powerful numbers.",
+      "mathContext": "Definition, examples, non-examples, and density of powerful numbers."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 50,
       "endLine": 78,
-      "summary": "Powerful, PowerfulAlt, squareIntervalSet, h function definitions."
+      "summary": "Powerful, PowerfulAlt, squareIntervalSet, h function definitions.",
+      "mathContext": "Powerful, PowerfulAlt, squareIntervalSet, h function definitions."
     },
     {
       "id": "examples",
       "title": "Examples of Powerful Numbers",
       "startLine": 79,
       "endLine": 104,
-      "summary": "1, 4, 8, 9, 36, 72 are powerful; 6, 12 are not."
+      "summary": "1, 4, 8, 9, 36, 72 are powerful; 6, 12 are not.",
+      "mathContext": "1, 4, 8, 9, 36, 72 are powerful; 6, 12 are not."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture (OPEN)",
       "startLine": 105,
       "endLine": 119,
-      "summary": "erdos_942_conjecture and erdos_942_open axioms."
+      "summary": "erdos_942_conjecture and erdos_942_open axioms.",
+      "mathContext": "erdos_942_conjecture and erdos_942_open axioms."
     },
     {
       "id": "limsup",
       "title": "Known Result: limsup h(n) = infinity",
       "startLine": 120,
       "endLine": 132,
-      "summary": "h_unbounded axiom with proof sketch."
+      "summary": "h_unbounded axiom with proof sketch.",
+      "mathContext": "h_unbounded axiom with proof sketch."
     },
     {
       "id": "density",
       "title": "Known Result: Density of h(n) = l",
       "startLine": 133,
       "endLine": 150,
-      "summary": "HasDensity, delta, density_sum_one, density_h_eq_1 axioms."
+      "summary": "HasDensity, delta, density_sum_one, density_h_eq_1 axioms.",
+      "mathContext": "HasDensity, delta, density_sum_one, density_h_eq_1 axioms."
     },
     {
       "id": "dekoninck-luca",
       "title": "De Koninck-Luca Lower Bound (2004)",
       "startLine": 150,
       "endLine": 150,
-      "summary": "The (log n / log log n)^{1/3} lower bound infinitely often."
+      "summary": "The (log n / log log n)^{1/3} lower bound infinitely often.",
+      "mathContext": "The (log n / log log n)^{1/3} lower bound infinitely often."
     },
     {
       "id": "properties",
       "title": "Properties of Powerful Numbers",
       "startLine": 150,
       "endLine": 150,
-      "summary": "Closure under multiplication, squares and cubes are powerful."
+      "summary": "Closure under multiplication, squares and cubes are powerful.",
+      "mathContext": "Closure under multiplication, squares and cubes are powerful."
     },
     {
       "id": "interval",
       "title": "The Square Interval",
       "startLine": 150,
       "endLine": 150,
-      "summary": "Properties of [n², (n+1)²): length 2n+1, endpoint membership."
+      "summary": "Properties of [n², (n+1)²): length 2n+1, endpoint membership.",
+      "mathContext": "Properties of [n², (n+1)²): length 2n+1, endpoint membership."
     },
     {
       "id": "small-examples",
       "title": "Small Examples",
       "startLine": 150,
       "endLine": 150,
-      "summary": "Computed values: h(1)=1, h(2)=2, h(3)=1."
+      "summary": "Computed values: h(1)=1, h(2)=2, h(3)=1.",
+      "mathContext": "Computed values: h(1)=1, h(2)=2, h(3)=1."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 150,
       "endLine": 150,
-      "summary": "Problem summary and erdos_942_status theorem."
+      "summary": "Problem summary and erdos_942_status theorem.",
+      "mathContext": "Problem summary and erdos_942_status theorem."
     }
   ],
   "conclusion": {

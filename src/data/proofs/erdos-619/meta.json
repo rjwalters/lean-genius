@@ -82,56 +82,64 @@
       "title": "Basic Definitions",
       "summary": "TriangleFree, diameter, HasDiameter, HasDiameterAtMost",
       "startLine": 35,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "TriangleFree, diameter, HasDiameter, HasDiameterAtMost"
     },
     {
       "id": "edge-addition",
       "title": "Edge Addition and h_r(G)",
       "summary": "addEdges with proofs, h and h_exact definitions",
       "startLine": 64,
-      "endLine": 98
+      "endLine": 98,
+      "mathContext": "addEdges with proofs, h and h_exact definitions"
     },
     {
       "id": "known-results",
       "title": "Known Results (1998)",
       "summary": "h₃ ≤ n, h₃ ≥ n-c, h₅ ≤ (n-1)/2",
       "startLine": 99,
-      "endLine": 127
+      "endLine": 127,
+      "mathContext": "h₃ ≤ n, h₃ ≥ n-c, h₅ ≤ (n-1)/2"
     },
     {
       "id": "open-question",
       "title": "The Main Question (OPEN)",
       "summary": "erdos_619_question, erdos_619_upper_bound_form",
       "startLine": 128,
-      "endLine": 150
+      "endLine": 150,
+      "mathContext": "erdos_619_question, erdos_619_upper_bound_form"
     },
     {
       "id": "without-constraint",
       "title": "Without Triangle-Free Constraint",
       "summary": "Alon-Gyárfás-Ruszinkó 2000: n/2 suffices",
       "startLine": 151,
-      "endLine": 162
+      "endLine": 162,
+      "mathContext": "Alon-Gyárfás-Ruszinkó 2000: n/2 suffices"
     },
     {
       "id": "examples",
       "title": "Examples and Special Cases",
       "summary": "pathGraph, path_is_triangle_free, path_diameter",
       "startLine": 163,
-      "endLine": 180
+      "endLine": 180,
+      "mathContext": "pathGraph, path_is_triangle_free, path_diameter"
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
       "summary": "h_monotone axiom: h_r ≥ h_{r+1}",
       "startLine": 181,
-      "endLine": 190
+      "endLine": 190,
+      "mathContext": "h_monotone axiom: h_r ≥ h_{r+1}"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_619 definition, erdos_619_partial_results theorem",
       "startLine": 191,
-      "endLine": 227
+      "endLine": 227,
+      "mathContext": "erdos_619 definition, erdos_619_partial_results theorem"
     }
   ],
   "conclusion": {

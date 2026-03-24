@@ -27,7 +27,8 @@
       "Basic analytic number theory (Fourier analysis on integers)",
       "Asymptotic notation and density of integer sets"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 497
   },
   "sections": [
     {
@@ -35,7 +36,8 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Module docstring stating the conjecture and its $500 bounty, Mathlib imports, namespace opens."
+      "summary": "Module docstring stating the conjecture and its $500 bounty, Mathlib imports, namespace opens.",
+      "mathContext": "Module docstring stating the conjecture and its $500 bounty, Mathlib imports, namespace opens."
     },
     {
       "id": "representation-function",
@@ -50,14 +52,16 @@
       "title": "Part II: Sumset and Asymptotic Basis",
       "startLine": 61,
       "endLine": 108,
-      "summary": "Sumset definition, Sidon set predicate (IsSidon), asymptotic basis of order 2 (IsAsymptoticBasis), and finiteness lemmas."
+      "summary": "Sumset definition, Sidon set predicate (IsSidon), asymptotic basis of order 2 (IsAsymptoticBasis), and finiteness lemmas.",
+      "mathContext": "Sumset definition, Sidon set predicate (IsSidon), asymptotic basis of order 2 (IsAsymptoticBasis), and finiteness lemmas."
     },
     {
       "id": "basic-properties",
       "title": "Part III: Basic Properties",
       "startLine": 109,
       "endLine": 200,
-      "summary": "Proved lemmas: Sidon representation bound (r_A(n) ≤ 2), exact computation of r_ℕ(n), and helper lemmas."
+      "summary": "Proved lemmas: Sidon representation bound (r_A(n) ≤ 2), exact computation of r_ℕ(n), and helper lemmas.",
+      "mathContext": "Proved lemmas: Sidon representation bound (r_A(n) ≤ 2), exact computation of r_ℕ(n), and helper lemmas."
     },
     {
       "id": "main-conjecture",
@@ -72,35 +76,40 @@
       "title": "Part V: Known Partial Results",
       "startLine": 225,
       "endLine": 234,
-      "summary": "Grekos et al. (2003): r_A(n) ≥ 6 i.o. Borwein et al.: r_A(n) ≥ 8 i.o."
+      "summary": "Grekos et al. (2003): r_A(n) ≥ 6 i.o. Borwein et al.: r_A(n) ≥ 8 i.o.",
+      "mathContext": "Grekos et al. (2003): r_A(n) ≥ 6 i.o. Borwein et al.: r_A(n) ≥ 8 i.o."
     },
     {
       "id": "examples",
       "title": "Part VI: Examples",
       "startLine": 235,
       "endLine": 347,
-      "summary": "ℕ as a basis, computation of r_ℕ(n) = n/2+1 or (n+1)/2, Finset-to-Set conversion lemmas."
+      "summary": "ℕ as a basis, computation of r_ℕ(n) = n/2+1 or (n+1)/2, Finset-to-Set conversion lemmas.",
+      "mathContext": "ℕ as a basis, computation of r_ℕ(n) = n/2+1 or (n+1)/2, Finset-to-Set conversion lemmas."
     },
     {
       "id": "sidon-connection",
       "title": "Part VII: Connection to Sidon Sets",
       "startLine": 348,
       "endLine": 412,
-      "summary": "Sidon density bound and proof outline for why infinite Sidon sets cannot be asymptotic bases."
+      "summary": "Sidon density bound and proof outline for why infinite Sidon sets cannot be asymptotic bases.",
+      "mathContext": "Sidon density bound and proof outline for why infinite Sidon sets cannot be asymptotic bases."
     },
     {
       "id": "ordered-vs-unordered",
       "title": "Part VIII: Ordered vs Unordered Representations",
       "startLine": 413,
       "endLine": 425,
-      "summary": "Proved: r_A(n) ≥ r_A^≤(n) since unordered pairs are a subset of ordered pairs."
+      "summary": "Proved: r_A(n) ≥ r_A^≤(n) since unordered pairs are a subset of ordered pairs.",
+      "mathContext": "Proved: r_A(n) ≥ r_A^≤(n) since unordered pairs are a subset of ordered pairs."
     },
     {
       "id": "conjecture-for-nat",
       "title": "Part IX: Conjecture Holds for ℕ",
       "startLine": 426,
       "endLine": 446,
-      "summary": "Proved: the Erdős-Turán conjecture holds trivially for A = ℕ, since r_ℕ(2k+2) = k+2 > k."
+      "summary": "Proved: the Erdős-Turán conjecture holds trivially for A = ℕ, since r_ℕ(2k+2) = k+2 > k.",
+      "mathContext": "Proved: the Erdős-Turán conjecture holds trivially for A = ℕ, since r_ℕ(2k+2) = k+2 > k."
     },
     {
       "id": "basis-density",
@@ -229,6 +238,11 @@
       "id": "erdos-41",
       "relationship": "extends",
       "description": "Problem #41 on $B_h$ sequence density bounds generalizes Sidon sets to higher-order representation constraints. The Erdős-Turán conjecture on bases of order 2 connects directly to whether $B_2[g]$ sets can be bases — Problem #28 implies they cannot"
+    },
+    {
+      "id": "erdos-42",
+      "relationship": "related",
+      "description": "Problem #42 on Sidon sets with disjoint difference sets explores the structure theory of $B_2$ sets, the same objects wh"
     }
   ],
   "leanFile": {

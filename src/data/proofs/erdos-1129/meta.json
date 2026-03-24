@@ -93,56 +93,64 @@
       "title": "Lagrange Interpolation Fundamentals",
       "summary": "LagrangeBasis definition, DistinctNodes, NodesInInterval predicates",
       "startLine": 43,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "LagrangeBasis definition, DistinctNodes, NodesInInterval predicates"
     },
     {
       "id": "lebesgue-constant",
       "title": "The Lebesgue Constant",
       "summary": "LebesgueFunction and LebesgueConstant definitions measuring interpolation conditioning",
       "startLine": 77,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "LebesgueFunction and LebesgueConstant definitions measuring interpolation conditioning"
     },
     {
       "id": "chebyshev-nodes",
       "title": "Chebyshev Nodes",
       "summary": "ChebyshevNodes definition using cosine formula, chebyshev_nodes_in_interval theorem",
       "startLine": 101,
-      "endLine": 128
+      "endLine": 128,
+      "mathContext": "ChebyshevNodes definition using cosine formula, chebyshev_nodes_in_interval theorem"
     },
     {
       "id": "lower-bounds",
       "title": "Fundamental Lower Bounds",
       "summary": "faber_lower_bound, erdos_lower_bound, chebyshev_upper_bound axioms establishing (2/π) log n",
       "startLine": 129,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "faber_lower_bound, erdos_lower_bound, chebyshev_upper_bound axioms establishing (2/π) log n"
     },
     {
       "id": "equal-height",
       "title": "The Equal-Height Characterization",
       "summary": "SubintervalMax, EqualHeightProperty definitions; Kilgore-Cheney and de Boor-Pinkus theorems",
       "startLine": 170,
-      "endLine": 225
+      "endLine": 225,
+      "mathContext": "SubintervalMax, EqualHeightProperty definitions; Kilgore-Cheney and de Boor-Pinkus theorems"
     },
     {
       "id": "exact-solutions",
       "title": "Known Exact Solutions",
       "summary": "optimal_n2, optimal_n3, optimal_n4_exists for small cases",
       "startLine": 226,
-      "endLine": 267
+      "endLine": 267,
+      "mathContext": "optimal_n2, optimal_n3, optimal_n4_exists for small cases"
     },
     {
       "id": "complex-variant",
       "title": "Complex Variant",
       "summary": "ComplexLebesgueConstant, RootsOfUnity, Brutman's theorems for unit circle",
       "startLine": 268,
-      "endLine": 317
+      "endLine": 317,
+      "mathContext": "ComplexLebesgueConstant, RootsOfUnity, Brutman's theorems for unit circle"
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_1129 and erdos_1129_summary theorems combining all results",
       "startLine": 318,
-      "endLine": 374
+      "endLine": 374,
+      "mathContext": "erdos_1129 and erdos_1129_summary theorems combining all results"
     }
   ],
   "conclusion": {

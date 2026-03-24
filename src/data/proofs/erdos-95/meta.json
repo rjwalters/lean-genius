@@ -79,56 +79,64 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 34,
-      "summary": "Header documentation with the problem statement ($\\sum f(u_i)^2 \\ll_\\varepsilon n^{3+\\varepsilon}$), solution by Guth-Katz ($n^3 \\log n$), \\$500 prize, and references to [GK15] and Fishburn/Altman."
+      "summary": "Header documentation with the problem statement ($\\sum f(u_i)^2 \\ll_\\varepsilon n^{3+\\varepsilon}$), solution by Guth-Katz ($n^3 \\log n$), \\$500 prize, and references to [GK15] and Fishburn/Altman.",
+      "mathContext": "Header documentation with the problem statement ($\\sum f(u_i)^2 \\ll_\\varepsilon n^{3+\\varepsilon}$), solution by Guth-Katz ($n^3 \\log n$), \\$500 prize, and references to [GK15] and Fishburn/Altman."
     },
     {
       "id": "point-configs",
       "title": "Point Configurations and Distances",
       "startLine": 35,
       "endLine": 61,
-      "summary": "Defines `Point := EuclideanSpace ℝ (Fin 2)$, `dist p q := \\|p - q\\|$, `PointConfig` (Finset with card > 0), `distanceSet P$ (pairwise distances via `image`), and `multiplicity P d$ (pair count via `filter`)."
+      "summary": "Defines `Point := EuclideanSpace ℝ (Fin 2)$, `dist p q := \\|p - q\\|$, `PointConfig` (Finset with card > 0), `distanceSet P$ (pairwise distances via `image`), and `multiplicity P d$ (pair count via `filter`).",
+      "mathContext": "Defines `Point := EuclideanSpace ℝ (Fin 2)$, `dist p q := \\|p - q\\|$, `PointConfig` (Finset with card > 0), `distanceSet P$ (pairwise distances via `image`), and `multiplicity P d$ (pair count via `fi"
     },
     {
       "id": "sum-squared",
       "title": "The Sum of Squared Multiplicities",
       "startLine": 62,
       "endLine": 74,
-      "summary": "States `sum_multiplicities` (sorry): $\\sum_d f(d) = n(n-1)$. Defines `sumSquaredMultiplicities P := \\sum_d f(d)^2$ via `Finset.sum`."
+      "summary": "States `sum_multiplicities` (sorry): $\\sum_d f(d) = n(n-1)$. Defines `sumSquaredMultiplicities P := \\sum_d f(d)^2$ via `Finset.sum`.",
+      "mathContext": "States `sum_multiplicities` (sorry): $\\sum_d f(d) = n(n-1)$. Defines `sumSquaredMultiplicities P := \\sum_d f(d)^2$ via `Finset.sum`."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture",
       "startLine": 75,
       "endLine": 86,
-      "summary": "Defines `ErdosConjecture`: $\\forall \\varepsilon > 0, \\exists C > 0, \\forall P$, $\\sum f(d)^2 \\le C \\cdot n^{3+\\varepsilon}$. The exponent $3+\\varepsilon$ is tight up to the $\\varepsilon$ (lattice achieves $n^3 \\log n$)."
+      "summary": "Defines `ErdosConjecture`: $\\forall \\varepsilon > 0, \\exists C > 0, \\forall P$, $\\sum f(d)^2 \\le C \\cdot n^{3+\\varepsilon}$. The exponent $3+\\varepsilon$ is tight up to the $\\varepsilon$ (lattice achieves $n^3 \\log n$).",
+      "mathContext": "Defines `ErdosConjecture`: $\\forall \\varepsilon > 0, \\exists C > 0, \\forall P$, $\\sum f(d)^2 \\le C \\cdot n^{3+\\varepsilon}$. The exponent $3+\\varepsilon$ is tight up to the $\\varepsilon$ (lattice achi"
     },
     {
       "id": "guth-katz",
       "title": "Guth-Katz Theorem (2015)",
       "startLine": 87,
       "endLine": 113,
-      "summary": "Axiomatizes `guth_katz_theorem`: $\\sum f(d)^2 \\le C \\cdot n^3 \\log n$. Derives `erdos_conjecture_proved` from it (1 sorry for $\\log n = o(n^\\varepsilon)$)."
+      "summary": "Axiomatizes `guth_katz_theorem`: $\\sum f(d)^2 \\le C \\cdot n^3 \\log n$. Derives `erdos_conjecture_proved` from it (1 sorry for $\\log n = o(n^\\varepsilon)$).",
+      "mathContext": "Axiomatizes `guth_katz_theorem`: $\\sum f(d)^2 \\le C \\cdot n^3 \\log n$. Derives `erdos_conjecture_proved` from it (1 sorry for $\\log n = o(n^\\varepsilon)$)."
     },
     {
       "id": "polynomial-method",
       "title": "The Polynomial Method",
       "startLine": 114,
       "endLine": 133,
-      "summary": "Commentary on the Guth-Katz proof techniques: point-line duality via Elekes-Sharir, polynomial partitioning of $\\mathbb{R}^3$, ruled surface structure for constant-distance lines, and incidence bounds ($O(n^{3/2})$ unless many lines share a surface)."
+      "summary": "Commentary on the Guth-Katz proof techniques: point-line duality via Elekes-Sharir, polynomial partitioning of $\\mathbb{R}^3$, ruled surface structure for constant-distance lines, and incidence bounds ($O(n^{3/2})$ unless many lines share a surface).",
+      "mathContext": "Commentary on the Guth-Katz proof techniques: point-line duality via Elekes-Sharir, polynomial partitioning of $\\mathbb{R}^3$, ruled surface structure for constant-distance lines, and incidence bounds"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 134,
       "endLine": 148,
-      "summary": "Axiomatizes `convex_polygon_case`: for convex-position points, $\\sum f(d)^2 = O(n^3)$ (Fishburn/Altman 1963). Notes that the $\\sqrt{n} \\times \\sqrt{n}$ lattice is the extremal general-position example."
+      "summary": "Axiomatizes `convex_polygon_case`: for convex-position points, $\\sum f(d)^2 = O(n^3)$ (Fishburn/Altman 1963). Notes that the $\\sqrt{n} \\times \\sqrt{n}$ lattice is the extremal general-position example.",
+      "mathContext": "Axiomatizes `convex_polygon_case`: for convex-position points, $\\sum f(d)^2 = O(n^3)$ (Fishburn/Altman 1963). Notes that the $\\sqrt{n} \\times \\sqrt{n}$ lattice is the extremal general-position example"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 149,
       "endLine": 186,
-      "summary": "Main theorem `erdos_95`: `ErdosConjecture ∧ Guth-Katz bound`, proved as $\\langle$`erdos_conjecture_proved`, `guth_katz_theorem`$\\rangle$. Documentation strings `erdos_95_answer` and `erdos_95_status`. `#check` commands verify key definitions."
+      "summary": "Main theorem `erdos_95`: `ErdosConjecture ∧ Guth-Katz bound`, proved as $\\langle$`erdos_conjecture_proved`, `guth_katz_theorem`$\\rangle$. Documentation strings `erdos_95_answer` and `erdos_95_status`. `#check` commands verify key definitions.",
+      "mathContext": "Main theorem `erdos_95`: `ErdosConjecture ∧ Guth-Katz bound`, proved as $\\langle$`erdos_conjecture_proved`, `guth_katz_theorem`$\\rangle$. Documentation strings `erdos_95_answer` and `erdos_95_status`."
     }
   ],
   "conclusion": {

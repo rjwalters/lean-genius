@@ -66,21 +66,24 @@
       "title": "Compact Riemannian Surface",
       "summary": "Axiomatic structure `CompactRiemannianSurface` encoding $\\chi(M)$, total curvature $\\int_M K\\,dA$, area $\\int_M dA > 0$, and the Gauss-Bonnet axiom $\\int_M K\\,dA = 2\\pi\\chi(M)$. This minimal axiomatization substitutes for Mathlib's missing Riemannian geometry.",
       "startLine": 45,
-      "endLine": 57
+      "endLine": 57,
+      "mathContext": "Axiomatic structure `CompactRiemannianSurface` encoding $\\chi(M)$, total curvature $\\int_M K\\,dA$, area $\\int_M dA > 0$, and the Gauss-Bonnet axiom $\\int_M K\\,dA = 2\\pi\\chi(M)$. This minimal axiomatiz"
     },
     {
       "id": "genus-topology",
       "title": "Genus and Topology",
       "summary": "Extends `CompactRiemannianSurface` to `OrientableClosedSurface` with genus $g$ and the relation $\\chi = 2 - 2g$. Proves total curvature determines genus: $(g : \\mathbb{R}) = 1 - \\int K\\,dA / (4\\pi)$.",
       "startLine": 58,
-      "endLine": 83
+      "endLine": 83,
+      "mathContext": "Extends `CompactRiemannianSurface` to `OrientableClosedSurface` with genus $g$ and the relation $\\chi = 2 - 2g$. Proves total curvature determines genus: $(g : \\mathbb{R}) = 1 - \\int K\\,dA / (4\\pi)$."
     },
     {
       "id": "gauss-bonnet-consequences",
       "title": "Gauss-Bonnet Direct Consequences",
       "summary": "States the Gauss-Bonnet theorem $\\int_M K\\,dA = 2\\pi\\chi(M)$ as a theorem (unwrapping the axiom) and proves total curvature is a topological invariant: surfaces with equal $\\chi$ have equal $\\int K\\,dA$, regardless of the Riemannian metric.",
       "startLine": 84,
-      "endLine": 106
+      "endLine": 106,
+      "mathContext": "States the Gauss-Bonnet theorem $\\int_M K\\,dA = 2\\pi\\chi(M)$ as a theorem (unwrapping the axiom) and proves total curvature is a topological invariant: surfaces with equal $\\chi$ have equal $\\int K\\,d"
     },
     {
       "id": "curvature-sign",
@@ -95,63 +98,72 @@
       "title": "Special Surfaces",
       "summary": "Computes total curvature for specific genera: sphere ($g=0$, $\\int K\\,dA = 4\\pi$), torus ($g=1$, $\\int K\\,dA = 0$), double torus ($g=2$, $\\int K\\,dA = -4\\pi$), and the general formula $\\int K\\,dA = 4\\pi(1 - g)$.",
       "startLine": 135,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "Computes total curvature for specific genera: sphere ($g=0$, $\\int K\\,dA = 4\\pi$), torus ($g=1$, $\\int K\\,dA = 0$), double torus ($g=2$, $\\int K\\,dA = -4\\pi$), and the general formula $\\int K\\,dA = 4\\"
     },
     {
       "id": "genus-determination",
       "title": "Curvature Determines Genus",
       "summary": "Complete classification: positive total curvature forces genus $0$ (sphere), zero forces genus $1$ (torus), negative forces genus $\\geq 2$. The last case uses `by_contra` and omega to eliminate $g = 0, 1$ via the computed total curvatures.",
       "startLine": 170,
-      "endLine": 197
+      "endLine": 197,
+      "mathContext": "Complete classification: positive total curvature forces genus $0$ (sphere), zero forces genus $1$ (torus), negative forces genus $\\geq 2$. The last case uses `by_contra` and omega to eliminate $g = 0"
     },
     {
       "id": "average-curvature",
       "title": "Average Curvature",
       "summary": "Defines $K_{\\text{avg}} = \\int K\\,dA / \\text{Area}(M)$ and proves $K_{\\text{avg}} = 2\\pi\\chi / \\text{Area}$. Verifies: unit sphere ($K_{\\text{avg}} = 1$), flat torus ($K_{\\text{avg}} = 0$).",
       "startLine": 198,
-      "endLine": 235
+      "endLine": 235,
+      "mathContext": "Defines $K_{\\text{avg}} = \\int K\\,dA / \\text{Area}(M)$ and proves $K_{\\text{avg}} = 2\\pi\\chi / \\text{Area}$. Verifies: unit sphere ($K_{\\text{avg}} = 1$), flat torus ($K_{\\text{avg}} = 0$)."
     },
     {
       "id": "pointwise-constraints",
       "title": "Pointwise Curvature Constraints",
       "summary": "Restatement of genus determination in pointwise curvature language: $K > 0$ everywhere $\\Rightarrow$ sphere, $K < 0$ everywhere $\\Rightarrow$ genus $\\geq 2$, $K = 0$ everywhere $\\Rightarrow$ torus. Plus the Bonnet-type area bound $\\text{Area} \\leq 4\\pi/K_{\\min}$ for positively curved spheres.",
       "startLine": 236,
-      "endLine": 278
+      "endLine": 278,
+      "mathContext": "Restatement of genus determination in pointwise curvature language: $K > 0$ everywhere $\\Rightarrow$ sphere, $K < 0$ everywhere $\\Rightarrow$ genus $\\geq 2$, $K = 0$ everywhere $\\Rightarrow$ torus. Pl"
     },
     {
       "id": "discrete-connection",
       "title": "Connection to Discrete Gauss-Bonnet",
       "summary": "Proves smooth and discrete versions agree: both yield $2\\pi\\chi$ as total curvature. Verifies agreement for sphere ($4\\pi$), torus ($0$), and double torus ($-4\\pi$). Notes the mesh refinement limit $\\sum_v \\delta(v) \\to \\int_M K\\,dA$.",
       "startLine": 279,
-      "endLine": 314
+      "endLine": 314,
+      "mathContext": "Proves smooth and discrete versions agree: both yield $2\\pi\\chi$ as total curvature. Verifies agreement for sphere ($4\\pi$), torus ($0$), and double torus ($-4\\pi$). Notes the mesh refinement limit $\\"
     },
     {
       "id": "chern-generalization",
       "title": "Chern-Gauss-Bonnet Generalization",
       "summary": "Axiomatizes the higher-dimensional Chern-Gauss-Bonnet theorem: for compact $2n$-manifolds, $\\int_M \\text{Pf}(\\Omega) = (2\\pi)^n \\chi(M)$. Proves the $n=1$ case reduces to classical Gauss-Bonnet $\\int K\\,dA = 2\\pi\\chi$.",
       "startLine": 315,
-      "endLine": 349
+      "endLine": 349,
+      "mathContext": "Axiomatizes the higher-dimensional Chern-Gauss-Bonnet theorem: for compact $2n$-manifolds, $\\int_M \\text{Pf}(\\Omega) = (2\\pi)^n \\chi(M)$. Proves the $n=1$ case reduces to classical Gauss-Bonnet $\\int "
     },
     {
       "id": "applications",
       "title": "Applications",
       "summary": "Topological applications: sphere has $\\chi = 2$ (hairy ball theorem consequence via Poincaré-Hopf), torus has $\\chi = 0$ (admits nowhere-vanishing vector fields). Proves same genus implies same $\\chi$ and same total curvature.",
       "startLine": 350,
-      "endLine": 384
+      "endLine": 384,
+      "mathContext": "Topological applications: sphere has $\\chi = 2$ (hairy ball theorem consequence via Poincaré-Hopf), torus has $\\chi = 0$ (admits nowhere-vanishing vector fields). Proves same genus implies same $\\chi$"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "Constructs three `OrientableClosedSurface` instances: standard sphere (area $4\\pi$, $K_{\\text{avg}} = 1$), flat torus with area $ab$ ($K_{\\text{avg}} = 0$), hyperbolic genus-2 surface (area $4\\pi$, $K_{\\text{avg}} = -1$). All verify the Gauss-Bonnet axiom via `ring`.",
       "startLine": 385,
-      "endLine": 433
+      "endLine": 433,
+      "mathContext": "Constructs three `OrientableClosedSurface` instances: standard sphere (area $4\\pi$, $K_{\\text{avg}} = 1$), flat torus with area $ab$ ($K_{\\text{avg}} = 0$), hyperbolic genus-2 surface (area $4\\pi$, $K"
     },
     {
       "id": "gauss-bonnet-boundary",
       "title": "Gauss-Bonnet with Boundary",
       "summary": "Extends to compact surfaces with boundary via the generalized formula $\\int_M K\\,dA + \\int_{\\partial M} \\kappa_g\\,ds = 2\\pi\\chi(M)$. Defines `CompactSurfaceWithBoundary`, geodesic polygons, and constant-curvature polygons. Proves the interior angle sum formula $\\sum\\theta_{\\text{int}} = (n-2)\\pi + K \\cdot \\text{Area}$.",
       "startLine": 434,
-      "endLine": 521
+      "endLine": 521,
+      "mathContext": "Extends to compact surfaces with boundary via the generalized formula $\\int_M K\\,dA + \\int_{\\partial M} \\kappa_g\\,ds = 2\\pi\\chi(M)$. Defines `CompactSurfaceWithBoundary`, geodesic polygons, and consta"
     },
     {
       "id": "girard-formula",
@@ -166,7 +178,8 @@
       "title": "Hyperbolic Triangle Area",
       "summary": "On the hyperbolic plane ($K = -1$): $\\text{Area} = \\pi - (\\alpha + \\beta + \\gamma)$, bounded above by $\\pi$ (ideal triangle limit). Proves the area bound and the ideal triangle limit formula.",
       "startLine": 584,
-      "endLine": 611
+      "endLine": 611,
+      "mathContext": "On the hyperbolic plane ($K = -1$): $\\text{Area} = \\pi - (\\alpha + \\beta + \\gamma)$, bounded above by $\\pi$ (ideal triangle limit). Proves the area bound and the ideal triangle limit formula."
     },
     {
       "id": "poincare-hopf",

@@ -235,6 +235,41 @@
       "id": "gcd-algorithm",
       "relationship": "related",
       "description": "The Euclidean algorithm for polynomial GCD computes $\\gcd(p,q)$ by repeated division with remainder — each step applies "
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem expands $(x-a)^n$ and provides the standard form for polynomial powers. Combined with the Factor Th"
+    },
+    {
+      "id": "solution-of-cubic",
+      "relationship": "extends",
+      "description": "Cardano's cubic formula finds one root; the Factor Theorem then reduces the cubic to a quadratic by dividing out $(x - \\"
+    },
+    {
+      "id": "general-quartic",
+      "relationship": "extends",
+      "description": "Ferrari's quartic solution, like Cardano's cubic, uses root-finding followed by factoring out linear terms via the Facto"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "analogous",
+      "description": "Unique factorization of polynomials into irreducible factors over a field ($F[x]$ is a UFD) parallels unique prime facto"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The Chinese Remainder Theorem for polynomials says $R[x]/(f_1 \\cdots f_k) \\cong \\prod R[x]/(f_i)$ when the $f_i$ are pai"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "related",
+      "description": "The proof that a degree-$n$ polynomial has at most $n$ roots uses strong induction on degree, with the Factor Theorem as"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem on subgroup orders and the Factor Theorem both concern divisibility structures. More directly, Lagran"
     }
   ],
   "references": [

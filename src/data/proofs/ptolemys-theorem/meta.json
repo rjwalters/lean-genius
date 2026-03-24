@@ -12,7 +12,8 @@
       "geometry",
       "circle",
       "classic",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/PtolemysTheorem.lean",
     "badge": "mathlib",
@@ -58,63 +59,72 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 47,
-      "summary": "Documentation header explaining Ptolemy's Theorem as Wiedijk #95, with historical notes on the Almagest (c. 150 AD), the cospherical approach, and Mathlib dependencies."
+      "summary": "Documentation header explaining Ptolemy's Theorem as Wiedijk #95, with historical notes on the Almagest (c. 150 AD), the cospherical approach, and Mathlib dependencies.",
+      "mathContext": "Documentation header explaining Ptolemy's Theorem as Wiedijk #95, with historical notes on the Almagest (c. 150 AD), the cospherical approach, and Mathlib dependencies."
     },
     {
       "id": "setup",
       "title": "Setup and Definitions",
       "startLine": 48,
       "endLine": 63,
-      "summary": "Variable declarations for a general Euclidean space (inner product space V, metric space P) and abbreviation Vec2 for the Euclidean plane."
+      "summary": "Variable declarations for a general Euclidean space (inner product space V, metric space P) and abbreviation Vec2 for the Euclidean plane.",
+      "mathContext": "Variable declarations for a general Euclidean space (inner product space V, metric space P) and abbreviation Vec2 for the Euclidean plane."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 64,
       "endLine": 87,
-      "summary": "Ptolemy's theorem: $\\text{dist}(A,B) \\cdot \\text{dist}(C,D) + \\text{dist}(B,C) \\cdot \\text{dist}(D,A) = \\text{dist}(A,C) \\cdot \\text{dist}(B,D)$ for `Cospherical` points with diagonal intersection $P$ satisfying $\\angle APC = \\pi$ and $\\angle BPD = \\pi$. One-liner via `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical`."
+      "summary": "Ptolemy's theorem: $\\text{dist}(A,B) \\cdot \\text{dist}(C,D) + \\text{dist}(B,C) \\cdot \\text{dist}(D,A) = \\text{dist}(A,C) \\cdot \\text{dist}(B,D)$ for `Cospherical` points with diagonal intersection $P$ satisfying $\\angle APC = \\pi$ and $\\angle BPD = \\pi$. One-liner via `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical`.",
+      "mathContext": "Ptolemy's theorem: $\\text{dist}(A,B) \\cdot \\text{dist}(C,D) + \\text{dist}(B,C) \\cdot \\text{dist}(D,A) = \\text{dist}(A,C) \\cdot \\text{dist}(B,D)$ for `Cospherical` points with diagonal intersection $P$"
     },
     {
       "id": "alternative",
       "title": "Alternative Formulations",
       "startLine": 88,
       "endLine": 116,
-      "summary": "Three equivalent formulations: diagonals form (same), symmetric form (diagonals on left), and rearranged form (using commutativity of multiplication)."
+      "summary": "Three equivalent formulations: diagonals form (same), symmetric form (diagonals on left), and rearranged form (using commutativity of multiplication).",
+      "mathContext": "Three equivalent formulations: diagonals form (same), symmetric form (diagonals on left), and rearranged form (using commutativity of multiplication)."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Special Cases",
       "startLine": 117,
       "endLine": 129,
-      "summary": "Diagonal product from sides: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ can be computed from the four side lengths alone, eliminating the need for trigonometric computation of diagonals."
+      "summary": "Diagonal product from sides: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ can be computed from the four side lengths alone, eliminating the need for trigonometric computation of diagonals.",
+      "mathContext": "Diagonal product from sides: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ can be computed from the four side lengths alone, eliminating the need for trigonometric computation of diagonals."
     },
     {
       "id": "connections",
       "title": "Connections to Other Theorems",
       "startLine": 130,
       "endLine": 162,
-      "summary": "Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture."
+      "summary": "Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture.",
+      "mathContext": "Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture."
     },
     {
       "id": "examples",
       "title": "Numerical Examples",
       "startLine": 163,
       "endLine": 208,
-      "summary": "Three verified examples: rectangle ($3 \\cdot 3 + 4 \\cdot 4 = 5 \\cdot 5$, recovering the Pythagorean theorem), square ($2s^2 = (s\\sqrt{2})^2$ via `Real.mul_self_sqrt`), and isosceles trapezoid ($5^2 + 6^2 = 61$, diagonal $= \\sqrt{61}$). All verified by `norm_num`."
+      "summary": "Three verified examples: rectangle ($3 \\cdot 3 + 4 \\cdot 4 = 5 \\cdot 5$, recovering the Pythagorean theorem), square ($2s^2 = (s\\sqrt{2})^2$ via `Real.mul_self_sqrt`), and isosceles trapezoid ($5^2 + 6^2 = 61$, diagonal $= \\sqrt{61}$). All verified by `norm_num`.",
+      "mathContext": "Three verified examples: rectangle ($3 \\cdot 3 + 4 \\cdot 4 = 5 \\cdot 5$, recovering the Pythagorean theorem), square ($2s^2 = (s\\sqrt{2})^2$ via `Real.mul_self_sqrt`), and isosceles trapezoid ($5^2 + "
     },
     {
       "id": "converse",
       "title": "Converse and Ptolemy's Inequality",
       "startLine": 209,
       "endLine": 232,
-      "summary": "The converse: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ implies concyclicity. Ptolemy's inequality $AC \\cdot BD \\le AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff concyclic. Related to the cross-ratio being real and positive."
+      "summary": "The converse: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ implies concyclicity. Ptolemy's inequality $AC \\cdot BD \\le AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff concyclic. Related to the cross-ratio being real and positive.",
+      "mathContext": "The converse: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ implies concyclicity. Ptolemy's inequality $AC \\cdot BD \\le AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality if"
     },
     {
       "id": "history",
       "title": "Historical Context: The Almagest",
       "startLine": 233,
       "endLine": 267,
-      "summary": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy's legacy in astronomy (al-Khwarizmi, al-Biruni), and `#check` verification of all five exported theorems."
+      "summary": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy's legacy in astronomy (al-Khwarizmi, al-Biruni), and `#check` verification of all five exported theorems.",
+      "mathContext": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy"
     }
   ],
   "crossReferences": [

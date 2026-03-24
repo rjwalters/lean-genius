@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-01-15T11:22:53.228Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Surveyed: 0 sorries, 4 deep axioms, 1 potentially eliminable",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEYED: File has 0 sorries, 4 axioms. All axioms are deep analytic number theory results. erdos_1935_necessary could be derived from primitive_reciprocal_log_convergent via comparison test but requires ~100 lines of real analysis. Other 3 axioms require results not in Mathlib.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "erdos_1935_necessary is logically derivable from primitive_reciprocal_log_convergent: if a ≤ C*b, then 1/(b·log b) ≤ 2C/(a·log a) for large n, so convergence transfers",
+      "Proof sketch: split sum at threshold N₀ where a_n ≥ 2C. Finite head is bounded. Tail satisfies comparison with Σ 1/(a_n log a_n).",
+      "ess_1967_necessary is strictly stronger than erdos_1935_necessary (the growth rate condition implies convergence)",
+      "primitive_counting_bound and primitive_reciprocal_log_convergent are independent foundational results from 1935",
+      "File is well-structured with clean definitions for IsPrimitive, IsStrictlyIncreasing, IsDominatedBy, IsGCDFree"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove erdos_1935_necessary from primitive_reciprocal_log_convergent (axiom elimination, ~100 lines real analysis)",
+      "Add IsStrictlyIncreasing_injective lemma (trivial but useful)",
+      "Add omega_choose_prime_power supporting lemma"
+    ],
     "markdown": "# Erdős #892 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a necessary and sufficient condition for a sequence of integers $b_1<b_2<\\cdots$ that ensures there exists a primitive sequence $a_1<a_2<\\cdots$ (i.e. no element divides another) with $a_n \\ll b_n$ for all $n$?\n\nIn particular, is this always possible if there are no non-trivial solutions to $(b_i,b_j)=b_k$?\n\n\n\nA problem of Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and Szemer\\'{e}di \\cite{ESS68}. It is known that\\[\\sum \\frac{1}{b_n\\log b_n}<\\infty\\]and\\[\\sum_{b_n<x}\\frac{1}{b_n} =o\\left(\\frac{\\log x}{\\sqrt{\\log\\log x}}\\right)\\]are both necessary. (The former is due to Erd\\H{o}s \\cite{Er35}, the latter to Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and Szemer\\'{e}di \\cite{ESS67}.)\n\nOne can ask a similar question for sequences of real numbers, as in [143].\n\n\n\n\nReferences\n\n\n[ESS67] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozy, A. and Szemer\\'{e}di, E., On a theorem of Behrend. J. Austral. Math. Soc. (1967), 9--16.\n\n[ESS68] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozi, A. and Szemer\\'{e}di, E., On the solvability of certain equations in sequences of\npositive upper logarithmic density. J. London Math. Soc. (1968), 71--78.\n\n[Er35] Erd\\\"{o}s, Paul, Note on Sequences of Integers No One of Which is Divisible By Any Other. J. London Math. Soc. (1935), 126-128.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #143\n- Problem #891\n- Problem #893\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er98\n- ESS68\n- Er35\n- ESS67\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [

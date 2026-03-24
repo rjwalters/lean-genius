@@ -83,56 +83,64 @@
       "title": "Basic Definitions",
       "summary": "Graphs, cycles, chords, and avoidance predicates",
       "startLine": 32,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "Graphs, cycles, chords, and avoidance predicates"
     },
     {
       "id": "g-function",
       "title": "The Function g_k(n)",
       "summary": "Definition, achievability, and maximality axioms",
       "startLine": 73,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "Definition, achievability, and maximality axioms"
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "summary": "Czipszer upper bound and Erdős lower bound",
       "startLine": 91,
-      "endLine": 102
+      "endLine": 102,
+      "mathContext": "Czipszer upper bound and Erdős lower bound"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "Pósa k=1, Erdős k=2,3",
       "startLine": 103,
-      "endLine": 118
+      "endLine": 118,
+      "mathContext": "Pósa k=1, Erdős k=2,3"
     },
     {
       "id": "jiang",
       "title": "Jiang's Theorem (2004)",
       "summary": "Main result: exact formula for n >= 3k+3",
       "startLine": 119,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "Main result: exact formula for n >= 3k+3"
     },
     {
       "id": "verification",
       "title": "Formula Verification",
       "summary": "Algebraic checks and special case verification",
       "startLine": 133,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "Algebraic checks and special case verification"
     },
     {
       "id": "examples",
       "title": "Computational Examples",
       "summary": "Numerical verification with native_decide",
       "startLine": 156,
-      "endLine": 171
+      "endLine": 171,
+      "mathContext": "Numerical verification with native_decide"
     },
     {
       "id": "combined",
       "title": "Combined Result",
       "summary": "erdos_767_statement combining all bounds",
       "startLine": 172,
-      "endLine": 207
+      "endLine": 207,
+      "mathContext": "erdos_767_statement combining all bounds"
     }
   ],
   "conclusion": {

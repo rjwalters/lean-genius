@@ -91,70 +91,80 @@
       "title": "Part I: Basic Definitions",
       "startLine": 44,
       "endLine": 64,
-      "summary": "prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom."
+      "summary": "prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom.",
+      "mathContext": "prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom."
     },
     {
       "id": "largest-prime",
       "title": "Part II: Largest Prime Divisor",
       "startLine": 65,
       "endLine": 88,
-      "summary": "largestPrimeDivisor via primeFactorsList maximum. Axioms: divides n, is prime, is maximal."
+      "summary": "largestPrimeDivisor via primeFactorsList maximum. Axioms: divides n, is prime, is maximal.",
+      "mathContext": "largestPrimeDivisor via primeFactorsList maximum. Axioms: divides n, is prime, is maximal."
     },
     {
       "id": "exponent",
       "title": "Part III: Exponent of Prime in Product",
       "startLine": 89,
       "endLine": 105,
-      "summary": "exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom."
+      "summary": "exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom.",
+      "mathContext": "exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom."
     },
     {
       "id": "condition",
       "title": "Part IV: The Condition",
       "startLine": 106,
       "endLine": 131,
-      "summary": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on exponent behavior."
+      "summary": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on exponent behavior.",
+      "mathContext": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on exponent behavior."
     },
     {
       "id": "questions",
       "title": "Part V: The Questions",
       "startLine": 132,
       "endLine": 160,
-      "summary": "question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions."
+      "summary": "question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions.",
+      "mathContext": "question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions."
     },
     {
       "id": "ramachandra",
       "title": "Part VI: Known Upper Bound",
       "startLine": 161,
       "endLine": 174,
-      "summary": "Ramachandra's bound axiom: v−u ≤ v^{1/2+ε} for large v."
+      "summary": "Ramachandra's bound axiom: v−u ≤ v^{1/2+ε} for large v.",
+      "mathContext": "Ramachandra's bound axiom: v−u ≤ v^{1/2+ε} for large v."
     },
     {
       "id": "cramer",
       "title": "Part VII: Connection to Cramér's Conjecture",
       "startLine": 175,
       "endLine": 192,
-      "summary": "cramersConjecture definition, cramer_implies_q1 axiom."
+      "summary": "cramersConjecture definition, cramer_implies_q1 axiom.",
+      "mathContext": "cramersConjecture definition, cramer_implies_q1 axiom."
     },
     {
       "id": "examples",
       "title": "Part VIII: Examples",
       "startLine": 193,
       "endLine": 207,
-      "summary": "Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom."
+      "summary": "Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom.",
+      "mathContext": "Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom."
     },
     {
       "id": "prime-free",
       "title": "Part IX: Prime-Free Interval Perspective",
       "startLine": 208,
       "endLine": 225,
-      "summary": "noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime."
+      "summary": "noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime.",
+      "mathContext": "noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
       "startLine": 226,
       "endLine": 266,
-      "summary": "erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN."
+      "summary": "erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN.",
+      "mathContext": "erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN."
     }
   ],
   "conclusion": {

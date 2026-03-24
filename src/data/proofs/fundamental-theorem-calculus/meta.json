@@ -13,7 +13,8 @@
       "integration",
       "differentiation",
       "classic",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/FundamentalTheoremCalculus.lean",
     "badge": "mathlib",
@@ -206,6 +207,41 @@
       "id": "mean-value-theorem",
       "relationship": "related",
       "description": "MVT is the key tool in proving FTC Part II: $F(b) - F(a) = \\int_a^b F'(x)\\,dx$ uses $F(x_{i+1}) - F(x_i) = F'(c_i)(x_{i+"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "FTC connects to the Pythagorean theorem through arc length: $L = \\int_a^b \\sqrt{1 + (f'(x))^2}\\,dx$ where $\\sqrt{1 + (f'"
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The divergence of the harmonic series $\\sum 1/n$ can be proved via FTC by comparison with $\\int_1^N 1/x\\,dx = \\ln N \\to "
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The integral Cauchy-Schwarz inequality $(\\int fg)^2 \\leq (\\int f^2)(\\int g^2)$ uses the Lebesgue integral, which is the "
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "related",
+      "description": "Repeated application of FTC gives the Taylor series: $f(x) = \\sum_{k=0}^n f^{(k)}(a)(x-a)^k/k! + R_n(x)$ where $R_n = \\i"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "The 1D Brouwer fixed point theorem follows directly from IVT, which is closely tied to FTC. For $f:[0,1] \\to [0,1]$ cont"
+    },
+    {
+      "id": "greens-theorem",
+      "relationship": "extends",
+      "description": "Green's theorem $\\oint_C (P\\,dx + Q\\,dy) = \\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ is the 2D genera"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ is derived using FTC applied to $\\ln(n!) = \\sum \\ln k \\approx \\i"
     }
   ],
   "references": [

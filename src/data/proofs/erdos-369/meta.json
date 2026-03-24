@@ -237,6 +237,31 @@
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
       "description": "Unique prime factorization is the foundation of smooth number theory: P⁺(n) (the largest prime factor) is well-defined by FTA, and smoothness is defined in terms of the factorization structure that FTA guarantees"
+    },
+    {
+      "id": "erdos-143",
+      "relationship": "related",
+      "description": "Erdős #143 studies dilation-avoiding sets, another problem where prime factorization structure controls combinatorial de"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees a prime in (n, 2n). Erdős #369 asks a complementary question: are there consecutive comp"
+    },
+    {
+      "id": "erdos-371",
+      "relationship": "related",
+      "description": "Erdős #371 studies the density of integers where $P^+(n) < P^+(n+1)$ (the largest prime factor increases). Both #369 and"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The infinitude of primes is foundational: smooth numbers are defined by having all prime factors below a threshold, and "
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "foundational",
+      "description": "Stirling's approximation $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ is essential to the Dickman function analysis: the differential-"
     }
   ],
   "leanFile": {

@@ -93,70 +93,80 @@
       "title": "Core Definitions",
       "startLine": 34,
       "endLine": 48,
-      "summary": "Defines `fiberAt f j` (the preimage fiber — the set of people assigned to day j) and `HasKWay f k` (existential predicate: some day has ≥ k people). These two definitions drive the entire formalization."
+      "summary": "Defines `fiberAt f j` (the preimage fiber — the set of people assigned to day j) and `HasKWay f k` (existential predicate: some day has ≥ k people). These two definitions drive the entire formalization.",
+      "mathContext": "Defines `fiberAt f j` (the preimage fiber — the set of people assigned to day j) and `HasKWay f k` (existential predicate: some day has ≥ k people). These two definitions drive the entire formalizatio"
     },
     {
       "id": "fiber-partition",
       "title": "Fiber Partition of Unity",
       "startLine": 49,
       "endLine": 64,
-      "summary": "Proves the partition-of-unity identity: fiber sizes sum to n. Uses `Finset.card_eq_sum_card_fiberwise` — the structural foundation for the generalized pigeonhole argument."
+      "summary": "Proves the partition-of-unity identity: fiber sizes sum to n. Uses `Finset.card_eq_sum_card_fiberwise` — the structural foundation for the generalized pigeonhole argument.",
+      "mathContext": "Proves the partition-of-unity identity: fiber sizes sum to n. Uses `Finset.card_eq_sum_card_fiberwise` — the structural foundation for the generalized pigeonhole argument."
     },
     {
       "id": "pigeonhole",
       "title": "Generalized Pigeonhole",
       "startLine": 65,
       "endLine": 113,
-      "summary": "Proves the generalized pigeonhole bound with examples for d=365."
+      "summary": "Proves the generalized pigeonhole bound with examples for d=365.",
+      "mathContext": "Proves the generalized pigeonhole bound with examples for d=365."
     },
     {
       "id": "classical-recovery",
       "title": "Classical Recovery (k=2)",
       "startLine": 114,
       "endLine": 171,
-      "summary": "Shows 2-way coincidence equals non-injectivity, connecting to the standard birthday problem."
+      "summary": "Shows 2-way coincidence equals non-injectivity, connecting to the standard birthday problem.",
+      "mathContext": "Shows 2-way coincidence equals non-injectivity, connecting to the standard birthday problem."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
       "startLine": 172,
       "endLine": 194,
-      "summary": "Proves k-way implies k'-way for k' <= k."
+      "summary": "Proves k-way implies k'-way for k' <= k.",
+      "mathContext": "Proves k-way implies k'-way for k' <= k."
     },
     {
       "id": "trivial-cases",
       "title": "Trivial Cases",
       "startLine": 195,
       "endLine": 229,
-      "summary": "Validates the definition with edge cases: k=0 always satisfied, k=1 iff n > 0."
+      "summary": "Validates the definition with edge cases: k=0 always satisfied, k=1 iff n > 0.",
+      "mathContext": "Validates the definition with edge cases: k=0 always satisfied, k=1 iff n > 0."
     },
     {
       "id": "probability",
       "title": "Probability Formula",
       "startLine": 230,
       "endLine": 281,
-      "summary": "Defines probKWay, proves it equals 1 when pigeonhole applies, and monotonicity in k."
+      "summary": "Defines probKWay, proves it equals 1 when pigeonhole applies, and monotonicity in k.",
+      "mathContext": "Defines probKWay, proves it equals 1 when pigeonhole applies, and monotonicity in k."
     },
     {
       "id": "classical-connection",
       "title": "Connection to Classical Birthday Problem",
       "startLine": 282,
       "endLine": 297,
-      "summary": "Shows the no-2-way set equals the set of injective functions."
+      "summary": "Shows the no-2-way set equals the set of injective functions.",
+      "mathContext": "Shows the no-2-way set equals the set of injective functions."
     },
     {
       "id": "counting",
       "title": "Counting Examples",
       "startLine": 298,
       "endLine": 331,
-      "summary": "Verifies small cases: 1 person has no 2-way, 0 people have no k-way."
+      "summary": "Verifies small cases: 1 person has no 2-way, 0 people have no k-way.",
+      "mathContext": "Verifies small cases: 1 person has no 2-way, 0 people have no k-way."
     },
     {
       "id": "bounds",
       "title": "Population Bounds",
       "startLine": 332,
       "endLine": 368,
-      "summary": "Proves that n < k people cannot have a k-way coincidence (fiber sizes are bounded by n), and the probability is exactly 0. Together with the pigeonhole regime (P=1), this brackets the probability into three regimes."
+      "summary": "Proves that n < k people cannot have a k-way coincidence (fiber sizes are bounded by n), and the probability is exactly 0. Together with the pigeonhole regime (P=1), this brackets the probability into three regimes.",
+      "mathContext": "Proves that n < k people cannot have a k-way coincidence (fiber sizes are bounded by n), and the probability is exactly 0. Together with the pigeonhole regime (P=1), this brackets the probability into"
     }
   ],
   "conclusion": {

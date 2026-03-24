@@ -50,70 +50,80 @@
       "title": "Imports and Setup",
       "startLine": 20,
       "endLine": 26,
-      "summary": "Imports tactics, Finset.Basic, Finset.Powerset, and Nat.Bitwise for popcount."
+      "summary": "Imports tactics, Finset.Basic, Finset.Powerset, and Nat.Bitwise for popcount.",
+      "mathContext": "Imports tactics, Finset.Basic, Finset.Powerset, and Nat.Bitwise for popcount."
     },
     {
       "id": "r-fold-sumset",
       "title": "r-Fold Sumset Definition",
       "startLine": 27,
       "endLine": 32,
-      "summary": "Defines rFoldSumset as the image of r-element subsets under summation."
+      "summary": "Defines rFoldSumset as the image of r-element subsets under summation.",
+      "mathContext": "Defines rFoldSumset as the image of r-element subsets under summation."
     },
     {
       "id": "sequence-defs",
       "title": "Sequence Properties",
       "startLine": 33,
       "endLine": 52,
-      "summary": "Defines StrictlyIncreasing, seqRSumset, DisjointSumsets, and IsAdmissible."
+      "summary": "Defines StrictlyIncreasing, seqRSumset, DisjointSumsets, and IsAdmissible.",
+      "mathContext": "Defines StrictlyIncreasing, seqRSumset, DisjointSumsets, and IsAdmissible."
     },
     {
       "id": "main-questions",
       "title": "Main Questions (OPEN)",
       "startLine": 53,
       "endLine": 76,
-      "summary": "Defines HasPolynomialGaps, HasRatioOne, and states the gap threshold and ratio-one axioms."
+      "summary": "Defines HasPolynomialGaps, HasRatioOne, and states the gap threshold and ratio-one axioms.",
+      "mathContext": "Defines HasPolynomialGaps, HasRatioOne, and states the gap threshold and ratio-one axioms."
     },
     {
       "id": "pow2-increasing",
       "title": "Powers of 2 Strictly Increasing (Fully Proved)",
       "startLine": 77,
       "endLine": 83,
-      "summary": "Proves 2^n < 2^(n+1) using Nat.pow_lt_pow_right."
+      "summary": "Proves 2^n < 2^(n+1) using Nat.pow_lt_pow_right.",
+      "mathContext": "Proves 2^n < 2^(n+1) using Nat.pow_lt_pow_right."
     },
     {
       "id": "popcount",
       "title": "Popcount Lemma (Axiomatized)",
       "startLine": 84,
       "endLine": 92,
-      "summary": "Axiomatizes that the popcount of a sum of distinct powers of 2 equals the number of terms."
+      "summary": "Axiomatizes that the popcount of a sum of distinct powers of 2 equals the number of terms.",
+      "mathContext": "Axiomatizes that the popcount of a sum of distinct powers of 2 equals the number of terms."
     },
     {
       "id": "pow2-admissible",
       "title": "Powers of 2 Admissible (Partially Proved)",
       "startLine": 93,
       "endLine": 104,
-      "summary": "Strict increase proved; disjoint sumsets uses sorry (depends on popcount argument)."
+      "summary": "Strict increase proved; disjoint sumsets uses sorry (depends on popcount argument).",
+      "mathContext": "Strict increase proved; disjoint sumsets uses sorry (depends on popcount argument)."
     },
     {
       "id": "growth-lower",
       "title": "Growth Lower Bound (Fully Proved)",
       "startLine": 105,
       "endLine": 116,
-      "summary": "Proves a(n) ≥ n+1 for admissible sequences by induction."
+      "summary": "Proves a(n) ≥ n+1 for admissible sequences by induction.",
+      "mathContext": "Proves a(n) ≥ n+1 for admissible sequences by induction."
     },
     {
       "id": "small-examples",
       "title": "Small Examples",
       "startLine": 117,
       "endLine": 124,
-      "summary": "The set {1, 2, 4} has disjoint 1-fold and 2-fold sumsets (sorry)."
+      "summary": "The set {1, 2, 4} has disjoint 1-fold and 2-fold sumsets (sorry).",
+      "mathContext": "The set {1, 2, 4} has disjoint 1-fold and 2-fold sumsets (sorry)."
     },
     {
       "id": "finite-connection",
       "title": "Connection to Problem #874",
       "startLine": 125,
       "endLine": 135,
-      "summary": "Axiomatizes the finite version: maximum admissible subset size of {1,...,n}."
+      "summary": "Axiomatizes the finite version: maximum admissible subset size of {1,...,n}.",
+      "mathContext": "Axiomatizes the finite version: maximum admissible subset size of {1,...,n}."
     }
   ],
   "conclusion": {

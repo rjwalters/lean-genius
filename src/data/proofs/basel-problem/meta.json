@@ -310,6 +310,66 @@
       "id": "prime-reciprocal-divergence",
       "relationship": "related",
       "description": "Euler proved ∑ 1/p diverges using the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function framework. The divergence of ∑ 1/p contrasts with the convergence of ∑ 1/n² = π²/6, highlighting how prime density differs from integer density"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "Basel's answer ζ(2) = π²/6 involves the same transcendental π — Lindemann's transcendence proof (1882) implies that ζ(2)"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Euler's proof of the infinitude of primes uses the Euler product ζ(s) = ∏(1-p⁻ˢ)⁻¹ — the same zeta function whose value "
+    },
+    {
+      "id": "basel-problem-oq-01",
+      "relationship": "extended-by",
+      "description": "Explores the open question of whether $\\zeta(5)$ is irrational — extending the Basel problem's $\\zeta(2) = \\pi^2/6$ to o"
+    },
+    {
+      "id": "leibniz-pi",
+      "relationship": "complementary",
+      "description": "Leibniz's formula $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\cdots$ and Basel's $\\sum 1/n^2 = \\pi^2/6$ are both series evaluations "
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "foundational",
+      "description": "The geometric series $\\sum r^n = 1/(1-r)$ for $|r| < 1$ is the simplest convergent series with closed form. The Basel se"
+    },
+    {
+      "id": "taylor-theorem",
+      "relationship": "technique",
+      "description": "Euler's original proof compares the Taylor expansion $\\sin(x)/x = 1 - x^2/6 + x^4/120 - \\cdots$ with the infinite produc"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "extends",
+      "description": "The Prime Number Theorem ($\\pi(x) \\sim x/\\ln x$) is proved by analyzing the Riemann zeta function $\\zeta(s)$ in the comp"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "The Bernoulli numbers that produce $\\zeta(2) = \\pi^2/6$ are defined by the exponential generating function $t/(e^t - 1) "
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ is another instance where $\\pi$ emerges from a purely integer"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "extends",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) uses Dirichlet $L$-functions $L(s, \\chi) = \\sum \\chi(n) "
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula $A = \\pi r^2$ and the Basel identity $\\zeta(2) = \\pi^2/6$ both reveal $\\pi$ in seemingly unrelated cont"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The Central Limit Theorem's Gaussian density $\\frac{1}{\\sqrt{2\\pi}} e^{-x^2/2}$ contains $\\pi$ for the same deep reason "
     }
   ],
   "leanFile": {

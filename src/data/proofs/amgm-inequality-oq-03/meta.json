@@ -241,6 +241,31 @@
       "id": "amgm-inequality-oq-03-oq-02",
       "relationship": "extended-by",
       "description": "Proves lim_{r→0} M_r = GM — the missing r=0 case that would bridge the positive and negative exponent monotonicity results"
+    },
+    {
+      "id": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The Bunyakovsky-Schwarz integral inequality is the continuous analog of the M₁ ≤ M₂ case: for equal weights, (∑wᵢzᵢ)² ≤ "
+    },
+    {
+      "id": "mean-value-theorem",
+      "relationship": "related",
+      "description": "MVT is foundational for proving the r=0 limit case: lim_{r→0} M_r = GM requires L'Hôpital's rule, which itself depends o"
+    },
+    {
+      "id": "triangle-inequality",
+      "relationship": "related",
+      "description": "For p ≥ 1, the power mean inequality M₁ ≤ M_p implies (via Minkowski) the L^p triangle inequality — connecting discrete "
+    },
+    {
+      "id": "shannon-entropy",
+      "relationship": "related",
+      "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α, which is essentially l"
+    },
+    {
+      "id": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (∑ wᵢzᵢ^k)^(1/k) = (p_k/n)^(1/k) for "
     }
   ],
   "references": [

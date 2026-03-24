@@ -86,63 +86,72 @@
       "title": "Problem Documentation",
       "startLine": 1,
       "endLine": 26,
-      "summary": "Problem statement, history, and Cambie's observation about factor pairing."
+      "summary": "Problem statement, history, and Cambie's observation about factor pairing.",
+      "mathContext": "Problem statement, history, and Cambie's observation about factor pairing."
     },
     {
       "id": "valid-factorization",
       "title": "Valid Factorizations",
       "startLine": 42,
       "endLine": 63,
-      "summary": "Defines IsValidFactorization and the minimum function A(n, B)."
+      "summary": "Defines IsValidFactorization and the minimum function A(n, B).",
+      "mathContext": "Defines IsValidFactorization and the minimum function A(n, B)."
     },
     {
       "id": "main-theorem",
       "title": "Main Result: Bound n²",
       "startLine": 64,
       "endLine": 85,
-      "summary": "The main asymptotic: A(n, n²) = n/2 - n/(2 log n) + o(n/log n)."
+      "summary": "The main asymptotic: A(n, n²) = n/2 - n/(2 log n) + o(n/log n).",
+      "mathContext": "The main asymptotic: A(n, n²) = n/2 - n/(2 log n) + o(n/log n)."
     },
     {
       "id": "variant",
       "title": "Variant: Bound n",
       "startLine": 86,
       "endLine": 106,
-      "summary": "With stricter bound n, we get A(n, n) = n - n/log n + o(n/log n)."
+      "summary": "With stricter bound n, we get A(n, n) = n - n/log n + o(n/log n).",
+      "mathContext": "With stricter bound n, we get A(n, n) = n - n/log n + o(n/log n)."
     },
     {
       "id": "cambie",
       "title": "Cambie's Observation",
       "startLine": 107,
       "endLine": 128,
-      "summary": "The main result follows from the variant via factor pairing."
+      "summary": "The main result follows from the variant via factor pairing.",
+      "mathContext": "The main result follows from the variant via factor pairing."
     },
     {
       "id": "stirling",
       "title": "Stirling's Approximation",
       "startLine": 129,
       "endLine": 156,
-      "summary": "Connection to log(n!) ~ n log n and lower bound intuition."
+      "summary": "Connection to log(n!) ~ n log n and lower bound intuition.",
+      "mathContext": "Connection to log(n!) ~ n log n and lower bound intuition."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 157,
       "endLine": 179,
-      "summary": "Concrete values for small n: A(2,4)=1, A(3,9)=1, A(4,16)=2, A(5,25)=2."
+      "summary": "Concrete values for small n: A(2,4)=1, A(3,9)=1, A(4,16)=2, A(5,25)=2.",
+      "mathContext": "Concrete values for small n: A(2,4)=1, A(3,9)=1, A(4,16)=2, A(5,25)=2."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Behavior",
       "startLine": 180,
       "endLine": 197,
-      "summary": "A(n, n²) ~ n/2 and the correction term is lower order."
+      "summary": "A(n, n²) ~ n/2 and the correction term is lower order.",
+      "mathContext": "A(n, n²) ~ n/2 and the correction term is lower order."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 198,
       "endLine": 220,
-      "summary": "Key results and intuition packaged together."
+      "summary": "Key results and intuition packaged together.",
+      "mathContext": "Key results and intuition packaged together."
     }
   ],
   "conclusion": {

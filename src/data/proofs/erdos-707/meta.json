@@ -77,56 +77,64 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Problem statement, status (DISPROVED), prize, and references."
+      "summary": "Problem statement, status (DISPROVED), prize, and references.",
+      "mathContext": "Problem statement, status (DISPROVED), prize, and references."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 30,
       "endLine": 39,
-      "summary": "Mathlib imports for Finset, primes, and modular arithmetic."
+      "summary": "Mathlib imports for Finset, primes, and modular arithmetic.",
+      "mathContext": "Mathlib imports for Finset, primes, and modular arithmetic."
     },
     {
       "id": "definitions",
       "title": "Key Definitions",
       "startLine": 40,
       "endLine": 69,
-      "summary": "IsSidon, IsSidonDiff, and IsPerfectDifferenceSet definitions."
+      "summary": "IsSidon, IsSidonDiff, and IsPerfectDifferenceSet definitions.",
+      "mathContext": "IsSidon, IsSidonDiff, and IsPerfectDifferenceSet definitions."
     },
     {
       "id": "main-theorem",
       "title": "The Conjecture is FALSE",
       "startLine": 70,
       "endLine": 92,
-      "summary": "The disproved statement and formal negation."
+      "summary": "The disproved statement and formal negation.",
+      "mathContext": "The disproved statement and formal negation."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
       "startLine": 93,
       "endLine": 133,
-      "summary": "Three counterexamples: {1,2,4,8}, {1,2,4,8,13}, {1,3,9,10,13}."
+      "summary": "Three counterexamples: {1,2,4,8}, {1,2,4,8,13}, {1,3,9,10,13}.",
+      "mathContext": "Three counterexamples: {1,2,4,8}, {1,2,4,8,13}, {1,3,9,10,13}."
     },
     {
       "id": "positive-results",
       "title": "Positive Results",
       "startLine": 134,
       "endLine": 159,
-      "summary": "Size bound, Singer construction, small Sidon extendability."
+      "summary": "Size bound, Singer construction, small Sidon extendability.",
+      "mathContext": "Size bound, Singer construction, small Sidon extendability."
     },
     {
       "id": "density",
       "title": "Connection to Density",
       "startLine": 160,
       "endLine": 169,
-      "summary": "Link to Erdős Problem #329 on Sidon set density."
+      "summary": "Link to Erdős Problem #329 on Sidon set density.",
+      "mathContext": "Link to Erdős Problem #329 on Sidon set density."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 170,
       "endLine": 194,
-      "summary": "Verified results: {1,2,4} is Sidon, perfect difference sets exist."
+      "summary": "Verified results: {1,2,4} is Sidon, perfect difference sets exist.",
+      "mathContext": "Verified results: {1,2,4} is Sidon, perfect difference sets exist."
     }
   ],
   "conclusion": {

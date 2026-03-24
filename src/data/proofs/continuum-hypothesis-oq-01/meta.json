@@ -82,56 +82,64 @@
       "title": "Module Header and Setup",
       "startLine": 1,
       "endLine": 59,
-      "summary": "Imports, problem statement, and overview of the CH axiom landscape."
+      "summary": "Imports, problem statement, and overview of the CH axiom landscape.",
+      "mathContext": "Imports, problem statement, and overview of the CH axiom landscape."
     },
     {
       "id": "deciding-ch",
       "title": "What It Means to Decide CH",
       "startLine": 60,
       "endLine": 83,
-      "summary": "The `Decides` predicate: axiom Φ decides CH iff it implies CH or implies ¬CH. CH and ¬CH trivially decide themselves."
+      "summary": "The `Decides` predicate: axiom Φ decides CH iff it implies CH or implies ¬CH. CH and ¬CH trivially decide themselves.",
+      "mathContext": "The `Decides` predicate: axiom Φ decides CH iff it implies CH or implies ¬CH. CH and ¬CH trivially decide themselves."
     },
     {
       "id": "zfc-bounds",
       "title": "ZFC-Provable Bounds",
       "startLine": 84,
       "endLine": 129,
-      "summary": "ℵ₁ ≤ 2^ℵ₀ (provable in ZFC); under ¬CH, the continuum is strictly > ℵ₁ and at least ℵ₂."
+      "summary": "ℵ₁ ≤ 2^ℵ₀ (provable in ZFC); under ¬CH, the continuum is strictly > ℵ₁ and at least ℵ₂.",
+      "mathContext": "ℵ₁ ≤ 2^ℵ₀ (provable in ZFC); under ¬CH, the continuum is strictly > ℵ₁ and at least ℵ₂."
     },
     {
       "id": "constructibility-direction",
       "title": "V=L — The Constructibility Direction",
       "startLine": 130,
       "endLine": 166,
-      "summary": "V=L implies GCH implies CH. Ultimate-L (Woodin) also implies GCH conditionally."
+      "summary": "V=L implies GCH implies CH. Ultimate-L (Woodin) also implies GCH conditionally.",
+      "mathContext": "V=L implies GCH implies CH. Ultimate-L (Woodin) also implies GCH conditionally."
     },
     {
       "id": "forcing-axioms",
       "title": "PFA and MM — The Forcing Axiom Direction",
       "startLine": 167,
       "endLine": 213,
-      "summary": "PFA implies 2^ℵ₀ = ℵ₂, hence ¬CH. MM implies PFA hence also ¬CH."
+      "summary": "PFA implies 2^ℵ₀ = ℵ₂, hence ¬CH. MM implies PFA hence also ¬CH.",
+      "mathContext": "PFA implies 2^ℵ₀ = ℵ₂, hence ¬CH. MM implies PFA hence also ¬CH."
     },
     {
       "id": "large-cardinal-incompatibility",
       "title": "V=L vs Large Cardinals (Scott's Theorem)",
       "startLine": 214,
       "endLine": 259,
-      "summary": "Scott (1961): V=L and measurable cardinals are mutually exclusive. V=L is not large-cardinal compatible."
+      "summary": "Scott (1961): V=L and measurable cardinals are mutually exclusive. V=L is not large-cardinal compatible.",
+      "mathContext": "Scott (1961): V=L and measurable cardinals are mutually exclusive. V=L is not large-cardinal compatible."
     },
     {
       "id": "axiom-selection",
       "title": "Mathematical Criteria for Axiom Selection",
       "startLine": 260,
       "endLine": 281,
-      "summary": "Key asymmetry theorem: V=L (→ CH) fails large-cardinal compatibility; PFA (→ ¬CH) satisfies it."
+      "summary": "Key asymmetry theorem: V=L (→ CH) fails large-cardinal compatibility; PFA (→ ¬CH) satisfies it.",
+      "mathContext": "Key asymmetry theorem: V=L (→ CH) fails large-cardinal compatibility; PFA (→ ¬CH) satisfies it."
     },
     {
       "id": "open-question-summary",
       "title": "Summary of the Open Question",
       "startLine": 262,
       "endLine": 317,
-      "summary": "Both CH-deciding and ¬CH-deciding axioms exist. The ¬CH side has structural advantages via large-cardinal compatibility."
+      "summary": "Both CH-deciding and ¬CH-deciding axioms exist. The ¬CH side has structural advantages via large-cardinal compatibility.",
+      "mathContext": "Both CH-deciding and ¬CH-deciding axioms exist. The ¬CH side has structural advantages via large-cardinal compatibility."
     }
   ],
   "conclusion": {

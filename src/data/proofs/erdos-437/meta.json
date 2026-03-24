@@ -91,77 +91,88 @@
       "title": "Partial Products",
       "summary": "IsStrictlyIncreasing, IsBoundedSequence, partialProducts",
       "startLine": 36,
-      "endLine": 67
+      "endLine": 67,
+      "mathContext": "IsStrictlyIncreasing, IsBoundedSequence, partialProducts"
     },
     {
       "id": "square-counting",
       "title": "Square Counting",
       "summary": "isSquare, DecidablePred, squareCount",
       "startLine": 68,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "isSquare, DecidablePred, squareCount"
     },
     {
       "id": "l-function",
       "title": "The Function L(x)",
       "summary": "IsValidSequence, L definition",
       "startLine": 97,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "IsValidSequence, L definition"
     },
     {
       "id": "u-function",
       "title": "The u(x) Function",
       "summary": "u(x) = √(log x · log log x)",
       "startLine": 118,
-      "endLine": 130
+      "endLine": 130,
+      "mathContext": "u(x) = √(log x · log log x)"
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "summary": "L_le_x, L_little_o_x via Siegel",
       "startLine": 131,
-      "endLine": 148
+      "endLine": 148,
+      "mathContext": "L_le_x, L_little_o_x via Siegel"
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "erdos437Conjecture, erdos_437 axiom",
       "startLine": 149,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "erdos437Conjecture, erdos_437 axiom"
     },
     {
       "id": "precise-bounds",
       "title": "Precise Bounds",
       "summary": "L_lower_bound, L_upper_bound by Tao",
       "startLine": 168,
-      "endLine": 191
+      "endLine": 191,
+      "mathContext": "L_lower_bound, L_upper_bound by Tao"
     },
     {
       "id": "proof-ingredients",
       "title": "Proof Ingredients",
       "summary": "siegel_theorem_consequence, hyperelliptic_connection",
       "startLine": 192,
-      "endLine": 214
+      "endLine": 214,
+      "mathContext": "siegel_theorem_consequence, hyperelliptic_connection"
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "powers_of_four_all_squares, primes_few_squares",
       "startLine": 215,
-      "endLine": 238
+      "endLine": 238,
+      "mathContext": "powers_of_four_all_squares, primes_few_squares"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Analysis",
       "summary": "L_growth_rate, L_beats_power",
       "startLine": 239,
-      "endLine": 272
+      "endLine": 272,
+      "mathContext": "L_growth_rate, L_beats_power"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_437_summary, erdos_437_answer",
       "startLine": 273,
-      "endLine": 300
+      "endLine": 300,
+      "mathContext": "erdos_437_summary, erdos_437_answer"
     }
   ],
   "conclusion": {

@@ -126,56 +126,64 @@
       "title": "Imports and Setup",
       "startLine": 20,
       "endLine": 26,
-      "summary": "Imports Mathlib modules for `Nat.Prime`, filters, real numbers, square roots, and tactics."
+      "summary": "Imports Mathlib modules for `Nat.Prime`, filters, real numbers, square roots, and tactics.",
+      "mathContext": "Imports Mathlib modules for `Nat.Prime`, filters, real numbers, square roots, and tactics."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: $p(n+k) > k^2 + 1$",
       "startLine": 27,
       "endLine": 38,
-      "summary": "Defines `ErdosProblem680` ($\\exists N_0, \\forall n \\ge N_0, \\exists k \\ge 1 : p(n+k) > k^2 + 1$) and `HasLargeLPF` (the predicate for individual $n$)."
+      "summary": "Defines `ErdosProblem680` ($\\exists N_0, \\forall n \\ge N_0, \\exists k \\ge 1 : p(n+k) > k^2 + 1$) and `HasLargeLPF` (the predicate for individual $n$).",
+      "mathContext": "Defines `ErdosProblem680` ($\\exists N_0, \\forall n \\ge N_0, \\exists k \\ge 1 : p(n+k) > k^2 + 1$) and `HasLargeLPF` (the predicate for individual $n$)."
     },
     {
       "id": "exponential-variant",
       "title": "Exponential Variant",
       "startLine": 39,
       "endLine": 55,
-      "summary": "States `ErdosProblem680Variant` ($\\forall \\varepsilon > 0$, the exponential bound $e^{(1+\\varepsilon)\\sqrt{k}} + C$ eventually fails) and `ErdosProblem680Combined` (both statements together)."
+      "summary": "States `ErdosProblem680Variant` ($\\forall \\varepsilon > 0$, the exponential bound $e^{(1+\\varepsilon)\\sqrt{k}} + C$ eventually fails) and `ErdosProblem680Combined` (both statements together).",
+      "mathContext": "States `ErdosProblem680Variant` ($\\forall \\varepsilon > 0$, the exponential bound $e^{(1+\\varepsilon)\\sqrt{k}} + C$ eventually fails) and `ErdosProblem680Combined` (both statements together)."
     },
     {
       "id": "cramer",
       "title": "Cramér's Conjecture Connection",
       "startLine": 56,
       "endLine": 71,
-      "summary": "Formalizes `CramerConjecture` ($p_{n+1} - p_n \\le C(\\log p_n)^2$) using `Nat.find` for the next prime. Axiomatizes `cramer_implies_large_lpf`: Cramér's conjecture implies a stronger version of #680."
+      "summary": "Formalizes `CramerConjecture` ($p_{n+1} - p_n \\le C(\\log p_n)^2$) using `Nat.find` for the next prime. Axiomatizes `cramer_implies_large_lpf`: Cramér's conjecture implies a stronger version of #680.",
+      "mathContext": "Formalizes `CramerConjecture` ($p_{n+1} - p_n \\le C(\\log p_n)^2$) using `Nat.find` for the next prime. Axiomatizes `cramer_implies_large_lpf`: Cramér's conjecture implies a stronger version of #680."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 72,
       "endLine": 95,
-      "summary": "Axiomatizes $k^2 + 1 < e^{(1+\\varepsilon)\\sqrt{k}}$ for large $k$. Proves the $k = 1$ case (`lpf_k1_means_odd`: $p(n+1) > 2$ iff $n+1$ is odd) and the prime offset reduction (`prime_offset_gives_large_lpf`)."
+      "summary": "Axiomatizes $k^2 + 1 < e^{(1+\\varepsilon)\\sqrt{k}}$ for large $k$. Proves the $k = 1$ case (`lpf_k1_means_odd`: $p(n+1) > 2$ iff $n+1$ is odd) and the prime offset reduction (`prime_offset_gives_large_lpf`).",
+      "mathContext": "Axiomatizes $k^2 + 1 < e^{(1+\\varepsilon)\\sqrt{k}}$ for large $k$. Proves the $k = 1$ case (`lpf_k1_means_odd`: $p(n+1) > 2$ iff $n+1$ is odd) and the prime offset reduction (`prime_offset_gives_large"
     },
     {
       "id": "granville",
       "title": "Granville's Refinement and Prime Distribution Reduction",
       "startLine": 96,
       "endLine": 125,
-      "summary": "Defines `granvilleConstant` ($2e^{-\\gamma} \\approx 1.1229$) and `GranvilleRefinement`. Proves `problem680_from_prime_distribution`: if primes exist near $n$ with $k^2 + 1 < n + k$, then #680 holds."
+      "summary": "Defines `granvilleConstant` ($2e^{-\\gamma} \\approx 1.1229$) and `GranvilleRefinement`. Proves `problem680_from_prime_distribution`: if primes exist near $n$ with $k^2 + 1 < n + k$, then #680 holds.",
+      "mathContext": "Defines `granvilleConstant` ($2e^{-\\gamma} \\approx 1.1229$) and `GranvilleRefinement`. Proves `problem680_from_prime_distribution`: if primes exist near $n$ with $k^2 + 1 < n + k$, then #680 holds."
     },
     {
       "id": "structural",
       "title": "Structural Lemmas",
       "startLine": 126,
       "endLine": 170,
-      "summary": "Five proved lemmas: successor-prime case, nearby-prime case, `minFac_prime_self`, `minFac_gt_of_no_small_divisor` (excluding small divisors), and `hasLargeLPF_monotone_offset` (monotonicity in offset)."
+      "summary": "Five proved lemmas: successor-prime case, nearby-prime case, `minFac_prime_self`, `minFac_gt_of_no_small_divisor` (excluding small divisors), and `hasLargeLPF_monotone_offset` (monotonicity in offset).",
+      "mathContext": "Five proved lemmas: successor-prime case, nearby-prime case, `minFac_prime_self`, `minFac_gt_of_no_small_divisor` (excluding small divisors), and `hasLargeLPF_monotone_offset` (monotonicity in offset)"
     },
     {
       "id": "computational",
       "title": "Computational Verification",
       "startLine": 171,
       "endLine": 194,
-      "summary": "Verifies `HasLargeLPF` for $n = 2, 4, 6, 8, 10, 12, 14, 20, 24, 100$ using `native_decide`. All cases use $k = 1$ witness."
+      "summary": "Verifies `HasLargeLPF` for $n = 2, 4, 6, 8, 10, 12, 14, 20, 24, 100$ using `native_decide`. All cases use $k = 1$ witness.",
+      "mathContext": "Verifies `HasLargeLPF` for $n = 2, 4, 6, 8, 10, 12, 14, 20, 24, 100$ using `native_decide`. All cases use $k = 1$ witness."
     }
   ],
   "conclusion": {
@@ -283,6 +291,11 @@
       "id": "erdos-648",
       "relationship": "related",
       "description": "Erdős #648 studies the greatest prime factor $P(n)$ while #680 studies the least prime factor $p(n)$. They are dual perspectives on the same arithmetic function: the prime factorization structure of integers near $n$."
+    },
+    {
+      "id": "erdos-1055",
+      "relationship": "related",
+      "description": "Erdős #1055 classifies primes by smoothness of $p+1$, connecting to the least prime factor of $p + 1$. Both problems rel"
     }
   ]
 }

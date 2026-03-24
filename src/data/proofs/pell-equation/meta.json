@@ -12,7 +12,8 @@
       "number-theory",
       "diophantine-equations",
       "continued-fractions",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/PellEquation.lean",
     "badge": "mathlib",
@@ -69,63 +70,72 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 67,
-      "summary": "Imports `Mathlib.NumberTheory.Pell` and provides extensive documentation: historical context (Brahmagupta, Bhaskara II, Fermat, Lagrange), the equation $x^2 - Dy^2 = 1$, key Mathlib API (`Solution₁`, `IsFundamental`), and the multiplicative structure in $\\mathbb{Z}[\\sqrt{D}]$"
+      "summary": "Imports `Mathlib.NumberTheory.Pell` and provides extensive documentation: historical context (Brahmagupta, Bhaskara II, Fermat, Lagrange), the equation $x^2 - Dy^2 = 1$, key Mathlib API (`Solution₁`, `IsFundamental`), and the multiplicative structure in $\\mathbb{Z}[\\sqrt{D}]$",
+      "mathContext": "Imports `Mathlib.NumberTheory.Pell` and provides extensive documentation: historical context (Brahmagupta, Bhaskara II, Fermat, Lagrange), the equation $x^2 - Dy^2 = 1$, key Mathlib API (`Solution₁`, "
     },
     {
       "id": "existence",
       "title": "Existence of Solutions",
       "startLine": 68,
       "endLine": 106,
-      "summary": "Two existence theorems: `pell_has_nontrivial_solution_int` gives $(x,y)$ with $x^2 - Dy^2 = 1$ and $y \\neq 0$ (wrapping `Pell.exists_of_not_isSquare`); `pell_has_pos_solution` gives a `Solution₁` with $x > 1$ and $y > 0$"
+      "summary": "Two existence theorems: `pell_has_nontrivial_solution_int` gives $(x,y)$ with $x^2 - Dy^2 = 1$ and $y \\neq 0$ (wrapping `Pell.exists_of_not_isSquare`); `pell_has_pos_solution` gives a `Solution₁` with $x > 1$ and $y > 0$",
+      "mathContext": "Two existence theorems: `pell_has_nontrivial_solution_int` gives $(x,y)$ with $x^2 - Dy^2 = 1$ and $y \\neq 0$ (wrapping `Pell.exists_of_not_isSquare`); `pell_has_pos_solution` gives a `Solution₁` with"
     },
     {
       "id": "infinitely-many",
       "title": "Infinitely Many Solutions",
       "startLine": 107,
       "endLine": 125,
-      "summary": "Proves infinitely many distinct solutions exist by showing distinct integer powers of the fundamental solution have distinct $y$-coordinates, using `y_strictMono.injective`"
+      "summary": "Proves infinitely many distinct solutions exist by showing distinct integer powers of the fundamental solution have distinct $y$-coordinates, using `y_strictMono.injective`",
+      "mathContext": "Proves infinitely many distinct solutions exist by showing distinct integer powers of the fundamental solution have distinct $y$-coordinates, using `y_strictMono.injective`"
     },
     {
       "id": "fundamental",
       "title": "The Fundamental Solution",
       "startLine": 126,
       "endLine": 154,
-      "summary": "Defines `IsFundamentalSolution` wrapping `Pell.IsFundamental`, proves existence via `IsFundamental.exists_of_not_isSquare`, and uniqueness via the `subsingleton` property of minimal elements"
+      "summary": "Defines `IsFundamentalSolution` wrapping `Pell.IsFundamental`, proves existence via `IsFundamental.exists_of_not_isSquare`, and uniqueness via the `subsingleton` property of minimal elements",
+      "mathContext": "Defines `IsFundamentalSolution` wrapping `Pell.IsFundamental`, proves existence via `IsFundamental.exists_of_not_isSquare`, and uniqueness via the `subsingleton` property of minimal elements"
     },
     {
       "id": "generation",
       "title": "Generating All Solutions",
       "startLine": 155,
       "endLine": 167,
-      "summary": "The key structural theorem: every solution $a$ satisfies $a = a_1^n$ or $a = -a_1^n$ for some $n \\in \\mathbb{Z}$, via `IsFundamental.eq_zpow_or_neg_zpow`. The solution group is $\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$"
+      "summary": "The key structural theorem: every solution $a$ satisfies $a = a_1^n$ or $a = -a_1^n$ for some $n \\in \\mathbb{Z}$, via `IsFundamental.eq_zpow_or_neg_zpow`. The solution group is $\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$",
+      "mathContext": "The key structural theorem: every solution $a$ satisfies $a = a_1^n$ or $a = -a_1^n$ for some $n \\in \\mathbb{Z}$, via `IsFundamental.eq_zpow_or_neg_zpow`. The solution group is $\\mathbb{Z} \\times \\mat"
     },
     {
       "id": "group-structure",
       "title": "Group Structure of Solutions",
       "startLine": 168,
       "endLine": 197,
-      "summary": "Verifies the group operations explicitly: multiplication formula $(x_1 x_2 + Dy_1 y_2,\\, x_1 y_2 + x_2 y_1)$ matching $\\mathbb{Z}[\\sqrt{D}]$ multiplication, identity $(1,0)$, and inverse $(x,-y)$ (conjugation)"
+      "summary": "Verifies the group operations explicitly: multiplication formula $(x_1 x_2 + Dy_1 y_2,\\, x_1 y_2 + x_2 y_1)$ matching $\\mathbb{Z}[\\sqrt{D}]$ multiplication, identity $(1,0)$, and inverse $(x,-y)$ (conjugation)",
+      "mathContext": "Verifies the group operations explicitly: multiplication formula $(x_1 x_2 + Dy_1 y_2,\\, x_1 y_2 + x_2 y_1)$ matching $\\mathbb{Z}[\\sqrt{D}]$ multiplication, identity $(1,0)$, and inverse $(x,-y)$ (con"
     },
     {
       "id": "examples",
       "title": "Explicit Verification Examples",
       "startLine": 198,
       "endLine": 244,
-      "summary": "Computational verification via `norm_num` for $D = 2$ (fundamental $(3,2)$, powers $(17,12)$, $(99,70)$), $D = 3$ ($(2,1)$, $(7,4)$), $D = 5$ ($(9,4)$), $D = 7$ ($(8,3)$), and Fermat's challenge $D = 61$ ($(1766319049, 226153980)$)"
+      "summary": "Computational verification via `norm_num` for $D = 2$ (fundamental $(3,2)$, powers $(17,12)$, $(99,70)$), $D = 3$ ($(2,1)$, $(7,4)$), $D = 5$ ($(9,4)$), $D = 7$ ($(8,3)$), and Fermat's challenge $D = 61$ ($(1766319049, 226153980)$)",
+      "mathContext": "Computational verification via `norm_num` for $D = 2$ (fundamental $(3,2)$, powers $(17,12)$, $(99,70)$), $D = 3$ ($(2,1)$, $(7,4)$), $D = 5$ ($(9,4)$), $D = 7$ ($(8,3)$), and Fermat's challenge $D = "
     },
     {
       "id": "non-square",
       "title": "Non-Square Requirement",
       "startLine": 245,
       "endLine": 271,
-      "summary": "Original proof that $D = k^2$ forces only trivial solutions: factors $x^2 - k^2 y^2 = (x-ky)(x+ky) = 1$, then uses $a \\mid 1 \\Rightarrow a = \\pm 1$ in $\\mathbb{Z}$ to conclude $ky = 0$"
+      "summary": "Original proof that $D = k^2$ forces only trivial solutions: factors $x^2 - k^2 y^2 = (x-ky)(x+ky) = 1$, then uses $a \\mid 1 \\Rightarrow a = \\pm 1$ in $\\mathbb{Z}$ to conclude $ky = 0$",
+      "mathContext": "Original proof that $D = k^2$ forces only trivial solutions: factors $x^2 - k^2 y^2 = (x-ky)(x+ky) = 1$, then uses $a \\mid 1 \\Rightarrow a = \\pm 1$ in $\\mathbb{Z}$ to conclude $ky = 0$"
     },
     {
       "id": "connections",
       "title": "Connections to Other Areas",
       "startLine": 272,
       "endLine": 298,
-      "summary": "Outlines connections to algebraic number theory (units in $\\mathbb{Z}[\\sqrt{D}]$, fundamental unit), continued fractions (convergents give solutions), Diophantine approximation ($|\\sqrt{D} - x/y| < 1/(2y^2)$), and cryptography (NTRU)"
+      "summary": "Outlines connections to algebraic number theory (units in $\\mathbb{Z}[\\sqrt{D}]$, fundamental unit), continued fractions (convergents give solutions), Diophantine approximation ($|\\sqrt{D} - x/y| < 1/(2y^2)$), and cryptography (NTRU)",
+      "mathContext": "Outlines connections to algebraic number theory (units in $\\mathbb{Z}[\\sqrt{D}]$, fundamental unit), continued fractions (convergents give solutions), Diophantine approximation ($|\\sqrt{D} - x/y| < 1/"
     }
   ],
   "crossReferences": [

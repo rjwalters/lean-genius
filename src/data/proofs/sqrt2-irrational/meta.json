@@ -9,7 +9,8 @@
       "number-theory",
       "classic",
       "irrationality",
-      "generalization"
+      "generalization",
+      "wiedijk-100"
     ],
     "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/Sqrt2Irrational.lean",
@@ -203,6 +204,41 @@
       "id": "abel-ruffini",
       "relationship": "foundational",
       "description": "The irrationality of $\\sqrt{2}$ is the earliest impossibility result in mathematics — showing $\\sqrt{2} \\notin \\mathbb{Q}$. Abel-Ruffini extends this paradigm: certain quantities cannot be expressed within given algebraic frameworks (radicals rather than rationals). Both prove that 'simple' descriptions fail to capture certain numbers"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "Both are landmark results about the nature of specific numbers: $\\sqrt{2} \\notin \\mathbb{Q}$ (irrational) is the weakest"
+    },
+    {
+      "id": "pi-transcendental",
+      "relationship": "related",
+      "description": "The irrationality of $\\sqrt{2}$ and the transcendence of $\\pi$ bracket the expressibility hierarchy: $\\sqrt{2}$ is algeb"
+    },
+    {
+      "id": "hermite-lindemann",
+      "relationship": "extends",
+      "description": "Hermite-Lindemann ($e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$) is a vast generalization: it proves transcen"
+    },
+    {
+      "id": "angle-trisection",
+      "relationship": "complementary",
+      "description": "$\\sqrt{2}$ IS constructible (diagonal of a unit square) because $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = 2 = 2^1$. This cont"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "thematic",
+      "description": "Both prove that certain sets are 'too large' for a given description: $\\sqrt{2} \\notin \\mathbb{Q}$ shows irrationals exi"
+    },
+    {
+      "id": "gelfond-schneider",
+      "relationship": "extends",
+      "description": "Gelfond-Schneider proves $\\alpha^\\beta$ is transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\bet"
+    },
+    {
+      "id": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The proof by infinite descent (showing no smallest counterexample exists) is closely related to strong induction — both "
     }
   ],
   "references": [

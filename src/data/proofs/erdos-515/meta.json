@@ -90,63 +90,72 @@
       "title": "Entire Functions",
       "summary": "Defines IsEntire (globally holomorphic via Differentiable $\\mathbb{C}$ $f$), IsTranscendental (entire and not a polynomial), and HasFiniteOrder ($|f(z)| \\le C\\exp(|z|^\\rho)$ for some $\\rho, C > 0$). These capture the precise function-theoretic hypotheses.",
       "startLine": 42,
-      "endLine": 67
+      "endLine": 67,
+      "mathContext": "Defines IsEntire (globally holomorphic via Differentiable $\\mathbb{C}$ $f$), IsTranscendental (entire and not a polynomial), and HasFiniteOrder ($|f(z)| \\le C\\exp(|z|^\\rho)$ for some $\\rho, C > 0$). T"
     },
     {
       "id": "paths",
       "title": "Paths in C",
       "summary": "Defines PathToInfinity (continuous with $|\\gamma(t)| \\to \\infty$ via Filter.Tendsto), LocallyRectifiable (finite arc length on bounded segments, placeholder body), and IsGoodPath (both properties). These ensure the path integral is well-defined.",
       "startLine": 68,
-      "endLine": 93
+      "endLine": 93,
+      "mathContext": "Defines PathToInfinity (continuous with $|\\gamma(t)| \\to \\infty$ via Filter.Tendsto), LocallyRectifiable (finite arc length on bounded segments, placeholder body), and IsGoodPath (both properties). Th"
     },
     {
       "id": "path-integrals",
       "title": "Path Integrals",
       "summary": "Defines pathIntegralInversePower as $\\int_0^\\infty \\|f(\\gamma(t))\\|^{-\\lambda} \\|\\gamma'(t)\\| \\, dt$ using Mathlib's integration and Real.rpow. IntegralIsFinite requires the integral to be $< \\top$.",
       "startLine": 94,
-      "endLine": 112
+      "endLine": 112,
+      "mathContext": "Defines pathIntegralInversePower as $\\int_0^\\infty \\|f(\\gamma(t))\\|^{-\\lambda} \\|\\gamma'(t)\\| \\, dt$ using Mathlib's integration and Real.rpow. IntegralIsFinite requires the integral to be $< \\top$."
     },
     {
       "id": "questions",
       "title": "The Questions",
       "summary": "Formalizes the quantifier structure: HuberQuestion ($\\forall \\lambda, \\exists \\gamma$: path may depend on $\\lambda$), ErdosQuestion ($\\exists \\gamma, \\forall \\lambda$: single path for all $\\lambda$), and UniversalQuestion (ErdosQuestion for all transcendental $f$). The $\\exists\\forall$ vs. $\\forall\\exists$ distinction is the mathematical heart.",
       "startLine": 113,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "Formalizes the quantifier structure: HuberQuestion ($\\forall \\lambda, \\exists \\gamma$: path may depend on $\\lambda$), ErdosQuestion ($\\exists \\gamma, \\forall \\lambda$: single path for all $\\lambda$), "
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
       "summary": "Axiomatizes Huber's 1957 theorem (path exists for each fixed $\\lambda$, Comment. Math. Helv.) and Zhang's 1977 theorem (single path for finite-order functions, Kexue Tongbao). The gap is the infinite-order case.",
       "startLine": 146,
-      "endLine": 168
+      "endLine": 168,
+      "mathContext": "Axiomatizes Huber's 1957 theorem (path exists for each fixed $\\lambda$, Comment. Math. Helv.) and Zhang's 1977 theorem (single path for finite-order functions, Kexue Tongbao). The gap is the infinite-"
     },
     {
       "id": "main-result",
       "title": "The Main Result",
       "summary": "Axiomatizes lewis_rossi_weitsman_1984 : UniversalQuestion — the complete solution for all transcendental entire functions (Ark. Mat. 1984). Also axiomatizes lrw_subharmonic_version extending to arbitrary subharmonic functions (placeholder body).",
       "startLine": 169,
-      "endLine": 189
+      "endLine": 189,
+      "mathContext": "Axiomatizes lewis_rossi_weitsman_1984 : UniversalQuestion — the complete solution for all transcendental entire functions (Ark. Mat. 1984). Also axiomatizes lrw_subharmonic_version extending to arbitr"
     },
     {
       "id": "insights",
       "title": "Why This is Surprising",
       "summary": "Comments (not formalized) explain the key mathematical ideas: entire functions grow rapidly along most rays (cos $\\pi\\rho$ theorem), the path avoids zeros by navigating between clusters, uniformity in $\\lambda$ follows from superpolynomial growth along the path, and the subharmonic generalization reveals potential theory as the true setting.",
       "startLine": 190,
-      "endLine": 215
+      "endLine": 215,
+      "mathContext": "Comments (not formalized) explain the key mathematical ideas: entire functions grow rapidly along most rays (cos $\\pi\\rho$ theorem), the path avoids zeros by navigating between clusters, uniformity in"
     },
     {
       "id": "construction",
       "title": "Construction Ideas",
       "summary": "Comments describe the LRW path construction: at each radius $r$, select the angle $\\theta(r)$ maximizing $|f(re^{i\\theta})|$. The resulting path chases the maximum modulus, keeping $|f|$ large and $|f|^{-\\lambda}$ integrable. Zero avoidance follows from the sparseness of zeros relative to the growth.",
       "startLine": 216,
-      "endLine": 241
+      "endLine": 241,
+      "mathContext": "Comments describe the LRW path construction: at each radius $r$, select the angle $\\theta(r)$ maximizing $|f(re^{i\\theta})|$. The resulting path chases the maximum modulus, keeping $|f|$ large and $|f"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Proves erdos_515_summary by assembling LRW, Huber (via unfolding HuberQuestion), and a True placeholder for Zhang. The theorems erdos_515 and erdos_515_answer are direct aliases for lewis_rossi_weitsman_1984.",
       "startLine": 242,
-      "endLine": 290
+      "endLine": 290,
+      "mathContext": "Proves erdos_515_summary by assembling LRW, Huber (via unfolding HuberQuestion), and a True placeholder for Zhang. The theorems erdos_515 and erdos_515_answer are direct aliases for lewis_rossi_weitsm"
     }
   ],
   "conclusion": {

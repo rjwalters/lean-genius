@@ -79,56 +79,64 @@
       "title": "Basic Definitions",
       "startLine": 31,
       "endLine": 50,
-      "summary": "Degree, maximum degree, and induced subgraph definitions."
+      "summary": "Degree, maximum degree, and induced subgraph definitions.",
+      "mathContext": "Degree, maximum degree, and induced subgraph definitions."
     },
     {
       "id": "property-p",
       "title": "Property P(k)",
       "startLine": 51,
       "endLine": 68,
-      "summary": "Definition of inducedMaxDegree and hasPropertyP for (k+2)-subsets."
+      "summary": "Definition of inducedMaxDegree and hasPropertyP for (k+2)-subsets.",
+      "mathContext": "Definition of inducedMaxDegree and hasPropertyP for (k+2)-subsets."
     },
     {
       "id": "function-f",
       "title": "The Function f(n,k)",
       "startLine": 69,
       "endLine": 86,
-      "summary": "Edge count, existence predicate, and the f(n,k) function framework."
+      "summary": "Edge count, existence predicate, and the f(n,k) function framework.",
+      "mathContext": "Edge count, existence predicate, and the f(n,k) function framework."
     },
     {
       "id": "basic-bounds",
       "title": "Basic Bounds",
       "startLine": 87,
       "endLine": 104,
-      "summary": "Lower bound kn/2 and upper bound from complete graph."
+      "summary": "Lower bound kn/2 and upper bound from complete graph.",
+      "mathContext": "Lower bound kn/2 and upper bound from complete graph."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 105,
       "endLine": 121,
-      "summary": "k=1 requires n-2 edges; k=n-2 requires complete graph."
+      "summary": "k=1 requires n-2 edges; k=n-2 requires complete graph.",
+      "mathContext": "k=1 requires n-2 edges; k=n-2 requires complete graph."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
       "startLine": 122,
       "endLine": 133,
-      "summary": "f is non-decreasing in k: P(k+1) implies P(k)."
+      "summary": "f is non-decreasing in k: P(k+1) implies P(k).",
+      "mathContext": "f is non-decreasing in k: P(k+1) implies P(k)."
     },
     {
       "id": "open-problem",
       "title": "The Open Problem",
       "startLine": 134,
       "endLine": 154,
-      "summary": "Existence axiom and statement of what remains unknown."
+      "summary": "Existence axiom and statement of what remains unknown.",
+      "mathContext": "Existence axiom and statement of what remains unknown."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 155,
       "endLine": 177,
-      "summary": "erdos_614_summary theorem combining existence and upper bound."
+      "summary": "erdos_614_summary theorem combining existence and upper bound.",
+      "mathContext": "erdos_614_summary theorem combining existence and upper bound."
     }
   ],
   "conclusion": {

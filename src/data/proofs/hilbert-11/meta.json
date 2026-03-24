@@ -57,77 +57,88 @@
       "title": "Imports and Setup",
       "summary": "Imports `QuadraticForm.Basic`, `QuadraticForm.Isometry`, `PadicNumbers`, `NumberField.Basic`, and `Tactic` from Mathlib. Sets `maxHeartbeats 400000` and opens `BigOperators` and `Matrix` scopes within a `noncomputable section`.",
       "startLine": 1,
-      "endLine": 89
+      "endLine": 89,
+      "mathContext": "Imports `QuadraticForm.Basic`, `QuadraticForm.Isometry`, `PadicNumbers`, `NumberField.Basic`, and `Tactic` from Mathlib. Sets `maxHeartbeats 400000` and opens `BigOperators` and `Matrix` scopes within"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines `RepresentsZeroNontrivially` ($\\exists x \\neq 0, Q(x) = 0$), `IsIsotropic`, `IsAnisotropic`, and `AreEquivalent` (via `Nonempty (Q_1.Isometry\\; Q_2)$). These are the core predicates for the entire formalization.",
       "startLine": 90,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "Defines `RepresentsZeroNontrivially` ($\\exists x \\neq 0, Q(x) = 0$), `IsIsotropic`, `IsAnisotropic`, and `AreEquivalent` (via `Nonempty (Q_1.Isometry\\; Q_2)$). These are the core predicates for the en"
     },
     {
       "id": "finite-dimensional",
       "title": "Quadratic Forms over Finite-Dimensional Spaces",
       "summary": "Axiomatizes `diagonalForm` for $Q(x) = a_1 x_1^2 + \\cdots + a_n x_n^2$, defines the `RealSignature` structure $(p,q)$, `IsIndefinite`, and axiomatizes **Sylvester's law of inertia** (1852): every real quadratic form has a unique signature.",
       "startLine": 114,
-      "endLine": 156
+      "endLine": 156,
+      "mathContext": "Axiomatizes `diagonalForm` for $Q(x) = a_1 x_1^2 + \\cdots + a_n x_n^2$, defines the `RealSignature` structure $(p,q)$, `IsIndefinite`, and axiomatizes **Sylvester's law of inertia** (1852): every real"
     },
     {
       "id": "hasse-minkowski",
       "title": "The Hasse-Minkowski Theorem",
       "summary": "The central result. Defines `RepresentsZeroOverReals` and `RepresentsZeroOverPadic` (placeholder `True` pending tensor product formalization), states `HasseMinkowskiTheorem` as a `def`, and axiomatizes `hasse_minkowski_alt`: $Q$ is isotropic $\\iff$ locally isotropic everywhere.",
       "startLine": 157,
-      "endLine": 210
+      "endLine": 210,
+      "mathContext": "The central result. Defines `RepresentsZeroOverReals` and `RepresentsZeroOverPadic` (placeholder `True` pending tensor product formalization), states `HasseMinkowskiTheorem` as a `def`, and axiomatize"
     },
     {
       "id": "consequences",
       "title": "Consequences and Applications",
       "summary": "Derives the weak Hasse principle (local representation of $a \\in \\mathbb{Q}^*$ implies global), ternary representation theorem, and axiomatizes **Lagrange's four squares theorem** (1770): $\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{Z}: n = a^2 + b^2 + c^2 + d^2$.",
       "startLine": 211,
-      "endLine": 253
+      "endLine": 253,
+      "mathContext": "Derives the weak Hasse principle (local representation of $a \\in \\mathbb{Q}^*$ implies global), ternary representation theorem, and axiomatizes **Lagrange's four squares theorem** (1770): $\\forall n \\"
     },
     {
       "id": "classification",
       "title": "Classification Results",
       "summary": "Defines classification types: `realClassification` (signature), `finiteFieldClassification` (dimension + discriminant class), and `RationalClassification` (dimension, discriminant in $\\mathbb{Q}^*/\\mathbb{Q}^{*2}$, Hasse-Witt invariants $\\varepsilon_v$). Axiomatizes completeness of rational classification.",
       "startLine": 254,
-      "endLine": 299
+      "endLine": 299,
+      "mathContext": "Defines classification types: `realClassification` (signature), `finiteFieldClassification` (dimension + discriminant class), and `RationalClassification` (dimension, discriminant in $\\mathbb{Q}^*/\\ma"
     },
     {
       "id": "witt-ring",
       "title": "Witt Ring Structure",
       "summary": "Witt cancellation theorem: $Q_1 \\perp Q \\cong Q_2 \\perp Q \\implies Q_1 \\cong Q_2$. Defines the hyperbolic plane $H = \\langle 1, -1 \\rangle$ and `IsHyperbolic`. The Witt ring $W(F)$ is the Grothendieck ring of forms modulo hyperbolic forms.",
       "startLine": 300,
-      "endLine": 330
+      "endLine": 330,
+      "mathContext": "Witt cancellation theorem: $Q_1 \\perp Q \\cong Q_2 \\perp Q \\implies Q_1 \\cong Q_2$. Defines the hyperbolic plane $H = \\langle 1, -1 \\rangle$ and `IsHyperbolic`. The Witt ring $W(F)$ is the Grothendieck"
     },
     {
       "id": "hasse-failures",
       "title": "Failures of the Hasse Principle",
       "summary": "Defines the **Selmer curve** $3x^3 + 4y^3 + 5z^3 = 0$ and axiomatizes that it has no rational points despite local solvability everywhere. Introduces the Brauer-Manin obstruction and states that for quadratic forms it vanishes, explaining why Hasse-Minkowski holds.",
       "startLine": 331,
-      "endLine": 382
+      "endLine": 382,
+      "mathContext": "Defines the **Selmer curve** $3x^3 + 4y^3 + 5z^3 = 0$ and axiomatizes that it has no rational points despite local solvability everywhere. Introduces the Brauer-Manin obstruction and states that for q"
     },
     {
       "id": "number-fields",
       "title": "Extensions to Number Fields",
       "summary": "States the Hasse-Minkowski theorem for general number fields $K$. Proves **Meyer's theorem** for $\\dim \\geq 5$: forms in $\\geq 5$ variables are always isotropic over $\\mathbb{Q}_p$. Lists open problems: explicit algorithms, Langlands connections, function fields, higher reciprocity.",
       "startLine": 383,
-      "endLine": 420
+      "endLine": 420,
+      "mathContext": "States the Hasse-Minkowski theorem for general number fields $K$. Proves **Meyer's theorem** for $\\dim \\geq 5$: forms in $\\geq 5$ variables are always isotropic over $\\mathbb{Q}_p$. Lists open problem"
     },
     {
       "id": "hilbert-symbol",
       "title": "Hilbert Symbol and Reciprocity",
       "summary": "Defines the **Hilbert symbol** $(a,b)_p \\in \\{\\pm 1\\}$ and states **Hilbert reciprocity**: $\\prod_v (a,b)_v = 1$, which generalizes quadratic reciprocity and connects quadratic forms to class field theory.",
       "startLine": 421,
-      "endLine": 445
+      "endLine": 445,
+      "mathContext": "Defines the **Hilbert symbol** $(a,b)_p \\in \\{\\pm 1\\}$ and states **Hilbert reciprocity**: $\\prod_v (a,b)_v = 1$, which generalizes quadratic reciprocity and connects quadratic forms to class field th"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "The `hilbert11_summary` theorem (proved by `trivial`) synthesizes all components: Hasse-Minkowski theorem, classification theory, Witt ring, Hilbert symbol, Selmer counterexample, and open problems. Includes `#check` commands verifying key definitions.",
       "startLine": 446,
-      "endLine": 497
+      "endLine": 497,
+      "mathContext": "The `hilbert11_summary` theorem (proved by `trivial`) synthesizes all components: Hasse-Minkowski theorem, classification theory, Witt ring, Hilbert symbol, Selmer counterexample, and open problems. I"
     }
   ],
   "conclusion": {
@@ -202,6 +213,16 @@
       "id": "fermat-two-squares",
       "relationship": "related",
       "description": "Fermat's two squares theorem characterizes which primes are represented by the binary form x^2 + y^2, a special case of "
+    },
+    {
+      "id": "pell-equation",
+      "relationship": "related",
+      "description": "Pell's equation x^2 - Dy^2 = 1 concerns the indefinite binary quadratic form x^2 - Dy^2, with solutions governed by unit"
+    },
+    {
+      "id": "kroneckers-jugendtraum",
+      "relationship": "related",
+      "description": "Hilbert's 12th Problem (Kronecker's Jugendtraum) seeks explicit class field theory, connecting to the reciprocity phenom"
     }
   ],
   "leanFile": {

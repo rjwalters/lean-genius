@@ -78,63 +78,72 @@
       "title": "Factorial Divisibility",
       "summary": "factorialDivisibility predicate definition",
       "startLine": 36,
-      "endLine": 56
+      "endLine": 56,
+      "mathContext": "factorialDivisibility predicate definition"
     },
     {
       "id": "logarithmic-gap",
       "title": "Logarithmic Gap Condition",
       "summary": "hasLogarithmicGap and hasSizeCondition definitions",
       "startLine": 57,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "hasLogarithmicGap and hasSizeCondition definitions"
     },
     {
       "id": "full-condition",
       "title": "Full Erdos 728 Condition",
       "summary": "isErdos728Solution combining all constraints",
       "startLine": 80,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "isErdos728Solution combining all constraints"
     },
     {
       "id": "erdos-1968",
       "title": "Erdos 1968 Upper Bound",
       "summary": "Classical result: a+b <= n + O(log n)",
       "startLine": 102,
-      "endLine": 126
+      "endLine": 126,
+      "mathContext": "Classical result: a+b <= n + O(log n)"
     },
     {
       "id": "resolution",
       "title": "The Resolution",
       "summary": "erdos_728_resolution axiom (Barreto & ChatGPT-5.2)",
       "startLine": 127,
-      "endLine": 161
+      "endLine": 161,
+      "mathContext": "erdos_728_resolution axiom (Barreto & ChatGPT-5.2)"
     },
     {
       "id": "construction",
       "title": "The b = n/2 Construction",
       "summary": "constructionTemplate and size verification",
       "startLine": 162,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "constructionTemplate and size verification"
     },
     {
       "id": "legendre",
       "title": "Legendre's Formula",
       "summary": "legendreSum and divisibility_via_legendre",
       "startLine": 197,
-      "endLine": 226
+      "endLine": 226,
+      "mathContext": "legendreSum and divisibility_via_legendre"
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Connection to Problem #729",
       "startLine": 227,
-      "endLine": 251
+      "endLine": 251,
+      "mathContext": "Connection to Problem #729"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_728_summary theorem",
       "startLine": 252,
-      "endLine": 258
+      "endLine": 258,
+      "mathContext": "erdos_728_summary theorem"
     }
   ],
   "conclusion": {

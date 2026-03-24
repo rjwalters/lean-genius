@@ -59,70 +59,80 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib's **InnerProductSpace**, **Finset**, **Real**, and **Finrank** for the `Erdos224` namespace.",
       "startLine": 24,
-      "endLine": 30
+      "endLine": 30,
+      "mathContext": "Imports Mathlib's **InnerProductSpace**, **Finset**, **Real**, and **Finrank** for the `Erdos224` namespace."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines **EuclideanPoint** ($\\text{Fin}\\, d \\to \\mathbb{R}$), **angle** via $\\arccos(\\langle A-B, C-B\\rangle / (\\|A-B\\| \\cdot \\|C-B\\|))$, **IsObtuseAngle** ($\\theta > \\pi/2$), and **FormsObtuseAngle**.",
       "startLine": 31,
-      "endLine": 60
+      "endLine": 60,
+      "mathContext": "Defines **EuclideanPoint** ($\\text{Fin}\\, d \\to \\mathbb{R}$), **angle** via $\\arccos(\\langle A-B, C-B\\rangle / (\\|A-B\\| \\cdot \\|C-B\\|))$, **IsObtuseAngle** ($\\theta > \\pi/2$), and **FormsObtuseAngle**"
     },
     {
       "id": "set-predicates",
       "title": "Set Predicates",
       "summary": "Defines **ContainsObtuseTriple** ($\\exists$ distinct $A, B, C \\in P$ with obtuse angle at $B$) and **IsObtuseFree** ($\\neg$ContainsObtuseTriple).",
       "startLine": 61,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "Defines **ContainsObtuseTriple** ($\\exists$ distinct $A, B, C \\in P$ with obtuse angle at $B$) and **IsObtuseFree** ($\\neg$ContainsObtuseTriple)."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "summary": "States **ErdosObtuseConjecture**: $|P| = 2^d + 1 \\Rightarrow \\text{ContainsObtuseTriple}(P)$. Axiomatizes **danzer_grunbaum** (1962) resolving it for all $d$.",
       "startLine": 77,
-      "endLine": 93
+      "endLine": 93,
+      "mathContext": "States **ErdosObtuseConjecture**: $|P| = 2^d + 1 \\Rightarrow \\text{ContainsObtuseTriple}(P)$. Axiomatizes **danzer_grunbaum** (1962) resolving it for all $d$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: d = 2 and d = 3",
       "summary": "Axiomatizes **case_d2** (5 points in $\\mathbb{R}^2$, trivial) and **case_d3** (9 points in $\\mathbb{R}^3$, Kuiper-Boerdijk).",
       "startLine": 94,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "Axiomatizes **case_d2** (5 points in $\\mathbb{R}^2$, trivial) and **case_d3** (9 points in $\\mathbb{R}^3$, Kuiper-Boerdijk)."
     },
     {
       "id": "extremal-config",
       "title": "The Extremal Configuration",
       "summary": "Defines **hypercubeVertices** $= \\{0,1\\}^d$ (sorry), axiomatizes **hypercube_card** ($= 2^d$) and **hypercube_obtuse_free**, and proves **hypercube_extremal**.",
       "startLine": 118,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "Defines **hypercubeVertices** $= \\{0,1\\}^d$ (sorry), axiomatizes **hypercube_card** ($= 2^d$) and **hypercube_obtuse_free**, and proves **hypercube_extremal**."
     },
     {
       "id": "hypercube-angles",
       "title": "Angles in the Hypercube",
       "summary": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\pi/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60°$ and $90°$ angles occur.",
       "startLine": 153,
-      "endLine": 177
+      "endLine": 177,
+      "mathContext": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\pi/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60°$ and $90°$ angles occur."
     },
     {
       "id": "why-2d-plus-1",
       "title": "Why 2^d + 1 Forces Obtuse",
       "summary": "Axiomatizes **pigeonhole_orthants**: $2^d + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Grünbaum argument.",
       "startLine": 178,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "Axiomatizes **pigeonhole_orthants**: $2^d + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Grünbaum argument."
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Discusses connections to **acute sets** (all angles $< 90°$), **spherical codes**, and high-dimensional geometry phenomena.",
       "startLine": 205,
-      "endLine": 229
+      "endLine": 229,
+      "mathContext": "Discusses connections to **acute sets** (all angles $< 90°$), **spherical codes**, and high-dimensional geometry phenomena."
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "Proves **erdos_224** (direct application of danzer_grunbaum) and **erdos_224_summary** (conjunction of main theorem with hypercube extremality).",
       "startLine": 230,
-      "endLine": 256
+      "endLine": 256,
+      "mathContext": "Proves **erdos_224** (direct application of danzer_grunbaum) and **erdos_224_summary** (conjunction of main theorem with hypercube extremality)."
     }
   ],
   "conclusion": {

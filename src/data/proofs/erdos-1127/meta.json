@@ -81,56 +81,64 @@
       "title": "Basic Definitions",
       "startLine": 47,
       "endLine": 83,
-      "summary": "Point type, distance function, distinct distances property, countable decomposition"
+      "summary": "Point type, distance function, distinct distances property, countable decomposition",
+      "mathContext": "Point type, distance function, distinct distances property, countable decomposition"
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 84,
       "endLine": 102,
-      "summary": "Formal statement of Erdős Problem #1127"
+      "summary": "Formal statement of Erdős Problem #1127",
+      "mathContext": "Formal statement of Erdős Problem #1127"
     },
     {
       "id": "continuum-hypothesis",
       "title": "Connection to the Continuum Hypothesis",
       "startLine": 103,
       "endLine": 124,
-      "summary": "Definition of CH and ℚ-linear independence"
+      "summary": "Definition of CH and ℚ-linear independence",
+      "mathContext": "Definition of CH and ℚ-linear independence"
     },
     {
       "id": "erdos-kakutani",
       "title": "The Erdős-Kakutani Theorem",
       "startLine": 125,
       "endLine": 167,
-      "summary": "CH ↔ countable union of ℚ-linearly independent sets"
+      "summary": "CH ↔ countable union of ℚ-linearly independent sets",
+      "mathContext": "CH ↔ countable union of ℚ-linearly independent sets"
     },
     {
       "id": "davies-theorem",
       "title": "Davies' Theorem (1972)",
       "startLine": 168,
       "endLine": 177,
-      "summary": "Extension to n=2 under CH"
+      "summary": "Extension to n=2 under CH",
+      "mathContext": "Extension to n=2 under CH"
     },
     {
       "id": "kunen-theorem",
       "title": "Kunen's Theorem (1987)",
       "startLine": 178,
       "endLine": 188,
-      "summary": "Full solution for all dimensions under CH"
+      "summary": "Full solution for all dimensions under CH",
+      "mathContext": "Full solution for all dimensions under CH"
     },
     {
       "id": "necessity-of-ch",
       "title": "The Necessity of CH",
       "startLine": 189,
       "endLine": 220,
-      "summary": "Erdős-Hajnal: finite partition fails without CH"
+      "summary": "Erdős-Hajnal: finite partition fails without CH",
+      "mathContext": "Erdős-Hajnal: finite partition fails without CH"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 259,
       "endLine": 309,
-      "summary": "Main theorem and key results combined"
+      "summary": "Main theorem and key results combined",
+      "mathContext": "Main theorem and key results combined"
     }
   ],
   "conclusion": {
@@ -199,6 +207,11 @@
       "id": "cantor-diagonalization",
       "relationship": "foundational",
       "description": "Cantor's diagonal argument establishes that ℝ is uncountable (|ℝ| = 2^ℵ₀ > ℵ₀). This is the reason the decomposition in "
+    },
+    {
+      "id": "erdos-100",
+      "relationship": "thematic",
+      "description": "Erdős #100 studies finite planar point sets with all pairwise distances being integers (restricted distance sets), while"
     }
   ],
   "references": [

@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/1068",
     "erdosProblemStatus": "open",
     "axiomCount": 3,
-    "lineCount": 205,
+    "lineCount": 268,
     "assumptions": "3 axioms: erdos_1068 (OPEN conjecture), soukup_uncountable_not_inf_connected (research result), problem_1067_disproved (research result). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
@@ -49,63 +49,72 @@
       "title": "Problem Statement and Context",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Detailed module docstring: the problem statement, its relationship to Problem 1067, Soukup's counterexample, Bowler–Pitz simplification, and key references. Explains the countable/uncountable distinction that makes Problem 1068 the remaining open case."
+      "summary": "Detailed module docstring: the problem statement, its relationship to Problem 1067, Soukup's counterexample, Bowler–Pitz simplification, and key references. Explains the countable/uncountable distinction that makes Problem 1068 the remaining open case.",
+      "mathContext": "Detailed module docstring: the problem statement, its relationship to Problem 1067, Soukup's counterexample, Bowler–Pitz simplification, and key references. Explains the countable/uncountable distinct"
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 34,
       "endLine": 44,
-      "summary": "Imports Mathlib's `SimpleGraph`, `Cardinal`, and `Set.Countable`. Opens `Cardinal` and `SimpleGraph` namespaces. Sets up universe-polymorphic vertex type variable."
+      "summary": "Imports Mathlib's `SimpleGraph`, `Cardinal`, and `Set.Countable`. Opens `Cardinal` and `SimpleGraph` namespaces. Sets up universe-polymorphic vertex type variable.",
+      "mathContext": "Imports Mathlib's `SimpleGraph`, `Cardinal`, and `Set.Countable`. Opens `Cardinal` and `SimpleGraph` namespaces. Sets up universe-polymorphic vertex type variable."
     },
     {
       "id": "graph-infrastructure",
       "title": "Graph Infrastructure: Paths and Disjointness",
       "startLine": 45,
       "endLine": 77,
-      "summary": "Defines `PathInGraph` (vertex-list paths), `InternallyDisjoint` (no shared internal vertices), `PairwiseInternallyDisjoint`, `InfinitelyManyDisjointPaths`, and `InfinitelyConnected`. These build toward Menger-style connectivity characterization."
+      "summary": "Defines `PathInGraph` (vertex-list paths), `InternallyDisjoint` (no shared internal vertices), `PairwiseInternallyDisjoint`, `InfinitelyManyDisjointPaths`, and `InfinitelyConnected`. These build toward Menger-style connectivity characterization.",
+      "mathContext": "Defines `PathInGraph` (vertex-list paths), `InternallyDisjoint` (no shared internal vertices), `PairwiseInternallyDisjoint`, `InfinitelyManyDisjointPaths`, and `InfinitelyConnected`. These build towar"
     },
     {
       "id": "chromatic-infrastructure",
       "title": "Chromatic Number and Induced Subgraphs",
       "startLine": 78,
       "endLine": 93,
-      "summary": "Defines `hasAleph1ChromaticNumber` ($\\chi(G) \\geq \\aleph_1$ via non-existence of countable proper coloring) and `inducedSubgraph` ($G[S]$ for a vertex set $S$). Together these set up the problem: find countable $S$ with $G[S]$ $\\infty$-connected."
+      "summary": "Defines `hasAleph1ChromaticNumber` ($\\chi(G) \\geq \\aleph_1$ via non-existence of countable proper coloring) and `inducedSubgraph` ($G[S]$ for a vertex set $S$). Together these set up the problem: find countable $S$ with $G[S]$ $\\infty$-connected.",
+      "mathContext": "Defines `hasAleph1ChromaticNumber` ($\\chi(G) \\geq \\aleph_1$ via non-existence of countable proper coloring) and `inducedSubgraph` ($G[S]$ for a vertex set $S$). Together these set up the problem: find"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (Problem 1068)",
       "startLine": 94,
       "endLine": 105,
-      "summary": "Axiomatizes `erdos_1068`: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. This is the central open problem."
+      "summary": "Axiomatizes `erdos_1068`: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. This is the central open problem.",
+      "mathContext": "Axiomatizes `erdos_1068`: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. This is the central open problem."
     },
     {
       "id": "known-results",
       "title": "Known Results: Soukup and Problem 1067",
       "startLine": 106,
       "endLine": 128,
-      "summary": "Axiomatizes Soukup's (2015) counterexample (uncountable sets can fail) and the disproof of Problem 1067 (no uncountable $\\infty$-connected subgraph with $\\chi \\geq \\aleph_1$ is forced). These establish why the countable case is the key remaining question."
+      "summary": "Axiomatizes Soukup's (2015) counterexample (uncountable sets can fail) and the disproof of Problem 1067 (no uncountable $\\infty$-connected subgraph with $\\chi \\geq \\aleph_1$ is forced). These establish why the countable case is the key remaining question.",
+      "mathContext": "Axiomatizes Soukup's (2015) counterexample (uncountable sets can fail) and the disproof of Problem 1067 (no uncountable $\\infty$-connected subgraph with $\\chi \\geq \\aleph_1$ is forced). These establis"
     },
     {
       "id": "structural-observations",
       "title": "Structural Observations",
       "startLine": 129,
       "endLine": 157,
-      "summary": "Axiomatizes the no-finite-separator property (consequence of Aharoni–Berger infinite Menger theorem), set-theoretic sensitivity (Komjáth 2013), and Bowler–Pitz (2024) simplified construction. The latter two are `True` placeholders."
+      "summary": "Axiomatizes the no-finite-separator property (consequence of Aharoni–Berger infinite Menger theorem), set-theoretic sensitivity (Komjáth 2013), and Bowler–Pitz (2024) simplified construction. The latter two are `True` placeholders.",
+      "mathContext": "Axiomatizes the no-finite-separator property (consequence of Aharoni–Berger infinite Menger theorem), set-theoretic sensitivity (Komjáth 2013), and Bowler–Pitz (2024) simplified construction. The latt"
     },
     {
       "id": "proved-implications",
       "title": "Proved Structural Implications",
       "startLine": 158,
       "endLine": 180,
-      "summary": "Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file."
+      "summary": "Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file.",
+      "mathContext": "Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file."
     },
     {
       "id": "summary",
       "title": "Summary and Open Aspects",
       "startLine": 181,
       "endLine": 205,
-      "summary": "Closing comment summarizing the problem status: main question open, Soukup's counterexample for uncountable case, ZFC-independence not established for Problem 1068, and the intersection of infinite combinatorics and set theory."
+      "summary": "Closing comment summarizing the problem status: main question open, Soukup's counterexample for uncountable case, ZFC-independence not established for Problem 1068, and the intersection of infinite combinatorics and set theory.",
+      "mathContext": "Closing comment summarizing the problem status: main question open, Soukup's counterexample for uncountable case, ZFC-independence not established for Problem 1068, and the intersection of infinite co"
     }
   ],
   "conclusion": {

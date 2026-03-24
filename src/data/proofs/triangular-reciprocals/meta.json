@@ -14,7 +14,8 @@
       "combinatorics",
       "classic",
       "intermediate",
-      "wiedijk"
+      "wiedijk",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/TriangularNumberReciprocals.lean",
     "badge": "mathlib",
@@ -72,63 +73,72 @@
       "title": "Introduction and Historical Context",
       "startLine": 1,
       "endLine": 52,
-      "summary": "Module documentation: states the identity ∑2/(n(n+1)) = 2, describes the telescoping approach, historical context of triangular numbers from the Pythagoreans, and Mathlib dependencies."
+      "summary": "Module documentation: states the identity ∑2/(n(n+1)) = 2, describes the telescoping approach, historical context of triangular numbers from the Pythagoreans, and Mathlib dependencies.",
+      "mathContext": "Module documentation: states the identity ∑2/(n(n+1)) = 2, describes the telescoping approach, historical context of triangular numbers from the Pythagoreans, and Mathlib dependencies."
     },
     {
       "id": "triangular-def",
       "title": "Triangular Number Definition",
       "startLine": 53,
       "endLine": 63,
-      "summary": "Defines T_n = n(n+1)/2 as a natural number function. Values: 1, 3, 6, 10, 15, ... formed by summing consecutive naturals."
+      "summary": "Defines T_n = n(n+1)/2 as a natural number function. Values: 1, 3, 6, 10, 15, ... formed by summing consecutive naturals.",
+      "mathContext": "Defines T_n = n(n+1)/2 as a natural number function. Values: 1, 3, 6, 10, 15, ... formed by summing consecutive naturals."
     },
     {
       "id": "partial-fractions",
       "title": "Partial Fraction Decomposition",
       "startLine": 64,
       "endLine": 91,
-      "summary": "Two forms of the key identity: 2/(n(n+1)) = 2/n - 2/(n+1) and 1/(n(n+1)) = 1/n - 1/(n+1). Proved by field_simp and ring after establishing non-zero denominators via positivity."
+      "summary": "Two forms of the key identity: 2/(n(n+1)) = 2/n - 2/(n+1) and 1/(n(n+1)) = 1/n - 1/(n+1). Proved by field_simp and ring after establishing non-zero denominators via positivity.",
+      "mathContext": "Two forms of the key identity: 2/(n(n+1)) = 2/n - 2/(n+1) and 1/(n(n+1)) = 1/n - 1/(n+1). Proved by field_simp and ring after establishing non-zero denominators via positivity."
     },
     {
       "id": "telescoping",
       "title": "Finite Telescoping Sum",
       "startLine": 92,
       "endLine": 131,
-      "summary": "Proves ∑_{k=1}^{n} 2/(k(k+1)) = 2 - 2/(n+1) by induction on n. The base case is norm_num; the inductive step uses field_simp and ring after careful Finset.Icc manipulation."
+      "summary": "Proves ∑_{k=1}^{n} 2/(k(k+1)) = 2 - 2/(n+1) by induction on n. The base case is norm_num; the inductive step uses field_simp and ring after careful Finset.Icc manipulation.",
+      "mathContext": "Proves ∑_{k=1}^{n} 2/(k(k+1)) = 2 - 2/(n+1) by induction on n. The base case is norm_num; the inductive step uses field_simp and ring after careful Finset.Icc manipulation."
     },
     {
       "id": "convergence",
       "title": "Series Convergence",
       "startLine": 132,
       "endLine": 169,
-      "summary": "Establishes Summable for both 1/(n(n+1)) and 2/(n(n+1)). Uses comparison test: 1/(n(n+1)) ≤ 1/n², and the p-series ∑1/n² converges via Real.summable_nat_rpow_inv."
+      "summary": "Establishes Summable for both 1/(n(n+1)) and 2/(n(n+1)). Uses comparison test: 1/(n(n+1)) ≤ 1/n², and the p-series ∑1/n² converges via Real.summable_nat_rpow_inv.",
+      "mathContext": "Establishes Summable for both 1/(n(n+1)) and 2/(n(n+1)). Uses comparison test: 1/(n(n+1)) ≤ 1/n², and the p-series ∑1/n² converges via Real.summable_nat_rpow_inv."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: HasSum and tsum",
       "startLine": 170,
       "endLine": 248,
-      "summary": "The core result: HasSum for ∑2/(n(n+1)) = 2. Converts to sequential convergence via hasSum_iff_tendsto_nat_of_nonneg, then uses the Metric.tendsto_atTop ε-N definition with N = ⌈2/ε⌉ + 1. Also provides tsum version."
+      "summary": "The core result: HasSum for ∑2/(n(n+1)) = 2. Converts to sequential convergence via hasSum_iff_tendsto_nat_of_nonneg, then uses the Metric.tendsto_atTop ε-N definition with N = ⌈2/ε⌉ + 1. Also provides tsum version.",
+      "mathContext": "The core result: HasSum for ∑2/(n(n+1)) = 2. Converts to sequential convergence via hasSum_iff_tendsto_nat_of_nonneg, then uses the Metric.tendsto_atTop ε-N definition with N = ⌈2/ε⌉ + 1. Also provide"
     },
     {
       "id": "corollary",
       "title": "Corollary: Unscaled Sum Equals 1",
       "startLine": 249,
       "endLine": 266,
-      "summary": "Derives ∑1/(n(n+1)) = 1 by dividing the main result by 2. Uses HasSum.div_const and algebraic simplification."
+      "summary": "Derives ∑1/(n(n+1)) = 1 by dividing the main result by 2. Uses HasSum.div_const and algebraic simplification.",
+      "mathContext": "Derives ∑1/(n(n+1)) = 1 by dividing the main result by 2. Uses HasSum.div_const and algebraic simplification."
     },
     {
       "id": "triangular-connection",
       "title": "Connection to Triangular Numbers",
       "startLine": 267,
       "endLine": 292,
-      "summary": "Proves 1/T_n = 2/(n(n+1)) by showing n(n+1) is always even (case split on parity of n), then field_simp and linarith."
+      "summary": "Proves 1/T_n = 2/(n(n+1)) by showing n(n+1) is always even (case split on parity of n), then field_simp and linarith.",
+      "mathContext": "Proves 1/T_n = 2/(n(n+1)) by showing n(n+1) is always even (case split on parity of n), then field_simp and linarith."
     },
     {
       "id": "examples",
       "title": "Pedagogical Examples",
       "startLine": 293,
       "endLine": 305,
-      "summary": "Computes T_1 = 1, T_2 = 3, T_3 = 6, T_4 = 10, T_5 = 15 via native_decide. Exports main theorems with #check."
+      "summary": "Computes T_1 = 1, T_2 = 3, T_3 = 6, T_4 = 10, T_5 = 15 via native_decide. Exports main theorems with #check.",
+      "mathContext": "Computes T_1 = 1, T_2 = 3, T_3 = 6, T_4 = 10, T_5 = 15 via native_decide. Exports main theorems with #check."
     }
   ],
   "crossReferences": [

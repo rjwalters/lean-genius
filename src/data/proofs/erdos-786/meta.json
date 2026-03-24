@@ -81,63 +81,72 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Problem statement, status (OPEN), and known results."
+      "summary": "Problem statement, status (OPEN), and known results.",
+      "mathContext": "Problem statement, status (OPEN), and known results."
     },
     {
       "id": "main-def",
       "title": "Main Definition",
       "startLine": 31,
       "endLine": 42,
-      "summary": "IsMulCardSet definition: equal products must have equal factor counts."
+      "summary": "IsMulCardSet definition: equal products must have equal factor counts.",
+      "mathContext": "IsMulCardSet definition: equal products must have equal factor counts."
     },
     {
       "id": "density",
       "title": "Natural Density",
       "startLine": 43,
       "endLine": 50,
-      "summary": "HasNaturalDensity using Filter.Tendsto."
+      "summary": "HasNaturalDensity using Filter.Tendsto.",
+      "mathContext": "HasNaturalDensity using Filter.Tendsto."
     },
     {
       "id": "conjectures",
       "title": "The Open Questions",
       "startLine": 51,
       "endLine": 71,
-      "summary": "DensityConjecture and FiniteConjecture as formal Props."
+      "summary": "DensityConjecture and FiniteConjecture as formal Props.",
+      "mathContext": "DensityConjecture and FiniteConjecture as formal Props."
     },
     {
       "id": "examples",
       "title": "Known Examples",
       "startLine": 72,
       "endLine": 108,
-      "summary": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε)."
+      "summary": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε).",
+      "mathContext": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε)."
     },
     {
       "id": "bounds",
       "title": "Upper and Lower Bounds",
       "startLine": 109,
       "endLine": 129,
-      "summary": "Ruzsa's (1-c)N upper bound and log 2 lower bound."
+      "summary": "Ruzsa's (1-c)N upper bound and log 2 lower bound.",
+      "mathContext": "Ruzsa's (1-c)N upper bound and log 2 lower bound."
     },
     {
       "id": "insight",
       "title": "Why These Sets Work",
       "startLine": 130,
       "endLine": 143,
-      "summary": "Explanation of the factorization pattern uniqueness."
+      "summary": "Explanation of the factorization pattern uniqueness.",
+      "mathContext": "Explanation of the factorization pattern uniqueness."
     },
     {
       "id": "verified",
       "title": "Verified Examples",
       "startLine": 144,
       "endLine": 157,
-      "summary": "Concrete mod 4 calculations via native_decide."
+      "summary": "Concrete mod 4 calculations via native_decide.",
+      "mathContext": "Concrete mod 4 calculations via native_decide."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 158,
       "endLine": 175,
-      "summary": "Main summary theorem combining known results."
+      "summary": "Main summary theorem combining known results.",
+      "mathContext": "Main summary theorem combining known results."
     }
   ],
   "conclusion": {

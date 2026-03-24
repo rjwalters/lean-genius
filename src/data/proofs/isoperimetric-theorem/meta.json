@@ -112,56 +112,64 @@
       "title": "Module Documentation and Imports",
       "startLine": 1,
       "endLine": 78,
-      "summary": "Extensive docstring covering the mathematical statement $4\\pi A \\le L^2$, four historical proof approaches (Steiner symmetrization, Fourier/Wirtinger, Brunn-Minkowski, calculus of variations), and status. Imports Mathlib's trigonometric constants, measure theory, and tactic library."
+      "summary": "Extensive docstring covering the mathematical statement $4\\pi A \\le L^2$, four historical proof approaches (Steiner symmetrization, Fourier/Wirtinger, Brunn-Minkowski, calculus of variations), and status. Imports Mathlib's trigonometric constants, measure theory, and tactic library.",
+      "mathContext": "Extensive docstring covering the mathematical statement $4\\pi A \\le L^2$, four historical proof approaches (Steiner symmetrization, Fourier/Wirtinger, Brunn-Minkowski, calculus of variations), and sta"
     },
     {
       "id": "curve-definitions",
       "title": "Simple Closed Curves and Circle Definitions",
       "startLine": 81,
       "endLine": 134,
-      "summary": "Defines `SimpleClosedCurve` (perimeter $L > 0$, area $A \\ge 0$) and `Circle` (radius $r > 0$) with derived `perimeter = 2\\pi r$, `area = \\pi r^2$, and coercion `Circle.toCurve`. Proves positivity of circle's perimeter and area."
+      "summary": "Defines `SimpleClosedCurve` (perimeter $L > 0$, area $A \\ge 0$) and `Circle` (radius $r > 0$) with derived `perimeter = 2\\pi r$, `area = \\pi r^2$, and coercion `Circle.toCurve`. Proves positivity of circle's perimeter and area.",
+      "mathContext": "Defines `SimpleClosedCurve` (perimeter $L > 0$, area $A \\ge 0$) and `Circle` (radius $r > 0$) with derived `perimeter = 2\\pi r$, `area = \\pi r^2$, and coercion `Circle.toCurve`. Proves positivity of c"
     },
     {
       "id": "isoperimetric-ratio",
       "title": "Isoperimetric Ratio",
       "startLine": 140,
       "endLine": 182,
-      "summary": "Defines the dimensionless ratio $\\rho = A/L^2$ and the optimal value $1/(4\\pi)$. Proves `circle_achieves_optimal_ratio`: every circle attains the theoretical maximum via algebraic computation (`field_simp` + `ring`)."
+      "summary": "Defines the dimensionless ratio $\\rho = A/L^2$ and the optimal value $1/(4\\pi)$. Proves `circle_achieves_optimal_ratio`: every circle attains the theoretical maximum via algebraic computation (`field_simp` + `ring`).",
+      "mathContext": "Defines the dimensionless ratio $\\rho = A/L^2$ and the optimal value $1/(4\\pi)$. Proves `circle_achieves_optimal_ratio`: every circle attains the theoretical maximum via algebraic computation (`field_"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: The Isoperimetric Inequality",
       "startLine": 188,
       "endLine": 233,
-      "summary": "Axiomatizes $4\\pi A \\le L^2$ for all simple closed curves. Derives the ratio form $A/L^2 \\le 1/(4\\pi)$ as a corollary. Documents why the proof is beyond current Mathlib (requires symmetrization, Fourier analysis, or Brunn-Minkowski)."
+      "summary": "Axiomatizes $4\\pi A \\le L^2$ for all simple closed curves. Derives the ratio form $A/L^2 \\le 1/(4\\pi)$ as a corollary. Documents why the proof is beyond current Mathlib (requires symmetrization, Fourier analysis, or Brunn-Minkowski).",
+      "mathContext": "Axiomatizes $4\\pi A \\le L^2$ for all simple closed curves. Derives the ratio form $A/L^2 \\le 1/(4\\pi)$ as a corollary. Documents why the proof is beyond current Mathlib (requires symmetrization, Fouri"
     },
     {
       "id": "equality-case",
       "title": "Equality Characterization",
       "startLine": 239,
       "endLine": 276,
-      "summary": "Defines `IsOptimal` ($4\\pi A = L^2$) and proves circles satisfy it. Axiomatizes the converse: optimality implies circularity. This **rigidity** result is the key qualitative insight."
+      "summary": "Defines `IsOptimal` ($4\\pi A = L^2$) and proves circles satisfy it. Axiomatizes the converse: optimality implies circularity. This **rigidity** result is the key qualitative insight.",
+      "mathContext": "Defines `IsOptimal` ($4\\pi A = L^2$) and proves circles satisfy it. Axiomatizes the converse: optimality implies circularity. This **rigidity** result is the key qualitative insight."
     },
     {
       "id": "examples-comparison",
       "title": "Examples: Square vs Circle",
       "startLine": 281,
       "endLine": 370,
-      "summary": "Defines `Square` and `EquilateralTriangle`, computes their isoperimetric ratios ($1/16$ and $1/(12\\sqrt{3})$ respectively), and proves both are strictly suboptimal compared to circles."
+      "summary": "Defines `Square` and `EquilateralTriangle`, computes their isoperimetric ratios ($1/16$ and $1/(12\\sqrt{3})$ respectively), and proves both are strictly suboptimal compared to circles.",
+      "mathContext": "Defines `Square` and `EquilateralTriangle`, computes their isoperimetric ratios ($1/16$ and $1/(12\\sqrt{3})$ respectively), and proves both are strictly suboptimal compared to circles."
     },
     {
       "id": "higher-dimensions",
       "title": "Higher-Dimensional Generalizations",
       "startLine": 374,
       "endLine": 398,
-      "summary": "States the 3D isoperimetric inequality $36\\pi V^2 \\le S^3$ (sphere is optimal) and the general $n$-dimensional form involving $\\omega_n$, the volume of the unit $n$-ball."
+      "summary": "States the 3D isoperimetric inequality $36\\pi V^2 \\le S^3$ (sphere is optimal) and the general $n$-dimensional form involving $\\omega_n$, the volume of the unit $n$-ball.",
+      "mathContext": "States the 3D isoperimetric inequality $36\\pi V^2 \\le S^3$ (sphere is optimal) and the general $n$-dimensional form involving $\\omega_n$, the volume of the unit $n$-ball."
     },
     {
       "id": "applications",
       "title": "Applications and Connections",
       "startLine": 404,
       "endLine": 449,
-      "summary": "Discusses applications in physics (soap bubbles), biology (cell shapes), engineering (optimal tanks), and connections to Sobolev inequalities, concentration of measure, geometric measure theory, and optimal transport."
+      "summary": "Discusses applications in physics (soap bubbles), biology (cell shapes), engineering (optimal tanks), and connections to Sobolev inequalities, concentration of measure, geometric measure theory, and optimal transport.",
+      "mathContext": "Discusses applications in physics (soap bubbles), biology (cell shapes), engineering (optimal tanks), and connections to Sobolev inequalities, concentration of measure, geometric measure theory, and o"
     }
   ],
   "conclusion": {
@@ -198,6 +206,36 @@
       "id": "area-of-circle-oq-01-oq-03",
       "relationship": "supports",
       "description": "The Wirtinger inequality and Fourier framework entry provides the other key ingredient for the Fourier-analytic proof."
+    },
+    {
+      "id": "picks-theorem",
+      "relationship": "related",
+      "description": "Pick's theorem relates area to lattice points for polygons. Both results connect perimeter/boundary information to enclo"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "foundational",
+      "description": "Fourier series provide the analytical machinery for Hurwitz's proof: the curve is decomposed into Fourier modes, and the"
+    },
+    {
+      "id": "amgm-inequality",
+      "relationship": "related",
+      "description": "The product-sum corollary of AM-GM (ab ≤ ((a+b)/2)²) proves the isoperimetric inequality for rectangles; the full theore"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz inequality is used in the parametric proof of the isoperimetric theorem: for a curve $(x(t), y(t))$ w"
+    },
+    {
+      "id": "greens-theorem",
+      "relationship": "foundational",
+      "description": "Green's theorem converts the isoperimetric problem from a double integral (area) to a line integral: $A = \\frac{1}{2}\\oi"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "thematic",
+      "description": "Both are fundamental results about convex bodies: the isoperimetric theorem characterizes the optimal shape (circle/sphe"
     }
   ],
   "references": [

@@ -54,49 +54,56 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation on Problem 1036, imports for SimpleGraph, Finset, Fintype, and real number arithmetic for counting arguments",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Module documentation on Problem 1036, imports for SimpleGraph, Finset, Fintype, and real number arithmetic for counting arguments"
     },
     {
       "id": "graph-setup",
       "title": "Graph Setup",
       "summary": "vertexCount definition: cardinality of the finite vertex set",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "vertexCount definition: cardinality of the finite vertex set"
     },
     {
       "id": "trivial",
       "title": "Trivial Subgraphs",
       "summary": "Definitions of isTrivialInduced, isIndependentSet, isClique, and the trivial_iff characterization (trivial = independent or clique)",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Definitions of isTrivialInduced, isIndependentSet, isClique, and the trivial_iff characterization (trivial = independent or clique)"
     },
     {
       "id": "non-ramsey",
       "title": "Non-Ramsey Graphs",
       "summary": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c log n), and axiomatized existence of non-Ramsey graphs via the probabilistic method",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "noLargeTrivial predicate, isNonRamsey definition (no trivial subgraph > c log n), and axiomatized existence of non-Ramsey graphs via the probabilistic method"
     },
     {
       "id": "induced",
       "title": "Induced Subgraphs",
       "summary": "inducedSubgraph definition (G[S] restricted to vertex subset S) and InducedPair for comparing equal-size induced subgraphs",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "inducedSubgraph definition (G[S] restricted to vertex subset S) and InducedPair for comparing equal-size induced subgraphs"
     },
     {
       "id": "isomorphism",
       "title": "Graph Isomorphism",
       "summary": "GraphIso (adjacency-preserving bijection), inducedIso, and proofs that induced isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "GraphIso (adjacency-preserving bijection), inducedIso, and proofs that induced isomorphism is an equivalence relation (reflexive, symmetric, transitive)"
     },
     {
       "id": "counting",
       "title": "Counting Distinct Induced Subgraphs",
       "summary": "allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "allInducedSubsets (power set), sameIsoClass equivalence relation, distinctInducedCount (number of isomorphism classes), hasDistinctInduced predicate"
     },
     {
       "id": "conjecture",
@@ -111,14 +118,16 @@
       "title": "Alon-Hajnal Bound (1991)",
       "summary": "alonHajnalExponent (n·(log n)^{-O(log log n)}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "alonHajnalExponent (n·(log n)^{-O(log log n)}), axiomatized Alon-Hajnal bound, and proof that it is weaker than Shelah's bound"
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal Bipartite Result (1989)",
       "summary": "hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "hasCompleteBipartite, avoidsBipartite predicates, axiomatized Erdős-Hajnal 1989 bound, and proof that non-Ramsey implies bipartite avoidance"
     },
     {
       "id": "shelah",
@@ -133,35 +142,40 @@
       "title": "Comparison of Bounds",
       "summary": "shelahBound and alonHajnalBound definitions with shelah_better proving Shelah's bound is exponentially stronger",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "shelahBound and alonHajnalBound definitions with shelah_better proving Shelah's bound is exponentially stronger"
     },
     {
       "id": "counting-args",
       "title": "Counting Arguments",
       "summary": "distinct_upper (trivial 2^n upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "distinct_upper (trivial 2^n upper bound), random_graph_distinct (random graphs near-maximize diversity), nonRamsey_random_like (non-Ramsey ≈ random in diversity)"
     },
     {
       "id": "fixed-size",
       "title": "Fixed-Size Induced Subgraphs",
       "summary": "inducedOfSize, distinctOfSize, hasDistinctOfSize definitions, and nonRamsey_fixed_size axiom for fixed-k diversity",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "inducedOfSize, distinctOfSize, hasDistinctOfSize definitions, and nonRamsey_fixed_size axiom for fixed-k diversity"
     },
     {
       "id": "complement",
       "title": "Complement Symmetry",
       "summary": "complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "complement_nonRamsey (complement preserves non-Ramsey) and complement_distinct (i(G) = i(Ḡ))"
     },
     {
       "id": "problem-1031",
       "title": "Connection to Problem 1031",
       "summary": "isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "isKUniversal definition, universal_implies_distinct theorem, and via_universality providing an alternative proof of Problem 1036 through Prömel-Rödl universality"
     }
   ],
   "conclusion": {

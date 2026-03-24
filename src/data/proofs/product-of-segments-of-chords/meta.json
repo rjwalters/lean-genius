@@ -12,7 +12,8 @@
       "geometry",
       "circles",
       "classic",
-      "beginner"
+      "beginner",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/ProductOfSegmentsOfChords.lean",
     "badge": "axiom",
@@ -69,56 +70,64 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Overview of the theorem, its historical context, and the proof approach."
+      "summary": "Overview of the theorem, its historical context, and the proof approach.",
+      "mathContext": "Overview of the theorem, its historical context, and the proof approach."
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 50,
       "endLine": 70,
-      "summary": "Circle and point-on-circle definitions in the Euclidean plane."
+      "summary": "Circle and point-on-circle definitions in the Euclidean plane.",
+      "mathContext": "Circle and point-on-circle definitions in the Euclidean plane."
     },
     {
       "id": "power",
       "title": "Power of a Point",
       "startLine": 71,
       "endLine": 100,
-      "summary": "The power of a point concept and auxiliary lemmas."
+      "summary": "The power of a point concept and auxiliary lemmas.",
+      "mathContext": "The power of a point concept and auxiliary lemmas."
     },
     {
       "id": "chord-algebra",
       "title": "Chord Intersection Algebra",
       "startLine": 101,
       "endLine": 220,
-      "summary": "Algebraic proof using quadratic equations and Vieta's formulas."
+      "summary": "Algebraic proof using quadratic equations and Vieta's formulas.",
+      "mathContext": "Algebraic proof using quadratic equations and Vieta's formulas."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 221,
       "endLine": 438,
-      "summary": "The Product of Segments of Chords theorem: PA * PB = PC * PD."
+      "summary": "The Product of Segments of Chords theorem: PA * PB = PC * PD.",
+      "mathContext": "The Product of Segments of Chords theorem: PA * PB = PC * PD."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 439,
       "endLine": 491,
-      "summary": "The center case (all chords are diameters) and the converse theorem."
+      "summary": "The center case (all chords are diameters) and the converse theorem.",
+      "mathContext": "The center case (all chords are diameters) and the converse theorem."
     },
     {
       "id": "examples",
       "title": "Numerical Examples",
       "startLine": 492,
       "endLine": 508,
-      "summary": "Concrete numerical examples demonstrating the theorem."
+      "summary": "Concrete numerical examples demonstrating the theorem.",
+      "mathContext": "Concrete numerical examples demonstrating the theorem."
     },
     {
       "id": "connections",
       "title": "Connections to Other Theorems",
       "startLine": 509,
       "endLine": 541,
-      "summary": "Relates the product of segments theorem to the power of a point, Ptolemy's theorem, and practical applications in lens design, architecture, and navigation."
+      "summary": "Relates the product of segments theorem to the power of a point, Ptolemy's theorem, and practical applications in lens design, architecture, and navigation.",
+      "mathContext": "Relates the product of segments theorem to the power of a point, Ptolemy's theorem, and practical applications in lens design, architecture, and navigation."
     }
   ],
   "conclusion": {

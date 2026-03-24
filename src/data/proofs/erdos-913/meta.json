@@ -48,56 +48,64 @@
       "title": "Problem Overview and Imports",
       "startLine": 17,
       "endLine": 26,
-      "summary": "Imports Mathlib's `Nat.factorization`, `Nat.Prime`, `Finsupp`, `Set.Finite`, and `Tactic` modules needed for formalizing the prime factorization and set infinitude machinery."
+      "summary": "Imports Mathlib's `Nat.factorization`, `Nat.Prime`, `Finsupp`, `Set.Finite`, and `Tactic` modules needed for formalizing the prime factorization and set infinitude machinery.",
+      "mathContext": "Imports Mathlib's `Nat.factorization`, `Nat.Prime`, `Finsupp`, `Set.Finite`, and `Tactic` modules needed for formalizing the prime factorization and set infinitude machinery."
     },
     {
       "id": "sec-913-definitions",
       "title": "Distinct Exponent Property",
       "startLine": 27,
       "endLine": 46,
-      "summary": "Defines HasDistinctExponents via Set.InjOn of Nat.factorization on primeFactors. The DistinctExponentSet collects all n satisfying this property."
+      "summary": "Defines HasDistinctExponents via Set.InjOn of Nat.factorization on primeFactors. The DistinctExponentSet collects all n satisfying this property.",
+      "mathContext": "Defines HasDistinctExponents via Set.InjOn of Nat.factorization on primeFactors. The DistinctExponentSet collects all n satisfying this property."
     },
     {
       "id": "sec-913-conjecture",
       "title": "The Main Conjecture",
       "startLine": 47,
       "endLine": 56,
-      "summary": "States ErdosProblem913 as DistinctExponentSet.Infinite—the claim that infinitely many n have distinct exponents in n(n+1)."
+      "summary": "States ErdosProblem913 as DistinctExponentSet.Infinite—the claim that infinitely many n have distinct exponents in n(n+1).",
+      "mathContext": "States ErdosProblem913 as DistinctExponentSet.Infinite—the claim that infinitely many n have distinct exponents in n(n+1)."
     },
     {
       "id": "sec-913-hypothesis",
       "title": "The 8p²-1 Prime Hypothesis",
       "startLine": 57,
       "endLine": 68,
-      "summary": "Defines PrimePairs8 = {p : p prime ∧ 8p²-1 prime} and axiomatizes its infinitude as a Bunyakovsky-type hypothesis."
+      "summary": "Defines PrimePairs8 = {p : p prime ∧ 8p²-1 prime} and axiomatizes its infinitude as a Bunyakovsky-type hypothesis.",
+      "mathContext": "Defines PrimePairs8 = {p : p prime ∧ 8p²-1 prime} and axiomatizes its infinitude as a Bunyakovsky-type hypothesis."
     },
     {
       "id": "sec-913-conditional",
       "title": "Conditional Proof",
       "startLine": 69,
       "endLine": 84,
-      "summary": "The key reduction: PrimePairs8.Infinite implies DistinctExponentSet.Infinite. For p in PrimePairs8, n = 8p²-1 gives exponents {1, 2, 3} on primes {8p²-1, p, 2}."
+      "summary": "The key reduction: PrimePairs8.Infinite implies DistinctExponentSet.Infinite. For p in PrimePairs8, n = 8p²-1 gives exponents {1, 2, 3} on primes {8p²-1, p, 2}.",
+      "mathContext": "The key reduction: PrimePairs8.Infinite implies DistinctExponentSet.Infinite. For p in PrimePairs8, n = 8p²-1 gives exponents {1, 2, 3} on primes {8p²-1, p, 2}."
     },
     {
       "id": "sec-913-examples",
       "title": "Known Examples",
       "startLine": 85,
       "endLine": 104,
-      "summary": "Axiomatized small examples: n = 3 (exponents {2,1}), n = 7 ({3,1}), n = 8 ({3,2}). The comment block includes n = 31 and n = 127 (Mersenne-like pattern)."
+      "summary": "Axiomatized small examples: n = 3 (exponents {2,1}), n = 7 ({3,1}), n = 8 ({3,2}). The comment block includes n = 31 and n = 127 (Mersenne-like pattern).",
+      "mathContext": "Axiomatized small examples: n = 3 (exponents {2,1}), n = 7 ({3,1}), n = 8 ({3,2}). The comment block includes n = 31 and n = 127 (Mersenne-like pattern)."
     },
     {
       "id": "sec-913-bunyakovsky",
       "title": "Connection to Bunyakovsky Conjecture",
       "startLine": 105,
       "endLine": 118,
-      "summary": "Identifies Bunyakovsky8 = PrimePairs8.Infinite as a special case of the Bunyakovsky/Bateman-Horn conjectures for f(x) = 8x²-1."
+      "summary": "Identifies Bunyakovsky8 = PrimePairs8.Infinite as a special case of the Bunyakovsky/Bateman-Horn conjectures for f(x) = 8x²-1.",
+      "mathContext": "Identifies Bunyakovsky8 = PrimePairs8.Infinite as a special case of the Bunyakovsky/Bateman-Horn conjectures for f(x) = 8x²-1."
     },
     {
       "id": "sec-913-structure",
       "title": "Exponent Multiplicity Structure",
       "startLine": 119,
       "endLine": 134,
-      "summary": "Axiomatizes the precise prime factor set {8p²-1, p, 2} for the 8p²-1 construction, confirming the three primes are distinct when p ≠ 2."
+      "summary": "Axiomatizes the precise prime factor set {8p²-1, p, 2} for the 8p²-1 construction, confirming the three primes are distinct when p ≠ 2.",
+      "mathContext": "Axiomatizes the precise prime factor set {8p²-1, p, 2} for the 8p²-1 construction, confirming the three primes are distinct when p ≠ 2."
     }
   ],
   "conclusion": {

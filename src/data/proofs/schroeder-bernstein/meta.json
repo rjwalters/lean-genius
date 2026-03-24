@@ -253,6 +253,21 @@
       "id": "mathematical-induction",
       "relationship": "related",
       "description": "The Knaster-Tarski fixed point $S^* = \\bigcup_n T^n(\\emptyset)$ is constructed by iterated application of the monotone operator, using transfinite induction."
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are Wiedijk 100 theorems formalized as pedagogical wrappers over Mathlib, demonstrating the pattern of exposing Mat"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both are foundational results establishing structural properties of infinite sets."
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "SB establishes $|\\mathbb{C}| = |\\mathbb{R}|$: $\\mathbb{R} \\hookrightarrow \\mathbb{C}$ (inclusion) and $\\mathbb{C} \\hookr"
     }
   ],
   "leanFile": {

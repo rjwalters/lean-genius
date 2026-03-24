@@ -82,63 +82,72 @@
       "title": "Extremal Numbers",
       "summary": "extremalNumber axiom, monotonicity, trivial upper bound",
       "startLine": 42,
-      "endLine": 64
+      "endLine": 64,
+      "mathContext": "extremalNumber axiom, monotonicity, trivial upper bound"
     },
     {
       "id": "degeneracy",
       "title": "Graph Degeneracy",
       "summary": "isDegenerate axiom, existence, monotonicity, 2-degenerate characterization",
       "startLine": 65,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "isDegenerate axiom, existence, monotonicity, 2-degenerate characterization"
     },
     {
       "id": "bipartite",
       "title": "Bipartite Graphs",
       "summary": "isBipartite axiom, complete bipartite encoding, properties",
       "startLine": 91,
-      "endLine": 108
+      "endLine": 108,
+      "mathContext": "isBipartite axiom, complete bipartite encoding, properties"
     },
     {
       "id": "kst-theorem",
       "title": "Kővári-Sós-Turán Theorem",
       "summary": "Upper bound for complete bipartite subgraphs, C_4 special case",
       "startLine": 109,
-      "endLine": 129
+      "endLine": 129,
+      "mathContext": "Upper bound for complete bipartite subgraphs, C_4 special case"
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Notation",
       "summary": "AsympLe definition, ≪ notation, transitivity for exponents",
       "startLine": 130,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "AsympLe definition, ≪ notation, transitivity for exponents"
     },
     {
       "id": "conjecture",
       "title": "Erdős-Simonovits Conjecture",
       "summary": "ErdosSimonovitsConjecture definition, forward direction, backward direction (false)",
       "startLine": 144,
-      "endLine": 180
+      "endLine": 180,
+      "mathContext": "ErdosSimonovitsConjecture definition, forward direction, backward direction (false)"
     },
     {
       "id": "janzer",
       "title": "Janzer's Counterexample",
       "summary": "3-regular graphs not 2-degenerate, Janzer theorem, beats threshold",
       "startLine": 181,
-      "endLine": 222
+      "endLine": 222,
+      "mathContext": "3-regular graphs not 2-degenerate, Janzer theorem, beats threshold"
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Füredi tight bounds, Erdős #146 Zarankiewicz, Erdős #147 Turán exponents",
       "startLine": 223,
-      "endLine": 244
+      "endLine": 244,
+      "mathContext": "Füredi tight bounds, Erdős #146 Zarankiewicz, Erdős #147 Turán exponents"
     },
     {
       "id": "main-theorem",
       "title": "Main Results",
       "summary": "erdos_113 theorem (¬ErdosSimonovitsConjecture), forward still true, prize claimed",
       "startLine": 245,
-      "endLine": 271
+      "endLine": 271,
+      "mathContext": "erdos_113 theorem (¬ErdosSimonovitsConjecture), forward still true, prize claimed"
     }
   ],
   "conclusion": {
@@ -209,6 +218,11 @@
       "id": "erdos-133",
       "relationship": "thematic",
       "description": "Problem #133 studies maximum degree in triangle-free diameter-2 graphs, with answer f(n) = Θ(√n). The Kővári-Sós-Turán bound ex(n; K_{2,2}) = O(n^{3/2}) that anchors #113's threshold is also fundamental to degree/diameter trade-offs studied in #133."
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem provides the foundational framework for forbidden subgraph problems. The extremal number ex(n;H) studie"
     }
   ],
   "references": [

@@ -12,7 +12,8 @@
       "graph-theory",
       "combinatorics",
       "classic",
-      "beginner"
+      "beginner",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/Konigsberg.lean",
     "badge": "mathlib",
@@ -69,56 +70,64 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Overview of the problem and its significance as the founding of graph theory."
+      "summary": "Overview of the problem and its significance as the founding of graph theory.",
+      "mathContext": "Overview of the problem and its significance as the founding of graph theory."
     },
     {
       "id": "vertices",
       "title": "Graph Vertices",
       "startLine": 47,
       "endLine": 83,
-      "summary": "Defining the 11 vertices: 4 landmasses and 7 bridges."
+      "summary": "Defining the 11 vertices: 4 landmasses and 7 bridges.",
+      "mathContext": "Defining the 11 vertices: 4 landmasses and 7 bridges."
     },
     {
       "id": "edges",
       "title": "Edge Definition",
       "startLine": 84,
       "endLine": 102,
-      "summary": "The edge list connecting bridges to their landmasses."
+      "summary": "The edge list connecting bridges to their landmasses.",
+      "mathContext": "The edge list connecting bridges to their landmasses."
     },
     {
       "id": "simple-graph",
       "title": "SimpleGraph Construction",
       "startLine": 103,
       "endLine": 118,
-      "summary": "Constructing the graph with symmetry and no self-loops."
+      "summary": "Constructing the graph with symmetry and no self-loops.",
+      "mathContext": "Constructing the graph with symmetry and no self-loops."
     },
     {
       "id": "degrees",
       "title": "Degree Calculation",
       "startLine": 119,
       "endLine": 141,
-      "summary": "Computing the degree of each vertex: landmasses are odd, bridges are even."
+      "summary": "Computing the degree of each vertex: landmasses are odd, bridges are even.",
+      "mathContext": "Computing the degree of each vertex: landmasses are odd, bridges are even."
     },
     {
       "id": "odd-vertices",
       "title": "Odd-Degree Vertices",
       "startLine": 142,
       "endLine": 160,
-      "summary": "Proving exactly the four landmasses have odd degree."
+      "summary": "Proving exactly the four landmasses have odd degree.",
+      "mathContext": "Proving exactly the four landmasses have odd degree."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 161,
       "endLine": 189,
-      "summary": "The impossibility proof using Euler's theorem on odd-degree vertices."
+      "summary": "The impossibility proof using Euler's theorem on odd-degree vertices.",
+      "mathContext": "The impossibility proof using Euler's theorem on odd-degree vertices."
     },
     {
       "id": "history",
       "title": "Historical Notes",
       "startLine": 190,
       "endLine": 220,
-      "summary": "Euler's original reasoning and the broader impact on mathematics."
+      "summary": "Euler's original reasoning and the broader impact on mathematics.",
+      "mathContext": "Euler's original reasoning and the broader impact on mathematics."
     }
   ],
   "conclusion": {

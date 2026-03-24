@@ -14,7 +14,8 @@
       "primes",
       "prime-gaps",
       "classic",
-      "erdos"
+      "erdos",
+      "wiedijk-100"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -201,6 +202,21 @@
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
       "description": "Unique prime factorization underpins Erdős's proof: the prime factorization of C(2n,n) is analyzed to show large primes "
+    },
+    {
+      "id": "bertrands-postulate-oq-03",
+      "relationship": "extended-by",
+      "description": "Explores the precise density of primes in short intervals — refining Bertrand's guarantee of at least one prime in $(n, "
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "RH implies the strongest form of the prime gap bound: $p_{n+1} - p_n = O(\\sqrt{p_n} \\log p_n)$, far stronger than Bertra"
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Both quantify prime density: Bertrand's postulate gives a local guarantee ($\\exists$ prime in $(n, 2n]$), while $\\sum 1/"
     }
   ],
   "leanFile": {

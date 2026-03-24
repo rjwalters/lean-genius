@@ -92,77 +92,88 @@
       "title": "Problem Statement and Context",
       "startLine": 1,
       "endLine": 68,
-      "summary": "Overview of the e+π transcendence question, connection to Schanuel's Conjecture, Nesterenko's Theorem, and current status."
+      "summary": "Overview of the e+π transcendence question, connection to Schanuel's Conjecture, Nesterenko's Theorem, and current status.",
+      "mathContext": "Overview of the e+π transcendence question, connection to Schanuel's Conjecture, Nesterenko's Theorem, and current status."
     },
     {
       "id": "foundational-axioms",
       "title": "Foundational Axioms",
       "startLine": 71,
       "endLine": 82,
-      "summary": "e and π are transcendental over ℚ (Hermite 1873, Lindemann 1882) — re-stated as axioms for self-containedness."
+      "summary": "e and π are transcendental over ℚ (Hermite 1873, Lindemann 1882) — re-stated as axioms for self-containedness.",
+      "mathContext": "e and π are transcendental over ℚ (Hermite 1873, Lindemann 1882) — re-stated as axioms for self-containedness."
     },
     {
       "id": "vieta-identity",
       "title": "Symmetric Polynomial Identity (Vieta)",
       "startLine": 85,
       "endLine": 121,
-      "summary": "Fully proved: e and π are roots of T² - (e+π)T + eπ = 0. Proved by ring — no sorry, no axioms."
+      "summary": "Fully proved: e and π are roots of T² - (e+π)T + eπ = 0. Proved by ring — no sorry, no axioms.",
+      "mathContext": "Fully proved: e and π are roots of T² - (e+π)T + eπ = 0. Proved by ring — no sorry, no axioms."
     },
     {
       "id": "algebraic-closure",
       "title": "Algebraic Closure Lemma",
       "startLine": 124,
       "endLine": 149,
-      "summary": "PROVED theorem: root of quadratic with algebraic coefficients is algebraic. Uses isAlgebraic_iff_isIntegral, Algebra.adjoin, Algebra.IsIntegral (transitivity of integral extensions via isIntegral_trans)."
+      "summary": "PROVED theorem: root of quadratic with algebraic coefficients is algebraic. Uses isAlgebraic_iff_isIntegral, Algebra.adjoin, Algebra.IsIntegral (transitivity of integral extensions via isIntegral_trans).",
+      "mathContext": "PROVED theorem: root of quadratic with algebraic coefficients is algebraic. Uses isAlgebraic_iff_isIntegral, Algebra.adjoin, Algebra.IsIntegral (transitivity of integral extensions via isIntegral_tran"
     },
     {
       "id": "main-theorem",
       "title": "At Least One is Transcendental",
       "startLine": 152,
       "endLine": 189,
-      "summary": "Theorem: at least one of e+π, eπ is transcendental over ℚ. Proved by contradiction using Vieta identity + algebraic closure lemma + e's transcendence."
+      "summary": "Theorem: at least one of e+π, eπ is transcendental over ℚ. Proved by contradiction using Vieta identity + algebraic closure lemma + e's transcendence.",
+      "mathContext": "Theorem: at least one of e+π, eπ is transcendental over ℚ. Proved by contradiction using Vieta identity + algebraic closure lemma + e's transcendence."
     },
     {
       "id": "consequences",
       "title": "Conditional Consequences",
       "startLine": 192,
       "endLine": 212,
-      "summary": "If eπ is algebraic, then e+π is transcendental. If e+π is algebraic, then eπ is transcendental."
+      "summary": "If eπ is algebraic, then e+π is transcendental. If e+π is algebraic, then eπ is transcendental.",
+      "mathContext": "If eπ is algebraic, then e+π is transcendental. If e+π is algebraic, then eπ is transcendental."
     },
     {
       "id": "open-conjectures",
       "title": "The Open Conjectures",
       "startLine": 215,
       "endLine": 232,
-      "summary": "Three open conjectures with sorry: e+π transcendental, eπ transcendental, e+π irrational. All unknown as of 2026."
+      "summary": "Three open conjectures with sorry: e+π transcendental, eπ transcendental, e+π irrational. All unknown as of 2026.",
+      "mathContext": "Three open conjectures with sorry: e+π transcendental, eπ transcendental, e+π irrational. All unknown as of 2026."
     },
     {
       "id": "schanuel-nesterenko",
       "title": "Schanuel's Conjecture and Nesterenko's Theorem",
       "startLine": 235,
       "endLine": 275,
-      "summary": "Schanuel's Conjecture stated (unproven). Nesterenko's Theorem (1996) axiomatized: π, e^π, Γ(1/4) algebraically independent."
+      "summary": "Schanuel's Conjecture stated (unproven). Nesterenko's Theorem (1996) axiomatized: π, e^π, Γ(1/4) algebraically independent.",
+      "mathContext": "Schanuel's Conjecture stated (unproven). Nesterenko's Theorem (1996) axiomatized: π, e^π, Γ(1/4) algebraically independent."
     },
     {
       "id": "pi-irrationality",
       "title": "π Irrationality from Mathlib",
       "startLine": 380,
       "endLine": 395,
-      "summary": "Direct theorem: π is irrational, proved via Mathlib's irrational_pi from Mathlib.Analysis.Real.Pi.Irrational."
+      "summary": "Direct theorem: π is irrational, proved via Mathlib's irrational_pi from Mathlib.Analysis.Real.Pi.Irrational.",
+      "mathContext": "Direct theorem: π is irrational, proved via Mathlib's irrational_pi from Mathlib.Analysis.Real.Pi.Irrational."
     },
     {
       "id": "algebraic-independence",
       "title": "Algebraic Independence Framework",
       "startLine": 396,
       "endLine": 500,
-      "summary": "Definition of e_pi_algebraicallyIndependent (no nonzero polynomial in MvPolynomial (Fin 2) ℚ vanishes at [e, π]). Three conditional theorems proved: e+π transcendental, e·π transcendental, e+π irrational — all under the assumption that e and π are algebraically independent. Technique: polynomial lifting via Polynomial.aeval_algHom_apply."
+      "summary": "Definition of e_pi_algebraicallyIndependent (no nonzero polynomial in MvPolynomial (Fin 2) ℚ vanishes at [e, π]). Three conditional theorems proved: e+π transcendental, e·π transcendental, e+π irrational — all under the assumption that e and π are algebraically independent. Technique: polynomial lifting via Polynomial.aeval_algHom_apply.",
+      "mathContext": "Definition of e_pi_algebraicallyIndependent (no nonzero polynomial in MvPolynomial (Fin 2) ℚ vanishes at [e, π]). Three conditional theorems proved: e+π transcendental, e·π transcendental, e+π irratio"
     },
     {
       "id": "summary",
       "title": "Summary and Final Checks",
       "startLine": 500,
       "endLine": 545,
-      "summary": "Current status table: proved vs open results. Key theorems listed with #check."
+      "summary": "Current status table: proved vs open results. Key theorems listed with #check.",
+      "mathContext": "Current status table: proved vs open results. Key theorems listed with #check."
     }
   ],
   "conclusion": {

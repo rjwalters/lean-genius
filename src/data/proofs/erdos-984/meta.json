@@ -74,63 +74,72 @@
       "title": "Part 1: Basic Definitions",
       "startLine": 33,
       "endLine": 53,
-      "summary": "Defines Coloring (ℕ → Bool), ArithProg (finset construction via Finset.image), IsMonochromatic (existential over Bool), and MonochromaticAP combining these."
+      "summary": "Defines Coloring (ℕ → Bool), ArithProg (finset construction via Finset.image), IsMonochromatic (existential over Bool), and MonochromaticAP combining these.",
+      "mathContext": "Defines Coloring (ℕ → Bool), ArithProg (finset construction via Finset.image), IsMonochromatic (existential over Bool), and MonochromaticAP combining these."
     },
     {
       "id": "growth-condition",
       "title": "Part 2: The Growth Condition",
       "startLine": 54,
       "endLine": 69,
-      "summary": "Formalizes GrowsSlowerThanAnyPower as ∀ε>0, ∃C>0, ∀a>0: f(a) ≤ C·a^ε, and SatisfiesCondition requiring this bound for all monochromatic APs."
+      "summary": "Formalizes GrowsSlowerThanAnyPower as ∀ε>0, ∃C>0, ∀a>0: f(a) ≤ C·a^ε, and SatisfiesCondition requiring this bound for all monochromatic APs.",
+      "mathContext": "Formalizes GrowsSlowerThanAnyPower as ∀ε>0, ∃C>0, ∀a>0: f(a) ≤ C·a^ε, and SatisfiesCondition requiring this bound for all monochromatic APs."
     },
     {
       "id": "van-der-waerden",
       "title": "Part 3: Van der Waerden Connection",
       "startLine": 70,
       "endLine": 82,
-      "summary": "Axiomatizes van der Waerden's theorem for r ≥ 2 colors and k ≥ 3 terms, guaranteeing monochromatic APs in sufficiently long initial segments."
+      "summary": "Axiomatizes van der Waerden's theorem for r ≥ 2 colors and k ≥ 3 terms, guaranteeing monochromatic APs in sufficiently long initial segments.",
+      "mathContext": "Axiomatizes van der Waerden's theorem for r ≥ 2 colors and k ≥ 3 terms, guaranteeing monochromatic APs in sufficiently long initial segments."
     },
     {
       "id": "spencer-result",
       "title": "Part 4: Spencer's 3-Coloring",
       "startLine": 83,
       "endLine": 101,
-      "summary": "Defines Coloring3 (ℕ → Fin 3) and MonochromaticAP3, then axiomatizes Spencer's 1975 result that 3 colors achieve subpolynomial growth via the inverse van der Waerden function."
+      "summary": "Defines Coloring3 (ℕ → Fin 3) and MonochromaticAP3, then axiomatizes Spencer's 1975 result that 3 colors achieve subpolynomial growth via the inverse van der Waerden function.",
+      "mathContext": "Defines Coloring3 (ℕ → Fin 3) and MonochromaticAP3, then axiomatizes Spencer's 1975 result that 3 colors achieve subpolynomial growth via the inverse van der Waerden function."
     },
     {
       "id": "erdos-partial",
       "title": "Part 5: Erdős's Partial Result",
       "startLine": 102,
       "endLine": 118,
-      "summary": "Defines ErdosWeakBound (k ≤ C·a^{1-c} for fixed c,C > 0) and axiomatizes Erdős's claim that such a 2-coloring exists, representing partial progress."
+      "summary": "Defines ErdosWeakBound (k ≤ C·a^{1-c} for fixed c,C > 0) and axiomatizes Erdős's claim that such a 2-coloring exists, representing partial progress.",
+      "mathContext": "Defines ErdosWeakBound (k ≤ C·a^{1-c} for fixed c,C > 0) and axiomatizes Erdős's claim that such a 2-coloring exists, representing partial progress."
     },
     {
       "id": "hunter-solution",
       "title": "Part 6: Hunter's Complete Solution",
       "startLine": 119,
       "endLine": 128,
-      "summary": "Axiomatizes Hunter's theorem: there exists a 2-coloring satisfying the full subpolynomial growth condition, resolving Problem #984 affirmatively."
+      "summary": "Axiomatizes Hunter's theorem: there exists a 2-coloring satisfying the full subpolynomial growth condition, resolving Problem #984 affirmatively.",
+      "mathContext": "Axiomatizes Hunter's theorem: there exists a 2-coloring satisfying the full subpolynomial growth condition, resolving Problem #984 affirmatively."
     },
     {
       "id": "chromatic-number",
       "title": "Part 7: Chromatic Number Perspective",
       "startLine": 129,
       "endLine": 158,
-      "summary": "Axiomatizes two_colors_suffice_for_power_bound (weaker, per-ε version) and proves one_color_insufficient constructively using Fin.eq_zero and push_neg, establishing 2 as optimal."
+      "summary": "Axiomatizes two_colors_suffice_for_power_bound (weaker, per-ε version) and proves one_color_insufficient constructively using Fin.eq_zero and push_neg, establishing 2 as optimal.",
+      "mathContext": "Axiomatizes two_colors_suffice_for_power_bound (weaker, per-ε version) and proves one_color_insufficient constructively using Fin.eq_zero and push_neg, establishing 2 as optimal."
     },
     {
       "id": "explicit-bounds",
       "title": "Part 8: Explicit Bounds",
       "startLine": 159,
       "endLine": 169,
-      "summary": "Axiomatizes the existence of an exponent 0 < c < 1 for Erdős's weak bound with unit constant C = 1."
+      "summary": "Axiomatizes the existence of an exponent 0 < c < 1 for Erdős's weak bound with unit constant C = 1.",
+      "mathContext": "Axiomatizes the existence of an exponent 0 < c < 1 for Erdős's weak bound with unit constant C = 1."
     },
     {
       "id": "summary",
       "title": "Part 9: Summary",
       "startLine": 170,
       "endLine": 192,
-      "summary": "erdos_984_summary packages Hunter's, Spencer's, and Erdős's results into a single conjunction, proved by exact ⟨hunter_theorem, spencer_1975, erdos_partial_construction⟩."
+      "summary": "erdos_984_summary packages Hunter's, Spencer's, and Erdős's results into a single conjunction, proved by exact ⟨hunter_theorem, spencer_1975, erdos_partial_construction⟩.",
+      "mathContext": "erdos_984_summary packages Hunter's, Spencer's, and Erdős's results into a single conjunction, proved by exact ⟨hunter_theorem, spencer_1975, erdos_partial_construction⟩."
     }
   ],
   "conclusion": {

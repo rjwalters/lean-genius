@@ -85,56 +85,64 @@
       "title": "Basic Definitions",
       "summary": "$p \\in \\mathbb{R}^2$, $\\ell = \\{p_0 + td : d \\neq 0\\}$, `Line.contains` ($p \\in \\ell \\iff \\exists t,\\, p = p_0 + td$), `isRich` ($|\\ell \\cap A| \\geq 2$), `unblocked` ($\\ell \\cap B = \\emptyset$)",
       "startLine": 45,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "$p \\in \\mathbb{R}^2$, $\\ell = \\{p_0 + td : d \\neq 0\\}$, `Line.contains` ($p \\in \\ell \\iff \\exists t,\\, p = p_0 + td$), `isRich` ($|\\ell \\cap A| \\geq 2$), `unblocked` ($\\ell \\cap B = \\emptyset$)"
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Purdy Conjecture",
       "summary": "$\\text{NonCollinear}(A) \\iff \\nexists \\ell : A \\subseteq \\ell$; $\\text{ErdosPurdyConj}: \\forall A, B,\\, |A| = n \\geq 4,\\, |B| = n-3,\\, \\text{disjoint} \\implies \\exists$ rich unblocked $\\ell$",
       "startLine": 72,
-      "endLine": 89
+      "endLine": 89,
+      "mathContext": "$\\text{NonCollinear}(A) \\iff \\nexists \\ell : A \\subseteq \\ell$; $\\text{ErdosPurdyConj}: \\forall A, B,\\, |A| = n \\geq 4,\\, |B| = n-3,\\, \\text{disjoint} \\implies \\exists$ rich unblocked $\\ell$"
     },
     {
       "id": "disproof",
       "title": "The Disproof",
       "summary": "`xichuan_counterexample`: $\\exists A, B$ with $|B| = n-3$ blocking all rich lines; `erdos_105_disproved`: $\\neg\\text{ErdosPurdyConj}$ by contradiction via counterexample",
       "startLine": 90,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "`xichuan_counterexample`: $\\exists A, B$ with $|B| = n-3$ blocking all rich lines; `erdos_105_disproved`: $\\neg\\text{ErdosPurdyConj}$ by contradiction via counterexample"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "`hickerson_n_minus_2`: $\\exists A, B$ with $|B| = n-2$ blocking all rich lines; `beck_szemeredi_trotter_positive`: $\\exists c > 0,\\, |B| \\leq cn \\implies \\exists$ rich unblocked $\\ell$",
       "startLine": 118,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "`hickerson_n_minus_2`: $\\exists A, B$ with $|B| = n-2$ blocking all rich lines; `beck_szemeredi_trotter_positive`: $\\exists c > 0,\\, |B| \\leq cn \\implies \\exists$ rich unblocked $\\ell$"
     },
     {
       "id": "szemeredi-trotter",
       "title": "Szemerédi-Trotter Theorem",
       "summary": "`incidenceCount` via `Finset.filter`; `szemeredi_trotter`: $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$; `many_rich_lines_exist`: non-collinear sets determine $\\geq 1$ rich line",
       "startLine": 142,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "`incidenceCount` via `Finset.filter`; `szemeredi_trotter`: $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$; `many_rich_lines_exist`: non-collinear sets determine $\\geq 1$ rich line"
     },
     {
       "id": "threshold",
       "title": "Threshold Function",
       "summary": "$f(n) = \\max\\{k : |B| \\leq k \\implies \\exists$ rich unblocked $\\ell\\}$; bounds $cn \\leq f(n) \\leq n - 4$",
       "startLine": 166,
-      "endLine": 180
+      "endLine": 180,
+      "mathContext": "$f(n) = \\max\\{k : |B| \\leq k \\implies \\exists$ rich unblocked $\\ell\\}$; bounds $cn \\leq f(n) \\leq n - 4$"
     },
     {
       "id": "open-problems",
       "title": "Open Problems",
       "summary": "`openProblem_n_minus_4`: does the conjecture hold at $|B| = n - 4$?; `openProblem_exact_threshold`: $\\exists c_1, c_2 > 0 : c_1 n \\leq f(n) \\leq c_2 n$?",
       "startLine": 181,
-      "endLine": 198
+      "endLine": 198,
+      "mathContext": "`openProblem_n_minus_4`: does the conjecture hold at $|B| = n - 4$?; `openProblem_exact_threshold`: $\\exists c_1, c_2 > 0 : c_1 n \\leq f(n) \\leq c_2 n$?"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "`erdos_105_summary`: $\\neg\\text{ErdosPurdyConj} \\land \\text{beck\\_szemeredi\\_trotter\\_positive}$ via `exact ⟨erdos_105_disproved, beck_szemeredi_trotter_positive⟩`; historical timeline 1983–2024",
       "startLine": 199,
-      "endLine": 248
+      "endLine": 248,
+      "mathContext": "`erdos_105_summary`: $\\neg\\text{ErdosPurdyConj} \\land \\text{beck\\_szemeredi\\_trotter\\_positive}$ via `exact ⟨erdos_105_disproved, beck_szemeredi_trotter_positive⟩`; historical timeline 1983–2024"
     }
   ],
   "conclusion": {

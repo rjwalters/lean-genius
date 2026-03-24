@@ -85,63 +85,72 @@
       "title": "Additive Bases",
       "startLine": 27,
       "endLine": 51,
-      "summary": "Defines `isAdditiveBasis A k` ($kA \\supseteq [N_0, \\infty)$) and `kFoldSumset A k` (unrestricted $k$-fold sums via `Finset` with `card ≤ k`)."
+      "summary": "Defines `isAdditiveBasis A k` ($kA \\supseteq [N_0, \\infty)$) and `kFoldSumset A k` (unrestricted $k$-fold sums via `Finset` with `card ≤ k`).",
+      "mathContext": "Defines `isAdditiveBasis A k` ($kA \\supseteq [N_0, \\infty)$) and `kFoldSumset A k` (unrestricted $k$-fold sums via `Finset` with `card ≤ k`)."
     },
     {
       "id": "restricted-sumsets",
       "title": "Restricted Sumsets and Gap Boundedness",
       "startLine": 52,
       "endLine": 89,
-      "summary": "Defines `restrictedKFoldSumset A k` ($k \\times A$, distinct-element sums), notation `k ×ₛ A`, `gapSupremum` via `ℕ∞`, and `hasBoundedGaps` ($\\Delta(B) < \\infty$)."
+      "summary": "Defines `restrictedKFoldSumset A k` ($k \\times A$, distinct-element sums), notation `k ×ₛ A`, `gapSupremum` via `ℕ∞`, and `hasBoundedGaps` ($\\Delta(B) < \\infty$).",
+      "mathContext": "Defines `restrictedKFoldSumset A k` ($k \\times A$, distinct-element sums), notation `k ×ₛ A`, `gapSupremum` via `ℕ∞`, and `hasBoundedGaps` ($\\Delta(B) < \\infty$)."
     },
     {
       "id": "burr-erdos-question",
       "title": "The Burr-Erdős Question",
       "startLine": 88,
       "endLine": 104,
-      "summary": "Defines `burrErdosQuestion k`: does every basis $A$ of order $k$ satisfy $\\Delta(k \\times A) < \\infty$?"
+      "summary": "Defines `burrErdosQuestion k`: does every basis $A$ of order $k$ satisfy $\\Delta(k \\times A) < \\infty$?",
+      "mathContext": "Defines `burrErdosQuestion k`: does every basis $A$ of order $k$ satisfy $\\Delta(k \\times A) < \\infty$?"
     },
     {
       "id": "k2-case",
       "title": "The $k = 2$ Case: Positive Answer via Parity",
       "startLine": 105,
       "endLine": 138,
-      "summary": "Axiomatizes `k2_bounded_gaps` ($\\Delta(2 \\times A) \\leq 2$), the parity argument (odd $n \\in 2A \\implies n \\in 2 \\times A$), and tightness (gap-2 examples exist)."
+      "summary": "Axiomatizes `k2_bounded_gaps` ($\\Delta(2 \\times A) \\leq 2$), the parity argument (odd $n \\in 2A \\implies n \\in 2 \\times A$), and tightness (gap-2 examples exist).",
+      "mathContext": "Axiomatizes `k2_bounded_gaps` ($\\Delta(2 \\times A) \\leq 2$), the parity argument (odd $n \\in 2A \\implies n \\in 2 \\times A$), and tightness (gap-2 examples exist)."
     },
     {
       "id": "k3-case",
       "title": "The $k \\geq 3$ Case: Negative Answer via Counterexample",
       "startLine": 139,
       "endLine": 172,
-      "summary": "Axiomatizes `k_ge_3_unbounded_gaps` and the quantitative counterexample construction. Explains why parity fails: sums of $\\geq 3$ distinct elements have no forced parity."
+      "summary": "Axiomatizes `k_ge_3_unbounded_gaps` and the quantitative counterexample construction. Explains why parity fails: sums of $\\geq 3$ distinct elements have no forced parity.",
+      "mathContext": "Axiomatizes `k_ge_3_unbounded_gaps` and the quantitative counterexample construction. Explains why parity fails: sums of $\\geq 3$ distinct elements have no forced parity."
     },
     {
       "id": "complete-resolution",
       "title": "Complete Resolution (Proved)",
       "startLine": 173,
       "endLine": 197,
-      "summary": "Fully proved `burr_erdos_complete_answer`: $k=2$ gives $\\Delta \\leq 2$, $k \\geq 3$ allows $\\Delta = \\infty$. Proved from axioms."
+      "summary": "Fully proved `burr_erdos_complete_answer`: $k=2$ gives $\\Delta \\leq 2$, $k \\geq 3$ allows $\\Delta = \\infty$. Proved from axioms.",
+      "mathContext": "Fully proved `burr_erdos_complete_answer`: $k=2$ gives $\\Delta \\leq 2$, $k \\geq 3$ allows $\\Delta = \\infty$. Proved from axioms."
     },
     {
       "id": "related-results",
       "title": "Related Results and Representation Function",
       "startLine": 198,
       "endLine": 227,
-      "summary": "Axiom `relation_to_classical` ($k \\times A \\subseteq kA$). Defines `representationFunction` counting distinct-$k$-subset sums. Density considerations for $k \\geq 3$."
+      "summary": "Axiom `relation_to_classical` ($k \\times A \\subseteq kA$). Defines `representationFunction` counting distinct-$k$-subset sums. Density considerations for $k \\geq 3$.",
+      "mathContext": "Axiom `relation_to_classical` ($k \\times A \\subseteq kA$). Defines `representationFunction` counting distinct-$k$-subset sums. Density considerations for $k \\geq 3$."
     },
     {
       "id": "parity-argument",
       "title": "Parity Argument in Detail",
       "startLine": 228,
       "endLine": 255,
-      "summary": "Detailed axioms: `parity_argument_detail` (odd $n \\in 2A \\implies$ distinct-pair representation) and `parity_fails_k3` (odd $n \\in 3A$ with no all-distinct representation)."
+      "summary": "Detailed axioms: `parity_argument_detail` (odd $n \\in 2A \\implies$ distinct-pair representation) and `parity_fails_k3` (odd $n \\in 3A$ with no all-distinct representation).",
+      "mathContext": "Detailed axioms: `parity_argument_detail` (odd $n \\in 2A \\implies$ distinct-pair representation) and `parity_fails_k3` (odd $n \\in 3A$ with no all-distinct representation)."
     },
     {
       "id": "summary",
       "title": "Summary: Final Status Theorems",
       "startLine": 256,
       "endLine": 297,
-      "summary": "Fully proved `erdos_880_status` and `erdos_880_resolved`: $\\text{burrErdosQuestion}(2) \\wedge \\forall\\, k \\geq 3,\\; \\neg\\text{burrErdosQuestion}(k)$."
+      "summary": "Fully proved `erdos_880_status` and `erdos_880_resolved`: $\\text{burrErdosQuestion}(2) \\wedge \\forall\\, k \\geq 3,\\; \\neg\\text{burrErdosQuestion}(k)$.",
+      "mathContext": "Fully proved `erdos_880_status` and `erdos_880_resolved`: $\\text{burrErdosQuestion}(2) \\wedge \\forall\\, k \\geq 3,\\; \\neg\\text{burrErdosQuestion}(k)$."
     }
   ],
   "conclusion": {

@@ -93,56 +93,64 @@
       "title": "Subset Sums in Groups",
       "summary": "subsetSums, IsSpanningSet, isSpanningSet_iff",
       "startLine": 41,
-      "endLine": 56
+      "endLine": 56,
+      "mathContext": "subsetSums, IsSpanningSet, isSpanningSet_iff"
     },
     {
       "id": "f-definition",
       "title": "The Function f(N)",
       "summary": "spanningProbability, f axiom, f_le_card",
       "startLine": 57,
-      "endLine": 75
+      "endLine": 75,
+      "mathContext": "spanningProbability, f axiom, f_le_card"
     },
     {
       "id": "elementary",
       "title": "Elementary Properties",
       "summary": "empty_spanning_iff, spanning_of_generators",
       "startLine": 76,
-      "endLine": 86
+      "endLine": 86,
+      "mathContext": "empty_spanning_iff, spanning_of_generators"
     },
     {
       "id": "erdos-renyi",
       "title": "Erdős-Rényi Upper Bound",
       "summary": "erdos_renyi_upper_bound: f(N) ≤ log₂ N + O(log log N)",
       "startLine": 87,
-      "endLine": 101
+      "endLine": 101,
+      "mathContext": "erdos_renyi_upper_bound: f(N) ≤ log₂ N + O(log log N)"
     },
     {
       "id": "conjecture-disproof",
       "title": "The Conjecture and Its Disproof",
       "summary": "LittleOConjecture, ErdosCounterConjecture, conjectures_complementary, chatgpt_tang_disproof, little_o_conjecture_false",
       "startLine": 102,
-      "endLine": 147
+      "endLine": 147,
+      "mathContext": "LittleOConjecture, ErdosCounterConjecture, conjectures_complementary, chatgpt_tang_disproof, little_o_conjecture_false"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "summary": "naive_lower_bound, erdos_hall_lower",
       "startLine": 148,
-      "endLine": 163
+      "endLine": 163,
+      "mathContext": "naive_lower_bound, erdos_hall_lower"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "cyclic_spanning_characterization, prime_full_spanning",
       "startLine": 164,
-      "endLine": 175
+      "endLine": 175,
+      "mathContext": "cyclic_spanning_characterization, prime_full_spanning"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_543_summary: ErdosCounterConjecture ∧ ¬LittleOConjecture",
       "startLine": 176,
-      "endLine": 192
+      "endLine": 192,
+      "mathContext": "erdos_543_summary: ErdosCounterConjecture ∧ ¬LittleOConjecture"
     }
   ],
   "conclusion": {

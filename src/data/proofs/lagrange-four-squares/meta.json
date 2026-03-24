@@ -186,6 +186,16 @@
       "id": "perfect-numbers",
       "relationship": "related",
       "description": "Both results connect to the multiplicative structure of $\\mathbb{N}$: Lagrange shows every $n$ decomposes as $a^2 + b^2 "
+    },
+    {
+      "id": "pythagorean-triples",
+      "relationship": "complementary",
+      "description": "Pythagorean triples solve $a^2 + b^2 = c^2$ — the two-variable sum-of-squares equation. Lagrange's theorem concerns the "
+    },
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem allows the four-squares problem to be decomposed by prime powers: proving $p = a^2+b^2+c^2"
     }
   ],
   "leanFile": {

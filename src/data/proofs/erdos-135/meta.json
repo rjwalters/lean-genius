@@ -48,63 +48,72 @@
       "title": "Problem Statement",
       "summary": "Erdős conjecture on four-point distance property, Tao's 2024 disproof",
       "startLine": 9,
-      "endLine": 36
+      "endLine": 36,
+      "mathContext": "Erdős conjecture on four-point distance property, Tao's 2024 disproof"
     },
     {
       "id": "basic-definitions",
       "title": "Points and Distances",
       "summary": "Point, sqDist, distinctDistances, distanceCount definitions",
       "startLine": 48,
-      "endLine": 64
+      "endLine": 64,
+      "mathContext": "Point, sqDist, distinctDistances, distanceCount definitions"
     },
     {
       "id": "five-distance-property",
       "title": "The Five-Distance Property",
       "summary": "fourPointDistances, HasFiveDistanceProperty — forbids degenerate 4-point configs",
       "startLine": 65,
-      "endLine": 78
+      "endLine": 78,
+      "mathContext": "fourPointDistances, HasFiveDistanceProperty — forbids degenerate 4-point configs"
     },
     {
       "id": "conjecture-false",
       "title": "Erdős's Conjecture (FALSE)",
       "summary": "ErdosConjecture135 definition, erdos_135_false axiom, erdos_135_disproved theorem",
       "startLine": 79,
-      "endLine": 106
+      "endLine": 106,
+      "mathContext": "ErdosConjecture135 definition, erdos_135_false axiom, erdos_135_disproved theorem"
     },
     {
       "id": "forbidden-patterns",
       "title": "Forbidden Four-Point Patterns",
       "summary": "InGeneralPosition, IsParallelogram, IsForbiddenPattern, parallelogram_forbidden",
       "startLine": 107,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "InGeneralPosition, IsParallelogram, IsForbiddenPattern, parallelogram_forbidden"
     },
     {
       "id": "algebraic-construction",
       "title": "Tao's Algebraic Construction",
       "summary": "ParabolaParams, RandomizedParabolaApproach, parabolas over finite fields",
       "startLine": 205,
-      "endLine": 235
+      "endLine": 235,
+      "mathContext": "ParabolaParams, RandomizedParabolaApproach, parabolas over finite fields"
     },
     {
       "id": "comparison-bounds",
       "title": "Comparison with Erdős-Guth-Katz Bounds",
       "summary": "trivial_distance_bound, guth_katz_lower_bound, tao_optimal_up_to_log",
       "startLine": 236,
-      "endLine": 301
+      "endLine": 301,
+      "mathContext": "trivial_distance_bound, guth_katz_lower_bound, tao_optimal_up_to_log"
     },
     {
       "id": "examples",
       "title": "Example Configurations",
       "summary": "Square (2 distances), rhombus (3), projected tetrahedron (4), generic (6)",
       "startLine": 302,
-      "endLine": 355
+      "endLine": 355,
+      "mathContext": "Square (2 distances), rhombus (3), projected tetrahedron (4), generic (6)"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Problem DISPROVED by Tao 2024, key techniques, historical context",
       "startLine": 356,
-      "endLine": 392
+      "endLine": 392,
+      "mathContext": "Problem DISPROVED by Tao 2024, key techniques, historical context"
     }
   ],
   "conclusion": {

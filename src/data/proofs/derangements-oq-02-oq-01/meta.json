@@ -191,6 +191,16 @@
       "id": "binomial-theorem",
       "relationship": "related",
       "description": "Binomial coefficients C(n,k) appear as the 'choose the fixed points' factor in S(n,k) = C(n,k)·D(n-k). The binomial theorem provides the algebraic framework for manipulating these coefficients"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The combinations formula C(n,k) = n!/(k!(n-k)!) is used directly in the partial derangement formula S(n,k) = C(n,k)·D(n-"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient φ(n) counts elements of (ℤ/nℤ)* coprime to n, paralleling how derangements count fixed-point-free permut"
     }
   ],
   "references": [

@@ -228,6 +228,11 @@
       "id": "primitive-roots",
       "relationship": "foundational",
       "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. The quadratic residues are precisely the even powers of a primitive root, forming the unique subgroup of index 2. This group structure is what makes the Legendre symbol a group homomorphism"
+    },
+    {
+      "id": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) is closely related to quadratic residues: pairing each residue with its i"
     }
   ],
   "references": [

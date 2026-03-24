@@ -95,56 +95,64 @@
       "title": "Non-Dividing and Non-Averaging Definitions",
       "startLine": 41,
       "endLine": 63,
-      "summary": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$). The equivalence `nondividing_equiv` between the two non-dividing formulations is stated but unproved."
+      "summary": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$). The equivalence `nondividing_equiv` between the two non-dividing formulations is stated but unproved.",
+      "mathContext": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$). Th"
     },
     {
       "id": "relationship",
       "title": "Non-dividing Implies Non-averaging",
       "startLine": 64,
       "endLine": 78,
-      "summary": "Proves the key structural implication: if $a = \\text{avg}(S)$ then $a \\mid \\sum S$. The proof structure is complete except for extracting $\\mathbb{N}$-divisibility from the $\\mathbb{Q}$-equation $\\sum S = a \\cdot |S|$."
+      "summary": "Proves the key structural implication: if $a = \\text{avg}(S)$ then $a \\mid \\sum S$. The proof structure is complete except for extracting $\\mathbb{N}$-divisibility from the $\\mathbb{Q}$-equation $\\sum S = a \\cdot |S|$.",
+      "mathContext": "Proves the key structural implication: if $a = \\text{avg}(S)$ then $a \\mid \\sum S$. The proof structure is complete except for extracting $\\mathbb{N}$-divisibility from the $\\mathbb{Q}$-equation $\\sum"
     },
     {
       "id": "f-function",
       "title": "The Extremal Function F(N)",
       "startLine": 79,
       "endLine": 90,
-      "summary": "Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$."
+      "summary": "Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$.",
+      "mathContext": "Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 91,
       "endLine": 111,
-      "summary": "Three upper bound results: ELRSS (1999) $F(N) < 3\\sqrt{N} + 1$, Pham-Zakharov (2024) $F(N) \\leq N^{1/4+o(1)}$ (via non-averaging connection), and the resolution `original_question_answered_no`: $F(N) \\not> N^{1/2-o(1)}$."
+      "summary": "Three upper bound results: ELRSS (1999) $F(N) < 3\\sqrt{N} + 1$, Pham-Zakharov (2024) $F(N) \\leq N^{1/4+o(1)}$ (via non-averaging connection), and the resolution `original_question_answered_no`: $F(N) \\not> N^{1/2-o(1)}$.",
+      "mathContext": "Three upper bound results: ELRSS (1999) $F(N) < 3\\sqrt{N} + 1$, Pham-Zakharov (2024) $F(N) \\leq N^{1/4+o(1)}$ (via non-averaging connection), and the resolution `original_question_answered_no`: $F(N) "
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 112,
       "endLine": 131,
-      "summary": "Two lower bound constructions: Csaba's polynomial $F(N) \\gg N^{1/5}$ and Straus's subexponential $F(N) > \\exp((\\sqrt{2/\\log 2} + o(1))\\sqrt{\\log N})$, with numerical bounds $1.6 < \\sqrt{2/\\log 2} < 1.8$ on Straus's constant."
+      "summary": "Two lower bound constructions: Csaba's polynomial $F(N) \\gg N^{1/5}$ and Straus's subexponential $F(N) > \\exp((\\sqrt{2/\\log 2} + o(1))\\sqrt{\\log N})$, with numerical bounds $1.6 < \\sqrt{2/\\log 2} < 1.8$ on Straus's constant.",
+      "mathContext": "Two lower bound constructions: Csaba's polynomial $F(N) \\gg N^{1/5}$ and Straus's subexponential $F(N) > \\exp((\\sqrt{2/\\log 2} + o(1))\\sqrt{\\log N})$, with numerical bounds $1.6 < \\sqrt{2/\\log 2} < 1."
     },
     {
       "id": "open-question",
       "title": "The Open Gap",
       "startLine": 132,
       "endLine": 153,
-      "summary": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false."
+      "summary": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false.",
+      "mathContext": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false."
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "startLine": 154,
       "endLine": 188,
-      "summary": "Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets."
+      "summary": "Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets.",
+      "mathContext": "Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets."
     },
     {
       "id": "connection",
       "title": "Connection to Non-Averaging (Problem #186)",
       "startLine": 189,
       "endLine": 477,
-      "summary": "Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$."
+      "summary": "Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$.",
+      "mathContext": "Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$."
     }
   ],
   "conclusion": {

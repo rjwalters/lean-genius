@@ -12,7 +12,8 @@
       "number-theory",
       "geometry",
       "classic",
-      "intermediate"
+      "intermediate",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/PythagoreanTriples.lean",
     "badge": "mathlib",
@@ -74,63 +75,72 @@
       "title": "Imports and Documentation",
       "startLine": 1,
       "endLine": 49,
-      "summary": "Imports Mathlib.NumberTheory.PythagoreanTriples and Mathlib.Tactic, with extensive documentation covering the parametric formula, proof strategy, and historical context (Plimpton 322, Wiedijk #23)."
+      "summary": "Imports Mathlib.NumberTheory.PythagoreanTriples and Mathlib.Tactic, with extensive documentation covering the parametric formula, proof strategy, and historical context (Plimpton 322, Wiedijk #23).",
+      "mathContext": "Imports Mathlib.NumberTheory.PythagoreanTriples and Mathlib.Tactic, with extensive documentation covering the parametric formula, proof strategy, and historical context (Plimpton 322, Wiedijk #23)."
     },
     {
       "id": "predicate",
       "title": "The Pythagorean Triple Predicate",
       "startLine": 50,
       "endLine": 66,
-      "summary": "Introduces Mathlib's PythagoreanTriple predicate and verifies it unfolds to x * x + y * y = z * z via Iff.rfl."
+      "summary": "Introduces Mathlib's PythagoreanTriple predicate and verifies it unfolds to x * x + y * y = z * z via Iff.rfl.",
+      "mathContext": "Introduces Mathlib's PythagoreanTriple predicate and verifies it unfolds to x * x + y * y = z * z via Iff.rfl."
     },
     {
       "id": "parametric-formula",
       "title": "Parametric Formula Classification",
       "startLine": 67,
       "endLine": 84,
-      "summary": "Documents IsPrimitiveClassified and IsClassified structures from Mathlib that formalize what it means for a triple to match the parametric form."
+      "summary": "Documents IsPrimitiveClassified and IsClassified structures from Mathlib that formalize what it means for a triple to match the parametric form.",
+      "mathContext": "Documents IsPrimitiveClassified and IsClassified structures from Mathlib that formalize what it means for a triple to match the parametric form."
     },
     {
       "id": "main-theorems",
       "title": "Main Classification Theorems",
       "startLine": 85,
       "endLine": 114,
-      "summary": "The central results: primitive_triples_are_classified (every coprime triple has parametric form) and all_triples_are_classified (every triple is a scaled parametric triple)."
+      "summary": "The central results: primitive_triples_are_classified (every coprime triple has parametric form) and all_triples_are_classified (every triple is a scaled parametric triple).",
+      "mathContext": "The central results: primitive_triples_are_classified (every coprime triple has parametric form) and all_triples_are_classified (every triple is a scaled parametric triple)."
     },
     {
       "id": "verification",
       "title": "Algebraic Verification",
       "startLine": 115,
       "endLine": 134,
-      "summary": "Proves the converse direction: the parametric formula always produces valid triples, verified via the ring tactic for both orderings of legs."
+      "summary": "Proves the converse direction: the parametric formula always produces valid triples, verified via the ring tactic for both orderings of legs.",
+      "mathContext": "Proves the converse direction: the parametric formula always produces valid triples, verified via the ring tactic for both orderings of legs."
     },
     {
       "id": "examples",
       "title": "Classical Examples",
       "startLine": 135,
       "endLine": 193,
-      "summary": "Verifies five classical Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29) with their corresponding (m,n) parameters."
+      "summary": "Verifies five classical Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29) with their corresponding (m,n) parameters.",
+      "mathContext": "Verifies five classical Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29) with their corresponding (m,n) parameters."
     },
     {
       "id": "properties",
       "title": "Properties of Pythagorean Triples",
       "startLine": 194,
       "endLine": 210,
-      "summary": "Proves structural properties: symmetry of legs, the trivial (0,0,0) triple, and the parity constraint that primitive triples have one even and one odd leg."
+      "summary": "Proves structural properties: symmetry of legs, the trivial (0,0,0) triple, and the parity constraint that primitive triples have one even and one odd leg.",
+      "mathContext": "Proves structural properties: symmetry of legs, the trivial (0,0,0) triple, and the parity constraint that primitive triples have one even and one odd leg."
     },
     {
       "id": "geometric",
       "title": "Unit Circle Parametrization",
       "startLine": 211,
       "endLine": 240,
-      "summary": "Extended documentation explaining the geometric derivation of the formula via stereographic projection from (-1,0) on the unit circle, with full algebraic verification."
+      "summary": "Extended documentation explaining the geometric derivation of the formula via stereographic projection from (-1,0) on the unit circle, with full algebraic verification.",
+      "mathContext": "Extended documentation explaining the geometric derivation of the formula via stereographic projection from (-1,0) on the unit circle, with full algebraic verification."
     },
     {
       "id": "scaling",
       "title": "Non-primitive Triples and Summary",
       "startLine": 241,
       "endLine": 268,
-      "summary": "Demonstrates that scaling preserves the Pythagorean property with examples (6,8,10) = 2×(3,4,5) and (9,12,15) = 3×(3,4,5), completing the classification."
+      "summary": "Demonstrates that scaling preserves the Pythagorean property with examples (6,8,10) = 2×(3,4,5) and (9,12,15) = 3×(3,4,5), completing the classification.",
+      "mathContext": "Demonstrates that scaling preserves the Pythagorean property with examples (6,8,10) = 2×(3,4,5) and (9,12,15) = 3×(3,4,5), completing the classification."
     }
   ],
   "conclusion": {

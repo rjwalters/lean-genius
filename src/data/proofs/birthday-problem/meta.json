@@ -13,7 +13,8 @@
       "combinatorics",
       "counting",
       "classic",
-      "beginner"
+      "beginner",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/BirthdayProblem.lean",
     "badge": "mathlib",
@@ -259,6 +260,41 @@
       "id": "binomial-theorem",
       "relationship": "uses",
       "description": "Binomial coefficients C(n,2) = n(n-1)/2 count the number of pairs, which is why 23 people have 253 pairs — the quadratic growth of pairs is the key to the birthday 'paradox'"
+    },
+    {
+      "id": "arithmetic-series",
+      "relationship": "related",
+      "description": "The number of pairs C(n,2) = n(n-1)/2 is a triangular number — the same formula as the arithmetic series sum, connecting"
+    },
+    {
+      "id": "derangements",
+      "relationship": "related",
+      "description": "Both are classic combinatorial problems counting structured functions: the birthday problem counts injective functions ("
+    },
+    {
+      "id": "inclusion-exclusion",
+      "relationship": "uses",
+      "description": "The birthday formula $P(n) = 1 - \\prod_{i=0}^{n-1}(1 - i/365)$ is a complement-counting argument, the simplest form of i"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\approx \\sqrt{2\\pi n}(n/e)^n$ enables the Poisson approximation $P(n) \\approx 1 - e^{-n^2/("
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "uses",
+      "description": "The binomial coefficient $\\binom{n}{2} = n(n-1)/2$ counts the number of person-pairs, which is the key to the birthday '"
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The probabilistic method uses expectation to prove existence: in the birthday problem, the expected number of matching p"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The number of birthday collisions among $n$ people follows a distribution that converges to Poisson (and thence to Gauss"
     }
   ],
   "leanFile": {

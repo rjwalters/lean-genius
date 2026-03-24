@@ -13,7 +13,8 @@
       "elliptic-curves",
       "modular-forms",
       "advanced",
-      "milestone"
+      "milestone",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/FermatsLastTheorem.lean",
     "badge": "axiom",
@@ -230,6 +231,51 @@
       "id": "pythagorean-theorem",
       "relationship": "foundational",
       "description": "The Pythagorean theorem establishes $a^2 + b^2 = c^2$ — Fermat's Last Theorem generalizes this from $n=2$ (infinitely many solutions: Pythagorean triples) to $n \\geq 3$ (no solutions). The contrast between richness at $n=2$ and emptiness at $n \\geq 3$ is the core mystery"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both are landmark results where Galois theory plays a central role: Abel-Ruffini uses non-solvability of $S_5$ to block "
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem constrains group structure throughout the proof: the order of Galois groups, the structure of decompo"
+    },
+    {
+      "id": "pythagorean-triples",
+      "relationship": "complementary",
+      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2=c^2$ are completely classified: $a = m^2-n^2$, $b=2mn$, $c=m^2+n^2$. FLT sho"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees all algebraic numbers embed in $\\mathbb{C}$, providing the complex-analytic tools for Wiles's proof. Modu"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "Gauss's quadratic reciprocity (1801) is the starting point of the class field theory that Wiles's proof generalizes: Art"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ for irregular primes blocked Kummer's 1847 approach to FLT."
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "thematic",
+      "description": "FLT was once conjectured to be unprovable in PA or even ZFC. Wiles's proof shows it is provable in ZFC, but the question"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Wiles's proof uses modular forms with $q$-expansions $f(\\tau) = \\sum a_n e^{2\\pi i n \\tau}$ — directly using Euler's for"
+    },
+    {
+      "id": "hilbert-10",
+      "relationship": "related",
+      "description": "Both concern integer solutions of polynomial equations: FLT proves $x^n + y^n = z^n$ has none for $n > 2$, while Hilbert"
     }
   ],
   "references": [

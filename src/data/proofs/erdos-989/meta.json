@@ -112,70 +112,80 @@
       "title": "Basic Definitions",
       "summary": "Defines Point (as EuclideanSpace ℝ (Fin 2)), Circle (center + positive radius), Circle.disk (closed ball), and circleArea (πr²). These are the geometric primitives for the discrepancy problem.",
       "startLine": 44,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "Defines Point (as EuclideanSpace ℝ (Fin 2)), Circle (center + positive radius), Circle.disk (closed ball), and circleArea (πr²). These are the geometric primitives for the discrepancy problem."
     },
     {
       "id": "discrepancy-definitions",
       "title": "Point Sequences and Discrepancy",
       "summary": "Defines PointSequence (ℕ → Point), countInCircle (filtering Finset.range n), localDiscrepancy (|count - πr²|), and the central object circleDiscrepancy (iSup over all circles of fixed radius and all prefix lengths).",
       "startLine": 62,
-      "endLine": 87
+      "endLine": 87,
+      "mathContext": "Defines PointSequence (ℕ → Point), countInCircle (filtering Finset.range n), localDiscrepancy (|count - πr²|), and the central object circleDiscrepancy (iSup over all circles of fixed radius and all p"
     },
     {
       "id": "lower-bound",
       "title": "Beck's Lower Bound",
       "summary": "States beck_lower_bound as an axiom (∃ c > 0, ∀ A, f(r) ≥ c√r eventually) and derives discrepancy_unbounded — one of the rare fully-proved theorems in the file, using calc chains with sqrt monotonicity.",
       "startLine": 88,
-      "endLine": 129
+      "endLine": 129,
+      "mathContext": "States beck_lower_bound as an axiom (∃ c > 0, ∀ A, f(r) ≥ c√r eventually) and derives discrepancy_unbounded — one of the rare fully-proved theorems in the file, using calc chains with sqrt monotonicit"
     },
     {
       "id": "upper-bound",
       "title": "Beck's Upper Bound",
       "summary": "States beck_upper_bound as an axiom (∃ A, f(r) ≤ C√(r log r) eventually) and extracts beckOptimalSequence via Classical.choose — a non-constructive witness from the probabilistic existence proof.",
       "startLine": 130,
-      "endLine": 150
+      "endLine": 150,
+      "mathContext": "States beck_upper_bound as an axiom (∃ A, f(r) ≤ C√(r log r) eventually) and extracts beckOptimalSequence via Classical.choose — a non-constructive witness from the probabilistic existence proof."
     },
     {
       "id": "complete-answer",
       "title": "The Complete Answer",
       "summary": "The erdos_989_solved theorem packages all three results as a conjunction: unboundedness, universal lower bound √r, and existence of near-optimal √(r log r) sequence. Proved by direct application of the preceding results.",
       "startLine": 151,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "The erdos_989_solved theorem packages all three results as a conjunction: unboundedness, universal lower bound √r, and existence of near-optimal √(r log r) sequence. Proved by direct application of th"
     },
     {
       "id": "discrepancy-theory",
       "title": "Connection to Discrepancy Theory",
       "summary": "Contextualizes circle discrepancy within the broader framework of geometric discrepancy theory. Defines allCircles and generalCircleDiscrepancy (sup over all radii), linking to the test-set family perspective of Roth, Schmidt, and Beck.",
       "startLine": 184,
-      "endLine": 208
+      "endLine": 208,
+      "mathContext": "Contextualizes circle discrepancy within the broader framework of geometric discrepancy theory. Defines allCircles and generalCircleDiscrepancy (sup over all radii), linking to the test-set family per"
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
       "summary": "Formalizes the two proof techniques as axioms: fourier_analysis_lower_bound (for any A and r > 1, some circle has discrepancy ≥ √r/10) and probabilistic_upper_bound_construction (existence of sequence with local discrepancy O(√(r log r))).",
       "startLine": 209,
-      "endLine": 239
+      "endLine": 239,
+      "mathContext": "Formalizes the two proof techniques as axioms: fourier_analysis_lower_bound (for any A and r > 1, some circle has discrepancy ≥ √r/10) and probabilistic_upper_bound_construction (existence of sequence"
     },
     {
       "id": "open-questions",
       "title": "Open Questions",
       "summary": "Formalizes three major open problems as Lean propositions: the logarithmic gap (is f(r) = O(√r) achievable?), explicit constructions (derandomization), and higher-dimensional balls (discrepancy in ℝ^d).",
       "startLine": 240,
-      "endLine": 283
+      "endLine": 283,
+      "mathContext": "Formalizes three major open problems as Lean propositions: the logarithmic gap (is f(r) = O(√r) achievable?), explicit constructions (derandomization), and higher-dimensional balls (discrepancy in ℝ^d"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "States Schmidt's classical box discrepancy theorem (D(N) ≥ c log N for d=2) and Alexander's half-plane discrepancy theorem (D(N) ≥ cN^{1/4}) as axioms, providing context for why circle discrepancy (√r) is intermediate.",
       "startLine": 284,
-      "endLine": 320
+      "endLine": 320,
+      "mathContext": "States Schmidt's classical box discrepancy theorem (D(N) ≥ c log N for d=2) and Alexander's half-plane discrepancy theorem (D(N) ≥ cN^{1/4}) as axioms, providing context for why circle discrepancy (√r"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "The erdos_989_answers_both_questions theorem restates the key conjunction: f(r) is always unbounded AND f(r) ≥ c√r. The detailed docstring provides a complete narrative of the problem, solution, techniques, significance, and open problems.",
       "startLine": 321,
-      "endLine": 365
+      "endLine": 365,
+      "mathContext": "The erdos_989_answers_both_questions theorem restates the key conjunction: f(r) is always unbounded AND f(r) ≥ c√r. The detailed docstring provides a complete narrative of the problem, solution, techn"
     }
   ],
   "conclusion": {
@@ -266,6 +276,11 @@
       "id": "fourier-series",
       "relationship": "related",
       "description": "Foundational Fourier series theory underpinning Beck's Fourier-analytic lower bound proof"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Roth's theorem (k=3 case) connects to Roth's earlier rectangle discrepancy lower bound (1954)"
     }
   ]
 }

@@ -50,56 +50,64 @@
       "title": "Problem Context and Imports",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Header documenting the conjecture, Shelah's consistency result, and imports for Cardinal.Ordinal (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic (graph structure, adjacency)."
+      "summary": "Header documenting the conjecture, Shelah's consistency result, and imports for Cardinal.Ordinal (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic (graph structure, adjacency).",
+      "mathContext": "Header documenting the conjecture, Shelah's consistency result, and imports for Cardinal.Ordinal (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic (graph structure, adjacency)."
     },
     {
       "id": "coloring-defs",
       "title": "Cardinal Coloring Infrastructure",
       "startLine": 30,
       "endLine": 53,
-      "summary": "Defines IsProperColoring (adjacent vertices get different colors from a cardinal-indexed type), IsColorable, and the axiomatized cardinalChromaticNumber with chromaticNumber_le_iff connecting it to colorability."
+      "summary": "Defines IsProperColoring (adjacent vertices get different colors from a cardinal-indexed type), IsColorable, and the axiomatized cardinalChromaticNumber with chromaticNumber_le_iff connecting it to colorability.",
+      "mathContext": "Defines IsProperColoring (adjacent vertices get different colors from a cardinal-indexed type), IsColorable, and the axiomatized cardinalChromaticNumber with chromaticNumber_le_iff connecting it to co"
     },
     {
       "id": "triangle-free",
       "title": "Triangle-Free Subgraphs",
       "startLine": 54,
       "endLine": 76,
-      "summary": "Defines IsTriangleFree (no three mutually adjacent vertices), inducedSubgraphOn (restricts G to a vertex subset S via subtypes), and HasTriangleFreeSubgraphWithChromatic (∃ S with G[S] triangle-free and χ(G[S]) ≥ κ)."
+      "summary": "Defines IsTriangleFree (no three mutually adjacent vertices), inducedSubgraphOn (restricts G to a vertex subset S via subtypes), and HasTriangleFreeSubgraphWithChromatic (∃ S with G[S] triangle-free and χ(G[S]) ≥ κ).",
+      "mathContext": "Defines IsTriangleFree (no three mutually adjacent vertices), inducedSubgraphOn (restricts G to a vertex subset S via subtypes), and HasTriangleFreeSubgraphWithChromatic (∃ S with G[S] triangle-free a"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 77,
       "endLine": 93,
-      "summary": "States erdos1175: for each uncountable κ, ∃ λ such that ∀ G, χ(G) ≥ λ implies G has a triangle-free subgraph with χ ≥ κ. Universally quantified over all types V and graphs G."
+      "summary": "States erdos1175: for each uncountable κ, ∃ λ such that ∀ G, χ(G) ≥ λ implies G has a triangle-free subgraph with χ ≥ κ. Universally quantified over all types V and graphs G.",
+      "mathContext": "States erdos1175: for each uncountable κ, ∃ λ such that ∀ G, χ(G) ≥ λ implies G has a triangle-free subgraph with χ ≥ κ. Universally quantified over all types V and graphs G."
     },
     {
       "id": "shelah-consistency",
       "title": "Shelah's Consistency Result",
       "startLine": 94,
       "endLine": 131,
-      "summary": "Axiomatizes Shelah's result: consistently ∃ G with χ(G) = ℵ₁ where every triangle-free induced subgraph has χ ≤ ℵ₀. The theorem shelah_implies_failure_at_aleph1 derives that λ = ℵ₁ fails for κ = ℵ₁ by contradiction."
+      "summary": "Axiomatizes Shelah's result: consistently ∃ G with χ(G) = ℵ₁ where every triangle-free induced subgraph has χ ≤ ℵ₀. The theorem shelah_implies_failure_at_aleph1 derives that λ = ℵ₁ fails for κ = ℵ₁ by contradiction.",
+      "mathContext": "Axiomatizes Shelah's result: consistently ∃ G with χ(G) = ℵ₁ where every triangle-free induced subgraph has χ ≤ ℵ₀. The theorem shelah_implies_failure_at_aleph1 derives that λ = ℵ₁ fails for κ = ℵ₁ by"
     },
     {
       "id": "finite-case",
       "title": "Finite Case and Mycielski",
       "startLine": 132,
       "endLine": 151,
-      "summary": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with χ ≥ k)."
+      "summary": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with χ ≥ k).",
+      "mathContext": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with"
     },
     {
       "id": "girth-variant",
       "title": "Girth Variant",
       "startLine": 152,
       "endLine": 173,
-      "summary": "Generalizes triangle-freeness to girth ≥ g via HasGirthAtLeast (no injective cycle of length < g). States erdos1175_girth_variant: for each g ≥ 4 and uncountable κ, ∃ λ with the analogous property."
+      "summary": "Generalizes triangle-freeness to girth ≥ g via HasGirthAtLeast (no injective cycle of length < g). States erdos1175_girth_variant: for each g ≥ 4 and uncountable κ, ∃ λ with the analogous property.",
+      "mathContext": "Generalizes triangle-freeness to girth ≥ g via HasGirthAtLeast (no injective cycle of length < g). States erdos1175_girth_variant: for each g ≥ 4 and uncountable κ, ∃ λ with the analogous property."
     },
     {
       "id": "erdos-1959",
       "title": "Erdős 1959 Existence and Summary",
       "startLine": 174,
       "endLine": 202,
-      "summary": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175."
+      "summary": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos1175.",
+      "mathContext": "Axiomatizes Erdős (1959): ∀ k ≥ 1, g ≥ 3, ∃ finite graph with girth ≥ g and χ ≥ k (probabilistic method). Summary theorem confirms Shelah's result as the main known result. ErdosProblem1175 := erdos11"
     }
   ],
   "conclusion": {

@@ -85,84 +85,96 @@
       "title": "Graphs and Color Lists",
       "summary": "Defines `Graph V` as `SimpleGraph V`, `ColorAssignment V a` as $V \\to \\text{Finset}(\\text{Fin}\\, a)$ assigning $a$ colors per vertex, `ColorSelection` for choosing subsets, and validity predicates (`IsValidAssignment`, `IsValidSelection`) ensuring correct cardinalities.",
       "startLine": 37,
-      "endLine": 59
+      "endLine": 59,
+      "mathContext": "Defines `Graph V` as `SimpleGraph V`, `ColorAssignment V a` as $V \\to \\text{Finset}(\\text{Fin}\\, a)$ assigning $a$ colors per vertex, `ColorSelection` for choosing subsets, and validity predicates (`I"
     },
     {
       "id": "choosability",
       "title": "(a,b)-Choosability",
       "summary": "The central definition: `IsChoosable G a b` holds iff $\\forall L$ (valid assignment of $a$ colors), $\\exists S$ (selection of $b$ colors from each list) such that adjacent vertices have `Disjoint` selections. This captures the $\\forall\\exists$ game semantics.",
       "startLine": 60,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "The central definition: `IsChoosable G a b` holds iff $\\forall L$ (valid assignment of $a$ colors), $\\exists S$ (selection of $b$ colors from each list) such that adjacent vertices have `Disjoint` sel"
     },
     {
       "id": "list-chromatic",
       "title": "List Chromatic Number",
       "summary": "Connects $(a,1)$-choosability to $\\chi_L(G) \\leq a$ via `listChromaticNumber_le`, defines $\\chi_L(G) = \\inf\\{a : \\text{IsChoosable}\\, G\\, a\\, 1\\}$, and axiomatizes $\\chi_L(G) \\geq \\chi(G)$.",
       "startLine": 81,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "Connects $(a,1)$-choosability to $\\chi_L(G) \\leq a$ via `listChromaticNumber_le`, defines $\\chi_L(G) = \\inf\\{a : \\text{IsChoosable}\\, G\\, a\\, 1\\}$, and axiomatizes $\\chi_L(G) \\geq \\chi(G)$."
     },
     {
       "id": "properties",
       "title": "Properties of Choosability",
       "summary": "Proves monotonicity in $a$ (more colors $\\implies$ easier), anti-monotonicity in $b$ (fewer selections $\\implies$ easier), the necessity of $b \\leq a$, and that the empty graph $\\bot$ is always $(a,b)$-choosable when $b \\leq a$.",
       "startLine": 100,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "Proves monotonicity in $a$ (more colors $\\implies$ easier), anti-monotonicity in $b$ (fewer selections $\\implies$ easier), the necessity of $b \\leq a$, and that the empty graph $\\bot$ is always $(a,b)"
     },
     {
       "id": "ert-conjecture",
       "title": "The Erdős–Rubin–Taylor Conjecture",
       "summary": "States `ERT_Conjecture`: $\\forall G, a, b, m \\geq 1$, $(a,b)$-choosable $\\implies$ $(am, bm)$-choosable. Proves the trivial $m = 1$ case and the vacuous $b = 0$ case (select $\\emptyset$ everywhere).",
       "startLine": 126,
-      "endLine": 154
+      "endLine": 154,
+      "mathContext": "States `ERT_Conjecture`: $\\forall G, a, b, m \\geq 1$, $(a,b)$-choosable $\\implies$ $(am, bm)$-choosable. Proves the trivial $m = 1$ case and the vacuous $b = 0$ case (select $\\emptyset$ everywhere)."
     },
     {
       "id": "m-2-case",
       "title": "The $m = 2$ Case",
       "summary": "Specializes to `ERT_Case_m2` ($m = 2$) and further to `ERT_Case_4_1_to_8_2`: does $(4,1)$-choosable imply $(8,2)$-choosable? Axiomatizes that this specific case is false.",
       "startLine": 155,
-      "endLine": 173
+      "endLine": 173,
+      "mathContext": "Specializes to `ERT_Case_m2` ($m = 2$) and further to `ERT_Case_4_1_to_8_2`: does $(4,1)$-choosable imply $(8,2)$-choosable? Axiomatizes that this specific case is false."
     },
     {
       "id": "dhs-counterexample",
       "title": "The Dvořák–Hu–Sereni Counterexample",
       "summary": "Axiomatizes the DHS 2019 result: $\\exists G$ with $(4,1)$-choosable $\\wedge \\neg(8,2)$-choosable, with $n > 100$ vertices. Also axiomatizes the existence of a specific bad 8-color assignment that blocks all valid 2-selections.",
       "startLine": 174,
-      "endLine": 199
+      "endLine": 199,
+      "mathContext": "Axiomatizes the DHS 2019 result: $\\exists G$ with $(4,1)$-choosable $\\wedge \\neg(8,2)$-choosable, with $n > 100$ vertices. Also axiomatizes the existence of a specific bad 8-color assignment that bloc"
     },
     {
       "id": "disproof",
       "title": "The Main Disproof",
       "summary": "Proves `ert_conjecture_false`: $\\neg\\text{ERT\\_Conjecture}$. The chain: `ert_4_1_to_8_2_false` $\\implies$ `ert_m2_false` (by specializing $a=4, b=1$) $\\implies$ `ert_conjecture_false` (by specializing $m=2$).",
       "startLine": 200,
-      "endLine": 226
+      "endLine": 226,
+      "mathContext": "Proves `ert_conjecture_false`: $\\neg\\text{ERT\\_Conjecture}$. The chain: `ert_4_1_to_8_2_false` $\\implies$ `ert_m2_false` (by specializing $a=4, b=1$) $\\implies$ `ert_conjecture_false` (by specializing"
     },
     {
       "id": "positive",
       "title": "Positive Results for Special Classes",
       "summary": "Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon–Tuza–Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints).",
       "startLine": 227,
-      "endLine": 263
+      "endLine": 263,
+      "mathContext": "Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon–Tuza–Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints)."
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "summary": "States the List Coloring Conjecture ($\\chi_L(L(G)) = \\chi'(G)$ for line graphs), Galvin's theorem for bipartite line graphs, and Ohba's theorem ($\\chi_L = \\chi$ when $|V| \\leq 2\\chi + 1$, proved by Noel–Reed–Wu 2015).",
       "startLine": 264,
-      "endLine": 285
+      "endLine": 285,
+      "mathContext": "States the List Coloring Conjecture ($\\chi_L(L(G)) = \\chi'(G)$ for line graphs), Galvin's theorem for bipartite line graphs, and Ohba's theorem ($\\chi_L = \\chi$ when $|V| \\leq 2\\chi + 1$, proved by No"
     },
     {
       "id": "construction",
       "title": "The Construction Details",
       "summary": "Axiomatizes structural details of the DHS counterexample: a Kneser-type base graph that is $(4,1)$-choosable, a key lemma providing a bad list assignment for $(8,2)$, and bounded degree ($\\Delta \\leq 100$).",
       "startLine": 286,
-      "endLine": 313
+      "endLine": 313,
+      "mathContext": "Axiomatizes structural details of the DHS counterexample: a Kneser-type base graph that is $(4,1)$-choosable, a key lemma providing a bad list assignment for $(8,2)$, and bounded degree ($\\Delta \\leq "
     },
     {
       "id": "main-result",
       "title": "Main Result — Erdős Problem #632 DISPROVED",
       "summary": "Final theorem `erdos_632_disproved`: $\\neg\\text{ERT\\_Conjecture}$, with summary strings. The `#check` commands verify that the disproof and counterexample typecheck in the Lean kernel.",
       "startLine": 314,
-      "endLine": 346
+      "endLine": 346,
+      "mathContext": "Final theorem `erdos_632_disproved`: $\\neg\\text{ERT\\_Conjecture}$, with summary strings. The `#check` commands verify that the disproof and counterexample typecheck in the Lean kernel."
     }
   ],
   "conclusion": {

@@ -52,63 +52,72 @@
       "title": "Probability Measure Type",
       "summary": "Defines ProbMeasure wrapping Mathlib's Measure R with IsProbabilityMeasure constraint, and diracProb for Dirac delta measures.",
       "startLine": 35,
-      "endLine": 48
+      "endLine": 48,
+      "mathContext": "Defines ProbMeasure wrapping Mathlib's Measure R with IsProbabilityMeasure constraint, and diracProb for Dirac delta measures."
     },
     {
       "id": "convolution",
       "title": "Convolution Operation",
       "summary": "Axiomatizes convolution of probability measures and its preservation of the probability measure property.",
       "startLine": 49,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "Axiomatizes convolution of probability measures and its preservation of the probability measure property."
     },
     {
       "id": "monoid",
       "title": "Monoid Structure",
       "summary": "Axioms for the commutative monoid: associativity, left/right identity (Dirac at 0), commutativity.",
       "startLine": 62,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "Axioms for the commutative monoid: associativity, left/right identity (Dirac at 0), commutativity."
     },
     {
       "id": "conv-pow",
       "title": "Convolution Powers",
       "summary": "Defines convPow mu n recursively, proves convPow_zero, convPow_one, and the distribution law convPow_add by induction.",
       "startLine": 82,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Defines convPow mu n recursively, proves convPow_zero, convPow_one, and the distribution law convPow_add by induction."
     },
     {
       "id": "char-fun",
       "title": "Characteristic Functions",
       "summary": "Axiomatizes the characteristic function, proves it is a monoid homomorphism (charFun_convolution, charFun_dirac_zero), and derives charFun_convPow.",
       "startLine": 115,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "Axiomatizes the characteristic function, proves it is a monoid homomorphism (charFun_convolution, charFun_dirac_zero), and derives charFun_convPow."
     },
     {
       "id": "normalization-clt",
       "title": "Normalization and the CLT",
       "summary": "Axiomatizes normalization, mean, variance, the standard Gaussian, and the CLT as convergence of normalized convolution powers.",
       "startLine": 146,
-      "endLine": 190
+      "endLine": 190,
+      "mathContext": "Axiomatizes normalization, mean, variance, the standard Gaussian, and the CLT as convergence of normalized convolution powers."
     },
     {
       "id": "gaussian-fixed-point",
       "title": "Gaussian as Fixed Point",
       "summary": "Axiomatizes Gaussian stability under all convolution powers and Cramer's indecomposability theorem.",
       "startLine": 191,
-      "endLine": 214
+      "endLine": 214,
+      "mathContext": "Axiomatizes Gaussian stability under all convolution powers and Cramer's indecomposability theorem."
     },
     {
       "id": "categorical-perspective",
       "title": "Categorical Perspective",
       "summary": "Domain of attraction definition, CLT as DOA membership, Gaussian in its own DOA, DOA closure under convolution.",
       "startLine": 215,
-      "endLine": 241
+      "endLine": 241,
+      "mathContext": "Domain of attraction definition, CLT as DOA membership, Gaussian in its own DOA, DOA closure under convolution."
     },
     {
       "id": "summary",
       "title": "Summary of Algebraic Structure",
       "summary": "Packages all four monoid axioms into convolution_monoid_summary theorem.",
       "startLine": 241,
-      "endLine": 241
+      "endLine": 241,
+      "mathContext": "Packages all four monoid axioms into convolution_monoid_summary theorem."
     }
   ],
   "overview": {

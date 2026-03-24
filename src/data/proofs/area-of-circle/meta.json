@@ -12,7 +12,8 @@
       "geometry",
       "measure-theory",
       "classic",
-      "beginner"
+      "beginner",
+      "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/AreaOfCircle.lean",
     "badge": "mathlib",
@@ -253,6 +254,66 @@
       "id": "basel-problem",
       "relationship": "related",
       "description": "Euler's Basel problem (∑1/n² = π²/6) provides another unexpected appearance of π — the same constant whose geometric meaning as the area-to-radius² ratio is formalized here. Euler's proof connecting ∑1/n² to sin(x)/x reveals π's dual role in geometry and analysis"
+    },
+    {
+      "id": "area-of-circle-oq-01",
+      "relationship": "extended-by",
+      "description": "Derives the circumference formula $C = 2\\pi r$ via differentiation of the area $A = \\pi r^2$ with respect to $r$ — the i"
+    },
+    {
+      "id": "area-of-circle-oq-03",
+      "relationship": "extended-by",
+      "description": "Formalizes Archimedes' method of exhaustion directly: approximating the circle's area by inscribed and circumscribed reg"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The intermediate value theorem underpins the continuity arguments needed for integration. Archimedes' method of exhausti"
+    },
+    {
+      "id": "isoperimetric-theorem",
+      "relationship": "complementary",
+      "description": "The isoperimetric inequality states that among all planar curves of fixed perimeter $L$, the circle encloses the maximum"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Derives the area formula by integrating circumference: $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$, showing the circle's a"
+    },
+    {
+      "id": "area-of-circle-oq-01-oq-03",
+      "relationship": "extended-by",
+      "description": "The isoperimetric inequality $C^2 \\geq 4\\pi A$ with equality iff the curve is a circle — the variational characterizatio"
+    },
+    {
+      "id": "area-of-circle-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Archimedes' bounds $223/71 < \\pi < 22/7$ via inscribed and circumscribed regular 96-gons — the computational complement "
+    },
+    {
+      "id": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "This proof formalizes area as Lebesgue measure $\\lambda^2$. The Lebesgue measure entry provides the measure-theoretic in"
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The annular ring derivation of $A = \\pi r^2$ is a direct application of the Fundamental Theorem of Calculus: $A(r) = \\in"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "The general $n$-dimensional ball volume $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$ that underpins this proof uses the Gamm"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of $e$ connects to the circle area formula through the Gaussian integral: $\\int_{-\\infty}^{\\infty} e^{"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} = -1$ connects to the circle area formula through the complex plane: this formalization uses "
     }
   ],
   "leanFile": {

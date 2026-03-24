@@ -80,63 +80,72 @@
       "title": "Imports and Namespace",
       "startLine": 59,
       "endLine": 68,
-      "summary": "Imports `Int.ModEq` for modular arithmetic, `Finset.Basic`, `Log.Basic`, `Pow.Real` for $L(N)$, and `Tactic`. Opens `Finset`, `Real` within `Erdos202`."
+      "summary": "Imports `Int.ModEq` for modular arithmetic, `Finset.Basic`, `Log.Basic`, `Pow.Real` for $L(N)$, and `Tactic`. Opens `Finset`, `Real` within `Erdos202`.",
+      "mathContext": "Imports `Int.ModEq` for modular arithmetic, `Finset.Basic`, `Log.Basic`, `Pow.Real` for $L(N)$, and `Tactic`. Opens `Finset`, `Real` within `Erdos202`."
     },
     {
       "id": "congruence-classes",
       "title": "Congruence Classes and Disjointness",
       "startLine": 73,
       "endLine": 84,
-      "summary": "Defines CongruenceClass$(a, n)$ with $n > 0$, containment via $x \\equiv a \\pmod{n}$ (`Int.ModEq`), and AreDisjoint: no integer belongs to both classes."
+      "summary": "Defines CongruenceClass$(a, n)$ with $n > 0$, containment via $x \\equiv a \\pmod{n}$ (`Int.ModEq`), and AreDisjoint: no integer belongs to both classes.",
+      "mathContext": "Defines CongruenceClass$(a, n)$ with $n > 0$, containment via $x \\equiv a \\pmod{n}$ (`Int.ModEq`), and AreDisjoint: no integer belongs to both classes."
     },
     {
       "id": "disjoint-systems",
       "title": "Disjoint System Structure",
       "startLine": 89,
       "endLine": 103,
-      "summary": "Defines DisjointSystem with `Finset CongruenceClass`, pairwise disjointness, `moduli` ($\\text{image}$ of modulus), `boundedBy(N)$ (all moduli $\\leq N$), and `size` ($|\\text{classes}|$)."
+      "summary": "Defines DisjointSystem with `Finset CongruenceClass`, pairwise disjointness, `moduli` ($\\text{image}$ of modulus), `boundedBy(N)$ (all moduli $\\leq N$), and `size` ($|\\text{classes}|$).",
+      "mathContext": "Defines DisjointSystem with `Finset CongruenceClass`, pairwise disjointness, `moduli` ($\\text{image}$ of modulus), `boundedBy(N)$ (all moduli $\\leq N$), and `size` ($|\\text{classes}|$)."
     },
     {
       "id": "f-function",
       "title": "The Function $f(N)$",
       "startLine": 108,
       "endLine": 152,
-      "summary": "Defines $f(N) = \\text{sSup}\\{|S| : S$ bounded by $N\\}$. Proves `f_mono` ($N_1 \\leq N_2 \\implies f(N_1) \\leq f(N_2)$) via subset argument (Aristotle)."
+      "summary": "Defines $f(N) = \\text{sSup}\\{|S| : S$ bounded by $N\\}$. Proves `f_mono` ($N_1 \\leq N_2 \\implies f(N_1) \\leq f(N_2)$) via subset argument (Aristotle).",
+      "mathContext": "Defines $f(N) = \\text{sSup}\\{|S| : S$ bounded by $N\\}$. Proves `f_mono` ($N_1 \\leq N_2 \\implies f(N_1) \\leq f(N_2)$) via subset argument (Aristotle)."
     },
     {
       "id": "basic-bounds",
       "title": "Basic Bounds and Density Constraint",
       "startLine": 153,
       "endLine": 336,
-      "summary": "Proves `sum_inv_moduli_le_one` ($\\sum 1/n_i \\leq 1$), `f_le_N` ($f(N) \\leq N$), `f_ge_N` ($f(N) \\geq N$ via full system), and `f_lower_trivial`. Multiple proofs by Aristotle."
+      "summary": "Proves `sum_inv_moduli_le_one` ($\\sum 1/n_i \\leq 1$), `f_le_N` ($f(N) \\leq N$), `f_ge_N` ($f(N) \\geq N$ via full system), and `f_lower_trivial`. Multiple proofs by Aristotle.",
+      "mathContext": "Proves `sum_inv_moduli_le_one` ($\\sum 1/n_i \\leq 1$), `f_le_N` ($f(N) \\leq N$), `f_ge_N` ($f(N) \\geq N$ via full system), and `f_lower_trivial`. Multiple proofs by Aristotle."
     },
     {
       "id": "l-function",
       "title": "The $L$ Function and Growth Properties",
       "startLine": 340,
       "endLine": 411,
-      "summary": "Defines $L(N) = \\exp(\\sqrt{\\log N \\cdot \\log\\log N})$. Proves `L_mono` and `L_subpolynomial` ($L(N) < N^\\varepsilon$, Aristotle). States `L_superlogarithmic` (sorry)."
+      "summary": "Defines $L(N) = \\exp(\\sqrt{\\log N \\cdot \\log\\log N})$. Proves `L_mono` and `L_subpolynomial` ($L(N) < N^\\varepsilon$, Aristotle). States `L_superlogarithmic` (sorry).",
+      "mathContext": "Defines $L(N) = \\exp(\\sqrt{\\log N \\cdot \\log\\log N})$. Proves `L_mono` and `L_subpolynomial` ($L(N) < N^\\varepsilon$, Aristotle). States `L_superlogarithmic` (sorry)."
     },
     {
       "id": "erdos-stein",
       "title": "Erdős–Stein Conjecture and Szemerédi Bound",
       "startLine": 420,
       "endLine": 546,
-      "summary": "States erdos_stein_conjecture: $f(N) = o(N)$ (sorry). Proves `erdos_szemeredi_upper`: $f(N) < N/(\\log N)^c$ (Aristotle). Includes `trivialSystem` and `full_system` constructions."
+      "summary": "States erdos_stein_conjecture: $f(N) = o(N)$ (sorry). Proves `erdos_szemeredi_upper`: $f(N) < N/(\\log N)^c$ (Aristotle). Includes `trivialSystem` and `full_system` constructions.",
+      "mathContext": "States erdos_stein_conjecture: $f(N) = o(N)$ (sorry). Proves `erdos_szemeredi_upper`: $f(N) < N/(\\log N)^c$ (Aristotle). Includes `trivialSystem` and `full_system` constructions."
     },
     {
       "id": "modern-bounds",
       "title": "BFV Bounds and Exact Asymptotic Conjecture",
       "startLine": 552,
       "endLine": 760,
-      "summary": "States `upper_bound_BFV`: $f(N) < N/L(N)^{\\sqrt{3}/2-\\varepsilon}$ (sorry). Proves `lower_bound_BFV`: $f(N) > N/L(N)^{1+\\varepsilon}$ (Aristotle). Defines ExactAsymptoticConjecture: $f(N) = N/L(N)^{1+o(1)}$."
+      "summary": "States `upper_bound_BFV`: $f(N) < N/L(N)^{\\sqrt{3}/2-\\varepsilon}$ (sorry). Proves `lower_bound_BFV`: $f(N) > N/L(N)^{1+\\varepsilon}$ (Aristotle). Defines ExactAsymptoticConjecture: $f(N) = N/L(N)^{1+o(1)}$.",
+      "mathContext": "States `upper_bound_BFV`: $f(N) < N/L(N)^{\\sqrt{3}/2-\\varepsilon}$ (sorry). Proves `lower_bound_BFV`: $f(N) > N/L(N)^{1+\\varepsilon}$ (Aristotle). Defines ExactAsymptoticConjecture: $f(N) = N/L(N)^{1+"
     },
     {
       "id": "examples",
       "title": "Historical Bounds and Examples",
       "startLine": 763,
       "endLine": 809,
-      "summary": "States Croot bounds (sorry), `example_N6` ($f(6) \\geq 3$ via classes $0 \\bmod 2, 1 \\bmod 4, 3 \\bmod 6$), and `coveringDensity` with $\\sum 1/n_i \\leq 1$."
+      "summary": "States Croot bounds (sorry), `example_N6` ($f(6) \\geq 3$ via classes $0 \\bmod 2, 1 \\bmod 4, 3 \\bmod 6$), and `coveringDensity` with $\\sum 1/n_i \\leq 1$.",
+      "mathContext": "States Croot bounds (sorry), `example_N6` ($f(6) \\geq 3$ via classes $0 \\bmod 2, 1 \\bmod 4, 3 \\bmod 6$), and `coveringDensity` with $\\sum 1/n_i \\leq 1$."
     }
   ],
   "conclusion": {

@@ -82,70 +82,80 @@
       "title": "Primorials and Totients",
       "summary": "Defines prime enumeration $p_k$, primorials $N_k = \\prod_{i=1}^{k} p_i$, and Euler's totient $\\varphi(N_k) = \\prod_{i=1}^{k}(p_i - 1)$ with the multiplicative product formula.",
       "startLine": 42,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "Defines prime enumeration $p_k$, primorials $N_k = \\prod_{i=1}^{k} p_i$, and Euler's totient $\\varphi(N_k) = \\prod_{i=1}^{k}(p_i - 1)$ with the multiplicative product formula."
     },
     {
       "id": "coprime-sequences",
       "title": "Coprime Sequences",
       "summary": "Constructs the set of totatives $\\{a \\in [0, N_k) : \\gcd(a, N_k) = 1\\}$, proves its cardinality equals $\\varphi(N_k)$, and sorts them into the ascending sequence $a_1 < a_2 < \\cdots$.",
       "startLine": 81,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "Constructs the set of totatives $\\{a \\in [0, N_k) : \\gcd(a, N_k) = 1\\}$, proves its cardinality equals $\\varphi(N_k)$, and sorts them into the ascending sequence $a_1 < a_2 < \\cdots$."
     },
     {
       "id": "gap-distribution",
       "title": "Gap Distribution",
       "summary": "Defines gaps $g_i = a_{i+1} - a_i$, average gap $\\bar{g} = N_k/\\varphi(N_k)$, normalized gaps $g_i/\\bar{g}$, and the empirical CDF $f_k(c) = |\\{i : g_i \\le c\\bar{g}\\}|/\\varphi(N_k)$.",
       "startLine": 114,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "Defines gaps $g_i = a_{i+1} - a_i$, average gap $\\bar{g} = N_k/\\varphi(N_k)$, normalized gaps $g_i/\\bar{g}$, and the empirical CDF $f_k(c) = |\\{i : g_i \\le c\\bar{g}\\}|/\\varphi(N_k)$."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "Formalizes Erdős #235: there exists a continuous $f$ such that $f_k(c) \\to f(c)$ for all $c \\ge 0$ as $k \\to \\infty$.",
       "startLine": 153,
-      "endLine": 166
+      "endLine": 166,
+      "mathContext": "Formalizes Erdős #235: there exists a continuous $f$ such that $f_k(c) \\to f(c)$ for all $c \\ge 0$ as $k \\to \\infty$."
     },
     {
       "id": "hooley",
       "title": "Hooley's Theorem",
       "summary": "Defines $\\text{exponentialCDF}(c) = 1 - e^{-c}$, axiomatizes Hooley's 1965 convergence result, and formally derives `ErdosConjecture235` by witnessing the exponential CDF.",
       "startLine": 167,
-      "endLine": 200
+      "endLine": 200,
+      "mathContext": "Defines $\\text{exponentialCDF}(c) = 1 - e^{-c}$, axiomatizes Hooley's 1965 convergence result, and formally derives `ErdosConjecture235` by witnessing the exponential CDF."
     },
     {
       "id": "properties",
       "title": "Distribution Properties",
       "summary": "Verifies $f(0) = 0$, $f(c) \\to 1$ as $c \\to \\infty$, median at $c = \\ln 2$, and mean normalized gap equals 1 — standard properties of $\\text{Exp}(1)$.",
       "startLine": 201,
-      "endLine": 233
+      "endLine": 233,
+      "mathContext": "Verifies $f(0) = 0$, $f(c) \\to 1$ as $c \\to \\infty$, median at $c = \\ln 2$, and mean normalized gap equals 1 — standard properties of $\\text{Exp}(1)$."
     },
     {
       "id": "stronger",
       "title": "Stronger Results",
       "summary": "Uniform convergence on compact intervals $[a,b]$ and quantitative error bound $|f_k(c) - (1-e^{-c})| \\le C/\\log k$.",
       "startLine": 234,
-      "endLine": 253
+      "endLine": 253,
+      "mathContext": "Uniform convergence on compact intervals $[a,b]$ and quantitative error bound $|f_k(c) - (1-e^{-c})| \\le C/\\log k$."
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Maximum gap bound $O(\\log N_k \\cdot \\log\\log N_k)$ and the Jacobsthal function $j(N_k) \\le p_k \\log p_k$ measuring the largest gap between consecutive coprimes.",
       "startLine": 254,
-      "endLine": 280
+      "endLine": 280,
+      "mathContext": "Maximum gap bound $O(\\log N_k \\cdot \\log\\log N_k)$ and the Jacobsthal function $j(N_k) \\le p_k \\log p_k$ measuring the largest gap between consecutive coprimes."
     },
     {
       "id": "mertens",
       "title": "Mertens' Theorem Connection",
       "summary": "Mertens' third theorem $\\prod_{p \\le x}(1-1/p) \\sim e^{-\\gamma}/\\log x$ yields the average gap asymptotics $N_k/\\varphi(N_k) \\sim e^\\gamma \\log p_k$, where $\\gamma$ is the Euler-Mascheroni constant.",
       "startLine": 281,
-      "endLine": 304
+      "endLine": 304,
+      "mathContext": "Mertens' third theorem $\\prod_{p \\le x}(1-1/p) \\sim e^{-\\gamma}/\\log x$ yields the average gap asymptotics $N_k/\\varphi(N_k) \\sim e^\\gamma \\log p_k$, where $\\gamma$ is the Euler-Mascheroni constant."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Final theorems `erdos_235` (main result) and `erdos_235_answer` (direct convergence statement for each $c \\ge 0$), confirming the answer is YES with $f(c) = 1 - e^{-c}$.",
       "startLine": 305,
-      "endLine": 336
+      "endLine": 336,
+      "mathContext": "Final theorems `erdos_235` (main result) and `erdos_235_answer` (direct convergence statement for each $c \\ge 0$), confirming the answer is YES with $f(c) = 1 - e^{-c}$."
     }
   ],
   "conclusion": {
@@ -191,6 +201,11 @@
       "id": "",
       "relationship": "related",
       "description": "Related gallery proof"
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "foundation",
+      "description": "The sum Σ(1/log x) ~ n/log n asymptotic and average gap growth both depend on the prime number theorem and Mertens' theo"
     }
   ]
 }

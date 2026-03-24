@@ -84,70 +84,80 @@
       "title": "Core Definitions",
       "startLine": 34,
       "endLine": 66,
-      "summary": "FloorSeq, floorSeqTerm, IsRepresentable, IsComplete, IsDyadicRational."
+      "summary": "FloorSeq, floorSeqTerm, IsRepresentable, IsComplete, IsDyadicRational.",
+      "mathContext": "FloorSeq, floorSeqTerm, IsRepresentable, IsComplete, IsDyadicRational."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 67,
       "endLine": 86,
-      "summary": "Non-negativity, unboundedness, eventual monotonicity."
+      "summary": "Non-negativity, unboundedness, eventual monotonicity.",
+      "mathContext": "Non-negativity, unboundedness, eventual monotonicity."
     },
     {
       "id": "hegyvari",
       "title": "Hegyvári's Results (1989)",
       "startLine": 87,
       "endLine": 109,
-      "summary": "Positive result for dyadic + non-dyadic; negative result for α ≥ 2, β = 2ᵏα."
+      "summary": "Positive result for dyadic + non-dyadic; negative result for α ≥ 2, β = 2ᵏα.",
+      "mathContext": "Positive result for dyadic + non-dyadic; negative result for α ≥ 2, β = 2ᵏα."
     },
     {
       "id": "van-doorn",
       "title": "Van Doorn's Result",
       "startLine": 110,
       "endLine": 122,
-      "summary": "Completeness when α < 2 < β < 3."
+      "summary": "Completeness when α < 2 < β < 3.",
+      "mathContext": "Completeness when α < 2 < β < 3."
     },
     {
       "id": "recent-negative",
       "title": "Recent Negative Results",
       "startLine": 123,
       "endLine": 139,
-      "summary": "Jiang-Ma (2024) and Fang-He (2025) extensions."
+      "summary": "Jiang-Ma (2024) and Fang-He (2025) extensions.",
+      "mathContext": "Jiang-Ma (2024) and Fang-He (2025) extensions."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 140,
       "endLine": 177,
-      "summary": "The general question and its known falsity; refined conjecture."
+      "summary": "The general question and its known falsity; refined conjecture.",
+      "mathContext": "The general question and its known falsity; refined conjecture."
     },
     {
       "id": "representation",
       "title": "Representation Properties",
       "startLine": 178,
       "endLine": 200,
-      "summary": "Zero representable, term representability, closure under addition."
+      "summary": "Zero representable, term representability, closure under addition.",
+      "mathContext": "Zero representable, term representability, closure under addition."
     },
     {
       "id": "measure",
       "title": "Measure-Theoretic Results",
       "startLine": 201,
       "endLine": 217,
-      "summary": "Positive density, generic completeness."
+      "summary": "Positive density, generic completeness.",
+      "mathContext": "Positive density, generic completeness."
     },
     {
       "id": "binary",
       "title": "Binary Representations",
       "startLine": 218,
       "endLine": 232,
-      "summary": "α = 1 gives powers of 2; α = β = 1 is complete (binary)."
+      "summary": "α = 1 gives powers of 2; α = β = 1 is complete (binary).",
+      "mathContext": "α = 1 gives powers of 2; α = β = 1 is complete (binary)."
     },
     {
       "id": "generalization",
       "title": "Generalization",
       "startLine": 233,
       "endLine": 251,
-      "summary": "Base γ ∈ (1, 2) version of the problem."
+      "summary": "Base γ ∈ (1, 2) version of the problem.",
+      "mathContext": "Base γ ∈ (1, 2) version of the problem."
     }
   ],
   "conclusion": {
