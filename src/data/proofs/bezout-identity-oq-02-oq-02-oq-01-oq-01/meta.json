@@ -7,7 +7,7 @@
     "author": "Euclid; formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euclid%27s_lemma",
     "date": "~300 BCE",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ02OQ01OQ01.lean",
     "tags": [
       "number-theory",
@@ -16,7 +16,7 @@
       "research"
     ],
     "badge": "original",
-    "sorries": 0,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Int.mul_ediv_cancel'",
@@ -33,7 +33,7 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 182,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 axioms, 1 sorry. See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

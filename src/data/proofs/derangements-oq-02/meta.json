@@ -7,10 +7,10 @@
     "author": "Classical combinatorics; formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Derangement#Generalizations",
     "date": "classical",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/DerangementsOQ02.lean",
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 1,
     "tags": [
       "combinatorics",
       "permutations",
@@ -68,7 +68,7 @@
     "dateAdded": "2026-02-25",
     "axiomCount": 0,
     "lineCount": 357,
-    "assumptions": "0 axioms, 0 sorries. Core cardinality result uses Mathlib's card_derangements_eq_numDerangements.",
+    "assumptions": "0 axioms, 1 sorry. Core cardinality result uses Mathlib's card_derangements_eq_numDerangements.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
