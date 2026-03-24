@@ -256,6 +256,11 @@
       "description": "Extends the transcendence hierarchy beyond Hermite-Lindemann: Gelfond-Schneider proves $\\alpha^\\beta$ is transcendental when $\\alpha \\neq 0,1$ is algebraic and $\\beta$ is algebraic irrational (e.g., $2^{\\sqrt{2}}$, $e^\\pi$). Together with Abel-Ruffini and Hermite-Lindemann, this illustrates progressively stronger barriers on expressing mathematical quantities in closed form"
     },
     {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt{2}$ ($\\sqrt{2} \\notin \\mathbb{Q}$, c. 500 BCE) is the first level of the expressibility hierarchy discussed in this entry's conclusion: irrationality → radical inexpressibility (Abel-Ruffini) → algebraic inexpressibility (Hermite-Lindemann) → computational undecidability (Turing). The ancient proof that $\\sqrt{2}$ escapes rational expressions foreshadows Abel-Ruffini's proof that certain algebraic numbers escape radical expressions"
+    },
+    {
       "targetId": "godel-incompleteness",
       "relationship": "related",
       "description": "Abel-Ruffini (1824) and Gödel's incompleteness (1931) are both impossibility results showing that natural questions ('find a formula', 'prove all truths') admit no universal solution within a given formal framework. Abel-Ruffini's framework is radical operations; Gödel's is consistent axiomatic systems. Both inaugurated paradigm shifts from seeking solutions to proving their nonexistence"
@@ -287,6 +292,7 @@
     "fermats-last-theorem",
     "hermite-lindemann",
     "gelfond-schneider",
+    "sqrt2-irrational",
     "godel-incompleteness",
     "halting-problem"
   ],

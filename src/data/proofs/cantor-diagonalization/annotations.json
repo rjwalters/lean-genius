@@ -3,8 +3,8 @@
     "id": "ann-binary-seq",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 5,
-      "endLine": 37
+      "startLine": 43,
+      "endLine": 45
     },
     "type": "definition",
     "title": "Binary Sequences as Functions",
@@ -21,8 +21,8 @@
     "id": "ann-diagonal-def",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 5,
-      "endLine": 37
+      "startLine": 49,
+      "endLine": 53
     },
     "type": "definition",
     "title": "The Diagonal Function",
@@ -39,8 +39,8 @@
     "id": "ann-diagonal-differs",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 5,
-      "endLine": 37
+      "startLine": 55,
+      "endLine": 62
     },
     "type": "lemma",
     "title": "Diagonal Differs at Each Position",
@@ -56,8 +56,8 @@
     "id": "ann-main-theorem",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 5,
-      "endLine": 37
+      "startLine": 66,
+      "endLine": 86
     },
     "type": "theorem",
     "title": "Cantor's Diagonalization Theorem",
@@ -74,8 +74,8 @@
     "id": "ann-proof-construct",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 5,
-      "endLine": 37
+      "startLine": 74,
+      "endLine": 76
     },
     "type": "tactic",
     "title": "Constructing the Witness",
@@ -91,8 +91,8 @@
     "id": "ann-proof-differ",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 5,
-      "endLine": 37
+      "startLine": 78,
+      "endLine": 86
     },
     "type": "tactic",
     "title": "Deriving the Contradiction",
@@ -109,13 +109,13 @@
     "id": "ann-corollary",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 47,
-      "endLine": 47
+      "startLine": 88,
+      "endLine": 107
     },
     "type": "theorem",
-    "title": "Reals Are Uncountable",
-    "content": "The classic formulation: there is no surjective function from $\\mathbb{N}$ to the binary sequences (equivalently, to $\\mathbb{R}$).\n\nThis follows immediately from Cantor's theorem: if $f$ were surjective, every sequence would be in its range, but we just showed one isn't.",
-    "mathContext": "$\\nexists f : \\mathbb{N} \\to 2^{\\mathbb{N}}$ such that $f$ is surjective.\n\nEquivalently: $|\\mathbb{N}| < |\\mathbb{R}|$",
+    "title": "Non-Surjectivity and Uncountability of Binary Sequences",
+    "content": "`no_surjection_nat_to_binary` reformulates Cantor's theorem as $\\neg\\exists f,\\, \\text{Surjective}\\,f$: assumes a surjection exists, obtains Cantor's witness, and derives a contradiction. `reals_uncountable` is an alias noting the informal correspondence between binary sequences and reals in $[0,1]$ — the bridge from $\\mathbb{N} \\to \\text{Bool}$ to $\\mathbb{R}$ (via binary expansion and the Cantor-Bernstein-Schröder theorem showing $|[0,1]| = |\\mathbb{R}|$) is not formalized here.",
+    "mathContext": "$\\neg\\exists f : \\mathbb{N} \\to 2^{\\mathbb{N}},\\, \\text{Surjective}\\,f$. The bridge to $|\\mathbb{N}| < |\\mathbb{R}|$ requires formalizing the bijection $2^{\\mathbb{N}} \\cong [0,1] \\subset \\mathbb{R}$ (modulo binary expansion non-uniqueness at dyadic rationals).",
     "significance": "key",
     "relatedConcepts": [
       "surjectivity",
@@ -127,8 +127,8 @@
     "id": "ann-corollary-proof",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 49,
-      "endLine": 51
+      "startLine": 89,
+      "endLine": 98
     },
     "type": "tactic",
     "title": "Proof of Uncountability",
@@ -144,8 +144,8 @@
     "id": "ann-powerset",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 55,
-      "endLine": 62
+      "startLine": 109,
+      "endLine": 133
     },
     "type": "theorem",
     "title": "Cantor's Power Set Theorem",
@@ -162,8 +162,8 @@
     "id": "ann-powerset-diag",
     "proofId": "cantor-diagonalization",
     "range": {
-      "startLine": 55,
-      "endLine": 62
+      "startLine": 135,
+      "endLine": 151
     },
     "type": "insight",
     "title": "The Diagonal Set",

@@ -14,7 +14,7 @@
       "calculus",
       "n-dimensional",
       "integration",
-      "wiedijk-100"
+      "research"
     ],
     "proofRepoPath": "Proofs/AreaOfCircleOq01Oq02Oq01.lean",
     "badge": "mathlib",
@@ -52,14 +52,10 @@
       }
     ],
     "originalContributions": [
-      "N-dimensional unit ball volume ω_n with explicit formulas for n=0,1,2,3",
-      "Derivative relation d/dr[V_n(r)] = S_n(r) via power rule",
-      "Main theorem: V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2",
-      "FTC Part 1 recovery: d/dr[∫₀ʳ S_n] = S_n(r)",
-      "Shell volume generalization: ∫_{r₁}^{r₂} S_n",
-      "Scaling laws: V_n(cr) = c^n V_n(r), S_n(cr) = c^(n-1) S_n(r)",
-      "Surface-to-volume ratio S_n/V_n = n/r",
-      "Explicit formulas: S₂ = 2πr, S₃ = 4πr², V₃ = (4π/3)r³"
+      "N-dimensional Gamma-based volume ω_n and explicit computations for n=0,1,2,3",
+      "Main theorem: V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2 and derivative relation d/dr[V_n(r)] = S_n(r)",
+      "Surface-to-volume ratio S_n/V_n = n/r (algebraic consequence of scaling)",
+      "Scaling laws: V_n(cr) = c^n V_n(r), S_n(cr) = c^(n-1) S_n(r)"
     ],
     "historicalContext": "The relationship between the volume and surface area of n-dimensional balls is a fundamental result in geometric analysis. In 2D, the area of a circle equals the integral of its circumference: A(r) = ∫₀ʳ 2πρ dρ = πr². This generalizes to all dimensions via V_n(r) = ω_n r^n and the polynomial structure of the volume function. The n-ball volume formula ω_n = π^(n/2)/Γ(n/2+1) was first computed by Schläfli (1852) and exhibits the surprising behavior of vanishing as n → ∞.",
     "dateAdded": "2026-03-11",
