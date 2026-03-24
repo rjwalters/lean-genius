@@ -222,21 +222,21 @@
       "title": "Module Header, Imports, and Problem Statement",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Imports Mathlib and four project-local files (InverseGalois, InverseGaloisD4, NthRootIrrationalOQ01, AngleTrisectionCos20Gal). Module docstring explains the upgrade from OQ-01's degree criterion to OQ-02's Galois 2-group biconditional.",
+      "summary": "Module docstring (lines 1-36) explaining the upgrade from OQ-01's degree criterion to OQ-02's Galois 2-group biconditional, with key examples. Imports (lines 38-42): Mathlib plus four project-local files (InverseGalois, InverseGaloisD4, NthRootIrrationalOQ01, AngleTrisectionCos20Gal). Opens Polynomial, IntermediateField, FiniteDimensional namespaces.",
       "mathContext": "The fundamental upgrade: $\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group — not merely $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$."
     },
     {
       "id": "2-groups",
       "title": "2-Groups: Basic Facts",
       "startLine": 46,
-      "endLine": 59,
-      "summary": "Three proved theorems about 2-groups: IsPGroup.iff_card (2-group ↔ order is 2^n), IsPGroup.of_card (2-power order → 2-group), and their combination.",
+      "endLine": 63,
+      "summary": "Part I: Three proved theorems about 2-groups: `isPGroup_iff_card_pow_two` (2-group ↔ order is 2^n), `isPGroup_of_card_pow_two` (2-power order → 2-group), and `isPGroup_card_is_pow_two` (converse: 2-group → order is 2^n). All delegate to Mathlib's `IsPGroup.iff_card` / `IsPGroup.of_card`.",
       "mathContext": "A finite group $G$ is a 2-group $\\iff |G| = 2^n$ for some $n \\geq 0$. Examples: $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/4\\mathbb{Z}$, $D_4$ (order 8), $Q_8$ (order 8). Non-examples: $S_3$ (order 6), $\\mathbb{Z}/3\\mathbb{Z}$ (order 3). The order characterization `IsPGroup.iff_card` bridges between Mathlib's element-wise definition and the cardinality condition needed for the constructibility criterion."
     },
     {
       "id": "constructibility",
       "title": "Definition of Constructibility",
-      "startLine": 60,
+      "startLine": 65,
       "endLine": 75,
       "summary": "IsConstructibleFromQ: α is constructible iff it lies in some K ⊇ ℚ inside ℝ with FiniteDimensional ℚ K and [K:ℚ] = 2^n for some n.",
       "mathContext": "$\\alpha$ constructible $\\iff \\exists$ tower $\\mathbb{Q} = K_0 \\subset K_1 \\subset \\cdots \\subset K_n$ with $[K_{i+1}:K_i] = 2$ and $\\alpha \\in K_n$."
@@ -244,15 +244,15 @@
     {
       "id": "wantzel-galois",
       "title": "Wantzel-Galois Theorem (Axiomatized)",
-      "startLine": 73,
-      "endLine": 89,
-      "summary": "The main biconditional: IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal. Axiomatized — requires full Galois correspondence.",
-      "mathContext": "$\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group. This is Wantzel's theorem refined by Galois theory."
+      "startLine": 77,
+      "endLine": 93,
+      "summary": "Part III: The main axiom `wantzel_galois_characterization`: IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal. Axiomatized because the full proof requires the Galois correspondence for intermediate fields. Docstring outlines both proof directions.",
+      "mathContext": "$\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group. ($\\Rightarrow$): constructible tower gives 2-power Galois closure; ($\\Leftarrow$): 2-group composition series gives degree-2 extension tower."
     },
     {
       "id": "non-constructible",
       "title": "Non-Constructibility: ∛2 and cos(20°)",
-      "startLine": 91,
+      "startLine": 95,
       "endLine": 141,
       "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2.",
       "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$: since $\\gcd(3, 2) = 1$, we get $\\gcd(3, 2^n) = 1$ by `Nat.Coprime.pow_right`, so $3 \\nmid 2^n$, but $3 \\mid 6$, contradiction with $6 = 2^n$. Same argument for $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$. The private lemma `not_pow_two_of_eq_six` encapsulates this coprimality argument and is reused for both non-constructibility proofs ($\\sqrt[3]{2}$ and $\\cos 20°$)."
@@ -261,16 +261,16 @@
       "id": "constructible-examples",
       "title": "Constructible Examples: √2 and 2^(1/4)",
       "startLine": 143,
-      "endLine": 200,
-      "summary": "PROVED: |Gal(x²-2/ℚ)| = 2 via divisibility squeeze (prime degree divides |Gal|, Gal embeds into S₂). Gal(x⁴-2/ℚ) = 8 from InverseGaloisD4. Both are 2-groups.",
+      "endLine": 207,
+      "summary": "Part V: Four private helper lemmas (irreducibility, separability, degree, monicity of x²-2), the key `x_sq_sub_2_gal_order` (|Gal(x²-2/ℚ)| = 2 via divisibility squeeze: prime degree divides |Gal| and Gal embeds into S₂), `x_sq_sub_2_gal_is_2group`, `x_4th_sub_2_gal_order` (imported from InverseGaloisD4, |Gal| = 8), and `x_4th_sub_2_gal_is_2group`. Both √2 and 2^(1/4) confirmed constructible.",
       "mathContext": "$|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2 = 2^1$: the only automorphism is $\\sqrt{2} \\mapsto -\\sqrt{2}$, so $\\text{Gal} \\cong \\mathbb{Z}/2\\mathbb{Z}$. $|\\text{Gal}(x^4-2/\\mathbb{Q})| = 8 = 2^3$: the four roots $\\zeta^k \\sqrt[4]{2}$ ($\\zeta = i$) yield $\\text{Gal} \\cong D_4$. Both are 2-groups via `IsPGroup.of_card`, confirming $\\sqrt{2}$ and $\\sqrt[4]{2}$ are constructible. Geometrically: $\\sqrt{2}$ is the unit square diagonal (one compass step), $\\sqrt[4]{2} = \\sqrt{\\sqrt{2}}$ requires two successive square root extractions."
     },
     {
       "id": "oq01-connection",
       "title": "Connection to OQ-01 (Degree Criterion)",
-      "startLine": 202,
+      "startLine": 208,
       "endLine": 242,
-      "summary": "PROVED: galois_2group_implies_degree_pow2 via tower law (natDegree | finrank(SplittingField) = |Gal| = 2^k). Former axiom eliminated.",
+      "summary": "Part VI: `galois_2group_implies_degree_pow2` (PROVED: 2-group Gal → natDegree | 2^k via tower law and IsPGroup.iff_card) and `constructible_implies_degree_dvd_pow2` (chains constructibility → 2-group Gal → degree criterion). Shows OQ-02 strictly implies OQ-01.",
       "mathContext": "The chain: $\\text{natDegree}(\\text{minpoly}) \\mid [\\text{SplittingField}:\\mathbb{Q}] = |\\text{Gal}| = 2^k$ (by the tower law and the Galois group order theorem), so $\\text{natDegree} = 2^j$ for some $j \\leq k$. This shows OQ-02's Galois criterion strictly implies OQ-01's degree criterion: constructible $\\Rightarrow$ 2-group Gal $\\Rightarrow$ $\\deg \\mid 2^n$. The reverse fails: some degree-$2^k$ polynomials have non-2-group Galois groups."
     },
     {
