@@ -178,6 +178,43 @@
       "description": "The divergence of ∑1/p (Euler, 1737) shows primes are not too sparse — this file quantifies how close consecutive primes can be, giving the complementary 'not too far apart' direction"
     }
   ],
+  "references": [
+    {
+      "authors": "Zhang, Y.",
+      "title": "Bounded gaps between primes",
+      "year": "2014",
+      "venue": "Annals of Mathematics, 179(3):1121–1174",
+      "note": "Landmark paper proving the first finite bound (70,000,000) on lim inf of prime gaps; the starting point for the Polymath 8 refinements"
+    },
+    {
+      "authors": "Maynard, J.",
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics, 181(1):383–413",
+      "note": "Introduces the multi-dimensional sieve that Polymath 8b used to achieve the 246 bound; establishes the admissible k-tuple framework central to this entry"
+    },
+    {
+      "authors": "Polymath, D. H. J.",
+      "title": "Variants of the Selberg sieve, and bounded intervals containing many primes",
+      "year": "2014",
+      "venue": "Research in the Mathematical Sciences, 1(1):Article 12",
+      "note": "The Polymath 8b paper formally establishing liminf(p_{n+1}−p_n) ≤ 246 via the 50-tuple admissible sieve; the primary reference for the 246 bound"
+    },
+    {
+      "authors": "Engelsma, T.",
+      "title": "Admissible prime constellations",
+      "year": "2013",
+      "venue": "Unpublished (web resource, http://www.opertech.com/primes/k-tuples.html)",
+      "note": "Exhaustive computer search establishing that 246 is the minimum diameter for admissible 50-tuples; axiomized as engelsma_lower_bound in this entry"
+    },
+    {
+      "authors": "Granville, A.",
+      "title": "Primes in intervals of bounded length",
+      "year": "2015",
+      "venue": "Bulletin of the American Mathematical Society, 52(2):171–222",
+      "note": "Expository survey of the Zhang–Maynard–Tao breakthrough on bounded prime gaps, including explanation of admissible tuples and the Polymath 8 project"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",

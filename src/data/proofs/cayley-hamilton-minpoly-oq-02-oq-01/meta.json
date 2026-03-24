@@ -163,5 +163,42 @@
       "relationship": "related",
       "description": "Foundational: Cayley-Hamilton provides integrality of matrices, enabling minpoly theory"
     }
+  ],
+  "references": [
+    {
+      "authors": "Cayley, A.",
+      "title": "A Memoir on the Theory of Matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society of London, 148, 17–37",
+      "note": "Original paper introducing the Cayley-Hamilton theorem; the minimal polynomial divides the characteristic polynomial, making this the foundational result that enables minimal polynomial theory for matrices"
+    },
+    {
+      "authors": "Jacobson, N.",
+      "title": "Basic Algebra II",
+      "year": "1989",
+      "venue": "W. H. Freeman, 2nd edition",
+      "note": "Develops minimal polynomial theory for elements of K-algebras (not just matrices), establishing invariance under algebra isomorphisms; the abstract treatment that this Lean formalization formalizes via minpoly.algEquiv_eq"
+    },
+    {
+      "authors": "Lang, S.",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer, Graduate Texts in Mathematics, Vol. 211, revised 3rd edition",
+      "note": "Chapter XIV treats the minimal polynomial as a K-algebra invariant and proves that similar matrices share the same minimal polynomial; Chapter II develops the algebra homomorphism framework used in the AlgEquiv construction"
+    },
+    {
+      "authors": "Atiyah, M. F. and Macdonald, I. G.",
+      "title": "Introduction to Commutative Algebra",
+      "year": "1969",
+      "venue": "Addison-Wesley",
+      "note": "Chapter 5 develops the theory of integral elements and minimal polynomials in ring extensions; the abstract framework connecting polynomial evaluation with algebra homomorphisms (aeval_algHom_apply) is implicit throughout"
+    },
+    {
+      "authors": "Noether, E.",
+      "title": "Hyperkomplexe Größen und Darstellungstheorie",
+      "year": "1929",
+      "venue": "Mathematische Zeitschrift, 30(1), 641–692",
+      "note": "Establishes that K-algebra automorphisms of matrix algebras Mat(n,K) are all inner (Skolem-Noether theorem); directly implies that matrix conjugation A ↦ P⁻¹AP is an algebra automorphism, the key construction in conjAlgEquiv"
+    }
   ]
 }

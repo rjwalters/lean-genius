@@ -164,6 +164,43 @@
       "description": "Integral inequalities underlie the arc-length estimates: the Cauchy-Schwarz integral inequality bounds the angular average, connecting this geometric probability result to functional analysis"
     }
   ],
+  "references": [
+    {
+      "authors": "Barbier, J.-É.",
+      "title": "Note sur le problème de l'aiguille et le jeu du joint couvert",
+      "year": "1860",
+      "venue": "Journal de mathématiques pures et appliquées, 2ème série, 5, 273–286",
+      "note": "Original proof that any curve of length L dropped on a parallel line grid has expected crossings 2L/(πd), generalizing Buffon's needle to arbitrary shapes (Buffon's Noodle Theorem)"
+    },
+    {
+      "authors": "Buffon, G.-L. L.",
+      "title": "Essai d'arithmétique morale",
+      "year": "1777",
+      "venue": "Supplément à l'Histoire Naturelle, vol. 4",
+      "note": "Original Buffon needle problem: a needle of length L dropped on a ruled surface with parallel lines spaced d apart crosses a line with probability 2L/(πd), the classical predecessor to Barbier's noodle theorem"
+    },
+    {
+      "authors": "Santalo, L. A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "1976",
+      "venue": "Addison-Wesley, Encyclopedia of Mathematics and its Applications",
+      "note": "Definitive reference for the Cauchy-Crofton formula and integral geometry; the Buffon-Barbier theorem is a special case of the kinematic formula for line crossings"
+    },
+    {
+      "authors": "Klain, D. A. and Rota, G.-C.",
+      "title": "Introduction to Geometric Probability",
+      "year": "1997",
+      "venue": "Cambridge University Press, Lezione Lincee",
+      "note": "Modern treatment of Buffon's needle and Barbier's theorem in the context of geometric probability and valuation theory; accessible proof of shape independence via angular averaging"
+    },
+    {
+      "authors": "Aigner, M. and Ziegler, G. M.",
+      "title": "Proofs from THE BOOK (Chapter: Buffon's needle problem)",
+      "year": "2018",
+      "venue": "Springer, 6th edition",
+      "note": "Elegant presentation of Buffon-Barbier using linearity of expectation and the angular average identity 2L/(πd), illustrating why shape does not matter"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",

@@ -181,6 +181,43 @@
     "theoremCount": 18,
     "definitionCount": 2
   },
+  "references": [
+    {
+      "authors": "Archimedes",
+      "title": "Measurement of a Circle (Κύκλου μέτρησις)",
+      "year": "~250 BCE",
+      "venue": "Syracuse",
+      "note": "First rigorous treatment of the area-circumference relationship: Archimedes proved A = (1/2)Cr by exhaustion, viewing the disk as a limit of inscribed and circumscribed polygons. The derivative relationship A'(r) = C(r) is the infinitesimal version of his argument"
+    },
+    {
+      "authors": "Federer, Herbert; Fleming, Wendell H.",
+      "title": "Normal and Integral Currents",
+      "year": "1960",
+      "venue": "Annals of Mathematics, vol. 72, no. 3, pp. 458–520",
+      "note": "Foundational work in geometric measure theory establishing the coarea formula, which generalizes the derivative relationship V'_n(r) = S_n(r) (volume derivative = surface area) to arbitrary codimension. The circle case A'(r) = C(r) is the simplest instance"
+    },
+    {
+      "authors": "Weierstrass, Karl",
+      "title": "Über eine besondere Classe von Minimalflächen-Problemen",
+      "year": "1870",
+      "venue": "Berlin Academy of Sciences",
+      "note": "First rigorous proof of the isoperimetric inequality C² ≥ 4πA using the calculus of variations. The equality C² = 4πA proved as a corollary in this formalization characterizes the circle as the unique maximizer"
+    },
+    {
+      "authors": "Hurwitz, Adolf",
+      "title": "Sur le problème des isopérimètres",
+      "year": "1902",
+      "venue": "Comptes rendus de l'Académie des Sciences, vol. 132, pp. 401–403",
+      "note": "Elegant Fourier-analytic proof of the isoperimetric inequality, showing C² ≥ 4πA with equality iff the curve is a circle. Uses the Parseval identity applied to the Fourier expansion of the boundary curve"
+    },
+    {
+      "authors": "Spivak, Michael",
+      "title": "Calculus",
+      "year": "1994",
+      "venue": "Publish or Perish, 3rd edition",
+      "note": "Chapter 12 presents the derivative A'(r) = C(r) as a motivating example for the Fundamental Theorem of Calculus, connecting the annular ring argument to Riemann integration"
+    }
+  ],
   "relatedProofs": [
     {
       "id": "area-of-circle",

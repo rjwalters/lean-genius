@@ -208,6 +208,43 @@
       "description": "Both involve multi-index combinatorics: multinomial coefficients generalize binomial coefficients, while simplicial numbers generalize triangular numbers — both are diagonal entries of Pascal's simplex"
     }
   ],
+  "references": [
+    {
+      "authors": "Graham, R. L., Knuth, D. E., and Patashnik, O.",
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "Addison-Wesley, 2nd edition",
+      "note": "Comprehensive treatment of multinomial coefficients, generating functions, and the multinomial theorem (Chapter 5); the standard combinatorics reference"
+    },
+    {
+      "authors": "Stanley, R. P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2012",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Rigorous treatment of multinomial coefficients and their role in generating function theory and polynomial algebra"
+    },
+    {
+      "authors": "Leibniz, G. W.",
+      "title": "Dissertatio de Arte Combinatoria",
+      "year": "1666",
+      "venue": "Leipzig",
+      "note": "Early systematic treatment of multinomial expansions and combinatorial coefficients, predating modern notation"
+    },
+    {
+      "authors": "Aigner, M. and Ziegler, G. M.",
+      "title": "Proofs from THE BOOK",
+      "year": "2018",
+      "venue": "Springer, 6th edition",
+      "note": "Elegant proofs of binomial and multinomial identities; illustrates the conceptual unity between binomial and multinomial theorems"
+    },
+    {
+      "authors": "van der Waerden, B. L.",
+      "title": "Algebra, Volume 1",
+      "year": "1991",
+      "venue": "Springer-Verlag",
+      "note": "Classical algebraic treatment of the binomial and multinomial theorems in commutative ring theory, contextualizing the Lean formalization setting"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Multinomial",

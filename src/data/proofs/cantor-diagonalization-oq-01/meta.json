@@ -160,6 +160,43 @@
       "description": "The Schröder-Bernstein theorem (injections both ways ↔ bijection) provides the cardinal arithmetic framework in which CH is formulated: ℵ₀ < 2^ℵ₀ uses the strict ordering of cardinals"
     }
   ],
+  "references": [
+    {
+      "authors": "Cantor, G.",
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1, 75–78",
+      "note": "Original paper introducing the diagonal argument, proving that the power set of any set is strictly larger — directly establishing ℵ₀ < 2^ℵ₀ and implying the gap the Continuum Hypothesis concerns"
+    },
+    {
+      "authors": "Gödel, K.",
+      "title": "The Consistency of the Axiom of Choice and of the Generalized Continuum-Hypothesis with the Axioms of Set Theory",
+      "year": "1940",
+      "venue": "Princeton University Press, Annals of Mathematics Studies, No. 3",
+      "note": "Proves that CH is consistent with ZFC using the constructible universe L; the first half of CH independence, showing the diagonal argument cannot disprove CH"
+    },
+    {
+      "authors": "Cohen, P. J.",
+      "title": "The Independence of the Continuum Hypothesis",
+      "year": "1963",
+      "venue": "Proceedings of the National Academy of Sciences, 50(6), 1143–1148",
+      "note": "Proves that ¬CH is also consistent with ZFC via forcing; together with Gödel's result, establishes that CH is independent — the diagonal argument cannot resolve whether an intermediate cardinal exists"
+    },
+    {
+      "authors": "Jech, T.",
+      "title": "Set Theory: The Third Millennium Edition",
+      "year": "2003",
+      "venue": "Springer Monographs in Mathematics",
+      "note": "Comprehensive reference for the beth number hierarchy, König's theorem (cf(2^ℵ₀) > ℵ₀), and the independence of CH; covers all results formalized in this Lean file"
+    },
+    {
+      "authors": "Woodin, W. H.",
+      "title": "The Continuum Hypothesis, Part I",
+      "year": "2001",
+      "venue": "Notices of the American Mathematical Society, 48(6), 567–576",
+      "note": "Surveys current research on resolving CH via large cardinal axioms and the Ultimate-L program; relevant to the open question of whether CH can be settled by extending ZFC"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.SetTheory.Cardinal.Basic",

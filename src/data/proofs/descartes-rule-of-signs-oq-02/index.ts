@@ -1,5 +1,6 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/DescartesRuleOfSignsOQ02.lean?raw'
 
 const meta = metaJson as unknown as {
@@ -27,7 +28,7 @@ export const descartesRuleOfSignsOQ02Proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const descartesRuleOfSignsOQ02Annotations: Annotation[] = []
+export const descartesRuleOfSignsOQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const descartesRuleOfSignsOQ02Data: ProofData = {
   proof: descartesRuleOfSignsOQ02Proof,
