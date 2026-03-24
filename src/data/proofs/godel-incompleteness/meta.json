@@ -2,7 +2,7 @@
   "id": "godel-incompleteness",
   "title": "Gödel's First Incompleteness Theorem",
   "slug": "godel-incompleteness",
-  "description": "Any consistent formal system capable of expressing basic arithmetic contains statements that are true but unprovable within the system. This 1931 theorem shattered Hilbert's program and revealed fundamental limits of formal reasoning.",
+  "description": "A pedagogical scaffold illustrating the conceptual structure of Gödel's Incompleteness Theorems in Lean 4. The provability predicate is a placeholder (constantly False), so all formal theorems are vacuously true — the value lies in the excellent mathematical commentary and argument structure, not the formal content.",
   "meta": {
     "author": "Kurt Gödel (formalized sketch in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems",
@@ -26,15 +26,12 @@
       }
     ],
     "originalContributions": [
-      "Formula structure with Gödel numbering (code : Nat)",
-      "Provable predicate (placeholder: fun _ => False)",
-      "Consistent and Complete definitions",
-      "godelNum_injective: Gödel numbering is injective",
-      "diagonal_lemma: existence of self-referential sentences (simplified)",
-      "G_not_provable and not_G_not_provable: incompleteness argument structure",
-      "first_incompleteness_theorem: consistent → ¬Complete",
+      "Argument structure demonstrated (all vacuously true due to Provable := const False):",
+      "first_incompleteness_theorem: correct case-split structure for consistent → ¬Complete",
       "second_incompleteness_theorem: consistent → ¬Provable Con",
-      "lob_theorem: Löb's theorem from derivability conditions"
+      "lob_theorem: Löb's theorem structure from derivability conditions",
+      "Genuine definitions: Formula, Consistent, Complete, godelNum with injectivity proof",
+      "Extensive pedagogical commentary: historical context, philosophical implications"
     ],
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 6,
@@ -53,7 +50,7 @@
   "overview": {
     "historicalContext": "In 1931, Kurt Gödel, a 25-year-old logician in Vienna, published a paper that would fundamentally change our understanding of mathematics and logic. His Incompleteness Theorems demonstrated that the dream of a complete, consistent foundation for mathematics—Hilbert's Program—was impossible.\n\nDavid Hilbert had proposed that all mathematical truths could be derived from a fixed set of axioms using formal rules. Gödel showed this was a fantasy: any system powerful enough to do arithmetic would contain truths it could never prove. The implications rippled through philosophy, computer science (anticipating the Halting Problem), and our understanding of the limits of human knowledge.",
     "problemStatement": "Gödel's First Incompleteness Theorem: If $F$ is a consistent formal system capable of expressing basic arithmetic, then there exists a sentence $G$ such that:\n\n1. $G$ is true (in the standard model of arithmetic)\n2. $G$ is not provable in $F$\n3. $\\neg G$ is not provable in $F$ (assuming $\\omega$-consistency)\n\nIn other words: $F$ is incomplete—there are truths it cannot reach.",
-    "text": "Any consistent formal system capable of expressing basic arithmetic contains statements that are true but unprovable within the system. This 1931 theorem shattered Hilbert's program and revealed fundamental limits of formal reasoning.",
+    "text": "A 467-line pedagogical scaffold for Gödel's Incompleteness Theorems (Wiedijk #6) with 2 axioms, 0 sorries. **Important**: The provability predicate `Provable` is defined as `fun _ => False`, making all incompleteness theorems vacuously true. The file's value is in its argument structure and extensive mathematical commentary, not in formal proof content. Demonstrates the correct case-split structure for the first incompleteness theorem and includes Löb's theorem, Rosser's strengthening, and the second incompleteness theorem.",
     "proofStrategy": "The proof proceeds through a remarkable self-referential construction:\n\n1. Gödel Numbering: Encode every formula as a natural number, allowing the system to \"talk about\" its own formulas\n2. Representability: Show that the provability relation can be expressed within the system via a formula $\\text{Prov}(x)$\n3. Diagonal Lemma: Construct a sentence $G$ that says \"$G$ is not provable\"—formal self-reference\n4. The Contradiction: If $G$ were provable, the system would prove both $\\text{Prov}(\\ulcorner G \\urcorner)$ and $\\neg\\text{Prov}(\\ulcorner G \\urcorner)$, violating consistency\n5. Conclusion: $G$ must be true but unprovable",
     "keyInsights": [
       "**Arithmetization of Metamathematics:** Gödel numbering assigns each formula $\\varphi$ a code $\\ulcorner \\varphi \\urcorner \\in \\mathbb{N}$. Proofs, derivations, and provability become arithmetic predicates — the system can reason about itself via ordinary number theory.",
