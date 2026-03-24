@@ -10,7 +10,7 @@
     "title": "The Hierarchy of Infinities",
     "content": "Cantor's theorem establishes that **not all infinities are equal**. For any set A:\n\n$$|A| < |\\mathcal{P}(A)| = 2^{|A|}$$\n\nThis means:\n- There are strictly more subsets of N than there are natural numbers\n- There are strictly more real numbers than rationals\n- The hierarchy continues: $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{N}))| < ...$\n\nThe proof uses the **diagonal argument**, which constructs an explicit witness to the non-surjectivity of any proposed function.",
     "mathContext": "$\\forall A,\\ |A| < |\\mathcal{P}(A)| = 2^{|A|}$. The injection $a \\mapsto \\{a\\}$ gives $|A| \\leq |\\mathcal{P}(A)|$; the diagonal argument shows no surjection $A \\twoheadrightarrow \\mathcal{P}(A)$ exists, so the inequality is strict. Iterating: $\\aleph_0 < 2^{\\aleph_0} < 2^{2^{\\aleph_0}} < \\cdots$ gives an unbounded tower of cardinals.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "cardinal numbers",
       "power set",
@@ -34,7 +34,7 @@
     "title": "No Surjection to Power Set",
     "content": "**Cantor's Theorem (Wiedijk #63)**:\n\n$$\\neg \\exists f: A \\to \\mathcal{P}(A), \\text{Surjective}(f)$$\n\nIn Lean, the power set is represented as `A -> Prop` (the type of predicates on A). Each predicate corresponds to a subset: the set of elements satisfying that predicate.\n\nMathlib's `Function.cantor_surjective` provides this directly:\n```lean\ntheorem cantor_no_surjection (A : Type*) :\n    not exists f : A -> (A -> Prop), Function.Surjective f\n```",
     "mathContext": "$\\neg \\exists f: A \\to (A \\to \\text{Prop}),\\ \\text{Surjective}(f)$. In Lean, $\\mathcal{P}(A)$ is `A \\to Prop`. Mathlib's `Function.cantor_surjective` proves this via the diagonal predicate $p(x) := \\neg f(x)(x)$, which cannot equal $f(b)$ for any $b$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "Function.cantor_surjective",
       "Function.Surjective",
@@ -56,8 +56,8 @@
     "type": "definition",
     "title": "The Diagonal Set",
     "content": "The key construction is the **diagonal set**:\n\n$$D = \\{x \\in A \\mid x \\notin f(x)\\}$$\n\nThis is the set of elements that are **not** contained in their own image under f.\n\nIn Lean:\n```lean\ndef diagonalSet (f : A -> Set A) : Set A :=\n  { x | x not_in f x }\n```\n\nThe diagonal set always exists and is well-defined for any function f. It's the **witness** that f cannot be surjective.",
-    "mathContext": "$D = \\{x \\mid x \\notin f(x)\\}$",
-    "significance": "critical",
+    "mathContext": "$D = \\{x \\mid x \\notin f(x)\\}$. In Lean, this is `{ x | x \\notin f x } : \\text{Set}\\,A`, using set-builder notation. The diagonal set is well-defined for any $f: A \\to \\mathcal{P}(A)$ — no axiom of choice or classical logic is needed. The name 'diagonal' comes from visualizing $f$ as a matrix $M_{xy} = [y \\in f(x)]$: the set $D$ flips the diagonal entries, ensuring $D$ differs from each row $f(x)$ at position $x$.",
+    "significance": "key",
     "prerequisites": [
       "set comprehension",
       "set membership",
@@ -103,8 +103,8 @@
     "type": "lemma",
     "title": "The Self-Reference Paradox",
     "content": "The **diagonal paradox** is the heart of the argument:\n\nIf f(b) = D where D = {x | x not in f(x)}, then:\n$$b \\in D \\iff b \\notin D$$\n\nThis is a **self-referential contradiction** - b's membership in D depends on whether b is in D.\n\nThis paradox is closely related to:\n- **Russell's Paradox**: Consider R = {x | x not in x}. Is R in R?\n- **The Liar Paradox**: 'This statement is false'\n- **Godel's Incompleteness**: Self-referential sentences about provability\n\nIn type theory, we avoid Russell's paradox by stratifying types into universes.",
-    "mathContext": "$b \\in D \\iff b \\notin D$",
-    "significance": "critical",
+    "mathContext": "If $f(b) = D$ then $b \\in D \\iff b \\notin f(b) = D \\iff b \\notin D$. This is an instance of the fixed-point-free theorem: the function $\\neg : \\text{Prop} \\to \\text{Prop}$ has no fixed point ($\\neg P \\neq P$ for any $P$), so no surjection $A \\twoheadrightarrow (A \\to \\text{Prop})$ can exist — if it did, the diagonal $p(x) = \\neg f(x)(x)$ would be $f(b)$ for some $b$, forcing $\\neg f(b)(b) = f(b)(b)$, i.e., $\\neg P = P$. This is Lawvere's categorical insight.",
+    "significance": "key",
     "prerequisites": [
       "self-reference",
       "Iff.rfl",
@@ -126,7 +126,7 @@
     "type": "theorem",
     "title": "Strict Cardinality Inequality",
     "content": "Cantor's theorem implies the **strict inequality**:\n$$|A| < |\\mathcal{P}(A)|$$\n\nThe inequality has two parts:\n1. $|A| \\leq |\\mathcal{P}(A)|$ : The injection $a \\mapsto \\{a\\}$ (singleton sets)\n2. $|A| \\neq |\\mathcal{P}(A)|$ : No bijection exists (Cantor's theorem)\n\nFor the natural numbers:\n$$|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| = |\\mathbb{R}| = \\mathfrak{c}$$\n\nThe symbol $\\mathfrak{c}$ denotes the **cardinality of the continuum**.",
-    "mathContext": "$|A| < 2^{|A|}$",
+    "mathContext": "$|A| < 2^{|A|}$. The injection $\\iota: A \\hookrightarrow \\mathcal{P}(A)$ via $a \\mapsto \\{a\\}$ gives $|A| \\leq |\\mathcal{P}(A)|$. Cantor's no-surjection result gives $|A| \\neq |\\mathcal{P}(A)|$ (by Schroeder-Bernstein, equality would imply a bijection, hence a surjection). Together: $|A| < |\\mathcal{P}(A)| = 2^{|A|}$. For $A = \\mathbb{N}$: $\\aleph_0 < 2^{\\aleph_0} = \\mathfrak{c}$ (the cardinality of the continuum). Whether $\\mathfrak{c} = \\aleph_1$ is the Continuum Hypothesis, independent of ZFC.",
     "significance": "key",
     "prerequisites": [
       "singleton injection",
@@ -149,7 +149,7 @@
     "type": "theorem",
     "title": "No Bijection Corollary",
     "content": "A direct corollary: no set can be put in **bijection** with its power set.\n\n$$\\neg \\exists f: A \\to \\mathcal{P}(A), \\text{Bijective}(f)$$\n\nProof: A bijection is in particular a surjection, which we just showed cannot exist.\n\nThis means:\n- N and P(N) have different cardinalities\n- R and P(R) have different cardinalities\n- For any set, its power set is strictly larger",
-    "mathContext": "$A \\not\\cong \\mathcal{P}(A)$",
+    "mathContext": "$\\neg \\exists f: A \\xrightarrow{\\sim} \\mathcal{P}(A)$. Every bijection is in particular a surjection, so this follows immediately from Cantor's no-surjection theorem. Combined with the singleton injection $a \\mapsto \\{a\\}$, this gives the strict inequality $|A| < |\\mathcal{P}(A)|$. In cardinal arithmetic: $\\kappa < 2^\\kappa$ for every cardinal $\\kappa$, including transfinite ones.",
     "significance": "key",
     "prerequisites": [
       "Function.Bijective",
