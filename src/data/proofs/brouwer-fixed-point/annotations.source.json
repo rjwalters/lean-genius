@@ -8,7 +8,7 @@
     "type": "concept",
     "title": "The Fixed Point Theorem That Changed Mathematics",
     "content": "Brouwer's Fixed Point Theorem states: every continuous function from a closed ball to itself has a fixed point. Despite its simple statement, this 1911 result required the development of algebraic topology to prove.\n\nThe intuition is beautiful: imagine stirring coffee in a circular cup. No matter how you stir (continuously), at least one point of coffee ends up exactly where it started. You cannot continuously move every point!\n\nThis formalization presents the conceptual structure. The full proof requires homology theory or degree theory, which we axiomatize to focus on the logical flow.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "fixed point",
       "continuous map",
@@ -48,7 +48,7 @@
     "title": "What Is a Fixed Point?",
     "content": "A **fixed point** of function $f$ is a point $x$ where $f(x) = x$. The point is 'fixed' because applying $f$ doesn't move it.\n\nFixed points are crucial in many areas:\n- **Dynamical systems:** Equilibrium states are fixed points\n- **Iteration:** $x, f(x), f(f(x)), ...$ converges if there's an attracting fixed point\n- **Economics:** Nash equilibria are fixed points of best-response maps\n- **Differential equations:** Steady-state solutions are fixed points\n\nBrouwer's theorem guarantees that continuous self-maps of balls always have at least one fixed point. This existence guarantee is powerful even when we can't find the fixed point explicitly.",
     "mathContext": "$x$ is a fixed point of $f$ iff $f(x) = x$",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "equilibrium",
       "iteration",
@@ -67,7 +67,7 @@
     "type": "definition",
     "title": "Retractions: Projecting to Subspaces",
     "content": "A **retraction** from space X onto subspace A is a continuous map $r: X \\to A$ that fixes A:\n$$r(a) = a \\text{ for all } a \\in A$$\n\nIntuitively: a retraction 'projects' X onto A without moving points already in A. Examples:\n- Projecting $\\mathbb{R}^2$ onto the x-axis: $(x, y) \\mapsto (x, 0)$ is a retraction\n- Projecting a square onto one of its edges: valid retraction\n\nBut some retractions are impossible! You cannot retract the ball onto its boundary sphere. This impossibility is the key to Brouwer's theorem.\n\nThe intuition: the ball is 'solid' (contractible), but the sphere is 'hollow' (has a hole). You can't continuously project solid onto hollow.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "projection",
       "subspace",
@@ -88,7 +88,7 @@
     "title": "No-Retraction Theorem: The Topological Heart",
     "content": "**Theorem:** There is no retraction from the closed ball $B^n$ to its boundary sphere $S^{n-1}$ (for $n \\geq 1$).\n\nThis is the topological core of Brouwer's theorem. The proof uses algebraic topology:\n\n**Via Homology:**\n- The ball has trivial homology: $H_k(B^n) = 0$ for $k > 0$\n- The sphere has nontrivial homology: $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$\n- A retraction would induce $H_{n-1}(S^{n-1}) \\to H_{n-1}(B^n) \\to H_{n-1}(S^{n-1}) = \\text{id}$\n- But this factors through $H_{n-1}(B^n) = 0$, forcing $\\text{id} = 0$. Contradiction!\n\n**Via Degree Theory:**\n- The identity on $S^{n-1}$ has degree 1\n- A retraction composed with inclusion gives the identity\n- But the composition factors through $B^n$, which is contractible\n- Contractible spaces have degree 0. So $1 = 0$. Contradiction!",
     "mathContext": "$\\nexists r: B^n \\to S^{n-1}$ continuous with $r|_{S^{n-1}} = \\text{id}$",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-retraction",
       "ann-closed-ball"
@@ -111,7 +111,7 @@
     "title": "The Brilliant Ray Construction",
     "content": "This is the proof's clever geometric construction. Given a fixed-point-free map $f$, we build a retraction:\n\n**Construction:** For each point $x$ in the ball:\n1. Compute $f(x)$ (which is different from $x$ by assumption)\n2. Draw a ray from $f(x)$ through $x$\n3. The ray must exit the ball at some point on the sphere\n4. Define $r(x)$ to be that exit point\n\n**Why this works:**\n- Since $f(x) \\neq x$, the ray direction is well-defined\n- The map $x \\mapsto r(x)$ is continuous (ray-casting varies smoothly)\n- If $x$ is on the sphere, the ray from $f(x)$ through $x$ exits at $x$ itself\n- Therefore $r$ fixes the boundary: it's a retraction!\n\nBut wait: we just proved no retraction exists! Contradiction. So our assumption was wrong: $f$ must have a fixed point.",
     "mathContext": "For $x \\in B^n$ with $f(x) \\neq x$: the ray from $f(x)$ through $x$ exits $B^n$ at a unique point $r(x) \\in S^{n-1}$. This defines $r: B^n \\to S^{n-1}$ continuous with $r|_{S^{n-1}} = \\text{id}$.",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-no-retraction"
     ],
@@ -132,7 +132,7 @@
     "title": "Brouwer's Fixed Point Theorem",
     "content": "**Theorem:** Every continuous map $f: B^n \\to B^n$ has a fixed point.\n\n**Proof:**\n1. Suppose $f$ has no fixed point (aiming for contradiction)\n2. Construct the retraction $r: B^n \\to S^{n-1}$ using the ray construction\n3. But no such retraction can exist (No-Retraction Theorem)\n4. Contradiction! So $f$ must have a fixed point. $\\square$\n\nThe Lean proof is remarkably concise — just 3 lines:\n```\nby_contra h\nlet r := retraction_from_no_fixpoint n f h\nexact no_retraction hn ⟨r, trivial⟩\n```\n`by_contra h` assumes $\\neg\\text{HasFixedPoint}$; `retraction_from_no_fixpoint` constructs the retraction (axiomatized); `no_retraction` produces the contradiction. The entire centuries-long development of algebraic topology — from Brouwer's degree theory (1911) through Eilenberg-Steenrod homology (1945) — is compressed into two axioms that capture the essential logical structure.",
     "mathContext": "$\\forall f: B^n \\to B^n$ continuous ($n \\geq 1$), $\\exists x \\in B^n: f(x) = x$. The proof is modus tollens: $\\text{no fixed point} \\Rightarrow \\text{retraction exists} \\Rightarrow \\bot$ (since no retraction can exist). The two axioms encapsulate: (1) the No-Retraction Theorem (from homology: $\\text{id}_{\\mathbb{Z}}$ cannot factor through 0), and (2) the ray-casting construction (from analysis: solving $\\|f(x) + t(x - f(x))\\|^2 = 1$ for $t > 0$).",
-    "significance": "critical",
+    "significance": "key",
     "prerequisites": [
       "ann-ray-construction",
       "ann-no-retraction"
