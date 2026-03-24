@@ -2,11 +2,11 @@
   "id": "fair-games-theorem",
   "title": "The Fair Games Theorem",
   "slug": "fair-games-theorem",
-  "description": "In a fair game (expected gain is zero), a gambler with finite wealth playing against an infinitely wealthy opponent will eventually go bankrupt with probability 1.",
+  "description": "The Optional Stopping Theorem (Wiedijk #62): for a martingale (fair game) and bounded stopping times $\\tau \\leq \\pi$, $E[X_\\tau] = E[X_\\pi]$. No betting strategy can change the expected outcome of a fair game. Proved via a sub/supermartingale sandwich argument using Mathlib's measure-theoretic probability API.",
   "meta": {
     "wiedijkNumber": 62,
     "author": "Classical probability theory",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Gambler%27s_ruin",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Optional_stopping_theorem",
     "date": "1700s",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/FairGamesTheorem.lean",
@@ -22,47 +22,67 @@
     "sorries": 0,
     "mathlibDependencies": [
       {
-        "theorem": "ProbabilityTheory.Martingale",
-        "description": "Martingale theory",
-        "module": "Mathlib.Probability.Martingale"
+        "theorem": "MeasureTheory.Submartingale.expected_stoppedValue_mono",
+        "description": "Submartingale optional stopping inequality: E[f_τ] ≤ E[f_π] for bounded τ ≤ π",
+        "module": "Mathlib.Probability.Martingale.OptionalStopping"
+      },
+      {
+        "theorem": "MeasureTheory.Martingale.submartingale",
+        "description": "Every martingale is a submartingale",
+        "module": "Mathlib.Probability.Martingale.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Martingale.supermartingale",
+        "description": "Every martingale is a supermartingale",
+        "module": "Mathlib.Probability.Martingale.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Supermartingale.neg",
+        "description": "Negation of a supermartingale is a submartingale",
+        "module": "Mathlib.Probability.Martingale.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.isStoppingTime_const",
+        "description": "A constant function is a stopping time",
+        "module": "Mathlib.Probability.Process.Stopping"
       }
     ],
     "originalContributions": [
-      "Framework for fair games and random walks",
-      "Ruin probability calculations",
-      "Connection to martingale stopping theorems"
+      "Proof of Optional Stopping Theorem equality via submartingale/supermartingale sandwich argument (le_antisymm)",
+      "E[X_τ]=E[X_0] corollary for bounded stopping times derived from the general two-stopping-time result",
+      "Submartingale characterization via stopped values (forward direction from Mathlib, converse axiomatized)"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
-    "assumptions": "1 axiom declaration: submartingale_of_stoppedValue_mono (submartingale from stopped value monotonicity)",
+    "assumptions": "1 axiom declaration: `submartingale_of_stoppedValue_mono` (converse of submartingale characterization via stopped values). This axiom is used ONLY in the supplementary `submartingale_characterization` theorem, NOT in the main result. The main theorem (`fair_games_theorem` / Optional Stopping Theorem) and its corollary are fully proved from Mathlib with 0 axioms and 0 sorries.",
     "lineCount": 476,
     "prerequisites": [
-      "Martingales and the Optional Stopping Theorem",
-      "Random walks and recurrence (Polya's theorem)",
-      "Probability theory: expectation and conditional expectation",
-      "Gambler's ruin and absorbing Markov chains",
-      "Filtrations and stopping times"
+      "Martingales, submartingales, and supermartingales",
+      "Probability theory: integration and expectation on measure spaces",
+      "Filtrations and stopping times",
+      "Conditional expectation",
+      "Lebesgue integration"
     ],
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The gambler's ruin problem has been studied since the origins of probability theory. Pascal and Fermat exchanged letters in 1654 about 'le problème des partis' (the division problem), effectively founding the theory of probability. Christiaan Huygens formalized the gambler's ruin in his 1657 treatise *De Ratiociniis in Ludo Aleae*, computing ruin probabilities as the first systematic results in probability. Nicholas Bernoulli studied the problem in his 1713 doctoral dissertation, discovering the St. Petersburg paradox as a related curiosity about infinite expected values.\n\nThe modern framework emerged in the 20th century. Louis Bachelier's 1900 thesis applied martingale-like reasoning to financial markets. Paul Lévy developed the theory of martingales in the 1930s, and Jean Ville coined the term 'martingale' in 1939 to describe fair betting sequences. Joseph Doob's 1953 masterwork *Stochastic Processes* established the Optional Stopping Theorem (also called the Fair Games Theorem) as a cornerstone of modern probability: for any bounded stopping time $\\tau$, $E[X_\\tau] = E[X_0]$.\n\nThis is Wiedijk's theorem #62 ('You cannot beat a fair game with any strategy'). The theorem explains why betting systems like the martingale doubling strategy, the D'Alembert system, and Fibonacci betting all fail: bounded capital means bounded stopping time, so expected earnings remain zero.",
-    "problemStatement": "**Fair Games Theorem**: In a fair game where a player wins or loses $1 with equal probability, a player starting with finite capital n playing against an opponent with infinite capital will eventually go bankrupt with probability 1.\n\nThe expected time to ruin is infinite, but ruin is certain.",
-    "text": "In a fair game (expected gain is zero), a gambler with finite wealth playing against an infinitely wealthy opponent will eventually go bankrupt with probability 1.",
-    "proofStrategy": "Model the game as a random walk on integers. The player's wealth is a martingale. By the martingale convergence theorem and recurrence properties of 1D random walks, the walk will hit 0 with probability 1.",
+    "historicalContext": "The Optional Stopping Theorem emerged from the development of martingale theory in the 20th century. The term 'martingale' originally referred to a betting strategy (double after each loss), attested in French gambling parlance since the 18th century. Jean Ville formalized the mathematical concept in his 1939 thesis *Étude critique de la notion de collectif*, defining a martingale as a sequence of random variables whose conditional expectation equals the current value — the mathematical abstraction of a 'fair game.'\n\nJoseph Doob developed the theory comprehensively in his 1953 masterwork *Stochastic Processes*, establishing the Optional Stopping Theorem as a cornerstone: for any bounded stopping time $\\tau$ in a martingale, $E[X_\\tau] = E[X_0]$. This formalized the intuition that no stopping strategy can beat a fair game. Doob's theorem requires boundedness — a condition that rules out 'play until you win' strategies and ensures the expectations are well-defined.\n\nThe roots of the problem go deeper. Louis Bachelier's 1900 thesis *Théorie de la spéculation* applied proto-martingale reasoning to model stock prices as random walks — anticipating the efficient market hypothesis by over 50 years. Paul Lévy developed much of the probabilistic machinery in the 1930s that Doob later systematized.\n\nThis is Wiedijk's theorem #62 ('You cannot beat a fair game with any strategy'). The Optional Stopping Theorem is foundational for mathematical finance: the First Fundamental Theorem of Asset Pricing (Harrison-Pliska, 1979) shows that arbitrage-free prices are martingales under a risk-neutral measure, making the Optional Stopping Theorem the theoretical basis of derivative pricing.",
+    "problemStatement": "**Optional Stopping Theorem (Fair Games Theorem)**: For a martingale $f$ (fair game) with respect to filtration $\\mathcal{F}$ and measure $\\mu$, and bounded stopping times $\\tau \\leq \\pi$ (with $\\pi \\leq N$):\n$$\\int_\\Omega f(\\tau(\\omega), \\omega)\\, d\\mu = \\int_\\Omega f(\\pi(\\omega), \\omega)\\, d\\mu$$\n\nIn particular, $E[X_\\tau] = E[X_0]$ for any bounded stopping time $\\tau$: no strategy can change the expected outcome of a fair game.",
+    "text": "A Lean 4 proof of the Optional Stopping Theorem (Wiedijk #62) via Mathlib's measure-theoretic probability API. The main theorem `fair_games_theorem` proves $E[f_\\tau] = E[f_\\pi]$ for bounded stopping times $\\tau \\leq \\pi$ in a martingale, using a sub/supermartingale sandwich argument (`le_antisymm`). The corollary `fair_games_corollary` derives $E[X_\\tau] = E[X_0]$. A supplementary characterization theorem establishes the equivalence between the submartingale property and monotonicity of stopped expectations (forward direction from Mathlib, converse axiomatized).",
+    "proofStrategy": "The proof exploits the duality between sub- and supermartingales. A martingale $f$ is both a submartingale and a supermartingale. The submartingale property gives $E[f_\\tau] \\leq E[f_\\pi]$ via `Submartingale.expected_stoppedValue_mono`. For the reverse inequality, negating $f$ yields a submartingale $(-f)$ (since $f$ is a supermartingale), giving $E[(-f)_\\tau] \\leq E[(-f)_\\pi]$, which after `integral_neg` and `linarith` gives $E[f_\\tau] \\geq E[f_\\pi]$. The two inequalities combine via `le_antisymm` to yield equality.",
     "keyInsights": [
-      "Fair games are still ruinous for the finite player: starting with wealth $W_0$ against an infinitely rich opponent, ruin probability is 1, even though $E[W_n] = W_0$ (wealth is constant in expectation)",
-      "The random walk is recurrent in 1D by Pólya's theorem (1921): a simple random walk on $\\mathbb{Z}$ returns to every point with probability 1. This is why ruin is certain — the walk must eventually hit 0.",
-      "Expected time to ruin is infinite despite certain ruin: $E[\\tau] = \\infty$ while $P(\\tau < \\infty) = 1$. This is a classic example where the event is almost sure but takes 'forever' on average.",
-      "No betting strategy can beat a fair game: the Optional Stopping Theorem says $E[X_\\tau] = E[X_0]$ for any bounded stopping time $\\tau$, so clever strategies cannot change expected outcomes — only redistribute variance.",
-      "Connection to financial mathematics: arbitrage-free prices are martingales under a risk-neutral measure by the First Fundamental Theorem of Asset Pricing (Harrison-Pliska 1979). The fair games theorem is thus the foundation of modern option pricing theory (Black-Scholes, 1973)."
+      "**Sub/supermartingale sandwich**: The core proof technique exploits the fact that a martingale is simultaneously a submartingale ($E[f_\\tau] \\leq E[f_\\pi]$) and a supermartingale ($E[f_\\tau] \\geq E[f_\\pi]$). The `le_antisymm` combining both inequalities is the entire argument — a beautiful instance of obtaining equality from two opposing inequalities.",
+      "**Negation trick for supermartingales**: To get the supermartingale inequality, the proof negates $f$ to obtain a submartingale $(-f)$ via `Submartingale.neg`, applies `expected_stoppedValue_mono`, then uses `integral_neg` and `linarith` to flip the inequality back. This avoids needing a separate `Supermartingale.expected_stoppedValue_mono` API.",
+      "**Boundedness is essential**: The theorem requires $\\pi \\leq N$ for some fixed $N$. Without boundedness, the result fails: the classic counterexample is a simple random walk stopped at the first return to 0, where $E[X_\\tau] = 0 = E[X_0]$ holds but $E[\\tau] = \\infty$. The bounded stopping time requirement prevents 'play until you win' strategies.",
+      "**Two-stopping-time generality**: The main theorem proves $E[f_\\tau] = E[f_\\pi]$ for arbitrary $\\tau \\leq \\pi$, which is strictly more general than the special case $E[X_\\tau] = E[X_0]$ (obtained by setting $\\tau = 0$). This generality is useful for comparing strategies against each other, not just against the initial value.",
+      "**Submartingale characterization**: The supplementary theorem `submartingale_characterization` proves a deep equivalence: a process is a submartingale if and only if $E[f_\\tau] \\leq E[f_\\pi]$ for all bounded $\\tau \\leq \\pi$. This connects the local conditional expectation property to a global stopping time property. The forward direction comes from Mathlib; the converse is axiomatized."
     ],
     "prerequisites": [
-      "Martingales and the Optional Stopping Theorem",
-      "Random walks and recurrence (Polya's theorem)",
-      "Probability theory: expectation and conditional expectation",
-      "Gambler's ruin and absorbing Markov chains",
-      "Filtrations and stopping times"
+      "Martingales, submartingales, and supermartingales",
+      "Probability theory: integration and expectation on measure spaces",
+      "Filtrations and stopping times (IsStoppingTime, bounded stopping times)",
+      "Conditional expectation (E[X | F_n])",
+      "Lebesgue integration (integral_neg, linarith for inequalities)"
     ]
   },
   "sections": [
@@ -91,12 +111,20 @@
       "mathContext": "$\\int f_{\\tau} \\, d\\mu = \\int f_{\\pi} \\, d\\mu$ for $\\tau \\leq \\pi \\leq N$. Proof: submartingale gives $\\leq$, supermartingale gives $\\geq$, then $\\text{le\\_antisymm}$."
     },
     {
+      "id": "characterization",
+      "title": "Submartingale Characterization via Optional Stopping",
+      "startLine": 269,
+      "endLine": 348,
+      "summary": "Part IV: the equivalence between being a submartingale and having monotone stopped expectations. Forward direction from Mathlib (`expected_stoppedValue_mono`), converse axiomatized (`submartingale_of_stoppedValue_mono`). For martingales, both directions of inequality hold, giving equality (`martingale_equality_characterization`).",
+      "mathContext": "$\\text{Submartingale}(f, \\mathcal{F}, \\mu) \\Leftrightarrow \\forall \\tau \\leq \\pi \\leq N,\\; E[f_\\tau] \\leq E[f_\\pi]$. The single axiom in the file is for the $\\Leftarrow$ direction. For martingales, the stopped-value condition becomes equality."
+    },
+    {
       "id": "applications",
-      "title": "Applications: Betting Systems and Finance",
+      "title": "Applications (Placeholder Theorems)",
       "startLine": 350,
       "endLine": 428,
-      "summary": "Gambler's ruin probability, failure of martingale/Fibonacci betting systems, financial mathematics connections (Black-Scholes, Doob's inequality).",
-      "mathContext": "Gambler's ruin: $P(\\text{success}) = W_0/(W_0 + a)$. Doob's inequality: $P(\\max_{n \\leq N} f_n \\geq \\lambda) \\leq E[f_N]/\\lambda$."
+      "summary": "Five placeholder theorems proving `(1:ℕ)+1=2` with substantive docstrings discussing gambler's ruin, betting systems, option pricing, and Doob's inequality. The mathematical applications described are accurate but NOT formalized — these are future targets.",
+      "mathContext": "Docstrings describe: gambler's ruin $P(\\text{success}) = W_0/(W_0 + a)$, Doob's inequality $P(\\max_{n \\leq N} f_n \\geq \\lambda) \\leq E[f_N]/\\lambda$, and Black-Scholes pricing. The formal content is trivial (`rfl`)."
     },
     {
       "id": "historical",
@@ -111,32 +139,26 @@
     {
       "targetId": "ballot-problem",
       "relationship": "related",
-      "description": "The ballot problem studies first-passage times of random walks, which are stopping times for the martingale of cumulative votes"
+      "description": "The ballot problem studies first-passage times of random walks, which are stopping times for martingales — the Optional Stopping Theorem provides the framework for analyzing such hitting-time expectations"
     },
     {
       "targetId": "law-of-large-numbers",
       "relationship": "related",
-      "description": "LLN shows averages converge to the mean; the fair games theorem shows stopping times cannot exploit deviations from the mean"
-    },
-    {
-      "targetId": "infinitude-primes",
-      "relationship": "related",
-      "description": "Both are 'inevitability' results: infinitely many primes exist (Euclid) and ruin is certain in a fair game (Doob) despite infinite expected time"
+      "description": "LLN shows sample averages converge to the mean; the Optional Stopping Theorem shows that stopping strategies cannot exploit transient deviations from the mean in a fair game"
     }
   ],
   "conclusion": {
-    "summary": "The fair games theorem reveals a counterintuitive truth: even in perfectly fair games, the poorer player is doomed. It's a foundational result connecting random walks to practical questions of risk.",
-    "implications": "Applications include risk management, insurance, optimal stopping, and understanding why 'the house always wins' even in fair games if it has more capital.",
+    "summary": "This formalization proves the Optional Stopping Theorem (Wiedijk #62) — the mathematical foundation of why no betting strategy can beat a fair game. The proof technique (sub/supermartingale sandwich via `le_antisymm`) is elegant and self-contained: a martingale is squeezed between submartingale and supermartingale inequalities, forcing equality of stopped expectations.",
+    "implications": "The Optional Stopping Theorem underpins modern mathematical finance (arbitrage-free pricing requires martingale measures), optimal stopping theory (secretary problem, American option exercise), and sequential analysis (Wald's equation). The bounded stopping time requirement is the key constraint: it prevents unbounded strategies that could exploit transient fluctuations.",
     "openQuestions": [
-      "What is the distribution of ruin times?",
-      "How does the result change with biased games?",
-      "What are the optimal betting strategies?"
+      "Can the converse direction of `submartingale_characterization` (stopped value monotonicity implies submartingale) be proved from Mathlib, eliminating the single axiom?",
+      "Can a specific example be formalized — e.g., constructing a simple random walk as a martingale and applying `fair_games_theorem` to compute concrete stopping expectations?",
+      "The Lean file contains 5 filler theorems proving `(1:ℕ)+1=2` with substantive docstrings — can these be replaced with actual formalizations (gambler's ruin probability, Doob's maximal inequality)?"
     ]
   },
   "relatedProofs": [
     "ballot-problem",
-    "law-of-large-numbers",
-    "infinitude-primes"
+    "law-of-large-numbers"
   ],
   "leanFile": {
     "imports": [
@@ -152,6 +174,9 @@
     "lineCount": 476,
     "axiomCount": 1,
     "theoremCount": 11,
+    "substantiveTheoremCount": 5,
+    "fillerTheoremCount": 6,
+    "fillerNote": "6 theorems are placeholders: 5 prove (1:ℕ)+1=2 with substantive docstrings, 1 proves True. The 5 substantive theorems are: fair_games_theorem, fair_games_corollary, fair_games_theorem_stoppedValue, submartingale_characterization, martingale_equality_characterization.",
     "definitionCount": 4
   },
   "references": [
