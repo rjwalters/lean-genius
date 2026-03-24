@@ -39,8 +39,10 @@
       "The Lean formalization uses the 'for every threshold N, there exists n ≥ N' idiom to express infinitude, avoiding direct use of Filter.atTop"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Number theory (primes, divisibility)"
+      "Number theory (prime enumeration, primorials, Kummer's theorem)",
+      "Combinatorics (binomial coefficients, factorials)",
+      "Analytic number theory (prime number theorem, prime gaps)",
+      "Lean 4 (Finset products, StrictMono, existential quantification)"
     ]
   },
   "sections": [
@@ -49,49 +51,56 @@
       "title": "Prime Enumeration",
       "startLine": 29,
       "endLine": 49,
-      "summary": "Defines nthPrime via Mathlib's countable primes, with axioms for primality and strict monotonicity."
+      "summary": "Defines nthPrime via Mathlib's countable primes, with axioms for primality and strict monotonicity.",
+      "mathContext": "Defines $p_i = \\text{nthPrime}(i)$ via Mathlib's countability of primes. Axioms: `nthPrime_prime`: $\\forall i,\\, p_i$ is prime; `nthPrime_strictMono`: $i < j \\Rightarrow p_i < p_j$. By PNT, $p_i \\sim i \\ln i$."
     },
     {
       "id": "consecutive-prime-product",
       "title": "Product of Consecutive Primes",
       "startLine": 50,
       "endLine": 65,
-      "summary": "Defines consecutivePrimeProd as the Finset.Ico product of nthPrime, and IsProductOfConsecutivePrimes as the existential predicate."
+      "summary": "Defines consecutivePrimeProd as the Finset.Ico product of nthPrime, and IsProductOfConsecutivePrimes as the existential predicate.",
+      "mathContext": "$\\text{cpp}(a,b) = \\prod_{i \\in [a,b)} p_i = p_a \\cdot p_{a+1} \\cdots p_{b-1}$. Equivalently, $\\text{cpp}(a,b) = p_b\\# / p_a\\#$ where $p_k\\# = \\prod_{i<k} p_i$ is the primorial. `IsProductOfConsecutivePrimes m := \\exists a < b,\\, m = \\text{cpp}(a,b)`."
     },
     {
       "id": "known-examples",
       "title": "Known Examples",
       "startLine": 66,
       "endLine": 91,
-      "summary": "Five axiomatized examples: C(21,2)=210, C(7,3)=35, C(10,4)=210, C(14,4)=1001, C(15,6)=5005."
+      "summary": "Five axiomatized examples: C(21,2)=210, C(7,3)=35, C(10,4)=210, C(14,4)=1001, C(15,6)=5005.",
+      "mathContext": "Axiomatized: $\\binom{21}{2} = 210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$, $\\binom{7}{3} = 35 = 5 \\cdot 7$, $\\binom{10}{4} = 210$, $\\binom{14}{4} = 1001 = 7 \\cdot 11 \\cdot 13$, $\\binom{15}{6} = 5005 = 5 \\cdot 7 \\cdot 11 \\cdot 13$. All have $k \\le 6,\\, n \\le 21$."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 92,
       "endLine": 105,
-      "summary": "ErdosProblem386: for every k ≥ 2, infinitely many n have C(n,k) equal to a product of consecutive primes."
+      "summary": "ErdosProblem386: for every k ≥ 2, infinitely many n have C(n,k) equal to a product of consecutive primes.",
+      "mathContext": "$\\forall k \\ge 2,\\, \\forall N,\\, \\exists n \\ge N,\\, k+2 \\le n \\land \\text{IsProductOfConsecutivePrimes}(\\binom{n}{k})$. Infinitude is expressed via the threshold idiom rather than `Filter.atTop`."
     },
     {
       "id": "structural-observations",
       "title": "Structural Observations",
       "startLine": 106,
       "endLine": 129,
-      "summary": "IsSquarefree definition, consecutivePrimeProd_squarefree axiom, and the proved theorem choose_consec_primes_squarefree."
+      "summary": "IsSquarefree definition, consecutivePrimeProd_squarefree axiom, and the proved theorem choose_consec_primes_squarefree.",
+      "mathContext": "Defines `IsSquarefree n := \\forall p,\\, \\text{Prime}\\,p \\Rightarrow \\neg(p^2 \\mid n)$. Axiom: $\\text{cpp}(a,b)$ is squarefree (each prime appears once). Proved theorem: $\\text{IsProductOfConsecutivePrimes}(\\binom{n}{k}) \\Rightarrow \\text{IsSquarefree}(\\binom{n}{k})$."
     },
     {
       "id": "k-equals-2",
       "title": "The k = 2 Case",
       "startLine": 130,
       "endLine": 141,
-      "summary": "For k = 2, C(n,2) = n(n-1)/2 must be a primorial quotient. Known example: C(21,2) = 210."
+      "summary": "For k = 2, C(n,2) = n(n-1)/2 must be a primorial quotient. Known example: C(21,2) = 210.",
+      "mathContext": "For $k=2$: $\\binom{n}{2} = n(n-1)/2 = \\text{cpp}(a,b)$. This asks when a triangular number $T_n = n(n-1)/2$ equals a primorial quotient. Known: $T_{21} = 210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$."
     },
     {
       "id": "erdos-graham-connection",
       "title": "Connection to Erdős–Graham (1980)",
       "startLine": 142,
       "endLine": 158,
-      "summary": "Context from the 1980 monograph, largest prime factor bound, and connections to Problems 384, 385, 387."
+      "summary": "Context from the 1980 monograph, largest prime factor bound, and connections to Problems 384, 385, 387.",
+      "mathContext": "Axiom `choose_largest_prime_le`: $p \\mid \\binom{n}{k} \\Rightarrow p \\le n$ (from $\\binom{n}{k} = n!/(k!(n-k)!)$). Context: Problems 384 (largest prime $> n/2$ by Sylvester-Schur), 385 (smooth numbers in products of consecutive integers), 387 (divisors in $(cn, n]$). All from Erdős-Graham (1980), p. 74."
     }
   ],
   "conclusion": {
@@ -108,11 +117,41 @@
     {
       "targetId": "erdos-384",
       "relationship": "related",
-      "description": "Problem #384 concerns prime divisors of C(n,k) exceeding n/2 (Sylvester–Schur theorem). Both problems study the prime factorization structure of binomial coefficients."
+      "description": "Problem #384 (Sylvester-Schur: the largest prime dividing $\\binom{n}{k}$ exceeds $n/2$ for $k \\ge 2$) studies the same prime factorization structure of binomial coefficients. The axiom `choose_largest_prime_le` in this file is a weaker form of that bound"
+    },
+    {
+      "targetId": "erdos-385",
+      "relationship": "related",
+      "description": "Problem #385 concerns smooth numbers in products of consecutive integers — closely related since $\\binom{n}{k} = \\prod_{i=1}^{k} (n-k+i)/i$ and the 'consecutive prime product' condition is a strong form of smoothness"
+    },
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Problem #387 asks about divisors of $\\binom{n}{k}$ in the interval $(cn, n]$. Together with Problems 384-386, these form a cluster in Erdős-Graham (1980) studying the prime structure of binomial coefficients"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem provides the algebraic context for $\\binom{n}{k}$. Problem 386 asks when these coefficients have the maximally structured factorization of being a product of consecutive primes"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n)$) constrains prime gaps and hence the spacing of consecutive prime products. For large $n$, the gap between consecutive primes ensures primorial quotients grow rapidly"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization is the basis for asking whether $\\binom{n}{k}$ equals a product of consecutive primes — without FTA, the question is not well-defined"
     }
   ],
   "relatedProofs": [
-    "erdos-384"
+    "erdos-384",
+    "erdos-385",
+    "erdos-387",
+    "binomial-theorem",
+    "bertrands-postulate",
+    "fundamental-arithmetic"
   ],
   "leanFile": {
     "imports": [
@@ -131,5 +170,35 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monograph No. 28, Université de Genève",
+      "note": "The source of Problem 386 (p. 74), in a cluster with Problems 384-387 on prime factorization of binomial coefficients. Contains the original formulation asking whether C(n,k) can equal a product of consecutive primes infinitely often"
+    },
+    {
+      "authors": "Granville, Andrew",
+      "title": "Arithmetic properties of binomial coefficients I: Binomial coefficients modulo prime powers",
+      "year": "1997",
+      "venue": "CMS Conference Proceedings, vol. 20, pp. 253–276",
+      "note": "Studies the p-adic structure of binomial coefficients via Kummer's theorem (carries in base-p addition). Relevant to understanding when C(n,k) can have the gap-free prime factorization required by Problem 386"
+    },
+    {
+      "authors": "Kummer, Ernst Eduard",
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 44, pp. 93–146",
+      "note": "Proved that $v_p(\\binom{m+n}{m})$ equals the number of carries when adding $m$ and $n$ in base $p$. This foundational result connects the prime factorization of C(n,k) to digit arithmetic, relevant to analyzing when the factorization can consist of consecutive primes"
+    },
+    {
+      "authors": "Granville, Andrew; Ramaré, Olivier",
+      "title": "Explicit bounds on exponential sums and the scarcity of squarefree binomial coefficients",
+      "year": "1996",
+      "venue": "Mathematika, vol. 43, pp. 73–107",
+      "note": "Showed that C(n,k) is squarefree for most pairs (n,k), with explicit bounds on exceptions. Since consecutive prime products are squarefree, this provides necessary conditions for Problem 386 instances"
+    }
+  ]
 }
