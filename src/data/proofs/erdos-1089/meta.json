@@ -48,26 +48,24 @@
     "originalContributions": [
       "g_d(n) threshold function definition via Nat.sInf",
       "distinctDistances and numDistinctDistances via Finset operations",
-      "Cube construction axiomatized with vertex count and distance bound",
-      "ratio_bounded_below genuinely proved from Erdős lower bound",
+      "Cube vertices constructed as Fin d → Fin 2 mapped to EuclideanSpace (proved, not axiomatized)",
+      "cube_card proved: 2^d vertices via Fintype.card_fun",
+      "g_mono_n proved: monotonicity in n via Nat.sInf_le and g_well_defined",
+      "ratio_bounded_below genuinely proved from Erdős lower bound (with division reasoning)",
       "f_d(n) inverse function and g-f relationship axiomatized",
-      "Monotonicity properties in both d and n axiomatized",
       "erdos1089Conjecture formalized via Filter.Tendsto"
     ],
     "dateAdded": "2025-12-29",
-    "axiomCount": 13,
+    "axiomCount": 10,
     "assumptions": [
       "g_well_defined: g_d(n) is finite for n ≥ 1",
       "g_1_3: g_1(3) = 4",
       "g_2_3: g_2(3) = 6",
       "g_3_3: g_3(3) = 7 (Croft 1962)",
       "g_d_2: g_d(2) = 3 for d ≥ 1",
-      "cubeVertices: existence of cube vertex set in ℝ^d",
-      "cube_card: cube has 2^d vertices",
       "cube_distances: cube vertices have ≤ d distinct distances",
       "erdos_lower_bound: g_d(n) ≥ c·d^{n-1} for n ≥ 2",
       "erdos_straus_upper_bound: g_d(n) ≤ c^{d^{1-b_n}} for n ≥ 2",
-      "g_mono_n: g_d(n) increasing in n",
       "g_mono_d: g_d(n) increasing in d for n ≥ 2",
       "g_f_relationship: g_d(n) = inf{m : f_d(m) ≥ n}"
     ],
@@ -78,7 +76,7 @@
       "Threshold functions and extremal combinatorics",
       "Filter-based limits in Lean (Filter.Tendsto)"
     ],
-    "lineCount": 201,
+    "lineCount": 239,
     "relatedProblems": [
       {
         "id": "erdos-1083",
@@ -290,12 +288,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 201,
+    "lineCount": 239,
     "structureCount": 0,
-    "axiomCount": 13,
-    "theoremCount": 3,
-    "lemmaCount": 0,
-    "defCount": 10,
+    "axiomCount": 10,
+    "theoremCount": 5,
+    "lemmaCount": 1,
+    "defCount": 11,
     "imports": [
       "Mathlib"
     ],

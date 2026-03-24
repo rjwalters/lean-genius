@@ -45,12 +45,12 @@ Points in d-dimensional Euclidean space and their pairwise distances.
 abbrev Point (d : ℕ) := EuclideanSpace ℝ (Fin d)
 
 /-- Euclidean distance between two points -/
-noncomputable def dist {d : ℕ} (p q : Point d) : ℝ :=
+noncomputable def eucDist {d : ℕ} (p q : Point d) : ℝ :=
   ‖p - q‖
 
 /-- The set of distinct distances determined by a point set -/
 noncomputable def distinctDistances {d : ℕ} (P : Finset (Point d)) : Finset ℝ :=
-  (P.product P).image (fun (p, q) => dist p q) |>.filter (· > 0)
+  (P.product P).image (fun (p, q) => eucDist p q) |>.filter (· > 0)
 
 /-- Number of distinct distances -/
 noncomputable def numDistinctDistances {d : ℕ} (P : Finset (Point d)) : ℕ :=
@@ -102,12 +102,26 @@ axiom g_d_2 : ∀ d ≥ 1, g d 2 = 3
 g_d(n) ≫ d^{n-1} via cube construction.
 -/
 
-/-- The vertices of the d-dimensional unit cube.
-    Axiomatized since it requires embedding {0,1}^d into ℝ^d. -/
-axiom cubeVertices (d : ℕ) : Finset (Point d)
+/-- The vertices of the d-dimensional unit cube: all points with coordinates in {0, 1}.
+    Constructed by mapping each function Fin d → Fin 2 to a point in ℝ^d. -/
+noncomputable def cubeVertices (d : ℕ) : Finset (Point d) :=
+  Finset.univ.image (fun (f : Fin d → Fin 2) =>
+    (EuclideanSpace.equiv (Fin d) ℝ).symm (fun i => ((f i : ℕ) : ℝ)))
+
+private lemma cubeVertices_injective (d : ℕ) :
+    Function.Injective (fun (f : Fin d → Fin 2) =>
+      (EuclideanSpace.equiv (Fin d) ℝ).symm (fun i => ((f i : ℕ) : ℝ))) := by
+  intro f₁ f₂ hf
+  have h : (fun i => ((f₁ i : ℕ) : ℝ)) = (fun i => ((f₂ i : ℕ) : ℝ)) :=
+    (EuclideanSpace.equiv (Fin d) ℝ).symm.injective hf
+  funext i
+  have hi := congr_fun h i
+  exact Fin.ext (Nat.cast_inj.mp hi)
 
 /-- Cube has 2^d vertices -/
-axiom cube_card : ∀ d : ℕ, (cubeVertices d).card = 2^d
+theorem cube_card (d : ℕ) : (cubeVertices d).card = 2 ^ d := by
+  simp only [cubeVertices, Finset.card_image_of_injective _ (cubeVertices_injective d),
+             Finset.card_univ, Fintype.card_fun, Fintype.card_fin]
 
 /-- Cube vertices determine at most d distinct distances -/
 axiom cube_distances :
@@ -154,7 +168,10 @@ def ratioIsBounded (n : ℕ) : Prop :=
 theorem ratio_bounded_below (n : ℕ) (hn : n ≥ 2) :
     ∃ c : ℝ, c > 0 ∧ ∀ d ≥ 1, gRatio d n ≥ c := by
   obtain ⟨c, hc, h⟩ := erdos_lower_bound n hn
-  exact ⟨c, hc, fun d hd => by simp only [gRatio]; linarith [h d hd]⟩
+  exact ⟨c, hc, fun d hd => by
+    simp only [gRatio]
+    rw [ge_iff_le, le_div_iff₀ (by positivity : (d : ℝ) ^ (n - 1) > 0)]
+    linarith [h d hd]⟩
 
 /-
 ## Monotonicity Properties
@@ -162,9 +179,30 @@ theorem ratio_bounded_below (n : ℕ) (hn : n ≥ 2) :
 How g_d(n) changes with d and n.
 -/
 
-/-- g_d(n) is increasing in n -/
-axiom g_mono_n :
-  ∀ d n₁ n₂ : ℕ, n₁ ≤ n₂ → g d n₁ ≤ g d n₂
+/-- g_d(n) is increasing in n.
+    Proof: If every m-point set has ≥ n₂ distances, it has ≥ n₁ distances (for n₁ ≤ n₂).
+    So the threshold set for n₂ is a subset of the threshold set for n₁,
+    and sInf of the superset ≤ sInf of the subset. -/
+theorem g_mono_n :
+    ∀ d n₁ n₂ : ℕ, n₁ ≤ n₂ → g d n₁ ≤ g d n₂ := by
+  intro d n₁ n₂ hn
+  by_cases hn2 : n₂ = 0
+  · have hn1 : n₁ = 0 := by omega
+    subst hn1; subst hn2
+    exact le_refl _
+  · -- n₂ ≥ 1, so g_well_defined gives nonemptiness of the n₂ threshold set
+    obtain ⟨m, hm⟩ := g_well_defined d n₂ (by omega)
+    -- The threshold set for n₂ is nonempty
+    have hne : Set.Nonempty {m : ℕ | ∀ P : Finset (Point d), P.card = m → determinesNDistances P n₂} :=
+      ⟨m, hm⟩
+    -- g d n₂ is in the n₂ threshold set (Nat.sInf_mem for nonempty sets)
+    have hmem_n2 : ∀ P : Finset (Point d), P.card = g d n₂ → determinesNDistances P n₂ :=
+      Nat.sInf_mem hne
+    -- g d n₂ is also in the n₁ threshold set (since n₁ ≤ n₂)
+    have hmem_n1 : g d n₂ ∈ {m : ℕ | ∀ P : Finset (Point d), P.card = m → determinesNDistances P n₁} :=
+      fun P hP => le_trans hn (hmem_n2 P hP)
+    -- sInf of n₁ set ≤ g d n₂ = sInf of n₂ set
+    exact Nat.sInf_le hmem_n1
 
 /-- g_d(n) is generally increasing in d -/
 axiom g_mono_d :
