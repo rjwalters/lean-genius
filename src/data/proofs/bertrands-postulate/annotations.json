@@ -9,6 +9,7 @@
     "type": "concept",
     "title": "Primes Are Never Far Apart",
     "content": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime.\n\n$$\\forall n > 0, \\exists p \\text{ prime}: n < p \\leq 2n$$\n\nThis means:\n- After 2, the next prime (3) is at most 4\n- After 100, there's a prime before 200\n- Prime gaps grow, but not too fast",
+    "mathContext": "Establishes $\\forall n \\in \\mathbb{N}^+,\\; \\exists p \\text{ prime}:\\; n < p \\le 2n$ as the main result, guaranteeing prime density up to a factor of 2.",
     "significance": "key",
     "relatedConcepts": [
       "prime gaps",
@@ -77,6 +78,7 @@
     "type": "technique",
     "title": "Infinitude of Primes (Alternative Proof)",
     "content": "Bertrand's Postulate provides yet another proof that there are infinitely many primes:\n\n1. Given any $n$, apply Bertrand to get prime $p$ with $n < p$\n2. This prime $p > n$\n3. Since $n$ was arbitrary, primes are unbounded\n4. Therefore there are infinitely many primes\n\nThis is distinct from Euclid's factorial argument, showing how the same result can arise from different perspectives.",
+    "mathContext": "Uses the bound $\\exists p > n$ for arbitrary $n$ to conclude $|\\{p : p \\text{ prime}\\}| = \\infty$, an alternative to Euclid's argument via $p \\mid (n! + 1)$.",
     "significance": "key",
     "relatedConcepts": [
       "infinitude of primes",
@@ -110,6 +112,7 @@
     "type": "insight",
     "title": "The Descending Prime Chain",
     "content": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime. This ensures every $n < 521$ has a prime in $(n, 2n]$.\n\nExample: For $n = 50$, we find 61 in the chain with $50 < 61 \\leq 100$. ✓",
+    "mathContext": "Each consecutive pair $(p_i, p_{i+1})$ in the chain satisfies $p_{i+1} > p_i / 2$, so the intervals $(p_i/2,\\, p_i]$ cover all $n < 521$.",
     "significance": "key",
     "relatedConcepts": [
       "constructive proofs",

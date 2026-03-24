@@ -27,6 +27,7 @@
     "type": "definition",
     "title": "Faber-Krahn Constant",
     "content": "The Faber-Krahn constant $c_{FK} = (1 - e^{-2})\\pi^2/4 \\approx 2.11$ arises from optimal concentration estimates. It measures how efficiently vorticity can concentrate in small regions before dissipation dominates.",
+    "mathContext": "Defined as $c_{FK} = \\frac{(1-e^{-2})\\pi^2}{4} \\approx 2.11$, bounding the ratio of vorticity concentration to dissipation via the isoperimetric-type Faber-Krahn inequality for the Laplacian.",
     "significance": "key",
     "relatedConcepts": [
       "isoperimetric inequality",
@@ -84,6 +85,7 @@
     "type": "lemma",
     "title": "Bernoulli's Inequality",
     "content": "The classical Bernoulli inequality $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ is proved by induction. This elementary result becomes surprisingly powerful when applied to backward-time energy growth, establishing that solutions cannot remain bounded while growing at a positive rate.",
+    "mathContext": "Proves $(1+x)^n \\ge 1 + nx$ for $x \\ge -1$ and $n \\in \\mathbb{N}$ by induction, applied here with $x = \\lambda_1 h > 0$ to show backward enstrophy growth is unbounded.",
     "significance": "supporting",
     "relatedConcepts": [
       "induction",
@@ -203,6 +205,7 @@
     "type": "concept",
     "title": "BKM Blowup Criterion",
     "content": "The Beale-Kato-Majda criterion (1984): blowup occurs if and only if $\\int_0^T \\|\\omega\\|_\\infty \\, dt = \\infty$. Equivalently, bounded enstrophy implies bounded max vorticity, which prevents blowup. This is the bridge from energy estimates to regularity.",
+    "mathContext": "The BKM criterion: a smooth solution blows up at time $T$ iff $\\int_0^T \\|\\omega(\\cdot,t)\\|_{L^\\infty}\\,dt = \\infty$. Bounded $E(t) = \\int|\\omega|^2$ implies bounded $\\|\\omega\\|_\\infty$ via Agmon's inequality.",
     "significance": "key",
     "relatedConcepts": [
       "Beale-Kato-Majda",
