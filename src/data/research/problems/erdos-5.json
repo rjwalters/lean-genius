@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T03:37:20.406Z",
-    "iteration": 1,
-    "focus": "Axiom elimination: 5→2 in Erdos5PrimeGaps.lean",
+    "iteration": 2,
+    "focus": "Session 2: Replaced True placeholders with proper Merikoski axiom, proved 5 structural theorems, updated gallery to main file",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove limitPointSet_isClosed (S is closed). Consider proving Hildebrand-Maier from westzynthius+merikoski.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: Reduced Erdos5PrimeGaps.lean axioms 5→2. Proved goldston_pintz_yildirim_small_gaps (derived from zhang_implies_zero_limit), proved erdos_ricci_positive_measure and merikoski_density (trivially True placeholders).",
+    "progressSummary": "PROGRESS: Session 2 replaced 2 dishonest True-placeholder theorems with proper Merikoski bounded-gaps axiom. Proved 5 new structural theorems: westzynthius_implies_frequently_large, limitPointSet_nonempty, limitPointSet_unbounded, erdos5_from_full, erdos5_known_partial. Updated gallery metadata to point to main file (Erdos5PrimeGaps.lean, 3 axioms) instead of legacy stub (Erdos5Problem.lean, 8 axioms).",
     "builtItems": [
       "Proved goldston_pintz_yildirim_small_gaps: derived from zhang_implies_zero_limit (already proved from zhang_bounded_gaps axiom)",
       "Proved erdos_ricci_positive_measure: trivially True placeholder (needs measure theory for real content)",
-      "Proved merikoski_density: trivially True placeholder (needs measure theory for real content)"
+      "Proved merikoski_density: trivially True placeholder (needs measure theory for real content)",
+      "PROVED westzynthius_implies_frequently_large: for any C, infinitely many n with normalizedGap n > C (from westzynthius axiom)",
+      "PROVED limitPointSet_nonempty: S is nonempty (0 ∈ S from Zhang)",
+      "PROVED limitPointSet_unbounded: S is unbounded (from Merikoski bounded gaps)",
+      "PROVED erdos5_from_full: conjecture follows from S ⊇ [0,∞) (Westzynthius gives ∞ part)",
+      "PROVED erdos5_known_partial: packages 0 ∈ S ∧ ∞ ∈ S",
+      "Added merikoski_bounded_gaps axiom: proper formalization of S having bounded gaps",
+      "Removed erdos_ricci_positive_measure True placeholder (was ∃ ε > 0, True)",
+      "Removed merikoski_density True placeholder (was ∃ d ≥ 1/3, True)",
+      "Updated gallery meta.json: proofRepoPath → Erdos5PrimeGaps.lean, axiomCount 8→3"
     ],
     "insights": [
       "Erdos5PrimeGaps.lean is the main file (343L, well-structured); Erdos5Problem.lean is legacy (81L, all axiomatized)",
@@ -41,14 +50,18 @@
       "erdos_ricci and merikoski axioms used ∧ True as placeholders for Lebesgue measure statements — trivially provable",
       "Remaining 2 axioms (westzynthius_large_gaps, zhang_bounded_gaps) are genuine deep results",
       "strictly_increasing_from_frequently is a useful general lemma: extracts StrictMono subsequence from frequently-true predicate",
-      "twin_prime_implies_zero_limit shows conditional: twin prime conjecture → 0 ∈ S"
+      "twin_prime_implies_zero_limit shows conditional: twin prime conjecture → 0 ∈ S",
+      "erdos_ricci_positive_measure and merikoski_density were vacuous: they proved ∃ x, P(x) ∧ True which says nothing about the mathematical content",
+      "Merikoski bounded gaps axiom enables proving S unbounded (for any M, limit point > M exists)",
+      "westzynthius_large_gaps + filter API gives infinitely-often large gaps via Tendsto.atTop decomposition",
+      "Gallery was pointing to legacy Erdos5Problem.lean (8 axioms, 80 lines) instead of main Erdos5PrimeGaps.lean (3 axioms, 380 lines, 19 theorems)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Make erdos_ricci/merikoski axioms substantive: import MeasureTheory, formalize Lebesgue measure statements",
-      "Consider if westzynthius_large_gaps can be derived from other axioms",
-      "Erdos5Problem.lean could be deprecated or merged into Erdos5PrimeGaps.lean",
-      "Aristotle: supporting lemmas for prime gap computations"
+      "Prove limitPointSet_isClosed: S is closed (diagonal argument on subsequential limits)",
+      "Consider proving Hildebrand-Maier from westzynthius + merikoski (large finite limit points)",
+      "Consider if merikoski_bounded_gaps can derive erdos_ricci (infinitely many distinct limit points)",
+      "Deprecate Erdos5Problem.lean or add note pointing to Erdos5PrimeGaps.lean"
     ],
     "markdown": "# Erdős #5 - Knowledge Base\n\n## Problem Statement\n\nLet $C\\geq 0$. Is there an infinite sequence of $n_i$ such that\\[\\lim_{i\\to \\infty}\\frac{p_{n_i+1}-p_{n_i}}{\\log n_i}=C?\\]\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #3\n- Problem #234\n- Problem #4\n- Problem #6\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n- Er57\n- Er61\n- Er65b\n- Er85c\n- Er90\n- Er97c\n- We31\n- GPY09\n- Er55\n- Ri56\n- HiMa88\n- Pi16\n- BFM16\n- Me20\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
@@ -174,16 +187,16 @@
     "mathlib": []
   },
   "started": "2026-01-12T03:31:00.704Z",
-  "lastUpdate": "2026-03-24T07:50:00.000Z",
+  "lastUpdate": "2026-03-24T08:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos5PrimeGaps.lean",
       "filename": "Erdos5PrimeGaps.lean",
-      "lineCount": 347,
-      "theoremCount": 21,
-      "axiomCount": 2,
+      "lineCount": 380,
+      "theoremCount": 19,
+      "axiomCount": 3,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
