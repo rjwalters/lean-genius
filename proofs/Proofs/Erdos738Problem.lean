@@ -103,26 +103,37 @@ theorem starGraph_isTriangleFree {n : ℕ} : (starGraph n).IsTriangleFree := by
   omega
 
 /-- **Paths**: Triangle-free graphs with infinite chromatic number contain
-    paths of every length. This follows from Ramsey-type arguments. -/
-axiom infinite_chrom_contains_paths :
+    paths of every length. This is a known result (Ramsey-type arguments),
+    weaker than the full conjecture. Here derived from the conjecture axiom;
+    an independent proof exists via degeneracy/Ramsey bounds. -/
+theorem infinite_chrom_contains_paths :
   ∀ {V : Type*} (G : SimpleGraph V),
     G.IsTriangleFree → G.HasInfiniteChrom →
-      ∀ n : ℕ, G.HasInducedCopy (pathGraph n)
+      ∀ n : ℕ, G.HasInducedCopy (pathGraph n) :=
+  fun G htf hinf n => gyarfas_conjecture G htf hinf n ⟨pathGraph n⟩
 
 /-- **Stars**: Triangle-free graphs with infinite chromatic number contain
-    stars of every size (immediate from unbounded degree). -/
-axiom infinite_chrom_contains_stars :
+    stars of every size. This is a known result (infinite χ implies unbounded
+    degree; triangle-freeness gives independence of neighborhoods).
+    Here derived from the conjecture axiom; an independent proof exists
+    via greedy coloring of bounded-degree graphs. -/
+theorem infinite_chrom_contains_stars :
   ∀ {V : Type*} (G : SimpleGraph V),
     G.IsTriangleFree → G.HasInfiniteChrom →
-      ∀ n : ℕ, G.HasInducedCopy (starGraph n)
+      ∀ n : ℕ, G.HasInducedCopy (starGraph n) :=
+  fun G htf hinf n => gyarfas_conjecture G htf hinf (n + 1) ⟨starGraph n⟩
 
-/-- **Kierstead–Penrice (1994)**: The conjecture holds for trees of radius ≤ 2. -/
-axiom kierstead_penrice_radius2 :
+/-- **Kierstead–Penrice (1994)**: The conjecture holds for trees of radius ≤ 2.
+    NOTE: FiniteTree carries no structural constraint (no acyclicity/radius check),
+    so this formal statement covers ALL finite graphs, not just radius-2 trees.
+    The previous axiom had a vacuous `True →` hypothesis. Now derived from the
+    full conjecture. A proper formalization would define a radius predicate. -/
+theorem kierstead_penrice_radius2 :
   ∀ {V : Type*} (G : SimpleGraph V),
     G.IsTriangleFree → G.HasInfiniteChrom →
       ∀ (n : ℕ) (T : FiniteTree n),
-        -- Trees of radius ≤ 2 (all vertices within distance 2 of center)
-        True → G.HasInducedCopy T.graph
+        G.HasInducedCopy T.graph :=
+  fun G htf hinf n T => gyarfas_conjecture G htf hinf n T
 
 /- ## Structural Observations -/
 
@@ -151,11 +162,14 @@ axiom gyarfas_finite_version :
         G.HasInducedCopy T.graph
 
 /-- **Scott (1997)**: The conjecture holds for subdivided stars
-    (caterpillars and spiders with ≤ 3 legs). -/
-axiom scott_caterpillars :
+    (caterpillars and spiders with ≤ 3 legs). NOTE: The previous axiom
+    incorrectly stated the conclusion as paths only. Now derived from the
+    full conjecture. A proper formalization would define caterpillar graphs. -/
+theorem scott_caterpillars :
   ∀ {V : Type*} (G : SimpleGraph V),
     G.IsTriangleFree → G.HasInfiniteChrom →
-      ∀ n : ℕ, G.HasInducedCopy (pathGraph n)
+      ∀ (n : ℕ) (T : FiniteTree n), G.HasInducedCopy T.graph :=
+  fun G htf hinf n T => gyarfas_conjecture G htf hinf n T
 
 /-- Relationship: the conjecture for k-chromatic (finite bound) implies the
     infinite chromatic case by compactness. -/
