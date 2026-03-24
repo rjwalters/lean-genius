@@ -3,14 +3,12 @@
   "proofId": "euler-polyhedral-formula",
   "reviewDate": "2026-03-24T21:00:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B",
     "oneLiner": "An exceptionally substantive 1092-line formalization with an axiom-free constructive proof, full Platonic solid classification, K5/K33 non-planarity, and genus generalization — but the meta.json significantly undersells the content and has several factual errors.",
     "tier": "A-",
     "tierJustification": "Tier A-: The core proof (euler_constructible) is fully proved by structural induction with 0 axioms, 0 sorries. The Platonic solid classification via Schlafli inequality and interval_cases is a complete, axiom-free mathematical argument. The file has 65 theorems and 27 definitions with zero filler. The single axiom (euler_formula_axiom) is only for the convenience of the weak PolyhedralGraph representation — none of the main results depend on it. The SimpleGraph bridge uses Mathlib's handshaking lemma for a genuine minimum degree bound. This is among the most substantive formalizations in the gallery."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -97,28 +95,30 @@
       "recommendation": "Low priority. Consider scoping the linter suppression to specific sections."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "enricher",
       "description": "Fix the assumptions field: change '1 axiom(s) and 2 sorry(s)' to accurately reflect 1 axiom and 0 sorries. Rewrite to explain the axiom's limited scope (only for weak PolyhedralGraph representation; the constructive proof is axiom-free).",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Already fixed by enricher prior to mechanic review."
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite originalContributions to reflect the file's actual strengths: axiom-free constructive proof, Platonic solid classification, non-planarity proofs, minimum degree bound, genus generalization. Remove the Gauss-Bonnet overclaim.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Already fixed by enricher prior to mechanic review."
     },
     {
       "id": "ai-3",
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite proofStrategy to match the actual code: constructive induction on ConstructiblePoly from tetrahedron via subdivideEdge/subdivideFace, not edge reduction/contraction.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Already fixed by enricher prior to mechanic review."
     },
     {
       "id": "ai-4",
@@ -132,7 +132,8 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Expand description to mention the constructive proof, Platonic classification, non-planarity results, and genus generalization. Add sum_degrees_eq_twice_card_edges to mathlibDependencies. Fix conclusion.implications formatting.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Description and overview.text expanded by mechanic."
     },
     {
       "id": "ai-6",
@@ -142,7 +143,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 9,
     "originalityAccuracy": 6,
@@ -152,6 +152,5 @@
     "internalConsistency": 6,
     "overall": 7.0
   },
-
   "suggestedBestFraming": "An axiom-free constructive proof of Euler's polyhedral formula V-E+F=2 (Wiedijk #13) via structural induction on polyhedra built from a tetrahedron by edge and face subdivision. Includes complete Platonic solid classification (exactly 5 exist, proved by Schlafli inequality), K5/K33 non-planarity, minimum degree bounds via Mathlib's handshaking lemma, genus generalization V-E+F=2-2g, and a Descartes angular deficiency connection. 65 theorems, zero filler; one axiom for the general PolyhedralGraph representation (Mathlib lacks planarity definitions)."
 }
