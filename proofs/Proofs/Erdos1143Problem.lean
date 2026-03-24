@@ -125,13 +125,19 @@ axiom alpha_gt_3_open (primes : Finset ℕ)
 theorem density_two_three :
     expectedDensity ({2, 3} : Finset ℕ) = 1 - (1 - 1/2) * (1 - 1/3) := by
   unfold expectedDensity
-  sorry
+  congr 1
+  rw [show ({2, 3} : Finset ℕ) = {2, 3} from rfl]
+  simp only [Finset.prod_insert (show (2 : ℕ) ∉ ({3} : Finset ℕ) by decide),
+    Finset.prod_singleton]; push_cast; ring
 
 /-- For primes {2, 3, 5}, expectedDensity = 1 - (1/2)(2/3)(4/5) = 11/15. -/
 theorem density_two_three_five :
     expectedDensity ({2, 3, 5} : Finset ℕ) = 1 - (1 - 1/2) * (1 - 1/3) * (1 - 1/5) := by
   unfold expectedDensity
-  sorry
+  congr 1
+  simp only [Finset.prod_insert (show (2 : ℕ) ∉ ({3, 5} : Finset ℕ) by decide),
+    Finset.prod_insert (show (3 : ℕ) ∉ ({5} : Finset ℕ) by decide),
+    Finset.prod_singleton]; push_cast; ring
 
 /-
 ## Connection to Jacobsthal's Function
