@@ -93,7 +93,12 @@
     ],
     "axiomCount": 11,
     "theoremCount": 4,
-    "sorryCount": 2
+    "sorryCount": 2,
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ]
   },
   "crossReferences": [
     {

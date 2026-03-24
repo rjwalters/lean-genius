@@ -312,7 +312,13 @@
     "defCount": 16,
     "imports": [
       "Mathlib"
-    ]
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos4"
   },
   "references": [
     {

@@ -261,6 +261,10 @@
     "defCount": 10,
     "imports": [
       "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset"
     ]
   },
   "references": [

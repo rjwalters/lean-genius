@@ -209,6 +209,9 @@
       "Mathlib.Tactic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Finset"
     ]
   },
   "references": [

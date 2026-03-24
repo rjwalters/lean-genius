@@ -206,7 +206,13 @@
     "lineCount": 262,
     "axiomCount": 10,
     "theoremCount": 3,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "opens": [
+      "Real",
+      "Complex",
+      "scoped",
+      "BigOperators"
+    ]
   },
   "references": [
     {
