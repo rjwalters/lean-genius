@@ -117,25 +117,11 @@ function stripLeanComments(content: string): string {
   return result
 }
 
-/** Namespaces whose members should not trigger "major Mathlib dependency" flag */
-const BASIC_MATHLIB_NAMES = new Set([
-  'Function', 'Set', 'Finset', 'Nat', 'Int', 'Real', 'Complex',
-  'List', 'Array', 'Option', 'Bool', 'Prod', 'Sum', 'Equiv',
-  'Order', 'Filter', 'Topology', 'Metric', 'Norm', 'Subtype',
-  'Classical', 'Decidable',
-  // Common standalone utilities
-  'congr_fun', 'congr_arg', 'funext', 'rfl', 'Iff',
-])
-
-/** Check whether a Mathlib dependency represents a major named result */
-function isMajorMathlibDep(theorem: string, module: string): boolean {
-  if (!theorem) return false
-  if (module === 'Lean core' || module.startsWith('Init.')) return false
-  const topNamespace = theorem.split('.')[0]
-  if (BASIC_MATHLIB_NAMES.has(topNamespace)) return false
-  if (BASIC_MATHLIB_NAMES.has(theorem)) return false
-  return true
-}
+// NOTE: Automated Mathlib wrapper detection was removed because regex-based
+// heuristics cannot reliably distinguish "using Mathlib lemmas as building blocks"
+// (normal, expected in original proofs) from "directly wrapping a Mathlib theorem
+// as the main result." The hasMajorMathlibDep field is retained in AuditTarget
+// for manual auditor review but is always false for automated scanning.
 
 function countInFile(filePath: string, pattern: RegExp): number {
   if (!fs.existsSync(filePath)) return 0
@@ -215,16 +201,7 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
       }
     }
 
-    // Mathlib dependency check: only flag genuinely major named results (Issue #6130)
-    const deps = proofMeta.mathlibDependencies || []
-    for (const dep of deps) {
-      const theorem = dep.theorem || ''
-      const module = dep.module || ''
-      if (isMajorMathlibDep(theorem, module) && rawContent.includes(theorem)) {
-        hasMajorMathlibDep = true
-        break
-      }
-    }
+    // hasMajorMathlibDep left as false -- automated detection removed (unreliable)
   }
 
   const trackerEntry = tracker.entries[id]
