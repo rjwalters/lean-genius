@@ -104,11 +104,21 @@ axiom erdos_884 : ErdosConjecture884
 
 /- ## Basic Properties -/
 
-/-- The all-pairs sum is non-negative. -/
-axiom allPairsSum_nonneg (n : ℕ) : allPairsSum n ≥ 0
+/-- The all-pairs sum is non-negative (sum of 1/gap ≥ 0). -/
+theorem allPairsSum_nonneg (n : ℕ) : allPairsSum n ≥ 0 := by
+  unfold allPairsSum
+  apply Finset.sum_nonneg
+  intro i _
+  apply Finset.sum_nonneg
+  intro j _
+  exact div_nonneg one_pos.le (Nat.cast_nonneg _)
 
-/-- The consecutive-pairs sum is non-negative. -/
-axiom consecutivePairsSum_nonneg (n : ℕ) : consecutivePairsSum n ≥ 0
+/-- The consecutive-pairs sum is non-negative (sum of 1/gap ≥ 0). -/
+theorem consecutivePairsSum_nonneg (n : ℕ) : consecutivePairsSum n ≥ 0 := by
+  unfold consecutivePairsSum
+  apply Finset.sum_nonneg
+  intro i _
+  exact div_nonneg one_pos.le (Nat.cast_nonneg _)
 
 /-- Number of terms in consecutive-pairs sum: τ(n) - 1. -/
 theorem consecutivePairsSum_num_terms (n : ℕ) (hn : n > 0) :
@@ -136,10 +146,13 @@ axiom gap_lower_bound (n i j : ℕ) (hij : i < j) :
     generalGap n i j ≥ consecutiveGap n i
 
 /-- For coprime m, n: τ(mn) = τ(m) · τ(n).
-    This multiplicativity of the divisor count affects gap patterns. -/
-axiom numDivisors_mul_coprime (m n : ℕ) (hm : m > 0) (hn : n > 0)
+    Proved from Mathlib's Nat.Coprime.divisors_mul and Finset.card_product. -/
+theorem numDivisors_mul_coprime (m n : ℕ) (hm : m > 0) (hn : n > 0)
     (hcop : Nat.Coprime m n) :
-    numDivisors (m * n) = numDivisors m * numDivisors n
+    numDivisors (m * n) = numDivisors m * numDivisors n := by
+  unfold numDivisors
+  rw [Nat.Coprime.divisors_mul hcop]
+  exact Finset.card_map _
 
 /- ## Connections -/
 
