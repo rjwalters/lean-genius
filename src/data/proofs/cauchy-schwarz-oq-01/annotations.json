@@ -1,5 +1,73 @@
 [
   {
+    "id": "ann-module-doc",
+    "proofId": "cauchy-schwarz-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "context",
+    "title": "Module Documentation and Setup",
+    "content": "The module docstring frames this entry as an answer to an open question from the parent `cauchy-schwarz` formalization: whether Mathlib's inner product machinery extends to complex spaces.\n\nFour Mathlib imports provide the complete infrastructure:\n- `InnerProductSpace.Basic`: Core definitions including `norm_inner_le_norm`, `inner_self_eq_norm_sq_to_K`, and `norm_add_sq` (the polarization identity)\n- `InnerProductSpace.PiL2`: `EuclideanSpace` for concrete instantiations\n- `RCLike.Basic`: The typeclass abstracting $\\mathbb{R}$ and $\\mathbb{C}$, providing `RCLike.norm_re_le_norm`\n- `Tactic`: Provides `nlinarith` and `ring` for the derived results\n\nThe `open scoped InnerProductSpace` line activates the `⟪·,·⟫_𝕜` notation, which desugars to `@inner 𝕜 E _ u v` — the inner product on `E` over the scalar field `𝕜`.",
+    "mathContext": "The namespace `CauchySchwarzOQ01` scopes 10 theorems covering: three Cauchy-Schwarz forms ($\\mathbb{C}$, $\\mathbb{R}$, RCLike), two derived inequalities (real part bound, squared form), two identities (self-inner product, imaginary part zero), and three applications (triangle inequality, Pythagoras, summary conjunction).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib imports",
+      "InnerProductSpace",
+      "RCLike typeclass",
+      "notation scoping"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "inner product space axioms"
+    ]
+  },
+  {
+    "id": "ann-self-inner-product",
+    "proofId": "cauchy-schwarz-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 101
+    },
+    "type": "technique",
+    "title": "Self-Inner Product and Imaginary Part",
+    "content": "Two theorems establishing the relationship between self-inner products and norms in complex spaces:\n\n**`inner_self_eq_norm_sq_complex`**: $\\langle u, u \\rangle_\\mathbb{C} = (\\|u\\|^2 : \\mathbb{C})$. The proof delegates to Mathlib's `inner_self_eq_norm_sq_to_K` with explicit scalar field annotation `(𝕜 := ℂ)`. The coercion $(\\|u\\|^2 : \\mathbb{C})$ embeds the real number $\\|u\\|^2$ into $\\mathbb{C}$ via `Complex.ofReal`.\n\n**`im_inner_self_zero`**: $(\\langle u, u \\rangle_\\mathbb{C}).\\text{im} = 0$. Since $\\langle u, u \\rangle_\\mathbb{C} = \\|u\\|^2 \\in \\mathbb{R} \\hookrightarrow \\mathbb{C}$, its imaginary part is zero. The `simp` call uses `Complex.mul_im` and `Complex.ofReal_im` to reduce the goal.\n\nTogether these confirm a defining property of inner product spaces: $\\langle u, u \\rangle$ is always a non-negative real number, even in complex spaces where $\\langle u, v \\rangle$ can be complex.",
+    "mathContext": "$\\langle u, u \\rangle_\\mathbb{C} = \\|u\\|^2 + 0i \\in \\mathbb{R}_{\\geq 0} \\hookrightarrow \\mathbb{C}$. This is a consequence of the sesquilinearity axiom: $\\langle u, u \\rangle = \\overline{\\langle u, u \\rangle}$ (by conjugate symmetry), so $\\langle u, u \\rangle \\in \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "self-inner product",
+      "positive definiteness",
+      "Complex.ofReal",
+      "sesquilinearity"
+    ],
+    "prerequisites": [
+      "inner_self_eq_norm_sq_to_K",
+      "complex number structure"
+    ]
+  },
+  {
+    "id": "ann-inner-triangle",
+    "proofId": "cauchy-schwarz-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 115
+    },
+    "type": "technique",
+    "title": "Triangle Inequality for Inner Products",
+    "content": "**Theorem** `inner_triangle`: $\\|\\langle u, v \\rangle_\\mathbb{K} + \\langle v, w \\rangle_\\mathbb{K}\\| \\leq \\|u\\| \\cdot \\|v\\| + \\|v\\| \\cdot \\|w\\|$.\n\nThe proof chains two steps via `calc`:\n1. `norm_add_le`: the norm triangle inequality $\\|a + b\\| \\leq \\|a\\| + \\|b\\|$ applied to inner products\n2. `add_le_add` with two applications of `norm_inner_le_norm`: bounding each inner product term\n\nThis result is stated for general `RCLike` fields, so it applies to both real and complex inner product spaces simultaneously.",
+    "mathContext": "$\\|\\langle u, v \\rangle + \\langle v, w \\rangle\\| \\leq \\|\\langle u, v \\rangle\\| + \\|\\langle v, w \\rangle\\| \\leq \\|u\\|\\|v\\| + \\|v\\|\\|w\\|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "triangle inequality",
+      "norm_add_le",
+      "Cauchy-Schwarz application"
+    ],
+    "prerequisites": [
+      "norm_inner_le_norm",
+      "norm_add_le"
+    ]
+  },
+  {
     "id": "ann-core-complex-cs",
     "proofId": "cauchy-schwarz-oq-01",
     "range": {
@@ -17,7 +85,11 @@
       "norm_inner_le_norm",
       "RCLike"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex inner product spaces",
+      "SeminormedAddCommGroup",
+      "norm_inner_le_norm"
+    ]
   },
   {
     "id": "ann-rclike-uniform",
@@ -37,7 +109,11 @@
       "inner product space",
       "Hilbert space"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "RCLike typeclass",
+      "InnerProductSpace typeclass",
+      "typeclass polymorphism"
+    ]
   },
   {
     "id": "ann-re-bound",
@@ -57,7 +133,11 @@
       "complex modulus",
       "chain of inequalities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "le_abs_self",
+      "RCLike.norm_re_le_norm",
+      "cauchy_schwarz_complex"
+    ]
   },
   {
     "id": "ann-squared-form",
@@ -77,7 +157,11 @@
       "quadratic witness",
       "Cauchy-Schwarz"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cauchy_schwarz_complex",
+      "norm_nonneg",
+      "nlinarith tactic"
+    ]
   },
   {
     "id": "ann-pythagoras",
@@ -97,7 +181,11 @@
       "norm_add_sq",
       "polarization identity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "norm_add_sq (polarization identity)",
+      "map_zero",
+      "ring tactic"
+    ]
   },
   {
     "id": "ann-summary",
@@ -117,6 +205,9 @@
       "norm_inner_le_norm",
       "formalization answer"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "norm_inner_le_norm",
+      "conjunction introduction"
+    ]
   }
 ]
