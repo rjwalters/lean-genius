@@ -100,9 +100,20 @@ axiom erdos_selfridge (m n : ℕ) (k : ℕ) (r : ℕ)
 
 /-- The product of consecutive integers connects to factorials:
   consecutiveProduct m k = (m + k)! / m!
-This is stated as a divisibility relation to stay in ℕ. -/
-axiom consecutiveProduct_eq_factorial_ratio (m k : ℕ) :
-  consecutiveProduct m k * m.factorial = (m + k).factorial
+Proved by induction on k, using Nat.factorial and Finset.prod_Icc. -/
+theorem consecutiveProduct_eq_factorial_ratio (m k : ℕ) :
+    consecutiveProduct m k * m.factorial = (m + k).factorial := by
+  induction k with
+  | zero => simp [consecutiveProduct]
+  | succ n ih =>
+    simp only [consecutiveProduct] at ih ⊢
+    rw [show Finset.Icc 1 (n + 1) = insert (n + 1) (Finset.Icc 1 n) from by
+      ext x; simp only [Finset.mem_Icc, Finset.mem_insert]; omega]
+    rw [Finset.prod_insert (by simp only [Finset.mem_Icc]; omega)]
+    rw [show m + (n + 1) = m + n + 1 from by omega]
+    rw [mul_comm (m + n + 1), mul_assoc, ih]
+    rw [show m + (n + 1) = (m + n) + 1 from by omega, Nat.factorial_succ]
+    ring
 
 /-- **Trivial family.** If k₁ = k₂ and m₁ = m₂ then the products are
 trivially equal. The conjecture excludes this by requiring disjointness. -/
