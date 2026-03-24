@@ -73,7 +73,7 @@
   "overview": {
     "historicalContext": "Erdős Problem #68 asks whether Σ_{n≥2} 1/(n!-1) is irrational. The problem appears in Erdős's papers from 1968, 1988, 1990, and 1997.\n\nDesmond Weisenberg observed that the sum can be rewritten as a double sum: Σ 1/(n!-1) = Σ_n Σ_k 1/(n!)^k, using the geometric series 1/(x-1) = Σ x^{-k}.\n\nErdős actually conjectured something stronger: that Σ 1/(n!+t) is transcendental for every integer t. The t=-1 case is this problem.\n\nThe decimal expansion is OEIS sequence A331373: 1.2517525711... The difficulty contrasts sharply with the number e = Σ 1/n!, whose irrationality has been known since Euler (1737) and transcendence since Hermite (1873). The small perturbation of replacing n! with n!-1 disrupts the telescoping and algebraic identities that make e accessible, placing this problem beyond current methods in transcendence theory.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nIs the sum\n$$\\sum_{n=2}^{\\infty} \\frac{1}{n!-1}$$\nirrational?\n\n**Weisenberg's Observation:**\n$$\\sum_{n=2}^{\\infty} \\frac{1}{n!-1} = \\sum_{n=2}^{\\infty} \\sum_{k=1}^{\\infty} \\frac{1}{(n!)^k}$$\n\n**Erdős's Broader Conjecture:**\nΣ 1/(n!+t) is transcendental for every integer t.",
-    "text": "Is the sum Σ_{n≥2} 1/(n!-1) irrational? Erdős conjectured more broadly that Σ 1/(n!+t) is transcendental for every integer t.",
+    "text": "A 388-line formalization of Erdos Problem #68 with 3 axioms and 0 sorries. Defines `factorialSum` as $\\sum_{n \\geq 2} 1/(n! - 1)$ and proves convergence, positivity, and Weisenberg's double-sum identity. The main conjecture `ErdosConjecture68` (irrationality of `factorialSum`) is axiomatized as OPEN. The generalized family `generalizedFactorialSum t` for integer $t$ formalizes Erdos's broader transcendence conjecture, with `problem_68_is_special_case` proving the $t = -1$ reduction. Explicit term computations, OEIS connection, and the transcendence-implies-irrationality hierarchy are established.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Sum Definition:** factorialSum using tsum with index shift\n\n2. **Convergence:** summand_pos, factorialSum_summable\n\n3. **Weisenberg Identity:** Double sum reformulation\n\n4. **Main Conjecture:** ErdosConjecture68 as Irrational factorialSum\n\n5. **Generalization:** generalizedFactorialSum for Erdős's broader conjecture\n\n6. **Explicit Values:** Compute first few terms (1, 1/5, 1/23, 1/119)\n\n7. **Context:** Connection to e and transcendence theory",
     "keyInsights": [
       "**Weisenberg Identity:** 1/(n!-1) = Σ_k (1/n!)^k using geometric series",
@@ -184,22 +184,60 @@
   },
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erdos, Paul",
       "title": "Problems and results on number theoretic properties of consecutive integers and related questions",
       "year": "1976",
       "venue": "Congressus Numerantium XVI, pp. 25-44",
-      "note": "Contains the original conjecture about irrationality of Σ 1/(n!-1)"
+      "note": "Contains the original conjecture about irrationality of Sigma 1/(n!-1)"
+    },
+    {
+      "authors": "Erdos, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathematique 28, Geneva",
+      "note": "Restates the conjecture and places it in the context of related factorial sum problems"
+    },
+    {
+      "authors": "Hermite, Charles",
+      "title": "Sur la fonction exponentielle",
+      "year": "1873",
+      "venue": "Comptes Rendus de l'Academie des Sciences 77: 18-24, 74-79, 226-233, 285-293",
+      "note": "Proved e is transcendental. The contrast with the intractability of the perturbed sum Sigma 1/(n!-1) illustrates how sensitive irrationality proofs are to small modifications."
     }
   ],
   "crossReferences": [
     {
       "targetId": "erdos-267",
       "relationship": "related",
-      "description": "Both are Erdős irrationality problems about natural arithmetic series: #267 concerns Fibonacci reciprocal sums, #68 concerns factorial reciprocal sums with perturbation"
+      "description": "Both are Erdos irrationality problems about natural arithmetic series: #267 concerns Fibonacci reciprocal sums, #68 concerns factorial reciprocal sums with perturbation"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite proved e = Sigma 1/n! is transcendental (1873). Problem #68 asks about the perturbed sum Sigma 1/(n!-1), which differs from e by approximately 0.04. The -1 perturbation breaks the telescoping identities that make e tractable, placing this seemingly similar problem beyond current methods."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "technique",
+      "description": "Weisenberg's identity uses the geometric series 1/(x-1) = Sigma_{k>=1} x^{-k} to rewrite 1/(n!-1) as Sigma 1/(n!)^k, converting the problem from a single sum with awkward denominators to a double sum involving only factorial powers."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The irrationality of sqrt(2) is elementary, while the irrationality of Sigma 1/(n!-1) remains open. This contrast illustrates how irrationality proofs vary enormously in difficulty: some are accessible to the ancient Greeks, others defeat modern number theory."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's theorem on Diophantine approximation provides a standard tool for proving transcendence by showing a number is too well approximated by rationals. The factorial sum Sigma 1/(n!-1) might be amenable to such methods if sufficiently precise rational approximation bounds could be established."
     }
   ],
   "relatedProofs": [
-    "erdos-267"
+    "erdos-267",
+    "e-transcendental",
+    "geometric-series",
+    "sqrt2-irrational",
+    "liouville-theorem"
   ],
   "leanFile": {
     "imports": [
