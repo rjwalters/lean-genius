@@ -143,5 +143,27 @@
     "axiomCount": 4,
     "theoremCount": 13,
     "definitionCount": 3
-  }
+  },
+  "references": [
+    {
+      "key": "Ma15",
+      "citation": "Maynard, J., Small gaps between primes, Annals of Mathematics 181(1) (2015), 383–413. Proved infinitely many prime gaps ≤ 600, later improved to 246 by Polymath 8b.",
+      "type": "paper"
+    },
+    {
+      "key": "P8b",
+      "citation": "Polymath, D.H.J., Variants of the Selberg sieve, and bounded intervals containing many primes, Research in the Mathematical Sciences 1:12 (2014). Improved Maynard's bound to 246.",
+      "type": "paper"
+    },
+    {
+      "key": "Zh14",
+      "citation": "Zhang, Y., Bounded gaps between primes, Annals of Mathematics 179(3) (2014), 1121–1174. First proof that lim inf(p_{n+1} - p_n) < ∞, with bound 7×10⁷.",
+      "type": "paper"
+    },
+    {
+      "key": "GPY09",
+      "citation": "Goldston, D.A., Pintz, J., and Yıldırım, C.Y., Primes in Tuples I, Annals of Mathematics 170(2) (2009), 819–862. Proved lim inf(p_{n+1} - p_n)/log p_n = 0, laying groundwork for Zhang-Maynard.",
+      "type": "paper"
+    }
+  ]
 }

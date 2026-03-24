@@ -227,5 +227,27 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "key": "Va72",
+      "citation": "Vandermonde, A.-T., Mémoire sur des irrationnelles de différens ordres avec une application au cercle, Mémoires de l'Académie royale des Sciences de Paris (1772), 489–498. First statement of the identity now bearing his name.",
+      "type": "paper"
+    },
+    {
+      "key": "GKP94",
+      "citation": "Graham, R.L., Knuth, D.E., and Patashnik, O., Concrete Mathematics, 2nd ed., Addison-Wesley (1994), Chapter 5: Binomial Coefficients. Standard reference for binomial coefficient identities including Vandermonde's.",
+      "type": "book"
+    },
+    {
+      "key": "Ri68",
+      "citation": "Riordan, J., Combinatorial Identities, Wiley (1968). Encyclopedic collection of binomial coefficient identities with multiple proof methods.",
+      "type": "book"
+    },
+    {
+      "key": "PWZ96",
+      "citation": "Petkovšek, M., Wilf, H.S., and Zeilberger, D., A=B, A K Peters (1996). Algorithmic proofs of hypergeometric identities, including Vandermonde's convolution as a key example.",
+      "type": "book"
+    }
+  ]
 }
