@@ -20,6 +20,8 @@ n points in ℝ^d with all pairwise distances ≥ 1. Estimate f_d(n).
   points are distance 2 apart (on opposite sides).
 - `unit_distance_1d_degree_at_most_two`: A point in ℝ has at most
   2 neighbors at unit distance among mutually separated points.
+- `f1_achievable`: The consecutive integer configuration 0, 1, ..., n-1
+  achieves exactly n-1 unit-distance pairs.
 
 ## References
 
@@ -83,13 +85,13 @@ theorem unit_distance_1d_triangle (x y z : ℝ)
   have hxz' := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hxz
   rcases hxy' with hxy' | hxy' <;> rcases hxz' with hxz' | hxz'
   · have : y = z := by linarith
-    rw [this] at hyz; simp at hyz
+    rw [this] at hyz; rw [sub_self, abs_zero] at hyz; linarith
   · have : y - z = -2 := by linarith
     rw [this]; norm_num
   · have : y - z = 2 := by linarith
     rw [this]; norm_num
   · have : y = z := by linarith
-    rw [this] at hyz; simp at hyz
+    rw [this] at hyz; rw [sub_self, abs_zero] at hyz; linarith
 
 /-- In ℝ, a point can have at most 2 unit-distance neighbors among
     mutually separated points. If x has three unit neighbors y, z, w
@@ -104,26 +106,44 @@ theorem unit_distance_1d_degree_at_most_two (x y z w : ℝ)
   have hxy' := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hxy
   have hxz' := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hxz
   have hxw' := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hxw
-  -- Each of y, z, w is x+1 or x-1 (two values, three variables → pigeonhole)
   rcases hxy' with hxy' | hxy' <;> rcases hxz' with hxz' | hxz' <;>
     rcases hxw' with hxw' | hxw'
   -- In each case, two variables are equal, so their separation is 0, not ≥ 1
   · have heq : y = z := by linarith
-    subst heq; simp at hyz
+    subst heq; rw [sub_self, abs_zero] at hyz; linarith
   · have heq : y = z := by linarith
-    subst heq; simp at hyz
+    subst heq; rw [sub_self, abs_zero] at hyz; linarith
   · have heq : y = w := by linarith
-    subst heq; simp at hyw
+    subst heq; rw [sub_self, abs_zero] at hyw; linarith
   · have heq : z = w := by linarith
-    subst heq; simp at hzw
+    subst heq; rw [sub_self, abs_zero] at hzw; linarith
   · have heq : z = w := by linarith
-    subst heq; simp at hzw
+    subst heq; rw [sub_self, abs_zero] at hzw; linarith
   · have heq : y = w := by linarith
-    subst heq; simp at hyw
+    subst heq; rw [sub_self, abs_zero] at hyw; linarith
   · have heq : y = z := by linarith
-    subst heq; simp at hyz
+    subst heq; rw [sub_self, abs_zero] at hyz; linarith
   · have heq : y = z := by linarith
-    subst heq; simp at hyz
+    subst heq; rw [sub_self, abs_zero] at hyz; linarith
+
+/- ### Helper Lemmas for 1D Counting -/
+
+/-- Distinct naturals have absolute difference ≥ 1 as reals. -/
+private lemma nat_abs_sub_ge_one {a b : ℕ} (h : a ≠ b) :
+    |(a : ℝ) - (b : ℝ)| ≥ 1 := by
+  rcases Nat.lt_or_gt_of_ne h with hab | hab
+  · have : (a : ℝ) + 1 ≤ (b : ℝ) := by exact_mod_cast hab
+    rw [abs_sub_comm, abs_of_nonneg (by linarith)]
+    linarith
+  · have : (b : ℝ) + 1 ≤ (a : ℝ) := by exact_mod_cast hab
+    rw [abs_of_nonneg (by linarith)]
+    linarith
+
+/-- For consecutive naturals, the real absolute difference is 1. -/
+private lemma nat_consecutive_abs_eq_one (i : ℕ) :
+    |(i : ℝ) - ((i + 1 : ℕ) : ℝ)| = 1 := by
+  have : (i : ℝ) - ((i + 1 : ℕ) : ℝ) = -1 := by push_cast; ring
+  rw [this, abs_neg, abs_one]
 
 /- ### 1D Bounds -/
 
@@ -137,9 +157,55 @@ axiom f1_upper_bound (n : ℕ) (hn : n ≥ 1) (C : SeparatedConfig1D n) :
   unitDistPairs1D C ≤ n - 1
 
 /-- The consecutive integer configuration achieves n-1 unit pairs.
-    Place points at 0, 1, 2, ..., n-1. -/
-axiom f1_achievable (n : ℕ) (hn : n ≥ 1) :
-  ∃ C : SeparatedConfig1D n, unitDistPairs1D C = n - 1
+    Place points at 0, 1, 2, ..., n-1.
+
+    Proof: We place points at integer positions 0, 1, ..., n-1.
+    Separation holds because distinct integers differ by ≥ 1.
+    The unit-distance pairs are exactly the consecutive pairs
+    (i, i+1) for i = 0, ..., n-2, giving n-1 pairs. -/
+theorem f1_achievable (n : ℕ) (hn : n ≥ 1) :
+    ∃ C : SeparatedConfig1D n, unitDistPairs1D C = n - 1 := by
+  -- Configuration: points at 0, 1, 2, ..., n-1
+  let C : SeparatedConfig1D n :=
+    ⟨fun i => (i.val : ℝ), fun i j hij => nat_abs_sub_ge_one (Fin.val_ne_of_ne hij)⟩
+  refine ⟨C, ?_⟩
+  simp only [unitDistPairs1D]
+  -- Map from Fin (n-1) to consecutive pairs: k ↦ (k, k+1)
+  set φ : Fin (n - 1) → Fin n × Fin n :=
+    fun k => (⟨k.val, by omega⟩, ⟨k.val + 1, by omega⟩) with hφ_def
+  -- φ is injective
+  have hinj : Function.Injective φ := by
+    intro x y hxy
+    simp only [φ, Prod.mk.injEq, Fin.mk.injEq] at hxy
+    exact Fin.ext hxy.1
+  -- Show: filter set = image of φ, then card = n - 1
+  suffices hset : Finset.filter
+      (fun p : Fin n × Fin n => p.1 < p.2 ∧ |C.points p.1 - C.points p.2| = 1)
+      Finset.univ = Finset.image φ Finset.univ by
+    rw [hset, Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]
+  ext ⟨a, b⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]
+  constructor
+  · -- Forward: (a, b) is unit pair → it's a consecutive pair from φ
+    rintro ⟨hab, hunit⟩
+    have hlt : a.val < b.val := hab
+    have hlt' : (a.val : ℝ) < (b.val : ℝ) := Nat.cast_lt.mpr hlt
+    have hdiff : (b.val : ℝ) - (a.val : ℝ) = 1 := by
+      rwa [abs_sub_comm, abs_of_pos (by linarith)] at hunit
+    have hba : b.val = a.val + 1 := by
+      exact_mod_cast (show (b.val : ℝ) = (a.val : ℝ) + 1 by linarith)
+    exact ⟨⟨a.val, by omega⟩, by simp only [φ]; exact Prod.ext (Fin.ext rfl) (Fin.ext hba.symm)⟩
+  · -- Backward: consecutive pair from φ is a unit pair
+    rintro ⟨k, hk⟩
+    have ha : a = ⟨k.val, by omega⟩ := by
+      have := congr_arg Prod.fst hk; simp only [φ] at this; exact this.symm
+    have hb : b = ⟨k.val + 1, by omega⟩ := by
+      have := congr_arg Prod.snd hk; simp only [φ] at this; exact this.symm
+    subst ha; subst hb
+    constructor
+    · show (⟨k.val, _⟩ : Fin n) < ⟨k.val + 1, _⟩
+      exact Fin.mk_lt_mk.mpr (Nat.lt_succ_of_le le_rfl)
+    · exact nat_consecutive_abs_eq_one k.val
 
 /-- f_1(n) = n - 1 -/
 axiom f1_exact (n : ℕ) (hn : n ≥ 1) :
