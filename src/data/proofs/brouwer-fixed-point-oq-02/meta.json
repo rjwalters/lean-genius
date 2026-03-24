@@ -170,6 +170,43 @@
       "description": "BU-OQ-03 proves the axiom reduction BU → no-retraction → Brouwer FP — this file explores the computational side of the same fixed-point landscape"
     }
   ],
+  "references": [
+    {
+      "authors": "Chen, X. and Deng, X.",
+      "title": "Settling the complexity of two-player Nash equilibrium",
+      "year": "2006",
+      "venue": "Proceedings of the 47th Annual IEEE Symposium on Foundations of Computer Science (FOCS), 261–272",
+      "note": "Proves PPAD-completeness of 2-player Nash equilibrium; the techniques extend to PPAD-completeness of Brouwer approximate fixed points in ≥2 dimensions"
+    },
+    {
+      "authors": "Papadimitriou, C. H.",
+      "title": "On the complexity of the parity argument and other inefficient proofs of existence",
+      "year": "1994",
+      "venue": "Journal of Computer and System Sciences, 48(3), 498–532",
+      "note": "Introduces the PPAD complexity class capturing the computational hardness of path-following arguments, foundational to this formalization"
+    },
+    {
+      "authors": "Banach, S.",
+      "title": "Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales",
+      "year": "1922",
+      "venue": "Fundamenta Mathematicae, 3, 133–181",
+      "note": "Original proof of the Banach contraction mapping theorem with geometric convergence, formalized here as contraction_convergence"
+    },
+    {
+      "authors": "Sperner, E.",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": "1928",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg, 6, 265–272",
+      "note": "Sperner's lemma on simplex labelings, used here in the 1D discrete IVT and as the combinatorial foundation for Brouwer's theorem"
+    },
+    {
+      "authors": "Daskalakis, C., Goldberg, P. W., and Papadimitriou, C. H.",
+      "title": "The complexity of computing a Nash equilibrium",
+      "year": "2009",
+      "venue": "SIAM Journal on Computing, 39(1), 195–259",
+      "note": "Proves PPAD-completeness of Nash equilibrium via a Brouwer fixed-point reduction, directly connected to this file's PPAD formalization"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

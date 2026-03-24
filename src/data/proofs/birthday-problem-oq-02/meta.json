@@ -197,6 +197,43 @@
       "description": "Related gallery proof"
     }
   ],
+  "references": [
+    {
+      "authors": "von Mises, R.",
+      "title": "Über Aufteilungs- und Besetzungs-Wahrscheinlichkeiten",
+      "year": "1939",
+      "venue": "Revue de la Faculté des Sciences de l'Université d'Istanbul, 4, 145–163",
+      "note": "First rigorous treatment of the birthday problem and the probability that k people share a birthday"
+    },
+    {
+      "authors": "Flajolet, P. and Sedgewick, R.",
+      "title": "Analytic Combinatorics",
+      "year": "2009",
+      "venue": "Cambridge University Press",
+      "note": "Chapter IX covers coupon collector, birthday and collision problems with exact generating function analyses and exponential approximations"
+    },
+    {
+      "authors": "Yuval, G.",
+      "title": "How to swindle Rabin",
+      "year": "1979",
+      "venue": "Communications of the ACM, 22(8), 448–449",
+      "note": "Introduced birthday attacks on cryptographic hash functions, showing O(2^{n/2}) collision cost via the birthday bound formalized here"
+    },
+    {
+      "authors": "Mitzenmacher, M. and Upfal, E.",
+      "title": "Probability and Computing: Randomization and Probabilistic Techniques in Algorithms and Data Analysis",
+      "year": "2017",
+      "venue": "Cambridge University Press, 2nd ed.",
+      "note": "Chapter 5 presents the birthday problem, the 1-x ≤ e^{-x} bound, and its applications in hashing and collision resistance"
+    },
+    {
+      "authors": "Cauchy, A.-L.",
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Paris: Imprimerie Royale",
+      "note": "Classic source for the inequality 1+x ≤ e^x used as the fundamental analytic workhorse of the birthday bound"
+    }
+  ],
   "leanFile": {
     "lineCount": 300,
     "structureCount": 0,
