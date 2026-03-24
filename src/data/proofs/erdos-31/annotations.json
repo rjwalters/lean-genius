@@ -16,7 +16,12 @@
       "sumsets",
       "lorentz-1954"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic density of subsets of ℕ",
+      "Sumset (Minkowski sum) of two sets",
+      "Cofinite subsets of ℕ",
+      "Set.Infinite (Mathlib predicate)"
+    ]
   },
   {
     "id": "ann-e31-density",
@@ -35,7 +40,12 @@
       "counting-function",
       "limsup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto (limit along a filter)",
+      "Filter.atTop (cofinite filter on ℕ)",
+      "Set.ncard (cardinality of a set)",
+      "Filter.limsup (limit superior along a filter)"
+    ]
   },
   {
     "id": "ann-e31-sumsets",
@@ -54,7 +64,12 @@
       "cofinite",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Finite (finiteness of sets in Mathlib)",
+      "Set.Icc (closed interval in an ordered type)",
+      "Minkowski sum / additive combinatorics sumset",
+      "Cofinite topology / cofinite filter on ℕ"
+    ]
   },
   {
     "id": "ann-e31-primes-axiom",
@@ -73,7 +88,12 @@
       "density-zero",
       "primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Number Theorem: π(N) ~ N / log N",
+      "Nat.Prime (primality predicate in Mathlib)",
+      "Nat.primeCounting (prime-counting function π(N))",
+      "HasDensityZero definition (this file)"
+    ]
   },
   {
     "id": "ann-e31-powers2-bijection",
@@ -92,7 +112,12 @@
       "logarithm",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.log (binary logarithm in Mathlib)",
+      "Finset.image (image of a function on a Finset)",
+      "Nat.pow_le_iff_le_log (Nat.log characterization)",
+      "Set.Icc (closed interval [a,b])"
+    ]
   },
   {
     "id": "ann-e31-powers2-count",
@@ -111,7 +136,12 @@
       "logarithmic-growth",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers_of_2_in_Icc_eq (bijection lemma, this file)",
+      "Finset.card_image_of_injective (injectivity gives equality of cardinalities)",
+      "Nat.card_Icc (cardinality of Nat.Icc a b)",
+      "Nat.log (binary logarithm)"
+    ]
   },
   {
     "id": "ann-e31-log-limit",
@@ -130,7 +160,12 @@
       "tendsto",
       "logarithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto.squeeze (squeeze theorem for limits)",
+      "Real.log (natural logarithm in Mathlib)",
+      "tendsto_pow_log_div_mul_add_atTop (log N / N → 0 in Mathlib)",
+      "Nat.log_le_clog (Nat.log bounded by Real.log)"
+    ]
   },
   {
     "id": "ann-e31-powers2-density",
@@ -149,7 +184,12 @@
       "density-zero",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers_of_2_count_bound (this file)",
+      "tendsto_log_add_one_div (this file)",
+      "Filter.Tendsto.congr (changing the function in a limit)",
+      "HasDensityZero / HasDensity definitions (this file)"
+    ]
   },
   {
     "id": "ann-e31-squares-bijection",
@@ -168,7 +208,12 @@
       "bijection",
       "sqrt"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.sqrt (integer square root in Mathlib)",
+      "Nat.le_sqrt (characterization: k ≤ √N ↔ k² ≤ N)",
+      "Finset.image (image of a function on a Finset)",
+      "Set.Icc (closed interval)"
+    ]
   },
   {
     "id": "ann-e31-squares-count",
@@ -187,7 +232,12 @@
       "square-root-growth",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squares_in_Icc_eq (bijection lemma, this file)",
+      "Finset.card_image_of_injective",
+      "Nat.card_Icc (cardinality of integer interval)",
+      "Nat.sqrt (integer square root)"
+    ]
   },
   {
     "id": "ann-e31-sqrt-limit",
@@ -206,7 +256,12 @@
       "tendsto",
       "sqrt"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real.sqrt (real square root in Mathlib)",
+      "tendsto_rpow_atTop (x^r → ∞ for r > 0)",
+      "Filter.Tendsto.squeeze / tendsto_of_tendsto_of_tendsto_of_le_of_le",
+      "Real.sqrt_le_sqrt (monotonicity of sqrt)"
+    ]
   },
   {
     "id": "ann-e31-squares-density",
@@ -225,7 +280,12 @@
       "density-zero",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squares_count_bound (this file)",
+      "tendsto_sqrt_inv (this file)",
+      "Filter.Tendsto.congr (rewriting the function in a limit)",
+      "HasDensityZero / HasDensity definitions (this file)"
+    ]
   },
   {
     "id": "ann-e31-main-statement",
@@ -244,7 +304,12 @@
       "additive-complements",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "HasDensityZero definition (this file)",
+      "CoversAllButFinitely definition (this file)",
+      "Set.Infinite (Mathlib predicate for infinite sets)",
+      "Lorentz (1954): constructive proof via greedy gap-filling"
+    ]
   },
   {
     "id": "ann-e31-lorentz-bound",
@@ -263,7 +328,12 @@
       "optimal",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lorentz_theorem axiom (this file)",
+      "countingFn definition (this file)",
+      "O(N / log N) growth rate (analytic number theory)",
+      "Real.log (natural logarithm in Mathlib)"
+    ]
   },
   {
     "id": "ann-e31-powers2-example",
@@ -282,7 +352,12 @@
       "example",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lorentz_theorem axiom (this file)",
+      "Set.infinite_of_injective_forall_mem (showing a set is infinite via injection)",
+      "powers_of_2_density_zero (this file)",
+      "CoversAllButFinitely definition (this file)"
+    ]
   },
   {
     "id": "ann-e31-optimal",
@@ -301,7 +376,12 @@
       "infimum",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real.sInf (infimum of a set of reals in Mathlib)",
+      "le_antisymm (antisymmetry of ≤ to prove equality)",
+      "lorentz_theorem axiom (this file)",
+      "HasDensity / density non-negativity"
+    ]
   },
   {
     "id": "ann-e31-coverage-theorem",
@@ -320,7 +400,12 @@
       "coverage",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Finite.image (image of a finite set is finite)",
+      "Set.Finite.prod (product of finite sets is finite)",
+      "Set.infinite_of_not_bddAbove (unbounded subsets of ℕ are infinite)",
+      "CoversAllButFinitely / CoversCofinite definitions (this file)"
+    ]
   },
   {
     "id": "ann-e31-basis",
@@ -339,7 +424,12 @@
       "order-2",
       "verified"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lorentz_theorem axiom (this file)",
+      "IsAsymptoticBasis definition (this file)",
+      "Sumset / sumset notation +ₛ (this file)",
+      "Set.union_subset (union of sets)"
+    ]
   },
   {
     "id": "ann-e31-strengthened",
@@ -358,7 +448,12 @@
       "strengthened",
       "lorentz"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lorentz_theorem axiom (this file)",
+      "lorentz_B_bound axiom (this file)",
+      "countingFn definition (this file)",
+      "Real.log (logarithm for the N/log N bound)"
+    ]
   },
   {
     "id": "ann-e31-summary",
@@ -377,6 +472,11 @@
       "solved",
       "verified-proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive combinatorics (sumsets, density, bases)",
+      "Lorentz (1954): constructive gap-filling proof",
+      "Asymptotic density and density-zero sets",
+      "Asymptotic additive bases of order 2"
+    ]
   }
 ]
