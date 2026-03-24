@@ -85,7 +85,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 44,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Core definitions: counting function, subset sums, arithmetic progressions, and subcomplete sets",
       "mathContext": "Defines $A(N) = |A \\cap \\{1,\\ldots,N\\}|$ via `Finset.range` and `filter`, subset sums $P(A)$ as $\\{\\sum_{n \\in B} n : B \\subseteq A\\}$, and subcompleteness as $\\exists a,d > 0, \\{a + kd\\} \\subseteq P(A)$."
     },
@@ -93,7 +93,7 @@
       "id": "density-conditions",
       "title": "Density Conditions",
       "startLine": 77,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Square root density, Folkman density, and optimal density conditions",
       "mathContext": "Three density levels: $A(N) \\geq C\\sqrt{N}$ (square root), $A(N) \\geq CN^{1/2+\\varepsilon}$ (Folkman), and $A(N) \\geq \\sqrt{2N}$ (optimal). The hierarchy is Folkman ⊂ square root ⊂ optimal, with each level corresponding to a different theorem."
     },
@@ -101,7 +101,7 @@
       "id": "folkman",
       "title": "Folkman's Result",
       "startLine": 105,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Folkman's theorem for N^{1/2+ε} density",
       "mathContext": "Axiomatized as `folkman_theorem`: $\\text{HasFolkmanDensity}(A) \\to \\text{IsSubcomplete}(A)$. Folkman's 1966 proof was the first to show density forces arithmetic structure in subset sums."
     },
@@ -109,7 +109,7 @@
       "id": "szemeredi-vu",
       "title": "Szemerédi-Vu Theorem",
       "startLine": 116,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "The main result proving Erdős's conjecture",
       "mathContext": "Axiomatized as `szemeredi_vu_2006`: $\\text{HasSquareRootDensity}(A) \\to \\text{IsSubcomplete}(A)$. Published in JAMS 2006, this removed the $\\varepsilon$ from Folkman's condition using Fourier analysis and the Freiman-Ruzsa inverse theorem."
     },
@@ -117,7 +117,7 @@
       "id": "open-conjecture",
       "title": "Open Conjecture",
       "startLine": 132,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "The optimal density conjecture and Erdős's counterexample",
       "mathContext": "Erdős's 1962 counterexample shows $\\exists A$ with $A(N) < \\sqrt{2N}$ and $\\lnot\\text{IsSubcomplete}(A)$. The `OptimalDensityConjecture` asks whether $A(N) \\geq \\sqrt{2N}$ suffices. The gap between $C\\sqrt{N}$ (sufficient) and $\\sqrt{2N}$ (necessary) remains open."
     },
@@ -125,7 +125,7 @@
       "id": "related-concepts",
       "title": "Related Concepts",
       "startLine": 156,
-      "endLine": 189,
+      "endLine": 190,
       "summary": "Complete sequences, complete_implies_subcomplete theorem, and density hierarchy",
       "mathContext": "Defines `IsComplete` ($P(A) \\supseteq \\{n \\geq N_0\\}$) and proves `complete_implies_subcomplete` constructively by witnessing the AP with $a = N_0, d = 1$. Also axiomatizes `folkman_implies_sqrt_density`: the technical lemma $N^{1/2+\\varepsilon} \\geq C\\sqrt{N}$ for large $N$."
     },

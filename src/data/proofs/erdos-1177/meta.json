@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 18,
     "lineCount": 206,
-    "assumptions": "18 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "18 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdos, Galvin, and Hajnal posed three interrelated conjectures about 3-uniform hypergraph families F_G(kappa) = {H : chi(H) = kappa, G not a subhypergraph of H}. These generalize the classical question 'can high chromatic number force the presence of specific substructures?' to the setting of forbidden subhypergraphs. For ordinary graphs (2-uniform), Erdos (1959) showed that high chromatic number does not force short cycles (high-chromatic-number high-girth graphs exist). The 3-uniform case with uncountable chromatic numbers is much harder. Conjecture 1 asks for a beth_2 = 2^(2^aleph_0) bound on witness size. Conjecture 2 asks for joint avoidance. Conjecture 3 asks for cardinal transfer. Referenced in Vaughan (1999) Problem 7.94.",
@@ -46,49 +47,49 @@
       "id": "cardinals",
       "title": "Abstract Cardinal Framework",
       "startLine": 28,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Axiomatizes Card type, aleph_0, aleph_1, beth_2, and basic cardinal inequalities."
     },
     {
       "id": "hypergraph",
       "title": "3-Uniform Hypergraphs",
       "startLine": 53,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Axiomatizes Hypergraph3 with vertexCard, ContainsSubgraph, IsFinite, chromaticNumber."
     },
     {
       "id": "forbidden-family",
       "title": "Forbidden Subgraph Family",
       "startLine": 78,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Defines forbiddenFamily G kappa and its nonemptiness predicate."
     },
     {
       "id": "conjectures",
       "title": "The Three Conjectures",
       "startLine": 95,
-      "endLine": 126,
+      "endLine": 127,
       "summary": "Formalizes Conjectures 1 (bounded witness), 2 (intersection), 3 (cardinal transfer)."
     },
     {
       "id": "relations",
       "title": "Relations Between Conjectures",
       "startLine": 128,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "Conjecture 3 implies simultaneous nonemptiness; trivial G=H case of Conjecture 2."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
       "startLine": 155,
-      "endLine": 177,
+      "endLine": 178,
       "summary": "Anti-monotonicity of forbidden families in the subgraph ordering."
     },
     {
       "id": "erdos1959",
       "title": "Connection to Erdos 1959",
       "startLine": 179,
-      "endLine": 192,
+      "endLine": 193,
       "summary": "2-uniform analogue: high chromatic number with high girth (probabilistic method)."
     },
     {

@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 4,
     "lineCount": 246,
-    "assumptions": "4 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "4 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdos posed this problem at the Oberwolfach mathematics research institute in 1986, inspired by the interplay between the partition function's analytic properties and multiplicative number theory. The partition function $p(n)$ — counting unordered sums of positive integers equaling $n$ — had been studied since Euler's pioneering work on generating functions in the 1740s. Hardy and Ramanujan's 1918 asymptotic formula $p(n) \\sim \\frac{1}{4n\\sqrt{3}}e^{\\pi\\sqrt{2n/3}}$, obtained via the circle method, revealed that $p(n)$ grows sub-exponentially but faster than any polynomial.\n\nThe first question ($F(n) \\to \\infty$) was resolved quickly: Schinzel noted in the Oberwolfach problem book that this follows from combining the Hardy-Ramanujan asymptotic with Tijdeman's 1973 result showing that sequences growing at least exponentially must accumulate infinitely many distinct prime factors. Full details appear on page 69 of the 1990 paper by Erdos and Ivic.\n\nSchinzel and Wirsing (1987) proved the quantitative lower bound $F(n) \\gg \\log n$, but the gap between $\\log n$ and the conjectured $n$ remains enormous. A breakthrough came with Ken Ono's 2000 result (using modular forms and Galois representations) that every prime divides $p(n)$ for a positive density of $n$, extending Ramanujan's classical congruences for $p = 5, 7, 11$.",
@@ -48,63 +49,63 @@
       "title": "Header and References",
       "summary": "Module docstring stating the problem, its status, all four key references (Tijdeman, Schinzel-Wirsing, Erdos-Ivic, Ono), and Lean 4 imports from Mathlib for partitions, primes, factorization, and filters.",
       "startLine": 1,
-      "endLine": 52
+      "endLine": 53
     },
     {
       "id": "partition-function",
       "title": "The Partition Function",
       "summary": "Defines $p(n)$ via `Fintype.card (Nat.Partition n)` and verifies small values $p(0) = 1$ through $p(4) = 5$ using `native_decide`.",
       "startLine": 54,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "partition-product",
       "title": "Product of Partition Numbers",
       "summary": "Defines $\\prod_{k=1}^n p(k)$ via `Finset.prod` over `Icc 1 n` and proves positivity since each $p(k) \\ge 1$.",
       "startLine": 78,
-      "endLine": 90
+      "endLine": 91
     },
     {
       "id": "prime-factors",
       "title": "Counting Prime Factors: F(n)",
       "summary": "Defines $F(n) = |\\text{primeFactors}(\\prod_{k=1}^n p(k))|$, provides an alternative via the `primeFactorsOfProduct` finset, and states (with sorry) that $F$ is monotone.",
       "startLine": 92,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "known-results",
       "title": "Known Results as Axioms",
       "summary": "States the Schinzel-Wirsing lower bound ($F(n) \\gg \\log n$), the Hardy-Ramanujan asymptotic formula, and Ono's prime divisibility theorem as axioms, since their proofs require the circle method, modular forms, and Galois representations.",
       "startLine": 108,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
       "summary": "States $F(n) \\to \\infty$ (proved, as axiom) and the open conjecture $F(n) > n$ eventually (as a `Prop` definition).",
       "startLine": 139,
-      "endLine": 169
+      "endLine": 170
     },
     {
       "id": "examples",
       "title": "Small Verified Examples",
       "summary": "Computationally verifies $F(1) = 0$, $F(2) = 1$, $F(3) = 2$, $F(4) = 3$, $F(5) = 4$ via `native_decide`, showing how each partition number contributes new prime factors.",
       "startLine": 171,
-      "endLine": 192
+      "endLine": 193
     },
     {
       "id": "oeis",
       "title": "OEIS Sequences",
       "summary": "Connects to OEIS A194259 (partition products) and A194260 (prime factor counts), noting the stalling pattern where $p(7) = 15 = 3 \\cdot 5$ introduces no new primes.",
       "startLine": 194,
-      "endLine": 208
+      "endLine": 209
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Recaps the formalization: Part 1 proved via Hardy-Ramanujan + Tijdeman, Part 2 open, small values verified, key axioms for deep analytic results.",
       "startLine": 210,
-      "endLine": 242
+      "endLine": 246
     }
   ],
   "conclusion": {

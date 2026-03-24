@@ -81,70 +81,70 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Problem statement, Adenwalla's 2025 proof, references (Erdős-Graham 1980, Adenwalla 2025), imports from `Mathlib.Data.Nat.GCD.Basic`, `Mathlib.Data.Nat.Divisors`, `Mathlib.Data.Finset.Basic`"
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 40,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines `properDivisors n` (divisors $> 1$), `ResidueAssignment n` (function assigning residues to divisors), `IsInResidueClass` ($x \\equiv a \\pmod{d}$), `IsCovered` (covered by some class), and `IsCoveringSystem` (every integer covered)"
     },
     {
       "id": "disjointness",
       "title": "The Disjointness Condition",
       "startLine": 64,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Defines `Overlaps` ($x$ in both residue classes), `IsAsDisjointAsPossible` (overlap $\\Rightarrow \\gcd(d,d') = 1$), and `IsDisjointCoveringSystem` (covering $\\wedge$ disjoint)"
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 86,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Defines `ExistsDisjointCoveringN` ($\\exists n > 1$ with disjoint covering) and `ErdosGrahamConjecture` ($\\neg$ExistsDisjointCoveringN)"
     },
     {
       "id": "density",
       "title": "Density Results",
       "startLine": 99,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "Placeholder axioms for density-zero result (if such $n$ existed) and Erdős-Graham's belief"
     },
     {
       "id": "adenwalla",
       "title": "Adenwalla's Theorem (2025)",
       "startLine": 114,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Axiom `adenwalla_2025: ErdosGrahamConjecture`. Derived theorems: `erdos_204_answer` ($\\neg$ExistsDisjointCoveringN) and `every_n_fails` ($\\forall n > 1$, no disjoint covering exists), proved by contradiction"
     },
     {
       "id": "why-fails",
       "title": "Why It Fails: Divisibility Obstruction",
       "startLine": 133,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "Verified proof `divisor_pair_not_coprime`: $d \\mid d' \\wedge d > 1 \\Rightarrow \\gcd(d,d') \\neq 1$, using `Nat.gcd_eq_left`. This is the key obstruction making disjoint covering impossible"
     },
     {
       "id": "related",
       "title": "Related Questions",
       "startLine": 155,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "`MaxCoverableDensity n` (sorry — supremum of coverable density under disjointness), Adenwalla's density study, and existence of standard covering systems without coprimality constraint"
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "startLine": 177,
-      "endLine": 195,
+      "endLine": 196,
       "summary": "Verified: `properDivisors 6 = {2, 3, 6}` by `native_decide`. Axioms `n6_fails` and `n12_fails`: for $n = 6$, $2 \\mid 6$ gives $\\gcd(2,6) = 2$; for $n = 12$, similar obstructions"
     },
     {
       "id": "covering-connections",
       "title": "Connection to Covering Systems",
       "startLine": 197,
-      "endLine": 216,
+      "endLine": 217,
       "summary": "Context axioms: classical covering system problem, minimum modulus problem, and Hough's theorem (2015) on reciprocal sums $\\sum 1/d_i \\geq 1$"
     },
     {

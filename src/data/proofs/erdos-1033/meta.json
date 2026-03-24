@@ -79,14 +79,14 @@
       "title": "Graph Setup",
       "summary": "vertexCount, edgeCount definitions",
       "startLine": 28,
-      "endLine": 41
+      "endLine": 42
     },
     {
       "id": "turan-threshold",
       "title": "Turán Threshold",
       "summary": "turanThreshold, isAboveTuran, turan_has_triangle",
       "startLine": 43,
-      "endLine": 59,
+      "endLine": 60,
       "mathContext": "Turán (1941): $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow G$ contains a triangle."
     },
     {
@@ -94,14 +94,14 @@
       "title": "Triangles and Degree Sums",
       "summary": "Triangle structure, vertexDegree, triangleDegreeSum",
       "startLine": 61,
-      "endLine": 90
+      "endLine": 91
     },
     {
       "id": "h-function",
       "title": "The Function h(n)",
       "summary": "hasDenseTriangle, isValidLowerBound, h definition",
       "startLine": 92,
-      "endLine": 117,
+      "endLine": 118,
       "mathContext": "$h(n) = \\max\\{k : \\forall G \\text{ with } |E| > n^2/4, \\exists \\text{triangle with } d(u)+d(v)+d(w) \\geq k\\}$."
     },
     {
@@ -109,7 +109,7 @@
       "title": "The Constant 2(√3−1)",
       "summary": "erdosLaskarConstant, erdosLaskar_approx",
       "startLine": 119,
-      "endLine": 130,
+      "endLine": 131,
       "mathContext": "$2(\\sqrt{3}-1) \\approx 1.464$. Arises from optimizing triangle degree sums in nearly-bipartite graphs near the Turán graph $T(n,2)$."
     },
     {
@@ -117,70 +117,70 @@
       "title": "Erdős-Laskar Upper Bound",
       "summary": "erdos_laskar_upper, upper_bound_tight",
       "startLine": 132,
-      "endLine": 148
+      "endLine": 149
     },
     {
       "id": "original-lower",
       "title": "Erdős-Laskar Lower Bound",
       "summary": "erdos_laskar_lower, lower_beats_n",
       "startLine": 150,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "fan-bound",
       "title": "Fan's Improved Lower Bound",
       "summary": "fanConstant, fan_lower, current_bounds",
       "startLine": 168,
-      "endLine": 190
+      "endLine": 191
     },
     {
       "id": "gap",
       "title": "The Gap",
       "summary": "boundGap, gap_positive, gap_approx",
       "startLine": 192,
-      "endLine": 208
+      "endLine": 209
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos_1033_conjecture, h_asymptotic",
       "startLine": 210,
-      "endLine": 229
+      "endLine": 230
     },
     {
       "id": "degree-properties",
       "title": "Degree Sum Properties",
       "summary": "triangle_min_degree, triangle_sum_min, dense_average_degree",
       "startLine": 231,
-      "endLine": 251
+      "endLine": 252
     },
     {
       "id": "maximum",
       "title": "Maximum Triangle Degree Sum",
       "summary": "maxTriangleDegreeSum, h_as_min",
       "startLine": 253,
-      "endLine": 270
+      "endLine": 271
     },
     {
       "id": "extremal",
       "title": "Extremal Graphs",
       "summary": "isExtremal, extremal_exists",
       "startLine": 272,
-      "endLine": 287
+      "endLine": 288
     },
     {
       "id": "turan-graph",
       "title": "Relation to Turán Graph",
       "summary": "bipartite_no_triangle, turan_plus_one",
       "startLine": 289,
-      "endLine": 311
+      "endLine": 312
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "h_three, h_four",
       "startLine": 313,
-      "endLine": 325
+      "endLine": 358
     }
   ],
   "conclusion": {

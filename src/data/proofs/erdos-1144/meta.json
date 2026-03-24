@@ -93,56 +93,56 @@
       "id": "header",
       "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 23,
       "summary": "Documentation header stating Erdős Problem #1144: the conjecture on partial sums of random multiplicative functions, its open status, Atherfold's upper bound, and relation to Problem #520."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 24,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Imports Mathlib.Tactic and Mathlib.Data.Nat.Prime.Basic; opens Filter and Finset namespaces."
     },
     {
       "id": "core-defs",
       "title": "Core Definitions",
       "startLine": 29,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Defines IsCompletelyMultiplicative (f(mn) = f(m)f(n)), IsRademacherMultiplicative (completely multiplicative with f(p) = ±1), and partialSum as ∑ over Finset.range."
     },
     {
       "id": "basic-props",
       "title": "Basic Properties",
       "startLine": 45,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Four theorems: rademacher_one (f(1)=1), rademacher_values_pm1 (f(n)=±1 for n>0, sorry), rademacher_abs_one (|f(n)|=1), completely_mult_zero (f(0)=0 by algebraic argument)."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 78,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "States the open conjecture in deterministic form (erdos_1144_conjecture: for every C>0, infinitely many N have |S_f(N)| ≥ C√N) and probabilistic form (erdos_1144_probabilistic: universal quantification over all Rademacher functions)."
     },
     {
       "id": "known-results",
       "title": "Known Results: Atherfold's Bound",
       "startLine": 104,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Axiomatizes Atherfold's 2025 upper bound: for every ε>0, there exists C>0 such that |S_f(N)| ≤ C√N (log N)^{1+ε} eventually."
     },
     {
       "id": "structural",
       "title": "Structural Theorems",
       "startLine": 119,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Three structural results: partialSum_zero (S(0)=0), atherfold_implies_subpolynomial (sorry: log factors dominated by N^δ), partialSum_trivial_bound (sorry: |S(N)| ≤ N by triangle inequality)."
     },
     {
       "id": "pinch",
       "title": "Growth Rate Pinch Theorem",
       "startLine": 142,
-      "endLine": 158,
+      "endLine": 185,
       "summary": "The main proved result: if the conjecture holds, combined with Atherfold's bound, the growth rate is pinned between C₁√N and C₂√N(log N)^{1+ε}. Proof extracts C₁=1 and C₂ from Atherfold."
     }
   ],

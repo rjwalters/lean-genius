@@ -22,35 +22,36 @@
     "badge": "axiom",
     "axiomCount": 11,
     "lineCount": 100,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 22,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines the foundational objects: `IsEntire` (entire function predicate), `IsMonomial` ($f(z) = cz^n$), the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$ via `maxModulus`, and the counting function $\\nu(r) = \\#\\{z : |z|=r,\\, |f(z)|=M(r)\\}$ via `nu`. All core definitions are axiomatized except `IsMonomial`."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 50,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "States that $1 \\le \\nu(r) < \\infty$ for non-monomial entire functions: finiteness from the identity theorem (the real-analytic function $\\theta \\mapsto |f(re^{i\\theta})|$ has finitely many maxima), and existence from compactness of the circle."
     },
     {
       "id": "question-1",
       "title": "Question 1: lim sup ν(r) = ∞ (Solved)",
       "startLine": 61,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "The solved part: Herzog–Piranian (1968) showed $\\limsup_{r \\to \\infty} \\nu(r) = \\infty$ is achievable. Formalized as: for every $N$, there exists a non-monomial entire $f$ and arbitrarily large $r$ with $\\nu(r) \\ge N$."
     },
     {
       "id": "question-2",
       "title": "Question 2: lim inf ν(r) = ∞ (Open)",
       "startLine": 70,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "The open part: can $\\liminf_{r \\to \\infty} \\nu(r) = \\infty$ for a non-monomial entire function? Formalized as a disjunction — either such $f$ exists, or every non-monomial has $\\nu(r)$ bounded infinitely often."
     },
     {

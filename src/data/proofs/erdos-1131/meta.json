@@ -25,7 +25,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 9,
     "lineCount": 158,
-    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem has roots in Fejér's 1932 work on optimal interpolation. Fejér proved that the zeros of the Legendre polynomial P_n minimize the maximum of the Lebesgue function Λ_n(x) = Σ|l_k(x)| over [-1,1]. Erdős naturally asked whether Legendre nodes also minimize the L² integral I = ∫Σ|l_k(x)|² dx. Szabados (1966, Acta Math. Acad. Sci. Hungar.) disproved this for n > 3, showing that slightly perturbed nodes give a smaller integral. Erdős then conjectured min I = 2 - (1+o(1))/n. The best bounds are due to Erdős, Szabados, Varma, and Vértesi (1994, Studia Sci. Math. Hungar.): they proved 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1). The upper bound comes from Legendre nodes (I = 2 - 2/(2n-1) for P_n zeros), while the lower bound uses the partition of unity and Cauchy-Schwarz. Turetskii (1940) initiated the study of Lebesgue constants for specific node systems, and Kilgore-de Boor-Pinkus (1978) proved the existence of optimal L∞ interpolation nodes — the L² analog remains open.",
@@ -55,7 +56,7 @@
       "id": "lagrange-basis",
       "title": "Lagrange Basis Polynomials",
       "startLine": 36,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Defines `NodeConfig n` (nodes in $[-1,1]$), `AreDistinct`, and the Lagrange basis $l_k(x) = \\prod_{i \\ne k} (x - x_i)/(x_k - x_i)$ as a finite product over `Finset.univ.filter`."
     },
     {
@@ -97,7 +98,7 @@
       "id": "main-theorem",
       "title": "Main Formalized Result",
       "startLine": 145,
-      "endLine": 156,
+      "endLine": 158,
       "summary": "The theorem `erdos_1131`: for any distinct nodes in $[-1,1]$, $I \\ge 2/n$. Proved by applying the lower bound axiom. The simplest unconditional result."
     }
   ],

@@ -69,7 +69,8 @@
     ],
     "axiomCount": 15,
     "lineCount": 386,
-    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #646**\n\nThis problem asks about the parity of prime exponents in factorial factorizations.\n\n**Key History:**\n- Erdős & Graham (1980, p. 77, *Old and New Problems and Results in Combinatorial Number Theory*): Original problem statement\n- Berend (1997): Proved the affirmative answer with a stronger bounded-gaps result\n\n**Mathematical Setting:**\nThe p-adic valuation $v_p(n!)$ counts how many times prime $p$ divides $n!$. Legendre's formula gives $v_p(n!) = \\sum_{j \\geq 1} \\lfloor n/p^j \\rfloor$. The beautiful digit-sum identity $v_p(n!) = (n - s_p(n))/(p-1)$ (where $s_p(n)$ is the base-$p$ digit sum) reduces the parity question to properties of digit representations. For a single prime, the parity of $v_p(n!)$ is quasi-periodic with density $\\approx 1/2$. The challenge for multiple primes is showing these quasi-periodic patterns are not anti-correlated — that simultaneous even valuations occur infinitely often. Berend's proof uses the Chinese Remainder Theorem to decompose the multi-prime problem into independent single-prime problems, leveraging the digit-sum formula and equidistribution of digit patterns.",
@@ -96,63 +97,63 @@
       "title": "p-adic Valuation",
       "summary": "padicVal, legendre_formula, factorial bound, periodic property",
       "startLine": 39,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "even-valuation",
       "title": "Even Valuation Property",
       "summary": "hasEvenValuation, hasEvenValuation_iff, hasAllEvenValuations",
       "startLine": 75,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "examples",
       "title": "Examples and Computations",
       "summary": "v₂(4!), v₂(7!), v₃(8!), n=31 for {2,3}",
       "startLine": 101,
-      "endLine": 169
+      "endLine": 170
     },
     {
       "id": "berend",
       "title": "Berend's Theorem",
       "summary": "berend_existence, berend_bounded_gaps, positive_density",
       "startLine": 171,
-      "endLine": 200
+      "endLine": 201
     },
     {
       "id": "single-prime",
       "title": "Single Prime Case",
       "summary": "Density ~1/2, quasi-periodic parity",
       "startLine": 202,
-      "endLine": 221
+      "endLine": 222
     },
     {
       "id": "conjecture",
       "title": "Erdős Conjecture",
       "summary": "ErdosConjecture646, erdos_646 theorem",
       "startLine": 223,
-      "endLine": 242
+      "endLine": 243
     },
     {
       "id": "digit-sums",
       "title": "Base-p Representations",
       "summary": "Kummer's theorem, digit_sum_formula, val_2_digit_sum",
       "startLine": 244,
-      "endLine": 271
+      "endLine": 272
     },
     {
       "id": "strengthened",
       "title": "Strengthened Results",
       "summary": "explicit_bound_2_3, gap_bound_two_primes, CRT independence",
       "startLine": 273,
-      "endLine": 304
+      "endLine": 305
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Odd valuations, prescribed parities",
       "startLine": 306,
-      "endLine": 333
+      "endLine": 334
     },
     {
       "id": "main-results",

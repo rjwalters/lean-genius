@@ -14,7 +14,8 @@
       "graph theory",
       "computer-assisted proof",
       "planar graphs"
-    ]
+    ],
+    "mathContext": "The Four Color Theorem: every planar graph $G$ satisfies $\\chi(G) \\leq 4$. Equivalently, every map on the sphere can be colored with 4 colors such that no two adjacent regions share a color."
   },
   {
     "id": "ann-graph-structure",
@@ -31,7 +32,8 @@
       "vertex",
       "edge",
       "adjacency"
-    ]
+    ],
+    "mathContext": "Part of the Four Color Theorem formalization: Graphs and Their Structure."
   },
   {
     "id": "ann-coloring",
@@ -66,7 +68,8 @@
       "planar embedding",
       "Kuratowski's theorem",
       "forbidden minors"
-    ]
+    ],
+    "mathContext": "A graph is planar if it can be embedded in $\\mathbb{R}^2$ without edge crossings. By Kuratowski's theorem (1930), $G$ is planar iff it contains no subdivision of $K_5$ or $K_{3,3}$."
   },
   {
     "id": "ann-euler",
@@ -144,7 +147,8 @@
       "color swapping",
       "connected component",
       "Kempe's fallacy"
-    ]
+    ],
+    "mathContext": "A proper $k$-coloring of a graph $G = (V, E)$ is a function $c: V \\to \\{1, \\ldots, k\\}$ such that $c(u) \\neq c(v)$ whenever $\\{u, v\\} \\in E$. The chromatic number $\\chi(G) = \\min\\{k : G \\text{ has a proper } k\\text{-coloring}\\}$."
   },
   {
     "id": "ann-kempe-swap",
@@ -181,7 +185,8 @@
       "minimal counterexample",
       "configuration",
       "extendability"
-    ]
+    ],
+    "mathContext": "A proper $k$-coloring of a graph $G = (V, E)$ is a function $c: V \\to \\{1, \\ldots, k\\}$ such that $c(u) \\neq c(v)$ whenever $\\{u, v\\} \\in E$. The chromatic number $\\chi(G) = \\min\\{k : G \\text{ has a proper } k\\text{-coloring}\\}$."
   },
   {
     "id": "ann-computer-verification",
@@ -198,7 +203,8 @@
       "Coq",
       "formal verification",
       "proof assistant"
-    ]
+    ],
+    "mathContext": "Part of the Four Color Theorem formalization: Computer-Assisted Proof."
   },
   {
     "id": "ann-gonthier",
@@ -215,6 +221,7 @@
       "Coq proof assistant",
       "SSReflect",
       "proof certificate"
-    ]
+    ],
+    "mathContext": "Part of the Four Color Theorem formalization: Gonthier's Coq Formalization."
   }
 ]

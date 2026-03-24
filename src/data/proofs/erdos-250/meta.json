@@ -78,21 +78,21 @@
       "id": "background",
       "title": "Background and Definitions",
       "startLine": 25,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Introduces the sum of divisors function $\\sigma(n)$ with the Lambert series identity, then verifies $\\sigma(n)$ computations for $n = 1, 2, 3, 4, 6, 12$ using `native_decide`."
     },
     {
       "id": "convergence",
       "title": "Series Convergence",
       "startLine": 70,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Defines partial sums $S_N = \\sum_{n=0}^{N} \\sigma(n)/2^n$, verifies $S_1 = 1/2$, and axiomatizes the bound $\\sigma(n) \\leq n^2$ ensuring convergence by comparison with the geometric series."
     },
     {
       "id": "main-result",
       "title": "Nesterenko's Irrationality Theorem",
       "startLine": 92,
-      "endLine": 143,
+      "endLine": 144,
       "summary": "Axiomatizes summability (`sigma_series_summable`) and Nesterenko's irrationality result (`nesterenko_irrationality`), then derives the main theorem `erdos_250` and proves existence of the limit via `sigma_series_has_sum`."
     },
     {

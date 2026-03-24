@@ -80,7 +80,7 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 26,
+      "endLine": 27,
       "summary": "Module documentation explaining the problem and opening namespaces for filters and topology.",
       "mathContext": "Imports Mathlib for `Nat`, `Set`, `Filter` (asymptotics). Opens `Set`, `Nat`, `Filter` namespaces for concise notation."
     },
@@ -88,7 +88,7 @@
       "id": "background",
       "title": "Background on Representation Functions",
       "startLine": 28,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Context on representation functions and their connection to additive problems.",
       "mathContext": "$r_A(n) = |\\{(a,b) : a,b \\in A, a + b = n\\}|$ counts representations of $n$ as a sum of two elements of $A$. Related to Sidon sets ($r_A \\leq 2$) and additive bases."
     },
@@ -96,7 +96,7 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 41,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "The representation function and its alternative notation.",
       "mathContext": "$r_A(n) = \\text{Nat.card}\\{(a,b) \\in A \\times A : a + b = n\\}$. Alternative: $r_A(n) = \\sum_{a \\in A} \\mathbf{1}_A(n-a)$."
     },
@@ -104,7 +104,7 @@
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 59,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "States Erdos66Question and ErdosConjecture66 as Props.",
       "mathContext": "Question: $\\exists A \\subseteq \\mathbb{N}: r_A(n)/\\log n \\to c \\neq 0$? Conjecture: NO such $A$ exists (OPEN)."
     },
@@ -112,7 +112,7 @@
       "id": "partial-results",
       "title": "Partial Results",
       "startLine": 93,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Axioms for Erdős-Sárközy and Horváth's theorems.",
       "mathContext": "Erdős-Sárközy (1986): if $r_A(n) \\sim c \\log n$ then $c = 1$. Horváth (2002): fluctuations persist, $\\limsup r_A/\\log n > \\liminf r_A/\\log n$ for additive bases."
     },
@@ -120,7 +120,7 @@
       "id": "random-sets",
       "title": "Random Set Behavior",
       "startLine": 130,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "Why random constructions almost solve the problem.",
       "mathContext": "Random $A$ with $\\Pr[n \\in A] = \\sqrt{\\log n / n}$ gives $\\mathbb{E}[r_A(n)] \\sim \\log n$, but concentration fails: $r_A(n)$ fluctuates."
     },

@@ -92,7 +92,8 @@
         "id": "bezout-identity-oq-02-oq-02-oq-01-oq-01",
         "relationship": "Child entry resolving OQ-01: removes the noncomputable annotation by replacing classical choice with computable integer division"
       }
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The **extended Euclidean algorithm** has roots in Euclid's *Elements* (~300 BCE, Book VII, Propositions 1-2), where the alternating subtraction method computes GCDs. The extension to computing Bézout coefficients was first published by **Bachet de Méziriac** in *Problèmes plaisants et délectables* (1624), well before Bézout's own treatise (1779). The Indian mathematician **Aryabhata** (5th century CE) independently described a similar algorithm (*kuṭṭaka*) for solving linear Diophantine equations.\n\nThe algorithm has $O(\\log \\min(a,b))$ bit complexity, making it one of the oldest known efficient algorithms. Knuth (1997) gives a thorough modern treatment, and the algorithm is foundational in computational number theory: it underlies RSA key generation (computing modular inverses), the Chinese Remainder Theorem, and continued fraction expansions.\n\nWhile Euclid's lemma (if $\\gcd(a,b) = 1$ and $a \\mid bc$, then $a \\mid c$, Elements VII.30) is classical, its **constructive content** — actually computing the quotient $c/a$ — is often overlooked in standard treatments. This formalization makes the construction explicit: given Bézout coefficients $u, v$ and a divisibility witness $k$, the quotient $q = uc + vk$ is extracted by a simple algebraic formula valid in any commutative ring. The core formula $q = uc + vk$ (where $ua + vb = 1$ and $bc = ak$) works in any commutative ring, and is instantiated over $\\mathbb{N}/\\mathbb{Z}$ via the extended GCD.",
@@ -120,7 +121,7 @@
       "id": "imports",
       "title": "Imports",
       "startLine": 1,
-      "endLine": 3,
+      "endLine": 4,
       "summary": "Imports Nat.GCD.Basic, Data.Int.GCD, and Mathlib.Tactic for the proof.",
       "mathContext": "Requires `Nat.gcd`, `Nat.mod_lt`, `Nat.div_add_mod` from GCD module, integer arithmetic from `Data.Int.GCD`, and `linear_combination`/`native_decide` tactics."
     },
@@ -128,7 +129,7 @@
       "id": "module-doc",
       "title": "Module Documentation",
       "startLine": 5,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Documents the open question origin, the affirmative answer, and the key formula u*c + v*k.",
       "mathContext": "Key formula: if $ua + vb = 1$ and $a | bc$ with $bc = ak$, then $q = uc + vk$ satisfies $aq = c$."
     },
@@ -136,7 +137,7 @@
       "id": "extgcd",
       "title": "Part I: The Extended Euclidean Algorithm",
       "startLine": 25,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Self-contained extGcd implementation with extGcd_gcd (returns gcd via strong induction), extGcd_bezout (Bézout identity via linear_combination), and extGcd_correct (combined). Termination by Nat.mod_lt.",
       "mathContext": "Computes $(x, y, g)$ with $ax + by = g = \\gcd(a,b)$. Recursion: $\\text{extGcd}(a, b+1)$ reduces via $a \\bmod (b+1) < b+1$."
     },
@@ -144,7 +145,7 @@
       "id": "quotient-formula",
       "title": "Part II: The Core Quotient Formula",
       "startLine": 84,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "quotient_formula proves a*(u*c + v*k) = c in any CommRing via calc chain. euclids_lemma_constructive wraps this as a divisibility statement with explicit witness.",
       "mathContext": "$a(uc + vk) = uac + vak = uac + vbc = (ua + vb)c = 1 \\cdot c = c$. Valid in any commutative ring."
     },
@@ -152,7 +153,7 @@
       "id": "constructive-algorithm",
       "title": "Part III: Constructive Algorithm for ℕ via extGcd",
       "startLine": 109,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "constructive_div combines extGcd coefficients with divisibility witness. constructive_div_correct proves a*q = c. euclids_lemma_via_extGcd packages the result.",
       "mathContext": "Assembly: $(x, y, g) \\leftarrow \\text{extGcd}(a, b)$; $k \\leftarrow bc/a$; return $q = xc + yk$."
     },
@@ -160,7 +161,7 @@
       "id": "computational-verification",
       "title": "Part IV: Computational Verification",
       "startLine": 146,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "Seven native_decide examples verifying extGcd outputs correct GCD values and Bézout identities for (3,7), (5,7), (17,5), and (252,198).",
       "mathContext": "E.g., $\\text{extGcd}(3,7) = (-2, 1, 1)$: $3(-2) + 7(1) = 1$. Also $\\text{extGcd}(252, 198) = (4, -5, 18)$."
     },
@@ -168,7 +169,7 @@
       "id": "uniqueness",
       "title": "Part V: Quotient Uniqueness",
       "startLine": 170,
-      "endLine": 180,
+      "endLine": 181,
       "summary": "constructive_quotient_unique: in an integral domain with a ≠ 0, the quotient is unique via mul_left_cancel₀.",
       "mathContext": "$a \\neq 0, \\; aq_1 = c = aq_2 \\implies q_1 = q_2$ by cancellation (no zero divisors)."
     },

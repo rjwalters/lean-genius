@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "lineCount": 94,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Hajnal, Sós, and Szemerédi studied the relationship between forbidden subgraphs and independence numbers in dense graphs. The octahedron K₂,₂,₂ (complete tripartite graph with parts of size 2) has Turán density 1/8: the maximum number of edges in a K₂,₂,₂-free graph on n vertices is (1/8 + o(1))n². EHSS (1983) proved that for edge density exceeding this threshold (δ > 1/8), K₂,₂,₂-free graphs must have linear independence numbers α(G) ≥ c·n. The conjecture extends this to all δ > 0, asking whether even sub-Turán density K₂,₂,₂-free graphs are forced to have large independent sets. This parallels Problem #533 (triangle-free subsets in K₅-free graphs), forming part of a broader program in Ramsey-Turán theory that investigates how forbidden subgraph conditions interact with density to force structural properties.",
@@ -47,35 +48,35 @@
       "id": "imports",
       "title": "Mathlib SimpleGraph Imports",
       "startLine": 17,
-      "endLine": 21,
+      "endLine": 22,
       "summary": "Imports SimpleGraph, Clique, Finset, and tactics from Mathlib."
     },
     {
       "id": "k222-containment",
       "title": "K₂,₂,₂ Definition and Freeness",
       "startLine": 23,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Defines K₂,₂,₂ containment via 6 distinct vertices with 12 cross-edges, and the K₂,₂,₂-free predicate."
     },
     {
       "id": "density-independence",
       "title": "Density and Independence",
       "startLine": 44,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Defines isDense (edge count ≥ δn²), IsIndepSet (pairwise non-adjacent), and independenceNumber (maximum |S|)."
     },
     {
       "id": "ehss-result",
       "title": "EHSS Result for δ > 1/8",
       "startLine": 59,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Records the 1983 result: K₂,₂,₂-free graphs above Turán density have linear independence number."
     },
     {
       "id": "main-conjecture",
       "title": "The Full Conjecture",
       "startLine": 71,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "States Problem 579: for all δ > 0, K₂,₂,₂-free dense graphs have α(G) ≥ cn."
     },
     {

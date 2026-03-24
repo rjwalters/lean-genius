@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 9,
     "lineCount": 251,
-    "assumptions": "9 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
+    "assumptions": "9 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem concerns the distribution of squarefree integers, which are integers not divisible by any perfect square greater than 1. The density of squarefree integers converges to 6/π² ≈ 0.6079, a beautiful fact connected to the Basel problem and ζ(2) = π²/6. The question of how the actual count Q(x) deviates from this asymptotic is intimately tied to some of the deepest problems in analytic number theory, including the Riemann Hypothesis. The problem has attracted work from Evelyn-Linfoot (1931), Walfisz (1963), and Liu (2016), but remains fundamentally open.",
@@ -47,63 +48,63 @@
       "title": "Squarefree Integers",
       "summary": "Definition of squarefree integers using Mathlib's Squarefree predicate with examples",
       "startLine": 39,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "counting-function",
       "title": "The Squarefree Counting Function Q(x)",
       "summary": "Definition of Q(x) counting squarefree integers up to x, with verified examples",
       "startLine": 64,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "asymptotic-density",
       "title": "The Asymptotic Density 6/π²",
       "summary": "The density of squarefree integers equals 1/ζ(2) = 6/π² ≈ 0.6079",
       "startLine": 85,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "error-term",
       "title": "The Error Term E(x)",
       "summary": "Definition of E(x) = Q(x) - (6/π²)x, the central object of study",
       "startLine": 111,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "summary": "Elementary, PNT, and Walfisz bounds for E(x)",
       "startLine": 126,
-      "endLine": 143
+      "endLine": 144
     },
     {
       "id": "lower-bound",
       "title": "The Lower Bound",
       "summary": "Evelyn-Linfoot (1931): E(x) ≫ x^(1/4), the conjectured true order",
       "startLine": 145,
-      "endLine": 159
+      "endLine": 160
     },
     {
       "id": "riemann-connection",
       "title": "Connection to the Riemann Hypothesis",
       "summary": "E(x) ≪ x^(1/4) implies RH; Liu's conditional bound under RH",
       "startLine": 161,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "mobius-function",
       "title": "The Möbius Function Connection",
       "summary": "Q(x) via Möbius inversion: Σ μ(d)⌊x/d²⌋",
       "startLine": 185,
-      "endLine": 205
+      "endLine": 206
     },
     {
       "id": "zeta-zeros",
       "title": "Related Error Terms and Zeta Zeros",
       "summary": "Connection to zero-free regions of the Riemann zeta function",
       "startLine": 207,
-      "endLine": 222
+      "endLine": 223
     },
     {
       "id": "summary",

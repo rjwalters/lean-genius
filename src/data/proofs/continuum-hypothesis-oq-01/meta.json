@@ -56,7 +56,8 @@
     "dateAdded": "2026-02-22",
     "axiomCount": 10,
     "lineCount": 317,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Gödel (1940) showed CH is consistent with ZFC using the constructible universe L; Cohen (1963) showed ¬CH is also consistent using forcing. The independence of CH left open a deeper philosophical question: which axioms, if any, should we add to ZFC to settle it? Gödel initially hoped V=L was the right answer, but Scott (1961) showed V=L is incompatible with measurable cardinals — large cardinals that most set theorists consider mathematically natural. Since the 1970s, forcing axioms like Martin's Maximum (MM) and the Proper Forcing Axiom (PFA) have emerged as popular alternatives, and these axioms imply ¬CH. Woodin's ongoing Ultimate-L program (1999–) seeks a canonical inner model that satisfies GCH while accommodating all large cardinals.",
@@ -80,35 +81,35 @@
       "id": "module-header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Imports, problem statement, and overview of the CH axiom landscape."
     },
     {
       "id": "deciding-ch",
       "title": "What It Means to Decide CH",
       "startLine": 60,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "The `Decides` predicate: axiom Φ decides CH iff it implies CH or implies ¬CH. CH and ¬CH trivially decide themselves."
     },
     {
       "id": "zfc-bounds",
       "title": "ZFC-Provable Bounds",
       "startLine": 84,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "ℵ₁ ≤ 2^ℵ₀ (provable in ZFC); under ¬CH, the continuum is strictly > ℵ₁ and at least ℵ₂."
     },
     {
       "id": "constructibility-direction",
       "title": "V=L — The Constructibility Direction",
       "startLine": 130,
-      "endLine": 165,
+      "endLine": 166,
       "summary": "V=L implies GCH implies CH. Ultimate-L (Woodin) also implies GCH conditionally."
     },
     {
       "id": "forcing-axioms",
       "title": "PFA and MM — The Forcing Axiom Direction",
       "startLine": 167,
-      "endLine": 212,
+      "endLine": 213,
       "summary": "PFA implies 2^ℵ₀ = ℵ₂, hence ¬CH. MM implies PFA hence also ¬CH."
     },
     {
@@ -129,7 +130,7 @@
       "id": "open-question-summary",
       "title": "Summary of the Open Question",
       "startLine": 262,
-      "endLine": 305,
+      "endLine": 317,
       "summary": "Both CH-deciding and ¬CH-deciding axioms exist. The ¬CH side has structural advantages via large-cardinal compatibility."
     }
   ],

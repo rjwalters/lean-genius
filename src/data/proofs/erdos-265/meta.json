@@ -39,7 +39,8 @@
     ],
     "axiomCount": 9,
     "lineCount": 205,
-    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Georg Cantor discovered in the 19th century that the triangular numbers $a_n = \\binom{n}{2} = n(n-1)/2$ produce a sequence where both $\\sum 1/a_n$ and $\\sum 1/(a_n - 1)$ are rational. This elegant example grows only polynomially ($a_n \\sim n^2/2$), so $a_n^{1/n} \\to 1$. Erdős asked a deeper question: how fast can such sequences grow?\n\nErdős conjectured two things: (1) that sequences with $a_n^{1/n} \\to \\infty$ (super-exponential growth) exist, and (2) that $a_n^{1/2^n} \\to 1$ is necessary (double-exponential growth is the limit). The first conjecture was confirmed in a landmark 2024 paper by Vjekoslav Kovač and Terence Tao, who constructed sequences achieving doubly exponential growth $a_n^{1/\\beta^n} \\to \\infty$ for some $\\beta > 1$, published in the *Annals of Mathematics*.\n\nThe second conjecture — whether $\\beta = 2$ is a hard barrier — remains one of the most intriguing open problems at the intersection of number theory and analysis. A folklore result shows that if $a_n^{1/2^n} \\to c > 1$, then $\\sum 1/a_n$ is automatically irrational, suggesting $\\beta = 2$ is indeed special. The problem connects rationality of infinite series to growth rates via transcendence theory.",
@@ -63,56 +64,56 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 20,
+      "endLine": 21,
       "summary": "Module documentation describing the problem, Cantor's example, Erdős's conjectures, Kovač-Tao result, and the remaining open question. Imports Mathlib."
     },
     {
       "id": "valid-sequences",
       "title": "Sequences with Rational Sums",
       "startLine": 22,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Core definitions: positive integer sequences, strict monotonicity, reciprocal sum ∑ 1/aₙ, shifted reciprocal sum ∑ 1/(aₙ-1), and the combined rationality predicate hasBothRationalSums."
     },
     {
       "id": "cantor-example",
       "title": "Cantor's Example",
       "startLine": 48,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Defines Cantor's sequence (triangular numbers n(n+1)/2), proves strict monotonicity, and states rationality of both sums as axioms."
     },
     {
       "id": "growth-rates",
       "title": "Growth Rate Measures",
       "startLine": 72,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Three growth measures: singleExpGrowth (aₙ^(1/n)), doubleExpGrowth (aₙ^(1/2ⁿ)), and genExpGrowth (aₙ^(1/βⁿ)) for parameterized β > 1."
     },
     {
       "id": "erdos-conjectures",
       "title": "Erdős's Conjectures",
       "startLine": 91,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Two conjectures: (1) aₙ^(1/n) → ∞ is achievable (proved by Kovač-Tao), (2) aₙ^(1/2ⁿ) → 1 is necessary (still open)."
     },
     {
       "id": "kovac-tao",
       "title": "Kovač-Tao Result and Open Question",
       "startLine": 111,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Kovač-Tao theorem: ∃ β > 1 with aₙ^(1/βⁿ) → ∞ achievable. The remaining open question: can β = 2 work?"
     },
     {
       "id": "irrationality",
       "title": "Irrationality Threshold",
       "startLine": 133,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "Folklore result: if aₙ^(1/2ⁿ) → c > 1, then ∑ 1/aₙ is irrational. This explains why β = 2 might be the natural barrier."
     },
     {
       "id": "valid-set-poly",
       "title": "Valid Set and Polynomial Examples",
       "startLine": 146,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Defines the set of valid sequences and states that higher-degree polynomial families (e.g., n³+6n²+5n with shift 12) can satisfy the constraint."
     },
     {

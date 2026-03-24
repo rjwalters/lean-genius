@@ -75,42 +75,42 @@
       "title": "Geometric Foundation",
       "summary": "Defines `Point` as $\\mathbb{R}^2$, `Line` via point-direction pairs, `Collinear` via affine combinations, and counting functions `numLines` and `maxCollinear`. These form the type-theoretic substrate for stating incidence bounds.",
       "startLine": 34,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "main-theorem",
       "title": "The Erdős Conjecture (Solved)",
       "summary": "States the `HasBoundedCollinearity` predicate ($m(P) \\leq n - k$) and axiomatizes the main Beck-Szemerédi-Trotter bound $\\Omega(kn)$ lines, plus the quadratic special case for $2n$ points with $\\leq n$ collinear.",
       "startLine": 78,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "beck-theorem",
       "title": "Beck's Theorem",
       "summary": "Axiomatizes Beck's dichotomy (either $\\geq n/K$ collinear or $\\geq n^2/K$ lines) and the quantitative version: if $m(P) \\leq n/c$ then $\\Omega(cn)$ lines exist. These decompose the main result into structural cases.",
       "startLine": 114,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "szemeredi-trotter",
       "title": "Szemerédi-Trotter Incidence Theorem",
       "summary": "Defines `incidences` (point-line pairs), axiomatizes the $O(m^{2/3}n^{2/3} + m + n)$ incidence bound, and derives the rich lines corollary $O(n^2/r^3 + n/r)$. This is the analytic engine powering the combinatorial bounds.",
       "startLine": 139,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "refined-conjecture",
       "title": "Erdős's Refined Conjecture",
       "summary": "Formalizes Erdős's speculation that the optimal bound is $\\geq (1+o(1))kn/6$ as a Lean `Prop`, and axiomatizes the matching upper bound: configurations with all 3-point lines achieve $\\approx n^2/6$.",
       "startLine": 167,
-      "endLine": 190
+      "endLine": 191
     },
     {
       "id": "extremal",
       "title": "Extremal Configurations and Crossing Numbers",
       "summary": "Axiomatizes Burr-Grünbaum-Sloane and Füredi-Palásti extremal constructions showing the 1/6 constant is tight, plus the crossing number inequality $\\text{cr}(G) \\geq m^3/(64n^2)$ that powers Székely's proof of Szemerédi-Trotter.",
       "startLine": 192,
-      "endLine": 217
+      "endLine": 218
     },
     {
       "id": "main-results",

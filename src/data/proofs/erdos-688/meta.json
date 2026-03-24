@@ -27,14 +27,15 @@
     ],
     "axiomCount": 8,
     "lineCount": 110,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "file-header",
       "title": "Problem Statement and Background",
       "startLine": 1,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "Module docstring introducing Erdős Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erdős's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and notes the problem is open."
     },
     {
@@ -69,21 +70,21 @@
       "id": "per-prime-coverage",
       "title": "Per-Prime Coverage",
       "startLine": 76,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering."
     },
     {
       "id": "mertens-estimate",
       "title": "Mertens Coverage Estimate",
       "startLine": 82,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "By Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) + O(1)$."
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
       "startLine": 90,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Monotonicity (smaller $\\varepsilon$ includes more primes), well-definedness of $\\varepsilon_n$ via supremum, and full prime covering ($\\varepsilon = 0$) by CRT and PNT for large $n$."
     },
     {

@@ -84,7 +84,7 @@
       "title": "Graph Concepts and Chromatic Number",
       "summary": "Axiomatized `chromaticNumber G` as a Cardinal-valued function and `hasChromaticNumberAleph1 G` asserting $\\chi(G) = \\aleph_1$. Uses Mathlib's `SimpleGraph` and `Cardinal.aleph`.",
       "startLine": 37,
-      "endLine": 53,
+      "endLine": 54,
       "mathContext": "The chromatic number is axiomatized (not defined from coloring functions) because Mathlib's `SimpleGraph.chromaticNumber` infrastructure doesn't directly support infinite cardinal values. $\\aleph_1 = \\text{Cardinal.aleph}\\,1$ is the first uncountable cardinal."
     },
     {
@@ -92,7 +92,7 @@
       "title": "Cycle and Edge-in-Cycle Predicates",
       "summary": "Axiomatized `hasCycleOfLength G n`, `edgeInCycleOfLength G e n`, `edgeInAllLargeCycles G e N` (edge $e$ lies in every cycle of length $\\geq N$), and `existsEdgeInAllLargeCycles G` (existence of such an edge).",
       "startLine": 55,
-      "endLine": 74,
+      "endLine": 75,
       "mathContext": "A cycle of length $n$ in $G$ is a closed walk $v_0, v_1, \\ldots, v_n = v_0$ visiting $n$ distinct vertices. The predicate `edgeInAllLargeCycles G e N` says $\\forall n \\geq N,\\; e$ lies in some cycle of length $n$ in $G$. This is the 'universal cycle edge' property that Thomassen proved exists."
     },
     {
@@ -100,7 +100,7 @@
       "title": "Erdős-Hajnal-Shelah (1974): All Large Cycles Exist",
       "summary": "`erdos_hajnal_shelah_1974`: axiom stating $\\chi(G) = \\aleph_1 \\Rightarrow \\exists N,\\; \\forall n \\geq N,\\; G$ has a cycle of length $n$. This is the 'eventually pancyclic' property.",
       "startLine": 76,
-      "endLine": 85,
+      "endLine": 86,
       "mathContext": "The EHS result: $\\chi(G) = \\aleph_1 \\Rightarrow G$ is eventually pancyclic. The proof uses the De Bruijn-Erdős theorem: since $\\chi(G) = \\aleph_1$, for every $k$ there is a finite subgraph with $\\chi > k$. High chromatic number in finite graphs forces long cycles (by Gallai's theorem and its generalizations)."
     },
     {
@@ -108,7 +108,7 @@
       "title": "Thomassen's Theorem (1983): Edge Routing",
       "summary": "`thomassen_1983`: axiom stating $\\chi(G) = \\aleph_1 \\Rightarrow \\exists$ edge $e$ and $N$ such that $e$ lies in every cycle of length $\\geq N$. `erdos_737_resolved` applies this to resolve the problem.",
       "startLine": 87,
-      "endLine": 104,
+      "endLine": 105,
       "mathContext": "Thomassen's strengthening: not only do all large cycles exist (EHS), but they can all pass through a single edge. The proof is by contradiction: if no edge works, each edge $e$ has a largest cycle length $N_e$ that avoids it. Using these bounds, one constructs an $\\aleph_1$-coloring of $G$, contradicting $\\chi(G) = \\aleph_1$."
     },
     {
@@ -116,7 +116,7 @@
       "title": "Structural Properties: Pancyclicity and Universal Edges",
       "summary": "`eventually_pancyclic` derives pancyclicity from EHS. `isUniversalCycleEdge` defines the property of being in all large cycles. `universal_edges_exist` derives existence from Thomassen.",
       "startLine": 106,
-      "endLine": 129,
+      "endLine": 130,
       "mathContext": "A graph is *eventually pancyclic* if it contains cycles of all lengths $\\geq N$ for some $N$. An edge is *universal* if it lies in cycles of all sufficiently large lengths. Thomassen's theorem says $\\chi = \\aleph_1$ implies universal edges exist — a much stronger property than mere pancyclicity."
     },
     {

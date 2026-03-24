@@ -86,63 +86,63 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 38,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "consecutiveProduct, t_k(n), divides_consecutive"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties of t_k",
       "startLine": 68,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "Well-definedness, t₂(p) = p - 1 for primes"
     },
     {
       "id": "sum-t2",
       "title": "The Sum Σ t₂(n)",
       "startLine": 96,
-      "endLine": 123,
+      "endLine": 124,
       "summary": "Sum function S, trivial lower bound, original conjecture"
     },
     {
       "id": "erdos-hall",
       "title": "Erdős-Hall Theorem (1978)",
       "startLine": 125,
-      "endLine": 142,
+      "endLine": 143,
       "summary": "(log log log x / log log x)x² upper bound"
     },
     {
       "id": "erdos-hall-conjecture",
       "title": "Erdős-Hall Conjecture",
       "startLine": 144,
-      "endLine": 165,
+      "endLine": 166,
       "summary": "o(x²/(log x)^c) for c < log 2"
     },
     {
       "id": "hierarchy",
       "title": "The Hierarchy Question",
       "startLine": 167,
-      "endLine": 180,
+      "endLine": 181,
       "summary": "Σ t_{k+1} = o(Σ t_k)?"
     },
     {
       "id": "factorials",
       "title": "Special Cases (Factorials)",
       "startLine": 182,
-      "endLine": 213,
+      "endLine": 214,
       "summary": "t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n"
     },
     {
       "id": "selfridge",
       "title": "The Selfridge Result",
       "startLine": 215,
-      "endLine": 232,
+      "endLine": 233,
       "summary": "Strict decrease property, n = 10 case"
     },
     {
       "id": "connections",
       "title": "Why This is Interesting",
       "startLine": 234,
-      "endLine": 261,
+      "endLine": 262,
       "summary": "Factorial divisibility, probabilistic intuition, smooth numbers"
     },
     {

@@ -101,7 +101,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 233,
-    "assumptions": "No axioms. 21 sorry(s) remain in the formalization."
+    "assumptions": "No axioms. 21 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem about G(n) = Σ dᵢ/dᵢ₊₁ in the late 1970s, asking two questions: whether G(n) → ∞ for almost all n (trivially yes), and what is the asymptotic formula for Σ G(n). The problem connects to deep questions about the multiplicative structure of integers.\n\nTerence Tao established the key bounds τ(n/m)/m ≤ G(n) ≤ τ(n), showing G(n) is controlled by the divisor function. For even n (density 1/2 of integers), taking m = 2 gives G(n) ≥ τ(n)/4, immediately implying G(n) → ∞ almost surely since τ(n) → ∞ for almost all n by Hardy-Ramanujan.\n\nErdős and Tenenbaum proved the deeper result that G(n)/τ(n) has a continuous distribution function — analogous to the Erdős-Kac theorem for ω(n). This means the 'efficiency' of divisor ratio accumulation has well-defined statistics. The asymptotic Σ G(n) ~ c X log X parallels Dirichlet's Σ τ(n) ~ X log X, with the exact constant c still unknown.",
@@ -127,63 +128,63 @@
       "title": "Divisor Definitions",
       "summary": "Defines `sortedDivisors` (ordered divisor list via `Finset.sort`), `tau` ($\\tau(n) = |\\{d : d \\mid n\\}|$), and `divisorAt` (0-indexed access). Proves boundary properties: $d_0 = 1$ and $d_{\\tau(n)-1} = n$.",
       "startLine": 33,
-      "endLine": 54
+      "endLine": 55
     },
     {
       "id": "g-function",
       "title": "The Function G(n)",
       "summary": "Defines $G(n) = \\sum_i d_i/d_{i+1}$ as a sum over `Finset.range (tau n - 1)`. Computes $G(1) = 0$, $G(p) = 1/p$ for primes, and $G(p^2) = 2/p$.",
       "startLine": 56,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "bounds",
       "title": "Bounds on G(n)",
       "summary": "Establishes $G(n) \\le \\tau(n) - 1$ (trivial), Tao's $G(n) \\le \\tau(n)$, Tao's $G(n) \\ge \\tau(n/m)/m$ for $m \\mid n$, and the even-number corollary $G(n) \\ge \\tau(n)/4$.",
       "startLine": 75,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
       "summary": "Proves average $(1/X) \\sum G(n) \\to \\infty$ and formalizes $G(n) \\to \\infty$ for density 1 of integers (`AlmostAllGToInfinity`), trivially answering Erdős's first question.",
       "startLine": 97,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "distribution",
       "title": "Distribution of G(n)/τ(n)",
       "summary": "Defines $\\text{GRatio}(n) = G(n)/\\tau(n)$, proves it is bounded in $[0,1]$, and formalizes the Erdős-Tenenbaum theorem: $G(n)/\\tau(n)$ has a continuous distribution function $F$.",
       "startLine": 115,
-      "endLine": 138
+      "endLine": 139
     },
     {
       "id": "specific",
       "title": "Specific Values",
       "summary": "Computes $G(6) = 1/2 + 2/3 + 1/2$ and $G(12) = 1/2 + 2/3 + 3/4 + 4/6 + 6/12$ from the divisor sequences. Shows highly composite numbers satisfy $G(n) \\ge \\tau(n)/4$.",
       "startLine": 140,
-      "endLine": 155
+      "endLine": 156
     },
     {
       "id": "multiplicative",
       "title": "Multiplicative Properties",
       "summary": "Proves $G$ is not multiplicative (exhibits coprime $a, b$ with $G(ab) \\neq G(a)G(b)$) but is superadditive: $G(mn) \\ge G(m) + G(n)$ for coprime $m, n$.",
       "startLine": 157,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "formula",
       "title": "Asymptotic Formula",
       "summary": "States $\\sum_{n \\le X} G(n) \\sim c X \\log X$ for some $c > 0$, both as a limit and as an $\\varepsilon$-$N$ formalization (`AsymptoticFormula`).",
       "startLine": 170,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "tau-connection",
       "title": "Connection to τ(n)",
       "summary": "Proves Dirichlet's $\\sum \\tau(n) \\sim X \\log X$ and the sandwich $c_1 \\sum \\tau(n) \\le \\sum G(n) \\le c_2 \\sum \\tau(n)$, confirming $G$ and $\\tau$ have comparable average order.",
       "startLine": 184,
-      "endLine": 200
+      "endLine": 233
     }
   ],
   "conclusion": {

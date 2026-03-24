@@ -49,7 +49,8 @@
     ],
     "axiomCount": 8,
     "lineCount": 148,
-    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -63,21 +64,21 @@
       "id": "sec-761-definitions",
       "title": "Core Definitions",
       "startLine": 33,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Defines the key structures: `Orientation G` (directed edge assignment), `IsAcyclicColoring` (no monochromatic directed edges), `HasAcyclicColoring` (existence of acyclic $k$-coloring), `dichromNumber` $\\delta(G) = \\min\\{k : \\forall O,\\, \\exists$ acyclic $k$-coloring\\}$, `IsCochromatic` (each class is clique or independent set), and `cochromNumber` $\\zeta(G)$."
     },
     {
       "id": "sec-761-properties",
       "title": "Basic Properties",
       "startLine": 73,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "Establishes $\\delta(G) \\le \\chi(G)$ (proper colorings are acyclic), $\\zeta(G) \\le \\chi(G)$ (proper colorings are cochromatic), and the bipartite bound $\\delta(G) \\le 2$ for 2-colorable graphs (the single sorry in the file)."
     },
     {
       "id": "sec-761-conjectures",
       "title": "Main Conjectures (OPEN)",
       "startLine": 96,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "States the two open questions: **Question 1** (Erdős-Neumann-Lara): $\\forall k,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\Rightarrow \\delta(G) \\ge k$. **Question 2** (Erdős-Gimbel): $\\forall k,\\, \\exists g(k)$ such that $\\zeta(G) \\ge g(k) \\Rightarrow \\exists H \\subseteq G$ with $\\delta(H) \\ge k$."
     },
     {

@@ -29,7 +29,8 @@
     ],
     "axiomCount": 8,
     "lineCount": 102,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #142 is one of the most celebrated open problems in combinatorics, carrying Erdős's largest prize ($10,000) for a problem in the field. The story begins with van der Waerden's theorem (1927) guaranteeing monochromatic $k$-APs in any finite coloring of the integers, and Erdős and Turán's 1936 conjecture that $r_k(N) = o(N)$. Roth (1953) proved the $k = 3$ case using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$, introducing the circle method to combinatorics. Szemerédi's celebrated theorem (1975) settled the general case via a monumental combinatorial argument and the Szemerédi regularity lemma, earning him the Abel Prize. The quantitative frontier advanced through Furstenberg's ergodic proof (1977), Gowers's introduction of uniformity norms (2001), and a remarkable succession of improvements for $k = 3$: Heath-Brown–Szemerédi, Bourgain, Sanders, Bloom, Bloom–Sisask. The 2023 breakthrough by Kelley and Meka — proving $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$ — was the first sub-polynomial density decay, yet the gap from Behrend's 1946 lower bound $N \\cdot \\exp(-C\\sqrt{\\log N})$ remains vast, illustrating how far we are from an asymptotic formula.",
@@ -60,56 +61,56 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 25,
-      "endLine": 40,
+      "endLine": 41,
       "summary": "Defines arithmetic progressions via `Finset.range k |>.image`, AP-$k$-free sets via `IsAPFree`, and $r_k(N) = \\max\\{|S| : S \\subseteq [N], S \\text{ AP-free}\\}$ via `Finset.sup` over `Finset.powerset`."
     },
     {
       "id": "szemeredi",
       "title": "Szemerédi's Theorem",
       "startLine": 42,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Axiomatizes $\\forall k \\ge 3, \\forall \\varepsilon > 0, \\exists N_0 : r_k(N) \\le \\varepsilon N$ for $N \\ge N_0$. The qualitative foundation: every dense set contains $k$-APs."
     },
     {
       "id": "roth",
       "title": "Roth's Theorem ($k = 3$)",
       "startLine": 50,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Axiomatizes $r_3(N) = o(N)$ separately, acknowledging the long chain of quantitative improvements from Roth (1953) through Kelley–Meka (2023)."
     },
     {
       "id": "behrend",
       "title": "Behrend's Lower Bound",
       "startLine": 57,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Axiomatizes $r_3(N) \\ge C \\cdot N \\cdot \\exp(-C\\sqrt{\\log N})$, the 1946 lattice-sphere construction that remains the best lower bound (up to constants) after nearly 80 years."
     },
     {
       "id": "kelley-meka",
       "title": "Kelley–Meka Upper Bound",
       "startLine": 65,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Axiomatizes the 2023 breakthrough: $r_3(N) \\le N \\cdot \\exp(-c(\\log N)^{1/12})$, the first sub-polynomial density decay for 3-AP-free sets."
     },
     {
       "id": "erdos-5000",
       "title": "Erdős's $\\$5{,}000$ Question",
       "startLine": 73,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Axiomatizes $r_k(N) = o(N/\\log N)$ for all $k \\ge 3$. Known for $k \\le 4$; the $k \\ge 5$ case is the last barrier for Erdős's sub-prize."
     },
     {
       "id": "main-problem",
       "title": "The $\\$10{,}000$ Open Problem",
       "startLine": 82,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "States the main problem: $\\exists f_k$ with $r_k(N)/f_k(N) \\to 1$. Even the order of magnitude of $r_3(N)$ is unknown, with the Behrend and Kelley–Meka bounds differing by an exponential factor in the exponent."
     },
     {
       "id": "green-tao",
       "title": "Green–Tao Bound for $k = 4$",
       "startLine": 93,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Axiomatizes $r_4(N) \\le N/(\\log N)^{1+c}$ from Green–Tao (2017), using the $U^3$ inverse theorem and density increment."
     },
     {

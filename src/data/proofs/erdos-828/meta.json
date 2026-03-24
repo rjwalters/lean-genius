@@ -105,35 +105,35 @@
       "title": "Basic Definitions",
       "summary": "totientDivisors(a): the set {n ∈ ℕ : φ(n) | n + a}",
       "startLine": 36,
-      "endLine": 40
+      "endLine": 41
     },
     {
       "id": "case-zero",
       "title": "Special Case a = 0",
       "summary": "totient_dvd_self_iff axiom and totientDivisors_zero_infinite theorem (proved via 2^k family)",
       "startLine": 42,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "lehmer",
       "title": "Lehmer's Conjecture (a = -1)",
       "summary": "lehmerConjecture definition, prime_totient_dvd_pred theorem, totientDivisors_neg_one_infinite theorem (proved from primes)",
       "startLine": 65,
-      "endLine": 92
+      "endLine": 93
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos828Conjecture: ∀ a : ℤ, (totientDivisors a).Infinite",
       "startLine": 94,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
       "summary": "totient_even (proved), totient_prime', totient_prime_pow_formula (proved from Mathlib)",
       "startLine": 101,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "summary",

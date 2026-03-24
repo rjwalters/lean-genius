@@ -52,7 +52,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 94,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Distinct Distances in Higher Dimensions**\n\nThe distinct distances problem is one of Erdős's most influential contributions to combinatorial geometry. In 1946, Erdős posed the question: what is the minimum number of distinct distances determined by $n$ points in $\\mathbb{R}^d$? For $d = 2$, he conjectured $f_2(n) = \\Omega(n/\\sqrt{\\log n})$, which stood open for 65 years until Guth and Katz proved it in 2015 using the polynomial partitioning technique introduced by Guth and Katz (2010) and algebraic geometry of lines in $\\mathbb{R}^3$.\n\nFor higher dimensions $d \\geq 3$, Erdős established the basic sandwich $n^{1/d} \\ll f_d(n) \\ll n^{2/d}$. The upper bound comes from the integer lattice $\\mathbb{Z}^d \\cap [0, n^{1/d}]^d$: distances have the form $\\sqrt{a_1^2 + \\cdots + a_d^2}$ with $0 \\leq a_i \\leq n^{1/d}$, giving $O(n^{2/d})$ possible values. The lower bound is a pigeonhole/packing argument.\n\n**Key Contributors:**\n- **Erdős (1946):** Original bounds $n^{1/d} \\ll f_d(n) \\ll n^{2/d}$ for all $d$\n- **Chung, Szemerédi, Trotter (1992):** Improved lower bounds in 3D using cutting methods\n- **Aronov, Pach, Sharir, Tardos (2004):** $f_d(n) \\gg n^{1/(d-90/77)-o(1)}$ via incidence geometry\n- **Solymosi, Vu (2008):** $f_d(n) \\gg n^{2/d - c/d^2}$ for $d \\geq 4$, the current best general bound\n- **Guth, Katz (2015):** Resolved the 2D case, with implications for $d = 3$\n\nThe problem connects to fundamental questions about the algebraic structure of Euclidean distance and the geometry of point configurations.",
@@ -85,28 +86,28 @@
       "title": "Part I: Definitions",
       "summary": "Axiomatization of f_d(n) as the extremal distinct-distance function mapping dimension and point count to minimum distinct distances",
       "startLine": 24,
-      "endLine": 34
+      "endLine": 35
     },
     {
       "id": "erdos-bounds",
       "title": "Part II: Erdős's Bounds (1946)",
       "summary": "Erdős's original sandwich inequality: existence of constants c₁, c₂ > 0 such that c₁·n^{1/d} ≤ f_d(n) ≤ c₂·n^{2/d}",
       "startLine": 36,
-      "endLine": 49
+      "endLine": 50
     },
     {
       "id": "solymosi-vu",
       "title": "Part III: Solymosi-Vu Improvement",
       "summary": "The 2008 improvement for d ≥ 4: f_d(n) ≥ n^{2/d - c/d²}, bringing the lower bound exponent within O(1/d²) of the conjectured value",
       "startLine": 51,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "conjecture",
       "title": "Part IV: The Conjecture",
       "summary": "The open conjecture f_d(n) = n^{2/d - o(1)}, formalized via ε-δ quantification over subpolynomial factors",
       "startLine": 64,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "main-theorem",

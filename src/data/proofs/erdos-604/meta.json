@@ -60,7 +60,8 @@
       "Number theory (sums of two squares, Landau's theorem)"
     ],
     "lineCount": 228,
-    "assumptions": "No axioms. 3 sorry(s) remain in the formalization."
+    "assumptions": "No axioms. 3 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The pinned distance problem is a stronger variant of the famous Erdős distinct distances problem (#89). Rather than counting all distinct pairwise distances in a point set, it asks: must some point 'see' many different distances to other points?\n\nErdős posed this across multiple papers from 1957 to 1997, offering a $500 prize. The integer lattice {1,...,√n} × {1,...,√n} shows the answer cannot exceed O(n/√log n), suggesting this might be the truth. The 'unpinned' version of the problem was famously resolved by Guth and Katz in 2015 using the polynomial method and algebraic geometry, achieving the near-optimal Ω(n/log n) bound, but their techniques have not yet been adapted to give the optimal pinned result. Katz and Tardos obtained the best known pinned lower bound of n^{(48-14e)/(55-16e)} ≈ n^{0.864} in 2004 using entropy methods.",
@@ -89,42 +90,42 @@
       "title": "Pinned Distance Definitions",
       "summary": "Core definitions for Euclidean distance and pinned distance counts",
       "startLine": 37,
-      "endLine": 53
+      "endLine": 54
     },
     {
       "id": "conjecture",
       "title": "The Pinned Distance Conjecture",
       "summary": "Weak and strong forms of the conjecture",
       "startLine": 55,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "katz-tardos",
       "title": "Katz-Tardos Bound",
       "summary": "The best known lower bound with exponent ≈ 0.864",
       "startLine": 69,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "bounds",
       "title": "Related Bounds",
       "summary": "Trivial bounds and the integer lattice construction",
       "startLine": 81,
-      "endLine": 102
+      "endLine": 103
     },
     {
       "id": "sum-conjecture",
       "title": "Sum of Pinned Distances",
       "summary": "Erdős's conjecture on the total pinned distance sum",
       "startLine": 104,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "connection",
       "title": "Connection to Distinct Distances",
       "summary": "How pinned distances relate to all pairwise distances",
       "startLine": 115,
-      "endLine": 130
+      "endLine": 228
     }
   ],
   "conclusion": {

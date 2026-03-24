@@ -82,63 +82,63 @@
       "title": "Complete Graphs and Edge Colorings",
       "summary": "Defines completeGraph n as the top graph on Fin n, Edge as ordered pairs with i < j, edgeCount n = C(n,2), EdgeColoring as Fin n → Fin n → Bool (using Bool for decidable two-coloring), and IsSymmetricColoring requiring c i j = c j i for undirected edges. The Bool-based coloring is elegant: it makes red/blue a computational rather than logical distinction.",
       "startLine": 30,
-      "endLine": 50
+      "endLine": 51
     },
     {
       "id": "triangles",
       "title": "Triangles and Monochromatic Structure",
       "summary": "Defines Triangle n as a structure with three Fin n vertices and distinctness proofs (v1 ≠ v2, v1 ≠ v3, v2 ≠ v3). IsMonochromatic requires c v1 v2 = c v1 v3 = c v2 v3 (transitivity chain). IsRedTriangle and IsBlueTriangle specialize to all-true and all-false. The proved theorem mono_iff_red_or_blue establishes the equivalence via aesop on the Bool structure.",
       "startLine": 52,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "edges-in-mono",
       "title": "Edges in Monochromatic Triangles",
       "summary": "The central predicate: EdgeInMonoTriangle c i j holds when i ≠ j and there exists a witness vertex k forming a monochromatic triple. EdgeNotInMonoTriangle is the universal negation — for ALL k, no monochromatic triple exists. countEdgesNotInMono uses Nat.card over ordered pairs (i < j) satisfying EdgeNotInMonoTriangle, providing the quantity the problem bounds.",
       "startLine": 84,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "bound",
       "title": "The Bound n²/4",
       "summary": "Defines boundQuarter n = n²/4 (floor division) and exactBound n as a piecewise function: C(n,2) for n ≤ 5 (all edges can escape), 10 for n = 6, and n²/4 for n ≥ 7. The piecewise structure captures the three-regime solution discovered by Keevash-Sudakov, with the phase transition at R(3,3) = 6.",
       "startLine": 105,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "Axiomatizes three foundational facts: small_case_5 (existence of a triangle-free 2-coloring of K₅ — the C₅ coloring), case_6 (at most 10 edges escape mono triangles in K₆, with a coloring achieving exactly 10), and ramsey_3_3 (every 2-coloring of K₆ has a monochromatic triangle). The n = 6 case is the phase transition point where R(3,3) first forces monochromatic triangles.",
       "startLine": 120,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "keevash-sudakov",
       "title": "The Keevash-Sudakov Theorem",
       "summary": "Axiomatizes the main result: keevash_sudakov_main (for n ≥ 7, countEdgesNotInMono ≤ n²/4), keevash_sudakov_tight (existence of colorings achieving the bound), and bipartite_achieves_bound (the balanced bipartite coloring is extremal). Also defines balancedBipartiteColoring explicitly as a Lean function splitting vertices at n/2.",
       "startLine": 144,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
       "summary": "Proves edge_partition: every edge in K_n is either in a monochromatic triangle or not — a complete dichotomy established by case analysis on the existential witness. This clean by-cases proof was verified by Aristotle. Also axiomatizes that non-mono edges form a bipartite-like structure (stated as True placeholder for the structural claim).",
       "startLine": 170,
-      "endLine": 187
+      "endLine": 188
     },
     {
       "id": "pyber",
       "title": "Pyber's Covering Result",
       "summary": "Axiomatizes Pyber's 1986 theorem: any 2-colored K_n can be covered by at most ⌊n²/4⌋ + 2 monochromatic cliques. Also states the Erdős-Rousseau-Schelp asymptotic result with an explicit ε-δ formulation using real arithmetic. Pyber's result was the key intermediate step: Alon observed that it implies the edge bound.",
       "startLine": 189,
-      "endLine": 208
+      "endLine": 209
     },
     {
       "id": "history",
       "title": "Earlier Partial Results",
       "summary": "States the keevash_sudakov_complete axiom unifying all cases into a single statement: for any n and any symmetric coloring, countEdgesNotInMono ≤ exactBound n. This combines the small cases (n ≤ 5, n = 6) with the main theorem (n ≥ 7) into one clean axiom.",
       "startLine": 210,
-      "endLine": 224
+      "endLine": 225
     },
     {
       "id": "main-result",

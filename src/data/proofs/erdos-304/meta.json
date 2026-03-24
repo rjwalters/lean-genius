@@ -83,63 +83,63 @@
       "id": "background",
       "title": "Egyptian Fractions Background",
       "startLine": 31,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Historical context on Egyptian fractions as sums of distinct unit fractions."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 43,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Defines unitFractionExpressible, smallestCollection (N(a,b)), and smallestCollectionMax (N(b))."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 70,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Properties of N(a,b) including the example N(2,15) = 2."
     },
     {
       "id": "bounds",
       "title": "Asymptotic Bounds",
       "startLine": 97,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Erdős (1950) lower/upper bounds and Vose (1985) improvement."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 133,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Statement of the main conjecture: Is N(b) ≪ log log b?"
     },
     {
       "id": "average-case",
       "title": "Average Case",
       "startLine": 152,
-      "endLine": 173,
+      "endLine": 174,
       "summary": "Average of N(a,b) over all numerators is also Ω(log log b)."
     },
     {
       "id": "special-case",
       "title": "Special Case N(b-1,b)",
       "startLine": 175,
-      "endLine": 187,
+      "endLine": 188,
       "summary": "Connection to Erdős Problem #293 via representations of (b-1)/b."
     },
     {
       "id": "algorithmic",
       "title": "Algorithmic Aspects",
       "startLine": 189,
-      "endLine": 200,
+      "endLine": 201,
       "summary": "The greedy algorithm uses O(log b) terms - worse than optimal."
     },
     {
       "id": "summary",
       "title": "Summary of Bounds",
       "startLine": 202,
-      "endLine": 220,
+      "endLine": 238,
       "summary": "Summary theorem combining known lower and upper bounds."
     }
   ],

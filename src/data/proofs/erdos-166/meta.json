@@ -82,7 +82,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 7,
     "lineCount": 285,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős offered $250 for proving that $R(4,k)$ grows like $k^3$ up to polylogarithmic factors. Spencer (1977) gave the first non-trivial lower bound $R(4,k) \\geq c(k \\log k)^{5/2}$ using the probabilistic method with dependent random choices. Ajtai, Komlós, and Szemerédi (1980) established the complementary upper bound $R(4,k) \\leq Ck^3/(\\log k)^2$ using a greedy algorithm, confirming that $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ for some $\\alpha$. For 43 years, closing this gap—improving the lower bound exponent from $5/2$ on $(k\\log k)$ to cubic in $k$—resisted all probabilistic approaches. The breakthrough came in 2023 when Sam Mattheus and Jacques Verstraete proved $R(4,k) \\geq ck^3/(\\log k)^4$ using algebraic constructions from finite geometry: $K_4$-free graphs built from incidence structures of classical polar spaces over $\\mathbb{F}_q$. This earned them the $250 Erdős prize and demonstrated that algebraic methods can succeed where probabilistic ones plateau.",
@@ -123,7 +124,7 @@
       "id": "section-3",
       "title": "Known Exact Values",
       "startLine": 124,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "Axiomatizes $R(3,3) = 6$ (monochromatic triangle in $K_6$), $R(4,4) = 18$, $R(4,5) = 25$, and the tight bounds $R(3,k) = \\Theta(k^2/\\log k)$ from Kim (1995) and Shearer (1983)."
     },
     {
@@ -151,7 +152,7 @@
       "id": "section-7",
       "title": "Formal Statement and Resolution",
       "startLine": 198,
-      "endLine": 232,
+      "endLine": 233,
       "summary": "`Erdos166Statement` defines the conjecture as $\\exists c, A > 0$ with cubic lower bound. `erdos_166_solved` proves it by instantiating $A = 4$ from Mattheus-Verstraete. `current_bounds` packages the sandwich inequality $ck^3/(\\log k)^4 \\leq R(4,k) \\leq Ck^3/(\\log k)^2$."
     },
     {

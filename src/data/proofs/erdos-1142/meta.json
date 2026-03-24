@@ -75,14 +75,14 @@
       "title": "Problem Statement and Context",
       "summary": "Header documentation stating the open problem: are there infinitely many $n$ with $n - 2^k$ prime for all $1 < 2^k < n$? Lists known values from OEIS A039669 and references to Mientka, Weitzenkamp, and Vaughan.",
       "startLine": 1,
-      "endLine": 22
+      "endLine": 23
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports `Mathlib.Tactic` and `Mathlib.Data.Nat.Prime.Basic` for primality testing and decidability. Opens `Finset` namespace for finite set operations.",
       "startLine": 24,
-      "endLine": 27
+      "endLine": 28
     },
     {
       "id": "core-definitions",
@@ -96,14 +96,14 @@
       "title": "Verification of Known Values",
       "summary": "Proves all seven known solutions via `native_decide`: $n = 4$ (one condition: $4 - 2 = 2$), $n = 7$ (two: $5, 3$), $n = 15$ (three: $13, 11, 7$), $n = 21$ (four: $19, 17, 13, 5$), $n = 45$ (five: $43, 41, 37, 29, 13$), $n = 75$ (six: $73, 71, 67, 59, 43, 11$), $n = 105$ (six: $103, 101, 97, 89, 73, 41$).",
       "startLine": 52,
-      "endLine": 80
+      "endLine": 81
     },
     {
       "id": "non-examples",
       "title": "Non-Examples",
       "summary": "Verifies $n = 6$ fails ($6 - 2 = 4$ is composite), $n = 9$ fails ($9 - 8 = 1$ is not prime), and $n = 10$ fails ($10 - 2 = 8$ is composite), demonstrating that the property is rare.",
       "startLine": 82,
-      "endLine": 91
+      "endLine": 92
     },
     {
       "id": "structural-properties",
@@ -117,7 +117,7 @@
       "title": "Logarithmic Cardinality",
       "summary": "States that $|\\text{powersOfTwoBetween}(n)| = \\lfloor \\log_2 n \\rfloor$ for $n \\geq 4$, formalizing the logarithmic growth of the number of primality conditions imposed on each candidate $n$.",
       "startLine": 129,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "conjecture",
@@ -131,14 +131,14 @@
       "title": "Exhaustive Verification up to 105",
       "summary": "The theorem `erdos1142_complete_le_105` uses `native_decide` to verify that exactly the seven known values satisfy the property among $n \\leq 105$, giving computational certainty matching the OEIS sequence.",
       "startLine": 158,
-      "endLine": 164
+      "endLine": 165
     },
     {
       "id": "implication",
       "title": "Stronger Conjecture Implies Finiteness",
       "summary": "Formalizes the logical chain: if the $o(\\log n)$ conjecture holds, then for sufficiently large $n$, the fraction of prime differences drops below 1, so not all $\\lfloor \\log_2 n \\rfloor$ conditions can hold simultaneously.",
       "startLine": 166,
-      "endLine": 175
+      "endLine": 192
     }
   ],
   "conclusion": {

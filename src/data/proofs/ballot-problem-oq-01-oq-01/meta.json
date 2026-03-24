@@ -67,7 +67,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 130,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The Discrete IVT and the Cycle Lemma**\n\nThe Dvoretzky-Motzkin Cycle Lemma (1947) states: given a sequence with $a$ copies of $+1$ and $b$ copies of $-k$ satisfying $a > kb$, exactly $a - kb$ of the $a + b$ cyclic rotations have all partial sums positive.\n\nThe proof has two parts:\n- **Upper bound** ($|\\text{goodRotations}| \\leq a-kb$): Via an injection from good rotations to distinct prefix sum levels — proved in BallotProblemOQ01.lean via `goodRotations_card_le`.\n- **Lower bound** ($|\\text{goodRotations}| \\geq a-kb$): Requires showing that for each level $v$ in $[\\mu, \\mu + S)$ (where $\\mu$ is the minimum prefix sum and $S$ is the total sum), there exists a good rotation achieving level $v$. This uses:\n  1. A **discrete IVT** to show every level is achieved by some prefix\n  2. The **rightmost position** at each level is a good rotation\n\nThe discrete IVT formalized here (`ballot_discrete_ivt`) captures the essential analytic content: if a {+1, -k}-sequence achieves prefix sum $v$ at some position, and the final sum exceeds $v$, then the rightmost position with prefix sum $\\leq v$ actually has prefix sum exactly $v$. This is because the rightmost such position must be followed by $+1$ (not $-k$, which would give prefix sum $\\leq v-k < v$).",
@@ -94,7 +95,7 @@
       "id": "imports-header",
       "title": "Imports and Problem Overview",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Header documenting the open question and proof strategy. Imports: `Mathlib.Tactic`, `Mathlib.Data.List.Basic`, `Mathlib.Data.Finset.Basic`.",
       "mathContext": "The Dvoretzky-Motzkin Cycle Lemma (1947): for a sequence with $a$ copies of $+1$ and $b$ copies of $-k$ satisfying $a > kb$, exactly $a - kb$ of the $a+b$ cyclic rotations have all partial sums positive. The prefix sum $P(i) = \\sum_{j=0}^{i-1} l_j$ tracks cumulative value at each position."
     },
@@ -102,7 +103,7 @@
       "id": "ballot-discrete-ivt",
       "title": "Discrete IVT for Ballot Sequences",
       "startLine": 39,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Theorem `ballot_discrete_ivt`: For a {+1,-k}-list, if some position achieves prefix sum v and the final sum exceeds v, then a strict prefix achieves prefix sum exactly v. Proved via `Finset.max'` of positions with prefix sum ≤ v; the maximal such position must be followed by +1 (not -k), forcing its prefix sum to equal exactly v.",
       "mathContext": "For $l \\in \\{+1, -k\\}^*$, define $S = \\{i \\in [0, |l|] : P(i) \\leq v\\}$. Let $j = \\max S$. Then $j < |l|$ (since $P(|l|) > v$), $P(j+1) > v$ (by maximality), and $l[j] = 1$ (else $P(j+1) = P(j)-k \\leq v-k < v$). So $P(j) = P(j+1)-1 \\geq v$ and $P(j) \\leq v$ give $P(j) = v$."
     },
@@ -125,7 +126,7 @@
       "id": "placeholder-theorems",
       "title": "Placeholder Theorems",
       "startLine": 108,
-      "endLine": 109,
+      "endLine": 130,
       "summary": "cycle_lemma_lower_bound_via_ivt: placeholder theorem (1+1=2) documenting how ballot_discrete_ivt iteratively produces good rotations at each prefix sum level, yielding |goodRotations| ≥ a - kb. Combined with the upper bound from OQ-01, this gives the full cycle lemma equality."
     }
   ],

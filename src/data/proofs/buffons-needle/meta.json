@@ -40,7 +40,8 @@
     "dateAdded": "2025-12-27",
     "axiomCount": 0,
     "lineCount": 266,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Buffon's Needle Problem was posed by Georges-Louis Leclerc, Comte de Buffon in his 1777 *Essai d'arithmétique morale*, making it one of the earliest problems in geometric probability. Buffon was a polymath — naturalist, mathematician, and director of the Jardin du Roi — who used this problem to explore the foundations of probability theory. The elegant answer $P = 2\\ell/(\\pi d)$ stunned contemporaries: how could $\\pi$, a geometric constant, arise from a probability calculation about random needle drops? Pierre-Simon Laplace recognized its deeper significance and connected it to what we now call integral geometry. In 1812, Laplace used the needle experiment to propose one of the first Monte Carlo methods for estimating $\\pi$: drop $n$ needles, count $k$ crossings, then $\\pi \\approx 2\\ell n/(kd)$. The Italian mathematician Mario Lazzarini claimed in 1901 to have estimated $\\pi$ to six decimal places with 3,408 throws — a result widely suspected to be fabricated, as the ratio $355/113$ (an excellent rational approximation to $\\pi$) fits suspiciously well. In the 20th century, Augustin-Louis Cauchy and later Mark Kac generalized Buffon's result to the Cauchy-Crofton formula, which relates the length of any rectifiable curve to its expected number of intersections with random lines, founding the field of integral geometry.",
@@ -63,35 +64,35 @@
       "id": "physical-setup",
       "title": "The Physical Setup",
       "startLine": 52,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Defines needle length ℓ > 0, line spacing d > 0, and the short needle constraint ℓ ≤ d. Introduces the two uniform random variables: angle θ ∈ [0,π) and distance x ∈ [0,d/2] from needle center to nearest line, exploiting the symmetry that only the nearest line matters."
     },
     {
       "id": "crossing-condition",
       "title": "The Crossing Condition",
       "startLine": 70,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Defines the geometric crossing predicate: the needle crosses a line iff x ≤ (ℓ/2)sin(θ). The perpendicular projection of half the needle, (ℓ/2)sin(θ), must exceed the distance x to the nearest line. The crossing region in the (x,θ)-plane is the area under the curve x = (ℓ/2)sin(θ)."
     },
     {
       "id": "key-integral",
       "title": "The Key Integral",
       "startLine": 88,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "The computational heart: proves ∫₀^π sin(θ) dθ = 2 using Mathlib's integral_sin, then scales to show the crossing region area equals ℓ. The sample space area is πd/2. The ratio ℓ/(πd/2) = 2ℓ/(πd) gives the probability."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 116,
-      "endLine": 145,
+      "endLine": 146,
       "summary": "Buffon's Needle Theorem (Wiedijk #99): P(crossing) = 2ℓ/(πd). Assembles the integral computation and area ratio into the final formula. Uses field_simp and ring for the algebraic simplification."
     },
     {
       "id": "pi-estimation",
       "title": "Connection to Pi Estimation",
       "startLine": 147,
-      "endLine": 176,
+      "endLine": 266,
       "summary": "Derives the Monte Carlo estimator: from P = 2ℓ/(πd), solving for π gives π = 2ℓ/(Pd). With n drops and k crossings (P ≈ k/n), we get π ≈ 2ℓn/(kd). Historical note on Lazzarini's suspect 1901 experiment claiming 6-digit accuracy."
     }
   ],

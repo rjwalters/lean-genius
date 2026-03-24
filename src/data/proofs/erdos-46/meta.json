@@ -84,7 +84,7 @@
       "id": "unit-fraction",
       "title": "Unit Fraction Representations",
       "startLine": 21,
-      "endLine": 30,
+      "endLine": 31,
       "summary": "Defines **IsUnitFractionRepr** ($\\sum_{n \\in S} 1/n = 1$ with $n \\ge 2$) and **IsRatFractionRepr** ($\\sum 1/n = q$) for Egyptian fraction sums over `Finset ℕ`.",
       "mathContext": "$\\text{IsUnitFractionRepr}(S) \\iff (\\forall n \\in S,\\, n \\ge 2) \\wedge \\sum_{n \\in S} \\frac{1}{n} = 1$. Egyptian fraction representation of 1 using distinct denominators $\\ge 2$."
     },
@@ -92,7 +92,7 @@
       "id": "colourings",
       "title": "Colourings",
       "startLine": 32,
-      "endLine": 40,
+      "endLine": 41,
       "summary": "Defines **FiniteColouring** $r$ = $\\mathbb{N} \\to \\text{Fin}\\, r$ and **IsMonochromatic**: $\\exists \\text{col},\\, \\forall n \\in S,\\, c(n) = \\text{col}$.",
       "mathContext": "$\\text{FiniteColouring}(r) = \\mathbb{N} \\to \\text{Fin}\\, r$. $\\text{IsMonochromatic}(c, S) \\iff \\exists k,\\, \\forall n \\in S,\\, c(n) = k$. Standard Ramsey-theoretic colouring framework."
     },
@@ -100,7 +100,7 @@
       "id": "main",
       "title": "Main Theorem",
       "startLine": 42,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "**ErdosProblem46**: $\\forall r,\\, \\forall c: \\exists S$ monochromatic with $\\sum 1/n = 1$. Stronger variant: solutions exist with all terms $> N$.",
       "mathContext": "$\\forall r \\ge 1,\\, \\forall c : \\mathbb{N} \\to \\text{Fin}\\, r,\\, \\exists S \\subseteq \\{n \\ge 2\\}: \\text{IsMonochromatic}(c, S) \\wedge \\sum_{n \\in S} \\frac{1}{n} = 1$. Croot's theorem: Egyptian fraction representations of 1 are partition-regular."
     },
@@ -108,7 +108,7 @@
       "id": "rational",
       "title": "Rational Generalization",
       "startLine": 56,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "**ErdosGraham_rational**: $\\forall q > 0,\\, \\exists$ monochromatic $S$ with $\\sum 1/n = q$. Axiom **rational_from_infinite** bridges from infinite solutions.",
       "mathContext": "$\\forall q \\in \\mathbb{Q}_{>0},\\, \\forall r \\ge 1,\\, \\forall c : \\mathbb{N} \\to \\text{Fin}\\, r,\\, \\exists S: \\text{IsMonochromatic}(c, S) \\wedge \\sum_{n \\in S} \\frac{1}{n} = q$. Erdős-Graham generalization to arbitrary positive rationals."
     },

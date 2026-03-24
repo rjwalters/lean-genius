@@ -21,7 +21,8 @@
     "axiomCount": 3,
     "lineCount": 89,
     "badge": "axiom",
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -35,7 +36,7 @@
       "id": "sign-vector-defs",
       "title": "Sign Vector and Signed Sum Definitions",
       "startLine": 24,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Defines `SignVector n` as functions $\\text{Fin}\\, n \\to \\mathbb{Z}$, validity condition $\\varepsilon_i \\in \\{\\pm 1\\}$, and the signed sum $\\sum_{i} \\varepsilon_i z_i$ over complex vectors."
     },
     {
@@ -56,14 +57,14 @@
       "id": "historical-real",
       "title": "Erdős's Real Case (1945)",
       "startLine": 57,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Axiom `erdos_real_case`: for real $z_i$ with $|z_i| \\geq 1$, at most $\\binom{n}{\\lfloor n/2 \\rfloor}$ signed sums fall in any interval of length 2. Proved via Sperner's antichain theorem."
     },
     {
       "id": "historical-complex",
       "title": "Erdős's Complex Weak Bound (1961)",
       "startLine": 69,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Axiom `erdos_complex_weak`: before Kleitman, Erdős showed the count is $O(2^n / \\sqrt{n})$, weaker than the sharp $\\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n / \\sqrt{\\pi n/2}$ by a constant."
     },
     {

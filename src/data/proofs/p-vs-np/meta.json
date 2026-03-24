@@ -39,7 +39,8 @@
     ],
     "dateAdded": "2025-12-29",
     "millenniumProblem": "p-vs-np",
-    "lineCount": 6777
+    "lineCount": 6777,
+    "mathlib_version": "4.26.0"
   },
   "leanFile": {
     "path": "Proofs/PNPBarriersUnified.lean",
@@ -150,14 +151,14 @@
       "title": "Abstract Computation Model",
       "summary": "Defines `DecisionProblem` as $L : \\mathbb{N} \\to \\text{Bool}$, `inputSize` as $\\lfloor \\log_2 n \\rfloor + 1$, `Program` as abstract TM with `decide : Nat → Bool × Nat`, and predicates `solves` and `runsInTime`.",
       "startLine": 53,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "polynomial-time",
       "title": "Polynomial Time",
       "summary": "Defines `Polynomial` (degree + coefficient), evaluation $p(n) = c \\cdot (n+1)^d$, `isPolynomial` predicate. Proves `eval_mono`, `poly_bound_degree`, and `poly_pow_expand` for polynomial arithmetic.",
       "startLine": 90,
-      "endLine": 138
+      "endLine": 139
     },
     {
       "id": "class-p",
@@ -165,7 +166,7 @@
       "summary": "Defines `inP` as existence of polynomial-time solver, and $P$ as the set of all such problems. $P = \\{L \\mid \\exists M, p :\\, M \\text{ decides } L \\text{ in } O(p(n))\\}$.",
       "mathContext": "$P = \\{L : \\exists \\text{TM } M, \\text{poly } p,\\; M \\text{ decides } L \\text{ in time } p(|x|)\\}$.",
       "startLine": 140,
-      "endLine": 153
+      "endLine": 154
     },
     {
       "id": "class-np",
@@ -173,7 +174,7 @@
       "summary": "Defines `Verifier`, `isCorrectVerifier` (soundness + completeness), `verifierPolyTime`, and `inNP`. $NP = \\{L \\mid \\exists V, p :\\, x \\in L \\Leftrightarrow \\exists c,\\, V(x,c) \\text{ accepts in } O(p(|x|))\\}$.",
       "mathContext": "$NP = \\{L : \\exists V, p,\\; x \\in L \\iff \\exists c,\\; V(x,c) = \\text{true in time } p(|x|)\\}$.",
       "startLine": 155,
-      "endLine": 191
+      "endLine": 192
     },
     {
       "id": "p-subset-np",
@@ -181,35 +182,35 @@
       "summary": "**Proved**: $P \\subseteq NP$ by constructing a verifier from a solver (ignoring the certificate). Fully constructive proof with careful polynomial bound arithmetic (~50 lines).",
       "mathContext": "$P \\subseteq NP$: if $M$ decides $L$ in time $p(n)$, define $V(x, c) = M(x)$ (ignore certificate). Verified in polynomial time.",
       "startLine": 193,
-      "endLine": 252
+      "endLine": 253
     },
     {
       "id": "reductions",
       "title": "Polynomial-Time Reductions",
       "summary": "Defines `Reduction` and `PolyReduction` ($A \\leq_p B$) with output size bounds. Proves reflexivity, transitivity (~150 lines of polynomial arithmetic), and the key `poly_reduce_in_P`: $A \\leq_p B \\wedge B \\in P \\Rightarrow A \\in P$.",
       "startLine": 254,
-      "endLine": 568
+      "endLine": 569
     },
     {
       "id": "np-completeness",
       "title": "NP-Hardness, NP-Completeness, and SAT",
       "summary": "Defines `NPHard` and `NPComplete`. Formalizes SAT with `Literal`, `Clause`, `CNFFormula`, `Assignment`. States Cook-Levin axiom and proves `cook_levin : NPComplete SAT`.",
       "startLine": 570,
-      "endLine": 666
+      "endLine": 667
     },
     {
       "id": "npc-gallery",
       "title": "NP-Complete Problems Gallery",
       "summary": "Defines and proves NP-completeness of 3-SAT, CLIQUE, SUBSET-SUM, HAMPATH via reduction chains from SAT. Uses helper lemmas for abstract placeholder problems.",
       "startLine": 668,
-      "endLine": 755
+      "endLine": 756
     },
     {
       "id": "conp-complement",
       "title": "coNP and Complement Classes",
       "summary": "Defines `complement` and `coNP`. **Proves**: $P$ is closed under complement ($L \\in P \\Leftrightarrow \\bar{L} \\in P$) and $P \\subseteq \\text{coNP}$.",
       "startLine": 757,
-      "endLine": 806
+      "endLine": 807
     },
     {
       "id": "conjecture",
@@ -217,21 +218,21 @@
       "summary": "Defines `P_ne_NP_Conjecture`. **Proves**: $P \\neq NP \\Leftrightarrow \\exists L \\in NP \\setminus P$, and the key equivalence `NPC_in_P_implies_P_eq_NP`: if any NP-complete problem is in $P$, then $P = NP$.",
       "mathContext": "Key: $L \\in \\text{NPC} \\cap P \\Rightarrow P = NP$ (any single NP-complete problem in $P$ collapses the hierarchy).",
       "startLine": 808,
-      "endLine": 864
+      "endLine": 865
     },
     {
       "id": "barriers-hierarchy",
       "title": "Known Results and Barriers",
       "summary": "States Time Hierarchy Theorem and $P \\neq \\text{EXPTIME}$ as axioms. Defines `EXPTIME` as problems solvable in $O(2^{n^c})$ time. States Ladner's Theorem: if $P \\neq NP$, NP-intermediate problems exist.",
       "startLine": 866,
-      "endLine": 899
+      "endLine": 900
     },
     {
       "id": "summary-export",
       "title": "Summary and Export",
       "summary": "Summarizes all main results: $P \\subseteq NP$, Cook-Levin, NP-completeness of SAT/3-SAT/CLIQUE/SUBSET-SUM/HAMPATH, the key equivalence, and Ladner's theorem. Exports definitions via `#check`.",
       "startLine": 901,
-      "endLine": 945
+      "endLine": 6777
     }
   ],
   "crossReferences": [

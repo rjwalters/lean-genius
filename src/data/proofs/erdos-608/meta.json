@@ -99,84 +99,84 @@
       "title": "Imports and Setup",
       "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Data.Real.Sqrt`, and `Tactic`. Opens `SimpleGraph`, `Finset`, `Real` namespaces with universe-polymorphic vertex type $V$.",
       "startLine": 21,
-      "endLine": 30
+      "endLine": 31
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines `IsC5` ($C_5$ predicate with all $\\binom{5}{2} = 10$ distinctness conditions and 5 edges), `EdgeInC5` (edge participation predicate), `edgesInC5` ($|\\{e \\in E(G) : e \\text{ in some } C_5\\}|$), and vertex count $n(V) = |V|$.",
       "startLine": 32,
-      "endLine": 49
+      "endLine": 50
     },
     {
       "id": "conjecture",
       "title": "Original Conjecture (FALSE)",
       "summary": "States Erdős's conjecture: $|E(G)| > n^2/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)n^2$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ — the conjecture is disproved.",
       "startLine": 51,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "constant",
       "title": "The Correct Constant $c = (2 + \\sqrt{2})/16$",
       "summary": "Defines $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ as a noncomputable real. Proves $0.213 < c < 0.214$ (approximation) and $c < 2/9$ (explaining the conjecture's failure).",
       "startLine": 64,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "furedi-maleki",
       "title": "Füredi-Maleki Upper Bound",
       "summary": "States `FurediMalekiConstruction`: $\\forall \\varepsilon > 0$, eventually $\\exists G$ with $|E| > n^2/4$ and $\\text{edgesInC5}(G) \\leq (c + \\varepsilon)n^2$. The extremal construction uses an optimally weighted blow-up.",
       "startLine": 77,
-      "endLine": 90
+      "endLine": 91
     },
     {
       "id": "grzesik-hu-volec",
       "title": "Grzesik-Hu-Volec Lower Bound",
       "summary": "States `GrzesikHuVolecBound`: $\\forall \\varepsilon > 0$, eventually $\\forall G$ with $|E| > n^2/4$, $\\text{edgesInC5}(G) \\geq (c - \\varepsilon)n^2$. Proved via flag algebras. Combined in `exact_answer`.",
       "startLine": 92,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "odd-cycles",
       "title": "General Odd Cycles $C_{2k+1}$",
       "summary": "Defines `IsOddCycle` for general $(2k+1)$-cycles using `Fin`-indexed injective paths with modular adjacency. Proves for $k \\geq 3$: $\\text{edgesInOddCycle}(G, k) \\geq (2/9 - o(1))n^2$, showing $C_5$ is the unique exception.",
       "startLine": 112,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "triangles",
       "title": "Triangles: Erdős-Faudree-Rousseau",
       "summary": "Defines `edgesInTriangles` as `edgesInOddCycle G 1`. States the Erdős-Faudree-Rousseau bound: $|E| > n^2/4 \\Rightarrow \\text{edgesInTriangles}(G) \\geq 2\\lfloor n/2 \\rfloor + 1$ — a linear (not quadratic) bound.",
       "startLine": 137,
-      "endLine": 149
+      "endLine": 150
     },
     {
       "id": "turan",
       "title": "Turán Threshold Sharpness",
       "summary": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $n^2/4$ is **sharp**.",
       "startLine": 151,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "small",
       "title": "Small Cases ($n = 5, 6$)",
       "summary": "Concrete verification: $C_5$ itself has 5/5 edges in $C_5$; for $n = 6$ with $> 9$ edges, $\\text{edgesInC5} \\geq 5$. Illustrates supersaturation at small scale.",
       "startLine": 174,
-      "endLine": 186
+      "endLine": 187
     },
     {
       "id": "construction",
       "title": "Füredi-Maleki Construction Details",
       "summary": "Defines `FurediMalekiGraph` as an algebraic blow-up construction. Proves `construction_optimal`: for $n \\geq 100$, achieves $|E| > n^2/4$ with $\\text{edgesInC5} \\leq cn^2 + n$.",
       "startLine": 188,
-      "endLine": 217
+      "endLine": 218
     },
     {
       "id": "counts",
       "title": "Subgraph Counts and Stability",
       "summary": "Defines `countC5` (unlabeled $C_5$ count, dividing by 10). States `many_c5_subgraphs`: dense graphs have $\\Omega(n^5)$ copies of $C_5$. Includes stability placeholder for near-extremal structure.",
       "startLine": 219,
-      "endLine": 234
+      "endLine": 270
     }
   ],
   "overview": {

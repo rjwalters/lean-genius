@@ -63,7 +63,8 @@
       "The nine-point circle and its properties",
       "Coordinate geometry computations (field_simp, ring, nlinarith)"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The nine-point circle was discovered independently by Charles-Julien Brianchon and Jean-Victor Poncelet in 1821 and by Karl Wilhelm Feuerbach in 1822. Feuerbach's key contribution, proved in his 1822 treatise *Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks*, was that this circle is tangent to the inscribed circle and all three excircles of the triangle. The tangency point with the incircle is now called the Feuerbach point, and the theorem itself is #29 on Wiedijk's list of 100 greatest theorems.\n\nThe nine-point circle was further studied by Leonhard Euler (who established the Euler line through circumcenter, centroid, and orthocenter) and named by Olry Terquem in 1842 after proving it passes through all nine special points. The relationship N = (O + H)/2 connecting the nine-point center to the Euler line was established by Feuerbach and generalized by later mathematicians.\n\nThis module provides the complete definitional infrastructure using explicit coordinate geometry in R^2. The approach trades the elegance of synthetic proofs for computational verifiability: every step is a polynomial identity verified by field_simp + ring. The 3-4-5 right triangle serves as a numerical sanity check, confirming that all formulas are consistent and Feuerbach tangency holds (|NI| = |R/2 - r|).",
@@ -89,7 +90,7 @@
       "id": "triangle-config",
       "title": "Triangle Configuration in R^2",
       "startLine": 1,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Defines Point = R x R, the Triangle structure with non-degeneracy condition, side lengths a/b/c via sqrt, semiperimeter, and area via the shoelace formula.",
       "mathContext": "Triangle $ABC$ in $\\mathbb{R}^2$ with non-degeneracy: $(B_x - A_x)(C_y - A_y) - (C_x - A_x)(B_y - A_y) \\neq 0$. Side lengths via Euclidean distance, area via signed area formula."
     },
@@ -113,7 +114,7 @@
       "id": "incircle-excircles",
       "title": "Incircle and Excircles",
       "startLine": 189,
-      "endLine": 252,
+      "endLine": 253,
       "summary": "Defines incenter I as weighted average of vertices by opposite side lengths, inradius r = area/semiperimeter, three excenters and exradii. Defines internal and external circle tangency.",
       "mathContext": "Incenter $I = (aA + bB + cC)/(a+b+c)$, inradius $r = \\Delta/s$. Excircle opposite $A$: center $I_A = (-aA + bB + cC)/(-a+b+c)$, exradius $r_A = \\Delta/(s-a)$."
     },
@@ -129,7 +130,7 @@
       "id": "midpoint-membership",
       "title": "Side Midpoints and Euler Midpoints on the Nine-Point Circle",
       "startLine": 373,
-      "endLine": 440,
+      "endLine": 441,
       "summary": "Proves all 6 midpoints lie on the nine-point circle: 3 side midpoints (M_a - N = (O-A)/2 etc.) and 3 Euler midpoints (mid(A,H) - N = (A-O)/2 etc.). Uses the ninepoint_membership lemma and circumcenter equidistance.",
       "mathContext": "For each midpoint $P$: $|P - N|^2 = |O - V|^2/4 = R^2/4$, so $\\text{dist}(N, P) = R/2$. Side midpoints use $M_a - N = (O - A)/2$; Euler midpoints use mid$(A,H) - N = (A - O)/2$."
     },

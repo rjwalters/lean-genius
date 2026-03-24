@@ -46,7 +46,8 @@
     "hilbertNumber": 22,
     "axiomCount": 0,
     "lineCount": 305,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1900, Hilbert's twenty-second problem asked for the uniformization of analytic relations by automorphic functions. This was motivated by the success of elliptic functions in parametrizing elliptic curves.\n\nThe complete answer came in 1907, when both Paul Koebe and Henri Poincare independently proved the Uniformization Theorem. This theorem is one of the deepest results in complex analysis, connecting:\n\n- **Riemann surfaces** (complex geometry)\n- **Automorphic functions** (symmetry and groups)\n- **Hyperbolic geometry** (negative curvature)\n- **Algebraic geometry** (curves and moduli)\n\nThe theorem states that every simply connected Riemann surface is conformally equivalent to exactly one of three model spaces: the Riemann sphere, the complex plane, or the unit disk.",
@@ -69,14 +70,14 @@
       "id": "model-spaces",
       "title": "The Three Model Spaces",
       "startLine": 61,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "Definition of the three simply connected model spaces: Riemann sphere, complex plane, and unit disk."
     },
     {
       "id": "conformal-mappings",
       "title": "Conformal Equivalence",
       "startLine": 110,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Formal definition of conformal equivalence between open subsets of ℂ via bijective holomorphic maps."
     },
     {
@@ -90,14 +91,14 @@
       "id": "uniformization",
       "title": "The Uniformization Theorem",
       "startLine": 191,
-      "endLine": 234,
+      "endLine": 235,
       "summary": "The main theorem classifying all simply connected Riemann surfaces into three conformal types."
     },
     {
       "id": "automorphic",
       "title": "Automorphic Functions",
       "startLine": 236,
-      "endLine": 279,
+      "endLine": 280,
       "summary": "Connection to Hilbert's original formulation via automorphic functions and Fuchsian groups."
     },
     {

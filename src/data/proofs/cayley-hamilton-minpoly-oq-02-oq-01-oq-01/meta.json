@@ -74,7 +74,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 570,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The Skolem-Noether Theorem**\n\nThe Skolem-Noether theorem, proved independently by Thoralf Skolem (1927) and Emmy Noether (1929), is a cornerstone of the theory of central simple algebras. In its most general form, it states that every automorphism of a central simple algebra over a field is inner.\n\nFor the matrix algebra $M_n(K)$, this says: every $K$-algebra automorphism $\\varphi : M_n(K) \\to M_n(K)$ has the form $\\varphi(A) = P^{-1}AP$ for some invertible matrix $P$. In other words, the only way to rearrange $M_n(K)$ while preserving its $K$-algebra structure is by a change of basis.\n\nThe standard proof uses the theory of simple modules: $K^n$ is the unique simple $M_n(K)$-module up to isomorphism. Given an automorphism $\\varphi$, one constructs a 'twisted' module where $M$ acts as $\\varphi(M)$. By uniqueness of simple modules (Artin-Wedderburn theory), the original and twisted modules are isomorphic, and the isomorphism gives the conjugating matrix.\n\nThis result has deep consequences: it shows that $\\text{Aut}_K(M_n(K)) \\cong \\text{PGL}_n(K)$, connecting algebra automorphisms to projective geometry.",
@@ -108,21 +109,21 @@
       "id": "inner-automorphisms",
       "title": "Inner Automorphisms",
       "startLine": 54,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Defines IsInnerAut and proves inner automorphisms form a group: conjAlgEquiv_isInner, isInnerAut_id, isInnerAut_symm, isInnerAut_trans."
     },
     {
       "id": "skolem-noether-proof",
       "title": "Skolem-Noether Proof (Elementary Matrix Units)",
       "startLine": 84,
-      "endLine": 279,
+      "endLine": 280,
       "summary": "Fully proves the Skolem-Noether theorem using elementary matrix units (no Artin-Wedderburn). Helper lemmas: stdBasis_entry, stdBasis_mul, f_mul, intertwine_prop, p_ne_zero, p_linearIndependent. Main theorem constructs an invertible P from linearly independent vectors p_j = φ(E_{j,i₀})·v₀ and proves φ = conj(P) by decomposing matrices as ∑ A_{ij}·E_{ij}."
     },
     {
       "id": "consequences",
       "title": "Consequences",
       "startLine": 281,
-      "endLine": 297,
+      "endLine": 298,
       "summary": "Derives exists_conjugating_matrix, surjection_units_to_aut (Aut = Inn), automorphism_preserves_minpoly, and aut_ext."
     },
     {
@@ -136,21 +137,21 @@
       "id": "matrix-unit-products",
       "title": "Matrix Unit Product Lemmas",
       "startLine": 347,
-      "endLine": 386,
+      "endLine": 387,
       "summary": "Helper lemmas mul_eij_entry and eij_mul_entry for computing products A·E_{ij} and E_{ij}·A, extracting/placing columns and rows."
     },
     {
       "id": "center",
       "title": "Center of Mₙ(K) = Scalar Matrices",
       "startLine": 388,
-      "endLine": 451,
+      "endLine": 452,
       "summary": "Proves center_iff_scalar: a matrix commutes with all matrices iff it is a scalar multiple of I. Uses off_diagonal_vanish_of_center and diagonal_constant_of_center."
     },
     {
       "id": "pgl-structure",
       "title": "Conjugation Kernel and PGL Structure",
       "startLine": 453,
-      "endLine": 568,
+      "endLine": 570,
       "summary": "Proves conjAlgEquiv_eq_iff_center (two units give same conjugation iff ratio is central) and conjAlgEquiv_eq_refl_iff (kernel = scalar matrices), establishing Aut_K(Mₙ(K)) ≅ PGLₙ(K)."
     }
   ],

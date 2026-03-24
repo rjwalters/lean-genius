@@ -72,7 +72,8 @@
         "description": "Kummer's classical theorem relating p-adic valuations of binomial coefficients to carries in base-p arithmetic"
       }
     ],
-    "assumptions": "15 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "15 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős first asked whether $\\binom{2n}{n}$ is squarefree for infinitely many $n$ in the 1970s, noting the connection to prime power divisibility of factorials via Legendre's formula. The question traces back to Kummer's 1852 theorem relating $v_p\\binom{m+n}{m}$ to carries in base-$p$ addition — one of the earliest results in $p$-adic number theory. Sárközy (1985) proved $\\binom{2n}{n}$ is not squarefree for all sufficiently large $n$ using analytic estimates on smooth numbers and the distribution of prime powers. Granville and Ramaré (1996) completed the proof for all $n \\ge 5$ by combining Sárközy's asymptotic result with direct verification of small cases and a delicate analysis of the power-of-2 case. The associated function $f(n) = \\max_p v_p\\binom{2n}{n}$ was studied by Sander (1992, 1995), who proved $f(n) \\to \\infty$ with lower bound $(\\log n)^{1/10}$, later improved to $(\\log n)^{1/4}$ by Erdős and Kolesnik (1999). The upper bound $f(n) = O(\\log n)$ is immediate from Kummer's theorem, and the gap between $(\\log n)^{1/4}$ and $\\log n$ remains open.",
@@ -96,63 +97,63 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 25,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Imports Mathlib modules for binomial coefficients (`Nat.choose`), primes, squarefreeness, $p$-adic valuations (`padicValNat`), and real numbers. Opens the `Nat` namespace."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 35,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Defines `centralBinom(n) = \\binom{2n}{n}$`, `IsSquarefree` (no prime square divides), and a placeholder `maxPrimePowerExp` for $f(n)$."
     },
     {
       "id": "divisibility-by-4",
       "title": "Divisibility by 4",
       "startLine": 52,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Axiomatizes Kummer's theorem and derives $v_2\\binom{2n}{n} = s_2(n)$. Proves $4 \\mid \\binom{2n}{n} \\iff n \\neq 2^k$. Handles the $n = 2^k$ case where $v_2 = 1$."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 77,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Axiomatizes Granville–Ramaré (1996): $\\binom{2n}{n}$ not squarefree for $n \\ge 5$. Also includes Sárközy (1985) for large $n$ and direct small-case verification up to $n = 100$."
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "startLine": 95,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Defines $f(n) = \\max_p v_p\\binom{2n}{n}$ and axiomatizes: Sander (1992) $f(n) \\to \\infty$, upper bound $f(n) = O(\\log n)$, Sander (1995) lower bound $(\\log n)^{1/10}$, and Erdős–Kolesnik (1999) improvement to $(\\log n)^{1/4}$."
     },
     {
       "id": "power-of-2-case",
       "title": "Power of 2 Case",
       "startLine": 130,
-      "endLine": 143,
+      "endLine": 144,
       "summary": "For $n = 2^k$ ($k \\ge 3$), axiomatizes that an odd prime square divides $\\binom{2n}{n}$. Includes example $\\binom{16}{8} = 12870 = 2 \\times 3^2 \\times 5 \\times 11 \\times 13$."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 145,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Sander's extension to $\\binom{2n+d}{n}$ for $|d| \\le n^{1-\\varepsilon}$, and the computational record: $n = 786$ is the largest known value with no odd prime square factor."
     },
     {
       "id": "open-questions",
       "title": "Open Questions",
       "startLine": 160,
-      "endLine": 173,
+      "endLine": 174,
       "summary": "States the open question $f(n) \\gg \\log n$ for all $n$ (known for almost all $n$ but not universally). The placeholder axiom `open_for_all_n : True` marks this as unresolved."
     },
     {
       "id": "explicit-examples",
       "title": "Explicit Examples",
       "startLine": 175,
-      "endLine": 191,
+      "endLine": 192,
       "summary": "Concrete computations: $\\binom{10}{5} = 252 = 2^2 \\cdot 3^2 \\cdot 7$ (verified by `native_decide`) and $\\binom{12}{6} = 924$. The theorem `c_10_5_not_squarefree` is proved via `norm_num`."
     },
     {

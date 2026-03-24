@@ -138,35 +138,35 @@
       "title": "The Depressed Cubic",
       "summary": "Defines depressedCubic (p q : ℂ) : ℂ[X] as X³ + C p * X + C q, discriminant as q²/4 + p³/27, and cubeRoot via Complex.cpow. All noncomputable.",
       "startLine": 49,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "algebraic-identities",
       "title": "Key Algebraic Identities",
       "summary": "Proves cube_of_sum by ring and cardano_verification_core via calc chain: the heart of the proof showing if u³+v³=-q and 3uv=-p then (u+v)³+p(u+v)+q=0.",
       "startLine": 70,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "cardano-properties",
       "title": "Properties of Cardano's Components",
       "summary": "Three lemmas: cardano_sum_property (conjugate cube roots sum to -q), cardano_product_under_roots (difference of squares), cardano_product_simplified (product equals -p³/27). All by ring.",
       "startLine": 95,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "main-theorem",
       "title": "Cardano's Formula (Main Theorem)",
       "summary": "Proves depressedCubic_eval (unfolds polynomial evaluation) and cardano_formula: the main Wiedijk #37 result. Converts uv = -p/3 to 3uv = -p via calc, then applies cardano_verification_core.",
       "startLine": 119,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "special-cases",
       "title": "Verified Examples",
       "summary": "Four concrete examples verified by norm_num: x³-6x-40=0 (root 4), x³+6x-20=0 (root 2), x³-1=0 (root 1), and discriminant vanishes when p=0.",
       "startLine": 146,
-      "endLine": 164
+      "endLine": 165
     },
     {
       "id": "cube-roots-unity",
@@ -180,7 +180,7 @@
       "title": "The Second Root via Omega",
       "summary": "Proves omega_root_product (product condition preserved under ω-twist since ω³=1) and second_root (ωu+ω²v is a root by the same verification lemma). The third root ω²u+ωv follows by symmetry.",
       "startLine": 228,
-      "endLine": 267
+      "endLine": 268
     },
     {
       "id": "historical-significance",

@@ -86,56 +86,56 @@
       "title": "Part I: Ordinal Ramsey Property Axiomatization",
       "summary": "Axiomatizes `OrdinalRamseyProperty α β n` as a `Prop` with notation `α →ₒ (β, n)²`, capturing the Erdős-Rado arrow relation $\\alpha \\to (\\beta, n)^2$ without requiring the full definition involving order-preserving embeddings and pair colorings.",
       "startLine": 39,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "specker",
       "title": "Part II: Specker's Results (1957)",
       "summary": "Two axioms for Specker's results: `specker_omega_squared` ($\\omega^2 \\to (\\omega^2, 3)^2$ holds) and `specker_omega_power_n_fails` ($\\omega^n \\nrightarrow (\\omega^n, 3)^2$ for $n \\ge 3$). Explicit failure theorems for $\\omega^3$ (via `le_refl 3`) and $\\omega^4$ (via `norm_num`) derived as corollaries.",
       "startLine": 53,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "chang",
       "title": "Part III: Chang's Theorem (1972)",
       "summary": "The main result `chang_omega_omega`: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, resolving Problem #590. The wrapper `erdos_590_solved` makes the solution explicit. Chang's proof uses transfinite induction exploiting the limit ordinal structure.",
       "startLine": 79,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "milner-larson",
       "title": "Part IV: Milner-Larson Extension",
       "summary": "Generalization `milner_larson_extension`: $\\omega^\\omega \\to (\\omega^\\omega, m)^2$ for all $m \\ge 1$. Specific instances for $m = 4$ and $m = 10$ derived via `norm_num`. Larson's 1973 proof was substantially shorter than Milner's original.",
       "startLine": 96,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "ordinal-hierarchy",
       "title": "Part V: The Ordinal Hierarchy",
       "summary": "Proved properties using Mathlib: $\\omega > 0$, $\\omega^2 = \\omega \\cdot \\omega$, $\\omega^3 = \\omega \\cdot \\omega \\cdot \\omega$, $\\omega^\\omega > 0$, $\\omega^\\omega$ is a limit ordinal, and $\\omega^n < \\omega^\\omega$ for all $n \\ge 1$. Uses `omega0_pos`, `pow_two`, `pow_succ`, `opow_pos`, `isLimit_opow_left`, `opow_lt_opow_right`.",
       "startLine": 114,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "pattern",
       "title": "Part VI: The Pattern Summary",
       "summary": "The `pattern_summary` theorem bundles: (1) $\\omega^2$ works, (2) $\\omega^3$ fails, (3) $\\omega^\\omega$ works. Includes a documentation table showing the full pattern from $\\omega$ through $\\omega^{\\omega^2}$ with the OPEN case marked.",
       "startLine": 144,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "related-problems",
       "title": "Part VII: Related Problems #591 and #592",
       "summary": "Defines `problem_591_conjecture` ($\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$, OPEN, \\$250) and `problem_592_related` (the general question for all limit $\\alpha$) as `Prop` definitions rather than theorems.",
       "startLine": 170,
-      "endLine": 180
+      "endLine": 181
     },
     {
       "id": "ordinal-arithmetic",
       "title": "Part VIII: Ordinal Arithmetic Identities",
       "summary": "Two proved results: `omega_omega_dominates` ($\\omega^n < \\omega^\\omega$ for all $n : \\mathbb{N}$, including $n = 0$ via `one_lt_opow`) and `omega_omega_squared_form` ($\\omega^\\omega \\cdot \\omega^\\omega = \\omega^{\\omega + \\omega}$ via `opow_add`).",
       "startLine": 182,
-      "endLine": 198
+      "endLine": 238
     }
   ],
   "conclusion": {

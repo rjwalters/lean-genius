@@ -32,7 +32,8 @@
       "native_decide"
     ],
     "lineCount": 174,
-    "assumptions": "2 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "2 axiom(s) and 3 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #686 appears in [Er79d] and was further discussed in the influential monograph 'Old and New Problems and Results in Combinatorial Number Theory' by Erdős and Graham (1980). The question explores the surprising representational power of products of consecutive integers — structures intimately connected to factorials, binomial coefficients, and the Gamma function. Products of $k$ consecutive integers satisfy $\\prod_{i=1}^k (n+i) = (n+k)!/n! = k! \\binom{n+k}{k}$, linking this problem to deep divisibility theory of binomial coefficients. The related Problem #677 asks the simpler question of which integers are products of consecutive integers (no ratio). Bertrand's postulate (Chebyshev, 1850) guarantees a prime in $(n, 2n)$, which constrains which integers can appear as such products. The ratio formulation in #686 is strictly more general, as demonstrated by the `product_implies_ratio` reduction in the formalization.",
@@ -76,7 +77,7 @@
       "id": "representability",
       "title": "Part III: The Representation Property",
       "startLine": 92,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Defines IsRepresentable (k ≥ 2, m ≥ n+k, ratio = N), Representable (existential), and axiomatizes ErdosConjecture686: ∀ N ≥ 2, Representable N.",
       "mathContext": "The constraints $k \\geq 2$ (excludes trivial single-factor ratios) and $m \\geq n + k$ (non-overlapping consecutive ranges) ensure meaningful representations with ratio $\\geq 2$."
     },
@@ -100,7 +101,7 @@
       "id": "followup",
       "title": "Part VI: Follow-Up Question",
       "startLine": 147,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "Defines RepresentableSet(n,k) — the set of integers representable with fixed initial parameters. Axiomatizes representable_set_infinite: this set is infinite for k ≥ 2.",
       "mathContext": "For fixed $n, k$, the set $\\{N : \\exists m \\geq n+k, P(m,k)/P(n,k) = N\\}$ is infinite because the ratio $P(m,k)/P(n,k) \\to \\infty$ as $m \\to \\infty$."
     },
@@ -108,7 +109,7 @@
       "id": "connections",
       "title": "Part VII: Connections",
       "startLine": 158,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "Defines problem_677_special_case: integers as products of consecutive integers (denominator = 1). Shows #686 generalizes #677.",
       "mathContext": "Problem #677 asks which $N$ satisfy $N = P(n,k)$ for some $n, k$. This is the special case of #686 where $P(n,k) = 1$ (i.e., $n = 0, k = 0$, or equivalently the denominator product is trivial)."
     },

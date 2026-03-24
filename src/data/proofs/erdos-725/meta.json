@@ -125,49 +125,49 @@
       "title": "Imports and Namespace",
       "summary": "Imports `Finset.Basic`, `Real.Basic`, `Asymptotics`, and `BigOperators` from Mathlib. Opens the `Erdos725` namespace for the formalization.",
       "startLine": 26,
-      "endLine": 31
+      "endLine": 32
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines `LatinRectangle k n` as a structure with `row_perm` ($\\forall i,\\, f(i,\\cdot)$ bijective) and `col_injective` ($\\forall j,\\, f(\\cdot,j)$ injective). Defines `LatinSquare n` as `LatinRectangle n n`. Introduces counting function $L(k,n)$ via `Finset.card`, along with `factorial` and `choose2`.",
       "startLine": 33,
-      "endLine": 58
+      "endLine": 59
     },
     {
       "id": "erdos-kaplansky",
       "title": "The Erdős-Kaplansky Formula",
       "summary": "Defines `ErdosKaplanskyFormula k n` $= e^{-\\binom{k}{2}} \\cdot (n!)^k$ using `Real.exp`. Formalizes the regime condition `InEKRegime` requiring $k = o((\\log n)^{3/2-\\varepsilon})$. States `erdos_kaplansky_1946` as an axiom: $L(k,n)/\\text{EKF}(k,n) \\to 1$ within this regime.",
       "startLine": 60,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "yamamoto",
       "title": "Yamamoto's Extension",
       "summary": "Defines `InYamamotoRegime` requiring $k(n) \\leq n^{1/3 - f(n)}$ with $f(n) \\to 0$, formalized via `Filter.Tendsto`. States `yamamoto_1951` extending the Erdős-Kaplansky asymptotic to this broader polynomial regime.",
       "startLine": 81,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "permanents",
       "title": "Permanent Methods",
       "summary": "Defines the matrix permanent $\\text{perm}(A) = \\sum_{\\sigma \\in S_n} \\prod_i A_{i,\\sigma(i)}$ over `Equiv.Perm (Fin n)`. States `L_as_permanent`: $L(k,n)$ equals a permanent of a $0\\text{-}1$ matrix. States `godsil_mckay_bounds`: two-sided multiplicative bounds $c_1 \\cdot \\text{EKF} \\leq L(k,n) \\leq c_2 \\cdot \\text{EKF}$.",
       "startLine": 97,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "exact-values",
       "title": "Known Exact Values",
       "summary": "States exact formulas: `L_1_n` ($L(1,n) = n!$), `L_2_n` ($L(2,n) = n! \\cdot D(n)$ via derangements), `L_n_n_upper` (Latin square upper bound $L(n,n) \\leq \\prod (i+1)!$), and the OEIS check `oeis_A001009` ($L(3,4) = 3456$).",
       "startLine": 117,
-      "endLine": 136
+      "endLine": 137
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "summary": "Defines `GeneralAsymptotic`: existence of $f(k,n)$ with $L(k,n)/f(k,n) \\to 1$ for all $k \\leq n$. Defines `ExtendedConjecture`: the Erdős-Kaplansky formula holds when $k/n \\to c \\in (0,1)$. Both remain **OPEN** beyond $k = o(n^{6/7})$.",
       "startLine": 138,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "main-results",

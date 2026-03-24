@@ -58,7 +58,8 @@
       "Binomial coefficients and Wolstenholme's theorem",
       "Modular arithmetic and prime residue classes",
       "Computational number theory and native_decide"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Wolstenholme's theorem (1862) states that $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for all primes $p \\geq 5$. A prime $p$ satisfying the stronger congruence modulo $p^4$ is called a Wolstenholme prime. Only two are known: 16843, discovered by McIntosh (1995) via computation of Bernoulli numbers, and 2124679, found by McIntosh and Roettger (2007). No others exist below $10^9$.\n\nStrikingly, both known Wolstenholme primes satisfy $p \\equiv 3 \\pmod{4}$. Whether this pattern persists — or whether a Wolstenholme prime $p \\equiv 1 \\pmod{4}$ exists — is an open question in computational number theory, with no known theoretical obstruction in either direction.",

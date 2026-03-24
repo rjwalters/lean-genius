@@ -111,35 +111,35 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 28,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines IsFloorPowerCoprime α n (coprimality predicate), coprimeFloorPowerSet α (the set of coprime positive n), countCoprime α N (counting function via Set.ncard), and HasNaturalDensity S d (asymptotic density via Filter.Tendsto)."
     },
     {
       "id": "main-theorem",
       "title": "Bergelson-Richter Theorem",
       "startLine": 50,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Axiomatizes the main result: for non-integer α > 0, the density of coprime floor-powers is 6/π². Proves density_equals_inv_zeta2 (6/π² = 1/(π²/6)) and wraps as erdos_1149_solved."
     },
     {
       "id": "density-bounds",
       "title": "Density Bounds: 0 < 6/π² < 1",
       "startLine": 83,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Proves density_pos (from π² > 0) and density_lt_one (from π > 3 ⟹ π² > 9 > 6 via nlinarith)."
     },
     {
       "id": "integer-case",
       "title": "Integer Exponent Exclusion",
       "startLine": 99,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "Proves integer_alpha_trivial: for positive integer k and n > 1, gcd(n, n^k) ≠ 1, since n | n^k by dvd_pow_self. Justifies the non-integer hypothesis."
     },
     {
       "id": "coprime-probability",
       "title": "Classical Coprime Probability",
       "startLine": 112,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Axiomatizes random_coprime_density: the density of coprime pairs in {1,...,N}² is 6/π² = 1/ζ(2). Contextualizes the Bergelson-Richter result as achieving exactly the 'random' coprime density."
     },
     {

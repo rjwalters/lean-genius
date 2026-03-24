@@ -54,7 +54,8 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 138,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**From Real to Complex: Extending Cauchy-Schwarz**\n\nThe classical Cauchy-Schwarz inequality for real inner product spaces states:\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor complex inner product spaces, the inner product $\\langle u, v \\rangle_\\mathbb{C}$ is **sesquilinear**: conjugate-linear in the first argument, linear in the second. The generalization requires the complex modulus:\n$$\\|\\langle u, v \\rangle_\\mathbb{C}\\| \\leq \\|u\\| \\cdot \\|v\\|$$\n\n**The Open Question**: Can the existing real Cauchy-Schwarz formalization be extended to complex inner product spaces using Mathlib's `inner_mul_le_norm_mul_norm`?\n\n**The Answer**: YES — and even more is true. Mathlib's `norm_inner_le_norm` works uniformly for any field `𝕜` satisfying `[RCLike 𝕜]`, which includes both `ℝ` and `ℂ`. The complex case requires no additional work beyond what Mathlib already provides.",
@@ -87,21 +88,21 @@
       "title": "Core Cauchy-Schwarz Theorems",
       "summary": "Three forms of Cauchy-Schwarz: (1) complex ‖⟪u,v⟫_ℂ‖ ≤ ‖u‖·‖v‖, (2) real ‖⟪u,v⟫_ℝ‖ ≤ ‖u‖·‖v‖, (3) uniform RCLike ‖⟪u,v⟫_𝕜‖ ≤ ‖u‖·‖v‖. All are one-line applications of norm_inner_le_norm.",
       "startLine": 37,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "derived",
       "title": "Derived Inequalities",
       "summary": "Re(⟪u,v⟫_ℂ) ≤ ‖u‖·‖v‖ via RCLike.norm_re_le_norm chained with Cauchy-Schwarz. Squared form ‖⟪u,v⟫_ℂ‖² ≤ ‖u‖²·‖v‖² via nlinarith from the linear bound.",
       "startLine": 64,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "self-inner",
       "title": "Self-Inner Product Identity",
       "summary": "inner_self_eq_norm_sq_to_K gives ⟪u,u⟫_ℂ = (↑‖u‖)² in ℂ. The imaginary part zero follows from Complex.mul_im and Complex.ofReal_im.",
       "startLine": 90,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "consequences",

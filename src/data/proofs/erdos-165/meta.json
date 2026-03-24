@@ -53,7 +53,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 187,
-    "assumptions": "25 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "25 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The R(3,k) Ramsey Number Problem**\n\nThis is one of the most actively studied problems in Ramsey theory. R(3,k) is the minimum N such that any graph on N vertices contains either a triangle (K₃) or an independent set of size k.\n\n**Timeline:**\n- **1980**: Ajtai-Komlós-Szemerédi prove R(3,k) = O(k²/log k)\n- **1983**: Shearer improves to R(3,k) ≤ (1+o(1))k²/log k (tight upper bound)\n- **1995**: Kim proves R(3,k) = Ω(k²/log k) using the triangle-free process\n- **2020-2021**: Bohman-Keevash and Pontiveros-Griffiths-Morris: c ≥ 1/4\n- **2025**: Campos-Jenssen-Michelen-Sahasrabudhe: c ≥ 1/3\n- **2025**: Hefty-Horn-King-Pfender: c ≥ 1/2 (current best)\n\nThe $250 prize was claimed when Kim established the order of magnitude.",
@@ -81,28 +82,28 @@
       "title": "Ramsey Numbers - Basic Definitions",
       "summary": "ramseyNumber axiom, symmetry, base cases, recurrence relation",
       "startLine": 46,
-      "endLine": 72
+      "endLine": 73
     },
     {
       "id": "r3-definition",
       "title": "R(3,k) - Triangle vs Independent Set",
       "summary": "R3 definition, characterization, small values",
       "startLine": 74,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "AKS theorem (1980), Shearer's theorem (1983), independence lemma",
       "startLine": 97,
-      "endLine": 131
+      "endLine": 132
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds - History of Constant c",
       "summary": "Kim (1995), Bohman-Keevash (2021), CJMS (2025), HHKP (2025)",
       "startLine": 133,
-      "endLine": 177
+      "endLine": 178
     },
     {
       "id": "main-result",

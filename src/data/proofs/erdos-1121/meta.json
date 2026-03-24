@@ -43,7 +43,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 4,
     "lineCount": 234,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #1121 asks whether a 'connected' configuration of circles in the plane can always be covered by a single circle whose radius equals the sum of all individual radii. Here 'connected' means no line disjoint from all circles can separate them into two non-empty groups.\n\nGoodman and Goodman proved this conjecture in 1945, published in the American Mathematical Monthly. Their proof uses geometric arguments about convex hulls and the configuration of circle centers. The result is tight — the covering radius cannot in general be reduced below the sum of radii.\n\nThe Goodman-Goodman theorem naturally generalizes to higher dimensions: balls in ℝⁿ with no separating hyperplane can be covered by a ball of radius equal to the sum of radii. This was noted in their original paper.",
@@ -67,42 +68,42 @@
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 38,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Definitions of Circle, Line, and containment predicates."
     },
     {
       "id": "separating-line",
       "title": "Part II: Separating Line Condition",
       "startLine": 81,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "Definition of separating lines and connected configurations."
     },
     {
       "id": "covering",
       "title": "Part III: Covering Circle",
       "startLine": 121,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "Definition of covering and sum of radii."
     },
     {
       "id": "conjecture",
       "title": "Part IV: The Erdős Conjecture (Now Theorem)",
       "startLine": 143,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "Statement of ErdosConjecture1121 and Goodman-Goodman theorem."
     },
     {
       "id": "special-cases",
       "title": "Part V: Special Cases",
       "startLine": 165,
-      "endLine": 193,
+      "endLine": 194,
       "summary": "Two circles case and overlapping circles."
     },
     {
       "id": "higher-dim",
       "title": "Part VI: Higher Dimensional Generalization",
       "startLine": 195,
-      "endLine": 217,
+      "endLine": 218,
       "summary": "Ball structure in ℝⁿ and generalization axiom."
     },
     {

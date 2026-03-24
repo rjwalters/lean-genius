@@ -89,7 +89,7 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 21,
+      "endLine": 22,
       "summary": "Module docstring referencing Prikry, Tijdeman, and Stewart. Imports Mathlib for $\\mathbb{Z}$, sets, Finset cardinality, and tactics. Opens `Set` namespace.",
       "mathContext": "Imports: `Int.Basic` for $a_1 - a_2 \\in \\mathbb{Z}$, `Set.Basic` for $D(A)$ definition, `Finset.Card` for $A(N)$."
     },
@@ -97,7 +97,7 @@
       "id": "difference-set",
       "title": "Difference Set D(A)",
       "startLine": 23,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Defines $D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1,a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$ using `Set.Infinite` on the fibre over each $d$. Stricter than $A - A$.",
       "mathContext": "$D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1,a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$. Stricter than $A - A$."
     },
@@ -105,7 +105,7 @@
       "id": "bounded-gaps",
       "title": "Bounded Gaps (Syndeticity)",
       "startLine": 31,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines `HasBoundedGaps`: $\\exists M > 0, \\forall z \\in \\mathbb{Z}, \\exists s \\in S: z \\leq s < z + M$. The dual of thick sets in topological dynamics.",
       "mathContext": "$\\text{HasBoundedGaps}(S) \\iff \\exists M > 0,\\, \\forall z \\in \\mathbb{Z},\\, \\exists s \\in S: z \\leq s < z + M$."
     },
@@ -121,7 +121,7 @@
       "id": "known-results",
       "title": "Known Results",
       "startLine": 58,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Four axiomatized results: **Prikry's theorem** ($\\overline{d}(A) > 0 \\Rightarrow D(A)$ syndetic), density inheritance for $D(A)$, symmetry $D(A) = -D(A)$, and $0 \\in D(A)$ for infinite $A$.",
       "mathContext": "Prikry: $\\overline{d}(A) > 0 \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Structure: $D(A) = -D(A)$, $0 \\in D(A)$ for infinite $A$."
     },
@@ -129,7 +129,7 @@
       "id": "main-problem",
       "title": "The Main Open Problem",
       "startLine": 78,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Erdős Problem 332: characterize the weakest property $P$ such that $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Positive upper density is the best known sufficient condition.",
       "mathContext": "Find weakest $P$: $P(A) \\Rightarrow \\text{HasBoundedGaps}(D(A))$. Known: $\\overline{d}(A) > 0$ suffices."
     },

@@ -24,7 +24,8 @@
     "erdosPrizeValue": "$100",
     "axiomCount": 12,
     "lineCount": 202,
-    "assumptions": "12 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "12 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős in 1975 as part of his extensive program on combinatorial and discrete geometry, and carries a $100 prize. It sits in the family of unit distance and incidence problems that have driven much of modern computational geometry. The fundamental observation is that any two points at distance at most 2 determine at most 2 unit circles through both (the centers lie on the perpendicular bisector), giving a trivial O(n²) upper bound on the number of unit circles with 3+ points from an n-point set. Harborth and Mengersen (1986) refined this to n(n-1)/3 using the fact that each 3-rich circle contributes at least 3 pairs. Elekes (1984) proved the matching lower bound Ω(n^{3/2}) by constructing point sets on a grid-like structure that create many triple incidences with unit circles. This established the conjectured growth rate as Θ(n^{3/2}), but proving the O(n^{3/2}) upper bound has remained stubbornly open. The problem is closely related to the Szemerédi-Trotter incidence theorem (1983), which bounds point-line incidences as O(n^{2/3}m^{2/3} + n + m). Analogous bounds hold for algebraic curves (Pach-Sharir), but naively applying them to unit circles only recovers the O(n²) trivial bound. The difficulty is that unit circles form a special 2-parameter family (parameterized by center position), and exploiting this algebraic structure has resisted all known techniques including polynomial partitioning (Guth-Katz 2015).",
@@ -49,49 +50,49 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation on Problem #104 (unit circles through 3 points), references to Erdős 1981, Elekes 1984, Harborth-Mengersen 1986, and imports for EuclideanSpace, Finset, Set",
       "startLine": 1,
-      "endLine": 34
+      "endLine": 35
     },
     {
       "id": "geometry",
       "title": "Points and Unit Circles",
       "summary": "Point type (EuclideanSpace ℝ (Fin 2)), dist (Euclidean distance), UnitCircle structure (center), and OnCircle incidence relation",
       "startLine": 36,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "counting",
       "title": "Point Sets and Circle Counting",
       "summary": "PointSet (Finset Point), CircleContainsKPoints (k-rich predicate), unitCirclesThrough3 (set of 3-rich unit circles), countUnitCircles3 (cardinality via ncard)",
       "startLine": 57,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "trivial-bound",
       "title": "Trivial Upper Bound",
       "summary": "Circle determination: two_points_two_circles, two_points_one_circle, two_points_no_circle. Bounds: trivial_upper_bound (n(n-1)), harborth_mengersen_bound (n(n-1)/3)",
       "startLine": 78,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound Constructions",
       "summary": "elekes_lower_bound (Ω(n^{3/2}) via grid construction) and linear_lower_bound (Ω(n) via points on a circle)",
       "startLine": 109,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos104Conjecture (O(n^{3/2})), erdos104WeakConjecture (o(n²)), and strong_implies_weak theorem",
       "startLine": 127,
-      "endLine": 151
+      "endLine": 152
     },
     {
       "id": "incidences",
       "title": "Incidence Geometry",
       "summary": "incidenceCount definition and circle_incidence_bound (Szemerédi-Trotter for circles: I ≤ O(n^{2/3}|C|^{2/3} + n + |C|))",
       "startLine": 153,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "values",

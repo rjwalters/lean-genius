@@ -80,56 +80,56 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 39,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Defines IsProductRep (ordered factorization), repCount (representation count from a set), IsBoundedRep (the <k constraint), and IsValidSubset (feasible solutions for the optimization)."
     },
     {
       "id": "g-function",
       "title": "The g_k(n) Function",
       "startLine": 71,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Defines g_k(n) as the supremum of |A| over valid subsets A of {1,...,n}, and axiomatizes the trivial bound g_k(n) ≤ n."
     },
     {
       "id": "first-order",
       "title": "First-Order Asymptotics",
       "startLine": 89,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Defines omega_count (integers with r prime factors), axiomatizes the Sathe-Selberg formula, and axiomatizes Erdős's 1964 theorem connecting g_k(n) to the count of r-almost primes."
     },
     {
       "id": "k3-case",
       "title": "The k = 3 Case",
       "startLine": 123,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "The sole proved theorem: g₃(n) ~ (log log n / log n)·n, derived by specializing erdos_1964_main with k=3, r=2 using norm_num and simp."
     },
     {
       "id": "second-order",
       "title": "Second-Order Terms",
       "startLine": 142,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "Defines the error E₃(n), axiomatizes the Θ(n/(log n)²) bounds, and formally states the open conjecture on convergence to a constant."
     },
     {
       "id": "k2-case",
       "title": "The k = 2 Case (Problem #425)",
       "startLine": 172,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "Axiomatizes g₂(n) ~ n/log n (the PNT-like result) and notes the connection to the companion Problem #425."
     },
     {
       "id": "optimal-sets",
       "title": "Optimal Sets and Semiprime Structure",
       "startLine": 185,
-      "endLine": 204,
+      "endLine": 205,
       "summary": "Defines near-optimal sets and axiomatizes that they concentrate on semiprimes (integers with Ω(m) = 2)."
     },
     {
       "id": "multiplicative",
       "title": "Divisor Function Connection",
       "startLine": 206,
-      "endLine": 217,
+      "endLine": 218,
       "summary": "Axiomatizes the key bound: τ(m) ≤ 2k-1 implies m is automatically safe (< k representations from any set)."
     },
     {

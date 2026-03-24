@@ -99,7 +99,7 @@
       "id": "header",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Imports Mathlib and opens Set/Finset. Module docstring describes Problem #1089: estimating $g_d(n)$, known small values ($g_1(3)=4$, $g_2(3)=6$, $g_3(3)=7$), the cube construction, and the central bounds ($d^{n-1} \\ll g_d(n) \\leq c^{d^{1-b_n}}$).",
       "mathContext": "Problem: does $\\lim_{d \\to \\infty} g_d(n)/d^{n-1}$ exist for fixed $n$? The cube $\\{0,1\\}^d$ with $2^d$ vertices and $d$ distinct distances motivates the polynomial normalization."
     },
@@ -108,7 +108,7 @@
       "title": "Points and Distances",
       "summary": "Defines Point d = EuclideanSpace ℝ (Fin d), Euclidean distance via ‖p - q‖, distinctDistances via Finset.product/image/filter, and numDistinctDistances as the cardinality.",
       "startLine": 38,
-      "endLine": 57,
+      "endLine": 58,
       "mathContext": "$\\text{Point}\\,d = \\text{EuclideanSpace}\\,\\mathbb{R}\\,(\\text{Fin}\\,d)$. Distance: $d(p,q) = \\|p - q\\|$. $\\Delta(P) = \\{\\|p-q\\| : (p,q) \\in P \\times P, p \\neq q\\}$ via `Finset.image` and `Finset.filter`."
     },
     {
@@ -116,7 +116,7 @@
       "title": "The Function g_d(n)",
       "summary": "Defines determinesNDistances (numDistinctDistances P ≥ n) and g d n via Nat.sInf. Axiomatizes well-definedness for n ≥ 1.",
       "startLine": 59,
-      "endLine": 75,
+      "endLine": 76,
       "mathContext": "$g_d(n) = \\inf\\{m \\in \\mathbb{N} : \\forall P \\subseteq \\mathbb{R}^d,\\,|P|=m \\implies |\\Delta(P)| \\geq n\\}$. Well-definedness ($g_d(n) < \\infty$ for $n \\geq 1$) is axiomatized."
     },
     {
@@ -124,7 +124,7 @@
       "title": "Small Cases",
       "summary": "Axiomatizes g_1(3) = 4, g_2(3) = 6, g_3(3) = 7 (Croft 1962). Proves g_d(1) = 2 (sorry'd) and axiomatizes g_d(2) = 3.",
       "startLine": 77,
-      "endLine": 97,
+      "endLine": 98,
       "mathContext": "$g_1(3)=4$, $g_2(3)=6$, $g_3(3)=7$ (Croft 1962). Trivially $g_d(1)=2$ (any two points have 1 distance) and $g_d(2)=3$ for $d \\geq 1$."
     },
     {
@@ -132,7 +132,7 @@
       "title": "Lower Bound: Cube Construction and Erdős Bound",
       "summary": "Axiomatizes `cubeVertices` (a `Finset (Point d)` with $2^d$ elements and $\\leq d$ distinct distances) and the general `erdos_lower_bound`: $g_d(n) \\geq c \\cdot d^{n-1}$ for $n \\geq 2$. The `cube_lower_bound` ($g_d(d+1) > 2^d$) is sorry'd — proving it from the axiomatized cube requires showing no $(2^d)$-point set in $\\mathbb{R}^d$ has $d+1$ distinct distances, a nontrivial step.",
       "startLine": 99,
-      "endLine": 122,
+      "endLine": 123,
       "mathContext": "$\\{0,1\\}^d$ has $2^d$ vertices with $|\\Delta| = d$ (distances $\\sqrt{k}$ for $k = 1, \\ldots, d$). Hence $g_d(d+1) > 2^d$. General counting: $g_d(n) \\geq c \\cdot d^{n-1}$ for fixed $n \\geq 2$ (Erdős 1975)."
     },
     {
@@ -140,7 +140,7 @@
       "title": "Upper Bound: Erdős-Straus",
       "summary": "Axiomatizes the Erdős-Straus bound: $g_d(n) \\leq c^{d^{1-b_n}}$ for constants $c > 1, b_n > 0$. This stretched-exponential upper bound creates the vast gap with the polynomial lower bound — the central challenge of the problem.",
       "startLine": 124,
-      "endLine": 133,
+      "endLine": 134,
       "mathContext": "$g_d(n) \\leq c^{d^{1-b_n}}$ for constants $c > 1, 0 < b_n < 1$ depending on $n$. The gap: $c_1 \\cdot d^{n-1} \\leq g_d(n) \\leq c_2^{d^{1-b_n}}$ (polynomial vs. stretched-exponential in $d$). Whether the truth is polynomial or super-polynomial is wide open."
     },
     {
@@ -148,7 +148,7 @@
       "title": "The Main Conjecture",
       "summary": "Defines gRatio(d, n) = g_d(n)/d^{n-1} and erdos1089Conjecture via Filter.Tendsto. Defines ratioIsBounded as a weaker question. Proves ratio_bounded_below genuinely from the Erdős lower bound.",
       "startLine": 135,
-      "endLine": 157,
+      "endLine": 158,
       "mathContext": "$R(d,n) = g_d(n)/d^{n-1}$. Conjecture: $\\exists L \\geq 0,\\; R(d,n) \\to L$ as $d \\to \\infty$. Proved: $R(d,n) \\geq c > 0$ from the Erdős lower bound."
     },
     {
@@ -156,7 +156,7 @@
       "title": "Monotonicity Properties",
       "summary": "Axiomatizes g_mono_n (g increasing in n: more distances need more points) and g_mono_d (g increasing in d for n ≥ 2: higher dimensions allow more few-distance configurations).",
       "startLine": 159,
-      "endLine": 171,
+      "endLine": 172,
       "mathContext": "$n_1 \\leq n_2 \\implies g_d(n_1) \\leq g_d(n_2)$ (more distances $\\Rightarrow$ more points). $d_1 \\leq d_2 \\implies g_{d_1}(n) \\leq g_{d_2}(n)$ for $n \\geq 2$ (higher dimensions allow larger few-distance sets)."
     },
     {

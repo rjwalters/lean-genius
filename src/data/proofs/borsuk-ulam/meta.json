@@ -56,7 +56,8 @@
         "id": "borsuk-ulam-oq-03",
         "relationship": "Extension of borsuk ulam"
       }
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Borsuk-Ulam theorem was conjectured by Stanisław Ulam and proved by Karol Borsuk in 1933, published in *Fundamenta Mathematicae* — the journal founded in 1920 by the Lwów-Warsaw school of mathematicians (Kuratowski, Sierpiński, Mazurkiewicz) that became the world center of point-set and algebraic topology. The theorem has a beautifully intuitive interpretation: at any given moment, there exist two antipodal points on Earth that have exactly the same temperature AND atmospheric pressure.\n\nBorsuk's original proof used the degree theory of continuous maps: an antipodal-preserving map $S^n \\to S^n$ has odd degree, and the nonexistence of an odd map $S^n \\to S^{n-1}$ follows from comparing cohomology rings. Modern proofs use three main approaches: (1) covering spaces via the double cover $S^n \\to \\mathbb{RP}^n$ and $\\pi_1(\\mathbb{RP}^n) \\cong \\mathbb{Z}/2\\mathbb{Z}$; (2) $\\mathbb{Z}/2$-homology and the transfer; (3) the Tucker lemma (a combinatorial analog, proved by Ky Fan 1952).\n\nWhat makes Borsuk-Ulam remarkable is its extraordinary range of applications. In 1978, László Lovász used it to prove Kneser's conjecture — that the chromatic number of the Kneser graph $KG(n,k)$ is $n - 2k + 2$ — launching the field of **topological combinatorics**. It implies the ham sandwich theorem (any $n$ measurable sets in $\\mathbb{R}^n$ can be simultaneously bisected by a hyperplane) and has applications to fair division (envy-free cake cutting), discrete geometry, and even economics (equilibrium existence). Jiří Matoušek's *Using the Borsuk-Ulam Theorem* (2003) surveys dozens of applications across mathematics.",
@@ -84,7 +85,7 @@
       "id": "preamble",
       "title": "File Header and Imports",
       "startLine": 1,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Module docstring describing the theorem, proof approach, and Mathlib dependencies. Imports topology, metric spaces, inner product spaces, and EuclideanSpace. Opens Set and Metric namespaces.",
       "mathContext": "Uses `EuclideanSpace \\mathbb{R} (\\text{Fin}\\; n)$ for $\\mathbb{R}^n$ and `Metric.sphere 0\\; 1$ for the unit sphere $S^n = \\{x \\in \\mathbb{R}^{n+1} : \\|x\\| = 1\\}$."
     },
@@ -124,7 +125,7 @@
       "id": "main-theorem",
       "title": "Part 5: The Borsuk-Ulam Theorem",
       "startLine": 158,
-      "endLine": 214,
+      "endLine": 215,
       "summary": "Proves the gadget function is continuous, that it's nonzero when no antipodal pair exists, then proves Borsuk-Ulam by contradiction: no antipodal pair → gadget is a continuous odd nonzero function on S^n → contradicts the no-odd-map axiom.",
       "mathContext": "Proof: assume $\\neg \\text{HasAntipodalPair}(f)$. Then $g(x) = f(x) - f(-x) \\neq 0$ on $S^n$. But $g$ is continuous (as $f$ is), odd ($g(-x) = -g(x)$), and nonzero on $S^n$ — contradicting `no_continuous_odd_nonzero_on_sphere`. Therefore $\\exists x \\in S^n,\\; f(x) = f(-x)$."
     },

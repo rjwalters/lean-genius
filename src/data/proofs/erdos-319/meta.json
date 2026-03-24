@@ -90,21 +90,21 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 26,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines `IsSigning A δ` ($\\delta(n) \\in \\{\\pm 1\\}$ for $n \\in A$), `signedSum A δ = \\sum_{n \\in A} \\delta(n)/n \\in \\mathbb{Q}$, `IsIrreducibleZeroSum A δ` (signing + zero sum + no proper nonempty zero-sum subset), and `maxIrreducibleSize N` as the supremum of $|A|$ over the powerset of $\\{1,\\ldots,N\\}$ filtered by existence of an irreducible zero sum."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 48,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Axiomatizes `erdos_319_conjecture`: for every $\\varepsilon > 0$, for large enough $N$, $c(N) \\geq (1 - 1/e - \\varepsilon)N$, using `Real.exp 1` for Euler's number $e$. This is the strongest known lower bound."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 57,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Axiomatizes `adenwalla_lower_bound` ($c(N) \\geq (1 - 1/e + o(1))N$ via the $B \\cup \\{1\\}$ construction), `trivial_upper_bound` ($c(N) \\leq N$), and `croot_unit_fraction_theorem` (every positive integer $k \\leq N$ is a sum of distinct unit fractions $1/n$ with $n \\in \\{1,\\ldots,N\\}$ for large $N$)."
     },
     {

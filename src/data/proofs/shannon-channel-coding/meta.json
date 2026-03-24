@@ -51,7 +51,8 @@
       "Jointly typical sequences and joint AEP",
       "Random coding and maximum likelihood decoding",
       "Fano's inequality and the channel coding converse"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Shannon's noisy channel coding theorem is arguably the most important result in information theory and one of the great theorems of 20th-century mathematics. Published in 1948, it answered a question that engineers had struggled with since the invention of the telegraph: is it possible to communicate reliably over a noisy channel, and if so, at what rate?\n\nBefore Shannon, the prevailing belief was that reducing error probability required reducing the communication rate to zero. Shannon's shocking result was that reliable communication is possible at any positive rate below the channel capacity C = max I(X;Y), and impossible above it. The channel capacity is a single number that completely characterizes the communication capability of a noisy channel.\n\nThe achievability proof uses random coding: choose a codebook at random and show that the average error probability over all codebooks is small. This is a probabilistic method argument -- one of the earliest and most influential. The converse uses Fano's inequality, which bounds the conditional entropy H(X|Y) in terms of the error probability, showing that rates above capacity force large errors.\n\nThe theorem launched the fields of coding theory and telecommunications engineering, leading to error-correcting codes (turbo codes, LDPC codes, polar codes) that approach channel capacity in practice.",
@@ -78,7 +79,7 @@
       "id": "introduction",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 13,
+      "endLine": 14,
       "summary": "Overview of the noisy channel coding theorem: reliable communication at any rate below channel capacity C = max I(X;Y). Attribution to Claude Shannon (1948).",
       "mathContext": "Shannon (1948): reliable communication at rate $R$ is possible iff $R < C = \\max_{p(x)} I(X;Y)$."
     },
@@ -86,7 +87,7 @@
       "id": "capacity-definition",
       "title": "Channel Capacity Definition",
       "startLine": 15,
-      "endLine": 19,
+      "endLine": 20,
       "summary": "Defines channel capacity as a noncomputable real number. The definition takes a channel transition matrix W : α → β → ℝ and should return the maximum mutual information over input distributions. Currently sorry'd because formalizing the optimization over the probability simplex requires measure theory.",
       "mathContext": "$C = \\max_{p(x)} I(X;Y) = \\max_{p(x)} [H(Y) - H(Y|X)]$"
     },
@@ -94,7 +95,7 @@
       "id": "fano-inequality",
       "title": "Fano's Inequality",
       "startLine": 21,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Fano's inequality bounds conditional entropy H(X|Y) in terms of error probability. Currently proves True (placeholder). The full statement requires defining conditional entropy and binary entropy function h(P_e).",
       "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}| - 1)$"
     },
@@ -102,7 +103,7 @@
       "id": "achievability",
       "title": "Channel Coding Achievability",
       "startLine": 29,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Achievability half: for any rate R < C, there exists a code with vanishing error probability as block length grows. Currently proves True (placeholder). The full proof would construct a random codebook and use joint typicality decoding.",
       "mathContext": "$R < C \\implies \\exists$ code sequence with $P_e^{(n)} \\to 0$"
     },
@@ -110,7 +111,7 @@
       "id": "converse",
       "title": "Channel Coding Converse",
       "startLine": 38,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Converse half: for any rate R > C, error probability is bounded away from zero. Currently proves True (placeholder). Uses Fano's inequality to show error probability cannot vanish.",
       "mathContext": "$R > C \\implies P_e^{(n)} \\not\\to 0$"
     },

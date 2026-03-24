@@ -38,7 +38,8 @@
     "dateAdded": "2026-03-05",
     "axiomCount": 0,
     "lineCount": 507,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Descartes discovered around 1630 that the total angular deficiency of a convex polyhedron equals 4π, though his work remained unpublished until 1860. Euler established V - E + F = 2 in 1758. Gauss (1827) and Bonnet (1848) developed the continuous version relating Gaussian curvature to topology: the Gauss-Bonnet theorem ∫∫ K dA = 2πχ. For polyhedral surfaces, curvature concentrates at vertices as angular deficiency, and the integral becomes a sum. The theorem was extended to all closed surfaces by von Dyck (1888) and to abstract Riemannian manifolds by Chern (1944-1945) using characteristic classes, making it a cornerstone of modern differential topology.",
@@ -62,21 +63,21 @@
       "id": "polyhedral-surface",
       "title": "Polyhedral Surface Structure",
       "startLine": 56,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Definition of a polyhedral surface with V-E-F data and angle information."
     },
     {
       "id": "gauss-bonnet",
       "title": "The Discrete Gauss-Bonnet Theorem",
       "startLine": 73,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "Main theorem: Σδ(v) = 2πχ, with Descartes' special case."
     },
     {
       "id": "genus-generalization",
       "title": "Genus Generalization",
       "startLine": 110,
-      "endLine": 145,
+      "endLine": 146,
       "summary": "Extension to orientable surfaces of genus g: Σδ(v) = 2π(2-2g)."
     },
     {
@@ -97,7 +98,7 @@
       "id": "classification",
       "title": "Regular Polyhedra Classification",
       "startLine": 420,
-      "endLine": 465,
+      "endLine": 507,
       "summary": "Schläfli constraint limits regular polyhedra to exactly 5 types."
     }
   ],

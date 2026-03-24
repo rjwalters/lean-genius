@@ -78,14 +78,15 @@
         "type": "book"
       }
     ],
-    "assumptions": "No axioms or sorries. Fully verified."
+    "assumptions": "No axioms or sorries. Fully verified.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "imports",
       "title": "Module Setup",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Imports, noncomputable section, maxHeartbeats.",
       "mathContext": "Dependencies: summable_nat_rpow_inv, hasSum_zeta_two/four, rpow_le_rpow_of_exponent_le."
     },
@@ -93,7 +94,7 @@
       "id": "convergence",
       "title": "Part I: Convergence Dichotomy",
       "startLine": 39,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "p-series converges iff s > 1.",
       "mathContext": "Sum n^{-s} converges iff s > 1."
     },
@@ -101,7 +102,7 @@
       "id": "known-values",
       "title": "Part II: Known Values",
       "startLine": 51,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "zeta(2) = pi^2/6, zeta(4) = pi^4/90.",
       "mathContext": "Basel problem and zeta(4)."
     },
@@ -109,7 +110,7 @@
       "id": "term-monotonicity",
       "title": "Part III: Term Monotonicity",
       "startLine": 61,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "(n^s)^-1 antitone in s.",
       "mathContext": "Pointwise antitonicity via rpow monotonicity."
     },
@@ -117,7 +118,7 @@
       "id": "zeta-monotonicity",
       "title": "Part IV: Zeta Monotonicity",
       "startLine": 85,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "zeta(s) antitone via hasSum_le.",
       "mathContext": "Term-wise comparison via inv_rpow_antitone, n=0 handled by zero_rpow."
     },
@@ -125,7 +126,7 @@
       "id": "bounds",
       "title": "Parts V-VI: Bounds",
       "startLine": 93,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "zeta(s) >= 1 via le_hasSum, zeta(s) <= pi^2/6 for s>=2 via antitone + Basel.",
       "mathContext": "Lower bound from n=1 term, upper bound via zeta monotonicity and zeta(2)."
     },
@@ -133,7 +134,7 @@
       "id": "partial-sums",
       "title": "Part VII: Partial Sums",
       "startLine": 109,
-      "endLine": 126,
+      "endLine": 127,
       "summary": "partialZeta convergence and monotonicity.",
       "mathContext": "Partial sums converge to zeta(s)."
     },
@@ -141,7 +142,7 @@
       "id": "bridge",
       "title": "Part VIII: Bridge",
       "startLine": 128,
-      "endLine": 145,
+      "endLine": 146,
       "summary": "rpow to nat pow via rpow_natCast.",
       "mathContext": "Connects real to integer exponents."
     },
@@ -149,7 +150,7 @@
       "id": "verification",
       "title": "Verification",
       "startLine": 147,
-      "endLine": 164,
+      "endLine": 173,
       "summary": "Type-checks all 14 results.",
       "mathContext": "14 proved, 0 sorry."
     }

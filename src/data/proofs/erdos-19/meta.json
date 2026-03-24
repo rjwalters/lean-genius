@@ -92,77 +92,77 @@
       "title": "Background",
       "summary": "Historical context and significance of the EFL conjecture",
       "startLine": 37,
-      "endLine": 46
+      "endLine": 47
     },
     {
       "id": "graph-definitions",
       "title": "Graph Definitions",
       "summary": "SimpleGraph', completeGraph, EdgeDisjoint",
       "startLine": 48,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "chromatic-number",
       "title": "Chromatic Number",
       "summary": "IsProperColoring, IsKColorable, chromaticNumber axioms",
       "startLine": 68,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "efl-setup",
       "title": "EFL Setup",
       "summary": "EFLFamily structure, eflUnionGraph construction",
       "startLine": 95,
-      "endLine": 127
+      "endLine": 128
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound",
       "summary": "efl_chromatic_lower_bound: χ(G) ≥ n",
       "startLine": 129,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "hindman_small_cases: n < 10",
       "startLine": 139,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "kahn-1992",
       "title": "Kahn's Result (1992)",
       "summary": "kahn_asymptotic, kahn_explicit_bound: χ(G) ≤ (1+o(1))n",
       "startLine": 149,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "main-result",
       "title": "Main Result (2021)",
       "summary": "kang_kelly_kuhn_methuku_osthus, EFLConjecture, efl_conjecture_resolved",
       "startLine": 164,
-      "endLine": 181
+      "endLine": 182
     },
     {
       "id": "equivalent-formulations",
       "title": "Equivalent Formulations",
       "summary": "LinearHypergraph, NearlyDisjointFamily structures",
       "startLine": 183,
-      "endLine": 227
+      "endLine": 228
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "projective_plane_case, steiner_system_case axioms",
       "startLine": 229,
-      "endLine": 246
+      "endLine": 247
     },
     {
       "id": "extensions",
       "title": "Extensions",
       "summary": "erdos_furedi_generalization axiom: k-wise intersections",
       "startLine": 248,
-      "endLine": 258
+      "endLine": 259
     },
     {
       "id": "summary",

@@ -82,56 +82,56 @@
       "id": "sumsets",
       "title": "Sumsets",
       "startLine": 41,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Definitions of sumset A+A and restricted sumset (A+A) ∩ [1,N]."
     },
     {
       "id": "f-definition",
       "title": "The Function f(N)",
       "startLine": 59,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Definition of admissible sets (A ⊆ [1,N] with |A| = √N) and f(N) as the maximum restricted sumset size."
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "startLine": 99,
-      "endLine": 115,
+      "endLine": 116,
       "summary": "Basic bounds: f(N) ≤ N and f(N) ≥ √N."
     },
     {
       "id": "erdos-freud-bounds",
       "title": "Erdős-Freud Bounds",
       "startLine": 117,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "The main result: (3/8 - o(1))N ≤ f(N) ≤ (1/2 + o(1))N from the 1991 paper."
     },
     {
       "id": "construction-arguments",
       "title": "Lower Bound Construction",
       "startLine": 170,
-      "endLine": 198,
+      "endLine": 199,
       "summary": "Axiomatized construction achieving 3N/8 and counting argument for upper bound N/2."
     },
     {
       "id": "quasi-sidon",
       "title": "Connection to Quasi-Sidon Sets",
       "startLine": 200,
-      "endLine": 223,
+      "endLine": 224,
       "summary": "Link to Problem #840 on quasi-Sidon sets with axiomatized sumset lower bound."
     },
     {
       "id": "extremal-examples",
       "title": "Extremal Examples",
       "startLine": 225,
-      "endLine": 236,
+      "endLine": 237,
       "summary": "Arithmetic progression sumset showing APs are suboptimal."
     },
     {
       "id": "the-gap",
       "title": "The Gap",
       "startLine": 238,
-      "endLine": 253,
+      "endLine": 254,
       "summary": "The open question: the gap of N/8 between the known bounds."
     },
     {

@@ -97,42 +97,42 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 29,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines $\\texttt{factorialResidueSet}(p) = \\{k! \\bmod p\\}$ as $\\texttt{Finset}(\\texttt{ZMod p})$, $\\texttt{factorialResidueCount}(p) = |A_p|$, and $\\texttt{conjecturedDensity} = 1 - e^{-1}$."
     },
     {
       "id": "wilson-consequences",
       "title": "Wilson's Theorem Consequences",
       "startLine": 40,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Three axioms: $(p-1)! \\equiv -1 \\pmod{p}$ (Wilson), $0 \\notin A_p$ for $p > 2$, and $|A_p| \\leq p - 2$ for $p > 5$. Together these give $A_p \\subseteq \\{1, \\ldots, p-1\\} \\setminus \\{\\text{some residues}\\}$."
     },
     {
       "id": "ratio-set-identity",
       "title": "Ratio Set Identity and $\\sqrt{p}$ Bound",
       "startLine": 54,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "$A_p / A_p \\supseteq (\\mathbb{Z}/p\\mathbb{Z})^*$ since $(k+1)!/k! = k+1$ ranges over all nonzero residues. Combined with $|A_p/A_p| \\leq |A_p|^2$, this gives $|A_p| \\geq \\sqrt{p-1}$."
     },
     {
       "id": "improved-lower-bound",
       "title": "GSSV 2024 Improved Bound",
       "startLine": 69,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Grebennikov–Sagdeev–Semchankau–Vasilevskii prove $|A_p \\cdot A_p| = (1+o(1))p$, yielding $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$, the current best unconditional bound."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 76,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "The open conjecture: $|A_p|/p \\to 1 - 1/e$ as $p \\to \\infty$. Formalized as $\\forall \\varepsilon > 0,\\; \\exists P_0$ such that the density is within $\\varepsilon$ of $1 - e^{-1}$ for all primes $p > P_0$."
     },
     {
       "id": "heuristic-motivation",
       "title": "Heuristic Motivation",
       "startLine": 85,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "The birthday-problem heuristic: $(1-1/p)^{p-1} \\to e^{-1}$ predicts coverage $p(1-1/e)$. The multiplicative walk structure $(k+1)! = (k+1) \\cdot k!$ makes factorial residues behave like random elements of $(\\mathbb{Z}/p\\mathbb{Z})^*$."
     },
     {

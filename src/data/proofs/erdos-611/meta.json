@@ -54,7 +54,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 245,
-    "assumptions": "5 axiom(s) and 13 sorry(s). See the Lean source for details."
+    "assumptions": "5 axiom(s) and 13 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #611 refines Problem #610 by asking how large clique sizes constrain the clique transversal number τ(G). Erdős, Gallai, and Tuza (1992) proved the key inequality: if every maximal clique has ≥ k vertices, then τ ≤ n - √(kn). For linear clique size k = cn, this gives τ ≤ (1-√c)n, answering Question 1 affirmatively. The deeper Question 2 asks for the threshold function k_c(n) — the minimum clique size forcing τ < (1-c)n. The lower bound k_c(n) ≥ n^{c'/log log n} comes from probabilistic constructions (random graphs with controlled clique sizes). Bollobás and Erdős found the exact threshold for the extreme case τ = 1: if all cliques have ≥ n + 3 - 2√n vertices, a single vertex hits every clique. This threshold is optimal — the constant 3 is exact, with extremal graphs showing τ = 2 just below the threshold. The problem connects clique structure to hypergraph transversal theory and the probabilistic method.",
@@ -86,56 +87,56 @@
       "title": "Core Definitions: Cliques, Transversals, Clique Size Predicates",
       "summary": "IsClique, IsMaximalClique, maximalCliques (filter univ). IsCliqueTransversal: T ∩ C nonempty. τ(G) (sorry). minMaximalCliqueSize (sorry). AllCliquesLarge G k, AllCliquesLinear G c with 0 < c ≤ 1",
       "startLine": 32,
-      "endLine": 71
+      "endLine": 72
     },
     {
       "id": "question1",
       "title": "Question 1: Linear Clique Size Forces Sublinear τ",
       "summary": "Question1_LinearCliques: ∀ε>0, ∃N, |V|≥N → τ < εn. Question1_Alternative: τ/n → 0 via Filter.Tendsto. Both formalize 'is τ = o(n)?'",
       "startLine": 73,
-      "endLine": 91
+      "endLine": 92
     },
     {
       "id": "question2",
       "title": "Question 2: Threshold Function k_c(n)",
       "summary": "k_threshold c n (sorry). ThresholdProperty: cliques ≥ k → τ < (1-c)n. Question2_ThresholdEstimate: find bounds on k_c(n). The deeper open problem",
       "startLine": 93,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "known-results",
       "title": "Erdős-Gallai-Tuza Bound and Its Consequence",
       "summary": "erdos_gallai_tuza_large_cliques (axiom): τ ≤ n - √(kn). linear_cliques_sublinear: k=cn → τ ≤ (1-√c)n (sorry). question1_positive: τ < n (sorry). Answers Q1",
       "startLine": 114,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound on k_c(n): n^{c'/log log n}",
       "summary": "threshold_lower_bound (axiom): k_c(n) ≥ n^{c'/log log n}. threshold_grows_slowly: k_c(n) ≤ n^ε eventually (sorry). Intermediate growth rate from random graphs",
       "startLine": 137,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "bollobas-erdos",
       "title": "Bollobás-Erdős Threshold: τ = 1 at n + 3 - 2√n",
       "summary": "bollobas_erdos_threshold = n + 3 - 2√n. bollobas_erdos_tau_one (axiom): above threshold → τ = 1. bollobas_erdos_optimal (axiom): below threshold → τ ≥ 2 possible. Exact result",
       "startLine": 154,
-      "endLine": 174
+      "endLine": 175
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Complete, Bipartite, Turán Graphs",
       "summary": "complete_graph_tau: τ(Kₙ) = 1 (sorry). complete_bipartite_tau: τ(K_{n/2,n/2}) = n/2 (sorry). turan_graph_tau (sorry). Extreme cases illustrating the spectrum",
       "startLine": 176,
-      "endLine": 191
+      "endLine": 192
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Lower Bounds and Relation to #610",
       "summary": "random_graph_clique_transversal (axiom): G(n,p) witnesses k_c(n) lower bound. refines_610: k=2 case recovers #610 (sorry). Connection to random graph theory",
       "startLine": 193,
-      "endLine": 213
+      "endLine": 214
     },
     {
       "id": "main-status",

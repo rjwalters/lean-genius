@@ -71,7 +71,7 @@
       "id": "prime-seq",
       "title": "Prime Sequence Definitions",
       "startLine": 32,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Axiomatizes the prime sequence and its properties",
       "mathContext": "The prime-counting sequence $p_1 = 2, p_2 = 3, p_3 = 5, p_4 = 7, p_5 = 11, \\ldots$ is axiomatized as a strictly increasing function $\\text{prime\\_seq}: \\mathbb{N} \\to \\mathbb{N}$ with $\\text{Prime}(\\text{prime\\_seq}(n))$ for all $n$."
     },
@@ -79,7 +79,7 @@
       "id": "problem-statement",
       "title": "The Problem Statement",
       "startLine": 63,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Formalizes the interval and divisibility conditions",
       "mathContext": "For $n \\in [p_{k-1}, p_k)$, the condition $\\text{onlyTwoPrimesDivide}(n, k)$ means every prime $p \\mid n!+1$ satisfies $p = p_k$ or $p = p_{k+1}$. Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ ensures $p_k \\mid (p_k - 1)! + 1$, providing a starting divisor."
     },
@@ -87,7 +87,7 @@
       "id": "conjecture",
       "title": "The Conjecture and Resolution",
       "startLine": 90,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "States the conjecture, Luca's proof, and complete classification",
       "mathContext": "Erdős-Stewart conjecture: $\\{n : \\text{satisfiesCondition}(n)\\}$ is finite. Luca (2001) proved the complete classification: the set equals $\\{1, 2, 3, 4, 5\\}$. The proof uses factorial growth bounds to show $n! + 1$ has too many prime factors for $n \\geq 6$."
     },
@@ -95,7 +95,7 @@
       "id": "verification",
       "title": "Verification of Known Cases",
       "startLine": 115,
-      "endLine": 135,
+      "endLine": 136,
       "summary": "Computational verification of n!+1 for n = 1,...,6",
       "mathContext": "Verification: $1!+1 = 2$, $2!+1 = 3$, $3!+1 = 7$, $4!+1 = 25 = 5^2$, $5!+1 = 121 = 11^2$ (all satisfy the condition). $6!+1 = 721 = 7 \\times 103$ (fails: 103 is neither $p_4 = 7$ nor $p_5 = 11$)."
     },

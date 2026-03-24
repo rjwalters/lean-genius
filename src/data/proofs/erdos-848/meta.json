@@ -51,7 +51,8 @@
       "fermat-two-squares",
       "elementary-quadratic-reciprocity",
       "erdos-844"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -107,7 +108,7 @@
       "id": "definitions",
       "title": "Definitions and Extremal Function",
       "startLine": 21,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "IsSquarefree, HasNonSqfreeProductProp, maxNonSqfreeSet (noncomputable def via Finset.sup over powerset), and maxNonSqfreeSet_le proved via injection x↦x-1.",
       "mathContext": "$\\text{maxNonSqfreeSet}(N) := \\sup\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\ \\text{HasNonSqfreeProductProp}(A)\\}$. Upper bound $\\leq N$ proved by injecting $\\text{Icc}(1,N)$ into $\\text{range}(N)$ via $x \\mapsto x-1$."
     },
@@ -115,7 +116,7 @@
       "id": "mod25-construction",
       "title": "Mod 25 Constructions and Connecting Lemmas",
       "startLine": 59,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "mod25_achieves and mod25_achieves_18: proved 5² | ab+1 for both residue classes via ring arithmetic. five_prime, not_sqfree_of_five_sq_dvd, mod7/18_set_has_property: connect divisibility to HasNonSqfreeProductProp.",
       "mathContext": "For $a \\equiv b \\equiv 7 \\pmod{25}$: $ab+1 \\equiv 50 \\equiv 0 \\pmod{25}$. For $a \\equiv b \\equiv 18 \\pmod{25}$: $ab+1 \\equiv 325 \\equiv 0 \\pmod{25}$. Both give $5^2 \\mid ab+1$, hence $\\neg\\text{IsSquarefree}(ab+1)$."
     },
@@ -123,7 +124,7 @@
       "id": "lower-bound",
       "title": "Lower Bound via Witness Construction",
       "startLine": 104,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "Defines mod7Set, proves it has the property and has cardinality ≥ N/25 via injection k↦25k+7. Concludes lower_bound: N/25 ≤ maxNonSqfreeSet(N) for N ≥ 25.",
       "mathContext": "The injection $k \\mapsto 25k+7$ maps $\\{0,\\ldots,\\lfloor N/25\\rfloor - 1\\}$ into $\\{n \\in \\{1,\\ldots,N\\} : n \\equiv 7 \\pmod{25}\\}$. Combined with Finset.le_sup, this gives the lower bound on the extremal function."
     },

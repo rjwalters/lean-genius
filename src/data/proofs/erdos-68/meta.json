@@ -96,7 +96,7 @@
       "title": "The Target Sum",
       "summary": "factorialSum, summand, summand_pos",
       "startLine": 26,
-      "endLine": 50,
+      "endLine": 51,
       "mathContext": "$S = \\sum_{n=2}^{\\infty} \\frac{1}{n!-1}$. Each term $\\frac{1}{n!-1} > 0$ and $\\to 0$ rapidly."
     },
     {
@@ -104,7 +104,7 @@
       "title": "Convergence",
       "summary": "summand_tendsto_zero, factorialSum_summable, factorialSum_pos",
       "startLine": 52,
-      "endLine": 67,
+      "endLine": 68,
       "mathContext": "$\\frac{1}{n!-1} \\to 0$ as $n \\to \\infty$. Series converges by comparison with $\\sum 1/n!$. $S > 0$ since all terms positive."
     },
     {
@@ -112,7 +112,7 @@
       "title": "Weisenberg's Identity",
       "summary": "inv_factorial_minus_one_eq_geom, weisenberg_identity",
       "startLine": 69,
-      "endLine": 90,
+      "endLine": 91,
       "mathContext": "Weisenberg: $\\frac{1}{n!-1} = \\frac{1}{n!} \\cdot \\frac{1}{1-1/n!} = \\sum_{k=1}^{\\infty} \\frac{1}{(n!)^k}$, a geometric series."
     },
     {
@@ -120,7 +120,7 @@
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture68, erdos_68",
       "startLine": 92,
-      "endLine": 106,
+      "endLine": 107,
       "mathContext": "Conjecture (OPEN): $S = \\sum_{n=2}^{\\infty} \\frac{1}{n!-1}$ is irrational."
     },
     {
@@ -128,7 +128,7 @@
       "title": "Erdős's Broader Conjecture",
       "summary": "generalizedFactorialSum, erdosTranscendenceConjecture, problem_68_is_special_case",
       "startLine": 108,
-      "endLine": 147,
+      "endLine": 148,
       "mathContext": "Stronger: $\\sum_{n=2}^{\\infty} \\frac{1}{n!-c}$ is transcendental for all integers $c \\neq 0$. This implies irrationality."
     },
     {
@@ -136,7 +136,7 @@
       "title": "Small Value Computations",
       "summary": "first_term, second_term, third_term, fourth_term",
       "startLine": 149,
-      "endLine": 177,
+      "endLine": 178,
       "mathContext": "Small values: $1/(2!-1) = 1$, $1/(3!-1) = 1/5$, $1/(4!-1) = 1/23$, $1/(5!-1) = 1/119$. Sum $\\approx 1.2646\\ldots$"
     },
     {
@@ -144,7 +144,7 @@
       "title": "Why This Is Hard",
       "summary": "eRelatedSum, perturbation_difference",
       "startLine": 179,
-      "endLine": 204,
+      "endLine": 205,
       "mathContext": "Difficulty: $S$ differs from $e - 1 = \\sum 1/n!$ by $\\sum (1/(n!-1) - 1/n!) = \\sum 1/(n!(n!-1))$, a very small perturbation."
     },
     {
@@ -152,7 +152,7 @@
       "title": "OEIS Connection",
       "summary": "oeis_a331373",
       "startLine": 206,
-      "endLine": 213,
+      "endLine": 214,
       "mathContext": "OEIS A331373: decimal expansion of $S$. The constant $S \\approx 1.264686...$ is not recognized as any known constant."
     },
     {
@@ -160,7 +160,7 @@
       "title": "Transcendence Theory",
       "summary": "transcendence_implies_irrationality, transcendence_implies_68",
       "startLine": 215,
-      "endLine": 241,
+      "endLine": 242,
       "mathContext": "Transcendence $\\implies$ irrationality. Known: $\\sum 1/n! = e - 1$ is transcendental (Hermite 1873). But $\\sum 1/(n!-1)$ is harder."
     },
     {
@@ -168,7 +168,7 @@
       "title": "Problem Status",
       "summary": "erdos_68_status, erdos_68_statement, Summary",
       "startLine": 243,
-      "endLine": 275,
+      "endLine": 356,
       "mathContext": "Status: OPEN. Neither irrationality nor rationality has been proved for $S$."
     }
   ],

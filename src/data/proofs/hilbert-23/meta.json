@@ -46,7 +46,8 @@
     "hilbertNumber": 23,
     "axiomCount": 8,
     "lineCount": 385,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Hilbert's twenty-third problem (1900) is unique among the 23 problems: it is not a specific question but a **research program**. Hilbert called for 'further development of the methods of the calculus of variations.'\n\nThe calculus of variations originated with the brachistochrone problem (1696): what curve allows fastest descent under gravity? Bernoulli's solution led to a new field of mathematics.\n\nMajor developments responding to Hilbert's call:\n\n- **Direct Methods** (Hilbert 1900, Tonelli 1920s): Prove existence without solving ODEs\n- **Weak Solutions** (Sobolev 1930s): Generalized derivatives in Sobolev spaces\n- **Optimal Control** (Pontryagin 1956): Control theory via the maximum principle\n- **Geometric Measure Theory** (Federer-Fleming 1960s): Minimal surfaces and currents\n- **Gamma-Convergence** (De Giorgi 1970s): Variational limits and homogenization",
@@ -69,49 +70,49 @@
       "id": "structure",
       "title": "The Structure of Variational Problems",
       "startLine": 51,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Lagrangians, admissible functions, and the action functional J[y] = integral of L(x, y, y') dx."
     },
     {
       "id": "fundamental-lemma",
       "title": "Fundamental Lemma of Calculus of Variations",
       "startLine": 81,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "The Du Bois-Reymond lemma: if the integral of f times eta vanishes for all test functions, then f = 0."
     },
     {
       "id": "euler-lagrange",
       "title": "The Euler-Lagrange Equation",
       "startLine": 110,
-      "endLine": 162,
+      "endLine": 163,
       "summary": "The central theorem: extrema satisfy dL/dy - d/dx(dL/dy') = 0."
     },
     {
       "id": "applications",
       "title": "Applications of Euler-Lagrange",
       "startLine": 164,
-      "endLine": 210,
+      "endLine": 211,
       "summary": "Geodesics as straight lines, and deriving Newton's laws from Lagrangian mechanics."
     },
     {
       "id": "direct-methods",
       "title": "Direct Methods (Tonelli)",
       "startLine": 212,
-      "endLine": 258,
+      "endLine": 259,
       "summary": "Existence theorems via coercivity and weak lower semicontinuity."
     },
     {
       "id": "optimal-control",
       "title": "Optimal Control Theory",
       "startLine": 260,
-      "endLine": 312,
+      "endLine": 313,
       "summary": "The Pontryagin maximum principle extending calculus of variations to control theory."
     },
     {
       "id": "modern",
       "title": "Modern Developments",
       "startLine": 314,
-      "endLine": 368,
+      "endLine": 385,
       "summary": "Sobolev spaces, Gamma-convergence, geometric measure theory, and connections to PDEs."
     }
   ],

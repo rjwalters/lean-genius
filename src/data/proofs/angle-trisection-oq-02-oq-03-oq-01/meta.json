@@ -72,7 +72,8 @@
       "Unit group of ZMod n and its structure",
       "Chebyshev polynomials and cos(2pi/n)",
       "Galois theory of cyclotomic extensions"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Gauss-Wantzel Theorem and Cyclotomic Fields**\n\nThe Gauss-Wantzel theorem (Gauss 1796, Wantzel 1837) characterizes which regular polygons are constructible: a regular n-gon is constructible iff n is a product of a power of 2 and distinct Fermat primes. The key algebraic fact is that cos(2π/n) is constructible iff its minimal polynomial has degree a power of 2, and this degree equals φ(n)/2.\n\nThis file bridges the axiomized Gauss-Wantzel theorem to Mathlib's cyclotomic field infrastructure, proving the connection between exp(2πi/n), cyclotomic polynomials, and cos(2π/n).",
@@ -99,7 +100,7 @@
       "title": "Cyclotomic Field Setup and Primitive Roots",
       "summary": "Establishes CyclotomicField n ℚ as a Galois extension with [K:ℚ] = φ(n), defines abstractZeta as the canonical primitive n-th root of unity via IsCyclotomicExtension.zeta, and proves its primitive root property.",
       "startLine": 31,
-      "endLine": 55,
+      "endLine": 56,
       "mathContext": "$[\\mathbb{Q}(\\zeta_n) : \\mathbb{Q}] = \\varphi(n)$. The $n$-th roots of unity form the cyclic group $\\mu_n \\cong \\mathbb{Z}/n\\mathbb{Z}$."
     },
     {
@@ -107,7 +108,7 @@
       "title": "Complex Conjugation as Order-2 Automorphism",
       "summary": "Defines conjAut (σ: ζ ↦ ζ⁻¹) via fromZetaAut, proves σ ≠ id for n ≥ 3 (since ζ = ζ⁻¹ would force n | 2), proves σ² = id via autEquivPow (σ corresponds to -1 ∈ (ℤ/nℤ)*), and concludes ord(σ) = 2.",
       "startLine": 57,
-      "endLine": 127,
+      "endLine": 128,
       "mathContext": "$\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$, acting by $\\sigma_k(\\zeta_n) = \\zeta_n^k$ for $\\gcd(k,n) = 1$."
     },
     {
@@ -115,7 +116,7 @@
       "title": "Fixed Field of Conjugation and Degree Computation",
       "summary": "Defines H = ⟨σ⟩ ≤ Aut(K/ℚ), proves |H| = 2, defines the maximal real subfield F = K^H, and derives [F:ℚ] = φ(n)/2 via the tower law [K:ℚ] = [K:F]·[F:ℚ].",
       "startLine": 129,
-      "endLine": 166,
+      "endLine": 167,
       "mathContext": "$H = \\langle \\sigma \\rangle$, $|H| = 2$; $[K^H : \\mathbb{Q}] = \\varphi(n)/2$ by the fundamental theorem of Galois theory."
     },
     {
@@ -123,7 +124,7 @@
       "title": "Alpha Field and IntermediateField Degree",
       "summary": "Defines α = ζ + ζ⁻¹, proves ζ satisfies X² - αX + 1 = 0 over ℚ(α), shows ℚ(α) ⊆ K^H, bounds [K:ℚ(α)] ≤ 2 via the quadratic, and proves [ℚ(α):ℚ] = φ(n)/2 by sandwiching between ≥ and ≤ bounds.",
       "startLine": 168,
-      "endLine": 377,
+      "endLine": 378,
       "mathContext": "$\\alpha = \\zeta_n + \\zeta_n^{-1}$; $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$ since $\\mathbb{Q}(\\alpha) = K^H$."
     },
     {
@@ -139,7 +140,7 @@
       "title": "Chebyshev Polynomials and Galois Conjugates",
       "summary": "Proves the algebraic Chebyshev identity T_k((x + x⁻¹)/2) = (x^k + x^{-k})/2 by strong induction, defines Galois automorphisms ζ ↦ ζ^k for coprime k, and proves cos(2kπ/n) are roots of minpoly(ℚ, cos(2π/n)).",
       "startLine": 542,
-      "endLine": 739,
+      "endLine": 740,
       "mathContext": "Chebyshev polynomials: $T_k(\\cos\\theta) = \\cos(k\\theta)$. For $(k,n) = 1$, $\\cos(2k\\pi/n)$ is a Galois conjugate of $\\cos(2\\pi/n)$."
     }
   ],

@@ -71,7 +71,8 @@
         "relationship": "Further extensions of the constructibility framework"
       }
     ],
-    "assumptions": "Fully verified. 0 axioms, 0 sorries."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "leanFile": {
     "imports": [
@@ -181,7 +182,7 @@
       "id": "setup",
       "title": "Imports and Historical Context",
       "startLine": 1,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Imports from Mathlib (trigonometry, field theory, polynomials) and PiTranscendental, plus the 2000-word docstring covering the three classical Greek problems, approach, axiom inventory, and proof structure.",
       "mathContext": "The file imports `SpecialFunctions.Trigonometric.Basic` for $\\cos$ and `cos\\_three\\_mul$, `IntermediateField.Basic` for field extensions, and `Proofs.PiTranscendental` for $\\pi$'s transcendence over $\\mathbb{Z}$ (lifted to $\\mathbb{Q}$)."
     },
@@ -189,7 +190,7 @@
       "id": "minimal-polynomial",
       "title": "The Minimal Polynomial for cos(20°)",
       "startLine": 71,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "Part I–II: defines `trisectionPolynomial` ($8x^3 - 6x - 1$), proves its degree is 3, defines angles 20° and 60° in radians, proves the triple angle formula, and shows cos(20°) satisfies the cubic equation.",
       "mathContext": "From $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ with $\\theta = \\pi/9$ (20°) and $\\cos(\\pi/3) = 1/2$: $1/2 = 4x^3 - 3x$ gives $8x^3 - 6x - 1 = 0$ where $x = \\cos(20°)$."
     },
@@ -197,7 +198,7 @@
       "id": "irreducibility",
       "title": "Irreducibility and Rational Root Check",
       "startLine": 132,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "Part III: defines `evalTrisectionPoly` for evaluation at rationals, then computationally verifies all 8 rational root candidates ($\\pm 1, \\pm 1/2, \\pm 1/4, \\pm 1/8$) are not roots using `norm_num`.",
       "mathContext": "By the rational root theorem, any rational root $p/q$ of $8x^3 - 6x - 1$ must have $p \\mid 1$ and $q \\mid 8$. None of the 8 candidates evaluates to zero, so the cubic has no linear factor over $\\mathbb{Q}$ and is therefore irreducible."
     },
@@ -205,7 +206,7 @@
       "id": "constructible",
       "title": "Constructible Numbers and Axioms",
       "startLine": 155,
-      "endLine": 214,
+      "endLine": 215,
       "summary": "Part IV: defines `IsConstructible` (degree divides $2^n$), proves `wantzel_theorem` (from the definition of constructibility and degree theory), proves `trisectionPolynomial_irreducible` (via Eisenstein criterion, imported from AngleTrisectionCos20Gal), and obtains `lindemann_pi_transcendental` from the PiTranscendental import. Both wantzel_theorem and trisectionPolynomial_irreducible were originally axiomatized but are now fully proved.",
       "mathContext": "Wantzel's criterion: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha) : \\mathbb{Q}]$ divides $2^n$. Both key results (Wantzel's theorem and trisection polynomial irreducibility) are now proved, not axiomatized. The only remaining axiom is transitive: `pi_transcendental` from PiTranscendental.lean, used for circle squaring."
     },
@@ -213,7 +214,7 @@
       "id": "number-theory",
       "title": "Number-Theoretic Lemmas",
       "startLine": 216,
-      "endLine": 260,
+      "endLine": 261,
       "summary": "Part V: proves $3 \\neq 2^n$ (by parity), $3 \\nmid 2^n$ (using primality of 3), the general `three_dvd_not_dvd_power_of_two`, and `degree_three_not_constructible` — the key lemma that degree 3 implies non-constructibility.",
       "mathContext": "$2^n$ is always even for $n \\geq 1$, so $2^n \\neq 3$. Since $\\gcd(3,2) = 1$ and 3 is prime, $3 \\nmid 2^n$ by induction. Therefore any number with minimal polynomial degree 3 has $3 \\mid d$ but $d \\nmid 2^n$, ruling out constructibility."
     },
@@ -221,7 +222,7 @@
       "id": "main-theorems",
       "title": "The Main Impossibility Theorems",
       "startLine": 262,
-      "endLine": 330,
+      "endLine": 331,
       "summary": "Parts VI–VII: the three classical impossibilities — `angle_trisection_impossible` (cos(20°) not constructible), `cube_doubling_impossible` ($\\sqrt[3]{2}$ not constructible), and `circle_squaring_impossible` ($\\sqrt{\\pi}$ not constructible).",
       "mathContext": "Angle trisection: $[\\mathbb{Q}(\\cos 20°) : \\mathbb{Q}] = 3 \\neq 2^n$. Cube doubling: $[\\mathbb{Q}(\\sqrt[3]{2}) : \\mathbb{Q}] = 3 \\neq 2^n$. Circle squaring: $\\pi$ is transcendental so $\\sqrt{\\pi}$ has no finite degree over $\\mathbb{Q}$."
     },

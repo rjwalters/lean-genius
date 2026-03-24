@@ -36,7 +36,8 @@
     ],
     "axiomCount": 1,
     "lineCount": 148,
-    "assumptions": "1 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom(s) and 5 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #960 originates from Erdős's 1984 paper [Er84] and concerns the interplay between ordinary lines and Ramsey-type phenomena in discrete geometry. An ordinary line is one passing through exactly two points of a configuration. The Sylvester-Gallai theorem (1893) guarantees at least one ordinary line for any non-collinear finite point set, and the Green-Tao theorem (2013) strengthened this to at least n/2 ordinary lines when no three points are collinear.\n\nThe problem asks about a higher-order structure: given many ordinary lines, must there exist r points whose C(r,2) connecting lines are all ordinary? The threshold f_{r,k}(n) measures the minimum number of ordinary lines needed to force such an 'all-ordinary' r-subset, among n-point configurations with no k collinear. Turán's theorem from extremal graph theory provides an upper bound by viewing the ordinary line relation as a graph.\n\nThe central conjecture is that f_{r,k}(n) = o(n²), meaning the threshold grows subquadratically. The stronger form asks whether f_{r,k}(n) is actually linear in n. Both questions remain open. The problem connects discrete geometry, extremal graph theory, and Ramsey theory in a way that highlights how local structure (ordinary lines) constrains global combinatorial patterns.",
@@ -62,49 +63,49 @@
       "id": "point-config",
       "title": "Part I: Point Configurations and Collinearity",
       "startLine": 25,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines PointConfig structure and NoKCollinear predicate."
     },
     {
       "id": "ordinary-lines",
       "title": "Part II: Ordinary Lines",
       "startLine": 43,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines IsOrdinaryLine and ordinaryLineCount."
     },
     {
       "id": "all-ordinary",
       "title": "Part III: All-Ordinary Subsets",
       "startLine": 58,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Defines AllOrdinary: every pair in a subset determines an ordinary line."
     },
     {
       "id": "threshold",
       "title": "Part IV: The Threshold Function",
       "startLine": 67,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets."
     },
     {
       "id": "conjecture",
       "title": "Part V: The Main Conjecture",
       "startLine": 79,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture."
     },
     {
       "id": "turan-bound",
       "title": "Part VI: Turán Upper Bound",
       "startLine": 97,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Axioms: turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines)."
     },
     {
       "id": "connections",
       "title": "Part VII: Known Cases and Connections",
       "startLine": 111,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets."
     },
     {

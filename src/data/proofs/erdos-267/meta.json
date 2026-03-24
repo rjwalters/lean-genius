@@ -57,7 +57,8 @@
       "Geometric series comparison test"
     ],
     "lineCount": 233,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem connects to a long tradition of irrationality questions in number theory going back to Euler's work on $e$ and Lambert's proof that $\\pi$ is irrational (1761). Erdős posed it as part of his broader program asking when 'natural' arithmetic series sum to irrational numbers.\n\nGood (1974) proved the first special case: $\\sum 1/F_{2^n}$ is irrational, using the rapid growth of $F_{2^n}$ and a clever continued fraction argument. Bicknell and Hoggatt (1976) extended this to related subsequences with indices $2^n k$.\n\nThe breakthrough came when André-Jeannin (1989) proved the full sum $\\sum 1/F_n$ is irrational using techniques from transcendence theory, specifically Padé approximation and the connection between Fibonacci numbers and the theory of $q$-series. Paradoxically, this proves the $c = 1$ case (all indices, weakest sparsity condition) while the general $c > 1$ case remains open — a situation where the strongest-looking result is proved but weaker-looking intermediate cases resist proof.\n\nThe problem is part of a cluster of Erdős irrationality conjectures including #250 ($\\sum \\sigma(n)/2^n$, solved by Nesterenko 1996) and #259 ($\\sum \\mu(n)^2 n / 2^n$, solved by Chen-Ruzsa).",
@@ -93,56 +94,56 @@
       "title": "Fibonacci Background",
       "summary": "Fibonacci sequence definition, golden ratio, exponential growth",
       "startLine": 27,
-      "endLine": 47
+      "endLine": 48
     },
     {
       "id": "verified-values",
       "title": "Verified Fibonacci Values",
       "summary": "fib_one through fib_twelve verified by rfl — direct computation in Lean 4 confirming F₁=1, F₂=1, ..., F₁₂=144.",
       "startLine": 49,
-      "endLine": 71
+      "endLine": 72
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio and Fibonacci Growth",
       "summary": "Defines goldenRatio = (1+√5)/2, proves goldenRatio_gt_one (needed for convergence), and fib_pos from Mathlib's Nat.fib_pos.",
       "startLine": 73,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "convergence",
       "title": "Series Convergence",
       "summary": "fibonacci_reciprocal_summable axiom, comparison with geometric series",
       "startLine": 96,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "solved-cases",
       "title": "Solved Cases",
       "summary": "good_bicknell_hoggatt (2^n indices), andre_jeannin (full sum) axioms",
       "startLine": 108,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "summary": "HasRatioBoundedBelow, Erdos267Conjecture, erdos_267_open by classical EM",
       "startLine": 130,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "weaker-variant",
       "title": "Weaker Variant (OPEN)",
       "summary": "HasSuperlinearGrowth, Erdos267WeakerVariant — n_k/k → ∞ might suffice",
       "startLine": 170,
-      "endLine": 189
+      "endLine": 190
     },
     {
       "id": "numerical",
       "title": "Numerical Observations",
       "summary": "pow_two_series_first_terms (verified by native_decide), sum ≈ 3.3598",
       "startLine": 191,
-      "endLine": 216
+      "endLine": 217
     },
     {
       "id": "related-problems",

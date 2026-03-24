@@ -70,7 +70,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
     "lineCount": 188,
-    "assumptions": "6 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "assumptions": "6 axiom(s) and 5 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The 'Happy Ending Problem' is one of the most celebrated questions in combinatorial geometry, named because George Szekeres and Esther Klein, who collaborated on it, fell in love and married in 1937. The problem originated in 1931 when Klein observed that among any 5 points in the plane in general position (no three collinear), four must form a convex quadrilateral. She challenged her friends, including Szekeres and Paul Erdos, to generalize this.\n\nErdos and Szekeres published their foundational paper in 1935, proving that for every n >= 3, there exists a finite threshold f(n) such that any f(n) points in general position must contain a convex n-gon. Their proof used a Ramsey-theoretic argument yielding the upper bound f(n) <= C(2n-4, n-2) + 1, which grows roughly as 4^n. In a second paper (1960), they constructed 2^{n-2} points in general position with no convex n-gon, establishing the lower bound f(n) >= 2^{n-2} + 1 and leading to their conjecture that this is tight.\n\nThe upper bound remained essentially unchanged for 80 years until Andrew Suk's breakthrough in 2017, proving f(n) <= 2^{(1+o(1))n} using a novel approach to the cups-and-caps theorem. This was further refined by Holmsen, Mojarrad, Pach, and Tardos (2020) to f(n) <= 2^{n + O(sqrt(n log n))}, the current best bound. The gap in the exponent between the lower bound (n-2) and upper bound (n + O(sqrt(n log n))) is now remarkably small, yet closing it remains open.\n\nThe only known exact values are f(3) = 3 (trivial), f(4) = 5 (Klein 1931), and f(5) = 9 (Makai-Turan). All match 2^{n-2} + 1. The value f(6) is unknown; the conjecture predicts f(6) = 17. Erdos offered $500 for a proof of the conjecture, making it one of his most famous prize problems.",
@@ -102,7 +103,7 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 30,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines InGeneralPosition (no three collinear via Mathlib's Collinear), IsConvexNGon ($|S|=n$ with every point extreme), HasConvexNGon (subset containment), CardSet (threshold set $\\{N \\mid \\ldots\\}$), and $f(n) = \\inf(\\text{CardSet}(n))$."
     },
     {
@@ -116,21 +117,21 @@
       "id": "lower-bound",
       "title": "Erdos-Szekeres Lower Bound",
       "startLine": 86,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Axiomatized: $2^{n-2}+1 \\leq f(n)$ for $n \\geq 3$. Construction provides $2^{n-2}$ points with no convex $n$-gon via recursive doubling."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 97,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "Three progressively tighter bounds: ES (1935) $\\binom{2n-4}{n-2}+1$ via Ramsey theory, Suk (2017) $2^{(1+o(1))n}$ via cups-caps with Filter.atTop, HMPT (2020) $2^{n+O(\\sqrt{n \\log n})}$ with existential constant $C$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 126,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "HappyEndingConjecture defined as a Prop: $f(n) = 2^{n-2}+1$ for all $n \\geq 3$. Correctly stated without asserting truth. $500 Erdos prize."
     },
     {

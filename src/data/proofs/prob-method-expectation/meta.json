@@ -55,7 +55,8 @@
       "Binomial coefficients and probabilistic bounds",
       "Finite probability spaces and indicator random variables"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The probabilistic method is one of the most powerful techniques in combinatorics, pioneered by Paul Erdos beginning in 1947. The core idea is strikingly simple: to prove that an object with a desired property exists, show that a randomly chosen object has the property with positive probability. No explicit construction is needed.\n\nErdos's first major application was his 1947 proof that the Ramsey number R(k,k) grows at least exponentially: R(k,k) >= 2^(k/2). He colored the edges of the complete graph K_n randomly, showing that with positive probability no monochromatic K_k appears, thus proving the existence of such a coloring. This was revolutionary because it proved existence without construction.\n\nThe first moment method (or expectation argument) is the simplest incarnation of the probabilistic method. If a random variable X has E[X] > t, then X > t for at least one outcome in the sample space. Despite its simplicity, this principle yields deep results in graph theory, number theory, and combinatorial geometry.",
@@ -82,7 +83,7 @@
       "id": "introduction",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 14,
+      "endLine": 15,
       "summary": "Overview of the first moment method: if E[X] > t on a finite probability space, some outcome exceeds t. Lists key results: first moment principle, linearity of expectation, and Erdos's 1947 Ramsey bound.",
       "mathContext": "$E[X] > t \\implies \\exists \\omega,\\; X(\\omega) > t$"
     },
@@ -90,7 +91,7 @@
       "id": "first-moment",
       "title": "First Moment Principle",
       "startLine": 16,
-      "endLine": 20,
+      "endLine": 21,
       "summary": "If the sum f(a) over a Finset s divided by |s| exceeds t, then some element a in s has f(a) > t. Uses ℚ (rationals) for exact arithmetic. Currently sorry'd — provable by contradiction using Finset.sum_le_sum.",
       "mathContext": "$\\frac{\\sum_{a \\in s} f(a)}{|s|} > t \\implies \\exists a \\in s,\\; f(a) > t$"
     },
@@ -98,7 +99,7 @@
       "id": "linearity",
       "title": "Linearity of Expectation",
       "startLine": 22,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Linearity of expectation for Finset sums: the sum of (f + g) equals the sum of f plus the sum of g. Currently sorry'd — follows directly from Finset.sum_add_distrib in Mathlib.",
       "mathContext": "$\\sum_{a \\in s} (f + g)(a) = \\sum_{a \\in s} f(a) + \\sum_{a \\in s} g(a)$"
     },
@@ -106,7 +107,7 @@
       "id": "mono-cliques",
       "title": "Expected Monochromatic Cliques",
       "startLine": 27,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "The expected number of monochromatic k-cliques in a random 2-coloring of K_n is C(n,k) · 2^(1-C(k,2)). Currently only states non-negativity of this expression (sorry'd). The full application would show this is < 1 when n < 2^(k/2).",
       "mathContext": "$E[\\text{mono } K_k] = \\binom{n}{k} \\cdot 2^{1 - \\binom{k}{2}}$"
     },
@@ -114,7 +115,7 @@
       "id": "ramsey-bound",
       "title": "Erdos Ramsey Lower Bound",
       "startLine": 33,
-      "endLine": 38,
+      "endLine": 136,
       "summary": "Simplified version of Erdos's 1947 result: R(k,k) >= 2^(k/2). Currently sorry'd as an existential statement — the full proof would combine the expected monochromatic clique count with the first moment principle.",
       "mathContext": "$R(k,k) \\geq 2^{k/2}$"
     }

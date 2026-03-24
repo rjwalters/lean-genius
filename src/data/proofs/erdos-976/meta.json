@@ -81,35 +81,35 @@
       "id": "section-1",
       "title": "Basic Definitions",
       "startLine": 35,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Defines irreducible polynomials over ℤ, polynomial degree, greatest prime divisor P(n), and the main function F_f(n) = greatest prime dividing any f(m) for 1 ≤ m ≤ n."
     },
     {
       "id": "section-2",
       "title": "Known Lower Bounds",
       "startLine": 69,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "States the three main known lower bounds as axioms: Nagell-Ricci (n log n), Erdős 1952 (n(log n)^{log log log n}), and Tenenbaum 1990 (n exp((log n)^c))."
     },
     {
       "id": "section-3",
       "title": "Main Conjectures",
       "startLine": 101,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Formalizes the two open conjectures as Prop definitions: polynomial growth F_f(n) ≫ n^{1+c}, and the stronger degree growth F_f(n) ≫ n^d."
     },
     {
       "id": "section-4",
       "title": "Upper Bounds",
       "startLine": 123,
-      "endLine": 133,
+      "endLine": 134,
       "summary": "States the trivial upper bound F_f(n) ≤ C·n^d as an axiom, bounding the function from above."
     },
     {
       "id": "section-5",
       "title": "Computational Examples",
       "startLine": 135,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Defines P(n) alias, proves greatestPrimeDivisor examples via native_decide, and gives numerical bound comparisons at n=1000."
     },
     {

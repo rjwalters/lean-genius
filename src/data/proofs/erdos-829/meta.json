@@ -83,21 +83,21 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib modules for $\\log$, `Finset`, `BigOperators`, and opens the `Erdos829` namespace",
       "startLine": 28,
-      "endLine": 36
+      "endLine": 37
     },
     {
       "id": "cubes-representation",
       "title": "Cubes and Representation Function",
       "summary": "Defines `IsCube`, `CubeSet` ($A = \\{k^3\\}$), and the representation functions $r_2(n) = |\\{(a,b) : a^3 + b^3 = n, a \\leq b\\}|$",
       "startLine": 38,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "erdos-question",
       "title": "The Erdős Question",
       "summary": "Formalizes `HasPolylogBound`: $\\exists c, C > 0$ with $r_2(n) \\leq C (\\log n)^c$ for all $n \\geq 2$, and defines `ErdosQuestion`",
       "startLine": 72,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "lower-bounds",
@@ -111,21 +111,21 @@
       "title": "Taxicab Numbers",
       "summary": "Hardy-Ramanujan number $1729 = 1^3 + 12^3 = 9^3 + 10^3$ (Ta(2)) and $87539319$ (Ta(3) with 3 representations)",
       "startLine": 128,
-      "endLine": 157
+      "endLine": 158
     },
     {
       "id": "theory",
       "title": "Asymptotic Density",
       "summary": "Counting function $N(x) = |\\{n \\leq x : r_2(n) > 0\\}| \\sim c \\cdot x^{2/3}$, implying density zero for the sumset $A + A$",
       "startLine": 159,
-      "endLine": 181
+      "endLine": 182
     },
     {
       "id": "the-gap",
       "title": "Exponent Comparison",
       "summary": "Verified inequality $11/13 > 1/4$ confirming Stewart's improvement over Mahler, proved by `norm_num`",
       "startLine": 183,
-      "endLine": 189
+      "endLine": 190
     },
     {
       "id": "summary",

@@ -41,7 +41,8 @@
     "dateAdded": "2026-02-26",
     "axiomCount": 0,
     "lineCount": 332,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Girard Desargues stated his theorem around 1639 in the context of perspective drawing and projective geometry. The theorem — that two triangles in perspective from a point are also in perspective from a line — holds in every projective plane coordinatizable by a division ring, a result formalized in OQ-01 using cross-product algebra. Forest Ray Moulton (1902) constructed the first concrete counterexample: an affine plane with the same point set as $\\mathbb{R}^2$ but modified lines, where negative slopes double upon crossing the $y$-axis. This showed that Desargues's theorem is not a consequence of the incidence axioms alone — it depends on the algebraic structure of the coordinate system. The Hessenberg-Artin theorem (Karl Hessenberg 1905, Emil Artin 1957) later proved the converse: a projective plane is Desarguesian if and only if it is coordinatizable by a division ring. The Moulton plane thus occupies a central place in the classification of projective planes and serves as the canonical example in most modern textbooks on incidence geometry (e.g., Hartshorne's *Foundations of Projective Geometry*).",
@@ -62,49 +63,49 @@
       "id": "moulton-plane",
       "title": "The Moulton Plane",
       "startLine": 1,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Defines the Moulton plane primitives: $\\text{MPoint} = \\mathbb{Q} \\times \\mathbb{Q}$, the inductive `MLine` type (standard/bent/vertical), the piecewise incidence relation `onLine` where bent lines use slope $m$ for $x \\leq 0$ and $2m$ for $x > 0$, and `MoultonCollinear` (three points on a common Moulton line)."
     },
     {
       "id": "configuration",
       "title": "Counterexample Configuration",
       "startLine": 61,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Seven rational points: center $O = (-4, 12)$ and two triangles $\\triangle ABC = \\{(-8,8), (-5,8), (-4,6)\\}$, $\\triangle A'B'C' = \\{(-14,2), (-7,0), (-4,3)\\}$. All vertices have $x \\leq 0$, ensuring perspectivity lines avoid Moulton bending."
     },
     {
       "id": "perspectivity",
       "title": "Perspectivity from Point O",
       "startLine": 73,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Proves $AA'$, $BB'$, $CC'$ all pass through $O$: $\\overline{OAA'}: y = x + 16$ (standard), $\\overline{OBB'}: y = 4x + 28$ (standard), $\\overline{OCC'}: x = -4$ (vertical). Bundles all 9 incidences into `perspective_from_point`."
     },
     {
       "id": "side-lines",
       "title": "Side Lines and Vertex Verification",
       "startLine": 107,
-      "endLine": 145,
+      "endLine": 146,
       "summary": "Defines 6 side lines: bent $A'B'$ ($m = -2/7$), $BC$ ($m = -2$), $CA$ ($m = -1/2$); standard $AB$ ($m = 0$), $B'C'$ ($m = 1$), $C'A'$ ($m = 1/10$). Verifies 12 vertex incidences. Only $CA$'s bending affects the counterexample at $\\beta$."
     },
     {
       "id": "intersections",
       "title": "Moulton Intersection Points",
       "startLine": 147,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "Computes $\\alpha = BC \\cap B'C' = (-3, 4)$, $\\beta = CA \\cap C'A' = (6/11, 38/11)$, $\\gamma = AB \\cap A'B' = (-35, 8)$. The critical computation: $CA$ has Moulton slope $-1/2$, so at $x = 6/11 > 0$ the effective slope is $-1$, giving $y = 38/11$ instead of the Euclidean $7/2$."
     },
     {
       "id": "non-collinearity",
       "title": "Non-Collinearity Proof",
       "startLine": 180,
-      "endLine": 224,
+      "endLine": 225,
       "summary": "Proves $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$ by case analysis over `MLine` constructors. Standard lines: overdetermined system gives $313/88 \\neq 304/88$ (gap $9/88$). Bent lines: right branch gives $307/88 \\neq 304/88$ (gap $3/88$). Vertical: $x$-coordinates $-3 \\neq 6/11$."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Desargues Fails",
       "startLine": 226,
-      "endLine": 250,
+      "endLine": 251,
       "summary": "`desargues_fails_in_moulton`: 13-conjunct theorem assembling perspectivity (9 incidences), side-intersections (6 incidences), and $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$. Complete formal statement that Desargues's theorem fails in the Moulton plane."
     },
     {

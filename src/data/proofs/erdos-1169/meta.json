@@ -90,63 +90,63 @@
       "id": "header-and-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Documents the problem, known results (Hajnal under CH, consistency, open in ZFC), related problems (#592, #118), and imports Mathlib ordinal/cardinal modules."
     },
     {
       "id": "partition-relations",
       "title": "Ordinal Partition Relations",
       "startLine": 38,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Axiomatizes the ordinal partition relation $\\alpha \\to (\\beta, k)^2$ and defines its negation $\\alpha \\not\\to (\\beta, k)^2$."
     },
     {
       "id": "key-ordinals",
       "title": "Key Ordinals: $\\omega_1$ and $\\omega_1^2$",
       "startLine": 57,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Defines $\\omega_1 = \\mathrm{ord}(\\aleph_1)$ and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$, with axioms for uncountability and cardinality."
     },
     {
       "id": "problem-statement",
       "title": "The Main Problem Statement",
       "startLine": 74,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Defines `erdos_1169_statement` as the partition relation $\\omega_1^2 \\to (\\omega_1^2, 3)^2$."
     },
     {
       "id": "hajnal-ch",
       "title": "Hajnal's CH-Conditional Result",
       "startLine": 86,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Defines CH ($2^{\\aleph_0} = \\aleph_1$), axiomatizes Hajnal's theorem that CH implies $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for all $k$, and derives the $k = 3$ case."
     },
     {
       "id": "independence",
       "title": "Independence and Consistency",
       "startLine": 107,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "Captures the metamathematical status: the problem is not disprovable (consistent via CH models) and the ZFC status remains open."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
       "startLine": 124,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "Axiomatizes monotonicity in the clique and ordinal parameters, and derives that the partition relation for pairs follows from triangles."
     },
     {
       "id": "connections",
       "title": "Connections to Problems #592 and #118",
       "startLine": 146,
-      "endLine": 164,
+      "endLine": 165,
       "summary": "Links to Problem #592 (countable analogue via Specker's theorem) and Problem #118 (clique extension, disproved in general but true for $\\omega_1^2$ under CH)."
     },
     {
       "id": "omega1-properties",
       "title": "Basic Properties of $\\omega_1$",
       "startLine": 166,
-      "endLine": 177,
+      "endLine": 178,
       "summary": "Axiomatizes that $\\omega_1$ is a limit ordinal, $\\omega < \\omega_1$, and $\\omega_1$ is regular (cofinality equals itself)."
     },
     {

@@ -43,7 +43,8 @@
     "wiedijkNumber": 54,
     "axiomCount": 0,
     "lineCount": 220,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1736, Leonhard Euler solved the Königsberg bridge problem, asking whether one could walk through the city crossing each of its seven bridges exactly once. Königsberg (now Kaliningrad, Russia) was built on both sides of the Pregel River with two islands in the middle, connected by seven bridges.\n\nEuler's key insight was to abstract away the geographical details and focus only on the connection structure. He represented each landmass as a point and each bridge as a line connecting two points. This abstraction created what we now call a graph.\n\nEuler observed that in any successful walk, each intermediate landmass must be entered and exited the same number of times, requiring an even number of bridges. Only the start and end points can have odd numbers of bridges. Since all four Königsberg landmasses had odd numbers of bridges, no such walk exists.\n\nThis paper, 'Solutio problematis ad geometriam situs pertinentis' (Solution of a problem relating to the geometry of position), is considered the first paper in graph theory and an early work in topology.",
@@ -67,56 +68,56 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Overview of the problem and its significance as the founding of graph theory."
     },
     {
       "id": "vertices",
       "title": "Graph Vertices",
       "startLine": 47,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Defining the 11 vertices: 4 landmasses and 7 bridges."
     },
     {
       "id": "edges",
       "title": "Edge Definition",
       "startLine": 84,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "The edge list connecting bridges to their landmasses."
     },
     {
       "id": "simple-graph",
       "title": "SimpleGraph Construction",
       "startLine": 103,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Constructing the graph with symmetry and no self-loops."
     },
     {
       "id": "degrees",
       "title": "Degree Calculation",
       "startLine": 119,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Computing the degree of each vertex: landmasses are odd, bridges are even."
     },
     {
       "id": "odd-vertices",
       "title": "Odd-Degree Vertices",
       "startLine": 142,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "Proving exactly the four landmasses have odd degree."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 161,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "The impossibility proof using Euler's theorem on odd-degree vertices."
     },
     {
       "id": "history",
       "title": "Historical Notes",
       "startLine": 190,
-      "endLine": 216,
+      "endLine": 220,
       "summary": "Euler's original reasoning and the broader impact on mathematics."
     }
   ],

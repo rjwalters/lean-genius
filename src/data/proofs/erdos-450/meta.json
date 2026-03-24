@@ -51,7 +51,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 226,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #450 appears in Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.89). It asks about the density of integers having a 'medium-sized' divisor—one lying in the interval $(n, 2n)$—within short intervals $(x, x+y)$.\n\nThe problem connects to deep questions about the anatomy of integers studied by Erdős, Kac, Tenenbaum, and others. Kevin Ford's landmark paper 'The distribution of integers with a divisor in a given interval' (Annals of Mathematics, 2008) established precise asymptotics for the density of such integers, showing it behaves as $(\\log n)^{-\\delta} (\\log \\log n)^{-3/2}$ where $\\delta = 1 - \\frac{1 + \\log\\log 2}{\\log 2} \\approx 0.0861$.\n\nStijn Cambie made key observations on the problem: the 'for all $x$' interpretation fails when $\\varepsilon$ is not sufficiently small relative to the Ford density. The existential version (does there exist a good starting point $x$?) remains open.",
@@ -76,42 +77,42 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 26,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Imports `Nat.Basic`, `Nat.GCD.Basic`, `Finset.Basic`, `Finset.Card`, and tactics. Opens `Finset` namespace."
     },
     {
       "id": "divisors",
       "title": "Part I: Divisors in an Interval",
       "startLine": 36,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Defines `HasDivisorIn m n := \\exists d \\mid m, \\; n < d < 2n$ and counting function $N(x, y, n)$ via `Finset.filter`."
     },
     {
       "id": "infrastructure",
       "title": "Part II: Infrastructure Lemmas",
       "startLine": 46,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "**Proves** 7 lemmas: $N \\leq y$, $N(x, 0, n) = 0$, degenerate $n$ cases, monotonicity in $y$, divisor witnesses for multiples, $n+1$, and $m \\in (n, 2n)$."
     },
     {
       "id": "density",
       "title": "Part III: Density Condition",
       "startLine": 111,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "Defines `DensityBound` using rational $\\varepsilon = \\varepsilon_{\\text{Num}}/\\varepsilon_{\\text{Den}}$. **Proves** 4 trivial cases: $y = 0$, $\\varepsilon \\geq 1$, $n = 0$, $n = 1$."
     },
     {
       "id": "problem-statements",
       "title": "Part IV: Problem Statements",
       "startLine": 150,
-      "endLine": 176,
+      "endLine": 177,
       "summary": "States `ErdosProblem450_ForAll` ($\\forall x$) and `ErdosProblem450_Exists` ($\\exists x$). **Proves** `forAll_implies_exists`."
     },
     {
       "id": "known-results",
       "title": "Part V: Known Results (Axiomatized)",
       "startLine": 178,
-      "endLine": 203,
+      "endLine": 204,
       "summary": "Axiomatizes Cambie's no-$y$ result, small-$\\varepsilon$ regime ($y \\geq 2n+1$ suffices), and Ford's $4n$-interval guarantee."
     },
     {

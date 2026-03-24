@@ -91,7 +91,7 @@
       "title": "Largest Prime Factor",
       "summary": "largestPrimeFactor definition, lpf_divides, lpf_prime, lpf_of_prime",
       "startLine": 42,
-      "endLine": 69,
+      "endLine": 70,
       "mathContext": "$P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ for $n > 1$, $P(1) = 1$. Also denoted $P^+(n)$. Properties: $P(n) \\mid n$, $P(n)$ is prime for $n > 1$, $P(p) = p$ for primes."
     },
     {
@@ -99,7 +99,7 @@
       "title": "Smooth Numbers",
       "summary": "isSmooth, isFriable definitions",
       "startLine": 71,
-      "endLine": 87,
+      "endLine": 88,
       "mathContext": "$\\text{isSmooth}(\\alpha, n) \\iff n > 0 \\wedge P(n) < n^\\alpha$. $\\text{isFriable}(y, n) \\iff P(n) \\le y$. An $\\alpha$-smooth number has all prime factors $< n^\\alpha$."
     },
     {
@@ -107,7 +107,7 @@
       "title": "The Dickman Function",
       "summary": "dickman_function axiom, properties: at_one, at_two, positive, decreasing",
       "startLine": 89,
-      "endLine": 112,
+      "endLine": 113,
       "mathContext": "$\\rho(u) = 1$ for $u \\le 1$, $u\\rho'(u) = -\\rho(u-1)$ for $u > 1$ (delay differential equation). $\\rho(2) = 1 - \\ln 2 \\approx 0.307$. $\\rho(u) \\sim u^{-u}$ for large $u$."
     },
     {
@@ -115,7 +115,7 @@
       "title": "Dickman's Theorem (1930)",
       "summary": "psi counting function, dickman_theorem axiom",
       "startLine": 114,
-      "endLine": 133,
+      "endLine": 134,
       "mathContext": "$\\Psi(x, x^\\alpha) / x \\to \\rho(1/\\alpha)$ as $x \\to \\infty$ (Dickman, 1930). The density of $\\alpha$-smooth numbers is $\\rho(1/\\alpha)$."
     },
     {
@@ -123,7 +123,7 @@
       "title": "The Main Question",
       "summary": "consecutiveSmooth, densityExists, erdos928Question",
       "startLine": 135,
-      "endLine": 160,
+      "endLine": 161,
       "mathContext": "$\\text{densityExists}(\\alpha, \\beta) \\iff \\lim_{N \\to \\infty} \\frac{|\\{n \\le N : P(n) < n^\\alpha \\wedge P(n+1) < (n+1)^\\beta\\}|}{N}$ exists. The main open question."
     },
     {
@@ -131,7 +131,7 @@
       "title": "Independence Conjecture",
       "summary": "independenceConjecture: density = ρ(1/α)ρ(1/β)",
       "startLine": 162,
-      "endLine": 172,
+      "endLine": 173,
       "mathContext": "$\\text{density} = \\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$. Since $\\gcd(n, n+1) = 1$, smoothness of $n$ and $n+1$ should be independent events."
     },
     {
@@ -139,7 +139,7 @@
       "title": "Partial Results",
       "summary": "infinitely_many_exist, teravainen_log_density, wang_conditional",
       "startLine": 174,
-      "endLine": 206,
+      "endLine": 207,
       "mathContext": "Schinzel/Meza: $\\infty$-many $n$ with both smooth. Teräväinen (2018): log density $= \\rho(1/\\alpha)\\rho(1/\\beta)$. Wang (2021): natural density $= \\rho(1/\\alpha)\\rho(1/\\beta)$ assuming Elliott-Halberstam for friable integers."
     },
     {

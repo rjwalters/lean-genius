@@ -20,7 +20,8 @@
     "axiomCount": 5,
     "lineCount": 790,
     "badge": "axiom",
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -41,28 +42,28 @@
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 49,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "The open conjecture: for any ε > 0 and sufficiently large no-five-collinear point sets P, the four-point line count is less than ε·|P|². Stated as an axiom since the problem is unresolved."
     },
     {
       "id": "known-lower-bounds",
       "title": "Known Lower Bounds",
       "startLine": 59,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Two lower bound results: Grünbaum's Ω(n^{3/2}) construction and Solymosi–Stojaković's nearly quadratic n^{2−O(1/√log n)} construction that disproved Erdős's original Θ(n^{3/2}) conjecture."
     },
     {
       "id": "trivial-upper",
       "title": "Trivial Upper Bound",
       "startLine": 77,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "The elementary observation that at most C(n,2) lines are determined by n points, giving O(n²) as the trivial upper bound on four-point lines."
     },
     {
       "id": "related-observations",
       "title": "Related Observations",
       "startLine": 83,
-      "endLine": 99,
+      "endLine": 790,
       "summary": "Burr–Grünbaum–Sloane/Füredi–Palásti constructions with Θ(n²) collinear triples but no four-point lines, and the Szemerédi–Trotter incidence theorem as the key tool for bounding collinearity configurations."
     }
   ],

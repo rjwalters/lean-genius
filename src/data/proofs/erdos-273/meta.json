@@ -62,7 +62,8 @@
     ],
     "axiomCount": 4,
     "assumptions": "4 axiom declarations: selfridge_example (p>=3 covering exists), covering_reciprocal_sum (reciprocal sum >= 1 necessary), difficulty_even_coverage (no modulus 2 obstacle), min_modulus_ge_4 (all moduli >= 4 for p>=5)",
-    "lineCount": 115
+    "lineCount": 115,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "A covering system is a finite collection of residue classes $a_i \\pmod{m_i}$ whose union is all of $\\mathbb{Z}$. Erdős asked whether one can construct a covering system using only moduli of the form $p - 1$ for primes $p \\geq 5$. When $p \\geq 3$ is allowed, Selfridge found such a system using divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$, with the key modulus $2 = 3 - 1$. The restriction to $p \\geq 5$ excludes modulus 2, making coverage much harder since every modulus must be $\\geq 4$. From Erdős–Graham (1980), p.24. Hough's 2015 resolution of the minimum modulus conjecture constrains the approach further.",
@@ -88,7 +89,7 @@
       "id": "covering-systems",
       "title": "Covering Systems",
       "startLine": 21,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Defines `CoveringSystem` as a structure with `Fin n`-indexed moduli ($m_i \\geq 2$), residues, and the covering property $\\forall z \\in \\mathbb{Z},\\, \\exists i,\\, z \\equiv r_i \\pmod{m_i}$. Uses integer modular arithmetic directly rather than `ZMod`.",
       "mathContext": "$\\forall z \\in \\mathbb{Z},\\, \\exists i \\in [n],\\, m_i \\mid (z - r_i)$, with $m_i \\geq 2$. Covering: $\\mathbb{Z} = \\bigcup_{i=1}^{n} (r_i + m_i\\mathbb{Z})$."
     },
@@ -96,7 +97,7 @@
       "id": "prime-minus-one",
       "title": "Prime-Minus-One Moduli",
       "startLine": 39,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines `IsPrimeMinusOne k m` ($m = p - 1$ for prime $p \\geq k$) and `AllModuliPrimeMinusOne k cs`. The parameter $k$ unifies Selfridge's solved case ($k = 3$) and Erdős's open question ($k = 5$).",
       "mathContext": "$\\text{IsPrimeMinusOne}(k, m) \\iff \\exists p \\geq k,\\, p \\text{ prime},\\, m = p - 1$. For $k=5$: allowed $m \\in \\{4,6,10,12,16,18,22,\\ldots\\}$."
     },
@@ -104,7 +105,7 @@
       "id": "main-problem",
       "title": "The Main Problem",
       "startLine": 51,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "States `ErdosProblem273 : Prop` as $\\exists cs : \\text{CoveringSystem},\\, \\text{AllModuliPrimeMinusOne}\\, 5\\, cs$. The allowed moduli are $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\}$.",
       "mathContext": "$\\exists n,\\, \\exists (m_i, r_i)_{i=1}^{n}: \\mathbb{Z} = \\bigcup r_i + m_i\\mathbb{Z}$ with each $m_i = p_i - 1$, $p_i$ prime $\\geq 5$."
     },
@@ -112,7 +113,7 @@
       "id": "selfridge-example",
       "title": "The Selfridge Example (p ≥ 3)",
       "startLine": 63,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Axiomatizes Selfridge's covering system for $p \\geq 3$ using divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$. The key modulus $2 = 3 - 1$ enables coverage of all parities.",
       "mathContext": "Selfridge: covering with moduli $\\mid 360 = 2^3 \\cdot 3^2 \\cdot 5$. Key: $2 = 3 - 1$ covers all parities."
     },
@@ -120,7 +121,7 @@
       "id": "covering-basics",
       "title": "Covering System Basics",
       "startLine": 74,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Defines `CoveringSystem.lcm` for periodicity reduction, axiomatizes $\\sum 1/m_i \\geq 1$ over $\\mathbb{Q}$, and defines `IsDistinct` (injective moduli) connecting to Hough's minimum modulus theorem.",
       "mathContext": "Necessary condition: $\\sum_{i=1}^{n} 1/m_i \\geq 1$. Periodicity: covering is determined by behavior on $[0, \\text{lcm}(m_i))$."
     },

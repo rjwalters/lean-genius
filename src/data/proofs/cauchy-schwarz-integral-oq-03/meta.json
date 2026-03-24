@@ -54,7 +54,8 @@
     "dateAdded": "2026-03-11",
     "axiomCount": 0,
     "lineCount": 181,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Cauchy-Schwarz inequality traces back to Augustin-Louis Cauchy (1821) for finite sums and Hermann Schwarz (1888) for integrals, with Viktor Bunyakovsky (1859) establishing the integral form independently. The extension from real to complex inner product spaces was clarified by John von Neumann's axiomatization of Hilbert spaces (1929), where the sesquilinearity of the complex inner product $\\langle f, g \\rangle = \\int \\bar{f} g \\, d\\mu$ introduces conjugation absent in the real case. The physics convention (conjugate-linear in the first argument) became standard through quantum mechanics, where $\\langle \\psi | \\phi \\rangle$ is the transition amplitude. In Mathlib, the `RCLike` typeclass (introduced to unify $\\mathbb{R}$ and $\\mathbb{C}$) enables stating the inequality once for all scalar fields. The bridge theorem `L2.inner_def` connecting abstract and integral forms is the crucial link that makes the transfer from abstract inner product space theory to concrete integral inequalities fully formal.",
@@ -78,49 +79,49 @@
       "id": "preamble",
       "title": "Preamble and Setup",
       "startLine": 1,
-      "endLine": 11,
+      "endLine": 12,
       "summary": "Imports Mathlib, sets `linter.unusedVariables false`, opens `MeasureTheory` and `InnerProductSpace` namespaces, and declares the measure space variable $\\alpha$ with measure $\\mu$."
     },
     {
       "id": "complex-l2-bridge",
       "title": "Complex L2 Bridge Theorem",
       "startLine": 13,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Establishes the `InnerProductSpace ℂ (Lp ℂ 2 μ)` instance via `inferInstance`, then proves the bridge theorem $\\langle f, g \\rangle_{L^2} = \\int \\langle f(x), g(x) \\rangle_{\\mathbb{C}} \\, d\\mu$ via `L2.inner_def`. Also derives the explicit conjugation form $\\langle f, g \\rangle = \\int \\bar{f}(x) g(x) \\, d\\mu$ using `Complex.inner_apply`."
     },
     {
       "id": "complex-cs",
       "title": "Complex Cauchy-Schwarz",
       "startLine": 38,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Four formulations of Cauchy-Schwarz for complex $L^2$: (1) abstract $\\|\\langle f, g \\rangle\\| \\leq \\|f\\| \\|g\\|$, (2) integral with pointwise inner products, (3) integral with explicit $\\bar{f} g$, and (4) squared form $\\|\\langle f, g \\rangle\\|^2 \\leq \\|f\\|^2 \\|g\\|^2$ proved via `nlinarith`."
     },
     {
       "id": "self-inner-product",
       "title": "Self-Inner Product Properties",
       "startLine": 66,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Proves $\\langle f, f \\rangle_{\\mathbb{C}} = \\|f\\|^2$, its imaginary part vanishes, its real part is non-negative, and it equals $\\int \\|f(x)\\|^2 \\, d\\mu$. These establish that the complex $L^2$ norm behaves as a real quantity despite the complex inner product."
     },
     {
       "id": "real-part",
       "title": "Real and Imaginary Part Bounds",
       "startLine": 95,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "Component-wise bounds $\\text{Re}\\langle f, g \\rangle \\leq \\|f\\| \\|g\\|$ and $|\\text{Im}\\langle f, g \\rangle| \\leq \\|f\\| \\|g\\|$, proved via `calc` chains composing $|\\text{Re}(z)| \\leq |z|$ with Cauchy-Schwarz."
     },
     {
       "id": "equality",
       "title": "Equality Characterization",
       "startLine": 114,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "Proves $\\|\\langle f, g \\rangle\\| = \\|f\\| \\|g\\|$ iff $f = cg$ for some $c \\in \\mathbb{C}$. Forward direction inverts `norm_inner_eq_norm_iff`; reverse computes $\\langle cf, f \\rangle = \\bar{c} \\|f\\|^2$ and uses `ring`."
     },
     {
       "id": "rclike-uniform",
       "title": "Uniform RCLike Formulation",
       "startLine": 132,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "The most general form: bridge theorem, abstract CS, and integral CS parameterized by `RCLike 𝕜`, simultaneously covering both $\\mathbb{R}$ and $\\mathbb{C}$ via Mathlib's scalar field typeclass."
     },
     {

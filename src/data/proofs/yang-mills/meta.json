@@ -59,7 +59,8 @@
     "millenniumProblem": "yang-mills",
     "axiomCount": 0,
     "assumptions": "1 explicit axiom declaration: gaugeTransform (gauge-transformed field). ~15 structure-encoded assumptions in: CompactSimpleGaugeGroup (compact, connected, simple), GaugeLieAlgebra (bracket_anticomm, bracket_jacobi), WightmanQFT (vacuum_normalized, energy_bounded_below, vacuum_lowest_energy), YangMillsAction (coupling_pos, action_nonneg), FieldStrength (antisymmetric), Instanton (action_formula, bogomolny_bound), EnergyMomentumTensor (symmetric, energy_density_nonneg, conservation). The Yang-Mills 4D mass gap conjecture remains OPEN.",
-    "lineCount": 28695
+    "lineCount": 28695,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Chen-Ning Yang and Robert Mills introduced non-abelian gauge theory in 1954, generalizing Maxwell's electromagnetism from the abelian group $U(1)$ to arbitrary compact Lie groups. Their paper was initially seen as physically unrealistic (massless gauge bosons were not observed), but the discovery of asymptotic freedom by David Gross, Frank Wilczek, and David Politzer in 1973 (Nobel Prize 2004) showed that non-abelian gauge coupling weakens at high energies, making perturbative QCD reliable there. Kenneth Wilson introduced lattice gauge theory in 1974, providing a non-perturbative definition via discrete spacetime, and showed evidence for quark confinement through the area law for Wilson loops. Arthur Wightman and others developed axiomatic quantum field theory in the 1950s-60s, formulating precise mathematical criteria (Wightman axioms) for a rigorous QFT. The Clay Mathematics Institute selected the Yang-Mills Existence and Mass Gap as one of seven Millennium Prize Problems in 2000, offering $1,000,000 for a proof that quantum Yang-Mills theory on $\\mathbb{R}^4$ exists rigorously and has a positive mass gap $\\Delta > 0$. Despite overwhelming numerical evidence from lattice QCD and physical confirmation of confinement, no rigorous 4D interacting quantum field theory has ever been constructed.",
@@ -87,7 +88,7 @@
       "summary": "Imports Mathlib modules for Lie algebras, matrix trace, calculus, inner product spaces, measure theory, and polynomials. Sets `maxHeartbeats 4000000` for the computationally intensive proofs.",
       "mathContext": "Imports for $\\mathfrak{g}$ (Lie algebra), $\\text{Tr}$ (matrix trace), $\\nabla$ (calculus), $\\langle \\cdot, \\cdot \\rangle$ (inner product), $\\int$ (measure theory).",
       "startLine": 1,
-      "endLine": 53
+      "endLine": 54
     },
     {
       "id": "gauge-group",
@@ -215,7 +216,7 @@
       "summary": "Defines `PolyakovLoop` (order parameter for confinement), `ConfinedPhase` ($\\langle P \\rangle = 0$, $\\sigma > 0$), `DeconfinedPhase` ($\\langle P \\rangle \\neq 0$, $T_c > 0$). Proves confinement and deconfinement are mutually exclusive. Summary lists 50+ proven theorems and 7 axioms.",
       "mathContext": "Polyakov: $P(\\vec{x}) = \\text{Tr}(\\prod_t U_0(\\vec{x},t))$. Confined: $\\langle P \\rangle = 0$. Deconfined: $\\langle P \\rangle \\neq 0$. Mutually exclusive.",
       "startLine": 1036,
-      "endLine": 1133
+      "endLine": 28695
     }
   ],
   "conclusion": {

@@ -56,7 +56,8 @@
     "dateAdded": "2026-02-21",
     "axiomCount": 0,
     "lineCount": 192,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Euclid's Lemma** is one of the oldest and most fundamental results in number theory, appearing in Euclid's *Elements* (~300 BCE) as Proposition VII.30: *'If a prime p divides the product a·b, then p divides a or p divides b.'* Euclid's original proof used the division algorithm and properties of proportions, without the modern algebraic language of Bézout coefficients.\n\nThe Bézout identity itself is named after **Étienne Bézout (1730–1783)**, though the key result — that gcd(a,b) can be expressed as an integer linear combination — was known to **Claude Gaspard Bachet de Méziriac (1624)** and even to **Aryabhata (~499 CE)** in the context of the Kuttaka algorithm for solving linear Diophantine equations.\n\nThe modern algebraic proof of Euclid's lemma via Bézout's identity: if gcd(p,a) = 1, get integers x, y with p·x + a·y = 1. Multiply by c: p·x·c + a·c·y = c. Since p | p·x·c and p | a·b (hypothesis gives a·b = p·k, so a·c·y = ...), deduce p | c. This argument abstracts to any **Bézout domain** or **principal ideal domain (PID)**.\n\nIn Lean 4, this argument is crystallized by the `coprime_iff_linear_combination` theorem: `Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1`. This converts the arithmetic fact 'gcd = 1' into the algebraic witness needed for the proof. The `linear_combination` tactic then closes the goal in a single line by ring arithmetic.",
@@ -79,7 +80,7 @@
       "id": "imports",
       "title": "Imports",
       "startLine": 1,
-      "endLine": 5,
+      "endLine": 6,
       "summary": "Imports GCD basics for naturals, GCD for integers (Bézout coefficients), coprime ring theory (IsCoprime), prime number basics, and Tactic (linear_combination, exact_mod_cast)."
     },
     {
@@ -100,28 +101,28 @@
       "id": "euclids-int",
       "title": "Euclid's Lemma for Integers",
       "startLine": 81,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "euclids_lemma_int: IsCoprime version. Unpacks IsCoprime to get u, v with u*a + v*b = 1. Gets k with b*c = a*k. Witness u*c + v*k, proved by linear_combination v * hk - c * huv."
     },
     {
       "id": "euclids-nat",
       "title": "Euclid's Lemma for Naturals (Main Result)",
       "startLine": 103,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "euclids_lemma_nat: the main answer to the OQ. Uses coprime_iff_linear_combination to get Bézout coefficients x, y over ℤ. Casts divisibility to ℤ with exact_mod_cast. Constructs witness x*c + y*k by linear_combination y * hk - c * hbez."
     },
     {
       "id": "euclids-prime",
       "title": "Prime Version of Euclid's Lemma",
       "startLine": 132,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "euclids_lemma_prime: if p prime and p | a*b then p|a or p|b. Case splits on p | a. If p ∤ a, uses Nat.Prime.coprime_iff_not_dvd to get Nat.Coprime p a, then applies euclids_lemma_nat."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
       "startLine": 154,
-      "endLine": 190,
+      "endLine": 192,
       "summary": "Four examples: (3,7,6), (5,8,15), prime 7|14*3, and direct witness verification 3*(5*6+(-2)*14) = 6."
     }
   ],

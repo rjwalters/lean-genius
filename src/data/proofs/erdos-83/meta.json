@@ -113,63 +113,63 @@
       "title": "Basic Definitions",
       "summary": "groundSet [m] as Fin m, isKUniform (k-uniform families), isTIntersecting (t-intersecting property), isIntersecting (t=1 specialization)",
       "startLine": 39,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "ekr-background",
       "title": "Erdős-Ko-Rado Background",
       "summary": "erdos_ko_rado_bound (classical EKR theorem, axiom), ekrStarFamily (star construction), ekr_achieved (tightness axiom)",
       "startLine": 70,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "problem-setup",
       "title": "The t-Intersecting Problem",
       "summary": "erdos83Params (4n, 2n, 2), isValidErdos83Family (uniformity + intersection constraints)",
       "startLine": 97,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "conjectured-bound",
       "title": "The Conjectured Bound",
       "summary": "erdos83Bound = ½(C(4n,2n) - C(2n,n)²), erdos83Question (formal problem statement)",
       "startLine": 114,
-      "endLine": 131
+      "endLine": 132
     },
     {
       "id": "extremal-construction",
       "title": "Extremal Construction",
       "summary": "starLikeFamily (majority family), starLikeFamily_achieves and starLikeFamily_valid (axioms for tightness and validity)",
       "startLine": 133,
-      "endLine": 156
+      "endLine": 157
     },
     {
       "id": "complete-intersection",
       "title": "Complete Intersection Theorem",
       "summary": "criticalRatio (phase transition parameter), akFamily (general AK construction), ahlswede_khachatrian_theorem (the landmark 1997 result, axiom)",
       "startLine": 158,
-      "endLine": 188
+      "endLine": 189
     },
     {
       "id": "resolution",
       "title": "Resolution of Erdős #83",
       "summary": "erdos83_from_ak (parameter specialization), erdos83_answer (main theorem proved from AK), reducing the problem to a corollary of the Complete Intersection Theorem",
       "startLine": 190,
-      "endLine": 213
+      "endLine": 214
     },
     {
       "id": "bound-computation",
       "title": "Bound Computation",
       "summary": "Small cases (n=1: bound 0, n=2: bound 20) and asymptotic growth (≈ ½C(4n,2n) for large n)",
       "startLine": 215,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "implications",
       "title": "Implications and Generalizations",
       "summary": "Phase transitions in optimal families, coding theory connection (constant-weight codes), probabilistic and multipartite extensions",
       "startLine": 235,
-      "endLine": 258
+      "endLine": 259
     },
     {
       "id": "summary",

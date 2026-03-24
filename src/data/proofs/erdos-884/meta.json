@@ -87,7 +87,7 @@
       "title": "Problem Documentation",
       "summary": "Header with problem statement, references, and background",
       "startLine": 1,
-      "endLine": 18,
+      "endLine": 19,
       "mathContext": "For $n$ with divisors $d_1 < d_2 < \\cdots < d_t$, compare $\\sum_{i<j} \\frac{1}{d_j - d_i}$ (all pairs) with $\\sum_{i=1}^{t-1} \\frac{1}{d_{i+1} - d_i}$ (consecutive pairs). Conjecture: the former is $O(1 + \\text{latter})$."
     },
     {
@@ -95,7 +95,7 @@
       "title": "Imports and Setup",
       "summary": "Specific Mathlib imports and namespace opening",
       "startLine": 20,
-      "endLine": 38,
+      "endLine": 39,
       "mathContext": "Uses `Nat.divisors` for the divisor set, `List.sort` for ordering, and `BigOperators` for $\\sum$ notation over `Finset`."
     },
     {
@@ -103,7 +103,7 @@
       "title": "Divisor Lists",
       "summary": "divisorList, numDivisors, divisor accessor, sorted and membership axioms",
       "startLine": 40,
-      "endLine": 58,
+      "endLine": 59,
       "mathContext": "The sorted divisor list $d_1 < d_2 < \\cdots < d_{\\tau(n)}$ where $\\tau(n) = |\\{d : d | n\\}|$ is the number-of-divisors function. Always $d_1 = 1$ and $d_{\\tau(n)} = n$."
     },
     {
@@ -111,7 +111,7 @@
       "title": "Divisor Gaps",
       "summary": "consecutiveGap, generalGap, positivity axioms",
       "startLine": 60,
-      "endLine": 76,
+      "endLine": 77,
       "mathContext": "Consecutive gap: $g_i = d_{i+1} - d_i > 0$. General gap: $d_j - d_i = \\sum_{k=i}^{j-1} g_k$ for $i < j$ (telescoping). Since general gaps are sums of consecutive gaps, $d_j - d_i \\geq d_{i+1} - d_i$."
     },
     {
@@ -119,7 +119,7 @@
       "title": "The Two Sums",
       "summary": "allPairsSum and consecutivePairsSum definitions",
       "startLine": 78,
-      "endLine": 91,
+      "endLine": 92,
       "mathContext": "$S_{\\text{all}}(n) = \\sum_{1 \\leq i < j \\leq \\tau} \\frac{1}{d_j - d_i}$ has $\\binom{\\tau}{2}$ terms. $S_{\\text{consec}}(n) = \\sum_{i=1}^{\\tau-1} \\frac{1}{d_{i+1} - d_i}$ has $\\tau - 1$ terms. The conjecture: $S_{\\text{all}} \\leq C(1 + S_{\\text{consec}})$."
     },
     {
@@ -127,7 +127,7 @@
       "title": "Main Conjecture",
       "summary": "ErdosConjecture884 definition and erdos_884 axiom",
       "startLine": 93,
-      "endLine": 103,
+      "endLine": 104,
       "mathContext": "$\\exists C > 0, \\forall n \\geq 1: S_{\\text{all}}(n) \\leq C \\cdot (1 + S_{\\text{consec}}(n))$. The '+1' handles the case $\\tau(n) = 2$ (primes) where $S_{\\text{consec}} = 1/(p-1)$ could be small."
     },
     {
@@ -135,7 +135,7 @@
       "title": "Basic Properties",
       "summary": "Nonnegativity axioms, consecutivePairsSum_num_terms theorem",
       "startLine": 105,
-      "endLine": 116,
+      "endLine": 117,
       "mathContext": "$S_{\\text{all}}(n) \\geq 0$ and $S_{\\text{consec}}(n) \\geq 0$ (sums of positive terms). The consecutive sum has exactly $\\tau(n) - 1$ terms."
     },
     {
@@ -143,7 +143,7 @@
       "title": "Examples",
       "summary": "divisors_6, divisors_prime, prime_case_equality",
       "startLine": 118,
-      "endLine": 129,
+      "endLine": 130,
       "mathContext": "$n = 6$: divisors $\\{1,2,3,6\\}$, consecutive gaps $1,1,3$. $n = p$ (prime): divisors $\\{1,p\\}$, both sums equal $1/(p-1)$, so $C = 1$ suffices. Primes are trivial; highly composite numbers are the hard case."
     },
     {
@@ -151,7 +151,7 @@
       "title": "Structural Lemmas",
       "summary": "gap_lower_bound and numDivisors_mul_coprime axioms",
       "startLine": 131,
-      "endLine": 142,
+      "endLine": 143,
       "mathContext": "Gap lower bound: $d_j - d_i \\geq d_{i+1} - d_i$ (telescoping). Multiplicativity: $\\tau(mn) = \\tau(m) \\cdot \\tau(n)$ for $\\gcd(m,n) = 1$. Highly composite numbers $n = 2^{a_1} 3^{a_2} 5^{a_3} \\cdots$ maximize $\\tau(n)$."
     },
     {

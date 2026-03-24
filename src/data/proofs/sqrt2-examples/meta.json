@@ -69,7 +69,8 @@
       }
     ],
     "lineCount": 48,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -118,7 +119,7 @@
       "id": "square-nonneg",
       "title": "Squares are Non-negative",
       "startLine": 30,
-      "endLine": 40,
+      "endLine": 41,
       "summary": "Proves $n \\cdot n \\geq 0$ for any integer $n$ using case analysis on the sign of $n$, with a `calc` block handling the negative case by rewriting as $(-n)(-n)$."
     },
     {
@@ -139,7 +140,7 @@
       "id": "negative-case",
       "title": "Negative Case: n < 0",
       "startLine": 36,
-      "endLine": 40,
+      "endLine": 48,
       "summary": "When $n < 0$, derives $-n \\geq 0$, then uses a `calc` block: $n \\cdot n = (-n) \\cdot (-n) \\geq 0$. The `ring` tactic proves the equality $n \\cdot n = (-n)(-n)$ and `mul_nonneg` closes the inequality."
     }
   ],

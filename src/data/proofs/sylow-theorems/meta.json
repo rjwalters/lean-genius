@@ -62,7 +62,8 @@
       "theoremCount": 10,
       "definitionCount": 1
     },
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. All three Sylow theorems delegate to Mathlib's `Sylow` module: existence via `Sylow.exists`, conjugacy via `Sylow.equiv`, and counting via `Sylow.card_sylow_modEq_one`. Original contributions are pedagogical wrappers — `unique_sylow_normal` (unique Sylow subgroup is normal) and `cauchy_theorem` (Cauchy's theorem as corollary) provide accessible named statements composing Mathlib results."
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. All three Sylow theorems delegate to Mathlib's `Sylow` module: existence via `Sylow.exists`, conjugacy via `Sylow.equiv`, and counting via `Sylow.card_sylow_modEq_one`. Original contributions are pedagogical wrappers — `unique_sylow_normal` (unique Sylow subgroup is normal) and `cauchy_theorem` (Cauchy's theorem as corollary) provide accessible named statements composing Mathlib results.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Peter Ludwig Mejdell Sylow (1832-1918) was a Norwegian mathematician who spent most of his career as a high school teacher in Halden, proving these landmark theorems as a side pursuit. He published them in *Mathematische Annalen* (1872, vol. 5) — a single paper that transformed finite group theory.\n\nGeorg Frobenius (1849-1917) gave streamlined alternative proofs in 1887 and strengthened the counting theorem. William Burnside (1852-1927) deployed Sylow's theorems extensively, proving in 1904 that all groups of order p^a·q^b are solvable — a result later reproved by Feit-Thompson (1963) as part of the monumental Odd Order Theorem.\n\nThe theorems became a cornerstone of the Classification of Finite Simple Groups (CFSG), completed ~2004 by Aschbacher, Smith, and others: Sylow counting immediately eliminates most orders from being simple, while conjugacy ensures uniform subgroup structure within each prime family.",
@@ -89,7 +90,7 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Imports six Mathlib modules covering Sylow theory, cosets, indices, element orders, and prime factorization. The docstring documents all three Sylow theorems, their historical origin (Sylow 1872), and a worked classification example (groups of order 15 are cyclic). Part of Wiedijk's 100 Theorems (#72).",
       "mathContext": "Dependencies: `Sylow p G`, `Subgroup.index`, `orderOf`, `Nat.factorization` from Mathlib's group theory library."
     },
@@ -105,7 +106,7 @@
       "id": "existence",
       "title": "First Sylow Theorem (Existence)",
       "startLine": 80,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "States and proves Sylow I: for any prime p, a finite group G has at least one Sylow p-subgroup. Also proves that the order of a Sylow p-subgroup equals p^(v_p(|G|)) where v_p is the p-adic valuation.",
       "mathContext": "$\\exists P \\leq G$ with $|P| = p^{\\nu_p(|G|)}$. Proof: `Sylow.nonempty` from Mathlib, internally via induction on $|G|$ and the class equation."
     },
@@ -113,7 +114,7 @@
       "id": "conjugacy",
       "title": "Second Sylow Theorem (Conjugacy)",
       "startLine": 105,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "States Sylow II: all Sylow p-subgroups are conjugate, with a corollary that all Sylow p-subgroups are isomorphic. Uses Mathlib's `MulAction.exists_smul_eq` for conjugacy and `Sylow.equiv` for the isomorphism.",
       "mathContext": "$P, Q \\in \\text{Syl}_p(G) \\Rightarrow \\exists g \\in G,\\, Q = gPg^{-1} \\Rightarrow P \\cong Q$."
     },
@@ -121,7 +122,7 @@
       "id": "counting",
       "title": "Third Sylow Theorem (Counting)",
       "startLine": 130,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "States Sylow III: the number n_p of Sylow p-subgroups satisfies n_p ≡ 1 (mod p) and n_p divides the index [G:P]. These two constraints together severely restrict possible group structures.",
       "mathContext": "$n_p \\equiv 1 \\pmod{p}$, $n_p \\mid [G:P] = m$ where $|G| = p^k m$."
     },

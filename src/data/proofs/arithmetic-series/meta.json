@@ -52,7 +52,8 @@
         "relationship": "Further extensions of simplicial number theory"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The formula for 1 + 2 + ... + n = n(n+1)/2 is famously attributed to Carl Friedrich Gauss, who allegedly discovered it as a schoolboy around 1785. The story goes that when his teacher J.G. Büttner asked the class to sum the numbers 1 to 100 (hoping for a quiet classroom), young Gauss immediately answered 5050. The earliest known source for this anecdote is Wolfgang Sartorius von Waltershausen's 1856 biography of Gauss, written decades after the alleged event — the story has been embellished in many retellings.\n\nGauss realized that pairing 1+100, 2+99, 3+98, etc. gives 50 pairs, each summing to 101, yielding 50 × 101 = 5050. This pairing argument is the essence of the proof and illustrates a fundamental principle: algebraic insight (symmetry) defeats brute-force computation.\n\nThe formula was known long before Gauss. It appears in Archimedes' work (c. 250 BCE), in Aryabhata's *Aryabhatiya* (499 CE, India) as the formula for *saṅkalita*, and in Babylonian mathematics. The Pythagoreans studied triangular numbers T(n) = n(n+1)/2 as figurate numbers — dots arranged in triangular patterns — connecting arithmetic to geometry. In China, the formula appears in the *Jiuzhang Suanshu* (Nine Chapters on the Mathematical Art, c. 200 BCE).",
@@ -85,7 +86,7 @@
       "id": "gauss-formula",
       "title": "Gauss's Summation Formula",
       "startLine": 50,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "The fundamental formulas for summing 0..n-1 and 0..n.",
       "mathContext": "$\\sum_{k=0}^{n-1} k = \\frac{n(n-1)}{2}$ and $\\sum_{k=0}^{n} k = \\frac{n(n+1)}{2}$. In Lean, `Finset.sum_range_id` gives $\\sum_{k \\in \\text{range}\\,n} k = n(n-1)/2$. The off-by-one between $\\sum_0^{n-1}$ and $\\sum_0^n$ is handled by the `sum_range_succ` lemma."
     },
@@ -93,7 +94,7 @@
       "id": "pairing-argument",
       "title": "The Pairing Argument",
       "startLine": 72,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "The algebraic heart of Gauss's proof: 2S = n(n+1).",
       "mathContext": "Write $S = 0 + 1 + 2 + \\cdots + n$ and $S = n + (n-1) + \\cdots + 0$. Adding term-by-term: $2S = n + n + \\cdots + n = (n+1) \\cdot n$, so $S = n(n+1)/2$. This is the same pairing trick used in Wilson's theorem, where elements pair with their inverses."
     },
@@ -101,7 +102,7 @@
       "id": "general-series",
       "title": "General Arithmetic Series",
       "startLine": 96,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "Generalization to arithmetic progressions with arbitrary first term and difference.",
       "mathContext": "$\\sum_{k=0}^{n-1} (a + kd) = na + d \\cdot \\frac{n(n-1)}{2} = \\frac{n(2a + (n-1)d)}{2}$. This factors as $n \\cdot \\frac{\\text{first} + \\text{last}}{2}$: the number of terms times the average of first and last. The Lean proof unfolds this from `Finset.sum_range_id` using `mul_comm` and `ring`."
     },
@@ -109,7 +110,7 @@
       "id": "special-cases",
       "title": "Famous Special Cases",
       "startLine": 110,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Gauss's original 1-100 problem, sum of odd numbers, and sum of even numbers.",
       "mathContext": "Gauss: $\\sum_{k=1}^{100} k = 5050 = 100 \\cdot 101 / 2$. Odd numbers: $\\sum_{k=0}^{n-1}(2k+1) = n^2$ (the $n$-th triangular gnomon). Even numbers: $\\sum_{k=1}^{n} 2k = n(n+1)$. The sum-of-odd-numbers formula $1+3+5+\\cdots+(2n-1) = n^2$ has a beautiful geometric proof: each odd number is an L-shaped gnomon completing a square."
     },
@@ -117,7 +118,7 @@
       "id": "triangular-numbers",
       "title": "Triangular Numbers",
       "startLine": 141,
-      "endLine": 178,
+      "endLine": 187,
       "summary": "Definition and properties of triangular numbers.",
       "mathContext": "$T_n = \\frac{n(n+1)}{2} = \\binom{n+1}{2}$. The $n$-th triangular number counts pairs from $n+1$ objects. Properties: $T_n + T_{n-1} = n^2$ (two consecutive triangulars make a square), $8T_n + 1 = (2n+1)^2$ (a square), and $T_n = \\sum_{k=1}^{n} k$ (definition as partial sum)."
     }

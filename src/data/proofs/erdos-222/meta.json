@@ -88,42 +88,42 @@
       "title": "Sums of Two Squares",
       "summary": "Defines `IsSumTwoSquares n` as $\\exists a, b \\in \\mathbb{Z}: n = a^2 + b^2$, and `SumTwoSquaresSeq` as the set $\\{n \\in \\mathbb{N} : n \\text{ is a sum of two squares}\\}$. Includes concrete examples: $0, 1, 2, 5, 13$.",
       "startLine": 42,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "fermat-criterion",
       "title": "Fermat's Criterion",
       "summary": "States the Fermat-Euler characterization: $n > 0$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ has even $p$-adic valuation in $n$. Also states that primes $p \\equiv 1 \\pmod{4}$ are themselves sums of two squares.",
       "startLine": 63,
-      "endLine": 80
+      "endLine": 81
     },
     {
       "id": "gap-function",
       "title": "The Gap Function",
       "summary": "Axiomatizes `nthSumTwoSquares : ℕ → ℕ` as a strictly increasing enumeration of sums of two squares, and defines `gap k = nthSumTwoSquares(k+1) - nthSumTwoSquares(k)` as the consecutive difference.",
       "startLine": 82,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "density",
       "title": "Density of Sums of Two Squares",
       "summary": "States Landau's theorem (1908): $\\texttt{countSumTwoSquares}(x) \\cdot \\sqrt{\\log x} / x \\to c$ as $x \\to \\infty$, where $c \\approx 0.7642$ is the Landau-Ramanujan constant. Formalized via `Tendsto` and the `atTop` filter.",
       "startLine": 100,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds on Gaps",
       "summary": "Three progressively stronger lower bounds: Erdős (1951) gives $\\text{gap} \\ge c \\log n / \\sqrt{\\log \\log n}$ infinitely often; Richards (1982) gives $\\limsup(\\text{gap}/\\log n) \\ge 1/4$; DEKKM (2022) improves to $\\ge 0.868$.",
       "startLine": 112,
-      "endLine": 132
+      "endLine": 133
     },
     {
       "id": "upper-bound",
       "title": "Bambah-Chowla Upper Bound",
       "summary": "States the universal upper bound: $\\text{gap}_k \\le C \\cdot n_k^{1/4}$ for all $k$, meaning every interval $[n, n + Cn^{1/4}]$ contains a sum of two squares.",
       "startLine": 134,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "summary",

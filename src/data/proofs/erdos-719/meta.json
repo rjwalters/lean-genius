@@ -103,35 +103,35 @@
       "id": "hypergraph-defs",
       "title": "r-Uniform Hypergraphs and Cliques",
       "startLine": 20,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "Defines `RUniformHypergraph V r` as Finset family with card $= r$ condition, `completeClique r S` via powerset filtering, `IsFullClique`, `IsSingleEdge`, and `IsDecompPiece`"
     },
     {
       "id": "decomposition",
       "title": "Decomposition Framework",
       "startLine": 55,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Defines `PiecesEdgeDisjoint` (no shared $r$-edges) and `IsValidDecomp` structure with `pieces_valid`, `pairwise_disjoint`, `covers` fields"
     },
     {
       "id": "turan",
       "title": "Turán Number and Main Conjecture",
       "startLine": 74,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Defines `IsCliqueFree r H` and `turanHypergraph n r` $= \\sup\\{|E| : H \\text{ is } K_{r+1}^r\\text{-free}\\}$; axiomatizes `erdos_sauer_conjecture` (OPEN)"
     },
     {
       "id": "graph-case",
       "title": "Graph Case (r = 2)",
       "startLine": 107,
-      "endLine": 123,
+      "endLine": 124,
       "summary": "Axiomatizes `turan_graph`: $\\text{ex}_2(n; K_3) = \\lfloor n^2/4 \\rfloor$; proves `graph_case_bound` reducing to $\\lfloor n^2/4 \\rfloor$ pieces"
     },
     {
       "id": "structural",
       "title": "Structural Results",
       "startLine": 125,
-      "endLine": 164,
+      "endLine": 165,
       "summary": "Proves `choose_succ_self`: $\\binom{r+1}{r} = r+1$ and `empty_case`; states `decomp_pieces_le_edges` and `trivial_decomp_exists` (sorry)"
     },
     {

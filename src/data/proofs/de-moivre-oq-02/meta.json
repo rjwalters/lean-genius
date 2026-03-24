@@ -88,35 +88,35 @@
       "title": "Composition Identity",
       "summary": "Proves T_m(T_n(cos θ)) = T_{mn}(cos θ): Chebyshev polynomials form a commutative monoid under composition. Also proves commutativity, identity (T_1), associativity, and special cases T_2 ∘ T_n and T_n ∘ T_n.",
       "startLine": 25,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "product-to-sum",
       "title": "Product-to-Sum Formula",
       "summary": "Proves 2·T_m(cos θ)·T_n(cos θ) = T_{m+n}(cos θ) + T_{m-n}(cos θ) from cos_add and cos_sub. Also derives the squaring identity 2·T_n²(cos θ) = T_{2n}(cos θ) + 1.",
       "startLine": 62,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "parity",
       "title": "Parity Relations",
       "summary": "Proves T_n(-cos θ) = (-1)^n · T_n(cos θ) via cos(π - θ) = -cos θ and cos(nπ - nθ) = (-1)^n cos(nθ). Derives even parity T_{2n}(-x) = T_{2n}(x) and odd parity T_{2n+1}(-x) = -T_{2n+1}(x).",
       "startLine": 84,
-      "endLine": 108
+      "endLine": 109
     },
     {
       "id": "special-values",
       "title": "Special Values",
       "summary": "Proves T_n(1) = 1 (from cos(0) = 1), T_n(-1) = (-1)^n (from cos(nπ) = (-1)^n), and T_n(0) = cos(nπ/2) (from cos(π/2) = 0).",
       "startLine": 110,
-      "endLine": 129
+      "endLine": 130
     },
     {
       "id": "roots",
       "title": "Roots of Chebyshev Polynomials",
       "summary": "Proves T_n vanishes at cos((2k+1)π/(2n)) for all k ∈ ℤ and positive n. The proof simplifies n · (2k+1)π/(2n) = kπ + π/2, then uses cos(kπ + π/2) = 0.",
       "startLine": 131,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "summary",

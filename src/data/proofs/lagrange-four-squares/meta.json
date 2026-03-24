@@ -41,7 +41,8 @@
       "Quadratic residues and Fermat's descent",
       "Sum of squares representations and unique factorization",
       "Waring's problem and additive number theory"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Lagrange's four squares theorem was proved by Joseph-Louis Lagrange in 1770, building on earlier work by Euler. The result answered a question that had puzzled mathematicians since antiquity: Diophantus had noted around 250 CE that certain numbers seemed to require many squares.\n\nThe deeper story involves one of mathematics' greatest coincidences: Euler discovered the four-square identity in 1748, showing that the product of two sums-of-four-squares is itself a sum of four squares. Nearly a century later, Hamilton discovered quaternions in 1843. The four-square identity IS quaternion multiplication! The norm of a product equals the product of norms.\n\nThis explains WHY four squares work when three don't: quaternions form a division algebra, but there is no 3-dimensional division algebra (proved by Frobenius in 1877). The algebraic structure that makes four squares work simply doesn't exist for three.\n\nAs one reviewer put it: \"The four squares theorem is astounding, it says something utterly profound about the universe... that's what binds the galaxies together.\"",
@@ -68,7 +69,7 @@
       "id": "euler-identity",
       "title": "Euler's Four-Square Identity",
       "startLine": 44,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "The key algebraic identity showing the product of two sums-of-four-squares is itself a sum of four squares. This is quaternion norm multiplicativity.",
       "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = A^2+B^2+C^2+D^2$ where $A,B,C,D$ are bilinear in $(a,b,c,d)$ and $(x,y,z,w)$. This is $|q_1 \\cdot q_2|^2 = |q_1|^2 |q_2|^2$ for quaternions."
     },
@@ -76,7 +77,7 @@
       "id": "three-vs-four",
       "title": "Why Four Squares and Not Three?",
       "startLine": 71,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Numbers of the form 4^k(8m+7) cannot be sums of three squares, but four always suffice.",
       "mathContext": "$n \\equiv 7 \\pmod{8}$ (e.g., $7, 15, 23$) cannot be written as $a^2 + b^2 + c^2$. Legendre's three-square theorem: $n = a^2+b^2+c^2 \\iff n \\neq 4^k(8m+7)$."
     },
@@ -84,7 +85,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 80,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Lagrange's theorem: every natural number is a sum of four squares. Uses Mathlib's Nat.sum_four_squares.",
       "mathContext": "`Nat.sum_four_squares`: $\\forall n \\in \\mathbb{N},\\, \\exists a,b,c,d \\in \\mathbb{N}: n = a^2 + b^2 + c^2 + d^2$. Waring's problem for $k=2$, $g(2) = 4$."
     },
@@ -92,7 +93,7 @@
       "id": "examples",
       "title": "Specific Examples",
       "startLine": 104,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "Concrete decompositions of small numbers, including the notorious 7 which needs all four squares.",
       "mathContext": "$7 = 1^2 + 1^2 + 1^2 + 2^2$ (needs 4 squares). $6 = 1^2 + 1^2 + 2^2 + 0^2$ (3 suffice). $15 = 1^2 + 1^2 + 2^2 + 3^2$ (needs 4)."
     },
@@ -100,7 +101,7 @@
       "id": "two-squares-connection",
       "title": "Connection to Two Squares Theorem",
       "startLine": 129,
-      "endLine": 138,
+      "endLine": 398,
       "summary": "Cross-reference to Fermat's Two Squares Theorem showing the contrast between universal four squares and restrictive two squares.",
       "mathContext": "Fermat: $n = a^2 + b^2 \\iff$ every prime $p \\equiv 3 \\pmod{4}$ divides $n$ to even power. Two squares is far more restrictive than four."
     }

@@ -77,49 +77,49 @@
       "id": "degeneracy",
       "title": "Graph Degeneracy",
       "startLine": 49,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Defines $d$-degeneracy via two equivalent characterizations: (1) every non-empty subgraph has a vertex of degree $\\le d$ (`IsDDegenerate`), and (2) vertices admit an ordering where each has $\\le d$ later neighbors (`HasDegeneracyOrdering`). Includes examples: trees are 1-degenerate, planar graphs are 5-degenerate."
     },
     {
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers",
       "startLine": 84,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Defines the Ramsey number $R(H)$ as the minimum $n$ such that any 2-coloring of $K_n$ contains a monochromatic copy of $H$. States the exponential bounds $2^{n/2} \\le R(K_n) \\le 4^n$ for clique Ramsey numbers (Erdős–Szekeres, 1935)."
     },
     {
       "id": "burr-erdos-conjecture",
       "title": "The Burr-Erdős Conjecture",
       "startLine": 107,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "States the Burr-Erdős Conjecture ($R(H) \\le C_d \\cdot n$ for $d$-degenerate $H$ on $n$ vertices) and two equivalent formulations: (1) union of $c$ forests has linear Ramsey number, and (2) bounded average degree implies linear Ramsey number."
     },
     {
       "id": "lee-theorem",
       "title": "Lee's Theorem (2017)",
       "startLine": 139,
-      "endLine": 165,
+      "endLine": 166,
       "summary": "Axiomatizes Lee's main result: $R(H) \\le 2^{2^{O(d)}} \\cdot n$ for $d$-degenerate $H$, along with the explicit constant bound $C = 2^{2^{cd}}$ and the refined chromatic number version $R(H) \\le 2^{d \\cdot 2^{c\\chi}} \\cdot n$."
     },
     {
       "id": "solved",
       "title": "Conjecture is SOLVED",
       "startLine": 167,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "Proves the Burr-Erdős Conjecture by directly applying Lee's theorem. The proof is a one-liner: `lee_theorem d hd` provides the constant $C_d$ and the bound."
     },
     {
       "id": "optimal-bound",
       "title": "Conjectured Optimal Bound",
       "startLine": 180,
-      "endLine": 203,
+      "endLine": 204,
       "summary": "Defines the conjectured optimal bound $R(H) \\le 2^{O(d)} \\cdot n$ (`OptimalBurrErdos`) and notes the significant gap between Lee's doubly exponential $2^{2^{O(d)}}$ and the conjectured singly exponential $2^{O(d)}$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 205,
-      "endLine": 232,
+      "endLine": 233,
       "summary": "Records known special cases: trees ($d=1$, $R(T_n) \\le Cn$), paths ($R(P_n) = n$ exactly), cycles (computed for various $n$), and planar graphs ($d=5$, $R(H) \\le C_5 n$). These were established before Lee's general result."
     },
     {

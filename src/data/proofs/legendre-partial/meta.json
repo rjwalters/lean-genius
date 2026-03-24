@@ -32,7 +32,8 @@
     "dateAdded": "2025-12-31",
     "axiomCount": 1,
     "lineCount": 165,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Adrien-Marie Legendre stated this conjecture in his *Essai sur la Théorie des Nombres* (1798), the same work that introduced the prime counting function approximation $\\pi(x) \\approx x/(\\ln x - 1.08366)$. The conjecture asks whether every interval $(n^2, (n+1)^2)$ contains at least one prime — a natural question about the regularity of prime distribution near perfect squares.\n\nThe conjecture sits in a hierarchy of progressively stronger statements about prime gaps. Bertrand's postulate — a prime exists in $(n, 2n)$ — was conjectured by Bertrand (1845) and proved by Chebyshev (1852), with an elegant proof later given by Erdős (1932) at age 19. Legendre's conjecture is strictly stronger: the interval $(n^2, (n+1)^2)$ has length $2n$, much shorter than $(n, 2n)$'s length $n$ when measured relative to the numbers involved. Oppermann's conjecture (1882) is stronger still: it asserts primes in both $(n^2, n^2 + n)$ and $(n^2 + n, (n+1)^2)$, splitting Legendre's interval in half.\n\nThe best unconditional progress toward Legendre is due to Baker, Harman, and Pintz (2001), who proved there is always a prime in $(x, x + x^{0.525})$ for sufficiently large $x$. For $x = n^2$, this gives a prime in $(n^2, n^2 + n^{1.05})$, which is contained in $(n^2, (n+1)^2)$ for large $n$ — so the BHP result actually implies Legendre's conjecture asymptotically. Earlier milestones include Ingham (1937) who proved a prime in $(x, x + x^{5/8})$, and Huxley (1972) who improved this to $x^{7/12}$.\n\nUnder the Riemann Hypothesis, much stronger results hold: von Koch (1901) showed that the prime gap near $x$ is $O(\\sqrt{x} \\log x)$, which for $x = n^2$ gives gaps of $O(n \\log n)$ — far smaller than the Legendre interval's length $2n$. So the Riemann Hypothesis implies Legendre's conjecture.\n\nComputationally, Legendre's conjecture has been verified for $n$ up to at least $10^{18}$. The conjecture is closely related to Andrica's conjecture (1985): $\\sqrt{p_{n+1}} - \\sqrt{p_n} < 1$, which is equivalent to asserting that consecutive primes never straddle a perfect square — precisely Legendre's claim.",
@@ -58,7 +59,7 @@
       "id": "header-imports",
       "title": "Module Documentation and Imports",
       "startLine": 1,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "Module docstring introducing Legendre's conjecture (1798), its status as a 'deep dive' formalization, the formal statement, and the single `Mathlib.Tactic` import providing `native_decide` and `Nat.Prime`. Opens the `Legendre` namespace.",
       "mathContext": "Legendre's conjecture: $\\forall n \\geq 1, \\exists p \\in \\mathbb{P}: n^2 < p < (n+1)^2$. The conjecture has been open for over 225 years and is implied by the Riemann Hypothesis."
     },
@@ -66,7 +67,7 @@
       "id": "definitions",
       "title": "Formal Definitions",
       "startLine": 20,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Three definitions: `LegendreAt n` (existence of a prime in $(n^2, (n+1)^2)$), `LegendreConjecture` (universal quantification $\\forall n \\geq 1$), and `legendreWitness n p` (explicit witness predicate). Section docstring introduces the verification methodology: each case uses `native_decide` to check primality and bounds.",
       "mathContext": "$\\text{LegendreAt}(n) := \\exists p, \\text{Prime}(p) \\wedge n^2 < p < (n+1)^2$. The separation of `LegendreAt` from `LegendreConjecture` allows proving individual cases without committing to the universal statement."
     },
@@ -74,7 +75,7 @@
       "id": "first-ten-cases",
       "title": "First Decade: Cases n = 1 through 10",
       "startLine": 46,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Ten one-liner proofs `⟨witness, by native_decide⟩` verifying Legendre's conjecture for $n = 1$ through $10$. Witnesses: 2, 5, 11, 17, 29, 37, 53, 67, 83, 101. Comments list all primes in each interval.",
       "mathContext": "Each proof constructs an existential witness: $\\langle p, \\text{native\\_decide}\\rangle$ provides the prime $p$ and verifies $\\text{Prime}(p) \\wedge n^2 < p \\wedge p < (n+1)^2$ by computation. The number of primes per interval ranges from 2 (at $n=1$) to 5 (at $n=10$)."
     },
@@ -82,7 +83,7 @@
       "id": "second-ten-cases",
       "title": "Second Decade: Cases n = 11 through 20",
       "startLine": 77,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Ten more verified cases with witnesses: 127, 149, 173, 197, 227, 257, 293, 331, 367, 401. The intervals widen ($2n$ ranges from 22 to 40) and contain 4–7 primes each.",
       "mathContext": "The prime count per interval increases roughly as $n/\\ln n$ by the PNT. Notable witnesses $197 = 14^2 + 1$ and $257 = 16^2 + 1$ have the form $n^2 + 1$, connecting to Bunyakovsky's conjecture."
     },
@@ -90,7 +91,7 @@
       "id": "witness-table",
       "title": "Summary Table",
       "startLine": 107,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "Doc comment with a complete table showing intervals $(n^2, (n+1)^2)$ and the first prime witness for each $n$ from 1 to 20. Followed by 'Additional Properties' section header.",
       "mathContext": "The witnesses tend to cluster near $n^2$: most are within $n$ of the left endpoint, consistent with Cramér's conjecture that the largest prime gap near $x$ is $O((\\log x)^2) \\ll \\sqrt{x}$."
     },

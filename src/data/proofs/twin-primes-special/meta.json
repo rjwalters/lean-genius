@@ -38,7 +38,8 @@
     "dateAdded": "2025-12-31",
     "axiomCount": 1,
     "lineCount": 190,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Twin primes have fascinated mathematicians since antiquity. The ancient Greeks knew about pairs like (3,5), (5,7), (11,13), and the pattern seems to continue indefinitely, though primes become increasingly sparse.\n\nThe Twin Prime Conjecture—that there are infinitely many twin prime pairs—remains one of the most famous open problems in mathematics. While Zhang Yitang's 2013 breakthrough showed there are infinitely many primes differing by at most 70 million (later reduced to 246 by the Polymath project), the gap of exactly 2 remains elusive.\n\nThis formalization proves a structural result: twin primes greater than 3 must have a specific form, constraining where to search for them.",
@@ -68,28 +69,28 @@
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 42,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Computational verification of 6 twin prime pairs: (3,5), (5,7), (11,13), (17,19), (29,31), (41,43)."
     },
     {
       "id": "structure-theorem",
       "title": "Structure Theorem",
       "startLine": 68,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "The main result: twin primes > 3 must satisfy p ≡ 5 (mod 6), giving form (6k-1, 6k+1)."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 156,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "The twin prime conjecture stated as an axiom."
     },
     {
       "id": "non-examples",
       "title": "Non-Examples",
       "startLine": 169,
-      "endLine": 188,
+      "endLine": 190,
       "summary": "Why 0, 1, and 2 cannot start twin prime pairs."
     }
   ],

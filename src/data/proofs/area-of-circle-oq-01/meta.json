@@ -52,7 +52,8 @@
       "Chain rule and power rule for derivatives",
       "Pi and trigonometric function properties"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The relationship between a circle's area and circumference was understood by Archimedes of Syracuse (~287–212 BCE) in *Measurement of a Circle*: he viewed the disk as composed of infinitely many concentric rings, each of circumference $C(\\rho) = 2\\pi\\rho$, yielding $A(r) = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. The inverse relationship $C = dA/dr$ follows by the Fundamental Theorem of Calculus, independently discovered by Newton and Leibniz in the 1660s–1680s. This elegant connection—that **boundary measure equals the derivative of enclosed measure**—generalizes to all dimensions: the surface area of an $n$-ball is the derivative of its volume with respect to radius, a fact formalized by Federer and Fleming in their 1960 foundational work on geometric measure theory. The isoperimetric equality $C^2 = 4\\pi A$ appearing as a corollary here is the equality case of the classical isoperimetric inequality, studied by Zenodorus (~200 BCE) and rigorously proved by Weierstrass (1870s) using the calculus of variations.",
@@ -100,7 +101,7 @@
       "id": "imports-setup",
       "title": "Imports and Module Setup",
       "startLine": 1,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Imports Mathlib's calculus infrastructure (`Deriv.Basic`, `Deriv.Pow`), trigonometric definitions for $\\pi$, and Lebesgue volume-of-balls. Opens the `Real` and `MeasureTheory` namespaces within `CircumferenceFromArea`.",
       "mathContext": "Imports from Mathlib: `Analysis.SpecialFunctions.Trigonometric.Deriv` for pi-related derivatives, `MeasureTheory.Measure.Lebesgue.EqHaar` for volume computations."
     },
@@ -108,7 +109,7 @@
       "id": "definitions",
       "title": "Area and Circumference Functions",
       "startLine": 46,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Defines `circleArea(r) = \\pi r^2` and `circumference(r) = 2\\pi r` as noncomputable real-valued functions.",
       "mathContext": "Definitions: $A(r) = \\pi r^2$ (area as function of radius), $C(r) = 2\\pi r$ (circumference as function of radius)."
     },
@@ -116,7 +117,7 @@
       "id": "main-theorem",
       "title": "Main Theorem: Derivative of Area Equals Circumference",
       "startLine": 52,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Proves `hasDerivAt_circleArea`: the area function has derivative $2\\pi r$ at every point $r$, using the power rule and constant multiplication. Also proves the `HasDerivAt` form with the circumference function.",
       "mathContext": "Main result: $\\frac{d}{dr}(\\pi r^2) = 2\\pi r$, i.e., $A'(r) = C(r)$. The circumference is the derivative of area with respect to radius."
     },
@@ -124,7 +125,7 @@
       "id": "deriv-forms",
       "title": "Derivative and Differentiability",
       "startLine": 73,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Derives the `deriv` form (`deriv circleArea r = 2\\pi r`), equality with the circumference function, and global differentiability of the area function.",
       "mathContext": "Alternative derivative forms: $\\frac{d}{dr}A = 2\\pi r$ via power rule, $\\frac{d}{dr}(\\pi r^2) = \\pi \\cdot 2r$ via chain rule."
     },
@@ -132,7 +133,7 @@
       "id": "special-cases",
       "title": "Special Cases and Scaling Laws",
       "startLine": 90,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Unit circumference ($2\\pi$), zero circumference ($0$), scaling laws for both area ($c^2$-quadratic) and circumference ($c$-linear).",
       "mathContext": "Special case: unit circle $A'(1) = 2\\pi$. The rate of area growth at $r = 1$ equals the circumference of the unit circle."
     },
@@ -140,7 +141,7 @@
       "id": "higher-order",
       "title": "Higher-Order Properties",
       "startLine": 116,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "Second derivative equals $2\\pi$ (constant), positivity for positive radius, monotonicity of both area and circumference for non-negative radii.",
       "mathContext": "Higher derivatives: $A''(r) = 2\\pi$ (constant curvature), $A'''(r) = 0$. The area function is a quadratic in $r$."
     },

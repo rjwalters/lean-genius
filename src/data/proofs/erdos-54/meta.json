@@ -84,7 +84,7 @@
       "id": "monochromatic-sums",
       "title": "Monochromatic Subset Sums",
       "startLine": 24,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "**Colouring2** and **monoSubsetSums**: $\\{\\sum_{s \\in S} s : S \\subseteq A,\\, \\forall s \\in S,\\, c(s) = k\\}$ — sums from one colour class of a 2-colouring.",
       "mathContext": "$\\text{monoSubsetSums}(A, c, k) = \\{\\sum_{s \\in S} s : S \\subseteq A,\\, \\forall s \\in S,\\, c(s) = k\\}$. Sums representable from one colour class of a 2-colouring."
     },
@@ -100,7 +100,7 @@
       "id": "lower-bound",
       "title": "Burr–Erdős Lower Bound",
       "startLine": 50,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "**burr_erdos_lower**: $\\exists c > 0$ such that $|A \\cap [1,N]| \\ge c(\\log_2 N)^2$ for Ramsey 2-complete $A$ and infinitely many $N$.",
       "mathContext": "$\\exists c > 0: \\text{IsRamsey2Complete}(A) \\implies |A \\cap [1,N]| \\ge c (\\log N)^2$ for all large $N$ (Burr-Erdős, 1985)."
     },
@@ -108,7 +108,7 @@
       "id": "upper-bound",
       "title": "Conlon–Fox–Pham Upper Bound",
       "startLine": 58,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "**conlon_fox_pham**: $\\exists A$ Ramsey 2-complete with $|A \\cap [1,N]| \\le C(\\log_2 N)^2$ for large $N$. Matches the lower bound.",
       "mathContext": "$\\exists A \\subseteq \\mathbb{N}: \\text{IsRamsey2Complete}(A) \\wedge |A \\cap [1,N]| \\ll (\\log N)^2$ (Conlon-Fox-Pham, 2021). Matches the lower bound."
     },
@@ -116,7 +116,7 @@
       "id": "main-problem",
       "title": "Main Problem (Solved)",
       "startLine": 67,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "**ErdosProblem54**: conjunction of both bounds, capturing $\\Theta((\\log N)^2)$ as the minimum growth rate. Solved by Conlon–Fox–Pham (2021).",
       "mathContext": "$\\Theta((\\log N)^2)$: $\\exists c_1, c_2 > 0$ such that the minimum counting function of a Ramsey 2-complete set satisfies $c_1 (\\log N)^2 \\le f(N) \\le c_2 (\\log N)^2$."
     },
@@ -124,7 +124,7 @@
       "id": "earlier-upper",
       "title": "Earlier Upper Bound",
       "startLine": 81,
-      "endLine": 87,
+      "endLine": 94,
       "summary": "**burr_erdos_upper**: $\\exists A$ Ramsey 2-complete with $|A \\cap [1,N]| < (2\\log_2 N)^3$. Original cubic bound, superseded by quadratic.",
       "mathContext": "$|A \\cap [1,N]| \\le (2 \\log_2 N)^3$ (Burr-Erdős, 1985). Original cubic upper bound, improved to quadratic by Conlon-Fox-Pham."
     }

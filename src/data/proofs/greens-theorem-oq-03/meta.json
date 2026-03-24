@@ -81,7 +81,8 @@
       "Simply-connected planar regions (Type I and Type II)",
       "Partial derivatives and continuously differentiable functions"
     ],
-    "assumptions": "2 axiom declarations: greens_theorem_typeI (Green's theorem for Type I regions), disk_area_eq_pi (area of disk). See the Lean source for details."
+    "assumptions": "2 axiom declarations: greens_theorem_typeI (Green's theorem for Type I regions), disk_area_eq_pi (area of disk). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -96,7 +97,7 @@
       "id": "sec-rectangles",
       "title": "Rectangles as TypeI Regions",
       "startLine": 91,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Rectangles as special TypeI regions with constant boundary curves.",
       "mathContext": "$f \\equiv c$, $g \\equiv d$: $D = [a,b] \\times [c,d]$. Set equality: $\\text{toSet} = \\text{Icc}\\,a\\,b \\times^s \\text{Icc}\\,c\\,d$."
     },
@@ -120,7 +121,7 @@
       "id": "sec-greens-theorem",
       "title": "Green's Theorem for TypeI Regions",
       "startLine": 181,
-      "endLine": 210,
+      "endLine": 557,
       "summary": "Axiom stating Green's theorem with concrete boundary decomposition via deriv f, deriv g.",
       "mathContext": "$\\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA = \\oint_{\\partial D} P\\,dx + Q\\,dy$. Boundary uses $f'(x)$ and $g'(x)$ from chain rule parametrization."
     }

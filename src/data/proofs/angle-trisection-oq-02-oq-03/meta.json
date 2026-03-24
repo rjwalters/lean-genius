@@ -63,7 +63,8 @@
       "Galois theory (cyclotomic extensions, 2-groups)",
       "Compass-and-straightedge constructibility criteria (from OQ-01, OQ-02)"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The problem of constructing regular polygons with compass and straightedge is among the oldest in mathematics, originating with the ancient Greeks who could construct the equilateral triangle ($n=3$), square ($n=4$), regular pentagon ($n=5$), regular hexagon ($n=6$), and their doublings ($n=8, 10, 12, 15, 16, \\ldots$). Euclid's *Elements* (c. 300 BCE) contains constructions for these polygons, and for over 2000 years no fundamentally new constructions were found.\n\nOn March 30, 1796, at age 18, Carl Friedrich Gauss discovered that the regular 17-gon is constructible — the first new construction since antiquity. He recorded this in his mathematical diary (Notizenjournal) and was so proud of it that he requested a regular 17-gon be engraved on his tombstone (though the stonemason declined, saying it would look like a circle). This discovery convinced Gauss to pursue mathematics over philology. Gauss announced the result in *Disquisitiones Arithmeticae* (1801), Section VII, where he proved the constructibility criterion using his theory of Gaussian periods.\n\nPierre Wantzel completed the theorem in 1837 by proving the converse: non-constructibility when $\\varphi(n) \\neq 2^k$. Wantzel's proof also settled the impossibility of angle trisection and cube doubling, linking all three ancient problems to the algebraic theory of field extensions. The theorem connects three deep areas: Galois theory (the Galois group of cyclotomic polynomials), number theory (Euler's totient function and Fermat primes), and geometry (compass-and-straightedge constructions).",
@@ -98,7 +99,7 @@
       "id": "totient-values",
       "title": "Section I: Euler's Totient Values",
       "startLine": 46,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "14 totient computations by decide/native_decide: φ(3)=2, φ(4)=2, φ(5)=4, ..., φ(17)=16, φ(257)=256, φ(65537)=65536.",
       "mathContext": "Computed: $\\varphi(3)=2, \\varphi(5)=4, \\varphi(7)=6, \\varphi(17)=16, \\varphi(257)=256, \\varphi(65537)=65536$. All verified by `decide`/`native_decide`."
     },
@@ -106,7 +107,7 @@
       "id": "pow2-criterion",
       "title": "Section II: Powers of 2 and the Totient Criterion",
       "startLine": 67,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "TotientIsPow2 definition, not_pow_two_of_odd_prime_dvd helper, 10 positive totient witnesses (n=3,4,5,6,8,10,12,17,257,65537), and 4 negative witnesses (n=7,9,11,13).",
       "mathContext": "`TotientIsPow2 n`: $\\exists k, \\varphi(n) = 2^k$. Key tool: `not_pow_two_of_odd_prime_dvd` — if odd prime $p \\mid \\varphi(n)$ then $\\varphi(n) \\neq 2^k$."
     },
@@ -114,7 +115,7 @@
       "id": "constructible-def",
       "title": "Section III: Constructible n-Gon Definition",
       "startLine": 120,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "IsConstructibleNgon n: ∃ K intermediate field of ℝ/ℚ with [K:ℚ] = 2^k and cos(2π/n) ∈ K.",
       "mathContext": "`IsConstructibleNgon n`: $\\exists K$ intermediate field of $\\mathbb{R}/\\mathbb{Q}$ with $[K:\\mathbb{Q}] = 2^k$ and $\\cos(2\\pi/n) \\in K$."
     },
@@ -122,7 +123,7 @@
       "id": "gauss-wantzel-axiom",
       "title": "Section IV: Gauss-Wantzel Theorem (Proved)",
       "startLine": 132,
-      "endLine": 210,
+      "endLine": 211,
       "summary": "The proved gauss_wantzel_theorem: IsConstructibleNgon n ↔ TotientIsPow2 n for n ≥ 3. Proved via cyclotomic degree theory from OQ02OQ03OQ01, including dvd_pow_two_is_pow_two helper and totient_div2_pow2_iff bridge.",
       "mathContext": "Proved: `IsConstructibleNgon n \\iff TotientIsPow2 n` for $n \\geq 3$. Uses cyclotomic tower law and degree theory from OQ02OQ03OQ01."
     },
@@ -130,7 +131,7 @@
       "id": "constructible-polygons",
       "title": "Section V: Constructible Regular Polygons",
       "startLine": 212,
-      "endLine": 263,
+      "endLine": 264,
       "summary": "10 constructible polygons: n = 3,4,5,6,8,10,12,17,257,65537. Highlights: Gauss's 17-gon (1796), Richelot's 257-gon (1832, 80 pages), Hermes's 65537-gon (1879-1889, 10 years).",
       "mathContext": "Constructible: $n = 3,4,5,6,8,10,12,17,257,65537$. Gauss's 17-gon (1796) was the first new constructible polygon since antiquity."
     },
@@ -138,7 +139,7 @@
       "id": "non-constructible",
       "title": "Section VI: Non-Constructible Regular Polygons",
       "startLine": 265,
-      "endLine": 291,
+      "endLine": 292,
       "summary": "4 non-constructible polygons: n = 7,9,11,13. Each proved by finding an odd prime factor of φ(n) via not_pow_two_of_odd_prime_dvd.",
       "mathContext": "Non-constructible: $n = 7,9,11,13$. Each has an odd prime factor of $\\varphi(n)$: $3 \\mid 6, 3 \\mid 6, 5 \\mid 10, 3 \\mid 12$."
     },
@@ -146,7 +147,7 @@
       "id": "fermat-primes",
       "title": "Section VII: Fermat Primes",
       "startLine": 293,
-      "endLine": 330,
+      "endLine": 331,
       "summary": "IsFermatPrime definition, 5 known Fermat primes verified, fermat_prime_totient_pow2 (general), fermat_prime_ngon_constructible (general), known_fermat_prime_ngons_constructible (conjunction of all 5).",
       "mathContext": "Fermat primes: $F_k = 2^{2^k} + 1$. Known: $F_0=3, F_1=5, F_2=17, F_3=257, F_4=65537$. $\\varphi(F_k) = F_k - 1 = 2^{2^k}$."
     },
@@ -154,7 +155,7 @@
       "id": "composite-examples",
       "title": "Section VIII: Composite Polygon Examples",
       "startLine": 332,
-      "endLine": 384,
+      "endLine": 385,
       "summary": "Composite constructible polygons (n=15,20: φ = 8) and non-constructible (n=14,18: φ = 6). Demonstrates the criterion for composite n.",
       "mathContext": "Constructible composites: $\\varphi(15) = \\varphi(3)\\varphi(5) = 2 \\cdot 4 = 8 = 2^3$. Non-constructible: $\\varphi(14) = \\varphi(2)\\varphi(7) = 1 \\cdot 6 = 6 \\neq 2^k$."
     },
@@ -162,7 +163,7 @@
       "id": "arithmetic-lemmas",
       "title": "Section IX: Arithmetic Lemmas for TotientIsPow2",
       "startLine": 386,
-      "endLine": 427,
+      "endLine": 428,
       "summary": "Structural lemmas: totient_pow2_of_two_power (φ(2^k) = 2^(k-1)), totient_prod_is_pow2 (coprime product), odd_prime_pow_gt_one_not_pow2 (p^k with k≥2 fails). Alternative proof of totient_9_not_pow2 via structural lemma.",
       "mathContext": "$\\varphi(2^k) = 2^{k-1}$. For coprime $m,n$: $\\varphi(mn) = \\varphi(m)\\varphi(n)$. Key: $p$ odd prime, $k \\geq 2 \\Rightarrow p \\mid \\varphi(p^k)$."
     },
@@ -170,7 +171,7 @@
       "id": "zmod-bridge",
       "title": "Section X: (ℤ/nℤ)* and the Galois Theory Connection",
       "startLine": 429,
-      "endLine": 454,
+      "endLine": 455,
       "summary": "units_zmod_card_eq_totient: |(ℤ/nℤ)*| = φ(n) from Mathlib. units_zmod_is_2group_iff: (ℤ/nℤ)* is 2-group ↔ TotientIsPow2 n — the key bridge connecting OQ02's Galois criterion to the totient criterion.",
       "mathContext": "$(\\mathbb{Z}/n\\mathbb{Z})^*$ is a 2-group $\\iff |(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n) = 2^k$. Connects OQ-02's Galois criterion to the totient criterion."
     },
@@ -178,7 +179,7 @@
       "id": "more-constructible",
       "title": "Section XI: More Constructible Polygons via Products",
       "startLine": 456,
-      "endLine": 506,
+      "endLine": 507,
       "summary": "Constructible composites: n = 34,51,85,255 (products of distinct Fermat primes × powers of 2). Alternative proof of 15-gon via totient_prod_is_pow2.",
       "mathContext": "Products of distinct Fermat primes $\\times$ powers of 2: $n=34=2\\cdot17, n=51=3\\cdot17, n=85=5\\cdot17, n=255=3\\cdot5\\cdot17$."
     },
@@ -186,7 +187,7 @@
       "id": "more-non-constructible",
       "title": "Section XII: More Non-Constructible Polygons",
       "startLine": 508,
-      "endLine": 558,
+      "endLine": 559,
       "summary": "Non-constructible composites: n = 21 (3×7, 7 not Fermat), n = 25 (5², squared Fermat prime via odd_prime_pow_gt_one_not_pow2), n = 35 (5×7).",
       "mathContext": "Non-constructible composites: $n=21=3\\cdot7$ (7 not Fermat), $n=25=5^2$ (squared Fermat prime), $n=35=5\\cdot7$."
     },
@@ -194,7 +195,7 @@
       "id": "f5-composite",
       "title": "Section XIII: F₅ is Composite (Euler 1732)",
       "startLine": 560,
-      "endLine": 579,
+      "endLine": 580,
       "summary": "Euler's factorization F₅ = 2^32+1 = 641 × 6700417 (f5_factorization, f5_value, f5_not_prime by native_decide, f5_not_fermat_prime).",
       "mathContext": "Euler (1732): $F_5 = 2^{32}+1 = 641 \\times 6700417$. Verified by `native_decide`. $F_5$ is not prime, hence not a Fermat prime."
     },
@@ -202,7 +203,7 @@
       "id": "axiom-decomposition",
       "title": "Section XIV: Axiom Elimination — Full Proof Construction",
       "startLine": 581,
-      "endLine": 708,
+      "endLine": 709,
       "summary": "Roadmap for eliminating the gauss_wantzel_theorem axiom. Proves cos(2π/n) is algebraic via Chebyshev polynomials (cos_2pi_div_n_isIntegral). Develops Chebyshev conjugate infrastructure for the splitting field analysis.",
       "mathContext": "$T_n(\\cos\\theta) = \\cos(n\\theta)$, so $\\cos(2\\pi/n)$ is a root of $T_n - 1$. Since $T_n - 1 \\neq 0$, $\\cos(2\\pi/n)$ is algebraic. This eliminates one of three axiom components."
     },

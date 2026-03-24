@@ -60,7 +60,8 @@
     "lineCount": 301,
     "theoremCount": 20,
     "definitionCount": 2,
-    "assumptions": "Fully verified. 0 axioms, 0 sorries."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Taylor's theorem (1715) provides the theoretical foundation for polynomial approximation of smooth functions, but the question of *convergence* of the Taylor series is more subtle. A function can be infinitely differentiable yet have a divergent Taylor series (e.g., f(x) = e^{-1/x^2} at x=0 in the real-analytic sense). The exponential function is the prototypical example where convergence succeeds everywhere: since every derivative of exp is exp itself, the Lagrange remainder exp(xi) * |x|^{n+1}/(n+1)! tends to zero because factorial growth dominates any fixed power. This was understood by Euler, who used the series e = sum 1/n! to compute e to arbitrary precision. The Cauchy remainder form, introduced by Augustin-Louis Cauchy in his 1823 Resume des lecons, provides an alternative that is sometimes sharper for bounding the error. This formalization answers the third open question from the parent Taylor's theorem entry (Wiedijk #35): can the Cauchy remainder be used to prove convergence of exp's Taylor series?",
@@ -85,49 +86,49 @@
       "id": "imports-and-docstring",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Imports from Mathlib (Taylor calculus, exp derivatives, normed limits, infinite sums, exponential bounds) and module documentation explaining the main results and approach."
     },
     {
       "id": "iterated-derivatives",
       "title": "Section I: Iterated Derivatives of exp",
       "startLine": 38,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Proves iteratedDeriv n exp = exp by induction: the base case is iteratedDeriv_zero, and the inductive step uses Real.deriv_exp. The pointwise version iteratedDeriv_exp_apply is an immediate corollary."
     },
     {
       "id": "partial-sums",
       "title": "Section II: Taylor Partial Sums",
       "startLine": 57,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Defines expPartialSum n x = sum_{k=0}^{n} x^k/k! and proves basic properties: S_0(x) = 1, the successor recurrence, and S_n(0) = 1."
     },
     {
       "id": "factorial-dominates",
       "title": "Section III: Factorial Dominates Powers",
       "startLine": 82,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "Proves summability of x^n/n! (from Mathlib's summable_pow_div_factorial) and the consequence x^n/n! -> 0, which is the engine driving Taylor convergence."
     },
     {
       "id": "remainder-bounds",
       "title": "Section IV: Remainder Bounds",
       "startLine": 96,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "States the two axioms (remainder bounds for x > 0 and x < 0), proves the unified bound |exp(x) - S_n(x)| <= exp(|x|) * |x|^{n+1}/n! by case analysis, and shows the remainder tends to zero via squeeze theorem."
     },
     {
       "id": "convergence",
       "title": "Section V: Convergence of Taylor Series",
       "startLine": 158,
-      "endLine": 198,
+      "endLine": 199,
       "summary": "Proves partial sums converge to exp(x) and derives the tsum identity exp(x) = sum' x^n/n! by uniqueness of limits. The index shift from range(n+1) to range(n) is handled by subtracting the n-th term."
     },
     {
       "id": "euler-computation",
       "title": "Section VI: Computation of Euler's Number",
       "startLine": 200,
-      "endLine": 238,
+      "endLine": 239,
       "summary": "Defines ePartialSum, proves 2 < e < 3, establishes the error bound |e - S_n(1)| <= 3/n!, and verifies that 10 terms give precision < 10^{-6}."
     },
     {

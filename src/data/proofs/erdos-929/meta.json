@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "lineCount": 99,
-    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1976, motivated by his longstanding interest in the distribution of smooth (or friable) numbers — integers whose prime factors are all bounded. The study of smooth numbers dates back to Ramanujan (1917) who first investigated their counting function, later made precise by Dickman (1930) through his function $\\rho(u)$ estimating $\\Psi(x, x^{1/u})/x$. The connection to consecutive integers goes deeper: Størmer (1897) had already studied consecutive smooth numbers, and Erdős and others explored how many consecutive integers can share the property of having only small prime factors. The breakthrough of Ford, Green, Konyagin, Maynard, and Tao (2018) on large gaps between primes — settling a conjecture of Erdős on prime gap sizes — unexpectedly provided the best known upper bound on $S(k)$, connecting this problem to one of the central achievements in 21st-century analytic number theory.",
@@ -45,35 +46,35 @@
       "id": "header-docs",
       "title": "Documentation Header",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 23,
       "summary": "Module documentation describing the problem statement, open status, key results (trivial bound, Rosser sieve, FGKMT), and reference to erdosproblems.com."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 24,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Imports Mathlib tactics, natural number primality, and real logarithmic functions. Opens the Filter namespace for asymptotic statements."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 30,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines IsSmooth (x-smooth numbers), SmoothBlock (consecutive smooth integers), smoothBlockSet (the density set), upper density via limsup, and the threshold function S(k) via Nat.find."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 58,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "States the Erdős conjecture: S(k) ≥ k^{1−ε} for all ε > 0 and sufficiently large k, formalized using the eventually quantifier on the atTop filter."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "startLine": 67,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Three axiomatized bounds: the trivial upper bound S(k) ≤ k+1 from factorial arithmetic progressions, Rosser's sieve lower bound k^{1/2−o(1)}, and the FGKMT upper bound with iterated logarithmic factors from their prime gap breakthrough."
     },
     {

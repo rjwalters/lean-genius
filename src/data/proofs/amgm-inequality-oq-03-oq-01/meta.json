@@ -54,7 +54,8 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 372,
-    "assumptions": "0 axioms, 0 sorries. Core building blocks (Jensen, rpow arithmetic) from Mathlib; original proofs for duality identity and negative-exponent monotonicity."
+    "assumptions": "0 axioms, 0 sorries. Core building blocks (Jensen, rpow arithmetic) from Mathlib; original proofs for duality identity and negative-exponent monotonicity.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Power Mean Inequality states that $M_r \\leq M_s$ whenever $r \\leq s$. While the positive-exponent case ($0 < r \\leq s$) follows directly from Jensen's inequality applied to the convex function $t \\mapsto t^{s/r}$, the negative-exponent case requires a fundamentally different approach.\n\nThe classical trick, due to Hardy, Littlewood, and Pólya (*Inequalities*, 1934, §2.9), exploits the algebraic duality $M_r(z) = M_{-r}(z^{-1})^{-1}$ between positive and negative power means via value inversion. This duality is an instance of a pervasive pattern in analysis: Hölder duality ($\\|f\\|_p^* = \\|f\\|_{p/(p-1)}$), Legendre-Fenchel duality in convex analysis ($f^{**} = f$ for convex $f$), and Pontryagin duality in harmonic analysis all exploit the same principle — negating or inverting a parameter transforms one inequality into another. The power mean duality is perhaps the simplest non-trivial example.\n\nAs of early 2026, Mathlib4 had an explicit TODO noting the gap for 'generalized mean inequality with any $p \\leq q$, including negative numbers.' This formalization fills that gap for the $r \\leq s < 0$ case, complementing the positive case proved in the parent file. The proof technique — reducing to a known case via an algebraic identity — is a model for how duality arguments can systematically extend results across parameter boundaries.",
@@ -81,7 +82,7 @@
       "id": "duality-identity",
       "title": "Algebraic Duality: M_r(z) = M_{-r}(z⁻¹)⁻¹",
       "startLine": 220,
-      "endLine": 250,
+      "endLine": 251,
       "summary": "power_mean_neg_inv proves the key identity by showing (zᵢ⁻¹)^(-r) = zᵢ^r (via inv_rpow + rpow_neg + inv_inv) and A^(1/r) = (A^(1/(-r)))⁻¹ (via rpow_neg).",
       "mathContext": "$M_r(z) = (\\sum w_i z_i^r)^{1/r} = ((\\sum w_i (z_i^{-1})^{-r})^{1/(-r)})^{-1} = M_{-r}(z^{-1})^{-1}$."
     },
@@ -89,7 +90,7 @@
       "id": "positivity-helpers",
       "title": "Positivity Helpers",
       "startLine": 252,
-      "endLine": 279,
+      "endLine": 280,
       "summary": "weighted_sum_pos and weightedPowerMean_pos establish that ∑ wᵢzᵢ^p > 0 and M_p > 0 when ∑ wᵢ = 1 and all zᵢ > 0. Uses Finset.single_le_sum to find a positive term.",
       "mathContext": "$\\sum w_i = 1 > 0$ and $w_i \\geq 0 \\Rightarrow \\exists i_0, w_{i_0} > 0$. Then $\\sum w_i z_i^p \\geq w_{i_0} z_{i_0}^p > 0$."
     },
@@ -97,7 +98,7 @@
       "id": "main-theorem",
       "title": "Negative Power Mean Monotonicity",
       "startLine": 281,
-      "endLine": 343,
+      "endLine": 344,
       "summary": "power_mean_monotone_neg: the main theorem. Negates exponents (0 < -t ≤ -r), applies power_mean_monotone_pos to z⁻¹, then inverts using explicit multiplicative calc blocks.",
       "mathContext": "$r \\leq t < 0 \\Rightarrow 0 < -t \\leq -r$. By positive case: $M_{-t}(z^{-1}) \\leq M_{-r}(z^{-1})$. Invert: $M_r(z) = M_{-r}(z^{-1})^{-1} \\leq M_{-t}(z^{-1})^{-1} = M_t(z)$."
     },
@@ -105,7 +106,7 @@
       "id": "hm-gm-corollary",
       "title": "HM ≤ GM as Power Mean Corollary",
       "startLine": 345,
-      "endLine": 355,
+      "endLine": 356,
       "summary": "The harmonic-geometric mean inequality as the r = -1 specialization. Proved via harmonic_mean_le_geom_mean_direct, with the _hHM hypothesis documenting that M_{-1} equals the weighted harmonic mean.",
       "mathContext": "$\\text{HM} = M_{-1} = (\\sum w_i z_i^{-1})^{-1} \\leq M_0 = \\text{GM} = \\prod z_i^{w_i}$."
     },

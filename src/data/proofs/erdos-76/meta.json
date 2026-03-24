@@ -119,70 +119,70 @@
       "title": "Edge Colorings",
       "summary": "Defines `Color` (Red/Blue), `EdgeColoring V` as $c : V \\to V \\to (u \\ne v) \\to \\text{Color}$, and `coloredEdges` partitioning $\\binom{n}{2}$ edges by color",
       "startLine": 29,
-      "endLine": 47
+      "endLine": 48
     },
     {
       "id": "triangles",
       "title": "Triangles and Monochromatic Property",
       "summary": "Defines `Triangle V` (Finset with card = 3), `Triangle.edges` via Cartesian product filtering, and `isMonochromatic` requiring all edges same color",
       "startLine": 49,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "packings",
       "title": "Edge-Disjoint Packings",
       "summary": "Defines `edgeDisjoint` via `Disjoint t₁.edges t₂.edges`, `isPacking` (pairwise disjoint), and `monochromaticPacking` combining packing with monochromaticity",
       "startLine": 68,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "max-packing",
       "title": "Maximum and Minimum Packing Sizes",
       "summary": "Defines `maxPackingSize c` as $\\sup\\{k : \\exists\\text{ packing of size }k\\}$ and `minMaxPackingSize n` as $\\inf_c \\max_{\\text{packing}} |\\text{packing}|$ — the extremal quantity",
       "startLine": 86,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "extremal",
       "title": "The Balanced Bipartition Coloring",
       "summary": "Defines `balancedColoring n` partitioning `Fin n` at $n/2$; proves `balanced_same_half_blue` and `balanced_diff_half_red` creating blue $K_{n/2} \\cup K_{n/2}$ and red $K_{n/2,n/2}$",
       "startLine": 101,
-      "endLine": 127
+      "endLine": 128
     },
     {
       "id": "conjecture",
       "title": "Erdős-Faudree-Ordman Conjecture",
       "summary": "Defines `conjecturedBound n` $= n^2/12$ and axiomatizes `balanced_achieves_bound`: the balanced coloring achieves exactly $n^2/12 + o(1)$ packed triangles",
       "startLine": 129,
-      "endLine": 143
+      "endLine": 144
     },
     {
       "id": "gruslys-letzter",
       "title": "Gruslys-Letzter Theorem (2020)",
       "summary": "Axiomatizes `gruslys_letzter`: $\\forall c, \\text{maxPackingSize}(c) \\ge (1 - 1/n) \\cdot n^2/12$ for $n \\ge 6$; also `extremal_uniqueness` (stability)",
       "startLine": 145,
-      "endLine": 163
+      "endLine": 164
     },
     {
       "id": "counting-vs-packing",
       "title": "Triangle Counting vs Packing",
       "summary": "Defines `totalTriangles n` $= \\binom{n}{3}$ and `totalEdges n` $= \\binom{n}{2}$; states `packing_upper_bound`: at most $\\lfloor \\binom{n}{2}/3 \\rfloor \\approx n^2/6$ packed triangles (sorry)",
       "startLine": 165,
-      "endLine": 181
+      "endLine": 182
     },
     {
       "id": "bound-explained",
       "title": "The $n^2/12$ Bound Explained",
       "summary": "Proves `bound_from_cliques`: $n^2/12 = 2 \\times (n/2)^2/24$, showing each blue $K_{n/2}$ contributes $\\approx n^2/24$ via Steiner-type packing",
       "startLine": 183,
-      "endLine": 197
+      "endLine": 198
     },
     {
       "id": "single-color",
       "title": "Single-Color Packing Conjecture",
       "summary": "Defines `maxSingleColorPacking` (max over colors of single-color packing) and states `single_color_conjecture`: $\\exists c > 1/24$ with max single-color packing $\\ge cn^2$",
       "startLine": 199,
-      "endLine": 219
+      "endLine": 245
     }
   ],
   "conclusion": {

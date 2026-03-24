@@ -39,7 +39,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 15,
     "lineCount": 255,
-    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem, also known as **Blumenthal's Problem**, asks for the largest angle $\\alpha$ guaranteed to appear among three points in any $n$-point planar set. The question originates from Leonard Blumenthal's work on metric geometry in the 1930s and was popularized by Erdős.\n\nThe first significant progress came from George Szekeres in 1941, who established initial bounds on $\\alpha_n$. In their influential 1960 paper, Erdős and Szekeres proved the elegant formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2, showing that regular $2^n$-gons are optimal. They conjectured that this formula $\\alpha_N = \\pi(1 - 1/n)$ held for all $N$ with $2^{n-1} < N \\le 2^n$.\n\nBlagovest Sendov dramatically disproved this conjecture in 1992, showing that for $N$ in the lower part of each range $(2^{n-1}, 2^{n-1} + 2^{n-3}]$, the correct formula is $\\alpha_N = \\pi(1 - 1/(2n-1))$. Sendov completed the full determination of $\\alpha_N$ for all $N$ in his 1993 paper \"On the theorem of Erdős–Szekeres\" (Rendiconti del Circolo Matematico di Palermo), revealing a remarkable dependence on the binary representation of $N$: the formula changes at the threshold $5 \\cdot 2^{n-3}$, connecting discrete geometry to number-theoretic structure.",
@@ -105,7 +106,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 43,
-      "endLine": 66,
+      "endLine": 67,
       "content": "Defines the angle $\\angle(x,y,z)$ at vertex $y$ using the dot product formula $\\arccos\\bigl(\\frac{(x-y)\\cdot(z-y)}{\\|x-y\\|\\|z-y\\|}\\bigr)$, with axioms for range $[0,\\pi]$ and symmetry $\\angle(x,y,z) = \\angle(z,y,x)$.",
       "proofMethod": "Direct computation via dot product and arccos, with axioms for range and symmetry."
     },
@@ -113,7 +114,7 @@
       "id": "max-angle",
       "title": "Maximum Angle in a Point Set",
       "startLine": 68,
-      "endLine": 83,
+      "endLine": 84,
       "content": "Axiomatized `maxAngleInSet` function giving $\\max_{x,y,z \\in A}\\angle(x,y,z)$ for a finite set $A$, with positivity for $|A| \\ge 3$ and the upper bound $\\le \\pi$.",
       "proofMethod": "Axiomatized to avoid Finset.sup' nonempty proof obligations."
     },
@@ -121,7 +122,7 @@
       "id": "alpha-n",
       "title": "The α_n Function and Small Cases",
       "startLine": 85,
-      "endLine": 111,
+      "endLine": 112,
       "content": "Defines $\\alpha_n = \\inf\\{\\operatorname{maxAngle}(A) : |A| = n\\}$ as the infimum over all $n$-point configurations. Includes well-definedness ($0 < \\alpha_n \\le \\pi$ for $n \\ge 3$), monotonicity ($\\alpha_n \\le \\alpha_m$ for $m \\le n$), and small cases $\\alpha_3 = \\alpha_4 = \\pi$.",
       "proofMethod": "iInf definition with axioms for monotonicity and boundary values."
     },
@@ -129,7 +130,7 @@
       "id": "erdos-szekeres",
       "title": "Erdős-Szekeres Results (1960)",
       "startLine": 113,
-      "endLine": 127,
+      "endLine": 128,
       "content": "The Erdős–Szekeres formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2 ($n \\ge 2$), where the regular $2^n$-gon achieves the minimum maximum angle.",
       "proofMethod": "Axiomatized formula erdosSzekeresFormula with the main theorem axiom erdos_szekeres."
     },
@@ -137,7 +138,7 @@
       "id": "sendov-solution",
       "title": "Sendov's Complete Solution (1993)",
       "startLine": 129,
-      "endLine": 167,
+      "endLine": 168,
       "content": "The full determination of $\\alpha_N$: for the upper range $2^{n-1} + 2^{n-3} < N \\le 2^n$, $\\alpha_N = \\pi(1-1/n)$; for the lower range $2^{n-1} < N \\le 2^{n-1} + 2^{n-3}$, $\\alpha_N = \\pi(1-1/(2n-1))$. The threshold $5 \\cdot 2^{n-3}$ splits each dyadic interval.",
       "proofMethod": "Two axiomatized formulas (sendov_upper, sendov_lower) with separate range conditions."
     },
@@ -145,7 +146,7 @@
       "id": "counterexample",
       "title": "Counterexample to Erdős-Szekeres Conjecture",
       "startLine": 169,
-      "endLine": 182,
+      "endLine": 183,
       "content": "Sendov's 1992 disproof: $\\exists\\, n, N$ with $2^{n-1} < N \\le 2^n$ such that $\\alpha_N \\ne \\pi(1-1/n)$. The smallest instance is $N = 5$ with $n = 3$.",
       "proofMethod": "Axiomatized existential statement erdos_szekeres_conjecture_false."
     },
@@ -153,7 +154,7 @@
       "id": "optimal-configs",
       "title": "Optimal Configurations and Convex Position",
       "startLine": 184,
-      "endLine": 219,
+      "endLine": 220,
       "content": "Defines regular $n$-gon vertices via $\\bigl(\\cos(2\\pi k/n), \\sin(2\\pi k/n)\\bigr)$, proves optimality for $N = 2^k$, and shows optimal configurations achieving $\\alpha_N$ are always in convex position.",
       "proofMethod": "Finset.image for polygon vertices, axioms for optimality and convexity."
     },

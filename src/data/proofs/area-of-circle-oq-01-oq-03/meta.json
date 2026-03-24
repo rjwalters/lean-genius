@@ -57,7 +57,8 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 1232,
-    "assumptions": "4 sorries remain in supporting lemmas: (1) parseval_periodic_real — Parseval's identity for periodic L² functions, (2) fourierCoeffOn_deriv_periodic — IBP for Fourier coefficients of periodic C¹ functions, (3) fourier_decomposition_periodic — full Fourier decomposition combining Parseval + IBP, (4) reparametrize_constant_speed — reparametrization of closed curves to constant speed. 0 axioms. The isoperimetric inequality itself and Wirtinger's inequality are fully proved from these 4 Fourier-analytic sorry lemmas."
+    "assumptions": "4 sorries remain in supporting lemmas: (1) parseval_periodic_real — Parseval's identity for periodic L² functions, (2) fourierCoeffOn_deriv_periodic — IBP for Fourier coefficients of periodic C¹ functions, (3) fourier_decomposition_periodic — full Fourier decomposition combining Parseval + IBP, (4) reparametrize_constant_speed — reparametrization of closed curves to constant speed. 0 axioms. The isoperimetric inequality itself and Wirtinger's inequality are fully proved from these 4 Fourier-analytic sorry lemmas.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The isoperimetric problem — find the shape of maximum area for a given perimeter — is one of the oldest optimization problems in mathematics, traced to ancient Dido of Carthage (~900 BCE). The problem asks: among all closed curves of length $L$, which encloses the most area? The answer is a circle, and the isoperimetric inequality $C^2 \\geq 4\\pi A$ quantifies how much any curve falls short. Archimedes knew the result informally (~250 BCE), but a rigorous proof waited until the 19th century. Steiner (1838) gave an elegant proof using symmetrization, but didn't prove existence of the maximizer. Weierstrass (1870s) gave the first complete proof using calculus of variations. The most elegant proof is due to Hurwitz (1901), who used Fourier series and the Wirtinger inequality.",
@@ -139,7 +140,7 @@
       "id": "part-viii-arithmetic",
       "title": "Part VIII: Arithmetic Foundations for the Isoperimetric Proof",
       "startLine": 523,
-      "endLine": 596,
+      "endLine": 1232,
       "summary": "cross_product_sq_le: 2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) by nlinarith. isoperimetric_from_wirtinger_bounds: arithmetic kernel — from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L². All inequalities fully proved."
     }
   ],

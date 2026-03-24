@@ -92,7 +92,7 @@
       "title": "Basic Definitions",
       "summary": "IsCountablyInfiniteFamily, IntersectionNot2, IsValidFamily, colorings",
       "startLine": 28,
-      "endLine": 56,
+      "endLine": 57,
       "mathContext": "Defines a valid family $(A_i)_{i \\in I}$ as one where each $A_i$ is countable and infinite, and $|A_i \\cap A_j| \\neq 2$ for $i \\neq j$. A coloring $c : \\bigcup A_i \\to \\Gamma$ is valid if no $A_i$ is monochromatic."
     },
     {
@@ -100,7 +100,7 @@
       "title": "The Main Question",
       "summary": "SufficientColors, chromaticNumber, ErdosConjecture603",
       "startLine": 58,
-      "endLine": 78,
+      "endLine": 79,
       "mathContext": "$C$ colors suffice for $A$ if $\\exists \\Gamma$ with $|\\Gamma| \\leq C$ and a valid coloring $c : \\alpha \\to \\Gamma$. The chromatic number is $\\inf\\{C : C \\text{ suffices}\\}$. The conjecture asks for $\\sup_A \\chi(A)$ over all valid families."
     },
     {
@@ -108,7 +108,7 @@
       "title": "Related Problem - Intersection != 1",
       "summary": "IntersectionNot1, komjath_not1",
       "startLine": 80,
-      "endLine": 96,
+      "endLine": 97,
       "mathContext": "Komjáth's theorem: if $|A_i \\cap A_j| \\neq 1$ for all $i \\neq j$, then $\\aleph_0$ colors suffice. Axiomatized here as `komjath_not1` since the proof requires deep set-theoretic arguments."
     },
     {
@@ -124,7 +124,7 @@
       "title": "Hypergraph Perspective",
       "summary": "SetFamilyHypergraph, hypergraphChromatic, weakChromatic",
       "startLine": 127,
-      "endLine": 146,
+      "endLine": 147,
       "mathContext": "Reformulates the problem as the weak chromatic number of a hypergraph $H = (V, \\mathcal{E})$ where $V = \\bigcup A_i$ and $\\mathcal{E} = \\{A_i\\}$. Weak chromatic number = minimum colors to break monochromaticity (contrast with strong chromatic number requiring rainbow edges)."
     },
     {
@@ -132,7 +132,7 @@
       "title": "Examples and Constructions",
       "summary": "disjoint_2_colors, SatisfiesBoth, both_constraints",
       "startLine": 148,
-      "endLine": 169,
+      "endLine": 170,
       "mathContext": "Disjoint families ($A_i \\cap A_j = \\emptyset$ for $i \\neq j$) need only 2 colors. Families satisfying both $\\neq 1$ and $\\neq 2$ constraints fall under Komjáth's theorem, giving $\\aleph_0$ as an upper bound."
     },
     {
@@ -140,14 +140,14 @@
       "title": "Problem Status",
       "summary": "erdos_603_status, erdos_603_statement",
       "startLine": 171,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Known bounds, open questions",
       "startLine": 198,
-      "endLine": 212
+      "endLine": 287
     }
   ],
   "conclusion": {

@@ -78,7 +78,8 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 11,
     "lineCount": 125,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this question in the late 1970s [ErGr79, ErGr80], asking whether the longest prime AP in $\\{1, \\ldots, N\\}$ grows sublogarithmically. The Prime Number Theorem gives a natural upper bound: $\\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$, since primes have density $\\sim 1/\\log N$. For decades, even the existence of arbitrarily long prime APs was unknown. The breakthrough came in 2008 when Green and Tao proved that primes contain APs of every length, using a transference principle that lifts Szemerédi's theorem to the primes. However, their quantitative bounds are tower-type ($N(k) \\leq \\exp^{(3)}(ck)$), far from establishing the growth rate of $\\text{longestPrimeAP}(N)$. The Hardy-Littlewood $k$-tuple conjecture predicts $\\text{longestPrimeAP}(N) \\sim c \\cdot \\log N$ for some $c \\in (0,1)$, suggesting the answer to Erdős's question may be NO. This tension between the conjecture and the heuristic makes Problem #200 particularly delicate and deep.",
@@ -104,42 +105,42 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 27,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Defines `IsAPSequence s k` (general AP), `IsPrimeAP k N` ($\\exists a, d > 0$ with all $k$ terms prime and $\\leq N$), and `longestPrimeAP N` ($\\sup\\{k : \\text{IsPrimeAP}(k, N)\\}$ via `sSup`)."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound from PNT",
       "startLine": 45,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Axiomatizes `prime_ap_upper_pnt`: $\\forall \\varepsilon > 0,\\, \\exists N_0:\\, \\forall N > N_0,\\, \\text{longestPrimeAP}(N) \\leq (1+\\varepsilon)\\log N$. The bound follows from prime density $\\pi(N) \\sim N/\\log N$."
     },
     {
       "id": "green-tao",
       "title": "Green-Tao Theorem",
       "startLine": 59,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Axiomatizes `green_tao` ($\\forall k,\\, \\exists N:\\, \\text{IsPrimeAP}(k, N)$) and `longest_prime_ap_unbounded` ($\\forall M,\\, \\exists N:\\, \\text{longestPrimeAP}(N) \\geq M$). The 2008 landmark result using transference from Szemerédi's theorem."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: $o(\\log N)$",
       "startLine": 70,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Axiomatizes `erdos_200_conjecture`: $\\forall \\varepsilon > 0,\\, \\exists N_0:\\, \\text{longestPrimeAP}(N) < \\varepsilon \\log N$ for $N > N_0$. This is the formal $o(\\log N)$ statement, the central open problem."
     },
     {
       "id": "known-examples",
       "title": "Concrete Prime APs and Quantitative Bounds",
       "startLine": 81,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Axiomatizes $\\{3,5,7\\}$ ($k=3$) and $\\{5,11,17,23,29\\}$ ($k=5$) as prime APs. States the Green-Tao-Maynard quantitative bound $N(k) \\leq e^{e^{e^{ck}}}$, reflecting tower-type inefficiency."
     },
     {
       "id": "other-conjectures",
       "title": "Hardy-Littlewood Heuristics",
       "startLine": 97,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "Notes the Hardy-Littlewood $k$-tuple prediction: $\\text{longestPrimeAP}(N) \\sim c \\cdot \\log N$ with $c < 1$. If correct, this contradicts the $o(\\log N)$ conjecture, making the problem delicate. Both axiomatized as `True` placeholders."
     },
     {

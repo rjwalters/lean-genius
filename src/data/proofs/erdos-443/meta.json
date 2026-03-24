@@ -80,7 +80,7 @@
       "title": "Basic Definitions",
       "summary": "Defines productValue $m$ $k$ $= k(m-k)$, productSet $m$ as the Finset $A_m$, commonProducts as $A_m \\cap B_n$, and commonProductCount as $|A_m \\cap B_n|$. All are computable, enabling concrete evaluation via native_decide.",
       "startLine": 37,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "properties",
@@ -122,7 +122,7 @@
       "title": "Arithmetic Progressions Connection",
       "summary": "Defines triangularNumber $m = m(m-1)/2$ and axiomatizes product_partition_interpretation: $k(m-k)$ equals a partial sum of $\\{1, \\ldots, m-1\\}$, connecting products to partitioning consecutive integers.",
       "startLine": 176,
-      "endLine": 186
+      "endLine": 187
     },
     {
       "id": "growth",

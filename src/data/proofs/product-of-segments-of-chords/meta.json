@@ -44,7 +44,8 @@
     "wiedijkNumber": 55,
     "axiomCount": 1,
     "lineCount": 541,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Product of Segments of Chords theorem appears as Proposition 35 in Book III of Euclid's *Elements* (c. 300 BCE), where Euclid proves it using similar triangles: triangles PAC and PDB are similar (by the inscribed angle theorem), giving PA/PD = PC/PB, hence PA·PB = PC·PD. This makes it one of the oldest formally stated results in circle geometry.\n\nThe deeper unifying concept — the *power of a point* — was introduced by Jakob Steiner in his 1826 work *Einige geometrische Betrachtungen*. Steiner recognized that the quantity $d^2 - r^2$ (where $d$ is the distance from the point to the center) is invariant for all lines through the point, unifying four classical theorems: intersecting chords (interior), two secants (exterior), secant-tangent, and two tangents. The radical axis of two circles (locus where powers are equal) became a fundamental tool in projective and inversive geometry.\n\nThis formalization takes the algebraic approach via Vieta's formulas rather than Euclid's synthetic proof, parametrizing chord-circle intersections as roots of a quadratic equation whose constant term equals the power.",
@@ -74,42 +75,42 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 50,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Circle and point-on-circle definitions in the Euclidean plane."
     },
     {
       "id": "power",
       "title": "Power of a Point",
       "startLine": 71,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "The power of a point concept and auxiliary lemmas."
     },
     {
       "id": "chord-algebra",
       "title": "Chord Intersection Algebra",
       "startLine": 101,
-      "endLine": 219,
+      "endLine": 220,
       "summary": "Algebraic proof using quadratic equations and Vieta's formulas."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 221,
-      "endLine": 437,
+      "endLine": 438,
       "summary": "The Product of Segments of Chords theorem: PA * PB = PC * PD."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 439,
-      "endLine": 490,
+      "endLine": 491,
       "summary": "The center case (all chords are diameters) and the converse theorem."
     },
     {
       "id": "examples",
       "title": "Numerical Examples",
       "startLine": 492,
-      "endLine": 507,
+      "endLine": 508,
       "summary": "Concrete numerical examples demonstrating the theorem."
     },
     {

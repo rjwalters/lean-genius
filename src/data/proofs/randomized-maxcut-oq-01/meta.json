@@ -94,49 +94,49 @@
       "id": "setup",
       "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Import Mathlib modules for graphs, real numbers, and finite sets."
     },
     {
       "id": "cut-structure",
       "title": "Cut Infrastructure",
       "startLine": 39,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Define GWCut structure and MaxCut value, mirroring the 1/2-approximation proof."
     },
     {
       "id": "gw-constant",
       "title": "The GW Constant",
       "startLine": 80,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "Define α_GW = 878/1000 and prove key bounds (0 < α_GW < 1, α_GW > 1/2)."
     },
     {
       "id": "sdp-relaxation",
       "title": "SDP Relaxation",
       "startLine": 100,
-      "endLine": 125,
+      "endLine": 126,
       "summary": "Axiomatize the SDP relaxation value and its relationship to MaxCut."
     },
     {
       "id": "hyperplane-rounding",
       "title": "Hyperplane Rounding",
       "startLine": 127,
-      "endLine": 145,
+      "endLine": 146,
       "summary": "Axiomatize the expected cut from GW hyperplane rounding."
     },
     {
       "id": "gw-inequality",
       "title": "The GW Inequality",
       "startLine": 147,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "Axiomatize the core analytical result: E[cut] ≥ α_GW · SDP_OPT."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: 0.878-Approximation",
       "startLine": 170,
-      "endLine": 195,
+      "endLine": 196,
       "summary": "Prove the main result: α_GW · MaxCut ≤ E[GW cut], with ratio bound corollary."
     },
     {
@@ -150,21 +150,21 @@
       "id": "arccos-framework",
       "title": "Arccos Rounding Probability Framework",
       "startLine": 240,
-      "endLine": 310,
+      "endLine": 311,
       "summary": "Define roundingProb(x) = arccos(x)/π and sdpContrib(x) = (1-x)/2 using Mathlib's arccos. Prove boundary values at x = -1, 0, 1 and range properties [0,1]."
     },
     {
       "id": "gw-boundary",
       "title": "GW Inequality at Boundary Points",
       "startLine": 312,
-      "endLine": 340,
+      "endLine": 341,
       "summary": "Prove the GW inequality αGW · sdpContrib(x) ≤ roundingProb(x) at the three critical points x = -1, 0, 1."
     },
     {
       "id": "ratio-analysis",
       "title": "Ratio Analysis",
       "startLine": 342,
-      "endLine": 375,
+      "endLine": 376,
       "summary": "Analyze the GW ratio roundingProb(x)/sdpContrib(x) at boundary points, showing it equals 1 at x = 0 and x = -1."
     },
     {

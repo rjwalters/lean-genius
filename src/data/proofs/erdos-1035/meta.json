@@ -36,7 +36,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 99,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in his collection on extremal graph theory: given a graph $G$ on $2^n$ vertices with minimum degree $\\delta(G) > (1-c) \\cdot 2^n$, must $G$ contain the $n$-dimensional hypercube $Q_n$? The question sits at the intersection of **Turán-type** extremal theory and **hypercube combinatorics**. Classical results like **Dirac's theorem** (1952) show $\\delta \\geq n/2$ forces a Hamiltonian cycle; the **Komlós–Sárközy–Szemerédi theorem** (1995) extends this to bounded-degree spanning subgraphs. Since $Q_n$ is $n$-regular with $2^n$ vertices, a positive answer would place it in the KSS family. Conlon (2009) proved partial embedding results for hypergraphs, and the edge-extremal variant — determining $\\mathrm{ex}(N, Q_n)$ — is Erdős Problem #576.",
@@ -62,7 +63,7 @@
       "id": "hypercube",
       "title": "Hypercube Graph $Q_n$",
       "startLine": 23,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines `hypercubeAdj` via $u \\oplus v = 2^k$ and constructs `hypercubeGraph` as a `SimpleGraph (Fin (2^n))` with symmetry (`Nat.xor_comm`) and irreflexivity proofs.",
       "mathContext": "The XOR characterisation is computationally elegant: `u XOR v` is a power of 2 precisely when $u$ and $v$ differ in exactly one bit. This avoids explicit binary-string representation and yields `DecidableRel` adjacency for free."
     },
@@ -70,7 +71,7 @@
       "id": "degree",
       "title": "Minimum Degree Predicate",
       "startLine": 40,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines `HasMinDegree G d` requiring $|\\{w : G.\\mathrm{Adj}\\, v\\, w\\}| \\geq d$ for every vertex $v$.",
       "mathContext": "The predicate uses `Finset.filter` over the universal `Finset.univ` on `Fin N` with `DecidableRel G.Adj`. This is the standard Lean 4 approach for computing degrees in finite graphs."
     },
@@ -78,7 +79,7 @@
       "id": "containment",
       "title": "Subgraph Containment",
       "startLine": 47,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "Defines `ContainsAsSubgraph G H` via an injective map $f: \\mathrm{Fin}\\,M \\to \\mathrm{Fin}\\,N$ preserving adjacency.",
       "mathContext": "This is non-induced subgraph containment: $G$ may have extra edges between image vertices. The injectivity requirement (`Function.Injective f`) prevents vertex collisions. For hypercubes, non-induced containment is the natural notion."
     },
@@ -86,7 +87,7 @@
       "id": "conjecture",
       "title": "Main Conjecture: `ErdosProblem1035`",
       "startLine": 55,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "States $\\exists\\, c > 0$ such that $\\forall\\, n \\geq 1$, any graph on $2^n$ vertices with $\\delta \\geq \\lceil (1-c) \\cdot 2^n \\rceil$ contains $Q_n$.",
       "mathContext": "The `Nat.ceil` handles rounding of the real-valued threshold $(1-c) \\cdot 2^n$ to a natural number. The universal quantifier over $n$ makes this a uniform statement — a single constant $c$ must work for all dimensions simultaneously."
     },
@@ -94,7 +95,7 @@
       "id": "alternatives",
       "title": "Alternative Formulations",
       "startLine": 65,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Two fallback questions: (1) `ErdosProblem1035Alt1` — find smallest $m > 2^n$ for non-spanning containment; (2) `ErdosProblem1035Alt2` — find exact threshold sequence $u_n > 0$.",
       "mathContext": "Alternative 1 relaxes spanning to non-spanning containment (typically easier). Alternative 2 seeks the precise extremal function $u_n$; if $u_n = c \\cdot 2^n$ for constant $c$, this recovers the main conjecture."
     },

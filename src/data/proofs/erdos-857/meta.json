@@ -105,7 +105,7 @@
       "title": "Imports and Setup",
       "summary": "Imports `Finset`, `Finset.Powerset`, `Nat.Choose`, `Real.Basic`, and `Combinatorics.SetFamily.Shadow` from Mathlib. Opens the `Finset` namespace for convenient notation.",
       "startLine": 36,
-      "endLine": 44
+      "endLine": 45
     },
     {
       "id": "basic-definitions",
@@ -119,7 +119,7 @@
       "title": "The Sunflower Function $m(n,k)$",
       "summary": "Axiomatizes `sunflower_number_exists` (the pigeonhole-based existence of $m(n,k)$) and defines `sunflowerNumber` as $\\mathrm{min}\\{m : \\forall \\mathcal{F} \\subseteq 2^{[n]},\\, |\\mathcal{F}| \\geq m \\implies k\\text{-sunflower in } \\mathcal{F}\\}$ via `Nat.find`.",
       "startLine": 89,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "erdos-ko-rado",
@@ -133,28 +133,28 @@
       "title": "Naslund-Sawin Bound and Cap Set Connection",
       "summary": "States the 2017 breakthrough: $m(n,3) \\leq (3/2^{2/3} + \\varepsilon)^n$ for large $n$. Links this to the cap set problem via `cap_set_connection`: the density of 3-AP-free subsets of $\\mathbb{F}_3^n$ controls $m(n,3)$ up to polynomial factors.",
       "startLine": 144,
-      "endLine": 169
+      "endLine": 170
     },
     {
       "id": "sunflower-conjecture",
       "title": "The Sunflower Conjecture and Bounds",
       "summary": "States the Erdős-Rado Sunflower Conjecture ($m(n,k) \\leq c(k)^n$), the trivial upper bound $m(n,k) \\leq 2^n + 1$ from the pigeonhole principle, and the exponential lower bound $m(n,k) \\geq c^n$ for $c > 1$ from random constructions.",
       "startLine": 171,
-      "endLine": 200
+      "endLine": 201
     },
     {
       "id": "examples",
       "title": "Concrete Sunflower Examples",
       "summary": "Provides verified and axiomatized examples: `singleton_sunflower_example` proves $\\{\\{0\\},\\{1\\},\\{2\\}\\}$ is a 3-sunflower with core $\\emptyset$; `nonempty_core_example` asserts a 3-sunflower with 2-element core; `sunflower_free_family_bound` asserts a maximal 3-sunflower-free family of 2-sets from $[4]$.",
       "startLine": 202,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "weak-vs-strong",
       "title": "Weak vs Strong Sunflower Problem",
       "summary": "Defines `strong_sunflower_bound` for $\\ell$-uniform families (Erdős Problem #20), states `weak_from_strong` bounding $m(n,k) \\leq (n+1)(k-1)!n^n$ by summing over set sizes, and axiomatizes the equivalence of intersection and union formulations of sunflowers.",
       "startLine": 235,
-      "endLine": 275
+      "endLine": 276
     },
     {
       "id": "summary-theorem",

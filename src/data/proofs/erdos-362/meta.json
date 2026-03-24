@@ -90,42 +90,42 @@
       "title": "Subset Sum Definitions",
       "summary": "Defines `setSum` ($\\sum_{x \\in A} x$), `subsetsWithSum` (subsets with $\\sum S = t$), `countSubsetsWithSum` ($|\\{S \\subseteq A : \\sum S = t\\}|$), and `concentrationFunction` ($\\max_t$ count) via `Finset.sup`.",
       "startLine": 34,
-      "endLine": 56
+      "endLine": 57
     },
     {
       "id": "question1",
       "title": "Question 1: General Bound",
       "summary": "Erdős–Moser weak bound $O(2^N / N^{3/2} \\cdot (\\log N)^{3/2})$, Sárközy–Szemerédi sharp bound $O(2^N / N^{3/2})$, and tightness axiom showing $\\Omega(2^N / N^{3/2})$ is achievable.",
       "startLine": 58,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "question2",
       "title": "Question 2: Fixed Cardinality",
       "summary": "Defines `subsetsWithSumAndCard` and `countSubsetsWithSumAndCard` for fixed $|S| = l$. Axiomatizes Halász's bound $|\\{S : \\sum S = t, |S| = l\\}| \\le C \\cdot 2^N / N^2$.",
       "startLine": 84,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "stanley",
       "title": "Stanley's Extremal Result",
       "summary": "Defines `symmetricSet(N) = \\{-\\lfloor(N-1)/2\\rfloor, \\ldots, \\lfloor N/2\\rfloor\\}`. Stanley's theorem: this set maximizes $Q_A$ via the hard Lefschetz theorem. Also proves $t = 0$ is optimal for symmetric sets.",
       "startLine": 106,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "multidim",
       "title": "Multi-dimensional Generalization",
       "summary": "Defines `vectorSetSum` and `countVectorSubsetsWithSum` for $\\mathbb{Z}^d$-valued sums. Axiomatizes Halász's multi-dimensional bound $O(2^N / N^{(d+1)/2})$, unifying Q1 ($d=1$) and Q2 ($d=2$).",
       "startLine": 130,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "generating-function",
       "title": "Generating Function Approach",
       "summary": "Defines `subsetSumGF(A, z) = \\prod_{a \\in A}(1 + z^a)` and axiomatizes Fourier extraction: $|\\{S : \\sum S = t\\}| = (2\\pi)^{-1} \\int_0^{2\\pi} F(e^{i\\theta}) e^{-it\\theta} d\\theta$.",
       "startLine": 154,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "summary",

@@ -54,7 +54,8 @@
       "Algebraic number theory (rationality of polynomial values)"
     ],
     "lineCount": 289,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The question of arithmetic control over analytic functions dates to Stäckel (1895), who showed a transcendental entire function can take rational values at all rationals — but his construction did not control irrational inputs. Erdős sharpened this to an $\\textit{if and only if}$ question: can $f(x) \\in \\mathbb{Q} \\Leftrightarrow x \\in \\mathbb{Q}$? Hayman included it as Problem 2.31 in his 1974 collection, attributing it to Erdős. Barth and Schneider solved it affirmatively in 1970, proving the much stronger result that for ANY countable dense $A, B \\subset \\mathbb{R}$, a transcendental entire $f$ with $f(A) = B$ exists — and can be made strictly monotone on $\\mathbb{R}$. Their 1971 follow-up extended this to countable dense subsets of $\\mathbb{C}$. The construction uses Weierstrass products and careful interpolation on the countable dense set.",
@@ -129,14 +130,14 @@
       "id": "extensions",
       "title": "Part 8: Extensions",
       "startLine": 208,
-      "endLine": 222,
+      "endLine": 223,
       "summary": "barth_schneider_complex axiom (1971 extension to countable dense subsets of ℂ)."
     },
     {
       "id": "insights",
       "title": "Part 9: Why This Works",
       "startLine": 224,
-      "endLine": 240,
+      "endLine": 241,
       "summary": "no_polynomial_works axiom: no polynomial of degree > 1 can preserve rationality."
     },
     {

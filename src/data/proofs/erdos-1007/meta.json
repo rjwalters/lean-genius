@@ -24,7 +24,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 4,
     "lineCount": 129,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The notion of graph dimension was introduced by Erdős, Harary, and Tutte. A graph has dimension d if it can be embedded in ℝᵈ with all edges as unit segments, but not in ℝᵈ⁻¹. Erdős posed this specific question to Soifer in January 1992, asking for the minimum edge count among 4-dimensional graphs.\n\nThe dimension ladder for complete graphs is natural: K₂ has dimension 1 (a single edge), K₃ has dimension 2 (equilateral triangle in the plane), K₄ has dimension 3 (regular tetrahedron). But dimension 4 breaks the pattern—the minimum is not K₅ but K_{3,3}, a bipartite graph with only 9 edges.\n\nHouse (2013) proved the minimum is 9 and that K_{3,3} is the unique achiever. Chaffee and Noble (2016) extended this to dimension 5, finding the minimum is 15 edges, achieved by both K₆ and K_{1,3,3}. The uniqueness at dimension 4 does not persist at higher dimensions.",
@@ -58,7 +59,7 @@
       "title": "Graph Dimension",
       "summary": "Unit distance embedding structure and graph dimension definition",
       "startLine": 49,
-      "endLine": 73,
+      "endLine": 74,
       "mathContext": "Unit distance embedding structure and graph dimension definition"
     },
     {
@@ -66,7 +67,7 @@
       "title": "Complete Bipartite Graphs",
       "summary": "Definition of K_{m,n} and the K_{3,3} structure",
       "startLine": 75,
-      "endLine": 87,
+      "endLine": 88,
       "mathContext": "Definition of K_{m,n} and the K_{3,3} structure"
     },
     {
@@ -74,7 +75,7 @@
       "title": "Known Dimensions",
       "summary": "Dimension results for K₃, K₄, and K_{3,3}",
       "startLine": 89,
-      "endLine": 100,
+      "endLine": 101,
       "mathContext": "Dimension results for K₃, K₄, and K_{3,3}"
     },
     {
@@ -82,7 +83,7 @@
       "title": "Main Result: 9 Edges Minimum",
       "summary": "House's theorem that K_{3,3} is the unique minimum for dimension 4",
       "startLine": 102,
-      "endLine": 121,
+      "endLine": 122,
       "mathContext": "House's theorem that K_{3,3} is the unique minimum for dimension 4"
     },
     {

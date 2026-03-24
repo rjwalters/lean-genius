@@ -88,42 +88,42 @@
       "id": "sylvester-schur",
       "title": "Sylvester-Schur Theorem",
       "startLine": 32,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "The classical result: C(n,i) has a prime factor > i"
     },
     {
       "id": "definitions",
       "title": "Key Definitions",
       "startLine": 50,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "HasCommonLargePrime, HasCommonStrictlyLargePrime, and the main statement"
     },
     {
       "id": "erdos-szekeres",
       "title": "Erdős-Szekeres Strengthening",
       "startLine": 80,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "The conjectured stronger form with finitely many exceptions"
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 101,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "Concrete GCD computations for small cases"
     },
     {
       "id": "counterexample",
       "title": "The Critical Counterexample",
       "startLine": 148,
-      "endLine": 204,
+      "endLine": 205,
       "summary": "The (28,5,14) case: gcd = 1080 with max prime 5"
     },
     {
       "id": "remarks",
       "title": "Why Sylvester-Schur Doesn't Help",
       "startLine": 206,
-      "endLine": 210,
+      "endLine": 219,
       "summary": "Explanation of why single-coefficient results don't extend"
     }
   ],

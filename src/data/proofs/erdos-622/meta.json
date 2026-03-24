@@ -98,70 +98,70 @@
       "title": "Module Documentation",
       "summary": "Problem statement, DKM 2025 solution, and note on regularity necessity.",
       "startLine": 1,
-      "endLine": 18
+      "endLine": 19
     },
     {
       "id": "imports",
       "title": "Imports and Namespace",
       "summary": "Imports `SimpleGraph.Basic`, `WalkCounting`, `Fintype.Basic`, `Asymptotics` (for `Filter.atTop`), and `Tactic`. Opens `SimpleGraph` and `Finset` namespaces.",
       "startLine": 20,
-      "endLine": 30
+      "endLine": 31
     },
     {
       "id": "graph-basics",
       "title": "Graph Definitions",
       "summary": "Defines `IsRegular` ($\\deg(v) = d$ for all $v$), `vertexCount`, and `IsErdosFaudreeGraph` ($2n$ vertices, $(n+1)$-regular).",
       "startLine": 32,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "cycles",
       "title": "Cycles and Spanning",
       "summary": "Defines `IsCycle` (closed vertex-disjoint walk of length $\\geq 3$), `SpannedByCycle` ($\\exists$ cycle with $V(C) = S$), and `cycleSpannedCount` ($|\\{S \\subseteq V : \\text{SpannedByCycle}(G,S)\\}|$).",
       "startLine": 45,
-      "endLine": 58
+      "endLine": 59
     },
     {
       "id": "main-theorem",
       "title": "Main Result: DKM 2025",
       "summary": "States `MainTheorem`: $\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; \\text{cycleSpannedCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$. Axiomatizes `dkm_2025` and `bound_tight` (tightness via `Filter.Frequently`).",
       "startLine": 60,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "erdos-observation",
       "title": "Erdős's Observation and Half-Half Symmetry",
       "summary": "Defines `nonCycleCount = 2^{|V|} - \\text{cycleSpannedCount}$. Axiomatizes Erdős's observation ($\\text{nonCycleCount} \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$) and `half_half` (both bounds combined).",
       "startLine": 81,
-      "endLine": 102
+      "endLine": 103
     },
     {
       "id": "regularity",
       "title": "Regularity is Essential: Counterexamples",
       "summary": "Defines `completeBipartite` $K_{n,n}$ on `Fin n ⊕ Fin n`. Proves $K_{n,n}$ has $2n$ vertices, degree $n$, and $O((n!)^2)$ cycle-spanned sets. Defines `knn_with_stars` ($\\delta = n+1$ but non-regular) with $o(2^n)$ cycle sets.",
       "startLine": 104,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "examples",
       "title": "Examples: Paley Graphs and Random Graphs",
       "summary": "Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). Axiomatizes `random_regular_bound` (DKM holds with high probability for random regular graphs).",
       "startLine": 148,
-      "endLine": 171
+      "endLine": 172
     },
     {
       "id": "hamiltonian",
       "title": "Hamiltonian Cycles",
       "summary": "Defines `IsHamiltonianCycle` ($V(C) = V$) and `hamiltonianCount`. Axiomatizes existence via **Dirac's theorem**: $\\delta(G) \\geq |V|/2 \\implies$ Hamiltonian.",
       "startLine": 173,
-      "endLine": 187
+      "endLine": 188
     },
     {
       "id": "turan",
       "title": "Edge Density and Turán Connection",
       "summary": "Axiomatizes $|E| = n(n+1)$ (handshaking lemma) and $n(n+1) > n^2 = \\text{ex}(2n, K_3)$ (Turán's theorem), confirming Erdős–Faudree graphs exceed the triangle-free threshold.",
       "startLine": 189,
-      "endLine": 201
+      "endLine": 238
     }
   ],
   "conclusion": {

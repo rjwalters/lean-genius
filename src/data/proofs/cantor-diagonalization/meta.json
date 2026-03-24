@@ -56,7 +56,8 @@
         "relationship": "Extension of cantor diagonalization"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Georg Cantor published the diagonal argument in 1891 in *Über eine elementare Frage der Mannigfaltigkeitslehre*, though he had already proven the uncountability of the reals in 1874 using a nested-intervals argument. The 1891 proof was revolutionary in its simplicity and generality: it works not just for $\\mathbb{R}$ but for any set $S$ versus $S \\to \\{0,1\\}$ (the power set), immediately giving $|S| < |2^S|$ for all sets $S$.\n\nCantor's work was the most controversial mathematics of its era. Leopold Kronecker called him a 'corrupter of youth'; Henri Poincaré considered set theory a 'disease' from which mathematics would eventually recover. But David Hilbert declared: 'No one shall expel us from the paradise that Cantor has created.' Cantor suffered repeated nervous breakdowns, possibly exacerbated by the opposition, and spent his final years in a sanatorium (died 1918).\n\nThe diagonal argument's influence is incalculable. Richard's paradox (1905) and Berry's paradox use diagonal-like constructions. Kurt Gödel used a self-referential diagonal construction in his incompleteness theorems (1931): the sentence 'this sentence is unprovable' diagonalizes over all proofs. Alan Turing (1936) used a diagonal argument to prove the undecidability of the halting problem: the machine that asks 'does this machine halt on itself?' diagonalizes over all Turing machines. Paul Cohen's forcing (1963), which proved the independence of the continuum hypothesis, also relies on diagonal arguments. The technique is arguably the single most important proof method in mathematical logic.",
@@ -82,7 +83,7 @@
       "id": "imports-docstring",
       "title": "Imports, Docstring, and Setup",
       "startLine": 1,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Three Mathlib imports (Logic.Function.Basic, Data.Set.Function, Tactic), module docstring documenting the diagonal argument and its history (Cantor 1891, Wiedijk #22), namespace `CantorDiagonalization`, and `BinarySeq` type alias for $\\mathbb{N} \\to \\text{Bool}$.",
       "mathContext": "$\\text{BinarySeq} := \\mathbb{N} \\to \\text{Bool}$, representing infinite binary sequences. Each sequence corresponds to a real in $[0,1]$ via binary expansion $0.b_0b_1b_2\\ldots$."
     },
@@ -90,7 +91,7 @@
       "id": "diagonal",
       "title": "The Diagonal Construction",
       "startLine": 47,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines `diagonal f n = !(f n n)` (flip the $n$-th bit of the $n$-th sequence) and proves `diagonal_differs`: the diagonal disagrees with $f(n)$ at position $n$, using boolean case analysis.",
       "mathContext": "Given $f: \\mathbb{N} \\to \\text{BinarySeq}$, define $d(n) = \\neg f(n)(n)$. Key lemma: $d(n) \\neq f(n)(n)$ since $\\neg b \\neq b$ for any boolean $b$."
     },
@@ -98,7 +99,7 @@
       "id": "main-theorem",
       "title": "Cantor's Main Theorem and Reformulations",
       "startLine": 64,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Three equivalent formulations: `cantor_diagonalization` ($\\forall f, \\exists s, \\forall n, f(n) \\neq s$), `no_surjection_nat_to_binary` ($\\neg\\exists f$ surjective), and `reals_uncountable` (alias). The main proof uses `diagonal f` as witness, then derives contradiction from `congrFun` and `diagonal_differs`.",
       "mathContext": "$\\forall f: \\mathbb{N} \\to 2^{\\mathbb{N}},\\; \\exists s,\\; \\forall n,\\; f(n) \\neq s$. Equivalently: $\\neg\\exists f: \\mathbb{N} \\twoheadrightarrow 2^{\\mathbb{N}}$."
     },
@@ -106,7 +107,7 @@
       "id": "powerset",
       "title": "Power Set Generalization",
       "startLine": 109,
-      "endLine": 133,
+      "endLine": 134,
       "summary": "Proves `cantor_powerset`: for any type $S$, no surjection $S \\to \\text{Set}\\,S$ exists. Uses the diagonal set $D = \\{x : x \\notin f(x)\\}$ and `by_cases` to derive $a \\in D \\iff a \\notin D$ — a contradiction.",
       "mathContext": "$\\nexists f: S \\twoheadrightarrow \\mathcal{P}(S)$ for any set $S$. The diagonal set $D = \\{x \\in S : x \\notin f(x)\\}$ witnesses this: $D = f(a) \\Rightarrow (a \\in D \\iff a \\notin D)$."
     },
@@ -114,7 +115,7 @@
       "id": "russell",
       "title": "Russell's Paradox Connection",
       "startLine": 135,
-      "endLine": 151,
+      "endLine": 152,
       "summary": "Proves `diagonal_set_paradox`: if $f(a) = D$ then $a \\in D \\iff a \\notin D$. Notes that taking $f = \\text{id}$ yields Russell's paradox $R = \\{x : x \\notin x\\}$, resolved in type theory by stratification of types.",
       "mathContext": "Russell's set $R = \\{x : x \\notin x\\}$ is the diagonal set for $f = \\text{id}$. In ZFC, the axiom of regularity prevents $x \\in x$; in type theory, $x \\in x$ is ill-typed."
     },

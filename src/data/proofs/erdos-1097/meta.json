@@ -54,7 +54,7 @@
       "id": "header",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Imports Mathlib.Tactic, Finset.Basic, and Pow.Real. Module docstring describes Problem #1097: common differences in 3-term APs, the $O(n^{3/2})$ conjecture, connections to Bourgain and Kakeya, and the full history of bounds from Erdős-Spencer through AlphaEvolve.",
       "mathContext": "Problem: For $A \\subseteq \\mathbb{Z}$ with $|A| = n$, estimate $|D(A)| = |\\{d : \\exists a, a+d, a+2d \\in A\\}|$. Conjectured $O(n^{3/2})$, best bounds $\\Omega(n^{1.778})$ to $O(n^{11/6})$."
     },
@@ -62,7 +62,7 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 36,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Defines IsThreeAP (the predicate for a, a+d, a+2d all in A), commonDifferences (the set D(A)), and finite-set versions commonDiffFinset and numCommonDiff for cardinality computations.",
       "mathContext": "$\\text{IsThreeAP}(A, a, d) \\iff a, a+d, a+2d \\in A$. $D(A) = \\{d \\in \\mathbb{Z} : \\exists a,\\; \\text{IsThreeAP}(A,a,d)\\}$. $f(n) = \\max_{|A|=n} |D(A)|$."
     },
@@ -94,7 +94,7 @@
       "id": "upper-bound",
       "title": "Katz–Tao Upper Bound",
       "startLine": 302,
-      "endLine": 308,
+      "endLine": 309,
       "summary": "Axiomatizes the best known upper bound: f(n) ≤ C·n^{11/6} (Katz–Tao, 1999), the exponent 11/6 ≈ 1.833.",
       "mathContext": "$f(n) \\leq C \\cdot n^{11/6}$ (Katz-Tao 1999). The exponent $11/6 \\approx 1.833$ uses incidence geometry connecting APs to line arrangements."
     },
@@ -102,7 +102,7 @@
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 310,
-      "endLine": 336,
+      "endLine": 337,
       "summary": "Axiomatizes four lower bounds: Erdős-Spencer (n^{3/2} probabilistic), Erdős-Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve (slight improvement on Lemm).",
       "mathContext": "Erdős-Spencer: $f(n) \\geq c n^{3/2}$ (probabilistic). Erdős-Ruzsa: $f(n) \\geq n^{4/3}$ (explicit). Lemm: $f(n) \\geq n^{1.778}$ (best known). AlphaEvolve: $f(n) \\geq n^{1.822}$ (marginal improvement)."
     },
@@ -110,7 +110,7 @@
       "id": "bourgain",
       "title": "Bourgain's Sums-Differences Equivalence",
       "startLine": 338,
-      "endLine": 364,
+      "endLine": 365,
       "summary": "Defines restrictedSum, restrictedDiff, and BourgainExponent, then states Chan's equivalence theorem connecting the 3-AP common differences exponent to the Bourgain sums-differences critical exponent.",
       "mathContext": "Bourgain: $\\text{RS}(A) = \\{a_1 + a_2 : a_1 \\neq a_2 \\in A\\}$, $\\text{RD}(A) = \\{a_1 - a_2 : a_1 \\neq a_2\\}$. Chan's equivalence: $\\sup\\{\\alpha : f(n) \\geq n^\\alpha\\} = \\sup\\{\\alpha : |\\text{RS}(A) \\cup \\text{RD}(A)| \\geq n^\\alpha\\}$."
     },

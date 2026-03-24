@@ -61,7 +61,8 @@
       "Hardy-Ramanujan and Erdős-Kac theorems on average/typical Ω(n)"
     ],
     "lineCount": 444,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The question of representing integers as $2^k + m$ with arithmetic restrictions on $m$ has roots stretching to de Polignac (1849), who conjectured every odd number is $2^k + p$ for some prime $p$. Romanoff (1934) proved a positive proportion of integers have the form $2^k + p$, establishing the first density result. Erdős (1950) dramatically showed de Polignac's conjecture fails: using covering systems — finite collections of congruence classes covering all integers — he constructed a positive density of odd counterexamples. The primes $\\{3, 5, 7, 13, 17, 241\\}$ whose orders of $2$ form a covering of $\\mathbb{Z}/24\\mathbb{Z}$ yield modulus $5{,}592{,}405$ such that every $n$ in a suitable arithmetic progression has all remainders $n - 2^k$ divisible by one of these primes. Crocker (1971) extended this to show infinitely many odd numbers fail $n = 2^a + 2^b + p$. Problem 205 asked whether the vastly weaker condition $\\Omega(m) < \\log\\log m$ — allowing $m$ to have many prime factors, just fewer than 'typical' — suffices for all large $n$. The Hardy-Ramanujan theorem (1917) shows $\\Omega(n) \\approx \\log\\log n$ on average, making this threshold natural. The Erdős-Kac theorem (1940) refined this to Gaussian concentration. Nevertheless, the conjecture was disproved in 2026: counterexamples exist where ALL remainders $n - 2^k$ have $\\Omega$ far exceeding $\\log\\log n$.",
@@ -91,49 +92,49 @@
       "id": "omega-function",
       "title": "The Ω Function",
       "startLine": 48,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "Definition of bigOmega via primeFactorsList.length, with all four properties PROVED from Mathlib: Ω(1)=0, Ω(p)=1, Ω(p^k)=k (by induction), Ω(ab)=Ω(a)+Ω(b) (via perm_primeFactorsList_mul)"
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "startLine": 87,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "HasSmallOmegaRep (n = 2^k + m with Ω(m) < log log m) and Erdos205Conjecture (all sufficiently large n have such a representation)"
     },
     {
       "id": "counterexample",
       "title": "The Counterexample and Disproof",
       "startLine": 101,
-      "endLine": 229,
+      "endLine": 230,
       "summary": "minOmegaRemainder and thresholdFunction definitions, Barreto-Leeham counterexample (axiom), auxiliary lemmas (threshold_dominates_loglog axiom, remainder_achieves_min and loglog_mono_nat proved), and the verified 47-line disproof erdos_205_disproved"
     },
     {
       "id": "romanoff",
       "title": "Romanoff's Theorem and Covering Obstruction",
       "startLine": 231,
-      "endLine": 253,
+      "endLine": 254,
       "summary": "IsPowerPlusePrime definition, Romanoff positive density (axiom: δ > 0 fraction are 2^k + p), and Erdős covering obstruction (axiom: positive density of odds are NOT 2^k + p)"
     },
     {
       "id": "concrete-omega",
       "title": "Concrete Ω Computations",
       "startLine": 255,
-      "endLine": 293,
+      "endLine": 294,
       "summary": "12 verified Ω values via native_decide: from Ω(2)=1 to Ω(30030)=6, including prime powers (Ω(1024)=10) and primorials (Ω(2310)=5, Ω(30030)=6)"
     },
     {
       "id": "covering-systems",
       "title": "Covering Systems and de Polignac Numbers",
       "startLine": 295,
-      "endLine": 384,
+      "endLine": 385,
       "summary": "IsCoveringSystem definition, Erdős modulus 5592405, orders of 2 mod {3,5,7,13,17,241} verified, LCM = 24 covering check, de Polignac numbers 127 and 149 verified (all 15 remainders proved composite via native_decide)"
     },
     {
       "id": "analytic-bounds",
       "title": "Related Analytic Bounds",
       "startLine": 386,
-      "endLine": 404,
+      "endLine": 405,
       "summary": "Hardy-Ramanujan average (axiom: average Ω ~ log log N) and Erdős-Kac concentration (axiom: Ω(n) is asymptotically Gaussian around log log n)"
     },
     {

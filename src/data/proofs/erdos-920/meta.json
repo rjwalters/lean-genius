@@ -24,7 +24,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 12,
     "lineCount": 237,
-    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The study of chromatic numbers of $K_k$-free graphs has a rich history intertwining graph coloring and Ramsey theory. Erdős initiated this line in 1959 when he used the probabilistic method to show $R(3,m) \\gg (m/\\log m)^2$, which implies $g_3(n) \\gg n^{1/2}/\\log n$. Graver and Yackel established the upper bound $g_k(n) \\ll (n \\log\\log n / \\log n)^{1-1/(k-1)}$ in 1968, published in the Journal of Combinatorial Theory. Shearer later improved the $k=3$ lower bound to $g_3(n) \\gg (n/\\log n)^{1/2}$, essentially resolving that case. For decades the general case $k \\geq 4$ remained open, with the best known lower bound exponent $1 - 2/(k+1)$ falling short of the conjectured $1 - 1/(k-1)$. The landscape changed dramatically in 2023 when Sam Mattheus and Jacques Verstraete proved $R(4,t) \\gg t^3/(\\log t)^4$ using algebraic geometry over finite fields, resolving the $k=4$ case with the optimal exponent $2/3$. Their work appeared in Annals of Mathematics and represents one of the major combinatorial breakthroughs of the decade. The problem for $k \\geq 5$ remains one of the central open questions in extremal combinatorics.",
@@ -51,7 +52,7 @@
       "title": "Imports and Setup",
       "summary": "Imports from Mathlib for `SimpleGraph`, `CliqueFree`, `Coloring`, and `Real.log`. Opens the `SimpleGraph` and `Real` namespaces within an `Erdos920` namespace.",
       "startLine": 33,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "basic-definitions",
@@ -86,7 +87,7 @@
       "title": "Connection to Ramsey Numbers",
       "summary": "Axiomatizes the Ramsey number $R(k,m)$, the Ramsey-chromatic connection (the key bridge: $R(k,m) \\geq c \\cdot m^\\alpha/(\\log m)^\\beta \\implies g_k(n) \\geq c' \\cdot n^{1-1/\\alpha}/(\\log n)^{\\beta/\\alpha}$), and the specific Ramsey bounds of Erdős ($R(3,m) \\gg (m/\\log m)^2$) and Mattheus-Verstraete ($R(4,m) \\gg m^3/(\\log m)^4$).",
       "startLine": 166,
-      "endLine": 207
+      "endLine": 208
     },
     {
       "id": "summary-theorem",

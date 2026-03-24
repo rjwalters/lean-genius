@@ -113,49 +113,49 @@
       "title": "Basic Definitions",
       "summary": "BlockDesign structure with pair coverage, numBlocks, IsPrimePower, IsProjectivePlaneSize",
       "startLine": 29,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "de-bruijn-erdos",
       "title": "The de Bruijn-Erdős Theorem",
       "summary": "de_bruijn_erdos axiom (t ≥ n), IsMinimalDesign, minimal_design_uniform",
       "startLine": 57,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "projective-planes",
       "title": "Projective Plane Constructions",
       "summary": "ProjectivePlane structure, projective_plane_exists, projective_plane_design axioms",
       "startLine": 75,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "erdos-sos-theorem",
       "title": "The Erdős-Sós Conjecture (Now Theorem)",
       "summary": "efsw_1985 axiom (gap theorem), efsw_strong axiom with broken-plane condition",
       "startLine": 100,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "gap-structure",
       "title": "The Gap Structure",
       "summary": "achievableBlocks set, n_achievable, gap_theorem, first_above_n (proved by contradiction)",
       "startLine": 121,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete gap computations for p = 2, 3, 4, 5 via norm_num",
       "startLine": 148,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "2-designs",
       "title": "Connection to Combinatorial Designs",
       "summary": "Is2Design predicate, fisher_inequality axiom, de_bruijn_erdos_from_fisher (proved)",
       "startLine": 164,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "summary",

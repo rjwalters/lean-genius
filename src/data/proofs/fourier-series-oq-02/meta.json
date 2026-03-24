@@ -103,7 +103,7 @@
       "id": "holder-setup",
       "title": "Hölder Continuity on the Circle",
       "startLine": 48,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Defines `IsHolderOnCircle` using Mathlib's `HolderWith`. Proves Hölder ⟹ continuous and Lipschitz ⟹ Hölder(1).",
       "mathContext": "A function $f$ is $(C, \\alpha)$-Hölder iff $|f(x) - f(y)| \\leq C \\cdot d(x,y)^\\alpha$. Lipschitz = Hölder(1)."
     },
@@ -111,7 +111,7 @@
       "id": "translation-infrastructure",
       "title": "Translation Infrastructure",
       "startLine": 74,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Defines `circleTranslate` (translation on AddCircle) and `halfPeriod` (T/(2n)). Proves `fourier_norm_one`: ‖e_n(x)‖ = 1 via Mathlib's fourier_apply and toCircle.",
       "mathContext": "The half-period $h = T/(2n)$ satisfies $e_{-n}(x + h) = -e_{-n}(x)$ because $e^{-\\pi i} = -1$."
     },
@@ -119,7 +119,7 @@
       "id": "axiomatized-analysis",
       "title": "Axiomatized Analysis Infrastructure",
       "startLine": 97,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "Axiomatizes the core analytical tools: half-period identity (e_{-n} sign flip), difference formula (2ĉ_n as integral), Hölder translation bound, and integral product bound.",
       "mathContext": "Key identity: $2\\hat{c}_n(f) = \\int (f(x) - f(x + T/(2n))) e_{-n}(x)\\, d\\mu$, bounded by $C(T/(2|n|))^\\alpha$ via Hölder."
     },
@@ -127,7 +127,7 @@
       "id": "main-theorem",
       "title": "Main Theorem: Fourier Coefficient Decay",
       "startLine": 150,
-      "endLine": 177,
+      "endLine": 178,
       "summary": "**PROVED**: ‖ĉ_n(f)‖ ≤ (C/2)(T/2|n|)^α. Uses difference formula, integral bound, and norm arithmetic.",
       "mathContext": "$\\|\\hat{c}_n(f)\\| \\leq \\frac{C}{2} \\left(\\frac{T}{2|n|}\\right)^\\alpha$ for $\\alpha$-Hölder $f$ with constant $C$."
     },
@@ -135,7 +135,7 @@
       "id": "corollaries",
       "title": "Corollaries",
       "startLine": 179,
-      "endLine": 205,
+      "endLine": 206,
       "summary": "Proves Lipschitz decay (α=1). Axiomatizes square-summability for α > 1/2 and Riemann-Lebesgue from Hölder.",
       "mathContext": "Lipschitz: $\\|\\hat{c}_n\\| \\leq CT/(4|n|)$. For $\\alpha > 1/2$: $\\sum |\\hat{c}_n|^2 < \\infty$."
     },
@@ -143,7 +143,7 @@
       "id": "optimality",
       "title": "Optimality",
       "startLine": 207,
-      "endLine": 232,
+      "endLine": 233,
       "summary": "Axiomatizes optimality (Weierstrass function construction) and partial converse (decay ⟹ regularity via Sobolev embedding).",
       "mathContext": "For each $\\alpha \\in (0,1)$, $\\exists$ $\\alpha$-Hölder $f$ with $|\\hat{c}_n| \\geq c/|n|^\\alpha$. Converse: $O(1/|n|^\\beta)$ with $\\beta > \\alpha + 1/2$ gives Hölder($\\alpha$)."
     },
@@ -151,7 +151,7 @@
       "id": "hierarchy",
       "title": "Regularity-Decay Hierarchy",
       "startLine": 234,
-      "endLine": 258,
+      "endLine": 382,
       "summary": "Axiomatizes C^k, C^∞ (rapid), and analytic (exponential) decay. Proves arithmetic consequences for the α = 1/2 threshold.",
       "mathContext": "$C^k \\Rightarrow O(1/|n|^k)$, $C^\\infty \\Rightarrow$ rapid decay, analytic $\\Rightarrow O(e^{-c|n|})$. Complete regularity $\\leftrightarrow$ decay correspondence."
     }

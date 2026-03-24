@@ -48,7 +48,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 106,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem extends the classical Turán theorem (1941), which established that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, achieved uniquely by K_{⌊n/2⌋,⌈n/2⌉}. Rademacher (unpublished, c. 1940s, attributed by Erdős) proved the first supersaturation result: exceeding this threshold by one edge forces at least ⌊n/2⌋ triangles. Erdős [Er62d] extended this to t < cn for a constant c and conjectured the full result for all t < ⌊n/2⌋. The conjecture was proved independently by Lovász-Simonovits (1976), who developed the influential 'stability method' for extremal graph theory, and by Nikiforov-Khadzhiivanov (1981). The stability method shows that graphs close to the Turán bound must structurally resemble the Turán graph, and has since become a fundamental technique in the field.",
@@ -74,7 +75,7 @@
       "id": "header",
       "title": "File Header and Imports",
       "startLine": 1,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Problem statement, historical background, and Mathlib import.",
       "mathContext": "Docstring references Erdős [Er62d] (1962), Lovász-Simonovits [LoSi76] (1976), and Nikiforov-Khadzhiivanov [NiKh81] (1981). Imports full `Mathlib`, opens `SimpleGraph` and `Finset` namespaces. Variables: `{V : Type*} [Fintype V] [DecidableEq V]`."
     },
@@ -83,7 +84,7 @@
       "title": "Turán Threshold and Triangle Counting",
       "summary": "Defines turanThreshold(n) = n²/4 and triangleCount via Finset filtering.",
       "startLine": 45,
-      "endLine": 57,
+      "endLine": 58,
       "mathContext": "`turanThreshold(n) := n^2 / 4` (natural number floor division). `triangleCount(G)` filters `Finset.univ` for 3-element subsets with complete adjacency. Each triangle counted once as unordered set."
     },
     {
@@ -91,7 +92,7 @@
       "title": "Rademacher's Theorem (Base Case)",
       "summary": "One extra edge over Turán forces ⌊n/2⌋ triangles.",
       "startLine": 59,
-      "endLine": 68,
+      "endLine": 69,
       "mathContext": "Axiom: `G.edgeFinset.card = turanThreshold(Fintype.card V) + 1 → triangleCount G ≥ Fintype.card V / 2`. The extra edge connects vertices in the same part, creating one triangle per vertex in the opposite part."
     },
     {
@@ -99,7 +100,7 @@
       "title": "Main Supersaturation Theorem",
       "summary": "t extra edges force t·⌊n/2⌋ triangles (Lovász-Simonovits 1976).",
       "startLine": 70,
-      "endLine": 82,
+      "endLine": 83,
       "mathContext": "Axiom with parameter `(t : ℕ)`: `t < Fintype.card V / 2 → G.edgeFinset.card = turanThreshold(Fintype.card V) + t → triangleCount G ≥ t * (Fintype.card V / 2)`. Linear growth for $t < \\lfloor n/2 \\rfloor$."
     },
     {

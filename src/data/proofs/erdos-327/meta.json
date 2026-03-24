@@ -75,7 +75,7 @@
       "id": "property",
       "title": "Sum-Divides-Product Property",
       "startLine": 25,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Defines `SumNotDvdProd` (pairwise $a+b \\nmid ab$), `SumNotDvdTwoProd` (pairwise $a+b \\nmid 2ab$), and `maxAvoidSize` as the powerset-supremum extremal function.  Both avoidance conditions are symmetric and hereditary.",
       "mathContext": "$\\text{SumNotDvdProd}(A) \\iff \\forall a, b \\in A,\\, a \\ne b \\implies (a+b) \\nmid (ab)$. Equivalently, $\\nexists c \\in \\mathbb{Z}^+: \\frac{1}{a} + \\frac{1}{b} = \\frac{1}{c}$. $\\text{maxAvoidSize}(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\, \\text{SumNotDvdProd}(A)\\}$."
     },
@@ -83,7 +83,7 @@
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 39,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "States `ErdosProblem327` in $\\varepsilon$-$N_0$ form: $\\text{maxAvoidSize}(N) \\leq (1/2 + \\varepsilon)N$ for all $\\varepsilon > 0$ and sufficiently large $N$.  Combined with the odd-numbers lower bound, this would pin the extremal density to exactly $1/2$.",
       "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists N_0: \\text{maxAvoidSize}(N) \\le (\\tfrac{1}{2} + \\varepsilon) N$ for $N \\ge N_0$. The odd numbers give $\\text{maxAvoidSize}(N) \\ge \\lceil N/2 \\rceil$."
     },
@@ -107,7 +107,7 @@
       "id": "basic",
       "title": "Basic Properties and Odd Numbers",
       "startLine": 70,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Fully proves four results: `sumNotDvdProd_empty` and `sumNotDvdProd_singleton` (vacuous truth), `sumNotDvdProd_subset` (hereditary/monotone property), and `oddNumbers_sumNotDvdProd` (parity argument using `Nat.mul_mod` and `omega`).  Zero sorries in this section.",
       "mathContext": "$\\text{SumNotDvdProd}(\\emptyset)$ and $\\text{SumNotDvdProd}(\\{n\\})$ hold vacuously. $B \\subseteq A \\wedge \\text{SumNotDvdProd}(A) \\implies \\text{SumNotDvdProd}(B)$ (hereditary). Odd numbers $\\{1,3,5,\\ldots\\} \\cap [1,N]$ satisfy SumNotDvdProd since $2 \\mid (a+b)$ but $2 \\nmid (ab)$."
     },

@@ -67,7 +67,8 @@
         "relationship": "The binomial theorem underlies many counting arguments in probability; the birthday problem's complement probability uses falling factorial counting"
       }
     ],
-    "lineCount": 402
+    "lineCount": 402,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Birthday Problem, also known as the Birthday Paradox, was first rigorously analyzed by Richard von Mises in his 1939 paper on the problem of coincidences. Harold Davenport independently studied it in the 1940s using similar counting arguments.\n\nThe 'paradox' is psychological, not mathematical: most people greatly underestimate the probability because they confuse the chance of someone matching *their* birthday ($\\approx n/365$, which requires $\\sim 253$ people for 50%) with the chance of *any* pair matching (which requires only 23 people). The key is that with $n$ people there are $\\binom{n}{2} = n(n-1)/2$ pairs — for $n=23$ that's already 253 pairs.\n\nIn the 1990s, the Birthday Problem gained renewed significance in cryptography. Yuval (1979) introduced the 'birthday attack' showing that hash collisions can be found in $O(2^{n/2})$ time rather than $O(2^n)$, fundamentally changing how hash function output lengths are chosen. This principle drove the transition from 128-bit hashes (only 64-bit collision resistance) to 256-bit hashes for security-critical applications.",
@@ -93,7 +94,7 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Overview of the birthday problem and the probability formula.",
       "mathContext": "The module docstring establishes the sample space model: birthdays are uniform over $\\{0,\\ldots,364\\}$, people are labeled $\\{0,\\ldots,n-1\\}$, and the probability is computed as a ratio of cardinalities over a finite sample space. This discrete-probability setup avoids measure theory entirely — the formalization works with `Nat` arithmetic and `Rat` or `Real` division, leveraging Mathlib's `Fintype.card` and `Nat.descFactorial`."
     },
@@ -133,7 +134,7 @@
       "id": "threshold",
       "title": "The 23-Person Threshold",
       "startLine": 184,
-      "endLine": 247,
+      "endLine": 248,
       "summary": "The famous result that P(23) > 1/2 and P(22) < 1/2.",
       "mathContext": "The 23-person threshold is a numerical fact: $\\text{descFactorial}(365,23) / 365^{23} < 1/2$ while $\\text{descFactorial}(365,22) / 365^{22} \\geq 1/2$. Since these are exact integer/integer comparisons (no floating point), Lean's `native_decide` tactic can verify them by evaluating the 146-digit integers at compile time. The psychological surprise is that $\\binom{23}{2} = 253$ pairs — exceeding the 365-day year — so a match is more likely than not."
     },
@@ -141,7 +142,7 @@
       "id": "combinatorics",
       "title": "Relationship to Combinatorics",
       "startLine": 249,
-      "endLine": 302,
+      "endLine": 303,
       "summary": "Connection to counting principles and verification examples.",
       "mathContext": "This section makes the combinatorial underpinning explicit: the count of collision-free assignments equals the number of injective functions, which equals the falling factorial by `Fintype.card_embedding_eq`. Verification examples (small $n$ with computed values) serve both as unit tests and as illustrations of the formula. The section also connects `descFactorial` to the standard combinatorial notation $P(n,k) = n!/(n-k)!$ (permutations), showing the birthday count is a permutation count."
     },

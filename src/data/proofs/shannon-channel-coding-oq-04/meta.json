@@ -56,7 +56,8 @@
       "Real logarithm and its properties (Mathlib)",
       "Convexity of x·log(x) on [0,∞) (Mathlib)",
       "Basic real analysis inequalities"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The binary entropy function h(p) = -p log p - (1-p) log(1-p) is arguably the single most important function in information theory. It measures the uncertainty (entropy) of a binary random variable with probability p of being 1. Shannon introduced it in 1948 as a special case of his general entropy formula, and it appears throughout coding theory: in the channel capacity of the binary symmetric channel (C = 1 - h(p)), in Fano's inequality, and in the sphere-packing bound.\n\nDespite its simplicity, the binary entropy function encodes deep mathematical content: its concavity reflects the fundamental principle that mixing distributions increases uncertainty, while its maximum at p = 1/2 captures the intuition that a fair coin is maximally unpredictable. The upper bound h(p) ≤ log 2 (= 1 bit) is a special case of the maximum entropy principle.",
@@ -75,7 +76,7 @@
       "id": "definition",
       "title": "Binary Entropy Definition",
       "startLine": 29,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Defines binary entropy h(p) = -(p·log p + (1-p)·log(1-p)) using natural logarithm, plus the base-2 variant hBits(p) = h(p)/ln(2).",
       "mathContext": "$h(p) = -(p \\ln p + (1-p) \\ln(1-p))$, $h_2(p) = h(p)/\\ln 2$"
     },
@@ -83,7 +84,7 @@
       "id": "boundary-values",
       "title": "Boundary Values",
       "startLine": 38,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Proves h(0) = 0 and h(1) = 0 by simplification using Real.log_one.",
       "mathContext": "$h(0) = h(1) = 0$"
     },
@@ -91,7 +92,7 @@
       "id": "symmetry",
       "title": "Symmetry",
       "startLine": 47,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Proves h(p) = h(1-p) as a pure ring identity.",
       "mathContext": "$h(p) = h(1-p)$ for all $p \\in \\mathbb{R}$"
     },
@@ -99,7 +100,7 @@
       "id": "half-value",
       "title": "Value at 1/2",
       "startLine": 57,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Proves h(1/2) = ln 2 using log_inv, and the bits version hBits(1/2) = 1.",
       "mathContext": "$h(1/2) = \\ln 2$, equivalently $h_2(1/2) = 1$ bit"
     },
@@ -107,7 +108,7 @@
       "id": "nonnegativity",
       "title": "Non-negativity",
       "startLine": 74,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "Proves h(p) ≥ 0 for p ∈ [0,1]. Each term p·log(p) ≤ 0 since p ≥ 0 and log(p) ≤ 0 for p ≤ 1.",
       "mathContext": "$h(p) \\geq 0$ for $p \\in [0,1]$"
     },
@@ -115,7 +116,7 @@
       "id": "upper-bound",
       "title": "Upper Bound via Binary Gibbs Inequality",
       "startLine": 96,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "Proves h(p) ≤ ln 2 via the binary Gibbs inequality. The KL term bound p·log(p/q) ≥ p-q (from log(x) ≤ x-1) is applied with q = 1/2 for both p and 1-p. Adding gives log 2 + (p·log p + (1-p)·log(1-p)) ≥ 0.",
       "mathContext": "$h(p) \\leq \\ln 2$ for all $p \\in [0,1]$, equivalently $h_2(p) \\leq 1$ bit"
     },
@@ -123,7 +124,7 @@
       "id": "zero-characterization",
       "title": "Zero Entropy Characterization",
       "startLine": 148,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "Proves h(p) = 0 iff p = 0 or p = 1. The forward direction uses strict negativity of log on (0,1) to show both terms are strictly negative when 0 < p < 1.",
       "mathContext": "$h(p) = 0 \\iff p \\in \\{0, 1\\}$"
     },
@@ -131,7 +132,7 @@
       "id": "concavity",
       "title": "Concavity on [0,1]",
       "startLine": 185,
-      "endLine": 222,
+      "endLine": 224,
       "summary": "Proves ConcaveOn ℝ (Set.Icc 0 1) h directly from Mathlib's convexOn_mul_log. Applies convexity of x·log(x) at points (x,y) and (1-x, 1-y), uses the affine identity a(1-x)+b(1-y) = 1-(ax+by), then adds and negates.",
       "mathContext": "$h$ is concave on $[0,1]$: $h(tp + (1-t)q) \\geq t \\cdot h(p) + (1-t) \\cdot h(q)$"
     }

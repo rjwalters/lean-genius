@@ -52,7 +52,8 @@
       "Polynomial identity verification (ring tactic)",
       "Basic Galois theory for discriminant applications"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Newton's identities were first published by Isaac Newton in *Arithmetica Universalis* (1707), though Albert Girard had stated equivalent results without proof in *Invention nouvelle en l'algèbre* (1629). The identities provide an algorithmic bridge between two fundamental bases of symmetric function theory: the elementary symmetric polynomials $e_k$ (which appear as polynomial coefficients via Vieta's formulas) and the power sums $p_k$ (which appear as matrix traces and moment-generating invariants).\n\nThe historical significance extends far beyond polynomial manipulation. In the 18th century, Edward Waring used Newton's identities to study symmetric functions systematically, leading to the 'Waring problem' of representing integers as sums of powers. In the 19th century, the connection between Newton's identities and matrix theory became central through Cayley and Sylvester's invariant theory. The Faddeev-LeVerrier algorithm (1840, 1853) directly applies Newton's identities to compute characteristic polynomials from matrix traces, a method still used in numerical linear algebra.\n\nIn modern mathematics, Newton's identities are a special case of the theory of symmetric functions developed by Schur, Littlewood, and Macdonald. The ring of symmetric functions $\\Lambda$ has multiple bases (monomial, elementary, power sum, Schur), and Newton's identities describe the change-of-basis between $e_k$ and $p_k$. This perspective connects to representation theory via the Frobenius characteristic map, which sends characters of symmetric groups to symmetric functions.",
@@ -79,7 +80,7 @@
       "id": "header-imports",
       "title": "Module Documentation and Import",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Module docstring describing Newton's identities, their historical context (Newton 1707, Girard 1629), and applications. Single import: `Mathlib.Tactic` (provides `ring` and `field_simp`). Opens the `NewtonIdentities` namespace.",
       "mathContext": "Newton's identities: $p_k = \\sum_{i=1}^{\\min(k,n)} (-1)^{i-1} e_i p_{k-i} + (-1)^{k-1} k e_k$. The generating function: $\\sum_{k \\geq 1} p_k t^{k-1} = -\\frac{E'(-t)}{E(-t)}$ where $E(t) = \\sum_{k \\geq 0} e_k t^k = \\prod_i (1 + x_i t)$."
     },
@@ -87,7 +88,7 @@
       "id": "two-variables",
       "title": "Two-Variable Newton Identities",
       "startLine": 33,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Newton's identities for $n = 2$: $e_1 = x+y$, $e_2 = xy$. Recursive form ($p_k$ from previous power sums) for $k = 1$ through $4$, plus pure forms expressing $p_2, p_3, p_4$ solely in $e_1, e_2$. All proofs by `ring`. Works over any `CommRing R`.",
       "mathContext": "The two-variable recurrence $p_k = e_1 p_{k-1} - e_2 p_{k-2}$ is a second-order linear recurrence with characteristic polynomial $(t-x)(t-y) = t^2 - e_1 t + e_2$. Pure forms: $p_2 = e_1^2 - 2e_2$, $p_3 = e_1^3 - 3e_1 e_2$, $p_4 = e_1^4 - 4e_1^2 e_2 + 2e_2^2$."
     },
@@ -95,7 +96,7 @@
       "id": "three-variables",
       "title": "Three-Variable Newton Identities",
       "startLine": 88,
-      "endLine": 160,
+      "endLine": 161,
       "summary": "Newton's identities for $n = 3$. Private abbreviations for $e_1, e_2, e_3$ and $p_1, \\ldots, p_4$. Recursive identities with the $+3e_3$ term in $p_3$. Pure forms eliminating intermediate power sums. Proofs by `unfold` + `ring`.",
       "mathContext": "Key identity: $p_3 = e_1^3 - 3e_1 e_2 + 3e_3$. The coefficient $+3$ on $e_3$ follows the pattern $(-1)^{k-1} k \\cdot e_k$: for $k = 3$, this gives $(-1)^2 \\cdot 3 = +3$."
     },
@@ -103,7 +104,7 @@
       "id": "four-variables",
       "title": "Four-Variable Newton Identities",
       "startLine": 162,
-      "endLine": 204,
+      "endLine": 205,
       "summary": "Newton's identities for $n = 4$: $p_2, p_3, p_4$ via the full four-variable recurrence. The fourth identity $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4e_4$ verified by `unfold` + `ring`.",
       "mathContext": "$e_4 = abcd$, and $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4e_4$. The alternating signs $+,-,+,-$ and the coefficient $-4$ on $e_4$ follow $(-1)^{k-1} k = (-1)^3 \\cdot 4 = -4$."
     },
@@ -111,7 +112,7 @@
       "id": "inversion",
       "title": "Inversion: Elementary Symmetric from Power Sums",
       "startLine": 206,
-      "endLine": 232,
+      "endLine": 233,
       "summary": "Newton's identities in reverse: $e_2 = (p_1^2 - p_2)/2$ and $e_3 = (p_1^3 - 3p_1 p_2 + 2p_3)/6$. Requires `Field` and `CharZero` for the divisions. Proofs by `field_simp` + `ring`.",
       "mathContext": "The denominators $2$ and $6 = 3!$ arise from the exponential formula $\\sum e_k t^k = \\exp(-\\sum (-1)^j p_j t^j / j)$. The inversion fails in characteristic $p$ when $p \\leq k$."
     },
@@ -119,7 +120,7 @@
       "id": "discriminant",
       "title": "Polynomial Discriminants via Symmetric Functions",
       "startLine": 234,
-      "endLine": 266,
+      "endLine": 267,
       "summary": "Quadratic discriminant $\\Delta = e_1^2 - 4e_2$ and cubic discriminant $\\Delta = e_1^2 e_2^2 - 4e_2^3 - 4e_1^3 e_3 + 18e_1 e_2 e_3 - 27e_3^2$. Also $\\Delta$ via power sums: $\\Delta = 2p_2 - p_1^2$ for $n = 2$.",
       "mathContext": "$\\Delta = \\prod_{i<j}(r_i - r_j)^2$ is a symmetric function of roots, hence expressible via $e_k$. Whether $\\sqrt{\\Delta} \\in F$ determines if $\\text{Gal}(f) \\subseteq A_n$."
     },
@@ -127,7 +128,7 @@
       "id": "matrix-trace",
       "title": "Matrix Traces and Cayley-Hamilton",
       "startLine": 268,
-      "endLine": 296,
+      "endLine": 297,
       "summary": "For $2 \\times 2$ matrices: $e_2 = (p_1^2 - p_2)/2$ recovers the determinant from traces. The Cayley-Hamilton identity $p_2 - e_1 p_1 + 2e_2 = 0$ is Newton's second identity.",
       "mathContext": "$\\text{tr}(A^k) = p_k(\\lambda_1, \\ldots, \\lambda_n)$. Cayley-Hamilton at the trace level: $p_2 - e_1 p_1 + 2e_2 = 0$, equivalent to $A^2 - \\text{tr}(A) A + \\det(A) I = 0$."
     },
@@ -135,7 +136,7 @@
       "id": "recurrence",
       "title": "Recurrence Verification for Higher Power Sums",
       "startLine": 298,
-      "endLine": 330,
+      "endLine": 331,
       "summary": "Verification that the recurrence extends beyond $k = n$: for 3 variables, $p_5 = e_1 p_4 - e_2 p_3 + e_3 p_2$ (no $e_4$, $e_5$ terms). For 2 variables, $p_5$ and $p_6$ verified.",
       "mathContext": "For $k > n$: $p_k = \\sum_{i=1}^n (-1)^{i-1} e_i p_{k-i}$. The $e_k$ term vanishes for $k > n$ since there are only $n$ variables."
     },

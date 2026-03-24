@@ -108,28 +108,28 @@
       "title": "Edge Colorings and Rainbow Subgraphs",
       "summary": "Defines EdgeColoringN (n-color edge coloring), CycleFour structure (4 vertices + 4 adjacency proofs), CycleFour.isRainbow (4 distinct edge colors), and IsRainbowC4Coloring",
       "startLine": 38,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "dense-rainbow",
       "title": "Dense Graphs with Rainbow-C₄ Colorings",
       "summary": "HasDenseRainbowC4 combines ≥ εn² edges with rainbow-C₄ n-coloring; existentially quantifies over both graph and coloring",
       "startLine": 71,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "ErdosProblem810 as a Prop using Filter.atTop: ∃ ε > 0 such that HasDenseRainbowC4 holds eventually",
       "startLine": 79,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "known-results",
       "title": "Known Results: Kővári-Sós-Turán",
       "summary": "Axiomatizes ex(n; C₄) = O(n^{3/2}) and the consequence that Ω(n²) edges force C₄ existence",
       "startLine": 91,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "structural",

@@ -86,49 +86,49 @@
       "title": "Basic Graph Definitions",
       "summary": "$\\chi(G) = \\inf\\{\\kappa : G \\text{ is } \\kappa\\text{-colorable}\\}$ and $\\text{hasAleph1ChromaticNumber}(G) :\\equiv \\chi(G) = \\aleph_1$",
       "startLine": 36,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "infinite-connectivity",
       "title": "Infinite Connectivity",
       "summary": "Layered definition: `PathInGraph` $\\to$ `DisjointPaths` $\\to$ `InfinitelyManyDisjointPaths` $\\to$ `InfinitelyConnected` (no finite vertex cut)",
       "startLine": 53,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "edge-connectivity",
       "title": "Edge Connectivity Variant",
       "summary": "`InfinitelyEdgeConnected`: no finite edge deletion disconnects the graph (weaker than vertex variant)",
       "startLine": 96,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "subgraph",
       "title": "Subgraph Relations",
       "summary": "`IsSubgraph` and `ErdosHajnalQuestion`: $\\chi(G) = \\aleph_1 \\implies \\exists H \\subseteq G$ infinitely connected with $\\chi = \\aleph_1$?",
       "startLine": 106,
-      "endLine": 122
+      "endLine": 123
     },
     {
       "id": "counterexamples",
       "title": "Main Results - Counterexamples",
       "summary": "Four axioms: Komjáth (consistency), Soukup (ZFC), Bowler-Pitz (elementary), Thomassen (edge variant) — all negative",
       "startLine": 124,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "aleph1-vertices",
       "title": "Variant with $\\aleph_1$ Vertices",
       "summary": "$|V(G)| = \\aleph_1$ restriction makes the question independent of ZFC (Komjáth)",
       "startLine": 167,
-      "endLine": 185
+      "endLine": 186
     },
     {
       "id": "observations",
       "title": "Key Observations",
       "summary": "Soukup's construction principle: ladder-tree graphs with $\\chi = \\aleph_1$ but no infinitely connected subgraph with $\\chi = \\aleph_1$",
       "startLine": 187,
-      "endLine": 197
+      "endLine": 198
     },
     {
       "id": "summary",

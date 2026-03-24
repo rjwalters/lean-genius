@@ -32,7 +32,8 @@
       "Asymptotic notation (little-o)"
     ],
     "lineCount": 368,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem sits at the intersection of multiplicative number theory and extremal combinatorics. The foundational insight, recognized by Erdős, is that prime factorization creates a bijection between positive integers and finite subsets of primes (with multiplicities), under which lcm corresponds to set union. Harold Davenport and Erdős proved in 1936 that any set of integers with positive upper density contains arbitrarily long divisibility chains a₁ | a₂ | ··· | aₖ, establishing that dense sets carry rich multiplicative structure. The LCM triple question asks whether this extends to the weaker relation lcm(a,b) = c. Daniel Kleitman resolved it affirmatively in 1971 via a purely combinatorial argument: he proved that union-free families of subsets of an n-element set have size at most (1+o(1))·C(n, ⌊n/2⌋), which is exponentially smaller than 2^n. Under the prime factorization correspondence, an LCM-free set of integers maps to a union-free collection, and Kleitman's bound forces such sets to have density zero. The proof is elegant in its use of the bijection to transfer a number-theoretic question to an extremal set system result.",
@@ -74,21 +75,21 @@
     {
       "id": "davenport-erdos",
       "startLine": 110,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "The 1936 Davenport-Erdős result and the coprime multipliers LCM triple construction.",
       "title": "Davenport-Erdős Theorem"
     },
     {
       "id": "kleitman",
       "startLine": 158,
-      "endLine": 221,
+      "endLine": 222,
       "summary": "Kleitman's 1971 theorem bounding union-free collections, plus the o(2^n) corollary.",
       "title": "Kleitman's Theorem"
     },
     {
       "id": "main-result",
       "startLine": 223,
-      "endLine": 243,
+      "endLine": 244,
       "summary": "The main theorem: dense sets contain LCM triples, plus infinitely many such triples.",
       "title": "Main Result"
     },

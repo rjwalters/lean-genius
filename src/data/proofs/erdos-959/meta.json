@@ -67,14 +67,14 @@
       "id": "frequency",
       "title": "Distance Frequency",
       "startLine": 26,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines distFrequency (unordered pair count at distance d), distinctDistances (positive distances), maxFrequency, secondFrequency, and frequencyGap."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 48,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "States ErdosProblem959: existence of C > 0 with frequency gap ≥ C·n·log n for n-point sets."
     },
     {
@@ -88,7 +88,7 @@
       "id": "strong",
       "title": "Stronger Conjecture",
       "startLine": 64,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Conjectured n^{1+c/log log n} growth rate for the maximum frequency gap."
     },
     {
@@ -102,14 +102,14 @@
       "id": "generalized",
       "title": "Generalized Frequency Gap",
       "startLine": 90,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Defines frequencyGapR for rank-r gaps and states the CDL generalized bound Ω(n log n / r)."
     },
     {
       "id": "counting",
       "title": "Total Pair Count",
       "startLine": 109,
-      "endLine": 122,
+      "endLine": 142,
       "summary": "States total_pairs (sum of frequencies ≤ n choose 2) and derives avg_frequency_bound."
     }
   ],

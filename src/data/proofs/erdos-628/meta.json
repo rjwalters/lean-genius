@@ -51,7 +51,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 254,
-    "assumptions": "4 axiom(s) and 14 sorry(s). See the Lean source for details."
+    "assumptions": "4 axiom(s) and 14 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Erdős–Lovász Tihany Conjecture is one of the most prominent open problems in structural graph theory. It was formulated by Paul Erdős and László Lovász at the 1968 Tihany conference on graph theory, held at Lake Balaton in Hungary — one of the most influential graph theory meetings of the era.\n\n**The question arose from a fundamental observation**: if a graph has $\\chi(G) = k$ but contains no $K_k$, then its high chromatic number must come from global structure rather than local density. The conjecture asserts this global structure is rich enough to be 'split' into two independently high-chromatic parts.\n\n**Timeline of results:**\n- **1968**: Erdős and Lovász formulate the conjecture at Tihany. Erdős initially asked about the $a = b = 3$ case.\n- **1969**: Jason I. Brown and Heinrich Jung independently proved the $a = b = 3$ case, showing that $K_5$-free 5-chromatic graphs contain two vertex-disjoint odd cycles. This was remarkably quick — only a year after the conjecture was posed.\n- **2006**: The Strong Perfect Graph Theorem (Chudnovsky et al.) shows Tihany is vacuous for perfect graphs, since perfect graphs always contain $K_{\\chi}$.\n- **2009**: Balogh, Kostochka, Prince, and Stiebitz proved two major special cases: (i) quasi-line graphs (where every vertex neighborhood is a union of two cliques), and (ii) graphs with independence number $\\alpha = 2$. These represented the first progress beyond Brown–Jung in 40 years.\n- **2022**: Zi-Xia Song published a comprehensive survey of the conjecture's status and partial results.\n\n**Connection to Lovász**: László Lovász, co-author of the conjecture, went on to win the Abel Prize (2021) partly for his foundational work in graph theory, including the Lovász theta function and the proof of Kneser's conjecture using topology. The Tihany Conjecture reflects his deep interest in graph structure.",
@@ -76,77 +77,77 @@
       "title": "Header, Imports, and Namespace",
       "summary": "Module docstring with conjecture statement and known results, Mathlib import, opening of Finset/Function/SimpleGraph/Nat namespaces, and type variable declarations",
       "startLine": 1,
-      "endLine": 29
+      "endLine": 30
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Sorry'd noncomputable chromaticNumber and cliqueNumber, IsCliqueFree (ω < k) and AreDisjoint (vertex set disjointness) predicates",
       "startLine": 31,
-      "endLine": 47
+      "endLine": 48
     },
     {
       "id": "splittability",
       "title": "The (a,b)-Splittability Property",
       "summary": "IsSplittable definition (disjoint vertex sets with χ ≥ a and χ ≥ b on induced subgraphs), plus equivalent HasDisjointHighChromatic formulation using S ∩ T = ∅",
       "startLine": 49,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "tihany-conjecture",
       "title": "The Tihany Conjecture",
       "summary": "Full TihanyConjecture definition (universal over k ≥ 5 and valid (a,b) pairs) and TihanyForPair (per-pair version with k = a + b - 1)",
       "startLine": 66,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "brown-jung",
       "title": "Brown–Jung Theorem (a = b = 3)",
       "summary": "Axiomatized brown_jung_theorem (TihanyForPair 3 3), proved tihany_3_3 instantiation, and axiomatized brown_jung_odd_cycles (two disjoint odd cycles formulation)",
       "startLine": 87,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "quasi-line",
       "title": "Quasi-Line Graphs",
       "summary": "Sorry'd IsLineGraph, IsQuasiLine definition (neighborhoods as union of two cliques), and axiomatized balogh_quasi_line (Tihany for all pairs on quasi-line graphs)",
       "startLine": 111,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "alpha-2",
       "title": "Independence Number 2",
       "summary": "Sorry'd independenceNumber definition and axiomatized balogh_alpha_2 (Tihany for all pairs when α = 2)",
       "startLine": 135,
-      "endLine": 150
+      "endLine": 151
     },
     {
       "id": "critical-graphs",
       "title": "Critical Graphs",
       "summary": "IsCritical definition (χ = k, removing any vertex drops χ), sorry'd contains_critical (k-critical subgraph existence), sorry'd critical_min_degree (δ ≥ k-1)",
       "startLine": 152,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "perfect-graphs",
       "title": "Perfect Graphs — Tihany Vacuous",
       "summary": "IsPerfect definition, sorry'd perfect_clique_free (K_{χ+1}-free), sorry'd perfect_tihany_vacuous (perfect graphs satisfy Tihany hypothesis vacuously)",
       "startLine": 170,
-      "endLine": 185
+      "endLine": 186
     },
     {
       "id": "partial-results",
       "title": "Bounds and Partial Results",
       "summary": "Sorry'd weak_splittability (single high-χ part), sorry'd tihany_a_eq_2 (easy a=2 case), and TihanySymmetric definition (a = b case)",
       "startLine": 187,
-      "endLine": 202
+      "endLine": 203
     },
     {
       "id": "odd-cycles",
       "title": "Odd Cycles and (3,3)-Splittability",
       "summary": "Sorry'd odd_cycle_chi_3 (χ(C_{2k+1}) = 3), sorry'd disjoint_odd_cycles_splittable with sorry'd cycle hypotheses connecting cycle theory to splittability",
       "startLine": 204,
-      "endLine": 219
+      "endLine": 220
     },
     {
       "id": "main-status",

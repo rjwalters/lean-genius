@@ -89,35 +89,35 @@
       "id": "definitions",
       "title": "Same Prime Factors",
       "startLine": 23,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Defines `SamePrimeFactors x y` as $x.\\mathrm{primeFactors} = y.\\mathrm{primeFactors}$, the radical equivalence relation on $\\mathbb{N}$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 29,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "States `ErdosProblem850`: $\\nexists\\, x \\neq y$ with $\\mathrm{rad}(x+i) = \\mathrm{rad}(y+i)$ for $i \\in \\{0, 1, 2\\}$. Defined as a `Prop`."
     },
     {
       "id": "two-shift",
       "title": "Weaker Variant: Two Consecutive Shifts",
       "startLine": 40,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines `TwoShiftSolvable` (the $k=1$ case IS solvable), `ParametricFamily(r)` giving $x = 2(2^r - 1)$, `MakowskiExample` $(75, 1215)$, and proves `makowski_distinct`."
     },
     {
       "id": "abc",
       "title": "Connection to ABC Conjecture",
       "startLine": 62,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Defines `radical(n) = \\prod_{p \\mid n} p$ and `StrongABCConjecture` (Baker's form: $c \\le C \\cdot \\mathrm{rad}(abc)^{7/6}$). Axiomatizes `shorey_tijdeman`: strong ABC $\\Rightarrow$ Problem 850."
     },
     {
       "id": "k-shift",
       "title": "General k-Shift Version",
       "startLine": 78,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Defines `KShiftProblem k` for general $k$. Proves `problem850_is_2shift` ($\\text{Problem 850} \\iff \\text{KShiftProblem}\\,2$) via `interval_cases` and `kshift_monotone` ($k \\Rightarrow k-1$) via `omega`."
     },
     {

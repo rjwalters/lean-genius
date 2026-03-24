@@ -50,7 +50,8 @@
       "Lévy's arcsine law and occupation times"
     ],
     "lineCount": 339,
-    "assumptions": "2 axioms: (1) firstPassageTime_eq_maxEvent — {τ_a ≤ T} = maxEvent (requires path continuity + csInf theory), (2) reflection_principle — P(max W ≥ a) = 2·P(W_T ≥ a) (requires strong Markov property). Arcsine law is discussed but not formally axiomatized."
+    "assumptions": "2 axioms: (1) firstPassageTime_eq_maxEvent — {τ_a ≤ T} = maxEvent (requires path continuity + csInf theory), (2) reflection_principle — P(max W ≥ a) = 2·P(W_T ≥ a) (requires strong Markov property). Arcsine law is discussed but not formally axiomatized.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The classical ballot problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes with $p > q$, the probability A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the reflection principle for lattice paths. The continuous-time version emerged from Louis Bachelier's 1900 thesis on stock price fluctuations — the first mathematical treatment of Brownian motion, predating Einstein's 1905 paper. Paul Lévy (1939) rigorously developed the reflection principle for Brownian motion, proving $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$, and discovered the arcsine law for the fraction of time BM spends positive. Monroe Donsker's 1951 invariance principle (functional CLT) formally connected discrete and continuous ballot theorems: the rescaled random walk converges in distribution to Brownian motion, making the discrete formula $(p-q)/(p+q)$ a finite approximation of the continuous reflection principle.",
@@ -77,7 +78,7 @@
       "id": "bm-structure",
       "title": "Brownian Motion Structure",
       "startLine": 75,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "BrownianMotion structure with process W : ℝ → Ω → ℝ, measurability, zero start, Gaussian marginals, symmetry, and positive probability field.",
       "mathContext": "$W : \\mathbb{R} \\to \\Omega \\to \\mathbb{R}$ with $W_t \\sim N(0,t)$, $W_0 = 0$, and continuous paths"
     },
@@ -85,7 +86,7 @@
       "id": "symmetry",
       "title": "Symmetry Properties",
       "startLine": 93,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "P(W_t > 0) = P(W_t < 0) proved from the symmetry field. Both positive and negative outcomes have positive probability for t > 0.",
       "mathContext": "$P(W_t > 0) = P(W_t < 0) > 0$ for $t > 0$, from the `symmetric` field of `BrownianMotion`"
     },
@@ -93,7 +94,7 @@
       "id": "reflection-principle",
       "title": "The Reflection Principle",
       "startLine": 130,
-      "endLine": 165,
+      "endLine": 166,
       "summary": "maxEvent definition and reflection_principle axiom: P(max W ≥ a in [0,T]) = 2·P(W_T ≥ a). Deep result requiring strong Markov property.",
       "mathContext": "$P(\\max_{s \\leq T} W_s \\geq a) = 2 \\cdot P(W_T \\geq a)$ (axiom, requires strong Markov property)"
     },
@@ -101,7 +102,7 @@
       "id": "first-passage",
       "title": "First Passage Time Distribution",
       "startLine": 167,
-      "endLine": 250,
+      "endLine": 251,
       "summary": "firstPassageTime as sInf, first_passage_cdf (P(τ_a ≤ T) = 2P(W_T ≥ a)), monotonicity, and positivity of passage probability.",
       "mathContext": "$\\tau_a = \\inf\\{t : W_t \\geq a\\}$; $P(\\tau_a \\leq T) = 2P(W_T \\geq a) = 2(1 - \\Phi(a/\\sqrt{T}))$"
     },

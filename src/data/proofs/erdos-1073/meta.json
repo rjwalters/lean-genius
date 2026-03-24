@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 161,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Hardy, and Subbarao asked how many composite numbers divide n!+1 for some n. By Wilson's theorem, every prime p divides (p-1)!+1, and this property characterizes primes completely. For composites the situation is radically different: if u | n!+1 then u must be coprime to n!, forcing every prime factor of u to exceed n and hence u > n². This coprimality constraint severely limits which composites can appear. The known sequence 25, 121, 169, 437, ... (OEIS A256519) is extremely sparse — all known examples are prime powers or semiprimes whose prime factors happen to align with a single factorial. Subbarao connected these to Wilson pseudoprimes: composites that mimic primality in factorial arithmetic. The conjecture A(x) ≤ x^{o(1)} would confirm that this phenomenon is exceptionally rare, growing slower than any fixed power of x.",
@@ -47,35 +48,35 @@
       "id": "divisibility",
       "title": "Factorial Divisibility",
       "startLine": 21,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Defines DividesFactorialPlusOne, compositeFactorialSet, and factorialCompositeCount."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 35,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "States ErdosProblem1073: A(x) ≤ x^ε for every ε > 0 and large x."
     },
     {
       "id": "wilson",
       "title": "Wilson's Theorem Connection",
       "startLine": 44,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Wilson's theorem and its consequence for primes."
     },
     {
       "id": "composites",
       "title": "Known Composites",
       "startLine": 54,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Proves 25 | 4!+1. States 121, 169 as axioms."
     },
     {
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 66,
-      "endLine": 80,
+      "endLine": 161,
       "summary": "Proves 1 divides all n!+1, divisibility transitivity, and states monotonicity."
     }
   ],

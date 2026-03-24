@@ -54,12 +54,13 @@
       "Kraft's inequality for prefix-free codes",
       "Pointwise KL divergence bound: p*log(p/q) >= p-q",
       "Ceiling function properties"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1948, Claude Shannon's 'A Mathematical Theory of Communication' established that the entropy $H(X)$ is the fundamental limit of lossless compression, but his proof was existential — showing optimal codes exist without constructing them. Shannon and Robert Fano developed a top-down coding scheme (Shannon-Fano coding) that was near-optimal but not guaranteed to minimize average code length. In 1951, Fano assigned his MIT information theory class the problem of finding a provably optimal binary code. David Huffman, then a graduate student, was about to give up and take the final exam instead when he discovered an elegant bottom-up construction: recursively merge the two least probable symbols, assigning them sibling leaves in a binary tree. Huffman's 1952 paper proved this greedy algorithm produces optimal prefix-free codes, solving the problem Fano himself could not. Leon Kraft had independently characterized valid prefix-free code lengths via the inequality $\\sum 2^{-l_i} \\le 1$ in his 1949 MIT thesis, and Brockway McMillan (1956) extended this to all uniquely decodable codes. Together, these results form the combinatorial and information-theoretic foundations of data compression.",
     "problemStatement": "Given a discrete source with probability distribution p = (p_1, ..., p_n) and Shannon entropy H(p) = -sum p_i ln(p_i):\n\n1. **Lower bound**: For any prefix-free code with lengths l_1, ..., l_n satisfying Kraft's inequality sum 2^(-l_i) <= 1, the average code length satisfies L * ln(2) >= H(p).\n\n2. **Upper bound**: Shannon coding (l_i = ceil(-log_2(p_i))) satisfies L_S * ln(2) < H(p) + ln(2).\n\n3. **Optimality**: Huffman's algorithm produces lengths that minimize L among all Kraft-valid codes.",
-    "text": "Huffman coding minimizes average code length among prefix-free codes. Entropy bounds H(p)/ln2 \u2264 L* < H(p)/ln2 + 1.",
+    "text": "Huffman coding minimizes average code length among prefix-free codes. Entropy bounds H(p)/ln2 ≤ L* < H(p)/ln2 + 1.",
     "proofStrategy": "The entropy lower bound uses the pointwise KL divergence inequality: for positive reals p, q, we have p * ln(p/q) >= p - q. Setting q_i = 2^(-l_i) and summing over all symbols, Kraft's inequality sum q_i <= 1 gives sum p_i * ln(p_i/q_i) >= 1 - sum q_i >= 0. Expanding the logarithm yields L * ln(2) >= H(p).\n\nThe Shannon coding upper bound uses the ceiling function property: ceil(x) < x + 1 for x >= 0, applied to x = -log(p_i)/log(2).\n\nHuffman optimality follows from two structural lemmas: (1) in any optimal code, more probable symbols get shorter codewords (exchange argument), and (2) optimal codes for n symbols can be constructed from optimal codes for n-1 symbols by merging the two least probable symbols.",
     "keyInsights": [
       "The entropy lower bound is essentially Gibbs' inequality (non-negativity of KL divergence) in disguise: setting $q_i = 2^{-l_i}$ turns Kraft's inequality into a sub-probability constraint, and $D(p \\| q) \\ge 0$ yields $L \\cdot \\ln 2 \\ge H(p)$",
@@ -136,7 +137,7 @@
       "id": "tight-bounds",
       "title": "Tight Bounds on Optimal Code Length",
       "startLine": 241,
-      "endLine": 270,
+      "endLine": 274,
       "summary": "Corollary: the optimal code length satisfies H(p)/ln(2) <= L* < H(p)/ln(2) + 1.",
       "mathContext": "Combines the entropy lower bound with Shannon coding upper bound and Huffman optimality."
     }

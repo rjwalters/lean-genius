@@ -47,7 +47,8 @@
       "Number theory (divisibility, harmonic sums)",
       "Coloring theorems"
     ],
-    "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -61,35 +62,35 @@
       "id": "main-property",
       "title": "The k-Egyptian Property",
       "startLine": 62,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "**HasKEgyptianProperty n k**: every k-coloring of properDivisors(n) contains a monochromatic subset D' with reciprocalSum D' = 1. Combines divisor theory with Ramsey-type universality over colorings."
     },
     {
       "id": "croot-theorem",
       "title": "Croot's Existence Theorem (2003)",
       "startLine": 74,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "**croot_existence**: ∀ k ≥ 2, ∃ n_k with the k-Egyptian property. Proved using the probabilistic method on n = lcm(1,...,M). One `sorry` remains — the proof is non-constructive and uses deep probabilistic arguments."
     },
     {
       "id": "bounds",
       "title": "Sawhney's Doubly Exponential Bounds",
       "startLine": 85,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "**sawhney_upper_bound**: n_k ≤ exp(C^k) via n = lcm(1,...,C^k). **sawhney_lower_bound**: n_k ≥ exp(c^k) from the necessary condition σ_{-1}(n) ≥ k, which requires primes up to exp(exp(k)) by Mertens' theorem. The bounds match, establishing doubly exponential growth."
     },
     {
       "id": "basic-facts",
       "title": "Basic Facts and Proved Lemma",
       "startLine": 105,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "**divisor_reciprocal_sum**: Σ_{d|n} 1/d = σ_{-1}(n). **egyptian_fraction_bound**: if Σ 1/d_i = 1 then each d_i ≤ Π d_j — **proved by Aristotle** using `Finset.dvd_prod_of_mem` and `Nat.le_of_dvd`."
     },
     {
       "id": "small-cases",
       "title": "Small Cases: k = 2",
       "startLine": 118,
-      "endLine": 124,
+      "endLine": 141,
       "summary": "**case_k_2**: n = 120 = 2³·3·5 has the 2-Egyptian property. With σ_{-1}(120) = 3 and 14 proper divisors, any 2-coloring forces a monochromatic Egyptian subset. The smallest known example for k = 2."
     }
   ],

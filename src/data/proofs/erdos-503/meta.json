@@ -77,42 +77,42 @@
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 26,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Imports $\\texttt{Nat.Choose.Basic}$ for binomial coefficients $\\binom{n}{k}$, $\\texttt{Finset.Basic}$ for finite point sets, and $\\texttt{Tactic}$ for $\\texttt{norm\\_num}$. Opens the $\\texttt{Erdos503}$ namespace."
     },
     {
       "id": "isosceles-sets",
       "title": "Isosceles Set Definitions",
       "startLine": 33,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines $\\texttt{IsIsoscelesSet}(A)$: every triple $\\{x,y,z\\} \\subset A$ satisfies $d(x,y) = d(y,z) \\lor d(y,z) = d(x,z) \\lor d(x,y) = d(x,z)$. Axiomatizes $\\texttt{maxIsoscelesSize}(n) = f(n)$."
     },
     {
       "id": "small-dimensions",
       "title": "Exact Results: $f(2) = 6$, $f(3) = 8$",
       "startLine": 50,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Axiomatizes Kelly's $f(2) = 6$ [1947] and Croft's $f(3) = 8$ [1962]—the only known exact values of the isosceles extremal function."
     },
     {
       "id": "upper-bound",
       "title": "Blokhuis Upper Bound $\\binom{n+2}{2}$",
       "startLine": 65,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Axiomatizes Blokhuis's 1984 result: $f(n) \\leq \\binom{n+2}{2} = \\frac{(n+2)(n+1)}{2}$ via a linear algebra dimension argument on distance polynomials."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds: Alweiss and Weisenberg",
       "startLine": 74,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Axiomatizes $f(n) \\geq \\binom{n+1}{2}$ (Alweiss, via $\\{e_i + e_j\\}$ vectors) and $f(n) \\geq \\binom{n+1}{2} + 1$ (Weisenberg, adding one more point)."
     },
     {
       "id": "combined-bounds",
       "title": "Combined Bounds and Consistency",
       "startLine": 90,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Proves $\\binom{n+1}{2}+1 \\leq f(n) \\leq \\binom{n+2}{2}$ from the axioms. Verifies consistency for $n = 2$ ($4 \\leq 6 \\leq 6$) and $n = 3$ ($7 \\leq 8 \\leq 10$) via $\\texttt{norm\\_num}$."
     },
     {

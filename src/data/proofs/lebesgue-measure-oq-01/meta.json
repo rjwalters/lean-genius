@@ -62,7 +62,8 @@
     "historicalContext": "Peter Gustav Lejeune Dirichlet introduced his indicator function 𝟙_ℚ in 1829 as an example of a function that cannot be integrated by Riemann's method: the upper Darboux sum is always 1 and the lower sum always 0 on any interval, since both rationals and irrationals are dense. This exposed a fundamental limitation of Riemann's 1854 integral. Henri Lebesgue's 1902 integral resolved this by measuring the range rather than the domain — since ℚ is countable and hence has Lebesgue measure zero, the function equals zero almost everywhere, yielding ∫₀¹ 𝟙_ℚ = 0. Lebesgue's criterion (1901) later gave a complete characterization: a bounded function is Riemann integrable iff its discontinuity set has measure zero. Since the Dirichlet function is discontinuous everywhere, it is not Riemann integrable — but it is Lebesgue integrable.",
     "axiomCount": 0,
     "lineCount": 197,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Dirichlet** (1829) introduced $\\mathbf{1}_{\\mathbb{Q}}$ to show that not all functions are representable by Fourier series, and it later became the canonical counterexample to Riemann integrability. **Riemann** (1854) formalized his integral, under which $\\mathbf{1}_{\\mathbb{Q}}$ fails: the upper Darboux sum is 1 and the lower is 0 on every subinterval, since both $\\mathbb{Q}$ and $\\mathbb{R} \\setminus \\mathbb{Q}$ are dense. **Lebesgue** (1902) resolved this with his measure-theoretic integral: since $\\mathbb{Q}$ is countable (hence measure zero), $\\mathbf{1}_{\\mathbb{Q}} = 0$ almost everywhere, giving $\\int_0^1 \\mathbf{1}_{\\mathbb{Q}} = 0$. This example demonstrates the strict superiority of Lebesgue's integral over Riemann's.",
@@ -90,28 +91,28 @@
       "title": "Measure Zero Properties",
       "summary": "Establishes that $\\mathbb{Q}$ embedded in $\\mathbb{R}$ is countable (`Set.countable_range`) and hence has Lebesgue measure zero (`Countable.measure_zero`). Also proves the monotonicity principle: subsets of null sets are null.",
       "startLine": 39,
-      "endLine": 56
+      "endLine": 57
     },
     {
       "id": "dirichlet-function",
       "title": "The Dirichlet Function",
       "summary": "Defines $\\mathbf{1}_{\\mathbb{Q}} : \\mathbb{R} \\to \\mathbb{R}$ as `Set.indicator` of $\\text{range}(\\text{Rat.cast})$ with constant value 1. Characterization lemmas: equals 1 on rationals (`indicator_of_mem`) and 0 on irrationals (`indicator_of_notMem`).",
       "startLine": 58,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "almost-everywhere",
       "title": "Almost Everywhere Zero",
       "summary": "The core technical result: $\\mathbf{1}_{\\mathbb{Q}} = 0$ a.e. via `compl_mem_ae_iff.mpr` (converts $\\mu(\\mathbb{Q}) = 0$ to $\\mathbb{Q}^c \\in \\text{ae}$) and `filter_upwards`. Restricted version for $[0,1]$ via `ae_restrict_of_ae`.",
       "startLine": 79,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem: $\\int_0^1 \\mathbf{1}_{\\mathbb{Q}} = 0$",
       "summary": "Applies `integral_eq_zero_of_ae` to the a.e.-zero result. This resolves the axiom `dirichlet_integral_zero` from the parent proof. Two equivalent formulations: one using the raw indicator, one using the named `dirichletFunction`.",
       "startLine": 98,
-      "endLine": 122
+      "endLine": 123
     },
     {
       "id": "extensions",

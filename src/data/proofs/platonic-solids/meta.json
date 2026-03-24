@@ -43,7 +43,8 @@
       "Symmetry groups of polyhedra and SO(3)",
       "Classification of convex regular polyhedra"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Platonic solids were known to the ancient Greeks and studied extensively by Plato (hence the name). Euclid proved in Elements Book XIII that these are the only five regular convex polyhedra. The classification relies on Euler's polyhedral formula V - E + F = 2 combined with regularity constraints: all faces are congruent regular p-gons and q faces meet at each vertex. The five solids correspond to the finite subgroups of SO(3) acting on the sphere, a connection fully developed by Klein (1884). Schläfli (1852) classified regular polytopes in higher dimensions, finding six in dimension 4 and only three (the simplex, hypercube, and cross-polytope) in each dimension 5 and above.",
@@ -78,7 +79,7 @@
       "id": "five-solids",
       "title": "The Five Platonic Solids",
       "startLine": 100,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Definitions of the five Platonic solids and verification they satisfy the constraint.",
       "mathContext": "The five valid Schläfli pairs are $\\{3,3\\}$ (tetrahedron), $\\{4,3\\}$ (cube), $\\{3,4\\}$ (octahedron), $\\{5,3\\}$ (dodecahedron), $\\{3,5\\}$ (icosahedron). Each satisfies $(p-2)(q-2) < 4$: the products are 1, 2, 2, 3, 3 respectively."
     },
@@ -102,7 +103,7 @@
       "id": "geometry",
       "title": "Geometric Properties",
       "startLine": 314,
-      "endLine": 369,
+      "endLine": 370,
       "summary": "Computing V, E, F for each solid and verifying Euler's formula.",
       "mathContext": "From $pF = 2E$, $qV = 2E$, and $V - E + F = 2$, one derives $E = \\frac{pq}{2p + 2q - pq} \\cdot 2$. For $\\{3,3\\}$: $(V,E,F) = (4,6,4)$; $\\{4,3\\}$: $(8,12,6)$; $\\{3,4\\}$: $(6,12,8)$; $\\{5,3\\}$: $(20,30,12)$; $\\{3,5\\}$: $(12,30,20)$. All satisfy $V - E + F = 2$."
     },

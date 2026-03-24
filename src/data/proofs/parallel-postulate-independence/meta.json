@@ -35,7 +35,8 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 7,
     "lineCount": 314,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "For over 2000 years — from Euclid (~300 BCE) through Ptolemy, Proclus, al-Haytham, Khayyam, Saccheri, Lambert, and Legendre — mathematicians tried to prove the Fifth Postulate from the other axioms. Bolyai and Lobachevsky independently developed hyperbolic geometry (1829-1832), and Beltrami (1868) proved its consistency by constructing models within Euclidean geometry. The independence follows by the soundness theorem: a model satisfying all axioms except the parallel postulate certifies it cannot be proved from the others. Klein (1871) and Poincaré (1882) gave further elegant models, and Hilbert (1899) provided the rigorous axiomatic framework. The discovery of non-Euclidean geometry was one of the most consequential events in the history of mathematics, reshaping the philosophy of mathematical truth and paving the way for Riemannian geometry and general relativity.",
@@ -58,7 +59,7 @@
       "id": "abstract-geometry",
       "title": "Abstract Incidence Geometry Framework",
       "startLine": 45,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Defines points, lines, and incidence geometry structures following Hilbert's axiomatics, with parallelism as non-intersection."
     },
     {
@@ -72,35 +73,35 @@
       "id": "neutral-geometry",
       "title": "Neutral (Absolute) Geometry",
       "startLine": 97,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "The common axioms shared by Euclidean and hyperbolic geometry — incidence, betweenness, congruence, continuity — omitting the parallel postulate."
     },
     {
       "id": "euclidean-model",
       "title": "The Euclidean Model",
       "startLine": 120,
-      "endLine": 142,
+      "endLine": 143,
       "summary": "Axiomatizes the Euclidean plane ℝ² as a model satisfying neutral geometry plus the parallel postulate."
     },
     {
       "id": "poincare-model",
       "title": "The Poincaré Disk Model",
       "startLine": 144,
-      "endLine": 185,
+      "endLine": 186,
       "summary": "Axiomatizes the Poincaré disk as a model of neutral geometry satisfying the hyperbolic parallel property."
     },
     {
       "id": "key-theorems",
       "title": "Key Theorems",
       "startLine": 187,
-      "endLine": 223,
+      "endLine": 224,
       "summary": "Proves that hyperbolic parallels contradict Playfair's axiom, and derives that the Poincaré disk violates the parallel postulate."
     },
     {
       "id": "independence",
       "title": "The Independence Theorem",
       "startLine": 225,
-      "endLine": 260,
+      "endLine": 314,
       "summary": "Main result: exhibits both a model (ℝ²) and a countermodel (Poincaré disk) for the parallel postulate, establishing independence."
     }
   ],

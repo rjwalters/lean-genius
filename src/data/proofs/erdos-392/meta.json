@@ -92,49 +92,49 @@
       "id": "valid-factorization",
       "title": "Valid Factorizations",
       "startLine": 42,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines IsValidFactorization and the minimum function A(n, B)."
     },
     {
       "id": "main-theorem",
       "title": "Main Result: Bound n²",
       "startLine": 64,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "The main asymptotic: A(n, n²) = n/2 - n/(2 log n) + o(n/log n)."
     },
     {
       "id": "variant",
       "title": "Variant: Bound n",
       "startLine": 86,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "With stricter bound n, we get A(n, n) = n - n/log n + o(n/log n)."
     },
     {
       "id": "cambie",
       "title": "Cambie's Observation",
       "startLine": 107,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "The main result follows from the variant via factor pairing."
     },
     {
       "id": "stirling",
       "title": "Stirling's Approximation",
       "startLine": 129,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "Connection to log(n!) ~ n log n and lower bound intuition."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 157,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "Concrete values for small n: A(2,4)=1, A(3,9)=1, A(4,16)=2, A(5,25)=2."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Behavior",
       "startLine": 180,
-      "endLine": 196,
+      "endLine": 197,
       "summary": "A(n, n²) ~ n/2 and the correction term is lower order."
     },
     {

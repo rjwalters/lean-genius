@@ -46,7 +46,8 @@
     "wiedijkNumber": 7,
     "axiomCount": 0,
     "lineCount": 231,
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core reciprocity law delegates to Mathlib's `legendreSym.quadratic_reciprocity` (proved via Gauss sums and Eisenstein's lemma). The supplementary laws use `ZMod.exists_sq_eq_neg_one_iff` and `ZMod.exists_sq_eq_two_iff`. Original contributions are pedagogical wrappers providing four forms of the main law and explicit worked examples."
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core reciprocity law delegates to Mathlib's `legendreSym.quadratic_reciprocity` (proved via Gauss sums and Eisenstein's lemma). The supplementary laws use `ZMod.exists_sq_eq_neg_one_iff` and `ZMod.exists_sq_eq_two_iff`. Original contributions are pedagogical wrappers providing four forms of the main law and explicit worked examples.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Quadratic reciprocity is one of the most celebrated theorems in number theory. Euler and Legendre conjectured the result but could not prove it completely. Gauss (1796) gave the first complete proof at age 19, calling it the golden theorem and eventually publishing 8 different proofs. The theorem reveals deep, unexpected connections between prime numbers and is the foundation for class field theory and algebraic number theory. Eisenstein (1844) gave a particularly elegant proof using roots of unity and Gaussian integers. The theorem was generalized to arbitrary number fields by Artin (1927) in his reciprocity law, and the complete theory of higher reciprocity laws was developed through 20th-century class field theory.",
@@ -74,21 +75,21 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Overview of quadratic reciprocity, historical context, and significance."
     },
     {
       "id": "main-law",
       "title": "The Main Law",
       "startLine": 63,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Product form, quotient form, and special cases for 1 mod 4 and 3 mod 4."
     },
     {
       "id": "first-supplementary",
       "title": "First Supplementary Law",
       "startLine": 116,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "When -1 is a quadratic residue modulo a prime."
     },
     {
@@ -102,14 +103,14 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 163,
-      "endLine": 198,
+      "endLine": 199,
       "summary": "Concrete calculations for primes 3, 5, and 7."
     },
     {
       "id": "euler-criterion",
       "title": "Euler's Criterion",
       "startLine": 200,
-      "endLine": 220,
+      "endLine": 231,
       "summary": "The connection between Legendre symbols and powers."
     }
   ],

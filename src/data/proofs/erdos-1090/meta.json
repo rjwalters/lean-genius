@@ -127,77 +127,77 @@
       "title": "Basic Definitions",
       "summary": "Defines `Point` as `abbrev` for `EuclideanSpace ℝ (Fin 2)`, `TwoColoring A` as `A → Bool`, `Collinear p q r` via `∃ t : ℝ, r - p = t • (q - p)`, `PointsOnLine` as a set comprehension, `Line` structure with point/direction/nonzero, and `OnLine` via `∃ t : ℝ, p = l.point + t • l.direction`.",
       "startLine": 36,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "monochromatic",
       "title": "Monochromatic Lines",
       "summary": "Defines `IsMonochromatic S c` (all points same color), `IsKCollinear S k` (S.card ≥ k ∧ ∃ l : Line, ∀ p ∈ S, OnLine l p), and `MonochromaticKCollinear A k c` combining subset, collinearity, and same-color conditions.",
       "startLine": 81,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "ramsey-property",
       "title": "Ramsey Property",
       "summary": "Defines `HasRamseyProperty A k` (∀ c : Point → Bool, MonochromaticKCollinear A k c) and `Erdos1090Question k` (k ≥ 3 → ∃ A, HasRamseyProperty A k).",
       "startLine": 108,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "graham-selfridge",
       "title": "Graham-Selfridge (k=3)",
       "summary": "Axiomatizes `graham_selfridge : ∃ A, HasRamseyProperty A 3`. Proves `k3_case : Erdos1090Question 3` by applying the axiom after `intro _`.",
       "startLine": 127,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "hales-jewett",
       "title": "Hales-Jewett Approach",
       "summary": "Defines `CombinatorialLine k n` structure with fixed/varying coordinate partition. Axiomatizes `hales_jewett` (monochromatic line guarantee), `generic_projection` (injective line-preserving map [k]ⁿ → Point), and `hunter_observation` (combining both for HasRamseyProperty).",
       "startLine": 148,
-      "endLine": 200
+      "endLine": 201
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "Proves `erdos_1090_affirmative : ∀ k ≥ 3, Erdos1090Question k` by applying `hunter_observation k hk` — a three-line proof that unfolds the question and applies Hunter's result.",
       "startLine": 202,
-      "endLine": 214
+      "endLine": 215
     },
     {
       "id": "constructions",
       "title": "Special Constructions",
       "summary": "Axiomatizes three point set constructions: `regularNgonWithCenter` (vertices + center), `gridPoints` (m × m grid), and `projectivePlanePoints` (from finite projective planes over 𝔽_q).",
       "startLine": 216,
-      "endLine": 238
+      "endLine": 239
     },
     {
       "id": "bounds",
       "title": "Size Bounds",
       "summary": "Defines `ramseyNumber k` (minimum |A| with Ramsey property, using noncomputable Nat.find). States `ramsey_lower_bound` (R(k) ≥ k, sorry). Axiomatizes `r3_small` (∃ A, A.card ≤ 9 ∧ HasRamseyProperty A 3).",
       "startLine": 240,
-      "endLine": 264
+      "endLine": 265
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Defines `SylvesterGallai` (ordinary line existence) and `HellyProperty` (d+1 convex sets with pairwise intersections have common point). Axiomatizes `sylvester_gallai` for ≥ 3 non-collinear points.",
       "startLine": 266,
-      "endLine": 294
+      "endLine": 295
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "summary": "Defines `Erdos1090Generalized k r` (r-coloring version) and `Erdos1090HigherDim d k` (hyperplanes in ℝᵈ). Axiomatizes `erdos_1090_generalized` via Hales-Jewett for r colors.",
       "startLine": 296,
-      "endLine": 327
+      "endLine": 328
     },
     {
       "id": "summary",
       "title": "Main Results Summary",
       "summary": "Proves `erdos_1090_summary` as conjunction of Graham-Selfridge (k=3) and Hunter (∀ k ≥ 3), with `erdos_1090 := erdos_1090_affirmative` as the final theorem.",
       "startLine": 329,
-      "endLine": 357
+      "endLine": 358
     }
   ],
   "conclusion": {

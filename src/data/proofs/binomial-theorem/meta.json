@@ -99,7 +99,8 @@
         "Mathlib.Algebra.Ring.Basic",
         "Mathlib.Tactic"
       ]
-    }
+    },
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The binomial theorem has one of the longest histories in mathematics, with contributions spanning civilizations and millennia. Special cases like $(a + b)^2 = a^2 + 2ab + b^2$ appear in Euclid's *Elements* (c. 300 BCE). The Indian mathematician **Pingala** (c. 200 BCE) described the binomial coefficients in the context of prosody (counting syllable patterns), and **Halayudha** (c. 975 CE) gave the first explicit construction of the coefficient triangle. The Persian mathematician **al-Karajī** (c. 953–1029) and **Omar Khayyám** (c. 1048–1131) described the general pattern and used it for extracting roots. The Chinese mathematician **Yang Hui** independently published the triangle in 1261. In Europe, **Blaise Pascal** systematized the theory in his 1654 *Traité du triangle arithmétique*, establishing the recurrence $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ and connecting it to probability theory — his correspondence with Fermat on gambling problems launched the entire field of combinatorics.\n\nThe most profound generalization came from **Isaac Newton** in 1665, who extended the theorem to non-integer exponents: $(1 + x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ where $\\binom{\\alpha}{k} = \\alpha(\\alpha-1)\\cdots(\\alpha-k+1)/k!$. Newton's generalized binomial series was a key tool in his development of calculus and the discovery of the power series for functions like $(1 + x)^{1/2}$ and $(1 + x)^{-1}$. The theorem is entry #44 on Wiedijk's list of 100 famous theorems.\n\nThe Lean 4 formalization works in the generality of **commutative semirings** — not just integers or reals — using Mathlib's `add_pow` theorem. This level of generality means the same proof applies to integers, rationals, reals, complex numbers, polynomials, and any other commutative semiring. The file proves the main theorem plus several corollaries: the sum of coefficients equals $2^n$, the alternating sum vanishes for $n \\geq 1$, Pascal's identity, symmetry, boundary values, and explicit expansions for $n = 2$ and $n = 3$.",
@@ -124,7 +125,7 @@
       "id": "imports",
       "title": "Imports",
       "startLine": 1,
-      "endLine": 4,
+      "endLine": 5,
       "summary": "Imports four Mathlib modules: `BigOperators.Ring.Finset` for `∑` notation over finsets, `Nat.Choose.Sum` for `add_pow` and coefficient sum theorems, `Ring.Basic` for ring axioms, and `Tactic` for proof automation.",
       "mathContext": "The `BigOperators` module provides the $\\sum$ notation `∑ k in S, f k` for finite sums, while `Nat.Choose.Sum` provides the core `add_pow` identity and its corollaries. Together these four imports supply every Mathlib result used in the file."
     },
@@ -132,7 +133,7 @@
       "id": "module-docstring",
       "title": "Module Docstring",
       "startLine": 6,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Establishes this as Wiedijk #44. States the binomial theorem, describes the Mathlib foundation (`add_pow`), lists dependencies (`Nat.choose`, `sum_range_choose`), and gives historical context: al-Karaji (c. 1000), Yang Hui (1261), Newton (1665).",
       "mathContext": "$(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$ where $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$. This is Wiedijk #44, formalized for commutative semirings via Mathlib's `add_pow`."
     },
@@ -140,7 +141,7 @@
       "id": "namespace-open",
       "title": "Namespace and Opens",
       "startLine": 45,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "Opens `BinomialTheorem` namespace and brings `Finset` and `BigOperators` into scope for `∑` and `range` notation.",
       "mathContext": "The `open Finset BigOperators` brings the notation $\\sum_{k \\in S} f(k)$ and the `range` function into scope. `Finset.range (n+1) = \\{0, 1, \\ldots, n\\}$."
     },

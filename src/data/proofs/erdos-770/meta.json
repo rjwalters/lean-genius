@@ -52,49 +52,50 @@
     ],
     "axiomCount": 3,
     "lineCount": 227,
-    "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "definition",
       "title": "Core Definition",
       "startLine": 33,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines `gcdPowerSeq n k` as $\\gcd(2^n-1, 3^n-1, \\ldots, k^n-1)$ using `Finset.fold Nat.gcd 0` over `Finset.Icc 2 k`. The identity element 0 ensures correct behavior: $\\gcd(0, x) = x$."
     },
     {
       "id": "concrete-values",
       "title": "Concrete GCD Computations",
       "startLine": 43,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Verifies `gcdPowerSeq` at specific $(n, k)$ values via `native_decide`. Includes: $\\gcd(2^2-1, 3^2-1) = \\gcd(3,8) = 1$; the Fermat pattern at $n=6$ where $\\gcd = 7$ until $k=7$; and the factorization cascade at $n=12$ where $\\gcd$ drops $455 \\to 91 \\to 13 \\to 1$."
     },
     {
       "id": "h-values",
       "title": "Verified h(n) Values",
       "startLine": 84,
-      "endLine": 145,
+      "endLine": 146,
       "summary": "Proves $h(n)$ for $n = 1, \\ldots, 12$ by exhibiting the minimal $k$ achieving $\\gcd = 1$. The pattern $h(n) = n+1$ when $n+1$ is prime (2, 3, 5, 7, 11, 13) and $h(n) \\in \\{3, 5\\}$ for composite $n+1$ is computationally verified."
     },
     {
       "id": "fermat",
       "title": "Fermat's Little Theorem: Computational Verification",
       "startLine": 147,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "Verifies the key mechanism: when $p$ is prime and $(p-1) \\mid n$, Fermat gives $p \\mid a^n - 1$ for all $\\gcd(a,p) = 1$, but $p \\nmid p^n - 1$ since $p^n \\equiv 0 \\pmod{p}$. Checked for $p = 3, 5, 7, 11, 13$ via `native_decide`."
     },
     {
       "id": "h-eq-3-pattern",
       "title": "Pattern: h(n) = 3 Infinitely Often",
       "startLine": 177,
-      "endLine": 198,
+      "endLine": 199,
       "summary": "Demonstrates $h(n) = 3$ at 11 values ($n = 3, 5, 7, 9, 13, 14, 15, 17, 19, 21, 25$), supporting the conjecture that $h(n) = 3$ for infinitely many $n$. Also exhibits counterexamples where $h(n) > 3$ due to shared Fermat factors."
     },
     {
       "id": "open-questions",
       "title": "Three Open Questions",
       "startLine": 200,
-      "endLine": 219,
+      "endLine": 220,
       "summary": "Axiomatizes the three open questions: (Q1) existence of density $\\delta_p$ for $h(n) = p$; (Q2) unboundedness $\\liminf h(n) = \\infty$; (Q3) characterization via largest prime $p$ with $(p-1) \\mid n$ and $p > n^\\varepsilon$."
     },
     {

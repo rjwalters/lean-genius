@@ -55,7 +55,8 @@
       }
     ],
     "lineCount": 159,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Divisibility rules using \"osculators\" (multipliers applied to the last digit) have roots in Martin Gardner's recreational mathematics and earlier work by V. Ramaswami Aiyar (1907). The positive osculator test ($d | n \\iff d | (\\lfloor n/10 \\rfloor + c \\cdot (n \\bmod 10))$ when $10c \\equiv 1 \\pmod{d}$) and the negative variant ($10c \\equiv -1 \\pmod{d}$) have traditionally been treated as separate rules. The parent formalization (divisibility-truncation-general) proved both cases independently, raising the natural question: can they be unified? This proof shows the answer is yes — the negative case is the positive case with $c$ negated, since $d | (10c_{\\text{neg}} + 1)$ implies $d | (10(-c_{\\text{neg}}) - 1)$. The unification reveals a deeper structure: positive and negative osculators are not independent constructions but additive inverses under the same modular arithmetic. Osculators are closely related to modular multiplicative inverses: the positive osculator $c_+$ satisfies $10c_+ \\equiv 1 \\pmod{d}$, making $c_+$ the multiplicative inverse of 10 in $\\mathbb{Z}/d\\mathbb{Z}$. The existence of such inverses (guaranteed by Bézout's identity when $\\gcd(10, d) = 1$) connects these recreational divisibility tricks to core algebraic number theory and the extended Euclidean algorithm.",
@@ -78,35 +79,35 @@
       "id": "setup",
       "title": "Imports and Algebraic Identity",
       "startLine": 16,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Imports Mathlib digits and tactic libraries. Proves the key helper lemma div_mod_cast: n = 10*(n/10) + (n%10) cast to integers, using Nat.div_add_mod and omega."
     },
     {
       "id": "unified-theorem",
       "title": "The Unified Osculator Theorem",
       "startLine": 30,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Single theorem: d | n <-> d | (n/10 + c*(n%10)) for any c with d | (10c - 1). Uses the identity 10*(n/10 + c*(n%10)) = n + (10c-1)*(n%10) and coprimality to transfer divisibility."
     },
     {
       "id": "negative-case",
       "title": "Negative Osculator as Special Case",
       "startLine": 65,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "Derives the negative osculator rule from the unified theorem by substituting -c."
     },
     {
       "id": "concrete-cases",
       "title": "Recovering Both Specific Cases",
       "startLine": 87,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Instantiations for d=7, 11, 13, 17, 19 showing both positive and negative osculator rules."
     },
     {
       "id": "dual-relationship",
       "title": "Dual Osculator Relationship",
       "startLine": 116,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "Theorem: d | (c_pos + c_neg), with verification examples for d=7, 13, 17."
     },
     {

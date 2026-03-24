@@ -27,14 +27,15 @@
     ],
     "axiomCount": 10,
     "lineCount": 134,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "file-header",
       "title": "Problem Statement and Background",
       "startLine": 1,
-      "endLine": 19,
+      "endLine": 20,
       "summary": "Module docstring introducing Problem #690: is $d_k(p)$ unimodal in $p$? Cites Cambie's resolution (YES for $k \\le 3$, NO for $k \\ge 4$) and Erdős's observations on typical vs. modal $k$-th prime factors."
     },
     {
@@ -55,7 +56,7 @@
       "id": "cambie-unimodal",
       "title": "Cambie's Unimodality Results (k ≤ 3)",
       "startLine": 53,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Cambie (2025) proved $d_k(p)$ is unimodal for $k = 1, 2, 3$. The $k = 1$ case is classical ($d_1$ is strictly decreasing); $k = 2, 3$ require delicate inclusion-exclusion analysis."
     },
     {
@@ -76,7 +77,7 @@
       "id": "special-k1",
       "title": "Special Case: k = 1",
       "startLine": 105,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "Explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$: $d_1(2) = 1/2$, $d_1(3) = 1/6$. The function $d_1$ is strictly decreasing in $p$, hence trivially unimodal with peak at $p = 2$."
     },
     {

@@ -99,49 +99,49 @@
       "title": "Basic Definitions",
       "summary": "Defines `PlaneColoring := ℂ → Bool` (red/blue partition), `redPoints`/`bluePoints` as color classes, `RedUnitDistanceFree` (no red unit distance), `BlueContainsUnitAP` (k-term AP with unit step in blue), and `IsValidColoring` combining both constraints.",
       "startLine": 28,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "achievable",
       "title": "The Achievable Set s",
       "summary": "Defines `achievableSet := {k | ∃ valid coloring for k}`, the main problem `ErdosProblem188` as finding `IsLeast achievableSet k`, and the noncomputable `minAchievable := sInf achievableSet`.",
       "startLine": 66,
-      "endLine": 80
+      "endLine": 81
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "summary": "Axiomatizes the lower bounds $k \\geq 5$ (EGMRSS 1973) and $k \\geq 6$ (Tsaturian 2017), the upper bound existence ($\\exists k \\in s,\\, k \\leq 10^7$), and proves `achievable_nonempty` and the combined `erdos_188_bounds` theorem.",
       "startLine": 82,
-      "endLine": 105
+      "endLine": 106
     },
     {
       "id": "unitgraph",
       "title": "Unit Distance Graph",
       "summary": "Constructs `UnitDistanceGraph : SimpleGraph ℂ` with adjacency $z_1 \\neq z_2 \\land \\text{dist}(z_1, z_2) = 1$, proving symmetry and irreflexivity. Then proves `red_is_independent`: red points form an independent set in this graph.",
       "startLine": 107,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "vanderwaerden",
       "title": "Van der Waerden Connection",
       "summary": "Axiomatizes van der Waerden's theorem (any finite coloring of $\\mathbb{N}$ has arbitrarily long monochromatic APs) and Alon's observation that the original problem without the unit-step restriction has no solution.",
       "startLine": 130,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "constructions",
       "title": "Constructions",
       "summary": "Derives `large_k_valid`: there exists some large $k$ and a coloring satisfying both constraints, as an immediate corollary of the axiomatized upper bound.",
       "startLine": 148,
-      "endLine": 161
+      "endLine": 162
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "Records the problem as OPEN and proves `erdos_188_statement`: the formal equivalence between `ErdosProblem188` and the existence of a least element in the achievable set.",
       "startLine": 163,
-      "endLine": 186
+      "endLine": 187
     },
     {
       "id": "summary",

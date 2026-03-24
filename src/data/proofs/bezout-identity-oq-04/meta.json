@@ -75,7 +75,8 @@
     "dateAdded": "2026-02-25",
     "axiomCount": 0,
     "lineCount": 349,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Bézout's identity** states that for any integers a, b, there exist x, y with ax + by = gcd(a, b). The deeper question — answered here — is: **what is the complete set of solutions to ax + by = c?**\n\nThe answer, known since at least the 19th century, is that solutions form a **1-dimensional arithmetic lattice**. If (x₀, y₀) is one solution, all solutions are parameterized by t ∈ ℤ as:\n  (x₀ + (b/d)t,  y₀ - (a/d)t)\nwhere d = gcd(a, b). This is sometimes called the **parametric solution** or **general solution** of the linear Diophantine equation.\n\nThe **GCD ideal characterization** — that d = gcd(a,b) iff d is the minimum positive linear combination and divides all linear combinations — connects the number-theoretic definition with the algebraic concept of an **ideal generator** in ℤ.",
@@ -112,7 +113,7 @@
       "id": "complete-param",
       "title": "Complete Parametrization of All Solutions",
       "startLine": 112,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "diophantine_complete_parameterization: with d=gcd(a,b)>0 and one solution (x₀,y₀), all solutions are (x₀+(b/d)t, y₀-(a/d)t). Key steps: gcd(a/d, b/d)=1 proved via Nat.dvd_one (gcd divides Bezout combination = 1); reduce to null space of coprime equation; backward direction uses linear_combination h₀ + key*t where key: a*(b/d) = b*(a/d)."
     },
     {
@@ -133,7 +134,7 @@
       "id": "ideal-characterization",
       "title": "Complete GCD Ideal Characterization",
       "startLine": 265,
-      "endLine": 299,
+      "endLine": 349,
       "summary": "gcd_complete_characterization: d = gcd(a,b) ↔ (d is achievable as ax+by) AND (d divides all achievable values). Forward: d | gcd (d divides Nat.gcdA,gcdB combination = gcd) and gcd | d (gcd divides the achieving combination = d), so d = gcd by Nat.dvd_antisymm. Backward: gcd_achievable and gcd divides all ax+by by gcd_divides_linear_combination."
     }
   ],

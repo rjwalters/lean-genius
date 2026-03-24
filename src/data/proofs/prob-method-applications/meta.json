@@ -75,7 +75,8 @@
       }
     ],
     "lineCount": 51,
-    "assumptions": "high_girth_high_chromatic proves True (placeholder). Several theorems prove simplified/weakened statements. 5/6 non-placeholder theorems; 1 True stub remains."
+    "assumptions": "high_girth_high_chromatic proves True (placeholder). Several theorems prove simplified/weakened statements. 5/6 non-placeholder theorems; 1 True stub remains.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The probabilistic method, developed by Paul Erdos from 1947 onward, transformed combinatorics by providing non-constructive existence proofs for objects that seemed impossibly difficult to construct explicitly. This applications module brings together the four core techniques -- first moment, alteration, second moment, and the Lovasz Local Lemma -- and demonstrates them on classical problems.\n\nThe applications span the major areas of probabilistic combinatorics: Ramsey theory (lower bounds on R(k,k) and off-diagonal Ramsey numbers), graph coloring (upper bounds on chromatic number from maximum degree), hypergraph coloring (Property B and its extensions), and extremal graph theory (independent set bounds in various graph families).\n\nThese results collectively demonstrate why the probabilistic method became one of the most important tools in 20th-century mathematics. Many of the bounds proved here remained the best known for decades, and some still are. The unity of the approach is striking: the same handful of probabilistic principles yield the strongest known results across diverse combinatorial domains.",
@@ -102,7 +103,7 @@
       "id": "introduction",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 14,
+      "endLine": 15,
       "summary": "Overview of the applications module: demonstrates the probabilistic method library on Ramsey bounds, chromatic number, independent sets, tournament domination, and crossing number.",
       "mathContext": "Classical applications of the first moment, alteration, second moment, and LLL."
     },
@@ -110,7 +111,7 @@
       "id": "ramsey",
       "title": "Ramsey Lower Bound",
       "startLine": 16,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "R(k,k) >= 2^((k-1)/2) for k >= 3. Simplified existential form. Sorry'd — the full proof requires the first moment method on random 2-colorings of K_n.",
       "mathContext": "$R(k,k) \\geq 2^{(k-1)/2}$"
     },
@@ -118,7 +119,7 @@
       "id": "chromatic-girth",
       "title": "High Girth + High Chromatic Number",
       "startLine": 20,
-      "endLine": 24,
+      "endLine": 25,
       "summary": "Erdős (1959): graphs exist with arbitrarily high girth and chromatic number. Proves True (placeholder) — requires graph type for full formalization.",
       "mathContext": "$\\forall g, c \\geq 3$, $\\exists G$ with $\\text{girth}(G) \\geq g$ and $\\chi(G) \\geq c$"
     },
@@ -126,7 +127,7 @@
       "id": "tournament",
       "title": "Tournament Domination",
       "startLine": 26,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Every tournament on n vertices has a dominating set of size <= log₂(n) + 1. Sorry'd — proof via random sampling with union bound.",
       "mathContext": "Domination number $\\gamma(T) \\leq \\lceil \\log_2 n \\rceil + 1$"
     },
@@ -134,7 +135,7 @@
       "id": "crossing",
       "title": "Crossing Number Inequality",
       "startLine": 30,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Ajtai-Chvátal-Newborn-Szemerédi (1982): cr(G) >= e³/(64n²) when e >= 4n. Currently only states positivity of this expression. Sorry'd.",
       "mathContext": "$\\text{cr}(G) \\geq \\frac{e^3}{64n^2}$ for $e \\geq 4n$"
     },
@@ -142,7 +143,7 @@
       "id": "unbalancing",
       "title": "Unbalancing Lights and Property B",
       "startLine": 35,
-      "endLine": 43,
+      "endLine": 51,
       "summary": "Two results: (1) for any ±1 matrix, some row/column sums are >= sqrt(n)/2; (2) every 2-colorable k-uniform hypergraph has >= 2^(k-1) edges. Both sorry'd with simplified statements.",
       "mathContext": "Unbalancing: $\\exists$ row/column sum $\\geq \\sqrt{n}/2$. Property B lower: $m \\geq 2^{k-1}$."
     }

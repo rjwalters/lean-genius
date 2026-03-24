@@ -23,7 +23,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 15,
     "lineCount": 309,
-    "assumptions": "15 axiom(s) and 4 sorry(s). See the Lean source for details."
+    "assumptions": "15 axiom(s) and 4 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem concerns the distribution of k-th power nonresidues among primes. Erdős posed the question in 1961 and proved the quadratic case (k=2) himself, establishing that the sum of least quadratic nonresidues grows like c₂ · x/log x where c₂ = Σ p_j/2^j ≈ 3.67. The general case for all k ≥ 2 was resolved by P.D.T.A. Elliott in 1967. Power residues have been studied since Legendre introduced the Legendre symbol in 1798 to formulate quadratic reciprocity; the distribution of least nonresidues mod primes connects to character sum estimates via the Polya-Vinogradov inequality. Under the Generalized Riemann Hypothesis, the least k-th power nonresidue mod p is O(p^{1/(2k) + ε}), but Elliott established the unconditional asymptotic for the sum over primes.",
@@ -49,35 +50,35 @@
       "id": "power-residues",
       "title": "Power Residues and Nonresidues",
       "startLine": 42,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Defines IsPowerResidue, IsPowerNonresidue, and leastPowerNonresidue (using Nat.find). States Vinogradov's bound n(p) = O(p^{1/(4√e)+ε}) and the GRH conditional bound n(p) = O((log p)²)."
     },
     {
       "id": "sum-function",
       "title": "The Sum Function S_k(x)",
       "startLine": 105,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Defines sumLeastNonresidues S_k(x) = Σ_{p<x} n_k(p) using Finset.range with primality filter. Axiomatizes nonnegativity."
     },
     {
       "id": "constants",
       "title": "The Constants c_k",
       "startLine": 123,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Defines c_2 = Σ p_j/2^j (≈ 3.67) as a tprime series, axiomatizes c_2_positive and c_2_approx (3.5 < c₂ < 4). Defines general c_k with positivity axiom for k ≥ 2."
     },
     {
       "id": "erdos-1961",
       "title": "Erdős's Result (1961)",
       "startLine": 160,
-      "endLine": 182,
+      "endLine": 183,
       "summary": "Axiomatizes Erdős's 1961 result: Σ_{p<x} n_2(p) ~ c₂ · x/log x in both absolute error and ratio convergence forms."
     },
     {
       "id": "elliott-1967",
       "title": "Elliott's Generalization (1967)",
       "startLine": 184,
-      "endLine": 214,
+      "endLine": 309,
       "summary": "Axiomatizes Elliott's 1967 generalization to all k ≥ 2. States erdos_980_solution (the main theorem), average interpretation, special cases (n₂(p) = 2 for p ≡ ±3 mod 8), Pólya-Vinogradov connection, and the summary theorem."
     }
   ],

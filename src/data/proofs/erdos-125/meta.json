@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 4,
     "lineCount": 106,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem originates in the study of sumsets of 'thin' structured sets. Burr, Erdős, Graham, and Li posed it in their 1996 paper 'On complete sequences of polynomial values', asking whether the sumset of integers with restricted digits in two different bases must have positive density. The sets $A = \\{\\sum \\varepsilon_k 3^k : \\varepsilon_k \\in \\{0,1\\}\\}$ and $B = \\{\\sum \\varepsilon_k 4^k : \\varepsilon_k \\in \\{0,1\\}\\}$ are 'Cantor set integers' — the integer analogues of the classical middle-thirds Cantor set and its base-4 counterpart. Each set is extremely sparse: $|A \\cap [0,x]| \\sim x^{\\log_3 2} \\approx x^{0.631}$ and $|B \\cap [0,x]| \\sim x^{\\log_4 2} = x^{0.5}$, both having density zero. Yet their arithmetic structure in different bases creates enough 'independence' that their sumset $C = A + B$ might have positive density.\n\nThe heuristic justification comes from fractal geometry: the Hausdorff dimensions satisfy $\\dim_H(A) + \\dim_H(B) = \\log_3 2 + \\log_4 2 \\approx 1.131 > 1$, and by analogy with Marstrand's projection theorem, sumsets of independent fractal sets whose dimensions exceed the ambient dimension tend to have positive measure.\n\nThe first quantitative progress came from Giuseppe Melfi in 2001, who proved $|C \\cap [1,x]| \\gg x^{0.965}$ — nearly linear growth but falling just short of establishing positive density (which requires linear growth with exponent exactly 1). Hasler and Melfi improved this in 2024 to $|C \\cap [1,x]| \\gg x^{0.9777}$, bringing the exponent tantalizingly close to 1, and also established the upper bound $\\overline{d}(C) \\leq 0.696$, showing that even if $C$ has positive density, it must miss at least 30% of the natural numbers.",
@@ -48,7 +49,7 @@
       "id": "header",
       "title": "Problem Statement and References",
       "startLine": 1,
-      "endLine": 15,
+      "endLine": 16,
       "summary": "Documents the problem with references to Burr-Erdős-Graham-Li (1996), Melfi (2001), and Hasler-Melfi (2024). Records the known bounds $x^{0.9777}$ and upper density $\\leq 0.696$."
     },
     {
@@ -62,35 +63,35 @@
       "id": "digit-sets",
       "title": "Digit-Restricted Sets (Cantor Set Integers)",
       "startLine": 24,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines `digitSet b` as naturals with only 0,1 digits in base $b$. Instantiates `setA = digitSet 3` (counting $\\sim x^{0.631}$) and `setB = digitSet 4` (counting $\\sim x^{0.5}$)."
     },
     {
       "id": "sumset",
       "title": "The Sumset $C = A + B$",
       "startLine": 40,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines $C = A + B$ as the set of all sums $a + b$ with $a \\in A$, $b \\in B$. Provides the counting function `countingC x = |C \\cap [0,x]|$ via `Finset.filter`."
     },
     {
       "id": "conjecture",
       "title": "Erdős Problem 125: Positive Lower Density",
       "startLine": 51,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Formalizes the conjecture as $\\exists \\delta > 0$ such that $\\liminf_{x \\to \\infty} |C \\cap [1,x]|/x \\geq \\delta$, using an $\\varepsilon$-$\\delta$ characterization of positive liminf."
     },
     {
       "id": "lower-bounds",
       "title": "Counting Lower Bounds (Melfi, Hasler-Melfi)",
       "startLine": 62,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Axiomatizes Melfi's 2001 bound $|C \\cap [1,x]| \\geq cx^{0.965}$ and the Hasler-Melfi 2024 improvement to $cx^{0.9777}$. Both are sub-linear, falling short of proving positive density."
     },
     {
       "id": "upper-density",
       "title": "Upper Density Bound (Hasler-Melfi 2024)",
       "startLine": 76,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Axiomatizes $\\overline{d}(C) \\leq 0.696$: for any $\\varepsilon > 0$, eventually $|C \\cap [1,x]|/x \\leq 0.696 + \\varepsilon$. Shows $C$ cannot be 'almost all' of $\\mathbb{N}$."
     },
     {

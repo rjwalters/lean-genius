@@ -24,49 +24,50 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "lineCount": 226,
-    "assumptions": "6 axioms: triangleRemovalEdges (process function), nonneg/complete bounds, BFL upper/lower bounds, Mantel bound. Grable bound now proved from BFL. All 3 former sorries filled."
+    "assumptions": "6 axioms: triangleRemovalEdges (process function), nonneg/complete bounds, BFL upper/lower bounds, Mantel bound. Grable bound now proved from BFL. All 3 former sorries filled.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "header-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Problem documentation describing the triangle removal process on K_n and imports from Mathlib for graphs, filters, and real-valued powers."
     },
     {
       "id": "process-axioms",
       "title": "Process Axiomatization",
       "startLine": 40,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Axiomatizes f(n) = triangleRemovalEdges as ℕ → ℝ with basic bounds: f(n) ≥ 0 and f(n) ≤ n(n-1)/2."
     },
     {
       "id": "known-results",
       "title": "Known Results: BFL and Grable Bounds",
       "startLine": 63,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "BFL (2015): n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε} eventually (axiomatized). Grable (1997): f(n) ≤ n^{7/4+ε} (now proved from BFL, no longer an axiom)."
     },
     {
       "id": "conjecture",
       "title": "Erdős Conjecture",
       "startLine": 96,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "The open conjecture: ∃ c₁,c₂ > 0 such that c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} for large n. Stronger than BFL's sub-polynomial precision."
     },
     {
       "id": "derived-results",
       "title": "Derived Theorems",
       "startLine": 112,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "Four proved theorems: BFL implies Grable (via exponent arithmetic), the conjecture implies Θ(n^{3/2}), BFL exponent characterization, and the generic implication."
     },
     {
       "id": "graph-basics",
       "title": "Graph-Theoretic Foundations",
       "startLine": 155,
-      "endLine": 210,
+      "endLine": 211,
       "summary": "Defines IsTriangle, IsTriangleFree'. Proves equivalence with CliqueFree 3 (via Finset.card_eq_three) and that K_n has triangles for n ≥ 3. All proofs complete."
     },
     {

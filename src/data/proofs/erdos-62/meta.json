@@ -56,7 +56,8 @@
       "Ramsey theory",
       "Graph density and structure"
     ],
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem at the intersection of infinite combinatorics and chromatic graph theory. The question asks whether graphs with uncountable chromatic number (χ = ℵ₁) must share 'rich' common subgraphs. The Erdős-Hajnal-Shelah theorem (1974) provides the key partial answer: every graph with χ = ℵ₁ contains all sufficiently large odd cycles, so any two such graphs share common subgraphs with χ = 3. The gap between χ = 3 (achieved) and χ = 4 (conjectured) represents a fundamental barrier in infinite combinatorics. Erdős generalized the problem to finite collections (1987) and raised it repeatedly through the 1990s. The problem connects to partition calculus, the De Bruijn-Erdős compactness theorem, and the structure theory of graphs with large chromatic number. Under ZFC, graphs with χ = ℵ₁ exist (e.g., shift graphs on ω₁), but controlling their common subgraph structure remains elusive.",
@@ -83,7 +84,7 @@
       "title": "Header and Problem Statement",
       "summary": "OPEN. Two graphs with χ = ℵ₁ — must they share a common subgraph with χ = 4 or ℵ₀? EHS gives χ = 3. Custom InfGraph, imports Mathlib bulk. 0 sorries",
       "startLine": 1,
-      "endLine": 28
+      "endLine": 29
     },
     {
       "id": "infgraph",
@@ -97,21 +98,21 @@
       "title": "Chromatic Number Classes",
       "summary": "HasChromaticNumber G k: exact finite χ. HasChromaticAleph0: countable but not finite. HasChromaticAleph1: ¬countably colorable. Three-level chromatic hierarchy",
       "startLine": 52,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "embeddings",
       "title": "Subgraph Embeddings",
       "summary": "EmbedsInto H G: injective homomorphism (∃ f injective, edge-preserving). Weak notion — not necessarily induced. Appropriate for common subgraph problem",
       "startLine": 66,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "conjectures",
       "title": "Main Conjectures (OPEN): Strong χ=4 and Weak χ=ℵ₀",
       "summary": "erdos_62_conjecture_strong: common χ=4 subgraph. erdos_62_conjecture_weak: common χ=ℵ₀ subgraph. Both as Prop definitions (open problems). Strong implies weak",
       "startLine": 72,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "generalization",
@@ -125,7 +126,7 @@
       "title": "Erdős-Hajnal-Shelah and odd_cycles_are_common (Proved)",
       "summary": "oddCycle, oddCycle_chromatic (axioms). erdos_hajnal_shelah (axiom): χ=ℵ₁ → contains all large odd cycles. odd_cycles_are_common (PROVED): k = max(N₁,N₂)+1 gives common χ=3 subgraph",
       "startLine": 109,
-      "endLine": 141
+      "endLine": 142
     },
     {
       "id": "chi-gap",

@@ -57,12 +57,13 @@
       "CliqueFree and triangle-free predicates",
       "Induced subgraph embeddings",
       "Finite tree definitions (paths, stars, caterpillars)"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Gyárfás conjectured in 1975 that for every tree $T$, there exists $f(T)$ such that every graph with chromatic number $\\geq f(T)$ contains $T$ as an induced subgraph. Problem 738, popularized by Erdős, focuses on the triangle-free case: if $G$ is triangle-free with $\\chi(G) = \\infty$, must $G$ contain every finite tree as an induced subgraph? This is stronger than the general conjecture because triangle-freeness constrains the graph's local structure to be tree-like (no short cycles), making induced tree copies more plausible. Kierstead and Penrice (1994) proved the conjecture for trees of radius $\\leq 2$, Scott (1997) extended it to caterpillars (trees where all vertices are within distance 1 of a central path), and Chudnovsky, Scott, and Seymour (2020) made progress on subdivisions. The problem connects to the broader theory of $\\chi$-bounded graph classes initiated by Gyárfás.",
     "problemStatement": "Must every triangle-free graph with infinite chromatic number contain every finite tree as an induced subgraph?",
-    "text": "Must every triangle-free graph with infinite chromatic number contain every finite tree as an induced subgraph? (Gy\u00e1rf\u00e1s conjecture). Kierstead-Penrice (1994) proved radius-2 trees; Scott (1997) proved caterpillars.",
+    "text": "Must every triangle-free graph with infinite chromatic number contain every finite tree as an induced subgraph? (Gyárfás conjecture). Kierstead-Penrice (1994) proved radius-2 trees; Scott (1997) proved caterpillars.",
     "proofStrategy": "The formalization uses Mathlib's `SimpleGraph` library with `CliqueFree 3` for triangle-freeness and `Coloring (Fin k)` for $k$-colorings. The induced subgraph copy is defined via an injective map $f: \\text{Fin}\\, n \\to V$ preserving and reflecting adjacency. Concrete graph constructions (`pathGraph`, `starGraph`) have their `symm` and `loopless` properties proved inline. The main conjecture and partial results are axiomatized, and the finite-to-infinite reduction is stated as a theorem.",
     "keyInsights": [
       "Triangle-free graphs with large chromatic number have tree-like local structure: neighborhoods have large girth, making induced tree copies geometrically natural",
@@ -92,7 +93,7 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 29,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "Defines `IsTriangleFree` via `CliqueFree 3`, `ChromAtMost k` via `Nonempty (Coloring (Fin k))`, `HasInfiniteChrom` as $\\forall k, \\neg\\text{ChromAtMost}\\, k$, `FiniteTree n` as a structure wrapping `SimpleGraph (Fin n)`, and `HasInducedCopy` via injective adjacency-preserving maps.",
       "mathContext": "Formalizes $\\omega(G) \\leq 2$, $\\chi(G) \\leq k$, $\\chi(G) = \\infty$, finite trees $T$ on $\\text{Fin}\\, n$, and induced copies $G \\supseteq_{\\text{ind}} T$ via injective adjacency-preserving maps."
     },
@@ -100,7 +101,7 @@
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 55,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Axiomatizes `gyarfas_conjecture`: for all $G$ that are triangle-free with $\\chi(G) = \\infty$, and for all finite trees $T$ on $n$ vertices, $G$ contains an induced copy of $T$.",
       "mathContext": "$\\forall G$ triangle-free with $\\chi(G) = \\infty$, $\\forall n$, $\\forall T \\in \\text{FiniteTree}(n)$: $G \\supseteq_{\\text{ind}} T$."
     },
@@ -108,7 +109,7 @@
       "id": "partial",
       "title": "Known Partial Results",
       "startLine": 65,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Defines `pathGraph` and `starGraph` with proved `symm` and `loopless` properties. Proves `infinite_chrom_contains_paths`, `infinite_chrom_contains_stars`, and `kierstead_penrice_radius2` as consequences of the main conjecture axiom.",
       "mathContext": "Concrete constructions: $P_n$ (path on $n$ vertices, edges $\\{i, i+1\\}$) and $K_{1,n}$ (star with center $0$). Three special cases derived from the full conjecture."
     },
@@ -116,7 +117,7 @@
       "id": "structural",
       "title": "Structural Observations and Reductions",
       "startLine": 101,
-      "endLine": 141,
+      "endLine": 189,
       "summary": "Proves `triangle_free_large_chrom_local_tree` (V nonempty, chromatic bounds at every vertex). Axiomatizes `gyarfas_finite_version` (finite quantitative version). Derives `scott_caterpillars` from the full conjecture. States `finite_implies_infinite_version` (finite→infinite reduction via compactness).",
       "mathContext": "Key structural result: $\\forall k$, $\\exists v$ such that all neighbors $w \\sim v$ satisfy $\\chi(G[N(w)]) > k$. Finite version: $\\forall T$, $\\exists N(T)$ such that $\\chi(G) > N(T) \\implies G \\supseteq_{\\text{ind}} T$."
     }

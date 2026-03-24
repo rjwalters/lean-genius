@@ -50,7 +50,8 @@
     "wiedijkNumber": 33,
     "axiomCount": 5,
     "lineCount": 204,
-    "assumptions": "5 axioms total. 2 with real mathematical content: FLT_for_odd_primes (the modularity theorem application) and fermatLastTheorem (the full FLT statement). 3 placeholder axioms concluding with True: FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem — these serve as proof-structure markers without encoding mathematical statements. The n=3 and n=4 cases are fully proved via Mathlib (fermatLastTheoremThree, fermatLastTheoremFour)."
+    "assumptions": "5 axioms total. 2 with real mathematical content: FLT_for_odd_primes (the modularity theorem application) and fermatLastTheorem (the full FLT statement). 3 placeholder axioms concluding with True: FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem — these serve as proof-structure markers without encoding mathematical statements. The n=3 and n=4 cases are fully proved via Mathlib (fermatLastTheoremThree, fermatLastTheoremFour).",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1637, Pierre de Fermat wrote in the margin of his copy of Diophantus's *Arithmetica*: \"I have discovered a truly marvelous proof of this, which this margin is too narrow to contain.\" This tantalizing note launched 358 years of mathematical obsession.\n\nGenerations of mathematicians attacked the problem. Euler proved the case n=3 (1770). Sophie Germain developed techniques for certain primes (1823). Ernst Kummer's work on ideal class groups proved it for all regular primes (1850), but infinitely many cases remained.\n\nThe modern breakthrough came from an unexpected direction. In 1984, Gerhard Frey proposed that a counterexample to Fermat would yield an elliptic curve with impossible properties. Jean-Pierre Serre refined this, and in 1986, Ken Ribet proved the key connection: if Fermat's Last Theorem were false, it would contradict the Taniyama-Shimura-Weil conjecture about modular forms.\n\nAndrew Wiles, who had dreamed of proving FLT since childhood, worked in secret for seven years. In June 1993, he announced his proof of enough of the modularity conjecture to imply FLT. But a gap was found. After a year of anguish, Wiles and Richard Taylor patched the proof using a brilliant new technique. On October 25, 1994, the proof was complete. It was published in 1995, ending the longest-standing unsolved problem in mathematics.",
@@ -77,7 +78,7 @@
       "id": "setup",
       "title": "Imports and Mathematical Framework",
       "startLine": 1,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Import statements and module documentation establishing the mathematical context.",
       "mathContext": "Imports from Mathlib's FLT modules, elliptic curve definitions, and integer ring theory."
     },
@@ -85,7 +86,7 @@
       "id": "statement",
       "title": "The Theorem Statement",
       "startLine": 54,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Fermat's Last Theorem stated precisely: no positive integer solutions to a^n + b^n = c^n for n > 2.",
       "mathContext": "$\\forall n > 2,\\; \\nexists a, b, c \\in \\mathbb{Z}_{>0},\\; a^n + b^n = c^n$. Equivalently: $\\forall a, b, c \\in \\mathbb{Z} \\setminus \\{0\\},\\; a^n + b^n \\neq c^n$."
     },
@@ -93,7 +94,7 @@
       "id": "frey-curve",
       "title": "The Frey Curve Construction",
       "startLine": 70,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "How a hypothetical counterexample gives rise to an elliptic curve with special properties.",
       "mathContext": "Given $a^p + b^p = c^p$, construct $E : y^2 = x(x - a^p)(x + b^p)$. This curve is semistable with discriminant $\\Delta = 16(abc)^{2p}$."
     },
@@ -101,7 +102,7 @@
       "id": "modularity",
       "title": "The Modularity Theorem",
       "startLine": 94,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Every semi-stable elliptic curve over Q is modular - the key to Wiles' approach.",
       "mathContext": "Wiles (1995): if $E/\\mathbb{Q}$ is semistable, then $\\exists f \\in S_2(\\Gamma_0(N))$ with $L(E, s) = L(f, s)$. This is part of the Taniyama-Shimura-Weil conjecture."
     },
@@ -109,7 +110,7 @@
       "id": "ribet",
       "title": "Ribet's Theorem and the Contradiction",
       "startLine": 111,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Why Frey curves cannot be modular, completing the proof by contradiction.",
       "mathContext": "Ribet (1986): if the Frey curve is modular, level-lowering gives a cusp form of level 2. But $\\dim S_2(\\Gamma_0(2)) = 0$, contradiction."
     },

@@ -80,7 +80,8 @@
       "maynard_tao_sieve_eh: The EH-conditional sieve — under Elliott-Halberstam, any admissible 5-tuple of diameter D gives infinitely many prime gaps ≤ D",
       "engelsma_lower_bound: No admissible 50-tuple has diameter < 246 (Engelsma 2013 computer search)"
     ],
-    "lineCount": 2017
+    "lineCount": 2017,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Bounded Prime Gaps: A Landmark in Analytic Number Theory**\n\nThe twin prime conjecture (infinitely many primes differing by 2) remained open for centuries. In 2013, Yitang Zhang made the first unconditional breakthrough: there are infinitely many prime pairs differing by at most 70,000,000. This was stunning because it proved *some* bounded gap exists, even if not 2.\n\nThe Polymath 8 project (organized by Terence Tao) rapidly optimized Zhang's work:\n- **Polymath 8a** (2013): Reduced Zhang's bound to 4,680\n- **Polymath 8b** (2014): Using Maynard's new GPY sieve method, reached **246**\n- **Maynard-Tao (2015)**: Independently showed gap ≤ 600, and generalized to m-tuples\n- **Assuming Elliott-Halberstam conjecture**: Bound improves to **12** (two apart from twin prime conjecture)\n\nThe central combinatorial object is an *admissible k-tuple*: a set $H = \\{h_1, \\ldots, h_k\\}$ of integers such that for every prime $p$, the set $H$ does not cover all residue classes mod $p$. The Dickson conjecture predicts that admissible tuples have infinitely many prime translates; the bounded gaps theorem proves that sufficiently large admissible tuples have infinitely many *partially* realized translates.",
@@ -107,7 +108,7 @@
       "id": "imports-header",
       "title": "Imports and Overview",
       "startLine": 1,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Header explaining the bounded prime gaps theorem and its context. Imports: Nat.Prime, Nth, Finset.Card, ZMod, NumberTheory.Bertrand, and Proofs.PrimeGapBounds.",
       "mathContext": "The central theorem: $\\liminf_{n \\to \\infty}(p_{n+1} - p_n) \\leq 246$ (Polymath 8b, 2014). Three axioms encode deep sieve-theoretic results; all combinatorial infrastructure is proved from Mathlib. The `open Nat Finset` declarations bring prime-number and finite-set operations into scope."
     },
@@ -115,7 +116,7 @@
       "id": "admissible-definition",
       "title": "Admissible Tuples: Definition and Basic Properties",
       "startLine": 57,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Defines IsAdmissible: a Finset ℕ is admissible if for every prime p, its image mod p has fewer than p elements. Proves basic properties: empty set, singletons, subsets, and sets with card < 2 are all admissible.",
       "mathContext": "`IsAdmissible H` $\\iff \\forall p$ prime, $|\\{h \\bmod p : h \\in H\\}| < p$. This ensures $H$ doesn't cover all residue classes mod any prime — the combinatorial condition guaranteeing that no single prime can obstruct all translates $n + H$ from containing primes. Example: $\\{0, 2\\}$ is admissible because $\\{0, 2\\} \\bmod 2 = \\{0\\}$ has size 1 < 2, and for $p > 2$, $|\\{0, 2\\}| = 2 < p$."
     },
@@ -155,7 +156,7 @@
       "id": "oscillation-more-tuples",
       "title": "Gap Oscillation and Additional Admissible Tuples",
       "startLine": 641,
-      "endLine": 1462,
+      "endLine": 2017,
       "summary": "Proves prime_gaps_unbounded via factorial construction (N!+k is composite for 2≤k≤N), prime_gaps_oscillate (bounded liminf but infinite gaps exist). Additional admissible sextuples: {0,2,6,8,12,18}, {0,4,6,10,12,16}. Further admissibility/non-admissibility results.",
       "mathContext": "Unbounded gaps: $N! + k$ is composite for $2 \\leq k \\leq N$ (since $k \\mid N! + k$), giving a gap of $\\geq N - 1$ after $p = $ the largest prime $\\leq N!+1$. Therefore $\\limsup_{n \\to \\infty} g_n = \\infty$. Combined with $\\liminf g_n \\leq 246$: prime gaps oscillate — they are infinitely often $\\leq 246$ yet infinitely often arbitrarily large."
     }

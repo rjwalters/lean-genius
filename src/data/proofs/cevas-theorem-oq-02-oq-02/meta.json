@@ -55,7 +55,8 @@
     "dateAdded": "2026-03-06",
     "axiomCount": 0,
     "lineCount": 320,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Ceva's theorem (1678) for triangles states that cevians AD, BE, CF are concurrent iff (BD/DC)·(CE/EA)·(AF/FB) = 1. The spherical version (proved in CevasTheoremOQ02OQ01.lean) replaces length ratios with sin-ratios and uses weight parameters: sin(BD)/sin(DC) = β/α for D = normalize(α·B + β·C).\n\nThe natural question (OQ-02-OQ-02) is: does this generalize to polygons? For an n-gon P₁...Pₙ with cevian points Qᵢ on each side PᵢPᵢ₊₁, when are the n cevians from a central point C concurrent?\n\nThis formalization answers YES: the concurrency condition is ∏ᵢ αᵢ = ∏ᵢ βᵢ, where (αᵢ, βᵢ) are the weight parameters defining each cevian point.",
@@ -121,7 +122,7 @@
       "id": "scaling-and-angles",
       "title": "Scaling Invariance and Angle Connection",
       "startLine": 250,
-      "endLine": 310,
+      "endLine": 320,
       "summary": "ceva_product_scale_invariant, ceva_product_pos, angle_product_from_weight_ratios connecting to the formal problem statement."
     }
   ],

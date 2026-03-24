@@ -46,7 +46,8 @@
     "hilbertNumber": 20,
     "axiomCount": 4,
     "lineCount": 244,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Hilbert's twentieth problem asked: do all boundary value problems with reasonable boundary conditions have solutions?\n\nThe answer, developed over the 20th century, is nuanced:\n\n- **Perron's Method (1923)**: Solved the Dirichlet problem for Laplace's equation using subharmonic functions\n- **Sobolev Spaces (1936)**: Introduced the natural function spaces for weak solutions\n- **Lax-Milgram Theorem (1954)**: Provided an abstract existence framework for elliptic problems\n- **Lewy's Example (1957)**: Showed some perfectly smooth PDEs have NO solutions at all\n\nThe resolution reveals that solvability depends deeply on the structure of the equation, not just the boundary conditions.",
@@ -69,28 +70,28 @@
       "id": "dirichlet",
       "title": "The Dirichlet Problem",
       "startLine": 56,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "The classical Dirichlet problem: find a harmonic function with prescribed boundary values. Existence and uniqueness theorems."
     },
     {
       "id": "weak",
       "title": "Weak Formulations",
       "startLine": 103,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "The variational approach: bilinear forms, boundedness, and coercivity conditions."
     },
     {
       "id": "lax-milgram",
       "title": "The Lax-Milgram Theorem",
       "startLine": 132,
-      "endLine": 182,
+      "endLine": 183,
       "summary": "The fundamental existence theorem for bounded coercive bilinear forms on Hilbert spaces."
     },
     {
       "id": "poisson",
       "title": "Application to Poisson Equation",
       "startLine": 184,
-      "endLine": 224,
+      "endLine": 225,
       "summary": "Existence of weak solutions to -u = f with Dirichlet boundary conditions via Lax-Milgram."
     },
     {

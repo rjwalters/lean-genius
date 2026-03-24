@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 12,
     "lineCount": 170,
-    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this question about the fine structure of prime gaps around 1985, building on decades of work on the distribution of primes. The prime gaps $d_n = p_{n+1} - p_n$ encode the local behavior of the prime counting function $\\pi(x)$. Cramér (1936) conjectured $\\max_{p_n \\leq x} d_n \\sim (\\log x)^2$, while Maier (1985) showed that primes exhibit unexpected irregularities in short intervals — the 'Maier phenomenon.' The function $h(x)$ introduced here measures a different aspect: the variability of consecutive gaps. Hardy and Littlewood's prime $k$-tuples conjecture (1923) predicts which gap patterns occur, and Brun's sieve (1919) — originally developed to bound twin primes — provides the key tool showing $h(x) \\to \\infty$. The problem connects to Gallagher's 1976 result that gaps between consecutive primes follow a Poisson distribution on average, and to the Erdős–Rankin construction (1938/1962) of large gaps. The interplay between the lower bound $(\\log x)^c$ and upper bound $o(\\log x)$ would pin down $h(x)$ as growing faster than any power of $\\log\\log x$ but slower than $\\log x$ — a narrow window reflecting the subtle balance between regularity and irregularity in the prime sequence.",
@@ -46,14 +47,14 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 24,
+      "endLine": 25,
       "summary": "Header documenting Erdős Problem #852 on maximal distinct prime gap runs. Imports `Nat.Prime.Basic`, `Finset.Basic`, `Real.log`, `Real.rpow`, `Asymptotics.Defs`, and `Filter.Basic` for the formalization."
     },
     {
       "id": "primes",
       "title": "Prime Sequence Axioms",
       "startLine": 26,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Axiomatizes `nthPrime : ℕ → ℕ` with four properties: $p_n$ is prime, $n \\mapsto p_n$ is strictly monotone, $p_0 = 2$, and $p_1 = 3$. These encode the fundamental enumeration of primes."
     },
     {
@@ -67,28 +68,28 @@
       "id": "distinct-runs",
       "title": "Distinct Gap Runs",
       "startLine": 57,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Defines `IsDistinctRun n k` requiring all $k$ gaps $d_n, \\ldots, d_{n+k-1}$ to be pairwise distinct. Proves: empty and single runs are distinct (`omega` tactic), and distinct runs are downward-closed in $k$ (prefix property)."
     },
     {
       "id": "h-function",
       "title": "The Function $h(x)$",
       "startLine": 82,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "Axiomatizes `maxDistinctRun : ℕ → ℕ` with witness (achieving run) and optimality (maximality). Proves $h(x) \\geq 1$ for $x \\geq 3$ using $p_0 = 2 < 3 \\leq x$ and `isDistinctRun_one`, and monotonicity $h(x) \\leq h(y)$ for $x \\leq y$."
     },
     {
       "id": "brun-sieve",
       "title": "Brun's Sieve Divergence",
       "startLine": 113,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "Axiomatizes Brun's result: $\\forall C,\\, \\exists X,\\, \\forall x \\geq X,\\, h(x) \\geq C$. Proves the `Filter.Tendsto` reformulation: $h \\to +\\infty$ as $x \\to \\infty$, using `tendsto_atTop_atTop` and `Nat.cast_le`."
     },
     {
       "id": "conjectures",
       "title": "Erdős Conjectures (OPEN)",
       "startLine": 129,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "Axiomatizes both open questions: (1) $\\exists c > 0,\\, \\forall^\\infty x,\\, (\\log x)^c < h(x)$ using `Real.log` and `rpow`; (2) $h = o(\\log)$ using `Asymptotics.IsLittleO`. Derives $\\varepsilon$-bound consequence and combined growth rate statement."
     },
     {

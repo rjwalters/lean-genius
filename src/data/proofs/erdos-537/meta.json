@@ -81,63 +81,63 @@
       "title": "Imports and Setup",
       "summary": "Imports from Mathlib: $\\text{Nat.Prime}$, $\\text{Squarefree}$, $\\text{Finset}$, and natural number arithmetic",
       "startLine": 1,
-      "endLine": 33
+      "endLine": 34
     },
     {
       "id": "basic-definitions",
       "title": "Density Definitions",
       "summary": "Defines $\\text{HasPositiveDensity}(A)$ via $\\liminf |A \\cap [1,N]|/N > 0$, and $\\text{IsDenseSubset}(A, \\epsilon, N)$ for $|A| \\geq \\epsilon N$",
       "startLine": 35,
-      "endLine": 47
+      "endLine": 48
     },
     {
       "id": "three-products",
       "title": "Three Equal Prime Products",
       "summary": "Defines $\\text{HasThreeEqualPrimeProducts}(A)$: existence of $a_1, a_2, a_3 \\in A$ and distinct primes $p_1, p_2, p_3$ with $a_1 p_1 = a_2 p_2 = a_3 p_3$",
       "startLine": 49,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "conjecture",
       "title": "The Erdős #537 Conjecture",
       "summary": "Formalizes the conjecture: $\\forall \\epsilon > 0, \\exists N_0, \\forall N \\geq N_0$, every $\\epsilon$-dense subset has three equal prime products (FALSE)",
       "startLine": 64,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "ruzsa-construction",
       "title": "Ruzsa's Construction",
       "summary": "Defines $\\text{IsLacunarySquarefree}(n)$: squarefree with consecutive prime divisors satisfying $q > 2p$. The $\\text{RuzsaSet}(N)$ restricts to $[1,N]$ with axiomatized positive density",
       "startLine": 77,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "key-lemma",
       "title": "The Key Lemma and Contradiction",
       "summary": "Gap property: if $pq | n$ with $p < q$ consecutive, then $q > 2p$. The $\\text{ratio\\_bound}$ theorem: for $a_2, a_3 \\in (N/2, N)$, $a_2/a_3 \\in (1,2)$. Axiomatized contradiction via incompatibility",
       "startLine": 113,
-      "endLine": 156
+      "endLine": 157
     },
     {
       "id": "disproof",
       "title": "The Disproof",
       "summary": "Assembles $\\text{ruzsa\\_no\\_three\\_products}$ (proved) and $\\text{erdos\\_537\\_disproved}$ (1 sorry) to negate the conjecture by exhibiting the Ruzsa set counterexample",
       "startLine": 158,
-      "endLine": 198
+      "endLine": 199
     },
     {
       "id": "understanding",
       "title": "Understanding Ruzsa's Construction",
       "summary": "Explains why the lacunary condition works: the ratio argument forces $p_3/p_2 > 2$ but $a_2/a_3 < 2$, a simple pigeonhole contradiction. Density estimate via sieve methods",
       "startLine": 200,
-      "endLine": 225
+      "endLine": 226
     },
     {
       "id": "connections",
       "title": "Connection to Related Problems",
       "summary": "Link to Erdős #536 (two equal prime products): #537 was proposed as a stepping stone. Also connects to multiplicative Szemerédi-type questions and the Erdős multiplicative functions program",
       "startLine": 227,
-      "endLine": 245
+      "endLine": 246
     },
     {
       "id": "main-results",

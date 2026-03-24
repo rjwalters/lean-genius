@@ -84,56 +84,56 @@
       "id": "power-sums",
       "title": "Part I: Power Sums of Complex Numbers",
       "startLine": 36,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Defines ComplexSeq, powerSum, HasFirstOne, modulus constraints, and maxPowerSum (axiomatized with specification)."
     },
     {
       "id": "erdos-question",
       "title": "Part II: The Erdős Question",
       "startLine": 70,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Formal statement ErdosQuestion973: ∃ C > 1 with max power sum < C^{-n} for |z_i| ≥ 1."
     },
     {
       "id": "unit-disk",
       "title": "Part III: Erdős's Construction (Unit Disk Case)",
       "startLine": 81,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Axiom erdos_unit_disk_construction: C ≈ 1.32 works for |z_i| ≤ 1."
     },
     {
       "id": "unit-circle",
       "title": "Part IV: L. Erdős's Refinement (1992)",
       "startLine": 94,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Defines M2 (infimum over unit circle sequences). Axiom l_erdos_1992_bounds: (1.746)^{-n} < M₂ < (1.745)^{-n}."
     },
     {
       "id": "turan-bound",
       "title": "Part V: Turán's Lower Bound",
       "startLine": 109,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "Axiom turan_lower_bound: for |z_i| ≥ 1, max power sum ≥ (2e)^{-(1+o(1))n}. Defines turanConstant = 2e."
     },
     {
       "id": "answer",
       "title": "Part VI: The Answer",
       "startLine": 124,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "AnswerSummary combines all three regimes into a single proposition. No True fillers."
     },
     {
       "id": "extremal",
       "title": "Part VII: Extremal Sequences",
       "startLine": 139,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "Defines rootsOfUnitySequence. Proves roots_on_circle. Axiom roots_power_sum: power sum is 0 or n."
     },
     {
       "id": "dirichlet",
       "title": "Part VIII: Dirichlet Polynomial Connection",
       "startLine": 157,
-      "endLine": 169,
+      "endLine": 170,
       "summary": "DirichletPolynomial structure. Axiom dirichlet_power_sum_connection: z_i = n_i^{it} yields Dirichlet sums."
     },
     {

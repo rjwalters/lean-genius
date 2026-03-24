@@ -89,7 +89,7 @@
       "title": "Problem Documentation",
       "summary": "File header documenting Erdős Problem #652: the distance multiplicity spectrum, $\\alpha_k$ constants, Elekes' disproof of the stronger conjecture, and Mathialagan's 2021 resolution with $\\alpha_k \\geq C\\sqrt{k}$.",
       "startLine": 1,
-      "endLine": 39,
+      "endLine": 40,
       "mathContext": "$R(x_i) = |\\{\\|x_j - x_i\\| : j \\neq i\\}|$. $\\alpha_k := \\inf\\{\\alpha : R(x_k) < \\alpha\\sqrt{n}\\}$. Answer: $\\alpha_k \\to \\infty$ with $\\alpha_k \\geq C\\sqrt{k}$."
     },
     {
@@ -97,7 +97,7 @@
       "title": "Basic Definitions",
       "summary": "Foundational types: `Point` as $\\mathbb{R} \\times \\mathbb{R}$, `dist` for Euclidean distance $\\sqrt{(x_1-x_2)^2 + (y_1-y_2)^2}$, `PointSet n` as `Fin n → Point`, `distinctDistances` via `Finset.image`, and `R` as the cardinality of distinct distances from a point.",
       "startLine": 41,
-      "endLine": 64,
+      "endLine": 65,
       "mathContext": "Point $= \\mathbb{R}^2$, $d(p,q) = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$, $R(P,i) = |\\{d(P_i, P_j) : j \\neq i\\}|$."
     },
     {
@@ -105,7 +105,7 @@
       "title": "Ordering by R Values",
       "summary": "The `R_k` function computing the $k$-th smallest value in $\\{R(P, i) : i \\in \\text{Fin}\\, n\\}$ via sorting, giving the distance multiplicity spectrum $R_1(P) \\leq \\cdots \\leq R_n(P)$.",
       "startLine": 66,
-      "endLine": 76,
+      "endLine": 77,
       "mathContext": "$R_k(P) := k$-th value in sorted $\\{R(P,i)\\}_{i=1}^n$, so $R_1(P) \\leq R_2(P) \\leq \\cdots \\leq R_n(P)$."
     },
     {
@@ -113,7 +113,7 @@
       "title": "The αₖ Constants",
       "summary": "Definition of $\\alpha_k = \\inf\\{\\alpha : R_k(P) < \\alpha\\sqrt{n} \\text{ is achievable}\\}$ as a Prop and axiomatized constant with positivity and achievability properties.",
       "startLine": 78,
-      "endLine": 95,
+      "endLine": 96,
       "mathContext": "$\\alpha_k := \\inf\\{\\alpha \\geq 0 : \\forall^\\infty n,\\ \\exists P,\\ R_k(P) < \\alpha\\sqrt{n}\\}$."
     },
     {
@@ -121,7 +121,7 @@
       "title": "Basic Properties",
       "summary": "Three foundational results: $\\alpha_1 = 0$ (regular polygon), $R(x_1) \\cdot R(x_2) \\geq Cn$ (covering argument), and $R_1 = 1$ achievable (equidistant configuration).",
       "startLine": 97,
-      "endLine": 115,
+      "endLine": 116,
       "mathContext": "$\\alpha_1 = 0$, $R(x_1) \\cdot R(x_2) \\geq Cn$ (complementarity), $\\min R = 1$ achievable."
     },
     {
@@ -129,7 +129,7 @@
       "title": "Elekes' Disproof",
       "summary": "Elekes' theorem via algebraic curves: for any $k \\geq 1$, there exist $n$-point sets with $R_k < C\\sqrt{n}$. Consequence: $\\alpha_k < \\infty$ for all $k$, disproving Erdős's stronger conjecture.",
       "startLine": 117,
-      "endLine": 132,
+      "endLine": 133,
       "mathContext": "Elekes: $\\forall k \\geq 1,\\ \\forall^\\infty n,\\ \\exists P,\\ R_k(P) < C_k\\sqrt{n}$. Hence $\\alpha_k < \\infty$ for all $k$."
     },
     {
@@ -137,7 +137,7 @@
       "title": "Mathialagan's Breakthrough (2021)",
       "summary": "The main positive results: $R(x_k) \\gg \\sqrt{kn}$ for $2 \\leq k \\leq n^{1/3}$ (polynomial partitioning), $\\alpha_k \\geq C\\sqrt{k}$ (quantitative lower bound), and $\\alpha_k \\to \\infty$ (divergence) — resolving Erdős #652 affirmatively.",
       "startLine": 134,
-      "endLine": 153,
+      "endLine": 154,
       "mathContext": "Mathialagan (2021): $R(x_k) \\geq C\\sqrt{kn}$ for $2 \\leq k \\leq n^{1/3}$. Hence $\\alpha_k \\geq C\\sqrt{k} \\to \\infty$."
     },
     {
@@ -145,7 +145,7 @@
       "title": "The Answer",
       "summary": "Combined theorem `erdos_652_solved`: $\\alpha_k \\to \\infty$ as $k \\to \\infty$ (Mathialagan) AND $\\alpha_k < \\infty$ for each fixed $k$ (Elekes).",
       "startLine": 155,
-      "endLine": 166,
+      "endLine": 167,
       "mathContext": "$\\alpha_k \\to \\infty \\wedge (\\forall k,\\ \\alpha_k < \\infty)$. The answer is YES with rate $\\alpha_k = \\Omega(\\sqrt{k})$."
     },
     {
@@ -153,7 +153,7 @@
       "title": "Computational Examples",
       "summary": "Concrete constructions: regular $n$-gon center achieves $R = 1$ (extreme minimizer), and the $\\sqrt{n} \\times \\sqrt{n}$ integer grid has $R \\leq 2\\sqrt{n}$ for most points (near-extremal for distinct distances).",
       "startLine": 168,
-      "endLine": 181,
+      "endLine": 182,
       "mathContext": "Regular $n$-gon center: $R = 1$. Integer $\\sqrt{n} \\times \\sqrt{n}$ grid: $R \\sim \\sqrt{n}$ for most points."
     },
     {
@@ -161,7 +161,7 @@
       "title": "Related Problems",
       "summary": "Connection to the Erdős distinct distances problem: total distinct distances $\\Omega(n/\\sqrt{\\log n})$ (Guth-Katz 2015), and the sum bound $\\sum R(x_i) \\leq n^2$. Polynomial partitioning links both results.",
       "startLine": 183,
-      "endLine": 199,
+      "endLine": 200,
       "mathContext": "Guth-Katz: distinct distances $\\geq cn/\\sqrt{\\log n}$. Sum bound: $\\sum_i R(x_i) \\leq n(n-1)$ (each distance counted from both endpoints)."
     },
     {

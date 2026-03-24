@@ -27,7 +27,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 110,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Paul Erdős posed this problem in the 1970s–1980s as part of his systematic investigation of Diophantine equations involving products of consecutive integers. The foundational result in this area is the Erdős–Selfridge theorem (1975, Illinois J. Math.), which proved that a product of two or more consecutive positive integers is never a perfect power — settling a conjecture that had been open since the 19th century (partial results by Obláth, 1956). Problem #388 asks the next natural question: when can two *disjoint* blocks of consecutive integers have the same product? The connection to factorials $(m+1) \\cdots (m+k) = (m+k)!/m!$ means this is equivalent to asking when two factorial ratios can be equal. The threshold $k > 3$ is essential because for small $k$, parametric families of solutions exist. The problem also connects to the Brocard–Ramanujan problem ($n! + 1 = m^2$) and to Erdős Problems #363 and #931 on related product identities.",
@@ -51,35 +52,35 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Module docstring with background on the Erdős–Selfridge theorem (1975) and the Brocard–Ramanujan problem. Imports Mathlib for `Nat.Factorial.Basic`, `Finset.LocallyFinite`, and tactics. Opens `Finset` and `BigOperators`."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 38,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines `consecutiveProduct` as $\\prod_{i \\in [1,k]} (m+i)$, `EqualProductSolution` structure with $k_1, k_2 > 3$, disjointness, and equal products, and `equalProductSolutions` as the universal set of solutions."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 62,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "The finiteness conjecture: $\\exists N, \\forall \\text{sol}, m_2 \\leq N$, axiomatized as `erdos_388_conjecture`. This is the main open problem."
     },
     {
       "id": "generalized-version",
       "title": "Generalized Proportional Version",
       "startLine": 71,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Defines `ProportionalProductSolution` for $a \\cdot \\prod(m_1+i) = b \\cdot \\prod(m_2+j)$ with $k_1 > 2$, and axiomatizes the generalized finiteness conjecture for fixed nonzero $a, b$."
     },
     {
       "id": "erdos-selfridge",
       "title": "Erdős–Selfridge Theorem",
       "startLine": 92,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Axiomatizes the 1975 result: $\\prod_{i=1}^k (m+i) \\neq n^r$ for $k \\geq 2, r \\geq 2, m \\geq 1$. No product of consecutive positive integers is a perfect power."
     },
     {

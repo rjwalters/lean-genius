@@ -67,7 +67,8 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 263,
-    "assumptions": "Fully verified. 0 axioms, 0 sorries."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Hermann Minkowski (1896) proved the triangle inequality for Lp spaces: ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p. His proof used Hölder's inequality (1889), which generalized Cauchy-Schwarz to conjugate exponents 1/p + 1/q = 1. This created a beautiful hierarchy: CS → Hölder → Minkowski.\n\nFor the special case p=2 (L² spaces), a more direct proof exists using the inner product structure. The norm-squared identity ‖u+v‖² = ‖u‖² + 2⟪u,v⟫ + ‖v‖², combined with the CS bound ⟪u,v⟫ ≤ ‖u‖·‖v‖, gives ‖u+v‖² ≤ (‖u‖+‖v‖)², from which Minkowski follows by taking square roots.\n\nIn Mathlib, L² is formalized as an InnerProductSpace (Hilbert space), and `abs_real_inner_le_norm` provides the CS inequality. The Minkowski inequality for L² then follows from these two results.",
@@ -91,42 +92,42 @@
       "id": "header",
       "title": "Open Question and Proof Strategy",
       "startLine": 1,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Imports and module-level documentation: states the open question, presents two derivation paths (inner-product CS for p=2; Hölder for general p), and diagrams the mathematical hierarchy CS → Hölder → Minkowski."
     },
     {
       "id": "setup",
       "title": "Noncomputable Section and Namespace",
       "startLine": 59,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Declares the noncomputable section (required for real-valued analysis), opens MeasureTheory, and introduces the ambient measure space variable (α, μ)."
     },
     {
       "id": "l2-case",
       "title": "Section I: L² Minkowski from Inner-Product CS",
       "startLine": 67,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "minkowski_l2_from_CS and minkowski_inner_product_space: explicit Lean 4 derivation using norm_add_sq_real + abs_real_inner_le_norm + Real.sqrt_le_sqrt. Generalizes from Lp ℝ 2 μ to any real InnerProductSpace."
     },
     {
       "id": "general-lp",
       "title": "Sections II–III: General Lᵖ Minkowski via Hölder",
       "startLine": 109,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "minkowski_lp_from_holder and minkowski_lp_triangle: use Fact (1 ≤ p) to activate the NormedAddCommGroup instance on Lp ℝ p μ, reducing Minkowski to norm_add_le. Includes documentation of the eLpNorm_add_le (formerly snorm_add_le) API change."
     },
     {
       "id": "elpnorm-form",
       "title": "Section IV: Minkowski in eLpNorm Seminorm Form",
       "startLine": 165,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "minkowski_elpnorm_triangle: proves the Minkowski inequality directly for the eLpNorm seminorm (working with raw measurable functions rather than Lp equivalence classes) via eLpNorm_add_le."
     },
     {
       "id": "bochner-form",
       "title": "Section V: Full Two-Variable Minkowski via Bochner Integration",
       "startLine": 185,
-      "endLine": 232,
+      "endLine": 233,
       "summary": "minkowski_integral_bochner and minkowski_integral_l2_from_cs: prove ‖∫F(y)dν‖_{Lp} ≤ ∫‖F(y)‖_{Lp}dν using norm_integral_le_integral_norm. The L² version makes the CS provenance explicit in the proof chain."
     },
     {

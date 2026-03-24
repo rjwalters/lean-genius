@@ -37,7 +37,8 @@
       "Basic combinatorics and the pigeonhole principle",
       "Lovász Local Lemma (for understanding Hough's proof)"
     ],
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Covering systems were introduced by Erdős around 1950. He asked whether the minimum modulus of a covering system with distinct moduli can be made arbitrarily large, calling it 'perhaps my favourite problem' and offering a $1000 prize. Constructions pushed the minimum modulus steadily upward: 2 (Erdős 1950), 3 (Choi 1971), 20 (Krukenberg 1971), 36 (Gibson 2009), 40 (Nielsen 2009), and 42 (Owens 2014). Most experts expected the answer to be YES. In a stunning surprise, Hough (2015) proved the answer is NO — every covering system must contain a modulus $\\leq 10^{16}$ — using the Lovász Local Lemma and building on work of Filaseta, Ford, Konyagin, Pomerance, and Yu (2007). The bound was dramatically improved to $616{,}000$ by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (2022) using their novel 'distortion method', published in the Annals of Mathematics. The exact maximum possible minimum modulus remains unknown, lying between 42 and 616,000.",
@@ -65,84 +66,84 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib and opens `Set`/`Finset` namespaces for the `Erdos2` namespace.",
       "startLine": 28,
-      "endLine": 32
+      "endLine": 33
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines **ArithmeticProgression** $\\{x \\mid x \\equiv a \\pmod{n}\\}$ and the **CongruenceClass** structure bundling residue with modulus $n \\geq 2$.",
       "startLine": 34,
-      "endLine": 48
+      "endLine": 49
     },
     {
       "id": "covering-systems",
       "title": "Covering Systems",
       "summary": "Defines **CoveringSystem** as a nonempty list of congruence classes covering $\\mathbb{Z}$, with **hasDistinctModuli**, **moduli**, **minModulus**, and **hasMinModulusAtLeast** properties.",
       "startLine": 50,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "original-conjecture",
       "title": "Erdős' Original Conjecture (DISPROVED)",
       "summary": "States **erdos_original_conjecture**: $\\forall N,\\, \\exists$ a covering system with min modulus $\\geq N$. Erdős expected YES and offered \\$1000.",
       "startLine": 75,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "main-result",
       "title": "Main Result and Logical Implication",
       "summary": "States **erdos_2_solution** ($\\exists N$ bounding all systems) and proves **solution_implies_not_conjecture** via contradiction with `omega`.",
       "startLine": 86,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "hough-theorem",
       "title": "Hough's Theorem (2015)",
       "summary": "Axiomatizes **hough_bound** ($\\leq 10^{16}$) and proves **hough_implies_solution**: the existential witness $N = 10^{16}$ resolves the problem.",
       "startLine": 105,
-      "endLine": 121
+      "endLine": 122
     },
     {
       "id": "balister-theorem",
       "title": "Balister et al. (2022)",
       "summary": "Axiomatizes **balister_bound** ($\\leq 616{,}000$), a dramatic $10^{10}$-fold improvement using the **distortion method**.",
       "startLine": 123,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "owens-construction",
       "title": "Owens' Construction and Bounds Summary",
       "summary": "Axiomatizes **owens_construction** (min modulus $\\geq 42$) and proves **bounds_summary**: $42 \\leq M \\leq 616{,}000$.",
       "startLine": 139,
-      "endLine": 157
+      "endLine": 158
     },
     {
       "id": "simple-examples",
       "title": "Simple Covering Systems (PROVED)",
       "summary": "Constructs $\\{0 \\bmod 2, 1 \\bmod 2\\}$, proves **even_odd_cover** and **trivial_cover_min_modulus** — the simplest covering system with min modulus $2$.",
       "startLine": 159,
-      "endLine": 187
+      "endLine": 188
     },
     {
       "id": "properties",
       "title": "Properties of Covering Systems",
       "summary": "Proves basic structural lemmas: **covering_distinct_moduli**, **covering_nonempty**, and **covering_complete** — extracting structure fields as standalone theorems.",
       "startLine": 189,
-      "endLine": 203
+      "endLine": 204
     },
     {
       "id": "density-argument",
       "title": "Density Argument",
       "summary": "Defines **reciprocalSum** $= \\sum 1/n_i$ over $\\mathbb{Q}$ and axiomatizes **reciprocal_sum_ge_one**: every covering system has reciprocal sum $\\geq 1$, providing the key density constraint.",
       "startLine": 205,
-      "endLine": 219
+      "endLine": 220
     },
     {
       "id": "related-problems",
       "title": "Related Problems",
       "summary": "States **exact_maximum_min_modulus** (the sharp bound problem, currently $42 \\leq M \\leq 616{,}000$) and the **Erdős-Selfridge conjecture** (every covering system has an even modulus).",
       "startLine": 221,
-      "endLine": 237
+      "endLine": 264
     }
   ],
   "conclusion": {

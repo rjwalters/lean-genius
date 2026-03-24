@@ -91,7 +91,7 @@
       "id": "sumsets",
       "title": "Part I: Sumsets",
       "startLine": 30,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Defines **sumset A B** = {a + b : a ∈ A, b ∈ B} and **sumsetUpTo** for counting. The sumset (Minkowski sum) is the central object of additive combinatorics, typically studied for lower bounds — here the question is about upper bounds under coprimality.",
       "mathContext": "Sumset: $A + B = \\{a + b : a \\in A, b \\in B\\}$. $\\text{sumsetUpTo}(A, B, n) = (A+B) \\cap [1,n]$."
     },
@@ -99,7 +99,7 @@
       "id": "coprimality",
       "title": "Part II: Pairwise Coprimality",
       "startLine": 46,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "**IsPairwiseCoprime S**: gcd(x,y) = 1 for all distinct x, y ∈ S. **SumsetPairwiseCoprime** combines this with the sumset. The multiplicative constraint forces elements to partition the primes — each prime divides at most one element.",
       "mathContext": "$\\text{IsPairwiseCoprime}(S) \\iff \\forall x, y \\in S, x \\neq y \\implies \\gcd(x,y) = 1$. $\\text{SumsetIsCoprime}(A,B) \\iff \\text{IsPairwiseCoprime}(A+B)$."
     },
@@ -107,7 +107,7 @@
       "id": "counting",
       "title": "Part III: Counting Functions",
       "startLine": 61,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "**countingFn S n** counts elements of S in [1,n]. **IsInfiniteSet** requires unbounded counting. Both A and B must be infinite, ensuring the sumset grows — the question is how fast, given coprimality.",
       "mathContext": "$f_S(n) = |S \\cap [1,n]|$. The question: what is $\\max f_{A+B}(n)$ subject to $\\text{SumsetIsCoprime}(A,B)$ and $A, B$ infinite?"
     },
@@ -115,7 +115,7 @@
       "id": "problem",
       "title": "Part IV: The Density Problem (OPEN)",
       "startLine": 75,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "**ErdosProblem432**: existence of a non-trivial upper bound f(n) on the coprime sumset counting function. The trivial bound is n; the coprime-set bound gives π(n) + 1. The real question: does sumset structure force further thinning?",
       "mathContext": "Problem: $\\exists$ bound $f(n) = o(n)$ such that $|\\{s \\in A+B : s \\leq n\\}| \\leq f(n)$ for all pairwise coprime sumsets? What is the best $f$?"
     },
@@ -123,7 +123,7 @@
       "id": "observations",
       "title": "Part V: Structural Observations",
       "startLine": 100,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "**prime_divides_at_most_one**: factorizations are disjoint across A + B. **coprime_set_bound**: at most π(n) + 1 coprime elements in [1,n]. **ostmann_connection**: companion problem #431 on additive complements.",
       "mathContext": "Key: if $s_1 = a_1 + b_1$ and $s_2 = a_2 + b_2$ share a prime factor $p$, then $p \\mid (a_1 - a_2)$ or $p \\mid (b_1 - b_2)$. This constrains arithmetic progressions in $A$ and $B$."
     },

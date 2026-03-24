@@ -58,7 +58,8 @@
     "dateAdded": "2026-03-11",
     "axiomCount": 0,
     "lineCount": 628,
-    "assumptions": "Fully verified. 0 axioms, 0 sorries."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Quadratic reciprocity is Gauss's 'golden theorem' — he gave the first proof in 1796 and published six more over his lifetime. By 2026, over 240 proofs have been published, each illuminating different mathematical structures. Egor Ivanovich Zolotarev published his proof in 1872 as 'Nouvelle démonstration de la loi de réciprocité de Legendre,' introducing the idea that the Legendre symbol equals the signature of the multiplication-by-$a$ permutation on $(\\mathbb{Z}/p\\mathbb{Z})^\\times$. This was the first proof to connect QR to permutation theory rather than lattice-point counting (Eisenstein 1844) or Gauss sums (Gauss 1801). Georg Frobenius simplified Zolotarev's argument in 1914, and George Rousseau gave a further simplification in the American Mathematical Monthly (1991). The approach is considered the most algebraic elementary proof and generalizes naturally to higher reciprocity laws via Artin symbols and class field theory.",
@@ -81,84 +82,84 @@
       "id": "preamble",
       "title": "Preamble and Setup",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "File header describing Zolotarev's 1872 approach, references (Frobenius 1914, Rousseau 1991), and imports. Sets `maxHeartbeats 800000` for the complex character-theoretic proofs."
     },
     {
       "id": "multiplication-permutation",
       "title": "Part I: The Multiplication Permutation",
       "startLine": 36,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Defines $\\sigma_a(x) = ax$ as a permutation on $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ with inverse $\\sigma_{a^{-1}}$. Proves $\\sigma_{ab} = \\sigma_a \\circ \\sigma_b$ and packages into `mulPermHom`: a `MonoidHom` from units to permutations (the left regular representation)."
     },
     {
       "id": "sign-character",
       "title": "Part II: Sign of Multiplication Permutation",
       "startLine": 67,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Defines `signMulHom = sign ∘ mulPerm` as a character $(\\mathbb{Z}/p\\mathbb{Z})^\\times \\to \\{\\pm 1\\}$. Proves: $\\chi(a)^2 = 1$, multiplicativity $\\chi(ab) = \\chi(a)\\chi(b)$, and square detection $\\chi(b^2) = +1$."
     },
     {
       "id": "zolotarev-context",
       "title": "Part III: Zolotarev's Lemma Context",
       "startLine": 95,
-      "endLine": 133,
+      "endLine": 134,
       "summary": "Describes the proof strategy for Zolotarev's Lemma: find a generator, analyze cycle structure, show both $\\mathrm{sign} \\circ \\sigma$ and the Legendre character are the unique non-trivial quadratic character. Defines the `unitToInt` helper for bridging between units and the Legendre symbol API."
     },
     {
       "id": "cycle-analysis",
       "title": "Part XI: Proving Zolotarev's Lemma",
       "startLine": 135,
-      "endLine": 321,
+      "endLine": 322,
       "summary": "The proof of Zolotarev's Lemma via character uniqueness. Key steps: $\\sigma_g$ is a $(p-1)$-cycle with $\\mathrm{sign}(\\sigma_g) = -1$ for odd $p$; `signMulHom` is surjective; `legendreCharOnUnits` is built and shown surjective (non-residues exist via `FiniteField.exists_nonsquare`); character uniqueness forces equality; bridge lemma connects via `quadraticChar`."
     },
     {
       "id": "consequences",
       "title": "Part IV: Consequences",
       "startLine": 323,
-      "endLine": 347,
+      "endLine": 348,
       "summary": "Derives from Zolotarev: multiplicativity $\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right)\\left(\\frac{b}{p}\\right)$ (from sign multiplicativity), square detection $\\left(\\frac{b^2}{p}\\right) = 1$ (from $\\mathrm{sign}(\\sigma_b^2) = 1$), and sign order-2 property."
     },
     {
       "id": "qr-statement",
       "title": "Part V: QR via Zolotarev",
       "startLine": 349,
-      "endLine": 387,
+      "endLine": 388,
       "summary": "States QR: $\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$ (from Mathlib). Compares Eisenstein (lattice points) and Zolotarev (permutation signs) in `two_proof_methods`, bundling QR with Zolotarev's Lemma and sign multiplicativity."
     },
     {
       "id": "supplements",
       "title": "Part VI: First and Second Supplements",
       "startLine": 389,
-      "endLine": 408,
+      "endLine": 409,
       "summary": "First supplement: $-1 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\not\\equiv 3 \\pmod{4}$. Second supplement: $2 \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff p \\equiv \\pm 1 \\pmod{8}$. Both restated with permutation-theoretic motivation."
     },
     {
       "id": "examples",
       "title": "Part VII: Examples",
       "startLine": 410,
-      "endLine": 442,
+      "endLine": 443,
       "summary": "Five computational examples verified by `decide`: $(2/5) = -1$, $(2/7) = 1$, $(3/5) = (5/3)$, $(3/7) = -(7/3)$, $(5/13) = (13/5)$. Each example includes the permutation cycle structure explanation."
     },
     {
       "id": "cyclic-infrastructure",
       "title": "Part VIII: Cyclic Group Infrastructure",
       "startLine": 444,
-      "endLine": 482,
+      "endLine": 483,
       "summary": "Proves $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = p - 1$, that $p - 1$ is even for odd $p$, and that a primitive root (generator $g$ with $\\mathrm{ord}(g) = p - 1$) exists. Foundation for the character uniqueness argument."
     },
     {
       "id": "mulperm-analysis",
       "title": "Part IX: Multiplication Permutation Analysis",
       "startLine": 484,
-      "endLine": 509,
+      "endLine": 510,
       "summary": "Proves $\\sigma_a$ is a derangement for $a \\neq 1$ (no fixed points: $ax = x \\Rightarrow a = 1$) and that `mulPermHom` is injective ($\\sigma_a = \\sigma_b \\Rightarrow a = b$, faithful action)."
     },
     {
       "id": "character-uniqueness",
       "title": "Part X: Character Uniqueness",
       "startLine": 511,
-      "endLine": 577,
+      "endLine": 628,
       "summary": "The key algebraic reduction: on a cyclic group $G = \\langle g \\rangle$, any surjective homomorphism $\\varphi: G \\to \\{\\pm 1\\}$ satisfies $\\varphi(g) = -1$ (otherwise $\\varphi$ is trivial). Two such homomorphisms must agree. This forces `signMulHom = legendreCharOnUnits`, proving Zolotarev's Lemma."
     }
   ],

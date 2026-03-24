@@ -100,7 +100,8 @@
       "Topological convergence (Filter.Tendsto, nhds)",
       "Asymptotic notation (Θ, O, Ω)"
     ],
-    "lineCount": 489
+    "lineCount": 489,
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -132,7 +133,7 @@
       "title": "BFL Sandwich and Conjecture Implications",
       "summary": "Combines BFL bounds into a sandwich n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}. Proves the conjecture strictly implies BFL via constant-to-sub-polynomial reduction.",
       "startLine": 105,
-      "endLine": 183,
+      "endLine": 184,
       "mathContext": "Conjecture $\\Longrightarrow$ BFL: $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ implies $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ since $c, C$ are constants absorbed by $n^{\\pm \\varepsilon}$."
     },
     {
@@ -148,7 +149,7 @@
       "title": "Exact Exponent Characterization",
       "summary": "Proves 3/2 is the exact critical exponent via two theorems: `bfl_exponent_is_three_halves` ($f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$) and `bfl_lower_tight` ($f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$, by contradiction using the intermediate exponent trick).",
       "startLine": 220,
-      "endLine": 252,
+      "endLine": 253,
       "mathContext": "Critical exponent: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. Upper: substitute $\\varepsilon = \\alpha - 3/2$ in BFL. Lower: assume $f(n) \\leq n^\\beta$, take $\\varepsilon' = (3/2 - \\beta)/2$, get $n^{3/2-\\varepsilon'} \\leq f(n) \\leq n^\\beta$ with $3/2 - \\varepsilon' > \\beta$, contradiction."
     },
     {

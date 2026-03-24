@@ -88,7 +88,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 30,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines IntegerSequence structure and convergence condition.",
       "description": "An IntegerSequence is strictly increasing with all terms > 1. The convergence condition ∑(1/aᵢ) < ∞ ensures the Dirichlet series converges."
     },
@@ -96,7 +96,7 @@
       "id": "dirichlet-sum",
       "title": "The Generalized Dirichlet Sum",
       "startLine": 51,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Defines complex power a^(1+it) and the generalized Dirichlet sum.",
       "description": "The key object is 1 + ∑ₖ 1/aₖ^(1+it), where a^(1+it) = a · e^(it·log(a)) involves oscillating complex exponentials."
     },
@@ -104,7 +104,7 @@
       "id": "conjecture",
       "title": "The Erdős-Ingham Conjecture",
       "startLine": 76,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "States the original conjecture and the finite sequence variant.",
       "description": "The conjecture asks if the sum is nonzero for all t. The finite case remains open after Yip's work."
     },
@@ -112,7 +112,7 @@
       "id": "simplest-case",
       "title": "The {2, 3, 5} Case",
       "startLine": 97,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "The simplest case Erdős-Ingham couldn't resolve, connected to Four Exponentials.",
       "description": "Whether sum235(t) = 0 for some t is related to transcendence questions in number theory."
     },
@@ -120,7 +120,7 @@
       "id": "tauberian",
       "title": "Tauberian Equivalence",
       "startLine": 118,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "The connection to Tauberian theorems that motivated the problem.",
       "description": "Erdős-Ingham proved the no-zeros condition is equivalent to certain asymptotic implications for functional equations."
     },
@@ -128,7 +128,7 @@
       "id": "yip-counterexample",
       "title": "Yip's Counterexample (2025)",
       "startLine": 133,
-      "endLine": 166,
+      "endLine": 167,
       "summary": "Yip's theorem disproving the conjecture and the main result.",
       "description": "For any t ≠ 0, there exists a sequence where the sum equals zero. This proves ¬erdosInghamConjecture."
     },
@@ -136,7 +136,7 @@
       "id": "open-questions",
       "title": "What Remains Open",
       "startLine": 168,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "The finite sequence case and structure of counterexamples.",
       "description": "Whether the conjecture holds for finite sequences remains open. Yip's counterexamples depend on t."
     },
@@ -144,7 +144,7 @@
       "id": "properties",
       "title": "Properties of the Sum",
       "startLine": 190,
-      "endLine": 232,
+      "endLine": 233,
       "summary": "Special case t = 0, oscillatory behavior, and concrete examples.",
       "description": "At t = 0, the sum is real and positive. Includes geometricSequence example {2^n} with proven convergence."
     },

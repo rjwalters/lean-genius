@@ -168,7 +168,7 @@
       "title": "The Gap",
       "summary": "bound_gap_lower_exists, bound_gap_upper_universal (axioms packaging the bounds), exponent_gap (log log N < log N, sorry)",
       "startLine": 118,
-      "endLine": 138,
+      "endLine": 139,
       "mathContext": "$(\\log\\log N)^{1/2} \\ll (\\log N)^{1/2}$. At $N = 10^{10^{10}}$: ratio $\\approx 30{,}000$."
     },
     {
@@ -176,7 +176,7 @@
       "title": "Examples",
       "summary": "geometricSeq 2^k (proved lacunary), powersOf3 3^k (proved lacunary), fib (eventually lacunary, ratio → φ)",
       "startLine": 140,
-      "endLine": 172,
+      "endLine": 173,
       "mathContext": "$2^k$ ($q = 2$), $3^k$ ($q = 3$), $F_k$ ($q \\to \\varphi \\approx 1.618$). Proved via constructor + norm_num."
     },
     {
@@ -184,7 +184,7 @@
       "title": "Connection to Strong Law of Large Numbers",
       "summary": "slln_connection (axiom: lacunary sums bounded by C√N, the zeroth-order estimate from variance ~ N)",
       "startLine": 174,
-      "endLine": 184,
+      "endLine": 185,
       "mathContext": "$\\text{Var}(S_N) \\sim cN \\Rightarrow |S_N| \\leq C\\sqrt{N}$ a.e. (zeroth-order estimate from Chebyshev)."
     },
     {
@@ -192,7 +192,7 @@
       "title": "Erdős's Opinion",
       "summary": "ErdosRefinedConjecture (upper bound improvable to (log log N)^{1/2+ε}, matching lower bound)",
       "startLine": 186,
-      "endLine": 198,
+      "endLine": 199,
       "mathContext": "Erdős (1964): upper bound should be $o(N(\\log\\log N)^{1/2+\\varepsilon})$, matching the lower bound."
     },
     {
@@ -200,7 +200,7 @@
       "title": "Main Results",
       "summary": "erdos_995_statement (proved: ⟨lower_exists, upper_universal⟩), erdos_995_summary (= erdos_995_statement)",
       "startLine": 200,
-      "endLine": 228,
+      "endLine": 232,
       "mathContext": "`erdos_995_statement = ⟨bound_gap_lower_exists, bound_gap_upper_universal⟩`. Gap OPEN."
     }
   ],

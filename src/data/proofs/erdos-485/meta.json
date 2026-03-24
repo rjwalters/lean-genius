@@ -24,7 +24,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
     "lineCount": 281,
-    "assumptions": "2 axiom(s) and 10 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
+    "assumptions": "2 axiom(s) and 10 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The problem originates in the 1947 investigation by Rényi and Rédei on the multiplicative structure of polynomial term counts.  Erdős (1949) proved the upper bound f(k) < k^{1-c} for some c > 0, demonstrating that squaring can achieve genuinely sublinear term compression.  The conjecture that f(k) → ∞ is attributed to Erdős and Rényi, appearing as Problem 4.4 in Hayman's 'Research Problems in Function Theory' (1974).  Schinzel (1987) resolved the conjecture affirmatively, proving f(k) > (log log k)/log 2 via an algebraic height argument that bounds the number of coefficient cancellations by the algebraic complexity of the support set.  Schinzel and Zannier (2009) significantly improved this to f(k) ≫ log k, using the Skolem–Mahler–Lech theorem on zeros of linear recurrence sequences and techniques from the geometry of numbers.  The precise growth rate of f(k) remains unknown: the gap between the log k lower bound and the k^{1-c} upper bound is exponential.",
@@ -49,7 +50,7 @@
       "id": "term-count",
       "title": "Term Count Definitions",
       "startLine": 55,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Defines termCount(P) = P.support.card as the number of nonzero monomials, and hasTerms(P,k) as the predicate termCount(P) = k.",
       "mathContext": "The support $\\text{supp}(P) = \\{i \\in \\mathbb{N} : a_i \\neq 0\\}$ is a finite subset of $\\mathbb{N}$ for any polynomial $P \\in \\mathbb{Q}[x]$.  The term count $|\\text{supp}(P)|$ is the $\\ell^0$ pseudo-norm of the coefficient vector and serves as the fundamental sparsity measure."
     },
@@ -57,7 +58,7 @@
       "id": "function-f",
       "title": "The Function f(k)",
       "startLine": 70,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Defines f(k) = sInf {termCount(P²) : hasTerms(P,k)} as the minimum achievable term count after squaring a k-term polynomial.",
       "mathContext": "The use of $\\text{sInf}$ (infimum in $\\mathbb{N}$) is justified by well-ordering: the set is nonempty for $k \\geq 1$ (take any $k$-term polynomial), and every nonempty subset of $\\mathbb{N}$ has a minimum.  Equivalently, $f(k) = \\min\\{|S + S| - r(S) : S \\subseteq \\mathbb{N},\\, |S| = k\\}$ where $r(S)$ counts cancellations achievable by coefficient choice."
     },
@@ -65,7 +66,7 @@
       "id": "basic-properties",
       "title": "Basic Properties (Aristotle-proved)",
       "startLine": 79,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Fully proved: f(1) = 1 (monomial), f(2) = 3 (binomial), f(k) ≥ 1 for k ≥ 1. The f(2) = 3 proof constructs the witness (1+x) and shows every binomial square has support ⊇ {2d₁, d₁+d₂, 2d₂}.",
       "mathContext": "The proof of $f(2) = 3$ is the most substantial: for the lower bound, given $P = c_1 x^{d_1} + c_2 x^{d_2}$ with $d_1 < d_2$ and $c_1, c_2 \\neq 0$, the square $P^2 = c_1^2 x^{2d_1} + 2c_1 c_2 x^{d_1+d_2} + c_2^2 x^{2d_2}$ has three terms because (1) the exponents $2d_1 < d_1 + d_2 < 2d_2$ are strictly increasing, and (2) all coefficients are nonzero since $\\text{char}(\\mathbb{Q}) = 0$."
     },
@@ -89,7 +90,7 @@
       "id": "related",
       "title": "Related Concepts: Sparse and Lacunary Polynomials",
       "startLine": 194,
-      "endLine": 247,
+      "endLine": 281,
       "summary": "Generalization g(k,n) for P^n, sparse polynomial definition, product density axiom, lacunary polynomial definition, and lacunary square term lower bound.",
       "mathContext": "The section connects Problem 485 to the broader theory of sparse polynomials.  A polynomial is *sparse* if $|\\text{supp}(P)| \\leq c \\log(\\deg P + 1)$, and *lacunary* if consecutive exponents have gaps $\\geq 2$.  Lacunary polynomials satisfy $\\text{termCount}(P^2) \\geq 2k - 1$ (no cancellation possible when gaps are large enough), showing that the minimum $f(k)$ must be achieved by non-lacunary, specifically engineered polynomials."
     }

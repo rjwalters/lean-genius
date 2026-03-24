@@ -72,35 +72,35 @@
       "id": "imports",
       "title": "Imports and Documentation",
       "startLine": 1,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Module documentation explaining the problem, its history, and solution. Imports Mathlib graph theory modules."
     },
     {
       "id": "overview",
       "title": "Mathematical Overview",
       "startLine": 30,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Detailed explanation of the problem, key concepts (chromatic number, girth), and the function f(k,r)."
     },
     {
       "id": "axiom",
       "title": "Main Axiom",
       "startLine": 70,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "The Erdős-Hajnal-Rödl theorem stated as an axiom, with justification for why formalization is beyond current Mathlib."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 93,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Erdős Problem #108 stated as a theorem, derived directly from the axiom."
     },
     {
       "id": "special-case",
       "title": "Rödl's Theorem (r=4)",
       "startLine": 103,
-      "endLine": 127,
+      "endLine": 142,
       "summary": "The special case for r=4: triangle-free highly chromatic subgraphs. Historical note on Mycielski's construction."
     }
   ],

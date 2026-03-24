@@ -81,56 +81,56 @@
       "title": "Module Header and Imports",
       "summary": "Problem statement documentation with known results timeline, followed by imports from Mathlib (SimpleGraph.Basic, Nat.Basic, Real.Basic, Finset.Basic, Finset.Card) providing the foundational types for hypergraph formalization.",
       "startLine": 1,
-      "endLine": 34
+      "endLine": 35
     },
     {
       "id": "hypergraph-definitions",
       "title": "t-Uniform Hypergraphs",
       "summary": "Defines `UniformHypergraph V t` as a structure wrapping a `Finset (Finset V)` with a uniformity proof that every edge has cardinality $t$. Also defines `edgeCount` returning the number of hyperedges. This is the core data type for the entire formalization.",
       "startLine": 36,
-      "endLine": 54
+      "endLine": 55
     },
     {
       "id": "complete-multipartite",
       "title": "Complete Multipartite Hypergraphs $K_t(r)$",
       "summary": "Defines `containsKtr` via existence of $t$ pairwise-disjoint parts of size $r$ whose transversals are all hyperedges, and `isKtrFree` as its negation. The transversal formulation elegantly captures $K_t(r)$ containment using `Fin t → Finset V` for parts and `Fin t → V` for choice functions.",
       "startLine": 56,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "turan-number",
       "title": "The Hypergraph Turán Number",
       "summary": "Defines `exHypergraph t n r` as `sSup` over all edge counts of $K_t(r)$-free $t$-uniform hypergraphs on $n$ vertices. This noncomputable definition is the central quantity of the problem, generalizing the Zarankiewicz number to arbitrary uniformities.",
       "startLine": 89,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "upper-bound",
       "title": "Known Upper Bound (Erdős 1964)",
       "summary": "Defines `hypergraphExponent t r = t - r^{1-t}` and axiomatizes the Erdős (1964) upper bound: $\\mathrm{ex}_t(n, K_t(r)) \\leq C \\cdot n^{t - r^{1-t}}$. This generalizes the Kővári–Sós–Turán theorem from graphs to $t$-uniform hypergraphs via a double-counting argument on co-degrees.",
       "startLine": 105,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "lower-bound",
       "title": "Known Lower Bound (Weaker, Probabilistic)",
       "summary": "Axiomatizes Erdős's weaker lower bound $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - C r^{1-t}}$ with $C > 1$, obtained via the probabilistic method (random hypergraph + deletion). The gap $C > 1$ vs the conjectured $C = 1$ is the central open problem.",
       "startLine": 136,
-      "endLine": 155
+      "endLine": 156
     },
     {
       "id": "conjecture",
       "title": "The Conjecture (Erdős Problem #1158)",
       "summary": "Defines `erdos1158Conjecture t r` using the $\\varepsilon$-formulation: for every $\\varepsilon > 0$, there exist $c > 0$ and $N_0$ such that $\\mathrm{ex}_t(n, K_t(r)) \\geq c \\cdot n^{t - r^{1-t} - \\varepsilon}$ for $n \\geq N_0$. This is the standard way to formalize $o(1)$ asymptotic bounds in Lean.",
       "startLine": 157,
-      "endLine": 180
+      "endLine": 181
     },
     {
       "id": "graph-reduction",
       "title": "Reduction to the Graph Case ($t = 2$)",
       "summary": "Proves the exponent specializes correctly for graphs: `exponent_t2` proves $\\alpha(2, r) = 2 - 1/r$ using `Real.rpow_neg_one`, and `exponent_t2_r2`/`exponent_t2_r3` compute the exact values $3/2$ and $5/3$. This connects Problem #1158 to Problem #714 (Zarankiewicz).",
       "startLine": 182,
-      "endLine": 215
+      "endLine": 216
     },
     {
       "id": "known-cases",

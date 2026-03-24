@@ -77,42 +77,42 @@
       "id": "divisibility",
       "title": "Divisibility Condition",
       "startLine": 37,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Defines $(n-i) \\mid \\binom{n}{k}$ predicate, counting function $|\\{i : (n-i) \\mid \\binom{n}{k}\\}|$, and `AllButOneDivide` requiring count $\\geq k-1$"
     },
     {
       "id": "threshold",
       "title": "The Threshold $n_k$",
       "startLine": 57,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "$n_k = \\min\\{n \\geq 2k : \\text{AllButOneDivide}(n, k)\\}$ — the extremal function whose growth rate is the open question"
     },
     {
       "id": "erdos-selfridge",
       "title": "Erdős-Selfridge Result",
       "startLine": 67,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Axiom: $\\forall k \\geq 2,\\, \\forall n \\geq 2k : \\text{divisibilityCount}(n,k) < k$ — full divisibility is impossible"
     },
     {
       "id": "small-values",
       "title": "Known Small Values",
       "startLine": 82,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Axioms for $n_2 = 4$, $n_3 = 6$, $n_4 = 9$, $n_5 = 12$ with concrete $\\binom{n}{k}$ verifications"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 105,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Monier: $n_k \\leq k!$; Cambie: $n_k \\leq k \\cdot \\text{lcm}(2,\\ldots,k-1) \\leq e^{(1+o(1))k}$; open: $\\exists C,\\, n_k \\leq k^C$?"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 133,
-      "endLine": 155,
+      "endLine": 159,
       "summary": "`erdos_1063_summary`: combines Erdős-Selfridge nondivisibility with Monier bound via `exact ⟨..., ...⟩`"
     }
   ],

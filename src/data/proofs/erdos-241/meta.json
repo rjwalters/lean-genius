@@ -21,7 +21,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "lineCount": 132,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "B₃ sets emerged from the study of Sidon sets (B₂ sets), initiated by Simon Sidon in the 1930s and developed by Erdős and Turán (1941). The natural generalization to B₃ sets—where all ordered triple sums are distinct—was studied by R.C. Bose and S. Chowla. In their landmark 1962 paper 'Theorems in the additive theory of numbers,' Bose and Chowla constructed explicit B₃ sets of size $(1+o(1))N^{1/3}$ using the multiplicative structure of finite fields $\\mathbb{F}_{p^3}$, specifically exploiting the injectivity of the cubing map. This algebraic construction parallels Singer's (1938) perfect difference set method for Sidon sets. The upper bound remained at the trivial $O(N^{1/3})$ for decades until Ben Green's 2001 breakthrough 'The number of squares and $B_h[g]$ sets,' which refined the constant to $(7/2)^{1/3} \\approx 1.519$ using additive energy techniques. The persistent gap between the constants 1 and 1.519 represents one of the central open problems in additive combinatorics. The problem carries a $100 prize from Erdős and appears as Problem C11 in Guy's 'Unsolved Problems in Number Theory.' It is closely related to questions in coding theory, where B₃ sets correspond to certain error-correcting codes.",
@@ -45,42 +46,42 @@
       "id": "b3-sets",
       "title": "B₃ Sets",
       "startLine": 22,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Defines threeSums (the image of ordered triples under addition) and IsB3 (injectivity of the sum map on ordered triples from A). The definition requires $a_1 + b_1 + c_1 = a_2 + b_2 + c_2$ with ordering constraints to imply equality of triples."
     },
     {
       "id": "max-b3-size",
       "title": "Maximum B₃ Subset Size",
       "startLine": 41,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "Defines maxB3Size N as the supremum of cardinalities of B₃ subsets of {1,...,N}, using Finset.powerset and filter over the B₃ predicate. This is the extremal function $f(N)$ central to the problem."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 49,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "States ErdosProblem241: for all $\\varepsilon > 0$, eventually $(1-\\varepsilon)N^{1/3} \\le f(N) \\le (1+\\varepsilon)N^{1/3}$. This $\\varepsilon$-$N_0$ formulation captures $f(N) \\sim N^{1/3}$ precisely."
     },
     {
       "id": "bose-chowla",
       "title": "The Bose–Chowla Lower Bound",
       "startLine": 63,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Axiomatizes the 1962 lower bound: $f(N) \\ge (1-\\varepsilon)N^{1/3}$ for all $N \\ge N_0(\\varepsilon)$. This is one half of the conjecture and is known to be true via explicit finite field constructions."
     },
     {
       "id": "green-bound",
       "title": "Green's Upper Bound",
       "startLine": 74,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Axiomatizes Green's 2001 result: $f(N) \\le ((7/2)^{1/3}+\\varepsilon)N^{1/3}$ for large $N$. The constant $(7/2)^{1/3} \\approx 1.519$ is the best known and the gap to 1 is the open problem."
     },
     {
       "id": "generalized-bh",
       "title": "Generalized Bₕ Sets",
       "startLine": 85,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Defines IsBh for arbitrary $h \\ge 2$ (using subset-sum injectivity), maxBhSize, and the general Bose–Chowla conjecture $f_h(N) \\sim N^{1/h}$. Notes $h=2$ (Sidon sets) is resolved and the lower bound holds for all $h$."
     },
     {

@@ -57,7 +57,8 @@
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "lineCount": 160,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The minimal polynomial of a linear operator was introduced by Frobenius in the 1870s as the monic polynomial of smallest degree annihilating the operator. Its relationship to the characteristic polynomial is one of the central structural results in linear algebra. The Cayley–Hamilton theorem (1858) shows the characteristic polynomial annihilates the matrix; by the defining property of the minimal polynomial, this immediately yields the divisibility relation $\\mu_M \\mid \\chi_M$.\n\nThe concept of non-derogatory matrices — those where $\\deg(\\mu_M) = \\deg(\\chi_M)$ — is important in rational canonical form theory. A matrix is non-derogatory if and only if its rational canonical form has a single companion block, equivalently if its centralizer consists only of polynomials in $M$. Companion matrices, introduced by Frobenius, are the canonical examples: the companion matrix of a monic polynomial $p$ has $p$ as both its minimal and characteristic polynomial.\n\nThe computational perspective on polynomial reduction modulo $\\mu_M$ vs $\\chi_M$ connects to efficient matrix function evaluation. When a matrix is derogatory ($\\deg(\\mu_M) < n$), reducing modulo the minimal polynomial gives shorter polynomial representations, which matters for numerical computation and symbolic algebra.",
@@ -80,35 +81,35 @@
       "id": "header",
       "title": "Introduction and Imports",
       "startLine": 1,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Header documentation describing the open question about minpoly vs charpoly reduction, key results to be formalized, and imports from Mathlib's Charpoly, Minpoly, and Polynomial modules."
     },
     {
       "id": "divisibility",
       "title": "Part I: Minpoly Divides Charpoly",
       "startLine": 34,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Two fully proved theorems: minpoly divides charpoly (via Cayley-Hamilton + minimality) and the degree comparison deg(minpoly) ≤ deg(charpoly)."
     },
     {
       "id": "reduction-efficiency",
       "title": "Part II: Reduction Efficiency Comparison",
       "startLine": 53,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Two fully proved theorems: the degree bound for minpoly remainder (degree < deg(minpoly) or zero) and the evaluation equivalence (reducing mod minpoly preserves matrix evaluation)."
     },
     {
       "id": "non-derogatory",
       "title": "Part III: Non-Derogatory Matrices",
       "startLine": 76,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "Defines IsNonDerogatory via degree equality, states that non-derogatory matrices have equally efficient reductions (sorry), and claims companion matrices are non-derogatory (sorry)."
     },
     {
       "id": "summary",
       "title": "Summary and Status",
       "startLine": 102,
-      "endLine": 118,
+      "endLine": 160,
       "summary": "Lists all 6 theorems with proof status: 4 fully proved, 2 with sorries (nonderogatory equivalence and companion matrix existence)."
     }
   ],

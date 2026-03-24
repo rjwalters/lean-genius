@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "lineCount": 212,
-    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -36,42 +37,42 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 26,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "IsTriangleFree wrapping CliqueFree 3, and triangleFreeMaxChi computing f(n) = sup{χ(G)} via sSup."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 40,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "f(n) ≤ n for all n (identity coloring), f(0) = 0, f(1) ≤ 1, f(n) ≥ 1 for n ≥ 1 (one sorry in empty graph chromatic number)."
     },
     {
       "id": "ramsey-duality",
       "title": "Ramsey Duality",
       "startLine": 109,
-      "endLine": 125,
+      "endLine": 126,
       "summary": "f(n) ≥ k iff R(3,k) ≤ n. Kim's R(3,k) = Θ(k²/log k) axiomatized with constants c₁, c₂."
     },
     {
       "id": "asymptotic-bounds",
       "title": "Main Asymptotic Bounds",
       "startLine": 127,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Lower bound (HHKP 2025): f(n) ≥ (1−o(1))√(n/log n). Upper bound (DI 2022): f(n) ≤ (2+o(1))√(n/log n). Exact constant open."
     },
     {
       "id": "edge-variant",
       "title": "Edge Variant",
       "startLine": 152,
-      "endLine": 174,
+      "endLine": 175,
       "summary": "g(m) = max χ over triangle-free graphs with m edges. Θ((m/(log m)²)^{1/3}) with upper constant 3^{5/3}."
     },
     {
       "id": "mycielski",
       "title": "Mycielski Construction",
       "startLine": 176,
-      "endLine": 201,
+      "endLine": 202,
       "summary": "Classical triangle-free graphs M_k with χ(M_k) = k on 3·2^{k−2} − 1 vertices. Gives weak f(n) ≥ Ω(log n) bound."
     },
     {

@@ -80,49 +80,49 @@
       "id": "fourier-partial-sums",
       "title": "Fourier Partial Sums",
       "startLine": 55,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Defines the N-th Fourier partial sum $S_N f(x) = \\sum_{n=-N}^{N} c_n(f) \\cdot e_n(x)$. Proves the base case (N=0) and continuity of partial sums."
     },
     {
       "id": "dirichlet-kernel",
       "title": "The Dirichlet Kernel",
       "startLine": 83,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "Defines the Dirichlet kernel $D_N(t) = \\sum_{n=-N}^{N} e_n(t)$ and proves key properties: continuity, cardinality (2N+1 terms), value at zero ($D_N(0) = 2N+1$), and conjugate symmetry ($D_N(-t) = \\overline{D_N(t)}$)."
     },
     {
       "id": "convolution-representation",
       "title": "Convolution Representation",
       "startLine": 146,
-      "endLine": 174,
+      "endLine": 175,
       "summary": "Axiomatizes the convolution identity $S_N f(x) = \\int f(t) D_N(x-t)\\,dt$ and the normalization $\\int D_N = 1$. These connect partial sums to kernel analysis."
     },
     {
       "id": "bounded-variation",
       "title": "Bounded Variation on the Circle",
       "startLine": 176,
-      "endLine": 221,
+      "endLine": 222,
       "summary": "Defines `HasBoundedVariationCircle` via Mathlib's `BoundedVariationOn` on [0,T]. Defines one-sided limits `rightLimit`/`leftLimit` using `limUnder` with `nhdsWithin`. Axiomatizes existence of BV limits."
     },
     {
       "id": "riemann-lebesgue",
       "title": "Riemann-Lebesgue Lemma (BV Version)",
       "startLine": 223,
-      "endLine": 282,
+      "endLine": 283,
       "summary": "Axiomatizes the Riemann-Lebesgue lemma for BV functions: $\\int g(t) e^{i\\lambda t}\\,dt \\to 0$ as $\\lambda \\to \\infty$. Also axiomatizes the Dirichlet kernel localization lemma that combines integral splitting with Riemann-Lebesgue."
     },
     {
       "id": "main-theorem",
       "title": "Dirichlet Convergence Theorem",
       "startLine": 284,
-      "endLine": 327,
+      "endLine": 328,
       "summary": "**The main result** (PROVED): $S_N f(x_0) \\to (f(x_0^+) + f(x_0^-))/2$ for BV functions. The proof chains: obtain one-sided limits, identify with rightLimit/leftLimit via uniqueness, rewrite as convolution, apply localization."
     },
     {
       "id": "consequences",
       "title": "Consequences and Special Cases",
       "startLine": 329,
-      "endLine": 409,
+      "endLine": 731,
       "summary": "Proves corollaries: convergence to $f(x_0)$ at continuity points (`dirichlet_at_continuity_point`), everywhere convergence for continuous BV functions (`dirichlet_continuous_BV`), and Lipschitz/monotone BV connections."
     }
   ],

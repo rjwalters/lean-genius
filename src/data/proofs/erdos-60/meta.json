@@ -96,63 +96,63 @@
       "title": "Problem Header and Aristotle Notes",
       "summary": "File header with Aristotle proof annotations. Aristotle proved `conjecture_implies_two_copies`: the $\\Omega(n^{1/2})$ conjecture implies the two-copies conjecture.",
       "startLine": 1,
-      "endLine": 34
+      "endLine": 35
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines `IsC4Copy` (4-cycle as ordered 4-tuple with distinctness and adjacency), `C4Copies` (set of all labeled copies), and `countC4` (unlabeled count = labeled / $|\\text{Aut}(C_4)| = 8$).",
       "startLine": 36,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "turan",
       "title": "Turán Number for $C_4$",
       "summary": "Axiomatizes $\\text{ex}(n; C_4)$ and its asymptotics: $\\text{ex}(n; C_4) = \\frac{1}{2}(1+o(1))n^{3/2}$ via Kővári-Sós-Turán (upper) and Reiman polarity graphs (lower).",
       "startLine": 62,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "supersaturation",
       "title": "Supersaturation Threshold",
       "summary": "Defines `ExceedsTuranC4`: the predicate $|E(G)| > \\text{ex}(n; C_4)$ that triggers the supersaturation question.",
       "startLine": 88,
-      "endLine": 92
+      "endLine": 93
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "summary": "Formalizes Erdős Problem 60: $\\exists c > 0$ such that $|E(G)| > \\text{ex}(n; C_4) \\Rightarrow \\text{countC4}(G) \\geq c \\cdot n^{1/2}$. The $\\Omega(n^{1/2})$ bound is conjectured to be tight.",
       "startLine": 94,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "partial-results",
       "title": "Partial Results: He-Ma-Yang (2021)",
       "summary": "Defines projective plane orders ($n = q^2+q+1$) and axiomatizes the He-Ma-Yang theorem: the conjecture holds for even prime power $q$, exploiting the structure of symplectic polarities.",
       "startLine": 109,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "weaker-results",
       "title": "Weaker Results and Open Gaps",
       "summary": "Axiomatizes $\\geq 1$ copy (trivial) and states the two-copies conjecture: even proving $\\geq 2$ copies from one extra edge remains open.",
       "startLine": 132,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "general-supersaturation",
       "title": "General Supersaturation Theorem",
       "summary": "Axiomatizes the Erdős-Simonovits supersaturation theorem: exceeding $\\text{ex}(n; C_4)$ by factor $(1+\\varepsilon)$ forces $\\geq \\delta \\cdot n^2$ copies, giving a weaker but general bound.",
       "startLine": 149,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "extremal-graphs",
       "title": "Extremal Graphs: Polarity Constructions",
       "summary": "Axiomatizes the existence of polarity graphs from $\\text{PG}(2,q)$ that are $C_4$-free and achieve $\\text{ex}(n; C_4)$ exactly for $n = q^2+q+1$.",
       "startLine": 167,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "aristotle-proofs",

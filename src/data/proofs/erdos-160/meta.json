@@ -23,56 +23,57 @@
     ],
     "axiomCount": 7,
     "lineCount": 225,
-    "assumptions": "7 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "7 axiom(s) and 3 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 21,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Imports Mathlib libraries for natural numbers, finite sets, real numbers, and tactics. Opens `Finset` and creates the `Erdos160` namespace."
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 31,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Defines 4-APs (`Is4AP`), color counting (`colorCount4`), the 3-diversity condition (`Is3DiverseOn4AP`), and the achievability predicate (`Achievable`)."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 59,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Proves trivial achievability for $n = 0$ and $n \\le 3$, color monotonicity, and $n$-monotonicity. Establishes that achievability is well-behaved."
     },
     {
       "id": "h-function",
       "title": "The Function h(N)",
       "startLine": 90,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "Axiomatizes $h(N)$ as the minimum colors for 3-diverse coloring. Proves $h(N) \\ge 1$ for $N \\ge 4$, monotonicity, $h(0) = 0$, $h(N) \\le 1$ for $N \\le 3$, and $h(N) \\le N$ via the identity coloring."
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 158,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Axiomatizes $h(N) \\le C N^{2/3}$ (LeechLattice) and the improved $h(N) \\le C N^{\\log 3/\\log 22 + \\varepsilon}$ (Hunter, $\\approx N^{0.356}$)."
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "startLine": 174,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "Axiomatizes $h(N) \\ge \\exp(c(\\log N)^{1/9})$ via Hunter's reduction from 3-AP-free set bounds (Kelley–Meka 2023)."
     },
     {
       "id": "consequences",
       "title": "Consequences",
       "startLine": 185,
-      "endLine": 203,
+      "endLine": 204,
       "summary": "Derives sublinear growth, unboundedness of $h$, and the numerical fact $\\log 3/\\log 22 < 2/3$ confirming Hunter improves LeechLattice."
     },
     {

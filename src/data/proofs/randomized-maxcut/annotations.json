@@ -14,7 +14,8 @@
       "Mathlib",
       "SimpleGraph",
       "Finset"
-    ]
+    ],
+    "mathContext": "We import key Mathlib modules: `Finset."
   },
   {
     "id": "ann-maxcut-theorem2",
@@ -91,7 +92,8 @@
       "quotient induction",
       "Sym2",
       "diagonal"
-    ]
+    ],
+    "mathContext": "To prove something about an unordered pair $e$, we use `induction e using Sym2."
   },
   {
     "id": "ann-maxcut-theorem4",

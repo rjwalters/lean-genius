@@ -136,56 +136,56 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib and opens the `Set`, `SimpleGraph`, and `Finset` namespaces. Declares universe-polymorphic vertex type V with `Fintype` and `DecidableEq` instances.",
       "startLine": 25,
-      "endLine": 31
+      "endLine": 32
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "Defines `Fin.succMod` for cyclic adjacency in ℤ/kℤ, `ContainsCycleLength G k` (injective k-cycle embedding), `minDegree` (via `Finset.inf'`), and `HasMinDegree G d` (δ(G) ≥ d). These are the fundamental building blocks for stating cycle containment under degree constraints.",
       "startLine": 33,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "powers-of-two",
       "title": "Powers of Two",
       "summary": "Defines `PowersOfTwoAtLeast4` = {2^k : k ≥ 2} = {4, 8, 16, ...}. Proves 2^k ≥ 4 for k ≥ 2 (valid cycle length) and 2^k is even (connecting to Liu-Montgomery's even cycle result).",
       "startLine": 53,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN, $1000)",
       "summary": "States `erdos_64_conjecture`: every finite graph with δ(G) ≥ 3 contains C_{2^k} for some k ≥ 2. Universally quantified over all finite types W with simple graphs.",
       "startLine": 69,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "erdos-gyarfas",
       "title": "Erdős-Gyárfás Conjecture (Disproved)",
       "summary": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ ≥ r avoiding all 2^k-cycles) and axiomatizes `liu_montgomery_threshold` disproving it for large r.",
       "startLine": 81,
-      "endLine": 105
+      "endLine": 106
     },
     {
       "id": "partial-results",
       "title": "Partial Results: Even Cycle Ranges",
       "summary": "Axiomatizes Liu-Montgomery's stronger result: δ(G) ≥ D implies all even cycle lengths in [4, L] for some L ≥ 16. Proves `range_contains_power_of_two`: [4, L] always contains 2^2 = 4.",
       "startLine": 107,
-      "endLine": 131
+      "endLine": 132
     },
     {
       "id": "infinite-counterexample",
       "title": "Infinite Counterexample",
       "summary": "Defines `InfGraph` (infinite simple graph without Fintype), `IsRegular`, `ContainsCycleLength`, and `IsTree`. Axiomatizes the infinite 3-regular tree showing finiteness is essential.",
       "startLine": 133,
-      "endLine": 160
+      "endLine": 161
     },
     {
       "id": "degree-3",
       "title": "Degree 3 Case (Open)",
       "summary": "Restates the conjecture as `degree_3_conjecture` with δ(G) = 3 explicitly. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous.",
       "startLine": 162,
-      "endLine": 174
+      "endLine": 175
     },
     {
       "id": "known-results",
@@ -199,7 +199,7 @@
       "title": "Probabilistic Bounds",
       "summary": "Axiomatizes that random graphs G(n, c/n) have δ ≥ 3 and contain C_{2^k} for k ≤ 10, providing probabilistic evidence that counterexamples must be highly structured.",
       "startLine": 199,
-      "endLine": 210
+      "endLine": 236
     }
   ],
   "conclusion": {

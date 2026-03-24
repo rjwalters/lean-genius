@@ -56,7 +56,8 @@
     ],
     "axiomCount": 14,
     "lineCount": 113,
-    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Herzog, and Piranian posed this problem in 1958, asking which monic polynomial of degree $n$ produces the longest lemniscate $\\{z : |p(z)| = 1\\}$. The conjectured answer $p(z) = z^n - 1$ has $n$-fold dihedral symmetry and lemniscate length $\\sim 2n$. Dolzhenko (1961) gave the first bound $f(n) \\leq 4\\pi n$ using argument-variation techniques. Danchenko (2007) halved this to $2\\pi n$ via potential theory. The breakthrough came from Fryntov and Nazarov (2009), who proved both local optimality of $z^n - 1$ (negative-definite Hessian of the length functional) and the near-optimal bound $f(n) \\leq 2n + O(n^{7/8})$, showing $f(n)/n \\to 2$. Eremenko and Hayman (1999) resolved the case $n = 2$ using conformal mapping techniques specific to the Bernoulli lemniscate. Terence Tao (2025) achieved the major breakthrough, proving $z^n - 1$ is the unique global maximum for all sufficiently large $n$, reducing the full conjecture to finitely many small cases. The problem carries a $\\$250$ Erdős bounty and remains open for all $n$.",
@@ -81,28 +82,28 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 27,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines `MonicPoly` as a structure with coefficient function $\\text{Fin}(n) \\to \\mathbb{C}$, axiomatizes `lemniscateLength` $L(p) = \\oint_{|p(z)|=1} |dz|$, defines `maxLemniscateLength` $f(n) = \\sup_p L(p)$, and constructs `extremalPoly` $z^n - 1$ with $a_0 = -1$, $a_k = 0$ for $k \\geq 1$."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 47,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Three progressively tighter upper bounds: Dolzhenko's $f(n) \\leq 4\\pi n$ (1961, argument variation), Danchenko's $f(n) \\leq 2\\pi n$ (2007, potential theory), and Fryntov-Nazarov's $f(n) \\leq 2n + C \\cdot n^{7/8}$ (2009, variational methods). Each is axiomatized."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound and Asymptotic",
       "startLine": 62,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "The extremal polynomial $z^n - 1$ gives $f(n) \\geq L(z^n - 1) > 0$. The asymptotic $f(n)/n \\to 2$ follows from combining the lower bound $L(z^n - 1) \\sim 2n$ with Fryntov-Nazarov's upper bound $f(n) \\leq 2n + o(n)$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture and Partial Results",
       "startLine": 74,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "States `erdos114Conjecture`: $\\forall n \\geq 1, \\forall p \\in \\text{MonicPoly}(n): L(p) \\leq L(z^n - 1)$. Axiomatizes Fryntov-Nazarov local optimality ($z^n - 1$ is a strict local max), Tao's large-$n$ global optimality ($\\exists N_0: n \\geq N_0 \\implies$ conjecture holds), and Eremenko-Hayman's $n = 2$ resolution."
     },
     {
