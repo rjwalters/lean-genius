@@ -58,20 +58,6 @@
     "axiomCount": 4,
     "assumptions": "optimalCoveringBound (existence of an optimal constant t(r) for all r-uniform hypergraphs satisfying the local condition), eht_lower_bound (Erdos-Hajnal-Tuza 1991 lower bound: t(r) >= (3/16)r + 7/8 via explicit constructions), eht_upper_bound (Erdos-Hajnal-Tuza 1991 upper bound: t(r) <= (1/5)r via counting arguments), fractionalCoveringNumber (LP relaxation of covering number allowing fractional vertex weights)",
     "lineCount": 286,
-    "leanFile": {
-      "lineCount": 286,
-      "structureCount": 0,
-      "axiomCount": 4,
-      "theoremCount": 5,
-      "lemmaCount": 0,
-      "defCount": 10,
-      "imports": [
-        "Mathlib.Data.Nat.Basic",
-        "Mathlib.Data.Set.Basic",
-        "Mathlib.Data.Finset.Basic",
-        "Mathlib.Data.Real.Basic"
-      ]
-    },
     "relatedProblems": [
       {
         "id": "erdos-610",
