@@ -219,6 +219,41 @@
       "id": "fermat-two-squares",
       "relationship": "related",
       "description": "Wilson's theorem and Fermat's two-squares theorem both concern primes modulo 4. Wilson's theorem shows $(p-1)! \\equiv -1"
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "extends",
+      "description": "The existence of primitive roots (generators of $(\\mathbb{Z}/p\\mathbb{Z})^*$) is closely related to Wilson's theorem. If"
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Both concern the distribution of primes. Bertrand's postulate (a prime exists between $n$ and $2n$) and Wilson's theorem"
+    },
+    {
+      "id": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "The Factor Theorem's polynomial-root connection parallels Wilson's arithmetic-root connection: the Factor Theorem says $"
+    },
+    {
+      "id": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity ($\\gcd(a,n) = 1 \\Rightarrow \\exists a^{-1}$ with $a \\cdot a^{-1} \\equiv 1 \\pmod{n}$) provides the mult"
+    },
+    {
+      "id": "sylow-theorems",
+      "relationship": "related",
+      "description": "Sylow's theorems describe subgroup structure of finite groups. Applied to $(\\mathbb{Z}/p\\mathbb{Z})^*$ (cyclic of order "
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Unique prime factorization connects to Wilson's backward direction: if $n$ is composite with smallest prime factor $p \\l"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both Wilson's theorem and Abel-Ruffini analyze the structure of symmetric/cyclic groups. Wilson's theorem shows $(\\mathb"
     }
   ],
   "leanFile": {
