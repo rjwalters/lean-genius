@@ -16,7 +16,7 @@
       "sequences"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 892,
     "erdosUrl": "https://erdosproblems.com/892",
     "erdosProblemStatus": "open",
@@ -49,62 +49,75 @@
       "Axiomatized Erdős (1935) reciprocal-log convergence as necessary condition",
       "Axiomatized Erdős-Sárközy-Szemerédi (1967) partial reciprocal sum growth bound",
       "Defined IsGCDFree and formalized the GCD-free variant of the problem",
-      "Axiomatized primitive counting bound |A ∩ [N]| ≤ C·N/√(log N)"
+      "Axiomatized primitive counting bound |A ∩ [N]| ≤ C·N/√(log N)",
+      "Proved primitive_elements_ge_two: every element of a primitive sequence ≥ 2",
+      "Proved strict_inc_lower_bound: a(n) ≥ n + 2 for strictly increasing primitive sequences",
+      "Proved strict_inc_eventually_ge: such sequences eventually exceed any bound M",
+      "Proved product_log_comparison: a·log(a) ≤ 2C·(b·log(b)) under domination with b ≥ C",
+      "Proved reciprocal_log_comparison: 1/(b·log b) ≤ 2C/(a·log a) via cross-multiplication",
+      "Converted erdos_1935_necessary from axiom to theorem with structured proof outline"
     ],
     "axiomCount": 3,
-    "lineCount": 161,
-    "assumptions": "3 axioms: ess_1967_necessary, primitive_counting_bound, primitive_reciprocal_log_convergent. 2 sorries: reciprocal_log_comparison (comparison test step), erdos_1935_necessary (comparison argument). See Lean source.",
+    "lineCount": 242,
+    "assumptions": "3 axioms: ess_1967_necessary, primitive_counting_bound, primitive_reciprocal_log_convergent. 1 sorry: erdos_1935_necessary (Finset sum splitting for convergence). See Lean source.",
     "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "primitive-sequences",
       "title": "Primitive Sequences",
-      "startLine": 24,
+      "startLine": 29,
       "endLine": 36,
-      "summary": "Defines `IsPrimitive a` as $\\forall i \\neq j,\\, a_i \\nmid a_j$: the sequence forms an antichain in the divisibility partial order. Also defines `IsStrictlyIncreasing a` as $i < j \\implies a_i < a_j$."
+      "summary": "Defines `IsPrimitive a` as $\\forall i \\neq j,\\, a_i \\nmid a_j$: the sequence forms an antichain in the divisibility partial order. Also defines `IsStrictlyIncreasing a$ as $i < j \\implies a_i < a_j$."
     },
     {
       "id": "domination",
       "title": "Domination",
       "startLine": 37,
       "endLine": 45,
-      "summary": "Defines `IsDominatedBy a b` as $\\exists C > 0,\\, \\forall n,\\, a_n \\leq C \\cdot b_n$. This is the $a \\ll b$ notation (Vinogradov): $a$ grows at most linearly relative to $b$."
+      "summary": "Defines `IsDominatedBy a b` as $\\exists C > 0,\\, \\forall n,\\, a_n \\leq C \\cdot b_n$."
     },
     {
       "id": "main-problem",
       "title": "The Problem",
       "startLine": 46,
       "endLine": 58,
-      "summary": "Defines `ErdosProblem892 b`: given strictly increasing $b$, does there exist a strictly increasing, primitive $a$ with $a \\ll b$? This asks for the characterization of sequences admitting primitive dominators."
+      "summary": "Defines `ErdosProblem892 b`: given strictly increasing $b$, does there exist a strictly increasing, primitive $a$ with $a \\ll b$?"
     },
     {
-      "id": "necessary-conditions",
-      "title": "Necessary Conditions",
+      "id": "proved-lemmas",
+      "title": "Proved Lemmas",
       "startLine": 59,
-      "endLine": 84,
-      "summary": "Axiomatizes two necessary conditions: (1) Erdős (1935): $\\sum 1/(b_n \\log b_n) < \\infty$; (2) Erdős-Sárközy-Szemerédi (1967): $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log \\log x})$. Both follow from the convergence of $\\sum 1/(a_n \\log a_n)$ for primitive $a$."
+      "endLine": 152,
+      "summary": "Five fully proved results: (1) `primitive_elements_ge_two`: $a_n \\geq 2$ for primitive $a$. (2) `strict_inc_lower_bound`: $a_n \\geq n+2$. (3) `strict_inc_eventually_ge`: $a$ eventually exceeds any bound. (4) `product_log_comparison`: $a \\cdot \\log a \\leq 2C \\cdot (b \\cdot \\log b)$ when $a \\leq Cb$ and $b \\geq C$. (5) `reciprocal_log_comparison`: division form $1/(b\\log b) \\leq 2C/(a\\log a)$."
+    },
+    {
+      "id": "axioms",
+      "title": "Axioms (Deep Results)",
+      "startLine": 153,
+      "endLine": 178,
+      "summary": "Three axioms for deep number-theoretic results: (1) Erdős 1935 convergence of $\\sum 1/(a_n \\log a_n)$ for primitive $a$. (2) Erdős-Sárközy-Szemerédi 1967 partial sum growth bound. (3) Primitive counting bound $|A \\cap [N]| \\ll N/\\sqrt{\\log N}$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 179,
+      "endLine": 204,
+      "summary": "`erdos_1935_necessary`: proves $\\sum 1/(b_n \\log b_n) < \\infty$ is necessary for primitive domination. Uses comparison test via `reciprocal_log_comparison`. One sorry remaining for Finset sum splitting."
     },
     {
       "id": "gcd-condition",
       "title": "GCD-Free Condition",
-      "startLine": 85,
-      "endLine": 101,
-      "summary": "Defines `IsGCDFree b`: no triple $(i, j, k)$ with distinct indices satisfies $\\gcd(b_i, b_j) = b_k$. States `ErdosProblem892GCDFree`: is this condition sufficient for the existence of a primitive dominator?"
-    },
-    {
-      "id": "primitive-properties",
-      "title": "Primitive Set Properties",
-      "startLine": 102,
-      "endLine": 121,
-      "summary": "Axiomatizes the counting bound $|\\{a_k \\leq N\\}| \\leq C \\cdot N / \\sqrt{\\log N}$ for primitive sequences, and Erdős (1935) convergence: $\\sum 1/(a_n \\log a_n)$ converges for any primitive $a$ with $a_n \\geq 2$."
+      "startLine": 205,
+      "endLine": 242,
+      "summary": "Defines `IsGCDFree b` and formulates `ErdosProblem892GCDFree`: is the GCD-free condition sufficient for the existence of a primitive dominator?"
     }
   ],
   "overview": {
     "historicalContext": "Primitive sets (antichains in the divisibility poset) have been central to combinatorial number theory since Behrend (1935) and Erdős (1935). Erdős proved in 1935 that for any primitive sequence $a_1 < a_2 < \\cdots$ with $a_n \\geq 2$, the series $\\sum 1/(a_n \\log a_n)$ converges — a remarkable density constraint showing primitive sequences are 'thin.' Problem 892, posed by Erdős, Sárközy, and Szemerédi in 1968, asks: given a target growth rate $b$, when can we find a primitive sequence growing at rate $\\ll b$? The convergence result gives a necessary condition: $\\sum 1/(b_n \\log b_n) < \\infty$. Erdős, Sárközy, and Szemerédi (1967) strengthened this to a partial sum growth condition: $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log\\log x})$. A sufficient condition remains elusive. The GCD-free variant asks whether the condition $\\gcd(b_i, b_j) \\neq b_k$ (which prevents divisibility obstructions) suffices.",
     "problemStatement": "Given $b_1 < b_2 < \\cdots$, find necessary and sufficient conditions for the existence of a primitive sequence $a_1 < a_2 < \\cdots$ (no $a_i \\mid a_j$) with $a_n \\ll b_n$.",
     "text": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with aₙ ≪ bₙ. Known: Σ 1/(bₙ log bₙ) < ∞ is necessary. OPEN.",
-    "proofStrategy": "The formalization models sequences as functions $\\mathbb{N} \\to \\mathbb{N}$, defines primitivity via pairwise non-divisibility, domination via an explicit constant, and the problem as an existential quantification. Necessary conditions are axiomatized with explicit partial sum bounds using `Finset.range` and `Real.log`. The GCD-free variant introduces an alternative sufficient condition. No theorems are proved; all deep results are axioms.",
+    "proofStrategy": "The formalization models sequences as functions $\\mathbb{N} \\to \\mathbb{N}$, defines primitivity via pairwise non-divisibility, and domination via an explicit constant. Five supporting lemmas are fully proved, including the key comparison bound $a \\cdot \\log a \\leq 2C \\cdot (b \\cdot \\log b)$. The Erdős 1935 necessary condition $\\sum 1/(b_n \\log b_n) < \\infty$ is being proved from axiomatized convergence of $\\sum 1/(a_n \\log a_n)$ via comparison test. Three deep results remain as axioms.",
     "keyInsights": [
       "Primitive sequences are antichains in the divisibility partial order: $a_i \\nmid a_j$ for $i \\neq j$. They are sparse — the primes form the densest primitive sequence",
       "Erdős (1935) convergence: $\\sum 1/(a_n \\log a_n) < \\infty$ for any primitive $a$ with $a_n \\geq 2$. This is an analog of the prime harmonic series divergence, showing primitive sets are even thinner than primes in the $1/(n \\log n)$ metric",
@@ -118,7 +131,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem 892 is formalized with definitions of primitive sequences, domination, and the GCD-free condition, along with axiomatized necessary conditions from Erdős (1935) and Erdős-Sárközy-Szemerédi (1967). The counting bound for primitive sets is also axiomatized. The file has 0 sorries and 4 axioms, with no proved theorems.",
+    "summary": "Erdős Problem 892 is formalized with 6 definitions, 5 fully proved theorems, and 1 theorem with sorry. The key comparison lemma (product_log_comparison) is fully proved, establishing $a \\cdot \\log a \\leq 2C \\cdot (b \\cdot \\log b)$ under domination. The Erdős 1935 necessary condition is being proved from 3 axiomatized deep results, with one sorry remaining for Finset sum splitting.",
     "implications": "A full characterization would provide a fundamental understanding of how the 'thinness' of primitive sequences constrains their growth rates. This connects to Behrend's theorem, the distribution of primes (the densest primitive sequence), and the structure of the divisibility lattice on natural numbers.",
     "openQuestions": [
       "What are necessary and sufficient conditions for a sequence b to admit a primitive dominator?",
@@ -169,13 +182,14 @@
       "Mathlib.Data.Real.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Order.Filter.Basic",
-      "Mathlib.Tactic"
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 161,
+    "lineCount": 242,
     "axiomCount": 3,
-    "theoremCount": 2,
+    "theoremCount": 6,
     "definitionCount": 6
   }
 }
