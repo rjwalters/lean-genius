@@ -97,15 +97,26 @@ theorem erdos_1126_main :
 
 /- ## Part IV: Uniqueness -/
 
-/-- **Uniqueness up to a.e. equality:**
-If g₁ and g₂ are both additive and agree a.e., then g₁ = g₂. -/
-axiom additive_ae_unique :
-    ∀ g₁ g₂ : ℝ → ℝ, IsAdditive g₁ → IsAdditive g₂ →
-      ae_eq g₁ g₂ → g₁ = g₂
-
 /-- An additive function that is 0 a.e. is identically 0. -/
 axiom additive_zero_ae :
     ∀ g : ℝ → ℝ, IsAdditive g → ae_eq g 0 → g = 0
+
+/-- **Uniqueness up to a.e. equality:**
+If g₁ and g₂ are both additive and agree a.e., then g₁ = g₂.
+Proof: h = g₁ - g₂ is additive and h = 0 a.e., so h = 0 by additive_zero_ae. -/
+theorem additive_ae_unique :
+    ∀ g₁ g₂ : ℝ → ℝ, IsAdditive g₁ → IsAdditive g₂ →
+      ae_eq g₁ g₂ → g₁ = g₂ := by
+  intro g₁ g₂ h1 h2 ⟨N, hN, hf⟩
+  -- h := g₁ - g₂ is additive
+  have h_add : IsAdditive (g₁ - g₂) := fun x y => by
+    simp only [Pi.sub_apply, h1 x y, h2 x y]; ring
+  -- h = 0 a.e. (from g₁ = g₂ a.e.)
+  have h_zero : ae_eq (g₁ - g₂) 0 :=
+    ⟨N, hN, fun x hx => by
+      simp only [Pi.sub_apply, Pi.zero_apply, sub_eq_zero]; exact hf x hx⟩
+  -- By additive_zero_ae: g₁ - g₂ = 0, hence g₁ = g₂
+  exact sub_eq_zero.mp (additive_zero_ae _ h_add h_zero)
 
 /- ## Part V: Wild Additive Functions and Regularity -/
 
