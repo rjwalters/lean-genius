@@ -1,10 +1,6 @@
-import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
-import Mathlib.Analysis.Complex.Polynomial.Basic
-import Mathlib.Analysis.SpecialFunctions.Complex.Circle
-import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib
 
-/-!
+/-
 # ℂ is the Unique Algebraic Closure of ℝ
 
 ## What This Proves
@@ -107,11 +103,11 @@ theorem no_real_root_of_x_sq_plus_one (x : ℝ) : x ^ 2 + 1 ≠ 0 := by
 theorem reals_not_alg_closed : ¬ IsAlgClosed ℝ := by
   intro h
   -- If ℝ were algebraically closed, X² + 1 would have a real root
-  have hp : (0 : WithBot ℕ) < degree (X ^ 2 + 1 : ℝ[X]) := by
+  have hp : degree (X ^ 2 + 1 : ℝ[X]) ≠ 0 := by
     simp [degree_add_eq_left_of_degree_lt, degree_X_pow]
   obtain ⟨r, hr⟩ := h.exists_root _ hp
   -- But x² + 1 > 0 for all real x
-  simp only [IsRoot, eval_add, eval_pow, eval_X, eval_one] at hr
+  rw [IsRoot, eval_add, eval_pow, eval_X, eval_one] at hr
   exact no_real_root_of_x_sq_plus_one r hr
 
 /-
@@ -128,24 +124,23 @@ noncomputable def charQuad (z : ℂ) : ℝ[X] :=
 -- z is a root of its characteristic quadratic
 theorem is_root_charQuad (z : ℂ) :
     (charQuad z).eval₂ (algebraMap ℝ ℂ) z = 0 := by
-  simp only [charQuad, eval₂_add, eval₂_sub, eval₂_mul, eval₂_pow, eval₂_X,
-    eval₂_C, map_ofNat, map_mul, map_add, map_pow]
-  ext
-  · -- Real part
-    simp [mul_comm, mul_assoc]
+  have halg : algebraMap ℝ ℂ = Complex.ofReal := rfl
+  simp only [charQuad, eval₂_add, eval₂_sub, eval₂_mul, eval₂_pow, eval₂_X, eval₂_C, halg]
+  apply Complex.ext
+  · simp only [Complex.ofReal_re, Complex.ofReal_im, Complex.add_re, Complex.sub_re,
+      Complex.mul_re, Complex.zero_re, sq]
     ring
-  · -- Imaginary part
-    simp [mul_comm, mul_assoc]
+  · simp only [Complex.ofReal_re, Complex.ofReal_im, Complex.add_im, Complex.sub_im,
+      Complex.mul_im, Complex.zero_im, sq]
     ring
 
 -- The conjugate z̄ is also a root
 theorem is_root_charQuad_conj (z : ℂ) :
-    (charQuad z).eval₂ (algebraMap ℝ ℂ) (conj z) = 0 := by
-  have : charQuad z = charQuad (conj z) := by
+    (charQuad z).eval₂ (algebraMap ℝ ℂ) (starRingEnd ℂ z) = 0 := by
+  have : charQuad z = charQuad (starRingEnd ℂ z) := by
     simp [charQuad, Complex.conj_re, Complex.conj_im]
-    ring
   rw [this]
-  exact is_root_charQuad (conj z)
+  exact is_root_charQuad (starRingEnd ℂ z)
 
 /-
   Part 7: Minimality — ℂ is the Smallest Algebraically Closed Extension of ℝ
@@ -161,16 +156,21 @@ theorem is_root_charQuad_conj (z : ℂ) :
 theorem no_intermediate_field (K : IntermediateField ℝ ℂ)
     (hK : Module.Finite ℝ K) :
     Module.finrank ℝ K = 1 ∨ Module.finrank ℝ K = 2 := by
-  -- [ℂ:ℝ] = [ℂ:K] * [K:ℝ] and [ℂ:ℝ] = 2
+  -- [ℂ:ℝ] = [ℂ:K] · [K:ℝ] and [ℂ:ℝ] = 2
   have h2 := finrank_complex_over_reals
-  have htower := IntermediateField.finrank_mul_finrank K (⊤ : IntermediateField ℝ ℂ)
-  rw [IntermediateField.finrank_top] at htower
+  have htower := Module.finrank_mul_finrank ℝ (↥K) ℂ
+  -- htower : finrank ℝ ↥K * finrank ↥K ℂ = finrank ℝ ℂ
   rw [h2] at htower
-  -- [ℂ:K] * [K:ℝ] = 2, and both factors are positive
-  have hK_pos : 0 < Module.finrank ℝ K := Module.finrank_pos
-  have hCK_pos : 0 < Module.finrank K (⊤ : IntermediateField ℝ ℂ) := Module.finrank_pos
-  -- 2 = a * b with a, b > 0 implies (a,b) = (1,2) or (2,1)
-  interval_cases (Module.finrank ℝ K) <;> omega
+  -- finrank ℝ ↥K * finrank ↥K ℂ = 2, and both factors are positive
+  have hK_pos : 0 < Module.finrank ℝ ↥K := Module.finrank_pos
+  have hCK_pos : 0 < Module.finrank (↥K) ℂ := Module.finrank_pos
+  -- a * b = 2 with b > 0 implies a ≤ 2
+  have hle : Module.finrank ℝ ↥K ≤ 2 := by
+    calc Module.finrank ℝ ↥K
+        ≤ Module.finrank ℝ ↥K * Module.finrank (↥K) ℂ :=
+          le_mul_of_one_le_right (Nat.zero_le _) hCK_pos
+        _ = 2 := htower
+  interval_cases (Module.finrank ℝ ↥K) <;> omega
 
 /-
   Part 8: The Quadratic Extension is Necessary and Sufficient

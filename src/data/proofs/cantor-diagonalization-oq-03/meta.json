@@ -1,0 +1,121 @@
+{
+  "id": "cantor-diagonalization-oq-03",
+  "title": "Lawvere Fixed-Point Theorem and Cantor's Theorem",
+  "slug": "cantor-diagonalization-oq-03",
+  "description": "The Lawvere fixed-point theorem: if there exists a surjection e : A -> (A -> B), then every endomorphism f : B -> B has a fixed point. Cantor's theorem follows as a corollary by noting that negation (Not) has no fixed point in Prop, so no surjection A -> (A -> Prop) can exist. This unifies Cantor's diagonal argument, Russell's paradox, and the halting problem as instances of a single principle.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ03.lean",
+    "tags": [
+      "set-theory",
+      "logic",
+      "category-theory",
+      "lawvere",
+      "cantor",
+      "diagonal-argument",
+      "fixed-point",
+      "wiedijk-100"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 149,
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. Uses only basic logic and function theory from Mathlib.",
+    "originalContributions": [
+      "lawvere_fixpoint: the general Lawvere fixed-point theorem for surjections A -> (A -> B)",
+      "not_has_no_fixpoint: negation has no fixed point in Prop (via cast and self-application)",
+      "cantor: Cantor's theorem as a direct corollary of Lawvere",
+      "cantor_bool: decidable version with Bool instead of Prop",
+      "russell: Russell's paradox as Cantor's theorem restated",
+      "diagonal_not_in_range: explicit diagonal construction showing non-membership in range"
+    ],
+    "dateAdded": "2026-03-24"
+  },
+  "overview": {
+    "problemStatement": "Prove the Lawvere fixed-point theorem as a categorical generalization of Cantor's diagonal argument: if a surjection $e : A \\to (A \\to B)$ exists, then every endomorphism $f : B \\to B$ has a fixed point. Derive Cantor's theorem as a corollary.",
+    "text": "A 149-line verified formalization of the Lawvere fixed-point theorem (1969) with 0 sorries and 0 axioms. The main theorem states: if $e : A \\to (A \\to B)$ is surjective, then every $f : B \\to B$ has a fixed point. The proof constructs the diagonal function $g(a) = f(e(a)(a))$ and uses surjectivity to find $a_0$ with $e(a_0) = g$, yielding $f(g(a_0)) = g(a_0)$. Five corollaries follow: Cantor's theorem for Prop, Cantor's theorem for Bool, Russell's paradox, the contrapositive (no fixed-point-free endomorphism implies no surjection), and an explicit diagonal non-membership result.",
+    "proofStrategy": "1. **Lawvere's diagonal trick**: Given surjective $e : A \\to (A \\to B)$ and $f : B \\to B$, define $g(a) = f(e(a)(a))$. By surjectivity, $\\exists a_0$ with $e(a_0) = g$. Then $e(a_0)(a_0) = g(a_0) = f(e(a_0)(a_0))$, so $e(a_0)(a_0)$ is a fixed point of $f$.\n\n2. **Cantor from Lawvere**: Take $B = \\mathrm{Prop}$ and $f = \\neg$. Since $\\neg$ has no fixed point ($\\neg p = p$ leads to contradiction via self-application), Lawvere implies no surjection $A \\to (A \\to \\mathrm{Prop})$ exists.\n\n3. **Negation has no fixed point**: If $\\neg p = p$, cast along this equality to get $p \\to \\neg p$ and $\\neg p \\to p$. Define $\\neg p$ by $\\lambda h. (\\mathrm{cast}\\, h^{-1}\\, h)\\, h$, then derive contradiction.",
+    "keyInsights": [
+      "**One Proof, Many Theorems**: Lawvere's fixed-point theorem unifies Cantor's diagonal argument, Russell's paradox, the halting problem, and Godel's incompleteness theorem. Each is an instance with different B and f.",
+      "**The Diagonal is Universal**: The construction g(a) = f(e(a)(a)) is the categorical essence of all diagonal arguments. It extracts the common pattern from seemingly different impossibility proofs.",
+      "**Self-Application is the Key**: The proof of not_has_no_fixpoint uses the same self-application trick as Russell's paradox: if we can apply something to itself, contradiction follows. This is the type-theoretic core of all diagonal arguments.",
+      "**Surjectivity is the Barrier**: Cantor's theorem is not about size per se — it's about the impossibility of a certain surjection. This formulation makes the logical content precise without appealing to cardinal arithmetic."
+    ]
+  },
+  "sections": [
+    {
+      "id": "lawvere",
+      "title": "Lawvere Fixed-Point Theorem",
+      "startLine": 33,
+      "endLine": 45,
+      "summary": "The main theorem: surjective e : A -> (A -> B) implies every f : B -> B has a fixed point.",
+      "mathContext": "If $e : A \\to (A \\to B)$ is surjective and $f : B \\to B$, define $g(a) = f(e(a)(a))$. By surjectivity $\\exists a_0$ with $e(a_0) = g$, giving fixed point $e(a_0)(a_0)$."
+    },
+    {
+      "id": "contrapositive",
+      "title": "No Fixed-Point-Free Corollary",
+      "startLine": 47,
+      "endLine": 56,
+      "summary": "Contrapositive: if f has no fixed point, no surjection A -> (A -> B) exists.",
+      "mathContext": "Direct contrapositive of the Lawvere theorem."
+    },
+    {
+      "id": "cantor",
+      "title": "Cantor's Theorem via Lawvere",
+      "startLine": 58,
+      "endLine": 89,
+      "summary": "Cantor's theorem: no surjection A -> (A -> Prop), because Not has no fixed point.",
+      "mathContext": "$\\neg : \\mathrm{Prop} \\to \\mathrm{Prop}$ has no fixed point. If $\\neg p = p$, cast along this equality to get $p \\to \\neg p$, construct $\\neg p$ by self-application, derive $p$, then contradiction."
+    },
+    {
+      "id": "cantor-bool",
+      "title": "Cantor's Theorem for Bool",
+      "startLine": 91,
+      "endLine": 108,
+      "summary": "Decidable version: no surjection A -> (A -> Bool), using boolean negation.",
+      "mathContext": "Boolean negation $!b \\neq b$ for both $b = \\mathrm{true}$ and $b = \\mathrm{false}$, verified by `decide`."
+    },
+    {
+      "id": "russell",
+      "title": "Russell's Paradox",
+      "startLine": 110,
+      "endLine": 121,
+      "summary": "Russell's paradox restated: no type can classify all predicates on itself.",
+      "mathContext": "Russell's paradox is Cantor's theorem for the specific case where we try to enumerate all subsets of A by elements of A."
+    },
+    {
+      "id": "diagonal",
+      "title": "Explicit Diagonal Construction",
+      "startLine": 123,
+      "endLine": 136,
+      "summary": "The diagonal function g(a) = f(e(a)(a)) is not in the range of e when f has no fixed point.",
+      "mathContext": "Explicit non-membership: if $f$ has no fixed point and $g(a) = f(e(a)(a))$, then $g \\notin \\mathrm{range}(e)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Lawvere fixed-point theorem reveals the common structure behind Cantor's diagonal argument, Russell's paradox, the halting problem, and Godel's incompleteness theorem. All are instances of the principle that surjectivity onto a function space is incompatible with fixed-point-free endomorphisms.",
+    "implications": "This formalization demonstrates that impossibility results in set theory, logic, and computation share a single categorical root. The 3-line proof of the Lawvere theorem shows that the deep content is in the diagonal construction g(a) = f(e(a)(a)) — everything else is a choice of B and f."
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "generalizes",
+      "description": "The base Cantor proof uses the diagonal argument directly; this proof derives it as a corollary of the more general Lawvere fixed-point theorem"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "generalizes",
+      "description": "Cantor's theorem (|S| < |P(S)|) follows from Lawvere by taking B = Prop and f = Not"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib.Logic.Function.Basic", "Mathlib.Order.BooleanAlgebra"],
+    "opens": [],
+    "namespace": "LawvereCantor",
+    "lineCount": 149,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0
+  }
+}

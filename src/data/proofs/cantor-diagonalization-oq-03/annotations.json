@@ -1,0 +1,29 @@
+[
+  {
+    "id": "ann-lawvere-main",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": { "startLine": 39, "endLine": 45 },
+    "type": "key-step",
+    "title": "Lawvere Fixed-Point Theorem",
+    "content": "The core 3-line proof: given surjective $e$ and any $f$, obtain $a_0$ with $e(a_0) = \\lambda a. f(e(a)(a))$ by surjectivity, then $e(a_0)(a_0)$ is the fixed point. The diagonal construction $g(a) = f(e(a)(a))$ is the categorical essence of all diagonal arguments.",
+    "significance": "major"
+  },
+  {
+    "id": "ann-lawvere-negation",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": { "startLine": 71, "endLine": 78 },
+    "type": "key-step",
+    "title": "Negation Has No Fixed Point",
+    "content": "If $\\neg p = p$, cast along this equality to get $p \\to \\neg p$ and $\\neg p \\to p$. Define $\\neg p := \\lambda h. (\\mathrm{cast}\\,h^{-1}\\,h)\\,h$ (self-application), then apply to get $p$, yielding contradiction. This uses the same self-referential trick as Russell's paradox.",
+    "significance": "major"
+  },
+  {
+    "id": "ann-lawvere-cantor",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": { "startLine": 80, "endLine": 85 },
+    "type": "key-step",
+    "title": "Cantor from Lawvere",
+    "content": "Cantor's theorem in 3 lines: assume surjective $e : A \\to (A \\to \\mathrm{Prop})$, apply Lawvere with $f = \\mathrm{Not}$, get fixed point $b$ with $\\neg b = b$, contradicting `not_has_no_fixpoint`.",
+    "significance": "major"
+  }
+]
