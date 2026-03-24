@@ -95,7 +95,9 @@
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat"],
+    "opens": [
+      "Nat"
+    ],
     "namespace": "Erdos1095OQ01",
     "lineCount": 148,
     "axiomCount": 4,
@@ -109,5 +111,21 @@
       "description": "Open question derived from Erdős #1095 on g(k)"
     }
   ],
-  "relatedProofs": []
+  "relatedProofs": [
+    {
+      "id": "erdos-1095",
+      "title": "Erdős Problem #1095: The Erdős-Selfridge Function",
+      "relationship": "parent problem — this is an open question about the growth rate of g(k)"
+    },
+    {
+      "id": "kummer-theorem",
+      "title": "Kummer's Theorem on Binomial Coefficients",
+      "relationship": "foundational — Kummer's theorem characterizes p-adic valuations of C(n,k)"
+    },
+    {
+      "id": "binomial-theorem",
+      "title": "The Binomial Theorem",
+      "relationship": "background — provides the algebraic framework for binomial coefficients"
+    }
+  ]
 }
