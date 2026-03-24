@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 960,
     "erdosUrl": "https://erdosproblems.com/960",
     "erdosProblemStatus": "open",
@@ -29,17 +29,17 @@
       "threshold(r,k,n) via sSup over configurations",
       "ErdosConjecture960_littleo: f = o(n²) formal statement",
       "ErdosConjecture960_linear: f ≪ n stronger form",
-      "turan_upper_bound (sorry): Turán bound over ℚ",
-      "threshold_r2 (sorry): f_{2,k}(n) = 0",
+      "turan_upper_bound (axiom): Turán bound over ℚ",
+      "threshold_r2 (proved): f_{2,k}(n) = 0",
       "trivial_bound (proved): at most C(n,2) ordinary lines",
       "linear_implies_littleo (proved): linear bound implies o(n²)",
       "ordinary_pairs_count (proved): r*(r-1) ordered ordinary pairs",
       "green_tao_ordinary_lines (axiom): ≥ n/2 for general position",
       "erdos_960_summary (proved): combines conjecture with r=2 case"
     ],
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 192,
-    "assumptions": "2 axioms: erdos_960_littleo_conjecture (the open o(n²) conjecture), green_tao_ordinary_lines (Green-Tao 2013 ordinary lines bound). 2 sorries in turan_upper_bound, threshold_r2.",
+    "assumptions": "3 axioms: erdos_960_littleo_conjecture (the open o(n²) conjecture), turan_upper_bound (Turán bound over ℚ), green_tao_ordinary_lines (Green-Tao 2013 ordinary lines bound). 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -147,7 +147,7 @@
     "opens": [],
     "namespace": "Erdos960",
     "lineCount": 192,
-    "axiomCount": 2,
+    "axiomCount": 3,
     "theoremCount": 7,
     "definitionCount": 8
   },
