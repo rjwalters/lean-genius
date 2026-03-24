@@ -88,22 +88,20 @@ def erdos_5 : Prop :=
     More precisely: lim sup (p_{n+1} - p_n) / log(p_n) = ∞ -/
 axiom westzynthius_large_gaps : InfinityIsLimitPoint
 
-/-- **Goldston-Pintz-Yildirim (2005)**: There are infinitely many prime gaps
-    smaller than the average.
-
-    This implies 0 is a limit point of normalized gaps. -/
-axiom goldston_pintz_yildirim_small_gaps : IsLimitPoint 0
-
-/-- **Erdős-Ricci**: The set S has positive Lebesgue measure. -/
-axiom erdos_ricci_positive_measure : ∃ ε : ℝ, ε > 0 ∧
+/-- **Erdős-Ricci**: The set S has positive Lebesgue measure.
+    The formal Lebesgue measure statement requires measure theory imports;
+    the existential structure is trivially satisfiable as a placeholder. -/
+theorem erdos_ricci_positive_measure : ∃ ε : ℝ, ε > 0 ∧
   -- Informal: μ(S) > ε where μ is Lebesgue measure
-  True
+  True := ⟨1, by norm_num, trivial⟩
 
 /-- **Merikoski (2020s)**: At least 1/3 of [0, ∞) belongs to S.
-    Also: S has bounded gaps (no "large holes"). -/
-axiom merikoski_density : ∃ density : ℝ, density ≥ 1/3 ∧
+    Also: S has bounded gaps (no "large holes").
+    The formal measure-theoretic statement requires measure theory imports;
+    the existential structure is trivially satisfiable as a placeholder. -/
+theorem merikoski_density : ∃ density : ℝ, density ≥ 1/3 ∧
   -- Informal: μ(S ∩ [0, M]) / M ≥ density as M → ∞
-  True
+  True := ⟨1/3, by norm_num, trivial⟩
 
 /- ## Part V: Basic Properties -/
 
@@ -334,6 +332,13 @@ theorem zhang_implies_zero_limit : IsLimitPoint 0 := by
     · exact le_of_lt h_log_pos
   rw [Real.norm_of_nonneg h_nonneg]
   linarith
+
+/-- **Goldston-Pintz-Yildirim (2005)**: There are infinitely many prime gaps
+    smaller than the average. This implies 0 is a limit point of normalized gaps.
+
+    Here derived from Zhang's bounded gaps theorem (which is a stronger result). -/
+theorem goldston_pintz_yildirim_small_gaps : IsLimitPoint 0 :=
+  zhang_implies_zero_limit
 
 #check erdos_5
 #check limitPointSet
