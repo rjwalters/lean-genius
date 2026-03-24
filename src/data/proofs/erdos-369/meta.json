@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/369",
     "sourceUrl": "https://erdosproblems.com/369",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/Erdos369Problem.lean",
     "dateAdded": "2026-01-23",
     "relatedProblems": [
@@ -34,14 +34,24 @@
         "relation": "Erdős #143 studies dilation-avoiding sets, another problem where prime factorization structure controls set density"
       }
     ],
-    "axiomCount": 1,
+    "axiomCount": 2,
     "assumptions": "2 axiom declarations: (1) largestPrimeFactor — definitional axiom positing existence of the largest prime factor function (trivially realizable, used for convenience), (2) balog_wooley_infinitely_many — mathematical assumption encoding the Balog-Wooley 1998 theorem (infinitely many consecutive smooth pairs)",
     "author": "Erdős-Graham (1980), Balog-Wooley (1998)",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
-        "description": "Primality predicate for prime factors",
+        "description": "Primality predicate for defining B-smooth numbers via prime factor bounds",
         "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.dvd",
+        "description": "Divisibility relation used in the IsSmooth predicate (p ∣ m)",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite set operations for potential prime factor enumeration",
+        "module": "Mathlib.Data.Finset.Basic"
       }
     ],
     "originalContributions": [
