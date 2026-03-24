@@ -64,8 +64,9 @@ noncomputable def smoothThreshold (k : ℕ) : ℕ :=
 
 /-- **Erdős Problem #929 (Open).**
 S(k) ≥ k^{1−o(1)}, meaning for every ε > 0 and all sufficiently
-large k, S(k) ≥ k^{1−ε}. -/
-axiom erdos_929_conjecture :
+large k, S(k) ≥ k^{1−ε}.
+Stated as a definition since this is an open conjecture. -/
+def Erdos929Conjecture : Prop :=
   ∀ ε : ℝ, 0 < ε → ∀ᶠ (k : ℕ) in atTop,
     (smoothThreshold k : ℝ) ≥ (k : ℝ) ^ (1 - ε)
 
