@@ -1,0 +1,198 @@
+{
+  "id": "brouwer-fixed-point-oq-04",
+  "title": "Kakutani Fixed Point Theorem: Set-Valued Generalization of Brouwer (OQ-04)",
+  "slug": "brouwer-fixed-point-oq-04",
+  "description": "Formalizes the Kakutani fixed point theorem (1941), which generalizes Brouwer's theorem to set-valued (multi-valued) maps. Defines correspondences, upper hemicontinuity, and proves: Kakutani implies Brouwer for single-valued maps, 1D Kakutani via IVT, mixed strategy simplex properties, and a Nash equilibrium framework.",
+  "meta": {
+    "author": "Kakutani (1941), Nash (1950), Berge (1959)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kakutani_fixed-point_theorem",
+    "date": "1941",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ04.lean",
+    "tags": [
+      "topology",
+      "fixed-point-theory",
+      "set-valued-maps",
+      "game-theory",
+      "Nash-equilibrium",
+      "convex-analysis",
+      "advanced"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "convex_closedBall",
+        "description": "Convexity of closed balls in normed spaces",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "isCompact_closedBall",
+        "description": "Compactness of closed balls in finite-dimensional spaces",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "intermediate_value_Icc'",
+        "description": "Intermediate value theorem for continuous functions on closed intervals",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "isCompact_univ_pi",
+        "description": "Tychonoff theorem: product of compact sets is compact",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of correspondences (set-valued maps) with nonempty, closed, convex values",
+      "Upper hemicontinuity definition and proved preservation under continuous image",
+      "Kakutani implies Brouwer: proved that singleton correspondences reduce to Brouwer FPT",
+      "1D Kakutani via IVT for continuous interval correspondences (fully proved)",
+      "Mixed strategy simplex: proved convexity, closedness, and compactness",
+      "Nash equilibrium framework: product of simplices compactness via Tychonoff"
+    ],
+    "dateAdded": "2026-03-24",
+    "axiomCount": 2,
+    "lineCount": 436,
+    "assumptions": "2 axioms: (1) brouwer_compact_convex_axiom (Brouwer FPT for compact convex sets, requires algebraic topology), (2) kakutani_fixed_point_axiom (Kakutani FPT, requires Brouwer + approximation scheme). 0 sorries.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Shizuo Kakutani proved his fixed point theorem in 1941, generalizing Brouwer's 1911 theorem from single-valued continuous maps to set-valued (multi-valued) upper hemicontinuous correspondences with convex values. This generalization proved transformative: John Nash (1950) used it to prove the existence of Nash equilibria in finite games, for which he received the 1994 Nobel Prize in Economics. Kenneth Arrow and Gerard Debreu (1954) used it to establish the existence of general equilibrium in competitive economies. The theorem remains foundational in mathematical economics, optimal control (Filippov 1962), and differential inclusions. Claude Berge's 1959 Maximum Theorem, which guarantees upper hemicontinuity of argmax correspondences, provides the key link between Kakutani and optimization theory.",
+    "problemStatement": "OQ-04: The Kakutani fixed point theorem (1941) generalizes Brouwer to set-valued maps. How does this generalization work, and what are its key applications?\n\nKakutani's theorem: Let S be a nonempty compact convex subset of R^n. Let F: S -> 2^S be an upper hemicontinuous correspondence such that F(x) is nonempty, convex, and closed for each x. Then there exists x* in S with x* in F(x*).",
+    "text": "This formalization defines the mathematical infrastructure for set-valued fixed point theory: correspondences with nonempty closed convex values, upper hemicontinuity, and the Kakutani theorem itself. It proves the key reduction from Kakutani to Brouwer (singleton correspondences), a fully proved 1D case via IVT, and develops the game-theoretic framework (mixed strategy simplices, their topological properties) that connects Kakutani to Nash equilibrium existence.",
+    "proofStrategy": "The formalization proceeds in layers:\n\n1. **Foundations**: Define correspondences (set-valued maps with nonempty, closed values mapping S to S), fixed points for correspondences (x in F(x)), upper hemicontinuity (Berge's definition: preimage of open sets is open in S).\n\n2. **Main Theorem**: Kakutani FPT is axiomatized (the proof requires Brouwer + triangulation/approximation). Two axioms: Brouwer for compact convex sets, and Kakutani itself.\n\n3. **Brouwer Reduction**: Proved that Kakutani for singleton correspondences {f(x)} recovers Brouwer's theorem f(x*) = x*.\n\n4. **1D Case**: Proved via IVT: for continuous interval correspondences F(x) = [l(x), u(x)] on [0,1], applying IVT to u(x) - x yields a fixed point.\n\n5. **Game Theory**: Defined mixed strategies as probability simplices, proved convexity, closedness, compactness, and product compactness (Tychonoff) for Nash equilibrium applications.",
+    "keyInsights": [
+      "Kakutani is the minimal generalization of Brouwer needed for game theory: convex-valued correspondences capture best-response sets",
+      "Upper hemicontinuity is the right notion for set-valued maps: it ensures 'limits of approximate fixed points are fixed points'",
+      "The singleton reduction shows Kakutani is a strict generalization: x in {f(x)} iff f(x) = x",
+      "Mixed strategy simplices are compact convex sets, providing the domain for Kakutani in Nash's proof",
+      "The 1D Kakutani reduces to IVT, paralleling how 1D Brouwer reduces to IVT — algebraic topology only needed in higher dimensions"
+    ],
+    "prerequisites": [
+      "Point-set topology",
+      "Convex analysis",
+      "Game theory (for applications)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "correspondences",
+      "title": "Correspondences (Set-Valued Maps)",
+      "startLine": 55,
+      "endLine": 90,
+      "summary": "Defines the `Correspondence` structure: a set-valued map $F: S \\to 2^S$ with nonempty, closed values that maps $S$ to itself. Defines fixed points ($x^* \\in F(x^*)$) and convex-valued correspondences.",
+      "mathContext": "A correspondence assigns to each point $x \\in S$ a nonempty, closed subset $F(x) \\subseteq S$. A fixed point satisfies $x^* \\in F(x^*)$, generalizing $f(x^*) = x^*$ for single-valued maps."
+    },
+    {
+      "id": "upper-hemicontinuity",
+      "title": "Upper Hemicontinuity",
+      "startLine": 91,
+      "endLine": 116,
+      "summary": "Defines upper hemicontinuity (Berge 1959): for every open $V \\supseteq F(x)$, there exists a neighborhood $U$ of $x$ with $F(y) \\subseteq V$ for all $y \\in U \\cap S$. Proves that continuous single-valued functions induce UHC singleton correspondences.",
+      "mathContext": "Upper hemicontinuity ensures the graph of $F$ has no 'upward jumps': if $F(x) \\subseteq V$ (open), then $F(y) \\subseteq V$ for $y$ near $x$."
+    },
+    {
+      "id": "kakutani-theorem",
+      "title": "The Kakutani Fixed Point Theorem",
+      "startLine": 117,
+      "endLine": 179,
+      "summary": "States the Kakutani FPT via two axioms: (1) Brouwer for compact convex subsets of $\\mathbb{R}^n$, and (2) Kakutani for UHC correspondences with convex values. Includes the classical proof sketch: approximate $F$ by continuous functions $f_k$ via triangulation, apply Brouwer to each $f_k$, and pass to the limit using UHC.",
+      "mathContext": "The main theorem: if $S \\subseteq \\mathbb{R}^n$ is nonempty, compact, convex, and $F: S \\to 2^S$ is UHC with nonempty convex closed values, then $\\exists x^* \\in F(x^*)$."
+    },
+    {
+      "id": "brouwer-reduction",
+      "title": "Single-Valued Reduction: Kakutani Implies Brouwer",
+      "startLine": 180,
+      "endLine": 228,
+      "summary": "Constructs the singleton correspondence $x \\mapsto \\{f(x)\\}$ from a continuous self-map $f$. Proves convexity of singleton values and the key equivalence: $x^* \\in \\{f(x^*)\\} \\Leftrightarrow f(x^*) = x^*$. Derives Brouwer's theorem as a corollary of Kakutani.",
+      "mathContext": "The singleton correspondence $\\{f(\\cdot)\\}$ satisfies all Kakutani hypotheses when $f$ is continuous: singletons are nonempty, closed, and convex. A fixed point $x^* \\in \\{f(x^*)\\}$ means $x^* = f(x^*)$."
+    },
+    {
+      "id": "1d-kakutani",
+      "title": "1D Kakutani via IVT",
+      "startLine": 229,
+      "endLine": 285,
+      "summary": "Defines continuous interval correspondences $F(x) = [l(x), u(x)]$ on $[0,1]$. Proves the 1D Kakutani theorem: apply IVT to $g(x) = u(x) - x$ (which satisfies $g(0) \\geq 0$ and $g(1) \\leq 0$) to find $x_0$ with $u(x_0) = x_0$, then $l(x_0) \\leq u(x_0) = x_0 \\leq u(x_0)$.",
+      "mathContext": "In dimension 1, interval correspondences have continuous bound functions. The IVT applied to $u(x) - x$ directly yields the fixed point, just as 1D Brouwer follows from IVT applied to $f(x) - x$."
+    },
+    {
+      "id": "correspondence-algebra",
+      "title": "Correspondence Algebra",
+      "startLine": 286,
+      "endLine": 326,
+      "summary": "Defines the constant correspondence $F(x) = S$ (every point is a fixed point) and the identity correspondence $F(x) = \\{x\\}$ (every point is a fixed point). Both are building blocks for more complex correspondences.",
+      "mathContext": "The constant and identity correspondences are the simplest examples, analogous to constant and identity functions in Brouwer's theorem."
+    },
+    {
+      "id": "nash-framework",
+      "title": "Nash Equilibrium Framework",
+      "startLine": 327,
+      "endLine": 399,
+      "summary": "Defines finite $N$-player games and mixed strategies (probability simplices). Proves mixed strategies form a convex set, a closed set (intersection of nonnegativity constraints and a hyperplane), and a compact set (closed subset of compact box via Tychonoff). Proves the product of simplices is compact, providing the domain for Kakutani in Nash's equilibrium proof.",
+      "mathContext": "Mixed strategies for player $i$ with $k$ pure strategies form the simplex $\\Delta_k = \\{\\sigma \\in \\mathbb{R}^k : \\sigma_j \\geq 0, \\sum \\sigma_j = 1\\}$. The product $\\prod_i \\Delta_{k_i}$ is compact and convex, satisfying Kakutani's domain requirements."
+    },
+    {
+      "id": "uhc-properties",
+      "title": "Properties of Upper Hemicontinuity",
+      "startLine": 400,
+      "endLine": 436,
+      "summary": "Proves that constant correspondences are UHC and that UHC is preserved under continuous image: if $F$ is UHC and $g$ is continuous, then $x \\mapsto g(F(x))$ is UHC. These are building blocks for constructing UHC correspondences in applications.",
+      "mathContext": "UHC preservation under continuous maps is key for game theory: if $F$ is the best-response correspondence and $g$ is a payoff transformation, the composed correspondence remains UHC."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the Kakutani fixed point theorem as the bridge between Brouwer's topological fixed point theory and its applications in game theory and economics. The key contributions are: clean definitions of correspondences and upper hemicontinuity, a proved reduction showing Kakutani implies Brouwer, a fully proved 1D case via IVT, and the complete topological infrastructure (simplex convexity, closedness, compactness) needed for Nash equilibrium existence.",
+    "implications": "**Theoretical Significance**: Kakutani's theorem is the single most important result connecting pure topology to applications in economics and game theory. This formalization provides the first Lean 4 definitions of correspondences and upper hemicontinuity, and proves the essential properties of mixed strategy simplices that Nash's theorem requires.\n\n**Proof Architecture**: The two axioms (Brouwer for compact convex sets, Kakutani FPT) are cleanly separated. The Brouwer axiom could be discharged by a full homology-based proof; the Kakutani axiom additionally requires approximation theory. The proved results (Brouwer reduction, 1D Kakutani, simplex properties, UHC preservation) are all fully verified.",
+    "openQuestions": [
+      "Can we formalize the approximation proof of Kakutani from Brouwer (eliminating the Kakutani axiom)?",
+      "Can we state and prove Nash's equilibrium theorem fully, given Kakutani?",
+      "Can we formalize Berge's Maximum Theorem, connecting Kakutani to optimization theory?",
+      "Can we extend to Fan's fixed point theorem for locally convex spaces?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "extends",
+      "description": "Kakutani generalizes Brouwer from single-valued to set-valued maps. This file proves the reduction: singleton correspondence fixed points = Brouwer fixed points."
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 proves 1D Brouwer via IVT. This file proves 1D Kakutani via IVT, showing the same pattern extends to interval correspondences."
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-02",
+      "relationship": "related",
+      "description": "OQ-02 formalizes PPAD complexity of finding Brouwer fixed points. Kakutani's theorem (via Nash) motivates the PPAD-completeness of Nash equilibrium computation."
+    },
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder extends Brouwer to infinite dimensions. Kakutani extends Brouwer to set-valued maps. Both generalize in orthogonal directions."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.Compactness.Compact",
+      "Mathlib.Topology.Connected.PathConnected",
+      "Mathlib.Topology.Order.IntermediateValue",
+      "Mathlib.Analysis.Normed.Module.FiniteDimension",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Metric",
+      "Filter"
+    ],
+    "namespace": "KakutaniFPT",
+    "lineCount": 436,
+    "axiomCount": 2,
+    "theoremCount": 21,
+    "definitionCount": 13
+  }
+}
