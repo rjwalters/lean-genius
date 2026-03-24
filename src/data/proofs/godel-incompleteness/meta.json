@@ -38,8 +38,8 @@
     ],
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 6,
-    "axiomCount": 3,
-    "assumptions": "3 axiom declarations: G_self_reference (Godel sentence self-reference), derivability_conditions (Hilbert-Bernays-Lob conditions), lob_sentence_fixed_point (Lob fixed point existence)",
+    "axiomCount": 2,
+    "assumptions": "2 axiom declarations: derivability_conditions (Hilbert-Bernays-Lob conditions), lob_sentence_fixed_point (Lob fixed point existence). G_self_reference is a theorem, not an axiom.",
     "prerequisites": [
       "Mathematical logic: formal systems, provability, consistency",
       "Gödel numbering and arithmetization of metamathematics",
@@ -277,7 +277,7 @@
   "leanFile": {
     "lineCount": 468,
     "structureCount": 1,
-    "axiomCount": 3,
+    "axiomCount": 2,
     "theoremCount": 14,
     "lemmaCount": 0,
     "defCount": 12,
