@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Proved reciprocal_log_comparison (cross-multiplication from product_log_comparison). Added 3 helper theorems (strict_inc_lower_bound, strict_inc_eventually_ge, product_log_comparison). Axioms: 3, sorries: 1 (was 2), theorems: 6 (was 2). erdos_1935_necessary proof structured with threshold and bound.",
+    "progressSummary": "COMPLETED: erdos_1935_necessary fully proved (Finset sum splitting at threshold, comparison lemma). File: 0 sorries, 3 axioms (deep results), 6 proved theorems. All theorem bodies complete.",
     "builtItems": [
       "primitive_elements_ge_two: proved from primitivity (0 divides everything, 1 divides everything)",
       "erdos_1935_necessary: converted from axiom to theorem (Steps 1-2 complete, Step 3 sorry for comparison arithmetic)",
@@ -38,7 +38,8 @@
       "product_log_comparison: proved a·log(a) ≤ 2C·(b·log(b)) via log monotonicity",
       "strict_inc_lower_bound: proved a(n) ≥ n+2 by induction",
       "strict_inc_eventually_ge: proved sequence eventually exceeds any bound M",
-      "reciprocal_log_comparison: PROVED from product_log_comparison via div_le_div_iff₀"
+      "reciprocal_log_comparison: PROVED from product_log_comparison via div_le_div_iff₀",
+      "erdos_1935_necessary: FULLY PROVED - sum splitting at N₀, head bounded by finite sum, tail by comparison+convergence"
     ],
     "insights": [
       "erdos_1935_necessary is logically derivable from primitive_reciprocal_log_convergent: if a ≤ C*b, then 1/(b·log b) ≤ 2C/(a·log a) for large n, so convergence transfers",
@@ -50,7 +51,8 @@
       "The comparison test from primitive_reciprocal_log_convergent to erdos_1935_necessary requires careful handling of ℕ/ℝ coercions and log monotonicity",
       "Key step: split sum at threshold where a(n) ≥ 2C. Finitely many terms below threshold (by strict increase), comparison above.",
       "div_le_div_iff₀ (not div_le_div_iff) is the correct Mathlib name for cross-multiplication of fraction inequalities",
-      "The threshold b(n) ≥ C (instead of a(n) ≥ 2C) is more natural for the comparison lemma"
+      "The threshold b(n) ≥ C (instead of a(n) ≥ 2C) is more natural for the comparison lemma",
+      "Finset.sum_filter_add_sum_filter_not cleanly splits sums by predicate; Finset.sum_le_sum_of_subset_of_nonneg handles subset monotonicity with non-negative terms"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -80,8 +82,8 @@
     {
       "path": "Proofs/Erdos892Problem.lean",
       "filename": "Erdos892Problem.lean",
-      "lineCount": 122,
-      "theoremCount": 0,
+      "lineCount": 290,
+      "theoremCount": 6,
       "axiomCount": 4,
       "defCount": 6,
       "sorryCount": 0,
