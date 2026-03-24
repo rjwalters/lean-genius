@@ -88,7 +88,7 @@ theorem not_good_16 : ¬ IsErdos1141Good 16 := by native_decide
 
 /-- n = 0 trivially satisfies the property (vacuously true). -/
 theorem good_0 : IsErdos1141Good 0 := by
-  intro k hk; simp [Finset.mem_range] at hk
+  intro k hk; simp at hk
 
 /-- n = 1 does not satisfy the property: k=0, 0²=0 < 1, gcd(1,0)=1,
     but 1-0=1 is not prime. -/
@@ -158,3 +158,45 @@ theorem good_570 : IsErdos1141Good 570 := by native_decide
 
 /-- The value n = 1722 (largest known) satisfies the property. -/
 theorem good_1722 : IsErdos1141Good 1722 := by native_decide
+
+-- ## Unified Verification
+
+/-- All 41 known OEIS A214583 values satisfy the Erdős-1141 property. -/
+theorem all_known_good : ∀ n ∈ knownGoodValues, IsErdos1141Good n := by native_decide
+
+-- ## Complete Classification to n = 100
+
+/-- The exhaustive list of good values in {0, …, 100}. -/
+def goodValuesUpTo100 : List ℕ :=
+  [0, 3, 4, 6, 8, 12, 14, 18, 20, 24, 30, 32, 38, 42, 48, 54, 60, 62, 68, 72, 80, 84, 90, 98]
+
+/-- Complete classification: the good values in {0, …, 100} are exactly `goodValuesUpTo100`. -/
+theorem classification_100 :
+    (Finset.range 101).filter IsErdos1141Good = goodValuesUpTo100.toFinset := by native_decide
+
+/-- There are exactly 24 good values in {0, …, 100}. -/
+theorem good_count_100 :
+    ((Finset.range 101).filter IsErdos1141Good).card = 24 := by native_decide
+
+-- ## Structural Corollaries
+
+/-- No prime ≥ 5 satisfies the Erdős-1141 property.
+    Proof: primes ≥ 5 are odd, but good values ≥ 4 must be even. -/
+theorem good_not_prime_ge5 (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) :
+    ¬ IsErdos1141Good p := by
+  intro hg
+  have heven := good_ge4_even p (by omega) hg
+  rcases hp.eq_one_or_self_of_dvd 2 heven with h | h <;> omega
+
+/-- 3 is the only odd good value ≥ 3. -/
+theorem good_odd_eq_three (n : ℕ) (hn : 3 ≤ n) (hg : IsErdos1141Good n)
+    (hodd : ¬ 2 ∣ n) : n = 3 := by
+  by_contra h
+  exact hodd (good_ge4_even n (by omega) hg)
+
+/-- If n ≥ 10 is good and coprime to 3, then n − 9 is also prime. -/
+theorem good_coprime3_sub9_prime (n : ℕ) (hn : 10 ≤ n)
+    (hg : IsErdos1141Good n) (hcop : Nat.Coprime n 3) :
+    (n - 9).Prime := by
+  rw [isErdos1141Good_iff_unbounded] at hg
+  exact hg 3 (by omega) hcop
