@@ -106,6 +106,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 16,
+      "summary": "Module docstring describing Erdős Problem #462 on least prime factor sums in short intervals. States the known asymptotic ∑_{n<x, composite} p(n)/n ~ c·√x/(log x)² (Alladi-Erdős 1977) and the open question: does there exist C > 0 such that the sum over an interval of length C·√x·(log x)² is bounded below? References Erdős-Graham (1980), p. 92. Imports the full Mathlib library.",
+      "mathContext": "Let p(n) denote the least prime factor of n. The global composite sum grows as Θ(√x/(log x)²), making √x·(log x)² the natural interval scale. The conjecture asks whether every interval of this length captures Ω(1) contribution — an equidistribution question analogous to the prime number theorem in short intervals. The single `import Mathlib` provides Nat.minFac, Real.log, and Finset.Icc needed for the formalization."
+    },
+    {
       "id": "least-prime-factor",
       "title": "Least Prime Factor",
       "startLine": 17,

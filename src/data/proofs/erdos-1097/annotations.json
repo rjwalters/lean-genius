@@ -4,11 +4,11 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 1,
-      "endLine": 34
+      "endLine": 37
     },
     "type": "context",
     "title": "Problem Statement, References, and Imports",
-    "content": "The module docstring sets up Erd\u0151s Problem #1097: estimating $|D(A)|$ for $n$-element sets $A \\subseteq \\mathbb{Z}$. The known bounds $n^{1.778} \\leq |D(A)| \\leq n^{11/6}$ and the conjectured $O(n^{3/2})$ are stated, along with the connection to Bourgain's sums-differences problem and the Kakeya conjecture. Three Mathlib imports provide tactics, finite sets, and real powers. The `open Finset` declaration enables direct use of `Finset.filter`, `Finset.image`, etc.",
+    "content": "The module docstring sets up Erdős Problem #1097: estimating $|D(A)|$ for $n$-element sets $A \\subseteq \\mathbb{Z}$. The known bounds $n^{1.778} \\leq |D(A)| \\leq n^{11/6}$ and the conjectured $O(n^{3/2})$ are stated, along with the connection to Bourgain's sums-differences problem and the Kakeya conjecture. Three Mathlib imports provide tactics, finite sets, and real powers. The `open Finset` declaration enables direct use of `Finset.filter`, `Finset.image`, etc.",
     "mathContext": "The problem asks: for $A \\subseteq \\mathbb{Z}$ with $|A| = n$, is $|D(A)| = O(n^{3/2})$? Current bounds: $n^{1.778} \\leq \\max_{|A|=n} |D(A)| \\leq C \\cdot n^{11/6}$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -26,7 +26,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 38,
-      "endLine": 41
+      "endLine": 42
     },
     "type": "definition",
     "title": "IsThreeAP",
@@ -35,7 +35,7 @@
     "significance": "key",
     "relatedConcepts": [
       "arithmetic progression",
-      "Szemer\u00e9di's theorem",
+      "Szemerédi's theorem",
       "additive combinatorics",
       "Roth's theorem"
     ],
@@ -49,11 +49,11 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 43,
-      "endLine": 46
+      "endLine": 47
     },
     "type": "definition",
     "title": "Common Differences D(A)",
-    "content": "The set $D(A)$ of all integers $d$ such that some three-term AP in $A$ has common difference $d$. This is the central object studied in Problem #1097: understanding how $|D(A)|$ grows with $|A|$.\n\n**Structural properties of $D(A)$:** Since $a, a+d, a+2d \\in A$ implies $a+2d, (a+2d)-d, (a+2d)-2d \\in A$, the set $D(A)$ is symmetric: $d \\in D(A) \\iff -d \\in D(A)$. For dense sets $A \\subseteq [n]$ with $|A| = \\delta n$, counting arguments give $|D(A)| \\geq \\Omega(n)$ (at least one AP exists for most differences $d$). The deep question is whether $|D(A)|$ can be polynomially larger than $|A|$ \u2014 i.e., whether dense sets necessarily exhibit many *distinct* AP common differences.",
+    "content": "The set $D(A)$ of all integers $d$ such that some three-term AP in $A$ has common difference $d$. This is the central object studied in Problem #1097: understanding how $|D(A)|$ grows with $|A|$.\n\n**Structural properties of $D(A)$:** Since $a, a+d, a+2d \\in A$ implies $a+2d, (a+2d)-d, (a+2d)-2d \\in A$, the set $D(A)$ is symmetric: $d \\in D(A) \\iff -d \\in D(A)$. For dense sets $A \\subseteq [n]$ with $|A| = \\delta n$, counting arguments give $|D(A)| \\geq \\Omega(n)$ (at least one AP exists for most differences $d$). The deep question is whether $|D(A)|$ can be polynomially larger than $|A|$ — i.e., whether dense sets necessarily exhibit many *distinct* AP common differences.",
     "mathContext": "$D(A) = \\{d \\in \\mathbb{Z} : \\exists\\, a \\text{ s.t. } a, a+d, a+2d \\in A\\}$. Note $0 \\in D(A)$ whenever $A \\neq \\emptyset$, and $D(A)$ is symmetric: $d \\in D(A) \\Leftrightarrow -d \\in D(A)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -71,7 +71,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 48,
-      "endLine": 54
+      "endLine": 55
     },
     "type": "definition",
     "title": "Finite Versions: commonDiffFinset and numCommonDiff",
@@ -93,7 +93,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 56,
-      "endLine": 92
+      "endLine": 93
     },
     "type": "technique",
     "title": "Subset Bound, Cardinality, and Nonemptiness",
@@ -103,7 +103,7 @@
     "relatedConcepts": [
       "difference set bounds",
       "Finset.filter",
-      "Pl\u00fcnnecke-Ruzsa inequality"
+      "Plünnecke-Ruzsa inequality"
     ],
     "prerequisites": [
       "Finset.card_filter_le",
@@ -115,7 +115,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 94,
-      "endLine": 161
+      "endLine": 162
     },
     "type": "technique",
     "title": "Monotonicity, Small-Set Computations, and Symmetry",
@@ -141,7 +141,7 @@
     },
     "type": "technique",
     "title": "Negation Symmetry and Finset-Set Lifting",
-    "content": "`commonDifferences_neg_iff`: $d \\in D(A) \\iff -d \\in D(A)$ \u2014 if $a, a+d, a+2d \\in A$ then reversing gives $a+2d, (a+2d)-d, (a+2d)-2d \\in A$ with common difference $-d$. `commonDiffFinset_mem_commonDifferences`: lifts Finset membership to Set-level membership, connecting the computable and propositional definitions.",
+    "content": "`commonDifferences_neg_iff`: $d \\in D(A) \\iff -d \\in D(A)$ — if $a, a+d, a+2d \\in A$ then reversing gives $a+2d, (a+2d)-d, (a+2d)-2d \\in A$ with common difference $-d$. `commonDiffFinset_mem_commonDifferences`: lifts Finset membership to Set-level membership, connecting the computable and propositional definitions.",
     "mathContext": "$D(A) = -D(A)$: the AP $(a, a+d, a+2d)$ reversed is $(a+2d, a+d, a)$ with difference $-d$. Combined with $0 \\in D(A)$, this means $|D(A)|$ is always odd for finite $A$ (symmetric around 0 plus the element 0 itself).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -186,7 +186,7 @@
     },
     "type": "technique",
     "title": "Dilation Covariance and Concrete AP Computations",
-    "content": "`commonDiff_dilation`: if $d \\in D(A)$ then $cd \\in D(cA)$ \u2014 scaling the set scales the common differences. Proved by showing $(ca, ca+cd, ca+2cd) \\in (cA)^3$ from $(a, a+d, a+2d) \\in A^3$. Also computes $D(\\{a, a+1, a+2\\}) = \\{-1, 0, 1\\}$: the AP $(a, a+1, a+2)$ gives $d=1$, reversal gives $d=-1$, trivial gives $d=0$. Proves the 3-element consecutive set has exactly 3 common differences.",
+    "content": "`commonDiff_dilation`: if $d \\in D(A)$ then $cd \\in D(cA)$ — scaling the set scales the common differences. Proved by showing $(ca, ca+cd, ca+2cd) \\in (cA)^3$ from $(a, a+d, a+2d) \\in A^3$. Also computes $D(\\{a, a+1, a+2\\}) = \\{-1, 0, 1\\}$: the AP $(a, a+1, a+2)$ gives $d=1$, reversal gives $d=-1$, trivial gives $d=0$. Proves the 3-element consecutive set has exactly 3 common differences.",
     "mathContext": "Dilation: $d \\in D(A) \\implies cd \\in D(cA)$. Example: $D(\\{a, a+1, a+2\\}) = \\{-1, 0, 1\\}$, so $|D| = 3$ for any 3-consecutive set.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -207,15 +207,15 @@
       "endLine": 301
     },
     "type": "insight",
-    "title": "Erd\u0151s's O(n^{3/2}) Conjecture",
-    "content": "The central open question: does $|D(A)| = O(n^{3/2})$? The Erd\u0151s-Spencer probabilistic construction achieves $\\Omega(n^{3/2})$, so the conjecture asserts this is essentially tight. The answer determines the exact growth rate of common differences.\n\nThis connects to the broader landscape of additive combinatorics: Szemer\u00e9di's theorem (see `szemeredi-theorem`) guarantees that dense sets contain arbitrarily long APs, while this problem asks how many *distinct* common differences arise in 3-term APs. The Roth-type bounds (see `roth-theorem-k3`) on sets without 3-APs provide complementary constraints.",
-    "mathContext": "The conjecture asks: $\\exists\\, C > 0$ such that for all $n \\in \\mathbb{N}$ and all $A \\subseteq \\mathbb{Z}$ with $|A| = n$, $|D(A)| \\le C \\cdot n^{3/2}$. Combined with the Erd\u0151s-Spencer lower bound, this would give $|D(A)| = \\Theta(n^{3/2})$.",
+    "title": "Erdős's O(n^{3/2}) Conjecture",
+    "content": "The central open question: does $|D(A)| = O(n^{3/2})$? The Erdős-Spencer probabilistic construction achieves $\\Omega(n^{3/2})$, so the conjecture asserts this is essentially tight. The answer determines the exact growth rate of common differences.\n\nThis connects to the broader landscape of additive combinatorics: Szemerédi's theorem (see `szemeredi-theorem`) guarantees that dense sets contain arbitrarily long APs, while this problem asks how many *distinct* common differences arise in 3-term APs. The Roth-type bounds (see `roth-theorem-k3`) on sets without 3-APs provide complementary constraints.",
+    "mathContext": "The conjecture asks: $\\exists\\, C > 0$ such that for all $n \\in \\mathbb{N}$ and all $A \\subseteq \\mathbb{Z}$ with $|A| = n$, $|D(A)| \\le C \\cdot n^{3/2}$. Combined with the Erdős-Spencer lower bound, this would give $|D(A)| = \\Theta(n^{3/2})$.",
     "significance": "key",
     "relatedConcepts": [
-      "Erd\u0151s problems",
+      "Erdős problems",
       "extremal combinatorics",
       "polynomial growth",
-      "Szemer\u00e9di's theorem",
+      "Szemerédi's theorem",
       "Roth's theorem"
     ],
     "prerequisites": [
@@ -228,7 +228,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 302,
-      "endLine": 308
+      "endLine": 309
     },
     "type": "insight",
     "title": "Katz-Tao Upper Bound",
@@ -238,7 +238,7 @@
     "relatedConcepts": [
       "Kakeya conjecture",
       "incidence geometry",
-      "Szemer\u00e9di-Trotter theorem"
+      "Szemerédi-Trotter theorem"
     ],
     "prerequisites": [
       "real analysis",
@@ -250,16 +250,16 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 310,
-      "endLine": 317
+      "endLine": 318
     },
     "type": "insight",
-    "title": "Erd\u0151s-Spencer Lower Bound",
-    "content": "A probabilistic construction showing $\\Omega(n^{3/2})$ common differences exist. The argument uses the Lov\u00e1sz Local Lemma or second-moment methods to show random subsets of $\\{1, \\ldots, N\\}$ achieve this bound with positive probability.",
+    "title": "Erdős-Spencer Lower Bound",
+    "content": "A probabilistic construction showing $\\Omega(n^{3/2})$ common differences exist. The argument uses the Lovász Local Lemma or second-moment methods to show random subsets of $\\{1, \\ldots, N\\}$ achieve this bound with positive probability.",
     "mathContext": "There exists $C > 0$ such that for all $n$, some $A$ with $|A| = n$ satisfies $|D(A)| \\ge C \\cdot n^{3/2}$. This is the conjectured correct order; the gap with the Katz-Tao upper bound is between exponents $3/2 = 1.5$ and $11/6 \\approx 1.833$.",
     "significance": "key",
     "relatedConcepts": [
       "probabilistic method",
-      "Lov\u00e1sz Local Lemma",
+      "Lovász Local Lemma",
       "random subsets"
     ],
     "prerequisites": [
@@ -272,11 +272,11 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 319,
-      "endLine": 323
+      "endLine": 324
     },
     "type": "insight",
-    "title": "Erd\u0151s-Ruzsa Explicit Construction",
-    "content": "An explicit (derandomized) construction achieving $n^{1+c}$ common differences for some constant $c > 0$. Unlike the Erd\u0151s-Spencer probabilistic argument, this gives a concrete family of sets, though with a weaker exponent.",
+    "title": "Erdős-Ruzsa Explicit Construction",
+    "content": "An explicit (derandomized) construction achieving $n^{1+c}$ common differences for some constant $c > 0$. Unlike the Erdős-Spencer probabilistic argument, this gives a concrete family of sets, though with a weaker exponent.",
     "mathContext": "There exist $c > 0$ and $C > 0$ such that for all $n$, an explicit $A$ with $|A| = n$ satisfies $|D(A)| \\ge C \\cdot n^{1+c}$. The exponent $1+c$ is weaker than the probabilistic $3/2$ but the construction is constructive.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -293,11 +293,11 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 325,
-      "endLine": 329
+      "endLine": 330
     },
     "type": "insight",
     "title": "Lemm's Lower Bound",
-    "content": "Matan Lemm (2015) proved the existence of sets achieving exponent $> 1.778$, surpassing the Erd\u0151s-Spencer $3/2 = 1.5$ barrier. This is the best known unconditional lower bound on the exponent.\n\n**Significance of the exponent improvement:** The jump from $3/2$ to $1.778$ is substantial: it shows the true growth rate of $|D(A)|$ is strictly superlinear-times-polylogarithmic, ruling out a class of counting arguments that would give exactly $\\Theta(n^{3/2})$. Lemm's construction uses probabilistic methods with careful moment estimates to build sets where many common differences are forced. The gap between $1.778$ (best lower bound on the exponent) and $11/6 \\approx 1.833$ (Katz-Tao upper bound) remains the central open interval for this problem.",
+    "content": "Matan Lemm (2015) proved the existence of sets achieving exponent $> 1.778$, surpassing the Erdős-Spencer $3/2 = 1.5$ barrier. This is the best known unconditional lower bound on the exponent.\n\n**Significance of the exponent improvement:** The jump from $3/2$ to $1.778$ is substantial: it shows the true growth rate of $|D(A)|$ is strictly superlinear-times-polylogarithmic, ruling out a class of counting arguments that would give exactly $\\Theta(n^{3/2})$. Lemm's construction uses probabilistic methods with careful moment estimates to build sets where many common differences are forced. The gap between $1.778$ (best lower bound on the exponent) and $11/6 \\approx 1.833$ (Katz-Tao upper bound) remains the central open interval for this problem.",
     "mathContext": "There exists $c > 1.778$ such that for all $n$, some $A$ with $|A| = n$ satisfies $|D(A)| \\ge n^c$. The improvement from $1.5$ to $1.778$ suggests the true exponent may be strictly between $3/2$ and $11/6$.",
     "significance": "key",
     "relatedConcepts": [
@@ -314,7 +314,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 331,
-      "endLine": 336
+      "endLine": 339
     },
     "type": "context",
     "title": "AlphaEvolve Improvement",
@@ -336,7 +336,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 340,
-      "endLine": 346
+      "endLine": 347
     },
     "type": "definition",
     "title": "Restricted Sum and Difference",
@@ -358,7 +358,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 348,
-      "endLine": 355
+      "endLine": 356
     },
     "type": "definition",
     "title": "Bourgain Exponent",
@@ -381,7 +381,7 @@
     "proofId": "erdos-1097",
     "range": {
       "startLine": 357,
-      "endLine": 364
+      "endLine": 365
     },
     "type": "insight",
     "title": "Chan's Equivalence Theorem",

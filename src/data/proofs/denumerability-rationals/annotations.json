@@ -1,5 +1,28 @@
 [
   {
+    "id": "diagonal-visualization",
+    "proofId": "denumerability-rationals",
+    "range": {
+      "startLine": 1,
+      "endLine": 58
+    },
+    "type": "insight",
+    "title": "Cantor's Diagonal Enumeration Visualization",
+    "content": "The classic visualization arranges positive rationals p/q in a grid and traverses anti-diagonals p + q = const, skipping non-reduced fractions. This dovetailing technique became fundamental in computability theory. Mathlib uses the Cantor pairing function rather than the diagonal traversal, which is computationally equivalent but more algebraically tractable.",
+    "mathContext": "Anti-diagonal enumeration: traverse pairs $(p, q)$ along $p + q = 2, 3, 4, \\ldots$. Cantor pairing: $\\pi(a, b) = (a+b)(a+b+1)/2 + b$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "grid arrangement of p/q fractions",
+      "reduced fractions (gcd(p,q) = 1)",
+      "Cantor pairing function bijectivity"
+    ],
+    "relatedConcepts": [
+      "dovetailing technique in computability",
+      "Cantor pairing function",
+      "Turing's enumeration of computable reals"
+    ]
+  },
+  {
     "id": "denumerable-instance",
     "proofId": "denumerability-rationals",
     "range": {
@@ -27,7 +50,7 @@
     "proofId": "denumerability-rationals",
     "range": {
       "startLine": 59,
-      "endLine": 63
+      "endLine": 66
     },
     "type": "definition",
     "title": "The Explicit Bijection natEquivRat",
@@ -50,7 +73,7 @@
     "proofId": "denumerability-rationals",
     "range": {
       "startLine": 67,
-      "endLine": 72
+      "endLine": 73
     },
     "type": "technique",
     "title": "Cantor's Classical Statement",
@@ -73,7 +96,7 @@
     "proofId": "denumerability-rationals",
     "range": {
       "startLine": 74,
-      "endLine": 78
+      "endLine": 112
     },
     "type": "concept",
     "title": "Alternative Formulations: Countable, Surjection, Injection",
@@ -96,7 +119,7 @@
     "proofId": "denumerability-rationals",
     "range": {
       "startLine": 113,
-      "endLine": 115
+      "endLine": 120
     },
     "type": "insight",
     "title": "Round-Trip Encode/Decode Properties",
@@ -119,7 +142,7 @@
     "proofId": "denumerability-rationals",
     "range": {
       "startLine": 121,
-      "endLine": 129
+      "endLine": 164
     },
     "type": "insight",
     "title": "Comparison with the Reals",
@@ -142,7 +165,7 @@
     "proofId": "denumerability-rationals",
     "range": {
       "startLine": 165,
-      "endLine": 169
+      "endLine": 191
     },
     "type": "technique",
     "title": "Cardinal Equality: |ℚ| = ℵ₀",
@@ -158,29 +181,6 @@
       "Cardinal.mk type constructor",
       "Cardinal.aleph0 (smallest infinite cardinal)",
       "Cardinal.mk_denumerable bridge lemma"
-    ]
-  },
-  {
-    "id": "diagonal-visualization",
-    "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 7,
-      "endLine": 44
-    },
-    "type": "insight",
-    "title": "Cantor's Diagonal Enumeration Visualization",
-    "content": "The classic visualization arranges positive rationals p/q in a grid and traverses anti-diagonals p + q = const, skipping non-reduced fractions. This dovetailing technique became fundamental in computability theory. Mathlib uses the Cantor pairing function rather than the diagonal traversal, which is computationally equivalent but more algebraically tractable.",
-    "mathContext": "Anti-diagonal enumeration: traverse pairs $(p, q)$ along $p + q = 2, 3, 4, \\ldots$. Cantor pairing: $\\pi(a, b) = (a+b)(a+b+1)/2 + b$.",
-    "significance": "supporting",
-    "prerequisites": [
-      "grid arrangement of p/q fractions",
-      "reduced fractions (gcd(p,q) = 1)",
-      "Cantor pairing function bijectivity"
-    ],
-    "relatedConcepts": [
-      "dovetailing technique in computability",
-      "Cantor pairing function",
-      "Turing's enumeration of computable reals"
     ]
   }
 ]

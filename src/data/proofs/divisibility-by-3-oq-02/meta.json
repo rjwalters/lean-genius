@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Documentation",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Imports Mathlib, documents the file's scope (generalizing divisibility rules to arbitrary bases), lists completed goals, and establishes the DivisibilityBy3OQ02 namespace. References Mathlib's `Nat.modEq_digits_sum` and `Nat.dvd_iff_dvd_digits_sum` as key dependencies.",
+      "mathContext": "The universal principle: $b \\equiv 1 \\pmod{b-1}$, so $n = \\sum d_i b^i \\equiv \\sum d_i \\pmod{b-1}$. This is the foundation of casting out 9s (base 10), 7s (base 8), 15s (base 16)."
+    },
+    {
       "id": "helpers",
       "title": "Part I: Key Helper Lemmas",
       "startLine": 40,

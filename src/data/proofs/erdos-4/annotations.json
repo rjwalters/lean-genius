@@ -2,21 +2,31 @@
   {
     "id": "ann-e4-header",
     "proofId": "erdos-4",
-    "range": { "startLine": 1, "endLine": 29 },
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
     "type": "context",
     "title": "Problem History and Imports",
     "content": "The module docstring traces the 80-year history of Erdős Problem #4 from Rankin's 1938 bound ($C = e^\\gamma/3$, unimproved for 75 years) through the simultaneous 2016 breakthroughs by Maynard and Ford-Green-Konyagin-Tao, to the combined FGKMT improvement (2018). The problem offered a $\\$10{,}000$ Erdős prize (for the weaker $(\\log n)^{1+c}$ conjecture, still open). The `import Mathlib` pulls in `Nat.nth` for prime enumeration, `Real.log` for iterated logarithms, and `Filter.Tendsto` for asymptotic analysis. The `open Set Nat Real` declaration makes these namespaces available without prefix.",
     "mathContext": "The problem asks: $\\forall C > 0$, $\\exists^\\infty n : p_{n+1} - p_n > C \\cdot f(n)$ where $f(n) = \\frac{\\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n}{(\\log\\log\\log n)^2}$. SOLVED (Maynard 2016, FGKT 2016).",
     "significance": "supporting",
-    "relatedConcepts": ["Rankin's construction", "Erdős prize problems", "prime gap history"],
-    "prerequisites": ["Mathlib", "analytic number theory"]
+    "relatedConcepts": [
+      "Rankin's construction",
+      "Erdős prize problems",
+      "prime gap history"
+    ],
+    "prerequisites": [
+      "Mathlib",
+      "analytic number theory"
+    ]
   },
   {
     "id": "ann-e4-nthprime",
     "proofId": "erdos-4",
     "range": {
       "startLine": 33,
-      "endLine": 34
+      "endLine": 35
     },
     "type": "definition",
     "title": "n-th Prime",
@@ -38,7 +48,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 36,
-      "endLine": 37
+      "endLine": 40
     },
     "type": "definition",
     "title": "Prime Gap",
@@ -60,7 +70,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 41,
-      "endLine": 42
+      "endLine": 43
     },
     "type": "definition",
     "title": "Natural Logarithm",
@@ -81,7 +91,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 44,
-      "endLine": 51
+      "endLine": 54
     },
     "type": "definition",
     "title": "Iterated Logarithms",
@@ -102,7 +112,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 55,
-      "endLine": 62
+      "endLine": 63
     },
     "type": "definition",
     "title": "Erdős Function",
@@ -126,7 +136,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 64,
-      "endLine": 69
+      "endLine": 72
     },
     "type": "definition",
     "title": "Rankin Function",
@@ -148,7 +158,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 73,
-      "endLine": 80
+      "endLine": 83
     },
     "type": "concept",
     "title": "Erdős Problem #4 (SOLVED)",
@@ -171,7 +181,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 84,
-      "endLine": 96
+      "endLine": 99
     },
     "type": "insight",
     "title": "Rankin's Theorem (1938)",
@@ -194,7 +204,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 100,
-      "endLine": 107
+      "endLine": 108
     },
     "type": "insight",
     "title": "Maynard's Theorem (2016)",
@@ -217,7 +227,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 109,
-      "endLine": 113
+      "endLine": 114
     },
     "type": "insight",
     "title": "Ford-Green-Konyagin-Tao (2016)",
@@ -239,7 +249,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 115,
-      "endLine": 116
+      "endLine": 119
     },
     "type": "insight",
     "title": "Problem Solved (PROVED)",
@@ -259,7 +269,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 120,
-      "endLine": 132
+      "endLine": 135
     },
     "type": "insight",
     "title": "FGKMT Improved Bound (2018)",
@@ -281,7 +291,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 136,
-      "endLine": 147
+      "endLine": 148
     },
     "type": "insight",
     "title": "Baker-Harman-Pintz Upper Bound (2001)",
@@ -325,7 +335,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 158,
-      "endLine": 160
+      "endLine": 161
     },
     "type": "definition",
     "title": "Cramér's Conjecture (1936, OPEN)",
@@ -349,7 +359,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 162,
-      "endLine": 166
+      "endLine": 169
     },
     "type": "definition",
     "title": "Cramér-Granville Constant",
@@ -370,7 +380,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 170,
-      "endLine": 171
+      "endLine": 172
     },
     "type": "concept",
     "title": "First Prime Gap",
@@ -390,7 +400,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 173,
-      "endLine": 174
+      "endLine": 176
     },
     "type": "concept",
     "title": "Gaps are Positive",
@@ -411,7 +421,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 177,
-      "endLine": 178
+      "endLine": 182
     },
     "type": "concept",
     "title": "Average Gap Asymptotic",
@@ -433,7 +443,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 183,
-      "endLine": 184
+      "endLine": 185
     },
     "type": "concept",
     "title": "Erdős Function Growth Rate",
@@ -498,7 +508,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 195,
-      "endLine": 204
+      "endLine": 205
     },
     "type": "definition",
     "title": "Erdős's Stronger Conjecture ($10,000 Prize)",
@@ -519,7 +529,7 @@
     "proofId": "erdos-4",
     "range": {
       "startLine": 206,
-      "endLine": 214
+      "endLine": 215
     },
     "type": "definition",
     "title": "Firoozbakht's Conjecture (1982, OPEN)",
