@@ -1,0 +1,69 @@
+[
+  {
+    "id": "ann-oq03-krylov-def",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 57, "endLine": 69 },
+    "type": "definition",
+    "title": "Krylov Vector Definition",
+    "content": "The $k$-th **Krylov vector** is $v_k = M^k v$, where $M$ is the matrix and $v$ is a starting vector. Named after Alexei Krylov (1931), who introduced iterative subspace methods for computing characteristic polynomials. The sequence $\\{v, Mv, M^2v, \\ldots\\}$ is the fundamental object in iterative eigenvalue and minimal polynomial computation.",
+    "mathContext": "$\\text{krylovVec}(M, v, k) = M^k \\cdot v$",
+    "significance": "key",
+    "relatedConcepts": ["Krylov subspace", "power iteration", "Lanczos algorithm"]
+  },
+  {
+    "id": "ann-oq03-recurrence",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 71, "endLine": 87 },
+    "type": "technique",
+    "title": "Krylov Recurrence: O(n\u00b2) Per Step",
+    "content": "The recurrence $v_{k+1} = M \\cdot v_k$ avoids computing $M^k$ explicitly. Each step requires one matrix-vector product: $n^2$ multiplications and $n(n-1)$ additions, for $O(n^2)$ field operations. Compare with the naive approach of computing $M^k$ via matrix multiplication ($O(n^3)$ per power), which would give $O(n^4)$ total. The Krylov recurrence saves a factor of $n$.",
+    "mathContext": "$v_{k+1} = M \\cdot v_k$ requires $O(n^2)$ field operations",
+    "significance": "key",
+    "relatedConcepts": ["matrix-vector product", "computational efficiency", "sparse matrix algorithms"],
+    "prerequisites": ["krylovVec definition"]
+  },
+  {
+    "id": "ann-oq03-annihilation",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 109, "endLine": 126 },
+    "type": "result",
+    "title": "Minimal Polynomial Annihilates Every Vector",
+    "content": "Since $\\mu_M(M) = 0$ as a matrix, applying to any vector gives $\\mu_M(M) \\cdot v = 0$. This is the foundational fact enabling the Krylov method: the minimal polynomial provides a universal relation among Krylov vectors. More generally, any polynomial $p$ with $p(M) = 0$ also satisfies $p(M) \\cdot v = 0$ for all $v$.",
+    "mathContext": "$\\mu_M(M) = 0 \\implies \\mu_M(M) \\cdot v = 0$ for all $v$",
+    "significance": "key",
+    "relatedConcepts": ["annihilating polynomial", "Cayley-Hamilton theorem"]
+  },
+  {
+    "id": "ann-oq03-termination",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 128, "endLine": 157 },
+    "type": "result",
+    "title": "Krylov Termination Theorem",
+    "content": "The $d+1$ Krylov vectors $\\{v, Mv, \\ldots, M^d v\\}$ are linearly dependent, where $d = \\deg(\\mu_M)$. Proof: $\\mu_M$ is monic, so $\\mu_M = X^d + a_{d-1}X^{d-1} + \\cdots + a_0$. From $\\mu_M(M)v = 0$: $M^d v + a_{d-1} M^{d-1}v + \\cdots + a_0 v = 0$. The leading coefficient 1 is nonzero, making this a nontrivial linear relation.",
+    "mathContext": "$M^d v = -a_{d-1} M^{d-1}v - \\cdots - a_0 v$, a nontrivial dependence",
+    "significance": "key",
+    "relatedConcepts": ["linear dependence", "monic polynomial", "Krylov convergence"]
+  },
+  {
+    "id": "ann-oq03-complexity",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 196, "endLine": 224 },
+    "type": "result",
+    "title": "O(n\u00b3) Complexity Bound",
+    "content": "Combining the Krylov dimension bound (at most $\\deg(\\mu_M)$ independent vectors) with $\\deg(\\mu_M) \\leq n$ (from $\\mu_M | \\chi_M$ and $\\deg(\\chi_M) = n$) gives at most $n$ iterations. Each iteration costs $O(n^2)$ (one matrix-vector product). Total: $O(n^3)$ field operations. For **sparse** matrices with $s$ nonzero entries, each product costs $O(s)$ instead, giving $O(n \\cdot s)$ total (Wiedemann 1986).",
+    "mathContext": "$\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$, so $\\leq n$ iterations $\\times$ $O(n^2)$ each $= O(n^3)$",
+    "significance": "key",
+    "relatedConcepts": ["matrix algorithms", "Wiedemann algorithm", "sparse linear algebra"]
+  },
+  {
+    "id": "ann-oq03-nonderogatory",
+    "proofId": "cayley-hamilton-minpoly-oq-03",
+    "range": { "startLine": 226, "endLine": 250 },
+    "type": "connection",
+    "title": "Optimality for Nonderogatory Matrices",
+    "content": "When $\\mu_M = \\chi_M$ (nonderogatory), a cyclic vector produces exactly $n$ linearly independent Krylov vectors before dependence at step $n$. The Krylov method then extracts all $n$ coefficients of $\\mu_M = \\chi_M$ in a single pass. No algorithm can do better: extracting $n$ coefficients requires $\\geq n$ matrix-vector products. This connects to OQ-04's characterization of nonderogatory matrices via cyclic vectors.",
+    "mathContext": "Nonderogatory: $\\mu_M = \\chi_M \\implies$ exactly $n$ independent Krylov vectors with a cyclic vector",
+    "significance": "key",
+    "relatedConcepts": ["nonderogatory matrix", "cyclic vector", "companion matrix"]
+  }
+]
