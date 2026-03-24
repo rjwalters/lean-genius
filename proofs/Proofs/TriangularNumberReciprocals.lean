@@ -88,6 +88,7 @@ theorem partial_fraction' (n : ℕ) (hn : n ≠ 0) :
   have hn1 : (n + 1 : ℝ) ≠ 0 := by positivity
   have hnn1 : (n : ℝ) * (n + 1) ≠ 0 := by positivity
   field_simp
+  ring
 
 /-! ## Telescoping Finite Sums
 
@@ -122,8 +123,10 @@ theorem finite_sum_reciprocals (n : ℕ) (hn : n ≠ 0) :
       rw [this, Finset.sum_union]
       · rw [Finset.sum_singleton, ih hm]
         have hm1 : (m + 1 : ℝ) ≠ 0 := by positivity
+        have hm2 : (m + 2 : ℝ) ≠ 0 := by positivity
         have hprod : (m + 1 : ℝ) * (m + 1 + 1) ≠ 0 := by positivity
         field_simp
+        push_cast
         ring
       · simp only [Finset.disjoint_singleton_right, Finset.mem_Icc, not_and, not_le]
         intro _
@@ -153,8 +156,8 @@ theorem summable_reciprocal_product : Summable (fun n : ℕ => (1 : ℝ) / ((n :
     · positivity
   have h_pseries : Summable fun n : ℕ => (1 : ℝ) / (n : ℝ)^2 := by
     have h := Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)
-    simp only [Real.rpow_natCast, ← one_div] at h
-    exact_mod_cast h
+    convert h using 1
+    ext n; simp [one_div]
   exact Summable.of_nonneg_of_le h_nonneg h_bound h_pseries
 
 /-- The series 2/(n(n+1)) is summable. -/
@@ -232,13 +235,13 @@ theorem sum_reciprocals_triangular :
       = |-(2 / (n : ℝ))| := by ring_nf
     _ = (2 : ℝ) / n := by rw [abs_neg, abs_of_pos (by positivity)]
     _ < ε := by
-        rw [div_lt_iff hn_pos]
+        rw [div_lt_iff₀ hn_pos]
         have h1 : (n : ℝ) ≥ Nat.ceil (2 / ε) + 1 := by exact_mod_cast hn
         have h2 : (Nat.ceil (2 / ε) : ℝ) ≥ 2 / ε := Nat.le_ceil _
         have h3 : (2 : ℝ) / ε < n := by linarith
         have h4 : (2 : ℝ) < ε * n := by
           rw [mul_comm]
-          exact (div_lt_iff hε).mp h3
+          exact (div_lt_iff₀ hε).mp h3
         linarith
 
 /-- The tsum version of the main theorem. -/
