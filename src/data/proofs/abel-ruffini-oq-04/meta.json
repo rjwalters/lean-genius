@@ -151,7 +151,7 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 31,
-      "summary": "Imports three Mathlib modules (GroupTheory.Solvable, SpecificGroups.Alternating, Tactic) and documents the 4-step proof chain architecture. Part of Wiedijk's 100 Theorems (#16, Insolvability of General Higher Degree Equations). References sibling files AbelRuffini.lean and AbelRuffiniGaloisExtensions.lean.",
+      "summary": "Imports three Mathlib modules (GroupTheory.Solvable, SpecificGroups.Alternating, Tactic) and documents the 4-step proof chain architecture. Part of Wiedijk's 100 Theorems (#16, Insolvability of General Higher Degree Equations). References sibling files AbelRuffini.lean and AbelRuffiniGaloisExtensions.lean. Note: the Lean file header cites Wiedijk #83, but the correct number for the Abel-Ruffini theorem (Insolvability of General Higher Degree Equations) is #16.",
       "mathContext": "Dependencies: `IsSolvable`, `alternatingGroup`, `isSimpleGroup_five`, `Equiv.Perm.not_solvable` from Mathlib's group theory library."
     },
     {
@@ -187,12 +187,20 @@
       "mathContext": "$\\text{IsSolvable}(S_1) \\wedge \\neg\\text{IsSolvable}(S_5)$: the transition is sharp at $n = 5$. Equivalently: $S_n$ solvable $\\iff n \\leq 4$, since $A_n$ is simple for $n \\geq 5$ while $A_4 \\supset V_4 \\cong (\\mathbb{Z}/2)^2$ has a proper normal subgroup."
     },
     {
-      "id": "chain",
-      "title": "The Complete Proof Chain (Documentation)",
+      "id": "chain-steps",
+      "title": "Proof Chain Steps 1–5 (Documentation)",
       "startLine": 88,
-      "endLine": 153,
-      "summary": "Comprehensive documentation of the 5-step proof chain (A₅ simple → non-solvable → Sₙ not solvable → Galois bridge → generic quintic). Includes 'Why Exactly 5?' table (derived series for S₁ through S₅) and 'Crucial Asymmetry' table (degree-by-degree radical solvability with historical formula discoverers).",
-      "mathContext": "$A_5$ simple $\\Rightarrow$ $[A_5, A_5] = A_5$ $\\Rightarrow$ $S_n$ not solvable $\\Rightarrow$ $\\text{Gal}(x^5 + \\cdots) \\cong S_5$ not solvable $\\Rightarrow$ no radical formula."
+      "endLine": 124,
+      "summary": "Comprehensive documentation of the 5-step proof chain from A₅ simplicity to the Abel-Ruffini impossibility. Step 1 (A₅ simple) and Step 3 (Sₙ not solvable) are formalized above; Step 2 (simple non-abelian implies non-solvable) is internal to Mathlib's Equiv.Perm.not_solvable; Steps 4–5 (Galois bridge and generic quintic Galois group) are documented but not formalized in this file. The chain illustrates how a single deep fact (A₅ simplicity) propagates through elementary group-theoretic implications to a landmark impossibility result.",
+      "mathContext": "The full chain: $A_5$ simple $\\Rightarrow$ $[A_5, A_5] = A_5$ (derived series stuck) $\\Rightarrow$ $S_n$ ($n \\geq 5$) not solvable $\\Rightarrow$ solvable Galois group needed for radicals $\\Rightarrow$ $\\text{Gal}(x^5 + a_1 x^4 + \\cdots + a_5 / \\mathbb{Q}(a_1,\\ldots,a_5)) \\cong S_5$ not solvable $\\Rightarrow$ no radical formula."
+    },
+    {
+      "id": "chain-tables",
+      "title": "Comparison Tables: Why Exactly 5 and Crucial Asymmetry",
+      "startLine": 125,
+      "endLine": 152,
+      "summary": "Two pedagogical tables that crystallize the solvability threshold. The 'Why Exactly 5?' table shows the derived series for S₁ through S₅, revealing that S₄'s series terminates ({e} ◁ V₄ ◁ A₄ ◁ S₄) while S₅'s gets stuck (A₅ = [A₅,A₅] is simple). The 'Crucial Asymmetry' table maps polynomial degree to Galois group solvability and radical solvability, showing the sharp transition at degree 5 with historical formula discoverers (Cardano 1545, Ferrari 1540, Abel 1824). Concludes with the crucial generic vs. specific distinction: x⁵ − 1 has a cyclic (solvable) Galois group, so the theorem concerns the non-existence of a general formula.",
+      "mathContext": "Composition factors: $S_4$ has $\\{\\mathbb{Z}/2, \\mathbb{Z}/3, \\mathbb{Z}/2, \\mathbb{Z}/2\\}$ (all cyclic prime order, hence solvable). $S_5$ has $\\{\\mathbb{Z}/2, A_5\\}$ (non-cyclic factor $A_5$, hence not solvable). The transition $S_4 \\to S_5$ is the exact point where a non-cyclic composition factor first appears."
     },
     {
       "id": "verification",
