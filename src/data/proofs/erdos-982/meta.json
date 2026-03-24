@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/982",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -92,70 +92,70 @@
       "title": "Basic Definitions",
       "summary": "Plane type, distinctDistancesFrom, maxDistinctDistances functions",
       "startLine": 43,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "convex-position",
       "title": "Convex Polygons",
       "summary": "InConvexPosition predicate, guaranteedDistinctDistances function f(n)",
       "startLine": 70,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "erdos982Conjecture and erdos982Conjecture' formal statements",
       "startLine": 99,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "moser_bound, erdos_fishburn_bound, dumitrescu_bound, nppz_bound axioms",
       "startLine": 126,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "regular-polygon",
       "title": "Regular Polygon Optimality",
       "summary": "regular_polygon_distances, upper_bound_on_f axioms",
       "startLine": 170,
-      "endLine": 191
+      "endLine": 192
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "triangle_case, quadrilateral_case, pentagon_case theorems",
       "startLine": 193,
-      "endLine": 235
+      "endLine": 236
     },
     {
       "id": "related-problem",
       "title": "Related Problem",
       "summary": "strongerConjectureDisproved, connection to Problem #97",
       "startLine": 237,
-      "endLine": 260
+      "endLine": 261
     },
     {
       "id": "curve-generalization",
       "title": "Convex Curve Generalization",
       "summary": "acute_triangle_counterexample, barany_roldan_pensado results",
       "startLine": 262,
-      "endLine": 292
+      "endLine": 293
     },
     {
       "id": "gap-analysis",
       "title": "Gap Analysis",
       "summary": "currentGap definition, gap_value theorem",
       "startLine": 294,
-      "endLine": 312
+      "endLine": 313
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_982_status, erdos_982_summary final theorems",
       "startLine": 314,
-      "endLine": 359
+      "endLine": 360
     }
   ],
   "conclusion": {
@@ -185,5 +185,27 @@
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distances, geometry, open"
+    },
+    {
+      "targetId": "erdos-94",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convex, discrete-geometry, distances, geometry"
+    },
+    {
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, geometry, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-654",
+    "erdos-94",
+    "erdos-103"
+  ]
 }

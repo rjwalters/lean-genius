@@ -25,7 +25,7 @@
     "erdosUrl": "https://erdosproblems.com/860",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "PrimeCounting",
@@ -84,42 +84,42 @@
       "title": "Basic Definitions",
       "summary": "Defines `nthPrime` (via `Nat.nth Nat.Prime`), `primePi` (via `Nat.primeCounting`), `PrimeCovering` (structure with interval, distinctness, and divisibility constraints), and `AdmitsCovering` (existential wrapper).",
       "startLine": 42,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "h-function",
       "title": "The Function $h(n)$",
       "summary": "Defines $h(n)$ via `Nat.find` as the minimum $L$ with $\\forall\\, m,\\; \\text{AdmitsCovering}(m, L, \\pi(n))$. Axiomatizes universality ($h(n)$ always works) and minimality ($h(n)-1$ sometimes fails).",
       "startLine": 64,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "bounds",
       "title": "Known Bounds: Erdős-Selfridge, Ruzsa, Erdős-Pomerance",
       "summary": "Axiomatizes three key results: (1) Erdős-Selfridge: $h(n) > (3-\\varepsilon)n$ for large $n$. (2) Ruzsa: $h(n)/n \\to \\infty$ (superlinear). (3) Erdős-Pomerance: $h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$ (subquadratic upper bound).",
       "startLine": 85,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "gap",
       "title": "The Gap Between Bounds",
       "summary": "Derives quantitative consequences: $h(n) \\geq 2.9n$ (partial proof from Erdős-Selfridge with $\\varepsilon = 0.1$) and $h(n) = o(n^2)$ (partial proof from Erdős-Pomerance). States the open question: is $h(n) = \\Theta(n^\\alpha)$?",
       "startLine": 111,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "summary": "Notes connections to Erdős Problem #375 (related covering question), Guy's Problem B32, and the greedy algorithm approach for constructing coverings.",
       "startLine": 139,
-      "endLine": 156
+      "endLine": 157
     },
     {
       "id": "reformulation",
       "title": "Bipartite Matching Reformulation",
       "summary": "Reformulates $h(n)$ as the minimum $L$ for a perfect matching in the bipartite divisibility graph. Hall's condition: $|N(S) \\cap (m, m+L]| \\geq |S|$ for all prime subsets $S$.",
       "startLine": 158,
-      "endLine": 171
+      "endLine": 172
     },
     {
       "id": "summary",
@@ -141,8 +141,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-375",
-    "erdos-533"
+    "erdos-1065",
+    "erdos-1072",
+    "erdos-386"
   ],
   "leanFile": {
     "imports": [
@@ -171,6 +172,23 @@
       "key": "Gu04",
       "citation": "Guy, Richard K., Unsolved Problems in Number Theory, 3rd ed. (2004), Problem B32.",
       "type": "book"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-386",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
     }
   ]
 }

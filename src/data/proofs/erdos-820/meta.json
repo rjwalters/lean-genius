@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/820",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.gcd",
@@ -177,5 +177,27 @@
     "axiomCount": 4,
     "theoremCount": 4,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-535",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gcd, number-theory, open"
+    },
+    {
+      "targetId": "erdos-539",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gcd, number-theory, open"
+    },
+    {
+      "targetId": "erdos-700",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gcd, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-535",
+    "erdos-539",
+    "erdos-700"
+  ]
 }

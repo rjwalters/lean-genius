@@ -38,7 +38,8 @@
     ],
     "axiomCount": 16,
     "lineCount": 246,
-    "assumptions": "16 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "16 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Unit Distance Graphs, Density, and the Independence Threshold**\n\nA *unit distance graph* (UDG) on $n$ points in $\\mathbb{R}^2$ has edges between points at Euclidean distance exactly 1. The *independence number* $\\alpha(G)$ is the size of the largest subset with no edges. Erdős defined $f(n) = \\min_G \\alpha(G)$ over all $n$-point UDGs and asked for its growth rate — in particular, whether $f(n) \\geq n/4$.\n\n**The Larman-Rogers Bridge (1972)**: The key insight connecting discrete and continuous. Let $m_1 = \\sup\\{\\overline{d}(S) : S \\subseteq \\mathbb{R}^2 \\text{ measurable, unit-distance-free}\\}$ be the maximum density of a measurable set avoiding unit distances. Larman and Rogers proved $f(n) \\geq m_1 \\cdot n$ by a probabilistic argument: a random translate of a high-density unit-distance-free set captures $\\geq m_1 n$ of any $n$ given points in expectation.\n\n**Croft's Construction (1967)**: Croft built explicit unit-distance-free sets from hexagonal lattices, proving $m_1 \\geq 0.22936$. Combined with Larman-Rogers: $f(n) \\geq 0.22936n$. This lower bound has stood for over 55 years.\n\n**The Moser Spindle (1961)**: Leo and William Moser constructed a 7-vertex UDG with independence number exactly 2 (and chromatic number 4). By tiling with $\\lfloor n/7 \\rfloor$ copies: $f(n) \\leq (2/7)n \\approx 0.286n$.\n\n**ACMVZ Barrier (2023)**: Ambrus, Csiszárik, Matolcsi, Varga, and Zsámboki proved $m_1 \\leq 0.247$ using Fourier-analytic methods — the constraint $d(p,q) \\neq 1$ translates to conditions on Bessel function zeros in the Fourier domain. Since $0.247 < 0.25 = 1/4$, this establishes a *barrier*: the density method alone cannot prove $f(n) \\geq n/4$.\n\n**De Grey and Hadwiger-Nelson (2018)**: The chromatic number $\\chi$ of $\\mathbb{R}^2$ satisfies $5 \\leq \\chi \\leq 7$ (de Grey improved the lower bound from 4 to 5). Since $\\alpha(G) \\cdot \\chi(G) \\geq |V(G)|$, we get $f(n) \\geq n/\\chi \\geq n/7$.\n\n**Current State**: Best bounds $0.22936n \\leq f(n) \\leq (2/7)n$, with the $n/4$ question requiring genuinely new techniques beyond density.",
@@ -64,49 +65,49 @@
       "id": "unit-distance-graphs",
       "title": "Unit Distance Graphs",
       "startLine": 39,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "`euclideanDist` via Mathlib `dist`; `isUnitDistance(p,q) :\\equiv d(p,q) = 1$; `UnitDistanceGraph n` with `Finset` of $n$ points; `IsIndependentSet(G, S)` requiring no unit distance pairs; `independenceNumber` via `Finset.sup` over `powerset.filter`"
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "startLine": 64,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "$f(n) = \\min_G \\alpha(G)$ axiomatized with `f_is_minimum` ($\\forall G,\\, \\alpha(G) \\geq f(n)$) and `f_is_achieved` ($\\exists G,\\, \\alpha(G) = f(n)$)"
     },
     {
       "id": "density-bound",
       "title": "Density-Based Lower Bound",
       "startLine": 81,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "$m_1 = \\sup\\{\\overline{d}(S) : S \\text{ unit-distance-free}\\}$ axiomatized; `larman_rogers_theorem`: $f(n) \\geq m_1 n$; `croft_lower_bound`: $m_1 \\geq 0.22936$; `f_lower_bound` proved via `nlinarith`"
     },
     {
       "id": "moser-spindle",
       "title": "The Moser Spindle Upper Bound",
       "startLine": 119,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "Moser spindle: $\\exists G \\in \\text{UDG}(7) : \\alpha(G) = 2$; tiling gives `moser_spindle_upper_bound`: $f(n) \\leq (2/7)n$; `best_known_bounds` packages both via `exact ⟨f_lower_bound n, moser_spindle_upper_bound n⟩`"
     },
     {
       "id": "quarter-question",
       "title": "The n/4 Question",
       "startLine": 150,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "`acmvz_upper_bound`: $m_1 \\leq 0.247$; `quarter_threshold`: $0.247 < 1/4$ by `norm_num`; `density_insufficient_for_quarter`: $m_1 < 1/4$ — density methods *cannot* prove $f(n) \\geq n/4$"
     },
     {
       "id": "hadwiger-nelson",
       "title": "Connection to Hadwiger-Nelson",
       "startLine": 170,
-      "endLine": 195,
+      "endLine": 196,
       "summary": "`chromaticNumberPlane` axiomatized with $5 \\leq \\chi \\leq 7$; `independence_chromatic_relation`: $f(n) \\geq n/\\chi$; `f_from_chromatic`: $f(n) \\geq n/7$ (sorry — division monotonicity casting)"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 197,
-      "endLine": 221,
+      "endLine": 246,
       "summary": "`erdos_1070_summary`: $(\\forall n,\\, 0.22936n \\leq f(n)) \\land (\\forall n,\\, f(n) \\leq (2/7)n) \\land (m_1 < 1/4)$ via `exact ⟨f_lower_bound, moser_spindle_upper_bound, density_insufficient_for_quarter⟩`"
     }
   ],
@@ -123,28 +124,28 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-508",
-      "relationship": "The Hadwiger-Nelson problem asks for the chromatic number χ(ℝ²); since any independent set in a unit distance graph is a color class, f(n) ≥ n/χ(ℝ²). The current bounds 5 ≤ χ ≤ 7 yield n/7 ≤ f(n), and resolving the chromatic number would immediately sharpen the independence bound."
+      "relationship": "The Hadwiger-Nelson problem asks for the chromatic number χ(ℝ²); since any independent set in a unit distance graph is a color class, f(n) ≥ n/χ(ℝ²). The current bounds 5 ≤ χ ≤ 7 yield n/7 ≤ f(n), and resolving the chromatic number would immediately sharpen the independence bound.",
+      "targetId": "erdos-508"
     },
     {
-      "target": "erdos-232",
-      "relationship": "The maximum density m₁ of a measurable unit-distance-free set in ℝ² is the continuous counterpart of f(n)/n. The Larman-Rogers theorem f(n) ≥ m₁·n connects both problems; the ACMVZ result m₁ ≤ 0.247 < 1/4 (formalized in erdos-232) provides the density barrier central to this formalization."
+      "relationship": "The maximum density m₁ of a measurable unit-distance-free set in ℝ² is the continuous counterpart of f(n)/n. The Larman-Rogers theorem f(n) ≥ m₁·n connects both problems; the ACMVZ result m₁ ≤ 0.247 < 1/4 (formalized in erdos-232) provides the density barrier central to this formalization.",
+      "targetId": "erdos-232"
     },
     {
-      "target": "erdos-1066",
-      "relationship": "The strict variant: n points in ℝ² with all pairwise distances ≥ 1, edges between points at distance exactly 1. Relaxing the 'no two points closer than 1' constraint changes the extremal behavior and leads to different bounds on the independence number."
+      "relationship": "The strict variant: n points in ℝ² with all pairwise distances ≥ 1, edges between points at distance exactly 1. Relaxing the 'no two points closer than 1' constraint changes the extremal behavior and leads to different bounds on the independence number.",
+      "targetId": "erdos-1066"
     },
     {
-      "target": "erdos-1069",
-      "relationship": "The Szemerédi-Trotter theorem on k-rich lines is proved via incidence geometry techniques in ℝ². Both problems concern extremal properties of finite point configurations in the Euclidean plane, and Szemerédi-Trotter machinery has been applied to bounding distances and independence in discrete geometry."
+      "relationship": "The Szemerédi-Trotter theorem on k-rich lines is proved via incidence geometry techniques in ℝ². Both problems concern extremal properties of finite point configurations in the Euclidean plane, and Szemerédi-Trotter machinery has been applied to bounding distances and independence in discrete geometry.",
+      "targetId": "erdos-1069"
     },
     {
-      "target": "four-color-theorem",
-      "relationship": "Graph colorings of planar graphs satisfy χ ≤ 4; unit distance graphs in ℝ² are not in general planar, but both problems study the tension between graph structure and geometric embedding. The Moser spindle, which gives the upper bound f(n) ≤ 2n/7, is also a graph with chromatic number 4."
+      "relationship": "Graph colorings of planar graphs satisfy χ ≤ 4; unit distance graphs in ℝ² are not in general planar, but both problems study the tension between graph structure and geometric embedding. The Moser spindle, which gives the upper bound f(n) ≤ 2n/7, is also a graph with chromatic number 4.",
+      "targetId": "four-color-theorem"
     },
     {
-      "target": "prob-method-expectation",
-      "relationship": "The Larman-Rogers theorem — the key lower bound f(n) ≥ m₁·n — is proved via a first-moment probabilistic argument: a random translate of a high-density unit-distance-free set captures at least m₁·n of any given n points in expectation, so some translate achieves this bound deterministically."
+      "relationship": "The Larman-Rogers theorem — the key lower bound f(n) ≥ m₁·n — is proved via a first-moment probabilistic argument: a random translate of a high-density unit-distance-free set captures at least m₁·n of any given n points in expectation, so some translate achieves this bound deterministically.",
+      "targetId": "prob-method-expectation"
     }
   ],
   "relatedProofs": [

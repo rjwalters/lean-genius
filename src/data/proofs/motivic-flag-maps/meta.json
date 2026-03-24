@@ -66,7 +66,8 @@
     "dateAdded": "2025-01-14",
     "axiomCount": 2,
     "lineCount": 438,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This result was announced in January 2025 by Jim Bryan, Balázs Elek, Freddie Manners, George Salafatinos, and Ravi Vakil. It represents a significant advance in understanding the motivic structure of moduli spaces of maps.\n\n**Notably, the authors explicitly credit AI assistance**: \"The proof of this result was obtained in conjunction with Google Gemini and related tools.\" This makes it one of the first major mathematical results to credit AI collaboration in the research process.\n\nThe result connects several deep areas of mathematics: algebraic geometry (flag varieties), K-theory (Grothendieck rings), and moduli theory (spaces of rational curves).",
@@ -89,21 +90,21 @@
       "id": "grothendieck-ring",
       "title": "Grothendieck Ring of Varieties",
       "startLine": 57,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "K_0(Var) as CommRing with Lefschetz motive L, affine and projective class formulas with geometric series proof."
     },
     {
       "id": "gln-class",
       "title": "GL_n Motivic Class",
       "startLine": 102,
-      "endLine": 149,
+      "endLine": 150,
       "summary": "Explicit GL_n formula via Bruhat decomposition with GL_1 through GL_4 theorems proved."
     },
     {
       "id": "flag-varieties",
       "title": "Flag Varieties",
       "startLine": 151,
-      "endLine": 195,
+      "endLine": 196,
       "summary": "Complete flag definition and flag variety motivic class formula with Fl_1 through Fl_4 proved."
     },
     {
@@ -117,7 +118,7 @@
       "id": "tower-decomposition",
       "title": "Tower Decomposition",
       "startLine": 244,
-      "endLine": 302,
+      "endLine": 303,
       "summary": "Fiber class formula from Corollary 2.5: [fiber] = L^{exponent} · (L^k - 1), verified for k=1,2,3. Cell decomposition infrastructure."
     },
     {
@@ -138,7 +139,7 @@
       "id": "further-formalization",
       "title": "Paths to Further Formalization",
       "startLine": 420,
-      "endLine": 437,
+      "endLine": 438,
       "summary": "Roadmap for short, medium, and long-term formalization goals (most short-term goals now complete)."
     }
   ],

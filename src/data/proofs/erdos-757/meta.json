@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/757",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set.ncard",
@@ -75,63 +75,63 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 28,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Sidon sets defined via the sum characterization: a + b = c + d implies {a,b} = {c,d}."
     },
     {
       "id": "almost-sidon",
       "title": "Almost-Sidon Condition",
       "startLine": 44,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "The almost-Sidon property and admissible constants for the main problem."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 65,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "The open problem about finding the exact supremum of admissible constants."
     },
     {
       "id": "bounds",
       "title": "Gyárfás-Lehel Bounds (1995)",
       "startLine": 79,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Lower bound (c > 1/2) and upper bound (c < 3/5) from the 1995 paper."
     },
     {
       "id": "sidon-properties",
       "title": "Properties of Sidon Sets",
       "startLine": 98,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "Difference counts, subset closure, and base cases for empty, singleton, and pairs."
     },
     {
       "id": "difference-sets",
       "title": "Difference Sets",
       "startLine": 134,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "Properties of difference sets: contains 0, symmetric structure."
     },
     {
       "id": "condition",
       "title": "The Condition |B - B| ≥ 11",
       "startLine": 150,
-      "endLine": 169,
+      "endLine": 170,
       "summary": "Bounds on difference set sizes for 4-element sets and relation to Sidon property."
     },
     {
       "id": "admissible",
       "title": "Admissible Constants",
       "startLine": 171,
-      "endLine": 206,
+      "endLine": 207,
       "summary": "Properties of the set of admissible constants: bounded above, nonempty."
     },
     {
       "id": "extremal",
       "title": "Extremal Combinatorics Connection",
       "startLine": 208,
-      "endLine": 224,
+      "endLine": 226,
       "summary": "Connection to B₂ sequences and the general Sidon set constant problem."
     }
   ],
@@ -160,5 +160,27 @@
     "axiomCount": 11,
     "theoremCount": 8,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-155",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-156",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-153",
+    "erdos-155",
+    "erdos-156"
+  ]
 }

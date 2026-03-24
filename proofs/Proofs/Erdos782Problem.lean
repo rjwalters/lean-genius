@@ -64,10 +64,15 @@ def ArithProg (a d k : ℕ) : Fin k → ℕ := fun i => a + i.val * d
 def ContainsAP (S : Set ℕ) (k : ℕ) : Prop :=
   ∃ a d : ℕ, d > 0 ∧ ∀ i : Fin k, ArithProg a d k i ∈ S
 
--- Classical: squares contain length-3 APs
--- Example: 1, 25, 49 is an AP with d=24 (1=1², 25=5², 49=7²)
--- Actually: 1, 25, 49 has d=24 but 25-1=24, 49-25=24 ✓
-axiom squares_contain_3AP : ContainsAP Squares 3
+/-- Squares contain a 3-term AP: {1, 25, 49} = {1², 5², 7²} with d = 24.
+    Proof by explicit construction. -/
+theorem squares_contain_3AP : ContainsAP Squares 3 := by
+  refine ⟨1, 24, by omega, fun i => ?_⟩
+  simp only [ArithProg, Squares, Set.mem_setOf_eq]
+  fin_cases i
+  · exact ⟨1, by norm_num⟩   -- 1 + 0*24 = 1 = 1²
+  · exact ⟨5, by norm_num⟩   -- 1 + 1*24 = 25 = 5²
+  · exact ⟨7, by norm_num⟩   -- 1 + 2*24 = 49 = 7²
 
 -- Fermat's theorem: x⁴ + y⁴ = z⁴ has no solutions (implies no 4-AP)
 -- Actually: x², y², z², w² in AP means (y²-x²) = (z²-y²) = (w²-z²)
@@ -197,17 +202,12 @@ theorem conditional_q2_negative (hBL : BombieriLangConjecture) : ¬Question2 := 
 Analyze small cubes in squares.
 -/
 
--- 1-cube: {a, a+b} both squares (sum of two squares structure)
--- This is possible: {0, 1} or {1, 4} won't work, but...
--- Actually {16, 25} = {4², 5²} with b = 9 works
+-- 1-cube example: {0, 1} = {0², 1²} with b₀ = 1
+-- 2-cube example: {0, 9, 16, 25} = {0², 3², 4², 5²} via 3² + 4² = 5²
+--   (a = 0, b₀ = 9, b₁ = 16, using the Pythagorean triple)
+-- 3-cube would require 8 squares in combinatorial cube structure — hard
 
--- 2-cube: {a, a+b₁, a+b₂, a+b₁+b₂} all squares
--- More constrained
-
--- Checking if small cubes exist
 def Has2Cube : Prop := ContainsCube Squares 2
-
--- Has3Cube would be even harder
 def Has3Cube : Prop := ContainsCube Squares 3
 
 /-
@@ -233,9 +233,6 @@ noncomputable def numSquaresUpTo (n : ℕ) : ℕ :=
 The problem remains OPEN.
 -/
 
--- The problem is open
-def erdos_782_status : String := "OPEN"
-
 -- Main formal statements
 theorem erdos_782_question1 :
     Question1 ↔ ∃ C : ℕ, ∀ k : ℕ, ContainsQuasiProg Squares C k := by
@@ -245,27 +242,30 @@ theorem erdos_782_question2 :
     Question2 ↔ ∀ k : ℕ, ContainsCube Squares k := by
   rfl
 
--- Combined problem status
-def ErdosProblem782 : Prop := Question1 ∨ ¬Question1  -- Either answer is open
-
 /-
 # Summary
 
-**Problem:** Two questions about structure in perfect squares:
-1. Do squares contain arbitrarily long quasi-progressions (with uniform bound C)?
-2. Do squares contain arbitrarily large combinatorial cubes?
+**Problem Status: OPEN**
 
-**Known:**
-- Squares have 3-term APs but no 4-term APs
-- Q1 affirmative implies Q2 affirmative
-- Solymosi conjectures Q2 is negative
-- Cilleruelo-Granville: Q2 negative under Bombieri-Lang
+**Proved Theorems (0 sorries)**:
+- squares_contain_3AP: {1, 25, 49} = {1², 5², 7²} is a 3-term AP (d=24) [was axiom]
+- no_cubes_implies_no_quasiprog: ¬Q2 → ¬Q1 (contrapositive)
+- conditional_q2_negative: Bombieri-Lang → ¬Q2
+- solymosi_equiv: Solymosi conjecture equivalence
+- erdos_782_question1/question2: definitional unfoldings
 
-**Unknown:**
-- Answers to both Q1 and Q2
-- Whether Q2 negative implies Q1 negative (likely yes)
+**Axioms (4)**:
+- no_4AP_in_squares: classical (Euler descent / Fermat for quartics)
+- question1_implies_question2: combinatorial (Ramsey-type argument)
+- BombieriLangConjecture: open conjecture in algebraic geometry
+- cilleruelo_granville: conditional result [CiGr07]
 
-**Difficulty:** Combines additive combinatorics with algebraic geometry.
+**Key Improvement**: Eliminated `squares_contain_3AP` axiom by explicit construction.
+
+References:
+- Brown, Erdős, Freedman [BEF90]: posed the problem
+- Solymosi [So07]: conjectured Q2 negative
+- Cilleruelo, Granville [CiGr07]: Q2 negative under Bombieri-Lang
 -/
 
 end Erdos782

@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent",
     "sourceUrl": "https://en.wikipedia.org/wiki/Planar_graph",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "graph-theory",
       "topology",
@@ -16,7 +16,7 @@
       "planar-graphs"
     ],
     "proofRepoPath": "Proofs/EulerPolyhedralOQ01.lean",
-    "badge": "open",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -52,7 +52,8 @@
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
     "lineCount": 903,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Euler's formula** $V - E + F = 2$ for connected planar graphs (equivalently, convex polyhedra) was first proved by Euler in 1758, though anticipated by Descartes. The formula has profound implications:\n\n- **Planarity**: $E \\leq 3V - 6$ and $E \\leq 2V - 4$ (bipartite), enabling planarity tests\n- **Coloring**: Average degree $< 6$ implies a vertex of degree $\\leq 5$, driving the Six Color Theorem and (via Kempe chains) the Five Color Theorem\n- **Topology**: For surfaces of genus $g$, $V - E + F = 2 - 2g$ (Euler characteristic)\n\nThe **Four Color Theorem** (1976, Appel-Haken; computer-verified by Gonthier 2005) shows planar graphs are actually 4-colorable, but the Six Color Theorem has an elegant elementary proof via degeneracy. The Five Color Theorem has a clean Kempe-chain proof.\n\nThis formalization extends the base `EulerPolyhedralFormula.lean` with deeper structural results: the spanning-tree construction of Euler's formula, graph degeneracy theory, and the Six Color Theorem.",
@@ -90,7 +91,7 @@
       "id": "part2-degeneracy",
       "title": "Part 2: Graph Degeneracy",
       "startLine": 216,
-      "endLine": 259,
+      "endLine": 260,
       "summary": "KDegenerate structure: every subgraph has a vertex of degree ≤ k. planar_five_degenerate: E ≤ 3V-6 implies 5-degeneracy. degeneracy_from_edge_bound: general k-degeneracy from 2E < (k+1)V."
     },
     {
@@ -104,7 +105,7 @@
       "id": "part4-edge-face",
       "title": "Part 4: Edge-Face Counting Identities",
       "startLine": 295,
-      "endLine": 333,
+      "endLine": 334,
       "summary": "Algebraic consequences of V-E+F=2: face_from_euler, edge_from_euler, vertex_from_euler, tree_edges_from_euler. Also maximal_planar_edges (E=3V-6) and maximal_planar_faces (F=2V-4) for triangulations."
     },
     {
@@ -132,7 +133,7 @@
       "id": "part11-six-color",
       "title": "Part 11: Six Color Theorem",
       "startLine": 616,
-      "endLine": 870,
+      "endLine": 903,
       "summary": "Full Six Color Theorem proof: LocalPlanarEmbedding structure with Euler axiom, local_edge_bound_planar (E≤3V-6), local_k5_not_planar (K₅ non-planar), exists_low_degree vertex in planar graphs, six_colorable_small, color_extension_step, and Six Color Theorem via Colorable predicate. Also: DegeneracyBuild ordering, kempe_prerequisite for Five Color Theorem."
     }
   ],

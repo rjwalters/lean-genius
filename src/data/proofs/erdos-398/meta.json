@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/398",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.factorial",
@@ -68,56 +68,56 @@
       "id": "header",
       "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Problem statement, historical background, and references."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 25,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Mathlib imports for factorial, sets, and finite sets."
     },
     {
       "id": "brown-numbers",
       "title": "The Brocard-Ramanujan Equation",
       "startLine": 33,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Definition of Brown numbers and verification of the three known solutions."
     },
     {
       "id": "non-solutions",
       "title": "Small Cases: Non-Solutions",
       "startLine": 77,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Verification that n = 0, 1, 2, 3, 6, 8 are not Brown numbers."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "startLine": 115,
-      "endLine": 164,
+      "endLine": 165,
       "summary": "Statement of the Brocard-Ramanujan conjecture and known elements."
     },
     {
       "id": "conditional",
       "title": "Conditional Results",
       "startLine": 166,
-      "endLine": 186,
+      "endLine": 187,
       "summary": "Overholt's theorem on finiteness under weak ABC conjecture."
     },
     {
       "id": "growth",
       "title": "Growth Analysis",
       "startLine": 188,
-      "endLine": 211,
+      "endLine": 212,
       "summary": "Why solutions are rare: factorial dominates squares."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 213,
-      "endLine": 225,
+      "endLine": 227,
       "summary": "erdos_398_summary combining verified Brown numbers and key results."
     }
   ],
@@ -146,5 +146,27 @@
     "axiomCount": 2,
     "theoremCount": 19,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1073",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorial, number-theory"
+    },
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorial, number-theory"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1073",
+    "erdos-1074",
+    "erdos-242"
+  ]
 }

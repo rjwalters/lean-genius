@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/851",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
@@ -77,14 +77,14 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 23,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "TwoPowAddSet and lowerDensity definitions capturing the representability condition."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 43,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Powers of 2 plus 1 are always representable; TwoPowAddSet is monotone; union covers all m ≥ 2."
     },
     {
@@ -119,7 +119,7 @@
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 131,
-      "endLine": 156,
+      "endLine": 195,
       "summary": "Specific integers 3, 5, 9, 17 verified to be in TwoPowAddSet 0."
     }
   ],
@@ -148,5 +148,27 @@
     "axiomCount": 11,
     "theoremCount": 7,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory"
+    },
+    {
+      "targetId": "erdos-12",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1110",
+    "erdos-1136",
+    "erdos-12"
+  ]
 }

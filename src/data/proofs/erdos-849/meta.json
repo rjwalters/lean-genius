@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/849",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -130,7 +130,7 @@
       "id": "oeis",
       "title": "Related Sequences",
       "startLine": 179,
-      "endLine": 196,
+      "endLine": 214,
       "summary": "Connection to OEIS A003015 and A182238."
     }
   ],
@@ -159,5 +159,27 @@
     "axiomCount": 13,
     "theoremCount": 15,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics"
+    },
+    {
+      "targetId": "erdos-397",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics"
+    },
+    {
+      "targetId": "erdos-698",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, pascal-triangle"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-387",
+    "erdos-397",
+    "erdos-698"
+  ]
 }

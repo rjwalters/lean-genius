@@ -5,7 +5,7 @@
   "description": "For which countable ordinals β does ω^β → (ω^β, 3)² hold? Specker (1957): β=2 yes, 3≤β<ω no. Chang (1972): β=ω yes. Schipperus (2010): β=ω^γ with CNF-length(γ)≤2 yes, ≥4 no. The case CNF-length(γ)=3 is OPEN. $1,000 bounty.",
   "meta": {
     "erdosNumber": 592,
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "erdos",
       "set-theory",
@@ -20,7 +20,7 @@
     "badge": "axiom",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Ordinal",
@@ -42,34 +42,10 @@
       "cantorNFLength: CNF-length axiom",
       "partition_ordinal_classification: complete classification summary"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-590",
-        "relationship": "sibling problem in ordinal Ramsey theory"
-      },
-      {
-        "id": "erdos-591",
-        "relationship": "companion partition ordinal problem"
-      },
-      {
-        "id": "erdos-597",
-        "relationship": "related ordinal partition relation question"
-      },
-      {
-        "id": "erdos-598",
-        "relationship": "ordinal Ramsey theory extension"
-      },
-      {
-        "id": "erdos-474",
-        "relationship": "connected partition calculus problem"
-      },
-      {
-        "id": "ramseys-theorem",
-        "relationship": "foundational result (ω → (ω,n)² for all n)"
-      }
-    ],
-    "axiomCount": 0,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
+    "axiomCount": 10,
+    "assumptions": "10 axiom declarations: ordinalPartition, specker_beta_two, specker_finite_fail, chang_beta_omega, galvin_larson_necessary, cantorNFLength, schipperus_leq_two, schipperus_geq_four, erdos_592_open_case, partition_ordinal_classification",
+    "proofRepoPath": "Proofs/Erdos592Problem.lean",
+    "lineCount": 115
   },
   "sections": [
     {
@@ -188,5 +164,41 @@
       "citation": "Erdős Problems, Problem #592, https://erdosproblems.com/592.",
       "type": "website"
     }
+  ],
+  "leanFile": {
+    "lineCount": 115,
+    "structureCount": 0,
+    "axiomCount": 10,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 4,
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, set-theory"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, set-theory"
+    },
+    {
+      "targetId": "erdos-1171",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1167",
+    "erdos-1169",
+    "erdos-1171"
   ]
 }

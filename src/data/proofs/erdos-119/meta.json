@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "lineCount": 115,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this three-part problem about the maximum modulus $M_n = \\max_{|z|=1} |\\prod(z - z_i)|$ for sequences of points on the unit circle. The problem asks how large $M_n$ must be, with three progressively stronger formulations.\n\nPart 1 was solved by Georg Wagner in 1980 in the Bulletin of the London Mathematical Society ('On a problem of Erdős in Diophantine approximation'). Wagner proved the quantitative bound $M_n > (\\log n)^c$ infinitely often, implying $\\limsup M_n = \\infty$. His method connected the polynomial maximum to Diophantine approximation properties of the root angles.\n\nPart 2 was solved by József Beck in his influential 1991 paper in the Annals of Mathematics ('The modulus of polynomials with zeros on the unit circle: A problem of Erdős'). Beck established $\\max_{n \\leq N} M_n > N^c$ for some $c > 0$, a major strengthening from logarithmic to polynomial growth. His proof introduced sophisticated techniques combining harmonic analysis with discrepancy theory.\n\nPart 3 remains open and carries a $100 Erdős prize. It asks whether the partial sums $\\sum_{k \\leq n} M_k$ grow like $n^{1+c}$ — a question about cumulative behavior rather than individual peaks. This is fundamentally harder than Parts 1-2 because it requires that $M_k$ is large 'on average', not just infinitely often.",
@@ -46,49 +47,49 @@
       "id": "header",
       "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 20,
+      "endLine": 21,
       "summary": "Documents all three parts of the problem with references to Wagner (1980), Beck (1991), and the open Part 3 with its $100 Erdős prize."
     },
     {
       "id": "imports",
       "title": "Imports",
       "startLine": 22,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Imports Mathlib modules for complex circle, normed spaces, filters (limsup, eventually), and big operators (finite sums and products)."
     },
     {
       "id": "definitions",
       "title": "Polynomial Product and Maximum Modulus",
       "startLine": 31,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines `unitCirclePoly` as $\\prod_{i<n}(w - z_i)$ and `maxModulus` as $\\sup\\{\\|p_n(w)\\| : \\|w\\| = 1\\}$."
     },
     {
       "id": "part1",
       "title": "Part 1: $\\limsup M_n = \\infty$ (Wagner 1980)",
       "startLine": 43,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "States $\\limsup M_n = \\top$ in EReal. Wagner proved $M_n > (\\log n)^c$ infinitely often."
     },
     {
       "id": "part2",
       "title": "Part 2: $M_n > N^c$ (Beck 1991)",
       "startLine": 56,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "States $\\exists c > 0$ with $\\max_{n \\leq N} M_n > N^c$. Solved by Beck with harmonic analysis."
     },
     {
       "id": "part3",
       "title": "Part 3: Partial Sum Growth (Open)",
       "startLine": 70,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Defines `ErdosProblem119` using `Filter.Eventually`: $\\exists c > 0,\\, \\forall^\\infty n,\\, \\sum_{k<n} M_k > n^{1+c}$. Open with $100 prize."
     },
     {
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 82,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "Proves base cases ($p_0 = 1$, $p_1 = w - z_0$) and states $M_n \\geq 1$ for $n \\geq 1$ and nonnegativity of $M_n$."
     },
     {
@@ -127,5 +128,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, extremal-problems, polynomials"
+    },
+    {
+      "targetId": "erdos-1039",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials"
+    },
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-114",
+    "erdos-1039",
+    "erdos-1040"
+  ]
 }

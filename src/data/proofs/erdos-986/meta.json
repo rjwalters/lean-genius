@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/986",
     "erdosProblemStatus": "partial",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.log",
@@ -82,42 +82,42 @@
       "title": "Ramsey Number Definition",
       "summary": "Definition of R(k,n) and existence axiom",
       "startLine": 39,
-      "endLine": 65
+      "endLine": 66
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Notation",
       "summary": "Definitions of ≫ and ≪ for asymptotic bounds",
       "startLine": 67,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "conjecture",
       "title": "The Conjectured Lower Bound",
       "summary": "Erdős's conjecture: R(k,n) ≫ n^(k-1)/(log n)^c",
       "startLine": 89,
-      "endLine": 102
+      "endLine": 103
     },
     {
       "id": "spencer",
       "title": "Spencer's k=3 Result",
       "summary": "Spencer (1977) proved the conjecture for k=3",
       "startLine": 104,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "mattheus-verstraete",
       "title": "Mattheus-Verstraete k=4 Result",
       "summary": "2023 breakthrough proving the k=4 case",
       "startLine": 126,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "general-bounds",
       "title": "Best Known General Bounds",
       "summary": "Bohman-Keevash lower and AKS upper bounds",
       "startLine": 148,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "gap-analysis",
@@ -131,7 +131,7 @@
       "title": "Summary",
       "summary": "Combined results: k=3,4 YES; k≥5 OPEN",
       "startLine": 216,
-      "endLine": 249
+      "endLine": 250
     }
   ],
   "conclusion": {
@@ -160,5 +160,27 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1105"
+  ]
 }

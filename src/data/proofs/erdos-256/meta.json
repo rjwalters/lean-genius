@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/256",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Complex.abs",
@@ -65,28 +65,6 @@
       "primitive_root_lower_bound axiom",
       "bounds_summary axiom"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-510",
-        "relationship": "directly-related",
-        "description": "The Chowla cosine problem — Atkinson showed log f*(n) ≤ C·M·log n when min cosine sum < −M, giving a direct bridge between the two problems"
-      },
-      {
-        "id": "erdos-228",
-        "relationship": "related",
-        "description": "Flat Littlewood polynomials: another problem about controlling polynomial values on the unit circle, with ±1 coefficients instead of product factors"
-      },
-      {
-        "id": "erdos-230",
-        "relationship": "related",
-        "description": "Ultraflat unimodular polynomials on the unit circle — studies how uniformly bounded polynomial values on |z|=1 can be"
-      },
-      {
-        "id": "erdos-512",
-        "relationship": "related",
-        "description": "Littlewood's conjecture on L¹ norms of exponential sums — another extremal problem about oscillatory sums on the circle"
-      }
-    ],
     "axiomCount": 10,
     "prerequisites": [
       "Complex analysis (unit circle, modulus, roots of unity)",
@@ -125,56 +103,56 @@
       "title": "Basic Definitions",
       "summary": "Defines `productPoly` ($\\prod_i(1 - z^{a_i})$), `maxOnUnitCircle` ($\\max_{|z|=1} |P(z)|$), and $f(n) = \\inf_a \\max_{|z|=1} |P(z;a)|$. The inf-max structure captures the minimax optimization.",
       "startLine": 39,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "summary": "Axiomatizes the historical bounds: Erdős-Szekeres $f(n) > \\sqrt{2n}$ (1959), Atkinson $\\log f(n) \\ll n^{1/2} \\log n$ (1961), Odlyzko $\\log f(n) \\ll n^{1/3}(\\log n)^{4/3}$ (1982). Also proves $\\lim f(n)^{1/n} = 1$.",
       "startLine": 66,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "question",
       "title": "The Main Question",
       "summary": "Defines `ErdosQuestion256`: $\\exists c > 0,\\, \\exists C > 0,\\, \\forall n \\geq 2,\\, \\log f(n) \\geq C \\cdot n^c$. Asks whether $\\log f(n)$ grows at least as a power of $n$.",
       "startLine": 105,
-      "endLine": 116
+      "endLine": 117
     },
     {
       "id": "answer",
       "title": "The Answer",
       "summary": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\log n)^4$ and proves `erdos_256_answer : ¬ErdosQuestion256` — the answer is NO, since $(\\log n)^4$ grows slower than $n^c$ for any $c > 0$.",
       "startLine": 118,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "distinct",
       "title": "The Distinct Case",
       "summary": "Defines `fDistinct(n)` for the variant with distinct exponents. Axiomatizes the Bourgain-Chang (2018) bound for this case, which has different (potentially better) growth behavior.",
       "startLine": 141,
-      "endLine": 158
+      "endLine": 159
     },
     {
       "id": "chowla",
       "title": "Connection to Chowla Problem",
       "summary": "Connects to Erdős Problem #510 via `chowlaMinimum`: the minimum of $|\\sum \\cos(a_i \\theta)|$ over $\\theta$. Atkinson observed these two minimax problems are related through the logarithm of the product.",
       "startLine": 160,
-      "endLine": 178
+      "endLine": 179
     },
     {
       "id": "properties",
       "title": "Properties of the Product",
       "summary": "Proves `product_at_root_of_unity`: evaluation at primitive $m$-th roots of unity. Axiomatizes `primitive_root_lower_bound`: these evaluation points provide key lower bounds on $f(n)$.",
       "startLine": 180,
-      "endLine": 200
+      "endLine": 201
     },
     {
       "id": "summary-bounds",
       "title": "Summary of Bounds",
       "summary": "Axiomatizes the complete bounds timeline in one theorem: $\\sqrt{2n} \\leq f(n)$ (1959) and $\\log f(n) \\leq C(\\log n)^4$ (1996). The gap between $\\frac{1}{2}\\log n$ and $(\\log n)^4$ remains open.",
       "startLine": 202,
-      "endLine": 225
+      "endLine": 226
     },
     {
       "id": "summary",
@@ -206,7 +184,13 @@
     "lineCount": 262,
     "axiomCount": 10,
     "theoremCount": 3,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "opens": [
+      "Real",
+      "Complex",
+      "scoped",
+      "BigOperators"
+    ]
   },
   "references": [
     {
@@ -229,5 +213,27 @@
       "citation": "Bourgain, J. and Chang, M.-C., On a multilinear character sum of Burgess, Comptes Rendus Mathématique (2018). Bounds for distinct exponents case.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1150",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, harmonic-analysis, unit-circle"
+    },
+    {
+      "targetId": "erdos-225",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved, unit-circle"
+    },
+    {
+      "targetId": "erdos-1114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1150",
+    "erdos-225",
+    "erdos-1114"
   ]
 }

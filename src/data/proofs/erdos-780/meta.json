@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/780",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SetFamily.Intersecting",
@@ -103,60 +103,77 @@
       "id": "kneser-hypergraph",
       "title": "The Kneser Hypergraph",
       "summary": "Defines `KneserHypergraph` structure with vertices ($r$-subsets), edges ($k$-tuples of pairwise disjoint $r$-sets), uniformity and inclusion constraints. Axiomatizes `chromaticNumber` $\\chi(KG^r(n,k))$.",
-      "startLine": 63,
+      "startLine": 55,
       "endLine": 73
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem (AFL 1986)",
       "summary": "Defines `threshold k r t` $= kr + (t-1)(k-1)$. Axiomatizes `alon_frankl_lovasz_1986`: $n \\geq n_0 \\implies$ monochromatic $k$-matching in every $t$-coloring. Also `kneser_hypergraph_chromatic_number`: $\\chi(KG^r(n,k)) = \\lceil (n - r(k-1))/(k-1) \\rceil$.",
-      "startLine": 75,
+      "startLine": 74,
       "endLine": 94
     },
     {
       "id": "tightness",
       "title": "Tightness Construction",
       "summary": "Defines `tightBound` $= kr - 1 + (t-1)(k-1)$. Axiomatizes `tightness_construction`: partition coloring with $|X_1| = kr-1$, $|X_i| = k-1$ avoids $k$ disjoint monochromatic edges, proving optimality of the threshold.",
-      "startLine": 96,
+      "startLine": 95,
       "endLine": 113
     },
     {
       "id": "kneser-conjecture",
       "title": "Kneser's Conjecture ($k = 2$)",
       "summary": "Axiomatizes `kneser_conjecture`: $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$ (Lovász 1978). Defines `KneserGraph` and `kneserAdj` (disjointness adjacency).",
-      "startLine": 115,
+      "startLine": 114,
       "endLine": 132
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "Four axiomatized instances: $\\chi(KG(5,2)) = 3$ (Petersen graph), $\\chi(KG(7,3)) = 2$, $\\chi(KG(2r,r)) = 2$ (perfect matching), $\\chi(KG(2r+1,r)) = 3$ (odd graph).",
-      "startLine": 134,
+      "startLine": 133,
       "endLine": 150
     },
     {
       "id": "connections",
       "title": "Erdős-Ko-Rado Connection",
       "summary": "Axiomatizes `erdos_ko_rado`: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$.",
-      "startLine": 152,
+      "startLine": 151,
       "endLine": 165
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
       "summary": "**Proves** `erdos_780_main` (wrapper for AFL axiom) and `erdos_780_summary` (conjunction of AFL + Kneser's conjecture). 0 sorries.",
-      "startLine": 167,
+      "startLine": 166,
       "endLine": 200
     }
   ],
   "crossReferences": [
     {
-      "relationship": "The Borsuk-Ulam theorem is the key topological tool in Lovász's 1978 proof of Kneser's conjecture and the AFL 1986 generalization. The topological argument shows the neighborhood/independence complex has high connectivity, forcing the chromatic lower bound.",
-      "targetId": "borsuk-ulam"
+      "targetId": "borsuk-ulam",
+      "relationship": "foundational",
+      "description": "The Borsuk-Ulam theorem is the key topological tool in Lovász's 1978 proof of Kneser's conjecture and the AFL 1986 generalization. The topological argument shows the neighborhood/independence complex has high connectivity, forcing the chromatic lower bound"
     },
     {
-      "relationship": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, while the AFL theorem guarantees monochromatic matchings in colored hypergraphs. Both establish unavoidable monochromatic substructures.",
-      "targetId": "ramseys-theorem"
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, while the AFL theorem guarantees monochromatic matchings in colored hypergraphs. Both establish unavoidable monochromatic substructures"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "supports",
+      "description": "The binomial coefficient $\\binom{n}{r}$ counts the vertices of the Kneser graph (the $r$-subsets of $[n]$), and $\\binom{n-1}{r-1}$ gives the Erdős-Ko-Rado independence number bound — central to the chromatic number computation"
+    },
+    {
+      "targetId": "erdos-1104",
+      "relationship": "related",
+      "description": "Both concern chromatic numbers of combinatorially defined graphs. The Kneser graph chromatic number $\\chi(KG(n,r)) = n - 2r + 2$ and triangle-free chromatic bounds are both instances of topological lower bound methods in graph coloring"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "Both are powerful tools for analyzing structure in large combinatorial objects. Szemerédi regularity gives pseudorandom graph decompositions, while the AFL theorem gives chromatic structure in Kneser-type hypergraphs — both are used to prove existence of substructures in large systems"
     }
   ],
   "conclusion": {
@@ -183,10 +200,57 @@
     "lineCount": 200,
     "axiomCount": 10,
     "theoremCount": 2,
-    "definitionCount": 10
+    "definitionCount": 11
   },
   "relatedProofs": [
-    "",
-    ""
+    "borsuk-ulam",
+    "ramseys-theorem",
+    "combinations-formula",
+    "erdos-1104",
+    "szemeredi-regularity"
+  ],
+  "references": [
+    {
+      "authors": "Lovász, László",
+      "title": "Kneser's conjecture, chromatic number, and homotopy",
+      "year": "1978",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 25, pp. 319–324",
+      "note": "First proof of Kneser's conjecture using the Borsuk-Ulam theorem via the neighborhood complex — the landmark paper that founded topological combinatorics"
+    },
+    {
+      "authors": "Alon, Noga; Frankl, Peter; Lovász, László",
+      "title": "The chromatic number of Kneser hypergraphs",
+      "year": "1986",
+      "venue": "Transactions of the American Mathematical Society, vol. 298, pp. 359–370",
+      "note": "Extended Lovász's topological method to r-uniform hypergraphs, proving the exact threshold n₀ = kr + (t-1)(k-1) for monochromatic k-matchings in t-colored hypergraphs"
+    },
+    {
+      "authors": "Kneser, Martin",
+      "title": "Aufgabe 360",
+      "year": "1955",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, vol. 58, p. 27",
+      "note": "Original conjecture: χ(KG(n,r)) = n - 2r + 2, proposed as a problem in the journal of the German Mathematical Society"
+    },
+    {
+      "authors": "Matoušek, Jiří",
+      "title": "A combinatorial proof of Kneser's conjecture",
+      "year": "2004",
+      "venue": "Combinatorica, vol. 24, pp. 163–170",
+      "note": "Purely combinatorial proof using Tucker's lemma, avoiding the topological machinery of Lovász's original proof — potentially more amenable to formalization in Lean"
+    },
+    {
+      "authors": "Schrijver, Alexander",
+      "title": "Vertex-critical subgraphs of Kneser graphs",
+      "year": "1978",
+      "venue": "Nieuw Archief voor Wiskunde, vol. 26, pp. 454–461",
+      "note": "Found the stable Kneser graph — a vertex-critical subgraph of KG(n,r) with the same chromatic number, using only 'stable' r-subsets (no two consecutive elements)"
+    },
+    {
+      "authors": "Erdős, Paul; Ko, Chao; Rado, Richard",
+      "title": "Intersection theorems for systems of finite sets",
+      "year": "1961",
+      "venue": "Quarterly Journal of Mathematics, vol. 12, pp. 313–320",
+      "note": "Proved the maximum size of an intersecting family of r-subsets of [n] is C(n-1,r-1) for n ≥ 2r — gives the independence number α(KG(n,r)) and hence the fractional chromatic number"
+    }
   ]
 }

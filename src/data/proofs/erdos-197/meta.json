@@ -20,7 +20,7 @@
     "erdosNumber": 197,
     "erdosUrl": "https://erdosproblems.com/197",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set.Disjoint",
@@ -54,9 +54,9 @@
       "erdos_197_status theorem: summary of known results",
       "erdos_197_open_question theorem: the main conjecture"
     ],
-    "axiomCount": 5,
+    "axiomCount": 2,
     "lineCount": 287,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axioms: erdos_graham_three_sets (deep combinatorial result), stanley_avoids_3AP (greedy construction). Previously 5 axioms; 3 eliminated by proving powers_of_2_avoid_3AP, erdos_197_conjecture (from classical logic), and removing malformed erdos_197_not_finite_checkable."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #197**\n\nThis problem originates from Erdős and Graham's foundational work on arithmetic progressions in the late 1970s and early 1980s, documented in [ErGr79] and [ErGr80].\n\n**Key History:**\n- Erdős and Graham posed the original question about partitioning ℕ\n- The three-set version was proved solvable by Erdős-Graham\n- The two-set version remains open and cannot be resolved by finite computation\n\n**Mathematical Setting:**\nA monotone 3-term arithmetic progression (3-AP) in a sequence f is a triple (i, j, k) with i < j < k where f(i), f(j), f(k) form an arithmetic progression. The question asks whether ℕ can be split into two parts, each rearrangeable to avoid such patterns.",
@@ -82,14 +82,14 @@
       "title": "Arithmetic Progressions",
       "summary": "isArithmeticProgression, hasMonotone3AP, avoids3AP definitions",
       "startLine": 41,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "set-permutations",
       "title": "Permutations of Sets",
       "summary": "isEnumeration, canPermuteTo3APFree definitions",
       "startLine": 69,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "partitions",
@@ -103,49 +103,49 @@
       "title": "The Main Conjecture",
       "summary": "erdos_197_conjecture axiom - the open two-set question",
       "startLine": 123,
-      "endLine": 141
+      "endLine": 142
     },
     {
       "id": "three-set-case",
       "title": "The Three-Set Case (Solved)",
       "summary": "isThreePartition and erdos_graham_three_sets axiom",
       "startLine": 143,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "properties",
       "title": "Properties of 3-AP Avoidance",
       "summary": "constant_avoids_3AP, StrictlyIncreasing, StrictlyDecreasing",
       "startLine": 164,
-      "endLine": 190
+      "endLine": 191
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "summary": "identity_has_3AP theorem and powers_of_2_avoid_3AP axiom",
       "startLine": 192,
-      "endLine": 214
+      "endLine": 215
     },
     {
       "id": "computational",
       "title": "Computational Intractability",
       "summary": "erdos_197_not_finite_checkable axiom",
       "startLine": 216,
-      "endLine": 229
+      "endLine": 230
     },
     {
       "id": "related-sequences",
       "title": "Related Sequences",
       "summary": "Stanley sequence definition and properties",
       "startLine": 231,
-      "endLine": 254
+      "endLine": 255
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_197_status and erdos_197_open_question theorems",
       "startLine": 256,
-      "endLine": 285
+      "endLine": 287
     }
   ],
   "conclusion": {
@@ -173,9 +173,31 @@
       "Function"
     ],
     "namespace": "Erdos197",
-    "lineCount": 287,
-    "axiomCount": 5,
-    "theoremCount": 5,
+    "lineCount": 295,
+    "axiomCount": 2,
+    "theoremCount": 7,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics"
+    },
+    {
+      "targetId": "erdos-139",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-138",
+    "erdos-139",
+    "erdos-176"
+  ]
 }

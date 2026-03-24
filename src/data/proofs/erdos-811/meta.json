@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/811",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -53,24 +53,6 @@
       "ErdosChallenge: C_6 or K_4 in balanced 6-colorings",
       "erdos_811: main theorem combining Clemen-Wagner and Axenovich-Clemen"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-809",
-        "relationship": "Companion problem on rainbow colorings of odd cycles; both concern which subgraphs are unavoidable as rainbow copies in edge-colorings"
-      },
-      {
-        "proofId": "erdos-810",
-        "relationship": "Related rainbow C₄ problem in dense edge-colored graphs; both explore rainbow subgraph existence under structural constraints on colorings"
-      },
-      {
-        "proofId": "erdos-812",
-        "relationship": "Consecutive Ramsey number problem in the same Erdős collection; shares Ramsey-theoretic foundations"
-      },
-      {
-        "proofId": "erdos-129",
-        "relationship": "Ramsey numbers avoiding monochromatic cliques; both concern unavoidable substructures under coloring constraints"
-      }
-    ],
     "axiomCount": 9,
     "lineCount": 193,
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -100,63 +82,63 @@
       "title": "Header and Imports",
       "summary": "Problem documentation referencing Erdős-Pyber-Tuza (1991), Clemen-Wagner (2023), and Axenovich-Clemen (2024); imports SimpleGraph, Finset, Fintype, and tactics",
       "startLine": 1,
-      "endLine": 34
+      "endLine": 35
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines completeEdgeCount (n choose 2), EdgeColoring structure with symmetry/irreflexivity, and noncomputable colorDegree via Finset filtering",
       "startLine": 36,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "balanced",
       "title": "Balanced Colorings",
       "summary": "IsBalanced predicate (uniform color degree) and balanced_existence axiom requiring n ≡ 1 (mod m)",
       "startLine": 53,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "rainbow",
       "title": "Rainbow Subgraphs",
       "summary": "GraphEmbedding (injective vertex map), IsRainbow (edge-color injectivity), ContainsRainbow (existential rainbow copy)",
       "startLine": 65,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "rainbow-property",
       "title": "The Rainbow Property",
       "summary": "HasRainbowProperty: for large n ≡ 1 (mod m), every balanced coloring contains a rainbow G",
       "startLine": 85,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "known-results",
       "title": "Known Results: K₄ and Complete Graphs",
       "summary": "Clemen-Wagner axiom (K₄ fails), Axenovich-Clemen axiom (infinitely many K_m fail), and the AxenovichClemenConjecture (all K_m fail for m ≥ 4)",
       "startLine": 95,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "quantitative",
       "title": "Quantitative Version: Rainbow Minimum Degree",
       "summary": "Axiomatized rainbowMinDegree function; Erdős-Tuza bounds for C₄: ⌊n/6⌋ ≤ d_{C₄}(n) ≤ (1/4 - c)n",
       "startLine": 117,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "erdos-challenge",
       "title": "Erdős's Specific Challenge",
       "summary": "ErdosChallenge: rainbow C₆ or K₄ in balanced 6-colorings of K_{6n+1}; K₄ part resolved negatively",
       "startLine": 135,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "small-cases",
       "title": "Small Cases: Trees and Stars",
       "summary": "Axioms: trees have the rainbow property (folklore); stars K_{1,m} have the rainbow property",
       "startLine": 154,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "summary",
@@ -209,5 +191,27 @@
       "citation": "Axenovich, M., Clemen, F., Infinitely many complete graphs are not rainbow-forcing (2024).",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1029",
+    "erdos-1030"
   ]
 }

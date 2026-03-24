@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/844",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Squarefree",
@@ -84,56 +84,56 @@
       "title": "Basic Definitions",
       "summary": "Interval, non-squarefree products, optimal set",
       "startLine": 40,
-      "endLine": 65
+      "endLine": 66
     },
     {
       "id": "optimal-property",
       "title": "Optimal Set Has the Property",
       "summary": "Proving even and non-squarefree products work",
       "startLine": 67,
-      "endLine": 102
+      "endLine": 103
     },
     {
       "id": "maximal-contains",
       "title": "Maximal Sets Contain Non-Squarefree",
       "summary": "Any maximal A must include all non-squarefree numbers",
       "startLine": 104,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "squarefree-reduction",
       "title": "Reduction to Squarefree Numbers",
       "summary": "Intersecting family criterion",
       "startLine": 119,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "chvatal",
       "title": "Chvátal's Result",
       "summary": "Maximum intersecting family is even squarefree",
       "startLine": 137,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "summary": "Weisenberg's proof and Alexeev-Mixon-Sawin alternative",
       "startLine": 156,
-      "endLine": 174
+      "endLine": 175
     },
     {
       "id": "characterization",
       "title": "Characterization",
       "summary": "Optimal set complement, size, and density bound",
       "startLine": 176,
-      "endLine": 194
+      "endLine": 195
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete example for N = 10",
       "startLine": 196,
-      "endLine": 211
+      "endLine": 212
     },
     {
       "id": "summary",
@@ -170,5 +170,27 @@
     "axiomCount": 16,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-534",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, intersecting-families, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-848",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, solved, squarefree"
+    },
+    {
+      "targetId": "erdos-378",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved, squarefree"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-534",
+    "erdos-848",
+    "erdos-378"
+  ]
 }

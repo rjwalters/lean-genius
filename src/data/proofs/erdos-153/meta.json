@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 130,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Sidon sets originate from Simon Sidon's 1932 question to Erdős about sets of natural numbers whose pairwise sums are all distinct. Erdős and Turán (1941) proved the foundational density bound: a Sidon set in $\\{1,\\ldots,N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, and perfect difference set constructions (Singer 1938, using projective planes over finite fields) show this is essentially tight. Problem 153 was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I', where they initiated a systematic study of the fine structure of sumsets $A+A$ for Sidon sets $A$. While the average gap in such sumsets is bounded ($\\Theta(1)$ for maximal Sidon sets), they conjectured that the second moment — the mean squared gap — must diverge. This question sits at the intersection of additive combinatorics and the statistical theory of gap distributions, connecting to broader phenomena like the pair correlation conjecture for zeros of the Riemann zeta function and the study of level spacing in random matrix theory.",
@@ -47,49 +48,49 @@
       "id": "imports",
       "title": "Library Imports",
       "startLine": 13,
-      "endLine": 19,
+      "endLine": 20,
       "summary": "Imports Mathlib libraries for natural numbers, integers, finite sets (cardinality, sorting), real numbers, and tactics needed throughout the formalization."
     },
     {
       "id": "sidon-sets",
       "title": "Sidon Sets",
       "startLine": 21,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Defines `IsSidon`: a finite set $A \\subseteq \\mathbb{N}$ where all pairwise sums $a+b$ with $a \\le b$ are distinct. Also known as $B_2$ sets."
     },
     {
       "id": "sumset-gaps",
       "title": "Sumset and Gap Structure",
       "startLine": 31,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines the sumset $A+A$ via Cartesian product image, the sorted sumset as a list $\\{s_1 < \\cdots < s_t\\}$, and `gapSquaredSum` computing $\\sum (s_{i+1} - s_i)^2$ via fold over zipped consecutive pairs."
     },
     {
       "id": "gap-variance",
       "title": "The Gap Variance",
       "startLine": 50,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines `meanGapSquared` as $(1/(t-1)) \\cdot \\sum (s_{i+1}-s_i)^2$ and `minMeanGapSquared(n)` as the infimum over all Sidon sets of size $n$, capturing the extremal gap regularity."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 64,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "States `ErdosProblem153`: $\\forall M > 0, \\exists N_0$ such that all Sidon sets $A$ with $|A| \\ge N_0$ satisfy $\\bar{G}(A) > M$. The mean squared gap diverges."
     },
     {
       "id": "sumset-properties",
       "title": "Sidon Set Sumset Properties",
       "startLine": 78,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Axiomatizes two structural properties: (1) $|A+A| \\ge n(n+1)/2$ for Sidon sets of size $n$, and (2) $A+A \\subseteq \\{2,\\ldots,2N\\}$ when $A \\subseteq \\{1,\\ldots,N\\}$."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 93,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "Axiomatizes the bounded average gap ($\\bar{g} = O(1)$) and the Erdős–Sárközy–Sós (1994) result that $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets."
     },
     {
@@ -126,5 +127,27 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, sumsets"
+    },
+    {
+      "targetId": "erdos-1112",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, sumsets"
+    },
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-1112",
+    "erdos-14"
+  ]
 }

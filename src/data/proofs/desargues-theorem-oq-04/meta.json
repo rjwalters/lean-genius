@@ -64,7 +64,8 @@
       }
     ],
     "lineCount": 415,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -73,14 +74,14 @@
       "summary": "Defines `cross3` (K³ cross product), `threeVecMat` (3×3 row matrix), and the explicit determinant expansion. All over an arbitrary `CommRing K`.",
       "mathContext": "$\\det(u,v,w) = u_0(v_1 w_2 - v_2 w_1) - u_1(v_0 w_2 - v_2 w_0) + u_2(v_0 w_1 - v_1 w_0)$",
       "startLine": 37,
-      "endLine": 72
+      "endLine": 73
     },
     {
       "id": "duality-foundation",
       "title": "Collinearity = Concurrence",
       "summary": "Defines `collinear` and `concurrent` as $\\det(u,v,w) = 0$ and proves they are the SAME predicate via `rfl`. This is the foundation of projective duality in homogeneous coordinates.",
       "startLine": 74,
-      "endLine": 93,
+      "endLine": 94,
       "mathContext": "$\\text{collinear}(u,v,w) = \\text{concurrent}(u,v,w) = (\\det(u,v,w) = 0)$. Proved by `rfl`: both are definitionally the predicate $\\text{threeVecMat}(u,v,w).\\det = 0$."
     },
     {
@@ -96,7 +97,7 @@
       "title": "Self-Duality Theorem",
       "summary": "The central result: `dual_perspFromPoint_eq_perspFromLine` proves that 'perspective from a point' of the dual configuration IS 'perspective from a line' of the original — proved by `rfl` (definitional equality).",
       "startLine": 126,
-      "endLine": 140,
+      "endLine": 141,
       "mathContext": "$\\text{dual}(\\text{perspFromPoint}) = \\text{perspFromLine}$ by `rfl`. The joining lines of dual vertex pairs are the intersection points of original sides."
     },
     {
@@ -121,7 +122,7 @@
       "summary": "Proves the Desargues identity is symmetric under triangle swap (`desargues_identity_swap`), the perspectivity determinant negates under swap ($\\det' = -\\det$), and `perspFromPoint` is preserved under swap.",
       "mathContext": "$\\det(A'A, B'B, C'C) = -\\det(AA', BB', CC')$ via cross product anticommutativity $a' \\times a = -(a \\times a')$.",
       "startLine": 218,
-      "endLine": 275
+      "endLine": 276
     },
     {
       "id": "line-perspective-swap",
@@ -129,14 +130,14 @@
       "summary": "Proves collinearity determinant negates under swap ($\\det' = -\\det$) and that `perspFromLine` is preserved under triangle swap.",
       "mathContext": "$\\det((A'B' \\cap AB), (B'C' \\cap BC), (C'A' \\cap CA)) = -\\det((AB \\cap A'B'), (BC \\cap B'C'), (CA \\cap C'A'))$",
       "startLine": 277,
-      "endLine": 303
+      "endLine": 304
     },
     {
       "id": "forward-swap",
       "title": "Forward Direction for Swapped Configuration",
       "summary": "Desargues's theorem for both orderings: the forward direction holds for both (A,B,C)→(A',B',C') and (A',B',C')→(A,B,C). The self-duality chain `desargues_forward_both_orders` packages both.",
       "startLine": 305,
-      "endLine": 323,
+      "endLine": 324,
       "mathContext": "Desargues forward for both orderings: $\\text{perspFromPoint}(\\Delta, \\Delta') \\implies \\text{perspFromLine}(\\Delta, \\Delta')$ and $\\text{perspFromPoint}(\\Delta', \\Delta) \\implies \\text{perspFromLine}(\\Delta', \\Delta)$."
     },
     {
@@ -145,14 +146,14 @@
       "summary": "Over integral domains with non-degenerate triangles ($\\det(ABC) \\cdot \\det(A'B'C') \\neq 0$), perspective from a line implies perspective from a point. Combines with the forward direction for the full biconditional `desargues_iff`.",
       "mathContext": "$\\text{perspFromPoint} \\iff \\text{perspFromLine}$ when $\\det(ABC) \\cdot \\det(A'B'C') \\neq 0$ in an `IsDomain`.",
       "startLine": 325,
-      "endLine": 349
+      "endLine": 350
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "summary": "Double swap is identity (`swap_swap` by `rfl`) and non-degeneracy is swap-invariant (`nonDegeneracy_swap` by `ring`). These complete the algebraic self-duality picture.",
       "startLine": 351,
-      "endLine": 362,
+      "endLine": 363,
       "mathContext": "$\\text{swap}(\\text{swap}(\\text{cfg})) = \\text{cfg}$ by `rfl` (double swap is identity). Non-degeneracy $\\det(ABC) \\cdot \\det(A'B'C') \\neq 0$ is swap-invariant by `ring`."
     },
     {

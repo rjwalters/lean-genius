@@ -24,7 +24,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "2000 rupees (~$78 in 1992)",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.div_mul_le_self",
@@ -170,5 +170,27 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-711",
+    "erdos-1005",
+    "erdos-13"
+  ]
 }

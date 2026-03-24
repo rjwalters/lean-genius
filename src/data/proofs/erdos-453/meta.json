@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/453",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -125,56 +125,56 @@
       "id": "primes",
       "title": "The Prime Sequence",
       "startLine": 42,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (sorry), and axiomatizes primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$."
     },
     {
       "id": "conjectures",
       "title": "The Conjectures",
       "startLine": 70,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Formalizes `ErdosStrausConjecture` ($\\exists N,\\ \\forall n \\geq N,\\ \\exists i < n : p_n^2 < p_{n+i} p_{n-i}$) and `SelfridgeConjecture` ($\\forall N,\\ \\exists n \\geq N,\\ \\forall i < n : p_n^2 > p_{n+i} p_{n-i}$). Proves mutual exclusivity in Lean using `omega` on $\\mathbb{Z}$ inequalities."
     },
     {
       "id": "convexity",
       "title": "Log-Prime Convexity Machinery",
       "startLine": 103,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "Introduces `logPrime n = log p_n`, axiomatizes $\\log p_n / n \\to 0$ (follows from PNT: $p_n \\sim n \\log n$), defines `IsConvexHullVertex` via the discrete concavity condition $2a_n > a_{n-i} + a_{n+i}$, and axiomatizes Pomerance's lemma: $a_n = o(n) \\Rightarrow$ infinitely many convex hull vertices."
     },
     {
       "id": "pomerance",
       "title": "Pomerance's Theorem (1979)",
       "startLine": 138,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "Proves `convexity_implies_product_bound` (convex hull vertex $\\Rightarrow p_n^2 > p_{n+i} p_{n-i}$, sorry for real analysis step), axiomatizes `pomerance_1979` (infinitely many such $n$ exist), and derives `selfridge_correct` and `erdos_straus_wrong` as term-mode and tactic proofs."
     },
     {
       "id": "solution",
       "title": "Problem #453 Solution",
       "startLine": 173,
-      "endLine": 197,
+      "endLine": 198,
       "summary": "States `erdos_453_solution : ¬ErdosStrausConjecture` and `erdos_453_negative_answer` (positive form: $\\forall N,\\ \\exists n \\geq N,\\ \\forall i : p_n^2 > p_{n+i} p_{n-i}$). Both proved as one-line term applications of `pomerance_1979`."
     },
     {
       "id": "prime-graph",
       "title": "The Prime Number Graph",
       "startLine": 199,
-      "endLine": 245,
+      "endLine": 246,
       "summary": "Defines `primeGraph n = (n, log p_n) ∈ ℝ × ℝ` and `geometric_interpretation` (vertex $\\Rightarrow$ product inequality). Introduces `LogConvexityProperty` ($2 \\log p_n > \\log p_{n+i} + \\log p_{n-i}$), proves `log_convexity_iff_vertex` by `rfl` (definitional equality), and axiomatizes the log-to-product bridge."
     },
     {
       "id": "density",
       "title": "Density of Counterexamples",
       "startLine": 247,
-      "endLine": 261,
+      "endLine": 262,
       "summary": "Proves `counterexample_set_infinite` (fully, no sorry) using `Set.infinite_iff_nat_lt` and `pomerance_1979`. The counterexample set $\\{n \\mid \\forall i < n : p_n^2 > p_{n+i} p_{n-i}\\}$ is cofinal in $\\mathbb{N}$."
     },
     {
       "id": "guy-connection",
       "title": "Connection to Guy's Collection",
       "startLine": 263,
-      "endLine": 275,
+      "endLine": 276,
       "summary": "States `guy_problem_A14 : ¬ErdosStrausConjecture` as an alias linking to Problem A14 in R.K. Guy's 'Unsolved Problems in Number Theory' (Springer, 2004)."
     },
     {

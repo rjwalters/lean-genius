@@ -50,7 +50,8 @@
       "Typical sets and typical sequences",
       "Prefix-free codes and Kraft's inequality",
       "Law of large numbers for information"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Shannon's source coding theorem, proved in his landmark 1948 paper, established the fundamental limit of lossless data compression. The theorem states that the entropy H(X) of a source is the minimum average number of bits per symbol needed to represent the source without loss. No lossless code can do better than H(X) bits per symbol, and there exist codes that come arbitrarily close.\n\nThis theorem answered a question that had been implicit since Morse code: what is the best possible compression? Morse used shorter codes for common letters (E is a single dot), but Shannon showed that the optimal average code length equals the entropy, providing both the limit and a constructive approach.\n\nThe proof technique -- typical sequences -- became a cornerstone of information theory. The Asymptotic Equipartition Property (AEP) shows that for long sequences from an i.i.d. source, almost all probability mass concentrates on a 'typical set' of approximately 2^(nH) sequences out of the |X|^n possible sequences. Encoding only the typical sequences requires approximately H bits per symbol.",
@@ -77,7 +78,7 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 11,
+      "endLine": 12,
       "summary": "Module docstring describing the source coding theorem: entropy as the compression limit, achievability via typical set coding, converse via AEP.",
       "mathContext": "Shannon (1948): $H(X)$ is the minimum achievable compression rate for an i.i.d. source."
     },
@@ -85,7 +86,7 @@
       "id": "aep",
       "title": "Asymptotic Equipartition Property",
       "startLine": 13,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "AEP: normalized log-probability converges to entropy in probability. Placeholder proving True.",
       "mathContext": "$-\\frac{1}{n}\\log p(X_1^n) \\xrightarrow{P} H(X)$ by the weak law of large numbers."
     },
@@ -93,7 +94,7 @@
       "id": "typical-set",
       "title": "Typical Set Size Bound",
       "startLine": 20,
-      "endLine": 26,
+      "endLine": 27,
       "summary": "Typical set has at most $2^{n(H+\\varepsilon)}$ elements and probability approaching 1. Placeholder.",
       "mathContext": "$|A_\\varepsilon^{(n)}| \\leq 2^{n(H+\\varepsilon)}$ and $\\Pr[A_\\varepsilon^{(n)}] \\to 1$."
     },
@@ -101,7 +102,7 @@
       "id": "achievability",
       "title": "Source Coding Achievability",
       "startLine": 28,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Rates above entropy are achievable: encode typical sequences with $n(H+\\varepsilon)$ bits. Placeholder.",
       "mathContext": "For $R > H(X)$: $P_e^{(n)} \\to 0$ as $n \\to \\infty$ by typical set coding."
     },

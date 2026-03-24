@@ -22,7 +22,7 @@
     "erdosNumber": 569,
     "erdosUrl": "https://erdosproblems.com/569",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -80,49 +80,49 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 35,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Odd cycle length definition and proved properties"
     },
     {
       "id": "edge-count-isolated",
       "title": "Edge Count and Isolated Vertices",
       "startLine": 56,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "NoIsolatedVertices definition and vertex bound axiom"
     },
     {
       "id": "ramsey-number",
       "title": "The Ramsey Number R(C_{2k+1}, H)",
       "startLine": 75,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Axiomatized Ramsey number R_cycle_graph(k, m)"
     },
     {
       "id": "linear-bound",
       "title": "The Linear Bound Conjecture",
       "startLine": 90,
-      "endLine": 106,
+      "endLine": 107,
       "summary": "LinearRamseyBound definition"
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 108,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Triangle case, pentagon case axioms"
     },
     {
       "id": "general-bounds",
       "title": "General Upper Bounds",
       "startLine": 133,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "EFRS93 bound and conjectured improvement"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 152,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "Star lower bound and c_k ≥ 2"
     },
     {
@@ -157,5 +157,27 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-159",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-554",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, odd-cycles, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-159",
+    "erdos-554",
+    "erdos-620"
+  ]
 }

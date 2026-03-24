@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/328",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Basic",
@@ -103,63 +103,63 @@
       "id": "header",
       "title": "Problem Overview",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Header documentation: Erdős-Newman question, Nešetřil-Rödl disproof, references to [ErGr80], [Er80e], [NeRo85]"
     },
     {
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 27,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Imports from Mathlib: `Nat.Basic`, `Set.Basic`, `Finset.Basic`, `BigOperators` for finite sums"
     },
     {
       "id": "representation-function",
       "title": "Representation Function",
       "startLine": 34,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Definitions of $r_A(n)$ via `representationFunction` (on `Set ℕ`) and `rA` (on `Finset ℕ`), plus `hasBoundedConvolution` requiring $r_A(n) \\leq C$ for all $n$"
     },
     {
       "id": "sidon-sets",
       "title": "$B_h$ Sets (Sidon Sets)",
       "startLine": 60,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "`isSidonSet` (all pairwise sums distinct, $r_A \\leq 2$), `isBhSet` ($B_h$ generalization), and `sidon_bounded_convolution` linking Sidon sets to $C=2$"
     },
     {
       "id": "partition-question",
       "title": "The Partition Question",
       "startLine": 85,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "`isPartition`, `hasStrictlySmaller`, and `erdos_newman_question`: $\\forall C, \\exists t(C), \\forall A$ with $r_A \\leq C$, can $A$ be split into $\\leq t$ pieces with $r_{A_i} < C$?"
     },
     {
       "id": "erdos-partial",
       "title": "Erdős's Partial Results (1980)",
       "startLine": 116,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "`erdos_C3_counterexample` and `erdos_C4_counterexample`: for $C=3$ and $C=4$, there exist bad sets with no valid partition"
     },
     {
       "id": "nesetril-rodl",
       "title": "Nešetřil-Rödl Complete Solution (1985)",
       "startLine": 141,
-      "endLine": 174,
+      "endLine": 175,
       "summary": "`nesetril_rodl_theorem` ($\\forall C \\geq 1$, counterexamples exist), `erdos_newman_disproved` ($\\neg$ Erdős-Newman), `nesetril_rodl_strong` (no partition works even with $t$ depending on $A$)"
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Sidon and Unique Sums",
       "startLine": 176,
-      "endLine": 202,
+      "endLine": 203,
       "summary": "`sidon_case` (even Sidon sets fail), `hasUniqueSums` ($r_A \\leq 1$), `unique_sums_hereditary` (unique sums closed under subsets)"
     },
     {
       "id": "density",
       "title": "Density Considerations",
       "startLine": 204,
-      "endLine": 214,
+      "endLine": 215,
       "summary": "`density_bound`: $|A \\cap [1,N]| \\leq C\\sqrt{N}+1$ for sets with bounded convolution; counterexamples achieve this bound"
     },
     {
@@ -194,5 +194,27 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-360",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, partition, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-152",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-360",
+    "erdos-14",
+    "erdos-152"
+  ]
 }

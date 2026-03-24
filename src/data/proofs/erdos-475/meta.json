@@ -26,7 +26,7 @@
     "erdosUrl": "https://erdosproblems.com/475",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod",
@@ -64,12 +64,6 @@
       "Summary theorem combining all verified ranges"
     ],
     "mathContext": "Additive Combinatorics — Sequencing in Finite Fields",
-    "crossReferences": [
-      {
-        "targetId": "erdos-466",
-        "relationship": "Related Erdős problem on additive combinatorics in finite fields"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 209,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -215,5 +209,15 @@
       "year": 1970,
       "journal": "Journal of the London Mathematical Society"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-476",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, finite-fields"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-476"
   ]
 }

@@ -7,7 +7,7 @@
     "author": "Choi, Erdős, Szemerédi",
     "sourceUrl": "https://erdosproblems.com/866",
     "date": "1975",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos866Problem.lean",
     "tags": [
@@ -53,24 +53,6 @@
       "Odd numbers construction as fundamental extremal example",
       "Four open problems formalized as Lean propositions"
     ],
-    "crossReferences": [
-      {
-        "id": "erdos-394",
-        "relationship": "Both study threshold phenomena in number-theoretic/combinatorial settings; erdos-394 examines divisibility thresholds while this examines pairwise sum thresholds"
-      },
-      {
-        "id": "erdos-932",
-        "relationship": "Connected through density and threshold concepts; erdos-932 studies natural density of smooth numbers, while this studies density thresholds for sumset configurations"
-      },
-      {
-        "id": "erdos-486",
-        "relationship": "Both involve extremal set theory with number-theoretic flavor; dense subsets of integers forced to contain specific arithmetic patterns"
-      },
-      {
-        "id": "subset-count",
-        "relationship": "Subset counting is foundational to analyzing which subsets can form pairwise sum configurations"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 274,
     "assumptions": "7 axiom(s) and 6 sorry(s). See the Lean source for details."
@@ -99,70 +81,70 @@
       "title": "Basic Definitions",
       "summary": "Defines Interval(N) = {1,...,2N}, HasAllPairwiseSums via Fin k → ℤ witnesses, PairwiseSumCondition as the universal threshold statement, and g(k,N) via Nat.find with a sorry for the vacuous existence argument.",
       "startLine": 41,
-      "endLine": 65
+      "endLine": 66
     },
     {
       "id": "case-k3",
       "title": "Case k=3",
       "summary": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). The lower bound g₃ ≥ 2 from odd numbers has a sorry requiring the parity-pigeonhole argument that two of three integers share parity.",
       "startLine": 67,
-      "endLine": 81
+      "endLine": 82
     },
     {
       "id": "case-k4",
       "title": "Case k=4",
       "summary": "Two axioms: g₄(N) ≤ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) ≤ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅.",
       "startLine": 83,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "case-k5",
       "title": "Case k=5",
       "summary": "Axiomatizes g₅(N) ≍ log N with two-sided bounds. A corollary theorem extracts the lower bound via `obtain` from the axiom. The construction using odd numbers + powers of 2 is described but not formalized.",
       "startLine": 97,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "case-k6",
       "title": "Case k=6",
       "summary": "Axiomatizes g₆(N) ≍ √N, the first case with polynomial growth. The jump from Θ(log N) to Θ(√N) between k=5 and k=6 is one of the problem's most striking features.",
       "startLine": 117,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "general-upper",
       "title": "General Upper Bound",
       "summary": "Axiomatizes g_k(N) ≪ N^{1-2^{-k}} for k ≥ 3. Defines upperExponent(k) = 1-2^{-k} and proves (with sorry) that it's strictly increasing. The exponent approaches 1 as k → ∞.",
       "startLine": 128,
-      "endLine": 150
+      "endLine": 151
     },
     {
       "id": "general-lower",
       "title": "General Lower Bound",
       "summary": "Axiomatizes the lower bound g_k(N) > N^{1-ε} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain.",
       "startLine": 152,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "odd-construction",
       "title": "Odd Numbers Construction",
       "summary": "Defines oddNumbers(N) as odd integers in [2N]. Proves (with sorries) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd. Derives g₃(N) ≥ 1 as a corollary.",
       "startLine": 174,
-      "endLine": 195
+      "endLine": 196
     },
     {
       "id": "summary-table",
       "title": "Summary Table",
       "summary": "Four summary theorems (summary_g3 through summary_g6) directly reference the case axioms, providing a clean interface to the known results. Includes a markdown table in comments.",
       "startLine": 197,
-      "endLine": 215
+      "endLine": 216
     },
     {
       "id": "open-problems",
       "title": "Open Problems",
       "summary": "Four open problems formalized as Lean propositions: (1) g₄ exact value, (2) g₅ optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction.",
       "startLine": 217,
-      "endLine": 248
+      "endLine": 249
     },
     {
       "id": "summary",
@@ -201,5 +183,27 @@
     "axiomCount": 7,
     "theoremCount": 12,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sumsets"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sumsets"
+    },
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-1103",
+    "erdos-1109"
+  ]
 }

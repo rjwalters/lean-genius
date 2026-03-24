@@ -50,7 +50,8 @@
     "wiedijkNumber": 35,
     "axiomCount": 0,
     "lineCount": 202,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Taylor's theorem has a rich history spanning several centuries. James Gregory discovered the general idea of power series expansion around 1671, and Brook Taylor published his systematic treatment in *Methodus Incrementorum Directa et Inversa* in 1715, giving the result its name. Colin Maclaurin popularized the special case $a = 0$ (Maclaurin series) in his 1742 *Treatise of Fluxions*, though this was already implicit in Taylor's work.\n\nThe rigorous formulation with explicit remainder terms came much later. Joseph-Louis Lagrange introduced the remainder $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$ in his 1797 *Théorie des fonctions analytiques*, providing the first tool for bounding approximation error. Augustin-Louis Cauchy developed an alternative remainder form $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{n!}(x-\\xi)^n(x-a)$ that is sometimes more convenient for analysis. Both forms rely on the Mean Value Theorem applied to a carefully constructed auxiliary function.\n\nTaylor's theorem is entry #35 on Freek Wiedijk's list of 100 greatest theorems. It is arguably the most widely applied theorem in all of mathematics: it underlies numerical computation (floating-point arithmetic, quadrature, ODE solvers), optimization (Newton's method uses the second-order Taylor expansion), physics (perturbation theory, linearization of nonlinear systems), and machine learning (gradient descent is first-order Taylor). The formal verification in Lean establishes both remainder forms with full generality.",
@@ -74,56 +75,56 @@
       "id": "imports-header",
       "title": "Imports and Documentation",
       "startLine": 1,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Imports Mathlib.Analysis.Calculus.Taylor and Mathlib.Tactic. Extensive docstring covers the Taylor expansion formula, Lagrange and Cauchy remainder forms, Wiedijk #35 designation, and historical notes on Taylor, Gregory, Maclaurin, and Lagrange."
     },
     {
       "id": "setup",
       "title": "Namespace and Setup",
       "startLine": 53,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Opens Set, Filter, Topology, and Finset namespaces. Opens the Nat scope for natural number notation."
     },
     {
       "id": "taylor-poly",
       "title": "Taylor Polynomial Definition",
       "startLine": 58,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Defines taylorPoly as a wrapper around Mathlib's taylorWithinEval, computing the degree-n Taylor polynomial of f at x₀ evaluated at x on the interval [x₀, x]."
     },
     {
       "id": "lagrange",
       "title": "Lagrange Remainder Form",
       "startLine": 72,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "The main theorem: for (n+1)-times continuously differentiable f, there exists ξ ∈ (x₀, x) such that the remainder equals f^(n+1)(ξ) · (x-x₀)^(n+1) / (n+1)!. Proof establishes differentiability hypotheses for taylor_mean_remainder_lagrange."
     },
     {
       "id": "cauchy",
       "title": "Cauchy Remainder Form",
       "startLine": 98,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Alternative remainder form: f^(n+1)(ξ) · (x-ξ)^n · (x-x₀) / n! for some ξ ∈ (x₀, x). Uses the same differentiability setup with taylor_mean_remainder_cauchy."
     },
     {
       "id": "bounds",
       "title": "Remainder Bounds",
       "startLine": 123,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "If the (n+1)-th derivative is bounded by C on [a,b], the remainder satisfies |f(x) - T_n(x)| ≤ C · (x-a)^(n+1) / n!. Direct application of taylor_mean_remainder_bound."
     },
     {
       "id": "first-order",
       "title": "First-Order Taylor (Mean Value Theorem)",
       "startLine": 140,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "The n=0 specialization recovers the Mean Value Theorem: f(x) - f(x₀) = f'(ξ)(x - x₀). Proof simplifies factorial and power terms via simp."
     },
     {
       "id": "second-order",
       "title": "Second-Order Taylor (Quadratic Approximation)",
       "startLine": 161,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "The n=1 specialization gives the quadratic approximation used in optimization: remainder equals f''(ξ)(x-x₀)²/2."
     },
     {

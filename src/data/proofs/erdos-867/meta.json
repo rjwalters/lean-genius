@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/867",
     "erdosProblemStatus": "disproved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.Ioc",
@@ -83,14 +83,14 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Header documenting Erdős Problem #867 with references to Erdős [Er92c], Freud (1993), and Coppersmith-Phillips (1996). Imports `Finset.Basic`, `Finset.Card`, `Finset.Interval`, `Nat.Interval`, `BigOperators`, `Interval.Finset.Nat`, and `Data.Real.Basic`. Opens `Finset` and `BigOperators` namespaces."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 43,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Defines `consecutiveSums : List \\mathbb{N} \\to \\text{Finset}\\,\\mathbb{N}$ collecting all sums $\\sum_{k=i}^{j} a_k$ via `List.drop`, `List.take`, and `List.sum`. Defines `isConsecutiveSumFree` requiring $\\sum_{k=i}^{j} a_k \\notin A$ for all $i < j$ with segment length $> 1$. Defines `maxDensity : \\mathbb{N} \\to \\mathbb{R}$ via `sSup`."
     },
     {
@@ -154,11 +154,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-839",
-    "erdos-533",
-    "erdos-347",
-    "erdos-28",
-    "erdos-106"
+    "erdos-1136",
+    "erdos-198",
+    "erdos-32"
   ],
   "leanFile": {
     "imports": [
@@ -179,5 +177,22 @@
     "axiomCount": 9,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, disproved"
+    },
+    {
+      "targetId": "erdos-32",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density-bounds"
+    }
+  ]
 }

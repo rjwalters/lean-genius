@@ -33,7 +33,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 243,
-    "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Ramsey Size Linearity and Its Origins**\n\nThe concept of Ramsey size linearity emerged from the study of how Ramsey numbers $R(G,H)$ grow as $H$ varies. Frank P. Ramsey proved in 1930 that $R(G,H)$ is always finite, but its growth rate depends subtly on both $G$ and $H$. In 1983, Stefan Burr introduced the notion of a graph being *Ramsey size linear* — meaning $R(G,H) = O(|E(H)|)$ for all $H$ without isolated vertices — and conjectured (with Erdős) that every bounded-degree graph is Ramsey size linear. This celebrated **Burr–Erdős conjecture** was proved by Choongbum Lee in 2017, a landmark result in extremal combinatorics.\n\n**The Mystery of $K_4$**: The complete graph $K_4$ is the simplest graph known to violate Ramsey size linearity. The Ramsey number $R(K_4, K_n) = \\Omega(n^2/\\log n)$, established using probabilistic deletion methods by Ajtai, Komlós, and Szemerédi (1980). Since $|E(K_n)| = \\binom{n}{2} \\sim n^2/2$, the ratio $R(K_4,K_n)/|E(K_n)|$ grows without bound — $K_4$ is superlinear. Yet every proper subgraph of $K_4$ (triangles, paths, matchings, stars with $\\leq 3$ edges) has bounded degree or is $K_3$, and is therefore Ramsey size linear by the Chvátal–Rödl–Szemerédi–Trotter theorem (1983) for triangles or Lee's theorem for general bounded-degree graphs.\n\n**The Question (1993)**: Erdős, Faudree, Rousseau, and Schelp asked whether $K_4$ is the *only* minimally non-Ramsey-size-linear graph, or whether infinitely many exist. For 31 years, no second example was found.\n\n**Resolution (2024)**: Yuval Wigderson proved that infinitely many such graphs exist, using a blend of probabilistic and extremal methods. The proof is fundamentally non-constructive: it derives a contradiction from assuming finitely many minimal obstructions exist, without exhibiting any new one. $K_4$ remains the sole explicit example, making the search for a second one a compelling open problem at the interface of Ramsey theory and constructive mathematics.",
@@ -59,84 +60,84 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib's `SimpleGraph`, `Subgraph`, `Fintype`, and `Real` modules. Opens the `SimpleGraph` namespace and begins the `Erdos79` namespace for the formalization.",
       "startLine": 16,
-      "endLine": 23
+      "endLine": 24
     },
     {
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers",
       "summary": "Defines $R(G,H) = \\min\\{n : \\text{every 2-coloring of } K_n \\text{ has red } G \\text{ or blue } H\\}$ as a noncomputable function using `Nat.find`. The existence witness is a placeholder; the full Ramsey existence theorem (1930) requires a deeper combinatorial argument.",
       "startLine": 25,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "no-isolated",
       "title": "Graphs with No Isolated Vertices",
       "summary": "Defines `noIsolatedVertices` ($\\forall v,\\; \\deg(v) \\geq 1$) and `edgeCount` ($|E(G)|$). These restrict the domain of Ramsey size linearity to graphs where the edge count is a meaningful measure of size.",
       "startLine": 45,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "ramsey-linear",
       "title": "Ramsey Size Linearity",
       "summary": "Defines `isRamseySizeLinear` ($\\exists C > 0,\\; \\forall H,\\; R(G,H) \\leq C \\cdot |E(H)|$) and its negation `isRamseySizeSuperlinear`. The linear bound captures graphs whose Ramsey numbers grow at most proportionally to the size of the second argument.",
       "startLine": 61,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "hereditary",
       "title": "Subgraphs and Hereditary Property",
       "summary": "Defines `isProperSubgraph` via the lattice ordering on `SimpleGraph` and axiomatizes that Ramsey size linearity is **hereditary**: $H \\subsetneq G \\wedge \\text{linear}(G) \\implies \\text{linear}(H)$. This is the structural foundation for defining minimal obstructions.",
       "startLine": 78,
-      "endLine": 91
+      "endLine": 92
     },
     {
       "id": "minimal",
       "title": "Minimally Non-Linear Graphs",
       "summary": "Defines `isMinimallyNonLinear` as the conjunction $\\neg\\text{linear}(G) \\wedge \\forall H \\subsetneq G,\\; \\text{linear}(H)$. These are the minimal obstructions to Ramsey size linearity — the forbidden subgraphs whose removal from any non-linear graph restores linearity.",
       "startLine": 93,
-      "endLine": 105
+      "endLine": 106
     },
     {
       "id": "K4",
       "title": "The Complete Graph K₄",
       "summary": "Defines `completeGraph n` on `Fin n` with adjacency $u \\neq v$, then axiomatizes $K_4$'s superlinearity and its subgraphs' linearity. Proves `K4_is_minimal` by combining both axioms via `constructor`. $K_4$ with $\\binom{4}{2} = 6$ edges is the unique known explicit minimally non-linear graph.",
       "startLine": 107,
-      "endLine": 132
+      "endLine": 133
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "Defines the set $\\mathcal{M} = \\{G : G \\text{ is minimally non-linear}\\}$ and formalizes Erdős Problem #79 as the proposition $|\\mathcal{M}| = \\infty$. This 1993 question by Erdős, Faudree, Rousseau, and Schelp stood open for 31 years.",
       "startLine": 134,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "wigderson",
       "title": "Wigderson's Theorem (2024)",
       "summary": "Axiomatizes Wigderson's breakthrough: $|\\mathcal{M}| = \\infty$. The proof is non-constructive, using probabilistic and extremal methods. Derives `erdos_79_solved` as a direct application of the axiom.",
       "startLine": 149,
-      "endLine": 161
+      "endLine": 162
     },
     {
       "id": "explicit",
       "title": "Explicit Construction Problem",
       "summary": "Defines `knownExamples = {K_4}` and the open problem `explicit_construction_open`: $\\exists G \\in \\mathcal{M},\\; G \\not\\cong K_4$. Despite Wigderson's existence proof, constructing a second explicit example remains one of the central open problems in Ramsey theory.",
       "startLine": 163,
-      "endLine": 184
+      "endLine": 185
     },
     {
       "id": "K4-structure",
       "title": "Why K₄ Is Special",
       "summary": "Proves $|E(K_4)| = 6$ (sorry), axiomatizes $R(K_3, H) = O(|E(H)|)$ (Chvátal–Rödl–Szemerédi–Trotter 1983), and that paths are Ramsey size linear (Lee 2017). These results show that every proper subgraph of $K_4$ is linear, placing $K_4$ precisely at the boundary.",
       "startLine": 186,
-      "endLine": 203
+      "endLine": 204
     },
     {
       "id": "antichain",
       "title": "Antichain Structure",
       "summary": "States that elements of $\\mathcal{M}$ form an **antichain**: $\\forall G, H \\in \\mathcal{M},\\; G \\neq H \\implies G \\not\\subsetneq H$. Combined with Wigderson's theorem, this gives an infinite antichain in the subgraph ordering, showing that Ramsey size linearity cannot be characterized by finitely many forbidden subgraphs.",
       "startLine": 205,
-      "endLine": 217
+      "endLine": 243
     }
   ],
   "conclusion": {
@@ -165,5 +166,27 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1029",
+    "erdos-1030"
+  ]
 }

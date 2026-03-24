@@ -40,35 +40,36 @@
     ],
     "axiomCount": 3,
     "lineCount": 79,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "definition",
       "title": "Definitions",
       "startLine": 23,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Defines **cosineSum A θ** = ∑_{n ∈ A} cos(nθ) (real part of exponential sum) and **minCosineSum A** = iInf(cosineSum A) (most negative value over all angles)."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 33,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Axiom **erdos_510_chowla**: ∃ c > 0, ∀ A ⊂ ℕ⁺ of size N, ∃ θ with cosineSum(A,θ) < −c√N. The central open conjecture with optimal exponent 1/2."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 43,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Axiom **bedert_bound**: ∃ c > 0 with cosineSum < −cN^{1/7} (Bedert 2025, first polynomial bound). Comments record Ruzsa's (2004) exp(√(log N)) and Bourgain's (1986) initial bounds."
     },
     {
       "id": "optimality",
       "title": "Optimality",
       "startLine": 59,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Axiom **sidon_optimality**: For any ε > 0, ∃ A with min cosine sum > −(1+ε)√|A|. Proved via Sidon difference sets A = B−B, showing √N is the exact threshold."
     },
     {

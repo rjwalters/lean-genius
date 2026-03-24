@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/634",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$25",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Multiset",
@@ -81,77 +81,77 @@
       "title": "Problem Header and Imports",
       "summary": "Documentation of Erdős Problem #634 with known results, references, and Mathlib import for access to multisets, big operators, and primality.",
       "startLine": 1,
-      "endLine": 34
+      "endLine": 35
     },
     {
       "id": "triangles",
       "title": "Triangles and Congruence",
       "summary": "Defines the `Triangle` structure via side lengths $(a, b, c) \\in \\mathbb{R}_{>0}$ satisfying the triangle inequality, and `Congruent` as multiset equality $\\{a, b, c\\} = \\{a', b', c'\\}$, with proofs that congruence is reflexive, symmetric, and transitive.",
       "startLine": 36,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "similar",
       "title": "Similar Triangles",
       "summary": "Defines `Similar` as proportionality of side lengths ($\\exists k > 0$, $T_2 = k \\cdot T_1$) and states that congruent triangles are similar (with scaling factor $k = 1$).",
       "startLine": 68,
-      "endLine": 81
+      "endLine": 82
     },
     {
       "id": "dissection",
       "title": "Triangle Dissection",
       "summary": "Central definitions: `Dissection T n` as a function $\\text{Fin}\\, n \\to \\text{Triangle}$ with area constraint, `IsCongruentDissection` requiring all pieces mutually congruent, and `IsDissectable n` asserting existence of some triangle admitting such a dissection.",
       "startLine": 83,
-      "endLine": 101
+      "endLine": 102
     },
     {
       "id": "positive",
       "title": "Known Positive Results",
       "summary": "Theorems asserting dissectability for $k^2$ (grid subdivision), $2k^2$, $3k^2$ (equilateral trisection), $6k^2$, $k^2 + m^2$ (two-scale grids), and the special case $27$ — all with `sorry` proofs pending geometric constructions.",
       "startLine": 103,
-      "endLine": 132
+      "endLine": 133
     },
     {
       "id": "beeson",
       "title": "Beeson's Negative Results",
       "summary": "Axiomatizes Beeson's 2012 results: $\\neg\\text{IsDissectable}\\, 7$ and $\\neg\\text{IsDissectable}\\, 11$, plus the proven observation that both 7 and 11 are primes of the form $4k + 3$.",
       "startLine": 134,
-      "endLine": 156
+      "endLine": 157
     },
     {
       "id": "conjecture",
       "title": "The 4k+3 Conjecture",
       "summary": "States the conjecture that primes of form $4k + 3$ are non-dissectable, with the refined version excluding $p = 3$ (since $3 = 3 \\cdot 1^2$ is dissectable). Proves $3$ is dissectable by specializing `three_squares_dissectable`.",
       "startLine": 158,
-      "endLine": 176
+      "endLine": 177
     },
     {
       "id": "open",
       "title": "Open Cases",
       "summary": "Analyzes $n = 19$: proves it is prime (`by decide`), of form $4 \\cdot 4 + 3$, and that the refined $4k+3$ conjecture would imply $\\neg\\text{IsDissectable}\\, 19$.",
       "startLine": 178,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "soifer",
       "title": "Similar Triangles (Soifer's Result)",
       "summary": "Defines `IsSimilarDissection` and `IsSimilarDissectable`, then axiomatizes Soifer's complete theorem: all $n \\geq 1$ except $2, 3, 5$ admit similar dissections, with the three exceptions also axiomatized.",
       "startLine": 198,
-      "endLine": 223
+      "endLine": 224
     },
     {
       "id": "self-similar",
       "title": "Self-Similar Dissections (Snover–Waiveris–Williams)",
       "summary": "Defines `IsSelfSimilarDissection` (pieces similar to the original) and axiomatizes the SWW characterization: $n$ is self-similar-dissectable iff $n \\in \\{k^2\\} \\cup \\{k^2 + m^2\\} \\cup \\{3k^2\\}$.",
       "startLine": 225,
-      "endLine": 245
+      "endLine": 246
     },
     {
       "id": "recent",
       "title": "Recent Progress (Zhang 2025)",
       "summary": "Axiomatizes Zhang's 2025 result on sufficient conditions: for fixed $a \\geq b \\geq 1$, all sufficiently large $n^2 a b$ are dissectable. Also defines `KnownDissectable` as the union of all known parametric families.",
       "startLine": 247,
-      "endLine": 263
+      "endLine": 264
     },
     {
       "id": "main-result",
@@ -212,5 +212,15 @@
       "citation": "Erdős, P. and Graham, R.L. 'Old and New Problems and Results in Combinatorial Number Theory.' L'Enseignement Mathématique, Monograph 28 (1980). Contains the original problem statement.",
       "type": "book"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-633",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: dissection, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-633"
   ]
 }

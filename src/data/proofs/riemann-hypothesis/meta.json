@@ -15,8 +15,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 41,
-    "assumptions": "41 axiom declarations across two files (32 main + 9 consequences). Main: RH equivalences (Robin, Mertens, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman, Li positivity, BSY integral, Riesz, Báez-Duarte, Volchkov), partial results (Hardy, classical zero-free region, Conrey 2/5, Montgomery pair correlation), moment bounds (Harper, Radziwiłł-Soundararajan), Selberg class (Kaczorowski-Perelli), explicit estimates (Rosser-Schoenfeld, prime counting), GRH consequences (Artin primitive root, Miller primality), prime gap bounds. Consequences: Mertens bound, Li criterion, Riemann-von Mangoldt, density hypothesis, Chebyshev bounds, explicit formula, Selberg class, Hadamard product. Soundness audit: removed li_criterion (was inconsistent with wrong liCoefficient def), fixed auto-bound RiemannHypothesisStatement, unified eulerMascheroniGamma. 8329 lines, 41 axioms, 0 sorries.",
+    "axiomCount": 38,
+    "assumptions": "38 axiom declarations across two files (32 main + 9 consequences). Main: RH equivalences (Robin, Mertens, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman, Li positivity, BSY integral, Riesz, Báez-Duarte, Volchkov), partial results (Hardy, classical zero-free region, Conrey 2/5, Montgomery pair correlation), moment bounds (Harper, Radziwiłł-Soundararajan), Selberg class (Kaczorowski-Perelli), explicit estimates (Rosser-Schoenfeld, prime counting), GRH consequences (Artin primitive root, Miller primality), prime gap bounds. Consequences: Mertens bound, Li criterion, Riemann-von Mangoldt, density hypothesis, Chebyshev bounds, explicit formula, Selberg class, Hadamard product. Soundness audit: removed li_criterion (was inconsistent with wrong liCoefficient def), fixed auto-bound RiemannHypothesisStatement, unified eulerMascheroniGamma. 8329 lines, 38 axioms, 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "riemannZeta",
@@ -54,7 +54,9 @@
     ],
     "dateAdded": "2025-12-27",
     "hilbertNumber": 8,
-    "millenniumProblem": "riemann"
+    "millenniumProblem": "riemann",
+    "proofRepoPath": "Proofs/RiemannHypothesis.lean",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Riemann Hypothesis was first stated by Bernhard Riemann in 1859 in his paper 'On the Number of Primes Less Than a Given Magnitude.' It concerns the location of the non-trivial zeros of the Riemann zeta function, which Riemann showed are intimately connected to the distribution of prime numbers.\n\nIn 2000, the Clay Mathematics Institute designated RH as one of seven Millennium Prize Problems, offering $1 million for its resolution. As of 2025, it remains one of the most important unsolved problems in mathematics.\n\nKey milestones:\n- 1859: Riemann states the hypothesis\n- 1896: Hadamard and de la Vallée Poussin prove the Prime Number Theorem\n- 1914: Hardy proves infinitely many zeros lie on the critical line\n- 1942: Selberg proves a positive proportion of zeros are on the critical line\n- 2004: First 10^13 zeros verified computationally",

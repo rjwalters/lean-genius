@@ -57,7 +57,8 @@
       "erdos_910_both_false: combined result disproving both conjectures"
     ],
     "lineCount": 155,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed two questions about connected subsets of $\\mathbb{R}^n$ in the 1940s, expecting affirmative answers based on the intuition that connected sets should possess rich internal structure. For typical connected sets — intervals, disks, manifolds — there are continuum-many connected subsets, and most proper connected subsets are not homeomorphic to the whole. Mary Ellen Rudin, in her landmark 1958 paper 'A connected subset of the plane' (Fundamenta Mathematicae 46), provided a stunning counterexample to both conjectures simultaneously. Working under the Continuum Hypothesis (CH), she constructed a connected subset $X \\subseteq \\mathbb{R}^2$ with the extraordinary property that every proper connected subset of $X$ is either a single point or homeomorphic to $X$ itself. Moreover, $X$ has exactly $2^{\\aleph_0}$ connected subsets, not more. The construction uses transfinite induction of length $\\aleph_1$, which equals $2^{\\aleph_0}$ under CH, to build $X$ point by point while maintaining both the connectivity and the self-similarity property at each stage. Rudin's result was one of her first major contributions to point-set topology; she later became one of the most influential topologists of the 20th century. The dependence on CH remains a fundamental aspect of this problem — it is still unknown whether a ZFC counterexample exists.",
@@ -97,28 +98,28 @@
       "id": "first-question",
       "title": "Erdős's First Question",
       "startLine": 85,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Defines `HasDiverseConnectedSubset` (proper connected non-singleton non-homeomorphic subset) and `erdosFirstConjecture` (all connected sets have diverse subsets)."
     },
     {
       "id": "second-question",
       "title": "Erdős's Second Question",
       "startLine": 104,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Defines `connectedSubsetCardinality`, `continuum := \\#\\mathbb{R}$, and `erdosSecondConjecture` (connected sets in $\\mathbb{R}^n$ have $> 2^{\\aleph_0}$ connected subsets)."
     },
     {
       "id": "rudin-set",
       "title": "The Rudin Set",
       "startLine": 123,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "Defines `ContinuumHypothesis`, `IsRudinSet` (every proper connected subset is a point or homeomorphic to the whole), and `HasExactlyContinuumConnectedSubsets`."
     },
     {
       "id": "rudin-theorem",
       "title": "Rudin's Theorem",
       "startLine": 143,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "Axiomatizes the existence of a Rudin set in $\\mathbb{R}^2$ under CH with exactly $2^{\\aleph_0}$ connected subsets."
     },
     {

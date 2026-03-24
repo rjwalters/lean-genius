@@ -16,7 +16,8 @@
       "Perfect matchings",
       "Threshold functions",
       "Probabilistic method"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-hypergraph",
@@ -34,7 +35,8 @@
       "Hypergraph",
       "Combinatorics"
     ],
-    "mathContext": "An $r$-uniform hypergraph on $[n]$ is a collection of $r$-element subsets of $\\{1, \\ldots, n\\}$"
+    "mathContext": "An $r$-uniform hypergraph on $[n]$ is a collection of $r$-element subsets of $\\{1, \\ldots, n\\}$",
+    "prerequisites": []
   },
   {
     "id": "ann-e747-matching",
@@ -52,7 +54,8 @@
       "Vertex-disjoint",
       "Independent set"
     ],
-    "mathContext": "A matching $M$ satisfies $\\forall e_1, e_2 \\in M: e_1 \\neq e_2 \\implies e_1 \\cap e_2 = \\emptyset$"
+    "mathContext": "A matching $M$ satisfies $\\forall e_1, e_2 \\in M: e_1 \\neq e_2 \\implies e_1 \\cap e_2 = \\emptyset$",
+    "prerequisites": []
   },
   {
     "id": "ann-e747-perfect-matching",
@@ -65,7 +68,9 @@
     "title": "Perfect Matching",
     "content": "**IsPerfectMatching:**\n\nA perfect matching covers all vertices exactly once.\n\nFor a 3-uniform hypergraph on 3n vertices, this means exactly n disjoint edges, each covering 3 vertices.",
     "significance": "key",
-    "mathContext": "A perfect matching $M$ partitions $[n]$ into $n/r$ disjoint $r$-element edges (requires $r \\mid n$)"
+    "mathContext": "A perfect matching $M$ partitions $[n]$ into $n/r$ disjoint $r$-element edges (requires $r \\mid n$)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-almost-surely",
@@ -83,7 +88,8 @@
       "Asymptotic behavior",
       "High probability"
     ],
-    "mathContext": "$P(\\text{event}) \\to 1$ as $n \\to \\infty$, i.e., failure probability is $o(1)$"
+    "mathContext": "$P(\\text{event}) \\to 1$ as $n \\to \\infty$, i.e., failure probability is $o(1)$",
+    "prerequisites": []
   },
   {
     "id": "ann-e747-threshold",
@@ -101,7 +107,8 @@
       "Phase transition",
       "Critical probability",
       "Random graphs"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-shamir-question",
@@ -114,7 +121,9 @@
     "title": "Shamir's Question",
     "content": "**ShamirQuestion:**\n\nFind the threshold ℓ(n) for perfect matchings in random 3-uniform hypergraphs.\n\nShamir asked this to Erdős in 1979. It became one of the major open problems in random hypergraph theory.",
     "significance": "key",
-    "mathContext": "Find $\\ell(n)$ such that $H_r(n, m)$ has a perfect matching a.s. when $m > \\ell(n)$ and fails a.s. when $m < \\ell(n)$"
+    "mathContext": "Find $\\ell(n)$ such that $H_r(n, m)$ has a perfect matching a.s. when $m > \\ell(n)$ and fails a.s. when $m < \\ell(n)$",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-threshold-function",
@@ -127,7 +136,9 @@
     "title": "The Threshold Function",
     "content": "**shamirThreshold:**\n\nℓ(n) = ⌈n log n⌉\n\nThis is the threshold for perfect matchings: below it, no matching exists a.s.; above it, a matching exists a.s.",
     "significance": "key",
-    "mathContext": "$\\ell(n) = \\lceil n \\log n \\rceil$ — the sharp threshold for perfect matchings in $H_r(n, m)$"
+    "mathContext": "$\\ell(n) = \\lceil n \\log n \\rceil$ — the sharp threshold for perfect matchings in $H_r(n, m)$",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-jkv",
@@ -144,7 +155,8 @@
     "relatedConcepts": [
       "Nibble method",
       "Second moment method"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-kahn",
@@ -157,7 +169,9 @@
     "title": "Kahn's Precise Asymptotic (2023)",
     "content": "**kahn_precise_threshold:**\n\nThe precise asymptotic is ℓ(n) ~ n log n.\n\nThis means: ℓ(n) / (n log n) → 1 as n → ∞.\n\nKahn proved this in 'Asymptotics for Shamir's problem', Adv. Math. (2023), also for general r-uniform hypergraphs.",
     "significance": "key",
-    "mathContext": "For $r \\geq 3$: if $m = (1+\\epsilon) \\cdot \\frac{n}{r} \\ln n$ then $H_r(n,m)$ has a perfect matching a.s. (Kahn 2023)"
+    "mathContext": "For $r \\geq 3$: if $m = (1+\\epsilon) \\cdot \\frac{n}{r} \\ln n$ then $H_r(n,m)$ has a perfect matching a.s. (Kahn 2023)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-general-r",
@@ -170,7 +184,9 @@
     "title": "General r-uniform Case",
     "content": "**kahn_general_r:**\n\nFor r-uniform hypergraphs on rn vertices, the threshold for perfect matchings is also ~ n log n.\n\nRemarkably, the threshold is the SAME for all uniformities r ≥ 2. This was not expected - hypergraphs seemed more complex than graphs.",
     "mathContext": "The uniformity independence was a surprising discovery.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-below",
@@ -183,7 +199,9 @@
     "title": "Below Threshold",
     "content": "**below_threshold_fails:**\n\nIf m < (1-ε) n log n, then almost surely no perfect matching exists.\n\n**Why:** Below threshold, the hypergraph has isolated vertices (vertices in no edge). A perfect matching is impossible if any vertex is isolated.",
     "significance": "key",
-    "mathContext": "$m < (1-\\epsilon) \\cdot n \\log n \\implies P(H_r(n,m)$ has perfect matching$) \\to 0$"
+    "mathContext": "$m < (1-\\epsilon) \\cdot n \\log n \\implies P(H_r(n,m)$ has perfect matching$) \\to 0$",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-isolated",
@@ -196,7 +214,9 @@
     "title": "Isolated Vertices Obstruction",
     "content": "**Key Insight:**\n\nThe obstruction below threshold is isolated vertices.\n\nIn the random model, expected degree of a vertex is proportional to m/n². When m < n log n, some vertices have degree 0 with high probability.\n\nThis is the same obstruction as in ordinary graphs!",
     "significance": "key",
-    "mathContext": "Below threshold: $\\exists v \\in [n]$ not covered by any edge with probability $\\to 1$ (coupon collector obstruction)"
+    "mathContext": "Below threshold: $\\exists v \\in [n]$ not covered by any edge with probability $\\to 1$ (coupon collector obstruction)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-above",
@@ -209,7 +229,9 @@
     "title": "Above Threshold",
     "content": "**above_threshold_succeeds:**\n\nIf m > (1+ε) n log n, then almost surely a perfect matching exists.\n\nThe proof is technically challenging, using the nibble method and regularity-type arguments.",
     "significance": "key",
-    "mathContext": "$m > (1+\\epsilon) \\cdot n \\log n \\implies P(H_r(n,m)$ has perfect matching$) \\to 1$"
+    "mathContext": "$m > (1+\\epsilon) \\cdot n \\log n \\implies P(H_r(n,m)$ has perfect matching$) \\to 1$",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-erdos-quote",
@@ -222,7 +244,9 @@
     "title": "Erdős's Comment",
     "content": "**Erdős wrote:**\n\n'Many of the problems on random hypergraphs can be settled by the same methods as used for ordinary graphs and usually one can guess the answer almost immediately. Here we have no idea of the answer.'\n\nThis unusual admission shows how difficult the problem was.",
     "significance": "supporting",
-    "mathContext": "Erdős's observation: many random hypergraph problems remain unsolved despite their graph analogues being well-understood"
+    "mathContext": "Erdős's observation: many random hypergraph problems remain unsolved despite their graph analogues being well-understood",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-main",
@@ -235,7 +259,9 @@
     "title": "Erdős Problem #747: SOLVED",
     "content": "**erdos_747** (axiom) and **erdos_747_answer** (theorem): The threshold for perfect matchings in random 3-uniform hypergraphs is ℓ(n) ~ n log n. The answer theorem directly applies Kahn's precise asymptotic result.",
     "significance": "key",
-    "mathContext": "$\\ell(n) \\sim \\frac{n}{r} \\ln n$ is the sharp threshold for perfect matchings in random $r$-uniform hypergraphs"
+    "mathContext": "$\\ell(n) \\sim \\frac{n}{r} \\ln n$ is the sharp threshold for perfect matchings in random $r$-uniform hypergraphs",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e747-summary",
@@ -248,6 +274,8 @@
     "title": "Complete Summary",
     "content": "**erdos_747_summary** combines all three key results into a single statement:\n\n1. **Threshold exists:** ShamirQuestion is satisfied\n2. **Order of magnitude:** ℓ(n) ≍ n log n (Johansson-Kahn-Vu)\n3. **Precise asymptotic:** ℓ(n)/n log n → 1 (Kahn)\n\nThe proof assembles these from the individual axioms.",
     "significance": "key",
-    "mathContext": "Three-part result: threshold at $\\sim n \\log n$, below fails (isolated vertices), above succeeds (Johansson-Kahn-Vu 2008, Kahn 2023)"
+    "mathContext": "Three-part result: threshold at $\\sim n \\log n$, below fails (isolated vertices), above succeeds (Johansson-Kahn-Vu 2008, Kahn 2023)",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

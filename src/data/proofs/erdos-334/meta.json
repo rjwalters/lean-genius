@@ -43,7 +43,7 @@
       "Concrete examples: example_10, example_100",
       "smoothCount (ψ function) and Goldbach connection"
     ],
-    "axiomCount": 5,
+    "axiomCount": 4,
     "prerequisites": [
       "Prime numbers and prime factorization",
       "Divisibility and Euclid's lemma",
@@ -53,7 +53,8 @@
       "Asymptotic notation (o(1), big-O)"
     ],
     "lineCount": 300,
-    "assumptions": "5 axiom(s) and 3 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
+    "assumptions": "4 axiom(s) and 3 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The concept of smooth numbers — integers whose prime factors are all bounded — goes back to Ramanujan and was systematically studied by de Bruijn (1951), who introduced the Dickman function $\\rho(u)$ governing the density of $y$-smooth numbers up to $x$ (where $u = \\log x / \\log y$). This function satisfies the delay differential equation $u\\rho'(u) = -\\rho(u-1)$.\n\nErdős originally asked (circa 1980, [ErGr80]) whether $f(n) \\leq n^{1/3}$ holds, where $f(n)$ is the minimal smoothness bound needed to write $n = a + b$ with both summands $f(n)$-smooth. This was answered positively, and Balog (1989) obtained the current best bound $f(n) \\ll n^{4/(9\\sqrt{e})+\\varepsilon} \\approx n^{0.2695}$ using the Selberg-Delange method from analytic number theory.\n\nThe problem connects to Goldbach-type questions about additive representations and to cryptographic applications where smooth numbers play a crucial role (e.g., the number field sieve and Lenstra's ECM factoring algorithm).",
@@ -82,56 +83,56 @@
       "title": "Part I: Smooth Numbers",
       "summary": "isSmooth definition, one_smooth, prime_power_smooth, smooth_mul",
       "startLine": 36,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "additive-representation",
       "title": "Part II: Additive Representation by Smooth Numbers",
       "summary": "hasSmootPairRepr definition, small_has_repr for n ≤ 3",
       "startLine": 75,
-      "endLine": 91
+      "endLine": 92
     },
     {
       "id": "minimal-smoothness",
       "title": "Part III: The Minimal Smoothness Function",
       "summary": "minSmoothness definition, minSmoothness_exists axiom",
       "startLine": 93,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "known-bounds",
       "title": "Part IV: Known Bounds",
       "summary": "erdos_cube_root_bound, balogExponent, balog_bound axiom",
       "startLine": 113,
-      "endLine": 140
+      "endLine": 141
     },
     {
       "id": "conjectures",
       "title": "Part V: Conjectured Bounds",
       "summary": "weakConjecture f(n) ≤ n^{o(1)}, strongConjecture f(n) ≤ e^{O(√log n)}",
       "startLine": 142,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "examples",
       "title": "Part VI: Examples",
       "summary": "example_10 (10 = 2 + 8), example_100 (100 = 64 + 36)",
       "startLine": 168,
-      "endLine": 221
+      "endLine": 222
     },
     {
       "id": "connections",
       "title": "Part VII: Connection to Other Problems",
       "summary": "smoothCount ψ(x,y), de_bruijn_asymptotic, Goldbach connection",
       "startLine": 223,
-      "endLine": 251
+      "endLine": 252
     },
     {
       "id": "summary",
       "title": "Part VIII: Main Results Summary",
       "summary": "erdos_334_summary, erdos_334 main theorem, openQuestion",
       "startLine": 253,
-      "endLine": 299
+      "endLine": 300
     }
   ],
   "conclusion": {
@@ -180,7 +181,7 @@
     ],
     "namespace": "Erdos334",
     "lineCount": 300,
-    "axiomCount": 5,
+    "axiomCount": 4,
     "theoremCount": 9,
     "definitionCount": 9
   },

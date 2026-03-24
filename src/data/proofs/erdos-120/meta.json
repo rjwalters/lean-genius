@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 7,
     "lineCount": 331,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Similarity Problem asks whether infinite sets are 'avoidable' — whether positive-measure sets can be constructed that contain no translated-scaled copy. Steinhaus (1920) showed finite sets are universal: every positive-measure set contains a similar copy of any finite set.\n\nErdős conjectured that infinite sets behave fundamentally differently and offered a $100 prize. Unbounded sets and sets dense in intervals are known to be avoidable. The hard case is bounded, nowhere-dense infinite sets, with the geometric sequence {1, 1/2, 1/4, ...} as the key test case (also Problem 94 on Ben Green's list).\n\nSvetic (2000) surveyed the problem comprehensively. Jung, Lai, and Mooroogen (2024) provided recent progress. The problem connects measure theory, Ramsey-type combinatorics, and the fine structure of the real line.",
@@ -45,63 +46,63 @@
       "id": "similar-copies",
       "title": "Part 1: Similar Copies",
       "startLine": 38,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Definition of similar copy aA+b, containment, and avoidance predicates."
     },
     {
       "id": "universal-sets",
       "title": "Part 2: Universal Similarity Sets",
       "startLine": 71,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Universal similarity sets (every positive-measure set contains a copy) and avoidable sets."
     },
     {
       "id": "steinhaus",
       "title": "Part 3: Steinhaus Theorem",
       "startLine": 98,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "Steinhaus (1920): finite nonempty sets are universal similarity sets."
     },
     {
       "id": "known-cases",
       "title": "Part 4: Known Avoidable Cases",
       "startLine": 118,
-      "endLine": 143,
+      "endLine": 144,
       "summary": "Unbounded sets and interval-dense sets are avoidable."
     },
     {
       "id": "conjecture",
       "title": "Part 5: The Erdős Conjecture",
       "startLine": 145,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "The main conjecture: every infinite set is avoidable. Plus the negation."
     },
     {
       "id": "geometric",
       "title": "Part 6: The Geometric Sequence Case",
       "startLine": 174,
-      "endLine": 203,
+      "endLine": 204,
       "summary": "The geometric sequence {(1/2)^n}, its properties, and the open question of avoidability."
     },
     {
       "id": "ratio-invariance",
       "title": "Part 7: Ratio Invariance",
       "startLine": 205,
-      "endLine": 227,
+      "endLine": 228,
       "summary": "Proved theorem: similar copies preserve ratios of differences via ring_nf."
     },
     {
       "id": "measure-tools",
       "title": "Part 8: Measure-Theoretic Tools",
       "startLine": 229,
-      "endLine": 255,
+      "endLine": 256,
       "summary": "Steinhaus difference theorem and Lebesgue density theorem as analytical tools."
     },
     {
       "id": "connections",
       "title": "Part 9: Connections and Related Problems",
       "startLine": 257,
-      "endLine": 294,
+      "endLine": 295,
       "summary": "Proved: universal ↔ ¬avoidable. Proved: conjecture ↔ no infinite set is universal."
     },
     {
@@ -143,5 +144,21 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-119",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-121",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-119",
+    "erdos-121"
+  ]
 }

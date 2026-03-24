@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/872",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -103,56 +103,56 @@
       "title": "Antichain Definitions",
       "summary": "IsDivisibilityAntichain, IsPrimitiveSet, antichain_iff_primitive",
       "startLine": 46,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "game-board",
       "title": "The Game Board",
       "summary": "gameBoard, gameBoard_card, IsLegalMove, legal_move_iff",
       "startLine": 79,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "game-state",
       "title": "Game State and Termination",
       "summary": "IsMaximalAntichain, game_terminates axiom",
       "startLine": 111,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "bounds",
       "title": "Bounds on Game Length",
       "summary": "Antichain upper bound n/2, prime antichain lower bound",
       "startLine": 132,
-      "endLine": 153
+      "endLine": 154
     },
     {
       "id": "erdos-questions",
       "title": "Erdős's Questions",
       "summary": "gameLastsLinear, gameLastsNearOptimal, open status",
       "startLine": 155,
-      "endLine": 189
+      "endLine": 190
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "Füredi-Seress triangle-free game, Biró-Horn-Wildstrom bound",
       "startLine": 191,
-      "endLine": 209
+      "endLine": 210
     },
     {
       "id": "examples",
       "title": "Special Cases and Examples",
       "summary": "primes_antichain, upper_half_antichain, firstPlayerAdvantage",
       "startLine": 211,
-      "endLine": 253
+      "endLine": 254
     },
     {
       "id": "game-theory",
       "title": "Game-Theoretic Formulation",
       "summary": "gameValue axiom with properties, erdos_872_conjecture",
       "startLine": 255,
-      "endLine": 276
+      "endLine": 277
     },
     {
       "id": "summary",
@@ -192,5 +192,21 @@
     "axiomCount": 14,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, primitive-sets"
+    },
+    {
+      "targetId": "erdos-892",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, primitive-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-793",
+    "erdos-892"
+  ]
 }

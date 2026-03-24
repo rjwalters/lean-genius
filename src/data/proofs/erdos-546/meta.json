@@ -20,35 +20,10 @@
     "erdosNumber": 546,
     "erdosUrl": "https://erdosproblems.com/546",
     "erdosProblemStatus": "solved",
-    "relatedProofs": [
-      {
-        "id": "erdos-545",
-        "relationship": "Companion problem asking whether Ramsey numbers are maximized by 'as complete as possible' graphs with m edges"
-      },
-      {
-        "id": "ramseys-theorem",
-        "relationship": "The foundational Ramsey theorem guaranteeing R(H) < ∞ for all finite H, on which this problem builds"
-      },
-      {
-        "id": "erdos-549",
-        "relationship": "Ramsey numbers for bipartite trees — a specific graph family where the bound simplifies"
-      },
-      {
-        "id": "erdos-550",
-        "relationship": "Ramsey numbers for trees vs multipartite graphs, another edge-count-based Ramsey bound"
-      },
-      {
-        "id": "erdos-551",
-        "relationship": "Ramsey numbers for cycles vs complete graphs, connecting sparse graph Ramsey theory"
-      },
-      {
-        "id": "erdos-548",
-        "relationship": "The Erdős-Sós conjecture on tree containment from edge density, a related extremal problem"
-      }
-    ],
     "axiomCount": 0,
     "lineCount": 238,
-    "assumptions": "No axioms. 10 sorry(s) remain in the formalization."
+    "assumptions": "No axioms. 10 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -56,70 +31,70 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's `SimpleGraph`, real power functions for $2^{C\\sqrt{m}}$, and tactics. Opens `SimpleGraph` and `Real` namespaces within `Erdos546`.",
       "startLine": 20,
-      "endLine": 29
+      "endLine": 30
     },
     {
       "id": "graphs",
       "title": "Graph Definitions",
       "summary": "Defines edge count $m = |E(G)|$, no-isolated-vertices condition $\\delta(G) \\geq 1$, and vertex degree. These are the input parameters for Sudakov's bound.",
       "startLine": 31,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "ramsey",
       "title": "Ramsey Numbers",
       "summary": "Formalizes subgraph containment, the complement graph $\\overline{G}$, and $R(H) = \\min\\{N : \\forall$ 2-coloring of $K_N$, $\\exists$ monochromatic $H\\}$.",
       "startLine": 45,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "main-result",
       "title": "Sudakov's Theorem",
       "summary": "The main result: $\\exists C > 0, R(G) \\leq 2^{C\\sqrt{m}}$ for all $G$ with $\\delta(G) \\geq 1$. Also states tightness via the Erdős (1947) probabilistic lower bound $R(K_n) \\geq 2^{n/2} = 2^{\\Theta(\\sqrt{m})}$.",
       "startLine": 66,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "bipartite",
       "title": "Bipartite Case (AKS 2003)",
       "summary": "Defines bipartite graphs and states the Alon-Krivelevich-Sudakov (2003) result: $R(G) \\leq 2^{O(\\sqrt{m})}$ for bipartite $G$, proved 8 years before the general case.",
       "startLine": 88,
-      "endLine": 101
+      "endLine": 102
     },
     {
       "id": "multicolor",
       "title": "Multi-Color Generalization (Open)",
       "summary": "Defines $r$-color Ramsey number $R_r(H)$ and states the open conjecture: $R_r(G) \\leq 2^{O(\\sqrt{m})}$ for $r \\geq 3$. The complement argument breaks for 3+ colors.",
       "startLine": 103,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "specific",
       "title": "Specific Graph Classes",
       "summary": "Constructs path $P_n$, cycle $C_n$, and complete bipartite $K_{a,b}$ graphs. Proves edge count formulas: $|E(P_n)| = n-1$, $|E(C_n)| = n$.",
       "startLine": 125,
-      "endLine": 156
+      "endLine": 157
     },
     {
       "id": "bounds",
       "title": "Bounds for Sparse Graphs",
       "summary": "States $R(P_n) \\leq 2n - 1$ and $R(C_n) \\leq 2n - 1$: linear Ramsey numbers for sparse graphs, showing Sudakov's $2^{O(\\sqrt{m})}$ is very loose for paths and cycles.",
       "startLine": 158,
-      "endLine": 176
+      "endLine": 177
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Lower Bound",
       "summary": "Lower bound $R(G) \\geq c\\sqrt{m}$ via random 2-coloring of $K_N$. For $K_n$, this gives $R(K_n) \\geq 2^{\\Omega(\\sqrt{m})}$, matching Sudakov's upper bound.",
       "startLine": 178,
-      "endLine": 186
+      "endLine": 187
     },
     {
       "id": "connection",
       "title": "Connection to Problem #545",
       "summary": "Problem #545 refines #546 by asking for the precise exponent: $R(G) \\leq C_\\varepsilon \\cdot m^{1/2 + \\varepsilon}$ for all $\\varepsilon > 0$? Sudakov's theorem implies a partial answer.",
       "startLine": 188,
-      "endLine": 205
+      "endLine": 238
     }
   ],
   "overview": {
@@ -176,5 +151,27 @@
     "Gerencsér-Gyárfás (1967): On Ramsey-type problems, Annales Univ. Sci. Budapest",
     "Conlon-Fox-Sudakov (2015): Recent developments in graph Ramsey theory, Surveys in Combinatorics",
     "https://erdosproblems.com/546"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1105"
   ]
 }

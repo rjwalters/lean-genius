@@ -11,7 +11,7 @@
       "irrationality",
       "generalization"
     ],
-    "mathlib_version": "4.10.0",
+    "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/Sqrt2Irrational.lean",
     "badge": "mathlib",
     "sorries": 0,
@@ -75,28 +75,28 @@
       "id": "setup",
       "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Module documentation and import statements."
     },
     {
       "id": "lemmas",
       "title": "Supporting Lemmas",
       "startLine": 52,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Key lemmas: if n² is even then n is even, and divisibility properties."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: √2",
       "startLine": 75,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "The irrationality of √2 using Mathlib's formalization."
     },
     {
       "id": "examples",
       "title": "Example Proofs",
       "startLine": 87,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "Additional proofs demonstrating tactics: case analysis, induction, logic."
     },
     {

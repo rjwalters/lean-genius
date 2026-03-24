@@ -21,7 +21,7 @@
     "erdosNumber": 684,
     "erdosUrl": "https://erdosproblems.com/684",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -84,49 +84,49 @@
       "title": "Smooth and Rough Parts",
       "summary": "smoothPart, roughPart, binomialSmoothPart, binomialRoughPart",
       "startLine": 38,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "f-definition",
       "title": "The Function f(n)",
       "summary": "f, f_property, below_f_small",
       "startLine": 66,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "mahler",
       "title": "Mahler's Classical Result",
       "summary": "mahler_ineffective, f_tendsto_infty_weak",
       "startLine": 84,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "modern-bounds",
       "title": "Modern Bounds",
       "summary": "tang_exponent, tang_bound, rh_exponent, rh_conditional_bound",
       "startLine": 100,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "heuristic",
       "title": "Heuristic Conjectures",
       "summary": "heuristic_bound, heuristic_conjecture",
       "startLine": 120,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "structure",
       "title": "Structure of Smooth Part",
       "summary": "legendreExponent, kummer_theorem",
       "startLine": 136,
-      "endLine": 153
+      "endLine": 154
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "f_lower_bound, prime_binomial_structure",
       "startLine": 155,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "generalized",
@@ -140,7 +140,7 @@
       "title": "Problem Status",
       "summary": "erdos_684_status, erdos_684_statement, summary",
       "startLine": 195,
-      "endLine": 233
+      "endLine": 245
     }
   ],
   "conclusion": {
@@ -175,5 +175,27 @@
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-683",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, open, primes"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, smooth-numbers"
+    },
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-683",
+    "erdos-1055",
+    "erdos-1063"
+  ]
 }

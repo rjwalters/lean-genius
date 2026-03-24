@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "lineCount": 273,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*, asking whether any polynomial of degree $\\geq 2$ can 'perfectly tile' the integers by translation. The question asks: given $f : \\mathbb{Z} \\to \\mathbb{Z}$ of degree $\\geq 2$, does there exist $A \\subseteq \\mathbb{Z}$ such that $\\mathbb{Z} = A \\oplus f(\\mathbb{Z})$? Sekanina (1959) had already shown this is impossible for $f(x) = x^2$ by analyzing the gap structure between consecutive squares. The problem connects to several deep areas: factorization of abelian groups (Hajós's theorem), the Coven-Meyerowitz conjecture on tiling $\\mathbb{Z}$ by finite sets, and additive combinatorics more broadly. The key difficulty is that polynomial images are sparse ($|f(\\mathbb{Z}) \\cap [-N,N]| = O(N^{1/d})$ for degree $d$), so any complement $A$ must have density approaching 1, yet must avoid double-covering any integer. The formalization is notable for containing many proved theorems (not just axioms), establishing structural properties of perfect complements.",
@@ -45,49 +46,49 @@
       "id": "header-imports",
       "title": "Header, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 23,
       "summary": "Module documentation, Mathlib import, and Erdos477 namespace opening."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 24,
-      "endLine": 35,
+      "endLine": 36,
       "summary": "Defines polyImage (range of $f$) and IsPerfectComplement ($\\mathbb{Z} = A \\oplus B$)."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties of Perfect Complements",
       "startLine": 37,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "Proved: non-emptiness of $A$ and $B$, singleton characterization ($\\{0\\} \\oplus B = \\mathbb{Z} \\iff B = \\mathbb{Z}$), linear case trivial, covering and uniqueness lemmas."
     },
     {
       "id": "symmetries",
       "title": "Commutativity and Shift Invariance",
       "startLine": 96,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "Proved: $A \\oplus B = \\mathbb{Z} \\iff B \\oplus A = \\mathbb{Z}$ and shifting preserves the complement relation."
     },
     {
       "id": "polynomial-images",
       "title": "Properties of Polynomial Images",
       "startLine": 121,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "Proved: $f(0) \\in f(\\mathbb{Z})$, injectivity gives infinite images, squares are non-negative, and element distinctness via $B$."
     },
     {
       "id": "difference-constraints",
       "title": "Difference Set Constraints",
       "startLine": 161,
-      "endLine": 198,
+      "endLine": 199,
       "summary": "Proved: $(A-A) \\cap (B-B) = \\{0\\}$ and finiteness obstruction (finite $B$ forces infinite $A$)."
     },
     {
       "id": "squares-analysis",
       "title": "Structural Analysis for Squares",
       "startLine": 200,
-      "endLine": 240,
+      "endLine": 241,
       "summary": "Proved: gap structure between consecutive squares, specific elements in square image, square complement must cover all negatives."
     },
     {
@@ -121,5 +122,27 @@
     "axiomCount": 3,
     "theoremCount": 22,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    },
+    {
+      "targetId": "erdos-53",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    },
+    {
+      "targetId": "erdos-530",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-10",
+    "erdos-53",
+    "erdos-530"
+  ]
 }

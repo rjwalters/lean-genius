@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/916",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -81,56 +81,56 @@
       "title": "Basic Graph Definitions",
       "summary": "SimpleGraph setup, hasVerticesAndEdges predicate",
       "startLine": 32,
-      "endLine": 46
+      "endLine": 47
     },
     {
       "id": "k4-subdivisions",
       "title": "K₄ Subdivisions",
       "summary": "isK4Subdivision definition, Dirac's theorem",
       "startLine": 48,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "cycle-structure",
       "title": "Cycles with Adjacent Vertices",
       "summary": "hasCycle, hasVertexTriplyAdjacentToCycle definitions",
       "startLine": 80,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "main-theorem",
       "title": "Thomassen's Result",
       "summary": "thomassen_cycle_structure axiom, erdos_916 theorem",
       "startLine": 117,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "relationship",
       "title": "Relationship to Dirac's Theorem",
       "summary": "triply_adjacent_implies_k4, thomassen_implies_dirac",
       "startLine": 149,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "edge-analysis",
       "title": "Edge Count Analysis",
       "summary": "edgeThreshold definition, tree_edge_count",
       "startLine": 174,
-      "endLine": 200
+      "endLine": 201
     },
     {
       "id": "small-cases",
       "title": "Concrete Small Cases",
       "summary": "case_n_eq_4, case_n_eq_5, case_n_eq_6",
       "startLine": 202,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "degree-analysis",
       "title": "Average Degree Analysis",
       "summary": "averageDegreeNumerator, avg_degree_numerator_formula",
       "startLine": 235,
-      "endLine": 252
+      "endLine": 253
     },
     {
       "id": "summary",
@@ -165,5 +165,27 @@
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-767",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-graphs, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-1079",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graphs, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-767",
+    "erdos-1079",
+    "erdos-57"
+  ]
 }

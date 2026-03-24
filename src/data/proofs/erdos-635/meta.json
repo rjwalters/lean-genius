@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős (c. 1980, letter to Ruzsa)",
     "sourceUrl": "https://erdosproblems.com/635",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos635Problem.lean",
     "tags": [
       "erdos",
@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/635",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-26",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.Icc",
@@ -94,56 +94,56 @@
       "id": "non-divisibility",
       "title": "Part I: The Non-Divisibility Condition",
       "startLine": 36,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Defines IsNonDivisible (t-non-divisibility for set pairs) and IsAdmissible (containment in {1,...,N} plus non-divisibility)."
     },
     {
       "id": "extremal-function",
       "title": "Part II: The Extremal Function",
       "startLine": 56,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Defines f(N,t) as sSup of achievable cardinalities of t-admissible sets."
     },
     {
       "id": "case-t1",
       "title": "Part III: The Case t = 1 — Odd Numbers",
       "startLine": 67,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Defines oddSet and axiomatizes: oddSet_admissible, oddSet_card = (N+1)/2, f_t1 optimality."
     },
     {
       "id": "case-t2",
       "title": "Part IV: The Case t = 2 — Beating the N/2 Barrier",
       "startLine": 99,
-      "endLine": 123,
+      "endLine": 124,
       "summary": "Axioms for f_t2_lower (N/2 + c·log N) and erdos_construction_t2 using odd numbers plus powers of 2."
     },
     {
       "id": "conjecture",
       "title": "Part V: The Main Conjecture (OPEN)",
       "startLine": 125,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Defines ErdosConjecture635 with ε-N₀ quantifiers formalizing o_t(1). Axiom erdos_635."
     },
     {
       "id": "bounds",
       "title": "Part VI: Upper and Lower Bounds",
       "startLine": 149,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "Axioms: f_upper_trivial (f ≤ N), f_monotone_t, f_lower_half (≥ (N+1)/2), f_t1_density (→ 1/2)."
     },
     {
       "id": "structural",
       "title": "Part VII: Structural Observations",
       "startLine": 173,
-      "endLine": 187,
+      "endLine": 188,
       "summary": "Axiom no_far_multiples: admissible sets exclude distant multiples."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
       "startLine": 189,
-      "endLine": 215,
+      "endLine": 265,
       "summary": "erdos_635_t1_solved theorem (from f_t1), erdos_635_status (trivial). Problem OPEN for general t."
     }
   ],
@@ -178,5 +178,27 @@
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-13",
+    "erdos-131",
+    "erdos-387"
+  ]
 }

@@ -46,7 +46,8 @@
     "wiedijkNumber": 51,
     "axiomCount": 0,
     "lineCount": 160,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Wilson's theorem has a fascinating multicultural history:\n\n- **Ibn al-Haytham (c. 1000 CE)**: First stated the theorem in his work on optics and number theory, making this one of the earliest primality characterizations\n- **John Wilson (1770)**: Rediscovered and conjectured the result while a student at Cambridge\n- **Edward Waring (1770)**: Published Wilson's conjecture in his book 'Meditationes Algebraicae'\n- **Joseph-Louis Lagrange (1771)**: Provided the first proof, establishing the result rigorously\n\nThe theorem reveals a beautiful algebraic structure: in the multiplicative group (Z/pZ)*, every element pairs with its inverse, leaving only the self-inverse elements 1 and -1 to contribute to the final product.",
@@ -76,7 +77,7 @@
       "id": "header",
       "title": "Imports and Documentation",
       "startLine": 1,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Imports (`Mathlib.NumberTheory.Wilson` for the main result, `Mathlib.Tactic` for automation), module docstring with historical note (Ibn al-Haytham ~1000 CE, Wilson 1770, Lagrange 1771), proof sketch via pairing argument, and namespace declaration.",
       "mathContext": "The module imports `ZMod.wilsons_lemma` ($(p-1)! \\equiv -1 \\pmod{p}$), `Nat.prime_iff_fac_equiv_neg_one` ($n$ prime $\\iff (n-1)! \\equiv -1 \\pmod{n}$), and `Nat.prime_of_fac_equiv_neg_one` (backward direction). The docstring explains the pairing argument: in $(\\mathbb{Z}/p\\mathbb{Z})^*$, elements pair as $\\{a, a^{-1}\\}$ with only $1$ and $-1$ self-inverse, so the product is $1 \\cdot (-1) \\cdot 1^{(p-3)/2} = -1$."
     },
@@ -84,7 +85,7 @@
       "id": "main-theorems",
       "title": "Main Theorems",
       "startLine": 50,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Four core theorems: `wilsons_lemma` (forward: prime $\\Rightarrow$ factorial $\\equiv -1$), `wilsons_theorem` (biconditional), `prime_implies_factorial_neg_one` (forward with explicit hypothesis), `factorial_neg_one_implies_prime` (backward). All delegate to Mathlib's `ZMod.wilsons_lemma`, `Nat.prime_iff_fac_equiv_neg_one`, and `Nat.prime_of_fac_equiv_neg_one`.",
       "mathContext": "`wilsons_lemma`: $(\\uparrow(p-1)! : \\text{ZMod}\\,p) = -1$ for prime $p$ (uses `Fact (Nat.Prime p)` typeclass). `wilsons_theorem`: $\\text{Nat.Prime}\\,n \\iff (\\uparrow(n-1)! : \\text{ZMod}\\,n) = -1$ (requires $n \\neq 1$). The two directions are split as `prime_implies_factorial_neg_one` and `factorial_neg_one_implies_prime`."
     },
@@ -92,7 +93,7 @@
       "id": "product-form",
       "title": "Product Formulation",
       "startLine": 91,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "`prod_one_to_pred_prime`: alternative formulation as $\\prod_{x \\in [1,p)} (x : \\text{ZMod}\\,p) = -1$, using `Finset.Ico` and delegating to `ZMod.prod_Ico_one_prime`.",
       "mathContext": "$\\prod_{x=1}^{p-1} x \\equiv -1 \\pmod{p}$. This is equivalent to Wilson's lemma but expressed as a `Finset.prod` over `Finset.Ico 1 p` rather than via the factorial function. The product form connects directly to the group-theoretic interpretation: it is the product of all elements of $(\\mathbb{Z}/p\\mathbb{Z})^*$."
     },
@@ -100,7 +101,7 @@
       "id": "examples",
       "title": "Examples and Corollaries",
       "startLine": 99,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Three concrete verifications: $p = 2$ ($1! = 1 \\equiv -1 \\pmod{2}$), $p = 5$ ($4! = 24 \\equiv -1 \\equiv 4 \\pmod{5}$), and the non-prime $n = 4$ ($3! = 6 \\equiv 2 \\not\\equiv -1 \\pmod{4}$, confirmed via `decide`).",
       "mathContext": "For $p = 2$: $1! = 1$ and $-1 \\equiv 1 \\pmod{2}$. For $p = 5$: $4! = 24 = 4 \\cdot 5 + 4$, so $24 \\equiv 4 \\equiv -1 \\pmod{5}$. For $n = 4$: $3! = 6 = 1 \\cdot 4 + 2$, so $6 \\equiv 2 \\not\\equiv 3 \\equiv -1 \\pmod{4}$."
     },
@@ -108,7 +109,7 @@
       "id": "computational",
       "title": "Computational Considerations",
       "startLine": 115,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Documentary section explaining why Wilson's theorem is computationally impractical: factorial growth is super-exponential ($99!$ has 156 digits), no known sub-linear algorithm for $(n-1)! \\bmod n$, and Miller-Rabin runs in $O(k \\log^3 n)$ vs $O(n \\log^2 n)$ for Wilson.",
       "mathContext": "$(n-1)! \\bmod n$ requires $n-2$ multiplications modulo $n$, each $O(\\log^2 n)$ via schoolbook multiplication, giving $O(n \\log^2 n)$ total. Miller-Rabin tests $a^{n-1} \\bmod n$ via repeated squaring in $O(\\log n)$ multiplications, $O(\\log^3 n)$ total per witness. The gap is exponential: $O(n)$ vs $O(\\log n)$ multiplications."
     },

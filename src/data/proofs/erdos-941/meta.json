@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/941",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -56,18 +56,6 @@
       "heath_brown_theorem: main result axiom",
       "IsRPowerful: r-powerful generalization",
       "generalizedQuestion: Problem #1107 connection"
-    ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-940",
-        "relationship": "companion",
-        "description": "Problem #940 asks whether diagonal sums of r-powerful numbers (r summands of r-powerful) have density 0 for r ≥ 3. Problem #941 is the complementary question: can all large integers be represented as such sums (for r = 2, k = 3)?"
-      },
-      {
-        "targetId": "erdos-1107",
-        "relationship": "generalization",
-        "description": "Problem #1107 generalizes to r-powerful numbers for r ≥ 3, asking for the minimal number of r-powerful summands needed to represent all large integers — directly captured by the generalizedQuestion definition"
-      }
     ],
     "axiomCount": 4,
     "lineCount": 327,
@@ -158,7 +146,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 217,
-      "endLine": 241,
+      "endLine": 327,
       "summary": "Three equivalent theorems: `erdos_941`, `erdos_941_main`, `erdos_941_solved`, all delegating to `heath_brown_theorem`. Confirms the problem is SOLVED: every sufficiently large integer is a sum of $\\le 3$ powerful numbers."
     }
   ],
@@ -188,5 +176,27 @@
     "axiomCount": 4,
     "theoremCount": 11,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-937",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, powerful-numbers, solved"
+    },
+    {
+      "targetId": "erdos-942",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, powerful-numbers, squarefull"
+    },
+    {
+      "targetId": "erdos-943",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-representation, number-theory, powerful-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-937",
+    "erdos-942",
+    "erdos-943"
+  ]
 }

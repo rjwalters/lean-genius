@@ -15,7 +15,8 @@
       "perspective",
       "duality"
     ],
-    "mathContext": "If $AA'$, $BB'$, $CC'$ are concurrent at $O$, then $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear. Conversely, collinearity of $P, Q, R$ implies concurrence of $AA'$, $BB'$, $CC'$. Self-dual under the projective duality that swaps points $\\leftrightarrow$ lines and concurrent $\\leftrightarrow$ collinear."
+    "mathContext": "If $AA'$, $BB'$, $CC'$ are concurrent at $O$, then $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear. Conversely, collinearity of $P, Q, R$ implies concurrence of $AA'$, $BB'$, $CC'$. Self-dual under the projective duality that swaps points $\\leftrightarrow$ lines and concurrent $\\leftrightarrow$ collinear.",
+    "prerequisites": []
   },
   {
     "id": "ann-projective-setup",
@@ -33,7 +34,8 @@
       "homogeneous coordinates",
       "cross product",
       "projective plane"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-collinearity",
@@ -51,7 +53,8 @@
       "determinant",
       "linear dependence",
       "duality"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-perspective",
@@ -69,7 +72,8 @@
       "center of perspectivity",
       "axis of perspectivity",
       "triangle"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-helper-lemmas",
@@ -87,7 +91,8 @@
       "BAC-CAB rule",
       "scalar triple product",
       "determinant"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-key-identity",
@@ -105,7 +110,8 @@
       "ring tactic",
       "polynomial identity",
       "factorization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-desargues-identity",
@@ -123,7 +129,8 @@
       "factorization",
       "concurrence",
       "collinearity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-main-theorem",
@@ -141,7 +148,8 @@
       "forward direction",
       "ring tactic",
       "0 * K = 0"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-converse",
@@ -159,7 +167,8 @@
       "converse",
       "mul_eq_zero",
       "non-degeneracy"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-equivalence",
@@ -177,7 +186,8 @@
       "iff",
       "equivalence",
       "biconditional"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-special-cases",
@@ -195,7 +205,8 @@
       "shared vertex",
       "crossProduct_self"
     ],
-    "mathContext": "See annotation content for formal details of special cases"
+    "mathContext": "See annotation content for formal details of special cases",
+    "prerequisites": []
   },
   {
     "id": "ann-context",
@@ -214,6 +225,7 @@
       "Moulton plane",
       "Pappus"
     ],
-    "mathContext": "See annotation content for formal details of projective duality and context"
+    "mathContext": "See annotation content for formal details of projective duality and context",
+    "prerequisites": []
   }
 ]

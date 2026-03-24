@@ -11,7 +11,8 @@
       "Lagrange interpolation",
       "Lebesgue function",
       "Approximation theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-points",
@@ -24,7 +25,8 @@
     "relatedConcepts": [
       "Interpolation",
       "Chebyshev nodes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-lagrange",
@@ -33,7 +35,9 @@
     "title": "Lagrange Basis Polynomials",
     "content": "**lagrangeBasis**\n\nThe Lagrange basis polynomial p_i^n satisfies:\n- p_i(a_i) = 1\n- p_i(a_j) = 0 for j != i\n- degree at most n - 1\n\n```lean\ndef lagrangeBasis (pts) (i) : Polynomial R :=\n  prod j in univ.filter (. != i),\n    C (1 / (pts.points i - pts.points j)) * (X - C (pts.points j))\n```",
     "mathContext": "These form a basis for polynomials of degree < n that interpolate given values.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-interp",
@@ -42,7 +46,9 @@
     "title": "Lagrange Interpolation Operator",
     "content": "**lagrangeInterp**\n\nThe interpolation operator:\n$$L^n f(x) = \\sum_{i=1}^{n} f(a_i) p_i^n(x)$$\n\nThis is the unique polynomial of degree < n passing through all the data points (a_i, f(a_i)).",
     "mathContext": "L^n f agrees with f at all interpolation nodes. The question is whether it converges to f elsewhere.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-lebesgue",
@@ -51,7 +57,9 @@
     "title": "Lebesgue Function",
     "content": "**lebesgueFunction**\n\n$$\\lambda_n(x) = \\sum_{i=1}^{n} |p_i^n(x)|$$\n\nThe Lebesgue function measures how much the interpolation operator can amplify errors.\n\n**Error bound:** |L^n f(x) - f(x)| <= (1 + lambda_n(x)) * best_approx_error",
     "mathContext": "When lambda_n(x) is large, small errors in data can cause large errors in interpolation.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-constant",
@@ -60,7 +68,9 @@
     "title": "Lebesgue Constant",
     "content": "**lebesgueConstant**\n\n$$\\Lambda_n = \\max_{x \\in [-1,1]} \\lambda_n(x)$$\n\nThe worst-case amplification factor over the entire interval.\n\n**Growth rates:**\n- Chebyshev nodes: Lambda_n ~ (2/pi) log n (optimal)\n- Equidistant nodes: Lambda_n ~ 2^n / n (exponential)",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of lebesgue constant"
+    "mathContext": "See annotation content for formal details of lebesgue constant",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-bernstein",
@@ -73,7 +83,8 @@
     "relatedConcepts": [
       "Divergence",
       "Pointwise vs uniform convergence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-ev",
@@ -82,7 +93,9 @@
     "title": "Erdos-Vertesi Theorem (1980)",
     "content": "**erdos_vertesi**\n\nFor ANY choice of interpolation nodes, there exists a continuous function f such that:\n$$|L^n f(x)| \\to \\infty \\text{ for almost every } x$$\n\nEven stronger than Bernstein: not just the Lebesgue function, but the actual interpolation diverges a.e. for some f.",
     "mathContext": "This shows that for any node choice, pathological functions exist. But the questions ask about ALL continuous f.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-q1",
@@ -91,7 +104,9 @@
     "title": "Question 1 (OPEN, $250)",
     "content": "**Question1**\n\nDoes there exist a point sequence such that for EVERY continuous f, there exists some x where:\n- limsup lambda_n(x) = infinity (Lebesgue diverges)\n- Yet L^n f(x) -> f(x) (interpolation converges)\n\nThis asks: can convergence occur despite local Lebesgue divergence?",
     "mathContext": "The Lebesgue function controlling error doesn't mean it prevents convergence when it diverges.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-q2",
@@ -100,7 +115,9 @@
     "title": "Question 2 (OPEN, $250)",
     "content": "**Question2**\n\nDoes there exist a point sequence where:\n- lambda_n(x) -> infinity for ALL x in [-1,1] (universal Lebesgue divergence)\n- Yet for every continuous f, some x has L^n f(x) -> f(x)\n\nThis is stronger than Q1: the Lebesgue function diverges EVERYWHERE, yet convergence still occurs somewhere for each f.",
     "mathContext": "Q2 implies Q1 (trivially). The Main Conjecture asks whether they're equivalent.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-cheby",
@@ -109,7 +126,9 @@
     "title": "Chebyshev Nodes",
     "content": "**chebyshevNodes**\n\n$$x_k = \\cos\\left(\\frac{(2k-1)\\pi}{2n}\\right), \\quad k = 1, \\ldots, n$$\n\nThese are the zeros of the Chebyshev polynomial T_n(x).\n\n**Optimal property:** Chebyshev nodes minimize the Lebesgue constant among all node choices, achieving Lambda_n ~ (2/pi) log n.",
     "mathContext": "Despite being optimal, Chebyshev nodes still have Lambda_n -> infinity, so uniform convergence fails for some f.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-equi",
@@ -121,7 +140,8 @@
     "significance": "key",
     "relatedConcepts": [
       "Runge phenomenon"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-faber",
@@ -130,7 +150,9 @@
     "title": "Faber's Theorem",
     "content": "**faber**\n\nFor ANY choice of interpolation nodes, there exists a continuous function f for which L^n f does NOT converge uniformly to f.\n\nThis is another fundamental negative result: universal uniform convergence is impossible.",
     "mathContext": "Faber's theorem complements Bernstein's: one shows Lebesgue diverges, the other shows actual interpolation diverges.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-pos",
@@ -139,7 +161,9 @@
     "title": "Positive Measure Divergence",
     "content": "**positive_measure_divergence**\n\nFor any point sequence, there exists a continuous f such that the set where |L^n f(x)| -> infinity has positive measure.\n\nCombined with Erdos-Vertesi (a.e. divergence), this shows how widespread divergence can be.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of positive measure divergence"
+    "mathContext": "See annotation content for formal details of positive measure divergence",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e671-main",
@@ -148,6 +172,8 @@
     "title": "The Main Conjecture",
     "content": "**MainConjecture**\n\nQuestion 1 iff Question 2?\n\nQ2 trivially implies Q1 (if Lebesgue diverges everywhere, it certainly diverges at some point).\n\nThe conjecture asks whether Q1 implies Q2 - is local Lebesgue divergence with convergence only possible when Lebesgue diverges everywhere?",
     "mathContext": "Resolution would deeply clarify the relationship between the Lebesgue function and actual convergence behavior.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

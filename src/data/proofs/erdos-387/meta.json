@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/387",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -72,21 +72,21 @@
       "id": "header",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Module documentation explaining the problem, its history, and what we formalize. Single Mathlib import."
     },
     {
       "id": "counterexample",
       "title": "Schinzel's Counterexample",
       "startLine": 29,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Section documentation and computational verification that 99215-i does not divide C(99215,15) for i < 15."
     },
     {
       "id": "easy-bound",
       "title": "The Easy Bound",
       "startLine": 47,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Proof that C(n,k) always has a divisor d with n/k ≤ d ≤ n, using gcd(C(n,k), n)."
     },
     {
@@ -124,5 +124,27 @@
     "axiomCount": 1,
     "theoremCount": 2,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1063",
+    "erdos-13",
+    "erdos-131"
+  ]
 }

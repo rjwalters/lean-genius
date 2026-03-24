@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/243",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.Tendsto",
@@ -73,35 +73,35 @@
       "id": "header",
       "title": "Problem Statement and History",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Documentation explaining the conjecture, its history, and references."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 25,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Mathlib imports for filters, topology, and summation."
     },
     {
       "id": "sylvester-def",
       "title": "Sylvester's Sequence Definition",
       "startLine": 35,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Recursive definition of Sylvester's sequence with verified concrete values."
     },
     {
       "id": "predicates",
       "title": "Hypothesis Predicates",
       "startLine": 58,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Definitions of EventuallySylvester, HasSylvesterGrowth, and HasRationalReciprocalSum."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (Axiom)",
       "startLine": 78,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "The open conjecture stated as an axiom: growth + rational sum implies Sylvester."
     },
     {
@@ -135,5 +135,27 @@
     "axiomCount": 2,
     "theoremCount": 8,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-315",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-315",
+    "erdos-1101",
+    "erdos-148"
+  ]
 }

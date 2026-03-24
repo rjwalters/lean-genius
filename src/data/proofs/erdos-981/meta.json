@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/981",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "legendreSym",
@@ -84,56 +84,56 @@
       "title": "The Legendre Symbol",
       "summary": "Legendre symbol and character sum definitions",
       "startLine": 42,
-      "endLine": 57
+      "endLine": 58
     },
     {
       "id": "stabilization",
       "title": "Stabilization Threshold",
       "summary": "isBoundedFrom predicate and f_ε(p) definition",
       "startLine": 59,
-      "endLine": 74
+      "endLine": 75
     },
     {
       "id": "asymptotic",
       "title": "Main Asymptotic",
       "summary": "sumFEps axiom and asymptoticFunc definition",
       "startLine": 76,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "elliott",
       "title": "Elliott's Theorem (1969)",
       "summary": "Main theorem and quantitative formulation",
       "startLine": 91,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "properties",
       "title": "Properties of Character Sums",
       "summary": "Pólya-Vinogradov, cancellation, finiteness of f_ε",
       "startLine": 111,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "burgess",
       "title": "Burgess Bounds",
       "summary": "Improved bounds for short character sums",
       "startLine": 130,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "related",
       "title": "Related Concepts",
       "summary": "Quadratic residue definition and complete sum",
       "startLine": 141,
-      "endLine": 151
+      "endLine": 152
     },
     {
       "id": "alternative",
       "title": "Alternative Formulation",
       "summary": "Tang-Zhang (2025) first-passage version",
       "startLine": 153,
-      "endLine": 171
+      "endLine": 172
     },
     {
       "id": "summary",
@@ -170,5 +170,27 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-391",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-391",
+    "erdos-1050",
+    "erdos-1054"
+  ]
 }

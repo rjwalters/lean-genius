@@ -49,7 +49,7 @@
       "asymptotic_threshold: proved corollary with explicit constant",
       "erdos_1078_summary combining all four main results"
     ],
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "dateAdded": "2026-01-19",
     "axiomCount": 6,
     "lineCount": 214,
@@ -77,49 +77,49 @@
       "id": "definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 30,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "RPartiteGraph structure, minDegree, ContainsKr."
     },
     {
       "id": "bes-conjecture",
       "title": "Part II: The BES Conjecture",
       "startLine": 63,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "BESConjecture definition and threshold_tight axiom."
     },
     {
       "id": "haxell",
       "title": "Part III: Haxell's Theorem (2001)",
       "startLine": 84,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "haxell_theorem axiom and asymptotic_threshold proved corollary."
     },
     {
       "id": "sharp-threshold",
       "title": "Part IV: Sharp Threshold (Haxell-Szabó 2006)",
       "startLine": 109,
-      "endLine": 135,
+      "endLine": 136,
       "summary": "sharpThreshold formula, haxell_szabo_theorem, threshold_sharp."
     },
     {
       "id": "special-cases",
       "title": "Part V: Special Cases",
       "startLine": 137,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "Computed thresholds for r = 2, 3, 4."
     },
     {
       "id": "comparison",
       "title": "Part VI: Comparison with BES Threshold",
       "startLine": 165,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "asymptotic_agreement: sharp threshold ≈ (r-3/2)n."
     },
     {
       "id": "transversals",
       "title": "Part VII: Connection to Transversals",
       "startLine": 177,
-      "endLine": 196,
+      "endLine": 197,
       "summary": "IsIndependentTransversal definition and extremal_construction."
     },
     {
@@ -141,34 +141,34 @@
   },
   "crossReferences": [
     {
-      "target": "ramseys-theorem",
       "relationship": "Ramsey's theorem guarantees complete subgraphs in dense graphs via pigeonhole arguments; the BES problem studies the sharper question of forcing K_r through a minimum degree condition in structured r-partite graphs.",
-      "significance": "high"
+      "significance": "high",
+      "targetId": "ramseys-theorem"
     },
     {
-      "target": "erdos-1079",
       "relationship": "Turán density in neighborhoods (Problem #1079) studies extremal densities for induced substructures in graph neighborhoods, a closely related minimum-degree / density threshold framework.",
-      "significance": "high"
+      "significance": "high",
+      "targetId": "erdos-1079"
     },
     {
-      "target": "erdos-1077",
       "relationship": "Problem #1077 on balanced subgraphs in dense graphs shares the theme of forcing structured subgraphs via degree conditions, complementing the multipartite setting of Problem #1078.",
-      "significance": "high"
+      "significance": "high",
+      "targetId": "erdos-1077"
     },
     {
-      "target": "erdos-1075",
       "relationship": "Dense subgraphs in r-uniform hypergraphs (Problem #1075) generalises the bipartite Kővári–Sós–Turán approach to higher uniformity; the r-partite graph setting of Problem #1078 is the graph-level analogue.",
-      "significance": "medium"
+      "significance": "medium",
+      "targetId": "erdos-1075"
     },
     {
-      "target": "erdos-1017",
       "relationship": "Clique partition of graphs (Problem #1017) addresses decomposing graphs into complete subgraphs; Problem #1078 forces a single K_r via a minimum degree threshold in the r-partite setting.",
-      "significance": "medium"
+      "significance": "medium",
+      "targetId": "erdos-1017"
     },
     {
-      "target": "erdos-1076",
       "relationship": "Extremal numbers for 3-uniform hypergraphs (Problem #1076) and the Steiner system constructions used there exhibit the same interplay between density/degree thresholds and the existence of complete sub-structures.",
-      "significance": "medium"
+      "significance": "medium",
+      "targetId": "erdos-1076"
     }
   ],
   "relatedProofs": [

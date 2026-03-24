@@ -19,9 +19,10 @@
     "erdosNumber": 544,
     "erdosUrl": "https://erdosproblems.com/544",
     "erdosProblemStatus": "open",
-    "axiomCount": 12,
+    "axiomCount": 11,
     "lineCount": 93,
-    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "11 axiom(s): ramsey3 (function), ramsey3_mono (monotonicity), 7 known values, kim_lower_bound, shearer_upper_bound. Former axiom ramsey3_ge_six now proved.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Sós asked whether the consecutive differences $R(3,k+1) - R(3,k)$ tend to infinity, and whether the growth is sublinear in $k$. The asymptotic behaviour of $R(3,k)$ has a rich history: **Erdős** established early bounds using the probabilistic method; **Shearer** (1983) proved $R(3,k) \\leq Ck^2/\\log k$; **Kim** (1995) proved the matching lower bound $R(3,k) \\geq ck^2/\\log k$ via the triangle-free process, a landmark in probabilistic combinatorics. Most recently, **Campos–Griffiths–Morris–Sahasrabudhe** (2023, *Ann. Math.*) sharpened the upper bound constant to within a factor of 4. The average consecutive difference is thus $\\Theta(k/\\log k)$, but the pointwise behaviour of individual differences remains an open problem.",
@@ -44,7 +45,7 @@
       "id": "ramsey-axiom",
       "title": "Ramsey Number R(3, k)",
       "startLine": 24,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Axiomatisation of R(3, k) with lower bound and monotonicity.",
       "mathContext": "Axiomatizes $R(3,k)$ with $R(3,k) \\geq c_1 k^2 / \\log k$ (Kim 1995) and monotonicity $R(3,k) \\leq R(3,k+1)$."
     },
@@ -52,7 +53,7 @@
       "id": "known-values",
       "title": "Known Values",
       "startLine": 39,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Exact values R(3,3)=6 through R(3,9)=36.",
       "mathContext": "Exact values: $R(3,3)=6, R(3,4)=9, R(3,5)=14, R(3,6)=18, R(3,7)=23, R(3,8)=28, R(3,9)=36$. Differences: $3, 5, 4, 5, 5, 8$."
     },
@@ -60,7 +61,7 @@
       "id": "asymptotic-bounds",
       "title": "Asymptotic Bounds",
       "startLine": 59,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Kim lower bound and Shearer/CGMS upper bound: R(3,k) = Θ(k²/log k).",
       "mathContext": "Kim (1995): $R(3,k) \\geq c_1 k^2/\\log k$. Shearer (1983): $R(3,k) \\leq c_2 k^2/\\log k$. Together: $R(3,k) = \\Theta(k^2/\\log k)$."
     },
@@ -68,7 +69,7 @@
       "id": "main-problems",
       "title": "Main Problems",
       "startLine": 71,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Divergence (Part 1) and sublinearity (Part 2) of consecutive Ramsey differences.",
       "mathContext": "Part 1: $R(3,k+1) - R(3,k) \\to \\infty$. Part 2: $R(3,k+1) - R(3,k) = o(k)$. Both OPEN."
     },
@@ -102,16 +103,13 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Rat.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [],
     "namespace": null,
     "lineCount": 93,
-    "axiomCount": 12,
-    "theoremCount": 0,
+    "axiomCount": 11,
+    "theoremCount": 1,
     "definitionCount": 4
   }
 }

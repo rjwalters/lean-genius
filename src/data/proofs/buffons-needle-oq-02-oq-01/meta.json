@@ -59,48 +59,9 @@
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
-    "crossReferences": [
-      {
-        "proofId": "buffons-needle",
-        "relationship": "generalizes",
-        "description": "The classical 2D Buffon's needle problem with crossing factor α₂ = 2/π"
-      },
-      {
-        "proofId": "buffons-needle-oq-01",
-        "relationship": "related",
-        "description": "The Buffon-Barbier smooth noodle theorem (C¹ curves in 2D)"
-      },
-      {
-        "proofId": "buffons-needle-oq-01-oq-01",
-        "relationship": "related",
-        "description": "Angular average formulation of the smooth curve crossing formula"
-      },
-      {
-        "proofId": "buffons-needle-oq-02",
-        "relationship": "generalizes",
-        "description": "The 3D Buffon formula E = L/(2d) with α₃ = 1/2, which this file extends to all dimensions"
-      },
-      {
-        "proofId": "stirling-formula",
-        "relationship": "related",
-        "description": "Stirling's approximation for Γ(n), relevant to the asymptotic rate αₙ ~ √(2/(πn))"
-      },
-      {
-        "proofId": "area-of-circle",
-        "relationship": "related",
-        "description": "π appears in both formulas: the crossing factor α₂ = 2/π connects Buffon's needle to the circle area formula"
-      }
-    ],
-    "relatedProofs": [
-      "buffons-needle",
-      "buffons-needle-oq-02",
-      "area-of-circle",
-      "buffons-needle-oq-01",
-      "buffons-needle-oq-01-oq-01",
-      "stirling-formula"
-    ],
     "lineCount": 309,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Buffon's needle problem, posed by Georges-Louis Leclerc, Comte de Buffon in 1777, is one of the earliest problems in geometric probability and the first problem to yield a connection between probability and π. The classical 2D result P = 2ℓ/(πd) was extended to curves by Barbier (1860), who proved that expected crossings depend only on arc length — the celebrated noodle theorem.\n\nThe n-dimensional generalization arises naturally from integral geometry. The crossing factor αₙ = E_{S^{n-1}}[|u₁|] represents the expected absolute projection of a uniformly random unit vector onto a fixed axis, a quantity central to the Cauchy-Crofton formula. Santaló's foundational work on integral geometry in arbitrary dimension (1976) established the framework for these formulas, connecting them to the kinematic formula and intrinsic volumes.\n\nThe crossing factor's closed form αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) follows from the surface area formula for spherical caps. The recurrence α_{n+2} = (n/(n+1))·αₙ is a consequence of the Gamma function's functional equation Γ(z+1) = z·Γ(z), yielding a Wallis-type product. The even/odd dichotomy — even-dimensional factors involve π while odd-dimensional ones are rational — reflects the fundamental distinction between Γ at integers (factorials) and half-integers (involving √π). This file extends the 2D and 3D formalizations (BuffonsNeedle.lean, BuffonsNeedleOQ02.lean) to a unified dimension-parametric framework.",
@@ -124,54 +85,54 @@
       "id": "part-i-recurrence",
       "title": "Part I: The Crossing Factor Recurrence",
       "startLine": 41,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Defines crossingFactor with base cases α₀=α₁=1 (degenerate), α₂=2/π, α₃=1/2, and recurrence α_{n+4} = ((n+2)/(n+3))·α_{n+2}. Provides simp lemmas for evaluation."
     },
     {
       "id": "part-ii-values",
       "title": "Part II: Computed Values",
       "startLine": 63,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Verifies α₄ = 4/(3π) ≈ 0.424 and α₅ = 3/8 = 0.375 by unfolding the recurrence with explicit ℕ numeral rewrites and field_simp."
     },
     {
       "id": "part-iii-positivity",
       "title": "Part III: Positivity",
       "startLine": 86,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Proves crossingFactor_pos: αₙ > 0 for n ≥ 2 by structural recursion. Base cases use positivity (2/π > 0) and norm_num (1/2 > 0). Recursive step uses mul_pos with div_pos for the ratio."
     },
     {
       "id": "part-iv-formula",
       "title": "Part IV: The General N-Dimensional Buffon Formula",
       "startLine": 103,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "Defines buffonNd(n,L,d) = αₙ·L/d. Proves: buffonNd_two recovers 2L/(πd), buffonNd_three recovers L/(2d), additivity (noodle theorem), length scaling, noodle theorem for polygonal paths, and monotonicity."
     },
     {
       "id": "part-v-comparison",
       "title": "Part V: Dimension Comparison",
       "startLine": 157,
-      "endLine": 186,
+      "endLine": 187,
       "summary": "Proves crossing factor ordering: α₃ < α₂ (via π < 4), α₄ < α₃ (via π > 3), α₅ < α₃ (3/8 < 1/2), α₄ < α₂ (transitive). Higher dimensions always have fewer expected crossings."
     },
     {
       "id": "part-vi-ratio",
       "title": "Part VI: The Recurrence Ratio",
       "startLine": 188,
-      "endLine": 222,
+      "endLine": 223,
       "summary": "Proves the recurrence ratio (n+2)/(n+3) < 1 for all n, the ratio formula α_{n+4}/α_{n+2} = (n+2)/(n+3), and the general strict decrease α_{n+2} < αₙ for n ≥ 2."
     },
     {
       "id": "part-vii-asymptotic",
       "title": "Part VII: Asymptotic Behavior",
       "startLine": 224,
-      "endLine": 236,
-      "summary": "States (with sorry) that αₙ → 0 as n → ∞: in high dimensions, the expected projection of a random unit vector onto any fixed axis vanishes. This follows from the Wallis-type product ∏(j/(j+1)) → 0, a consequence of the divergence of ∑1/j. This is the file's sole sorry — a natural candidate for Aristotle proof search."
+      "endLine": 309,
+      "summary": "Proves that αₙ → 0 as n → ∞: in high dimensions, the expected projection of a random unit vector onto any fixed axis vanishes. Uses a squeeze argument with 1/√n bound."
     }
   ],
   "conclusion": {
-    "summary": "The n-dimensional Buffon noodle formula is formalized with 17 theorems, 1 sorry (asymptotic limit), and 0 axioms. The crossing factor recurrence α_{n+2} = (n/(n+1))·αₙ provides a clean characterization of how expected hyperplane crossings depend on dimension. The strict decrease and specific value computations extend the 2D and 3D results to arbitrary dimension.",
+    "summary": "The n-dimensional Buffon noodle formula is formalized with 20 theorems, 0 sorries, and 0 axioms. The crossing factor recurrence α_{n+2} = (n/(n+1))·αₙ provides a clean characterization of how expected hyperplane crossings depend on dimension. The strict decrease and specific value computations extend the 2D and 3D results to arbitrary dimension.",
     "implications": "**Mathematical Significance**:\n\n**1. Dimension-Parametric Formula**\nThe recurrence captures the full family of crossing factors without requiring explicit Gamma function computations.\n\n**2. Even/Odd Dichotomy**\nEven dimensions involve π (transcendental factors) while odd dimensions are purely rational. This is a formal consequence of Γ(n) being rational for integers and involving √π for half-integers.\n\n**3. Infrastructure for Integral Geometry**\nThe buffonNd framework with proved additivity, scaling, and monotonicity provides infrastructure for Cauchy-Crofton type formulas in arbitrary dimension.\n\n**4. Asymptotic Vanishing**\nThe stated (sorry) limit αₙ → 0 captures the concentration of measure phenomenon: in high dimensions, most of a unit vector's length is spread across many coordinates.",
     "openQuestions": [
       "Prove crossingFactor_tendsto_zero: αₙ → 0 as n → ∞ (Wallis product argument)",

@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 128,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -43,7 +44,7 @@
       "id": "degeneracy",
       "title": "Collinearity and Cocircularity",
       "startLine": 37,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines collinearity via the $2 \\times 2$ cross product determinant and cocircularity via existence of a circumscribed circle."
     },
     {
@@ -78,7 +79,7 @@
       "id": "anning-erdos",
       "title": "Anning–Erdős and Known Results",
       "startLine": 96,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "The classical Anning–Erdős theorem (1945), its consequence for finite cliques in general position, and the quantitative diameter bound $|S| \\leq O(\\text{diam}^2)$."
     },
     {
@@ -134,5 +135,27 @@
     "Andrásfai & Erdős (1997): original problem [Er97b]",
     "Anning & Erdős (1945): infinite integer distance sets are collinear [AnEr45]",
     "https://erdosproblems.com/130"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1066",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1104",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1066",
+    "erdos-1092",
+    "erdos-1104"
   ]
 }

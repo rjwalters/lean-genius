@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Graham",
     "sourceUrl": "https://erdosproblems.com/383",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos383Problem.lean",
     "tags": [
       "erdos",
@@ -21,7 +21,7 @@
     "erdosNumber": 383,
     "erdosUrl": "https://erdosproblems.com/383",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
@@ -143,7 +143,7 @@
       "title": "Summary and Formal Statement",
       "summary": "Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation.",
       "startLine": 191,
-      "endLine": 212
+      "endLine": 244
     }
   ],
   "conclusion": {

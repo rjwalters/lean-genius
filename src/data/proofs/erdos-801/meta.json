@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/801",
     "erdosProblemStatus": "solved",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -48,16 +48,6 @@
         "theorem": "sSup",
         "description": "Supremum for defining independence number",
         "module": "Mathlib.Data.Nat.Basic"
-      }
-    ],
-    "relatedProofs": [
-      {
-        "id": "erdos-181",
-        "relationship": "Ramsey number of the hypercube — graph-theoretic Ramsey theory using `SimpleGraph`"
-      },
-      {
-        "id": "ramseys-theorem",
-        "relationship": "Classical Ramsey theorem — the independence/clique duality underlying Alon's proof"
       }
     ],
     "axiomCount": 3,
@@ -104,7 +94,7 @@
       "id": "definitions",
       "title": "Basic Graph Definitions",
       "startLine": 40,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Defines `FiniteGraph` as `SimpleGraph (Fin n)`, $\\alpha(G)$ via `sSup` over `IsIndependent` sets, `HasBoundedIndependence`, and `inducedEdges` via `Finset.filter` on ordered pairs.",
       "mathContext": "$\\alpha(G) = \\sup\\{|S| : S \\subseteq V, G.\\text{IsIndependent}\\, S\\}$. Induced edges: $e_G(S) = |\\{(u,v) \\in S \\times S : u < v \\wedge G.\\text{Adj}\\, u\\, v\\}|$."
     },
@@ -161,12 +151,12 @@
   ],
   "crossReferences": [
     {
-      "target": "ramseys-theorem",
-      "context": "The independence/clique duality underlying Alon's proof — α(G) ≤ √n is a Ramsey-type constraint"
+      "targetId": "ramseys-theorem",
+      "description": "The independence/clique duality underlying Alon's proof — α(G) ≤ √n is a Ramsey-type constraint"
     },
     {
-      "target": "erdos-806",
-      "context": "Both are Erdős problems about structural graph-theoretic properties"
+      "targetId": "erdos-806",
+      "description": "Both are Erdős problems about structural graph-theoretic properties"
     }
   ],
   "leanFile": {

@@ -52,7 +52,8 @@
       "Liouville's theorem from complex analysis",
       "Polynomial degree and leading coefficient"
     ],
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core existence result delegates to Mathlib's `Complex.exists_root` (proved via Liouville's theorem: a non-vanishing polynomial yields a bounded entire function $1/p(z)$, contradicting Liouville). Original contributions (`no_roots_implies_constant`, `card_roots_eq_degree`, `monic_prod_roots`, `quadratic_has_root`) are pedagogical wrappers composing Mathlib's `IsAlgClosed` infrastructure."
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core existence result delegates to Mathlib's `Complex.exists_root` (proved via Liouville's theorem: a non-vanishing polynomial yields a bounded entire function $1/p(z)$, contradicting Liouville). Original contributions (`no_roots_implies_constant`, `card_roots_eq_degree`, `monic_prod_roots`, `quadratic_has_root`) are pedagogical wrappers composing Mathlib's `IsAlgClosed` infrastructure.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Algebra has roots stretching back to the 16th century. Peter Rothe stated a version for real roots in 1608, and Albert Girard first conjectured the full result in his 1629 *Invention nouvelle en l'algèbre*: every polynomial of degree $n$ has $n$ roots (counting multiplicities, allowing 'impossible' — i.e., complex — solutions). The first serious proof attempt came from Jean le Rond d'Alembert in 1746, whose argument contained gaps that would take over a century to fill.\n\nLeonhard Euler (1749) gave an algebraic argument reducing the problem to showing that real polynomials of even degree factor over $\\mathbb{R}$, but his proof also had gaps for polynomials of degree $2^k$ with $k \\geq 3$. Joseph-Louis Lagrange (1772) and Pierre-Simon Laplace (1795) also attempted proofs with varying degrees of completeness.\n\nCarl Friedrich Gauss provided the first substantially correct proof in his 1799 doctoral dissertation *Demonstratio nova theorematis omnem functionem algebraicam rationalem integram unius variabilis in factores reales primi vel secundi gradus resolvi posse*. Gauss criticized d'Alembert's approach and used a topological argument about the winding number of a curve. He went on to publish three more proofs (1816, 1816, 1849), each using different techniques — the fourth was purely algebraic modulo the intermediate value theorem.\n\nDespite its name, the theorem is fundamentally analytic rather than algebraic. Every known proof requires the completeness of $\\mathbb{R}$ in some form — whether through complex analysis (Liouville's theorem), topology (winding numbers), or the intermediate value theorem. The Mathlib proof uses Liouville's theorem: if $p(z) \\neq 0$ everywhere, then $1/p(z)$ is a bounded entire function, hence constant by Liouville, contradicting $\\deg p \\geq 1$.\n\nThe theorem is #2 on Wiedijk's list of 100 theorems, reflecting its foundational importance. It underpins the algebraic closure of $\\mathbb{C}$, the spectral theorem in linear algebra, and the decomposition of rational functions into partial fractions.",
@@ -78,7 +79,7 @@
       "id": "introduction",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 23,
       "summary": "Overview of the Fundamental Theorem of Algebra and its historical significance as the foundation of algebraic closure.",
       "mathContext": "Every non-constant polynomial $p(z) \\in \\mathbb{C}[z]$ has a root: $\\exists z_0 \\in \\mathbb{C},\\, p(z_0) = 0$. Equivalently, $\\mathbb{C}$ is algebraically closed."
     },
@@ -86,7 +87,7 @@
       "id": "mathlib-imports",
       "title": "Mathlib Imports",
       "startLine": 24,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Importing the complex polynomial theory from Mathlib, which provides the formalized theorem.",
       "mathContext": "Imports `Mathlib.Analysis.SpecificLimits.Complex` and `Polynomial` modules providing `Complex.exists_root` and `IsAlgClosed`"
     },
@@ -94,7 +95,7 @@
       "id": "polynomial-basics",
       "title": "Polynomial Foundations",
       "startLine": 34,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Setting up polynomial notation and reviewing key concepts: degree, evaluation, and what it means to be a root.",
       "mathContext": "`Polynomial.eval₂` for evaluation $p(z_0)$, `Polynomial.degree` for $\\deg p$, `Polynomial.IsRoot` for $p(z_0) = 0$"
     },
@@ -102,7 +103,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 57,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Stating and proving the Fundamental Theorem of Algebra using Mathlib's Complex.exists_root theorem.",
       "mathContext": "$\\forall p \\in \\mathbb{C}[z],\\, \\deg p \\geq 1 \\implies \\exists z_0 \\in \\mathbb{C},\\, p(z_0) = 0$. Proof via Liouville: if $p(z) \\neq 0$ everywhere, then $1/p$ is bounded entire, hence constant — contradiction."
     },
@@ -110,7 +111,7 @@
       "id": "algebraic-closure",
       "title": "Algebraic Closure",
       "startLine": 84,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "The powerful consequence: the complex numbers form an algebraically closed field.",
       "mathContext": "$\\mathbb{C}$ is algebraically closed: `IsAlgClosed \\mathbb{C}`. Every polynomial over $\\mathbb{C}$ of degree $\\geq 1$ has a root, so no proper algebraic extension of $\\mathbb{C}$ exists."
     },
@@ -118,7 +119,7 @@
       "id": "complete-factorization",
       "title": "Complete Factorization",
       "startLine": 107,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "Root counting (card_roots_eq_degree) and monic factorization (monic_prod_roots) — a degree-n polynomial has exactly n roots with multiplicity, and monic polynomials equal the product of their linear factors.",
       "mathContext": "$p(z) = a_n \\prod_{i=1}^{n} (z - z_i)$ where $z_1, \\ldots, z_n$ are the roots (with multiplicity). Uses `Polynomial.roots`, `natDegree_eq_card_roots`, and `prod_multiset_X_sub_C_of_monic_of_roots_card_eq`."
     },
@@ -126,7 +127,7 @@
       "id": "significance",
       "title": "Why This Matters",
       "startLine": 157,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Documentary commentary on FTA's consequences: algebraic completeness of ℂ, eigenvalue existence in linear algebra, ℂ as the algebraic closure of ℝ and ℚ, and the connection to topology/analysis.",
       "mathContext": "FTA implies: (1) every $n \\times n$ complex matrix has an eigenvalue ($\\det(A - \\lambda I)$ is a degree-$n$ polynomial in $\\lambda$, so FTA gives $\\lambda_0$ with $\\det(A - \\lambda_0 I) = 0$); (2) $\\overline{\\mathbb{Q}} \\subset \\mathbb{C}$ is the algebraic closure of $\\mathbb{Q}$ (a countable subfield); (3) Jordan normal form exists over $\\mathbb{C}$; (4) the spectral theorem for normal operators and SVD for arbitrary matrices both rest on FTA.\n\n**FTA + Abel-Ruffini together**: FTA tells us the roots of every $p \\in \\mathbb{C}[z]$ *exist*. Abel-Ruffini (1824) shows that for $\\deg p \\geq 5$, these roots cannot in general be *written down* using radicals applied to the coefficients — the Galois group of a generic degree-5 polynomial is $S_5$, which is not solvable (since $A_5$ is simple and non-abelian). FTA is thus logically prior to Abel-Ruffini: you must first know roots exist before asking whether they have a radical formula.\n\n**Partial fractions**: Over $\\mathbb{C}$, every rational function $r(z) = p(z)/q(z)$ decomposes as a sum of terms $c/(z - r_i)^k$, because FTA guarantees $q$ splits into linear factors. This is the foundation of the residue calculus and contour integration in complex analysis."
     },
@@ -157,11 +158,6 @@
       "description": "FTA guarantees roots exist in C; Abel-Ruffini shows they cannot always be expressed by radicals — existence does not imply explicit formulas"
     },
     {
-      "targetId": "fermats-last-theorem",
-      "relationship": "related",
-      "description": "FLT uses algebraic number theory over number fields — FTA ensures these fields embed in C, providing the complex-analytic tools needed for Wiles's proof via modular forms"
-    },
-    {
       "targetId": "liouville-theorem",
       "relationship": "uses",
       "description": "The Mathlib proof of FTA relies on Liouville's theorem (bounded entire function is constant): if p(z) ≠ 0 everywhere, then 1/p is bounded entire, hence constant — contradiction"
@@ -182,11 +178,6 @@
       "description": "FTA shows every polynomial splits over C, so every Galois group embeds in some S_n. The Inverse Galois Problem asks which groups arise over Q — a question that presupposes FTA's guarantee that roots exist"
     },
     {
-      "targetId": "hermite-lindemann",
-      "relationship": "related",
-      "description": "Hermite-Lindemann proves e^α is transcendental for algebraic α ≠ 0. FTA concerns algebraic numbers (roots of polynomials); transcendental numbers like e and π lie permanently outside the algebraic closure of Q but inside C"
-    },
-    {
       "targetId": "general-quartic",
       "relationship": "specializes",
       "description": "Ferrari's quartic formula provides explicit complex roots for degree-4 polynomials; FTA guarantees such roots exist for any degree, subsuming all explicit formula results"
@@ -202,11 +193,6 @@
       "description": "Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots: $a_{n-k}/a_n = (-1)^k e_k(r_1,\\ldots,r_n)$. FTA guarantees these $n$ roots exist in $\\mathbb{C}$, making Vieta's formulas universally applicable over $\\mathbb{C}$ — without FTA, the roots might not exist and the formulas would be vacuous"
     },
     {
-      "targetId": "cayley-hamilton",
-      "relationship": "related",
-      "description": "The Cayley-Hamilton theorem ($p(A) = 0$ where $p$ is the characteristic polynomial) combined with FTA yields the eigenvalue decomposition: FTA factors $p(\\lambda) = \\prod(\\lambda - \\lambda_i)^{m_i}$ over $\\mathbb{C}$, then Cayley-Hamilton gives $\\prod(A - \\lambda_i I)^{m_i} = 0$, which implies each $A - \\lambda_i I$ is singular on some subspace — the foundation of spectral theory"
-    },
-    {
       "targetId": "intermediate-value-theorem",
       "relationship": "foundational",
       "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root (by IVT, since it tends to $\\pm\\infty$), and every complex number has a square root. These two facts, both consequences of the completeness of $\\mathbb{R}$, suffice to prove FTA — making IVT one of the minimal prerequisites"
@@ -215,21 +201,6 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "related",
       "description": "Both FTA and Brouwer's fixed point theorem are topological results about continuous maps on compact sets. The topological proof of FTA via winding numbers (the degree of $p(z)/|p(z)|$ on a large circle is $n$) uses the same homotopy-theoretic tools that prove Brouwer's theorem — both are consequences of the non-triviality of $\\pi_1(S^1) \\cong \\mathbb{Z}$"
-    },
-    {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ parametrizes the unit circle in $\\mathbb{C}$, and the $n$th roots of unity $e^{2\\pi ik/n}$ are the roots of $z^n - 1 = 0$ — the simplest application of FTA. The algebraic closure of $\\mathbb{C}$ guaranteed by FTA means all cyclotomic polynomials split completely over $\\mathbb{C}$"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "thematic",
-      "description": "Both were proved by Gauss: quadratic reciprocity in Disquisitiones Arithmeticae (1801) and FTA in his doctoral thesis (1799). Gauss gave four proofs of FTA (1799, 1816, 1816, 1849) and eight proofs of QR, reflecting his conviction that fundamental theorems deserve multiple proofs revealing different facets"
-    },
-    {
-      "targetId": "pi-transcendental",
-      "relationship": "related",
-      "description": "FTA guarantees all algebraic numbers live in $\\mathbb{C}$, while Lindemann (1882) proves $\\pi \\notin \\overline{\\mathbb{Q}}$ — transcendental numbers exist in $\\mathbb{C}$ but are unreachable by polynomial equations. The algebraic closure $\\overline{\\mathbb{Q}}$ is a countable subfield of the uncountable $\\mathbb{C}$, so 'most' complex numbers are transcendental"
     }
   ],
   "relatedProofs": [
@@ -237,18 +208,12 @@
     "angle-trisection",
     "inverse-galois",
     "solution-of-cubic",
-    "fermats-last-theorem",
     "liouville-theorem",
-    "hermite-lindemann",
     "general-quartic",
     "lagrange-theorem",
     "vietas-formulas",
-    "cayley-hamilton",
     "intermediate-value-theorem",
-    "brouwer-fixed-point",
-    "euler-identity",
-    "quadratic-reciprocity",
-    "pi-transcendental"
+    "brouwer-fixed-point"
   ],
   "references": [
     {

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/942",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.Card",
@@ -61,7 +61,7 @@
       "Asymptotic count of powerful numbers up to N",
       "Small examples: h(1)=1, h(2)=2, h(3)=1"
     ],
-    "axiomCount": 32,
+    "axiomCount": 6,
     "lineCount": 150,
     "assumptions": "32 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -96,35 +96,35 @@
       "id": "background",
       "title": "Background: Powerful Numbers",
       "startLine": 35,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Definition, examples, non-examples, and density of powerful numbers."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 50,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Powerful, PowerfulAlt, squareIntervalSet, h function definitions."
     },
     {
       "id": "examples",
       "title": "Examples of Powerful Numbers",
       "startLine": 79,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "1, 4, 8, 9, 36, 72 are powerful; 6, 12 are not."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture (OPEN)",
       "startLine": 105,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "erdos_942_conjecture and erdos_942_open axioms."
     },
     {
       "id": "limsup",
       "title": "Known Result: limsup h(n) = infinity",
       "startLine": 120,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "h_unbounded axiom with proof sketch."
     },
     {
@@ -198,5 +198,27 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, density, number-theory"
+    },
+    {
+      "targetId": "erdos-222",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, density, number-theory"
+    },
+    {
+      "targetId": "erdos-371",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1102",
+    "erdos-222",
+    "erdos-371"
+  ]
 }

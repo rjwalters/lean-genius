@@ -44,7 +44,8 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 1442,
-    "assumptions": "No axioms. 1 sorry: density_increment_iter N=1 hard case (delta ∈ (0.99, 1]) — requires Dirichlet approximation to prevent descent reaching N=1 with high density. DirichletApproximation.lean is already proved."
+    "assumptions": "No axioms. 1 sorry: density_increment_iter N=1 hard case (delta ∈ (0.99, 1]) — requires Dirichlet approximation to prevent descent reaching N=1 with high density. DirichletApproximation.lean is already proved.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Roth's theorem, proved by Klaus Friedrich Roth in 1953, was a landmark achievement in number theory and combinatorics. It confirmed the k=3 case of the Erdos-Turan conjecture (1936) that every dense subset of the integers contains arithmetic progressions of any length.\n\nRoth introduced Fourier-analytic methods to additive combinatorics, a revolutionary approach that opened an entirely new toolbox. His key insight was the density increment strategy: if a set A of density delta in [N] has no 3-term AP, then there exists a long arithmetic progression P where A has density at least delta + c*delta^2. Iterating this increment (which can only happen O(1/delta) times before density exceeds 1) yields a contradiction.\n\nThe quantitative bounds have been dramatically improved over the decades: Bourgain (1999, 2008), Sanders (2011), and most recently Bloom and Sisask (2020) achieved r_3(N) = O(N/(log N)^{1+c}). In 2023, Kelley and Meka achieved the breakthrough bound r_3(N) = O(N * exp(-c * (log N)^{1/12})).\n\nRoth's theorem is the natural starting point for the Szemeredi program because it introduces the core techniques (Fourier analysis, density increment) in their simplest setting.",
@@ -84,7 +85,7 @@
       "id": "ap-counting",
       "title": "Part II: AP Counting",
       "startLine": 67,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Defines tripleCount as the number of nontrivial 3-APs. Proves APFree ↔ tripleCount = 0, bridging the logical and combinatorial definitions. 0 sorries.",
       "mathContext": "$\\Lambda_3(A) = |\\{(a,d) : d \\neq 0,\\; a, a+d, a+2d \\in A\\}|$. AP-free $\\iff \\Lambda_3(A) = 0$."
     },
@@ -92,7 +93,7 @@
       "id": "fourier-setup",
       "title": "Part III.A: Fourier Coefficient Definition and Setup",
       "startLine": 93,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "Proves tripleCount_add_card_eq_triple_sum helper (1 sorry — combinatorial identity relating total triple count to the Fourier sum). Defines fourierCoeff as the discrete Fourier transform. Proves fourierCoeff_norm_le: |Â(r)| ≤ |A| via triangle inequality.",
       "mathContext": "$\\hat{1}_A(r) = \\sum_{x \\in A} \\psi(rx)$ where $\\psi(x) = e^{2\\pi i \\cdot \\text{val}(x)/N}$. Bound: $|\\hat{1}_A(r)| \\leq |A|$."
     },
@@ -132,7 +133,7 @@
       "id": "main",
       "title": "Part VI: Iteration and Main Theorem",
       "startLine": 496,
-      "endLine": 594,
+      "endLine": 1442,
       "summary": "Proves density_increment_step (one iteration), density_iteration (k iterations give density ≥ δ + kδ²/100), and roth_density_bound (Roth's theorem: r₃(N) = o(N)) by choosing K > 100/δ² to force density > 1, contradicting |A| ≤ N. All 0 sorries — the iteration argument and main theorem are fully proved from the density increment lemma.",
       "mathContext": "After $k$ increments: density $\\geq \\delta + k\\delta^2/100$. Choose $K > 100/\\delta^2$: density $> 1$, contradiction. Therefore $r_3(N) = o(N)$."
     }

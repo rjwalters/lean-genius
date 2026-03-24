@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/490",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -69,28 +69,6 @@
       "multiplicativeEnergy: counting quadruples a₁b₁ = a₂b₂",
       "bound_is_optimal: matching lower bound (partially proved)"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-808",
-        "relationship": "Erdős-808 studies graph-restricted sum-product bounds in finite fields — both problems concern when multiplicative structure constrains set sizes"
-      },
-      {
-        "id": "erdos-861",
-        "relationship": "Erdős-861 counts Sidon sets (distinct pairwise sums), directly analogous to multiplicative Sidon sets formalized in this entry"
-      },
-      {
-        "id": "erdos-337",
-        "relationship": "Erdős-337 studies sumset growth and additive bases — the additive analog of the product set growth question"
-      },
-      {
-        "id": "erdos-322",
-        "relationship": "Erdős-322 concerns Waring's problem and representation as sums of powers — related extremal questions in multiplicative number theory"
-      },
-      {
-        "id": "erdos-66",
-        "relationship": "Erdős-66 studies representation functions r_A(n) — counting how many ways n can be represented, dual to the distinct products question"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 277,
     "assumptions": "6 axiom(s) and 9 sorry(s). See the Lean source for details."
@@ -119,7 +97,7 @@
       "title": "Problem Statement and Imports",
       "summary": "Problem overview, references to Szemerédi 1976 and Erdős 1972, connections to Problems #425 and #896; imports Finset, Log, Primorial",
       "startLine": 1,
-      "endLine": 36
+      "endLine": 37
     },
     {
       "id": "basic-definitions",
@@ -214,5 +192,27 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1161",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-297",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1161",
+    "erdos-297",
+    "erdos-310"
+  ]
 }

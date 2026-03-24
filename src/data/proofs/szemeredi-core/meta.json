@@ -42,14 +42,6 @@
       "Size-weighted partition energy following Komlos-Simonovits (1996)",
       "Proved: edgeDensity_nonneg, edgeDensity_le_one, partitionEnergy_nonneg"
     ],
-    "relatedProofs": [
-      "szemeredi-regularity",
-      "szemeredi-counting",
-      "szemeredi-full",
-      "szemeredi-theorem",
-      "roth-theorem-k3",
-      "ramseys-theorem"
-    ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "lineCount": 110,
@@ -59,7 +51,8 @@
       "Finite combinatorics (Cartesian products, cardinality, filters)",
       "Familiarity with Lean 4 and Mathlib"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Szemerédi regularity lemma (1975/1978) is one of the most influential results in modern combinatorics. Endre Szemerédi first developed the regularity method as a tool within his proof that every dense subset of the integers contains arbitrarily long arithmetic progressions (1975), settling a conjecture of Erdős and Turán from 1936. The regularity lemma itself was then published separately in 1978, and rapidly became a cornerstone of extremal graph theory.\n\nThe key conceptual innovation was the notion of epsilon-regularity: a pair of vertex sets that behaves pseudorandomly in that all large sub-pairs have approximately the same edge density. This allowed Szemerédi to replace complicated dense graphs with simpler 'reduced graphs' that retain the essential combinatorial structure. The partition energy function, formalized here following the exposition of Komlós and Simonovits (1996), provides the potential argument that drives the regularity lemma: energy lies in $[0,1]$, increases by at least $\\varepsilon^5$ at each refinement step, and therefore the refinement process must terminate.\n\nThis core module extracts the shared definitions used by the full Szemerédi pipeline (regularity, counting, removal, and the main theorem on arithmetic progressions), preventing definition drift across files. The modularity mirrors the mathematical structure: the same definitions of edge density and epsilon-regularity appear in applications ranging from the triangle removal lemma (Ruzsa-Szemerédi 1978) to the Green-Tao theorem on primes in arithmetic progressions (2008).",
@@ -85,7 +78,7 @@
       "id": "preamble",
       "title": "Preamble and Imports",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Module docstring listing all definitions and lemmas. Imports Mathlib, opens Classical (for decidability of propositions), and declares the finite vertex type variable $V$ with `Fintype` and `DecidableEq` instances.",
       "mathContext": "Variables: $V$ is a finite type with decidable equality. Classical reasoning is opened to allow decidable propositions in definitions."
     },
@@ -93,7 +86,7 @@
       "id": "edge-density",
       "title": "Edge Density Definition",
       "startLine": 29,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Defines `edgeDensity G A B` as $|\\{(a,b) \\in A \\times B : G.\\text{Adj}\\, a\\, b\\}| / (|A| \\cdot |B|)$. Returns 0 when either set is empty (guarded by the `if h` branch on the denominator being zero). Marked `noncomputable` because it involves division in $\\mathbb{Q}$.",
       "mathContext": "$d(A,B) = \\frac{|\\{(a,b) \\in A \\times B : a \\sim b\\}|}{|A| \\cdot |B|}$ with $d(A,B) = 0$ when $|A| \\cdot |B| = 0$."
     },
@@ -101,7 +94,7 @@
       "id": "regularity-defs",
       "title": "Epsilon-Regularity and Regular Partitions",
       "startLine": 36,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines `IsEpsilonRegular G eps A B`: for all $A' \\subseteq A$, $B' \\subseteq B$ with $|A'| \\geq \\varepsilon|A|$ and $|B'| \\geq \\varepsilon|B|$, $|d(A',B') - d(A,B)| \\leq \\varepsilon$. Defines `IsRegularPartition G eps parts`: equitability (parts differ by at most 1 in size) and at most $\\varepsilon k(k-1)$ irregular pairs.",
       "mathContext": "$(A,B)$ is $\\varepsilon$-regular iff $\\forall A' \\subseteq A,\\, B' \\subseteq B$ with $|A'| \\geq \\varepsilon|A|,\\, |B'| \\geq \\varepsilon|B|$: $|d(A',B') - d(A,B)| \\leq \\varepsilon$. Partition is regular iff equitable and $|\\{(i,j) : \\text{not } \\varepsilon\\text{-regular}\\}| \\leq \\varepsilon k(k-1)$."
     },
@@ -109,7 +102,7 @@
       "id": "partition-energy",
       "title": "Partition Energy",
       "startLine": 58,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Defines `partitionEnergy G parts` as $q(\\mathcal{P}) = \\sum_{(P_i, P_j) \\in \\mathcal{P} \\times \\mathcal{P}} \\frac{|P_i| \\cdot |P_j|}{n^2} \\cdot d(P_i, P_j)^2$, where $n = |V|$. Returns 0 for empty graphs. Size-weighting by $|P_i||P_j|/n^2$ normalizes the energy to $[0,1]$.",
       "mathContext": "$q(\\mathcal{P}) = \\sum_{i,j} \\frac{|P_i||P_j|}{n^2} d(P_i,P_j)^2 \\in [0,1]$. Key property: $q(\\mathcal{P}') \\geq q(\\mathcal{P}) + \\varepsilon^5$ when $\\mathcal{P}'$ refines an irregular pair."
     },

@@ -15,7 +15,7 @@
       "approximation",
       "randomized"
     ],
-    "mathlib_version": "4.10.0",
+    "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/RandomizedMaxCut.lean",
     "badge": "original",
     "sorries": 0,
@@ -97,7 +97,7 @@
       "id": "cut-structure",
       "title": "The Cut Structure",
       "startLine": 48,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Define cuts as vertex partitions with proof obligations: $A \\cup B = V$, $A \\cap B = \\emptyset$. Cut value counts edges crossing the partition.",
       "mathContext": "Cut value: $|C| = |\\{e = \\{u,v\\} \\in E : u \\in A, v \\in B\\}|$. The structure enforces $A \\sqcup B = V$ at the type level."
     },
@@ -105,7 +105,7 @@
       "id": "algorithm",
       "title": "The Randomized Algorithm",
       "startLine": 82,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Define the randomized MaxCut algorithm (independent fair coin per vertex) and edge indicator $\\chi_e$ ($1$ if edge $e$ is cut, $0$ otherwise).",
       "mathContext": "Algorithm: $\\forall v,\\; \\Pr[v \\in A] = \\Pr[v \\in B] = 1/2$, independently. Indicator: $\\chi_e = \\mathbf{1}[u \\in A, v \\in B] + \\mathbf{1}[u \\in B, v \\in A]$."
     },
@@ -113,7 +113,7 @@
       "id": "theorem1",
       "title": "Theorem 1: Sum of Indicators",
       "startLine": 98,
-      "endLine": 120,
+      "endLine": 121,
       "summary": "Cut size equals sum of edge indicator values: $|C| = \\sum_{e \\in E} \\chi_e$.",
       "mathContext": "$|C| = \\sum_{e \\in E} \\chi_e$. Reduces the global cut counting problem to per-edge analysis."
     },
@@ -121,7 +121,7 @@
       "id": "theorem2",
       "title": "Theorem 2: Counting Lemma",
       "startLine": 122,
-      "endLine": 165,
+      "endLine": 166,
       "summary": "Half of all $2^{|V|}$ boolean assignments place any two distinct vertices in different partitions. Proved via toggle bijection.",
       "mathContext": "$|\\{f : V \\to \\{0,1\\} : f(u) \\neq f(v)\\}| = 2^{|V|-1}$ for $u \\neq v$. The toggle $f \\mapsto f \\oplus \\mathbf{1}_u$ is a bijection swapping same/different."
     },
@@ -129,7 +129,7 @@
       "id": "theorem3",
       "title": "Theorem 3: Edge Probability",
       "startLine": 167,
-      "endLine": 210,
+      "endLine": 211,
       "summary": "Each edge has exactly $1/2$ probability of being cut: $\\Pr[e \\in C] = 1/2$ for all $e \\in E$.",
       "mathContext": "$\\Pr[\\chi_e = 1] = 2^{|V|-1} / 2^{|V|} = 1/2$. Follows from the counting lemma applied to $e = \\{u,v\\}$."
     },
@@ -137,7 +137,7 @@
       "id": "theorem4",
       "title": "Theorem 4: Expected Cut Size",
       "startLine": 212,
-      "endLine": 245,
+      "endLine": 246,
       "summary": "The main computation: $\\mathbb{E}[|C|] = |E|/2$ by linearity of expectation.",
       "mathContext": "$\\mathbb{E}[|C|] = \\mathbb{E}[\\sum_e \\chi_e] = \\sum_e \\mathbb{E}[\\chi_e] = \\sum_e \\frac{1}{2} = \\frac{|E|}{2}$. Linearity holds without independence."
     },
@@ -145,7 +145,7 @@
       "id": "theorem5",
       "title": "Theorem 5: MaxCut Upper Bound",
       "startLine": 247,
-      "endLine": 265,
+      "endLine": 266,
       "summary": "The trivial bound $\\text{MaxCut}(G) \\leq |E|$: no cut can use more edges than exist.",
       "mathContext": "$\\text{MaxCut}(G) = \\max_{A \\subseteq V} |C_A| \\leq |E|$. Proved via `Finset.card_filter_le`."
     },
@@ -153,7 +153,7 @@
       "id": "theorem6",
       "title": "Theorem 6: Approximation Guarantee",
       "startLine": 267,
-      "endLine": 285,
+      "endLine": 324,
       "summary": "The $1/2$-approximation: $\\mathbb{E}[|C|] \\geq \\text{MaxCut}(G)/2$.",
       "mathContext": "$\\mathbb{E}[|C|] = |E|/2 \\geq \\text{MaxCut}/2$ since $\\text{MaxCut} \\leq |E|$. A $1/2$-approximation for an NP-complete problem in $O(n)$ time."
     }

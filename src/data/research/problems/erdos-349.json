@@ -29,11 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved erdos_349_characterization (tautological axiom). Added expFloorSeq_at_one. Axioms 5→4.",
+    "builtItems": [
+      "erdos_349_characterization: proved — take S = {p | IsGoodPair p.1 p.2}",
+      "expFloorSeq_at_one: ⌊t·1^n⌋ = ⌊t⌋"
+    ],
+    "insights": [
+      "The characterization axiom is a tautology",
+      "α=1 gives constant sequence, not complete",
+      "Parity of ⌊(3/2)^n⌋ is notoriously open"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove ¬IsGoodPair t 1 (constant seq not complete)",
+      "Prove non-completeness for α ≥ 2 (gap argument)"
+    ],
     "markdown": "# Erdős #349 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor what values of $t,\\alpha \\in (0,\\infty)$ is the sequence $\\lfloor t\\alpha^n\\rfloor$ complete (that is, all sufficiently large integers are the sum of distinct integers of the form $\\lfloor t\\alpha^n\\rfloor$)?\n\n\n\nEven in the range $t\\in (0,1)$ and $\\alpha\\in (1,2)$ the behaviour is surprisingly complex. For example, Graham \\cite{Gr64e} has shown that for any $k$ there exists some $t_k\\in (0,1)$ such that the set of $\\alpha$ such that the sequence is complete consists of at least $k$ disjoint line segments. It seems likely that the sequence is complete for all $t>0$ and all $1<\\alpha < \\frac{1+\\sqrt{5}}{2}$. Proving this seems very difficult, since we do not even know whether $\\lfloor (3/2)^n\\rfloor$ is odd or even infinitely often.\n\n\n\n\nReferences\n\n\n[Gr64e] Graham, R. L., On a conjecture of Erd\\H{o}s in additive number theory. Acta Arith. (1964/65), 63-70.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #348\n- Problem #350\n- Problem #39\n- Problem #1\n\n## References\n\n- Gr64e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [

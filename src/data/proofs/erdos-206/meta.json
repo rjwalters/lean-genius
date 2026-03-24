@@ -22,7 +22,7 @@
     "erdosNumber": 206,
     "erdosUrl": "https://erdosproblems.com/206",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -87,49 +87,49 @@
       "id": "definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 52,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Egyptian fractions, valid denominators, R_n(x) axiomatization with properties."
     },
     {
       "id": "greedy-property",
       "title": "Part II: The Greedy Property",
       "startLine": 83,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "EventuallyGreedy definition and EventuallyGreedySet."
     },
     {
       "id": "positive-results",
       "title": "Part III: Positive Results",
       "startLine": 100,
-      "endLine": 123,
+      "endLine": 124,
       "summary": "Curtiss, Erdős, Nathanson, and Chu theorems for specific classes."
     },
     {
       "id": "kovac-main",
       "title": "Part IV: Kovač's Theorem",
       "startLine": 125,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "The main result: measure(EventuallyGreedySet) = 0."
     },
     {
       "id": "open-questions",
       "title": "Part V: Open Questions",
       "startLine": 149,
-      "endLine": 164,
+      "endLine": 165,
       "summary": "All rationals? Explicit non-greedy example?"
     },
     {
       "id": "counterexample",
       "title": "Part VI: Special Cases and Counterexample",
       "startLine": 166,
-      "endLine": 180,
+      "endLine": 181,
       "summary": "The 11/24 non-greedy-at-step-two example."
     },
     {
       "id": "egyptian-fractions",
       "title": "Part VII: Egyptian Fractions",
       "startLine": 182,
-      "endLine": 198,
+      "endLine": 199,
       "summary": "Existence theorem and Sylvester's greedy algorithm."
     },
     {
@@ -169,5 +169,27 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1001",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, measure-theory, number-theory"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-296",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1001",
+    "erdos-286",
+    "erdos-296"
+  ]
 }

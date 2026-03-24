@@ -16,7 +16,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ02.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,34 +49,9 @@
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
-    "crossReferences": [
-      {
-        "proofId": "binomial-theorem",
-        "title": "The Binomial Theorem",
-        "relationship": "parent",
-        "note": "The binomial theorem (1+X)^n = Σ C(n,k) X^k provides the coefficient extraction that connects polynomial identities to combinatorial ones"
-      },
-      {
-        "proofId": "arithmetic-series-oq-02-oq-02",
-        "title": "2D Hockey Stick Identity",
-        "relationship": "related",
-        "note": "Uses the parallel Vandermonde identity Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1), a shifted variant of the standard Vandermonde"
-      },
-      {
-        "proofId": "combinations-formula",
-        "title": "Formula for the Number of Combinations",
-        "relationship": "uses",
-        "note": "The foundation C(n,k) = n!/(k!(n-k)!) upon which the identity is built"
-      },
-      {
-        "proofId": "pascals-hexagon",
-        "title": "Pascal's Hexagon Theorem",
-        "relationship": "related",
-        "note": "Another deep structural property of Pascal's triangle derived from binomial coefficient identities"
-      }
-    ],
     "lineCount": 111,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Vandermonde's identity $\\binom{m+n}{r} = \\sum_{i+j=r} \\binom{m}{i}\\binom{n}{j}$ was published by Alexandre-Théophile Vandermonde in 1772, though instances appear in Chu Shih-Chieh's 'Precious Mirror of the Four Elements' (1303). The identity is one of the most fundamental in combinatorics, encoding the fact that choosing $r$ items from $m+n$ objects is equivalent to choosing some from the first $m$ and the rest from the last $n$. The algebraic proof via coefficient comparison — factoring $(1+X)^{m+n}$ as $(1+X)^m \\cdot (1+X)^n$ and equating coefficients of $X^r$ — is perhaps the most elegant approach, reducing the combinatorial identity to the monoid law $a^{m+n} = a^m \\cdot a^n$ and the Cauchy product formula for polynomial multiplication. This proof technique, sometimes called the 'generating function method', has become a standard tool in algebraic combinatorics.",
@@ -108,28 +83,28 @@
       "title": "Exponent Law",
       "summary": "The polynomial identity (1+X)^(m+n) = (1+X)^m · (1+X)^n, proved in one line via pow_add — the monoid exponent law applied to ℕ[X].",
       "startLine": 28,
-      "endLine": 36
+      "endLine": 37
     },
     {
       "id": "vandermonde",
       "title": "Vandermonde's Identity",
       "summary": "The antidiagonal convolution formula C(m+n,r) = Σ_{i+j=r} C(m,i)·C(n,j) via Nat.add_choose_eq, plus the symmetry theorem.",
       "startLine": 38,
-      "endLine": 54
+      "endLine": 55
     },
     {
       "id": "cauchy",
       "title": "Cauchy Product Structure",
       "summary": "The Cauchy product formula, coefficient comparison principle, and the algebraic proof structure connecting all three layers.",
       "startLine": 56,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "summary": "Equal parameters case C(2n,r) = Σ C(n,i)·C(n,j) and Pascal's rule as the m=1 specialization of Vandermonde.",
       "startLine": 79,
-      "endLine": 92
+      "endLine": 93
     },
     {
       "id": "summary",

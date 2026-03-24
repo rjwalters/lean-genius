@@ -25,7 +25,7 @@
     "erdosUrl": "https://erdosproblems.com/664",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -66,16 +66,6 @@
       "IsBalancedBlockDesign: original 1981 formulation (still open)",
       "ErdosQuestion664_Original: balanced block design version",
       "minimum_blocking_set_size: Bruen's bound q + √q + 1 for projective planes"
-    ],
-    "relatedProofs": [
-      {
-        "id": "erdos-1159",
-        "relationship": "Stronger variant: #1159 asks whether O(log n)-bounded blocking sets exist in projective planes specifically, while #664 asked about O(1)-bounded blockers in general near-linear families"
-      },
-      {
-        "id": "erdos-661",
-        "relationship": "Both involve extremal questions about structured combinatorial configurations; #661 studies bipartite distinct distances while #664 studies blocking sets in near-linear families"
-      }
     ],
     "axiomCount": 10,
     "lineCount": 281,
@@ -208,5 +198,27 @@
     "axiomCount": 10,
     "theoremCount": 4,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1159",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: blocking-sets, combinatorics, finite-geometry, projective-planes"
+    },
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, finite-geometry, probabilistic-method"
+    },
+    {
+      "targetId": "erdos-21",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, probabilistic-method, projective-planes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1159",
+    "erdos-166",
+    "erdos-21"
+  ]
 }

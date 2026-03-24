@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/400",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.factorial",
@@ -97,42 +97,42 @@
       "id": "imports",
       "title": "Imports and Dependencies",
       "startLine": 14,
-      "endLine": 19,
+      "endLine": 20,
       "summary": "Imports `Nat.Factorial.Basic` for $n!$, `Real.Basic` for $\\mathbb{R}$ and $\\log$, `Asymptotics` for $O(\\cdot)$ notation, `Filter.Basic` for `Filter.atTop` convergence, and `Tactic` for automation."
     },
     {
       "id": "factorial-divisibility",
       "title": "Factorial Divisibility Condition",
       "startLine": 21,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Defines `FactorialDivides a n`: the product $\\prod_{i=1}^k a_i!$ divides $n!$. Uses `Finset.prod` over `Fin k` with `Nat.factorial`."
     },
     {
       "id": "excess-function",
       "title": "The Excess Function $g_k$",
       "startLine": 30,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Defines `sumExcess a n = (\\sum a_i) - n$ over $\\mathbb{Z}$ and `gExcess k n = \\operatorname{sSup}\\{e : \\exists a,\\, \\text{FactorialDivides}(a,n) \\wedge \\text{sumExcess}(a,n) = e\\}$."
     },
     {
       "id": "conjectures",
       "title": "The Conjectures",
       "startLine": 44,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "`ErdosProblem400a`: $\\sum_{n \\le x} g_k(n) / (x \\log x) \\to c_k$ via `Filter.Tendsto`. `ErdosProblem400b`: density of $|g_k(n) - c_k \\log x| > \\varepsilon \\log x$ tends to $0$. Combined `ErdosProblem400`: both hold $\\forall k \\ge 2$."
     },
     {
       "id": "upper-bound",
       "title": "Erdős-Graham Upper Bound",
       "startLine": 71,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "`gExcess_upper_bound` (axiom): $\\exists C > 0,\\, \\forall n \\ge 1,\\, g_k(n) \\le C \\log n$. Establishes logarithmic order of magnitude from $p$-adic valuation constraints."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties and Binomial Connection",
       "startLine": 80,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "`gExcess_nonneg` (axiom): $g_k(n) \\ge 0$ from trivial tuple $(n, 0, \\ldots, 0)$. `g2_binomial_connection` (axiom): for $k = 2$, the excess connects to integrality of $n!/(a! \\cdot b!)$."
     },
     {
@@ -169,5 +169,27 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-361",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-13",
+    "erdos-131",
+    "erdos-361"
+  ]
 }

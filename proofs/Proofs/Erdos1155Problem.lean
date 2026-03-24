@@ -62,14 +62,6 @@ axiom triangleRemovalEdges_le_complete (n : ℕ) :
 
 -- ## Known Results
 
-/-- **Grable (1997)**: For every ε > 0, the number of remaining edges
-satisfies f(n) ≤ n^{7/4 + ε} asymptotically (in probability).
-We state the deterministic bound on the expectation. -/
-axiom grable_upper_bound :
-    ∀ ε : ℝ, 0 < ε →
-      ∀ᶠ (n : ℕ) in atTop,
-        triangleRemovalEdges n ≤ (n : ℝ) ^ ((7 : ℝ) / 4 + ε)
-
 /-- **Bohman-Frieze-Lubetzky (2015)**: f(n) = n^{3/2 + o(1)} almost surely.
 Upper bound part: for every ε > 0, eventually f(n) < n^{3/2 + ε}. -/
 axiom bfl_upper_bound :
@@ -83,6 +75,23 @@ axiom bfl_lower_bound :
     ∀ ε : ℝ, 0 < ε →
       ∀ᶠ (n : ℕ) in atTop,
         (n : ℝ) ^ ((3 : ℝ) / 2 - ε) ≤ triangleRemovalEdges n
+
+/-- **Grable (1997)**: For every ε > 0, the number of remaining edges
+satisfies f(n) ≤ n^{7/4 + ε} asymptotically (in probability).
+This follows directly from the stronger BFL bound (3/2 + ε' implies 7/4 + ε
+with ε' = 1/4 + ε). Originally axiomatized; now proved from BFL. -/
+theorem grable_upper_bound :
+    ∀ ε : ℝ, 0 < ε →
+      ∀ᶠ (n : ℕ) in atTop,
+        triangleRemovalEdges n ≤ (n : ℝ) ^ ((7 : ℝ) / 4 + ε) := by
+  intro ε hε
+  have hε' : (0 : ℝ) < 1/4 + ε := by linarith
+  have h1 := bfl_upper_bound (1/4 + ε) hε'
+  apply h1.mono
+  intro n hn
+  have : (3 : ℝ) / 2 + (1 / 4 + ε) = 7 / 4 + ε := by ring
+  rw [this] at hn
+  exact hn
 
 -- ## Erdős Conjecture
 
@@ -153,32 +162,65 @@ def IsTriangleFree' {V : Type*} (G : SimpleGraph V) : Prop :=
   ∀ a b c : V, ¬IsTriangle G a b c
 
 /-- Triangle-free is equivalent to CliqueFree 3 for simple graphs. -/
-theorem triangleFree_iff_cliqueFree3 {V : Type*} [Fintype V] (G : SimpleGraph V) :
-    IsTriangleFree' G ↔ G.CliqueFree 3 := by
-  sorry
+theorem triangleFree_iff_cliqueFree3 {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) : IsTriangleFree' G ↔ G.CliqueFree 3 := by
+  constructor
+  · -- IsTriangleFree' → CliqueFree 3
+    intro htf s hs
+    obtain ⟨hclique, hcard⟩ := hs
+    rw [Finset.card_eq_three] at hcard
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := hcard
+    have mem_a : a ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+    have mem_b : b ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+    have mem_c : c ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+    exact htf a b c ⟨hab, hbc, hac,
+      hclique mem_a mem_b hab,
+      hclique mem_b mem_c hbc,
+      hclique mem_a mem_c hac⟩
+  · -- CliqueFree 3 → IsTriangleFree'
+    intro hcf a b c ⟨hab, hbc, hac, hadj_ab, hadj_bc, hadj_ac⟩
+    apply hcf {a, b, c}
+    refine ⟨?_, by rw [Finset.card_eq_three]; exact ⟨a, b, c, hab, hac, hbc, rfl⟩⟩
+    intro x hx y hy hxy
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+               Set.mem_singleton_iff] at hx hy
+    rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl <;>
+      first | exact absurd rfl hxy | exact hadj_ab | exact hadj_ac |
+              exact hadj_bc | exact G.symm hadj_ab | exact G.symm hadj_ac |
+              exact G.symm hadj_bc
 
 /-- The complete graph on n ≥ 3 vertices contains triangles. -/
 theorem complete_has_triangles {n : ℕ} (hn : 3 ≤ n) :
     ¬IsTriangleFree' (⊤ : SimpleGraph (Fin n)) := by
-  sorry
+  intro h
+  let v0 : Fin n := ⟨0, by omega⟩
+  let v1 : Fin n := ⟨1, by omega⟩
+  let v2 : Fin n := ⟨2, by omega⟩
+  have h01 : v0 ≠ v1 := by intro heq; simp [v0, v1] at heq
+  have h12 : v1 ≠ v2 := by intro heq; simp [v1, v2] at heq
+  have h02 : v0 ≠ v2 := by intro heq; simp [v0, v2] at heq
+  have adj01 : (⊤ : SimpleGraph (Fin n)).Adj v0 v1 := by
+    simp only [SimpleGraph.top_adj]; exact h01
+  have adj12 : (⊤ : SimpleGraph (Fin n)).Adj v1 v2 := by
+    simp only [SimpleGraph.top_adj]; exact h12
+  have adj02 : (⊤ : SimpleGraph (Fin n)).Adj v0 v2 := by
+    simp only [SimpleGraph.top_adj]; exact h02
+  exact h v0 v1 v2 ⟨h01, h12, h02, adj01, adj12, adj02⟩
 
 -- ## Mantel's Theorem (Triangle-Free Bound)
 --
 -- The triangle removal process terminates with a triangle-free graph.
 -- By Mantel's theorem (Turán for r=3), a triangle-free graph on n vertices
--- has at most ⌊n²/4⌋ edges. This gives a trivial upper bound on f(n).
+-- has at most ⌊n²/4⌋ edges. This gives a universal upper bound on f(n).
 
-/-- **Mantel's theorem**: A triangle-free graph on n vertices has at most
-⌊n²/4⌋ edges. -/
-axiom mantel_theorem {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] :
-    G.CliqueFree 3 →
-    (Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.Adj p.1 p.2)).card
-      ≤ n ^ 2 / 4
+/-- **Mantel bound for triangle removal**: The triangle removal process ends
+with a triangle-free graph. By Mantel's theorem, any triangle-free graph on
+n vertices has at most ⌊n²/4⌋ edges. Therefore f(n) ≤ n²/4 for all n. -/
+axiom triangleRemoval_mantel_bound (n : ℕ) :
+    triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 4
 
-/-- The Mantel bound gives a trivial upper bound: f(n) ≤ n²/4. -/
+/-- The Mantel bound as an eventually-true statement (for comparison with BFL). -/
 theorem trivial_upper_bound :
     ∀ᶠ (n : ℕ) in atTop,
-      triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 4 := by
-  -- The triangle removal process ends with a triangle-free graph,
-  -- which by Mantel's theorem has at most n²/4 edges.
-  sorry
+      triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 4 :=
+  Filter.eventually_atTop.mpr ⟨0, fun n _ => triangleRemoval_mantel_bound n⟩

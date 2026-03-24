@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/886",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -94,63 +94,63 @@
       "title": "Divisors of n",
       "summary": "divisorsOf, divisorCount, divisorCount_pos",
       "startLine": 38,
-      "endLine": 49
+      "endLine": 50
     },
     {
       "id": "critical-interval",
       "title": "The Interval Near √n",
       "summary": "criticalInterval, intervalWidth, intervalWidth_sublinear",
       "startLine": 51,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "divisors-in-interval",
       "title": "Divisors in the Critical Interval",
       "summary": "divisorsInInterval, divisorsNearSqrt",
       "startLine": 69,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "conjecture",
       "title": "Ruzsa's Conjecture",
       "summary": "ruzsaConjecture definition",
       "startLine": 81,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "erdos-rosenfeld",
       "title": "Erdős-Rosenfeld Result",
       "summary": "erdos_rosenfeld_four_divisors, erdos_rosenfeld axioms",
       "startLine": 95,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "factor-difference",
       "title": "Factor-Difference Set",
       "summary": "factorDifferenceSet definition, factorDifferenceSet_nonempty",
       "startLine": 111,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "density",
       "title": "Divisor Density Near √n",
       "summary": "localDivisorDensity, ruzsaConjectureAlt, conjecture_equivalence",
       "startLine": 125,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "isHighlyComposite definition",
       "startLine": 144,
-      "endLine": 151
+      "endLine": 152
     },
     {
       "id": "bounds",
       "title": "Bounds and Partial Results",
       "summary": "trivial_bound (proved), divisor_count_bound",
       "startLine": 153,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "summary",

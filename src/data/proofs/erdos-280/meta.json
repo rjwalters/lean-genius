@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/280",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.pow_lt_pow_right",
@@ -83,35 +83,35 @@
       "title": "Basic Definitions",
       "summary": "AvoidsAll, CountAvoiders, SatisfiesGrowthBound",
       "startLine": 36,
-      "endLine": 48
+      "endLine": 49
     },
     {
       "id": "conjecture",
       "title": "The Conjecture (DISPROVED)",
       "summary": "OriginalConjecture definition",
       "startLine": 50,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "counterexample",
       "title": "Cambie's Counterexample",
       "summary": "cambie_n, cambie_a, cambie_increasing, cambie_satisfies_growth, cambie_only_one_avoider, cambie_count_is_one",
       "startLine": 64,
-      "endLine": 92
+      "endLine": 93
     },
     {
       "id": "refutation",
       "title": "Refutation of the Conjecture",
       "summary": "original_conjecture_false, erdos_280_disproved",
       "startLine": 94,
-      "endLine": 101
+      "endLine": 102
     },
     {
       "id": "bound-optimality",
       "title": "Why the Bound is Best Possible",
       "summary": "prime_number_theorem_approx axiom",
       "startLine": 103,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "summary",
@@ -149,5 +149,27 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-205",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, disproved, number-theory"
+    },
+    {
+      "targetId": "erdos-27",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, disproved, number-theory"
+    },
+    {
+      "targetId": "erdos-275",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, covering-systems, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-205",
+    "erdos-27",
+    "erdos-275"
+  ]
 }

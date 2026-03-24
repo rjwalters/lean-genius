@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/897",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.atTop",
@@ -86,35 +86,35 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 28,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "Definition of IsAdditive and UnboundedOnPrimePowers predicates."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures (OPEN)",
       "startLine": 49,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Parts I and II about consecutive differences being unbounded."
     },
     {
       "id": "wirsing",
       "title": "Wirsing's Theorem (SOLVED)",
       "startLine": 75,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "The converse: bounded differences imply f(n) = c·log(n) + O(1)."
     },
     {
       "id": "restricted",
       "title": "Restricted Variants",
       "startLine": 93,
-      "endLine": 123,
+      "endLine": 124,
       "summary": "Definitions of strongly/completely additive and corresponding variants."
     },
     {
       "id": "examples",
       "title": "Classical Examples",
       "startLine": 125,
-      "endLine": 145,
+      "endLine": 146,
       "summary": "Definitions of omega, bigOmega, and log as additive functions."
     },
     {
@@ -148,5 +148,27 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1122",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-functions, analytic-number-theory, number-theory"
+    },
+    {
+      "targetId": "erdos-673",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, arithmetic-functions, number-theory"
+    },
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1122",
+    "erdos-673",
+    "erdos-1004"
+  ]
 }

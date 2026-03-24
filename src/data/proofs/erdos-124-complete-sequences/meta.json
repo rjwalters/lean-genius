@@ -48,7 +48,8 @@
     "dateAdded": "2026-01-09",
     "axiomCount": 0,
     "lineCount": 507,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The 30-Year Problem**\n\nIn 1996, Stefan Burr, Paul Erdos, Ronald Graham, and Wen-Ching Li published \"Complete sequences of sets of integer powers\" in Acta Arithmetica. A year later, Erdos reformulated the problem in two separate publications, inadvertently creating ambiguity about the exact conditions.\n\nThe problem remained open for nearly 30 years until November 2025, when Harmonic's AI system \"Aristotle\" became the first to solve it autonomously. Boris Alexeev selected several Erdos problems for testing, launched Aristotle overnight, and woke up to find Problem #124 solved.\n\n**The AI Breakthrough**: Aristotle took 6 hours to find the proof with 100% autonomy. Lean verified it in 1 minute. This marked the first time an AI system autonomously solved an open mathematical conjecture.",
@@ -80,49 +81,49 @@
       "id": "algebraic-inequality",
       "title": "Algebraic Gap Lemma",
       "startLine": 62,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Key inequality derived from the reciprocal sum condition."
     },
     {
       "id": "browns-criterion",
       "title": "Brown's Criterion",
       "startLine": 73,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "The central insight: sequences with small gaps allow all integers as subset sums."
     },
     {
       "id": "sequence-construction",
       "title": "Greedy Sequence Construction",
       "startLine": 111,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "Definitions of min_index, next_e, e_seq, and u_seq for the greedy algorithm."
     },
     {
       "id": "sequence-properties",
       "title": "Sequence Properties",
       "startLine": 138,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "Proofs that u_seq is monotone and has bounded gaps."
     },
     {
       "id": "digit-decomposition",
       "title": "Digit Decomposition",
       "startLine": 172,
-      "endLine": 187,
+      "endLine": 188,
       "summary": "Converting subset sums back to 0/1 digit representations in each base."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 189,
-      "endLine": 230,
+      "endLine": 231,
       "summary": "The complete proof combining all components."
     },
     {
       "id": "formal-conjectures",
       "title": "Formal Conjectures Compatibility",
       "startLine": 232,
-      "endLine": 258,
+      "endLine": 507,
       "summary": "Versions matching Google DeepMind's Formal Conjectures project statements."
     }
   ],
@@ -151,5 +152,27 @@
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-123",
+      "relationship": "sibling",
+      "description": "Both concern complete sequences: #123 studies d-complete sequences, this entry studies complete sequences from digit-restricted numbers"
+    },
+    {
+      "targetId": "erdos-124",
+      "relationship": "parent",
+      "description": "Parent Erdős problem entry; this is a deeper analysis of complete sequences"
+    },
+    {
+      "targetId": "erdos-125",
+      "relationship": "sibling",
+      "description": "Related Erdős problem on positive density of digit-restricted sums, sharing the theme of additive structure in number-theoretically constrained sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-123",
+    "erdos-124",
+    "erdos-125"
+  ]
 }

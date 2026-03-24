@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/987",
     "erdosProblemStatus": "partially-open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Complex.exp",
@@ -134,49 +134,49 @@
       "title": "Basic Definitions",
       "summary": "Defines the exponential function e(x) = exp(2πix) with unit circle and periodicity axioms, the partial sum Sₙ(k) = ∑e(kxⱼ) over Finset.range, and the Aₖ function as limsup of |Sₙ(k)| along Filter.atTop.",
       "startLine": 37,
-      "endLine": 74
+      "endLine": 75
     },
     {
       "id": "erdos-early",
       "title": "Erdős's Basic Results (1964-1965)",
       "summary": "Introduces InUnitInterval predicate and axiomatizes Erdős's two early observations: unboundedness of sup_n |Sₙ(k)| as k grows (1964), and the quantitative bound Aₖ ≫ log k infinitely often (1965).",
       "startLine": 76,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "clunie",
       "title": "Clunie's Results (1967)",
       "summary": "Axiomatizes Clunie's two complementary results — the √k lower bound (Aₖ ≫ √k i.o.) via second-moment method and the O(k) upper construction (∃ sequences with Aₖ ≤ k) — plus Tao's independent proof of the lower bound.",
       "startLine": 108,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "liu",
       "title": "Liu's Results (1969)",
       "summary": "Defines FinitelyManyDistinct predicate and axiomatizes Liu's theorem (Aₖ ≫ k^{1-ε} for finite point sets) and Clunie's observation that Aₖ is unbounded in the finite distinct case.",
       "startLine": 139,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "summary": "Defines SublinearGrowth (Aₖ = o(k)) via Filter.Tendsto and openQuestion as the existential statement. Proves known_bounds theorem combining Clunie's lower and upper results — one of two proved (non-axiom) results in the file.",
       "startLine": 170,
-      "endLine": 204
+      "endLine": 205
     },
     {
       "id": "weyl-sums",
       "title": "Weyl Sums and Equidistribution",
       "summary": "Axiomatizes the Weyl sum bound |∑e(jθ)| ≤ csc(πθ/2) for non-integer θ, connecting exponential sums to equidistribution theory and showing arithmetic sequences xⱼ = jα achieve O(1) partial sums.",
       "startLine": 206,
-      "endLine": 222
+      "endLine": 223
     },
     {
       "id": "discrepancy",
       "title": "Connection to Discrepancy Theory",
       "summary": "Defines sequence discrepancy as sup over intervals of |empirical - expected| proportion, then axiomatizes the Erdős-Turán inequality: D_n ≤ 1/K + Σ|Sₙ(k)|/(kn), the quantitative bridge between exponential sums and equidistribution.",
       "startLine": 224,
-      "endLine": 244
+      "endLine": 245
     },
     {
       "id": "main-results",

@@ -21,7 +21,7 @@
     "erdosNumber": 126,
     "erdosUrl": "https://erdosproblems.com/126",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.offDiag",
@@ -97,42 +97,42 @@
       "id": "extremal-function",
       "title": "Part I: The Extremal Function",
       "startLine": 30,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines IsMaximalAddFactorsCard(f): f(n) is the maximum m such that every n-element subset guarantees at least m distinct prime factors in the pairwise sum product."
     },
     {
       "id": "main-conjecture",
       "title": "Part II: The Main Conjecture",
       "startLine": 50,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Defines ErdosConjecture126 (f(n)/log(n) → ∞) and states the main axiom erdos_126."
     },
     {
       "id": "known-bounds",
       "title": "Part III: Known Bounds (Erdős–Turán 1934)",
       "startLine": 71,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Axioms for the lower bound (log(n) = O(f(n))) and upper bound (f(n) = O(n/log(n))). Theorem erdos_turan_bounds combines both."
     },
     {
       "id": "littleo-question",
       "title": "Part IV: The Little-o Question",
       "startLine": 103,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Axiom erdos_126_littleo: f(n) = o(n/log(n)), an open sub-question about tightness of the upper bound."
     },
     {
       "id": "trivial-bound",
       "title": "Part V: Trivial Upper Bound Construction",
       "startLine": 119,
-      "endLine": 133,
+      "endLine": 134,
       "summary": "Axiom trivial_upper_bound: existence of A with bounded prime factor count via A = {1,...,n}."
     },
     {
       "id": "monotonicity",
       "title": "Part VI: Monotonicity of f",
       "startLine": 135,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "Axiom f_monotone: the extremal function is monotone non-decreasing."
     },
     {
@@ -174,5 +174,27 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-648",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-890",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-648",
+    "erdos-890",
+    "erdos-1054"
+  ]
 }

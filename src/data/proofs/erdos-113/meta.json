@@ -55,7 +55,8 @@
     ],
     "axiomCount": 21,
     "lineCount": 271,
-    "assumptions": "21 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "21 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The Erdős-Simonovits Conjecture (1984)**\n\nThis conjecture characterized which bipartite graphs have sub-quadratic extremal numbers. The extremal number ex(n;H) is the maximum number of edges in an n-vertex graph containing no copy of H.\n\n**Timeline:**\n- **1954**: Kővári-Sós-Turán prove ex(n; K_{s,t}) = O(n^{2-1/s})\n- **1984**: Erdős-Simonovits conjecture the 2-degeneracy characterization\n- **1996**: Füredi establishes tight bounds for complete bipartite graphs\n- **2023**: Janzer disproves the conjecture with a 3-regular counterexample\n\n**Prize History:**\n- Erdős originally offered $250 for a proof, $100 for a counterexample\n- Later increased to $500 for a counterexample\n- Janzer claimed the $500 prize in 2023",
@@ -81,56 +82,56 @@
       "title": "Extremal Numbers",
       "summary": "extremalNumber axiom, monotonicity, trivial upper bound",
       "startLine": 42,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "degeneracy",
       "title": "Graph Degeneracy",
       "summary": "isDegenerate axiom, existence, monotonicity, 2-degenerate characterization",
       "startLine": 65,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "bipartite",
       "title": "Bipartite Graphs",
       "summary": "isBipartite axiom, complete bipartite encoding, properties",
       "startLine": 91,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "kst-theorem",
       "title": "Kővári-Sós-Turán Theorem",
       "summary": "Upper bound for complete bipartite subgraphs, C_4 special case",
       "startLine": 109,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Notation",
       "summary": "AsympLe definition, ≪ notation, transitivity for exponents",
       "startLine": 130,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "conjecture",
       "title": "Erdős-Simonovits Conjecture",
       "summary": "ErdosSimonovitsConjecture definition, forward direction, backward direction (false)",
       "startLine": 144,
-      "endLine": 179
+      "endLine": 180
     },
     {
       "id": "janzer",
       "title": "Janzer's Counterexample",
       "summary": "3-regular graphs not 2-degenerate, Janzer theorem, beats threshold",
       "startLine": 181,
-      "endLine": 221
+      "endLine": 222
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Füredi tight bounds, Erdős #146 Zarankiewicz, Erdős #147 Turán exponents",
       "startLine": 223,
-      "endLine": 243
+      "endLine": 244
     },
     {
       "id": "main-theorem",

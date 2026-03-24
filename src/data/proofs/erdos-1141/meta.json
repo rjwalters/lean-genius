@@ -20,7 +20,7 @@
     "erdosNumber": 1141,
     "erdosUrl": "https://erdosproblems.com/1141",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -51,29 +51,24 @@
     "originalContributions": [
       "IsErdos1141Good",
       "isErdos1141Good_iff_unbounded",
-      "good_3",
-      "good_4",
-      "good_6",
-      "good_8",
-      "good_12",
-      "good_14",
-      "good_18",
-      "good_20",
-      "not_good_5",
-      "not_good_7",
-      "not_good_9",
-      "not_good_10",
-      "not_good_16"
+      "good_implies_pred_prime",
+      "good_ge4_even",
+      "all_known_good",
+      "classification_100",
+      "good_count_100",
+      "good_not_prime_ge5",
+      "good_odd_eq_three",
+      "good_coprime3_sub9_prime"
     ],
     "axiomCount": 1,
-    "lineCount": 158,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "lineCount": 202,
+    "assumptions": "1 axiom (open conjecture: infinitely many good values). All verifiable results are fully proved."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1141 asks whether infinitely many natural numbers n have the property that n - k² is prime for every k coprime to n with k² < n. The problem connects primality testing to quadratic residues and coprimality structure, sitting at the intersection of additive and multiplicative number theory.\n\nThe known good values form OEIS sequence A214583, comprising 41 terms: 3, 4, 6, 8, 12, ..., 930, 1722. Strikingly, all known good values except 3 are even, and many are highly composite numbers (24, 30, 60, 90, 180, 252, 360, 570). This pattern has a natural explanation: highly composite n have small Euler totient ratio φ(n)/n, meaning fewer coprime k values, and hence fewer simultaneous primality conditions to satisfy.\n\nAn exhaustive computational search found no further good values between 1722 and 10^10, suggesting the sequence may be finite. ChatGPT-Tang proved that the counting function satisfies #{n ≤ N : IsGood(n)} = O(N^{1/2+o(1)}), a density bound consistent with finiteness but insufficient to prove it. The sparse distribution and gap beyond 1722 make this one of the more enigmatic Erdős problems — the answer 'finitely many' seems likely but is unproved.",
     "problemStatement": "**Erdős Problem #1141**:\n\nAre there infinitely many $n$ such that $n - k^2$ is prime for all $k$ with $\\gcd(n, k) = 1$ and $k^2 < n$?\n\n**Formally**: Does the set $\\{n \\in \\mathbb{N} : \\forall k,\\; \\gcd(n,k) = 1 \\wedge k^2 < n \\Rightarrow (n - k^2) \\text{ is prime}\\}$ have infinitely many elements?",
     "text": "Are there infinitely many n such that n - k² is prime for all k with gcd(n, k) = 1 and k² < n?",
-    "proofStrategy": "The formalization defines the Erdős-1141 property using bounded quantification over Finset.range for decidability, proves equivalence with the unbounded mathematical formulation, computationally verifies 8 small good values (by `decide`) and 9 larger ones up to 1722 (by `native_decide`), establishes structural results (good n ≥ 2 implies n-1 prime), and states the infinitude conjecture as an axiom. The key structural theorem `good_implies_pred_prime` provides a necessary condition constraining good values.",
+    "proofStrategy": "The formalization defines the Erdős-1141 property using bounded quantification over Finset.range for decidability, proves equivalence with the unbounded formulation, verifies all 41 known OEIS A214583 values via `all_known_good`, provides a complete classification of good values up to 100, and proves structural constraints: good n ≥ 4 are even, n-1 must be prime, no prime ≥ 5 is good, 3 is the unique odd good value, and good n coprime to 3 forces n-9 prime. The open conjecture (infinitude) is axiomatized.",
     "keyInsights": [
       "**Highly composite advantage**: Good values cluster among highly composite numbers because these have the fewest coprime residues (low φ(n)/n ratio), minimizing the number of independent primality conditions n - k² must satisfy.",
       "**Necessary condition: n - 1 prime**: Every good n ≥ 2 must have n - 1 prime (from k = 1). This immediately excludes most n and explains why good values are always one more than a prime.",
@@ -91,7 +86,7 @@
       "id": "header",
       "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the 10^10 search bound, and ChatGPT-Tang's density result."
     },
     {
@@ -105,48 +100,69 @@
       "id": "core-def",
       "title": "Core Definition",
       "startLine": 26,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation."
     },
     {
       "id": "positive-examples",
       "title": "Positive Examples (decide)",
       "startLine": 45,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
       "startLine": 71,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 88,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n ≥ 2 requires n-1 prime."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "startLine": 109,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Axiomatizes the open problem: for every N, there exists n ≥ N with IsErdos1141Good n (infinitude of good values)."
     },
     {
       "id": "large-examples",
       "title": "Large Verified Examples (native_decide)",
       "startLine": 116,
-      "endLine": 155,
+      "endLine": 162,
       "summary": "Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide."
+    },
+    {
+      "id": "unified-verification",
+      "title": "Unified Verification",
+      "startLine": 163,
+      "endLine": 166,
+      "summary": "Single theorem verifying all 41 known OEIS A214583 values satisfy the property, via native_decide over the knownGoodValues list."
+    },
+    {
+      "id": "classification",
+      "title": "Complete Classification to n = 100",
+      "startLine": 167,
+      "endLine": 181,
+      "summary": "Exhaustive classification: computes exactly which values in {0,...,100} satisfy IsErdos1141Good, yielding 24 good values. Proved by filtering Finset.range 101 and comparing to the explicit list."
+    },
+    {
+      "id": "structural-corollaries",
+      "title": "Structural Corollaries",
+      "startLine": 182,
+      "endLine": 202,
+      "summary": "Three corollaries: no prime ≥ 5 is good (primes are odd but good values ≥ 4 are even), 3 is the unique odd good value ≥ 3, and good n ≥ 10 coprime to 3 forces n − 9 to be prime."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1141 in Lean 4, defining the coprime-square-subtraction property with decidable bounded quantification, computationally verifying 17 specific values (8 good, 5 bad by decide; 9 large good by native_decide), proving the structural constraint that good n ≥ 2 requires n-1 prime, and stating the open infinitude conjecture as an axiom.",
-    "implications": "The decidable formulation enables a powerful interplay between proof and computation: structural results like good_implies_pred_prime provide theoretical constraints, while decide/native_decide give computational evidence. The formalization precisely captures the gap between what is known (41 values, density bound, 10^10 search) and what remains open (infinitude).",
+    "summary": "This formalization captures Erdős Problem #1141 in Lean 4 with 35 theorems covering the coprime-square-subtraction property. It includes decidable bounded quantification, unified verification of all 41 known OEIS A214583 values, a complete classification of good values up to 100, structural constraints (good n ≥ 4 are even, n-1 must be prime), corollaries excluding primes ≥ 5, and the open infinitude conjecture as an axiom.",
+    "implications": "The decidable formulation enables a powerful interplay between proof and computation. The complete classification to n=100 demonstrates exhaustive verification, while structural corollaries (good_not_prime_ge5, good_odd_eq_three, good_coprime3_sub9_prime) constrain the shape of good values beyond individual case checks. The formalization precisely captures the gap between what is known (41 values, density bound, 10^10 search) and what remains open (infinitude).",
     "openQuestions": [
       "Is the sequence of good values finite? The gap from 1722 to 10^10 strongly suggests yes, but no proof exists.",
       "Can sieve methods or the large sieve inequality be used to prove the sequence is finite by showing the primality constraints become unsatisfiable?",
@@ -266,9 +282,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 158,
+    "lineCount": 202,
     "axiomCount": 1,
-    "theoremCount": 29,
-    "definitionCount": 2
+    "theoremCount": 35,
+    "definitionCount": 3
   }
 }

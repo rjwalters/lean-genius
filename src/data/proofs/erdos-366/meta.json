@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/366",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.factorization",
@@ -50,7 +50,7 @@
       "Connection to Mahler's result on consecutive powerful numbers",
       "Density growth bounds for k-full numbers"
     ],
-    "axiomCount": 24,
+    "axiomCount": 5,
     "lineCount": 143,
     "assumptions": "24 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -84,28 +84,28 @@
       "id": "definitions",
       "title": "k-Full Number Definitions",
       "startLine": 33,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Definitions of IsKFull, IsPowerful (2-full), and IsCubeful (3-full)."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 60,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Properties like 1 is k-full, prime powers are k-full iff exponent ≥ k."
     },
     {
       "id": "main-question",
       "title": "Main Open Question",
       "startLine": 97,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "The Erdős Problem #366 conjecture: 2-full n with 3-full n+1."
     },
     {
       "id": "reverse-direction",
       "title": "Reverse Direction",
       "startLine": 115,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "Known pairs (8,9) and (12167,12168) where n is 3-full and n+1 is 2-full."
     },
     {
@@ -160,5 +160,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-365",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, powerful-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-137",
+    "erdos-365",
+    "erdos-367"
+  ]
 }

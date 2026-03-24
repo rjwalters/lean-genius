@@ -51,7 +51,8 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 13,
     "lineCount": 463,
-    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798) and Gauss (1849, in the form π(x) ~ Li(x)), then proved independently by Hadamard and de la Vallée Poussin in 1896 using the non-vanishing of ζ(1+it). Erdős and Selberg gave an elementary proof in 1949. Avigad et al. provided the first formal proof in Isabelle (2004), and Kontorovich, Tao, et al. completed a full Lean 4 formalization (2024) in the PrimeNumberTheoremAnd project. The theorem was a major landmark in analytic number theory: Riemann's 1859 memoir introduced the zeta function and sketched the connection between its zeros and prime distribution, but the proof required controlling ζ on the entire critical strip Re(s) = 1, achieved by Hadamard's product formula and de la Vallée Poussin's zero-free region.",
@@ -75,7 +76,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 66,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Defines primePi (via Mathlib's Nat.primeCounting), primeApprox (x/ln x), and logIntegral Li(x) = ∫₂ˣ dt/ln t."
     },
     {
@@ -89,14 +90,14 @@
       "id": "equivalences",
       "title": "Equivalence of Formulations",
       "startLine": 127,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "Axiomatized equivalences between all four PNT formulations, including Li(x) ~ x/ln(x) via asymptotic expansion."
     },
     {
       "id": "main-axiom",
       "title": "The Main Theorem (Axiomatized)",
       "startLine": 190,
-      "endLine": 216,
+      "endLine": 217,
       "summary": "PNT axiomatized based on PrimeNumberTheoremAnd project; corollaries derive asymptotic and Li forms."
     },
     {
@@ -110,14 +111,14 @@
       "id": "rh-connection",
       "title": "Stronger Versions (Conditional on RH)",
       "startLine": 308,
-      "endLine": 351,
+      "endLine": 352,
       "summary": "Riemann Hypothesis stated; von Koch's theorem gives |π(x)−Li(x)| = O(√x ln x) conditionally."
     },
     {
       "id": "elementary-bounds",
       "title": "Elementary Bounds",
       "startLine": 353,
-      "endLine": 410,
+      "endLine": 463,
       "summary": "Chebyshev's pre-PNT bounds (0.92 < π·ln x/x < 1.11), infinitude of primes, and Euler product connection."
     }
   ],

@@ -43,7 +43,8 @@
     "wiedijkNumber": 39,
     "axiomCount": 0,
     "lineCount": 298,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Pell's Equation: A 2000-Year Journey**\n\nDespite its name, John Pell (1611-1685) contributed virtually nothing to this equation. The misattribution is due to Euler, who confused Pell with Lord Brouncker.\n\n**Ancient Origins:**\n- **Brahmagupta** (598-668 CE) discovered the *samasa* (composition) law: if $(x_1,y_1)$ and $(x_2,y_2)$ solve $x^2 - Dy^2 = 1$, then so does $(x_1 x_2 + D y_1 y_2,\\, x_1 y_2 + x_2 y_1)$. This is exactly the group operation on solutions.\n- **Bhaskara II** (1114-1185) developed the *chakravala* method, an algorithm that computes fundamental solutions efficiently. He solved $x^2 - 61y^2 = 1$ finding $x = 1766319049$.\n\n**European Revival:**\n- **Fermat** (1657) challenged English mathematicians to solve $x^2 - 61y^2 = 1$, knowing the solution was enormous. Brouncker and Wallis found it independently.\n- **Euler** (1732-1770s) studied the equation extensively and connected it to continued fractions.\n- **Lagrange** (1766-1769) gave the first rigorous existence proof using continued fraction expansions of $\\sqrt{D}$, showing the periodic structure guarantees a solution.\n\n**Modern Significance:**\nPell's equation is central to algebraic number theory: solutions correspond to units in the ring $\\mathbb{Z}[\\sqrt{D}]$, and the fundamental solution corresponds to the fundamental unit. Dirichlet's unit theorem generalizes this to all number fields. The equation also appears in lattice-based cryptography (NTRU) and Diophantine approximation.\n\n**Wiedijk's 100 Theorems:** This is entry #39 in Freek Wiedijk's list of 100 greatest theorems formalized in proof assistants.",
@@ -67,56 +68,56 @@
       "id": "module-header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Imports `Mathlib.NumberTheory.Pell` and provides extensive documentation: historical context (Brahmagupta, Bhaskara II, Fermat, Lagrange), the equation $x^2 - Dy^2 = 1$, key Mathlib API (`Solution₁`, `IsFundamental`), and the multiplicative structure in $\\mathbb{Z}[\\sqrt{D}]$"
     },
     {
       "id": "existence",
       "title": "Existence of Solutions",
       "startLine": 68,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Two existence theorems: `pell_has_nontrivial_solution_int` gives $(x,y)$ with $x^2 - Dy^2 = 1$ and $y \\neq 0$ (wrapping `Pell.exists_of_not_isSquare`); `pell_has_pos_solution` gives a `Solution₁` with $x > 1$ and $y > 0$"
     },
     {
       "id": "infinitely-many",
       "title": "Infinitely Many Solutions",
       "startLine": 107,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "Proves infinitely many distinct solutions exist by showing distinct integer powers of the fundamental solution have distinct $y$-coordinates, using `y_strictMono.injective`"
     },
     {
       "id": "fundamental",
       "title": "The Fundamental Solution",
       "startLine": 126,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "Defines `IsFundamentalSolution` wrapping `Pell.IsFundamental`, proves existence via `IsFundamental.exists_of_not_isSquare`, and uniqueness via the `subsingleton` property of minimal elements"
     },
     {
       "id": "generation",
       "title": "Generating All Solutions",
       "startLine": 155,
-      "endLine": 166,
+      "endLine": 167,
       "summary": "The key structural theorem: every solution $a$ satisfies $a = a_1^n$ or $a = -a_1^n$ for some $n \\in \\mathbb{Z}$, via `IsFundamental.eq_zpow_or_neg_zpow`. The solution group is $\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$"
     },
     {
       "id": "group-structure",
       "title": "Group Structure of Solutions",
       "startLine": 168,
-      "endLine": 196,
+      "endLine": 197,
       "summary": "Verifies the group operations explicitly: multiplication formula $(x_1 x_2 + Dy_1 y_2,\\, x_1 y_2 + x_2 y_1)$ matching $\\mathbb{Z}[\\sqrt{D}]$ multiplication, identity $(1,0)$, and inverse $(x,-y)$ (conjugation)"
     },
     {
       "id": "examples",
       "title": "Explicit Verification Examples",
       "startLine": 198,
-      "endLine": 243,
+      "endLine": 244,
       "summary": "Computational verification via `norm_num` for $D = 2$ (fundamental $(3,2)$, powers $(17,12)$, $(99,70)$), $D = 3$ ($(2,1)$, $(7,4)$), $D = 5$ ($(9,4)$), $D = 7$ ($(8,3)$), and Fermat's challenge $D = 61$ ($(1766319049, 226153980)$)"
     },
     {
       "id": "non-square",
       "title": "Non-Square Requirement",
       "startLine": 245,
-      "endLine": 270,
+      "endLine": 271,
       "summary": "Original proof that $D = k^2$ forces only trivial solutions: factors $x^2 - k^2 y^2 = (x-ky)(x+ky) = 1$, then uses $a \\mid 1 \\Rightarrow a = \\pm 1$ in $\\mathbb{Z}$ to conclude $ky = 0$"
     },
     {

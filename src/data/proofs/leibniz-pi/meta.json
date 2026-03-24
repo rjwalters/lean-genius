@@ -47,7 +47,8 @@
       "Integration of geometric series",
       "Abel's theorem on power series boundary convergence"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Leibniz formula $\\pi/4 = 1 - 1/3 + 1/5 - 1/7 + \\cdots$ is one of the most celebrated identities in mathematics, discovered independently at least three times. Madhava of Sangamagrama (c. 1350–1425) of the Kerala school in India discovered it around 1400 CE, along with the Taylor series for sine and cosine — nearly 300 years before European mathematicians. His results were transmitted through the works of Nilakantha Somayaji's Tantrasamgraha (1501).\n\nJames Gregory rediscovered the arctangent series in 1671 while studying the quadrature of the circle. Gottfried Wilhelm Leibniz found the formula independently in 1676, deriving it from the integral $\\int_0^1 1/(1+x^2)\\,dx = \\pi/4$ via term-by-term integration of the geometric series $1/(1+x^2) = 1 - x^2 + x^4 - \\cdots$. Leibniz was thrilled by the result, calling it a beautiful connection between the circle and odd numbers.\n\nThe series converges painfully slowly — about $10^6$ terms yield only 6 correct digits of $\\pi$. Machin's formula (1706) and modern algorithms like Chudnovsky's achieve far faster convergence. Nevertheless, the Leibniz formula remains a cornerstone of analysis education and a gateway to understanding power series, conditional convergence, and Abel's theorem on boundary behavior.",
@@ -74,7 +75,7 @@
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 59,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "The alternating series 1 - 1/3 + 1/5 - 1/7 + ... converges to pi/4.",
       "mathContext": "$\\lim_{k \\to \\infty} S_k = \\pi/4$ via `Real.tendsto_sum_pi_div_four`."
     },
@@ -82,7 +83,7 @@
       "id": "arctan-connection",
       "title": "Connection to Arctangent",
       "startLine": 73,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "arctan(1) = pi/4 is the key value connecting the Leibniz series to pi.",
       "mathContext": "$\\arctan(1) = \\pi/4$ via `Real.arctan_one`. Taylor series at $x = 1$ gives the Leibniz series."
     },
@@ -90,7 +91,7 @@
       "id": "partial-sums",
       "title": "Partial Sum Calculations",
       "startLine": 87,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "Verification of the first four partial sums as increasingly accurate approximations to pi/4.",
       "mathContext": "$S_1 = 1$, $S_2 = 2/3$, $S_3 = 13/15$, $S_4 = 76/105$. Alternates above/below $\\pi/4 \\approx 0.7854$."
     },
@@ -98,7 +99,7 @@
       "id": "term-properties",
       "title": "Properties of Series Terms",
       "startLine": 110,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Properties of individual terms: even-indexed positive, odd-indexed negative.",
       "mathContext": "$a_n = (-1)^n/(2n+1)$. Even terms positive, odd terms negative. $|a_n| \\searrow 0$."
     },
@@ -106,7 +107,7 @@
       "id": "significance",
       "title": "Mathematical Significance",
       "startLine": 141,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "Discussion of the formula's historical importance, conditional convergence, and connection to transcendence.",
       "mathContext": "Conditional convergence: $\\sum |a_n| = \\infty$ but $\\sum a_n = \\pi/4$. By Riemann rearrangement, conditionally convergent series can be rearranged to any value."
     },

@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/355",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -73,21 +73,21 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 39,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Key definitions: IsLacunaryWith, IsLacunary, ReciprocalSums, RepresentsRationalsIn."
     },
     {
       "id": "properties",
       "title": "Properties of Lacunary Sequences",
       "startLine": 70,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Properties: strict monotonicity, convergent reciprocal sums, powers of 2 example."
     },
     {
       "id": "boundary",
       "title": "The Critical λ = 2 Boundary",
       "startLine": 106,
-      "endLine": 125,
+      "endLine": 126,
       "summary": "Why λ = 2 fails: dyadic rationals don't fill intervals."
     },
     {
@@ -101,14 +101,14 @@
       "id": "sharp-boundary",
       "title": "Sharp Boundary",
       "startLine": 168,
-      "endLine": 185,
+      "endLine": 186,
       "summary": "The threshold λ = 2 is sharp: (1,2) works, [2,∞) doesn't."
     },
     {
       "id": "examples",
       "title": "Examples and Intuition",
       "startLine": 187,
-      "endLine": 222,
+      "endLine": 387,
       "summary": "Fibonacci-like sequence example and intuition for why λ < 2 works."
     }
   ],
@@ -151,5 +151,27 @@
     "axiomCount": 3,
     "theoremCount": 14,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory"
+    },
+    {
+      "targetId": "erdos-206",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-206",
+    "erdos-242"
+  ]
 }

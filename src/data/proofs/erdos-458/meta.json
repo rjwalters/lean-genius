@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 8,
     "lineCount": 181,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #458** originates in Erdős and Graham's study of LCM growth between consecutive primes. The LCM function $\\text{lcm}(1, \\ldots, n)$ is deeply connected to prime distribution: $\\log \\text{lcm}(1, \\ldots, n) = \\psi(n) \\sim n$ by Chebyshev's theorem (and PNT). The conjecture asks whether the multiplicative growth factor from $p_k$ to $p_{k+1}$ is at most $p_k$.\n\nErdős and Graham described this as **'almost certainly true'** but noted that any proof would require controlling prime gaps at a level close to **Legendre's conjecture** (that there is always a prime between $n^2$ and $(n+1)^2$). The key obstacle: primes $q$ with $p_k < q^2 < p_{k+1}$ contribute factors that must be carefully bounded. The problem remains **open** as of 2025.",
@@ -57,7 +58,7 @@
       "id": "lcm-function",
       "title": "The LCM Function and Properties",
       "startLine": 34,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Defines `lcm_upto n = (Finset.Icc 1 n).lcm id`. Proves `lcm_upto_one`, `lcm_upto_pos` (LCM is always positive via `Finset.lcm_eq_zero_iff`), five small values via `native_decide`, divisibility monotonicity `lcm_upto_dvd_mono`, and two axioms: `lcm_upto_prime_step` (LCM is constant between primes) and `lcm_upto_at_prime` ($\\text{lcm}(p) = p \\cdot \\text{lcm}(p-1)$ for prime $p$).",
       "mathContext": "$\\text{lcm\\_upto}(n) = \\prod_{p \\leq n} p^{\\lfloor \\log_p n \\rfloor}$. Growth pattern: $\\text{lcm\\_upto}(n) = \\text{lcm\\_upto}(n-1)$ when $n$ is composite with no new prime powers, and $\\text{lcm\\_upto}(p) = p \\cdot \\text{lcm\\_upto}(p-1)$ at primes."
     },
@@ -65,7 +66,7 @@
       "id": "nth-prime",
       "title": "The nth Prime",
       "startLine": 93,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "`nthPrime k = Nat.nth Nat.Prime k` (noncomputable). Four axioms for specific values ($p_0 = 2, \\ldots, p_3 = 7$). Two theorems: `nthPrime_prime` (every $p_k$ is prime, via `Nat.nth_mem_of_infinite`) and `nthPrime_strictMono` (strict monotonicity, via `Nat.nth_strictMono`).",
       "mathContext": "$p_k = \\text{Nat.nth}\\;\\{n \\in \\mathbb{N} : \\text{Prime}(n)\\}\\;k$, the $(k+1)$-th prime in increasing order."
     },
@@ -73,7 +74,7 @@
       "id": "main-conjecture",
       "title": "The Main Conjecture and Connection to Legendre",
       "startLine": 118,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "`Erdos458Conjecture`: $\\forall k \\geq 1, \\text{lcm\\_upto}(p_{k+1}-1) < p_k \\cdot \\text{lcm\\_upto}(p_k)$. Then `LegendreConjecture` restated locally, and `legendre_implies_gap_bound` (axiom): Legendre implies $p_{k+1} - p_k < \\sqrt{p_k} + 1$.",
       "mathContext": "The conditional: Legendre $\\Rightarrow$ gap $< \\sqrt{p_k} + 1$ $\\Rightarrow$ at most one prime $q$ with $q^2 \\in (p_k, p_{k+1})$ $\\Rightarrow$ controlled LCM growth $\\Rightarrow$ Erdős #458."
     },

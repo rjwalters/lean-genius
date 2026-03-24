@@ -14,15 +14,15 @@
       "packing",
       "open"
     ],
-    "sorries": 4,
+    "sorries": 3,
+    "badge": "wip",
     "sourceUrl": "https://erdosproblems.com/662",
     "erdosUrl": "https://erdosproblems.com/662",
-    "relatedProofs": [
-      "erdos-660",
-      "erdos-661"
-    ],
-    "axiomCount": 0,
-    "assumptions": "No axioms. 4 sorry(s) remain in the formalization."
+    "axiomCount": 3,
+    "assumptions": "3 axiom declarations. 4 sorry(s) remain in the formalization.",
+    "proofRepoPath": "Proofs/Erdos662Problem.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 109
   },
   "sections": [
     {
@@ -115,5 +115,46 @@
     "Harborth (1974): Lösung zu Problem 664A (contact number formula)",
     "Swanepoel (2009): Combinatorial distance geometry in normed spaces",
     "https://erdosproblems.com/662"
+  ],
+  "leanFile": {
+    "lineCount": 109,
+    "structureCount": 0,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "lemmaCount": 0,
+    "defCount": 2,
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Classical"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, open, packing"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open, packing"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distances, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-103",
+    "erdos-1084",
+    "erdos-1087"
   ]
 }

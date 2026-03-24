@@ -21,7 +21,7 @@
     "erdosNumber": 293,
     "erdosUrl": "https://erdosproblems.com/293",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -80,42 +80,42 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 31,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Egyptian fraction decompositions, appearsInDecomp, v(k) axiom with positivity and minimality"
     },
     {
       "id": "vardi-constant",
       "title": "The Vardi Constant",
       "startLine": 58,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Vardi sequence, computed values, Vardi constant c₀ ≈ 1.26408 with bounds"
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "startLine": 81,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Bleicher-Erdős (k!) and van Doorn-Tang (e^{ck²}) lower bounds"
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 93,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Elementary bound v(k) ≤ k · c₀^{2^k} and max denominator bound"
     },
     {
       "id": "conjectures",
       "title": "Conjectures",
       "startLine": 107,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "Weak (e^{e^{c√k}}) and strong (e^{e^{ck}}) doubly exponential conjectures"
     },
     {
       "id": "small-values",
       "title": "Small Values",
       "startLine": 121,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "v(1) = 2, v(2) = 2, v(3) = 4"
     },
     {
@@ -153,5 +153,27 @@
     "axiomCount": 12,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-242",
+    "erdos-284"
+  ]
 }

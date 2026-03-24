@@ -72,7 +72,8 @@
     "parentProof": "mean-value-theorem",
     "axiomCount": 0,
     "lineCount": 461,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Mean Value Theorem has a rich 300-year history. **Rolle** (1691) proved the special case $f(a) = f(b) \\Rightarrow f'(c) = 0$. **Lagrange** (1801) generalized to $f'(c) = \\frac{f(b)-f(a)}{b-a}$. **Cauchy** (1823) gave the ratio form for parametric curves. When **Banach** (1932) and **Dieudonné** (1960) developed analysis in normed spaces, they discovered the equality form fails: circular motion $f(t) = (\\cos t, \\sin t)$ has $f(2\\pi) = f(0)$ but $\\|f'(t)\\| = 1 \\neq 0$. The resolution is the **mean value inequality** $\\|f(b) - f(a)\\| \\leq C \\cdot (b-a)$, which Dieudonné called 'the correct form of the mean value theorem.' This inequality is strictly weaker than equality for $\\mathbb{R} \\to \\mathbb{R}$ but is the *only* form available for $\\mathbb{R} \\to E$ and $E \\to F$, and it suffices for all applications in nonlinear analysis.",
@@ -100,56 +101,56 @@
       "title": "The Mean Value Inequality",
       "summary": "The central theorem: for $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, $\\|f(x) - f(a)\\| \\leq C \\cdot (x-a)$ for all $x \\in [a,b]$. One-line proof delegating to Mathlib's `norm_image_sub_le_of_norm_deriv_le_segment'`.",
       "startLine": 49,
-      "endLine": 81
+      "endLine": 82
     },
     {
       "id": "scalar-special-case",
       "title": "Scalar MVT as Special Case",
       "summary": "When $E = \\mathbb{R}$, the vector inequality reduces to $|f(x) - f(a)| \\leq C(x-a)$. The classical scalar MVT ($\\exists c, f'(c) = \\text{slope}$) is strictly stronger, using `exists_deriv_eq_slope`.",
       "startLine": 83,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "counterexample",
       "title": "Circular Motion Counterexample",
       "summary": "Canonical counterexample: $f(t) = (\\cos t, \\sin t)$ has $f(2\\pi) = f(0)$ but $\\|f'(t)\\| = 1$ everywhere. Proves $\\cos(2\\pi) = 1 \\wedge \\sin(2\\pi) = 0$ and $\\sin^2 t + \\cos^2 t = 1$.",
       "startLine": 115,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "lipschitz",
       "title": "Lipschitz Consequences",
       "summary": "Derivative bound $\\Rightarrow$ Lipschitz: if $\\|Df(x)\\|_{\\text{op}} \\leq L$ on a convex set, then $f$ is $L$-Lipschitz. Also proves: zero derivative implies constant function via MVT with $C = 0$.",
       "startLine": 146,
-      "endLine": 185
+      "endLine": 186
     },
     {
       "id": "contraction-bounds",
       "title": "Contraction-Type Bounds",
       "summary": "If $\\|T'(x)\\| \\leq q$ on $[a,b]$, then $\\|T(x) - T(a)\\| \\leq q(x-a)$. Foundation for proving contraction mappings are contractive.",
       "startLine": 187,
-      "endLine": 210
+      "endLine": 211
     },
     {
       "id": "displacement-bound",
       "title": "Displacement Bound and Gronwall Connection",
       "summary": "Simplest form: $\\|f(T) - f(0)\\| \\leq CT$ for $\\|f'\\| \\leq C$ on $[0,T]$. Connection to Gronwall's inequality, which generalizes to $f'(t) \\leq \\alpha f(t)$.",
       "startLine": 212,
-      "endLine": 237
+      "endLine": 238
     },
     {
       "id": "banach-space",
       "title": "General Banach Space MVT",
       "summary": "For $f : E \\to F$ between normed spaces, Fréchet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction mapping theorem.",
       "startLine": 239,
-      "endLine": 271
+      "endLine": 272
     },
     {
       "id": "ode-uniqueness",
       "title": "ODE Difference Bound",
       "summary": "For $f, g$ with $f(a) = g(a)$ and $\\|f'(t) - g'(t)\\| \\leq q$: $\\|f(x) - g(x)\\| \\leq q(x-a)$. Core argument behind Picard-Lindelöf uniqueness, applying MVT to $h = f - g$.",
       "startLine": 273,
-      "endLine": 305
+      "endLine": 306
     },
     {
       "id": "scalar-vs-vector",

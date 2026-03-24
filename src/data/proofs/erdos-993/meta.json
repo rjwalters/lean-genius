@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/993",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -85,63 +85,63 @@
       "title": "Independent Sets in Graphs",
       "summary": "IsIndependentSet, indepCount, independencePolynomial definitions",
       "startLine": 31,
-      "endLine": 46
+      "endLine": 47
     },
     {
       "id": "unimodality",
       "title": "Unimodality",
       "summary": "IsUnimodal, indepSequence, HasUnimodalIndepSequence definitions",
       "startLine": 48,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "trees-forests",
       "title": "Trees and Forests",
       "summary": "IsAcyclic, IsTree, IsForest definitions; tree_is_forest theorem; tree_edge_count axiom",
       "startLine": 62,
-      "endLine": 81
+      "endLine": 82
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "summary": "tree_unimodal and forest_unimodal axioms; erdos_993_main proved theorem",
       "startLine": 83,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples for General Graphs",
       "summary": "general_graph_not_unimodal axiom",
       "startLine": 108,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "schwenk",
       "title": "Schwenk's Matching Theorem",
       "summary": "IsMatching, matchingCount definitions; schwenk_matching_unimodal axiom",
       "startLine": 115,
-      "endLine": 129
+      "endLine": 130
     },
     {
       "id": "proof-technique",
       "title": "Proof Technique: Real-Rootedness",
       "summary": "tree_indep_poly_real_roots axiom",
       "startLine": 131,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "log-concavity",
       "title": "Log-Concavity",
       "summary": "IsLogConcave definition, log_concave_implies_unimodal, tree_log_concave_conjecture",
       "startLine": 139,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "independence-number",
       "title": "Independence Number",
       "summary": "independenceNumber, no_large_indep_sets, peak_at_most_alpha",
       "startLine": 154,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "summary",
@@ -179,5 +179,27 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-557",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, trees"
+    },
+    {
+      "targetId": "erdos-743",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, trees"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-557",
+    "erdos-743",
+    "erdos-1014"
+  ]
 }

@@ -23,7 +23,7 @@
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$500",
     "dateAdded": "2026-01-13",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.Icc",
@@ -79,42 +79,42 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 26,
+      "endLine": 27,
       "summary": "Module documentation and opening namespaces for finsets and big operators."
     },
     {
       "id": "background",
       "title": "Background on Discrepancy",
       "startLine": 28,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Explanation of what discrepancy measures and Erdős's question."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 43,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Discrepancy function, bounded discrepancy, and ±1 sequences."
     },
     {
       "id": "main-theorem",
       "title": "Tao's Theorem",
       "startLine": 67,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "The main result and its equivalent formulation."
     },
     {
       "id": "complex-variant",
       "title": "Complex Variant",
       "startLine": 98,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "The more general version for unit circle values."
     },
     {
       "id": "stronger-conjecture",
       "title": "Stronger Conjecture (Open)",
       "startLine": 129,
-      "endLine": 151,
+      "endLine": 152,
       "summary": "Erdős's conjecture about logarithmic growth."
     },
     {

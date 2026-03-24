@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Eliminated all 3 sorries and reduced axiom count 7→6. Grable bound proved from BFL. Graph theory lemmas proved. Mantel axiom simplified.",
+    "builtItems": [
+      "Proved triangleFree_iff_cliqueFree3 (Erdos1155Problem.lean)",
+      "Proved complete_has_triangles (Erdos1155Problem.lean)",
+      "Proved grable_upper_bound from BFL (axiom→theorem, Erdos1155Problem.lean)",
+      "Proved trivial_upper_bound from Mantel axiom (Erdos1155Problem.lean)"
+    ],
+    "insights": [
+      "Grable bound is provable from BFL (exponent arithmetic: 3/2+ε where ε=1/4+δ gives 7/4+δ)",
+      "triangleFree_iff_cliqueFree3 proved via Finset.card_eq_three decomposition",
+      "complete_has_triangles proved by explicit construction of vertices 0,1,2 in Fin n",
+      "Mantel axiom replaced with direct bound on triangleRemovalEdges (simpler, more usable)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "OQ01 file has redundant axiom re-declarations - could be cleaned up to import parent file",
+      "Investigate if triangleRemovalEdges_nonneg or triangleRemovalEdges_le_complete can be proved from Mantel bound"
+    ],
     "markdown": "# Erdős #1155 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -52,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:46:42.684Z",
-  "lastUpdate": "2026-03-13T07:52:17.058Z",
+  "lastUpdate": "2026-03-23T06:45:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

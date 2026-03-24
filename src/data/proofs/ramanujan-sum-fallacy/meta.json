@@ -4,7 +4,7 @@
   "slug": "ramanujan-sum-fallacy",
   "description": "A demonstration of how Lean catches the famous fallacious 'proof' that 1+2+3+... = -1/12, showing why mathematical rigor matters.",
   "meta": {
-    "status": "formalized",
+    "status": "axiomatized",
     "tags": [
       "fallacy",
       "divergent-series",
@@ -12,11 +12,11 @@
       "zeta-function",
       "educational"
     ],
-    "badge": "fallacy",
+    "badge": "axiom",
     "sorries": 0,
     "sorriesIntentional": true,
     "sorriesExplanation": "All 9 sorries in this file are INTENTIONALLY unprovable. They mark steps in the famous '1+2+3+...=-1/12' fallacy that are mathematically impossible. Each sorry documents where Lean's type system catches an invalid manipulation of divergent series. These sorries should NOT be filled - they demonstrate the educational value of formal verification in catching fallacies.",
-    "mathlib_version": "4.10.0",
+    "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/RamanujanSumFallacy.lean",
     "externalReferences": [
       {
@@ -122,7 +122,7 @@
       "id": "conclusion",
       "title": "Conclusion",
       "startLine": 179,
-      "endLine": 194,
+      "endLine": 282,
       "summary": "Summary of how Lean enforces mathematical rigor."
     }
   ],

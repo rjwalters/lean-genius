@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/704",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -79,56 +79,56 @@
       "title": "Problem Overview",
       "summary": "Header documentation with problem statement and known bounds",
       "startLine": 1,
-      "endLine": 13
+      "endLine": 14
     },
     {
       "id": "imports-namespace",
       "title": "Imports and Setup",
       "summary": "Mathlib imports for graphs, metric spaces, and filters",
       "startLine": 15,
-      "endLine": 22
+      "endLine": 23
     },
     {
       "id": "unit-distance-graph",
       "title": "Unit Distance Graph Definition",
       "summary": "Definition of Gₙ and its chromatic number χ(Gₙ)",
       "startLine": 24,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "summary": "Frankl-Wilson 1981 lower bound 1.2ⁿ",
       "startLine": 53,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Trivial bound, Larman-Rogers 1972, and conjectured bound",
       "startLine": 68,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "hadwiger-nelson",
       "title": "Hadwiger-Nelson Problem (n=2)",
       "summary": "The classical plane case with de Grey's 2018 result",
       "startLine": 96,
-      "endLine": 116
+      "endLine": 117
     },
     {
       "id": "open-questions",
       "title": "Open Questions and Derived Results",
       "summary": "Limit definition, exponential growth axiom, base bounds axiom",
       "startLine": 118,
-      "endLine": 138
+      "endLine": 139
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
       "summary": "How lower and upper bounds are proved",
       "startLine": 140,
-      "endLine": 155
+      "endLine": 156
     },
     {
       "id": "main-results",
@@ -164,5 +164,27 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-171",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorial-geometry, hadwiger-nelson"
+    },
+    {
+      "targetId": "erdos-508",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorial-geometry, graph-coloring"
+    },
+    {
+      "targetId": "erdos-130",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorial-geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-171",
+    "erdos-508",
+    "erdos-130"
+  ]
 }

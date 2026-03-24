@@ -49,23 +49,10 @@
       "question2_positive and question1_negative: answers to both questions",
       "IsBhSet: B_h sequence generalization"
     ],
-    "crossReferences": [
-      {
-        "targetProof": "erdos-857",
-        "relationship": "Both problems were resolved using the hypergraph container method of Saxton-Thomason (2015). Problem #857 concerns sunflower-free families; #862 concerns Sidon sets, but both require counting independent sets in structured hypergraphs."
-      },
-      {
-        "targetProof": "ramseys-theorem",
-        "relationship": "Sidon sets are a Ramsey-type object: the condition that all pairwise sums are distinct is an avoidance condition on a 4-uniform hypergraph, analogous to how Ramsey theory avoids monochromatic complete subgraphs."
-      },
-      {
-        "targetProof": "combinations-formula",
-        "relationship": "Binomial coefficients appear in counting Sidon subsets and in the container method's probabilistic arguments about random subsets of {1,...,N}."
-      }
-    ],
     "axiomCount": 11,
     "lineCount": 171,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #862: Maximal Sidon Subsets**\n\nA **Sidon set** (B₂ sequence) is a set of integers where all pairwise sums $a + b$ are distinct. The concept was introduced by Simon Sidon in 1932 in a letter to Paul Erdős, asking how large a subset of $\\{1,\\ldots,N\\}$ can be while maintaining this property. Erdős and Pál Turán (1941) proved the foundational upper bound $f(N) \\leq \\sqrt{N} + O(N^{1/4})$, while constructions by Singer (1938) using perfect difference sets and by Erdős and Turán gave $f(N) \\geq (1-o(1))\\sqrt{N}$, establishing $f(N) \\sim \\sqrt{N}$.\n\nIn 1992, Peter Cameron and Paul Erdős shifted attention from the largest Sidon set to counting problems. They asked two questions about $A_1(N)$, the number of **maximal** Sidon subsets of $\\{1,\\ldots,N\\}$ (where \"maximal\" means no element can be added without creating a repeated sum): (Q1) Is $A_1(N) < 2^{o(\\sqrt{N})}$? (Q2) Is $A_1(N) > 2^{N^c}$ for some $c > 0$?\n\nThe breakthrough came from David Saxton and Andrew Thomason's 2015 paper \"Hypergraph containers\" (Inventiones Mathematicae, 201, 925–992), which developed a general method for counting independent sets in uniform hypergraphs. Applied to the Sidon hypergraph (where 4-element edges encode $a+b=c+d$ violations), they proved $A(N) \\geq 2^{(1.16+o(1))\\sqrt{N}}$ for the total number of Sidon sets. Since each maximal Sidon set of size $\\sim\\sqrt{N}$ has at most $2^{(1+o(1))\\sqrt{N}}$ Sidon subsets, dividing gives $A_1(N) \\geq 2^{(0.16+o(1))\\sqrt{N}}$.\n\nThis resolves both questions: Q2 is YES (since $0.16\\sqrt{N} > N^c$ for $c < 1/2$) and Q1 is NO (since $0.16\\sqrt{N}$ is not $o(\\sqrt{N})$). The hypergraph container method, developed simultaneously by Józef Balogh, Robert Morris, and Wojciech Samotij (2015), has since become one of the most influential tools in combinatorics.",
@@ -90,63 +77,63 @@
       "title": "Imports and Setup",
       "summary": "Imports `Nat.Basic`, `Set.Basic`, `Finset.Basic` for finite set operations, `Real.Basic` for $\\mathbb{R}$-valued bounds, and `SpecialFunctions.Log.Basic`/`Pow.Real` for $2^x$ and $\\sqrt{N}$. Opens `Real`, `Set`, and `Finset` namespaces.",
       "startLine": 32,
-      "endLine": 41
+      "endLine": 42
     },
     {
       "id": "basic-definitions",
       "title": "Sidon Sets: Basic Definitions",
       "summary": "Defines `IsSidonSet S` via the sum-distinctness condition $a+b=c+d \\implies \\{a,b\\}=\\{c,d\\}$. Defines the interval $[N] = \\{1,\\ldots,N\\}$ as `Finset.range(N+1) \\ {0}` and `SidonSubset N S` as $S \\subseteq [N] \\wedge \\text{IsSidonSet}(S)$.",
       "startLine": 43,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "maximal-sidon",
       "title": "Maximal Sidon Sets and Counting Functions",
       "summary": "Defines `IsMaximalSidonSet N S` requiring $S$ to be a Sidon subset of $[N]$ with no extendable element. Defines $A_1(N)$ and $A(N)$ as cardinalities of the filtered powerset $\\{S \\subseteq [N] : S \\text{ maximal Sidon}\\}$ and $\\{S \\subseteq [N] : S \\text{ Sidon}\\}$ respectively.",
       "startLine": 57,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "largest-size",
       "title": "Size of Largest Sidon Set",
       "summary": "Defines $f(N) = \\max\\{|S| : S \\subseteq [N],\\, S \\text{ Sidon}\\}$ and axiomatizes the classical asymptotic $f(N) \\sim \\sqrt{N}$, both as an $\\varepsilon$-bound and via `Filter.Tendsto` showing $f(N)/\\sqrt{N} \\to 1$.",
       "startLine": 72,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "cameron-erdos-questions",
       "title": "The Cameron-Erdős Questions",
       "summary": "Formalizes Question 1 ($A_1(N) < 2^{c\\sqrt{N}}$ for all $c > 0$, i.e., $A_1(N) < 2^{o(\\sqrt{N})}$) and Question 2 ($A_1(N) > 2^{N^c}$ for some $c > 0$) as Lean propositions using real-valued exponents.",
       "startLine": 88,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "saxton-thomason",
       "title": "Saxton-Thomason Theorem (2015)",
       "summary": "Three axioms: (1) $A(N) \\geq 2^{(1.16-\\varepsilon)\\sqrt{N}}$ (container lower bound on total Sidon sets), (2) each maximal Sidon set has $\\leq 2^{(1+\\varepsilon)\\sqrt{N}}$ Sidon subsets, (3) every Sidon set extends to a maximal one (Zorn's lemma).",
       "startLine": 100,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "main-result",
       "title": "Main Result and Question Answers",
       "summary": "The counting argument gives $A_1(N) \\geq A(N)/2^{(1+\\varepsilon)\\sqrt{N}}$. Combined with the Saxton-Thomason lower bound: $A_1(N) \\geq 2^{(0.16-\\varepsilon)\\sqrt{N}}$. This answers Q2 positively and Q1 negatively.",
       "startLine": 119,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound on $A_1(N)$",
       "summary": "Axiomatizes $A_1(N) \\leq 2^{C\\sqrt{N}}$ for some constant $C > 0$, establishing that the growth is $2^{\\Theta(\\sqrt{N})}$ — exponential in $\\sqrt{N}$ with an undetermined constant in the exponent.",
       "startLine": 137,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "generalizations",
       "title": "$B_h$ Generalizations",
       "summary": "Defines `IsBhSet h S` requiring all $h$-element subsets with equal sums to be identical. Axiomatizes `sidon_is_b2`: Sidon sets are precisely $B_2$ sets. The counting problem for maximal $B_h$ with $h \\geq 3$ remains open.",
       "startLine": 144,
-      "endLine": 155
+      "endLine": 156
     },
     {
       "id": "summary-theorem",
@@ -186,5 +173,27 @@
     "axiomCount": 11,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-447",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-772",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, sidon-sets, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-447",
+    "erdos-757",
+    "erdos-772"
+  ]
 }

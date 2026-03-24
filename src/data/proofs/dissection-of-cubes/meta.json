@@ -50,13 +50,6 @@
       "Proved smallest_cube_top_is_floor via Finset.exists_min_image",
       "Created DissectionOfCubesOQ01.lean: formalized collision pairs and minimum collision lower bound"
     ],
-    "crossReferences": [
-      {
-        "proofId": "dissection-of-cubes-oq-01",
-        "relationship": "extends",
-        "description": "OQ01 formalizes collision pairs and minimum collision lower bounds, advancing toward removing the chain axiom"
-      }
-    ],
     "dateAdded": "2025-12-28",
     "axiomCount": 2,
     "lineCount": 366,
@@ -66,7 +59,8 @@
       "Combinatorial arguments in discrete geometry",
       "Basic real analysis (volume decomposition)"
     ],
-    "assumptions": "2 axiom(s) and 2 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
+    "assumptions": "2 axiom(s) and 2 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The impossibility of dissecting a cube into smaller cubes of all different sizes was proved by J.E. Littlewood and included in his book 'A Mathematician's Miscellany' (1953) as an example of mathematical elegance. The proof requires no computation or algebraic manipulation — just geometric visualization and infinite descent.\n\nThe 2D analog has a completely different answer: a square CAN be dissected into squares of all different sizes. The first such 'squared square' was found by Brooks, Smith, Stone, and Tutte in 1940, using an ingenious connection to electrical network theory. The smallest 'simple perfect squared square' has 21 squares and side 112, found by Duijvestijn (1978).\n\nThe key geometric reason for the dimensional difference: in 3D, the smallest cube on any floor is completely surrounded by taller cubes on all 4 sides, forcing its top face to be a new interior floor. In 2D, a square can extend to the boundary wall, breaking the descent argument. The impossibility extends to all dimensions >= 3 and to rectangular boxes.",
@@ -100,7 +94,7 @@
       "id": "cube-dissection",
       "title": "Cube Dissection Definition",
       "startLine": 111,
-      "endLine": 143,
+      "endLine": 144,
       "summary": "Cube.interiorDisjoint (6-way axis separation), CubeDissection structure (cubes, containment, pairwise disjoint, covering axiomatized), allDifferentSizes.",
       "mathContext": "Interior disjoint: $\\exists$ axis where the projections are separated. Covering: $\\bigcup_{c \\in \\text{cubes}} c = [0,1]^3$ (axiomatized as `True`)."
     },
@@ -108,7 +102,7 @@
       "id": "floor-argument",
       "title": "The Key Lemma: Smallest Cube on a Floor",
       "startLine": 145,
-      "endLine": 181,
+      "endLine": 182,
       "summary": "cubesTouchingBottom/cubesTouchingPlane (noncomputable via Classical.propDecidable), smallest_cube_top_is_floor via Finset.exists_min_image.",
       "mathContext": "`Finset.exists_min_image`: for nonempty $S$ and $f : S \\to \\mathbb{R}$, $\\exists c \\in S,\\; \\forall c' \\in S,\\; f(c) \\leq f(c')$. Applied with $f = \\text{Cube.size}$."
     },
@@ -116,7 +110,7 @@
       "id": "infinite-descent",
       "title": "The Infinite Descent Argument",
       "startLine": 183,
-      "endLine": 256,
+      "endLine": 257,
       "summary": "hasDecreasingChain definition, two axioms (smaller_cube_above, long_chains), and the proved chain_length_bounded via Fintype.card_le_of_injective.",
       "mathContext": "Strictly decreasing chain of length $n$ is injective $\\implies n \\leq |\\text{cubes}|$. Proof: $\\text{chain}(i) \\neq \\text{chain}(j)$ for $i < j$ since sizes differ; then `Fintype.card_le_of_injective`."
     },
@@ -124,7 +118,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 258,
-      "endLine": 298,
+      "endLine": 299,
       "summary": "dissection_of_cubes: ¬ allDifferentSizes (3 lines + omega). two_cubes_same_size: existential reformulation via by_contra + push_neg.",
       "mathContext": "Take chain of length $|\\text{cubes}| + 1 > |\\text{cubes}|$: contradicts `chain_length_bounded`. `omega` closes $n+1 \\leq n$."
     },
@@ -132,7 +126,7 @@
       "id": "squaring-contrast",
       "title": "Contrast with Squaring the Square",
       "startLine": 300,
-      "endLine": 362,
+      "endLine": 366,
       "summary": "squaring_the_square_exists (True placeholder) and historical notes on the 2D/3D contrast, dimensional generalization.",
       "mathContext": "2D: 'squared square' exists (Brooks-Smith-Stone-Tutte 1940, smallest: 21 squares, side 112). 3D: impossible by Littlewood's descent. The dimensional barrier: 3D cubes are surrounded on all sides; 2D squares can reach the boundary."
     }
@@ -171,6 +165,16 @@
       "targetId": "angle-trisection",
       "relationship": "thematic",
       "description": "Both are impossibility results in geometry: angle trisection shows certain constructions are impossible with compass and straightedge, while cube dissection shows certain geometric decompositions are impossible"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 explores extensions and variations of the cube dissection impossibility, including higher-dimensional analogues and related open problems in combinatorial geometry"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are structural impossibility results: Abel-Ruffini reduces quintic unsolvability to the non-solvability of $S_5$, while cube dissection reduces geometric impossibility to infinite descent on the smallest cube — each identifies a fundamental structural obstruction"
     }
   ],
   "references": [
@@ -212,6 +216,8 @@
   ],
   "relatedProofs": [
     "hilbert-10",
-    "angle-trisection"
+    "angle-trisection",
+    "dissection-of-cubes-oq-01",
+    "abel-ruffini"
   ]
 }

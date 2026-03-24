@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Ordinal.Basic",
@@ -60,36 +60,6 @@
       "independenceNumber: cardinal-valued graph invariant",
       "GeneralConjecture: $500 prize problem"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-590",
-        "relationship": "ordinal Ramsey theory for ω^ω"
-      },
-      {
-        "id": "erdos-591",
-        "relationship": "companion ordinal partition problem"
-      },
-      {
-        "id": "erdos-592",
-        "relationship": "partition ordinals and CNF classification"
-      },
-      {
-        "id": "erdos-597",
-        "relationship": "partition relations for ordinal powers"
-      },
-      {
-        "id": "erdos-598",
-        "relationship": "ordinal Ramsey theory extension"
-      },
-      {
-        "id": "ramseys-theorem",
-        "relationship": "foundational result (P(ω) is the base case)"
-      },
-      {
-        "id": "erdos-474",
-        "relationship": "connected partition calculus problem"
-      }
-    ],
     "axiomCount": 3,
     "lineCount": 247,
     "assumptions": "3 axiom(s) and 14 sorry(s). See the Lean source for details."
@@ -99,7 +69,7 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 24,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Imports `Mathlib.SetTheory.Ordinal.Arithmetic`, `Cardinal.Basic`, `SimpleGraph.Basic`, and `Tactic`. Opens `Ordinal`, `Cardinal`, `SimpleGraph` namespaces."
     },
     {
@@ -107,70 +77,70 @@
       "title": "Basic Definitions",
       "summary": "Defines `OrdinalGraph` ($\\text{SimpleGraph}\\;\\alpha.\\text{toType}$), `HasInfinitePath` (injective $f : \\mathbb{N} \\to V$ with $f(n) \\sim f(n+1)$), `IsIndependent` (no edges in $S$), and `HasOrderType` ($\\text{Ordinal.type}$ of subrelation).",
       "startLine": 34,
-      "endLine": 49
+      "endLine": 50
     },
     {
       "id": "property-p",
       "title": "Property $P(\\alpha)$",
       "summary": "Defines $P(\\alpha)$: every graph on $\\alpha$ has infinite path OR independent set of order type $\\alpha$. Proves equivalence with the contrapositive formulation.",
       "startLine": 51,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "finite",
       "title": "Finite Ordinals",
       "summary": "$P(n)$ holds trivially for all finite $n$: no infinite path exists in a finite graph, so the independent set condition must hold.",
       "startLine": 65,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "omega",
       "title": "The First Infinite Ordinal: $P(\\omega)$",
       "summary": "$P(\\omega)$ follows from the infinite Ramsey theorem ($\\omega \\to (\\omega)^2_2$): any graph on $\\omega$ has either an infinite clique (containing a ray) or an infinite independent set.",
       "startLine": 77,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "ehm",
       "title": "Erdős-Hajnal-Milner Theorem (1970)",
       "summary": "Defines `criticalOrdinal` $= \\omega_1^{\\omega+2}$ and axiomatizes the main result: $P(\\alpha)$ holds for all $\\alpha < \\omega_1^{\\omega+2}$. The proof uses transfinite induction on Cantor normal form.",
       "startLine": 88,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "critical",
       "title": "The Critical Case: $\\omega_1^{\\omega+2}$ ($250)",
       "summary": "States the `CriticalCaseConjecture`: does $P(\\omega_1^{\\omega+2})$ hold? This is the exact boundary where the Erdős-Hajnal-Milner induction breaks down. \\$250 prize.",
       "startLine": 102,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "martins-axiom",
       "title": "Martin's Axiom and Larson's Extension",
       "summary": "Axiomatizes Martin's Axiom and Larson's theorem (1990): under MA, $P(\\alpha)$ holds for all $\\alpha$ with $|\\alpha| < 2^{\\aleph_0}$, extending the range far beyond $\\omega_1^{\\omega+2}$.",
       "startLine": 117,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "ordinal-arithmetic",
       "title": "Ordinal Arithmetic and Hierarchy",
       "summary": "Establishes the ordinal chain $\\omega < \\omega_1 < \\omega_1^\\omega < \\omega_1^{\\omega+1} < \\omega_1^{\\omega+2}$ and proves all countable ordinals satisfy $P$.",
       "startLine": 135,
-      "endLine": 150
+      "endLine": 151
     },
     {
       "id": "graph-tools",
       "title": "Graph-Theoretic Tools",
       "summary": "States König's lemma (infinite finitely-branching trees have rays) and ordinal Ramsey partition regularity for large ordinals.",
       "startLine": 152,
-      "endLine": 164
+      "endLine": 165
     },
     {
       "id": "independence",
       "title": "Independence Number",
       "summary": "Defines `independenceNumber` as $\\sup_{S \\text{ independent}} |S|$ and establishes that $P(\\alpha)$ failure requires $\\alpha(G) < |\\alpha|$ with no infinite path.",
       "startLine": 166,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "general",
@@ -254,5 +224,27 @@
       "citation": "Erdős Problems, Problem #601, https://erdosproblems.com/601.",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, set-theory"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, set-theory"
+    },
+    {
+      "targetId": "erdos-1174",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-111",
+    "erdos-1169",
+    "erdos-1174"
   ]
 }

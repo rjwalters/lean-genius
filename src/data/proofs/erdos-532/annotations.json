@@ -15,7 +15,8 @@
       "Ramsey theory",
       "IP sets",
       "Partition regularity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-coloring-def",
@@ -33,7 +34,8 @@
       "Partition regularity",
       "Fin type",
       "Ramsey theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-monochromatic-def",
@@ -50,7 +52,8 @@
     "relatedConcepts": [
       "Coloring",
       "Ramsey theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-finite-sums",
@@ -68,7 +71,8 @@
       "Finset.sum",
       "Subset sums",
       "BigOperators"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-ip-set",
@@ -86,7 +90,8 @@
       "FiniteSums",
       "Set.Infinite",
       "Partition regularity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-ip-star",
@@ -104,7 +109,8 @@
       "IP sets",
       "Ultrafilters",
       "Topological dynamics"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-hindman-theorem",
@@ -122,7 +128,8 @@
       "Coloring",
       "FiniteSums",
       "IsMonochromatic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-color-class",
@@ -140,7 +147,8 @@
       "hindman_theorem",
       "IsIPSet",
       "IsMonochromatic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-two-colors",
@@ -157,7 +165,8 @@
     "relatedConcepts": [
       "hindman_color_class",
       "Graham-Rothschild"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-singleton",
@@ -174,7 +183,8 @@
     "relatedConcepts": [
       "FiniteSums",
       "Finset.singleton"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-ip-infinite",
@@ -191,7 +201,8 @@
     "relatedConcepts": [
       "Set.Infinite.mono",
       "singleton_in_finite_sums"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-disjoint-closure",
@@ -209,7 +220,8 @@
       "Finset.sum_union",
       "Disjoint",
       "FiniteSums"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-ultrafilter",
@@ -227,7 +239,8 @@
       "Stone-Čech compactification",
       "Ellis's lemma",
       "Idempotent ultrafilter"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-hales-jewett",
@@ -245,7 +258,8 @@
       "Hales-Jewett theorem",
       "Van der Waerden's theorem",
       "Ramsey theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-hindman-numbers",
@@ -263,7 +277,8 @@
       "Schur numbers",
       "Finite Ramsey theory",
       "Nat.find"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e532-summary",
@@ -280,6 +295,7 @@
     "relatedConcepts": [
       "erdos_532_two_colors",
       "hindman_theorem"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

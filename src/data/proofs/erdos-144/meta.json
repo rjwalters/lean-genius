@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/144",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Divisors",
@@ -82,28 +82,28 @@
       "title": "Basic Definitions",
       "summary": "naturalDensity, hasCloseDivisors, hasCloseDivisorsC, closeDivisorsSet",
       "startLine": 40,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "summary": "erdos_144_conjecture, erdos_144_strong_conjecture, maier_tenenbaum_theorem/strong",
       "startLine": 66,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "threshold",
       "title": "The Threshold β = log 3 - 1",
       "summary": "criticalExponent, hasRefinedCloseDivisors, erdos_hall_theorem, maier_tenenbaum_refined, phase_transition",
       "startLine": 87,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "prime_powers_fail, hasCloseDivisors 6 and 12 proved by norm_num",
       "startLine": 125,
-      "endLine": 157
+      "endLine": 158
     },
     {
       "id": "summary",

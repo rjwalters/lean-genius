@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/326",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.Tendsto",
@@ -73,35 +73,35 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Module documentation explaining the problem, its history with Cassels' 1957 result, and Mathlib imports for filters and topology."
     },
     {
       "id": "basis-definitions",
       "title": "Additive Basis Definitions",
       "startLine": 25,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Define IsAddBasis (general additive basis) and IsAddBasisOfOrder (basis with bounded summand count), plus a lemma relating them."
     },
     {
       "id": "growth-definitions",
       "title": "Growth Rate Definitions",
       "startLine": 61,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Define the growth ratio bₖ/k² and what it means for this ratio to have a limit or no limit."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem (Open)",
       "startLine": 91,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "State Erdős Problem #326 as an open question: either every order 2 basis has a non-convergent sub-basis, or there's a counterexample."
     },
     {
       "id": "cassels",
       "title": "Cassels' Theorem (1957)",
       "startLine": 118,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "State Cassels' result showing there exists a basis with convergent growth ratio, disproving the original A=B formulation."
     },
     {
@@ -135,5 +135,27 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, growth-rates, number-theory"
+    },
+    {
+      "targetId": "erdos-336",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, bases, number-theory"
+    },
+    {
+      "targetId": "erdos-868",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, bases, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1103",
+    "erdos-336",
+    "erdos-868"
+  ]
 }

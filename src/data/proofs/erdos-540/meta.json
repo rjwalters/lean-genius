@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/540",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod",
@@ -83,56 +83,56 @@
       "title": "Basic Definitions",
       "summary": "Subset sums, zero-sum subsets, and the HasZeroSumSubset predicate",
       "startLine": 28,
-      "endLine": 42
+      "endLine": 43
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Heilbronn Conjecture",
       "summary": "Threshold property and the original conjecture statement",
       "startLine": 44,
-      "endLine": 58
+      "endLine": 59
     },
     {
       "id": "olson",
       "title": "Olson's Theorem (1968) — Prime Case",
       "summary": "First proof for primes with √(2p) threshold",
       "startLine": 60,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "szemeredi",
       "title": "Szemerédi's Theorem (1970) — General Case",
       "summary": "Complete resolution of the conjecture",
       "startLine": 80,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "balandraud",
       "title": "Balandraud's Optimal Result (2012)",
       "summary": "Exact threshold √(2p) for primes with tightness",
       "startLine": 95,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "hamidoune-zemor",
       "title": "Hamidoune–Zémor (1996)",
       "summary": "Near-optimal (1+o(1))√(2N) for all N",
       "startLine": 114,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "davenport",
       "title": "Trivial Case and Davenport Constant",
       "summary": "N = 1 proved directly; Davenport constant comparison",
       "startLine": 130,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "abelian",
       "title": "Generalization to Abelian Groups",
       "summary": "Extension to arbitrary finite abelian groups",
       "startLine": 154,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "summary",
@@ -170,5 +170,27 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-339",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1136",
+    "erdos-237",
+    "erdos-339"
+  ]
 }

@@ -7,7 +7,7 @@
     "author": "Neel Somani (2026)",
     "sourceUrl": "https://erdosproblems.com/397",
     "date": "2026",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos397Problem.lean",
     "tags": [
       "erdos",
@@ -15,13 +15,13 @@
       "combinatorics",
       "binomial-coefficients"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 397,
     "erdosUrl": "https://erdosproblems.com/397",
     "erdosProblemStatus": "disproved",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.centralBinom",
@@ -72,35 +72,35 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 24,
+      "endLine": 25,
       "summary": "Module documentation explaining the problem, Somani's discovery, and Mathlib imports."
     },
     {
       "id": "definitions",
       "title": "Key Definitions",
       "startLine": 26,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Define central binomial abbreviation, solution set, and Somani's parameter c(a)."
     },
     {
       "id": "main-theorem",
       "title": "Main Result (Disproved)",
       "startLine": 41,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "State the disproof: the set of solutions is infinite."
     },
     {
       "id": "somani-family",
       "title": "Somani's Infinite Family",
       "startLine": 57,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "Formalize Somani's parametric solution family and the identity it satisfies."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 87,
-      "endLine": 103,
+      "endLine": 119,
       "summary": "Compute concrete values of central binomials and Somani's parameter."
     }
   ],
@@ -126,5 +126,27 @@
     "axiomCount": 3,
     "theoremCount": 8,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-699",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-387",
+    "erdos-699",
+    "erdos-1005"
+  ]
 }

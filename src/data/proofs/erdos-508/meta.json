@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/508",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -56,20 +56,6 @@
       "fractional_chromatic_bounds: 4 ≤ χ_f ≤ 4.36",
       "higher_dimensions: 6 ≤ χ(ℝ³) ≤ 15",
       "erdos_de_bruijn: compactness theorem reducing to finite subgraphs"
-    ],
-    "relatedProofs": [
-      {
-        "id": "erdos-143",
-        "relationship": "Erdős-143 studies sparseness of dilation-avoiding sets — both problems concern geometric constraints on point configurations in Euclidean space"
-      },
-      {
-        "id": "erdos-169",
-        "relationship": "Erdős-169 studies AP-free sets with harmonic sum constraints — related extremal combinatorics with coloring-theoretic connections via van der Waerden"
-      },
-      {
-        "id": "erdos-808",
-        "relationship": "Erdős-808 concerns graph-restricted sum-product bounds — related graph-theoretic extremal problems"
-      }
     ],
     "axiomCount": 9,
     "lineCount": 87,
@@ -108,7 +94,7 @@
       "title": "Definitions",
       "summary": "unitDistGraph on EuclideanSpace ℝ (Fin 2) with proved symmetry (dist_comm) and looplessness; planeChromatic axiomatized as unknown ℕ",
       "startLine": 25,
-      "endLine": 37,
+      "endLine": 38,
       "mathContext": "`unitDistGraph : SimpleGraph (EuclideanSpace \\mathbb{R} (\\text{Fin } 2))` with adjacency $x \\sim y \\iff d(x,y) = 1 \\wedge x \\neq y$. Symmetry: $d(x,y) = d(y,x)$. Loopless: $d(x,x) = 0 \\neq 1$."
     },
     {
@@ -116,7 +102,7 @@
       "title": "Main Problem Statement",
       "summary": "erdos_508_problem axiom: 5 ≤ planeChromatic ∧ planeChromatic ≤ 7, constraining the answer to {5, 6, 7}",
       "startLine": 39,
-      "endLine": 44,
+      "endLine": 45,
       "mathContext": "$5 \\leq \\chi(\\mathbb{R}^2) \\leq 7$. The answer is one of $\\{5, 6, 7\\}$."
     },
     {
@@ -124,7 +110,7 @@
       "title": "Known Lower Bounds",
       "summary": "Progressive axioms: chromatic_ge_3 (equilateral triangle K₃), chromatic_ge_4_moser (Moser spindle, 7 vertices), de_grey_2018 (1581 vertices, SAT verification)",
       "startLine": 46,
-      "endLine": 58,
+      "endLine": 59,
       "mathContext": "$\\chi \\geq 3$: equilateral triangle $K_3$ embeds as a unit-distance graph. $\\chi \\geq 4$: Moser spindle (7 vertices, 11 edges). $\\chi \\geq 5$: de Grey's 1581-vertex graph (2018), reduced to 509 vertices by Polymath."
     },
     {
@@ -132,7 +118,7 @@
       "title": "Known Upper Bound",
       "summary": "chromatic_le_7_isbell axiom: hexagonal tiling with diameter < 1 hexagons in 7-color periodic pattern",
       "startLine": 60,
-      "endLine": 65,
+      "endLine": 66,
       "mathContext": "$\\chi \\leq 7$: tile $\\mathbb{R}^2$ with regular hexagons of diameter $< 1$; 7 colors suffice in a periodic pattern where no two same-colored hexagons are within unit distance."
     },
     {

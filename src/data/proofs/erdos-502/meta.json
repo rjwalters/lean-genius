@@ -21,7 +21,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 7,
     "lineCount": 97,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -130,5 +131,27 @@
     "Blokhuis (1984): simplified BBS proof using linear algebra",
     "Petrov–Pohoata (2021): simpler proof via Croot–Lev–Pach polynomial method",
     "https://erdosproblems.com/502"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, geometry"
+    },
+    {
+      "targetId": "erdos-1127",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, geometry"
+    },
+    {
+      "targetId": "erdos-217",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-103",
+    "erdos-1127",
+    "erdos-217"
   ]
 }

@@ -21,7 +21,7 @@
     "erdosNumber": 1176,
     "erdosUrl": "https://erdosproblems.com/1176",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Ordinal",
@@ -86,35 +86,35 @@
       "title": "Problem Statement and Imports",
       "summary": "Documentation header stating the open problem of Erdős, Galvin, and Hajnal with known results by Hajnal-Komjáth, followed by Mathlib imports for cardinal arithmetic and graph theory.",
       "startLine": 1,
-      "endLine": 38
+      "endLine": 39
     },
     {
       "id": "coloring-definitions",
       "title": "Graph Coloring Definitions",
       "summary": "Defines proper vertex coloring, cardinal colorability ($\\kappa$-colorable), and the chromatic number $\\chi(G)$ as a cardinal infimum. Uses type parameters for color types to handle uncountable cardinalities.",
       "startLine": 40,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "edge-coloring",
       "title": "Edge Colorings",
       "summary": "Defines edge colorings as functions from Sym2 V to a color type C, along with the set of all colors used on actual edges of G.",
       "startLine": 65,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "domination-property",
       "title": "The Domination Property",
       "summary": "Defines edge colors seen by a vertex class and the domination property: for every proper $\\mathbb{N}$-coloring, some vertex class sees all edge colors. This is the central concept of the problem.",
       "startLine": 81,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "main-conjecture",
       "title": "Formal Conjecture",
       "summary": "States ErdosProblem1176: for every $G$ with $\\chi(G) = \\aleph_1$, there exists an edge coloring with $\\aleph_1$ colors having the domination property.",
       "startLine": 102,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "structural-results",
@@ -128,14 +128,14 @@
       "title": "Hajnal-Komjáth Consistency Result",
       "summary": "Axiomatizes the metamathematical result that ErdosProblem1176 is consistent with ZFC, using an axiom since forcing results cannot be directly expressed in Lean's object language.",
       "startLine": 148,
-      "endLine": 161
+      "endLine": 162
     },
     {
       "id": "variants",
       "title": "Strong Domination and Partition Calculus",
       "summary": "Defines StrongDominationProperty (every nonempty class sees all colors) and DominationViaColorClasses (reformulation via edge color class intersection), connecting the problem to infinite partition calculus.",
       "startLine": 163,
-      "endLine": 208
+      "endLine": 209
     },
     {
       "id": "summary",
@@ -171,5 +171,27 @@
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1174",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1169",
+    "erdos-1174",
+    "erdos-1014"
+  ]
 }

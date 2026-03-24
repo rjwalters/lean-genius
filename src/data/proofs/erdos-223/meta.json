@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/223",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-20",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -84,56 +84,56 @@
       "title": "Overview",
       "summary": "Problem context and dimensional behavior",
       "startLine": 32,
-      "endLine": 44
+      "endLine": 45
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "PointConfig, diameter, diameterPairs",
       "startLine": 46,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "f-function",
       "title": "The Function f_d(n)",
       "summary": "Maximum diameter pairs definition",
       "startLine": 77,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "two-dimensional",
       "title": "Two-Dimensional Case",
       "summary": "Hopf-Pannwitz 1934: f₂(n) = n",
       "startLine": 86,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "three-dimensional",
       "title": "Three-Dimensional Case",
       "summary": "Grünbaum/Heppes/Strasziewicz: f₃(n) = 2n-2",
       "startLine": 108,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "higher-dimensional",
       "title": "Higher Dimensions (Erdős 1960)",
       "summary": "Quadratic growth for d ≥ 4",
       "startLine": 127,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "swanepoel",
       "title": "Swanepoel's Complete Solution",
       "summary": "Exact formulas and extremal configurations",
       "startLine": 148,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Bounds",
       "summary": "Coefficient calculations for d = 4, 5, 6",
       "startLine": 164,
-      "endLine": 191
+      "endLine": 192
     },
     {
       "id": "diameter-graph",
@@ -147,7 +147,7 @@
       "title": "Summary",
       "summary": "erdos_223_summary theorem",
       "startLine": 235,
-      "endLine": 270
+      "endLine": 277
     }
   ],
   "conclusion": {

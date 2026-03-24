@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/706",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathContext": {
       "field": "Combinatorial Geometry",
       "subfield": "Chromatic numbers of distance graphs in the Euclidean plane",
@@ -42,24 +42,6 @@
       ],
       "significance": "Generalizes the Hadwiger-Nelson problem from one forbidden distance to r distances. The gap between the known exponential upper bound L(r) ≤ C^r and the conjectured polynomial bound L(r) ≤ r^{O(1)} is vast. Even the r = 1 case (5 ≤ L(1) ≤ 7) remains unsolved after 75 years, making the general question one of the hardest open problems in chromatic geometry."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-508",
-        "relationship": "The r = 1 case of Problem #706 is exactly the Hadwiger-Nelson problem (#508): what is the chromatic number of the unit distance graph of ℝ²?"
-      },
-      {
-        "id": "erdos-704",
-        "relationship": "Problem #704 studies chromatic numbers of unit distance graphs in ℝⁿ (higher dimensions), where Frankl-Wilson gives exponential lower bounds. #706 generalizes in a different direction: multiple distances in the plane"
-      },
-      {
-        "id": "erdos-705",
-        "relationship": "Problem #705 asks whether large girth forces the chromatic number of unit distance graphs down to 3 (Wormald constructed 4-chromatic examples with girth 5). Both concern structural constraints on distance graphs"
-      },
-      {
-        "id": "erdos-640",
-        "relationship": "Both involve chromatic number problems on geometric graphs; #640 studies edge-coloring of intersection graphs while #706 studies vertex-coloring of distance graphs"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -113,28 +95,28 @@
       "title": "Distance Set and L(r)",
       "summary": "Defines `IsDistanceSet` (finite subset of positive reals) and `multiDistChromatic` (axiomatized L(r) = max χ(G_A) over distance sets A of size r). The function is noncomputable since it involves a supremum over uncountably many geometric configurations.",
       "startLine": 22,
-      "endLine": 31
+      "endLine": 32
     },
     {
       "id": "main-conjecture",
       "title": "Polynomial Bound Conjecture",
       "summary": "States `erdos_706_polynomial_bound`: ∃ C, k > 0 such that L(r) ≤ C · r^k for all r ≥ 1. This is the central open question — whether chromatic number grows polynomially or superpolynomially in the number of forbidden distances.",
       "startLine": 33,
-      "endLine": 40
+      "endLine": 41
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds: Hadwiger-Nelson and Monotonicity",
       "summary": "Records `erdos_706_base_case` (5 ≤ L(1) ≤ 7 from de Grey and Isbell), `erdos_706_monotone` (L is non-decreasing), and `erdos_706_lower` (L(r) ≥ 5 for r ≥ 1, combining monotonicity with de Grey's result).",
       "startLine": 42,
-      "endLine": 57
+      "endLine": 58
     },
     {
       "id": "exponential-upper",
       "title": "Exponential Upper Bound",
       "summary": "Records `erdos_706_exponential_upper`: ∃ C > 1 such that L(r) ≤ C^r. This exponential bound from Frankl-Wilson methods is the best known upper bound, and the polynomial conjecture asks whether it can be dramatically improved.",
       "startLine": 59,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "observations",
@@ -189,5 +171,27 @@
       "citation": "Erdős Problems, Problem #706, https://erdosproblems.com/706",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-130",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorial-geometry, open"
+    },
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open"
+    },
+    {
+      "targetId": "erdos-1066",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-130",
+    "erdos-101",
+    "erdos-1066"
   ]
 }

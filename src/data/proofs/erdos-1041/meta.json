@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1041",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Path",
@@ -87,42 +87,42 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 25,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Definitions of sublevelSet, length (via Hausdorff measure), and PathInC structure."
     },
     {
       "id": "component-lemma",
       "title": "Component Lemma (SOLVED 1958)",
       "startLine": 45,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "The Erdős-Herzog-Piranian theorem about connected components containing two roots."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 68,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "The open problem about existence of short paths of length < 2."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 94,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Diameter bounds and the quadratic case as base case."
     },
     {
       "id": "properties",
       "title": "Sublevel Set Properties",
       "startLine": 120,
-      "endLine": 143,
+      "endLine": 144,
       "summary": "Proved theorems: sublevel sets are open and contain all roots."
     },
     {
       "id": "length",
       "title": "Length Properties",
       "startLine": 145,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "Path length bounds and the triangle inequality for unit disk."
     },
     {
@@ -145,29 +145,29 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1040",
       "relationship": "companion problem",
-      "description": "Erdős #1040 studies transfinite diameter and the measure of sublevel sets for monic polynomials with roots in the unit disk — the same setting as #1041, examining the potential-theoretic capacity of {z : |f(z)| < 1}."
+      "description": "Erdős #1040 studies transfinite diameter and the measure of sublevel sets for monic polynomials with roots in the unit disk — the same setting as #1041, examining the potential-theoretic capacity of {z : |f(z)| < 1}.",
+      "targetId": "erdos-1040"
     },
     {
-      "target": "erdos-1042",
       "relationship": "companion problem",
-      "description": "Erdős #1042 asks about connected components of polynomial lemniscates {z : |f(z)| = c}, the level curves bounding the sublevel sets studied in #1041. The Component Lemma from 1041 directly motivates the finer lemniscate topology questions in #1042."
+      "description": "Erdős #1042 asks about connected components of polynomial lemniscates {z : |f(z)| = c}, the level curves bounding the sublevel sets studied in #1041. The Component Lemma from 1041 directly motivates the finer lemniscate topology questions in #1042.",
+      "targetId": "erdos-1042"
     },
     {
-      "target": "erdos-1039",
       "relationship": "related problem",
-      "description": "Erdős #1039 concerns the disc radius of polynomial lemniscates for monic polynomials with roots in the unit disk. The same polynomial family and level-set geometry underlies both problems."
+      "description": "Erdős #1039 concerns the disc radius of polynomial lemniscates for monic polynomials with roots in the unit disk. The same polynomial family and level-set geometry underlies both problems.",
+      "targetId": "erdos-1039"
     },
     {
-      "target": "erdos-1044",
       "relationship": "related problem",
-      "description": "Erdős #1044 asks for bounds on the boundary length of polynomial level sets. Short-path existence inside sublevel sets (#1041) and bounds on the bounding curve's length (#1044) are complementary metric questions about polynomial level-set geometry."
+      "description": "Erdős #1044 asks for bounds on the boundary length of polynomial level sets. Short-path existence inside sublevel sets (#1041) and bounds on the bounding curve's length (#1044) are complementary metric questions about polynomial level-set geometry.",
+      "targetId": "erdos-1044"
     },
     {
-      "target": "erdos-1038",
       "relationship": "related problem",
-      "description": "Erdős #1038 studies sublevel sets of monic polynomials from a measure-theory perspective, forming part of the same cluster of Erdős–Herzog–Piranian problems on the geometry and measure of polynomial sublevel sets."
+      "description": "Erdős #1038 studies sublevel sets of monic polynomials from a measure-theory perspective, forming part of the same cluster of Erdős–Herzog–Piranian problems on the geometry and measure of polynomial sublevel sets.",
+      "targetId": "erdos-1038"
     }
   ],
   "relatedProofs": [

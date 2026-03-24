@@ -51,7 +51,8 @@
       }
     ],
     "lineCount": 124,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Intermediate Value Theorem was first rigorously proved by Bernard Bolzano in 1817, though Cauchy gave a more widely known proof in 1821. Both proofs are non-constructive — they assert existence of a root without providing a method to find it. The bisection method, known since antiquity (used implicitly by the Babylonians for $\\sqrt{2}$ approximations and described by al-Tusi in the 13th century), makes the IVT constructive: given a continuous $f$ with $f(a) \\cdot f(b) < 0$, it produces an explicit sequence converging to a root. The method is the simplest root-finding algorithm with guaranteed convergence, requiring only function evaluation and sign comparison. While Newton's method converges quadratically (doubling correct digits each step), bisection's linear convergence ($\\sim$3.32 steps per decimal digit) is unconditionally reliable — no smoothness or initial guess quality required.",
@@ -74,14 +75,14 @@
       "id": "part-i",
       "title": "Part I: The Bisection Step",
       "startLine": 26,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Defines bisectStep (conditional midpoint selection), midpoint, and proves midpoint_mem_Icc, midpoint_sub_left, right_sub_midpoint — basic interval arithmetic for the building block."
     },
     {
       "id": "part-ii",
       "title": "Part II: Iterated Bisection",
       "startLine": 53,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Defines bisectIter (recursive iteration of bisectStep), bisectLeft, bisectRight — accessor functions for the nth interval endpoints."
     },
     {
@@ -95,7 +96,7 @@
       "id": "part-iv",
       "title": "Part IV: Error Bound",
       "startLine": 102,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "Proves bisect_error_bound (width ≤ (b-a)/2^n) as a direct corollary of bisect_width via le_of_eq."
     },
     {

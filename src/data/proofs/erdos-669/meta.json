@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/669",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -80,42 +80,42 @@
       "title": "Point and Line Definitions",
       "summary": "Point, Line, OnLine, pointsOnLine",
       "startLine": 33,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "functions",
       "title": "f_k and F_k Functions",
       "summary": "ExactlyKPoints, AtLeastKPoints, f_k, F_k",
       "startLine": 53,
-      "endLine": 71
+      "endLine": 72
     },
     {
       "id": "orchard",
       "title": "The Orchard Problem (k=3)",
       "summary": "orchardProblem, burr_grunbaum_sloane, k3_limit",
       "startLine": 73,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "upper-bound",
       "title": "Trivial Upper Bound",
       "summary": "trivial_upper_bound, limit_upper",
       "startLine": 96,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "conjecture",
       "title": "The General Conjecture",
       "summary": "limit_conjecture, k3_matches, k3_conjecture_true",
       "startLine": 109,
-      "endLine": 121
+      "endLine": 122
     },
     {
       "id": "configs",
       "title": "Optimal Configurations",
       "summary": "optimal_configs_exist",
       "startLine": 123,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "summary",
@@ -160,5 +160,21 @@
       "citation": "Burr, S.A., Grünbaum, B., Sloane, N.J.A., The orchard problem, Geom. Dedicata 2 (1974), 397-424",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-588",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidences, point-line"
+    },
+    {
+      "targetId": "erdos-104",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidences"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-588",
+    "erdos-104"
   ]
 }

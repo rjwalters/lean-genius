@@ -163,7 +163,8 @@ def strongConjecture : Prop :=
 **Open Problem Status:**
 Both conjectures remain open.
 -/
-axiom erdos_334_open : ¬ (weakConjecture ∨ ¬weakConjecture → False)
+theorem erdos_334_open : ¬ (weakConjecture ∨ ¬weakConjecture → False) :=
+  fun h => h (Classical.em _)
 
 /-
 ## Part VI: Examples

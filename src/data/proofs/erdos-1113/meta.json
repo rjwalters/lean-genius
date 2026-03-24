@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/1113",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -100,56 +100,56 @@
       "title": "Problem Overview and Imports",
       "summary": "Module docstring describing Problem #1113 and imports from Mathlib (`Nat.Basic`, `Nat.Prime.Basic`, `Finset.Basic`, `Nat.Parity`). Sets up the arithmetic foundation for Sierpinski numbers and covering systems.",
       "startLine": 1,
-      "endLine": 40
+      "endLine": 41
     },
     {
       "id": "sierpinski-numbers",
       "title": "Sierpinski Numbers",
       "summary": "Defines `IsSierpinskiNumber` ($m$ odd, positive, all $2^k \\cdot m + 1$ composite), `sierpinskiSequence` helper, `AllComposite` predicate, and proves `sierpinski_iff_all_composite` establishing their equivalence.",
       "startLine": 42,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "covering-sets",
       "title": "Covering Sets",
       "summary": "Defines `IsCoveringSet` (finite primes $P$ where $\\forall k, \\exists p \\in P, p \\mid 2^k \\cdot m + 1$) and `HasFiniteCoveringSet`. Axiomatizes `covering_set_implies_sierpinski`: covered numbers are Sierpinski.",
       "startLine": 64,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "main-question",
       "title": "The Main Question (OPEN)",
       "summary": "Formalizes `ErdosProblem1113` ($\\exists$ uncovered Sierpinski number) and `AllSierpinskiHaveCoverings` ($\\forall$ Sierpinski numbers are covered). Proves `problem_equivalence` showing these are exact negations via `push_neg`.",
       "startLine": 81,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "known-examples",
       "title": "78557 and Sierpinski's Theorem",
       "summary": "Axiomatizes 78557 as smallest known Sierpinski number with covering set $\\{3,5,7,13,19,37,73\\}$. Axiomatizes Sierpinski's 1960 infinitude theorem: $\\forall N, \\exists m > N$, $m$ is Sierpinski with a finite covering set.",
       "startLine": 101,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "izotov",
       "title": "Izotov's Candidate (1995)",
       "summary": "Axiomatizes `izotovCandidate` $= 734110615000775^4$ as Sierpinski. Verifies `izotov_is_power` ($m$ is a perfect 4th power) via `norm_num`/`rfl`. Strongest evidence for Problem #1113 having answer YES.",
       "startLine": 121,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "ffk-conjecture",
       "title": "FFK Conjecture and Power Result",
       "summary": "Defines `IsPerfectPower` ($m = n^k$, $k \\geq 2$) and `FFKConjecture` (Sierpinski $\\Rightarrow$ perfect power $\\vee$ covered). Verifies `ffk_consistent_with_izotov`. Axiomatizes the FFK power result on simultaneous compositeness for $2^k \\cdot m^i + 1$.",
       "startLine": 132,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "fermat-connection",
       "title": "Connection to Fermat Primes",
       "summary": "Defines `FermatNumber` ($F_n = 2^{2^n} + 1$) and `IsFermatPrime`. Axiomatizes known Fermat primes $F_0$-$F_4$, $F_5$'s factorization ($641 \\times 6700417$), and the Erdos-Graham connection: universal covering $\\Rightarrow$ infinitely many Fermat primes.",
       "startLine": 156,
-      "endLine": 184
+      "endLine": 185
     },
     {
       "id": "summary",

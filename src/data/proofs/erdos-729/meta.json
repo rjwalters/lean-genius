@@ -46,7 +46,8 @@
     ],
     "axiomCount": 7,
     "lineCount": 207,
-    "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős proved in 1968 that if $a!b! \\mid n!$ then $a + b \\leq n + O(\\log n)$, using an elegant argument based on Legendre's formula for $v_2(n!) = n - s_2(n)$, where $s_2(n)$ is the binary digit sum. Problem 729, posed later, asks whether this logarithmic bound can be defeated by \"ignoring\" small primes: specifically, whether there are infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ such that $n!/(a!b!)$ has denominator divisible only by primes $\\leq C$. Barreto and Leeham resolved the problem negatively, showing that large primes alone carry sufficient information to enforce the bound. Their proof adapts the technique from Problem #728, extending it to show that for any prime $p > C$, the constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ already implies $a + b \\leq n + O(\\log n)$. This reveals a fundamental rigidity in factorial arithmetic: the divisibility structure is controlled by all primes collectively, and no finite set of exceptions can weaken it.",
@@ -70,63 +71,63 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 35,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$."
     },
     {
       "id": "erdos-classical",
       "title": "Erdős's Classical Result (1968)",
       "startLine": 57,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Axiomatizes `erdos_1968_classical`: $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only the $p = 2$ constraint."
     },
     {
       "id": "relaxed-condition",
       "title": "The Relaxed Condition",
       "startLine": 75,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'."
     },
     {
       "id": "question",
       "title": "The Question",
       "startLine": 95,
-      "endLine": 106,
+      "endLine": 107,
       "summary": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729."
     },
     {
       "id": "barreto-leeham",
       "title": "Barreto-Leeham Resolution",
       "startLine": 108,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constant $D$."
     },
     {
       "id": "proof-strategy",
       "title": "Proof Strategy",
       "startLine": 124,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no $p$-component."
     },
     {
       "id": "legendre-details",
       "title": "Legendre's Formula Details",
       "startLine": 141,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. The theorem `legendre_for_two` ($v_2(n!) = n - s_2(n)$) has a `sorry`."
     },
     {
       "id": "implications",
       "title": "Implications and Rigidity",
       "startLine": 161,
-      "endLine": 177,
+      "endLine": 178,
       "summary": "Axiomatizes `factorial_rigidity` and states `binomial_rigidity` (with `sorry`): when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
       "startLine": 179,
-      "endLine": 192,
+      "endLine": 193,
       "summary": "Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness."
     },
     {

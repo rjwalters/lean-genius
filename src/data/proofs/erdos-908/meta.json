@@ -68,16 +68,6 @@
       "de_bruijn_erdos_conjecture theorem",
       "erdos_908_summary comprehensive theorem"
     ],
-    "crossReferences": [
-      {
-        "targetProof": "erdos-907",
-        "relationship": "Problem #907 asks when additive functions must be continuous. This is directly connected: the additive component h in Problem #908's decomposition may be discontinuous, and Problem #907's criterion (bounded on an interval implies continuous) characterizes when the decomposition simplifies."
-      },
-      {
-        "targetProof": "lebesgue-measure",
-        "relationship": "The Lebesgue measure is fundamental to Problem #908: 'measurable differences' means Lebesgue measurability of difference functions, 'rigid' means a.e. equality with respect to Lebesgue measure, and the key tool (Steinhaus's theorem) concerns sets of positive Lebesgue measure."
-      }
-    ],
     "axiomCount": 11,
     "lineCount": 258,
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -104,7 +94,7 @@
       "id": "imports-setup",
       "title": "Imports and Setup",
       "startLine": 39,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "Imports `AEMeasurableOrder`, `Lebesgue.Basic`, `ContinuousAffineMap`, `Integrals`, `Group.Basic`. Opens `MeasureTheory` and `Set` for $\\lambda$-a.e. notation and `Measurable`."
     },
     {
@@ -112,49 +102,49 @@
       "title": "Basic Definitions",
       "summary": "Defines `HasMeasurableDifferences f` ($\\Delta_h f$ measurable $\\forall h > 0$), `IsAdditive h` ($h(x+y) = h(x) + h(y)$), and `IsRigid r` ($r(x+h) = r(x)$ $\\lambda$-a.e.).",
       "startLine": 49,
-      "endLine": 65
+      "endLine": 66
     },
     {
       "id": "additive-properties",
       "title": "Properties of Additive Functions",
       "summary": "Verified: $h(0) = 0$ and $h(-x) = -h(x)$. Axioms: $h(qx) = qh(x)$ for $q \\in \\mathbb{Q}$, $\\exists$ discontinuous additive (via Hamel bases), continuous additive $\\Rightarrow h(x) = cx$.",
       "startLine": 67,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "rigid-properties",
       "title": "Properties of Rigid Functions",
       "summary": "Axioms: rigid + continuous $\\Rightarrow$ constant (periodic with every period). Rigid $\\Rightarrow$ measurable differences ($\\Delta_h r = 0$ $\\lambda$-a.e.).",
       "startLine": 97,
-      "endLine": 108
+      "endLine": 109
     },
     {
       "id": "decomposition-theorem",
       "title": "The Decomposition Theorem",
       "summary": "Axiomatizes `laczkovich_decomposition`: $\\forall f \\in \\text{MD},\\; \\exists g \\in C(\\mathbb{R}),\\; h$ additive, $r$ rigid: $f = g + h + r$. Essential uniqueness: $g_1 - g_2 = cx$, $r_1 = r_2$ $\\lambda$-a.e.",
       "startLine": 110,
-      "endLine": 143
+      "endLine": 144
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Verifications",
       "summary": "If $f$ is measurable, $h = 0$ ($f = g + r$). Verified: continuous $\\Rightarrow \\text{MD}$ (via `hCont.sub`). Verified: additive $\\Rightarrow \\text{MD}$ ($\\Delta_h f = f(h)$ constant, hence `measurable_const`).",
       "startLine": 145,
-      "endLine": 181
+      "endLine": 182
     },
     {
       "id": "related-problems",
       "title": "Connection to Erdős #907",
       "summary": "Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity.",
       "startLine": 183,
-      "endLine": 197
+      "endLine": 198
     },
     {
       "id": "de-bruijn",
       "title": "The de Bruijn Perspective",
       "summary": "Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation.",
       "startLine": 199,
-      "endLine": 215
+      "endLine": 216
     },
     {
       "id": "summary",
@@ -192,5 +182,27 @@
     "axiomCount": 11,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1126",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, functional-equations, measure-theory, solved"
+    },
+    {
+      "targetId": "erdos-1125",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, functional-equations, solved"
+    },
+    {
+      "targetId": "erdos-907",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-functions, analysis, functional-equations"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1126",
+    "erdos-1125",
+    "erdos-907"
+  ]
 }

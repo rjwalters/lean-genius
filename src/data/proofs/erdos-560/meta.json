@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/560",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -90,7 +90,7 @@
       "title": "Basic Definitions",
       "summary": "EdgeColoring, completeBipartiteGraph K_{n,n}",
       "startLine": 42,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "size-ramsey",
@@ -104,42 +104,42 @@
       "title": "Known Bounds",
       "summary": "erdos_rousseau_lower_bound, upper_bound, size_ramsey_bounds",
       "startLine": 122,
-      "endLine": 148
+      "endLine": 149
     },
     {
       "id": "cfw-results",
       "title": "Conlon-Fox-Wigderson Results",
       "summary": "cfw_general_lower, cfw_asymptotic, cfw_conjecture",
       "startLine": 150,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "Monotonicity, lower bounds, K11 case, path linear bound",
       "startLine": 184,
-      "endLine": 209
+      "endLine": 210
     },
     {
       "id": "classical-ramsey",
       "title": "Classical Ramsey Relation",
       "summary": "classicalRamseyNumber, size vs classical relationship",
       "startLine": 211,
-      "endLine": 237
+      "endLine": 238
     },
     {
       "id": "bounds-gap",
       "title": "Gap Analysis",
       "summary": "bounds_gap theorem, cfw_implies_tight_lower",
       "startLine": 239,
-      "endLine": 267
+      "endLine": 268
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_560_summary combining all bounds",
       "startLine": 269,
-      "endLine": 295
+      "endLine": 296
     }
   ],
   "conclusion": {
@@ -170,5 +170,27 @@
     "axiomCount": 16,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1105",
+    "erdos-111"
+  ]
 }

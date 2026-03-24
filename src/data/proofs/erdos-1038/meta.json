@@ -21,7 +21,7 @@
     "erdosNumber": 1038,
     "erdosUrl": "https://erdosproblems.com/1038",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.volume",
@@ -76,28 +76,28 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 26,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines monic polynomials with roots in [-1,1], sublevel sets, and their measures"
     },
     {
       "id": "supremum",
       "title": "Supremum Result",
       "startLine": 47,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "The supremum equals 2√2, proved by Tao in December 2025"
     },
     {
       "id": "infimum",
       "title": "Infimum Bounds",
       "startLine": 65,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Lower bound 2^(4/3) - 1 and upper bound 1.835 on the infimum"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 88,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Specific polynomials witnessing the bounds: (x+1)(x-1)^m for infimum, x²-1 for supremum"
     },
     {
@@ -119,34 +119,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1039",
       "relationship": "sibling",
-      "description": "Closely related: asks for the largest disc contained in the sublevel set {z: |f(z)| < 1} for polynomials with roots in the unit disc. Together problems #1038 and #1039 form a pair studying metric properties of polynomial sublevel sets."
+      "description": "Closely related: asks for the largest disc contained in the sublevel set {z: |f(z)| < 1} for polynomials with roots in the unit disc. Together problems #1038 and #1039 form a pair studying metric properties of polynomial sublevel sets.",
+      "targetId": "erdos-1039"
     },
     {
-      "target": "erdos-1040",
       "relationship": "sibling",
-      "description": "Direct generalization: extends the sublevel set measure question to arbitrary closed infinite sets F ⊆ ℂ via transfinite diameter. Problem #1038 is the special case F = [-1,1]."
+      "description": "Direct generalization: extends the sublevel set measure question to arbitrary closed infinite sets F ⊆ ℂ via transfinite diameter. Problem #1038 is the special case F = [-1,1].",
+      "targetId": "erdos-1040"
     },
     {
-      "target": "erdos-1041",
       "relationship": "sibling",
-      "description": "Studies path connectivity within polynomial sublevel sets {z : |f(z)| < 1}, a topological companion to the measure-theoretic questions of #1038."
+      "description": "Studies path connectivity within polynomial sublevel sets {z : |f(z)| < 1}, a topological companion to the measure-theoretic questions of #1038.",
+      "targetId": "erdos-1041"
     },
     {
-      "target": "erdos-1043",
       "relationship": "sibling",
-      "description": "Asks about linear projections of the sublevel set {z : |f(z)| ≤ 1}, complementing #1038's study of the total Lebesgue measure of the real sublevel set."
+      "description": "Asks about linear projections of the sublevel set {z : |f(z)| ≤ 1}, complementing #1038's study of the total Lebesgue measure of the real sublevel set.",
+      "targetId": "erdos-1043"
     },
     {
-      "target": "erdos-1046",
       "relationship": "sibling",
-      "description": "Studies disc containment for connected lemniscates {z: |f(z)| < 1}, providing geometric context for the measure bounds proved in #1038."
+      "description": "Studies disc containment for connected lemniscates {z: |f(z)| < 1}, providing geometric context for the measure bounds proved in #1038.",
+      "targetId": "erdos-1046"
     },
     {
-      "target": "lebesgue-measure",
       "relationship": "uses",
-      "description": "The formalization relies on Lebesgue measure on ℝ to define the measure of the sublevel set {x : |f(x)| < 1}."
+      "description": "The formalization relies on Lebesgue measure on ℝ to define the measure of the sublevel set {x : |f(x)| < 1}.",
+      "targetId": "lebesgue-measure"
     }
   ],
   "relatedProofs": [

@@ -21,7 +21,7 @@
     "erdosNumber": 903,
     "erdosUrl": "https://erdosproblems.com/903",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -54,38 +54,6 @@
       "Connected to Fisher's inequality for 2-designs",
       "Stated stronger bound: t ≥ n + 1.148p unless broken projective plane"
     ],
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-734",
-        "relationship": "generalizes",
-        "description": "Studies PBDs with bounded block frequencies, directly generalizing the pair-coverage block designs here"
-      },
-      {
-        "targetProofId": "erdos-732",
-        "relationship": "related",
-        "description": "Characterizes which block-size sequences are compatible with valid PBD structure"
-      },
-      {
-        "targetProofId": "erdos-722",
-        "relationship": "specializes",
-        "description": "Steiner systems S(r,k,n) are the uniform specialization of block designs; projective planes are S(2, q+1, q²+q+1)"
-      },
-      {
-        "targetProofId": "erdos-664",
-        "relationship": "related",
-        "description": "Blocking sets in PG(2,q) use the same projective plane structure formalized here"
-      },
-      {
-        "targetProofId": "erdos-905",
-        "relationship": "analogous",
-        "description": "Studies a similar gap/rigidity phenomenon for edge-triangle multiplicities above the Turán threshold"
-      },
-      {
-        "targetProofId": "erdos-901",
-        "relationship": "related",
-        "description": "Uses the Fano plane (PG(2,2), order 2 projective plane) as the extremal example for m(3) = 7"
-      }
-    ],
     "axiomCount": 9,
     "lineCount": 228,
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -113,49 +81,49 @@
       "title": "Basic Definitions",
       "summary": "BlockDesign structure with pair coverage, numBlocks, IsPrimePower, IsProjectivePlaneSize",
       "startLine": 29,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "de-bruijn-erdos",
       "title": "The de Bruijn-Erdős Theorem",
       "summary": "de_bruijn_erdos axiom (t ≥ n), IsMinimalDesign, minimal_design_uniform",
       "startLine": 57,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "projective-planes",
       "title": "Projective Plane Constructions",
       "summary": "ProjectivePlane structure, projective_plane_exists, projective_plane_design axioms",
       "startLine": 75,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "erdos-sos-theorem",
       "title": "The Erdős-Sós Conjecture (Now Theorem)",
       "summary": "efsw_1985 axiom (gap theorem), efsw_strong axiom with broken-plane condition",
       "startLine": 100,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "gap-structure",
       "title": "The Gap Structure",
       "summary": "achievableBlocks set, n_achievable, gap_theorem, first_above_n (proved by contradiction)",
       "startLine": 121,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete gap computations for p = 2, 3, 4, 5 via norm_num",
       "startLine": 148,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "2-designs",
       "title": "Connection to Combinatorial Designs",
       "summary": "Is2Design predicate, fisher_inequality axiom, de_bruijn_erdos_from_fisher (proved)",
       "startLine": 164,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "summary",
@@ -189,5 +157,27 @@
     "axiomCount": 9,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1159",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, finite-geometry, projective-planes"
+    },
+    {
+      "targetId": "erdos-664",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, finite-geometry, projective-planes"
+    },
+    {
+      "targetId": "erdos-665",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: block-designs, combinatorics, projective-planes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1159",
+    "erdos-664",
+    "erdos-665"
+  ]
 }

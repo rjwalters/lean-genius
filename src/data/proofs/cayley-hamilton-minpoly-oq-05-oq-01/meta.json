@@ -78,7 +78,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 270,
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. Uses Classical.propDecidable as a local instance for decidability of propositions. All 5 theorems and 2 definitions are proved from Mathlib's UniqueFactorizationMonoid, EuclideanDomain, and linear algebra infrastructure."
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries. Uses Classical.propDecidable as a local instance for decidability of propositions. All 5 theorems and 2 definitions are proved from Mathlib's UniqueFactorizationMonoid, EuclideanDomain, and linear algebra infrastructure.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The concept of nonderogatory matrices dates to Frobenius's 1878 work on the rational canonical form. Frobenius showed that every matrix over a field is similar to a block diagonal of companion matrices — one for each invariant factor — and that the matrix is nonderogatory precisely when there is a single block (i.e., the minimal polynomial equals the characteristic polynomial). The equivalence between the nonderogatory condition and the existence of a cyclic vector was made explicit in Hoffman and Kunze's influential 1961 textbook, where it serves as the bridge between the algebraic description ($\\mu_M = \\chi_M$) and the geometric one (existence of $v$ with $\\{v, Mv, \\ldots, M^{n-1}v\\}$ spanning $K^n$). The union avoidance argument used in this proof has an independent pedigree: it is the linear algebra analogue of the prime avoidance lemma in commutative algebra, first noted by E.D. Davis (1964). Over infinite fields, it says that finitely many proper subspaces cannot cover the full space — a fact with a pleasantly elementary proof via a line-counting argument. This result also connects to the Zariski topology: the set of cyclic vectors forms a Zariski-open (hence dense) subset of $K^n$ when $K$ is infinite.",
@@ -98,7 +99,7 @@
       "id": "preamble",
       "title": "Module Setup and Variable Context",
       "startLine": 1,
-      "endLine": 20,
+      "endLine": 21,
       "summary": "Module documentation, Mathlib import, noncomputable section, namespace declaration, and universe/type variable setup. Declares Classical.propDecidable as a local instance to enable classical reasoning (excluded middle, choice) throughout the proof.",
       "mathContext": "The proof works over an arbitrary field $K$ and dimension $n : \\mathbb{N}$, with matrices in $M_n(K)$. Classical logic is needed for the union avoidance argument (which uses excluded middle to case-split on subspace membership) and the final contradiction."
     },
@@ -106,7 +107,7 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 22,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Defines IsCyclicVector (no nonzero polynomial of degree < n annihilates v under M) and IsNonderogatory (minpoly = charpoly)",
       "mathContext": "A cyclic vector v generates the entire Krylov space span{v, Mv, M²v, ...} = K^n. Nonderogatory means the minimal and characteristic polynomials coincide, i.e., M has a single invariant factor."
     },
@@ -114,7 +115,7 @@
       "id": "helper-eval-nonvanishing",
       "title": "Helper: Polynomial Evaluation Non-vanishing",
       "startLine": 35,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Proves aeval_ne_zero_of_ne_zero: if p ≠ 0 and deg(p) < deg(minpoly M), then p(M) ≠ 0. Uses the minimality property: if p(M) = 0 then minpoly | p, forcing deg(minpoly) ≤ deg(p), a contradiction.",
       "mathContext": "The minimal polynomial is the monic polynomial of least degree annihilating $M$. By definition, $\\mu_M | p$ whenever $p(M) = 0$, so any nonzero $p$ with $\\deg(p) < \\deg(\\mu_M)$ cannot annihilate $M$. This is the entry point for the proper-subspace construction in Phase 2."
     },
@@ -122,7 +123,7 @@
       "id": "helper-union-avoidance",
       "title": "Helper: Union Avoidance over Infinite Fields",
       "startLine": 44,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Proves not_union_proper_subspaces: over an infinite field, finitely many proper subspaces cannot cover a nontrivial vector space. Induction on the number of subspaces with a line argument — for v ∉ S_k and w ∉ S_1 ∪ ⋯ ∪ S_{k-1}, the line {v + tw} meets each S_i in at most one point, and K is infinite.",
       "mathContext": "Union avoidance: $V \\neq S_1 \\cup \\cdots \\cup S_k$ when each $S_i \\subsetneq V$ and $|K| = \\infty$. The line argument: $|\\{t \\in K : v + tw \\in S_i\\}| \\leq 1$ for each $i$ (two intersections force $w \\in S_i$), so at most $k$ bad parameters exist in an infinite field."
     },
@@ -130,7 +131,7 @@
       "id": "helper-gcd-annihilation",
       "title": "Helper: GCD Annihilation via Bezout",
       "startLine": 106,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "Proves gcd_aeval_mulVec_eq_zero: if p(M)v = 0, then gcd(p, minpoly)(M)v = 0. Uses Bezout's identity d = a·p + b·μ in K[X], evaluates at M, and applies to v. Both terms vanish: a(M)·p(M)v = 0 by hypothesis, b(M)·μ(M)v = 0 by Cayley-Hamilton.",
       "mathContext": "Bezout in $K[X]$: $d = \\gcd(p, \\mu) = ap + b\\mu$. Then $d(M)v = a(M)\\underbrace{p(M)v}_{=0} + b(M)\\underbrace{\\mu(M)v}_{=0} = 0$. The key subtlety: Bezout gives $d = pa + \\mu b$ but we need $ap$ and $b\\mu$ (commuted) so that $p(M)$ and $\\mu(M)$ act on $v$ first via `mulVec_mulVec`."
     },
@@ -162,7 +163,7 @@
       "id": "main-theorem-contradiction",
       "title": "Main Theorem: Phase 4 (Cyclicity by Contradiction)",
       "startLine": 210,
-      "endLine": 268,
+      "endLine": 270,
       "summary": "Proves v is cyclic by contradiction. If nonzero p with deg(p) < n annihilates v, then d = gcd(p,μ) annihilates v and properly divides μ. Writing μ = d·s with s non-unit, factor s to get irreducible q₀ | s, find associated q' ∈ normalizedFactors(μ), then (μ/q')(M)v = 0 — contradicting v's avoidance of ker((μ/q')(M)).",
       "mathContext": "Contradiction chain: $d = \\gcd(p,\\mu)$, $d(M)v = 0$, $\\deg(d) < n = \\deg(\\mu)$. Factor $\\mu = ds$, $\\deg(s) > 0$, $q_0 | s$ irreducible, $q' \\sim q_0$ in $\\text{nf}(\\mu)$, $q' | s$, $\\mu/q' = dt$, $(\\mu/q')(M)v = t(M) \\cdot d(M)v = 0$. But $v \\notin \\ker((\\mu/q')(M))$ by Phase 3."
     }

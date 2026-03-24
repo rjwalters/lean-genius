@@ -61,7 +61,8 @@
     "dateAdded": "2026-02-21",
     "axiomCount": 0,
     "lineCount": 284,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The **Chinese Remainder Theorem** (CRT) is one of the oldest results in number theory, originating in the **Sunzi Suanjing** (孫子算經, 'The Mathematical Classic of Sun Zi'), a Chinese mathematical treatise from the 3rd–5th century CE. The classic problem: *'Find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7.'* The answer is 23 (unique mod 105 = 3 × 5 × 7).\n\nThe deep connection to **Bézout's identity** was understood much later. When gcd(m, n) = 1, Bézout's identity gives integers u, v with mu + nv = 1. This is precisely what's needed to 'switch on' one residue while 'switching off' the other: the term a·nv has nv ≡ 1 (mod m) so it contributes a (mod m) while vanishing (mod n), and symmetrically for b·mu.\n\nIn Lean 4, this connection is crystallized beautifully: **IsCoprime** is literally the type `∃ u v, u * m + v * n = 1`, which is Bézout's identity with gcd = 1. The CRT proof becomes a direct application of this algebraic witness.",
@@ -84,7 +85,7 @@
       "id": "imports",
       "title": "Imports",
       "startLine": 1,
-      "endLine": 3,
+      "endLine": 4,
       "summary": "Imports Int.GCD (Bézout coefficients), RingTheory.Coprime.Basic (IsCoprime.mul_dvd), and Tactic (linear_combination, linarith, push_cast)."
     },
     {
@@ -105,42 +106,42 @@
       "id": "existence",
       "title": "CRT Existence via bezout_int",
       "startLine": 68,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "The main existence theorem crt_exists_via_bezout. Gets Bézout coefficients from coprime_bezout, constructs x = a*n*v + b*m*u, proves both congruences using linear_combination -a * hbez and -b * hbez respectively."
     },
     {
       "id": "uniqueness",
       "title": "CRT Uniqueness",
       "startLine": 97,
-      "endLine": 125,
+      "endLine": 126,
       "summary": "Two theorems: isCoprime_of_gcd_eq_one (bridges Int.gcd = 1 and IsCoprime via linear_combination) and crt_unique_via_bezout (uniqueness mod m*n via IsCoprime.mul_dvd after rewriting congruences as divisibility)."
     },
     {
       "id": "iscop-version",
       "title": "CRT via IsCoprime",
       "startLine": 127,
-      "endLine": 160,
+      "endLine": 161,
       "summary": "crt_iscop and crt_unique_iscop: alternative formulations using IsCoprime directly. Cleaner algebraically since IsCoprime unpacks to exactly the Bézout coefficients needed."
     },
     {
       "id": "combined",
       "title": "Combined Existence-Uniqueness",
       "startLine": 162,
-      "endLine": 180,
+      "endLine": 181,
       "summary": "crt_via_bezout: packages existence and uniqueness into a single theorem using transitivity of congruences."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
       "startLine": 182,
-      "endLine": 240,
+      "endLine": 241,
       "summary": "Four examples showing explicit Bézout coefficients and CRT solutions: (3,5)→8, (7,11)→58, (4,9)→28, (6,7)→23. Each example shows the Bézout equation, the formula computation, and verification of both congruences."
     },
     {
       "id": "crt-function",
       "title": "Explicit CRT Function",
       "startLine": 242,
-      "endLine": 270,
+      "endLine": 271,
       "summary": "crtInt: a computable function returning x = a*n*gcdB + b*m*gcdA. Proved correct via crtInt_mod_left and crtInt_mod_right using linear_combination with the Bézout identity."
     },
     {

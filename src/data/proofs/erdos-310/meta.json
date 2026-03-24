@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/310",
     "erdosProblemStatus": "proved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -91,63 +91,63 @@
       "title": "Basic Definitions",
       "summary": "unitFractionSum, isDense, hasBoundedDenom definitions",
       "startLine": 35,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "erdosGrahamConjecture definition - the formal problem statement",
       "startLine": 64,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "liu-sawhney",
       "title": "Liu-Sawhney Theorem",
       "summary": "liu_sawhney_theorem and bloom_unit_fraction_density axioms",
       "startLine": 84,
-      "endLine": 121
+      "endLine": 122
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "summary": "Verified unit fraction sums: 1/2+1/3+1/6=1, etc.",
       "startLine": 123,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "density-examples",
       "title": "Density Examples",
       "summary": "full_density_trivial, evenNumbersTo, even_sum_small",
       "startLine": 149,
-      "endLine": 178
+      "endLine": 179
     },
     {
       "id": "sharpness",
       "title": "Sharpness of Bounds",
       "summary": "liu_sawhney_sharpness axiom showing bounds are optimal",
       "startLine": 180,
-      "endLine": 197
+      "endLine": 198
     },
     {
       "id": "egyptian-fractions",
       "title": "Egyptian Fractions",
       "summary": "egyptian_fraction_exists, egyptian_fraction_greedy axioms",
       "startLine": 199,
-      "endLine": 223
+      "endLine": 224
     },
     {
       "id": "historical-context",
       "title": "Historical Context",
       "summary": "erdosStrausConjecture, erdos_straus_3, erdos_straus_5",
       "startLine": 225,
-      "endLine": 252
+      "endLine": 253
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "erdos_310 theorem proving erdosGrahamConjecture",
       "startLine": 254,
-      "endLine": 295
+      "endLine": 296
     },
     {
       "id": "related-results",
@@ -186,5 +186,27 @@
     "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+    },
+    {
+      "targetId": "erdos-292",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-296",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-286",
+    "erdos-292",
+    "erdos-296"
+  ]
 }

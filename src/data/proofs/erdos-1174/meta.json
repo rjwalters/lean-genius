@@ -21,7 +21,7 @@
     "erdosNumber": 1174,
     "erdosUrl": "https://erdosproblems.com/1174",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -90,42 +90,42 @@
       "title": "Clique and Coloring Definitions",
       "summary": "Definitions of cliques, K₄-freeness, cardinal clique-freeness, and symmetric coloring",
       "startLine": 37,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "part-a",
       "title": "The Finite Question (Part a)",
       "summary": "Monochromatic triangle, Erdős-Hajnal finite property, and the formal statement of part (a)",
       "startLine": 72,
-      "endLine": 105
+      "endLine": 106
     },
     {
       "id": "part-b",
       "title": "The Infinite Question (Part b)",
       "summary": "Monochromatic ℵ₀-clique, Erdős-Hajnal infinite property, and the formal statement of part (b)",
       "startLine": 107,
-      "endLine": 141
+      "endLine": 142
     },
     {
       "id": "ramsey-context",
       "title": "Ramsey Theory Context",
       "summary": "Infinite Ramsey theorem for 2 colors and proof that the complete graph is not K₄-free",
       "startLine": 143,
-      "endLine": 171
+      "endLine": 172
     },
     {
       "id": "partition-calculus",
       "title": "Partition Calculus Framework",
       "summary": "Partition property definition and the Nešetřil-Rödl theorem for finite colors",
       "startLine": 173,
-      "endLine": 197
+      "endLine": 198
     },
     {
       "id": "consistency-observations",
       "title": "Consistency Results and Structural Observations",
       "summary": "Shelah's consistency results and observations about triangle-rich K₄-free graphs",
       "startLine": 199,
-      "endLine": 222
+      "endLine": 223
     },
     {
       "id": "open-status",
@@ -159,5 +159,27 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1176",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1169",
+    "erdos-1176",
+    "erdos-1014"
+  ]
 }

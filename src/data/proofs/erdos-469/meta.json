@@ -20,7 +20,9 @@
     "axiomCount": 2,
     "badge": "axiom",
     "lineCount": 227,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "proofRepoPath": "Proofs/Erdos469Problem.lean",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -34,14 +36,14 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 22,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "IsPseudoperfect, IsPrimitivePseudoperfect, primitivePseudoperfectSet."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 39,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "6 is primitive pseudoperfect, perfect numbers are pseudoperfect, infinitely many exist, multiples inherit property."
     },
     {
@@ -55,7 +57,7 @@
       "id": "implications",
       "title": "Implications and Context",
       "startLine": 71,
-      "endLine": 85,
+      "endLine": 227,
       "summary": "Connection to analytic number theory, density questions, and OEIS A006036."
     }
   ],
@@ -91,5 +93,39 @@
     "Erdős–Graham (1980), p.93",
     "OEIS A006036",
     "https://erdosproblems.com/469"
+  ],
+  "leanFile": {
+    "lineCount": 228,
+    "structureCount": 0,
+    "axiomCount": 2,
+    "theoremCount": 19,
+    "lemmaCount": 0,
+    "defCount": 7,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-313",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, pseudoperfect-numbers"
+    },
+    {
+      "targetId": "erdos-412",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convergence, number-theory, open"
+    },
+    {
+      "targetId": "erdos-884",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisors, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-313",
+    "erdos-412",
+    "erdos-884"
   ]
 }

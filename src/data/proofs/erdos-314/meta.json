@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/314",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -83,42 +83,42 @@
       "title": "Harmonic Sum Definitions",
       "summary": "harmonicNumber, partialHarmonicSum",
       "startLine": 33,
-      "endLine": 50
+      "endLine": 51
     },
     {
       "id": "m-function",
       "title": "The Function m(n)",
       "summary": "Minimal m with partial sum ≥ 1",
       "startLine": 52,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "epsilon",
       "title": "The Error Term ε(n)",
       "summary": "Definition and basic bounds",
       "startLine": 72,
-      "endLine": 90
+      "endLine": 91
     },
     {
       "id": "approximation",
       "title": "Approximation of m(n)",
       "summary": "m(n)/n → e asymptotically",
       "startLine": 92,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "Is lim inf n²ε(n) = 0?",
       "startLine": 105,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "solution",
       "title": "Lim-Steinerberger Theorem (2024)",
       "summary": "YES with explicit bounds",
       "startLine": 115,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "optimal",
@@ -132,7 +132,7 @@
       "title": "Summary",
       "summary": "Main results and open questions",
       "startLine": 158,
-      "endLine": 182
+      "endLine": 184
     }
   ],
   "conclusion": {
@@ -155,5 +155,27 @@
     "axiomCount": 10,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, harmonic-numbers, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved, unit-fractions"
+    },
+    {
+      "targetId": "erdos-296",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-309",
+    "erdos-286",
+    "erdos-296"
+  ]
 }

@@ -23,11 +23,7 @@ References:
   factorials", J. Austral. Math. Soc. 1991
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Prime.Defs
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib
 import Mathlib.Tactic
 
 namespace Erdos1108
@@ -85,11 +81,17 @@ theorem one_is_powerful : IsPowerful 1 := by
   intro p hp hdiv
   exact absurd (Nat.eq_one_of_dvd_one hdiv) (Nat.Prime.ne_one hp)
 
-/-- 4 = 2² is powerful. Axiomatized for simplicity. -/
-axiom four_is_powerful : IsPowerful 4
+/-- 4 = 2² is powerful. The only prime dividing 4 is 2, and 2² = 4 ∣ 4. -/
+theorem four_is_powerful : IsPowerful 4 := by
+  intro p hp hdiv
+  have : p ≤ 4 := Nat.le_of_dvd (by norm_num) hdiv
+  interval_cases p <;> simp_all (config := { decide := true })
 
-/-- 9 = 3² is powerful. Axiomatized for simplicity. -/
-axiom nine_is_powerful : IsPowerful 9
+/-- 9 = 3² is powerful. The only prime dividing 9 is 3, and 3² = 9 ∣ 9. -/
+theorem nine_is_powerful : IsPowerful 9 := by
+  intro p hp hdiv
+  have : p ≤ 9 := Nat.le_of_dvd (by norm_num) hdiv
+  interval_cases p <;> simp_all (config := { decide := true })
 
 /- ## Perfect Powers in Factorial Sums -/
 

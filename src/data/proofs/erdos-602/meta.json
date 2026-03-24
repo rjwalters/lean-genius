@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/602",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos602Problem.lean",
     "tags": [
       "erdos",
@@ -17,12 +17,12 @@
       "infinite-sets",
       "open"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 602,
     "erdosUrl": "https://erdosproblems.com/602",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set",
@@ -60,7 +60,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 299,
-    "assumptions": "No axioms. 1 sorry(s) remain in the formalization."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries."
   },
   "overview": {
     "historicalContext": "This problem was posed by Komjáth and appears in [Er87]. It concerns 'Property B' for families of infinite sets - the existence of 2-colorings avoiding monochromatic members.\n\nProperty B is well-studied for finite hypergraphs (where it always holds for 2-uniform). The extension to infinite sets with specific intersection constraints is more subtle.\n\nThe condition that intersections ≠ 1 is crucial and non-obvious. Single-element intersections allow counterexamples via constraint-forcing arguments.",
@@ -86,70 +86,70 @@
       "title": "Basic Definitions",
       "summary": "SetFamily, IsCountablyInfinite, AllCountablyInfinite",
       "startLine": 29,
-      "endLine": 53
+      "endLine": 54
     },
     {
       "id": "intersections",
       "title": "Intersection Conditions",
       "summary": "HasFiniteIntersection, IntersectionNotOne, ValidIntersection, IsErdosFamily",
       "startLine": 55,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "colorings",
       "title": "2-Colorings",
       "summary": "TwoColoring, ColoredSubset, IsMonochromatic, HasPropertyB",
       "startLine": 81,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "family-property-b",
       "title": "Property B for Families",
       "summary": "IsValidColoring, FamilyHasPropertyB, ErdosQuestion602",
       "startLine": 106,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture602, NoCounterexample, conjecture_equiv",
       "startLine": 125,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "conditions",
       "title": "Why Conditions Matter",
       "summary": "Role of each condition explained",
       "startLine": 148,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "related",
       "title": "Related Property B Results",
       "summary": "Miller's theorem, KomjathProblem",
       "startLine": 168,
-      "endLine": 181
+      "endLine": 182
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "CountableIndex, IsDisjointFamily, IsAlmostDisjoint",
       "startLine": 183,
-      "endLine": 203
+      "endLine": 204
     },
     {
       "id": "obstructions",
       "title": "Obstructions to Property B",
       "summary": "Is2ChromaticForcing, counterexample_structure",
       "startLine": 205,
-      "endLine": 234
+      "endLine": 235
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_602_status, erdos_602_statement",
       "startLine": 236,
-      "endLine": 269
+      "endLine": 299
     }
   ],
   "conclusion": {
@@ -176,5 +176,27 @@
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 22
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: coloring, combinatorics, open"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, set-theory"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1105",
+    "erdos-1167",
+    "erdos-1169"
+  ]
 }

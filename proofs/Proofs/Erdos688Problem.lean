@@ -17,10 +17,7 @@ one congruence m ≡ aₚ (mod p). Estimate εₙ; is εₙ = o(1)?
 - <https://erdosproblems.com/688>
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 
@@ -89,9 +86,22 @@ axiom mertens_coverage :
 
 /-- Monotonicity: if ε₁ ≤ ε₂, the primes in (n^ε₁, n] include those
     in (n^ε₂, n], so more primes are available. -/
-axiom exponent_monotone_coverage :
+theorem exponent_monotone_coverage :
   ∀ (n : ℕ) (ε₁ ε₂ : ℝ), 0 < ε₁ → ε₁ ≤ ε₂ → ε₂ < 1 →
-    (primesInRange n ε₂) ⊆ (primesInRange n ε₁)
+    (primesInRange n ε₂) ⊆ (primesInRange n ε₁) := by
+  intro n ε₁ ε₂ hε₁ hε₁₂ _
+  intro p hp
+  simp only [primesInRange, Finset.mem_filter] at hp ⊢
+  refine ⟨hp.1, hp.2.1, ?_, hp.2.2.2⟩
+  -- Need: (p : ℝ) > (n : ℝ) ^ ε₁
+  -- We know: (p : ℝ) > (n : ℝ) ^ ε₂ and ε₁ ≤ ε₂
+  by_cases hn : n = 0
+  · subst hn; simp [Real.zero_rpow (ne_of_gt hε₁)] at hp
+  · calc (n : ℝ) ^ ε₁ ≤ (n : ℝ) ^ ε₂ := by
+          apply Real.rpow_le_rpow_of_exponent_le
+          · exact Nat.one_le_cast.mpr (Nat.pos_of_ne_zero hn)
+          · exact hε₁₂
+      _ < p := hp.2.2.1
 
 /-- Covering with all primes ≤ n (ε = 0): by CRT and the prime number
     theorem, one class per prime suffices to cover [1, n] for large n. -/
@@ -102,9 +112,10 @@ axiom full_prime_covering :
 
 /-- The sieve connection: covering [1,n] by one residue class per prime
     is dual to sieving — excluding one class per prime. -/
-axiom sieve_duality :
+theorem sieve_duality :
   ∀ (n : ℕ) (primes : Finset ℕ),
     (∀ p ∈ primes, Nat.Prime p) →
     -- If we exclude one class per prime, the remaining set is the
     -- complement of the covering
-    True
+    True := by
+  tauto

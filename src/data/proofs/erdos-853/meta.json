@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/853",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth",
@@ -60,18 +60,6 @@
       "erdos_853_weak: weak conjecture r(x) → ∞",
       "erdos_853_strong: strong conjecture r(x)/log x → ∞"
     ],
-    "crossReferences": [
-      {
-        "targetId": "prime-number-theorem",
-        "relationship": "foundational",
-        "description": "PNT gives average gap size ~log x, providing context for the strong conjecture r(x)/log x → ∞ which asks for the smallest missing gap to grow faster than the average gap"
-      },
-      {
-        "targetId": "twin-primes-special",
-        "relationship": "thematic",
-        "description": "Twin primes (gap = 2) are the smallest possible gap; Problem 853 asks whether ALL even gaps eventually appear, generalizing the twin prime question to arbitrary even gaps"
-      }
-    ],
     "axiomCount": 9,
     "lineCount": 237,
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -98,28 +86,28 @@
       "id": "infrastructure",
       "title": "Mathlib-Based Prime Infrastructure",
       "startLine": 40,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "Defines `nthPrime(n) = \\mathrm{Nat.nth}\\,\\mathrm{Prime}\\,n$ and `primeGap(n) = p_{n+1} - p_n$`. Proves 9 structural theorems: `nthPrime_prime`, `nthPrime_strictMono`, `primeGap_pos`, `primeGap_zero` ($d_0 = 1$), `primeGap_even` ($2 \\mid d_n$ for $n \\ge 1$), `primeGap_ge_two`, `nthPrime_zero` ($p_0 = 2$), `nthPrime_one` ($p_1 = 3$), `nthPrime_mono`."
     },
     {
       "id": "gap-set",
       "title": "Gap Set and r(x)",
       "startLine": 113,
-      "endLine": 157,
+      "endLine": 158,
       "summary": "Defines $G(x) = \\{d_n : n \\ge 1, p_n \\le x\\}$. Proves `gapSet_mono` ($G(x) \\subseteq G(y)$), `gapSet_even`, `gapSet_pos`, `gapSet_ge_two`. Axiomatizes $r(x)$ with `r_even_pos`, `r_not_gap`, `r_minimal`."
     },
     {
       "id": "monotonicity",
       "title": "Proved Properties of r(x)",
       "startLine": 159,
-      "endLine": 173,
+      "endLine": 174,
       "summary": "Proves `r_monotone` ($x \\le y \\Rightarrow r(x) \\le r(y)$) by contradiction using `r_minimal` and `gapSet_mono`. Axiomatizes trivial upper bound $r(x) \\le x$."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures",
       "startLine": 175,
-      "endLine": 203,
+      "endLine": 204,
       "summary": "States `erdos_853_weak` ($r(x) \\to \\infty$) and `erdos_853_strong` ($r(x)/\\log x \\to \\infty$). Proves `weak_implies_all_even_gaps`: the weak conjecture implies every even $t \\ge 2$ eventually enters $G(x)$."
     },
     {
@@ -159,5 +147,27 @@
     "axiomCount": 9,
     "theoremCount": 15,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-gaps, primes"
+    },
+    {
+      "targetId": "erdos-454",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-gaps, primes"
+    },
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-gaps"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-15",
+    "erdos-454",
+    "erdos-1137"
+  ]
 }

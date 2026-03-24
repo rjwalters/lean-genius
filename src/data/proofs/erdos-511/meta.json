@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/511",
     "erdosProblemStatus": "disproved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Complex.abs",
@@ -175,5 +175,27 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, disproved, lemniscates, polynomials"
+    },
+    {
+      "targetId": "erdos-1039",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, lemniscates, polynomials"
+    },
+    {
+      "targetId": "erdos-1041",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, metric-geometry, polynomials"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1048",
+    "erdos-1039",
+    "erdos-1041"
+  ]
 }

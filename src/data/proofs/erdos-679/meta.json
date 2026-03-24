@@ -42,24 +42,6 @@
       ],
       "significance": "Probes the simultaneous distribution of ω across arithmetic progressions n-k. The main conjecture is open after 45+ years and cannot be resolved by finite computation. The disproved stronger version (O(1) error) shows the (1+ε) multiplicative slack is essential. Resolution would reveal deep structure in the correlation of prime factor counts across consecutive differences."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-248",
-        "relationship": "Both study ω bounds on consecutive integers; #248 asks about forward shifts ω(n+k), #679 about backward shifts ω(n-k). #248 solved by Tao-Teräväinen"
-      },
-      {
-        "id": "erdos-413",
-        "relationship": "Both study structural constraints on ω; #413 formalizes ω-barriers (m + ω(m) ≤ n), #679 asks about simultaneous smallness of ω(n-k)"
-      },
-      {
-        "id": "erdos-690",
-        "relationship": "Both study prime factor distribution; #690 examines k-th prime factor density and unimodality, #679 examines total prime factor count bounds"
-      },
-      {
-        "id": "erdos-673",
-        "relationship": "Both involve arithmetic functions of divisors; #673 studies G(n) via τ(n), #679 studies ω(n) which counts distinct prime divisors"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
@@ -102,9 +84,10 @@
       "dichotomy: excluded-middle separation of outcomes",
       "density_upper_bound: special n have density ≤ x/log x"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 248,
-    "assumptions": "1 axiom(s) and 14 sorry(s). See the Lean source for details."
+    "assumptions": "0 axiom(s) and 14 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979 about the distribution of distinct prime factors across differences n-k. The question asks whether infinitely many integers n exist such that all predecessors n-k (for large k) have ω below the threshold (1+ε) log k / log log k.\n\nThe problem has a subtle two-part structure. The stronger version — with an additive O(1) error instead of the multiplicative (1+ε) factor — has been disproven: for every large n, some k < n gives ω(n-k) ≥ log k/log log k + c·log k/(log log k)². But the main question with the (1+ε) slack remains open.\n\nThe Hardy-Ramanujan theorem (1917) provides the context: ω(n) ~ log log n for 'typical' n, while the maximum of ω for n ≤ x is ~ log x/log log x. The threshold is (1+ε) times this maximum, so the question asks whether all predecessors can simultaneously stay below (1+ε) times the extremal order. Probabilistic heuristics suggest special n should be rare (count ~ x/log x), and the problem provably cannot be resolved by finite computation.",
@@ -130,77 +113,77 @@
       "title": "The ω Function",
       "summary": "Defines ω(n) = |primeFactors(n)| via `Nat.primeFactors.card`. Proves ω(1) = 0, ω(p) = 1, ω(p^k) = 1, and additivity ω(mn) = ω(m) + ω(n) for coprime m, n.",
       "startLine": 30,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "hardy-ramanujan",
       "title": "Hardy-Ramanujan Normal Order",
       "summary": "Formalizes the normal order theorem: ω(n) ~ log log n for almost all n. Also bounds the maximum: max ω(n≤x) ≤ 2 log x / log log x.",
       "startLine": 53,
-      "endLine": 72
+      "endLine": 73
     },
     {
       "id": "main",
       "title": "The Main Question",
       "summary": "Defines the threshold (1+ε) log k / log log k, the SatisfiesProperty predicate, and the MainConjecture: infinitely many n satisfy the property. Notes the problem is OPEN.",
       "startLine": 74,
-      "endLine": 90
+      "endLine": 91
     },
     {
       "id": "stronger",
       "title": "Stronger Version (Disproven)",
       "summary": "Defines StrongerVersion with O(1) error and proves it FALSE. Gives quantitative lower bound: ∃ c > 0, ∀ large n, ∃ k: ω(n-k) ≥ threshold + c·log k/(log log k)².",
       "startLine": 92,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "bigomega",
       "title": "The Ω Function Variant",
       "summary": "Defines Ω(n) counting prime factors with multiplicity, proves Ω ≥ ω, and states the analogous question with threshold log₂ k.",
       "startLine": 111,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "special",
       "title": "Special Cases",
       "summary": "Analyzes n = 2^m (powers of 2) and n = primorial(r) = p₁···pᵣ. Shows both fail the property — some k always gives large ω(n-k).",
       "startLine": 130,
-      "endLine": 143
+      "endLine": 144
     },
     {
       "id": "lower",
       "title": "Lower Bounds",
       "summary": "For any n ≥ 10, some k gives ω(n-k) ≥ (log log n)/2. The set of k with ω(n-k) ≤ 2 has density < 1.",
       "startLine": 145,
-      "endLine": 157
+      "endLine": 158
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Placeholder connections to Problem #248 (bounded ω(n+k), solved by Tao-Teräväinen) and Problem #413 (ω-barriers).",
       "startLine": 159,
-      "endLine": 167
+      "endLine": 168
     },
     {
       "id": "heuristics",
       "title": "Probabilistic Heuristics",
       "summary": "Random n should not satisfy the property. Expected count of special n ≤ x is heuristically ~ x/log x. Computational evidence: no n ≤ 10^6 satisfies the property for ε = 0.1.",
       "startLine": 169,
-      "endLine": 188
+      "endLine": 189
     },
     {
       "id": "dichotomy",
       "title": "Key Dichotomy",
       "summary": "Either infinitely many special n exist (MainConjecture) or there is a uniform lower bound: ∀ large n, ∃ k with ω(n-k) ≥ (1+c) threshold.",
       "startLine": 190,
-      "endLine": 197
+      "endLine": 198
     },
     {
       "id": "density",
       "title": "Density Considerations",
       "summary": "If special n exist, their count is at most x/log x (zero density). Asks whether density is even x^α for α < 1.",
       "startLine": 199,
-      "endLine": 212
+      "endLine": 248
     }
   ],
   "conclusion": {
@@ -285,7 +268,7 @@
     ],
     "namespace": "Erdos679",
     "lineCount": 248,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 18
   },

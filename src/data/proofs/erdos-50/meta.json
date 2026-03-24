@@ -22,7 +22,7 @@
     "erdosNumber": 50,
     "erdosUrl": "https://erdosproblems.com/50",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
@@ -91,42 +91,42 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 28,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Imports $\\texttt{Nat.Totient}$ for $\\varphi(n)$, $\\texttt{MeasureTheory.Measure.Lebesgue.Basic}$ for the Lebesgue measure and $\\forall^{\\text{ae}}$ quantifier, and opens $\\texttt{Filter}$/$\\texttt{Finset}$ for density computation."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 34,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Defines $\\texttt{totientRatioBelow}(c) = \\{n > 0 : \\varphi(n)/n < c\\}$, $\\texttt{naturalDensity}(S)$ via $\\texttt{Filter.liminf}$, and Schoenberg's $f(c) = d(\\{n : \\varphi(n)/n < c\\})$."
     },
     {
       "id": "schoenberg",
       "title": "Schoenberg's Theorem and Properties",
       "startLine": 52,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Axiomatizes Schoenberg's density existence theorem, monotonicity ($c_1 \\leq c_2 \\Rightarrow f(c_1) \\leq f(c_2)$), boundary values ($f(0) = 0$, $f(1) = 1$), and continuity of $f$ on $[0,1]$."
     },
     {
       "id": "singularity",
       "title": "Erdős's Pure Singularity Result",
       "startLine": 69,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Axiomatizes Erdős's theorem: $f'(x) = 0$ for Lebesgue-almost every $x \\in [0,1]$, making $f$ a purely singular distribution function analogous to the Cantor function."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture ($250 Prize)",
       "startLine": 79,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "The $250 prize question: $\\neg \\exists x,\\; \\exists d > 0 : f'(x) = d$. Wherever $f$ is differentiable, the derivative must be zero—strengthening 'a.e.' to 'everywhere it exists.'"
     },
     {
       "id": "euler-product",
       "title": "Euler Product Formula",
       "startLine": 88,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Axiomatizes $\\varphi(n)/n = \\prod_{p \\in \\texttt{n.primeFactors}}(1 - 1/p)$: the totient ratio depends only on the prime support of $n$, not on multiplicities."
     },
     {

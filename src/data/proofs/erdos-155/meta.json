@@ -28,7 +28,8 @@
     ],
     "axiomCount": 11,
     "lineCount": 109,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The study of Sidon sets ($B_2$ sets) began when the Hungarian mathematician Simon Sidon asked Erdős in 1932 about sets of integers with all pairwise sums distinct. Erdős and Turán (1941) proved the fundamental upper bound $F(N) = O(\\sqrt{N})$ by counting pairwise sums, and Singer (1938) achieved the matching lower bound $F(N) \\ge (1-o(1))\\sqrt{N}$ using perfect difference sets from finite projective geometry. Lindström (1969) refined the upper bound to $F(N) \\le \\sqrt{N} + N^{1/4} + 1$, and the gap between upper and lower bounds in the second-order term remains open (the '$\\sqrt{N} + 1/2$ vs $\\sqrt{N} + N^{1/4}$' question). Erdős posed Problem #155 around 1992, asking about the fine growth structure: since $F(N)$ increases by 1 only $\\sim \\sqrt{N}$ times in $[1,N]$, the increase points should be very sparse — heuristically spaced $\\sim \\sqrt{N}$ apart. The conjecture that $F(N+k) \\le F(N) + 1$ for fixed $k$ formalizes this, and the stronger form $k \\approx \\varepsilon\\sqrt{N}$ would nearly pin down the increase point distribution.",
@@ -52,49 +53,49 @@
       "id": "imports",
       "title": "Imports",
       "startLine": 26,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Imports `Finset`, `Nat`, `Filter`, and Mathlib tactics for finite set operations and real-valued bounds."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 31,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Defines `IsSidonSet` ($\\forall a \\le b, c \\le d \\in S : a+b = c+d \\Rightarrow (a,b) = (c,d)$) and axiomatizes $F(N)$ with achievability and optimality. The axiom `maxSidonSize : \\mathbb{N} \\to \\mathbb{N}$ is opaque, characterized by its properties."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
       "startLine": 52,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Axiomatizes $F(N) \\le F(N+1) \\le F(N) + 1$: the sequence $F(1), F(2), \\ldots$ is nondecreasing with steps of 0 or 1."
     },
     {
       "id": "asymptotic-bounds",
       "title": "Asymptotic Bounds",
       "startLine": 60,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Axiomatizes the Erdős–Turán/Lindström upper bound $F(N) \\le \\sqrt{N} + N^{1/4} + 1$ and the Singer lower bound $F(N) \\ge (1-\\varepsilon)\\sqrt{N}$ for large $N$. Together: $F(N) = (1+o(1))\\sqrt{N}$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: $F(N+k) \\le F(N) + 1$",
       "startLine": 73,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "The central open problem: for every fixed $k \\ge 1$, $F(N+k) \\le F(N) + 1$ for all sufficiently large $N$. The quantifier structure $\\forall k, \\exists N_0, \\forall N \\ge N_0$ allows $N_0$ to depend on $k$."
     },
     {
       "id": "strong-form",
       "title": "Stronger Form: $k \\approx \\varepsilon\\sqrt{N}$",
       "startLine": 83,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Erdős's stronger conjecture: $F(N + \\lfloor\\varepsilon\\sqrt{N}\\rfloor) \\le F(N) + 1$, implying consecutive increase points are separated by $\\ge \\varepsilon\\sqrt{N}$."
     },
     {
       "id": "consequences",
       "title": "Consequences: Sparse Increase Points",
       "startLine": 92,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "The number of increase points in $[1,M]$ is $\\le (1+\\varepsilon)\\sqrt{M}$. Since $F(M) \\sim \\sqrt{M}$ and each increase adds 1, this count equals $F(M) - 1 \\sim \\sqrt{M}$."
     },
     {
@@ -140,5 +141,27 @@
     "O'Bryant (2004): A complete annotated bibliography of work related to Sidon sets",
     "OEIS A003022: maximal Sidon sets, A143824: increase points",
     "https://erdosproblems.com/155"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-156",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-332",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, difference-sets, open"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sidon-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-156",
+    "erdos-332",
+    "erdos-340"
   ]
 }

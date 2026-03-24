@@ -23,7 +23,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 10,
     "lineCount": 158,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem lies at the intersection of Ramsey theory and graph partitioning—two pillars of combinatorics that grew from the same soil in the mid-20th century. Ramsey's theorem (1930) guarantees monochromatic cliques in any edge-coloring, but says nothing about how efficiently one can *pack* such cliques. Erdős posed the question: if we greedily tile a 2-colored $K_n$ with vertex-disjoint monochromatic copies of $K_t$, how many vertices must remain uncovered?\n\nThe first breakthrough came from Moon (1966), who proved $f(3) = 4$ for $n \\ge 8$: when packing monochromatic triangles in any 2-colored complete graph on 8 or more vertices, at most 4 vertices are left over. Moon's proof combined a careful case analysis of the red/blue degree sequence with an extremal argument about triangle-free subgraphs.\n\nErdős himself observed that $f(t) < R(t,t) \\le 4^t$ by a simple but elegant argument: the leftover vertices, together with their induced coloring, form a 2-colored complete graph containing no monochromatic $K_t$ (otherwise we could extend the partition). By definition, the size of such a graph is bounded by $R(t,t) - 1$. The upper bound $R(t,t) \\le \\binom{2t-2}{t-1} \\le 4^t$ is the classical Erdős-Szekeres (1935) result, proved by double induction on the Ramsey numbers.\n\nThis led Erdős to ask two more refined questions: (1) Does $f(t)^{1/t} \\to 1$, meaning the leftover grows subexponentially? (2) Is $f(t) = O(t)$, meaning linear growth? Both questions hoped that the $4^t$ Ramsey bound was a massive overestimate.\n\nBurr, Erdős, and Spencer (1975) settled both questions negatively with an exact formula. They proved that for $t \\ge 3$ and $n$ sufficiently large, $f(t) = R(t, t-1) + x$ where $0 \\le x < t$ is determined by $n \\pmod{t}$. The key shift is from the *diagonal* Ramsey number $R(t,t)$ to the *off-diagonal* $R(t, t-1)$: the leftover vertices can contain a monochromatic $K_{t-1}$ but not $K_t$, so the controlling quantity is $R(t, t-1)$, not $R(t,t)$. Since $R(t, t-1)$ still grows exponentially (at rate $\\sim 4^t / \\sqrt{t}$ by the Erdős-Szekeres recursion), we get $f(t)^{1/t} \\to 4$ and $f(t)$ is far from linear.\n\nThe Burr-Erdős-Spencer result exemplifies a common theme in Ramsey theory: the transition from crude exponential bounds to exact or near-exact formulas often requires replacing diagonal Ramsey numbers with off-diagonal ones. This pattern recurs in the Ramsey multiplicity problem, the Folkman number problem, and the Erdős-Hajnal conjecture.",
@@ -48,56 +49,56 @@
       "title": "Problem Documentation and References",
       "summary": "Module docstring documenting the problem statement, historical background (Moon 1966, Erdős, BES 1975), the exact formula $f(t) = R(t,t-1) + x$, and resolution of both Erdős questions. Imports Mathlib.",
       "startLine": 1,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "two-coloring",
       "title": "Two-Colorings and Monochromatic Cliques",
       "summary": "Defines `TwoColoring n` as $\\text{Fin}\\;n \\to \\text{Fin}\\;n \\to \\text{Bool}$, the symmetry predicate $c(i,j) = c(j,i)$, and `isMonochromaticClique` requiring all edges in $S$ to have the same color.",
       "startLine": 45,
-      "endLine": 58
+      "endLine": 59
     },
     {
       "id": "clique-partition",
       "title": "Clique Partitions",
       "summary": "Defines `areDisjoint` for pairwise disjoint sets and the `CliquePartition` structure bundling cliques of size $t$, color assignments, monochromaticity proofs, and disjointness. Defines `coveredVertices` and `leftover`.",
       "startLine": 60,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "f-definition",
       "title": "The Function $f(t)$",
       "summary": "Three-level minimax: `minLeftover(c,t)` via `sInf`, `f_n(n,t)` via `sSup` over colorings, and `f(t)` via `sSup` over $n$. This captures $f(t) = \\sup_n \\max_c \\min_P \\text{leftover}(P)$.",
       "startLine": 87,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "moon",
       "title": "Moon's Theorem: $f(3) = 4$",
       "summary": "Axiomatizes Moon's 1966 result: $f(3) = 4$ and the uniform version $f_n(n, 3) = 4$ for $n \\ge 8$.",
       "startLine": 105,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "ramsey-bound",
       "title": "Ramsey Numbers and Erdős Bound",
       "summary": "Axiomatizes `ramseyNumber(s,t)` and Erdős's observations: $f(t) < R(t,t)$ (leftover avoids monochromatic $K_t$) and the crude bound $R(t,t) \\le 4^t$ from Erdős-Szekeres.",
       "startLine": 115,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "exact-formula",
       "title": "Burr-Erdős-Spencer Exact Formula",
       "summary": "The main result axiomatized: $\\exists x < t: f(t) = R(t, t-1) + x$ for $t \\ge 3$. Includes both the lower bound $f(t) \\ge R(t, t-1)$ and upper bound $f(t) < R(t, t-1) + t$.",
       "startLine": 128,
-      "endLine": 140
+      "endLine": 141
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
       "summary": "Two consequences of the BES formula: the root limit $f(t)^{1/t} \\to 4$ (via `Filter.Tendsto`) answering Erdős's first question, and $f(t) \\ne O(t)$ (negated existential) answering the second.",
       "startLine": 142,
-      "endLine": 155
+      "endLine": 158
     }
   ],
   "conclusion": {

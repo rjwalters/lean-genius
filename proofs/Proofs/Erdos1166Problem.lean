@@ -17,13 +17,7 @@
 -- Status: PROVED
 -- Reference: erdosproblems.com/1166, Erdős–Révész [Va99, 6.78]
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 open Real
 
@@ -93,8 +87,10 @@ axiom mem_mostVisitedSet (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
     x ∈ mostVisitedSet ω k ↔ visitCount ω k x = maxVisitCount ω k
 
 /-- F(k) is nonempty (the maximum is achieved). -/
-axiom mostVisitedSet_nonempty (ω : RandomWalk) (k : ℕ) :
-    (mostVisitedSet ω k).Nonempty
+theorem mostVisitedSet_nonempty (ω : RandomWalk) (k : ℕ) :
+    (mostVisitedSet ω k).Nonempty := by
+  obtain ⟨x, hx⟩ := maxVisitCount_achieved ω k
+  exact ⟨x, (mem_mostVisitedSet ω k x).mpr hx⟩
 
 -- ## Cumulative Most-Visited Points
 
@@ -176,8 +172,23 @@ theorem erdos1166_polylog :
         ((cumulativeMostVisited ω n).card : ℝ) ≤ (Real.log n) ^ α) := by
   apply almostSurely_mono _ erdos1166_main
   intro ω ⟨C, hC, N, hN⟩
-  exact ⟨3, by norm_num, N, fun n hn =>
-    le_trans (hN n hn) (by sorry)⟩ -- C · (log n)² ≤ (log n)³ for large n
+  -- Choose N' large enough that log n ≥ C for all n ≥ N'
+  -- Then C * (log n)² ≤ (log n)³ = (log n)^3
+  refine ⟨3, by norm_num, max N (Nat.ceil (Real.exp C) + 1), fun n hn => ?_⟩
+  have hN' : N ≤ n := (le_max_left _ _).trans hn
+  have hexp : Nat.ceil (Real.exp C) + 1 ≤ n := (le_max_right _ _).trans hn
+  have hn_large : (Real.exp C : ℝ) < n := by
+    calc Real.exp C ≤ ↑(Nat.ceil (Real.exp C)) := Nat.le_ceil _
+      _ < ↑(Nat.ceil (Real.exp C) + 1) := by exact_mod_cast Nat.lt_succ_of_le le_rfl
+      _ ≤ (n : ℝ) := by exact_mod_cast hexp
+  have hlog_ge : C ≤ Real.log n := by
+    rw [← Real.log_exp C]
+    exact Real.log_le_log (Real.exp_pos C) (le_of_lt hn_large)
+  have hlog_pos : 0 < Real.log n :=
+    lt_of_lt_of_le (by positivity) hlog_ge
+  calc ((cumulativeMostVisited ω n).card : ℝ) ≤ C * (Real.log ↑n) ^ 2 := hN n hN'
+    _ ≤ Real.log ↑n * (Real.log ↑n) ^ 2 := by nlinarith [sq_nonneg (Real.log (n : ℝ))]
+    _ = (Real.log ↑n) ^ 3 := by ring
 
 -- ## Proof Structure
 
@@ -252,8 +263,21 @@ theorem erdosTaylor_implies_bound :
   apply almostSurely_mono _ h
   intro ω hω
   obtain ⟨N, hN⟩ := hω 1 one_pos
-  exact ⟨1 / Real.pi + 1, by positivity, N, fun n hn => by
-    have := hN n hn
-    sorry⟩ -- follows from |T_n/(log n)² - 1/π| < 1
+  refine ⟨1 / Real.pi + 1, by positivity, max N 2, fun n hn => ?_⟩
+  have hN' : N ≤ n := (le_max_left N 2).trans hn
+  have hn2 : 2 ≤ n := (le_max_right N 2).trans hn
+  have h_abs := hN n hN'
+  -- From |T/(log n)² - 1/π| < 1, extract upper bound
+  have h_upper := (abs_lt.mp h_abs).2
+  -- h_upper : T/(log n)² - 1/π < 1, i.e., T/(log n)² < 1/π + 1
+  have hlog_pos : (0 : ℝ) < Real.log n :=
+    Real.log_pos (by exact_mod_cast (show 1 < n by omega))
+  have hlog2_pos : (0 : ℝ) < (Real.log ↑n) ^ 2 := sq_pos_of_pos hlog_pos
+  -- T/(log n)² < 1/π + 1, multiply by (log n)²
+  have h1 : (maxVisitCount ω n : ℝ) / (Real.log ↑n) ^ 2 < 1 / Real.pi + 1 := by
+    linarith
+  have h2 : (maxVisitCount ω n : ℝ) < (1 / Real.pi + 1) * (Real.log ↑n) ^ 2 :=
+    (div_lt_iff hlog2_pos).mp h1
+  linarith
 
 end Erdos1166

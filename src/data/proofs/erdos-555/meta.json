@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Graham",
     "sourceUrl": "https://erdosproblems.com/555",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos555Problem.lean",
     "tags": [
       "erdos",
@@ -14,14 +14,15 @@
       "graph theory",
       "extremal combinatorics"
     ],
-    "badge": "formalized",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 555,
     "erdosUrl": "https://erdosproblems.com/555",
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 94,
-    "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem asking for the precise growth rate of $R(C_{2n}; k)$, the multicolor Ramsey number of even cycles. For a fixed even cycle $C_{2n}$ and $k$ colors, $R(C_{2n}; k)$ is the minimum $m$ such that every $k$-coloring of $K_m$ contains a monochromatic $C_{2n}$. Erdős established the general bounds $k^{1+1/(2n)} \\ll R(C_{2n}; k) \\ll k^{1+1/(n-1)}$. The lower bound uses probabilistic or algebraic constructions (for $C_4$, the polarity graph of a finite projective plane provides the sharp construction). The upper bound relies on the Szemeredi regularity lemma or the dependent random choice technique to find long paths in dense monochromatic subgraphs. For the special case $C_4$ ($n = 2$), Chung and Graham (1975) proved the nearly tight bounds $k^2 - k + 1 < R(C_4; k) \\leq k^2 + k + 1$ when $k - 1$ is a prime power, connecting the problem to the existence of finite projective planes and the Zarankiewicz problem $z(m; 2, 2)$. The gap between the exponents $1/(2n)$ (lower) and $1/(n-1)$ (upper) represents one of the central open questions in Ramsey theory for sparse graphs. For $n = 2$, both exponents equal 1, so the $C_4$ case is resolved up to lower-order terms. For $n \\geq 3$, the gap is genuine and no improvements to either bound are known in general.",
@@ -51,28 +52,28 @@
       "id": "cycle-coloring",
       "title": "Even Cycles and Colorings",
       "startLine": 24,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines HasCycleOfLength (injective vertex sequence forming a cycle), EdgeColoring (k-coloring of K_m), and monochromaticGraph (subgraph of edges with color c, 1 sorry for symmetry)."
     },
     {
       "id": "ramsey-def",
       "title": "Ramsey Number Definition",
       "startLine": 48,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines ramseyEvenCycle n k = R(C_{2n}; k) via Nat.find with a trivial existence witness."
     },
     {
       "id": "erdos-bounds",
       "title": "Erdos General Bounds",
       "startLine": 58,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Axioms: lower bound R(C_{2n}; k) ≥ c·k^{1+1/(2n)} and upper bound R(C_{2n}; k) ≤ C·k^{1+1/(n-1)} for n ≥ 2."
     },
     {
       "id": "c4-case",
       "title": "C₄ Case: Chung-Graham Bounds",
       "startLine": 72,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Axioms: k²-k+1 < R(C₄; k) (when k-1 is prime power) and R(C₄; k) ≤ k²+k+1 for all k."
     },
     {
@@ -107,5 +108,27 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1013",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
+    },
+    {
+      "targetId": "erdos-1177",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
+    },
+    {
+      "targetId": "erdos-151",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: Ramsey theory, graph theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1013",
+    "erdos-1177",
+    "erdos-151"
+  ]
 }

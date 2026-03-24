@@ -70,7 +70,10 @@
       "Faber-Krahn additivity for disjoint balls"
     ],
     "dateAdded": "2025-12-21",
-    "millenniumProblem": "navier-stokes"
+    "millenniumProblem": "navier-stokes",
+    "proofRepoPath": "Proofs/NavierStokes.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 21111
   },
   "objection": {
     "verdict": "CONDITIONAL 3D + PROVEN 2D",
@@ -341,5 +344,49 @@
     "navier-stokes-oq-02",
     "lebesgue-measure",
     "fourier-series"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 21111,
+    "structureCount": 249,
+    "axiomCount": 0,
+    "theoremCount": 832,
+    "lemmaCount": 14,
+    "defCount": 101,
+    "imports": [
+      "Mathlib.Analysis.Calculus.Deriv.Basic",
+      "Mathlib.Analysis.Calculus.FDeriv.Basic",
+      "Mathlib.Analysis.Calculus.ContDiff.Basic",
+      "Mathlib.Analysis.Calculus.Monotone",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Continuity",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.Complex.ExponentialBounds",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.Normed.Module.FiniteDimension",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Analysis.Real.Pi.Bounds",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Symmetric",
+      "Mathlib.LinearAlgebra.Eigenspace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Real",
+      "Set",
+      "Filter",
+      "Topology",
+      "scoped",
+      "Topology",
+      "BigOperators",
+      "ENNReal",
+      "TwoDimensionalGlobal"
+    ]
+  }
 }

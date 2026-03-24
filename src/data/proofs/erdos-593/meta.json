@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 4,
     "lineCount": 127,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1995 as part of his investigations into infinite combinatorics and hypergraph coloring, offering a $500 prize for its solution. The question asks which finite 3-uniform hypergraphs are 'unavoidable' — meaning they must appear in every 3-uniform hypergraph of uncountable chromatic number. The motivation comes from the completely solved graph case: for ordinary graphs, a finite graph is unavoidable if and only if it is bipartite. The key insight behind the graph case is that non-bipartite graphs (those containing odd cycles) can be avoided because there exist triangle-free graphs of arbitrarily large chromatic number, as Erdős showed using the probabilistic method in 1959 and Mycielski demonstrated with an explicit construction in 1955. Erdős, Galvin, and Hajnal (1975) established the general framework: for each uniformity r, characterize the unavoidable finite r-uniform hypergraphs. The case r = 2 is solved. The case r = 3 is the first open frontier and has resisted all attempts for nearly five decades. The natural analog of bipartiteness is 2-colorability (property B), and 2-colorable hypergraphs are known to be unavoidable. Whether the converse holds — whether every unavoidable 3-uniform hypergraph must be 2-colorable — is the central open question.",
@@ -55,35 +56,35 @@
       "id": "hypergraph-defs",
       "title": "Hypergraph Definitions",
       "startLine": 21,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines Hypergraph3 as a structure with 3-element Finset edges, IsProperColoring (no monochromatic edge), and ChromaticNumberLE using Cardinal to bound the number of colors."
     },
     {
       "id": "subhypergraph",
       "title": "Subhypergraph Embedding",
       "startLine": 43,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Defines IsSubhypergraph via an injective vertex map φ preserving edge membership, capturing the notion of F appearing in H."
     },
     {
       "id": "main-problem",
       "title": "The Main Problem",
       "startLine": 53,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Defines IsUnavoidable (F appears in every 3-uniform hypergraph of chromatic number > ℵ₀) and ErdosProblem593 (characterize all unavoidable F)."
     },
     {
       "id": "graph-case",
       "title": "The Graph Case (Solved)",
       "startLine": 74,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Defines SimpleGraph' and IsBipartite. Axiomatizes the solved 2-uniform case: a graph is unavoidable iff bipartite."
     },
     {
       "id": "known-constraints",
       "title": "Known Constraints for 3-Uniform Case",
       "startLine": 99,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "Defines Is2Colorable and axiomatizes that 2-colorable hypergraphs are unavoidable. Identifies K₄³ (chromatic number 3, not 2-colorable) as the key test case."
     },
     {
@@ -119,5 +120,27 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1068",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1067",
+    "erdos-1068",
+    "erdos-110"
+  ]
 }

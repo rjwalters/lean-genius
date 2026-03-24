@@ -21,7 +21,7 @@
     "erdosNumber": 274,
     "erdosUrl": "https://erdosproblems.com/274",
     "erdosProblemStatus": "partially-solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Subgroup.index",
@@ -72,42 +72,42 @@
       "title": "Core Definitions",
       "summary": "ExactCovering structure with proper partition property and hasDistinctIndices predicate",
       "startLine": 29,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "conjecture",
       "title": "Herzog-Schönheim Conjecture",
       "summary": "The main conjecture statement",
       "startLine": 45,
-      "endLine": 56
+      "endLine": 57
     },
     {
       "id": "abelian",
       "title": "Abelian Case (Solved)",
       "summary": "Sun's theorem for finite abelian groups",
       "startLine": 58,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "computational",
       "title": "Computational Verification",
       "summary": "Margolis-Schnabel result for small groups",
       "startLine": 79,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "problem",
       "title": "The Open Problem",
       "summary": "Statement of Erdős Problem #274",
       "startLine": 89,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "index-sum",
       "title": "Index Sum Lemma",
       "summary": "Necessary condition: reciprocals of indices sum to 1",
       "startLine": 106,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "summary",
@@ -144,5 +144,27 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems"
+    },
+    {
+      "targetId": "erdos-202",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems"
+    },
+    {
+      "targetId": "erdos-543",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, group-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-202",
+    "erdos-543"
+  ]
 }

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/368",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -93,70 +93,70 @@
       "title": "Basic Definitions",
       "summary": "largestPrimeFactor, F(n), product_ge_two",
       "startLine": 42,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "coprimality",
       "title": "Coprimality",
       "summary": "consecutive_coprime, primeFactors_product_coprime, F_eq_max",
       "startLine": 72,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "polya",
       "title": "Pólya's Theorem",
       "summary": "polya_theorem axiom, F_unbounded theorem",
       "startLine": 96,
-      "endLine": 116
+      "endLine": 117
     },
     {
       "id": "mahler",
       "title": "Mahler's Bound",
       "summary": "mahler_bound axiom, mahler_improves_polya axiom",
       "startLine": 118,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "schinzel",
       "title": "Schinzel's Upper Bound",
       "summary": "schinzel_upper axiom, isSmooth definition",
       "startLine": 141,
-      "endLine": 170
+      "endLine": 171
     },
     {
       "id": "erdos-conjectures",
       "title": "Erdős's Conjectures",
       "summary": "erdos_lower_conjecture, erdos_upper_conjecture definitions",
       "startLine": 172,
-      "endLine": 195
+      "endLine": 196
     },
     {
       "id": "pasten",
       "title": "Pasten's Theorem",
       "summary": "pasten_bound axiom, pasten_improves_mahler axiom",
       "startLine": 197,
-      "endLine": 219
+      "endLine": 220
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "F(1) through F(8), OEIS A074399",
       "startLine": 221,
-      "endLine": 274
+      "endLine": 275
     },
     {
       "id": "variant",
       "title": "n² + 1 Variant",
       "summary": "P_squared_plus_one, pasten_squared_plus_one",
       "startLine": 276,
-      "endLine": 295
+      "endLine": 296
     },
     {
       "id": "abc",
       "title": "ABC Connection",
       "summary": "radical definition, abc_implies_strong_bound",
       "startLine": 297,
-      "endLine": 322
+      "endLine": 323
     },
     {
       "id": "summary",

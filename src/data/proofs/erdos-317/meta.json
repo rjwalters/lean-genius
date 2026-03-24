@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/317",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -79,42 +79,42 @@
       "title": "Basic Definitions",
       "summary": "IsSignFunction, signedUnitFractionSum, signedSumAbs",
       "startLine": 39,
-      "endLine": 52
+      "endLine": 53
     },
     {
       "id": "question-1",
       "title": "Question 1 (Main Conjecture)",
       "summary": "Question1: ∃ c > 0, ∀ n ≥ 1, ∃ δ with 0 < |sum| < c/2^n",
       "startLine": 54,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "question-2",
       "title": "Question 2",
       "summary": "lcm_1_to_n, Question2: ∀ᶠ n, nonzero sums exceed 1/lcm",
       "startLine": 64,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "weak_inequality axiom, counterexample_small_n axiom",
       "startLine": 77,
-      "endLine": 92
+      "endLine": 93
     },
     {
       "id": "kovac-van-doorn",
       "title": "Kovac–van Doorn Upper Bound",
       "summary": "Nonzero signed sums always exist",
       "startLine": 94,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_317_summary proved theorem",
       "startLine": 105,
-      "endLine": 121
+      "endLine": 165
     }
   ],
   "conclusion": {
@@ -148,5 +148,27 @@
     "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory"
+    },
+    {
+      "targetId": "erdos-1001",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory"
+    },
+    {
+      "targetId": "erdos-1147",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1000",
+    "erdos-1001",
+    "erdos-1147"
+  ]
 }

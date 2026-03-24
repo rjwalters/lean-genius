@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/185",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod",
@@ -97,63 +97,63 @@
       "title": "Basic Definitions",
       "summary": "TernaryHypercube, hypercube_card",
       "startLine": 35,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "lines",
       "title": "Lines in {0,1,2}^n",
       "summary": "OnLine, CombinatorialLine definitions",
       "startLine": 53,
-      "endLine": 81
+      "endLine": 82
     },
     {
       "id": "cap-sets",
       "title": "Cap Sets",
       "summary": "IsCapSet, IsCapSetCombinatorial, f3(n)",
       "startLine": 83,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "ap-connection",
       "title": "Connection to APs",
       "summary": "R3(N), f3 ≥ R3 lower bound",
       "startLine": 109,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "Moser's lower bound, Moser's construction",
       "startLine": 130,
-      "endLine": 150
+      "endLine": 151
     },
     {
       "id": "hales-jewett",
       "title": "Density Hales-Jewett",
       "summary": "Main theorem and corollary f₃(n) = o(3^n)",
       "startLine": 152,
-      "endLine": 178
+      "endLine": 179
     },
     {
       "id": "recent-progress",
       "title": "Recent Progress",
       "summary": "Meshulam (1995), Ellenberg-Gijswijt (2016)",
       "startLine": 180,
-      "endLine": 205
+      "endLine": 206
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "f₃(1)=2, f₃(2)=4, f₃(3)=9, f₃(4)=20",
       "startLine": 207,
-      "endLine": 234
+      "endLine": 235
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_185, erdos_185_density, erdos_185_answer theorems",
       "startLine": 236,
-      "endLine": 287
+      "endLine": 1112
     }
   ],
   "crossReferences": [

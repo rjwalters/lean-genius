@@ -65,7 +65,8 @@
         "Mathlib.Tactic"
       ]
     },
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The geometric series is among the oldest objects in mathematics. Euclid's *Elements* (Book IX, Proposition 35, c. 300 BCE) gives the finite geometric sum formula for integers, and Archimedes (~250 BCE) used the infinite geometric series $1 + \\frac{1}{4} + \\frac{1}{16} + \\cdots = \\frac{4}{3}$ to calculate the area under a parabola in *Quadrature of the Parabola* — one of the first rigorous uses of an infinite process in mathematics.\n\nNicole Oresme (c. 1350) proved that $\\sum_{k=1}^{\\infty} k/2^k = 2$ by a remarkable graphical argument, making him the first European mathematician to sum an infinite series explicitly. In the Kerala school of astronomy, Nilakantha Somayaji (c. 1500) used geometric series within the derivation of the Madhava-Leibniz series for $\\pi/4$, anticipating European work by two centuries.\n\nThe general finite formula $\\sum_{k=0}^{n-1} r^k = (1 - r^n)/(1 - r)$ appears in the work of François Viète (1593) and was fully systematized by Euler in *Introductio in analysin infinitorum* (1748), where it serves as the starting point for the theory of power series. Newton's generalized binomial theorem (1665) implicitly relies on geometric series as the case $\\alpha = -1$ of $(1-r)^\\alpha$.\n\nRigorous convergence theory arrived with Cauchy's *Cours d'analyse* (1821), which defined convergence of series via partial sums and proved the geometric series converges precisely when $|r| < 1$. Weierstrass later placed this in the framework of uniform convergence and the $\\epsilon$-$\\delta$ formalism that underpins modern analysis.\n\nToday, geometric series appear throughout mathematics and its applications: compound interest and annuities in finance, the geometric distribution and moment-generating functions in probability, $z$-transforms in signal processing, the Neumann series $(I - T)^{-1} = \\sum T^k$ in operator theory, perturbation series in quantum field theory, and as the simplest formal power series in combinatorics.",
@@ -102,7 +103,7 @@
       "id": "finite-sum",
       "title": "Finite Geometric Sum",
       "startLine": 52,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Three formulations of the finite geometric sum: `finite_geom_sum` gives $(1-r) \\cdot \\sum r^k = 1 - r^n$ via `mul_neg_geom_sum`, `finite_geom_sum'` gives the commuted form $\\sum r^k \\cdot (1-r) = 1 - r^n$ via `geom_sum_mul_neg`, and `finite_geom_sum_div` gives the division form $\\sum r^k = (1 - r^n)/(1 - r)$ for $r \\neq 1$ using `field_simp`.",
       "mathContext": "The three forms correspond to the factorization $1 - r^n = (1-r)(1 + r + \\cdots + r^{n-1})$. The multiplicative forms work in any `Ring R`; the division form requires `DivisionRing R` and $r \\neq 1$ to ensure $1 - r$ is invertible."
     },
@@ -110,7 +111,7 @@
       "id": "infinite-sum",
       "title": "Infinite Geometric Series",
       "startLine": 79,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "`infinite_geom_sum` proves $\\sum_{k=0}^{\\infty} r^k = (1-r)^{-1}$ for real $r$ with $|r| < 1$ via `tsum_geometric_of_abs_lt_one`. `geom_series_summable` establishes the `Summable` precondition via `summable_geometric_of_abs_lt_one`.",
       "mathContext": "The summability proof uses the comparison test: $|r^k| = |r|^k$ and $\\sum |r|^k$ converges (as a non-negative geometric series with ratio $< 1$), so the series is absolutely convergent. In Lean, `tsum` denotes the unconditional sum, which equals the limit of partial sums when the series is summable."
     },
@@ -118,7 +119,7 @@
       "id": "general-form",
       "title": "General Form with First Term",
       "startLine": 99,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "`infinite_geom_sum_scaled` proves $\\sum a \\cdot r^k = a \\cdot (1-r)^{-1}$ by factoring out $a$ via `tsum_mul_left` and applying `infinite_geom_sum`.",
       "mathContext": "$\\sum_{k=0}^{\\infty} a r^k = a \\sum_{k=0}^{\\infty} r^k = \\frac{a}{1-r}$. The linearity of `tsum` (`tsum_mul_left`) is the key step — it holds because $\\sum a \\cdot c_k = a \\cdot \\sum c_k$ for any summable series."
     },
@@ -126,7 +127,7 @@
       "id": "special-cases",
       "title": "Special Cases and Examples",
       "startLine": 111,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "Three classic instantiations: `sum_halves` ($\\sum 2^{-(k+1)} = 1$, Zeno's paradox), `geom_sum_third` ($\\sum (1/3)^k = 3/2$), and `geom_sum_neg_half` ($\\sum (-1/2)^k = 2/3$, an alternating series). Each first establishes $|r| < 1$ via `norm_num`, then applies `infinite_geom_sum`.",
       "mathContext": "The three examples illustrate different aspects: $r = 1/2$ (binary subdivision, connected to binary representation $0.111\\ldots_2 = 1$), $r = 1/3$ (ternary, connected to the Cantor set), $r = -1/2$ (alternating signs, showing the formula works for negative ratios). The `sum_halves` proof is more involved because it shifts the index: $\\sum_{k=0}^{\\infty} (1/2)^{k+1} = (1/2) \\cdot \\sum_{k=0}^{\\infty} (1/2)^k$."
     },
@@ -134,7 +135,7 @@
       "id": "finite-to-infinite",
       "title": "Connection Between Finite and Infinite Sums",
       "startLine": 143,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "`finite_to_infinite` proves that the sequence of finite partial sums $S_n = \\sum_{k=0}^{n-1} r^k$ converges to $(1-r)^{-1}$ in the topological sense (`Filter.Tendsto` to `nhds`), using `HasSum.tendsto_sum_nat` applied to the summable geometric series.",
       "mathContext": "This bridges the algebraic finite formula and the analytic infinite sum: $\\lim_{n \\to \\infty} \\frac{1 - r^n}{1 - r} = \\frac{1}{1-r}$. The proof uses `HasSum`, Mathlib's predicate for unconditional summability, which for $\\mathbb{R}$-valued series is equivalent to absolute convergence."
     },

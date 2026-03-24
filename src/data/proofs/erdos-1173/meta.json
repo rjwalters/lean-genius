@@ -19,7 +19,7 @@
     "erdosNumber": 1173,
     "erdosUrl": "https://erdosproblems.com/1173",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Basic",
@@ -81,42 +81,42 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Header documentation with problem statement and references, Mathlib imports for `Cardinal.Basic`, `Cardinal.Ordinal`, and `Mathlib.Tactic`. Opens the `Cardinal` and `Ordinal` namespaces."
     },
     {
       "id": "cardinal-setup",
       "title": "Cardinal and Ordinal Constants",
       "startLine": 38,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Defines $\\aleph_\\omega = \\text{aleph}(\\omega_0)$, $\\aleph_{\\omega+1} = \\text{aleph}(\\omega_0 + 1)$, the initial ordinal $\\omega_{\\omega+1}$, and the Generalized Continuum Hypothesis as $\\forall \\alpha,\\; 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$."
     },
     {
       "id": "set-mappings",
       "title": "Set Mappings and Free Sets",
       "startLine": 56,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Defines `SetMapping` on ordinals, `BoundedImageSize` ($|f(\\alpha)| \\leq \\kappa$), `AlmostDisjoint` ($|f(\\alpha) \\cap f(\\beta)| < \\kappa$ for $\\alpha \\neq \\beta$), `IsFreeSet` ($\\alpha \\notin f(\\beta)$ for distinct $\\alpha, \\beta \\in S$), and `HasFreeSetOfCard`."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 90,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Formalizes `erdos_1173`: under GCH, every set mapping $f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\leq \\aleph_\\omega}$ with almost-disjoint images has a free set of cardinality $\\aleph_{\\omega+1}$."
     },
     {
       "id": "hajnal-theorem",
       "title": "The Hajnal Free Set Theorem",
       "startLine": 109,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "Axiomatizes the Hajnal free set theorem for regular $\\kappa$: if $|f(\\alpha)| < \\kappa$ for all $\\alpha < \\kappa^+$, then there exists a free set of size $\\kappa^+$. This is the known result that Problem #1173 seeks to generalize."
     },
     {
       "id": "gch-observations",
       "title": "Observations under GCH",
       "startLine": 126,
-      "endLine": 143,
+      "endLine": 144,
       "summary": "Two axioms: (1) GCH implies $\\aleph_\\omega$ is a strong limit ($2^{\\aleph_n} < \\aleph_\\omega$ for all $n$). (2) Almost-disjointness with bound $\\aleph_\\omega$ implies each pairwise overlap is bounded by some $\\aleph_n$, using $\\mathrm{cf}(\\aleph_\\omega) = \\omega$."
     },
     {

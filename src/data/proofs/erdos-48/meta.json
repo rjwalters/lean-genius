@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/48",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-13",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
@@ -87,70 +87,70 @@
       "title": "Arithmetic Functions",
       "summary": "sumDivisors definition, notation, Euler's totient from Mathlib",
       "startLine": 40,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "sumDivisors_one, sumDivisors_prime, totient_prime, totient_lt",
       "startLine": 71,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "pair-sets",
       "title": "Totient-Sigma Pairs",
       "summary": "totientSigmaPairs, commonValues, commonValues_iff",
       "startLine": 102,
-      "endLine": 129
+      "endLine": 130
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "summary": "pair_5_3, pair_2_1, pair_7_5, pair_13_11, pair_13_6",
       "startLine": 131,
-      "endLine": 215
+      "endLine": 216
     },
     {
       "id": "ford-luca-pomerance",
       "title": "Ford-Luca-Pomerance Theorem",
       "summary": "ford_luca_pomerance axiom, erdos_48 main theorem",
       "startLine": 217,
-      "endLine": 242
+      "endLine": 243
     },
     {
       "id": "garaev",
       "title": "Garaev's Improvement",
       "summary": "garaev_improvement axiom with stronger density bounds",
       "startLine": 244,
-      "endLine": 262
+      "endLine": 263
     },
     {
       "id": "twin-primes",
       "title": "Connection to Twin Primes",
       "summary": "twin_prime_gives_pair, twin_prime_implies_erdos_48",
       "startLine": 264,
-      "endLine": 294
+      "endLine": 295
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "prime_pair_condition, Sophie Germain, perfect numbers",
       "startLine": 296,
-      "endLine": 334
+      "endLine": 335
     },
     {
       "id": "value-distribution",
       "title": "Value Distribution",
       "summary": "totientRange, sigmaRange, common values 1, 4, 6, 12",
       "startLine": 336,
-      "endLine": 401
+      "endLine": 402
     },
     {
       "id": "multiplicativity",
       "title": "Multiplicativity",
       "summary": "sumDivisors_multiplicative, totient_multiplicative",
       "startLine": 403,
-      "endLine": 422
+      "endLine": 423
     },
     {
       "id": "main-results",

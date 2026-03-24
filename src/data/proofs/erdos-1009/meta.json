@@ -22,18 +22,8 @@
     "erdosNumber": 1009,
     "erdosUrl": "https://erdosproblems.com/1009",
     "erdosProblemStatus": "solved",
-    "crossReferences": [
-      {
-        "proofId": "erdos-1008",
-        "relationship": "Studies C₄-free subgraphs with many edges; both problems ask how much forbidden-subgraph-free structure can be extracted from dense graphs"
-      },
-      {
-        "proofId": "erdos-1054",
-        "relationship": "Studies partial sums and Aristotle proofs; shares the theme of exact computation with verified bounds"
-      }
-    ],
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -91,42 +81,42 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib, opens `Finset` and `SimpleGraph` namespaces, declares variables $V$ with `[Fintype V] [DecidableEq V]`.",
       "startLine": 33,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "sec-1009-graph-basics",
       "title": "Graph Basics",
       "summary": "Defines `numVertices G = |V|$, `numEdges G = |E(G)|$, and `turanThreshold n = \\lfloor n^2/4 \\rfloor$, the Turán number $\\text{ex}(n, K_3)$.",
       "startLine": 45,
-      "endLine": 53
+      "endLine": 54
     },
     {
       "id": "sec-1009-triangles",
       "title": "Triangles and Edge-Disjointness",
       "summary": "Defines `Triangle G` (structure with adjacency proofs), `Triangle.edges` ($\\{\\{a,b\\},\\{b,c\\},\\{a,c\\}\\}$), `edgeDisjoint`, `pairwiseEdgeDisjoint`, and `maxEdgeDisjointTriangles` ($\\nu_3(G)$ via `sSup`).",
       "startLine": 55,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "sec-1009-main",
       "title": "Györi's Main Theorem",
       "summary": "Defines `excessEdges G = |E(G)| - \\lfloor n^2/4 \\rfloor$ and axiomatizes Györi's result: $\\nu_3(G) \\geq k - f(c)$ when $k < cn$, with $f(c) \\leq Cc^2$.",
       "startLine": 87,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "sec-1009-partial",
       "title": "Erdős's Partial Result and Refinements",
       "summary": "Axiomatizes $f(c) = 0$ for $c < 1/2$ (Erdős), $c < 2$ for odd $n$, and $c < 3/2$ for even $n$ (Györi). The parity refinements reflect the structure of the Turán graph.",
       "startLine": 114,
-      "endLine": 145
+      "endLine": 146
     },
     {
       "id": "sec-1009-sauer",
       "title": "Sauer's Counterexample",
       "summary": "Defines `completeTripartite a b c` on `Fin a ⊕ Fin b ⊕ Fin c`. Axiomatizes Sauer's result: $K_{1,m,m}$ has $2m$ excess edges but $\\nu_3 = 2m - 1$, proving $f(2) \\geq 1$.",
       "startLine": 147,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "sec-1009-corollaries",

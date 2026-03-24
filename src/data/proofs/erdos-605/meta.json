@@ -23,7 +23,7 @@
     "erdosNumber": 605,
     "erdosUrl": "https://erdosproblems.com/605",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -85,7 +85,7 @@
       "id": "header",
       "title": "Problem Overview",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Problem statement, references, imports, and namespace declaration"
     },
     {
@@ -196,5 +196,27 @@
     "axiomCount": 14,
     "theoremCount": 1,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-210",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry, solved"
+    },
+    {
+      "targetId": "erdos-224",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, geometry, solved"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distances, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-210",
+    "erdos-224",
+    "erdos-654"
+  ]
 }

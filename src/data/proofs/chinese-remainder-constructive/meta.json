@@ -53,27 +53,11 @@
       "CRT injectivity as foundation for ring isomorphism",
       "Modular arithmetic preservation (add, mul, pow)"
     ],
-    "crossReferences": [
-      {
-        "proofId": "bezout-identity",
-        "relationship": "uses",
-        "description": "Bezout's identity provides the coefficients mu + nv = 1 that give the constructive CRT solution formula"
-      },
-      {
-        "proofId": "chinese-remainder-non-coprime",
-        "relationship": "extends",
-        "description": "Generalizes CRT to non-coprime moduli where solutions exist iff the remainders are compatible: a = b (mod gcd(m,n))"
-      },
-      {
-        "proofId": "fermats-last-theorem",
-        "relationship": "related",
-        "description": "Modular arithmetic and CRT are fundamental tools in the theory of Diophantine equations; Wiles's proof uses CRT-related techniques in the study of Galois representations"
-      }
-    ],
     "dateAdded": "2025-12-31",
     "axiomCount": 0,
     "lineCount": 416,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem first appeared in the Sunzi Suanjing ('The Mathematical Classic of Sun Zi'), a Chinese treatise from the 3rd-5th century CE. The classic problem asks:\n\n'Find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7.'\n\nThe answer is 23, unique modulo 105 = 3 * 5 * 7. Indian mathematicians, notably Aryabhata (499 CE), independently developed similar techniques for astronomical calculations involving planetary periods. The theorem was rediscovered in Europe by Euler and fully developed by Gauss in his Disquisitiones Arithmeticae (1801), where it appears as a tool for reducing modular computations. The modern ring-theoretic formulation — CRT gives an isomorphism Z/mnZ -> Z/mZ x Z/nZ — emerged in the 20th century and is fundamental to algebraic number theory and cryptography.",
@@ -99,7 +83,7 @@
       "id": "core-crt",
       "title": "Core CRT for Two Moduli",
       "startLine": 44,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Existence (`crt_exists`), uniqueness (`crt_unique`), and bounded solution (`crt_bounded`) for $x \\equiv a \\pmod{m}$, $x \\equiv b \\pmod{n}$.",
       "mathContext": "$\\exists x < mn,\\; x \\equiv a \\pmod{m} \\wedge x \\equiv b \\pmod{n}$ (unique) when $\\gcd(m,n)=1$"
     },
@@ -107,7 +91,7 @@
       "id": "constructive",
       "title": "Constructive Algorithm",
       "startLine": 70,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Bezout coefficients (`bezoutCoeffs`, `bezout_identity`, `bezout_coprime`) and the explicit solution formula (`crtSolution`).",
       "mathContext": "$mu + nv = 1$ via `Nat.gcdA`/`Nat.gcdB`; solution $x = a \\cdot nv + b \\cdot mu$"
     },
@@ -115,7 +99,7 @@
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 105,
-      "endLine": 162,
+      "endLine": 163,
       "summary": "The Sunzi problem ($23 \\bmod 105$), the $(4, 5)$ case ($17 \\bmod 20$), and the $(11, 13)$ case ($135 \\bmod 143$), all verified by `native_decide`.",
       "mathContext": "$23 \\equiv 2 \\pmod{3},\\; 23 \\equiv 3 \\pmod{5},\\; 23 \\equiv 2 \\pmod{7}$; verified by `decide`"
     },
@@ -123,7 +107,7 @@
       "id": "three-moduli",
       "title": "Extension to Three Moduli",
       "startLine": 164,
-      "endLine": 202,
+      "endLine": 203,
       "summary": "CRT for three pairwise coprime moduli (`crt_three`, `crt_three_unique`) by iterating the two-moduli result.",
       "mathContext": "Solve mod $m_1 m_2$ first, then combine with $m_3$; uses `Nat.Coprime.mul_right` for coprimality of products"
     },
@@ -131,7 +115,7 @@
       "id": "applications",
       "title": "Applications: Residue Number Systems",
       "startLine": 204,
-      "endLine": 238,
+      "endLine": 239,
       "summary": "RNS representation and the `rns_unique` theorem: any $x, y < 105$ with equal residues mod 3, 5, 7 are equal.",
       "mathContext": "Bijection $\\{0, \\ldots, M-1\\} \\simeq \\prod_i \\mathbb{Z}/m_i\\mathbb{Z}$ via residue map; parallel arithmetic on components"
     },
@@ -147,7 +131,7 @@
       "id": "four-moduli",
       "title": "CRT for Four Moduli",
       "startLine": 279,
-      "endLine": 316,
+      "endLine": 317,
       "summary": "Existence (`crt_four`) and uniqueness (`crt_four_unique`) for four pairwise coprime moduli by iterating `crt_three` + `crt_exists`.",
       "mathContext": "$\\exists! x \\pmod{m_1 m_2 m_3 m_4},\\; x \\equiv a_i \\pmod{m_i}$ for $i=1,\\ldots,4$"
     },
@@ -155,7 +139,7 @@
       "id": "modular-preservation",
       "title": "Modular Arithmetic Preservation",
       "startLine": 318,
-      "endLine": 354,
+      "endLine": 355,
       "summary": "Congruences preserved under addition (`modEq_add`), multiplication (`modEq_mul`), exponentiation (`modEq_pow`), and the coprime product divisibility characterization (`coprime_mul_dvd_iff`, `modEq_mul_iff`).",
       "mathContext": "$a \\equiv b \\pmod{m}$ is a ring congruence: respects $+$, $\\times$, $(\\cdot)^k$. Also: $mn \\mid x \\iff m \\mid x \\wedge n \\mid x$ when $\\gcd(m,n)=1$."
     },
@@ -163,7 +147,7 @@
       "id": "four-moduli-example",
       "title": "Concrete Four-Moduli Example",
       "startLine": 356,
-      "endLine": 381,
+      "endLine": 382,
       "summary": "Verifies $53 \\equiv 1 \\pmod{2},\\; 53 \\equiv 2 \\pmod{3},\\; 53 \\equiv 3 \\pmod{5},\\; 53 \\equiv 4 \\pmod{7}$, unique mod $210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$.",
       "mathContext": "$53$ is the unique solution mod $210$ to $x \\equiv i+1 \\pmod{p_i}$ for primes $p_1=2, p_2=3, p_3=5, p_4=7$"
     },
@@ -171,7 +155,7 @@
       "id": "ring-isomorphism",
       "title": "CRT and Ring Isomorphism",
       "startLine": 383,
-      "endLine": 414,
+      "endLine": 416,
       "summary": "Injectivity of the CRT map (`crt_injective`) and coprime zero congruence (`coprime_zero_congruence`). Together with surjectivity from `crt_bounded`, these establish $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.",
       "mathContext": "Injectivity: $x, y < mn,\\; x \\equiv y \\pmod{m},\\; x \\equiv y \\pmod{n} \\implies x = y$. This is the CRT bijection on canonical representatives."
     }

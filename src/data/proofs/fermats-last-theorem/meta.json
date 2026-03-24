@@ -20,14 +20,24 @@
     "sorries": 0,
     "mathlibDependencies": [
       {
-        "theorem": "EllipticCurve",
-        "description": "Elliptic curve definitions",
-        "module": "Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass"
+        "theorem": "FermatLastTheoremFor",
+        "description": "FLT statement for specific exponent: ∀ a b c : ℤ, a^n + b^n = c^n → a*b*c = 0",
+        "module": "Mathlib.NumberTheory.FLT.Basic"
+      },
+      {
+        "theorem": "fermatLastTheoremFour",
+        "description": "FLT for n=4 (Fermat's infinite descent proof)",
+        "module": "Mathlib.NumberTheory.FLT.Four"
+      },
+      {
+        "theorem": "fermatLastTheoremThree",
+        "description": "FLT for n=3 (Euler's proof via ℤ[ω])",
+        "module": "Mathlib.NumberTheory.FLT.Three"
       }
     ],
     "originalContributions": [
       "Axiomatized framework for FLT proof structure",
-      "Frey curve construction formalization",
+      "Pedagogical exposition of the Frey-Ribet-Wiles proof strategy (axiomatized, not formalized)",
       "Educational overview of Wiles' proof strategy"
     ],
     "dateAdded": "2025-12-22",
@@ -40,12 +50,13 @@
     "wiedijkNumber": 33,
     "axiomCount": 5,
     "lineCount": 204,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axioms total. 2 with real mathematical content: FLT_for_odd_primes (the modularity theorem application) and fermatLastTheorem (the full FLT statement). 3 placeholder axioms concluding with True: FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem — these serve as proof-structure markers without encoding mathematical statements. The n=3 and n=4 cases are fully proved via Mathlib (fermatLastTheoremThree, fermatLastTheoremFour).",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1637, Pierre de Fermat wrote in the margin of his copy of Diophantus's *Arithmetica*: \"I have discovered a truly marvelous proof of this, which this margin is too narrow to contain.\" This tantalizing note launched 358 years of mathematical obsession.\n\nGenerations of mathematicians attacked the problem. Euler proved the case n=3 (1770). Sophie Germain developed techniques for certain primes (1823). Ernst Kummer's work on ideal class groups proved it for all regular primes (1850), but infinitely many cases remained.\n\nThe modern breakthrough came from an unexpected direction. In 1984, Gerhard Frey proposed that a counterexample to Fermat would yield an elliptic curve with impossible properties. Jean-Pierre Serre refined this, and in 1986, Ken Ribet proved the key connection: if Fermat's Last Theorem were false, it would contradict the Taniyama-Shimura-Weil conjecture about modular forms.\n\nAndrew Wiles, who had dreamed of proving FLT since childhood, worked in secret for seven years. In June 1993, he announced his proof of enough of the modularity conjecture to imply FLT. But a gap was found. After a year of anguish, Wiles and Richard Taylor patched the proof using a brilliant new technique. On October 25, 1994, the proof was complete. It was published in 1995, ending the longest-standing unsolved problem in mathematics.",
     "problemStatement": "For any integer $n > 2$, there are no three positive integers $a$, $b$, $c$ such that:\n\n$$a^n + b^n = c^n$$\n\nEquivalently: the only integer solutions to $x^n + y^n = z^n$ for $n > 2$ are the trivial ones where $xyz = 0$.\n\nNote that $n = 2$ has infinitely many solutions (Pythagorean triples like $3^2 + 4^2 = 5^2$), but something fundamentally changes at $n = 3$.",
-    "text": "A 204-line axiomatized formalization of Fermat's Last Theorem with 16 declarations, 0 sorries. Imports Mathlib's `FermatLastThm` (the statement $\\forall n \\geq 3, a^n + b^n = c^n \\Rightarrow abc = 0$), `FermatLastThm.Four` (the $n=4$ case proved by Fermat's descent), and `FermatLastThm.Three` (the $n=3$ case). The file provides `flt_statement` as a clean restatement, `flt_n4` and `flt_n3` as explicit instantiations, and `flt_reduces_to_primes` demonstrating the classical reduction. Axioms encode the modularity theorem (Wiles-Taylor) and its application via the Frey curve and Ribet's theorem. Commentary traces the proof strategy: Frey curve construction $y^2 = x(x-a^n)(x+b^n)$, semi-stability, Ribet's level-lowering, and the Taylor-Wiles patching method.",
+    "text": "A 204-line axiomatized formalization of Fermat's Last Theorem with 0 sorries and 5 axioms. Imports Mathlib's `FermatLastTheoremFor` (the statement type), `fermatLastTheoremFour` ($n=4$ by Fermat's descent), and `fermatLastTheoremThree` ($n=3$ by Euler). The file provides `fermat_four` and `fermat_three` as explicit proofs of the $n=4$ and $n=3$ cases, `flt_multiple` demonstrating the classical reduction to prime exponents, and three axiomatized placeholders (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem) marking the Frey-Ribet-Wiles proof structure. The axioms `FLT_for_odd_primes` and `fermatLastTheorem` encode the deep results. Commentary traces the proof strategy: Frey curve construction, semi-stability, Ribet's level-lowering, and the Taylor-Wiles patching method.",
     "proofStrategy": "Wiles' proof proceeds by contradiction through a remarkable chain of ideas:\n\n1. **ASSUME** a counterexample exists: $a^n + b^n = c^n$ with $n > 2$ and $a, b, c$ positive integers.\n\n2. **CONSTRUCT** the Frey curve: From this hypothetical solution, build the elliptic curve\n   $$E: y^2 = x(x - a^n)(x + b^n)$$\n   This curve has unusual properties: it is semi-stable with discriminant divisible by enormous prime powers.\n\n3. **APPLY RIBET'S THEOREM** (1986): The Frey curve, if it existed, would be modular but have a conductor too small to match any modular form. This is impossible.\n\n4. **PROVE MODULARITY**: Wiles proves that all semistable elliptic curves over $\\mathbb{Q}$ are modular (the Taniyama-Shimura-Weil conjecture for semistable curves).\n\n5. **CONTRADICTION**: The Frey curve must be modular (by step 4), but cannot be modular (by step 3). Therefore, no counterexample exists.\n\nThe bulk of Wiles' 100+ page proof establishes the modularity theorem. The Taylor-Wiles patching method, developed to fix the gap, has become a fundamental tool in modern number theory.",
     "keyInsights": [
       "**Frey Curve:** A counterexample $a^n + b^n = c^n$ yields the elliptic curve $E: y^2 = x(x - a^n)(x + b^n)$ with discriminant $\\Delta \\sim (abc)^{2n}$ — a curve with 'impossibly' large conductor for its simple equation.",
@@ -67,7 +78,7 @@
       "id": "setup",
       "title": "Imports and Mathematical Framework",
       "startLine": 1,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Import statements and module documentation establishing the mathematical context.",
       "mathContext": "Imports from Mathlib's FLT modules, elliptic curve definitions, and integer ring theory."
     },
@@ -75,7 +86,7 @@
       "id": "statement",
       "title": "The Theorem Statement",
       "startLine": 54,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Fermat's Last Theorem stated precisely: no positive integer solutions to a^n + b^n = c^n for n > 2.",
       "mathContext": "$\\forall n > 2,\\; \\nexists a, b, c \\in \\mathbb{Z}_{>0},\\; a^n + b^n = c^n$. Equivalently: $\\forall a, b, c \\in \\mathbb{Z} \\setminus \\{0\\},\\; a^n + b^n \\neq c^n$."
     },
@@ -83,7 +94,7 @@
       "id": "frey-curve",
       "title": "The Frey Curve Construction",
       "startLine": 70,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "How a hypothetical counterexample gives rise to an elliptic curve with special properties.",
       "mathContext": "Given $a^p + b^p = c^p$, construct $E : y^2 = x(x - a^p)(x + b^p)$. This curve is semistable with discriminant $\\Delta = 16(abc)^{2p}$."
     },
@@ -91,7 +102,7 @@
       "id": "modularity",
       "title": "The Modularity Theorem",
       "startLine": 94,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Every semi-stable elliptic curve over Q is modular - the key to Wiles' approach.",
       "mathContext": "Wiles (1995): if $E/\\mathbb{Q}$ is semistable, then $\\exists f \\in S_2(\\Gamma_0(N))$ with $L(E, s) = L(f, s)$. This is part of the Taniyama-Shimura-Weil conjecture."
     },
@@ -99,7 +110,7 @@
       "id": "ribet",
       "title": "Ribet's Theorem and the Contradiction",
       "startLine": 111,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Why Frey curves cannot be modular, completing the proof by contradiction.",
       "mathContext": "Ribet (1986): if the Frey curve is modular, level-lowering gives a cusp form of level 2. But $\\dim S_2(\\Gamma_0(2)) = 0$, contradiction."
     },

@@ -44,7 +44,8 @@
     "wiedijkNumber": 83,
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 axioms, 0 sorries. FriendshipTheorem.lean imports FriendshipTheoremOQ01.lean which provides both key results: (1) regularity of friendship graphs without universal vertex (via A³ commutativity + complement-connectivity), and (2) k-regular friendship implies k=2 (via characteristic polynomial analysis). Both former axioms eliminated.",
-    "lineCount": 373
+    "lineCount": 373,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1966, Paul Erdős, Alfréd Rényi, and Vera T. Sós proved the Friendship Theorem in their paper 'On a problem of K. Zarankiewicz' (Acta Math. Hungar.). The theorem has a beautiful sociological interpretation: if in any group of people, every pair has exactly one mutual friend, then there must be a 'politician' who is friends with everyone.\n\nThe original 1966 proof uses spectral graph theory — analyzing eigenvalues of the adjacency matrix $A$ satisfying $A^2 = J - I + (k-1)A$ (for $k$-regular friendship graphs) to derive contradictions for non-windmill structures. This spectral approach, requiring linear algebra over the reals, was noted as surprisingly deep for such a clean combinatorial statement.\n\nSubsequent proofs avoided spectral methods: Herbert Wilf (1971) gave a purely combinatorial argument, and Craig Huneke (2002, American Mathematical Monthly) presented a slick algebraic proof accessible to undergraduates. The theorem is Wiedijk's #83 in the '100 theorems' list and appears in Proofs from THE BOOK.",
@@ -68,7 +69,7 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Overview of the Friendship Theorem and its significance in graph theory.",
       "mathContext": "The friendship theorem: if every pair of vertices in a finite graph $G$ has exactly one common neighbor, then $G$ has a universal vertex (adjacent to all others). Equivalently, $G$ is a windmill graph $\\text{Wd}(n)$."
     },
@@ -76,7 +77,7 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 62,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Defining the friendship property, universal vertex, and windmill graphs.",
       "mathContext": "Core definitions: `IsFriendshipGraph G` (every pair of distinct vertices has exactly one common neighbor), `IsUniversalVertex G v` (vertex $v$ is adjacent to all others), and `IsWindmill G n` (graph is isomorphic to the windmill $\\text{Wd}(n)$)."
     },
@@ -84,7 +85,7 @@
       "id": "lemmas",
       "title": "Key Lemmas",
       "startLine": 101,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Supporting lemmas about the structure of friendship graphs.",
       "mathContext": "Key lemma: in a friendship graph, either there exists a universal vertex, or the graph is regular. Proof: the adjacency matrix $A$ satisfies $A^2 + A = J + (k-1)I$ for some $k$; eigenvalue analysis forces regularity when no universal vertex exists."
     },
@@ -92,7 +93,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 152,
-      "endLine": 201,
+      "endLine": 202,
       "summary": "Statement and proof of the Friendship Theorem.",
       "mathContext": "The spectral argument: if $G$ has no universal vertex, then all eigenvalues besides the largest are equal, forcing the graph to be regular. But a regular friendship graph must be a cycle $C_5$, and $C_5$ does not satisfy the common-neighbor property — contradiction."
     },
@@ -100,7 +101,7 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 203,
-      "endLine": 260,
+      "endLine": 261,
       "summary": "The windmill graph W₂ as a concrete example satisfying the friendship property.",
       "mathContext": "Examples: $\\text{Wd}(1) = K_3$ (triangle), $\\text{Wd}(2) = $ butterfly graph (two triangles sharing a vertex), $\\text{Wd}(3) = $ three triangles sharing a vertex (7 vertices, 9 edges)."
     },
@@ -108,7 +109,7 @@
       "id": "history",
       "title": "Historical Notes",
       "startLine": 262,
-      "endLine": 295,
+      "endLine": 373,
       "summary": "The 1966 paper and alternative proof approaches.",
       "mathContext": "The friendship theorem was proved by Paul Erdős, Alfréd Rényi, and Vera T. Sós in 1966. Their original proof used the spectral method (eigenvalues of the adjacency matrix). Elementary combinatorial proofs exist but are longer. The theorem is sometimes called the 'handshake lemma' of friendship graphs."
     }

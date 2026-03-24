@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/572",
     "erdosProblemStatus": "partially-solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -153,5 +153,27 @@
     "axiomCount": 6,
     "theoremCount": 8,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, turan-type"
+    },
+    {
+      "targetId": "erdos-714",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, partially-solved"
+    },
+    {
+      "targetId": "erdos-915",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, partially-solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-714",
+    "erdos-915"
+  ]
 }

@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/763",
     "erdosProblemStatus": "disproved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -168,5 +168,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-764",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, analytic-number-theory, representation-functions"
+    },
+    {
+      "targetId": "erdos-198",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, disproved"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, analytic-number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-764",
+    "erdos-198",
+    "erdos-200"
+  ]
 }

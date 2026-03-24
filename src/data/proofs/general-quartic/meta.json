@@ -46,7 +46,8 @@
       "Quadratic formula for complex coefficients",
       "Completing the square and factorization techniques"
     ],
-    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The quartic formula represents the culmination of Renaissance algebra. While Cardano's Ars Magna (1545) is famous for the cubic formula, it was his student Lodovico Ferrari who, at age 18, discovered how to solve the quartic by reducing it to a cubic.\n\nThe key insight is brilliant: by adding a parameter m and completing the square, the quartic can be written as a difference of squares, which factors. Finding the right m requires solving a cubic equation (the 'resolvent cubic'). This creates a tower of solutions:\n- Quadratic: Direct formula\n- Cubic: Cardano's formula\n- Quartic: Ferrari's method (uses cubic)\n- Quintic and beyond: Abel-Ruffini (1824) proves no general formula exists!\n\nThis historical sequence explains why we can solve up to degree 4 but not degree 5+: the Galois groups S2, S3, S4 are solvable, but S5 is not.",
@@ -73,42 +74,42 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 1,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Defines quartic polynomial, depressed quartic, and resolvent cubic forms."
     },
     {
       "id": "depression",
       "title": "Depressed Form Reduction",
       "startLine": 67,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Shows any quartic reduces to depressed form via substitution y = x + a/4."
     },
     {
       "id": "ferrari-method",
       "title": "Ferrari's Method",
       "startLine": 97,
-      "endLine": 135,
+      "endLine": 136,
       "summary": "Ferrari's factorization theorem and existence of resolvent root."
     },
     {
       "id": "roots",
       "title": "The Four Roots",
       "startLine": 137,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "Explicit Ferrari formulas for all four roots."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 177,
-      "endLine": 195,
+      "endLine": 196,
       "summary": "Biquadratic case simplification when q = 0."
     },
     {
       "id": "history",
       "title": "Historical Context",
       "startLine": 197,
-      "endLine": 230,
+      "endLine": 344,
       "summary": "Ferrari's discovery and connection to Abel-Ruffini/Galois theory."
     }
   ],

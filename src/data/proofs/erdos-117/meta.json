@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/117",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Subgroup",
@@ -47,16 +47,6 @@
       "Stated Pyber (1987) bounds: c₁^n ≤ h(n) ≤ c₂^n",
       "Stated Isaacs lower bound: c^n ≤ h(n) for some c > 1",
       "Proved trivial case h(1) = 1 (n-commuting with n=1 implies Abelian)"
-    ],
-    "relatedProofs": [
-      {
-        "id": "ramseys-theorem",
-        "relationship": "The n-commuting property is a Ramsey-type condition: large subsets must contain structured pairs, analogous to Ramsey's guarantee of monochromatic cliques"
-      },
-      {
-        "id": "lagrange-theorem",
-        "relationship": "Lagrange's theorem on subgroup orders underlies the covering number analysis, since the index of each Abelian subgroup constrains how many are needed"
-      }
     ],
     "axiomCount": 4,
     "lineCount": 79,
@@ -91,21 +81,21 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 23,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Defines three key objects: `HasNCommutingProperty G n` asserting that every `Finset G` of cardinality $> n$ contains distinct commuting elements $x \\neq y$ with $xy = yx$; `IsAbelianSubgroup G H` asserting pairwise commutativity $\\forall x, y \\in H, xy = yx$; and `abelianCoverNumber n` as the infimum $\\inf\\{k : \\forall G \\text{ with } n\\text{-commuting property}, G \\text{ covered by } k \\text{ Abelian subgroups}\\}$ via `sInf`."
     },
     {
       "id": "main-problem",
       "title": "Main Problem Statement",
       "startLine": 44,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Axiomatizes the main problem as `erdos_117_problem`: there exist real constants $c_2 > c_1 > 1$ such that for all $n > 0$, $c_1^n < h(n) < c_2^n$, establishing exponential growth of the Abelian covering number."
     },
     {
       "id": "known-results",
       "title": "Known Results: Pyber and Isaacs",
       "startLine": 53,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Axiomatizes two key results. `pyber_1987`: exponential bounds $c_1^n \\leq h(n) \\leq c_2^n$ for constants $c_2 > c_1 > 1$, using $\\leq$ rather than strict inequalities. `isaacs_lower`: the independent exponential lower bound $c^n \\leq h(n)$ for some $c > 1$, established before Pyber's comprehensive treatment."
     },
     {
@@ -157,5 +147,21 @@
       "citation": "Isaacs, I.M. (1976). Character Theory of Finite Groups. Academic Press (Dover reprint 1994).",
       "type": "book"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-116",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-118",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-116",
+    "erdos-118"
   ]
 }

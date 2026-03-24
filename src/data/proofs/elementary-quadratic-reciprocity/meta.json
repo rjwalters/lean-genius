@@ -58,7 +58,8 @@
       "Floor function and integer division",
       "Lattice points and geometric counting"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Eisenstein discovered this proof in 1844, simplifying Gauss's third proof (1808). It is considered one of the most elegant proofs of quadratic reciprocity because it reduces the theorem to a **lattice point counting argument** requiring only elementary arithmetic.\n\nThere are now over 240 known proofs of QR. This Eisenstein proof stands out because:\n- It uses no algebraic number theory or Gauss sums\n- The key insight is purely geometric (counting points in triangles)\n- Each step is independently verifiable with basic modular arithmetic\n\nGauss himself published 8 proofs; Eisenstein's approach builds on Gauss's third proof but achieves greater clarity through the floor function reformulation.",
@@ -84,7 +85,7 @@
       "id": "header",
       "title": "Introduction and Proof Overview",
       "startLine": 1,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Historical context, proof chain overview, and Mathlib dependencies.",
       "mathContext": "Quadratic reciprocity: for odd primes $p \\neq q$, $\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$. This file proves it via Eisenstein's 1844 elementary method: Gauss's Lemma $\\to$ Eisenstein's floor sum $\\to$ lattice point counting."
     },
@@ -92,7 +93,7 @@
       "id": "gauss-lemma",
       "title": "Step 1: Gauss's Lemma",
       "startLine": 67,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Gauss's Lemma (1808): Legendre symbol via counting residues exceeding p/2.",
       "mathContext": "Gauss's Lemma: $\\left(\\frac{a}{p}\\right) = (-1)^{\\#\\{k \\in \\{1,\\ldots,(p-1)/2\\} : ka \\bmod p > p/2\\}}$. The Legendre symbol equals $(-1)^n$ where $n$ counts how many of $a, 2a, \\ldots, \\frac{p-1}{2}a$ have residues exceeding $p/2$."
     },
@@ -100,7 +101,7 @@
       "id": "eisenstein-lemma",
       "title": "Step 2: Eisenstein's Lemma",
       "startLine": 91,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Eisenstein's Lemma (1844): Converts residue counting to floor function sums.",
       "mathContext": "Eisenstein's Lemma: $\\left(\\frac{q}{p}\\right) = (-1)^{\\sum_{k=1}^{(p-1)/2} \\lfloor kq/p \\rfloor}$. Converts the Gauss Lemma's residue counting to a sum of floor functions, making the symmetry between $p$ and $q$ accessible."
     },
@@ -108,7 +109,7 @@
       "id": "lattice-identity",
       "title": "Step 3: Lattice Point Identity",
       "startLine": 116,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "The geometric heart: counting lattice points in two triangles.",
       "mathContext": "Key identity: $\\sum_{k=1}^{(p-1)/2} \\lfloor kq/p \\rfloor + \\sum_{k=1}^{(q-1)/2} \\lfloor kp/q \\rfloor = \\frac{(p-1)(q-1)}{4}$. Geometrically: the total counts lattice points in the rectangle $(0,0)$ to $(p/2, q/2)$, split by the diagonal $y = qx/p$ into two triangles."
     },
@@ -116,7 +117,7 @@
       "id": "elementary-qr",
       "title": "Step 4: Elementary QR",
       "startLine": 157,
-      "endLine": 192,
+      "endLine": 193,
       "summary": "Combining Eisenstein's Lemma with the lattice identity to prove QR.",
       "mathContext": "Combining: $\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\sum \\lfloor kq/p \\rfloor + \\sum \\lfloor kp/q \\rfloor} = (-1)^{(p-1)(q-1)/4}$. The first equality is Eisenstein's Lemma applied twice; the second is the lattice identity."
     },
@@ -124,7 +125,7 @@
       "id": "proof-chain",
       "title": "The Eisenstein Proof Chain",
       "startLine": 194,
-      "endLine": 242,
+      "endLine": 243,
       "summary": "All three steps combined in a single theorem statement.",
       "mathContext": "The complete Eisenstein proof chain in one theorem: Gauss's Lemma + Eisenstein's floor reformulation + lattice point counting = quadratic reciprocity. Verified end-to-end with `ZMod.quadraticReciprocity` from Mathlib."
     },
@@ -132,7 +133,7 @@
       "id": "consequences",
       "title": "Readable Forms and Consequences",
       "startLine": 244,
-      "endLine": 293,
+      "endLine": 294,
       "summary": "1 mod 4 and 3 mod 4 cases, supplementary laws.",
       "mathContext": "Special cases: if $p \\equiv 1 \\pmod{4}$ or $q \\equiv 1 \\pmod{4}$, then $\\left(\\frac{p}{q}\\right) = \\left(\\frac{q}{p}\\right)$ (same sign). If both $\\equiv 3 \\pmod{4}$, then $\\left(\\frac{p}{q}\\right) = -\\left(\\frac{q}{p}\\right)$ (opposite signs). Supplementary laws: $\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$ and $\\left(\\frac{2}{p}\\right) = (-1)^{(p^2-1)/8}$."
     },
@@ -140,7 +141,7 @@
       "id": "examples",
       "title": "Computational Examples",
       "startLine": 295,
-      "endLine": 328,
+      "endLine": 357,
       "summary": "Concrete examples demonstrating QR for small primes.",
       "mathContext": "Examples: $(3/5) = (5/3)$ since $5 \\equiv 1 \\pmod{4}$; $(3/7) = -(7/3)$ since both $\\equiv 3 \\pmod{4}$. Verified computationally using `decide` in Lean for specific prime pairs."
     }

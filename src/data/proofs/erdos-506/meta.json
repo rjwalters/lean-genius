@@ -22,7 +22,8 @@
     "erdosProblemStatus": "partially solved",
     "axiomCount": 4,
     "lineCount": 115,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem asks for the minimum number of distinct circles determined by $n$ points in the plane, not all lying on a single circle. The question is a natural analogue of the Sylvester-Gallai problem for lines, where $n$ non-collinear points determine at least $n$ ordinary lines. For circles, three non-collinear points determine a unique circumcircle, so $n$ points produce at most $\\binom{n}{3}$ candidate circles, but many triples may share a circumcircle. P.D.T.A. Elliott proved in 1967 that for $n > 393$ non-degenerate points (not all concyclic, not all collinear), at least $\\binom{n-1}{2} = (n-1)(n-2)/2$ distinct circles arise. His proof used an inductive point-deletion argument. However, Beniamino Segre showed this bound fails for small $n$: projecting the 8 vertices of a cube onto a suitable plane produces 8 non-degenerate points with fewer than $\\binom{7}{2} = 21$ circles, because the cube's symmetry forces many triples to share circumcircles. The gap between Segre's counterexample and Elliott's threshold ($4 \\leq n \\leq 393$) remains open. The problem connects to Erdős Problems #104 (distinct distances) and #831, and to the broader program in incidence geometry studying how combinatorial structure constrains geometric configurations.",
@@ -46,49 +47,49 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Module documentation describing the circle counting problem, Elliott's theorem, and Segre's counterexample, with Mathlib imports for real arithmetic, finite sets, and affine spaces."
     },
     {
       "id": "geometric-primitives",
       "title": "Geometric Primitives",
       "startLine": 25,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Defines Point2 (ℝ²), AreCollinear (cross product test), circumcircle (center and radius from 3 points via perpendicular bisectors), and SameCircle (circumcircle equality)."
     },
     {
       "id": "configurations",
       "title": "Point Configurations and Degeneracy",
       "startLine": 52,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines PointConfig (indexed n-point set), AllConcyclic (single common circle), and AllCollinear (all triples collinear) — the two degeneracy conditions excluded in the problem."
     },
     {
       "id": "circle-counting",
       "title": "Circle Counting",
       "startLine": 64,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Defines numCircles (distinct circles via image cardinality) and minCircles (extremal minimum over non-degenerate configurations)."
     },
     {
       "id": "elliott-theorem",
       "title": "Elliott's Theorem (1967)",
       "startLine": 79,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "Axiom: for n > 393 non-degenerate points, at least C(n-1,2) distinct circles."
     },
     {
       "id": "segre-counterexample",
       "title": "Segre's Cube Counterexample",
       "startLine": 87,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Axiom: 8 points from cube projection determine fewer than 21 circles, showing Elliott's bound fails for small n."
     },
     {
       "id": "open-question",
       "title": "Open Question: Small n",
       "startLine": 97,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Axiom: existence of a lower bound function f(n) for 4 ≤ n ≤ 393, the unresolved range."
     },
     {
@@ -123,5 +124,27 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1121",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: circles, geometry"
+    },
+    {
+      "targetId": "erdos-502",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial geometry, geometry"
+    },
+    {
+      "targetId": "erdos-505",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial geometry, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1121",
+    "erdos-502",
+    "erdos-505"
+  ]
 }

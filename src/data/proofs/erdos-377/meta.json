@@ -7,7 +7,7 @@
     "author": "Erdős, Graham, Ruzsa, & Straus (1975)",
     "sourceUrl": "https://erdosproblems.com/377",
     "date": "1975",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos377Problem.lean",
     "tags": [
       "erdos",
@@ -16,13 +16,13 @@
       "prime-divisibility",
       "analytic-number-theory"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 377,
     "erdosUrl": "https://erdosproblems.com/377",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.centralBinom",
@@ -77,35 +77,35 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 30,
+      "endLine": 31,
       "summary": "Module documentation and Mathlib imports for central binomials, primes, logarithms, and filters."
     },
     {
       "id": "function",
       "title": "The Main Function f(n)",
       "startLine": 32,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Definition of sumInvPrimesNotDivCentralBinom — the key function measuring primes that miss."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "startLine": 44,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Statement of the main boundedness conjecture that remains open."
     },
     {
       "id": "egrs-results",
       "title": "EGRS 1975 Results",
       "startLine": 63,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "Four axioms capturing the known results: first moment, second moment, almost everywhere, upper bound."
     },
     {
       "id": "understanding",
       "title": "Understanding the Problem",
       "startLine": 112,
-      "endLine": 147,
+      "endLine": 150,
       "summary": "Discussion of Kummer's theorem, complementary sums, and implications."
     }
   ],
@@ -139,5 +139,27 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    },
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1004",
+    "erdos-1102",
+    "erdos-1106"
+  ]
 }

@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Tucker%27s_lemma",
     "date": "2026",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BorsukUlamOQ03OQ01.lean",
     "tags": [
       "topology",
@@ -21,7 +21,7 @@
       "perturbation",
       "research"
     ],
-    "badge": "open",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -59,7 +59,7 @@
     ],
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 1162,
     "assumptions": "2 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
@@ -86,35 +86,35 @@
       "title": "Lipschitz Borsuk-Ulam Bounds",
       "summary": "For L-Lipschitz f, the antisymmetric difference is 2L-Lipschitz and the maximum antipodal deviation |f(x)-f(-x)| on [-1,1] is at most 2L.",
       "startLine": 41,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "bisection",
       "title": "Bisection Convergence Rate",
       "summary": "The bisection method on [-1,1] locates zeros with geometric convergence: interval width 2*(1/2)^n -> 0.",
       "startLine": 78,
-      "endLine": 114
+      "endLine": 115
     },
     {
       "id": "oscillation",
       "title": "Oscillation Bounds on Antipodal Deviation",
       "summary": "For continuous f on [-1,1], the antipodal deviation is bounded by the oscillation (sup - inf) of f on [-1,1].",
       "startLine": 116,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "coincidence-set",
       "title": "Coincidence Set Structure",
       "summary": "The set {x in [-1,1] | f(x) = f(-x)} is symmetric, nonempty, compact, and has a minimum element.",
       "startLine": 156,
-      "endLine": 199
+      "endLine": 200
     },
     {
       "id": "circle-bounds",
       "title": "Quantitative Circle BU",
       "summary": "For L-Lipschitz f: R^2 -> R, the circle antipodal deviation |f(p)-f(-p)| <= 2L, proved via max-norm distance bound.",
       "startLine": 201,
-      "endLine": 241
+      "endLine": 242
     },
     {
       "id": "uniform-continuity",
@@ -135,14 +135,14 @@
       "title": "Tucker's Lemma (1D) via Discrete IVT",
       "summary": "Full proof of Tucker's 1D lemma with integer labels {+-1}: an antipodal boundary labeling of Fin(n+2) has a complementary edge where f(i)+f(i+1)=0. Proved via discrete IVT and case analysis on {+-1} labels. Includes verified examples and counting version.",
       "startLine": 514,
-      "endLine": 644
+      "endLine": 645
     },
     {
       "id": "tucker-higher",
       "title": "Tucker's Lemma in Higher Dimensions (Axiomized)",
       "summary": "Tucker 2D (labels from {+-1,+-2}) and Tucker n-D (labels from {+-1,...,+-n}) axiomized with abstract graph-theoretic formulation. Tucker-BU equivalence proved in 1D.",
       "startLine": 646,
-      "endLine": 766
+      "endLine": 1162
     }
   ],
   "conclusion": {

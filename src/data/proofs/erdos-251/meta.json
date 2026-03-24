@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/251",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth",
@@ -80,56 +80,56 @@
       "id": "nth-prime",
       "title": "The nth Prime Function",
       "startLine": 37,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Definition of nthPrime using Mathlib's Nat.nth and axiom for first few values."
     },
     {
       "id": "main-sum",
       "title": "The Main Sum",
       "startLine": 57,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Definition of erdosTerm, erdosSum, and convergence axiom."
     },
     {
       "id": "partial-sums",
       "title": "Partial Sums",
       "startLine": 93,
-      "endLine": 106,
+      "endLine": 107,
       "summary": "Definition and verification of the first 5-term partial sum."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 108,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Statement of erdos_251_conjecture: Irrational erdosSum."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 123,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "Erdős's factorial irrationality theorem and the generalized conjecture."
     },
     {
       "id": "difficulty",
       "title": "Why This Is Hard",
       "startLine": 148,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "Discussion of the challenges in proving irrationality of explicit series."
     },
     {
       "id": "general-conjecture",
       "title": "Generalized Conjecture",
       "startLine": 161,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "Erdős's general conjecture about products of slowly-growing sequences."
     },
     {
       "id": "oeis",
       "title": "The OEIS Constant",
       "startLine": 177,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "Bounds on erdosSum: between 3 and 4, approximately 3.5968."
     },
     {
@@ -167,5 +167,27 @@
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-258",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: infinite-series, irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-262",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: infinite-series, irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-68",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: infinite-series, irrationality, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-258",
+    "erdos-262",
+    "erdos-68"
+  ]
 }

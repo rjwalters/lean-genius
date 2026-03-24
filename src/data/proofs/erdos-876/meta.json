@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/876",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -46,20 +46,6 @@
       "dem_growth axiom: aₙ ~ n^{3+o(1)} achievable",
       "reciprocalSum definition and sullivan_bound axiom",
       "powers_of_two_sumfree theorem sketch"
-    ],
-    "crossReferences": [
-      {
-        "targetProof": "erdos-862",
-        "relationship": "Sidon sets (Problem #862) are a related additive structure: Sidon forbids repeated pairwise sums, while sum-free forbids any subset sum equaling another element. Both concern avoidance conditions in additive combinatorics."
-      },
-      {
-        "targetProof": "ramseys-theorem",
-        "relationship": "Sum-free sets arise in Ramsey theory: Schur's theorem guarantees that any finite coloring of {1,...,N} contains a monochromatic solution to x+y=z. Sum-free sets are precisely the independent sets avoiding such solutions."
-      },
-      {
-        "targetProof": "binomial-theorem",
-        "relationship": "The powers-of-two example {1, 2, 4, 8, ...} connects to binary representation and the binomial expansion of (1+1)^n, where the uniqueness of binary representation proves sum-freeness."
-      }
     ],
     "axiomCount": 8,
     "lineCount": 298,
@@ -88,7 +74,7 @@
       "title": "Imports and Setup",
       "summary": "Imports `Nat.Basic`, `Set.Basic`, `Finset.Basic`, and `BigOperators.Group.Finset` for summation. Opens `Finset` and `BigOperators` namespaces for $\\sum$ notation and finite set operations.",
       "startLine": 34,
-      "endLine": 41
+      "endLine": 42
     },
     {
       "id": "sum-free-sets",
@@ -174,5 +160,27 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-329",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-number-theory, combinatorics"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, partially-solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-13",
+    "erdos-329",
+    "erdos-711"
+  ]
 }

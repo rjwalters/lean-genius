@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/352",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.volume",
@@ -78,63 +78,63 @@
       "id": "header",
       "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Problem statement, status, known results, and references."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 33,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Mathlib imports for measure theory, inner products, determinants."
     },
     {
       "id": "triangle-area",
       "title": "Triangle Area Definition",
       "startLine": 43,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "2D cross product, signed and unsigned triangle area, basic properties."
     },
     {
       "id": "main-property",
       "title": "The Main Property",
       "startLine": 78,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "ContainsTriangleOfArea and ContainsUnitTriangle definitions."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 90,
-      "endLine": 106,
+      "endLine": 107,
       "summary": "The open problem axiomatized, plus formal statement."
     },
     {
       "id": "conjectured-constant",
       "title": "The Conjectured Constant",
       "startLine": 108,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "erdosConstant = 4pi/sqrt(27), conjecture and optimality statement."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 136,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Infinite measure case, unbounded case, Freiling-Mauldin for compact convex."
     },
     {
       "id": "critical-circle",
       "title": "The Critical Circle Witness",
       "startLine": 163,
-      "endLine": 191,
+      "endLine": 192,
       "summary": "criticalRadius, circle area equals constant, max inscribed triangle area."
     },
     {
       "id": "reduction",
       "title": "Reduction to Finite Unions",
       "startLine": 193,
-      "endLine": 215,
+      "endLine": 216,
       "summary": "Mauldin's reduction and Freiling-Mauldin result for n <= 3 sets."
     },
     {
@@ -173,5 +173,21 @@
     "axiomCount": 10,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-351",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-353",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-351",
+    "erdos-353"
+  ]
 }

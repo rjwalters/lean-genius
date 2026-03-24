@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 98,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p.64), as part of a broader investigation into when series with integer terms produce irrational sums. The growth condition $\\liminf a_n^{1/2^n} > 1$ captures sequences growing at least doubly exponentially—a natural threshold since slower-growing sequences can yield rational sums (e.g., arithmetic progressions give telescoping sums). Erdős made partial progress in a 1988 paper, proving irrationality for sequences satisfying the stronger condition $a_{n+1} \\geq C \\cdot a_n^2$. The proof technique uses rapid convergence of partial sums to derive contradictions from the assumption of rationality, building on methods going back to Liouville's 1844 construction of transcendental numbers. The gap between this quadratic recurrence condition and the general $\\liminf$ condition remains the central open challenge. The problem connects to the Erdős–Graham program of understanding irrationality of series involving integer sequences, and to classical work on Sylvester–Fibonacci expansions and Egyptian fraction representations by Kellogg (1921) and Curtiss (1922).",
@@ -54,35 +55,35 @@
       "id": "growth-condition",
       "title": "Growth Condition",
       "startLine": 21,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Defines GrowthCondition: $\\liminf a_n^{1/2^n} > 1$ via Filter.liminf with atTop filter. Marked noncomputable due to real-valued limit computation."
     },
     {
       "id": "series",
       "title": "The Reciprocal Product Series",
       "startLine": 31,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Defines erdosSeries as $\\sum 1/(a_n \\cdot a_{n+1})$ using Mathlib's tsum. Marked noncomputable since it involves real-valued infinite sums."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 39,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "States ErdosProblem1051 as a Prop: for all strictly monotone integer sequences satisfying the growth condition, the erdosSeries is irrational. Uses Mathlib's Irrational and StrictMono."
     },
     {
       "id": "rapid-growth",
       "title": "Rapid Growth Case (Solved)",
       "startLine": 53,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Axiomatizes Erdős's 1988 result: irrationality holds when $a_{n+1} \\geq C \\cdot a_n^2$ for some $C > 0$. This is the strongest known partial result toward the full conjecture."
     },
     {
       "id": "convergence",
       "title": "Convergence and Positivity",
       "startLine": 65,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Two axioms: (1) the series converges absolutely (Summable) under the growth condition, and (2) the sum is strictly positive when all terms $a_n > 0$."
     },
     {
@@ -105,34 +106,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1049",
       "relationship": "companion",
-      "description": "Erdős Problem #1049 is a neighboring irrationality problem for integer sequences; both problems belong to the Erdős–Graham program of classifying which growth conditions force irrationality of infinite series."
+      "description": "Erdős Problem #1049 is a neighboring irrationality problem for integer sequences; both problems belong to the Erdős–Graham program of classifying which growth conditions force irrationality of infinite series.",
+      "targetId": "erdos-1049"
     },
     {
-      "target": "erdos-1053",
       "relationship": "companion",
-      "description": "Erdős Problem #1053 is another problem in the same cluster of irrationality questions for reciprocal sums, sharing the theme of doubly exponential growth and rational vs. irrational series sums."
+      "description": "Erdős Problem #1053 is another problem in the same cluster of irrationality questions for reciprocal sums, sharing the theme of doubly exponential growth and rational vs. irrational series sums.",
+      "targetId": "erdos-1053"
     },
     {
-      "target": "erdos-1003",
       "relationship": "related",
-      "description": "Erdős Problem #1003 involves series with integer denominators; both problems study when integer-sequence-defined series must be irrational, placing #1051 in the broader context of Erdős irrationality conjectures."
+      "description": "Erdős Problem #1003 involves series with integer denominators; both problems study when integer-sequence-defined series must be irrational, placing #1051 in the broader context of Erdős irrationality conjectures.",
+      "targetId": "erdos-1003"
     },
     {
-      "target": "sqrt2-irrational",
       "relationship": "prerequisite",
-      "description": "The irrationality of √2 is a foundational result establishing the Irrational predicate and contradiction-from-rationality proof technique that Erdős's 1988 argument for the rapid-growth case builds upon."
+      "description": "The irrationality of √2 is a foundational result establishing the Irrational predicate and contradiction-from-rationality proof technique that Erdős's 1988 argument for the rapid-growth case builds upon.",
+      "targetId": "sqrt2-irrational"
     },
     {
-      "target": "e-transcendental",
       "relationship": "related",
-      "description": "The transcendence of e is a key result in transcendence theory; the open question of whether sums in #1051 are transcendental (not merely irrational) under the growth condition connects directly to methods from this area."
+      "description": "The transcendence of e is a key result in transcendence theory; the open question of whether sums in #1051 are transcendental (not merely irrational) under the growth condition connects directly to methods from this area.",
+      "targetId": "e-transcendental"
     },
     {
-      "target": "infinitude-primes",
       "relationship": "related",
-      "description": "The infinitude of primes underpins density arguments for integer sequences and is used in ruling out counterexamples in irrationality proofs where prime factorization constraints on denominators are exploited."
+      "description": "The infinitude of primes underpins density arguments for integer sequences and is used in ruling out counterexamples in irrationality proofs where prime factorization constraints on denominators are exploited.",
+      "targetId": "infinitude-primes"
     }
   ],
   "relatedProofs": [

@@ -47,7 +47,8 @@
     "wiedijkNumber": 80,
     "axiomCount": 0,
     "lineCount": 224,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Arithmetic has roots in Euclid's *Elements* (c. 300 BCE): Book VII, Proposition 31 proves every composite number has a prime factor (existence), while Propositions 32 and Book IX, Proposition 14 establish key steps toward uniqueness. However, Euclid never stated the theorem explicitly. Carl Friedrich Gauss gave the first rigorous proof in §16 of his *Disquisitiones Arithmeticae* (1801), recognizing that uniqueness requires Euclid's Lemma ($p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$) as a non-trivial ingredient. Ernst Zermelo (1934) gave an elegant proof using the well-ordering principle. The theorem fails in certain algebraic number rings — for example, in $\\mathbb{Z}[\\sqrt{-5}]$, $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ has two distinct factorizations into irreducibles. Kummer's introduction of 'ideal numbers' (1847) to restore unique factorization led to Dedekind's theory of ideals and ultimately to the algebraic concept of a **Unique Factorization Domain** (UFD). This is #80 on Freek Wiedijk's list of 100 theorems formalized in proof assistants.",
@@ -70,49 +71,49 @@
       "id": "header",
       "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "States the Fundamental Theorem of Arithmetic ($n = p_1^{a_1} \\cdots p_k^{a_k}$ uniquely), proof approach via strong induction and Euclid's Lemma, Mathlib dependencies, and historical note (Euclid c. 300 BCE, Gauss 1801, Wiedijk #80)."
     },
     {
       "id": "existence",
       "title": "Existence of Prime Factorization",
       "startLine": 59,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Proves `n.primeFactorsList.prod = n` (existence), that all factors are prime, and that the factor list is sorted. All via Mathlib's `Nat.prod_primeFactorsList`, `Nat.prime_of_mem_primeFactorsList`, `Nat.primeFactorsList_sorted`."
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness of Prime Factorization",
       "startLine": 81,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Proves two prime lists with the same product are permutations (`prime_lists_perm_of_prod_eq`), and that equal factor lists imply equal numbers. Uses `Nat.primeFactorsList_unique`."
     },
     {
       "id": "full-theorem",
       "title": "Complete FTA Statement",
       "startLine": 106,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "States and proves the full theorem: $\\forall n \\ge 2$, $\\exists$ sorted prime list $\\ell$ with $\\prod \\ell = n$ and any other prime list with same product is a permutation of $\\ell$."
     },
     {
       "id": "ufd",
       "title": "Unique Factorization Domain",
       "startLine": 133,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Proves $\\mathbb{N}$ is a `UniqueFactorizationMonoid` via `inferInstance`, connecting to the algebraic theory of UFDs."
     },
     {
       "id": "euclid-lemma",
       "title": "Euclid's Lemma",
       "startLine": 142,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Proves $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ for prime $p$ via `Nat.Prime.dvd_mul` — the key lemma for uniqueness."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
       "startLine": 152,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "Verifies factorizations by `native_decide`: $12 = [2,2,3]$, $30 = [2,3,5]$, $60 = [2,2,3,5]$, $17 = [17]$. Confirms product and sorted properties."
     },
     {

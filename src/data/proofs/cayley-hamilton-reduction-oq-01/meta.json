@@ -58,7 +58,8 @@
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
     "lineCount": 304,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Cayley-Hamilton theorem (1858) underpins efficient matrix computation. The open question from the cayley-hamilton-reduction gallery entry asks: 'Can this reduction be made computationally efficient for sparse matrices?' This formalization answers YES for four key sparse structures.\n\nFor dense n×n matrices, computing the characteristic polynomial requires O(n³) operations (via determinant expansion). For sparse/structured matrices, this drops dramatically:\n- Upper triangular: O(n) — just read the diagonal\n- Block triangular: O(Σ kᵢ³) where kᵢ are block sizes — up to O(n³/k²) savings for k blocks of equal size\n- Diagonal: O(n) — entry-wise computation\n\nThe Wiedemann algorithm (1986) exploits sparsity to compute charpolys in O(n²s) where s is sparsity, giving O(n²) for s = O(1) sparse matrices.",
@@ -82,35 +83,35 @@
       "id": "general",
       "title": "General Results",
       "startLine": 58,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Matrix charpoly is always monic (wrapper theorem for Mathlib's charpoly_monic)."
     },
     {
       "id": "upper-triangular",
       "title": "Upper Triangular Matrices",
       "startLine": 72,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "For upper triangular M (BlockTriangular id), charpoly = ∏(X - Mᵢᵢ). The Cayley-Hamilton reduction applies with this factored charpoly, enabling O(n) charpoly computation."
     },
     {
       "id": "block-triangular",
       "title": "Block Triangular Matrices",
       "startLine": 132,
-      "endLine": 180,
+      "endLine": 181,
       "summary": "For block triangular matrices, charpoly decomposes as a product over diagonal blocks. Includes general BlockTriangular case and specialized 2×2 block theorems (lower triangular, upper triangular, block diagonal)."
     },
     {
       "id": "nilpotent",
       "title": "Strictly Upper Triangular (Nilpotent) Matrices",
       "startLine": 182,
-      "endLine": 230,
+      "endLine": 231,
       "summary": "Zero diagonal implies charpoly = X^n, hence M^n = 0 (nilpotent). Higher powers M^k = 0 for k ≥ n. The reduction basis is bounded by nilpotency index."
     },
     {
       "id": "diagonal",
       "title": "Diagonal Matrices",
       "startLine": 232,
-      "endLine": 285,
+      "endLine": 304,
       "summary": "Diagonal structure preserved under powers: (D^k) i j = 0 for i ≠ j, and (D^k) i i = (D i i)^k. Enables O(n) polynomial evaluation entry-by-entry."
     }
   ],

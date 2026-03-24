@@ -24,7 +24,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 199,
-    "assumptions": "No axioms. 1 sorry(s) remain in the formalization."
+    "assumptions": "No axioms. 1 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős, Nešetřil, and Rödl** posed this problem in [Er92b], asking whether a density condition on non-collinearity implies a structural decomposition. The question belongs to the broader programme of **density-to-structure implications** in combinatorics: when does a quantitative property (every large piece has a proportional substructure) force a qualitative partition (the whole set splits into finitely many well-structured pieces)? Analogous questions appear throughout Ramsey theory—for instance, Szemerédi's regularity lemma converts density conditions on graphs into structural partitions. In the geometric setting, **Sylvester–Gallai** (1893/1944) showed that any finite set of points not all collinear determines a line through exactly two points, constraining the collinearity hypergraph. The Hales–Jewett density theorem and the density Hales–Jewett theorem provide further parallels. Problem 846 is closely related to Erdős Problems 774 and 847, which concern similar density-vs-structure questions for collinearity in the plane. The problem remains **open** as of 2026.",
@@ -48,63 +49,63 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 15,
-      "endLine": 20,
+      "endLine": 21,
       "summary": "Imports InnerProductSpace for ℝ², Finset for combinatorics, and standard tactics."
     },
     {
       "id": "collinearity",
       "title": "Collinearity via Cross Product",
       "startLine": 22,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Defines AreCollinear using the vanishing of the 2D cross product determinant."
     },
     {
       "id": "non-trilinear",
       "title": "Non-Trilinear Sets",
       "startLine": 29,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Defines NonTrilinear: no three distinct points in the set are collinear (general position)."
     },
     {
       "id": "eps-property",
       "title": "ε-Non-Trilinear Property",
       "startLine": 34,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines the density condition: every finite subset B has a non-collinear subset C with |C| ≥ ε|B|."
     },
     {
       "id": "weakly-non-trilinear",
       "title": "Weakly Non-Trilinear Sets",
       "startLine": 43,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines the structural condition: A is a finite union of non-trilinear sets."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties (Fully Proved)",
       "startLine": 50,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Four proved lemmas: monotonicity, empty set, singleton non-trilinearity, and collinearity symmetry."
     },
     {
       "id": "eps-results",
       "title": "ε-Non-Trilinear Results (Fully Proved)",
       "startLine": 75,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Proves non-trilinear sets are 1-non-trilinear and that ε-non-trilinearity is monotone in ε."
     },
     {
       "id": "pigeonhole",
       "title": "Finitary Pigeonhole Principle (Fully Proved)",
       "startLine": 99,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "A standalone proof that some fiber of f : B → Fin k has |fiber| ≥ |B|/k, by contradiction."
     },
     {
       "id": "easy-direction",
       "title": "Easy Direction: Structure → Density (Fully Proved)",
       "startLine": 123,
-      "endLine": 177,
+      "endLine": 178,
       "summary": "The main proved theorem: if A ⊆ ⋃ᵢ Sᵢ with each Sᵢ non-trilinear, then A is (1/k)-non-trilinear."
     },
     {
@@ -141,5 +142,27 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: collinearity, combinatorial-geometry"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: collinearity, combinatorial-geometry"
+    },
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-101",
+    "erdos-102",
+    "erdos-107"
+  ]
 }

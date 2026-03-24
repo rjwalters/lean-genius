@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/565",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -175,5 +175,27 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-814",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, induced-subgraphs, solved"
+    },
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, induced-subgraphs, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1036",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, induced-subgraphs, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-814",
+    "erdos-88",
+    "erdos-1036"
+  ]
 }

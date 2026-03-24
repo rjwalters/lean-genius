@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/571",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -88,42 +88,42 @@
       "title": "Part I: Graph Definitions",
       "summary": "Defines `Graph V` as a structure with symmetric, loopless `adj`. `IsBipartite G` via partition $V = A \\sqcup B$ with edges crossing. `edgeCount` via `Finset.filter` on ordered pairs $(u,v)$ with $u < v$. `ContainsCopy G H` via injective edge-preserving map. `IsFree H G` as negation of containment.",
       "startLine": 35,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "asymptotic-notation",
       "title": "Part II: Extremal Numbers and Asymptotic Notation",
       "summary": "Defines custom `AsymptoticEquiv f g` ($\\exists c_1, c_2 > 0, N_0:\\; c_1 g(n) \\le f(n) \\le c_2 g(n)$ for $n \\ge N_0$) and `IsBigO f g`. These capture $\\Theta$ and $O$ notation with explicit witnesses, designed for compatibility with the existential structure of `IsTuranExponent`.",
       "startLine": 63,
-      "endLine": 72
+      "endLine": 73
     },
     {
       "id": "turan-exponents",
       "title": "Part III: Turán Exponents and the Conjecture",
       "summary": "Defines `IsTuranExponent \\alpha` requiring $1 \\le \\alpha < 2$ and existence of bipartite $G$ with extremal function $\\asymp n^\\alpha$. States `erdos_571_conjecture` as a `def : Prop` (open problem), asserting all rationals in $[1,2)$ are Turan exponents.",
       "startLine": 74,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "known-exponents",
       "title": "Part V: Known Turán Exponent Families",
       "summary": "Five axioms for specific families: CJL $3/2 - 1/(2s)$ (subdivisions), JQ $4/3 - 1/(3s)$ and $5/4 - 1/(4s)$ (algebraic graphs), JQ $1 + a/b$ with $b > a^2$ (low exponents via norm constructions), JMY $2 - 2/(2b+1)$ (hypergraph encoding), and CJ $2 - a/b$ with $b \\ge (a-1)^2$ (dense near 2 via random algebraic varieties). Also `exponent_7_5` as a standalone result.",
       "startLine": 100,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "bukh-conlon",
       "title": "Part VI: Bukh-Conlon Finite Family Result",
       "summary": "Axiomatizes `bukh_conlon_families`: every $\\alpha \\in [1,2) \\cap \\mathbb{Q}$ is achievable for a finite family of bipartite graphs. The axiom existentially quantifies over a family size $k$ and an extremal function. This resolves the weakened family version while the single-graph version remains open.",
       "startLine": 146,
-      "endLine": 158
+      "endLine": 159
     },
     {
       "id": "classical-bounds",
       "title": "Part VII: Classical Upper Bounds",
       "summary": "Two foundational axioms: `kovari_sos_turan` gives $\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$ via double counting, and `bondy_simonovits_upper` guarantees $\\text{ex}(n;G) = O(n^{2-1/k})$ for some $k$ for any bipartite $G$. Together they justify the interval $[1,2)$.",
       "startLine": 160,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "summary",

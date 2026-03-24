@@ -21,7 +21,7 @@
     "erdosNumber": 861,
     "erdosUrl": "https://erdosproblems.com/861",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.filter",
@@ -58,7 +58,7 @@
   "overview": {
     "historicalContext": "This problem, posed by Cameron and Erdős, asks about counting Sidon sets (sets where all pairwise sums are distinct). It connects to additive combinatorics and the hypergraph container method. The problem appears as C9 in Guy's 'Unsolved Problems in Number Theory'. Sidon sets — also called B₂ sequences — were introduced by Simon Sidon in the 1930s in the context of Fourier analysis; Erdős and Turán proved in 1941 that the maximum Sidon subset of {1, …, N} has size ~√N, and constructions achieving this via Singer difference sets in finite fields were known by the 1940s. Cameron and Erdős posed their counting question in the early 1990s, anticipating that the exponential structure of 2^{f(N)} subsets would need to be understood more precisely. The 2015 resolution using the hypergraph container method of Balogh-Morris-Samotij and independently Saxton-Thomason represented a major breakthrough in counting sparse combinatorial structures.",
     "problemStatement": "Let f(N) be the size of the largest Sidon subset of {1,...,N} and A(N) the number of Sidon subsets. Question 1: Is A(N)/2^{f(N)} → ∞? Question 2: Is A(N) = 2^{(1+o(1))f(N)}?",
-    "text": "Let f(N) be the max Sidon subset size and A(N) the number of Sidon subsets of {1,...,N}. Is A(N)/2^{f(N)} \u2192 \u221e? (Yes) Is A(N) = 2^{(1+o(1))f(N)}? (No)",
+    "text": "Let f(N) be the max Sidon subset size and A(N) the number of Sidon subsets of {1,...,N}. Is A(N)/2^{f(N)} → ∞? (Yes) Is A(N) = 2^{(1+o(1))f(N)}? (No)",
     "proofStrategy": "The formalization defines Sidon sets and the counting functions, then states the Cameron-Erdős questions and their answers as axioms. The current best bounds (Saxton-Thomason lower, KLRS upper) are included.",
     "keyInsights": [
       "A Sidon set (B₂ sequence) has all pairwise sums distinct: $a + b = c + d \\implies \\{a,b\\} = \\{c,d\\}$",
@@ -165,5 +165,27 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, counting"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics"
+    },
+    {
+      "targetId": "erdos-1112",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-748",
+    "erdos-109",
+    "erdos-1112"
+  ]
 }

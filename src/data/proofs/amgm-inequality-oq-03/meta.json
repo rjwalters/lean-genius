@@ -58,7 +58,8 @@
       "Finset product and sum operations"
     ],
     "lineCount": 372,
-    "assumptions": "0 axioms, 0 sorries. Core building blocks (AM-GM, Jensen, AM ≤ M_p) from Mathlib; original proofs for HM ≤ GM, power mean monotonicity (positive and negative exponents), and duality identity."
+    "assumptions": "0 axioms, 0 sorries. Core building blocks (AM-GM, Jensen, AM ≤ M_p) from Mathlib; original proofs for HM ≤ GM, power mean monotonicity (positive and negative exponents), and duality identity.",
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -154,7 +155,7 @@
       "id": "known-results",
       "title": "Known Results (from Mathlib)",
       "startLine": 72,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "M₁ = AM (power_mean_one_eq_arith_mean), AM ≤ M_p for p ≥ 1 (arith_mean_le_power_mean), GM ≤ AM (geom_mean_le_arith_mean), Jensen (jensen_pow_ineq). All proved directly from Mathlib.",
       "mathContext": "Jensen: $(\\sum w_i z_i)^p \\leq \\sum w_i z_i^p$ for $p \\geq 1$. Equivalently $\\text{AM} \\leq M_p$. GM $\\leq$ AM is `Real.geom_mean_le_arith_mean_weighted`."
     },
@@ -162,7 +163,7 @@
       "id": "hm-le-gm",
       "title": "HM ≤ GM (New Proof)",
       "startLine": 120,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "harmonic_mean_le_geom_mean_direct: direct proof via AM-GM on inverse values. Key steps: GM(z⁻¹)·GM(z)=1, GM(z⁻¹) ≤ ∑ wᵢ/zᵢ (AM-GM on z⁻¹), then algebraic inversion.",
       "mathContext": "$\\text{GM}(z^{-1}) \\cdot \\text{GM}(z) = 1$ (term-by-term: $z_i^{-w_i} \\cdot z_i^{w_i} = 1$). Then $\\text{GM}(z)^{-1} \\leq \\sum w_i z_i^{-1}$, so $\\text{HM} \\leq \\text{GM}$."
     },
@@ -170,7 +171,7 @@
       "id": "power-mean-mono-pos",
       "title": "Power Mean Monotonicity for 0 < r ≤ s (New Proof)",
       "startLine": 169,
-      "endLine": 218,
+      "endLine": 219,
       "summary": "power_mean_monotone_pos: M_r ≤ M_s for 0 < r ≤ s. Uses Jensen with exponent s/r ≥ 1, then raises to 1/s.",
       "mathContext": "Jensen with $q = s/r \\geq 1$: $(\\sum w_i z_i^r)^{s/r} \\leq \\sum w_i z_i^s$. Raise to $1/s$: $M_r = (\\sum w_i z_i^r)^{1/r} \\leq (\\sum w_i z_i^s)^{1/s} = M_s$."
     },
@@ -178,7 +179,7 @@
       "id": "duality-and-neg-mono",
       "title": "Duality Identity and Negative Power Mean Monotonicity",
       "startLine": 220,
-      "endLine": 343,
+      "endLine": 344,
       "summary": "power_mean_neg_inv: M_r(z) = M_{-r}(z⁻¹)⁻¹. power_mean_monotone_neg: M_r ≤ M_s for r ≤ s < 0 via dual argument. Helper lemmas for positivity.",
       "mathContext": "Duality: $M_r(z) = M_{-r}(z^{-1})^{-1}$ via $(z_i^{-1})^{-r} = z_i^r$. For $r \\leq s < 0$: negate to $0 < -s \\leq -r$, apply `power_mean_monotone_pos` to $z^{-1}$, then invert."
     },

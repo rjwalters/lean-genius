@@ -23,7 +23,8 @@
     "erdosProblemStatus": "partially-solved",
     "axiomCount": 15,
     "assumptions": "15 axiom declarations: consecutive_residues_exist (runs exist for large primes), lambda_2_2 (Lambda(2,2) = 9), lambda_3_2 (Lambda(3,2) = 77), lambda_4_2 (Lambda(4,2) = 1224), lambda_5_2 (Lambda(5,2) = 7888), lambda_6_2 (Lambda(6,2) = 202124), lambda_7_2 (Lambda(7,2) = 1649375), hildebrand_theorem (Lambda(k,2) finite for all k), lambda_3_3 (Lambda(3,3) = 23532), lambda_even_3_infinite (Lambda(k,3) infinite for even k), graham_theorem (Lambda(k,m) infinite for m>=4), lambda_2_2_achieved (Lambda(2,2)=9 is sharp), growth_appears_super_polynomial (super-polynomial growth), qr_product_non_residues (QR product property), euler_criterion_backward (Euler criterion converse)",
-    "lineCount": 634
+    "lineCount": 634,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "D.H. Lehmer and Emma Lehmer initiated this problem in their 1962 paper 'On runs of residues,' proving $\\Lambda(2,2) = 9$ with an elegant argument exploiting Legendre symbol multiplicativity. In the 1960s, extensive machine computations by Dunton, Bierstedt, Mills, Brillhart, Selfridge, and the Lehmers found exact values $\\Lambda(k, 2)$ for $k \\leq 7$ and $\\Lambda(3, 3) = 23532$ --- among the earliest applications of electronic computers to number theory. The Lehmers also proved the remarkable parity dichotomy: $\\Lambda(k, 3) = \\infty$ for all even $k$, since $(-1)^k = 1$ creates a structural obstruction. Graham (1964) proved the definitive result that $\\Lambda(k, m) = \\infty$ for $m \\geq 4$, making $m \\leq 3$ the only interesting cases. The major breakthrough came from Hildebrand (1991), who used character sum estimates and the large sieve inequality to prove $\\Lambda(k, 2) < \\infty$ for all $k$, completely resolving Question 1. The remaining open question --- whether $\\Lambda(k, 3)$ is finite for odd $k \\geq 5$ --- lies at the boundary of current analytic number theory, as Hildebrand's methods do not extend from $m = 2$ to $m = 3$.",
@@ -48,49 +49,49 @@
       "id": "definitions",
       "title": "Power Residue Definitions",
       "startLine": 45,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 71,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions."
     },
     {
       "id": "r-function",
       "title": "The $r(k,m,p)$ Function",
       "startLine": 157,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes."
     },
     {
       "id": "lambda-function",
       "title": "The $\\Lambda(k,m)$ Function",
       "startLine": 177,
-      "endLine": 195,
+      "endLine": 196,
       "summary": "Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$."
     },
     {
       "id": "known-values",
       "title": "Known Exact Values",
       "startLine": 197,
-      "endLine": 237,
+      "endLine": 238,
       "summary": "Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations."
     },
     {
       "id": "hildebrand",
       "title": "Hildebrand's Theorem (1991)",
       "startLine": 239,
-      "endLine": 257,
+      "endLine": 258,
       "summary": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly."
     },
     {
       "id": "m3-case",
       "title": "The $m = 3$ Case and Parity Dichotomy",
       "startLine": 259,
-      "endLine": 285,
+      "endLine": 286,
       "summary": "$\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?"
     },
     {
@@ -104,21 +105,21 @@
       "id": "quadratic",
       "title": "Quadratic Residue Case: $\\Lambda(2,2) \\leq 9$",
       "startLine": 312,
-      "endLine": 334,
+      "endLine": 335,
       "summary": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely often."
     },
     {
       "id": "growth",
       "title": "Growth Rate Analysis",
       "startLine": 336,
-      "endLine": 539,
+      "endLine": 540,
       "summary": "Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive."
     },
     {
       "id": "flt-euler",
       "title": "Fermat's Little Theorem and Euler's Criterion",
       "startLine": 541,
-      "endLine": 620,
+      "endLine": 634,
       "summary": "FLT $r^{p-1} \\equiv 1 \\pmod{p}$ proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$. Euler's criterion forward ($r = x^2 \\Rightarrow r^{(p-1)/2} = 1$) proved via calc chain; backward axiomatized. Legendre symbol multiplicativity from Mathlib."
     }
   ],
@@ -150,5 +151,27 @@
     "axiomCount": 15,
     "theoremCount": 44,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    },
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1004",
+    "erdos-1102",
+    "erdos-1106"
+  ]
 }

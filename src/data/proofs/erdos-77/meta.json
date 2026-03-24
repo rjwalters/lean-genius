@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100 (existence) / $10000 (non-existence)",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.liminf",
@@ -83,42 +83,42 @@
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers",
       "startLine": 41,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Axiomatization of R(k) and small known values."
     },
     {
       "id": "classical-bounds",
       "title": "Classical Bounds",
       "startLine": 86,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Erdos lower and upper bounds on R(k)."
     },
     {
       "id": "growth-rate",
       "title": "The Growth Rate Question",
       "startLine": 119,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "Definition of R(k)^{1/k} and liminf/limsup bounds."
     },
     {
       "id": "breakthroughs",
       "title": "Recent Breakthroughs (2023-2024)",
       "startLine": 148,
-      "endLine": 185,
+      "endLine": 186,
       "summary": "CGMS 2023 and GNNW 2024 improvements to upper bound."
     },
     {
       "id": "open-questions",
       "title": "The Open Questions",
       "startLine": 187,
-      "endLine": 216,
+      "endLine": 217,
       "summary": "LimitExists, ErdosConjecture, consistency verification."
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Method Bounds",
       "startLine": 218,
-      "endLine": 232,
+      "endLine": 290,
       "summary": "Refined lower bound with o(1) terms."
     }
   ],

@@ -23,7 +23,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 7,
     "lineCount": 237,
-    "assumptions": "7 axiom(s) and 4 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
+    "assumptions": "7 axiom(s) and 4 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Hajnal in 1967 as they studied connections between local graph properties and chromatic number. The condition that every subgraph has a large independent set is a strong structural constraint. Surprisingly, they could not prove even the k=1 case, though k=0 is trivial (it implies bipartiteness). Jon Folkman proved the general result in 1970, establishing that the chromatic bound k+2 always holds. This is a beautiful example of how local constraints (subgraph structure) control global properties (chromatic number).",
@@ -48,63 +49,63 @@
       "title": "Basic Definitions",
       "summary": "IsIndependentSet, independenceNumber, IsProperColoring, chromaticNumber definitions",
       "startLine": 36,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "folkman-property",
       "title": "The Folkman Property",
       "summary": "hasFolkmanProperty and hasFolkmanPropertyInduced definitions",
       "startLine": 70,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "k=0 case implies bipartiteness with χ ≤ 2",
       "startLine": 89,
-      "endLine": 108
+      "endLine": 109
     },
     {
       "id": "folkman-theorem",
       "title": "Folkman's Theorem",
       "summary": "The main result: Folkman property with parameter k implies χ ≤ k+2",
       "startLine": 110,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "tightness",
       "title": "Understanding the Bound",
       "summary": "The bound k+2 is tight, with examples achieving equality",
       "startLine": 126,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "independence-ratio",
       "title": "Connection to Independence Ratio",
       "summary": "Folkman property in terms of independence ratio ≥ (1-k/n)/2",
       "startLine": 146,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "greedy-coloring",
       "title": "Greedy Coloring Connection",
       "summary": "Connection to greedy coloring and degree bounds",
       "startLine": 167,
-      "endLine": 181
+      "endLine": 182
     },
     {
       "id": "erdos-hajnal",
       "title": "The Original Erdős-Hajnal Formulation",
       "summary": "The 1967 formulation that Folkman resolved",
       "startLine": 183,
-      "endLine": 199
+      "endLine": 200
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "Ramsey connection, Brooks' theorem",
       "startLine": 201,
-      "endLine": 216
+      "endLine": 217
     },
     {
       "id": "summary",
@@ -140,5 +141,27 @@
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
+    },
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-1032",
+    "erdos-1067"
+  ]
 }

@@ -52,7 +52,8 @@
     ],
     "axiomCount": 8,
     "lineCount": 304,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "A chordal graph is one with no induced cycles of length greater than 3, equivalently every cycle of length 4 or more has a chord. These graphs arise naturally in sparse matrix computations, database theory, and phylogenetics. Erdős, Ordman, and Zalcstein asked in 1993 how efficiently the edges of a chordal graph on n vertices can be partitioned into cliques, conjecturing that n²/6 + O(n) cliques always suffice.\n\nThe lower bound comes from an explicit extremal construction: take K_{n/3} and 2n/3 isolated vertices, connecting every K_{n/3} vertex to every isolated vertex. This split graph requires approximately n²/6 cliques because the bipartite edges between the clique and independent set cannot be efficiently grouped. Erdős, Ordman, and Zalcstein proved the upper bound that (1/4 - ε)n² cliques always suffice for some small ε > 0. Chen, Erdős, and Ordman (1994) improved this to 3n²/16 + O(n) for the special case of split graphs.\n\nThe gap between the upper bound coefficient 1/4 and the conjectured coefficient 1/6 (a factor of approximately 1.5) remains open. Chordal graphs are characterized by having a perfect elimination ordering (Dirac 1961, Fulkerson-Gross 1965), which gives a polynomial-time recognition algorithm and a greedy clique partition that is a 2-approximation, but the optimal coefficient for clique partitions remains unknown.",
@@ -84,7 +85,7 @@
       "id": "split-graphs",
       "title": "Split Graphs",
       "startLine": 98,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Split graph definition and the axiom that split graphs are chordal"
     },
     {
@@ -98,35 +99,35 @@
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 149,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "Erdős-Ordman-Zalcstein (1/4 − ε)n² and Chen-Erdős-Ordman 3n²/16 + O(n) for split graphs"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture and Gap",
       "startLine": 169,
-      "endLine": 195,
+      "endLine": 196,
       "summary": "The open conjecture (n²/6 + O(n)) and gap analysis"
     },
     {
       "id": "peo",
       "title": "Perfect Elimination Ordering",
       "startLine": 197,
-      "endLine": 226,
+      "endLine": 227,
       "summary": "Simplicial vertices, PEO definition, and the chordal ↔ PEO characterization"
     },
     {
       "id": "computational",
       "title": "Computational Aspects",
       "startLine": 228,
-      "endLine": 251,
+      "endLine": 252,
       "summary": "PEO-based 2-approximation algorithm and the open algorithmic question"
     },
     {
       "id": "related",
       "title": "Related Problems",
       "startLine": 253,
-      "endLine": 275,
+      "endLine": 276,
       "summary": "Intersection number (clique cover) and its relation to clique partition number"
     },
     {

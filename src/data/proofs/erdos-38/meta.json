@@ -21,7 +21,7 @@
     "erdosNumber": 38,
     "erdosUrl": "https://erdosproblems.com/38",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
+    "axiomCount": 4,
     "lineCount": 139,
     "prerequisites": [
       "Essential components in additive number theory",
@@ -29,7 +29,8 @@
       "Schnirelmann density",
       "Freiman's theorem"
     ],
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem connects two fundamental concepts in additive combinatorics: Schnirelmann density and additive bases. Schnirelmann density σ(A) = inf_{N≥1} |A ∩ {1,...,N}|/N is a worst-case density measure, crucial in the study of additive number theory.\n\nErdős proved in 1936 that additive bases of order k have a specific density-boosting property with factor α(1-α)/(2k). Linnik in 1942 constructed an 'essential component' - a set that increases Schnirelmann density when added - that is NOT an additive basis.\n\nThis problem asks whether the stronger density-boosting property (improving counts for specific translates) can exist without being a basis. It probes the gap between 'essential components' and 'additive bases'.",
@@ -55,35 +56,35 @@
       "id": "schnirelmann",
       "title": "Schnirelmann Density",
       "startLine": 36,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Defines counting function and Schnirelmann density as infimum"
     },
     {
       "id": "bases",
       "title": "Additive Bases",
       "startLine": 57,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Defines additive bases of order k and general bases"
     },
     {
       "id": "essential",
       "title": "Essential Components",
       "startLine": 71,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Defines translates and the density-boosting property"
     },
     {
       "id": "main-problem",
       "title": "Main Problem",
       "startLine": 89,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "States Erdős Problem #38 formally"
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 103,
-      "endLine": 137,
+      "endLine": 139,
       "summary": "Erdős 1936, Linnik 1942, and random set optimality"
     }
   ],
@@ -107,7 +108,7 @@
     ],
     "namespace": "Erdos38",
     "lineCount": 139,
-    "axiomCount": 5,
+    "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 8
   },

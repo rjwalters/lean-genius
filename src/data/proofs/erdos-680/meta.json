@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/680",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.minFac",
@@ -124,21 +124,21 @@
       "id": "main-conjecture",
       "title": "Main Conjecture: $p(n+k) > k^2 + 1$",
       "startLine": 27,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Defines `ErdosProblem680` ($\\exists N_0, \\forall n \\ge N_0, \\exists k \\ge 1 : p(n+k) > k^2 + 1$) and `HasLargeLPF` (the predicate for individual $n$)."
     },
     {
       "id": "exponential-variant",
       "title": "Exponential Variant",
       "startLine": 39,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "States `ErdosProblem680Variant` ($\\forall \\varepsilon > 0$, the exponential bound $e^{(1+\\varepsilon)\\sqrt{k}} + C$ eventually fails) and `ErdosProblem680Combined` (both statements together)."
     },
     {
       "id": "cramer",
       "title": "Cramér's Conjecture Connection",
       "startLine": 56,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Formalizes `CramerConjecture` ($p_{n+1} - p_n \\le C(\\log p_n)^2$) using `Nat.find` for the next prime. Axiomatizes `cramer_implies_large_lpf`: Cramér's conjecture implies a stronger version of #680."
     },
     {
@@ -152,7 +152,7 @@
       "id": "granville",
       "title": "Granville's Refinement and Prime Distribution Reduction",
       "startLine": 96,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "Defines `granvilleConstant` ($2e^{-\\gamma} \\approx 1.1229$) and `GranvilleRefinement`. Proves `problem680_from_prime_distribution`: if primes exist near $n$ with $k^2 + 1 < n + k$, then #680 holds."
     },
     {

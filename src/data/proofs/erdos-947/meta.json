@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/947",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod",
@@ -59,12 +59,6 @@
       "Davenport-Rado LCM divisibility axiom with Finset.lcm",
       "Verified exactCoveringWithRepeats: {0 mod 2, 1 mod 2} is an exact covering",
       "Proved erdos_947_summary combining impossibility and existence"
-    ],
-    "relatedProofs": [
-      {
-        "id": "erdos-9",
-        "relationship": "Both problems concern structural properties of integers under modular arithmetic and combinatorial number theory"
-      }
     ],
     "axiomCount": 6,
     "lineCount": 208,
@@ -177,5 +171,27 @@
       "citation": "Erdős, P. (1977). Problems and results on combinatorial number theory III. In Number Theory Day, Springer Lecture Notes in Mathematics 626, 43-72.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-273",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-275",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, covering-systems, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-273",
+    "erdos-275"
   ]
 }

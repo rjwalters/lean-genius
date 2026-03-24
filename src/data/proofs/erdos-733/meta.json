@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/733",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -69,8 +69,6 @@
       "Counting arguments and exponential bounds",
       "Grid constructions in discrete geometry"
     ],
-    "crossReferences": [],
-    "relatedProofs": [],
     "assumptions": "5 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -106,7 +104,7 @@
       "title": "Point Configurations",
       "summary": "PointSet (Finset (ℝ × ℝ)), lineThrough, pointsOnLine, richLines.",
       "startLine": 39,
-      "endLine": 72,
+      "endLine": 73,
       "mathContext": "A PointSet is a finite subset of $\\mathbb{R}^2$. A $k$-rich line has $\\geq k$ points from the set. The incidence structure between points and lines is the fundamental object."
     },
     {
@@ -114,7 +112,7 @@
       "title": "Line-Compatible Sequences",
       "summary": "isLineCompatible: sorted sequences realizable by some point configuration. countLineCompatible: f(n).",
       "startLine": 74,
-      "endLine": 105,
+      "endLine": 106,
       "mathContext": "A sorted sequence $2 \\leq X_1 \\leq \\cdots \\leq X_m \\leq n$ is line-compatible if some $n$-point set has exactly these point counts on its lines. $f(n) = |\\{\\text{line-compatible sequences}\\}|$."
     },
     {
@@ -122,7 +120,7 @@
       "title": "The Szemerédi-Trotter Theorem",
       "summary": "Axiomatized incidence bound and k-rich lines corollary.",
       "startLine": 107,
-      "endLine": 132,
+      "endLine": 133,
       "mathContext": "$I(P, L) \\leq C(n^{2/3}m^{2/3} + n + m)$ for $n$ points and $m$ lines. Corollary: $\\leq O(n^2/k^3 + n/k)$ lines with $\\geq k$ points."
     },
     {
@@ -130,7 +128,7 @@
       "title": "Lower Bound",
       "summary": "f(n) ≥ exp(c√n) via grid construction.",
       "startLine": 134,
-      "endLine": 161,
+      "endLine": 162,
       "mathContext": "A $\\sqrt{n} \\times \\sqrt{n}$ integer grid has $\\Theta(n)$ lines. Choosing subsets gives $2^{\\Theta(\\sqrt{n})} = \\exp(\\Theta(\\sqrt{n}))$ distinct sequences."
     },
     {
@@ -138,7 +136,7 @@
       "title": "Upper Bound",
       "summary": "f(n) ≤ exp(C√n) via Szemerédi-Trotter.",
       "startLine": 163,
-      "endLine": 190,
+      "endLine": 191,
       "mathContext": "Szemerédi-Trotter limits the number of $k$-rich lines, which bounds the possible sequence patterns to $\\exp(O(\\sqrt{n}))$."
     },
     {
@@ -146,7 +144,7 @@
       "title": "The Main Result",
       "summary": "tight_bounds combining lower and upper, erdos_733 main theorem.",
       "startLine": 192,
-      "endLine": 227,
+      "endLine": 228,
       "mathContext": "$\\exp(c\\sqrt{n}) \\leq f(n) \\leq \\exp(C\\sqrt{n})$, i.e., $f(n) = \\exp(\\Theta(\\sqrt{n}))$."
     },
     {
@@ -154,7 +152,7 @@
       "title": "The Limit Question",
       "summary": "limitConstant: does lim log(f(n))/√n exist? What is its value?",
       "startLine": 229,
-      "endLine": 253,
+      "endLine": 254,
       "mathContext": "$\\lim_{n \\to \\infty} \\frac{\\log f(n)}{\\sqrt{n}} \\in [c, C]$ if the limit exists. An interesting follow-up posed by Erdős."
     },
     {
@@ -193,5 +191,27 @@
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+    },
+    {
+      "targetId": "erdos-211",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, solved, szemeredi-trotter"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1090",
+    "erdos-1166",
+    "erdos-211"
+  ]
 }

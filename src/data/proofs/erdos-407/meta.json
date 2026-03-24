@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/407",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.one_le_pow",
@@ -75,35 +75,35 @@
       "title": "S-Units and Powers",
       "summary": "Powers of 2, powers of 3, and {2,3}-smooth numbers",
       "startLine": 39,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "counting",
       "title": "The Counting Function w(n)",
       "summary": "Definition of w(n) and distinct representations",
       "startLine": 70,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Specific values and representations",
       "startLine": 100,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "EGST 1988, Tijdeman-Wang 1988, Bajpai-Bennett 2024",
       "startLine": 137,
-      "endLine": 170
+      "endLine": 171
     },
     {
       "id": "infinite-family",
       "title": "Infinitely Many with w(n) = 4",
       "summary": "Algebraic identities giving 4 representations",
       "startLine": 172,
-      "endLine": 204
+      "endLine": 205
     },
     {
       "id": "summary",
@@ -139,5 +139,27 @@
     "axiomCount": 7,
     "theoremCount": 7,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    },
+    {
+      "targetId": "erdos-1099",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1050",
+    "erdos-1099",
+    "erdos-1136"
+  ]
 }

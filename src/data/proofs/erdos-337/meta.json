@@ -21,7 +21,7 @@
     "erdosNumber": 337,
     "erdosUrl": "https://erdosproblems.com/337",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Basic",
@@ -102,14 +102,14 @@
       "id": "header",
       "title": "Problem Overview",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Header: Erdős-Graham question on sumset growth for sparse bases, Turjányi counterexample, Ruzsa-Turjányi generalization and positive result"
     },
     {
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 33,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Imports from Mathlib: `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Set.Basic`, `BigOperators`; opens `Nat`, `Finset`, `Set`"
     },
     {
@@ -151,14 +151,14 @@
       "id": "open-conjecture",
       "title": "The Open Conjecture",
       "startLine": 183,
-      "endLine": 203,
+      "endLine": 204,
       "summary": "`scaledConjecture`: does $|2A \\cap [1,2N]|/|A \\cap [1,N]| \\to \\infty$? Status: OPEN (Ruzsa-Turjányi conjecture)"
     },
     {
       "id": "intuition",
       "title": "Why the Conjecture Fails",
       "startLine": 205,
-      "endLine": 226,
+      "endLine": 227,
       "summary": "`construction_insight`: collisions in $A+A$ limit growth; sparsity alone is insufficient for sumset expansion"
     },
     {
@@ -172,7 +172,7 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 249,
-      "endLine": 267,
+      "endLine": 268,
       "summary": "Powers of 2 (sparse but NOT a basis), squares (sparse basis of order 4 by Lagrange's theorem)"
     },
     {
@@ -212,5 +212,27 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sumsets"
+    },
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sumsets"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-bases, additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1103",
+    "erdos-1109",
+    "erdos-28"
+  ]
 }

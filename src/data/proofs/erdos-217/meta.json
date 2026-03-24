@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/217",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -50,32 +50,6 @@
       "Erdos217Exists predicate: existence for each n",
       "small_cases_exist theorem: n = 4..8 work",
       "ErdosConjecture217: impossibility for large n"
-    ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-98",
-        "relationship": "Directly related: Problem #98 asks for the minimum number of distinct distances among n points in general position. Problem #217 constrains the multiplicity pattern of those distances."
-      },
-      {
-        "proofId": "erdos-94",
-        "relationship": "Studies distance multiplicities in convex polygons — a closely related extremal question about how distances distribute in structured point sets."
-      },
-      {
-        "proofId": "erdos-95",
-        "relationship": "Analyzes the sum of squared distance multiplicities, another way to measure how 'spread out' the distance spectrum is."
-      },
-      {
-        "proofId": "erdos-213",
-        "relationship": "Asks whether n points in general position (no 3 collinear, no 4 concyclic) can have all pairwise distances be integers. Shares identical general position constraints."
-      },
-      {
-        "proofId": "erdos-90",
-        "relationship": "The unit distance problem: foundational distance-counting problem that motivates the study of distance multiplicities."
-      },
-      {
-        "proofId": "erdos-91",
-        "relationship": "Studies uniqueness of optimal distance configurations — relevant since Problem #217 asks whether distance patterns can be realized at all."
-      }
     ],
     "axiomCount": 4,
     "lineCount": 100,
@@ -105,35 +79,35 @@
       "title": "Header and Imports",
       "summary": "Module docstring describing the problem history, followed by imports of Mathlib's inner product spaces, finite sets, and real number basics. The formalization uses $\\mathbb{R} \\times \\mathbb{R}$ coordinates rather than `EuclideanSpace`.",
       "startLine": 1,
-      "endLine": 26
+      "endLine": 27
     },
     {
       "id": "definitions",
       "title": "Point Configurations and Distance Definitions",
       "summary": "Core definitions: `PointConfig n` as labeled points via `Fin n → ℝ × ℝ`, squared Euclidean distance `sqDist`, and the `NoThreeCollinear` general position predicate using the cross-product (determinant) criterion.",
       "startLine": 28,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "triangular-multiplicity",
       "title": "The Triangular Multiplicity Property",
       "summary": "The central definition `HasTriangularMultiplicity`: existence of $n{-}1$ distinct distances where the $k$-th appears exactly $k$ times, using `Finset.filter` and `Finset.card` for counting. This encodes the staircase pattern $1 + 2 + \\cdots + (n{-}1) = \\binom{n}{2}$.",
       "startLine": 45,
-      "endLine": 53
+      "endLine": 54
     },
     {
       "id": "known-constructions",
       "title": "Known Constructions (Axiomatized)",
       "summary": "Axiomatized existence results: `example_n_eq_4` (isosceles triangle + center), `pomerance_n_eq_5` (Pomerance's surprising construction), and `palasti_small_n` (Palásti's extension to all $4 \\leq n \\leq 8$). These are stated as `axiom` since explicit coordinate constructions would be extensive.",
       "startLine": 55,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture",
       "summary": "The main open conjecture `erdos_217_conjecture`: there exists a threshold $N_0$ such that for all $n \\geq N_0$, no configuration in general position has the triangular multiplicity property. Stated as `axiom` reflecting its unproven status.",
       "startLine": 72,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "main-theorem",
@@ -183,5 +157,27 @@
       "citation": "Guth, L. and Katz, N.H., On the Erdős distinct distances problem in the plane, Annals of Mathematics 181 (2015), 155-190.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, geometry, open"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, open, point-configurations"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: distances, geometry, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-103",
+    "erdos-1087",
+    "erdos-654"
   ]
 }

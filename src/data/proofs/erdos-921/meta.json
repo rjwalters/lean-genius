@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/921",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -89,7 +89,7 @@
       "id": "section-2",
       "title": "Main Conjecture",
       "startLine": 77,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Formalizes the Erdős-Gallai conjecture f_k(n) ≍ n^{1/(k-2)} and states the Kierstead-Szemerédi-Trotter theorem proving it."
     },
     {
@@ -135,5 +135,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-182",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-1092",
+    "erdos-182"
+  ]
 }

@@ -2,8 +2,8 @@
   "version": 1,
   "entries": {
     "pythagorean-triples": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T02:46:26Z",
+      "auditCount": 4,
+      "lastAudited": "2026-03-24T06:54:07Z",
       "result": "clean",
       "issues": []
     },
@@ -20,8 +20,8 @@
       "issues": []
     },
     "angle-trisection-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T02:50:33Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T06:19:58Z",
       "result": "clean",
       "issues": []
     },
@@ -32,14 +32,14 @@
       "issues": []
     },
     "area-of-circle-oq-03-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T02:52:07Z",
-      "result": "clean",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T07:04:07Z",
+      "result": "issues-fixed",
       "issues": []
     },
     "area-of-circle-oq-01-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-03-24T02:52:33Z",
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T07:08:58Z",
       "result": "clean",
       "issues": []
     },
@@ -131,6 +131,1075 @@
       "auditCount": 1,
       "lastAudited": "2026-03-24T02:59:23Z",
       "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:29:47Z",
+      "result": "clean",
+      "issues": []
+    },
+    "ballot-problem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:31:04Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "ballot-problem-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:33:31Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "ballot-problem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:33:31Z",
+      "result": "clean",
+      "issues": []
+    },
+    "ballot-problem-oq-03-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:33:31Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "bertrands-postulate-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:35:12Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "bezout-identity-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:35:12Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:35:12Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:35:12Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-02-oq-02-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:46:52Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-02-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:49:23Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:49:23Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-03-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:49:23Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-03-oq-01-oq-01-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T03:49:23Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "bezout-identity-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:49:23Z",
+      "result": "clean",
+      "issues": []
+    },
+    "binomial-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:49:23Z",
+      "result": "clean",
+      "issues": []
+    },
+    "bezout-identity-oq-03-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:49:23Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "binomial-theorem-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T03:49:23Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "birch-swinnerton-dyer": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:03:12Z",
+      "result": "clean",
+      "issues": []
+    },
+    "brouwer-fixed-point": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:03:12Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "binomial-theorem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:32:31Z",
+      "result": "clean",
+      "issues": []
+    },
+    "birthday-problem-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:32:40Z",
+      "result": "clean",
+      "issues": []
+    },
+    "brouwer-fixed-point-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:32:40Z",
+      "result": "clean",
+      "issues": []
+    },
+    "buffons-needle-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:32:40Z",
+      "result": "clean",
+      "issues": []
+    },
+    "buffons-needle-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:32:40Z",
+      "result": "clean",
+      "issues": []
+    },
+    "buffons-needle-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:32:40Z",
+      "result": "clean",
+      "issues": []
+    },
+    "buffons-needle-oq-02-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Stale sorry annotation: section 7 summary says 'States (with sorry)' and conclusion says '1 sorry' but the Lean file has 0 sorries (the asymptotic theorem crossingFactor_tendsto_zero is now fully proved)"
+      ]
+    },
+    "cantor-diagonalization-oq-02": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Stale axiom annotation: section 'countable-ordinals' summary says 'States the axiom \u03b1 < \u03c9\u2081 \u2194 IsCountableOrdinal \u03b1' but lt_omega1_iff_countable is a fully proved theorem, not an axiom"
+      ]
+    },
+    "cantor-diagonalization-oq-02-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Badge 'original' overclaimed: most theorems are 1-2 line wrappers around Mathlib lemmas (aleph_lt_aleph, isRegular_aleph_one, card_ord, etc.) -- 'verified' would be more accurate"
+      ]
+    },
+    "cantors-theorem-oq-03": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:35:30Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-integral-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Uses /-! docstring sections (6 occurrences) which cause Aristotle parsing errors",
+        "Badge 'original' overclaimed: core theorems (holder_lintegral, minkowski_l2) are thin wrappers around Mathlib -- 'verified' would be more accurate"
+      ]
+    },
+    "cauchy-schwarz-integral-oq-01-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Badge 'original' overclaimed: holder_lintegral is a one-liner wrapping ENNReal.lintegral_mul_le_Lp_mul_Lq, cauchy_schwarz_lintegral wraps same, l2_cauchy_schwarz wraps abs_real_inner_le_norm, young_nnreal wraps NNReal.young_inequality. Badge should be 'verified' (specializations are real but core content is Mathlib)"
+      ]
+    },
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:35:30Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-integral-oq-02-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:35:30Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-03-24T04:37:00Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Badge 'original' overclaimed: cauchy_schwarz_complex, cauchy_schwarz_real, cauchy_schwarz_rclike are all one-line applications of norm_inner_le_norm. Derived results are thin Mathlib combinations. Badge should be 'verified' or 'mathlib'"
+      ]
+    },
+    "chinese-remainder-constructive": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:35:30Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T04:53:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-oq-03": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:58:01Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-oq-03-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:59:09Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-oq-04": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T05:00:36Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-minpoly-oq-02": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T05:00:36Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-minpoly-oq-05-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T04:59:46Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-minpoly-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:00:36Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-minpoly-oq-02-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:00:36Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-minpoly-oq-05": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:00:36Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-reduction-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:01:54Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-reduction-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:01:54Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cevas-theorem-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:01:54Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cevas-theorem-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:01:55Z",
+      "result": "clean",
+      "issues": []
+    },
+    "chinese-remainder-constructive-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:01:55Z",
+      "result": "clean",
+      "issues": []
+    },
+    "chinese-remainder-non-coprime-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:01:55Z",
+      "result": "clean",
+      "issues": []
+    },
+    "chinese-remainder-non-coprime-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:02:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cramers-rule-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:02:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cramers-rule-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:02:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "de-moivre-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:02:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "de-moivre-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:02:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "de-moivre-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:02:42Z",
+      "result": "clean",
+      "issues": []
+    },
+    "derangements-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "derangements-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:02:42Z",
+      "result": "clean",
+      "issues": []
+    },
+    "derangements-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:02:42Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-10": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-107": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1091": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1113": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "inverse-galois": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "morleys-theorem": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "pascals-hexagon": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "picks-theorem": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "picks-theorem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "poincare-conjecture": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "taylor-sincos-convergence": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "descartes-rule-of-signs-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1006-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1006-oq-02-oq-03": {
+      "auditCount": 2,
+      "lastAudited": "2026-03-24T05:17:19Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-321": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-28": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-42": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:11:44Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-1002": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:18Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1003": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:18Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1004": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:18Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1005": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:19Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1007": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:20Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1008": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:20Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1009": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:20Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-101": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:21Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-102": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:21Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1020": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:37Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1021": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:37Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1022": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:37Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1023": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:37Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1024": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:37Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1025": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:37Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1026": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:37Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1027": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:37Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1028": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:38Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1029": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:38Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-103": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:38Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1030": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:38Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1031": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:38Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1032": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:38Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1033": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:17:38Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1137": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1138-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-131": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-402": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-60": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-809": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-938": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "fundamental-theorem-calculus-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "greens-theorem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "hodge-conjecture": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "knights-tour-oblique": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "navier-stokes": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "navier-stokes-existence": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "navier-stokes-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "navier-stokes-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "roth-theorem-k3": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "schauder-fixed-point": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "schauder-fixed-point-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "yang-mills-2d": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "yang-mills-lattice": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "yang-mills-transfer-matrix": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "riemann-hypothesis": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:25:07Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "binomial-theorem-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:55:13Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "cantors-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:56:18Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "cantors-theorem-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:57:03Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cauchy-schwarz-integral-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:58:25Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "central-limit-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:58:25Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cevas-theorem-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:58:25Z",
+      "result": "clean",
+      "issues": []
+    },
+    "desargues-theorem-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:59:57Z",
+      "result": "clean",
+      "issues": []
+    },
+    "dissection-of-cubes-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:59:57Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "dissection-of-cubes-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T05:59:57Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-369": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:01:43Z",
+      "result": "clean",
+      "issues": []
+    },
+    "divisibility-truncation-general": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:01:43Z",
+      "result": "clean",
+      "issues": []
+    },
+    "divisibility-truncation-general-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:01:43Z",
+      "result": "clean",
+      "issues": []
+    },
+    "elementary-quadratic-reciprocity-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:01:43Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-249": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:01:43Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-412": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:01:43Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-463": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:06Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-493": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:06Z",
+      "result": "clean",
+      "issues": []
+    },
+    "euler-polyhedral-formula-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:06Z",
+      "result": "clean",
+      "issues": []
+    },
+    "fair-games-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "feuerbachs-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "intermediate-value-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "fermat-two-squares-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:07Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "greens-theorem-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:07Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "intermediate-value-theorem": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:03:07Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "lebesgue-measure-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:04:35Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "lebesgue-measure-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:04:35Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "leibniz-pi-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:04:35Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "leibniz-pi-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:04:35Z",
+      "result": "clean",
+      "issues": []
+    },
+    "mathematical-induction": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:04:35Z",
+      "result": "clean",
+      "issues": []
+    },
+    "randomized-maxcut": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:04:35Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1072": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:18:41Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-96": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:18:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "hilbert-21": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:18:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "schroeder-bernstein": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:18:41Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "schroeder-bernstein-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:18:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "shannon-channel-coding-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:18:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "solution-of-cubic": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:18:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "solution-of-cubic-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:18:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sqrt2-examples": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:18:41Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sqrt2-from-axioms-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:19:58Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sum-of-kth-powers": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:19:58Z",
+      "result": "clean",
+      "issues": []
+    },
+    "vietas-formulas-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:19:58Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sum-of-kth-powers-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:19:58Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "taylor-theorem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:19:58Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "triangle-inequality": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T06:19:58Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-529": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T07:04:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-756": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T07:04:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "godel-incompleteness": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T07:04:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "pythagorean-theorem-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T07:04:08Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-86": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T07:04:08Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-679": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T07:04:08Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "fourier-series-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T07:04:08Z",
+      "result": "issues-fixed",
+      "issues": []
+    },
+    "euler-polyhedral-formula-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-03-24T07:04:08Z",
+      "result": "issues-fixed",
       "issues": []
     }
   }

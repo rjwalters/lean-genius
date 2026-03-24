@@ -299,6 +299,28 @@
     ]
   },
   {
+    "id": "ann-e4-cramer-intro",
+    "proofId": "erdos-4",
+    "range": {
+      "startLine": 149,
+      "endLine": 157
+    },
+    "type": "context",
+    "title": "Cramér's Conjecture: Section Introduction",
+    "content": "The transition from established results (Rankin through FGKMT) to open conjectures. Cramér's conjecture (1936) predicts the true maximal prime gap is $O((\\log p_n)^2)$, based on his probabilistic model of primes. This section provides the conjectural upper bounds that complement the proved lower bounds from Problem #4.",
+    "significance": "supporting",
+    "mathContext": "The hierarchy of prime gap conjectures:\n- **Proved**: $g_n \\geq C \\cdot f(n)$ for all $C > 0$ (FGKMT) — lower bound grows as iterated logs times $\\log n$\n- **Best unconditional upper**: $g_n \\leq n^{0.525}$ (BHP 2001)\n- **Conjectured**: $g_n = O((\\log p_n)^2)$ (Cramér) — an exponential improvement over the unconditional upper bound\n- **Under RH**: $g_n = O(p_n^{1/2} \\log p_n)$ (Cramér 1920)",
+    "relatedConcepts": [
+      "Cramér's random model",
+      "prime gap conjectures",
+      "probabilistic heuristics"
+    ],
+    "prerequisites": [
+      "Prime Number Theorem",
+      "baker_harman_pintz_upper_bound"
+    ]
+  },
+  {
     "id": "ann-e4-cramer",
     "proofId": "erdos-4",
     "range": {
@@ -450,10 +472,32 @@
     ]
   },
   {
+    "id": "ann-e4-related-intro",
+    "proofId": "erdos-4",
+    "range": {
+      "startLine": 193,
+      "endLine": 201
+    },
+    "type": "context",
+    "title": "Related Conjectures: Beyond Problem #4",
+    "content": "This section introduces two conjectures that go beyond the resolved Problem #4. Erdős's stronger conjecture ($g_n > (\\log n)^{1+c}$) represents the next frontier — it would show that maximal gaps grow as a genuine power of $\\log n$ beyond the first, far exceeding the iterated-log amplification proved by FGKMT. Firoozbakht's conjecture provides a complementary upper bound perspective. These two conjectures are in tension: if both were true, the maximal gap would be tightly constrained between $(\\log n)^{1+c}$ and $(\\log n)^2 - \\log n$.",
+    "significance": "supporting",
+    "mathContext": "The conjecture hierarchy for prime gaps, from weakest to strongest:\n1. **Proved**: $g_n > C \\cdot f(n)$ for all $C$ (Problem #4, FGKMT 2018)\n2. **Open ($\\$10{,}000$)**: $g_n > (\\log n)^{1+c}$ for some $c > 0$ (Erdős's stronger conjecture)\n3. **Open**: $g_n = O((\\log p_n)^2)$ (Cramér's conjecture)\n4. **Open**: $p_n^{1/n}$ strictly decreasing (Firoozbakht — implies $g_n < (\\log p_n)^2 - \\log p_n$)\n\nNote: (2) and (4) are potentially incompatible for very large $c$, highlighting the deep uncertainty about maximal gap growth.",
+    "relatedConcepts": [
+      "Erdős prize hierarchy",
+      "gap growth rate conjectures",
+      "tension between conjectures"
+    ],
+    "prerequisites": [
+      "erdos_4_solved",
+      "cramer_conjecture"
+    ]
+  },
+  {
     "id": "ann-e4-stronger",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 202,
+      "startLine": 195,
       "endLine": 204
     },
     "type": "definition",
@@ -474,7 +518,7 @@
     "id": "ann-e4-firoozbakht",
     "proofId": "erdos-4",
     "range": {
-      "startLine": 212,
+      "startLine": 206,
       "endLine": 214
     },
     "type": "definition",

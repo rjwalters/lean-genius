@@ -22,7 +22,7 @@
     "erdosNumber": 739,
     "erdosUrl": "https://erdosproblems.com/739",
     "erdosProblemStatus": "independent",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Cardinal",
@@ -87,49 +87,49 @@
       "title": "Basic Definitions",
       "summary": "chromaticNumber, HasChromaticNumber, HasSubgraphWithChromaticNumber",
       "startLine": 41,
-      "endLine": 56
+      "endLine": 57
     },
     {
       "id": "galvin-question",
       "title": "Galvin's Question",
       "summary": "GalvinProperty, ErdosGalvinQuestion",
       "startLine": 58,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "galvin-countable",
       "title": "Galvin's Theorem (ℵ₀)",
       "summary": "galvin_countable_theorem axiom, finite_chromatic_subgraphs proved",
       "startLine": 70,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "set-theory",
       "title": "Set-Theoretic Observation",
       "summary": "galvin_set_theory_implication: induced version implies 2^κ < 2^ν",
       "startLine": 84,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "komjath",
       "title": "Komjáth's Consistency Result (1988)",
       "summary": "komjath_consistency: χ=ℵ₂ graph with no ℵ₁-chromatic subgraph",
       "startLine": 95,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "shelah",
       "title": "Shelah's Result under V=L (1990)",
       "summary": "shelah_constructibility: YES under V=L for ℵ₂/ℵ₁",
       "startLine": 105,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "gch",
       "title": "The GCH Question (OPEN)",
       "summary": "GCH, MainOpenProblem",
       "startLine": 113,
-      "endLine": 121
+      "endLine": 122
     },
     {
       "id": "summary",
@@ -164,5 +164,27 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-736",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, independence, set-theory"
+    },
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1068",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-736",
+    "erdos-1067",
+    "erdos-1068"
+  ]
 }

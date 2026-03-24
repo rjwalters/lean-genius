@@ -16,7 +16,8 @@
       "Bipartite graphs",
       "Infinite combinatorics",
       "Cardinal arithmetic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-bipartite",
@@ -34,7 +35,8 @@
       "Graph coloring",
       "Odd cycles",
       "König's theorem"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-edge-deletion",
@@ -52,7 +54,8 @@
       "Subgraph",
       "Max-cut",
       "Edge deletion"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-coloring",
@@ -70,7 +73,8 @@
       "Chromatic number",
       "Four color theorem",
       "NP-completeness"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-chromatic-number",
@@ -88,7 +92,8 @@
       "Graph coloring",
       "Greedy algorithm",
       "NP-completeness"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-cardinal-chromatic",
@@ -107,7 +112,8 @@
       "ℵ₁",
       "Uncountable sets",
       "Set theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-odd-cycles",
@@ -125,7 +131,8 @@
       "Cycle detection",
       "BFS",
       "Graph traversal"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-vertex-disjoint",
@@ -143,7 +150,8 @@
       "Compactness",
       "Ramsey theory",
       "Graph packing"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-h-linear",
@@ -156,7 +164,9 @@
     "title": "Linear Lower Bound",
     "content": "**h_at_least_linear:**\n\nFor graphs with χ(G) = ℵ₁, the edge deletion function h_G(n) grows at least linearly.\n\n**Axiom:**\n```lean\naxiom h_at_least_linear {V : Type*} (G : SimpleGraph V)\n    (hχ : hasAleph1ChromaticNumber G) :\n    ∀ c : ℕ, ∃ N : ℕ, ∀ n ≥ N, edgeDeletionFunction G n ≥ c * n\n```\n\nThis follows from the vertex-disjoint cycles: n/(2r+1) cycles means at least n/(2r+1) edges to delete.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of linear lower bound"
+    "mathContext": "See annotation content for formal details of linear lower bound",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-upper-bound",
@@ -174,7 +184,8 @@
       "Shift graphs",
       "Probabilistic method",
       "Graph constructions"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-erdos-conjecture",
@@ -192,7 +203,8 @@
       "Extremal graph theory",
       "Growth rates",
       "Open problems"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-main-question",
@@ -210,7 +222,8 @@
       "Limit behavior",
       "Growth rates",
       "Open problems"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-related",
@@ -228,7 +241,8 @@
       "Problem #74",
       "Finite combinatorics",
       "Bipartite graphs"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e111-summary",
@@ -241,6 +255,8 @@
     "title": "Summary Theorem",
     "content": "**erdos_111_summary:**\n\nCombines all known results about Erdős Problem #111 into a single theorem:\n\n1. **Lower bound:** For all $\\chi = \\aleph_1$ graphs, $h_G(n) \\geq cn$ for some $c > 0$\n2. **Upper bound:** There exists a $\\chi = \\aleph_1$ graph with $h_G(n) \\leq Cn^{3/2}$\n\nThe proof derives the lower bound from `h_at_least_linear` and the upper bound from `ehs_upper_bound`. The gap between linear and $n^{3/2}$ remains to be closed.",
     "mathContext": "This is one of the few theorems in the file with a complete proof — it follows directly from combining the two main axioms.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

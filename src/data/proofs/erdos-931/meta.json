@@ -20,39 +20,10 @@
     "erdosNumber": 931,
     "erdosUrl": "https://erdosproblems.com/931",
     "erdosProblemStatus": "open",
-    "crossReferences": [
-      {
-        "proofId": "erdos-388",
-        "relationship": "Directly related: Problem #388 asks when products of consecutive integers from disjoint blocks can be equal, the stronger condition of product equality vs. prime factor equality"
-      },
-      {
-        "proofId": "erdos-929",
-        "relationship": "Studies smooth numbers in short intervals; smooth blocks of k consecutive integers require all factors bounded, complementary to studying which primes appear"
-      },
-      {
-        "proofId": "erdos-930",
-        "relationship": "Studies whether products of disjoint intervals of consecutive integers can be perfect powers, another structural question about consecutive-integer products"
-      },
-      {
-        "proofId": "erdos-933",
-        "relationship": "Examines the smooth part of products of consecutive integers n(n+1); shares the theme of extracting prime factor structure from consecutive products"
-      },
-      {
-        "proofId": "erdos-928",
-        "relationship": "Studies density of consecutive smooth number pairs; bounded prime factors in consecutive integers is the smoothness analogue of this problem"
-      },
-      {
-        "proofId": "erdos-935",
-        "relationship": "Studies the powerful part of products of consecutive integers, analyzing prime power structure rather than prime support"
-      },
-      {
-        "proofId": "prime-number-theorem",
-        "relationship": "Foundation: the distribution of primes governs how prime factor sets of consecutive products can overlap across distant blocks"
-      }
-    ],
     "axiomCount": 2,
     "lineCount": 199,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1976 [Er76d], asking about the finiteness of pairs of consecutive-integer blocks whose products share the same set of prime factors. The problem appears in Guy's _Unsolved Problems in Number Theory_ as Problem B35. The question connects to deep themes in multiplicative number theory: the radical $\\text{rad}(n)$ (product of distinct prime factors) of a product $(n+1)\\cdots(n+k) = (n+k)!/n!$ depends on which primes $\\leq n+k$ divide at least one element of the block. Erdős himself doubted the full conjecture and proposed the weaker claim that same-prime-factor pairs must satisfy $n_2 > 2(n_1 + k_1)$ with finitely many exceptions. This stronger conjecture was disproved by a counterexample: $10! = 2^8 \\cdot 3^4 \\cdot 5^2 \\cdot 7$ and $14 \\cdot 15 \\cdot 16 = 2^5 \\cdot 3 \\cdot 5 \\cdot 7$ share prime factors $\\{2,3,5,7\\}$ with $n_2 = 13 \\leq 20 = 2(n_1 + k_1)$. Tijdeman found another example: $19 \\cdot 20 \\cdot 21 \\cdot 22$ and $54 \\cdot 55 \\cdot 56 \\cdot 57$ share the same primes (this one beyond the double gap). The connection to Bertrand's postulate is central: for $n_2 > 2(n_1 + k_1)$, a prime in $(n_1 + k_1, 2(n_1 + k_1)]$ would divide the second block but not the first, reducing the problem to the bounded-gap case. The constraint $k_1, k_2 \\geq 3$ excludes trivial infinite families for small block sizes.",
@@ -77,56 +48,56 @@
       "id": "sec-931-header",
       "title": "Problem Statement and References",
       "startLine": 1,
-      "endLine": 17,
+      "endLine": 18,
       "summary": "Documentation block with the problem statement, counterexample descriptions (AlphaProof and Tijdeman), status (OPEN), and references to Er76d and Guy's Problem B35."
     },
     {
       "id": "sec-931-imports",
       "title": "Imports and Setup",
       "startLine": 19,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Imports Nat.Basic, Nat.Prime.Basic, Nat.Factorization.Basic, Finset.Basic, Finset.Interval, and Tactic. Opens Nat and Finset namespaces within Erdos931."
     },
     {
       "id": "sec-931-definitions",
       "title": "Core Definitions",
       "startLine": 30,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Three foundational definitions: `consecutiveProduct` (∏(n+i) via Finset.Icc), `consecutivePrimeFactors` (prime factor set via Nat.primeFactors), and `SamePrimeFactors` (equality of prime factor sets), plus decidability instance."
     },
     {
       "id": "sec-931-computations",
       "title": "Verified Small Computations",
       "startLine": 50,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Concrete product values (10!=3628800, 14·15·16=3360, etc.), base cases (empty product=1, single factor=n+1), positivity, and non-zero properties—all proved by native_decide, simp, or omega."
     },
     {
       "id": "sec-931-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 86,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Formalizes ErdosProblem931 (finiteness of same-prime-factor pairs with gap ≥ k₁) and StrongerConjecture (restricted to n₂ ≤ 2(n₁+k₁))."
     },
     {
       "id": "sec-931-counterexamples",
       "title": "Verified Counterexamples",
       "startLine": 104,
-      "endLine": 126,
+      "endLine": 127,
       "summary": "AlphaProof counterexample (n₁=0, k₁=10, n₂=13, k₂=3) and Tijdeman's example (n₁=18, k₁=k₂=4, n₂=53), fully verified by native_decide and omega. Establishes that the stronger conjecture is false."
     },
     {
       "id": "sec-931-properties",
       "title": "Properties of Prime Factors",
       "startLine": 128,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "Seven lemmas: prime factors divide the product and are prime, a prime dividing any n+i is in the factor set (via Finset.dvd_prod_of_mem), and SamePrimeFactors is reflexive, symmetric, transitive."
     },
     {
       "id": "sec-931-implication",
       "title": "Stronger Implies Main",
       "startLine": 172,
-      "endLine": 179,
+      "endLine": 180,
       "summary": "Axiom recording that the stronger conjecture implies the main one, via the Bertrand's postulate argument for the unbounded-gap case."
     },
     {
@@ -166,5 +137,27 @@
     "axiomCount": 2,
     "theoremCount": 21,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, prime-factorization"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, open"
+    },
+    {
+      "targetId": "erdos-388",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-137",
+    "erdos-369",
+    "erdos-388"
+  ]
 }

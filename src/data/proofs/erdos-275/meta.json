@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/275",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Int.ModEq",
@@ -72,63 +72,63 @@
       "title": "Imports and Problem Statement",
       "summary": "Lean header with problem description; imports `Mathlib.Data.Int.ModEq` for $x \\equiv a \\pmod{n}$ and `Mathlib.Data.Finset` for finite set cardinality in $k$-fold coverage",
       "startLine": 1,
-      "endLine": 28
+      "endLine": 29
     },
     {
       "id": "congruence-class",
       "title": "Congruence Class Definition",
       "summary": "Defines $\\text{CongruenceClass}(a, n) = \\{x \\in \\mathbb{Z} : x \\equiv a \\pmod{n}\\}$ as arithmetic progressions $a, a \\pm n, a \\pm 2n, \\ldots$",
       "startLine": 30,
-      "endLine": 38
+      "endLine": 39
     },
     {
       "id": "covering-system",
       "title": "Covering System Structure",
       "summary": "Lean structure `CoveringSystem` with fields `size : \\mathbb{N}`, `residues : \\text{Fin}(r) \\to \\mathbb{Z}`, `moduli : \\text{Fin}(r) \\to \\mathbb{N}`, and positivity proof",
       "startLine": 40,
-      "endLine": 48
+      "endLine": 49
     },
     {
       "id": "coverage-predicates",
       "title": "Coverage Predicates",
       "summary": "Defines `IsCovered` ($\\exists i, x \\in a_i + n_i\\mathbb{Z}$), `CoversSet` ($\\forall x \\in S$), `CoversAll` ($\\forall x \\in \\mathbb{Z}$), and `ConsecutiveIntegers` ($[a, a+n)$)",
       "startLine": 50,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "main-theorem",
       "title": "The $2^r$ Bound (Main Theorem)",
       "summary": "Axiomatizes: if $r$ congruences cover $2^r$ consecutive integers starting at $a$, then $\\text{CoversAll}(C)$ holds for all $x \\in \\mathbb{Z}$",
       "startLine": 78,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "alternative-formulation",
       "title": "Crittenden–Vanden Eynden Formulation",
       "summary": "Alternative axiom: $r$ progressions covering $\\{0, 1, \\ldots, 2^r - 1\\}$ cover all of $\\mathbb{Z}$; published in *Proc. AMS* (1970)",
       "startLine": 89,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "optimal-example",
       "title": "Optimal Example Construction",
       "summary": "Constructive definition: `OptimalExample(r)` uses moduli $2^{i+1}$ and residues $2^i$ for $i = 0, \\ldots, r-1$, covering $x$ iff $2^r \\nmid x$",
       "startLine": 100,
-      "endLine": 120
+      "endLine": 121
     },
     {
       "id": "tightness",
       "title": "Tightness of the $2^r$ Bound",
       "summary": "Axiomatizes that $\\exists C$ with $|C| = r$ covering $2^r - 1$ consecutive integers but $\\neg \\text{CoversAll}(C)$, proving $2^r$ is sharp",
       "startLine": 122,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "related-definitions",
       "title": "Related Definitions",
       "summary": "Defines `IsCoveringSystem` (complete coverage) and `IsExactlyCovering(C, k)` for $k$-fold coverage where each $x$ is covered exactly $k$ times; $k = 1$ gives disjoint covering systems",
       "startLine": 132,
-      "endLine": 149
+      "endLine": 150
     },
     {
       "id": "summary-theorem",

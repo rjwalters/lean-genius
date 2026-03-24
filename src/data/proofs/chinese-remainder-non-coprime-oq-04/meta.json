@@ -2,7 +2,7 @@
   "id": "chinese-remainder-non-coprime-oq-04",
   "title": "Dirichlet's Approximation Theorem and CRT Lattice Connections",
   "slug": "chinese-remainder-non-coprime-oq-04",
-  "description": "Dirichlet's approximation theorem (1842): for any real \u03b1 and N \u2265 1, there exist p, q with 1 \u2264 q \u2264 N and |q\u03b1 - p| < 1/N. Proved via pigeonhole principle on fractional part binning. Includes mediant/Stern-Brocot property, lattice point theorem, golden ratio identities, and CRT non-coprime solvability examples connecting Diophantine approximation to lattice geometry.",
+  "description": "Dirichlet's approximation theorem (1842): for any real α and N ≥ 1, there exist p, q with 1 ≤ q ≤ N and |qα - p| < 1/N. Proved via pigeonhole principle on fractional part binning. Includes mediant/Stern-Brocot property, lattice point theorem, golden ratio identities, and CRT non-coprime solvability examples connecting Diophantine approximation to lattice geometry.",
   "meta": {
     "author": "Peter Gustav Lejeune Dirichlet (1842); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_approximation_theorem",
@@ -47,11 +47,11 @@
       }
     ],
     "originalContributions": [
-      "Full pigeonhole proof of Dirichlet's approximation theorem via fractional part binning (binFn : Fin(N+1) \u2192 Fin(N))",
+      "Full pigeonhole proof of Dirichlet's approximation theorem via fractional part binning (binFn : Fin(N+1) → Fin(N))",
       "Stern-Brocot mediant property: mediant lies strictly between input fractions",
       "Farey neighbor ordering: determinant 1 implies strict ordering",
       "Lattice point existence: half-open interval of length m contains a multiple of m",
-      "Golden ratio quadratic identity \u03c6\u00b2 = \u03c6 + 1 and reciprocal identity 1/\u03c6 = \u03c6 - 1",
+      "Golden ratio quadratic identity φ² = φ + 1 and reciprocal identity 1/φ = φ - 1",
       "CRT non-coprime solvability examples connecting to lattice coset structure"
     ],
     "dateAdded": "2026-03-23",
@@ -60,18 +60,20 @@
       "Pigeonhole principle for finite types",
       "Real number arithmetic and absolute value",
       "Basic number theory: GCD, LCM, modular arithmetic"
-    ]
+    ],
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Peter Gustav Lejeune Dirichlet (1805-1859) proved this theorem in 1842, establishing the foundation of Diophantine approximation. The result shows that every real number can be well-approximated by rationals, with quality inversely proportional to the denominator. The proof introduced the 'pigeonhole principle' (Schubfachprinzip) to number theory.\n\nThe theorem was later refined by Hurwitz (1891), who showed the optimal constant is 1/\u221a5, achieved by the golden ratio \u03c6 = (1+\u221a5)/2. The connection to the Chinese Remainder Theorem arises through lattice geometry: CRT solvability corresponds to lattice coset membership, and Dirichlet-style counting arguments on lattice points yield approximation results.\n\nThe Stern-Brocot tree (Stern 1858, Brocot 1861) provides the algorithmic structure for generating best rational approximations, with the mediant operation as its fundamental building block. This connects to continued fractions, which give the sequence of best approximations to any real number.",
-    "problemStatement": "**Dirichlet's Approximation Theorem**: For any real number \u03b1 and any positive integer N, there exist integers p and q with 1 \u2264 q \u2264 N such that |q\u03b1 - p| < 1/N.\n\nEquivalently: |\u03b1 - p/q| < 1/(qN) \u2264 1/q\u00b2.\n\nThis is proved via the pigeonhole principle: N+1 fractional parts {0\u00b7\u03b1}, {1\u00b7\u03b1}, ..., {N\u00b7\u03b1} mapped to N bins of width 1/N in [0,1). Two must share a bin, giving a good approximation.",
+    "historicalContext": "Peter Gustav Lejeune Dirichlet (1805-1859) proved this theorem in 1842, establishing the foundation of Diophantine approximation. The result shows that every real number can be well-approximated by rationals, with quality inversely proportional to the denominator. The proof introduced the 'pigeonhole principle' (Schubfachprinzip) to number theory.\n\nThe theorem was later refined by Hurwitz (1891), who showed the optimal constant is 1/√5, achieved by the golden ratio φ = (1+√5)/2. The connection to the Chinese Remainder Theorem arises through lattice geometry: CRT solvability corresponds to lattice coset membership, and Dirichlet-style counting arguments on lattice points yield approximation results.\n\nThe Stern-Brocot tree (Stern 1858, Brocot 1861) provides the algorithmic structure for generating best rational approximations, with the mediant operation as its fundamental building block. This connects to continued fractions, which give the sequence of best approximations to any real number.",
+    "problemStatement": "**Dirichlet's Approximation Theorem**: For any real number α and any positive integer N, there exist integers p and q with 1 ≤ q ≤ N such that |qα - p| < 1/N.\n\nEquivalently: |α - p/q| < 1/(qN) ≤ 1/q².\n\nThis is proved via the pigeonhole principle: N+1 fractional parts {0·α}, {1·α}, ..., {N·α} mapped to N bins of width 1/N in [0,1). Two must share a bin, giving a good approximation.",
     "text": "Dirichlet's approximation theorem via pigeonhole principle, with connections to CRT lattice theory, Stern-Brocot mediants, and the golden ratio as the worst-case approximation target.",
-    "proofStrategy": "**Dirichlet's theorem** is proved by defining a bin function binFn : Fin(N+1) \u2192 Fin(N) that maps each index i to the bin \u230aN \u00b7 fract(i\u03b1)\u230b. By Fintype.exists_ne_map_eq_of_card_lt (pigeonhole), two indices share a bin. Their fractional parts are within 1/N, and the difference gives the desired approximation.\n\nThe **mediant theorem** uses cross-multiplication: a/b < c/d implies a\u00b7d < c\u00b7b, and the mediant (a+c)/(b+d) satisfies both a(b+d) < (a+c)b and (a+c)d < c(b+d).\n\nThe **golden ratio** identities follow from \u221a5\u00b2 = 5 and algebraic manipulation with nlinarith.",
+    "proofStrategy": "**Dirichlet's theorem** is proved by defining a bin function binFn : Fin(N+1) → Fin(N) that maps each index i to the bin ⌊N · fract(iα)⌋. By Fintype.exists_ne_map_eq_of_card_lt (pigeonhole), two indices share a bin. Their fractional parts are within 1/N, and the difference gives the desired approximation.\n\nThe **mediant theorem** uses cross-multiplication: a/b < c/d implies a·d < c·b, and the mediant (a+c)/(b+d) satisfies both a(b+d) < (a+c)b and (a+c)d < c(b+d).\n\nThe **golden ratio** identities follow from √5² = 5 and algebraic manipulation with nlinarith.",
     "keyInsights": [
-      "**Pigeonhole on fractional parts**: The N+1 values {k\u03b1} for k = 0,...,N lie in [0,1). Binning into N intervals of width 1/N guarantees a collision, which yields the approximation. The proof is entirely constructive once the collision is found.",
-      "**Cast gymnastics**: The main technical challenge is managing coercions between \u2115, \u2124, and \u211d. Natural subtraction (j - i where j > i as \u2115) must be cast to real subtraction (\u2191j - \u2191i) via Nat.cast_sub, and integer floor differences must be split via Int.cast_sub.",
-      "**Golden ratio optimality**: \u03c6 = (1+\u221a5)/2 is the hardest-to-approximate irrational because its continued fraction [1;1,1,...] has the slowest convergence. Hurwitz's theorem says 1/\u221a5 is the best universal constant for |x - p/q| < C/q\u00b2.",
-      "**CRT-lattice duality**: Non-coprime CRT solvability (gcd(m\u2081,m\u2082) | (a\u2081-a\u2082)) is equivalent to a lattice point existing in a shifted sublattice. This geometric viewpoint unifies Dirichlet-style counting with modular arithmetic.",
+      "**Pigeonhole on fractional parts**: The N+1 values {kα} for k = 0,...,N lie in [0,1). Binning into N intervals of width 1/N guarantees a collision, which yields the approximation. The proof is entirely constructive once the collision is found.",
+      "**Cast gymnastics**: The main technical challenge is managing coercions between ℕ, ℤ, and ℝ. Natural subtraction (j - i where j > i as ℕ) must be cast to real subtraction (↑j - ↑i) via Nat.cast_sub, and integer floor differences must be split via Int.cast_sub.",
+      "**Golden ratio optimality**: φ = (1+√5)/2 is the hardest-to-approximate irrational because its continued fraction [1;1,1,...] has the slowest convergence. Hurwitz's theorem says 1/√5 is the best universal constant for |x - p/q| < C/q².",
+      "**CRT-lattice duality**: Non-coprime CRT solvability (gcd(m₁,m₂) | (a₁-a₂)) is equivalent to a lattice point existing in a shifted sublattice. This geometric viewpoint unifies Dirichlet-style counting with modular arithmetic.",
       "**Stern-Brocot mediant**: The mediant (a+c)/(b+d) of a/b and c/d always lies strictly between them. This operation generates all rationals in lowest terms and produces best approximations via binary search."
     ],
     "prerequisites": [
@@ -93,35 +95,35 @@
       "id": "dirichlet-theorem",
       "title": "Dirichlet's Approximation Theorem",
       "startLine": 66,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "Proves Dirichlet's approximation theorem: for any real α and N ≥ 1, there exist p, q with 1 ≤ q ≤ N and |qα - p| < 1/N. Applies pigeonhole via Fintype.exists_ne_map_eq_of_card_lt to binFn, then converts the bin collision to an approximation bound through fract_sub_eq and careful cast gymnastics."
     },
     {
       "id": "consequences",
       "title": "Consequences: Nearest Integer Bound",
       "startLine": 114,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "Derives the nearest integer bound: every real number has an integer within distance 1/2. A direct corollary using the floor of α + 1/2."
     },
     {
       "id": "lattice-points",
       "title": "Lattice Point Theorem",
       "startLine": 124,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "Proves integer_in_interval (any interval [a, a+1) contains an integer via ceiling) and lattice_point_exists (any interval (a, a+m] contains a multiple of m), providing the geometric foundation for CRT solvability through lattice coset arguments."
     },
     {
       "id": "stern-brocot",
       "title": "Mediant and Stern-Brocot Property",
       "startLine": 148,
-      "endLine": 174,
+      "endLine": 175,
       "summary": "Proves the mediant (a+c)/(b+d) lies strictly between a/b and c/d via cross-multiplication, and that Farey neighbors (determinant cb - ad = 1) are automatically ordered. These results underlie the Stern-Brocot tree construction of best rational approximations."
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio Properties",
       "startLine": 176,
-      "endLine": 207,
+      "endLine": 208,
       "summary": "Defines φ = (1+√5)/2 and proves its key algebraic identities: positivity, φ > 1, φ² = φ + 1, 1/φ = φ - 1, and the minimal polynomial root property. Includes Fibonacci verification examples showing the denominators of φ's best rational approximations."
     },
     {
@@ -151,7 +153,7 @@
     {
       "targetId": "bezout-identity",
       "relationship": "foundational",
-      "description": "B\u00e9zout's identity provides the coefficient witness for CRT solvability: the examples use 6\u00b7(-1) + 4\u00b72 = gcd(6,4) to construct solutions"
+      "description": "Bézout's identity provides the coefficient witness for CRT solvability: the examples use 6·(-1) + 4·2 = gcd(6,4) to construct solutions"
     }
   ],
   "relatedProofs": [
@@ -167,8 +169,8 @@
   "conclusion": {
     "summary": "We have formalized Dirichlet's approximation theorem via the pigeonhole principle, establishing the foundational result of Diophantine approximation. The proof demonstrates how finite combinatorics (pigeonhole on N+1 fractional parts) yields a powerful analytic result (rational approximation quality 1/(qN)). The connections to CRT lattice structure, Stern-Brocot mediants, and the golden ratio show how number theory, combinatorics, and geometry interweave in the theory of Diophantine approximation.",
     "implications": [
-      "Every irrational has infinitely many rational approximations p/q with quality better than 1/q\u00b2",
-      "The golden ratio is the hardest-to-approximate irrational (Hurwitz constant \u221a5)",
+      "Every irrational has infinitely many rational approximations p/q with quality better than 1/q²",
+      "The golden ratio is the hardest-to-approximate irrational (Hurwitz constant √5)",
       "CRT solvability for non-coprime moduli reduces to lattice point counting",
       "Dirichlet's method extends to simultaneous approximation in higher dimensions (Minkowski's theorem)"
     ],
@@ -176,6 +178,20 @@
       "Can the pigeonhole-based proof be extended to simultaneous Diophantine approximation in Lean, formalizing Minkowski's lattice point theorem for convex bodies?",
       "What is the formal relationship between the Stern-Brocot mediant operation and the convergents of continued fraction expansions — can this be unified in Lean's Mathlib?",
       "The Littlewood conjecture (1930, still open): for all real α, β, is it true that lim inf n·‖nα‖·‖nβ‖ = 0? This is the natural two-dimensional extension of Dirichlet's theorem."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 240,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "lemmaCount": 4,
+    "defCount": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
     ]
   }
 }

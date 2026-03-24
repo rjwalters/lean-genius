@@ -7,7 +7,7 @@
     "author": "Kovač & Tao (2024)",
     "sourceUrl": "https://erdosproblems.com/266",
     "date": "2024",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos266Problem.lean",
     "tags": [
       "erdos",
@@ -16,13 +16,13 @@
       "shifted-sums",
       "ahmes-series"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 266,
     "erdosUrl": "https://erdosproblems.com/266",
     "erdosProblemStatus": "disproved",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Irrational",
@@ -72,42 +72,42 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Module documentation and Mathlib imports for irrationality, summability, and infinite sums."
     },
     {
       "id": "conjecture",
       "title": "Stolarsky's Conjecture",
       "startLine": 29,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Formal statement of Stolarsky's conjecture: some shift should produce irrationality."
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "startLine": 44,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Kovač-Tao's disproof: the conjecture is false."
     },
     {
       "id": "stronger",
       "title": "Stronger All-Rationals Result",
       "startLine": 57,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "The stronger result that ALL rational shifts give rational sums."
     },
     {
       "id": "discussion",
       "title": "Discussion and Relations",
       "startLine": 74,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "Understanding the counterexample and connections to Erdős #264."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 100,
-      "endLine": 118,
+      "endLine": 150,
       "summary": "Standard series examples: harmonic (diverges), Basel (converges), geometric."
     }
   ],
@@ -139,5 +139,27 @@
     "axiomCount": 2,
     "theoremCount": 3,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-1051",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1049",
+    "erdos-1050",
+    "erdos-1051"
+  ]
 }

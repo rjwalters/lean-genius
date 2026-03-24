@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/775",
     "erdosProblemStatus": "disproved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Clique",
@@ -86,63 +86,63 @@
       "title": "Hypergraph Fundamentals",
       "summary": "UniformHypergraph structure, Hypergraph3 abbreviation for 3-uniform case",
       "startLine": 46,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "cliques-in-hypergraphs",
       "title": "Cliques in Hypergraphs",
       "summary": "completeHypergraph, IsClique, IsMaximalClique definitions",
       "startLine": 68,
-      "endLine": 91
+      "endLine": 92
     },
     {
       "id": "clique-size-distribution",
       "title": "Clique Size Distribution",
       "summary": "cliqueSizes set, numCliqueSizes counting function",
       "startLine": 93,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "historical-results",
       "title": "Historical Results for Graphs",
       "summary": "spencer_graph_construction, moon_moser_upper_bound axioms",
       "startLine": 112,
-      "endLine": 136
+      "endLine": 137
     },
     {
       "id": "erdos-construction",
       "title": "Erdős's Construction",
       "summary": "erdos_hypergraph_construction achieving n - log*n clique sizes",
       "startLine": 138,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "the-question",
       "title": "The Question",
       "summary": "erdos775Question formal statement",
       "startLine": 154,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "gao-theorem",
       "title": "Gao's Theorem (2025)",
       "summary": "gaoFunction definition, gao_upper_bound, gaoFunction_tendsto_infinity axioms",
       "startLine": 170,
-      "endLine": 199
+      "endLine": 200
     },
     {
       "id": "the-answer",
       "title": "The Answer - NO",
       "summary": "erdos_775_answer theorem: formal disproof of erdos775Question",
       "startLine": 201,
-      "endLine": 235
+      "endLine": 236
     },
     {
       "id": "comparison",
       "title": "Comparison with Graphs",
       "summary": "graphs_vs_hypergraphs showing fundamental difference between k=2 and k≥3",
       "startLine": 237,
-      "endLine": 259
+      "endLine": 260
     },
     {
       "id": "related-summary",
@@ -180,5 +180,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, disproved, graph-theory"
+    },
+    {
+      "targetId": "erdos-927",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cliques, disproved, graph-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1080",
+    "erdos-927",
+    "erdos-1014"
+  ]
 }

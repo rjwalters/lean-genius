@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/812",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Basic",
@@ -53,40 +53,6 @@
       "ratio_implies_exponential: logical consequence",
       "Computational verifications for small n (6 examples proved by norm_num)",
       "erdos_812_summary: conjunction proved by exact ⟨BEFS_theorem, problem_165_bound⟩"
-    ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-165",
-        "relationship": "Two-step bound R(n+2) - R(n) ≫ n^{2-o(1)} derived from R(3,k) asymptotics (Problem #165)"
-      },
-      {
-        "proofId": "ramseys-theorem",
-        "relationship": "Foundational theorem establishing existence of R(n) for all n"
-      },
-      {
-        "proofId": "erdos-1029",
-        "relationship": "Related growth rate question: prove R(k)/(k·2^{k/2}) → ∞"
-      },
-      {
-        "proofId": "erdos-1030",
-        "relationship": "Off-diagonal ratio convergence: R(k+1,k)/R(k,k) > 1+c (solved by BEFS)"
-      },
-      {
-        "proofId": "erdos-1014",
-        "relationship": "Off-diagonal ratio: R(k,l+1)/R(k,l) → 1 as l → ∞ (open for k ≥ 3)"
-      },
-      {
-        "proofId": "erdos-163",
-        "relationship": "Burr–Erdős conjecture on degenerate Ramsey numbers; shares authors"
-      },
-      {
-        "proofId": "erdos-79",
-        "relationship": "Ramsey size linearity — minimally non-linear graphs"
-      },
-      {
-        "proofId": "erdos-800",
-        "relationship": "Linear Ramsey numbers for subdivisions (Alon 1994); related BEFS-era result"
-      }
     ],
     "relatedProblems": [
       "erdos-165",
@@ -182,7 +148,7 @@
       "id": "summary",
       "title": "Summary Theorem (Proved)",
       "startLine": 165,
-      "endLine": 171,
+      "endLine": 173,
       "summary": "`erdos_812_summary` packages BEFS + Problem #165 bounds as a conjunction. **Verified proof** by `exact ⟨BEFS_theorem, problem_165_bound⟩`."
     }
   ],
@@ -209,5 +175,27 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-165",
+    "erdos-166",
+    "erdos-1014"
+  ]
 }

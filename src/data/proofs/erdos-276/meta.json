@@ -24,7 +24,7 @@
     ],
     "sorries": 0,
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Composite",
@@ -65,9 +65,9 @@
         "relationship": "Sierpinski numbers: parallel question about covering systems as sole mechanism for compositeness"
       }
     ],
-    "axiomCount": 4,
-    "lineCount": 87,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "axiomCount": 3,
+    "lineCount": 94,
+    "assumptions": "3 axioms: erdos_276_existence (Graham 1964 existence), graham_construction (coprime primefree sequence), covering_system_mechanism (covering congruence structure). The former axiom coprime_necessary has been PROVED as gcd_propagation via two-step induction."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #276** belongs to the rich interface between linear recurrences and covering congruences in combinatorial number theory.\n\n**The Original Question:**\nErdős asked whether there exists a Lucas sequence $a_{n+2} = a_{n+1} + a_n$ where every term is composite, yet no single integer greater than 1 divides all terms. The condition that no universal divisor exists is crucial: if $\\gcd(a_0, a_1) = d > 1$, then $d$ divides every term by induction on the recurrence, giving a trivially composite sequence. The interesting case requires $\\gcd(a_0, a_1) = 1$.\n\n**Graham's Resolution (1964):**\nRonald Graham proved the existence of such sequences in his 1964 paper in *Mathematics Magazine*. His construction is elegant: choose initial values $a_0, a_1$ that are coprime and composite, such that a finite set of primes $S$ covers all index positions via the Pisano period structure. The key insight is that the Lucas sequence is periodic modulo each prime $p$, with period $\\pi(p)$ (the Pisano period). If the residue classes $\\{k \\bmod \\pi(p) : p \\mid a_k\\}$ for primes $p \\in S$ form a covering system of the natural numbers, then every term has at least one prime divisor from $S$. Graham's original starting values had 34 digits.\n\n**Subsequent Improvements:**\nDonald Knuth found smaller starting values. Vsemirnov (2004) achieved the current record: $a_0 = 106276436867$, $a_1 = 35256392432$ (12 digits). Ismailescu and Son (2014) studied explicit constructions further.\n\n**The Open Question:**\nWhile Graham showed that covering congruences *suffice* to construct primefree Lucas sequences, Erdős asked whether they are *necessary*. Could there exist a primefree Lucas sequence that is not explained by any covering system? This deeper question connects to fundamental issues about the structure of divisibility in linear recurrences and remains open.",
@@ -92,7 +92,7 @@
       "title": "Imports",
       "summary": "Imports Mathlib's natural number arithmetic, GCD, primality, and tactic libraries.",
       "startLine": 20,
-      "endLine": 23,
+      "endLine": 24,
       "mathContext": "Requires `Nat.Composite` ($n$ has a nontrivial factorization), `Nat.Coprime` ($\\gcd(a,b) = 1$), `Nat.Prime`, and divisibility ($\\mid$) from Mathlib."
     },
     {
@@ -100,7 +100,7 @@
       "title": "Core Definitions",
       "summary": "Defines **IsLucasSequence** ($a_{n+2} = a_{n+1} + a_n$), **IsPrimefree** ($\\forall k, a_k$ composite), and **HasNoUniversalDivisor** ($\\forall d > 1, \\exists k, d \\nmid a_k$). These three predicates capture the problem's requirements precisely.",
       "startLine": 25,
-      "endLine": 38,
+      "endLine": 39,
       "mathContext": "Three predicates: $\\text{IsLucasSequence}(a) :\\equiv \\forall n,\\, a(n+2) = a(n+1) + a(n)$; $\\text{IsPrimefree}(a) :\\equiv \\forall k,\\, a(k).\\text{Composite}$; $\\text{HasNoUniversalDivisor}(a) :\\equiv \\forall d > 1,\\, \\exists k,\\, d \\nmid a(k)$."
     },
     {
@@ -108,7 +108,7 @@
       "title": "Main Question (Existence)",
       "summary": "Axiomatizes **erdos_276_existence**: there exists a Lucas sequence that is primefree with no universal divisor. This is the resolved part of the problem (Graham 1964).",
       "startLine": 40,
-      "endLine": 47,
+      "endLine": 48,
       "mathContext": "$\\exists a : \\mathbb{N} \\to \\mathbb{N},\\; \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\text{HasNoUniversalDivisor}(a)$. Graham (1964) proved existence via covering congruences."
     },
     {
@@ -116,7 +116,7 @@
       "title": "Graham's Construction",
       "summary": "Axiomatizes **graham_construction** (coprime primefree Lucas sequence exists) and **coprime_necessary** (any common divisor of $a_0, a_1$ divides all terms). Together, these show coprimality is the right condition for nontriviality.",
       "startLine": 49,
-      "endLine": 63,
+      "endLine": 64,
       "mathContext": "Graham's strengthening: $\\exists a,\\, \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\gcd(a_0, a_1) = 1$. GCD propagation: $d \\mid a_0 \\wedge d \\mid a_1 \\Rightarrow \\forall k,\\, d \\mid a_k$ (by induction on $a_{n+2} = a_{n+1} + a_n$)."
     },
     {
@@ -124,7 +124,7 @@
       "title": "Covering Congruence Mechanism",
       "summary": "Axiomatizes **covering_system_mechanism**: a finite set of primes covers all index positions via Pisano period residue classes. This captures how Graham's construction works and poses the open question of whether this mechanism is necessary.",
       "startLine": 65,
-      "endLine": 77,
+      "endLine": 78,
       "mathContext": "$\\exists S \\subseteq \\{\\text{primes}\\},\\; \\forall a,\\; \\text{IsLucas}(a) \\wedge \\gcd(a_0,a_1)=1 \\wedge \\text{Primefree}(a) \\Rightarrow \\forall k,\\, \\exists p \\in S,\\, p \\mid a_k$. The Lucas sequence is periodic mod $p$ with Pisano period $\\pi(p)$."
     },
     {
@@ -156,9 +156,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 87,
-    "axiomCount": 4,
-    "theoremCount": 0,
+    "lineCount": 94,
+    "axiomCount": 3,
+    "theoremCount": 1,
     "definitionCount": 3
   },
   "references": [

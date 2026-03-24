@@ -21,7 +21,7 @@
     "erdosNumber": 1063,
     "erdosUrl": "https://erdosproblems.com/1063",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -77,42 +77,42 @@
       "id": "divisibility",
       "title": "Divisibility Condition",
       "startLine": 37,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Defines $(n-i) \\mid \\binom{n}{k}$ predicate, counting function $|\\{i : (n-i) \\mid \\binom{n}{k}\\}|$, and `AllButOneDivide` requiring count $\\geq k-1$"
     },
     {
       "id": "threshold",
       "title": "The Threshold $n_k$",
       "startLine": 57,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "$n_k = \\min\\{n \\geq 2k : \\text{AllButOneDivide}(n, k)\\}$ — the extremal function whose growth rate is the open question"
     },
     {
       "id": "erdos-selfridge",
       "title": "Erdős-Selfridge Result",
       "startLine": 67,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Axiom: $\\forall k \\geq 2,\\, \\forall n \\geq 2k : \\text{divisibilityCount}(n,k) < k$ — full divisibility is impossible"
     },
     {
       "id": "small-values",
       "title": "Known Small Values",
       "startLine": 82,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Axioms for $n_2 = 4$, $n_3 = 6$, $n_4 = 9$, $n_5 = 12$ with concrete $\\binom{n}{k}$ verifications"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 105,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Monier: $n_k \\leq k!$; Cambie: $n_k \\leq k \\cdot \\text{lcm}(2,\\ldots,k-1) \\leq e^{(1+o(1))k}$; open: $\\exists C,\\, n_k \\leq k^C$?"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 133,
-      "endLine": 155,
+      "endLine": 159,
       "summary": "`erdos_1063_summary`: combines Erdős-Selfridge nondivisibility with Monier bound via `exact ⟨..., ...⟩`"
     }
   ],
@@ -129,34 +129,34 @@
   },
   "crossReferences": [
     {
-      "target": "kummer-theorem",
       "relationship": "foundational",
-      "description": "Kummer's theorem gives the p-adic valuation of C(n,k) as the carry count when adding k and n-k in base p. This is the core tool underlying the Erdős-Selfridge impossibility: if all k consecutive integers n, n-1, …, n-k+1 were to divide C(n,k), the p-adic valuations would conflict with the carry structure of k!."
+      "description": "Kummer's theorem gives the p-adic valuation of C(n,k) as the carry count when adding k and n-k in base p. This is the core tool underlying the Erdős-Selfridge impossibility: if all k consecutive integers n, n-1, …, n-k+1 were to divide C(n,k), the p-adic valuations would conflict with the carry structure of k!.",
+      "targetId": "kummer-theorem"
     },
     {
-      "target": "binomial-theorem",
       "relationship": "related",
-      "description": "The binomial theorem gives the algebraic identity for C(n,k), whose divisibility properties are the subject of Erdős #1063. The extremal question—which integers in the numerator of C(n,k) = n(n-1)···(n-k+1)/k! actually divide the result—requires detailed understanding of how the binomial coefficient factors."
+      "description": "The binomial theorem gives the algebraic identity for C(n,k), whose divisibility properties are the subject of Erdős #1063. The extremal question—which integers in the numerator of C(n,k) = n(n-1)···(n-k+1)/k! actually divide the result—requires detailed understanding of how the binomial coefficient factors.",
+      "targetId": "binomial-theorem"
     },
     {
-      "target": "prime-number-theorem",
       "relationship": "related",
-      "description": "Cambie's exponential improvement n_k ≤ k·lcm(2,…,k-1) connects directly to the prime number theorem: log lcm(1,…,m) = ψ(m) ~ m (the Chebyshev ψ-function), so the lcm grows as e^m. The PNT thus determines the leading constant in Cambie's bound and is central to the 'polynomial vs. exponential' question."
+      "description": "Cambie's exponential improvement n_k ≤ k·lcm(2,…,k-1) connects directly to the prime number theorem: log lcm(1,…,m) = ψ(m) ~ m (the Chebyshev ψ-function), so the lcm grows as e^m. The PNT thus determines the leading constant in Cambie's bound and is central to the 'polynomial vs. exponential' question.",
+      "targetId": "prime-number-theorem"
     },
     {
-      "target": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate (proved by Chebyshev, later elegantly by Erdős) guarantees a prime between k and 2k. This prime divides k! only to the first power, contributing to the obstruction that forces at least one of the k consecutive integers not to divide C(n,k)—the mechanism behind the Erdős-Selfridge nondivisibility result."
+      "description": "Bertrand's postulate (proved by Chebyshev, later elegantly by Erdős) guarantees a prime between k and 2k. This prime divides k! only to the first power, contributing to the obstruction that forces at least one of the k consecutive integers not to divide C(n,k)—the mechanism behind the Erdős-Selfridge nondivisibility result.",
+      "targetId": "bertrands-postulate"
     },
     {
-      "target": "erdos-1062",
       "relationship": "sibling",
-      "description": "Erdős #1062 also asks an extremal question about divisibility: finding the largest subset A ⊆ {1,…,n} with no element dividing two distinct others. Both problems share the theme of 'how many divisibility relations can simultaneously hold,' and both involve the interplay between consecutive or bounded integers and divisibility."
+      "description": "Erdős #1062 also asks an extremal question about divisibility: finding the largest subset A ⊆ {1,…,n} with no element dividing two distinct others. Both problems share the theme of 'how many divisibility relations can simultaneously hold,' and both involve the interplay between consecutive or bounded integers and divisibility.",
+      "targetId": "erdos-1062"
     },
     {
-      "target": "erdos-1056",
       "relationship": "sibling",
-      "description": "Erdős #1056 asks about products of consecutive intervals being ≡ 1 (mod p)—a modular divisibility question related to Wilson's theorem and factorial arithmetic. Like #1063, it concerns divisibility conditions on products of consecutive integers and remains open for large k."
+      "description": "Erdős #1056 asks about products of consecutive intervals being ≡ 1 (mod p)—a modular divisibility question related to Wilson's theorem and factorial arithmetic. Like #1063, it concerns divisibility conditions on products of consecutive integers and remains open for large k.",
+      "targetId": "erdos-1056"
     }
   ],
   "relatedProofs": [

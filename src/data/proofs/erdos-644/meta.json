@@ -42,16 +42,6 @@
       ],
       "significance": "Determines the precise covering efficiency of k-uniform set families under r-wise pair coherence. The known exact values f(k,3)=2k through f(k,6)=k reveal a decreasing coefficient sequence c₃=2, c₄=3/2, c₅=5/4, c₆=1. The open questions ask whether c₇=3/4 (crossing below the natural barrier c=1) and whether the linear-in-k behavior persists for all r."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-621",
-        "relationship": "Both study covering/transversal problems in combinatorial structures; #621 covers triangles in graphs, #644 covers sets in families"
-      },
-      {
-        "id": "erdos-23",
-        "relationship": "Both involve covering problems with structural constraints; #23 asks about bipartite edge deletion, #644 about set piercing"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -76,7 +66,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\"."
+    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Fon-Der-Flaass, Kostochka, and Tuza introduced this problem in 1992, studying the covering function f(k,r) for k-uniform set families with the r-wise pair intersection property. They determined exact values for r = 3, 4, 5, 6, revealing a striking pattern of decreasing coefficients: c₃ = 2, c₄ = 3/2, c₅ = 5/4, c₆ = 1.\n\nThe r-wise pair property is a Helly-type condition: it requires that any r sets in the family are linked by a common pair intersecting all of them. As r increases, the condition becomes stronger, forcing more structure on the family and enabling smaller covering sets. The sequence of exact values suggests a regular pattern, but no general formula has been established.\n\nThe problem connects to several important themes in combinatorics: the sunflower lemma (Erdős-Rado 1960), Helly-type theorems, hypergraph transversal theory, and the recently improved sunflower bounds (Alweiss-Lovett-Wu-Zhang 2020). The open questions about f(k,7) and general asymptotics probe the fundamental limits of covering efficiency under structural constraints.",
@@ -222,5 +213,27 @@
       "citation": "Erdős Problems, Problem #644, https://erdosproblems.com/644",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1075",
+    "erdos-1088"
   ]
 }

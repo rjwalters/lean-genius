@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/918",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.aleph",
@@ -80,35 +80,35 @@
       "id": "open-questions",
       "title": "The Main Open Questions",
       "startLine": 42,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Axiomatization of Question1 (ℵ₂ case) and Question2 (ℵ_{ω+1} case)."
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal Finite Case",
       "startLine": 67,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "The solved part: for every finite k, such graphs exist."
     },
     {
       "id": "negative-results",
       "title": "Impossibility of Exact ℵ₀",
       "startLine": 84,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Why the original = ℵ₀ formulation is trivially false."
     },
     {
       "id": "background",
       "title": "Aleph Cardinals Background",
       "startLine": 98,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "Basic facts about the aleph hierarchy using Mathlib."
     },
     {
       "id": "difficulty",
       "title": "Why This Problem is Hard",
       "startLine": 118,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "Commentary on the mathematical challenges."
     },
     {
@@ -143,5 +143,27 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, infinite-graphs, set-theory"
+    },
+    {
+      "targetId": "erdos-110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, infinite-graphs, set-theory"
+    },
+    {
+      "targetId": "erdos-594",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, infinite-graphs, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1067",
+    "erdos-110",
+    "erdos-594"
+  ]
 }

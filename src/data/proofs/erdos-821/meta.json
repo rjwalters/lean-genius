@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/821",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
@@ -79,35 +79,35 @@
       "title": "Euler's Totient Function",
       "summary": "phi, g, preimageCount definitions",
       "startLine": 40,
-      "endLine": 56
+      "endLine": 57
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "pillai_theorem, erdos_1935, erdos_explicit_bound",
       "startLine": 58,
-      "endLine": 74
+      "endLine": 75
     },
     {
       "id": "lichtman",
       "title": "Lichtman's Result (2022)",
       "summary": "lichtmanExponent, lichtman_theorem, lichtman_primes",
       "startLine": 76,
-      "endLine": 91
+      "endLine": 92
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "ErdosConjecture821 formal statement and alternative form",
       "startLine": 93,
-      "endLine": 102
+      "endLine": 103
     },
     {
       "id": "smooth-primes",
       "title": "Connection to Smooth Primes",
       "summary": "IsEpsilonSmooth, SmoothPrimesCondition, smooth_implies_conjecture",
       "startLine": 104,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "upper-bounds",
@@ -151,5 +151,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, smooth-numbers"
+    },
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, smooth-numbers"
+    },
+    {
+      "targetId": "erdos-249",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, totient"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1055",
+    "erdos-1065",
+    "erdos-249"
+  ]
 }

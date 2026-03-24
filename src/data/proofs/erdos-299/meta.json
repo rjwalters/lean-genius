@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/299",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.atTop",
@@ -130,7 +130,7 @@
       "id": "sparse",
       "title": "Why Bounded Gaps Matter",
       "startLine": 209,
-      "endLine": 227,
+      "endLine": 325,
       "summary": "Proof that powers of 2 have unbounded gaps, showing the condition is necessary."
     }
   ],
@@ -166,5 +166,27 @@
     "axiomCount": 1,
     "theoremCount": 10,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-298",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-292",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-298",
+    "erdos-292",
+    "erdos-310"
+  ]
 }

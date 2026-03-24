@@ -16,7 +16,8 @@
       "Arithmetic progressions",
       "Coprimality",
       "Fermat's theorem"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-powerful",
@@ -34,7 +35,8 @@
       "Prime factorization",
       "Squarefree numbers",
       "Perfect powers"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-rpowerful",
@@ -52,7 +54,8 @@
       "Prime powers",
       "Density"
     ],
-    "mathContext": "See annotation content for formal details of r-powerful numbers"
+    "mathContext": "See annotation content for formal details of r-powerful numbers",
+    "prerequisites": []
   },
   {
     "id": "ann-e937-examples",
@@ -65,7 +68,9 @@
     "title": "Verified Examples",
     "content": "**Concrete powerful number examples:**\n\n- **one_is_powerful:** 1 is powerful (vacuously, no prime divisors)\n- **four_is_powerful:** 4 = 2² is powerful\n- **eight_is_powerful:** 8 = 2³ is powerful\n- **nine_is_powerful:** 9 = 3² is powerful\n- **seventytwo_is_powerful:** 72 = 2³ · 3² is powerful\n\n**Key theorem:**\n```lean\ntheorem square_is_powerful (n : ℕ) (hn : n ≥ 1) : IsPowerful (n^2)\n```\n\nEvery perfect square is powerful.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of verified examples"
+    "mathContext": "See annotation content for formal details of verified examples",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-ap",
@@ -82,7 +87,8 @@
       "Arithmetic sequences",
       "Common difference"
     ],
-    "mathContext": "See annotation content for formal details of arithmetic progressions"
+    "mathContext": "See annotation content for formal details of arithmetic progressions",
+    "prerequisites": []
   },
   {
     "id": "ann-e937-coprimality",
@@ -100,7 +106,8 @@
       "Coprimality",
       "GCD",
       "Pairwise coprime"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-main-sets",
@@ -113,7 +120,9 @@
     "title": "Main Theorem Sets",
     "content": "**coprimePowerfulFourTermAPs:**\n\nThe set of 4-tuples (a,b,c,d) where:\n1. All four are powerful\n2. They form an arithmetic progression\n3. They are pairwise coprime\n\n```lean\ndef coprimePowerfulFourTermAPs : Set (ℕ × ℕ × ℕ × ℕ) :=\n  {t | IsPowerful t.1 ∧ IsPowerful t.2.1 ∧ IsPowerful t.2.2.1 ∧ \n       IsPowerful t.2.2.2 ∧ CoprimeFourTermAP t.1 t.2.1 t.2.2.1 t.2.2.2}\n```\n\nThe main theorem shows this set is infinite.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of main theorem sets"
+    "mathContext": "See annotation content for formal details of main theorem sets",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-fermat",
@@ -131,7 +140,8 @@
       "Fermat's theorems",
       "Infinite descent",
       "Elliptic curves"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-easy",
@@ -144,7 +154,9 @@
     "title": "Easy Construction (Without Coprimality)",
     "content": "**extend_powerful_AP and arbitrarily_long_powerful_APs:**\n\nWithout coprimality, arbitrarily long APs of powerful numbers exist.\n\n**Construction:**\nIf a, a+d, ..., a+(k-1)d is an AP of powerful numbers, then:\na(a+kd)², (a+d)(a+kd)², ..., (a+(k-1)d)(a+kd)², (a+kd)³\n\nis an AP of powerful numbers with one more term.\n\nStarting from any two powerful numbers, we can extend indefinitely.",
     "mathContext": "This shows why coprimality is essential - without it, the problem is trivial.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-bbc",
@@ -161,7 +173,8 @@
     "relatedConcepts": [
       "Analytic number theory",
       "Infinite sets"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-abc",
@@ -179,7 +192,8 @@
       "ABC conjecture",
       "Radical of an integer",
       "Masser-Oesterlé"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-main",
@@ -192,7 +206,9 @@
     "title": "Main Result: Erdős #937 Solved",
     "content": "**erdos_937:**\n\n```lean\ntheorem erdos_937 : coprimePowerfulFourTermAPs.Infinite :=\n  bajpai_bennett_chan_four_term\n```\n\n**Answer: YES**\n\nThere are infinitely many four-term arithmetic progressions of pairwise coprime powerful numbers.\n\nProved by Bajpai, Bennett, and Chan in 2024.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of main result: erdős #937 solved"
+    "mathContext": "See annotation content for formal details of main result: erdős #937 solved",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e937-contrast",
@@ -209,6 +225,7 @@
       "Fermat's theorems",
       "Set density"
     ],
-    "mathContext": "See annotation content for formal details of contrast with fermat"
+    "mathContext": "See annotation content for formal details of contrast with fermat",
+    "prerequisites": []
   }
 ]

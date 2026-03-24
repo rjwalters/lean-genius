@@ -67,15 +67,8 @@
       "Equality conditions in classical inequalities",
       "Proportionality and linear dependence of vectors"
     ],
-    "relatedProofs": [
-      "cauchy-schwarz-integral-oq-02",
-      "cauchy-schwarz-integral",
-      "cauchy-schwarz",
-      "amgm-inequality",
-      "cauchy-schwarz-oq-01",
-      "triangle-inequality"
-    ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -129,7 +122,7 @@
       "id": "module-setup",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 17,
+      "endLine": 18,
       "summary": "Module docstring, Mathlib import, and variable declarations. Establishes the working context: a generic real inner product space E with NormedAddCommGroup and InnerProductSpace ℝ instances.",
       "mathContext": "The variable declaration `{E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]` means all theorems hold in any real inner product space — from $\\mathbb{R}^n$ to $L^2(\\mu)$ to abstract Hilbert spaces."
     },
@@ -137,7 +130,7 @@
       "id": "proportionality-implies-cs",
       "title": "Proportionality Implies CS Equality",
       "startLine": 19,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Theorem inner_eq_of_proportional: ‖f‖•g = ‖g‖•f implies ⟪f,g⟫ = ‖f‖·‖g‖. Applies ⟪f,·⟫ to both sides, uses ⟪f,f⟫ = ‖f‖², and cancels the nonzero factor ‖f‖.",
       "mathContext": "$\\|f\\| \\cdot g = \\|g\\| \\cdot f \\Rightarrow \\|f\\|\\langle f,g\\rangle = \\|g\\|\\|f\\|^2 \\Rightarrow \\langle f,g\\rangle = \\|f\\|\\|g\\|$."
     },
@@ -145,7 +138,7 @@
       "id": "cs-implies-proportionality",
       "title": "CS Equality Implies Proportionality",
       "startLine": 39,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Theorem proportional_of_inner_eq: ⟪f,g⟫ = ‖f‖·‖g‖ implies ‖f‖•g = ‖g‖•f. Shows ‖‖f‖g - ‖g‖f‖² = 0 by expanding via norm_sub_sq_real and substituting the CS equality.",
       "mathContext": "$\\langle f,g\\rangle = \\|f\\|\\|g\\| \\Rightarrow \\|\\|f\\|g - \\|g\\|f\\|^2 = 2\\|f\\|^2\\|g\\|^2 - 2\\|f\\|\\|g\\|\\langle f,g\\rangle = 0$."
     },

@@ -134,6 +134,6 @@ to being an additive basis, or is there a "middle ground"?
 -/
 
 /-- The main conjecture (OPEN) -/
-axiom erdos_38_conjecture : Erdos38Problem ∨ ¬Erdos38Problem
+theorem erdos_38_conjecture : Erdos38Problem ∨ ¬Erdos38Problem := Classical.em _
 
 end Erdos38

@@ -21,7 +21,7 @@
     "erdosNumber": 486,
     "erdosUrl": "https://erdosproblems.com/486",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.Tendsto",
@@ -59,28 +59,6 @@
       "erdos486_conjecture: The main open conjecture — every modular avoidance set has a logarithmic density",
       "davenport_erdos_theorem: The proven special case (Xₙ = {0}) — stated as axiom pending Mathlib formalization",
       "besicovitch_counterexample: Existence of a set with logarithmic but not natural density — stated as axiom pending formalization"
-    ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-25",
-        "relationship": "generalization",
-        "description": "Problem #486 generalizes #25 (which restricts to |Xₙ| = 1 per modulus) to arbitrary forbidden residue sets"
-      },
-      {
-        "targetId": "harmonic-divergence",
-        "relationship": "foundational",
-        "description": "Logarithmic density is built on harmonic sums Σ 1/n; the divergence of the harmonic series is why log(x) normalization yields a nontrivial density"
-      },
-      {
-        "targetId": "erdos-1134",
-        "relationship": "thematic",
-        "description": "Both problems investigate density properties of number-theoretic sets defined by modular/affine conditions"
-      }
-    ],
-    "relatedProofs": [
-      "erdos-25",
-      "harmonic-divergence",
-      "erdos-1134"
     ]
   },
   "overview": {
@@ -108,7 +86,7 @@
       "id": "preamble",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Module docstring stating the open problem, its partial results (Davenport-Erdős, Besicovitch), and relationship to Problem #25. Imports Mathlib and opens Classical logic for decidability.",
       "mathContext": "Problem #486: for each $n$, choose $X_n \\subseteq \\mathbb{Z}/n\\mathbb{Z}$. Let $B = \\{m : \\forall n,\\; m \\bmod n \\notin X_n\\}$. Must $B$ have a logarithmic density? **Status: OPEN.**"
     },
@@ -116,7 +94,7 @@
       "id": "density-definitions",
       "title": "Logarithmic Density Definitions",
       "startLine": 25,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Defines logSum (the harmonic-weighted partial sum of A up to x) and HasLogDensity (the limit of logSum(A,x)/log(x) as x→∞), using Mathlib's Filter.Tendsto.",
       "mathContext": "$\\text{logSum}(A, x) = \\sum_{n \\in A,\\; 0 < n \\leq x} \\frac{1}{n}$. $A$ has logarithmic density $d$ if $\\lim_{x \\to \\infty} \\frac{\\text{logSum}(A,x)}{\\log x} = d$."
     },
@@ -190,5 +168,27 @@
       "venue": "Mathematische Annalen, 110, pp. 336-341",
       "note": "Showed natural density can fail for zero-avoidance sets, justifying the use of logarithmic density"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-25",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-697",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, modular-arithmetic, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1074",
+    "erdos-25",
+    "erdos-697"
   ]
 }

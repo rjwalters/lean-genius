@@ -17,7 +17,8 @@
       "interval-arithmetic",
       "finset-fold",
       "number-theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-interval-lcm-alt",
@@ -31,7 +32,9 @@
       "finset-icc",
       "interval-arithmetic"
     ],
-    "mathContext": "See annotation content for formal details of alternative definition"
+    "mathContext": "See annotation content for formal details of alternative definition",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-zero-one",
@@ -45,7 +48,9 @@
       "lcm",
       "finset-fold"
     ],
-    "mathContext": "See annotation content for formal details of base cases"
+    "mathContext": "See annotation content for formal details of base cases",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-monotonicity",
@@ -84,7 +89,9 @@
       "lcm",
       "predicate-definition",
       "number-theory"
-    ]
+    ],
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-selfridge-1",
@@ -99,7 +106,9 @@
       "native-decide",
       "computational-verification",
       "lcm"
-    ]
+    ],
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-selfridge-2",
@@ -113,7 +122,9 @@
       "computational-verification",
       "native-decide"
     ],
-    "mathContext": "See annotation content for formal details of selfridge's second example"
+    "mathContext": "See annotation content for formal details of selfridge's second example",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-computed-values",
@@ -128,7 +139,9 @@
       "computational-verification",
       "lcm",
       "explicit-values"
-    ]
+    ],
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-infinitely-many",
@@ -167,7 +180,9 @@
       "sufficiently-large",
       "lcm",
       "erdos-problem"
-    ]
+    ],
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-prime-power",
@@ -186,7 +201,8 @@
       "lcm-structure",
       "number-theory"
     ],
-    "mathContext": "See annotation content for formal details of prime power divisibility"
+    "mathContext": "See annotation content for formal details of prime power divisibility",
+    "prerequisites": []
   },
   {
     "id": "ann-e678-skip",
@@ -201,7 +217,9 @@
       "prime-distribution",
       "lcm",
       "key-insight"
-    ]
+    ],
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-growth",
@@ -219,7 +237,8 @@
       "chebyshev",
       "prime-number-theorem"
     ],
-    "mathContext": "See annotation content for formal details of lcm growth bounds"
+    "mathContext": "See annotation content for formal details of lcm growth bounds",
+    "prerequisites": []
   },
   {
     "id": "ann-e678-minimal-n",
@@ -234,7 +253,9 @@
       "erdos-problem",
       "open-bounds"
     ],
-    "mathContext": "See annotation content for formal details of minimal starting point"
+    "mathContext": "See annotation content for formal details of minimal starting point",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e678-final",

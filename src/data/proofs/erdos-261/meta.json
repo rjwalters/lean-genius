@@ -34,7 +34,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 94,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Paul Erdős posed this problem in the 1970s, asking whether every positive integer n can be represented as n/2^n = Σ_{k∈S} k/2^k for a finite set S of distinct positive integers. Thomas Cusick (1989) proved the first positive result: infinitely many n admit such representations. Peter Borwein and Tamás Loring gave an explicit infinite family: for m ≥ 1, the integer n = 2^{m+1} − m − 2 is representable using the consecutive block {n+1,...,n+m}. Szabolcs Tengely, Maciej Ulas, and Jakub Zygadło computationally verified the conjecture for all n ≤ 10000, providing strong evidence for universality. Erdős also asked a deeper question: does some rational number admit continuum-many (2^{ℵ₀}) distinct infinite representations as Σ a_k/2^{a_k}? Both the universality conjecture (all n) and the continuum question remain open.",
@@ -66,21 +67,21 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 27,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines recipPow2Weight(k) = k/2^k as a noncomputable rational function, recipPow2Sum as a Finset.sum of weights, IsRecipPow2Rep bundling |S| ≥ 2 with positivity and sum equality, and IsRepresentable as existential quantification over valid representations."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 47,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Three axiomatized results: Cusick's infinitude theorem (for any N, some n ≥ N is representable), Borwein–Loring's explicit family (n = 2^{m+1} − m − 2 for m ≥ 1), and Tengely–Ulas–Zygadło's computational verification for all n ≤ 10000."
     },
     {
       "id": "conjectures",
       "title": "The Erdős Conjectures",
       "startLine": 63,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Part 1 (resolved): infinitely many n are representable — proved as a theorem via Cusick's axiom. Part 2 (open): every n ≥ 1 is representable — axiomatized as the stronger universality conjecture."
     },
     {
@@ -115,5 +116,27 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, representations"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1005",
+    "erdos-1110",
+    "erdos-1138"
+  ]
 }

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/272",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -84,49 +84,49 @@
       "title": "Basic Definitions",
       "summary": "interval, ArithProg, IsArithProg, singleton_is_ap, pair_is_ap",
       "startLine": 31,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "ap-intersection",
       "title": "The AP-Intersection Property",
       "summary": "hasAPIntersectionProperty, maxAPFamily",
       "startLine": 70,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "simonovits-sos",
       "title": "The Simonovits-Sós Bounds",
       "summary": "simonovits_sos_upper, simonovits_sos_lower axioms",
       "startLine": 84,
-      "endLine": 92
+      "endLine": 93
     },
     {
       "id": "erdos-graham",
       "title": "Erdős-Graham Conjecture (Disproved)",
       "summary": "erdos_graham_conjecture_false axiom",
       "startLine": 94,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "small-sets",
       "title": "Simonovits-Sós Construction",
       "summary": "smallSetsThroughElement, small_sets_count, small_sets_has_AP",
       "startLine": 112,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "szabo-theorem",
       "title": "Szabó's Theorem (1999)",
       "summary": "szabo_theorem, szabo_leading_constant",
       "startLine": 127,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "szabo-refined",
       "title": "Szabó's Refined Results",
       "summary": "szabo_lower_bound, szabo_common_element_conjecture",
       "startLine": 139,
-      "endLine": 149
+      "endLine": 150
     },
     {
       "id": "summary",
@@ -162,5 +162,27 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-194",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-645",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-702",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-194",
+    "erdos-645",
+    "erdos-702"
+  ]
 }

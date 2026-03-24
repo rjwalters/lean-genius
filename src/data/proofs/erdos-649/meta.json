@@ -52,7 +52,8 @@
     ],
     "axiomCount": 17,
     "lineCount": 328,
-    "assumptions": "17 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "17 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #649**\n\nThis problem asks whether all prime pairs can be realized as greatest prime factors of consecutive integers.\n\n**Key History:**\n- Erdős believed the problem was 'probably hopelessly difficult'\n- Multiple counterexamples discovered via modular arithmetic\n- Tong proved infinitely many pairs fail for any fixed p\n- Mahler (1935) studied growth of P(n(n+1))\n\n**The Counterexamples:**\n- (2, 7): 2^k ≢ -1 (mod 7) since ord_7(2) = 3 is odd\n- (19, 2): 2 is a primitive root mod 19\n- Infinitely many pairs via quadratic reciprocity obstructions",
@@ -78,49 +79,49 @@
       "title": "Greatest Prime Factor",
       "summary": "Definition of P(m), axioms for primes, prime powers, products",
       "startLine": 39,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "conjecture",
       "title": "Erdős Conjecture",
       "summary": "ErdosConjecture649 definition",
       "startLine": 81,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "counterexample-2-7",
       "title": "Counterexample: (2, 7)",
       "summary": "Key modular arithmetic lemmas, no_solution_2_7 theorem",
       "startLine": 97,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "general-obstruction",
       "title": "General Obstruction Theory",
       "summary": "Tong's theorem, primitive root obstruction, (19, 2) counterexample",
       "startLine": 154,
-      "endLine": 201
+      "endLine": 202
     },
     {
       "id": "positive-cases",
       "title": "Positive Results",
       "summary": "Solutions for (2,3) and (3,2)",
       "startLine": 203,
-      "endLine": 242
+      "endLine": 243
     },
     {
       "id": "mahler",
       "title": "Mahler's Growth Theorem",
       "summary": "P(n(n+1)) growth, infinitely_many_large_gpf corollary",
       "startLine": 244,
-      "endLine": 271
+      "endLine": 272
     },
     {
       "id": "quadratic-reciprocity",
       "title": "Quadratic Reciprocity Connection",
       "summary": "Order of 2 mod 7, odd_order_no_minus_one",
       "startLine": 273,
-      "endLine": 305
+      "endLine": 306
     },
     {
       "id": "main-results",
@@ -158,5 +159,27 @@
     "axiomCount": 17,
     "theoremCount": 8,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-205",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, disproved"
+    },
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-205",
+    "erdos-105",
+    "erdos-1056"
+  ]
 }

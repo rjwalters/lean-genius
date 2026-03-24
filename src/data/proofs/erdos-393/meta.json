@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/393",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.factorial",
@@ -82,56 +82,56 @@
       "title": "Factorial Factorizations",
       "summary": "Definitions for factorizations, increasing sequences, span",
       "startLine": 41,
-      "endLine": 65
+      "endLine": 66
     },
     {
       "id": "f-function",
       "title": "The f(n) Function",
       "summary": "Definition of f(n) as minimal span",
       "startLine": 67,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "consecutive-case",
       "title": "The f(n) = 1 Case",
       "summary": "When n! = k(k+1) for consecutive integers",
       "startLine": 79,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "counting-function",
       "title": "The Counting Function F_m(N)",
       "summary": "Counting n ≤ N with f(n) = m",
       "startLine": 99,
-      "endLine": 116
+      "endLine": 117
     },
     {
       "id": "abc-conditional",
       "title": "f(n) → ∞ Conditional on ABC",
       "summary": "Luca's result assuming ABC conjecture",
       "startLine": 118,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "bounds",
       "title": "Lower Bounds on f(n)",
       "summary": "Basic bounds on the f(n) function",
       "startLine": 136,
-      "endLine": 149
+      "endLine": 150
     },
     {
       "id": "diophantine",
       "title": "Connection to Diophantine Equations",
       "summary": "P(x) = n! and Brocard's problem",
       "startLine": 151,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "density",
       "title": "Density Results",
       "summary": "Density zero and sparse values theorems",
       "startLine": 167,
-      "endLine": 178
+      "endLine": 179
     },
     {
       "id": "summary",
@@ -167,5 +167,27 @@
     "axiomCount": 10,
     "theoremCount": 4,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-373",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, factorials, number-theory"
+    },
+    {
+      "targetId": "erdos-388",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, factorials, number-theory"
+    },
+    {
+      "targetId": "erdos-399",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-equations, factorials, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-373",
+    "erdos-388",
+    "erdos-399"
+  ]
 }

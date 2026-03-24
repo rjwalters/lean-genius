@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 10,
     "lineCount": 89,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős** originally conjectured that $R(G) \\geq R(k)$ whenever $\\chi(G) = k$: graphs with the same chromatic number as $K_k$ should have Ramsey number at least as large. This was disproved by **Faudree and McKay**, who showed the pentagonal wheel $W$ (central vertex joined to $C_5$) has $\\chi(W) = 4$ and $R(W) = 17 < R(4) = 18$. Erdős then weakened the conjecture to two forms: (weak) $R(G) > (1-\\varepsilon)^k \\cdot R(k)$ for large $k$, and (strong) $R(G) > c \\cdot R(k)$ for an absolute constant $c > 0$. The problem connects to the **Erdős-Szekeres bound** $R(k) \\leq 4^k$ (1935), the probabilistic lower bound $R(k) \\geq 2^{k/2}$ (Erdős 1947), and the recent breakthrough by **Campos, Griffiths, Morris, and Sahasrabudhe** (2023) proving $R(k) \\leq (4-\\varepsilon)^k$. The problem remains **open** in both forms.",
@@ -48,56 +49,56 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 16,
-      "endLine": 21,
+      "endLine": 22,
       "summary": "Imports SimpleGraph.Basic, Fin.Basic, Filter.Basic, and tactics."
     },
     {
       "id": "diagonal-ramsey",
       "title": "Diagonal Ramsey Number",
       "startLine": 23,
-      "endLine": 30,
+      "endLine": 31,
       "summary": "Axiomatizes R(k) with positivity for k ≥ 1."
     },
     {
       "id": "graph-ramsey",
       "title": "Graph Ramsey Number",
       "startLine": 32,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Axiomatizes R(G) for SimpleGraph (Fin n) with positivity."
     },
     {
       "id": "chromatic-number",
       "title": "Chromatic Number",
       "startLine": 39,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Axiomatizes χ(G) with bounds: 1 ≤ χ(G) ≤ n for non-empty graphs."
     },
     {
       "id": "weak-conjecture",
       "title": "Weak Form: R(G) > (1-ε)^k · R(k)",
       "startLine": 50,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "The weak form as a Prop-valued definition: exponentially decaying factor allowed."
     },
     {
       "id": "strong-conjecture",
       "title": "Strong Form: R(G) > c · R(k)",
       "startLine": 61,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "The strong form as a Prop-valued definition: absolute constant c independent of k."
     },
     {
       "id": "exponential-lower",
       "title": "Exponential Lower Bound",
       "startLine": 70,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Random colouring argument giving R(G) ≫ 2^{k/2} for χ(G) = k."
     },
     {
       "id": "ramsey-upper",
       "title": "Ramsey Upper Bound R(k) ≤ 4^k",
       "startLine": 79,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "The classical Erdős-Szekeres upper bound on diagonal Ramsey numbers."
     },
     {
@@ -134,5 +135,27 @@
     "axiomCount": 10,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1006",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, graph-theory, probabilistic-method"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1037",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1006",
+    "erdos-1029",
+    "erdos-1037"
+  ]
 }

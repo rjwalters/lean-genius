@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/473",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -83,42 +83,42 @@
       "title": "Basic Definitions",
       "summary": "IsPermutation, HasPrimeSumProperty, IsPrimeSumPermutation",
       "startLine": 42,
-      "endLine": 54
+      "endLine": 55
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "segalQuestion and odlyzko_theorem",
       "startLine": 56,
-      "endLine": 65
+      "endLine": 66
     },
     {
       "id": "greedy-algorithm",
       "title": "The Greedy Algorithm",
       "summary": "greedySeq, initial values, van Doorn's 197 observation",
       "startLine": 67,
-      "endLine": 102
+      "endLine": 103
     },
     {
       "id": "finite-version",
       "title": "Finite Version",
       "summary": "IsFinitePrimeSumPermutation and infinite family",
       "startLine": 104,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "graph-interpretation",
       "title": "Graph-Theoretic Interpretation",
       "summary": "primeSumGraph, parity constraint",
       "startLine": 121,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_473_solved, erdos_473_main proved theorem",
       "startLine": 135,
-      "endLine": 154
+      "endLine": 273
     }
   ],
   "conclusion": {
@@ -146,5 +146,27 @@
     "axiomCount": 13,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes, solved"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-237",
+    "erdos-1136",
+    "erdos-141"
+  ]
 }

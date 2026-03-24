@@ -11,7 +11,7 @@
     "sorries": 0,
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "tags": [
       "erdos",
       "number-theory",
@@ -57,28 +57,6 @@
       "perfectSquares and erdos_graham_squares_conjecture for sparse denominators",
       "greedy_implies_representable connecting termination to representability"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-283",
-        "relationship": "Egyptian fractions with polynomial denominators — extends the denominator restriction from arithmetic progressions to polynomial values"
-      },
-      {
-        "proofId": "erdos-284",
-        "relationship": "Maximum first denominator in Egyptian fractions of 1 — quantitative structure of greedy decompositions"
-      },
-      {
-        "proofId": "erdos-285",
-        "relationship": "Egyptian fractions asymptotics — counting the number of representations, complementary to the termination question"
-      },
-      {
-        "proofId": "erdos-280",
-        "relationship": "Covering congruences and sieve methods — related Erdős problem on modular structure"
-      },
-      {
-        "proofId": "erdos-281",
-        "relationship": "Covering congruences and density — adjacent problem in the Erdős-Graham collection"
-      }
-    ],
     "axiomCount": 8,
     "lineCount": 112,
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -88,35 +66,35 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 25,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Imports Mathlib's **Rat.Basic**, **Nat.Basic**, **Set.Basic**, and **Tactic** for rational numbers, natural number arithmetic, set predicates, and proof automation."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 30,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Defines **IsEgyptianFracRep** ($x = \\sum 1/n$ for finite $S \\subseteq A$), **IsRepresentable** ($\\exists S$ witnessing a decomposition), **greedyStep** (smallest $n \\in A$ with $1/n \\leq x$) with membership and inequality axioms, and **GreedyTerminates** (greedy process reaches $0$)."
     },
     {
       "id": "fibonacci",
       "title": "Fibonacci's Theorem",
       "startLine": 59,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "States **fibonacci_greedy_terminates**: the greedy algorithm terminates for all $x \\in (0,1]$ when $A = \\mathbb{N} \\setminus \\{0\\}$. The classical 1202 result from *Liber Abaci* using numerator descent."
     },
     {
       "id": "odd-question",
       "title": "The Odd Denominator Question",
       "startLine": 66,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Defines **oddPositives** ($\\{1, 3, 5, \\ldots\\}$) and **HasOddDenom** (odd denominator in lowest terms). States **stein_odd_greedy_conjecture**: greedy terminates for all odd-denominator $x \\in (0,1]$ with odd denominators. This is the main OPEN question."
     },
     {
       "id": "graham",
       "title": "Graham's Representability",
       "startLine": 83,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Defines **congClass** (positive integers $\\equiv a \\pmod{d}$) and states **graham_representability**: algebraic conditions characterize when $m/n$ is representable with denominators in a congruence class. Representability $\\neq$ greedy termination."
     },
     {
@@ -176,5 +154,27 @@
     "Stein (unpublished): odd greedy conjecture for Egyptian fractions with odd denominators",
     "Vose (1985): 'Egyptian fractions', Bulletin of the London Mathematical Society 17, 21–24",
     "https://erdosproblems.com/282"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-283",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-313",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-283",
+    "erdos-313"
   ]
 }

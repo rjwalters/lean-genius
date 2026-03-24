@@ -23,7 +23,7 @@
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$100",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Int.ModEq",
@@ -58,28 +58,6 @@
       "ffkpy_main_theorem and erdos_27_disproved",
       "growing_C_works and sufficientC",
       "bbmst_bound connection to perfect coverings"
-    ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-2",
-        "relationship": "Minimum modulus problem for covering systems — the foundational question in this area, resolved by Hough (2015)"
-      },
-      {
-        "proofId": "erdos-7",
-        "relationship": "Odd covering systems — structural constraints on covering moduli"
-      },
-      {
-        "proofId": "erdos-275",
-        "relationship": "Covering congruence 2^r bound — quantitative results on covering system density"
-      },
-      {
-        "proofId": "erdos-276",
-        "relationship": "Primefree Lucas sequences via covering congruences — another application of covering system theory"
-      },
-      {
-        "proofId": "erdos-277",
-        "relationship": "Covering systems and abundancy — adjacent problem in Erdős's covering systems program"
-      }
     ],
     "axiomCount": 0,
     "lineCount": 242,
@@ -116,63 +94,63 @@
       "title": "Congruence Systems",
       "summary": "Defines **Congruence** (residue/modulus), **CongruenceSystem** (finite set with distinct moduli), **covers** ($\\exists c, x \\equiv c.a \\pmod{c.n}$), and **uncovered** ($\\forall c, x \\not\\equiv c.a \\pmod{c.n}$).",
       "startLine": 36,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "density",
       "title": "Uncovered Density",
       "summary": "Defines **uncoveredCount** (integers in $[1,M]$ uncovered), **uncoveredDensity** (fraction), and **asymptoticUncoveredDensity** ($\\liminf$ as $M \\to \\infty$).",
       "startLine": 62,
-      "endLine": 74
+      "endLine": 75
     },
     {
       "id": "almost-covering",
       "title": "Almost Covering Systems",
       "summary": "Defines **IsAlmostCovering** ($\\delta(S) \\leq \\varepsilon$) and **IsPerfectCovering** ($\\forall x, S.\\mathrm{covers}(x)$). Proves perfect $\\Rightarrow$ $0$-almost (sorry).",
       "startLine": 76,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "bounded-moduli",
       "title": "Bounded Moduli Systems",
       "summary": "Defines **HasModuliInRange** (moduli in $[N,M]$) and **HasModuliInCRange** (moduli in $[N, \\lfloor CN\\rfloor]$). The bounded-range constraint is what makes the problem nontrivial.",
       "startLine": 91,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "natural-density",
       "title": "Natural Density Bound",
       "summary": "Defines **naturalDensity** = $\\prod(1-1/n)$ over moduli range. States the averaging bound (exists system achieving this density) and that it vanishes as the range grows.",
       "startLine": 101,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "States **ErdosConjecture** ($\\exists C > 1$, universal almost-covering) and **ErdosConjectureNegation** ($\\forall C > 1$, some $\\varepsilon, N$ fail). Proves they are logical opposites (sorry).",
       "startLine": 120,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "disproof",
       "title": "The FFKPY Disproof",
       "summary": "Defines **criticalExponent** $\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N}$. States **ffkpy_main_theorem** (density lower bound for $C \\leq N^{\\alpha(N)}$), **product_bounded_below** ($\\prod \\geq 1/C$), **erdos_27_disproved**, and **no_universal_constant**.",
       "startLine": 137,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "what-works",
       "title": "What Does Work",
       "summary": "Proves **growing_C_works** (growing $C(N)$ achieves almost-covering). Defines **sufficientC** = $N^{1/\\log\\log N}$ and states it suffices for any fixed $\\varepsilon$.",
       "startLine": 168,
-      "endLine": 184
+      "endLine": 185
     },
     {
       "id": "perfect-covering",
       "title": "Perfect Covering Connection",
       "summary": "States **perfect_covering_min_modulus** (some modulus is bounded) and **bbmst_bound** (minimum modulus $< 616{,}000$ by Bloom-Briggs-Maynard-Smith-Tao).",
       "startLine": 186,
-      "endLine": 201
+      "endLine": 242
     }
   ],
   "conclusion": {

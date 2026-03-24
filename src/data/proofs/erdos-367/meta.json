@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/367",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
@@ -93,7 +93,7 @@
       "id": "two-full-part",
       "title": "Part 1: The 2-Full Part",
       "startLine": 39,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Defines squarefreePart (primes with exponent 1), twoFullPart (B₂ = n/squarefreePart), and twoFullPartAlt (B₂ via factorization filter).",
       "mathContext": "$B_2(n) = \\prod_{v_p(n) \\geq 2} p^{v_p(n)}$, e.g., $B_2(12) = B_2(2^2 \\cdot 3) = 4$"
     },
@@ -101,7 +101,7 @@
       "id": "product",
       "title": "Part 2: Product over Consecutive Integers",
       "startLine": 74,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Defines productTwoFullParts(n, k) = ∏_{m ∈ Ico(n, n+k)} B₂(m), the main object of study.",
       "mathContext": "$\\text{productTwoFullParts}(n, k) = \\prod_{m=n}^{n+k-1} B_2(m)$"
     },
@@ -109,7 +109,7 @@
       "id": "bounds",
       "title": "Part 3: The Bounds",
       "startLine": 89,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "Defines weakBound(k): ∀ε>0, product ≤ C·n^{2+ε}; and strongBound(k): product ≤ C·n². The two asymptotic regimes.",
       "mathContext": "Weak: $\\forall \\varepsilon > 0, \\exists C : \\prod B_2(m) \\leq C n^{2+\\varepsilon}$. Strong: $\\exists C : \\prod B_2(m) \\leq C n^2$"
     },
@@ -117,7 +117,7 @@
       "id": "conjecture",
       "title": "Part 4: The Erdős Conjecture",
       "startLine": 113,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "erdos_367_conjecture: weakBound(k) holds for all k ≥ 1. The main open question.",
       "mathContext": "$\\forall k \\geq 1 : \\prod_{m=n}^{n+k-1} B_2(m) \\ll n^{2+o(1)}$"
     },
@@ -125,7 +125,7 @@
       "id": "trivial-cases",
       "title": "Part 5: Trivial Cases (k ≤ 2)",
       "startLine": 129,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Axiomatizes strongBound for k=1 (B₂(n) ≤ n ≤ n²) and k=2 (B₂(n)·B₂(n+1) ≤ n(n+1) < 2n²).",
       "mathContext": "$k=1: B_2(n) \\leq n^2$. $k=2: B_2(n) B_2(n+1) \\leq n(n+1) < 2n^2$"
     },
@@ -133,7 +133,7 @@
       "id": "failure",
       "title": "Part 6: Failure of Strong Bound (k ≥ 3)",
       "startLine": 149,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "van Doorn: ¬strongBound(3) and lower bound ∃c>0: ∏B₂(m) ≥ c·n²·log(n) infinitely often.",
       "mathContext": "$\\exists c > 0 : \\forall N, \\exists n \\geq N : \\prod_{m=n}^{n+2} B_2(m) \\geq c n^2 \\log n$"
     },
@@ -141,7 +141,7 @@
       "id": "properties",
       "title": "Part 7: Properties of B₂",
       "startLine": 173,
-      "endLine": 221,
+      "endLine": 222,
       "summary": "Six axiomatized properties: B₂=1 iff squarefree, B₂(p)=1, B₂(p²)=p², multiplicativity on coprime, B₂≤n, B₂|n.",
       "mathContext": "$B_2(n) = 1 \\iff n$ squarefree; $B_2$ is multiplicative on coprime arguments; $B_2(n) \\mid n$"
     },
@@ -149,7 +149,7 @@
       "id": "generalization",
       "title": "Part 8: r-Full Parts Generalization",
       "startLine": 223,
-      "endLine": 254,
+      "endLine": 255,
       "summary": "Defines rFullPart, proves twoFullPartAlt = rFullPart 2 by rfl, states generalized conjecture for r-full products.",
       "mathContext": "$B_r(n) = \\prod_{v_p(n) \\geq r} p^{v_p(n)}$. Conjecture: $\\prod B_r(m) \\ll n^{r+o(1)}$"
     },
@@ -157,7 +157,7 @@
       "id": "heuristics",
       "title": "Part 9: Heuristic Analysis",
       "startLine": 256,
-      "endLine": 271,
+      "endLine": 272,
       "summary": "Axiomatizes that average B₂(n) is O(1). Explains why worst-case products exceed the average prediction.",
       "mathContext": "$\\frac{1}{N} \\sum_{n=1}^{N} B_2(n) = O(1)$, since squarefree density $= 6/\\pi^2 \\approx 0.608$"
     },

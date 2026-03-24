@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1085",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -54,7 +54,7 @@
       "Swanepoel 2009 exact formulas for even d≥6",
       "Erdős-Pach 1990 tight bounds for odd d≥5"
     ],
-    "axiomCount": 23,
+    "axiomCount": 1,
     "lineCount": 126,
     "assumptions": "23 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -87,14 +87,14 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 52,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "PointConfig, distinctPairs, unitDistanceCount, and maxUnitDistances (f_d(n))."
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "startLine": 85,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "Upper bound n(n-1)/2 and lower bound n-1 for any dimension."
     },
     {

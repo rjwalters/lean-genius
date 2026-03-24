@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/961",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.smoothNumbers",
@@ -61,12 +61,6 @@
       "Proved bounds_summary: combined bound statement",
       "Axiomatized erdos_1955_bound and jutila_ramachandra_shorey_bound",
       "Defined polylog_conjecture and smooth_gap for connection to #683"
-    ],
-    "relatedProofs": [
-      {
-        "id": "erdos-9",
-        "relationship": "Both problems concern distribution properties of integers with specific prime factorization constraints"
-      }
     ],
     "axiomCount": 4,
     "lineCount": 261,
@@ -157,7 +151,7 @@
       "id": "summary",
       "title": "Bounds Summary",
       "startLine": 221,
-      "endLine": 227,
+      "endLine": 261,
       "summary": "*Proves* `bounds_summary`: combines $f(k) \\leq k$ (from `sylvester_schur_bound`) with Erdős's eventually-bound (from the axiom), returning both as a conjunction."
     }
   ],
@@ -216,5 +210,27 @@
       "citation": "Ramachandra, K. and Shorey, T.N. (1973). On gaps between numbers with a large prime factor. Acta Arithmetica, 24, 99-111.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factors, smooth-numbers"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factors, smooth-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1095",
+    "erdos-1106",
+    "erdos-240"
   ]
 }

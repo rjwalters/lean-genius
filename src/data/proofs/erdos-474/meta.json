@@ -25,7 +25,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100",
     "dateAdded": "2026-01-28",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.aleph",
@@ -99,63 +99,63 @@
       "title": "Cardinal Definitions",
       "summary": "continuum, aleph1, aleph2 definitions",
       "startLine": 36,
-      "endLine": 54
+      "endLine": 55
     },
     {
       "id": "coloring",
       "title": "The Coloring Problem",
       "summary": "ThreeColoring, IsUncountable, ContainsAllColorPairs",
       "startLine": 56,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosColoringProperty, PartitionProperty",
       "startLine": 80,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "two-color",
       "title": "The Two-Color Case (Solved)",
       "summary": "sierpinski_kurepa axiom, two_color_partition axiom",
       "startLine": 102,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "under-ch",
       "title": "Under CH (Erdős's Result)",
       "summary": "ContinuumHypothesis definition, erdos_under_ch axiom",
       "startLine": 125,
-      "endLine": 141
+      "endLine": 142
     },
     {
       "id": "shelah",
       "title": "Shelah's Consistency Result",
       "summary": "shelah_consistency axiom, shelah_large_c axiom",
       "startLine": 143,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "summary": "OpenQuestion definition, erdos_prize_question definition",
       "startLine": 168,
-      "endLine": 199
+      "endLine": 200
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "NegativePartition, higher_colors_harder, erdos_rado_two_color",
       "startLine": 201,
-      "endLine": 236
+      "endLine": 237
     },
     {
       "id": "argument",
       "title": "The Argument Structure",
       "summary": "ch_argument axiom, large_c_failure axiom",
       "startLine": 238,
-      "endLine": 265
+      "endLine": 266
     },
     {
       "id": "summary",
@@ -192,5 +192,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: open, partition-calculus, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1128",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: partition-calculus, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: open, ramsey-theory, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1167",
+    "erdos-1128",
+    "erdos-1169"
+  ]
 }

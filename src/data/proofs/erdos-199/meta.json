@@ -25,7 +25,7 @@
     "erdosProblemStatus": "disproved",
     "solvedBy": "J.E. Baumgartner",
     "solvedYear": 1975,
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set.compl",
@@ -77,42 +77,42 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 36,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "3-term AP, AP-free sets, infinite AP definitions"
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture",
       "startLine": 56,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Formal statement of the original question"
     },
     {
       "id": "baumgartner",
       "title": "Baumgartner's Counterexample",
       "startLine": 66,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "The partition axiom and counterexample existence"
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "startLine": 85,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Proof that Erdős's conjecture is false"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 105,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Van der Waerden's theorem and connections to Ramsey theory"
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 120,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Concrete examples with naturals and rationals"
     },
     {
@@ -147,5 +147,27 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, disproved"
+    },
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics"
+    },
+    {
+      "targetId": "erdos-139",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1080",
+    "erdos-138",
+    "erdos-139"
+  ]
 }

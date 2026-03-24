@@ -51,27 +51,11 @@
       "Extension to three non-coprime moduli (pairwise gcd conditions)",
       "LCM-product bound: lcm(m,n) | m*n gives tighter uniqueness"
     ],
-    "crossReferences": [
-      {
-        "proofId": "chinese-remainder-constructive",
-        "relationship": "generalizes",
-        "description": "The non-coprime CRT generalizes the constructive CRT: when gcd(m,n)=1, solvability is automatic and lcm=mn, recovering the classical statement exactly"
-      },
-      {
-        "proofId": "bezout-identity",
-        "relationship": "uses",
-        "description": "The sufficiency proof reduces to coprime moduli m/g, n/g and applies Bezout's identity to construct the solution"
-      },
-      {
-        "proofId": "bezout-identity-oq-02",
-        "relationship": "related",
-        "description": "Extended GCD algorithms compute the Bezout coefficients used in the constructive solution formula"
-      }
-    ],
     "dateAdded": "2026-02-09",
     "axiomCount": 0,
     "lineCount": 305,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The classical Chinese Remainder Theorem requires coprime moduli: gcd(m,n) = 1. But what happens when the moduli share common factors? The answer was implicit in Gauss's Disquisitiones Arithmeticae (1801), where he studied simultaneous congruences systematically, but the clean formulation as a solvability criterion was developed explicitly by Ore (1952) in the American Mathematical Monthly.\n\nThe generalization reveals that the coprimality condition in the classical CRT is not a fundamental requirement but rather a convenience: it guarantees that the compatibility condition gcd(m,n) | (a-b) is automatically satisfied. When moduli share factors, some systems of congruences become genuinely unsolvable — for example, x = 1 (mod 6) and x = 2 (mod 4) has no solution because gcd(6,4) = 2 does not divide 1-2 = -1.\n\nThe non-coprime CRT is essential in algebraic number theory (where ideals in number rings may share factors), coding theory (redundant residue number systems), and scheduling theory (aligning cycles with shared periods).",
@@ -97,7 +81,7 @@
       "id": "lcm-combining",
       "title": "LCM-Based Congruence Combining",
       "startLine": 32,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Four theorems: `int_natCast_lcm_dvd` (Z lift), `modEq_lcm_of_modEq` (forward), two converses (`modEq_left/right_of_modEq_lcm`), and the iff `modEq_lcm_iff`.",
       "mathContext": "$a \\equiv b \\pmod{m} \\wedge a \\equiv b \\pmod{n} \\iff a \\equiv b \\pmod{\\text{lcm}(m,n)}$"
     },
@@ -105,7 +89,7 @@
       "id": "solvability",
       "title": "Solvability Condition",
       "startLine": 75,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "Necessity (`noncoprime_crt_necessary`), sufficiency via Bézout construction (`noncoprime_crt_sufficient`), and the full iff (`noncoprime_crt_iff`).",
       "mathContext": "$\\exists x \\iff \\gcd(m,n) \\mid (a-b)$; sufficiency via $x = a + m(-ks)$ with Bézout on $m/g$, $n/g$"
     },
@@ -113,7 +97,7 @@
       "id": "uniqueness",
       "title": "Uniqueness Modulo LCM",
       "startLine": 170,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "`noncoprime_crt_unique`: two solutions agree modulo lcm(m,n), using `modEq_lcm_of_modEq`.",
       "mathContext": "$x_1, x_2$ both solutions $\\implies x_1 \\equiv x_2 \\pmod{\\text{lcm}(m,n)}$"
     },
@@ -121,7 +105,7 @@
       "id": "classical-recovery",
       "title": "Classical CRT as Special Case",
       "startLine": 185,
-      "endLine": 212,
+      "endLine": 213,
       "summary": "`classical_crt_from_general`, `coprime_lcm_eq_mul`, and `noncoprime_crt_specializes`: when gcd(m,n)=1, solvability is automatic and lcm=mn.",
       "mathContext": "$\\gcd(m,n) = 1 \\implies 1 \\mid (a-b)$ always and $\\text{lcm}(m,n) = mn$"
     },
@@ -129,7 +113,7 @@
       "id": "three-moduli",
       "title": "Extension to Three Moduli",
       "startLine": 214,
-      "endLine": 239,
+      "endLine": 240,
       "summary": "`noncoprime_crt_three_necessary` (pairwise gcd conditions) and `noncoprime_crt_three_unique` (uniqueness via iterated LCM).",
       "mathContext": "Pairwise condition: $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ for all $i \\neq j$; uniqueness mod $\\text{lcm}(\\text{lcm}(m_1, m_2), m_3)$"
     },
@@ -137,7 +121,7 @@
       "id": "lcm-product",
       "title": "LCM-Product Relationship",
       "startLine": 241,
-      "endLine": 254,
+      "endLine": 255,
       "summary": "`lcm_dvd_mul`: lcm(m,n) always divides m*n. `noncoprime_tighter_bound`: the non-coprime CRT gives a tighter uniqueness bound.",
       "mathContext": "$\\text{lcm}(m,n) \\mid mn$; when $\\gcd(m,n) > 1$, the uniqueness modulus is strictly smaller than $mn$"
     },
@@ -145,7 +129,7 @@
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 256,
-      "endLine": 295,
+      "endLine": 305,
       "summary": "Five verified examples: solvable (7 mod 12, 15 mod 30), unsolvable (gcd=2 but 2 ∤ -1), trivial (0 mod 12), and coprime reduction (8 mod 15).",
       "mathContext": "Key: $x \\equiv 1 \\pmod{6},\\; x \\equiv 2 \\pmod{4}$ is unsolvable since $\\gcd(6,4) = 2 \\nmid -1$"
     }

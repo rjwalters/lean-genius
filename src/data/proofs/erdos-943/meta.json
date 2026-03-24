@@ -20,39 +20,10 @@
     "sourceUrl": "https://erdosproblems.com/943",
     "erdosUrl": "https://erdosproblems.com/943",
     "erdosProblemStatus": "open",
-    "crossReferences": [
-      {
-        "proofId": "erdos-941",
-        "relationship": "Companion problem: Heath-Brown (1988) showed every large integer is the sum of at most 3 powerful numbers, the ternary analogue of this binary question"
-      },
-      {
-        "proofId": "erdos-942",
-        "relationship": "Studies the distribution of powerful numbers between consecutive squares, providing local density information relevant to the representation count"
-      },
-      {
-        "proofId": "erdos-940",
-        "relationship": "Generalizes the additive representation question to r-powerful numbers; the density-zero result of Baker-Brüdern (1994) for r=2 sums is closely related"
-      },
-      {
-        "proofId": "erdos-939",
-        "relationship": "Studies whether coprime r-powerful numbers can sum to an r-powerful number; complementary Diophantine question about powerful number sums"
-      },
-      {
-        "proofId": "erdos-938",
-        "relationship": "Studies arithmetic progressions among consecutive powerful numbers; shares the theme of additive structure in the powerful number sequence"
-      },
-      {
-        "proofId": "lagrange-four-squares",
-        "relationship": "Foundation: every integer is a sum of four squares; squares are a subset of powerful numbers and the classical case where additive representation is fully understood"
-      },
-      {
-        "proofId": "minkowski-theorem",
-        "relationship": "Lattice point counting techniques underlie the density estimate |A ∩ [1,x]| ~ c√x for powerful numbers"
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 87,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1976 [Er76d], asking whether the representation function $r(n)$ for sums of two powerful numbers grows subpolynomially. Powerful numbers (also called squarefull numbers) were first systematically studied by Golomb (1970), who proved the key characterization $n = a^2 b^3$ for $a, b \\geq 1$. The density of powerful numbers up to $x$ is asymptotically $(\\zeta(3/2)/\\zeta(3))\\sqrt{x} \\approx 1.943\\sqrt{x}$, a classical result following from the $a^2 b^3$ representation and Euler product methods. The question belongs to additive number theory: given a structured set $\\mathcal{A}$ with known density, how large can the representation function $r(n) = (\\mathbf{1}_\\mathcal{A} * \\mathbf{1}_\\mathcal{A})(n)$ be? For the analogous problem with perfect squares, Jacobi's two-square theorem gives $r_2(n) = 4(d_1(n) - d_3(n)) = O(n^\\varepsilon)$ via the divisor bound. For powerful numbers, the irregular multiplicative structure (not closed under addition, not a group) makes the problem fundamentally harder. The trivial bound $r(n) \\leq c\\sqrt{n}$ follows from density, corresponding to exponent $1/2$. The conjecture asks for improvement to any $\\varepsilon > 0$. Related work includes Heath-Brown's 1988 result that every sufficiently large integer is the sum of at most three powerful numbers (the ternary case), and Baker-Brüdern's 1994 density-zero result for sums of two cubes of squarefull numbers.",
@@ -84,35 +55,35 @@
       "id": "sec-943-definitions",
       "title": "Core Definitions",
       "startLine": 24,
-      "endLine": 40,
+      "endLine": 41,
       "summary": "Three foundational definitions: `IsPowerful` (n ≥ 1 and every prime factor squared divides n), `PowerfulSet` (set comprehension), and `powerfulSumRep` (representation count via Finset.filter on Finset.range(n+1))."
     },
     {
       "id": "sec-943-conjecture",
       "title": "Main Conjecture",
       "startLine": 42,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Erdős's open conjecture formalized as an axiom: for every ε > 0, r(n) ≤ n^ε for all sufficiently large n, using Real.rpow for the power function."
     },
     {
       "id": "sec-943-density",
       "title": "Powerful Number Density",
       "startLine": 50,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Axiom stating the classical density result: the count of powerful numbers up to x is at most c·√x for some constant c > 0."
     },
     {
       "id": "sec-943-trivial-bound",
       "title": "Trivial Upper Bound",
       "startLine": 60,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Axiom stating r(n) ≤ c·√n, the immediate consequence of the density bound: each representation requires one powerful summand from [0,n]."
     },
     {
       "id": "sec-943-structure",
       "title": "Golomb's a²b³ Characterization",
       "startLine": 66,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Axiom recording Golomb's 1970 result: every powerful number n can be written as a²b³ for a, b ≥ 1, converting the additive problem to a specific Diophantine equation."
     },
     {
@@ -152,5 +123,27 @@
     "Erdős (1976): original problem [Er76d]",
     "Golomb (1970): a²b³ characterization of powerful numbers",
     "https://erdosproblems.com/943"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-936",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-938",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-941",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-representation, number-theory, powerful-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-936",
+    "erdos-938",
+    "erdos-941"
   ]
 }

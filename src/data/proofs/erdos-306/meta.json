@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/306",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.cardDistinctFactors",
@@ -88,28 +88,28 @@
       "id": "egyptian-background",
       "title": "Egyptian Fractions Background",
       "startLine": 33,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Historical context on Egyptian fractions as sums of distinct unit fractions."
     },
     {
       "id": "semiprime-defs",
       "title": "Semiprime Definitions",
       "startLine": 47,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Definitions of products of k distinct primes using ω and Ω functions."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 74,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "The EgyptianRepr structure and the main open conjecture for 2 distinct primes."
     },
     {
       "id": "butler-erdos-graham",
       "title": "Butler-Erdős-Graham Theorem",
       "startLine": 112,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "The solved case for 3 distinct primes on positive integers."
     },
     {
@@ -123,7 +123,7 @@
       "id": "density",
       "title": "Density Analysis",
       "startLine": 183,
-      "endLine": 215,
+      "endLine": 255,
       "summary": "Why 2 primes is harder than 3 primes due to density considerations."
     }
   ],
@@ -156,5 +156,27 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-318",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, partially-solved"
+    },
+    {
+      "targetId": "erdos-1094",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factorization"
+    },
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factorization"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-318",
+    "erdos-1094",
+    "erdos-137"
+  ]
 }

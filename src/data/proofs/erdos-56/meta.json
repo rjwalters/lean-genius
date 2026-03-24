@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/56",
     "erdosProblemStatus": "disproved",
     "dateAdded": "2026-01-13",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -85,28 +85,28 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Module documentation explaining the problem and Mathlib imports for primes, finsets, and coprimality."
     },
     {
       "id": "weak-divisibility",
       "title": "WeaklyDivisible and Basic Properties",
       "startLine": 27,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Defines WeaklyDivisible k A: no k+1 pairwise coprime elements exist in A. Proves three basic lemmas: empty set is vacuously k-weakly divisible, singletons are k-weakly divisible for k ≥ 1, and no nonempty set is 0-weakly divisible."
     },
     {
       "id": "optimization-defs",
       "title": "Optimization Definitions",
       "startLine": 59,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "MaxWeaklyDivisible(N,k): maximum cardinality of a k-weakly divisible subset of {1,...,N} (the quantity Erdős asked about). FirstPrimesMultiples(N,k): multiples of the first k primes in {1,...,N} (Erdős's conjectured optimal construction)."
     },
     {
       "id": "main-theorem",
       "title": "Main Result (Disproved)",
       "startLine": 77,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "States Erdős's conjecture and its negation as an axiom, with justification."
     },
     {

@@ -20,7 +20,7 @@
     "erdosNumber": 380,
     "erdosUrl": "https://erdosproblems.com/380",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -75,7 +75,7 @@
       "id": "greatest-prime-factor",
       "title": "Greatest Prime Factor",
       "startLine": 22,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Axiomatizes `greatestPrimeFactor : ℕ → ℕ` with three properties: `gpf_prime` (primality for $n \\geq 2$), `gpf_dvd` (divisibility $P(n) \\mid n$), and `gpf_largest` (maximality: $p$ prime, $p \\mid n \\implies p \\leq P(n)$).  Returns 0 for $n \\leq 1$.",
       "mathContext": "$P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ for $n \\ge 2$, $P(1) = 0$. Axiomatized via primality ($P(n)$ is prime for $n \\ge 2$), divisibility ($P(n) \\mid n$), and maximality ($p \\mid n \\implies p \\le P(n)$)."
     },
@@ -83,7 +83,7 @@
       "id": "bad-intervals",
       "title": "Bad Intervals",
       "startLine": 40,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Defines `IsBadInterval u v` requiring $u \\leq v$ and $P(\\Pi)^2 \\mid \\Pi$ where $\\Pi = \\prod_{m=u}^{v} m$.  Defines `InBadInterval n` as $\\exists u \\leq n \\leq v$ with $[u, v]$ bad.  Uses `Finset.Icc` and `Finset.prod id` for the interval product.",
       "mathContext": "$\\text{IsBadInterval}(u,v) \\iff u \\le v \\wedge P(\\prod_{m=u}^{v} m)^2 \\mid \\prod_{m=u}^{v} m$. $\\text{InBadInterval}(n) \\iff \\exists u \\le n \\le v: \\text{IsBadInterval}(u,v)$."
     },
@@ -91,7 +91,7 @@
       "id": "counting-functions",
       "title": "Counting Functions",
       "startLine": 54,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines `badCount x` = $|\\{n \\in [1, x] : \\text{InBadInterval}(n)\\}|$ and `gpfSquareCount x` = $|\\{n \\in [2, x] : P(n)^2 \\mid n\\}|$.  Both noncomputable due to decidability of the predicates.  The inclusion $G(x) \\leq B(x)$ follows from singleton bad intervals.",
       "mathContext": "$B(x) = |\\{n \\in [1,x] : \\text{InBadInterval}(n)\\}|$. $\\text{gpfSquareCount}(x) = |\\{n \\in [2,x] : P(n)^2 \\mid n\\}|$."
     },
@@ -99,7 +99,7 @@
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 64,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "States `ErdosProblem380` as ratio convergence: $\\forall \\varepsilon > 0, \\exists x_0, \\forall x \\geq x_0: G(x) > 0 \\wedge |B(x)/G(x) - 1| < \\varepsilon$.  Uses $\\mathbb{Q}$ for the ratio to avoid real number infrastructure.",
       "mathContext": "$B(x) \\sim \\text{gpfSquareCount}(x)$ as $x \\to \\infty$, i.e., $\\frac{B(x)}{\\text{gpfSquareCount}(x)} \\to 1$."
     },
@@ -107,7 +107,7 @@
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 74,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Axiomatizes `erdos_graham_lower` ($B(x) \\geq x^{1-\\varepsilon}$ for large $x$) and `gpfSquare_asymptotic` (GPF-square count exceeds $x^{1-\\varepsilon}$, consistent with the precise $x/\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})$ asymptotic).",
       "mathContext": "$B(x) > x^{1-o(1)}$ (Erdős-Graham 1980). $\\text{gpfSquareCount}(x) \\sim \\frac{x}{\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})}$ for some $c > 0$."
     },
@@ -145,5 +145,27 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-452",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, intervals, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-452",
+    "erdos-1106",
+    "erdos-368"
+  ]
 }

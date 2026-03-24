@@ -16,7 +16,7 @@
       "convolution",
       "pascal-triangle"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axioms": 0,
     "mathlibDependencies": [
@@ -58,7 +58,8 @@
     "dateAdded": "2026-02-26",
     "axiomCount": 0,
     "lineCount": 195,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Vandermonde identity derived from Mathlib Nat.add_choose_eq; binomial coefficient properties from Mathlib Nat.choose_symm and Nat.choose_succ_succ.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Vandermonde's identity was published by Alexandre-Théophile Vandermonde in his 1772 memoir \"Mémoire sur des irrationnelles de différents ordres avec une application au cercle,\" presented to the Académie Royale des Sciences in Paris. However, the identity was known earlier — Zhu Shijie stated a version in his 1303 text *Siyuan Yujian* (Jade Mirror of the Four Unknowns), and the combinatorial interpretation was implicit in the work of Blaise Pascal (1654) and Isaac Newton.\n\nVandermonde's contribution was to systematically study determinants and combinatorial identities together. The identity is the cornerstone of combinatorial convolution theory: it underpins the hypergeometric distribution in probability (where the summand $\\binom{m}{k}\\binom{n}{r-k}/\\binom{m+n}{r}$ gives the PMF), the Cauchy product of generating functions, and lattice path counting via the Lindström–Gessel–Viennot lemma.\n\nThe special case $\\binom{2n}{n} = \\sum \\binom{n}{k}^2$ connects to the central binomial coefficient, which governs the asymptotics of random walks ($\\binom{2n}{n} \\sim 4^n / \\sqrt{\\pi n}$) and appears in the Catalan number formula $C_n = \\binom{2n}{n}/(n+1)$.",
@@ -96,7 +97,7 @@
       "id": "verifications",
       "title": "Part II: Concrete Verifications",
       "startLine": 58,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Three native_decide examples verifying Vandermonde numerically: C(8,4)=70 via 5+3 split, C(10,3)=120 via 6+4 split, and C(8,4)=70=Σ C(4,k)² for sum-of-squares."
     },
     {
@@ -117,21 +118,21 @@
       "id": "sum-of-squares",
       "title": "Part V: Sum-of-Squares Corollary",
       "startLine": 117,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "vandermonde_sum_squares: C(2n,n) = Σ_{k=0}^{n} C(n,k)², the central result connecting the central binomial coefficient to Pascal's triangle row sums of squares. Uses Nat.choose_symm."
     },
     {
       "id": "monotonicity",
       "title": "Part VI: Monotonicity and Summand Bounds",
       "startLine": 141,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "vandermonde_mono: C(n,r) ≤ C(m+n,r) via choose_le_choose. vandermonde_summand_le: each summand C(m,k)*C(n,r-k) ≤ C(m+n,r) via Finset.single_le_sum."
     },
     {
       "id": "pascal",
       "title": "Part VII: Pascal's Rule Connection",
       "startLine": 160,
-      "endLine": 174,
+      "endLine": 175,
       "summary": "vandermonde_pascal: Pascal's rule C(n+1,k+1) = C(n,k) + C(n,k+1) is the m=1 case of Vandermonde, proved via Nat.choose_succ_succ."
     },
     {

@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/594",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.aleph",
@@ -83,42 +83,42 @@
       "title": "Cardinal Background",
       "summary": "Definitions of ℵ₀, ℵ₁, ℵ₂",
       "startLine": 43,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "chromatic",
       "title": "Chromatic Number",
       "summary": "IsColorable, chromaticNumber, hasLargeChromaticNumber",
       "startLine": 63,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "cycles",
       "title": "Cycles in Graphs",
       "summary": "hasCycleOfLength, containsAllLargeOddCycles",
       "startLine": 88,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "main-theorem",
       "title": "Main Results",
       "summary": "erdos_hajnal_shelah axiom, erdos_594 theorem",
       "startLine": 109,
-      "endLine": 138
+      "endLine": 139
     },
     {
       "id": "optimality",
       "title": "Threshold Optimality",
       "summary": "countable_chromatic_insufficient, aleph1_is_optimal",
       "startLine": 140,
-      "endLine": 163
+      "endLine": 164
     },
     {
       "id": "related",
       "title": "Related Properties",
       "summary": "Bipartite containment, triangle-free graphs",
       "startLine": 165,
-      "endLine": 189
+      "endLine": 190
     },
     {
       "id": "thomassen",
@@ -163,5 +163,27 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-737",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, cycles, graph-theory, infinite-graphs, solved"
+    },
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, infinite-graphs, set-theory"
+    },
+    {
+      "targetId": "erdos-110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, infinite-graphs, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-737",
+    "erdos-1067",
+    "erdos-110"
+  ]
 }

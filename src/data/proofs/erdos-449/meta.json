@@ -21,7 +21,7 @@
     "erdosNumber": 449,
     "erdosUrl": "https://erdosproblems.com/449",
     "erdosProblemStatus": "disproved",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -85,7 +85,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 46,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Defines four counting functions: `tau n` = $\\tau(n)$ (total divisors via `n.divisors.card`), `closeDivisorPairs n` (pairs $(d_1, d_2)$ with $d_1 < d_2 < 2d_1$, via filtered Cartesian product), `r n` (cardinality of close pairs), and `tauPlus n` = $\\tau^+(n)$ (divisors $d$ with $d^2 \\leq n$).",
       "mathContext": "$\\tau(n) = |\\{d : d \\mid n\\}|$, $r(n) = |\\{(d_1, d_2) : d_1 \\mid n \\wedge d_2 \\mid n \\wedge d_1 < d_2 < 2d_1\\}|$, $\\tau^+(n) = |\\{d : d \\mid n \\wedge d^2 \\le n\\}|$."
     },
@@ -93,7 +93,7 @@
       "id": "conjecture",
       "title": "The (False) Erdős Conjecture",
       "startLine": 74,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "States `ErdosConjecture449` using `Filter.Tendsto` with `Filter.atTop` and `nhds 0`: for every $\\varepsilon > 0$, the natural density of $\\{n : r(n) \\geq \\varepsilon \\cdot \\tau(n)\\}$ is $0$.  Uses set-builder notation with real-valued coercions.",
       "mathContext": "$\\forall \\varepsilon > 0: \\lim_{N \\to \\infty} \\frac{|\\{n \\le N : r(n) \\ge \\varepsilon \\cdot \\tau(n)\\}|}{N} = 0$. Erdős conjectured close divisor pairs are negligible for almost all $n$."
     },
@@ -101,7 +101,7 @@
       "id": "disproof",
       "title": "The Disproof",
       "startLine": 90,
-      "endLine": 106,
+      "endLine": 107,
       "summary": "Axiomatizes `erdos_449_disproof` ($\\forall K > 0, \\exists \\delta > 0$: the set $\\{n : r(n) > K \\cdot \\tau(n)\\}$ has lower density $\\geq \\delta$) and `erdos_449_false` ($\\neg$ErdosConjecture449).  The negation is quantitatively strong: $r(n)/\\tau(n)$ is unbounded on positive density.",
       "mathContext": "$\\forall K > 0,\\, \\exists \\delta > 0: \\liminf_{N \\to \\infty} \\frac{|\\{n \\le N : r(n) > K \\cdot \\tau(n)\\}|}{N} \\ge \\delta$. The negation is quantitatively strong."
     },
@@ -109,7 +109,7 @@
       "id": "key-inequality",
       "title": "The Key Inequality",
       "startLine": 108,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Axiomatizes `cauchy_schwarz_divisors` ($r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$) and `problem_448_consequence` ($\\tau(n)^2/\\tau^+(n) \\geq (K+1)\\tau(n)$ on positive density).  The Cauchy-Schwarz bound is a dyadic pigeonhole argument; Problem 448's consequence provides the density input.",
       "mathContext": "$r(n) + \\tau(n) \\ge \\frac{\\tau(n)^2}{\\tau^+(n)}$. Cauchy-Schwarz applied to divisor pairs grouped by dyadic intervals. When $\\tau^+(n) \\ll \\tau(n)$, close pairs dominate."
     },
@@ -117,7 +117,7 @@
       "id": "examples",
       "title": "Examples and Small Values",
       "startLine": 131,
-      "endLine": 142,
+      "endLine": 143,
       "summary": "Axiomatizes `example_12`: $\\tau(12) = 6$, $r(12) = 5$.  Demonstrates that $r(n)/\\tau(n) = 5/6$ for this small case, foreshadowing the general unboundedness result.",
       "mathContext": "$\\tau(12) = 6$, close pairs: $(2,3), (3,4), (3,6), (4,6), (6,12)$, so $r(12) = 5$. Demonstrates $r(n)$ can be close to $\\tau(n)$."
     },
@@ -125,7 +125,7 @@
       "id": "related-results",
       "title": "Ford's Derivation",
       "startLine": 144,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Axiomatizes `ford_derivation`: the two-step argument from Cauchy-Schwarz + Problem 448 to $r(n) \\geq K \\cdot \\tau(n)$ on positive density.  This is the core argument of the disproof, reducing Problem 449 to Problem 448.",
       "mathContext": "From Problem 448: $\\tau(n)/\\tau^+(n)$ can be arbitrarily large on a positive density set. By Cauchy-Schwarz, $r(n) \\ge \\tau(n)^2/\\tau^+(n) - \\tau(n) \\ge K \\cdot \\tau(n)$ for such $n$."
     },
@@ -167,5 +167,27 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, divisors, number-theory"
+    },
+    {
+      "targetId": "erdos-26",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, disproved, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-144",
+    "erdos-26"
+  ]
 }

@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 102,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Hajnal, and Szemerédi introduced this problem as part of their investigation into when local chromatic structure forces global coloring bounds. The function $f_r(n)$ captures a 'local-to-global' threshold: if every subgraph of an $n$-vertex graph can be made $r$-colorable by deleting at most $k$ edges, what is the largest $k$ that still forces $\\chi(G) \\leq r+1$? Rödl's 1982 construction provided a crucial upper bound, showing $f_2(n) = O(n \\cdot (\\log n)^2)$ via probabilistic and algebraic techniques. Tang subsequently observed that Rödl's construction directly addresses Question 1, providing evidence that $f_2(n) \\gg n$ may be false. The problem connects to broader themes in extremal graph theory: the interplay between local substructure (each piece is nearly $r$-colorable) and global properties (the whole graph has bounded chromatic number). Similar local-to-global phenomena appear in Szemerédi's regularity lemma, Brooks' theorem ($\\chi \\leq \\Delta + 1$ from local degree bounds), and Johansson's theorem ($\\chi = O(\\Delta/\\log \\Delta)$ for triangle-free graphs). The problem also relates to Erdős Problem #744, which considers variant chromatic decomposition thresholds.",
@@ -55,35 +56,35 @@
       "id": "definitions",
       "title": "Graph Infrastructure",
       "startLine": 20,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Custom `SGraph n` structure with adjacency, symmetry, irreflexivity. Defines `edgeCount`, `hasColoring` (proper $r$-coloring), and `chromaticNum` (via `Nat.find`). Uses `Fin n` for concrete finite vertex sets."
     },
     {
       "id": "chromatic-reduce",
       "title": "Chromatic Reduction by Edge Deletion",
       "startLine": 44,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Defines `CanReduceChromatic G k r`: existence of $\\leq k$ edge removals yielding $\\chi \\leq r$. Maintains symmetry by excluding both orientations of removed edges."
     },
     {
       "id": "threshold",
       "title": "The Threshold Function $f_r(n)$",
       "startLine": 54,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines `fThreshold r n` as $\\sup\\{k : \\text{local } k\\text{-reducibility} \\implies \\chi(G) \\leq r+1\\}$ via `sSup`. The central extremal quantity of the problem."
     },
     {
       "id": "questions",
       "title": "The Main Conjectures",
       "startLine": 64,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both axiomatized as open problems."
     },
     {
       "id": "rodl-bounds",
       "title": "Rödl's Construction and Bounds",
       "startLine": 76,
-      "endLine": 96,
+      "endLine": 102,
       "summary": "Rödl's upper bound $f_2(n) \\leq C \\cdot n \\cdot (\\log n)^2$, trivial lower bound $f_r(n) \\geq n - 1$, and monotonicity $f_r(n) \\leq f_{r+1}(n)$. Connection to Problem #744."
     }
   ],
@@ -99,24 +100,24 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-744",
-      "relationship": "Erdős Problem #744 studies a closely related edge-deletion threshold for k-critical bipartite graphs; Rödl and Tuza's disproof (1985) of #744 uses constructions directly relevant to Problem #1092"
+      "relationship": "Erdős Problem #744 studies a closely related edge-deletion threshold for k-critical bipartite graphs; Rödl and Tuza's disproof (1985) of #744 uses constructions directly relevant to Problem #1092",
+      "targetId": "erdos-744"
     },
     {
-      "target": "erdos-58",
-      "relationship": "Problem #58 (chromatic number vs. odd cycle lengths, solved by Gyárfás 1992) illustrates another dimension of local-to-global chromatic reasoning — cycle structure forcing χ — that complements the edge-deletion threshold approach of #1092"
+      "relationship": "Problem #58 (chromatic number vs. odd cycle lengths, solved by Gyárfás 1992) illustrates another dimension of local-to-global chromatic reasoning — cycle structure forcing χ — that complements the edge-deletion threshold approach of #1092",
+      "targetId": "erdos-58"
     },
     {
-      "target": "erdos-1091",
-      "relationship": "Problem #1091 on odd cycles with diagonals in K4-free graphs shares the chromatic-number/substructure theme and similarly combines solved special cases with an open general question"
+      "relationship": "Problem #1091 on odd cycles with diagonals in K4-free graphs shares the chromatic-number/substructure theme and similarly combines solved special cases with an open general question",
+      "targetId": "erdos-1091"
     },
     {
-      "target": "szemeredi-regularity",
-      "relationship": "The Szemerédi Regularity Lemma is the canonical example of local approximate structure (ε-regular pairs) controlling global graph properties; Problem #1092 asks an analogous local-to-global question for chromatic reducibility"
+      "relationship": "The Szemerédi Regularity Lemma is the canonical example of local approximate structure (ε-regular pairs) controlling global graph properties; Problem #1092 asks an analogous local-to-global question for chromatic reducibility",
+      "targetId": "szemeredi-regularity"
     },
     {
-      "target": "ramseys-theorem",
-      "relationship": "Ramsey theory underpins extremal graph coloring: Ramsey numbers bound the graphs where chromatic constraints must be satisfied, providing context for the extremal behavior of f_r(n)"
+      "relationship": "Ramsey theory underpins extremal graph coloring: Ramsey numbers bound the graphs where chromatic constraints must be satisfied, providing context for the extremal behavior of f_r(n)",
+      "targetId": "ramseys-theorem"
     }
   ],
   "relatedProofs": [

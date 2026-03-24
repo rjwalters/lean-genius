@@ -132,49 +132,49 @@
       "title": "Basic Graph Definitions",
       "summary": "Defines HasTriangle (existence of K₃ subgraph), IsTriangleFree (negation), vertexDegree via neighborFinset cardinality, maxDegree via Finset.sup, hasPathOfLength using Walk.length, hasDiameter2 requiring paths of length ≤ 2 between all pairs, and edgeCount.",
       "startLine": 47,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "graph-extension",
       "title": "Graph Extension Framework",
       "summary": "Defines isSupergraph (edge containment G ⊆ G'), addedEdges as edgeFinset set difference cardinality, and the central predicate extendableToDiameter2WithBudget combining triangle-freeness, diameter 2, and edge budget constraints in a single existential.",
       "startLine": 101,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "main-conjecture",
       "title": "The Erdős-Gyárfás Conjecture",
       "summary": "Formalizes erdosGyarfasConjecture as a Π₃ statement: ∀ε,δ > 0, ∃N, ∀n ≥ N, ∀G triangle-free with Δ(G) < n^{1/2-ε}, G extends with budget ⌊δn²⌋. Uses Real.rpow for the exponent and Nat.floor for the budget.",
       "startLine": 130,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "historical-results",
       "title": "Historical Results",
       "summary": "Axiomatizes the weak Erdős-Gyárfás result (works for Δ ≤ C·log n/log log n) and Simonovits's counterexample showing failure at Δ = C√n for large C, establishing the sharp threshold at exponent 1/2.",
       "startLine": 149,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "alon-theorem",
       "title": "Alon's Theorem (Solution)",
       "summary": "Axiomatizes Alon's O(n^{2-ε}) extension bound and its implication for the conjecture. The quantitative bound is strictly stronger: n^{2-ε}/n² = n^{-ε} → 0.",
       "startLine": 185,
-      "endLine": 213
+      "endLine": 214
     },
     {
       "id": "critical-exponent",
       "title": "The Role of the Exponent",
       "summary": "Commentary section explaining the phase transition at n^{1/2}: below 1/2-ε extension is cheap (Alon), at 1/2 extension is expensive (Simonovits). The ε gap is essential for probabilistic arguments.",
       "startLine": 215,
-      "endLine": 225
+      "endLine": 226
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "summary": "Defines commonNeighborProperty (every non-adjacent pair shares a neighbor) and axiomatizes diameter2_equiv: for connected graphs, diameter ≤ 2 ↔ common neighbor property. This local characterization is key for probabilistic proofs.",
       "startLine": 227,
-      "endLine": 245
+      "endLine": 246
     },
     {
       "id": "summary",

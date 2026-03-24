@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/240",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -102,49 +102,49 @@
       "title": "P-Smooth Numbers",
       "summary": "isPSmooth, smoothNumbers, one_isPSmooth definitions",
       "startLine": 42,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "enumeration",
       "title": "Enumeration and Gaps",
       "summary": "smoothEnum axioms, gap definition",
       "startLine": 69,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "gapsTendToInfinity, erdos240Question",
       "startLine": 102,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "polya-theorem",
       "title": "Pólya's Theorem (1918)",
       "summary": "polya_theorem, polya_corollary axioms",
       "startLine": 120,
-      "endLine": 138
+      "endLine": 139
     },
     {
       "id": "finite-p",
       "title": "Finite P Case",
       "summary": "finite_P_unbounded_gaps, tijdeman_finite_bound",
       "startLine": 140,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "tijdeman-main",
       "title": "Tijdeman's Main Theorem",
       "summary": "tijdeman_main_theorem, erdos240_answer",
       "startLine": 168,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "construction",
       "title": "Construction Ideas",
       "summary": "tijdeman_construction, singleton_large_gaps",
       "startLine": 198,
-      "endLine": 226
+      "endLine": 227
     },
     {
       "id": "related",

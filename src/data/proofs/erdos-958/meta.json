@@ -23,7 +23,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 2,
     "lineCount": 200,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #958 asks whether a special distance multiplicity pattern — exactly n-1 distinct distances with multiplicities {n-1, n-2, ..., 1} — uniquely characterizes equidistant points on a line or circle. Erdős himself conjectured the answer was NO, predicting that other geometric configurations should also produce this pattern.\n\nThe problem remained open for decades until Clemen, Dumitrescu, and Liu resolved it in 2025. They constructed an elegant counterexample: take n-1 equidistant points on a sufficiently short arc of a unit circle and add the center of the circle. This n-point configuration satisfies the special multiplicity pattern but is neither equidistant on a line nor equidistant on a circle.\n\nThe result confirms Erdős's intuition and opens new questions about which geometric properties are actually characterized by distance multiplicity patterns. The arc-plus-center family provides infinitely many counterexamples for all n ≥ 4.",
@@ -58,7 +59,7 @@
       "id": "points-distances",
       "title": "Part I: Points and Distances",
       "startLine": 34,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "`Point := EuclideanSpace ℝ (Fin 2)` — the Euclidean plane via Mathlib's inner product space. `dist p q := ‖p - q‖` — standard Euclidean distance (noncomputable).",
       "mathContext": "Points in $\\mathbb{R}^2$ with the standard Euclidean metric $d(p,q) = \\|p - q\\| = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$."
     },
@@ -66,7 +67,7 @@
       "id": "distance-sets",
       "title": "Part II: Distance Sets and Multiplicities",
       "startLine": 49,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Three noncomputable definitions: `distanceSet A` (all distinct pairwise distances via `(A.product A).image`), `multiplicity A d` (count of ordered pairs at distance $d$ via `filter` and `card`), `multiplicityMultiset A` (multiset of all multiplicities via `map`).",
       "mathContext": "$\\Delta(A) = \\{\\|p-q\\| : p, q \\in A\\}$, $f(d) = |\\{(p,q) \\in A^2 : \\|p-q\\| = d\\}|$. Note: ordered pairs, so each distance $d > 0$ has even multiplicity (pair $(p,q)$ and $(q,p)$)."
     },
@@ -74,7 +75,7 @@
       "id": "configurations",
       "title": "Part III: Special Configurations",
       "startLine": 74,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "`isEquidistantLine A n`: $n$ collinear equally spaced points (via existence of base point $p_0$ and direction $v$). `isEquidistantCircle A n`: $n$ concyclic equidistant points (via center and radius $r > 0$). `isStandardConfig`: disjunction of the two.",
       "mathContext": "Standard configs: $n$ equally spaced points on a line give $n-1$ distinct distances with multiplicities $2(n-1), 2(n-2), \\ldots, 2$. Regular $n$-gon on a circle gives $\\lfloor n/2 \\rfloor$ distinct distances."
     },
@@ -82,7 +83,7 @@
       "id": "conjecture",
       "title": "Part IV: The Conjectured Characterization",
       "startLine": 105,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "`hasSpecialPattern A`: $|\\Delta(A)| = n-1$ and multiplicities form $\\{1, 2, \\ldots, n-1\\}$ (via `Multiset.range`). `OriginalConjecture`: `hasSpecialPattern A ↔ isStandardConfig A` for $|A| \\geq 3$. Marked FALSE.",
       "mathContext": "The special pattern: exactly $n-1$ distinct distances with multiplicities forming a complete set $\\{1, 2, \\ldots, n-1\\}$. The conjecture asked whether this pattern uniquely characterizes the two classical configurations."
     },
@@ -90,7 +91,7 @@
       "id": "counterexample",
       "title": "Part V: The Counterexample",
       "startLine": 129,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "`isArcPlusCenter A n`: $n-1$ equidistant points on a short arc of a unit circle plus the center ($n \\geq 3$, all arc-to-center distances $= 1$, all arc-to-arc distances $< 2$). Two axioms: `clemen_dumitrescu_liu` (counterexamples exist for all $n \\geq 4$) and `conjecture_disproved` ($\\neg\\text{OriginalConjecture}$).",
       "mathContext": "The arc+center construction: place $n-1$ points at angles $\\theta_j = j \\cdot \\epsilon$ on the unit circle ($\\epsilon$ small) plus the center $O$. The center has distance 1 to all arc points (multiplicity $n-1$). Arc-to-arc distances $2\\sin(|j-k|\\epsilon/2)$ are all distinct for small $\\epsilon$, with multiplicities $2(n-1-|j-k|)$."
     },

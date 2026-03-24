@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/752",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -90,14 +90,14 @@
       "title": "Basic Definitions",
       "summary": "Minimum degree, girth, and cycle lengths",
       "startLine": 40,
-      "endLine": 58
+      "endLine": 59
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Faudree-Schelp Conjecture",
       "summary": "Original conjecture and base case s = 2",
       "startLine": 60,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "sudakov-verstrate",
@@ -111,35 +111,35 @@
       "title": "Why Girth Matters",
       "summary": "Moore bound, Moore graphs, and tightness",
       "startLine": 128,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "girth-structure",
       "title": "Girth and Cycle Structure",
       "summary": "How girth constrains cycle lengths",
       "startLine": 144,
-      "endLine": 167
+      "endLine": 168
     },
     {
       "id": "extremal-connections",
       "title": "Extremal Connections",
       "summary": "Zarankiewicz-type bounds",
       "startLine": 169,
-      "endLine": 178
+      "endLine": 179
     },
     {
       "id": "extensions",
       "title": "Extensions and Generalizations",
       "summary": "Chromatic number, odd cycle, and consecutive lengths versions",
       "startLine": 180,
-      "endLine": 205
+      "endLine": 206
     },
     {
       "id": "quantitative",
       "title": "Quantitative Bounds",
       "summary": "Explicit constants and improved bounds for small s",
       "startLine": 207,
-      "endLine": 225
+      "endLine": 226
     },
     {
       "id": "summary",
@@ -174,5 +174,27 @@
     "axiomCount": 14,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-133",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: degree-bounds, extremal-combinatorics, graph-theory"
+    },
+    {
+      "targetId": "erdos-608",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory"
+    },
+    {
+      "targetId": "erdos-622",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-133",
+    "erdos-608",
+    "erdos-622"
+  ]
 }

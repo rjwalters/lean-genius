@@ -23,12 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/742",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
-    "relatedProofs": [
-      "erdos-566",
-      "erdos-567",
-      "erdos-575"
-    ],
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -85,63 +80,63 @@
       "id": "header",
       "title": "Problem Statement and References",
       "startLine": 1,
-      "endLine": 26,
+      "endLine": 27,
       "summary": "Module docstring introducing Erdős Problem #742: is $|E(G)| \\le n^2/4$ for minimal diameter-2 graphs? Cites Murty-Plesník (1979), Caccetta-Häggkvist (1979), and Füredi's (1992) resolution."
     },
     {
       "id": "imports",
       "title": "Library Imports and Setup",
       "startLine": 28,
-      "endLine": 35,
+      "endLine": 36,
       "summary": "Imports Mathlib's `SimpleGraph`, `Connectivity.Subgraph`, and finite type infrastructure. Opens the `SimpleGraph` namespace and declares universe-polymorphic vertex variables."
     },
     {
       "id": "graph-diameter",
       "title": "Graph Distance and Diameter",
       "startLine": 37,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Defines `dist G u v` (shortest path length in $\\mathbb{N}_{\\infty}$), `diameter G = \\sup_{u,v} d_G(u,v)$, `HasDiameter G d` (connected, all distances $\\le d$, some pair at distance $d$), and `HasDiameter2`."
     },
     {
       "id": "edge-deletion",
       "title": "Edge Deletion and Critical Edges",
       "startLine": 59,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Defines `deleteEdge G u v` (removes $\\{u,v\\}$ preserving symmetry/irreflexivity), `IsCriticalEdge` ($uv \\in E$ and $\\mathrm{diam}(G - uv) > 2$), and `AllEdgesCritical` (every edge is critical)."
     },
     {
       "id": "minimal-diameter2",
       "title": "Minimal Diameter-2 Graphs and Edge Bound",
       "startLine": 79,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Defines `IsMinimalDiameter2 G` (diameter 2 with all edges critical), `edgeCount G = |E(G)|$, and `MurtyPlesnikBound n = n^2/4$."
     },
     {
       "id": "bipartite-example",
       "title": "Complete Bipartite Extremal Example",
       "startLine": 94,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Axiomatizes: $K_{a,b}$ has diameter 2 with $a \\cdot b$ edges, the balanced partition gives $\\lfloor n^2/4 \\rfloor$ edges, and $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is minimal diameter-2."
     },
     {
       "id": "furedi-theorem",
       "title": "Füredi's Theorem",
       "startLine": 116,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Axiomatizes Füredi (1992): $\\exists N_0,\\; \\forall n \\ge N_0$, minimal diameter-2 graphs have $|E| \\le n^2/4$. Proves `bound_is_tight`: $\\forall n \\ge 2$, the bound is achieved by the balanced bipartite graph."
     },
     {
       "id": "history",
       "title": "Historical Context",
       "startLine": 142,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Records the conjecture timeline (Ore → Murty-Simon → Murty-Plesník → Caccetta-Häggkvist → Füredi). Axiomatizes that Füredi's proof uses extremal methods."
     },
     {
       "id": "related",
       "title": "Diameter-Critical Generalization",
       "startLine": 160,
-      "endLine": 185,
+      "endLine": 186,
       "summary": "Defines `IsDiameterCritical G d` for general diameter $d$. Proves `minimal_iff_critical`: `IsMinimalDiameter2 G ↔ IsDiameterCritical G 2`. Axiomatizes existence of bounds for $d \\ge 3$."
     },
     {
@@ -194,5 +189,27 @@
       "citation": "Mantel, W., Problem 28, Wiskundige Opgaven 10 (1907), 60-61.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-182",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-577",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-134",
+    "erdos-182",
+    "erdos-577"
   ]
 }

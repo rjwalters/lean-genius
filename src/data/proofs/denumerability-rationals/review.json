@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "proofId": "denumerability-rationals",
+  "reviewDate": "2026-03-23T22:30:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B",
+    "oneLiner": "Exemplary pedagogical presentation of a Mathlib result — every proof is a 1-2 line wrapper, but the multi-perspective formulations, cardinal arithmetic bridge, and rich historical exposition make this a model gallery entry for a Tier B proof.",
+    "tier": "B",
+    "tierJustification": "Tier B: Formalized using Mathlib. The core result (Denumerable ℚ) is entirely provided by Mathlib.Data.Rat.Denumerable via inferInstance. The file adds pedagogical value through alternative formulations (bijection, countability, surjection, injection), encode/decode wrappers with round-trip proofs, and a cardinal arithmetic connection — but no original mathematical reasoning."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json overview.historicalContext; ContinuumHypothesis.lean lines 7-43, 121-184",
+      "finding": "The historical exposition is outstanding. It traces the result from Cantor's 1874 paper through Dedekind's correspondence, Kronecker's opposition, Hilbert's defense ('No one shall expel us from the Paradise that Cantor has created'), and the result's influence on Borel, Lebesgue, and Gödel. The meta.json keyInsights include genuinely informative observations (density ≠ cardinality, Stern-Brocot alternative, constructive content of round-trip proofs). The ASCII diagonal enumeration visualization (lines 134-158) is a helpful pedagogical aid.",
+      "recommendation": "Preserve. This exposition could serve as a model for other gallery entries."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "DenumerabilityRationals.lean lines 59-173 (full theorem suite)",
+      "finding": "The file presents denumerability from 6 complementary perspectives: typeclass instance (Denumerable ℚ), explicit equivalence (natEquivRat), existential bijection (rationals_denumerable), surjection/injection (exists_surjection_nat_to_rat, exists_injection_rat_to_nat), round-trip encode/decode, and cardinal arithmetic (card_rat_eq_aleph0). This systematic coverage is pedagogically valuable and well-organized.",
+      "recommendation": "Preserve. The multi-perspective approach is the file's main formal contribution."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json badge: 'mathlib', proofStrategy",
+      "finding": "The meta.json is largely honest about the proof's nature. The badge is correctly 'mathlib', the proofStrategy accurately describes each section including 'via inferInstance' and 'via Cardinal.mk_denumerable', and the description says 'using Mathlib's Denumerable typeclass'. This self-awareness is commendable.",
+      "recommendation": "Preserve this honest framing."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions",
+      "finding": "The originalContributions list includes 'rationals_countable: Countable ℚ via inferInstance' and 'rationals_infinite: Infinite ℚ via inferInstance' as original contributions. Calling inferInstance is not an original contribution — it invokes a pre-existing Mathlib typeclass instance with zero proof work. Similarly, 'natEquivRat definition via (Denumerable.eqv ℚ).symm' is a one-line alias. The only items that could reasonably be called contributions are the pedagogical documentation and the organizational structure.",
+      "recommendation": "Reframe as: ['Multi-perspective formalization presenting Mathlib\\'s Denumerable ℚ result through bijection, surjection, injection, countability, and cardinal arithmetic lenses', 'Round-trip encode/decode wrappers with simp-verified proofs', 'Pedagogical documentation with diagonal enumeration visualization and detailed historical context']. Drop the inferInstance calls from the list."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "DenumerabilityRationals.lean line 38 (docstring)",
+      "finding": "The file header says 'Georg Cantor proved this result in the 1870s using his famous diagonal argument.' Cantor proved denumerability of ℚ using enumeration by anti-diagonals (a constructive listing), not the diagonal argument. The diagonal argument was his 1891 proof that ℝ is UNcountable. These are different techniques.",
+      "recommendation": "Change to 'using his enumeration along anti-diagonals of the numerator/denominator grid' or simply 'using a systematic enumeration'."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json references",
+      "finding": "References Ca74 and Ca74b are the same paper (Cantor 1874, Crelle's Journal 77, 258-262) listed twice with slightly different formatting. Ca74 has no note field; Ca74b has a note. This is a duplicate.",
+      "recommendation": "Remove Ca74 and keep Ca74b (which has the note)."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json leanFile.theoremCount: 7",
+      "finding": "The file contains at least 8 named theorems: rationals_denumerable, rationals_countable, exists_surjection_nat_to_rat, exists_injection_rat_to_nat, decode_encode, encode_decode, card_rat_eq_aleph0, card_rat_eq_card_nat. Plus rationals_infinite (9) and an unnamed example (10). theoremCount 7 undercounts.",
+      "recommendation": "Update to 8 (named theorems) or 9 (including rationals_infinite which is also a theorem)."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "DenumerabilityRationals.lean lines 186-189",
+      "finding": "Four #check debug commands left at the end of the file.",
+      "recommendation": "Remove."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Reframe originalContributions to honestly reflect pedagogical repackaging rather than claiming inferInstance calls as original. Suggested: ['Multi-perspective formalization of Denumerable ℚ through bijection, surjection, injection, countability, and cardinal arithmetic', 'Round-trip encode/decode with verified proofs', 'Pedagogical documentation with diagonal visualization and historical context'].",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix historical note in file header: Cantor used enumeration by anti-diagonals (not the diagonal argument) to prove ℚ is countable. The diagonal argument was his 1891 proof of uncountability of ℝ.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Remove duplicate reference: Ca74 and Ca74b are the same paper. Keep Ca74b (has note), remove Ca74.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Update meta.json leanFile.theoremCount from 7 to 9 (8 named theorems + rationals_infinite).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Remove #check debug lines at end of file (lines 186-189).",
+      "status": "open"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 5,
+    "originalityAccuracy": 5,
+    "completeness": 9,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 9,
+    "internalConsistency": 8,
+    "overall": 7.2
+  },
+  "suggestedBestFraming": "A comprehensive pedagogical presentation of Mathlib's proof that ℚ is denumerable (Wiedijk #3), packaging the Denumerable typeclass instance into six complementary perspectives — explicit bijection, existential statement, surjection, injection, round-trip encoding, and cardinal arithmetic — with excellent historical exposition tracing Cantor's 1874 result through its foundational impact."
+}

@@ -20,7 +20,7 @@
     "erdosNumber": 519,
     "erdosUrl": "https://erdosproblems.com/519",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Complex",
@@ -89,7 +89,7 @@
       "id": "imports-namespace",
       "title": "Imports and Namespace",
       "startLine": 31,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Imports Mathlib modules for complex numbers, exponential functions, natural numbers, and finite sets; opens the `Complex` and `Finset` namespaces",
       "mathContext": "The formalization depends on Mathlib's `Complex.abs` (complex modulus), `Complex.exp` (for roots of unity), and `Finset.sum` (finite summation)."
     },
@@ -97,7 +97,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 41,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Defines the core objects: the $k$-th power sum $S_k(z) = \\sum_i z_i^k$, its magnitude $|S_k|$, the maximum power sum $\\max_{1 \\le k \\le n} |S_k|$, and the normalization constraint $z_1 = 1$",
       "mathContext": "These definitions set up the extremal problem: minimize $\\max_k |S_k|$ over all configurations $z$ with $z_1 = 1$."
     },
@@ -105,7 +105,7 @@
       "id": "turan-result",
       "title": "Turán's Original Result",
       "startLine": 73,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "Axiomatizes Turán's bound $\\max_k |S_k| \\ge c/n$ and formally states the question of whether an absolute (n-independent) constant exists",
       "mathContext": "Turán's power sum method: the bound $c/n$ degrades with $n$, leaving open whether the dependence is essential."
     },
@@ -113,7 +113,7 @@
       "id": "atkinson",
       "title": "Atkinson's Theorem (1961)",
       "startLine": 96,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Axiomatizes Atkinson's breakthrough: $\\max_k |S_k| > 1/6$ for all $n$ and all $z$ with $z_1 = 1$. Derives `turan_question_yes` as a direct corollary",
       "mathContext": "Atkinson's result settles Turán's question affirmatively: the constant $c = 1/6$ is absolute, independent of $n$."
     },
@@ -121,7 +121,7 @@
       "id": "biro",
       "title": "Biró's Improvements",
       "startLine": 119,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "Axiomatizes Biró's improved bounds: $c = 1/2$ (1994) and $c > 1/2$ (2000), plus the placeholder conjecture that the optimal constant is approximately $0.7$",
       "mathContext": "Biró's refinements doubled Atkinson's constant and broke the $1/2$ barrier, but the conjectured optimal $c \\approx 0.7$ remains unproved."
     },
@@ -129,7 +129,7 @@
       "id": "key-observations",
       "title": "Key Observations",
       "startLine": 150,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "Proves the trivial case $n=1$ directly ($S_k = 1^k = 1$ for all $k$) and explains why the constraint $z_1 = 1$ is essential: without it, taking all $z_i = 0$ trivializes the problem",
       "mathContext": "The decomposition $S_k = 1 + \\sum_{i > 0} z_i^k$ shows that each power sum includes the anchor term $1^k = 1$, so cancellation must come from the remaining terms."
     },
@@ -137,7 +137,7 @@
       "id": "special-cases",
       "title": "Roots of Unity and Special Cases",
       "startLine": 180,
-      "endLine": 220,
+      "endLine": 221,
       "summary": "Defines $n$-th roots of unity via $\\omega_k = e^{2\\pi i k/n}$ and axiomatizes their power sum behavior: $\\sum \\omega_k^j = n$ if $n | j$, else $0$. Notes connection to Problem #973",
       "mathContext": "Roots of unity exhibit the orthogonality relation $\\sum_{k=0}^{n-1} e^{2\\pi i jk/n} = n \\cdot \\mathbf{1}_{n | j}$, a cornerstone of discrete Fourier analysis."
     },
@@ -145,7 +145,7 @@
       "id": "optimal-constant",
       "title": "The Optimal Constant",
       "startLine": 222,
-      "endLine": 247,
+      "endLine": 248,
       "summary": "Packages Biró's result as `optimal_lower_bound` and axiomatizes the computational evidence that $c \\approx 0.7$; notes the remaining gap between proved and conjectured values",
       "mathContext": "The gap $1/2 < c_{\\text{proved}} < c_{\\text{optimal}} \\approx 0.7$ represents the frontier of the problem."
     },
@@ -170,7 +170,7 @@
   },
   "relatedProofs": [
     "erdos-973",
-    "de-moivre"
+    "erdos-974"
   ],
   "leanFile": {
     "imports": [
@@ -188,5 +188,17 @@
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-973",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, power-sums"
+    },
+    {
+      "targetId": "erdos-974",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, power-sums"
+    }
+  ]
 }

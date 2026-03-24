@@ -23,7 +23,8 @@
     "erdosPrizeValue": "$250",
     "axiomCount": 5,
     "lineCount": 392,
-    "assumptions": "5 axiom(s) and 6 sorry(s). See the Lean source for details."
+    "assumptions": "5 axiom(s) and 6 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Gyárfás conjectured that local constraints on 4-point configurations would force global distance diversity: if any 4 points determine at least 5 of the 6 possible distinct distances, the total number of distances should be quadratic. This $250-prize problem remained open for decades until Terence Tao disproved it in September 2024 (arXiv:2409.01343). Tao's counterexample, using randomized algebraic curves over finite fields, was part of his broader exploration of erdosproblems.com, partly as a test case for AI-assisted mathematics. The result shows that local constraints on small point subsets cannot guarantee global distance diversity.",
@@ -54,21 +55,21 @@
       "title": "Points and Distances",
       "summary": "Point, sqDist, distinctDistances, distanceCount definitions",
       "startLine": 48,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "five-distance-property",
       "title": "The Five-Distance Property",
       "summary": "fourPointDistances, HasFiveDistanceProperty — forbids degenerate 4-point configs",
       "startLine": 65,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "conjecture-false",
       "title": "Erdős's Conjecture (FALSE)",
       "summary": "ErdosConjecture135 definition, erdos_135_false axiom, erdos_135_disproved theorem",
       "startLine": 79,
-      "endLine": 105
+      "endLine": 106
     },
     {
       "id": "forbidden-patterns",
@@ -82,21 +83,21 @@
       "title": "Tao's Algebraic Construction",
       "summary": "ParabolaParams, RandomizedParabolaApproach, parabolas over finite fields",
       "startLine": 205,
-      "endLine": 234
+      "endLine": 235
     },
     {
       "id": "comparison-bounds",
       "title": "Comparison with Erdős-Guth-Katz Bounds",
       "summary": "trivial_distance_bound, guth_katz_lower_bound, tao_optimal_up_to_log",
       "startLine": 236,
-      "endLine": 300
+      "endLine": 301
     },
     {
       "id": "examples",
       "title": "Example Configurations",
       "summary": "Square (2 distances), rhombus (3), projected tetrahedron (4), generic (6)",
       "startLine": 302,
-      "endLine": 354
+      "endLine": 355
     },
     {
       "id": "summary",
@@ -130,5 +131,27 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, disproved"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distinct-distances"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distinct-distances"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-105",
+    "erdos-1088",
+    "erdos-1089"
+  ]
 }

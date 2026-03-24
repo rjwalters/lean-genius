@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/384",
     "erdosProblemStatus": "solved",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "axiomCount": 13,
     "prerequisites": [
       "Binomial coefficients and Pascal's triangle",
@@ -58,7 +58,7 @@
       "id": "definitions",
       "title": "Prime Divisor Predicates",
       "startLine": 30,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Defines primeDiv(p, n), minPrimeDivisor via Nat.minFac (with proved primality and divisibility), and hasSmallPrimeDivisor(n, bound).",
       "mathContext": "$\\text{hasSmallPrimeDivisor}(n, B) \\equiv \\exists p \\text{ prime}: p \\mid n \\wedge p < B$"
     },
@@ -66,7 +66,7 @@
       "id": "exception",
       "title": "The Unique Exception: $\\binom{7}{3} = 35$",
       "startLine": 59,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Formally verifies C(7,3) = 35 by native_decide, its factorization 5 × 7 by norm_num, and that no prime < 4 divides 35 by interval_cases. Defines isException predicate.",
       "mathContext": "$\\binom{7}{3} = 35 = 5 \\times 7$; both primes $\\geq \\lceil 7/2 \\rceil = 4$, so $\\neg\\text{hasSmallPrimeDivisor}(35, 4)$"
     },
@@ -74,7 +74,7 @@
       "id": "main-theorem",
       "title": "Ecklund's Theorem (1969)",
       "startLine": 91,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Axiom ecklund_1969: for 1 < k < n−1, either C(n,k) has a prime < n/2+1 or (n,k) ∈ {(7,3),(7,4)}. Proves ecklund_no_exception by case analysis.",
       "mathContext": "$1 < k < n-1 \\Rightarrow \\text{hasSmallPrimeDivisor}(\\binom{n}{k}, \\lfloor n/2 \\rfloor + 1) \\vee \\text{isException}(n,k)$"
     },
@@ -82,7 +82,7 @@
       "id": "stronger-conjectures",
       "title": "Stronger Conjectures (Partially Open)",
       "startLine": 111,
-      "endLine": 133,
+      "endLine": 134,
       "summary": "Ecklund's strong conjecture: C(n,k) has prime < n/k when n > k². Selfridge's conjecture: threshold 17.125k. Axiom partial_bound_known for intermediate results.",
       "mathContext": "$n > k^2 \\Rightarrow \\exists p \\text{ prime}: p \\mid \\binom{n}{k} \\wedge p < n/k$; Selfridge: $n > 17.125k$ suffices"
     },
@@ -90,7 +90,7 @@
       "id": "kummer",
       "title": "Kummer's Theorem and Large Primes",
       "startLine": 135,
-      "endLine": 151,
+      "endLine": 152,
       "summary": "States Kummer's theorem (p-adic valuation = carries in base-p addition). Axiom large_prime_not_divisor: p > n implies p ∤ C(n,k).",
       "mathContext": "$v_p\\binom{n}{k} = \\#\\{\\text{carries when adding } k \\text{ and } n-k \\text{ in base } p\\}$; $p > n \\Rightarrow p \\nmid \\binom{n}{k}$"
     },
@@ -98,7 +98,7 @@
       "id": "edge-cases",
       "title": "Edge Cases: $k = 1$ and $k = n-1$",
       "startLine": 153,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "Proves C(n,1) = n by simp, that it has a prime divisor (via minFac), and C(n,n−1) = n by choose_symm_diff.",
       "mathContext": "$\\binom{n}{1} = n$ (proved); $\\binom{n}{n-1} = n$ (proved by symmetry $\\binom{n}{k} = \\binom{n}{n-k}$)"
     },
@@ -106,7 +106,7 @@
       "id": "small-cases",
       "title": "Small Cases Verification",
       "startLine": 177,
-      "endLine": 213,
+      "endLine": 214,
       "summary": "Concrete verification: C(5,2)=10 has prime 2 < 3, C(6,2)=15 has prime 3 < 4, C(6,3)=20 has prime 2 < 4. All proved by native_decide + norm_num.",
       "mathContext": "$\\binom{5}{2} = 10 = 2 \\times 5$; $\\binom{6}{2} = 15 = 3 \\times 5$; $\\binom{6}{3} = 20 = 2^2 \\times 5$"
     },
@@ -114,7 +114,7 @@
       "id": "primorial",
       "title": "Primorial and Bertrand's Postulate",
       "startLine": 215,
-      "endLine": 226,
+      "endLine": 227,
       "summary": "Defines primorial'(n). Axiom central_binomial_primes: C(2n,n) always has a prime in (n, 2n], a consequence of Bertrand's postulate.",
       "mathContext": "$\\exists p \\text{ prime}: p \\mid \\binom{2n}{n} \\wedge n < p \\leq 2n$ (Bertrand's postulate)"
     },
@@ -122,7 +122,7 @@
       "id": "asymptotics",
       "title": "Asymptotic Behavior",
       "startLine": 228,
-      "endLine": 240,
+      "endLine": 241,
       "summary": "Axiomatizes that the smallest prime divisor of C(n,k) is O(n/k) for large n, and intersection properties of prime factorizations of overlapping binomial coefficients.",
       "mathContext": "$\\min\\{p \\text{ prime}: p \\mid \\binom{n}{k}\\} = O(n/k)$ as $n \\to \\infty$"
     },
@@ -130,7 +130,7 @@
       "id": "related",
       "title": "Related Problems and References",
       "startLine": 242,
-      "endLine": 258,
+      "endLine": 259,
       "summary": "Connections to Erdős Problems #1094 (consecutive integers in C(n,k)), #1095, and Guy's B31/B33 sections.",
       "mathContext": "Related: $\\binom{n}{k}$ contains a run of consecutive integers as factors when $k$ is small"
     },
@@ -138,7 +138,7 @@
       "id": "applications",
       "title": "Applications to Catalan Numbers and Pascal Patterns",
       "startLine": 260,
-      "endLine": 276,
+      "endLine": 277,
       "summary": "Applications: Catalan numbers C_n = C(2n,n)/(n+1), Pascal's triangle modular patterns (Lucas' theorem), combinatorial number theory.",
       "mathContext": "$C_n = \\frac{1}{n+1}\\binom{2n}{n}$; Lucas: $\\binom{n}{k} \\equiv \\prod \\binom{n_i}{k_i} \\pmod{p}$ where $n = \\sum n_i p^i$"
     },

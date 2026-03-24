@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/309",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -94,84 +94,84 @@
       "title": "Unit Fractions",
       "summary": "unitFraction, sumUnitFractions, sumUnitFractions_empty",
       "startLine": 46,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "denominator-range",
       "title": "Denominator Range",
       "summary": "denominatorRange, mem_denominatorRange, denominatorRange_card",
       "startLine": 84,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "representable-integers",
       "title": "Representable Integers",
       "summary": "IsRepresentable, zero_representable, one_representable",
       "startLine": 109,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "counting",
       "title": "Counting Function",
       "summary": "countRepresentable definition",
       "startLine": 141,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "harmonic-numbers",
       "title": "Harmonic Numbers",
       "summary": "harmonicNumber, harmonicNumber_one, max_representable_le_harmonic",
       "startLine": 154,
-      "endLine": 177
+      "endLine": 178
     },
     {
       "id": "asymptotic-bounds",
       "title": "Asymptotic Bounds",
       "summary": "harmonic_log_asymptotic, countRepresentable_upper_bound",
       "startLine": 179,
-      "endLine": 198
+      "endLine": 199
     },
     {
       "id": "yokota-1997",
       "title": "Yokota's Lower Bound (1997)",
       "summary": "yokota_lower_bound_1997 axiom",
       "startLine": 200,
-      "endLine": 211
+      "endLine": 212
     },
     {
       "id": "croot-1999",
       "title": "Croot's Threshold (1999)",
       "summary": "croot_threshold_1999 axiom",
       "startLine": 213,
-      "endLine": 225
+      "endLine": 226
     },
     {
       "id": "yokota-2002",
       "title": "Yokota's Refined Bound (2002)",
       "summary": "yokota_refined_2002 axiom",
       "startLine": 227,
-      "endLine": 238
+      "endLine": 239
     },
     {
       "id": "main-result",
       "title": "Answer to Erdős's Question",
       "summary": "erdos_309_answer theorem, count_asymptotic",
       "startLine": 240,
-      "endLine": 271
+      "endLine": 272
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "N=6 example, egyptianFractionProperty",
       "startLine": 273,
-      "endLine": 292
+      "endLine": 293
     },
     {
       "id": "harmonic-series",
       "title": "Connection to Harmonic Series",
       "summary": "harmonic_divergence, representable_sparse_but_unbounded",
       "startLine": 294,
-      "endLine": 322
+      "endLine": 323
     },
     {
       "id": "summary",
@@ -212,5 +212,27 @@
     "axiomCount": 7,
     "theoremCount": 12,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-314",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-analysis, harmonic-numbers, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-314",
+    "erdos-148",
+    "erdos-242"
+  ]
 }

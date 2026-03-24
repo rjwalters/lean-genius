@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/528",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.Tendsto",
@@ -104,70 +104,70 @@
       "title": "Counting SAWs",
       "summary": "sawCount axiom, f_zero, f_one base cases",
       "startLine": 69,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "limit-existence",
       "title": "Submultiplicativity and Limit Existence",
       "summary": "submultiplicativity, limit_exists (Hammersley-Morton), connectiveConstant definition",
       "startLine": 86,
-      "endLine": 105
+      "endLine": 106
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "summary": "connective_lower_bound, connective_upper_bound, trivial_bounds theorem",
       "startLine": 107,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "kesten",
       "title": "Kesten's Asymptotic (1963)",
       "summary": "kesten_asymptotic, kesten_first_order",
       "startLine": 125,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "two-dimensional",
       "title": "Two-Dimensional Case",
       "summary": "mu2_value, conway_guttmann_lower, alm_upper, jsg_computation, two_d_bounds",
       "startLine": 141,
-      "endLine": 161
+      "endLine": 162
     },
     {
       "id": "higher-dimensions",
       "title": "Higher Dimensions",
       "summary": "mu3_estimate, large_k_limit, normalized_limit",
       "startLine": 163,
-      "endLine": 177
+      "endLine": 178
     },
     {
       "id": "honeycomb",
       "title": "Honeycomb Lattice",
       "summary": "mu_honeycomb definition, mu_honeycomb_approx, honeycomb_exact",
       "startLine": 179,
-      "endLine": 198
+      "endLine": 199
     },
     {
       "id": "conjectures",
       "title": "Conjectures",
       "summary": "mu2_closed_form_conjecture, irrationality_conjecture, mu2_irrationality_open_status",
       "startLine": 200,
-      "endLine": 216
+      "endLine": 217
     },
     {
       "id": "enumeration",
       "title": "SAW Enumeration",
       "summary": "saw_counts_2d (n ≤ 5), ratio_convergence",
       "startLine": 218,
-      "endLine": 234
+      "endLine": 235
     },
     {
       "id": "applications",
       "title": "Applications",
       "summary": "critical_exponent_exists, gamma_2d_conjecture_value",
       "startLine": 236,
-      "endLine": 252
+      "endLine": 253
     },
     {
       "id": "summary",
@@ -205,5 +205,27 @@
     "axiomCount": 21,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-529",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: probability, self-avoiding-walks, statistical-mechanics"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, probability"
+    },
+    {
+      "targetId": "erdos-1155",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, probability"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-529",
+    "erdos-1138",
+    "erdos-1155"
+  ]
 }

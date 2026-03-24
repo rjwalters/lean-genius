@@ -7,7 +7,7 @@
     "author": "Lobachevsky & Bolyai (1830s), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hyperbolic_law_of_cosines",
     "date": "c. 1830",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PythagoreanTheoremOQ03.lean",
     "tags": [
       "geometry",
@@ -17,7 +17,7 @@
       "pythagorean-theorem",
       "generalization"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -62,9 +62,10 @@
         "relationship": "The original Euclidean Pythagorean theorem proof that posed the open question answered by this formalization"
       }
     ],
-    "axiomCount": 0,
+    "axiomCount": 3,
     "lineCount": 1431,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 sorries but 3 structure-encoded assumptions: HyperbolicRightTriangle.law (cosh c = cosh a · cosh b), SphericalRightTriangle.law (cos c = cos a · cos b), SphericalRightTriangleR.law (cos(c/R) = cos(a/R) · cos(b/R)). These metric laws are axiomatized as structure fields; all 50+ consequence theorems are fully proved.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Pythagorean theorem $a^2 + b^2 = c^2$ is arguably the most fundamental metric relation in all of mathematics. Its generalization to non-Euclidean geometries reveals deep connections between algebra, analysis, and geometry.\n\nSpherical trigonometry has ancient roots: the Islamic mathematician al-Battani (c. 858–929 CE) used the spherical law of cosines for astronomical calculations, and Regiomontanus (1436–1476) systematized spherical trigonometry in *De Triangulis Omnimodis* (1464). The spherical Pythagorean theorem $\\cos(c/R) = \\cos(a/R) \\cdot \\cos(b/R)$ was known implicitly through this tradition.\n\nHyperbolic geometry emerged much later. Nikolai Lobachevsky (1829) and János Bolyai (1832) independently discovered that Euclid's parallel postulate could be negated consistently, producing a geometry where the angle sum of triangles is less than $\\pi$. The hyperbolic Pythagorean theorem $\\cosh c = \\cosh a \\cdot \\cosh b$ follows from the hyperbolic metric. Carl Friedrich Gauss had privately anticipated these results but never published them.\n\nThe unification came through Bernhard Riemann's 1854 *Habilitationsschrift*, where he introduced the concept of curvature $\\kappa$ parameterizing a family of geometries. The generalized cosine function $C_\\kappa(x)$ packages all three cases: $\\cos(\\sqrt{\\kappa} \\cdot x)$ for $\\kappa > 0$, $\\cosh(\\sqrt{|\\kappa|} \\cdot x)$ for $\\kappa < 0$, and the flat limit $\\kappa \\to 0$ recovering $a^2 + b^2 = c^2$ via Taylor expansion.\n\nThis formalization answers the open question from our Pythagorean theorem proof: 'What is the analog of the Pythagorean theorem in hyperbolic and spherical geometry?' The 65+ fully proved theorems (zero sorries, zero axioms) cover the complete picture: structures, identities, area-defect formulas, laws of cosines, monotonicity, and quantitative approximation.",
@@ -253,7 +254,7 @@
     ],
     "namespace": "PythagoreanNonEuclidean",
     "lineCount": 1431,
-    "axiomCount": 0,
+    "axiomCount": 3,
     "theoremCount": 105,
     "definitionCount": 18
   }

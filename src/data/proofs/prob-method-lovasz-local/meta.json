@@ -51,7 +51,8 @@
       "k-SAT satisfiability and clause independence",
       "Moser-Tardos resampling algorithm (constructive LLL)"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Lovasz Local Lemma (LLL), proved by Paul Erdos and Laszlo Lovasz in 1975, is widely regarded as the crown jewel of the probabilistic method. It addresses a fundamental limitation of the basic probabilistic method: when bad events are not independent, the naive union bound can be far too pessimistic.\n\nThe LLL shows that if each bad event has small probability and is independent of most other bad events, then with positive probability none of the bad events occur. The precise condition involves a dependency graph: each event must be independent of all events not in its neighborhood, and the probabilities must satisfy a system of inequalities involving the graph structure.\n\nThe symmetric form of the LLL is especially elegant: if each event has probability at most p and depends on at most d other events, and if ep(d+1) <= 1 (where e is Euler's number), then all bad events can be simultaneously avoided. This clean criterion is remarkably powerful.\n\nIn 2010, Moser and Tardos gave a constructive proof of the LLL via a resampling algorithm, resolving a long-standing question about whether the non-constructive existence proof could be made algorithmic. Their proof showed that repeated resampling of violated constraints converges rapidly.",
@@ -78,7 +79,7 @@
       "id": "introduction",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 19,
+      "endLine": 20,
       "summary": "Overview of the Lovász Local Lemma formalization covering symmetric/general LLL, k-SAT application, Moser-Tardos constructive bounds, and symmetric case specialization.",
       "mathContext": "If bad events are unlikely and mostly independent, they can all be simultaneously avoided."
     },
@@ -86,7 +87,7 @@
       "id": "symmetric-lll",
       "title": "Part I: Symmetric LLL (Algebraic Core)",
       "startLine": 21,
-      "endLine": 35,
+      "endLine": 36,
       "summary": "The symmetric LLL algebraic kernel: if p*(d+1) ≤ 1/3, then (1-p)^n > 0. Proved via pow_pos and nlinarith. This captures the algebraic core ensuring the avoidance probability is positive.",
       "mathContext": "$p(d+1) \\leq 1/3 \\implies (1-p)^n > 0$"
     },
@@ -94,7 +95,7 @@
       "id": "general-lll",
       "title": "Part II: General LLL Product Positivity",
       "startLine": 37,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "General LLL product positivity: if x_i ∈ [0,1) for all i, then ∏(1-x_i) > 0. Proved via Finset.prod_pos. The product gives a lower bound on P[∩ Āᵢ].",
       "mathContext": "$x_i \\in [0,1) \\implies \\prod_i(1-x_i) > 0$"
     },
@@ -102,7 +103,7 @@
       "id": "probability-bounds",
       "title": "Part III: LLL Probability Bounds",
       "startLine": 50,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "The LLL condition implies prob_i ≤ x_i (since ∏(1-x_j) ≤ 1). Also proves each avoidance factor 1-x_i is strictly positive. All proved, no sorries.",
       "mathContext": "$\\Pr[A_i] \\leq x_i \\prod_{j \\in \\Gamma(i)}(1-x_j) \\leq x_i$"
     },
@@ -110,7 +111,7 @@
       "id": "ksat",
       "title": "Part IV: k-SAT Application",
       "startLine": 78,
-      "endLine": 115,
+      "endLine": 116,
       "summary": "k-SAT via LLL: proves 2^(-k)·(2^(k-2)+1) ≤ 1 for k ≥ 3, verifying the LLL condition for random k-SAT with bounded variable occurrence. Helper lemma pow2_plus_one_le proved via gcongr.",
       "mathContext": "$2^{-k} \\cdot (2^{k-2} + 1) \\leq 1$ for $k \\geq 3$"
     },
@@ -118,7 +119,7 @@
       "id": "moser-tardos",
       "title": "Part V: Moser-Tardos Constructive LLL",
       "startLine": 117,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "Moser-Tardos resampling bound: the expected number of resampling steps Σ x_i/(1-x_i) is non-negative. Proved via Finset.sum_nonneg and div_nonneg.",
       "mathContext": "$0 \\leq \\sum_i \\frac{x_i}{1-x_i}$"
     },
@@ -126,7 +127,7 @@
       "id": "symmetric-specialization",
       "title": "Part VI: Symmetric Case Specialization",
       "startLine": 132,
-      "endLine": 173,
+      "endLine": 229,
       "summary": "Symmetric case with uniform x = 1/(d+1): proves x is in [0,1), the avoidance product (d/(d+1))^n is positive, the uniform product equals (d/(d+1))^n, and the Moser-Tardos bound simplifies to n/d.",
       "mathContext": "Uniform $x_i = \\frac{1}{d+1}$: product $= (\\frac{d}{d+1})^n > 0$, expected resampling $= \\frac{n}{d}$"
     }

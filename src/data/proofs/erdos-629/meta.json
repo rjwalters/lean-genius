@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 912,
-    "assumptions": "No axioms. 8 sorry(s) remain in the formalization."
+    "assumptions": "No axioms. 8 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Rubin, and Taylor introduced the concept of list coloring (choosability) in their landmark 1979/1980 paper, which revealed a fundamental surprise: bipartite graphs, though 2-colorable, can have arbitrarily large list chromatic number. They proved the first bounds $2^{k-1} < n(k) < k^2 \\cdot 2^{k+2}$ and computed $n(2) = 6$ using $K_{3,3}$ with a clever adversarial list assignment. Hanson, MacGillivray, and Toft (1996) determined $n(3) = 14$ through exhaustive case analysis and gave the recursive bound $n(k) \\leq k \\cdot n(k-2) + 2^k$. Radhakrishnan and Srinivasan (2000) improved the lower bound to $n(k) \\geq c \\cdot 2^k \\sqrt{k/\\ln k}$ using an entropy-based refinement of the probabilistic method. Galvin's 1995 theorem that $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$, proved via the kernel method, provides the key structural result for complete bipartite graphs. The problem connects to Property B (Erdős Problem #901) via the sandwich inequality $m(k) \\leq n(k) \\leq m(k+1)$, linking list coloring to hypergraph 2-coloring theory.",
@@ -55,14 +56,14 @@
       "title": "List Coloring Definitions",
       "summary": "Defines `ColorListAssignment V C` (per-vertex color lists), `RespectsLists L f` ($f(v) \\in L(v)$), `IsProperColoring G f` (adjacent vertices differ), `IsKListColorable G k` ($\\forall L$ with $|L(v)| \\geq k$, proper $L$-coloring exists), and `listChromaticNumber G` ($\\chi_L(G) = \\inf\\{k : k\\text{-choosable}\\}$).",
       "startLine": 66,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "bipartite",
       "title": "Bipartite Graphs and the χ vs χ_L Gap",
       "summary": "Defines `IsBipartite G` (2-colorable via `Fin 2`), proves `bipartite_chromatic_le_two` ($\\chi(G) \\leq 2$, Aristotle), and builds the `MyGraph k` construction with Aristotle-proved lemmas showing `MyGraph k` is bipartite and not $(k+1)$-list-colorable via the hitting-set argument.",
       "startLine": 91,
-      "endLine": 258
+      "endLine": 259
     },
     {
       "id": "unbounded",
@@ -76,14 +77,14 @@
       "title": "The Function n(k): Definition and Basic Properties",
       "summary": "Defines $n(k) = \\inf\\{m : \\exists$ bipartite $G$ with $|V| = m, \\chi_L(G) > k\\}$. Proves `n_well_defined` ($n(k) > 0$, Aristotle) and `n_mono` ($k_1 \\leq k_2 \\implies n(k_1) \\leq n(k_2)$, Aristotle).",
       "startLine": 272,
-      "endLine": 317
+      "endLine": 318
     },
     {
       "id": "exact-values",
       "title": "Exact Values: n(2) = 6 and n(3) = 14",
       "summary": "Proves `n_2_eq_6` (Aristotle) via $K_{3,3}$ not being 2-choosable + all bipartite graphs on $< 6$ vertices being 2-choosable. States `n_3_eq_14` (sorry) from Hanson-MacGillivray-Toft (1996). The $K_{3,3}$ argument includes explicit adversarial list assignment and decision-procedure verification.",
       "startLine": 319,
-      "endLine": 631
+      "endLine": 632
     },
     {
       "id": "original-bounds",
@@ -97,21 +98,21 @@
       "title": "Improved Bounds and Recursive Upper",
       "summary": "States `rs_lower_bound` (sorry): $2^k \\cdot (k/\\log k)^{1/2} \\lesssim n(k)$ from Radhakrishnan-Srinivasan (2000). States `hmt_recursive_upper` (sorry): $n(k) \\leq k \\cdot n(k-2) + 2^k$ from Hanson-MacGillivray-Toft (1996).",
       "startLine": 816,
-      "endLine": 829
+      "endLine": 830
     },
     {
       "id": "property-b",
       "title": "Property B Connection",
       "summary": "Defines `propertyB_threshold k` ($m(k)$ = smallest family of $k$-sets without Property B). States `n_property_b_bounds` (sorry): $m(k) \\leq n(k) \\leq m(k+1)$, connecting list coloring to Erdős Problem #901.",
       "startLine": 831,
-      "endLine": 845
+      "endLine": 846
     },
     {
       "id": "constructions",
       "title": "Complete Bipartite Graphs and Asymptotics",
       "summary": "Defines `completeBipartite m n` ($K_{m,n}$ on `Fin m ⊕ Fin n`). States `knn_list_chromatic` (sorry): $\\chi_L(K_{n,n}) \\approx \\log_2 n + 1$. States `n_exponential_growth` (sorry) and defines `ExactAsymptoticConjecture`: $n(k) = \\Theta(2^k \\cdot k^\\alpha)$.",
       "startLine": 847,
-      "endLine": 907
+      "endLine": 912
     }
   ],
   "conclusion": {
@@ -125,11 +126,9 @@
     ]
   },
   "relatedProofs": [
-    "four-color-theorem",
-    "erdos-87",
-    "erdos-60",
-    "randomized-maxcut",
-    "ramseys-theorem"
+    "erdos-630",
+    "erdos-111",
+    "erdos-631"
   ],
   "leanFile": {
     "imports": [
@@ -175,5 +174,22 @@
     "axiomCount": 0,
     "theoremCount": 37,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-630",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, chromatic-number, graph-theory, list-coloring"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, chromatic-number, graph-theory"
+    },
+    {
+      "targetId": "erdos-631",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, list-coloring"
+    }
+  ]
 }

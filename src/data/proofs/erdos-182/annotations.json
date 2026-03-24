@@ -15,7 +15,8 @@
       "k-regular-graphs",
       "extremal-graph-theory",
       "janzer-sudakov"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-isregular",
@@ -33,7 +34,8 @@
       "degree",
       "neighborSet",
       "ncard"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-haskregular",
@@ -51,7 +53,8 @@
       "subgraph",
       "induced-subgraph",
       "Finset"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-extremal",
@@ -68,7 +71,8 @@
     "relatedConcepts": [
       "Nat.choose",
       "extremal-function"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-basic",
@@ -86,7 +90,8 @@
       "handshaking-lemma",
       "complete-graph",
       "parity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-janzer-sudakov",
@@ -104,7 +109,8 @@
       "janzer-sudakov-2023",
       "iterative-argument",
       "log-log"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-upper-bound",
@@ -121,7 +127,8 @@
     "relatedConcepts": [
       "contrapositive",
       "upper-bound"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-pyber",
@@ -139,7 +146,8 @@
       "pyber-rodl-szemeredi-1995",
       "lower-bound",
       "construction"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-theta",
@@ -156,7 +164,8 @@
     "relatedConcepts": [
       "big-theta",
       "asymptotic-analysis"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-special-k2",
@@ -174,7 +183,8 @@
       "forest",
       "cycle",
       "IsAcyclic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-connected",
@@ -191,7 +201,8 @@
     "relatedConcepts": [
       "connected-graph",
       "erdos-1975"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-dense",
@@ -208,7 +219,8 @@
     "relatedConcepts": [
       "dense-graph",
       "edge-density"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-history",
@@ -225,7 +237,8 @@
     "relatedConcepts": [
       "erdos-sauer",
       "problem-history"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-resolved",
@@ -242,7 +255,8 @@
     "relatedConcepts": [
       "complete-solution",
       "both-bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e182-loglog",
@@ -259,6 +273,7 @@
     "relatedConcepts": [
       "iterated-logarithm",
       "iteration-depth"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

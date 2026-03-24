@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos (1977)",
     "sourceUrl": "https://erdosproblems.com/358",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos358Problem.lean",
     "tags": [
       "erdos",
@@ -21,7 +21,7 @@
     "erdosNumber": 358,
     "erdosUrl": "https://erdosproblems.com/358",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -57,9 +57,9 @@
       "PositiveDensityConjecture definition: positive upper density",
       "Classical characterization: n = sum of >=2 consecutive iff n != 2^k"
     ],
-    "axiomCount": 7,
+    "axiomCount": 5,
     "lineCount": 183,
-    "assumptions": "7 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "5 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdos Problem #358 was posed in 1977 [Er77c] and revisited in Erdos-Graham (1980). It asks a deceptively simple question about how many ways an integer can be written as a sum of consecutive terms from a fixed sequence.\n\nErdos himself remarked: \"This problem can perhaps be rightly criticized as being artificial and in the backwater of Mathematics but it seems very strange and attractive to me.\"\n\nThe problem connects to classical results about sums of consecutive integers (which relate to odd divisors) and to the Erdos-Moser conjecture (1963) about consecutive prime sums.",
@@ -126,7 +126,7 @@
       "title": "Related Problems",
       "summary": "Connection to Problem #356, convex sumsets",
       "startLine": 145,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "status",
@@ -160,8 +160,30 @@
     ],
     "namespace": "Erdos358",
     "lineCount": 183,
-    "axiomCount": 7,
+    "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    },
+    {
+      "targetId": "erdos-1141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1113",
+    "erdos-1141",
+    "erdos-200"
+  ]
 }

@@ -28,7 +28,7 @@
       "Finset.sum for partial sums",
       "Real analysis for approximation bounds"
     ],
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.exp",
@@ -64,7 +64,7 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 24,
-      "endLine": 35,
+      "endLine": 36,
       "summary": "Defines `unitFracSum(A) = \\sum_{n \\in A} 1/n$`, axiomatizes `delta(N)` as the minimal nonzero deviation $|1 - \\sum 1/n|$, and proves `delta_pos`: $\\delta(N) > 0$ for $N \\ge 1$.",
       "mathContext": "$\\text{unitFracSum}(A) = \\sum_{n \\in A} \\frac{1}{n}$ for $A \\subseteq \\{1, \\ldots, N\\}$. $\\delta(N) = \\min\\{|1 - \\text{unitFracSum}(A)| : A \\subseteq \\{1,\\ldots,N\\},\\, \\text{unitFracSum}(A) \\le 1,\\, \\text{unitFracSum}(A) \\ne 1\\}$."
     },
@@ -72,7 +72,7 @@
       "id": "lower-bound",
       "title": "Lower Bound",
       "startLine": 37,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Lower bound: $\\delta(N) \\ge e^{-(1+\\varepsilon)N}$ for large $N$, from $\\delta(N) \\ge 1/\\text{lcm}(1,\\ldots,N) = e^{-\\psi(N)}$ where $\\psi(N) \\sim N$ by PNT.",
       "mathContext": "$\\delta(N) \\ge \\frac{1}{\\text{lcm}(1,\\ldots,N)} = e^{-(1+o(1))N}$ by clearing denominators. Uses $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)}$ where $\\psi(N) \\sim N$ (Chebyshev/PNT)."
     },
@@ -80,7 +80,7 @@
       "id": "upper-bound",
       "title": "Upper Bound",
       "startLine": 44,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Tang's upper bound: $\\delta(N) \\le \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ — subexponential, far from the conjectured $e^{-cN}$.",
       "mathContext": "$\\delta(N) \\le \\exp\\bigl(-\\frac{cN}{(\\log N \\cdot \\log\\log N)^3}\\bigr)$ for some $c > 0$ (Tang). This is subexponential — between the conjectured $e^{-cN}$ and polynomial decay."
     },

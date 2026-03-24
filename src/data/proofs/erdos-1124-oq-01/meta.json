@@ -39,16 +39,17 @@
         "relationship": "Parent problem: Laczkovich's proof that a circle and square of equal area are translation-equidecomposable. This open question asks for the minimum piece count."
       }
     ],
-    "axiomCount": 8,
+    "axiomCount": 5,
     "lineCount": 454,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Geometric Definitions",
       "startLine": 1,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines `Point` as $\\mathbb{R}^2$ (`EuclideanSpace ℝ (Fin 2)`), `disk` as $\\{p : \\|p\\| \\leq r\\}$, `square` as the axis-aligned $[0,s]^2$, translation congruence via $B = A + v$, and the equal-area condition $\\pi r^2 = s^2$."
     },
     {
@@ -97,7 +98,7 @@
       "id": "one-piece",
       "title": "One-Piece Impossibility (Proved)",
       "startLine": 337,
-      "endLine": 425,
+      "endLine": 426,
       "summary": "The deepest verified result: proves 1-piece equidecomposition is impossible via a diagonal norm argument. If the square were a translate of the disk, the diagonal point $(s,s)$ maps to the disk, giving $\\|(s,s)\\| \\leq 2r$, so $2s^2 \\leq 4r^2$, but $\\pi r^2 = s^2$ forces $\\pi \\leq 2$, contradicting $\\pi > 3$."
     },
     {

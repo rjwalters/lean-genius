@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/80",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -103,35 +103,35 @@
       "title": "The f_c(n) Function",
       "summary": "isDense, f function definition (Erdős-Rothschild function)",
       "startLine": 99,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "summary": "alon_trotter_bound, fox_loh_bound, erdos_polynomial_conjecture_false",
       "startLine": 127,
-      "endLine": 159
+      "endLine": 160
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "summary": "linear_bound_above_threshold, regularity_lower_bound, f_tends_to_infinity",
       "startLine": 161,
-      "endLine": 188
+      "endLine": 189
     },
     {
       "id": "phase-transition",
       "title": "The Phase Transition",
       "summary": "critical_threshold, above_threshold_linear, below_threshold_subpolynomial",
       "startLine": 190,
-      "endLine": 214
+      "endLine": 215
     },
     {
       "id": "open-questions",
       "title": "Open Questions",
       "summary": "erdos_log_conjecture definition",
       "startLine": 216,
-      "endLine": 227
+      "endLine": 228
     },
     {
       "id": "main-results",
@@ -170,5 +170,27 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-621",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangles"
+    },
+    {
+      "targetId": "erdos-813",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangles"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, triangles"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-621",
+    "erdos-813",
+    "erdos-1009"
+  ]
 }

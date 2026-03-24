@@ -55,16 +55,8 @@
       "Cauchy-Schwarz inequality (for density convexity)",
       "Szemerédi core definitions (edgeDensity, IsEpsilonRegular, etc.)"
     ],
-    "relatedProofs": [
-      "szemeredi-core",
-      "szemeredi-counting",
-      "szemeredi-full",
-      "szemeredi-theorem",
-      "roth-theorem-k3",
-      "ramseys-theorem",
-      "prob-method-alteration"
-    ],
-    "lineCount": 501
+    "lineCount": 501,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Szemerédi Regularity Lemma, proved by Endre Szemerédi in 1975 as a key tool in his proof of Szemerédi's theorem, has become one of the most important and widely-used results in combinatorics. It provides a universal structural decomposition for graphs: any sufficiently large graph can be partitioned into a bounded number of parts such that the edges between almost all pairs of parts behave pseudo-randomly.\n\nThe lemma's power lies in reducing arbitrary graph problems to problems about dense random-like bipartite graphs. This 'structure vs randomness' paradigm has transformed graph theory, additive combinatorics, and theoretical computer science.\n\nGowers (1997) showed that the tower-type bound on the number of parts is unavoidable: the partition size must grow as a tower of exponentials in 1/epsilon. Despite this, the lemma's qualitative power is undiminished, and it remains the primary tool for transferring results from random graphs to arbitrary graphs.\n\nThe regularity lemma has inspired numerous variants: the strong regularity lemma (Alon-Fischer-Krivelevich-Szegedy), weak regularity (Frieze-Kannan), arithmetic regularity (Green), and hypergraph regularity (Gowers, Rödl-Skokan). This formalization develops reusable energy machinery (density convexity, split identities, energy bounds) from scratch and provides a compatibility bridge that exposes Mathlib's complete regularity lemma through our combinatorics-oriented definitions. The core energy increment iteration and tower bound are not re-proved here — they come from Mathlib's comprehensive implementation.",
@@ -93,7 +85,7 @@
       "id": "preamble",
       "title": "Preamble, Imports, and Re-exports",
       "startLine": 1,
-      "endLine": 30,
+      "endLine": 31,
       "summary": "Module docstring, imports Mathlib and SzemerediCore, re-exports core definitions (`edgeDensity`, `IsEpsilonRegular`, `IsRegularPartition`, `partitionEnergy` and their basic lemmas) so downstream code referencing `Szemeredi.Regularity.*` continues to compile.",
       "mathContext": "Re-exports: `edgeDensity`, `IsEpsilonRegular`, `IsRegularPartition`, `partitionEnergy`, `edgeDensity_nonneg`, `edgeDensity_le_one`, `partitionEnergy_nonneg` from `Szemeredi.Core`."
     },
@@ -101,7 +93,7 @@
       "id": "energy-helpers",
       "title": "Part II: Edge Count Helpers and Density Convexity",
       "startLine": 32,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Proves three helper lemmas and the main density convexity theorem. `card_mul_edgeDensity` recovers edge count from density. `edge_count_union` shows edge counts are additive over disjoint vertex sets. `density_sq_convex` is the Cauchy-Schwarz ingredient: $n_1 d_1^2 + n_2 d_2^2 \\geq (n_1+n_2) d^2$ when $d$ is the weighted average density.",
       "mathContext": "Density convexity: if $A = A_1 \\sqcup A_2$, then $|A_1| d(A_1,B)^2 + |A_2| d(A_2,B)^2 \\geq |A| d(A,B)^2$. Reduces to $n_1 n_2 (d_1-d_2)^2/(n_1+n_2) \\geq 0$."
     },
@@ -109,7 +101,7 @@
       "id": "energy-analysis",
       "title": "Energy Analysis: Splitting and Bounds",
       "startLine": 149,
-      "endLine": 219,
+      "endLine": 220,
       "summary": "Extracts irregular pairs (`exists_irregular_pair`), proves the algebraic split energy identity ($n_1 n_2 (d_1-d_2)^2/(n_1+n_2)$), non-negativity, and quantitative excess bound. Includes a note explaining why the energy increment step is deferred to Mathlib.",
       "mathContext": "Split identity: $n_1 d_1^2 + n_2 d_2^2 - (n_1+n_2)\\bar{d}^2 = \\frac{n_1 n_2 (d_1-d_2)^2}{n_1+n_2}$. Bound: if $|d_1-d_2| \\geq \\delta$, excess $\\geq \\frac{n_1 n_2 \\delta^2}{n_1+n_2}$."
     },
@@ -117,7 +109,7 @@
       "id": "regularity-main",
       "title": "Part III: Regularity Lemma (Vacuous and Strong Forms)",
       "startLine": 221,
-      "endLine": 321,
+      "endLine": 322,
       "summary": "Proves `partitionEnergy_le_one` ($E \\leq 1$ for valid partitions), `max_iterations` (termination bound), `exists_irregular_witness` (extract witnessing subsets), and the basic `regularity_lemma` (vacuously satisfied by the one-part partition $\\{V\\}$).",
       "mathContext": "Energy bound: $E(\\mathcal{P}) \\leq 1$ since $d^2 \\leq d \\leq 1$ and the sum has $k^2$ terms with $1/k^2$ factor. Termination: $\\lceil 1/\\varepsilon^5 \\rceil$ iterations suffice."
     },
@@ -125,7 +117,7 @@
       "id": "mathlib-bridge",
       "title": "Bridge to Mathlib: Compatibility and Strong/Full Forms",
       "startLine": 323,
-      "endLine": 500,
+      "endLine": 501,
       "summary": "Four compatibility theorems bridging our definitions to Mathlib's: `edgeDensity_eq_mathlib` (density equivalence), `mathlib_uniform_imp_regular` (Mathlib uniformity → our regularity), `equipartition_imp_equitable` (equitability bridge), `irregular_subset_nonuniform` (irregular pairs subset). These yield `regularity_lemma_strong` (with m₀ ≤ k ≤ M) and `regularity_lemma_full` (with partition structure: coverage and disjointness) via `szemeredi_regularity` from Mathlib.",
       "mathContext": "Bridge: our $\\varepsilon$-regularity (with $\\leq$) is implied by Mathlib's uniformity (with $<$). Our irregular pair set $\\subseteq$ Mathlib's non-uniform set. This yields: $\\forall \\varepsilon > 0, m_0 \\geq 1, \\exists M: n \\geq M \\Rightarrow$ graph has $\\varepsilon$-regular partition with $m_0 \\leq k \\leq M$."
     }

@@ -28,7 +28,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "4 axiom declarations: borsuk_ulam_general (n>=1, INDEPENDENT), no_retraction (n>=1, REDUNDANT - proved from BU via hemisphere folding), brouwer_fixed_point (nD, REDUNDANT - proved from no_retraction via ray-sphere retraction), lusternik_schnirelmann (n>=1, REDUNDANT - proved from BU via infDist). Only 1 independent axiom: borsuk_ulam_general. Two former axioms (ham_sandwich_general, odd_map_odd_degree) converted to theorems. The 1D cases are all proved directly from IVT with 0 axioms.",
+    "assumptions": "1 axiom declaration: borsuk_ulam_general (Borsuk-Ulam theorem for n>=1, INDEPENDENT). Three former axioms (no_retraction, brouwer_fixed_point, lusternik_schnirelmann) are REDUNDANT — proved from BU. Two former axioms (ham_sandwich_general, odd_map_odd_degree) converted to theorems.",
     "mathlibDependencies": [
       {
         "theorem": "intermediate_value_Icc",
@@ -132,7 +132,7 @@
       "title": "No Odd Map Between Spheres",
       "summary": "Proves no continuous odd map S^n -> S^{n-1} exists (from BU). Establishes equivariant map hierarchy: existence iff source_dim <= target_dim. Proves isobarycentric point theorem for odd functions.",
       "startLine": 4830,
-      "endLine": 5010
+      "endLine": 5186
     }
   ],
   "conclusion": {

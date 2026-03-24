@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500",
     "dateAdded": "2026-01-13",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -81,49 +81,49 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Module documentation and namespace setup."
     },
     {
       "id": "background",
       "title": "Background",
       "startLine": 27,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Context on equidistance in point sets."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 39,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Definitions of equidistance properties and f(n)."
     },
     {
       "id": "conjectures",
       "title": "The Main Conjectures",
       "startLine": 76,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Weak and strong forms of the conjecture."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "startLine": 103,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Axioms for upper and lower bounds."
     },
     {
       "id": "small-values",
       "title": "Small Values",
       "startLine": 149,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "Fishburn's computations for small n."
     },
     {
       "id": "consequences",
       "title": "Consequences",
       "startLine": 165,
-      "endLine": 192,
+      "endLine": 247,
       "summary": "Relations between conjectures and historical notes."
     }
   ],
@@ -151,5 +151,27 @@
     "axiomCount": 9,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, incidence-geometry"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, incidence-geometry"
+    },
+    {
+      "targetId": "erdos-1069",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, incidence-geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-101",
+    "erdos-102",
+    "erdos-1069"
+  ]
 }

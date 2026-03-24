@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/1074",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.factorial",
@@ -86,35 +86,35 @@
       "title": "Definitions",
       "summary": "EHSNumbers and PillaiPrimes set definitions",
       "startLine": 34,
-      "endLine": 46
+      "endLine": 47
     },
     {
       "id": "chowla-example",
       "title": "Chowla's Example",
       "summary": "23 is a Pillai prime: 14! + 1 ≡ 0 (mod 23)",
       "startLine": 48,
-      "endLine": 72
+      "endLine": 73
     },
     {
       "id": "ehs-examples",
       "title": "EHS Number Examples",
       "summary": "Verified: 8 and 9 are EHS numbers",
       "startLine": 74,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "infinitude",
       "title": "Infinitude Results",
       "summary": "Both sets are infinite (Erdős-Hardy-Subbarao)",
       "startLine": 98,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "open-problems",
       "title": "Open Density Problems",
       "summary": "Do the asymptotic densities exist?",
       "startLine": 117,
-      "endLine": 154
+      "endLine": 156
     }
   ],
   "conclusion": {
@@ -130,28 +130,28 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1073",
-      "relationship": "Erdős Problem #1073 asks which composites m divide m! + 1, directly paralleling Problem #1074's study of which m have a prime factor p | m! + 1 with p ≢ 1 (mod m). Both problems center on divisibility properties of factorial-plus-one."
+      "relationship": "Erdős Problem #1073 asks which composites m divide m! + 1, directly paralleling Problem #1074's study of which m have a prime factor p | m! + 1 with p ≢ 1 (mod m). Both problems center on divisibility properties of factorial-plus-one.",
+      "targetId": "erdos-1073"
     },
     {
-      "target": "erdos-1072",
-      "relationship": "Erdős Problem #1072 asks for the least n such that n! ≡ -1 (mod p), connecting Wilson's theorem to factorial congruences. Problem #1074's Pillai primes are exactly those primes p for which such an n exists with p ≢ 1 (mod n), making these problems twin investigations of factorial residues."
+      "relationship": "Erdős Problem #1072 asks for the least n such that n! ≡ -1 (mod p), connecting Wilson's theorem to factorial congruences. Problem #1074's Pillai primes are exactly those primes p for which such an n exists with p ≢ 1 (mod n), making these problems twin investigations of factorial residues.",
+      "targetId": "erdos-1072"
     },
     {
-      "target": "wilsons-theorem",
-      "relationship": "Wilson's theorem ((p-1)! ≡ -1 (mod p)) is the foundational result underpinning EHS numbers and Pillai primes. The EHS condition p ≢ 1 (mod m) explicitly excludes the Wilson case, so understanding Wilson's theorem is prerequisite to understanding Problem #1074."
+      "relationship": "Wilson's theorem ((p-1)! ≡ -1 (mod p)) is the foundational result underpinning EHS numbers and Pillai primes. The EHS condition p ≢ 1 (mod m) explicitly excludes the Wilson case, so understanding Wilson's theorem is prerequisite to understanding Problem #1074.",
+      "targetId": "wilsons-theorem"
     },
     {
-      "target": "prime-number-theorem",
-      "relationship": "The Prime Number Theorem governs the asymptotic density of primes, providing the analytic framework for asking whether Pillai primes have a positive relative density among all primes. Problem #1074's density questions are in the same spirit as PNT-style asymptotic analysis."
+      "relationship": "The Prime Number Theorem governs the asymptotic density of primes, providing the analytic framework for asking whether Pillai primes have a positive relative density among all primes. Problem #1074's density questions are in the same spirit as PNT-style asymptotic analysis.",
+      "targetId": "prime-number-theorem"
     },
     {
-      "target": "dirichlets-theorem",
-      "relationship": "Dirichlet's theorem on primes in arithmetic progressions is closely related: the condition p ≢ 1 (mod m) in the Pillai prime definition is a residue-class condition on primes, and understanding which residue classes contain infinitely many primes (Dirichlet) informs the infinitude and density results for Pillai primes."
+      "relationship": "Dirichlet's theorem on primes in arithmetic progressions is closely related: the condition p ≢ 1 (mod m) in the Pillai prime definition is a residue-class condition on primes, and understanding which residue classes contain infinitely many primes (Dirichlet) informs the infinitude and density results for Pillai primes.",
+      "targetId": "dirichlets-theorem"
     },
     {
-      "target": "bertrands-postulate",
-      "relationship": "Bertrand's Postulate guarantees prime existence in intervals, a prototype for the kind of prime-density and prime-existence arguments used to show EHSNumbers and PillaiPrimes are infinite. Both results belong to the tradition of elementary number theory establishing prime density lower bounds."
+      "relationship": "Bertrand's Postulate guarantees prime existence in intervals, a prototype for the kind of prime-density and prime-existence arguments used to show EHSNumbers and PillaiPrimes are infinite. Both results belong to the tradition of elementary number theory establishing prime density lower bounds.",
+      "targetId": "bertrands-postulate"
     }
   ],
   "relatedProofs": [

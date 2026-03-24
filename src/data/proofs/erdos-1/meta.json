@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/1",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.powerset",
@@ -78,7 +78,7 @@
       "id": "header",
       "title": "Aristotle Header and Problem Statement",
       "startLine": 1,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Aristotle proof search results (lines 1-24) documenting three proved theorems with full type signatures. Problem statement docstring (lines 26-41): if $A \\subseteq \\{1, \\ldots, N\\}$ with $|A| = n$ has all $2^n$ subset sums distinct, then $N \\geq 2^{n-1}$. Erdos posed this as his 'first serious problem' (1931) with a \\$500 prize for the stronger conjecture $N \\geq c \\cdot 2^n$. Imports full Mathlib (line 43) and opens `Finset` namespace (line 46).",
       "mathContext": "Three results proved by Aristotle: $2^{|A|-1} \\leq N$ (main bound), $2^{|A|-1} \\leq \\max(A)$ (corollary), and the spacing property $S \\neq T \\Rightarrow \\sum S \\neq \\sum T$ for $S, T \\subseteq A$."
     },
@@ -86,7 +86,7 @@
       "id": "definition",
       "title": "Distinct Subset Sums Definition",
       "startLine": 48,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Defines `hasDistinctSubsetSums A` as `Function.Injective (\\lambda S \\Rightarrow (S.\\text{filter}\\,(\\cdot \\in A)).\\text{sum}\\,\\text{id})`. This captures: distinct subsets of $A$ have distinct sums.",
       "mathContext": "Distinct subset sums: $S \\neq T \\Rightarrow \\sum_{a \\in S \\cap A} a \\neq \\sum_{a \\in T \\cap A} a$ for all $S, T \\in \\text{Finset}\\,\\mathbb{N}$."
     },
@@ -94,7 +94,7 @@
       "id": "main-theorem",
       "title": "Main Lower Bound (Aristotle-proved)",
       "startLine": 52,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Proves `erdos_1_lower_bound`: $2^{|A|-1} \\leq N$ for $A \\subseteq \\{1, \\ldots, N\\}$ with distinct subset sums. Uses powerset cardinality bound $|\\mathcal{P}(A)| \\leq 2N$, then case-splits on $|A|$ with `pow_succ`, `mul_assoc`, `linarith`, and `grind`.",
       "mathContext": "$A \\subseteq \\{1, \\ldots, N\\}$ with $|A| = n$ and all $2^n$ subset sums distinct $\\Rightarrow 2^{n-1} \\leq N$."
     },
@@ -102,7 +102,7 @@
       "id": "max-element",
       "title": "Maximum Element Bound (Aristotle-proved)",
       "startLine": 67,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Proves `max_element_bound`: $2^{|A|-1} \\leq \\max(A)$ for nonempty $A$ with distinct subset sums. Reduces to `erdos_1_lower_bound` via `convert` with $N = A.\\text{max'}$, using `Finset.le_max'` for the containment hypothesis.",
       "mathContext": "$2^{|A|-1} \\leq \\max(A)$ — the maximum element alone must be at least $2^{n-1}$."
     },

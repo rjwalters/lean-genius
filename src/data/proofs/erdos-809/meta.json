@@ -7,7 +7,7 @@
     "author": "Burr, Erdős, Graham, Sós",
     "sourceUrl": "https://erdosproblems.com/809",
     "date": "1991",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos809Problem.lean",
     "tags": [
       "erdos",
@@ -22,7 +22,7 @@
     "erdosNumber": 809,
     "erdosUrl": "https://erdosproblems.com/809",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -79,42 +79,42 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 37,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Graphs, edge counts, Turán threshold, edge colorings"
     },
     {
       "id": "rainbow-property",
       "title": "Rainbow Property",
       "startLine": 71,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Rainbow colorings and cycle structure"
     },
     {
       "id": "function-f",
       "title": "The Function F_k(n)",
       "startLine": 92,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "F_k(n) axiomatized"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 105,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "Main conjecture F_k(n) ~ n²/8 in two equivalent forms"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 124,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "BEGS lower bound and quadratic upper bound"
     },
     {
       "id": "turan-context",
       "title": "Turán's Theorem Context",
       "startLine": 142,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Why ⌊n²/4⌋ + 1 edges and threshold_significance"
     },
     {
@@ -150,5 +150,27 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, odd-cycles"
+    },
+    {
+      "targetId": "erdos-573",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, turan"
+    },
+    {
+      "targetId": "erdos-904",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, turan"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-569",
+    "erdos-573",
+    "erdos-904"
+  ]
 }

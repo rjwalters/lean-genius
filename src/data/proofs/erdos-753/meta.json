@@ -24,8 +24,7 @@
     "erdosNumber": 753,
     "erdosUrl": "https://erdosproblems.com/753",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "v4.15.0",
-    "relatedProofs": [],
+    "mathlib_version": "4.26.0",
     "relatedProblems": [],
     "mathlibDependencies": [
       {
@@ -91,63 +90,63 @@
       "id": "list-coloring-defs",
       "title": "List Coloring Definitions",
       "startLine": 38,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "ListAssignment (V → Set C), IsKListAssignment (|L(v)| >= k via Set.ncard), IsLColoring (c(v) in L(v) and proper), IsKChoosable (forall k-list, exists L-coloring). listChromaticNumber axiomatized with achieved and minimal properties."
     },
     {
       "id": "complement-graph",
       "title": "Complement Graph",
       "startLine": 88,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "complementGraph: Adj v w iff v != w and not G.Adj v w, with proved symmetry and loopless. complement_complement: PROVED (G^c)^c = G by ext and by_cases on G.Adj v w."
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Rubin-Taylor Conjecture",
       "startLine": 119,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "ERTConjecture: exists c > 0, forall n >= 1, forall G on n vertices, chi_L(G) + chi_L(G^c) > n^{1/2+c}. Uses Real arithmetic for the exponent."
     },
     {
       "id": "alon-counterexample",
       "title": "Alon's Counterexample (1992)",
       "startLine": 134,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "alon_counterexample (axiom): exists C > 0, forall n >= 2, exists G with sum <= C*sqrt(n*log(n)). conjecture_false: not ERTConjecture (1 sorry in asymptotic contradiction)."
     },
     {
       "id": "bounds-relations",
       "title": "Bounds and Relations",
       "startLine": 163,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "list_chromatic_ge_chromatic: chi_L >= chi. trivial_lower_bound: sum >= sqrt(n). list_chromatic_le_max_degree_plus_one: chi_L <= Delta+1 (simplified)."
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Construction",
       "startLine": 190,
-      "endLine": 207,
+      "endLine": 208,
       "summary": "alon_construction_probabilistic and random_half_symmetry (both := True): document that G(n,1/2) provides counterexamples via self-complementary distribution."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 209,
-      "endLine": 236,
+      "endLine": 237,
       "summary": "nordhaus_gaddum: chi(G)+chi(G^c) >= 2*sqrt(n). nordhaus_gaddum_upper: sum <= n+1. list_chromatic_differs_from_chromatic: Voigt's example chi_L > chi."
     },
     {
       "id": "choosability-properties",
       "title": "Choosability Properties",
       "startLine": 238,
-      "endLine": 263,
+      "endLine": 264,
       "summary": "bipartite_not_always_two_choosable: chi=2 but chi_L>2. complete_graph_list_chromatic: chi_L(K_n)=n. galvin_theorem: chi_L(K_{n,n}) = 1+ceil(log_2(n))."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 265,
-      "endLine": 298,
+      "endLine": 299,
       "summary": "erdos_753_summary: PROVED conjunction of conjecture_false and alon_counterexample, packaging complete resolution of Problem #753."
     }
   ],
@@ -177,5 +176,27 @@
     "axiomCount": 15,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-630",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, list-coloring, solved"
+    },
+    {
+      "targetId": "erdos-631",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, list-coloring, solved"
+    },
+    {
+      "targetId": "erdos-797",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, probabilistic-method, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-630",
+    "erdos-631",
+    "erdos-797"
+  ]
 }

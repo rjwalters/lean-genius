@@ -22,7 +22,7 @@
     "erdosNumber": 773,
     "erdosUrl": "https://erdosproblems.com/773",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [],
     "originalContributions": [
       "IsSidon and IsSidonAlt definitions",
@@ -58,7 +58,7 @@
       "id": "header",
       "title": "Problem Overview and Imports",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Module docstring stating the problem, known results, and key insight about Landau's theorem. Imports Mathlib for finsets, naturals, and logarithms."
     },
     {
@@ -137,5 +137,27 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open, sidon-sets"
+    },
+    {
+      "targetId": "erdos-782",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open, squares"
+    },
+    {
+      "targetId": "erdos-1148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-340",
+    "erdos-782",
+    "erdos-1148"
+  ]
 }

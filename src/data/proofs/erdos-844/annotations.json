@@ -15,7 +15,8 @@
       "Squarefree numbers",
       "Intersecting families",
       "Extremal sets"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-nonsq-products",
@@ -28,7 +29,9 @@
     "title": "Non-Squarefree Product Property",
     "content": "**HasNonSquarefreeProducts A:**\n\n∀ a, b ∈ A, ¬Squarefree(a * b)\n\nThis is the constraint: every product of elements in A must be divisible by some p².",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of non-squarefree product property"
+    "mathContext": "See annotation content for formal details of non-squarefree product property",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-optimal-set",
@@ -45,7 +48,8 @@
     "relatedConcepts": [
       "Even numbers",
       "Non-squarefree numbers"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-even-product",
@@ -58,7 +62,9 @@
     "title": "Even Products Not Squarefree",
     "content": "**even_product_not_squarefree:**\n\nIf 2|a and 2|b and ab > 0, then ¬Squarefree(ab).\n\nReason: ab is divisible by 2·2 = 4, so has a repeated prime factor.",
     "mathContext": "This is why even × even works. Products are divisible by 4 = 2².",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-nonsq-inherit",
@@ -71,7 +77,9 @@
     "title": "Non-Squarefree Inheritance",
     "content": "**nonsquarefree_product:**\n\nIf ¬Squarefree(a) and b > 0, then ¬Squarefree(ab).\n\nReason: If p²|a, then p²|ab.",
     "mathContext": "This is why including all non-squarefree numbers is safe - they 'infect' any product.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-maximal",
@@ -84,7 +92,9 @@
     "title": "Maximal Sets Contain Non-Squarefree",
     "content": "**maximal_contains_nonsquarefree:**\n\nAny maximal A with the property contains all non-squarefree numbers.\n\nReason: Non-squarefree n can always be added - n×m is not squarefree for any m.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of maximal sets contain non-squarefree"
+    "mathContext": "See annotation content for formal details of maximal sets contain non-squarefree",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-squarefree-crit",
@@ -101,7 +111,8 @@
     "relatedConcepts": [
       "Prime factorization",
       "Squarefree numbers"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-intersecting",
@@ -118,7 +129,8 @@
       "Hypergraphs",
       "Chvátal's theorem"
     ],
-    "mathContext": "See annotation content for formal details of intersecting family"
+    "mathContext": "See annotation content for formal details of intersecting family",
+    "prerequisites": []
   },
   {
     "id": "ann-e844-chvatal",
@@ -135,7 +147,8 @@
     "relatedConcepts": [
       "Chvátal 1974",
       "Intersecting hypergraphs"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-weisenberg",
@@ -148,7 +161,9 @@
     "title": "Weisenberg's Proof",
     "content": "**weisenberg_proof:**\n\nFor N ≥ 1 and any A ⊆ {1,...,N} with HasNonSquarefreeProducts A:\n|A| ≤ |optimalSet N|\n\nThe optimal set achieves the maximum.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of weisenberg's proof"
+    "mathContext": "See annotation content for formal details of weisenberg's proof",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-ams",
@@ -161,7 +176,9 @@
     "title": "Alexeev-Mixon-Sawin Alternative",
     "content": "**alexeev_mixon_sawin_proof:**\n\nIndependent alternative proof of the same result.\n\nPublished in arXiv:2507.01928 (2025).",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of alexeev-mixon-sawin alternative"
+    "mathContext": "See annotation content for formal details of alexeev-mixon-sawin alternative",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-density",
@@ -178,7 +195,8 @@
     "relatedConcepts": [
       "Squarefree density",
       "Asymptotic analysis"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-example",
@@ -191,7 +209,9 @@
     "title": "Example for N = 10",
     "content": "**optimalSet 10 = {2, 4, 6, 8, 9, 10}**\n\n- 2, 4, 6, 8, 10 are even\n- 9 = 3² is odd non-squarefree\n- Missing: 1, 3, 5, 7 (odd squarefree)\n- Why 1 cannot be added: 1 × 3 = 3 is squarefree",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of example for n = 10"
+    "mathContext": "See annotation content for formal details of example for n = 10",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-characterization",
@@ -204,7 +224,9 @@
     "title": "Complete Characterization",
     "content": "**erdos_844_characterization:**\n\n1. The optimal set has the non-squarefree product property\n2. No larger set has the property\n3. The optimal set = even numbers ∪ odd non-squarefree\n\nThis completely resolves Erdős Problem #844.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of complete characterization"
+    "mathContext": "See annotation content for formal details of complete characterization",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e844-summary",
@@ -217,6 +239,8 @@
     "title": "Summary Theorem",
     "content": "**erdos_844:**\n\nCombines the two main results:\n1. The optimal set has the non-squarefree product property\n2. No larger set has the property\n\nProved via exact ⟨optimal_set_has_property, weisenberg_proof⟩.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

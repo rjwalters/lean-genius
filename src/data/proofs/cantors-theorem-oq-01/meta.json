@@ -7,7 +7,7 @@
     "author": "Cantor (1891); Easton (1970); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Beth_number",
     "date": "1891",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CantorsTheoremOQ01.lean",
     "tags": [
       "set-theory",
@@ -19,7 +19,7 @@
       "classic",
       "foundations"
     ],
-    "badge": "axiom",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -61,9 +61,9 @@
       "Key technique: beth_succ requires explicit rewrite (2 : Ordinal) = Order.succ 1 since omega does not work for Ordinal arithmetic"
     ],
     "dateAdded": "2026-02-23",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 272,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "0 axioms, 0 sorries. Core cardinal facts (Cantor's theorem, mk_set, mk_real, beth hierarchy) from Mathlib; original work combines these to establish |𝒫(ℝ)| = ℶ₂ and conditional CH/GCH results."
   },
   "overview": {
     "historicalContext": "Cantor's 1891 diagonal argument proved |ℝ| < |𝒫(ℝ)|, establishing that the power set of any set is strictly larger. Combined with the identification |ℝ| = 2^ℵ₀ = 𝔠 (the continuum), this gives |𝒫(ℝ)| = 2^𝔠.\n\nThe beth number hierarchy (Sierpiński, 1947) organizes this: ℶ₀ = ℵ₀ = |ℕ|, ℶ₁ = 2^ℵ₀ = 𝔠 = |ℝ|, ℶ₂ = 2^𝔠 = |𝒫(ℝ)|, and so on. So |𝒫(ℝ)| = ℶ₂ is a clean, definitive ZFC theorem.\n\nHowever, the question of which aleph number equals ℶ₂ is deeply non-trivial. Gödel (1938) showed CH is consistent with ZFC; Cohen (1963) showed ¬CH is consistent. Easton (1970) showed that 2^κ for regular κ can be almost anything consistent with König's theorem: cf(2^κ) > κ. In particular, |𝒫(ℝ)| can consistently equal ℵ₂, ℵ₃, ℵ_{ω₁+1}, or many other values — but never ℵ_ω (since cf(ℵ_ω) = ω ≤ 𝔠).",
@@ -133,7 +133,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves all ZFC-provable facts about |𝒫(ℝ)|: the power set formula (= 2^𝔠), Cantor's strict inequality (|ℝ| < |𝒫(ℝ)|), the beth representation (= ℶ₂), and the aleph lower bound (ℵ₁ < |𝒫(ℝ)|). The file compiles with 0 sorries and 1 axiom (König's constraint). The proofs navigate Lean4's ordinal arithmetic limitations by using Order.succ_eq_add_one + norm_num instead of omega.",
+    "summary": "This formalization proves all ZFC-provable facts about |𝒫(ℝ)|: the power set formula (= 2^𝔠), Cantor's strict inequality (|ℝ| < |𝒫(ℝ)|), the beth representation (= ℶ₂), and the aleph lower bound (ℵ₁ < |𝒫(ℝ)|). The file compiles with 0 sorries and 0 axioms, using Mathlib's cardinal arithmetic library. The proofs navigate Lean4's ordinal arithmetic limitations by using Order.succ_eq_add_one + norm_num instead of omega.",
     "implications": "**Theoretical Significance**: **What this establishes**:\n\n**Definitive ZFC answer**: |𝒫(ℝ)| = 2^𝔠 = 2^(2^ℵ₀) = ℶ₂. This is the cleanest possible answer — no set-theoretic independence, no choice of axioms beyond ZFC.\n\n**Independence boundary**: The aleph-index of ℶ₂ is where ZFC independence begins.\n\nCH says ℶ₁ = ℵ₁, GCH then gives ℶ₂ = ℵ₂. But both CH and GCH are independent of ZFC.\n\n**König's constraint**: cf(2^𝔠) > 𝔠 is a genuine ZFC theorem that rules out many potential values (e.g., ℵ_ω, ℵ_{ω·2}, etc.), showing the boundary between provable and independent.",
     "openQuestions": [
       "Is |𝒫(ℝ)| = ℵ₂? (Independent of ZFC — consistent both ways)",

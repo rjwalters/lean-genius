@@ -14,7 +14,7 @@
   {
     "id": "ann-1059-allcomp",
     "proofId": "erdos-1059",
-    "range": { "startLine": 29, "endLine": 32 },
+    "range": { "startLine": 24, "endLine": 33 },
     "type": "definition",
     "title": "AllFactorialSubtractionsComposite",
     "content": "The key predicate: $n$ satisfies the property if for every $k$ with $k! < n$, both $\\neg(n - k!)$.Prime and $n - k! \\geq 2$. The $\\geq 2$ condition is essential — it excludes the trivial cases $n - k! \\in \\{0, 1\\}$ which are neither prime nor composite.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-1059-examples-doc",
     "proofId": "erdos-1059",
-    "range": { "startLine": 34, "endLine": 55 },
+    "range": { "startLine": 34, "endLine": 56 },
     "type": "concept",
     "title": "Worked Examples: Factorizations for 101, 211, and 89",
     "content": "Commentary showing the explicit factorial subtraction computations for all three cases. For $p = 101$: four factorials to check (up to $4! = 24$), all subtractions $100, 99, 95, 77$ are composite. For $p = 211$: five factorials (up to $5! = 120$), all subtractions composite. For $p = 89$: the subtraction $89 - 6 = 83$ is prime, so 89 fails. The factorizations are given explicitly (e.g., $77 = 7 \\times 11$), making the verification transparent.",
@@ -38,8 +38,8 @@
   {
     "id": "ann-1059-bound101",
     "proofId": "erdos-1059",
-    "range": { "startLine": 57, "endLine": 69 },
-    "type": "theorem",
+    "range": { "startLine": 57, "endLine": 71 },
+    "type": "technique",
     "title": "Factorial Growth Bounds for Finite Case Reduction",
     "content": "Two auxiliary lemmas reduce the infinite universal quantifier to finite case analysis. `factorial_lt_bound` proves $k! < 101 \\implies k \\leq 4$ and `factorial_lt_bound_211` proves $k! < 211 \\implies k \\leq 5$. Both use the same pattern: assume for contradiction $k \\geq 5$ (or 6), apply `Nat.factorial_le` for monotonicity ($m \\leq n \\implies m! \\leq n!$), compute $5! = 120 > 101$ (or $6! = 720 > 211$), and derive contradiction via `omega`.",
     "mathContext": "$k! < 101 \\implies k \\leq 4$ (since $5! = 120$); $k! < 211 \\implies k \\leq 5$ (since $6! = 720$). General pattern: $k! < n \\implies k \\leq \\lfloor\\Gamma^{-1}(n)\\rfloor$.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-1059-ex101",
     "proofId": "erdos-1059",
-    "range": { "startLine": 72, "endLine": 75 },
+    "range": { "startLine": 72, "endLine": 77 },
     "type": "insight",
     "title": "Example: p = 101 (Verified)",
     "content": "Fully verified proof that $101$ satisfies the factorial-subtraction property. After bounding $k \\leq 4$, `interval_cases` splits into 5 cases: $101 - 0! = 100 = 4 \\times 25$, $101 - 1! = 100$, $101 - 2! = 99 = 9 \\times 11$, $101 - 3! = 95 = 5 \\times 19$, $101 - 4! = 77 = 7 \\times 11$. Each compositeness check is resolved by `decide`.\n\n**Why 101 is the smallest qualifying prime:** Below 101, the primes that fail include 89 ($89 - 6 = 83$ prime), 71 ($71 - 6 = 65 = 5 \\times 13$, $71 - 24 = 47$ prime), 53 ($53 - 6 = 47$ prime), and many others. The $k = 3$ case ($k! = 6$) is the most common obstruction: since $p - 6$ is prime for many primes $p$ (this is the prime-gap-6 phenomenon, related to twin primes mod 6), finding primes where *all* factorial subtractions avoid primality requires escaping multiple primality obstructions simultaneously.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-1059-ex211",
     "proofId": "erdos-1059",
-    "range": { "startLine": 78, "endLine": 81 },
+    "range": { "startLine": 78, "endLine": 83 },
     "type": "insight",
     "title": "Example: p = 211 (Verified)",
     "content": "Fully verified: $211$ satisfies the property with 6 cases ($k \\leq 5$ since $5! = 120 < 211 < 720 = 6!$). Subtractions: $211 - 1 = 210$, $211 - 2 = 209 = 11 \\times 19$, $211 - 6 = 205 = 5 \\times 41$, $211 - 24 = 187 = 11 \\times 17$, $211 - 120 = 91 = 7 \\times 13$. All composite.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-1059-counter89",
     "proofId": "erdos-1059",
-    "range": { "startLine": 84, "endLine": 88 },
+    "range": { "startLine": 84, "endLine": 89 },
     "type": "insight",
     "title": "Counterexample: p = 89 (Verified)",
     "content": "Proof that $89$ does NOT satisfy the property: $89 - 3! = 89 - 6 = 83$, and $83$ is prime. The proof instantiates $k = 3$ in `AllFactorialSubtractionsComposite`, extracts the non-primality claim for $83$, and derives a contradiction via `decide` confirming $83$ is prime.\n\nNotably, Wilson's theorem (see `wilsons-theorem`) gives $(p-1)! \\equiv -1 \\pmod{p}$, so $p - (p-1)! \\equiv 1 \\pmod{p}$, which is never prime for $p > 2$. But the factorials relevant here are much smaller than $(p-1)!$ — for $p = 89$, only $k \\leq 4$ (since $4! = 24 < 89 < 120 = 5!$), far from $88!$.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-1059-conjecture",
     "proofId": "erdos-1059",
-    "range": { "startLine": 90, "endLine": 97 },
+    "range": { "startLine": 90, "endLine": 98 },
     "type": "concept",
     "title": "Main Conjecture: Infinitely Many Factorial-Avoiding Primes",
     "content": "The open conjecture: the set $\\{p \\in \\mathbb{N} : p\\text{ prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$ is infinite. Axiomatized using `Set.Infinite`. The probabilistic heuristic suggests not just infinitude but density 1 among primes: each $p - k!$ is prime independently with probability $\\sim 1/\\ln p$, and with only $\\sim \\log p / \\log \\log p$ values to check, the probability all are composite is $(1 - 1/\\ln p)^{O(\\log p / \\log \\log p)} \\to 1$.\n\nCompare with the infinitude of primes itself (see `infinitude-primes`): that result is constructive and ancient (Euclid, ~300 BCE), while this conjecture about a structured subset of primes remains open — illustrating how much harder it is to prove infinitude results for subsets of primes than for primes themselves.",
@@ -98,7 +98,7 @@
   {
     "id": "ann-1059-factorial-count",
     "proofId": "erdos-1059",
-    "range": { "startLine": 99, "endLine": 106 },
+    "range": { "startLine": 99, "endLine": 107 },
     "type": "concept",
     "title": "Factorial Count Bound",
     "content": "For $n \\geq 2$, there exists $l$ such that $l! < n \\leq (l+1)!$. This means exactly $l+1$ values of $k$ satisfy $k! < n$ (namely $k = 0, 1, \\ldots, l$). Since factorials grow as $k! \\sim \\sqrt{2\\pi k}(k/e)^k$ (Stirling), $l = O(\\log n / \\log \\log n)$.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-1059-alternative",
     "proofId": "erdos-1059",
-    "range": { "startLine": 108, "endLine": 119 },
+    "range": { "startLine": 108, "endLine": 120 },
     "type": "concept",
     "title": "Erdős's Smooth-Number Alternative",
     "content": "Erdős suggested a potentially easier variant: infinitely many $n$ in $(l!, (l+1)!]$ have (1) all prime factors $> l$ (i.e., $n$ is *$l$-rough*), and (2) $n - k!$ is composite for all $1 \\leq k \\leq l$. This drops the primality requirement on $n$, replacing it with an $l$-rough condition that may be more amenable to sieve theory (Selberg sieve, Brun-Titchmarsh inequality).\n\nThe connection to smooth numbers: the Dickman function $\\rho(u)$ governs the density of $y$-smooth numbers (all prime factors $\\leq y$) below $x$: the count is $\\sim x \\rho(\\log x / \\log y)$. In the factorial interval $(l!, (l+1)!]$, an integer $n$ with all prime factors $> l$ is the complement of being $l$-smooth. Since $\\log((l+1)!) \\approx l \\log l$ and $\\log l \\approx \\log l$, the smoothness parameter $u = l \\log l / \\log l = l$, and $\\rho(l) \\to 0$ rapidly, suggesting most large factorial-interval integers are indeed $l$-rough.",
@@ -122,8 +122,8 @@
   {
     "id": "ann-1059-primality",
     "proofId": "erdos-1059",
-    "range": { "startLine": 121, "endLine": 137 },
-    "type": "theorem",
+    "range": { "startLine": 121, "endLine": 138 },
+    "type": "technique",
     "title": "Primality Verification via decide",
     "content": "Proves `prime_101` and `prime_211` using Lean's `decide` tactic, which compiles the primality test to native code and evaluates it at kernel level. This produces a proof term — stronger than `#eval` — confirming the computation is correct. These primality proofs are prerequisites for the summary theorem.\n\nThe `decide` tactic works by reducing the proposition to a Boolean computation via the `Decidable` typeclass. For `Nat.Prime n`, Lean checks whether any integer from 2 to $\\sqrt{n}$ divides $n$. For $n = 211$, this means checking divisibility by 2, 3, 5, 7, 11, 13 (since $14^2 = 196 < 211 < 225 = 15^2$). The entire computation is verified by the kernel — no axioms, no trust assumptions.",
     "mathContext": "$101$ is prime (not divisible by $2, 3, 5, 7$ since $10^2 = 100 < 101$). $211$ is prime (not divisible by $2, 3, 5, 7, 11, 13$ since $14^2 = 196 < 211$). Lean's `decide` performs certified trial division, producing a proof term checked by the kernel.",

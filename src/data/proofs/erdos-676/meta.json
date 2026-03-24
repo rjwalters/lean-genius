@@ -21,7 +21,7 @@
     "erdosNumber": 676,
     "erdosUrl": "https://erdosproblems.com/676",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -84,49 +84,49 @@
       "title": "Basic Definitions",
       "summary": "HasRepresentation, IsRepresentable, ExceptionSet",
       "startLine": 31,
-      "endLine": 49
+      "endLine": 50
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture676, ErdosConjecture676', conjecture_equiv",
       "startLine": 51,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "density",
       "title": "Density Results",
       "summary": "exceptionCount, brun_selberg_bound, density_one",
       "startLine": 87,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "summary": "five_representable, thirteen_representable",
       "startLine": 106,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "variants",
       "title": "Variant Problems",
       "summary": "IsRepresentableGeneral, minimalCoefficient, SubpolynomialGrowth",
       "startLine": 136,
-      "endLine": 164
+      "endLine": 165
     },
     {
       "id": "connections",
       "title": "Related Concepts",
       "summary": "RepresentableByPrime, ResidueConstraint, almost_all_covered",
       "startLine": 166,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_676_status, erdos_676_statement",
       "startLine": 185,
-      "endLine": 212
+      "endLine": 213
     },
     {
       "id": "summary",
@@ -161,5 +161,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-methods"
+    },
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-methods"
+    },
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-369",
+    "erdos-976",
+    "erdos-1053"
+  ]
 }

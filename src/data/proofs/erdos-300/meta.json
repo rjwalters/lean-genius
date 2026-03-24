@@ -22,7 +22,7 @@
     "erdosNumber": 300,
     "erdosUrl": "https://erdosproblems.com/300",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.Icc",
@@ -87,42 +87,42 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 44,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Unit fraction sum, unit sum-free sets, interval {1,...,N}, and A(N)"
     },
     {
       "id": "erdos-graham",
       "title": "The Erdős-Graham Conjecture",
       "startLine": 78,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Original conjecture statement and Croot's disproof"
     },
     {
       "id": "lower-bound",
       "title": "The Trivial Lower Bound",
       "startLine": 106,
-      "endLine": 135,
+      "endLine": 136,
       "summary": "A(N) ≥ (1 - 1/e - o(1))N via excluding small n"
     },
     {
       "id": "liu-sawhney",
       "title": "Liu-Sawhney Theorem (2024)",
       "startLine": 137,
-      "endLine": 185,
+      "endLine": 186,
       "summary": "Main result A(N) = (1 - 1/e + o(1))N with combined asymptotic formula"
     },
     {
       "id": "egyptian",
       "title": "Egyptian Fractions Connection",
       "startLine": 187,
-      "endLine": 209,
+      "endLine": 210,
       "summary": "Egyptian fraction representations and multiple decompositions of 1"
     },
     {
       "id": "variants",
       "title": "Variants and Generalizations",
       "startLine": 211,
-      "endLine": 240,
+      "endLine": 241,
       "summary": "Avoiding other integer sums, greedy algorithm construction"
     },
     {
@@ -163,5 +163,27 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-321",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, subset-sums, unit-fractions"
+    },
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-310",
+    "erdos-321",
+    "erdos-148"
+  ]
 }

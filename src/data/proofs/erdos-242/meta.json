@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/242",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Rat",
@@ -47,9 +47,9 @@
       "Connection to Schinzel's generalization",
       "Summary of computational verification status"
     ],
-    "axiomCount": 6,
+    "axiomCount": 5,
     "lineCount": 186,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "The Erdős-Straus conjecture was posed by Paul Erdős and Ernst Straus in 1948. It asks whether every fraction 4/n with n > 2 can be written as a sum of exactly three unit fractions with distinct denominators.\n\nThis is one of the most famous unsolved problems in elementary number theory. Despite its simple statement, it has resisted proof for over 75 years. The conjecture has been verified computationally for all n up to 10^17 (over 100 quadrillion values), yet no general proof exists.\n\nThe problem is related to ancient Egyptian mathematics, where fractions were always written as sums of distinct unit fractions. The conjecture essentially asks: can the Egyptians always express 4/n using exactly three unit fractions?",
@@ -80,49 +80,49 @@
       "id": "egyptian-fraction",
       "title": "Egyptian Fraction Definition",
       "startLine": 35,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "General definition of Egyptian fraction representation"
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Straus Conjecture",
       "startLine": 45,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Formal statement of the main conjecture"
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
       "startLine": 63,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Four fractions suffice, density results, computational verification"
     },
     {
       "id": "specific-cases",
       "title": "Specific Cases",
       "startLine": 94,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "Results for specific residue classes mod 4"
     },
     {
       "id": "schinzel",
       "title": "Schinzel's Generalization",
       "startLine": 114,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "Generalization to a/n for arbitrary a"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 138,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "Verified examples for n=3, 5, 7"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 161,
-      "endLine": 185,
+      "endLine": 186,
       "summary": "Current status and summary theorem"
     }
   ],
@@ -146,8 +146,30 @@
     ],
     "namespace": "Erdos242",
     "lineCount": 186,
-    "axiomCount": 6,
+    "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-284",
+    "erdos-286"
+  ]
 }

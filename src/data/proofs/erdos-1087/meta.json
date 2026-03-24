@@ -7,7 +7,7 @@
     "author": "Erdos-Purdy (1971 bounds)",
     "sourceUrl": "https://erdosproblems.com/1087",
     "date": "1971",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1087Problem.lean",
     "tags": [
       "erdos",
@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1087",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -64,9 +64,9 @@
       "Connection to unit distances and Guth-Katz theorem",
       "erdos_1087 theorem: combining known bounds"
     ],
-    "axiomCount": 7,
+    "axiomCount": 6,
     "lineCount": 330,
-    "assumptions": "7 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #1087**\n\nThis problem was posed by Paul Erdos and George Purdy in their 1971 paper \"Some extremal problems in geometry\" (J. Combinatorial Theory Ser. A, 246-252). It belongs to the rich tradition of combinatorial geometry problems that Erdos pioneered.\n\n**The Setting:**\nGiven n points in the plane, consider all C(n,4) = n(n-1)(n-2)(n-3)/24 subsets of 4 points (quadruples). A quadruple is called \"degenerate\" if at least two of its 6 pairwise distances are equal. Let f(n) be the maximum number of degenerate quadruples over all n-point configurations.\n\n**Historical Progress:**\nErdos and Purdy proved bounds n^3 log n << f(n) << n^{7/2} in 1971. The problem asks whether the upper bound can be improved to n^{3+o(1)}, which would nearly match the lower bound. This remains open as of 2025, representing a gap in our understanding of distance geometry.",
@@ -91,56 +91,56 @@
       "title": "Basic Definitions",
       "summary": "Point type, distance function, and plane geometry setup",
       "startLine": 38,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "degenerate-quadruples",
       "title": "Degenerate Quadruples",
       "summary": "Quadruple type, pairwise distances, degeneracy predicate",
       "startLine": 57,
-      "endLine": 105
+      "endLine": 106
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "summary": "Point configurations, counting degenerate quadruples, extremal function",
       "startLine": 107,
-      "endLine": 149
+      "endLine": 150
     },
     {
       "id": "erdos-purdy-bounds",
       "title": "Erdos-Purdy Bounds (1971)",
       "summary": "Lower bound n^3 log n, upper bound n^{7/2}, the gap theorem",
       "startLine": 151,
-      "endLine": 184
+      "endLine": 185
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "Erdos's conjecture about n^{3+o(1)}, open status",
       "startLine": 186,
-      "endLine": 206
+      "endLine": 207
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "summary": "Unit distances, repeated distances, connection to other problems",
       "startLine": 208,
-      "endLine": 238
+      "endLine": 239
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "summary": "Total quadruples count, trivial upper bound, lattice lower bound",
       "startLine": 240,
-      "endLine": 270
+      "endLine": 271
     },
     {
       "id": "distinct-distances",
       "title": "Connection to Distinct Distances",
       "summary": "Guth-Katz theorem, relation between distinct and degenerate",
       "startLine": 272,
-      "endLine": 300
+      "endLine": 301
     },
     {
       "id": "main-results",
@@ -288,7 +288,7 @@
     ],
     "namespace": "Erdos1087",
     "lineCount": 330,
-    "axiomCount": 7,
+    "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 12
   }

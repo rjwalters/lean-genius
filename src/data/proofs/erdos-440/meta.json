@@ -22,7 +22,7 @@
     "erdosNumber": 440,
     "erdosUrl": "https://erdosproblems.com/440",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.lcm",
@@ -85,35 +85,35 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 36,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "IncreasingSeq, countingFunction A(x), normalizedRatio"
     },
     {
       "id": "naturals-case",
       "title": "The Natural Numbers Case",
       "startLine": 63,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "naturalsSeq, lcm_consecutive theorem, counting and liminf"
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound",
       "startLine": 101,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "bounded_by_sqrt, Tao's proof, optimal constant, van Doorn"
     },
     {
       "id": "liminf-question",
       "title": "The Liminf Question",
       "startLine": 141,
-      "endLine": 169,
+      "endLine": 170,
       "summary": "Erdős-Szemerédi liminf bound, combined summary theorem"
     },
     {
       "id": "generalizations",
       "title": "Special Sequences",
       "startLine": 171,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "k-consecutive LCM generalization"
     },
     {
@@ -147,5 +147,27 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-873",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: lcm, multiplicative-structure, number-theory"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved"
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counting-functions, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-873",
+    "erdos-1050",
+    "erdos-1057"
+  ]
 }

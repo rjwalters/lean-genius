@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "lineCount": 118,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1995 (reference [Er95]), asking about a fundamental property of sets defined by congruence exclusions. The question connects to a rich tradition in analytic number theory: the study of how sieve-theoretic constructions interact with different notions of density. Logarithmic density, which weights each integer $m$ by $1/m$, is a weaker notion than natural density—it exists more often. For example, the set of integers whose prime factorization has an odd number of factors (related to the Liouville function) has logarithmic density $1/2$ even though its natural density oscillates. The classical sieve of Eratosthenes produces congruence-sieved sets (with prime moduli and residue 0), and the density of primes can be understood through this lens. Erdős's question generalizes this to arbitrary moduli and residues, asking whether the logarithmic density is always well-defined. The problem is a special case of the broader Problem 486, which asks the same question for more general sieve constructions. The key difficulty is that while finite sieves yield periodic sets (whose density trivially exists), infinite sieves can produce sets with complex, non-periodic structure where the limit defining the density may oscillate.",
@@ -47,35 +48,35 @@
       "id": "log-density",
       "title": "Logarithmic Density",
       "startLine": 23,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Axiomatizes `logDensity S d` (the limit $\\frac{\\sum_{m \\in S, m \\le x} 1/m}{\\sum_{m \\le x} 1/m} \\to d$), `LogDensityExists`, uniqueness of the density value, and the $[0,1]$ bound."
     },
     {
       "id": "congruence-sieve",
       "title": "Congruence Sieve",
       "startLine": 45,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines `CongruenceSieve` (strictly increasing moduli + residues) and `sievedSet`: $\\{m : \\forall i,\\ m < n_i \\text{ or } m \\not\\equiv a_i \\pmod{n_i}\\}$ using `Int.ModEq`."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 62,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "States ErdosProblem25: $\\forall \\sigma,\\ \\text{LogDensityExists}(A(\\sigma))$. The universal quantification over all sieve configurations is the core difficulty."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 71,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Defines the prime-residue case (moduli are all primes). Axiomatizes finite sieve density existence (eventual periodicity). Notes the relationship to Problem 486."
     },
     {
       "id": "density-bounds",
       "title": "Density Bounds",
       "startLine": 91,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Axiomatizes nonemptiness of sieved sets (small integers pass all conditions) and positive density under pairwise coprimality of moduli."
     },
     {

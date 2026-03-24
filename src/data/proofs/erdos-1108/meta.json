@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1108",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.factorial",
@@ -50,7 +50,7 @@
       "Proved membership examples for factorial sums",
       "Proved 1 is both a square factorial sum and powerful"
     ],
-    "axiomCount": 7,
+    "axiomCount": 5,
     "lineCount": 193,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -83,49 +83,49 @@
       "id": "factorial-sums",
       "title": "Factorial Sums Definition",
       "startLine": 37,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Definition of FactorialSums set and membership examples."
     },
     {
       "id": "powerful",
       "title": "Powerful Numbers",
       "startLine": 70,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Definition and examples of powerful numbers."
     },
     {
       "id": "main-sets",
       "title": "Main Question Sets",
       "startLine": 94,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Definitions of k-th powers and powerful numbers in factorial sums."
     },
     {
       "id": "open-questions",
       "title": "The Open Questions",
       "startLine": 104,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Axiomatization of both open questions."
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
       "startLine": 123,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "Brindza-Erdős bound and related open problem #398."
     },
     {
       "id": "mahler",
       "title": "Mahler's Related Problem",
       "startLine": 140,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Mahler's problem on power sums and his example."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "startLine": 160,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Proofs that sets are nonempty (1 is in both)."
     },
     {
@@ -260,12 +260,7 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Factorial.Basic",
-      "Mathlib.Data.Nat.Prime.Defs",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Algebra.BigOperators.Ring.Finset",
-      "Mathlib.Data.Set.Finite.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [
       "Nat",
@@ -274,8 +269,8 @@
     ],
     "namespace": "Erdos1108",
     "lineCount": 193,
-    "axiomCount": 7,
-    "theoremCount": 11,
+    "axiomCount": 5,
+    "theoremCount": 13,
     "definitionCount": 5
   }
 }

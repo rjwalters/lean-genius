@@ -20,7 +20,7 @@
     "erdosNumber": 1060,
     "erdosUrl": "https://erdosproblems.com/1060",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -81,7 +81,7 @@
       "title": "Sum of Divisors Function",
       "summary": "sigma definition and basic properties",
       "startLine": 34,
-      "endLine": 61,
+      "endLine": 62,
       "mathContext": "$\\sigma(k) = \\sum_{d \\mid k} d$ is the sum of divisors function. It is multiplicative: $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$. Basic values: $\\sigma(1) = 1$, $\\sigma(p) = p+1$ for prime $p$, $\\sigma(p^a) = (p^{a+1}-1)/(p-1)$."
     },
     {
@@ -89,7 +89,7 @@
       "title": "Product k·σ(k)",
       "summary": "g definition, g_one, g_prime theorems",
       "startLine": 63,
-      "endLine": 83,
+      "endLine": 84,
       "mathContext": "Define $g(k) = k \\cdot \\sigma(k)$. For primes: $g(p) = p(p+1)$. Note $g$ is NOT multiplicative: $g(6) = 6 \\cdot 12 = 72$ but $g(2) \\cdot g(3) = 6 \\cdot 12 = 72$ coincidentally; in general $g(mn) \\neq g(m)g(n)$."
     },
     {
@@ -97,7 +97,7 @@
       "title": "Counting Function f(n)",
       "summary": "solutionSet, f definitions, finiteness proof",
       "startLine": 85,
-      "endLine": 129,
+      "endLine": 130,
       "mathContext": "$f(n) = |\\{k : g(k) = n\\}|$. Finiteness: since $\\sigma(k) \\geq 1$ for $k \\geq 1$, we have $g(k) = k\\sigma(k) \\geq k$, so $g(k) = n$ implies $k \\leq n$. Thus $f(n) \\leq n$ trivially."
     },
     {
@@ -105,7 +105,7 @@
       "title": "Basic Values",
       "summary": "f(1), f(0) theorems",
       "startLine": 131,
-      "endLine": 146,
+      "endLine": 147,
       "mathContext": "$f(1) = 1$ (only $k=1$ gives $g(1) = 1\\cdot 1 = 1$). $f(0) = 1$ (only $k=0$ gives $g(0) = 0$). Most values of $n$ have $f(n) = 0$ (not in the range of $g$)."
     },
     {
@@ -113,7 +113,7 @@
       "title": "Upper Bound Conjectures (Open)",
       "summary": "Weak and strong conjecture axioms",
       "startLine": 148,
-      "endLine": 172,
+      "endLine": 173,
       "mathContext": "Weak: $f(n) \\leq n^{o(1/\\log\\log n)}$, meaning for any $\\varepsilon > 0$, eventually $f(n) \\leq n^{\\varepsilon/\\log\\log n}$. Strong: $f(n) \\leq (\\log n)^C$ for some absolute constant $C$. Both remain OPEN."
     },
     {
@@ -121,7 +121,7 @@
       "title": "OEIS Connection",
       "summary": "A327153 definition and membership",
       "startLine": 174,
-      "endLine": 201,
+      "endLine": 202,
       "mathContext": "OEIS A327153: the set $\\{n : f(n) > 0\\} = \\{g(k) : k \\geq 1\\} = \\{1, 6, 12, 30, 56, 72, \\ldots\\}$. This is the range of $g(k) = k\\sigma(k)$."
     },
     {
@@ -129,7 +129,7 @@
       "title": "Examples and Computations",
       "summary": "Concrete verified examples using native_decide",
       "startLine": 203,
-      "endLine": 239,
+      "endLine": 241,
       "mathContext": "Verified: $g(2) = 6$, $g(3) = 12$, $g(5) = 30$, $g(6) = 72$, $g(7) = 56$. For primes $p$: $g(p) = p(p+1)$, giving infinitely many values in the range."
     }
   ],

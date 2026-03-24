@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 206,
-    "assumptions": "1 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom(s) and 5 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal posed this problem around 1960, connecting combinatorial independence with measure theory and set-theoretic foundations. Their 1960 theorem that arbitrarily large finite independent sets exist uses a probabilistic/measure-theoretic argument: since each $A_x$ has outer measure $< 1$, the 'forbidden region' for any finite set of points has total measure less than the length of the interval, leaving room for an additional independent point. Gladysz (1962) showed that for closed families, even size-2 independent sets exist — a non-trivial fact since closedness provides topological structure. The dramatic set-theoretic turn came with Hechler (1972), who constructed under the Continuum Hypothesis a bounded outer measure family with no infinite independent set. This used a CH-powered diagonalization: well-ordering the reals in type $\\omega_1$ and building each $A_x$ to prevent infinite independence. The positive resolution for closed sets came from Newelski, Pawlikowski, and Seredyński (1987), who proved in ZFC alone that closed measure families always admit infinite independent sets. This is one of the cleanest examples in mathematics where the answer to a natural analytic question depends on set-theoretic axioms.",
@@ -97,7 +98,7 @@
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 143,
-      "endLine": 172,
+      "endLine": 206,
       "summary": "Proves independence is hereditary (subsets of independent sets are independent) and the insertion lemma (extending by one element). Defines `maxIndependentSize` and states it is infinite by Erdős-Hajnal."
     }
   ],
@@ -136,5 +137,27 @@
     "Newelski, Pawlikowski & Seredyński (1987): infinite independent for closed families",
     "Erdős & Hajnal (1961): partition calculus and infinite combinatorics",
     "https://erdosproblems.com/501"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-623",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, independence, set-theory"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, set-theory"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-623",
+    "erdos-1167",
+    "erdos-1169"
   ]
 }

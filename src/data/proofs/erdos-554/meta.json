@@ -21,7 +21,7 @@
     "erdosNumber": 554,
     "erdosUrl": "https://erdosproblems.com/554",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Basic",
@@ -79,42 +79,42 @@
       "id": "ramsey-framework",
       "title": "Part I: Ramsey Number Framework",
       "startLine": 24,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Axiomatizes Ramsey numbers, defines triangleRamsey and oddCycleRamsey."
     },
     {
       "id": "conjecture",
       "title": "Part II: The Conjecture",
       "startLine": 47,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "States erdosConjecture554: the ratio R(C_{2n+1};k)/R(K_3;k) -> 0 as k -> infinity."
     },
     {
       "id": "known-bounds",
       "title": "Part III: Known Bounds",
       "startLine": 64,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "Exponential bounds for triangle Ramsey numbers, upper and lower bounds for odd cycle Ramsey numbers."
     },
     {
       "id": "two-color",
       "title": "Part IV: Classical 2-Color Results",
       "startLine": 100,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "2-color results: R(C_{2n+1}; 2) = 4n+1, R(K_3; 2) = 6, and verified pentagon ratio."
     },
     {
       "id": "pentagon-case",
       "title": "Part V: The Pentagon Case",
       "startLine": 126,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "The simplest open case C_5 and proof it follows from the full conjecture."
     },
     {
       "id": "chromatic-connection",
       "title": "Part VI: Relation to Graph Chromatic Number",
       "startLine": 143,
-      "endLine": 164,
+      "endLine": 165,
       "summary": "Connection to chromatic number: all odd cycles are 3-chromatic like K_3."
     },
     {
@@ -148,5 +148,27 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-558",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, odd-cycles, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-925",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, multicolor-ramsey, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-558",
+    "erdos-569",
+    "erdos-925"
+  ]
 }

@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 14,
-    "focus": "Session 14: Verified build, assessed sorry. Fix requires ~220 lines Dirichlet integration.",
+    "iteration": 15,
+    "focus": "Session 15: Exhaustive analysis of Case 2 sorry. AP-freeness transfer to subprogressions proved conceptually. Density boost requires ~200 lines of approximate Fourier analysis.",
     "blockers": [
       "Pre-existing Mathlib API breakages in fourier_large_coefficient (lines 583-800)",
       "Dirichlet approximation needed for N=1 iteration case (in density_increment_iter)"
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 13 added density_bound_from_increment lemma (d+d²/100≤1 from density_increment_lemma+card_le_nat), apFree_density_lt_two_thirds lemma (δ≤2/3 for N≥3), fixed 4 linter warnings, improved sorry documentation with detailed fix path. File: 0 axioms, 1 sorry, 1476 lines.",
+    "progressSummary": "PROGRESS: Session 15 performed exhaustive analysis of Case 2 sorry. Established key insight: AP-freeness transfers to subprogressions. Documented detailed 6-step proof outline. The sorry requires ~200 lines of infrastructure (subprogression defs, wrapping-AP analysis, approximate Fourier analysis). File: 0 axioms, 1 sorry, 1560 lines.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -67,7 +67,8 @@
       "Split nlinarith timeout into intermediate lemma hcaseN + linarith",
       "PROVED density_bound_from_increment: δ+δ²/100≤1 from density_increment_lemma+card_le_nat",
       "PROVED apFree_density_lt_two_thirds: δ≤2/3 for APFree on ZMod N with N≥3",
-      "Fixed 4 linter warnings: unused simp args (true_and, Finset.mem_univ), unused vars (_hg, _hAP, _hdelta1, _hdelta)"
+      "Fixed 4 linter warnings: unused simp args (true_and, Finset.mem_univ), unused vars (_hg, _hAP, _hdelta1, _hdelta)",
+      "Session 15: Documented detailed 6-step proof outline for Case 2 in RothTheorem.lean comments"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -118,7 +119,12 @@
       "Without Dirichlet, density_increment_lemma can produce M=1 from ANY N≥2 (M=gcd(val(r),N)=1 for prime N), allowing descent to reach N=1 in one step",
       "The sorry at density_increment_iter line 1408 is provably unreachable via Dirichlet approximation, but the formal proof requires restructuring the iteration to track M≥√N at each step",
       "density_bound_from_increment already proves d+d²/100≤1 for N≥2, so density never exceeds ~0.99 while M≥2. The issue is that M can drop to 1 in a single step, where density=1 and the next increment exceeds 1.",
-      "DirichletApproximation.lean is fully proved (0 sorries, 142 lines) and ready for integration"
+      "DirichletApproximation.lean is fully proved (0 sorries, 142 lines) and ready for integration",
+      "Case 2 of density_increment_dirichlet (d < √N) genuinely requires Dirichlet subprogression approach — no combination of coset decompositions avoids it",
+      "AP-freeness DOES transfer to subprogressions: when q∤N, wrapping APs with consistent wrap patterns map to valid APs in ZMod N, and mixed-wrapping requires N|Mq which fails",
+      "The M ≥ √N property is ESSENTIAL for Roth's theorem — without it, iteration can collapse to M=1 before density exceeds 1 (e.g., prime N with gcd(r,N)=1)",
+      "Approximate character constancy does NOT follow from simple triangle inequality — error O(δN) dominates signal O(δ²N) for the naive bound",
+      "Dual coset decomposition (d cosets of size g>√N) gives APFree and density ≥ δ by pigeonhole, but NO density boost since the Fourier compatibility condition (g|val(r)) fails"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -143,7 +149,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-23T04:30:00Z",
+  "lastUpdate": "2026-03-24T03:30:00Z",
   "significance": 9,
   "tractability": 6
 }

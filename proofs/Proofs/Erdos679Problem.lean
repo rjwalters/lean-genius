@@ -87,7 +87,7 @@ def MainConjecture : Prop :=
   ∀ ε > 0, Set.Infinite {n : ℕ | SatisfiesProperty ε n}
 
 /-- The problem is OPEN. -/
-axiom main_conjecture_open : MainConjecture ∨ ¬MainConjecture
+theorem main_conjecture_open : MainConjecture ∨ ¬MainConjecture := Classical.em _
 
 /- ## Part IV: The Stronger Version (Disproven) -/
 

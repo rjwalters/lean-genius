@@ -23,12 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/748",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
-    "relatedProofs": [
-      "erdos-14",
-      "erdos-160",
-      "erdos-175"
-    ],
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.powerset",
@@ -91,56 +86,56 @@
       "title": "Sum-Free Sets",
       "summary": "Defines `IsSumFree A`: $\\forall a,b,c \\in A,\\; a \\ne b + c$. Alternative `IsSumFree'` and proved equivalence `sumFree_iff`.",
       "startLine": 44,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "counting",
       "title": "Counting Sum-Free Sets",
       "summary": "Defines `sumFreeSubsets n` (filtered power set of $\\{0,\\ldots,n-1\\}$) and $f(n) = |\\text{sumFreeSubsets}(n)|$ (OEIS A007865).",
       "startLine": 72,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "lower-bound",
       "title": "Trivial Lower Bound",
       "summary": "Proves `upperHalf_sumFree`: subsets of $\\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$ are sum-free (sums exceed $n$). Axiomatizes $f(n) \\ge 2^{n/2}$.",
       "startLine": 89,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "conjecture",
       "title": "The Cameron-Erdős Conjecture",
       "summary": "Defines `cameronErdosConjecture`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, $(1-\\varepsilon)n/2 \\le \\log_2 f(n) \\le (1+\\varepsilon)n/2$.",
       "startLine": 114,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "solution",
       "title": "The Solution",
       "summary": "Axiomatizes Green's $f(n) \\le C \\cdot 2^{n/2}$, Sapozhenko's independent result, and the precise $f(n) \\sim c_n \\cdot 2^{n/2}$ with parity-dependent constants. Proves `cameron_erdos_proved`.",
       "startLine": 130,
-      "endLine": 173
+      "endLine": 174
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Proves `empty_sumFree` (vacuous), `singleton_sumFree` ($x \\ne 2x$ for $x > 0$), and `oddNumbers_sumFree` (odd + odd = even $\\ne$ odd).",
       "startLine": 175,
-      "endLine": 210
+      "endLine": 211
     },
     {
       "id": "structure",
       "title": "Structure of Sum-Free Sets",
       "summary": "Axiomatizes that $f(n) \\le 10(2^{n/2} + 2^{(n+1)/2})$ for $n \\ge 100$ (two dominant types) and the maximum sum-free set size $\\lceil n/2 \\rceil$ (Schur connection).",
       "startLine": 212,
-      "endLine": 238
+      "endLine": 239
     },
     {
       "id": "oeis",
       "title": "OEIS A007865",
       "summary": "Axiomatizes small values from OEIS A007865: $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. These match the known sequence and verify the counting function against explicit enumeration.",
       "startLine": 240,
-      "endLine": 255
+      "endLine": 256
     },
     {
       "id": "summary",
@@ -177,5 +172,27 @@
     "axiomCount": 6,
     "theoremCount": 11,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-185",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1136",
+    "erdos-1179",
+    "erdos-185"
+  ]
 }

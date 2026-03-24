@@ -21,7 +21,7 @@
     "erdosNumber": 878,
     "erdosUrl": "https://erdosproblems.com/878",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
@@ -77,42 +77,42 @@
       "title": "The Function f(n)",
       "summary": "logFloor, primePowerBelow, f, f_one, f_prime",
       "startLine": 36,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "F-definition",
       "title": "The Function F(n)",
       "summary": "ValidDecomposition, F, f_le_F",
       "startLine": 62,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
       "summary": "AlmostAll, Question1_f, Question1_F, Question2, Question3",
       "startLine": 89,
-      "endLine": 122
+      "endLine": 123
     },
     {
       "id": "H-function",
       "title": "The Sum H(x)",
       "summary": "H, H_lower_bound, H_upper_bound, H_limsup_infinite, H_liminf_finite, f_no_mean_value",
       "startLine": 124,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "erdos-1984",
       "title": "Erdős's 1984 Result",
       "summary": "erdos_1984 partial asymptotic",
       "startLine": 156,
-      "endLine": 170
+      "endLine": 171
     },
     {
       "id": "conjecture-F",
       "title": "Conjecture on F(n)",
       "summary": "Conjecture_F_almost_all",
       "startLine": 172,
-      "endLine": 180
+      "endLine": 181
     },
     {
       "id": "summary",

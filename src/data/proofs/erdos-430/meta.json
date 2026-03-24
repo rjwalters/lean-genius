@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 4,
     "assumptions": "4 axiom declarations: example_n8 (n=8 greedy sequence values), erdos_385_equivalence (equivalence with Problem 385), erdos_430_conjecture (composites appear for large n), small_n_all_prime (small n can be all-prime)",
-    "lineCount": 90
+    "lineCount": 90,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdos and Graham in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' The construction defines a greedy sequence $a_0 = n-1, a_{k+1} = \\max\\{m < a_k : \\text{all prime factors of } m > n - m\\}$ and asks whether composites must eventually appear. John Selfridge performed extensive computational searches supporting the conjecture but reported that 'no proof is in sight.' Sarosh Adenwalla later made the crucial observation that Problem #430 is equivalent to the first part of Erdos Problem #385: for large $n$, there exists a composite $m < n$ with all prime factors exceeding $n - m$. The admissibility condition $p > n - m$ for all $p \\mid m$ makes $m$ an $(n-m)$-rough number in the sense of sieve theory. The connection to smooth and rough number distribution places this problem at the intersection of combinatorial number theory, sieve methods, and the distribution of primes in short intervals. By Bertrand's postulate, there is always a prime in $(n/2, n)$, so primes are always available as admissible terms --- the question is whether they suffice to fill the entire greedy sequence.",
@@ -47,42 +48,42 @@
       "id": "imports",
       "title": "Imports and Dependencies",
       "startLine": 18,
-      "endLine": 21,
+      "endLine": 22,
       "summary": "Imports Mathlib's $\\texttt{Nat.minFac}$, $\\texttt{Nat.Prime}$, $\\texttt{Nat.Factorization}$, and $\\texttt{Finset}$ for constructing and analyzing the greedy sequence."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 23,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines $\\texttt{minPrimeFactor}$, the roughness predicate $\\texttt{allPrimeFactorsExceed}(m, k) \\iff \\forall p \\mid m,\\; p > k$, the admissibility condition $\\texttt{IsAdmissible}(n, m)$, and the greedy next-element selector $\\texttt{greedyNext}$ via $\\texttt{Finset.sup}$."
     },
     {
       "id": "greedy-sequence",
       "title": "The Greedy Sequence",
       "startLine": 43,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Constructs the sequence $a_0 = n - 1$, $a_{k+1} = \\texttt{greedyNext}(n, a_k)$ with termination at $a_k = 0$, and defines $\\texttt{hasComposite}(n) \\iff \\exists k,\\; a_k > 1 \\wedge \\neg a_k.\\text{Prime}$."
     },
     {
       "id": "example",
       "title": "Example: $n = 8$",
       "startLine": 59,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "For $n = 8$: $a_0 = 7$, $a_1 = 5$, then termination. Both terms are prime. The integer $4$ fails admissibility since $2 \\mid 4$ but $2 \\leq 8 - 4 = 4$."
     },
     {
       "id": "equivalence",
       "title": "Equivalence with Problem #385",
       "startLine": 66,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Adenwalla's equivalence: the greedy sequence contains a composite for large $n$ iff for large $n$ there exists a composite $m < n$ with all prime factors $> n - m$. Reduces the constructive greedy question to an existence question about rough composites."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 76,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "The open conjecture: $\\exists N_0,\\; \\forall n \\geq N_0$, the greedy sequence contains a composite. Supported by Selfridge's computations but unproven."
     },
     {
@@ -116,5 +117,27 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-282",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: greedy-algorithms, number-theory, open"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: greedy-algorithms, number-theory, open"
+    },
+    {
+      "targetId": "erdos-931",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-factorization"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-282",
+    "erdos-340",
+    "erdos-931"
+  ]
 }

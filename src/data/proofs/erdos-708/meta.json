@@ -24,7 +24,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.prod",
@@ -83,49 +83,49 @@
       "title": "Basic Definitions",
       "summary": "setProduct, consecutiveSet, productDivides",
       "startLine": 43,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "g-function",
       "title": "The Function g(n)",
       "summary": "validSubset, g_exists axiom, g definition via Nat.find",
       "startLine": 57,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "known-values",
       "title": "Known Values",
       "summary": "g(2) = 2 (Gallai), g(3) = 4 (Erdős-Surányi)",
       "startLine": 89,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "bounds",
       "title": "Bounds on g(n)",
       "summary": "Trivial upper bound, Erdős-Surányi lower bound",
       "startLine": 99,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "ErdosConjecture and StrongerConjecture definitions",
       "startLine": 114,
-      "endLine": 127
+      "endLine": 128
     },
     {
       "id": "variant",
       "title": "Related Variant",
       "summary": "Interval length c_n problem, c₂ = 1, c₃ = √2",
       "startLine": 129,
-      "endLine": 143
+      "endLine": 144
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete examples for g(2) and g(3)",
       "startLine": 145,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "summary",
@@ -163,5 +163,27 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, open"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, open"
+    },
+    {
+      "targetId": "erdos-388",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1063",
+    "erdos-369",
+    "erdos-388"
+  ]
 }

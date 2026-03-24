@@ -62,25 +62,26 @@
     "wiedijkNumber": 69,
     "axiomCount": 0,
     "lineCount": 247,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Euclidean algorithm is one of the oldest algorithms still in common use today:\n\n- **Euclid's Elements (c. 300 BCE)**: Described in Book VII, Propositions 1-2, using repeated subtraction\n- **Ancient China**: The algorithm appears in the Chinese mathematical text 'Nine Chapters on the Mathematical Art' (c. 200 BCE)\n- **India**: Described by Aryabhata (c. 500 CE) in his Aryabhatiya\n- **Modern Form**: The modulo-based formulation we use today is equivalent but more efficient\n\nThe algorithm has been continuously used for over 2,300 years, making it perhaps the oldest non-trivial algorithm still in practical use.",
     "problemStatement": "**The Euclidean Algorithm**:\n\nCompute the greatest common divisor (GCD) of two natural numbers a and b.\n\n**Recursive Definition**:\n$$\\gcd(a, b) = \\begin{cases} a & \\text{if } b = 0 \\\\ \\gcd(b, a \\mod b) & \\text{otherwise} \\end{cases}$$\n\n**What We Prove**:\n1. **Correctness**: The algorithm returns a value that divides both inputs\n2. **Maximality**: The result is the *greatest* such divisor\n3. **Termination**: The algorithm always halts (via well-founded recursion)\n4. **Bezout's Identity**: gcd(a, b) can be expressed as ax + by for some integers x, y",
-    "text": "This entry formalizes Euclidean algorithm correctness in Lean 4 using Mathlib's `Nat.gcd` infrastructure. The core recurrence `Nat.gcd_rec : Nat.gcd a b = Nat.gcd b (a % b)` drives the algorithm; termination is guaranteed by `Nat.mod_lt` which provides the strictly decreasing measure `a % b < b`. The formalization proves: (1) correctness \u2014 `Nat.gcd_dvd_left/right` establish divisibility; (2) maximality \u2014 `Nat.dvd_gcd` establishes the universal property `d \u2223 gcd(a,b) \u2194 d \u2223 a \u2227 d \u2223 b`; (3) B\u00e9zout's identity \u2014 `Nat.gcd_eq_gcd_ab` provides the linear combination `gcd(a,b) = a\u00b7gcdA + b\u00b7gcdB` over \u2124. This is Wiedijk's Theorem #69, verified with 0 axioms and 0 sorries.",
+    "text": "This entry formalizes Euclidean algorithm correctness in Lean 4 using Mathlib's `Nat.gcd` infrastructure. The core recurrence `Nat.gcd_rec : Nat.gcd a b = Nat.gcd b (a % b)` drives the algorithm; termination is guaranteed by `Nat.mod_lt` which provides the strictly decreasing measure `a % b < b`. The formalization proves: (1) correctness — `Nat.gcd_dvd_left/right` establish divisibility; (2) maximality — `Nat.dvd_gcd` establishes the universal property `d ∣ gcd(a,b) ↔ d ∣ a ∧ d ∣ b`; (3) Bézout's identity — `Nat.gcd_eq_gcd_ab` provides the linear combination `gcd(a,b) = a·gcdA + b·gcdB` over ℤ. This is Wiedijk's Theorem #69, verified with 0 axioms and 0 sorries.",
     "proofStrategy": "The proof of correctness relies on two key observations:\n\n**1. Common Divisors Are Preserved**:\n- If d | a and d | b, then d | (a mod b) since a mod b = a - q*b\n- Conversely, if d | b and d | (a mod b), then d | a\n- Thus gcd(a, b) and gcd(b, a mod b) have the same common divisors\n\n**2. Termination via Well-Founded Recursion**:\n- Since a mod b < b (for b > 0), the second argument strictly decreases\n- The natural numbers are well-founded under <\n- Therefore the recursion must terminate\n\n**3. Base Case**:\n- When b = 0, gcd(a, 0) = a (every number divides 0, so a is the GCD)\n\nThe extended Euclidean algorithm additionally tracks Bezout coefficients, giving us x and y such that gcd(a, b) = ax + by.",
     "keyInsights": [
-      "The invariant `gcd(a,b) = gcd(b, a%b)` is formalized as `Nat.gcd_rec`, proved via `Nat.gcd_comm` and well-founded recursion on `b`; termination uses `Nat.mod_lt : 0 < b \u2192 a % b < b` as the decreasing measure",
-      "The universal property `d \u2223 Nat.gcd a b \u2194 d \u2223 a \u2227 d \u2223 b` (proved by `Nat.dvd_gcd` + `Nat.gcd_dvd_left/right` + `Nat.dvd_antisymm`) uniquely characterizes GCD as the meet in the divisibility lattice `(\u2115, \u2223)`",
-      "B\u00e9zout coefficients are extracted constructively: `Nat.gcdA a b : \u2124` and `Nat.gcdB a b : \u2124` with `Nat.gcd_eq_gcd_ab : (gcd a b : \u2124) = a * gcdA a b + b * gcdB a b`; the coercion to \u2124 is essential since B\u00e9zout coefficients can be negative",
-      "Lam\u00e9's theorem (1844) gives $O(5 \\log_{10} \\min(a,b))$ steps; the worst case is consecutive Fibonacci numbers because $F_n = \\phi^n/\\sqrt{5}$ \u2014 each step produces the previous Fibonacci number, so `gcd(F_{n+1}, F_n)` takes exactly $n-1$ division steps",
-      "The algorithm generalizes via the `EuclideanDomain` typeclass (`Mathlib.Algebra.EuclideanDomain.Defs`): instances include `\u2124`, `F[x]` (polynomial degree as norm), and `\u2124[i]` Gaussian integers ($a^2+b^2$ as norm) \u2014 the same termination argument applies to all"
+      "The invariant `gcd(a,b) = gcd(b, a%b)` is formalized as `Nat.gcd_rec`, proved via `Nat.gcd_comm` and well-founded recursion on `b`; termination uses `Nat.mod_lt : 0 < b → a % b < b` as the decreasing measure",
+      "The universal property `d ∣ Nat.gcd a b ↔ d ∣ a ∧ d ∣ b` (proved by `Nat.dvd_gcd` + `Nat.gcd_dvd_left/right` + `Nat.dvd_antisymm`) uniquely characterizes GCD as the meet in the divisibility lattice `(ℕ, ∣)`",
+      "Bézout coefficients are extracted constructively: `Nat.gcdA a b : ℤ` and `Nat.gcdB a b : ℤ` with `Nat.gcd_eq_gcd_ab : (gcd a b : ℤ) = a * gcdA a b + b * gcdB a b`; the coercion to ℤ is essential since Bézout coefficients can be negative",
+      "Lamé's theorem (1844) gives $O(5 \\log_{10} \\min(a,b))$ steps; the worst case is consecutive Fibonacci numbers because $F_n = \\phi^n/\\sqrt{5}$ — each step produces the previous Fibonacci number, so `gcd(F_{n+1}, F_n)` takes exactly $n-1$ division steps",
+      "The algorithm generalizes via the `EuclideanDomain` typeclass (`Mathlib.Algebra.EuclideanDomain.Defs`): instances include `ℤ`, `F[x]` (polynomial degree as norm), and `ℤ[i]` Gaussian integers ($a^2+b^2$ as norm) — the same termination argument applies to all"
     ],
     "prerequisites": [
-      "Natural number divisibility and the \u2223 relation in Lean/Mathlib",
+      "Natural number divisibility and the ∣ relation in Lean/Mathlib",
       "Modular arithmetic: `Nat.mod`, `Nat.div`, and `Nat.mod_lt`",
       "Well-founded recursion and termination in Lean 4",
-      "Integer coercions (\u2115 \u2192 \u2124) for B\u00e9zout's identity",
+      "Integer coercions (ℕ → ℤ) for Bézout's identity",
       "Basic Mathlib imports: `Mathlib.Data.Nat.GCD.Basic`, `Mathlib.Algebra.EuclideanDomain.Defs`"
     ]
   },
@@ -89,7 +90,7 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Overview of the Euclidean algorithm, its ancient history, and connection to Wiedijk's 100 Theorems.",
       "mathContext": "Imports `Mathlib.Data.Nat.GCD.Basic` (providing `Nat.gcd`, `Nat.gcd_dvd_left/right`, `Nat.dvd_gcd`), `Mathlib.Algebra.EuclideanDomain.Defs` (generalizing to arbitrary Euclidean domains), and `Mathlib.Tactic`. The module docstring outlines the algorithm $\\gcd(a,b) = \\gcd(b, a \\bmod b)$ with base case $\\gcd(a,0) = a$."
     },
@@ -97,15 +98,15 @@
       "id": "core-algorithm",
       "title": "Core Algorithm",
       "startLine": 56,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "The fundamental recurrence relation and base case that define the Euclidean algorithm.",
-      "mathContext": "$\\gcd(a,b) = \\gcd(b, a \\bmod b)$ for $b > 0$, and $\\gcd(a,0) = a$. Termination: $a \\bmod b < b$, so the second argument strictly decreases, and $\\mathbb{N}$ is well-founded under $<$. Complexity: $O(\\log(\\min(a,b)))$ steps \u2014 the worst case is consecutive Fibonacci numbers, where $\\gcd(F_{n+1}, F_n)$ takes exactly $n$ steps."
+      "mathContext": "$\\gcd(a,b) = \\gcd(b, a \\bmod b)$ for $b > 0$, and $\\gcd(a,0) = a$. Termination: $a \\bmod b < b$, so the second argument strictly decreases, and $\\mathbb{N}$ is well-founded under $<$. Complexity: $O(\\log(\\min(a,b)))$ steps — the worst case is consecutive Fibonacci numbers, where $\\gcd(F_{n+1}, F_n)$ takes exactly $n$ steps."
     },
     {
       "id": "divisibility",
       "title": "Divisibility Properties",
       "startLine": 84,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Proof that gcd(a, b) divides both a and b.",
       "mathContext": "$\\gcd(a,b) \\mid a$ and $\\gcd(a,b) \\mid b$. In Lean: `Nat.gcd_dvd_left a b` and `Nat.gcd_dvd_right a b`. The proof follows from the recurrence: if $d \\mid b$ and $d \\mid (a \\bmod b)$, then $d \\mid a$ (since $a = qb + (a \\bmod b)$)."
     },
@@ -113,7 +114,7 @@
       "id": "greatest",
       "title": "Greatest Property",
       "startLine": 98,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "Proof that gcd(a, b) is the greatest common divisor, with complete characterization.",
       "mathContext": "$d \\mid a \\land d \\mid b \\Rightarrow d \\mid \\gcd(a,b)$. In Lean: `Nat.dvd_gcd`. This makes $\\gcd(a,b)$ the greatest common divisor in the divisibility ordering: $\\gcd(a,b) = \\max_{\\text{dvd}} \\{d : d \\mid a \\land d \\mid b\\}$. Combined with the divisibility property, this gives the universal property: $d \\mid \\gcd(a,b) \\iff d \\mid a \\land d \\mid b$."
     },
@@ -121,7 +122,7 @@
       "id": "properties",
       "title": "Key Properties",
       "startLine": 124,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Associativity, commutativity, identity element, and related GCD properties.",
       "mathContext": "$\\gcd(a,b) = \\gcd(b,a)$ (commutativity), $\\gcd(\\gcd(a,b),c) = \\gcd(a,\\gcd(b,c))$ (associativity), $\\gcd(a,0) = a$ (identity). These make $(\\mathbb{N}, \\gcd)$ a commutative monoid. Additional properties: $\\gcd(a,a) = a$ (idempotence), $\\gcd(ka, kb) = k \\cdot \\gcd(a,b)$ (homogeneity)."
     },
@@ -129,7 +130,7 @@
       "id": "coprimality",
       "title": "Coprimality",
       "startLine": 149,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Definition and examples of coprime numbers.",
       "mathContext": "$a$ and $b$ are coprime iff $\\gcd(a,b) = 1$. Equivalently, the only positive common divisor is 1. Coprimality is the key hypothesis for: the CRT ($\\gcd(m,n)=1 \\Rightarrow \\mathbb{Z}/mn \\cong \\mathbb{Z}/m \\times \\mathbb{Z}/n$), multiplicativity of $\\sigma_1$ and $\\phi$, and existence of multiplicative inverses ($\\gcd(a,n)=1 \\iff a$ invertible mod $n$)."
     },
@@ -137,7 +138,7 @@
       "id": "bezout",
       "title": "Bezout's Identity",
       "startLine": 160,
-      "endLine": 180,
+      "endLine": 181,
       "summary": "The extended Euclidean algorithm and Bezout coefficients.",
       "mathContext": "$\\exists x, y \\in \\mathbb{Z},\\; \\gcd(a,b) = ax + by$. The extended Euclidean algorithm computes $x, y$ alongside $\\gcd(a,b)$ by tracking the linear combination through each recursive step. This is constructive: given $\\gcd(b, a \\bmod b) = bx' + (a \\bmod b)y'$, substitute $a \\bmod b = a - qb$ to get $\\gcd(a,b) = ay' + b(x' - qy')$."
     },
@@ -145,20 +146,20 @@
       "id": "examples",
       "title": "Worked Examples",
       "startLine": 182,
-      "endLine": 202,
+      "endLine": 247,
       "summary": "Step-by-step examples tracing the algorithm execution.",
       "mathContext": "Example: $\\gcd(252, 105)$: $252 = 2 \\cdot 105 + 42 \\to \\gcd(105, 42)$: $105 = 2 \\cdot 42 + 21 \\to \\gcd(42, 21)$: $42 = 2 \\cdot 21 + 0 \\to \\gcd(21, 0) = 21$. Three steps, with the second argument decreasing: $105 \\to 42 \\to 21 \\to 0$."
     }
   ],
   "conclusion": {
     "summary": "The Lean 4 formalization fully verifies the Euclidean algorithm using Mathlib's `Nat.gcd` infrastructure (0 axioms, 0 sorries). The `gcd_characterization` theorem packages the complete universal property into a single biconditional, proved via `Nat.dvd_antisymm`. The extended algorithm is handled by `bezout_identity` and `bezout_equation`, both one-liners that delegate to `Nat.gcd_eq_gcd_ab`. The `native_decide` examples serve as executable regression tests verified by Lean's kernel. This entry demonstrates how Mathlib's algebraic hierarchy (`EuclideanDomain`) lifts the integer GCD algorithm to abstract rings.",
-    "implications": "The Euclidean algorithm underlies foundational results across mathematics and computer science:\n\n**1. Cryptography (RSA, ECDH)**\nB\u00e9zout's identity `gcd(e, \u03c6(n)) = 1 \u27f9 \u2203 d, ed \u2261 1 (mod \u03c6(n))` is the RSA key equation; the extended Euclidean algorithm computes `d` in $O(\\log n)$ operations.\n\n**2. Chinese Remainder Theorem**\nThe constructive proof of CRT (`chinese-remainder-constructive`) uses B\u00e9zout coefficients: given `gcd(m, n) = 1`, find `x, y` with `mx + ny = 1`, then `a\u00b7ny + b\u00b7mx` solves the system.\n\n**3. Unique Factorization (`fundamental-arithmetic`)**\nThe key lemma `p prime \u2227 p \u2223 ab \u27f9 p \u2223 a \u2228 p \u2223 b` follows from `gcd(p, a) = 1 \u27f9 B\u00e9zout \u27f9 p \u2223 b`; GCD provides the constructive alternative to factorization-based proofs.\n\n**4. Euclidean Domains (abstract algebra)**\nMathlib's `EuclideanDomain` typeclass generalizes this to `\u2124`, `F[x]`, and `\u2124[i]`; the `GCDMonoid` typeclass further abstracts to UFDs where explicit division may not exist.\n\n**5. Lattice Theory**\n$(\\mathbb{N}, \\gcd, \\text{lcm})$ forms a distributive lattice; `Nat.gcd_mul_lcm : gcd a b * lcm a b = a * b` is the lattice-theoretic identity corresponding to $a \\sqcap b \\cdot a \\sqcup b = a \\cdot b$.",
+    "implications": "The Euclidean algorithm underlies foundational results across mathematics and computer science:\n\n**1. Cryptography (RSA, ECDH)**\nBézout's identity `gcd(e, φ(n)) = 1 ⟹ ∃ d, ed ≡ 1 (mod φ(n))` is the RSA key equation; the extended Euclidean algorithm computes `d` in $O(\\log n)$ operations.\n\n**2. Chinese Remainder Theorem**\nThe constructive proof of CRT (`chinese-remainder-constructive`) uses Bézout coefficients: given `gcd(m, n) = 1`, find `x, y` with `mx + ny = 1`, then `a·ny + b·mx` solves the system.\n\n**3. Unique Factorization (`fundamental-arithmetic`)**\nThe key lemma `p prime ∧ p ∣ ab ⟹ p ∣ a ∨ p ∣ b` follows from `gcd(p, a) = 1 ⟹ Bézout ⟹ p ∣ b`; GCD provides the constructive alternative to factorization-based proofs.\n\n**4. Euclidean Domains (abstract algebra)**\nMathlib's `EuclideanDomain` typeclass generalizes this to `ℤ`, `F[x]`, and `ℤ[i]`; the `GCDMonoid` typeclass further abstracts to UFDs where explicit division may not exist.\n\n**5. Lattice Theory**\n$(\\mathbb{N}, \\gcd, \\text{lcm})$ forms a distributive lattice; `Nat.gcd_mul_lcm : gcd a b * lcm a b = a * b` is the lattice-theoretic identity corresponding to $a \\sqcap b \\cdot a \\sqcup b = a \\cdot b$.",
     "openQuestions": [
       "What is the average-case step count? (Heilbronn 1969: $\\approx \\frac{12 \\ln 2}{\\pi^2} \\ln b \\approx 0.843 \\log_2 b$ steps on average)",
-      "Binary GCD (Stein's algorithm, 1967) replaces division with bit shifts \u2014 can it be formalized in Mathlib and shown competitive with the Euclidean algorithm on modern hardware?",
-      "The Lehmer variant computes GCD using only single-precision arithmetic for multi-precision inputs \u2014 does this have a Lean formalization?",
-      "Can the `EuclideanDomain` GCD algorithm be unified with the `GCDMonoid` normalization to produce canonical B\u00e9zout certificates in abstract algebraic settings?",
-      "Knuth\u2013Yao\u2013Dixon analysis gives the distribution of quotients $q_i = \\lfloor r_{i-1}/r_i \\rfloor$ \u2014 are these Gauss-Kuzmin distributed? What does a formal proof require?"
+      "Binary GCD (Stein's algorithm, 1967) replaces division with bit shifts — can it be formalized in Mathlib and shown competitive with the Euclidean algorithm on modern hardware?",
+      "The Lehmer variant computes GCD using only single-precision arithmetic for multi-precision inputs — does this have a Lean formalization?",
+      "Can the `EuclideanDomain` GCD algorithm be unified with the `GCDMonoid` normalization to produce canonical Bézout certificates in abstract algebraic settings?",
+      "Knuth–Yao–Dixon analysis gives the distribution of quotients $q_i = \\lfloor r_{i-1}/r_i \\rfloor$ — are these Gauss-Kuzmin distributed? What does a formal proof require?"
     ]
   },
   "leanFile": {
@@ -241,7 +242,7 @@
   "references": [
     {
       "authors": "Euclid",
-      "title": "Elements, Book VII, Propositions 1\u20132",
+      "title": "Elements, Book VII, Propositions 1–2",
       "year": "~300 BCE",
       "venue": "Alexandria",
       "note": "The earliest known description of the Euclidean algorithm for computing greatest common divisors"
@@ -258,14 +259,14 @@
       "title": "An Introduction to the Theory of Numbers",
       "year": "2008",
       "venue": "Oxford University Press, 6th edition",
-      "note": "Chapter 12 covers the Euclidean algorithm, continued fractions, and the connection to best rational approximations \u2014 GCD steps produce the continued fraction expansion"
+      "note": "Chapter 12 covers the Euclidean algorithm, continued fractions, and the connection to best rational approximations — GCD steps produce the continued fraction expansion"
     },
     {
-      "authors": "Lam\u00e9, Gabriel",
+      "authors": "Lamé, Gabriel",
       "title": "Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur entre deux nombres entiers",
       "year": "1844",
-      "venue": "Comptes rendus de l'Acad\u00e9mie des Sciences 19, 867\u2013870",
-      "note": "First rigorous complexity analysis: the number of steps is at most 5 times the number of digits of the smaller input \u2014 the worst case is consecutive Fibonacci numbers"
+      "venue": "Comptes rendus de l'Académie des Sciences 19, 867–870",
+      "note": "First rigorous complexity analysis: the number of steps is at most 5 times the number of digits of the smaller input — the worst case is consecutive Fibonacci numbers"
     }
   ]
 }

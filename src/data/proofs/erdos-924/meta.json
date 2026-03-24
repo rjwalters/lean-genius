@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/924",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -55,43 +55,6 @@
       "nesetril_rodl_1976 axiom: general k case",
       "erdos_924 theorem: main result"
     ],
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-920",
-        "relationship": "related",
-        "description": "Studies chromatic numbers of K_k-free graphs — the twin problem of high chromatic complexity in clique-free graphs"
-      },
-      {
-        "targetProofId": "erdos-922",
-        "relationship": "same-author",
-        "description": "Another result by Jon Folkman (1970) on chromatic number bounds via independent sets"
-      },
-      {
-        "targetProofId": "erdos-923",
-        "relationship": "same-author",
-        "description": "Result by Rödl (1977) on triangle-free subgraphs with high chromatic number"
-      },
-      {
-        "targetProofId": "erdos-925",
-        "relationship": "related",
-        "description": "Studies independent sets in non-Ramsey graphs, directly addressing Ramsey-type bounds"
-      },
-      {
-        "targetProofId": "erdos-1090",
-        "relationship": "uses-same-technique",
-        "description": "Also uses the Hales-Jewett theorem (central to the Nešetřil-Rödl proof) for monochromatic collinear points"
-      },
-      {
-        "targetProofId": "erdos-927",
-        "relationship": "related",
-        "description": "Studies distinct clique sizes in graphs — complementary perspective on clique structure"
-      },
-      {
-        "targetProofId": "ramseys-theorem",
-        "relationship": "uses",
-        "description": "The classical Ramsey theorem provides the foundation; Folkman graphs achieve Ramsey-type forcing without large cliques"
-      }
-    ],
     "axiomCount": 5,
     "lineCount": 317,
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -120,49 +83,49 @@
       "title": "Basic Graph Concepts",
       "summary": "Defines `completeGraph` as $\\top$ in the `SimpleGraph` lattice, `IsCliqueOfSize` via `Finset`/`IsClique`, `IsCliqueFree` ($\\neg \\text{IsCliqueOfSize}$), and `ContainsClique` (semantic alias).",
       "startLine": 36,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "edge-colorings",
       "title": "Edge Colorings",
       "summary": "`EdgeColoring` as $G.\\text{edgeSet} \\to \\text{Fin}\\, k$, `MonochromaticSubgraph` with `symm`/`loopless` proofs via `Sym2.eq_swap`, and `HasMonochromaticClique` ($\\exists c,\\; K_l \\subseteq G_c$).",
       "startLine": 69,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "ramsey-property",
       "title": "The Ramsey Property",
       "summary": "`HasRamseyProperty`: $\\forall \\chi,\\; \\exists c,\\; K_l \\subseteq G_c$. `ErdosHajnalQuestion`: $\\exists G,\\; \\omega(G) \\le l \\land G \\to (K_l)^k_2$.",
       "startLine": 106,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "folkman-graphs",
       "title": "Folkman Graphs",
       "summary": "`IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber` $f(l;k)$ defined via `Nat.find` from the existence guarantee.",
       "startLine": 127,
-      "endLine": 145
+      "endLine": 146
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "Axioms: `folkman_1970` ($k=2$, $\\forall l \\ge 3$) and `nesetril_rodl_1976` ($\\forall k \\ge 2, l \\ge 3$). The general theorem completely solves the Erdős-Hajnal question.",
       "startLine": 147,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "`FolkmanNumber_3_2` definition, Graham's upper bound $f(3;2) \\le 941$, and exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014).",
       "startLine": 167,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
       "summary": "`RamseyNumber` $R(l,l)$ definition via `Nat.find`. Comparison: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$.",
       "startLine": 198,
-      "endLine": 220
+      "endLine": 221
     },
     {
       "id": "proof-techniques",
@@ -242,5 +205,27 @@
       "venue": "J. Combinatorial Mathematics and Combinatorial Computing, 88, 61–71",
       "note": "Contributed to establishing f(3;2) = 786."
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-191",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-coloring, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-191",
+    "erdos-1090",
+    "erdos-136"
   ]
 }

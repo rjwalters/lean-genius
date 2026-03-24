@@ -52,6 +52,7 @@ DEFAULT_DEPLOYER=1
 DEFAULT_AUDITOR=1
 DEFAULT_TESTER=1
 DEFAULT_HERALD=1
+DEFAULT_MECHANIC=1
 
 # Max pool sizes
 MAX_ENRICHER=5
@@ -62,6 +63,7 @@ MAX_SEEKER=1
 MAX_DEPLOYER=1
 MAX_TESTER=1
 MAX_HERALD=1
+MAX_MECHANIC=3
 
 # Helper: Print usage
 usage() {
@@ -87,6 +89,7 @@ Start Options:
   --auditor N            Number of Auditors (default: $DEFAULT_AUDITOR, max: $MAX_AUDITOR)
   --tester N             Number of Testers (default: $DEFAULT_TESTER, max: $MAX_TESTER)
   --herald N             Number of Heralds (default: $DEFAULT_HERALD, max: $MAX_HERALD)
+  --mechanic N           Number of Mechanics (default: $DEFAULT_MECHANIC, max: $MAX_MECHANIC)
 
 Stop Options:
   <type>                 Stop only agents of this type (enricher, aristotle, etc.)
@@ -103,6 +106,7 @@ Daemon Options:
   --deployer N           Target Deployer count (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
   --tester N             Target Tester count (default: $DEFAULT_TESTER, max: $MAX_TESTER)
   --herald N             Target Herald count (default: $DEFAULT_HERALD, max: $MAX_HERALD)
+  --mechanic N           Target Mechanic count (default: $DEFAULT_MECHANIC, max: $MAX_MECHANIC)
 
 Agent Types:
   enricher    Enriches proof gallery entries with deeper annotations and commentary
@@ -113,6 +117,7 @@ Agent Types:
   deployer    Merges PRs and deploys website
   tester      Tests random proof pages on the live site
   herald      Posts noteworthy results to Mathstodon
+  mechanic    Repairs issues found by auditors and peer reviewers
 
 Examples:
   $0 start                              # Start with defaults
@@ -154,6 +159,7 @@ init_state() {
     local deployer="${6:-$DEFAULT_DEPLOYER}"
     local tester="${7:-$DEFAULT_TESTER}"
     local herald="${8:-$DEFAULT_HERALD}"
+    local mechanic="${9:-$DEFAULT_MECHANIC}"
 
     mkdir -p "$(dirname "$STATE_FILE")"
 
@@ -177,6 +183,7 @@ init_state() {
         --argjson deployer "$deployer" \
         --argjson tester "$tester" \
         --argjson herald "$herald" \
+        --argjson mechanic "$mechanic" \
         --argjson prev_stats "$prev_stats" \
         '{
             started_at: $started_at,
@@ -189,7 +196,8 @@ init_state() {
                 seeker: $seeker,
                 deployer: $deployer,
                 tester: $tester,
-                herald: $herald
+                herald: $herald,
+                mechanic: $mechanic
             },
             agents: {},
             session_stats: (
@@ -290,6 +298,16 @@ get_sessions_for_type() {
                 sessions+=("herald-agent")
             fi
             ;;
+        mechanic)
+            for i in 1 2 3; do
+                if tmux has-session -t "mechanic-$i" 2>/dev/null; then
+                    sessions+=("mechanic-$i")
+                fi
+            done
+            if tmux has-session -t "mechanic-agent" 2>/dev/null; then
+                sessions+=("mechanic-agent")
+            fi
+            ;;
     esac
 
     if [[ ${#sessions[@]} -gt 0 ]]; then
@@ -331,6 +349,9 @@ signal_stop_session() {
             ;;
         herald)
             touch "$SIGNALS_DIR/stop-herald"
+            ;;
+        mechanic)
+            touch "$SIGNALS_DIR/stop-mechanic"
             ;;
     esac
 }
@@ -406,6 +427,7 @@ cmd_start() {
     local auditor=$DEFAULT_AUDITOR
     local tester=$DEFAULT_TESTER
     local herald=$DEFAULT_HERALD
+    local mechanic=$DEFAULT_MECHANIC
 
     # Apply time-based schedule (overrides defaults before CLI args)
     apply_schedule
@@ -443,6 +465,10 @@ cmd_start() {
                 ;;
             --herald)
                 herald="$2"
+                shift 2
+                ;;
+            --mechanic)
+                mechanic="$2"
                 shift 2
                 ;;
             *)
@@ -486,6 +512,10 @@ cmd_start() {
         echo -e "${YELLOW}Warning: Herald count $herald exceeds max $MAX_HERALD, using $MAX_HERALD${NC}"
         herald=$MAX_HERALD
     fi
+    if [[ $mechanic -gt $MAX_MECHANIC ]]; then
+        echo -e "${YELLOW}Warning: Mechanic count $mechanic exceeds max $MAX_MECHANIC, using $MAX_MECHANIC${NC}"
+        mechanic=$MAX_MECHANIC
+    fi
 
     echo -e "${BOLD}Starting Lean Genius Mathematical Orchestration${NC}"
     echo ""
@@ -498,13 +528,14 @@ cmd_start() {
     echo "  Deployers: $deployer"
     echo "  Testers: $tester"
     echo "  Heralds: $herald"
+    echo "  Mechanics: $mechanic"
     echo ""
 
     # Migrate state file from old location if needed
     migrate_state_file
 
     # Initialize state
-    init_state "$enricher" "$aristotle" "$researcher" "$auditor" "$seeker" "$deployer" "$tester" "$herald"
+    init_state "$enricher" "$aristotle" "$researcher" "$auditor" "$seeker" "$deployer" "$tester" "$herald" "$mechanic"
 
     # Start agents
     local started=0
@@ -571,6 +602,17 @@ cmd_start() {
             ./scripts/auditor/launch-agent.sh &
             sleep 1
             echo -e "${GREEN}\xe2\x9c\x93 Auditor agent launched${NC}"
+            started=$((started + 1))
+        fi
+    fi
+
+    # Mechanic
+    if [[ $mechanic -gt 0 ]]; then
+        echo -e "${BLUE}Starting Mechanic agent...${NC}"
+        if check_script "./scripts/mechanic/launch-agent.sh"; then
+            ./scripts/mechanic/launch-agent.sh &
+            sleep 1
+            echo -e "${GREEN}✓ Mechanic agent launched${NC}"
             started=$((started + 1))
         fi
     fi
@@ -648,6 +690,15 @@ get_all_agent_sessions() {
     # Herald
     if tmux has-session -t "herald-agent" 2>/dev/null; then
         sessions+=("herald-agent")
+    fi
+    # Mechanic
+    for i in 1 2 3; do
+        if tmux has-session -t "mechanic-$i" 2>/dev/null; then
+            sessions+=("mechanic-$i")
+        fi
+    done
+    if tmux has-session -t "mechanic-agent" 2>/dev/null; then
+        sessions+=("mechanic-agent")
     fi
     if [[ ${#sessions[@]} -gt 0 ]]; then
         printf '%s\n' "${sessions[@]}"
@@ -814,7 +865,7 @@ is_polling_agent() {
     local session="$1"
     local agent_type
     agent_type=$(get_agent_type "$session")
-    [[ "$agent_type" == "deployer" || "$agent_type" == "seeker" || "$agent_type" == "auditor" || "$agent_type" == "tester" || "$agent_type" == "herald" ]]
+    [[ "$agent_type" == "deployer" || "$agent_type" == "seeker" || "$agent_type" == "auditor" || "$agent_type" == "tester" || "$agent_type" == "herald" || "$agent_type" == "mechanic" ]]
 }
 
 # Helper: Get consecutive failure count from agent log
@@ -829,6 +880,7 @@ get_consecutive_failures() {
         seeker-agent) log_file="$log_dir/seeker.log" ;;
         auditor-agent) log_file="$log_dir/auditor.log" ;;
         herald-agent) log_file="$log_dir/herald.log" ;;
+        mechanic-*) log_file="$log_dir/${session}.log" ;;
         aristotle-agent) log_file="$log_dir/aristotle.log" ;;
         tester-agent) log_file="$log_dir/tester-agent.log" ;;
         *) echo "0"; return ;;
@@ -1244,6 +1296,9 @@ apply_schedule() {
     new_val=$(echo "$pools" | jq -r '.herald // empty' 2>/dev/null)
     [[ -n "$new_val" ]] && herald=$(( new_val > MAX_HERALD ? MAX_HERALD : new_val ))
 
+    new_val=$(echo "$pools" | jq -r '.mechanic // empty' 2>/dev/null)
+    [[ -n "$new_val" ]] && mechanic=$(( new_val > MAX_MECHANIC ? MAX_MECHANIC : new_val ))
+
     daemon_log "INFO" "Schedule: window=$window_name (${current_time} ${tz}), targets: enricher=$enricher, researcher=$researcher, aristotle=$aristotle"
 
     # Update state file config to reflect scheduled values
@@ -1281,6 +1336,7 @@ get_agent_type() {
         deployer)         echo "deployer" ;;
         tester-agent)     echo "tester" ;;
         herald-agent)     echo "herald" ;;
+        mechanic-*)       echo "mechanic" ;;
         *)                echo "unknown" ;;
     esac
 }
@@ -1452,6 +1508,15 @@ _do_respawn_agent() {
                 daemon_log "WARN" "Cannot respawn herald: script not found"
             fi
             ;;
+        mechanic)
+            if check_script "./scripts/mechanic/launch-agent.sh" 2>/dev/null; then
+                SESSION_NAME="$session" ./scripts/mechanic/launch-agent.sh &
+                sleep 1
+                daemon_log "INFO" "Mechanic agent respawned (session: $session)"
+            else
+                daemon_log "WARN" "Cannot respawn mechanic: script not found"
+            fi
+            ;;
         *)
             daemon_log "WARN" "Unknown agent type for session: $session"
             ;;
@@ -1608,6 +1673,7 @@ cmd_daemon() {
     local auditor=$DEFAULT_AUDITOR
     local tester=$DEFAULT_TESTER
     local herald=$DEFAULT_HERALD
+    local mechanic=$DEFAULT_MECHANIC
     local monitor_only=false
 
     # Apply time-based schedule (overrides defaults before CLI args)
@@ -1656,6 +1722,10 @@ cmd_daemon() {
                 herald="$2"
                 shift 2
                 ;;
+            --mechanic)
+                mechanic="$2"
+                shift 2
+                ;;
             *)
                 echo -e "${RED}Unknown daemon option: $1${NC}" >&2
                 usage
@@ -1694,7 +1764,7 @@ cmd_daemon() {
     trap 'daemon_log "INFO" "Received SIGINT"; exit 0' INT
 
     daemon_log "INFO" "Starting daemon (PID $$, interval ${interval}s, monitor_only=$monitor_only)"
-    daemon_log "INFO" "Pool config: enricher=$enricher, aristotle=$aristotle, researcher=$researcher, auditor=$auditor, seeker=$seeker, deployer=$deployer, tester=$tester, herald=$herald"
+    daemon_log "INFO" "Pool config: enricher=$enricher, aristotle=$aristotle, researcher=$researcher, auditor=$auditor, seeker=$seeker, deployer=$deployer, tester=$tester, herald=$herald, mechanic=$mechanic"
 
     if [[ "$monitor_only" == "true" ]]; then
         daemon_log "INFO" "Monitor-only mode: skipping agent startup, monitoring existing sessions"
@@ -1717,7 +1787,7 @@ cmd_daemon() {
         fi
     else
         # Start initial agents via cmd_start
-        cmd_start --enricher "$enricher" --aristotle "$aristotle" --researcher "$researcher" --auditor "$auditor" --seeker "$seeker" --deployer "$deployer" --tester "$tester" --herald "$herald"
+        cmd_start --enricher "$enricher" --aristotle "$aristotle" --researcher "$researcher" --auditor "$auditor" --seeker "$seeker" --deployer "$deployer" --tester "$tester" --herald "$herald" --mechanic "$mechanic"
     fi
 
     local cycle_count=0
@@ -1827,7 +1897,7 @@ cmd_daemon() {
 
         # 2a-post. Sweep for orphaned claude processes (detached from any tmux session)
         local orphan_pids
-        orphan_pids=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\)' | awk '$7 == "??" {print $2}')
+        orphan_pids=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\)' | awk '$7 == "??" {print $2}')
         if [[ -n "$orphan_pids" ]]; then
             local orphan_count
             orphan_count=$(echo "$orphan_pids" | wc -l | tr -d ' ')
@@ -1850,12 +1920,13 @@ cmd_daemon() {
             auditor=$(jq -r '.config.auditor // 0' "$STATE_FILE" 2>/dev/null || echo "$auditor")
             deployer=$(jq -r '.config.deployer // 0' "$STATE_FILE" 2>/dev/null || echo "$deployer")
             herald=$(jq -r '.config.herald // 0' "$STATE_FILE" 2>/dev/null || echo "$herald")
+            mechanic=$(jq -r '.config.mechanic // 0' "$STATE_FILE" 2>/dev/null || echo "$mechanic")
         fi
 
         # Apply time-based schedule overrides
         apply_schedule
 
-        local enricher_active=0 researcher_active=0 aristotle_active=0 auditor_active=0 seeker_active=0 deployer_active=0 herald_active=0
+        local enricher_active=0 researcher_active=0 aristotle_active=0 auditor_active=0 seeker_active=0 deployer_active=0 herald_active=0 mechanic_active=0
         for i in $(seq 1 $MAX_ENRICHER); do
             tmux has-session -t "enricher-$i" 2>/dev/null && enricher_active=$((enricher_active + 1))
         done
@@ -1867,6 +1938,10 @@ cmd_daemon() {
         tmux has-session -t "seeker-agent" 2>/dev/null && seeker_active=1
         tmux has-session -t "deployer" 2>/dev/null && deployer_active=1
         tmux has-session -t "herald-agent" 2>/dev/null && herald_active=1
+        for i in 1 2 3; do
+            tmux has-session -t "mechanic-$i" 2>/dev/null && mechanic_active=$((mechanic_active + 1))
+        done
+        tmux has-session -t "mechanic-agent" 2>/dev/null && mechanic_active=$((mechanic_active + 1))
 
         if [[ $enricher_active -lt $enricher ]]; then
             local missing_enricher=$((enricher - enricher_active))
@@ -1934,6 +2009,22 @@ cmd_daemon() {
             fi
         fi
 
+        if [[ $mechanic_active -lt $mechanic ]]; then
+            local missing_mech=$((mechanic - mechanic_active))
+            daemon_log "INFO" "Pool gap: mechanic has $mechanic_active/$mechanic, spawning $missing_mech"
+            for i in 1 2 3; do
+                [[ $missing_mech -le 0 ]] && break
+                if ! tmux has-session -t "mechanic-$i" 2>/dev/null; then
+                    if is_cooldown_elapsed "mechanic-$i"; then
+                        if respawn_agent "mechanic-$i"; then
+                            total_respawns=$((total_respawns + 1))
+                            missing_mech=$((missing_mech - 1))
+                        fi
+                    fi
+                fi
+            done
+        fi
+
         # 3. Work queue assessment (with timeout protection)
         local queue_stats
         queue_stats=$(get_work_queue_stats)
@@ -1986,13 +2077,13 @@ cmd_stop() {
                 force=true
                 shift
                 ;;
-            enricher|aristotle|researcher|auditor|seeker|deployer|herald)
+            enricher|aristotle|researcher|auditor|seeker|deployer|herald|mechanic)
                 agent_type="$1"
                 shift
                 ;;
             *)
                 echo -e "${RED}Unknown stop option: $1${NC}" >&2
-                echo "Usage: $0 stop [enricher|aristotle|researcher|auditor|seeker|deployer|herald] [--force]"
+                echo "Usage: $0 stop [enricher|aristotle|researcher|auditor|seeker|deployer|herald|mechanic] [--force]"
                 exit 1
                 ;;
         esac
@@ -2044,7 +2135,7 @@ cmd_stop() {
         # Safety net: kill any remaining agent sessions
         echo -e "${BLUE}Catch-all: cleaning remaining agent sessions...${NC}"
         local remaining_sessions
-        remaining_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^(enricher-|researcher-|aristotle-agent$|auditor-agent$|seeker-agent$|deployer$|herald-agent$|tester-agent$)' || true)
+        remaining_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^(enricher-|researcher-|mechanic-|aristotle-agent$|auditor-agent$|mechanic-agent$|seeker-agent$|deployer$|herald-agent$|tester-agent$)' || true)
         if [[ -n "$remaining_sessions" ]]; then
             while IFS= read -r session; do
                 echo -e "  Killing stale session: $session"
@@ -2055,7 +2146,7 @@ cmd_stop() {
         # Sweep for orphaned claude processes that survived session destruction
         echo -e "${BLUE}Sweeping orphaned claude processes...${NC}"
         local orphan_pids
-        orphan_pids=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\)' | awk '$7 == "??" {print $2}')
+        orphan_pids=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\)' | awk '$7 == "??" {print $2}')
         if [[ -n "$orphan_pids" ]]; then
             local orphan_count
             orphan_count=$(echo "$orphan_pids" | wc -l | tr -d ' ')
@@ -2064,7 +2155,7 @@ cmd_stop() {
             sleep 1
             # Force-kill any that didn't exit gracefully
             local remaining_orphans
-            remaining_orphans=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\)' | awk '$7 == "??" {print $2}')
+            remaining_orphans=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\)' | awk '$7 == "??" {print $2}')
             if [[ -n "$remaining_orphans" ]]; then
                 echo "$remaining_orphans" | xargs kill -9 2>/dev/null || true
             fi
@@ -2119,6 +2210,9 @@ cmd_stop() {
 
         echo -e "${BLUE}Signaling Auditor agent...${NC}"
         touch "$SIGNALS_DIR/stop-auditor" 2>/dev/null || true
+
+        echo -e "${BLUE}Signaling Mechanic agent(s)...${NC}"
+        touch "$SIGNALS_DIR/stop-mechanic" 2>/dev/null || true
 
         echo -e "${BLUE}Signaling Seeker agent...${NC}"
         touch "$SIGNALS_DIR/stop-seeker" 2>/dev/null || true
@@ -2224,6 +2318,11 @@ cmd_stop_type() {
             herald)
                 if [[ -x "./scripts/herald/launch-agent.sh" ]]; then
                     ./scripts/herald/launch-agent.sh --graceful-stop 2>/dev/null || true
+                fi
+                ;;
+            mechanic)
+                if [[ -x "./scripts/mechanic/launch-agent.sh" ]]; then
+                    ./scripts/mechanic/launch-agent.sh --graceful-stop 2>/dev/null || true
                 fi
                 ;;
         esac
@@ -2338,6 +2437,26 @@ cmd_spawn() {
                 echo -e "${GREEN}✓ Auditor spawned (legacy slot)${NC}"
             fi
             ;;
+        mechanic)
+            echo -e "${BLUE}Spawning additional Mechanic...${NC}"
+            for i in 1 2 3; do
+                local sname="mechanic-$i"
+                if ! tmux has-session -t "$sname" 2>/dev/null; then
+                    SESSION_NAME="$sname" ./scripts/mechanic/launch-agent.sh &
+                    sleep 2
+                    echo -e "${GREEN}✓ Mechanic spawned (slot $i)${NC}"
+                    exit 0
+                fi
+            done
+            # Check legacy singleton name too
+            if tmux has-session -t "mechanic-agent" 2>/dev/null; then
+                echo -e "${YELLOW}All Mechanic slots are full (max: $MAX_MECHANIC)${NC}"
+            else
+                SESSION_NAME="mechanic-agent" ./scripts/mechanic/launch-agent.sh &
+                sleep 2
+                echo -e "${GREEN}✓ Mechanic spawned (legacy slot)${NC}"
+            fi
+            ;;
         peer-reviewer)
             echo -e "${BLUE}Spawning Peer Reviewer...${NC}"
             for i in 1 2; do
@@ -2352,7 +2471,7 @@ cmd_spawn() {
             ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: enricher, aristotle, researcher, auditor, seeker, deployer, tester, herald, peer-reviewer"
+            echo "Valid types: enricher, aristotle, researcher, auditor, mechanic, seeker, deployer, tester, herald, peer-reviewer"
             exit 1
             ;;
     esac
@@ -2470,6 +2589,42 @@ cmd_scale() {
                 echo -e "${GREEN}Already at $count Researchers${NC}"
             fi
             ;;
+        mechanic)
+            if [[ $count -gt $MAX_MECHANIC ]]; then
+                echo -e "${YELLOW}Count $count exceeds max $MAX_MECHANIC, using $MAX_MECHANIC${NC}"
+                count=$MAX_MECHANIC
+            fi
+
+            local current=0
+            for i in 1 2 3; do
+                if tmux has-session -t "mechanic-$i" 2>/dev/null; then
+                    current=$((current + 1))
+                fi
+            done
+            if tmux has-session -t "mechanic-agent" 2>/dev/null; then
+                current=$((current + 1))
+            fi
+
+            if [[ $count -gt $current ]]; then
+                local to_add=$((count - current))
+                echo -e "${BLUE}Scaling Mechanics from $current to $count (adding $to_add)...${NC}"
+                update_daemon_config "mechanic" "$count"
+                local added=0
+                for i in 1 2 3; do
+                    [[ $added -ge $to_add ]] && break
+                    if ! tmux has-session -t "mechanic-$i" 2>/dev/null; then
+                        SESSION_NAME="mechanic-$i" ./scripts/mechanic/launch-agent.sh &
+                        sleep 2
+                        added=$((added + 1))
+                    fi
+                done
+                echo -e "${GREEN}✓ Scaled to $count Mechanics${NC}"
+            elif [[ $count -lt $current ]]; then
+                scale_down_multi "mechanic" "mechanic" "$current" "$count"
+            else
+                echo -e "${GREEN}Already at $count Mechanics${NC}"
+            fi
+            ;;
         auditor|aristotle|seeker|deployer|tester|herald)
             if [[ $count -gt 1 ]]; then
                 echo -e "${YELLOW}$agent_type can only have 0 or 1 instance, using 1${NC}"
@@ -2500,7 +2655,7 @@ cmd_scale() {
             ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: enricher, researcher, aristotle, auditor, seeker, deployer, tester, herald"
+            echo "Valid types: enricher, researcher, mechanic, aristotle, auditor, seeker, deployer, tester, herald"
             exit 1
             ;;
     esac
@@ -2557,9 +2712,21 @@ cmd_wake() {
             touch "$SIGNALS_DIR/wake-herald-agent"
             echo -e "${GREEN}Wake signal sent to herald-agent${NC}"
             ;;
+        mechanic)
+            for i in 1 2 3; do
+                if tmux has-session -t "mechanic-$i" 2>/dev/null; then
+                    touch "$SIGNALS_DIR/wake-mechanic-$i"
+                    echo -e "${GREEN}Wake signal sent to mechanic-$i${NC}"
+                fi
+            done
+            if tmux has-session -t "mechanic-agent" 2>/dev/null; then
+                touch "$SIGNALS_DIR/wake-mechanic-agent"
+                echo -e "${GREEN}Wake signal sent to mechanic-agent${NC}"
+            fi
+            ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: all, aristotle, researcher, auditor, deployer, seeker, enricher, tester, herald"
+            echo "Valid types: all, aristotle, researcher, auditor, mechanic, deployer, seeker, enricher, tester, herald"
             exit 1
             ;;
     esac

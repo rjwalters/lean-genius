@@ -64,7 +64,8 @@
       "Chinese Remainder Theorem",
       "Least common multiples and divisibility"
     ],
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #7, also known as the Erdős-Selfridge Conjecture, asks whether there exists a covering system whose moduli are all odd. A covering system is a finite collection of congruence classes {aᵢ mod mᵢ} such that every integer belongs to at least one class. The simplest covering system uses moduli {2, 3, 4, 6, 12}, and all known constructions require at least one even modulus.\n\nSignificant partial results have been obtained. Hough and Nielsen (2019) proved that every covering system must contain at least one modulus divisible by 2 or 3, meaning an odd covering would necessarily include moduli divisible by 3. Balister, Bollobas, Morris, Sahasrabudhe, and Tiba (2022) proved the stronger result that no covering system exists with all moduli both odd and squarefree, ruling out a natural class of potential counterexamples.\n\nThe problem carries prizes from both Erdős ($25 for proving no odd covering exists) and Selfridge ($2000 specifically for an explicit construction). The LCM of any hypothetical odd covering must be divisible by 9 or 15, further constraining what such a system could look like. Despite these restrictions, the general conjecture remains open.",
@@ -91,77 +92,77 @@
       "title": "Basic Definitions",
       "summary": "CongruenceClass and CoveringSystem structures",
       "startLine": 31,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "odd-moduli",
       "title": "Odd Moduli",
       "summary": "Predicates for odd and even moduli",
       "startLine": 57,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "erdos-selfridge",
       "title": "The Erdős-Selfridge Conjecture",
       "summary": "Main conjecture in two equivalent forms",
       "startLine": 71,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "squarefree",
       "title": "Squarefree Moduli",
       "summary": "Definitions for squarefree covering systems",
       "startLine": 102,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "balister",
       "title": "Balister et al. (2022)",
       "summary": "No odd squarefree covering exists",
       "startLine": 119,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "hough-nielsen",
       "title": "Hough-Nielsen (2019)",
       "summary": "Some modulus must be divisible by 2 or 3",
       "startLine": 141,
-      "endLine": 158
+      "endLine": 159
     },
     {
       "id": "lcm-constraint",
       "title": "LCM Constraint",
       "summary": "If odd covering exists, LCM divisible by 9 or 15",
       "startLine": 160,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "properties",
       "title": "Simple Properties",
       "summary": "Basic facts about odd moduli",
       "startLine": 174,
-      "endLine": 187
+      "endLine": 188
     },
     {
       "id": "gap",
       "title": "The Gap",
       "summary": "Summary of what is known vs unknown",
       "startLine": 189,
-      "endLine": 206
+      "endLine": 207
     },
     {
       "id": "selfridge",
       "title": "Selfridge's Prize",
       "summary": "$2000 for explicit odd covering construction",
       "startLine": 208,
-      "endLine": 218
+      "endLine": 219
     },
     {
       "id": "covering-properties",
       "title": "Covering with Specific Properties",
       "summary": "Min odd modulus definitions",
       "startLine": 220,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "summary-theorem",

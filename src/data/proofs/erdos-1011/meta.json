@@ -25,7 +25,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 15,
     "lineCount": 219,
-    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #1011 connects three fundamental graph invariants: edge count, chromatic number, and triangle existence. The threshold function f_r(n) gives the minimum number of edges such that every n-vertex graph with at least f_r(n) edges and chromatic number ≥ r must contain a triangle. Turán's theorem (1941) solved the case r=2: f_2(n) = ⌊n²/4⌋ + 1.\n\nErdős and Gallai (1962) determined f_3(n) = ⌊(n-1)²/4⌋ + 2, and Simonovits established the general asymptotic form f_r(n) = n²/4 - g(r)·n/2 + O(1) in his PhD thesis. Here g(r) measures how far triangle-free graphs with chromatic number ≥ r can be from bipartite. The problem thus reduces to understanding g(r).\n\nRecent progress has narrowed the bounds significantly. Davies and Illingworth (2022) proved g(r) ≥ (1/2 - o(1))r² log r using χ-Ramsey techniques, while Hefty, Horn, King, and Pfender (2025) showed g(r) ≤ (2 + o(1))r² log r, building on advances in off-diagonal Ramsey numbers R(3,k). The factor-of-4 gap between these bounds remains open. Ren, Wang, Wang, and Yang (2024) recently determined the exact value f_4(n) for n ≥ 150.",
@@ -52,70 +53,70 @@
       "title": "Basic Graph Properties",
       "summary": "Triangle containment and chromatic number definitions",
       "startLine": 38,
-      "endLine": 54
+      "endLine": 55
     },
     {
       "id": "threshold",
       "title": "The Threshold Function f_r(n)",
       "summary": "Definition of the central function",
       "startLine": 56,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "turan",
       "title": "Turán's Theorem (r = 2)",
       "summary": "The classical case: > n²/4 edges implies triangle",
       "startLine": 80,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "r3",
       "title": "Erdős-Gallai (r = 3)",
       "summary": "f_3(n) = ⌊(n-1)²/4⌋ + 2",
       "startLine": 100,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "r4",
       "title": "The Case r = 4",
       "summary": "f_4(n) for large n (2024 result)",
       "startLine": 113,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "asymptotic",
       "title": "The Simonovits Asymptotic",
       "summary": "f_r(n) = n²/4 - g(r)n/2 + O(1)",
       "startLine": 126,
-      "endLine": 143
+      "endLine": 144
     },
     {
       "id": "bounds",
       "title": "Bounds on g(r)",
       "summary": "Davies-Illingworth lower, HHKP upper",
       "startLine": 145,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "mono",
       "title": "Monotonicity Properties",
       "summary": "How f and g vary with parameters",
       "startLine": 168,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "special",
       "title": "Special Values of g(r)",
       "summary": "g(2)=0, g(3)=1, g(4)=3",
       "startLine": 184,
-      "endLine": 195
+      "endLine": 196
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "Determining the exact asymptotic of g(r)",
       "startLine": 197,
-      "endLine": 212
+      "endLine": 219
     }
   ],
   "conclusion": {

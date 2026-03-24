@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/999",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
@@ -83,56 +83,56 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 45,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Euler's totient, approximability, and infinite approximability."
     },
     {
       "id": "divergence-condition",
       "title": "The Divergence Condition",
       "startLine": 58,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "The Duffin-Schaeffer sum and divergence/convergence conditions."
     },
     {
       "id": "measure-theory",
       "title": "Measure-Theoretic Formulation",
       "startLine": 72,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Almost all, almost none, and the measure-theoretic setup."
     },
     {
       "id": "main-conjecture",
       "title": "The Duffin-Schaeffer Conjecture",
       "startLine": 86,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "The conjecture statement, easy direction, and hard direction."
     },
     {
       "id": "erdos-partial",
       "title": "Erdős's Partial Result",
       "startLine": 101,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Erdős proved the case when f(q)·q is bounded."
     },
     {
       "id": "koukoulopoulos-maynard",
       "title": "Koukoulopoulos-Maynard Theorem (2020)",
       "startLine": 111,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "The full conjecture proved after 79 years."
     },
     {
       "id": "consequences",
       "title": "Consequences",
       "startLine": 121,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "Convergence case, zero-one law, continued fractions."
     },
     {
       "id": "khintchine",
       "title": "Khintchine's Theorem",
       "startLine": 138,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "The 1924 result for monotone functions and the limsup set."
     },
     {
@@ -169,5 +169,27 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-206",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, measure-theory, solved"
+    },
+    {
+      "targetId": "erdos-1001",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, measure-theory"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: measure-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-206",
+    "erdos-1001",
+    "erdos-1118"
+  ]
 }

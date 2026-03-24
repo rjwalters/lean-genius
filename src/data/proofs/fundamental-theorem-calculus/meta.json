@@ -39,7 +39,8 @@
     "wiedijkNumber": 15,
     "axiomCount": 0,
     "lineCount": 165,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Calculus (FTC) represents one of mathematics' greatest unifications. Its origins predate Newton and Leibniz: Isaac Barrow, Newton's teacher at Cambridge, proved a geometric version in his *Lectiones Geometricae* (1670), showing that the tangent to an area curve gives the height of the original curve — essentially FTC Part 1 in geometric language. But Barrow did not recognize the full computational significance.\n\nIsaac Newton developed his 'method of fluxions' while avoiding the plague at Woolsthorpe Manor (1665-1666), making FTC the centerpiece: he systematically used antidifferentiation to compute areas, volumes, and arc lengths. Leibniz independently created his differential calculus in the 1670s, with superior notation (dx, dy, ∫) that we still use today. Their bitter priority dispute dominated European mathematics for decades.\n\nWhile Newton and Leibniz grasped the theorem intuitively, rigorous proof required the epsilon-delta foundations developed by Cauchy in his *Résumé des leçons* (1823) and perfected by Weierstrass (1860s). Bernhard Riemann's 1854 Habilitationsschrift gave the first rigorous definition of the integral, making FTC a theorem rather than a heuristic. The modern Lebesgue integral (1902) and its generalization by Henstock-Kurzweil further extended FTC to broader classes of functions.",
@@ -63,7 +64,7 @@
       "id": "setup",
       "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Introduces the historical context, imports Mathlib's calculus and integration libraries, and opens the namespace.",
       "mathContext": "Imports: `FDeriv` (Fréchet derivative), `Deriv` (real derivative), `IntervalIntegral` ($\\int_a^b$), `FundThmCalculus` (Mathlib's FTC infrastructure), `MeanValue` (MVT), `Topology`."
     },
@@ -71,7 +72,7 @@
       "id": "integral-function",
       "title": "The Integral Function",
       "startLine": 31,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Defines F(x) = ∫ₐˣ f(t)dt, the cumulative integral that measures accumulated area.",
       "mathContext": "$F(x) = \\int_a^x f(t)\\,dt$ defines a function $F : \\mathbb{R} \\to \\mathbb{R}$ that 'accumulates' the values of $f$ from the basepoint $a$."
     },
@@ -79,7 +80,7 @@
       "id": "ftc-part1",
       "title": "FTC Part 1: Differentiation of Integrals",
       "startLine": 44,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Proves that the derivative of an integral recovers the original function: F'(x) = f(x).",
       "mathContext": "$\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$ for $f$ continuous. Lean: `HasDerivAt (integralFunction f a) (f b) b`."
     },
@@ -87,7 +88,7 @@
       "id": "ftc-part2",
       "title": "FTC Part 2: Evaluation of Integrals",
       "startLine": 61,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Proves that the integral of a derivative equals the net change: ∫ₐᵇ F' = F(b) - F(a).",
       "mathContext": "$\\int_a^b F'(x)\\,dx = F(b) - F(a)$ for $F$ continuous on $[a,b]$, differentiable on $(a,b)$."
     },
@@ -95,7 +96,7 @@
       "id": "antiderivatives",
       "title": "Antiderivatives and Uniqueness",
       "startLine": 88,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Shows that the integral function is an antiderivative, and that antiderivatives differ only by constants.",
       "mathContext": "$F' = G' \\Rightarrow (F-G)' = 0 \\Rightarrow F - G = c$. The kernel of $d/dx$ is $\\{\\text{constants}\\}$, so antiderivatives form an affine subspace $F + \\mathbb{R}$."
     },
@@ -103,7 +104,7 @@
       "id": "checks",
       "title": "Type Checking",
       "startLine": 141,
-      "endLine": 146,
+      "endLine": 165,
       "summary": "Verifies the types of the main theorems using #check commands.",
       "mathContext": "Verified: `ftc_part1`, `ftc_part2`, `integral_is_antiderivative`, `antiderivatives_differ_by_constant`."
     }

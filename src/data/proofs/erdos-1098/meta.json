@@ -21,7 +21,7 @@
     "erdosNumber": 1098,
     "erdosUrl": "https://erdosproblems.com/1098",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Subgroup",
@@ -127,7 +127,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 40,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Defines `nonCommuting g h` as `g * h ≠ h * g`, `commuting g h` as `g * h = h * g`. Proves `nonCommuting_symm` via simp and constructor. Defines `centerDef := Subgroup.center G` and proves `mem_center_iff` characterizing center membership via `commuting`."
     },
     {

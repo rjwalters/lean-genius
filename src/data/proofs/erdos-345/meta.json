@@ -29,7 +29,7 @@
       "Finset and subset operations",
       "Induction and well-ordering"
     ],
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -79,7 +79,7 @@
       "id": "subset-sums-completeness",
       "title": "Subset Sums and Completeness",
       "startLine": 21,
-      "endLine": 30,
+      "endLine": 31,
       "summary": "Defines `subsetSums(A) = P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A\\}$ and `IsComplete(A)`: $\\exists m, \\forall n \\ge m: n \\in P(A)$.",
       "mathContext": "$P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A,\\, S \\text{ finite}\\}$. $\\text{IsComplete}(A) \\iff \\exists m,\\, \\forall n \\ge m: n \\in P(A)$. Subset sums use distinct elements (no repetition)."
     },
@@ -87,7 +87,7 @@
       "id": "threshold",
       "title": "Completeness Threshold",
       "startLine": 32,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "Axiomatizes $T(A) = \\min\\{m : \\forall n \\ge m, n \\in P(A)\\}$ via correctness and minimality axioms.",
       "mathContext": "$T(A) = \\min\\{m : \\forall n \\ge m,\\, n \\in P(A)\\}$. Axiomatized via correctness ($\\forall n \\ge T(A): n \\in P(A)$) and minimality ($T(A) > 0 \\implies \\exists n < T(A): n \\notin P(A)$)."
     },
@@ -95,7 +95,7 @@
       "id": "power-sequences",
       "title": "Power Sequences",
       "startLine": 49,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Defines `powerSeq(k) = \\{n^k : n \\ge 1\\}$. Proves $T(n^1) = 1$. Axiomatizes completeness for all $k \\ge 1$ via Waring's problem.",
       "mathContext": "$\\text{powerSeq}(k) = \\{n^k : n \\ge 1\\}$. $T(n^1) = 1$ since every positive integer is a sum of distinct positive integers. Completeness for all $k \\ge 1$ follows from Waring's problem."
     },
@@ -111,7 +111,7 @@
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 79,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Conjecture: $\\exists^\\infty k: T(n^k) > T(n^{k+1})$. Formalized as $\\forall K, \\exists k \\ge K: T(n^{k+1}) < T(n^k)$.",
       "mathContext": "$\\exists^\\infty k: T(n^k) > T(n^{k+1})$. Erdos-Graham suggest $k = 2^t$ for large $t$ as candidates for threshold reversal. Any reversal must occur for $k \\ge 5$ by the computed monotonicity."
     },
@@ -119,7 +119,7 @@
       "id": "monotonicity",
       "title": "Monotonicity Observations",
       "startLine": 86,
-      "endLine": 94,
+      "endLine": 96,
       "summary": "Strict monotonicity: $T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$. No reversal in the computable range; any reversal requires $k \\ge 5$.",
       "mathContext": "$T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$: strict monotonicity holds in the computable range. Computing $T(n^k)$ for $k \\ge 6$ is currently infeasible."
     }

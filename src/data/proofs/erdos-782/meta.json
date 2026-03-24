@@ -22,7 +22,7 @@
     "erdosNumber": 782,
     "erdosUrl": "https://erdosproblems.com/782",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set",
@@ -57,11 +57,11 @@
       "BombieriLangConjecture placeholder",
       "cilleruelo_granville axiom",
       "no_4AP_in_squares axiom (classical)",
-      "squares_contain_3AP axiom"
+      "squares_contain_3AP: PROVED by explicit construction {1,25,49}={1²,5²,7²} with d=24 (was axiom)"
     ],
-    "axiomCount": 5,
+    "axiomCount": 4,
     "lineCount": 271,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s): no_4AP_in_squares (Euler), question1_implies_question2 (Ramsey-type), BombieriLangConjecture (open), cilleruelo_granville (conditional). squares_contain_3AP was proved by explicit construction {1,25,49}."
   },
   "overview": {
     "historicalContext": "This problem was posed by Brown, Erdős, and Freedman in [BEF90]. It connects classical results about arithmetic progressions in squares with modern questions in additive combinatorics.\n\nThe classical result that squares contain no 4-term APs (related to Fermat's Last Theorem for n=4) motivates asking about weaker structures. Quasi-progressions relax the exact gap requirement to bounded gaps.\n\nSolymosi (2007) conjectured that even combinatorial cubes don't appear in unbounded sizes. Cilleruelo and Granville (2007) showed this would follow from the Bombieri-Lang conjecture in algebraic geometry.",
@@ -87,70 +87,70 @@
       "title": "Perfect Squares",
       "summary": "Squares, IsSquare, isSquare_iff, small examples",
       "startLine": 33,
-      "endLine": 52
+      "endLine": 53
     },
     {
       "id": "progressions",
       "title": "Arithmetic Progressions",
       "summary": "ArithProg, ContainsAP, squares_contain_3AP, no_4AP_in_squares",
       "startLine": 54,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "quasi-prog",
       "title": "Quasi-Progressions",
       "summary": "IsQuasiProg, ContainsQuasiProg, Question1, Question1Weak",
       "startLine": 79,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "cubes",
       "title": "Combinatorial Cubes",
       "summary": "CubeVertices, IsNontrivialCube, ContainsCube, Question2",
       "startLine": 105,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "relationship",
       "title": "Relationship Between Questions",
       "summary": "question1_implies_question2, no_cubes_implies_no_quasiprog",
       "startLine": 132,
-      "endLine": 145
+      "endLine": 146
     },
     {
       "id": "solymosi",
       "title": "Solymosi's Conjecture",
       "summary": "SolymosiConjecture, SolymosiConjectureAlt, solymosi_equiv",
       "startLine": 147,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "bombieri-lang",
       "title": "Conditional Result",
       "summary": "BombieriLangConjecture, cilleruelo_granville, conditional_q2_negative",
       "startLine": 170,
-      "endLine": 188
+      "endLine": 189
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "Has2Cube, Has3Cube",
       "startLine": 190,
-      "endLine": 207
+      "endLine": 208
     },
     {
       "id": "density",
       "title": "Density Considerations",
       "summary": "numSquaresUpTo, sparsity analysis",
       "startLine": 209,
-      "endLine": 224
+      "endLine": 225
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_782_status, erdos_782_question1, erdos_782_question2",
       "startLine": 226,
-      "endLine": 265
+      "endLine": 271
     }
   ],
   "conclusion": {
@@ -175,8 +175,59 @@
     ],
     "namespace": "Erdos782",
     "lineCount": 271,
-    "axiomCount": 5,
-    "theoremCount": 6,
+    "axiomCount": 4,
+    "theoremCount": 7,
     "definitionCount": 19
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern unavoidable structure in large combinatorial objects. Ramsey theory guarantees monochromatic substructures in colored sets, while this problem asks whether the perfect squares contain specific additive structures (quasi-progressions, combinatorial cubes)"
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem guarantees arithmetic progressions in dense subsets of integers. The squares have density $\\sim n^{-1/2}$ (too sparse for Szemerédi to apply directly), but the question of quasi-progressions in squares asks whether a weaker structured pattern still appears"
+    },
+    {
+      "targetId": "erdos-781",
+      "relationship": "related",
+      "description": "Adjacent Erdős problem in the same series on structured monochromatic/additive configurations in integer sequences"
+    },
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Nearby Erdős problem in the combinatorics series; both concern extremal properties of structured mathematical objects"
+    }
+  ],
+  "relatedProofs": [
+    "ramseys-theorem",
+    "szemeredi-theorem",
+    "erdos-781",
+    "erdos-780"
+  ],
+  "references": [
+    {
+      "authors": "Brown, Tom C.; Erdős, Paul; Freedman, Allen R.",
+      "title": "Quasi-progressions and descending waves",
+      "year": "1990",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 53, pp. 81–95",
+      "note": "Introduced quasi-progressions and posed the question of whether perfect squares contain arbitrarily long quasi-progressions with uniform bound"
+    },
+    {
+      "authors": "Halberstam, Heini; Roth, Klaus F.",
+      "title": "Sequences",
+      "year": "1966",
+      "venue": "Oxford University Press (2nd edition, Springer 1983)",
+      "note": "Classical reference on additive structure of integer sequences including the density and additive properties of perfect squares"
+    },
+    {
+      "authors": "Bombieri, Enrico; Lang, Serge",
+      "title": "Diophantine approximation on abelian varieties",
+      "year": "1970",
+      "venue": "Inventiones Mathematicae",
+      "note": "The Bombieri-Lang conjecture on rational points of varieties of general type is connected to Q2 (combinatorial cubes in squares) via the algebraic geometry of the resulting Diophantine equations"
+    }
+  ]
 }

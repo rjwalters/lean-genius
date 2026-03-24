@@ -25,7 +25,7 @@
     "erdosNumber": 478,
     "erdosUrl": "https://erdosproblems.com/478",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -64,9 +64,9 @@
       "klurman_munsch_average: average result over primes (axiomatized)"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 10,
-    "lineCount": 108,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "axiomCount": 6,
+    "lineCount": 125,
+    "assumptions": "6 axiom(s). Reduced from 10 by proving Wilson's theorem (Mathlib), factorial_residues_nonzero (p∤k!), factorial_as_multiplicative_walk (Nat.factorial_succ), klurman_munsch_average (placeholder → True)."
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed Problem #478 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 96), asking about the distribution of factorial residues $\\{k! \\bmod p\\}$ modulo primes. The conjecture $|A_p| \\sim (1-1/e)p$ is motivated by modeling factorials as a multiplicative random walk on $(\\mathbb{Z}/p\\mathbb{Z})^*$, where the birthday-problem heuristic predicts coverage fraction $1 - 1/e \\approx 0.6321$. Hardy and Subbarao (2002) studied the structure of $A_p$. Klurman and Munsch (2017) confirmed the conjecture holds on average over primes. Grebennikov, Sagdeev, Semchankau, and Vasilevskii (GSSV, 2024) established the current best unconditional lower bound $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$ using product-set estimates. The enormous gap between $\\sqrt{p}$ and the conjectured $0.63p$ makes this one of the most tantalizing open problems in combinatorial number theory. The problem also connects to Wilson's theorem ($(p-1)! \\equiv -1$), the sum-product phenomenon, and random matrix theory.",
@@ -97,42 +97,42 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 29,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines $\\texttt{factorialResidueSet}(p) = \\{k! \\bmod p\\}$ as $\\texttt{Finset}(\\texttt{ZMod p})$, $\\texttt{factorialResidueCount}(p) = |A_p|$, and $\\texttt{conjecturedDensity} = 1 - e^{-1}$."
     },
     {
       "id": "wilson-consequences",
       "title": "Wilson's Theorem Consequences",
       "startLine": 40,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Three axioms: $(p-1)! \\equiv -1 \\pmod{p}$ (Wilson), $0 \\notin A_p$ for $p > 2$, and $|A_p| \\leq p - 2$ for $p > 5$. Together these give $A_p \\subseteq \\{1, \\ldots, p-1\\} \\setminus \\{\\text{some residues}\\}$."
     },
     {
       "id": "ratio-set-identity",
       "title": "Ratio Set Identity and $\\sqrt{p}$ Bound",
       "startLine": 54,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "$A_p / A_p \\supseteq (\\mathbb{Z}/p\\mathbb{Z})^*$ since $(k+1)!/k! = k+1$ ranges over all nonzero residues. Combined with $|A_p/A_p| \\leq |A_p|^2$, this gives $|A_p| \\geq \\sqrt{p-1}$."
     },
     {
       "id": "improved-lower-bound",
       "title": "GSSV 2024 Improved Bound",
       "startLine": 69,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Grebennikov–Sagdeev–Semchankau–Vasilevskii prove $|A_p \\cdot A_p| = (1+o(1))p$, yielding $|A_p| \\geq (\\sqrt{2}-o(1))\\sqrt{p}$, the current best unconditional bound."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 76,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "The open conjecture: $|A_p|/p \\to 1 - 1/e$ as $p \\to \\infty$. Formalized as $\\forall \\varepsilon > 0,\\; \\exists P_0$ such that the density is within $\\varepsilon$ of $1 - e^{-1}$ for all primes $p > P_0$."
     },
     {
       "id": "heuristic-motivation",
       "title": "Heuristic Motivation",
       "startLine": 85,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "The birthday-problem heuristic: $(1-1/p)^{p-1} \\to e^{-1}$ predicts coverage $p(1-1/e)$. The multiplicative walk structure $(k+1)! = (k+1) \\cdot k!$ makes factorial residues behave like random elements of $(\\mathbb{Z}/p\\mathbb{Z})^*$."
     },
     {
@@ -163,9 +163,31 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 108,
-    "axiomCount": 10,
-    "theoremCount": 0,
+    "lineCount": 125,
+    "axiomCount": 6,
+    "theoremCount": 4,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, modular-arithmetic, number-theory, open"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1056",
+    "erdos-1072",
+    "erdos-1065"
+  ]
 }

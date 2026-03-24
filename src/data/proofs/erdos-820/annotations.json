@@ -15,7 +15,8 @@
       "GCD",
       "Multiplicative order",
       "Fermat's Little Theorem"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-ncoprime",
@@ -70,7 +71,9 @@
     "title": "The H(n) Function",
     "content": "**H(n):**\n\nH(n) = min{l ≥ 2 : ∃k<l, gcd(k^n-1, l^n-1)=1}\n\nThis is the central object: the smallest l admitting a coprime predecessor.\n\n```lean\nnoncomputable def H (n : ℕ) : ℕ :=\n  Nat.find (⟨3, 2, ..., sorry⟩ : ∃ l, l ≥ 2 ∧ hasNCoprimePredecessor l n)\n```",
     "mathContext": "The function H measures how rare coprimality is among exponentials.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-computed",
@@ -83,7 +86,9 @@
     "title": "Computed Values",
     "content": "**knownHValues:**\n\nH(1..10) = [3, 3, 3, 6, 3, 18, 3, 6, 3, 12]\n\nNotice H(n)=3 occurs for n=1,2,3,5,7,9 (all odd except 2).\nH(6)=18 is the first large value.",
     "mathContext": "Empirical data supporting the conjecture that H(n)=3 infinitely often.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-h3-equiv",
@@ -96,7 +101,9 @@
     "title": "H(n)=3 Characterization",
     "content": "**H_eq_3_iff_2_3_coprime:**\n\nH(n) = 3 if and only if gcd(2^n - 1, 3^n - 1) = 1.\n\nWhen H(n)=3, the witness is always k=2, l=3.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of h(n)=3 characterization"
+    "mathContext": "See annotation content for formal details of h(n)=3 characterization",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-conjecture1",
@@ -109,7 +116,9 @@
     "title": "Main Conjecture",
     "content": "**erdos820Conjecture1:**\n\nH(n) = 3 for infinitely many n.\n\n```lean\ndef erdos820Conjecture1 : Prop :=\n  ∀ N : ℕ, ∃ n > N, H n = 3\n```\n\nThis is the central question of Problem #820.",
     "mathContext": "Equivalently: gcd(2^n-1, 3^n-1)=1 infinitely often.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-oeis",
@@ -122,7 +131,9 @@
     "title": "OEIS A263647",
     "content": "**oeisA263647:**\n\nThe set of n where gcd(2^n - 1, 3^n - 1) = 1.\n\n```lean\ndef oeisA263647 : Set ℕ :=\n  {n : ℕ | n ≥ 1 ∧ Nat.gcd (2^n - 1) (3^n - 1) = 1}\n```\n\nThe conjecture asks if this set is infinite.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of oeis a263647"
+    "mathContext": "See annotation content for formal details of oeis a263647",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-lower-conj",
@@ -135,7 +146,9 @@
     "title": "Lower Bound Conjecture",
     "content": "**erdos820LowerBoundConjecture:**\n\n∃c>0 ∀ε>0: H(n) > exp(n^{(c-ε)/log log n}) infinitely often.\n\nThis bounds H(n) from below with iterated logarithm growth.",
     "mathContext": "The exponent n^{c/log log n} grows very slowly.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-upper-conj",
@@ -148,7 +161,9 @@
     "title": "Upper Bound Conjecture",
     "content": "**erdos820UpperBoundConjecture:**\n\n∃c>0 ∀ε>0: H(n) < exp(n^{(c+ε)/log log n}) for all large n.\n\nCombined with the lower bound, this would pin down H(n)'s growth precisely.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of upper bound conjecture"
+    "mathContext": "See annotation content for formal details of upper bound conjecture",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-erdos1974",
@@ -161,7 +176,9 @@
     "title": "Erdős 1974 Lower Bound",
     "content": "**erdos_1974_lower_bound:**\n\n∃c>0: H(n) > exp(n^{c/(log log n)²}) infinitely often.\n\nThis is weaker than the conjecture (squared log log in denominator).\n\nFrom \"Remarks on some problems in number theory\", Math. Balkanica (1974).",
     "mathContext": "Erdős's original partial result on this problem.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-vandoorn",
@@ -174,7 +191,9 @@
     "title": "van Doorn's Improvement",
     "content": "**van_doorn_lower_bound:**\n\n∃c>0: H(n) > exp(n^{c/log log n}) infinitely often.\n\nThis matches the conjectured lower bound form, removing the square.",
     "mathContext": "Improvement sketched in comments on erdosproblems.com.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-k-function",
@@ -187,7 +206,9 @@
     "title": "Dual Function K(n)",
     "content": "**K(n):**\n\nK(n) = min{k ≥ 2 : gcd(k^n - 1, 2^n - 1) = 1}\n\nThe 'dual' to H(n): find smallest k coprime to 2^n-1.\n\n```lean\nnoncomputable def K (n : ℕ) : ℕ :=\n  Nat.find (⟨3, sorry⟩ : ∃ k, k ≥ 2 ∧ Nat.gcd (k^n - 1) (2^n - 1) = 1)\n```",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of dual function k(n)"
+    "mathContext": "See annotation content for formal details of dual function k(n)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-question3",
@@ -200,7 +221,9 @@
     "title": "Question 3",
     "content": "**erdos820Question3:**\n\nDoes K(n) < exp(n^{(c+ε)/log log n}) for all large n?\n\nErdős asked if the dual function K has similar upper bounds.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of question 3"
+    "mathContext": "See annotation content for formal details of question 3",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-gcd-char",
@@ -213,7 +236,9 @@
     "title": "GCD Characterization",
     "content": "**gcd_characterization:**\n\nIf p | gcd(k^n-1, l^n-1), then there exists d|n with k^d ≡ 1 and l^d ≡ 1 (mod p).\n\nThis connects the GCD problem to multiplicative orders modulo primes.",
     "mathContext": "The key number-theoretic insight behind the problem.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-fermat",
@@ -226,7 +251,9 @@
     "title": "Fermat's Little Theorem",
     "content": "**fermat_little_theorem:**\n\nFor prime p not dividing k: k^{p-1} ≡ 1 (mod p).\n\nIf (p-1)|n, then p might divide both k^n-1 and l^n-1, making coprimality harder to achieve.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of fermat's little theorem"
+    "mathContext": "See annotation content for formal details of fermat's little theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-h-small",
@@ -242,7 +269,8 @@
     "significance": "key",
     "relatedConcepts": [
       "Problem #770"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-h-le-h",
@@ -255,7 +283,9 @@
     "title": "H ≤ h Relationship",
     "content": "**H_le_h:**\n\nH(n) ≤ h(n) always.\n\nSince h(n) requires pairwise coprimality while H(n) only needs one coprime pair, H is always at most h.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of h ≤ h relationship"
+    "mathContext": "See annotation content for formal details of h ≤ h relationship",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-summary",
@@ -268,7 +298,9 @@
     "title": "Summary Theorem",
     "content": "**erdos_820_summary:**\n\n```lean\ntheorem erdos_820_summary :\n    (∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, ∃ n > N,\n      (H n : ℝ) > Real.exp ((n : ℝ)^(c / Real.log (Real.log (n : ℝ))))) := ...\n```\n\nVan Doorn's lower bound is the strongest known result.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e820-status",
@@ -281,6 +313,8 @@
     "title": "Problem Status",
     "content": "**erdos_820_open:**\n\nThe problem is OPEN.\n\n1. H(n)=3 infinitely often? UNKNOWN\n2. Upper bound on H(n)? UNKNOWN\n3. Similar bounds for K(n)? UNKNOWN\n\nOnly the lower bound (van Doorn) is established.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of problem status"
+    "mathContext": "See annotation content for formal details of problem status",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

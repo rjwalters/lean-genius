@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/420",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -87,63 +87,63 @@
       "title": "The Divisor Function",
       "summary": "tau definition, tau_one, tau_prime, tau_multiplicative",
       "startLine": 40,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "factorial-divisors",
       "title": "Divisor Function of Factorials",
       "summary": "tauFactorial definition, tau_factorial_asymptotic",
       "startLine": 71,
-      "endLine": 90
+      "endLine": 91
     },
     {
       "id": "f-function",
       "title": "The F Function",
       "summary": "F definition measuring divisor count ratios",
       "startLine": 92,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "easy-result",
       "title": "Easy Result - F(√n, n) → ∞",
       "summary": "sqrt_gives_infinity, subhalf_exponent_works axioms",
       "startLine": 112,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "egip96-results",
       "title": "EGIP96 Results",
       "summary": "liminf_log_equals_one, four_ninths_gives_infinity, small_f_gives_one_almost_all",
       "startLine": 136,
-      "endLine": 173
+      "endLine": 174
     },
     {
       "id": "prime-gaps",
       "title": "Connection to Prime Gaps",
       "summary": "bounded_gaps_implies_limsup_infinity, zhang_bounded_gaps, bounded_gaps_consequence, cramer_implies_limit_infinity",
       "startLine": 175,
-      "endLine": 223
+      "endLine": 224
     },
     {
       "id": "open-questions",
       "title": "Open Questions",
       "summary": "Three partially open questions about density and limits",
       "startLine": 225,
-      "endLine": 255
+      "endLine": 256
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "erdos_420 theorem, egip96_summary",
       "startLine": 257,
-      "endLine": 282
+      "endLine": 283
     },
     {
       "id": "legendre",
       "title": "Legendre's Formula and τ(n!)",
       "summary": "tau_factorial_formula, legendre_exponent",
       "startLine": 284,
-      "endLine": 302
+      "endLine": 303
     },
     {
       "id": "summary",
@@ -183,5 +183,27 @@
     "axiomCount": 13,
     "theoremCount": 5,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-727",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, partially-solved"
+    },
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-727",
+    "erdos-1049",
+    "erdos-1053"
+  ]
 }

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/788",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.range",
@@ -84,42 +84,42 @@
       "title": "Basic Definitions",
       "summary": "openInterval, lowerInterval, upperInterval, pairwiseSums, isSumFreeWithResp",
       "startLine": 44,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "summary": "isValidConfig, f axiom",
       "startLine": 68,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "choi-bound",
       "title": "Choi's Bound and Conjecture (1971)",
       "summary": "choi_upper_bound, choiConjecture",
       "startLine": 81,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "adenwalla",
       "title": "Adenwalla's Lower Bound",
       "summary": "adenwalla_lower_bound, isSidonSet, sidon_sets_exist",
       "startLine": 91,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "improvements",
       "title": "Hunter's and BSS Improvements",
       "summary": "hunter_bound, bss_bound",
       "startLine": 109,
-      "endLine": 121
+      "endLine": 122
     },
     {
       "id": "interval-arithmetic",
       "title": "Interval Arithmetic",
       "summary": "interval_sum_range theorem, sums_in_upper_interval axiom",
       "startLine": 123,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "summary",
@@ -155,5 +155,27 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-155",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sidon-sets"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sidon-sets"
+    },
+    {
+      "targetId": "erdos-510",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, open, sidon-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-155",
+    "erdos-340",
+    "erdos-510"
+  ]
 }

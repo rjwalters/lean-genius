@@ -27,7 +27,8 @@
       "Combinatorial number theory",
       "Arithmetic combinatorics"
     ],
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Szemerédi posed this problem in 1983, asking whether sums and products of distinct elements from a finite integer set must be super-polynomially abundant. The question captures a deep principle in additive combinatorics: that additive and multiplicative structure in a set are fundamentally incompatible, so at least one of sums or products must be very rich. The problem is closely related to their more famous sum-product conjecture (Problem 52), which concerns pairwise operations $|A+A| + |A \\cdot A|$ rather than subset operations. Erdős and Szemerédi also established an upper bound, showing that arbitrarily large sets exist where the representable count is at most $\\exp(c(\\log|A|)^2 \\log\\log|A|)$, so the growth is subexponential. In 2003, Mei-Chu Chang resolved the problem affirmatively, proving that for every $k$, sufficiently large sets have at least $|A|^k$ representable integers. Chang's proof combined the Balog-Szemerédi-Gowers theorem with multiplicative energy estimates, building on the growing toolkit of additive combinatorics developed by Gowers, Bourgain, and others. The result confirmed that finite integer sets are inherently arithmetically rich when measured by subset operations.",
@@ -53,42 +54,42 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 20,
+      "endLine": 21,
       "summary": "Module documentation describing Problem 53 and its resolution by Chang (2003), with Mathlib imports for integers, finite sets, powerset operations, and tactics."
     },
     {
       "id": "subset-operations",
       "title": "Subset Sums and Products",
       "startLine": 22,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Defines subsetSums (all subset sums), subsetProducts (nonempty subset products), and sumsOrProducts (their union) using Finset.powerset and Finset.image."
     },
     {
       "id": "main-conjecture",
       "title": "Erdős Problem 53",
       "startLine": 45,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "States the conjecture as a Prop: for every k ≥ 1, there exists N₀ such that |A| ≥ N₀ implies |sumsOrProducts(A)| ≥ |A|^k."
     },
     {
       "id": "chang-theorem",
       "title": "Chang's Theorem (2003)",
       "startLine": 59,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Axiom: ErdosProblem53 holds — Chang proved the polynomial lower bound for all k."
     },
     {
       "id": "upper-bound",
       "title": "Erdős-Szemerédi Upper Bound",
       "startLine": 68,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Axiom: arbitrarily large sets exist with representable count at most exp(c(log|A|)² log log|A|), formalized as |A|^(c·(log₂|A|+1))."
     },
     {
       "id": "sum-product-connection",
       "title": "Sum-Product Connection (Problem 52)",
       "startLine": 83,
-      "endLine": 106,
+      "endLine": 107,
       "summary": "Defines pairwise sumset A+A and productset A·A, and states the Erdős-Szemerédi sum-product conjecture (Problem 52) as a related Prop."
     },
     {

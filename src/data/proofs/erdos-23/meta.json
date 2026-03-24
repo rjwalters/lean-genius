@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/23",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "axiomCount": 14,
     "mathlibDependencies": [
       {
@@ -87,49 +87,49 @@
       "title": "Basic Definitions",
       "summary": "Graph structure, IsBipartite, ContainsTriangle, IsTriangleFree, HasCycle",
       "startLine": 38,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "edge-deletion",
       "title": "Edge Deletion and Bipartiteness",
       "summary": "bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero",
       "startLine": 87,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "c5-construction",
       "title": "Blow-Up of C₅",
       "summary": "C5 graph, C5BlowUp structure, c5BlowUpGraph, triangle-freeness proofs",
       "startLine": 102,
-      "endLine": 155
+      "endLine": 156
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture23: triangle-free on 5n vertices → bipartite with ≤ n² deletions",
       "startLine": 157,
-      "endLine": 169
+      "endLine": 170
     },
     {
       "id": "best-bounds",
       "title": "Best Known Bounds",
       "summary": "Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound",
       "startLine": 171,
-      "endLine": 186
+      "endLine": 187
     },
     {
       "id": "generalized-conjecture",
       "title": "Generalized Conjecture",
       "summary": "GeneralizedConjecture for odd girth ≥ 2k+1, blow-up of C_{2k+1}",
       "startLine": 188,
-      "endLine": 221
+      "endLine": 222
     },
     {
       "id": "turan-connections",
       "title": "Turán-Type Connections",
       "summary": "Kővári-Sós-Turán theorem, Mantel's theorem, odd cycle cover",
       "startLine": 223,
-      "endLine": 250
+      "endLine": 251
     },
     {
       "id": "summary",

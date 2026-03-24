@@ -57,7 +57,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 313,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Dirichlet's theorem (1837) was the first use of analytic methods to prove results about the distribution of primes. While Euclid had proved there are infinitely many primes (c. 300 BCE), Dirichlet showed something far more refined: primes are equidistributed among arithmetic progressions.\n\nThe proof required Dirichlet to invent entirely new mathematical machinery: Dirichlet characters (group homomorphisms from (Z/qZ)* to C*) and L-functions (infinite series generalizing the Riemann zeta function). These tools became foundational for all of analytic number theory.\n\nThe key difficulty is proving that L(1, chi) is not zero for non-principal characters chi. For real characters, this requires showing the residue at s=1 is positive, which Dirichlet accomplished through careful analysis.",
@@ -83,7 +84,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 66,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "Definitions of arithmetic progressions, coprimality, and sets of primes in progressions.",
       "mathContext": "$\\text{ArithmeticProgression}(a, d) := \\{n \\in \\mathbb{N} \\mid \\exists k, n = a + kd\\}$. $\\text{PrimesCongruentMod}(a, d) := \\{p \\text{ prime} \\mid p \\equiv a \\pmod{d}\\}$."
     },
@@ -91,7 +92,7 @@
       "id": "main-theorem",
       "title": "Dirichlet's Theorem - Primary Formulations",
       "startLine": 87,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "Multiple equivalent formulations: ZMod, natural number congruence, constructive, integer, and filter-theoretic versions.",
       "mathContext": "ZMod form: $\\text{Set.Infinite}\\{p \\text{ prime} \\mid (p : \\mathbb{Z}/q\\mathbb{Z}) = a\\}$ for $a \\in (\\mathbb{Z}/q\\mathbb{Z})^*$. Constructive form: $\\forall n, \\exists p > n, p \\text{ prime} \\wedge p \\equiv a \\pmod{q}$."
     },
@@ -99,7 +100,7 @@
       "id": "l-functions",
       "title": "Dirichlet Characters and L-Functions",
       "startLine": 132,
-      "endLine": 165,
+      "endLine": 166,
       "summary": "The analytic machinery behind the proof: Dirichlet characters, L-functions, and the non-vanishing theorem.",
       "mathContext": "$\\chi: (\\mathbb{Z}/q\\mathbb{Z})^* \\to \\mathbb{C}^*$ group homomorphism. $L(s, \\chi) = \\sum_{n=1}^{\\infty} \\chi(n)/n^s = \\prod_p (1 - \\chi(p)/p^s)^{-1}$. Key lemma: $L(1, \\chi) \\neq 0$ for $\\chi \\neq \\chi_0$."
     },
@@ -115,7 +116,7 @@
       "id": "connections",
       "title": "Connections to Other Results",
       "startLine": 225,
-      "endLine": 250,
+      "endLine": 313,
       "summary": "Relations to the Prime Number Theorem for arithmetic progressions and Linnik's theorem.",
       "mathContext": "PNT for APs: $\\pi(x; q, a) \\sim x / (\\phi(q) \\ln x)$. Linnik: $\\exists L, \\forall a, q, \\gcd(a,q)=1 \\implies \\min\\{p \\equiv a \\pmod q\\} \\leq q^L$. Best known $L \\leq 5$."
     }

@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/108",
     "erdosProblemStatus": "proved",
     "dateAdded": "2026-01-14",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.chromaticNumber",
@@ -72,35 +72,35 @@
       "id": "imports",
       "title": "Imports and Documentation",
       "startLine": 1,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Module documentation explaining the problem, its history, and solution. Imports Mathlib graph theory modules."
     },
     {
       "id": "overview",
       "title": "Mathematical Overview",
       "startLine": 30,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Detailed explanation of the problem, key concepts (chromatic number, girth), and the function f(k,r)."
     },
     {
       "id": "axiom",
       "title": "Main Axiom",
       "startLine": 70,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "The Erdős-Hajnal-Rödl theorem stated as an axiom, with justification for why formalization is beyond current Mathlib."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 93,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Erdős Problem #108 stated as a theorem, derived directly from the axiom."
     },
     {
       "id": "special-case",
       "title": "Rödl's Theorem (r=4)",
       "startLine": 103,
-      "endLine": 127,
+      "endLine": 142,
       "summary": "The special case for r=4: triangle-free highly chromatic subgraphs. Historical note on Mycielski's construction."
     }
   ],
@@ -115,34 +115,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-58",
       "relationship": "companion problem",
-      "description": "Erdős Problem #58 asks whether graphs with sufficiently high chromatic number must contain odd cycles of every length, a complementary question about how chromatic number forces cycle structure. Together with #108, it forms part of Erdős's program relating chromatic number to cycle properties."
+      "description": "Erdős Problem #58 asks whether graphs with sufficiently high chromatic number must contain odd cycles of every length, a complementary question about how chromatic number forces cycle structure. Together with #108, it forms part of Erdős's program relating chromatic number to cycle properties.",
+      "targetId": "erdos-58"
     },
     {
-      "target": "erdos-57",
       "relationship": "closely related result",
-      "description": "Erdős Problem #57 addresses whether graphs of infinite chromatic number must contain odd cycles, an infinite analogue of the finite chromatic/cycle questions. The relationship between girth and chromatic number studied in #108 is directly relevant."
+      "description": "Erdős Problem #57 addresses whether graphs of infinite chromatic number must contain odd cycles, an infinite analogue of the finite chromatic/cycle questions. The relationship between girth and chromatic number studied in #108 is directly relevant.",
+      "targetId": "erdos-57"
     },
     {
-      "target": "erdos-61",
       "relationship": "related conjecture",
-      "description": "The Erdős–Hajnal Conjecture (#61) asks whether every graph with a forbidden induced subgraph has a large clique or independent set. It shares the theme of extracting structured subgraphs from dense/chromatic graphs, and Erdős and Hajnal are co-authors of both problems."
+      "description": "The Erdős–Hajnal Conjecture (#61) asks whether every graph with a forbidden induced subgraph has a large clique or independent set. It shares the theme of extracting structured subgraphs from dense/chromatic graphs, and Erdős and Hajnal are co-authors of both problems.",
+      "targetId": "erdos-61"
     },
     {
-      "target": "erdos-77",
       "relationship": "shared technique",
-      "description": "Erdős Problem #77 concerns Ramsey number growth rates and relies on the same probabilistic method (random graph constructions) that underlies Rödl's proof of the r=4 case of #108. Both illustrate the power of the probabilistic method in extremal combinatorics."
+      "description": "Erdős Problem #77 concerns Ramsey number growth rates and relies on the same probabilistic method (random graph constructions) that underlies Rödl's proof of the r=4 case of #108. Both illustrate the power of the probabilistic method in extremal combinatorics.",
+      "targetId": "erdos-77"
     },
     {
-      "target": "erdos-78",
       "relationship": "shared technique",
-      "description": "Erdős Problem #78 seeks constructive lower bounds for Ramsey numbers, using probabilistic arguments similar to those in the proof of #108. The girth control in #108's proof uses random subgraph selection analogous to Ramsey constructions."
+      "description": "Erdős Problem #78 seeks constructive lower bounds for Ramsey numbers, using probabilistic arguments similar to those in the proof of #108. The girth control in #108's proof uses random subgraph selection analogous to Ramsey constructions.",
+      "targetId": "erdos-78"
     },
     {
-      "target": "erdos-74",
       "relationship": "related problem",
-      "description": "Erdős Problem #74 asks whether graphs of high chromatic number contain almost-bipartite subgraphs of high chromatic number—a variant of the same theme in #108 where the structural constraint is near-bipartiteness rather than large girth."
+      "description": "Erdős Problem #74 asks whether graphs of high chromatic number contain almost-bipartite subgraphs of high chromatic number—a variant of the same theme in #108 where the structural constraint is near-bipartiteness rather than large girth.",
+      "targetId": "erdos-74"
     }
   ],
   "relatedProofs": [

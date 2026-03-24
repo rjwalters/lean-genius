@@ -25,7 +25,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 6,
     "lineCount": 343,
-    "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem asks about extracting subsets in general position (no 3 collinear) from sets in almost general position (no 4 collinear). Erdős originally believed linear growth was achievable, but this was disproved.\n\n**Timeline:**\n- **1991 (Füredi)**: Proved g(n) ≥ c·√n·log n and g(n) = o(n)\n- **1991 (Furstenberg-Katznelson)**: Density Hales-Jewett theorem implies o(n) upper bound\n- **2018 (Balogh-Solymosi)**: Proved g(n) ≤ n^(5/6+o(1)) using container method\n\nThe exact order of growth remains open, with a gap between exponents 1/2 and 5/6.",
@@ -148,5 +149,27 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1070",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, discrete-geometry"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, discrete-geometry"
+    },
+    {
+      "targetId": "erdos-185",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, hales-jewett"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1070",
+    "erdos-1088",
+    "erdos-185"
+  ]
 }

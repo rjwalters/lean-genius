@@ -22,7 +22,7 @@
     "erdosNumber": 364,
     "erdosUrl": "https://erdosproblems.com/364",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -101,49 +101,49 @@
       "id": "powerful-def",
       "title": "Powerful Number Definition",
       "startLine": 29,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines a natural number as powerful if p | n implies p² | n for all primes p."
     },
     {
       "id": "basic-examples",
       "title": "Basic Examples",
       "startLine": 43,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Proves 1, 4, 8, 9 are powerful using interval_cases and decidability."
     },
     {
       "id": "pairs",
       "title": "Consecutive Pairs",
       "startLine": 103,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Shows (8,9) is a powerful pair and states infinitely many pairs exist via Pell equation."
     },
     {
       "id": "quadruple",
       "title": "No Quadruples",
       "startLine": 123,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Proves no four consecutive powerful numbers exist using the mod 4 argument."
     },
     {
       "id": "triple-conjecture",
       "title": "Triple Conjecture (OPEN)",
       "startLine": 152,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "States the open conjecture that no three consecutive powerful numbers exist."
     },
     {
       "id": "stronger-gap",
       "title": "Gap Conjecture",
       "startLine": 172,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "States Erdős's stronger conjecture about polynomial growth of gaps."
     },
     {
       "id": "partial",
       "title": "Partial Results",
       "startLine": 190,
-      "endLine": 204,
+      "endLine": 205,
       "summary": "States Chan's 2025 result ruling out triples with a cube in the middle."
     }
   ],

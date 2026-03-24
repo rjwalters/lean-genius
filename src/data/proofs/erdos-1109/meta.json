@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1109",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Squarefree",
@@ -103,7 +103,7 @@
       "title": "Squarefree Numbers",
       "summary": "Definition using Mathlib's Squarefree, basic properties",
       "startLine": 44,
-      "endLine": 67,
+      "endLine": 68,
       "mathContext": "A natural number $n$ is *squarefree* if $p^2 \\nmid n$ for all primes $p$. Equivalently, $n$ has no repeated prime factors. The density of squarefree numbers is $6/\\pi^2 \\approx 0.608$."
     },
     {
@@ -111,7 +111,7 @@
       "title": "The Sumset",
       "summary": "sumset definition and hasSquarefreeSumset predicate",
       "startLine": 69,
-      "endLine": 79,
+      "endLine": 80,
       "mathContext": "The sumset $A + A = \\{a + b : a, b \\in A\\}$ has at most $|A|(|A|+1)/2$ distinct elements. The predicate  requires every element of $A + A$ to be squarefree."
     },
     {
@@ -119,7 +119,7 @@
       "title": "The Function f(N)",
       "summary": "Definition of f(N) as max size of squarefree-sumset sets",
       "startLine": 81,
-      "endLine": 87,
+      "endLine": 88,
       "mathContext": "$f(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\, \\forall s \\in A+A,\\, s \\text{ squarefree}\\}$. The question is whether $f(N)$ grows subpolynomially or polylogarithmically."
     },
     {
@@ -127,7 +127,7 @@
       "title": "Erdős-Sárközy Bounds (1987)",
       "summary": "Original bounds: log N ≪ f(N) ≪ N^{3/4} log N",
       "startLine": 89,
-      "endLine": 107,
+      "endLine": 108,
       "mathContext": "Erdős-Sárközy (1987): $\\log N \\ll f(N) \\ll N^{3/4} \\log N$. The lower bound constructs sets via careful residue class selection; the upper bound uses counting arguments about squarefree distribution."
     },
     {
@@ -135,7 +135,7 @@
       "title": "Konyagin's Improvements (2004)",
       "summary": "Current best bounds and current_bounds theorem",
       "startLine": 109,
-      "endLine": 150,
+      "endLine": 151,
       "mathContext": "Konyagin (2004): $(\\log\\log N)(\\log N)^2 \\ll f(N) \\ll N^{11/15+o(1)}$. The exponent $11/15 \\approx 0.733$ improves the Erdős-Sárközy upper bound $3/4 = 0.75$. The lower bound is significantly stronger than $\\log N$."
     },
     {
@@ -143,7 +143,7 @@
       "title": "The Open Questions",
       "summary": "Subpolynomial and polylogarithmic conjectures",
       "startLine": 152,
-      "endLine": 178,
+      "endLine": 179,
       "mathContext": "Question 1: Is $f(N) \\leq N^{o(1)}$? (subpolynomial). Question 2: Is $f(N) \\leq (\\log N)^{O(1)}$? (polylogarithmic). Erdős-Sárközy conjecture: Q2 holds. Both remain OPEN."
     },
     {
@@ -151,7 +151,7 @@
       "title": "Related Problems",
       "summary": "Connection to #1103, k-power-free generalization",
       "startLine": 180,
-      "endLine": 205,
+      "endLine": 206,
       "mathContext": "Problem #1103 (infinite analogue): if $f(N) = (\\log N)^{O(1)}$, then any infinite sequence with squarefree pairwise sums satisfies $a_n \\geq n^c$ for some $c > 0$. Sárközy (1992) generalized to $k$-power-free sumsets."
     },
     {
@@ -159,7 +159,7 @@
       "title": "Why Squarefree Sumsets are Small",
       "summary": "Density of squarefree numbers and modular constraint intuition",
       "startLine": 207,
-      "endLine": 230,
+      "endLine": 231,
       "mathContext": "For each prime $p$, avoiding $p^2 \\mid (a+b)$ restricts $A$ to at most $\\lfloor p/2 \\rfloor + 1$ residue classes mod $p^2$. These constraints across all primes interact multiplicatively via CRT, severely limiting $|A|$."
     },
     {
@@ -167,7 +167,7 @@
       "title": "Main Results",
       "summary": "erdos_1109_summary theorem combining both bounds",
       "startLine": 232,
-      "endLine": 253,
+      "endLine": 3731,
       "mathContext": "Current state: $(\\log\\log N)(\\log N)^2 \\ll f(N) \\ll N^{11/15+o(1)}$. The gap between polylogarithmic and $N^{0.733}$ is fundamental. The exact growth rate of $f(N)$ remains one of the key open problems in additive combinatorics."
     }
   ],

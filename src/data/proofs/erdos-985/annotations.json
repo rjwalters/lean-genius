@@ -15,7 +15,8 @@
       "Primitive roots",
       "Artin's conjecture",
       "Cyclic groups"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-primitive-root-def",
@@ -33,7 +34,8 @@
       "Cyclic groups",
       "Generators"
     ],
-    "mathContext": "See annotation content for formal details of primitive root definition"
+    "mathContext": "See annotation content for formal details of primitive root definition",
+    "prerequisites": []
   },
   {
     "id": "ann-e985-prime-primitive-root",
@@ -50,7 +52,8 @@
       "Prime numbers",
       "Primitive roots"
     ],
-    "mathContext": "See annotation content for formal details of prime primitive root"
+    "mathContext": "See annotation content for formal details of prime primitive root",
+    "prerequisites": []
   },
   {
     "id": "ann-e985-basic-facts",
@@ -63,7 +66,9 @@
     "title": "Existence of Primitive Roots",
     "content": "**Two fundamental facts:**\n\n1. **exists_primitive_root:** Every odd prime p has at least one primitive root g with 0 < g < p.\n\n2. **zmod_units_cyclic:** The multiplicative group (ℤ/pℤ)× is cyclic for prime p.\n\nThese are well-known theorems but axiomatized here since the full proofs require substantial group theory.",
     "mathContext": "The existence of primitive roots for primes was known to Gauss. The cyclicity of (ℤ/pℤ)× follows from the structure theorem for finite abelian groups.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-example-2-mod-3",
@@ -76,7 +81,9 @@
     "title": "Example: 2 is a Primitive Root mod 3",
     "content": "**primitiveRoot_2_mod_3:**\n\nord_3(2) = 2 = 3 - 1\n\n**Verification:**\n- 2¹ ≡ 2 (mod 3)\n- 2² ≡ 1 (mod 3)\n\nSo 2 has order 2, which equals φ(3) = 2. Thus 2 generates (ℤ/3ℤ)×.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of example: 2 is a primitive root mod 3"
+    "mathContext": "See annotation content for formal details of example: 2 is a primitive root mod 3",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-example-3-mod-7",
@@ -89,7 +96,9 @@
     "title": "Example: 3 is a Primitive Root mod 7",
     "content": "**primitiveRoot_3_mod_7:**\n\nord_7(3) = 6 = 7 - 1\n\n**Verification:**\n- 3¹ ≡ 3, 3² ≡ 2, 3³ ≡ 6, 3⁴ ≡ 4, 3⁵ ≡ 5, 3⁶ ≡ 1 (mod 7)\n\nAll 6 nonzero residues appear, so 3 generates (ℤ/7ℤ)×.\n\n**Note:** 2 is NOT a primitive root mod 7 (ord_7(2) = 3).",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of example: 3 is a primitive root mod 7"
+    "mathContext": "See annotation content for formal details of example: 3 is a primitive root mod 7",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-not-primitive-2-mod-7",
@@ -102,7 +111,9 @@
     "title": "Counterexample: 2 is NOT Primitive mod 7",
     "content": "**not_primitiveRoot_2_mod_7:**\n\nord_7(2) = 3 ≠ 6\n\n**Verification:**\n- 2³ = 8 ≡ 1 (mod 7)\n\nSo 2 has order 3, not 6. This shows not every small prime is a primitive root for every prime.\n\nBut 3 IS a primitive root mod 7, so Erdős 985 holds for p = 7.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of counterexample: 2 is not primitive mod 7"
+    "mathContext": "See annotation content for formal details of counterexample: 2 is not primitive mod 7",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-verified-cases",
@@ -115,7 +126,9 @@
     "title": "Verified Cases of Erdős 985",
     "content": "**Computational Verification:**\n\nWe verify Erdős 985 for several small primes:\n\n| p | Prime primitive root q | Order |\n|---|------------------------|-------|\n| 3 | 2 | 2 |\n| 5 | 2 | 4 |\n| 7 | 3 | 6 |\n| 11 | 2 | 10 |\n| 13 | 2 | 12 |\n| 23 | 5 | 22 |\n\nIn each case, we find a prime q < p with ord_p(q) = p - 1.\n\nProved using `native_decide` for computational verification.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of verified cases of erdős 985"
+    "mathContext": "See annotation content for formal details of verified cases of erdős 985",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-artin-conjecture",
@@ -132,7 +145,8 @@
     "relatedConcepts": [
       "Generalized Riemann Hypothesis",
       "Prime density"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-heath-brown",
@@ -149,7 +163,8 @@
     "relatedConcepts": [
       "Artin's conjecture",
       "Sieve methods"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-main-conjecture",
@@ -162,7 +177,9 @@
     "title": "Erdős Problem #985 Conjecture",
     "content": "**erdos_985_conjecture:**\n\nFor every prime p > 2, there exists a prime q < p which is a primitive root modulo p.\n\n**Status:** OPEN\n\n**What makes this hard:**\n- We know primitive roots exist (always)\n- We know infinitely many primes are primitive roots somewhere (Heath-Brown)\n- But we don't know if EVERY prime p has a PRIME primitive root < p\n\n**The gap:** Existence vs. universality",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of erdős problem #985 conjecture"
+    "mathContext": "See annotation content for formal details of erdős problem #985 conjecture",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-equivalence",
@@ -175,7 +192,9 @@
     "title": "Equivalent Formulation",
     "content": "**erdos_985_iff_all_odd_primes:**\n\nErdős 985 is equivalent to:\n\nprimesWithPrimePrimitiveRoot = {p : ℕ | p.Prime ∧ p ≠ 2}\n\n**Meaning:** The set of primes having a prime primitive root equals all odd primes.\n\n**Proof:** A straightforward set-theoretic argument showing the bijection between the universal quantifier and set equality.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of equivalent formulation"
+    "mathContext": "See annotation content for formal details of equivalent formulation",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-heuristic",
@@ -188,7 +207,9 @@
     "title": "Heuristic Argument",
     "content": "**heuristic_prime_primitive_roots:**\n\nFor large p, we expect the conjecture to hold:\n\n1. There are φ(p-1) primitive roots in [1, p-1]\n2. By PNT, about p/log(p) primes in [1, p]\n3. Expected prime primitive roots ≈ φ(p-1)/log(p)\n\nSince φ(p-1) grows roughly like p/log(log(p)), this ratio goes to infinity.\n\n**Caveat:** Heuristics don't constitute proof!",
     "mathContext": "The heuristic assumes primitive roots are \"random\" among [1, p-1], which is not rigorous.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e985-artin-implies",
@@ -205,7 +226,8 @@
       "Artin's conjecture",
       "Quantitative number theory"
     ],
-    "mathContext": "See annotation content for formal details of artin implies erdős 985"
+    "mathContext": "See annotation content for formal details of artin implies erdős 985",
+    "prerequisites": []
   },
   {
     "id": "ann-e985-summary",
@@ -218,6 +240,8 @@
     "title": "Summary Theorem",
     "content": "**erdos_985_summary:**\n\nCombines our main results:\n\n1. **Verified cases:** p = 3, 5, 7, 11, 13 all satisfy Erdős 985\n2. **Heath-Brown:** At least one of {2, 3, 5} is a primitive root for infinitely many primes\n\n**What we know:**\n- Conjecture holds for all tested small primes\n- Theoretical support from Heath-Brown\n- Heuristic evidence from PNT\n\n**What we don't know:**\n- Whether the conjecture is true for ALL primes",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

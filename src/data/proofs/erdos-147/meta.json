@@ -24,7 +24,7 @@
     "erdosProblemStatus": "disproved",
     "erdosPrizeValue": "$500",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -83,35 +83,35 @@
       "title": "Imports and Setup",
       "summary": "Imports `SimpleGraph.Basic` for the graph type and `IsBipartite`, `Data.Real.Basic` for real exponents, and `Data.Nat.Basic`. Opens `Erdos147` namespace.",
       "startLine": 21,
-      "endLine": 29
+      "endLine": 30
     },
     {
       "id": "turan-def",
       "title": "Turán Number Axiom",
       "summary": "Axiomatizes `turanNumber H n : ℕ` as $\\mathrm{ex}(n; H) = \\max\\{|E(G)| : |V(G)| = n, H \\not\\subseteq G\\}$. Naturally axiomatized since computing it requires optimizing over all $H$-free graphs.",
       "startLine": 31,
-      "endLine": 37
+      "endLine": 38
     },
     {
       "id": "mindegree-def",
       "title": "Minimum Degree Definition",
       "summary": "Defines `minDegree G` as $\\delta(G) = \\min_{v} \\deg(v)$ via `Finset.inf'` over vertex degrees. This is the key parameter linking graph structure to Turán exponents.",
       "startLine": 39,
-      "endLine": 44
+      "endLine": 45
     },
     {
       "id": "janzer-disproof",
       "title": "Janzer's Disproof (2023)",
       "summary": "Axiomatizes `janzer_disproof`: $\\forall$ even $r \\geq 4$, $\\exists$ bipartite $H$ with $\\mathrm{ex}(n; H) \\leq C \\cdot n^{2 - 1/(r-1)} \\cdot (\\log n)^r$. Uses algebraic constructions over finite fields.",
       "startLine": 46,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "prob-bound",
       "title": "Probabilistic Lower Bound",
       "summary": "Axiomatizes `probabilistic_lower_bound`: for bipartite $H$ with $\\delta(H) = r$, $\\mathrm{ex}(n; H) \\geq c \\cdot n^{2-2/r+\\varepsilon}$. From random graph deletion with $p = \\Theta(n^{-2/r})$.",
       "startLine": 65,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "main-theorem",
@@ -172,5 +172,27 @@
       "citation": "Kővári, T., Sós, V.T., and Turán, P., On a problem of K. Zarankiewicz, Colloq. Math. 3 (1954), 50-57.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, disproved, extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, disproved, extremal-graph-theory"
+    },
+    {
+      "targetId": "erdos-127",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-graph-theory, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1080",
+    "erdos-113",
+    "erdos-127"
   ]
 }

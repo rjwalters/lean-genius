@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/792",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-25",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -61,9 +61,9 @@
       "erdos_792_bounds: summary combining bounds",
       "erdos_792_lower_bound_chain: chain of lower bounds"
     ],
-    "axiomCount": 11,
-    "lineCount": 116,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "axiomCount": 10,
+    "lineCount": 119,
+    "assumptions": "10 axioms: f (function), f_spec/f_tight (defining properties), erdos_lower_bound/alon_kleitman_bound/bourgain_bound/bedert_bound (lower bounds), egm_upper_bound/f_asymptotic (upper bounds), middle_third_construction (construction). Formerly 11 — interval_sum_free proved by omega."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #792: Sum-Free Subsets**\n\nThis fundamental problem in additive combinatorics asks about guaranteed sum-free subsets. A set is sum-free if no element equals the sum of two others.\n\n**Historical Timeline:**\n- Erdős (1965): Established basic bound f(n) >= n/3 using the 'middle third' construction\n- Alon & Kleitman (1990): Improved to f(n) >= (n+1)/3\n- Bourgain (1997): Further improved to f(n) >= (n+2)/3\n- Eberhard, Green & Manners (2014): Proved f(n) <= n/3 + o(n), showing main term is optimal\n- Bedert (2025): Achieved f(n) >= n/3 + c*log log n, the current best lower bound\n\n**Significance:** This is Problem 1 on Ben Green's open problems list, indicating its central importance to the field. The exact second-order term remains unknown.",
@@ -89,49 +89,49 @@
       "title": "Problem Overview",
       "summary": "Header documentation with problem statement and known bounds",
       "startLine": 1,
-      "endLine": 22
+      "endLine": 23
     },
     {
       "id": "imports-setup",
       "title": "Imports and Setup",
       "summary": "Mathlib imports and namespace declaration",
       "startLine": 24,
-      "endLine": 33
+      "endLine": 34
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "SumFree, SumFreeFinset, IsSumFreeSubset, maxSumFreeSize",
       "startLine": 35,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "f-axiom",
       "title": "Axiomatized f(n)",
       "summary": "f(n) axiom with specification and tightness properties",
       "startLine": 53,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "summary": "Erdős, Alon-Kleitman, Bourgain, Bedert bounds as axioms",
       "startLine": 66,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Eberhard-Green-Manners bound and asymptotic limit",
       "startLine": 81,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "constructions",
       "title": "Examples and Constructions",
       "summary": "Interval sum-free and middle-third construction axioms",
       "startLine": 90,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "summary",
@@ -168,9 +168,31 @@
       "Filter"
     ],
     "namespace": "Erdos792",
-    "lineCount": 116,
-    "axiomCount": 11,
-    "theoremCount": 2,
+    "lineCount": 119,
+    "axiomCount": 10,
+    "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-789",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics, sum-free-sets"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sum-free-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-789",
+    "erdos-1",
+    "erdos-1136"
+  ]
 }

@@ -91,13 +91,50 @@ def IsUltraflat (P : ℕ → Polynomial ℂ) : Prop :=
   (∀ n, (P n).natDegree = n) ∧
   Filter.Tendsto (fun n => supNorm (P n) / Real.sqrt n) atTop (nhds 1)
 
-/-- Erdős #1150 is equivalent to: no ultraflat Littlewood sequence exists.
+/-- **Forward direction (proved):**
+    If the conjecture holds (∃ c > 0 with max|P| > (1+c)√n eventually),
+    then no ultraflat Littlewood sequence exists.
 
-    If ∃ c > 0 with max|P| > (1+c)√n, then supNorm/√n > 1+c, can't → 1.
-    Conversely, if no ultraflat sequence exists, then the ratio is
-    bounded away from 1, giving the required c. -/
-axiom conjecture_equiv_no_ultraflat :
-    Erdos1150Conjecture ↔ ∀ P : ℕ → Polynomial ℂ, ¬ IsUltraflat P
+    Proof: If supNorm(P_n) > (1+c)√n eventually, then
+    supNorm(P_n)/√n > 1+c eventually, which contradicts
+    supNorm(P_n)/√n → 1. -/
+theorem conjecture_implies_no_ultraflat :
+    Erdos1150Conjecture → ∀ P : ℕ → Polynomial ℂ, ¬ IsUltraflat P := by
+  intro ⟨c, hc, hev⟩ P ⟨hlit, hdeg, htend⟩
+  -- From the conjecture: eventually supNorm(P n) > (1+c)√n
+  -- Since P n has degree n and is Littlewood, eventually ratio > 1+c
+  have hev' : ∀ᶠ n in atTop, supNorm (P n) / Real.sqrt n > 1 + c := by
+    apply (hev.and (Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩)).mono
+    intro n ⟨hn, hn_pos⟩
+    have hspecial := hn (P n) (hdeg n) (hlit n)
+    have hsqrt_pos : (0 : ℝ) < Real.sqrt n := by
+      apply Real.sqrt_pos_of_pos; exact_mod_cast (show 0 < n by omega)
+    exact lt_div_iff₀ hsqrt_pos |>.mpr (by linarith)
+  -- From ultraflat: supNorm(P n)/√n → 1, so eventually < 1 + c
+  have hlt : ∀ᶠ n in atTop, supNorm (P n) / Real.sqrt n < 1 + c := by
+    have hmem : Set.Iio (1 + c) ∈ nhds (1 : ℝ) := Iio_mem_nhds (by linarith)
+    exact Filter.Eventually.mono (htend hmem) fun n hn => hn
+  -- Contradiction: eventually > 1+c AND eventually < 1+c
+  have hboth := hev'.and hlt
+  obtain ⟨n, hgt, hlt'⟩ := hboth.exists
+  linarith
+
+/-- **Backward direction (axiomatized):**
+    If no ultraflat Littlewood sequence exists, then the conjecture holds.
+
+    Proof sketch: By contrapositive. If no c works, then for each k,
+    there exists n_k and a Littlewood P_k of degree n_k with
+    supNorm(P_k) ≤ (1+1/k)√n_k. Taking k → ∞ yields an ultraflat
+    sequence, contradicting the hypothesis.
+
+    This requires countable choice and a careful diagonal argument. -/
+axiom no_ultraflat_implies_conjecture :
+    (∀ P : ℕ → Polynomial ℂ, ¬ IsUltraflat P) → Erdos1150Conjecture
+
+/-- The full equivalence follows from both directions. -/
+theorem conjecture_equiv_no_ultraflat :
+    Erdos1150Conjecture ↔ ∀ P : ℕ → Polynomial ℂ, ¬ IsUltraflat P :=
+  ⟨conjecture_implies_no_ultraflat, no_ultraflat_implies_conjecture⟩
 
 /-
 ## Known Results
@@ -138,8 +175,8 @@ theorem bbmst_upper_bound_exists :
   obtain ⟨_, c₂, _, hc₂, hflat⟩ := bbmst_flat
   refine ⟨c₂, hc₂, hflat.mono fun n ⟨p, hdeg, hlit, hbound⟩ => ⟨p, hdeg, hlit, ?_⟩⟩
   -- supNorm p = ⨆ z on unit circle of ‖p.eval z‖ ≤ c₂ * √n
-  -- since hbound z hz gives ‖p.eval z‖ ≤ c₂ * √n for each z
-  sorry
+  -- since hbound z hz gives ‖p.eval z‖ ≤ c₂ * √n for each z on the unit circle
+  sorry -- supNorm p ≤ c₂√n from pointwise bound (ciSup API issue with ConditionallyCompleteLattice)
 
 /-
 ## The Gap Between Flat and Ultraflat
@@ -191,6 +228,10 @@ every degree-n ±1 polynomial has max_{|z|=1} |P(z)| > (1+c)√n?
 
 **Gap**: We know flat ±1 polynomials exist but not whether
 ultraflat ±1 polynomials exist. Erdős conjectured they don't.
+
+**Proved in this file**:
+5. Conjecture ↔ no ultraflat ±1 sequences (forward direction proved,
+   backward direction axiomatized)
 -/
 theorem erdos_1150_summary :
     -- Parseval lower bound holds
@@ -201,7 +242,9 @@ theorem erdos_1150_summary :
       ∀ᶠ n in atTop, ∃ p : Polynomial ℂ,
         p.natDegree = n ∧ IsLittlewoodPolynomial p ∧
         ∀ z : ℂ, ‖z‖ = 1 →
-          c₁ * Real.sqrt n ≤ ‖p.eval z‖ ∧ ‖p.eval z‖ ≤ c₂ * Real.sqrt n) := by
-  exact ⟨parseval_lower_bound, bbmst_flat⟩
+          c₁ * Real.sqrt n ≤ ‖p.eval z‖ ∧ ‖p.eval z‖ ≤ c₂ * Real.sqrt n) ∧
+    -- Equivalence: conjecture ↔ no ultraflat sequences
+    (Erdos1150Conjecture ↔ ∀ P : ℕ → Polynomial ℂ, ¬ IsUltraflat P) := by
+  exact ⟨parseval_lower_bound, bbmst_flat, conjecture_equiv_no_ultraflat⟩
 
 end Erdos1150

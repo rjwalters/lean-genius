@@ -21,7 +21,7 @@
     "erdosNumber": 643,
     "erdosUrl": "https://erdosproblems.com/643",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -76,49 +76,49 @@
       "id": "hypergraphs",
       "title": "Hypergraph Definitions",
       "startLine": 27,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Basic definitions for t-uniform hypergraphs"
     },
     {
       "id": "crossed-pair",
       "title": "The Crossed Pair Configuration",
       "startLine": 43,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Definition of crossed pairs and when hypergraphs contain them"
     },
     {
       "id": "extremal-function",
       "title": "The Extremal Function f(n,t)",
       "startLine": 65,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Definition of f(n,t) as minimum edge count forcing crossed pairs"
     },
     {
       "id": "graph-case",
       "title": "Case t = 2: Graphs and C₄",
       "startLine": 86,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Connection to 4-cycles and Kővári–Sós–Turán"
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "startLine": 111,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Pikhurko-Verstraëte and general bounds"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 141,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "Statement of Erdős's asymptotic conjecture"
     },
     {
       "id": "constructions",
       "title": "Sunflower Constructions",
       "startLine": 158,
-      "endLine": 181,
+      "endLine": 1433,
       "summary": "Sunflower hypergraphs avoiding crossed pairs"
     }
   ],
@@ -190,5 +190,27 @@
     "axiomCount": 3,
     "theoremCount": 45,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1022",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, hypergraphs"
+    },
+    {
+      "targetId": "erdos-1023",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics"
+    },
+    {
+      "targetId": "erdos-1025",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1022",
+    "erdos-1023",
+    "erdos-1025"
+  ]
 }

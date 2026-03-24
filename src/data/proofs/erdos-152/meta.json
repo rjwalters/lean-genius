@@ -21,7 +21,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "lineCount": 108,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I' in the Journal of Number Theory (pp. 329-347). They initiated a systematic study of the additive structure of Sidon sumsets, asking not just about the size of $A + A$ (which is exactly $\\binom{n+1}{2}$ for a Sidon set of size $n$) but about its fine structure — how the elements are distributed within their range.\n\nA Sidon set (also called a $B_2$ sequence) is a set where all pairwise sums are distinct: $a_1 + b_1 = a_2 + b_2$ implies $\\{a_1, b_1\\} = \\{a_2, b_2\\}$. Classical results show that a Sidon subset of $\\{1, \\ldots, N\\}$ has at most $\\sqrt{N} + O(N^{1/4})$ elements, so the sumset $A + A$ contains $\\sim N/2$ elements in an interval of length $\\sim 2N$ — density roughly $1/4$. This means roughly 3/4 of the interval is 'gaps', and the question is how many sumset elements are completely surrounded by these gaps.\n\nThe problem has a weak form (the isolated count grows without bound) and a strong form ($\\gg |A|^2$ isolated elements, meaning a positive fraction of the sumset is isolated). Neither version has been resolved. The pigeonhole principle gives at least one isolated element for $|A| \\geq 5$, but going from one to unboundedly many requires understanding the global distribution of sums, not just local density.",
@@ -45,49 +46,49 @@
       "id": "header",
       "title": "Problem Statement and References",
       "startLine": 1,
-      "endLine": 13,
+      "endLine": 14,
       "summary": "Documents the problem from Erdős-Sárközy-Sós (1994), J. Number Theory. States both the weak (unbounded) and strong ($\\gg |A|^2$) forms."
     },
     {
       "id": "imports",
       "title": "Imports",
       "startLine": 15,
-      "endLine": 22,
+      "endLine": 23,
       "summary": "Imports Mathlib Sidon set library, pointwise finset operations, and filter basics. Opens `Pointwise` scope."
     },
     {
       "id": "sidon-sumsets",
       "title": "Sidon Sets and Sumsets",
       "startLine": 24,
-      "endLine": 35,
+      "endLine": 36,
       "summary": "Defines `IsSidonFinset` (distinct pairwise sums) and `sumsetFinset A = A + A`. The Sidon property gives $|A+A| = \\binom{n+1}{2}$."
     },
     {
       "id": "isolated-elements",
       "title": "Isolated Elements",
       "startLine": 37,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines `IsIsolated` ($s \\pm 1 \\notin A+A$) and `isolatedCount` via `Finset.filter`. The central counting function of the problem."
     },
     {
       "id": "weak-conjecture",
       "title": "Weak Conjecture: Unbounded Isolated Count",
       "startLine": 51,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "States `ErdosProblem152`: $\\forall M, \\exists N_0, \\forall$ Sidon $A$ with $|A| \\geq N_0$, $I(A) \\geq M$."
     },
     {
       "id": "strong-conjecture",
       "title": "Strong Conjecture: $\\gg |A|^2$ Isolated Elements",
       "startLine": 62,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "States `ErdosProblem152Strong`: $\\exists c > 0$ with $I(A) \\geq c|A|^2$ for all Sidon $A$. A constant fraction of the sumset is isolated."
     },
     {
       "id": "sumset-bounds",
       "title": "Sumset Size and Range Bounds",
       "startLine": 74,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Axiomatizes $|A+A| = n(n+1)/2$ and $\\max A \\geq n^2 - n + 1$ for Sidon sets of size $n$."
     },
     {
@@ -125,5 +126,27 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    },
+    {
+      "targetId": "erdos-840",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-14",
+    "erdos-153",
+    "erdos-840"
+  ]
 }

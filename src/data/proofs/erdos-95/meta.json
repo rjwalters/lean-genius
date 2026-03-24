@@ -20,7 +20,7 @@
     ],
     "badge": "axiom",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "sorries": 2,
     "erdosNumber": 95,
     "erdosUrl": "https://erdosproblems.com/95",
@@ -52,18 +52,6 @@
       "erdos_conjecture_proved: derives conjecture from Guth-Katz (1 sorry)",
       "convex_polygon_case: Fishburn/Altman axiom",
       "erdos_95: combined main theorem"
-    ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-94",
-        "relationship": "companion",
-        "description": "Problem #94 is the main distinct distances conjecture (Ω(n/log n) distinct distances), solved in the same Guth-Katz 2015 paper. The squared multiplicity sum ∑f(d)² is dual to the distinct distances count via Cauchy-Schwarz"
-      },
-      {
-        "targetId": "erdos-93",
-        "relationship": "specialization",
-        "description": "Problem #93 studies distinct distances for convex polygons, corresponding to the convex_polygon_case axiom in this formalization where the O(n³) bound holds without the log factor"
-      }
     ],
     "axiomCount": 2,
     "lineCount": 186,
@@ -168,5 +156,27 @@
     "axiomCount": 2,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-210",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry, solved"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry, solved"
+    },
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-210",
+    "erdos-605",
+    "erdos-105"
+  ]
 }

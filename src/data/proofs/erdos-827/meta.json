@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/827",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real",
@@ -50,20 +50,6 @@
       "MartinezBound: n_k ≤ Ck⁹",
       "erdosClaimedBound: Erdős's original (incorrect) bound",
       "nk_three, nk_monotone, nk_ge_k: basic properties"
-    ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-97",
-        "relationship": "Both concern geometric configurations in the plane; #97 studies equidistant vertices in convex polygons, sharing the theme of distance/radius constraints on point sets"
-      },
-      {
-        "proofId": "erdos-100",
-        "relationship": "Both concern point sets with restricted distance properties; #100 studies point sets with restricted distances, while #827 studies circumradii distinctness"
-      },
-      {
-        "proofId": "erdos-104",
-        "relationship": "Both involve circles determined by point triples; #104 studies unit circles through three points, connecting to the circumradius framework"
-      }
     ],
     "axiomCount": 7,
     "lineCount": 111,
@@ -99,28 +85,28 @@
       "title": "Points in General Position",
       "summary": "Defines Point as ℝ × ℝ, distSq (squared Euclidean distance), and GeneralPosition (no three collinear via cross-product test)",
       "startLine": 21,
-      "endLine": 34
+      "endLine": 35
     },
     {
       "id": "circumradius",
       "title": "Circumradius",
       "summary": "Defines circumRadiusSq via R² = a²b²c²/(4·Area²) and AllDistinctCircumradii requiring all triple pairs to have different radii",
       "startLine": 36,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "minimal-nk",
       "title": "The Minimal Number n_k",
       "summary": "NkExists (threshold existence), minimalNk axiomatized with validity (minimalNk_valid) and sharpness (minimalNk_sharp)",
       "startLine": 57,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "main-problem",
       "title": "Main Problem",
       "summary": "ErdosProblem827: n_k exists for all k ≥ 3",
       "startLine": 80,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "bounds",
@@ -170,5 +156,27 @@
       "citation": "Martinez, R., Roldán-Pensado, E., Corrected polynomial bounds for distinct circumradii configurations.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, ramsey-type"
+    },
+    {
+      "targetId": "erdos-224",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, geometry"
+    },
+    {
+      "targetId": "erdos-504",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1088",
+    "erdos-224",
+    "erdos-504"
   ]
 }

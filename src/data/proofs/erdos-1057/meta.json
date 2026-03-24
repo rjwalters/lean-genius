@@ -9,7 +9,7 @@
     "date": "1956",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1057Problem.lean",
-    "mathlib_version": "4.24.0",
+    "mathlib_version": "4.26.0",
     "tags": [
       "erdos",
       "number-theory",
@@ -67,23 +67,6 @@
       "erdos1057Conjecture, pomeranceConjecture: formal conjectures"
     ],
     "dateAdded": "2026-01-19",
-    "crossReferences": [
-      {
-        "id": "subset-count",
-        "relationship": "uses similar technique",
-        "description": "Foundational counting technique; both use Finset.filter for cardinality arguments"
-      },
-      {
-        "id": "fermats-little-theorem",
-        "relationship": "foundational result",
-        "description": "Fermat's little theorem is the basis: Carmichael numbers are composites that satisfy a^n ≡ a (mod n) for all a, the same congruence primes satisfy by Fermat's theorem"
-      },
-      {
-        "id": "erdos-1166",
-        "relationship": "related Erdős problem",
-        "description": "Erdős #1166 on pseudoprime counting also studies composites that mimic primes under modular exponentiation tests"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 1113,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -115,70 +98,70 @@
       "title": "Definitions: Korselt and Carmichael",
       "summary": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theorem.",
       "startLine": 39,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "small",
       "title": "Verified Small Carmichael Numbers",
       "summary": "Formally verifies $561, 1105, 1729, 2465, 2821, 6601, 8911$ as Carmichael numbers using `native_decide` for primality checks and `norm_num` for Korselt divisibility. Each proof follows the same pattern: squarefreeness via `Nat.squarefree_iff_prime_squarefree`, then Korselt divisibility by enumerating prime factors.",
       "startLine": 61,
-      "endLine": 229
+      "endLine": 230
     },
     {
       "id": "counting",
       "title": "Counting Function C(x)",
       "summary": "Defines $C(x)$ via `Finset.filter` and proves monotonicity $x \\leq y \\implies C(x) \\leq C(y)$ using Mathlib's `Finset.card_le_card` and `Finset.range_mono`.",
       "startLine": 231,
-      "endLine": 248
+      "endLine": 249
     },
     {
       "id": "bounds",
       "title": "Known Bounds on C(x)",
       "summary": "Axiomatizes Erdős's 1956 upper bound, Lichtman's 2022 lower bound ($x^{0.3389}$), Harman's 2008 bound ($x^{0.33336704}$), the AGP infinitude theorem, and AGP's quantitative $x^{2/7}$ bound.",
       "startLine": 250,
-      "endLine": 276
+      "endLine": 277
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture and Pomerance Prediction",
       "summary": "Formalizes $C(x) = x^{1-o(1)}$ as `erdos1057Conjecture`, the log-ratio formulation via `Filter.Tendsto`, and Pomerance's heuristic as `pomeranceConjecture`.",
       "startLine": 278,
-      "endLine": 300
+      "endLine": 301
     },
     {
       "id": "structural",
       "title": "Structural Theorems (Verified)",
       "summary": "Three fully verified structural results: (1) Carmichael numbers are odd (parity-squarefreeness argument), (2) not semiprimes (coprimality argument via $\\mathbb{Z}$ lifting), (3) have $\\geq 3$ prime factors (case analysis on factorization cardinality). Also proves no Carmichael is a prime power.",
       "startLine": 302,
-      "endLine": 517
+      "endLine": 518
     },
     {
       "id": "gap",
       "title": "The Exponent Gap",
       "summary": "Defines `upperExponent(x) = 1 - \\log\\log\\log x / \\log\\log x` and `lowerExponent = 0.3389`. Proves the lower bound exponent is $< 1$. Packages the open problem as `erdos1057OpenProblem`.",
       "startLine": 519,
-      "endLine": 537
+      "endLine": 538
     },
     {
       "id": "utilities",
       "title": "Utility Lemmas and Extractors",
       "summary": "Accessor lemmas extracting individual components from `IsCarmichael`: `carmichael_gt_one`, `carmichael_composite`, `carmichael_squarefree`, `carmichael_korselt_dvd`. Plus lower bound comparison theorems proving $2/7 < 0.33336704 < 0.3389 < 1$.",
       "startLine": 539,
-      "endLine": 574
+      "endLine": 575
     },
     {
       "id": "counting-properties",
       "title": "Counting Function Properties",
       "summary": "Proves $C(0) = C(1) = 0$, $C(560) = 0$ (via decidable checking), $C(561) \\geq 1$, $C(2821) \\geq 5$, $C(8911) \\geq 7$ (by constructing explicit witness sets), and $C$ unbounded (inductive construction from AGP).",
       "startLine": 576,
-      "endLine": 726
+      "endLine": 727
     },
     {
       "id": "deeper-structure",
       "title": "Deeper Structural Properties",
       "summary": "Additional verified results: minimum prime $\\geq 3$, distinct prime factors (from squarefree), product-of-primes decomposition, multiplicity-one factorization, Korselt congruence $n \\equiv 1 \\pmod{p-1}$, double congruence, and all seven small Carmichaels have exactly 3 prime factors.",
       "startLine": 728,
-      "endLine": 883
+      "endLine": 1113
     }
   ],
   "conclusion": {

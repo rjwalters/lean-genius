@@ -18,7 +18,7 @@
     ],
     "badge": "axiom",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "sorries": 0,
     "erdosNumber": 597,
     "erdosUrl": "https://erdosproblems.com/597",
@@ -79,42 +79,42 @@
       "id": "ordinal-notation",
       "title": "Ordinal Notation",
       "startLine": 32,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Definitions of ω₁, ω, ω₁ω, and ω₁² as ordinals"
     },
     {
       "id": "graph-structures",
       "title": "Graph Structures",
       "startLine": 58,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "SimpleGraph', containsClique, isK4Free, containsCountableBiclique, isKAleph0Free, hasAtMostAleph1Vertices"
     },
     {
       "id": "partition-arrow",
       "title": "Partition Arrow Notation",
       "startLine": 93,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Axiomatized partition relation α → (β, γ)²"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 104,
-      "endLine": 123,
+      "endLine": 124,
       "summary": "erdos597Conjecture and finiteCaseConjecture definitions"
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 125,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "Erdős-Hajnal triangle theorem and Baumgartner counterexample"
     },
     {
       "id": "background",
       "title": "Background and Context",
       "startLine": 143,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "Why both conditions are needed, partition calculus background, set-theoretic context"
     },
     {
@@ -147,5 +147,27 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1128",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: partition-calculus, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: partition-calculus, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-474",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: partition-calculus, ramsey-theory, set-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1128",
+    "erdos-1167",
+    "erdos-474"
+  ]
 }

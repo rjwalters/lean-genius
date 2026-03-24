@@ -24,7 +24,8 @@
     "relatedProblems": [],
     "axiomCount": 6,
     "lineCount": 249,
-    "assumptions": "6 axiom(s) and 9 sorry(s). See the Lean source for details."
+    "assumptions": "6 axiom(s) and 9 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős, Herzog, and Piranian around 1958, motivated by the geometry of polynomial lemniscates — the level curves {z : |f(z)| = c} of complex polynomials. For a monic polynomial f(z) = ∏(z - zᵢ) with all roots in the closed unit disc, the sublevel set {z : |f(z)| < 1} is a bounded open region in the complex plane. The problem asks how large a disc can be inscribed in this sublevel set. The benchmark is the polynomial zⁿ - 1, whose n roots are equally spaced on the unit circle: its sublevel set consists of n thin petals, and the largest inscribed disc has radius at most π/(2n). Pommerenke (1961) proved the first general lower bound ρ(f) ≥ 1/(2en²) using potential theory and properties of Green's functions, establishing that the inscribed disc radius is at least quadratically small. This left a large gap between the O(1/n²) lower bound and the conjectured O(1/n) behavior. The problem attracted attention from researchers in potential theory, approximation theory, and complex dynamics. After decades of incremental progress, Krishnapur, Lundberg, and Ramachandran (2025) achieved a major breakthrough, proving ρ(f) ≥ c/(n√(log n)) using area bounds for sublevel sets derived from potential-theoretic estimates on logarithmic capacity. This nearly closes the gap, leaving only a √(log n) factor between the best known lower bound and the conjectured 1/n rate. The problem connects to transfinite diameter (Problem 1040), sublevel set measure (Problem 1038), and the broader study of polynomial inequalities in complex analysis.",
@@ -50,84 +51,84 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation on the Erdős-Herzog-Piranian problem (#1039), the known bounds hierarchy (Pommerenke 1961, KLR 2025), and imports for Mathlib complex analysis",
       "startLine": 1,
-      "endLine": 23
+      "endLine": 24
     },
     {
       "id": "polynomial-setup",
       "title": "Polynomial Setup",
       "summary": "UnitDiscPolynomial structure (degree, roots, roots_in_disc constraint), UnitDiscPolynomial.eval (product formula), and sublevelSet definition {z : |f(z)| < 1}",
       "startLine": 25,
-      "endLine": 46
+      "endLine": 47
     },
     {
       "id": "inscribed-disc",
       "title": "Inscribed Disc Radius",
       "summary": "isInscribedDisc (disc B(c,r) ⊆ S), inscribedDiscRadius (supremum of radii), and rho (ρ(f) = inscribedDiscRadius of sublevel set)",
       "startLine": 48,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "benchmark",
       "title": "The Benchmark: zⁿ - 1",
       "summary": "rootsOfUnity construction (roots at e^{2πik/n}) and benchmark_upper axiom: ρ(zⁿ - 1) ≤ π/(2n)",
       "startLine": 63,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Lower Bound (1961)",
       "summary": "pommerenke_lower axiom (ρ(f) ≥ 1/(2en²)) and pommerenkeExponent constant (= 2, recording the quadratic rate)",
       "startLine": 80,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "klr",
       "title": "KLR Bound (2025)",
       "summary": "klr_lower axiom (ρ(f) ≥ c/(n√log n) for n ≥ 3) and klr_better_than_pommerenke theorem (KLR eventually dominates)",
       "startLine": 91,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "conjecture",
       "title": "The EHP Conjecture",
       "summary": "ehpConjecture definition (∃ c > 0, ρ(f) ≥ c/n for all unit disc polynomials) and ehp_open placeholder axiom",
       "startLine": 106,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "comparison",
       "title": "Comparison of Bounds",
       "summary": "Explicit bound functions pommerenkeBound, klrBound, conjecturedBound, benchmarkBound, and bounds_gap theorem showing KLR < benchmark",
       "startLine": 119,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "lemniscate",
       "title": "Lemniscate Properties",
       "summary": "lemniscate definition ({z : |f(z)| = 1}), sublevelSet_isOpen, sublevelSet_nonempty, and root_in_sublevelSet (roots lie in sublevel set)",
       "startLine": 144,
-      "endLine": 164
+      "endLine": 165
     },
     {
       "id": "area",
       "title": "Area Bounds",
       "summary": "sublevelArea (Lebesgue measure of sublevel set), area_implies_disc_bound (area ≥ πρ²), and klr_area_bound axiom (area ≥ π/(n² log n))",
       "startLine": 166,
-      "endLine": 180
+      "endLine": 181
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "degree_one_optimal (ρ = 1 for degree 1), hasClusteredRoots definition, and clustered_implies_large_disc (clustered roots → ρ ≥ 1 - ε)",
       "startLine": 182,
-      "endLine": 199
+      "endLine": 200
     },
     {
       "id": "random",
       "title": "Random Polynomials",
       "summary": "random_polynomial_expected axiom: E[ρ] ~ 1/√n for random unit disc polynomials, showing worst-case is atypical",
       "startLine": 201,
-      "endLine": 209
+      "endLine": 210
     },
     {
       "id": "open-question",

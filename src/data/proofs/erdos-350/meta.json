@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/350",
     "erdosProblemStatus": "proved",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -83,42 +83,42 @@
       "id": "definitions",
       "title": "Dissociated Sets Definition",
       "startLine": 34,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Definition of DistinctSubsetSums and alternative formulation."
     },
     {
       "id": "examples",
       "title": "Examples of Dissociated Sets",
       "startLine": 50,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Proofs that {1}, {1,2}, and powers of 2 are dissociated."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
       "startLine": 68,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Ryavec's theorem, sharp bound, and HSS generalization."
     },
     {
       "id": "bounds",
       "title": "Bounds and Properties",
       "startLine": 99,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Cardinality bounds and subset closure properties."
     },
     {
       "id": "sidon",
       "title": "Connection to Sidon Sets",
       "startLine": 120,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Definition of Sidon sets and relationship to dissociated sets."
     },
     {
       "id": "numerical",
       "title": "Numerical Examples",
       "startLine": 136,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "Concrete verified computations of reciprocal sums."
     },
     {
@@ -157,5 +157,27 @@
     "axiomCount": 8,
     "theoremCount": 7,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-30",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sidon-sets"
+    },
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sidon-sets"
+    },
+    {
+      "targetId": "erdos-41",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sidon-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-30",
+    "erdos-340",
+    "erdos-41"
+  ]
 }

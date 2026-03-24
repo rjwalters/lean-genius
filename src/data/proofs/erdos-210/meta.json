@@ -80,63 +80,63 @@
       "title": "Basic Definitions",
       "summary": "Point, PointSet, Collinear, InGeneralPosition, NotAllCollinear",
       "startLine": 42,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "ordinary-lines",
       "title": "Ordinary Lines",
       "summary": "Line structure, OnLine, IsOrdinaryLine, OrdinaryLineCount",
       "startLine": 64,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "summary": "Axiomatized f(n) as minimum ordinary line count",
       "startLine": 84,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "sylvester-gallai",
       "title": "Sylvester-Gallai Theorem",
       "summary": "f(n) ≥ 1 for any non-collinear configuration",
       "startLine": 89,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "motzkin",
       "title": "Motzkin's Theorem",
       "summary": "f(n) → ∞, with f_tends_to_infinity proved",
       "startLine": 106,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "kelly-moser-csima-sawyer",
       "title": "Kelly-Moser and Csima-Sawyer Bounds",
       "summary": "f(n) ≥ 3n/7 and f(n) ≥ 6n/13 for n ≥ 8",
       "startLine": 120,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "green-tao",
       "title": "Green-Tao Theorem",
       "summary": "f(n) ≥ n/2 for large even n, f(n) ≥ 3⌊n/4⌋ for large odd n, tightness",
       "startLine": 132,
-      "endLine": 148
+      "endLine": 149
     },
     {
       "id": "extremal",
       "title": "Extremal Configurations",
       "summary": "Böröczky construction, small n values",
       "startLine": 150,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "structure-theory",
       "title": "Structure Theory",
       "summary": "LiesOnCubic axiom and structure_theorem",
       "startLine": 170,
-      "endLine": 181
+      "endLine": 182
     },
     {
       "id": "summary",
@@ -172,5 +172,27 @@
     "axiomCount": 14,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry, solved"
+    },
+    {
+      "targetId": "erdos-95",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry, solved"
+    },
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, incidence-geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-605",
+    "erdos-95",
+    "erdos-105"
+  ]
 }

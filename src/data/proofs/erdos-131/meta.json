@@ -65,19 +65,10 @@
       "erdos_131_open_question: formal statement of remaining open problem"
     ],
     "dateAdded": "2026-01-19",
-    "crossReferences": [
-      {
-        "proofId": "erdos-186",
-        "relationship": "Non-dividing implies non-averaging (verified); F(N) ≤ g(N) allows Pham-Zakharov bounds to transfer from Problem #186"
-      },
-      {
-        "proofId": "subset-count",
-        "relationship": "Both use Finset.powerset and Finset.filter for counting extremal subsets"
-      }
-    ],
     "axiomCount": 0,
     "lineCount": 477,
-    "assumptions": "No axioms. 5 sorry(s) remain in the formalization."
+    "assumptions": "No axioms. 5 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem around 1975, asking for the growth rate of the maximum non-dividing subset of $\\{1,\\ldots,N\\}$. He originally conjectured $F(N) < (\\log N)^{O(1)}$, i.e., that non-dividing sets must be extremely sparse. Straus dramatically disproved this by constructing non-dividing sets of size $\\exp(c\\sqrt{\\log N})$ with $c = \\sqrt{2/\\log 2} \\approx 1.699$, showing they are far denser than polylogarithmic. Erdős then asked the refined question: 'Is $F(N) > N^{1/2-o(1)}$?' This stood open for decades. Erdős, Lev, Rauzy, Sandor, and Sarkozy (ELRSS, 1999) proved the first strong upper bound $F(N) < 3\\sqrt{N} + 1$, and Csaba provided a polynomial lower bound $F(N) \\gg N^{1/5}$. The breakthrough came from Pham and Zakharov (2024), who proved $F(N) \\leq N^{1/4+o(1)}$ via a surprising connection: every non-dividing set is non-averaging (no element is the average of others), so upper bounds on non-averaging sets from additive combinatorics apply. Since $N^{1/4} < N^{1/2-\\varepsilon}$, the original question was answered NO. However, the exact growth rate remains open: the gap between $\\exp(c\\sqrt{\\log N})$ (subexponential lower bound from Straus) and $N^{1/4+o(1)}$ (polynomial upper bound from Pham-Zakharov) is enormous. Whether $F$ grows polynomially or subexponentially is completely unknown.",
@@ -103,56 +94,56 @@
       "id": "definitions",
       "title": "Non-Dividing and Non-Averaging Definitions",
       "startLine": 41,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$). The equivalence `nondividing_equiv` between the two non-dividing formulations is stated but unproved."
     },
     {
       "id": "relationship",
       "title": "Non-dividing Implies Non-averaging",
       "startLine": 64,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Proves the key structural implication: if $a = \\text{avg}(S)$ then $a \\mid \\sum S$. The proof structure is complete except for extracting $\\mathbb{N}$-divisibility from the $\\mathbb{Q}$-equation $\\sum S = a \\cdot |S|$."
     },
     {
       "id": "f-function",
       "title": "The Extremal Function F(N)",
       "startLine": 79,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 91,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "Three upper bound results: ELRSS (1999) $F(N) < 3\\sqrt{N} + 1$, Pham-Zakharov (2024) $F(N) \\leq N^{1/4+o(1)}$ (via non-averaging connection), and the resolution `original_question_answered_no`: $F(N) \\not> N^{1/2-o(1)}$."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 112,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "Two lower bound constructions: Csaba's polynomial $F(N) \\gg N^{1/5}$ and Straus's subexponential $F(N) > \\exp((\\sqrt{2/\\log 2} + o(1))\\sqrt{\\log N})$, with numerical bounds $1.6 < \\sqrt{2/\\log 2} < 1.8$ on Straus's constant."
     },
     {
       "id": "open-question",
       "title": "The Open Gap",
       "startLine": 132,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false."
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "startLine": 154,
-      "endLine": 187,
+      "endLine": 188,
       "summary": "Verified: `singleton_nondividing` (vacuous truth). Partially verified: $\\{2,3\\}$ non-dividing (cardinality contradiction). Stated: primes form non-dividing sets."
     },
     {
       "id": "connection",
       "title": "Connection to Non-Averaging (Problem #186)",
       "startLine": 189,
-      "endLine": 206,
+      "endLine": 477,
       "summary": "Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$."
     }
   ],
@@ -178,5 +169,27 @@
     "axiomCount": 0,
     "theoremCount": 27,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, divisibility, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-13",
+    "erdos-387",
+    "erdos-400"
+  ]
 }

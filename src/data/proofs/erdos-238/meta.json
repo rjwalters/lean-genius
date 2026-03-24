@@ -20,7 +20,7 @@
     "erdosNumber": 238,
     "erdosUrl": "https://erdosproblems.com/238",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
+    "axiomCount": 2,
     "prerequisites": [
       "Prime Number Theorem",
       "Prime gap distribution",
@@ -29,7 +29,7 @@
       "Asymptotic analysis (big-O, little-o)"
     ],
     "lineCount": 234,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses: erdos_partial_result (Erdős's second-moment argument), prime_number_theorem_asymptotic (PNT). The average_gap_grows axiom was eliminated by proving prime gaps are unbounded via the factorial argument."
   },
   "overview": {
     "historicalContext": "This problem from Erdős [Er55c, p.7; Er49c] concerns long runs of consecutive primes with uniformly large gaps. It originates from Erdős's 1949 and 1955 papers on prime gap distribution, building on the classical question of how primes cluster or spread apart.\n\nThe Prime Number Theorem (proved independently by Hadamard and de la Vallée-Poussin in 1896) ensures that the average gap between consecutive primes near $x$ grows as $\\log x$, so most gaps exceed any fixed constant for large $x$. The challenge is finding LONG runs (of length $\\sim c_1 \\log x$) where ALL gaps simultaneously exceed a threshold $c_2$.\n\nErdős proved the conjecture holds when $c_1$ is sufficiently small (depending on $c_2$) using a second-moment argument: showing the expected number of qualifying runs in $[1, x]$ tends to infinity. The general case — arbitrary $c_1, c_2 > 0$ — remains open and is closely related to understanding the joint distribution of consecutive prime gaps.\n\nThe problem sits at the intersection of several major themes in analytic number theory: Cramér's 1936 random model for primes (which predicts maximal gaps of size $(\\log x)^2$), the Maier matrix method (1985) which showed deviations from the Cramér model in short intervals, and the Goldston-Pintz-Yıldırım (2009) and Maynard-Tao (2014) breakthroughs on small gaps between primes.",
@@ -92,14 +92,14 @@
       "title": "Part 6: PNT Context",
       "startLine": 119,
       "endLine": 141,
-      "summary": "Two axioms: average_gap_grows (eventually ∃ gap > c₂ among primes ≤ x) and prime_number_theorem_asymptotic (π(x) ~ x/log(x) formalized via ε-approximation)."
+      "summary": "PROVED average_gap_grows via factorial argument (prime gaps are unbounded). Uses Nat.count/Nat.nth Galois connection. Remaining axiom: prime_number_theorem_asymptotic (π(x) ~ x/log(x))."
     },
     {
       "id": "run-length",
       "title": "Part 7: Run Length Analysis",
       "startLine": 143,
-      "endLine": 164,
-      "summary": "Defines maxRunLength(x, c) via sSup and axiom conjecture_implies_run_growth connecting the conjecture to growth of this function."
+      "endLine": 203,
+      "summary": "Defines maxRunLength(x, c) via sSup. PROVED theorem conjecture_implies_run_growth (formerly axiom): the conjecture implies maxRunLength grows as log x. Uses le_csSup with BddAbove bound from strict monotonicity of nthPrime."
     },
     {
       "id": "heuristics",
@@ -187,16 +187,17 @@
       "Mathlib.Topology.Algebra.Order.LiminfLimsup",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Data.Real.Basic",
-      "Mathlib.Tactic"
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Factorial.Basic"
     ],
     "opens": [
       "Filter",
       "Real"
     ],
     "namespace": "Erdos238",
-    "lineCount": 234,
-    "axiomCount": 4,
-    "theoremCount": 4,
+    "lineCount": 345,
+    "axiomCount": 2,
+    "theoremCount": 12,
     "definitionCount": 10
   }
 }

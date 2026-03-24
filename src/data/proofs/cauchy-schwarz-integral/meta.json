@@ -44,12 +44,13 @@
     "dateAdded": "2026-02-11",
     "axiomCount": 0,
     "lineCount": 118,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**From Discrete Sums to Integrals: A Three-Generation Story**\n\nAugustin-Louis Cauchy first stated the discrete inequality $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ in his 1821 *Cours d'Analyse*, proving it as a lemma for bounding products of sums. The proof was algebraic: expand $(\\sum a_i b_j - a_j b_i)^2 \\geq 0$ and rearrange — the Binet-Cauchy identity. This inequality became a workhorse of 19th-century analysis.\n\nViktor Yakovlevich Bunyakovsky (1804–1889) recognized in 1859 that Cauchy's argument extends to integrals. In his memoir *Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies*, published in the Memoirs of the St. Petersburg Academy, he proved the continuous version:\n$$\\left(\\int_a^b f(x) g(x) \\, dx\\right)^2 \\leq \\int_a^b f(x)^2 \\, dx \\cdot \\int_a^b g(x)^2 \\, dx$$\nfor Riemann-integrable functions on $[a,b]$. His proof replaced finite sums with Riemann sums and passed to the limit — the natural generalization of Cauchy's method.\n\nHermann Amandus Schwarz (1843–1921) independently proved the integral form in 1885 in the context of minimal surfaces and variational calculus, using it to bound the first variation of area functionals. Because Bunyakovsky's work was published in Russian and French in the St. Petersburg memoirs, it was less widely known in Western Europe, and the inequality is often called 'Cauchy-Schwarz' despite Bunyakovsky's priority.\n\nThe modern measure-theoretic formulation replaces Riemann integrals with Lebesgue integrals and works in $L^2(\\mu)$ for arbitrary measures. This version was established through the work of Frigyes Riesz (1907) and Ernst Fischer (1907), who independently proved the completeness of $L^2$ — the Fischer-Riesz theorem. With $L^2$ as a complete inner product space (Hilbert space), Cauchy-Schwarz becomes a consequence of the abstract inner product axioms.\n\n**Modern Formalization Strategy**\n\nIn Mathlib, $L^2(\\mu)$ is already equipped with an `InnerProductSpace` instance, where $\\langle f, g \\rangle = \\int f \\cdot g \\, d\\mu$. The abstract Cauchy-Schwarz inequality $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ therefore immediately gives the integral form. The key insight is that the bridge theorem connecting the abstract inner product to the concrete integral is the critical step — once established, the integral inequality is a one-line rewrite.",
     "problemStatement": "**Bunyakovsky-Schwarz Integral Inequality**\n\nFor $L^2$ functions $f, g$:\n$$\\left|\\int f \\cdot g \\, d\\mu\\right| \\leq \\|f\\|_{L^2} \\cdot \\|g\\|_{L^2}$$\n\nEquivalently in squared form:\n$$(\\int f \\cdot g \\, d\\mu)^2 \\leq \\|f\\|_{L^2}^2 \\cdot \\|g\\|_{L^2}^2$$\n\nEquality holds if and only if $f$ and $g$ are linearly dependent in $L^2$.",
-    "text": "(integral f*g)^2 <= (integral f^2)*(integral g^2). The integral form of Cauchy-Schwarz via L^2 inner product spaces.",
+    "text": "A 118-line formalization of the Bunyakovsky-Schwarz integral inequality in Lean 4, with 0 sorries and 0 axioms. The proof exploits Mathlib's `InnerProductSpace` instance on `Lp ℝ 2 μ`: since $L^2(\\mu)$ is an inner product space, the abstract Cauchy-Schwarz `abs_real_inner_le_norm` gives $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ immediately. The critical bridge theorem `L2_inner_eq_integral` rewrites $\\langle f, g \\rangle = \\int f \\cdot g \\, d\\mu$, converting the abstract inequality into the concrete integral form $(\\int fg\\,d\\mu)^2 \\leq (\\int f^2\\,d\\mu)(\\int g^2\\,d\\mu)$ via a single rewrite. Both absolute value and squared forms are proved, plus the equality characterization: $|\\int fg| = \\|f\\|\\|g\\|$ iff $f$ and $g$ are linearly dependent in $L^2$ (via `norm_inner_eq_norm_iff`). The formalization works over arbitrary $\\sigma$-finite measure spaces, subsuming Lebesgue measure, counting measure (recovering discrete Cauchy-Schwarz), and probability measures (bounding the Pearson correlation $|\\rho| \\leq 1$).",
     "proofStrategy": "**Formalization Strategy**\n\n1. **L2 is an InnerProductSpace:** Mathlib provides `InnerProductSpace \\mathbb{R} (Lp \\mathbb{R} 2 \\mu)` as an instance.\n2. **Abstract Cauchy-Schwarz:** Apply `abs_real_inner_le_norm` to get $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$.\n3. **Bridge theorem:** Show $\\langle f, g \\rangle = \\int f \\cdot g \\, d\\mu$ using `L2.inner_def`.\n4. **Rewrite:** Substitute the bridge into the abstract inequality to obtain the integral form.\n5. **Equality:** Use `norm_inner_eq_norm_iff` to characterize equality as linear dependence in $L^2$.",
     "keyInsights": [
       "**L2 as InnerProductSpace:** Mathlib's `Lp \\mathbb{R} 2 \\mu` carries an `InnerProductSpace` instance where $\\langle f, g \\rangle = \\int f \\cdot g \\, d\\mu$. This means the abstract Cauchy-Schwarz inequality *is* the integral form.",
@@ -72,7 +73,7 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's L2 space, Bochner integration, inner product space theory, and tactics. Opens `MeasureTheory` namespace and sets up universe variables for a measurable space $(\\alpha, \\mu)$.",
       "startLine": 1,
-      "endLine": 42,
+      "endLine": 43,
       "mathContext": "The setup is parametric over an arbitrary measure space $(\\alpha, \\mathcal{F}, \\mu)$, ensuring the results hold for Lebesgue measure on $\\mathbb{R}^n$, counting measure on $\\mathbb{Z}$, probability measures, and any $\\sigma$-finite measure. The `noncomputable section` is needed because $L^2(\\mu)$ elements are equivalence classes of functions (agreeing $\\mu$-a.e.), which are not computably decidable."
     },
     {
@@ -80,7 +81,7 @@
       "title": "Abstract L2 Cauchy-Schwarz",
       "summary": "Establishes that `Lp \\mathbb{R} 2 \\mu` is an `InnerProductSpace` (via `inferInstance`) and states the abstract Cauchy-Schwarz $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ and its squared form.",
       "startLine": 44,
-      "endLine": 60,
+      "endLine": 61,
       "mathContext": "The abstract Cauchy-Schwarz inequality $|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$ holds in any inner product space. The standard proof expands $\\|u - tv\\|^2 \\geq 0$ for optimal $t = \\langle u,v\\rangle / \\|v\\|^2$, yielding a non-negative discriminant condition. The squared form $(\\langle f,g\\rangle)^2 \\leq \\|f\\|^2 \\|g\\|^2$ avoids absolute values and is algebraically cleaner for applications."
     },
     {
@@ -88,7 +89,7 @@
       "title": "Bridge: Inner Product = Integral",
       "summary": "Proves `L2_inner_eq_integral`: $\\langle f, g \\rangle = \\int f(a) \\cdot g(a) \\, d\\mu(a)$, connecting the abstract inner product to concrete integration via `L2.inner_def`.",
       "startLine": 62,
-      "endLine": 73,
+      "endLine": 74,
       "mathContext": "The bridge theorem $\\langle f, g \\rangle_{L^2} = \\int_\\alpha f(a) g(a) \\, d\\mu(a)$ is the Riesz representation in action: the abstract inner product on $L^2$ is *defined* as this integral, but Lean's typeclass system abstracts this away. The proof unfolds `L2.inner_def` and uses `inner x y = x * y` for $x, y \\in \\mathbb{R}$ (since the real inner product is just multiplication). This is the key step that makes the abstract inequality concrete."
     },
     {
@@ -96,7 +97,7 @@
       "title": "Bunyakovsky-Schwarz Inequality",
       "summary": "States and proves the integral form in both absolute value ($|\\int fg| \\leq \\|f\\|\\|g\\|$) and squared ($(\\int fg)^2 \\leq \\|f\\|^2\\|g\\|^2$) versions by rewriting the bridge theorem into the abstract inequality.",
       "startLine": 75,
-      "endLine": 93,
+      "endLine": 94,
       "mathContext": "The integral Cauchy-Schwarz: $\\left|\\int_\\alpha f \\cdot g \\, d\\mu\\right| \\leq \\left(\\int_\\alpha f^2 \\, d\\mu\\right)^{1/2} \\left(\\int_\\alpha g^2 \\, d\\mu\\right)^{1/2}$. Each proof is a single rewrite substituting the bridge theorem into the abstract inequality — the entire mathematical content is in the type-level identification $L^2(\\mu) \\cong \\text{InnerProductSpace}$, and the proofs are purely structural."
     },
     {
@@ -104,7 +105,7 @@
       "title": "Equality Characterization",
       "summary": "Proves equality holds iff $f$ and $g$ are linearly dependent in $L^2$: $|\\langle f, g \\rangle| = \\|f\\|\\|g\\| \\iff \\exists c: f = c \\cdot g$, using `norm_inner_eq_norm_iff`.",
       "startLine": 95,
-      "endLine": 116,
+      "endLine": 118,
       "mathContext": "Equality $|\\langle f, g \\rangle| = \\|f\\| \\cdot \\|g\\|$ holds iff $f = cg$ a.e. for some $c \\in \\mathbb{R}$. Geometrically, this means the 'angle' between $f$ and $g$ in $L^2$ is $0$ or $\\pi$ — they point in the same or opposite directions. The proof uses the standard Hilbert space fact: $\\|u - tv\\|^2 = 0$ for some $t$ iff $u$ and $v$ are proportional. In probability, equality means $Y = aX + b$ a.s. (perfect linear correlation $|\\rho| = 1$)."
     }
   ],

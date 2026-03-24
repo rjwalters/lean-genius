@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 105,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős introduced the translation property in the 1970s as a measure of 'quasi-periodicity' for number-theoretic sets. A set A ⊆ ℕ has this property if every finite initial pattern of A reappears at some translate—weaker than periodicity but capturing a form of self-similarity. The key tool is Brun's sieve (1920), which establishes the property for B-free sets (integers avoiding divisibility by elements of B) when B is pairwise coprime with convergent reciprocal sum. This immediately gives the translation property for squarefree numbers (B = {p² : p prime}, where Σ 1/p² < ∞). Problem 675 asks three deeper questions: (1) Do sums of two squares have the property? This is non-trivial because sums of two squares have density C/√(log x) by the Landau-Ramanujan theorem and are defined by an exponent-parity condition (primes p ≡ 3 mod 4 must divide to even power), not a non-divisibility condition, so Brun's sieve does not directly apply. (2) For balanced partitions P ∪ Q of primes, can P-smooth numbers have the property? This connects to multiplicative number theory and Dickman's function. (3) For squarefree numbers, must the minimal translation t_n grow at least as exp(n^c)? The CRT gives an upper bound t_n ≤ e^{O(n)}, and the question is whether a matching lower bound holds, quantifying the local non-periodicity of the squarefree pattern.",
@@ -47,49 +48,49 @@
       "id": "imports",
       "title": "Number Theory Imports",
       "startLine": 20,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Imports Nat.Basic, Set.Basic, Finset.Basic, and tactics from Mathlib."
     },
     {
       "id": "translation-property",
       "title": "The Translation Property",
       "startLine": 25,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Defines HasTranslationProperty and the minimal translation function via Nat.find."
     },
     {
       "id": "number-theoretic-sets",
       "title": "Number-Theoretic Sets",
       "startLine": 38,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set ℕ predicates."
     },
     {
       "id": "sieve-conditions",
       "title": "Sieve Conditions",
       "startLine": 52,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines IsPairwiseCoprime and HasSmallReciprocalSum as conditions for Brun's sieve."
     },
     {
       "id": "known-results",
       "title": "Known Results (Brun's Sieve)",
       "startLine": 62,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Axiomatizes the CRT-based translation for B-free sets and the squarefree special case."
     },
     {
       "id": "part1-two-squares",
       "title": "Part 1: Sums of Two Squares",
       "startLine": 75,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "States the conjecture that sums of two squares have the translation property."
     },
     {
       "id": "balanced-partition",
       "title": "Balanced Prime Partition and P-Smooth Numbers",
       "startLine": 82,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Defines balanced partitions, P-smooth numbers, and states Part 2 of the conjecture."
     },
     {
@@ -124,5 +125,27 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, open"
+    },
+    {
+      "targetId": "erdos-177",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, open"
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1138",
+    "erdos-177",
+    "erdos-36"
+  ]
 }

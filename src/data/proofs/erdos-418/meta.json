@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/418",
     "erdosProblemStatus": "proved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
@@ -123,7 +123,7 @@
       "id": "nonaliquots",
       "title": "Related: Nonaliquots",
       "startLine": 195,
-      "endLine": 213,
+      "endLine": 238,
       "summary": "Numbers not of form sigma(n) - n have positive density (Erdos 1973)."
     }
   ],
@@ -153,5 +153,27 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient"
+    },
+    {
+      "targetId": "erdos-220",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient"
+    },
+    {
+      "targetId": "erdos-249",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1004",
+    "erdos-220",
+    "erdos-249"
+  ]
 }

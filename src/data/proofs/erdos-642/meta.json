@@ -22,7 +22,7 @@
     "erdosNumber": 642,
     "erdosUrl": "https://erdosproblems.com/642",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -87,70 +87,70 @@
       "title": "Graphs and Cycles",
       "summary": "Abbreviates Graph V = SimpleGraph V, then defines Cycle G as a structure with List V vertices, length ≥ 3, modular adjacency closure (consecutive vertices and wraparound), and Nodup (simple cycle). Cycle.len extracts the vertex count. The list-based representation allows direct index arithmetic for adjacency checking.",
       "startLine": 30,
-      "endLine": 48
+      "endLine": 49
     },
     {
       "id": "diagonals",
       "title": "Diagonals of a Cycle",
       "summary": "Defines CycleAdjacent n i j via modular arithmetic ((i+1)%n = j or (j+1)%n = i) to identify cycle edges. IsDiagonal C e requires two distinct non-adjacent cycle positions connected by an edge in G, using Sym2 for unordered edges. diagonalCount filters edgeFinset for diagonals. This clean separation of cycle edges from chords is the foundation of the problem.",
       "startLine": 50,
-      "endLine": 71
+      "endLine": 72
     },
     {
       "id": "condition",
       "title": "The Cycle-Diagonal Condition",
       "summary": "SatisfiesCycleDiagonalCondition G requires C.len > diagonalCount C for ALL cycles C in G — a universal quantifier over an infinite family. The extremal function f(n) = sSup over n-vertex graphs satisfying this condition, making it a Turán-type problem with a global structural constraint rather than a forbidden subgraph.",
       "startLine": 73,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "trivial",
       "title": "Trivial Bounds",
       "summary": "Three basic observations: f_ge_tree (f(n) ≥ n-1 from acyclic graphs), f_le_complete (f(n) ≤ n(n-1)/2 from complete graph), and max_diagonals_in_cycle (a k-cycle has at most k(k-3)/2 diagonals = C(k,2) - k). All carry sorry — they bound f(n) between n-1 and n²/2.",
       "startLine": 89,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "ces",
       "title": "Chen-Erdős-Staton Bound",
       "summary": "Axiomatizes chen_erdos_staton: f(n) ≤ 2⌊n^(3/2)⌋ for n ≥ 10. This 1996 result was the first non-trivial upper bound and the best known for nearly 30 years. The proof uses neighborhood overlap in dense graphs to find heavily-chorded cycles. Also defines ces_exponent = 3/2.",
       "startLine": 108,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "dmms",
       "title": "DMMS Bound (2024)",
       "summary": "Axiomatizes dmms_2024: f(n) ≤ ⌈n(log n)^8⌉ for n ≥ 10, the state-of-the-art from Draganić-Methuku-Munhá Correia-Sudakov. This dramatic improvement from O(n^(3/2)) to O(n(log n)^8) uses sublinear expander techniques. dmms_improves_ces (sorry) verifies the improvement for n ≥ 1000.",
       "startLine": 121,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "summary": "States two open conjectures: HamburgerSzegedyConjecture (f(n) = o(n), formalized as ∀ε>0, ∃N, ∀n≥N, f(n) < εn) and the weaker LinearBoundConjecture (f(n) = O(n)). Both remain OPEN — the DMMS bound O(n(log n)^8) is still superlinear. conjecture_stronger_than_dmms (sorry) notes the logical relationship.",
       "startLine": 136,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "girth",
       "title": "Related Extremal Problems",
       "summary": "Connects to girth-5 graphs: HasGirth G 5 requires all cycles have length ≥ 5. girth_5_satisfies (sorry) shows these satisfy the condition. turan_C4_free (axiom) gives girth-5 graphs with Ω(n^(3/2)) edges from projective plane incidence graphs. f_lower_bound chains these to get f(n) ≥ Ω(n^(3/2)). This is the Kővári-Sós-Turán / Reiman construction.",
       "startLine": 156,
-      "endLine": 180
+      "endLine": 181
     },
     {
       "id": "expanders",
       "title": "Expander Techniques",
       "summary": "Formalizes the DMMS proof machinery: IsExpander G d λ (d-regular with spectral gap λ < d), IsSublinearExpander (degree d = n^ε for ε < 1), and the key expander_cycle_lemma dichotomy: good expanders either violate the condition or are sparse (|E| < dn/2). This is the technical heart of the 2024 breakthrough.",
       "startLine": 182,
-      "endLine": 205
+      "endLine": 206
     },
     {
       "id": "short-long",
       "title": "Short vs Long Cycles",
       "summary": "Complete critical length analysis — all proved without sorry: short_cycles_ok (k ≤ 4 ⟹ k > k(k-3)/2, by interval_cases + norm_num), pentagon_all_diags_violates (¬(5 > 5), by norm_num), and critical_length (k ≥ 5 ⟹ k ≤ k(k-3)/2, by omega). Together these show the exact transition at k = 5 between safe and potentially-violating cycle lengths.",
       "startLine": 207,
-      "endLine": 225
+      "endLine": 226
     },
     {
       "id": "main-result",
@@ -217,5 +217,27 @@
       "citation": "Reiman, I. (1958). Über ein Problem von K. Zarankiewicz. Acta Mathematica Academiae Scientiarum Hungaricae, 9(3–4), 269–273.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-608",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory"
+    },
+    {
+      "targetId": "erdos-622",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory"
+    },
+    {
+      "targetId": "erdos-65",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-608",
+    "erdos-622",
+    "erdos-65"
   ]
 }

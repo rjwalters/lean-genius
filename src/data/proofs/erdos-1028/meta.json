@@ -24,7 +24,8 @@
     "relatedProblems": [],
     "axiomCount": 7,
     "lineCount": 318,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #1028 concerns the discrepancy of sign functions: given a function f mapping pairs from {1,...,n} to {±1}, the discrepancy of a subset X is |∑_{x≠y∈X} f(x,y)|. The function H(n) is the minimum over all sign functions f of the maximum discrepancy over all subsets X. This measures the unavoidable imbalance in signed complete graphs.\n\nErdős (1963) established the upper bound H(n) = O(n^{3/2}) using the probabilistic method: a random sign function achieves maximum discrepancy O(n^{3/2}) with positive probability. For a subset of size k, the expected discrepancy of a random signing is √(k(k-1)) ≈ k, and optimizing over k ≈ √n gives the n^{3/2} bound. Note: the originally proposed lower bound H(n) ≥ n/4 was found to be incorrect (Aristotle verified a counterexample for n=8).\n\nErdős and Spencer (1971) proved the matching lower bound H(n) = Ω(n^{3/2}) using entropy and counting arguments, establishing H(n) = Θ(n^{3/2}). Their proof showed that any sign function must have some subset with discrepancy at least cn^{3/2}, confirming that random signs are essentially optimal. The formalization includes several theorems proved by Aristotle (Harmonic), including the well-definedness of H(n), symmetric pair sum decomposition, and discrepancy bounds.",
@@ -49,21 +50,21 @@
       "title": "Sign Functions",
       "summary": "SignFunction, isValidSign, validSignFunctions",
       "startLine": 81,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "discrepancy",
       "title": "Discrepancy",
       "summary": "pairSum, discrepancy, maxDiscrepancy",
       "startLine": 98,
-      "endLine": 114
+      "endLine": 115
     },
     {
       "id": "h-function",
       "title": "The Function H(n)",
       "summary": "H definition, H_spec",
       "startLine": 116,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "erdos-upper",
@@ -84,35 +85,35 @@
       "title": "The Main Result",
       "summary": "H_asymptotic, erdos_1028_question, erdos_1028_solved",
       "startLine": 158,
-      "endLine": 190
+      "endLine": 191
     },
     {
       "id": "symmetric",
       "title": "Symmetric Functions",
       "summary": "isSymmetric, symmetric_pairSum",
       "startLine": 192,
-      "endLine": 214
+      "endLine": 215
     },
     {
       "id": "graph",
       "title": "Graph Interpretation",
       "summary": "asSignedGraph, discrepancy_as_imbalance",
       "startLine": 216,
-      "endLine": 229
+      "endLine": 230
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Intuition",
       "summary": "expectedDiscrepancy, expected_discrepancy_bound, random_upper",
       "startLine": 231,
-      "endLine": 255
+      "endLine": 256
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound and Special Cases",
       "summary": "large_discrepancy_exists, H_two, H_three, homogeneous_small_discrepancy",
       "startLine": 257,
-      "endLine": 294
+      "endLine": 318
     }
   ],
   "conclusion": {
@@ -128,28 +129,28 @@
   },
   "crossReferences": [
     {
-      "target": "ramseys-theorem",
-      "relationship": "Ramsey theory provides the extremal combinatorics context in which homogeneous subsets drive large discrepancy; see openQuestions on Ramsey connections."
+      "relationship": "Ramsey theory provides the extremal combinatorics context in which homogeneous subsets drive large discrepancy; see openQuestions on Ramsey connections.",
+      "targetId": "ramseys-theorem"
     },
     {
-      "target": "erdos-1",
-      "relationship": "Erdős #1 (Sidon sets / sum-free sets) shares the probabilistic-method toolkit used to establish the O(n^{3/2}) upper bound."
+      "relationship": "Erdős #1 (Sidon sets / sum-free sets) shares the probabilistic-method toolkit used to establish the O(n^{3/2}) upper bound.",
+      "targetId": "erdos-1"
     },
     {
-      "target": "erdos-1025",
-      "relationship": "Erdős #1025 studies signed graph imbalance; the two problems share the signed-complete-graph model and discrepancy extremal questions."
+      "relationship": "Erdős #1025 studies signed graph imbalance; the two problems share the signed-complete-graph model and discrepancy extremal questions.",
+      "targetId": "erdos-1025"
     },
     {
-      "target": "erdos-1029",
-      "relationship": "Adjacent Erdős problem in the discrepancy-theory cluster; formalized with the same axiom structure and proof approach."
+      "relationship": "Adjacent Erdős problem in the discrepancy-theory cluster; formalized with the same axiom structure and proof approach.",
+      "targetId": "erdos-1029"
     },
     {
-      "target": "erdos-500",
-      "relationship": "Erdős #500 involves combinatorial counting over pairs; the pair-sum decomposition technique used here appears in related Erdős pair-counting problems."
+      "relationship": "Erdős #500 involves combinatorial counting over pairs; the pair-sum decomposition technique used here appears in related Erdős pair-counting problems.",
+      "targetId": "erdos-500"
     },
     {
-      "target": "binomial-theorem",
-      "relationship": "Binomial coefficient estimates underpin the counting arguments in both the upper and lower bound proofs for H(n)."
+      "relationship": "Binomial coefficient estimates underpin the counting arguments in both the upper and lower bound proofs for H(n).",
+      "targetId": "binomial-theorem"
     }
   ],
   "relatedProofs": [

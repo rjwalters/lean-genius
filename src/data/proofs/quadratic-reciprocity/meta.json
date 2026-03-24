@@ -46,7 +46,8 @@
     "wiedijkNumber": 7,
     "axiomCount": 0,
     "lineCount": 231,
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core reciprocity law delegates to Mathlib's `legendreSym.quadratic_reciprocity` (proved via Gauss sums and Eisenstein's lemma). The supplementary laws use `ZMod.exists_sq_eq_neg_one_iff` and `ZMod.exists_sq_eq_two_iff`. Original contributions are pedagogical wrappers providing four forms of the main law and explicit worked examples."
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core reciprocity law delegates to Mathlib's `legendreSym.quadratic_reciprocity` (proved via Gauss sums and Eisenstein's lemma). The supplementary laws use `ZMod.exists_sq_eq_neg_one_iff` and `ZMod.exists_sq_eq_two_iff`. Original contributions are pedagogical wrappers providing four forms of the main law and explicit worked examples.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Quadratic reciprocity is one of the most celebrated theorems in number theory. Euler and Legendre conjectured the result but could not prove it completely. Gauss (1796) gave the first complete proof at age 19, calling it the golden theorem and eventually publishing 8 different proofs. The theorem reveals deep, unexpected connections between prime numbers and is the foundation for class field theory and algebraic number theory. Eisenstein (1844) gave a particularly elegant proof using roots of unity and Gaussian integers. The theorem was generalized to arbitrary number fields by Artin (1927) in his reciprocity law, and the complete theory of higher reciprocity laws was developed through 20th-century class field theory.",
@@ -74,21 +75,21 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Overview of quadratic reciprocity, historical context, and significance."
     },
     {
       "id": "main-law",
       "title": "The Main Law",
       "startLine": 63,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Product form, quotient form, and special cases for 1 mod 4 and 3 mod 4."
     },
     {
       "id": "first-supplementary",
       "title": "First Supplementary Law",
       "startLine": 116,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "When -1 is a quadratic residue modulo a prime."
     },
     {
@@ -102,14 +103,14 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 163,
-      "endLine": 198,
+      "endLine": 199,
       "summary": "Concrete calculations for primes 3, 5, and 7."
     },
     {
       "id": "euler-criterion",
       "title": "Euler's Criterion",
       "startLine": 200,
-      "endLine": 220,
+      "endLine": 231,
       "summary": "The connection between Legendre symbols and powers."
     }
   ],
@@ -155,11 +156,6 @@
       "description": "The quadratic residues modulo $p$ form a subgroup of index 2 in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, with order $(p-1)/2$ by Lagrange's theorem. This index-2 structure (the kernel of the Legendre symbol homomorphism) is the group-theoretic foundation for reciprocity"
     },
     {
-      "targetId": "fundamental-theorem-algebra",
-      "relationship": "related",
-      "description": "FTA guarantees $x^2 - a$ splits over $\\mathbb{C}$; quadratic reciprocity determines when it splits over $\\mathbb{F}_p$. Both address the solvability of $x^2 = a$ — FTA over $\\mathbb{C}$ (always), reciprocity over $\\mathbb{F}_p$ (depends on $a$ and $p$)"
-    },
-    {
       "targetId": "fermats-last-theorem",
       "relationship": "foundational",
       "description": "Quadratic reciprocity is the $n = 2$ case of Artin reciprocity, which Wiles's modularity theorem generalizes to 2-dimensional Galois representations. The Langlands program, of which FLT is a consequence, seeks to extend reciprocity laws to all reductive groups — making QR the historical seed of the entire program"
@@ -180,19 +176,9 @@
       "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is cyclotomic) generalizes quadratic reciprocity: QR determines the splitting of primes in quadratic fields $\\mathbb{Q}(\\sqrt{d})$, while Kronecker-Weber determines splitting in all abelian extensions. Hilbert's 12th problem seeks the analogous result for arbitrary number fields"
     },
     {
-      "targetId": "angle-trisection",
-      "relationship": "related",
-      "description": "Gauss's constructibility criterion for regular $n$-gons (1801, same year as QR) requires $n = 2^k p_1 \\cdots p_m$ with distinct Fermat primes. The Fermat prime structure connects to quadratic residues: $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$, and the second supplementary law $(2/p)$ is used in Gauss's constructibility analysis"
-    },
-    {
       "targetId": "fermat-two-squares",
       "relationship": "related",
       "description": "Fermat's two-squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) is a direct application of quadratic reciprocity: $p \\equiv 1 \\pmod{4}$ means $-1$ is a quadratic residue mod $p$ (first supplementary law), so $x^2 \\equiv -1$ has a solution, which enables the descent argument producing $a^2 + b^2 = p$"
-    },
-    {
-      "targetId": "euler-identity",
-      "relationship": "related",
-      "description": "Gauss sums $g(\\chi) = \\sum_{a=0}^{p-1} \\chi(a) e^{2\\pi ia/p}$, defined using Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$, are the primary tool in modern proofs of quadratic reciprocity. The evaluation $g(\\chi)^2 = (-1)^{(p-1)/2} p$ for the Legendre symbol $\\chi$ connects the algebraic structure of $\\mathbb{F}_p$ to complex exponentials"
     },
     {
       "targetId": "hilbert-9-reciprocity",
@@ -207,14 +193,11 @@
     "infinitude-primes",
     "abel-ruffini",
     "lagrange-theorem",
-    "fundamental-theorem-algebra",
     "fermats-last-theorem",
     "fundamental-arithmetic",
     "primitive-roots",
     "kroneckers-jugendtraum",
-    "angle-trisection",
     "fermat-two-squares",
-    "euler-identity",
     "hilbert-9-reciprocity"
   ],
   "leanFile": {

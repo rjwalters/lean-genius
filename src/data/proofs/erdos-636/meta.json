@@ -21,7 +21,7 @@
     "erdosNumber": 636,
     "erdosUrl": "https://erdosproblems.com/636",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -88,74 +88,82 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Problem statement (Erdős-Faudree-Sós): in a Ramsey graph $G$ on $n$ vertices (no clique or independent set of size $\\gg \\log n$), must $G$ contain $\\gg n^{5/2}$ induced subgraphs with pairwise distinct (vertex count, edge count) signatures? Solved YES by Kwan-Sudakov (2021), optimal. Imports full Mathlib.",
+      "mathContext": "A Ramsey graph satisfies $\\omega(G), \\alpha(G) \\leq c \\log n$. Count distinct pairs $(|V(H)|, |E(H)|)$ over induced $H \\subseteq G$. Erdős-Faudree-Sós proved $\\gg n^{3/2}$; Kwan-Sudakov proved the optimal $\\gg n^{5/2}$. The $n^{5/2}$ bound comes from the pigeonhole principle: $\\binom{n}{k}$ induced subgraphs of size $k$, Ramsey condition forces diverse edge counts."
+    },
+    {
       "id": "basics",
       "title": "Graphs and Basic Definitions",
       "summary": "Defines cliqueNumber ω(G) using Mathlib's cliqueNum, independenceNumber α(G) as ω(Gᶜ) exploiting Ramsey symmetry, and NoLargeHomogeneousSet requiring both ω, α ≤ k. The complement-based definition of α is elegant and fundamental to Ramsey theory.",
       "startLine": 34,
-      "endLine": 56
+      "endLine": 57
     },
     {
       "id": "induced",
       "title": "Induced Subgraphs",
       "summary": "Defines inducedSubgraph G S via Mathlib's induce, inducedEdgeCount via edge finset cardinality, and the central Signature type as ℕ × ℕ pairs. The getSignature function maps vertex subsets to their (|S|, |E(G[S])|) pair.",
       "startLine": 58,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "counting",
       "title": "Counting Distinct Signatures",
       "summary": "Defines allSignatures as the image of all vertex subsets under getSignature, and distinctSignatureCount as its cardinality. Also defines DifferentSignatures for pairwise distinctness. The image-based definition cleanly captures the counting problem.",
       "startLine": 81,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "ramsey",
       "title": "The Ramsey Condition",
       "summary": "Defines ramseyBound k = 2^(2k) as a rough R(k,k) upper bound, axiomatizes existence of Ramsey graphs, and defines IsRamseyGraph G C requiring ω(G), α(G) ≤ ⌈C log n⌉. Random graphs G(n, 1/2) satisfy this condition with high probability.",
       "startLine": 102,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "efs",
       "title": "Erdős-Faudree-Sós Result",
       "summary": "Axiomatizes the original lower bound: Ramsey graphs have ≥ cn^(3/2) distinct signatures. The exponent 3/2 comes from summing Ω(v^(1/2)) achievable edge counts per vertex count v. This was the state of the art before Kwan-Sudakov.",
       "startLine": 120,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "kwan-sudakov",
       "title": "Kwan-Sudakov Theorem",
       "summary": "Axiomatizes the optimal lower bound cn^(5/2) and formally verifies ks_improves_efs (5/2 > 3/2) by norm_num. The dramatic improvement from 3/2 to 5/2 comes from showing Ω(v^(3/2)) edge counts per vertex count, not Ω(v^(1/2)).",
       "startLine": 135,
-      "endLine": 151
+      "endLine": 152
     },
     {
       "id": "optimality",
       "title": "Optimality",
       "summary": "Axiomatizes the matching upper bound O(n^(5/2)) and proves theta_bound by extracting existential witnesses from both axioms. The proof is a clean combination: obtain c₁ from Kwan-Sudakov, c₂ from the upper bound, and package them together.",
       "startLine": 153,
-      "endLine": 176
+      "endLine": 177
     },
     {
       "id": "techniques",
       "title": "Proof Techniques",
       "summary": "Axiomatizes key proof ideas: probabilistic method (random subset sampling), signature distribution (well-spread in the (v,e) plane), and establishes vertex_count_range (|S| ≤ n) and edge_count_range (|E(G[S])| ≤ |S|(|S|-1)/2).",
       "startLine": 178,
-      "endLine": 203
+      "endLine": 204
     },
     {
       "id": "ramsey-theory",
       "title": "Connections to Ramsey Theory",
       "summary": "Shows the Ramsey condition is essential: non-Ramsey graphs can have fewer signatures, and extreme cases (complete graphs, empty graphs) have only n+1 signatures. Axiomatizes that the Ramsey condition forces local complexity driving signature diversity.",
       "startLine": 205,
-      "endLine": 232
+      "endLine": 233
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Connects to counting isomorphism types (much harder than signatures), the Erdős-Hajnal conjecture (forbidden induced subgraphs force large homogeneous sets — the converse direction), and counting specific induced structures like paths.",
       "startLine": 234,
-      "endLine": 255
+      "endLine": 256
     },
     {
       "id": "main-result",

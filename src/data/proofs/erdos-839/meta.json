@@ -21,7 +21,7 @@
     "erdosNumber": 839,
     "erdosUrl": "https://erdosproblems.com/839",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.Icc",
@@ -83,35 +83,35 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 20,
-      "endLine": 40,
+      "endLine": 41,
       "summary": "Core definitions: consecutive sum $\\sum_{k=i}^{j} a_k$, avoidance property $a_m \\neq \\sum_{k=i}^{j} a_k$ for $i \\leq j < m$, and the ValidSeq subtype bundling positivity, strict monotonicity, and avoidance."
     },
     {
       "id": "questions",
       "title": "Growth Rate Questions",
       "startLine": 42,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "The two open questions: Question 1 ($\\limsup a_n/n = \\infty$, formalized as $\\forall C, \\exists n: a_n/(n+1) > C$) and Question 2 (vanishing logarithmic density, formalized via $\\varepsilon$-$X_0$)."
     },
     {
       "id": "structural",
       "title": "Structural Theorems (Proved)",
       "startLine": 56,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "Seven fully proved theorems: linear lower bound $a_n \\geq n+1$ (by induction), single-term sum identity, no-repeat from monotonicity, avoidance implies no single-term match, empty sum is zero, sum $\\geq$ first term, strict sum inequality for $i < j$, and the real-valued growth coercion."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 124,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "Axiomatized results: $\\liminf(a_n/n)$ can be finite (valid sequences need not grow super-linearly everywhere), and the reciprocal sum $\\sum 1/a_n$ can grow as $\\Omega(c \\cdot \\log \\log x)$."
     },
     {
       "id": "upper-density",
       "title": "Upper Density and Freud's Counterexample",
       "startLine": 140,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "The upper density $\\overline{d}(a)$ defined via `Filter.limsup`, and Freud's construction achieving $\\overline{d}(a) = 19/36 > 1/2$, disproving Erdős's density conjecture."
     },
     {
@@ -146,5 +146,27 @@
     "axiomCount": 6,
     "theoremCount": 8,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-342",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-423",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-342",
+    "erdos-423",
+    "erdos-11"
+  ]
 }

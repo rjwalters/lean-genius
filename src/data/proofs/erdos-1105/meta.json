@@ -22,7 +22,7 @@
     "erdosNumber": 1105,
     "erdosUrl": "https://erdosproblems.com/1105",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -88,70 +88,70 @@
       "title": "Graph Basics",
       "summary": "SimpleGraph, EdgeSet, CompleteGraph, numEdgesKn, EdgeColoring, numColors",
       "startLine": 34,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "paths-cycles",
       "title": "Paths and Cycles",
       "summary": "PathGraph, CycleGraph, numEdgesPath, numEdgesCycle",
       "startLine": 61,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "rainbow",
       "title": "Rainbow Subgraphs",
       "summary": "GraphEmbedding, embeddedEdges, IsRainbow, AvoidsRainbow",
       "startLine": 81,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "anti-ramsey",
       "title": "Anti-Ramsey Numbers",
       "summary": "antiRamsey, arCycle, arPath definitions",
       "startLine": 111,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "cycle-conjecture",
       "title": "The Cycle Conjecture",
       "summary": "cycleCoeff, CycleConjecture, ar_triangle",
       "startLine": 128,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "path-conjecture",
       "title": "The Path Conjecture",
       "summary": "pathL, pathEpsilon, pathFormula, PathConjecture, simonovits_sos_path, yuan_path_announced",
       "startLine": 149,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "bounds",
       "title": "Lower and Upper Bounds",
       "summary": "ar_lower_bound, ar_upper_bound, ar_mono_n",
       "startLine": 184,
-      "endLine": 201
+      "endLine": 202
     },
     {
       "id": "turan",
       "title": "Connection to Turán Numbers",
       "summary": "turan definition, ar_turan_lower",
       "startLine": 203,
-      "endLine": 219
+      "endLine": 220
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "ar_triangle, ar_path_3, ar_k3",
       "startLine": 221,
-      "endLine": 234
+      "endLine": 235
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_1105_status, erdos_1105_cycle_statement, erdos_1105_path_statement",
       "startLine": 236,
-      "endLine": 273
+      "endLine": 275
     }
   ],
   "conclusion": {

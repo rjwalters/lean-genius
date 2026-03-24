@@ -22,7 +22,7 @@
     "erdosNumber": 683,
     "erdosUrl": "https://erdosproblems.com/683",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "dateAdded": "2026-01-19",
     "mathlibDependencies": [
       {
@@ -117,56 +117,56 @@
       "id": "definitions",
       "title": "Basic Definitions: $P(n)$ and $P(\\binom{n}{k})$",
       "startLine": 41,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Defines `largestPrimeDivisor` via `Nat.find` and `P n k = P(\\binom{n}{k})`. Axiomatizes $P(n)$ as prime, dividing $n$, and maximal among prime divisors."
     },
     {
       "id": "sylvester-schur",
       "title": "Sylvester-Schur Theorem: $P(\\binom{n}{k}) > k$",
       "startLine": 80,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Axiomatizes $P(\\binom{n}{k}) > k$ for $k \\le n/2$ and derives the existential form $\\exists p$ prime with $p \\mid \\binom{n}{k}$ and $p > k$ (proved from axioms)."
     },
     {
       "id": "erdos-1955",
       "title": "Erdős 1955: $P(\\binom{n}{k}) \\ge c \\cdot k \\log k$",
       "startLine": 115,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "Axiomatizes the quantitative improvement $P(\\binom{n}{k}) \\ge c \\cdot k \\log k$ and instantiates it for specific $n, k$ via `obtain`."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture: $P \\ge \\min(n-k+1, k^{1+c})$",
       "startLine": 139,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Formalizes `erdosConjecture683` as a `Prop` and axiomatizes Erdős's 1979 belief that $P > k^{1+c}$ for all $c > 0$ with finite exceptions."
     },
     {
       "id": "heuristics",
       "title": "Heuristic Bounds: $P > e^{c\\sqrt{k}}$",
       "startLine": 163,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "Axiomatizes the Cramér-type heuristic $P(\\binom{n}{k}) > e^{c\\sqrt{k}}$ and the comparison $e^{c\\sqrt{k}} > k^{1+c}$ (stretched exponential vs polynomial)."
     },
     {
       "id": "min-bound",
       "title": "Trivial Upper Bound: $P(\\binom{n}{k}) \\le n$",
       "startLine": 190,
-      "endLine": 199,
+      "endLine": 200,
       "summary": "Axiomatizes $P(\\binom{n}{k}) \\le n$, the trivial upper bound since $\\binom{n}{k}$ divides products of terms $\\le n$."
     },
     {
       "id": "consecutive",
       "title": "Consecutive Products and Bertrand's Postulate",
       "startLine": 201,
-      "endLine": 227,
+      "endLine": 228,
       "summary": "Defines `consecutiveProduct m k = \\prod_{i=0}^{k-1}(m+i)` and axiomatizes Bertrand-type results: $P(\\binom{2n}{n}) > n$ and Sylvester's theorem for consecutive products."
     },
     {
       "id": "specific-cases",
       "title": "Central Binomial and Small $k$ Cases",
       "startLine": 229,
-      "endLine": 249,
+      "endLine": 250,
       "summary": "Axiomatizes $P(\\binom{2k}{k}) > \\frac{4}{3}k$ for large $k$ and $P(\\binom{n}{2}) \\ge (n-1)/2$ for $n \\ge 4$ as consistency checks."
     },
     {

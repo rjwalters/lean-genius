@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/653",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.sqrt",
@@ -90,70 +90,70 @@
       "title": "Point Configuration",
       "summary": "euclidDist, PointConfig definitions",
       "startLine": 38,
-      "endLine": 53
+      "endLine": 54
     },
     {
       "id": "distance-count",
       "title": "Distinct Distance Count",
       "summary": "distanceSet, distinctDistCount (R function)",
       "startLine": 55,
-      "endLine": 71
+      "endLine": 72
     },
     {
       "id": "g-function",
       "title": "The Function g(n)",
       "summary": "rValueSet, numDistinctRValues, g definition",
       "startLine": 73,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "erdos_fishburn_bound, csizmadia_bound, upper_bound",
       "startLine": 98,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "erdos653Conjecture definition",
       "startLine": 126,
-      "endLine": 138
+      "endLine": 139
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "g_pos, g_le_n, g_mono axioms",
       "startLine": 140,
-      "endLine": 158
+      "endLine": 159
     },
     {
       "id": "special-configs",
       "title": "Special Configurations",
       "summary": "IsCollinear, IsRegularPolygon, regular_polygon_r_value",
       "startLine": 160,
-      "endLine": 187
+      "endLine": 188
     },
     {
       "id": "extremal-configs",
       "title": "Extremal Configurations",
       "summary": "IsOptimalConfig, optimal_exists",
       "startLine": 189,
-      "endLine": 205
+      "endLine": 206
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Analysis",
       "summary": "gap_lower_bound, gap_bounds axioms",
       "startLine": 207,
-      "endLine": 224
+      "endLine": 225
     },
     {
       "id": "connections",
       "title": "Connection to Unit Distance Problem",
       "summary": "unitDistPairs, totalDistinctDistances",
       "startLine": 226,
-      "endLine": 244
+      "endLine": 245
     },
     {
       "id": "summary",
@@ -192,5 +192,27 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, discrete-geometry, open"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, open, point-configurations"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distinct-distances, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1084",
+    "erdos-1087",
+    "erdos-1088"
+  ]
 }

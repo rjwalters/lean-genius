@@ -18,11 +18,11 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 1,
     "erdosNumber": 1166,
     "erdosUrl": "https://erdosproblems.com/1166",
     "erdosProblemStatus": "proved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Basic",
@@ -77,9 +77,9 @@
       "mem_mostVisitedSet",
       "mostVisitedSet_nonempty"
     ],
-    "axiomCount": 20,
+    "axiomCount": 19,
     "lineCount": 259,
-    "assumptions": "20 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "19 axioms encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "Erdős Problem #1166 was posed by Paul Erdős and Pál Révész in their study of the fine structure of planar random walks. The problem belongs to a cluster of questions (#1165, #1166) about 'favorite points' — the sites most frequently visited by a random walk on $\\mathbb{Z}^2$. The study of favorite points connects to deep results in probability theory going back to Pólya's 1921 recurrence theorem: a simple random walk on $\\mathbb{Z}^2$ returns to its starting point infinitely often, but only barely — the expected number of returns diverges logarithmically, making two dimensions the critical case between recurrence (1D, 2D) and transience (3D+).\n\nThe key breakthrough came from the Erdős–Taylor theorem (1960), which established that the maximum local time $T_n$ (the largest number of visits to any single point through $n$ steps) satisfies $T_n / (\\log n)^2 \\to 1/\\pi$ almost surely. The appearance of $\\pi$ here is remarkable: it arises from the connection between 2D random walks and planar Brownian motion via Donsker's invariance principle, and ultimately from the Green's function of the 2D lattice.\n\nThe answer to Problem #1166 is YES: almost surely $|\\bigcup_{k \\leq n} F(k)| = O((\\log n)^2)$. The proof combines two ingredients: (1) $|F(n)| \\leq 3$ a.s. for large $n$ (Erdős–Révész, related to #1165), and (2) the Erdős–Taylor bound on $T_n$. Since $T_n$ is integer-valued and bounded by $C(\\log n)^2$, there are at most $O((\\log n)^2)$ distinct 'regimes' of most-visited points, each contributing at most 3 new points. This problem is catalogued at erdosproblems.com/1166 and referenced in Révész's monograph [Va99, 6.78].",
@@ -106,56 +106,56 @@
       "id": "header-and-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 30,
+      "endLine": 31,
       "summary": "Documents the problem statement, its resolution, key ingredients (Erdős–Révész bound and Erdős–Taylor theorem), and imports Mathlib modules for finite sets, real analysis, logarithms, and powers."
     },
     {
       "id": "random-walk-definitions",
       "title": "Random Walk on $\\mathbb{Z}^2$",
       "startLine": 32,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines the integer lattice, origin, and axiomatizes random walks as an abstract type with trajectories starting at the origin."
     },
     {
       "id": "visit-counts",
       "title": "Visit Counts and Properties",
       "startLine": 47,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Axiomatizes the visit count function $f_k(x, \\omega)$ with non-negativity, monotonicity in $k$, and initial visit to the origin."
     },
     {
       "id": "max-visit-count",
       "title": "Maximum Visit Count $T_k$",
       "startLine": 63,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Defines the maximum visit count $T_k$ and proves it is always at least 1, combining the origin's visit count with monotonicity."
     },
     {
       "id": "most-visited-set",
       "title": "Most-Visited Set $F(k)$",
       "startLine": 84,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Axiomatizes the set of points achieving maximum visit count, with membership characterization and nonemptiness."
     },
     {
       "id": "cumulative-set",
       "title": "Cumulative Most-Visited Set",
       "startLine": 99,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "Defines $\\bigcup_{k \\leq n} F(k)$ with containment and subset axioms, and proves monotonicity of the cumulative set."
     },
     {
       "id": "almost-surely",
       "title": "Almost Sure Events",
       "startLine": 121,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Axiomatizes almost sure events with monotonicity and conjunction properties, abstracting away the probability space."
     },
     {
       "id": "key-ingredients",
       "title": "Key Ingredients: Erdős–Révész and Erdős–Taylor",
       "startLine": 136,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "States the two main ingredients: $|F(n)| \\leq 3$ a.s. for large $n$ (Erdős–Révész) and $T_n \\leq C(\\log n)^2$ a.s. (Erdős–Taylor)."
     },
     {
@@ -198,8 +198,30 @@
     ],
     "namespace": "Erdos1166",
     "lineCount": 259,
-    "axiomCount": 20,
-    "theoremCount": 7,
+    "axiomCount": 19,
+    "theoremCount": 8,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, combinatorics, probability, solved"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, combinatorics, probability"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1179",
+    "erdos-1090",
+    "erdos-1138"
+  ]
 }

@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/495",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-26",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "round",
@@ -82,42 +82,42 @@
       "id": "dist-int",
       "title": "Part I: Distance to Nearest Integer",
       "startLine": 39,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines distInt x = |x - round(x)| and axiomatizes non-negativity and the bound distInt x ≤ 1/2."
     },
     {
       "id": "littlewood-product",
       "title": "Part II: The Littlewood Product",
       "startLine": 58,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Defines the Littlewood product L(n, α, β) = n · ‖nα‖ · ‖nβ‖ and axiomatizes non-negativity."
     },
     {
       "id": "conjecture",
       "title": "Part III: The Littlewood Conjecture",
       "startLine": 73,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "States the Littlewood conjecture: for all α, β and ε > 0, infinitely many n satisfy L(n, α, β) < ε."
     },
     {
       "id": "special-cases",
       "title": "Part IV: Special Cases",
       "startLine": 88,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "Axiomatizes the rational case and Cassels–Swinnerton-Dyer (1955) for cubic irrationals."
     },
     {
       "id": "ekl-theorem",
       "title": "Part V: The EKL Theorem",
       "startLine": 113,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "Einsiedler–Katok–Lindenstrauss (2006): counterexamples are countable for each fixed α."
     },
     {
       "id": "padic",
       "title": "Part VI: The p-adic Littlewood Conjecture",
       "startLine": 138,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "Defines the p-adic Littlewood conjecture (de Mathan–Teulié 2004) and Badziahin–Velani (2014) partial result."
     },
     {
@@ -153,5 +153,27 @@
     "axiomCount": 7,
     "theoremCount": 1,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-254",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory, open"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory, open"
+    },
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-254",
+    "erdos-997",
+    "erdos-1000"
+  ]
 }

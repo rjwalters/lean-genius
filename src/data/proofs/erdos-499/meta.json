@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/499",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-25",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Matrix.doublyStochastic",
@@ -90,56 +90,56 @@
       "title": "Doubly Stochastic Matrices",
       "summary": "Definition and basic examples including uniform matrix",
       "startLine": 44,
-      "endLine": 80
+      "endLine": 81
     },
     {
       "id": "diagonal-products",
       "title": "Diagonal Products",
       "summary": "Definition of diagonal products for permutations",
       "startLine": 82,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "permanent",
       "title": "The Permanent",
       "summary": "Definition of permanent and its properties",
       "startLine": 109,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "marcus-ree",
       "title": "Marcus-Ree Theorem (1959)",
       "summary": "Weaker result: sum of diagonal ≥ 1",
       "startLine": 136,
-      "endLine": 151
+      "endLine": 152
     },
     {
       "id": "marcus-minc",
       "title": "Marcus-Minc Theorem (1962)",
       "summary": "Main result: product ≥ n^{-n} = Erdős #499",
       "startLine": 153,
-      "endLine": 177
+      "endLine": 178
     },
     {
       "id": "van-der-waerden",
       "title": "Van der Waerden Conjecture",
       "summary": "Stronger result: permanent ≥ n^{-n} · n!",
       "startLine": 179,
-      "endLine": 214
+      "endLine": 215
     },
     {
       "id": "two-by-two",
       "title": "The 2×2 Case",
       "summary": "Concrete verification for small matrices",
       "startLine": 216,
-      "endLine": 237
+      "endLine": 238
     },
     {
       "id": "birkhoff",
       "title": "Birkhoff-von Neumann Theorem",
       "summary": "Structural characterization of doubly stochastic matrices",
       "startLine": 239,
-      "endLine": 262
+      "endLine": 263
     },
     {
       "id": "summary",

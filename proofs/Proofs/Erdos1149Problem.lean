@@ -48,6 +48,30 @@ def HasNaturalDensity (S : Set ℕ) (d : ℝ) : Prop :=
     atTop (nhds d)
 
 /-
+## Properties of the Coprime Floor-Power Set
+-/
+
+/-- n = 1 is always coprime to any floor power, since gcd(1, m) = 1. -/
+theorem one_isFloorPowerCoprime (α : ℝ) : IsFloorPowerCoprime α 1 :=
+  Nat.coprime_one_left _
+
+/-- 1 is always in the coprime floor-power set. -/
+theorem one_mem_coprimeFloorPowerSet (α : ℝ) : 1 ∈ coprimeFloorPowerSet α :=
+  ⟨Nat.one_pos, one_isFloorPowerCoprime α⟩
+
+/-- The coprime floor-power set is always nonempty (contains 1). -/
+theorem coprimeFloorPowerSet_nonempty (α : ℝ) : (coprimeFloorPowerSet α).Nonempty :=
+  ⟨1, one_mem_coprimeFloorPowerSet α⟩
+
+/-- If ⌊n^α⌋ = 1, then n is coprime to ⌊n^α⌋. This covers
+    the regime 1 < n^α < 2 (e.g., small α or small n). -/
+theorem coprime_of_floor_eq_one (α : ℝ) (n : ℕ)
+    (h : Nat.floor ((n : ℝ) ^ α) = 1) : IsFloorPowerCoprime α n := by
+  unfold IsFloorPowerCoprime
+  rw [h]
+  exact Nat.coprime_one_right n
+
+/-
 ## The Main Theorem
 -/
 
@@ -109,6 +133,17 @@ theorem integer_alpha_trivial (k : ℕ) (hk : 0 < k) :
   rw [hcop] at this
   exact Nat.not_lt.mpr (Nat.le_of_dvd one_pos this) hn
 
+/-- The density 6/π² lies strictly in the open interval (0, 1). -/
+theorem density_mem_Ioo : 6 / Real.pi ^ 2 ∈ Set.Ioo (0 : ℝ) 1 :=
+  ⟨density_pos, density_lt_one⟩
+
+/-- The Bergelson-Richter theorem restated using HasNaturalDensity:
+    the coprime floor-power set has natural density 6/π². -/
+theorem bergelson_richter_density (α : ℝ) (hα_pos : 0 < α)
+    (hα_nonint : ∀ k : ℤ, (k : ℝ) ≠ α) :
+    HasNaturalDensity (coprimeFloorPowerSet α) (6 / Real.pi ^ 2) :=
+  bergelson_richter α hα_pos hα_nonint
+
 /-
 ## Connection to Coprime Probability
 
@@ -129,6 +164,21 @@ axiom random_coprime_density :
         Nat.Coprime p.1 p.2} : ℝ) / (N : ℝ) ^ 2)
       Filter.atTop
       (nhds (6 / Real.pi ^ 2))
+
+/-- Coprime pair counting via Finset (decidable/computable).
+    Counts |{(a,b) ∈ [1,N]² : gcd(a,b) = 1}| using a finite computation. -/
+def countCoprimePairs (N : ℕ) : ℕ :=
+  ((Finset.Icc 1 N ×ˢ Finset.Icc 1 N).filter
+    (fun p => Nat.Coprime p.1 p.2)).card
+
+/-- Coprime pair symmetry: (a,b) coprime iff (b,a) coprime.
+    Hence countCoprimePairs counts each pair's contribution equally. -/
+theorem coprime_pair_symm (a b : ℕ) : Nat.Coprime a b ↔ Nat.Coprime b a :=
+  ⟨Nat.Coprime.symm, Nat.Coprime.symm⟩
+
+/-- The coprime pair count at N = 1 is exactly 1: only (1,1). -/
+theorem countCoprimePairs_one : countCoprimePairs 1 = 1 := by
+  native_decide
 
 /-
 ## Computational Verification (small cases)

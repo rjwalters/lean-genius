@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/715",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathContext": {
       "field": "Structural Graph Theory",
       "subfield": "Regular subgraph existence under degree regularity constraints",
@@ -42,24 +42,6 @@
       ],
       "significance": "Resolves the Berge-Sauer question with a sharp threshold: r = 4 is the minimum regularity degree forcing a 3-regular subgraph. K₄ and the Petersen graph show r = 3 fails. The Alon-Friedland-Kalai strengthening (4-regular + one edge suffices) reveals remarkable structural rigidity in 4-regular graphs. The general threshold problem for k-regular subgraphs remains open for k ≥ 4."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-577",
-        "relationship": "Problem #577 asks about vertex-disjoint 4-cycles in dense graphs (Wang 2010). Both study extraction of regular substructures from graphs satisfying degree conditions"
-      },
-      {
-        "id": "erdos-64",
-        "relationship": "Problem #64 asks about power-of-two cycles under minimum degree ≥ 3 (open, $1000). Both concern structural consequences of degree constraints, with similar threshold phenomena"
-      },
-      {
-        "id": "erdos-65",
-        "relationship": "Problem #65 studies cycle length diversity in dense graphs. Both involve extracting cycle-based substructures from graphs with degree/regularity constraints"
-      },
-      {
-        "id": "erdos-716",
-        "relationship": "Problem #716 (Ruzsa-Szemerédi) uses the regularity lemma for triangle structure in graphs. Both concern regular structure extraction, though #716 works in the hypergraph setting"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset.filter",
@@ -126,56 +108,56 @@
       "title": "Basic Definitions",
       "summary": "Defines `SimpleGraph'` with explicit adjacency, `degree` via `Finset.filter`, and `IsRegular` (all vertices have degree exactly r). These form the foundation for stating regularity constraints.",
       "startLine": 29,
-      "endLine": 45
+      "endLine": 46
     },
     {
       "id": "subgraphs",
       "title": "Subgraph Hierarchy",
       "summary": "Defines `IsSubgraph` (edge containment), `IsSpanningSubgraph` (same vertices), and `inducedSubgraph` (vertex restriction). Tashkinov's result finds spanning 3-regular subgraphs.",
       "startLine": 47,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "main-question",
       "title": "The Central Predicate",
       "summary": "Defines `HasRegularSubgraph(r, k)`: does every r-regular graph contain a k-regular subgraph? This parameterizes the Berge-Sauer question and its generalizations.",
       "startLine": 63,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "main-results",
       "title": "Tashkinov and Alon-Friedland-Kalai",
       "summary": "States `tashkinov_theorem` (4-regular → 3-regular subgraph), the corollary for r ≥ 4, and the AFK strengthening (4-regular + edge suffices). All deep results are stated as theorem sorries.",
       "startLine": 71,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples for r < 4",
       "summary": "K₄ (Fin 4, complete graph) is 3-regular with no proper 3-regular subgraph. Proves the threshold is exactly 4 by providing the sharpness witness.",
       "startLine": 98,
-      "endLine": 121
+      "endLine": 122
     },
     {
       "id": "berge-sauer",
       "title": "The Berge-Sauer Answer",
       "summary": "Formalizes the original question and its positive answer. `berge_sauer_answer` is proved from `tashkinov_theorem` with witness r = 4. Defines `RegularSubgraphThreshold` for the general problem.",
       "startLine": 123,
-      "endLine": 141
+      "endLine": 142
     },
     {
       "id": "petersen",
       "title": "The Petersen Graph",
       "summary": "Explicit construction of the Petersen graph on Fin 10 with outer pentagon, inner pentagram, and spoke edges. Stated to be 3-regular with no proper 3-regular subgraph.",
       "startLine": 143,
-      "endLine": 174
+      "endLine": 175
     },
     {
       "id": "edge-counting",
       "title": "Edge Counting and Parity",
       "summary": "Handshaking lemma for r-regular graphs: rn/2 edges, with parity condition Even(rn). Provides necessary conditions for existence of regular graphs.",
       "startLine": 176,
-      "endLine": 189
+      "endLine": 209
     }
   ],
   "conclusion": {
@@ -220,5 +202,27 @@
       "citation": "Erdős Problems, Problem #715, https://erdosproblems.com/715",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-182",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, regular-graphs, solved"
+    },
+    {
+      "targetId": "erdos-622",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, regular-graphs, solved"
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, subgraphs"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-182",
+    "erdos-622",
+    "erdos-1008"
   ]
 }

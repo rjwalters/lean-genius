@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/685",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -86,21 +86,21 @@
       "id": "omega",
       "title": "Prime Divisor Count",
       "startLine": 21,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Defines omega (distinct prime factors via Nat.primeFactors) and primeSumInRange (prime reciprocal sum over Finset.Ioo)."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 31,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "States ErdosProblem685: ω(C(n,k)) = (1±δ)·k·Σ 1/p for n^ε < k ≤ n^{1-ε}, with explicit quantifiers over ε and δ."
     },
     {
       "id": "lower",
       "title": "Trivial Lower Bound",
       "startLine": 43,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Trivial bound ω(C(n,k)) ≥ log C(n,k)/log n and tightness for k > n^{1-ε}."
     },
     {
@@ -138,5 +138,27 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-683",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-684",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1095",
+    "erdos-683",
+    "erdos-684"
+  ]
 }

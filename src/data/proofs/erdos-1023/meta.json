@@ -26,7 +26,8 @@
     ],
     "axiomCount": 5,
     "lineCount": 366,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #1023 asks about union-free families: collections of subsets of {1,...,n} where no member equals the union of other members. This is a fundamental question in extremal set theory, connecting to Sperner's theorem and the study of antichains. Erdős posed the question of whether the maximum size F(n) grows asymptotically as c · 2^n / √n for some constant c > 0.\n\nThe key insight is that antichains (families where no set contains another) are automatically union-free, since a union of two or more distinct sets strictly contains each of them. By Sperner's theorem, the largest antichain in the power set of {1,...,n} is the middle layer consisting of all sets of size ⌊n/2⌋, which has C(n, ⌊n/2⌋) elements. This gives the lower bound F(n) ≥ C(n, ⌊n/2⌋).\n\nErdős and Kleitman proved the matching upper bound F(n) ≤ C(n, ⌊n/2⌋), establishing that F(n) = C(n, ⌊n/2⌋) exactly. By Stirling's approximation, C(n, ⌊n/2⌋) ~ √(2/π) · 2^n / √n, confirming the conjectured asymptotic form with c = √(2/π) ≈ 0.798. Hunter later observed that this result also follows from the solution to Erdős Problem #447 on 2-union-free families, since every union-free family is 2-union-free.",
@@ -114,7 +115,7 @@
       "title": "Connection to Problem 447",
       "summary": "isTwoUnionFree, problem_447_solution axiom, hunter_observation",
       "startLine": 277,
-      "endLine": 331
+      "endLine": 366
     }
   ],
   "conclusion": {
@@ -130,28 +131,28 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-447",
-      "relationship": "Hunter observed that Problem #1023 follows directly from Problem #447 (2-union-free families), since every union-free family is 2-union-free and both have the same extremal answer C(n, n/2)."
+      "relationship": "Hunter observed that Problem #1023 follows directly from Problem #447 (2-union-free families), since every union-free family is 2-union-free and both have the same extremal answer C(n, n/2).",
+      "targetId": "erdos-447"
     },
     {
-      "target": "erdos-703",
-      "relationship": "Forbidden intersection families are a dual extremal question: instead of bounding unions, one restricts intersection sizes. Both problems use layered/antichain structure and Katona-style arguments."
+      "relationship": "Forbidden intersection families are a dual extremal question: instead of bounding unions, one restricts intersection sizes. Both problems use layered/antichain structure and Katona-style arguments.",
+      "targetId": "erdos-703"
     },
     {
-      "target": "erdos-1022",
-      "relationship": "Problem #1022 studies Property B of sparse set families; both #1022 and #1023 belong to the cluster of extremal set-family problems Erdős posed around the same period."
+      "relationship": "Problem #1022 studies Property B of sparse set families; both #1022 and #1023 belong to the cluster of extremal set-family problems Erdős posed around the same period.",
+      "targetId": "erdos-1022"
     },
     {
-      "target": "erdos-1062",
-      "relationship": "Problem #1062 maximizes sets where no element divides two others — an arithmetic analogue of the antichain condition. Both problems are solved by the middle-layer / maximum-antichain argument."
+      "relationship": "Problem #1062 maximizes sets where no element divides two others — an arithmetic analogue of the antichain condition. Both problems are solved by the middle-layer / maximum-antichain argument.",
+      "targetId": "erdos-1062"
     },
     {
-      "target": "stirling-formula",
-      "relationship": "Stirling's approximation is the analytic tool that converts the exact answer C(n, n/2) into the asymptotic form √(2/π) · 2^n / √n appearing in Problem #1023."
+      "relationship": "Stirling's approximation is the analytic tool that converts the exact answer C(n, n/2) into the asymptotic form √(2/π) · 2^n / √n appearing in Problem #1023.",
+      "targetId": "stirling-formula"
     },
     {
-      "target": "binomial-theorem",
-      "relationship": "The binomial theorem and properties of central binomial coefficients C(n, n/2) are the combinatorial backbone of the exact formula F(n) = C(n, n/2)."
+      "relationship": "The binomial theorem and properties of central binomial coefficients C(n, n/2) are the combinatorial backbone of the exact formula F(n) = C(n, n/2).",
+      "targetId": "binomial-theorem"
     }
   ],
   "relatedProofs": [

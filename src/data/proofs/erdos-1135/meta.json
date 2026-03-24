@@ -16,15 +16,12 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1135",
     "erdosUrl": "https://erdosproblems.com/1135",
-    "relatedProofs": [
-      {
-        "id": "collatz-structured",
-        "relationship": "Verifies Collatz convergence for structured values (powers of 2, small cases up to 27)"
-      }
-    ],
     "axiomCount": 3,
     "badge": "axiom",
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "proofRepoPath": "Proofs/Erdos1135Problem.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 70
   },
   "sections": [
     {
@@ -173,5 +170,18 @@
       "citation": "Barina, D., Convergence verification of the Collatz problem, Journal of Supercomputing 77 (2021), 2681–2688.",
       "type": "paper"
     }
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 70,
+    "structureCount": 0,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "lemmaCount": 0,
+    "defCount": 3,
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": []
+  }
 }

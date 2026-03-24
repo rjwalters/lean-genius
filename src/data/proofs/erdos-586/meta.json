@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/586",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.image",
@@ -76,42 +76,42 @@
       "title": "Part 1: Basic Definitions",
       "summary": "Defines `ResidueClass a n` as $\\{x : x \\bmod n = a \\bmod n\\}$ and `CongruenceClass` structure bundling residue, modulus $> 0$, and positivity proof. `toSet` converts to the underlying set of integers.",
       "startLine": 34,
-      "endLine": 50
+      "endLine": 51
     },
     {
       "id": "covering-systems",
       "title": "Part 2: Covering Systems",
       "summary": "Defines `CoveringSystem` as a nonempty `Finset CongruenceClass`. `moduli` extracts moduli via `Finset.image`. `covers S x` checks membership in any class. `IsCovering S` requires $\\forall x \\in \\mathbb{Z},\\, \\exists c \\in S,\\, x \\in c.\\text{toSet}$.",
       "startLine": 52,
-      "endLine": 71
+      "endLine": 72
     },
     {
       "id": "antichain",
       "title": "Part 3: Antichain Condition",
       "summary": "Defines `Divides` (comparability), `IsAntichain M` (pairwise incomparability in divisibility poset), `HasAntichainModuli S`. States `schinzel_question` as an existential: $\\exists S$ covering with antichain moduli.",
       "startLine": 73,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "main-result",
       "title": "Part 4: The Main Result (BBMST 2022)",
       "summary": "Axiomatizes `bbmst_theorem`: $\\neg\\text{schinzel\\_question}$ (no antichain covering exists). `covering_implies_comparable`: every covering system has at least two comparable moduli ($\\exists n_i \\mid n_j$).",
       "startLine": 96,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "density",
       "title": "Part 5: Density Results",
       "summary": "Defines `uncoveredDensity S = 1 - \\sum 1/n_i$ as a heuristic coverage bound. Axiomatizes `bbmst_density_bound`: antichain moduli force $\\delta > 0$. `antichain_not_covering` follows: positive uncovered density means not a covering.",
       "startLine": 109,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "generalizations",
       "title": "Part 6: k-Covering Generalization",
       "summary": "Defines `IsKCovering S k` requiring every integer covered by $\\ge k$ classes (via `Finset.filter` and `card`). Axiomatizes `no_antichain_k_covering`: no $k$-covering with antichain moduli for any $k \\ge 1$.",
       "startLine": 126,
-      "endLine": 140
+      "endLine": 141
     },
     {
       "id": "summary",
@@ -141,5 +141,27 @@
     "axiomCount": 5,
     "theoremCount": 1,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems, number-theory"
+    },
+    {
+      "targetId": "erdos-202",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems, number-theory"
+    },
+    {
+      "targetId": "erdos-7",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-202",
+    "erdos-7"
+  ]
 }

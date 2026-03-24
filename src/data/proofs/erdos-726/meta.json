@@ -18,13 +18,12 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/726",
     "erdosUrl": "https://erdosproblems.com/726",
-    "relatedProofs": [
-      "erdos-725",
-      "erdos-727"
-    ],
     "axiomCount": 6,
     "badge": "axiom",
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "proofRepoPath": "Proofs/Erdos726Problem.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 209
   },
   "sections": [
     {
@@ -124,5 +123,42 @@
     "Bombieri & Davenport (1968): Small differences between consecutive primes",
     "Granville & Soundararajan (2007): Large character sums",
     "https://erdosproblems.com/726"
+  ],
+  "leanFile": {
+    "lineCount": 209,
+    "structureCount": 0,
+    "axiomCount": 6,
+    "theoremCount": 12,
+    "lemmaCount": 0,
+    "defCount": 2,
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-386",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1065",
+    "erdos-1072",
+    "erdos-386"
   ]
 }

@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/286",
     "erdosProblemStatus": "solved",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -77,42 +77,42 @@
       "id": "unit-fractions",
       "title": "Unit Fraction Representations",
       "startLine": 33,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines IsUnitFractionSum and SumsToOne: when a finite set of positive integers has reciprocals summing to a given value."
     },
     {
       "id": "intervals",
       "title": "Intervals",
       "startLine": 47,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Defines NatInterval [a,b] as Finset.Icc and IntervalWidth as b - a."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 60,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "HasShortIntervalRepresentation captures when k integers in a short interval have reciprocals summing to 1."
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "startLine": 73,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "Proved examples for k=3 (interval [2,6]) and k=4 (interval [2,20]). States k=2 impossibility."
     },
     {
       "id": "optimal-constant",
       "title": "The Optimal Constant",
       "startLine": 112,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "Defines ErdosGrahamConstant = e - 1 and proves 1.7 < (e-1) < 1.72 using Real.exp bounds."
     },
     {
       "id": "croot-theorem",
       "title": "Croot's Theorem",
       "startLine": 134,
-      "endLine": 196,
+      "endLine": 197,
       "summary": "Croot (2001): for large k, width ≤ (e-1+ε)k suffices. Proves erdos_286 for all k ≥ 3 via examples + monotonicity + Croot. States asymptotic optimality."
     },
     {
@@ -147,5 +147,27 @@
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-296",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+    },
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-296",
+    "erdos-310",
+    "erdos-148"
+  ]
 }

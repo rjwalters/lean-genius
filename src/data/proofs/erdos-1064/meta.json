@@ -21,7 +21,7 @@
     "erdosNumber": 1064,
     "erdosUrl": "https://erdosproblems.com/1064",
     "erdosProblemStatus": "proved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
@@ -87,7 +87,7 @@
       "id": "examples-greater",
       "title": "Examples: φ(n) > φ(n - φ(n))",
       "startLine": 83,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Verified examples: $n = 10$: $\\phi(10) = 4 > 2 = \\phi(6)$; $n = 15$: $\\phi(15) = 8 > 4 = \\phi(7)$.",
       "mathContext": "For $n = 10 = 2 \\cdot 5$: $\\phi(10) = 4$, $n - \\phi(n) = 6$, $\\phi(6) = 2$. The inequality $4 > 2$ holds. This is the 'typical' case — most $n$ satisfy the inequality because $n - \\phi(n)$ tends to be smooth (many small prime factors) while $\\phi$ of smooth numbers is relatively small."
     },

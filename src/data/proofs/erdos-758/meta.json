@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/758",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -63,7 +63,7 @@
       "mehta_unique_graph axiom: unique K₄-free graph with χ ≥ 5",
       "mehta_verification axiom: that graph has ζ = 4"
     ],
-    "axiomCount": 31,
+    "axiomCount": 3,
     "lineCount": 128,
     "assumptions": "31 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -97,7 +97,7 @@
       "title": "Basic Properties",
       "summary": "Bounds, monotonicity, connection to chromatic number",
       "startLine": 78,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "known-values",
@@ -177,5 +177,27 @@
     "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-760",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, cochromatic-number, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-1111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, coloring, graph-theory"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-760",
+    "erdos-1111",
+    "erdos-57"
+  ]
 }

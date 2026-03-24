@@ -26,7 +26,8 @@
         "proofId": "abel-ruffini",
         "relationship": "Abel-Ruffini shows degree ≥ 5 polynomials over ℚ have no radical formula; Puiseux series provide an alternative solution format over Laurent series"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-puiseux-series",
@@ -45,7 +46,8 @@
       "support",
       "ramification index",
       "totally ramified extension"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-main-theorem",
@@ -70,7 +72,8 @@
         "proofId": "fundamental-theorem-algebra",
         "relationship": "FTA proves ℂ = algebraic closure of ℝ; Puiseux proves ℂ{{x}} = algebraic closure of ℂ((x)) — both are explicit algebraic closure results"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-newton-puiseux",
@@ -95,7 +98,8 @@
         "proofId": "solution-of-cubic",
         "relationship": "Cardano's formula gives explicit roots of cubics over ℚ; Newton-Puiseux gives explicit series roots of all polynomials over K((x))"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-applications",
@@ -115,7 +119,8 @@
       "tropical geometry",
       "monodromy",
       "intersection multiplicity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-galois",
@@ -141,7 +146,8 @@
         "proofId": "de-moivre",
         "relationship": "De Moivre's theorem gives nth roots of unity ζₙ = e^{2πi/n}; these roots of unity generate the Galois action on Puiseux series"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-examples",
@@ -160,7 +166,8 @@
       "cusp curve",
       "cube root",
       "Newton polygon computation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-hensel",
@@ -180,7 +187,8 @@
       "complete valued field",
       "uniformizer",
       "Levi-Civita field"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-char-zero",
@@ -199,7 +207,8 @@
       "characteristic p",
       "wild ramification",
       "inseparability"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-significance",
@@ -225,6 +234,7 @@
         "proofId": "vietas-formulas",
         "relationship": "Vieta's formulas relate polynomial coefficients to symmetric functions of roots; for Puiseux roots, these become identities in the Puiseux series field"
       }
-    ]
+    ],
+    "prerequisites": []
   }
 ]

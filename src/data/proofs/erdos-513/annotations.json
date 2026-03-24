@@ -17,7 +17,8 @@
       "power series",
       "complex analysis"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "erdos-513-max-term",
@@ -35,7 +36,8 @@
       "power series terms",
       "order of entire functions"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "erdos-513-max-modulus",
@@ -54,7 +56,8 @@
       "order of growth",
       "convexity"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "erdos-513-ratio",
@@ -72,7 +75,8 @@
       "polynomial vs transcendental growth",
       "liminf optimization"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "erdos-513-trivial-bound",
@@ -90,7 +94,8 @@
       "Cauchy integral formula",
       "term-by-term bounds"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "erdos-513-proved-structural",
@@ -108,7 +113,8 @@
       "division by zero handling",
       "real arithmetic in Lean"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "erdos-513-kovari",
@@ -127,7 +133,8 @@
       "extremal entire functions",
       "gap series"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "erdos-513-clunie-hayman",
@@ -146,7 +153,8 @@
       "Phragmen-Lindelof indicator",
       "phase cancellation"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "erdos-513-gap-theorem",
@@ -165,7 +173,8 @@
       "linarith tactic",
       "interval consistency"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "erdos-513-conjecture",
@@ -185,6 +194,7 @@
       "Landau constant",
       "supremum characterization"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   }
 ]

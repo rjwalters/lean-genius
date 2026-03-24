@@ -51,38 +51,6 @@
       "Proved case analysis for p = 3 and p = 5 from the Yu-Liu characterization",
       "Formalized the Erdős-Graham perfect-power generalization"
     ],
-    "crossReferences": [
-      {
-        "targetProofId": "wilsons-theorem",
-        "relationship": "uses",
-        "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) provides the key modular constraint on the factorial term, enabling the divisibility argument that p divides the sum"
-      },
-      {
-        "targetProofId": "kummer-theorem",
-        "relationship": "uses-same-technique",
-        "description": "Kummer's theorem on p-adic valuations of binomial coefficients — the same p-adic machinery (Legendre's formula) used to analyze v_p((p-1)!)"
-      },
-      {
-        "targetProofId": "erdos-404",
-        "relationship": "related",
-        "description": "Neighboring Erdős problem on factorial divisibility properties — shares the factorial arithmetic and p-adic analysis framework"
-      },
-      {
-        "targetProofId": "erdos-407",
-        "relationship": "related",
-        "description": "Erdős problem on exponential Diophantine equations — same family of problems combining growth-rate arguments with Baker's method"
-      },
-      {
-        "targetProofId": "erdos-400",
-        "relationship": "related",
-        "description": "Erdős problem involving prime power representations — connected through the study of when arithmetic expressions equal prime powers"
-      },
-      {
-        "targetProofId": "pell-equation",
-        "relationship": "uses-same-technique",
-        "description": "Pell equations arise in the case analysis for p = 3: the equation 2 + a² = 3^k reduces to a Pellian recurrence for the solutions"
-      }
-    ],
     "axiomCount": 12,
     "relatedProblems": [
       {
@@ -95,7 +63,8 @@
       }
     ],
     "lineCount": 269,
-    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in the 1970s, observing that $(p-1)! + a^{p-1}$ is rarely a perfect power of $p$. The factorial grows super-exponentially while $p^k$ grows only exponentially, so solutions should be sparse.\n\nBrindza and Erdős (1991) proved finiteness using Baker's theory of linear forms in logarithms. Baker's method (1966) gives effective bounds for Diophantine equations involving exponentials: if $\\Lambda = b_1 \\log \\alpha_1 + \\cdots + b_n \\log \\alpha_n \\neq 0$, then $|\\Lambda| > B^{-C}$ for an explicit $C$ depending on the $\\alpha_i$. Applied to $(p-1)! + a^{p-1} = p^k$, this yields an effective (though astronomically large) bound on all solution parameters.\n\nYu and Liu (1996) achieved a complete resolution by refining these bounds through careful $p$-adic analysis and exhaustive case checking for small primes. Their strategy: (1) show $p \\geq 7$ is impossible via factorial growth, (2) for $p = 3$, solve $2 + a^2 = 3^k$ (a generalized Ramanujan-Nagell equation), (3) for $p = 5$, solve $24 + a^4 = 5^k$ by $p$-adic methods.\n\nThe problem connects to Brocard's problem ($n! + 1 = m^2$, still open for $n > 7$) and Catalan's conjecture (proved by Mihailescu 2002: the only consecutive perfect powers are $8$ and $9$). The example $6! + 2^6 = 28^2$ (noted by Erdős-Graham) shows the perfect-power phenomenon extends beyond prime-power bases.",
@@ -119,63 +88,63 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 35,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines the `Solution` structure bundling $(p, a, k)$ with primality and equation proofs, and the `IsSolution` predicate for the Diophantine equation $(p-1)! + a^{p-1} = p^k$."
     },
     {
       "id": "three-solutions",
       "title": "The Three Known Solutions",
       "startLine": 58,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Computational verification via `norm_num` of the three solutions: $(3,1,1)$ giving $2!+1=3$, $(3,5,3)$ giving $2!+25=27$, and $(5,1,2)$ giving $4!+1=25$."
     },
     {
       "id": "finiteness-results",
       "title": "The Finiteness Results",
       "startLine": 95,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Axiomatizes the Brindza–Erdős (1991) finiteness theorem (via Baker's theory) and the Yu–Liu (1996) complete characterization identifying all three solutions."
     },
     {
       "id": "wilson-theorem",
       "title": "Wilson's Theorem Connection",
       "startLine": 115,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "Axiomatizes Wilson's theorem $((p-1)! \\equiv -1 \\pmod{p})$, Fermat's little theorem $(a^{p-1} \\equiv 1 \\pmod{p})$, and their combination showing $p \\mid (p-1)! + a^{p-1}$."
     },
     {
       "id": "exceptional-case",
       "title": "The Exceptional Case $p \\mid a$",
       "startLine": 134,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Analysis when $p \\mid a$: the power $a^{p-1}$ is divisible by $p^{p-1}$, severely constraining $k$ since $v_p((p-1)!) = 0$."
     },
     {
       "id": "padic-analysis",
       "title": "$p$-adic Analysis",
       "startLine": 149,
-      "endLine": 166,
+      "endLine": 167,
       "summary": "Defines factorial $p$-adic valuation via Legendre's formula $v_p(n!) = \\sum \\lfloor n/p^i \\rfloor$ and proves the pivotal constraint $v_p((p-1)!) = 0$."
     },
     {
       "id": "only-these-solutions",
       "title": "Why Only These Solutions",
       "startLine": 168,
-      "endLine": 202,
+      "endLine": 203,
       "summary": "Growth-rate elimination of $p \\geq 7$, then explicit case analysis for $p = 3$ (two solutions: $a = 1, 5$) and $p = 5$ (one solution: $a = 1$) using Yu–Liu."
     },
     {
       "id": "perfect-power",
       "title": "General Perfect Power Question",
       "startLine": 204,
-      "endLine": 223,
+      "endLine": 224,
       "summary": "Explores the Erdős–Graham observation that $(p-1)! + a^{p-1}$ is rarely a perfect power, with the example $6! + 2^6 = 28^2$ and a generalized conjecture."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
       "startLine": 225,
-      "endLine": 238,
+      "endLine": 239,
       "summary": "Complete formalization combining finiteness (Brindza–Erdős) and full characterization (Yu–Liu) into the main theorem `erdos_405_statement`."
     },
     {

@@ -235,11 +235,11 @@
       "startLine": 196,
       "endLine": 203
     },
-    "type": "concept",
+    "type": "context",
     "title": "The Mean Inequality Chain: QM ≥ AM ≥ GM",
     "content": "**The Power Mean Hierarchy**:\n\nThe `am_ge_gm` alias places AM-GM in the classical chain of mean inequalities:\n$$\\text{QM} = \\sqrt{\\frac{a^2+b^2}{2}} \\;\\geq\\; \\text{AM} = \\frac{a+b}{2} \\;\\geq\\; \\text{GM} = \\sqrt{ab} \\;\\geq\\; \\text{HM} = \\frac{2ab}{a+b}$$\n\nMore generally, the **power mean** $M_p(a,b) = \\left(\\frac{a^p+b^p}{2}\\right)^{1/p}$ satisfies $M_p \\leq M_q$ whenever $p \\leq q$, with $M_0 = \\text{GM}$, $M_1 = \\text{AM}$, $M_2 = \\text{QM}$, and $M_{-1} = \\text{HM}$. AM-GM is the single step $M_0 \\leq M_1$ in this chain.\n\nThis monotonicity of power means is equivalent to Jensen's inequality for the convex function $t \\mapsto t^{q/p}$ and unifies all classical mean comparisons under one principle.",
     "mathContext": "$$M_{-1} \\leq M_0 \\leq M_1 \\leq M_2, \\quad M_p = \\left(\\frac{a^p+b^p}{2}\\right)^{1/p}$$",
-    "significance": "key",
+    "significance": "supporting",
     "relatedConcepts": [
       "power mean",
       "quadratic mean",

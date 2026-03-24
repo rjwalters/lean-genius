@@ -7,7 +7,7 @@
     "author": "Pierre Wantzel (1837)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Angle_trisection",
     "date": "1837",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "geometry",
       "galois-theory",
@@ -17,7 +17,7 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/AngleTrisection.lean",
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,7 +49,7 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 8,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "prerequisites": [
       "Field extensions and algebraic degree",
       "Polynomial rings and irreducibility over Q",
@@ -71,7 +71,8 @@
         "relationship": "Further extensions of the constructibility framework"
       }
     ],
-    "assumptions": "1 axiom (transitive): pi_transcendental from PiTranscendental.lean — transcendence of π over ℤ, not yet in Mathlib. Angle trisection and cube doubling are fully verified (0 axioms). Circle squaring depends on this axiom via pi_transcendental_over_rationals. Wantzel's constructibility criterion and trisection polynomial irreducibility are proved without axioms."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "leanFile": {
     "imports": [
@@ -115,19 +116,9 @@
       "description": "Pythagoras is the cornerstone of Euclidean geometry that underpins compass-and-straightedge constructions — every constructible length arises from iterated application of the Pythagorean theorem via intersections of circles and lines"
     },
     {
-      "targetId": "halting-problem",
-      "relationship": "related",
-      "description": "Both are impossibility results: angle trisection shows a geometric construction is impossible, the halting problem shows a computational decision is impossible — each resolves a long-standing question by proving non-existence"
-    },
-    {
       "targetId": "pi-transcendental",
       "relationship": "uses",
       "description": "This file directly imports the pi transcendence proof to establish that squaring the circle is impossible — Lindemann's 1882 result that π is transcendental means √π has no minimal polynomial over ℚ"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Gauss's constructibility theorem for regular n-gons requires n to be a product of a power of 2 and distinct Fermat primes — the same degree-over-ℚ framework as angle trisection, and Fermat prime structure connects to quadratic residues"
     },
     {
       "targetId": "lagrange-theorem",
@@ -145,54 +136,14 @@
       "description": "√2 IS constructible (as the diagonal of a unit square, a basic compass-and-straightedge construction) because its minimal polynomial x²-2 has degree 2 = 2¹ — contrasting with cos(20°) whose degree 3 ≠ 2ⁿ blocks constructibility"
     },
     {
-      "targetId": "hermite-lindemann",
-      "relationship": "uses",
-      "description": "This formalization directly imports the Hermite-Lindemann result (π transcendental) to prove squaring the circle impossible — Lindemann's 1882 theorem provides a strictly stronger impossibility than the degree argument used for trisection and cube doubling"
-    },
-    {
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
       "description": "Cardano's formula solves the general cubic by radicals — the trisection polynomial 8x³-6x-1 is a specific cubic whose roots CAN be expressed using cube roots (via Cardano's formula involving complex numbers), but this expression involves cube roots of complex numbers (casus irreducibilis), so it does not yield a compass-straightedge construction"
     },
     {
-      "targetId": "abel-ruffini-oq-04",
-      "relationship": "related",
-      "description": "Both use the non-solvability of specific groups to prove impossibility: Abel-Ruffini-OQ-04 proves S₅ is not solvable (blocking quintic radical solutions), while this file proves degree-3 extensions are incompatible with the 2-group structure required for constructibility — different group-theoretic obstructions within the same Galois framework"
-    },
-    {
       "targetId": "angle-trisection-oq-02",
       "relationship": "extended-by",
       "description": "OQ-02 extends the degree argument to a complete Galois characterization: α is constructible iff Gal(minpoly(α)/ℚ) is a 2-group. This strengthens Wantzel's degree criterion (degree divides 2ⁿ) to a group-theoretic criterion that captures all obstructions"
-    },
-    {
-      "targetId": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization underpins the core number-theoretic argument: since $3$ is prime and $\\gcd(3,2) = 1$, we have $3 \\nmid 2^n$ for all $n$ — this is the arithmetic fact that makes degree 3 incompatible with constructibility (degree $2^n$). The induction step uses primality of 3 via `Nat.Prime.dvd_mul`"
-    },
-    {
-      "targetId": "euler-totient",
-      "relationship": "related",
-      "description": "Euler's totient function determines Gauss's constructibility criterion for regular $n$-gons: the $n$-gon is constructible iff $\\phi(n)$ is a power of 2, which happens iff $n = 2^k p_1 \\cdots p_m$ for distinct Fermat primes $p_i$. The degree of $\\cos(2\\pi/n)$ over $\\mathbb{Q}$ is $\\phi(n)/2$, and constructibility requires this to be a power of 2"
-    },
-    {
-      "targetId": "godel-incompleteness",
-      "relationship": "thematic",
-      "description": "Both are foundational impossibility results: Wantzel proved no compass-straightedge procedure can trisect a general angle (1837), Gödel proved no consistent formal system can prove all arithmetic truths (1931). Both resolve long-standing questions by showing that certain natural-seeming capabilities are provably unachievable within a given formal framework"
-    },
-    {
-      "targetId": "area-of-circle",
-      "relationship": "related",
-      "description": "Both involve the geometry of circles and the constant $\\pi$: the area formula $A = \\pi r^2$ is the first circle theorem formalized in this gallery, while this file proves that $\\sqrt{\\pi}$ is not constructible — connecting the geometric formula to the impossibility of squaring the circle"
-    },
-    {
-      "targetId": "vietas-formulas",
-      "relationship": "foundational",
-      "description": "Vieta's formulas relate the roots and coefficients of the trisection polynomial $8x^3 - 6x - 1 = 0$: the three roots $\\cos(20°)$, $\\cos(140°)$, $\\cos(260°)$ satisfy $r_1 + r_2 + r_3 = 0$, $r_1 r_2 + r_1 r_3 + r_2 r_3 = -3/4$, $r_1 r_2 r_3 = 1/8$ — these symmetric function relations are implicit in the rational root test used to prove irreducibility"
-    },
-    {
-      "targetId": "cantor-diagonalization",
-      "relationship": "thematic",
-      "description": "Both belong to the impossibility proof tradition: Cantor's diagonal argument proves no enumeration reaches all reals (1891), Wantzel's argument proves no compass-straightedge construction trisects all angles (1837). Both show that natural-seeming operations (enumeration, geometric construction) have provable limitations"
     },
     {
       "targetId": "angle-trisection-oq-02-oq-01",
@@ -203,6 +154,11 @@
       "targetId": "nth-root-irrational",
       "relationship": "foundational",
       "description": "The irrationality of $\\sqrt[3]{2}$ (a special case of the $n$-th root irrationality) is the simplest instance of the degree-3 obstruction to constructibility: $[\\mathbb{Q}(\\sqrt[3]{2}):\\mathbb{Q}] = 3$, and $3 \\nmid 2^n$. The same argument proves the impossibility of doubling the cube"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "extended-by",
+      "description": "Extends the constructibility framework to the Gauss-Wantzel theorem for regular polygons: the regular $n$-gon is constructible iff $\\phi(n)$ is a power of 2, i.e., $n = 2^a p_1 \\cdots p_m$ with distinct Fermat primes $p_i$. This connects the same degree-criterion used here to cyclotomic field theory and Euler's totient function"
     }
   ],
   "overview": {
@@ -231,7 +187,7 @@
       "id": "setup",
       "title": "Imports and Historical Context",
       "startLine": 1,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Imports from Mathlib (trigonometry, field theory, polynomials) and PiTranscendental, plus the 2000-word docstring covering the three classical Greek problems, approach, axiom inventory, and proof structure.",
       "mathContext": "The file imports `SpecialFunctions.Trigonometric.Basic` for $\\cos$ and `cos\\_three\\_mul$, `IntermediateField.Basic` for field extensions, and `Proofs.PiTranscendental` for $\\pi$'s transcendence over $\\mathbb{Z}$ (lifted to $\\mathbb{Q}$)."
     },
@@ -239,7 +195,7 @@
       "id": "minimal-polynomial",
       "title": "The Minimal Polynomial for cos(20°)",
       "startLine": 71,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "Part I–II: defines `trisectionPolynomial` ($8x^3 - 6x - 1$), proves its degree is 3, defines angles 20° and 60° in radians, proves the triple angle formula, and shows cos(20°) satisfies the cubic equation.",
       "mathContext": "From $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ with $\\theta = \\pi/9$ (20°) and $\\cos(\\pi/3) = 1/2$: $1/2 = 4x^3 - 3x$ gives $8x^3 - 6x - 1 = 0$ where $x = \\cos(20°)$."
     },
@@ -247,7 +203,7 @@
       "id": "irreducibility",
       "title": "Irreducibility and Rational Root Check",
       "startLine": 132,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "Part III: defines `evalTrisectionPoly` for evaluation at rationals, then computationally verifies all 8 rational root candidates ($\\pm 1, \\pm 1/2, \\pm 1/4, \\pm 1/8$) are not roots using `norm_num`.",
       "mathContext": "By the rational root theorem, any rational root $p/q$ of $8x^3 - 6x - 1$ must have $p \\mid 1$ and $q \\mid 8$. None of the 8 candidates evaluates to zero, so the cubic has no linear factor over $\\mathbb{Q}$ and is therefore irreducible."
     },
@@ -255,15 +211,15 @@
       "id": "constructible",
       "title": "Constructible Numbers and Axioms",
       "startLine": 155,
-      "endLine": 214,
-      "summary": "Part IV: defines `IsConstructible` (degree divides $2^n$), states `wantzel_theorem` (axiom 1), `trisectionPolynomial_irreducible` (axiom 2), and proves `lindemann_pi_transcendental` from the PiTranscendental import.",
-      "mathContext": "Wantzel's criterion: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha) : \\mathbb{Q}]$ divides $2^n$. The two axioms encode deep results not in Mathlib: Wantzel's theorem connecting geometry to algebra, and the irreducibility of $8x^3 - 6x - 1$."
+      "endLine": 215,
+      "summary": "Part IV: defines `IsConstructible` (degree divides $2^n$), proves `wantzel_theorem` (from the definition of constructibility and degree theory), proves `trisectionPolynomial_irreducible` (via Eisenstein criterion, imported from AngleTrisectionCos20Gal), and obtains `lindemann_pi_transcendental` from the PiTranscendental import. Both wantzel_theorem and trisectionPolynomial_irreducible were originally axiomatized but are now fully proved.",
+      "mathContext": "Wantzel's criterion: $\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha) : \\mathbb{Q}]$ divides $2^n$. Both key results (Wantzel's theorem and trisection polynomial irreducibility) are now proved, not axiomatized. The only remaining axiom is transitive: `pi_transcendental` from PiTranscendental.lean, used for circle squaring."
     },
     {
       "id": "number-theory",
       "title": "Number-Theoretic Lemmas",
       "startLine": 216,
-      "endLine": 260,
+      "endLine": 261,
       "summary": "Part V: proves $3 \\neq 2^n$ (by parity), $3 \\nmid 2^n$ (using primality of 3), the general `three_dvd_not_dvd_power_of_two`, and `degree_three_not_constructible` — the key lemma that degree 3 implies non-constructibility.",
       "mathContext": "$2^n$ is always even for $n \\geq 1$, so $2^n \\neq 3$. Since $\\gcd(3,2) = 1$ and 3 is prime, $3 \\nmid 2^n$ by induction. Therefore any number with minimal polynomial degree 3 has $3 \\mid d$ but $d \\nmid 2^n$, ruling out constructibility."
     },
@@ -271,7 +227,7 @@
       "id": "main-theorems",
       "title": "The Main Impossibility Theorems",
       "startLine": 262,
-      "endLine": 330,
+      "endLine": 331,
       "summary": "Parts VI–VII: the three classical impossibilities — `angle_trisection_impossible` (cos(20°) not constructible), `cube_doubling_impossible` ($\\sqrt[3]{2}$ not constructible), and `circle_squaring_impossible` ($\\sqrt{\\pi}$ not constructible).",
       "mathContext": "Angle trisection: $[\\mathbb{Q}(\\cos 20°) : \\mathbb{Q}] = 3 \\neq 2^n$. Cube doubling: $[\\mathbb{Q}(\\sqrt[3]{2}) : \\mathbb{Q}] = 3 \\neq 2^n$. Circle squaring: $\\pi$ is transcendental so $\\sqrt{\\pi}$ has no finite degree over $\\mathbb{Q}$."
     },
@@ -297,27 +253,18 @@
   },
   "relatedProofs": [
     "abel-ruffini",
-    "abel-ruffini-oq-04",
     "fundamental-theorem-algebra",
     "inverse-galois",
     "pythagorean-theorem",
-    "halting-problem",
     "pi-transcendental",
-    "quadratic-reciprocity",
     "lagrange-theorem",
     "e-transcendental",
     "sqrt2-irrational",
-    "hermite-lindemann",
     "solution-of-cubic",
     "angle-trisection-oq-02",
-    "fundamental-arithmetic",
-    "euler-totient",
-    "godel-incompleteness",
-    "area-of-circle",
-    "vietas-formulas",
-    "cantor-diagonalization",
     "angle-trisection-oq-02-oq-01",
-    "nth-root-irrational"
+    "nth-root-irrational",
+    "angle-trisection-oq-02-oq-03"
   ],
   "references": [
     {

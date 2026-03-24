@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/312",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -80,42 +80,42 @@
       "title": "Unit Fraction Sums",
       "summary": "reciprocalSum, subsetReciprocalSum definitions",
       "startLine": 31,
-      "endLine": 40
+      "endLine": 41
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "hasExponentialPrecision, mainConjecture (OPEN)",
       "startLine": 42,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "known-result",
       "title": "Known Result (Polynomial Bound)",
       "summary": "hasPolynomialPrecision, erdos_graham_polynomial axiom",
       "startLine": 63,
-      "endLine": 80
+      "endLine": 81
     },
     {
       "id": "relationship",
       "title": "Relationship Between Bounds",
       "summary": "exponential_stronger_than_polynomial, conjecture_implies_known",
       "startLine": 82,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "harmonic-context",
       "title": "Harmonic Number Context",
       "summary": "harmonicNumber definition, harmonic_unbounded axiom",
       "startLine": 111,
-      "endLine": 120
+      "endLine": 121
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_312_status combining known results",
       "startLine": 122,
-      "endLine": 137
+      "endLine": 515
     }
   ],
   "conclusion": {
@@ -149,5 +149,27 @@
     "axiomCount": 1,
     "theoremCount": 44,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-242",
+    "erdos-284"
+  ]
 }

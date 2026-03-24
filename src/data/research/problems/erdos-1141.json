@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T16:10:18.694Z",
-    "iteration": 2,
-    "focus": "Fixed build issues: Decidable instance, omega→nlinarith, apply→explicit",
+    "iteration": 3,
+    "focus": "Added classification, unified verification, structural corollaries",
     "blockers": [],
-    "nextAction": "File compiles cleanly. Only 1 irreducible axiom (open conjecture).",
+    "nextAction": "Problem is maximally formalized. Only axiom is genuinely open conjecture.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -29,19 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FIX: Added Decidable instance for IsErdos1141Good, fixed omega→nlinarith for quadratic bound, fixed apply→explicit application in good_implies_pred_prime. File now compiles with 29 theorems, 1 axiom (open: is the sequence infinite?), 0 sorries.",
+    "progressSummary": "Added 6 new theorems: all_known_good (unified verification of all 41 OEIS values), classification_100 (complete classification up to n=100), good_count_100 (24 good values ≤ 100), good_not_prime_ge5, good_odd_eq_three (3 is unique odd good value), good_coprime3_sub9_prime. Fixed simp lint. 35 theorems, 1 axiom (open), 0 sorries.",
     "builtItems": [
       "Added Decidable instance for IsErdos1141Good (required for native_decide)",
       "Fixed isErdos1141Good_iff_unbounded: omega→nlinarith for k < n from k^2 < n",
       "Fixed good_implies_pred_prime: explicit hg 1 application instead of apply hg",
-      "Changed decide→native_decide for all computational verifications"
+      "Changed decide→native_decide for all computational verifications",
+      "all_known_good: unified native_decide verification of all 41 OEIS A214583 values",
+      "classification_100: complete exhaustive classification of good values in {0,...,100}",
+      "good_count_100: exactly 24 good values in {0,...,100}",
+      "good_not_prime_ge5: no prime ≥ 5 satisfies the property",
+      "good_odd_eq_three: 3 is the unique odd good value ≥ 3",
+      "good_coprime3_sub9_prime: good n coprime to 3 forces n-9 prime"
     ],
     "insights": [
       "29 theorems verify computational examples and structural properties",
       "Single axiom erdos_1141_infinitely_many is genuinely open",
       "Known good values: 3,4,6,8,12,14,18,20,24,30,...,1722 (OEIS A214583)",
       "omega cannot handle k < n from k^2 < n (quadratic) — use nlinarith",
-      "IsErdos1141Good needs explicit Decidable instance for native_decide to work"
+      "IsErdos1141Good needs explicit Decidable instance for native_decide to work",
+      "Complete classification up to 100 confirms 24 good values, matching OEIS A214583 subsequence",
+      "The structural corollaries (prime exclusion, odd uniqueness) follow cleanly from good_ge4_even",
+      "good_coprime3_sub9_prime shows coprimality to small primes creates additional simultaneous primality constraints"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -65,17 +74,17 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:10:18.694Z",
-  "lastUpdate": "2026-03-13T07:52:17.057Z",
+  "lastUpdate": "2026-03-23T03:22:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1141Problem.lean",
       "filename": "Erdos1141Problem.lean",
-      "lineCount": 161,
-      "theoremCount": 29,
+      "lineCount": 202,
+      "theoremCount": 35,
       "axiomCount": 1,
-      "defCount": 2,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1141Problem.lean"

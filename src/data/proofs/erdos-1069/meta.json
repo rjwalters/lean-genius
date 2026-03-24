@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1069",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real",
@@ -81,56 +81,56 @@
       "title": "Basic Definitions",
       "summary": "Point, Line, onLine, pointsOnLine, incidenceCount definitions",
       "startLine": 37,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "k-rich-lines",
       "title": "k-Rich Lines",
       "summary": "isKRich, kRichLines, numKRichLines definitions",
       "startLine": 64,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "total-incidences",
       "title": "Total Incidences",
       "summary": "totalIncidences, incidencePairs, incidences_eq axiom",
       "startLine": 81,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "szemeredi-trotter",
       "title": "The Szemerédi-Trotter Theorem",
       "summary": "szTrBound function, szemeredi_trotter axiom, optimality axiom",
       "startLine": 99,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "k-rich-bound",
       "title": "The k-Rich Lines Bound",
       "summary": "kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069 theorem",
       "startLine": 119,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "proof-strategy",
       "title": "The Proof Strategy",
       "summary": "dyadicLines decomposition, dyadic_bound, dyadic_szTr axioms",
       "startLine": 146,
-      "endLine": 167
+      "endLine": 168
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bound Constructions",
       "summary": "latticePoints, lattice_card, lattice_lower_bound axioms",
       "startLine": 169,
-      "endLine": 185
+      "endLine": 186
     },
     {
       "id": "special-duality",
       "title": "Special Cases and Duality",
       "summary": "large_k_bound, dual_kRich_bound axioms",
       "startLine": 187,
-      "endLine": 202
+      "endLine": 203
     },
     {
       "id": "summary",
@@ -152,28 +152,28 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-89",
-      "relationship": "The distinct distances problem is closely linked: the Szemerédi-Trotter theorem is a key tool in the Guth-Katz proof of the near-optimal n/√(log n) distinct distances lower bound."
+      "relationship": "The distinct distances problem is closely linked: the Szemerédi-Trotter theorem is a key tool in the Guth-Katz proof of the near-optimal n/√(log n) distinct distances lower bound.",
+      "targetId": "erdos-89"
     },
     {
-      "target": "erdos-90",
-      "relationship": "The unit distance problem is bounded using incidence geometry; the Szemerédi-Trotter theorem provides the O(n^{4/3}) upper bound on unit-distance pairs."
+      "relationship": "The unit distance problem is bounded using incidence geometry; the Szemerédi-Trotter theorem provides the O(n^{4/3}) upper bound on unit-distance pairs.",
+      "targetId": "erdos-90"
     },
     {
-      "target": "erdos-52",
-      "relationship": "The Sum-Product Conjecture is proved (in characteristic 0) using the Szemerédi-Trotter theorem via the Elekes incidence argument, bounding |A+A|·|A·A|."
+      "relationship": "The Sum-Product Conjecture is proved (in characteristic 0) using the Szemerédi-Trotter theorem via the Elekes incidence argument, bounding |A+A|·|A·A|.",
+      "targetId": "erdos-52"
     },
     {
-      "target": "erdos-211",
-      "relationship": "Beck's Theorem (lines formed by n points) is closely related: both results bound incidences and line multiplicities in planar point sets using crossing number methods."
+      "relationship": "Beck's Theorem (lines formed by n points) is closely related: both results bound incidences and line multiplicities in planar point sets using crossing number methods.",
+      "targetId": "erdos-211"
     },
     {
-      "target": "erdos-607",
-      "relationship": "Incidence signatures of point configurations directly study the distribution of incidence counts, the same combinatorial data captured by the k-rich lines bound."
+      "relationship": "Incidence signatures of point configurations directly study the distribution of incidence counts, the same combinatorial data captured by the k-rich lines bound.",
+      "targetId": "erdos-607"
     },
     {
-      "target": "erdos-588",
-      "relationship": "k-Point lines in general position asks whether f_k(n) = o(n²) for k ≥ 4 — a refinement of the k-rich lines bound studied in this problem."
+      "relationship": "k-Point lines in general position asks whether f_k(n) = o(n²) for k ≥ 4 — a refinement of the k-rich lines bound studied in this problem.",
+      "targetId": "erdos-588"
     }
   ],
   "relatedProofs": [

@@ -36,7 +36,8 @@
     "dateAdded": "2025-12-24",
     "axiomCount": 0,
     "lineCount": 425,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The question 'what is the primitive concept of mathematics?' has occupied logicians since Frege. The standard answer—set membership—proved technically successful but philosophically troubling. Benacerraf's problem (why is 2 = {empty, {empty}} rather than {{empty}}?) suggests sets don't capture mathematical essence.\n\nTom Etter, working at the Boundary Institute, proposed a radical alternative: three-place relative identity Id(x,y,z)—read 'x regards y as identical to z'—is the true primitive, with existence derived as distinguishability from non-existence. This formalizes Gian-Carlo Rota's slogan 'Identity precedes existence.'",
@@ -60,42 +61,42 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 40,
+      "endLine": 41,
       "summary": "Overview of the proof and its significance: formalizing Etter's claim that three-place identity is foundationally universal."
     },
     {
       "id": "relative-identity",
       "title": "The Relative Identity Structure",
       "startLine": 42,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Definition of RelativeIdentity: a three-place predicate where each fixed viewpoint induces an equivalence relation."
     },
     {
       "id": "bridge-d1",
       "title": "Bridge D1: Membership from Identity",
       "startLine": 88,
-      "endLine": 126,
+      "endLine": 127,
       "summary": "First bridge: y exists for x when x distinguishes y from itself. Formalizes 'existence as distinguishability.'"
     },
     {
       "id": "bridge-d2",
       "title": "Bridge D2: Identity from Membership",
       "startLine": 128,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "Second bridge: x regards y,z as identical when they have the same membership status. Connects to Quine's role identities."
     },
     {
       "id": "d2-preserves",
       "title": "D2 Preserves Identity Structure",
       "startLine": 170,
-      "endLine": 221,
+      "endLine": 222,
       "summary": "Proof that any membership relation induces a valid relative identity structure via D2."
     },
     {
       "id": "foundation",
       "title": "The Foundation Axiom",
       "startLine": 223,
-      "endLine": 243,
+      "endLine": 244,
       "summary": "The ZF Foundation axiom: no set contains itself. Essential for the round-trip theorem."
     },
     {

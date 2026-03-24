@@ -28,9 +28,10 @@
       "barrier_246: the 246 barrier cannot be broken by k-tuple methods alone"
     ],
     "dateAdded": "2026-03-21",
-    "axiomCount": 5,
+    "axiomCount": 4,
     "lineCount": 162,
-    "assumptions": "5 axiom(s) and 2 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
+    "assumptions": "5 axiom(s) and 2 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The bounded gaps between primes saga is one of the great stories of 21st-century mathematics. In May 2013, Yitang Zhang stunned the mathematical world by proving that there are infinitely many pairs of primes differing by at most 70 million — the first finite bound ever established. Within months, James Maynard (then a postdoc at Montreal) and, independently, Terence Tao developed a radically simpler sieve-theoretic approach based on multidimensional Selberg sieve weights, reducing the bound below 600. The Polymath 8b collaborative project, coordinated online, then optimized every parameter: sieve weights, level of distribution, and crucially the admissible k-tuple used. Thomas Engelsma's exhaustive 2013 computation showed that the narrowest admissible 50-tuple has diameter exactly 246, and the Polymath team proved this suffices — yielding the current record of 246 for consecutive prime gaps. This file formalizes why 246 is a hard barrier for these methods.",
@@ -53,35 +54,35 @@
       "id": "minimum-diameter",
       "title": "Minimum Diameter of Admissible k-Tuples",
       "startLine": 32,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Defines the opaque function D(k) for the minimum admissible k-tuple diameter and axiomatizes known computed values: D(2) = 2, D(3) = 6, and D(50) = 246 from Engelsma's exhaustive 2013 computation."
     },
     {
       "id": "small-tuples",
       "title": "Small Admissible Tuples (Verified)",
       "startLine": 56,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Constructs concrete admissible tuples {0,2}, {0,2,6}, and {0,2,6,8} as Finsets and verifies their cardinalities and diameters using native_decide, providing machine-checked witnesses for the smallest admissible k-tuples."
     },
     {
       "id": "asymptotic-growth",
       "title": "Asymptotic Growth of D(k)",
       "startLine": 86,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "States the fundamental bounds on D(k): a linear lower bound from the pigeonhole/covering argument and a near-linear upper bound D(k) <= C * k * (log k)^2 from greedy construction via the prime number theorem. Both remain as sorry targets."
     },
     {
       "id": "maynard-tao-barrier",
       "title": "The Maynard-Tao Barrier",
       "startLine": 104,
-      "endLine": 135,
+      "endLine": 136,
       "summary": "Formalizes the Maynard-Tao sieve framework as a structure with parameters (k, m, bound) and proves two key instances: k=2 giving bound 2 (twin primes) and k=50 giving bound 246 (Polymath 8b). Establishes barrier_246 showing D(50) = 246 is sharp."
     },
     {
       "id": "beyond-maynard-tao",
       "title": "Improving Beyond Maynard-Tao",
       "startLine": 137,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Explores routes past the 246 barrier: the Elliott-Halberstam conjecture would reduce the bound to 12, and the twin prime conjecture is equivalent to D(2) being achievable. Axiomatizes the conditional EH improvement."
     }
   ],

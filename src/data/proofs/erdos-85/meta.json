@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/85",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-13",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -88,14 +88,14 @@
       "id": "background",
       "title": "Background on 4-Cycles",
       "startLine": 27,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Context on 4-cycles and minimum degree in graphs."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 39,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Definitions of C4 graph, containsC4 predicate, and minDegreeForC4 function."
     },
     {
@@ -152,5 +152,27 @@
     "axiomCount": 4,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal, graph-theory"
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal, graph-theory"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, minimum-degree"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1008",
+    "erdos-1010",
+    "erdos-1032"
+  ]
 }

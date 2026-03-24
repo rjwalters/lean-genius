@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/850",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
@@ -48,18 +48,6 @@
       "problem850_is_2shift: proved ErdosProblem850 ↔ KShiftProblem 2",
       "kshift_monotone: proved k-shift monotonicity",
       "samePrimeFactors_refl/symm/trans: proved equivalence relation"
-    ],
-    "crossReferences": [
-      {
-        "targetId": "infinitude-primes",
-        "relationship": "foundational",
-        "description": "The infinitude of primes underlies the richness of the prime factor set relation — with finitely many primes, the k-shift problem would be trivially decidable"
-      },
-      {
-        "targetId": "fermats-last-theorem",
-        "relationship": "thematic",
-        "description": "Both problems connect to the ABC conjecture: FLT follows from ABC (Granville-Stark), and Problem 850 follows from Baker's strong ABC (Shorey-Tijdeman)"
-      }
     ],
     "axiomCount": 1,
     "lineCount": 120,
@@ -89,35 +77,35 @@
       "id": "definitions",
       "title": "Same Prime Factors",
       "startLine": 23,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Defines `SamePrimeFactors x y` as $x.\\mathrm{primeFactors} = y.\\mathrm{primeFactors}$, the radical equivalence relation on $\\mathbb{N}$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 29,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "States `ErdosProblem850`: $\\nexists\\, x \\neq y$ with $\\mathrm{rad}(x+i) = \\mathrm{rad}(y+i)$ for $i \\in \\{0, 1, 2\\}$. Defined as a `Prop`."
     },
     {
       "id": "two-shift",
       "title": "Weaker Variant: Two Consecutive Shifts",
       "startLine": 40,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines `TwoShiftSolvable` (the $k=1$ case IS solvable), `ParametricFamily(r)` giving $x = 2(2^r - 1)$, `MakowskiExample` $(75, 1215)$, and proves `makowski_distinct`."
     },
     {
       "id": "abc",
       "title": "Connection to ABC Conjecture",
       "startLine": 62,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Defines `radical(n) = \\prod_{p \\mid n} p$ and `StrongABCConjecture` (Baker's form: $c \\le C \\cdot \\mathrm{rad}(abc)^{7/6}$). Axiomatizes `shorey_tijdeman`: strong ABC $\\Rightarrow$ Problem 850."
     },
     {
       "id": "k-shift",
       "title": "General k-Shift Version",
       "startLine": 78,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Defines `KShiftProblem k` for general $k$. Proves `problem850_is_2shift` ($\\text{Problem 850} \\iff \\text{KShiftProblem}\\,2$) via `interval_cases` and `kshift_monotone` ($k \\Rightarrow k-1$) via `omega`."
     },
     {
@@ -151,5 +139,27 @@
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: abc-conjecture, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-368",
+    "erdos-1095",
+    "erdos-1106"
+  ]
 }

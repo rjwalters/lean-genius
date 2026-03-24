@@ -21,7 +21,7 @@
     "erdosNumber": 952,
     "erdosUrl": "https://erdosproblems.com/952",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "GaussianInt",
@@ -83,42 +83,42 @@
       "title": "Gaussian Integers and Primes",
       "summary": "IsGaussianPrime, GaussianPrimes using Mathlib",
       "startLine": 39,
-      "endLine": 52
+      "endLine": 53
     },
     {
       "id": "classification",
       "title": "Gaussian Prime Classification",
       "summary": "IsNorm2Prime, IsInertPrime, IsSplitPrime, gaussian_prime_classification",
       "startLine": 54,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "moat-problem",
       "title": "The Moat Problem",
       "summary": "IsInfiniteGaussianPrimeWalk, HasBoundedGaps, GaussianMoatConjecture",
       "startLine": 77,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "known-results",
       "title": "Known Negative Results",
       "summary": "jordan_rabung, tsuchimura, gethner_et_al, CurrentBestBound",
       "startLine": 99,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "moat-width",
       "title": "The Moat Width",
       "summary": "CanEscapeMoat, criticalMoatWidth, StrongNegation",
       "startLine": 120,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "density",
       "title": "Density of Gaussian Primes",
       "summary": "gaussianPrimeCount, gaussian_prime_theorem",
       "startLine": 137,
-      "endLine": 151
+      "endLine": 152
     },
     {
       "id": "connections",
@@ -132,7 +132,7 @@
       "title": "Variants",
       "summary": "EisensteinMoatProblem, RationalPrimeMoat",
       "startLine": 184,
-      "endLine": 197
+      "endLine": 198
     },
     {
       "id": "status",
@@ -165,5 +165,27 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 20
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open"
+    },
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1053",
+    "erdos-1055",
+    "erdos-1056"
+  ]
 }

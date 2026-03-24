@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/143",
     "erdosProblemStatus": "partially-solved",
     "erdosPrizeValue": "$500",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.liminf",
@@ -73,7 +73,7 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 31,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Definition of well-separated sets and counting functions",
       "mathContext": "Well-separated: $\\forall x \\neq y \\in A, k \\geq 1: kx \\neq y$ (no integer dilation maps one element to another). Counting: $A(x) = |A \\cap [1,x]|$."
     },
@@ -81,7 +81,7 @@
       "id": "conjectures",
       "title": "The Three Conjectures",
       "startLine": 45,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Formalizations of the density and series convergence questions",
       "mathContext": "Question 1: $A(x) = o(x)$? (zero density). Question 2: $\\sum_{a \\in A} 1/a < \\infty$? (convergent reciprocal sum). Both OPEN."
     },
@@ -89,7 +89,7 @@
       "id": "main-results",
       "title": "Main Results",
       "startLine": 61,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "The KLL theorem and its application",
       "mathContext": "KLL theorem (Klurman-Lunnon-Lewko): if $A$ is well-separated, then $A(x) = o(x/\\sqrt{\\log x})$ — a density bound slightly better than trivial."
     },
@@ -97,7 +97,7 @@
       "id": "primitive-sets",
       "title": "Connection to Primitive Sets",
       "startLine": 86,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "How integer dilation-avoidance implies primitivity",
       "mathContext": "Integer dilation-avoidance ($kx \\neq y$) implies primitivity ($x \\nmid y$). So dilation-avoiding sets are a subclass of primitive sets."
     },
@@ -105,7 +105,7 @@
       "id": "historical",
       "title": "Historical Results",
       "startLine": 98,
-      "endLine": 102,
+      "endLine": 120,
       "summary": "Erdős 1935 theorem on primitive sets",
       "mathContext": "Erdős (1935): primitive sets satisfy $\\sum_{a \\in A} 1/(a \\log a) < \\infty$. But this doesn't resolve $\\sum 1/a$ convergence for dilation-avoiding sets."
     }

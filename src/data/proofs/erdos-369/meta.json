@@ -21,6 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/369",
     "sourceUrl": "https://erdosproblems.com/369",
     "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/Erdos369Problem.lean",
     "dateAdded": "2026-01-23",
     "relatedProblems": [
@@ -39,8 +40,18 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
-        "description": "Primality predicate for prime factors",
+        "description": "Primality predicate for defining B-smooth numbers via prime factor bounds",
         "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.dvd",
+        "description": "Divisibility relation used in the IsSmooth predicate (p ∣ m)",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite set operations for potential prime factor enumeration",
+        "module": "Mathlib.Data.Finset.Basic"
       }
     ],
     "originalContributions": [
@@ -115,7 +126,7 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 35,
+      "endLine": 36,
       "summary": "Docstring defining Erdős Problem #369: for $\\varepsilon > 0$ and $k \\geq 2$, does $\\{1,\\ldots,n\\}$ contain $k$ consecutive $n^\\varepsilon$-smooth integers for all large $n$? References Erdős-Graham (1980), Balog-Wooley (1998). Imports Mathlib for primes, divisibility, and finite sets.",
       "mathContext": "$m$ is $B$-smooth if $P^+(m) \\leq B$. Question: $\\forall \\varepsilon > 0, k \\geq 2, \\exists N_0: n \\geq N_0 \\implies$ $k$ consecutive $n^\\varepsilon$-smooth integers in $[1,n]$."
     },
@@ -123,7 +134,7 @@
       "id": "smooth-numbers",
       "title": "Part I: Smooth Numbers",
       "startLine": 37,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines **IsSmooth m B** ($P^+(m) \\leq B$, all prime factors bounded) and axiomatizes **largestPrimeFactor**. The Dickman-de Bruijn function governs the density of $B$-smooth numbers: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$.",
       "mathContext": "$\\text{IsSmooth}(m, B) \\iff \\forall p \\mid m,\\, p\\text{ prime} \\implies p \\leq B$. Density: $\\Psi(x, x^{1/u}) \\sim x\\rho(u)$ where $\\rho$ satisfies $u\\rho'(u) = -\\rho(u-1)$."
     },
@@ -131,7 +142,7 @@
       "id": "consecutive-runs",
       "title": "Part II: Consecutive Smooth Runs",
       "startLine": 50,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Defines **ConsecutiveSmoothRun m k B** ($k \\geq 2$ consecutive $B$-smooth integers from $m$) and **HasConsecutiveSmoothRun** (existence within $\\{1,\\ldots,n\\}$). Coprimality of consecutive integers makes joint smoothness a multiplicatively independent condition.",
       "mathContext": "$\\text{ConsecutiveSmoothRun}(m, k, B) \\iff \\forall i < k: P^+(m+i) \\leq B$. Key difficulty: $\\gcd(m, m+1) = 1$ makes their smoothness independent."
     },
@@ -139,7 +150,7 @@
       "id": "conjecture",
       "title": "Part III: The Erdős-Graham Conjecture",
       "startLine": 69,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "**ErdosConjecture369**: parametrized by `smoothBound : ℕ → ℕ` (divergent, $\\leq n$), asserts $\\forall k \\geq 2, \\exists N_0, \\forall n \\geq N_0$, a $k$-run of smooth integers exists. Elegantly avoids real exponentiation.",
       "mathContext": "Parametrized: given $B : \\mathbb{N} \\to \\mathbb{N}$ with $B(n) \\to \\infty, B(n) \\leq n$: $\\forall k \\geq 2, \\exists N_0, \\forall n \\geq N_0: \\text{HasConsecutiveSmoothRun}(n,k,B(n))$."
     },
@@ -147,7 +158,7 @@
       "id": "k2-case",
       "title": "Part IV: The k = 2 Case",
       "startLine": 89,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "**ErdosConjecture369_k2**: the simplest open instance. Even two consecutive smooth numbers for all large $n$ is unresolved. Erdős-Graham: 'the problem seems very hard.'",
       "mathContext": "$k = 2$: $\\exists N_0, \\forall n \\geq N_0, \\exists m \\leq n: P^+(m) \\leq B(n) \\wedge P^+(m+1) \\leq B(n)$. The simplest open case."
     },
@@ -155,7 +166,7 @@
       "id": "balog-wooley",
       "title": "Part V: Balog-Wooley Partial Result (1998)",
       "startLine": 107,
-      "endLine": 120,
+      "endLine": 121,
       "summary": "Axiomatizes **balog_wooley_infinitely_many**: infinitely many $n$ with $n, n+1$ both smooth. Uses sieve methods and exponential sums. Falls short of 'all sufficiently large $n$.'",
       "mathContext": "Balog-Wooley: $|\\{n \\leq x : P^+(n) \\leq n^\\varepsilon \\wedge P^+(n+1) \\leq n^\\varepsilon\\}| = \\infty$. Gap: this is $\\exists^\\infty$ not $\\forall^\\infty$."
     },
@@ -225,7 +236,8 @@
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
-    ]
+    ],
+    "namespace": "Erdos369"
   },
   "references": [
     {

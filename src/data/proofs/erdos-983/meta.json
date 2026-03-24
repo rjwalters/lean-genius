@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/983",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -97,7 +97,7 @@
       "title": "Basic Definitions",
       "summary": "primePi, primesUpTo, IsSmooth, smoothElements, PrimesCover",
       "startLine": 40,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "f-function",
@@ -118,21 +118,21 @@
       "title": "Erdős-Straus Results",
       "summary": "erdos_straus_main, difference_is_sublinear, erdos_straus_dense",
       "startLine": 128,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "intuition",
       "title": "Why 2π(√n)?",
       "summary": "prime_structure: integers ≤ n have at most one prime factor > √n",
       "startLine": 167,
-      "endLine": 181
+      "endLine": 182
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "summary": "IsYSmooth, smoothCount, dickman_asymptotics",
       "startLine": 183,
-      "endLine": 207
+      "endLine": 208
     },
     {
       "id": "summary",
@@ -170,5 +170,27 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-56",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-684",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes, smooth-numbers"
+    },
+    {
+      "targetId": "erdos-795",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, prime-counting"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-56",
+    "erdos-684",
+    "erdos-795"
+  ]
 }

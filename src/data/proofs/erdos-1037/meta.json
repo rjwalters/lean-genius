@@ -24,7 +24,8 @@
     "relatedProblems": [],
     "axiomCount": 5,
     "lineCount": 276,
-    "assumptions": "5 axiom(s) and 9 sorry(s). See the Lean source for details."
+    "assumptions": "5 axiom(s) and 9 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Chen and Erdős posed this question as part of a broader program investigating how degree sequence structure constrains Ramsey-type properties of graphs. By Ramsey's theorem (1930), every n-vertex graph contains a clique or independent set of size at least (1/2) log₂ n, and Erdős (1947) showed via the probabilistic method that random graphs G(n,1/2) essentially achieve this bound. The Chen-Erdős conjecture asked whether imposing degree diversity — specifically, requiring that each degree appears at most twice and that the number of distinct degrees exceeds (1/2 + ε)n — forces significantly larger trivial (complete or empty) subgraphs. This would have provided a deterministic condition implying non-random-like Ramsey behavior. The conjecture remained open for decades until Cambie, Chan, and Hunter (2025) disproved it by constructing explicit graphs with at least 3n/4 distinct degrees (each appearing at most twice) in which the largest clique or independent set has size only O(log n). Their construction shows that degree diversity is fundamentally independent of Ramsey structure: one can have maximally diverse degree sequences while maintaining the same trivial subgraph size as random graphs. The fraction 3/4 appears to be essentially optimal for multiplicity-2 constraints, connecting this to extremal questions about degree sequence realizability.",
@@ -51,84 +52,84 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation on Problem 1037 (Chen-Erdős conjecture, Cambie-Chan-Hunter disproof), imports for SimpleGraph, Finset, Fintype, and real number arithmetic",
       "startLine": 1,
-      "endLine": 21
+      "endLine": 22
     },
     {
       "id": "graph-setup",
       "title": "Graph Setup",
       "summary": "vertexCount definition: cardinality of the finite vertex set",
       "startLine": 23,
-      "endLine": 34
+      "endLine": 35
     },
     {
       "id": "degree-sequences",
       "title": "Degree Sequences",
       "summary": "degreeMultiset (multiset of all vertex degrees), distinctDegrees (number of distinct values), degreeMultiplicity (count of each degree value)",
       "startLine": 36,
-      "endLine": 53
+      "endLine": 54
     },
     {
       "id": "degree-constraints",
       "title": "Degree Constraints",
       "summary": "hasLimitedMultiplicity (each degree at most twice), hasManyDistinctDegrees (distinct degrees > (1/2 + ε)n), isChenErdosGraph (both conditions)",
       "startLine": 55,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "trivial-subgraphs",
       "title": "Trivial Subgraphs",
       "summary": "isIndependentSet, isClique, isTrivialSet (independent or clique), maxTrivialSize (maximum over all trivial subsets)",
       "startLine": 71,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "conjecture",
       "title": "The Chen-Erdős Conjecture",
       "summary": "chenErdosConjecture (degree diversity forces trivial subgraphs ≫ log n) and chenErdos_false establishing the conjecture is false",
       "startLine": 91,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "counterexample",
       "title": "Cambie-Chan-Hunter Counterexample",
       "summary": "cambieConstant (3/4), cambieChanHunter_construction axiomatizing the existence of counterexample graphs with ≥ 3n/4 distinct degrees and O(log n) trivial size, counterexample_works proving the construction satisfies all requirements",
       "startLine": 106,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "ramsey",
       "title": "Ramsey Connection",
       "summary": "ramseyNumber definition, ramsey_theorem (every graph has trivial subgraph ≥ (1/2) log₂ n), degree_diversity_no_ramsey_help (degree diversity does not improve the Ramsey bound)",
       "startLine": 136,
-      "endLine": 161
+      "endLine": 162
     },
     {
       "id": "degree-properties",
       "title": "Degree Sequence Properties",
       "summary": "degree_sum_eq_twice_edges (handshaking lemma), limited_multiplicity_bound (multiplicity ≤ 2 constrains distinct degrees ≤ n), degree_bound (each degree < n)",
       "startLine": 163,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "stronger-bounds",
       "title": "Stronger Bounds",
       "summary": "optimalDistinctBound (3n/4), max_distinct_with_limited_mult (distinct degrees ≤ 3n/4 when multiplicity ≤ 2), cambie_is_optimal (the counterexample achieves this bound)",
       "startLine": 185,
-      "endLine": 206
+      "endLine": 207
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "summary": "hasMultiplicityAtMost (generalized multiplicity ≤ k), generalMultiplicityBound (max distinct degrees with multiplicity ≤ k is (1-1/(2k))n), multiplicity_two_bound (special case k=2 recovers 3n/4)",
       "startLine": 208,
-      "endLine": 237
+      "endLine": 238
     },
     {
       "id": "resolved",
       "title": "The Resolved Question",
       "summary": "erdos_1037_disproved (the conjecture is false via counterexample) and erdos_1037_answer (degree diversity does not force large trivial subgraphs)",
       "startLine": 239,
-      "endLine": 256
+      "endLine": 276
     }
   ],
   "conclusion": {

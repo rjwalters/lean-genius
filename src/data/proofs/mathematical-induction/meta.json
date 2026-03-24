@@ -48,20 +48,21 @@
     "wiedijkNumber": 74,
     "axiomCount": 0,
     "lineCount": 249,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Principle of Mathematical Induction was rigorously formulated by Giuseppe Peano in 1889 as the fifth axiom in his axiomatization of the natural numbers. However, the technique of proving statements by establishing a base case and showing the step from n to n+1 has much older roots.\n\nPascal used induction explicitly in his 1665 'Traite du Triangle Arithmetique' to prove properties of binomial coefficients. Fermat used a form of infinite descent (essentially contrapositive induction) in his number-theoretic proofs. Even ancient Greek mathematicians like Euclid implicitly used inductive reasoning.\n\nIn modern type theory and proof assistants like Lean, induction is not just a proof technique but is built into the foundations: the natural numbers are an inductive type, and the induction principle is automatically generated as the recursor.",
     "problemStatement": "The Principle of Mathematical Induction:\n\nFor any predicate $P$ on natural numbers, if:\n1. $P(0)$ holds (base case), and\n2. For all $n$, $P(n)$ implies $P(n+1)$ (inductive step)\n\nThen $P(n)$ holds for all natural numbers $n$.\n\n$$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$$\n\nThis is equivalent to several other principles:\n- Strong induction (assuming P(k) for all k < n)\n- The well-ordering principle (every nonempty set has a minimum)\n- Infinite descent (no infinite descending chains)",
-    "text": "This Lean 4 formalization demonstrates that mathematical induction \u2014 Peano's fifth axiom \u2014 is not merely a proof technique but is literally the recursor for the `Nat` inductive type. The file proves weak and strong induction as explicit theorems, establishes their logical equivalence via the predicate-strengthening technique (`Q(n) := \u2200 k < n, P k`), derives the well-ordering principle using `Nat.find`, and shows well-ordering implies strong induction by contradiction on the minimal counterexample. Two example applications demonstrate the difference in practice: the Gauss sum formula uses weak induction with `Finset.sum_range_succ` and `ring`, while prime divisor existence requires strong induction. The Curry-Howard correspondence is made explicit by providing both tactic-style and term-mode proofs using `Nat.rec` directly, revealing the computational content of the induction principle. This is theorem #74 in Wiedijk's 100 Theorems list.",
+    "text": "This Lean 4 formalization demonstrates that mathematical induction — Peano's fifth axiom — is not merely a proof technique but is literally the recursor for the `Nat` inductive type. The file proves weak and strong induction as explicit theorems, establishes their logical equivalence via the predicate-strengthening technique (`Q(n) := ∀ k < n, P k`), derives the well-ordering principle using `Nat.find`, and shows well-ordering implies strong induction by contradiction on the minimal counterexample. Two example applications demonstrate the difference in practice: the Gauss sum formula uses weak induction with `Finset.sum_range_succ` and `ring`, while prime divisor existence requires strong induction. The Curry-Howard correspondence is made explicit by providing both tactic-style and term-mode proofs using `Nat.rec` directly, revealing the computational content of the induction principle. This is theorem #74 in Wiedijk's 100 Theorems list.",
     "proofStrategy": "In Lean, mathematical induction is built into the type system through the `Nat.rec` recursor. We demonstrate this explicitly:\n\n**Weak Induction:**\nGiven P(0) and the step function (P(n) -> P(n+1)), we use Lean's `induction` tactic which applies the recursor.\n\n**Strong Induction:**\nWe use `Nat.strong_induction_on` from Mathlib, which provides the stronger hypothesis that P(k) holds for ALL k < n.\n\n**Equivalence:**\nWe prove that weak induction implies strong induction by strengthening the predicate to 'P holds for all values up to n'. Conversely, strong induction implies weak induction trivially since the weak hypothesis is a special case.\n\n**Well-Ordering:**\nWe show the well-ordering principle using `Nat.find`, and demonstrate that it implies strong induction via contraposition.",
     "keyInsights": [
-      "In Lean 4, `induction n with` desugars to `Nat.rec` \u2014 the induction principle IS the recursor for the `Nat` inductive type, not a derived rule. This means proofs by induction are simultaneously recursive programs under the Curry-Howard correspondence.",
-      "The predicate-strengthening technique `Q(n) := \u2200 k < n, P k` converts any strong induction proof into a weak induction proof. This is formalized in `strong_from_weak` and is the key to the equivalence theorem.",
+      "In Lean 4, `induction n with` desugars to `Nat.rec` — the induction principle IS the recursor for the `Nat` inductive type, not a derived rule. This means proofs by induction are simultaneously recursive programs under the Curry-Howard correspondence.",
+      "The predicate-strengthening technique `Q(n) := ∀ k < n, P k` converts any strong induction proof into a weak induction proof. This is formalized in `strong_from_weak` and is the key to the equivalence theorem.",
       "Well-ordering (`Nat.find`) requires `DecidablePred` because it is implemented by computable linear search. This distinguishes it from classical well-ordering and shows how computability constraints permeate Lean's foundational primitives.",
-      "The minimal counterexample method (`by_contra; push_neg; obtain \u27e8m, hm, hmin\u27e9 := well_ordering`) is the constructive form of proof by contradiction that works in Lean's kernel without needing `Classical.choice`.",
-      "Strong induction subsumes weak induction (special case using only `n-1`) and infinite descent (equivalent to well-ordering). All three principles axiomatize the same mathematical structure \u2014 the natural numbers \u2014 and are interderivable in Lean with zero axioms beyond the built-in `Nat.rec`.",
-      "Structural induction on `List` generalizes induction to arbitrary inductive types. For non-inductive termination, Lean's `termination_by` clause uses `WellFounded.induction` \u2014 a further generalization that makes all well-founded relations into induction principles."
+      "The minimal counterexample method (`by_contra; push_neg; obtain ⟨m, hm, hmin⟩ := well_ordering`) is the constructive form of proof by contradiction that works in Lean's kernel without needing `Classical.choice`.",
+      "Strong induction subsumes weak induction (special case using only `n-1`) and infinite descent (equivalent to well-ordering). All three principles axiomatize the same mathematical structure — the natural numbers — and are interderivable in Lean with zero axioms beyond the built-in `Nat.rec`.",
+      "Structural induction on `List` generalizes induction to arbitrary inductive types. For non-inductive termination, Lean's `termination_by` clause uses `WellFounded.induction` — a further generalization that makes all well-founded relations into induction principles."
     ],
     "prerequisites": [
       "natural numbers and Peano arithmetic",
@@ -83,53 +84,53 @@
       "id": "weak-induction",
       "title": "Weak Induction",
       "startLine": 49,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "The standard form of induction: prove P(0), prove P(n) -> P(n+1), conclude forall n. P(n)."
     },
     {
       "id": "strong-induction",
       "title": "Strong Induction",
       "startLine": 78,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Complete induction where the hypothesis is P(k) for all k < n."
     },
     {
       "id": "equivalence",
       "title": "Equivalence of Weak and Strong Induction",
       "startLine": 106,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Proof that weak and strong induction can derive each other."
     },
     {
       "id": "examples",
       "title": "Example Applications",
       "startLine": 149,
-      "endLine": 173,
+      "endLine": 174,
       "summary": "Classic examples: sum of first n naturals and existence of prime divisors."
     },
     {
       "id": "well-ordering",
       "title": "Well-Ordering Principle",
       "startLine": 175,
-      "endLine": 202,
+      "endLine": 203,
       "summary": "The well-ordering principle and its connection to strong induction."
     },
     {
       "id": "peano-axioms",
       "title": "Connection to Peano Axioms",
       "startLine": 204,
-      "endLine": 240,
+      "endLine": 249,
       "summary": "How induction relates to Lean's type theory and the Nat recursor."
     }
   ],
   "conclusion": {
     "summary": "The Principle of Mathematical Induction is now fully formalized with both weak and strong forms, their equivalence proven, and connections to the well-ordering principle demonstrated. Example applications show the practical use of induction in number theory.",
-    "implications": "This formalization has implications across several areas:\n\n**1. Foundations of Lean's Type Theory**\nThe file demonstrates that `Nat.rec` is the single primitive from which both weak and strong induction, well-ordering, and the minimal counterexample method all follow as zero-axiom theorems. Every inductive type in Lean generates an analogous recursor, so all of these patterns generalize uniformly.\n\n**2. Proof Strategy Patterns**\nThe `strong_from_weak` proof crystallizes the predicate-strengthening technique \u2014 arguably the most important meta-technique in inductive proofs. Recognizing when to strengthen the induction hypothesis is a key skill both in informal mathematics and in proof assistants.\n\n**3. Algorithm Verification**\nStrong induction corresponds to structural recursion with a well-founded measure (e.g., fuel-based termination in Lean's `termination_by`). The equivalence theorem here shows that any such algorithm can be verified by either induction style \u2014 choosing based on ergonomics.\n\n**4. Number Theory in Mathlib**\nThe prime divisor example connects to `Nat.exists_prime_and_dvd`, `Nat.factors`, and ultimately the fundamental theorem of arithmetic (`Nat.factors_unique`). Strong induction is the backbone of most divisibility arguments in Mathlib.\n\n**5. Formalization Pedagogy**\nAs theorem #74 in Wiedijk's list, this entry serves as a reference for how fundamental mathematical induction appears in a proof assistant. The dual proof style (tactic + term mode via `Nat.rec`) illustrates that Lean's logic is computational.",
+    "implications": "This formalization has implications across several areas:\n\n**1. Foundations of Lean's Type Theory**\nThe file demonstrates that `Nat.rec` is the single primitive from which both weak and strong induction, well-ordering, and the minimal counterexample method all follow as zero-axiom theorems. Every inductive type in Lean generates an analogous recursor, so all of these patterns generalize uniformly.\n\n**2. Proof Strategy Patterns**\nThe `strong_from_weak` proof crystallizes the predicate-strengthening technique — arguably the most important meta-technique in inductive proofs. Recognizing when to strengthen the induction hypothesis is a key skill both in informal mathematics and in proof assistants.\n\n**3. Algorithm Verification**\nStrong induction corresponds to structural recursion with a well-founded measure (e.g., fuel-based termination in Lean's `termination_by`). The equivalence theorem here shows that any such algorithm can be verified by either induction style — choosing based on ergonomics.\n\n**4. Number Theory in Mathlib**\nThe prime divisor example connects to `Nat.exists_prime_and_dvd`, `Nat.factors`, and ultimately the fundamental theorem of arithmetic (`Nat.factors_unique`). Strong induction is the backbone of most divisibility arguments in Mathlib.\n\n**5. Formalization Pedagogy**\nAs theorem #74 in Wiedijk's list, this entry serves as a reference for how fundamental mathematical induction appears in a proof assistant. The dual proof style (tactic + term mode via `Nat.rec`) illustrates that Lean's logic is computational.",
     "openQuestions": [
-      "Transfinite induction over ordinals: Lean's `WellFounded.induction` generalizes to any well-founded relation. Can the full hierarchy of induction up to \u03b5\u2080 (the proof-theoretic ordinal of Peano arithmetic) be formalized in Lean 4 as a single parameterized theorem?",
-      "Is there a formalized proof in Lean that Peano arithmetic's induction schema is independent of the first four Peano axioms (i.e., that models satisfying PA1\u2013PA4 but not PA5 exist)? This requires constructing a non-standard model of the first four axioms.",
-      "Cyclic induction and modular arithmetic: can the induction principle be adapted for proofs over \u2124/n\u2124 (e.g., proving properties of cyclic groups by structural induction on coset representatives)?",
-      "For which predicates is strong induction strictly necessary versus equivalent but more convenient? Characterizing the \u03a3\u2081/\u03a0\u2081 boundary where predicate complexity forces strong induction is an open meta-mathematical question.",
+      "Transfinite induction over ordinals: Lean's `WellFounded.induction` generalizes to any well-founded relation. Can the full hierarchy of induction up to ε₀ (the proof-theoretic ordinal of Peano arithmetic) be formalized in Lean 4 as a single parameterized theorem?",
+      "Is there a formalized proof in Lean that Peano arithmetic's induction schema is independent of the first four Peano axioms (i.e., that models satisfying PA1–PA4 but not PA5 exist)? This requires constructing a non-standard model of the first four axioms.",
+      "Cyclic induction and modular arithmetic: can the induction principle be adapted for proofs over ℤ/nℤ (e.g., proving properties of cyclic groups by structural induction on coset representatives)?",
+      "For which predicates is strong induction strictly necessary versus equivalent but more convenient? Characterizing the Σ₁/Π₁ boundary where predicate complexity forces strong induction is an open meta-mathematical question.",
       "Lean's `Finset.induction_on` and `List.induction_on` are instances of structural induction on finite data. Can a unified framework formalize 'induction on size' for all finite mathematical objects (graphs, polytopes, matroids) via a universal `Fintype` induction principle?"
     ]
   },
@@ -170,7 +171,7 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "related",
-      "description": "Euclid's proof of infinite primes uses a form of induction (given any finite list, construct a new prime). Strong induction and well-ordering \u2014 equivalent to induction \u2014 appear throughout number theory."
+      "description": "Euclid's proof of infinite primes uses a form of induction (given any finite list, construct a new prime). Strong induction and well-ordering — equivalent to induction — appear throughout number theory."
     },
     {
       "targetId": "fundamental-arithmetic",

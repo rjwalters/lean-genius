@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/231",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "List",
@@ -83,49 +83,49 @@
       "title": "Basic Definitions",
       "summary": "Parikh vectors and abelian squares",
       "startLine": 46,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "squarefree",
       "title": "Squarefree vs Abelian-Square-Free",
       "summary": "Hierarchy of avoidance properties",
       "startLine": 77,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "alphabet",
       "title": "Alphabet Size Question",
       "summary": "Erdős's original question",
       "startLine": 105,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "thue",
       "title": "Thue's Result",
       "summary": "Squarefree strings over 3 letters",
       "startLine": 120,
-      "endLine": 131
+      "endLine": 132
     },
     {
       "id": "keranen",
       "title": "Keränen's Construction",
       "summary": "Abelian-square-free over 4 letters",
       "startLine": 133,
-      "endLine": 155
+      "endLine": 156
     },
     {
       "id": "disproof",
       "title": "Resolution",
       "summary": "NO for k ≥ 4",
       "startLine": 157,
-      "endLine": 179
+      "endLine": 180
     },
     {
       "id": "small-k",
       "title": "Small k Cases",
       "summary": "k = 2, 3 still have abelian squares",
       "startLine": 181,
-      "endLine": 199
+      "endLine": 200
     },
     {
       "id": "examples",
@@ -167,5 +167,21 @@
     "axiomCount": 9,
     "theoremCount": 3,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-230",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-232",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-230",
+    "erdos-232"
+  ]
 }

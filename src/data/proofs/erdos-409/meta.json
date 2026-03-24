@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 12,
     "assumptions": "12 axiom declarations: iteration_terminates (orbit reaches a prime), iterate_decreasing (strict decrease on composites), erdos_409_upper_bound (F(n) = o(n) bound), erdos_409_same_prime (infinite basin existence), erdos_409_density (basin natural density), prime_zero_iterations (F(p) = 0 for primes), one_iteration_criterion (F(n) = 1 condition), totient_plus_one_odd (parity of phi+1), sigma_variant_question (sigma variant termination), sigma_growing (sigma non-decreasing), four_to_three (phi(4)+1 = 3), one_iteration_infinite (infinitely many F=1)",
-    "lineCount": 127
+    "lineCount": 127,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem originates with Finucane and was popularized by Erdos and Graham in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 81). The map $T(n) = \\varphi(n) + 1$ defines a discrete dynamical system on the positive integers: since $\\varphi(n) < n - 1$ for composite $n > 1$, each application strictly decreases the value until a prime fixed point is reached ($T(p) = p$ for primes $p$). The iteration count $F(n) = \\min\\{k \\geq 0 : T^k(n) \\text{ is prime}\\}$ appears as OEIS A039651. Cambie noted that $F(n) = o(n)$ is trivial but the true growth rate remains unknown --- heuristically $F(n) = O(\\log n)$ since $\\varphi(n)/n$ has mean value $6/\\pi^2 \\approx 0.608$, suggesting each step reduces $n$ by a constant factor. Guy discusses the problem in UPINT (B41). The companion problem replacing $\\varphi$ by $\\sigma$ (sum of divisors) yields $n \\mapsto \\sigma(n) - 1$, which is non-decreasing for composites, making termination at a prime an entirely separate open question related to aliquot sequences and the Catalan--Dickson conjecture.",
@@ -47,35 +48,35 @@
       "id": "imports",
       "title": "Imports and Dependencies",
       "startLine": 24,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Imports Mathlib's Euler totient $\\varphi(n) = |\\{k \\leq n : \\gcd(k,n) = 1\\}|$, primality, and the filter framework for $o(\\cdot)$ asymptotics."
     },
     {
       "id": "core-defs",
       "title": "Core Definitions",
       "startLine": 33,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines the totient-plus-one map $T(n) = \\varphi(n) + 1$, its $k$-th iterate $T^k(n)$ via $\\texttt{Nat.iterate}$, and the stopping time $F(n) = \\min\\{k : T^k(n) \\text{ is prime}\\}$ using $\\texttt{sSup}$."
     },
     {
       "id": "termination",
       "title": "Termination and Descent",
       "startLine": 47,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Proves (axiomatically) that every orbit reaches a prime: $\\forall n > 0,\\; \\exists k,\\; T^k(n)$ is prime. The key lemma is strict decrease $T(n) < n$ for composite $n > 1$, giving descent on $\\mathbb{N}$."
     },
     {
       "id": "part-i",
       "title": "Part (i): Asymptotic Bound $F(n) = o(n)$",
       "startLine": 60,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "The trivial bound $F(n) = o(n)$ follows from the fact that each iteration reduces $n$ by at least 1 for composites. The open question is whether $F(n) = O(\\log n)$ or even $O(\\log \\log n)$."
     },
     {
       "id": "part-ii",
       "title": "Part (ii): Infinite Basins of Attraction",
       "startLine": 69,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Asks whether some prime $p$ has $|\\{n : \\exists k,\\; T^k(n) = p\\}| = \\infty$. The basin of attraction of $p$ under $T$ --- likely infinite for small primes like 2 and 3."
     },
     {
@@ -89,14 +90,14 @@
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 82,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Establishes $F(p) = 0$ for primes, the criterion $F(n) = 1 \\iff \\varphi(n) + 1$ is prime, and the parity result that $\\varphi(n) + 1$ is odd for $n \\geq 3$ (since $\\varphi(n)$ is even)."
     },
     {
       "id": "sigma-variant",
       "title": "Sigma Variant: $n \\mapsto \\sigma(n) - 1$",
       "startLine": 99,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "The companion problem using $\\sigma(n)$ instead of $\\varphi(n)$. Since $\\sigma(n) \\geq 1 + n$ for composites, $\\sigma(n) - 1 \\geq n$, so the sigma iteration is non-decreasing --- a fundamentally different dynamical regime."
     },
     {
@@ -134,5 +135,27 @@
     "axiomCount": 12,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-412",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: dynamical-systems, iteration, number-theory"
+    },
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-412",
+    "erdos-1059",
+    "erdos-1113"
+  ]
 }

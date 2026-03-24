@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 7,
     "lineCount": 148,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #687 concerns the Jacobsthal function of the primorial, a central object in the theory of covering systems and prime gaps. Jacobsthal (1960) introduced g(n) as the largest gap between consecutive integers coprime to n. For the primorial P(x) = ∏_{p ≤ x} p, we have Y(x) = g(P(x)), connecting covering congruences to prime distribution. Iwaniec (1978) proved Y(x) ≪ x² using the Selberg sieve, a bound that has resisted improvement for nearly 50 years. Rankin (1938) gave the first non-trivial lower bound Y(x) ≫ x · log x · log log x · log log log log x / (log log log x)², which stood for decades. Ford, Green, Konyagin, Maynard, and Tao (2018), as part of their landmark work on large prime gaps, improved Rankin's bound by replacing the double-log denominator. Maier and Pomerance conjectured Y(x) ≪ x · (log x)^{2+o(1)}, which would nearly close the gap. Erdős offered $1,000 for proving Y(x) = o(x²), one of his largest prizes, reflecting the problem's depth and connection to the distribution of primes in arithmetic progressions, sieve methods, and the structure of smooth numbers.",
@@ -46,56 +47,56 @@
       "id": "imports",
       "title": "Part 0: Imports",
       "startLine": 29,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Imports `Mathlib.Tactic`, `Data.Nat.Prime.Basic`, and `Order.ConditionallyCompleteLattice.Basic` for prime number predicates, `sSup`, and `BddAbove`."
     },
     {
       "id": "definitions",
       "title": "Part I: Core Definitions",
       "startLine": 33,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Defines `primorial(x) = \\prod_{p \\le x} p$, `IsCovered` for integers satisfying a congruence $n \\equiv a_p \\pmod{p}$, `jacobsthalSet(x)` of achievable covering lengths, and $Y(x) = \\text{sSup}(\\text{jacobsthalSet}(x))$."
     },
     {
       "id": "jacobsthal",
       "title": "Part II: The Jacobsthal Function",
       "startLine": 56,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Defines $g(n) = \\sup\\{d \\mid \\exists m, \\forall k \\in (m, m+d), \\exists p \\mid n \\text{ with } p \\mid k\\}$, the largest gap between consecutive integers coprime to $n$."
     },
     {
       "id": "basic-properties",
       "title": "Part III: Basic Properties",
       "startLine": 65,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Proves `jacobsthalSet` is nonempty (via $y = 0$ vacuously) and axiomatizes it is bounded above (by CRT periodicity of the primorial), enabling the use of `sSup`."
     },
     {
       "id": "structural",
       "title": "Part IV: Structural Properties",
       "startLine": 81,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Proves `jacobsthalSet` is monotone ($x_1 \\le x_2 \\Rightarrow \\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$) by extending coverings to new primes. Derives $Y(x)$ monotonicity via `csSup_le_csSup`."
     },
     {
       "id": "connection",
       "title": "Part V: Connection to Jacobsthal Function",
       "startLine": 105,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Axiomatizes $Y(x) = g(\\text{primorial}(x))$, the fundamental equivalence between covering length and the Jacobsthal function of the primorial."
     },
     {
       "id": "conjecture",
       "title": "Part VI: Main Conjecture ($1,000)",
       "startLine": 111,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "States the \\$1,000 prize conjecture: $\\forall \\varepsilon > 0$, eventually $Y(x) \\le x^{1+\\varepsilon}$, formalized using `Filter.atTop` and `Filter.Eventually`."
     },
     {
       "id": "bounds",
       "title": "Part VII: Known Bounds",
       "startLine": 119,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier–Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsilon}$."
     },
     {
@@ -131,5 +132,27 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-688",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering systems, number theory, sieve theory"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering systems, number theory"
+    },
+    {
+      "targetId": "erdos-929",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number theory, prime gaps"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-688",
+    "erdos-281",
+    "erdos-929"
+  ]
 }

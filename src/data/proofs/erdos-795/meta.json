@@ -21,27 +21,10 @@
     "erdosNumber": 795,
     "erdosUrl": "https://erdosproblems.com/795",
     "erdosProblemStatus": "solved",
-    "crossReferences": [
-      {
-        "proofId": "erdos-1",
-        "relationship": "The additive analogue: distinct subset sums instead of products"
-      },
-      {
-        "proofId": "erdos-786",
-        "relationship": "Sister problem on multiplicative cardinality sets, explicitly linked in the Lean file"
-      },
-      {
-        "proofId": "erdos-788",
-        "relationship": "Sum-free subsets in intervals; Sidon sets appear in the construction arguments"
-      },
-      {
-        "proofId": "erdos-789",
-        "relationship": "Sum-length-free subsets, a weakening of the Sidon condition that parallels distinct products"
-      }
-    ],
     "axiomCount": 0,
     "lineCount": 519,
-    "assumptions": "15 sorry(s)."
+    "assumptions": "15 sorry(s).",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős introduced the function $g(n)$ in a 1966 paper 'Remarks on number theory V' published in Matematikai Lapok, as part of his broader program studying multiplicative structures in sets of integers. The problem arose naturally from the observation that the set of all primes up to $n$ has distinct subset products (by unique factorization), giving $g(n) \\geq \\pi(n)$. Erdős proved the first non-trivial upper bound $g(n) \\leq \\pi(n) + O(\\sqrt{n}/\\ln n)$ in the same paper, showing that at most $O(\\pi(\\sqrt{n}))$ non-prime elements could participate. The gap between the lower bound $\\pi(n)$ and upper bound $\\pi(n) + O(\\pi(\\sqrt{n}))$ suggested that squares of small primes (contributing $\\pi(\\sqrt{n})$ additional elements) might close the gap. This remained open for nearly 60 years until Raghavan's 2025 resolution. The problem is the multiplicative counterpart of Erdős Problem #1 on distinct subset sums, where $f(n, N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; \\text{all subset sums distinct}\\}$ and the Conway-Guy conjecture similarly identifies optimal sets. The distinct products problem connects to Sidon sets in multiplicative groups, $B_h$ sequences, and the broader study of sum-free and product-free sets in additive combinatorics.",
@@ -74,28 +57,28 @@
       "id": "sec-795-basic",
       "title": "Core Definitions",
       "startLine": 58,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Defines the namespace Erdos795 and the key mathematical objects: HasDistinctSubsetProducts (all subsets give different products), an alternative injectivity formulation DistinctProducts', and the extremal function g(n) as a supremum over filtered power sets."
     },
     {
       "id": "sec-795-prime-pi",
       "title": "Prime Counting Function",
       "startLine": 78,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Defines primePi(n) = π(n) by filtering and counting primes in Finset.range(n+1). This local definition parallels Nat.Arithmetic.primePi in some Mathlib versions."
     },
     {
       "id": "sec-795-erdos-bound",
       "title": "Erdős's 1966 Upper Bound",
       "startLine": 84,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "States Erdős's original result g(n) ≤ π(n) + O(√n/log n) as a Lean theorem with explicit existential constant. Sorry'd—this is a deep analytic number theory result."
     },
     {
       "id": "sec-795-conjecture",
       "title": "The Main Conjecture",
       "startLine": 110,
-      "endLine": 120,
+      "endLine": 121,
       "summary": "Formalizes Erdős's conjecture as a Lean definition: for all ε > 0, eventually g(n) ≤ π(n) + π(√n) + ε·√n/log n. Uses ε-N formulation of the little-o condition."
     },
     {
@@ -109,7 +92,7 @@
       "id": "sec-795-constructions",
       "title": "Natural Constructions",
       "startLine": 210,
-      "endLine": 290,
+      "endLine": 291,
       "summary": "Formal statements about the building blocks: primes have distinct products (by unique factorization), adding prime squares preserves the property, and the combined construction achieves g(n) ≥ π(n) + π(√n)."
     },
     {
@@ -130,21 +113,21 @@
       "id": "sec-795-sidon",
       "title": "Connection to Multiplicative Sidon Sets",
       "startLine": 360,
-      "endLine": 414,
+      "endLine": 415,
       "summary": "Defines multiplicative Sidon sets (no non-trivial product relations ab = cd), proves Sidon implies distinct products, and shows the converse fails. Links to the broader theory of B_h sequences."
     },
     {
       "id": "sec-795-related",
       "title": "Related Problem #786",
       "startLine": 416,
-      "endLine": 422,
+      "endLine": 423,
       "summary": "A placeholder connecting to the sister problem erdos-786 on growth of g(n) for specific families, noting Raghavan's bounds pin it to π(n) + π(√n) + Θ(π(∛n))."
     },
     {
       "id": "sec-795-examples",
       "title": "Examples and Small Values",
       "startLine": 424,
-      "endLine": 489,
+      "endLine": 490,
       "summary": "Concrete examples: {2,3,5} has distinct products (all 8 products different), {2,3,6} fails (product collision at 6), and small computed values g(2)=1, g(3)=2, g(5)=3, g(10)≥5."
     },
     {
@@ -175,5 +158,27 @@
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-983",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, prime-counting"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-983",
+    "erdos-1005",
+    "erdos-1138"
+  ]
 }

@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/619",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -82,49 +82,49 @@
       "title": "Basic Definitions",
       "summary": "TriangleFree, diameter, HasDiameter, HasDiameterAtMost",
       "startLine": 35,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "edge-addition",
       "title": "Edge Addition and h_r(G)",
       "summary": "addEdges with proofs, h and h_exact definitions",
       "startLine": 64,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "known-results",
       "title": "Known Results (1998)",
       "summary": "h₃ ≤ n, h₃ ≥ n-c, h₅ ≤ (n-1)/2",
       "startLine": 99,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "open-question",
       "title": "The Main Question (OPEN)",
       "summary": "erdos_619_question, erdos_619_upper_bound_form",
       "startLine": 128,
-      "endLine": 149
+      "endLine": 150
     },
     {
       "id": "without-constraint",
       "title": "Without Triangle-Free Constraint",
       "summary": "Alon-Gyárfás-Ruszinkó 2000: n/2 suffices",
       "startLine": 151,
-      "endLine": 161
+      "endLine": 162
     },
     {
       "id": "examples",
       "title": "Examples and Special Cases",
       "summary": "pathGraph, path_is_triangle_free, path_diameter",
       "startLine": 163,
-      "endLine": 179
+      "endLine": 180
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
       "summary": "h_monotone axiom: h_r ≥ h_{r+1}",
       "startLine": 181,
-      "endLine": 189
+      "endLine": 190
     },
     {
       "id": "summary",
@@ -170,5 +170,27 @@
       "citation": "Alon, N., Gyárfás, A., Ruszinkó, M. (2000)",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-128",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, triangle-free"
+    },
+    {
+      "targetId": "erdos-133",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
+    },
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diameter, graph-theory, triangle-free"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-128",
+    "erdos-133",
+    "erdos-134"
   ]
 }

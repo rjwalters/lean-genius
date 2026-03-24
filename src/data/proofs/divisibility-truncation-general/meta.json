@@ -12,7 +12,7 @@
       "generalization",
       "research"
     ],
-    "mathlib_version": "4.10.0",
+    "mathlib_version": "4.26.0",
     "proofRepoPath": "Proofs/DivisibilityTruncationGeneral.lean",
     "badge": "original",
     "sorries": 0,
@@ -72,35 +72,35 @@
       "id": "setup",
       "title": "Setup",
       "startLine": 1,
-      "endLine": 35,
+      "endLine": 36,
       "summary": "Module documentation, imports, and the div-mod identity lemma."
     },
     {
       "id": "positive-osculator",
       "title": "Positive Osculator Theorem",
       "startLine": 37,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "General theorem for d | n ↔ d | (n/10 + c*(n%10)) when d | 10c-1."
     },
     {
       "id": "negative-osculator",
       "title": "Negative Osculator Theorem",
       "startLine": 82,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "General theorem for d | n ↔ d | (n/10 - c*(n%10)) when d | 10c+1."
     },
     {
       "id": "corollaries",
       "title": "Concrete Corollaries",
       "startLine": 126,
-      "endLine": 200,
+      "endLine": 201,
       "summary": "Specific rules for 3, 7, 9, 11, 13, 17, 19, 23, 29, 31, 37."
     },
     {
       "id": "verification",
       "title": "Verification Examples",
       "startLine": 202,
-      "endLine": 240,
+      "endLine": 241,
       "summary": "Numeric examples confirming the rules work."
     },
     {

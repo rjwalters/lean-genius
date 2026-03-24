@@ -28,17 +28,19 @@
     "originalContributions": [
       "Definition IsLittlewoodPolynomial, supNorm, IsUltraflat, Erdos1150Conjecture",
       "Proved parseval_bound_pos (√(n+1) > 0)",
+      "Proved conjecture_implies_no_ultraflat (forward direction: conjecture → no ultraflat)",
+      "Proved conjecture_equiv_no_ultraflat (full iff from proved forward + axiom backward)",
       "Proved flat_does_not_imply_ultraflat (flat ≠ ultraflat)",
-      "Proved erdos_1150_summary (Parseval + BBMST combined)",
+      "Proved erdos_1150_summary (Parseval + BBMST + equivalence combined)",
       "Axiom parseval_lower_bound (sup ≥ √(n+1))",
-      "Axiom conjecture_equiv_no_ultraflat (equivalence with no ultraflat)",
+      "Axiom no_ultraflat_implies_conjecture (backward direction: requires diagonal argument)",
       "Axiom bbmst_flat (flat Littlewood polynomials exist)",
       "Axiom kahane_unimodular_ultraflat (ultraflat for unimodular coefficients)",
       "Axiom rudin_shapiro_bound (concrete ≤ √(2n) family)"
     ],
     "axiomCount": 5,
-    "lineCount": 207,
-    "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "lineCount": 253,
+    "assumptions": "5 axiom(s) and 1 sorry(s). Forward direction of equivalence (conjecture → no ultraflat) is proved; backward direction axiomatized."
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #1150 as part of his investigations into extremal properties of polynomials with restricted coefficients. The study of Littlewood polynomials — polynomials with all coefficients ±1 — dates to J.E. Littlewood's 1966 monograph, where he asked about the minimal sup norm on the unit circle. By Parseval's identity, every degree-$n$ Littlewood polynomial satisfies $\\max_{|z|=1}|P(z)| \\ge \\sqrt{n+1}$, since the $L^2$ norm equals $\\sqrt{n+1}$. The question is whether this can be improved by a multiplicative constant. Kahane's 1980 breakthrough showed that for general unimodular coefficients ($|a_k| = 1$, complex phases allowed), ultraflat polynomials exist — the sup norm can be made $(1+o(1))\\sqrt{n}$. This made the ±1 restriction the essential barrier. The problem gained renewed attention after Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (BBMST, 2019) proved flat Littlewood polynomials exist ($c_1\\sqrt{n} \\le |P(z)| \\le c_2\\sqrt{n}$), resolving Erdős Problem #228. But flat is weaker than ultraflat: the gap between 'bounded ratio' and 'ratio converging to 1' is precisely what Problem #1150 asks about. The Rudin-Shapiro polynomials, constructed recursively since the 1950s, provide the best explicit examples with sup norm at most $\\sqrt{2(n+1)}$.",
@@ -64,57 +66,57 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 37,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines IsLittlewoodPolynomial (all coefficients in {-1,+1}) and supNorm (supremum of |P(z)| over the unit circle). These are the foundational concepts for the entire formalization."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 48,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "States Erdos1150Conjecture as a Prop: ∃ c > 0 such that eventually all degree-n Littlewood polynomials satisfy supNorm P > (1+c)√n. Uses Lean's Filter.Eventually (∀ᶠ) for the 'for all large n' quantifier."
     },
     {
       "id": "parseval",
       "title": "Parseval Lower Bound",
       "startLine": 64,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "The trivial bound ‖P‖∞ ≥ √(n+1) from Parseval's identity. Axiomatized as parseval_lower_bound. Also proves parseval_bound_pos: √(n+1) > 0 for n ≥ 1 using the positivity tactic."
     },
     {
       "id": "ultraflat-equivalence",
       "title": "Ultraflat Equivalence",
       "startLine": 83,
-      "endLine": 100,
-      "summary": "Defines IsUltraflat (sequence of Littlewood polynomials with supNorm/√n → 1) and axiomatizes that the conjecture is equivalent to non-existence of such sequences."
+      "endLine": 141,
+      "summary": "Defines IsUltraflat (supNorm/√n → 1). Proves forward direction: conjecture → no ultraflat (by contradiction with Filter.Tendsto). Axiomatizes backward direction (requires diagonal/choice argument). Full equivalence is a theorem."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 102,
-      "endLine": 143,
+      "startLine": 142,
+      "endLine": 183,
       "summary": "Axiomatizes three landmark results: BBMST flat polynomials (2019), Kahane unimodular ultraflat (1980), and derives the BBMST upper bound consequence (contains 1 sorry for the supremum step)."
     },
     {
       "id": "gap-analysis",
       "title": "Flat vs Ultraflat Gap",
-      "startLine": 144,
-      "endLine": 161,
+      "startLine": 184,
+      "endLine": 200,
       "summary": "Formally shows that flat does not logically imply ultraflat. The existence of bounded-ratio polynomials (BBMST) does not give ratio-converging-to-1 polynomials (ultraflat). This is the essential gap that Problem #1150 asks about."
     },
     {
       "id": "rudin-shapiro",
       "title": "Rudin-Shapiro Bound",
-      "startLine": 162,
-      "endLine": 172,
+      "startLine": 201,
+      "endLine": 213,
       "summary": "Axiomatizes the Rudin-Shapiro construction: for each k ≥ 1, a degree-(2^k - 1) Littlewood polynomial with sup norm at most √(2·2^k). Provides the best known explicit upper bound on minimal sup norm."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 174,
-      "endLine": 207,
-      "summary": "Packages the two main known results (Parseval bound + BBMST flat existence) into a single theorem erdos_1150_summary, proved directly from the axioms. Documents the state of knowledge in both the docstring and the formal statement."
+      "startLine": 214,
+      "endLine": 253,
+      "summary": "Packages Parseval bound + BBMST flat existence + ultraflat equivalence into erdos_1150_summary, proved from axioms. Now includes the equivalence conjecture ↔ ¬ultraflat as a proved component."
     }
   ],
   "conclusion": {
@@ -155,9 +157,31 @@
       "Filter"
     ],
     "namespace": "Erdos1150",
-    "lineCount": 207,
+    "lineCount": 253,
     "axiomCount": 5,
-    "theoremCount": 4,
+    "theoremCount": 7,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-230",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, harmonic-analysis, polynomials"
+    },
+    {
+      "targetId": "erdos-256",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, harmonic-analysis, unit-circle"
+    },
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, polynomials"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-230",
+    "erdos-256",
+    "erdos-1048"
+  ]
 }

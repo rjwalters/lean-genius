@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/570",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -57,19 +57,6 @@
       "Graph theory: cycles, complete graphs, edge colorings",
       "Extremal graph theory: Turán-type results",
       "Natural number arithmetic: ceiling function, divisibility"
-    ],
-    "relatedProofs": [
-      {
-        "id": "erdos-424",
-        "relationship": "sibling",
-        "description": "Another Erdős problem in graph theory/Ramsey theory"
-      }
-    ],
-    "crossReferences": [
-      {
-        "target": "erdos-424",
-        "context": "Both are Erdős problems involving graph-theoretic Ramsey-type questions"
-      }
     ],
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -106,7 +93,7 @@
       "title": "Graph Definitions",
       "summary": "CycleGraph (constructive with proved symmetry and irreflexivity), edgeCount, NoIsolatedVertices.",
       "startLine": 35,
-      "endLine": 72,
+      "endLine": 73,
       "mathContext": "$C_k$ has vertex set $\\{0,\\ldots,k-1\\}$ with adjacency $i \\sim j \\iff j \\equiv i+1 \\pmod{k}$ or $i \\equiv j+1 \\pmod{k}$. Edge count $m = |E(H)|$. No isolated vertices: $\\forall v, \\deg(v) \\geq 1$."
     },
     {
@@ -114,7 +101,7 @@
       "title": "Ramsey Numbers",
       "summary": "RamseyNumber, CycleRamseyNumber — formal Ramsey number definitions via infimum over valid colorings.",
       "startLine": 74,
-      "endLine": 88,
+      "endLine": 89,
       "mathContext": "$R(G, H) = \\min\\{n : \\text{every 2-coloring of } K_n \\text{ contains red } G \\text{ or blue } H\\}$. By Ramsey's theorem (1930), $R(G, H) < \\infty$ for all finite $G, H$."
     },
     {
@@ -122,7 +109,7 @@
       "title": "The Conjecture",
       "summary": "UpperBound function computing 2m + ⌈(k-1)/2⌉ and Erdos570Conjecture formal statement.",
       "startLine": 90,
-      "endLine": 104,
+      "endLine": 105,
       "mathContext": "$R(C_k, H) \\leq 2m + \\lceil(k-1)/2\\rceil$ where $m = |E(H)|$. The bound is linear in $m$ with additive correction $\\lceil(k-1)/2\\rceil = \\lfloor k/2 \\rfloor$."
     },
     {
@@ -130,7 +117,7 @@
       "title": "Proven Cases",
       "summary": "Four axioms for each historical contribution: EFRS (even k), Sidorenko (k=3), Jayawardene (k=5), CFMPP (odd k≥7).",
       "startLine": 106,
-      "endLine": 141,
+      "endLine": 142,
       "mathContext": "Even $k$: proved by regularity method. $k=3$: uses the Turán-type density argument for triangle-free graphs. $k=5$: pentagon-specific embedding. Odd $k \\geq 7$: connected covers technique (2024)."
     },
     {
@@ -138,7 +125,7 @@
       "title": "Complete Resolution",
       "summary": "The full conjecture axiomatized as resolved, combining all cases to cover all k ≥ 3.",
       "startLine": 143,
-      "endLine": 156,
+      "endLine": 157,
       "mathContext": "Cases: $k$ even (EFRS) $\\cup$ $k=3$ (Sidorenko) $\\cup$ $k=5$ (Jayawardene) $\\cup$ $k \\geq 7$ odd (CFMPP) = all $k \\geq 3$."
     },
     {
@@ -146,7 +133,7 @@
       "title": "The Ceiling Formula",
       "summary": "Proved theorem: ⌈(k-1)/2⌉ = k/2 for even k and (k+1)/2 for odd k, using natural number arithmetic.",
       "startLine": 158,
-      "endLine": 164,
+      "endLine": 165,
       "mathContext": "$\\lceil(k-1)/2\\rceil = \\begin{cases} k/2 & k \\text{ even} \\\\ (k-1)/2 + 1 & k \\text{ odd} \\end{cases}$. One of the two fully proved (non-axiom) results in the file."
     },
     {
@@ -203,5 +190,27 @@
       "citation": "Cambie, S., Freschi, A., Morawski, L., Petrova, E., Pokrovskiy, A., Cycle-complete graph Ramsey numbers (2024)",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-720",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, graph-theory, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-163",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-518",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-720",
+    "erdos-163",
+    "erdos-518"
   ]
 }

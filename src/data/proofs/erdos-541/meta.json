@@ -7,7 +7,7 @@
     "author": "Graham (conjectured), Erdős-Szemerédi (1976, large primes), Gao-Hamidoune-Wang (2010, full proof)",
     "sourceUrl": "https://erdosproblems.com/541",
     "date": "",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos541Problem.lean",
     "tags": [
       "erdos",
@@ -16,12 +16,12 @@
       "modular-arithmetic",
       "additive-combinatorics"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 541,
     "erdosUrl": "https://erdosproblems.com/541",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod",
@@ -61,28 +61,6 @@
       "erdos_szemeredi_large_primes: Graham's conjecture holds for sufficiently large primes (Erdős-Szemerédi 1976)",
       "gao_hamidoune_wang: Graham's conjecture holds for all moduli n (Gao-Hamidoune-Wang 2010)",
       "erdos_ginzburg_ziv: Among 2n-1 integers, some n have sum ≡ 0 mod n (Erdős-Ginzburg-Ziv 1961)"
-    ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-1",
-        "relationship": "thematic",
-        "description": "Both concern structural constraints on subset sums — #1 asks when all 2^n subset sums are distinct, #541 asks what happens when all zero-sum subsets have the same cardinality"
-      },
-      {
-        "targetId": "erdos-1179",
-        "relationship": "thematic",
-        "description": "Both study uniform subset sum properties in abelian groups — #1179 estimates the threshold for uniform representations"
-      },
-      {
-        "targetId": "erdos-109",
-        "relationship": "thematic",
-        "description": "Both involve additive structure in integer sequences — #109 concerns sumsets B+C from dense sets, #541 concerns zero-sum subsequences with uniform cardinality"
-      }
-    ],
-    "relatedProofs": [
-      "erdos-1",
-      "erdos-1179",
-      "erdos-109"
     ]
   },
   "overview": {
@@ -109,7 +87,7 @@
       "id": "preamble",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Module docstring with problem statement, known results (Erdős-Szemerédi 1976, Gao-Hamidoune-Wang 2010), and Mathlib imports for ZMod, Finset, and Set.ncard.",
       "mathContext": "Problem: given $a_1, \\ldots, a_p \\in \\mathbb{Z}/p\\mathbb{Z}$ where all nonempty zero-sum subsets have the same cardinality $r$, must $|\\{a_1, \\ldots, a_p\\}| \\leq 2$? **SOLVED** (Gao-Hamidoune-Wang 2010)."
     },
@@ -117,7 +95,7 @@
       "id": "setup",
       "title": "Definitions",
       "startLine": 27,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Defines HasUniqueZeroSumLength (all nonempty zero-sum subsets have cardinality r), HasSomeUniqueZeroSumLength (existential wrapper), and distinctCount (number of distinct residues in the sequence via Set.range ncard).",
       "mathContext": "$\\text{HasUniqueZeroSumLength}(p, a, r) :\\iff \\forall S \\neq \\emptyset,\\; \\sum_{i \\in S} a_i = 0 \\Rightarrow |S| = r$. $\\text{distinctCount}(p, a) = |\\{a(i) : i \\in \\text{Fin}\\; p\\}|$."
     },
@@ -125,7 +103,7 @@
       "id": "main-theorem",
       "title": "Graham's Conjecture and Partial Results",
       "startLine": 46,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "States graham_conjecture (with sorry), then axiomatizes Erdős-Szemerédi (large primes) and Gao-Hamidoune-Wang (all moduli). The main claim: HasSomeUniqueZeroSumLength implies distinctCount ≤ 2.",
       "mathContext": "$\\text{HasSomeUniqueZeroSumLength}(p, a) \\Rightarrow \\text{distinctCount}(p, a) \\leq 2$. Erdős-Szemerédi: holds for $p \\gg 1$ prime. Gao-Hamidoune-Wang: holds for all $n$."
     },
@@ -133,7 +111,7 @@
       "id": "examples",
       "title": "Examples and Key Insight",
       "startLine": 87,
-      "endLine": 151,
+      "endLine": 152,
       "summary": "Examples showing constant (distinctCount ≤ 1) and two-value (distinctCount ≤ 2) sequences satisfy the bound. Comment explaining why 3+ values force zero-sum subsets of different sizes. Includes zero_sum_exists theorem proved by Aristotle via pigeonhole.",
       "mathContext": "Constant sequence: $\\text{distinctCount} = 1$. Two values: $\\text{range} \\subseteq \\{c, d\\}$, so $\\text{distinctCount} \\leq 2$. Zero-sum existence: partial sums $s_0, \\ldots, s_p$ in $\\mathbb{Z}/p\\mathbb{Z}$ have a collision by pigeonhole."
     },
@@ -191,5 +169,27 @@
       "venue": "Bulletin of the Research Council of Israel, 10F, pp. 41-43",
       "note": "Foundational result: 2n-1 integers contain n summing to 0 mod n"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1056",
+    "erdos-1074",
+    "erdos-11"
   ]
 }

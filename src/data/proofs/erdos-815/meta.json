@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/815",
     "erdosProblemStatus": "solved",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -56,24 +56,6 @@
       "evenKConjecture: open conjecture for even k",
       "erdos_815_summary: combines disproof with EFGS short cycle theorem"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-814",
-        "relationship": "Both concern minimum degree conditions in graphs; #814 studies dense graphs containing smaller min-degree-k subgraphs, while #815 studies the cycle structure of graphs on the min-degree-3 boundary"
-      },
-      {
-        "proofId": "erdos-57",
-        "relationship": "Both concern cycle existence in graphs under structural constraints; #57 studies odd cycles in graphs with high chromatic number"
-      },
-      {
-        "proofId": "erdos-207",
-        "relationship": "Both concern cycle avoidance in structured combinatorial objects; #207 studies high-girth Steiner triple systems"
-      },
-      {
-        "proofId": "erdos-816",
-        "relationship": "Consecutive problem in the Erdős collection; #816 concerns equal-degree vertices and paths, sharing the theme of degree conditions forcing subgraph structure"
-      }
-    ],
     "axiomCount": 4,
     "lineCount": 252,
     "assumptions": "4 axiom(s) and 1 sorry(s). See the Lean source for details."
@@ -102,14 +84,14 @@
       "title": "Header and Imports",
       "summary": "Problem documentation with references to EFGS (1988), Erdős (1991), and Narins-Pokrovskiy-Szabó (2017); imports SimpleGraph, Subgraph, Connectivity, and Finset.Card",
       "startLine": 1,
-      "endLine": 50
+      "endLine": 51
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines minDegree via Finset.min', IsDegree3Critical (edge count + proper subgraph condition), vertexCount, edgeCount",
       "startLine": 52,
-      "endLine": 74
+      "endLine": 75
     },
     {
       "id": "cycles",
@@ -144,14 +126,14 @@
       "title": "What Remains Open: Even k",
       "summary": "evenKConjecture: degree 3 critical graphs contain C_k for all even k ≥ 4? (OPEN)",
       "startLine": 166,
-      "endLine": 179
+      "endLine": 180
     },
     {
       "id": "explanation",
       "title": "Motivation and Construction Idea",
       "summary": "Why 'degree 3 critical': average degree ≈ 4 but no dense cores. NPS construction uses recursion, graph products, local cycle analysis",
       "startLine": 181,
-      "endLine": 216
+      "endLine": 217
     },
     {
       "id": "summary",
@@ -206,5 +188,27 @@
       "citation": "Narins, L., Pokrovskiy, A., Szabó, T., Graphs without proper subgraphs of minimum degree 3 and short cycles (2017).",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, disproved, graph-theory"
+    },
+    {
+      "targetId": "erdos-110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, disproved, graph-theory"
+    },
+    {
+      "targetId": "erdos-632",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, disproved, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1080",
+    "erdos-110",
+    "erdos-632"
   ]
 }

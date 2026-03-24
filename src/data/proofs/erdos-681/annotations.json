@@ -15,7 +15,8 @@
       "prime-factors",
       "smooth-numbers",
       "sieving"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-681-imports",
@@ -32,7 +33,8 @@
       "mathlib",
       "prime-basic"
     ],
-    "mathContext": "See annotation content for formal details of imports and setup"
+    "mathContext": "See annotation content for formal details of imports and setup",
+    "prerequisites": []
   },
   {
     "id": "erdos-681-lpf",
@@ -49,7 +51,8 @@
     "relatedConcepts": [
       "minFac",
       "prime-factorization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-681-is-lpf",
@@ -66,7 +69,8 @@
     "relatedConcepts": [
       "predicate-style",
       "prime-divisors"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-681-composite-lpf",
@@ -83,7 +87,8 @@
       "fundamental-theorem",
       "existence"
     ],
-    "mathContext": "See annotation content for formal details of existence of least prime factor"
+    "mathContext": "See annotation content for formal details of existence of least prime factor",
+    "prerequisites": []
   },
   {
     "id": "erdos-681-conjecture",
@@ -101,7 +106,8 @@
       "number-theory",
       "sieving",
       "open-problem"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-681-general",
@@ -118,7 +124,8 @@
     "relatedConcepts": [
       "generalization",
       "exponent-growth"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-681-sqrt",
@@ -135,7 +142,8 @@
     "relatedConcepts": [
       "trial-division",
       "composite-structure"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "erdos-681-minFac",
@@ -152,6 +160,7 @@
       "mathlib-api",
       "minFac"
     ],
-    "mathContext": "See annotation content for formal details of nat.minfac connection"
+    "mathContext": "See annotation content for formal details of nat.minfac connection",
+    "prerequisites": []
   }
 ]

@@ -21,11 +21,8 @@
     "erdosNumber": 10,
     "erdosUrl": "https://erdosproblems.com/10",
     "erdosProblemStatus": "open",
-    "crossReferences": [
-      "erdos-949"
-    ],
     "axiomCount": 8,
-    "assumptions": "8 axiom declarations: erdos_10_conjecture (every sufficiently large even number is the sum of a prime and a power of 2), gallagher_density (density result for Romanoff's theorem), granville_soundararajan_odd/even (odd/even number representation results), grechuk_counterexample (explicit counterexample 1117175146 for k=3), infinitely_many_exceptions_k2/k3 (infinitely many exceptions for small k), romanoff_positive_density (Romanoff 1934: positive density of sums). Mix of proved results and open conjectures.",
+    "assumptions": "8 axiom declarations: erdos_10_conjecture (main conjecture), gallagher_density (density result), granville_soundararajan_odd/even (representation conjectures), grechuk_counterexample (k=3 counterexample), infinitely_many_exceptions_k2/k3 (exception existence), romanoff_positive_density (positive density). All results are deep number-theoretic facts axiomatized in the formalization.",
     "lineCount": 109,
     "prerequisites": [
       "Prime numbers and their distribution",
@@ -33,7 +30,8 @@
       "Sieve methods (for Romanoff's theorem)",
       "Covering congruences (for the exception construction)",
       "Large sieve inequality (for Gallagher's theorem)"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős asked whether there exists $k$ such that every sufficiently large integer can be written as a prime plus at most $k$ powers of 2. He described the problem as 'probably unattackable' and, with Graham, conjectured no such $k$ exists. The problem has deep roots: Romanoff (1934) showed that already for $k = 1$, a positive proportion of integers are representable as $p + 2^a$, using sieve methods. Erdős (1950) proved via covering congruences that the complement also has positive density. Gallagher (1975) proved the density approaches 1 as $k$ grows, using the large sieve inequality and the Bombieri-Vinogradov theorem on primes in arithmetic progressions. Granville and Soundararajan (1998) made the bold conjecture that $k = 3$ suffices for all odd integers $> 1$. Grechuk computationally verified that $1117175146$ (even) is not in $S_3$, confirming the parity barrier. The problem connects to Goldbach-type questions, covering systems (Erdős 1950), and the deep question of how well lacunary sequences complement the primes as additive bases.",
@@ -68,42 +66,42 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 36,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines `sumPrimeAndTwoPows k : Set \\mathbb{N}` as $\\{n : \\exists p \\text{ prime},\\, \\exists \\text{pows} : \\text{Multiset}\\,\\mathbb{N},\\, |\\text{pows}| \\leq k \\land n = p + \\sum 2^{a_i}\\}$. Defines `Set.lowerDensity S = \\liminf_{n \\to \\infty} |S \\cap [0,n]| / (n+1)$ via `Filter.liminf` along `atTop`."
     },
     {
       "id": "main-conjecture",
       "title": "Erdős-Graham Conjecture",
       "startLine": 50,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Axiomatizes `erdos_10_conjecture`: $\\neg \\exists k,\\, \\{n > 1\\} \\subseteq S_k$. The Erdős-Graham conjecture that no finite $k$ suffices for all integers. Equivalently: $\\forall k,\\, \\{n > 1\\} \\setminus S_k \\neq \\emptyset$."
     },
     {
       "id": "gallagher",
       "title": "Gallagher's Density Theorem",
       "startLine": 61,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Axiomatizes `gallagher_density`: $\\forall \\varepsilon > 0,\\, \\exists k: \\underline{d}(S_k) \\geq 1 - \\varepsilon$. The strongest unconditional result — 'almost all' integers are representable for large enough $k$. Proved via the large sieve (1975)."
     },
     {
       "id": "granville-soundararajan",
       "title": "Granville-Soundararajan Conjectures",
       "startLine": 69,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Axiomatizes `granville_soundararajan_odd`: $\\{n \\text{ odd},\\, n > 1\\} \\subseteq S_3$, and `granville_soundararajan_even`: $\\{n \\text{ even},\\, n \\neq 0\\} \\subseteq S_4$. Conjectured 1998; computationally verified for large ranges."
     },
     {
       "id": "counterexample",
       "title": "Grechuk's Counterexample",
       "startLine": 81,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Axiomatizes `grechuk_counterexample`: $1117175146 \\notin S_3$. Since $1117175146$ is even, this is consistent with $S_3 \\supseteq \\{n \\text{ odd},\\, n > 1\\}$ but shows $k = 3$ fails for even integers."
     },
     {
       "id": "exceptions",
       "title": "Infinitely Many Exceptions",
       "startLine": 88,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Axiomatizes `infinitely_many_exceptions_k2`: $\\{n \\text{ even}\\} \\setminus S_2$ is infinite (proved via covering congruences), and `infinitely_many_exceptions_k3`: $\\{n \\text{ even}\\} \\setminus S_3$ is infinite (conjectured)."
     },
     {

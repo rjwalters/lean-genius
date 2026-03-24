@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/20",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$1000",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -74,70 +74,70 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib and opens `Set`/`Finset` namespaces; declares type variable $\\alpha$ with `DecidableEq`",
       "startLine": 26,
-      "endLine": 32
+      "endLine": 33
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines $n$-uniform families (`IsUniform`), sunflower core ($C = \\bigcap_i S_i$), $k$-sunflowers ($S_i \\cap S_j = C$ for all $i \\neq j$), and containment",
       "startLine": 34,
-      "endLine": 53
+      "endLine": 54
     },
     {
       "id": "sunflower-number",
       "title": "Sunflower Number $f(n,k)$",
       "summary": "Axiomatizes $f(n,k) = \\min\\{m : \\text{every } n\\text{-uniform family of size } m \\text{ has a } k\\text{-sunflower}\\}$ and its finiteness",
       "startLine": 55,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "erdos-rado",
       "title": "Erdős-Rado Lemma (1960)",
       "summary": "Original upper bound $f(n,k) \\leq (k-1)^n \\cdot n!$ with explicit bound definition `erdosRadoBound`",
       "startLine": 66,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "conjecture",
       "title": "The Sunflower Conjecture",
       "summary": "OPEN conjecture: $\\forall k \\geq 3, \\exists c_k > 0 : f(n,k) < c_k^n$, plus the critical $k=3$ special case",
       "startLine": 79,
-      "endLine": 91
+      "endLine": 92
     },
     {
       "id": "progress",
       "title": "Progress on the Conjecture",
       "summary": "Three milestones: Kostochka (1997) $o(n!)$ factor, ALWZ (2020) $(Ck\\log n \\log\\log n)^n$, Rao (2020) $(Ck\\log n)^n$",
       "startLine": 93,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "gap",
       "title": "The Remaining Gap",
       "summary": "Defines `RequiredBound` ($\\exists c > 0: f(n,k) \\leq c^n$) and proves its equivalence to the full conjecture via strict/non-strict inequality manipulation",
       "startLine": 113,
-      "endLine": 131
+      "endLine": 132
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Lower Bound",
       "summary": "Exact values $f(n,2) = n+1$ and $f(2,3) = 6$; lower bound $f(n,k) \\geq (k-1)^n$ from product constructions",
       "startLine": 133,
-      "endLine": 143
+      "endLine": 144
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "Verified 3-sunflowers: $\\{1,2,3\\}, \\{1,4,5\\}, \\{1,6,7\\}$ (core $\\{1\\}$) and $\\{1,2\\}, \\{3,4\\}, \\{5,6\\}$ (empty core $\\emptyset$)",
       "startLine": 145,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "applications",
       "title": "Applications",
       "summary": "Connections to matrix multiplication exponent, ACC$^0$ circuit lower bounds, and property testing in TCS",
       "startLine": 167,
-      "endLine": 174
+      "endLine": 175
     },
     {
       "id": "status",

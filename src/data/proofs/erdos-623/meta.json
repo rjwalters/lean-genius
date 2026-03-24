@@ -17,6 +17,7 @@
       "independence"
     ],
     "badge": "wip",
+    "mathlib_version": "4.26.0",
     "sorries": 6,
     "erdosNumber": 623,
     "erdosUrl": "https://erdosproblems.com/623",
@@ -74,81 +75,89 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Problem statement (Erdős-Hajnal 1958): for $|X| = \\aleph_\\omega$ and $f : [X]^{<\\omega} \\to X$ with $f(A) \\notin A$, must there exist infinite independent $Y \\subseteq X$? Below $\\aleph_\\omega$: NO (Erdős-Hajnal). Erdős suggested possibly undecidable (1999).",
+      "mathContext": "$f : [X]^{<\\omega} \\to X$ is free if $f(A) \\notin A$ for all finite $A \\subseteq X$. $Y \\subseteq X$ is independent if $f(B) \\notin Y$ for all finite $B \\subseteq Y$. The threshold $\\aleph_\\omega$ (the first singular cardinal, $\\aleph_\\omega = \\sup_n \\aleph_n$, $\\mathrm{cof}(\\aleph_\\omega) = \\omega$) is critical."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports `Cardinal.Ordinal` for $\\aleph$ functions, `Cardinal.Cofinality` for $\\mathrm{cof}(\\kappa)$, and `Finset.Basic` for finite subset operations. Opens the `Cardinal` and `Set` namespaces.",
       "startLine": 27,
-      "endLine": 35
+      "endLine": 36
     },
     {
       "id": "cardinals",
       "title": "Cardinal Background",
       "summary": "Defines $\\aleph_\\omega = \\aleph_{\\omega}$ as the first singular cardinal, proves it is a limit cardinal via `Cardinal.isLimit_aleph`, establishes singularity ($\\neg\\mathrm{IsRegular}$), and shows $\\aleph_n < \\aleph_\\omega$ for all $n < \\omega$.",
       "startLine": 37,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "free-functions",
       "title": "Free Functions",
       "summary": "Defines `IsFreeFunction` as $\\forall A \\in [X]^{<\\omega},\\, f(A) \\notin A$. Proves existence of free functions on infinite sets by choosing elements outside finite subsets (using the infinite pigeonhole principle).",
       "startLine": 61,
-      "endLine": 74
+      "endLine": 75
     },
     {
       "id": "independent-sets",
       "title": "Independent Sets",
       "summary": "Defines `IsIndependent` as $\\forall B \\in [Y]^{<\\omega},\\, f(B) \\notin Y$. Proves $\\emptyset$ is trivially independent and characterizes singleton independence: $\\{x\\}$ is independent iff $f(\\{x\\}) \\neq x$.",
       "startLine": 76,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal Negative Result",
       "summary": "Axiomatizes the Erdős-Hajnal theorem (1958): for $|X| < \\aleph_\\omega$, there exists a free $f$ with no infinite independent set. Derives the consequence for each specific $\\aleph_n$ via `counterexample_at_aleph_n`.",
       "startLine": 102,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "main-problem",
       "title": "The Main Problem (OPEN)",
       "summary": "States `erdos_623_conjecture`: $\\forall X$ with $|X| = \\aleph_\\omega$, every free $f$ admits an infinite independent set. Also states the negative formulation and proves the dichotomy `erdos_623_conjecture \\lor \\text{erdos\\_623\\_negative}`.",
       "startLine": 121,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "undecidability",
       "title": "Potential Undecidability",
       "summary": "Discusses Erdős's 1999 suggestion of ZFC-independence. Proves `cofinality_aleph_omega : $\\mathrm{cof}(\\aleph_\\omega) = \\omega$` using `Cardinal.cof_aleph`, establishing the singular nature that drives independence phenomena.",
       "startLine": 148,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "related",
       "title": "Related Concepts",
       "summary": "Provides a chromatic interpretation (`ChromaticVersion`): coloring finite sets so the image avoids $Y$. Also gives a `RamseyInterpretation` viewing the problem as a partition regularity question for singular cardinals.",
       "startLine": 164,
-      "endLine": 173
+      "endLine": 174
     },
     {
       "id": "finite-cases",
       "title": "Finite and Countable Cases",
       "summary": "Proves `finite_case_trivial`: for finite $X$, no infinite $Y$ exists (via `Set.toFinite`). Proves `countable_case_no`: for $|X| = \\aleph_0$, reduces to Erdős-Hajnal since $\\aleph_0 = \\aleph_0 < \\aleph_\\omega$.",
       "startLine": 175,
-      "endLine": 190
+      "endLine": 191
     },
     {
       "id": "gap",
       "title": "The Gap",
       "summary": "Summarizes known results in a table: NO for all $\\aleph_n$ ($n < \\omega$), OPEN at $\\aleph_\\omega$, UNKNOWN above. The theorem `known_results_summary` formalizes the universal negative below $\\aleph_\\omega$.",
       "startLine": 192,
-      "endLine": 212
+      "endLine": 213
     },
     {
       "id": "variants",
       "title": "Strengthenings and Variants",
       "summary": "Defines `erdos_623_uncountable`: must $Y$ have $|Y| > \\aleph_0$? Defines `erdos_623_weak`: does at least one free $f$ have an infinite independent set? Proves the weak version follows from the strong conjecture.",
       "startLine": 214,
-      "endLine": 233
+      "endLine": 268
     }
   ],
   "conclusion": {
@@ -162,7 +171,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-620"
+    "erdos-501",
+    "erdos-603",
+    "erdos-739"
   ],
   "leanFile": {
     "imports": [
@@ -181,5 +192,22 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-501",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, independence, set-theory"
+    },
+    {
+      "targetId": "erdos-603",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cardinals, combinatorics, set-theory"
+    },
+    {
+      "targetId": "erdos-739",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cardinals, independence, set-theory"
+    }
+  ]
 }

@@ -59,7 +59,8 @@
     "dateAdded": "2026-03-13",
     "axiomCount": 0,
     "lineCount": 1553,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Karl Wilhelm Feuerbach proved the tangency of the nine-point circle with the incircle in his 1822 monograph 'Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks', one of the most beautiful results in classical triangle geometry. The nine-point circle itself was independently discovered by Brianchon-Poncelet (1821) and Feuerbach (1822), passing through the three side midpoints, three altitude feet, and three midpoints from vertices to orthocenter. The main Feuerbach formalization (feuerbachs-theorem) had axiomatized 8 distance relations due to algebraic complexity. This companion file resolves the open question of whether those axioms could be proved by direct coordinate computation in Lean. The answer is yes: all 8 axioms are eliminated. The key innovation is expressing the NI vector via barycentric-style weights $2s(N-I) = \\sum(s-k)(V_k - O)$, expanding the bilinear form, and applying the algebraic chain $R^2s^2 - \\sigma = (Rs - 2\\text{Area})^2$ which uses the extended law of sines $abc = 4R \\cdot \\text{Area}$ as the decisive substitution. This approach, combining coordinate geometry with classical algebraic identities (Heron, law of sines), avoids the need for Mathlib's inner product infrastructure.",
@@ -83,7 +84,7 @@
       "id": "helpers",
       "title": "Helper Lemmas",
       "startLine": 46,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Redeclares private infrastructure: nonnegativity of dist2 and ninePointRadius, nonzero circumcenter denominator, nonzero squared side lengths, circumcenter equidistance properties. All derived from triangle non-degeneracy.",
       "mathContext": "Infrastructure for the nine-point circle: nonnegativity of $\\text{dist}^2$ and the nine-point radius $R_9 = R/2$, and the nine-point center $N = (O + H)/2$ (midpoint of circumcenter and orthocenter). These are the basic properties needed for the distance computations."
     },
@@ -91,7 +92,7 @@
       "id": "altitude-feet",
       "title": "Altitude Feet on Nine-Point Circle",
       "startLine": 120,
-      "endLine": 196,
+      "endLine": 197,
       "summary": "Three theorems proving d(N, H_a) = d(N, H_b) = d(N, H_c) = R/2 via the strategy: reduce to squared equality, unfold definitions, clear denominators with field_simp, verify polynomial identity with ring.",
       "mathContext": "Three theorems proving $d(N, H_a) = d(N, H_b) = d(N, H_c) = R/2$: the nine-point center is equidistant from all three altitude feet. The strategy: compute $|N - H_k|^2$ by coordinate expansion and show it equals $(R/2)^2$."
     },
@@ -99,7 +100,7 @@
       "id": "equilateral",
       "title": "Equilateral Triangle R = 2r",
       "startLine": 198,
-      "endLine": 303,
+      "endLine": 304,
       "summary": "Constructs equilateral triangle (0,0)-(s,0)-(s/2, s√3/2), proves all side lengths = s, computes circumcenter, circumradius, area, inradius explicitly, then shows R² = (2r)² = s²/3 using squared values to avoid sqrt arithmetic.",
       "mathContext": "Constructs the equilateral triangle with vertices $(0,0)$, $(s,0)$, $(s/2, s\\sqrt{3}/2)$. Proves all side lengths are $s$, area is $s^2\\sqrt{3}/4$, and verifies Feuerbach\\'s theorem: $d(N,I) = R/2 - r = R/2 - s\\sqrt{3}/6$ for this symmetric case."
     },
@@ -107,7 +108,7 @@
       "id": "345-excircle-verification",
       "title": "3-4-5 Triangle Excircle Verification",
       "startLine": 305,
-      "endLine": 418,
+      "endLine": 419,
       "summary": "Numerical verification of all three excircle tangency relations for the 3-4-5 right triangle: computes excenters I_a=(6,6), I_b=(-3,3), I_c=(2,-2), exradii r_a=6, r_b=3, r_c=2, and verifies d(N, I_k) = R/2 + r_k.",
       "mathContext": "Numerical verification for the 3-4-5 right triangle: all three excircle tangency distances match $R/2 + r_a$, $R/2 + r_b$, $R/2 + r_c$. Excircle radii: $r_a = s - a$, $r_b = s - b$, $r_c = s - c$ times area/semiperimeter."
     },
@@ -123,7 +124,7 @@
       "id": "heron-dot-products",
       "title": "Heron's Formula and Circumcenter Dot Products",
       "startLine": 584,
-      "endLine": 687,
+      "endLine": 688,
       "summary": "Heron's formula in three forms (squared polynomial, product, classical s(s-a)(s-b)(s-c)). Circumcenter dot products via polarization identity: ⟨A-O,B-O⟩ = R² - c²/2. These feed into the bilinear expansion of |NI|².",
       "mathContext": "Heron\\'s formula in three forms: squared polynomial $16\\Delta^2 = 2(a^2b^2 + b^2c^2 + c^2a^2) - (a^4 + b^4 + c^4)$, product form $16\\Delta^2 = (a+b+c)(-a+b+c)(a-b+c)(a+b-c)$, and classical $\\Delta = \\sqrt{s(s-a)(s-b)(s-c)}$. Derived from dot product computations."
     },
@@ -139,7 +140,7 @@
       "id": "heron-classical",
       "title": "Classical Heron and Sigma-Heron Connection",
       "startLine": 762,
-      "endLine": 812,
+      "endLine": 813,
       "summary": "Derives classical Heron from product form, proves σ = abcs - 4·Area² by combining sigma identity with Heron. This converts the bilinear expansion into terms involving R, side lengths, and Area.",
       "mathContext": "Derives classical Heron from the product form. Proves the key identity $\\sigma = abcs - 4\\Delta^2$ by combining Heron\\'s formula with the sigma identity. This algebraic relation is the engine of the Feuerbach distance computation."
     },
@@ -155,7 +156,7 @@
       "id": "triangle-inequalities",
       "title": "Triangle Inequalities from Heron",
       "startLine": 936,
-      "endLine": 1005,
+      "endLine": 1006,
       "summary": "Proves s-a > 0, s-b > 0, s-c > 0 indirectly: Heron + area positivity imply s(s-a)(s-b)(s-c) > 0, so no factor can be ≤ 0. Needed for excircle denominators.",
       "mathContext": "Proves $s - a > 0$, $s - b > 0$, $s - c > 0$ indirectly: Heron\\'s formula $\\Delta^2 = s(s-a)(s-b)(s-c)$ combined with $\\Delta > 0$ implies each factor is positive. These strict inequalities are needed for the excircle radius positivity."
     },
@@ -163,7 +164,7 @@
       "id": "ni-vector-bilinear",
       "title": "NI Vector Formula and Bilinear Expansion",
       "startLine": 1007,
-      "endLine": 1100,
+      "endLine": 1101,
       "summary": "Proves 2s(N-I) = Σ(s-k)(V_k - O) by coordinate unfolding and ring. Expands 4s²|NI|² via bilinear form, substitutes dot products and algebraic chain to get 4s²|NI|² = (Rs - 2·Area)².",
       "mathContext": "Vector formula: $2s(N - I) = \\sum_k (s-k)(V_k - O)$ where $V_k$ are vertices and $O$ is the circumcenter. Expanding: $4s^2|N-I|^2 = R^2 s^2 - \\sigma$. This bilinear expansion converts the geometric distance to an algebraic expression in side lengths."
     },
@@ -179,7 +180,7 @@
       "id": "feuerbach-excircle-a",
       "title": "Feuerbach Excircle A Distance",
       "startLine": 1138,
-      "endLine": 1272,
+      "endLine": 1273,
       "summary": "Proves d(N, I_a) = R/2 + r_a for excircle opposite A. Modified vector formula: 2(s-a)(N-I_a) = s(A-O) - (s-c)(B-O) - (s-b)(C-O). Sigma variant + algebraic core → |NI_a|² = (R/2 + r_a)².",
       "mathContext": "Excircle tangency: $d(N, I_a) = R/2 + r_a$ for the $A$-excircle. The distance equals the sum of radii, so the nine-point circle is **externally** tangent to each excircle. Modified vector formula with sign changes for the excircle center."
     },
@@ -187,7 +188,7 @@
       "id": "feuerbach-excircle-b",
       "title": "Feuerbach Excircle B Distance",
       "startLine": 1274,
-      "endLine": 1407,
+      "endLine": 1408,
       "summary": "Proves d(N, I_b) = R/2 + r_b. Same algebraic framework with modified signs for excircle opposite B.",
       "mathContext": "Excircle tangency: $d(N, I_b) = R/2 + r_b$ for the $B$-excircle. Same algebraic framework with modified signs for the second vertex. Completes the tangency for all but one excircle."
     },

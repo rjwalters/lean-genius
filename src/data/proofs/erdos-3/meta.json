@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/3",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$5000",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.atTop",
@@ -86,49 +86,49 @@
       "title": "Core Definitions",
       "summary": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum via negated Summable).",
       "startLine": 33,
-      "endLine": 57
+      "endLine": 58
     },
     {
       "id": "roth-number",
       "title": "Roth Number r_k(N)",
       "summary": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = o(N/\\log N)$.",
       "startLine": 59,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "summary": "States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$.",
       "startLine": 71,
-      "endLine": 80
+      "endLine": 81
     },
     {
       "id": "historical",
       "title": "Historical Results",
       "summary": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Leng-Sah-Sawhney (2024, $r_k \\ll N/\\exp((\\log \\log N)^c)$).",
       "startLine": 82,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "gap",
       "title": "The Critical Gap",
       "summary": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation). Explains the exponential gap between current bounds and the conjecture threshold.",
       "startLine": 115,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "constructions",
       "title": "AP-Free Constructions",
       "summary": "Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$).",
       "startLine": 136,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "green-tao",
       "title": "Green-Tao Connection",
       "summary": "Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary.",
       "startLine": 156,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "status",

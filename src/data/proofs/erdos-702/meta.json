@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/702",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathContext": {
       "field": "Extremal Set Theory",
       "subfield": "Forbidden intersection configurations in uniform families",
@@ -42,20 +42,6 @@
       ],
       "significance": "Resolves the Erdős-Sós conjecture on singleton intersection avoidance: the maximum k-uniform family avoiding |A ∩ B| = 1 has exactly C(n-2, k-2) sets (achieved by fixing two common elements). Frankl's proof via shifting established a paradigm for extremal set theory. The sharp threshold at k = 4 reveals a structural boundary — the theorem fails for k = 3 due to designs like Steiner triple systems."
     },
-    "relatedProofs": [
-      {
-        "id": "erdos-703",
-        "relationship": "Companion problem: #703 generalizes to r-intersection avoidance in non-uniform families, solved by Frankl-Rödl (1987). Both use Frankl's shifting technique"
-      },
-      {
-        "id": "erdos-644",
-        "relationship": "Both study extremal properties of k-uniform families; #644 asks about covering numbers under r-wise pair coherence, #702 asks about maximum family size avoiding singleton intersections"
-      },
-      {
-        "id": "erdos-59",
-        "relationship": "Both are extremal counting problems; #59 counts H-free graphs (forbidden subgraph), #702 counts families without singleton intersections (forbidden intersection pattern)"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -118,42 +104,42 @@
       "title": "Set Families",
       "summary": "Defines `groundSet` ({1,...,n} via Finset.range with shift), `IsKUniform` (all sets have cardinality k), and `IsOverGroundSet` (all sets are subsets of ground set).",
       "startLine": 34,
-      "endLine": 47
+      "endLine": 48
     },
     {
       "id": "intersections",
       "title": "Intersection Patterns",
       "summary": "Defines `SingletonIntersection` (|A ∩ B| = 1), `AvoidsSingletonIntersections` (no distinct pair has singleton intersection), and `HasSingletonPair` (existential).",
       "startLine": 49,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "extremal",
       "title": "Extremal Bound",
       "summary": "Axiomatizes the extremal construction: fix {x, y}, take all k-sets through both. Family has C(n-2, k-2) sets and avoids singleton intersections (every pair shares ≥ 2 elements).",
       "startLine": 66,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "frankl",
       "title": "Frankl's Theorem",
       "summary": "Axiomatizes `frankl_theorem` (k ≥ 4, |F| > C(n-2, k-2) implies singleton pair exists) and `katona_k4` (the k = 4 special case).",
       "startLine": 86,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "special",
       "title": "Special Cases",
       "summary": "Verifies C(4,2) = 6 by `native_decide`. Axiomatizes `k3_fails`: for k = 3, large families avoiding singleton intersections exist beyond the C(n-2, 1) bound.",
       "startLine": 112,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "proof",
       "title": "Proof Technique",
       "summary": "Notes Frankl's shifting method and the connection to Problem #703 (general r-intersection avoidance).",
       "startLine": 132,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "summary",
@@ -209,5 +195,27 @@
       "citation": "Erdős Problems, Problem #702, https://erdosproblems.com/702",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-21",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, intersecting-families, solved"
+    },
+    {
+      "targetId": "erdos-272",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, solved"
+    },
+    {
+      "targetId": "erdos-701",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, intersecting-families"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-21",
+    "erdos-272",
+    "erdos-701"
   ]
 }

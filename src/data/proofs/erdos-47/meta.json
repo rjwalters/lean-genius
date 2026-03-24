@@ -23,7 +23,7 @@
     "erdosNumber": 47,
     "erdosUrl": "https://erdosproblems.com/47",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -67,7 +67,7 @@
   "overview": {
     "historicalContext": "Erdős posed Problem #47 in the 1960s, asking whether sets of positive integers with large reciprocal sums must contain subsets whose reciprocals sum to exactly 1—an Egyptian fraction representation. The problem connects to a rich tradition going back to the Rhind Papyrus (c. 1650 BCE), where ancient Egyptians expressed fractions as sums of unit fractions. Erdős and Graham conjectured that the threshold should be around $(\\log \\log N)^2$. Thomas Bloom resolved the conjecture affirmatively in his landmark 2021 paper [Bl21], using the Hardy–Littlewood circle method combined with structural results on additive energy. Mehtaab Liu and Ashwin Sawhney [LiSa24] subsequently improved Bloom's quantitative bound from $(\\log N)^{1-o(1)}$ down to $(\\log N)^{4/5+o(1)}$, a dramatic polynomial improvement. Carl Pomerance showed that sets with $\\sum 1/a \\approx (\\log \\log N)^2$ can avoid unit fraction subsets, establishing that Erdős's conjectured threshold is essentially tight. The gap between $(\\log \\log N)^2$ and $(\\log N)^{4/5}$ remains one of the central open quantitative questions in combinatorial number theory.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nIf $\\delta > 0$ and $N$ is sufficiently large, and $A \\subseteq \\{1, \\ldots, N\\}$ satisfies $\\sum_{a \\in A} \\frac{1}{a} > \\delta \\log N$, must there exist $S \\subseteq A$ with $\\sum_{n \\in S} \\frac{1}{n} = 1$?\n\n**Answer:** YES (Bloom 2021).\n\n**Quantitative bounds:** $(\\log \\log N)^2 \\leq \\text{threshold} \\leq (\\log N)^{4/5+o(1)}$.",
-    "text": "If A \u2286 {1,\u2026,N} has \u2211 1/a > \u03b4 log N, must some S \u2286 A have \u2211 1/n = 1? Yes \u2014 proved by Bloom (2021). Liu\u2013Sawhney improved the quantitative bound. SOLVED.",
+    "text": "If A ⊆ {1,…,N} has ∑ 1/a > δ log N, must some S ⊆ A have ∑ 1/n = 1? Yes — proved by Bloom (2021). Liu–Sawhney improved the quantitative bound. SOLVED.",
     "proofStrategy": "The formalization defines reciprocal sums over $\\mathbb{Q}$ for exact arithmetic, the unit fraction sum property ($\\sum 1/n = 1$), and the density condition ($\\sum 1/a > \\delta \\log N$). Bloom's theorem, his quantitative bound, the Liu–Sawhney improvement, and Pomerance's lower bound construction are axiomatized. The summary theorem equates the conjecture with Bloom's result.",
     "keyInsights": [
       "**Bloom's resolution (2021):** Proved Erdős's conjecture using the Hardy–Littlewood circle method and structural additive energy bounds—the first proof that harmonic density forces unit fraction subsets",
@@ -87,49 +87,49 @@
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 25,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Imports $\\texttt{Finset}$, $\\texttt{Rat}$, $\\texttt{Real.log}$, and $\\texttt{Filter}$ from Mathlib. Opens $\\texttt{Finset}$ and $\\texttt{Filter}$ namespaces for convenient access to summation and asymptotic reasoning."
     },
     {
       "id": "unit-fractions",
       "title": "Unit Fraction Definitions",
       "startLine": 36,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines $\\texttt{reciprocalSum}(A) = \\sum_{a \\in A} \\frac{1}{a}$ over $\\mathbb{Q}$, $\\texttt{HasUnitFractionSum}(S)$ requiring $\\sum \\frac{1}{n} = 1$ with all $n \\geq 1$, and $\\texttt{ContainsUnitFraction}(A)$ asserting $\\exists S \\subseteq A$ with unit fraction sum."
     },
     {
       "id": "dense-subsets",
       "title": "Dense Subsets of $\\{1, \\ldots, N\\}$",
       "startLine": 58,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Defines $\\texttt{Icc1}(N) = \\{1, \\ldots, N\\}$ via $\\texttt{Finset.range}$ and $\\texttt{IsDenseSubset}(A, N, \\delta)$ requiring $A \\subseteq \\{1,\\ldots,N\\}$ with $\\sum \\frac{1}{a} > \\delta \\log N$."
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture (Formal Statement)",
       "startLine": 74,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Defines $\\texttt{ErdosConjecture47}$: $\\forall \\delta > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0$, every $\\delta$-dense subset contains a unit fraction subset. This is the Prop that Bloom's theorem proves."
     },
     {
       "id": "bloom",
       "title": "Bloom's Theorem (2021)",
       "startLine": 90,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Axiomatizes Bloom's qualitative result ($\\texttt{bloom\\_theorem} : \\texttt{ErdosConjecture47}$) and quantitative bound: $\\sum \\frac{1}{a} \\geq C \\cdot \\frac{\\log \\log \\log N}{\\log \\log N} \\cdot \\log N$ suffices."
     },
     {
       "id": "liu-sawhney",
       "title": "Liu–Sawhney Improvement (2024)",
       "startLine": 116,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Axiomatizes the improved threshold: $\\forall \\varepsilon > 0$, $\\sum \\frac{1}{a} \\geq (\\log N)^{4/5+\\varepsilon}$ suffices. A polynomial improvement from $(\\log N)^{1-o(1)}$ to $(\\log N)^{4/5+o(1)}$."
     },
     {
       "id": "pomerance",
       "title": "Pomerance's Lower Bound",
       "startLine": 130,
-      "endLine": 142,
+      "endLine": 143,
       "summary": "Axiomatizes Pomerance's construction: sets with $\\sum \\frac{1}{a} \\geq (\\log \\log N)^2$ avoiding unit fraction subsets exist for arbitrarily large $N$, showing the threshold is at least $(\\log \\log N)^2$."
     },
     {

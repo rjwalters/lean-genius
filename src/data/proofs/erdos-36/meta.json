@@ -8,7 +8,7 @@
     "status": "axiomatized",
     "author": "Erdős (1955), Scherk (1955), White (2022), Haugland (2016)",
     "proofRepoPath": "Proofs/Erdos36Problem.lean",
-    "mathlib_version": "4.24.0",
+    "mathlib_version": "4.26.0",
     "tags": [
       "erdos",
       "combinatorics",
@@ -26,6 +26,11 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
     "mathlibDependencies": [
+      {
+        "theorem": "Finset.product",
+        "description": "Cartesian product A ×ˢ B used in overlap definition",
+        "module": "Mathlib.Data.Finset.Product"
+      },
       {
         "theorem": "Finset.filter",
         "description": "Filtering pairs for overlap counting",
@@ -90,15 +95,15 @@
       "id": "header",
       "title": "Module Header",
       "startLine": 1,
-      "endLine": 17,
+      "endLine": 18,
       "summary": "Problem statement: partition {1,...,2N} into equal halves, minimize maximum overlap. Known bounds 0.379 < c < 0.381. Status: OPEN.",
-      "mathContext": "$c = \\lim M(N)/N$ with $0.379005 < c < 0.380876$."
+      "mathContext": "Partition $\\{1, \\ldots, 2N\\}$ into $A \\sqcup B$ with $|A| = |B| = N$. Define $M(N) = \\min_{(A,B)} \\max_k |\\{(a,b) : a - b = k\\}|$. The limit $c = \\lim_{N \\to \\infty} M(N)/N$ exists with $0.379005 < c < 0.380876$."
     },
     {
       "id": "imports",
       "title": "Imports",
       "startLine": 19,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Imports Mathlib's **Nat.Basic**, **Int.Basic**, **Finset.Basic**, **Real.Basic**, and **Tactic** for integer differences, finite set cardinality, and real-valued asymptotic bounds.",
       "mathContext": "Imports: `Finset.filter`/`Finset.card` for counting overlaps, `Real.sqrt` for Scherk's $1 - 1/\\sqrt{2}$ bound, standard arithmetic for the minimax definition."
     },
@@ -106,7 +111,7 @@
       "id": "definition",
       "title": "Core Definitions",
       "startLine": 25,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines **overlap**(A,B,k) as the representation function $r_{A-B}(k)$, **maxOverlap** as $\\max_k r_{A-B}(k)$, and **minMaxOverlap** $M(N) = \\min_{(A,B)} \\max_k \\text{overlap}(A,B,k)$.",
       "mathContext": "$\\text{overlap}(A,B,k) = |\\{(a,b) \\in A \\times B : a - b = k\\}| = r_{A-B}(k)$. $M(N) = \\min_{A \\sqcup B = [2N],\\,|A|=|B|=N} \\max_k r_{A-B}(k)$."
     },
@@ -114,7 +119,7 @@
       "id": "main-question",
       "title": "Main Question: The Asymptotic Constant",
       "startLine": 40,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "States the existence of $c = \\lim M(N)/N > 0$ via $\\varepsilon$-$N_0$ definition. The exact value of $c$ is the central open question.",
       "mathContext": "$c = \\lim_{N \\to \\infty} M(N)/N$ exists and $c > 0$. Currently $0.379005 < c < 0.380876$."
     },
@@ -122,7 +127,7 @@
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 49,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Axiomatizes four bounds: **Erdős** ($> 1/4$, 1955), **Scherk** ($> 1 - 1/\\sqrt{2}$, 1955), **White** ($> 0.379005$, 2022 via Fourier/SDP), **Haugland-TTT** ($< 0.380876$, 2016/2026 via step functions).",
       "mathContext": "$1/4 < 1 - 1/\\sqrt{2} \\approx 0.293 < 0.379005 < c < 0.380876 < 0.381$. Four progressively tighter bounds spanning 70 years of research."
     },
@@ -130,7 +135,7 @@
       "id": "small-values",
       "title": "Small Values",
       "startLine": 72,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Records $M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3$. Computed by exhaustive enumeration; the ratios $M(N)/N$ oscillate toward $c \\approx 0.38$.",
       "mathContext": "$M(1)/1 = 1, M(2)/2 = 0.5, M(3)/3 \\approx 0.667, M(4)/4 = 0.5, M(5)/5 = 0.6$. The ratios oscillate and converge toward $c \\approx 0.38$."
     },
@@ -164,7 +169,7 @@
   },
   "conclusion": {
     "summary": "The minimum overlap problem asks for the exact asymptotic constant $c = \\lim M(N)/N$ where $M(N)$ is the minimum maximum overlap in equal partitions of $\\{1,\\ldots,2N\\}$. The constant is pinned between $0.379005$ (White 2022, via Fourier/convex optimization) and $0.380876$ (TTT-Discover 2026, via step-function constructions). The gap of less than $0.002$ is remarkably tight, yet the exact value of $c$ remains unknown.",
-    "implications": "Determining c would resolve a fundamental question in additive combinatorics about unavoidable structure in equal partitions of consecutive integers. The Fourier-analytic framework (reducing combinatorial optimization to SDP) has broader applications to discrepancy theory, sumset problems, and representation function asymptotics. AI optimization successfully improved the upper bound (TTT-Discover 2026), suggesting computational approaches may eventually close the gap entirely. The connection between partition overlap and autocorrelation provides a template for attacking similar minimax problems in additive combinatorics",
+    "implications": "Determining c would resolve a fundamental question in additive combinatorics about unavoidable structure in equal partitions of consecutive integers. The Fourier-analytic framework (reducing combinatorial optimization to SDP) has broader applications to discrepancy theory, sumset problems, and representation function asymptotics. AI optimization successfully improved the upper bound (TTT-Discover 2026), suggesting computational approaches may eventually close the gap entirely. The connection between partition overlap and autocorrelation provides a template for attacking similar minimax problems in additive combinatorics.",
     "openQuestions": [
       "What is the exact value of c = lim M(N)/N? Is it algebraic, transcendental, or even rational?",
       "Can the gap between 0.379005 and 0.380876 be further narrowed by refined Fourier methods or better constructions?",
@@ -272,6 +277,20 @@
       "year": "2004",
       "venue": "Springer, 3rd edition",
       "note": "Problem C17: Minimum overlap of equal partitions"
+    },
+    {
+      "authors": "Moser, Leo",
+      "title": "On the minimum overlap problem",
+      "year": "1959",
+      "venue": "Acta Arithmetica 5, 117–119",
+      "note": "Early constructive upper bounds via balanced partitions; inspired subsequent optimization approaches"
+    },
+    {
+      "authors": "Swinnerton-Dyer, H. P. F.",
+      "title": "On the minimum overlap problem",
+      "year": "1971",
+      "venue": "Unpublished manuscript",
+      "note": "Refined exponential sum estimates for upper bounds on c"
     }
   ]
 }

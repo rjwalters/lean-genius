@@ -22,7 +22,7 @@
     "erdosNumber": 845,
     "erdosUrl": "https://erdosproblems.com/845",
     "erdosProblemStatus": "disproved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.image",
@@ -88,42 +88,42 @@
       "id": "smooth-numbers",
       "title": "3-Smooth Number Definitions",
       "startLine": 29,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "Defines 3-smooth numbers as products of powers of 2 and 3, with the smoothNum parametrization."
     },
     {
       "id": "bounded-rep",
       "title": "Bounded-Ratio Representations",
       "startLine": 49,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Defines when an integer has a C-bounded representation as a sum of 3-smooth numbers."
     },
     {
       "id": "conjecture",
       "title": "The Original Conjecture",
       "startLine": 66,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "States Erdős's original conjecture that bounded-ratio representation sets have density 0."
     },
     {
       "id": "disproof",
       "title": "The Disproof",
       "startLine": 84,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Formalizes van Doorn-Everts (2025): all integers have 6-bounded representations, disproving the conjecture."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds on Optimal C",
       "startLine": 109,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Captures results showing C* > 2 (Erdős-Lewin) and C* ≥ 3 (van Doorn-Everts)."
     },
     {
       "id": "silly-conjecture",
       "title": "The 'Silly Conjecture'",
       "startLine": 136,
-      "endLine": 162,
+      "endLine": 163,
       "summary": "Related result: every integer is a sum of 3-smooth numbers with no divisibility relations."
     },
     {
@@ -156,5 +156,27 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory, representations"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory"
+    },
+    {
+      "targetId": "erdos-12",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1110",
+    "erdos-1136",
+    "erdos-12"
+  ]
 }

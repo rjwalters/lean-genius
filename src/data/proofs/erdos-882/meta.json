@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/882",
     "erdosProblemStatus": "solved",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.log",
@@ -82,7 +82,7 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib modules for $\\text{Nat.log}$, `Finset.Powerset`, and `BigOperators`. Opens the `Finset` and `BigOperators` namespaces for clean syntax.",
       "startLine": 25,
-      "endLine": 35
+      "endLine": 36
     },
     {
       "id": "basic-definitions",
@@ -124,21 +124,21 @@
       "title": "Examples",
       "summary": "Concrete examples: $A = \\{1\\}$ is trivially valid (singleton antichain); $A = \\{2,3\\}$ has subset sums $\\{2,3,5\\}$ which form an antichain since $\\gcd$ pairs prevent divisibility.",
       "startLine": 158,
-      "endLine": 169
+      "endLine": 170
     },
     {
       "id": "connections",
       "title": "Connection to Erdős Problems",
       "summary": "Links to Erdős #1 (distinct subset sums, providing the upper bound) and Erdős #13 (Sidon sets, a thematic relative from additive combinatorics with maximum size $\\sim \\sqrt{n}$ rather than $\\sim \\log n$).",
       "startLine": 171,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "The definitive theorems `erdos_882_statement` and `erdos_882_summary`, both expressing the sandwich bound $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$. The summary serves as the canonical SOLVED marker.",
       "startLine": 185,
-      "endLine": 215
+      "endLine": 216
     }
   ],
   "conclusion": {

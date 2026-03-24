@@ -20,7 +20,7 @@
     "erdosNumber": 831,
     "erdosUrl": "https://erdosproblems.com/831",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -85,70 +85,70 @@
       "title": "Points in the Plane",
       "summary": "Point type alias, PointTriple structure",
       "startLine": 43,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "general-position",
       "title": "Collinearity and Concyclicity",
       "summary": "areCollinear, areConcyclic, isInGeneralPosition definitions",
       "startLine": 61,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "circumradius",
       "title": "Circumcircles and Radii",
       "summary": "circumradius definition using triangle formula",
       "startLine": 96,
-      "endLine": 121
+      "endLine": 122
     },
     {
       "id": "counting",
       "title": "Counting Distinct Radii",
       "summary": "allCircumradii, countDistinctRadii, h function definitions",
       "startLine": 123,
-      "endLine": 150
+      "endLine": 151
     },
     {
       "id": "basic-bounds",
       "title": "Basic Bounds",
       "summary": "h_upper_bound, h_three, h_four_lower",
       "startLine": 152,
-      "endLine": 175
+      "endLine": 176
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos_831_conjecture axiom on asymptotics",
       "startLine": 177,
-      "endLine": 199
+      "endLine": 200
     },
     {
       "id": "constructions",
       "title": "Related Constructions",
       "summary": "isRegularPolygon, regular_polygon_not_general",
       "startLine": 201,
-      "endLine": 228
+      "endLine": 229
     },
     {
       "id": "connections",
       "title": "Connection to Other Problems",
       "summary": "Orchard problem, unit distance problem connections",
       "startLine": 230,
-      "endLine": 250
+      "endLine": 251
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "h(5) and h(6) bounds",
       "startLine": 252,
-      "endLine": 267
+      "endLine": 268
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_831_summary and erdos_831_open_question theorems",
       "startLine": 269,
-      "endLine": 303
+      "endLine": 305
     }
   ],
   "conclusion": {
@@ -180,5 +180,27 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1086",
+    "erdos-1090",
+    "erdos-1166"
+  ]
 }

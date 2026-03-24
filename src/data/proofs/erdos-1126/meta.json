@@ -22,7 +22,7 @@
     "erdosNumber": 1126,
     "erdosUrl": "https://erdosproblems.com/1126",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real",
@@ -85,42 +85,42 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Problem statement, references (Jurkat 1965, de Bruijn 1966, Erdős 1960), and imports from `Mathlib.Data.Real.Basic`, `Mathlib.MeasureTheory.Measure.Lebesgue.Basic`, `Mathlib.Topology.Basic`"
     },
     {
       "id": "cauchy",
       "title": "Cauchy's Functional Equation",
       "startLine": 35,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Defines `IsAdditive f` as $\\forall x\\,y,\\, f(x+y) = f(x) + f(y)$. Proves `id_is_additive` ($f = \\text{id}$) and `scalar_is_additive` ($f(x) = cx$) by `ring`. Axiomatizes `continuous_additive_is_linear`: continuous + additive $\\Rightarrow f(x) = cx$."
     },
     {
       "id": "almost-everywhere",
       "title": "Almost-Everywhere Definitions",
       "startLine": 59,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Defines `ae_holds P` (property holds outside a null set in $\\mathbb{R}$), `ae_pairs P` (holds outside a null set in $\\mathbb{R}^2$), `IsAlmostAdditive f` ($f(x+y) = f(x) + f(y)$ for a.e. pairs), and `ae_eq f g` ($f = g$ a.e.)."
     },
     {
       "id": "main-theorem",
       "title": "The de Bruijn-Jurkat Theorem",
       "startLine": 79,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "The main result axiomatized as `de_bruijn_jurkat_theorem`: $\\forall f,\\, \\text{IsAlmostAdditive}(f) \\Rightarrow \\exists g,\\, \\text{IsAdditive}(g) \\wedge f =_{\\text{a.e.}} g$. Wrapped as `erdos_1126_main` for clarity."
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness of the Correction",
       "startLine": 98,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "Two uniqueness axioms: `additive_ae_unique` ($g_1, g_2$ additive, $g_1 =_{\\text{a.e.}} g_2 \\Rightarrow g_1 = g_2$) and `additive_zero_ae` ($g$ additive, $g =_{\\text{a.e.}} 0 \\Rightarrow g = 0$). Together they show the repair $g$ is unique."
     },
     {
       "id": "wild-functions",
       "title": "Wild Additive Functions and Regularity",
       "startLine": 110,
-      "endLine": 123,
+      "endLine": 124,
       "summary": "Context axioms: `wild_additive_exist` (AC $\\Rightarrow \\exists$ discontinuous additive $f$) and `measurable_additive_is_linear` (additive + measurable $\\Rightarrow f(x) = cx$). Shows measurability is the sharp threshold for 'tame' behavior."
     },
     {

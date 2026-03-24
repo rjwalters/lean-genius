@@ -16,7 +16,8 @@
       "factorization",
       "Cramér's conjecture",
       "Ramachandra's bound"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-prodinterval",
@@ -35,7 +36,8 @@
       "Finset.Icc",
       "Finset.prod",
       "BigOperators"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-prodinterval-props",
@@ -53,7 +55,8 @@
       "Finset.Icc_self",
       "Nat.factorial",
       "simp tactic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-largest-prime",
@@ -71,7 +74,8 @@
       "primeFactorsList",
       "List.maximum?",
       "noncomputable"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-largest-prime-axioms",
@@ -89,7 +93,8 @@
       "divisibility",
       "prime maximality",
       "primeFactorsList properties"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-exponent",
@@ -107,7 +112,8 @@
       "p-adic valuation",
       "Nat.factorization",
       "Finsupp"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-exponent-sum",
@@ -125,7 +131,8 @@
       "additive valuation",
       "Nat.factorization_prod",
       "completely multiplicative"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-condition",
@@ -143,7 +150,8 @@
       "prime power",
       "interval product",
       "exponent condition"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-structural",
@@ -161,7 +169,8 @@
       "prime squares",
       "interval containment",
       "exponent bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-q1",
@@ -179,7 +188,8 @@
       "subpolynomial growth",
       "o(1) notation",
       "Cramér's conjecture"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-q2",
@@ -197,7 +207,8 @@
       "unbounded growth",
       "prime squares",
       "heuristic arguments"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-ramachandra",
@@ -215,7 +226,8 @@
       "short intervals",
       "prime distribution",
       "analytic number theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-cramer-def",
@@ -233,7 +245,8 @@
       "prime gaps",
       "Cramér's conjecture",
       "Nat.nth"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-cramer-implies",
@@ -251,7 +264,8 @@
       "conditional results",
       "prime-free intervals",
       "logarithmic bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-example",
@@ -269,7 +283,8 @@
       "native_decide",
       "computational verification",
       "counterexample"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-no-prime-upper",
@@ -287,7 +302,8 @@
       "Nat.sqrt",
       "contrapositive",
       "prime-free intervals"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-primefree",
@@ -305,7 +321,8 @@
       "prime-free intervals",
       "equivalent formulations",
       "Nat.sqrt"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-summary",
@@ -323,7 +340,8 @@
       "summary theorem",
       "anonymous constructor",
       "open problem"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e382-consistent",
@@ -341,6 +359,7 @@
       "consistency",
       "open problem",
       "Ramachandra's bound"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

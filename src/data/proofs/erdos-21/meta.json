@@ -25,7 +25,7 @@
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$500",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -91,28 +91,28 @@
       "title": "Basic Definitions",
       "summary": "Intersecting families, covering property, uniform families",
       "startLine": 40,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "summary": "Definition and basic properties",
       "startLine": 78,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "known-values",
       "title": "Known Exact Values",
       "summary": "f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13",
       "startLine": 98,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "lower-bound",
       "title": "Erdős-Lovász Lower Bound",
       "summary": "f(n) ≥ (8/3)n - 3",
       "startLine": 126,
-      "endLine": 145
+      "endLine": 146
     },
     {
       "id": "upper-bounds",
@@ -126,7 +126,7 @@
       "title": "Projective Planes",
       "summary": "Construction technique",
       "startLine": 204,
-      "endLine": 232
+      "endLine": 233
     },
     {
       "id": "properties",
@@ -140,7 +140,7 @@
       "title": "Generalizations",
       "summary": "f_k(n) covering (n-k)-sets",
       "startLine": 280,
-      "endLine": 300
+      "endLine": 301
     },
     {
       "id": "summary",

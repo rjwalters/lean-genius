@@ -52,7 +52,8 @@
       "Roth's theorem on 3-term arithmetic progressions"
     ],
     "lineCount": 1196,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The counting lemma and triangle removal lemma are the key applications of the Szemeredi Regularity Lemma. The counting lemma, implicit in Szemeredi's 1975 work, states that epsilon-regular triples contain approximately the expected number of triangles (as if edges were random). The triangle removal lemma, proved by Ruzsa and Szemeredi in 1978, says that a graph with few triangles can be made triangle-free by removing few edges.\n\nThe profound connection between the triangle removal lemma and additive combinatorics was recognized by Ruzsa and Szemeredi: encoding a 3-AP-free set as a tripartite graph, the removal lemma implies Roth's theorem. This connection was later generalized by Solymosi and by Fox to give new proofs of Szemeredi's theorem via hypergraph removal.\n\nFox (2011) proved the best known quantitative bounds for the triangle removal lemma, showing that the dependence of gamma on delta can be made a tower of bounded height (rather than the tower of height polynomial in 1/delta coming from a direct application of regularity). The optimal bounds remain an important open problem.",
@@ -79,7 +80,7 @@
       "id": "preamble",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Module docstring listing Parts I–III (counting lemma, triangle removal, graph removal), references to Ruzsa-Szemerédi (1978) and Komlós-Simonovits (1996). Imports Mathlib, `Proofs.SzemerediCore`, and `Proofs.SzemerediRegularity`. Opens `Classical`, declares variables for finite vertex type $V$.",
       "mathContext": "Setting: $G = (V, E)$ simple graph, $V$ finite with decidable equality. Depends on $\\varepsilon$-regularity from the regularity module."
     },

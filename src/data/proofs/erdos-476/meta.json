@@ -22,7 +22,7 @@
     "erdosNumber": 476,
     "erdosUrl": "https://erdosproblems.com/476",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod",
@@ -80,63 +80,63 @@
       "title": "Restricted Sumsets",
       "summary": "Definition of A +̂ A and ordinary sumset A + A",
       "startLine": 42,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "Subset relation, singleton case, nonemptiness",
       "startLine": 68,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "main-bound",
       "title": "The Erdős-Heilbronn Bound",
       "summary": "erdos_heilbronn_bound axiom and erdos_476 theorem",
       "startLine": 97,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "da-silva-hamidoune",
       "title": "Da Silva-Hamidoune Theorem",
       "summary": "The 1994 proof using exterior algebra",
       "startLine": 121,
-      "endLine": 136
+      "endLine": 137
     },
     {
       "id": "tightness",
       "title": "Tightness - Arithmetic Progressions",
       "summary": "APs achieve the bound 2|A| - 3 exactly",
       "startLine": 138,
-      "endLine": 169
+      "endLine": 170
     },
     {
       "id": "cauchy-davenport",
       "title": "Comparison with Cauchy-Davenport",
       "summary": "Ordinary sumsets have bound 2|A| - 1",
       "startLine": 171,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "polynomial-method",
       "title": "The Polynomial Method",
       "summary": "Combinatorial Nullstellensatz and ANR proof",
       "startLine": 198,
-      "endLine": 222
+      "endLine": 223
     },
     {
       "id": "generalization",
       "title": "Generalization to r-Sums",
       "summary": "r-fold restricted sumsets with bound r|A| - r² + 1",
       "startLine": 224,
-      "endLine": 245
+      "endLine": 246
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "summary": "Cases |A| = 2 and |A| = 3",
       "startLine": 247,
-      "endLine": 270
+      "endLine": 271
     },
     {
       "id": "summary",
@@ -173,5 +173,27 @@
     "axiomCount": 7,
     "theoremCount": 9,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-484",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+    },
+    {
+      "targetId": "erdos-785",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+    },
+    {
+      "targetId": "erdos-806",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-484",
+    "erdos-785",
+    "erdos-806"
+  ]
 }

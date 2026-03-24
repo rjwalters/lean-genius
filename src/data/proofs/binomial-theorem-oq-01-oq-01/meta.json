@@ -17,7 +17,7 @@
       "ODE",
       "research"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -51,7 +51,8 @@
       "Real-valued rpow function"
     ],
     "lineCount": 220,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Core analytic convergence derived from Mathlib Real.one_add_rpow_hasFPowerSeriesOnBall_zero via binomialSeries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Newton discovered the generalized binomial theorem around 1665, extending the finite binomial sum $(1+x)^n = \\sum \\binom{n}{k} x^k$ to arbitrary real exponents via the infinite series $(1+x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ for $|x| < 1$. The analytic function theory perspective emerged from Euler and Cauchy's work on ODEs: the function $f(x) = (1+x)^\\alpha$ is the unique solution to the initial value problem $(1+x)f'(x) = \\alpha f(x)$, $f(0) = 1$. This ODE approach is elegant because it determines the power series coefficients via a single recurrence relation, from which all properties (convergence, functional equation, special values) follow.",
@@ -76,14 +77,14 @@
       "id": "definition",
       "title": "Generalized Binomial Coefficient",
       "startLine": 18,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Definition genBinom α k = ∏_{j∈range k} (α-j) / k! and basic properties: genBinom_zero (C(α,0)=1) and genBinom_one (C(α,1)=α)."
     },
     {
       "id": "ode-recurrence",
       "title": "ODE Recurrence and Coefficient Uniqueness",
       "startLine": 29,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Part I: ode_recurrence proves (k+1)·C(α,k+1) = (α-k)·C(α,k) from the falling factorial definition. genBinom_unique_from_ode shows this recurrence with C(α,0)=1 uniquely determines all coefficients, using mul_left_cancel₀ on the nonzero factor (k+1)."
     },
     {
@@ -97,35 +98,35 @@
       "id": "functional-equation",
       "title": "Functional Equation",
       "startLine": 62,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Part III: rpow_add_exponents proves (1+x)^α·(1+x)^β = (1+x)^(α+β) for x > -1, with special cases rpow_zero_one and rpow_one_id."
     },
     {
       "id": "coefficient-ratio",
       "title": "Coefficient Ratio",
       "startLine": 75,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Part IV: genBinom_ratio shows C(α,k+1)/C(α,k) = (α-k)/(k+1) when C(α,k) ≠ 0. This ratio test implies convergence radius 1."
     },
     {
       "id": "negation",
       "title": "Negation and Special Values",
       "startLine": 85,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Part V: genBinom_zero_succ (C(0,k)=0 for k≥1) and genBinom_neg_one (C(-1,k)=(-1)^k), connecting to the geometric series."
     },
     {
       "id": "absorption",
       "title": "Absorption Identity (Derivative Correspondence)",
       "startLine": 106,
-      "endLine": 143,
+      "endLine": 144,
       "summary": "Part VI: The absorption identity α·C(α-1,k) = (k+1)·C(α,k+1), which is the coefficient-level statement of d/dx[(1+x)^α] = α(1+x)^(α-1). Proved by induction using the ODE recurrence for both α and α-1."
     },
     {
       "id": "half-integer",
       "title": "Half-Integer Binomial Coefficients",
       "startLine": 145,
-      "endLine": 180,
+      "endLine": 220,
       "summary": "Part VII: Concrete values C(1/2,0)=1, C(1/2,1)=1/2, C(1/2,2)=-1/8, C(1/2,3)=1/16 for the square root series. genBinom_half_ne_zero proves all C(1/2,k) are nonzero since 1/2 is never a natural number."
     }
   ],

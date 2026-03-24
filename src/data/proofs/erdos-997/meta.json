@@ -25,7 +25,7 @@
     "erdosUrl": "https://erdosproblems.com/997",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Int.floor",
@@ -185,5 +185,27 @@
     "axiomCount": 11,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-998",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, diophantine-approximation, discrepancy, equidistribution"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-998",
+    "erdos-1113",
+    "erdos-1138"
+  ]
 }

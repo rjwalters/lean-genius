@@ -22,7 +22,7 @@
     "erdosNumber": 262,
     "erdosUrl": "https://erdosproblems.com/262",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Irrational",
@@ -88,42 +88,42 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 41,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Strictly increasing sequences, positive integer sequences, weighted sums"
     },
     {
       "id": "irrationality-sequences",
       "title": "Irrationality Sequences",
       "startLine": 64,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "IsIrrationalitySequence definition and main question"
     },
     {
       "id": "examples",
       "title": "Examples and Non-Examples",
       "startLine": 84,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "2^{2^n} is an irrationality sequence; n! is not"
     },
     {
       "id": "necessary-growth",
       "title": "Necessary Growth Condition",
       "startLine": 112,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "Root growth, Hančl's theorem, double exponential bound"
     },
     {
       "id": "hancl-criterion",
       "title": "Hančl's General Condition",
       "startLine": 140,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "General criterion and slower-growth-fails corollary"
     },
     {
       "id": "spacing",
       "title": "The Spacing Property",
       "startLine": 161,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "Super-exponential ratio of consecutive terms"
     },
     {
@@ -160,5 +160,27 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory, solved, transcendence"
+    },
+    {
+      "targetId": "erdos-68",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: infinite-series, irrationality, number-theory, transcendence"
+    },
+    {
+      "targetId": "erdos-250",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory, transcendence"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1050",
+    "erdos-68",
+    "erdos-250"
+  ]
 }

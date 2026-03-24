@@ -56,27 +56,10 @@
       "Platonic solid examples: tetrahedron (1), octahedron (2), cube (3) distances",
       "Guth-Katz theorem statement for general distinct distances"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-652",
-        "relationship": "Studies pointwise distance counts R(x_i) in planar point sets; #660 studies total distinct distances in convex 3D configurations"
-      },
-      {
-        "id": "erdos-94",
-        "relationship": "Investigates distance multiplicities specifically in convex polygons, the 2D setting that Altman's theorem addresses"
-      },
-      {
-        "id": "erdos-98",
-        "relationship": "Studies distinct distances in general position; #660 specializes to convex position in 3D"
-      },
-      {
-        "id": "erdos-657",
-        "relationship": "Isosceles-free constraint forces many distances; convexity in #660 is a different structural constraint with similar consequences"
-      }
-    ],
     "axiomCount": 0,
     "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"verified\"."
+    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"verified\".",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Origins: Erdős and the Convex Distance Problem (1975)**\n\nProblem #660 was posed by Erdős in 1975, building on a rich tradition of distance problems in convex geometry. The question is deceptively simple: must the vertices of a convex polyhedron in $\\mathbb{R}^3$ determine many distinct distances?\n\n**Altman's 2D Solution (1963)**\n\nThe 2D analogue was solved by Edward Altman in 1963: the $n$ vertices of a convex polygon determine at least $\\lfloor n/2 \\rfloor$ distinct distances. Altman's proof exploits the cyclic ordering of vertices on the convex hull — for each 'diagonal length,' there are at most 2 diagonals of that length connecting vertices of a convex polygon, giving the $n/2$ bound. Erdős mentioned that Altman may have proved an even stronger result ($\\gg n$ distances), but no reference was provided.\n\n**The Convexity Advantage**\n\nFor arbitrary point sets, the Guth-Katz theorem (2015) gives $\\Omega(n/\\log n)$ distinct distances — nearly optimal but with a logarithmic loss. For points in convex position, the rigidity of the convex hull is expected to eliminate this loss entirely, yielding a clean $\\Theta(n)$ bound. The conjecture's constant $1/2$ matches Altman's 2D result.\n\n**The 3D Challenge**\n\nThe jump from 2D to 3D is non-trivial because convex polyhedra lack the cyclic ordering that makes Altman's argument work. In 3D, the combinatorial structure of the face lattice (vertices, edges, faces) is far more complex, and the relationship between convex hull geometry and distance distributions is not well understood. Even proving a linear bound (without the $1/2$ constant) remains open.\n\n**Platonic Solid Tests**\n\nThe five Platonic solids provide test cases: tetrahedron (4 vertices, 1 distance), octahedron (6 vertices, 2 distances), cube (8 vertices, 3 distances), icosahedron (12 vertices, 3 distances), dodecahedron (20 vertices, 5 distances). All satisfy the conjecture, but they represent only highly symmetric special cases.",
@@ -158,5 +141,27 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, convex-geometry"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
+    },
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-1089",
+    "erdos-604"
+  ]
 }

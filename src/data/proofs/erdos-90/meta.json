@@ -64,7 +64,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 98,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed Problem 90 in 1946, making it one of the oldest open problems in combinatorial geometry. The unit distance problem asks: given $n$ points in $\\mathbb{R}^2$, what is the maximum number $u(n)$ of pairs at Euclidean distance exactly 1? Erdős himself showed the trivial bound $u(n) \\leq \\binom{n}{2}$ and constructed lattice examples achieving $u(n) \\geq n^{1+c/\\log\\log n}$ for a constant $c > 0$, exploiting the number-theoretic fact that $\\lfloor\\sqrt{n}\\rfloor \\times \\lfloor\\sqrt{n}\\rfloor$ integer lattice points have many representations as sums of two squares. In 1984, Spencer, Szemerédi, and Trotter proved $u(n) = O(n^{4/3})$ using the celebrated Szemerédi–Trotter incidence theorem, which bounds the number of incidences between $n$ points and $m$ lines (or circles). This $n^{4/3}$ bound has stood for over 40 years. In 2005, Valtr constructed a non-Euclidean metric on $\\mathbb{R}^2$ achieving $\\Theta(n^{4/3})$ unit distances, proving that any improvement must exploit specific properties of the Euclidean metric. Erdős offered $\\$500$ for the full resolution and $\\$250$–$300$ for even the weaker form $u(n) = n^{1+o(1)}$. The problem connects to the Erdős distinct distances problem (solved by Guth–Katz in 2015 using algebraic methods), but the unit distance conjecture remains stubbornly open.",
@@ -101,28 +102,28 @@
       "id": "trivial-bound",
       "title": "Trivial Upper Bound",
       "startLine": 39,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Axiomatizes `unitDistanceCounts_bddAbove`: the set of achievable unit distance counts is bounded above (by $\\binom{n}{2}$), ensuring the `sSup` defining $u(n)$ is well-defined."
     },
     {
       "id": "upper-bound",
       "title": "Spencer–Szemerédi–Trotter Upper Bound",
       "startLine": 46,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "States $u(n) \\leq C \\cdot n^{4/3}$ for a constant $C > 0$ and all $n \\geq 1$. This 1984 result applies the Szemerédi–Trotter incidence theorem to unit circles: each point generates a unit circle, and bounding point-circle incidences gives the $n^{4/3}$ bound."
     },
     {
       "id": "lower-bound",
       "title": "Lattice Lower Bound",
       "startLine": 56,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "States that for some $c > 0$, eventually $u(n) \\geq n^{1+c/\\log\\log n}$. This is achieved by integer lattice configurations exploiting the arithmetic of sums of two squares. The double-logarithmic factor arises from the Ramanujan–Hardy estimate for highly composite numbers."
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture and Weak Form",
       "startLine": 65,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "States the main conjecture (`ErdosProblem90`): $u(n) \\leq n^{1+C/\\log\\log n}$ eventually, matching the lattice lower bound up to the constant $C$. Also states the weak form (`erdos_90_weak`): $u(n) \\leq n^{1+\\varepsilon}$ for every $\\varepsilon > 0$ and large $n$."
     },
     {

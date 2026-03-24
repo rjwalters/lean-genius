@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500",
     "dateAdded": "2026-01-13",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -80,49 +80,49 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 24,
+      "endLine": 25,
       "summary": "Module documentation and namespace setup."
     },
     {
       "id": "background",
       "title": "Background",
       "startLine": 26,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Context on the distinct distances problem."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 38,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Definitions of distances and the extremal function g(n)."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 64,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Erdos89Conjecture statement."
     },
     {
       "id": "guth-katz",
       "title": "Guth-Katz Theorem",
       "startLine": 84,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "The 2015 partial result and grid bound."
     },
     {
       "id": "implication",
       "title": "Consistency Check",
       "startLine": 115,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "Proof that the conjecture implies Guth-Katz."
     },
     {
       "id": "history",
       "title": "Historical Development",
       "startLine": 139,
-      "endLine": 191,
+      "endLine": 234,
       "summary": "Earlier bounds and related problems."
     }
   ],
@@ -151,5 +151,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
+    },
+    {
+      "targetId": "erdos-503",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, extremal"
+    },
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distinct-distances"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1089",
+    "erdos-503",
+    "erdos-604"
+  ]
 }

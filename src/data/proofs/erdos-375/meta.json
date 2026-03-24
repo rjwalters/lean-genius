@@ -7,7 +7,7 @@
     "author": "Grimm (1969 conjecture), Ramachandra-Shorey-Tijdeman (1975 partial)",
     "sourceUrl": "https://erdosproblems.com/375",
     "date": "1969",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos375Problem.lean",
     "tags": [
       "erdos",
@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/375",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -58,9 +58,9 @@
       "Connection to prime gaps and Legendre's conjecture",
       "Hall's marriage theorem formulation"
     ],
-    "axiomCount": 8,
+    "axiomCount": 7,
     "lineCount": 336,
-    "assumptions": "8 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "assumptions": "7 axiom(s) and 5 sorry(s). See the Lean source for details."
   },
   "overview": {
     "historicalContext": "**Erdos Problem #375: Grimm's Conjecture**\n\nThis conjecture was originally posed by C.A. Grimm in 1969 in the American Mathematical Monthly. It connects prime factorization with combinatorial matching theory.\n\n**The Core Question:**\nGiven any interval of k consecutive composite numbers (a 'prime gap'), can we always assign a distinct prime divisor to each composite?\n\n**Historical Progress:**\n- 1969: Grimm poses conjecture, proves k << log n / log log n\n- 1970s: Erdos-Selfridge extend to k <= (1+o(1)) log n\n- 1975: Ramachandra-Shorey-Tijdeman prove k << (log n / log log n)^3\n\n**Significance:**\nThis is listed as problem B32 in Guy's Unsolved Problems in Number Theory. It remains one of the most intriguing open problems connecting prime gaps to matching theory.",
@@ -86,56 +86,56 @@
       "title": "Basic Definitions",
       "summary": "isComposite, isCompositeBlock, PrimeDivisorAssignment, isValidAssignment",
       "startLine": 40,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "grimms-conjecture",
       "title": "Grimm's Conjecture",
       "summary": "The main conjecture statement and open status",
       "startLine": 77,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "trivial-cases",
       "title": "Trivial Cases",
       "summary": "k = 1 and k = 2 are provable",
       "startLine": 98,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
       "summary": "Grimm, Erdos-Selfridge, Ramachandra-Shorey-Tijdeman bounds",
       "startLine": 126,
-      "endLine": 159
+      "endLine": 160
     },
     {
       "id": "prime-gaps",
       "title": "Connection to Prime Gaps",
       "summary": "primeGap, grimm_implies_prime_gap, Legendre's conjecture",
       "startLine": 161,
-      "endLine": 192
+      "endLine": 193
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete examples: 24-25-26, 90-95",
       "startLine": 194,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "counting",
       "title": "Counting Arguments",
       "summary": "Prime factor bounds, small prime divisors",
       "startLine": 235,
-      "endLine": 253
+      "endLine": 254
     },
     {
       "id": "halls-theorem",
       "title": "Hall's Marriage Theorem Connection",
       "summary": "Bipartite graph formulation, Hall's condition, equivalence",
       "startLine": 255,
-      "endLine": 292
+      "endLine": 293
     },
     {
       "id": "main-results",
@@ -171,8 +171,30 @@
     ],
     "namespace": "Erdos375",
     "lineCount": 336,
-    "axiomCount": 8,
+    "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-gaps"
+    },
+    {
+      "targetId": "erdos-276",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: composite-numbers, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1055",
+    "erdos-1137",
+    "erdos-276"
+  ]
 }

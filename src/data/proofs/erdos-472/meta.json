@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 226,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem originated with Stanisław Ulam and appears in the Erdős–Graham collection (1980). Ulam studied iterative constructions on number sequences extensively, including his famous Ulam numbers (integers uniquely representable as sums of two earlier terms). Problem 472 applies a related greedy principle specifically to primes: given a finite seed of primes, extend by always choosing the smallest prime of the form q_n + q_i − 1. The shift by −1 (rather than plain addition) creates a subtle parity structure: when both operands are odd, the candidate is odd and hence potentially prime. The seed [3, 5] produces the sequence 3, 5, 7, 11, 13, 17, 19, 23, ... which computationally matches all odd primes through 23. Whether any seed produces an infinite sequence remains open. The problem connects to questions about additive bases among primes, Goldbach-type phenomena, and the distribution of primes in arithmetic progressions.",
@@ -47,63 +48,63 @@
       "id": "imports",
       "title": "Mathlib Imports",
       "startLine": 16,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "Imports Nat.Prime.Basic, List.Basic, and tactics from Mathlib."
     },
     {
       "id": "candidate-rule",
       "title": "Candidate Extension Rule",
       "startLine": 20,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Defines IsCandidateNext: p is prime and equals last + qᵢ − 1 for some qᵢ in the sequence."
     },
     {
       "id": "sequence-spec",
       "title": "Ulam Prime Sequence Specification",
       "startLine": 27,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Defines IsUlamPrimeSeq with four conjuncts: seed matching, primality, monotonicity, minimality."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 44,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "States Erdős Problem 472: existence of a seed producing an infinite Ulam prime sequence."
     },
     {
       "id": "seed-verification",
       "title": "Seed [3, 5] Verification",
       "startLine": 55,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Defines ulamSeed35 and proves it satisfies all seed requirements (prime, sorted, length ≥ 2) via decide."
     },
     {
       "id": "basic-properties",
       "title": "Basic Structural Properties",
       "startLine": 70,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Proves self-candidate oddness, terms ≥ 2, and the consecutive gap bound f(n+1) ≥ f(n) + 2."
     },
     {
       "id": "computable-impl",
       "title": "Computable Implementation",
       "startLine": 115,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Implements listMin, ulamNextCandidate, ulamStep, and ulamExtend for computational verification."
     },
     {
       "id": "term-verification",
       "title": "Computational Term Verification",
       "startLine": 142,
-      "endLine": 169,
+      "endLine": 170,
       "summary": "Verifies the first 6 terms [3,5,7,11,13,17] step-by-step and as a batch via native_decide."
     },
     {
       "id": "parity-analysis",
       "title": "Parity Analysis",
       "startLine": 171,
-      "endLine": 199,
+      "endLine": 200,
       "summary": "Proves odd+odd−1 is odd, seed element 2 gives even candidates, and odd inputs give odd candidates."
     },
     {
@@ -137,5 +138,27 @@
     "axiomCount": 1,
     "theoremCount": 19,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1059",
+    "erdos-1101",
+    "erdos-1113"
+  ]
 }

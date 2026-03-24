@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/668",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-25",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -87,35 +87,35 @@
       "title": "Unit Distances in the Plane",
       "summary": "isUnitPair, unitDistanceEdges definitions",
       "startLine": 36,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "counting",
       "title": "Counting Unit Distances",
       "summary": "unitDistanceCount, u(n) maximum definition",
       "startLine": 57,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "extremal",
       "title": "Extremal Configurations",
       "summary": "isExtremal, extremalConfigs set",
       "startLine": 80,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "congruence",
       "title": "Congruence of Point Sets",
       "summary": "isRigidMotion, areCongruent, equivalence relation",
       "startLine": 102,
-      "endLine": 140
+      "endLine": 141
     },
     {
       "id": "f-function",
       "title": "The Counting Function f(n)",
       "summary": "f(n) definition counting incongruent extremals",
       "startLine": 142,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "n-four",

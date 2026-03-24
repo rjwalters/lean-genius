@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500",
     "dateAdded": "2026-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Filter.liminf",
@@ -75,35 +75,35 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 34,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Definition of B_h sets, counting function, density ratio, and the general conjecture."
     },
     {
       "id": "solved-cases",
       "title": "Solved Cases",
       "startLine": 67,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Axioms for Erdős (h=2), Nash (h=4), and Chen (all even h) theorems."
     },
     {
       "id": "open-case",
       "title": "The Open h=3 Case",
       "startLine": 95,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Definition of the main open problem (Erdős Problem #41 proper)."
     },
     {
       "id": "sidon-connection",
       "title": "Connection to Sidon Sets",
       "startLine": 111,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "B_2 sets are Sidon sets; Erdős's theorem applies."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 121,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Empty set, singleton, and powers of 2 as B_h sets."
     },
     {
@@ -126,24 +126,24 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-43",
-      "relationship": "Sidon sets (B_2 sets) are the h=2 special case of B_h sets; erdos-43 studies disjointness properties of their difference sets, directly extending the foundational h=2 result axiomatized here."
+      "relationship": "Sidon sets (B_2 sets) are the h=2 special case of B_h sets; erdos-43 studies disjointness properties of their difference sets, directly extending the foundational h=2 result axiomatized here.",
+      "targetId": "erdos-43"
     },
     {
-      "target": "erdos-40",
-      "relationship": "Erdős Problem #40 concerns representation functions and dense additive sets, a complementary perspective to the sparsity (liminf = 0) established for B_h sets in Problem #41."
+      "relationship": "Erdős Problem #40 concerns representation functions and dense additive sets, a complementary perspective to the sparsity (liminf = 0) established for B_h sets in Problem #41.",
+      "targetId": "erdos-40"
     },
     {
-      "target": "erdos-1",
-      "relationship": "Erdős Problem #1 on distinct subset sums shares the same additive-combinatorics framework of sets with unique sum structure, making it a natural companion to the B_h density question."
+      "relationship": "Erdős Problem #1 on distinct subset sums shares the same additive-combinatorics framework of sets with unique sum structure, making it a natural companion to the B_h density question.",
+      "targetId": "erdos-1"
     },
     {
-      "target": "erdos-47",
-      "relationship": "Erdős Problem #47 connects unit fractions to dense sets; density bounds for additive sets of special type appear in both problems, illustrating Erdős's broader program on structured sparsity."
+      "relationship": "Erdős Problem #47 connects unit fractions to dense sets; density bounds for additive sets of special type appear in both problems, illustrating Erdős's broader program on structured sparsity.",
+      "targetId": "erdos-47"
     },
     {
-      "target": "binomial-theorem",
-      "relationship": "Counting h-element subsets of a B_h set — central to the definition of IsBhSet — relies on binomial coefficients; the Binomial Theorem underpins the combinatorial counting arguments in Chen's and Nash's proofs."
+      "relationship": "Counting h-element subsets of a B_h set — central to the definition of IsBhSet — relies on binomial coefficients; the Binomial Theorem underpins the combinatorial counting arguments in Chen's and Nash's proofs.",
+      "targetId": "binomial-theorem"
     }
   ],
   "relatedProofs": [

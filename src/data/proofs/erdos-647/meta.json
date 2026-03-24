@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/647",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "£25",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -75,49 +75,49 @@
       "id": "tau",
       "title": "The Divisor Function",
       "startLine": 28,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Definition and verified values of τ"
     },
     {
       "id": "main-quantity",
       "title": "The Quantity m + τ(m)",
       "startLine": 52,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Definition of mPlusTau and the Erdős condition"
     },
     {
       "id": "n24",
       "title": "n = 24 Satisfies the Condition",
       "startLine": 95,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Machine-verified proof that n=24 works"
     },
     {
       "id": "failures",
       "title": "Why Most n Fail",
       "startLine": 115,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "Proofs that n=25, 26, 7 fail"
     },
     {
       "id": "main-question",
       "title": "The Main Open Question",
       "startLine": 148,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "Statement of the open problem and asymptotic conjecture"
     },
     {
       "id": "highly-composite",
       "title": "Highly Composite Numbers",
       "startLine": 190,
-      "endLine": 246,
+      "endLine": 247,
       "summary": "Connection to highly composite numbers as obstructions"
     },
     {
       "id": "related",
       "title": "Related Problems",
       "startLine": 248,
-      "endLine": 295,
+      "endLine": 300,
       "summary": "Connection to Problem #679 and the ω function"
     }
   ],
@@ -144,5 +144,27 @@
     "axiomCount": 1,
     "theoremCount": 25,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-122",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1049",
+    "erdos-1053",
+    "erdos-122"
+  ]
 }

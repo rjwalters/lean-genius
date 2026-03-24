@@ -27,7 +27,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 204,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -41,42 +42,42 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 31,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and $\\text{HasSolution}(k)$."
     },
     {
       "id": "infrastructure",
       "title": "Infrastructure Lemmas",
       "startLine": 54,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under multiplication ($a \\equiv 1, b \\equiv 1 \\implies ab \\equiv 1$)."
     },
     {
       "id": "verified-solutions",
       "title": "Verified Solutions",
       "startLine": 95,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-triviality proof, and observation that both solutions use odd primes $p > 2$."
     },
     {
       "id": "wilson-connection",
       "title": "Wilson's Theorem Connection",
       "startLine": 152,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\ldots, p-1\\}$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 173,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known."
     },
     {
       "id": "noll-simmons",
       "title": "Noll–Simmons Generalization",
       "startLine": 180,
-      "endLine": 192,
+      "endLine": 193,
       "summary": "Axiomatizes the Noll–Simmons conjecture: $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. Weaker than the interval product conjecture since it drops consecutiveness."
     },
     {
@@ -116,28 +117,28 @@
   },
   "crossReferences": [
     {
-      "target": "wilsons-theorem",
-      "relationship": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is the primary structural obstruction in this problem: intervals cannot partition all of $\\{1, \\ldots, p-1\\}$, and the proof verifies Wilson's identity computationally for $p = 11$ and $p = 17$."
+      "relationship": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is the primary structural obstruction in this problem: intervals cannot partition all of $\\{1, \\ldots, p-1\\}$, and the proof verifies Wilson's identity computationally for $p = 11$ and $p = 17$.",
+      "targetId": "wilsons-theorem"
     },
     {
-      "target": "erdos-1058",
-      "relationship": "Both problems concern factorial values modulo primes. Erdős #1058 studies prime divisors of $n!+1$ between consecutive primes, while #1056 studies collisions among $n! \\bmod p$; both probe the residue distribution of the factorial function."
+      "relationship": "Both problems concern factorial values modulo primes. Erdős #1058 studies prime divisors of $n!+1$ between consecutive primes, while #1056 studies collisions among $n! \\bmod p$; both probe the residue distribution of the factorial function.",
+      "targetId": "erdos-1058"
     },
     {
-      "target": "primitive-roots",
-      "relationship": "The multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. A primitive root generates this group, giving the algebraic setting in which interval products $\\equiv 1$ must be understood as elements of order dividing $p-1$."
+      "relationship": "The multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. A primitive root generates this group, giving the algebraic setting in which interval products $\\equiv 1$ must be understood as elements of order dividing $p-1$.",
+      "targetId": "primitive-roots"
     },
     {
-      "target": "erdos-1055",
-      "relationship": "Erdős #1055 classifies primes by the factorization depth of $p+1$ using smooth-number analysis. The smoothness of $p-1$ controls the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, which in turn constrains which products of consecutive integers can equal 1 modulo $p$."
+      "relationship": "Erdős #1055 classifies primes by the factorization depth of $p+1$ using smooth-number analysis. The smoothness of $p-1$ controls the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, which in turn constrains which products of consecutive integers can equal 1 modulo $p$.",
+      "targetId": "erdos-1055"
     },
     {
-      "target": "erdos-945",
-      "relationship": "Erdős #945 asks about consecutive integers with distinct divisor counts, sharing the theme of structured behavior in consecutive-integer ranges. Both problems seek patterns in how multiplicative properties vary across consecutive integers."
+      "relationship": "Erdős #945 asks about consecutive integers with distinct divisor counts, sharing the theme of structured behavior in consecutive-integer ranges. Both problems seek patterns in how multiplicative properties vary across consecutive integers.",
+      "targetId": "erdos-945"
     },
     {
-      "target": "chinese-remainder-constructive",
-      "relationship": "The Chinese Remainder Theorem provides tools for constructing simultaneous congruence solutions. Multi-interval congruence conditions of the form $\\prod_{i=a_j}^{b_j-1} i \\equiv 1 \\pmod{p}$ can be analyzed via CRT when multiple primes are considered."
+      "relationship": "The Chinese Remainder Theorem provides tools for constructing simultaneous congruence solutions. Multi-interval congruence conditions of the form $\\prod_{i=a_j}^{b_j-1} i \\equiv 1 \\pmod{p}$ can be analyzed via CRT when multiple primes are considered.",
+      "targetId": "chinese-remainder-constructive"
     }
   ],
   "relatedProofs": [

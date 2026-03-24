@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/915",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -100,63 +100,63 @@
       "title": "Basic Definitions",
       "summary": "Path, VertexDisjoint, EdgeDisjoint, HasMVertexDisjointPaths, HasMEdgeDisjointPaths, ContainsMVertexDisjointPair, ContainsMEdgeDisjointPair",
       "startLine": 38,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "functions",
       "title": "The Functions k_m(n) and ℓ_m(n)",
       "summary": "Axiomatized extremal functions k, ell, and ell_le_k ordering",
       "startLine": 86,
-      "endLine": 102
+      "endLine": 103
     },
     {
       "id": "conjecture",
       "title": "The Bollobás-Erdős Conjecture",
       "summary": "BollobasErdosConjecture definition and extremal_construction lower bound",
       "startLine": 104,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "small-cases",
       "title": "Small Cases: Conjecture TRUE for m ≤ 4",
       "summary": "k_2, bartfai_k3_even/odd, bollobas_k4, conjecture_m2/m3/m4, conjecture_small_m",
       "startLine": 127,
-      "endLine": 149
+      "endLine": 150
     },
     {
       "id": "disproof",
       "title": "The Disproof for m ≥ 5",
       "summary": "leonard_counterexample, leonard_lower_bound, sorensen_thomassen_k5, mader_disproof, conjecture_false_m5, conjecture_false_large_m",
       "startLine": 151,
-      "endLine": 195
+      "endLine": 196
     },
     {
       "id": "edge-disjoint",
       "title": "The Edge-Disjoint Case: Fully Solved",
       "summary": "mader_edge_disjoint, EdgeDisjointConjecture, edge_disjoint_solved",
       "startLine": 197,
-      "endLine": 213
+      "endLine": 214
     },
     {
       "id": "specific-ell",
       "title": "Specific Values for ℓ_m",
       "summary": "leonard_small_m, leonard_ell5_even/odd, leonard_ell6",
       "startLine": 215,
-      "endLine": 226
+      "endLine": 227
     },
     {
       "id": "mader-stronger",
       "title": "Mader's Stronger Result",
       "summary": "mader_degree_condition with low-degree vertex correction",
       "startLine": 228,
-      "endLine": 241
+      "endLine": 242
     },
     {
       "id": "three-connected",
       "title": "3-Connected Graphs",
       "summary": "three_connected_conjecture with explicit 3-connectivity hypothesis",
       "startLine": 243,
-      "endLine": 258
+      "endLine": 259
     },
     {
       "id": "summary",
@@ -195,5 +195,27 @@
     "axiomCount": 24,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1033",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1034",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-1033",
+    "erdos-1034"
+  ]
 }

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/766",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -111,14 +111,14 @@
       "title": "The Turán Number",
       "summary": "ex(n;H) = max edges in H-free graph",
       "startLine": 61,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "f-function",
       "title": "The Function f(n;k,l)",
       "summary": "min ex over graphs with k vertices, l edges",
       "startLine": 71,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "range",

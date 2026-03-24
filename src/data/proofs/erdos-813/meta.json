@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/813",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -88,42 +88,42 @@
       "title": "Basic Definitions",
       "summary": "Graphs, triangles, subsets",
       "startLine": 33,
-      "endLine": 49
+      "endLine": 50
     },
     {
       "id": "cliques",
       "title": "Cliques",
       "summary": "Clique definitions",
       "startLine": 51,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "function-h",
       "title": "The Function h(n)",
       "summary": "Definition and specification of h(n)",
       "startLine": 61,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "Erdős-Hajnal bounds on h(n)",
       "startLine": 71,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "bucic-sudakov",
       "title": "Bucić-Sudakov Improvement",
       "summary": "2023 improved lower bound",
       "startLine": 90,
-      "endLine": 101
+      "endLine": 102
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "Can bounds be improved?",
       "startLine": 103,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "summary",
@@ -160,5 +160,27 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-183",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-183",
+    "erdos-22",
+    "erdos-547"
+  ]
 }

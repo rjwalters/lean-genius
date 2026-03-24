@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/202",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Int.ModEq",
@@ -135,7 +135,7 @@
       "id": "examples",
       "title": "Historical Bounds and Examples",
       "startLine": 763,
-      "endLine": 798,
+      "endLine": 809,
       "summary": "States Croot bounds (sorry), `example_N6` ($f(6) \\geq 3$ via classes $0 \\bmod 2, 1 \\bmod 4, 3 \\bmod 6$), and `coveringDensity` with $\\sum 1/n_i \\leq 1$."
     }
   ],
@@ -170,5 +170,27 @@
     "axiomCount": 0,
     "theoremCount": 40,
     "definitionCount": 19
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems, number-theory"
+    },
+    {
+      "targetId": "erdos-586",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems, number-theory"
+    },
+    {
+      "targetId": "erdos-7",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, covering-systems, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-586",
+    "erdos-7"
+  ]
 }

@@ -51,13 +51,6 @@
       "nth_prime_le_two_pow_succ: p_n <= 2^(n+1) proved by induction from Bertrand",
       "nth_prime_le_two_pow: 1-indexed variant p_n <= 2^n"
     ],
-    "relatedProofs": [
-      "bounded-prime-gaps",
-      "bertrands-postulate-oq-03",
-      "bertrands-postulate",
-      "prime-number-theorem",
-      "infinitude-primes"
-    ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "lineCount": 202,
@@ -67,7 +60,8 @@
       "The n-th prime function and its monotonicity",
       "Basic number theory (divisibility, prime factorization)"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Joseph Bertrand conjectured in 1845 that for every $n \\geq 1$, there exists a prime between $n$ and $2n$, after verifying it computationally for $n < 6{,}000{,}000$. Pafnuty Chebyshev gave the first proof in 1852, using bounds on the Chebyshev function $\\theta(x) = \\sum_{p \\leq x} \\ln p$. Ramanujan found a shorter proof in 1919 using properties of the Gamma function, and in 1932, Paul Erdős — then only 19 years old — gave a celebrated elementary proof using only properties of the central binomial coefficient $\\binom{2n}{n}$. It is Erdős's approach that underpins most modern formalizations, including Mathlib's.\n\nWhile the Prime Number Theorem (proved independently by Hadamard and de la Vallée Poussin in 1896) gives the asymptotic $\\pi(n) \\sim n / \\ln n$ and $p_n \\sim n \\ln n$, Bertrand's postulate provides explicit, non-asymptotic bounds requiring no analytic machinery. This module derives the exponential bound $p_n \\leq 2^{n+1}$ by elementary induction from Bertrand, along with quantitative doubling bounds on $\\pi(n)$. The exponential bound is weaker than the PNT estimate but has the virtue of being fully elementary and is imported by the Bounded Prime Gaps formalization for its prime gap infrastructure.",
@@ -93,7 +87,7 @@
       "id": "module-header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Module docstring listing key results, imports of Bertrand's postulate, prime counting, and n-th prime from Mathlib, namespace declaration.",
       "mathContext": "Imports provide Bertrand's postulate, $\\pi(n)$ (prime counting), and $p_n$ (n-th prime enumeration)."
     },
@@ -101,7 +95,7 @@
       "id": "bertrand-wrapper",
       "title": "Bertrand's Postulate Wrapper and Prime Basics",
       "startLine": 27,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Wraps Mathlib's Bertrand's postulate in a convenient form, records $p_0 = 2$, and proves $p_n$ is always prime. These are the foundational building blocks for all subsequent results.",
       "mathContext": "Bertrand's postulate: for $n \\geq 1$, $\\exists p$ prime with $n < p \\leq 2n$. Plus: $p_0 = 2$ and $p_n$ is prime for all $n$."
     },
@@ -125,7 +119,7 @@
       "id": "order-preserving-lemma",
       "title": "Key Lemma: Order-Preserving Prime Enumeration",
       "startLine": 111,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Proves `nth_prime_succ_le_of_prime_gt`: if $q$ is prime and $q > p_n$, then $p_{n+1} \\leq q$. The most technically demanding proof, using a counting argument by contradiction with `Nat.count_nth_of_infinite`.",
       "mathContext": "If $q$ is prime and $q > p_n$, then $p_{n+1} \\leq q$. Equivalently: $p_{n+1} = \\min\\{q : q \\text{ prime}, q > p_n\\}$."
     },

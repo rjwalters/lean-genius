@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdos, Nesetril, Rodl",
     "sourceUrl": "https://erdosproblems.com/847",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos847Problem.lean",
     "tags": [
       "erdos",
@@ -17,11 +17,11 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 847,
     "erdosUrl": "https://erdosproblems.com/847",
     "erdosProblemStatus": "disproved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set.Infinite",
@@ -37,6 +37,21 @@
         "theorem": "Set.ncard",
         "description": "Cardinality of sets",
         "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Finset.card_biUnion",
+        "description": "Cardinality of disjoint biUnion equals sum of cardinalities",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum_lt_sum",
+        "description": "Strict inequality for sums over finsets",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "Set.mem_iUnion",
+        "description": "Membership in indexed union",
+        "module": "Mathlib.Data.Set.Lattice"
       }
     ],
     "originalContributions": [
@@ -47,13 +62,15 @@
       "isFiniteAPFreeUnion definition: finite union characterization",
       "ENRConjecture definition: the disproved conjecture",
       "enr_conjecture_false axiom: the conjecture is FALSE",
-      "counterexample_exists axiom: explicit counterexample",
+      "counterexample_exists theorem: derived from enr_conjecture_false via push_neg",
       "szemeredi_theorem axiom: density implies APs",
       "roth_theorem axiom: k=3 case",
       "kelley_meka_bound axiom: best known bounds",
+      "finset_pigeonhole theorem: pigeonhole principle for Finsets",
+      "finite_union_implies_enr theorem: finite AP-free union implies ENR condition (PROVED)",
       "erdos_847_disproved theorem: main result"
     ],
-    "axiomCount": 6,
+    "axiomCount": 5,
     "prerequisites": [
       "Arithmetic progressions and their basic properties",
       "Szemeredi's theorem (density of sets avoiding APs)",
@@ -61,8 +78,8 @@
       "Roth's theorem on 3-term APs in dense sets",
       "Basic additive combinatorics (set unions, partitions, density)"
     ],
-    "lineCount": 254,
-    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "lineCount": 303,
+    "assumptions": "5 axiom(s) (Szemeredi, Roth, Kelley-Meka, AP-free density, ENR disproof) and 0 sorry(s)."
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdos, Nesetril, and Rodl [Er92b]. It asks about the structure of infinite sets with a specific property related to AP-free subsets.\n\nThe problem connects deeply to Szemeredi's theorem (1975), which shows that any dense subset of the integers contains arbitrarily long arithmetic progressions. Consequently, AP-free sets have density 0.\n\nThe question explores whether having uniformly large AP-free subsets forces a simple structure (finite union of AP-free sets). The conjecture was ultimately DISPROVED: the ENR condition (every n-element subset contains an AP-free subset of size at least epsilon*n) is strictly weaker than being a finite union of AP-free sets. This parallels a broader theme in additive combinatorics where local density conditions do not force global structural decompositions. The Kelley-Meka theorem (2023) giving near-optimal bounds of |A| ≤ N·exp(-c(log N)^{1/12}) for AP-free sets in [N] further sharpened the quantitative landscape surrounding such problems.",
@@ -146,7 +163,7 @@
       "title": "Summary",
       "summary": "erdos_847_disproved, erdos_847_counterexample",
       "startLine": 205,
-      "endLine": 236
+      "endLine": 254
     }
   ],
   "conclusion": {
@@ -204,10 +221,7 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Set.Basic",
-      "Mathlib.Data.Set.Finite.Basic",
-      "Mathlib.Data.Finset.Card"
+      "Mathlib"
     ],
     "opens": [
       "Nat",
@@ -215,9 +229,9 @@
       "Finset"
     ],
     "namespace": "Erdos847",
-    "lineCount": 254,
-    "axiomCount": 6,
-    "theoremCount": 5,
+    "lineCount": 303,
+    "axiomCount": 5,
+    "theoremCount": 7,
     "definitionCount": 8
   }
 }

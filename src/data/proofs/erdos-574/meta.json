@@ -17,31 +17,12 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/574",
     "erdosUrl": "https://erdosproblems.com/574",
-    "crossReferences": [
-      {
-        "id": "erdos-573",
-        "relationship": "specialization",
-        "description": "Problem #573 is the k=2 case: ex(n; {C₃, C₄}) ~ (n/2)^{3/2}"
-      },
-      {
-        "id": "erdos-575",
-        "relationship": "generalization",
-        "description": "Problem #575 asks whether bipartite Turán numbers dominate for families containing a bipartite graph"
-      },
-      {
-        "id": "erdos-113",
-        "relationship": "related",
-        "description": "Problem #113 on extremal numbers and degeneracy of bipartite graphs, connecting to the bipartite structure underlying cycle extremal theory"
-      },
-      {
-        "id": "erdos-180",
-        "relationship": "related",
-        "description": "Problem #180 on Turán numbers for graph families, the general framework for this problem"
-      }
-    ],
     "axiomCount": 4,
     "badge": "axiom",
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "proofRepoPath": "Proofs/Erdos574Problem.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 96
   },
   "sections": [
     {
@@ -116,5 +97,42 @@
     "Lazebnik, Ustimenko & Woldar (1995): algebraic constructions for k = 2, 3, 5",
     "Wenger (1991): explicit C_{2k}-free constructions via algebraic geometry",
     "https://erdosproblems.com/574"
+  ],
+  "leanFile": {
+    "lineCount": 96,
+    "structureCount": 1,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 2,
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-64",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-graph-theory, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-64",
+    "erdos-1080",
+    "erdos-1092"
   ]
 }

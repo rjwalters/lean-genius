@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 225,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #70 belongs to partition calculus, the infinitary extension of Ramsey theory developed by Erdős and Rado in their foundational 1956 paper 'A partition calculus in set theory'. The arrow notation κ → (α, β)_k^n captures the idea that coloring n-element subsets of a κ-sized set forces monochromatic subsets of specified types. Erdős and Rado proved 𝔠 → (ω+n, 4)₂³ for 2 ≤ n < ω, establishing that the continuum satisfies non-trivial partition relations for 3-element subsets. The proof uses the stepping-up lemma, converting 2-dimensional partition relations to 3-dimensional ones at the cost of enlarging the ordinal parameter. The general case — whether 𝔠 → (β, n)₂³ holds for all countable ordinals β — remains completely open. This connects to deep questions about the combinatorial structure of the continuum. Under GCH, stronger partition relations hold, but the problem is formulated in ZFC. Todorčević's work on partition relations and Shelah's pcf theory have provided partial insights, but the gap between ω+n and arbitrary countable ordinals has not been bridged.",
@@ -48,7 +49,7 @@
       "id": "imports",
       "title": "Part 0: Imports",
       "startLine": 27,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Imports the full Mathlib library and opens `Set`, `Cardinal`, `Ordinal` namespaces for set-theoretic notation and ordinal/cardinal arithmetic.",
       "mathContext": "Uses Mathlib's `Cardinal`, `Ordinal`, `Finset` modules for set-theoretic partition calculus."
     },
@@ -56,7 +57,7 @@
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 33,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines `Coloring S n k` as functions from $n$-element subsets of $S$ to $\\text{Fin}(k)$ colors, and `nSubsets S n` as the set $\\{t \\in \\text{Finset}(S) \\mid |t| = n\\}$.",
       "mathContext": "A $k$-coloring of $n$-subsets: $c : \\binom{S}{n} \\to \\{0, \\ldots, k-1\\}$."
     },
@@ -64,7 +65,7 @@
       "id": "homogeneous-sets",
       "title": "Part II: Homogeneous Sets",
       "startLine": 43,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "Defines `IsHomogeneous H n c i`: all $n$-subsets of $H$ receive color $i$ under coloring $c$. Provides both `Set` and `Finset` variants for the monochromatic condition.",
       "mathContext": "$H$ is $i$-homogeneous for $c$ if $\\forall t \\in \\binom{H}{n}, c(t) = i$."
     },
@@ -72,7 +73,7 @@
       "id": "order-types",
       "title": "Part III: Order Types",
       "startLine": 55,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines `HasOrderTypeAtLeast S H α`: $|H| \\ge |\\alpha|$ (cardinal comparison). A simplified proxy for the full order-type condition $\\text{otp}(H) \\ge \\alpha$.",
       "mathContext": "$\\text{otp}(H) \\geq \\alpha$ simplified to cardinal: $|H| \\geq |\\alpha|$."
     },
@@ -80,7 +81,7 @@
       "id": "partition-arrow",
       "title": "Part IV: Partition Arrow",
       "startLine": 62,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Defines $\\kappa \\to (\\alpha, m)_2^3$: for any 2-coloring of 3-subsets of a $\\kappa$-sized set, either a color-0 homogeneous set of order type $\\ge \\alpha$ exists, or a color-1 homogeneous set of size $\\ge m$.",
       "mathContext": "$\\kappa \\to (\\alpha, m)_2^3$: for every 2-coloring of 3-subsets of $\\kappa$, get order-type $\\alpha$ in color 0 or size $m$ in color 1."
     },
@@ -88,7 +89,7 @@
       "id": "continuum",
       "title": "Part V: The Continuum",
       "startLine": 76,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Defines $\\mathfrak{c} = 2^{\\aleph_0}$ via `Cardinal.continuum` and proves `continuum_def : continuum_card = 2 ^ aleph0`.",
       "mathContext": "$\\mathfrak{c} = 2^{\\aleph_0} = |\\mathbb{R}|$. Under CH: $\\mathfrak{c} = \\aleph_1$."
     },
@@ -96,7 +97,7 @@
       "id": "countable-ordinals",
       "title": "Part VI: Countable Ordinals",
       "startLine": 85,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Defines `IsCountableOrdinal α` as $|\\alpha| \\le \\aleph_0$. Proves $\\omega$ and all natural numbers are countable ordinals using `card_omega0` and `card_nat`.",
       "mathContext": "Countable ordinal: $|\\alpha| \\leq \\aleph_0$. Examples: $\\omega, \\omega+n, \\omega^2, \\omega^\\omega$."
     },
@@ -104,7 +105,7 @@
       "id": "erdos-rado",
       "title": "Part VII: Erdős-Rado Theorem",
       "startLine": 101,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "Axiomatizes the Erdős-Rado partial result: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all $2 \\le n < \\omega$. This is the strongest known result toward the full conjecture.",
       "mathContext": "Erdős-Rado: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all finite $n$ (stepping-up from Erdős-Dushnik-Miller)."
     },
@@ -112,7 +113,7 @@
       "id": "main-conjecture",
       "title": "Part VIII: Main Conjecture (OPEN)",
       "startLine": 114,
-      "endLine": 125,
+      "endLine": 126,
       "summary": "States `erdos_70_conjecture`: $\\forall \\beta$ countable, $\\forall n \\ge 2$, $\\mathfrak{c} \\to (\\beta, n)_2^3$. The full Erdős Problem #70, open for ordinals beyond $\\omega + n$.",
       "mathContext": "$\\forall \\beta < \\omega_1, \\forall 2 \\leq n < \\omega: \\mathfrak{c} \\to (\\beta, n)_2^3$. OPEN for $\\beta \\geq \\omega^2$."
     },
@@ -120,7 +121,7 @@
       "id": "special-cases",
       "title": "Part IX: Special Cases",
       "startLine": 127,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Defines conjectures for $\\beta = \\omega$, $\\beta = \\omega^2$, $\\beta = \\omega^\\omega$. The $\\omega$ case follows from Erdős-Rado; the $\\omega^2$ case is the first genuinely open instance.",
       "mathContext": "$\\mathfrak{c} \\to (\\omega, n)_2^3$ (known), $\\mathfrak{c} \\to (\\omega^2, n)_2^3$ (first open case)."
     },
@@ -128,7 +129,7 @@
       "id": "finite-ramsey",
       "title": "Part X: Finite Ramsey Theory",
       "startLine": 141,
-      "endLine": 160,
+      "endLine": 161,
       "summary": "Axiomatizes the finite Ramsey theorem $\\forall r,k,n, \\exists N, N \\to (r)_k^n$ and the specific case $R(3,3) = 6$ for 2-colorings of 3-subsets of a 6-element set.",
       "mathContext": "Finite Ramsey: $\\forall r, k, n, \\exists N: N \\to (r)_k^n$. Special case: $R(3,3) = 6$."
     },
@@ -136,7 +137,7 @@
       "id": "negative-results",
       "title": "Part XI: Negative Results",
       "startLine": 162,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "Defines `erdos_70_counterexample` (negation of the conjecture) and proves `conjecture_xor_counterexample`: the conjecture and its negation are logically complementary.",
       "mathContext": "The conjecture and its negation are exclusive: exactly one holds (possible ZFC independence)."
     },
@@ -144,7 +145,7 @@
       "id": "monotonicity",
       "title": "Part XII: Monotonicity",
       "startLine": 180,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "Axiomatizes monotonicity: $\\kappa \\to (\\beta, m)_k^n$ with $\\alpha \\le \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$, and similarly for $m' \\le m$.",
       "mathContext": "Monotonicity: $\\kappa \\to (\\beta, m)_k^n$ and $\\alpha \\leq \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$."
     },
@@ -152,7 +153,7 @@
       "id": "ordinal-arithmetic",
       "title": "Part XIII: Ordinal Arithmetic",
       "startLine": 190,
-      "endLine": 200,
+      "endLine": 225,
       "summary": "Proves $\\omega + n$ and $\\omega^2$ are countable using `card_add`, `card_mul`, `aleph0_add_nat`, and `aleph0_mul_aleph0` from Mathlib.",
       "mathContext": "$|\\omega + n| = \\aleph_0$ and $|\\omega^2| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$. Both countable."
     }

@@ -23,7 +23,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 6,
     "lineCount": 335,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Gallai, and Tuza posed this conjecture in their influential 1996 paper 'Covering and independence in triangle structures,' published in Discrete Mathematics. They noted the problem 'is probably quite difficult,' placing it alongside a suite of conjectures on triangle packings and covers that extended Gallai's earlier work on transversals in hypergraphs. The parameters $\\alpha_1(G)$ and $\\tau_1(G)$ generalize the classical matching number and vertex cover number from edges to triangles, mirroring the Gallai identity $\\alpha(G) + \\tau(G) = n$ at the edge level. Haxell (1999) made partial progress, establishing asymptotic bounds. The full conjecture was resolved by Sergey Norin and Hehui Wu (later published as Norin-Sun, 2016), who proved the stronger result $\\alpha_1(G) + \\tau_B(G) \\le n^2/4$, where $\\tau_B$ denotes the bipartite edge deletion number. Their proof leveraged the Kruskal-Katona theorem and structural analysis of near-extremal graphs. The bound $n^2/4$ is the same as in Mantel's theorem (1907) and Turán's theorem (1941), revealing a deep unity in extremal graph theory where triangle-related invariants are governed by the same quadratic threshold.",
@@ -55,77 +56,77 @@
       "title": "Part I: Triangle Definitions",
       "summary": "Defines `IsTriangle G a b c` (three pairwise-adjacent vertices), `HitsTriangle S a b c` (edge set $S$ shares an edge with triangle $abc$), `IsTriangleEdgeCover` (hits every triangle), and `IsTriangleSparse` (at most one edge per triangle).",
       "startLine": 35,
-      "endLine": 58
+      "endLine": 59
     },
     {
       "id": "structural-lemmas",
       "title": "Part II: Structural Lemmas",
       "summary": "Proves that the full edge set $E(G)$ is always a triangle edge cover (`edgeFinset_is_cover`), the empty set is vacuously triangle-sparse (`empty_is_sparse`), and every triangle contributes three edges to $E(G)$ (`triangle_edges_in_graph`).",
       "startLine": 60,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "tau1-alpha1",
       "title": "Part III: The $\\tau_1$ and $\\alpha_1$ Functions",
       "summary": "Defines $\\tau_1(G)$ as the minimum cardinality among all triangle edge covers that are subsets of $E(G)$ (via `Finset.inf'`), and $\\alpha_1(G)$ as the maximum cardinality among all triangle-sparse subsets of $E(G)$ (via `Finset.sup'`). Well-definedness relies on the structural lemmas from Part II.",
       "startLine": 84,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "bipartite-removal",
       "title": "Part IV: Bipartite Removal",
       "summary": "Axiomatizes $\\tau_B(G)$, the minimum number of edge removals to make $G$ bipartite (the odd cycle transversal number for edges). Also axiomatizes $\\tau_B(G) \\le |E(G)|$.",
       "startLine": 108,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "bipartite-triangles",
       "title": "Part V: Bipartite Graphs and Triangles",
       "summary": "Proves `bipartite_triangle_free`: bipartite graphs contain no triangles, using a 2-coloring pigeonhole argument on `Bool`. Axiomatizes $\\tau_1 \\le \\tau_B$: any bipartite-making deletion set hits all triangles.",
       "startLine": 121,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "main-conjecture",
       "title": "Part VI: The Main Conjecture",
       "summary": "Defines `EGTConjecture` ($\\alpha_1 + \\tau_1 \\le n^2/4$) and `NorinSunResult` ($\\alpha_1 + \\tau_B \\le n^2/4$). Axiomatizes Norin-Sun 2016. Proves `egt_conjecture_resolved`: the EGT conjecture follows from Norin-Sun via $\\tau_1 \\le \\tau_B$ and `linarith`.",
       "startLine": 146,
-      "endLine": 169
+      "endLine": 170
     },
     {
       "id": "triangle-free",
       "title": "Part VII: Triangle-Free Graphs",
       "summary": "Proves four results for triangle-free graphs: the empty set is a valid cover, $\\tau_1(G) = 0$, the full edge set is sparse, and $\\alpha_1(G) = |E(G)|$. Axiomatizes Mantel's theorem ($|E(G)| \\le n^2/4$ for triangle-free $G$) and derives `triangle_free_egt`.",
       "startLine": 171,
-      "endLine": 229
+      "endLine": 230
     },
     {
       "id": "bounds",
       "title": "Part VIII: Bounds and Estimates",
       "summary": "Proves $\\tau_1(G) \\le |E(G)|$ and $\\alpha_1(G) \\le |E(G)|$ from definitions, then derives $\\alpha_1(G) \\le n^2/4$ from Norin-Sun via nonnegativity of $\\tau_B$.",
       "startLine": 231,
-      "endLine": 256
+      "endLine": 257
     },
     {
       "id": "triangle-free-sum",
       "title": "Part IX: Triangle-Free Sum Identity",
       "summary": "Proves $\\alpha_1(G) + \\tau_1(G) = |E(G)|$ for triangle-free graphs, combining the results $\\tau_1 = 0$ and $\\alpha_1 = |E|$ with `omega`.",
       "startLine": 258,
-      "endLine": 265
+      "endLine": 266
     },
     {
       "id": "equality-cases",
       "title": "Part X: Equality Cases",
       "summary": "Axiomatizes that equality $\\alpha_1(G) + \\tau_1(G) = \\lfloor n^2/4 \\rfloor$ is achievable for every $n \\ge 2$, realized by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$.",
       "startLine": 267,
-      "endLine": 276
+      "endLine": 277
     },
     {
       "id": "problem23",
       "title": "Part XI: Problem #23 Connection",
       "summary": "Defines `Problem23Conjecture` ($\\tau_B(G) \\le n^2/25$) and proves that if Problem #23 holds, then $\\tau_1(G) \\le n^2/25$ via the chain $\\tau_1 \\le \\tau_B \\le n^2/25$.",
       "startLine": 278,
-      "endLine": 296
+      "endLine": 335
     }
   ],
   "conclusion": {
@@ -155,5 +156,27 @@
     "axiomCount": 6,
     "theoremCount": 15,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-80",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangles"
+    },
+    {
+      "targetId": "erdos-813",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, triangles"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, triangles"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-80",
+    "erdos-813",
+    "erdos-1009"
+  ]
 }

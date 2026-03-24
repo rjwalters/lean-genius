@@ -22,7 +22,7 @@
     "erdosNumber": 985,
     "erdosUrl": "https://erdosproblems.com/985",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "orderOf",
@@ -84,56 +84,56 @@
       "title": "Primitive Root Definitions",
       "summary": "isPrimitiveRoot, isPrimePrimitiveRoot, primesWithPrimePrimitiveRoot",
       "startLine": 27,
-      "endLine": 40
+      "endLine": 41
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "exists_primitive_root, zmod_units_cyclic axioms",
       "startLine": 42,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "small-examples",
       "title": "Small Prime Examples",
       "summary": "Verification of primitive roots for 2, 3, 5 modulo small primes",
       "startLine": 53,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "erdos-verification",
       "title": "Verified Cases of Erdős 985",
       "summary": "erdos985_for_3, erdos985_for_5, erdos985_for_7, erdos985_for_11, erdos985_for_13, erdos985_for_23",
       "startLine": 87,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "artin-heathbrown",
       "title": "Artin's Conjecture and Heath-Brown",
       "summary": "artin_conjecture_for_2, heath_brown_theorem axioms",
       "startLine": 113,
-      "endLine": 129
+      "endLine": 130
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "summary": "erdos_985_conjecture axiom, erdos_985_iff_all_odd_primes equivalence",
       "startLine": 131,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "density",
       "title": "Density Considerations",
       "summary": "Heuristic argument based on prime number theorem",
       "startLine": 174,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "summary": "artin_implies_erdos_985 theorem",
       "startLine": 185,
-      "endLine": 198
+      "endLine": 199
     },
     {
       "id": "summary",
@@ -168,5 +168,27 @@
     "axiomCount": 6,
     "theoremCount": 17,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory, open"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    },
+    {
+      "targetId": "erdos-1141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1056",
+    "erdos-1113",
+    "erdos-1141"
+  ]
 }

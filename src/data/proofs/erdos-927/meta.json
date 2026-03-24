@@ -24,7 +24,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 9,
     "lineCount": 275,
-    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Moon and Moser (1965, Israel J. Math.) initiated the study of $g(n)$, the maximum number of distinct clique sizes in a graph on $n$ vertices. They proved $n - \\log_2 n - 2\\log\\log n < g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using Ramsey-theoretic arguments for the upper bound and explicit constructions for the lower bound. Erdős (1966, Israel J. Math.) sharpened the lower bound to $g(n) > n - \\log_2 n - \\log^*(n) - O(1)$ using the iterated logarithm $\\log^*$ — the number of times $\\log_2$ must be applied to reach below 1 — and conjectured this was tight: $g(n) = n - \\log_2 n - \\log^*(n) + O(1)$. Spencer (1971, Israel J. Math.) disproved the conjecture by showing $g(n) > n - \\log_2 n - O(1)$, eliminating the $\\log^*$ term entirely. Spencer's probabilistic construction showed that for large $n$, one can build graphs achieving $n - \\lfloor \\log_2 n \\rfloor - C$ distinct clique sizes for a universal constant $C$. The correct asymptotic is therefore $g(n) = n - \\log_2 n - \\Theta(1)$. The problem connects to Ramsey theory (the upper bound on $g(n)$ relates to unavoidable gaps in clique spectra) and extremal graph theory.",
@@ -55,35 +56,35 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 40,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Defines `IsClique G S` requiring all pairs in $S$ to be adjacent, `HasCliqueOfSize G k` requiring a $k$-element clique, and `cliqueSizes G : \\text{Set}\\,\\mathbb{N}$ as $\\{k : \\text{HasCliqueOfSize}\\,G\\,k\\}$."
     },
     {
       "id": "g-function",
       "title": "The Function $g(n)$",
       "startLine": 65,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Defines `g : \\mathbb{N} \\to \\mathbb{N}` as the maximum number of distinct clique sizes over all graphs on $n$ vertices (noncomputable). Axiomatizes $g(n) \\leq n$ and proves `singleton_is_clique`: every vertex forms a clique of size 1."
     },
     {
       "id": "moon-moser",
       "title": "Moon-Moser Bounds (1965)",
       "startLine": 95,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "Axiomatizes the Moon-Moser bounds: upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using `Nat.log 2 n`, and lower bound $g(n) > n - \\log_2 n - 2\\log\\log n / \\log 2$ using `Real.log`."
     },
     {
       "id": "log-star",
       "title": "The Iterated Logarithm $\\log^*$",
       "startLine": 113,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "Defines `logStar : \\mathbb{N} \\to \\mathbb{N}` recursively: $\\log^*(0) = \\log^*(1) = 0$, otherwise $1 + \\log^*(\\lfloor \\log_2 n \\rfloor)$ if $\\lfloor \\log_2 n \\rfloor > 1$. Axiomatizes $\\log^*(2^{16}) \\leq 4$."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture (1966)",
       "startLine": 140,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Axiomatizes Erdős's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$. Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$."
     },
     {
@@ -104,7 +105,7 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 225,
-      "endLine": 241,
+      "endLine": 242,
       "summary": "Axiomatizes `complete_graph_cliques`: $K_n$ has cliques of sizes $1, 2, \\ldots, n$ so $g(n) \\geq n$, and `empty_graph_one_clique_size`: $g(1) \\geq 1$."
     },
     {
@@ -126,9 +127,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-775",
-    "erdos-166",
-    "erdos-79"
+    "erdos-134",
+    "erdos-150",
+    "erdos-565"
   ],
   "leanFile": {
     "imports": [
@@ -143,5 +144,22 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-150",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    },
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    }
+  ]
 }

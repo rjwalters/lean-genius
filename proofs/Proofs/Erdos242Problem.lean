@@ -172,7 +172,7 @@ theorem example_n_7 : (4 : ℚ) / 7 = 1 / 2 + 1 / 15 + 1 / 210 := by norm_num
 
 The problem's difficulty lies in the "distinct" requirement for denominators.
 -/
-axiom erdos_straus_open : ErdosStrausConjecture ∨ ¬ErdosStrausConjecture
+theorem erdos_straus_open : ErdosStrausConjecture ∨ ¬ErdosStrausConjecture := Classical.em _
 
 /- ## Summary -/
 

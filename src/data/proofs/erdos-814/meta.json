@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/814",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -87,42 +87,42 @@
       "title": "Basic Definitions",
       "summary": "edgeThreshold, minDegree, subgraphFraction, sauermann_constant",
       "startLine": 46,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "historical-bounds",
       "title": "Historical Progression",
       "summary": "efrs_original_bound (1990), mns_bound (2017) showing improvement over time",
       "startLine": 81,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "sauermann-theorem",
       "title": "Sauermann's Theorem",
       "summary": "sauermann_theorem axiom and erdos_814 main theorem",
       "startLine": 120,
-      "endLine": 167
+      "endLine": 168
     },
     {
       "id": "threshold-analysis",
       "title": "Edge Threshold Analysis",
       "summary": "edgeThreshold_three, edgeThreshold_two, extremal_construction",
       "startLine": 169,
-      "endLine": 204
+      "endLine": 205
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal k=3 Case",
       "summary": "The original case with k=3 that started the investigation",
       "startLine": 206,
-      "endLine": 239
+      "endLine": 240
     },
     {
       "id": "degree-bounds",
       "title": "Degree Bounds and Density",
       "summary": "handshaking lemma, high_degree_exists theorem",
       "startLine": 241,
-      "endLine": 273
+      "endLine": 274
     },
     {
       "id": "main-results",
@@ -162,5 +162,27 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, induced-subgraphs, solved"
+    },
+    {
+      "targetId": "erdos-914",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, minimum-degree, solved"
+    },
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-565",
+    "erdos-914",
+    "erdos-134"
+  ]
 }

@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/728",
     "erdosProblemStatus": "proved",
     "dateAdded": "2026-01-25",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.factorial",
@@ -78,56 +78,56 @@
       "title": "Factorial Divisibility",
       "summary": "factorialDivisibility predicate definition",
       "startLine": 36,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "logarithmic-gap",
       "title": "Logarithmic Gap Condition",
       "summary": "hasLogarithmicGap and hasSizeCondition definitions",
       "startLine": 57,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "full-condition",
       "title": "Full Erdos 728 Condition",
       "summary": "isErdos728Solution combining all constraints",
       "startLine": 80,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "erdos-1968",
       "title": "Erdos 1968 Upper Bound",
       "summary": "Classical result: a+b <= n + O(log n)",
       "startLine": 102,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "resolution",
       "title": "The Resolution",
       "summary": "erdos_728_resolution axiom (Barreto & ChatGPT-5.2)",
       "startLine": 127,
-      "endLine": 160
+      "endLine": 161
     },
     {
       "id": "construction",
       "title": "The b = n/2 Construction",
       "summary": "constructionTemplate and size verification",
       "startLine": 162,
-      "endLine": 195
+      "endLine": 196
     },
     {
       "id": "legendre",
       "title": "Legendre's Formula",
       "summary": "legendreSum and divisibility_via_legendre",
       "startLine": 197,
-      "endLine": 225
+      "endLine": 226
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Connection to Problem #729",
       "startLine": 227,
-      "endLine": 250
+      "endLine": 251
     },
     {
       "id": "summary",
@@ -167,5 +167,27 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-404",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, factorials, number-theory, p-adic-valuation"
+    },
+    {
+      "targetId": "erdos-646",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, p-adic-valuation, solved"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, factorials, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-404",
+    "erdos-646",
+    "erdos-400"
+  ]
 }

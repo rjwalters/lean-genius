@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/237",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -87,7 +87,7 @@
       "title": "Basic Definitions",
       "summary": "Defines representationCount f_A(n) as Nat.card of pairs (p, a) with p prime, a ∈ A, p + a = n. Defines HasLogDensity via |A ∩ [1,N]| ≥ c·log(N). Defines HasUnboundedLimsup as ∀ M, ∃ n, f(n) > M.",
       "startLine": 38,
-      "endLine": 58,
+      "endLine": 59,
       "mathContext": "$f_A(n) = |\\{(p, a) : p + a = n, p \\text{ prime}, a \\in A\\}|$ = number of representations of $n$ as prime + element of $A$."
     },
     {
@@ -95,7 +95,7 @@
       "title": "The Main Conjecture",
       "summary": "Formalizes ErdosConjecture: log-density implies unbounded limsup. Formalizes StrongerVersion (Chen-Ding): infinite set implies unbounded limsup. The stronger version immediately implies the original.",
       "startLine": 60,
-      "endLine": 80,
+      "endLine": 81,
       "mathContext": "Conjecture: if $A \\subseteq \\mathbb{N}$ has positive logarithmic density ($\\sum_{a \\in A, a \\leq x} 1/a \\to \\infty$), then $\\limsup f_A(n) = \\infty$."
     },
     {
@@ -103,7 +103,7 @@
       "title": "Historical Results",
       "summary": "Defines powersOfTwo = {2^k}. Axiomatizes Erdős's 1950 result for powers of two. Axiomatizes that powers of two have logarithmic density. Axiomatizes the arithmetic progression representation bound.",
       "startLine": 82,
-      "endLine": 112,
+      "endLine": 113,
       "mathContext": "Erdős (1950): proved for $A = \\{2^k\\}$ (powers of two). Uses sieve methods: PNT gives $\\sim n/\\log n$ primes $\\leq n$."
     },
     {
@@ -111,7 +111,7 @@
       "title": "Chen and Ding's Theorem",
       "summary": "Axiomatizes chen_ding_2022: every infinite set has unbounded representation count. Derives erdos_conjecture_true by showing log-density implies infinitude (with one sorry for the Set.Infinite deduction from bounded intersection cardinality).",
       "startLine": 114,
-      "endLine": 141,
+      "endLine": 142,
       "mathContext": "Chen-Ding (2022): resolved the conjecture. Every infinite $A \\subseteq \\mathbb{N}$ has $\\limsup f_A(n) = \\infty$."
     },
     {
@@ -119,7 +119,7 @@
       "title": "Understanding the Proof Strategy",
       "summary": "Comment sections explaining why infinite sets suffice: the PNT guarantees enough primes, the density-vs-cardinality gap between Erdős's hypothesis and Chen-Ding's, and the key role of the Prime Number Theorem.",
       "startLine": 143,
-      "endLine": 167,
+      "endLine": 168,
       "mathContext": "PNT gives $\\pi(n) \\sim n/\\log n$ primes $\\leq n$. For each $n$, $f_A(n) = |\\{p \\leq n : n - p \\in A\\}|$."
     },
     {
@@ -127,7 +127,7 @@
       "title": "Examples and Special Cases",
       "summary": "Defines squares = {k² : k ≥ 1} and primePowers = {p^k : p prime, k ≥ 1} as concrete infinite sets. Axiomatizes their unbounded representation counts as corollaries of Chen-Ding.",
       "startLine": 169,
-      "endLine": 196,
+      "endLine": 197,
       "mathContext": "Examples: $A = \\{k^2\\}$ (squares), $A = \\{p^k\\}$ (prime powers). Both infinite, so Chen-Ding applies."
     },
     {
@@ -135,7 +135,7 @@
       "title": "Relation to Goldbach-type Problems",
       "summary": "Comment sections connecting n = p + a to the Goldbach conjecture (A = primes), the Waring-Goldbach problem (A = kth powers), and the general landscape of binary additive problems in number theory.",
       "startLine": 198,
-      "endLine": 215,
+      "endLine": 216,
       "mathContext": "Connection to Goldbach: $A = \\mathbb{P}$ gives $f_A(n) = $ number of Goldbach representations. Goldbach is the $A = \\text{primes}$ special case."
     },
     {

@@ -24,7 +24,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 1,
     "lineCount": 166,
-    "assumptions": "1 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal conjectured in 1966 that graphs with infinite chromatic number must have 'many' odd cycles, quantified by the divergence of the reciprocal sum ∑ 1/aᵢ. The conjecture sits in a hierarchy of increasingly strong claims: (1) infinitely many odd cycle lengths, (2) ∑ 1/aᵢ = ∞ (this problem), (3) positive upper density (Erdős 1981, OPEN), (4) upper density ≥ 1/2 (Erdős 1995-96, OPEN). The foundation is the classical bipartite characterization: χ(G) ≤ 2 iff no odd cycles. Problem #57 asks what happens at χ(G) = ∞. Liu and Montgomery solved it in 2020 using dependent random choice and structural decomposition techniques from extremal combinatorics. Their proof analyzes graphs lacking short odd cycles, showing that even in the high-girth regime (where odd cycles are sparse), the reciprocal sum still diverges. The result has connections to Ramsey theory and the Gyárfás-Sumner conjecture on χ-bounded classes.",
@@ -58,7 +59,7 @@
       "title": "Core Definitions: Cycles, Coloring, Infinite Chromatic Number",
       "summary": "cycleLengths via Walk.IsCycle existential, oddCycleLengths as odd-parity filter, IsColorable via proper k-coloring, HasInfiniteChromaticNumber as ∀ k negation",
       "startLine": 28,
-      "endLine": 49,
+      "endLine": 50,
       "mathContext": "$\\mathcal{C}(G) = \\{|p| : p \\text{ cycle in } G\\}$, $\\mathcal{C}_{\\text{odd}}(G) = \\{n \\in \\mathcal{C}(G) : n \\text{ odd}\\}$. $\\chi(G) = \\infty \\iff \\forall k, \\neg\\text{IsColorable}(G, k)$."
     },
     {
@@ -66,7 +67,7 @@
       "title": "Harmonic Sum in ENNReal",
       "summary": "oddCycleHarmonicSum as tsum over oddCycleLengths subtype of 1/n in ENNReal, allowing ⊤ value",
       "startLine": 51,
-      "endLine": 55,
+      "endLine": 56,
       "mathContext": "$\\text{oddCycleHarmonicSum}(G) = \\sum_{n \\in \\mathcal{C}_{\\text{odd}}(G)} \\frac{1}{n} \\in [0, \\infty]$ computed as `tsum` in `ENNReal`."
     },
     {
@@ -74,7 +75,7 @@
       "title": "Main Result: erdos_57 Axiom (Liu-Montgomery 2020)",
       "summary": "Axiom: HasInfiniteChromaticNumber G → oddCycleHarmonicSum G = ⊤. The solved Erdős-Hajnal conjecture",
       "startLine": 57,
-      "endLine": 64,
+      "endLine": 65,
       "mathContext": "$\\chi(G) = \\infty \\implies \\sum_{n \\in \\mathcal{C}_{\\text{odd}}(G)} 1/n = \\infty$. Axiomatized as $\\text{oddCycleHarmonicSum}(G) = \\top$."
     },
     {
@@ -82,7 +83,7 @@
       "title": "Proved Lemmas: Finite Sum, Positivity, Corollary",
       "summary": "finite_reciprocal_sum_ne_top via tsum→Finset.sum conversion + ENNReal.sum_lt_top. oddCycleLengths_pos via three_le_length. infinite_odd_cycle_lengths by contradiction combining both",
       "startLine": 66,
-      "endLine": 119,
+      "endLine": 120,
       "mathContext": "Three results proved from the axiom: (1) $|S| < \\infty \\implies \\sum_{n \\in S} 1/n < \\infty$, (2) $n \\in \\mathcal{C}_{\\text{odd}} \\implies n \\geq 3$, (3) $\\chi(G) = \\infty \\implies |\\mathcal{C}_{\\text{odd}}(G)| = \\infty$."
     },
     {
@@ -90,7 +91,7 @@
       "title": "Open Density Conjectures (Erdős 1981, 1995-96)",
       "summary": "upperDensity via Filter.limsup of |S ∩ [1,N]|/N. UpperDensityConjecture: d̄ > 0. HalfDensityConjecture: d̄ ≥ 1/2. Both OPEN, strictly stronger than #57",
       "startLine": 121,
-      "endLine": 141,
+      "endLine": 142,
       "mathContext": "$\\overline{d}(S) = \\limsup_{N \\to \\infty} \\frac{|S \\cap [1,N]|}{N}$. Conjectures: $\\overline{d}(\\mathcal{C}_{\\text{odd}}) > 0$ (1981) and $\\overline{d}(\\mathcal{C}_{\\text{odd}}) \\geq 1/2$ (1995). Both OPEN."
     },
     {
@@ -98,7 +99,7 @@
       "title": "Bipartite Characterization (2 sorries)",
       "summary": "bipartite_iff_no_odd_cycles: G.IsBipartite ↔ oddCycleLengths G = ∅ (sorry). colorable_two_no_odd_cycles: IsColorable G 2 → empty odd cycles (sorry). Classical foundation for the chromatic-cycle connection",
       "startLine": 143,
-      "endLine": 153,
+      "endLine": 154,
       "mathContext": "$G \\text{ bipartite} \\iff \\mathcal{C}_{\\text{odd}}(G) = \\emptyset \\iff \\chi(G) \\leq 2$. The classical König characterization."
     },
     {

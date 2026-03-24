@@ -22,12 +22,13 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "assumptions": "5 axiom declarations: weird_70 (70 is weird), sigma_70 (sigma(70)=144), necessary_lower_bound (C must exceed 2), no_known_odd_weird (no odd weird found), odd_weird_abundancy_bound (no odd weird implies bound)",
-    "lineCount": 94
+    "lineCount": 94,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Benkoski and Erdős studied weird numbers—abundant numbers that are not semiperfect. The smallest weird number is 70. Erdős asked whether sufficiently high abundancy σ(n)/n forces semiperfectness, offering a $25 prize. The problem remains open. No odd weird number is known (Erdős Problem #470). Perfect numbers (σ(n) = 2n) have been studied since antiquity, and abundant numbers were classified by Nicomachus around 100 CE. Semiperfect numbers were introduced by Sierpinski in 1965, and Benkoski coined the term weird in 1972 for abundant numbers lacking a subset-sum representation using proper divisors.",
     "problemStatement": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n?",
-    "text": "Is there an absolute constant C > 0 such that every n with \u03c3(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
+    "text": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
     "proofStrategy": "The formalization defines divisor sums, proper divisors, semiperfectness, and weird numbers. It axiomatises the known lower bound C > 2 (from the counterexample n = 70) and the connection to odd weird numbers. The main conjecture and the strengthened C = 3 version are stated.",
     "keyInsights": [
       "A weird number is abundant but not semiperfect; 70 is the smallest",
@@ -45,7 +46,7 @@
       "id": "divisor-sum",
       "title": "Divisor Sum and Proper Divisors",
       "startLine": 20,
-      "endLine": 35,
+      "endLine": 36,
       "summary": "Definitions of σ(n), proper divisors, and abundant numbers.",
       "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. Proper divisors: $\\{d : d \\mid n,\\, d < n\\}$. $\\text{IsAbundant}(n) \\iff \\sigma(n) > 2n$ (equivalently, sum of proper divisors exceeds $n$)."
     },
@@ -53,7 +54,7 @@
       "id": "semiperfect-weird",
       "title": "Semiperfect and Weird Numbers",
       "startLine": 37,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "Semiperfectness (distinct sum of proper divisors equals n) and weirdness (abundant but not semiperfect).",
       "mathContext": "$\\text{IsSemiperfect}(n) \\iff \\exists S \\subseteq \\{d : d \\mid n,\\, d < n\\}: \\sum_{d \\in S} d = n$. $\\text{IsWeird}(n) \\iff \\text{IsAbundant}(n) \\wedge \\neg\\text{IsSemiperfect}(n)$."
     },
@@ -61,7 +62,7 @@
       "id": "abundancy",
       "title": "Abundancy Ratio",
       "startLine": 49,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "The abundancy index σ(n)/n as a rational number.",
       "mathContext": "$\\text{abundancy}(n) = \\sigma(n)/n \\in \\mathbb{Q}$. The abundancy index measures divisor density. Weird numbers are abundant ($\\sigma(n)/n > 2$) but resist subset-sum representation."
     },
@@ -69,7 +70,7 @@
       "id": "examples",
       "title": "Known Examples",
       "startLine": 54,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "70 is the smallest weird number with σ(70) = 144.",
       "mathContext": "$\\sigma(70) = 144$, proper divisors $\\{1, 2, 5, 7, 10, 14, 35\\}$, sum $= 74 > 70$. No subset of $\\{1,2,5,7,10,14,35\\}$ sums to $70$ (verified exhaustively over $2^7 = 128$ subsets)."
     },
@@ -77,7 +78,7 @@
       "id": "lower-bound",
       "title": "Lower Bound on C",
       "startLine": 61,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Any valid constant C must satisfy C > 2, demonstrated by n = 70.",
       "mathContext": "$C > 2$ is necessary: $\\sigma(70) = 144 > 2 \\cdot 70 = 140$ yet 70 is weird. So $C = 2$ fails. The conjectured threshold is $C = 3$."
     },
@@ -85,7 +86,7 @@
       "id": "odd-weird",
       "title": "Odd Weird Numbers",
       "startLine": 68,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "No odd weird number is known up to 10²¹. If none exist, weird numbers have abundancy < 4.",
       "mathContext": "No odd weird number known up to $10^{21}$ (Erdős Problem #470). If none exist, all weird numbers have even structure constraining abundancy $< 4$, implying $C = 3$ suffices."
     },
@@ -93,7 +94,7 @@
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 81,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Erdős Problem 825: weird numbers have bounded abundancy, conjecturally C = 3.",
       "mathContext": "$\\exists C > 2: \\forall n,\\, \\sigma(n) > Cn \\implies \\text{IsSemiperfect}(n)$. Strengthened: $C = 3$ suffices. Equivalently, every weird number has $\\sigma(n)/n < 3$. Erdős prize: \\$25."
     }
@@ -121,5 +122,21 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-824",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-826",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-824",
+    "erdos-826"
+  ]
 }

@@ -17,13 +17,12 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/566",
     "erdosUrl": "https://erdosproblems.com/566",
-    "relatedProofs": [
-      "erdos-567",
-      "erdos-565"
-    ],
     "axiomCount": 4,
     "badge": "axiom",
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "proofRepoPath": "Proofs/Erdos566Problem.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 101
   },
   "sections": [
     {
@@ -124,5 +123,42 @@
     "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
     "Bradač, Gishboliner & Sudakov (2024): Size Ramsey numbers of K₄-subdivisions",
     "https://erdosproblems.com/566"
+  ],
+  "leanFile": {
+    "lineCount": 101,
+    "structureCount": 1,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 2,
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-567",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory, size-ramsey"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-567",
+    "erdos-1014",
+    "erdos-1105"
   ]
 }

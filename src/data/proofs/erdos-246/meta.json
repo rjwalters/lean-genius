@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/246",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Coprime",
@@ -94,7 +94,7 @@
       "title": "Basic Definitions",
       "summary": "Power sets and completeness property",
       "startLine": 45,
-      "endLine": 70,
+      "endLine": 71,
       "mathContext": "$P(a,b) = \\{a^k b^l : k, l \\geq 0\\}$. Complete: $\\forall n \\geq N_0,\\, \\exists S \\subseteq P(a,b)$ distinct, $n = \\sum_{s \\in S} s$."
     },
     {
@@ -102,7 +102,7 @@
       "title": "Birch's Theorem (1959)",
       "summary": "Main result: coprime power sets are complete",
       "startLine": 72,
-      "endLine": 91,
+      "endLine": 92,
       "mathContext": "$\\gcd(a,b) = 1,\\, a,b \\geq 2 \\Rightarrow P(a,b)$ is complete (Birch 1959)."
     },
     {
@@ -110,7 +110,7 @@
       "title": "Cassels' Generalization",
       "summary": "Logarithmic density criterion",
       "startLine": 93,
-      "endLine": 105,
+      "endLine": 106,
       "mathContext": "Cassels criterion: if $|S \\cap [1,N]| \\gg (\\log N)^{1+\\epsilon}$, then $S$ is complete."
     },
     {
@@ -118,14 +118,14 @@
       "title": "Davenport's Observation",
       "summary": "Bounded l suffices",
       "startLine": 107,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "quantitative-bounds",
       "title": "Quantitative Bounds",
       "summary": "Hegyvári and Fang-Chen bounds",
       "startLine": 125,
-      "endLine": 139,
+      "endLine": 140,
       "mathContext": "Hegyvári (2000): $l \\leq 2^{2^{2^{2^{\\max(a,b)}}}}$. Fang-Chen (2017): $l \\leq 2^{2^{2^{\\max(a,b)}}}$."
     },
     {
@@ -133,28 +133,28 @@
       "title": "Yu's Result (2024)",
       "summary": "Large summands suffice",
       "startLine": 141,
-      "endLine": 151
+      "endLine": 152
     },
     {
       "id": "related-sequences",
       "title": "Related Complete Sequences",
       "summary": "Fibonacci, powers of 2, general criterion",
       "startLine": 153,
-      "endLine": 176
+      "endLine": 177
     },
     {
       "id": "non-complete",
       "title": "Non-Complete Sequences",
       "summary": "Single-base powers not complete",
       "startLine": 178,
-      "endLine": 194
+      "endLine": 195
     },
     {
       "id": "structure",
       "title": "Structure of Power Sets",
       "summary": "Counting, reciprocal sums, representations, greedy algorithm",
       "startLine": 196,
-      "endLine": 247
+      "endLine": 248
     },
     {
       "id": "summary",

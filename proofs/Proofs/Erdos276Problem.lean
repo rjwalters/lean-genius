@@ -56,11 +56,18 @@ axiom graham_construction :
   ∃ a : ℕ → ℕ,
     IsLucasSequence a ∧ IsPrimefree a ∧ Nat.Coprime (a 0) (a 1)
 
-/-- **Coprimality is necessary**: if gcd(a₀, a₁) = d > 1, then d
-    divides every term, making the sequence trivially composite. -/
-axiom coprime_necessary :
-  ∀ a : ℕ → ℕ, IsLucasSequence a →
-    ∀ d : ℕ, d ∣ a 0 → d ∣ a 1 → ∀ k, d ∣ a k
+/-- **GCD propagation**: if d divides both a₀ and a₁, then d divides
+    every term. Proof: two-step induction using a_{n+2} = a_{n+1} + a_n. -/
+theorem gcd_propagation (a : ℕ → ℕ) (hluc : IsLucasSequence a)
+    (d : ℕ) (h0 : d ∣ a 0) (h1 : d ∣ a 1) : ∀ k, d ∣ a k := by
+  suffices ∀ k, d ∣ a k ∧ d ∣ a (k + 1) from fun k => (this k).1
+  intro k
+  induction k with
+  | zero => exact ⟨h0, h1⟩
+  | succ n ih => exact ⟨ih.2, hluc n ▸ dvd_add ih.2 ih.1⟩
+
+/- Note: gcd_propagation also implies that HasNoUniversalDivisor → Coprime(a₀, a₁)
+   by contrapositive. Any d > 1 dividing gcd(a₀, a₁) would divide all terms. -/
 
 /- ## Covering Congruence Mechanism -/
 

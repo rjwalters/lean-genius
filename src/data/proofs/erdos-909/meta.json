@@ -21,7 +21,7 @@
     "erdosNumber": 909,
     "erdosUrl": "https://erdosproblems.com/909",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "TopologicalSpace",
@@ -81,35 +81,35 @@
       "id": "covering-dimension",
       "title": "Covering Dimension",
       "startLine": 27,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Axiomatizes coveringDimension X n (dim ≤ n), defines hasDimensionExactly with n > 0 guard, and axiomatizes the product inequality dim(X×Y) ≤ dim(X)+dim(Y)."
     },
     {
       "id": "problem-statement",
       "title": "Formal Problem Statement",
       "startLine": 53,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines erdos909Statement: ∀ n ≥ 1, ∃ S with TopologicalSpace, hasDimensionExactly S n ∧ hasDimensionExactly (S×S) n."
     },
     {
       "id": "n-equals-1",
       "title": "Known Results for n=1",
       "startLine": 64,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Axiomatizes rational_hilbert_example: ℓ²(ℚ) has dim = 1 and dim of square = 1. Classical example predating the general result."
     },
     {
       "id": "anderson-keisler",
       "title": "Anderson-Keisler Theorem (1967)",
       "startLine": 76,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "Axiomatizes the main result: ∀ n ≥ 1, ∃ separable metric S with dim(S) = n ∧ dim(S×S) = n. Proves erdos_909 by dropping MetrizableSpace witness."
     },
     {
       "id": "supporting-results",
       "title": "Supporting Results",
       "startLine": 102,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Background: dimension_euclidean (dim(ℝ^n) = n) and dimension_subspace (monotonicity: Y ⊆ X → dim(Y) ≤ dim(X))."
     },
     {
@@ -145,5 +145,15 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: solved, topology"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-780"
+  ]
 }

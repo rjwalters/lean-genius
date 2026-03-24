@@ -25,7 +25,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -85,49 +85,49 @@
       "title": "Basic Definitions",
       "summary": "isBipartite, isGFree definitions",
       "startLine": 42,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "extremal-numbers",
       "title": "Extremal Numbers",
       "summary": "extremalNumber axiom and bound",
       "startLine": 62,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "asymptotic-growth",
       "title": "Asymptotic Growth",
       "summary": "hasPowerLawGrowth, hasPowerLawOrder definitions",
       "startLine": 77,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "main-questions",
       "title": "The Main Questions",
       "summary": "Strong, weak, and rationality questions",
       "startLine": 95,
-      "endLine": 122
+      "endLine": 123
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "Kővári-Sós-Turán, complete bipartite bounds and exponent",
       "startLine": 124,
-      "endLine": 150
+      "endLine": 151
     },
     {
       "id": "original-conjecture",
       "title": "Erdős's Original Conjecture (Disproved)",
       "summary": "erdosOriginalConjecture definition and Erdős-Simonovits counterexample",
       "startLine": 152,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "hypergraph",
       "title": "Hypergraph Counterexamples",
       "summary": "Frankl-Füredi-Gerbner results for k ≥ 5",
       "startLine": 170,
-      "endLine": 186
+      "endLine": 187
     },
     {
       "id": "summary",
@@ -165,5 +165,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1021",
+    "erdos-111",
+    "erdos-23"
+  ]
 }

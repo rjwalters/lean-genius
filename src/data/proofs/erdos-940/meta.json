@@ -58,21 +58,10 @@
       "cubes_subset_cubefull: proved cubes ⊆ cubefull",
       "status_summary: proved conjunction of known results"
     ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-941",
-        "relationship": "companion",
-        "description": "Problem #941 focuses specifically on Heath-Brown's theorem that all large integers are sums of ≤3 squarefull numbers, which is axiomatized in this formalization"
-      },
-      {
-        "targetId": "erdos-935",
-        "relationship": "complementary",
-        "description": "Problem #935 examines the 'powerful part' (r-powerful component) of consecutive products, while #940 studies sums of r-powerful numbers — both probe the additive/multiplicative structure of powerful numbers"
-      }
-    ],
     "axiomCount": 2,
     "lineCount": 339,
-    "assumptions": "2 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "2 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #940: Density of Sums of r-Powerful Numbers**\n\nThis problem was posed by Erdős and Ivić, recorded in the 1986 Oberwolfach problem book, with roots in Erdős's 1976 paper on consecutive integers [Er76d]. It asks a fundamental question about the additive structure of powerful numbers.\n\n**Historical Timeline:**\n- 1976: Erdős claimed the $r = 2$ case was 'easy' and sketched a counting argument\n- 1986: Problem recorded in the Oberwolfach problem book (Erdős-Ivić)\n- 1986: Schinzel discovered an error in Erdős's original counting argument\n- 1988: Heath-Brown proved all large integers are sums of $\\le 3$ squarefull numbers (ternary quadratic forms)\n- 1994: Baker and Brüdern gave the first rigorous proof that sums of $\\le 2$ squarefull numbers have density 0\n\n**The Central Phenomenon:** There is a remarkable phase transition at 2-to-3 summands for squarefull numbers. With 2 summands, the representable set has density 0 (Baker-Brüdern). With 3 summands, all large integers are representable (Heath-Brown). The main conjecture asks whether a similar density-0 result holds for the diagonal case ($r$ summands of $r$-powerful numbers) when $r \\ge 3$.\n\n**Why is it hard?** The counting function for $r$-powerful numbers up to $N$ is $\\sim c_r N^{1/r}$. Naively, $r$ summands give $O(N^{r \\cdot 1/r}) = O(N)$ representations — exactly the boundary between sparse and dense! Proving $o(N)$ requires understanding cancellation in the overlap of different sum decompositions, which defeated Erdős's original approach.",
@@ -99,77 +88,77 @@
       "title": "r-Powerful Numbers",
       "summary": "Defines `isPowerful r n` ($n \\neq 0$ and $\\forall p$ prime, $p \\mid n \\Rightarrow p^r \\mid n$). Proves `one_isPowerful`, `zero_not_isPowerful`, and `power_isPowerful` ($n^r$ is $r$-powerful via `Nat.Prime.dvd_of_dvd_pow`).",
       "startLine": 39,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "sums-set",
       "title": "The Set of Sums",
       "summary": "Defines `SumsOfPowerful r k` using `Multiset` sums and `DiagonalSums r = SumsOfPowerful r r`. Proves `zero_mem_SumsOfPowerful` (empty sum) and `one_mem_SumsOfPowerful` (sum of just 1).",
       "startLine": 78,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "density",
       "title": "Natural Density",
       "summary": "Defines `countingFunction A N = |A \\cap [0,N]|$, `HasDensity A d$ via `Filter.Tendsto`, and `HasDensityZero` as density 0.",
       "startLine": 106,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "States `erdos_940_conjecture`: $\\forall r \\ge 3$, $\\text{DiagonalSums}(r)$ has density 0. Also `erdos_940_infinitely_many` (complement is infinite) and `conjecture_implies_infinite` (1 sorry).",
       "startLine": 119,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "squarefull",
       "title": "The Squarefull Case (r = 2)",
       "summary": "Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Brüdern (1994) proved this 18 years after Erdős called it 'easy'.",
       "startLine": 144,
-      "endLine": 159
+      "endLine": 160
     },
     {
       "id": "heath-brown",
       "title": "Heath-Brown's Representation Theorem",
       "summary": "Axiomatizes `heath_brown_theorem`: $\\forall^\\infty n$, $n \\in \\text{SumsOfPowerful}(2, 3)$. All large integers are sums of $\\le 3$ squarefull numbers (1988, ternary quadratic forms).",
       "startLine": 161,
-      "endLine": 180
+      "endLine": 181
     },
     {
       "id": "cubefull",
       "title": "The Cubefull Case and Three Cubes",
       "summary": "States `three_cubes_conjecture` (OPEN). Proves `cubes_subset_cubefull` ($n^3$ is 3-powerful). Defines `cubefull_conjecture` ($r = 3$ case).",
       "startLine": 182,
-      "endLine": 203
+      "endLine": 204
     },
     {
       "id": "universal",
       "title": "The Large Integer Representation Question",
       "summary": "States `universal_representation_conjecture`: $\\forall r \\ge 2$, $\\forall^\\infty n$, $n \\in \\text{DiagonalSums}(r)$. OPEN even for $r = 2$ (diagonal case).",
       "startLine": 205,
-      "endLine": 223
+      "endLine": 224
     },
     {
       "id": "relationship",
       "title": "Relationship Between the Questions",
       "summary": "Proves `status_summary`: Baker-Brüdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases.",
       "startLine": 225,
-      "endLine": 247
+      "endLine": 248
     },
     {
       "id": "examples",
       "title": "Examples and Computations",
       "summary": "Concrete proofs: $4 = 2^2$ is squarefull, $8 = 2^3$ is cubefull, $72 = 2^3 \\cdot 3^2$ is squarefull. All use `interval_cases` and `simp_all`.",
       "startLine": 249,
-      "endLine": 280
+      "endLine": 281
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Defines connections to Erdős #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal).",
       "startLine": 282,
-      "endLine": 294
+      "endLine": 339
     }
   ],
   "conclusion": {
@@ -201,5 +190,27 @@
     "axiomCount": 2,
     "theoremCount": 10,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1107",
+    "erdos-1110",
+    "erdos-1136"
+  ]
 }

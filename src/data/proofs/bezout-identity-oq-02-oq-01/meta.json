@@ -69,12 +69,13 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 257,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Euclid's Elements, Book IX, Proposition 14** states: 'If a number be the least that is measured by prime numbers, it will not be measured by any other prime number except those originally measuring it.' This is the uniqueness of prime factorization, proved by Euclid himself using what we now call Euclid's Lemma (Elements VII.30).\n\n**Carl Friedrich Gauss** gave the first modern complete proof of the Fundamental Theorem of Arithmetic in his *Disquisitiones Arithmeticae* (1801, Article 16), establishing both existence and uniqueness with full rigor for all positive integers.\n\nThe modern algebraic perspective reveals that FTA holds in any **Unique Factorization Domain (UFD)**. The key ingredient is always some form of Euclid's Lemma: if an irreducible element divides a product, it divides one factor. In ℤ, this follows from Bézout's identity; in polynomial rings, from the Euclidean algorithm for polynomials.\n\nThis formalization makes the proof chain completely explicit in Lean 4: **Bézout's Identity** (encoded as `IsCoprime` / `Nat.Coprime`) → **Euclid's Lemma** (`euclids_lemma_prime`) → **FTA Uniqueness** (`fta_uniqueness`) → **Full FTA** (`fta_from_euclid`).",
     "problemStatement": "**Open Question (bezout-identity-oq-02-oq-01)**: Can the Fundamental Theorem of Arithmetic be derived by building explicitly on the `euclids_lemma_prime` result from BezoutIdentityOQ02?\n\n**Answer: YES.**\n\nFor every `n ≥ 2`, there exists a list `l` of primes such that:\n- All elements of `l` are prime\n- `l.prod = n`  \n- Any other prime list `l'` with `l'.prod = n` satisfies `l'.Perm l`\n\nThe uniqueness proof uses `euclids_lemma_prime` at its core, making the Bézout connection transparent.",
-    "text": "The Fundamental Theorem of Arithmetic (unique prime factorization) derived explicitly from euclids_lemma_prime. The proof chain: Bézout → Euclid's Lemma → FTA Uniqueness. The uniqueness half of FTA is proved via induction, with euclids_lemma_prime as the key step showing a prime divides exactly one factor in a prime product.",
+    "text": "A 257-line formalization of the Fundamental Theorem of Arithmetic derived from Euclid's lemma. The proof chain is: Bézout's identity $\\Rightarrow$ `euclids_lemma_prime` ($p \\mid ab, p \\nmid a \\Rightarrow p \\mid b$, via `Coprime.dvd_of_dvd_mul_left`) $\\Rightarrow$ `prime_dvd_of_dvd_list_prod` (by induction on the list) $\\Rightarrow$ `prime_mem_of_dvd_prime_list` ($p$ dividing a product of primes must equal one of them) $\\Rightarrow$ `fta_uniqueness` (two prime lists with equal products are permutations, by induction removing matched primes). Existence uses Mathlib's `Nat.primeFactorsList`. The combined `fta_from_euclid` gives both existence and uniqueness. Corollaries include `prime_factor_count_unique` (unique multiplicities) and `no_finite_list_contains_all_primes` (infinitude of primes as an FTA consequence). Fully verified: 0 sorries, 0 axioms.",
     "proofStrategy": "The proof proceeds in five stages:\n\n**Stage 1 (euclids_lemma_prime)**: One line via `Nat.Coprime.dvd_of_dvd_mul_left`. If `p ∤ a`, then `gcd(p,a) = 1` by `Nat.Prime.coprime_iff_not_dvd`, so `p ∣ b`.\n\n**Stage 2 (prime_dvd_of_dvd_list_prod)**: Induction on the list. Base: p | 1 contradicts p.Prime. Step: p | (hd * tl.prod), so p | hd or p | tl.prod by `hp.dvd_mul`. In the second case, apply induction.\n\n**Stage 3 (prime_mem_of_dvd_prime_list)**: Combine Stage 2 with primality: if x is prime and p | x, then p = x (since both are ≥ 2 and the only divisors of a prime are 1 and itself).\n\n**Stage 4 (fta_uniqueness)**: Induction on l₁. Empty case: if l₂ has primes with product 1, it must be empty. Cons case: p (head of l₁) divides l₂.prod, so p ∈ l₂ by Stage 3. Remove p from l₂ to get l₂', show products equal, apply induction.\n\n**Stage 5 (fta_from_euclid)**: Existence via `Nat.primeFactorsList`. Uniqueness by applying `fta_uniqueness` to any competing prime list.",
     "keyInsights": [
       "**Euclid's Lemma IS the key step**: FTA Uniqueness is exactly what requires Euclid's Lemma. Without it, we can prove existence (every number is a product of primes) but not uniqueness.",
@@ -134,7 +135,7 @@
       "id": "consequences",
       "title": "Consequences: Unique Multiplicities and Infinite Primes",
       "startLine": 226,
-      "endLine": 255,
+      "endLine": 257,
       "summary": "prime_factor_count_unique: if two prime lists have the same product, they have the same count of each prime (via Perm.count_eq). no_finite_list_contains_all_primes: for any finite list of primes, there exists a prime not in the list (using Nat.exists_infinite_primes and List.le_sum_of_mem)."
     }
   ],
@@ -174,6 +175,29 @@
     "bezout-identity",
     "fundamental-arithmetic",
     "infinitude-primes"
+  ],
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Books VII and IX",
+      "year": "-300",
+      "venue": "~300 BCE",
+      "note": "Book VII Proposition 30 (Euclid's lemma) and Book IX Proposition 14 (fundamental theorem of arithmetic) — the first statements and proofs of unique prime factorization"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Gerhard Fleischer, Leipzig, §16",
+      "note": "First fully rigorous proof of the fundamental theorem of arithmetic. Gauss recognized that Euclid's proof of VII.30 required the well-ordering principle and gave a complete argument via strong induction"
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition, Chapters 1-2",
+      "note": "Standard treatment of the proof chain from the Euclidean algorithm through Bézout's identity and Euclid's lemma to unique prime factorization"
+    }
   ],
   "leanFile": {
     "imports": [

@@ -31,7 +31,8 @@
       "Goldbach conjecture and related results",
       "Sieve methods in number theory"
     ],
-    "assumptions": "No axioms. 8 sorry(s) remain in the formalization."
+    "assumptions": "No axioms. 8 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Schnirelmann introduced his density notion in 1930 and proved that the primes form an additive basis — every sufficiently large integer is a bounded sum of primes. His density d_s(A) = inf_{N≥1} A(N)/N is more restrictive than natural density because it uses the true infimum rather than a limit, making it well-suited for additive combinatorics where worst-case control is essential.\n\nErdős posed Problem #35 in 1956 [Er56], conjecturing that if B is an additive basis of order k with 0 ∈ B, then d_s(A+B) ≥ α + α(1-α)/k where α = d_s(A). He had already proved a weaker version with 2k in the denominator in 1936 [Er36c], which was the first quantitative result connecting basis order to density increment. The factor-of-2 gap between Erdős's partial result and his conjecture remained open for over three decades.\n\nPlünnecke's 1970 paper [Pl70] resolved the problem by proving the strictly stronger inequality d_s(A+B) ≥ α^{1-1/k}. His proof used a novel graph-theoretic framework — directed layered graphs with vertex magnification properties — that was later simplified and popularized by Ruzsa in 1989. The power bound α^{1-1/k} dominates the conjectured bound α + α(1-α)/k on all of [0,1], as can be verified by the concavity of x^p for p ∈ (0,1).\n\nThe Plünnecke–Ruzsa inequality has since become one of the cornerstones of additive combinatorics, with far-reaching applications to sumset estimates, Freiman's theorem, and the polynomial Freiman–Ruzsa conjecture (recently resolved by Gowers, Green, Manners, and Tao in 2023). Erdős Problem #35 thus served as a catalyst for a major line of research in modern combinatorial number theory.",
@@ -58,35 +59,35 @@
       "title": "Schnirelmann Density",
       "summary": "Defines the counting function A(N) = |A ∩ {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N≥1} A(N)/N via Lean's iInf over a subtype. Introduces notation d_s for schnirelmannDensity.",
       "startLine": 37,
-      "endLine": 52
+      "endLine": 53
     },
     {
       "id": "additive-basis",
       "title": "Additive Bases",
       "summary": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold sum with m ≤ k). Also defines exact order requiring minimality.",
       "startLine": 54,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "basic-props",
       "title": "Basic Properties",
       "summary": "Proves d_s(A) ≥ 0 (fully proved via iInf_nonneg and case analysis), states d_s(A) ≤ 1 (1 sorry: needs countingFunction A 1 ≤ 1), the density ratio at N=1 for 1 ∈ A (1 sorry), and monotonicity d_s(A) ≤ d_s(A+B) when 0 ∈ B (1 sorry: needs A ⊆ A+B argument).",
       "startLine": 78,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "erdos-1936",
       "title": "Erdős 1936 Result",
       "summary": "States Erdős's original 1936 partial result: d_s(A+B) ≥ α + α(1-α)/(2k). This was the first quantitative bound but with a factor-of-2 gap from the conjecture. Axiomatized with sorry.",
       "startLine": 113,
-      "endLine": 122
+      "endLine": 123
     },
     {
       "id": "plunnecke",
       "title": "Plünnecke's Inequality",
       "summary": "States the key 1970 result d_s(A+B) ≥ α^{1-1/k} and the bridge calculus lemma α^{1-1/k} ≥ α + α(1-α)/k. The power bound uses concavity of x^p for p ∈ (0,1). Both axiomatized with sorry.",
       "startLine": 124,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "main-theorem",
@@ -100,14 +101,14 @@
       "title": "Basis of Order 1",
       "summary": "Proves that a basis of order 1 containing 0 must be all of ℕ. Uses interval_cases on the at-most-1 bound to show every n ∈ B. This is a fully proved result with no sorries.",
       "startLine": 164,
-      "endLine": 175
+      "endLine": 176
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "Defines squares = {n² : n ∈ ℕ} and primesWithOne = {1} ∪ {p : p prime}. States squares form a basis of order 4 (Lagrange's four-square theorem) and primes with 1 form a basis of order 3 (conditional on Goldbach). Both axiomatized with sorry.",
       "startLine": 177,
-      "endLine": 190
+      "endLine": 225
     }
   ],
   "conclusion": {

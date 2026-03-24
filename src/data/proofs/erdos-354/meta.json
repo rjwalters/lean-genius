@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/354",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Int.floor",
@@ -83,63 +83,63 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 34,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "FloorSeq, floorSeqTerm, IsRepresentable, IsComplete, IsDyadicRational."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 67,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "Non-negativity, unboundedness, eventual monotonicity."
     },
     {
       "id": "hegyvari",
       "title": "Hegyvári's Results (1989)",
       "startLine": 87,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "Positive result for dyadic + non-dyadic; negative result for α ≥ 2, β = 2ᵏα."
     },
     {
       "id": "van-doorn",
       "title": "Van Doorn's Result",
       "startLine": 110,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Completeness when α < 2 < β < 3."
     },
     {
       "id": "recent-negative",
       "title": "Recent Negative Results",
       "startLine": 123,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "Jiang-Ma (2024) and Fang-He (2025) extensions."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 140,
-      "endLine": 176,
+      "endLine": 177,
       "summary": "The general question and its known falsity; refined conjecture."
     },
     {
       "id": "representation",
       "title": "Representation Properties",
       "startLine": 178,
-      "endLine": 199,
+      "endLine": 200,
       "summary": "Zero representable, term representability, closure under addition."
     },
     {
       "id": "measure",
       "title": "Measure-Theoretic Results",
       "startLine": 201,
-      "endLine": 216,
+      "endLine": 217,
       "summary": "Positive density, generic completeness."
     },
     {
       "id": "binary",
       "title": "Binary Representations",
       "startLine": 218,
-      "endLine": 231,
+      "endLine": 232,
       "summary": "α = 1 gives powers of 2; α = β = 1 is complete (binary)."
     },
     {
@@ -175,5 +175,27 @@
     "axiomCount": 18,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-11",
+    "erdos-1103",
+    "erdos-1107"
+  ]
 }

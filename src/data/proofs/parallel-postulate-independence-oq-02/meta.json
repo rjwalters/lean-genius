@@ -50,7 +50,8 @@
     "historicalContext": "For over 2000 years mathematicians attempted to prove Euclid's Fifth Postulate from the other axioms. Bolyai (1832) and Lobachevsky (1829) independently developed hyperbolic geometry. Beltrami (1868) proved its consistency by constructing models within Euclidean geometry. The Beltrami-Klein model uses the open unit disk with chords as lines, making the hyperbolic parallel property visually intuitive: through any interior point not on a chord, multiple non-intersecting chords exist.",
     "axiomCount": 1,
     "lineCount": 453,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -58,56 +59,56 @@
       "title": "Beltrami-Klein Disk Model",
       "summary": "Defines DiskPoint (open unit disk), Chord (line restricted to disk), OnChord (incidence), and ChordParallel (no common disk point).",
       "startLine": 24,
-      "endLine": 52
+      "endLine": 53
     },
     {
       "id": "concrete-constructions",
       "title": "Concrete Constructions",
       "summary": "Defines the x-axis chord, point P = (0, 1/2), and two parallel chords par₁ (slope 1/4) and par₂ (slope -1/4).",
       "startLine": 54,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "verification",
       "title": "Incidence and Parallelism Verification",
       "summary": "Proves P is not on xaxis, P lies on both parallels, parallels are distinct, and each parallel doesn't intersect xaxis in the disk.",
       "startLine": 91,
-      "endLine": 131
+      "endLine": 132
     },
     {
       "id": "hyperbolic-parallel",
       "title": "Hyperbolic Parallel Property",
       "summary": "Assembles the existential witness: chord xaxis, point P, and two distinct parallel chords through P.",
       "startLine": 133,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "pp-violation",
       "title": "Parallel Postulate Violation",
       "summary": "Defines Playfair's axiom for the BK model and proves it fails: uniqueness is contradicted by the two parallels.",
       "startLine": 148,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "incidence-axioms",
       "title": "Incidence Axiom Verification",
       "summary": "Proves three non-collinear points exist (O, A, B), disk nontriviality, and axiomatizes two-point-determine-chord and chord-has-two-points.",
       "startLine": 170,
-      "endLine": 199
+      "endLine": 200
     },
     {
       "id": "independence",
       "title": "Independence Theorem",
       "summary": "Combines Euclidean (axiomatized) and Beltrami-Klein (proved) models to establish that the parallel postulate is independent.",
       "startLine": 201,
-      "endLine": 228
+      "endLine": 229
     },
     {
       "id": "additional",
       "title": "Additional Geometric Facts",
       "summary": "Euclidean-parallel chords are BK-parallel; example of a non-parallel secant crossing xaxis inside the disk.",
       "startLine": 230,
-      "endLine": 270
+      "endLine": 453
     }
   ],
   "overview": {

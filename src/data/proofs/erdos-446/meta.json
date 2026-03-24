@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/446",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.log",
@@ -82,35 +82,35 @@
       "title": "Basic Definitions",
       "summary": "hasDivisorInInterval, delta, divisorCount, deltaR, delta_decomposition",
       "startLine": 37,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "alpha",
       "title": "The Constant α",
       "summary": "Definition and numerical bounds for α ≈ 0.08607",
       "startLine": 75,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "historical",
       "title": "Historical Results",
       "summary": "Besicovitch 1934, Erdős 1935, Erdős 1960 axioms",
       "startLine": 85,
-      "endLine": 105
+      "endLine": 106
     },
     {
       "id": "ford",
       "title": "Ford's Resolution (2008)",
       "summary": "ford_2008_main, ford_2008_disproof, ford_2008_general axioms",
       "startLine": 107,
-      "endLine": 129
+      "endLine": 130
     },
     {
       "id": "examples",
       "title": "Key Examples",
       "summary": "prime_no_divisor theorem",
       "startLine": 131,
-      "endLine": 141
+      "endLine": 142
     },
     {
       "id": "summary",
@@ -144,5 +144,27 @@
     "axiomCount": 12,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-427",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-459",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotic-density, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-728",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-427",
+    "erdos-459",
+    "erdos-728"
+  ]
 }

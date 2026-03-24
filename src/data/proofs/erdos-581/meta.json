@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/581",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Adj",
@@ -84,49 +84,49 @@
       "title": "Basic Definitions",
       "summary": "IsTriangleFree, IsBipartite, edgeCount, IsSubgraph",
       "startLine": 33,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "f-function",
       "title": "The Function f(m)",
       "summary": "maxBipartiteEdges axiom, f axiom",
       "startLine": 71,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "summary": "half_edges_bipartite: any graph has m/2 bipartite edges",
       "startLine": 96,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "alon-upper",
       "title": "Alon's Upper Bound",
       "summary": "f(m) ≤ m/2 + c₂·m^{4/5}, constant c₂",
       "startLine": 113,
-      "endLine": 140
+      "endLine": 141
     },
     {
       "id": "alon-lower",
       "title": "Alon's Lower Bound",
       "summary": "f(m) ≥ m/2 + c₁·m^{4/5}, constant c₁",
       "startLine": 142,
-      "endLine": 169
+      "endLine": 170
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Characterization",
       "summary": "ThetaBound definition, alon_main_theorem",
       "startLine": 171,
-      "endLine": 195
+      "endLine": 196
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "general_graph_bound, Mantel's theorem, Kővári-Sós-Turán",
       "startLine": 197,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "main-results",
@@ -164,5 +164,27 @@
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, solved, triangle-free"
+    },
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory, triangle-free"
+    },
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, extremal-combinatorics, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-134",
+    "erdos-23",
+    "erdos-1021"
+  ]
 }

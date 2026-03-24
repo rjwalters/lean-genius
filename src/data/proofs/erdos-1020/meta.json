@@ -24,7 +24,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 11,
     "lineCount": 238,
-    "assumptions": "11 axiom(s) and 3 sorry(s). See the Lean source for details."
+    "assumptions": "11 axiom(s) and 3 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this conjecture around 1965, asking for the maximum number of edges in an r-uniform hypergraph on n vertices with no k pairwise disjoint edges. For ordinary graphs (r=2), the answer was already known: the Erdős-Gallai theorem (1959) gives the exact value as max(C(2k-1,2), n(k-1) - C(k,2)). For r≥3, Erdős conjectured that the extremum is always achieved by one of two natural constructions: either taking all r-subsets of a (rk-1)-element set (too few vertices for k disjoint r-edges), or taking all r-subsets meeting a fixed (k-1)-element set (a 'sunflower' obstruction). The problem attracted decades of work. Kleitman (1968) proved an early upper bound. Bollobás, Daykin, and Erdős made further partial progress. Frankl (1987) proved the influential upper bound f(n;r,k) ≤ (k-1)·C(n-1,r-1) using the shifting technique. A major breakthrough came when Łuczak and Mieczkowska (2014) confirmed the conjecture for r=3 (3-uniform hypergraphs) using a sophisticated container method argument. Huang, Loh, and Sudakov (2012) proved the conjecture for sufficiently large n (n ≥ 3kr²) using dependent random choice. Frankl (2013, 2017) obtained further improvements. Despite this progress, the general conjecture remains open for r≥4 and is considered one of the most important problems in extremal set theory.",
@@ -53,84 +54,84 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure",
       "startLine": 1,
-      "endLine": 39
+      "endLine": 40
     },
     {
       "id": "basics",
       "title": "Hypergraph Basics",
       "summary": "Definitions of r-uniform hypergraphs (RUniformHypergraph) and matchings (IsMatching) as collections of pairwise disjoint edges",
       "startLine": 41,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "function",
       "title": "The Function f(n; r, k)",
       "summary": "Definition of erdosMatchingFunction as the supremum of edge counts over r-uniform hypergraphs on n vertices avoiding k-matchings",
       "startLine": 69,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "formula",
       "title": "The Conjectured Formula",
       "summary": "Two extremal constructions: complete r-graph on rk-1 vertices and (k-1)-sunflower construction, with conjecture that f equals their maximum",
       "startLine": 81,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "r2",
       "title": "The Case r = 2 (Graphs)",
       "summary": "Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))",
       "startLine": 101,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "r3",
       "title": "The Case r = 3",
       "summary": "Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods",
       "startLine": 117,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "partial",
       "title": "Partial Results",
       "summary": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n ≥ 3kr²)",
       "startLine": 128,
-      "endLine": 148
+      "endLine": 149
     },
     {
       "id": "upper",
       "title": "Upper Bounds",
       "summary": "Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound",
       "startLine": 150,
-      "endLine": 164
+      "endLine": 165
     },
     {
       "id": "lower",
       "title": "Lower Bounds",
       "summary": "Construction-based lower bounds establishing the conjectured value as achievable",
       "startLine": 166,
-      "endLine": 188
+      "endLine": 189
     },
     {
       "id": "mono",
       "title": "Monotonicity",
       "summary": "f(n;r,k) is non-decreasing in n and k: adding vertices or relaxing the matching condition cannot decrease the extremal number",
       "startLine": 190,
-      "endLine": 200
+      "endLine": 201
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
       "summary": "Large n regime where the sunflower construction dominates and asymptotic analysis of the extremal function",
       "startLine": 202,
-      "endLine": 217
+      "endLine": 218
     },
     {
       "id": "open",
       "title": "The Open Problem",
       "summary": "Statement that the conjecture remains open for r ≥ 4, with summary of known partial results and current state",
       "startLine": 219,
-      "endLine": 231
+      "endLine": 238
     }
   ],
   "conclusion": {

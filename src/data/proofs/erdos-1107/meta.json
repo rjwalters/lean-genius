@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/1107",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors",
@@ -67,42 +67,42 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Module documentation explaining the problem, its history, and Mathlib imports for prime factorization and filters."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 34,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Define IsFull (r-powerful) and SumOfRPowerful predicates."
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 67,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "Prove basic facts: 0 and 1 are r-powerful, every number is 0-powerful and 1-powerful, and the monotonicity lemma."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 96,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Verify that 4, 8, 9, and 36 are 2-powerful using native_decide."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
       "startLine": 111,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "State the main conjecture (open) and Heath-Brown's theorem for r=2 as axioms."
     },
     {
       "id": "verified-sums",
       "title": "Verified Sum Examples",
       "startLine": 140,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "Prove that 13 and 17 can be written as sums of squareful numbers."
     }
   ],

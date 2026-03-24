@@ -41,12 +41,13 @@
       "Quadratic residues and Fermat's descent",
       "Sum of squares representations and unique factorization",
       "Waring's problem and additive number theory"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Lagrange's four squares theorem was proved by Joseph-Louis Lagrange in 1770, building on earlier work by Euler. The result answered a question that had puzzled mathematicians since antiquity: Diophantus had noted around 250 CE that certain numbers seemed to require many squares.\n\nThe deeper story involves one of mathematics' greatest coincidences: Euler discovered the four-square identity in 1748, showing that the product of two sums-of-four-squares is itself a sum of four squares. Nearly a century later, Hamilton discovered quaternions in 1843. The four-square identity IS quaternion multiplication! The norm of a product equals the product of norms.\n\nThis explains WHY four squares work when three don't: quaternions form a division algebra, but there is no 3-dimensional division algebra (proved by Frobenius in 1877). The algebraic structure that makes four squares work simply doesn't exist for three.\n\nAs one reviewer put it: \"The four squares theorem is astounding, it says something utterly profound about the universe... that's what binds the galaxies together.\"",
     "problemStatement": "Theorem (Lagrange, 1770): Every natural number n can be written as the sum of four squares:\n\n$$n = a^2 + b^2 + c^2 + d^2$$\n\nfor some non-negative integers a, b, c, d.\n\nKey contrast: While every number is a sum of four squares, NOT every number is a sum of three squares. Numbers of the form $4^k(8m + 7)$ (such as 7, 15, 23, 28, ...) require all four squares.",
-    "text": "Every natural number can be expressed as the sum of four squares, a profound result connecting number theory to quaternion algebra.",
+    "text": "A 398-line axiomatized formalization of Lagrange's Four Squares Theorem (Wiedijk #19) with 9 axioms encoding the deep number-theoretic content. The core statement `four_squares` asserts $\\forall n \\in \\mathbb{N}, \\exists a\\,b\\,c\\,d \\in \\mathbb{Z},\\; n = a^2 + b^2 + c^2 + d^2$, wrapping Mathlib's `Nat.sum_four_squares`. Euler's four-square identity — showing that sums-of-four-squares are closed under multiplication — is the algebraic heart, equivalent to the multiplicativity of the quaternion norm $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$. The formalization includes the three-squares obstruction ($4^a(8b+7)$ cannot be represented as a sum of three squares), Jacobi's exact formula $r_4(n) = 8 \\sum_{4 \\nmid d | n} d$ for the number of representations, and connections to the Hurwitz quaternion order. Commentary explains why four squares succeeds where three fails: the quaternions $\\mathbb{H}$ form a division algebra, but no 3-dimensional normed division algebra exists (Hurwitz's 1, 2, 4, 8 theorem).",
     "proofStrategy": "The proof uses Euler's four-square identity and a descent argument:\n\n1. **Euler's Identity**: Show that $(a^2 + b^2 + c^2 + d^2)(x^2 + y^2 + z^2 + w^2) = A^2 + B^2 + C^2 + D^2$ where A, B, C, D are explicit bilinear combinations. This means we only need to prove the theorem for primes.\n\n2. **Primes**: For each prime p, find some multiple mp (with m < p) that is a sum of four squares. This uses properties of quadratic residues.\n\n3. **Descent**: If m > 1, show we can find a smaller multiple. This is the technical heart of the proof.\n\n4. **Conclusion**: By descent, m = 1, so p itself is a sum of four squares.\n\n5. **Extension**: Use Euler's identity to extend from primes to all naturals via unique factorization.",
     "keyInsights": [
       "**Quaternion connection**: Euler's four-square identity IS quaternion multiplication: $|q_1 \\cdot q_2|^2 = |q_1|^2 \\cdot |q_2|^2$. This was discovered 95 years before Hamilton's quaternions (1843).",
@@ -68,7 +69,7 @@
       "id": "euler-identity",
       "title": "Euler's Four-Square Identity",
       "startLine": 44,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "The key algebraic identity showing the product of two sums-of-four-squares is itself a sum of four squares. This is quaternion norm multiplicativity.",
       "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = A^2+B^2+C^2+D^2$ where $A,B,C,D$ are bilinear in $(a,b,c,d)$ and $(x,y,z,w)$. This is $|q_1 \\cdot q_2|^2 = |q_1|^2 |q_2|^2$ for quaternions."
     },
@@ -76,7 +77,7 @@
       "id": "three-vs-four",
       "title": "Why Four Squares and Not Three?",
       "startLine": 71,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Numbers of the form 4^k(8m+7) cannot be sums of three squares, but four always suffice.",
       "mathContext": "$n \\equiv 7 \\pmod{8}$ (e.g., $7, 15, 23$) cannot be written as $a^2 + b^2 + c^2$. Legendre's three-square theorem: $n = a^2+b^2+c^2 \\iff n \\neq 4^k(8m+7)$."
     },
@@ -84,7 +85,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 80,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Lagrange's theorem: every natural number is a sum of four squares. Uses Mathlib's Nat.sum_four_squares.",
       "mathContext": "`Nat.sum_four_squares`: $\\forall n \\in \\mathbb{N},\\, \\exists a,b,c,d \\in \\mathbb{N}: n = a^2 + b^2 + c^2 + d^2$. Waring's problem for $k=2$, $g(2) = 4$."
     },
@@ -92,7 +93,7 @@
       "id": "examples",
       "title": "Specific Examples",
       "startLine": 104,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "Concrete decompositions of small numbers, including the notorious 7 which needs all four squares.",
       "mathContext": "$7 = 1^2 + 1^2 + 1^2 + 2^2$ (needs 4 squares). $6 = 1^2 + 1^2 + 2^2 + 0^2$ (3 suffice). $15 = 1^2 + 1^2 + 2^2 + 3^2$ (needs 4)."
     },
@@ -100,7 +101,7 @@
       "id": "two-squares-connection",
       "title": "Connection to Two Squares Theorem",
       "startLine": 129,
-      "endLine": 138,
+      "endLine": 398,
       "summary": "Cross-reference to Fermat's Two Squares Theorem showing the contrast between universal four squares and restrictive two squares.",
       "mathContext": "Fermat: $n = a^2 + b^2 \\iff$ every prime $p \\equiv 3 \\pmod{4}$ divides $n$ to even power. Two squares is far more restrictive than four."
     }
@@ -140,6 +141,16 @@
       "targetId": "perfect-numbers",
       "relationship": "related",
       "description": "Both results connect to the multiplicative structure of $\\mathbb{N}$: Lagrange shows every $n$ decomposes as $a^2 + b^2 + c^2 + d^2$, while perfect numbers satisfy $\\sigma(n) = 2n$. Both use descent arguments and the factorization of integers into primes"
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "complementary",
+      "description": "Pythagorean triples solve $a^2 + b^2 = c^2$ — the two-variable sum-of-squares equation. Lagrange's theorem concerns the representation $n = a^2 + b^2 + c^2 + d^2$ — the four-variable version. Both connect to the norm equations of number rings: $\\mathbb{Z}[i]$ for two squares (Pythagorean), $\\mathbb{H}$ for four squares (Lagrange)"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "foundational",
+      "description": "The Chinese Remainder Theorem allows the four-squares problem to be decomposed by prime powers: proving $p = a^2+b^2+c^2+d^2$ for each prime $p$ and extending via Euler's multiplicative identity. CRT provides the algebraic framework for this prime-by-prime analysis"
     }
   ],
   "relatedProofs": [
@@ -147,7 +158,9 @@
     "quadratic-reciprocity",
     "hurwitz-theorem",
     "fundamental-arithmetic",
-    "perfect-numbers"
+    "perfect-numbers",
+    "pythagorean-triples",
+    "chinese-remainder-non-coprime"
   ],
   "leanFile": {
     "imports": [

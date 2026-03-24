@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/427",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -136,7 +136,7 @@
       "id": "corollaries",
       "title": "Shiu's Power and Corollaries",
       "startLine": 204,
-      "endLine": 281,
+      "endLine": 300,
       "summary": "Connection to Dirichlet's theorem and broader implications."
     }
   ],
@@ -169,5 +169,27 @@
     "axiomCount": 13,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-446",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-728",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-784",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-446",
+    "erdos-728",
+    "erdos-784"
+  ]
 }

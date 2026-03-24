@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/509",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Complex.abs",
@@ -86,42 +86,42 @@
       "title": "Bounded Disc Cover",
       "summary": "Structure and definition for disc covers with bounded total radius",
       "startLine": 40,
-      "endLine": 57
+      "endLine": 58
     },
     {
       "id": "sublevel-sets",
       "title": "Polynomial Sublevel Sets",
       "summary": "Definition of sublevel set and basic properties (roots, nonemptiness, compactness)",
       "startLine": 59,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "Erdős Problem #509: can we cover with total radius ≤ 2?",
       "startLine": 84,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "Cartan's 2e bound, Pommerenke's 2.59 bound, and connected case",
       "startLine": 98,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "sublevel-structure",
       "title": "Structure of Sublevel Sets",
       "summary": "Boundedness, linear example, and quadratic lower bound example",
       "startLine": 125,
-      "endLine": 157
+      "endLine": 158
     },
     {
       "id": "historical-context",
       "title": "Historical Context",
       "summary": "Historical development from Cartan (1928) through Pommerenke (1959, 1961)",
       "startLine": 159,
-      "endLine": 171
+      "endLine": 172
     },
     {
       "id": "summary",
@@ -158,5 +158,27 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials, potential-theory"
+    },
+    {
+      "targetId": "erdos-1042",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials, potential-theory"
+    },
+    {
+      "targetId": "erdos-1047",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, polynomials, potential-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1040",
+    "erdos-1042",
+    "erdos-1047"
+  ]
 }

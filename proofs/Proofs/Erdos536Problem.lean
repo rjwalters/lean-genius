@@ -76,12 +76,20 @@ axiom weisenberg_construction :
 
 /- ## Observations -/
 
-/-- **LCM Structure**: [a,b] = [b,c] = [a,c] = L means a, b, c are all
-    divisors of L that pairwise have LCM exactly L. Each pair covers all
-    prime factors of L. -/
-axiom lcm_structure (a b c L : ℕ) :
-  HasEqualPairwiseLCM a b c → a.lcm b = L →
-    a ∣ L ∧ b ∣ L ∧ c ∣ L
+/--
+**Proved: LCM Structure** — if [a,b] = [b,c] = [a,c] = L, then a, b, c all divide L.
+
+Since a ∣ lcm(a,b) and b ∣ lcm(a,b) by Nat.dvd_lcm_left/right, and
+c ∣ lcm(b,c) = lcm(a,b) = L by the equal-LCM hypothesis. Previously an axiom.
+-/
+theorem lcm_structure (a b c L : ℕ) :
+    HasEqualPairwiseLCM a b c → a.lcm b = L →
+      a ∣ L ∧ b ∣ L ∧ c ∣ L := by
+  intro ⟨_, _, _, hab_eq_bc, _⟩ hL
+  refine ⟨?_, ?_, ?_⟩
+  · exact hL ▸ Nat.dvd_lcm_left a b
+  · exact hL ▸ Nat.dvd_lcm_right a b
+  · rw [← hL, hab_eq_bc]; exact Nat.dvd_lcm_right b c
 
 /- **Related Problems**: #535, #537, #856, #857 concern similar questions
     about GCD/LCM patterns in dense sets. -/

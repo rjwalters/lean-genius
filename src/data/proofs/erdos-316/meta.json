@@ -21,7 +21,7 @@
     "erdosNumber": 316,
     "erdosUrl": "https://erdosproblems.com/316",
     "erdosProblemStatus": "disproved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.Disjoint",
@@ -110,7 +110,7 @@
       "id": "multiset-variant",
       "title": "Multiset Variant",
       "startLine": 81,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Multiset variant: the counterexample $\\{2,3,3,5,5,5,5\\}$ has $\\sum 1/n_i = 1/2 + 2/3 + 4/5 = 59/30 < 2$ but resists bipartition. Uses `Multiset` with addition $A = A_1 + A_2$ replacing disjoint union."
     },
     {

@@ -231,41 +231,25 @@ axiom crowdmath_theorem :
 ## Part V: The Four Variants of Erdős #936
 -/
 
-/--
-**Erdős #936 Variant 1:**
-Is 2^n + 1 powerful for only finitely many n?
+/-- **Erdős #936 Variant 1** (from CrowdMath 2020): 2^n + 1 eventually not powerful. -/
+theorem erdos_936_two_pow_add_one :
+    abc_conjecture_holds → EventuallyNotPowerful (fun n => 2^n + 1) :=
+  fun h => (crowdmath_theorem h).1
 
-Conditionally YES (assuming ABC).
--/
-axiom erdos_936_two_pow_add_one :
-    abc_conjecture_holds → EventuallyNotPowerful (fun n => 2^n + 1)
+/-- **Erdős #936 Variant 2** (from CrowdMath 2020): 2^n - 1 eventually not powerful. -/
+theorem erdos_936_two_pow_sub_one :
+    abc_conjecture_holds → EventuallyNotPowerful (fun n => 2^n - 1) :=
+  fun h => (crowdmath_theorem h).2
 
-/--
-**Erdős #936 Variant 2:**
-Is 2^n - 1 powerful for only finitely many n?
+/-- **Erdős #936 Variant 3** (from Cushing-Pascoe 2016): n! + 1 eventually not powerful. -/
+theorem erdos_936_factorial_add_one :
+    abc_conjecture_holds → EventuallyNotPowerful (fun n => n! + 1) :=
+  fun h => (cushing_pascoe_theorem h).1
 
-Conditionally YES (assuming ABC).
--/
-axiom erdos_936_two_pow_sub_one :
-    abc_conjecture_holds → EventuallyNotPowerful (fun n => 2^n - 1)
-
-/--
-**Erdős #936 Variant 3:**
-Is n! + 1 powerful for only finitely many n?
-
-Conditionally YES (assuming ABC).
--/
-axiom erdos_936_factorial_add_one :
-    abc_conjecture_holds → EventuallyNotPowerful (fun n => n! + 1)
-
-/--
-**Erdős #936 Variant 4:**
-Is n! - 1 powerful for only finitely many n?
-
-Conditionally YES (assuming ABC).
--/
-axiom erdos_936_factorial_sub_one :
-    abc_conjecture_holds → EventuallyNotPowerful (fun n => n! - 1)
+/-- **Erdős #936 Variant 4** (from Cushing-Pascoe 2016): n! - 1 eventually not powerful. -/
+theorem erdos_936_factorial_sub_one :
+    abc_conjecture_holds → EventuallyNotPowerful (fun n => n! - 1) :=
+  fun h => (cushing_pascoe_theorem h).2
 
 /--
 **All Four Variants Combined:**

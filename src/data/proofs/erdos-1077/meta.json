@@ -21,7 +21,7 @@
     "erdosNumber": 1077,
     "erdosUrl": "https://erdosproblems.com/1077",
     "erdosProblemStatus": "disproved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -78,7 +78,7 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 51,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "D-balanced property, min/max degree definitions."
     },
     {
@@ -92,7 +92,7 @@
       "id": "original-question",
       "title": "The Original Question",
       "startLine": 90,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Discussion of ambiguities in Erdős-Simonovits formulation."
     },
     {
@@ -114,34 +114,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-803",
       "relationship": "closely-related",
-      "description": "Erdős #803 asks an almost identical question about D-balanced subgraphs in dense graphs, differing only in minor parameter choices; the two problems are studied together in the literature."
+      "description": "Erdős #803 asks an almost identical question about D-balanced subgraphs in dense graphs, differing only in minor parameter choices; the two problems are studied together in the literature.",
+      "targetId": "erdos-803"
     },
     {
-      "target": "erdos-82",
       "relationship": "related",
-      "description": "Erdős #82 asks for regular induced subgraphs in dense graphs; the quest for perfectly regular subgraphs is the limiting case (D=1) of D-balanced subgraphs studied here."
+      "description": "Erdős #82 asks for regular induced subgraphs in dense graphs; the quest for perfectly regular subgraphs is the limiting case (D=1) of D-balanced subgraphs studied here.",
+      "targetId": "erdos-82"
     },
     {
-      "target": "erdos-715",
       "relationship": "related",
-      "description": "Erdős #715 studies regular subgraphs inside regular host graphs; both problems investigate how much regularity can be extracted from a given graph."
+      "description": "Erdős #715 studies regular subgraphs inside regular host graphs; both problems investigate how much regularity can be extracted from a given graph.",
+      "targetId": "erdos-715"
     },
     {
-      "target": "erdos-182",
       "relationship": "related",
-      "description": "Erdős #182 asks for the maximum number of edges in a graph with no k-regular subgraph, the extremal complement of guaranteeing balanced subgraphs."
+      "description": "Erdős #182 asks for the maximum number of edges in a graph with no k-regular subgraph, the extremal complement of guaranteeing balanced subgraphs.",
+      "targetId": "erdos-182"
     },
     {
-      "target": "erdos-814",
       "relationship": "related",
-      "description": "Erdős #814 establishes that dense graphs contain subgraphs with large minimum degree, a key intermediate step used in iterative-regularization arguments like the one resolving #1077."
+      "description": "Erdős #814 establishes that dense graphs contain subgraphs with large minimum degree, a key intermediate step used in iterative-regularization arguments like the one resolving #1077.",
+      "targetId": "erdos-814"
     },
     {
-      "target": "szemeredi-regularity",
       "relationship": "foundational",
-      "description": "Szemerédi's regularity lemma is the principal tool behind iterative-regularization proofs; the Jiang-Longbrake argument for #1077 uses a regularization procedure conceptually descended from it."
+      "description": "Szemerédi's regularity lemma is the principal tool behind iterative-regularization proofs; the Jiang-Longbrake argument for #1077 uses a regularization procedure conceptually descended from it.",
+      "targetId": "szemeredi-regularity"
     }
   ],
   "relatedProofs": [

@@ -22,7 +22,7 @@
     "erdosNumber": 442,
     "erdosUrl": "https://erdosproblems.com/442",
     "erdosProblemStatus": "disproved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.lcm",
@@ -79,77 +79,77 @@
       "id": "iterated-logs",
       "title": "Iterated Logarithms",
       "startLine": 42,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Definitions of log⁺, log₂⁺, log₃⁺ with basic properties"
     },
     {
       "id": "reciprocal-sum",
       "title": "The Reciprocal Sum",
       "startLine": 64,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Definition of Σ_{n∈A, n≤N} 1/n over subsets of ℕ"
     },
     {
       "id": "lcm-sum",
       "title": "The LCM Sum",
       "startLine": 85,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Definition of Σ_{a,b∈A, a<b≤N} 1/lcm(a,b) and normalized version"
     },
     {
       "id": "density",
       "title": "The Density Condition",
       "startLine": 101,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "When a set has reciprocal sum growing faster than log log x"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture and Refutation",
       "startLine": 113,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "Erdős's question and Tao's negative answer"
     },
     {
       "id": "tao-construction",
       "title": "Tao's Construction",
       "startLine": 138,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "The counterexample set with bounded normalized LCM sum"
     },
     {
       "id": "optimality",
       "title": "Optimality",
       "startLine": 157,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "The threshold is sharp: faster growth implies divergence"
     },
     {
       "id": "key-insight",
       "title": "Why the Counterexample Works",
       "startLine": 172,
-      "endLine": 185,
+      "endLine": 186,
       "summary": "Structure vs density: smooth numbers in careful patterns"
     },
     {
       "id": "lcm-properties",
       "title": "LCM Properties",
       "startLine": 187,
-      "endLine": 206,
+      "endLine": 207,
       "summary": "The fundamental identity lcm(a,b)·gcd(a,b) = a·b"
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 208,
-      "endLine": 217,
+      "endLine": 218,
       "summary": "Computational verification of LCM values"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 219,
-      "endLine": 243,
+      "endLine": 265,
       "summary": "Main theorem combining the negative answer and existence"
     }
   ],
@@ -188,5 +188,27 @@
     "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: lcm, number-theory"
+    },
+    {
+      "targetId": "erdos-316",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counterexample, number-theory"
+    },
+    {
+      "targetId": "erdos-440",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: lcm, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-269",
+    "erdos-316",
+    "erdos-440"
+  ]
 }

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/751",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -79,35 +79,35 @@
       "title": "Graph Theory Foundations",
       "summary": "minDegree, maxDegree, chromaticNumber, girth, cycleLengths definitions",
       "startLine": 36,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "key-relationships",
       "title": "Key Relationships",
       "summary": "chromatic_implies_minDeg, four_chromatic_minDeg axioms",
       "startLine": 88,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "bondy-vince",
       "title": "Bondy-Vince Theorem",
       "summary": "bondy_vince_theorem and bondy_vince_gap axioms",
       "startLine": 111,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_751_chromatic_4, erdos_751_with_girth, erdos_751 theorems",
       "startLine": 139,
-      "endLine": 190
+      "endLine": 191
     },
     {
       "id": "strengthening",
       "title": "Strengthening",
       "summary": "min_degree_3_cycle_gap, chromatic_4_implies_min_deg_3",
       "startLine": 192,
-      "endLine": 214
+      "endLine": 215
     },
     {
       "id": "summary",
@@ -143,5 +143,27 @@
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, minimum-degree"
+    },
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, girth, graph-theory"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, cycles, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1032",
+    "erdos-108",
+    "erdos-57"
+  ]
 }

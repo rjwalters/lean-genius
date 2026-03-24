@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/455",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "StrictMono",
@@ -98,7 +98,7 @@
       "id": "richter-bound",
       "title": "Richter's Lower Bound",
       "startLine": 54,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Axiomatizes Richter's 1976 result: $\\liminf_{n \\to \\infty} q_n/n^2 > 0.352$ for any `MonotoneGapPrimeSeq`. Proof requires prime distribution estimates beyond current Mathlib."
     },
     {

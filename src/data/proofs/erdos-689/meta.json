@@ -21,7 +21,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 140,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -42,14 +43,14 @@
       "id": "small-cases",
       "title": "Small Cases",
       "startLine": 90,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Proves `primesUpTo_one` ($\\pi(1) = 0$, no primes $\\leq 1$) and `coveringCount_one` (covering count is 0 when $n = 1$). These establish base cases showing coverage is impossible for very small $n$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture and Generalization",
       "startLine": 105,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Axiomatizes `erdos_689_double_cover`: for large $n$, a 2-fold cover exists. Axiomatizes `erdos_689_r_fold`: for any fixed $r \\geq 1$ and sufficiently large $n$, an $r$-fold cover exists."
     },
     {

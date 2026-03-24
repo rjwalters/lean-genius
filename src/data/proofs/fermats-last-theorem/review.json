@@ -90,7 +90,7 @@
       "priority": "high",
       "target": "enricher",
       "description": "Fix meta.json mathlibDependencies: replace EllipticCurve (not imported) with the three actually used: FermatLastTheoremFor, fermatLastTheoremFour, fermatLastTheoremThree. Fix overview.text to use actual theorem names (fermat_four, fermat_three, flt_multiple instead of flt_n4, flt_n3, flt_reduces_to_primes). Fix originalContributions item 2 to not claim Frey curve 'formalization'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
@@ -104,7 +104,7 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix the stale docstring on line 38 ('3 sorries remain' — should say '5 axioms'). Update assumptions field to distinguish real axioms from True placeholders. Remove redundant theorem synonyms (no_sum_of_cubes, no_sum_of_fourth_powers).",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 

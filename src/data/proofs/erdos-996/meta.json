@@ -21,7 +21,7 @@
     "erdosNumber": 996,
     "erdosUrl": "https://erdosproblems.com/996",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.integral",
@@ -104,84 +104,84 @@
       "id": "lacunary",
       "title": "Lacunary Sequences",
       "startLine": 50,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Defines IsLacunary (ratio condition n(k+1)/n(k) ≥ λ > 1), proves powers of 2 and 3 are lacunary via explicit ratio calculations, and states lacunary_strictMono (sorry)."
     },
     {
       "id": "fourier",
       "title": "Fourier Series and Partial Sums",
       "startLine": 91,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Defines fourierPartialSum (trigonometric polynomial of degree N), fourierError (L² norm of f - fₙ), and axiomatizes Parseval's identity connecting L² norm to Fourier coefficient ℓ² norm."
     },
     {
       "id": "ergodic",
       "title": "The Ergodic Average",
       "startLine": 109,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "Defines frac (fractional part), ergodicAverage ((1/N)Σf({αnₖ}) as Cesàro mean), and spaceAverage (∫₀¹f dx, the zeroth Fourier coefficient)."
     },
     {
       "id": "strong-law",
       "title": "The Strong Law of Large Numbers",
       "startLine": 124,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Defines StrongLawHolds (Tendsto of ergodic average to space average) and StrongLawHoldsAE (a.e. version using ∀ᵐ α with Lebesgue measure on [0,1])."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 136,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "Four axiomatized historical milestones: raikov_theorem (geometric sequences, unconditional), kac_salem_zygmund_1948 (log decay c > 1), erdos_1949 (log log c > 1), matsuyama_1966 (log log c > 1/2)."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 172,
-      "endLine": 186,
+      "endLine": 187,
       "summary": "Formalizes ErdosProblem996 as a Lean Prop: ∃ C > 0 such that log log log decay with exponent C suffices for StrongLawHoldsAE. Status: OPEN."
     },
     {
       "id": "related",
       "title": "Related Questions",
       "startLine": 188,
-      "endLine": 199,
+      "endLine": 200,
       "summary": "Two additional open questions: FloorPowerQuestion (SLLN for ⌊aᵏ⌋ with real a > 1) and BoundedFunctionQuestion (SLLN for all bounded f without Fourier decay condition)."
     },
     {
       "id": "decay-hierarchy",
       "title": "The Decay Hierarchy",
       "startLine": 201,
-      "endLine": 230,
+      "endLine": 231,
       "summary": "DecayCondition structure with name/rate/sufficiency, instantiated for log (c > 1, sufficient), log log (c > 1/2, sufficient), and log log log (unknown, sufficient = false)."
     },
     {
       "id": "quasi-independence",
       "title": "Why Lacunary Sequences?",
       "startLine": 232,
-      "endLine": 249,
+      "endLine": 250,
       "summary": "Placeholder for quasi-independence theorem (proved as True), and consecutive_not_lacunary showing n(k) = k+1 fails the ratio condition (sorry, needs Archimedean argument)."
     },
     {
       "id": "gap",
       "title": "The Gap Between Results",
       "startLine": 251,
-      "endLine": 265,
+      "endLine": 266,
       "summary": "known_gap theorem packaging Matsuyama's result (∀ c > 1/2, ...) with a True placeholder for the open question. Proved by direct application of matsuyama_1966."
     },
     {
       "id": "connections",
       "title": "Connections to Other Areas",
       "startLine": 267,
-      "endLine": 281,
+      "endLine": 282,
       "summary": "Weyl equidistribution theorem axiomatized as a precursor. Documents connections to ergodic theory, harmonic analysis, probability, and Diophantine approximation."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 283,
-      "endLine": 311,
+      "endLine": 343,
       "summary": "erdos_996_summary theorem: existential witness c = 1 > 1/2 satisfies Matsuyama, conjoined with True for the open log log log question. Complete docstring overview."
     }
   ],

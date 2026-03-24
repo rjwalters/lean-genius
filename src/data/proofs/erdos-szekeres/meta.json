@@ -43,12 +43,13 @@
     "wiedijkNumber": 73,
     "axiomCount": 2,
     "assumptions": "2 axiom declarations: erdos_szekeres_existence_axiom (monotone subsequence exists), erdos_szekeres_tight_axiom (bound (r-1)(s-1)+1 is tight)",
-    "lineCount": 280
+    "lineCount": 280,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Paul Erdős and George Szekeres proved this theorem in 1935 in their paper \"A combinatorial problem in geometry.\" It was one of Erdős's first major results, published when he was just 22 years old. The theorem arose from the Happy Ending Problem about convex polygons and has since become a cornerstone of combinatorics and Ramsey theory. The elegant pigeonhole proof gives an exact tight bound. Dilworth's theorem (1950) generalized it: in any finite partially ordered set, the minimum number of chains covering it equals the maximum antichain size; the Erdős-Szekeres theorem is the linear order special case. The result is also a foundational instance of the general Ramsey principle that any large enough structure must contain order.",
     "problemStatement": "**Erdős–Szekeres Theorem**: Any sequence of at least $(r-1)(s-1) + 1$ distinct real numbers contains either:\n- An increasing subsequence of length $r$, OR\n- A decreasing subsequence of length $s$\n\n**Corollary (Classic Form)**: Any sequence of $n^2 + 1$ distinct numbers contains a monotonic subsequence of length $n + 1$.\n\nThis is Wiedijk's 100 Theorems #73.",
-    "text": "Any sequence of at least (r-1)(s-1) + 1 distinct numbers contains either an increasing subsequence of length r, or a decreasing subsequence of length s.",
+    "text": "A 280-line formalization of the Erdős-Szekeres theorem (Wiedijk #73) in Lean 4: any sequence of at least $(r-1)(s-1)+1$ distinct numbers contains an increasing subsequence of length $r$ or a decreasing one of length $s$. The proof formalizes the elegant pigeonhole argument assigning each position a pair $(a_i, b_i)$ of longest increasing/decreasing subsequence lengths. The file includes the classic $n^2+1$ corollary, the tightness construction (concatenating $s-1$ increasing blocks of length $r-1$ in decreasing order), concrete examples, and the Ramsey-theoretic perspective via the Erdős-Szekeres number $ES(r,s)$. Two axioms encode the main existence and tightness results; 8 theorems are proved with 0 sorries.",
     "proofStrategy": "**The Pigeonhole Argument:**\n\nFor each position $i$ in the sequence, assign a pair $(a_i, b_i)$ where:\n- $a_i$ = length of longest increasing subsequence ending at position $i$\n- $b_i$ = length of longest decreasing subsequence ending at position $i$\n\n**Key insight**: All pairs $(a_i, b_i)$ are distinct!\n\nIf $i < j$ and $(a_i, b_i) = (a_j, b_j)$:\n- If $f(i) < f(j)$: the increasing subsequence ending at $i$ extends to $j$, so $a_j > a_i$\n- If $f(i) > f(j)$: the decreasing subsequence ending at $i$ extends to $j$, so $b_j > b_i$\n\nThis contradicts $(a_i, b_i) = (a_j, b_j)$. Since all pairs are distinct and bounded by $(r-1, s-1)$, we can have at most $(r-1)(s-1)$ elements. But we have $(r-1)(s-1) + 1$, contradiction!",
     "keyInsights": [
       "The pigeonhole principle on (longest-inc, longest-dec) pairs",
@@ -84,7 +85,7 @@
       "id": "classic-form",
       "title": "Classic Form",
       "startLine": 142,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "The n²+1 corollary: any sequence of n²+1 elements has a monotonic subsequence of length n+1.",
       "mathContext": "$n = m^2 + 1 \\implies$ any injective sequence of length $n$ has a monotonic subsequence of length $m + 1$. Special case $r = s = m + 1$: $(m+1-1)(m+1-1) + 1 = m^2 + 1$."
     },
@@ -92,7 +93,7 @@
       "id": "tightness",
       "title": "Tightness of Bound",
       "startLine": 155,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "Construction showing the bound (r-1)(s-1) + 1 cannot be improved.",
       "mathContext": "$\\exists f : \\text{Fin}\\, ((r-1)(s-1)) \\to \\mathbb{N}$ injective with no increasing length $r$ and no decreasing length $s$. Construction: $s-1$ increasing blocks of $r-1$ elements, blocks in decreasing order."
     },
@@ -100,7 +101,7 @@
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 185,
-      "endLine": 229,
+      "endLine": 230,
       "summary": "Examples demonstrating the theorem on specific sequences.",
       "mathContext": "For $r = s = 3$: sequence $[3, 4, 1, 2]$ has length $(3-1)(3-1) = 4$. No increasing length 3 (blocked), no decreasing length 3 (only 2 blocks). Adding one more element forces a monotonic triple."
     },
@@ -108,7 +109,7 @@
       "id": "ramsey-perspective",
       "title": "Ramsey-Theoretic Perspective",
       "startLine": 231,
-      "endLine": 274,
+      "endLine": 280,
       "summary": "The Erdős–Szekeres number and its connection to Ramsey theory.",
       "mathContext": "$ES(r,s) = (r-1)(s-1) + 1$. 2-color pairs $(i,j)$ by comparing $f(i)$ vs $f(j)$. The theorem guarantees a red $r$-clique (increasing) or blue $s$-clique (decreasing). $ES(r,s) = ES(s,r)$ by symmetry."
     }
@@ -117,7 +118,22 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "generalization",
-      "description": "Ramsey's theorem generalizes the Erdős–Szekeres result: the ES theorem is a special case for ordered 2-colorings of pairs"
+      "description": "Ramsey's theorem generalizes the Erdős-Szekeres result: the ES theorem is a special case for ordered 2-colorings of pairs. The ES number $ES(r,s) = (r-1)(s-1)+1$ gives an exact Ramsey-type bound for monotone subsequences in linear orders"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "supports",
+      "description": "The binomial coefficient $\\binom{n}{2}$ counts the pairs in a sequence whose comparisons define the 2-coloring in the Ramsey-theoretic view. The pigeonhole argument implicitly uses that $(r-1)(s-1)+1$ pairs $(a_i, b_i)$ fit in a $(r-1) \\times (s-1)$ grid"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Both are foundational Erdős results in combinatorics. The Erdős-Szekeres theorem on monotone subsequences and Problem #1 on Sidon sets both concern structure in sequences, with tight extremal bounds"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The alternative proof of the Erdős-Szekeres theorem uses strong induction: if the longest increasing subsequence has length $< r$ and the longest decreasing has length $< s$, partition by the first element and apply induction to the remaining subsequences"
     }
   ],
   "conclusion": {
@@ -130,7 +146,47 @@
     ]
   },
   "relatedProofs": [
-    "ramseys-theorem"
+    "ramseys-theorem",
+    "combinations-formula",
+    "erdos-1",
+    "mathematical-induction"
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Szekeres, George",
+      "title": "A combinatorial problem in geometry",
+      "year": "1935",
+      "venue": "Compositio Mathematica, vol. 2, pp. 463–470",
+      "note": "The original paper proving both the monotone subsequence theorem and the Happy Ending problem on convex polygons — one of Erdős's first publications"
+    },
+    {
+      "authors": "Dilworth, Robert P.",
+      "title": "A decomposition theorem for partially ordered sets",
+      "year": "1950",
+      "venue": "Annals of Mathematics, vol. 51, pp. 161–166",
+      "note": "Generalized the Erdős-Szekeres theorem to arbitrary finite posets: minimum chain cover equals maximum antichain. The Erdős-Szekeres theorem is the special case for total orders"
+    },
+    {
+      "authors": "Seidenberg, Abraham",
+      "title": "A simple proof of a theorem of Erdős and Szekeres",
+      "year": "1959",
+      "venue": "Journal of the London Mathematical Society, vol. 34, pp. 386",
+      "note": "The elegant one-page pigeonhole proof using (longest-increasing, longest-decreasing) pairs — the approach formalized here"
+    },
+    {
+      "authors": "Steele, J. Michael",
+      "title": "Variations on the monotone subsequence theme of Erdős and Szekeres",
+      "year": "1995",
+      "venue": "IMA Volumes in Mathematics 72, pp. 111–131",
+      "note": "Survey of extensions including probabilistic analysis: the expected length of the longest increasing subsequence of a random permutation of [n] is asymptotically 2√n (Vershik-Kerov, Logan-Shepp, 1977)"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The Erdős-Szekeres theorem is #73 on the Wiedijk 100 list of well-known mathematical theorems tracked for formalization across proof assistants"
+    }
   ],
   "leanFile": {
     "imports": [

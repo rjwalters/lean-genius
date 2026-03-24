@@ -25,7 +25,7 @@
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$500",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -71,20 +71,6 @@
       "erdos_83_summary: both directions (bound + tightness)",
       "erdos_83: final theorem statement"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-857",
-        "relationship": "Both involve the EKR framework; #857 studies sunflowers (systems where every pair shares the same core), which is a structured special case of intersection constraints. The Erdős-Ko-Rado authors appear in both problems."
-      },
-      {
-        "proofId": "erdos-644",
-        "relationship": "Both concern set families with intersection constraints; #644 studies covering families where every r sets share a common pair, connecting pairwise and higher-order intersection structure."
-      },
-      {
-        "proofId": "erdos-776",
-        "relationship": "Both involve extremal problems on set families over [n]; #776 studies antichains with set-size multiplicity in 2^[n], sharing the theme of structural constraints on families of finite sets."
-      }
-    ],
     "axiomCount": 9,
     "lineCount": 289,
     "assumptions": "9 axiom(s) and 3 sorry(s). See the Lean source for details."
@@ -113,63 +99,63 @@
       "title": "Basic Definitions",
       "summary": "groundSet [m] as Fin m, isKUniform (k-uniform families), isTIntersecting (t-intersecting property), isIntersecting (t=1 specialization)",
       "startLine": 39,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "ekr-background",
       "title": "Erdős-Ko-Rado Background",
       "summary": "erdos_ko_rado_bound (classical EKR theorem, axiom), ekrStarFamily (star construction), ekr_achieved (tightness axiom)",
       "startLine": 70,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "problem-setup",
       "title": "The t-Intersecting Problem",
       "summary": "erdos83Params (4n, 2n, 2), isValidErdos83Family (uniformity + intersection constraints)",
       "startLine": 97,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "conjectured-bound",
       "title": "The Conjectured Bound",
       "summary": "erdos83Bound = ½(C(4n,2n) - C(2n,n)²), erdos83Question (formal problem statement)",
       "startLine": 114,
-      "endLine": 131
+      "endLine": 132
     },
     {
       "id": "extremal-construction",
       "title": "Extremal Construction",
       "summary": "starLikeFamily (majority family), starLikeFamily_achieves and starLikeFamily_valid (axioms for tightness and validity)",
       "startLine": 133,
-      "endLine": 156
+      "endLine": 157
     },
     {
       "id": "complete-intersection",
       "title": "Complete Intersection Theorem",
       "summary": "criticalRatio (phase transition parameter), akFamily (general AK construction), ahlswede_khachatrian_theorem (the landmark 1997 result, axiom)",
       "startLine": 158,
-      "endLine": 188
+      "endLine": 189
     },
     {
       "id": "resolution",
       "title": "Resolution of Erdős #83",
       "summary": "erdos83_from_ak (parameter specialization), erdos83_answer (main theorem proved from AK), reducing the problem to a corollary of the Complete Intersection Theorem",
       "startLine": 190,
-      "endLine": 213
+      "endLine": 214
     },
     {
       "id": "bound-computation",
       "title": "Bound Computation",
       "summary": "Small cases (n=1: bound 0, n=2: bound 20) and asymptotic growth (≈ ½C(4n,2n) for large n)",
       "startLine": 215,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "implications",
       "title": "Implications and Generalizations",
       "summary": "Phase transitions in optimal families, coding theory connection (constant-weight codes), probabilistic and multipartite extensions",
       "startLine": 235,
-      "endLine": 258
+      "endLine": 259
     },
     {
       "id": "summary",
@@ -229,5 +215,27 @@
       "citation": "Frankl, P., 'The shifting technique in extremal set theory,' in Surveys in Combinatorics (1987), London Math. Soc. Lecture Note Ser. 123, 81–110.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-447",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-862",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-1023",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-447",
+    "erdos-862",
+    "erdos-1023"
   ]
 }

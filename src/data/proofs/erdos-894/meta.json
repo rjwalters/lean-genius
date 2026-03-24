@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/894",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.ceil_pos",
@@ -80,63 +80,63 @@
       "id": "lacunary-sequences",
       "title": "Part I: Lacunary Sequences",
       "startLine": 38,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Defines IsLacunary(a, ε). Proves lacunary_exponential_growth by induction. Defines geometricSequence, proves geometric_is_lacunary."
     },
     {
       "id": "colorings",
       "title": "Part II: Colorings and Cayley Graphs",
       "startLine": 75,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Defines Coloring(k), AvoidsMonochromatic, IsFinitelyColorable, chromaticNumber (axiom)."
     },
     {
       "id": "diophantine",
       "title": "Part III: The Diophantine Approximation Connection",
       "startLine": 94,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Defines fractionalDistance. Axiom problem_464_result: lacunary sequences have badly approximable θ."
     },
     {
       "id": "katznelson",
       "title": "Part IV: Katznelson's Coloring Construction",
       "startLine": 107,
-      "endLine": 123,
+      "endLine": 124,
       "summary": "Defines katznelsonColoring using circle intervals. Axiom katznelson_theorem: coloring avoids monochromatic differences."
     },
     {
       "id": "main-result",
       "title": "Part V: The Main Result",
       "startLine": 125,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Proves lacunary_finitely_colorable from Problem #464 and Katznelson. Defines ErdosConjecture894, proves erdos_894."
     },
     {
       "id": "quantitative",
       "title": "Part VI: Quantitative Bounds (Peres-Schlag 2010)",
       "startLine": 141,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "Axioms: peres_schlag_bound (O(ε⁻¹ log(1/ε)) colors), peres_schlag_optimality (essentially optimal)."
     },
     {
       "id": "cayley-graphs",
       "title": "Part VII: Cayley Graphs",
       "startLine": 155,
-      "endLine": 185,
+      "endLine": 186,
       "summary": "Defines CayleyGraph structure, lacunaryCayleyGraph (proved symmetric and generated_by_A). Defines cayleyChromatic."
     },
     {
       "id": "connection-464",
       "title": "Part VIII: Connection to Problem #464",
       "startLine": 187,
-      "endLine": 200,
+      "endLine": 201,
       "summary": "Defines Problem464Statement. Proves problem_464_implies_894."
     },
     {
       "id": "special-cases",
       "title": "Part IX: Special Cases",
       "startLine": 202,
-      "endLine": 220,
+      "endLine": 221,
       "summary": "Proves powers_of_2_colorable and powers_of_3_colorable from main theorem."
     },
     {
@@ -175,5 +175,27 @@
     "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-465",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, diophantine-approximation, solved"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-58",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-465",
+    "erdos-57",
+    "erdos-58"
+  ]
 }

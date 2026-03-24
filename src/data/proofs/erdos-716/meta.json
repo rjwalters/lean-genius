@@ -24,7 +24,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 16,
     "assumptions": "16 axiom declarations: extremalHypergraph (extremal number function), ex63_trivial_upper (O(n^2) upper bound), rs_hypergraph_equivalence (RS graph equivalence), ruzsa_szemeredi_theorem (main o(n^2) result), ex63_upper_bound (tight upper bound), ex63_lower_bound (Behrend lower bound), triangle_removal_lemma (few-triangles removal), rs_from_removal_lemma (RS from removal), roth_r3 (3-AP-free set size), roth_theorem (r3=o(n)), behrend_construction (large 3-AP-free sets), ex63_from_behrend (lower bound construction), rs_implies_roth (RS implies Roth), bes_k4_solved (BES k=4 case), bes_general_solved (full BES conjecture), ruzsa_lower_bound_k678 (Ruzsa lower bound k=6,7,8)",
-    "lineCount": 265
+    "lineCount": 265,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Brown, Erdős, and Sós in 1973 as part of their systematic study of extremal hypergraph problems. The (6,3)-problem sits within the broader Brown-Erdős-Sós conjecture (1973), which posits that f^(3)(n; k+3, k) = o(n²) for all k ≥ 3 — that is, k hyperedges spanning at most k+3 vertices must occur subquadratically often. The k=3 case (asking about 3 edges on 6 vertices) became known as the (6,3)-problem and was the first non-trivial case to be resolved.\n\nImre Ruzsa and Endre Szemerédi solved it in 1978 using Szemerédi's regularity lemma (published 1975), which partitions a graph's vertices into roughly equal parts with controlled edge densities between them. Their key tool was the Triangle Removal Lemma: a graph with few triangles (o(n³)) can be made triangle-free by removing few edges (o(n²)). Applying this to a cleverly constructed auxiliary graph gives the subquadratic bound. The tightness is established by Behrend's 1946 construction of large 3-AP-free sets, which Ruzsa translated into large (6,3)-free hypergraphs. The full Brown-Erdős-Sós conjecture was finally proved by Delcourt and Postle in 2024 using absorption methods.",
@@ -49,56 +50,56 @@
       "title": "Part I: Hypergraph Basics",
       "summary": "3-uniform hypergraphs, (v,e)-configurations, and the (6,3)-free condition",
       "startLine": 48,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "extremal-numbers",
       "title": "Part II: Extremal Numbers",
       "summary": "extremalHypergraph, ex63 definitions, trivial O(n²) bound",
       "startLine": 80,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "graph-formulation",
       "title": "Part III: Graph Formulation",
       "summary": "RS graphs (every edge in unique triangle), hypergraph equivalence",
       "startLine": 95,
-      "endLine": 114
+      "endLine": 115
     },
     {
       "id": "main-theorem",
       "title": "Part IV: The Main Theorem",
       "summary": "Ruzsa-Szemerédi theorem: ex₃(n; 6, 3) = o(n²). Tight bounds n² · e^{±c√(log n)}",
       "startLine": 116,
-      "endLine": 142
+      "endLine": 143
     },
     {
       "id": "triangle-removal",
       "title": "Part V: The Triangle Removal Lemma",
       "summary": "Triangle removal lemma and its derivation of the RS theorem",
       "startLine": 144,
-      "endLine": 161
+      "endLine": 162
     },
     {
       "id": "arithmetic-progressions",
       "title": "Part VI: Connection to Arithmetic Progressions",
       "summary": "3-AP-free sets, Roth's theorem, Behrend construction, RS implies Roth",
       "startLine": 163,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "bes-conjecture",
       "title": "Part VII: The Brown-Erdős-Sós Conjecture",
       "summary": "BES conjecture definition, k=3 is erdos-716, k=4 by Glock, general by Delcourt-Postle",
       "startLine": 198,
-      "endLine": 220
+      "endLine": 221
     },
     {
       "id": "stronger-question",
       "title": "Part VIII: Erdős's Stronger Question",
       "summary": "f^(3)(n; k+3, k) ≍ n · r_{k-3}(n)? Ruzsa's lower bound for k = 6, 7, 8",
       "startLine": 222,
-      "endLine": 240
+      "endLine": 241
     },
     {
       "id": "summary",
@@ -134,5 +135,27 @@
     "axiomCount": 16,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics"
+    },
+    {
+      "targetId": "erdos-1020",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, hypergraph-theory"
+    },
+    {
+      "targetId": "erdos-155",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, extremal-combinatorics"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-1020",
+    "erdos-155"
+  ]
 }

@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/935",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-12-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat",
@@ -91,7 +91,7 @@
       "id": "preamble",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Module docstring with Erdős Problem #935 statement, three-part conjecture overview, references, and imports for Nat, Finset, and Rat.",
       "mathContext": "Three conjectures about $Q_2(n(n+1)\\cdots(n+\\ell))$: (1) $< n^{2+\\varepsilon}$, (2) $\\limsup Q_2/n^2 = \\infty$ for $\\ell \\geq 2$, (3) $Q_2/n^{\\ell+1} \\to 0$. All **OPEN**."
     },
@@ -99,7 +99,7 @@
       "id": "powerful-part",
       "title": "Powerful Part",
       "startLine": 29,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Axiomatises powerfulPart with four properties: Q₂(1)=1, Q₂(n)|n, Q₂(n) is powerful, Q₂ is multiplicative on coprimes.",
       "mathContext": "$Q_2(n) = \\prod_{p^k \\| n,\\, k \\geq 2} p^k$. Properties: $Q_2(1) = 1$, $Q_2(n) \\mid n$, $Q_2(n)$ is powerful, $\\gcd(a,b)=1 \\implies Q_2(ab) = Q_2(a) Q_2(b)$."
     },
@@ -107,7 +107,7 @@
       "id": "consecutive-products",
       "title": "Consecutive Products",
       "startLine": 50,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Defines consecutiveProduct n(n+1)···(n+ℓ) via Finset.range and Q2consec as its powerful part.",
       "mathContext": "`consecutiveProduct n l` $= \\prod_{i=0}^{l} (n+i) = n(n+1)\\cdots(n+l)$. `Q2consec n l` $= Q_2(\\text{consecutiveProduct}(n,l))$."
     },
@@ -115,7 +115,7 @@
       "id": "mahler",
       "title": "Mahler's Result",
       "startLine": 60,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Mahler's lower bound: for every ℓ ≥ 1, lim sup Q₂(···)/n² ≥ 1 — infinitely many n achieve Q₂ ≥ n².",
       "mathContext": "Mahler: $\\forall \\ell \\geq 1,\\, \\forall N_0,\\, \\exists n \\geq N_0: Q_2(n(n+1)\\cdots(n+\\ell)) \\geq n^2$. Establishes $n^2$ as the natural scale."
     },

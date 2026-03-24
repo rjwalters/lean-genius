@@ -21,7 +21,7 @@
     "erdosNumber": 233,
     "erdosUrl": "https://erdosproblems.com/233",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth",
@@ -44,9 +44,9 @@
       "Clear exposition of the relationship between prime gaps and the Riemann Hypothesis",
       "Connection to Cramér's conjecture on individual prime gaps"
     ],
-    "axiomCount": 6,
+    "axiomCount": 5,
     "lineCount": 160,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
     "historicalContext": "This problem concerns the distribution of prime gaps dₙ = pₙ₊₁ - pₙ. The prime number theorem tells us that the average gap near x is approximately log x, but individual gaps can be much larger or smaller.\n\nThe conjecture that Σ dₙ² ≪ N(log N)² is sometimes attributed to Heath-Brown. It says that, on average, prime gaps are 'typically' of size log p - the squares don't accumulate faster than expected.\n\nCramér (1936) proved that, assuming the Riemann Hypothesis, Σ dₙ² = O(N(log N)⁴). Selberg (1943) improved this to Σ dₙ²/n = O((log N)⁴). The prime number theorem immediately gives the matching lower bound N(log N)², so the gap between lower and upper bounds is (log N)².\n\nThis problem is intimately connected to Cramér's famous conjecture that dₙ = O((log pₙ)²), which remains one of the most important open problems about prime gaps.",
@@ -76,49 +76,49 @@
       "id": "prime-gap-def",
       "title": "Prime Gap Definition",
       "startLine": 32,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Define the n-th prime and prime gap function"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 47,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "State Erdős Problem #233 (Heath-Brown's conjecture)"
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 63,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Lower bound from PNT, conditional upper bounds from Cramér and Selberg"
     },
     {
       "id": "current-status",
       "title": "Current Status",
       "startLine": 104,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "Summary of what is known and what remains open"
     },
     {
       "id": "cramer-connection",
       "title": "Connection to Cramér's Conjecture",
       "startLine": 118,
-      "endLine": 133,
+      "endLine": 134,
       "summary": "Define Cramér's conjecture and show it implies the sum bound"
     },
     {
       "id": "examples",
       "title": "Examples and Computations",
       "startLine": 135,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "First few prime gaps axiomatized"
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 142,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "Final summary combining known results"
     }
   ],
@@ -143,8 +143,30 @@
     ],
     "namespace": "Erdos233",
     "lineCount": 160,
-    "axiomCount": 6,
+    "axiomCount": 5,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, prime-gaps"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1137",
+    "erdos-15",
+    "erdos-4"
+  ]
 }

@@ -49,7 +49,8 @@
     "dateAdded": "2026-03-12",
     "axiomCount": 0,
     "lineCount": 391,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The computational complexity of finding fixed points interweaves topology, analysis, and computational complexity theory across a century of development. L.E.J. Brouwer (1911) proved existence non-constructively using degree theory, sparking foundational debates about constructive mathematics — Brouwer himself later rejected his own proof's methods. Stefan Banach (1922) provided the first constructive algorithm: iterate a contraction and converge geometrically, yielding explicit error bounds. Emanuel Sperner (1928) supplied the combinatorial foundation with his simplex labeling lemma, which Knaster, Kuratowski, and Mazurkiewicz used to give an independent proof of Brouwer's theorem. The complexity-theoretic revolution came with Christos Papadimitriou's introduction of PPAD (1994), identifying a class of total search problems whose totality follows from the 'parity argument on directed graphs.' Xi Chen and Xiaotie Deng (2009) proved that computing approximate Brouwer fixed points is PPAD-complete in dimensions $\\geq 2$, resolving a major open question. In 1D, however, the bisection method achieves optimal $O(\\log(1/\\varepsilon))$ query complexity — a dramatic complexity gap between one and higher dimensions. John Nash's proof (1950) that every finite game has an equilibrium relies on Brouwer's theorem, and the PPAD-completeness of Nash equilibrium computation (Daskalakis-Goldberg-Papadimitriou 2009) is a direct descendant of this line of work.",
@@ -79,42 +80,42 @@
       "id": "discrete-ivt",
       "title": "1D Discrete IVT",
       "startLine": 29,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Proves the discrete intermediate value theorem: a sign-changing integer sequence $f: \\mathbb{N} \\to \\mathbb{Z}$ with $f(0) \\geq 0$ and $f(N) < 0$ has an adjacent sign change $f(i) \\geq 0, f(i+1) < 0$. This is the combinatorial foundation for the bisection method and a 1D instance of Sperner's lemma."
     },
     {
       "id": "approximate-fixed-points",
       "title": "Approximate Fixed Points",
       "startLine": 46,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines $\\varepsilon$-approximate fixed points ($|f(x) - x| \\leq \\varepsilon$) and proves existence for continuous self-maps of $[0,1]$ via the IVT. The exact fixed point guaranteed by Brouwer's theorem is trivially $\\varepsilon$-approximate for any $\\varepsilon > 0$."
     },
     {
       "id": "convergence",
       "title": "Convergence of Approximations",
       "startLine": 62,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "Proves that $1/n$-approximate fixed points converge to exact ones: if $x_n \\to x^*$ with $|f(x_n) - x_n| \\leq 1/n$, then $f(x^*) = x^*$. The proof uses a triangle inequality argument with $\\varepsilon = |f(x^*) - x^*|/2$, combining metric convergence and the approximation bounds."
     },
     {
       "id": "contraction-convergence",
       "title": "Contraction Mapping Convergence",
       "startLine": 126,
-      "endLine": 176,
+      "endLine": 177,
       "summary": "Establishes geometric convergence for $L$-contractions: $|f(f^n(x_0)) - f^n(x_0)| \\leq L^n |f(x_0) - x_0|$ (a priori error bound), and proves the iterate sequence is Cauchy using $L^n \\to 0$ from Mathlib's `tendsto_pow_atTop_nhds_zero_of_lt_one`."
     },
     {
       "id": "binary-search",
       "title": "Binary Search",
       "startLine": 178,
-      "endLine": 215,
+      "endLine": 216,
       "summary": "Formalizes the bisection method: after $n$ steps, the sign-change interval for $g(x) = f(x) - x$ has width $\\leq 1/2^n$, yielding $O(\\log(1/\\varepsilon))$ query complexity. The base case uses $g(0) \\geq 0$ and $g(1) \\leq 0$ from the self-map property; each step evaluates the midpoint."
     },
     {
       "id": "ppad-structure",
       "title": "PPAD Structure",
       "startLine": 217,
-      "endLine": 365,
+      "endLine": 366,
       "summary": "Complete formalization of PPAD: defines instances with successor/predecessor consistency, proves path injectivity via strong induction on $i + j$, establishes path termination via the pigeonhole principle ($|V|+1$ distinct vertices in a finite set), and concludes with the PPAD principle: every finite PPAD instance has a solution (a sink $v \\neq s$ with $\\text{succ}(v) = \\text{none}$)."
     },
     {

@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/534",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.gcd",
@@ -49,33 +49,6 @@
         "theorem": "Finset.card",
         "description": "Cardinality of finite sets",
         "module": "Mathlib.Data.Finset.Card"
-      }
-    ],
-    "crossReferences": [
-      {
-        "id": "erdos-535",
-        "title": "GCD-Free r-Subsets",
-        "relationship": "Complementary problem: #535 studies sets avoiding r elements with equal pairwise gcds, while #534 requires all pairs to have gcd > 1"
-      },
-      {
-        "id": "erdos-56",
-        "title": "Weakly Divisible Sets",
-        "relationship": "Direct dual: #56 asks about sets avoiding k+1 pairwise coprime elements (also disproved by Ahlswede-Khachatrian, 1994)"
-      },
-      {
-        "id": "erdos-701",
-        "title": "Chvátal's Conjecture on Intersecting Families",
-        "relationship": "Generalization of Erdős-Ko-Rado to hereditary families; #534 is the arithmetic analog using gcd intersection"
-      },
-      {
-        "id": "erdos-702",
-        "title": "Singleton Intersections in k-Uniform Families",
-        "relationship": "Studies forbidden intersection patterns in set families using Frankl's shifting; parallel to #534's intersection constraints"
-      },
-      {
-        "id": "erdos-703",
-        "title": "Forbidden r-Intersection Families",
-        "relationship": "Studies maximum family size avoiding r-intersections (Frankl-Rödl 1987); analog of #534 in set-theoretic framework"
       }
     ],
     "originalContributions": [
@@ -116,35 +89,35 @@
       "title": "Basic Definitions",
       "summary": "Defines interval N = {1,...,N}, IsGCDIntersecting (pairwise gcd > 1), ContainsN (N ∈ A), and maxGCDIntersecting (supremum of valid set sizes).",
       "startLine": 35,
-      "endLine": 50
+      "endLine": 51
     },
     {
       "id": "simple-constructions",
       "title": "Simple Constructions",
       "summary": "Defines multiplesOfSmallestPrime (all multiples of p = minFac(N)) and evenMultiplesSharing (even numbers sharing a factor with N), with axioms for size and GCD-intersecting property.",
       "startLine": 52,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "original-conjecture",
       "title": "Original Conjecture (WRONG)",
       "summary": "States the Erdős-Graham conjecture (max = max(N/p, |evenMultiplesSharing|)), axiomatizes it as false, and provides counterexample_exists.",
       "startLine": 75,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "correct-characterization",
       "title": "Correct Characterization (Ahlswede-Khachatrian 1996)",
       "summary": "Defines optimalFamily using {2q₁,...,2qⱼ, q₁⋯qⱼ} construction and axiomatizes ahlswede_khachatrian_theorem: the maximum equals the optimal family size.",
       "startLine": 91,
-      "endLine": 108
+      "endLine": 109
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "Axiomatizes prime_power_case (maxGCDIntersecting(p^k) = p^(k-1)) and two_times_prime_case (maxGCDIntersecting(2p) = 2).",
       "startLine": 110,
-      "endLine": 120
+      "endLine": 121
     },
     {
       "id": "summary",
@@ -206,5 +179,27 @@
       "author": "Thomas Bloom",
       "url": "https://erdosproblems.com/534"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-844",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, intersecting-families, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-402",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gcd, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-433",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-844",
+    "erdos-402",
+    "erdos-433"
   ]
 }

@@ -57,7 +57,8 @@
     ],
     "axiomCount": 10,
     "lineCount": 297,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Burr and Erdős and addresses a fundamental question in additive combinatorics: how does the restriction to distinct summands affect the gap structure of additive bases? An additive basis $A$ of order $k$ satisfies $kA \\supseteq [N_0, \\infty)$ — every large integer is a sum of at most $k$ elements of $A$ (with repetition). The restricted sumset $k \\times A$ allows only sums of distinct elements. Burr and Erdős asked: if $kA \\sim \\mathbb{N}$, must $\\Delta(k \\times A) < \\infty$? Hegyvári, Hennecart, and Plagne completely resolved this in their 2007 paper, discovering a surprising dichotomy. For $k = 2$, the answer is YES with the tight bound $\\Delta(2 \\times A) \\leq 2$, proved by an elegant parity argument: sums $a + a$ are always even, so every odd number in $2A$ must be $a + b$ with $a \\neq b$, hence in $2 \\times A$. Since $2A$ contains all large integers of both parities, odd numbers appear densely in $2 \\times A$, bounding gaps to $2$. For $k \\geq 3$, the answer is NO: there exist bases $A$ with $kA \\sim \\mathbb{N}$ but $\\Delta(k \\times A) = \\infty$. The parity trick fails because sums of $3$ or more distinct elements have no forced parity structure, allowing carefully constructed counterexamples. This result beautifully illustrates how the 'distinct elements' constraint can fundamentally alter combinatorial behavior.",
@@ -97,42 +98,42 @@
       "id": "burr-erdos-question",
       "title": "The Burr-Erdős Question",
       "startLine": 88,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Defines `burrErdosQuestion k`: does every basis $A$ of order $k$ satisfy $\\Delta(k \\times A) < \\infty$?"
     },
     {
       "id": "k2-case",
       "title": "The $k = 2$ Case: Positive Answer via Parity",
       "startLine": 105,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "Axiomatizes `k2_bounded_gaps` ($\\Delta(2 \\times A) \\leq 2$), the parity argument (odd $n \\in 2A \\implies n \\in 2 \\times A$), and tightness (gap-2 examples exist)."
     },
     {
       "id": "k3-case",
       "title": "The $k \\geq 3$ Case: Negative Answer via Counterexample",
       "startLine": 139,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "Axiomatizes `k_ge_3_unbounded_gaps` and the quantitative counterexample construction. Explains why parity fails: sums of $\\geq 3$ distinct elements have no forced parity."
     },
     {
       "id": "complete-resolution",
       "title": "Complete Resolution (Proved)",
       "startLine": 173,
-      "endLine": 196,
+      "endLine": 197,
       "summary": "Fully proved `burr_erdos_complete_answer`: $k=2$ gives $\\Delta \\leq 2$, $k \\geq 3$ allows $\\Delta = \\infty$. Proved from axioms."
     },
     {
       "id": "related-results",
       "title": "Related Results and Representation Function",
       "startLine": 198,
-      "endLine": 226,
+      "endLine": 227,
       "summary": "Axiom `relation_to_classical` ($k \\times A \\subseteq kA$). Defines `representationFunction` counting distinct-$k$-subset sums. Density considerations for $k \\geq 3$."
     },
     {
       "id": "parity-argument",
       "title": "Parity Argument in Detail",
       "startLine": 228,
-      "endLine": 254,
+      "endLine": 255,
       "summary": "Detailed axioms: `parity_argument_detail` (odd $n \\in 2A \\implies$ distinct-pair representation) and `parity_fails_k3` (odd $n \\in 3A$ with no all-distinct representation)."
     },
     {
@@ -155,9 +156,9 @@
     ]
   },
   "relatedProofs": [
-    "erdos-839",
-    "erdos-840",
-    "erdos-533"
+    "erdos-28",
+    "erdos-330",
+    "erdos-337"
   ],
   "leanFile": {
     "imports": [
@@ -172,5 +173,22 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-bases, additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-330",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-bases, additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-337",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-bases, additive-combinatorics, number-theory"
+    }
+  ]
 }

@@ -21,7 +21,7 @@
     "erdosNumber": 818,
     "erdosUrl": "https://erdosproblems.com/818",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
@@ -89,56 +89,56 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 46,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Sumset, product set, additive doubling, small sumset condition"
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "startLine": 78,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Elementary bounds on sumset and product set sizes"
     },
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture",
       "startLine": 106,
-      "endLine": 120,
+      "endLine": 121,
       "summary": "Erdős's question about product sets under small sumset hypothesis"
     },
     {
       "id": "solymosi-theorem",
       "title": "Solymosi's Theorem",
       "startLine": 122,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "The main result: |AA| ≥ c·|A|²/log|A|"
     },
     {
       "id": "multiplicative-energy",
       "title": "Multiplicative Energy",
       "startLine": 156,
-      "endLine": 189,
+      "endLine": 190,
       "summary": "Energy definitions and key bounds"
     },
     {
       "id": "proof-sketch",
       "title": "Proof Sketch",
       "startLine": 191,
-      "endLine": 228,
+      "endLine": 229,
       "summary": "How energy bounds combine to prove the theorem, log tightness"
     },
     {
       "id": "sum-product-connection",
       "title": "Connection to Sum-Product",
       "startLine": 230,
-      "endLine": 259,
+      "endLine": 260,
       "summary": "Relation to Problem 52 and sum-product dichotomy"
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 261,
-      "endLine": 290,
+      "endLine": 291,
       "summary": "Arithmetic and geometric progressions as extremes"
     },
     {

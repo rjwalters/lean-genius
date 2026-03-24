@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/970",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Coprime",
@@ -61,7 +61,7 @@
   "overview": {
     "historicalContext": "Jacobsthal's function h(k) measures how long an interval of consecutive integers must be to guarantee an element coprime to any number with at most k prime factors. The function was introduced by Jacobsthal, who conjectured h(k) = O(k²). This remains one of the major open problems in multiplicative number theory.\n\nIwaniec (1978) proved the best known upper bound h(k) ≤ C(k log k)² using sieve methods. The lower bound was dramatically improved by Ford, Green, Konyagin, Maynard, and Tao (2018), who used their breakthrough results on prime gaps to show h(k) ≥ ck(log k)(log log log k)/(log log k)².\n\nThe gap between upper and lower bounds remains substantial, and closing it (or even reaching the conjectured k² bound) would be a major advance.",
     "problemStatement": "Let $h(k)$ be Jacobsthal's function, defined as the minimal $m$ such that, if $n$ has at most $k$ prime factors, then in any set of $m$ consecutive integers there exists an integer coprime to $n$. Determine the order of magnitude of $h(k)$. In particular, is it true that $h(k) \\ll k^2$?\n\n**Answer: OPEN**",
-    "text": "Is h(k) = O(k\u00b2) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)\u00b2 by Iwaniec (1978).",
+    "text": "Is h(k) = O(k²) where h(k) is the minimal m such that any m consecutive integers contain one coprime to any n with at most k prime factors? OPEN: Best upper bound is (k log k)² by Iwaniec (1978).",
     "proofStrategy": "The formalization axiomatizes Jacobsthal's function h(k) with its defining property and minimality condition. Known upper and lower bounds are stated as axioms (Iwaniec 1978, FGKMT 2018). Small computed values h(1)=2 through h(5)=14 are recorded. The conjecture h(k) = O(k²) is formally defined but remains open.",
     "keyInsights": [
       "**Jacobsthal's function** measures coprimality in intervals: h(k) is the minimal m ensuring a coprime element exists",
@@ -82,42 +82,42 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 40,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "omega, hasAtMostKPrimes, consecutiveInterval, hasCoprimeElement"
     },
     {
       "id": "jacobsthal-function",
       "title": "Jacobsthal's Function",
       "startLine": 56,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "h(k) axiomatized with specification and minimality"
     },
     {
       "id": "main-conjecture",
       "title": "Jacobsthal's Conjecture",
       "startLine": 77,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "jacobsthalConjecture: h(k) = O(k²)"
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 83,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "Iwaniec's theorem: h(k) ≤ C(k log k)²"
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "startLine": 102,
-      "endLine": 115,
+      "endLine": 116,
       "summary": "FGKMT lower bound and Rankin-type bounds"
     },
     {
       "id": "small-values",
       "title": "Known Small Values",
       "startLine": 117,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "h(1)=2, h(2)=4, h(3)=6, h(4)=10, h(5)=14"
     },
     {
@@ -155,5 +155,27 @@
     "axiomCount": 12,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    },
+    {
+      "targetId": "erdos-1100",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: coprimality, number-theory"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1059",
+    "erdos-1100",
+    "erdos-1101"
+  ]
 }

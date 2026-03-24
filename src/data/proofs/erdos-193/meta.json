@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 80,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Joseph Gerver and L. Thomas Ramsey posed this problem in 1979 while studying self-avoiding walks on integer lattices with bounded step sets. They proved that in $\\mathbb{Z}^2$, every infinite injective $S$-walk must contain three collinear points, using a pigeonhole argument on the finitely many directions determined by the step set. The argument exploits the fact that in two dimensions, finitely many step directions constrain visited points to finitely many slopes from the origin, forcing three points to lie on a common line. Erdős recorded the problem and highlighted the open three-dimensional case, where the vastly larger direction space ($S^2$ vs. $S^1$) prevents the same pigeonhole approach. The problem connects to broader questions about unavoidable geometric patterns in discrete walks, a theme running through Erdős's work on combinatorial geometry from the 1970s onward. The 3D case has resisted all approaches for over 40 years and remains one of the most accessible yet stubbornly open problems in lattice combinatorics.",
@@ -54,7 +55,7 @@
       "id": "lattice-points",
       "title": "Lattice Points and Walks",
       "startLine": 20,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Defines $\\text{LatticePoint}\\,d = \\text{Fin}\\,d \\to \\mathbb{Z}$, $\\text{Walk}\\,d = \\mathbb{N} \\to \\mathbb{Z}^d$, and $\\text{StepSet}\\,d = \\text{Finset}(\\mathbb{Z}^d)$ — dimension-generic setup."
     },
     {
@@ -68,7 +69,7 @@
       "id": "collinearity-def",
       "title": "Collinearity via Integer Parallelism",
       "startLine": 39,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Defines AreCollinear$(p, q, r)$ via $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq 0, \\forall j: a(q_j - p_j) = b(r_j - p_j)$ — the integer cross product condition."
     },
     {
@@ -122,5 +123,27 @@
     "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1086",
+    "erdos-1090",
+    "erdos-1166"
+  ]
 }

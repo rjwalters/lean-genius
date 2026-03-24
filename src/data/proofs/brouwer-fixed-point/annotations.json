@@ -50,8 +50,8 @@
     "id": "ann-fixed-point-def",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 78,
-      "endLine": 93
+      "startLine": 71,
+      "endLine": 72
     },
     "type": "definition",
     "title": "What Is a Fixed Point?",
@@ -73,8 +73,8 @@
     "id": "ann-retraction",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 95,
-      "endLine": 105
+      "startLine": 75,
+      "endLine": 76
     },
     "type": "definition",
     "title": "Retractions: Projecting to Subspaces",
@@ -96,8 +96,8 @@
     "id": "ann-no-retraction",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 107,
-      "endLine": 129
+      "startLine": 91,
+      "endLine": 93
     },
     "type": "theorem",
     "title": "No-Retraction Theorem: The Topological Heart",
@@ -118,8 +118,8 @@
     "id": "ann-ray-construction",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 131,
-      "endLine": 188
+      "startLine": 126,
+      "endLine": 129
     },
     "type": "concept",
     "title": "The Brilliant Ray Construction",
@@ -140,7 +140,7 @@
     "proofId": "brouwer-fixed-point",
     "range": {
       "startLine": 190,
-      "endLine": 202
+      "endLine": 197
     },
     "type": "theorem",
     "title": "Brouwer's Fixed Point Theorem",
@@ -161,8 +161,8 @@
     "id": "ann-dimension-1",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 227,
-      "endLine": 242
+      "startLine": 10,
+      "endLine": 44
     },
     "type": "insight",
     "title": "Dimension 1: The Intermediate Value Theorem",
@@ -183,24 +183,22 @@
     "id": "ann-dimension-2",
     "proofId": "brouwer-fixed-point",
     "range": {
-      "startLine": 204,
-      "endLine": 225
+      "startLine": 10,
+      "endLine": 44
     },
     "type": "insight",
-    "title": "Applications: Nash Equilibrium, Perron-Frobenius, and Beyond",
-    "content": "Brouwer's theorem has profound applications across mathematics and economics:\n\n**1. Nash Equilibrium (1950):** Every finite game has a mixed strategy equilibrium. Nash's proof maps the strategy simplex to itself via the best-response correspondence — Brouwer guarantees a fixed point, which IS the equilibrium. This earned Nash the 1994 Nobel Prize.\n\n**2. Perron-Frobenius Theorem:** Every non-negative matrix has a non-negative eigenvector. The eigenvector problem reduces to finding a fixed point on the probability simplex (homeomorphic to a ball).\n\n**3. Differential Equations:** The Picard-Lindelöf and Schauder fixed point theorems guarantee solutions to ODEs and PDEs by finding fixed points of integral operators on function spaces.\n\n**4. General Equilibrium (Arrow-Debreu 1954):** Market equilibria exist because supply-demand dynamics define continuous self-maps on compact convex price simplices. Kakutani's generalization handles the set-valued case needed for economies.\n\n**5. PPAD-Completeness:** Finding approximate Brouwer fixed points is PPAD-complete (Papadimitriou 1994), explaining why computing Nash equilibria is hard — it's equivalent to finding fixed points in the worst case.",
-    "mathContext": "Nash: the best-response map $\\beta: \\Delta \\to \\Delta$ on the strategy simplex is continuous, so $\\beta$ has a fixed point $\\sigma^* = \\beta(\\sigma^*)$, which is a Nash equilibrium. Arrow-Debreu: excess demand $z(p)$ defines a self-map on the price simplex via Walras' law, and Kakutani's extension gives equilibrium.",
+    "title": "Dimension 2: Stirring Coffee",
+    "content": "The 2D case is the famous 'coffee cup theorem': when you stir coffee in a circular cup, at least one point of coffee returns to its starting position.\n\n**Why is this surprising?**\nYou might think: 'I'll just rotate everything!' But pure rotation has the center fixed. What about more complex stirring?\n\nNo matter how cleverly you stir:\n- If continuous (no tearing the liquid)\n- And the coffee stays in the cup (maps cup to itself)\n\n...some point must be fixed. You cannot continuously move every point of a disk!\n\nThis is genuinely counterintuitive. The theorem says it's impossible to avoid fixed points, even though we can't easily find them.",
+    "mathContext": "$f: B^2 \\to B^2$ continuous $\\implies \\exists x \\in B^2,\\; f(x) = x$, where $B^2$ is the closed unit disk in $\\mathbb{R}^2$.",
     "significance": "key",
     "prerequisites": [
       "brouwer_fixed_point (main theorem)",
-      "game theory basics"
+      "closed unit disk"
     ],
     "relatedConcepts": [
-      "Nash equilibrium",
-      "Perron-Frobenius",
-      "PPAD-completeness",
-      "Kakutani fixed point theorem",
-      "Arrow-Debreu equilibrium"
+      "rotation",
+      "stirring",
+      "intuitive mathematics"
     ]
   }
 ]

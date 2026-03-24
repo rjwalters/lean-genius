@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/329",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set.ncard",
@@ -88,28 +88,28 @@
       "id": "sidon-def",
       "title": "Sidon Set Definition",
       "startLine": 39,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "IsSidon definition: all pairwise sums are distinct."
     },
     {
       "id": "density",
       "title": "Density Measures",
       "startLine": 51,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "sqrtPartialDensity and sidonUpperDensity using limsup."
     },
     {
       "id": "perfect-diff",
       "title": "Perfect Difference Sets",
       "startLine": 67,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "IsPerfectDifferenceSet definition and its connection to Sidon theory."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 80,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "maxSidonDensity definition as supremum over all Sidon sets."
     },
     {
@@ -130,14 +130,14 @@
       "id": "conditional",
       "title": "Conditional Results",
       "startLine": 138,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "Equivalence between density 1 and perfect difference set embedding."
     },
     {
       "id": "examples",
       "title": "Basic Examples",
       "startLine": 158,
-      "endLine": 195,
+      "endLine": 196,
       "summary": "Proved: empty_is_sidon, singleton_is_sidon. Verified sum computations."
     },
     {
@@ -176,5 +176,27 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, density"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, density"
+    },
+    {
+      "targetId": "erdos-139",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, density"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1075",
+    "erdos-109",
+    "erdos-139"
+  ]
 }

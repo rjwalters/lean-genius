@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -45,7 +45,8 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 0,
     "lineCount": 281,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Euler discovered this theorem around 1748 while developing his groundbreaking theory of generating functions for integer partitions. Working in the tradition of Leibniz's formal power series, Euler showed that the generating function for partitions into distinct parts, ∏(1+xᵏ), equals the generating function for partitions into odd parts, ∏1/(1-x^{2k+1}), by the algebraic identity 1+xᵏ = (1-x^{2k})/(1-xᵏ).\n\nThe theorem is one of the earliest results in partition theory and appears in Euler's 'Introductio in analysin infinitorum' (1748). It sparked centuries of work: Glaisher (1883) found a direct bijective proof using binary representation of multiplicities; Ramanujan (1919) discovered his famous congruences p(5n+4) ≡ 0 (mod 5), p(7n+5) ≡ 0 (mod 7), and p(11n+6) ≡ 0 (mod 11) while studying partition functions; Hardy and Ramanujan (1918) developed the circle method to find the asymptotic formula for p(n).\n\nThe theorem is #45 on Wiedijk's list of '100 Theorems' that benchmark formal verification systems. The Lean formalization uses Mathlib's archive proof, which implements Euler's generating function approach within the formal power series framework. Notably, this is a FULLY PROVED result with no axioms — the proof chain from Mathlib is complete.",
@@ -102,7 +103,7 @@
       "id": "introduction",
       "title": "Introduction and Documentation",
       "startLine": 1,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Extensive docstring covering the mathematical statement, examples for n=5 and n=8, Mathlib approach, original contributions, proof techniques, status checklist, dependencies, historical note on Euler (1748), and Glaisher's bijection. Notes Wiedijk #45 classification."
     },
     {
@@ -116,7 +117,7 @@
       "id": "distinct-partitions",
       "title": "Distinct Partitions",
       "startLine": 107,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Shows Nat.Partition.distincts n (Finset of distinct partitions) and proves distinct_iff_nodup: membership in distincts ↔ parts.Nodup, via simp."
     },
     {
@@ -130,35 +131,35 @@
       "id": "main-theorem",
       "title": "The Partition Theorem",
       "startLine": 133,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "Main result: partition_theorem proves (distincts n).card = (odds n).card via one-line invocation of Theorems100.partition_theorem. FULLY PROVED — no axioms or sorry."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 154,
-      "endLine": 196,
+      "endLine": 197,
       "summary": "Computationally verifies partition equality for n = 0 through 8 using native_decide. Lists explicit partitions for each case, providing independent confirmation of the theorem."
     },
     {
       "id": "generating-functions",
       "title": "Generating Function Proof",
       "startLine": 198,
-      "endLine": 222,
+      "endLine": 223,
       "summary": "Commentary explaining the classical generating function argument: ∏(1+xᵏ) = ∏1/(1-x^{2k+1}) via the identity 1+xᵏ = (1-x^{2k})/(1-xᵏ) and telescoping cancellation of even factors."
     },
     {
       "id": "glaisher-bijection",
       "title": "Glaisher's Bijection",
       "startLine": 224,
-      "endLine": 250,
+      "endLine": 251,
       "summary": "Commentary on the Glaisher correspondence: distinct → odd via d = 2^a × b decomposition, and reverse via binary representation of multiplicities. Worked example: {6,5,3} ↔ {5,3,3,3}."
     },
     {
       "id": "pentagonal-connection",
       "title": "Pentagonal Number Connection",
       "startLine": 252,
-      "endLine": 264,
+      "endLine": 265,
       "summary": "Commentary on Euler's pentagonal number theorem ∏(1-xᵏ) = Σ(-1)ⁿx^{n(3n-1)/2} and the resulting recurrence for p(n) with signs alternating in pairs."
     },
     {

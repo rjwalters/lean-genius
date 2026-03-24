@@ -22,7 +22,7 @@
     "erdosNumber": 433,
     "erdosUrl": "https://erdosproblems.com/433",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Coprime",
@@ -78,63 +78,63 @@
       "title": "The Frobenius Number",
       "summary": "Definition of numerical semigroups and G(A)",
       "startLine": 44,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "fundamental-properties",
       "title": "Fundamental Properties",
       "summary": "Sylvester-Frobenius formula and examples",
       "startLine": 68,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "function-g",
       "title": "The Function g(k, n)",
       "summary": "Definition of g and coprimality condition",
       "startLine": 117,
-      "endLine": 132
+      "endLine": 133
     },
     {
       "id": "erdos-graham",
       "title": "Erdős-Graham Bounds",
       "summary": "Original 1972 bounds: g(k,n) < 2n²/k",
       "startLine": 134,
-      "endLine": 155
+      "endLine": 156
     },
     {
       "id": "dixmier",
       "title": "Dixmier's Theorem",
       "summary": "Precise bounds proving g(k,n) ~ n²/(k-1)",
       "startLine": 157,
-      "endLine": 193
+      "endLine": 194
     },
     {
       "id": "exact-values",
       "title": "Exact Values",
       "summary": "Special cases where exact formulas exist",
       "startLine": 195,
-      "endLine": 214
+      "endLine": 215
     },
     {
       "id": "extremal-sets",
       "title": "Extremal Sets",
       "summary": "Structure of sets achieving g(k,n)",
       "startLine": 216,
-      "endLine": 235
+      "endLine": 236
     },
     {
       "id": "classical-frobenius",
       "title": "Classical Frobenius Problem",
       "summary": "Chicken McNugget theorem and NP-hardness",
       "startLine": 237,
-      "endLine": 265
+      "endLine": 266
     },
     {
       "id": "gap-counting",
       "title": "Counting Gaps",
       "summary": "Number of gaps and symmetry properties",
       "startLine": 267,
-      "endLine": 288
+      "endLine": 289
     },
     {
       "id": "summary",
@@ -172,5 +172,27 @@
     "axiomCount": 13,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-435",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: frobenius-number, number-theory, numerical-semigroups, solved"
+    },
+    {
+      "targetId": "erdos-434",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, numerical-semigroups"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-435",
+    "erdos-434",
+    "erdos-466"
+  ]
 }

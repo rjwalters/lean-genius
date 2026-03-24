@@ -24,7 +24,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -105,63 +105,63 @@
       "id": "header-and-imports",
       "title": "Header, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Module documentation citing the problem statement, known results, and references; imports of InnerProductSpace.PiL2, Finset.Basic, Finset.Card, Real.Sqrt, and Topology.MetricSpace.Basic"
     },
     {
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 40,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Defines Point = EuclideanSpace ℝ (Fin 2), dist p q = ‖p - q‖; proves dist_symm (via norm_neg) and dist_nonneg (via norm_nonneg)"
     },
     {
       "id": "distance-multiplicity",
       "title": "Part II: Distance Multiplicity",
       "startLine": 56,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Defines pairsAtDistance A d by filtering A.powerset for 2-element subsets at distance d, and multiplicity A d as the cardinality"
     },
     {
       "id": "rare-distances",
       "title": "Part III: Rare Distances and Problem Statements",
       "startLine": 68,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "Defines isRareDistance (d > 0, 1 ≤ mult ≤ n); formalizes erdos132_question1 (two rare distances), erdos132_question2 (count → ∞), and erdos132_strong_conjecture (n^{1-ε} rare distances)"
     },
     {
       "id": "hopf-pannwitz",
       "title": "Part IV: Hopf-Pannwitz Theorem (1934)",
       "startLine": 103,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Axiomatizes the foundational result: for |A| ≥ 2, there exists a rare distance (the diameter occurs at most n times)"
     },
     {
       "id": "counterexample",
       "title": "Part V: Counterexample for n = 4",
       "startLine": 116,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Axiomatizes existence of a 4-point set (double equilateral triangle) with only one rare distance"
     },
     {
       "id": "positive-results",
       "title": "Part VI: Positive Results (Erdős-Fishburn 1996)",
       "startLine": 130,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "Separate axioms for n = 5 and n = 6: two rare distances always exist, proved by exhaustive case analysis"
     },
     {
       "id": "convex-position",
       "title": "Part VII: Convex Position (CDL 2025)",
       "startLine": 146,
-      "endLine": 162,
+      "endLine": 163,
       "summary": "Defines inConvexPosition via convex hull exclusion; axiomatizes Clemen-Dumitrescu-Liu result for |A| ≥ 5 in convex position"
     },
     {
       "id": "related-bounds",
       "title": "Part VIII: Related Bounds",
       "startLine": 164,
-      "endLine": 184,
+      "endLine": 185,
       "summary": "Axiomatizes Spencer-Szemerédi-Trotter unit distance bound O(n^{4/3}) and Guth-Katz distinct distances Ω(n/log n) for context"
     },
     {

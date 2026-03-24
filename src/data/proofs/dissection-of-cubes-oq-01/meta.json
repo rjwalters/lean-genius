@@ -7,7 +7,7 @@
     "author": "Littlewood / formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
     "date": "1953",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ01.lean",
     "tags": [
       "geometry",
@@ -17,7 +17,7 @@
       "open-problem",
       "wiedijk-100"
     ],
-    "badge": "open",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -52,9 +52,9 @@
       "Floor argument commentary: why Littlewood's cascade forces many collisions in practice"
     ],
     "dateAdded": "2026-02-23",
-    "axiomCount": 0,
+    "axiomCount": 2,
     "lineCount": 279,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries."
+    "assumptions": "2 axioms (inherited from DissectionOfCubes.lean): axioms for 3D geometric properties used in the descent argument. This file has 0 direct axioms and 0 sorries, but all theorems depend transitively on the parent file's 2 axioms. Note: the covering constraint (covers_unit_cube) is a placeholder (covers_unit_cube : True), so results technically apply to disjoint cube arrangements, not necessarily actual dissections of the unit cube."
   },
   "overview": {
     "historicalContext": "Littlewood's 1953 proof (Wiedijk #82) established that NO cube dissection can have all different sizes: in any finite partition of a cube into smaller cubes, at least two must share the same side length. The infinite descent argument — the smallest cube on any floor forces an ever-smaller cube above it — implies repeated sizes are unavoidable.\n\nThis raises a natural quantitative follow-up: exactly how many cubes must participate in size repetitions? The binary existence statement 'at least one collision pair' is equivalent to saying 'at least 2 cubes collide.' But in all known cube dissections, many more cubes share sizes. The question of whether exactly 2 is achievable remains open.\n\nBy contrast, the 2D analog (squaring the square) allows ALL different sizes. The smallest simple perfect squared square, found by Brooks–Smith–Stone–Tutte (1940), uses 21 squares with all different sizes. This dimensional gap makes the 3D minimum collision number especially intriguing.",
@@ -153,21 +153,12 @@
       "targetId": "mathematical-induction",
       "relationship": "foundational",
       "description": "The infinite descent argument underlying Littlewood's cascade proof is a classical application of strong induction, a technique formalized here"
-    },
-    {
-      "targetId": "euler-polyhedral-formula",
-      "relationship": "related",
-      "description": "Both entries concern geometric decomposition and counting arguments; Euler's formula counts faces/vertices/edges while cube dissections count size repetitions"
     }
   ],
   "relatedProofs": [
-    {
-      "id": "dissection-of-cubes",
-      "relationship": "Base formalization (Wiedijk #82) proving no perfect cube dissection exists; this OQ-01 strengthens it to give the minimum collision count"
-    },
     "dissection-of-cubes",
-    "mathematical-induction",
-    "euler-polyhedral-formula"
+    "dissection-of-cubes",
+    "mathematical-induction"
   ],
   "references": [
     {

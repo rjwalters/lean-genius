@@ -22,7 +22,8 @@
     "erdosProblemStatus": "partially solved",
     "axiomCount": 9,
     "lineCount": 98,
-    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Karol Borsuk conjectured in 1933 that every bounded set in $\\mathbb{R}^n$ can be partitioned into at most $n + 1$ parts of strictly smaller diameter. The conjecture was inspired by the observation that a ball in $\\mathbb{R}^n$ requires exactly $n + 1$ pieces, and it generalized earlier results of Lenz and Hadwiger for $n = 2$. The conjecture was widely believed to be true and was verified for $n \\leq 3$: the case $n = 2$ by classical methods and $n = 3$ by Eggleston (1955), Grünbaum, and Heppes. Erdős discussed the problem with Coxeter and others, and was among those who suspected it might fail in high dimensions. In 1993, Jeff Kahn and Gil Kalai produced one of the most dramatic counterexamples in combinatorial geometry: using a carefully chosen subset of the Boolean cube $\\{0,1\\}^n$ and the Frankl-Wilson theorem on intersecting families, they showed $\\alpha(n) \\geq (1.2)^{\\sqrt{n}}$, which exceeds $n + 1$ for $n \\geq 2015$. This was later refined to $n \\geq 2014$. In 2014, Andries Brouwer and Thomas Jenrich used computer-assisted search over two-distance sets to lower the counterexample threshold to $n \\geq 64$, the current best result. On the upper bound side, Oded Schramm showed $\\alpha(n) \\leq (\\sqrt{3/2} + o(1))^n \\approx 1.225^n$ using the illumination body technique. The problem remains open for $4 \\leq n \\leq 63$, a gap that has resisted all known approaches.",
@@ -46,42 +47,42 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 24,
+      "endLine": 25,
       "summary": "Module documentation describing Borsuk's conjecture history and key results (n ≤ 3 true, n ≥ 64 false, quantitative bounds), with Mathlib imports for real analysis, finite sets, and inner product spaces."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 26,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines BoundedSet, diameter (supremum of pairwise distances), IsSmallDiamPartition (k pieces covering S with diameter < d), and the Borsuk number α(n) axiomatized as a function ℕ → ℕ."
     },
     {
       "id": "conjecture",
       "title": "Borsuk's Conjecture",
       "startLine": 50,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Defines borsukConjecture n as the predicate α(n) ≤ n + 1, the central claim of the problem."
     },
     {
       "id": "low-dim",
       "title": "Low-Dimensional Positive Results",
       "startLine": 57,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Axioms: Borsuk's conjecture holds for n = 2 (classical) and n = 3 (Eggleston 1955)."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
       "startLine": 65,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Axioms: Kahn-Kalai (1993) disprove the conjecture for n ≥ 2014; Brouwer-Jenrich (2014) improve the threshold to n ≥ 64."
     },
     {
       "id": "quantitative-bounds",
       "title": "Quantitative Bounds on α(n)",
       "startLine": 78,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Axioms: Kahn-Kalai lower bound α(n) ≥ 1.2^√n and Schramm upper bound α(n) ≤ (√(3/2) + o(1))^n, establishing α(n) between exp(c√n) and exp(Cn)."
     },
     {
@@ -116,5 +117,21 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-502",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial geometry, geometry"
+    },
+    {
+      "targetId": "erdos-506",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial geometry, geometry"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-502",
+    "erdos-506"
+  ]
 }

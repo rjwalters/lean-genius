@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/258",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -72,28 +72,28 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 24,
+      "endLine": 25,
       "summary": "Module documentation explaining the problem and Mathlib imports for divisors, irrationality, and infinite sums."
     },
     {
       "id": "definitions",
       "title": "Key Definitions",
       "startLine": 26,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Definitions of the divisor function τ(n), product prefixes, and the general term of the series."
     },
     {
       "id": "computations",
       "title": "Verified Computations",
       "startLine": 41,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Verified values of τ(n) for small n using native_decide."
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "startLine": 60,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "The two solved variants: monotone (Erdős-Straus) and power case (Erdős), stated as axioms."
     },
     {
@@ -136,5 +136,27 @@
     "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-251",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: infinite-series, irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-257",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, irrationality, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1049",
+    "erdos-251",
+    "erdos-257"
+  ]
 }

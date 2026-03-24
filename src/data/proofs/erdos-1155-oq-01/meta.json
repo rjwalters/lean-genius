@@ -79,20 +79,6 @@
         "relationship": "Both concern structural properties of graphs under random or extremal processes; Ramsey theory provides related combinatorial bounds"
       }
     ],
-    "relatedProofs": [
-      "erdos-1155",
-      "ramseys-theorem",
-      "szemeredi-regularity",
-      "erdos-1009",
-      "erdos-1010",
-      "erdos-1104",
-      "szemeredi-theorem",
-      "szemeredi-counting",
-      "roth-theorem-k3",
-      "prob-method-alteration",
-      "prob-method-lovasz-local",
-      "prob-method-second-moment"
-    ],
     "prerequisites": [
       "Filter-based asymptotics (Filter.Eventually, atTop)",
       "Real powers (Real.rpow) and their monotonicity properties",
@@ -100,7 +86,8 @@
       "Topological convergence (Filter.Tendsto, nhds)",
       "Asymptotic notation (Θ, O, Ω)"
     ],
-    "lineCount": 489
+    "lineCount": 489,
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -132,7 +119,7 @@
       "title": "BFL Sandwich and Conjecture Implications",
       "summary": "Combines BFL bounds into a sandwich n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}. Proves the conjecture strictly implies BFL via constant-to-sub-polynomial reduction.",
       "startLine": 105,
-      "endLine": 183,
+      "endLine": 184,
       "mathContext": "Conjecture $\\Longrightarrow$ BFL: $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ implies $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ since $c, C$ are constants absorbed by $n^{\\pm \\varepsilon}$."
     },
     {
@@ -145,50 +132,58 @@
     },
     {
       "id": "exponent-characterization",
-      "title": "Exponent Characterization and Small Values",
-      "summary": "Proves 3/2 is the exact critical exponent. f(n) = O(n^α) for all α > 3/2 but for no β < 3/2. Includes small-value bounds and ratio reformulation of BFL.",
-      "startLine": 226,
-      "endLine": 305,
-      "mathContext": "Critical exponent: $f(n) = O(n^\\alpha)$ for $\\alpha > 3/2$, $f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$. Ratio: $R(n) = f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$."
+      "title": "Exact Exponent Characterization",
+      "summary": "Proves 3/2 is the exact critical exponent via two theorems: `bfl_exponent_is_three_halves` ($f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$) and `bfl_lower_tight` ($f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$, by contradiction using the intermediate exponent trick).",
+      "startLine": 220,
+      "endLine": 253,
+      "mathContext": "Critical exponent: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. Upper: substitute $\\varepsilon = \\alpha - 3/2$ in BFL. Lower: assume $f(n) \\leq n^\\beta$, take $\\varepsilon' = (3/2 - \\beta)/2$, get $n^{3/2-\\varepsilon'} \\leq f(n) \\leq n^\\beta$ with $3/2 - \\varepsilon' > \\beta$, contradiction."
+    },
+    {
+      "id": "small-values-ratio",
+      "title": "Small Values and BFL Ratio Reformulation",
+      "summary": "Base cases ($f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$) from the complete graph edge bound. Then `bfl_ratio_characterization`: BFL reformulated as the ratio $f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually, making the gap with the conjecture (constant bounds) maximally transparent.",
+      "startLine": 254,
+      "endLine": 304,
+      "mathContext": "Base cases: $f(n) \\leq n(n-1)/2$ gives $f(0) \\leq 0$, $f(2) \\leq 1$. Ratio: $R(n) = f(n)/n^{3/2}$. BFL $\\iff R(n) \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$. Conjecture $\\iff R(n) \\in [c_1, c_2]$."
     },
     {
       "id": "sufficient-conditions",
       "title": "Sufficient Conditions for the Conjecture",
       "summary": "If f(n)/n^{3/2} → L > 0, the conjecture holds with c₁ = L/2, c₂ = 3L/2. The weaker limsup/liminf boundedness condition also suffices.",
-      "startLine": 311,
+      "startLine": 305,
       "endLine": 355,
       "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies$ conjecture with $c_1 = L/2, c_2 = 3L/2$. Weaker: $0 < \\liminf \\leq \\limsup < \\infty$ also suffices."
     },
     {
       "id": "lower-exponent",
       "title": "Lower Exponent Characterization",
-      "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Includes superlinear and n^{5/4} special cases.",
-      "startLine": 362,
+      "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Proved by taking ε = 3/2 - α in the BFL lower bound. Includes physical interpretation: superlinearity (f(n) ≫ n) means the terminal graph is far from being a forest.",
+      "startLine": 356,
       "endLine": 370,
       "mathContext": "$\\forall \\alpha < 3/2: \\; n^\\alpha \\leq f(n)$ eventually. Take $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound."
     },
     {
       "id": "mantel-connection",
       "title": "Mantel/Turán Connection",
-      "summary": "Connects the triangle removal process to Mantel's theorem: the triangle-free terminal graph has at most n²/4 edges. BFL's n^{7/4} bound is strictly tighter.",
-      "startLine": 382,
+      "summary": "Connects the triangle removal process to Mantel's theorem: the triangle-free terminal graph has at most n²/4 edges. Axiomatizes this as `triangleRemoval_mantel_bound`. Proves `bfl_below_mantel_exponent`: BFL's $n^{7/4}$ bound (via $\\varepsilon = 1/4$) is vastly tighter than Mantel's $n^2/4$.",
+      "startLine": 371,
       "endLine": 403,
       "mathContext": "Mantel: $f(n) \\leq n^2/4$ (triangle-free). BFL: $f(n) \\leq n^{7/4}$. Hierarchy: $n^{3/2} \\ll n^{7/4} \\ll n^2/4$."
     },
     {
       "id": "hierarchy",
       "title": "Hierarchy of Bounds",
-      "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant.",
-      "startLine": 411,
-      "endLine": 445,
+      "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant. `hierarchy_conjecture_implies_bfl` combines the two one-sided implications. `hierarchy_bfl_implies_grable` shows $n^{3/2+\\varepsilon} \\leq n^{7/4+\\varepsilon}$ via the substitution $\\varepsilon' = 1/4 + \\varepsilon$.",
+      "startLine": 404,
+      "endLine": 433,
       "mathContext": "Strict hierarchy: $\\Theta(n^{3/2}) \\Longrightarrow n^{3/2 \\pm o(1)} \\Longrightarrow n^{7/4+o(1)}$. Each step relaxes the multiplicative constant control."
     },
     {
       "id": "tightness",
       "title": "Tightness and Ratio Characterization",
-      "summary": "Under the conjecture, the normalized ratio f(n)/n^{3/2} is eventually in [c₁, c₂]. Characterizes the conjecture as a compactness condition on the ratio sequence in (0, ∞).",
-      "startLine": 447,
-      "endLine": 489,
+      "summary": "Two characterizations: `conjecture_tightness` shows $f(n)/(c_1 n^{3/2}) \\in [1, c_2/c_1]$ eventually. `conjecture_ratio_bounded` shows $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually. Together they characterize the conjecture as a compactness condition on the ratio sequence in $(0, \\infty)$.",
+      "startLine": 434,
+      "endLine": 490,
       "mathContext": "Conjecture $\\iff \\{f(n)/n^{3/2}\\}_{n \\geq N}$ is bounded in $(0, \\infty)$: a compactness condition on the ratio sequence."
     }
   ],
@@ -254,6 +249,26 @@
       "targetId": "roth-theorem-k3",
       "relationship": "related",
       "description": "The triangle removal lemma — a key consequence of Szemerédi regularity — states that graphs with o(n³) triangles can be made triangle-free by removing o(n²) edges. Ruzsa and Szemerédi (1978) used this to prove Roth's theorem (no 3-AP in dense sets) via a graph construction where triangles encode 3-term arithmetic progressions. The triangle removal *process* studied here is the random greedy counterpart: rather than removing a minimal edge set to destroy all triangles, it removes edges of uniformly random triangles one at a time. The connection raises the question of whether the triangle removal lemma's quantitative bounds (recently improved by Fox 2011) can constrain the process's terminal edge count"
+    },
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "related",
+      "description": "Szemerédi's counting lemma quantifies triangle density in ε-regular triples: if (A, B, C) are pairwise ε-regular with edge densities d₁, d₂, d₃, the triangle count is approximately d₁d₂d₃|A||B||C|. In the triangle removal process, this counting governs the early (dense) phase when the graph still has many ε-regular triples — the rate of triangle depletion in this regime determines how quickly the process transitions to the critical n^{3/2} phase"
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The alteration method (Erdős 1963) constructs combinatorial objects by starting with a random structure and modifying it. The triangle removal process is a natural extension: start with K_n and greedily remove random triangles. The alteration perspective suggests that the terminal graph's structure may be analyzable by viewing it as K_n 'altered' by the removal process, with the n^{3/2} scaling reflecting the balance between the random greedy deletions and the surviving edge structure"
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The Lovász Local Lemma provides bounds on the probability that no 'bad event' occurs when events have limited dependency. In the triangle removal process, triangle deletions create complex dependencies — removing one triangle's edges can destroy adjacent triangles. The BFL proof uses martingale concentration (a related probabilistic tool) to handle these dependencies during the critical phase of the process"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method bounds P(X > 0) via E[X]²/E[X²], providing concentration for the triangle count during the removal process. BFL's proof tracks the variance of edge and triangle counts through the process, using second-moment-type arguments to show concentration around the ODE trajectory until the critical n^{3/2} threshold"
     }
   ],
   "references": [
@@ -337,6 +352,11 @@
     "defCount": 6,
     "imports": [
       "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "SimpleGraph",
+      "Finset"
     ]
   },
   "conclusion": {
@@ -360,6 +380,10 @@
     "erdos-1010",
     "erdos-1104",
     "szemeredi-theorem",
-    "roth-theorem-k3"
+    "szemeredi-counting",
+    "roth-theorem-k3",
+    "prob-method-alteration",
+    "prob-method-lovasz-local",
+    "prob-method-second-moment"
   ]
 }

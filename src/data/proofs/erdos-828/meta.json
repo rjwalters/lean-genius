@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/828",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
@@ -105,35 +105,35 @@
       "title": "Basic Definitions",
       "summary": "totientDivisors(a): the set {n ∈ ℕ : φ(n) | n + a}",
       "startLine": 36,
-      "endLine": 40
+      "endLine": 41
     },
     {
       "id": "case-zero",
       "title": "Special Case a = 0",
       "summary": "totient_dvd_self_iff axiom and totientDivisors_zero_infinite theorem (proved via 2^k family)",
       "startLine": 42,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "lehmer",
       "title": "Lehmer's Conjecture (a = -1)",
       "summary": "lehmerConjecture definition, prime_totient_dvd_pred theorem, totientDivisors_neg_one_infinite theorem (proved from primes)",
       "startLine": 65,
-      "endLine": 92
+      "endLine": 93
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos828Conjecture: ∀ a : ℤ, (totientDivisors a).Infinite",
       "startLine": 94,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
       "summary": "totient_even (proved), totient_prime', totient_prime_pow_formula (proved from Mathlib)",
       "startLine": 101,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "summary",
@@ -170,5 +170,27 @@
     "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, open"
+    },
+    {
+      "targetId": "erdos-396",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, open"
+    },
+    {
+      "targetId": "erdos-650",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1063",
+    "erdos-396",
+    "erdos-650"
+  ]
 }

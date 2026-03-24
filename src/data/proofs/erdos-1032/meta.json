@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/1032",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat",
@@ -88,14 +88,14 @@
       "id": "known-constructions",
       "title": "Known Constructions",
       "startLine": 48,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Dirac's 6-chromatic critical graphs with δ > n/2, and Simonovits–Toft's 4-chromatic critical graphs with δ ≫ n^{1/3}."
     },
     {
       "id": "toft-conjecture",
       "title": "Toft's Conjecture",
       "startLine": 63,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Every 4-chromatic critical graph on n vertices has ≥ (5/3+o(1))n edges."
     },
     {
@@ -119,34 +119,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-58",
       "relationship": "related",
-      "description": "Chromatic number constrained by odd cycle structure — another Erdős problem linking chromatic number to graph structural properties, paralleling the critical graph angle"
+      "description": "Chromatic number constrained by odd cycle structure — another Erdős problem linking chromatic number to graph structural properties, paralleling the critical graph angle",
+      "targetId": "erdos-58"
     },
     {
-      "target": "erdos-108",
       "relationship": "related",
-      "description": "High chromatic subgraphs with large girth — directly related: asks for high-χ graphs with large girth, the dual challenge to critical graphs with high minimum degree"
+      "description": "High chromatic subgraphs with large girth — directly related: asks for high-χ graphs with large girth, the dual challenge to critical graphs with high minimum degree",
+      "targetId": "erdos-108"
     },
     {
-      "target": "erdos-1013",
       "relationship": "related",
-      "description": "Triangle-free chromatic threshold — explores how high chromatic number can be achieved with sparse local structure, closely related to minimum degree constraints in critical graphs"
+      "description": "Triangle-free chromatic threshold — explores how high chromatic number can be achieved with sparse local structure, closely related to minimum degree constraints in critical graphs",
+      "targetId": "erdos-1013"
     },
     {
-      "target": "erdos-1011",
       "relationship": "related",
-      "description": "Triangles in graphs with high chromatic number — examines edge density needed to force triangles when χ is high, complementing the minimum degree perspective of Problem 1032"
+      "description": "Triangles in graphs with high chromatic number — examines edge density needed to force triangles when χ is high, complementing the minimum degree perspective of Problem 1032",
+      "targetId": "erdos-1011"
     },
     {
-      "target": "erdos-1092",
       "relationship": "related",
-      "description": "Chromatic decomposition threshold — studies how many edges must be removed to reduce chromatic number, closely tied to edge-criticality which underlies k-chromatic critical graph theory"
+      "description": "Chromatic decomposition threshold — studies how many edges must be removed to reduce chromatic number, closely tied to edge-criticality which underlies k-chromatic critical graph theory",
+      "targetId": "erdos-1092"
     },
     {
-      "target": "four-color-theorem",
       "relationship": "related",
-      "description": "Four Color Theorem — the landmark result on planar graph chromatic number; 4-chromatic critical graphs are the irreducible obstacles to 3-coloring and connect directly to planarity questions"
+      "description": "Four Color Theorem — the landmark result on planar graph chromatic number; 4-chromatic critical graphs are the irreducible obstacles to 3-coloring and connect directly to planarity questions",
+      "targetId": "four-color-theorem"
     }
   ],
   "relatedProofs": [

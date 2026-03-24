@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/979",
     "erdosProblemStatus": "partially-solved",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -79,14 +79,14 @@
       "id": "header",
       "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 23,
       "summary": "Problem statement, status, known results for k=2,3, and references."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 24,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Mathlib imports for primes, multisets, BigOperators, and filters."
     },
     {
@@ -100,42 +100,42 @@
       "id": "small-cases",
       "title": "Small Cases",
       "startLine": 52,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Handle edge cases: n=0 with k=0 has unique empty solution; n=0 with k>=1 has no solutions."
     },
     {
       "id": "examples-k2",
       "title": "Examples: Sum of Two Squares",
       "startLine": 68,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Concrete examples for k=2: 8 = 2^2 + 2^2 and 50 = 5^2 + 5^2."
     },
     {
       "id": "examples-k3",
       "title": "Examples: Sum of Three Cubes",
       "startLine": 83,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Concrete example for k=3: 24 = 2^3 + 2^3 + 2^3."
     },
     {
       "id": "main-results",
       "title": "Main Theorems",
       "startLine": 93,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "Erdős's results: lim sup f_2(n) = infinity and lim sup f_3(n) = infinity. The k>=4 case remains open."
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "startLine": 116,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Relationships to Goldbach conjecture, Waring's problem, and Hardy-Littlewood method."
     },
     {
       "id": "properties",
       "title": "Properties of Solution Counts",
       "startLine": 131,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Bounds: no solutions for n < 2^k; smallest k=2 solution is n=8."
     },
     {
@@ -176,5 +176,27 @@
     "axiomCount": 11,
     "theoremCount": 4,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-11",
+    "erdos-1103",
+    "erdos-1107"
+  ]
 }

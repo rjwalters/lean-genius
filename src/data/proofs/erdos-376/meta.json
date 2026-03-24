@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/376",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-17",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.centralBinom",
@@ -54,7 +54,7 @@
       "Computationally verified: one_is_good, two_not_good, four_not_good",
       "Characterization via digit intersection"
     ],
-    "axiomCount": 21,
+    "axiomCount": 1,
     "lineCount": 126,
     "assumptions": "21 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
@@ -80,7 +80,7 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 31,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Central binomial coefficient, Is105Good, GoodSet105."
     },
     {
@@ -158,5 +158,27 @@
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+    },
+    {
+      "targetId": "erdos-1093",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+    },
+    {
+      "targetId": "erdos-1094",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: binomial-coefficients, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1063",
+    "erdos-1093",
+    "erdos-1094"
+  ]
 }

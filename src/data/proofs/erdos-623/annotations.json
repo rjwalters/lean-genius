@@ -8,14 +8,14 @@
     },
     "type": "concept",
     "title": "Problem Statement",
-    "content": "Erdős Problem #623 asks about independence for functions on finite subsets. Given a set $X$ of cardinality $\\aleph_\\omega$ and a 'free' function $f: \\text{Finset}(X) \\to X$ (where $f(A) \\notin A$ always), must there exist an infinite 'independent' set $Y$ where $f(B) \\notin Y$ for all finite $B \\subseteq Y$? Status: OPEN, possibly undecidable in ZFC.",
+    "content": "Erd\u0151s Problem #623 asks about independence for functions on finite subsets. Given a set $X$ of cardinality $\\aleph_\\omega$ and a 'free' function $f: \\text{Finset}(X) \\to X$ (where $f(A) \\notin A$ always), must there exist an infinite 'independent' set $Y$ where $f(B) \\notin Y$ for all finite $B \\subseteq Y$? Status: OPEN, possibly undecidable in ZFC.",
     "mathContext": "The problem formalizes a partition calculus question at the first singular cardinal $\\aleph_\\omega = \\sup_{n < \\omega} \\aleph_n$. The 'free' condition $f(A) \\notin A$ is a choice function that avoids its input; the 'independent' condition $f(B) \\notin Y$ for $B \\in [Y]^{<\\omega}$ means $Y$ is closed under avoiding $f$-images.",
     "significance": "key",
     "relatedConcepts": [
       "singular cardinals",
       "partition calculus",
       "set-theoretic independence",
-      "Erdős-Hajnal theorem"
+      "Erd\u0151s-Hajnal theorem"
     ],
     "prerequisites": [
       "cardinal arithmetic",
@@ -53,8 +53,8 @@
     },
     "type": "definition",
     "title": "Aleph-Omega ($\\aleph_\\omega$)",
-    "content": "$\\aleph_\\omega$ is the first singular cardinal — the supremum of $\\aleph_0, \\aleph_1, \\aleph_2, \\ldots$ It is larger than every $\\aleph_n$ but is NOT a successor cardinal. Its cofinality is $\\omega$ (countable), making it singular. Under GCH, $\\aleph_\\omega = \\beth_\\omega$.",
-    "mathContext": "Defined as `ℵ_ ω` in Mathlib, where $\\aleph : \\text{Ordinal} \\to \\text{Cardinal}$. As a cardinal, $\\aleph_\\omega = |\\bigcup_{n < \\omega} \\omega_n|$ where $\\omega_n$ is the $n$-th infinite ordinal.",
+    "content": "$\\aleph_\\omega$ is the first singular cardinal \u2014 the supremum of $\\aleph_0, \\aleph_1, \\aleph_2, \\ldots$ It is larger than every $\\aleph_n$ but is NOT a successor cardinal. Its cofinality is $\\omega$ (countable), making it singular. Under GCH, $\\aleph_\\omega = \\beth_\\omega$.",
+    "mathContext": "Defined as `\u2135_ \u03c9` in Mathlib, where $\\aleph : \\text{Ordinal} \\to \\text{Cardinal}$. As a cardinal, $\\aleph_\\omega = |\\bigcup_{n < \\omega} \\omega_n|$ where $\\omega_n$ is the $n$-th infinite ordinal.",
     "significance": "key",
     "relatedConcepts": [
       "singular cardinal",
@@ -75,7 +75,7 @@
       "startLine": 45,
       "endLine": 46
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "$\\aleph_\\omega$ is a Limit Cardinal",
     "content": "We prove $\\aleph_\\omega$ is a limit cardinal using Mathlib's `Cardinal.isLimit_aleph`. Limit cardinals have no immediate predecessor: there is no $\\kappa$ with $\\kappa^+ = \\aleph_\\omega$. This is proved by showing $\\omega$ is a limit ordinal.",
     "mathContext": "`aleph_omega_is_limit` proves `aleph_omega.IsLimit`, meaning (1) $\\aleph_\\omega > 0$ and (2) $\\forall \\kappa < \\aleph_\\omega,\\, \\kappa^+ < \\aleph_\\omega$. The proof applies `Cardinal.isLimit_aleph` to the limit ordinal $\\omega$.",
@@ -97,9 +97,9 @@
       "startLine": 49,
       "endLine": 54
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "$\\aleph_\\omega$ is Singular",
-    "content": "A cardinal $\\kappa$ is **singular** if $\\text{cof}(\\kappa) < \\kappa$. For $\\aleph_\\omega$, $\\text{cof}(\\aleph_\\omega) = \\omega < \\aleph_\\omega$. Singular cardinals exhibit independence phenomena — Shelah's PCF theory (1990s) provides deep structural results about their arithmetic.",
+    "content": "A cardinal $\\kappa$ is **singular** if $\\text{cof}(\\kappa) < \\kappa$. For $\\aleph_\\omega$, $\\text{cof}(\\aleph_\\omega) = \\omega < \\aleph_\\omega$. Singular cardinals exhibit independence phenomena \u2014 Shelah's PCF theory (1990s) provides deep structural results about their arithmetic.",
     "mathContext": "The theorem proves $\\neg\\aleph_\\omega.\\text{IsRegular}$ by assuming regularity, extracting `h.cof_eq`, and deriving a contradiction since $\\text{cof}(\\aleph_\\omega) = \\omega \\ne \\aleph_\\omega$. Currently sorry'd at the final step.",
     "significance": "key",
     "relatedConcepts": [
@@ -120,7 +120,7 @@
       "startLine": 57,
       "endLine": 59
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "$\\aleph_n < \\aleph_\\omega$ for all $n$",
     "content": "Fully proved in Lean: for every $n \\in \\mathbb{N}$, $\\aleph_n < \\aleph_\\omega$. Uses `Cardinal.aleph_lt_aleph` and `Ordinal.nat_lt_omega0`. Establishes that $\\aleph_\\omega$ strictly exceeds every member of the aleph sequence below it.",
     "mathContext": "The proof: $\\aleph_n < \\aleph_\\omega \\iff n < \\omega$ (by monotonicity of $\\aleph$), and $n < \\omega$ since every natural number is finite. Uses `simp [aleph_omega]` and `Cardinal.aleph_lt_aleph.mpr`.",
@@ -163,7 +163,7 @@
       "startLine": 70,
       "endLine": 74
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Free Functions Exist",
     "content": "For any infinite set $X$, free functions exist. Since $X$ is infinite and any $A$ is finite, $X \\setminus A \\ne \\emptyset$, so we can choose $f(A) \\in X \\setminus A$. This uses the axiom of choice. The sorry'd proof would use `Classical.choice`.",
     "mathContext": "The theorem states $\\exists f : \\text{Finset}(X) \\to X,\\, \\text{IsFreeFunction}(f)$ for infinite nonempty $X$. The proof would construct $f$ via `Classical.choice` on the nonempty complement $X \\setminus A$.",
@@ -207,7 +207,7 @@
       "startLine": 84,
       "endLine": 87
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Empty Set is Independent",
     "content": "$\\emptyset$ is trivially independent: $f(B) \\notin \\emptyset$ holds for all $B$. Fully proved via `simp`. The challenge is finding INFINITE independent sets.",
     "mathContext": "The proof applies `intro B hB` then `simp`, since $f(B) \\notin \\emptyset$ is definitionally true.",
@@ -228,7 +228,7 @@
       "endLine": 113
     },
     "type": "axiom",
-    "title": "Erdős-Hajnal Theorem (1958)",
+    "title": "Erd\u0151s-Hajnal Theorem (1958)",
     "content": "The key negative result: for any $X$ with $|X| < \\aleph_\\omega$, there exists a free function $f$ with NO infinite independent set. The construction uses transfinite induction up to $\\aleph_n$ for each $n$. This establishes $\\aleph_\\omega$ as a **sharp threshold**.",
     "mathContext": "The axiom: $\\forall X,\\, \\#X < \\aleph_\\omega \\Rightarrow \\exists f,\\, \\text{IsFreeFunction}(f) \\wedge \\forall Y,\\, Y.\\text{Infinite} \\to \\neg\\text{IsIndependent}(f, Y)$. The proof for $|X| = \\aleph_n$ proceeds by induction on $n$, constructing $f$ that 'kills' potential independent sets via well-ordering.",
     "significance": "key",
@@ -249,9 +249,9 @@
       "startLine": 116,
       "endLine": 119
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Counterexamples at $\\aleph_n$",
-    "content": "For every $n \\in \\mathbb{N}$, there's a counterexample at $\\aleph_n$. Sorry'd — would instantiate $X$ as the ordinal $\\omega_n$ and apply the Erdős-Hajnal axiom. This gives a complete parametric family of negative results.",
+    "content": "For every $n \\in \\mathbb{N}$, there's a counterexample at $\\aleph_n$. Sorry'd \u2014 would instantiate $X$ as the ordinal $\\omega_n$ and apply the Erd\u0151s-Hajnal axiom. This gives a complete parametric family of negative results.",
     "mathContext": "The statement: $\\forall n,\\, \\exists X,\\, \\#X = \\aleph_n \\wedge \\exists f,\\, \\text{free and no infinite independent set}$. The sorry hides the type-level construction of $X$ with prescribed cardinality.",
     "significance": "key",
     "relatedConcepts": [
@@ -259,7 +259,7 @@
       "ordinal types"
     ],
     "prerequisites": [
-      "Erdős-Hajnal theorem"
+      "Erd\u0151s-Hajnal theorem"
     ]
   },
   {
@@ -271,7 +271,7 @@
     },
     "type": "definition",
     "title": "Main Conjecture (OPEN)",
-    "content": "Erdős Problem #623: for every free $f$ on a set of cardinality $\\aleph_\\omega$, there exists an infinite independent set. Stated as `def` since it's OPEN. The universal quantification over ALL free functions makes this extremely strong.",
+    "content": "Erd\u0151s Problem #623: for every free $f$ on a set of cardinality $\\aleph_\\omega$, there exists an infinite independent set. Stated as `def` since it's OPEN. The universal quantification over ALL free functions makes this extremely strong.",
     "mathContext": "`erdos_623_conjecture` is $\\forall X,\\, \\#X = \\aleph_\\omega \\to \\forall f,\\, \\text{IsFreeFunction}(f) \\to \\exists Y,\\, Y.\\text{Infinite} \\wedge \\text{IsIndependent}(f, Y)$. The type-theoretic quantification over `X : Type` ensures generality across all representations.",
     "significance": "key",
     "relatedConcepts": [
@@ -292,7 +292,7 @@
     },
     "type": "definition",
     "title": "Negative Formulation",
-    "content": "The negation: $\\exists$ a set of cardinality $\\aleph_\\omega$ with a free function having no infinite independent set. By classical logic, exactly one of conjecture/negation holds — but which one might be independent of ZFC.",
+    "content": "The negation: $\\exists$ a set of cardinality $\\aleph_\\omega$ with a free function having no infinite independent set. By classical logic, exactly one of conjecture/negation holds \u2014 but which one might be independent of ZFC.",
     "mathContext": "`erdos_623_negative` existentially quantifies over $X, f$. If this holds, the counterexample $f$ 'kills' every potential infinite independent set via a diagonal argument. The `erdos_623_dichotomy` theorem proves the classical disjunction.",
     "significance": "key",
     "relatedConcepts": [
@@ -312,8 +312,8 @@
     },
     "type": "definition",
     "title": "Potential Undecidability",
-    "content": "Erdős (1999) suggested this might be independent of ZFC. Problems at singular cardinals often exhibit independence: Silver's theorem (1975) constrains GCH at singular cardinals, and Shelah's PCF theory reveals deep structure. The placeholder `True` acknowledges that actual independence requires metamathematical formalization beyond Lean's object theory.",
-    "mathContext": "Independence from ZFC means both `erdos_623_conjecture` and `erdos_623_negative` are consistent with ZFC. This would require forcing models — possibly using Prikry forcing or its variants that change cofinality properties at singular cardinals.",
+    "content": "Erd\u0151s (1999) suggested this might be independent of ZFC. Problems at singular cardinals often exhibit independence: Silver's theorem (1975) constrains GCH at singular cardinals, and Shelah's PCF theory reveals deep structure. The placeholder `True` acknowledges that actual independence requires metamathematical formalization beyond Lean's object theory.",
+    "mathContext": "Independence from ZFC means both `erdos_623_conjecture` and `erdos_623_negative` are consistent with ZFC. This would require forcing models \u2014 possibly using Prikry forcing or its variants that change cofinality properties at singular cardinals.",
     "significance": "key",
     "relatedConcepts": [
       "ZFC independence",
@@ -333,10 +333,10 @@
       "startLine": 160,
       "endLine": 162
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Cofinality of $\\aleph_\\omega$",
-    "content": "Fully proved: $\\text{cof}(\\aleph_\\omega) = \\omega$. Uses `Cardinal.cof_aleph`. This countable cofinality is the root cause of $\\aleph_\\omega$'s special behavior — it means $\\aleph_\\omega$ is 'reachable' by a countable increasing sequence.",
-    "mathContext": "The theorem proves `aleph_omega.ord.cof = ω`. In PCF theory, the cofinality determines $\\text{pcf}(\\{\\aleph_n : n < \\omega\\})$, which controls cardinal arithmetic properties.",
+    "content": "Fully proved: $\\text{cof}(\\aleph_\\omega) = \\omega$. Uses `Cardinal.cof_aleph`. This countable cofinality is the root cause of $\\aleph_\\omega$'s special behavior \u2014 it means $\\aleph_\\omega$ is 'reachable' by a countable increasing sequence.",
+    "mathContext": "The theorem proves `aleph_omega.ord.cof = \u03c9`. In PCF theory, the cofinality determines $\\text{pcf}(\\{\\aleph_n : n < \\omega\\})$, which controls cardinal arithmetic properties.",
     "significance": "key",
     "relatedConcepts": [
       "cofinality computation",
@@ -355,7 +355,7 @@
       "startLine": 178,
       "endLine": 181
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Finite Case is Trivial",
     "content": "For finite $X$, no infinite $Y \\subseteq X$ exists. Fully proved: `Set.not_infinite.mpr (Set.toFinite Y)` contradicts `Y.Infinite`. The problem only has content for infinite sets.",
     "mathContext": "The proof destructs the existential, extracts the infinite set $Y$, and derives a contradiction via `Set.toFinite` (all subsets of finite types are finite).",
@@ -375,9 +375,9 @@
       "startLine": 184,
       "endLine": 190
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Countable Case",
-    "content": "For countable $X$ ($|X| = \\aleph_0$), the answer is NO. Fully proved by showing $\\aleph_0 < \\aleph_\\omega$ (via `aleph_n_lt_omega 0`) and applying the Erdős-Hajnal axiom. A clean two-line proof demonstrating the power of the axiomatized negative result.",
+    "content": "For countable $X$ ($|X| = \\aleph_0$), the answer is NO. Fully proved by showing $\\aleph_0 < \\aleph_\\omega$ (via `aleph_n_lt_omega 0`) and applying the Erd\u0151s-Hajnal axiom. A clean two-line proof demonstrating the power of the axiomatized negative result.",
     "mathContext": "Proof: $\\#X = \\aleph_0 \\Rightarrow \\#X < \\aleph_\\omega$ (since $\\aleph_0 = \\aleph_0 < \\aleph_\\omega$), then apply `erdos_hajnal_below_aleph_omega`.",
     "significance": "key",
     "relatedConcepts": [
@@ -386,7 +386,7 @@
     ],
     "prerequisites": [
       "cardinal comparison",
-      "Erdős-Hajnal axiom"
+      "Erd\u0151s-Hajnal axiom"
     ]
   },
   {
@@ -396,7 +396,7 @@
       "startLine": 208,
       "endLine": 212
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "Known Results Summary",
     "content": "`known_results_summary` captures all negative results: $\\forall n$, there's a counterexample at $\\aleph_n$. This leaves $\\aleph_\\omega$ as the exact threshold. The proof delegates to `counterexample_at_aleph_n`.",
     "mathContext": "The universal statement $\\forall n : \\mathbb{N}$ gives a complete family of counterexamples at every level $\\aleph_0, \\aleph_1, \\ldots$ of the aleph hierarchy below $\\aleph_\\omega$.",
@@ -418,7 +418,7 @@
     },
     "type": "definition",
     "title": "Variants and Strengthenings",
-    "content": "Two variants: (1) **Strong**: requires $|Y| > \\aleph_0$ (uncountable). (2) **Weak**: asks if SOME free $f$ has an infinite independent set. The implication chain: strong $\\Rightarrow$ original $\\Rightarrow$ weak. The gaps may be where the truth lies — perhaps all free functions have countably infinite independent sets but not uncountable ones.",
+    "content": "Two variants: (1) **Strong**: requires $|Y| > \\aleph_0$ (uncountable). (2) **Weak**: asks if SOME free $f$ has an infinite independent set. The implication chain: strong $\\Rightarrow$ original $\\Rightarrow$ weak. The gaps may be where the truth lies \u2014 perhaps all free functions have countably infinite independent sets but not uncountable ones.",
     "mathContext": "`erdos_623_uncountable` strengthens to $\\#Y > \\aleph_0$; `erdos_623_weak` weakens to $\\exists f,\\, \\exists Y$. The theorem `weak_follows_from_strong` (sorry'd) would take any free $f$ and apply the conjecture.",
     "significance": "supporting",
     "relatedConcepts": [

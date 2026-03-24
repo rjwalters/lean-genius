@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 8,
     "lineCount": 189,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős asked Mahler whether infinitely many consecutive powerful pairs exist. Mahler immediately answered yes, observing that solutions to the Pell equation x² - 8y² = 1 yield pairs (8y², 8y² + 1) where both terms are powerful. The fundamental solution (3, 1) gives the pair (8, 9). Erdős then posed the deeper question: must all such pairs arise from Pell equations? Equivalently, must either n or n+1 be a perfect square?\n\nGolomb (1970) answered this decisively: NO. He exhibited the counterexample 12167 = 23³ and 12168 = 2³·3²·13², both powerful with neither being a perfect square. Walker (1976) went further, showing that the generalized Pell equation 343x² = 27y² + 1 has infinitely many solutions, each producing a consecutive powerful pair where neither element is a square. This demonstrated that non-Pell counterexamples are not isolated curiosities but form infinite families.\n\nThe second part of the problem — whether the counting function P(x) = |{n ≤ x : n and n+1 both powerful}| satisfies P(x) = O((log x)^C) — remains open. Since most known pairs come from Pell-type equations, whose solution counts grow polylogarithmically, the bound is widely expected to hold. The problem connects to fundamental questions about the distribution of powerful numbers and the structure of Diophantine equations.",
@@ -47,42 +48,42 @@
       "id": "powerful",
       "title": "Powerful Numbers",
       "startLine": 40,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Definition of powerful numbers and basic axioms about squares and cubes"
     },
     {
       "id": "consecutive",
       "title": "Consecutive Powerful Numbers",
       "startLine": 59,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Definition of consecutive powerful pairs and proved example (8, 9)"
     },
     {
       "id": "pell",
       "title": "Pell Equation Connection",
       "startLine": 79,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Mahler's observation and infinitely many Pell solutions"
     },
     {
       "id": "question1",
       "title": "Question 1 - Square Requirement",
       "startLine": 101,
-      "endLine": 125,
+      "endLine": 126,
       "summary": "Q1 is FALSE: Golomb's counterexample with verified factorizations"
     },
     {
       "id": "walker",
       "title": "Walker's Infinite Family",
       "startLine": 127,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "Infinitely many non-Pell counterexamples via Walker's equation"
     },
     {
       "id": "counting",
       "title": "Question 2 - Counting",
       "startLine": 148,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "Open question about polylogarithmic bound on P(x)"
     },
     {
@@ -115,5 +116,27 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-366",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, powerful-numbers"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-137",
+    "erdos-366",
+    "erdos-367"
+  ]
 }

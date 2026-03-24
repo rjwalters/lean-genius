@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/208",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Squarefree",
@@ -120,7 +120,7 @@
       "id": "examples",
       "title": "Gap Examples",
       "startLine": 163,
-      "endLine": 199,
+      "endLine": 202,
       "summary": "Concrete small gaps and structural observations."
     }
   ],
@@ -152,5 +152,27 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-145",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+    },
+    {
+      "targetId": "erdos-489",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, squarefree"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-145",
+    "erdos-489",
+    "erdos-11"
+  ]
 }

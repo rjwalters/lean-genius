@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/536",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -47,9 +47,6 @@
       "Stated four_elements_fail: no four-element analogue at density 1/2",
       "Stated weisenberg_construction: large triple-free sets with f(N) → ∞",
       "Stated lcm_structure: equal pairwise LCMs imply common divisibility"
-    ],
-    "relatedProofs": [
-      "erdos-9"
     ],
     "lineCount": 88,
     "axiomCount": 5,
@@ -156,5 +153,27 @@
       "venue": "Monographies de L'Enseignement Mathématique 28, Université de Genève",
       "note": "Comprehensive collection including the LCM triple conjecture and related problems"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-487",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, density, lcm, number-theory"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, density, number-theory"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-487",
+    "erdos-310",
+    "erdos-1005"
   ]
 }

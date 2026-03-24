@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 398,
-    "assumptions": "Mertens' second theorem: Σ_{p≤N} 1/p ≥ c·log(log N) for some c > 0 and N ≥ 3"
+    "assumptions": "Mertens' second theorem: Σ_{p≤N} 1/p ≥ c·log(log N) for some c > 0 and N ≥ 3",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1973, studying the interplay between multiplicative constraints and additive density. Given a set $A \\subseteq \\{1, \\ldots, N\\}$ where each integer $m$ has at most $r$ representations as $m = p \\cdot a$ with $p$ prime and $a \\in A$, how large can the reciprocal sum $\\sum_{n \\in A} 1/n$ be? Erdős proved the bound $O(r \\cdot \\log N / \\log\\log N)$ using a double counting argument combined with Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). The idea is elegant: multiplying the reciprocal sum by the prime reciprocal sum produces terms $1/(pa)$ that are controlled by the representation constraint. The harmonic sum $\\sum_{m \\leq N} 1/m \\sim \\log N$ then closes the argument. Whether this bound is optimal remains open. The problem is related to Problems 536 and 537 on multiplicative representations, and connects to the broader study of multiplicative energy in additive combinatorics. The case $r = 1$ (each integer has at most one prime factorization involving an element of $A$) forces $A$ to be 'multiplicatively thin', strengthening the bound to $O(\\log N / \\log\\log N)$.",
@@ -45,70 +46,70 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 23,
       "summary": "Module documentation describing Problem 538 and Erdős's bound, with Mathlib imports for primality, finite sets, real numbers, and tactics."
     },
     {
       "id": "representation-count",
       "title": "Representation Count",
       "startLine": 24,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines primeReprSet, reprCount (counting m = pa representations), and HasBoundedRepr (at most r representations for all m)."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties of reprCount",
       "startLine": 43,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Proved: reprCount of empty set is 0, reprCount ≤ |A|, HasBoundedRepr is monotone in r and hereditary under subsets."
     },
     {
       "id": "reciprocal-sum",
       "title": "Reciprocal Sum",
       "startLine": 81,
-      "endLine": 115,
+      "endLine": 116,
       "summary": "Defines reciprocalSum (Σ 1/n) and proves: empty sum = 0, non-negativity, monotonicity under subsets, insertion identity."
     },
     {
       "id": "problem-statement",
       "title": "Problem Statement",
       "startLine": 117,
-      "endLine": 135,
+      "endLine": 136,
       "summary": "Defines ErdosProblem538 as finding the optimal bound f(r,N) for the reciprocal sum under the representation constraint."
     },
     {
       "id": "erdos-bound",
       "title": "Erdős Upper Bound",
       "startLine": 137,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "Theorem (sorry): Σ 1/n ≤ C·r·log N / log log N via double counting with Mertens' theorem."
     },
     {
       "id": "trivial-bound",
       "title": "Harmonic Upper Bound",
       "startLine": 158,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "Theorem (PROVED): Σ 1/n ≤ 1 + log N (harmonic sum bound) by induction using log(x) ≤ x - 1."
     },
     {
       "id": "double-counting",
       "title": "Double Counting Framework",
       "startLine": 169,
-      "endLine": 192,
+      "endLine": 193,
       "summary": "Proved: primes_for_element_bound (|{p : pa ≤ N}| ≤ N/a) and sum_reprCount_bound (Σ reprCount ≤ |A|·N) via double counting."
     },
     {
       "id": "multiplicative-energy",
       "title": "Multiplicative Energy Bound",
       "startLine": 194,
-      "endLine": 207,
+      "endLine": 208,
       "summary": "Proved: multiplicative energy trivial bound |A|² (the tighter r²|A| bound is false — counterexample documented)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 209,
-      "endLine": 228,
+      "endLine": 398,
       "summary": "Proved: r = 1 cardinality bound (|A| ≤ N for positive elements) and singleton 1-bounded representations."
     }
   ],
@@ -139,5 +140,21 @@
     "axiomCount": 1,
     "theoremCount": 21,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-121",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: multiplicative number theory, number theory"
+    },
+    {
+      "targetId": "erdos-690",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number theory, prime factors"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-121",
+    "erdos-690"
+  ]
 }

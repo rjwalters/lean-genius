@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1101",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth",
@@ -79,35 +79,35 @@
       "id": "header",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 30,
+      "endLine": 31,
       "summary": "Module documentation explaining the problem, its history, and Mathlib imports."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 32,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Definition of ASet (sieved set), A (enumeration), and t (product index)."
     },
     {
       "id": "good-predicate",
       "title": "The Good Sequence Predicate",
       "startLine": 54,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Definition of IsGood combining all four conditions for a sequence to be good."
     },
     {
       "id": "conjectures",
       "title": "The Main Conjectures",
       "startLine": 77,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "Axioms stating no polynomial good sequence exists but subexponential does."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 100,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Erdős's existence theorem and the sieve theory lower bound."
     },
     {

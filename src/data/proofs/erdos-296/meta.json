@@ -23,7 +23,7 @@
     "erdosNumber": 296,
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -65,28 +65,6 @@
       "k_not_sublogarithmic: NOT o(log N) (proved, answers Erdős's question)",
       "k_infinitely_often_large: infinitely many N with k(N) > ε·log N (proved)"
     ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-282",
-        "relationship": "Greedy algorithm for Egyptian fractions — the greedy approach is also used in Hunter-Sawhney's packing construction"
-      },
-      {
-        "proofId": "erdos-283",
-        "relationship": "Egyptian fractions with polynomial denominators — variant denominator constraints on unit fraction sums"
-      },
-      {
-        "proofId": "erdos-284",
-        "relationship": "Maximum first denominator for Egyptian fractions of 1 — quantitative structure of unit sets"
-      },
-      {
-        "proofId": "erdos-285",
-        "relationship": "Egyptian fractions asymptotics — counting representations, complementary to packing"
-      },
-      {
-        "proofId": "erdos-313",
-        "relationship": "Primary pseudoperfect numbers — special Egyptian fractions of 1 with prime denominators"
-      }
-    ],
     "axiomCount": 6,
     "lineCount": 173,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -96,56 +74,56 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 41,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Imports the full **Mathlib** library. Opens **Finset** and **BigOperators** for finite set operations and $\\sum$ notation."
     },
     {
       "id": "unit-fractions",
       "title": "Unit Fraction Sums",
       "startLine": 45,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines **reciprocalSum** ($\\sum 1/n$ over $\\mathbb{Q}$), **isUnitSet** (reciprocals sum to $1$), and proves the classic example $\\{2,3,6\\}$ is a unit set."
     },
     {
       "id": "packings",
       "title": "Disjoint Unit Set Packings",
       "startLine": 64,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Defines **arePairwiseDisjoint** and the **UnitSetPacking** structure bundling disjoint unit sets within $\\{1, \\ldots, N\\}$ with a **size** function."
     },
     {
       "id": "k-definition",
       "title": "The Function k(N)",
       "startLine": 85,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Defines **k N** as $\\sup\\{p.\\mathrm{size}\\}$ over all valid packings. The central quantity measuring maximum packing density."
     },
     {
       "id": "basic-bounds",
       "title": "Basic Bounds",
       "startLine": 95,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "States **k_ge_one** ($k(N) \\geq 1$ for $N \\geq 6$) and **k_le_N** ($k(N) \\leq N$). Trivial bounds establishing $k(N)$ is nontrivial and finite."
     },
     {
       "id": "sunflower",
       "title": "Sunflower Lower Bound",
       "startLine": 105,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "States **sunflower_lower_bound**: $\\geq N \\cdot e^{-c\\sqrt{\\log N}}$ disjoint sets with equal sums, via the Erdős-Rado sunflower lemma. A weaker intermediate result."
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "startLine": 119,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "States **hunter_sawhney_lower** ($k(N) \\geq (1-\\varepsilon)\\log N$), **k_upper_bound** ($k(N) \\leq \\log N + C$), and **erdos_296_main** ($k(N)/\\log N \\to 1$). The complete asymptotic picture."
     },
     {
       "id": "answer",
       "title": "Answer to Erdős's Question",
       "startLine": 138,
-      "endLine": 169,
+      "endLine": 173,
       "summary": "PROVES **k_not_sublogarithmic** ($k(N) \\neq o(\\log N)$, answering Erdős negatively) and **k_infinitely_often_large** (constructive corollary). These are genuine Lean proofs, not axioms."
     }
   ],
@@ -197,5 +175,27 @@
     "Hunter, Sawhney (2021): observation that Bloom's Theorem 3 implies k(N) = (1-o(1))·log N",
     "Erdős, Rado (1960): 'Intersection theorems for systems of sets', sunflower lemma",
     "https://erdosproblems.com/296"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+    },
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-286",
+    "erdos-310",
+    "erdos-148"
   ]
 }

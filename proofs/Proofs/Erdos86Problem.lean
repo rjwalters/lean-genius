@@ -165,7 +165,8 @@ def erdos86ConjectureAlt : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, (f n : ℝ) ≤ (1/2 + ε) * n * 2^(n-1)
 
 /-- The conjecture is currently open -/
-axiom erdos86_open : ¬(erdos86Conjecture ∨ ¬erdos86Conjecture → False)
+theorem erdos86_open : ¬(erdos86Conjecture ∨ ¬erdos86Conjecture → False) :=
+  fun h => h (Classical.em _)
   -- This is a placeholder indicating the problem is open
   -- Neither proved nor disproved
 

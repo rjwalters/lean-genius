@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1150",
   "title": "Erdős #1150",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: Proved forward direction of equivalence (conjecture → no ultraflat). Reduced axiom conjecture_equiv_no_ultraflat to only the backward direction. File now has 253 lines, 5 axioms, 7 theorems, 1 sorry.",
+    "builtItems": [
+      "conjecture_implies_no_ultraflat theorem: forward direction proved via filter contradiction",
+      "conjecture_equiv_no_ultraflat theorem: full equivalence from proved forward + axiom backward"
+    ],
+    "insights": [
+      "Forward direction is clean: supNorm/√n > 1+c eventually contradicts Tendsto ... (nhds 1)",
+      "Backward direction needs countable choice: extract witnesses for 1/k, build ultraflat sequence",
+      "The bbmst_upper_bound_exists sorry requires ciSup handling for conditional supremum",
+      "Parseval axiom potentially provable if Mathlib has circle integration theory"
+    ],
+    "mathlibGaps": [
+      "ciSup over conditional types in ConditionallyCompleteLattice",
+      "Integration on unit circle (for Parseval)"
+    ],
+    "nextSteps": [
+      "Fix bbmst_upper_bound_exists sorry",
+      "Prove no_ultraflat_implies_conjecture (diagonal argument)",
+      "Explore whether parseval_lower_bound is provable from Mathlib"
+    ],
     "markdown": "# Erdős #1150 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [

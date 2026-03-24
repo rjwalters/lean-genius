@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/692",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -116,7 +116,7 @@
       "title": "Divisors in Interval",
       "summary": "Defines `divisorsInInterval(k, n, m) = |\\mathcal{D}(k) \\cap (n,m)|$ via `Finset.filter` and `hasExactlyOneDivisor` for the exactness predicate",
       "startLine": 49,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "counting-density",
@@ -151,7 +151,7 @@
       "title": "Cambie's Counterexample Values ($n = 3$)",
       "summary": "Axiomatizes $\\delta_1(3,6) > 0.34$, $\\delta_1(3,7) < 0.34$, $\\delta_1(3,8) > 0.36$ — the decrease-then-increase pattern computed via inclusion-exclusion over divisibility by 4, 5, and 20",
       "startLine": 142,
-      "endLine": 157
+      "endLine": 158
     },
     {
       "id": "disproof",

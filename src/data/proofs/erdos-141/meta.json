@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/141",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth",
@@ -73,14 +73,14 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Module documentation explaining the problem history, status, and Mathlib imports."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 36,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Definitions for nth prime, consecutive primes, arithmetic progressions, and the main predicate."
     },
     {
@@ -136,5 +136,27 @@
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-236",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-200",
+    "erdos-236",
+    "erdos-237"
+  ]
 }

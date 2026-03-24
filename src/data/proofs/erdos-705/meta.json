@@ -21,7 +21,7 @@
     "erdosNumber": 705,
     "erdosUrl": "https://erdosproblems.com/705",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -81,63 +81,63 @@
       "title": "Unit Distance Graphs",
       "summary": "unitDistAdj, unitDistGraph — definition of UDGs in ℝ²",
       "startLine": 35,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "parameters",
       "title": "Chromatic Number and Girth",
       "summary": "chromaticNumber', girth', isKColorable, hasGirthAtLeast",
       "startLine": 69,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "constructions",
       "title": "Known 4-Chromatic Constructions",
       "summary": "Moser spindle, O'Donnell, Wormald, Chilakamarri axioms",
       "startLine": 99,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "summary": "erdos_705_conjecture, erdos_705_negation",
       "startLine": 148,
-      "endLine": 170
+      "endLine": 171
     },
     {
       "id": "consequences",
       "title": "Deriving Consequences",
       "summary": "girth_3_chi_4, girth_4_chi_4, girth_5_chi_4 theorems",
       "startLine": 172,
-      "endLine": 197
+      "endLine": 198
     },
     {
       "id": "hadwiger-nelson",
       "title": "The Hadwiger-Nelson Connection",
       "summary": "de_grey_lower_bound — χ(plane) ≥ 5",
       "startLine": 199,
-      "endLine": 218
+      "endLine": 219
     },
     {
       "id": "abstract-geometric",
       "title": "Abstract vs. Geometric Graphs",
       "summary": "erdos_1959_girth_chromatic — why geometry matters",
       "startLine": 220,
-      "endLine": 238
+      "endLine": 239
     },
     {
       "id": "vertex-growth",
       "title": "Vertex Count Growth",
       "summary": "vertexCountGrowth — exponential growth of constructions",
       "startLine": 240,
-      "endLine": 257
+      "endLine": 258
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Problems #508, #704, #706",
       "startLine": 259,
-      "endLine": 273
+      "endLine": 274
     },
     {
       "id": "status",
@@ -173,5 +173,27 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, girth, graph-theory"
+    },
+    {
+      "targetId": "erdos-626",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, girth, graph-theory"
+    },
+    {
+      "targetId": "erdos-751",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, girth, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-108",
+    "erdos-626",
+    "erdos-751"
+  ]
 }

@@ -24,7 +24,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$250",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -87,7 +87,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 43,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "hasCliqueInfinite, isKFreeInfinite, isK4Free, isTriangleFree",
       "mathContext": "Infinite graph cliques: $\\text{hasCliqueInfinite}(G, k)$ means $G$ contains $K_k$ as a subgraph. $\\text{isKFreeInfinite}(G, k) \\iff \\neg\\text{hasCliqueInfinite}(G, k)$."
     },
@@ -95,7 +95,7 @@
       "id": "coverings",
       "title": "Graph Coverings and Unions",
       "startLine": 76,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "IsSubgraph, isCountableUnionOf, hasCountableTriangleFreeCover",
       "mathContext": "$\\text{hasCountableTriangleFreeCover}(G)$: $\\exists$ countable family $\\{G_i\\}_{i \\in \\mathbb{N}}$ of triangle-free subgraphs with $G = \\bigcup_i G_i$."
     },
@@ -103,7 +103,7 @@
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 103,
-      "endLine": 120,
+      "endLine": 121,
       "summary": "erdos595_conjecture: formal statement of the open problem",
       "mathContext": "Conjecture: every $K_4$-free graph has a countable triangle-free cover. Formally: $\\text{isK4Free}(G) \\implies \\text{hasCountableTriangleFreeCover}(G)$."
     },
@@ -111,7 +111,7 @@
       "id": "finite-case",
       "title": "Finite Analogues",
       "startLine": 122,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "hasFiniteTriangleFreeCover, folkman_finite_resistance, nesetril_rodl_finite_resistance",
       "mathContext": "Finite case: every $K_4$-free graph on finitely many vertices has a finite triangle-free cover (Folkman 1970, Nešetřil-Rödl). Proved via Ramsey-type partition."
     },
@@ -119,7 +119,7 @@
       "id": "infinite-gap",
       "title": "The Infinite Case",
       "startLine": 156,
-      "endLine": 177,
+      "endLine": 178,
       "summary": "Discussion of finite-to-countable gap, problem595_reformulated",
       "mathContext": "The finite-to-countable gap: finite covers exist for finite graphs, but extending to countable covers of infinite $K_4$-free graphs is the open problem."
     },
@@ -127,7 +127,7 @@
       "id": "related-results",
       "title": "Related Results",
       "startLine": 179,
-      "endLine": 192,
+      "endLine": 193,
       "summary": "c4_free_countable_trees axiom: C₄-free graphs are countably coverable",
       "mathContext": "Related: $C_4$-free graphs (no 4-cycles) have countable covers by trees (axiomatized). Trees are triangle-free, so this is a stronger structural result for a different forbidden subgraph."
     },

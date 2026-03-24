@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/257",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -72,35 +72,35 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Module documentation explaining the problem's partial solution status and Mathlib imports for divisors, irrationality, and infinite sums."
     },
     {
       "id": "definitions",
       "title": "Key Definitions",
       "startLine": 31,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Definitions of the Lambert sum over a set and the divisor-weighted sum."
     },
     {
       "id": "identity",
       "title": "Lambert Series Identity",
       "startLine": 44,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "The fundamental identity connecting 1/(2^n - 1) sums to divisor function sums."
     },
     {
       "id": "erdos-1948",
       "title": "Erdős's 1948 Result",
       "startLine": 61,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Irrationality of the full Lambert sum, based on Erdős's 1948 proof."
     },
     {
       "id": "open-problem",
       "title": "The Open Problem",
       "startLine": 83,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Statement of the general conjecture for arbitrary infinite sets."
     },
     {
@@ -137,5 +137,27 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-258",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, irrationality, number-theory"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: irrationality, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1049",
+    "erdos-258",
+    "erdos-1050"
+  ]
 }

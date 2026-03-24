@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/1071",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Basic",
@@ -92,35 +92,35 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib modules for $\\mathbb{N}$, `Set`, `Finset`, $\\mathbb{Q}$, and tactics. No EuclideanSpace import — the formalization uses $\\mathbb{Q} \\times \\mathbb{Q}$ as a coordinate abstraction.",
       "startLine": 18,
-      "endLine": 22
+      "endLine": 23
     },
     {
       "id": "segment-abstractions",
       "title": "Segment Abstractions",
       "summary": "Defines `UnitSegment` with $\\mathbb{Q}^2$ endpoints and abstracted unit length. `InUnitSquare(p) \\iff p \\in [0,1]^2$, `SegmentInSquare` for endpoint containment, `AreDisjoint` (axiomatized) with symmetry.",
       "startLine": 24,
-      "endLine": 45
+      "endLine": 46
     },
     {
       "id": "packing-defs",
       "title": "Packing Definitions",
       "summary": "Defines `IsPacking` (containment $+$ pairwise disjointness), `IsMaximalPacking` (blocking condition: every new segment intersects some existing one), `IsFinitePacking` ($|S| < \\infty$), and `IsCountablyInfinitePacking` ($|S| = \\aleph_0$).",
       "startLine": 47,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "danzer",
       "title": "Danzer's Result (Part a — SOLVED)",
       "summary": "Axiomatizes `danzer_finite_maximal`: $\\exists S$ finite and maximal in $[0,1]^2$. Ludwig Danzer's construction earned \\$10 from Erdős.",
       "startLine": 68,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "region-packing",
       "title": "Region Packings and the Open Problem (Part b)",
       "summary": "Defines `Region := \\text{Set}(\\mathbb{Q}^2)$, `IsRegionPacking`, `IsMaximalRegionPacking`. Axiomatizes `ErdosProblem1071b`: $\\exists R, S$ with $|S| = \\aleph_0$ and $S$ maximal in $R$. Status: **OPEN**.",
       "startLine": 75,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "endpoint-variant",

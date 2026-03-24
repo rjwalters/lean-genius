@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/887",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.sqrt",
@@ -79,42 +79,42 @@
       "title": "Basic Definitions",
       "summary": "Divisors, τ(n), and counting divisors in intervals",
       "startLine": 25,
-      "endLine": 40
+      "endLine": 41
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Rosenfeld Conjecture",
       "summary": "Formal statement of the main conjecture and its weak form",
       "startLine": 42,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "lower-bound",
       "title": "Erdős-Rosenfeld Lower Bound (1997)",
       "summary": "Infinitely many n have 4 divisors; conjectured maximum",
       "startLine": 65,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "perfect-squares",
       "title": "Perfect Square Case — Chan's Theorem (2013)",
       "summary": "Perfect squares have at most 5 divisors in the interval",
       "startLine": 78,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "divisor-bounds",
       "title": "General Divisor Bounds",
       "summary": "Classical τ(n) ≪ n^ε bound",
       "startLine": 99,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "variations",
       "title": "Interval Width Variations",
       "summary": "Phase transitions at exponents 1/2 and 1/4",
       "startLine": 106,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "summary",
@@ -149,5 +149,27 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-450",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisors, number-theory, short-intervals"
+    },
+    {
+      "targetId": "erdos-462",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, short-intervals"
+    },
+    {
+      "targetId": "erdos-673",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, divisors, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-450",
+    "erdos-462",
+    "erdos-673"
+  ]
 }

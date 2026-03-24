@@ -21,7 +21,7 @@
     "erdosNumber": 1102,
     "erdosUrl": "https://erdosproblems.com/1102",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Squarefree",
@@ -72,35 +72,35 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 50,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Properties P and Q formalized as set predicates."
     },
     {
       "id": "squarefree-set",
       "title": "The Squarefree Numbers",
       "startLine": 66,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "The set of squarefree numbers with examples and density constant."
     },
     {
       "id": "main-axioms",
       "title": "Main Axioms (van Doorn-Tao)",
       "startLine": 93,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Density bounds for P and Q sequences stated as axioms from the 2025 paper."
     },
     {
       "id": "derived-theorems",
       "title": "Derived Theorems",
       "startLine": 131,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "Theorems combining the axioms to state that squarefree numbers form an optimal Q-sequence."
     },
     {
       "id": "special-sequences",
       "title": "Special Sequences",
       "startLine": 154,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "Results for 2ⁿ ± 1 and n! ± 1."
     }
   ],

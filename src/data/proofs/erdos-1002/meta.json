@@ -7,7 +7,7 @@
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1002",
     "date": "",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1002Problem.lean",
     "tags": [
       "analysis",
@@ -16,15 +16,15 @@
       "distribution-functions",
       "fractional-parts"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1002,
     "erdosUrl": "https://erdosproblems.com/1002",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\"."
+    "axiomCount": 7,
+    "lineCount": 211,
+    "assumptions": "7 axioms: erdos_1002_conjecture (the OPEN main conjecture), cauchy_is_distribution (Cauchy CDF properties), kesten_theorem (Kesten 1960 two-parameter result), f_bounded_for_irrational (boundedness), innerSum_log_bound (log-scale bound), weyl_equidistribution (Weyl 1916), innerSum_periodic_rational (periodicity for rationals)."
   },
   "overview": {
     "historicalContext": "**Fractional Parts in Number Theory**\n\nThe study of fractional parts $\\{n\\alpha\\}$ for irrational $\\alpha$ is central to Diophantine approximation. Hermann Weyl's equidistribution theorem (1916) established that $\\{\\alpha\\}, \\{2\\alpha\\}, \\{3\\alpha\\}, \\ldots$ is uniformly distributed in $[0,1)$, a foundational result connecting number theory to ergodic theory.\n\n**Gauss and Continued Fractions**: Carl Friedrich Gauss studied the map $T(x) = \\{1/x\\}$ on $(0,1)$, discovering its invariant measure $d\\mu = dx/(\\log 2 \\cdot (1+x))$. The Gauss-Kuzmin theorem (Kuzmin 1928, Lévy 1929) describes the rate at which iterates of $T$ converge to this measure.\n\n**Erdős's Question**: Erdős asked whether $f(\\alpha, n) = \\frac{1}{\\log n}\\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ has an asymptotic distribution function — does the proportion of $\\alpha$ with $f(\\alpha, n) \\le c$ converge as $n \\to \\infty$?\n\n**Kesten's Breakthrough**: Harry Kesten (1960) proved the two-parameter variant $f(\\alpha, \\beta, n) = \\frac{1}{\\log n}\\sum(1/2 - \\{\\beta + \\alpha k\\})$ has a Cauchy limit distribution $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + 1/2$, using the ergodic properties of the natural extension of the Gauss map. The extra parameter $\\beta$ provides the independence needed for the ergodic argument. Fixing $\\beta = 0$ destroys this independence, and the one-parameter problem remains **OPEN**.",
@@ -47,72 +47,72 @@
     {
       "id": "fractional-part",
       "title": "Fractional Part",
-      "summary": "$\\{x\\} = x - \\lfloor x \\rfloor$ fractional part definition and basic properties",
-      "startLine": 24,
-      "endLine": 1
+      "summary": "$\\{x\\} = x - \\lfloor x \\rfloor$ fractional part definition and deviation from midpoint",
+      "startLine": 34,
+      "endLine": 41
     },
     {
       "id": "weighted-sum",
       "title": "The Weighted Sum f(α, n)",
       "summary": "$S(\\alpha, n) = \\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ and $f(\\alpha, n) = S(\\alpha, n)/\\log n$",
-      "startLine": 39,
-      "endLine": 1
+      "startLine": 43,
+      "endLine": 57
     },
     {
       "id": "distribution-functions",
       "title": "Distribution Functions",
       "summary": "$g : \\mathbb{R} \\to [0,1]$ non-decreasing with $g(-\\infty) = 0$, $g(+\\infty) = 1$",
-      "startLine": 56,
-      "endLine": 1
+      "startLine": 59,
+      "endLine": 70
     },
     {
       "id": "asymptotic-distribution",
       "title": "Asymptotic Distribution",
       "summary": "Level set $L(n,c) = \\{\\alpha : f(\\alpha,n) \\le c\\}$ and $\\mu(L(n,c)) \\to g(c)$ convergence",
-      "startLine": 70,
-      "endLine": 1
+      "startLine": 72,
+      "endLine": 90
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "OPEN: $\\exists\\, g,\\; \\mu(\\{\\alpha : f(\\alpha,n) \\le c\\}) \\to g(c)$ as $n \\to \\infty$",
-      "startLine": 90,
-      "endLine": 1
+      "startLine": 92,
+      "endLine": 99
     },
     {
       "id": "kesten-theorem",
       "title": "Kesten's Theorem (1960)",
-      "summary": "Kesten (1960): $f(\\alpha, \\beta, n)$ has Cauchy limit $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$",
-      "startLine": 103,
-      "endLine": 1
+      "summary": "Kesten (1960): Two-parameter variant has Cauchy limit $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$",
+      "startLine": 101,
+      "endLine": 140
     },
     {
       "id": "relationship",
       "title": "Relationship Between Problems",
-      "summary": "$f(\\alpha, n) = f(\\alpha, 0, n)$: one-parameter case is $\\beta = 0$ specialization",
-      "startLine": 135,
-      "endLine": 1
+      "summary": "$f(\\alpha, n) = f(\\alpha, 0, n)$: one-parameter case is $\\beta = 0$ specialization (proved)",
+      "startLine": 142,
+      "endLine": 152
     },
     {
       "id": "difficulty",
       "title": "Why the Problem is Difficult",
-      "summary": "Fixing $\\beta = 0$ destroys ergodic independence; Weyl equidistribution and oscillation for fixed $\\alpha$",
-      "startLine": 147,
-      "endLine": 1
+      "summary": "Boundedness of $f$ for irrational $\\alpha$ and $|S(\\alpha, n)| \\le C \\log n$ bound",
+      "startLine": 154,
+      "endLine": 167
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
-      "summary": "$|f(\\alpha, n)| \\le C(\\alpha)$ boundedness and $|S(\\alpha, n)| \\le C \\log n$ continued fraction bound",
-      "startLine": 168,
-      "endLine": 1
+      "summary": "Weyl equidistribution implies sublinear growth; rational periodicity of inner sum",
+      "startLine": 169,
+      "endLine": 183
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Full problem formalization with 0 sorries; main conjecture OPEN (mathematical gap, not formalization gap)",
-      "startLine": 184,
-      "endLine": 1
+      "summary": "Complete formalization: 7 axioms, 0 sorries, 2 theorems; main conjecture OPEN (mathematical gap, not formalization gap)",
+      "startLine": 185,
+      "endLine": 211
     }
   ],
   "conclusion": {
@@ -128,28 +128,28 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-994",
-      "relationship": "Khintchine's equidistribution conjecture concerns whether (1/n)∑1_{kα∈E} → λ(E) for almost all α and ALL measurable E — the same tension between pointwise and averaged equidistribution that drives the difficulty in Problem #1002"
+      "relationship": "Khintchine's equidistribution conjecture concerns whether (1/n)∑1_{kα∈E} → λ(E) for almost all α and ALL measurable E — the same tension between pointwise and averaged equidistribution that drives the difficulty in Problem #1002",
+      "targetId": "erdos-994"
     },
     {
-      "target": "erdos-995",
-      "relationship": "Lacunary sequences and fractional parts: estimates of ∑f({αn_k}) for lacunary n_k share the same normalization scale and Diophantine dependence on α as the weighted sums in Problem #1002"
+      "relationship": "Lacunary sequences and fractional parts: estimates of ∑f({αn_k}) for lacunary n_k share the same normalization scale and Diophantine dependence on α as the weighted sums in Problem #1002",
+      "targetId": "erdos-995"
     },
     {
-      "target": "erdos-1001",
-      "relationship": "Kesten and Sós appear in both problems — Problem #1001 records their result on Diophantine approximation density, providing context for Kesten's 1960 Cauchy-distribution theorem cited in Problem #1002"
+      "relationship": "Kesten and Sós appear in both problems — Problem #1001 records their result on Diophantine approximation density, providing context for Kesten's 1960 Cauchy-distribution theorem cited in Problem #1002",
+      "targetId": "erdos-1001"
     },
     {
-      "target": "erdos-464",
-      "relationship": "Density of fractional parts along lacunary sequences: equidistribution and density questions for {θn_k} complement the distribution-function question for the running sum (1/log n)∑(1/2 − {αk})"
+      "relationship": "Density of fractional parts along lacunary sequences: equidistribution and density questions for {θn_k} complement the distribution-function question for the running sum (1/log n)∑(1/2 − {αk})",
+      "targetId": "erdos-464"
     },
     {
-      "target": "erdos-492",
-      "relationship": "Schmidt's disproof of uniform distribution for generalized fractional parts illustrates how sensitive distribution questions for fractional-part sums are to the exact setup — directly relevant to whether fixing β = 0 destroys the Cauchy limit"
+      "relationship": "Schmidt's disproof of uniform distribution for generalized fractional parts illustrates how sensitive distribution questions for fractional-part sums are to the exact setup — directly relevant to whether fixing β = 0 destroys the Cauchy limit",
+      "targetId": "erdos-492"
     },
     {
-      "target": "laws-of-large-numbers",
-      "relationship": "The asymptotic distribution question for f(α,n) is an analogue of the LLN for strongly dependent sequences: Weyl equidistribution gives the almost-sure mean zero, but the fluctuation scale (1/log n) and limiting law require deeper ergodic input"
+      "relationship": "The asymptotic distribution question for f(α,n) is an analogue of the LLN for strongly dependent sequences: Weyl equidistribution gives the almost-sure mean zero, but the fluctuation scale (1/log n) and limiting law require deeper ergodic input",
+      "targetId": "laws-of-large-numbers"
     }
   ],
   "relatedProofs": [
@@ -231,12 +231,26 @@
     }
   ],
   "leanFile": {
-    "imports": [],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
+      "Mathlib.Topology.Instances.Real.Basic",
+      "Mathlib.Data.Int.Floor"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set",
+      "Filter",
+      "Real",
+      "Int"
+    ],
+    "namespace": "Erdos1002",
+    "lineCount": 211,
+    "axiomCount": 7,
+    "theoremCount": 2,
+    "definitionCount": 11
   }
 }

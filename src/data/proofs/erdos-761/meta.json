@@ -20,16 +20,6 @@
     "sourceUrl": "https://erdosproblems.com/761",
     "erdosUrl": "https://erdosproblems.com/761",
     "erdosProblemStatus": "open",
-    "relatedProofs": [
-      {
-        "id": "erdos-760",
-        "relationship": "Problem #760 provides the bound ζ(G) ≤ χ(G) used to show that Question 2 of #761 implies Question 1"
-      },
-      {
-        "id": "erdos-735",
-        "relationship": "Both involve incidence-geometric or combinatorial structures on finite configurations; #735 classifies magic configurations while #761 studies orientation-coloring duality"
-      }
-    ],
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -49,7 +39,8 @@
     ],
     "axiomCount": 8,
     "lineCount": 148,
-    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -63,21 +54,21 @@
       "id": "sec-761-definitions",
       "title": "Core Definitions",
       "startLine": 33,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Defines the key structures: `Orientation G` (directed edge assignment), `IsAcyclicColoring` (no monochromatic directed edges), `HasAcyclicColoring` (existence of acyclic $k$-coloring), `dichromNumber` $\\delta(G) = \\min\\{k : \\forall O,\\, \\exists$ acyclic $k$-coloring\\}$, `IsCochromatic` (each class is clique or independent set), and `cochromNumber` $\\zeta(G)$."
     },
     {
       "id": "sec-761-properties",
       "title": "Basic Properties",
       "startLine": 73,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "Establishes $\\delta(G) \\le \\chi(G)$ (proper colorings are acyclic), $\\zeta(G) \\le \\chi(G)$ (proper colorings are cochromatic), and the bipartite bound $\\delta(G) \\le 2$ for 2-colorable graphs (the single sorry in the file)."
     },
     {
       "id": "sec-761-conjectures",
       "title": "Main Conjectures (OPEN)",
       "startLine": 96,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "States the two open questions: **Question 1** (Erdős-Neumann-Lara): $\\forall k,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\Rightarrow \\delta(G) \\ge k$. **Question 2** (Erdős-Gimbel): $\\forall k,\\, \\exists g(k)$ such that $\\zeta(G) \\ge g(k) \\Rightarrow \\exists H \\subseteq G$ with $\\delta(H) \\ge k$."
     },
     {
@@ -152,5 +143,27 @@
       "citation": "Erdős Problems, Problem #761, https://erdosproblems.com/761",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1104",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1092",
+    "erdos-1104",
+    "erdos-111"
   ]
 }

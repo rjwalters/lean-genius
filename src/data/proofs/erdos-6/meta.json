@@ -52,7 +52,8 @@
       "Prime number theorem (for context)",
       "Erdős's work on prime gap problems"
     ],
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Turán in 1948. Erdős was confident it was true, famously offering substantial money only for a *disproof*. The problem remained open for over 60 years until the revolutionary work on bounded gaps between primes.\n\nThe breakthrough came from Zhang's 2013 proof of bounded gaps (infinitely many prime pairs differ by at most 70 million), followed by Maynard and Tao's improvements. Banks, Freiberg, and Turnage-Butterbaugh applied this machinery to solve Erdős Problem 6 in 2015.",
@@ -79,28 +80,28 @@
       "title": "Prime Gap Definition",
       "summary": "Definition of d_n = p_{n+1} - p_n using Mathlib's prime enumeration",
       "startLine": 32,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "monotone",
       "title": "Monotone Sequences",
       "summary": "HasIncreasingGaps, HasDecreasingGaps, InfinitelyMany predicates",
       "startLine": 57,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "conjecture",
       "title": "Original Conjecture",
       "summary": "Erdős Problem 6 as InfinitelyManyIncreasing 2",
       "startLine": 75,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "summary": "Banks-Freiberg-Turnage-Butterbaugh (2015) resolution",
       "startLine": 86,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "machinery",
@@ -114,7 +115,7 @@
       "title": "Generalizations",
       "summary": "Arbitrarily long runs and oscillation theorems",
       "startLine": 148,
-      "endLine": 172
+      "endLine": 204
     }
   ],
   "conclusion": {

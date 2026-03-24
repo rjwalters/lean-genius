@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/888",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.Ioc",
@@ -91,7 +91,7 @@
       "id": "core-condition",
       "title": "Core Condition",
       "startLine": 30,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Definition of square-product condition and required condition for sets."
     },
     {
@@ -105,14 +105,14 @@
       "id": "sarkozy-bound",
       "title": "Sárközy's Upper Bound",
       "startLine": 101,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "The sublinear upper bound |A| = o(n)."
     },
     {
       "id": "prime-construction",
       "title": "Prime Lower Bound",
       "startLine": 120,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "Primes satisfy the condition, giving |A| ≥ π(n) ≫ n/log n."
     },
     {
@@ -126,7 +126,7 @@
       "id": "variants",
       "title": "Variants and Generalizations",
       "startLine": 207,
-      "endLine": 251,
+      "endLine": 255,
       "summary": "Weaker conditions and squarefree restriction."
     }
   ],
@@ -158,5 +158,27 @@
     "axiomCount": 11,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-425",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, multiplicative-structure, number-theory, prime-numbers"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, partially-solved"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-425",
+    "erdos-711",
+    "erdos-1005"
+  ]
 }

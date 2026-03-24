@@ -7,7 +7,7 @@
     "author": "Deaconescu Conjecture; Verified for n ≤ 1000",
     "sourceUrl": "https://erdosproblems.com/779",
     "date": "1983",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos779Problem.lean",
     "tags": [
       "erdos",
@@ -16,12 +16,12 @@
       "primorial",
       "additive-combinatorics"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 779,
     "erdosUrl": "https://erdosproblems.com/779",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth",
@@ -85,42 +85,42 @@
       "id": "primorial",
       "title": "The Primorial Function",
       "startLine": 32,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Definitions of nthPrime and primorial"
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 50,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Primorial positivity and divisibility properties"
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 71,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Defines validPrimes(n) and states the Deaconescu conjecture as set-nonemptiness"
     },
     {
       "id": "polynomial-bound",
       "title": "Erdős's Polynomial Bound Conjecture",
       "startLine": 98,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "Erdős's quantitative strengthening: the smallest valid prime is O(n^c)"
     },
     {
       "id": "verified-cases",
       "title": "Verified Small Cases",
       "startLine": 110,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Explicit witness primes for n = 2, 3, 4, 5 verified by norm_num"
     },
     {
       "id": "heuristic",
       "title": "Heuristic Analysis",
       "startLine": 174,
-      "endLine": 190,
+      "endLine": 191,
       "summary": "Cramér-model probabilistic argument and primorial_growth_heuristic theorem"
     },
     {
@@ -181,5 +181,27 @@
     "axiomCount": 4,
     "theoremCount": 8,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-236",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, primes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-141",
+    "erdos-200",
+    "erdos-236"
+  ]
 }

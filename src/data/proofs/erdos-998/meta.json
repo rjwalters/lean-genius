@@ -21,7 +21,7 @@
     "erdosNumber": 998,
     "erdosUrl": "https://erdosproblems.com/998",
     "erdosProblemStatus": "proved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Int.floor",
@@ -84,49 +84,49 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 33,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Imports Mathlib modules for $\\lfloor x \\rfloor$ (`Mathlib.Algebra.Order.Floor`), `Finset` (`Mathlib.Data.Finset.Basic`), $\\sqrt{n}$ (`Mathlib.Analysis.SpecialFunctions.Integrals`), and opens the `Set` namespace."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 43,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Defines the fractional part $\\{x\\} = x - \\lfloor x \\rfloor$ and proves $0 \\leq \\{x\\} < 1$ via `Int.floor_le` and `Int.lt_floor_add_one`. Defines irrationality as $\\neg \\exists p\\, q \\in \\mathbb{Z},\\, q \\neq 0 \\wedge \\alpha = p/q$."
     },
     {
       "id": "counting-function",
       "title": "Counting Function",
       "startLine": 71,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Defines $N(n, u, v, \\alpha) = \\#\\{1 \\leq m \\leq n : \\{\\alpha m\\} \\in [u, v)\\}$ via `Finset.filter` on `Finset.range(n+1) \\setminus \\{0\\}$. Also provides a set-theoretic version `countSet` for alternative reasoning."
     },
     {
       "id": "bounded-discrepancy",
       "title": "Bounded Discrepancy",
       "startLine": 89,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Defines $O(1)$ discrepancy: $\\exists C > 0,\\, \\forall n \\geq 1,\\, |N(n,u,v,\\alpha) - n(v-u)| \\leq C$. Axiomatizes the generic Weyl bound $|N(n,u,v,\\alpha) - n(v-u)| \\leq C\\sqrt{n}$ as `weyl_generic_bound`."
     },
     {
       "id": "characterization",
       "title": "The Characterization",
       "startLine": 109,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "Defines `endpointsFromOrbit`: $u = \\{\\alpha k\\}$ or $u = 0$, and $v = \\{\\alpha \\ell\\}$ or $v = 1$. States the Hecke-Ostrowski backward direction and Kesten's forward direction as axioms. Proves the biconditional `erdos_szusz_characterization` by `constructor`."
     },
     {
       "id": "three-distance",
       "title": "Three-Distance Theorem",
       "startLine": 148,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Axiomatizes the three-distance theorem: $\\{\\alpha\\}, \\{2\\alpha\\}, \\ldots, \\{n\\alpha\\}$ partition $[0,1)$ into intervals of at most 3 distinct lengths $L_1, L_2, L_3$ with $L_3 = L_1 + L_2$."
     },
     {
       "id": "weyl",
       "title": "Weyl's Equidistribution",
       "startLine": 163,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Axiomatizes Weyl's theorem: $N(n,u,v,\\alpha)/n \\to (v-u)$ as $n \\to \\infty$ for irrational $\\alpha$. Expressed as $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, |N(n,u,v,\\alpha)/n - (v-u)| < \\varepsilon$."
     },
     {

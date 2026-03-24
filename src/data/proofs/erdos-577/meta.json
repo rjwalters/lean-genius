@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/577",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-24",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -71,56 +71,56 @@
       "title": "Imports and Setup",
       "summary": "Imports `SimpleGraph.Basic`, `Subgraph`, `Fintype.Card`; opens `SimpleGraph` namespace",
       "startLine": 28,
-      "endLine": 35
+      "endLine": 36
     },
     {
       "id": "basic-defs",
       "title": "Basic Definitions",
       "summary": "Defines minimum degree $\\delta(G)$ via `Finset.min'`, `FourCycle` structure with 4 distinct vertices and edges $v_1v_2, v_2v_3, v_3v_4, v_4v_1$",
       "startLine": 37,
-      "endLine": 65
+      "endLine": 66
     },
     {
       "id": "disjointness",
       "title": "Disjointness Predicates",
       "summary": "Defines `DisjointFourCycles` via `Finset.Disjoint` on vertex sets, and `PairwiseDisjoint` for collections of $C_4$'s",
       "startLine": 67,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "conjecture",
       "title": "Erdős-Faudree Conjecture",
       "summary": "Formal statement: $\\forall k > 0$, if $|V| = 4k$ and $\\delta(G) \\geq 2k$, then $\\exists$ $k$ pairwise vertex-disjoint $C_4$'s",
       "startLine": 75,
-      "endLine": 92
+      "endLine": 93
     },
     {
       "id": "wang",
       "title": "Wang's Theorem (2010)",
       "summary": "Axiom `wang_theorem : ErdosFaudreeConjecture` and wrapper `erdos_faudree_solved` confirming the solution",
       "startLine": 94,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Sharpness",
       "summary": "Base case $k=1$ (4 vertices, $\\delta \\geq 2$ implies $C_4$ exists) and sharpness: $\\delta = 2k-1$ admits counterexamples",
       "startLine": 109,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Connections to Dirac's theorem ($\\delta \\geq n/2 \\Rightarrow$ Hamiltonian), El-Zahar's conjecture (general cycle lengths), and Corrádi-Hajnal ($C_3$ partition)",
       "startLine": 141,
-      "endLine": 163
+      "endLine": 164
     },
     {
       "id": "techniques",
       "title": "Proof Techniques",
       "summary": "Wang's minimal counterexample method: neighborhood analysis, greedy $C_4$ extraction, contradiction",
       "startLine": 165,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "summary",
@@ -131,12 +131,9 @@
     }
   ],
   "relatedProofs": [
-    "erdos-622",
-    "erdos-570",
-    "erdos-572",
-    "erdos-599",
-    "erdos-546",
-    "erdos-579"
+    "erdos-64",
+    "erdos-1035",
+    "erdos-1080"
   ],
   "references": [
     "Wang, H. (2010). 'Proof of the Erdős-Faudree conjecture on quadrilaterals.' Graphs and Combinatorics, 26(6), 833–877.",
@@ -171,5 +168,22 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-64",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-graph-theory, graph-theory, minimum-degree"
+    },
+    {
+      "targetId": "erdos-1035",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, minimum-degree"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-graph-theory, graph-theory"
+    }
+  ]
 }

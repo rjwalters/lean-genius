@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/584",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -76,49 +76,49 @@
       "title": "Graph Definitions",
       "summary": "Graph structure, edgeCount, density, HasDensity",
       "startLine": 40,
-      "endLine": 57
+      "endLine": 58
     },
     {
       "id": "subgraphs",
       "title": "Subgraphs",
       "summary": "IsSubgraph definition",
       "startLine": 59,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "cycle-connectivity",
       "title": "Cycle Connectivity",
       "summary": "Path, IsCycle, OnCommonCycle, IsCycleConnected, AdjacentEdgesOn4Cycle",
       "startLine": 65,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "HasH1Property, HasH2Property, ErdosConjecture584_H1/H2, ErdosConjecture584",
       "startLine": 96,
-      "endLine": 124
+      "endLine": 125
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "duke_erdos_1982, duke_erdos_rodl_1984, fox_sudakov_2008 axioms",
       "startLine": 126,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "main-challenge",
       "title": "The Main Challenge",
       "summary": "IsSparseRegime, SparseRegimeConjecture for δ = n^{-c}",
       "startLine": 154,
-      "endLine": 170
+      "endLine": 171
     },
     {
       "id": "quantitative-bounds",
       "title": "Quantitative Bounds",
       "summary": "bestKnownExponentH1, targetExponentH1, bestKnownThresholdH2",
       "startLine": 172,
-      "endLine": 184
+      "endLine": 185
     },
     {
       "id": "summary",
@@ -154,5 +154,27 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, subgraphs"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1066",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1008",
+    "erdos-1014",
+    "erdos-1066"
+  ]
 }

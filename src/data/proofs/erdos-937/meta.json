@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/937",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -89,7 +89,7 @@
       "title": "Powerful Numbers",
       "summary": "IsPowerful, IsRPowerful definitions",
       "startLine": 35,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "basic-properties",
@@ -103,49 +103,49 @@
       "title": "Arithmetic Progressions",
       "summary": "IsArithmeticProgression, IsFourTermAP, IsThreeTermAP",
       "startLine": 133,
-      "endLine": 159
+      "endLine": 160
     },
     {
       "id": "coprimality",
       "title": "Coprimality Conditions",
       "summary": "PairwiseCoprime, CoprimeFourTermAP, CoprimeThreeTermAP",
       "startLine": 161,
-      "endLine": 188
+      "endLine": 189
     },
     {
       "id": "main-sets",
       "title": "Main Theorem Sets",
       "summary": "coprimePowerfulFourTermAPs, coprime3PowerfulThreeTermAPs",
       "startLine": 190,
-      "endLine": 213
+      "endLine": 214
     },
     {
       "id": "fermat",
       "title": "Fermat's Theorem",
       "summary": "fermat_no_four_squares_in_AP axiom",
       "startLine": 215,
-      "endLine": 228
+      "endLine": 229
     },
     {
       "id": "easy-construction",
       "title": "Easy Construction",
       "summary": "extend_powerful_AP, arbitrarily_long_powerful_APs",
       "startLine": 230,
-      "endLine": 253
+      "endLine": 254
     },
     {
       "id": "bbc-theorem",
       "title": "Bajpai-Bennett-Chan Theorem",
       "summary": "bajpai_bennett_chan_four_term, bajpai_bennett_chan_three_term_3powerful",
       "startLine": 255,
-      "endLine": 275
+      "endLine": 276
     },
     {
       "id": "abc-conjecture",
       "title": "ABC Conjecture Connection",
       "summary": "erdosConjectureRPowerful, abc_implies_finite_rpowerful",
       "startLine": 277,
-      "endLine": 308
+      "endLine": 309
     },
     {
       "id": "main-results",
@@ -184,5 +184,27 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-936",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: abc-conjecture, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-938",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, number-theory, powerful-numbers"
+    },
+    {
+      "targetId": "erdos-941",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, powerful-numbers, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-936",
+    "erdos-938",
+    "erdos-941"
+  ]
 }

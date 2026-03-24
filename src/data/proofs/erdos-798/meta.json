@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/798",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set.ncard",
@@ -88,49 +88,49 @@
       "title": "Lattice Points and Lines",
       "summary": "latticeGrid, lineThroughPoints, lines_from_points",
       "startLine": 38,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "covering-function",
       "title": "The Covering Function t(n)",
       "summary": "linesCoversGrid, pointsCoversGrid, t definition",
       "startLine": 79,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound (Erdos-Purdy)",
       "summary": "erdos_purdy_lower_bound, counting argument",
       "startLine": 113,
-      "endLine": 141
+      "endLine": 142
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound (Alon)",
       "summary": "alon_upper_bound, alon_construction",
       "startLine": 143,
-      "endLine": 173
+      "endLine": 174
     },
     {
       "id": "asymptotic-answer",
       "title": "The Asymptotic Answer",
       "summary": "tight_bounds, t_is_o_n",
       "startLine": 175,
-      "endLine": 203
+      "endLine": 204
     },
     {
       "id": "examples",
       "title": "Examples and Explicit Bounds",
       "summary": "t_2_bound, t_3_bound, explicit_lower",
       "startLine": 205,
-      "endLine": 234
+      "endLine": 235
     },
     {
       "id": "geometric-insight",
       "title": "Geometric Insight",
       "summary": "exponent_explanation, linesThroughOrigin",
       "startLine": 236,
-      "endLine": 262
+      "endLine": 263
     },
     {
       "id": "main-results",
@@ -168,5 +168,27 @@
     "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+    },
+    {
+      "targetId": "erdos-733",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1090",
+    "erdos-1166",
+    "erdos-733"
+  ]
 }

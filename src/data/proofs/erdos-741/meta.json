@@ -23,8 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/741",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "v4.15.0",
-    "relatedProofs": [],
+    "mathlib_version": "4.26.0",
     "relatedProblems": [],
     "mathlibDependencies": [
       {
@@ -92,21 +91,21 @@
       "id": "definitions",
       "title": "Density and Sumset Definitions",
       "startLine": 27,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "upperDensity via atTop.limsup of Set.ncard ratios; HasPosDensity as 0 < upperDensity; sumset as explicit existential {n | exists a, b}; IsBasisOrder2 via Filter.Eventually; IsSyndetic with bounded gap condition."
     },
     {
       "id": "conjectures",
       "title": "Main Conjectures (Both OPEN)",
       "startLine": 53,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "ErdosProblem741_density (Part 1): positive density sumset splitting. ErdosProblem741_basis (Part 2): existence of non-splittable basis. Both stated as Prop definitions."
     },
     {
       "id": "sumset-algebra",
       "title": "Sumset Algebraic Properties",
       "startLine": 71,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "10 proved theorems: sumset_comm (A+B=B+A), empty cases, sumset_mono (monotonicity), zero_mem_sumset_self, double_mem_sumset (a in A implies 2a in A+A), sumset_union_contains_left/right."
     },
     {
@@ -165,5 +164,27 @@
     "axiomCount": 7,
     "theoremCount": 22,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, open, sumsets"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, open, sumsets"
+    },
+    {
+      "targetId": "erdos-749",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, density, open, sumsets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-335",
+    "erdos-432",
+    "erdos-749"
+  ]
 }

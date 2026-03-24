@@ -18,13 +18,14 @@
       "coprime-residues"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 5,
     "erdosNumber": 854,
     "erdosUrl": "https://erdosproblems.com/854",
     "erdosProblemStatus": "open",
-    "axiomCount": 21,
+    "axiomCount": 9,
     "lineCount": 95,
-    "assumptions": "21 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "9 axiom declarations: nthPrime (k-th prime), nthPrime_prime, nthPrime_mono, nthPrime_vals, gaps_even, maxGap_bound, lacampagne_selfridge_counterexample, ErdosProblem854_missing_gap_growth, ErdosProblem854_many_gaps",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős** posed this problem about the gap structure of coprime residues modulo primorials. The sequence $1 = a_1 < a_2 < \\cdots < a_{\\varphi(n_k)} = n_k - 1$ of integers coprime to the $k$-th primorial $n_k = p_1 \\cdots p_k$ exhibits a rich gap structure. Erdős initially conjectured that **all even integers** up to the maximal gap appear as consecutive differences, but computational work by **Lacampagne and Selfridge** for $n_6 = 30030$ disproved this strong form. The problem connects to the **Jacobsthal function** $j(n)$, the maximum gap between consecutive integers coprime to $n$, studied by Jacobsthal (1960), Iwaniec (1978), and Pintz (1997). Iwaniec proved $j(n) \\ll (\\log n)^2$, giving the sharpest known upper bound. The two remaining open questions—growth rate of the smallest missing gap and proportionality of distinct gap counts—connect coprimality patterns to distribution of primes in arithmetic progressions.",
@@ -55,56 +56,56 @@
       "id": "prime-enumeration",
       "title": "Prime Enumeration Axioms",
       "startLine": 25,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Axiomatizes the k-th prime with primality, strict monotonicity, and initial values."
     },
     {
       "id": "primorial",
       "title": "Primorial Function",
       "startLine": 31,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Defines the k-th primorial recursively as the product of the first k primes."
     },
     {
       "id": "coprime-residues",
       "title": "Coprime Residues",
       "startLine": 36,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Defines the coprime residue set computationally and axiomatizes the sorted enumeration."
     },
     {
       "id": "gap-structure",
       "title": "Gap Set and Evenness",
       "startLine": 46,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Axiomatizes the gap set, gap evenness for k ≥ 2, maximal gap with membership and maximality."
     },
     {
       "id": "known-bounds",
       "title": "Jacobsthal Bound and Distinct Gap Count",
       "startLine": 65,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Records the bound g(nₖ) ≤ 2pₖ and axiomatizes the distinct gap count."
     },
     {
       "id": "first-missing-gap",
       "title": "First Missing Gap",
       "startLine": 71,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Axiomatizes the smallest even integer absent from the gap set with evenness and non-membership."
     },
     {
       "id": "counterexample",
       "title": "Lacampagne-Selfridge Counterexample",
       "startLine": 78,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030."
     },
     {
       "id": "conjecture-part1",
       "title": "Conjecture Part 1: Missing Gap Growth",
       "startLine": 83,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "States that the smallest missing gap grows without bound."
     },
     {
@@ -139,5 +140,27 @@
     "axiomCount": 21,
     "theoremCount": 0,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-852",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps, sieve-theory"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sieve-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-852",
+    "erdos-1055",
+    "erdos-1101"
+  ]
 }

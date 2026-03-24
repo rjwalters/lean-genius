@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/181",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -55,12 +55,6 @@
       "lower_bound: R(Q_n) ≥ 2^n from vertex count",
       "bound_gap_description: 2^n ≤ 2^{2n} proved (gap illustration)"
     ],
-    "relatedProofs": [
-      {
-        "id": "ramseys-theorem",
-        "relationship": "The classical Ramsey theorem R(s,t) < ∞ provides the trivial upper bound R(Q_n) ≤ R(K_{2^n}) used as the starting point for this problem"
-      }
-    ],
     "axiomCount": 7,
     "lineCount": 211,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -88,28 +82,28 @@
       "id": "hypercube-graph",
       "title": "Hypercube Graph Q_n",
       "startLine": 33,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Defines `hypercubeAdj n x y` via $\\exists! i : \\text{Fin } n$ with differing bit at position $i$ on `Fin (2^n)` vertices. Proves four structural results: symmetry of adjacency (`hypercubeAdj_symm`), irreflexivity (`hypercubeAdj_irrefl`), vertex count $|V(Q_n)| = 2^n$ via `Fintype.card_fin`, and edge count formula $n \\cdot 2^n / 2 = n \\cdot 2^{n-1}$ via algebraic manipulation."
     },
     {
       "id": "ramsey-number",
       "title": "Ramsey Number Definition",
       "startLine": 73,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Defines `ramseyNumber n` as $\\inf\\{N : \\forall c : \\text{Fin } N \\to \\text{Fin } N \\to \\text{Fin } 2, \\exists f \\text{ injective}, \\exists \\text{color}, \\forall x, y \\text{ adjacent in } Q_n, c(f(x))(f(y)) = \\text{color}\\}$. Proves the base case $R(Q_0) \\leq 1$ by constructing a trivial embedding (the 0-cube has one vertex and no edges)."
     },
     {
       "id": "main-conjecture",
       "title": "Burr-Erdős Conjecture",
       "startLine": 99,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "Axiomatizes the main conjecture `erdos_181_conjecture`: $\\exists C > 0, \\forall n, R(Q_n) \\leq C \\cdot 2^n$. This asserts the Ramsey number is at most linear in the vertex count $2^n$, making $R(Q_n) = O(2^n)$."
     },
     {
       "id": "known-bounds",
       "title": "Known Upper and Lower Bounds",
       "startLine": 114,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "Axiomatizes three bounds: the trivial upper bound $R(Q_n) \\leq C^{2^n}$ from the Ramsey number of $K_{2^n}$, Tikhomirov's (2022) best known upper bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ with $c \\approx 0.0366$, and the trivial lower bound $R(Q_n) \\geq 2^n$ from the vertex count."
     },
     {
@@ -166,5 +160,27 @@
       "citation": "Erdős, P. (1993). On some of my problems in graph theory. Combinatorics, Graph Theory, and Algorithms, Vol. I, 365-377.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1029",
+    "erdos-1030"
   ]
 }

@@ -22,7 +22,7 @@
     "erdosNumber": 966,
     "erdosUrl": "https://erdosproblems.com/966",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.range",
@@ -84,63 +84,63 @@
       "title": "Arithmetic Progressions",
       "summary": "Definitions of APs, AP-free sets, and containment predicates",
       "startLine": 40,
-      "endLine": 71
+      "endLine": 72
     },
     {
       "id": "colorings",
       "title": "Colorings and Monochromatic Sets",
       "summary": "r-colorings, color classes, and monochromatic AP predicates",
       "startLine": 73,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "spencer-set",
       "title": "Spencer's Set",
       "summary": "The witness set and its key properties (AP-free and Ramsey)",
       "startLine": 101,
-      "endLine": 127
+      "endLine": 128
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "summary": "erdos_966: the answer is YES for all k, r ≥ 2",
       "startLine": 129,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "van-der-waerden",
       "title": "Van der Waerden Connection",
       "summary": "Van der Waerden numbers and how this refines the classical theorem",
       "startLine": 156,
-      "endLine": 189
+      "endLine": 190
     },
     {
       "id": "erdos-924",
       "title": "Connection to Erdős #924",
       "summary": "Graph-theoretic analogue via Folkman's theorem",
       "startLine": 191,
-      "endLine": 208
+      "endLine": 209
     },
     {
       "id": "specific-cases",
       "title": "Specific Cases",
       "summary": "Instantiations for k=2,r=2 and k=3,r=2",
       "startLine": 210,
-      "endLine": 228
+      "endLine": 229
     },
     {
       "id": "roth-theorem",
       "title": "Roth's Theorem Connection",
       "summary": "Upper density and its implications for Spencer's sets",
       "startLine": 230,
-      "endLine": 254
+      "endLine": 255
     },
     {
       "id": "ap-properties",
       "title": "Properties of Arithmetic Progressions",
       "summary": "singleton_AP_free and AP_card theorems",
       "startLine": 256,
-      "endLine": 281
+      "endLine": 282
     },
     {
       "id": "summary",
@@ -177,5 +177,27 @@
     "axiomCount": 10,
     "theoremCount": 7,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-645",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, solved, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-645",
+    "erdos-138",
+    "erdos-176"
+  ]
 }

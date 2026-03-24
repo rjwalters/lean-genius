@@ -24,7 +24,7 @@
     "erdosNumber": 464,
     "erdosUrl": "https://erdosproblems.com/464",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Int.floor",
@@ -49,12 +49,6 @@
       "Axiomatization of de Mathan-Pollington theorem and Peres-Schlag bound"
     ],
     "mathContext": "Diophantine Approximation — Lacunary Sequences and Equidistribution",
-    "crossReferences": [
-      {
-        "targetId": "erdos-466",
-        "relationship": "Related problem on lacunary sums modulo 1"
-      }
-    ],
     "axiomCount": 2,
     "lineCount": 83,
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -81,21 +75,21 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 24,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Imports `Mathlib.Data.Real.Basic` and `Mathlib.Data.Nat.Basic` for floor/ceiling operations and real arithmetic. Opens the `Erdos464` namespace."
     },
     {
       "id": "lacunary-sequences",
       "title": "Lacunary Sequences",
       "startLine": 33,
-      "endLine": 35,
+      "endLine": 36,
       "summary": "Defines `IsLacunary a ε` as the conjunction $\\varepsilon > 0 \\land \\text{StrictMono}(a) \\land \\forall k,\\, a(k+1) \\geq (1+\\varepsilon) \\cdot a(k)$. This captures the exponential growth condition that is the key hypothesis."
     },
     {
       "id": "distance-to-integer",
       "title": "Distance to Nearest Integer",
       "startLine": 37,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Defines `distToInt x = \\min(x - \\lfloor x \\rfloor, \\lceil x \\rceil - x)`, which computes $\\|x\\| \\in [0, 1/2]$, the distance from $x$ to the nearest integer. This is the standard Diophantine approximation metric."
     },
     {
@@ -180,5 +174,27 @@
       "year": 2004,
       "journal": "Doklady Mathematics"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1002",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, fractional-parts"
+    },
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, equidistribution"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, fractional-parts"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1002",
+    "erdos-335",
+    "erdos-466"
   ]
 }

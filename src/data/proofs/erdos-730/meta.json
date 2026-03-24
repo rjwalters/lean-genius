@@ -20,14 +20,10 @@
     "erdosNumber": 730,
     "erdosUrl": "https://erdosproblems.com/730",
     "erdosProblemStatus": "open",
-    "relatedProofs": [
-      "erdos-726",
-      "erdos-728",
-      "erdos-175"
-    ],
     "axiomCount": 10,
     "lineCount": 118,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Graham, Ruzsa, and Straus posed this problem in their influential 1975 paper on the arithmetic properties of binomial coefficients, expressing 'no doubt' that infinitely many matching pairs exist. The conjecture connects to Kummer's theorem (1852), which characterizes $p \\mid \\binom{m+n}{m}$ via carries in base-$p$ addition — for central binomials, $p \\mid \\binom{2n}{n}$ iff some base-$p$ digit of $n$ exceeds $\\lceil p/2 \\rceil$. The known examples $(87, 88)$ and $(607, 608)$ were found by exhaustive computation of prime factorizations of central binomial coefficients — numbers with 52 and 364 digits respectively. The remarkable triple at $n = 10003, 10004, 10005$ shows that even three consecutive values can share prime divisor sets, requiring carry-pattern stability across all prime bases simultaneously. These examples are catalogued in OEIS A129515. The problem sits at the intersection of combinatorial number theory and computational mathematics, with connections to Bertrand's postulate (which guarantees 'middle primes' in $(n, 2n]$), Legendre's formula for $\\nu_p(n!)$, and the general question of how arithmetic functions behave on structured subsequences.",
@@ -53,63 +49,63 @@
       "id": "header",
       "title": "Problem Statement and References",
       "startLine": 1,
-      "endLine": 19,
+      "endLine": 20,
       "summary": "Module docstring introducing Erdős Problem #730: are there infinitely many pairs of central binomials sharing prime divisor sets? Cites EGRS (1975), known examples, and OEIS A129515."
     },
     {
       "id": "imports",
       "title": "Library Imports",
       "startLine": 21,
-      "endLine": 24,
+      "endLine": 25,
       "summary": "Imports `Nat.Choose.Central` for $\\binom{2n}{n}$, `Nat.Prime.Basic` and `Nat.Factors` for prime factorization, and general Mathlib tactics."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 26,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Defines `centralBinom n = Nat.choose (2*n) n`, `primeDivisors n = n.primeFactors`, the relation `SamePrimeDivisors` (equality of prime divisor Finsets), and `CentralBinomPairs` (the set of pairs $(n,m)$ with $n < m$ and matching divisors)."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 44,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Axiomatizes the EGRS conjecture: `Set.Infinite CentralBinomPairs`. Stated as an axiom reflecting the open status of the problem."
     },
     {
       "id": "examples",
       "title": "Known Examples",
       "startLine": 50,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Axiomatizes the known pairs $(87,88)$ and $(607,608)$, the triple $(10003, 10004, 10005)$ with all pairwise matches, and proves `delta_ne_one`: a non-consecutive pair exists (gap 2 via the triple)."
     },
     {
       "id": "kummer",
       "title": "Kummer's Divisibility Criterion",
       "startLine": 70,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Axiomatizes Kummer's theorem specialized to central binomials: $p \\mid \\binom{2n}{n}$ iff $\\exists k,\\; (n / p^k) \\bmod p \\ge \\lceil p/2 \\rceil$, capturing the carry condition in base-$p$ addition."
     },
     {
       "id": "structure",
       "title": "Prime Divisor Structure",
       "startLine": 77,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Three structural results: (1) $2 \\mid \\binom{2n}{n}$ for $n \\ge 1$, (2) primes $p > 2n$ never divide $\\binom{2n}{n}$, (3) primes in $(n, 2n]$ always divide $\\binom{2n}{n}$ with multiplicity 1 (Bertrand/Legendre)."
     },
     {
       "id": "spacing",
       "title": "Spacing Conjecture",
       "startLine": 89,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "The stronger conjecture: for every $k \\ge 1$, infinitely many $n$ satisfy $\\mathrm{rad}\\binom{2n}{n} = \\mathrm{rad}\\binom{2(n+k)}{n+k}$."
     },
     {
       "id": "reduction",
       "title": "Spacing-1 Implies Main Conjecture",
       "startLine": 97,
-      "endLine": 106,
+      "endLine": 107,
       "summary": "Proved theorem: the spacing-1 case implies the main conjecture, via injective image $n \\mapsto (n, n+1)$ into `CentralBinomPairs` using `Set.Infinite.mono` and `omega`."
     },
     {
@@ -143,5 +139,21 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-729",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-731",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-729",
+    "erdos-731"
+  ]
 }

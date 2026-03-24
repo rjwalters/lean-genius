@@ -20,7 +20,7 @@
     "erdosUrl": "https://erdosproblems.com/810",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -53,24 +53,6 @@
       "kovari_sos_turan_C4: C₄-free graphs have O(n^{3/2}) edges (axiom)",
       "dense_graph_has_C4: Ω(n²) edges implies C₄ exists (axiom)",
       "c4_free_vacuously_rainbow: proved C₄-free satisfies rainbow condition"
-    ],
-    "crossReferences": [
-      {
-        "proofId": "erdos-809",
-        "relationship": "Companion problem explicitly referenced in the statement; both concern rainbow structures in edge-colored graphs"
-      },
-      {
-        "proofId": "erdos-811",
-        "relationship": "Related edge-coloring problem in the Erdős collection"
-      },
-      {
-        "proofId": "erdos-129",
-        "relationship": "Edge-coloring problem with connections to rainbow subgraph theory"
-      },
-      {
-        "proofId": "erdos-76",
-        "relationship": "Related edge-coloring and Ramsey-type problem"
-      }
     ],
     "axiomCount": 2,
     "lineCount": 121,
@@ -108,28 +90,28 @@
       "title": "Edge Colorings and Rainbow Subgraphs",
       "summary": "Defines EdgeColoringN (n-color edge coloring), CycleFour structure (4 vertices + 4 adjacency proofs), CycleFour.isRainbow (4 distinct edge colors), and IsRainbowC4Coloring",
       "startLine": 38,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "dense-rainbow",
       "title": "Dense Graphs with Rainbow-C₄ Colorings",
       "summary": "HasDenseRainbowC4 combines ≥ εn² edges with rainbow-C₄ n-coloring; existentially quantifies over both graph and coloring",
       "startLine": 71,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "ErdosProblem810 as a Prop using Filter.atTop: ∃ ε > 0 such that HasDenseRainbowC4 holds eventually",
       "startLine": 79,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "known-results",
       "title": "Known Results: Kővári-Sós-Turán",
       "summary": "Axiomatizes ex(n; C₄) = O(n^{3/2}) and the consequence that Ω(n²) edges force C₄ existence",
       "startLine": 91,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "structural",
@@ -164,5 +146,27 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: edge-coloring, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-76",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: edge-coloring, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-129",
+    "erdos-76",
+    "erdos-1014"
+  ]
 }

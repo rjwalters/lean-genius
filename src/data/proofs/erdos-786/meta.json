@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/786",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.prod",
@@ -87,56 +87,56 @@
       "id": "main-def",
       "title": "Main Definition",
       "startLine": 31,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "IsMulCardSet definition: equal products must have equal factor counts."
     },
     {
       "id": "density",
       "title": "Natural Density",
       "startLine": 43,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "HasNaturalDensity using Filter.Tendsto."
     },
     {
       "id": "conjectures",
       "title": "The Open Questions",
       "startLine": 51,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "DensityConjecture and FiniteConjecture as formal Props."
     },
     {
       "id": "examples",
       "title": "Known Examples",
       "startLine": 72,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε)."
     },
     {
       "id": "bounds",
       "title": "Upper and Lower Bounds",
       "startLine": 109,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Ruzsa's (1-c)N upper bound and log 2 lower bound."
     },
     {
       "id": "insight",
       "title": "Why These Sets Work",
       "startLine": 130,
-      "endLine": 142,
+      "endLine": 143,
       "summary": "Explanation of the factorization pattern uniqueness."
     },
     {
       "id": "verified",
       "title": "Verified Examples",
       "startLine": 144,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "Concrete mod 4 calculations via native_decide."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 158,
-      "endLine": 173,
+      "endLine": 175,
       "summary": "Main summary theorem combining known results."
     }
   ],

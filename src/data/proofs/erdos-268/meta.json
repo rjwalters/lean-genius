@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/268",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Topology.Instances.Real",
@@ -85,7 +85,7 @@
       "title": "Harmonic Subseries",
       "summary": "Defines HasConvergentHarmonicSubseries as Summable (fun n : A => 1/n) and shiftedHarmonicSum for the k-shifted variant. Proves finite sets trivially converge (sorry) and shifted summability follows from comparison (sorry). The subtype-based summation pattern is standard Mathlib.",
       "startLine": 38,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "point-set",
@@ -99,56 +99,56 @@
       "title": "Main Theorem",
       "summary": "Axiomatizes erdos_268_solved: (interior (harmonicPointSet d)).Nonempty for all d. The derived theorem contains_open_ball is fully proved: it extracts a point from the interior, uses mem_interior to find an open set, then Metric.isOpen_iff to find a ball. This is a genuine deduction from the axiom.",
       "startLine": 88,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "dim-2",
       "title": "2-Dimensional Case (Erdős-Straus)",
       "summary": "Axiomatizes the Erdős-Straus result that (interior (harmonicPointSet 2)).Nonempty. States dim2_point_form showing the concrete 2D point is (harmonicSubseriesSum A, shiftedHarmonicSum A 1) using matrix notation (sorry for the definitional unfolding).",
       "startLine": 109,
-      "endLine": 122
+      "endLine": 123
     },
     {
       "id": "dim-3",
       "title": "3-Dimensional Case (Kovač 2024)",
       "summary": "Axiomatizes kovac_3d for the d=3 interior result. Defines placeholder kovacBallCenter and kovacBallRadius for Kovač's explicit construction. Axiomatizes kovac_explicit_ball: the ball lies inside harmonicPointSet 3.",
       "startLine": 124,
-      "endLine": 140
+      "endLine": 141
     },
     {
       "id": "general",
       "title": "General Dimension (Kovač-Tao 2024)",
       "summary": "The theorem kovac_tao_general for d ≥ 1 is a direct application of erdos_268_solved. Defines AhmesSeries as a synonym for harmonicSubseriesSum, recording the Egyptian fraction connection that powered the Kovač-Tao proof.",
       "startLine": 142,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "properties",
       "title": "Properties of X",
       "summary": "States harmonicPointSet_nonempty (sorry — would use squares example), harmonicPointSet_path_connected (sorry — involves continuous interpolation of sets), and harmonicPointSet_dense_somewhere (partially proved from the main axiom using isOpen_interior, with one remaining sorry).",
       "startLine": 156,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "coordinates",
       "title": "Coordinate Properties",
       "summary": "States coordinate_decreasing: shifted sums decrease with shift index (sorry — needs tsum_lt_tsum for infinite A). States first_coordinate_largest as a corollary. States all_coordinates_positive for nonempty A (sorry — needs tsum_pos). Together these show X lies in the cone {x₀ > x₁ > ··· > x_{d-1} > 0}.",
       "startLine": 185,
-      "endLine": 205
+      "endLine": 206
     },
     {
       "id": "monotonicity",
       "title": "Dimension Monotonicity",
       "summary": "Defines projectionMap from ℝᵈ² to ℝᵈ¹ for d₁ ≤ d₂ via coordinate restriction. States projection_preserves: the image of X_{d₂} under projection lies in X_{d₁} (sorry — requires showing the same set A generates both points).",
       "startLine": 207,
-      "endLine": 216
+      "endLine": 217
     },
     {
       "id": "examples",
       "title": "Specific Examples",
       "summary": "Defines squaresSet = {n² : n ≥ 1} and powersOf2Set = {2ᵏ}. States convergence for both (sorry). Defines squaresPoint and powers2Point as concrete elements of X. The squares example connects to the Basel problem (Σ 1/n² = π²/6); the powers-of-2 example is a geometric series (Σ 1/2ᵏ = 2).",
       "startLine": 218,
-      "endLine": 241
+      "endLine": 278
     }
   ],
   "conclusion": {

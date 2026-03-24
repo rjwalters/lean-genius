@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100",
     "dateAdded": "2026-01-13",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -76,42 +76,42 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Module documentation and namespace setup."
     },
     {
       "id": "background",
       "title": "Background",
       "startLine": 27,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Context on equidistance in convex polygons."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 39,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Definitions of equidistance, unit distance, and convex position."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 82,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "Erdos97Question for k = 4."
     },
     {
       "id": "danzer",
       "title": "Danzer's Counterexample",
       "startLine": 102,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "The 9-point counterexample for k = 3."
     },
     {
       "id": "fishburn-reeds",
       "title": "Fishburn-Reeds Result",
       "startLine": 130,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "The 20-point unit distance example."
     },
     {
@@ -145,5 +145,15 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-92",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: conjecture, equidistant"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-92"
+  ]
 }

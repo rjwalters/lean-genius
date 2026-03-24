@@ -22,7 +22,7 @@
     "erdosNumber": 164,
     "erdosUrl": "https://erdosproblems.com/164",
     "erdosProblemStatus": "proved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -78,35 +78,35 @@
       "title": "Part 1: Primitive Sets",
       "summary": "IsPrimitive definition, primes_primitive theorem, {6,10,15} example.",
       "startLine": 39,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "sum-definition",
       "title": "Part 2: The Sum Σ 1/(n log n)",
       "summary": "f, primitiveSumFinite, primitiveSum, primeSum definitions.",
       "startLine": 64,
-      "endLine": 82
+      "endLine": 83
     },
     {
       "id": "convergence",
       "title": "Part 3: Erdős's Convergence Theorem (1935)",
       "summary": "erdos_convergence axiom, primes_sum_converges theorem, primes_sum_value.",
       "startLine": 84,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "lichtman",
       "title": "Part 4: Lichtman's Theorem (2023)",
       "summary": "lichtman_theorem, lichtman_uniqueness axioms, erdos_164_answer.",
       "startLine": 100,
-      "endLine": 118
+      "endLine": 119
     },
     {
       "id": "generalization",
       "title": "Part 5: Generalization",
       "summary": "IsMaximizedByPrimes definition, f_maximized_by_primes theorem.",
       "startLine": 120,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "summary",
@@ -144,5 +144,27 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes, solved"
+    },
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-473",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-237",
+    "erdos-444",
+    "erdos-473"
+  ]
 }

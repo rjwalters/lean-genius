@@ -18,10 +18,11 @@ integers as possible? The conjecture says primes are optimal.
 Reference: https://erdosproblems.com/783
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
+
+open Finset Nat
+
+namespace Erdos783
 
 /- ## Core Definitions -/
 
@@ -36,30 +37,50 @@ def IsValidSievingSet (A : Finset ℕ) (n : ℕ) (C : ℝ) : Prop :=
 def unsievedCount (A : Finset ℕ) (n : ℕ) : ℕ :=
   (Finset.range (n + 1)).filter (fun m => m ≥ 1 ∧ ∀ a ∈ A, ¬(a ∣ m)) |>.card
 
-/-- There exists an optimal sieving set for any valid configuration. -/
-axiom optimal_sieving_set_exists (n : ℕ) (C : ℝ) (hC : C > 0) :
+/-- There exists an optimal sieving set for any valid configuration.
+    Proof: ℕ is well-ordered, so the set of achievable unsievedCount values
+    among valid sieving sets has a minimum. The empty set is always valid,
+    guaranteeing this set is nonempty. -/
+theorem optimal_sieving_set_exists (n : ℕ) (C : ℝ) (hC : C > 0) :
     ∃ A : Finset ℕ, IsValidSievingSet A n C ∧
       ∀ B : Finset ℕ, IsValidSievingSet B n C →
-        unsievedCount A n ≤ unsievedCount B n
+        unsievedCount A n ≤ unsievedCount B n := by
+  classical
+  have hempty : IsValidSievingSet ∅ n C := by
+    refine ⟨?_, ?_, ?_⟩
+    · intro a ha; exact absurd ha (Finset.notMem_empty a)
+    · intro a _ ha; exact absurd ha (Finset.notMem_empty a)
+    · simp; linarith
+  -- Use Nat.find: the smallest k such that some valid A has unsievedCount A n = k
+  let P : ℕ → Prop := fun k => ∃ A : Finset ℕ, IsValidSievingSet A n C ∧ unsievedCount A n = k
+  have hP : ∃ k, P k := ⟨unsievedCount ∅ n, ∅, hempty, rfl⟩
+  obtain ⟨A, hA, hAm⟩ := Nat.find_spec hP
+  exact ⟨A, hA, fun B hB => hAm ▸ Nat.find_min' hP ⟨B, hB, rfl⟩⟩
 
 /- ## The Prime Sieving Set -/
 
-/-- The k-th prime number (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...). -/
-axiom nthPrime (k : ℕ) : ℕ
+/-- The k-th prime number (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...).
+    Defined via Mathlib's Nat.nth for the set of primes. -/
+noncomputable def nthPrime (k : ℕ) : ℕ := Nat.nth Nat.Prime k
+
+/-- The set of primes is infinite. -/
+theorem primes_infinite : (setOf Nat.Prime).Infinite := Nat.infinite_setOf_prime
 
 /-- nthPrime gives primes. -/
-axiom nthPrime_prime (k : ℕ) : (nthPrime k).Prime
+theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime :=
+  Nat.nth_mem_of_infinite primes_infinite k
+
+/-- nthPrime is strictly monotone. -/
+theorem nthPrime_strictMono : StrictMono nthPrime :=
+  Nat.nth_strictMono primes_infinite
 
 /-- nthPrime is strictly increasing. -/
-axiom nthPrime_increasing (i j : ℕ) (h : i < j) : nthPrime i < nthPrime j
+theorem nthPrime_increasing (i j : ℕ) (h : i < j) : nthPrime i < nthPrime j :=
+  nthPrime_strictMono h
 
 /-- nthPrime is injective (follows from strict monotonicity). -/
-theorem nthPrime_injective : Function.Injective nthPrime := by
-  intro i j h
-  by_contra hij
-  rcases Ne.lt_or_lt hij with hlt | hlt
-  · exact absurd h (ne_of_lt (nthPrime_increasing i j hlt))
-  · exact absurd h (ne_of_gt (nthPrime_increasing j i hlt))
+theorem nthPrime_injective : Function.Injective nthPrime :=
+  nthPrime_strictMono.injective
 
 /-- nthPrime values are at least 2. -/
 theorem nthPrime_ge_two (k : ℕ) : 2 ≤ nthPrime k :=
@@ -72,7 +93,7 @@ theorem nthPrime_coprime (i j : ℕ) (h : i ≠ j) :
     (fun heq => h (nthPrime_injective heq))
 
 /-- The prime sieving set: the first k primes. -/
-def primeSievingSet (k : ℕ) : Finset ℕ :=
+noncomputable def primeSievingSet (k : ℕ) : Finset ℕ :=
   (Finset.range k).image nthPrime
 
 /-- The prime sieving set has exactly k elements (since nthPrime is injective). -/
@@ -104,7 +125,9 @@ theorem primeSievingSet_pairwise_coprime (k : ℕ) :
   have hpb := primeSievingSet_all_prime k b hb
   exact (Nat.coprime_primes hpa hpb).mpr hab
 
-/-- The maximal k such that the first k prime reciprocals sum to ≤ C. -/
+/-- The maximal k such that the first k prime reciprocals sum to ≤ C.
+    This exists because prime reciprocals diverge (Euler), so for any C
+    there is a finite k beyond which the sum exceeds C. -/
 axiom maxPrimeCount (C : ℝ) : ℕ
 
 axiom maxPrimeCount_spec (C : ℝ) (hC : C > 0) :
@@ -146,11 +169,13 @@ axiom erdos_783_conjecture (C : ℝ) (hC : C > 0) :
 /- ## Supporting Analysis -/
 
 /-- By inclusion-exclusion, for a coprime set A, the unsieved fraction is
-    approximately Π_{a ∈ A} (1 - 1/a). -/
-axiom coprime_sieve_estimate (A : Finset ℕ) (n : ℕ) (C : ℝ)
-    (hvalid : IsValidSievingSet A n C) (hn : n ≥ 1) :
+    approximately Π_{a ∈ A} (1 - 1/a). This statement is trivially true
+    as stated since ∃ δ with no bound on δ always holds. -/
+theorem coprime_sieve_estimate (A : Finset ℕ) (n : ℕ) (C : ℝ)
+    (_hvalid : IsValidSievingSet A n C) (_hn : n ≥ 1) :
     ∃ δ : ℝ, |((unsievedCount A n : ℝ) / n) -
-      A.prod (fun a => 1 - (1 : ℝ) / a)| ≤ δ
+      A.prod (fun a => 1 - (1 : ℝ) / a)| ≤ δ :=
+  ⟨_, le_refl _⟩
 
 /-- For a fixed reciprocal sum budget C, the product Π(1 - 1/a_i)
     is minimized when the a_i are primes. Replacing a composite
@@ -166,15 +191,17 @@ axiom primes_minimize_product (A : Finset ℕ) (n : ℕ) (C : ℝ)
 theorem empty_is_valid (n : ℕ) (C : ℝ) (hC : C > 0) :
     IsValidSievingSet ∅ n C := by
   refine ⟨?_, ?_, ?_⟩
-  · intro a ha; exact absurd ha (Finset.not_mem_empty a)
-  · intro a _ ha; exact absurd ha (Finset.not_mem_empty a)
+  · intro a ha; exact absurd ha (Finset.notMem_empty a)
+  · intro a _ ha; exact absurd ha (Finset.notMem_empty a)
   · simp; linarith
 
 /-- With the empty sieving set, every positive integer ≤ n is unsieved. -/
 theorem unsievedCount_empty (n : ℕ) (hn : n ≥ 1) :
     unsievedCount ∅ n = n := by
   unfold unsievedCount
-  simp only [Finset.not_mem_empty, IsEmpty.forall_iff, not_true, and_true]
+  have : ∀ m, (m ≥ 1 ∧ ∀ a ∈ (∅ : Finset ℕ), ¬(a ∣ m)) ↔ m ≥ 1 := by
+    intro m; simp
+  simp_rw [this]
   have : (Finset.range (n + 1)).filter (fun m => 1 ≤ m) =
       (Finset.range (n + 1)).erase 0 := by
     ext m
@@ -183,8 +210,17 @@ theorem unsievedCount_empty (n : ℕ) (hn : n ≥ 1) :
   rw [this, Finset.card_erase_of_mem (Finset.mem_range.mpr (by omega))]
   simp [Finset.card_range]
 
-/-- Adding any element a ≥ 2 to the sieving set reduces the unsieved count
-    by at least ⌊n/a⌋ - (size of overlap). -/
-axiom sieving_reduces_unsieved (A : Finset ℕ) (a n : ℕ)
-    (ha : a ≥ 2) (ha_not : a ∉ A) :
-    unsievedCount (insert a A) n ≤ unsievedCount A n
+/-- Adding any element a ≥ 2 to the sieving set can only reduce or maintain
+    the unsieved count, since we add an additional divisibility constraint. -/
+theorem sieving_reduces_unsieved (A : Finset ℕ) (a n : ℕ)
+    (_ha : a ≥ 2) (_ha_not : a ∉ A) :
+    unsievedCount (insert a A) n ≤ unsievedCount A n := by
+  unfold unsievedCount
+  apply Finset.card_le_card
+  intro m hm
+  simp only [Finset.mem_filter] at hm ⊢
+  refine ⟨hm.1, hm.2.1, ?_⟩
+  intro b hb
+  exact hm.2.2 b (Finset.mem_insert_of_mem hb)
+
+end Erdos783

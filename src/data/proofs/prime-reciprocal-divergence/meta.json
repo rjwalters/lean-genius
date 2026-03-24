@@ -40,7 +40,8 @@
     "dateAdded": "2025-12-27",
     "axiomCount": 0,
     "lineCount": 164,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Leonhard Euler proved in 1737 that $\\sum_p 1/p$ diverges, using his celebrated product formula $\\prod_p (1 - 1/p)^{-1} = \\sum_n 1/n$: taking logarithms of both sides, the left side yields $\\sum_p 1/p$ plus convergent correction terms, while the right side diverges. This was a dramatic strengthening of Euclid's infinitude of primes (~300 BCE). Franz Mertens sharpened Euler's result in 1874, proving $\\sum_{p \\leq n} 1/p = \\ln(\\ln(n)) + M + o(1)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant. Paul Erdős later gave an elegant elementary proof using smooth number estimates, appearing in Aigner and Ziegler's \"Proofs from THE BOOK.\" The result connects to the Riemann zeta function via the prime zeta function $P(s) = \\sum_p p^{-s}$, convergent for $\\text{Re}(s) > 1$, and to the Prime Number Theorem through the relationship between $\\sum_{p \\leq n} 1/p$ and $\\pi(n) \\sim n/\\ln(n)$.",
@@ -64,7 +65,7 @@
       "id": "imports-documentation",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Imports `Mathlib.NumberTheory.SumPrimeReciprocals` for the main theorem and `Topology.Algebra.InfiniteSum.Basic` for summability. Documents the historical context (Euler 1737), proof strategy (Erdős's elementary argument), and the comparison $H_n \\sim \\ln(n)$ vs $\\sum_{p \\leq n} 1/p \\sim \\ln(\\ln(n))$."
     },
     {
@@ -78,21 +79,21 @@
       "id": "indicator-formulation",
       "title": "Indicator Function Formulation",
       "startLine": 78,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Expresses the prime reciprocal sum as a sub-sum of the harmonic series using `Set.indicator`: for each $n$, the term is $1/n$ if $n$ is prime, else $0$. Proved via `not_summable_one_div_on_primes`."
     },
     {
       "id": "p-series-criterion",
       "title": "The $p$-Series over Primes",
       "startLine": 91,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Proves the sharp convergence criterion: $\\sum_p p^r$ converges iff $r < -1$ via `Nat.Primes.summable_rpow`. The critical exponent $r = -1$ is recovered as a special case."
     },
     {
       "id": "significance",
       "title": "Significance for Prime Distribution",
       "startLine": 111,
-      "endLine": 126,
+      "endLine": 127,
       "summary": "Documents connections to analytic number theory: Basel problem ($\\sum 1/n^2 = \\pi^2/6$), harmonic series ($\\sum 1/n \\sim \\ln n$), Prime Number Theorem ($\\pi(n) \\sim n/\\ln n$), Mertens' theorems, and the Riemann zeta function."
     },
     {
@@ -106,7 +107,7 @@
       "id": "erdos-proof-strategy",
       "title": "Erdős's Proof Strategy",
       "startLine": 147,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Documents Erdős's elementary proof from \"Proofs from THE BOOK\": assume convergence, count $k$-smooth numbers ($\\leq 2^k \\sqrt{n}$), bound non-smooth numbers ($< n/2$), derive contradiction $n \\leq 4^k$ for all $n$."
     },
     {

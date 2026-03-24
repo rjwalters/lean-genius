@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/904",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -101,7 +101,7 @@
       "id": "header",
       "title": "Problem Overview",
       "startLine": 1,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Header: Bollobás-Erdős conjecture, Edwards' 1978 proof, Turán context, reference [Ed78]"
     },
     {
@@ -192,5 +192,27 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-905",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, triangles, turan"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, solved, triangles"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, triangles"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-905",
+    "erdos-1009",
+    "erdos-1011"
+  ]
 }

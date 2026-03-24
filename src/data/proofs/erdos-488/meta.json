@@ -20,9 +20,10 @@
     "erdosNumber": 488,
     "erdosUrl": "https://erdosproblems.com/488",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 92,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "axiomCount": 2,
+    "lineCount": 140,
+    "assumptions": "2 axiom(s): constant_2_optimal (optimality of 2 via limit argument), multiplesSet_density_exists (Davenport's density theorem). 3 former axioms now proved: singleton count formula, monotonicity, subset monotonicity.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1961, asking whether the density of multiples of a finite set satisfies a doubling inequality. The 1961 formulation contained a likely typographic error (writing $a \\nmid n$ instead of $a \\mid n$), corrected in a 1966 paper. The problem sits within the classical theory of sequences of multiples, initiated by Davenport's 1933 theorem that the natural density of the set of multiples of any sequence exists (extending Schnirelmann density ideas). Besicovitch (1935) showed that for infinite sets, the asymptotic density of multiples need not exist, making the finite-set case fundamentally different. The optimality claim — that the constant 2 cannot be improved — connects to the behavior of the floor function $\\lfloor N/a \\rfloor$ near the transition points $N = 2a - 1$ and $N = 2a$, where the density ratio jumps discontinuously. Halberstam and Roth's 1966 monograph 'Sequences' provides the definitive treatment of this circle of ideas, placing Erdős's question in the context of additive and multiplicative number theory.",
@@ -82,7 +83,7 @@
       "title": "Inclusion-Exclusion for Multiples",
       "startLine": 72,
       "endLine": 82,
-      "summary": "Three axioms: the singleton count formula $|B(\\{a\\}) \\cap [1,N]| = \\lfloor N/a \\rfloor$, monotonicity of `multiplesCount` in $N$, and monotonicity in $A$ (adding elements increases the count)."
+      "summary": "Three proved theorems (formerly axioms): the singleton count formula $|B(\\{a\\}) \\cap [1,N]| = \\lfloor N/a \\rfloor$ via bijection, monotonicity of `multiplesCount` in $N$, and monotonicity in $A$ (adding elements increases the count)."
     },
     {
       "id": "davenport-density",
@@ -104,17 +105,13 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Rat.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 92,
-    "axiomCount": 5,
-    "theoremCount": 0,
+    "lineCount": 140,
+    "axiomCount": 2,
+    "theoremCount": 3,
     "definitionCount": 4
   },
   "references": [
@@ -124,5 +121,27 @@
     "Besicovitch (1935): sequences of multiples need not have asymptotic density",
     "Halberstam & Roth (1966): Sequences, Chapter 2",
     "https://erdosproblems.com/488"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    },
+    {
+      "targetId": "erdos-12",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, divisibility"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-10",
+    "erdos-12",
+    "erdos-281"
   ]
 }

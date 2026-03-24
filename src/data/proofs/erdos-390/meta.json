@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 171,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham first discussed this problem in their 1980 monograph. The key breakthrough came in the 1982 paper by Erdős, Richard Guy, and John Selfridge ('Another property of 239 and some related questions', Congress. Numer. 35), which established that the excess $f(n) - 2n$ has order of magnitude $n/\\log n$. The title refers to the surprising fact that $239$ is the smallest prime $p$ such that $p \\cdot (p+1)/2$ is not a product of primes $\\leq p$ — a related factorization curiosity. The problem asks whether the normalized excess $(f(n) - 2n) \\cdot \\log n / n$ converges to a specific constant, which would reveal the precise structure of optimal large-factor factorizations of $n!$. The function $f(n)$ is recorded as OEIS sequence A193429. This problem sits at the intersection of factorial arithmetic, prime number theory, and optimization over integer partitions.",
@@ -46,35 +47,35 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "Module docstring referencing Erdős–Graham (1980), Erdős–Guy–Selfridge (1982), and OEIS A193429. Imports Mathlib for factorial, Finset, Filter, and tactics."
     },
     {
       "id": "formal-definition",
       "title": "Formal Definition of f(n)",
       "startLine": 20,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines `ValidFactorization` (sorted list of factors $> n$ with product $= n!$), `maxFactor` (last element of sorted list), and `factorizationMax` ($f(n) = \\inf\\{\\max(\\text{factors})\\}$ via `sInf`)."
     },
     {
       "id": "concrete-values",
       "title": "Concrete Values via Explicit Witnesses",
       "startLine": 43,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Constructive witnesses for $n = 3, 5, 6, 7$: $3! = [6]$, $5! = [10, 12]$, $6! = [8, 9, 10]$, $7! = [14, 18, 20]$. Full proof that $f(3) = 6$ by case analysis (two factors $\\geq 4$ give product $\\geq 20 > 6$)."
     },
     {
       "id": "structural-properties",
       "title": "Basic Structural Properties",
       "startLine": 131,
-      "endLine": 147,
+      "endLine": 148,
       "summary": "Proves $f(n) > n$ (from `all_gt` and `getLast_mem`) and $f(n) \\leq n!$ (from the trivial single-factor factorization $[n!]$ for $n \\geq 3$)."
     },
     {
       "id": "egs-asymptotic",
       "title": "Erdős–Guy–Selfridge Asymptotic (1982)",
       "startLine": 149,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "Axiomatizes the two-sided bound $c \\cdot n/\\log n \\leq f(n) - 2n \\leq C \\cdot n/\\log n$ for $n \\geq 10$, from the 1982 paper."
     },
     {
@@ -115,5 +116,27 @@
     "OEIS A193429: values of f(n)",
     "Guy (2004): 'Unsolved Problems in Number Theory', Problem B22",
     "https://erdosproblems.com/390"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, open"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, open"
+    },
+    {
+      "targetId": "erdos-374",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: factorials, number-theory, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1056",
+    "erdos-1072",
+    "erdos-374"
   ]
 }

@@ -1,39 +1,60 @@
 {
   "slug": "divisibility-by-3-oq-04",
   "title": "Are there practical applications of the generalized divisibility theorem",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "For base b, modulus d with b % d = 1: digitsum_b(a) + digitsum_b(c) \u2261 digitsum_b(a+c) (mod d) and digitsum_b(a) * digitsum_b(c) \u2261 digitsum_b(a*c) (mod d)",
+    "plain": "Digit sums respect both addition and multiplication modulo d when b % d = 1, enabling arithmetic verification (casting out nines and generalizations).",
+    "whyMatters": [
+      "Formalizes a 1200-year-old arithmetic verification method",
+      "Provides machine-checked error detection guarantees"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "digit_sum_add_general: digit sums respect addition mod d (general)",
+      "digit_sum_mul_general: digit sums respect multiplication mod d (general)",
+      "detect_add_error_general: contrapositive error detection for addition",
+      "detect_mul_error_general: contrapositive error detection for multiplication",
+      "Specializations: casting out nines (mod 9), threes (mod 3), sevens (octal), fifteens (hex)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Complete formalization of casting out nines and generalizations"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-24T00:48:59.818Z",
+    "phase": "COMPLETED",
+    "since": "2026-03-24T05:49:05.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Formalized casting out nines and generalizations",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - completed",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: 229-line Lean file with 17 theorems, 0 axioms, 0 sorries. Formalizes casting out nines for addition and multiplication, general casting out for arbitrary base/modulus, error detection contrapositives, and concrete examples.",
+    "builtItems": [
+      "proofs/Proofs/DivisibilityBy3OQ04.lean (229 lines, 17 theorems, 0 axioms)",
+      "src/data/proofs/divisibility-by-3-oq-04/ (gallery entry with meta.json, annotations.json, index.ts)"
+    ],
+    "insights": [
+      "Digit sums form a ring homomorphism N -> Z/dZ when b % d = 1",
+      "Nat.add_mod and Nat.mul_mod provide the algebraic transfer through arithmetic operations",
+      "Error detection is a simple contrapositive - no false positives but false negatives for multiples of d",
+      "Casting out threes catches 2/3 of errors vs 8/9 for nines - tradeoff between detection rate and simplicity"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Could formalize alternating digit sum rule for divisibility by b+1 (e.g. 11 in base 10)",
+      "Could formalize digital root (iterative digit summing)",
+      "Could quantify detection probability formally"
+    ]
   },
   "tags": [
     "number-theory",
@@ -53,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.818Z",
-  "lastUpdate": "2026-03-24T00:48:59.818Z",
+  "lastUpdate": "2026-03-24T05:49:05.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -78,6 +99,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04.lean",
+      "filename": "DivisibilityBy3OQ04.lean",
+      "lineCount": 229,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04.lean"
     }
   ]
 }

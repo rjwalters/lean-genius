@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/336",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-28",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
@@ -80,49 +80,49 @@
       "title": "Part 1: Basic Definitions",
       "summary": "IsBasis, HasExactOrder, HasOrderAndExactOrder, h(r) defined as supremum.",
       "startLine": 35,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "limit-question",
       "title": "Part 2: The Limit Question",
       "summary": "LimitExists and limitValue definitions for lim h(r)/r².",
       "startLine": 57,
-      "endLine": 65
+      "endLine": 66
     },
     {
       "id": "known-bounds",
       "title": "Part 3: Known Bounds",
       "summary": "Erdős-Graham 1980 bounds, Grekos 1988 lower, Nash 1993 upper, current_bounds theorem.",
       "startLine": 67,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "specific-values",
       "title": "Part 4: Specific Values",
       "summary": "h(2) = 4, h(3) = 7, 10 ≤ h(4) ≤ 11, ratio verification examples.",
       "startLine": 91,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "order-differ",
       "title": "Part 5: Order vs Exact Order",
       "summary": "erdosGrahamExample, example_order_2, example_exact_order_3, order_exact_order_differ theorem.",
       "startLine": 112,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "characterization",
       "title": "Part 6: Characterization",
       "summary": "consecutiveDiffs, erdos_graham_characterization axiom (exact order ↔ coprime differences).",
       "startLine": 132,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "plagne-refinement",
       "title": "Part 7: Plagne's Refinement",
       "summary": "plagne_lower_order_2004 axiom: refined lower-order term bounds.",
       "startLine": 148,
-      "endLine": 158
+      "endLine": 159
     },
     {
       "id": "main-results",
@@ -155,5 +155,27 @@
     "axiomCount": 12,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-326",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, bases, number-theory"
+    },
+    {
+      "targetId": "erdos-868",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, bases, number-theory"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-326",
+    "erdos-868",
+    "erdos-11"
+  ]
 }

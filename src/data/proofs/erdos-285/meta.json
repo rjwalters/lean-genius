@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/285",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.rexp",
@@ -72,21 +72,21 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Module documentation and Mathlib imports for exponentials, asymptotics, and sums."
     },
     {
       "id": "background",
       "title": "Egyptian Fraction Definitions",
       "startLine": 27,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Definitions of Egyptian fraction representations, valid lengths, and the function f(k)."
     },
     {
       "id": "main-result",
       "title": "Martin's Asymptotic Result",
       "startLine": 53,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "The constant e/(e-1) and Martin's theorem that f(k) achieves this asymptotic."
     },
     {
@@ -100,7 +100,7 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 116,
-      "endLine": 127,
+      "endLine": 374,
       "summary": "Concrete Egyptian fraction representations of 1."
     }
   ],
@@ -135,5 +135,27 @@
     "axiomCount": 1,
     "theoremCount": 21,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, harmonic-series, number-theory"
+    },
+    {
+      "targetId": "erdos-295",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, harmonic-series, number-theory"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-284",
+    "erdos-295",
+    "erdos-1054"
+  ]
 }

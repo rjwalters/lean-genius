@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/212",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set.Pairwise",
@@ -72,35 +72,35 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 36,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Definition of rational distance sets."
     },
     {
       "id": "main-problem",
       "title": "The Erdős-Ulam Problem",
       "startLine": 43,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Statement of the main conjecture."
     },
     {
       "id": "conditional",
       "title": "Conditional Result",
       "startLine": 60,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Tao-Shaffaf theorem assuming Bombieri-Lang."
     },
     {
       "id": "unconditional",
       "title": "Unconditional Results",
       "startLine": 83,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Algebraic curve containment and Solymosi-de Zeeuw theorem."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 115,
-      "endLine": 137,
+      "endLine": 139,
       "summary": "Combined summary of all known results."
     }
   ],
@@ -126,5 +126,21 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-211",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    },
+    {
+      "targetId": "erdos-213",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-neighbor"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-211",
+    "erdos-213"
+  ]
 }

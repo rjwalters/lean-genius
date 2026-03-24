@@ -26,7 +26,8 @@
         "proofId": "triangle-angle-sum",
         "relationship": "The angle sum theorem (Wiedijk #27) depends on the parallel postulate; in hyperbolic geometry angles sum to less than π"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-framework",
@@ -45,7 +46,8 @@
       "incidence geometry",
       "projective geometry",
       "affine planes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-playfair",
@@ -70,7 +72,8 @@
         "proofId": "triangle-angle-sum",
         "relationship": "The triangle angle sum (= π) is equivalent to the parallel postulate in neutral geometry — each implies the other"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-hyperbolic",
@@ -90,7 +93,8 @@
       "Bolyai",
       "angle of parallelism",
       "horocycles"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-neutral",
@@ -116,7 +120,8 @@
         "proofId": "triangle-angle-sum",
         "relationship": "In neutral geometry one can only prove angle sum ≤ π (Saccheri-Legendre); equality requires the parallel postulate"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-euclidean",
@@ -135,7 +140,8 @@
       "Euclidean geometry",
       "analytic geometry",
       "Descartes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-poincare",
@@ -161,7 +167,8 @@
         "proofId": "brouwer-fixed-point",
         "relationship": "The Poincaré disk is the open unit ball in ℝ²; Brouwer's theorem applies to the closed ball, highlighting the topological distinction"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-contradiction",
@@ -179,7 +186,8 @@
       "proof by contradiction",
       "uniqueness",
       "incompatibility of axioms"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-poincare-not-euclidean",
@@ -197,7 +205,8 @@
       "Poincaré disk",
       "model theory",
       "countermodel"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-main-theorem",
@@ -226,7 +235,8 @@
         "proofId": "cantors-theorem",
         "relationship": "Cantor's diagonal argument (1891) and the parallel postulate independence (1868) both revealed fundamental limitations on mathematical systems in the 19th century"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-history",
@@ -255,6 +265,7 @@
         "proofId": "isoperimetric-theorem",
         "relationship": "The isoperimetric inequality 4πA ≤ L² holds in Euclidean geometry; its form changes in hyperbolic and spherical geometry due to curvature"
       }
-    ]
+    ],
+    "prerequisites": []
   }
 ]

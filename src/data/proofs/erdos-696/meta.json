@@ -7,7 +7,7 @@
     "author": "Erdős (1979), van Doorn (proof)",
     "sourceUrl": "https://erdosproblems.com/696",
     "date": "1979",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos696Problem.lean",
     "tags": [
       "erdos",
@@ -22,7 +22,7 @@
     "erdosNumber": 696,
     "erdosUrl": "https://erdosproblems.com/696",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -78,63 +78,63 @@
       "title": "The Functions h(n) and H(n)",
       "summary": "Definitions of prime chains, divisor chains, and the functions h and H",
       "startLine": 43,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "h(n) ≤ H(n), base cases h(1) and h(p)",
       "startLine": 87,
-      "endLine": 114
+      "endLine": 115
     },
     {
       "id": "iterated-log",
       "title": "The Iterated Logarithm",
       "summary": "Definition of log*(n) and its slow growth",
       "startLine": 116,
-      "endLine": 138
+      "endLine": 139
     },
     {
       "id": "conjectures",
       "title": "Erdős's Conjectures",
       "summary": "h(n) → ∞, normal order, ratio H/h conjectures",
       "startLine": 140,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "chains",
       "title": "Why These Chains?",
       "summary": "Multiplicative group connection, Sophie Germain, Cunningham chains",
       "startLine": 167,
-      "endLine": 198
+      "endLine": 199
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "h(6), h(30), h(2310) computed",
       "startLine": 200,
-      "endLine": 221
+      "endLine": 222
     },
     {
       "id": "comparison",
       "title": "Comparison h(n) vs H(n)",
       "summary": "Why H(n) can be much larger, composites give flexibility",
       "startLine": 223,
-      "endLine": 249
+      "endLine": 250
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "h(n) ≤ ω(n) and H(n) ≤ log₂(n)",
       "startLine": 251,
-      "endLine": 273
+      "endLine": 274
     },
     {
       "id": "van-doorn",
       "title": "The van Doorn Result",
       "summary": "Proof that h(n) → ∞ for almost all n",
       "startLine": 275,
-      "endLine": 296
+      "endLine": 297
     },
     {
       "id": "summary",
@@ -174,5 +174,27 @@
     "axiomCount": 19,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1058",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-divisors"
+    },
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-divisors"
+    },
+    {
+      "targetId": "erdos-275",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1058",
+    "erdos-1074",
+    "erdos-275"
+  ]
 }

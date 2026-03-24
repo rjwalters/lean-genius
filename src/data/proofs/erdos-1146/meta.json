@@ -94,49 +94,49 @@
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 29,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Imports Erdős #37 formalization for Schnirelmann density, essential components, and smooth number definitions. Opens the Erdos37 namespace."
     },
     {
       "id": "smooth-properties",
       "title": "Properties of 3-Smooth Numbers",
       "startLine": 35,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Proves basic properties: membership (1, 2, 3, 6 are smooth), closure under multiplication by 2 and 3, multiplicative closure, positivity, and unboundedness."
     },
     {
       "id": "non-lacunary",
       "title": "Non-Lacunary Property",
       "startLine": 91,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "States that {2^m · 3^n} is NOT lacunary (axiom). Consecutive smooth numbers have ratios approaching 1, unlike lacunary sets."
     },
     {
       "id": "growth",
       "title": "Growth Rate Analysis",
       "startLine": 110,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "States that the (log N)² growth satisfies Ruzsa's necessary condition for essential components with c = 1/2 (sorry - routine analysis)."
     },
     {
       "id": "density",
       "title": "Schnirelmann Density",
       "startLine": 134,
-      "endLine": 149,
+      "endLine": 150,
       "summary": "Axiom: d_s({2^m · 3^n}) = 0. Smooth numbers become sparse in initial segments."
     },
     {
       "id": "mann-bound",
       "title": "Sumset Growth via Mann's Theorem",
       "startLine": 151,
-      "endLine": 174,
+      "endLine": 175,
       "summary": "Proves mann_lower_bound: d_s(A + B) ≥ d_s(B) using Mann's theorem with d_s(A) = 0. Shows why the problem is hard — we get only non-strict inequality."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Open Question",
       "startLine": 176,
-      "endLine": 210,
+      "endLine": 211,
       "summary": "States Erdos1146Conjecture = IsEssentialComponent smoothNumbers23 and proves equivalence with RuzsaOpenQuestion from Erdős #37. Discusses what would resolve the problem."
     },
     {

@@ -21,7 +21,7 @@
     "erdosNumber": 69,
     "erdosUrl": "https://erdosproblems.com/69",
     "erdosProblemStatus": "proved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.omega",
@@ -80,7 +80,7 @@
       "id": "preamble",
       "title": "Aristotle Header, Documentation, and Setup",
       "startLine": 1,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Aristotle proof-search header noting the automated discovery of `tao_identity`, module docstring explaining the problem and Tao's identity, `import Mathlib` for the full library, `set_option maxHeartbeats 800000` for the complex proof, and `open scoped ArithmeticFunction.omega` plus `BigOperators Finset`.",
       "mathContext": "The `maxHeartbeats` increase is needed because the Fubini-style summation interchange in `tao_identity` involves complex type-class and finset manipulations. The `ArithmeticFunction.omega` scoped open provides the notation $\\omega$ for the number of distinct prime divisors."
     },
@@ -88,7 +88,7 @@
       "id": "definitions",
       "title": "Sum Definitions: omegaSum and primeSum",
       "startLine": 45,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "`omegaSum` defines $\\sum_{n \\geq 2} \\omega(n)/2^n$ as `tsum` with index shift $n \\mapsto n+2$. `primeSum` defines $\\sum_p 1/(2^p - 1)$ over the prime subtype `{n : ℕ | n.Prime}`.",
       "mathContext": "The index shift `n + 2` avoids $n = 0, 1$ where $\\omega$ is trivially 0. The prime subtype sum over $\\{n : \\mathbb{N} \\mid \\text{Prime}\\,n\\}$ encodes the sum over the infinite set of primes via Lean's subtype mechanism."
     },
@@ -96,7 +96,7 @@
       "id": "helper-lemmas",
       "title": "Helper Lemmas: Powers and Geometric Series",
       "startLine": 53,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "`two_pow_gt_one` proves $2^p > 1$ for $p \\geq 2$. `geometric_sum_over_multiples` proves the key identity $\\sum_{k \\geq 1} 1/2^{pk} = 1/(2^p - 1)$ by recognizing the series as geometric with ratio $r = 2^{-p}$ and applying `tsum_geometric_of_lt_one`. `omega_eq_card_prime_divisors` confirms $\\omega(n) = |\\text{primeFactors}(n)|$.",
       "mathContext": "The geometric series $\\sum_{k=1}^{\\infty} (2^{-p})^k = \\frac{2^{-p}}{1 - 2^{-p}} = \\frac{1}{2^p - 1}$. The proof uses `field_simp` to simplify $\\frac{2^{-p}}{1 - 2^{-p}}$ into $\\frac{1}{2^p - 1}$. For $p = 2$: $1/3$; for $p = 3$: $1/7$; for $p = 5$: $1/31$."
     },
@@ -104,7 +104,7 @@
       "id": "tao-identity",
       "title": "Tao's Identity (Proved by Aristotle)",
       "startLine": 91,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "`tao_identity : omegaSum = primeSum` — the central combinatorial identity, proved by Aristotle via automated proof search. The proof rewrites $\\omega(n)$ as $\\sum_{p|n} 1$, performs a Fubini-style summation interchange (justified by absolute convergence via `Summable.tsum_comm`), and applies `geometric_sum_over_multiples` to each inner sum.",
       "mathContext": "$\\sum_{n \\geq 2} \\frac{\\omega(n)}{2^n} = \\sum_{n \\geq 2} \\frac{\\sum_{p|n} 1}{2^n} = \\sum_p \\sum_{k \\geq 1} \\frac{1}{2^{pk}} = \\sum_p \\frac{1}{2^p - 1}$\n\nThe summation interchange is the mathematical core — it requires absolute convergence of the double sum, proved by comparing $\\omega(n)/2^n \\leq n/2^n$ (since $\\omega(n) \\leq n$) and showing $\\sum n/2^n$ converges via the ratio test with limit $1/2$."
     },

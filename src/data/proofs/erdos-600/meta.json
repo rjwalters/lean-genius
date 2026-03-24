@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/600",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Basic",
@@ -91,49 +91,49 @@
       "title": "Graph Definitions",
       "summary": "Graph structure, edgeCount, IsTriangle",
       "startLine": 36,
-      "endLine": 54
+      "endLine": 55
     },
     {
       "id": "edge-triangle-containment",
       "title": "Edge-Triangle Containment",
       "summary": "triangleCount, IsTriangleCovered, AllEdgesTriangleCovered, HasEdgeInRTriangles",
       "startLine": 56,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "e-function",
       "title": "The e(n,r) Function",
       "summary": "e(n,r) definition via sInf and e_well_defined axiom",
       "startLine": 78,
-      "endLine": 90
+      "endLine": 91
     },
     {
       "id": "ruzsa-szemeredi",
       "title": "Ruzsa-Szemerédi Result",
       "summary": "ruzsa_szemeredi: e(n,r) = o(n²) for fixed r",
       "startLine": 92,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "open-questions",
       "title": "The Two Open Questions",
       "summary": "Question1 (absolute difference) and Question2 (ratio convergence)",
       "startLine": 101,
-      "endLine": 114
+      "endLine": 115
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
       "summary": "e_monotone_r, e_monotone_n, questions_together theorem",
       "startLine": 116,
-      "endLine": 134
+      "endLine": 135
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "turan_number_bound, upper_bound, lower_bound",
       "startLine": 136,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "summary",
@@ -170,5 +170,27 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-graph-theory, open"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1075",
+    "erdos-533",
+    "erdos-1014"
+  ]
 }

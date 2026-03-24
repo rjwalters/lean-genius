@@ -16,7 +16,8 @@
       "Gödel's constructible universe",
       "Cohen forcing"
     ],
-    "mathContext": "Continuum Hypothesis: $2^{\\aleph_0} = \\aleph_1$, i.e., there is no cardinal between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. Hilbert's first problem (1900). Independence: $\\text{ZFC} \\nvdash \\text{CH}$ (Cohen, 1963) and $\\text{ZFC} \\nvdash \\neg\\text{CH}$ (Gödel, 1940)."
+    "mathContext": "Continuum Hypothesis: $2^{\\aleph_0} = \\aleph_1$, i.e., there is no cardinal between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. Hilbert's first problem (1900). Independence: $\\text{ZFC} \\nvdash \\text{CH}$ (Cohen, 1963) and $\\text{ZFC} \\nvdash \\neg\\text{CH}$ (Gödel, 1940).",
+    "prerequisites": []
   },
   {
     "id": "ann-continuum-def",
@@ -34,7 +35,8 @@
       "power set",
       "cardinal arithmetic",
       "Cantor's theorem"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-aleph-one",
@@ -52,7 +54,8 @@
       "ordinals",
       "well-ordering",
       "successor cardinal"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-ch-statement",
@@ -70,7 +73,8 @@
       "continuum",
       "aleph hierarchy",
       "independence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-ch-alt",
@@ -87,7 +91,8 @@
     "relatedConcepts": [
       "cardinal comparison",
       "intermediate cardinals"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-gch",
@@ -98,14 +103,15 @@
     },
     "type": "definition",
     "title": "Generalized Continuum Hypothesis",
-    "content": "**GCH** extends CH to all infinite cardinals:\n\n$$\\forall \\alpha : 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$$\n\nThis says the power set operation always produces the \"next\" aleph. GCH implies CH (set α = 0).\n\nGöran proved GCH holds in L, and Cohen showed GCH can fail via forcing.",
+    "content": "**GCH** extends CH to all infinite cardinals:\n\n$$\\forall \\alpha : 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$$\n\nThis says the power set operation always produces the \"next\" aleph. GCH implies CH (set α = 0).\n\nGödel proved GCH holds in L, and Cohen showed GCH can fail via forcing.",
     "mathContext": "$2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$",
     "significance": "key",
     "relatedConcepts": [
       "ordinal indexing",
       "power set",
       "successor cardinals"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-zfc-structure",
@@ -123,7 +129,8 @@
       "models",
       "consistency"
     ],
-    "mathContext": "ZFC axioms: Extensionality, Pairing, Union, Power Set, Infinity, Separation, Replacement, Foundation, Choice. These axioms are neither too strong (they don't decide CH) nor too weak (they prove most of mathematics)."
+    "mathContext": "ZFC axioms: Extensionality, Pairing, Union, Power Set, Infinity, Separation, Replacement, Foundation, Choice. These axioms are neither too strong (they don't decide CH) nor too weak (they prove most of mathematics).",
+    "prerequisites": []
   },
   {
     "id": "ann-godel-L",
@@ -141,7 +148,8 @@
       "transfinite recursion",
       "definability",
       "inner models"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-L-exists",
@@ -154,7 +162,9 @@
     "title": "Why L Is an Axiom Here",
     "content": "Fully formalizing L would require:\n\n1. Transfinite recursion over all ordinals\n2. Gödel operations (8 operations for definability)\n3. Verification of each ZFC axiom in L\n4. ~1000+ lines of formal proof\n\nWe capture this as an axiom to focus on the *structure* of the independence proof.",
     "significance": "supporting",
-    "mathContext": "Gödel's constructible universe $L$: the minimal inner model of ZFC, built by transfinite recursion $L_0 = \\emptyset$, $L_{\\alpha+1} = \\text{Def}(L_\\alpha)$, $L_\\lambda = \\bigcup_{\\alpha<\\lambda} L_\\alpha$, $L = \\bigcup_{\\alpha \\in \\text{Ord}} L_\\alpha$. In $L$: $\\text{GCH}$ holds ($2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$)."
+    "mathContext": "Gödel's constructible universe $L$: the minimal inner model of ZFC, built by transfinite recursion $L_0 = \\emptyset$, $L_{\\alpha+1} = \\text{Def}(L_\\alpha)$, $L_\\lambda = \\bigcup_{\\alpha<\\lambda} L_\\alpha$, $L = \\bigcup_{\\alpha \\in \\text{Ord}} L_\\alpha$. In $L$: $\\text{GCH}$ holds ($2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$).",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-forcing",
@@ -172,7 +182,8 @@
       "generic filters",
       "posets",
       "boolean-valued models"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-forcing-axiom",
@@ -185,7 +196,9 @@
     "title": "Why Forcing Is an Axiom Here",
     "content": "Formalizing Cohen forcing requires:\n\n1. Complete posets and dense sets\n2. Generic filters (via Rasiowa-Sikorski lemma)\n3. Names and interpretation\n4. Truth lemma and definability\n5. ~2000+ lines of machinery\n\nCohen's breakthrough was showing this construction preserves ZFC while changing the value of the continuum.",
     "significance": "supporting",
-    "mathContext": "Cohen forcing: given a model $M \\models \\text{ZFC}$, adjoin a 'generic' set $G$ to get $M[G] \\models \\text{ZFC} + \\neg\\text{CH}$. The key: the forcing poset $\\text{Fn}(\\aleph_2 \\times \\omega, 2)$ adds $\\aleph_2$ new reals, making $2^{\\aleph_0} \\geq \\aleph_2 > \\aleph_1$."
+    "mathContext": "Cohen forcing: given a model $M \\models \\text{ZFC}$, adjoin a 'generic' set $G$ to get $M[G] \\models \\text{ZFC} + \\neg\\text{CH}$. The key: the forcing poset $\\text{Fn}(\\aleph_2 \\times \\omega, 2)$ adds $\\aleph_2$ new reals, making $2^{\\aleph_0} \\geq \\aleph_2 > \\aleph_1$.",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-relative-consistency",
@@ -203,7 +216,8 @@
       "consistency proofs",
       "model theory",
       "metamathematics"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-godel-result",
@@ -221,7 +235,8 @@
       "constructible universe",
       "inner models",
       "GCH"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-cohen-result",
@@ -239,7 +254,8 @@
       "forcing",
       "Cohen reals",
       "independence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-main-theorem",
@@ -257,7 +273,8 @@
       "independence results",
       "metamathematics",
       "set-theoretic pluralism"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-cantor",
@@ -275,7 +292,8 @@
       "diagonal argument",
       "power set",
       "cardinal comparison"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-philosophy",
@@ -293,6 +311,7 @@
       "set-theoretic pluralism",
       "foundations"
     ],
-    "mathContext": "Independence means CH is undecidable in ZFC: $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC}+\\text{CH}) \\land \\text{Con}(\\text{ZFC}+\\neg\\text{CH})$. This parallels the parallel postulate: Euclidean and non-Euclidean geometries are both consistent. Gödel conjectured CH is false; others (e.g., Woodin) have proposed large cardinal axioms that would settle it."
+    "mathContext": "Independence means CH is undecidable in ZFC: $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC}+\\text{CH}) \\land \\text{Con}(\\text{ZFC}+\\neg\\text{CH})$. This parallels the parallel postulate: Euclidean and non-Euclidean geometries are both consistent. Gödel conjectured CH is false; others (e.g., Woodin) have proposed large cardinal axioms that would settle it.",
+    "prerequisites": []
   }
 ]

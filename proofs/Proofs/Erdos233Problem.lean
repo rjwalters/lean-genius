@@ -113,7 +113,7 @@ is not fully understood:
 
 The gap between the lower bound and the conditional upper bound is (log N)².
 -/
-axiom erdos_233_open : Erdos233Conjecture ∨ ¬Erdos233Conjecture
+theorem erdos_233_open : Erdos233Conjecture ∨ ¬Erdos233Conjecture := Classical.em _
 
 /- ## Connection to Cramér's Conjecture -/
 

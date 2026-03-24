@@ -16,7 +16,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ02OQ01.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -46,17 +46,15 @@
       }
     ],
     "originalContributions": [
-      "Aleph hierarchy: ℵ_α < ℵ_(α+1) for all ordinals α",
-      "Aleph strict monotonicity and injectivity",
-      "ℵ₁ regularity and cofinality = ℵ₁ (uncountable cofinality)",
-      "Countable cardinal characterization: κ < ℵ₁ ↔ κ ≤ ℵ₀",
-      "Ordinal characterization: α < (ℵ₁).ord ↔ card(α) ≤ ℵ₀",
-      "ω₁ is not countable: ¬(card((ℵ₁).ord) ≤ ℵ₀)"
+      "Bridge formalization organizing Mathlib's cardinal/ordinal theorems into a coherent ω₁ property reference",
+      "Countable cardinal characterization: κ < ℵ₁ ↔ κ ≤ ℵ₀ (derived from aleph_succ + lt_succ_iff)",
+      "Ordinal characterization: α < (ℵ₁).ord ↔ card(α) ≤ ℵ₀ (composition of lt_ord + above)"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 130,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Core results (aleph hierarchy, regularity, cofinality) derived from Mathlib's Cardinal.aleph_lt_aleph, isRegular_aleph_one, card_ord, and lt_ord.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The ordinal $\\omega_1$ — the first uncountable ordinal — was introduced implicitly by Georg Cantor in his 1895 'Beiträge zur Begründung der transfiniten Mengenlehre'. Cantor established the existence of uncountable sets (1891) and the well-ordering of cardinals, but the systematic study of $\\omega_1$ and the aleph hierarchy ($\\aleph_0 < \\aleph_1 < \\aleph_2 < \\cdots$) was refined by Felix Hausdorff (1908) and later placed on rigorous axiomatic footing by von Neumann's ordinal construction. The concept of cofinality — how a limit ordinal is 'approached' by smaller ordinals — was developed by Hausdorff and became central to Easton's theorem and pcf theory. The regularity of $\\aleph_1$ (meaning $\\omega_1$ cannot be expressed as a supremum of countably many smaller ordinals) is a fundamental structural fact that distinguishes $\\aleph_1$ from singular cardinals like $\\aleph_\\omega$.",
@@ -87,28 +85,28 @@
       "title": "Part I: Aleph Hierarchy",
       "summary": "Proves the aleph function $\\alpha \\mapsto \\aleph_\\alpha$ is strictly monotone and injective. Derives $\\aleph_\\alpha < \\aleph_{\\alpha+1}$ for all ordinals $\\alpha$ and verifies the concrete chain $\\aleph_0 < \\aleph_1 < \\aleph_2$.",
       "startLine": 28,
-      "endLine": 49
+      "endLine": 50
     },
     {
       "id": "regularity",
       "title": "Part II: Cofinality and Regularity",
       "summary": "Establishes that $\\aleph_1$ is a regular cardinal: $\\text{cof}(\\omega_1) = \\aleph_1$, hence $\\text{cof}(\\omega_1) > \\aleph_0$. This means $\\omega_1$ cannot be expressed as a countable union of countable ordinals.",
       "startLine": 51,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "cardinal",
       "title": "Part III: Cardinal Properties",
       "summary": "Characterizes $\\aleph_1 = \\text{succ}(\\aleph_0)$ and derives the equivalence $\\kappa < \\aleph_1 \\iff \\kappa \\leq \\aleph_0$: a cardinal is countable if and only if it is at most $\\aleph_0$.",
       "startLine": 70,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "ordinal",
       "title": "Part IV: Ordinal of $\\aleph_1$",
       "summary": "Proves $|\\omega_1| = \\aleph_1$, $\\omega < \\omega_1$, and the characterization $\\alpha < \\omega_1 \\iff |\\alpha| \\leq \\aleph_0$. Concludes that $\\omega_1$ itself is not countable.",
       "startLine": 90,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "summary",

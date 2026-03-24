@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/319",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card",
@@ -49,12 +49,6 @@
       "Stated trivial upper bound c(N) ≤ N",
       "Axiomatised Croot's unit-fraction theorem for the construction",
       "Stated small example existence in {1,...,6}"
-    ],
-    "relatedProofs": [
-      {
-        "id": "erdos-9",
-        "relationship": "Both problems concern arithmetic properties of sets of integers and extremal sizes of structured subsets"
-      }
     ],
     "axiomCount": 5,
     "assumptions": "5 axiom declarations: erdos_319_conjecture (lower bound on c(N)), adenwalla_lower_bound (Adenwalla construction), trivial_upper_bound (c(N) at most N), croot_unit_fraction_theorem (unit-fraction decomposition), small_example (irreducible sum in {1..6})",
@@ -90,21 +84,21 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 26,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines `IsSigning A δ` ($\\delta(n) \\in \\{\\pm 1\\}$ for $n \\in A$), `signedSum A δ = \\sum_{n \\in A} \\delta(n)/n \\in \\mathbb{Q}$, `IsIrreducibleZeroSum A δ` (signing + zero sum + no proper nonempty zero-sum subset), and `maxIrreducibleSize N` as the supremum of $|A|$ over the powerset of $\\{1,\\ldots,N\\}$ filtered by existence of an irreducible zero sum."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 48,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Axiomatizes `erdos_319_conjecture`: for every $\\varepsilon > 0$, for large enough $N$, $c(N) \\geq (1 - 1/e - \\varepsilon)N$, using `Real.exp 1` for Euler's number $e$. This is the strongest known lower bound."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 57,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Axiomatizes `adenwalla_lower_bound` ($c(N) \\geq (1 - 1/e + o(1))N$ via the $B \\cup \\{1\\}$ construction), `trivial_upper_bound` ($c(N) \\leq N$), and `croot_unit_fraction_theorem` (every positive integer $k \\leq N$ is a sum of distinct unit fractions $1/n$ with $n \\in \\{1,\\ldots,N\\}$ for large $N$)."
     },
     {
@@ -151,5 +145,27 @@
       "citation": "Croot, E.S. (2001). On a coloring conjecture about unit fractions. Annals of Mathematics, 157(2), 545-556.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-300",
+    "erdos-310",
+    "erdos-1005"
   ]
 }

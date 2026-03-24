@@ -22,7 +22,7 @@
     "erdosProblemStatus": "solved",
     "dateAdded": "2025-01-15",
     "dateUpdated": "2026-02-12",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.lcm",
@@ -161,5 +161,27 @@
     "axiomCount": 6,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-441",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, lcm, number-theory"
+    },
+    {
+      "targetId": "erdos-1062",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-168",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-441",
+    "erdos-1062",
+    "erdos-168"
+  ]
 }

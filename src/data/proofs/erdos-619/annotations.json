@@ -15,7 +15,8 @@
       "Graph diameter",
       "Triangle-free graphs",
       "Edge augmentation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e619-triangle-free",
@@ -34,7 +35,8 @@
       "Bipartite graphs",
       "Graph distance"
     ],
-    "leanSymbol": "TriangleFree"
+    "leanSymbol": "TriangleFree",
+    "prerequisites": []
   },
   {
     "id": "ann-e619-add-edges",
@@ -53,7 +55,8 @@
       "Optimization"
     ],
     "leanSymbol": "h",
-    "mathContext": "See annotation content for formal details of edge addition and h_r(g)"
+    "mathContext": "See annotation content for formal details of edge addition and h_r(g)",
+    "prerequisites": []
   },
   {
     "id": "ann-e619-known-bounds",
@@ -72,7 +75,8 @@
       "Lower bound",
       "Tightness"
     ],
-    "leanSymbol": "h3_upper_bound"
+    "leanSymbol": "h3_upper_bound",
+    "prerequisites": []
   },
   {
     "id": "ann-e619-open-question",
@@ -91,7 +95,8 @@
       "Linear saving"
     ],
     "leanSymbol": "erdos_619_question",
-    "mathContext": "See annotation content for formal details of the erdős question (open)"
+    "mathContext": "See annotation content for formal details of the erdős question (open)",
+    "prerequisites": []
   },
   {
     "id": "ann-e619-no-triangle-free",
@@ -110,7 +115,8 @@
       "General graphs",
       "Constraint impact"
     ],
-    "leanSymbol": "without_triangle_free_constraint"
+    "leanSymbol": "without_triangle_free_constraint",
+    "prerequisites": []
   },
   {
     "id": "ann-e619-path-example",
@@ -129,7 +135,8 @@
       "High diameter"
     ],
     "leanSymbol": "pathGraph",
-    "mathContext": "See annotation content for formal details of path graph example"
+    "mathContext": "See annotation content for formal details of path graph example",
+    "prerequisites": []
   },
   {
     "id": "ann-e619-monotonicity",
@@ -147,7 +154,8 @@
       "Ordering of bounds"
     ],
     "leanSymbol": "h_monotone",
-    "mathContext": "See annotation content for formal details of h_r monotonicity"
+    "mathContext": "See annotation content for formal details of h_r monotonicity",
+    "prerequisites": []
   },
   {
     "id": "ann-e619-summary",
@@ -166,6 +174,7 @@
       "Combined theorem"
     ],
     "leanSymbol": "erdos_619_partial_results",
-    "mathContext": "See annotation content for formal details of summary and partial results"
+    "mathContext": "See annotation content for formal details of summary and partial results",
+    "prerequisites": []
   }
 ]

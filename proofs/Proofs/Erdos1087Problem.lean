@@ -203,7 +203,8 @@ def erdosConjecture : Prop :=
 **Open Problem Status:**
 As of the knowledge cutoff, this conjecture remains open.
 -/
-axiom erdos_1087_open : ¬ (erdosConjecture ∨ ¬erdosConjecture → False)
+theorem erdos_1087_open : ¬ (erdosConjecture ∨ ¬erdosConjecture → False) :=
+  fun h => h (Classical.em _)
 
 /-
 ## Part VI: Related Concepts

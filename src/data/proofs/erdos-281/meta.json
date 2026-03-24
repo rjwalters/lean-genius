@@ -43,7 +43,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 262,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Covering systems were introduced by Erdős in the 1950s. A covering system of congruences is a finite set of residue classes whose union is all integers; Erdős conjectured (and it was proved by Hough in 2015) that no covering system exists with all moduli distinct and greater than any given bound. Problem 281 is a density-theoretic variant: Erdős asked in 1980 whether the full-covering condition (every choice of congruence classes leaves density-0 uncovered) automatically gives *uniform* finite approximation. The affirmative resolution uses the Davenport–Erdős theorem (1951) — that upper and lower density coincide for divisibility-defined sets — and Rogers' maximization theorem from Halberstam–Roth's 'Sequences' (1966).",
@@ -67,7 +68,7 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 33,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Defines `CongruenceChoice`, `IsCovered`, `IsCoveredByFirst`, `uncoveredCount`, and `uncoveredDensity`.",
       "mathContext": "$\\text{uncoveredDensity}(k,N) = \\frac{|\\{m \\in [1,N] : m \\notin \\bigcup_{i<k} a_i \\pmod{n_i}\\}|}{N}$"
     },
@@ -75,7 +76,7 @@
       "id": "infrastructure-lemmas",
       "title": "Proven Infrastructure Lemmas",
       "startLine": 61,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "12 lemmas proved constructively: coverage monotonicity, uncovered count antitonicity, density bounds in $[0,1]$, structural properties of valid/increasing moduli.",
       "mathContext": "$k_1 \\leq k_2 \\implies \\text{uncoveredDensity}(k_2, N) \\leq \\text{uncoveredDensity}(k_1, N) \\leq 1$"
     },
@@ -83,7 +84,7 @@
       "id": "full-covering",
       "title": "Full Covering and Structural Predicates",
       "startLine": 133,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "Defines `HasFullCovering`, `IsStrictlyIncreasing`, `ModuliValid`, `PairwiseCoprime`.",
       "mathContext": "$\\text{HasFullCovering}: \\forall \\text{choice},\\; \\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0,\\; \\text{density} < \\varepsilon$"
     },
@@ -91,7 +92,7 @@
       "id": "easy-direction",
       "title": "Easy Direction (Proved)",
       "startLine": 154,
-      "endLine": 213,
+      "endLine": 214,
       "summary": "Proves `uniform_implies_full` constructively and structural lemmas on moduli growth bounds. The easy direction: uniform → full via quantifier swap and density antitonicity.",
       "mathContext": "$\\forall\\varepsilon,\\; \\exists k,\\; \\forall\\text{choice}: \\text{density} < \\varepsilon \\implies \\forall\\text{choice},\\; \\forall\\varepsilon: \\text{density} \\to 0$"
     },
@@ -99,7 +100,7 @@
       "id": "divergence-coprime",
       "title": "Divergence and Coprime Results",
       "startLine": 215,
-      "endLine": 230,
+      "endLine": 231,
       "summary": "Full covering implies $\\sum 1/n_i = \\infty$. When moduli are pairwise coprime, divergence is also sufficient (by CRT).",
       "mathContext": "$\\text{HasFullCovering} \\implies \\sum_{i} 1/n_i = \\infty$; coprime + divergence $\\implies$ full covering"
     },
@@ -160,5 +161,27 @@
       "venue": "Oxford University Press",
       "note": "Contains Rogers' theorem used in the uniformization step"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-688",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, covering systems, number theory"
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    },
+    {
+      "targetId": "erdos-278",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: congruences, density"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-688",
+    "erdos-10",
+    "erdos-278"
   ]
 }

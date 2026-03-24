@@ -23,7 +23,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 6,
     "lineCount": 351,
-    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #858 concerns sets $A \\subseteq \\{1,\\ldots,N\\}$ where no element $at = b$ holds with $a,b \\in A$ and $\\text{spf}(t) > a$ (spf = smallest prime factor). This is a weakening of the **primitive set condition** (no element divides another). The **weighted reciprocal sum** $(1/\\log N) \\sum_{n \\in A} 1/n$ is the quantity of interest. **Alexander** (1966, *Acta Arithmetica*) first proved this sum is $o(1)$; **Erdős–Sárközi–Szemerédi** (1968, *J. London Math. Soc.*) gave an independent proof by different methods. For the stronger primitive condition, **Behrend** (1935) showed the quantitative bound $O(1/\\sqrt{\\log\\log N})$. The problem is fully resolved: the maximum is $o(1)$, with no known sharp quantitative bound for the weaker condition.",
@@ -48,35 +49,35 @@
       "id": "prime-factor",
       "title": "Smallest Prime Factor",
       "startLine": 44,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Definition and properties of the smallest prime factor function"
     },
     {
       "id": "condition",
       "title": "The Multiplicative Condition",
       "startLine": 79,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Definition of sets avoiding at=b with spf(t) > a"
     },
     {
       "id": "primitive",
       "title": "Primitive Sets",
       "startLine": 106,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Definition and proof that primitive sets satisfy the condition"
     },
     {
       "id": "sums",
       "title": "Weighted Reciprocal Sum",
       "startLine": 131,
-      "endLine": 187,
+      "endLine": 188,
       "summary": "Definition of (1/log N) Σ 1/n and basic bounds"
     },
     {
       "id": "solution",
       "title": "Solution: o(1) Bound",
       "startLine": 189,
-      "endLine": 298,
+      "endLine": 351,
       "summary": "Alexander (1966) and Erdős-Sárközi-Szemerédi (1968) results"
     }
   ],
@@ -109,5 +110,27 @@
     "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, primitive-sets"
+    },
+    {
+      "targetId": "erdos-786",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, multiplicative-structure, number-theory"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-143",
+    "erdos-786",
+    "erdos-1054"
+  ]
 }

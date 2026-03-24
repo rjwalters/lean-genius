@@ -21,7 +21,7 @@
     "erdosNumber": 871,
     "erdosUrl": "https://erdosproblems.com/871",
     "erdosProblemStatus": "disproved (lean)",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Mathlib.Data.Set.Basic",
@@ -81,31 +81,31 @@
     {
       "title": "Core Definitions",
       "startLine": 38,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Defines representation function, sumset, and additive basis of order 2"
     },
     {
       "title": "Growth Conditions",
       "startLine": 88,
-      "endLine": 115,
+      "endLine": 116,
       "summary": "RepTendsToInfty and RepEventuallyGe conditions on r_A(n)"
     },
     {
       "title": "Partition Predicate",
       "startLine": 117,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Definition of CanPartitionIntoBases"
     },
     {
       "title": "The Conjecture",
       "startLine": 123,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Formal statement of Erdős Problem #871"
     },
     {
       "title": "Erdős-Nathanson Results",
       "startLine": 131,
-      "endLine": 146,
+      "endLine": 147,
       "summary": "1989 negative and positive results on partitioning"
     },
     {
@@ -117,13 +117,13 @@
     {
       "title": "Blocking Property",
       "startLine": 182,
-      "endLine": 225,
+      "endLine": 226,
       "summary": "Technical blocking condition preventing partition"
     },
     {
       "title": "Summary",
       "startLine": 227,
-      "endLine": 256,
+      "endLine": 425,
       "summary": "Overview of results and references"
     }
   ],
@@ -153,5 +153,27 @@
     "axiomCount": 3,
     "theoremCount": 25,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-38",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-40",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-881",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-basis, additive-combinatorics, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-38",
+    "erdos-40",
+    "erdos-881"
+  ]
 }

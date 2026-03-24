@@ -49,11 +49,12 @@ def inSetA' (n : ℕ) : Prop :=
 theorem one_in_setA : 1 ∈ setA := by
   constructor
   · norm_num
-  · intro p hp hdiv
-    intro _ _
-    have : p = 1 := Nat.eq_one_of_pos_of_self_mul_self_le (Nat.Prime.pos hp) 
-      (by simpa using hdiv)
-    exact absurd this (Nat.Prime.ne_one hp)
+  · intro p hp hdiv _ _
+    -- p | 1 implies p ≤ 1, but p.Prime implies p ≥ 2: contradiction
+    exfalso
+    have h1 := Nat.le_of_dvd (by norm_num) hdiv
+    have h2 := hp.two_le
+    omega
 
 /-- Prime powers are NOT in A (no d > 1 with d ≡ 1 mod p can divide p^k) -/
 theorem prime_power_not_in_setA (p : ℕ) (k : ℕ) (hp : p.Prime) (hk : k ≥ 1) :
@@ -62,9 +63,19 @@ theorem prime_power_not_in_setA (p : ℕ) (k : ℕ) (hp : p.Prime) (hk : k ≥ 1
   have hpdiv : p ∣ p^k := dvd_pow_self p (Nat.one_le_iff_ne_zero.mp hk)
   specialize hA p hp hpdiv hp hpdiv
   obtain ⟨d, hd1, hdiv, hmod⟩ := hA
-  -- d | p^k means d = p^j for some j
-  -- d ≡ 1 (mod p) and d > 1 is impossible for d = p^j
-  sorry
+  -- d | p^k and d > 1 means p | d (since p is the only prime factor of p^k)
+  have hd_ne_one : d ≠ 1 := by omega
+  obtain ⟨q, hq_prime, hq_dvd_d⟩ := Nat.exists_prime_and_dvd hd_ne_one
+  have hq_dvd_pk : q ∣ p ^ k := dvd_trans hq_dvd_d hdiv
+  have hq_dvd_p : q ∣ p := hq_prime.dvd_of_dvd_pow hq_dvd_pk
+  have hq_eq_p : q = p := by
+    rcases hp.eq_one_or_self_of_dvd q hq_dvd_p with h | h
+    · exact absurd h hq_prime.ne_one
+    · exact h
+  have hp_dvd_d : p ∣ d := hq_eq_p ▸ hq_dvd_d
+  -- p | d means d % p = 0, but we assumed d % p = 1
+  rw [Nat.dvd_iff_mod_eq_zero] at hp_dvd_d
+  omega
 
 /-- Products of distinct primes p where (p-1) | n can be in A -/
 theorem product_special_primes_in_setA (ps : List ℕ) 
@@ -82,6 +93,7 @@ Let A(N) = |A ∩ [1,N]|. The question is about the asymptotic behavior of A(N)/
 
 /-- Count of elements of A up to N -/
 noncomputable def countA (N : ℕ) : ℕ :=
+  haveI : DecidablePred inSetA := Classical.decPred _
   (Finset.filter inSetA (Finset.range (N + 1))).card
 
 /-- The density of A up to N -/
@@ -134,12 +146,12 @@ of non-cyclic simple groups.
 
 /-- n is the order of a simple group -/
 def isSimpleGroupOrder (n : ℕ) : Prop :=
-  ∃ G : Type*, ∃ _ : Group G, ∃ _ : Fintype G, 
+  ∃ (G : Type) (_ : Group G) (_ : Fintype G),
     Fintype.card G = n ∧ IsSimpleGroup G
 
 /-- n is the order of a non-cyclic simple group -/
 def isNonCyclicSimpleGroupOrder (n : ℕ) : Prop :=
-  isSimpleGroupOrder n ∧ ¬∃ G : Type*, ∃ _ : Group G, ∃ _ : Fintype G,
+  isSimpleGroupOrder n ∧ ¬∃ (G : Type) (_ : Group G) (_ : Fintype G),
     Fintype.card G = n ∧ IsSimpleGroup G ∧ IsCyclic G
 
 /-- Orders of non-cyclic simple groups are in A -/
@@ -159,10 +171,6 @@ theorem squarefree_part_structure (n : ℕ) (p : ℕ)
     ∃ q : ℕ, q.Prime ∧ q ∣ n ∧ q ≠ p ∧ q % p = 1 := by
   -- The witness d ≡ 1 (mod p) with d > 1 and d | n must have a prime factor q ≡ 1 (mod p)
   sorry
-
-/-- The smallest element of A greater than 1 -/
-axiom smallest_nontrivial_in_setA :
-  ∃ n : ℕ, n > 1 ∧ n ∈ setA ∧ ∀ m : ℕ, 1 < m → m < n → m ∉ setA
 
 /-
 ## Asymptotic Analysis
@@ -188,21 +196,65 @@ OEIS A001034 lists orders of non-cyclic simple groups.
 OEIS A352287 lists elements of A.
 -/
 
-/-- Some small elements of A (OEIS A352287) -/
-axiom small_elements_of_A :
-  1 ∈ setA ∧ 6 ∈ setA ∧ 12 ∈ setA ∧ 56 ∈ setA
+/-- 6 = 2 × 3 is NOT in A: for p=3, no d > 1 divides 6 with d ≡ 1 (mod 3).
+    (The divisors of 6 > 1 are {2, 3, 6}; 2%3=2, 3%3=0, 6%3=0.) -/
+theorem six_not_in_setA : 6 ∉ setA := by
+  intro ⟨_, hA⟩
+  have := hA 3 (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  obtain ⟨d, hd1, hdiv, hmod⟩ := this
+  -- d | 6 and d > 1 means d ∈ {2, 3, 6}
+  have hdle : d ≤ 6 := Nat.le_of_dvd (by norm_num) hdiv
+  interval_cases d <;> omega
 
-/-- 6 = 2 × 3 is in A because 3 ≡ 1 (mod 2) -/
-theorem six_in_setA : 6 ∈ setA := by
+/-- 12 = 2² × 3 is in A: for p=2, d=3 (3≡1 mod 2); for p=3, d=4 (4≡1 mod 3) -/
+theorem twelve_in_setA : 12 ∈ setA := by
   constructor
   · norm_num
-  · intro p hp hdiv
-    intro _ _
-    interval_cases p
-    all_goals {
-      use 3
-      constructor <;> norm_num
-    }
+  · intro p hp hdiv _ _
+    have hp_le : p ≤ 12 := Nat.le_of_dvd (by norm_num) hdiv
+    interval_cases p <;> first
+      | exact ⟨3, by omega, by omega, by omega⟩
+      | exact ⟨4, by omega, by omega, by omega⟩
+      | (exfalso; revert hp hdiv; norm_num)
+
+/-- 56 = 2³ × 7 is in A: for p=2, d=7 (7≡1 mod 2); for p=7, d=8 (8≡1 mod 7) -/
+theorem fiftysix_in_setA : 56 ∈ setA := by
+  constructor
+  · norm_num
+  · intro p hp hdiv _ _
+    have hp_le : p ≤ 56 := Nat.le_of_dvd (by norm_num) hdiv
+    interval_cases p <;> first
+      | exact ⟨7, by omega, by omega, by omega⟩
+      | exact ⟨8, by omega, by omega, by omega⟩
+      | (exfalso; revert hp hdiv; norm_num)
+
+/-- Some small elements of A (OEIS A352287). Originally axiomatized; now proved. -/
+theorem small_elements_of_A :
+  1 ∈ setA ∧ 12 ∈ setA ∧ 56 ∈ setA :=
+  ⟨one_in_setA, twelve_in_setA, fiftysix_in_setA⟩
+
+/-- The smallest element of A greater than 1 is 12.
+    2-11 are excluded: 2,3,5,7,11 are primes; 4,8,9 are prime powers;
+    6 fails at p=3; 10 fails at p=5. -/
+theorem smallest_nontrivial_in_setA :
+  ∃ n : ℕ, n > 1 ∧ n ∈ setA ∧ ∀ m : ℕ, 1 < m → m < n → m ∉ setA := by
+  refine ⟨12, by norm_num, twelve_in_setA, fun m hm1 hm12 => ?_⟩
+  interval_cases m
+  · exact prime_power_not_in_setA 2 1 (by norm_num) (by omega)
+  · exact prime_power_not_in_setA 3 1 (by norm_num) (by omega)
+  · exact prime_power_not_in_setA 2 2 (by norm_num) (by omega)
+  · exact prime_power_not_in_setA 5 1 (by norm_num) (by omega)
+  · exact six_not_in_setA
+  · exact prime_power_not_in_setA 7 1 (by norm_num) (by omega)
+  · exact prime_power_not_in_setA 2 3 (by norm_num) (by omega)
+  · exact prime_power_not_in_setA 3 2 (by norm_num) (by omega)
+  · -- 10 = 2 × 5: fails at p=5 (divisors > 1: {2, 5, 10}; none ≡ 1 mod 5)
+    intro ⟨_, hA⟩
+    have := hA 5 (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    obtain ⟨d, hd1, hdiv, hmod⟩ := this
+    have hdle : d ≤ 10 := Nat.le_of_dvd (by norm_num) hdiv
+    interval_cases d <;> omega
+  · exact prime_power_not_in_setA 11 1 (by norm_num) (by omega)
 
 /-
 ## Main Open Problem Statement

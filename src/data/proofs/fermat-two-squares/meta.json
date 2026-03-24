@@ -53,7 +53,8 @@
       }
     ],
     "lineCount": 201,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Fermat stated this theorem around 1640 in a letter to Mersenne, claiming he had an \"irrefutable proof\" but, as with many of his claims, never published it. The theorem remained unproven for over a century until Euler provided the first complete proof in 1747.\n\nIn 1990, Don Zagier published what he called a \"one-sentence proof\" - an extraordinarily elegant argument that fits on a single page. This proof has become famous in mathematical circles for its beauty and brevity.\n\nThe theorem connects number theory to algebra in profound ways. It's closely related to factorization in the Gaussian integers Z[i], where p = a^2 + b^2 corresponds to p = (a+bi)(a-bi) splitting in Z[i]. This connection to algebraic number theory makes it a gateway to deeper results like Lagrange's four squares theorem.",
@@ -79,7 +80,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 47,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "The complete characterization: a prime p is a sum of two squares if and only if p % 4 is not 3.",
       "mathContext": "The main theorem is a direct wrapper around Mathlib's `Nat.Prime.sq_add_sq`, which states: for a prime $p$, $\\exists\\, a\\, b,\\, p = a^2 + b^2 \\iff p\\,\\%\\,4 \\neq 3$. This covers all three cases simultaneously: $p = 2$ (since $2\\,\\%\\,4 = 2 \\neq 3$, and $2 = 1^2+1^2$), $p \\equiv 1 \\pmod{4}$ (representable), and $p \\equiv 3 \\pmod{4}$ (not representable, since squares mod 4 are 0 or 1 so $a^2+b^2 \\in \\{0,1,2\\} \\pmod{4}$)."
     },
@@ -87,7 +88,7 @@
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 67,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Explicit statements for primes congruent to 1 (mod 4), the prime 2, and primes congruent to 3 (mod 4).",
       "mathContext": "This section splits the main theorem into pedagogically clearer cases: (1) `prime_one_mod_four_sum_two_squares`: if $p$ is prime and $p \\equiv 1 \\pmod{4}$ then $p = a^2+b^2$; (2) `two_sum_two_squares`: $2 = 1^2+1^2$; (3) `prime_three_mod_four_not_sum_two_squares`: if $p \\equiv 3 \\pmod{4}$ then $p \\neq a^2+b^2$ for any $a,b$. Each case is a consequence of the main theorem plus modular arithmetic, often discharged with `omega` or `decide` for the residue computations."
     },
@@ -95,7 +96,7 @@
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 95,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Verification of small cases: 5 = 1^2 + 2^2, 13 = 2^2 + 3^2, 17 = 1^2 + 4^2, etc.",
       "mathContext": "Concrete verifications serve as executable witnesses: $5 = 1^2+2^2$, $13 = 2^2+3^2$, $17 = 1^2+4^2$, $29 = 2^2+5^2$, $37 = 1^2+6^2$, $41 = 4^2+5^2$. Each is proved by `norm_num` or `decide`, which reduces the goal to arithmetic. These examples also illustrate uniqueness: primes $\\equiv 1 \\pmod{4}$ have essentially unique representations (up to order and signs), a consequence of unique factorization in $\\mathbb{Z}[i]$ — though uniqueness is not formally proved here."
     },
@@ -111,7 +112,7 @@
       "id": "classification-corollary",
       "title": "Classification Corollary",
       "startLine": 156,
-      "endLine": 195,
+      "endLine": 201,
       "summary": "Restates the main theorem in the natural form: p = a² + b² iff p = 2 or p ≡ 1 (mod 4). Combines all three cases into a single equivalence.",
       "mathContext": "This corollary presents the theorem in its most natural formulation: $p = a^2+b^2 \\iff p = 2 \\lor p \\equiv 1 \\pmod{4}$. The forward direction (representable implies $p=2$ or $p \\equiv 1$) uses the mod-4 obstruction: if $p \\equiv 3 \\pmod{4}$ then $a^2+b^2 \\equiv 0,1,2 \\pmod{4}$, never 3. The backward direction uses the existence proof from `Nat.Prime.sq_add_sq`. Combining both directions into a clean `↔` statement makes this the most useful form for downstream applications."
     }

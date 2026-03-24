@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/162",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x",
+    "mathlib_version": "4.26.0",
     "axiomCount": 7,
     "lineCount": 186,
     "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details."
@@ -67,42 +67,42 @@
       "id": "colouring",
       "title": "Edge Colouring and Balance",
       "startLine": 32,
-      "endLine": 74,
+      "endLine": 75,
       "summary": "Defines EdgeColouring (symmetric Bool on pairs), colourEdgeCount (filtered product count), colourEdgeCount_total (sorry), IsBalancedOn, IsKBalanced, and balanced_requires_le_half (sorry)."
     },
     {
       "id": "function-f",
       "title": "The Function F(n, α)",
       "startLine": 76,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Axiomatizes discrepancyF with characterization spec, monotonicity in α, F(n,0)=n, and F(n,α) ≤ n."
     },
     {
       "id": "log-bounds",
       "title": "Logarithmic Bounds",
       "startLine": 104,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Axiomatizes lower and upper bounds c₁ log n < F < c₂ log n. Proves Θ(log n) sandwich theorem."
     },
     {
       "id": "derived",
       "title": "Derived Results",
       "startLine": 130,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Proves half_is_extremal: F(n,1/2) ≤ F(n,α) directly from monotonicity axiom."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 136,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "Defines ErdosProblem162: F(n,α)/log n → c_α via ε-δ convergence for every 0 < α ≤ 1/2."
     },
     {
       "id": "examples",
       "title": "Computational Examples",
       "startLine": 150,
-      "endLine": 162,
+      "endLine": 186,
       "summary": "Verifies C(1,2)=0, C(2,2)=1, C(4,2)=6, C(8,2)=28 via native_decide."
     }
   ],
@@ -127,5 +127,27 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, discrepancy, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-176",
+    "erdos-1014",
+    "erdos-1030"
+  ]
 }

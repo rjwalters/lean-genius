@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1054",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -85,7 +85,7 @@
       "id": "undefined-cases",
       "title": "Undefined Cases",
       "startLine": 77,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Analysis of why n=2 and n=5 cannot be represented, with derived theorems f(2)=0 and f(5)=0."
     },
     {
@@ -99,14 +99,14 @@
       "id": "open-problem",
       "title": "The Open Problem",
       "startLine": 167,
-      "endLine": 217,
+      "endLine": 218,
       "summary": "The three main questions and Tao's partial result disproving Part I."
     },
     {
       "id": "understanding",
       "title": "Understanding the Problem",
       "startLine": 219,
-      "endLine": 302,
+      "endLine": 612,
       "summary": "Intuition about divisor structure and why certain values are achievable or not."
     }
   ],
@@ -123,29 +123,29 @@
   },
   "crossReferences": [
     {
-      "target": "fundamental-arithmetic",
       "relationship": "prerequisite",
-      "description": "Divisor structure underlying f(n) relies on the fundamental theorem of arithmetic; smallest divisors of m are determined by its prime factorization."
+      "description": "Divisor structure underlying f(n) relies on the fundamental theorem of arithmetic; smallest divisors of m are determined by its prime factorization.",
+      "targetId": "fundamental-arithmetic"
     },
     {
-      "target": "infinitude-primes",
       "relationship": "related",
-      "description": "Primes play a key role in the divisor sum structure: for a prime product m = pq the divisors are {1, p, q, pq}, giving the connection to Goldbach-type representations."
+      "description": "Primes play a key role in the divisor sum structure: for a prime product m = pq the divisors are {1, p, q, pq}, giving the connection to Goldbach-type representations.",
+      "targetId": "infinitude-primes"
     },
     {
-      "target": "erdos-1053",
       "relationship": "related",
-      "description": "Erdős Problem #1053 studies the ratio σ(n)/n for k-perfect numbers; both problems investigate how sums of divisors (total or partial) can be controlled asymptotically."
+      "description": "Erdős Problem #1053 studies the ratio σ(n)/n for k-perfect numbers; both problems investigate how sums of divisors (total or partial) can be controlled asymptotically.",
+      "targetId": "erdos-1053"
     },
     {
-      "target": "erdos-1049",
       "relationship": "related",
-      "description": "Erdős Problem #1049 connects divisor counts τ(n) to series involving divisor sums; both problems arise from Erdős's broader program on the arithmetic of divisor functions."
+      "description": "Erdős Problem #1049 connects divisor counts τ(n) to series involving divisor sums; both problems arise from Erdős's broader program on the arithmetic of divisor functions.",
+      "targetId": "erdos-1049"
     },
     {
-      "target": "euler-totient",
       "relationship": "related",
-      "description": "The Euler totient function is a sibling multiplicative function; techniques for bounding φ(n)/n and σ(n)/n inform density arguments relevant to f(n)/n."
+      "description": "The Euler totient function is a sibling multiplicative function; techniques for bounding φ(n)/n and σ(n)/n inform density arguments relevant to f(n)/n.",
+      "targetId": "euler-totient"
     }
   ],
   "relatedProofs": [

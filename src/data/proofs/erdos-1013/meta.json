@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 11,
     "lineCount": 121,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Jan Mycielski's foundational 1955 paper 'Sur le coloriage des graphes' proved that triangle-free graphs of arbitrarily high chromatic number exist, via his celebrated inductive construction. This raised the quantitative question: how many vertices are needed? Graver and Yackel (1968) gave the first quantitative lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ using probabilistic deletion. The connection to Ramsey theory proved decisive: Shearer's 1983 entropy-based bound on $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ implies $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$, since triangle-free graphs on $n$ vertices must have large independent sets. The upper bound $h_3(k) \\leq (1+o(1))k^2 \\log k$ comes from explicit algebraic constructions. The exact constant $c$ in $h_3(k) \\sim c \\cdot k^2 \\log k$, known to lie in $[1/2, 1]$, remains one of the central open questions in extremal graph theory. Erdos also asked the weaker question of whether $h_3(k+1)/h_3(k) \\to 1$. The problem is closely related to Problem #1104 (the dual function $f(n)$, the maximum chromatic number of a triangle-free graph on $n$ vertices) and Problem #920 (the $K_r$-free generalization $h_r(k)$).",
@@ -46,63 +47,63 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Module documentation for Erdos Problem #1013 on the triangle-free chromatic threshold, listing key results and references. Imports Mathlib's SimpleGraph, Clique, Real, Log, and Tactic modules."
     },
     {
       "id": "triangle-free-def",
       "title": "Triangle-Free and Coloring Definitions",
       "startLine": 29,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Defines `IsTriangleFree` (no $K_3$ subgraph) and `HasProperColoring` ($k$-coloring with distinct colors on adjacent vertices). These are the local and global conditions whose interplay the problem studies."
     },
     {
       "id": "chromatic-threshold-def",
       "title": "Chromatic Number and h_3(k)",
       "startLine": 41,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines `chromaticNumber` as $\\sup\\{k : G$ has no proper $k$-coloring$\\} + 1$, and `triangleFreeChromThreshold` $h_3(k)$ as the smallest $n$ with a triangle-free graph on $n$ vertices achieving $\\chi \\geq k$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: Asymptotic Formula",
       "startLine": 51,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "States Erdos's conjecture that $h_3(k)/(k^2 \\log k) \\to c$ for some constant $c > 0$, formalized using `Filter.Tendsto` and `nhds c`."
     },
     {
       "id": "ratio-convergence",
       "title": "Ratio Convergence Conjecture",
       "startLine": 61,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "The weaker conjecture $h_3(k+1)/h_3(k) \\to 1$: the threshold grows smoothly. Formalized as `Filter.Tendsto` to `nhds 1`."
     },
     {
       "id": "lower-upper-bounds",
       "title": "Known Lower and Upper Bounds",
       "startLine": 69,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "The probabilistic lower bound $(1/2 - o(1))k^2 \\log k$ from Shearer's Ramsey bound, and the constructive upper bound $(1+o(1))k^2 \\log k$ from algebraic constructions. Together they give $h_3(k) = \\Theta(k^2 \\log k)$ with constant in $[1/2, 1]$."
     },
     {
       "id": "graver-yackel",
       "title": "Graver-Yackel Historical Bound",
       "startLine": 84,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "The 1968 bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ by Graver and Yackel using probabilistic deletion. This was the first quantitative lower bound, later superseded by the Ramsey-theoretic approach."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity of h_3",
       "startLine": 91,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "The threshold $h_3$ is non-decreasing: $j \\leq k \\implies h_3(j) \\leq h_3(k)$, since achieving $\\chi \\geq k$ implies $\\chi \\geq j$."
     },
     {
       "id": "small-cases",
       "title": "Small Cases and Extremal Graphs",
       "startLine": 97,
-      "endLine": 115,
+      "endLine": 116,
       "summary": "Computed values: $h_3(1) = 1$, $h_3(2) = 2$, $h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grotzsch graph). Each extremal graph is a Mycielski graph. The Grotzsch graph with 11 vertices and 20 edges is the smallest triangle-free 4-chromatic graph."
     },
     {
@@ -125,34 +126,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1104",
       "relationship": "dual problem",
-      "note": "Erdős Problem #1104 asks for the maximum chromatic number $f(n)$ of a triangle-free graph on $n$ vertices — the inverse of $h_3(k)$. The two functions satisfy $h_3(f(n)) \\leq n < h_3(f(n)+1)$, so progress on one directly constrains the other. The known bound $f(n) = \\Theta(\\sqrt{n/\\log n})$ is equivalent to $h_3(k) = \\Theta(k^2 \\log k)$."
+      "note": "Erdős Problem #1104 asks for the maximum chromatic number $f(n)$ of a triangle-free graph on $n$ vertices — the inverse of $h_3(k)$. The two functions satisfy $h_3(f(n)) \\leq n < h_3(f(n)+1)$, so progress on one directly constrains the other. The known bound $f(n) = \\Theta(\\sqrt{n/\\log n})$ is equivalent to $h_3(k) = \\Theta(k^2 \\log k)$.",
+      "targetId": "erdos-1104"
     },
     {
-      "target": "erdos-920",
       "relationship": "generalization",
-      "note": "Erdős Problem #920 concerns $h_r(k)$, the smallest $n$ such that a $K_r$-free graph on $n$ vertices can have chromatic number $k$. Problem #1013 is the $r = 3$ special case. The general problem requires understanding Ramsey numbers $R(r,k)$, making it considerably harder for $r \\geq 4$."
+      "note": "Erdős Problem #920 concerns $h_r(k)$, the smallest $n$ such that a $K_r$-free graph on $n$ vertices can have chromatic number $k$. Problem #1013 is the $r = 3$ special case. The general problem requires understanding Ramsey numbers $R(r,k)$, making it considerably harder for $r \\geq 4$.",
+      "targetId": "erdos-920"
     },
     {
-      "target": "erdos-1014",
       "relationship": "structural analogy",
-      "note": "Erdős Problem #1014 asks whether $R(k, l+1)/R(k, l) \\to 1$ as $l \\to \\infty$ for fixed $k$. The ratio convergence question here — whether $h_3(k+1)/h_3(k) \\to 1$ — is structurally identical and similarly open for $k = 3$. Both ask whether the relevant combinatorial threshold grows smoothly."
+      "note": "Erdős Problem #1014 asks whether $R(k, l+1)/R(k, l) \\to 1$ as $l \\to \\infty$ for fixed $k$. The ratio convergence question here — whether $h_3(k+1)/h_3(k) \\to 1$ — is structurally identical and similarly open for $k = 3$. Both ask whether the relevant combinatorial threshold grows smoothly.",
+      "targetId": "erdos-1014"
     },
     {
-      "target": "ramseys-theorem",
       "relationship": "key tool",
-      "note": "Shearer's 1983 bound $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ on Ramsey numbers is what yields the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$: any triangle-free graph must have an independent set of size $\\sim k$, so $n \\geq R(3,k)$. Understanding Problem #1013 requires tight Ramsey bounds."
+      "note": "Shearer's 1983 bound $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ on Ramsey numbers is what yields the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$: any triangle-free graph must have an independent set of size $\\sim k$, so $n \\geq R(3,k)$. Understanding Problem #1013 requires tight Ramsey bounds.",
+      "targetId": "ramseys-theorem"
     },
     {
-      "target": "prob-method-expectation",
       "relationship": "proof technique",
-      "note": "The first-moment probabilistic method underlies the Graver–Yackel lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ (1968): a random graph on $n$ vertices with edge probability $p$ can be shown to have high chromatic number while containing few triangles, which are then deleted without destroying the chromatic number."
+      "note": "The first-moment probabilistic method underlies the Graver–Yackel lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ (1968): a random graph on $n$ vertices with edge probability $p$ can be shown to have high chromatic number while containing few triangles, which are then deleted without destroying the chromatic number.",
+      "targetId": "prob-method-expectation"
     },
     {
-      "target": "prob-method-alteration",
       "relationship": "proof technique",
-      "note": "The alteration method (random construction followed by deterministic deletion of obstructions) is the standard tool for proving upper and lower bounds on $h_3(k)$. Constructing triangle-free graphs with high chromatic number proceeds by taking a random graph and removing edges in triangles while tracking the chromatic number."
+      "note": "The alteration method (random construction followed by deterministic deletion of obstructions) is the standard tool for proving upper and lower bounds on $h_3(k)$. Constructing triangle-free graphs with high chromatic number proceeds by taking a random graph and removing edges in triangles while tracking the chromatic number.",
+      "targetId": "prob-method-alteration"
     }
   ],
   "relatedProofs": [

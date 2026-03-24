@@ -29,7 +29,7 @@
       "Complex analysis fundamentals",
       "Discrepancy theory"
     ],
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Complex.arg",
@@ -65,38 +65,6 @@
       "sharp_erdos_turan axiom: optimal constant exists",
       "erdelyi_one_sided axiom: one-sided improvement"
     ],
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-987",
-        "relationship": "uses-same-technique",
-        "description": "Uses the Erdős-Turán exponential sum method for sequence discrepancy — the same framework applied to integer sequences"
-      },
-      {
-        "targetProofId": "erdos-988",
-        "relationship": "related",
-        "description": "Discrepancy on the sphere (Schmidt 1969) — the higher-dimensional analogue of angular root discrepancy"
-      },
-      {
-        "targetProofId": "erdos-989",
-        "relationship": "related",
-        "description": "Circle discrepancy via Fourier analysis and Bessel functions — the same harmonic analysis toolkit"
-      },
-      {
-        "targetProofId": "erdos-991",
-        "relationship": "related",
-        "description": "Applies discrepancy bounds to logarithmic energy minimizers and Fekete points on the sphere"
-      },
-      {
-        "targetProofId": "erdos-992",
-        "relationship": "related",
-        "description": "Discrepancy of sequences mod 1 (Baker 1981) — connected via Weyl's criterion and exponential sums"
-      },
-      {
-        "targetProofId": "erdos-994",
-        "relationship": "related",
-        "description": "Khintchine's equidistribution conjecture — explores limits of equidistribution theory"
-      }
-    ],
     "axiomCount": 22,
     "lineCount": 285,
     "assumptions": "22 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
@@ -127,7 +95,7 @@
       "title": "Basic Definitions",
       "summary": "ComplexPoly as $\\text{Fin}(d+1) \\to \\mathbb{C}$, nonzeroCoeffCount (sparsity $n$), argument function $\\theta: \\mathbb{C}^* \\to [0, 2\\pi)$",
       "startLine": 36,
-      "endLine": 55,
+      "endLine": 56,
       "mathContext": "The coefficient-vector representation $p: \\text{Fin}(d+1) \\to \\mathbb{C}$ stores $p(i) = a_i$ for $f(x) = \\sum a_i x^i$. Sparsity $n = |\\{i : a_i \\neq 0\\}|$ is the key parameter of Problem #990."
     },
     {
@@ -135,7 +103,7 @@
       "title": "The Mahler Measure",
       "summary": "coeffSum, $M = \\sum|a_i|/\\sqrt{|a_0||a_d|}$, mahler_ge_two axiom ($M \\geq 2$ for monic polynomials)",
       "startLine": 57,
-      "endLine": 77,
+      "endLine": 78,
       "mathContext": "$M$ normalizes the coefficient sum by the geometric mean of the leading and constant term. For monic polynomials with $|a_0| = |a_d| = 1$, the AM-GM inequality gives $M \\geq 2$. The logarithm $\\log M$ appears under the square root in the bound."
     },
     {
@@ -143,7 +111,7 @@
       "title": "Root Counting and Discrepancy",
       "summary": "rootSet (axiomatized), rootsInInterval, expectedCount, discrepancy $|N(I) - |I|d/(2\\pi)|$, maxDiscrepancy $D^* = \\sup_I$",
       "startLine": 79,
-      "endLine": 106,
+      "endLine": 107,
       "mathContext": "The star discrepancy $D^* = \\sup_{0 \\leq \\alpha \\leq \\beta \\leq 2\\pi} |N([\\alpha,\\beta]) - (\\beta-\\alpha)d/(2\\pi)|$ measures worst-case deviation from uniformity. The root set is axiomatized with the fundamental theorem of algebra guaranteeing $|\\text{rootSet}| = d$."
     },
     {
@@ -151,7 +119,7 @@
       "title": "Classical Erdős-Turán (1950)",
       "summary": "erdos_turan_classical: $D^* \\leq C\\sqrt{d \\log M}$, erdos_turan_explicit_constant (universal $C$), ganelius_improvement ($C \\leq 8$)",
       "startLine": 108,
-      "endLine": 129,
+      "endLine": 130,
       "mathContext": "The 1950 result bounds star discrepancy via exponential sum estimates and Newton's identities for power sums $s_k = \\sum z_j^k$. Ganelius (1954) made the constant explicit as $C \\leq 8$."
     },
     {
@@ -159,7 +127,7 @@
       "title": "The Sparse Conjecture",
       "summary": "sparseConjecture: $D^* \\leq C\\sqrt{n \\log M}$ (OPEN), sparse_improves_dense (proved: $n \\leq d+1$), unity_root_sparse ($x^d - 1$ has $n = 2$)",
       "startLine": 131,
-      "endLine": 151,
+      "endLine": 152,
       "mathContext": "The open conjecture replaces degree $d$ with sparsity $n$ in the Erdős-Turán bound. Since $n \\leq d + 1$ (proved by `Finset.card_filter_le`), the sparse bound would strictly improve the classical bound for all polynomials with $n < d + 1$."
     },
     {
@@ -167,7 +135,7 @@
       "title": "Sharp Constant",
       "summary": "sharp_erdos_turan ($\\exists C_{\\text{sharp}}$: optimal constant), hilbert_connection (link to Hilbert transform operator norm)",
       "startLine": 153,
-      "endLine": 169,
+      "endLine": 170,
       "mathContext": "Soundararajan (2019) showed the sharp constant is determined by the operator norm of a modified Hilbert transform $Hf(x) = \\text{PV} \\int f(t)/(x-t)\\,dt$ restricted to trigonometric polynomials."
     },
     {
@@ -175,7 +143,7 @@
       "title": "Special Cases",
       "summary": "unity_roots_uniform ($D^* \\leq 1$ for roots of unity), isLittlewood ($|a_i| = 1$ or $a_i = 0$), littlewood_root_distribution ($D^* \\leq \\sqrt{d \\log d + d}$)",
       "startLine": 171,
-      "endLine": 192,
+      "endLine": 193,
       "mathContext": "Roots of unity form a regular $d$-gon on $S^1$ with discrepancy $\\leq 1$. Littlewood polynomials (coefficients $\\pm 1$) satisfy $M \\leq d+1$, giving $D^* \\leq C\\sqrt{d \\log(d+1)}$ from the classical bound."
     },
     {
@@ -183,7 +151,7 @@
       "title": "Generalizations",
       "summary": "Extensions to Jordan curves (general_contour_version), logarithmic potentials (potential_theory_connection), trigonometric polynomials (trigonometric_version) — all placeholder axioms",
       "startLine": 194,
-      "endLine": 210,
+      "endLine": 211,
       "mathContext": "The Erdős-Turán framework extends beyond the unit circle. For Jordan curves $\\Gamma$, the discrepancy is measured against arclength-proportional distribution. The potential-theoretic interpretation connects to the equilibrium measure of $\\Gamma$ and logarithmic capacity."
     },
     {
@@ -191,7 +159,7 @@
       "title": "Applications",
       "summary": "Interpolation via Fekete/Leja points (interpolation_application), random matrix eigenvalue distribution (random_matrix_application), distribution of $L$-function zeros (l_function_application) — all placeholders",
       "startLine": 212,
-      "endLine": 228,
+      "endLine": 229,
       "mathContext": "Fekete points minimize the logarithmic energy $\\sum_{i \\neq j} \\log|z_i - z_j|^{-1}$ and are optimally equidistributed. For random matrices, the characteristic polynomial has roots (eigenvalues) whose angular distribution is governed by the circular ensemble and the Erdős-Turán bound."
     },
     {
@@ -199,7 +167,7 @@
       "title": "Lower Bounds",
       "summary": "lower_bound_construction ($D^* \\geq \\tfrac{1}{10}\\sqrt{d}$ for some polynomial), optimal_dependence ($\\sqrt{d}$ and $\\log M$ both necessary)",
       "startLine": 230,
-      "endLine": 244,
+      "endLine": 245,
       "mathContext": "Random polynomials with i.i.d. coefficients on $S^1$ exhibit $\\Theta(\\sqrt{d})$ discrepancy by the CLT. Rudin-Shapiro polynomials provide explicit deterministic examples. The constant $1/10$ is not optimal but establishes the correct order."
     },
     {
@@ -207,7 +175,7 @@
       "title": "One-Sided Improvements",
       "summary": "erdelyi_one_sided: $N(I) - E(I) \\leq C\\sqrt{d \\log M}$ (excess bound without absolute value), totik_varju_corollary (potential-theoretic extension)",
       "startLine": 246,
-      "endLine": 261,
+      "endLine": 262,
       "mathContext": "Erdélyi's one-sided bound controls root *excess* (clustering) in sectors. The Totik-Varjú corollary extends this to equilibrium measures on general compact sets in $\\mathbb{C}$, connecting to potential theory."
     },
     {
@@ -287,5 +255,27 @@
       "venue": "Annals of Probability",
       "description": "Root distribution of random polynomials, providing context for the lower bound construction"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, complex-analysis, polynomials"
+    },
+    {
+      "targetId": "erdos-994",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, discrepancy, equidistribution"
+    },
+    {
+      "targetId": "erdos-997",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, discrepancy, equidistribution"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1048",
+    "erdos-994",
+    "erdos-997"
   ]
 }

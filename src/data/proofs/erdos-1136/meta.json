@@ -22,7 +22,7 @@
     "erdosNumber": 1136,
     "erdosUrl": "https://erdosproblems.com/1136",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.dvd_add",
@@ -82,7 +82,11 @@
       "MullerSet"
     ],
     "axiomCount": 3,
-    "theoremCount": 12
+    "theoremCount": 12,
+    "opens": [
+      "Finset",
+      "Filter"
+    ]
   },
   "crossReferences": [
     {
@@ -131,42 +135,42 @@
       "id": "docstring",
       "title": "Module Docstring",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Problem statement, history (Erdős 1987 DMV conference, Müller 2011), construction description $n \\equiv 3 \\cdot 2^i \\pmod{2^{i+2}}$, and reference."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 29,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Imports `Nat.Basic`, `Real.Basic`, `Finset.Basic`, and `Filter.Basic` from Mathlib. Opens `Finset` namespace."
     },
     {
       "id": "definitions",
       "title": "Part I: Core Definitions",
       "startLine": 38,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines `AvoidsPowerOfTwoSums(A)` as $\\forall a, b \\in A, \\forall k, a + b \\neq 2^k$ and `lowerDensity(A) = \\inf_{N > 0} |A \\cap [0,N)| / N$."
     },
     {
       "id": "trivial-bound",
       "title": "Part II: Trivial Bound via Multiples of 3",
       "startLine": 51,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Verified proof that $3\\mathbb{N}$ avoids power-of-two sums (since $3 \\mid (a+b)$ but $3 \\nmid 2^k$), plus axiomatized density $\\underline{d}(3\\mathbb{N}) = 1/3$."
     },
     {
       "id": "muller-construction",
       "title": "Part III: Müller's Binary Construction",
       "startLine": 73,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Defines `MullerSet` via $n \\bmod 2^{i+2} = 3 \\cdot 2^i$. Axiomatizes avoidance + density $1/2$ (`muller_construction`) and the upper bound $\\underline{d}(A) \\leq 1/2$ (`muller_optimality`)."
     },
     {
       "id": "main-result",
       "title": "Part IV: Main Theorems",
       "startLine": 94,
-      "endLine": 114,
+      "endLine": 213,
       "summary": "Verified `erdos_1136` (existence with $\\underline{d}(A) > 1/3$ via `linarith` on $1/2 > 1/3$) and `erdos_1136_optimal` (exact optimum $1/2$, combining both axioms)."
     }
   ],

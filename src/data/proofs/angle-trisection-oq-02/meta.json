@@ -81,7 +81,8 @@
         "relationship": "Sub-entry connecting to the Gauss-Wantzel theorem for regular polygon constructibility"
       }
     ],
-    "assumptions": "1 axiom: wantzel_galois_characterization — the Wantzel-Galois biconditional: an algebraic number α is constructible by compass and straightedge iff the Galois group of its minimal polynomial over ℚ is a 2-group (IsPGroup 2 (minpoly ℚ α).Gal). Axiomatized because the full proof requires the Galois correspondence for intermediate fields. All other results (non-constructibility of ∛2 and cos(20°), constructibility of √2 and 2^{1/4}, hierarchy of criteria) are fully proved from this axiom with 0 sorries."
+    "assumptions": "1 axiom: wantzel_galois_characterization — the Wantzel-Galois biconditional: an algebraic number α is constructible by compass and straightedge iff the Galois group of its minimal polynomial over ℚ is a 2-group (IsPGroup 2 (minpoly ℚ α).Gal). Axiomatized because the full proof requires the Galois correspondence for intermediate fields. All other results (non-constructibility of ∛2 and cos(20°), constructibility of √2 and 2^{1/4}, hierarchy of criteria) are fully proved from this axiom with 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -100,11 +101,6 @@
       "description": "The Galois group realizations (S₃ for x³-2, D₄ for x⁴-2) are concrete instances of the inverse Galois problem"
     },
     {
-      "targetId": "sylow-theorems",
-      "relationship": "foundational",
-      "description": "Sylow theory provides structure theorems for p-groups; the 2-group characterization of constructibility relies on 2-Sylow subgroups"
-    },
-    {
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
       "description": "The tower law [K:ℚ] = ∏[Kᵢ₊₁:Kᵢ] — a consequence of Lagrange's theorem — underpins galois_2group_implies_degree_pow2: the minimal polynomial degree divides |Gal| = 2^k"
@@ -115,34 +111,9 @@
       "description": "√2 is the canonical constructible irrational: |Gal(x²-2/ℚ)| = 2 = 2¹, proved here by divisibility squeeze. Its irrationality is the first step beyond ℚ in the constructible tower"
     },
     {
-      "targetId": "pi-transcendental",
-      "relationship": "related",
-      "description": "π is transcendental (Lindemann 1882), so it is not constructible — a strictly stronger impossibility than the Galois-theoretic criterion (constructibility requires algebraic). Squaring the circle reduces to constructing √π, which is also transcendental"
-    },
-    {
-      "targetId": "fundamental-theorem-algebra",
-      "relationship": "foundational",
-      "description": "FTA guarantees that every polynomial over ℚ splits over ℂ, ensuring that the Galois group of minpoly(ℚ,α) is well-defined as Aut(splitting field/ℚ) — the foundation for the Galois characterization of constructibility"
-    },
-    {
       "targetId": "angle-trisection-oq-02-oq-03",
       "relationship": "extended-by",
       "description": "Sub-entry extending the Galois characterization of constructibility with additional results or concrete examples"
-    },
-    {
-      "targetId": "general-quartic",
-      "relationship": "complementary",
-      "description": "Ferrari's quartic formula shows all quartics are solvable by radicals (S₄ solvable), while this file shows 2^(1/4) is constructible because Gal(x⁴-2/ℚ) ≅ D₄ has order 8 = 2³ — the quartic sits at the intersection of radical solvability and constructibility"
-    },
-    {
-      "targetId": "abel-ruffini-oq-04",
-      "relationship": "related",
-      "description": "Both expose Galois group obstructions: OQ-04 shows A₅ simplicity → S₅ not solvable → quintics unsolvable by radicals, while this file shows non-2-group Galois groups → non-constructibility. Same framework (Galois groups control algebraic capabilities), different group-theoretic criteria (solvable vs 2-group)"
-    },
-    {
-      "targetId": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Gauss's constructibility theorem for regular n-gons requires φ(n) = 2^k, which forces n = 2^a · p₁···pₘ with distinct Fermat primes pᵢ = 2^(2^eᵢ) + 1. Fermat prime structure connects to quadratic residues: the Gauss periods that build the constructive tower are indexed by quadratic residue classes mod p"
     },
     {
       "targetId": "angle-trisection-oq-02-oq-01",
@@ -165,11 +136,6 @@
       "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest case of the constructibility question: $\\sqrt[n]{m}$ is constructible iff $\\text{Gal}(x^n - m / \\mathbb{Q})$ is a 2-group. For $n = 2$, $\\text{Gal}(x^2 - m) \\cong \\mathbb{Z}/2\\mathbb{Z}$ (a 2-group), so $\\sqrt{m}$ is always constructible. For $n = 3$, $\\text{Gal}(x^3 - m) \\cong S_3$ (order 6, not a 2-group), so $\\sqrt[3]{m}$ is never constructible"
     },
     {
-      "targetId": "e-transcendental",
-      "relationship": "related",
-      "description": "The transcendence of $e$ (Hermite 1873) is a strictly stronger impossibility than non-constructibility: transcendental numbers are not just non-constructible but satisfy no polynomial over $\\mathbb{Q}$ at all. The Galois criterion applies only to algebraic numbers — for transcendental numbers, even the Galois group framework does not apply"
-    },
-    {
       "targetId": "solution-of-cubic",
       "relationship": "complementary",
       "description": "Cardano's cubic formula solves cubics by radicals (S₃ is solvable), but cos(20°) satisfies the cubic 8x³-6x-1=0 yet is NOT constructible — because S₃ is solvable but not a 2-group. This is the key distinction: solvability by radicals (solvable Galois group) is strictly weaker than constructibility (2-group Galois group). Cardano's formula gives cos(20°) in terms of cube roots, confirming it is solvable by radicals, yet the Galois 2-group criterion blocks constructibility"
@@ -180,19 +146,14 @@
       "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Connects the 2-group Galois criterion proved here to the concrete setting of $\\zeta_n = e^{2\\pi i/n}$ and Chebyshev polynomials, showing how the abstract group-theoretic characterization manifests in the cyclotomic world that governs regular polygon constructibility"
     },
     {
-      "targetId": "de-moivre",
-      "relationship": "foundational",
-      "description": "De Moivre's formula $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ expresses the $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$ that generate cyclotomic extensions. The Gauss-Wantzel theorem is a direct application: the regular $p$-gon is constructible iff $\\text{Gal}(\\mathbb{Q}(\\zeta_p)/\\mathbb{Q}) \\cong (\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is a 2-group, i.e., $p-1 = 2^k$. Gauss's construction of the 17-gon used the 2-group structure to recursively extract square roots of the Gauss periods $\\eta_i = \\sum_{j} \\zeta_{17}^{g^{2j+i}}$, which are real numbers expressed via De Moivre's formula"
+      "targetId": "pi-transcendental",
+      "relationship": "complementary",
+      "description": "The transcendence of $\\pi$ (Lindemann 1882) proves the third classical impossibility — squaring the circle — by a different mechanism than the Galois 2-group criterion used here. Angle trisection and cube doubling fail because the relevant algebraic numbers have non-2-group Galois groups; squaring the circle fails because $\\pi$ is not even algebraic, lying entirely outside the constructible $\\subsetneq$ algebraic hierarchy. Together, the three classical impossibilities span two levels: algebraic obstruction (2-group criterion) and transcendence"
     },
     {
-      "targetId": "kroneckers-jugendtraum",
-      "relationship": "extends",
-      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) explains why all constructible numbers live inside cyclotomic fields: the degree-2 tower generating a constructible number produces an abelian extension, which Kronecker-Weber places inside $\\mathbb{Q}(\\zeta_n)$ for some $n$. This connects the local geometric construction (compass-and-straightedge) to the global arithmetic of cyclotomic fields"
-    },
-    {
-      "targetId": "hilbert-13",
-      "relationship": "related",
-      "description": "Hilbert's 13th problem asked whether the solution of degree-7 equations requires functions of 3 variables after Bring-Jerrard reduction. This extends the expressibility hierarchy formalized here: constructible (2-group Galois) $\\subsetneq$ solvable by radicals (solvable Galois) $\\subsetneq$ solvable by algebraic functions of bounded variables. The Kolmogorov-Arnold theorem (1957) resolved the continuous version but the algebraic question remains open — connecting the 2-group constructibility barrier to deeper algebraic complexity"
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "complementary",
+      "description": "FTA guarantees every polynomial has roots in $\\mathbb{C}$, so constructibility is never about existence of solutions — only about which geometric operations can produce them. The 2-group criterion characterizes which algebraic numbers (all of which exist by FTA) happen to lie in the compass-and-straightedge closure of $\\mathbb{Q}$"
     }
   ],
   "overview": {
@@ -221,39 +182,39 @@
       "id": "header",
       "title": "Module Header, Imports, and Problem Statement",
       "startLine": 1,
-      "endLine": 44,
-      "summary": "Imports Mathlib and four project-local files (InverseGalois, InverseGaloisD4, NthRootIrrationalOQ01, AngleTrisectionCos20Gal). Module docstring explains the upgrade from OQ-01's degree criterion to OQ-02's Galois 2-group biconditional.",
+      "endLine": 45,
+      "summary": "Module docstring (lines 1-36) explaining the upgrade from OQ-01's degree criterion to OQ-02's Galois 2-group biconditional, with key examples. Imports (lines 38-42): Mathlib plus four project-local files (InverseGalois, InverseGaloisD4, NthRootIrrationalOQ01, AngleTrisectionCos20Gal). Opens Polynomial, IntermediateField, FiniteDimensional namespaces.",
       "mathContext": "The fundamental upgrade: $\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group — not merely $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$."
     },
     {
       "id": "2-groups",
       "title": "2-Groups: Basic Facts",
       "startLine": 46,
-      "endLine": 59,
-      "summary": "Three proved theorems about 2-groups: IsPGroup.iff_card (2-group ↔ order is 2^n), IsPGroup.of_card (2-power order → 2-group), and their combination.",
+      "endLine": 64,
+      "summary": "Part I: Three proved theorems about 2-groups: `isPGroup_iff_card_pow_two` (2-group ↔ order is 2^n), `isPGroup_of_card_pow_two` (2-power order → 2-group), and `isPGroup_card_is_pow_two` (converse: 2-group → order is 2^n). All delegate to Mathlib's `IsPGroup.iff_card` / `IsPGroup.of_card`.",
       "mathContext": "A finite group $G$ is a 2-group $\\iff |G| = 2^n$ for some $n \\geq 0$. Examples: $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/4\\mathbb{Z}$, $D_4$ (order 8), $Q_8$ (order 8). Non-examples: $S_3$ (order 6), $\\mathbb{Z}/3\\mathbb{Z}$ (order 3). The order characterization `IsPGroup.iff_card` bridges between Mathlib's element-wise definition and the cardinality condition needed for the constructibility criterion."
     },
     {
       "id": "constructibility",
       "title": "Definition of Constructibility",
-      "startLine": 60,
-      "endLine": 75,
+      "startLine": 65,
+      "endLine": 76,
       "summary": "IsConstructibleFromQ: α is constructible iff it lies in some K ⊇ ℚ inside ℝ with FiniteDimensional ℚ K and [K:ℚ] = 2^n for some n.",
       "mathContext": "$\\alpha$ constructible $\\iff \\exists$ tower $\\mathbb{Q} = K_0 \\subset K_1 \\subset \\cdots \\subset K_n$ with $[K_{i+1}:K_i] = 2$ and $\\alpha \\in K_n$."
     },
     {
       "id": "wantzel-galois",
       "title": "Wantzel-Galois Theorem (Axiomatized)",
-      "startLine": 73,
-      "endLine": 89,
-      "summary": "The main biconditional: IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal. Axiomatized — requires full Galois correspondence.",
-      "mathContext": "$\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group. This is Wantzel's theorem refined by Galois theory."
+      "startLine": 77,
+      "endLine": 94,
+      "summary": "Part III: The main axiom `wantzel_galois_characterization`: IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal. Axiomatized because the full proof requires the Galois correspondence for intermediate fields. Docstring outlines both proof directions.",
+      "mathContext": "$\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group. ($\\Rightarrow$): constructible tower gives 2-power Galois closure; ($\\Leftarrow$): 2-group composition series gives degree-2 extension tower."
     },
     {
       "id": "non-constructible",
       "title": "Non-Constructibility: ∛2 and cos(20°)",
-      "startLine": 91,
-      "endLine": 141,
+      "startLine": 95,
+      "endLine": 142,
       "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2.",
       "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$: since $\\gcd(3, 2) = 1$, we get $\\gcd(3, 2^n) = 1$ by `Nat.Coprime.pow_right`, so $3 \\nmid 2^n$, but $3 \\mid 6$, contradiction with $6 = 2^n$. Same argument for $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$. The private lemma `not_pow_two_of_eq_six` encapsulates this coprimality argument and is reused for both non-constructibility proofs ($\\sqrt[3]{2}$ and $\\cos 20°$)."
     },
@@ -261,23 +222,23 @@
       "id": "constructible-examples",
       "title": "Constructible Examples: √2 and 2^(1/4)",
       "startLine": 143,
-      "endLine": 200,
-      "summary": "PROVED: |Gal(x²-2/ℚ)| = 2 via divisibility squeeze (prime degree divides |Gal|, Gal embeds into S₂). Gal(x⁴-2/ℚ) = 8 from InverseGaloisD4. Both are 2-groups.",
+      "endLine": 207,
+      "summary": "Part V: Four private helper lemmas (irreducibility, separability, degree, monicity of x²-2), the key `x_sq_sub_2_gal_order` (|Gal(x²-2/ℚ)| = 2 via divisibility squeeze: prime degree divides |Gal| and Gal embeds into S₂), `x_sq_sub_2_gal_is_2group`, `x_4th_sub_2_gal_order` (imported from InverseGaloisD4, |Gal| = 8), and `x_4th_sub_2_gal_is_2group`. Both √2 and 2^(1/4) confirmed constructible.",
       "mathContext": "$|\\text{Gal}(x^2-2/\\mathbb{Q})| = 2 = 2^1$: the only automorphism is $\\sqrt{2} \\mapsto -\\sqrt{2}$, so $\\text{Gal} \\cong \\mathbb{Z}/2\\mathbb{Z}$. $|\\text{Gal}(x^4-2/\\mathbb{Q})| = 8 = 2^3$: the four roots $\\zeta^k \\sqrt[4]{2}$ ($\\zeta = i$) yield $\\text{Gal} \\cong D_4$. Both are 2-groups via `IsPGroup.of_card`, confirming $\\sqrt{2}$ and $\\sqrt[4]{2}$ are constructible. Geometrically: $\\sqrt{2}$ is the unit square diagonal (one compass step), $\\sqrt[4]{2} = \\sqrt{\\sqrt{2}}$ requires two successive square root extractions."
     },
     {
       "id": "oq01-connection",
       "title": "Connection to OQ-01 (Degree Criterion)",
-      "startLine": 202,
-      "endLine": 242,
-      "summary": "PROVED: galois_2group_implies_degree_pow2 via tower law (natDegree | finrank(SplittingField) = |Gal| = 2^k). Former axiom eliminated.",
+      "startLine": 208,
+      "endLine": 243,
+      "summary": "Part VI: `galois_2group_implies_degree_pow2` (PROVED: 2-group Gal → natDegree | 2^k via tower law and IsPGroup.iff_card) and `constructible_implies_degree_dvd_pow2` (chains constructibility → 2-group Gal → degree criterion). Shows OQ-02 strictly implies OQ-01.",
       "mathContext": "The chain: $\\text{natDegree}(\\text{minpoly}) \\mid [\\text{SplittingField}:\\mathbb{Q}] = |\\text{Gal}| = 2^k$ (by the tower law and the Galois group order theorem), so $\\text{natDegree} = 2^j$ for some $j \\leq k$. This shows OQ-02's Galois criterion strictly implies OQ-01's degree criterion: constructible $\\Rightarrow$ 2-group Gal $\\Rightarrow$ $\\deg \\mid 2^n$. The reverse fails: some degree-$2^k$ polynomials have non-2-group Galois groups."
     },
     {
       "id": "contrapositives",
       "title": "Contrapositive Non-Constructibility Results",
       "startLine": 244,
-      "endLine": 261,
+      "endLine": 262,
       "summary": "Two contrapositive theorems: constructible_implies_degree_dvd_pow2 (Galois criterion → degree criterion), not_constructible_of_not_2group (¬2-group → ¬constructible), not_constructible_of_degree (degree ∤ 2^n → ¬constructible).",
       "mathContext": "Contrapositives: $\\text{Gal} \\not\\cong 2\\text{-group} \\Rightarrow \\alpha$ not constructible, and $\\deg(\\text{minpoly}) \\nmid 2^n$ for all $n \\Rightarrow \\alpha$ not constructible."
     },
@@ -323,25 +284,17 @@
     "angle-trisection",
     "abel-ruffini",
     "inverse-galois",
-    "sylow-theorems",
     "lagrange-theorem",
     "sqrt2-irrational",
-    "pi-transcendental",
-    "fundamental-theorem-algebra",
     "angle-trisection-oq-02-oq-03",
-    "general-quartic",
-    "abel-ruffini-oq-04",
-    "quadratic-reciprocity",
     "angle-trisection-oq-02-oq-01",
     "primitive-roots",
     "euler-totient",
     "nth-root-irrational",
-    "e-transcendental",
     "solution-of-cubic",
     "angle-trisection-oq-02-oq-03-oq-01",
-    "de-moivre",
-    "kroneckers-jugendtraum",
-    "hilbert-13"
+    "pi-transcendental",
+    "fundamental-theorem-algebra"
   ],
   "references": [
     {

@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/523",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Complex.abs",
@@ -160,7 +160,7 @@
       "id": "summary",
       "title": "Summary: SOLVED",
       "startLine": 238,
-      "endLine": 253,
+      "endLine": 255,
       "summary": "Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**"
     }
   ],
@@ -193,5 +193,27 @@
     "axiomCount": 8,
     "theoremCount": 5,
     "definitionCount": 21
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: littlewood, polynomials, probability, random-polynomials, solved"
+    },
+    {
+      "targetId": "erdos-1114",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, polynomials, solved"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, probability, solved"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-525",
+    "erdos-1114",
+    "erdos-1166"
+  ]
 }

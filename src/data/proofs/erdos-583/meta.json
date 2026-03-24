@@ -21,7 +21,7 @@
     "erdosNumber": 583,
     "erdosUrl": "https://erdosproblems.com/583",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -102,7 +102,7 @@
       "title": "Part 1: Basic Definitions",
       "summary": "Defines `GraphPath G` via `List V` with `Nodup` and consecutive adjacency. `edgeSet` extracts `Sym2 V` edges. `EdgeDisjoint paths` requires pairwise empty edge intersection. `CoversAllEdges` requires every graph edge in some path. `PathPartition G` bundles both with `size` = `paths.length`.",
       "startLine": 33,
-      "endLine": 70,
+      "endLine": 71,
       "mathContext": "GraphPath: nodup vertex list with consecutive adjacency. EdgeDisjoint: $E(P_i) \\cap E(P_j) = \\emptyset$. PathPartition: edge-disjoint paths covering all edges."
     },
     {
@@ -110,7 +110,7 @@
       "title": "Part 2: The Erdos-Gallai Conjecture",
       "summary": "Defines `ErdosGallaiConjecture n`: every connected graph on $n$ vertices admits a `PathPartition` of size $\\le (n+1)/2 = \\lceil n/2 \\rceil$. `satisfiesConjecture G` checks individual graphs against the bound.",
       "startLine": 72,
-      "endLine": 86,
+      "endLine": 87,
       "mathContext": "Erdos-Gallai: every connected $G$ on $n$ vertices admits an edge-disjoint path partition of size $\\leq \\lceil n/2 \\rceil$"
     },
     {
@@ -118,7 +118,7 @@
       "title": "Part 3: Lovasz's Theorem (1968)",
       "summary": "Defines `GraphCycle G` with wraparound adjacency ($\\ge 3$ vertices) and `PathCyclePartition`. Axiomatizes `lovasz_theorem`: every graph decomposes into $\\le \\lfloor n/2 \\rfloor$ edge-disjoint paths and cycles combined. Corollary: $\\le n-1$ paths suffice (by splitting cycles).",
       "startLine": 88,
-      "endLine": 115,
+      "endLine": 116,
       "mathContext": "Lovasz (1968): $G$ decomposes into $\\leq \\lfloor n/2 \\rfloor$ edge-disjoint paths and cycles combined"
     },
     {
@@ -126,7 +126,7 @@
       "title": "Part 4: Chung's Theorem (1978)",
       "summary": "Defines `TreePartition G` and axiomatizes `chung_theorem`: connected graphs decompose into $\\le \\lceil n/2 \\rceil$ edge-disjoint trees. Achieves the conjectured bound but with branching structures instead of linear paths. `chung_implies_tree_bound` derives the numeric bound.",
       "startLine": 117,
-      "endLine": 136,
+      "endLine": 137,
       "mathContext": "Chung (1978): connected $G$ decomposes into $\\leq \\lceil n/2 \\rceil$ edge-disjoint trees (not paths)"
     },
     {
@@ -134,7 +134,7 @@
       "title": "Part 5: Pyber's Theorem (1996)",
       "summary": "Defines `PathCover G` (covering without disjointness). Axiomatizes `pyber_theorem`: connected graphs admit a path cover of size $n/2 + O(n^{3/4})$. Asymptotically close to $n/2$ but the error term prevents resolving the exact conjecture.",
       "startLine": 138,
-      "endLine": 153,
+      "endLine": 154,
       "mathContext": "Pyber (1996): connected $G$ admits a path cover of size $n/2 + O(n^{3/4})$ (asymptotically close)"
     },
     {
@@ -142,7 +142,7 @@
       "title": "Part 6: Fan's Theorem (2002)",
       "summary": "Axiomatizes `fan_theorem`: connected graphs have a `PathCover` of size $\\le \\lceil n/2 \\rceil$. This proves the EXACT bound without edge-disjointness. `fan_covers_conjecture` records the result. The open gap is achieving disjointness with this bound.",
       "startLine": 155,
-      "endLine": 168,
+      "endLine": 169,
       "mathContext": "Fan (2002): connected $G$ has a path cover of size $\\leq \\lceil n/2 \\rceil$ (exact bound, but not edge-disjoint)"
     },
     {
@@ -150,7 +150,7 @@
       "title": "Part 7: Hajos' Conjecture",
       "summary": "Defines `IsEulerian G` via `Even (G.degree v)` for all vertices. `HajosConjecture n`: Eulerian graphs decompose into $\\le \\lfloor n/2 \\rfloor$ edge-disjoint cycles. The cycle analog of Erdos-Gallai, also open.",
       "startLine": 170,
-      "endLine": 186,
+      "endLine": 187,
       "mathContext": "Hajos: Eulerian $G$ decomposes into $\\leq \\lfloor n/2 \\rfloor$ edge-disjoint cycles (also open)"
     },
     {
@@ -158,7 +158,7 @@
       "title": "Part 8: Special Cases",
       "summary": "Three axiomatized cases: `tree_satisfies` (trees decompose trivially), `complete_graph_satisfies` ($K_n$ has known decompositions, including Hamiltonian path decompositions for odd $n$), and `cycle_satisfies` (a cycle is a single path when opened).",
       "startLine": 188,
-      "endLine": 205,
+      "endLine": 206,
       "mathContext": "Trees: trivial. $K_n$: Hamiltonian path decomposition. Cycles: open the cycle to get one path."
     },
     {
@@ -166,7 +166,7 @@
       "title": "Part 9: Main Statement",
       "summary": "Proves `erdos_583_conjecture n` as `Iff.rfl` -- the conjecture is definitionally equal to its unfolded universal statement over connected graphs.",
       "startLine": 207,
-      "endLine": 220,
+      "endLine": 221,
       "mathContext": "$\\text{erdos\\_583\\_conjecture}(n) \\leftrightarrow \\forall G \\text{ connected on } n, \\exists \\text{PathPartition of size } \\leq \\lceil n/2 \\rceil$"
     },
     {
@@ -212,5 +212,27 @@
     "axiomCount": 10,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1080"
+  ]
 }

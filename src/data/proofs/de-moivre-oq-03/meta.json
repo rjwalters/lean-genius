@@ -16,7 +16,7 @@
       "roots-of-unity",
       "wiedijk-100"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -62,7 +62,7 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "lineCount": 275,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Fractional powers via Mathlib's cpow_def_of_ne_zero and exp/log. Original root enumeration and distinctness proofs."
   },
   "overview": {
     "historicalContext": "De Moivre's theorem (1707) states that $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ for integer $n$. Abraham de Moivre, a French Huguenot mathematician exiled to England, published this result in the *Philosophical Transactions* of the Royal Society. While the integer case follows by induction on Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ (1748), the extension to fractional exponents $p/q$ introduces the fundamental complication of **multi-valuedness**: $z^{p/q}$ has exactly $q$ distinct values, reflecting the $q$-fold covering of $\\mathbb{C}^*$ by itself. This multi-valuedness was first systematically studied by Euler and later by Cauchy and Riemann, who introduced branch cuts and Riemann surfaces to resolve it. The modern approach defines $z^w = \\exp(w \\log z)$ and selects a **principal branch** via the principal logarithm ($-\\pi < \\arg z \\leq \\pi$). This formalization bridges classical root extraction with Mathlib's principal-branch `cpow`, providing the first complete formal treatment of fractional De Moivre including root enumeration, distinctness, and consistency.",
@@ -86,42 +86,42 @@
       "title": "Preamble and Problem Statement",
       "summary": "Module docstring establishing the problem: extend De Moivre's theorem to fractional exponents $z^{p/q}$, with key results and references",
       "startLine": 1,
-      "endLine": 35
+      "endLine": 36
     },
     {
       "id": "definitions",
       "title": "Root Definitions",
       "summary": "Defines $\\texttt{qthRoot}(\\theta, p, q, k) = \\exp(i(p\\theta + 2\\pi k)/q)$, the $k$-th candidate $q$-th root of $(e^{i\\theta})^p$",
       "startLine": 37,
-      "endLine": 39
+      "endLine": 40
     },
     {
       "id": "root-verification",
       "title": "Part I: Root Verification",
       "summary": "Proves $\\zeta_k^q = (e^{i\\theta})^p$ by cancelling the $q$ denominator and applying $e^{2\\pi ik} = 1$",
       "startLine": 41,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "roots-of-unity",
       "title": "Part II: Roots of Unity and Factorization",
       "summary": "Defines $\\omega_k = e^{2\\pi ik/q}$, proves $\\omega_k^q = 1$, and shows the factorization $\\zeta_k = \\zeta_0 \\cdot \\omega_k$",
       "startLine": 71,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "distinctness",
       "title": "Part III: Root Distinctness",
       "summary": "Proves $j \\neq k$ with $0 \\leq j,k < q$ implies $\\zeta_j \\neq \\zeta_k$ via a pigeonhole argument on $|j - k| < q$",
       "startLine": 98,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "principal-value",
       "title": "Part IV: Principal Value via cpow",
       "summary": "Connects Mathlib's $\\texttt{cpow}(e^{i\\theta}, p/q)$ to $\\zeta_0 = \\exp(ip\\theta/q)$ using `log_exp` for $-\\pi < \\theta \\leq \\pi$; includes trigonometric form $\\cos(p\\theta/q) + i\\sin(p\\theta/q)$",
       "startLine": 149,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "consistency",
@@ -135,7 +135,7 @@
       "title": "Part VI: Square Root Special Case",
       "summary": "Proves both square roots satisfy $\\zeta_k^2 = e^{i\\theta}$ and that $\\zeta_1 = -\\zeta_0$ via Euler's identity $e^{i\\pi} = -1$",
       "startLine": 201,
-      "endLine": 223
+      "endLine": 224
     },
     {
       "id": "cube-root-case",
@@ -149,14 +149,14 @@
       "title": "Part VIII: Verified Examples",
       "summary": "Concrete computations: $\\zeta_0(0,1,2) = 1$, $\\zeta_0(0,1,3) = 1$, and $\\zeta_1(0,1,4) = i$ (the fourth root $e^{i\\pi/2}$)",
       "startLine": 238,
-      "endLine": 255
+      "endLine": 256
     },
     {
       "id": "summary",
       "title": "Part IX: Summary Theorem",
       "summary": "Bundles all four main results into a single conjunction: root verification, unity factorization, principal value identification, and consistency",
       "startLine": 257,
-      "endLine": 274
+      "endLine": 275
     }
   ],
   "conclusion": {

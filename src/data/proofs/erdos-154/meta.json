@@ -21,7 +21,7 @@
     "erdosNumber": 154,
     "erdosUrl": "https://erdosproblems.com/154",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "dateAdded": "2026-01-24",
     "mathlibDependencies": [
       {
@@ -77,42 +77,42 @@
       "title": "Imports and Setup",
       "summary": "Imports `Data.Nat.Basic` and `Data.Finset.Basic` for finite set operations on $\\mathbb{N}$. Opens the `Erdos154` namespace.",
       "startLine": 23,
-      "endLine": 30
+      "endLine": 31
     },
     {
       "id": "sidon-def",
       "title": "Sidon Set Definition",
       "summary": "Defines `IsSidon A`: $\\forall a,b,c,d \\in A$, $a+b = c+d \\implies \\{a,b\\} = \\{c,d\\}$. This is the $B_2$ condition ensuring all pairwise sums are distinct.",
       "startLine": 32,
-      "endLine": 37
+      "endLine": 38
     },
     {
       "id": "sumset-def",
       "title": "Sumset and Well-Distribution",
       "summary": "Defines `sumset A` as $A + A = \\{a+b : a,b \\in A\\}$ via `Finset.product` and `image`. Defines `IsWellDistributed S m ε`: each residue class mod $m$ has $|S|/m \\pm \\varepsilon|S|$ elements.",
       "startLine": 39,
-      "endLine": 48
+      "endLine": 49
     },
     {
       "id": "lindstrom",
       "title": "Lindström's Theorem (1998)",
       "summary": "Axiomatizes `lindstrom_sidon_distribution`: for Sidon $A \\subset \\{1,\\ldots,N\\}$, $\\forall m \\geq 2$, $\\forall \\varepsilon > 0$, $A$ is $\\varepsilon$-well-distributed mod $m$ for large $N$. Uses fourth moment bounds on character sums.",
       "startLine": 50,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "sumset-distr",
       "title": "Sumset Distribution",
       "summary": "Axiomatizes `sumset_distribution`: for Sidon $A$, $A+A$ is well-distributed mod $m$. The unique representation property transfers distribution from $A$ to $A+A$ via convolution.",
       "startLine": 63,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "even-odd",
       "title": "Even-Odd Balance",
       "summary": "Axiomatizes `even_odd_balance`: the $m = 2$ case. About half of $A+A$ is even ($\\binom{k}{2} + \\binom{|A|-k}{2}$ sums) and half odd ($k(|A|-k)$ sums), where $k \\approx |A|/2$ from Lindström.",
       "startLine": 77,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "main-result",
@@ -172,5 +172,27 @@
       "citation": "O'Bryant, K., A complete annotated bibliography of work related to Sidon sets, Electron. J. Combin. DS11 (2004).",
       "type": "survey"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-152",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-14",
+    "erdos-152",
+    "erdos-153"
   ]
 }

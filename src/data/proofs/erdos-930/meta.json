@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/930",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.prod",
@@ -83,35 +83,35 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 28,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Definition of IsPower (perfect power predicate), intervalProduct, and intervalLength."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 48,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "The general statement of Problem #930 for arbitrary r disjoint intervals."
     },
     {
       "id": "erdos-selfridge",
       "title": "Erdős-Selfridge Theorem (r=1)",
       "startLine": 72,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "The solved case: products of consecutive integers are never perfect powers."
     },
     {
       "id": "technical-lemma",
       "title": "Prime Multiplicity Lemma",
       "startLine": 91,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "The technical result about prime multiplicities that drives the proof."
     },
     {
       "id": "properties",
       "title": "Perfect Power Properties",
       "startLine": 114,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Basic properties: 0 and 1 are powers, squares and cubes are powers."
     },
     {
@@ -145,5 +145,27 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1094",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factorization"
+    },
+    {
+      "targetId": "erdos-1108",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, perfect-powers"
+    },
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-factorization"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1094",
+    "erdos-1108",
+    "erdos-137"
+  ]
 }

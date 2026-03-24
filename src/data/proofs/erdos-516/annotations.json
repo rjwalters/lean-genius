@@ -15,7 +15,8 @@
       "gap-series",
       "entire-functions",
       "minimum-modulus"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-imports",
@@ -32,7 +33,8 @@
       "mathlib",
       "complex-analysis"
     ],
-    "mathContext": "See annotation content for formal details of mathlib imports"
+    "mathContext": "See annotation content for formal details of mathlib imports",
+    "prerequisites": []
   },
   {
     "id": "ann-e516-fabry",
@@ -50,7 +52,8 @@
       "tendsto",
       "atTop",
       "sparse-series"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-fejer",
@@ -67,7 +70,8 @@
     "relatedConcepts": [
       "summable",
       "comparison-test"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-fabry-implies-fejer",
@@ -84,7 +88,8 @@
     "relatedConcepts": [
       "comparison-test",
       "p-series"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-finite-order",
@@ -102,7 +107,8 @@
       "entire-function",
       "growth-rate",
       "order"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-order-def",
@@ -119,7 +125,8 @@
       "infimum",
       "growth-bound"
     ],
-    "mathContext": "See annotation content for formal details of order of an entire function"
+    "mathContext": "See annotation content for formal details of order of an entire function",
+    "prerequisites": []
   },
   {
     "id": "ann-e516-max-modulus",
@@ -137,7 +144,8 @@
       "supremum",
       "circle",
       "maximum-principle"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-min-modulus",
@@ -155,7 +163,8 @@
       "infimum",
       "zeros",
       "argument-principle"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-ratio",
@@ -173,7 +182,8 @@
       "logarithm",
       "ratio",
       "asymptotic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-fuchs",
@@ -191,7 +201,8 @@
       "limsup",
       "logarithmic-density",
       "nevanlinna-theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-wiman",
@@ -208,7 +219,8 @@
     "relatedConcepts": [
       "historical",
       "stronger-gaps"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-erdos-macintyre",
@@ -225,7 +237,8 @@
     "relatedConcepts": [
       "historical",
       "gap-reciprocals"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-kovari",
@@ -242,7 +255,8 @@
     "relatedConcepts": [
       "infinite-order",
       "stronger-gaps"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-fejer-conj",
@@ -259,7 +273,8 @@
     "relatedConcepts": [
       "open-problem",
       "optimal-condition"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-macintyre-counter",
@@ -276,7 +291,8 @@
     "relatedConcepts": [
       "counterexample",
       "optimality"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e516-solved",
@@ -293,6 +309,7 @@
     "relatedConcepts": [
       "main-result",
       "solved"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

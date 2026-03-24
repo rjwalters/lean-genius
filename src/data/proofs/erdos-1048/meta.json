@@ -22,7 +22,7 @@
     "erdosNumber": 1048,
     "erdosUrl": "https://erdosproblems.com/1048",
     "erdosProblemStatus": "disproved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Complex",
@@ -94,70 +94,70 @@
       "title": "Polynomials and Roots",
       "summary": "Defines IsMonic (leading coefficient = 1), roots (zero set of polynomial evaluation), RootsBoundedBy (all roots in |z| ≤ r), and the BoundedMonicPoly structure bundling polynomial, monicity, root bound, and nontriviality (degree ≥ 1)",
       "startLine": 28,
-      "endLine": 50
+      "endLine": 51
     },
     {
       "id": "lemniscates",
       "title": "Lemniscates",
       "summary": "Defines lemniscate f c as the open sublevel set {z : |f(z)| < c}, introduces notation L(f,c), defines unitLemniscate for c = 1, and proves lemniscate_isOpen (via continuity of |f(·)|) and lemniscate_bounded (monic polynomials grow at infinity)",
       "startLine": 52,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "components",
       "title": "Connected Components",
       "summary": "Defines ConnectedComponent S z as the union of all connected subsets of S containing z, diameter S as the supremum of pairwise distances, and maxComponentDiameter f c as the supremum over all component diameters in the lemniscate",
       "startLine": 78,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "States EHPConjecture: for all r < 2 and all BoundedMonicPoly r, the maxComponentDiameter exceeds 2 − r. This is the precise formalization of the 1958 question from the Journal d'Analyse Mathématique",
       "startLine": 96,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "counterexample",
       "title": "Pommerenke's Counterexample",
       "summary": "Constructs pommerenkeCounterexample r n = X^n − C(r^n), proves counterexample_monic and counterexample_bounded, describes roots as r times nth roots of unity, axiomatizes n-component decomposition and diameter vanishing (pommerenke_diameter_vanishes), and derives EHP_false_for_r_gt_1 : ¬ EHPConjecture",
       "startLine": 109,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "positive",
       "title": "Positive Results",
       "summary": "Defines φ_minus_1 = (√5 − 1)/2 with numerical bounds, then axiomatizes three diameter guarantees for the component containing the origin: pommerenke_case_small_r (r ≤ 1/2 ⇒ diam ≥ 2), pommerenke_case_medium_r (1/2 < r ≤ φ−1 ⇒ diam > 1/r), pommerenke_case_large_r (φ−1 ≤ r ≤ 1 ⇒ diam > 2 − r²)",
       "startLine": 149,
-      "endLine": 175
+      "endLine": 176
     },
     {
       "id": "optimal",
       "title": "Optimal Examples",
       "summary": "Proves zn_diameter (z^n has unit lemniscate diameter exactly 2) and diameter_2_sharp (for r = 0 the bound diam ≥ 2 is tight), axiomatizes diameter_near_1_for_r_eq_1 (for r = 1 one can achieve max diameter < 1 + ε), demonstrating optimality of the positive results",
       "startLine": 177,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "degree",
       "title": "Degree and Components",
       "summary": "Axiomatizes component_count_bound (degree-n polynomial lemniscate has at most n connected components) and proves exterior_unbounded (the complement {|f(z)| ≥ c} is unbounded for c above the leading coefficient, since monic polynomials grow without bound)",
       "startLine": 198,
-      "endLine": 212
+      "endLine": 213
     },
     {
       "id": "capacity",
       "title": "Potential Theory",
       "summary": "Axiomatizes logCapacity (logarithmic capacity of a compact set), the fundamental formula lemniscate_capacity (cap(L(f,c)) = c^{1/n} for degree-n monic f), and capacity_diameter_inequality (diam(S) ≥ 4·cap(S) for connected S), linking the geometric diameter bounds to potential-theoretic invariants",
       "startLine": 214,
-      "endLine": 229
+      "endLine": 230
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Unifies the disproof via erdos_1048 : ¬ EHPConjecture (reducing to EHP_false_for_r_gt_1), defines erdos_1048_answer and erdos_1048_status strings, and proves pommerenke_insight: for any r > 1 and any δ > 0, there exists a monic polynomial with all roots on |z| = r whose lemniscate components all have diameter < δ",
       "startLine": 231,
-      "endLine": 271
+      "endLine": 273
     }
   ],
   "conclusion": {

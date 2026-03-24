@@ -59,7 +59,8 @@
     ],
     "axiomCount": 17,
     "lineCount": 278,
-    "assumptions": "17 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "17 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The Geometry of Polynomial Level Sets**\n\nThis problem originated with Helmut Grunsky and was reported by Erdős, Herzog, and Piranian in their 1958 paper 'Metric properties of polynomials' (EHP58). The question asks about the geometry of **polynomial lemniscates** — the level sets {z : |f(z)| ≤ c}.\n\nFor small c, the lemniscate breaks into separate components around each root. Near a simple root z₀, the component looks like a small disk: |z - z₀| ≤ c^(1/k) where k is multiplicity. Grunsky asked: must these components always be convex?\n\n**The Surprising Answer**: NO! The intuition that 'small regions around roots are nearly circular' breaks down when roots interact. Pommerenke (1961) gave the first counterexample, and Goodman (1966) provided explicit constructions including one with all simple roots.",
@@ -88,77 +89,77 @@
       "title": "Lemniscate Definitions",
       "summary": "Basic definitions: lemniscate, strictLemniscate, lemniscateBoundary",
       "startLine": 50,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "properties",
       "title": "Lemniscate Properties",
       "summary": "Closedness, compactness, and component counting theorems",
       "startLine": 68,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "components",
       "title": "Connected Components",
       "summary": "Component counting and componentContaining helper",
       "startLine": 85,
-      "endLine": 102
+      "endLine": 103
     },
     {
       "id": "convexity",
       "title": "Convexity in ℂ",
       "summary": "IsConvexComplex definition and closedBall convexity",
       "startLine": 104,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "grunsky",
       "title": "The Grunsky Conjecture",
       "summary": "Statement of grunskyConjecture and grunskyConjecture_false",
       "startLine": 119,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Counterexample",
       "summary": "The 1961 counterexample: z^k(z-a) for large k",
       "startLine": 135,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "goodman",
       "title": "Goodman's Counterexamples",
       "summary": "(z²+1)(z-2)² and the simple-roots degree-4 example",
       "startLine": 168,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "referee",
       "title": "Referee's Example",
       "summary": "z(z⁵-1) with symmetric root configuration",
       "startLine": 198,
-      "endLine": 219
+      "endLine": 220
     },
     {
       "id": "positive",
       "title": "Positive Results",
       "summary": "Single-root lemniscates are disks (hence convex)",
       "startLine": 221,
-      "endLine": 230
+      "endLine": 231
     },
     {
       "id": "open-question",
       "title": "Goodman's Open Question",
       "summary": "maxNonConvexComponents as a function of degree",
       "startLine": 232,
-      "endLine": 249
+      "endLine": 250
     },
     {
       "id": "main",
       "title": "Main Results Summary",
       "summary": "erdos_1047 theorem and existence of counterexamples",
       "startLine": 251,
-      "endLine": 277
+      "endLine": 278
     }
   ],
   "conclusion": {
@@ -174,34 +175,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1046",
       "relationship": "companion-problem",
-      "description": "Pommerenke's 1959 lemniscate containment result (connected lemniscates lie in a disc of radius 2) is a positive geometric result for the same class of level sets, contrasting with the non-convexity shown here."
+      "description": "Pommerenke's 1959 lemniscate containment result (connected lemniscates lie in a disc of radius 2) is a positive geometric result for the same class of level sets, contrasting with the non-convexity shown here.",
+      "targetId": "erdos-1046"
     },
     {
-      "target": "erdos-1048",
       "relationship": "companion-problem",
-      "description": "Diameter bounds for polynomial lemniscate components — Pommerenke (1961) also disproved this bound conjecture, the same paper that gave the first counterexample to the Grunsky convexity conjecture."
+      "description": "Diameter bounds for polynomial lemniscate components — Pommerenke (1961) also disproved this bound conjecture, the same paper that gave the first counterexample to the Grunsky convexity conjecture.",
+      "targetId": "erdos-1048"
     },
     {
-      "target": "erdos-1042",
       "relationship": "companion-problem",
-      "description": "Counts connected components of polynomial lemniscates as a function of transfinite diameter of the root set — directly related to the component-level analysis central to this problem."
+      "description": "Counts connected components of polynomial lemniscates as a function of transfinite diameter of the root set — directly related to the component-level analysis central to this problem.",
+      "targetId": "erdos-1042"
     },
     {
-      "target": "erdos-511",
       "relationship": "related-result",
-      "description": "Bounded components of polynomial lemniscates: whether the number of components with diameter > c is bounded by degree. Also disproved, illustrating the rich non-convex geometry of lemniscate level sets."
+      "description": "Bounded components of polynomial lemniscates: whether the number of components with diameter > c is bounded by degree. Also disproved, illustrating the rich non-convex geometry of lemniscate level sets.",
+      "targetId": "erdos-511"
     },
     {
-      "target": "erdos-1043",
       "relationship": "companion-problem",
-      "description": "Projection lengths of polynomial level sets — another 1961 Pommerenke result showing the same sets {z : |f(z)| ≤ 1} that fail convexity also have unexpectedly large projections onto lines."
+      "description": "Projection lengths of polynomial level sets — another 1961 Pommerenke result showing the same sets {z : |f(z)| ≤ 1} that fail convexity also have unexpectedly large projections onto lines.",
+      "targetId": "erdos-1043"
     },
     {
-      "target": "erdos-1039",
       "relationship": "related-result",
-      "description": "Inner disc radius of polynomial lemniscates — studies how large a convex disc can be inscribed inside a lemniscate component, a positive counterpart to the non-convexity studied here."
+      "description": "Inner disc radius of polynomial lemniscates — studies how large a convex disc can be inscribed inside a lemniscate component, a positive counterpart to the non-convexity studied here.",
+      "targetId": "erdos-1039"
     }
   ],
   "relatedProofs": [

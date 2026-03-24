@@ -24,7 +24,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 341,
-    "assumptions": "2 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "2 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal posed this problem about preserving chromatic number while avoiding short odd cycles. It first appeared in Erdős's 1981 paper 'On the combinatorial problems which I would most like to see solved' ([Er81]), where he listed it among approximately 50 problems he considered most important in combinatorics. Rödl proved the case 𝔪 = ℵ₀ and r = 3 (triangle-free) in 1977, using a sophisticated probabilistic argument involving random vertex selection. The problem also appears in Erdős's 1995 survey [Er95d] on combinatorial set theory. The general case and the threshold function f_r(𝔪) remain open, connecting infinite combinatorics, set theory, and structural graph theory. The problem sits at the intersection of Ramsey theory and chromatic graph theory, building on Erdős's seminal 1959 result that graphs with arbitrarily high girth and chromatic number exist.",
@@ -52,63 +53,63 @@
       "title": "Part I: Graph Coloring and Chromatic Number",
       "summary": "Defines cardinal-valued chromatic number and k-colorability for infinite graphs, extending the classical finite notion to arbitrary cardinals using Mathlib's Cardinal type.",
       "startLine": 37,
-      "endLine": 56
+      "endLine": 57
     },
     {
       "id": "cycles",
       "title": "Part II: Cycles in Graphs",
       "summary": "Formalizes the Cycle structure with closure, adjacency, and distinctness conditions. Defines odd cycles, triangles, and the key predicates containsOddCycleLeq and noOddCyclesLeq that express the cycle-avoidance property central to Problem #740.",
       "startLine": 58,
-      "endLine": 105
+      "endLine": 106
     },
     {
       "id": "subgraphs",
       "title": "Part III: Subgraphs",
       "summary": "Defines induced subgraphs via Mathlib's SimpleGraph.induce and the existential predicate hasSubgraphWith, packaging the twin requirements of chromatic number preservation and cycle avoidance.",
       "startLine": 107,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "conjecture",
       "title": "Part IV: The Erdős-Hajnal Conjecture",
       "summary": "States the main conjecture erdosHajnalConjecture for general infinite cardinals and r, plus the triangle-free specialization (r = 3) and the countable case (𝔪 = ℵ₀). This is the formal statement of Erdős Problem #740.",
       "startLine": 127,
-      "endLine": 158
+      "endLine": 159
     },
     {
       "id": "rodl",
       "title": "Part V: Rödl's Theorem",
       "summary": "Declares Rödl's theorem as an axiom: countableCase 3 holds. Derives the trivial corollary countable_triangle_free. This represents the strongest known positive result for Problem #740.",
       "startLine": 160,
-      "endLine": 175
+      "endLine": 176
     },
     {
       "id": "threshold",
       "title": "Part VI: The General Function f_r(𝔪)",
       "summary": "Formalizes the threshold function question: does there exist a cardinal f such that χ(G) ≥ f guarantees the desired subgraph? Records that this quantitative refinement remains open for most parameters.",
       "startLine": 177,
-      "endLine": 200
+      "endLine": 201
     },
     {
       "id": "girth",
       "title": "Part VII: Girth Variant",
       "summary": "Defines girth, the stronger girthConjecture (avoiding ALL short cycles), and proves girth_implies_odd: the girth conjecture implies the odd cycle conjecture. This is one of the few fully verified results in the file.",
       "startLine": 202,
-      "endLine": 246
+      "endLine": 247
     },
     {
       "id": "finite",
       "title": "Part VIII: Finite Analogs",
       "summary": "Defines the finite version of the problem and axiomatizes partial progress for the r = 3 case, connecting to results of Thomassen on finite graphs with high chromatic number.",
       "startLine": 248,
-      "endLine": 268
+      "endLine": 269
     },
     {
       "id": "bipartite",
       "title": "Part IX: Bipartite Subgraphs",
       "summary": "Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite.",
       "startLine": 270,
-      "endLine": 296
+      "endLine": 297
     },
     {
       "id": "summary",

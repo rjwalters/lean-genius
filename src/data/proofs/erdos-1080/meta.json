@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/1080",
     "erdosProblemStatus": "disproved",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -91,56 +91,56 @@
       "title": "Bipartite Graphs and Bipartitions",
       "summary": "IsBipartition, bipartition_edges_between, IsBipartite definitions",
       "startLine": 45,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "cycles",
       "title": "Cycles in Graphs",
       "summary": "HasCycleOfLength, C4Free, C6Free, C4C6Free predicates",
       "startLine": 85,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "extremal-function",
       "title": "The Extremal Function f(n,m)",
       "summary": "maxC4C6FreeEdges definition and achievability axiom",
       "startLine": 114,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "decaen-szekely",
       "title": "De Caen-Székely Bounds (1992)",
       "summary": "Upper and lower bounds, Faudree-Simonovits general bound",
       "startLine": 139,
-      "endLine": 173
+      "endLine": 174
     },
     {
       "id": "lazebnik-improvement",
       "title": "Lazebnik-Ustimenko-Woldar Improvement (1994)",
       "summary": "Improved lower bound Ω(n^(16/15))",
       "startLine": 175,
-      "endLine": 187
+      "endLine": 188
     },
     {
       "id": "disproof",
       "title": "Disproof of Erdős's Conjecture",
       "summary": "erdos_conjecture_false and erdos_1080 main theorems",
       "startLine": 189,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "c8-observation",
       "title": "The C_8 Observation",
       "summary": "Erdős's observation that C_8 is guaranteed",
       "startLine": 235,
-      "endLine": 250
+      "endLine": 251
     },
     {
       "id": "related-results",
       "title": "Related Extremal Results",
       "summary": "Kővári-Sós-Turán theorem, C_4-free characterization",
       "startLine": 252,
-      "endLine": 281
+      "endLine": 282
     },
     {
       "id": "summary",

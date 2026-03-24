@@ -31,7 +31,8 @@
       "Cramér probabilistic model for primes"
     ],
     "lineCount": 340,
-    "assumptions": "22 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "22 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem across several papers from 1955-1985, asking about the local statistical behavior of prime gaps $d_n = p_{n+1} - p_n$. While the Prime Number Theorem (Hadamard, de la Vallée-Poussin 1896) shows $d_n \\sim \\log p_n$ on average, the local behavior — whether consecutive gaps tend to increase, decrease, or stay equal — is far subtler. Cramér's probabilistic model (1936) suggests that gap comparisons should behave like independent coin flips, yielding density $1/2$ for both increasing and decreasing gaps. However, primes exhibit nontrivial correlations (e.g., the Hardy-Littlewood prime $k$-tuples conjecture) that could affect local gap statistics. The equal-gap conjecture ($d_n = d_{n+1}$ infinitely often) is equivalent to asking for infinitely many 3-term arithmetic progressions of consecutive primes. The Green-Tao theorem (2004) gives arbitrarily long APs in primes, but not of consecutive primes. Terence Tao assessed this problem as 'looks difficult' on his blog.",
@@ -60,70 +61,70 @@
       "id": "prime-enum",
       "title": "Part 1: Prime Enumeration and Gaps",
       "startLine": 43,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "nthPrime via Nat.nth, nthPrime_prime, nthPrime_strictMono, specific values."
     },
     {
       "id": "prime-gaps",
       "title": "Part 2: Prime Gaps",
       "startLine": 69,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "primeGap definition, primeGap_pos (proved), specific gap values."
     },
     {
       "id": "density",
       "title": "Part 3: Natural Density",
       "startLine": 102,
-      "endLine": 126,
+      "endLine": 127,
       "summary": "HasDensity, upperDensity, lowerDensity definitions."
     },
     {
       "id": "key-sets",
       "title": "Part 4: The Sets of Interest",
       "startLine": 128,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "gapIncreasingSet, gapDecreasingSet, gapEqualSet, gapEqualSet_eq_inter (proved)."
     },
     {
       "id": "conjectures",
       "title": "Part 5: The Conjectures (OPEN)",
       "startLine": 173,
-      "endLine": 202,
+      "endLine": 203,
       "summary": "erdos_218a, erdos_218b, erdos_218c axioms (all OPEN)."
     },
     {
       "id": "ap-connection",
       "title": "Part 6: Connection to Arithmetic Progressions",
       "startLine": 204,
-      "endLine": 224,
+      "endLine": 225,
       "summary": "threePrimesInAP, gapEqual_iff_ap axiom, infinitely_many_3ap_from_218c (proved)."
     },
     {
       "id": "examples",
       "title": "Part 7: Known Examples of Equal Gaps",
       "startLine": 226,
-      "endLine": 235,
+      "endLine": 236,
       "summary": "example_ap_1, apTriples definition, ap_357 axiom."
     },
     {
       "id": "green-tao",
       "title": "Part 8: Connection to Green-Tao",
       "startLine": 237,
-      "endLine": 248,
+      "endLine": 249,
       "summary": "Green-Tao theorem axiom; does not directly imply conjecture 3."
     },
     {
       "id": "partial",
       "title": "Part 9: Partial Results",
       "startLine": 250,
-      "endLine": 271,
+      "endLine": 272,
       "summary": "gapIncreasingSet_infinite, gapDecreasingSet_infinite axioms, average_gap_growth."
     },
     {
       "id": "symmetry",
       "title": "Part 10: Symmetry Argument (Heuristic)",
       "startLine": 273,
-      "endLine": 300,
+      "endLine": 301,
       "summary": "Heuristic for density 1/2, partition theorem (proved)."
     },
     {
@@ -164,5 +165,27 @@
     "axiomCount": 22,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-932",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: natural-density, number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
+    },
+    {
+      "targetId": "erdos-1137",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, prime-gaps"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-932",
+    "erdos-1055",
+    "erdos-1137"
+  ]
 }

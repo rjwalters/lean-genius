@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/953",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-25",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.Measure.Lebesgue",
@@ -87,56 +87,56 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib modules for inner product spaces, Lebesgue measure, square roots, and metric spaces. Opens the `Erdos953` namespace for the formalization.",
       "startLine": 35,
-      "endLine": 42
+      "endLine": 43
     },
     {
       "id": "distance-predicates",
       "title": "Distance Predicates",
       "summary": "Defines `IsIntegerDistance a b` ($\\exists n \\in \\mathbb{Z},\\; d(a,b) = n$) and `AvoidsIntegerDistances A` (no distinct pair has integer distance). Includes an equivalence theorem expanding the avoidance property via `simp`.",
       "startLine": 44,
-      "endLine": 71
+      "endLine": 72
     },
     {
       "id": "disk-measure",
       "title": "The Disk and Measure",
       "summary": "Defines `openDisk r = \\{x \\in \\mathbb{R}^2 : d(x,0) < r\\}` and proves it is nonempty for $r > 0$. Introduces `maxMeasure r = \\sup\\{\\mu(A)\\}$ over measurable subsets avoiding integer distances—the central quantity of Problem #953.",
       "startLine": 73,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties and Verified Examples",
       "summary": "Fully proves two base cases: `singleton_avoids` (singletons trivially satisfy the avoidance property) and `pair_half_avoids` (the set $\\{(0,0), (0.5, 0)\\}$ avoids integer distances via an `omega` argument showing $0.5 \\notin \\mathbb{Z}$).",
       "startLine": 100,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Axiomatizes the $O(r)$ upper bound on `maxMeasure r` and the circle separation lemma: if two concentric circles have radii differing by 1, an integer-distance-avoiding set cannot intersect both.",
       "startLine": 141,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds and Sárközy Exponent",
       "summary": "Axiomatizes Kovač's lower bound $M(r) \\geq C \\cdot r^{\\alpha}$ with $\\alpha \\approx 0.26$. Introduces the Sárközy exponent as an axiom with bounds $0.25 \\leq \\alpha \\leq 0.27$.",
       "startLine": 168,
-      "endLine": 192
+      "endLine": 193
     },
     {
       "id": "annulus-construction",
       "title": "The Annulus Construction",
       "summary": "Defines `annulus r₁ r₂ = \\{x : r_1 \\leq d(x,0) < r_2\\}$ and axiomatizes the thin annulus property: for $\\delta < 1$, there exists a positive-measure subset of the annulus $[r, r+\\delta)$ that avoids integer distances.",
       "startLine": 194,
-      "endLine": 214
+      "endLine": 215
     },
     {
       "id": "related-problems",
       "title": "Related Distance Problems",
       "summary": "Introduces `AvoidsForbiddenDistances A D` for general forbidden distance sets. Proves that integer avoidance equals $D = \\mathbb{Z}$ avoidance. Axiomatizes Erdős #465 (unit distance upper bounds) and #466 (unit distance lower bounds).",
       "startLine": 216,
-      "endLine": 255
+      "endLine": 256
     },
     {
       "id": "main-question",

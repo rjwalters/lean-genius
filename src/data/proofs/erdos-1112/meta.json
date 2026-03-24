@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1112",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Set.mem_setOf_eq",
@@ -78,49 +78,49 @@
       "title": "Lacunary Sequences",
       "summary": "IsLacunary and HasBoundedGaps definitions",
       "startLine": 38,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "k-fold-sumsets",
       "title": "k-fold Sumsets",
       "summary": "SeqRange, TwoFoldSumset, ThreeFoldSumset, KFoldSumset definitions",
       "startLine": 57,
-      "endLine": 79
+      "endLine": 80
     },
     {
       "id": "avoidance-problem",
       "title": "The Avoidance Problem",
       "summary": "AvoidancePossible and RkExists predicates",
       "startLine": 81,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "erdos-graham",
       "title": "Erdős-Graham Result (1980)",
       "summary": "erdos_graham_1980 axiom and r2_23_equals_2 theorem (proved)",
       "startLine": 98,
-      "endLine": 131
+      "endLine": 132
     },
     {
       "id": "bhj-1997",
       "title": "Bollobás-Hegyvári-Jin Result (1997)",
       "summary": "BHJ axioms and r3_23_not_exists theorem (proved)",
       "startLine": 133,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "chen-2000",
       "title": "Chen's Generalization (2000)",
       "summary": "chen_r2_bound axiom: r₂(a,b) ≤ 2 for b ≠ 2a",
       "startLine": 170,
-      "endLine": 176
+      "endLine": 177
     },
     {
       "id": "tang-yang-2021",
       "title": "Tang-Yang Results (2021)",
       "summary": "tang_yang_2021 axiom: non-existence for k ≥ 3",
       "startLine": 178,
-      "endLine": 187
+      "endLine": 188
     },
     {
       "id": "summary",

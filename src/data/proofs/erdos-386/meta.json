@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 10,
     "lineCount": 158,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 74), asking whether binomial coefficients C(n,k) can equal products of consecutive primes p_i · p_{i+1} · ⋯ · p_j infinitely often. The question sits at the intersection of two deep streams: the prime factorization structure of binomial coefficients (studied since Kummer's 1852 theorem on p-adic valuations via carries in base-p addition) and the distribution of primorial quotients (products of consecutive primes). The known examples — C(21,2) = 210 = 2·3·5·7, C(7,3) = 35 = 5·7, C(10,4) = 210, C(14,4) = 1001 = 7·11·13, and C(15,6) = 5005 = 5·7·11·13 — all have small k ≤ 6 and n ≤ 21. The Sylvester–Schur theorem (1934) guarantees that C(n,k) always has a prime factor > k, providing a lower bound on the 'reach' of its prime factorization. Granville's work on the multiplicative structure of binomial coefficients (2000s) shows they are 'almost always' squarefree, but being a product of *consecutive* primes is a much stronger constraint that remains poorly understood.",
@@ -47,42 +48,42 @@
       "id": "prime-enumeration",
       "title": "Prime Enumeration",
       "startLine": 29,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines nthPrime via Mathlib's countable primes, with axioms for primality and strict monotonicity."
     },
     {
       "id": "consecutive-prime-product",
       "title": "Product of Consecutive Primes",
       "startLine": 50,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Defines consecutivePrimeProd as the Finset.Ico product of nthPrime, and IsProductOfConsecutivePrimes as the existential predicate."
     },
     {
       "id": "known-examples",
       "title": "Known Examples",
       "startLine": 66,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Five axiomatized examples: C(21,2)=210, C(7,3)=35, C(10,4)=210, C(14,4)=1001, C(15,6)=5005."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 92,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "ErdosProblem386: for every k ≥ 2, infinitely many n have C(n,k) equal to a product of consecutive primes."
     },
     {
       "id": "structural-observations",
       "title": "Structural Observations",
       "startLine": 106,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "IsSquarefree definition, consecutivePrimeProd_squarefree axiom, and the proved theorem choose_consec_primes_squarefree."
     },
     {
       "id": "k-equals-2",
       "title": "The k = 2 Case",
       "startLine": 130,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "For k = 2, C(n,2) = n(n-1)/2 must be a primorial quotient. Known example: C(21,2) = 210."
     },
     {

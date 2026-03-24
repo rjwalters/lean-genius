@@ -36,35 +36,36 @@
     ],
     "axiomCount": 4,
     "lineCount": 82,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Definitions",
       "startLine": 23,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Defines **binaryDigit** (k-th binary digit of t mapped to ±1), **randSignPoly** (Rademacher polynomial Σ ε_k x^k), and **polyMax** (M_n(t) = sup over [-1,1] of |P_n|)."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound (Erdős)",
       "startLine": 38,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "Axiom **erdos_lower_bound**: For every ε ∈ (0, 1/2), M_n/n^{1/2-ε} → ∞ a.e. The lower bound comes from evaluating at x=1 (random walk) and the law of the iterated logarithm."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound (Chung)",
       "startLine": 49,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Axiom **chung_upper_bound**: ∃ C > 0, for a.e. t, i.o. n with M_n ≤ C√(n/log log n). An 'infinitely often' bound, not uniform — the log log n factor from LIL considerations."
     },
     {
       "id": "comparison",
       "title": "Salem-Zygmund Comparison",
       "startLine": 59,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Axiom **salem_zygmund_trigonometric**: Random trig polynomials have max Θ(√(n log n)) on [0,2π]. The algebraic polynomial case on [-1,1] differs due to endpoint concentration of monomials x^k."
     },
     {

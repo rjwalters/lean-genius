@@ -21,7 +21,7 @@
     "erdosNumber": 1091,
     "erdosUrl": "https://erdosproblems.com/1091",
     "erdosProblemStatus": "partially-solved",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -106,42 +106,42 @@
       "id": "basic-definitions",
       "title": "Part 1: Basic Definitions",
       "startLine": 27,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Cycle structure (vertex list with adjacency), isOdd, isDiagonal (non-consecutive edge), diagonalCount (unordered pairs via Finset.filter), IsK4Free (no 4-clique), chromaticNumber (min colors via sSup)."
     },
     {
       "id": "larson-theorem",
       "title": "Part 2: Larson's Theorem (1979)",
       "startLine": 70,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "`larson_one_diagonal` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 1$ diagonal. `BollobasErdosAlternative` structure and `bollobas_erdos_conjecture` (axiom)."
     },
     {
       "id": "voss-theorem",
       "title": "Part 3: Voss's Theorem (1982)",
       "startLine": 96,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "`voss_two_diagonals` (axiom): $K_4$-free, $\\chi \\geq 4$ implies odd cycle with $\\geq 2$ diagonals. `voss_implies_larson` (verified corollary via `Nat.le_of_succ_le`)."
     },
     {
       "id": "counterexample",
       "title": "Part 4: Pentagonal Wheel Counterexample",
       "startLine": 113,
-      "endLine": 157,
+      "endLine": 158,
       "summary": "PentagonalWheel definition as SimpleGraph (Fin 6) with proved symmetry/loop-freeness. Axioms for $K_4$-free, $\\chi=4$, max 2 diagonals. Verified `three_diagonals_not_guaranteed` by contradiction with `omega`."
     },
     {
       "id": "general-question",
       "title": "Part 5: General Question (OPEN)",
       "startLine": 159,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of $f(r) \\to \\infty$). The main unsolved part of Problem #1091."
     },
     {
       "id": "related-results",
       "title": "Part 6: Related Results",
       "startLine": 177,
-      "endLine": 189,
+      "endLine": 190,
       "summary": "`K4_free_high_chi_possible` (verified via PentagonalWheel), `mycielski_construction` (axiom: triangle-free graphs with arbitrary $\\chi$)."
     },
     {

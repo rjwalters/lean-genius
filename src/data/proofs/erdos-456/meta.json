@@ -25,7 +25,7 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
     "dateUpdated": "2026-02-12",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -128,49 +128,49 @@
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 28,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Imports `Nat.Prime.Basic` for the `Nat.Prime` predicate and `Nat.Totient` for Euler's totient function $\\varphi$. Opens `Nat` namespace for convenience."
     },
     {
       "id": "core-functions",
       "title": "Core Definitions",
       "startLine": 35,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines `smallestPrimeMod1 n` $= \\inf\\{p : p$ prime, $n \\mid p - 1\\}$ and `smallestTotientDiv n` $= \\inf\\{m > 0 : n \\mid \\varphi(m)\\}$ via `sInf`. Both are noncomputable (depend on Dirichlet's theorem for well-definedness)."
     },
     {
       "id": "pn-properties",
       "title": "Properties of $p_n$",
       "startLine": 50,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Axiomatizes Dirichlet's theorem (infinitely many primes $\\equiv 1 \\pmod{n}$) and three properties of $p_n$: `smallestPrimeMod1_prime` ($p_n$ is prime), `smallestPrimeMod1_cong` ($n \\mid p_n - 1$), `smallestPrimeMod1_minimal` ($p_n \\le p$ for any prime $p \\equiv 1$)."
     },
     {
       "id": "mn-properties",
       "title": "Properties of $m_n$",
       "startLine": 71,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Axiomatizes three properties of $m_n$: `smallestTotientDiv_pos` ($m_n > 0$), `smallestTotientDiv_divides` ($n \\mid \\varphi(m_n)$), `smallestTotientDiv_minimal` ($m_n \\le m$ for any $m > 0$ with $n \\mid \\varphi(m)$)."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 88,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "States five known results: `m_le_p` ($m_n \\le p_n$, trivial), `linnik_bound` ($p_n \\le n^L$), `erdos_strict_inequality` ($m_n < p_n$ infinitely often), `m_over_n_diverges` ($m_n/n \\to \\infty$ a.a.), `van_doorn_power_of_two` ($m_n \\le 2n$ for $n = 2^{2k+1}$)."
     },
     {
       "id": "density",
       "title": "Natural Density",
       "startLine": 120,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Defines `AlmostAll P`: $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall M \\ge N,\\, |\\{n < M : \\neg P(n)\\}| < M$. This encodes 'the exceptional set has density $0$' in the natural density sense."
     },
     {
       "id": "conjectures",
       "title": "The Three Erdős Conjectures",
       "startLine": 130,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "Defines `ErdosProblem456_Part1`: $m_n < p_n$ for a.a. $n$. `Part2`: $p_n/m_n \\to \\infty$ for a.a. $n$ (formalized as $\\forall C,\\, C \\cdot m_n \\le p_n$ a.a.). `Part3`: infinitely many 'rigid' primes $p$ with unique preimage $n = p - 1$. States `part2_implies_part1` (sorry) and `part1_implies_infinitely_many` (sorry)."
     }
   ],

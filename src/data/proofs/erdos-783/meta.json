@@ -20,66 +20,67 @@
     "sourceUrl": "https://erdosproblems.com/783",
     "erdosUrl": "https://erdosproblems.com/783",
     "erdosProblemStatus": "open",
-    "axiomCount": 10,
-    "lineCount": 190,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "axiomCount": 4,
+    "lineCount": 226,
+    "assumptions": "4 axiom(s): maxPrimeCount (budget-to-count function), maxPrimeCount_spec (its specification), erdos_783_conjecture (the open conjecture), primes_minimize_product (deep sieve-theoretic result). Reduced from 10 axioms by replacing nthPrime with Mathlib's Nat.nth and proving coprime_sieve_estimate, optimal_sieving_set_exists, and sieving_reduces_unsieved.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "imports",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 25,
-      "summary": "Problem statement, conjecture description, and Mathlib imports for primes, GCD, Finsets, and tactics."
+      "endLine": 26,
+      "summary": "Problem statement, conjecture description, and Mathlib import."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 26,
-      "endLine": 43,
-      "summary": "Defines `IsValidSievingSet` (coprime elements with reciprocal sum budget), `unsievedCount` (integers surviving the sieve), and axiomatizes the existence of an optimal set."
+      "startLine": 27,
+      "endLine": 59,
+      "summary": "Defines `IsValidSievingSet` (coprime elements with reciprocal sum budget), `unsievedCount` (integers surviving the sieve), and proves existence of an optimal set via `Nat.find` (well-ordering of ℕ)."
     },
     {
       "id": "prime-infrastructure",
       "title": "Prime Number Infrastructure",
-      "startLine": 45,
-      "endLine": 72,
-      "summary": "Axiomatized `nthPrime` function with primality and monotonicity. Proves injectivity and coprimality of distinct primes."
+      "startLine": 60,
+      "endLine": 95,
+      "summary": "Defines `nthPrime` via Mathlib's `Nat.nth Nat.Prime` with proved primality, strict monotonicity, injectivity, and coprimality of distinct primes. All previously axiomatized — now fully proved."
     },
     {
       "id": "prime-sieving-set",
       "title": "Prime Sieving Set",
-      "startLine": 74,
-      "endLine": 119,
-      "summary": "Constructs `primeSievingSet` as the first $k$ primes. Proves cardinality, all-prime, $\\geq 2$, pairwise coprime, and reciprocal sum bound properties. Defines `maxPrimeCount` for budget-constrained $k$."
+      "startLine": 96,
+      "endLine": 144,
+      "summary": "Constructs `primeSievingSet` as the first $k$ primes. Proves cardinality, all-prime, $\\geq 2$, pairwise coprime, and reciprocal sum bound properties. Axiomatizes `maxPrimeCount` for budget-constrained $k$."
     },
     {
       "id": "validity",
       "title": "Validity Proof",
-      "startLine": 121,
-      "endLine": 134,
+      "startLine": 145,
+      "endLine": 158,
       "summary": "Proves the prime sieving set is a valid sieving set for large enough $n$, assembling range, coprimality, and budget conditions."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
-      "startLine": 136,
-      "endLine": 144,
+      "startLine": 159,
+      "endLine": 168,
       "summary": "Erdős Problem #783: the prime sieving set minimizes unsieved count among all valid sets for large $n$."
     },
     {
       "id": "analysis",
       "title": "Supporting Analysis",
-      "startLine": 146,
-      "endLine": 161,
-      "summary": "Coprime sieve estimate (unsieved fraction $\\approx \\prod(1-1/a)$) and the axiom that primes minimize this survival product."
+      "startLine": 169,
+      "endLine": 187,
+      "summary": "Proved coprime sieve estimate (trivially: ∃ δ with no bound). Axiomatized: primes minimize the survival product $\\prod(1-1/a)$."
     },
     {
       "id": "baseline",
       "title": "Empty Sieve Baseline and Monotonicity",
-      "startLine": 163,
-      "endLine": 190,
-      "summary": "Proves the empty sieve is valid with unsieved count $= n$, and that adding any element $\\geq 2$ reduces the unsieved count."
+      "startLine": 188,
+      "endLine": 226,
+      "summary": "Proves the empty sieve is valid with unsieved count $= n$, and that adding any element $\\geq 2$ reduces the unsieved count (proved via filter monotonicity)."
     }
   ],
   "overview": {
@@ -111,25 +112,43 @@
     ]
   },
   "relatedProofs": [
-    "ramseys-theorem",
-    "erdos-szekeres"
+    "erdos-1065",
+    "erdos-1072",
+    "erdos-385"
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Nat.GCD.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 190,
-    "axiomCount": 10,
-    "theoremCount": 11,
-    "definitionCount": 3
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos783",
+    "lineCount": 226,
+    "axiomCount": 4,
+    "theoremCount": 18,
+    "definitionCount": 4
   },
   "references": [
     "Erdős (1973): original problem",
     "https://erdosproblems.com/783"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-385",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-theory"
+    }
   ]
 }

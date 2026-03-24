@@ -23,7 +23,7 @@
     "erdosProblemStatus": "partially-solved",
     "erdosPrizeValue": "$50",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -96,49 +96,49 @@
       "id": "core-defs",
       "title": "Core Definitions",
       "startLine": 41,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Primes set, countingFunction, IsAdditiveComplement, and IsStrongAdditiveComplement."
     },
     {
       "id": "density-conditions",
       "title": "Density Conditions",
       "startLine": 70,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "HasLogSquaredDensity, HasSubLogSquaredDensity, HasLogDensity, HasLogLogLogDensity."
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 96,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Axioms for Lorentz, Erdős, Kolountzakis, and Ruzsa upper bound results."
     },
     {
       "id": "lower-bound",
       "title": "Ruzsa's Lower Bound",
       "startLine": 136,
-      "endLine": 169,
+      "endLine": 170,
       "summary": "Euler's constant e^γ, Ruzsa's liminf lower bound, corollary on suboptimal density."
     },
     {
       "id": "open-question",
       "title": "The Main Open Question",
       "startLine": 171,
-      "endLine": 190,
+      "endLine": 191,
       "summary": "Erdős's $50 question on O(log N), his negative conjecture."
     },
     {
       "id": "optimal-constant",
       "title": "The Optimal Constant",
       "startLine": 192,
-      "endLine": 211,
+      "endLine": 212,
       "summary": "Definition of optimalConstant as infimum, lower bound axiom."
     },
     {
       "id": "goldbach",
       "title": "Connection to Goldbach",
       "startLine": 213,
-      "endLine": 235,
+      "endLine": 236,
       "summary": "Theorem relating Goldbach's conjecture to prime self-complementing."
     },
     {

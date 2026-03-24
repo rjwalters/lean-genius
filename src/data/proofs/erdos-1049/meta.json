@@ -22,7 +22,7 @@
     "erdosNumber": 1049,
     "erdosUrl": "https://erdosproblems.com/1049",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -73,24 +73,6 @@
       "Infinite series convergence (tsum)",
       "p-adic analysis (for understanding Erdős's proof technique)"
     ],
-    "relatedProofs": [
-      {
-        "id": "erdos-1048",
-        "relationship": "sibling",
-        "description": "Related irrationality question about Lambert series generalizations"
-      },
-      {
-        "id": "erdos-1050",
-        "relationship": "sibling",
-        "description": "Closely related irrationality question in the same problem family"
-      }
-    ],
-    "crossReferences": [
-      {
-        "target": "erdos-1048",
-        "context": "Both problems concern the irrationality of values of Lambert-type series"
-      }
-    ],
     "lineCount": 280
   },
   "overview": {
@@ -119,7 +101,7 @@
       "title": "Part I: The Divisor Function",
       "summary": "Defines tau(n) = Nat.divisors.card as the number of positive divisors of n. Proves tau_one (tau(1) = 1) by simp. States tau_prime (tau(p) = 2), tau_prime_pow (tau(p^k) = k+1), tau_multiplicative (tau(mn) = tau(m)*tau(n) for coprime m,n), tau_pos (tau(n) >= 1 for n >= 1), and tau_le (tau(n) <= n) as sorry'd theorems.",
       "startLine": 26,
-      "endLine": 61,
+      "endLine": 62,
       "mathContext": "$\\tau(n) = |\\{d \\in \\mathbb{N} : d \\mid n\\}|$. Key properties: $\\tau(1) = 1$, $\\tau(p) = 2$, $\\tau(p^k) = k+1$, and multiplicativity $\\gcd(m,n)=1 \\implies \\tau(mn) = \\tau(m)\\tau(n)$."
     },
     {
@@ -127,7 +109,7 @@
       "title": "Part II: The Series",
       "summary": "Defines the main series S(t) = tsum 1/(t^n - 1) and the divisor series D(t) = tsum tau(n)/t^n, both as noncomputable real-valued functions. States convergence theorems S_summable and D_summable for t > 1 (sorry'd).",
       "startLine": 63,
-      "endLine": 85,
+      "endLine": 86,
       "mathContext": "$S(t) = \\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1}$ and $D(t) = \\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{t^n}$. Both converge for $t > 1$ since $\\frac{1}{t^n - 1} \\sim \\frac{1}{t^n}$."
     },
     {
@@ -135,7 +117,7 @@
       "title": "Part III: The Identity S(t) = D(t)",
       "summary": "States the classical identity S_eq_D: sum 1/(t^n-1) = sum tau(n)/t^n. Includes the double_sum_identity (interchange of summation over divisor pairs (d,m)) and geometric_divisor (sum_m 1/t^{dm} = 1/(t^d-1) as a geometric series). All sorry'd but with detailed proof outlines in doc comments.",
       "startLine": 87,
-      "endLine": 112,
+      "endLine": 113,
       "mathContext": "$\\sum_{d=1}^{\\infty} \\frac{1}{t^d - 1} = \\sum_{d=1}^{\\infty} \\sum_{m=1}^{\\infty} \\frac{1}{t^{dm}} = \\sum_{n=1}^{\\infty} \\frac{|\\{(d,m): dm=n\\}|}{t^n} = \\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{t^n}$."
     },
     {
@@ -143,7 +125,7 @@
       "title": "Part IV: Erdős's Result for Integers",
       "summary": "Axiomatizes erdos_integer_irrational: S(t) is Irrational for integer t >= 2 (Erdos 1948). Defines S_at_2 and proves S_at_2_irrational as a corollary by applying the axiom with t=2 and norm_num. States S_at_2_first_terms expanding the series as 1 + 1/3 + 1/7 + 1/15 + remainder.",
       "startLine": 114,
-      "endLine": 134,
+      "endLine": 135,
       "mathContext": "Erdős (1948): $\\forall t \\in \\mathbb{Z},\\; t \\ge 2 \\implies S(t) \\notin \\mathbb{Q}$. Corollary: $S(2) = \\sum 1/(2^n - 1) \\approx 1.606695 \\notin \\mathbb{Q}$."
     },
     {
@@ -151,7 +133,7 @@
       "title": "Part V: Chowla's Conjecture",
       "summary": "Defines ChowlaConjecture as the proposition that S(t) is irrational for all rational t > 1. States chowla_conjecture_open as a tautological axiom indicating the conjecture is unresolved. Proves chowla_for_integers showing the conjecture holds for integer t >= 2 via Erdos's result.",
       "startLine": 136,
-      "endLine": 151,
+      "endLine": 152,
       "mathContext": "Chowla's Conjecture: $\\forall t \\in \\mathbb{Q},\\; t > 1 \\implies S(t) \\notin \\mathbb{Q}$. Known for $t \\in \\{2, 3, 4, \\ldots\\}$; open for non-integer rationals like $t = 3/2$."
     },
     {
@@ -159,7 +141,7 @@
       "title": "Part VI: Special Values",
       "summary": "Axiomatizes S_at_2_approx bounding S(2) between 1.606 and 1.607. Defines erdosBorweinConstant := S_at_2. Defines S_at_3 and proves S_at_3_irrational. States asymptotic behavior: S_tendsto_infinity (S(t) -> +inf as t -> 1+) and S_tendsto_zero (S(t) -> 0 as t -> +inf).",
       "startLine": 153,
-      "endLine": 178,
+      "endLine": 179,
       "mathContext": "$E = S(2) \\approx 1.606695$ (Erdős-Borwein constant). $S(t) \\to +\\infty$ as $t \\to 1^+$ and $S(t) \\to 0$ as $t \\to +\\infty$."
     },
     {
@@ -167,7 +149,7 @@
       "title": "Part VII: Algebraic Properties",
       "summary": "Defines TranscendentalConjecture (S(t) is transcendental for algebraic t > 1) and AlgebraicIndependenceConjecture (placeholder for full algebraic independence statement). Proves transcendental_implies_chowla showing the transcendental conjecture subsumes Chowla's.",
       "startLine": 180,
-      "endLine": 197,
+      "endLine": 198,
       "mathContext": "TranscendentalConjecture $\\implies$ ChowlaConjecture since $\\mathbb{Q} \\subset \\overline{\\mathbb{Q}}$: transcendental $\\implies$ irrational."
     },
     {
@@ -175,7 +157,7 @@
       "title": "Part VIII: Connection to Lambert Series",
       "summary": "Defines isLambertSeries as sum a_n * q^n / (1 - q^n). States S_as_lambert showing S(t) equals the Lambert series with a_n = 1 and q = 1/t. Includes lambert_arithmetic_property axiom (placeholder for arithmetic properties of Lambert series).",
       "startLine": 199,
-      "endLine": 217,
+      "endLine": 218,
       "mathContext": "$L(q) = \\sum_{n=1}^{\\infty} \\frac{a_n q^n}{1 - q^n}$. Setting $a_n \\equiv 1$ and $q = 1/t$ gives $L(1/t) = S(t)$."
     },
     {
@@ -183,7 +165,7 @@
       "title": "Part IX: Partial Results",
       "summary": "Includes placeholder axioms partial_rational_results and linear_independence_partial for known partial progress on Chowla's conjecture. Proves S_bounds giving 1/(t-1) <= S(t) <= t/(t-1)^2 (sorry'd), providing useful numerical approximation bounds.",
       "startLine": 219,
-      "endLine": 238,
+      "endLine": 239,
       "mathContext": "$\\frac{1}{t-1} \\le S(t) \\le \\frac{t}{(t-1)^2}$ for $t > 1$. For $t = 2$: $1 \\le S(2) \\le 2$."
     },
     {
@@ -191,7 +173,7 @@
       "title": "Part X: Main Results",
       "summary": "States erdos_1049_partial and erdos_1049 as the main theorem: for integer t >= 2, S(t) is irrational. Defines erdos_1049_answer and erdos_1049_status as String descriptions of the problem's open status. The full Chowla conjecture for non-integer rationals remains unresolved.",
       "startLine": 240,
-      "endLine": 275,
+      "endLine": 280,
       "mathContext": "Main result: $\\forall t \\in \\mathbb{Z},\\; t \\ge 2 \\implies S(t) \\notin \\mathbb{Q}$ (Erdős 1948). Full conjecture for $t \\in \\mathbb{Q}_{>1}$ remains open."
     }
   ],
@@ -243,7 +225,9 @@
     "euler-totient",
     "fundamental-arithmetic",
     "erdos-1003",
-    "erdos-1051"
+    "erdos-1051",
+    "erdos-1048",
+    "erdos-1050"
   ],
   "references": [
     {
@@ -301,10 +285,12 @@
       "Nat",
       "Real"
     ],
-    "namespace": "Erdos1049",
+    "namespace": null,
     "lineCount": 280,
     "axiomCount": 6,
     "theoremCount": 22,
+    "substantiveTheoremCount": 22,
+    "trivialSpecializations": 0,
     "definitionCount": 12
   }
 }

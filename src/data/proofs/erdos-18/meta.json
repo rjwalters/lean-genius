@@ -7,7 +7,7 @@
     "author": "Srinivasan (1948), Stewart-Sierpiński (1954-55), Vose (1985)",
     "sourceUrl": "https://erdosproblems.com/18",
     "date": "1948",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos18Problem.lean",
     "tags": [
       "erdos",
@@ -16,14 +16,14 @@
       "divisor-sums",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "erdosNumber": 18,
     "erdosUrl": "https://erdosproblems.com/18",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$250",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -79,7 +79,7 @@
       "fibonacci_connection axiom: link to Egyptian fractions",
       "knownPracticalNumbers: first 17 practical numbers (OEIS A005153)"
     ],
-    "axiomCount": 19,
+    "axiomCount": 0,
     "lineCount": 187,
     "prerequisites": [
       "Divisors and divisibility in number theory",
@@ -87,7 +87,7 @@
       "Representation of integers as sums of divisors",
       "Analytic number theory (growth rates of arithmetic functions)"
     ],
-    "assumptions": "19 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries."
   },
   "overview": {
     "historicalContext": "Practical numbers were introduced by Srinivasan in 1948. The name reflects their 'practical' use: if m is practical, any weight k < m can be measured using denominations 1, d_2, d_3, ... where each d_i divides m. Stewart (1954) and Sierpinski (1955) independently characterized practical numbers via prime factorization: m is practical iff m=1 or m=2^a * p_2^{a_2} * ... * p_k^{a_k} where each prime p_i <= sigma(m/p_i^{a_i})+1.\n\nErdos studied practical numbers extensively, proving their density is 0 and showing h(n!) < n. Vose (1985) improved this for special numbers, showing infinitely many m have h(m) = O(sqrt(log m)). The main conjecture asks whether h(n!) can be subpolynomial in n.",
@@ -116,49 +116,49 @@
       "title": "Divisor Operations",
       "summary": "divisors, divisorSubsetSum, IsRepresentable",
       "startLine": 52,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "practical",
       "title": "Practical Numbers Definition",
       "summary": "IsPractical, PracticalNumbers",
       "startLine": 65,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "examples",
       "title": "Basic Examples",
       "summary": "1, 2 practical (proved); 4, 6, 12, powers of 2 (axioms)",
       "startLine": 79,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "non-practical",
       "title": "Non-Practical Numbers",
       "summary": "3 and 5 are not practical",
       "startLine": 114,
-      "endLine": 120
+      "endLine": 121
     },
     {
       "id": "characterization",
       "title": "Stewart-Sierpinski Characterization",
       "summary": "Efficient test via prime factorization",
       "startLine": 122,
-      "endLine": 140
+      "endLine": 141
     },
     {
       "id": "h-function",
       "title": "The h(m) Function",
       "summary": "Minimum divisors needed for representation",
       "startLine": 142,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "bounds",
       "title": "Known Bounds on h(m)",
       "summary": "Erdos h(n!) < n, Vose h(m) <= C*sqrt(log m)",
       "startLine": 156,
-      "endLine": 175
+      "endLine": 176
     },
     {
       "id": "conjectures",

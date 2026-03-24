@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1059",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-19",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -99,55 +99,63 @@
       "summary": "Problem statement, references (Guy [Gu04] Problem A2, OEIS A064152, erdosproblems.com), and Mathlib imports for primes, factorials, sets, and finite sets.",
       "startLine": 1,
       "endLine": 23,
-      "mathContext": "Imports `Nat.Prime`, `Nat.factorial`, `Set.Infinite`, `Finset` from Mathlib for the formalization."
+      "mathContext": "Imports `Nat.Prime` (primality predicate), `Nat.factorial` (factorial function and monotonicity lemmas), `Set.Infinite` (infinitary conjecture statement), `Finset` (finite set operations for `interval_cases`), and `Mathlib.Tactic` (for `decide`, `interval_cases`, `omega`, `push_neg`)."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "summary": "Defines `AllFactorialSubtractionsComposite(n)`: for every $k$ with $k! < n$, we have $\\neg(n - k!)$.Prime and $n - k! \\geq 2$. The $\\geq 2$ condition ensures the subtraction is genuinely composite, not 0 or 1.",
-      "startLine": 25,
-      "endLine": 32,
+      "startLine": 24,
+      "endLine": 33,
       "mathContext": "$\\text{AllFact}(n) \\iff \\forall k, \\; k! < n \\implies \\neg(n-k!)\\text{.Prime} \\wedge n-k! \\geq 2$."
     },
     {
-      "id": "examples",
-      "title": "Verified Examples and Counterexample",
-      "summary": "Factorial growth bounds (`factorial_lt_bound` for 101, `factorial_lt_bound_211` for 211) reduce to finite case analysis. Proves $p = 101$ and $p = 211$ satisfy the property via `interval_cases` + `decide`, and $p = 89$ fails via $89 - 6 = 83$ prime.",
+      "id": "factorial-bounds",
+      "title": "Factorial Growth Bounds",
+      "summary": "Private lemmas `factorial_lt_bound` ($k! < 101 \\implies k \\leq 4$) and `factorial_lt_bound_211` ($k! < 211 \\implies k \\leq 5$) reduce the infinite universal quantifier to finite case analysis. Proof pattern: assume $k \\geq 5$ (or 6), use `Nat.factorial_le` for monotonicity ($m \\leq n \\implies m! \\leq n!$), compute $5! = 120 > 101$ (or $6! = 720 > 211$), derive contradiction via `omega`.",
       "startLine": 34,
-      "endLine": 88,
-      "mathContext": "$101 - \\{1,1,2,6,24\\} = \\{100,100,99,95,77\\}$ all composite. $89 - 6 = 83$ is prime (counterexample)."
+      "endLine": 69,
+      "mathContext": "$k! < n \\implies k \\leq \\lfloor \\Gamma^{-1}(n) \\rfloor$. For $n = 101$: $5! = 120 > 101$, so $k \\leq 4$. For $n = 211$: $6! = 720 > 211$, so $k \\leq 5$. General pattern exploits super-exponential growth: `Nat.factorial_le` gives $m \\leq n \\implies m! \\leq n!$."
+    },
+    {
+      "id": "verified-examples",
+      "title": "Verified Examples and Counterexample",
+      "summary": "`example_101` and `example_211`: after factorial bounds reduce to finite cases, `interval_cases` splits into $k \\in \\{0,1,2,3,4\\}$ (or $\\{0,\\ldots,5\\}$), `simp [Nat.factorial]` computes the subtraction, and `decide` verifies compositeness. `counterexample_89`: instantiate $k = 3$, show $89 - 6 = 83$ prime by `decide`, contradicting the universal claim.",
+      "startLine": 70,
+      "endLine": 89,
+      "mathContext": "$101 - \\{0!,1!,2!,3!,4!\\} = \\{100,100,99,95,77\\}$ all composite. $211 - \\{0!,\\ldots,5!\\} = \\{210,210,209,205,187,91\\}$ all composite. $89 - 3! = 83$ prime $\\implies \\neg\\text{AllFact}(89)$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "summary": "Axiomatizes `erdos_1059_conjecture`: `Set.Infinite {p : ℕ | p.Prime ∧ AllFactorialSubtractionsComposite p}`. This is the open problem.",
+      "summary": "Axiomatizes `erdos_1059_conjecture`: `Set.Infinite {p : ℕ | p.Prime ∧ AllFactorialSubtractionsComposite p}`. This is the open problem, supported by a probabilistic heuristic predicting density 1 among primes.",
       "startLine": 90,
-      "endLine": 97,
-      "mathContext": "$|\\{p \\leq N : p\\text{ prime}, \\; \\text{AllFact}(p)\\}| \\to \\infty$ as $N \\to \\infty$."
+      "endLine": 98,
+      "mathContext": "$\\text{Set.Infinite}\\{p : p\\text{ prime}, \\; \\text{AllFact}(p)\\}$. Heuristic: $\\Pr[\\text{all composite}] \\to 1$ as $p \\to \\infty$."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
-      "summary": "Axiomatizes `factorial_count_bound`: for $n \\geq 2$, there exists $l$ with $l! < n \\leq (l+1)!$. This bounds the number of factorials below $n$.",
+      "summary": "Axiomatizes `factorial_count_bound`: for $n \\geq 2$, there exists $l$ with $l! < n \\leq (l+1)!$. This bounds the number of factorials below $n$ to $O(\\log n / \\log \\log n)$ by Stirling's approximation.",
       "startLine": 99,
-      "endLine": 106,
+      "endLine": 107,
       "mathContext": "$\\forall n \\geq 2, \\exists l: l! < n \\leq (l+1)!$. Only $l+1 = O(\\log n / \\log \\log n)$ factorials below $n$."
     },
     {
       "id": "alternative",
       "title": "Erdős's Alternative Approach",
-      "summary": "Axiomatizes `erdos_alternative_approach`: infinitely many $n$ in $(l!, (l+1)!]$ have all prime factors $> l$ and all factorial subtractions composite. This smooth-number variant may be more tractable.",
+      "summary": "Axiomatizes `erdos_alternative_approach`: infinitely many $n$ in $(l!, (l+1)!]$ have all prime factors $> l$ ($l$-rough) and all factorial subtractions composite. This drops primality, replacing it with a roughness condition potentially amenable to sieve methods.",
       "startLine": 108,
-      "endLine": 119,
-      "mathContext": "Relaxes primality to rough-number condition: $n \\in (l!, (l+1)!]$ with $\\min(\\text{prime factors of } n) > l$."
+      "endLine": 120,
+      "mathContext": "Relaxes primality to rough-number condition: $n \\in (l!, (l+1)!]$ with $\\min(\\text{prime factors of } n) > l$. Connected to Dickman $\\rho$-function."
     },
     {
       "id": "summary",
       "title": "Verified Examples Summary",
-      "summary": "Proves `prime_101`, `prime_211` via `decide`, and packages both witnesses into `two_witnesses`: $(101).\\text{Prime} \\wedge \\text{AllFact}(101) \\wedge (211).\\text{Prime} \\wedge \\text{AllFact}(211)$.",
+      "summary": "Proves `prime_101`, `prime_211` via certified `decide` (trial division checked by the kernel). Packages both witnesses into `two_witnesses`: $(101).\\text{Prime} \\wedge \\text{AllFact}(101) \\wedge (211).\\text{Prime} \\wedge \\text{AllFact}(211)$.",
       "startLine": 121,
       "endLine": 143,
-      "mathContext": "Summary: $101, 211 \\in $ OEIS A064152, both verified prime and factorial-avoiding."
+      "mathContext": "Summary: $101, 211 \\in $ OEIS A064152, both verified prime and factorial-avoiding. Lean's `decide` performs certified trial division."
     }
   ],
   "crossReferences": [
@@ -218,7 +226,7 @@
     "lineCount": 143,
     "structureCount": 0,
     "axiomCount": 3,
-    "theoremCount": 6,
+    "theoremCount": 8,
     "lemmaCount": 0,
     "defCount": 1,
     "imports": [

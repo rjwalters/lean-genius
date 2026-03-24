@@ -21,7 +21,7 @@
     "erdosNumber": 805,
     "erdosUrl": "https://erdosproblems.com/805",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -72,35 +72,35 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 38,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "IsClique and IsIndependentSet definitions for graph vertex sets"
     },
     {
       "id": "everywhere-ramsey",
       "title": "Everywhere Ramsey Property",
       "startLine": 48,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "HasEverywhereRamsey and ExistsEverywhereRamseyGraph definitions"
     },
     {
       "id": "alon-sudakov",
       "title": "Alon-Sudakov Negative Result (2007)",
       "startLine": 62,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "No such graph for g(n) = c(log n)³/(log log n)"
     },
     {
       "id": "alon-bucic-sudakov",
       "title": "Alon-Bucić-Sudakov Positive Result (2021)",
       "startLine": 70,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Graph exists for g(n) ≤ 2^{2^{√(log log n)}}"
     },
     {
       "id": "conjecture",
       "title": "The Conjectured Threshold",
       "startLine": 79,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Erdős-Hajnal conjecture that (log n)³ is too small"
     },
     {
@@ -134,5 +134,27 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1029",
+    "erdos-1030"
+  ]
 }

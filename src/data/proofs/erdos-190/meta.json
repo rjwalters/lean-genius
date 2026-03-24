@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 11,
     "lineCount": 250,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This is a canonical Ramsey theory problem from Erdős-Graham [ErGr79, p.333; ErGr80, p.17]. Unlike van der Waerden numbers W(k) (which require monochromatic APs only), H(k) allows rainbow APs as an alternative 'win condition'. The existence of H(k) follows from Szemerédi's theorem: for N large enough, either pigeonhole forces a monochromatic AP, or the coloring uses enough colors for a rainbow AP. The known result H(k)^{1/k} → ∞ is relatively straightforward, but the stronger question H(k)^{1/k}/k → ∞ — equivalently, whether H(k) grows faster than k^k — remains open.",
@@ -47,70 +48,70 @@
       "id": "arithmetic-progressions",
       "title": "Part 1: Arithmetic Progressions",
       "startLine": 40,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Definition of k-term arithmetic progressions as sets {a, a+d, ..., a+(k-1)d} and as function sequences."
     },
     {
       "id": "colorings",
       "title": "Part 2: Colorings",
       "startLine": 54,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Colorings of {1,...,N}, monochromatic sets (all same color), and rainbow sets (all distinct colors)."
     },
     {
       "id": "canonical-property",
       "title": "Part 3: The Canonical Property",
       "startLine": 83,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "A coloring has the canonical property for k-APs if it contains a monochromatic OR rainbow k-AP."
     },
     {
       "id": "h-function",
       "title": "Part 4: The H(k) Function",
       "startLine": 97,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "H(k) defined via Nat.find as the minimum N guaranteeing the canonical property. Existence, specification, and minimality axioms."
     },
     {
       "id": "van-der-waerden",
       "title": "Part 5: Relation to van der Waerden Numbers",
       "startLine": 120,
-      "endLine": 139,
+      "endLine": 140,
       "summary": "Van der Waerden number W(k) defined via Nat.find. H(k) ≤ W(k) and H(k) ≥ k for k ≥ 3."
     },
     {
       "id": "asymptotics",
       "title": "Part 6: Known Asymptotic Results",
       "startLine": 141,
-      "endLine": 160,
+      "endLine": 161,
       "summary": "Known: H(k)^{1/k} → ∞. Conjecture: H(k)^{1/k}/k → ∞ (super-exponential growth)."
     },
     {
       "id": "small-cases",
       "title": "Part 7: Small Cases",
       "startLine": 162,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "Bounds on small values: H(3) ≤ 10, H(4) ≤ 100."
     },
     {
       "id": "connections",
       "title": "Part 8: Connections",
       "startLine": 170,
-      "endLine": 187,
+      "endLine": 188,
       "summary": "Connection to Szemerédi's theorem (density → existence) and canonical vs standard Ramsey theory."
     },
     {
       "id": "difficulty",
       "title": "Part 9: Why This Is Hard",
       "startLine": 189,
-      "endLine": 207,
+      "endLine": 208,
       "summary": "The challenge of precise asymptotics: interplay between monochromatic and rainbow conditions via pigeonhole."
     },
     {
       "id": "summary",
       "title": "Part 10: Summary",
       "startLine": 209,
-      "endLine": 249,
+      "endLine": 250,
       "summary": "H_pos axiom, summary theorem combining H(k) > 0 and H(k)^{1/k} → ∞. Status: OPEN."
     }
   ],
@@ -138,5 +139,27 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-187",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-179",
+    "erdos-187",
+    "erdos-721"
+  ]
 }

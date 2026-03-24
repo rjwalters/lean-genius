@@ -40,7 +40,8 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 6,
     "assumptions": "6 axiom declarations: liouville_approximation_theorem_axiom (algebraic approximation bound), liouville_constant_irrational_axiom (L is irrational), liouville_uncountable_axiom (Liouville numbers uncountable), liouville_add_rat_axiom (closed under rational translation), liouville_mul_rat_axiom (closed under rational scaling), roth_theorem (optimal exponent 2+epsilon)",
-    "lineCount": 444
+    "lineCount": 444,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Joseph Liouville published his groundbreaking result in 1844 in the *Journal de Mathématiques Pures et Appliquées*, a journal he himself had founded in 1836. At the time, mathematicians strongly suspected that transcendental numbers existed — Euler had conjectured as much — but no one had produced a single example. Liouville's insight was indirect: rather than analyzing a specific constant, he identified a *structural property* (superpolynomial approximability by rationals) that forces transcendence. He then exhibited $L = \\sum 10^{-n!}$ as a concrete number with this property. This was nearly 30 years before Cantor's cardinality argument (1874) showed transcendentals are overwhelmingly common, and predated Hermite's proof that $e$ is transcendental (1873) and Lindemann's proof for $\\pi$ (1882). Liouville's method via Diophantine approximation remains the conceptual foundation for modern transcendence theory, influencing the Thue-Siegel-Roth progression that culminated in Roth's Fields Medal.",
@@ -63,7 +64,7 @@
       "id": "introduction",
       "title": "Historical Introduction and Documentation",
       "startLine": 8,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Module documentation covering the historical significance of Liouville's 1844 result as the first explicit transcendental number, theorem statements, Mathlib dependencies, and references.",
       "mathContext": "Liouville's theorem (1844): if $\\alpha$ is algebraic of degree $n \\geq 2$, then $\\exists c > 0$ such that $|\\alpha - p/q| > c/q^n$ for all $p/q \\in \\mathbb{Q}$. A **Liouville number** violates this bound for every $n$, hence is transcendental. The Liouville constant $L = \\sum_{k=1}^{\\infty} 10^{-k!} = 0.110001000000000000000001\\ldots$ was the first explicit transcendental (Wiedijk #18)."
     },
@@ -79,7 +80,7 @@
       "id": "approximation-theorem",
       "title": "Liouville's Approximation Theorem",
       "startLine": 105,
-      "endLine": 163,
+      "endLine": 164,
       "summary": "The approximation bound: algebraic numbers of degree n resist rational approximation beyond c/q^n. Stated as an axiom with the full proof outline via minimal polynomials and the Mean Value Theorem.",
       "mathContext": "If $\\alpha$ is algebraic of degree $n$ with minimal polynomial $f$, then for $p/q \\neq \\alpha$: $|f(p/q)| \\geq 1/q^n$ (since $q^n f(p/q) \\in \\mathbb{Z} \\setminus \\{0\\}$). By the Mean Value Theorem: $|f(p/q)| = |f(p/q) - f(\\alpha)| \\leq M|p/q - \\alpha|$ where $M = \\max_{|x-\\alpha|\\leq 1}|f'(x)|$. Combining: $|\\alpha - p/q| \\geq 1/(Mq^n)$. Setting $c = 1/M$ gives Liouville's bound."
     },
@@ -87,7 +88,7 @@
       "id": "transcendence",
       "title": "Transcendence of Liouville Numbers",
       "startLine": 165,
-      "endLine": 204,
+      "endLine": 205,
       "summary": "Main result: Liouville numbers are transcendental. Proved via Mathlib's Liouville.transcendental, with an alternative formulation showing non-algebraicity explicitly.",
       "mathContext": "Proof by contradiction: suppose $\\alpha$ is Liouville and algebraic of degree $n$. By the approximation theorem, $|\\alpha - p/q| > c/q^n$ for all $p/q$. But the Liouville property gives $|\\alpha - p/q| < 1/q^{n+1}$ for some $p/q$ with $q$ large enough that $1/q^{n+1} < c/q^n$ (i.e., $q > 1/c$). Contradiction. Therefore $\\alpha$ is transcendental."
     },
@@ -95,7 +96,7 @@
       "id": "liouville-constant",
       "title": "The Liouville Constant",
       "startLine": 206,
-      "endLine": 257,
+      "endLine": 258,
       "summary": "Explicit construction of the first transcendental number L = Σ 10^(-n!), with Lean proofs that it is Liouville, transcendental, and irrational.",
       "mathContext": "$L = \\sum_{k=1}^{\\infty} 10^{-k!} = 0.1100010000000000000000010\\ldots$ The rational approximation $p_n/q_n = \\sum_{k=1}^{n} 10^{-k!}$ with $q_n = 10^{n!}$ satisfies $|L - p_n/q_n| = \\sum_{k=n+1}^{\\infty} 10^{-k!} < 2 \\cdot 10^{-(n+1)!} = 2/q_n^{n+1}$. Since $(n+1)! \\geq (n+1) \\cdot n!$, this beats $c/q_n^m$ for any fixed $m$, proving $L$ is Liouville."
     },
@@ -103,7 +104,7 @@
       "id": "properties",
       "title": "Properties of Liouville Numbers",
       "startLine": 259,
-      "endLine": 297,
+      "endLine": 298,
       "summary": "Algebraic closure properties: Liouville numbers are closed under rational translation and nonzero rational scaling, and the set is uncountable.",
       "mathContext": "If $\\alpha$ is Liouville and $r \\in \\mathbb{Q}$, then $\\alpha + r$ is Liouville (shifting rational approximations). If $r \\neq 0$, then $r\\alpha$ is Liouville (scaling). The set of Liouville numbers is uncountable: $\\{\\sum b_k \\cdot 10^{-k!} : b_k \\in \\{1, 2\\}\\}$ has cardinality $2^{\\aleph_0}$ and consists entirely of Liouville numbers."
     },
@@ -111,7 +112,7 @@
       "id": "roth-theorem",
       "title": "Roth's Theorem and Generalizations",
       "startLine": 299,
-      "endLine": 346,
+      "endLine": 347,
       "summary": "The Thue-Siegel-Roth progression improving the approximation exponent from n to 2+ε, culminating in Roth's optimal result (Fields Medal 1958).",
       "mathContext": "The progression: Liouville (1844) $|\\alpha - p/q| > c/q^n$; Thue (1909) $> c/q^{n/2+1}$; Siegel (1921) $> c/q^{2\\sqrt{n}}$; Dyson (1947) $> c/q^{\\sqrt{2n}}$; Roth (1955) $> c/q^{2+\\varepsilon}$ for any $\\varepsilon > 0$. Roth's bound is optimal: Dirichlet's theorem gives $|\\alpha - p/q| < 1/q^2$ for infinitely many $p/q$, so the exponent cannot be reduced below 2."
     },
@@ -119,7 +120,7 @@
       "id": "connections",
       "title": "Connections to Other Results",
       "startLine": 348,
-      "endLine": 373,
+      "endLine": 374,
       "summary": "Relationships to Hermite-Lindemann, Gelfond-Schneider, Baker's theorem, and Diophantine approximation (Dirichlet, Hurwitz, continued fractions).",
       "mathContext": "The transcendence hierarchy: Liouville (1844, Diophantine approximation) $\\to$ Hermite (1873, $e$ transcendental) $\\to$ Lindemann (1882, $\\pi$ transcendental) $\\to$ Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental for algebraic $\\alpha \\neq 0,1$ and irrational algebraic $\\beta$) $\\to$ Baker (1966, linear independence of logarithms). Each method is strictly more powerful than its predecessors."
     },
@@ -127,7 +128,7 @@
       "id": "examples",
       "title": "Examples and Computations",
       "startLine": 375,
-      "endLine": 386,
+      "endLine": 387,
       "summary": "Generalization: Σ b^(-n!) is transcendental for any base b ≥ 2, with Lean proofs for b=2 and arbitrary b.",
       "mathContext": "For any integer $b \\geq 2$: $L_b = \\sum_{k=1}^{\\infty} b^{-k!}$ is Liouville, hence transcendental. The proof is identical to the $b = 10$ case: $|L_b - p_n/b^{n!}| < 2b^{-(n+1)!}$ and $(n+1)!/n! = n+1 \\to \\infty$. Examples: $L_2 = 0.110001000000000000000001\\ldots_2$, $L_{10}$ is the classical Liouville constant."
     },
@@ -135,7 +136,7 @@
       "id": "measure-theory",
       "title": "Measure-Theoretic Perspective",
       "startLine": 388,
-      "endLine": 411,
+      "endLine": 412,
       "summary": "Liouville numbers form a measure-zero yet uncountable G-delta dense set — topologically generic but measure-theoretically negligible.",
       "mathContext": "The set of Liouville numbers $\\mathcal{L}$ has Lebesgue measure zero ($\\lambda(\\mathcal{L}) = 0$) but is a dense $G_\\delta$ set (countable intersection of open dense sets), hence comeagre by the Baire category theorem. This is a striking example of measure-category duality: $\\mathcal{L}$ is 'large' topologically (residual) but 'small' measure-theoretically (null). Almost all reals are transcendental but not Liouville; the 'generic' transcendental (like $e$ or $\\pi$) is well-approximable but not superpolynomially so."
     },

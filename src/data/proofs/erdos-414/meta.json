@@ -22,6 +22,7 @@
     "sourceUrl": "https://erdosproblems.com/414",
     "erdosUrl": "https://erdosproblems.com/414",
     "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
     "date": "1980",
     "dateAdded": "2026-01-23",
     "relatedProblems": [
@@ -46,31 +47,28 @@
         "relation": "The Collatz conjecture: canonical example of orbit coalescence for an iterated function, but with non-monotone dynamics"
       }
     ],
-    "axiomCount": 4,
+    "axiomCount": 3,
     "assumptions": [
-      "h_strictly_increasing: h(n) > n for n ≥ 1",
-      "orbit_strictly_increasing: orbits are strictly increasing sequences",
-      "h_upper: h(n) ≤ 2n for n ≥ 1",
-      "h_prime: h(p) = p + 2 for primes p",
-      "h_one: h(1) = 2",
-      "h_two: h(2) = 4",
-      "h_three: h(3) = 5",
-      "erdos_414_conjecture: all orbits eventually merge (main open question)",
-      "single_eventual_orbit: equivalent single-orbit formulation",
-      "orbit_1_start: orbit from 1 is 1, 2, 4, 7, 9, ...",
-      "orbit_3_merges_with_1: orbit from 3 reaches 7, merging with orbit from 1",
-      "average_divisor_count: PLACEHOLDER — declares `True`, not the actual Dirichlet asymptotic. Contributes no mathematical content",
-      "orbit_linear_lower: orbit values grow at least linearly",
-      "orbits_get_close: weaker statement that orbits get arbitrarily close"
+      "erdos_414_conjecture: ∀ m, n ≥ 1, ∃ i, j: h^i(m) = h^j(n) — all orbits eventually merge (main open question)",
+      "single_eventual_orbit: equivalent formulation — there exists a single sequence S that all orbits eventually follow",
+      "orbits_get_close: ∀ m, n ≥ 1, ∀ D, ∃ i, j: |h^i(m) - h^j(n)| < D — weaker proximity statement (also open)"
     ],
     "lineCount": 155
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Problem statement: do orbits of $h(n) = n + \\tau(n)$ all eventually merge? Module docstring describes the iteration $n \\to n + \\tau(n)$, OEIS A064491, and the single-orbit conjecture. Imports Mathlib for natural number basics, divisor counting, and Finset.",
+      "mathContext": "$h : \\mathbb{N} \\to \\mathbb{N}$, $h(n) = n + \\tau(n)$ where $\\tau(n) = \\sum_{d \\mid n} 1$. The iteration produces orbits $n, h(n), h^2(n), \\ldots$ conjectured to all merge into a single trajectory."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 26,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Defines **h(n) = n + τ(n)** using `Nat.divisors.card` and the orbit sequence **hOrbit(n, k) = h^k(n)** by recursion. These form the basic objects of the dynamical system on ℕ.",
       "mathContext": "$h(n) = n + \\tau(n)$ where $\\tau(n) = |\\{d : d \\mid n\\}|$. Orbit: $h^0(n) = n$, $h^{k+1}(n) = h(h^k(n))$."
     },
@@ -78,7 +76,7 @@
       "id": "basic-properties",
       "title": "Basic Properties of h",
       "startLine": 36,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "**h_strictly_increasing**: h(n) > n since τ(n) ≥ 1. **h_upper**: h(n) ≤ 2n. **h_prime**: h(p) = p + 2 for primes. Concrete values: h(1) = 2, h(2) = 4, h(3) = 5. These establish that orbits are strictly increasing, eliminating cycles and fixed points.",
       "mathContext": "$h(n) > n$ (since $\\tau(n) \\geq 1$), $h(n) \\leq 2n$ (since $\\tau(n) \\leq n$), $h(p) = p + 2$ for primes $p$ (since $\\tau(p) = 2$). No fixed points or cycles."
     },
@@ -86,7 +84,7 @@
       "id": "main-conjecture",
       "title": "The Merging Conjecture (OPEN)",
       "startLine": 98,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "**erdos_414_conjecture**: ∀ m, n ≥ 1, ∃ i, j with h^i(m) = h^j(n). Equivalently, **single_eventual_orbit**: all orbits merge into one trajectory. The directed graph n → h(n) is conjectured to be a tree with a single trunk.",
       "mathContext": "$\\forall m, n \\geq 1, \\exists i, j \\in \\mathbb{N}: h^i(m) = h^j(n)$. Equivalently, the directed graph $n \\to h(n)$ has a single connected component."
     },
@@ -94,9 +92,9 @@
       "id": "orbit-examples",
       "title": "Orbit Computations and Merging",
       "startLine": 113,
-      "endLine": 125,
+      "endLine": 126,
       "summary": "**orbit_1_start**: 1 → 2 → 4 → 7 → 9 → ... (OEIS A064491). **orbit_3_merges_with_1**: h²(3) = h³(1) = 7, the simplest non-trivial merge. The collision occurs because h(4) = h(5) = 7 — different inputs producing the same output.",
-      "mathContext": "Orbit from 1: $1 \\to 2 \\to 4 \\to 7 \\to 9 \\to \\ldots$ Merge: $h^2(3) = h(5) = 7 = h(4) = h^3(1)$."
+      "mathContext": "Orbit from 1: $1 \\to 2 \\to 4 \\to 7 \\to 9 \\to 12 \\to 18 \\to 24 \\to \\ldots$ (OEIS A064491). Orbit from 3: $3 \\to 5 \\to 7 \\to \\ldots$ Merge at step 2/3: $h^2(3) = h(5) = 7 = h(4) = h^3(1)$. The collision $h(4) = h(5) = 7$ is a 'collision point' — two inputs mapping to the same output because $\\tau(4) = 3$ and $\\tau(5) = 2$ compensate."
     },
     {
       "id": "growth-rate",
@@ -204,8 +202,8 @@
   "leanFile": {
     "lineCount": 155,
     "structureCount": 0,
-    "axiomCount": 4,
-    "theoremCount": 10,
+    "axiomCount": 3,
+    "theoremCount": 13,
     "lemmaCount": 0,
     "defCount": 2,
     "imports": [

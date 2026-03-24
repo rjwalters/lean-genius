@@ -24,7 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/435",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -97,21 +97,21 @@
       "title": "Module Documentation",
       "summary": "Problem statement, history (Erdős–Graham 1980, Hwang–Song 2024, Peake–Cambie), and OEIS reference A389479.",
       "startLine": 1,
-      "endLine": 25
+      "endLine": 26
     },
     {
       "id": "imports",
       "title": "Imports and Namespace",
       "summary": "Imports `Nat.Choose.Basic` ($\\binom{n}{k}$), `Nat.Prime.Basic`, `Nat.Factorization.Basic` ($v_p(n)$, `primeFactors`), and `Finset.Basic` ($\\sum$). Opens `Erdos435` namespace.",
       "startLine": 27,
-      "endLine": 32
+      "endLine": 33
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines `IsPrimePower` ($n = p^k$), `NotPrimePower`, `IsRepresentable` ($m = \\sum c_i \\binom{n}{i}$), `representableSet`, and `frobeniusBinomial` ($\\sup\\{m : m \\notin S_n\\}$).",
       "startLine": 34,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "the-formula",
@@ -125,35 +125,35 @@
       "title": "Main Theorem and Consequences",
       "summary": "Axiomatizes `hwang_song_theorem`: $g(S_n) = \\text{hwangSongFormula}(n)$, plus `non_representable_exist` (gaps exist) and `large_numbers_representable` ($m > g \\implies m \\in S_n$).",
       "startLine": 96,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "special-cases",
       "title": "Special Cases: $n = 6$ and $n = 10$",
       "summary": "Proves $\\neg\\text{IsPrimePower}(6)$ by `interval_cases`. Axiomatizes $g(S_6) = 49$, computed as $\\binom{6}{2}(2-1) + \\binom{6}{3}(3-1) - 6 = 15 + 40 - 6$.",
       "startLine": 121,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "prime-power-special",
       "title": "Why Prime Powers are Special",
       "summary": "Documents the degenerate case: for $n = p^k$, Lucas' theorem gives $p \\mid \\binom{n}{i}$ for all $0 < i < n$, making the complement infinite.",
       "startLine": 146,
-      "endLine": 163
+      "endLine": 164
     },
     {
       "id": "semigroup-structure",
       "title": "Numerical Semigroup Structure",
       "summary": "Axiomatizes `representable_semigroup` ($0 \\in S_n$ and additive closure) and `gcd_binomials_one` ($\\gcd(\\binom{n}{1}, \\binom{n}{2}) = 1$ for non-prime-powers).",
       "startLine": 165,
-      "endLine": 186
+      "endLine": 187
     },
     {
       "id": "related-results",
       "title": "Related Classical Results",
       "summary": "Axiomatizes Sylvester–Frobenius theorem $g(a,b) = ab - a - b$ (placeholder). Documents Sylvester–Denumerant connection and OEIS A389479.",
       "startLine": 188,
-      "endLine": 210
+      "endLine": 211
     },
     {
       "id": "main-results",

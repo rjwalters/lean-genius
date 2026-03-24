@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/479",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-16",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Int.ModEq",
@@ -83,42 +83,42 @@
       "id": "solution-set",
       "title": "The Solution Set",
       "startLine": 28,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Definition of SolutionSet(k) and why k = 1 is impossible."
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
       "startLine": 68,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Powers of 2 and k = -1 cases proved by Graham, Lehmer, and Lehmer."
     },
     {
       "id": "conjecture",
       "title": "Graham's Conjecture",
       "startLine": 88,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Statement of the main open conjecture."
     },
     {
       "id": "computational",
       "title": "Computational Difficulty",
       "startLine": 104,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "The k = 3 case with smallest n = 4700063497."
     },
     {
       "id": "structure",
       "title": "Understanding the Structure",
       "startLine": 130,
-      "endLine": 157,
+      "endLine": 158,
       "summary": "Fermat's Little Theorem and the infinitude of SolutionSet(2)."
     },
     {
       "id": "examples",
       "title": "Verified Examples and OEIS",
       "startLine": 159,
-      "endLine": 199,
+      "endLine": 200,
       "summary": "Concrete verifications using decide tactic and OEIS connection."
     },
     {
@@ -156,5 +156,27 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-2",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1056",
+    "erdos-1074",
+    "erdos-2"
+  ]
 }

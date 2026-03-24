@@ -7,7 +7,7 @@
     "author": "Erdős (1949, 1964)",
     "sourceUrl": "https://erdosproblems.com/995",
     "date": "1964",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos995Problem.lean",
     "tags": [
       "erdos",
@@ -28,7 +28,7 @@
       "Weyl's theorem on uniform distribution",
       "Measure theory fundamentals"
     ],
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.log",
@@ -61,47 +61,8 @@
       "Proved powers of 3 are lacunary",
       "Noted connection to Strong Law of Large Numbers"
     ],
-    "crossReferences": [
-      {
-        "targetId": "erdos-996",
-        "relationship": "related",
-        "description": "Companion problem on the Strong Law of Large Numbers for lacunary sums — same setup ∑f({αn_k}) but studies almost sure convergence of ergodic averages"
-      },
-      {
-        "targetId": "erdos-992",
-        "relationship": "uses-same-technique",
-        "description": "Discrepancy of sequences mod 1 — the Erdős-Gál theorem gives discrepancy bounds for lacunary sequences, directly measuring equidistribution of fractional parts"
-      },
-      {
-        "targetId": "erdos-987",
-        "relationship": "uses-same-technique",
-        "description": "Exponential sums and sequence discrepancy — Erdős-Turán inequality controls equidistribution via Weyl sums, the main analytic tool for lacunary sequence problems"
-      },
-      {
-        "targetId": "erdos-994",
-        "relationship": "related",
-        "description": "Khintchine's equidistribution conjecture (disproved) — explores limits of equidistribution theory for fractional parts {αn_k}"
-      },
-      {
-        "targetId": "erdos-999",
-        "relationship": "related",
-        "description": "Duffin-Schaeffer conjecture (solved 2020) — metric Diophantine approximation for almost all α, connected through the measure-theoretic framework of fractional part distribution"
-      },
-      {
-        "targetId": "laws-of-large-numbers",
-        "relationship": "generalizes",
-        "description": "Classical Strong Law of Large Numbers — lacunary sums satisfy analogous laws due to quasi-independence of {αn_k} terms"
-      }
-    ],
     "axiomCount": 5,
     "lineCount": 232,
-    "relatedProofs": [
-      "erdos-996",
-      "erdos-992",
-      "erdos-987",
-      "erdos-994",
-      "erdos-999"
-    ],
     "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
@@ -168,7 +129,7 @@
       "title": "The Gap",
       "summary": "bound_gap_lower_exists, bound_gap_upper_universal (axioms packaging the bounds), exponent_gap (log log N < log N, sorry)",
       "startLine": 118,
-      "endLine": 138,
+      "endLine": 139,
       "mathContext": "$(\\log\\log N)^{1/2} \\ll (\\log N)^{1/2}$. At $N = 10^{10^{10}}$: ratio $\\approx 30{,}000$."
     },
     {
@@ -176,7 +137,7 @@
       "title": "Examples",
       "summary": "geometricSeq 2^k (proved lacunary), powersOf3 3^k (proved lacunary), fib (eventually lacunary, ratio → φ)",
       "startLine": 140,
-      "endLine": 172,
+      "endLine": 173,
       "mathContext": "$2^k$ ($q = 2$), $3^k$ ($q = 3$), $F_k$ ($q \\to \\varphi \\approx 1.618$). Proved via constructor + norm_num."
     },
     {
@@ -184,7 +145,7 @@
       "title": "Connection to Strong Law of Large Numbers",
       "summary": "slln_connection (axiom: lacunary sums bounded by C√N, the zeroth-order estimate from variance ~ N)",
       "startLine": 174,
-      "endLine": 184,
+      "endLine": 185,
       "mathContext": "$\\text{Var}(S_N) \\sim cN \\Rightarrow |S_N| \\leq C\\sqrt{N}$ a.e. (zeroth-order estimate from Chebyshev)."
     },
     {
@@ -192,7 +153,7 @@
       "title": "Erdős's Opinion",
       "summary": "ErdosRefinedConjecture (upper bound improvable to (log log N)^{1/2+ε}, matching lower bound)",
       "startLine": 186,
-      "endLine": 198,
+      "endLine": 199,
       "mathContext": "Erdős (1964): upper bound should be $o(N(\\log\\log N)^{1/2+\\varepsilon})$, matching the lower bound."
     },
     {
@@ -200,7 +161,7 @@
       "title": "Main Results",
       "summary": "erdos_995_statement (proved: ⟨lower_exists, upper_universal⟩), erdos_995_summary (= erdos_995_statement)",
       "startLine": 200,
-      "endLine": 228,
+      "endLine": 232,
       "mathContext": "`erdos_995_statement = ⟨bound_gap_lower_exists, bound_gap_upper_universal⟩`. Gap OPEN."
     }
   ],
@@ -301,5 +262,27 @@
       "description": "Most recent significant progress on the gap: improved upper bounds under additional conditions on the lacunary sequence and the function f",
       "relevance": "supporting"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1002",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, diophantine-approximation"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, probability"
+    },
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, probability"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1002",
+    "erdos-1138",
+    "erdos-1144"
   ]
 }

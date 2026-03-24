@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "ballot-problem-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Module Overview: From Classical to Generalized Ballot Problem",
+    "content": "The module docstring establishes the generalized ballot problem for $k$-fold dominance and outlines the proof strategy via the Dvoretzky-Motzkin cycle lemma. Imports `Archive.Wiedijk100Theorems.BallotProblem` (Mathlib's classical ballot formalization, Wiedijk #30) and `Mathlib.Tactic` for proof automation. Opens `List` and `Set` namespaces for convenient list manipulation.\n\nThe generalization from $k=1$ (classical: A always leads B) to arbitrary $k$ (A always has $>k$ times B's votes) changes the lattice path model: downsteps become $-k$ instead of $-1$, making the path analysis significantly harder. The cycle lemma handles this elegantly via rotational symmetry.",
+    "mathContext": "Classical ($k=1$): $P(\\text{A leads throughout}) = \\frac{p-q}{p+q}$ (Bertrand 1887). Generalized: $P = \\frac{a-kb}{a+b}$ (Dvoretzky-Motzkin 1947). The lattice path has steps $+1$ (A-vote) and $-k$ (B-vote), total displacement $S = a - kb$, and the cycle lemma counts exactly $S$ good rotations out of $n = a+b$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Wiedijk #30",
+      "ballot problem history",
+      "lattice paths",
+      "cycle lemma"
+    ],
+    "prerequisites": [
+      "Archive.Wiedijk100Theorems.BallotProblem",
+      "Mathlib.Tactic"
+    ]
+  },
+  {
     "id": "ann-generalized-def",
     "proofId": "ballot-problem-oq-01",
     "range": {
@@ -275,6 +298,31 @@
       "goodRotations_card_le",
       "goodRotations_card_ge",
       "le_antisymm"
+    ]
+  },
+  {
+    "id": "ann-lattice-path",
+    "proofId": "ballot-problem-oq-01",
+    "range": {
+      "startLine": 702,
+      "endLine": 710
+    },
+    "type": "insight",
+    "title": "Lattice Path Interpretation: Geometry of Vote Counting",
+    "content": "The concluding section provides the geometric interpretation that unifies the entire formalization. Each vote sequence maps to a lattice path: A-votes are $+1$ upsteps and B-votes are $-k$ downsteps. The ballot condition (A always has $>k$ times B's votes) corresponds to the path staying strictly above the $x$-axis. The cycle lemma counts exactly $a - kb$ favorable starting positions out of $a + b$ total rotations, giving the probability $P = (a-kb)/(a+b)$.\n\nThis geometric viewpoint connects the ballot problem to a rich tradition in combinatorics: Dyck paths ($k=1$, counted by Catalan numbers), Motzkin paths (with horizontal steps), and general lattice paths with prescribed step sets. The $k$-fold generalization studied here corresponds to paths with the asymmetric step set $\\{+1, -k\\}$.",
+    "mathContext": "The lattice path $(x_0, y_0), (x_1, y_1), \\ldots, (x_n, y_n)$ with $x_i = i$ and $y_i = \\sigma(i) = \\sum_{j=1}^{i} l_j$ stays above the $x$-axis iff $\\sigma(i) > 0$ for all $1 \\leq i \\leq n$. For $k=1$: these are Dyck paths, counted by $C_n = \\frac{1}{n+1}\\binom{2n}{n}$. For general $k$: the paths have the asymmetric step set $\\{+1, -k\\}$ and are counted by the cycle lemma.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dyck paths",
+      "Catalan numbers",
+      "lattice path enumeration",
+      "asymmetric step sets",
+      "ballot sequences"
+    ],
+    "prerequisites": [
+      "prefixSum",
+      "kStaysPositive",
+      "cycle lemma"
     ]
   }
 ]

@@ -28,7 +28,8 @@
       "Powers of 2 in combinatorics",
       "Ramsey theory for infinite structures"
     ],
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Peter Mihók and Paul Erdős during the period 1993-1997, building on earlier work connecting chromatic number to cycle structure. Penman first observed that the result holds when the chromatic number is uncountable, using the Erdős-Hajnal theorem (which gives arbitrarily large $K_{m,m}$ subgraphs, each containing all even cycles up to $2m$). The countable case was much harder and remained open for over two decades. The breakthrough came from Hong Liu and Richard Montgomery in 2020, who proved a key result connecting high chromatic number to high minimum degree subgraphs: every graph with $\\chi > k$ contains a subgraph with $\\delta > k/2$. Combined with the de Bruijn-Erdős compactness theorem (1951) and the Bondy-Simonovits theorem on even cycles in dense graphs, this resolved the full problem. Liu and Montgomery's result was part of their broader work on Mader's conjecture about clique subdivisions in $C_4$-free graphs.",
@@ -55,63 +56,63 @@
       "title": "Core Definitions",
       "summary": "Defines cyclic successor (Fin.succMod), cycle containment via injective vertex maps, the set of cycle lengths in G, and the infinite chromatic number property.",
       "startLine": 34,
-      "endLine": 51
+      "endLine": 52
     },
     {
       "id": "minimum-degree",
       "title": "Minimum Degree and Subgraphs",
       "summary": "Defines minimum degree δ(G) as the infimum of vertex degrees, and ContainsMinDegreeSubgraph asserting existence of a subgraph with minimum degree ≥ d.",
       "startLine": 53,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "key-lemmas",
       "title": "Key Lemmas on Degree and Cycles",
       "summary": "Axiomatizes two results: high minimum degree implies an even cycle (weaker form), and the full Bondy-Simonovits theorem guaranteeing ALL even cycle lengths from 4 to 2d.",
       "startLine": 66,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "de-bruijn-erdos",
       "title": "de Bruijn-Erdős Compactness Theorem",
       "summary": "Defines InfGraph for possibly infinite graphs, along with colorability and infinite chromatic number. Axiomatizes the de Bruijn-Erdős theorem: infinite χ → finite high-χ subgraphs.",
       "startLine": 85,
-      "endLine": 116
+      "endLine": 117
     },
     {
       "id": "liu-montgomery",
       "title": "Liu-Montgomery Theorem (2020)",
       "summary": "Axiomatizes the key breakthrough: every graph with χ > k contains a subgraph with minimum degree > k/2, bridging chromatic number to minimum degree.",
       "startLine": 118,
-      "endLine": 127
+      "endLine": 128
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal for Uncountable χ",
       "summary": "Axiomatizes Erdős-Hajnal (uncountable χ → K_{m,m} subgraphs) and the fact that K_{m,m} contains all even cycles up to 2m.",
       "startLine": 129,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "main-result",
       "title": "Main Result: Erdős Problem 63",
       "summary": "Defines PowersOfTwo, proves that 2^n is even (n≥1) and ≥4 (n≥2), states the erdos_63_statement, and axiomatizes the main theorem.",
       "startLine": 146,
-      "endLine": 187
+      "endLine": 188
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Penman's Observation",
       "summary": "Proves the infinitely_many_power_cycles corollary by unfolding the main theorem. Axiomatizes Penman's observation for the uncountable case.",
       "startLine": 189,
-      "endLine": 209
+      "endLine": 210
     },
     {
       "id": "generalization",
       "title": "Generalized Conjecture",
       "summary": "Defines the generalized conjecture for arbitrary sequences f(n), proves squares_strictly_increasing, and states the specific squares conjecture as an open problem.",
       "startLine": 211,
-      "endLine": 228
+      "endLine": 255
     }
   ],
   "conclusion": {

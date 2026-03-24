@@ -15,7 +15,8 @@
       "Turán problems",
       "Bipartite graphs",
       "Degree sequences"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e816-path3",
@@ -34,7 +35,8 @@
       "graph walks",
       "P4 subgraph",
       "vertex-disjoint paths"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e816-main-prop",
@@ -53,7 +55,8 @@
       "P3 path conditions",
       "Erdős-Hajnal conjecture"
     ],
-    "mathContext": "See annotation content for formal details of equal-degree path-3 pair"
+    "mathContext": "See annotation content for formal details of equal-degree path-3 pair",
+    "prerequisites": []
   },
   {
     "id": "ann-e816-conditions",
@@ -72,7 +75,8 @@
       "Chen-Ma theorem",
       "vertex-edge bounds"
     ],
-    "mathContext": "See annotation content for formal details of erdős-hajnal and chen-ma conditions"
+    "mathContext": "See annotation content for formal details of erdős-hajnal and chen-ma conditions",
+    "prerequisites": []
   },
   {
     "id": "ann-e816-bipartite",
@@ -85,7 +89,9 @@
     "title": "Complete Bipartite Graph and Counterexample",
     "content": "**isCompleteBipartite:** K_{n,n+1} is the complete bipartite graph with parts of size n and n+1. All edges go between parts, giving n² + n total edges.\n\n**K_counterexample:** K_{n,n+1} does NOT contain an equal-degree path-3 pair. Part A has degree n+1, part B has degree n, so same-degree vertices are in the same part. But length-3 paths between same-part vertices don't exist in bipartite graphs.\n\nThis shows the threshold n² + n + 1 is tight.",
     "mathContext": "K_{n,n+1} is the unique extremal graph for the problem.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e816-chen-ma",
@@ -104,7 +110,8 @@
       "graph Ramsey theory",
       "extremal graph theory",
       "P4 existence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e816-pigeonhole",
@@ -117,7 +124,9 @@
     "title": "Pigeonhole for Degrees",
     "content": "**pigeonhole_degrees:** In any graph with at least 2 vertices, some pair of vertices must share a degree. There are only n possible degrees (0 to n-1) among n vertices, so by pigeonhole, at least two coincide.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of pigeonhole for degrees"
+    "mathContext": "See annotation content for formal details of pigeonhole for degrees",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e816-summary",
@@ -136,6 +145,7 @@
       "graph theory open problems",
       "Erdős problems solved"
     ],
-    "mathContext": "See annotation content for formal details of summary"
+    "mathContext": "See annotation content for formal details of summary",
+    "prerequisites": []
   }
 ]
