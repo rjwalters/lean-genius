@@ -46,56 +46,64 @@
       "title": "Problem Statement and History",
       "startLine": 1,
       "endLine": 19,
-      "summary": "Documents the Erdős-Herzog-Piranian conjecture, its resolution by KLR, Pommerenke's earlier bound, and the near-matching upper bound. References erdosproblems.com/116."
+      "summary": "Documents the Erdős-Herzog-Piranian conjecture, its resolution by KLR, Pommerenke's earlier bound, and the near-matching upper bound. References erdosproblems.com/116.",
+      "mathContext": "Documents the Erdős-Herzog-Piranian conjecture, its resolution by KLR, Pommerenke's earlier bound, and the near-matching upper bound. References erdosproblems.com/116."
     },
     {
       "id": "imports",
       "title": "Imports",
       "startLine": 20,
       "endLine": 25,
-      "summary": "Imports Mathlib modules for complex circle, Lebesgue measure, logarithm, and complex basics."
+      "summary": "Imports Mathlib modules for complex circle, Lebesgue measure, logarithm, and complex basics.",
+      "mathContext": "Imports Mathlib modules for complex circle, Lebesgue measure, logarithm, and complex basics."
     },
     {
       "id": "setup",
       "title": "Unit Disk Polynomials",
       "startLine": 26,
       "endLine": 40,
-      "summary": "Defines the `UnitDiskPoly` structure (monic degree-$n$ polynomial with roots in $\\overline{\\mathbb{D}}$), polynomial evaluation via root product, and the sublevel set $\\{|p(z)| < 1\\}$."
+      "summary": "Defines the `UnitDiskPoly` structure (monic degree-$n$ polynomial with roots in $\\overline{\\mathbb{D}}$), polynomial evaluation via root product, and the sublevel set $\\{|p(z)| < 1\\}$.",
+      "mathContext": "Defines the `UnitDiskPoly` structure (monic degree-$n$ polynomial with roots in $\\overline{\\mathbb{D}}$), polynomial evaluation via root product, and the sublevel set $\\{|p(z)| < 1\\}$."
     },
     {
       "id": "measure",
       "title": "Sublevel Set Measure",
       "startLine": 41,
       "endLine": 48,
-      "summary": "Defines `sublevelMeasure` as the 2D Lebesgue measure of the sublevel set, identifying $\\mathbb{C}$ with $\\mathbb{R}^2$ via the standard measure space."
+      "summary": "Defines `sublevelMeasure` as the 2D Lebesgue measure of the sublevel set, identifying $\\mathbb{C}$ with $\\mathbb{R}^2$ via the standard measure space.",
+      "mathContext": "Defines `sublevelMeasure` as the 2D Lebesgue measure of the sublevel set, identifying $\\mathbb{C}$ with $\\mathbb{R}^2$ via the standard measure space."
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Bound",
       "startLine": 49,
       "endLine": 56,
-      "summary": "States the first polynomial lower bound: $\\mu(S_P) \\geq c/n^4$ for all unit disk polynomials. Proved using logarithmic potential theory."
+      "summary": "States the first polynomial lower bound: $\\mu(S_P) \\geq c/n^4$ for all unit disk polynomials. Proved using logarithmic potential theory.",
+      "mathContext": "States the first polynomial lower bound: $\\mu(S_P) \\geq c/n^4$ for all unit disk polynomials. Proved using logarithmic potential theory."
     },
     {
       "id": "klr",
       "title": "KLR Bounds",
       "startLine": 57,
       "endLine": 73,
-      "summary": "States the optimal KLR lower bound $c/\\log n$ (resolving the conjecture) and the near-tight upper bound $C/\\log\\log n$ from extremal polynomial constructions."
+      "summary": "States the optimal KLR lower bound $c/\\log n$ (resolving the conjecture) and the near-tight upper bound $C/\\log\\log n$ from extremal polynomial constructions.",
+      "mathContext": "States the optimal KLR lower bound $c/\\log n$ (resolving the conjecture) and the near-tight upper bound $C/\\log\\log n$ from extremal polynomial constructions."
     },
     {
       "id": "polya",
       "title": "Pólya's Upper Bound",
       "startLine": 74,
       "endLine": 80,
-      "summary": "States $\\mu(S_P) \\leq \\pi$ for all unit disk polynomials, with equality iff all roots coincide."
+      "summary": "States $\\mu(S_P) \\leq \\pi$ for all unit disk polynomials, with equality iff all roots coincide.",
+      "mathContext": "States $\\mu(S_P) \\leq \\pi$ for all unit disk polynomials, with equality iff all roots coincide."
     },
     {
       "id": "resolution",
       "title": "Problem Resolution and Minimizers",
       "startLine": 81,
       "endLine": 98,
-      "summary": "Records `ErdosProblem116` as proved via the KLR lower bound, and states the existence of minimizing polynomials for each degree as an open problem."
+      "summary": "Records `ErdosProblem116` as proved via the KLR lower bound, and states the existence of minimizing polynomials for each degree as an open problem.",
+      "mathContext": "Records `ErdosProblem116` as proved via the KLR lower bound, and states the existence of minimizing polynomials for each degree as an open problem."
     }
   ],
   "conclusion": {

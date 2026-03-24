@@ -77,63 +77,72 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Problem statement, status, references, and OEIS link."
+      "summary": "Problem statement, status, references, and OEIS link.",
+      "mathContext": "Problem statement, status, references, and OEIS link."
     },
     {
       "id": "background",
       "title": "Euler Totient Background",
       "startLine": 28,
       "endLine": 56,
-      "summary": "Properties of φ and when φ(n) = φ(n+1) can hold."
+      "summary": "Properties of φ and when φ(n) = φ(n+1) can hold.",
+      "mathContext": "Properties of φ and when φ(n) = φ(n+1) can hold."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 57,
       "endLine": 74,
-      "summary": "Definition of ConsecutiveEqualTotients and the open conjecture."
+      "summary": "Definition of ConsecutiveEqualTotients and the open conjecture.",
+      "mathContext": "Definition of ConsecutiveEqualTotients and the open conjecture."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 75,
       "endLine": 112,
-      "summary": "Small cases verified with native_decide: n = 1, 3, 15, 104."
+      "summary": "Small cases verified with native_decide: n = 1, 3, 15, 104.",
+      "mathContext": "Small cases verified with native_decide: n = 1, 3, 15, 104."
     },
     {
       "id": "k-consecutive",
       "title": "Consecutive k Equal Values",
       "startLine": 113,
       "endLine": 132,
-      "summary": "The stronger conjecture about k consecutive equal totients."
+      "summary": "The stronger conjecture about k consecutive equal totients.",
+      "mathContext": "The stronger conjecture about k consecutive equal totients."
     },
     {
       "id": "eps-bound",
       "title": "EPS Upper Bound",
       "startLine": 133,
       "endLine": 157,
-      "summary": "The Erdős-Pomerance-Sárközy sparsity result."
+      "summary": "The Erdős-Pomerance-Sárközy sparsity result.",
+      "mathContext": "The Erdős-Pomerance-Sárközy sparsity result."
     },
     {
       "id": "examples-detail",
       "title": "Understanding the Examples",
       "startLine": 197,
       "endLine": 232,
-      "summary": "Why φ(15) = φ(16) and φ(104) = φ(105)."
+      "summary": "Why φ(15) = φ(16) and φ(104) = φ(105).",
+      "mathContext": "Why φ(15) = φ(16) and φ(104) = φ(105)."
     },
     {
       "id": "triple",
       "title": "The Consecutive Triple",
       "startLine": 233,
       "endLine": 255,
-      "summary": "Three consecutive integers 5186, 5187, 5188 with equal totient."
+      "summary": "Three consecutive integers 5186, 5187, 5188 with equal totient.",
+      "mathContext": "Three consecutive integers 5186, 5187, 5188 with equal totient."
     },
     {
       "id": "flp-bound",
       "title": "FLP Lower Bound",
       "startLine": 256,
       "endLine": 276,
-      "summary": "Ford-Luca-Pomerance result suggesting infinitude."
+      "summary": "Ford-Luca-Pomerance result suggesting infinitude.",
+      "mathContext": "Ford-Luca-Pomerance result suggesting infinitude."
     }
   ],
   "conclusion": {

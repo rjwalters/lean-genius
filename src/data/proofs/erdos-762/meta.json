@@ -83,56 +83,64 @@
       "title": "Basic Definitions",
       "summary": "IsProperColoring, chromaticNumber, cliqueNumber",
       "startLine": 41,
-      "endLine": 65
+      "endLine": 65,
+      "mathContext": "IsProperColoring, chromaticNumber, cliqueNumber"
     },
     {
       "id": "cochromatic",
       "title": "Cochromatic Coloring",
       "summary": "IsCochromaticColorClass, IsCochromaticColoring, cochromaticNumber",
       "startLine": 66,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "IsCochromaticColorClass, IsCochromaticColoring, cochromaticNumber"
     },
     {
       "id": "relationship",
       "title": "Relationship Between χ and ζ",
       "summary": "proper_implies_cochromatic, chi_ge_zeta",
       "startLine": 101,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "proper_implies_cochromatic, chi_ge_zeta"
     },
     {
       "id": "conjecture",
       "title": "The EGS Conjecture",
       "summary": "egs_conjecture definition",
       "startLine": 124,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "egs_conjecture definition"
     },
     {
       "id": "counterexample",
       "title": "Steiner's Counterexample",
       "summary": "steiner_counterexample, egs_conjecture_false",
       "startLine": 140,
-      "endLine": 171
+      "endLine": 171,
+      "mathContext": "steiner_counterexample, egs_conjecture_false"
     },
     {
       "id": "general-theorem",
       "title": "General EGS Theorem",
       "summary": "egs_general_theorem, chi_zeta_gap_bounded",
       "startLine": 172,
-      "endLine": 197
+      "endLine": 197,
+      "mathContext": "egs_general_theorem, chi_zeta_gap_bounded"
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "summary": "zeta_le_chi, steiner_gap_lower_bound",
       "startLine": 198,
-      "endLine": 216
+      "endLine": 216,
+      "mathContext": "zeta_le_chi, steiner_gap_lower_bound"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_762_summary theorem",
       "startLine": 217,
-      "endLine": 249
+      "endLine": 249,
+      "mathContext": "erdos_762_summary theorem"
     }
   ],
   "conclusion": {

@@ -85,63 +85,72 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 59,
-      "summary": "Imports Mathlib's trigonometric functions, inner product spaces, complex numbers, and Euclidean angle definitions. Sets up the `MorleysTheorem` namespace."
+      "summary": "Imports Mathlib's trigonometric functions, inner product spaces, complex numbers, and Euclidean angle definitions. Sets up the `MorleysTheorem` namespace.",
+      "mathContext": "Imports Mathlib's trigonometric functions, inner product spaces, complex numbers, and Euclidean angle definitions. Sets up the `MorleysTheorem` namespace."
     },
     {
       "id": "triangle-angles",
       "title": "Triangle Angles and Trisection",
       "startLine": 60,
       "endLine": 93,
-      "summary": "Defines `TriangleAngles` structure ($\\alpha + \\beta + \\gamma = \\pi$), trisected angles $\\alpha_3 = \\alpha/3$, and the key lemma `trisected_sum`: $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$."
+      "summary": "Defines `TriangleAngles` structure ($\\alpha + \\beta + \\gamma = \\pi$), trisected angles $\\alpha_3 = \\alpha/3$, and the key lemma `trisected_sum`: $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$.",
+      "mathContext": "Defines `TriangleAngles` structure ($\\alpha + \\beta + \\gamma = \\pi$), trisected angles $\\alpha_3 = \\alpha/3$, and the key lemma `trisected_sum`: $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$."
     },
     {
       "id": "backward-construction",
       "title": "Conway's Backward Construction",
       "startLine": 94,
       "endLine": 137,
-      "summary": "Defines equilateral triangle vertices as cube roots of unity $e^{i \\cdot 2\\pi k/3}$ in $\\mathbb{C}$. Axiom `equilateral_side_length_axiom` asserts $|Q - P| = |R - Q| = |P - R|$."
+      "summary": "Defines equilateral triangle vertices as cube roots of unity $e^{i \\cdot 2\\pi k/3}$ in $\\mathbb{C}$. Axiom `equilateral_side_length_axiom` asserts $|Q - P| = |R - Q| = |P - R|$.",
+      "mathContext": "Defines equilateral triangle vertices as cube roots of unity $e^{i \\cdot 2\\pi k/3}$ in $\\mathbb{C}$. Axiom `equilateral_side_length_axiom` asserts $|Q - P| = |R - Q| = |P - R|$."
     },
     {
       "id": "trig-identities",
       "title": "Trigonometric Identities",
       "startLine": 138,
       "endLine": 159,
-      "summary": "Proves $\\sin(\\pi/3 + \\theta)$ and $\\cos(\\pi/3 + \\theta)$ expansions using Mathlib's `sin_add`, `cos_add` with $\\sin(\\pi/3) = \\sqrt{3}/2$, $\\cos(\\pi/3) = 1/2$."
+      "summary": "Proves $\\sin(\\pi/3 + \\theta)$ and $\\cos(\\pi/3 + \\theta)$ expansions using Mathlib's `sin_add`, `cos_add` with $\\sin(\\pi/3) = \\sqrt{3}/2$, $\\cos(\\pi/3) = 1/2$.",
+      "mathContext": "Proves $\\sin(\\pi/3 + \\theta)$ and $\\cos(\\pi/3 + \\theta)$ expansions using Mathlib's `sin_add`, `cos_add` with $\\sin(\\pi/3) = \\sqrt{3}/2$, $\\cos(\\pi/3) = 1/2$."
     },
     {
       "id": "vertex-reconstruction",
       "title": "Original Triangle Reconstruction",
       "startLine": 160,
       "endLine": 198,
-      "summary": "Defines `Point := ℂ`, `direction θ := e^{iθ}`, and vertices $A$, $B$, $C$ reconstructed from Morley triangle using trisected-angle-determined rays."
+      "summary": "Defines `Point := ℂ`, `direction θ := e^{iθ}`, and vertices $A$, $B$, $C$ reconstructed from Morley triangle using trisected-angle-determined rays.",
+      "mathContext": "Defines `Point := ℂ`, `direction θ := e^{iθ}`, and vertices $A$, $B$, $C$ reconstructed from Morley triangle using trisected-angle-determined rays."
     },
     {
       "id": "morley-structure",
       "title": "Morley Triangle and Side Length",
       "startLine": 199,
       "endLine": 231,
-      "summary": "Defines `MorleyTriangle t` (three intersection points $M_1, M_2, M_3$) and `morleySideLength` $= 8R \\sin(\\alpha_3) \\sin(\\beta_3) \\sin(\\gamma_3)$."
+      "summary": "Defines `MorleyTriangle t` (three intersection points $M_1, M_2, M_3$) and `morleySideLength` $= 8R \\sin(\\alpha_3) \\sin(\\beta_3) \\sin(\\gamma_3)$.",
+      "mathContext": "Defines `MorleyTriangle t` (three intersection points $M_1, M_2, M_3$) and `morleySideLength` $= 8R \\sin(\\alpha_3) \\sin(\\beta_3) \\sin(\\gamma_3)$."
     },
     {
       "id": "main-theorem",
       "title": "Morley's Theorem",
       "startLine": 232,
       "endLine": 271,
-      "summary": "**Theorem** `morleys_theorem` (Wiedijk #84): $|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$. Proved from axiom. Alternative formulation `morley_triangle_equilateral`."
+      "summary": "**Theorem** `morleys_theorem` (Wiedijk #84): $|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$. Proved from axiom. Alternative formulation `morley_triangle_equilateral`.",
+      "mathContext": "**Theorem** `morleys_theorem` (Wiedijk #84): $|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$. Proved from axiom. Alternative formulation `morley_triangle_equilateral`."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 272,
       "endLine": 312,
-      "summary": "Equilateral original triangle ($\\alpha = \\beta = \\gamma = \\pi/3$, trisected angle $= \\pi/9$) and right isosceles ($\\alpha = \\beta = \\pi/4$, $\\gamma = \\pi/2$)."
+      "summary": "Equilateral original triangle ($\\alpha = \\beta = \\gamma = \\pi/3$, trisected angle $= \\pi/9$) and right isosceles ($\\alpha = \\beta = \\pi/4$, $\\gamma = \\pi/2$).",
+      "mathContext": "Equilateral original triangle ($\\alpha = \\beta = \\gamma = \\pi/3$, trisected angle $= \\pi/9$) and right isosceles ($\\alpha = \\beta = \\pi/4$, $\\gamma = \\pi/2$)."
     },
     {
       "id": "historical-notes",
       "title": "Historical Notes and Generalizations",
       "startLine": 313,
       "endLine": 352,
-      "summary": "Frank Morley (1860-1937) at Johns Hopkins. Why the theorem was missed (trisection impossibility). Extensions: non-adjacent trisectors, Morley's pentagon, exterior trisectors."
+      "summary": "Frank Morley (1860-1937) at Johns Hopkins. Why the theorem was missed (trisection impossibility). Extensions: non-adjacent trisectors, Morley's pentagon, exterior trisectors.",
+      "mathContext": "Frank Morley (1860-1937) at Johns Hopkins. Why the theorem was missed (trisection impossibility). Extensions: non-adjacent trisectors, Morley's pentagon, exterior trisectors."
     }
   ],
   "conclusion": {

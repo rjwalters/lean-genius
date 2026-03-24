@@ -97,70 +97,80 @@
       "title": "Module Documentation",
       "summary": "Problem statement, history (Erdős–Graham 1980, Hwang–Song 2024, Peake–Cambie), and OEIS reference A389479.",
       "startLine": 1,
-      "endLine": 26
+      "endLine": 26,
+      "mathContext": "Problem statement, history (Erdős–Graham 1980, Hwang–Song 2024, Peake–Cambie), and OEIS reference A389479."
     },
     {
       "id": "imports",
       "title": "Imports and Namespace",
       "summary": "Imports `Nat.Choose.Basic` ($\\binom{n}{k}$), `Nat.Prime.Basic`, `Nat.Factorization.Basic` ($v_p(n)$, `primeFactors`), and `Finset.Basic` ($\\sum$). Opens `Erdos435` namespace.",
       "startLine": 27,
-      "endLine": 33
+      "endLine": 33,
+      "mathContext": "Imports `Nat.Choose.Basic` ($\\binom{n}{k}$), `Nat.Prime.Basic`, `Nat.Factorization.Basic` ($v_p(n)$, `primeFactors`), and `Finset.Basic` ($\\sum$). Opens `Erdos435` namespace."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines `IsPrimePower` ($n = p^k$), `NotPrimePower`, `IsRepresentable` ($m = \\sum c_i \\binom{n}{i}$), `representableSet`, and `frobeniusBinomial` ($\\sup\\{m : m \\notin S_n\\}$).",
       "startLine": 34,
-      "endLine": 74
+      "endLine": 74,
+      "mathContext": "Defines `IsPrimePower` ($n = p^k$), `NotPrimePower`, `IsRepresentable` ($m = \\sum c_i \\binom{n}{i}$), `representableSet`, and `frobeniusBinomial` ($\\sup\\{m : m \\notin S_n\\}$)."
     },
     {
       "id": "the-formula",
       "title": "The Hwang-Song Formula",
       "summary": "Defines `primePowerContribution` $(\\sum_{d=1}^{a} \\binom{n}{p^d})(p-1)$ and `hwangSongFormula` $\\sum_{p \\mid n} \\text{contrib}(n, p, v_p(n)) - n$.",
       "startLine": 75,
-      "endLine": 93
+      "endLine": 93,
+      "mathContext": "Defines `primePowerContribution` $(\\sum_{d=1}^{a} \\binom{n}{p^d})(p-1)$ and `hwangSongFormula` $\\sum_{p \\mid n} \\text{contrib}(n, p, v_p(n)) - n$."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem and Consequences",
       "summary": "Axiomatizes `hwang_song_theorem`: $g(S_n) = \\text{hwangSongFormula}(n)$, plus `non_representable_exist` (gaps exist) and `large_numbers_representable` ($m > g \\implies m \\in S_n$).",
       "startLine": 96,
-      "endLine": 120
+      "endLine": 120,
+      "mathContext": "Axiomatizes `hwang_song_theorem`: $g(S_n) = \\text{hwangSongFormula}(n)$, plus `non_representable_exist` (gaps exist) and `large_numbers_representable` ($m > g \\implies m \\in S_n$)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: $n = 6$ and $n = 10$",
       "summary": "Proves $\\neg\\text{IsPrimePower}(6)$ by `interval_cases`. Axiomatizes $g(S_6) = 49$, computed as $\\binom{6}{2}(2-1) + \\binom{6}{3}(3-1) - 6 = 15 + 40 - 6$.",
       "startLine": 121,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "Proves $\\neg\\text{IsPrimePower}(6)$ by `interval_cases`. Axiomatizes $g(S_6) = 49$, computed as $\\binom{6}{2}(2-1) + \\binom{6}{3}(3-1) - 6 = 15 + 40 - 6$."
     },
     {
       "id": "prime-power-special",
       "title": "Why Prime Powers are Special",
       "summary": "Documents the degenerate case: for $n = p^k$, Lucas' theorem gives $p \\mid \\binom{n}{i}$ for all $0 < i < n$, making the complement infinite.",
       "startLine": 146,
-      "endLine": 164
+      "endLine": 164,
+      "mathContext": "Documents the degenerate case: for $n = p^k$, Lucas' theorem gives $p \\mid \\binom{n}{i}$ for all $0 < i < n$, making the complement infinite."
     },
     {
       "id": "semigroup-structure",
       "title": "Numerical Semigroup Structure",
       "summary": "Axiomatizes `representable_semigroup` ($0 \\in S_n$ and additive closure) and `gcd_binomials_one` ($\\gcd(\\binom{n}{1}, \\binom{n}{2}) = 1$ for non-prime-powers).",
       "startLine": 165,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "Axiomatizes `representable_semigroup` ($0 \\in S_n$ and additive closure) and `gcd_binomials_one` ($\\gcd(\\binom{n}{1}, \\binom{n}{2}) = 1$ for non-prime-powers)."
     },
     {
       "id": "related-results",
       "title": "Related Classical Results",
       "summary": "Axiomatizes Sylvester–Frobenius theorem $g(a,b) = ab - a - b$ (placeholder). Documents Sylvester–Denumerant connection and OEIS A389479.",
       "startLine": 188,
-      "endLine": 211
+      "endLine": 211,
+      "mathContext": "Axiomatizes Sylvester–Frobenius theorem $g(a,b) = ab - a - b$ (placeholder). Documents Sylvester–Denumerant connection and OEIS A389479."
     },
     {
       "id": "main-results",
       "title": "Final Theorems",
       "summary": "Proved `erdos_435` (direct application of axiom) and `erdos_435_summary` (conjunction of formula + completeness). 0 sorries.",
       "startLine": 212,
-      "endLine": 242
+      "endLine": 242,
+      "mathContext": "Proved `erdos_435` (direct application of axiom) and `erdos_435_summary` (conjunction of formula + completeness). 0 sorries."
     }
   ],
   "conclusion": {

@@ -77,70 +77,80 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Problem statement, historical context, status (SOLVED), and references."
+      "summary": "Problem statement, historical context, status (SOLVED), and references.",
+      "mathContext": "Problem statement, historical context, status (SOLVED), and references."
     },
     {
       "id": "core-defs",
       "title": "Core Definitions",
       "startLine": 34,
       "endLine": 61,
-      "summary": "sumMultiset, SameKSums, and KSumDeterminesSet definitions."
+      "summary": "sumMultiset, SameKSums, and KSumDeterminesSet definitions.",
+      "mathContext": "sumMultiset, SameKSums, and KSumDeterminesSet definitions."
     },
     {
       "id": "k2-case",
       "title": "The k = 2 Case",
       "startLine": 62,
       "endLine": 82,
-      "summary": "Selfridge-Straus characterization: uniqueness iff |A| is not a power of 2."
+      "summary": "Selfridge-Straus characterization: uniqueness iff |A| is not a power of 2.",
+      "mathContext": "Selfridge-Straus characterization: uniqueness iff |A| is not a power of 2."
     },
     {
       "id": "k34-cases",
       "title": "The k = 3 and k = 4 Cases",
       "startLine": 83,
       "endLine": 109,
-      "summary": "Specific bounds: k=3 for |A| > 6, k=4 for |A| > 12, prime criterion."
+      "summary": "Specific bounds: k=3 for |A| > 6, k=4 for |A| > 12, prime criterion.",
+      "mathContext": "Specific bounds: k=3 for |A| > 6, k=4 for |A| > 12, prime criterion."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples for Small Sets",
       "startLine": 110,
       "endLine": 136,
-      "summary": "Kruyt rotation (|A| = k) and Tao negation (|A| = 2k) counterexamples."
+      "summary": "Kruyt rotation (|A| = k) and Tao negation (|A| = 2k) counterexamples.",
+      "mathContext": "Kruyt rotation (|A| = k) and Tao negation (|A| = 2k) counterexamples."
     },
     {
       "id": "main-result",
       "title": "Main Result (GFS 1962)",
       "startLine": 137,
       "endLine": 151,
-      "summary": "For all k > 2, uniqueness holds for sufficiently large |A|."
+      "summary": "For all k > 2, uniqueness holds for sufficiently large |A|.",
+      "mathContext": "For all k > 2, uniqueness holds for sufficiently large |A|."
     },
     {
       "id": "products",
       "title": "Product Version (False!)",
       "startLine": 152,
       "endLine": 171,
-      "summary": "Steinerberger's counterexample using 6th roots of unity."
+      "summary": "Steinerberger's counterexample using 6th roots of unity.",
+      "mathContext": "Steinerberger's counterexample using 6th roots of unity."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 172,
       "endLine": 190,
-      "summary": "erdos_494_summary combining the main positive results."
+      "summary": "erdos_494_summary combining the main positive results.",
+      "mathContext": "erdos_494_summary combining the main positive results."
     },
     {
       "id": "examples",
       "title": "Specific Examples",
       "startLine": 191,
       "endLine": 211,
-      "summary": "The set {0, 1, 2} and its properties."
+      "summary": "The set {0, 1, 2} and its properties.",
+      "mathContext": "The set {0, 1, 2} and its properties."
     },
     {
       "id": "threshold",
       "title": "The Threshold Function",
       "startLine": 212,
       "endLine": 232,
-      "summary": "N(k) bounds and the GFS explicit bound k^2 - k + 2."
+      "summary": "N(k) bounds and the GFS explicit bound k^2 - k + 2.",
+      "mathContext": "N(k) bounds and the GFS explicit bound k^2 - k + 2."
     }
   ],
   "conclusion": {

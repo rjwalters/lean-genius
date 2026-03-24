@@ -80,77 +80,88 @@
       "title": "Basic Definitions",
       "summary": "Defines productValue $m$ $k$ $= k(m-k)$, productSet $m$ as the Finset $A_m$, commonProducts as $A_m \\cap B_n$, and commonProductCount as $|A_m \\cap B_n|$. All are computable, enabling concrete evaluation via native_decide.",
       "startLine": 37,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "Defines productValue $m$ $k$ $= k(m-k)$, productSet $m$ as the Finset $A_m$, commonProducts as $A_m \\cap B_n$, and commonProductCount as $|A_m \\cap B_n|$. All are computable, enabling concrete evaluat"
     },
     {
       "id": "properties",
       "title": "Elementary Properties",
       "summary": "Establishes that $k(m-k)$ is maximized at $k = m/2$ (axiomatized), vanishes at endpoints (proved via simp/ring), is bounded by $m^2/4$, and satisfies symmetry $k(m-k) = (m-k)k$. The set $A_m$ has $\\le m/2$ elements and is nonempty for $m \\ge 2$.",
       "startLine": 62,
-      "endLine": 98
+      "endLine": 98,
+      "mathContext": "Establishes that $k(m-k)$ is maximized at $k = m/2$ (axiomatized), vanishes at endpoints (proved via simp/ring), is bounded by $m^2/4$, and satisfies symmetry $k(m-k) = (m-k)k$. The set $A_m$ has $\\le"
     },
     {
       "id": "diophantine",
       "title": "The Diophantine Equation",
       "summary": "Defines sameProduct: $k(m-k) = l(n-l)$, with equivalences to expanded form $km - k^2 = ln - l^2$ and completed-square form $m^2 - (2k-m)^2 = n^2 - (2l-n)^2$ over $\\mathbb{Z}$. The latter reformulation connects intersection counting to the divisor function.",
       "startLine": 99,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "Defines sameProduct: $k(m-k) = l(n-l)$, with equivalences to expanded form $km - k^2 = ln - l^2$ and completed-square form $m^2 - (2k-m)^2 = n^2 - (2l-n)^2$ over $\\mathbb{Z}$. The latter reformulation"
     },
     {
       "id": "main-results",
       "title": "Main Results - Hegyvári (2025)",
       "summary": "Axiomatizes Hegyvári's bound $|A_m \\cap B_n| \\le m^{C/\\log\\log m}$ for $m > n$, the subpolynomial consequence $|A_m \\cap B_n| \\le (mn)^\\varepsilon$ eventually, and achievability of every finite intersection size. Proves intersection_unbounded as a corollary.",
       "startLine": 117,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "Axiomatizes Hegyvári's bound $|A_m \\cap B_n| \\le m^{C/\\log\\log m}$ for $m > n$, the subpolynomial consequence $|A_m \\cap B_n| \\le (mn)^\\varepsilon$ eventually, and achievability of every finite inters"
     },
     {
       "id": "examples",
       "title": "Special Cases and Examples",
       "summary": "Proves $A_m \\cap A_m = A_m$ (common_self via Finset.inter_self). Computes $A_4 = \\{3, 4\\}$ and $A_6 = \\{5, 8, 9\\}$ via native_decide, illustrating disjointness for small product sets.",
       "startLine": 142,
-      "endLine": 162
+      "endLine": 162,
+      "mathContext": "Proves $A_m \\cap A_m = A_m$ (common_self via Finset.inter_self). Computes $A_4 = \\{3, 4\\}$ and $A_6 = \\{5, 8, 9\\}$ via native_decide, illustrating disjointness for small product sets."
     },
     {
       "id": "quadratic",
       "title": "Quadratic Structure",
       "summary": "Axiomatizes the difference-of-squares identity $k(m-k) = (m/2)^2 - (k - m/2)^2$ for even $m$, writing $A_m$ as shifted square complements. The product_set_squares_relation axiom captures the general case.",
       "startLine": 163,
-      "endLine": 175
+      "endLine": 175,
+      "mathContext": "Axiomatizes the difference-of-squares identity $k(m-k) = (m/2)^2 - (k - m/2)^2$ for even $m$, writing $A_m$ as shifted square complements. The product_set_squares_relation axiom captures the general c"
     },
     {
       "id": "arithmetic",
       "title": "Arithmetic Progressions Connection",
       "summary": "Defines triangularNumber $m = m(m-1)/2$ and axiomatizes product_partition_interpretation: $k(m-k)$ equals a partial sum of $\\{1, \\ldots, m-1\\}$, connecting products to partitioning consecutive integers.",
       "startLine": 176,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "Defines triangularNumber $m = m(m-1)/2$ and axiomatizes product_partition_interpretation: $k(m-k)$ equals a partial sum of $\\{1, \\ldots, m-1\\}$, connecting products to partitioning consecutive integer"
     },
     {
       "id": "growth",
       "title": "Growth Rate Analysis",
       "summary": "Axiomatizes $1/\\log\\log m \\to 0$ (exponent_tends_to_zero) confirming subpolynomial growth, and the uniform bound $|A_m \\cap B_n| \\le m^\\varepsilon$ for large $m$ and $n \\le m$ (subpolynomial_growth).",
       "startLine": 188,
-      "endLine": 201
+      "endLine": 201,
+      "mathContext": "Axiomatizes $1/\\log\\log m \\to 0$ (exponent_tends_to_zero) confirming subpolynomial growth, and the uniform bound $|A_m \\cap B_n| \\le m^\\varepsilon$ for large $m$ and $n \\le m$ (subpolynomial_growth)."
     },
     {
       "id": "technique",
       "title": "Proof Technique",
       "summary": "Axiomatizes the key divisibility constraint: $k(m-k) = l(n-l) \\Rightarrow k \\mid ln$ or $(n-l) \\mid (m-k)$. Hegyvári's sieve argument exploits these constraints to bound the Diophantine solution count.",
       "startLine": 202,
-      "endLine": 210
+      "endLine": 210,
+      "mathContext": "Axiomatizes the key divisibility constraint: $k(m-k) = l(n-l) \\Rightarrow k \\mid ln$ or $(n-l) \\mid (m-k)$. Hegyvári's sieve argument exploits these constraints to bound the Diophantine solution count"
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Defines binomialSet for comparison with common values of $\\binom{n}{2}$. Axiomatizes that product-set intersections have different structure from binomial intersections, illustrating how the generating quadratic form affects behavior.",
       "startLine": 211,
-      "endLine": 224
+      "endLine": 224,
+      "mathContext": "Defines binomialSet for comparison with common values of $\\binom{n}{2}$. Axiomatizes that product-set intersections have different structure from binomial intersections, illustrating how the generatin"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Proves erdos_443_summary: (1) $\\forall s, \\exists m, n: s \\le |A_m \\cap B_n|$ and (2) $\\forall \\varepsilon > 0$, eventually $|A_m \\cap B_n| \\le (mn)^\\varepsilon$. Both components assembled from axioms via intersection_unbounded and subpolynomial_bound. The alias erdos_443 marks the resolution.",
       "startLine": 225,
-      "endLine": 249
+      "endLine": 249,
+      "mathContext": "Proves erdos_443_summary: (1) $\\forall s, \\exists m, n: s \\le |A_m \\cap B_n|$ and (2) $\\forall \\varepsilon > 0$, eventually $|A_m \\cap B_n| \\le (mn)^\\varepsilon$. Both components assembled from axioms"
     }
   ],
   "conclusion": {

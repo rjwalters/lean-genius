@@ -53,70 +53,80 @@
       "title": "Basic Graph Properties",
       "summary": "Triangle containment and chromatic number definitions",
       "startLine": 38,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "Triangle containment and chromatic number definitions"
     },
     {
       "id": "threshold",
       "title": "The Threshold Function f_r(n)",
       "summary": "Definition of the central function",
       "startLine": 56,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "Definition of the central function"
     },
     {
       "id": "turan",
       "title": "Turán's Theorem (r = 2)",
       "summary": "The classical case: > n²/4 edges implies triangle",
       "startLine": 80,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "The classical case: > n²/4 edges implies triangle"
     },
     {
       "id": "r3",
       "title": "Erdős-Gallai (r = 3)",
       "summary": "f_3(n) = ⌊(n-1)²/4⌋ + 2",
       "startLine": 100,
-      "endLine": 112
+      "endLine": 112,
+      "mathContext": "f_3(n) = ⌊(n-1)²/4⌋ + 2"
     },
     {
       "id": "r4",
       "title": "The Case r = 4",
       "summary": "f_4(n) for large n (2024 result)",
       "startLine": 113,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "f_4(n) for large n (2024 result)"
     },
     {
       "id": "asymptotic",
       "title": "The Simonovits Asymptotic",
       "summary": "f_r(n) = n²/4 - g(r)n/2 + O(1)",
       "startLine": 126,
-      "endLine": 144
+      "endLine": 144,
+      "mathContext": "f_r(n) = n²/4 - g(r)n/2 + O(1)"
     },
     {
       "id": "bounds",
       "title": "Bounds on g(r)",
       "summary": "Davies-Illingworth lower, HHKP upper",
       "startLine": 145,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "Davies-Illingworth lower, HHKP upper"
     },
     {
       "id": "mono",
       "title": "Monotonicity Properties",
       "summary": "How f and g vary with parameters",
       "startLine": 168,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "How f and g vary with parameters"
     },
     {
       "id": "special",
       "title": "Special Values of g(r)",
       "summary": "g(2)=0, g(3)=1, g(4)=3",
       "startLine": 184,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "g(2)=0, g(3)=1, g(4)=3"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "Determining the exact asymptotic of g(r)",
       "startLine": 197,
-      "endLine": 213
+      "endLine": 213,
+      "mathContext": "Determining the exact asymptotic of g(r)"
     }
   ],
   "conclusion": {

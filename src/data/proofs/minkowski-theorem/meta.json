@@ -61,63 +61,72 @@
       "title": "Imports and Problem Overview",
       "startLine": 1,
       "endLine": 97,
-      "summary": "Imports Mathlib modules for inner product spaces, convexity, measure theory, determinants, and `NumberTheory.SumTwoSquares`. Extensive docstring covers historical context, the classical pigeonhole proof, applications, and Mathlib dependencies."
+      "summary": "Imports Mathlib modules for inner product spaces, convexity, measure theory, determinants, and `NumberTheory.SumTwoSquares`. Extensive docstring covers historical context, the classical pigeonhole proof, applications, and Mathlib dependencies.",
+      "mathContext": "Imports Mathlib modules for inner product spaces, convexity, measure theory, determinants, and `NumberTheory.SumTwoSquares`. Extensive docstring covers historical context, the classical pigeonhole pro"
     },
     {
       "id": "euclidean-symmetry",
       "title": "Euclidean Space and Central Symmetry",
       "startLine": 101,
       "endLine": 131,
-      "summary": "Defines `EuclideanN n` as `EuclideanSpace ℝ (Fin n)` and `CentrallySymmetric` ($x \\in S \\Rightarrow -x \\in S$). Proves `origin_mem_of_symmetric_nonempty`: any nonempty symmetric convex set contains the origin, using the midpoint argument with weights $1/2$."
+      "summary": "Defines `EuclideanN n` as `EuclideanSpace ℝ (Fin n)` and `CentrallySymmetric` ($x \\in S \\Rightarrow -x \\in S$). Proves `origin_mem_of_symmetric_nonempty`: any nonempty symmetric convex set contains the origin, using the midpoint argument with weights $1/2$.",
+      "mathContext": "Defines `EuclideanN n` as `EuclideanSpace ℝ (Fin n)` and `CentrallySymmetric` ($x \\in S \\Rightarrow -x \\in S$). Proves `origin_mem_of_symmetric_nonempty`: any nonempty symmetric convex set contains th"
     },
     {
       "id": "lattice-defs",
       "title": "Lattice Definitions",
       "startLine": 137,
       "endLine": 188,
-      "summary": "Defines the `Lattice n` structure with a basis matrix $B$ and nonzero determinant. Introduces `covolume = |\\det(B)|$, proves covolume positivity via `abs_pos`, defines `isLatticeVector` and `latticePoints`, and constructs the standard lattice $\\mathbb{Z}^n$ with covolume 1."
+      "summary": "Defines the `Lattice n` structure with a basis matrix $B$ and nonzero determinant. Introduces `covolume = |\\det(B)|$, proves covolume positivity via `abs_pos`, defines `isLatticeVector` and `latticePoints`, and constructs the standard lattice $\\mathbb{Z}^n$ with covolume 1.",
+      "mathContext": "Defines the `Lattice n` structure with a basis matrix $B$ and nonzero determinant. Introduces `covolume = |\\det(B)|$, proves covolume positivity via `abs_pos`, defines `isLatticeVector` and `latticePo"
     },
     {
       "id": "convex-bodies",
       "title": "Convex Bodies",
       "startLine": 193,
       "endLine": 206,
-      "summary": "Defines `ConvexBody n` bundling a carrier set with proofs of convexity, central symmetry, and nonemptiness. Provides `Membership` instance and `ConvexBody.zero_mem` corollary."
+      "summary": "Defines `ConvexBody n` bundling a carrier set with proofs of convexity, central symmetry, and nonemptiness. Provides `Membership` instance and `ConvexBody.zero_mem` corollary.",
+      "mathContext": "Defines `ConvexBody n` bundling a carrier set with proofs of convexity, central symmetry, and nonemptiness. Provides `Membership` instance and `ConvexBody.zero_mem` corollary."
     },
     {
       "id": "volume",
       "title": "Volume and Critical Threshold",
       "startLine": 212,
       "endLine": 234,
-      "summary": "Introduces `HasVolume` typeclass abstracting Lebesgue measure. Defines `criticalVolume(L) = 2^n \\cdot \\text{covol}(L)$, the Minkowski threshold, and proves it positive using `pow_pos` and `mul_pos`."
+      "summary": "Introduces `HasVolume` typeclass abstracting Lebesgue measure. Defines `criticalVolume(L) = 2^n \\cdot \\text{covol}(L)$, the Minkowski threshold, and proves it positive using `pow_pos` and `mul_pos`.",
+      "mathContext": "Introduces `HasVolume` typeclass abstracting Lebesgue measure. Defines `criticalVolume(L) = 2^n \\cdot \\text{covol}(L)$, the Minkowski threshold, and proves it positive using `pow_pos` and `mul_pos`."
     },
     {
       "id": "main-theorem",
       "title": "Minkowski's Fundamental Theorem",
       "startLine": 240,
       "endLine": 307,
-      "summary": "States the main theorem as `axiom minkowski_fundamental`: $\\text{vol}(S) > 2^n \\cdot \\text{covol}(L) \\Rightarrow \\exists x \\in S \\cap L, x \\neq 0$. Includes the equivalent unfolded form `minkowski_fundamental'` and the integer lattice specialization where the threshold simplifies to $2^n$."
+      "summary": "States the main theorem as `axiom minkowski_fundamental`: $\\text{vol}(S) > 2^n \\cdot \\text{covol}(L) \\Rightarrow \\exists x \\in S \\cap L, x \\neq 0$. Includes the equivalent unfolded form `minkowski_fundamental'` and the integer lattice specialization where the threshold simplifies to $2^n$.",
+      "mathContext": "States the main theorem as `axiom minkowski_fundamental`: $\\text{vol}(S) > 2^n \\cdot \\text{covol}(L) \\Rightarrow \\exists x \\in S \\cap L, x \\neq 0$. Includes the equivalent unfolded form `minkowski_fun"
     },
     {
       "id": "applications",
       "title": "Applications: Fermat and Dirichlet",
       "startLine": 322,
       "endLine": 370,
-      "summary": "Applies Minkowski to prove Fermat's two-squares theorem ($p \\equiv 1 \\pmod{4} \\Rightarrow p = a^2 + b^2$) using Mathlib's `Nat.Prime.sq_add_sq`. Describes Dirichlet's approximation theorem and Lagrange's four-squares theorem as further applications."
+      "summary": "Applies Minkowski to prove Fermat's two-squares theorem ($p \\equiv 1 \\pmod{4} \\Rightarrow p = a^2 + b^2$) using Mathlib's `Nat.Prime.sq_add_sq`. Describes Dirichlet's approximation theorem and Lagrange's four-squares theorem as further applications.",
+      "mathContext": "Applies Minkowski to prove Fermat's two-squares theorem ($p \\equiv 1 \\pmod{4} \\Rightarrow p = a^2 + b^2$) using Mathlib's `Nat.Prime.sq_add_sq`. Describes Dirichlet's approximation theorem and Lagrang"
     },
     {
       "id": "generalizations",
       "title": "Variants and Generalizations",
       "startLine": 375,
       "endLine": 405,
-      "summary": "Covers the boundary equality case, Blichfeldt's generalization (volume $> k \\cdot 2^n \\cdot \\text{covol}$ gives $k+1$ lattice points), and Minkowski's successive minima $\\lambda_1 \\cdots \\lambda_n \\cdot \\text{vol}(S) \\leq 2^n \\cdot \\det(L)$. States `blichfeldt_statement` as a proposition."
+      "summary": "Covers the boundary equality case, Blichfeldt's generalization (volume $> k \\cdot 2^n \\cdot \\text{covol}$ gives $k+1$ lattice points), and Minkowski's successive minima $\\lambda_1 \\cdots \\lambda_n \\cdot \\text{vol}(S) \\leq 2^n \\cdot \\det(L)$. States `blichfeldt_statement` as a proposition.",
+      "mathContext": "Covers the boundary equality case, Blichfeldt's generalization (volume $> k \\cdot 2^n \\cdot \\text{covol}$ gives $k+1$ lattice points), and Minkowski's successive minima $\\lambda_1 \\cdots \\lambda_n \\cd"
     },
     {
       "id": "significance",
       "title": "Modern Significance",
       "startLine": 411,
       "endLine": 453,
-      "summary": "Discusses the theorem's impact on algebraic number theory (class number finiteness), cryptography (LWE, NTRU, post-quantum security), coding theory (sphere packing), and computational complexity (shortest vector problem is NP-hard)."
+      "summary": "Discusses the theorem's impact on algebraic number theory (class number finiteness), cryptography (LWE, NTRU, post-quantum security), coding theory (sphere packing), and computational complexity (shortest vector problem is NP-hard).",
+      "mathContext": "Discusses the theorem's impact on algebraic number theory (class number finiteness), cryptography (LWE, NTRU, post-quantum security), coding theory (sphere packing), and computational complexity (shor"
     }
   ],
   "conclusion": {

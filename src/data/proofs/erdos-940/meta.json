@@ -88,77 +88,88 @@
       "title": "r-Powerful Numbers",
       "summary": "Defines `isPowerful r n` ($n \\neq 0$ and $\\forall p$ prime, $p \\mid n \\Rightarrow p^r \\mid n$). Proves `one_isPowerful`, `zero_not_isPowerful`, and `power_isPowerful` ($n^r$ is $r$-powerful via `Nat.Prime.dvd_of_dvd_pow`).",
       "startLine": 39,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "Defines `isPowerful r n` ($n \\neq 0$ and $\\forall p$ prime, $p \\mid n \\Rightarrow p^r \\mid n$). Proves `one_isPowerful`, `zero_not_isPowerful`, and `power_isPowerful` ($n^r$ is $r$-powerful via `Nat.P"
     },
     {
       "id": "sums-set",
       "title": "The Set of Sums",
       "summary": "Defines `SumsOfPowerful r k` using `Multiset` sums and `DiagonalSums r = SumsOfPowerful r r`. Proves `zero_mem_SumsOfPowerful` (empty sum) and `one_mem_SumsOfPowerful` (sum of just 1).",
       "startLine": 78,
-      "endLine": 105
+      "endLine": 105,
+      "mathContext": "Defines `SumsOfPowerful r k` using `Multiset` sums and `DiagonalSums r = SumsOfPowerful r r`. Proves `zero_mem_SumsOfPowerful` (empty sum) and `one_mem_SumsOfPowerful` (sum of just 1)."
     },
     {
       "id": "density",
       "title": "Natural Density",
       "summary": "Defines `countingFunction A N = |A \\cap [0,N]|$, `HasDensity A d$ via `Filter.Tendsto`, and `HasDensityZero` as density 0.",
       "startLine": 106,
-      "endLine": 118
+      "endLine": 118,
+      "mathContext": "Defines `countingFunction A N = |A \\cap [0,N]|$, `HasDensity A d$ via `Filter.Tendsto`, and `HasDensityZero` as density 0."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "States `erdos_940_conjecture`: $\\forall r \\ge 3$, $\\text{DiagonalSums}(r)$ has density 0. Also `erdos_940_infinitely_many` (complement is infinite) and `conjecture_implies_infinite` (1 sorry).",
       "startLine": 119,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "States `erdos_940_conjecture`: $\\forall r \\ge 3$, $\\text{DiagonalSums}(r)$ has density 0. Also `erdos_940_infinitely_many` (complement is infinite) and `conjecture_implies_infinite` (1 sorry)."
     },
     {
       "id": "squarefull",
       "title": "The Squarefull Case (r = 2)",
       "summary": "Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Brüdern (1994) proved this 18 years after Erdős called it 'easy'.",
       "startLine": 144,
-      "endLine": 160
+      "endLine": 160,
+      "mathContext": "Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Brüdern (1994) proved this 18 years after Erdős called it 'easy'."
     },
     {
       "id": "heath-brown",
       "title": "Heath-Brown's Representation Theorem",
       "summary": "Axiomatizes `heath_brown_theorem`: $\\forall^\\infty n$, $n \\in \\text{SumsOfPowerful}(2, 3)$. All large integers are sums of $\\le 3$ squarefull numbers (1988, ternary quadratic forms).",
       "startLine": 161,
-      "endLine": 181
+      "endLine": 181,
+      "mathContext": "Axiomatizes `heath_brown_theorem`: $\\forall^\\infty n$, $n \\in \\text{SumsOfPowerful}(2, 3)$. All large integers are sums of $\\le 3$ squarefull numbers (1988, ternary quadratic forms)."
     },
     {
       "id": "cubefull",
       "title": "The Cubefull Case and Three Cubes",
       "summary": "States `three_cubes_conjecture` (OPEN). Proves `cubes_subset_cubefull` ($n^3$ is 3-powerful). Defines `cubefull_conjecture` ($r = 3$ case).",
       "startLine": 182,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "States `three_cubes_conjecture` (OPEN). Proves `cubes_subset_cubefull` ($n^3$ is 3-powerful). Defines `cubefull_conjecture` ($r = 3$ case)."
     },
     {
       "id": "universal",
       "title": "The Large Integer Representation Question",
       "summary": "States `universal_representation_conjecture`: $\\forall r \\ge 2$, $\\forall^\\infty n$, $n \\in \\text{DiagonalSums}(r)$. OPEN even for $r = 2$ (diagonal case).",
       "startLine": 205,
-      "endLine": 224
+      "endLine": 224,
+      "mathContext": "States `universal_representation_conjecture`: $\\forall r \\ge 2$, $\\forall^\\infty n$, $n \\in \\text{DiagonalSums}(r)$. OPEN even for $r = 2$ (diagonal case)."
     },
     {
       "id": "relationship",
       "title": "Relationship Between the Questions",
       "summary": "Proves `status_summary`: Baker-Brüdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases.",
       "startLine": 225,
-      "endLine": 248
+      "endLine": 248,
+      "mathContext": "Proves `status_summary`: Baker-Brüdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases."
     },
     {
       "id": "examples",
       "title": "Examples and Computations",
       "summary": "Concrete proofs: $4 = 2^2$ is squarefull, $8 = 2^3$ is cubefull, $72 = 2^3 \\cdot 3^2$ is squarefull. All use `interval_cases` and `simp_all`.",
       "startLine": 249,
-      "endLine": 281
+      "endLine": 281,
+      "mathContext": "Concrete proofs: $4 = 2^2$ is squarefull, $8 = 2^3$ is cubefull, $72 = 2^3 \\cdot 3^2$ is squarefull. All use `interval_cases` and `simp_all`."
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Defines connections to Erdős #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal).",
       "startLine": 282,
-      "endLine": 339
+      "endLine": 339,
+      "mathContext": "Defines connections to Erdős #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal)."
     }
   ],
   "conclusion": {

@@ -54,63 +54,72 @@
       "title": "Turán Number for K_r",
       "summary": "ex(n, K_r) = (1 - 1/(r-1)) · n²/2, the maximum K_r-free edge count",
       "startLine": 33,
-      "endLine": 47
+      "endLine": 47,
+      "mathContext": "ex(n, K_r) = (1 - 1/(r-1)) · n²/2, the maximum K_r-free edge count"
     },
     {
       "id": "clique-counting",
       "title": "Clique Counting and Density",
       "summary": "Definitions of cliqueCount(G, r), edgeDensity(G), and cliqueDensity(G, r)",
       "startLine": 49,
-      "endLine": 73
+      "endLine": 73,
+      "mathContext": "Definitions of cliqueCount(G, r), edgeDensity(G), and cliqueDensity(G, r)"
     },
     {
       "id": "turan-theorem",
       "title": "Turán's Theorem (General)",
       "summary": "Exceeding ex(n, K_r) forces at least one K_r",
       "startLine": 75,
-      "endLine": 84
+      "endLine": 84,
+      "mathContext": "Exceeding ex(n, K_r) forces at least one K_r"
     },
     {
       "id": "supersaturation",
       "title": "General Supersaturation",
       "summary": "Erdős-Simonovits: exceeding threshold by factor (1+δ) forces Ω(n^r) copies",
       "startLine": 86,
-      "endLine": 98
+      "endLine": 98,
+      "mathContext": "Erdős-Simonovits: exceeding threshold by factor (1+δ) forces Ω(n^r) copies"
     },
     {
       "id": "kruskal-katona",
       "title": "Kruskal-Katona Theorem",
       "summary": "Shadow bound: minimum shadow size is achieved by initial colex segment",
       "startLine": 100,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "Shadow bound: minimum shadow size is achieved by initial colex segment"
     },
     {
       "id": "razborov",
       "title": "Razborov's Triangle Density (2010)",
       "summary": "Exact minimum: g₃(d) = d(2d-1)²/2 for d ≥ 1/2 via flag algebras",
       "startLine": 119,
-      "endLine": 140
+      "endLine": 140,
+      "mathContext": "Exact minimum: g₃(d) = d(2d-1)²/2 for d ≥ 1/2 via flag algebras"
     },
     {
       "id": "reiher",
       "title": "Reiher's K₄ Density (2016)",
       "summary": "Extended flag algebras to determine exact K₄ density",
       "startLine": 142,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "Extended flag algebras to determine exact K₄ density"
     },
     {
       "id": "open-kr",
       "title": "Open: Exact K_r Density for r ≥ 5",
       "summary": "Conjectured to be achieved by iterated Turán constructions, but exact formulas unknown",
       "startLine": 157,
-      "endLine": 177
+      "endLine": 177,
+      "mathContext": "Conjectured to be achieved by iterated Turán constructions, but exact formulas unknown"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Solved for r=3,4; open for r≥5. Key tools: Kruskal-Katona, flag algebras, stability method",
       "startLine": 179,
-      "endLine": 193
+      "endLine": 193,
+      "mathContext": "Solved for r=3,4; open for r≥5. Key tools: Kruskal-Katona, flag algebras, stability method"
     }
   ],
   "conclusion": {

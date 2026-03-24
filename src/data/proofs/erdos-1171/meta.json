@@ -107,84 +107,96 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 38,
-      "summary": "Documentation header describing the multicolor partition relation problem, its relationship to #1169, known results under CH and MA, and imports from Mathlib for ordinal arithmetic, cardinal theory, and tactics."
+      "summary": "Documentation header describing the multicolor partition relation problem, its relationship to #1169, known results under CH and MA, and imports from Mathlib for ordinal arithmetic, cardinal theory, and tactics.",
+      "mathContext": "Documentation header describing the multicolor partition relation problem, its relationship to #1169, known results under CH and MA, and imports from Mathlib for ordinal arithmetic, cardinal theory, a"
     },
     {
       "id": "ordinal-setup",
       "title": "Ordinal Setup",
       "startLine": 39,
       "endLine": 51,
-      "summary": "Defines the three key ordinals: ω₁ = (ℵ₁).ord, ω₁² = ω₁·ω₁, and ω₁·ω, all marked noncomputable."
+      "summary": "Defines the three key ordinals: ω₁ = (ℵ₁).ord, ω₁² = ω₁·ω₁, and ω₁·ω, all marked noncomputable.",
+      "mathContext": "Defines the three key ordinals: ω₁ = (ℵ₁).ord, ω₁² = ω₁·ω₁, and ω₁·ω, all marked noncomputable."
     },
     {
       "id": "partition-defs",
       "title": "Partition Relation Definitions",
       "startLine": 52,
       "endLine": 69,
-      "summary": "Axiomatizes the 2-color partition relation ordinalPartitionRel2(α, β, k) and the multicolor partition relation ordinalPartitionRelMulti(α, β, clique, numColors)."
+      "summary": "Axiomatizes the 2-color partition relation ordinalPartitionRel2(α, β, k) and the multicolor partition relation ordinalPartitionRelMulti(α, β, clique, numColors).",
+      "mathContext": "Axiomatizes the 2-color partition relation ordinalPartitionRel2(α, β, k) and the multicolor partition relation ordinalPartitionRelMulti(α, β, clique, numColors)."
     },
     {
       "id": "ordinal-props",
       "title": "Basic Ordinal Properties",
       "startLine": 70,
       "endLine": 97,
-      "summary": "Proves ω < ω₁ (via Cardinal.aleph_lt_aleph), ω₁ > 0, and ω₁·ω < ω₁² (via left-cancellation). Axiomatizes that ω₁·ω and ω₁ are limit ordinals."
+      "summary": "Proves ω < ω₁ (via Cardinal.aleph_lt_aleph), ω₁ > 0, and ω₁·ω < ω₁² (via left-cancellation). Axiomatizes that ω₁·ω and ω₁ are limit ordinals.",
+      "mathContext": "Proves ω < ω₁ (via Cardinal.aleph_lt_aleph), ω₁ > 0, and ω₁·ω < ω₁² (via left-cancellation). Axiomatizes that ω₁·ω and ω₁ are limit ordinals."
     },
     {
       "id": "problem-statement",
       "title": "The Problem Statement",
       "startLine": 98,
       "endLine": 110,
-      "summary": "Defines erdos_1171_statement as ∀ k : ℕ, ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1)."
+      "summary": "Defines erdos_1171_statement as ∀ k : ℕ, ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1).",
+      "mathContext": "Defines erdos_1171_statement as ∀ k : ℕ, ordinalPartitionRelMulti omega1Sq omega1TimesOmega 3 (k + 1)."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
       "startLine": 111,
       "endLine": 135,
-      "summary": "Four axioms: monotonicity in number of colors, target ordinal, source ordinal, and equivalence between 2-color multicolor and standard 2-color relations."
+      "summary": "Four axioms: monotonicity in number of colors, target ordinal, source ordinal, and equivalence between 2-color multicolor and standard 2-color relations.",
+      "mathContext": "Four axioms: monotonicity in number of colors, target ordinal, source ordinal, and equivalence between 2-color multicolor and standard 2-color relations."
     },
     {
       "id": "ch-connection",
       "title": "CH Resolution via Hajnal",
       "startLine": 136,
       "endLine": 165,
-      "summary": "Defines CH, axiomatizes Hajnal's theorem (ω₁² → (ω₁², k)² under CH), and proves the k=1 case under CH by target monotonicity. Axiomatizes 2-color monotonicity properties."
+      "summary": "Defines CH, axiomatizes Hajnal's theorem (ω₁² → (ω₁², k)² under CH), and proves the k=1 case under CH by target monotonicity. Axiomatizes 2-color monotonicity properties.",
+      "mathContext": "Defines CH, axiomatizes Hajnal's theorem (ω₁² → (ω₁², k)² under CH), and proves the k=1 case under CH by target monotonicity. Axiomatizes 2-color monotonicity properties."
     },
     {
       "id": "baumgartner",
       "title": "Baumgartner's Result Under MA",
       "startLine": 166,
       "endLine": 186,
-      "summary": "Axiomatizes Martin's Axiom, Baumgartner's theorem ω₁·ω → (ω₁·ω, 3)² under MA, and proves the k=1 case of #1171 under MA by source monotonicity."
+      "summary": "Axiomatizes Martin's Axiom, Baumgartner's theorem ω₁·ω → (ω₁·ω, 3)² under MA, and proves the k=1 case of #1171 under MA by source monotonicity.",
+      "mathContext": "Axiomatizes Martin's Axiom, Baumgartner's theorem ω₁·ω → (ω₁·ω, 3)² under MA, and proves the k=1 case of #1171 under MA by source monotonicity."
     },
     {
       "id": "ordinal-arithmetic",
       "title": "Ordinal Arithmetic Properties",
       "startLine": 187,
       "endLine": 207,
-      "summary": "Proves ω₁ < ω₁·ω (via 1 < ω and left-cancellation), the sandwich ω₁ < ω₁·ω < ω₁², and ω₁² > 0."
+      "summary": "Proves ω₁ < ω₁·ω (via 1 < ω and left-cancellation), the sandwich ω₁ < ω₁·ω < ω₁², and ω₁² > 0.",
+      "mathContext": "Proves ω₁ < ω₁·ω (via 1 < ω and left-cancellation), the sandwich ω₁ < ω₁·ω < ω₁², and ω₁² > 0."
     },
     {
       "id": "multicolor-hierarchy",
       "title": "The Multicolor Hierarchy",
       "startLine": 208,
       "endLine": 242,
-      "summary": "Axiomatizes the trivial 1-color case, proves the conjecture implies the k=1 and k=2 special cases, axiomatizes the CH color-merging argument for all k, and proves erdos_1171_under_ch."
+      "summary": "Axiomatizes the trivial 1-color case, proves the conjecture implies the k=1 and k=2 special cases, axiomatizes the CH color-merging argument for all k, and proves erdos_1171_under_ch.",
+      "mathContext": "Axiomatizes the trivial 1-color case, proves the conjecture implies the k=1 and k=2 special cases, axiomatizes the CH color-merging argument for all k, and proves erdos_1171_under_ch."
     },
     {
       "id": "erdos-rado",
       "title": "Erdős-Rado Partition Theorem",
       "startLine": 243,
       "endLine": 252,
-      "summary": "Axiomatizes the Erdős-Rado theorem (2^κ)⁺ → (κ⁺ + 1)²_κ as a contextual reference point from infinite Ramsey theory."
+      "summary": "Axiomatizes the Erdős-Rado theorem (2^κ)⁺ → (κ⁺ + 1)²_κ as a contextual reference point from infinite Ramsey theory.",
+      "mathContext": "Axiomatizes the Erdős-Rado theorem (2^κ)⁺ → (κ⁺ + 1)²_κ as a contextual reference point from infinite Ramsey theory."
     },
     {
       "id": "summary",
       "title": "Summary of Formalization",
       "startLine": 253,
       "endLine": 288,
-      "summary": "Comment block summarizing: the problem, what is formalized (partition relations, ordinals, monotonicity, CH/MA results, Erdős-Rado), the status (open in ZFC, solved under CH, k=1 under MA), key insights, and axiom/theorem count (14 axioms, 10 theorems)."
+      "summary": "Comment block summarizing: the problem, what is formalized (partition relations, ordinals, monotonicity, CH/MA results, Erdős-Rado), the status (open in ZFC, solved under CH, k=1 under MA), key insights, and axiom/theorem count (14 axioms, 10 theorems).",
+      "mathContext": "Comment block summarizing: the problem, what is formalized (partition relations, ordinals, monotonicity, CH/MA results, Erdős-Rado), the status (open in ZFC, solved under CH, k=1 under MA), key insigh"
     }
   ],
   "conclusion": {

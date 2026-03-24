@@ -97,56 +97,64 @@
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Historical introduction covering Klein (1931), Erdos-Szekeres (1935, 1960), Suk (2017), and HMPT (2020). States the problem and lists key milestones."
+      "summary": "Historical introduction covering Klein (1931), Erdos-Szekeres (1935, 1960), Suk (2017), and HMPT (2020). States the problem and lists key milestones.",
+      "mathContext": "Historical introduction covering Klein (1931), Erdos-Szekeres (1935, 1960), Suk (2017), and HMPT (2020). States the problem and lists key milestones."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 30,
       "endLine": 57,
-      "summary": "Defines InGeneralPosition (no three collinear via Mathlib's Collinear), IsConvexNGon ($|S|=n$ with every point extreme), HasConvexNGon (subset containment), CardSet (threshold set $\\{N \\mid \\ldots\\}$), and $f(n) = \\inf(\\text{CardSet}(n))$."
+      "summary": "Defines InGeneralPosition (no three collinear via Mathlib's Collinear), IsConvexNGon ($|S|=n$ with every point extreme), HasConvexNGon (subset containment), CardSet (threshold set $\\{N \\mid \\ldots\\}$), and $f(n) = \\inf(\\text{CardSet}(n))$.",
+      "mathContext": "Defines InGeneralPosition (no three collinear via Mathlib's Collinear), IsConvexNGon ($|S|=n$ with every point extreme), HasConvexNGon (subset containment), CardSet (threshold set $\\{N \\mid \\ldots\\}$)"
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "startLine": 58,
       "endLine": 85,
-      "summary": "Known exact values: $f(3)=3$ (sorry proof), $f(4)=5$ (Klein 1931, axiomatized), $f(5)=9$ (Makai-Turan, axiomatized). All match $2^{n-2}+1$."
+      "summary": "Known exact values: $f(3)=3$ (sorry proof), $f(4)=5$ (Klein 1931, axiomatized), $f(5)=9$ (Makai-Turan, axiomatized). All match $2^{n-2}+1$.",
+      "mathContext": "Known exact values: $f(3)=3$ (sorry proof), $f(4)=5$ (Klein 1931, axiomatized), $f(5)=9$ (Makai-Turan, axiomatized). All match $2^{n-2}+1$."
     },
     {
       "id": "lower-bound",
       "title": "Erdos-Szekeres Lower Bound",
       "startLine": 86,
       "endLine": 96,
-      "summary": "Axiomatized: $2^{n-2}+1 \\leq f(n)$ for $n \\geq 3$. Construction provides $2^{n-2}$ points with no convex $n$-gon via recursive doubling."
+      "summary": "Axiomatized: $2^{n-2}+1 \\leq f(n)$ for $n \\geq 3$. Construction provides $2^{n-2}$ points with no convex $n$-gon via recursive doubling.",
+      "mathContext": "Axiomatized: $2^{n-2}+1 \\leq f(n)$ for $n \\geq 3$. Construction provides $2^{n-2}$ points with no convex $n$-gon via recursive doubling."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 97,
       "endLine": 125,
-      "summary": "Three progressively tighter bounds: ES (1935) $\\binom{2n-4}{n-2}+1$ via Ramsey theory, Suk (2017) $2^{(1+o(1))n}$ via cups-caps with Filter.atTop, HMPT (2020) $2^{n+O(\\sqrt{n \\log n})}$ with existential constant $C$."
+      "summary": "Three progressively tighter bounds: ES (1935) $\\binom{2n-4}{n-2}+1$ via Ramsey theory, Suk (2017) $2^{(1+o(1))n}$ via cups-caps with Filter.atTop, HMPT (2020) $2^{n+O(\\sqrt{n \\log n})}$ with existential constant $C$.",
+      "mathContext": "Three progressively tighter bounds: ES (1935) $\\binom{2n-4}{n-2}+1$ via Ramsey theory, Suk (2017) $2^{(1+o(1))n}$ via cups-caps with Filter.atTop, HMPT (2020) $2^{n+O(\\sqrt{n \\log n})}$ with existenti"
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 126,
       "endLine": 139,
-      "summary": "HappyEndingConjecture defined as a Prop: $f(n) = 2^{n-2}+1$ for all $n \\geq 3$. Correctly stated without asserting truth. $500 Erdos prize."
+      "summary": "HappyEndingConjecture defined as a Prop: $f(n) = 2^{n-2}+1$ for all $n \\geq 3$. Correctly stated without asserting truth. $500 Erdos prize.",
+      "mathContext": "HappyEndingConjecture defined as a Prop: $f(n) = 2^{n-2}+1$ for all $n \\geq 3$. Correctly stated without asserting truth. $500 Erdos prize."
     },
     {
       "id": "existence",
       "title": "Existence and Verified Bounds",
       "startLine": 140,
       "endLine": 170,
-      "summary": "`f_finite`: CardSet$(n)$ is nonempty for $n \\geq 3$. Explicit bounds `f_4_lb` and `f_4_ub` bracket $f(4)$. All have sorry proofs requiring case analysis or the Ramsey argument."
+      "summary": "`f_finite`: CardSet$(n)$ is nonempty for $n \\geq 3$. Explicit bounds `f_4_lb` and `f_4_ub` bracket $f(4)$. All have sorry proofs requiring case analysis or the Ramsey argument.",
+      "mathContext": "`f_finite`: CardSet$(n)$ is nonempty for $n \\geq 3$. Explicit bounds `f_4_lb` and `f_4_ub` bracket $f(4)$. All have sorry proofs requiring case analysis or the Ramsey argument."
     },
     {
       "id": "historical-notes",
       "title": "Historical Notes",
       "startLine": 171,
       "endLine": 188,
-      "summary": "Commentary on the 'Happy Ending' name origin (Szekeres-Klein marriage), the gap between bounds, and key references (ES 1935/1960, Suk 2017, HMPT 2020)."
+      "summary": "Commentary on the 'Happy Ending' name origin (Szekeres-Klein marriage), the gap between bounds, and key references (ES 1935/1960, Suk 2017, HMPT 2020).",
+      "mathContext": "Commentary on the 'Happy Ending' name origin (Szekeres-Klein marriage), the gap between bounds, and key references (ES 1935/1960, Suk 2017, HMPT 2020)."
     }
   ],
   "conclusion": {

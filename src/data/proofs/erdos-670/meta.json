@@ -94,56 +94,64 @@
       "title": "Basic Definitions",
       "startLine": 33,
       "endLine": 58,
-      "summary": "PointSet in ℝ^d, Euclidean distance, DistinctDistances, diameter, numPairs"
+      "summary": "PointSet in ℝ^d, Euclidean distance, DistinctDistances, diameter, numPairs",
+      "mathContext": "PointSet in ℝ^d, Euclidean distance, DistinctDistances, diameter, numPairs"
     },
     {
       "id": "trivial-bound",
       "title": "The Trivial Lower Bound",
       "startLine": 59,
       "endLine": 66,
-      "summary": "diameter ≥ C(n,2) when distances differ by ≥ 1"
+      "summary": "diameter ≥ C(n,2) when distances differ by ≥ 1",
+      "mathContext": "diameter ≥ C(n,2) when distances differ by ≥ 1"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 67,
       "endLine": 85,
-      "summary": "MainConjecture, WeakConjecture, trivial_gives_half"
+      "summary": "MainConjecture, WeakConjecture, trivial_gives_half",
+      "mathContext": "MainConjecture, WeakConjecture, trivial_gives_half"
     },
     {
       "id": "one-dimensional",
       "title": "The One-Dimensional Case (SOLVED)",
       "startLine": 86,
       "endLine": 116,
-      "summary": "RealPointSet, erdos_1997_d1, erdos_1997_d1_asymptotic"
+      "summary": "RealPointSet, erdos_1997_d1, erdos_1997_d1_asymptotic",
+      "mathContext": "RealPointSet, erdos_1997_d1, erdos_1997_d1_asymptotic"
     },
     {
       "id": "constructions",
       "title": "Constructions",
       "startLine": 117,
       "endLine": 140,
-      "summary": "Arithmetic progressions showing tightness of n² bound"
+      "summary": "Arithmetic progressions showing tightness of n² bound",
+      "mathContext": "Arithmetic progressions showing tightness of n² bound"
     },
     {
       "id": "higher-dimensions",
       "title": "Higher Dimensions",
       "startLine": 141,
       "endLine": 148,
-      "summary": "SuperlinearConjecture definition"
+      "summary": "SuperlinearConjecture definition",
+      "mathContext": "SuperlinearConjecture definition"
     },
     {
       "id": "connections",
       "title": "Connection to Distinct Distances",
       "startLine": 149,
       "endLine": 165,
-      "summary": "differ_implies_distinct, pigeonhole_approach"
+      "summary": "differ_implies_distinct, pigeonhole_approach",
+      "mathContext": "differ_implies_distinct, pigeonhole_approach"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 166,
       "endLine": 186,
-      "summary": "Proved conjunction of d=1 result and WeakConjecture"
+      "summary": "Proved conjunction of d=1 result and WeakConjecture",
+      "mathContext": "Proved conjunction of d=1 result and WeakConjecture"
     }
   ],
   "conclusion": {

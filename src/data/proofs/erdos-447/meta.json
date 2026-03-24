@@ -128,70 +128,80 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 34,
-      "summary": "Module docstring: union-free collections, Kleitman's optimal bound. Imports `Finset.Basic`, `Finset.Powerset`, `Nat.Choose.Basic`, `Data.Real.Basic`, `SetFamily.Compression.Down`. Opens `Finset` and `Nat` namespaces."
+      "summary": "Module docstring: union-free collections, Kleitman's optimal bound. Imports `Finset.Basic`, `Finset.Powerset`, `Nat.Choose.Basic`, `Data.Real.Basic`, `SetFamily.Compression.Down`. Opens `Finset` and `Nat` namespaces.",
+      "mathContext": "Module docstring: union-free collections, Kleitman's optimal bound. Imports `Finset.Basic`, `Finset.Powerset`, `Nat.Choose.Basic`, `Data.Real.Basic`, `SetFamily.Compression.Down`. Opens `Finset` and `"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 35,
       "endLine": 57,
-      "summary": "Defines `GroundSet n = Finset (Fin n)`, `powerSet n = Finset.univ.powerset`, `IsUnionFree` (no $A \\cup B = C$), and `IsUnionFree'` (symmetric variant forbidding all three union orientations)."
+      "summary": "Defines `GroundSet n = Finset (Fin n)`, `powerSet n = Finset.univ.powerset`, `IsUnionFree` (no $A \\cup B = C$), and `IsUnionFree'` (symmetric variant forbidding all three union orientations).",
+      "mathContext": "Defines `GroundSet n = Finset (Fin n)`, `powerSet n = Finset.univ.powerset`, `IsUnionFree` (no $A \\cup B = C$), and `IsUnionFree'` (symmetric variant forbidding all three union orientations)."
     },
     {
       "id": "middle-layer-sperner",
       "title": "Middle Layer and Sperner Bound",
       "startLine": 58,
       "endLine": 76,
-      "summary": "Defines `middleLayer` (sets of size $\\lfloor n/2 \\rfloor$), axiomatizes it as union-free. Defines `middleBinomial = \\binom{n}{\\lfloor n/2 \\rfloor}$. Axiomatizes Sperner's theorem: $|\\text{antichain}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$."
+      "summary": "Defines `middleLayer` (sets of size $\\lfloor n/2 \\rfloor$), axiomatizes it as union-free. Defines `middleBinomial = \\binom{n}{\\lfloor n/2 \\rfloor}$. Axiomatizes Sperner's theorem: $|\\text{antichain}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$.",
+      "mathContext": "Defines `middleLayer` (sets of size $\\lfloor n/2 \\rfloor$), axiomatizes it as union-free. Defines `middleBinomial = \\binom{n}{\\lfloor n/2 \\rfloor}$. Axiomatizes Sperner's theorem: $|\\text{antichain}| "
     },
     {
       "id": "asymptotic-notation",
       "title": "Asymptotic Notation",
       "startLine": 77,
       "endLine": 90,
-      "summary": "Defines `IsLittleO` ($f = o(g)$ via $\\varepsilon$-$N$), `maxUnionFreeSize` (sup over union-free families), `AsymptoticUpperBound` ($f \\leq (1+o(1))g$)."
+      "summary": "Defines `IsLittleO` ($f = o(g)$ via $\\varepsilon$-$N$), `maxUnionFreeSize` (sup over union-free families), `AsymptoticUpperBound` ($f \\leq (1+o(1))g$).",
+      "mathContext": "Defines `IsLittleO` ($f = o(g)$ via $\\varepsilon$-$N$), `maxUnionFreeSize` (sup over union-free families), `AsymptoticUpperBound` ($f \\leq (1+o(1))g$)."
     },
     {
       "id": "sarkozy-szemeredi",
       "title": "Sárközy-Szemerédi Result",
       "startLine": 91,
       "endLine": 97,
-      "summary": "Axiom: $\\text{maxUnionFreeSize}(n) = o(2^n)$. First non-trivial upper bound (unpublished, $\\sim$1965). Superseded by Kleitman."
+      "summary": "Axiom: $\\text{maxUnionFreeSize}(n) = o(2^n)$. First non-trivial upper bound (unpublished, $\\sim$1965). Superseded by Kleitman.",
+      "mathContext": "Axiom: $\\text{maxUnionFreeSize}(n) = o(2^n)$. First non-trivial upper bound (unpublished, $\\sim$1965). Superseded by Kleitman."
     },
     {
       "id": "kleitman",
       "title": "Kleitman's Theorem (1971)",
       "startLine": 98,
       "endLine": 106,
-      "summary": "Axiom: $\\text{AsymptoticUpperBound}\\, \\text{maxUnionFreeSize}\\, \\text{middleBinomial}$. The optimal bound via compression."
+      "summary": "Axiom: $\\text{AsymptoticUpperBound}\\, \\text{maxUnionFreeSize}\\, \\text{middleBinomial}$. The optimal bound via compression.",
+      "mathContext": "Axiom: $\\text{AsymptoticUpperBound}\\, \\text{maxUnionFreeSize}\\, \\text{middleBinomial}$. The optimal bound via compression."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound",
       "startLine": 107,
       "endLine": 114,
-      "summary": "Axioms: $|\\text{middleLayer}(n)| = \\binom{n}{\\lfloor n/2 \\rfloor}$ and $\\text{maxUnionFreeSize}(n) \\geq \\binom{n}{\\lfloor n/2 \\rfloor}$. Together with Kleitman, pins down the asymptotic."
+      "summary": "Axioms: $|\\text{middleLayer}(n)| = \\binom{n}{\\lfloor n/2 \\rfloor}$ and $\\text{maxUnionFreeSize}(n) \\geq \\binom{n}{\\lfloor n/2 \\rfloor}$. Together with Kleitman, pins down the asymptotic.",
+      "mathContext": "Axioms: $|\\text{middleLayer}(n)| = \\binom{n}{\\lfloor n/2 \\rfloor}$ and $\\text{maxUnionFreeSize}(n) \\geq \\binom{n}{\\lfloor n/2 \\rfloor}$. Together with Kleitman, pins down the asymptotic."
     },
     {
       "id": "problem-487",
       "title": "Connection to Problem 487",
       "startLine": 115,
       "endLine": 134,
-      "summary": "Defines `lcmRepresentation` and `hasPositiveDensity`. Axiom `problem_487_from_447`: positive-density sets contain arbitrarily large LCM triples. Via prime factorization encoding: $\\text{union} \\leftrightarrow \\text{lcm}$."
+      "summary": "Defines `lcmRepresentation` and `hasPositiveDensity`. Axiom `problem_487_from_447`: positive-density sets contain arbitrarily large LCM triples. Via prime factorization encoding: $\\text{union} \\leftrightarrow \\text{lcm}$.",
+      "mathContext": "Defines `lcmRepresentation` and `hasPositiveDensity`. Axiom `problem_487_from_447`: positive-density sets contain arbitrarily large LCM triples. Via prime factorization encoding: $\\text{union} \\leftri"
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "startLine": 135,
       "endLine": 148,
-      "summary": "Defines `IsKUnionFree` ($k$-union-free via `Finset.sup`) and `IsStrongUnionFree` (Problem 1023: no set is union of any number of others)."
+      "summary": "Defines `IsKUnionFree` ($k$-union-free via `Finset.sup`) and `IsStrongUnionFree` (Problem 1023: no set is union of any number of others).",
+      "mathContext": "Defines `IsKUnionFree` ($k$-union-free via `Finset.sup`) and `IsStrongUnionFree` (Problem 1023: no set is union of any number of others)."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 149,
       "endLine": 165,
-      "summary": "`erdos_447_summary`: conjunction of Kleitman's upper bound and middle layer lower bound, proved by `exact ⟨kleitman_theorem, lower_bound⟩`. SOLVED."
+      "summary": "`erdos_447_summary`: conjunction of Kleitman's upper bound and middle layer lower bound, proved by `exact ⟨kleitman_theorem, lower_bound⟩`. SOLVED.",
+      "mathContext": "`erdos_447_summary`: conjunction of Kleitman's upper bound and middle layer lower bound, proved by `exact ⟨kleitman_theorem, lower_bound⟩`. SOLVED."
     }
   ],
   "conclusion": {

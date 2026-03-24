@@ -49,70 +49,80 @@
       "title": "Header and Aristotle Summary",
       "summary": "Header documenting Aristotle's 6 proved results: `bipartite_chromatic_le_two`, `bipartite_list_chromatic_unbounded`, `n_well_defined`, `n_mono`, `n_2_eq_6`, and `ert_lower_bound`. Describes the problem statement and known results.",
       "startLine": 1,
-      "endLine": 60
+      "endLine": 60,
+      "mathContext": "Header documenting Aristotle's 6 proved results: `bipartite_chromatic_le_two`, `bipartite_list_chromatic_unbounded`, `n_well_defined`, `n_mono`, `n_2_eq_6`, and `ert_lower_bound`. Describes the proble"
     },
     {
       "id": "list-coloring",
       "title": "List Coloring Definitions",
       "summary": "Defines `ColorListAssignment V C` (per-vertex color lists), `RespectsLists L f` ($f(v) \\in L(v)$), `IsProperColoring G f` (adjacent vertices differ), `IsKListColorable G k` ($\\forall L$ with $|L(v)| \\geq k$, proper $L$-coloring exists), and `listChromaticNumber G` ($\\chi_L(G) = \\inf\\{k : k\\text{-choosable}\\}$).",
       "startLine": 66,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "Defines `ColorListAssignment V C` (per-vertex color lists), `RespectsLists L f` ($f(v) \\in L(v)$), `IsProperColoring G f` (adjacent vertices differ), `IsKListColorable G k` ($\\forall L$ with $|L(v)| \\"
     },
     {
       "id": "bipartite",
       "title": "Bipartite Graphs and the χ vs χ_L Gap",
       "summary": "Defines `IsBipartite G` (2-colorable via `Fin 2`), proves `bipartite_chromatic_le_two` ($\\chi(G) \\leq 2$, Aristotle), and builds the `MyGraph k` construction with Aristotle-proved lemmas showing `MyGraph k` is bipartite and not $(k+1)$-list-colorable via the hitting-set argument.",
       "startLine": 91,
-      "endLine": 259
+      "endLine": 259,
+      "mathContext": "Defines `IsBipartite G` (2-colorable via `Fin 2`), proves `bipartite_chromatic_le_two` ($\\chi(G) \\leq 2$, Aristotle), and builds the `MyGraph k` construction with Aristotle-proved lemmas showing `MyGr"
     },
     {
       "id": "unbounded",
       "title": "List Chromatic Unbounded (Proved)",
       "summary": "Proves `bipartite_list_chromatic_unbounded` (Aristotle): $\\forall k, \\exists$ bipartite $G$ with $\\chi_L(G) > k$. Uses `MyGraph k` construction and monotonicity. The central result establishing that $n(k)$ is well-defined.",
       "startLine": 260,
-      "endLine": 271
+      "endLine": 271,
+      "mathContext": "Proves `bipartite_list_chromatic_unbounded` (Aristotle): $\\forall k, \\exists$ bipartite $G$ with $\\chi_L(G) > k$. Uses `MyGraph k` construction and monotonicity. The central result establishing that $"
     },
     {
       "id": "n-function",
       "title": "The Function n(k): Definition and Basic Properties",
       "summary": "Defines $n(k) = \\inf\\{m : \\exists$ bipartite $G$ with $|V| = m, \\chi_L(G) > k\\}$. Proves `n_well_defined` ($n(k) > 0$, Aristotle) and `n_mono` ($k_1 \\leq k_2 \\implies n(k_1) \\leq n(k_2)$, Aristotle).",
       "startLine": 272,
-      "endLine": 318
+      "endLine": 318,
+      "mathContext": "Defines $n(k) = \\inf\\{m : \\exists$ bipartite $G$ with $|V| = m, \\chi_L(G) > k\\}$. Proves `n_well_defined` ($n(k) > 0$, Aristotle) and `n_mono` ($k_1 \\leq k_2 \\implies n(k_1) \\leq n(k_2)$, Aristotle)."
     },
     {
       "id": "exact-values",
       "title": "Exact Values: n(2) = 6 and n(3) = 14",
       "summary": "Proves `n_2_eq_6` (Aristotle) via $K_{3,3}$ not being 2-choosable + all bipartite graphs on $< 6$ vertices being 2-choosable. States `n_3_eq_14` (sorry) from Hanson-MacGillivray-Toft (1996). The $K_{3,3}$ argument includes explicit adversarial list assignment and decision-procedure verification.",
       "startLine": 319,
-      "endLine": 632
+      "endLine": 632,
+      "mathContext": "Proves `n_2_eq_6` (Aristotle) via $K_{3,3}$ not being 2-choosable + all bipartite graphs on $< 6$ vertices being 2-choosable. States `n_3_eq_14` (sorry) from Hanson-MacGillivray-Toft (1996). The $K_{3"
     },
     {
       "id": "original-bounds",
       "title": "Original Bounds: $2^{k-1} < n(k) < k^2 \\cdot 2^{k+2}$",
       "summary": "Proves `ert_lower_bound` (Aristotle) using the probabilistic method: bipartite graphs with $< 2^k$ vertices are $k$-choosable via random 2-partition of colors. States `ert_upper_bound` (sorry). Includes several auxiliary lemmas on bipartite partition structure and the probability bound.",
       "startLine": 633,
-      "endLine": 804
+      "endLine": 804,
+      "mathContext": "Proves `ert_lower_bound` (Aristotle) using the probabilistic method: bipartite graphs with $< 2^k$ vertices are $k$-choosable via random 2-partition of colors. States `ert_upper_bound` (sorry). Includ"
     },
     {
       "id": "improved-bounds",
       "title": "Improved Bounds and Recursive Upper",
       "summary": "States `rs_lower_bound` (sorry): $2^k \\cdot (k/\\log k)^{1/2} \\lesssim n(k)$ from Radhakrishnan-Srinivasan (2000). States `hmt_recursive_upper` (sorry): $n(k) \\leq k \\cdot n(k-2) + 2^k$ from Hanson-MacGillivray-Toft (1996).",
       "startLine": 816,
-      "endLine": 830
+      "endLine": 830,
+      "mathContext": "States `rs_lower_bound` (sorry): $2^k \\cdot (k/\\log k)^{1/2} \\lesssim n(k)$ from Radhakrishnan-Srinivasan (2000). States `hmt_recursive_upper` (sorry): $n(k) \\leq k \\cdot n(k-2) + 2^k$ from Hanson-Mac"
     },
     {
       "id": "property-b",
       "title": "Property B Connection",
       "summary": "Defines `propertyB_threshold k` ($m(k)$ = smallest family of $k$-sets without Property B). States `n_property_b_bounds` (sorry): $m(k) \\leq n(k) \\leq m(k+1)$, connecting list coloring to Erdős Problem #901.",
       "startLine": 831,
-      "endLine": 846
+      "endLine": 846,
+      "mathContext": "Defines `propertyB_threshold k` ($m(k)$ = smallest family of $k$-sets without Property B). States `n_property_b_bounds` (sorry): $m(k) \\leq n(k) \\leq m(k+1)$, connecting list coloring to Erdős Problem"
     },
     {
       "id": "constructions",
       "title": "Complete Bipartite Graphs and Asymptotics",
       "summary": "Defines `completeBipartite m n` ($K_{m,n}$ on `Fin m ⊕ Fin n`). States `knn_list_chromatic` (sorry): $\\chi_L(K_{n,n}) \\approx \\log_2 n + 1$. States `n_exponential_growth` (sorry) and defines `ExactAsymptoticConjecture`: $n(k) = \\Theta(2^k \\cdot k^\\alpha)$.",
       "startLine": 847,
-      "endLine": 912
+      "endLine": 912,
+      "mathContext": "Defines `completeBipartite m n` ($K_{m,n}$ on `Fin m ⊕ Fin n`). States `knn_list_chromatic` (sorry): $\\chi_L(K_{n,n}) \\approx \\log_2 n + 1$. States `n_exponential_growth` (sorry) and defines `ExactAsy"
     }
   ],
   "conclusion": {

@@ -49,70 +49,80 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Documentation block with the problem statement, counterexample descriptions (AlphaProof and Tijdeman), status (OPEN), and references to Er76d and Guy's Problem B35."
+      "summary": "Documentation block with the problem statement, counterexample descriptions (AlphaProof and Tijdeman), status (OPEN), and references to Er76d and Guy's Problem B35.",
+      "mathContext": "Documentation block with the problem statement, counterexample descriptions (AlphaProof and Tijdeman), status (OPEN), and references to Er76d and Guy's Problem B35."
     },
     {
       "id": "sec-931-imports",
       "title": "Imports and Setup",
       "startLine": 19,
       "endLine": 29,
-      "summary": "Imports Nat.Basic, Nat.Prime.Basic, Nat.Factorization.Basic, Finset.Basic, Finset.Interval, and Tactic. Opens Nat and Finset namespaces within Erdos931."
+      "summary": "Imports Nat.Basic, Nat.Prime.Basic, Nat.Factorization.Basic, Finset.Basic, Finset.Interval, and Tactic. Opens Nat and Finset namespaces within Erdos931.",
+      "mathContext": "Imports Nat.Basic, Nat.Prime.Basic, Nat.Factorization.Basic, Finset.Basic, Finset.Interval, and Tactic. Opens Nat and Finset namespaces within Erdos931."
     },
     {
       "id": "sec-931-definitions",
       "title": "Core Definitions",
       "startLine": 30,
       "endLine": 49,
-      "summary": "Three foundational definitions: `consecutiveProduct` (∏(n+i) via Finset.Icc), `consecutivePrimeFactors` (prime factor set via Nat.primeFactors), and `SamePrimeFactors` (equality of prime factor sets), plus decidability instance."
+      "summary": "Three foundational definitions: `consecutiveProduct` (∏(n+i) via Finset.Icc), `consecutivePrimeFactors` (prime factor set via Nat.primeFactors), and `SamePrimeFactors` (equality of prime factor sets), plus decidability instance.",
+      "mathContext": "Three foundational definitions: `consecutiveProduct` (∏(n+i) via Finset.Icc), `consecutivePrimeFactors` (prime factor set via Nat.primeFactors), and `SamePrimeFactors` (equality of prime factor sets),"
     },
     {
       "id": "sec-931-computations",
       "title": "Verified Small Computations",
       "startLine": 50,
       "endLine": 85,
-      "summary": "Concrete product values (10!=3628800, 14·15·16=3360, etc.), base cases (empty product=1, single factor=n+1), positivity, and non-zero properties—all proved by native_decide, simp, or omega."
+      "summary": "Concrete product values (10!=3628800, 14·15·16=3360, etc.), base cases (empty product=1, single factor=n+1), positivity, and non-zero properties—all proved by native_decide, simp, or omega.",
+      "mathContext": "Concrete product values (10!=3628800, 14·15·16=3360, etc.), base cases (empty product=1, single factor=n+1), positivity, and non-zero properties—all proved by native_decide, simp, or omega."
     },
     {
       "id": "sec-931-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 86,
       "endLine": 103,
-      "summary": "Formalizes ErdosProblem931 (finiteness of same-prime-factor pairs with gap ≥ k₁) and StrongerConjecture (restricted to n₂ ≤ 2(n₁+k₁))."
+      "summary": "Formalizes ErdosProblem931 (finiteness of same-prime-factor pairs with gap ≥ k₁) and StrongerConjecture (restricted to n₂ ≤ 2(n₁+k₁)).",
+      "mathContext": "Formalizes ErdosProblem931 (finiteness of same-prime-factor pairs with gap ≥ k₁) and StrongerConjecture (restricted to n₂ ≤ 2(n₁+k₁))."
     },
     {
       "id": "sec-931-counterexamples",
       "title": "Verified Counterexamples",
       "startLine": 104,
       "endLine": 148,
-      "summary": "Five verified examples: AlphaProof (n₁=0, k₁=10, n₂=13, k₂=3), Tijdeman (n₁=18, k₁=k₂=4, n₂=53), and three new small examples showing {4,5,6}/{8,9,10}, {3,4,5,6}/{8,9,10}, and {1..5}/{8,9,10} share prime factors {2,3,5}. All verified by native_decide and omega."
+      "summary": "Five verified examples: AlphaProof (n₁=0, k₁=10, n₂=13, k₂=3), Tijdeman (n₁=18, k₁=k₂=4, n₂=53), and three new small examples showing {4,5,6}/{8,9,10}, {3,4,5,6}/{8,9,10}, and {1..5}/{8,9,10} share prime factors {2,3,5}. All verified by native_decide and omega.",
+      "mathContext": "Five verified examples: AlphaProof (n₁=0, k₁=10, n₂=13, k₂=3), Tijdeman (n₁=18, k₁=k₂=4, n₂=53), and three new small examples showing {4,5,6}/{8,9,10}, {3,4,5,6}/{8,9,10}, and {1..5}/{8,9,10} share pr"
     },
     {
       "id": "sec-931-properties",
       "title": "Properties of Prime Factors",
       "startLine": 149,
       "endLine": 192,
-      "summary": "Seven lemmas: prime factors divide the product and are prime, a prime dividing any n+i is in the factor set (via Finset.dvd_prod_of_mem), and SamePrimeFactors is reflexive, symmetric, transitive."
+      "summary": "Seven lemmas: prime factors divide the product and are prime, a prime dividing any n+i is in the factor set (via Finset.dvd_prod_of_mem), and SamePrimeFactors is reflexive, symmetric, transitive.",
+      "mathContext": "Seven lemmas: prime factors divide the product and are prime, a prime dividing any n+i is in the factor set (via Finset.dvd_prod_of_mem), and SamePrimeFactors is reflexive, symmetric, transitive."
     },
     {
       "id": "sec-931-implication",
       "title": "Stronger Implies Main",
       "startLine": 193,
       "endLine": 207,
-      "summary": "Axiom with detailed commentary: the stronger conjecture implies the main one. The set decomposition into band and outer regions is explained, with the outer region requiring Størmer-type smooth number arguments."
+      "summary": "Axiom with detailed commentary: the stronger conjecture implies the main one. The set decomposition into band and outer regions is explained, with the outer region requiring Størmer-type smooth number arguments.",
+      "mathContext": "Axiom with detailed commentary: the stronger conjecture implies the main one. The set decomposition into band and outer regions is explained, with the outer region requiring Størmer-type smooth number"
     },
     {
       "id": "sec-931-bertrand",
       "title": "Bertrand's Postulate and Prime Between Blocks",
       "startLine": 208,
       "endLine": 277,
-      "summary": "NEW: Four theorems using Bertrand's postulate. (1) If the first block contains a prime, a prime exists in range (trivial). (2) By Bertrand, when k₁ ≥ n₁ the first block always has a prime. (3) Combined: exists_prime_between_blocks holds for k₁ ≥ n₁ without SamePrimeFactors. (4) If the first product has a large prime factor, SamePrimeFactors transfers it to bound q ≤ n₂+k₂ via Prime.dvd_finset_prod_iff."
+      "summary": "NEW: Four theorems using Bertrand's postulate. (1) If the first block contains a prime, a prime exists in range (trivial). (2) By Bertrand, when k₁ ≥ n₁ the first block always has a prime. (3) Combined: exists_prime_between_blocks holds for k₁ ≥ n₁ without SamePrimeFactors. (4) If the first product has a large prime factor, SamePrimeFactors transfers it to bound q ≤ n₂+k₂ via Prime.dvd_finset_prod_iff.",
+      "mathContext": "NEW: Four theorems using Bertrand's postulate. (1) If the first block contains a prime, a prime exists in range (trivial). (2) By Bertrand, when k₁ ≥ n₁ the first block always has a prime. (3) Combine"
     },
     {
       "id": "sec-931-prime-between-axiom",
       "title": "Open Question: Remaining Hard Case",
       "startLine": 278,
       "endLine": 300,
-      "summary": "Axiom for the remaining hard case where n₁ > k₁ and the first block is all composite. Detailed commentary explains why this case requires smooth number theory (Størmer's theorem) and is empirically impossible for all tested values."
+      "summary": "Axiom for the remaining hard case where n₁ > k₁ and the first block is all composite. Detailed commentary explains why this case requires smooth number theory (Størmer's theorem) and is empirically impossible for all tested values.",
+      "mathContext": "Axiom for the remaining hard case where n₁ > k₁ and the first block is all composite. Detailed commentary explains why this case requires smooth number theory (Størmer's theorem) and is empirically im"
     }
   ],
   "conclusion": {

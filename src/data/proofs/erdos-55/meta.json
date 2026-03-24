@@ -51,70 +51,80 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib and opens `Finset`, `BigOperators` for $\\sum$ notation",
       "startLine": 27,
-      "endLine": 32
+      "endLine": 32,
+      "mathContext": "Imports Mathlib and opens `Finset`, `BigOperators` for $\\sum$ notation"
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines $r$-colorings ($A \\to \\mathrm{Fin}\\,r$), monochromatic subsets, finite sums, and the central predicate `IsRamseyComplete`",
       "startLine": 33,
-      "endLine": 53
+      "endLine": 53,
+      "mathContext": "Defines $r$-colorings ($A \\to \\mathrm{Fin}\\,r$), monochromatic subsets, finite sums, and the central predicate `IsRamseyComplete`"
     },
     {
       "id": "counting",
       "title": "Counting Function and Growth Rates",
       "summary": "Defines counting function $|A \\cap [1,N]|$ via `Set.ncard` and predicates `HasGrowthAtMost` ($O$-bound) and `HasGrowthAtLeast` ($\\Omega$-bound)",
       "startLine": 54,
-      "endLine": 67
+      "endLine": 67,
+      "mathContext": "Defines counting function $|A \\cap [1,N]|$ via `Set.ncard` and predicates `HasGrowthAtMost` ($O$-bound) and `HasGrowthAtLeast` ($\\Omega$-bound)"
     },
     {
       "id": "burr-erdos-lower",
       "title": "Burr-Erdős Lower Bound (1985)",
       "summary": "For $r=2$: $\\exists\\,c > 0$ such that no Ramsey 2-complete set satisfies $|A \\cap [1,N]| \\leq c(\\log N)^2$",
       "startLine": 68,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "For $r=2$: $\\exists\\,c > 0$ such that no Ramsey 2-complete set satisfies $|A \\cap [1,N]| \\leq c(\\log N)^2$"
     },
     {
       "id": "burr-erdos-upper",
       "title": "Burr-Erdős Upper Bound and Burr's Theorem",
       "summary": "Upper bound $(\\log N)^3$ for $r=2$ and Burr's theorem that $k$-th powers are Ramsey $r$-complete for all $r,k \\geq 1$",
       "startLine": 82,
-      "endLine": 95
+      "endLine": 95,
+      "mathContext": "Upper bound $(\\log N)^3$ for $r=2$ and Burr's theorem that $k$-th powers are Ramsey $r$-complete for all $r,k \\geq 1$"
     },
     {
       "id": "cfp-upper",
       "title": "Conlon-Fox-Pham Upper Bound (2021)",
       "summary": "For all $r \\geq 2$: $\\exists$ Ramsey $r$-complete $A$ with $|A \\cap [1,N]| \\leq Cr(\\log N)^2$",
       "startLine": 96,
-      "endLine": 108
+      "endLine": 108,
+      "mathContext": "For all $r \\geq 2$: $\\exists$ Ramsey $r$-complete $A$ with $|A \\cap [1,N]| \\leq Cr(\\log N)^2$"
     },
     {
       "id": "cfp-lower",
       "title": "Conlon-Fox-Pham Lower Bound (2021)",
       "summary": "Universal $c > 0$: if $|A \\cap [1,N]| \\leq cr(\\log N)^2$ then $A$ is not $r$-Ramsey complete",
       "startLine": 109,
-      "endLine": 121
+      "endLine": 121,
+      "mathContext": "Universal $c > 0$: if $|A \\cap [1,N]| \\leq cr(\\log N)^2$ then $A$ is not $r$-Ramsey complete"
     },
     {
       "id": "main-solution",
       "title": "Complete Solution: Θ(r(log N)²)",
       "summary": "Theorem `erdos_55_solution`: combines CFP upper and lower bounds into the tight $\\Theta(r(\\log N)^2)$ characterization",
       "startLine": 122,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "Theorem `erdos_55_solution`: combines CFP upper and lower bounds into the tight $\\Theta(r(\\log N)^2)$ characterization"
     },
     {
       "id": "r2-corollary",
       "title": "Corollary: Optimal Growth for r=2",
       "summary": "Derives $\\Theta((\\log N)^2)$ for $r=2$ from the general bounds, closing the Burr-Erdős gap via `ring` and `linarith`",
       "startLine": 144,
-      "endLine": 173
+      "endLine": 173,
+      "mathContext": "Derives $\\Theta((\\log N)^2)$ for $r=2$ from the general bounds, closing the Burr-Erdős gap via `ring` and `linarith`"
     },
     {
       "id": "historical-notes",
       "title": "Historical Notes and References",
       "summary": "Timeline from Burr-Erdős (1985) through Conlon-Fox-Pham (2021), construction techniques, and key references",
       "startLine": 174,
-      "endLine": 193
+      "endLine": 193,
+      "mathContext": "Timeline from Burr-Erdős (1985) through Conlon-Fox-Pham (2021), construction techniques, and key references"
     }
   ],
   "relatedProofs": [

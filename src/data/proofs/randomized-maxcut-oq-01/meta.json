@@ -95,84 +95,96 @@
       "title": "Setup and Imports",
       "startLine": 1,
       "endLine": 38,
-      "summary": "Import Mathlib modules for graphs, real numbers, and finite sets."
+      "summary": "Import Mathlib modules for graphs, real numbers, and finite sets.",
+      "mathContext": "Import Mathlib modules for graphs, real numbers, and finite sets."
     },
     {
       "id": "cut-structure",
       "title": "Cut Infrastructure",
       "startLine": 39,
       "endLine": 79,
-      "summary": "Define GWCut structure and MaxCut value, mirroring the 1/2-approximation proof."
+      "summary": "Define GWCut structure and MaxCut value, mirroring the 1/2-approximation proof.",
+      "mathContext": "Define GWCut structure and MaxCut value, mirroring the 1/2-approximation proof."
     },
     {
       "id": "gw-constant",
       "title": "The GW Constant",
       "startLine": 80,
       "endLine": 99,
-      "summary": "Define α_GW = 878/1000 and prove key bounds (0 < α_GW < 1, α_GW > 1/2)."
+      "summary": "Define α_GW = 878/1000 and prove key bounds (0 < α_GW < 1, α_GW > 1/2).",
+      "mathContext": "Define α_GW = 878/1000 and prove key bounds (0 < α_GW < 1, α_GW > 1/2)."
     },
     {
       "id": "sdp-relaxation",
       "title": "SDP Relaxation",
       "startLine": 100,
       "endLine": 126,
-      "summary": "Axiomatize the SDP relaxation value and its relationship to MaxCut."
+      "summary": "Axiomatize the SDP relaxation value and its relationship to MaxCut.",
+      "mathContext": "Axiomatize the SDP relaxation value and its relationship to MaxCut."
     },
     {
       "id": "hyperplane-rounding",
       "title": "Hyperplane Rounding",
       "startLine": 127,
       "endLine": 146,
-      "summary": "Axiomatize the expected cut from GW hyperplane rounding."
+      "summary": "Axiomatize the expected cut from GW hyperplane rounding.",
+      "mathContext": "Axiomatize the expected cut from GW hyperplane rounding."
     },
     {
       "id": "gw-inequality",
       "title": "The GW Inequality",
       "startLine": 147,
       "endLine": 169,
-      "summary": "Axiomatize the core analytical result: E[cut] ≥ α_GW · SDP_OPT."
+      "summary": "Axiomatize the core analytical result: E[cut] ≥ α_GW · SDP_OPT.",
+      "mathContext": "Axiomatize the core analytical result: E[cut] ≥ α_GW · SDP_OPT."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: 0.878-Approximation",
       "startLine": 170,
       "endLine": 196,
-      "summary": "Prove the main result: α_GW · MaxCut ≤ E[GW cut], with ratio bound corollary."
+      "summary": "Prove the main result: α_GW · MaxCut ≤ E[GW cut], with ratio bound corollary.",
+      "mathContext": "Prove the main result: α_GW · MaxCut ≤ E[GW cut], with ratio bound corollary."
     },
     {
       "id": "bounds",
       "title": "Structural Bounds",
       "startLine": 197,
       "endLine": 225,
-      "summary": "Prove MaxCut ≤ edges and expected cut ≤ edges bounds."
+      "summary": "Prove MaxCut ≤ edges and expected cut ≤ edges bounds.",
+      "mathContext": "Prove MaxCut ≤ edges and expected cut ≤ edges bounds."
     },
     {
       "id": "arccos-framework",
       "title": "Arccos Rounding Probability Framework",
       "startLine": 240,
       "endLine": 311,
-      "summary": "Define roundingProb(x) = arccos(x)/π and sdpContrib(x) = (1-x)/2 using Mathlib's arccos. Prove boundary values at x = -1, 0, 1 and range properties [0,1]."
+      "summary": "Define roundingProb(x) = arccos(x)/π and sdpContrib(x) = (1-x)/2 using Mathlib's arccos. Prove boundary values at x = -1, 0, 1 and range properties [0,1].",
+      "mathContext": "Define roundingProb(x) = arccos(x)/π and sdpContrib(x) = (1-x)/2 using Mathlib's arccos. Prove boundary values at x = -1, 0, 1 and range properties [0,1]."
     },
     {
       "id": "gw-boundary",
       "title": "GW Inequality at Boundary Points",
       "startLine": 312,
       "endLine": 341,
-      "summary": "Prove the GW inequality αGW · sdpContrib(x) ≤ roundingProb(x) at the three critical points x = -1, 0, 1."
+      "summary": "Prove the GW inequality αGW · sdpContrib(x) ≤ roundingProb(x) at the three critical points x = -1, 0, 1.",
+      "mathContext": "Prove the GW inequality αGW · sdpContrib(x) ≤ roundingProb(x) at the three critical points x = -1, 0, 1."
     },
     {
       "id": "ratio-analysis",
       "title": "Ratio Analysis",
       "startLine": 342,
       "endLine": 376,
-      "summary": "Analyze the GW ratio roundingProb(x)/sdpContrib(x) at boundary points, showing it equals 1 at x = 0 and x = -1."
+      "summary": "Analyze the GW ratio roundingProb(x)/sdpContrib(x) at boundary points, showing it equals 1 at x = 0 and x = -1.",
+      "mathContext": "Analyze the GW ratio roundingProb(x)/sdpContrib(x) at boundary points, showing it equals 1 at x = 0 and x = -1."
     },
     {
       "id": "enhanced-bounds",
       "title": "Enhanced Structural Bounds",
       "startLine": 377,
       "endLine": 403,
-      "summary": "Additional bounds: improvement factor over random, bipartite specialization, tighter αGW estimates, and UGC hardness axiom."
+      "summary": "Additional bounds: improvement factor over random, bipartite specialization, tighter αGW estimates, and UGC hardness axiom.",
+      "mathContext": "Additional bounds: improvement factor over random, bipartite specialization, tighter αGW estimates, and UGC hardness axiom."
     }
   ],
   "conclusion": {

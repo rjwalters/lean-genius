@@ -88,56 +88,64 @@
       "title": "Imports and Namespace",
       "startLine": 25,
       "endLine": 35,
-      "summary": "Imports $\\texttt{Finset}$, $\\texttt{Rat}$, $\\texttt{Real.log}$, and $\\texttt{Filter}$ from Mathlib. Opens $\\texttt{Finset}$ and $\\texttt{Filter}$ namespaces for convenient access to summation and asymptotic reasoning."
+      "summary": "Imports $\\texttt{Finset}$, $\\texttt{Rat}$, $\\texttt{Real.log}$, and $\\texttt{Filter}$ from Mathlib. Opens $\\texttt{Finset}$ and $\\texttt{Filter}$ namespaces for convenient access to summation and asymptotic reasoning.",
+      "mathContext": "Imports $\\texttt{Finset}$, $\\texttt{Rat}$, $\\texttt{Real.log}$, and $\\texttt{Filter}$ from Mathlib. Opens $\\texttt{Finset}$ and $\\texttt{Filter}$ namespaces for convenient access to summation and asym"
     },
     {
       "id": "unit-fractions",
       "title": "Unit Fraction Definitions",
       "startLine": 36,
       "endLine": 57,
-      "summary": "Defines $\\texttt{reciprocalSum}(A) = \\sum_{a \\in A} \\frac{1}{a}$ over $\\mathbb{Q}$, $\\texttt{HasUnitFractionSum}(S)$ requiring $\\sum \\frac{1}{n} = 1$ with all $n \\geq 1$, and $\\texttt{ContainsUnitFraction}(A)$ asserting $\\exists S \\subseteq A$ with unit fraction sum."
+      "summary": "Defines $\\texttt{reciprocalSum}(A) = \\sum_{a \\in A} \\frac{1}{a}$ over $\\mathbb{Q}$, $\\texttt{HasUnitFractionSum}(S)$ requiring $\\sum \\frac{1}{n} = 1$ with all $n \\geq 1$, and $\\texttt{ContainsUnitFraction}(A)$ asserting $\\exists S \\subseteq A$ with unit fraction sum.",
+      "mathContext": "Defines $\\texttt{reciprocalSum}(A) = \\sum_{a \\in A} \\frac{1}{a}$ over $\\mathbb{Q}$, $\\texttt{HasUnitFractionSum}(S)$ requiring $\\sum \\frac{1}{n} = 1$ with all $n \\geq 1$, and $\\texttt{ContainsUnitFrac"
     },
     {
       "id": "dense-subsets",
       "title": "Dense Subsets of $\\{1, \\ldots, N\\}$",
       "startLine": 58,
       "endLine": 73,
-      "summary": "Defines $\\texttt{Icc1}(N) = \\{1, \\ldots, N\\}$ via $\\texttt{Finset.range}$ and $\\texttt{IsDenseSubset}(A, N, \\delta)$ requiring $A \\subseteq \\{1,\\ldots,N\\}$ with $\\sum \\frac{1}{a} > \\delta \\log N$."
+      "summary": "Defines $\\texttt{Icc1}(N) = \\{1, \\ldots, N\\}$ via $\\texttt{Finset.range}$ and $\\texttt{IsDenseSubset}(A, N, \\delta)$ requiring $A \\subseteq \\{1,\\ldots,N\\}$ with $\\sum \\frac{1}{a} > \\delta \\log N$.",
+      "mathContext": "Defines $\\texttt{Icc1}(N) = \\{1, \\ldots, N\\}$ via $\\texttt{Finset.range}$ and $\\texttt{IsDenseSubset}(A, N, \\delta)$ requiring $A \\subseteq \\{1,\\ldots,N\\}$ with $\\sum \\frac{1}{a} > \\delta \\log N$."
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture (Formal Statement)",
       "startLine": 74,
       "endLine": 89,
-      "summary": "Defines $\\texttt{ErdosConjecture47}$: $\\forall \\delta > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0$, every $\\delta$-dense subset contains a unit fraction subset. This is the Prop that Bloom's theorem proves."
+      "summary": "Defines $\\texttt{ErdosConjecture47}$: $\\forall \\delta > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0$, every $\\delta$-dense subset contains a unit fraction subset. This is the Prop that Bloom's theorem proves.",
+      "mathContext": "Defines $\\texttt{ErdosConjecture47}$: $\\forall \\delta > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0$, every $\\delta$-dense subset contains a unit fraction subset. This is the Prop that Bloom's theorem prov"
     },
     {
       "id": "bloom",
       "title": "Bloom's Theorem (2021)",
       "startLine": 90,
       "endLine": 115,
-      "summary": "Axiomatizes Bloom's qualitative result ($\\texttt{bloom\\_theorem} : \\texttt{ErdosConjecture47}$) and quantitative bound: $\\sum \\frac{1}{a} \\geq C \\cdot \\frac{\\log \\log \\log N}{\\log \\log N} \\cdot \\log N$ suffices."
+      "summary": "Axiomatizes Bloom's qualitative result ($\\texttt{bloom\\_theorem} : \\texttt{ErdosConjecture47}$) and quantitative bound: $\\sum \\frac{1}{a} \\geq C \\cdot \\frac{\\log \\log \\log N}{\\log \\log N} \\cdot \\log N$ suffices.",
+      "mathContext": "Axiomatizes Bloom's qualitative result ($\\texttt{bloom\\_theorem} : \\texttt{ErdosConjecture47}$) and quantitative bound: $\\sum \\frac{1}{a} \\geq C \\cdot \\frac{\\log \\log \\log N}{\\log \\log N} \\cdot \\log N"
     },
     {
       "id": "liu-sawhney",
       "title": "Liu–Sawhney Improvement (2024)",
       "startLine": 116,
       "endLine": 129,
-      "summary": "Axiomatizes the improved threshold: $\\forall \\varepsilon > 0$, $\\sum \\frac{1}{a} \\geq (\\log N)^{4/5+\\varepsilon}$ suffices. A polynomial improvement from $(\\log N)^{1-o(1)}$ to $(\\log N)^{4/5+o(1)}$."
+      "summary": "Axiomatizes the improved threshold: $\\forall \\varepsilon > 0$, $\\sum \\frac{1}{a} \\geq (\\log N)^{4/5+\\varepsilon}$ suffices. A polynomial improvement from $(\\log N)^{1-o(1)}$ to $(\\log N)^{4/5+o(1)}$.",
+      "mathContext": "Axiomatizes the improved threshold: $\\forall \\varepsilon > 0$, $\\sum \\frac{1}{a} \\geq (\\log N)^{4/5+\\varepsilon}$ suffices. A polynomial improvement from $(\\log N)^{1-o(1)}$ to $(\\log N)^{4/5+o(1)}$."
     },
     {
       "id": "pomerance",
       "title": "Pomerance's Lower Bound",
       "startLine": 130,
       "endLine": 143,
-      "summary": "Axiomatizes Pomerance's construction: sets with $\\sum \\frac{1}{a} \\geq (\\log \\log N)^2$ avoiding unit fraction subsets exist for arbitrarily large $N$, showing the threshold is at least $(\\log \\log N)^2$."
+      "summary": "Axiomatizes Pomerance's construction: sets with $\\sum \\frac{1}{a} \\geq (\\log \\log N)^2$ avoiding unit fraction subsets exist for arbitrarily large $N$, showing the threshold is at least $(\\log \\log N)^2$.",
+      "mathContext": "Axiomatizes Pomerance's construction: sets with $\\sum \\frac{1}{a} \\geq (\\log \\log N)^2$ avoiding unit fraction subsets exist for arbitrarily large $N$, showing the threshold is at least $(\\log \\log N)"
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 144,
       "endLine": 154,
-      "summary": "$\\texttt{erdos\\_47\\_summary} : \\texttt{ErdosConjecture47} := \\texttt{bloom\\_theorem}$. Records that Problem #47 is solved and the conjecture equals Bloom's result."
+      "summary": "$\\texttt{erdos\\_47\\_summary} : \\texttt{ErdosConjecture47} := \\texttt{bloom\\_theorem}$. Records that Problem #47 is solved and the conjecture equals Bloom's result.",
+      "mathContext": "$\\texttt{erdos\\_47\\_summary} : \\texttt{ErdosConjecture47} := \\texttt{bloom\\_theorem}$. Records that Problem #47 is solved and the conjecture equals Bloom's result."
     }
   ],
   "conclusion": {

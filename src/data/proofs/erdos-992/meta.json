@@ -91,56 +91,64 @@
       "title": "Basic Definitions",
       "summary": "StrictlyIncreasingSeq, frac, frac_in_unit_interval",
       "startLine": 39,
-      "endLine": 54
+      "endLine": 54,
+      "mathContext": "StrictlyIncreasingSeq, frac, frac_in_unit_interval"
     },
     {
       "id": "discrepancy",
       "title": "Discrepancy Definition",
       "summary": "countInInterval, discrepancy D(N) via supremum",
       "startLine": 55,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "countInInterval, discrepancy D(N) via supremum"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "erdos_koksma_cassels, baker_1981 axioms",
       "startLine": 73,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "erdos_koksma_cassels, baker_1981 axioms"
     },
     {
       "id": "lacunary",
       "title": "Lacunary Sequences",
       "summary": "Lacunary definition, erdos_gal_lacunary axiom",
       "startLine": 91,
-      "endLine": 105
+      "endLine": 105,
+      "mathContext": "Lacunary definition, erdos_gal_lacunary axiom"
     },
     {
       "id": "conjectures",
       "title": "Main Conjectures",
       "summary": "conjecture_log_subpolynomial, conjecture_loglog_polynomial",
       "startLine": 106,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "conjecture_log_subpolynomial, conjecture_loglog_polynomial"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "summary": "lower_bound_sqrt: √N is necessary",
       "startLine": 126,
-      "endLine": 136
+      "endLine": 136,
+      "mathContext": "lower_bound_sqrt: √N is necessary"
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "naturalSeq, powersOfTwo, powers_of_two_bound",
       "startLine": 137,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "naturalSeq, powersOfTwo, powers_of_two_bound"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_992_summary combining Baker and Erdős-Gál",
       "startLine": 158,
-      "endLine": 179
+      "endLine": 179,
+      "mathContext": "erdos_992_summary combining Baker and Erdős-Gál"
     }
   ],
   "conclusion": {

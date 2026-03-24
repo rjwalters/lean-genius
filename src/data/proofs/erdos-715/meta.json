@@ -108,56 +108,64 @@
       "title": "Basic Definitions",
       "summary": "Defines `SimpleGraph'` with explicit adjacency, `degree` via `Finset.filter`, and `IsRegular` (all vertices have degree exactly r). These form the foundation for stating regularity constraints.",
       "startLine": 29,
-      "endLine": 46
+      "endLine": 46,
+      "mathContext": "Defines `SimpleGraph'` with explicit adjacency, `degree` via `Finset.filter`, and `IsRegular` (all vertices have degree exactly r). These form the foundation for stating regularity constraints."
     },
     {
       "id": "subgraphs",
       "title": "Subgraph Hierarchy",
       "summary": "Defines `IsSubgraph` (edge containment), `IsSpanningSubgraph` (same vertices), and `inducedSubgraph` (vertex restriction). Tashkinov's result finds spanning 3-regular subgraphs.",
       "startLine": 47,
-      "endLine": 62
+      "endLine": 62,
+      "mathContext": "Defines `IsSubgraph` (edge containment), `IsSpanningSubgraph` (same vertices), and `inducedSubgraph` (vertex restriction). Tashkinov's result finds spanning 3-regular subgraphs."
     },
     {
       "id": "main-question",
       "title": "The Central Predicate",
       "summary": "Defines `HasRegularSubgraph(r, k)`: does every r-regular graph contain a k-regular subgraph? This parameterizes the Berge-Sauer question and its generalizations.",
       "startLine": 63,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "Defines `HasRegularSubgraph(r, k)`: does every r-regular graph contain a k-regular subgraph? This parameterizes the Berge-Sauer question and its generalizations."
     },
     {
       "id": "main-results",
       "title": "Tashkinov and Alon-Friedland-Kalai",
       "summary": "States `tashkinov_theorem` (4-regular → 3-regular subgraph), the corollary for r ≥ 4, and the AFK strengthening (4-regular + edge suffices). All deep results are stated as theorem sorries.",
       "startLine": 71,
-      "endLine": 97
+      "endLine": 97,
+      "mathContext": "States `tashkinov_theorem` (4-regular → 3-regular subgraph), the corollary for r ≥ 4, and the AFK strengthening (4-regular + edge suffices). All deep results are stated as theorem sorries."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples for r < 4",
       "summary": "K₄ (Fin 4, complete graph) is 3-regular with no proper 3-regular subgraph. Proves the threshold is exactly 4 by providing the sharpness witness.",
       "startLine": 98,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "K₄ (Fin 4, complete graph) is 3-regular with no proper 3-regular subgraph. Proves the threshold is exactly 4 by providing the sharpness witness."
     },
     {
       "id": "berge-sauer",
       "title": "The Berge-Sauer Answer",
       "summary": "Formalizes the original question and its positive answer. `berge_sauer_answer` is proved from `tashkinov_theorem` with witness r = 4. Defines `RegularSubgraphThreshold` for the general problem.",
       "startLine": 123,
-      "endLine": 142
+      "endLine": 142,
+      "mathContext": "Formalizes the original question and its positive answer. `berge_sauer_answer` is proved from `tashkinov_theorem` with witness r = 4. Defines `RegularSubgraphThreshold` for the general problem."
     },
     {
       "id": "petersen",
       "title": "The Petersen Graph",
       "summary": "Explicit construction of the Petersen graph on Fin 10 with outer pentagon, inner pentagram, and spoke edges. Stated to be 3-regular with no proper 3-regular subgraph.",
       "startLine": 143,
-      "endLine": 175
+      "endLine": 175,
+      "mathContext": "Explicit construction of the Petersen graph on Fin 10 with outer pentagon, inner pentagram, and spoke edges. Stated to be 3-regular with no proper 3-regular subgraph."
     },
     {
       "id": "edge-counting",
       "title": "Edge Counting and Parity",
       "summary": "Handshaking lemma for r-regular graphs: rn/2 edges, with parity condition Even(rn). Provides necessary conditions for existence of regular graphs.",
       "startLine": 176,
-      "endLine": 209
+      "endLine": 209,
+      "mathContext": "Handshaking lemma for r-regular graphs: rn/2 edges, with parity condition Even(rn). Provides necessary conditions for existence of regular graphs."
     }
   ],
   "conclusion": {

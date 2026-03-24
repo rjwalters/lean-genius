@@ -84,70 +84,80 @@
       "title": "Lagrange Identity",
       "summary": "Proves the Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2·[(∑f²)(∑g²) - (∑fg)²]. The LHS is manifestly non-negative, giving CS as a corollary.",
       "startLine": 26,
-      "endLine": 58
+      "endLine": 58,
+      "mathContext": "Proves the Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2·[(∑f²)(∑g²) - (∑fg)²]. The LHS is manifestly non-negative, giving CS as a corollary."
     },
     {
       "id": "sum-sq-zero",
       "title": "Sum of Squares Zero Characterization",
       "summary": "∑hᵢ² = 0 iff each hᵢ = 0. Extended to double sums. The fundamental technique reused for Hölder via Young deficits.",
       "startLine": 59,
-      "endLine": 82
+      "endLine": 82,
+      "mathContext": "∑hᵢ² = 0 iff each hᵢ = 0. Extended to double sums. The fundamental technique reused for Hölder via Young deficits."
     },
     {
       "id": "cs-equality-iff",
       "title": "Cauchy-Schwarz Equality Characterization",
       "summary": "Full iff: equality in CS holds iff all cross-terms fᵢgⱼ = fⱼgᵢ vanish. Extracts proportionality: fᵢ = c·gᵢ when some gₖ ≠ 0.",
       "startLine": 83,
-      "endLine": 149
+      "endLine": 149,
+      "mathContext": "Full iff: equality in CS holds iff all cross-terms fᵢgⱼ = fⱼgᵢ vanish. Extracts proportionality: fᵢ = c·gᵢ when some gₖ ≠ 0."
     },
     {
       "id": "inner-product-equality",
       "title": "Inner Product Space Equality",
       "summary": "Abstract characterization: ‖⟨u,v⟩‖ = ‖u‖·‖v‖ iff ∃c, u = c•v. Both norm and absolute value forms.",
       "startLine": 150,
-      "endLine": 177
+      "endLine": 177,
+      "mathContext": "Abstract characterization: ‖⟨u,v⟩‖ = ‖u‖·‖v‖ iff ∃c, u = c•v. Both norm and absolute value forms."
     },
     {
       "id": "holder-cs-finite",
       "title": "Hölder/CS for Finite Sums and Examples",
       "summary": "Hölder for NNReal sums via Mathlib, CS from Lagrange, and concrete equality/strict-inequality examples.",
       "startLine": 178,
-      "endLine": 230
+      "endLine": 230,
+      "mathContext": "Hölder for NNReal sums via Mathlib, CS from Lagrange, and concrete equality/strict-inequality examples."
     },
     {
       "id": "conjugate-identities",
       "title": "Conjugate Exponent Identities",
       "summary": "Five identities for Hölder conjugate pairs: q=p/(p-1), (p-1)(q-1)=1, q/p+1=q, 1<q, p+q=pq.",
       "startLine": 231,
-      "endLine": 293
+      "endLine": 293,
+      "mathContext": "Five identities for Hölder conjugate pairs: q=p/(p-1), (p-1)(q-1)=1, q/p+1=q, 1<q, p+q=pq."
     },
     {
       "id": "young-equality",
       "title": "Young's Equality Case",
       "summary": "Defines Young deficit a^p/p + b^q/q - ab. Full iff: deficit = 0 ↔ a^p = b^q. Forward via exp/log; reverse via strict convexity of exp.",
       "startLine": 294,
-      "endLine": 461
+      "endLine": 461,
+      "mathContext": "Defines Young deficit a^p/p + b^q/q - ab. Full iff: deficit = 0 ↔ a^p = b^q. Forward via exp/log; reverse via strict convexity of exp."
     },
     {
       "id": "holder-equality",
       "title": "General Hölder Equality (Finite Sums)",
       "summary": "Reduces Hölder equality to pointwise Young equality: sum of deficits = 0 forces each deficit = 0. Normalized and general cases with both directions.",
       "startLine": 462,
-      "endLine": 600
+      "endLine": 600,
+      "mathContext": "Reduces Hölder equality to pointwise Young equality: sum of deficits = 0 forces each deficit = 0. Normalized and general cases with both directions."
     },
     {
       "id": "cs-from-holder",
       "title": "Recovering Cauchy-Schwarz from Hölder",
       "summary": "At p=q=2, power proportionality fᵢ² = c·gᵢ² reduces to linear proportionality fᵢ = √c·gᵢ for non-negative functions.",
       "startLine": 626,
-      "endLine": 651
+      "endLine": 651,
+      "mathContext": "At p=q=2, power proportionality fᵢ² = c·gᵢ² reduces to linear proportionality fᵢ = √c·gᵢ for non-negative functions."
     },
     {
       "id": "integral-holder-equality",
       "title": "Integral Hölder Equality (Measure Theory)",
       "summary": "Lifts Hölder equality to integrals: ∫fg = ‖f‖_p‖g‖_q iff f^p =ᵃᵉ c·g^q. Uses integral_eq_zero_iff_of_nonneg_ae as the measure-theoretic 'sum of nonneg = 0'.",
       "startLine": 652,
-      "endLine": 835
+      "endLine": 835,
+      "mathContext": "Lifts Hölder equality to integrals: ∫fg = ‖f‖_p‖g‖_q iff f^p =ᵃᵉ c·g^q. Uses integral_eq_zero_iff_of_nonneg_ae as the measure-theoretic 'sum of nonneg = 0'."
     }
   ],
   "overview": {

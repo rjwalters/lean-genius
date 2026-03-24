@@ -61,77 +61,88 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 32,
-      "summary": "States Erdős Problem #140: prove $r_3(N) \\ll N/(\\log N)^C$ for every $C > 0$. Outlines the 70-year history from Roth (1953) through Kelley-Meka (2023)."
+      "summary": "States Erdős Problem #140: prove $r_3(N) \\ll N/(\\log N)^C$ for every $C > 0$. Outlines the 70-year history from Roth (1953) through Kelley-Meka (2023).",
+      "mathContext": "States Erdős Problem #140: prove $r_3(N) \\ll N/(\\log N)^C$ for every $C > 0$. Outlines the 70-year history from Roth (1953) through Kelley-Meka (2023)."
     },
     {
       "id": "3-term-aps",
       "title": "3-Term Arithmetic Progressions",
       "startLine": 33,
       "endLine": 45,
-      "summary": "Defines IsAP3 (the condition $2b = a + c$ with $a < b < c$), Is3APFree for sets of reals, and Finset3APFree for finite sets. These are the basic predicates for the entire formalization."
+      "summary": "Defines IsAP3 (the condition $2b = a + c$ with $a < b < c$), Is3APFree for sets of reals, and Finset3APFree for finite sets. These are the basic predicates for the entire formalization.",
+      "mathContext": "Defines IsAP3 (the condition $2b = a + c$ with $a < b < c$), Is3APFree for sets of reals, and Finset3APFree for finite sets. These are the basic predicates for the entire formalization."
     },
     {
       "id": "roth-number",
       "title": "The Roth Number r₃(N)",
       "startLine": 46,
       "endLine": 78,
-      "summary": "Defines $r_3(N)$ as the maximum cardinality of a 3-AP-free subset of $\\{0, \\ldots, N\\}$. Proves r3_achieved: the supremum is attained (nonempty bounded set of naturals)."
+      "summary": "Defines $r_3(N)$ as the maximum cardinality of a 3-AP-free subset of $\\{0, \\ldots, N\\}$. Proves r3_achieved: the supremum is attained (nonempty bounded set of naturals).",
+      "mathContext": "Defines $r_3(N)$ as the maximum cardinality of a 3-AP-free subset of $\\{0, \\ldots, N\\}$. Proves r3_achieved: the supremum is attained (nonempty bounded set of naturals)."
     },
     {
       "id": "historical-bounds",
       "title": "Historical Upper Bounds",
       "startLine": 79,
       "endLine": 111,
-      "summary": "Axiomatizes the four milestone upper bounds: Roth ($o(N)$, 1953), Bourgain ($O(N/\\sqrt{\\log\\log N})$, 2008), Sanders ($O(N(\\log\\log N)^5/\\log N)$, 2011), and Bloom-Sisask ($O(N/(\\log N)^{1+c})$, 2020)."
+      "summary": "Axiomatizes the four milestone upper bounds: Roth ($o(N)$, 1953), Bourgain ($O(N/\\sqrt{\\log\\log N})$, 2008), Sanders ($O(N(\\log\\log N)^5/\\log N)$, 2011), and Bloom-Sisask ($O(N/(\\log N)^{1+c})$, 2020).",
+      "mathContext": "Axiomatizes the four milestone upper bounds: Roth ($o(N)$, 1953), Bourgain ($O(N/\\sqrt{\\log\\log N})$, 2008), Sanders ($O(N(\\log\\log N)^5/\\log N)$, 2011), and Bloom-Sisask ($O(N/(\\log N)^{1+c})$, 2020)"
     },
     {
       "id": "kelley-meka",
       "title": "The Kelley-Meka Theorem (2023)",
       "startLine": 112,
       "endLine": 128,
-      "summary": "Axiomatizes the main result: for all $C > 0$ there exists $K > 0$ such that $r_3(N) \\leq KN/(\\log N)^C$ for $N \\geq 3$. Proves erdos_140_solved as a direct application."
+      "summary": "Axiomatizes the main result: for all $C > 0$ there exists $K > 0$ such that $r_3(N) \\leq KN/(\\log N)^C$ for $N \\geq 3$. Proves erdos_140_solved as a direct application.",
+      "mathContext": "Axiomatizes the main result: for all $C > 0$ there exists $K > 0$ such that $r_3(N) \\leq KN/(\\log N)^C$ for $N \\geq 3$. Proves erdos_140_solved as a direct application."
     },
     {
       "id": "corollaries",
       "title": "Consequences and Corollaries",
       "startLine": 129,
       "endLine": 150,
-      "summary": "Derives r3_superlogarithmic (density decays faster than any inverse log power) and r3_density_vanishes ($r_3(N)(\\log N)^C/N \\to 0$) from the Kelley-Meka theorem."
+      "summary": "Derives r3_superlogarithmic (density decays faster than any inverse log power) and r3_density_vanishes ($r_3(N)(\\log N)^C/N \\to 0$) from the Kelley-Meka theorem.",
+      "mathContext": "Derives r3_superlogarithmic (density decays faster than any inverse log power) and r3_density_vanishes ($r_3(N)(\\log N)^C/N \\to 0$) from the Kelley-Meka theorem."
     },
     {
       "id": "lower-bounds",
       "title": "Behrend Lower Bound",
       "startLine": 151,
       "endLine": 162,
-      "summary": "Axiomatizes Behrend's 1946 lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$. The gap between this and Kelley-Meka's upper bound remains a major open problem."
+      "summary": "Axiomatizes Behrend's 1946 lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$. The gap between this and Kelley-Meka's upper bound remains a major open problem.",
+      "mathContext": "Axiomatizes Behrend's 1946 lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$. The gap between this and Kelley-Meka's upper bound remains a major open problem."
     },
     {
       "id": "examples",
       "title": "Verified 3-AP-Free Examples",
       "startLine": 163,
       "endLine": 183,
-      "summary": "Machine-verifies that $\\{0\\}$ and $\\{1,2,4,5,10,11,13,14\\}$ are 3-AP-free using omega tactic and case analysis. The latter set is the first 8 elements of the greedy sequence (OEIS A003278)."
+      "summary": "Machine-verifies that $\\{0\\}$ and $\\{1,2,4,5,10,11,13,14\\}$ are 3-AP-free using omega tactic and case analysis. The latter set is the first 8 elements of the greedy sequence (OEIS A003278).",
+      "mathContext": "Machine-verifies that $\\{0\\}$ and $\\{1,2,4,5,10,11,13,14\\}$ are 3-AP-free using omega tactic and case analysis. The latter set is the first 8 elements of the greedy sequence (OEIS A003278)."
     },
     {
       "id": "greedy-sequence",
       "title": "The Greedy 3-AP-Free Sequence",
       "startLine": 184,
       "endLine": 196,
-      "summary": "Defines the greedy construction that adds the smallest integer avoiding 3-APs. Axiomatizes that the greedy sequence is 3-AP-free. Growth rate is approximately $n^{\\log 2/\\log 3}$."
+      "summary": "Defines the greedy construction that adds the smallest integer avoiding 3-APs. Axiomatizes that the greedy sequence is 3-AP-free. Growth rate is approximately $n^{\\log 2/\\log 3}$.",
+      "mathContext": "Defines the greedy construction that adds the smallest integer avoiding 3-APs. Axiomatizes that the greedy sequence is 3-AP-free. Growth rate is approximately $n^{\\log 2/\\log 3}$."
     },
     {
       "id": "k-term-generalization",
       "title": "k-Term AP Generalization",
       "startLine": 197,
       "endLine": 240,
-      "summary": "Generalizes to $k$-term APs: defines IsAPk, FinsetkAPFree, $r_k(N)$, and states the conjecture that $r_k(N) = O(N/(\\log N)^C)$ for all $k \\geq 3$. Proves the $k = 3$ case from Kelley-Meka. The $k \\geq 4$ cases remain open."
+      "summary": "Generalizes to $k$-term APs: defines IsAPk, FinsetkAPFree, $r_k(N)$, and states the conjecture that $r_k(N) = O(N/(\\log N)^C)$ for all $k \\geq 3$. Proves the $k = 3$ case from Kelley-Meka. The $k \\geq 4$ cases remain open.",
+      "mathContext": "Generalizes to $k$-term APs: defines IsAPk, FinsetkAPFree, $r_k(N)$, and states the conjecture that $r_k(N) = O(N/(\\log N)^C)$ for all $k \\geq 3$. Proves the $k = 3$ case from Kelley-Meka. The $k \\geq"
     },
     {
       "id": "summary",
       "title": "Summary and Problem Status",
       "startLine": 241,
       "endLine": 267,
-      "summary": "Summarizes the formalization: 4 verified theorems, 9 axioms encoding historical results, and the Kelley-Meka resolution. Lists open questions including the Behrend gap and $k \\geq 4$ generalization."
+      "summary": "Summarizes the formalization: 4 verified theorems, 9 axioms encoding historical results, and the Kelley-Meka resolution. Lists open questions including the Behrend gap and $k \\geq 4$ generalization.",
+      "mathContext": "Summarizes the formalization: 4 verified theorems, 9 axioms encoding historical results, and the Kelley-Meka resolution. Lists open questions including the Behrend gap and $k \\geq 4$ generalization."
     }
   ],
   "crossReferences": [

@@ -84,56 +84,64 @@
       "title": "Points in General Position",
       "summary": "Definition of general position in ℝ^k",
       "startLine": 38,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "Definition of general position in ℝ^k"
     },
     {
       "id": "convex-polyhedra",
       "title": "Convex Polyhedra",
       "summary": "Convex hull, determining polyhedra, containing polyhedra",
       "startLine": 56,
-      "endLine": 82
+      "endLine": 82,
+      "mathContext": "Convex hull, determining polyhedra, containing polyhedra"
     },
     {
       "id": "f-k-function",
       "title": "The Function f_k(n)",
       "summary": "Ramsey-type function for convex geometry",
       "startLine": 83,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "Ramsey-type function for convex geometry"
     },
     {
       "id": "erdos-szekeres",
       "title": "The Erdős-Klein-Szekeres Case",
       "summary": "k = 2 case: f_2(n) = 2^{n-2} + 1",
       "startLine": 114,
-      "endLine": 133
+      "endLine": 133,
+      "mathContext": "k = 2 case: f_2(n) = 2^{n-2} + 1"
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity in Dimension",
       "summary": "f_k decreases with increasing k",
       "startLine": 134,
-      "endLine": 147
+      "endLine": 147,
+      "mathContext": "f_k decreases with increasing k"
     },
     {
       "id": "conjecture",
       "title": "The Original Conjecture",
       "summary": "Exponential lower bound conjecture",
       "startLine": 148,
-      "endLine": 160
+      "endLine": 160,
+      "mathContext": "Exponential lower bound conjecture"
     },
     {
       "id": "disproof",
       "title": "The Disproof",
       "summary": "Pohoata-Zakharov 2022: f_3(n) ≤ 2^{o(n)}, disproving the conjecture",
       "startLine": 161,
-      "endLine": 202
+      "endLine": 202,
+      "mathContext": "Pohoata-Zakharov 2022: f_3(n) ≤ 2^{o(n)}, disproving the conjecture"
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_651 theorem and summary combining disproof with subexponential bound",
       "startLine": 203,
-      "endLine": 227
+      "endLine": 227,
+      "mathContext": "erdos_651 theorem and summary combining disproof with subexponential bound"
     }
   ],
   "conclusion": {

@@ -94,70 +94,80 @@
       "title": "Divisors of n",
       "summary": "divisorsOf, divisorCount, divisorCount_pos",
       "startLine": 38,
-      "endLine": 50
+      "endLine": 50,
+      "mathContext": "divisorsOf, divisorCount, divisorCount_pos"
     },
     {
       "id": "critical-interval",
       "title": "The Interval Near √n",
       "summary": "criticalInterval, intervalWidth, intervalWidth_sublinear",
       "startLine": 51,
-      "endLine": 68
+      "endLine": 68,
+      "mathContext": "criticalInterval, intervalWidth, intervalWidth_sublinear"
     },
     {
       "id": "divisors-in-interval",
       "title": "Divisors in the Critical Interval",
       "summary": "divisorsInInterval, divisorsNearSqrt",
       "startLine": 69,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "divisorsInInterval, divisorsNearSqrt"
     },
     {
       "id": "conjecture",
       "title": "Ruzsa's Conjecture",
       "summary": "ruzsaConjecture definition",
       "startLine": 81,
-      "endLine": 94
+      "endLine": 94,
+      "mathContext": "ruzsaConjecture definition"
     },
     {
       "id": "erdos-rosenfeld",
       "title": "Erdős-Rosenfeld Result",
       "summary": "erdos_rosenfeld_four_divisors, erdos_rosenfeld axioms",
       "startLine": 95,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "erdos_rosenfeld_four_divisors, erdos_rosenfeld axioms"
     },
     {
       "id": "factor-difference",
       "title": "Factor-Difference Set",
       "summary": "factorDifferenceSet definition, factorDifferenceSet_nonempty",
       "startLine": 111,
-      "endLine": 124
+      "endLine": 124,
+      "mathContext": "factorDifferenceSet definition, factorDifferenceSet_nonempty"
     },
     {
       "id": "density",
       "title": "Divisor Density Near √n",
       "summary": "localDivisorDensity, ruzsaConjectureAlt, conjecture_equivalence",
       "startLine": 125,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "localDivisorDensity, ruzsaConjectureAlt, conjecture_equivalence"
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "isHighlyComposite definition",
       "startLine": 144,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "isHighlyComposite definition"
     },
     {
       "id": "bounds",
       "title": "Bounds and Partial Results",
       "summary": "trivial_bound (proved), divisor_count_bound",
       "startLine": 153,
-      "endLine": 166
+      "endLine": 166,
+      "mathContext": "trivial_bound (proved), divisor_count_bound"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_886_summary theorem combining trivial_bound and Erdős-Rosenfeld",
       "startLine": 167,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "erdos_886_summary theorem combining trivial_bound and Erdős-Rosenfeld"
     }
   ],
   "conclusion": {

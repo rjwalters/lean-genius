@@ -76,70 +76,80 @@
       "title": "Imports and Namespace",
       "startLine": 1,
       "endLine": 31,
-      "summary": "Imports `Data.Nat.Fib.Basic` (Fibonacci lemmas), `Data.Nat.GCD.Basic`, `Data.Nat.Log` (for $\\lfloor \\log_b n \\rfloor$), and `Tactic`. Opens `Nat` namespace and documents the open question status."
+      "summary": "Imports `Data.Nat.Fib.Basic` (Fibonacci lemmas), `Data.Nat.GCD.Basic`, `Data.Nat.Log` (for $\\lfloor \\log_b n \\rfloor$), and `Tactic`. Opens `Nat` namespace and documents the open question status.",
+      "mathContext": "Imports `Data.Nat.Fib.Basic` (Fibonacci lemmas), `Data.Nat.GCD.Basic`, `Data.Nat.Log` (for $\\lfloor \\log_b n \\rfloor$), and `Tactic`. Opens `Nat` namespace and documents the open question status."
     },
     {
       "id": "sec-gcd-oq01-step-counting",
       "title": "Step Counting Function",
       "startLine": 32,
       "endLine": 54,
-      "summary": "Defines `euclideanSteps` with termination proof via `Nat.mod_lt`, plus 10 verification examples showing $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n = 0, \\ldots, 8$."
+      "summary": "Defines `euclideanSteps` with termination proof via `Nat.mod_lt`, plus 10 verification examples showing $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n = 0, \\ldots, 8$.",
+      "mathContext": "Defines `euclideanSteps` with termination proof via `Nat.mod_lt`, plus 10 verification examples showing $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n = 0, \\ldots, 8$."
     },
     {
       "id": "sec-gcd-oq01-unfolding",
       "title": "Unfolding Lemmas",
       "startLine": 55,
       "endLine": 70,
-      "summary": "Three interface lemmas: `euclideanSteps_zero` (simp), `euclideanSteps_pos_eq` ($b > 0$ recursive case), and `euclideanSteps_ge_one` ($b > 0 \\implies \\text{steps} \\geq 1$)."
+      "summary": "Three interface lemmas: `euclideanSteps_zero` (simp), `euclideanSteps_pos_eq` ($b > 0$ recursive case), and `euclideanSteps_ge_one` ($b > 0 \\implies \\text{steps} \\geq 1$).",
+      "mathContext": "Three interface lemmas: `euclideanSteps_zero` (simp), `euclideanSteps_pos_eq` ($b > 0$ recursive case), and `euclideanSteps_ge_one` ($b > 0 \\implies \\text{steps} \\geq 1$)."
     },
     {
       "id": "sec-gcd-oq01-lame",
       "title": "Lamé's Theorem",
       "startLine": 71,
       "endLine": 156,
-      "summary": "Core result by strong induction: $\\text{euclideanSteps}(a,b) = n \\wedge b > 0 \\implies \\text{fib}(n+1) \\leq b$. Includes classical form `lame_theorem` and contrapositive `lame_step_bound`: $b < \\text{fib}(k+2) \\implies \\text{steps} \\leq k$."
+      "summary": "Core result by strong induction: $\\text{euclideanSteps}(a,b) = n \\wedge b > 0 \\implies \\text{fib}(n+1) \\leq b$. Includes classical form `lame_theorem` and contrapositive `lame_step_bound`: $b < \\text{fib}(k+2) \\implies \\text{steps} \\leq k$.",
+      "mathContext": "Core result by strong induction: $\\text{euclideanSteps}(a,b) = n \\wedge b > 0 \\implies \\text{fib}(n+1) \\leq b$. Includes classical form `lame_theorem` and contrapositive `lame_step_bound`: $b < \\text{"
     },
     {
       "id": "sec-gcd-oq01-worst-case",
       "title": "Worst Case: Consecutive Fibonacci Numbers",
       "startLine": 157,
       "endLine": 197,
-      "summary": "Proves $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n \\geq 1$ via `fib_mod_fib`: $F_{n+2} \\bmod F_{n+1} = F_n$. Includes saturation verification examples."
+      "summary": "Proves $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n \\geq 1$ via `fib_mod_fib`: $F_{n+2} \\bmod F_{n+1} = F_n$. Includes saturation verification examples.",
+      "mathContext": "Proves $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n \\geq 1$ via `fib_mod_fib`: $F_{n+2} \\bmod F_{n+1} = F_n$. Includes saturation verification examples."
     },
     {
       "id": "sec-gcd-oq01-logarithmic",
       "title": "Logarithmic Bound",
       "startLine": 198,
       "endLine": 231,
-      "summary": "Proves $\\text{fib}(2n+1) \\geq 2^n$ by induction, then derives $\\text{steps} \\leq 2\\lfloor\\log_2 b\\rfloor + 2$ via `calc` chain confirming $O(\\log b)$ complexity."
+      "summary": "Proves $\\text{fib}(2n+1) \\geq 2^n$ by induction, then derives $\\text{steps} \\leq 2\\lfloor\\log_2 b\\rfloor + 2$ via `calc` chain confirming $O(\\log b)$ complexity.",
+      "mathContext": "Proves $\\text{fib}(2n+1) \\geq 2^n$ by induction, then derives $\\text{steps} \\leq 2\\lfloor\\log_2 b\\rfloor + 2$ via `calc` chain confirming $O(\\log b)$ complexity."
     },
     {
       "id": "sec-gcd-oq01-5digit",
       "title": "Lamé's 5-Digit Bound",
       "startLine": 232,
       "endLine": 267,
-      "summary": "Defines `decimalDigits` and proves $\\text{steps} \\leq 5 \\cdot \\text{decimalDigits}(b)$ for $b < 10^{20}$, using $\\text{fib}(5k+2) \\geq 10^k$ verified by `interval_cases`/`native_decide`."
+      "summary": "Defines `decimalDigits` and proves $\\text{steps} \\leq 5 \\cdot \\text{decimalDigits}(b)$ for $b < 10^{20}$, using $\\text{fib}(5k+2) \\geq 10^k$ verified by `interval_cases`/`native_decide`.",
+      "mathContext": "Defines `decimalDigits` and proves $\\text{steps} \\leq 5 \\cdot \\text{decimalDigits}(b)$ for $b < 10^{20}$, using $\\text{fib}(5k+2) \\geq 10^k$ verified by `interval_cases`/`native_decide`."
     },
     {
       "id": "sec-gcd-oq01-gcd-preservation",
       "title": "GCD Preservation and Structural Properties",
       "startLine": 268,
       "endLine": 306,
-      "summary": "Proves bidirectional characterization (`steps = 0 ↔ b = 0`), divisibility shortcut (`b | a → steps = 1`), one-step termination (`steps = 1 → a%b = 0`), and Lamé remainder bound extraction."
+      "summary": "Proves bidirectional characterization (`steps = 0 ↔ b = 0`), divisibility shortcut (`b | a → steps = 1`), one-step termination (`steps = 1 → a%b = 0`), and Lamé remainder bound extraction.",
+      "mathContext": "Proves bidirectional characterization (`steps = 0 ↔ b = 0`), divisibility shortcut (`b | a → steps = 1`), one-step termination (`steps = 1 → a%b = 0`), and Lamé remainder bound extraction."
     },
     {
       "id": "sec-gcd-oq01-tight-lame",
       "title": "Tight Lamé Bound and Monotonicity",
       "startLine": 307,
       "endLine": 346,
-      "summary": "Proves translation invariance (`steps(a + kb, b) = steps(a, b)`) and the swap lemma (`a < b → steps(a,b) = steps(b,a) + 1`), establishing that step count depends only on the remainder sequence."
+      "summary": "Proves translation invariance (`steps(a + kb, b) = steps(a, b)`) and the swap lemma (`a < b → steps(a,b) = steps(b,a) + 1`), establishing that step count depends only on the remainder sequence.",
+      "mathContext": "Proves translation invariance (`steps(a + kb, b) = steps(a, b)`) and the swap lemma (`a < b → steps(a,b) = steps(b,a) + 1`), establishing that step count depends only on the remainder sequence."
     },
     {
       "id": "sec-gcd-oq01-average",
       "title": "Finite Average Computation and Dixon's Theorem",
       "startLine": 347,
       "endLine": 460,
-      "summary": "Defines `totalSteps N` and `pairCount N` for exact finite averages. Documents Dixon's theorem: average steps $\\sim (12\\ln 2/\\pi^2)\\ln N \\approx 0.8427 \\ln N$, requiring continued fractions and ergodic theory not yet in Mathlib."
+      "summary": "Defines `totalSteps N` and `pairCount N` for exact finite averages. Documents Dixon's theorem: average steps $\\sim (12\\ln 2/\\pi^2)\\ln N \\approx 0.8427 \\ln N$, requiring continued fractions and ergodic theory not yet in Mathlib.",
+      "mathContext": "Defines `totalSteps N` and `pairCount N` for exact finite averages. Documents Dixon's theorem: average steps $\\sim (12\\ln 2/\\pi^2)\\ln N \\approx 0.8427 \\ln N$, requiring continued fractions and ergodic"
     }
   ],
   "conclusion": {

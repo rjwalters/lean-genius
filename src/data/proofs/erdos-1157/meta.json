@@ -47,70 +47,80 @@
       "title": "Problem Context and Imports",
       "startLine": 1,
       "endLine": 28,
-      "summary": "Header documentation with problem statement, known results (BES 1973, Ruzsa-Szemerédi 1978, Glock 2019, Delcourt-Postle 2024), and Mathlib imports for natural numbers, real numbers, and real powers."
+      "summary": "Header documentation with problem statement, known results (BES 1973, Ruzsa-Szemerédi 1978, Glock 2019, Delcourt-Postle 2024), and Mathlib imports for natural numbers, real numbers, and real powers.",
+      "mathContext": "Header documentation with problem statement, known results (BES 1973, Ruzsa-Szemerédi 1978, Glock 2019, Delcourt-Postle 2024), and Mathlib imports for natural numbers, real numbers, and real powers."
     },
     {
       "id": "extremal-number",
       "title": "General Extremal Number",
       "startLine": 31,
       "endLine": 53,
-      "summary": "Axiomatizes f^(r)(n; k, s) as extremalNumber : ℕ⁴ → ℕ with monotonicity axioms in k and s."
+      "summary": "Axiomatizes f^(r)(n; k, s) as extremalNumber : ℕ⁴ → ℕ with monotonicity axioms in k and s.",
+      "mathContext": "Axiomatizes f^(r)(n; k, s) as extremalNumber : ℕ⁴ → ℕ with monotonicity axioms in k and s."
     },
     {
       "id": "bes-exponent",
       "title": "BES Exponent",
       "startLine": 54,
       "endLine": 77,
-      "summary": "Defines besExponent α = (rs−k)/(s−1) over ℝ and proves positivity when rs > k and s ≥ 2."
+      "summary": "Defines besExponent α = (rs−k)/(s−1) over ℝ and proves positivity when rs > k and s ≥ 2.",
+      "mathContext": "Defines besExponent α = (rs−k)/(s−1) over ℝ and proves positivity when rs > k and s ≥ 2."
     },
     {
       "id": "bes-lower-bound",
       "title": "Brown-Erdős-Sós Lower Bound",
       "startLine": 78,
       "endLine": 84,
-      "summary": "Axiomatizes the 1973 lower bound: f^(r)(n; k, s) ≥ c·n^α for k > r ≥ 2, s ≥ 2."
+      "summary": "Axiomatizes the 1973 lower bound: f^(r)(n; k, s) ≥ c·n^α for k > r ≥ 2, s ≥ 2.",
+      "mathContext": "Axiomatizes the 1973 lower bound: f^(r)(n; k, s) ≥ c·n^α for k > r ≥ 2, s ≥ 2."
     },
     {
       "id": "bes-conjecture",
       "title": "The BES Conjecture",
       "startLine": 85,
       "endLine": 101,
-      "summary": "Formalizes IsLittleO and the BES conjecture: f^(t)(n; k, s) = o(n^t) when k ≥ (r−t)s + t + 1."
+      "summary": "Formalizes IsLittleO and the BES conjecture: f^(t)(n; k, s) = o(n^t) when k ≥ (r−t)s + t + 1.",
+      "mathContext": "Formalizes IsLittleO and the BES conjecture: f^(t)(n; k, s) = o(n^t) when k ≥ (r−t)s + t + 1."
     },
     {
       "id": "special-cases",
       "title": "Connections to Other Problems",
       "startLine": 102,
       "endLine": 119,
-      "summary": "Parameter checks connecting to Problem #716 (tight at k=6) and Problem #1076 (beyond BES threshold)."
+      "summary": "Parameter checks connecting to Problem #716 (tight at k=6) and Problem #1076 (beyond BES threshold).",
+      "mathContext": "Parameter checks connecting to Problem #716 (tight at k=6) and Problem #1076 (beyond BES threshold)."
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
       "startLine": 120,
       "endLine": 137,
-      "summary": "Axiomatizes Ruzsa-Szemerédi (6,3), Glock (7,4), and Delcourt-Postle (full 3-uniform) results."
+      "summary": "Axiomatizes Ruzsa-Szemerédi (6,3), Glock (7,4), and Delcourt-Postle (full 3-uniform) results.",
+      "mathContext": "Axiomatizes Ruzsa-Szemerédi (6,3), Glock (7,4), and Delcourt-Postle (full 3-uniform) results."
     },
     {
       "id": "exponent-structure",
       "title": "Exponent Structural Properties",
       "startLine": 138,
       "endLine": 181,
-      "summary": "Proves exponent is decreasing in k, zero at k=rs, computes α(3,6,3)=3/2 and α(3,7,4)=5/3, and shows α≤1 at BES threshold."
+      "summary": "Proves exponent is decreasing in k, zero at k=rs, computes α(3,6,3)=3/2 and α(3,7,4)=5/3, and shows α≤1 at BES threshold.",
+      "mathContext": "Proves exponent is decreasing in k, zero at k=rs, computes α(3,6,3)=3/2 and α(3,7,4)=5/3, and shows α≤1 at BES threshold."
     },
     {
       "id": "proved-theorems",
       "title": "Proved Theorems",
       "startLine": 182,
       "endLine": 211,
-      "summary": "Three fully proved theorems: 3-uniform resolution, (6,3) case, and monotonicity transfer principle for little-o bounds."
+      "summary": "Three fully proved theorems: 3-uniform resolution, (6,3) case, and monotonicity transfer principle for little-o bounds.",
+      "mathContext": "Three fully proved theorems: 3-uniform resolution, (6,3) case, and monotonicity transfer principle for little-o bounds."
     },
     {
       "id": "main-statement",
       "title": "Problem Statement and Summary",
       "startLine": 212,
       "endLine": 237,
-      "summary": "States full Problem #1157 as universal BES conjecture. Summary theorem combines Delcourt-Postle, Ruzsa-Szemerédi, and computed exponents."
+      "summary": "States full Problem #1157 as universal BES conjecture. Summary theorem combines Delcourt-Postle, Ruzsa-Szemerédi, and computed exponents.",
+      "mathContext": "States full Problem #1157 as universal BES conjecture. Summary theorem combines Delcourt-Postle, Ruzsa-Szemerédi, and computed exponents."
     }
   ],
   "conclusion": {

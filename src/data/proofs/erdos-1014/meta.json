@@ -45,56 +45,64 @@
       "title": "Imports and Setup",
       "startLine": 21,
       "endLine": 23,
-      "summary": "Imports `SimpleGraph.Basic`, `Data.Real.Basic`, and `Tactic` for the axiomatic Ramsey number formalization."
+      "summary": "Imports `SimpleGraph.Basic`, `Data.Real.Basic`, and `Tactic` for the axiomatic Ramsey number formalization.",
+      "mathContext": "Imports `SimpleGraph.Basic`, `Data.Real.Basic`, and `Tactic` for the axiomatic Ramsey number formalization."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions and Basic Properties",
       "startLine": 27,
       "endLine": 36,
-      "summary": "Axiomatizes $R(k,l)$ with positivity ($R(k,l) \\geq 1$) and symmetry ($R(k,l) = R(l,k)$)."
+      "summary": "Axiomatizes $R(k,l)$ with positivity ($R(k,l) \\geq 1$) and symmetry ($R(k,l) = R(l,k)$).",
+      "mathContext": "Axiomatizes $R(k,l)$ with positivity ($R(k,l) \\geq 1$) and symmetry ($R(k,l) = R(l,k)$)."
     },
     {
       "id": "classical-bounds",
       "title": "Classical Bounds",
       "startLine": 40,
       "endLine": 50,
-      "summary": "Erdős-Szekeres upper bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$, monotonicity $R(k,l) \\leq R(k,l+1)$, and the recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$."
+      "summary": "Erdős-Szekeres upper bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$, monotonicity $R(k,l) \\leq R(k,l+1)$, and the recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$.",
+      "mathContext": "Erdős-Szekeres upper bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$, monotonicity $R(k,l) \\leq R(k,l+1)$, and the recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$."
     },
     {
       "id": "r3-bounds",
       "title": "R(3,l) Tight Bounds",
       "startLine": 54,
       "endLine": 62,
-      "summary": "Shearer/Kim lower bound and AKS upper bound: $R(3,l) = \\Theta(l^2/\\log l)$. The tightest known bounds for any off-diagonal Ramsey number."
+      "summary": "Shearer/Kim lower bound and AKS upper bound: $R(3,l) = \\Theta(l^2/\\log l)$. The tightest known bounds for any off-diagonal Ramsey number.",
+      "mathContext": "Shearer/Kim lower bound and AKS upper bound: $R(3,l) = \\Theta(l^2/\\log l)$. The tightest known bounds for any off-diagonal Ramsey number."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: Ratio Convergence",
       "startLine": 66,
       "endLine": 70,
-      "summary": "**Erdős Problem #1014** (OPEN): $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$ for fixed $k \\geq 3$, formalized via $\\varepsilon$-$\\delta$ convergence."
+      "summary": "**Erdős Problem #1014** (OPEN): $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$ for fixed $k \\geq 3$, formalized via $\\varepsilon$-$\\delta$ convergence.",
+      "mathContext": "**Erdős Problem #1014** (OPEN): $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$ for fixed $k \\geq 3$, formalized via $\\varepsilon$-$\\delta$ convergence."
     },
     {
       "id": "consequences",
       "title": "Consequences and Equivalences",
       "startLine": 74,
       "endLine": 88,
-      "summary": "The conjecture follows from power-law asymptotics $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$. Equivalently: $R(k,l+1) - R(k,l) = o(R(k,l))$."
+      "summary": "The conjecture follows from power-law asymptotics $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$. Equivalently: $R(k,l+1) - R(k,l) = o(R(k,l))$.",
+      "mathContext": "The conjecture follows from power-law asymptotics $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$. Equivalently: $R(k,l+1) - R(k,l) = o(R(k,l))$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Known Values",
       "startLine": 92,
       "endLine": 100,
-      "summary": "Trivial case $R(2,l) = l$ with ratio $(l+1)/l \\to 1$. Known exact values $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$ show slow convergence."
+      "summary": "Trivial case $R(2,l) = l$ with ratio $(l+1)/l \\to 1$. Known exact values $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$ show slow convergence.",
+      "mathContext": "Trivial case $R(2,l) = l$ with ratio $(l+1)/l \\to 1$. Known exact values $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$ show slow convergence."
     },
     {
       "id": "diagonal",
       "title": "Diagonal Ramsey Connection",
       "startLine": 101,
       "endLine": 134,
-      "summary": "Diagonal bound $R(k,k) \\leq \\binom{2k-2}{k-1}$, connecting to Problem #1030 on diagonal Ramsey asymptotics."
+      "summary": "Diagonal bound $R(k,k) \\leq \\binom{2k-2}{k-1}$, connecting to Problem #1030 on diagonal Ramsey asymptotics.",
+      "mathContext": "Diagonal bound $R(k,k) \\leq \\binom{2k-2}{k-1}$, connecting to Problem #1030 on diagonal Ramsey asymptotics."
     }
   ],
   "overview": {

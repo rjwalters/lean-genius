@@ -79,70 +79,80 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Problem statement, known results, and references."
+      "summary": "Problem statement, known results, and references.",
+      "mathContext": "Problem statement, known results, and references."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 43,
       "endLine": 62,
-      "summary": "apTerm, apProduct, IsPerfectPower, IsPerfectPowerSome."
+      "summary": "apTerm, apProduct, IsPerfectPower, IsPerfectPowerSome.",
+      "mathContext": "apTerm, apProduct, IsPerfectPower, IsPerfectPowerSome."
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "startLine": 63,
       "endLine": 79,
-      "summary": "Erdos672With predicate and the full conjecture statement."
+      "summary": "Erdos672With predicate and the full conjecture statement.",
+      "mathContext": "Erdos672With predicate and the full conjecture statement."
     },
     {
       "id": "euler",
       "title": "Euler's Result: k=4, l=2",
       "startLine": 80,
       "endLine": 97,
-      "summary": "Four terms in AP cannot have product equal to a square."
+      "summary": "Four terms in AP cannot have product equal to a square.",
+      "mathContext": "Four terms in AP cannot have product equal to a square."
     },
     {
       "id": "oblath",
       "title": "Obláth's Results (1951)",
       "startLine": 98,
       "endLine": 120,
-      "summary": "Extensions to k=5 (squares) and k=3 (cubes through 5th powers)."
+      "summary": "Extensions to k=5 (squares) and k=3 (cubes through 5th powers).",
+      "mathContext": "Extensions to k=5 (squares) and k=3 (cubes through 5th powers)."
     },
     {
       "id": "erdos-selfridge",
       "title": "Erdős-Selfridge (1975)",
       "startLine": 121,
       "endLine": 144,
-      "summary": "Consecutive integers: product is never a perfect power."
+      "summary": "Consecutive integers: product is never a perfect power.",
+      "mathContext": "Consecutive integers: product is never a perfect power."
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "startLine": 145,
       "endLine": 166,
-      "summary": "Concrete examples: 120, 24, 945, 880 are not perfect powers."
+      "summary": "Concrete examples: 120, 24, 945, 880 are not perfect powers.",
+      "mathContext": "Concrete examples: 120, 24, 945, 880 are not perfect powers."
     },
     {
       "id": "gcd-analysis",
       "title": "GCD Analysis",
       "startLine": 167,
       "endLine": 197,
-      "summary": "Why gcd(n,d)=1 is required; pairwise gcd bounds."
+      "summary": "Why gcd(n,d)=1 is required; pairwise gcd bounds.",
+      "mathContext": "Why gcd(n,d)=1 is required; pairwise gcd bounds."
     },
     {
       "id": "summary-table",
       "title": "Known Cases Summary",
       "startLine": 198,
       "endLine": 220,
-      "summary": "Table of proven cases and combined theorem."
+      "summary": "Table of proven cases and combined theorem.",
+      "mathContext": "Table of proven cases and combined theorem."
     },
     {
       "id": "heuristics",
       "title": "Heuristic Arguments",
       "startLine": 221,
       "endLine": 245,
-      "summary": "Why the conjecture should be true: overdetermined constraints."
+      "summary": "Why the conjecture should be true: overdetermined constraints.",
+      "mathContext": "Why the conjecture should be true: overdetermined constraints."
     }
   ],
   "conclusion": {

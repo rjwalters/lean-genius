@@ -79,7 +79,8 @@
       "title": "Graph Setup",
       "summary": "vertexCount, edgeCount definitions",
       "startLine": 28,
-      "endLine": 42
+      "endLine": 42,
+      "mathContext": "vertexCount, edgeCount definitions"
     },
     {
       "id": "turan-threshold",
@@ -94,7 +95,8 @@
       "title": "Triangles and Degree Sums",
       "summary": "Triangle structure, vertexDegree, triangleDegreeSum",
       "startLine": 61,
-      "endLine": 91
+      "endLine": 91,
+      "mathContext": "Triangle structure, vertexDegree, triangleDegreeSum"
     },
     {
       "id": "h-function",
@@ -117,63 +119,72 @@
       "title": "Erdős-Laskar Upper Bound",
       "summary": "erdos_laskar_upper, upper_bound_tight",
       "startLine": 132,
-      "endLine": 149
+      "endLine": 149,
+      "mathContext": "erdos_laskar_upper, upper_bound_tight"
     },
     {
       "id": "original-lower",
       "title": "Erdős-Laskar Lower Bound",
       "summary": "erdos_laskar_lower, lower_beats_n",
       "startLine": 150,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "erdos_laskar_lower, lower_beats_n"
     },
     {
       "id": "fan-bound",
       "title": "Fan's Improved Lower Bound",
       "summary": "fanConstant, fan_lower, current_bounds",
       "startLine": 168,
-      "endLine": 191
+      "endLine": 191,
+      "mathContext": "fanConstant, fan_lower, current_bounds"
     },
     {
       "id": "gap",
       "title": "The Gap",
       "summary": "boundGap, gap_positive, gap_approx",
       "startLine": 192,
-      "endLine": 209
+      "endLine": 209,
+      "mathContext": "boundGap, gap_positive, gap_approx"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos_1033_conjecture, h_asymptotic",
       "startLine": 210,
-      "endLine": 230
+      "endLine": 230,
+      "mathContext": "erdos_1033_conjecture, h_asymptotic"
     },
     {
       "id": "degree-properties",
       "title": "Degree Sum Properties",
       "summary": "triangle_min_degree, triangle_sum_min, dense_average_degree",
       "startLine": 231,
-      "endLine": 252
+      "endLine": 252,
+      "mathContext": "triangle_min_degree, triangle_sum_min, dense_average_degree"
     },
     {
       "id": "maximum",
       "title": "Maximum Triangle Degree Sum",
       "summary": "maxTriangleDegreeSum, h_as_min",
       "startLine": 253,
-      "endLine": 271
+      "endLine": 271,
+      "mathContext": "maxTriangleDegreeSum, h_as_min"
     },
     {
       "id": "extremal",
       "title": "Extremal Graphs",
       "summary": "isExtremal, extremal_exists",
       "startLine": 272,
-      "endLine": 288
+      "endLine": 288,
+      "mathContext": "isExtremal, extremal_exists"
     },
     {
       "id": "turan-graph",
       "title": "Relation to Turán Graph",
       "summary": "bipartite_no_triangle, turan_plus_one",
       "startLine": 289,
-      "endLine": 312
+      "endLine": 312,
+      "mathContext": "bipartite_no_triangle, turan_plus_one"
     },
     {
       "id": "small-cases",

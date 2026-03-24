@@ -70,63 +70,72 @@
       "title": "Imports and Documentation",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Imports Mathlib.Geometry.Euclidean.Triangle and Mathlib.Tactic. Extensive docstring covers the angle sum formula, Euclid's Elements Book I Prop 32, connection to non-Euclidean geometry, and Wiedijk #27 designation."
+      "summary": "Imports Mathlib.Geometry.Euclidean.Triangle and Mathlib.Tactic. Extensive docstring covers the angle sum formula, Euclid's Elements Book I Prop 32, connection to non-Euclidean geometry, and Wiedijk #27 designation.",
+      "mathContext": "Imports Mathlib.Geometry.Euclidean.Triangle and Mathlib.Tactic. Extensive docstring covers the angle sum formula, Euclid's Elements Book I Prop 32, connection to non-Euclidean geometry, and Wiedijk #2"
     },
     {
       "id": "setup",
       "title": "Namespace and Type Variables",
       "startLine": 47,
       "endLine": 53,
-      "summary": "Opens the EuclideanGeometry scope for the ∠ notation. Declares universe-polymorphic type variables V (normed vector space) and P (metric affine space) with inner product structure."
+      "summary": "Opens the EuclideanGeometry scope for the ∠ notation. Declares universe-polymorphic type variables V (normed vector space) and P (metric affine space) with inner product structure.",
+      "mathContext": "Opens the EuclideanGeometry scope for the ∠ notation. Declares universe-polymorphic type variables V (normed vector space) and P (metric affine space) with inner product structure."
     },
     {
       "id": "main-theorem",
       "title": "Main Triangle Angle Sum Theorem",
       "startLine": 54,
       "endLine": 67,
-      "summary": "The central result (Wiedijk #27): for p₂ ≠ p₁ and p₃ ≠ p₁, the three interior angles sum to π. Direct application of Mathlib's angle_add_angle_add_angle_eq_pi."
+      "summary": "The central result (Wiedijk #27): for p₂ ≠ p₁ and p₃ ≠ p₁, the three interior angles sum to π. Direct application of Mathlib's angle_add_angle_add_angle_eq_pi.",
+      "mathContext": "The central result (Wiedijk #27): for p₂ ≠ p₁ and p₃ ≠ p₁, the three interior angles sum to π. Direct application of Mathlib's angle_add_angle_add_angle_eq_pi."
     },
     {
       "id": "distinct",
       "title": "Non-Degenerate Triangle Version",
       "startLine": 68,
       "endLine": 78,
-      "summary": "Reformulation requiring all three vertices to be pairwise distinct (p₁ ≠ p₂, p₂ ≠ p₃, p₃ ≠ p₁), closer to the classical statement for proper triangles."
+      "summary": "Reformulation requiring all three vertices to be pairwise distinct (p₁ ≠ p₂, p₂ ≠ p₃, p₃ ≠ p₁), closer to the classical statement for proper triangles.",
+      "mathContext": "Reformulation requiring all three vertices to be pairwise distinct (p₁ ≠ p₂, p₂ ≠ p₃, p₃ ≠ p₁), closer to the classical statement for proper triangles."
     },
     {
       "id": "bounds",
       "title": "Angle Bounds",
       "startLine": 79,
       "endLine": 90,
-      "summary": "Each interior angle satisfies 0 ≤ ∠ ≤ π, using Mathlib's angle_le_pi and angle_nonneg."
+      "summary": "Each interior angle satisfies 0 ≤ ∠ ≤ π, using Mathlib's angle_le_pi and angle_nonneg.",
+      "mathContext": "Each interior angle satisfies 0 ≤ ∠ ≤ π, using Mathlib's angle_le_pi and angle_nonneg."
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
       "startLine": 91,
       "endLine": 116,
-      "summary": "Three consequences: the third angle is determined by the other two, any single angle is strictly less than π in a non-degenerate triangle, and the sum of any two angles is less than π."
+      "summary": "Three consequences: the third angle is determined by the other two, any single angle is strictly less than π in a non-degenerate triangle, and the sum of any two angles is less than π.",
+      "mathContext": "Three consequences: the third angle is determined by the other two, any single angle is strictly less than π in a non-degenerate triangle, and the sum of any two angles is less than π."
     },
     {
       "id": "right-triangle",
       "title": "Right Triangle Special Case",
       "startLine": 117,
       "endLine": 127,
-      "summary": "In a right triangle (one angle = π/2), the two acute angles sum to π/2. Proved by substituting the right angle into the sum identity."
+      "summary": "In a right triangle (one angle = π/2), the two acute angles sum to π/2. Proved by substituting the right angle into the sum identity.",
+      "mathContext": "In a right triangle (one angle = π/2), the two acute angles sum to π/2. Proved by substituting the right angle into the sum identity."
     },
     {
       "id": "exterior-angle",
       "title": "Exterior Angle Theorem",
       "startLine": 128,
       "endLine": 138,
-      "summary": "The exterior angle at a vertex (π minus the interior angle) equals the sum of the two remote interior angles."
+      "summary": "The exterior angle at a vertex (π minus the interior angle) equals the sum of the two remote interior angles.",
+      "mathContext": "The exterior angle at a vertex (π minus the interior angle) equals the sum of the two remote interior angles."
     },
     {
       "id": "degrees-summary",
       "title": "Degree Conversion and Verification",
       "startLine": 139,
       "endLine": 157,
-      "summary": "Converts the radian result to degrees: the sum equals 180°. Uses field_simp for the π cancellation. Concludes with #check verification of all main theorems."
+      "summary": "Converts the radian result to degrees: the sum equals 180°. Uses field_simp for the π cancellation. Concludes with #check verification of all main theorems.",
+      "mathContext": "Converts the radian result to degrees: the sum equals 180°. Uses field_simp for the π cancellation. Concludes with #check verification of all main theorems."
     }
   ],
   "conclusion": {

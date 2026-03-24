@@ -80,70 +80,80 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 54,
-      "summary": "Imports `Mathlib.LinearAlgebra.CrossProduct` and `Mathlib.LinearAlgebra.Matrix.Determinant.Basic` for cross products and determinants in $\\mathbb{R}^3$."
+      "summary": "Imports `Mathlib.LinearAlgebra.CrossProduct` and `Mathlib.LinearAlgebra.Matrix.Determinant.Basic` for cross products and determinants in $\\mathbb{R}^3$.",
+      "mathContext": "Imports `Mathlib.LinearAlgebra.CrossProduct` and `Mathlib.LinearAlgebra.Matrix.Determinant.Basic` for cross products and determinants in $\\mathbb{R}^3$."
     },
     {
       "id": "projective-points-lines",
       "title": "Projective Points and Lines",
       "startLine": 55,
       "endLine": 73,
-      "summary": "Defines `ProjPoint` and `ProjLine` as `Fin 3 → ℝ` (vectors in $\\mathbb{R}^3$), with `valid` predicates ensuring nonzero representatives in $\\mathbb{RP}^2$."
+      "summary": "Defines `ProjPoint` and `ProjLine` as `Fin 3 → ℝ` (vectors in $\\mathbb{R}^3$), with `valid` predicates ensuring nonzero representatives in $\\mathbb{RP}^2$.",
+      "mathContext": "Defines `ProjPoint` and `ProjLine` as `Fin 3 → ℝ` (vectors in $\\mathbb{R}^3$), with `valid` predicates ensuring nonzero representatives in $\\mathbb{RP}^2$."
     },
     {
       "id": "fundamental-operations",
       "title": "Fundamental Operations",
       "startLine": 74,
       "endLine": 87,
-      "summary": "Defines `lineThrough`, `lineIntersection` (both via cross product), and `pointOnLine` (via dot product $p \\cdot l = 0$)."
+      "summary": "Defines `lineThrough`, `lineIntersection` (both via cross product), and `pointOnLine` (via dot product $p \\cdot l = 0$).",
+      "mathContext": "Defines `lineThrough`, `lineIntersection` (both via cross product), and `pointOnLine` (via dot product $p \\cdot l = 0$)."
     },
     {
       "id": "collinearity-concurrency",
       "title": "Collinearity and Concurrency",
       "startLine": 88,
       "endLine": 108,
-      "summary": "Defines `threeVectorMatrix`, `collinear` ($\\det(p,q,r) = 0$), and `concurrent` ($\\det(l,m,n) = 0$) — dual predicates via the same determinant condition."
+      "summary": "Defines `threeVectorMatrix`, `collinear` ($\\det(p,q,r) = 0$), and `concurrent` ($\\det(l,m,n) = 0$) — dual predicates via the same determinant condition.",
+      "mathContext": "Defines `threeVectorMatrix`, `collinear` ($\\det(p,q,r) = 0$), and `concurrent` ($\\det(l,m,n) = 0$) — dual predicates via the same determinant condition."
     },
     {
       "id": "conic-sections",
       "title": "Conic Sections",
       "startLine": 109,
       "endLine": 133,
-      "summary": "Defines `Conic` as a symmetric $3 \\times 3$ matrix $C$, `conicQuadraticForm` ($p^T C p = \\sum_{i,j} C_{ij} p_i p_j$), `pointOnConic`, non-degeneracy ($\\det C \\neq 0$), and symmetry."
+      "summary": "Defines `Conic` as a symmetric $3 \\times 3$ matrix $C$, `conicQuadraticForm` ($p^T C p = \\sum_{i,j} C_{ij} p_i p_j$), `pointOnConic`, non-degeneracy ($\\det C \\neq 0$), and symmetry.",
+      "mathContext": "Defines `Conic` as a symmetric $3 \\times 3$ matrix $C$, `conicQuadraticForm` ($p^T C p = \\sum_{i,j} C_{ij} p_i p_j$), `pointOnConic`, non-degeneracy ($\\det C \\neq 0$), and symmetry."
     },
     {
       "id": "inscribed-hexagon",
       "title": "Inscribed Hexagon and Pascal Points",
       "startLine": 134,
       "endLine": 172,
-      "summary": "Defines `InscribedHexagon C` with 6 vertices on conic $C$, and the three Pascal points: $P = (A \\times B) \\times (D \\times E)$, $Q = (B \\times C') \\times (E \\times F)$, $R = (C' \\times D) \\times (F \\times A)$."
+      "summary": "Defines `InscribedHexagon C` with 6 vertices on conic $C$, and the three Pascal points: $P = (A \\times B) \\times (D \\times E)$, $Q = (B \\times C') \\times (E \\times F)$, $R = (C' \\times D) \\times (F \\times A)$.",
+      "mathContext": "Defines `InscribedHexagon C` with 6 vertices on conic $C$, and the three Pascal points: $P = (A \\times B) \\times (D \\times E)$, $Q = (B \\times C') \\times (E \\times F)$, $R = (C' \\times D) \\times (F \\t"
     },
     {
       "id": "pascal-constraint",
       "title": "Pascal's Constraint",
       "startLine": 173,
       "endLine": 187,
-      "summary": "Defines `pascalConstraint`: compute opposite-side intersections $P, Q, R$ via cross products, then check $\\det(P, Q, R) = 0$."
+      "summary": "Defines `pascalConstraint`: compute opposite-side intersections $P, Q, R$ via cross products, then check $\\det(P, Q, R) = 0$.",
+      "mathContext": "Defines `pascalConstraint`: compute opposite-side intersections $P, Q, R$ via cross products, then check $\\det(P, Q, R) = 0$."
     },
     {
       "id": "main-theorem",
       "title": "Pascal's Hexagon Theorem",
       "startLine": 188,
       "endLine": 231,
-      "summary": "The axiom `conic_implies_pascal_constraint` and **Theorem** `pascal_hexagon_theorem` (Wiedijk #28): for hexagon inscribed in conic, Pascal points $P, Q, R$ are collinear."
+      "summary": "The axiom `conic_implies_pascal_constraint` and **Theorem** `pascal_hexagon_theorem` (Wiedijk #28): for hexagon inscribed in conic, Pascal points $P, Q, R$ are collinear.",
+      "mathContext": "The axiom `conic_implies_pascal_constraint` and **Theorem** `pascal_hexagon_theorem` (Wiedijk #28): for hexagon inscribed in conic, Pascal points $P, Q, R$ are collinear."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Pappus's Theorem",
       "startLine": 232,
       "endLine": 248,
-      "summary": "Defines `collinearOnLine` for Pappus's theorem — the degenerate case where the conic is a pair of lines $l_1 \\cup l_2$."
+      "summary": "Defines `collinearOnLine` for Pappus's theorem — the degenerate case where the conic is a pair of lines $l_1 \\cup l_2$.",
+      "mathContext": "Defines `collinearOnLine` for Pappus's theorem — the degenerate case where the conic is a pair of lines $l_1 \\cup l_2$."
     },
     {
       "id": "brianchon-dual",
       "title": "Brianchon's Dual Theorem",
       "startLine": 249,
       "endLine": 321,
-      "summary": "Defines `hexagonDiagonal1/2/3` for Brianchon's theorem (1806): if a hexagon is circumscribed about a conic, the three main diagonals $AD$, $BE$, $CF$ are concurrent. Includes historical notes on the 60 Pascal lines."
+      "summary": "Defines `hexagonDiagonal1/2/3` for Brianchon's theorem (1806): if a hexagon is circumscribed about a conic, the three main diagonals $AD$, $BE$, $CF$ are concurrent. Includes historical notes on the 60 Pascal lines.",
+      "mathContext": "Defines `hexagonDiagonal1/2/3` for Brianchon's theorem (1806): if a hexagon is circumscribed about a conic, the three main diagonals $AD$, $BE$, $CF$ are concurrent. Includes historical notes on the 6"
     }
   ],
   "conclusion": {

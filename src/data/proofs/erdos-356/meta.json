@@ -89,63 +89,72 @@
       "title": "Part I: Consecutive Sums",
       "startLine": 36,
       "endLine": 61,
-      "summary": "Defines consecutiveSubsum, consecutiveSums Finset, and distinctConsecutiveSums counting function."
+      "summary": "Defines consecutiveSubsum, consecutiveSums Finset, and distinctConsecutiveSums counting function.",
+      "mathContext": "Defines consecutiveSubsum, consecutiveSums Finset, and distinctConsecutiveSums counting function."
     },
     {
       "id": "trivial-sequence",
       "title": "Part II: The Trivial Sequence",
       "startLine": 62,
       "endLine": 92,
-      "summary": "trivialSequence {1,...,n}. Axioms: trivial_fails (O(n) distinct sums), trivial_collision_structure (sub-quadratic)."
+      "summary": "trivialSequence {1,...,n}. Axioms: trivial_fails (O(n) distinct sums), trivial_collision_structure (sub-quadratic).",
+      "mathContext": "trivialSequence {1,...,n}. Axioms: trivial_fails (O(n) distinct sums), trivial_collision_structure (sub-quadratic)."
     },
     {
       "id": "increasing-sequences",
       "title": "Part III: Strictly Increasing Sequences",
       "startLine": 93,
       "endLine": 115,
-      "summary": "isStrictlyIncreasing, boundedBy, isValidSequence definitions."
+      "summary": "isStrictlyIncreasing, boundedBy, isValidSequence definitions.",
+      "mathContext": "isStrictlyIncreasing, boundedBy, isValidSequence definitions."
     },
     {
       "id": "main-conjecture",
       "title": "Part IV: The Main Conjecture",
       "startLine": 116,
       "endLine": 138,
-      "summary": "erdosGrahamConjecture definition. beker_theorem axiom resolving it."
+      "summary": "erdosGrahamConjecture definition. beker_theorem axiom resolving it.",
+      "mathContext": "erdosGrahamConjecture definition. beker_theorem axiom resolving it."
     },
     {
       "id": "permutation-variant",
       "title": "Part V: The Permutation Variant",
       "startLine": 139,
       "endLine": 169,
-      "summary": "isPermutation, permutationConjecture, konieczny_theorem axiom."
+      "summary": "isPermutation, permutationConjecture, konieczny_theorem axiom.",
+      "mathContext": "isPermutation, permutationConjecture, konieczny_theorem axiom."
     },
     {
       "id": "constructions",
       "title": "Part VI: Construction Insights",
       "startLine": 170,
       "endLine": 184,
-      "summary": "beker_construction_yields_quadratic: explicit constant exists with c < 1."
+      "summary": "beker_construction_yields_quadratic: explicit constant exists with c < 1.",
+      "mathContext": "beker_construction_yields_quadratic: explicit constant exists with c < 1."
     },
     {
       "id": "related-problems",
       "title": "Part VII: Related Problems",
       "startLine": 185,
       "endLine": 210,
-      "summary": "Connections to Problems #34, #357. permutation_implies_increasing axiom. erdos357Question definition."
+      "summary": "Connections to Problems #34, #357. permutation_implies_increasing axiom. erdos357Question definition.",
+      "mathContext": "Connections to Problems #34, #357. permutation_implies_increasing axiom. erdos357Question definition."
     },
     {
       "id": "bounds",
       "title": "Part VIII: Upper and Lower Bounds",
       "startLine": 211,
       "endLine": 232,
-      "summary": "upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn² achievable)."
+      "summary": "upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn² achievable).",
+      "mathContext": "upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn² achievable)."
     },
     {
       "id": "summary",
       "title": "Part IX: Summary",
       "startLine": 233,
       "endLine": 263,
-      "summary": "erdos_356_solved: combines beker_theorem and konieczny_theorem. erdos_356: main result."
+      "summary": "erdos_356_solved: combines beker_theorem and konieczny_theorem. erdos_356: main result.",
+      "mathContext": "erdos_356_solved: combines beker_theorem and konieczny_theorem. erdos_356: main result."
     }
   ],
   "conclusion": {

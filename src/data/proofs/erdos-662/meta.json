@@ -30,56 +30,64 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 10,
-      "summary": "Module docstring introducing the Erdős–Lovász–Vesztergombi conjecture (1997): among 1-separated point sets in $\\mathbb{R}^2$, the triangular lattice maximizes the number of pairs at distance $\\le t$."
+      "summary": "Module docstring introducing the Erdős–Lovász–Vesztergombi conjecture (1997): among 1-separated point sets in $\\mathbb{R}^2$, the triangular lattice maximizes the number of pairs at distance $\\le t$.",
+      "mathContext": "Module docstring introducing the Erdős–Lovász–Vesztergombi conjecture (1997): among 1-separated point sets in $\\mathbb{R}^2$, the triangular lattice maximizes the number of pairs at distance $\\le t$."
     },
     {
       "id": "imports",
       "title": "Library Imports",
       "startLine": 12,
       "endLine": 18,
-      "summary": "Imports Mathlib's $\\mathbb{R}$, $\\mathbb{N}$, $\\text{Finset}$, cardinality, and tactics for coordinate geometry and finite combinatorial computations."
+      "summary": "Imports Mathlib's $\\mathbb{R}$, $\\mathbb{N}$, $\\text{Finset}$, cardinality, and tactics for coordinate geometry and finite combinatorial computations.",
+      "mathContext": "Imports Mathlib's $\\mathbb{R}$, $\\mathbb{N}$, $\\text{Finset}$, cardinality, and tactics for coordinate geometry and finite combinatorial computations."
     },
     {
       "id": "point-distance",
       "title": "Points and Distance",
       "startLine": 22,
       "endLine": 27,
-      "summary": "Defines $\\text{Point2D} = \\mathbb{R} \\times \\mathbb{R}$ and the squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$, avoiding square roots for cleaner algebraic manipulation."
+      "summary": "Defines $\\text{Point2D} = \\mathbb{R} \\times \\mathbb{R}$ and the squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$, avoiding square roots for cleaner algebraic manipulation.",
+      "mathContext": "Defines $\\text{Point2D} = \\mathbb{R} \\times \\mathbb{R}$ and the squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$, avoiding square roots for cleaner algebraic manipulation."
     },
     {
       "id": "separation-neighbors",
       "title": "Separation and Neighborhood",
       "startLine": 29,
       "endLine": 44,
-      "summary": "Defines 1-separation ($d(p,q) \\ge 1$ for all distinct pairs), the $t$-neighborhood $N_t(p)$, ordered and unordered pair counts. The unordered pair count $\\text{pairs}_t(S)$ is the central quantity in the conjecture."
+      "summary": "Defines 1-separation ($d(p,q) \\ge 1$ for all distinct pairs), the $t$-neighborhood $N_t(p)$, ordered and unordered pair counts. The unordered pair count $\\text{pairs}_t(S)$ is the central quantity in the conjecture.",
+      "mathContext": "Defines 1-separation ($d(p,q) \\ge 1$ for all distinct pairs), the $t$-neighborhood $N_t(p)$, ordered and unordered pair counts. The unordered pair count $\\text{pairs}_t(S)$ is the central quantity in "
     },
     {
       "id": "triangular-lattice",
       "title": "Triangular Lattice Construction",
       "startLine": 48,
       "endLine": 55,
-      "summary": "Constructs the triangular lattice $\\Lambda = \\mathbb{Z}(1,0) + \\mathbb{Z}(\\frac{1}{2}, \\frac{\\sqrt{3}}{2})$ and axiomatizes the lattice count function $f(t) = |\\{\\mathbf{v} \\in \\Lambda \\setminus \\{\\mathbf{0}\\} : \\|\\mathbf{v}\\| \\le t\\}|$."
+      "summary": "Constructs the triangular lattice $\\Lambda = \\mathbb{Z}(1,0) + \\mathbb{Z}(\\frac{1}{2}, \\frac{\\sqrt{3}}{2})$ and axiomatizes the lattice count function $f(t) = |\\{\\mathbf{v} \\in \\Lambda \\setminus \\{\\mathbf{0}\\} : \\|\\mathbf{v}\\| \\le t\\}|$.",
+      "mathContext": "Constructs the triangular lattice $\\Lambda = \\mathbb{Z}(1,0) + \\mathbb{Z}(\\frac{1}{2}, \\frac{\\sqrt{3}}{2})$ and axiomatizes the lattice count function $f(t) = |\\{\\mathbf{v} \\in \\Lambda \\setminus \\{\\ma"
     },
     {
       "id": "lattice-distance",
       "title": "Lattice Distance Formula and Known Values",
       "startLine": 59,
       "endLine": 71,
-      "summary": "Proves the Loeschian quadratic form $d^2 = a^2 + ab + b^2$ for lattice point $(a,b)$ and establishes $f(1) = 6$, $f(\\sqrt{3}) = 12$: the first two coordination shells of the triangular lattice."
+      "summary": "Proves the Loeschian quadratic form $d^2 = a^2 + ab + b^2$ for lattice point $(a,b)$ and establishes $f(1) = 6$, $f(\\sqrt{3}) = 12$: the first two coordination shells of the triangular lattice.",
+      "mathContext": "Proves the Loeschian quadratic form $d^2 = a^2 + ab + b^2$ for lattice point $(a,b)$ and establishes $f(1) = 6$, $f(\\sqrt{3}) = 12$: the first two coordination shells of the triangular lattice."
     },
     {
       "id": "contact-number",
       "title": "Contact Number Bounds",
       "startLine": 75,
       "endLine": 91,
-      "summary": "Axiomatizes the per-vertex bound $|N_1(p)| \\le 6$ (2D kissing number), derives the ordered bound $6n$, and proves the contact number bound $\\text{pairs}_1(S) \\le 3n$ — the resolved $t = 1$ case of the conjecture."
+      "summary": "Axiomatizes the per-vertex bound $|N_1(p)| \\le 6$ (2D kissing number), derives the ordered bound $6n$, and proves the contact number bound $\\text{pairs}_1(S) \\le 3n$ — the resolved $t = 1$ case of the conjecture.",
+      "mathContext": "Axiomatizes the per-vertex bound $|N_1(p)| \\le 6$ (2D kissing number), derives the ordered bound $6n$, and proves the contact number bound $\\text{pairs}_1(S) \\le 3n$ — the resolved $t = 1$ case of the"
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 95,
       "endLine": 100,
-      "summary": "States the Erdős–Lovász–Vesztergombi conjecture: for all $t \\ge 1$ and sufficiently large $n$, $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ for every 1-separated $S$ with $|S| = n$. Axiomatized as the conjecture remains open."
+      "summary": "States the Erdős–Lovász–Vesztergombi conjecture: for all $t \\ge 1$ and sufficiently large $n$, $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ for every 1-separated $S$ with $|S| = n$. Axiomatized as the conjecture remains open.",
+      "mathContext": "States the Erdős–Lovász–Vesztergombi conjecture: for all $t \\ge 1$ and sufficiently large $n$, $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ for every 1-separated $S$ with $|S| = n$. Axiomatized as the conje"
     }
   ],
   "overview": {

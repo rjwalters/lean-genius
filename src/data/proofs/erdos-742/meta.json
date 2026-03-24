@@ -81,70 +81,80 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 27,
-      "summary": "Module docstring introducing Erdős Problem #742: is $|E(G)| \\le n^2/4$ for minimal diameter-2 graphs? Cites Murty-Plesník (1979), Caccetta-Häggkvist (1979), and Füredi's (1992) resolution."
+      "summary": "Module docstring introducing Erdős Problem #742: is $|E(G)| \\le n^2/4$ for minimal diameter-2 graphs? Cites Murty-Plesník (1979), Caccetta-Häggkvist (1979), and Füredi's (1992) resolution.",
+      "mathContext": "Module docstring introducing Erdős Problem #742: is $|E(G)| \\le n^2/4$ for minimal diameter-2 graphs? Cites Murty-Plesník (1979), Caccetta-Häggkvist (1979), and Füredi's (1992) resolution."
     },
     {
       "id": "imports",
       "title": "Library Imports and Setup",
       "startLine": 28,
       "endLine": 36,
-      "summary": "Imports Mathlib's `SimpleGraph`, `Connectivity.Subgraph`, and finite type infrastructure. Opens the `SimpleGraph` namespace and declares universe-polymorphic vertex variables."
+      "summary": "Imports Mathlib's `SimpleGraph`, `Connectivity.Subgraph`, and finite type infrastructure. Opens the `SimpleGraph` namespace and declares universe-polymorphic vertex variables.",
+      "mathContext": "Imports Mathlib's `SimpleGraph`, `Connectivity.Subgraph`, and finite type infrastructure. Opens the `SimpleGraph` namespace and declares universe-polymorphic vertex variables."
     },
     {
       "id": "graph-diameter",
       "title": "Graph Distance and Diameter",
       "startLine": 37,
       "endLine": 58,
-      "summary": "Defines `dist G u v` (shortest path length in $\\mathbb{N}_{\\infty}$), `diameter G = \\sup_{u,v} d_G(u,v)$, `HasDiameter G d` (connected, all distances $\\le d$, some pair at distance $d$), and `HasDiameter2`."
+      "summary": "Defines `dist G u v` (shortest path length in $\\mathbb{N}_{\\infty}$), `diameter G = \\sup_{u,v} d_G(u,v)$, `HasDiameter G d` (connected, all distances $\\le d$, some pair at distance $d$), and `HasDiameter2`.",
+      "mathContext": "Defines `dist G u v` (shortest path length in $\\mathbb{N}_{\\infty}$), `diameter G = \\sup_{u,v} d_G(u,v)$, `HasDiameter G d` (connected, all distances $\\le d$, some pair at distance $d$), and `HasDiame"
     },
     {
       "id": "edge-deletion",
       "title": "Edge Deletion and Critical Edges",
       "startLine": 59,
       "endLine": 78,
-      "summary": "Defines `deleteEdge G u v` (removes $\\{u,v\\}$ preserving symmetry/irreflexivity), `IsCriticalEdge` ($uv \\in E$ and $\\mathrm{diam}(G - uv) > 2$), and `AllEdgesCritical` (every edge is critical)."
+      "summary": "Defines `deleteEdge G u v` (removes $\\{u,v\\}$ preserving symmetry/irreflexivity), `IsCriticalEdge` ($uv \\in E$ and $\\mathrm{diam}(G - uv) > 2$), and `AllEdgesCritical` (every edge is critical).",
+      "mathContext": "Defines `deleteEdge G u v` (removes $\\{u,v\\}$ preserving symmetry/irreflexivity), `IsCriticalEdge` ($uv \\in E$ and $\\mathrm{diam}(G - uv) > 2$), and `AllEdgesCritical` (every edge is critical)."
     },
     {
       "id": "minimal-diameter2",
       "title": "Minimal Diameter-2 Graphs and Edge Bound",
       "startLine": 79,
       "endLine": 93,
-      "summary": "Defines `IsMinimalDiameter2 G` (diameter 2 with all edges critical), `edgeCount G = |E(G)|$, and `MurtyPlesnikBound n = n^2/4$."
+      "summary": "Defines `IsMinimalDiameter2 G` (diameter 2 with all edges critical), `edgeCount G = |E(G)|$, and `MurtyPlesnikBound n = n^2/4$.",
+      "mathContext": "Defines `IsMinimalDiameter2 G` (diameter 2 with all edges critical), `edgeCount G = |E(G)|$, and `MurtyPlesnikBound n = n^2/4$."
     },
     {
       "id": "bipartite-example",
       "title": "Complete Bipartite Extremal Example",
       "startLine": 94,
       "endLine": 115,
-      "summary": "Axiomatizes: $K_{a,b}$ has diameter 2 with $a \\cdot b$ edges, the balanced partition gives $\\lfloor n^2/4 \\rfloor$ edges, and $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is minimal diameter-2."
+      "summary": "Axiomatizes: $K_{a,b}$ has diameter 2 with $a \\cdot b$ edges, the balanced partition gives $\\lfloor n^2/4 \\rfloor$ edges, and $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is minimal diameter-2.",
+      "mathContext": "Axiomatizes: $K_{a,b}$ has diameter 2 with $a \\cdot b$ edges, the balanced partition gives $\\lfloor n^2/4 \\rfloor$ edges, and $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is minimal diameter-2."
     },
     {
       "id": "furedi-theorem",
       "title": "Füredi's Theorem",
       "startLine": 116,
       "endLine": 141,
-      "summary": "Axiomatizes Füredi (1992): $\\exists N_0,\\; \\forall n \\ge N_0$, minimal diameter-2 graphs have $|E| \\le n^2/4$. Proves `bound_is_tight`: $\\forall n \\ge 2$, the bound is achieved by the balanced bipartite graph."
+      "summary": "Axiomatizes Füredi (1992): $\\exists N_0,\\; \\forall n \\ge N_0$, minimal diameter-2 graphs have $|E| \\le n^2/4$. Proves `bound_is_tight`: $\\forall n \\ge 2$, the bound is achieved by the balanced bipartite graph.",
+      "mathContext": "Axiomatizes Füredi (1992): $\\exists N_0,\\; \\forall n \\ge N_0$, minimal diameter-2 graphs have $|E| \\le n^2/4$. Proves `bound_is_tight`: $\\forall n \\ge 2$, the bound is achieved by the balanced biparti"
     },
     {
       "id": "history",
       "title": "Historical Context",
       "startLine": 142,
       "endLine": 159,
-      "summary": "Records the conjecture timeline (Ore → Murty-Simon → Murty-Plesník → Caccetta-Häggkvist → Füredi). Axiomatizes that Füredi's proof uses extremal methods."
+      "summary": "Records the conjecture timeline (Ore → Murty-Simon → Murty-Plesník → Caccetta-Häggkvist → Füredi). Axiomatizes that Füredi's proof uses extremal methods.",
+      "mathContext": "Records the conjecture timeline (Ore → Murty-Simon → Murty-Plesník → Caccetta-Häggkvist → Füredi). Axiomatizes that Füredi's proof uses extremal methods."
     },
     {
       "id": "related",
       "title": "Diameter-Critical Generalization",
       "startLine": 160,
       "endLine": 186,
-      "summary": "Defines `IsDiameterCritical G d` for general diameter $d$. Proves `minimal_iff_critical`: `IsMinimalDiameter2 G ↔ IsDiameterCritical G 2`. Axiomatizes existence of bounds for $d \\ge 3$."
+      "summary": "Defines `IsDiameterCritical G d` for general diameter $d$. Proves `minimal_iff_critical`: `IsMinimalDiameter2 G ↔ IsDiameterCritical G 2`. Axiomatizes existence of bounds for $d \\ge 3$.",
+      "mathContext": "Defines `IsDiameterCritical G d` for general diameter $d$. Proves `minimal_iff_critical`: `IsMinimalDiameter2 G ↔ IsDiameterCritical G 2`. Axiomatizes existence of bounds for $d \\ge 3$."
     },
     {
       "id": "summary",
       "title": "Main Theorem and Summary",
       "startLine": 187,
       "endLine": 226,
-      "summary": "Proves `erdos_742`: the conjunction of Füredi's upper bound and tightness. Defines answer and status strings. Includes `#check` commands for key definitions."
+      "summary": "Proves `erdos_742`: the conjunction of Füredi's upper bound and tightness. Defines answer and status strings. Includes `#check` commands for key definitions.",
+      "mathContext": "Proves `erdos_742`: the conjunction of Füredi's upper bound and tightness. Defines answer and status strings. Includes `#check` commands for key definitions."
     }
   ],
   "conclusion": {

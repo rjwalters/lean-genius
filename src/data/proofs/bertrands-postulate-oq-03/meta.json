@@ -85,56 +85,64 @@
       "title": "Module Header and Problem Setup",
       "startLine": 1,
       "endLine": 66,
-      "summary": "Imports, the density hierarchy table (from x^(log x)² to 2n), and the key new result π(2^m) ≥ m."
+      "summary": "Imports, the density hierarchy table (from x^(log x)² to 2n), and the key new result π(2^m) ≥ m.",
+      "mathContext": "Imports, the density hierarchy table (from x^(log x)² to 2n), and the key new result π(2^m) ≥ m."
     },
     {
       "id": "definitions",
       "title": "Definitions — Prime Count in Intervals",
       "startLine": 67,
       "endLine": 89,
-      "summary": "primeCountInInterval as π(hi) - π(lo), with monotonicity and the key conversion lemma."
+      "summary": "primeCountInInterval as π(hi) - π(lo), with monotonicity and the key conversion lemma.",
+      "mathContext": "primeCountInInterval as π(hi) - π(lo), with monotonicity and the key conversion lemma."
     },
     {
       "id": "bertrand-bounds",
       "title": "Bertrand Lower Bounds",
       "startLine": 90,
       "endLine": 124,
-      "summary": "bertrand_interval_nonempty (every (n,2n] has ≥1 prime), π(2^m) ≥ m, and iterated Bertrand giving π(2^k*n) ≥ π(n)+k."
+      "summary": "bertrand_interval_nonempty (every (n,2n] has ≥1 prime), π(2^m) ≥ m, and iterated Bertrand giving π(2^k*n) ≥ π(n)+k.",
+      "mathContext": "bertrand_interval_nonempty (every (n,2n] has ≥1 prime), π(2^m) ≥ m, and iterated Bertrand giving π(2^k*n) ≥ π(n)+k."
     },
     {
       "id": "log-lower-bound",
       "title": "Logarithmic Lower Bound π(n) ≥ log₂(n)",
       "startLine": 125,
       "endLine": 148,
-      "summary": "From π(2^m) ≥ m and 2^(log₂ n) ≤ n, proved: π(n) ≥ log₂(n) for all n ≥ 2."
+      "summary": "From π(2^m) ≥ m and 2^(log₂ n) ≤ n, proved: π(n) ≥ log₂(n) for all n ≥ 2.",
+      "mathContext": "From π(2^m) ≥ m and 2^(log₂ n) ≤ n, proved: π(n) ≥ log₂(n) for all n ≥ 2."
     },
     {
       "id": "pnt-axioms",
       "title": "PNT Asymptotic Density (Axioms)",
       "startLine": 149,
       "endLine": 173,
-      "summary": "pnt_ratio_form (π(x) ~ x/ln x) and pnt_medium_interval_density — PNT-derived results axiomatized since PNT is not in base Mathlib."
+      "summary": "pnt_ratio_form (π(x) ~ x/ln x) and pnt_medium_interval_density — PNT-derived results axiomatized since PNT is not in base Mathlib.",
+      "mathContext": "pnt_ratio_form (π(x) ~ x/ln x) and pnt_medium_interval_density — PNT-derived results axiomatized since PNT is not in base Mathlib."
     },
     {
       "id": "bhp-theorem",
       "title": "Baker-Harman-Pintz (2001) — The Record θ=0.525",
       "startLine": 174,
       "endLine": 192,
-      "summary": "bhp_short_interval axiom: for x ≥ 1 and h ≥ x^0.525, the interval [x, x+h] contains a prime. The current best proved bound."
+      "summary": "bhp_short_interval axiom: for x ≥ 1 and h ≥ x^0.525, the interval [x, x+h] contains a prime. The current best proved bound.",
+      "mathContext": "bhp_short_interval axiom: for x ≥ 1 and h ≥ x^0.525, the interval [x, x+h] contains a prime. The current best proved bound."
     },
     {
       "id": "open-conjectures",
       "title": "Open Conjectures — Cramér and Legendre",
       "startLine": 193,
       "endLine": 227,
-      "summary": "cramer_conjecture (max prime gap O((log p)²)) and legendre_conjecture (prime in [n²,(n+1)²]) — both open since the 19th century."
+      "summary": "cramer_conjecture (max prime gap O((log p)²)) and legendre_conjecture (prime in [n²,(n+1)²]) — both open since the 19th century.",
+      "mathContext": "cramer_conjecture (max prime gap O((log p)²)) and legendre_conjecture (prime in [n²,(n+1)²]) — both open since the 19th century."
     },
     {
       "id": "prime-gap-conjecture",
       "title": "The Prime Gap Conjecture — Formal Definition",
       "startLine": 228,
       "endLine": 308,
-      "summary": "PrimeGapConjecture(θ) defined formally, monotonicity proved, BHP gives θ=0.525, density_question_status summarizes the full landscape."
+      "summary": "PrimeGapConjecture(θ) defined formally, monotonicity proved, BHP gives θ=0.525, density_question_status summarizes the full landscape.",
+      "mathContext": "PrimeGapConjecture(θ) defined formally, monotonicity proved, BHP gives θ=0.525, density_question_status summarizes the full landscape."
     }
   ],
   "conclusion": {

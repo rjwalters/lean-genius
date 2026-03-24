@@ -105,77 +105,88 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 32,
-      "summary": "Header: rough numbers in prime gaps, Erdős's counterexample via $13\\# = 30030$, Gafni-Tao (2025) resolution, arXiv:2508.06463"
+      "summary": "Header: rough numbers in prime gaps, Erdős's counterexample via $13\\# = 30030$, Gafni-Tao (2025) resolution, arXiv:2508.06463",
+      "mathContext": "Header: rough numbers in prime gaps, Erdős's counterexample via $13\\# = 30030$, Gafni-Tao (2025) resolution, arXiv:2508.06463"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 44,
       "endLine": 82,
-      "summary": "`nthPrime` ($p_n$), `leastPrimeFactor` ($p(m) = \\text{minFac}(m)$), proved properties: `leastPrimeFactor_prime` and `leastPrimeFactor_dvd`"
+      "summary": "`nthPrime` ($p_n$), `leastPrimeFactor` ($p(m) = \\text{minFac}(m)$), proved properties: `leastPrimeFactor_prime` and `leastPrimeFactor_dvd`",
+      "mathContext": "`nthPrime` ($p_n$), `leastPrimeFactor` ($p(m) = \\text{minFac}(m)$), proved properties: `leastPrimeFactor_prime` and `leastPrimeFactor_dvd`"
     },
     {
       "id": "k-rough-numbers",
       "title": "$k$-Rough Numbers",
       "startLine": 83,
       "endLine": 112,
-      "summary": "`isKRough m k` ($p(m) \\geq k$), `one_rough_all` (every positive integer is 1-rough), example: 7 is 7-rough"
+      "summary": "`isKRough m k` ($p(m) \\geq k$), `one_rough_all` (every positive integer is 1-rough), example: 7 is 7-rough",
+      "mathContext": "`isKRough m k` ($p(m) \\geq k$), `one_rough_all` (every positive integer is 1-rough), example: 7 is 7-rough"
     },
     {
       "id": "prime-gaps",
       "title": "Prime Gaps",
       "startLine": 113,
       "endLine": 136,
-      "summary": "`primeGap n` ($g_n = p_{n+1} - p_n$), `gapInterval n` ($(p_n, p_{n+1})$), `gap_nonempty` for $n \\geq 2$"
+      "summary": "`primeGap n` ($g_n = p_{n+1} - p_n$), `gapInterval n` ($(p_n, p_{n+1})$), `gap_nonempty` for $n \\geq 2$",
+      "mathContext": "`primeGap n` ($g_n = p_{n+1} - p_n$), `gapInterval n` ($(p_n, p_{n+1})$), `gap_nonempty` for $n \\geq 2$"
     },
     {
       "id": "main-property",
       "title": "The Main Property",
       "startLine": 137,
       "endLine": 154,
-      "summary": "`hasRoughNumberInGap n` ($\\exists m \\in (p_n, p_{n+1}), p(m) \\geq g_n$), `isExceptional n` (negation)"
+      "summary": "`hasRoughNumberInGap n` ($\\exists m \\in (p_n, p_{n+1}), p(m) \\geq g_n$), `isExceptional n` (negation)",
+      "mathContext": "`hasRoughNumberInGap n` ($\\exists m \\in (p_n, p_{n+1}), p(m) \\geq g_n$), `isExceptional n` (negation)"
     },
     {
       "id": "counterexample",
       "title": "Erdős's Counterexample Construction",
       "startLine": 155,
       "endLine": 198,
-      "summary": "`primorial`, `dickson_special_case` (primes at $2183+30030d$, $2201+30030d$), `erdos_counterexample_condition`, infinitely many exceptions conditional on Dickson"
+      "summary": "`primorial`, `dickson_special_case` (primes at $2183+30030d$, $2201+30030d$), `erdos_counterexample_condition`, infinitely many exceptions conditional on Dickson",
+      "mathContext": "`primorial`, `dickson_special_case` (primes at $2183+30030d$, $2201+30030d$), `erdos_counterexample_condition`, infinitely many exceptions conditional on Dickson"
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 199,
       "endLine": 216,
-      "summary": "`holdsForAlmostAll` (density-0 exceptions), `erdos682Question`: does the property hold for almost all $n$?"
+      "summary": "`holdsForAlmostAll` (density-0 exceptions), `erdos682Question`: does the property hold for almost all $n$?",
+      "mathContext": "`holdsForAlmostAll` (density-0 exceptions), `erdos682Question`: does the property hold for almost all $n$?"
     },
     {
       "id": "gafni-tao",
       "title": "Gafni-Tao Theorem (2025)",
       "startLine": 217,
       "endLine": 258,
-      "summary": "`exceptionalCount`, `gafni_tao_upper_bound` ($E(X) \\leq C \\cdot X/(\\log X)^2$), `gafni_tao_conditional_asymptotic`, `erdos682_answer`: YES"
+      "summary": "`exceptionalCount`, `gafni_tao_upper_bound` ($E(X) \\leq C \\cdot X/(\\log X)^2$), `gafni_tao_conditional_asymptotic`, `erdos682_answer`: YES",
+      "mathContext": "`exceptionalCount`, `gafni_tao_upper_bound` ($E(X) \\leq C \\cdot X/(\\log X)^2$), `gafni_tao_conditional_asymptotic`, `erdos682_answer`: YES"
     },
     {
       "id": "density",
       "title": "Density Implications",
       "startLine": 259,
       "endLine": 288,
-      "summary": "`exceptional_density_zero` ($E(X)/X \\to 0$), `most_gaps_have_rough`"
+      "summary": "`exceptional_density_zero` ($E(X)/X \\to 0$), `most_gaps_have_rough`",
+      "mathContext": "`exceptional_density_zero` ($E(X)/X \\to 0$), `most_gaps_have_rough`"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 289,
       "endLine": 318,
-      "summary": "Connections to Problems #680, #681; smooth vs rough numbers; de Bruijn's theory; Bertrand's postulate"
+      "summary": "Connections to Problems #680, #681; smooth vs rough numbers; de Bruijn's theory; Bertrand's postulate",
+      "mathContext": "Connections to Problems #680, #681; smooth vs rough numbers; de Bruijn's theory; Bertrand's postulate"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 319,
       "endLine": 344,
-      "summary": "`erdos_682_summary` (Gafni-Tao bound + affirmative answer), `erdos_682` main theorem"
+      "summary": "`erdos_682_summary` (Gafni-Tao bound + affirmative answer), `erdos_682` main theorem",
+      "mathContext": "`erdos_682_summary` (Gafni-Tao bound + affirmative answer), `erdos_682` main theorem"
     }
   ],
   "conclusion": {

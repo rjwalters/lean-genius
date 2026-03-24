@@ -80,70 +80,80 @@
       "title": "Part I: Graph Basics",
       "summary": "Abbreviates `Graph V` for `SimpleGraph V` and defines `numVertices` via `Fintype.card V`. Establishes the finitary setting with `Fintype` and `DecidableEq` constraints needed for computable cardinality and decidable adjacency.",
       "startLine": 51,
-      "endLine": 66
+      "endLine": 66,
+      "mathContext": "Abbreviates `Graph V` for `SimpleGraph V` and defines `numVertices` via `Fintype.card V`. Establishes the finitary setting with `Fintype` and `DecidableEq` constraints needed for computable cardinalit"
     },
     {
       "id": "induced-subgraphs",
       "title": "Part II: Induced Subgraphs",
       "summary": "Defines `IsInducedSubgraph G S G'` via the biconditional $G'.\\text{Adj}(u,v) \\iff G.\\text{Adj}(u,v)$ for $u, v \\in S$, and `ContainsInducedCopy H G` via a `Function.Embedding` preserving AND reflecting adjacency. The biconditional is the key distinction from ordinary subgraph containment.",
       "startLine": 67,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "Defines `IsInducedSubgraph G S G'` via the biconditional $G'.\\text{Adj}(u,v) \\iff G.\\text{Adj}(u,v)$ for $u, v \\in S$, and `ContainsInducedCopy H G` via a `Function.Embedding` preserving AND reflectin"
     },
     {
       "id": "edge-colorings",
       "title": "Part III: Edge Colorings",
       "summary": "Defines the `EdgeColor` inductive type (`Red | Blue`), `EdgeColoring G` as a function from `Sym2`-based edge witnesses to colors, and `HasMonochromaticInducedCopy` requiring an embedding with both the induced property and uniform coloring across all embedded edges.",
       "startLine": 91,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "Defines the `EdgeColor` inductive type (`Red | Blue`), `EdgeColoring G` as a function from `Sym2`-based edge witnesses to colors, and `HasMonochromaticInducedCopy` requiring an embedding with both the"
     },
     {
       "id": "induced-ramsey",
       "title": "Part IV: Induced Ramsey Numbers",
       "summary": "Defines `HasInducedRamseyProperty H G` as a universal statement over all 2-colorings, and `inducedRamseyNumber n G` as `sInf` over valid host sizes. The infimum optimizes over both the number of vertices $m$ and the choice of host graph $H$.",
       "startLine": 123,
-      "endLine": 144
+      "endLine": 144,
+      "mathContext": "Defines `HasInducedRamseyProperty H G` as a universal statement over all 2-colorings, and `inducedRamseyNumber n G` as `sInf` over valid host sizes. The infimum optimizes over both the number of verti"
     },
     {
       "id": "existence",
       "title": "Part V: Existence of R*(G)",
       "summary": "Axiomatizes `induced_ramsey_exists` (finiteness for all graphs, due to Deuber, EHP, and Rödl) and derives `induced_ramsey_number_finite` showing the defining set is nonempty by destructuring the existence axiom.",
       "startLine": 145,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "Axiomatizes `induced_ramsey_exists` (finiteness for all graphs, due to Deuber, EHP, and Rödl) and derives `induced_ramsey_number_finite` showing the defining set is nonempty by destructuring the exist"
     },
     {
       "id": "historical-bounds",
       "title": "Part VI: Historical Bounds",
       "summary": "Three axioms capturing progressive improvements: Rödl's bipartite $2^{O(n)}$ (1973, with `True` placeholder for bipartiteness), KPR's $2^{O(n(\\log n)^2)}$ (1998, sparse regularity), and CFS's $2^{O(n \\log n)}$ (2012, dependent random choice + Lovász Local Lemma). All use `Real.rpow` and `Real.log`.",
       "startLine": 166,
-      "endLine": 198
+      "endLine": 198,
+      "mathContext": "Three axioms capturing progressive improvements: Rödl's bipartite $2^{O(n)}$ (1973, with `True` placeholder for bipartiteness), KPR's $2^{O(n(\\log n)^2)}$ (1998, sparse regularity), and CFS's $2^{O(n "
     },
     {
       "id": "solution",
       "title": "Part VII: The Solution - Aragão et al. (2025)",
       "summary": "Axiomatizes `aragao_et_al_theorem`: $\\exists C > 0$ with $R^*(G) \\le 2^{Cn}$ for all $n$-vertex $G$. The theorem `erdos_565_solution` follows by `exact aragao_et_al_theorem`, resolving the 50-year problem.",
       "startLine": 199,
-      "endLine": 225
+      "endLine": 225,
+      "mathContext": "Axiomatizes `aragao_et_al_theorem`: $\\exists C > 0$ with $R^*(G) \\le 2^{Cn}$ for all $n$-vertex $G$. The theorem `erdos_565_solution` follows by `exact aragao_et_al_theorem`, resolving the 50-year pro"
     },
     {
       "id": "comparison",
       "title": "Part VIII: Comparison with Ordinary Ramsey",
       "summary": "Defines `ordinaryRamseyNumber` using `completeGraph (Fin m)` as host (unlike induced Ramsey, which optimizes over all hosts). States `induced_ramsey_ge_ordinary` ($R^* \\ge R$, with sorry) and `gap_can_be_large` asserting arbitrarily large multiplicative gaps.",
       "startLine": 226,
-      "endLine": 256
+      "endLine": 256,
+      "mathContext": "Defines `ordinaryRamseyNumber` using `completeGraph (Fin m)` as host (unlike induced Ramsey, which optimizes over all hosts). States `induced_ramsey_ge_ordinary` ($R^* \\ge R$, with sorry) and `gap_can"
     },
     {
       "id": "lower-bounds",
       "title": "Part IX: Lower Bounds",
       "summary": "Axiomatizes `exponential_lower_bound`: $\\exists c > 0$ with $\\exists G_n$ on $n$ vertices satisfying $R^*(G_n) \\ge 2^{cn}$. Proves `bound_essentially_tight` combining this with `aragao_et_al_theorem` via pair construction, establishing $R^* = 2^{\\Theta(n)}$ in worst case.",
       "startLine": 257,
-      "endLine": 280
+      "endLine": 280,
+      "mathContext": "Axiomatizes `exponential_lower_bound`: $\\exists c > 0$ with $\\exists G_n$ on $n$ vertices satisfying $R^*(G_n) \\ge 2^{cn}$. Proves `bound_essentially_tight` combining this with `aragao_et_al_theorem` "
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
       "summary": "Proves `erdos_565_summary` bundling the upper bound ($2^{O(n)}$, Aragão et al.) and lower bound ($2^{\\Omega(n)}$, random graphs) into a single conjunction via `⟨aragao_et_al_theorem, exponential_lower_bound⟩`, completely resolving Erdős Problem #565.",
       "startLine": 281,
-      "endLine": 307
+      "endLine": 307,
+      "mathContext": "Proves `erdos_565_summary` bundling the upper bound ($2^{O(n)}$, Aragão et al.) and lower bound ($2^{\\Omega(n)}$, random graphs) into a single conjunction via `⟨aragao_et_al_theorem, exponential_lower"
     }
   ],
   "conclusion": {

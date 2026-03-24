@@ -58,77 +58,88 @@
       "title": "Power Residue Definitions",
       "startLine": 45,
       "endLine": 70,
-      "summary": "Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$."
+      "summary": "Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$.",
+      "mathContext": "Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 71,
       "endLine": 156,
-      "summary": "Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions."
+      "summary": "Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions.",
+      "mathContext": "Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions."
     },
     {
       "id": "r-function",
       "title": "The $r(k,m,p)$ Function",
       "startLine": 157,
       "endLine": 176,
-      "summary": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes."
+      "summary": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes.",
+      "mathContext": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes."
     },
     {
       "id": "lambda-function",
       "title": "The $\\Lambda(k,m)$ Function",
       "startLine": 177,
       "endLine": 196,
-      "summary": "Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$."
+      "summary": "Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$.",
+      "mathContext": "Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$."
     },
     {
       "id": "known-values",
       "title": "Known Exact Values",
       "startLine": 197,
       "endLine": 238,
-      "summary": "Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations."
+      "summary": "Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations.",
+      "mathContext": "Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations."
     },
     {
       "id": "hildebrand",
       "title": "Hildebrand's Theorem (1991)",
       "startLine": 239,
       "endLine": 258,
-      "summary": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly."
+      "summary": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly.",
+      "mathContext": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly."
     },
     {
       "id": "m3-case",
       "title": "The $m = 3$ Case and Parity Dichotomy",
       "startLine": 259,
       "endLine": 286,
-      "summary": "$\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?"
+      "summary": "$\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?",
+      "mathContext": "$\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?"
     },
     {
       "id": "graham",
       "title": "Graham's Theorem (1964)",
       "startLine": 287,
       "endLine": 311,
-      "summary": "$\\Lambda(k, m) = \\infty$ for all $k \\geq 2, m \\geq 4$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$, proved by contradiction."
+      "summary": "$\\Lambda(k, m) = \\infty$ for all $k \\geq 2, m \\geq 4$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$, proved by contradiction.",
+      "mathContext": "$\\Lambda(k, m) = \\infty$ for all $k \\geq 2, m \\geq 4$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$, proved by contradiction."
     },
     {
       "id": "quadratic",
       "title": "Quadratic Residue Case: $\\Lambda(2,2) \\leq 9$",
       "startLine": 312,
       "endLine": 335,
-      "summary": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely often."
+      "summary": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely often.",
+      "mathContext": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely o"
     },
     {
       "id": "growth",
       "title": "Growth Rate Analysis",
       "startLine": 336,
       "endLine": 540,
-      "summary": "Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive."
+      "summary": "Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive.",
+      "mathContext": "Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive."
     },
     {
       "id": "flt-euler",
       "title": "Fermat's Little Theorem and Euler's Criterion",
       "startLine": 541,
       "endLine": 634,
-      "summary": "FLT $r^{p-1} \\equiv 1 \\pmod{p}$ proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$. Euler's criterion forward ($r = x^2 \\Rightarrow r^{(p-1)/2} = 1$) proved via calc chain; backward axiomatized. Legendre symbol multiplicativity from Mathlib."
+      "summary": "FLT $r^{p-1} \\equiv 1 \\pmod{p}$ proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$. Euler's criterion forward ($r = x^2 \\Rightarrow r^{(p-1)/2} = 1$) proved via calc chain; backward axiomatized. Legendre symbol multiplicativity from Mathlib.",
+      "mathContext": "FLT $r^{p-1} \\equiv 1 \\pmod{p}$ proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$. Euler's criterion forward ($r = x^2 \\Rightarrow r^{(p-1)/2} = 1$) proved via calc chain; backward axiomatized."
     }
   ],
   "conclusion": {

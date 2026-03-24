@@ -84,77 +84,88 @@
       "title": "Graph Definitions",
       "summary": "Trees and vertex counting",
       "startLine": 30,
-      "endLine": 44
+      "endLine": 44,
+      "mathContext": "Trees and vertex counting"
     },
     {
       "id": "multipartite",
       "title": "Complete Multipartite Graphs",
       "summary": "K_{m₁,...,mₖ} structure and chromatic number",
       "startLine": 45,
-      "endLine": 73
+      "endLine": 73,
+      "mathContext": "K_{m₁,...,mₖ} structure and chromatic number"
     },
     {
       "id": "ramsey",
       "title": "Ramsey Numbers",
       "summary": "Definition of R(T, G) and Ramsey property",
       "startLine": 74,
-      "endLine": 102
+      "endLine": 102,
+      "mathContext": "Definition of R(T, G) and Ramsey property"
     },
     {
       "id": "chvatal",
       "title": "Chvátal's Theorem",
       "summary": "R(T, Kₘ) = (m-1)(n-1) + 1",
       "startLine": 103,
-      "endLine": 130
+      "endLine": 130,
+      "mathContext": "R(T, Kₘ) = (m-1)(n-1) + 1"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "The conjectured bound for multipartite G",
       "startLine": 131,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "The conjectured bound for multipartite G"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "Complete graphs, bipartite, stars",
       "startLine": 153,
-      "endLine": 176
+      "endLine": 176,
+      "mathContext": "Complete graphs, bipartite, stars"
     },
     {
       "id": "paths",
       "title": "Path Graphs",
       "summary": "P_n and Gerencsér-Gyárfás",
       "startLine": 177,
-      "endLine": 197
+      "endLine": 197,
+      "mathContext": "P_n and Gerencsér-Gyárfás"
     },
     {
       "id": "tree-structure",
       "title": "Tree Structure",
       "summary": "Maximum degree and Burr's conjecture",
       "startLine": 198,
-      "endLine": 219
+      "endLine": 219,
+      "mathContext": "Maximum degree and Burr's conjecture"
     },
     {
       "id": "turan",
       "title": "Turán Connections",
       "summary": "Extremal graph theory connections",
       "startLine": 220,
-      "endLine": 231
+      "endLine": 231,
+      "mathContext": "Extremal graph theory connections"
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Bounds",
       "summary": "Lower bounds from random graphs",
       "startLine": 232,
-      "endLine": 244
+      "endLine": 244,
+      "mathContext": "Lower bounds from random graphs"
     },
     {
       "id": "extremal",
       "title": "Extremal Graphs",
       "summary": "Constructions achieving bounds",
       "startLine": 245,
-      "endLine": 260
+      "endLine": 260,
+      "mathContext": "Constructions achieving bounds"
     },
     {
       "id": "asymptotic",

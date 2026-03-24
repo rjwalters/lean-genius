@@ -77,77 +77,88 @@
       "title": "General Last-k-Digits Framework",
       "startLine": 28,
       "endLine": 96,
-      "summary": "Unified theorem for last-digit rules (2, 4, 8, 16, 32, 5, 25, 125) including binary and hexadecimal bases."
+      "summary": "Unified theorem for last-digit rules (2, 4, 8, 16, 32, 5, 25, 125) including binary and hexadecimal bases.",
+      "mathContext": "Unified theorem for last-digit rules (2, 4, 8, 16, 32, 5, 25, 125) including binary and hexadecimal bases."
     },
     {
       "id": "power-generalizations",
       "title": "Power-of-2 and Power-of-5 Theorems",
       "startLine": 97,
       "endLine": 119,
-      "summary": "General theorems: 2^k | n ↔ 2^k | (n mod 10^k), and similarly for 5^k."
+      "summary": "General theorems: 2^k | n ↔ 2^k | (n mod 10^k), and similarly for 5^k.",
+      "mathContext": "General theorems: 2^k | n ↔ 2^k | (n mod 10^k), and similarly for 5^k."
     },
     {
       "id": "truncation-13",
       "title": "Divisibility by 13 via Truncation",
       "startLine": 120,
       "endLine": 154,
-      "summary": "The 'add 4 times the last digit' rule for 13, proved via integer arithmetic and coprimality."
+      "summary": "The 'add 4 times the last digit' rule for 13, proved via integer arithmetic and coprimality.",
+      "mathContext": "The 'add 4 times the last digit' rule for 13, proved via integer arithmetic and coprimality."
     },
     {
       "id": "digit-sum-rules",
       "title": "Digit-Sum Rules in Various Bases",
       "startLine": 155,
       "endLine": 268,
-      "summary": "Instantiations of the general digit-sum rule for 37 (base 1000), 99 (base 100), 999, 27, and rules in hex, octal, and other bases."
+      "summary": "Instantiations of the general digit-sum rule for 37 (base 1000), 99 (base 100), 999, 27, and rules in hex, octal, and other bases.",
+      "mathContext": "Instantiations of the general digit-sum rule for 37 (base 1000), 99 (base 100), 999, 27, and rules in hex, octal, and other bases."
     },
     {
       "id": "casting-out",
       "title": "Casting Out Nines and Threes",
       "startLine": 220,
       "endLine": 269,
-      "summary": "Casting out nines/threes preserves addition and multiplication modulo 9/3."
+      "summary": "Casting out nines/threes preserves addition and multiplication modulo 9/3.",
+      "mathContext": "Casting out nines/threes preserves addition and multiplication modulo 9/3."
     },
     {
       "id": "digital-root",
       "title": "Digital Root Theory",
       "startLine": 270,
       "endLine": 332,
-      "summary": "Digital root definition, bound ≤ 9, positivity, divisibility-by-9 characterization, and mod-3 property."
+      "summary": "Digital root definition, bound ≤ 9, positivity, divisibility-by-9 characterization, and mod-3 property.",
+      "mathContext": "Digital root definition, bound ≤ 9, positivity, divisibility-by-9 characterization, and mod-3 property."
     },
     {
       "id": "coprime-factorization",
       "title": "Coprime Factorization Rules",
       "startLine": 333,
       "endLine": 375,
-      "summary": "Rules for 6, 12, 15, 18, 36, 45, 60, 90 via coprime factor decomposition."
+      "summary": "Rules for 6, 12, 15, 18, 36, 45, 60, 90 via coprime factor decomposition.",
+      "mathContext": "Rules for 6, 12, 15, 18, 36, 45, 60, 90 via coprime factor decomposition."
     },
     {
       "id": "truncation-7-11",
       "title": "Truncation Methods for 7 and 11",
       "startLine": 375,
       "endLine": 441,
-      "summary": "Divisibility by 7 via subtract-2x-last-digit and divisibility by 11 via subtract-last-digit, both proved via integer arithmetic and coprimality."
+      "summary": "Divisibility by 7 via subtract-2x-last-digit and divisibility by 11 via subtract-last-digit, both proved via integer arithmetic and coprimality.",
+      "mathContext": "Divisibility by 7 via subtract-2x-last-digit and divisibility by 11 via subtract-last-digit, both proved via integer arithmetic and coprimality."
     },
     {
       "id": "truncation-17-19",
       "title": "Truncation Methods for 17 and 19",
       "startLine": 442,
       "endLine": 511,
-      "summary": "Divisibility by 17 via subtract-5x-last-digit and divisibility by 19 via add-2x-last-digit."
+      "summary": "Divisibility by 17 via subtract-5x-last-digit and divisibility by 19 via add-2x-last-digit.",
+      "mathContext": "Divisibility by 17 via subtract-5x-last-digit and divisibility by 19 via add-2x-last-digit."
     },
     {
       "id": "alternating-grouping",
       "title": "Alternating Digit Grouping",
       "startLine": 512,
       "endLine": 539,
-      "summary": "Observations about alternating 3-digit groups: 1001 = 7·11·13 implies 1000 ≡ -1 (mod 7, 11, 13)."
+      "summary": "Observations about alternating 3-digit groups: 1001 = 7·11·13 implies 1000 ≡ -1 (mod 7, 11, 13).",
+      "mathContext": "Observations about alternating 3-digit groups: 1001 = 7·11·13 implies 1000 ≡ -1 (mod 7, 11, 13)."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 540,
       "endLine": 550,
-      "summary": "Master summary combining digit-sum, last-digit, and power generalization rules."
+      "summary": "Master summary combining digit-sum, last-digit, and power generalization rules.",
+      "mathContext": "Master summary combining digit-sum, last-digit, and power generalization rules."
     }
   ],
   "conclusion": {

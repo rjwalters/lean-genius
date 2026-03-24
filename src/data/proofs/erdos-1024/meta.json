@@ -50,70 +50,80 @@
       "title": "Hypergraphs",
       "summary": "Hypergraph, vertices, isKUniform, is3Uniform",
       "startLine": 23,
-      "endLine": 44
+      "endLine": 44,
+      "mathContext": "Hypergraph, vertices, isKUniform, is3Uniform"
     },
     {
       "id": "linear",
       "title": "Linear Hypergraphs",
       "summary": "isLinear, is3UniformLinear definitions",
       "startLine": 45,
-      "endLine": 58
+      "endLine": 58,
+      "mathContext": "isLinear, is3UniformLinear definitions"
     },
     {
       "id": "independent",
       "title": "Independent Sets",
       "summary": "isIndependent, independenceNumber, exists_independent",
       "startLine": 59,
-      "endLine": 78
+      "endLine": 78,
+      "mathContext": "isIndependent, independenceNumber, exists_independent"
     },
     {
       "id": "extremal",
       "title": "The Extremal Function f(n)",
       "summary": "linearHypergraphs3, f definition, f_spec axiom",
       "startLine": 79,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "linearHypergraphs3, f definition, f_spec axiom"
     },
     {
       "id": "erdos-bounds",
       "title": "Erdős's Bounds",
       "summary": "erdos_lower_bound, erdos_upper_bound axioms, erdos_bounds theorem",
       "startLine": 97,
-      "endLine": 121
+      "endLine": 121,
+      "mathContext": "erdos_lower_bound, erdos_upper_bound axioms, erdos_bounds theorem"
     },
     {
       "id": "phelps-rodl",
       "title": "Phelps-Rödl Theorem (1986)",
       "summary": "asymptoticBound, phelps_rodl_lower/upper axioms, phelps_rodl theorem",
       "startLine": 122,
-      "endLine": 150
+      "endLine": 150,
+      "mathContext": "asymptoticBound, phelps_rodl_lower/upper axioms, phelps_rodl theorem"
     },
     {
       "id": "main-result",
       "title": "The Main Question Answered",
       "summary": "erdos_1024_question, erdos_1024_solved",
       "startLine": 151,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "erdos_1024_question, erdos_1024_solved"
     },
     {
       "id": "steiner",
       "title": "Steiner Triple Systems",
       "summary": "isSteinerTripleSystem, steiner_existence, sts_densest axiom",
       "startLine": 168,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "isSteinerTripleSystem, steiner_existence, sts_densest axiom"
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Lower Bound",
       "summary": "expectedIndependent, probabilistic_lower axiom",
       "startLine": 188,
-      "endLine": 202
+      "endLine": 202,
+      "mathContext": "expectedIndependent, probabilistic_lower axiom"
     },
     {
       "id": "comparison",
       "title": "Comparison of Bounds",
       "summary": "bound_comparison, log_factor_refinement axioms",
       "startLine": 214,
-      "endLine": 254
+      "endLine": 254,
+      "mathContext": "bound_comparison, log_factor_refinement axioms"
     }
   ],
   "conclusion": {

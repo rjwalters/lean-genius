@@ -85,63 +85,72 @@
       "title": "Part I: Van der Waerden Numbers",
       "startLine": 44,
       "endLine": 61,
-      "summary": "W(3,k) axiom, W_ge trivial lower bound, W_increasing monotonicity."
+      "summary": "W(3,k) axiom, W_ge trivial lower bound, W_increasing monotonicity.",
+      "mathContext": "W(3,k) axiom, W_ge trivial lower bound, W_increasing monotonicity."
     },
     {
       "id": "known-values",
       "title": "Part II: Known Small Values",
       "startLine": 62,
       "endLine": 75,
-      "summary": "Exact values W(3,3)=9 through W(3,7)=46."
+      "summary": "Exact values W(3,3)=9 through W(3,7)=46.",
+      "mathContext": "Exact values W(3,3)=9 through W(3,7)=46."
     },
     {
       "id": "graham-conjecture",
       "title": "Part III: Graham's Conjecture (Disproved)",
       "startLine": 76,
       "endLine": 91,
-      "summary": "graham_conjecture definition (W(3,k) ≤ Ck²) and graham_conjecture_false axiom."
+      "summary": "graham_conjecture definition (W(3,k) ≤ Ck²) and graham_conjecture_false axiom.",
+      "mathContext": "graham_conjecture definition (W(3,k) ≤ Ck²) and graham_conjecture_false axiom."
     },
     {
       "id": "lower-bounds",
       "title": "Part IV: Lower Bounds",
       "startLine": 92,
       "endLine": 121,
-      "summary": "green_lower_bound, hunter_lower_bound, W_superpolynomial axioms."
+      "summary": "green_lower_bound, hunter_lower_bound, W_superpolynomial axioms.",
+      "mathContext": "green_lower_bound, hunter_lower_bound, W_superpolynomial axioms."
     },
     {
       "id": "upper-bounds",
       "title": "Part V: Upper Bounds",
       "startLine": 122,
       "endLine": 143,
-      "summary": "schoen_upper_bound (exp(k^c)) and bloom_sisask_upper_bound (exp(C(log k)^9))."
+      "summary": "schoen_upper_bound (exp(k^c)) and bloom_sisask_upper_bound (exp(C(log k)^9)).",
+      "mathContext": "schoen_upper_bound (exp(k^c)) and bloom_sisask_upper_bound (exp(C(log k)^9))."
     },
     {
       "id": "three-ap",
       "title": "Part VI: Connection to 3-AP Free Sets",
       "startLine": 144,
       "endLine": 184,
-      "summary": "roth_density_connection, behrend_construction, kelley_meka_density axioms."
+      "summary": "roth_density_connection, behrend_construction, kelley_meka_density axioms.",
+      "mathContext": "roth_density_connection, behrend_construction, kelley_meka_density axioms."
     },
     {
       "id": "growth-rate",
       "title": "Part VII: The Growth Rate Question",
       "startLine": 185,
       "endLine": 210,
-      "summary": "exact_growth_conjecture definition, bounds_gap_width axiom."
+      "summary": "exact_growth_conjecture definition, bounds_gap_width axiom.",
+      "mathContext": "exact_growth_conjecture definition, bounds_gap_width axiom."
     },
     {
       "id": "related",
       "title": "Part VIII: Related Problems",
       "startLine": 211,
       "endLine": 232,
-      "summary": "szemeredi_theorem axiom, diagonal_growth axiom."
+      "summary": "szemeredi_theorem axiom, diagonal_growth axiom.",
+      "mathContext": "szemeredi_theorem axiom, diagonal_growth axiom."
     },
     {
       "id": "summary",
       "title": "Part IX: Summary",
       "startLine": 233,
       "endLine": 282,
-      "summary": "erdos_721_status, W_bounds_summary, erdos_721 theorems combining all results."
+      "summary": "erdos_721_status, W_bounds_summary, erdos_721 theorems combining all results.",
+      "mathContext": "erdos_721_status, W_bounds_summary, erdos_721 theorems combining all results."
     }
   ],
   "conclusion": {

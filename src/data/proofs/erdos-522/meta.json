@@ -76,70 +76,80 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 26,
-      "summary": "Problem statement, status, history, and references."
+      "summary": "Problem statement, status, history, and references.",
+      "mathContext": "Problem statement, status, history, and references."
     },
     {
       "id": "polynomial-types",
       "title": "Littlewood and Rademacher Polynomials",
       "startLine": 39,
       "endLine": 60,
-      "summary": "Definitions of polynomial classes with constrained coefficients."
+      "summary": "Definitions of polynomial classes with constrained coefficients.",
+      "mathContext": "Definitions of polynomial classes with constrained coefficients."
     },
     {
       "id": "unit-disk",
       "title": "Unit Disk and Circle",
       "startLine": 61,
       "endLine": 106,
-      "summary": "Definitions of unitDisk, unitCircle, and membership proofs."
+      "summary": "Definitions of unitDisk, unitCircle, and membership proofs.",
+      "mathContext": "Definitions of unitDisk, unitCircle, and membership proofs."
     },
     {
       "id": "kac-polynomials",
       "title": "Kac Polynomial Structure",
       "startLine": 107,
       "endLine": 135,
-      "summary": "Structure for random polynomial data with coefficient constraints."
+      "summary": "Structure for random polynomial data with coefficient constraints.",
+      "mathContext": "Structure for random polynomial data with coefficient constraints."
     },
     {
       "id": "root-counting",
       "title": "Root Counting",
       "startLine": 136,
       "endLine": 146,
-      "summary": "Axiomatized root counting function for the unit disk."
+      "summary": "Axiomatized root counting function for the unit disk.",
+      "mathContext": "Axiomatized root counting function for the unit disk."
     },
     {
       "id": "main-results",
       "title": "Main Results (Doc Comments)",
       "startLine": 147,
       "endLine": 188,
-      "summary": "Erdős-Offord theorem, Yakir's theorem, and the open almost sure convergence question (documented as comments; no trivial axioms)."
+      "summary": "Erdős-Offord theorem, Yakir's theorem, and the open almost sure convergence question (documented as comments; no trivial axioms).",
+      "mathContext": "Erdős-Offord theorem, Yakir's theorem, and the open almost sure convergence question (documented as comments; no trivial axioms)."
     },
     {
       "id": "heuristics",
       "title": "Heuristics and Geometric Polynomial",
       "startLine": 189,
       "endLine": 217,
-      "summary": "Why n/2? Symmetry argument. Geometric polynomial with all roots on unit circle."
+      "summary": "Why n/2? Symmetry argument. Geometric polynomial with all roots on unit circle.",
+      "mathContext": "Why n/2? Symmetry argument. Geometric polynomial with all roots on unit circle."
     },
     {
       "id": "connections",
       "title": "Connections to Other Areas",
       "startLine": 218,
       "endLine": 240,
-      "summary": "Links to Salem numbers and Mahler measure (doc comments)."
+      "summary": "Links to Salem numbers and Mahler measure (doc comments).",
+      "mathContext": "Links to Salem numbers and Mahler measure (doc comments)."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 241,
       "endLine": 256,
-      "summary": "Proofs that z-1, z+1, z²+1 have roots on the unit circle."
+      "summary": "Proofs that z-1, z+1, z²+1 have roots on the unit circle.",
+      "mathContext": "Proofs that z-1, z+1, z²+1 have roots on the unit circle."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 257,
       "endLine": 281,
-      "summary": "unitCircle_summary theorem packaging verified facts."
+      "summary": "unitCircle_summary theorem packaging verified facts.",
+      "mathContext": "unitCircle_summary theorem packaging verified facts."
     }
   ],
   "conclusion": {

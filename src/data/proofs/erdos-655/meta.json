@@ -47,56 +47,64 @@
       "title": "Euclidean Geometry Imports",
       "startLine": 18,
       "endLine": 22,
-      "summary": "Imports InnerProductSpace for EuclideanSpace ℝ (Fin 2), Finset for combinatorial counting, and tactics."
+      "summary": "Imports InnerProductSpace for EuclideanSpace ℝ (Fin 2), Finset for combinatorial counting, and tactics.",
+      "mathContext": "Imports InnerProductSpace for EuclideanSpace ℝ (Fin 2), Finset for combinatorial counting, and tactics."
     },
     {
       "id": "point-config",
       "title": "Point Configurations",
       "startLine": 23,
       "endLine": 27,
-      "summary": "Defines PointConfig as Fin n → EuclideanSpace ℝ (Fin 2) for n labeled points in the plane."
+      "summary": "Defines PointConfig as Fin n → EuclideanSpace ℝ (Fin 2) for n labeled points in the plane.",
+      "mathContext": "Defines PointConfig as Fin n → EuclideanSpace ℝ (Fin 2) for n labeled points in the plane."
     },
     {
       "id": "distances",
       "title": "Distance Definitions",
       "startLine": 28,
       "endLine": 36,
-      "summary": "Defines distinctDistances (global pairwise) and distinctDistancesFrom (per-point) as Finsets of positive reals."
+      "summary": "Defines distinctDistances (global pairwise) and distinctDistancesFrom (per-point) as Finsets of positive reals.",
+      "mathContext": "Defines distinctDistances (global pairwise) and distinctDistancesFrom (per-point) as Finsets of positive reals."
     },
     {
       "id": "concyclicity",
       "title": "Concyclicity Restrictions",
       "startLine": 37,
       "endLine": 52,
-      "summary": "Defines NoConcyclicTriple (≤ 2 equidistant from any center point) and NoFourConcyclic (no 4 on any circle)."
+      "summary": "Defines NoConcyclicTriple (≤ 2 equidistant from any center point) and NoFourConcyclic (no 4 on any circle).",
+      "mathContext": "Defines NoConcyclicTriple (≤ 2 equidistant from any center point) and NoFourConcyclic (no 4 on any circle)."
     },
     {
       "id": "counting-lemma",
       "title": "Counting Lemma (Fully Proved)",
       "startLine": 53,
       "endLine": 102,
-      "summary": "Proves n-1 ≤ 2·|distinctDistancesFrom P i| via fiber decomposition and NoConcyclicTriple. The core 40-line proof."
+      "summary": "Proves n-1 ≤ 2·|distinctDistancesFrom P i| via fiber decomposition and NoConcyclicTriple. The core 40-line proof.",
+      "mathContext": "Proves n-1 ≤ 2·|distinctDistancesFrom P i| via fiber decomposition and NoConcyclicTriple. The core 40-line proof."
     },
     {
       "id": "basic-bound",
       "title": "Basic (n-1)/2 Bound (Fully Proved)",
       "startLine": 103,
       "endLine": 112,
-      "summary": "Derives (n-1)/2 ≤ |distinctDistancesFrom P i| as a corollary of the counting lemma via omega."
+      "summary": "Derives (n-1)/2 ≤ |distinctDistancesFrom P i| as a corollary of the counting lemma via omega.",
+      "mathContext": "Derives (n-1)/2 ≤ |distinctDistancesFrom P i| as a corollary of the counting lemma via omega."
     },
     {
       "id": "counterexample",
       "title": "Hunter's Counterexample",
       "startLine": 113,
       "endLine": 123,
-      "summary": "Axiomatizes Hunter's result: equally-spaced circle points disprove the original conjecture."
+      "summary": "Axiomatizes Hunter's result: equally-spaced circle points disprove the original conjecture.",
+      "mathContext": "Axiomatizes Hunter's result: equally-spaced circle points disprove the original conjecture."
     },
     {
       "id": "corrected-conjecture",
       "title": "Corrected Erdős–Pach Conjecture",
       "startLine": 124,
       "endLine": 133,
-      "summary": "States the corrected Problem 655 with NoFourConcyclic: ≥ (1+c)n/2 distinct distances."
+      "summary": "States the corrected Problem 655 with NoFourConcyclic: ≥ (1+c)n/2 distinct distances.",
+      "mathContext": "States the corrected Problem 655 with NoFourConcyclic: ≥ (1+c)n/2 distinct distances."
     }
   ],
   "conclusion": {

@@ -84,56 +84,64 @@
       "title": "Orthogonal Projection Coefficient",
       "startLine": 29,
       "endLine": 65,
-      "summary": "Defines projCoeff(u,v) = inner(u,v)/norm(v)^2 and proj(u,v) = projCoeff(u,v) * v. Proves the residual u - proj(u,v) is orthogonal to v and derives the Pythagorean norm decomposition."
+      "summary": "Defines projCoeff(u,v) = inner(u,v)/norm(v)^2 and proj(u,v) = projCoeff(u,v) * v. Proves the residual u - proj(u,v) is orthogonal to v and derives the Pythagorean norm decomposition.",
+      "mathContext": "Defines projCoeff(u,v) = inner(u,v)/norm(v)^2 and proj(u,v) = projCoeff(u,v) * v. Proves the residual u - proj(u,v) is orthogonal to v and derives the Pythagorean norm decomposition."
     },
     {
       "id": "exact-constant",
       "title": "Exact Proportionality Constant",
       "startLine": 70,
       "endLine": 112,
-      "summary": "Proves cs_equality_exact_constant (forward), cs_equality_of_exact_constant (reverse), and the full biconditional cs_equality_iff_exact_constant: |inner u v| = norm u * norm v iff u = projCoeff(u,v) * v."
+      "summary": "Proves cs_equality_exact_constant (forward), cs_equality_of_exact_constant (reverse), and the full biconditional cs_equality_iff_exact_constant: |inner u v| = norm u * norm v iff u = projCoeff(u,v) * v.",
+      "mathContext": "Proves cs_equality_exact_constant (forward), cs_equality_of_exact_constant (reverse), and the full biconditional cs_equality_iff_exact_constant: |inner u v| = norm u * norm v iff u = projCoeff(u,v) * "
     },
     {
       "id": "coefficient-properties",
       "title": "Projection Coefficient Properties",
       "startLine": 117,
       "endLine": 143,
-      "summary": "Proves projCoeff(cv, v) = c, projCoeff(v, v) = 1, additivity projCoeff(u1+u2, v) = projCoeff(u1,v) + projCoeff(u2,v), and scaling projCoeff(cu, v) = c * projCoeff(u,v)."
+      "summary": "Proves projCoeff(cv, v) = c, projCoeff(v, v) = 1, additivity projCoeff(u1+u2, v) = projCoeff(u1,v) + projCoeff(u2,v), and scaling projCoeff(cu, v) = c * projCoeff(u,v).",
+      "mathContext": "Proves projCoeff(cv, v) = c, projCoeff(v, v) = 1, additivity projCoeff(u1+u2, v) = projCoeff(u1,v) + projCoeff(u2,v), and scaling projCoeff(cu, v) = c * projCoeff(u,v)."
     },
     {
       "id": "residual",
       "title": "CS Equality and Residual Norm",
       "startLine": 148,
       "endLine": 154,
-      "summary": "Proves CS equality holds iff the residual u - proj(u,v) = 0, connecting the equality condition to orthogonal projection theory."
+      "summary": "Proves CS equality holds iff the residual u - proj(u,v) = 0, connecting the equality condition to orthogonal projection theory.",
+      "mathContext": "Proves CS equality holds iff the residual u - proj(u,v) = 0, connecting the equality condition to orthogonal projection theory."
     },
     {
       "id": "geometric",
       "title": "Geometric Interpretation",
       "startLine": 159,
       "endLine": 186,
-      "summary": "Proves projCoeff > 0 when inner(u,v) > 0 (same direction) and projCoeff < 0 when inner(u,v) < 0 (opposite direction). Derives the direction-specific equality conditions."
+      "summary": "Proves projCoeff > 0 when inner(u,v) > 0 (same direction) and projCoeff < 0 when inner(u,v) < 0 (opposite direction). Derives the direction-specific equality conditions.",
+      "mathContext": "Proves projCoeff > 0 when inner(u,v) > 0 (same direction) and projCoeff < 0 when inner(u,v) < 0 (opposite direction). Derives the direction-specific equality conditions."
     },
     {
       "id": "bridge",
       "title": "Bridge to Existential Result",
       "startLine": 191,
       "endLine": 197,
-      "summary": "Shows that any scalar c satisfying u = cv must equal projCoeff(u,v), connecting to the existential characterization in the base CauchySchwarz.lean formalization."
+      "summary": "Shows that any scalar c satisfying u = cv must equal projCoeff(u,v), connecting to the existential characterization in the base CauchySchwarz.lean formalization.",
+      "mathContext": "Shows that any scalar c satisfying u = cv must equal projCoeff(u,v), connecting to the existential characterization in the base CauchySchwarz.lean formalization."
     },
     {
       "id": "finite-sum",
       "title": "Finite Sum Exact Constant",
       "startLine": 203,
       "endLine": 268,
-      "summary": "Proves the finite sum version via the Lagrange identity: if (sum a_i*b_i)^2 = (sum a_i^2)(sum b_i^2), then a_i = (sum a_j*b_j / sum b_j^2) * b_i for all i. Uses cross-term vanishing from the double-sum expansion."
+      "summary": "Proves the finite sum version via the Lagrange identity: if (sum a_i*b_i)^2 = (sum a_i^2)(sum b_i^2), then a_i = (sum a_j*b_j / sum b_j^2) * b_i for all i. Uses cross-term vanishing from the double-sum expansion.",
+      "mathContext": "Proves the finite sum version via the Lagrange identity: if (sum a_i*b_i)^2 = (sum a_i^2)(sum b_i^2), then a_i = (sum a_j*b_j / sum b_j^2) * b_i for all i. Uses cross-term vanishing from the double-su"
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 273,
       "endLine": 288,
-      "summary": "Concrete verifications: projCoeff(3v, v) = 3 and projCoeff(v, v) = 1, with type-check confirmations of the main theorems."
+      "summary": "Concrete verifications: projCoeff(3v, v) = 3 and projCoeff(v, v) = 1, with type-check confirmations of the main theorems.",
+      "mathContext": "Concrete verifications: projCoeff(3v, v) = 3 and projCoeff(v, v) = 1, with type-check confirmations of the main theorems."
     }
   ],
   "crossReferences": [

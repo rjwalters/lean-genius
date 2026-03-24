@@ -78,63 +78,72 @@
       "title": "Imports and Namespace",
       "summary": "Imports `Nat.Prime`, `Finset`, `Primorial`, and `Real.Basic`. Opens `Erdos425` namespace for all definitions and theorems.",
       "startLine": 31,
-      "endLine": 38
+      "endLine": 38,
+      "mathContext": "Imports `Nat.Prime`, `Finset`, `Primorial`, and `Real.Basic`. Opens `Erdos425` namespace for all definitions and theorems."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines `SubsetOfInterval n`, `OrderedPair A`, `ProductSet A = \\{ab : a,b \\in A,\\, a < b\\}$`, `IsMultiplicativeSidon` (product injectivity), and `IsMultiplicativeSidon'` (cardinality characterization).",
       "startLine": 39,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "Defines `SubsetOfInterval n`, `OrderedPair A`, `ProductSet A = \\{ab : a,b \\in A,\\, a < b\\}$`, `IsMultiplicativeSidon` (product injectivity), and `IsMultiplicativeSidon'` (cardinality characterization)"
     },
     {
       "id": "function-f",
       "title": "The Function F(n)",
       "summary": "$F(n) = \\max |A|$ over multiplicative Sidon $A \\subseteq \\{1,\\ldots,n\\}$ via `Finset.sup'`. Axioms: `primes_are_sidon` and $F(n) \\ge \\pi(n)$.",
       "startLine": 77,
-      "endLine": 109
+      "endLine": 109,
+      "mathContext": "$F(n) = \\max |A|$ over multiplicative Sidon $A \\subseteq \\{1,\\ldots,n\\}$ via `Finset.sup'`. Axioms: `primes_are_sidon` and $F(n) \\ge \\pi(n)$."
     },
     {
       "id": "erdos-bounds",
       "title": "Erdős's Bounds",
       "summary": "Axiom: $\\exists\\, 0 < c_1 \\le c_2$ with $\\pi(n) + c_1 n^{3/4}(\\log n)^{-3/2} \\le F(n) \\le \\pi(n) + c_2 n^{3/4}(\\log n)^{-3/2}$. `MainQuestion`: does a single constant $c$ exist?",
       "startLine": 110,
-      "endLine": 135
+      "endLine": 135,
+      "mathContext": "Axiom: $\\exists\\, 0 < c_1 \\le c_2$ with $\\pi(n) + c_1 n^{3/4}(\\log n)^{-3/2} \\le F(n) \\le \\pi(n) + c_2 n^{3/4}(\\log n)^{-3/2}$. `MainQuestion`: does a single constant $c$ exist?"
     },
     {
       "id": "r-product",
       "title": "r-Product Generalization",
       "summary": "`IsRMultiplicativeSidon A r` for $r$-fold product distinctness. `RProductConjecture`: $|A| \\le \\pi(n) + O(n^{(r+1)/(2r)})$ with exponent $3/4, 2/3, \\ldots \\to 1/2$.",
       "startLine": 136,
-      "endLine": 162
+      "endLine": 162,
+      "mathContext": "`IsRMultiplicativeSidon A r` for $r$-fold product distinctness. `RProductConjecture`: $|A| \\le \\pi(n) + O(n^{(r+1)/(2r)})$ with exponent $3/4, 2/3, \\ldots \\to 1/2$."
     },
     {
       "id": "real-version",
       "title": "The Real Number Version",
       "summary": "`RealMultSidon`: $|ab - cd| \\ge 1$. Erdős conjectured $o(x)$---**DISPROVED** by Alexander via Sidon-to-exponential lifting giving $|A| \\ge cx$.",
       "startLine": 163,
-      "endLine": 199
+      "endLine": 199,
+      "mathContext": "`RealMultSidon`: $|ab - cd| \\ge 1$. Erdős conjectured $o(x)$---**DISPROVED** by Alexander via Sidon-to-exponential lifting giving $|A| \\ge cx$."
     },
     {
       "id": "sidon-connection",
       "title": "Connection to Additive Sidon Sets",
       "summary": "`IsSidonSet` (additive $B_2$), `log_conversion` ($\\log(ab) = \\log a + \\log b$), `sidon_bound` ($|S| \\le \\sqrt{n} + n^{1/4}$). Links to Erdős Problem #30.",
       "startLine": 200,
-      "endLine": 233
+      "endLine": 233,
+      "mathContext": "`IsSidonSet` (additive $B_2$), `log_conversion` ($\\log(ab) = \\log a + \\log b$), `sidon_bound` ($|S| \\le \\sqrt{n} + n^{1/4}$). Links to Erdős Problem #30."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Verified counterexample: $\\{1,2,3,6\\}$ is not multiplicative Sidon since $1 \\cdot 6 = 2 \\cdot 3 = 6$. Proved with `norm_num` and `simp`.",
       "startLine": 234,
-      "endLine": 248
+      "endLine": 248,
+      "mathContext": "Verified counterexample: $\\{1,2,3,6\\}$ is not multiplicative Sidon since $1 \\cdot 6 = 2 \\cdot 3 = 6$. Proved with `norm_num` and `simp`."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "`erdos_425_summary`: packages Erdős bounds $\\wedge$ Alexander construction. Proved by `⟨erdos_bounds, alexander_construction⟩`.",
       "startLine": 249,
-      "endLine": 287
+      "endLine": 287,
+      "mathContext": "`erdos_425_summary`: packages Erdős bounds $\\wedge$ Alexander construction. Proved by `⟨erdos_bounds, alexander_construction⟩`."
     }
   ],
   "conclusion": {

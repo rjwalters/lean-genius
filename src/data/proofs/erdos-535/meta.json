@@ -50,70 +50,80 @@
       "title": "Imports and Setup",
       "summary": "Imports from Mathlib: $\\gcd$, $\\text{Finset}$, $\\text{sSup}$, logarithms, and natural number arithmetic",
       "startLine": 1,
-      "endLine": 42
+      "endLine": 42,
+      "mathContext": "Imports from Mathlib: $\\gcd$, $\\text{Finset}$, $\\text{sSup}$, logarithms, and natural number arithmetic"
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines `HasNoRGCDSubset` (no $r$ elements with equal pairwise $\\gcd$), `HasNoGCDClique`, and the extremal function $f_r(N) = \\sup\\{|A| : A \\subseteq [N],\\, \\text{gcd-clique-free}\\}$",
       "startLine": 43,
-      "endLine": 65
+      "endLine": 65,
+      "mathContext": "Defines `HasNoRGCDSubset` (no $r$ elements with equal pairwise $\\gcd$), `HasNoGCDClique`, and the extremal function $f_r(N) = \\sup\\{|A| : A \\subseteq [N],\\, \\text{gcd-clique-free}\\}$"
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "summary": "Establishes $f_r(N) \\leq N$ (universe bound) and the requirement $r \\geq 3$ for non-degeneracy",
       "startLine": 66,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "Establishes $f_r(N) \\leq N$ (universe bound) and the requirement $r \\geq 3$ for non-degeneracy"
     },
     {
       "id": "erdos-upper",
       "title": "Erdős's Original Upper Bound (1964)",
       "summary": "Axiom: $f_r(N) \\leq N^{3/4+o(1)}$ via double-counting arguments on divisor pairs",
       "startLine": 78,
-      "endLine": 92
+      "endLine": 92,
+      "mathContext": "Axiom: $f_r(N) \\leq N^{3/4+o(1)}$ via double-counting arguments on divisor pairs"
     },
     {
       "id": "abbott-hanson",
       "title": "Abbott-Hanson Upper Bound (1970)",
       "summary": "Axiom: $f_r(N) \\leq N^{1/2+o(1)}$ via auxiliary graph construction and Turán's theorem; `exponent_improvement` verifies $3/4 > 1/2$",
       "startLine": 93,
-      "endLine": 111
+      "endLine": 111,
+      "mathContext": "Axiom: $f_r(N) \\leq N^{1/2+o(1)}$ via auxiliary graph construction and Turán's theorem; `exponent_improvement` verifies $3/4 > 1/2$"
     },
     {
       "id": "lower-bound",
       "title": "Erdős's Lower Bound",
       "summary": "Axiom: $f_3(N) > N^{c/\\log \\log N}$ using smooth numbers with $\\leq k$ prime factors for $k \\sim \\log \\log N$",
       "startLine": 112,
-      "endLine": 127
+      "endLine": 127,
+      "mathContext": "Axiom: $f_3(N) > N^{c/\\log \\log N}$ using smooth numbers with $\\leq k$ prime factors for $k \\sim \\log \\log N$"
     },
     {
       "id": "gap-conjecture",
       "title": "The Gap and Erdős's Conjecture",
       "summary": "Defines `ErdosConjecture`: $f_r(N) \\leq N^{c/\\log \\log N}$, asserting the lower bound is tight and the polynomial upper bound can be dramatically improved",
       "startLine": 128,
-      "endLine": 146
+      "endLine": 146,
+      "mathContext": "Defines `ErdosConjecture`: $f_r(N) \\leq N^{c/\\log \\log N}$, asserting the lower bound is tight and the polynomial upper bound can be dramatically improved"
     },
     {
       "id": "sunflower",
       "title": "Connection to Sunflower Problem",
       "summary": "Maps $\\gcd$-cliques to sunflowers via prime factorizations; `StrongerSunflowerLemma` would imply `ErdosConjecture` by removing the factorial from the Erdős-Rado bound",
       "startLine": 147,
-      "endLine": 163
+      "endLine": 163,
+      "mathContext": "Maps $\\gcd$-cliques to sunflowers via prime factorizations; `StrongerSunflowerLemma` would imply `ErdosConjecture` by removing the factorial from the Erdős-Rado bound"
     },
     {
       "id": "techniques",
       "title": "Proof Techniques",
       "summary": "Discussion of methods: double counting, Turán graph embedding, smooth number constructions, and the prime factor multiset encoding",
       "startLine": 164,
-      "endLine": 192
+      "endLine": 192,
+      "mathContext": "Discussion of methods: double counting, Turán graph embedding, smooth number constructions, and the prime factor multiset encoding"
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Conjunction `erdos535_summary`: combines Abbott-Hanson upper bound $N^{1/2+o(1)}$ and Erdős lower bound $N^{c/\\log \\log N}$ into a single statement of current knowledge",
       "startLine": 193,
-      "endLine": 220
+      "endLine": 220,
+      "mathContext": "Conjunction `erdos535_summary`: combines Abbott-Hanson upper bound $N^{1/2+o(1)}$ and Erdős lower bound $N^{c/\\log \\log N}$ into a single statement of current knowledge"
     }
   ],
   "conclusion": {

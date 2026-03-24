@@ -86,49 +86,56 @@
       "title": "Multiplicative Functions",
       "summary": "IsMultiplicative, IsPlusMinusOne, MultPlusMinusOne definitions",
       "startLine": 46,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "IsMultiplicative, IsPlusMinusOne, MultPlusMinusOne definitions"
     },
     {
       "id": "mean-values",
       "title": "Mean Values",
       "summary": "partialSum, meanValue, HasConvergentMean definitions",
       "startLine": 62,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "partialSum, meanValue, HasConvergentMean definitions"
     },
     {
       "id": "classical-examples",
       "title": "Classical Examples",
       "summary": "liouville, mobiusSign definitions and properties",
       "startLine": 78,
-      "endLine": 102
+      "endLine": 102,
+      "mathContext": "liouville, mobiusSign definitions and properties"
     },
     {
       "id": "completely-multiplicative",
       "title": "Completely Multiplicative Case",
       "summary": "IsCompletelyMultiplicative, determination by prime values",
       "startLine": 103,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "IsCompletelyMultiplicative, determination by prime values"
     },
     {
       "id": "wintner-counterexample",
       "title": "Wintner-Renyi Counterexample",
       "summary": "powerI function, why {-1,1} restriction is needed",
       "startLine": 124,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "powerI function, why {-1,1} restriction is needed"
     },
     {
       "id": "wirsing-theorem",
       "title": "Wirsing's Theorem",
       "summary": "Main convergence theorem, erdos_239",
       "startLine": 146,
-      "endLine": 166
+      "endLine": 166,
+      "mathContext": "Main convergence theorem, erdos_239"
     },
     {
       "id": "halasz-generalization",
       "title": "Halasz Generalization",
       "summary": "meanLimit, halasz_characterization",
       "startLine": 167,
-      "endLine": 189
+      "endLine": 189,
+      "mathContext": "meanLimit, halasz_characterization"
     },
     {
       "id": "constant-function",
@@ -142,21 +149,24 @@
       "title": "Liouville Function Mean",
       "summary": "liouville_mean_zero, connection to PNT",
       "startLine": 218,
-      "endLine": 238
+      "endLine": 238,
+      "mathContext": "liouville_mean_zero, connection to PNT"
     },
     {
       "id": "prime-distribution",
       "title": "Connection to Prime Distribution",
       "summary": "liouville_pnt_equivalence, Riemann Hypothesis",
       "startLine": 239,
-      "endLine": 257
+      "endLine": 257,
+      "mathContext": "liouville_pnt_equivalence, Riemann Hypothesis"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_239_summary, erdos_239_answer",
       "startLine": 258,
-      "endLine": 295
+      "endLine": 295,
+      "mathContext": "erdos_239_summary, erdos_239_answer"
     }
   ],
   "conclusion": {

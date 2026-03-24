@@ -76,63 +76,72 @@
       "title": "Imports and Documentation",
       "startLine": 1,
       "endLine": 52,
-      "summary": "Imports Mathlib.Analysis.Calculus.Taylor and Mathlib.Tactic. Extensive docstring covers the Taylor expansion formula, Lagrange and Cauchy remainder forms, Wiedijk #35 designation, and historical notes on Taylor, Gregory, Maclaurin, and Lagrange."
+      "summary": "Imports Mathlib.Analysis.Calculus.Taylor and Mathlib.Tactic. Extensive docstring covers the Taylor expansion formula, Lagrange and Cauchy remainder forms, Wiedijk #35 designation, and historical notes on Taylor, Gregory, Maclaurin, and Lagrange.",
+      "mathContext": "Imports Mathlib.Analysis.Calculus.Taylor and Mathlib.Tactic. Extensive docstring covers the Taylor expansion formula, Lagrange and Cauchy remainder forms, Wiedijk #35 designation, and historical notes"
     },
     {
       "id": "setup",
       "title": "Namespace and Setup",
       "startLine": 53,
       "endLine": 57,
-      "summary": "Opens Set, Filter, Topology, and Finset namespaces. Opens the Nat scope for natural number notation."
+      "summary": "Opens Set, Filter, Topology, and Finset namespaces. Opens the Nat scope for natural number notation.",
+      "mathContext": "Opens Set, Filter, Topology, and Finset namespaces. Opens the Nat scope for natural number notation."
     },
     {
       "id": "taylor-poly",
       "title": "Taylor Polynomial Definition",
       "startLine": 58,
       "endLine": 71,
-      "summary": "Defines taylorPoly as a wrapper around Mathlib's taylorWithinEval, computing the degree-n Taylor polynomial of f at x₀ evaluated at x on the interval [x₀, x]."
+      "summary": "Defines taylorPoly as a wrapper around Mathlib's taylorWithinEval, computing the degree-n Taylor polynomial of f at x₀ evaluated at x on the interval [x₀, x].",
+      "mathContext": "Defines taylorPoly as a wrapper around Mathlib's taylorWithinEval, computing the degree-n Taylor polynomial of f at x₀ evaluated at x on the interval [x₀, x]."
     },
     {
       "id": "lagrange",
       "title": "Lagrange Remainder Form",
       "startLine": 72,
       "endLine": 97,
-      "summary": "The main theorem: for (n+1)-times continuously differentiable f, there exists ξ ∈ (x₀, x) such that the remainder equals f^(n+1)(ξ) · (x-x₀)^(n+1) / (n+1)!. Proof establishes differentiability hypotheses for taylor_mean_remainder_lagrange."
+      "summary": "The main theorem: for (n+1)-times continuously differentiable f, there exists ξ ∈ (x₀, x) such that the remainder equals f^(n+1)(ξ) · (x-x₀)^(n+1) / (n+1)!. Proof establishes differentiability hypotheses for taylor_mean_remainder_lagrange.",
+      "mathContext": "The main theorem: for (n+1)-times continuously differentiable f, there exists ξ ∈ (x₀, x) such that the remainder equals f^(n+1)(ξ) · (x-x₀)^(n+1) / (n+1)!. Proof establishes differentiability hypothe"
     },
     {
       "id": "cauchy",
       "title": "Cauchy Remainder Form",
       "startLine": 98,
       "endLine": 122,
-      "summary": "Alternative remainder form: f^(n+1)(ξ) · (x-ξ)^n · (x-x₀) / n! for some ξ ∈ (x₀, x). Uses the same differentiability setup with taylor_mean_remainder_cauchy."
+      "summary": "Alternative remainder form: f^(n+1)(ξ) · (x-ξ)^n · (x-x₀) / n! for some ξ ∈ (x₀, x). Uses the same differentiability setup with taylor_mean_remainder_cauchy.",
+      "mathContext": "Alternative remainder form: f^(n+1)(ξ) · (x-ξ)^n · (x-x₀) / n! for some ξ ∈ (x₀, x). Uses the same differentiability setup with taylor_mean_remainder_cauchy."
     },
     {
       "id": "bounds",
       "title": "Remainder Bounds",
       "startLine": 123,
       "endLine": 139,
-      "summary": "If the (n+1)-th derivative is bounded by C on [a,b], the remainder satisfies |f(x) - T_n(x)| ≤ C · (x-a)^(n+1) / n!. Direct application of taylor_mean_remainder_bound."
+      "summary": "If the (n+1)-th derivative is bounded by C on [a,b], the remainder satisfies |f(x) - T_n(x)| ≤ C · (x-a)^(n+1) / n!. Direct application of taylor_mean_remainder_bound.",
+      "mathContext": "If the (n+1)-th derivative is bounded by C on [a,b], the remainder satisfies |f(x) - T_n(x)| ≤ C · (x-a)^(n+1) / n!. Direct application of taylor_mean_remainder_bound."
     },
     {
       "id": "first-order",
       "title": "First-Order Taylor (Mean Value Theorem)",
       "startLine": 140,
       "endLine": 160,
-      "summary": "The n=0 specialization recovers the Mean Value Theorem: f(x) - f(x₀) = f'(ξ)(x - x₀). Proof simplifies factorial and power terms via simp."
+      "summary": "The n=0 specialization recovers the Mean Value Theorem: f(x) - f(x₀) = f'(ξ)(x - x₀). Proof simplifies factorial and power terms via simp.",
+      "mathContext": "The n=0 specialization recovers the Mean Value Theorem: f(x) - f(x₀) = f'(ξ)(x - x₀). Proof simplifies factorial and power terms via simp."
     },
     {
       "id": "second-order",
       "title": "Second-Order Taylor (Quadratic Approximation)",
       "startLine": 161,
       "endLine": 179,
-      "summary": "The n=1 specialization gives the quadratic approximation used in optimization: remainder equals f''(ξ)(x-x₀)²/2."
+      "summary": "The n=1 specialization gives the quadratic approximation used in optimization: remainder equals f''(ξ)(x-x₀)²/2.",
+      "mathContext": "The n=1 specialization gives the quadratic approximation used in optimization: remainder equals f''(ξ)(x-x₀)²/2."
     },
     {
       "id": "existence-summary",
       "title": "Existence of Bounds and Verification",
       "startLine": 180,
       "endLine": 202,
-      "summary": "Proves that a uniform remainder bound always exists on compact intervals (via compactness), and verifies all main theorems with #check."
+      "summary": "Proves that a uniform remainder bound always exists on compact intervals (via compactness), and verifies all main theorems with #check.",
+      "mathContext": "Proves that a uniform remainder bound always exists on compact intervals (via compactness), and verifies all main theorems with #check."
     }
   ],
   "conclusion": {

@@ -84,63 +84,72 @@
       "title": "Problem Statement and Overview",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Module documentation explaining Vandermonde's identity, its combinatorial and algebraic proofs, the sum-of-squares corollary, and Mathlib imports for Nat.choose infrastructure."
+      "summary": "Module documentation explaining Vandermonde's identity, its combinatorial and algebraic proofs, the sum-of-squares corollary, and Mathlib imports for Nat.choose infrastructure.",
+      "mathContext": "Module documentation explaining Vandermonde's identity, its combinatorial and algebraic proofs, the sum-of-squares corollary, and Mathlib imports for Nat.choose infrastructure."
     },
     {
       "id": "main-identity",
       "title": "Part I: The Vandermonde Identity",
       "startLine": 37,
       "endLine": 57,
-      "summary": "Core theorem vandermonde_identity: C(m+n,r) = Σ_{k=0}^{r} C(m,k)*C(n,r-k), proved in two lines via Nat.add_choose_eq and sum_antidiagonal_eq_sum_range_succ."
+      "summary": "Core theorem vandermonde_identity: C(m+n,r) = Σ_{k=0}^{r} C(m,k)*C(n,r-k), proved in two lines via Nat.add_choose_eq and sum_antidiagonal_eq_sum_range_succ.",
+      "mathContext": "Core theorem vandermonde_identity: C(m+n,r) = Σ_{k=0}^{r} C(m,k)*C(n,r-k), proved in two lines via Nat.add_choose_eq and sum_antidiagonal_eq_sum_range_succ."
     },
     {
       "id": "verifications",
       "title": "Part II: Concrete Verifications",
       "startLine": 58,
       "endLine": 74,
-      "summary": "Three native_decide examples verifying Vandermonde numerically: C(8,4)=70 via 5+3 split, C(10,3)=120 via 6+4 split, and C(8,4)=70=Σ C(4,k)² for sum-of-squares."
+      "summary": "Three native_decide examples verifying Vandermonde numerically: C(8,4)=70 via 5+3 split, C(10,3)=120 via 6+4 split, and C(8,4)=70=Σ C(4,k)² for sum-of-squares.",
+      "mathContext": "Three native_decide examples verifying Vandermonde numerically: C(8,4)=70 via 5+3 split, C(10,3)=120 via 6+4 split, and C(8,4)=70=Σ C(4,k)² for sum-of-squares."
     },
     {
       "id": "special-cases",
       "title": "Part III: Special Cases",
       "startLine": 75,
       "endLine": 101,
-      "summary": "Boundary cases: vandermonde_r_zero (C(m+n,0)=1), vandermonde_n_zero (n=0 degenerate case), vandermonde_r_full (full selection sum=1), vandermonde_r_one (C(m+n,1)=m+n)."
+      "summary": "Boundary cases: vandermonde_r_zero (C(m+n,0)=1), vandermonde_n_zero (n=0 degenerate case), vandermonde_r_full (full selection sum=1), vandermonde_r_one (C(m+n,1)=m+n).",
+      "mathContext": "Boundary cases: vandermonde_r_zero (C(m+n,0)=1), vandermonde_n_zero (n=0 degenerate case), vandermonde_r_full (full selection sum=1), vandermonde_r_one (C(m+n,1)=m+n)."
     },
     {
       "id": "symmetry",
       "title": "Part IV: Symmetry",
       "startLine": 102,
       "endLine": 116,
-      "summary": "vandermonde_symmetric: Σ C(m,k)*C(n,r-k) = Σ C(n,k)*C(m,r-k), proved via both sides equalling C(m+n,r)=C(n+m,r) by add_comm."
+      "summary": "vandermonde_symmetric: Σ C(m,k)*C(n,r-k) = Σ C(n,k)*C(m,r-k), proved via both sides equalling C(m+n,r)=C(n+m,r) by add_comm.",
+      "mathContext": "vandermonde_symmetric: Σ C(m,k)*C(n,r-k) = Σ C(n,k)*C(m,r-k), proved via both sides equalling C(m+n,r)=C(n+m,r) by add_comm."
     },
     {
       "id": "sum-of-squares",
       "title": "Part V: Sum-of-Squares Corollary",
       "startLine": 117,
       "endLine": 140,
-      "summary": "vandermonde_sum_squares: C(2n,n) = Σ_{k=0}^{n} C(n,k)², the central result connecting the central binomial coefficient to Pascal's triangle row sums of squares. Uses Nat.choose_symm."
+      "summary": "vandermonde_sum_squares: C(2n,n) = Σ_{k=0}^{n} C(n,k)², the central result connecting the central binomial coefficient to Pascal's triangle row sums of squares. Uses Nat.choose_symm.",
+      "mathContext": "vandermonde_sum_squares: C(2n,n) = Σ_{k=0}^{n} C(n,k)², the central result connecting the central binomial coefficient to Pascal's triangle row sums of squares. Uses Nat.choose_symm."
     },
     {
       "id": "monotonicity",
       "title": "Part VI: Monotonicity and Summand Bounds",
       "startLine": 141,
       "endLine": 159,
-      "summary": "vandermonde_mono: C(n,r) ≤ C(m+n,r) via choose_le_choose. vandermonde_summand_le: each summand C(m,k)*C(n,r-k) ≤ C(m+n,r) via Finset.single_le_sum."
+      "summary": "vandermonde_mono: C(n,r) ≤ C(m+n,r) via choose_le_choose. vandermonde_summand_le: each summand C(m,k)*C(n,r-k) ≤ C(m+n,r) via Finset.single_le_sum.",
+      "mathContext": "vandermonde_mono: C(n,r) ≤ C(m+n,r) via choose_le_choose. vandermonde_summand_le: each summand C(m,k)*C(n,r-k) ≤ C(m+n,r) via Finset.single_le_sum."
     },
     {
       "id": "pascal",
       "title": "Part VII: Pascal's Rule Connection",
       "startLine": 160,
       "endLine": 175,
-      "summary": "vandermonde_pascal: Pascal's rule C(n+1,k+1) = C(n,k) + C(n,k+1) is the m=1 case of Vandermonde, proved via Nat.choose_succ_succ."
+      "summary": "vandermonde_pascal: Pascal's rule C(n+1,k+1) = C(n,k) + C(n,k+1) is the m=1 case of Vandermonde, proved via Nat.choose_succ_succ.",
+      "mathContext": "vandermonde_pascal: Pascal's rule C(n+1,k+1) = C(n,k) + C(n,k+1) is the m=1 case of Vandermonde, proved via Nat.choose_succ_succ."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
       "startLine": 176,
       "endLine": 195,
-      "summary": "vandermonde_key_results: conjunction packaging the four main results — identity, symmetry, sum-of-squares, monotonicity — all proved with 0 sorries and 0 axioms."
+      "summary": "vandermonde_key_results: conjunction packaging the four main results — identity, symmetry, sum-of-squares, monotonicity — all proved with 0 sorries and 0 axioms.",
+      "mathContext": "vandermonde_key_results: conjunction packaging the four main results — identity, symmetry, sum-of-squares, monotonicity — all proved with 0 sorries and 0 axioms."
     }
   ],
   "conclusion": {

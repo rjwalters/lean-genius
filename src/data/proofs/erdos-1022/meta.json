@@ -50,77 +50,88 @@
       "title": "Problem Documentation and Imports",
       "summary": "Documents Erdős Problem #1022 on property B for sparse set families. Imports Mathlib's `Finset`, `Fintype`, and `Real` modules for finite combinatorics and real-valued thresholds.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Documents Erdős Problem #1022 on property B for sparse set families. Imports Mathlib's `Finset`, `Fintype`, and `Real` modules for finite combinatorics and real-valued thresholds."
     },
     {
       "id": "set-families",
       "title": "Set Family Infrastructure",
       "summary": "Defines `SetFamily α` as `Finset (Finset α)`, the `groundSet` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `minSetSize` returning $\\min_{A \\in \\mathcal{F}} |A|$. These are the basic objects parametrizing the hypergraph coloring problem.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `SetFamily α` as `Finset (Finset α)`, the `groundSet` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `minSetSize` returning $\\min_{A \\in \\mathcal{F}} |A|$. These are the basic objects parametr"
     },
     {
       "id": "property-b",
       "title": "Property B (2-Colorability)",
       "summary": "Defines `hasPropertyB F` via existence of a `TwoColoring` $c: \\alpha \\to \\text{Bool}$ such that every set $A \\in \\mathcal{F}$ with $|A| \\ge 2$ contains both a true-colored and false-colored element. Named after Bernstein (1908). Proves `propertyB_iff_chromatic2`.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `hasPropertyB F` via existence of a `TwoColoring` $c: \\alpha \\to \\text{Bool}$ such that every set $A \\in \\mathcal{F}$ with $|A| \\ge 2$ contains both a true-colored and false-colored element. N"
     },
     {
       "id": "chromatic",
       "title": "Chromatic Number of a Set Family",
       "summary": "Generalizes to $k$ colors: `isKColorable F k` requires a $k$-coloring making every set non-monochromatic. `chromaticNumber F` is the minimum such $k$ via `Nat.find`. Connects property B to $\\chi(\\mathcal{F}) \\le 2$.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Generalizes to $k$ colors: `isKColorable F k` requires a $k$-coloring making every set non-monochromatic. `chromaticNumber F` is the minimum such $k$ via `Nat.find`. Connects property B to $\\chi(\\math"
     },
     {
       "id": "sparseness",
       "title": "Sparseness Condition",
       "summary": "Defines `subsetCount F X` counting $|\\{A \\in \\mathcal{F} : A \\subseteq X\\}|$, `isSparse F c` requiring this count $< c \\cdot |X|$ for all finite $X$, and `hasMinSize F t` requiring all sets to have $|A| \\ge t$. The sparseness condition is the key structural hypothesis.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `subsetCount F X` counting $|\\{A \\in \\mathcal{F} : A \\subseteq X\\}|$, `isSparse F c` requiring this count $< c \\cdot |X|$ for all finite $X$, and `hasMinSize F t` requiring all sets to have $|"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture: $c_t \\to \\infty$",
       "summary": "Defines `ThresholdFunction` and `tendsToInfinity`. States `erdos_1022_conjecture`: existence of $c: \\mathbb{N} \\to \\mathbb{R}$ with $c_t \\to \\infty$ such that $t$-sparse families with minimum size $t$ have property B. The divergence condition is the heart of the problem.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `ThresholdFunction` and `tendsToInfinity`. States `erdos_1022_conjecture`: existence of $c: \\mathbb{N} \\to \\mathbb{R}$ with $c_t \\to \\infty$ such that $t$-sparse families with minimum size $t$"
     },
     {
       "id": "lovasz",
       "title": "Lovász's Theorem (1968): $c_2 = 1$",
       "summary": "Axiomatizes `lovasz_theorem`: for $t = 2$, if every set $X$ has fewer than $|X|$ family members as subsets, the family has property B. Derives `t2_case_solved` packaging this as an existential witness ($c = 1 > 0$). The only solved case of the conjecture.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Axiomatizes `lovasz_theorem`: for $t = 2$, if every set $X$ has fewer than $|X|$ family members as subsets, the family has property B. Derives `t2_case_solved` packaging this as an existential witness"
     },
     {
       "id": "hypergraph",
       "title": "Hypergraph Formulation",
       "summary": "Defines `Hypergraph α` as an alias for `SetFamily α` and `hypergraphChromaticNumber` as `chromaticNumber`. Restates the conjecture as `erdos_1022_hypergraph` ($\\chi(H) \\le 2$). Proves `formulations_equiv` showing logical equivalence of the two viewpoints.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `Hypergraph α` as an alias for `SetFamily α` and `hypergraphChromaticNumber` as `chromaticNumber`. Restates the conjecture as `erdos_1022_hypergraph` ($\\chi(H) \\le 2$). Proves `formulations_eq"
     },
     {
       "id": "necessary",
       "title": "Necessary Conditions and Subset Density",
       "summary": "If $c_t$ exists and $c_t \\to \\infty$, it must be eventually positive (`threshold_positive`) and grow without bound (`threshold_grows`). Defines `subsetDensity` $= |\\{A \\subseteq X\\}| / |X|$ and proves `sparse_iff_low_density`: sparseness $\\iff$ low density for all nonempty $X$.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "If $c_t$ exists and $c_t \\to \\infty$, it must be eventually positive (`threshold_positive`) and grow without bound (`threshold_grows`). Defines `subsetDensity` $= |\\{A \\subseteq X\\}| / |X|$ and proves"
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Intuition: Random Colorings",
       "summary": "Defines `expectedMonochromatic F` $= \\sum_{A \\in \\mathcal{F}} 2^{1-|A|}$: the expected number of monochromatic sets under a random 2-coloring. Axiomatizes the first-moment method: if $< 1$, property B holds. Proves `sparse_bounds_expected`: sparseness controls this expectation.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `expectedMonochromatic F` $= \\sum_{A \\in \\mathcal{F}} 2^{1-|A|}$: the expected number of monochromatic sets under a random 2-coloring. Axiomatizes the first-moment method: if $< 1$, property B"
     },
     {
       "id": "cover-free",
       "title": "Cover-Free Families",
       "summary": "Defines `isCoverFree F r`: no set in $\\mathcal{F}$ is contained in the union of $r$ others. Proves `coverFree_implies_sparse`: $r$-cover-freeness implies $(r+1)$-sparseness. Connects to combinatorial group testing and superimposed codes.",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Defines `isCoverFree F r`: no set in $\\mathcal{F}$ is contained in the union of $r$ others. Proves `coverFree_implies_sparse`: $r$-cover-freeness implies $(r+1)$-sparseness. Connects to combinatorial "
     }
   ],
   "conclusion": {

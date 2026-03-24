@@ -101,56 +101,64 @@
       "title": "Ramsey Number Definitions",
       "startLine": 36,
       "endLine": 52,
-      "summary": "Defines $R(s,t)$ as $\\inf\\{N : \\forall c : \\text{Sym2}(\\text{Fin}\\,N) \\to \\text{Bool},\\, \\exists$ red $K_s$ or blue $K_t\\}$. Uses `Sym2` for unordered edges and `Finset (Fin N)` for cliques. Introduces notation `R(s, t)`."
+      "summary": "Defines $R(s,t)$ as $\\inf\\{N : \\forall c : \\text{Sym2}(\\text{Fin}\\,N) \\to \\text{Bool},\\, \\exists$ red $K_s$ or blue $K_t\\}$. Uses `Sym2` for unordered edges and `Finset (Fin N)` for cliques. Introduces notation `R(s, t)`.",
+      "mathContext": "Defines $R(s,t)$ as $\\inf\\{N : \\forall c : \\text{Sym2}(\\text{Fin}\\,N) \\to \\text{Bool},\\, \\exists$ red $K_s$ or blue $K_t\\}$. Uses `Sym2` for unordered edges and `Finset (Fin N)` for cliques. Introduce"
     },
     {
       "id": "section-2",
       "title": "Basic Properties",
       "startLine": 53,
       "endLine": 123,
-      "summary": "Three verified results: (1) `ramsey_symmetric` proves $R(s,t) = R(t,s)$ via color complement `c \\mapsto \\neg c$, (2) `ramsey_one_left` proves $R(1,t) = 1$ by singleton witness, (3) `ramsey_two_left` proves $R(2,t) = t$ via pigeonhole-style case analysis on edge colors."
+      "summary": "Three verified results: (1) `ramsey_symmetric` proves $R(s,t) = R(t,s)$ via color complement `c \\mapsto \\neg c$, (2) `ramsey_one_left` proves $R(1,t) = 1$ by singleton witness, (3) `ramsey_two_left` proves $R(2,t) = t$ via pigeonhole-style case analysis on edge colors.",
+      "mathContext": "Three verified results: (1) `ramsey_symmetric` proves $R(s,t) = R(t,s)$ via color complement `c \\mapsto \\neg c$, (2) `ramsey_one_left` proves $R(1,t) = 1$ by singleton witness, (3) `ramsey_two_left` p"
     },
     {
       "id": "section-3",
       "title": "Known Exact Values",
       "startLine": 124,
       "endLine": 155,
-      "summary": "Axiomatizes $R(3,3) = 6$ (monochromatic triangle in $K_6$), $R(4,4) = 18$, $R(4,5) = 25$, and the tight bounds $R(3,k) = \\Theta(k^2/\\log k)$ from Kim (1995) and Shearer (1983)."
+      "summary": "Axiomatizes $R(3,3) = 6$ (monochromatic triangle in $K_6$), $R(4,4) = 18$, $R(4,5) = 25$, and the tight bounds $R(3,k) = \\Theta(k^2/\\log k)$ from Kim (1995) and Shearer (1983).",
+      "mathContext": "Axiomatizes $R(3,3) = 6$ (monochromatic triangle in $K_6$), $R(4,4) = 18$, $R(4,5) = 25$, and the tight bounds $R(3,k) = \\Theta(k^2/\\log k)$ from Kim (1995) and Shearer (1983)."
     },
     {
       "id": "section-4",
       "title": "Historical Lower Bounds",
       "startLine": 156,
       "endLine": 167,
-      "summary": "Axiomatizes Spencer's 1977 bound $R(4,k) \\geq c(k \\log k)^{5/2}$ from probabilistic dependent random choice. Best lower bound for 46 years but suboptimal by factor $k^{1/2}$."
+      "summary": "Axiomatizes Spencer's 1977 bound $R(4,k) \\geq c(k \\log k)^{5/2}$ from probabilistic dependent random choice. Best lower bound for 46 years but suboptimal by factor $k^{1/2}$.",
+      "mathContext": "Axiomatizes Spencer's 1977 bound $R(4,k) \\geq c(k \\log k)^{5/2}$ from probabilistic dependent random choice. Best lower bound for 46 years but suboptimal by factor $k^{1/2}$."
     },
     {
       "id": "section-5",
       "title": "AKS Upper Bound",
       "startLine": 170,
       "endLine": 181,
-      "summary": "Axiomatizes the Ajtai-Komlós-Szemerédi 1980 upper bound $R(4,k) \\leq Ck^3/(\\log k)^2$ from greedy coloring. Established the cubic benchmark for $R(4,k)$."
+      "summary": "Axiomatizes the Ajtai-Komlós-Szemerédi 1980 upper bound $R(4,k) \\leq Ck^3/(\\log k)^2$ from greedy coloring. Established the cubic benchmark for $R(4,k)$.",
+      "mathContext": "Axiomatizes the Ajtai-Komlós-Szemerédi 1980 upper bound $R(4,k) \\leq Ck^3/(\\log k)^2$ from greedy coloring. Established the cubic benchmark for $R(4,k)$."
     },
     {
       "id": "section-6",
       "title": "The Solution: Mattheus-Verstraete 2023",
       "startLine": 184,
       "endLine": 195,
-      "summary": "Axiomatizes the breakthrough $R(4,k) \\geq ck^3/(\\log k)^4$ using algebraic constructions from finite geometry (polar spaces over $\\mathbb{F}_q$). Solved Erdős #166, earned \\$250 prize."
+      "summary": "Axiomatizes the breakthrough $R(4,k) \\geq ck^3/(\\log k)^4$ using algebraic constructions from finite geometry (polar spaces over $\\mathbb{F}_q$). Solved Erdős #166, earned \\$250 prize.",
+      "mathContext": "Axiomatizes the breakthrough $R(4,k) \\geq ck^3/(\\log k)^4$ using algebraic constructions from finite geometry (polar spaces over $\\mathbb{F}_q$). Solved Erdős #166, earned \\$250 prize."
     },
     {
       "id": "section-7",
       "title": "Formal Statement and Resolution",
       "startLine": 198,
       "endLine": 233,
-      "summary": "`Erdos166Statement` defines the conjecture as $\\exists c, A > 0$ with cubic lower bound. `erdos_166_solved` proves it by instantiating $A = 4$ from Mattheus-Verstraete. `current_bounds` packages the sandwich inequality $ck^3/(\\log k)^4 \\leq R(4,k) \\leq Ck^3/(\\log k)^2$."
+      "summary": "`Erdos166Statement` defines the conjecture as $\\exists c, A > 0$ with cubic lower bound. `erdos_166_solved` proves it by instantiating $A = 4$ from Mattheus-Verstraete. `current_bounds` packages the sandwich inequality $ck^3/(\\log k)^4 \\leq R(4,k) \\leq Ck^3/(\\log k)^2$.",
+      "mathContext": "`Erdos166Statement` defines the conjecture as $\\exists c, A > 0$ with cubic lower bound. `erdos_166_solved` proves it by instantiating $A = 4$ from Mattheus-Verstraete. `current_bounds` packages the s"
     },
     {
       "id": "section-8",
       "title": "Summary and Logarithmic Gap",
       "startLine": 234,
       "endLine": 285,
-      "summary": "`erdos_166_status` confirms resolution. `logarithmic_gap` formalizes the remaining open question: $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ with $2 \\leq \\alpha \\leq 4$. Determining the exact $\\alpha$ is the natural successor problem."
+      "summary": "`erdos_166_status` confirms resolution. `logarithmic_gap` formalizes the remaining open question: $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ with $2 \\leq \\alpha \\leq 4$. Determining the exact $\\alpha$ is the natural successor problem.",
+      "mathContext": "`erdos_166_status` confirms resolution. `logarithmic_gap` formalizes the remaining open question: $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ with $2 \\leq \\alpha \\leq 4$. Determining the exact $\\alpha$ is "
     }
   ],
   "conclusion": {

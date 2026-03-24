@@ -85,70 +85,80 @@
       "title": "Independent Sets in Graphs",
       "summary": "IsIndependentSet, indepCount, independencePolynomial definitions",
       "startLine": 31,
-      "endLine": 47
+      "endLine": 47,
+      "mathContext": "IsIndependentSet, indepCount, independencePolynomial definitions"
     },
     {
       "id": "unimodality",
       "title": "Unimodality",
       "summary": "IsUnimodal, indepSequence, HasUnimodalIndepSequence definitions",
       "startLine": 48,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "IsUnimodal, indepSequence, HasUnimodalIndepSequence definitions"
     },
     {
       "id": "trees-forests",
       "title": "Trees and Forests",
       "summary": "IsAcyclic, IsTree, IsForest definitions; tree_is_forest theorem; tree_edge_count axiom",
       "startLine": 62,
-      "endLine": 82
+      "endLine": 82,
+      "mathContext": "IsAcyclic, IsTree, IsForest definitions; tree_is_forest theorem; tree_edge_count axiom"
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "summary": "tree_unimodal and forest_unimodal axioms; erdos_993_main proved theorem",
       "startLine": 83,
-      "endLine": 107
+      "endLine": 107,
+      "mathContext": "tree_unimodal and forest_unimodal axioms; erdos_993_main proved theorem"
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples for General Graphs",
       "summary": "general_graph_not_unimodal axiom",
       "startLine": 108,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "general_graph_not_unimodal axiom"
     },
     {
       "id": "schwenk",
       "title": "Schwenk's Matching Theorem",
       "summary": "IsMatching, matchingCount definitions; schwenk_matching_unimodal axiom",
       "startLine": 115,
-      "endLine": 130
+      "endLine": 130,
+      "mathContext": "IsMatching, matchingCount definitions; schwenk_matching_unimodal axiom"
     },
     {
       "id": "proof-technique",
       "title": "Proof Technique: Real-Rootedness",
       "summary": "tree_indep_poly_real_roots axiom",
       "startLine": 131,
-      "endLine": 138
+      "endLine": 138,
+      "mathContext": "tree_indep_poly_real_roots axiom"
     },
     {
       "id": "log-concavity",
       "title": "Log-Concavity",
       "summary": "IsLogConcave definition, log_concave_implies_unimodal, tree_log_concave_conjecture",
       "startLine": 139,
-      "endLine": 153
+      "endLine": 153,
+      "mathContext": "IsLogConcave definition, log_concave_implies_unimodal, tree_log_concave_conjecture"
     },
     {
       "id": "independence-number",
       "title": "Independence Number",
       "summary": "independenceNumber, no_large_indep_sets, peak_at_most_alpha",
       "startLine": 154,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "independenceNumber, no_large_indep_sets, peak_at_most_alpha"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_993_summary theorem combining all three key results",
       "startLine": 170,
-      "endLine": 187
+      "endLine": 187,
+      "mathContext": "erdos_993_summary theorem combining all three key results"
     }
   ],
   "conclusion": {

@@ -90,7 +90,8 @@
       "startLine": 30,
       "endLine": 50,
       "summary": "Defines IntegerSequence structure and convergence condition.",
-      "description": "An IntegerSequence is strictly increasing with all terms > 1. The convergence condition ∑(1/aᵢ) < ∞ ensures the Dirichlet series converges."
+      "description": "An IntegerSequence is strictly increasing with all terms > 1. The convergence condition ∑(1/aᵢ) < ∞ ensures the Dirichlet series converges.",
+      "mathContext": "Defines IntegerSequence structure and convergence condition."
     },
     {
       "id": "dirichlet-sum",
@@ -98,7 +99,8 @@
       "startLine": 51,
       "endLine": 75,
       "summary": "Defines complex power a^(1+it) and the generalized Dirichlet sum.",
-      "description": "The key object is 1 + ∑ₖ 1/aₖ^(1+it), where a^(1+it) = a · e^(it·log(a)) involves oscillating complex exponentials."
+      "description": "The key object is 1 + ∑ₖ 1/aₖ^(1+it), where a^(1+it) = a · e^(it·log(a)) involves oscillating complex exponentials.",
+      "mathContext": "Defines complex power a^(1+it) and the generalized Dirichlet sum."
     },
     {
       "id": "conjecture",
@@ -106,7 +108,8 @@
       "startLine": 76,
       "endLine": 96,
       "summary": "States the original conjecture and the finite sequence variant.",
-      "description": "The conjecture asks if the sum is nonzero for all t. The finite case remains open after Yip's work."
+      "description": "The conjecture asks if the sum is nonzero for all t. The finite case remains open after Yip's work.",
+      "mathContext": "States the original conjecture and the finite sequence variant."
     },
     {
       "id": "simplest-case",
@@ -114,7 +117,8 @@
       "startLine": 97,
       "endLine": 117,
       "summary": "The simplest case Erdős-Ingham couldn't resolve, connected to Four Exponentials.",
-      "description": "Whether sum235(t) = 0 for some t is related to transcendence questions in number theory."
+      "description": "Whether sum235(t) = 0 for some t is related to transcendence questions in number theory.",
+      "mathContext": "The simplest case Erdős-Ingham couldn't resolve, connected to Four Exponentials."
     },
     {
       "id": "tauberian",
@@ -122,7 +126,8 @@
       "startLine": 118,
       "endLine": 132,
       "summary": "The connection to Tauberian theorems that motivated the problem.",
-      "description": "Erdős-Ingham proved the no-zeros condition is equivalent to certain asymptotic implications for functional equations."
+      "description": "Erdős-Ingham proved the no-zeros condition is equivalent to certain asymptotic implications for functional equations.",
+      "mathContext": "The connection to Tauberian theorems that motivated the problem."
     },
     {
       "id": "yip-counterexample",
@@ -130,7 +135,8 @@
       "startLine": 133,
       "endLine": 167,
       "summary": "Yip's theorem disproving the conjecture and the main result.",
-      "description": "For any t ≠ 0, there exists a sequence where the sum equals zero. This proves ¬erdosInghamConjecture."
+      "description": "For any t ≠ 0, there exists a sequence where the sum equals zero. This proves ¬erdosInghamConjecture.",
+      "mathContext": "Yip's theorem disproving the conjecture and the main result."
     },
     {
       "id": "open-questions",
@@ -138,7 +144,8 @@
       "startLine": 168,
       "endLine": 189,
       "summary": "The finite sequence case and structure of counterexamples.",
-      "description": "Whether the conjecture holds for finite sequences remains open. Yip's counterexamples depend on t."
+      "description": "Whether the conjecture holds for finite sequences remains open. Yip's counterexamples depend on t.",
+      "mathContext": "The finite sequence case and structure of counterexamples."
     },
     {
       "id": "properties",
@@ -146,7 +153,8 @@
       "startLine": 190,
       "endLine": 233,
       "summary": "Special case t = 0, oscillatory behavior, and concrete examples.",
-      "description": "At t = 0, the sum is real and positive. Includes geometricSequence example {2^n} with proven convergence."
+      "description": "At t = 0, the sum is real and positive. Includes geometricSequence example {2^n} with proven convergence.",
+      "mathContext": "Special case t = 0, oscillatory behavior, and concrete examples."
     },
     {
       "id": "summary",
@@ -154,7 +162,8 @@
       "startLine": 234,
       "endLine": 254,
       "summary": "Main results: conjecture disproved, finite case open.",
-      "description": "The 60-year-old conjecture was disproved in 2025. Key questions about finite sequences remain."
+      "description": "The 60-year-old conjecture was disproved in 2025. Key questions about finite sequences remain.",
+      "mathContext": "Main results: conjecture disproved, finite case open."
     }
   ],
   "conclusion": {

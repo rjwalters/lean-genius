@@ -77,63 +77,72 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib modules for $\\mathbb{N}$, $\\mathbb{Z}$, `Fin k`, `SimpleGraph`, and `Finset` operations. Opens the `Erdos439` namespace.",
       "startLine": 26,
-      "endLine": 35
+      "endLine": 35,
+      "mathContext": "Imports Mathlib modules for $\\mathbb{N}$, $\\mathbb{Z}$, `Fin k`, `SimpleGraph`, and `Finset` operations. Opens the `Erdos439` namespace."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines `FiniteColoring k` as $\\mathbb{Z} \\to \\mathrm{Fin}\\, k$, `IsPerfectSquare` as $\\exists n,\\; m = n^2$, `SumIsSquare` as $\\exists n,\\; x + y = n^2$, and `HasMonochromaticSquarePair` encoding the partition regularity condition $\\exists x \\neq y,\\; c(x) = c(y) \\wedge x + y \\text{ is a square}$.",
       "startLine": 36,
-      "endLine": 64
+      "endLine": 64,
+      "mathContext": "Defines `FiniteColoring k` as $\\mathbb{Z} \\to \\mathrm{Fin}\\, k$, `IsPerfectSquare` as $\\exists n,\\; m = n^2$, `SumIsSquare` as $\\exists n,\\; x + y = n^2$, and `HasMonochromaticSquarePair` encoding the"
     },
     {
       "id": "square-graph",
       "title": "The Square Graph",
       "summary": "Constructs `squareGraph : SimpleGraph ℕ` with adjacency $m \\sim n \\iff m \\neq n \\wedge m + n$ is a perfect square. Proves symmetry via `add_comm` and looplessness via `Ne.irrefl`. The infinite chromatic number of this graph is equivalent to the problem statement.",
       "startLine": 65,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "Constructs `squareGraph : SimpleGraph ℕ` with adjacency $m \\sim n \\iff m \\neq n \\wedge m + n$ is a perfect square. Proves symmetry via `add_comm` and looplessness via `Ne.irrefl`. The infinite chromat"
     },
     {
       "id": "ess-1989",
       "title": "ESS Partial Results (1989)",
       "summary": "Axiomatizes the Erdős-Sárközy-Sós results: `ess_two_colors` for 2-colorings and `ess_three_colors` for 3-colorings. These were proved using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$ and represent the state of the art for 17 years.",
       "startLine": 80,
-      "endLine": 95
+      "endLine": 95,
+      "mathContext": "Axiomatizes the Erdős-Sárközy-Sós results: `ess_two_colors` for 2-colorings and `ess_three_colors` for 3-colorings. These were proved using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$ and represent t"
     },
     {
       "id": "main-theorem",
       "title": "Khalfalah-Szemerédi Theorem (2006)",
       "summary": "Axiomatizes the main result `khalfalah_szemeredi (k : ℕ) (hk : k ≥ 1)` proving that every finite coloring admits monochromatic square-sum pairs. This resolves Problem #439 completely, using the regularity lemma and distribution of squares in arithmetic progressions.",
       "startLine": 96,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "Axiomatizes the main result `khalfalah_szemeredi (k : ℕ) (hk : k ≥ 1)` proving that every finite coloring admits monochromatic square-sum pairs. This resolves Problem #439 completely, using the regula"
     },
     {
       "id": "polynomial-generalization",
       "title": "Polynomial Generalization",
       "summary": "Defines `PolyIsEvenSomewhere f` ($\\exists z,\\; 2 \\mid f(z)$) and `HasMonochromaticPolyPair c f`. Axiomatizes `khalfalah_szemeredi_general`: for any non-constant polynomial satisfying the evenness condition, monochromatic $f$-pairs exist. The evenness condition is necessary since odd $f$ allows parity-based avoidance.",
       "startLine": 111,
-      "endLine": 136
+      "endLine": 136,
+      "mathContext": "Defines `PolyIsEvenSomewhere f` ($\\exists z,\\; 2 \\mid f(z)$) and `HasMonochromaticPolyPair c f`. Axiomatizes `khalfalah_szemeredi_general`: for any non-constant polynomial satisfying the evenness cond"
     },
     {
       "id": "kth-powers",
       "title": "k-th Power Generalization",
       "summary": "Defines `IsKthPower m k`, `SumIsKthPower x y k`, and `HasMonochromaticKthPowerPair`. Axiomatizes `kth_power_result` for $k \\geq 2$: any finite coloring has monochromatic pairs with $k$-th power sums. Follows from the polynomial case since $f(z) = z^k$ satisfies $2 \\mid f(0)$.",
       "startLine": 137,
-      "endLine": 168
+      "endLine": 168,
+      "mathContext": "Defines `IsKthPower m k`, `SumIsKthPower x y k`, and `HasMonochromaticKthPowerPair`. Axiomatizes `kth_power_result` for $k \\geq 2$: any finite coloring has monochromatic pairs with $k$-th power sums. "
     },
     {
       "id": "graph-perspective",
       "title": "Graph Perspective: Power Graphs",
       "summary": "Defines `kthPowerGraph k : SimpleGraph ℕ` and proves `square_is_second_power : squareGraph = kthPowerGraph 2` via extensionality and `pow_two`. This formally unifies the square and power perspectives into a single graph-theoretic framework.",
       "startLine": 169,
-      "endLine": 193
+      "endLine": 193,
+      "mathContext": "Defines `kthPowerGraph k : SimpleGraph ℕ` and proves `square_is_second_power : squareGraph = kthPowerGraph 2` via extensionality and `pow_two`. This formally unifies the square and power perspectives "
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Proves `erdos_439_summary` packaging three results: (1) Khalfalah-Szemerédi for all $k \\geq 1$, (2) ESS for 2 colors, (3) ESS for 3 colors. Uses `refine ⟨?_, ess_two_colors, ess_three_colors⟩` to split the conjunction.",
       "startLine": 194,
-      "endLine": 225
+      "endLine": 225,
+      "mathContext": "Proves `erdos_439_summary` packaging three results: (1) Khalfalah-Szemerédi for all $k \\geq 1$, (2) ESS for 2 colors, (3) ESS for 3 colors. Uses `refine ⟨?_, ess_two_colors, ess_three_colors⟩` to spli"
     }
   ],
   "conclusion": {

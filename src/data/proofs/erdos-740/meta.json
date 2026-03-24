@@ -53,70 +53,80 @@
       "title": "Part I: Graph Coloring and Chromatic Number",
       "summary": "Defines cardinal-valued chromatic number and k-colorability for infinite graphs, extending the classical finite notion to arbitrary cardinals using Mathlib's Cardinal type.",
       "startLine": 37,
-      "endLine": 57
+      "endLine": 57,
+      "mathContext": "Defines cardinal-valued chromatic number and k-colorability for infinite graphs, extending the classical finite notion to arbitrary cardinals using Mathlib's Cardinal type."
     },
     {
       "id": "cycles",
       "title": "Part II: Cycles in Graphs",
       "summary": "Formalizes the Cycle structure with closure, adjacency, and distinctness conditions. Defines odd cycles, triangles, and the key predicates containsOddCycleLeq and noOddCyclesLeq that express the cycle-avoidance property central to Problem #740.",
       "startLine": 58,
-      "endLine": 106
+      "endLine": 106,
+      "mathContext": "Formalizes the Cycle structure with closure, adjacency, and distinctness conditions. Defines odd cycles, triangles, and the key predicates containsOddCycleLeq and noOddCyclesLeq that express the cycle"
     },
     {
       "id": "subgraphs",
       "title": "Part III: Subgraphs",
       "summary": "Defines induced subgraphs via Mathlib's SimpleGraph.induce and the existential predicate hasSubgraphWith, packaging the twin requirements of chromatic number preservation and cycle avoidance.",
       "startLine": 107,
-      "endLine": 126
+      "endLine": 126,
+      "mathContext": "Defines induced subgraphs via Mathlib's SimpleGraph.induce and the existential predicate hasSubgraphWith, packaging the twin requirements of chromatic number preservation and cycle avoidance."
     },
     {
       "id": "conjecture",
       "title": "Part IV: The Erdős-Hajnal Conjecture",
       "summary": "States the main conjecture erdosHajnalConjecture for general infinite cardinals and r, plus the triangle-free specialization (r = 3) and the countable case (𝔪 = ℵ₀). This is the formal statement of Erdős Problem #740.",
       "startLine": 127,
-      "endLine": 159
+      "endLine": 159,
+      "mathContext": "States the main conjecture erdosHajnalConjecture for general infinite cardinals and r, plus the triangle-free specialization (r = 3) and the countable case (𝔪 = ℵ₀). This is the formal statement of Er"
     },
     {
       "id": "rodl",
       "title": "Part V: Rödl's Theorem",
       "summary": "Declares Rödl's theorem as an axiom: countableCase 3 holds. Derives the trivial corollary countable_triangle_free. This represents the strongest known positive result for Problem #740.",
       "startLine": 160,
-      "endLine": 176
+      "endLine": 176,
+      "mathContext": "Declares Rödl's theorem as an axiom: countableCase 3 holds. Derives the trivial corollary countable_triangle_free. This represents the strongest known positive result for Problem #740."
     },
     {
       "id": "threshold",
       "title": "Part VI: The General Function f_r(𝔪)",
       "summary": "Formalizes the threshold function question: does there exist a cardinal f such that χ(G) ≥ f guarantees the desired subgraph? Records that this quantitative refinement remains open for most parameters.",
       "startLine": 177,
-      "endLine": 201
+      "endLine": 201,
+      "mathContext": "Formalizes the threshold function question: does there exist a cardinal f such that χ(G) ≥ f guarantees the desired subgraph? Records that this quantitative refinement remains open for most parameters"
     },
     {
       "id": "girth",
       "title": "Part VII: Girth Variant",
       "summary": "Defines girth, the stronger girthConjecture (avoiding ALL short cycles), and proves girth_implies_odd: the girth conjecture implies the odd cycle conjecture. This is one of the few fully verified results in the file.",
       "startLine": 202,
-      "endLine": 247
+      "endLine": 247,
+      "mathContext": "Defines girth, the stronger girthConjecture (avoiding ALL short cycles), and proves girth_implies_odd: the girth conjecture implies the odd cycle conjecture. This is one of the few fully verified resu"
     },
     {
       "id": "finite",
       "title": "Part VIII: Finite Analogs",
       "summary": "Defines the finite version of the problem and axiomatizes partial progress for the r = 3 case, connecting to results of Thomassen on finite graphs with high chromatic number.",
       "startLine": 248,
-      "endLine": 269
+      "endLine": 269,
+      "mathContext": "Defines the finite version of the problem and axiomatizes partial progress for the r = 3 case, connecting to results of Thomassen on finite graphs with high chromatic number."
     },
     {
       "id": "bipartite",
       "title": "Part IX: Bipartite Subgraphs",
       "summary": "Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite.",
       "startLine": 270,
-      "endLine": 297
+      "endLine": 297,
+      "mathContext": "Defines bipartite graphs (no odd cycles of any length) and proves no_infinite_bipartite: for 𝔪 > 2, no bipartite subgraph can have χ = 𝔪. This shows the parameter r in the conjecture must be finite."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
       "summary": "Combines all results into erdos_740_summary (a conjunction of Rödl's theorem, girth-implies-odd, and bipartite limitation). States erdos_740 as the main theorem and records the open question and erdosMostWanted conjecture.",
       "startLine": 298,
-      "endLine": 341
+      "endLine": 341,
+      "mathContext": "Combines all results into erdos_740_summary (a conjunction of Rödl's theorem, girth-implies-odd, and bipartite limitation). States erdos_740 as the main theorem and records the open question and erdos"
     }
   ],
   "conclusion": {

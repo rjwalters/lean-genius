@@ -77,84 +77,96 @@
       "title": "Divisor Sum Sets",
       "startLine": 46,
       "endLine": 66,
-      "summary": "Defines DivisorSumSet t as the set of n where t can be written as a sum of distinct divisors, with a membership characterization proved by definitional unfolding (rfl)."
+      "summary": "Defines DivisorSumSet t as the set of n where t can be written as a sum of distinct divisors, with a membership characterization proved by definitional unfolding (rfl).",
+      "mathContext": "Defines DivisorSumSet t as the set of n where t can be written as a sum of distinct divisors, with a membership characterization proved by definitional unfolding (rfl)."
     },
     {
       "id": "density",
       "title": "Natural Density",
       "startLine": 67,
       "endLine": 81,
-      "summary": "Introduces the counting function A_t(N) and natural density via Filter.Tendsto, plus HasPositiveDensity as the conjunction of existence and strict positivity."
+      "summary": "Introduces the counting function A_t(N) and natural density via Filter.Tendsto, plus HasPositiveDensity as the conjunction of existence and strict positivity.",
+      "mathContext": "Introduces the counting function A_t(N) and natural density via Filter.Tendsto, plus HasPositiveDensity as the conjunction of existence and strict positivity."
     },
     {
       "id": "examples",
       "title": "Basic Examples",
       "startLine": 82,
       "endLine": 114,
-      "summary": "Establishes d₀ = 1 (empty sum works for all n), d₁ = 1 (1 divides every positive n), and d₂ = 1/2 (iff 2 | n). The t = 2 case has a sorry requiring subset analysis."
+      "summary": "Establishes d₀ = 1 (empty sum works for all n), d₁ = 1 (1 divides every positive n), and d₂ = 1/2 (iff 2 | n). The t = 2 case has a sorry requiring subset analysis.",
+      "mathContext": "Establishes d₀ = 1 (empty sum works for all n), d₁ = 1 (1 divides every positive n), and d₂ = 1/2 (iff 2 | n). The t = 2 case has a sorry requiring subset analysis."
     },
     {
       "id": "erdos-bounds",
       "title": "Erdős's Bounds (1970)",
       "startLine": 115,
       "endLine": 142,
-      "summary": "Three axioms encoding Erdős's 1970 results: density existence for all t, positivity for t > 0, and the log-power bounds (log t)^{-c₃} < dₜ < (log t)^{-c₄}. These are axiomatized because the proofs require deep analytic methods."
+      "summary": "Three axioms encoding Erdős's 1970 results: density existence for all t, positivity for t > 0, and the log-power bounds (log t)^{-c₃} < dₜ < (log t)^{-c₄}. These are axiomatized because the proofs require deep analytic methods.",
+      "mathContext": "Three axioms encoding Erdős's 1970 results: density existence for all t, positivity for t > 0, and the log-power bounds (log t)^{-c₃} < dₜ < (log t)^{-c₄}. These are axiomatized because the proofs req"
     },
     {
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 143,
       "endLine": 159,
-      "summary": "Formalizes Erdős Problem #859 as a Prop: existence of c₁, c₂ > 0 such that dₜ ~[atTop] c₁/(log t)^c₂, using Mathlib's asymptotic equivalence. Status: OPEN."
+      "summary": "Formalizes Erdős Problem #859 as a Prop: existence of c₁, c₂ > 0 such that dₜ ~[atTop] c₁/(log t)^c₂, using Mathlib's asymptotic equivalence. Status: OPEN.",
+      "mathContext": "Formalizes Erdős Problem #859 as a Prop: existence of c₁, c₂ > 0 such that dₜ ~[atTop] c₁/(log t)^c₂, using Mathlib's asymptotic equivalence. Status: OPEN."
     },
     {
       "id": "divisor-functions",
       "title": "The Divisor Function",
       "startLine": 160,
       "endLine": 175,
-      "summary": "Defines σ(n) = Σ_{d|n} d and τ(n) = #{d | n}, then proves the powerset of divisors(n) has cardinality 2^τ(n), bounding the number of possible subset sums."
+      "summary": "Defines σ(n) = Σ_{d|n} d and τ(n) = #{d | n}, then proves the powerset of divisors(n) has cardinality 2^τ(n), bounding the number of possible subset sums.",
+      "mathContext": "Defines σ(n) = Σ_{d|n} d and τ(n) = #{d | n}, then proves the powerset of divisors(n) has cardinality 2^τ(n), bounding the number of possible subset sums."
     },
     {
       "id": "multiplicative",
       "title": "Multiplicative Structure",
       "startLine": 176,
       "endLine": 190,
-      "summary": "Shows τ(mn) = τ(m)·τ(n) for coprime m, n (sorry), and characterizes divisors of prime powers p^a as the geometric set {1, p, ..., p^a} (sorry). These structural results underpin the density analysis."
+      "summary": "Shows τ(mn) = τ(m)·τ(n) for coprime m, n (sorry), and characterizes divisors of prime powers p^a as the geometric set {1, p, ..., p^a} (sorry). These structural results underpin the density analysis.",
+      "mathContext": "Shows τ(mn) = τ(m)·τ(n) for coprime m, n (sorry), and characterizes divisors of prime powers p^a as the geometric set {1, p, ..., p^a} (sorry). These structural results underpin the density analysis."
     },
     {
       "id": "comparisons",
       "title": "Density Comparisons",
       "startLine": 191,
       "endLine": 207,
-      "summary": "Proves dₜ < 1 for large t (sorry) and d_{2t} ≤ dₜ (sorry), establishing that density decreases as the target grows. Both require σ(n)-based arguments."
+      "summary": "Proves dₜ < 1 for large t (sorry) and d_{2t} ≤ dₜ (sorry), establishing that density decreases as the target grows. Both require σ(n)-based arguments.",
+      "mathContext": "Proves dₜ < 1 for large t (sorry) and d_{2t} ≤ dₜ (sorry), establishing that density decreases as the target grows. Both require σ(n)-based arguments."
     },
     {
       "id": "practical",
       "title": "Practical Numbers",
       "startLine": 208,
       "endLine": 224,
-      "summary": "Defines practical numbers (n where every k ≤ σ(n) is a divisor subset sum), gives examples (sorry), and axiomatizes Margenstern's 1991 result that practical numbers have positive density."
+      "summary": "Defines practical numbers (n where every k ≤ σ(n) is a divisor subset sum), gives examples (sorry), and axiomatizes Margenstern's 1991 result that practical numbers have positive density.",
+      "mathContext": "Defines practical numbers (n where every k ≤ σ(n) is a divisor subset sum), gives examples (sorry), and axiomatizes Margenstern's 1991 result that practical numbers have positive density."
     },
     {
       "id": "subset-sum",
       "title": "Subset Sum Problem",
       "startLine": 225,
       "endLine": 237,
-      "summary": "Introduces SubsetSumExists and proves the bridge theorem: n ∈ DivisorSumSet t ↔ SubsetSumExists(divisors(n), t), connecting the number-theoretic and combinatorial viewpoints."
+      "summary": "Introduces SubsetSumExists and proves the bridge theorem: n ∈ DivisorSumSet t ↔ SubsetSumExists(divisors(n), t), connecting the number-theoretic and combinatorial viewpoints.",
+      "mathContext": "Introduces SubsetSumExists and proves the bridge theorem: n ∈ DivisorSumSet t ↔ SubsetSumExists(divisors(n), t), connecting the number-theoretic and combinatorial viewpoints."
     },
     {
       "id": "sigma-growth",
       "title": "Growth of σ(n)",
       "startLine": 238,
       "endLine": 249,
-      "summary": "Axiomatizes two classical results: the average order Σ_{n≤N} σ(n) ~ (π²/12)N² (Dirichlet's hyperbola method), and the typical bound σ(n) < n·(log n)² for most n (Gronwall's theorem)."
+      "summary": "Axiomatizes two classical results: the average order Σ_{n≤N} σ(n) ~ (π²/12)N² (Dirichlet's hyperbola method), and the typical bound σ(n) < n·(log n)² for most n (Gronwall's theorem).",
+      "mathContext": "Axiomatizes two classical results: the average order Σ_{n≤N} σ(n) ~ (π²/12)N² (Dirichlet's hyperbola method), and the typical bound σ(n) < n·(log n)² for most n (Gronwall's theorem)."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 250,
       "endLine": 307,
-      "summary": "Combines all three Erdős axioms into a single summary theorem using refine and direct application, packaging the known results about dₜ in one statement."
+      "summary": "Combines all three Erdős axioms into a single summary theorem using refine and direct application, packaging the known results about dₜ in one statement.",
+      "mathContext": "Combines all three Erdős axioms into a single summary theorem using refine and direct application, packaging the known results about dₜ in one statement."
     }
   ],
   "conclusion": {

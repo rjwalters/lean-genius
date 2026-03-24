@@ -48,63 +48,72 @@
       "title": "Part 0: Imports",
       "startLine": 29,
       "endLine": 32,
-      "summary": "Imports `Mathlib.Tactic`, `Data.Nat.Prime.Basic`, and `Order.ConditionallyCompleteLattice.Basic` for prime number predicates, `sSup`, and `BddAbove`."
+      "summary": "Imports `Mathlib.Tactic`, `Data.Nat.Prime.Basic`, and `Order.ConditionallyCompleteLattice.Basic` for prime number predicates, `sSup`, and `BddAbove`.",
+      "mathContext": "Imports `Mathlib.Tactic`, `Data.Nat.Prime.Basic`, and `Order.ConditionallyCompleteLattice.Basic` for prime number predicates, `sSup`, and `BddAbove`."
     },
     {
       "id": "definitions",
       "title": "Part I: Core Definitions",
       "startLine": 33,
       "endLine": 55,
-      "summary": "Defines `primorial(x) = \\prod_{p \\le x} p$, `IsCovered` for integers satisfying a congruence $n \\equiv a_p \\pmod{p}$, `jacobsthalSet(x)` of achievable covering lengths, and $Y(x) = \\text{sSup}(\\text{jacobsthalSet}(x))$."
+      "summary": "Defines `primorial(x) = \\prod_{p \\le x} p$, `IsCovered` for integers satisfying a congruence $n \\equiv a_p \\pmod{p}$, `jacobsthalSet(x)` of achievable covering lengths, and $Y(x) = \\text{sSup}(\\text{jacobsthalSet}(x))$.",
+      "mathContext": "Defines `primorial(x) = \\prod_{p \\le x} p$, `IsCovered` for integers satisfying a congruence $n \\equiv a_p \\pmod{p}$, `jacobsthalSet(x)` of achievable covering lengths, and $Y(x) = \\text{sSup}(\\text{j"
     },
     {
       "id": "jacobsthal",
       "title": "Part II: The Jacobsthal Function",
       "startLine": 56,
       "endLine": 64,
-      "summary": "Defines $g(n) = \\sup\\{d \\mid \\exists m, \\forall k \\in (m, m+d), \\exists p \\mid n \\text{ with } p \\mid k\\}$, the largest gap between consecutive integers coprime to $n$."
+      "summary": "Defines $g(n) = \\sup\\{d \\mid \\exists m, \\forall k \\in (m, m+d), \\exists p \\mid n \\text{ with } p \\mid k\\}$, the largest gap between consecutive integers coprime to $n$.",
+      "mathContext": "Defines $g(n) = \\sup\\{d \\mid \\exists m, \\forall k \\in (m, m+d), \\exists p \\mid n \\text{ with } p \\mid k\\}$, the largest gap between consecutive integers coprime to $n$."
     },
     {
       "id": "basic-properties",
       "title": "Part III: Basic Properties",
       "startLine": 65,
       "endLine": 80,
-      "summary": "Proves `jacobsthalSet` is nonempty (via $y = 0$ vacuously) and axiomatizes it is bounded above (by CRT periodicity of the primorial), enabling the use of `sSup`."
+      "summary": "Proves `jacobsthalSet` is nonempty (via $y = 0$ vacuously) and axiomatizes it is bounded above (by CRT periodicity of the primorial), enabling the use of `sSup`.",
+      "mathContext": "Proves `jacobsthalSet` is nonempty (via $y = 0$ vacuously) and axiomatizes it is bounded above (by CRT periodicity of the primorial), enabling the use of `sSup`."
     },
     {
       "id": "structural",
       "title": "Part IV: Structural Properties",
       "startLine": 81,
       "endLine": 104,
-      "summary": "Proves `jacobsthalSet` is monotone ($x_1 \\le x_2 \\Rightarrow \\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$) by extending coverings to new primes. Derives $Y(x)$ monotonicity via `csSup_le_csSup`."
+      "summary": "Proves `jacobsthalSet` is monotone ($x_1 \\le x_2 \\Rightarrow \\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$) by extending coverings to new primes. Derives $Y(x)$ monotonicity via `csSup_le_csSup`.",
+      "mathContext": "Proves `jacobsthalSet` is monotone ($x_1 \\le x_2 \\Rightarrow \\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$) by extending coverings to new primes. Derives $Y(x)$ monotonicity via `csSu"
     },
     {
       "id": "connection",
       "title": "Part V: Connection to Jacobsthal Function",
       "startLine": 105,
       "endLine": 110,
-      "summary": "Axiomatizes $Y(x) = g(\\text{primorial}(x))$, the fundamental equivalence between covering length and the Jacobsthal function of the primorial."
+      "summary": "Axiomatizes $Y(x) = g(\\text{primorial}(x))$, the fundamental equivalence between covering length and the Jacobsthal function of the primorial.",
+      "mathContext": "Axiomatizes $Y(x) = g(\\text{primorial}(x))$, the fundamental equivalence between covering length and the Jacobsthal function of the primorial."
     },
     {
       "id": "conjecture",
       "title": "Part VI: Main Conjecture ($1,000)",
       "startLine": 111,
       "endLine": 118,
-      "summary": "States the \\$1,000 prize conjecture: $\\forall \\varepsilon > 0$, eventually $Y(x) \\le x^{1+\\varepsilon}$, formalized using `Filter.atTop` and `Filter.Eventually`."
+      "summary": "States the \\$1,000 prize conjecture: $\\forall \\varepsilon > 0$, eventually $Y(x) \\le x^{1+\\varepsilon}$, formalized using `Filter.atTop` and `Filter.Eventually`.",
+      "mathContext": "States the \\$1,000 prize conjecture: $\\forall \\varepsilon > 0$, eventually $Y(x) \\le x^{1+\\varepsilon}$, formalized using `Filter.atTop` and `Filter.Eventually`."
     },
     {
       "id": "bounds",
       "title": "Part VII: Known Bounds",
       "startLine": 119,
       "endLine": 141,
-      "summary": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier–Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsilon}$."
+      "summary": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier–Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsilon}$.",
+      "mathContext": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier–Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsi"
     },
     {
       "id": "trivial-bound",
       "title": "Part VIII: Trivial Lower Bound",
       "startLine": 142,
       "endLine": 148,
-      "summary": "Axiomatizes $Y(x) \\ge x + 1$ for $x \\ge 2$: every integer in $[1, x]$ has a prime factor $\\le x$, so taking $a_p = 0$ covers at least $[1, x]$."
+      "summary": "Axiomatizes $Y(x) \\ge x + 1$ for $x \\ge 2$: every integer in $[1, x]$ has a prime factor $\\le x$, so taking $a_p = 0$ covers at least $[1, x]$.",
+      "mathContext": "Axiomatizes $Y(x) \\ge x + 1$ for $x \\ge 2$: every integer in $[1, x]$ has a prime factor $\\le x$, so taking $a_p = 0$ covers at least $[1, x]$."
     }
   ],
   "conclusion": {

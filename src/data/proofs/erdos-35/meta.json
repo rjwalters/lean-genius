@@ -59,56 +59,64 @@
       "title": "Schnirelmann Density",
       "summary": "Defines the counting function A(N) = |A ∩ {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N≥1} A(N)/N via Lean's iInf over a subtype. Introduces notation d_s for schnirelmannDensity.",
       "startLine": 37,
-      "endLine": 53
+      "endLine": 53,
+      "mathContext": "Defines the counting function A(N) = |A ∩ {1,...,N}| via Finset.filter, the density ratio A(N)/N, and the Schnirelmann density d_s(A) = inf_{N≥1} A(N)/N via Lean's iInf over a subtype. Introduces nota"
     },
     {
       "id": "additive-basis",
       "title": "Additive Bases",
       "summary": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold sum with m ≤ k). Also defines exact order requiring minimality.",
       "startLine": 54,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "Defines sumsets A + B via existential quantification with HAdd instance, k-fold sumsets by recursion (0-fold = {0}, (k+1)-fold = kB + B), and additive bases of order k (every natural in some m-fold su"
     },
     {
       "id": "basic-props",
       "title": "Basic Properties",
       "summary": "Proves d_s(A) ≥ 0 (fully proved via iInf_nonneg and case analysis), states d_s(A) ≤ 1 (1 sorry: needs countingFunction A 1 ≤ 1), the density ratio at N=1 for 1 ∈ A (1 sorry), and monotonicity d_s(A) ≤ d_s(A+B) when 0 ∈ B (1 sorry: needs A ⊆ A+B argument).",
       "startLine": 78,
-      "endLine": 112
+      "endLine": 112,
+      "mathContext": "Proves d_s(A) ≥ 0 (fully proved via iInf_nonneg and case analysis), states d_s(A) ≤ 1 (1 sorry: needs countingFunction A 1 ≤ 1), the density ratio at N=1 for 1 ∈ A (1 sorry), and monotonicity d_s(A) ≤"
     },
     {
       "id": "erdos-1936",
       "title": "Erdős 1936 Result",
       "summary": "States Erdős's original 1936 partial result: d_s(A+B) ≥ α + α(1-α)/(2k). This was the first quantitative bound but with a factor-of-2 gap from the conjecture. Axiomatized with sorry.",
       "startLine": 113,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "States Erdős's original 1936 partial result: d_s(A+B) ≥ α + α(1-α)/(2k). This was the first quantitative bound but with a factor-of-2 gap from the conjecture. Axiomatized with sorry."
     },
     {
       "id": "plunnecke",
       "title": "Plünnecke's Inequality",
       "summary": "States the key 1970 result d_s(A+B) ≥ α^{1-1/k} and the bridge calculus lemma α^{1-1/k} ≥ α + α(1-α)/k. The power bound uses concavity of x^p for p ∈ (0,1). Both axiomatized with sorry.",
       "startLine": 124,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "States the key 1970 result d_s(A+B) ≥ α^{1-1/k} and the bridge calculus lemma α^{1-1/k} ≥ α + α(1-α)/k. The power bound uses concavity of x^p for p ∈ (0,1). Both axiomatized with sorry."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "summary": "The complete proof of Erdős Problem #35: chains plunnecke_inequality and power_bound_implies_erdos via linarith. The theorem erdos_35 compiles in Lean modulo the sorries in its dependencies, demonstrating the clean logical structure.",
       "startLine": 144,
-      "endLine": 160
+      "endLine": 160,
+      "mathContext": "The complete proof of Erdős Problem #35: chains plunnecke_inequality and power_bound_implies_erdos via linarith. The theorem erdos_35 compiles in Lean modulo the sorries in its dependencies, demonstra"
     },
     {
       "id": "basis-order-one",
       "title": "Basis of Order 1",
       "summary": "Proves that a basis of order 1 containing 0 must be all of ℕ. Uses interval_cases on the at-most-1 bound to show every n ∈ B. This is a fully proved result with no sorries.",
       "startLine": 164,
-      "endLine": 176
+      "endLine": 176,
+      "mathContext": "Proves that a basis of order 1 containing 0 must be all of ℕ. Uses interval_cases on the at-most-1 bound to show every n ∈ B. This is a fully proved result with no sorries."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "Defines squares = {n² : n ∈ ℕ} and primesWithOne = {1} ∪ {p : p prime}. States squares form a basis of order 4 (Lagrange's four-square theorem) and primes with 1 form a basis of order 3 (conditional on Goldbach). Both axiomatized with sorry.",
       "startLine": 177,
-      "endLine": 225
+      "endLine": 225,
+      "mathContext": "Defines squares = {n² : n ∈ ℕ} and primesWithOne = {1} ∪ {p : p prime}. States squares form a basis of order 4 (Lagrange's four-square theorem) and primes with 1 form a basis of order 3 (conditional o"
     }
   ],
   "conclusion": {

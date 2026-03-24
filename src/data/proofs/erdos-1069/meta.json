@@ -81,63 +81,72 @@
       "title": "Basic Definitions",
       "summary": "Point, Line, onLine, pointsOnLine, incidenceCount definitions",
       "startLine": 37,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "Point, Line, onLine, pointsOnLine, incidenceCount definitions"
     },
     {
       "id": "k-rich-lines",
       "title": "k-Rich Lines",
       "summary": "isKRich, kRichLines, numKRichLines definitions",
       "startLine": 64,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "isKRich, kRichLines, numKRichLines definitions"
     },
     {
       "id": "total-incidences",
       "title": "Total Incidences",
       "summary": "totalIncidences, incidencePairs, incidences_eq axiom",
       "startLine": 81,
-      "endLine": 98
+      "endLine": 98,
+      "mathContext": "totalIncidences, incidencePairs, incidences_eq axiom"
     },
     {
       "id": "szemeredi-trotter",
       "title": "The Szemerédi-Trotter Theorem",
       "summary": "szTrBound function, szemeredi_trotter axiom, optimality axiom",
       "startLine": 99,
-      "endLine": 118
+      "endLine": 118,
+      "mathContext": "szTrBound function, szemeredi_trotter axiom, optimality axiom"
     },
     {
       "id": "k-rich-bound",
       "title": "The k-Rich Lines Bound",
       "summary": "kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069 theorem",
       "startLine": 119,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069 theorem"
     },
     {
       "id": "proof-strategy",
       "title": "The Proof Strategy",
       "summary": "dyadicLines decomposition, dyadic_bound, dyadic_szTr axioms",
       "startLine": 146,
-      "endLine": 168
+      "endLine": 168,
+      "mathContext": "dyadicLines decomposition, dyadic_bound, dyadic_szTr axioms"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bound Constructions",
       "summary": "latticePoints, lattice_card, lattice_lower_bound axioms",
       "startLine": 169,
-      "endLine": 186
+      "endLine": 186,
+      "mathContext": "latticePoints, lattice_card, lattice_lower_bound axioms"
     },
     {
       "id": "special-duality",
       "title": "Special Cases and Duality",
       "summary": "large_k_bound, dual_kRich_bound axioms",
       "startLine": 187,
-      "endLine": 203
+      "endLine": 203,
+      "mathContext": "large_k_bound, dual_kRich_bound axioms"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_1069_summary theorem",
       "startLine": 204,
-      "endLine": 228
+      "endLine": 228,
+      "mathContext": "erdos_1069_summary theorem"
     }
   ],
   "conclusion": {

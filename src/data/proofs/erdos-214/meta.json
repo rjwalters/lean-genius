@@ -104,70 +104,80 @@
       "title": "Problem Statement",
       "summary": "Docstring introducing Erdős Problem #214 (1983): unit-distance-free S implies Sᶜ contains unit square? Answered YES by Juhász (1979) with the stronger result covering all 4-point configurations.",
       "startLine": 1,
-      "endLine": 25
+      "endLine": 25,
+      "mathContext": "Docstring introducing Erdős Problem #214 (1983): unit-distance-free S implies Sᶜ contains unit square? Answered YES by Juhász (1979) with the stronger result covering all 4-point configurations."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines Plane = EuclideanSpace ℝ (Fin 2), dist = ‖p-q‖, IsUnitDistanceFree (no pair at distance 1), IsUnitSquare (4 edges length 1, 2 diagonals length √2), ContainsUnitSquare (∃ four points in S forming a unit square).",
       "startLine": 36,
-      "endLine": 62
+      "endLine": 62,
+      "mathContext": "Defines Plane = EuclideanSpace ℝ (Fin 2), dist = ‖p-q‖, IsUnitDistanceFree (no pair at distance 1), IsUnitSquare (4 edges length 1, 2 diagonals length √2), ContainsUnitSquare (∃ four points in S formi"
     },
     {
       "id": "main-statement",
       "title": "Main Statement and Solution",
       "summary": "Erdos214Statement = ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom.",
       "startLine": 63,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "Erdos214Statement = ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom."
     },
     {
       "id": "stronger-version",
       "title": "Stronger Version: Any 4-Point Set",
       "summary": "Defines PointSet n = Fin n → Plane and ContainsCongruentCopy (via distance-preserving map f with image in S). JuhaszStrongerTheorem: ∀ S unit-free, ∀ P : PointSet 4, Sᶜ contains congruent copy. unit_square_from_stronger has sorry (needs explicit unit square encoding as PointSet 4).",
       "startLine": 77,
-      "endLine": 107
+      "endLine": 107,
+      "mathContext": "Defines PointSet n = Fin n → Plane and ContainsCongruentCopy (via distance-preserving map f with image in S). JuhaszStrongerTheorem: ∀ S unit-free, ∀ P : PointSet 4, Sᶜ contains congruent copy. unit_s"
     },
     {
       "id": "limitations",
       "title": "Limitations for Larger Sets",
       "summary": "fails_for_large_sets: ∃ n, ∃ S unit-free with ∃ P : PointSet n not in Sᶜ. HoldsFor5Points: Prop (open question). The critical threshold n between 4 (works) and the failure point is unknown.",
       "startLine": 108,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "fails_for_large_sets: ∃ n, ∃ S unit-free with ∃ P : PointSet n not in Sᶜ. HoldsFor5Points: Prop (open question). The critical threshold n between 4 (works) and the failure point is unknown."
     },
     {
       "id": "unit-distance-graph",
       "title": "Unit Distance Graph Connection",
       "summary": "UnitDistanceGraph(S) = pairs at distance 1 in S. FULLY PROVED: unit_distance_free_iff_no_edges (S is unit-free iff UDG(S) = ∅) via ext/simp proof. Chromatic number χ(ℝ²) ∈ {5,...,7} stated as placeholder True.",
       "startLine": 124,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "UnitDistanceGraph(S) = pairs at distance 1 in S. FULLY PROVED: unit_distance_free_iff_no_edges (S is unit-free iff UDG(S) = ∅) via ext/simp proof. Chromatic number χ(ℝ²) ∈ {5,...,7} stated as placehol"
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques (Sketched)",
       "summary": "Three placeholder True axioms outlining Juhász's geometric argument: (1) maximal unit-free sets have specific structure, (2) unit circles at points of S lie in Sᶜ (pigeonhole), (3) circle intersection patterns limit Sᶜ sparseness.",
       "startLine": 153,
-      "endLine": 175
+      "endLine": 175,
+      "mathContext": "Three placeholder True axioms outlining Juhász's geometric argument: (1) maximal unit-free sets have specific structure, (2) unit circles at points of S lie in Sᶜ (pigeonhole), (3) circle intersection"
     },
     {
       "id": "examples",
       "title": "Examples and Constructions",
       "summary": "Notes ℤ² is NOT unit-distance-free (contains distance-1 pairs). Defines ScaledLattice = √2·ℤ² which IS unit-distance-free (axiomatized): distance between lattice points is √(2·integer), never equaling 1 since 1/2 is not an integer sum of squares.",
       "startLine": 176,
-      "endLine": 199
+      "endLine": 199,
+      "mathContext": "Notes ℤ² is NOT unit-distance-free (contains distance-1 pairs). Defines ScaledLattice = √2·ℤ² which IS unit-distance-free (axiomatized): distance between lattice points is √(2·integer), never equaling"
     },
     {
       "id": "related-problems",
       "title": "Related Problems",
       "summary": "Three related problems as True placeholders: Nelson-Hadwiger problem (χ(ℝ²)), Erdős unit distance problem (max pairs at distance 1 among n points: Θ(n^{1+c/log log n})), and Moser's worm problem (smallest convex cover of all unit curves).",
       "startLine": 200,
-      "endLine": 242
+      "endLine": 242,
+      "mathContext": "Three related problems as True placeholders: Nelson-Hadwiger problem (χ(ℝ²)), Erdős unit distance problem (max pairs at distance 1 among n points: Θ(n^{1+c/log log n})), and Moser's worm problem (smal"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_214_summary: Erdos214Statement ∧ JuhaszStrongerTheorem, proved by ⟨juhasz_1979, juhasz_stronger⟩. Problem SOLVED. Includes human-readable status string.",
       "startLine": 243,
-      "endLine": 279
+      "endLine": 279,
+      "mathContext": "erdos_214_summary: Erdos214Statement ∧ JuhaszStrongerTheorem, proved by ⟨juhasz_1979, juhasz_stronger⟩. Problem SOLVED. Includes human-readable status string."
     }
   ],
   "conclusion": {

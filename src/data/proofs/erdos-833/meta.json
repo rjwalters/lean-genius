@@ -92,70 +92,80 @@
       "title": "Header and Imports",
       "summary": "Problem documentation with references to Erdős–Lovász (1975); imports Mathlib's `SimpleGraph.Basic`, `Finset`, and `Real` modules; opens `Nat` and `Finset` namespaces",
       "startLine": 1,
-      "endLine": 45
+      "endLine": 45,
+      "mathContext": "Problem documentation with references to Erdős–Lovász (1975); imports Mathlib's `SimpleGraph.Basic`, `Finset`, and `Real` modules; opens `Nat` and `Finset` namespaces"
     },
     {
       "id": "hypergraph-definitions",
       "title": "Hypergraph Definitions",
       "summary": "Defines `UniformHypergraph V` (structure with $r$, edges, uniformity constraint $|e| = r$, and $r \\geq 2$), `vertexDegree` ($\\deg_H(v) = |\\{e : v \\in e\\}|$), `maxDegree`, and `minMaxDegree` via `Finset.filter` and `Finset.univ.sup`",
       "startLine": 46,
-      "endLine": 75
+      "endLine": 75,
+      "mathContext": "Defines `UniformHypergraph V` (structure with $r$, edges, uniformity constraint $|e| = r$, and $r \\geq 2$), `vertexDegree` ($\\deg_H(v) = |\\{e : v \\in e\\}|$), `maxDegree`, and `minMaxDegree` via `Finse"
     },
     {
       "id": "colorings",
       "title": "Hypergraph Colorings",
       "summary": "Defines `IsProperColoring` (no monochromatic edge: $\\forall e,\\; \\exists v_1, v_2 \\in e,\\; c(v_1) \\neq c(v_2)$), `IsKColorable`, trivial upper bound $\\chi(H) \\leq |V|$, `chromaticNumber` via `Nat.find`, and `HasChromaticNumber3` ($\\neg 2\\text{-colorable} \\wedge 3\\text{-colorable}$)",
       "startLine": 76,
-      "endLine": 104
+      "endLine": 104,
+      "mathContext": "Defines `IsProperColoring` (no monochromatic edge: $\\forall e,\\; \\exists v_1, v_2 \\in e,\\; c(v_1) \\neq c(v_2)$), `IsKColorable`, trivial upper bound $\\chi(H) \\leq |V|$, `chromaticNumber` via `Nat.find"
     },
     {
       "id": "f-function",
       "title": "The Function $f(r)$ and Known Values",
       "summary": "Defines $f(r) = \\inf\\{d : \\forall H \\in \\mathcal{H}_{r,3},\\; \\Delta(H) \\geq d\\}$ via `sInf`; axiomatizes $f(2) = 2$ (triangle) and $f(3) = 3$ (Fano plane $\\mathrm{PG}(2,2)$)",
       "startLine": 105,
-      "endLine": 126
+      "endLine": 126,
+      "mathContext": "Defines $f(r) = \\inf\\{d : \\forall H \\in \\mathcal{H}_{r,3},\\; \\Delta(H) \\geq d\\}$ via `sInf`; axiomatizes $f(2) = 2$ (triangle) and $f(3) = 3$ (Fano plane $\\mathrm{PG}(2,2)$)"
     },
     {
       "id": "exponential-question",
       "title": "The Exponential Question",
       "summary": "Defines `ExponentialGrowthConjecture`: $\\exists c > 0,\\; \\forall r \\geq 2,\\; f(r) \\geq (1+c)^r$ — does the minimum max degree grow exponentially with uniformity?",
       "startLine": 127,
-      "endLine": 136
+      "endLine": 136,
+      "mathContext": "Defines `ExponentialGrowthConjecture`: $\\exists c > 0,\\; \\forall r \\geq 2,\\; f(r) \\geq (1+c)^r$ — does the minimum max degree grow exponentially with uniformity?"
     },
     {
       "id": "erdos-lovasz",
       "title": "Erdős–Lovász Theorem (1975)",
       "summary": "Axiomatizes the bound in three forms: pointwise ($\\exists v,\\; \\deg(v) \\geq 2^{r-1}/(4r)$), function ($f(r) \\geq \\lfloor 2^{r-1}/(4r) \\rfloor$), and asymptotic ($\\geq (\\sqrt{2} - \\varepsilon)^r$ for large $r$). Derives `erdos_833_solution` confirming exponential growth",
       "startLine": 137,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "Axiomatizes the bound in three forms: pointwise ($\\exists v,\\; \\deg(v) \\geq 2^{r-1}/(4r)$), function ($f(r) \\geq \\lfloor 2^{r-1}/(4r) \\rfloor$), and asymptotic ($\\geq (\\sqrt{2} - \\varepsilon)^r$ for l"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; axiomatizes `edge_lower_bound` ($|E| \\geq 2^{r-1}/(4r)$ for 3-chromatic $H$)",
       "startLine": 171,
-      "endLine": 191
+      "endLine": 191,
+      "mathContext": "**Proved** `exists_high_degree_vertex` from the Erdős–Lovász bound; axiomatizes `edge_lower_bound` ($|E| \\geq 2^{r-1}/(4r)$ for 3-chromatic $H$)"
     },
     {
       "id": "specific-values",
       "title": "Specific Values: Triangle and Fano Plane",
       "summary": "Axiomatizes tight examples: `f_2_achieved` (triangle $K_3$ with $\\Delta = 2$, $\\chi = 3$) and `fano_plane_example` (Fano plane $\\mathrm{PG}(2,2)$: 7 vertices, 7 triples, $\\Delta = 3$, $\\chi = 3$)",
       "startLine": 192,
-      "endLine": 207
+      "endLine": 207,
+      "mathContext": "Axiomatizes tight examples: `f_2_achieved` (triangle $K_3$ with $\\Delta = 2$, $\\chi = 3$) and `fano_plane_example` (Fano plane $\\mathrm{PG}(2,2)$: 7 vertices, 7 triples, $\\Delta = 3$, $\\chi = 3$)"
     },
     {
       "id": "proof-technique",
       "title": "Proof Technique: Lovász Local Lemma",
       "summary": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; axiomatizes `contrapositive_form`: $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies \\chi(H) \\leq 2$",
       "startLine": 208,
-      "endLine": 225
+      "endLine": 225,
+      "mathContext": "Describes the LLL argument: random 2-coloring with $\\Pr[\\text{monochromatic } e] = 2^{1-r}$, dependency $\\leq r\\Delta$; axiomatizes `contrapositive_form`: $\\forall v,\\; \\deg(v) < 2^{r-1}/(4r) \\implies"
     },
     {
       "id": "main-theorem",
       "title": "Complete Theorem: erdos_833",
       "summary": "**Verified proof**: `erdos_833 : ExponentialGrowthConjecture ∧ (∀ r ≥ 2, ∀ H, ∃ v, deg(v) ≥ 2^{r-1}/(4r))`, proved by `constructor; exact erdos_833_solution; exact erdos_lovasz_bound`. Packages the complete resolution of Problem #833",
       "startLine": 226,
-      "endLine": 265
+      "endLine": 265,
+      "mathContext": "**Verified proof**: `erdos_833 : ExponentialGrowthConjecture ∧ (∀ r ≥ 2, ∀ H, ∃ v, deg(v) ≥ 2^{r-1}/(4r))`, proved by `constructor; exact erdos_833_solution; exact erdos_lovasz_bound`. Packages the co"
     }
   ],
   "conclusion": {

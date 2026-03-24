@@ -59,63 +59,72 @@
       "title": "Part 1: Basic Definitions",
       "startLine": 36,
       "endLine": 51,
-      "summary": "hasDivisorInInterval, setA, setA_finite (proved)."
+      "summary": "hasDivisorInInterval, setA, setA_finite (proved).",
+      "mathContext": "hasDivisorInInterval, setA, setA_finite (proved)."
     },
     {
       "id": "gap-definitions",
       "title": "Part 2: Gap Definitions",
       "startLine": 52,
       "endLine": 73,
-      "summary": "setAFinset, orderedA, consecutiveGaps, maxGap, maxGapA."
+      "summary": "setAFinset, orderedA, consecutiveGaps, maxGap, maxGapA.",
+      "mathContext": "setAFinset, orderedA, consecutiveGaps, maxGap, maxGapA."
     },
     {
       "id": "main-problem",
       "title": "Part 3: The Main Problem",
       "startLine": 74,
       "endLine": 89,
-      "summary": "polylogBoundedGap definition and erdos693Conjecture."
+      "summary": "polylogBoundedGap definition and erdos693Conjecture.",
+      "mathContext": "polylogBoundedGap definition and erdos693Conjecture."
     },
     {
       "id": "basic-properties",
       "title": "Part 4: Basic Properties",
       "startLine": 90,
       "endLine": 105,
-      "summary": "mem_setA_has_divisor (proved), divisor_factorization (proved), range_card (axiom)."
+      "summary": "mem_setA_has_divisor (proved), divisor_factorization (proved), range_card (axiom).",
+      "mathContext": "mem_setA_has_divisor (proved), divisor_factorization (proved), range_card (axiom)."
     },
     {
       "id": "gap-bounds",
       "title": "Part 5: Gap Bounds",
       "startLine": 106,
       "endLine": 116,
-      "summary": "maxGap_trivial_upper and maxGap_pigeonhole axioms."
+      "summary": "maxGap_trivial_upper and maxGap_pigeonhole axioms.",
+      "mathContext": "maxGap_trivial_upper and maxGap_pigeonhole axioms."
     },
     {
       "id": "counting-density",
       "title": "Part 6: Counting and Density",
       "startLine": 117,
       "endLine": 132,
-      "summary": "countA definition, divisor_density_heuristic axiom."
+      "summary": "countA definition, divisor_density_heuristic axiom.",
+      "mathContext": "countA definition, divisor_density_heuristic axiom."
     },
     {
       "id": "alternative",
       "title": "Part 7: Alternative Formulation",
       "startLine": 133,
       "endLine": 144,
-      "summary": "uniformGapBound definition, uniform_equiv_maxgap axiom."
+      "summary": "uniformGapBound definition, uniform_equiv_maxgap axiom.",
+      "mathContext": "uniformGapBound definition, uniform_equiv_maxgap axiom."
     },
     {
       "id": "connections",
       "title": "Part 8: Connections",
       "startLine": 145,
       "endLine": 159,
-      "summary": "divisor_distribution_connection and related_problem_446 placeholders."
+      "summary": "divisor_distribution_connection and related_problem_446 placeholders.",
+      "mathContext": "divisor_distribution_connection and related_problem_446 placeholders."
     },
     {
       "id": "summary",
       "title": "Part 9: Summary",
       "startLine": 160,
       "endLine": 317,
-      "summary": "erdos_693_summary (proved), erdos_693_status."
+      "summary": "erdos_693_summary (proved), erdos_693_status.",
+      "mathContext": "erdos_693_summary (proved), erdos_693_status."
     }
   ],
   "conclusion": {

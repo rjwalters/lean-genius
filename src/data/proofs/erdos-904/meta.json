@@ -102,63 +102,72 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Header: Bollobás-Erdős conjecture, Edwards' 1978 proof, Turán context, reference [Ed78]"
+      "summary": "Header: Bollobás-Erdős conjecture, Edwards' 1978 proof, Turán context, reference [Ed78]",
+      "mathContext": "Header: Bollobás-Erdős conjecture, Edwards' 1978 proof, Turán context, reference [Ed78]"
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 30,
       "endLine": 47,
-      "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Finite`, `SimpleGraph.Clique`; variables `V : Type*` with `[Fintype V] [DecidableEq V]`"
+      "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Finite`, `SimpleGraph.Clique`; variables `V : Type*` with `[Fintype V] [DecidableEq V]`",
+      "mathContext": "Imports `SimpleGraph.Basic`, `SimpleGraph.Finite`, `SimpleGraph.Clique`; variables `V : Type*` with `[Fintype V] [DecidableEq V]`"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 43,
       "endLine": 76,
-      "summary": "`vertexDegree` ($d(v)$), `edgeCount` ($|E(G)|$), `IsTriangle` ($K_3$ subgraph), `triangleDegreeSum` ($d(x)+d(y)+d(z)$)"
+      "summary": "`vertexDegree` ($d(v)$), `edgeCount` ($|E(G)|$), `IsTriangle` ($K_3$ subgraph), `triangleDegreeSum` ($d(x)+d(y)+d(z)$)",
+      "mathContext": "`vertexDegree` ($d(v)$), `edgeCount` ($|E(G)|$), `IsTriangle` ($K_3$ subgraph), `triangleDegreeSum` ($d(x)+d(y)+d(z)$)"
     },
     {
       "id": "turan-context",
       "title": "Turán's Theorem Context",
       "startLine": 77,
       "endLine": 103,
-      "summary": "`turanThreshold` ($\\lfloor n^2/4 \\rfloor$), `IsDense` ($|E| > n^2/4$), `turan_triangle` (dense $\\implies \\exists$ triangle)"
+      "summary": "`turanThreshold` ($\\lfloor n^2/4 \\rfloor$), `IsDense` ($|E| > n^2/4$), `turan_triangle` (dense $\\implies \\exists$ triangle)",
+      "mathContext": "`turanThreshold` ($\\lfloor n^2/4 \\rfloor$), `IsDense` ($|E| > n^2/4$), `turan_triangle` (dense $\\implies \\exists$ triangle)"
     },
     {
       "id": "bollobas-erdos-conjecture",
       "title": "The Bollobás-Erdős Conjecture",
       "startLine": 104,
       "endLine": 122,
-      "summary": "`HasHighDegreeSum` ($2(d(x)+d(y)+d(z)) \\geq 3n$), `BollobasErdosConjecture`: dense $\\implies \\exists$ high-degree-sum triangle"
+      "summary": "`HasHighDegreeSum` ($2(d(x)+d(y)+d(z)) \\geq 3n$), `BollobasErdosConjecture`: dense $\\implies \\exists$ high-degree-sum triangle",
+      "mathContext": "`HasHighDegreeSum` ($2(d(x)+d(y)+d(z)) \\geq 3n$), `BollobasErdosConjecture`: dense $\\implies \\exists$ high-degree-sum triangle"
     },
     {
       "id": "edwards-theorem",
       "title": "Edwards' Theorem (1978)",
       "startLine": 123,
       "endLine": 141,
-      "summary": "`edwards_1978`: the conjecture is true; `erdos_904 := edwards_1978`"
+      "summary": "`edwards_1978`: the conjecture is true; `erdos_904 := edwards_1978`",
+      "mathContext": "`edwards_1978`: the conjecture is true; `erdos_904 := edwards_1978`"
     },
     {
       "id": "sharpness",
       "title": "Sharpness and Extremality",
       "startLine": 142,
       "endLine": 161,
-      "summary": "`complete_bipartite_triangle_free` ($K_{n/2,n/2}$ achieves $\\lfloor n^2/4 \\rfloor$ edges, no triangles), `turan_extremal` (no triangle-free graph exceeds $\\lfloor n^2/4 \\rfloor$)"
+      "summary": "`complete_bipartite_triangle_free` ($K_{n/2,n/2}$ achieves $\\lfloor n^2/4 \\rfloor$ edges, no triangles), `turan_extremal` (no triangle-free graph exceeds $\\lfloor n^2/4 \\rfloor$)",
+      "mathContext": "`complete_bipartite_triangle_free` ($K_{n/2,n/2}$ achieves $\\lfloor n^2/4 \\rfloor$ edges, no triangles), `turan_extremal` (no triangle-free graph exceeds $\\lfloor n^2/4 \\rfloor$)"
     },
     {
       "id": "stronger-results",
       "title": "Stronger Results",
       "startLine": 162,
       "endLine": 186,
-      "summary": "`degree_sum_tight` ($\\frac{3}{2}$ is best possible), `supersaturation` (dense graphs have many triangles)"
+      "summary": "`degree_sum_tight` ($\\frac{3}{2}$ is best possible), `supersaturation` (dense graphs have many triangles)",
+      "mathContext": "`degree_sum_tight` ($\\frac{3}{2}$ is best possible), `supersaturation` (dense graphs have many triangles)"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 187,
       "endLine": 198,
-      "summary": "`erdos_904_main`: instantiated Edwards' theorem for a specific dense graph $G$"
+      "summary": "`erdos_904_main`: instantiated Edwards' theorem for a specific dense graph $G$",
+      "mathContext": "`erdos_904_main`: instantiated Edwards' theorem for a specific dense graph $G$"
     }
   ],
   "conclusion": {

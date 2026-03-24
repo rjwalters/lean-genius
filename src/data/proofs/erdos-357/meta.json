@@ -82,77 +82,88 @@
       "title": "Consecutive Sums Property",
       "startLine": 40,
       "endLine": 58,
-      "summary": "Defines `IsContiguousInterval` as $I = \\{u, u+1, \\ldots, v\\}$ and `HasDistinctConsecutiveSums` requiring all $k(k+1)/2$ interval sums to be pairwise distinct. Provides two equivalent formulations: one via `Finset.range k` and one via `Fin k` with `OrdConnected`."
+      "summary": "Defines `IsContiguousInterval` as $I = \\{u, u+1, \\ldots, v\\}$ and `HasDistinctConsecutiveSums` requiring all $k(k+1)/2$ interval sums to be pairwise distinct. Provides two equivalent formulations: one via `Finset.range k` and one via `Fin k` with `OrdConnected`.",
+      "mathContext": "Defines `IsContiguousInterval` as $I = \\{u, u+1, \\ldots, v\\}$ and `HasDistinctConsecutiveSums` requiring all $k(k+1)/2$ interval sums to be pairwise distinct. Provides two equivalent formulations: one"
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "startLine": 59,
       "endLine": 82,
-      "summary": "Defines `IsValidSequence` (elements in $[1,n]$, strictly increasing, distinct consecutive sums) and $f(n) = \\sup\\{k : \\exists a, \\text{IsValidSequence}\\, n\\, k\\, a\\}$. Proves `f_nonempty`: the empty sequence ($k=0$) witnesses nonemptiness of the supremum set."
+      "summary": "Defines `IsValidSequence` (elements in $[1,n]$, strictly increasing, distinct consecutive sums) and $f(n) = \\sup\\{k : \\exists a, \\text{IsValidSequence}\\, n\\, k\\, a\\}$. Proves `f_nonempty`: the empty sequence ($k=0$) witnesses nonemptiness of the supremum set.",
+      "mathContext": "Defines `IsValidSequence` (elements in $[1,n]$, strictly increasing, distinct consecutive sums) and $f(n) = \\sup\\{k : \\exists a, \\text{IsValidSequence}\\, n\\, k\\, a\\}$. Proves `f_nonempty`: the empty s"
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "startLine": 83,
       "endLine": 110,
-      "summary": "Establishes $f(n) \\leq n$ (at most $n$ distinct integers in $[1,n]$), $f(n) \\geq 1$ for $n \\geq 1$, $f(n) \\geq 2$ for $n \\geq 2$ (via $\\{1,2\\}$). Counts $k(k+1)/2$ contiguous intervals and derives the weak bound $f(n) \\leq 2n$ from $k(k+1)/2 \\leq kn$."
+      "summary": "Establishes $f(n) \\leq n$ (at most $n$ distinct integers in $[1,n]$), $f(n) \\geq 1$ for $n \\geq 1$, $f(n) \\geq 2$ for $n \\geq 2$ (via $\\{1,2\\}$). Counts $k(k+1)/2$ contiguous intervals and derives the weak bound $f(n) \\leq 2n$ from $k(k+1)/2 \\leq kn$.",
+      "mathContext": "Establishes $f(n) \\leq n$ (at most $n$ distinct integers in $[1,n]$), $f(n) \\geq 1$ for $n \\geq 1$, $f(n) \\geq 2$ for $n \\geq 2$ (via $\\{1,2\\}$). Counts $k(k+1)/2$ contiguous intervals and derives the"
     },
     {
       "id": "weisenberg",
       "title": "Weisenberg's Lower Bound",
       "startLine": 111,
       "endLine": 131,
-      "summary": "Axiomatizes Weisenberg's bound: $f(n) \\geq (2+o(1))\\sqrt{n}$ via B₂ sequences. Derives corollary `f_grows_at_least_sqrt`: $\\exists C > 0, f(n) \\geq C\\sqrt{n}$ eventually. The proof partially uses `weisenberg_lower_bound` but has a sorry in the little-o extraction."
+      "summary": "Axiomatizes Weisenberg's bound: $f(n) \\geq (2+o(1))\\sqrt{n}$ via B₂ sequences. Derives corollary `f_grows_at_least_sqrt`: $\\exists C > 0, f(n) \\geq C\\sqrt{n}$ eventually. The proof partially uses `weisenberg_lower_bound` but has a sorry in the little-o extraction.",
+      "mathContext": "Axiomatizes Weisenberg's bound: $f(n) \\geq (2+o(1))\\sqrt{n}$ via B₂ sequences. Derives corollary `f_grows_at_least_sqrt`: $\\exists C > 0, f(n) \\geq C\\sqrt{n}$ eventually. The proof partially uses `wei"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "startLine": 132,
       "endLine": 150,
-      "summary": "Formalizes the open question as `Erdos357Conjecture := f =_o(\\text{id})$ using Mathlib's `isLittleO` at `atTop`. Provides alternative formulation `Erdos357ConjectureAlt` via $f(n)/n \\to 0$ and states their equivalence (sorry)."
+      "summary": "Formalizes the open question as `Erdos357Conjecture := f =_o(\\text{id})$ using Mathlib's `isLittleO` at `atTop`. Provides alternative formulation `Erdos357ConjectureAlt` via $f(n)/n \\to 0$ and states their equivalence (sorry).",
+      "mathContext": "Formalizes the open question as `Erdos357Conjecture := f =_o(\\text{id})$ using Mathlib's `isLittleO` at `atTop`. Provides alternative formulation `Erdos357ConjectureAlt` via $f(n)/n \\to 0$ and states "
     },
     {
       "id": "variant-g",
       "title": "Non-Monotone Variant g(n)",
       "startLine": 151,
       "endLine": 173,
-      "summary": "Defines $g(n)$ without monotonicity requirement. Proves $g(n) \\geq f(n)$ (sorry). Axiomatizes Hegyvári (1986): $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$, showing $g(n) = \\Theta(n)$ — dramatically different from the conjectured $f(n) = o(n)$."
+      "summary": "Defines $g(n)$ without monotonicity requirement. Proves $g(n) \\geq f(n)$ (sorry). Axiomatizes Hegyvári (1986): $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$, showing $g(n) = \\Theta(n)$ — dramatically different from the conjectured $f(n) = o(n)$.",
+      "mathContext": "Defines $g(n)$ without monotonicity requirement. Proves $g(n) \\geq f(n)$ (sorry). Axiomatizes Hegyvári (1986): $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$, showing $g(n) = \\Theta(n)$ — dramatically diffe"
     },
     {
       "id": "variant-h",
       "title": "Weakly Monotone Variant h(n)",
       "startLine": 174,
       "endLine": 191,
-      "summary": "Defines $h(n)$ with weak monotonicity ($a_i \\leq a_{i+1}$, ties allowed). Shows $f(n) \\leq h(n)$ (sorry). Poses `MonotoneConjecture: h(n) = o(n)`, interpolating between the strictly monotone and unrestricted cases."
+      "summary": "Defines $h(n)$ with weak monotonicity ($a_i \\leq a_{i+1}$, ties allowed). Shows $f(n) \\leq h(n)$ (sorry). Poses `MonotoneConjecture: h(n) = o(n)`, interpolating between the strictly monotone and unrestricted cases.",
+      "mathContext": "Defines $h(n)$ with weak monotonicity ($a_i \\leq a_{i+1}$, ties allowed). Shows $f(n) \\leq h(n)$ (sorry). Poses `MonotoneConjecture: h(n) = o(n)`, interpolating between the strictly monotone and unres"
     },
     {
       "id": "infinite-sets",
       "title": "Infinite Sets",
       "startLine": 192,
       "endLine": 210,
-      "summary": "Defines `InfiniteDistinctSums` for infinite strictly monotone sequences. Axiomatizes lower density 0 via `Filter.liminf`. States two open conjectures: full density 0 (`InfiniteDensityZeroConjecture`) and $\\sum 1/a_k$ convergence (`InfiniteSumConvergesConjecture`)."
+      "summary": "Defines `InfiniteDistinctSums` for infinite strictly monotone sequences. Axiomatizes lower density 0 via `Filter.liminf`. States two open conjectures: full density 0 (`InfiniteDensityZeroConjecture`) and $\\sum 1/a_k$ convergence (`InfiniteSumConvergesConjecture`).",
+      "mathContext": "Defines `InfiniteDistinctSums` for infinite strictly monotone sequences. Axiomatizes lower density 0 via `Filter.liminf`. States two open conjectures: full density 0 (`InfiniteDensityZeroConjecture`) "
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 211,
       "endLine": 231,
-      "summary": "Proves $\\{1\\}$ has distinct sums (by `simp`). States $\\{1,2\\}$ (sums 1,2,3) and $\\{1,2,4\\}$ (sums 1,2,4,3,6,7) as sorry lemmas. Axiomatizes that powers of 2 $\\{2^0, 2^1, 2^2, \\ldots\\}$ have all consecutive sums distinct via binary representation uniqueness."
+      "summary": "Proves $\\{1\\}$ has distinct sums (by `simp`). States $\\{1,2\\}$ (sums 1,2,3) and $\\{1,2,4\\}$ (sums 1,2,4,3,6,7) as sorry lemmas. Axiomatizes that powers of 2 $\\{2^0, 2^1, 2^2, \\ldots\\}$ have all consecutive sums distinct via binary representation uniqueness.",
+      "mathContext": "Proves $\\{1\\}$ has distinct sums (by `simp`). States $\\{1,2\\}$ (sums 1,2,3) and $\\{1,2,4\\}$ (sums 1,2,4,3,6,7) as sorry lemmas. Axiomatizes that powers of 2 $\\{2^0, 2^1, 2^2, \\ldots\\}$ have all consec"
     },
     {
       "id": "b2-connection",
       "title": "B₂ Sequences",
       "startLine": 232,
       "endLine": 250,
-      "summary": "Defines `IsB2Sequence` (all pairwise sums $a_i + a_j$ distinct). States `B2_implies_distinct_consecutive` (sorry): B₂ $\\Rightarrow$ distinct consecutive sums. Axiomatizes B₂ max size $(1+o(1))\\sqrt{n}$ (Erdős-Turán 1941), the key ingredient for Weisenberg's bound."
+      "summary": "Defines `IsB2Sequence` (all pairwise sums $a_i + a_j$ distinct). States `B2_implies_distinct_consecutive` (sorry): B₂ $\\Rightarrow$ distinct consecutive sums. Axiomatizes B₂ max size $(1+o(1))\\sqrt{n}$ (Erdős-Turán 1941), the key ingredient for Weisenberg's bound.",
+      "mathContext": "Defines `IsB2Sequence` (all pairwise sums $a_i + a_j$ distinct). States `B2_implies_distinct_consecutive` (sorry): B₂ $\\Rightarrow$ distinct consecutive sums. Axiomatizes B₂ max size $(1+o(1))\\sqrt{n}"
     },
     {
       "id": "related",
       "title": "Related Problems",
       "startLine": 251,
       "endLine": 303,
-      "summary": "Defines `HasDistinctSubsetSums` (Problem #874, all $2^k$ subset sums distinct) with `subset_sums_implies_consecutive` (sorry). Defines `HasDistinctConsecutiveProducts` (Problem #421, multiplicative analogue). Establishes the hierarchy: distinct subset sums $\\subset$ distinct consecutive sums."
+      "summary": "Defines `HasDistinctSubsetSums` (Problem #874, all $2^k$ subset sums distinct) with `subset_sums_implies_consecutive` (sorry). Defines `HasDistinctConsecutiveProducts` (Problem #421, multiplicative analogue). Establishes the hierarchy: distinct subset sums $\\subset$ distinct consecutive sums.",
+      "mathContext": "Defines `HasDistinctSubsetSums` (Problem #874, all $2^k$ subset sums distinct) with `subset_sums_implies_consecutive` (sorry). Defines `HasDistinctConsecutiveProducts` (Problem #421, multiplicative an"
     }
   ],
   "crossReferences": [

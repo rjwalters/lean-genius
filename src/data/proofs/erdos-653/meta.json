@@ -90,77 +90,88 @@
       "title": "Point Configuration",
       "summary": "euclidDist, PointConfig definitions",
       "startLine": 38,
-      "endLine": 54
+      "endLine": 54,
+      "mathContext": "euclidDist, PointConfig definitions"
     },
     {
       "id": "distance-count",
       "title": "Distinct Distance Count",
       "summary": "distanceSet, distinctDistCount (R function)",
       "startLine": 55,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "distanceSet, distinctDistCount (R function)"
     },
     {
       "id": "g-function",
       "title": "The Function g(n)",
       "summary": "rValueSet, numDistinctRValues, g definition",
       "startLine": 73,
-      "endLine": 97
+      "endLine": 97,
+      "mathContext": "rValueSet, numDistinctRValues, g definition"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "erdos_fishburn_bound, csizmadia_bound, upper_bound",
       "startLine": 98,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "erdos_fishburn_bound, csizmadia_bound, upper_bound"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "erdos653Conjecture definition",
       "startLine": 126,
-      "endLine": 139
+      "endLine": 139,
+      "mathContext": "erdos653Conjecture definition"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "g_pos, g_le_n, g_mono axioms",
       "startLine": 140,
-      "endLine": 159
+      "endLine": 159,
+      "mathContext": "g_pos, g_le_n, g_mono axioms"
     },
     {
       "id": "special-configs",
       "title": "Special Configurations",
       "summary": "IsCollinear, IsRegularPolygon, regular_polygon_r_value",
       "startLine": 160,
-      "endLine": 188
+      "endLine": 188,
+      "mathContext": "IsCollinear, IsRegularPolygon, regular_polygon_r_value"
     },
     {
       "id": "extremal-configs",
       "title": "Extremal Configurations",
       "summary": "IsOptimalConfig, optimal_exists",
       "startLine": 189,
-      "endLine": 206
+      "endLine": 206,
+      "mathContext": "IsOptimalConfig, optimal_exists"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Analysis",
       "summary": "gap_lower_bound, gap_bounds axioms",
       "startLine": 207,
-      "endLine": 225
+      "endLine": 225,
+      "mathContext": "gap_lower_bound, gap_bounds axioms"
     },
     {
       "id": "connections",
       "title": "Connection to Unit Distance Problem",
       "summary": "unitDistPairs, totalDistinctDistances",
       "startLine": 226,
-      "endLine": 245
+      "endLine": 245,
+      "mathContext": "unitDistPairs, totalDistinctDistances"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_653_summary theorem, erdos_653 theorem",
       "startLine": 246,
-      "endLine": 276
+      "endLine": 276,
+      "mathContext": "erdos_653_summary theorem, erdos_653 theorem"
     }
   ],
   "conclusion": {

@@ -56,56 +56,64 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Documents the two-part problem, references to Erdős [Er92c, Er97, Er97e], Erdős-Freud [ErFr91], and OEIS A143824."
+      "summary": "Documents the two-part problem, references to Erdős [Er92c, Er97, Er97e], Erdős-Freud [ErFr91], and OEIS A143824.",
+      "mathContext": "Documents the two-part problem, references to Erdős [Er92c, Er97, Er97e], Erdős-Freud [ErFr91], and OEIS A143824."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 23,
       "endLine": 29,
-      "summary": "Imports Mathlib's asymptotics library and finset basics. Opens `Finset`, `Filter`, `Asymptotics` for `atTop`, `∀ᶠ`, `∃ᶠ`."
+      "summary": "Imports Mathlib's asymptotics library and finset basics. Opens `Finset`, `Filter`, `Asymptotics` for `atTop`, `∀ᶠ`, `∃ᶠ`.",
+      "mathContext": "Imports Mathlib's asymptotics library and finset basics. Opens `Finset`, `Filter`, `Asymptotics` for `atTop`, `∀ᶠ`, `∃ᶠ`."
     },
     {
       "id": "unique-sums",
       "title": "Unique Sums Definition",
       "startLine": 30,
       "endLine": 39,
-      "summary": "Defines `uniqueSums A` for finite $A$: integers with exactly one representation as $a+b$ ($a \\leq b$). Uses `Finset.filter` with `.card = 1`."
+      "summary": "Defines `uniqueSums A` for finite $A$: integers with exactly one representation as $a+b$ ($a \\leq b$). Uses `Finset.filter` with `.card = 1`.",
+      "mathContext": "Defines `uniqueSums A` for finite $A$: integers with exactly one representation as $a+b$ ($a \\leq b$). Uses `Finset.filter` with `.card = 1`."
     },
     {
       "id": "counting",
       "title": "Non-Unique Sum Counting Functions",
       "startLine": 40,
       "endLine": 51,
-      "summary": "Defines `nonUniqueSumCount` (finite) and `nonUniqueSumCountInf` (infinite via `Set.ncard`) — the quantity $f_A(N) = |\\{1,\\ldots,N\\} \\setminus B|$."
+      "summary": "Defines `nonUniqueSumCount` (finite) and `nonUniqueSumCountInf` (infinite via `Set.ncard`) — the quantity $f_A(N) = |\\{1,\\ldots,N\\} \\setminus B|$.",
+      "mathContext": "Defines `nonUniqueSumCount` (finite) and `nonUniqueSumCountInf` (infinite via `Set.ncard`) — the quantity $f_A(N) = |\\{1,\\ldots,N\\} \\setminus B|$."
     },
     {
       "id": "conjectures",
       "title": "Main Conjectures (14a and 14b)",
       "startLine": 52,
       "endLine": 66,
-      "summary": "States (a) $f_A(N) \\gg N^{1/2-\\varepsilon}$ eventually and (b) $\\exists A$ with $f_A(N) = o(\\sqrt{N})$, using `∀ᶠ` and filter quantifiers."
+      "summary": "States (a) $f_A(N) \\gg N^{1/2-\\varepsilon}$ eventually and (b) $\\exists A$ with $f_A(N) = o(\\sqrt{N})$, using `∀ᶠ` and filter quantifiers.",
+      "mathContext": "States (a) $f_A(N) \\gg N^{1/2-\\varepsilon}$ eventually and (b) $\\exists A$ with $f_A(N) = o(\\sqrt{N})$, using `∀ᶠ` and filter quantifiers."
     },
     {
       "id": "ess-bounds",
       "title": "Erdős-Sárközy-Szemerédi Bounds",
       "startLine": 67,
       "endLine": 82,
-      "summary": "Upper: $\\exists A$ with $f_A(N) \\leq CN^{1/2+\\varepsilon}$ eventually. Lower: same $A$ has $f_A(N) \\geq CN^{1/3-\\varepsilon}$ frequently."
+      "summary": "Upper: $\\exists A$ with $f_A(N) \\leq CN^{1/2+\\varepsilon}$ eventually. Lower: same $A$ has $f_A(N) \\geq CN^{1/3-\\varepsilon}$ frequently.",
+      "mathContext": "Upper: $\\exists A$ with $f_A(N) \\leq CN^{1/2+\\varepsilon}$ eventually. Lower: same $A$ has $f_A(N) \\geq CN^{1/3-\\varepsilon}$ frequently."
     },
     {
       "id": "erdos-freud",
       "title": "Erdős-Freud Finite Analogue",
       "startLine": 83,
       "endLine": 89,
-      "summary": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < 2^{3/2}\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal."
+      "summary": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < 2^{3/2}\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal.",
+      "mathContext": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < 2^{3/2}\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
       "startLine": 90,
       "endLine": 103,
-      "summary": "Sidon sets give $f_A(N) \\geq N/2$ (perfect uniqueness, poor coverage). Monotonicity: $M \\leq N \\implies f_A(M) \\leq f_A(N)$."
+      "summary": "Sidon sets give $f_A(N) \\geq N/2$ (perfect uniqueness, poor coverage). Monotonicity: $M \\leq N \\implies f_A(M) \\leq f_A(N)$.",
+      "mathContext": "Sidon sets give $f_A(N) \\geq N/2$ (perfect uniqueness, poor coverage). Monotonicity: $M \\leq N \\implies f_A(M) \\leq f_A(N)$."
     }
   ],
   "conclusion": {

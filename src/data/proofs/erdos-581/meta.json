@@ -84,56 +84,64 @@
       "title": "Basic Definitions",
       "summary": "IsTriangleFree, IsBipartite, edgeCount, IsSubgraph",
       "startLine": 33,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "IsTriangleFree, IsBipartite, edgeCount, IsSubgraph"
     },
     {
       "id": "f-function",
       "title": "The Function f(m)",
       "summary": "maxBipartiteEdges axiom, f axiom",
       "startLine": 71,
-      "endLine": 95
+      "endLine": 95,
+      "mathContext": "maxBipartiteEdges axiom, f axiom"
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "summary": "half_edges_bipartite: any graph has m/2 bipartite edges",
       "startLine": 96,
-      "endLine": 112
+      "endLine": 112,
+      "mathContext": "half_edges_bipartite: any graph has m/2 bipartite edges"
     },
     {
       "id": "alon-upper",
       "title": "Alon's Upper Bound",
       "summary": "f(m) ≤ m/2 + c₂·m^{4/5}, constant c₂",
       "startLine": 113,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "f(m) ≤ m/2 + c₂·m^{4/5}, constant c₂"
     },
     {
       "id": "alon-lower",
       "title": "Alon's Lower Bound",
       "summary": "f(m) ≥ m/2 + c₁·m^{4/5}, constant c₁",
       "startLine": 142,
-      "endLine": 170
+      "endLine": 170,
+      "mathContext": "f(m) ≥ m/2 + c₁·m^{4/5}, constant c₁"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Characterization",
       "summary": "ThetaBound definition, alon_main_theorem",
       "startLine": 171,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "ThetaBound definition, alon_main_theorem"
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "general_graph_bound, Mantel's theorem, Kővári-Sós-Turán",
       "startLine": 197,
-      "endLine": 234
+      "endLine": 234,
+      "mathContext": "general_graph_bound, Mantel's theorem, Kővári-Sós-Turán"
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_581 theorem, erdos_581_summary",
       "startLine": 235,
-      "endLine": 281
+      "endLine": 281,
+      "mathContext": "erdos_581 theorem, erdos_581_summary"
     }
   ],
   "conclusion": {

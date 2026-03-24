@@ -83,56 +83,64 @@
       "title": "Imports",
       "summary": "Imports `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic` (providing `charmatrix`, `charpoly`, `aeval_self_charpoly`), `Mathlib.LinearAlgebra.Matrix.Adjugate` (providing `adjugate_mul`, `mul_adjugate`), and `Mathlib.RingTheory.PolynomialAlgebra` (providing `matPolyEquiv`).",
       "startLine": 1,
-      "endLine": 5
+      "endLine": 5,
+      "mathContext": "Imports `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic` (providing `charmatrix`, `charpoly`, `aeval_self_charpoly`), `Mathlib.LinearAlgebra.Matrix.Adjugate` (providing `adjugate_mul`, `mul_adjugate`), a"
     },
     {
       "id": "adjugate-identity",
       "title": "The Adjugate Identity (Cramer's Rule Core)",
       "summary": "Recalls both forms of the adjugate identity: `A * adj(A) = det(A) * I` and `adj(A) * A = det(A) * I`. These are the algebraic foundation of Cramer's Rule.",
       "startLine": 56,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "Recalls both forms of the adjugate identity: `A * adj(A) = det(A) * I` and `adj(A) * A = det(A) * I`. These are the algebraic foundation of Cramer's Rule."
     },
     {
       "id": "charmatrix-application",
       "title": "Applying Cramer to the Characteristic Matrix",
       "summary": "Applies the left adjugate identity to `charmatrix M = λI - M`, giving `adj(λI - M) * (λI - M) = charpoly(M) * I`. This is Cramer's Rule applied to a polynomial matrix.",
       "startLine": 82,
-      "endLine": 121
+      "endLine": 121,
+      "mathContext": "Applies the left adjugate identity to `charmatrix M = λI - M`, giving `adj(λI - M) * (λI - M) = charpoly(M) * I`. This is Cramer's Rule applied to a polynomial matrix."
     },
     {
       "id": "matpolyequiv-bridge",
       "title": "The matPolyEquiv Bridge",
       "summary": "Uses the algebra isomorphism `matPolyEquiv` to transfer the Cramer identity from `Matrix n n R[X]` to `(Matrix n n R)[X]`, converting `charmatrix M` to `X - C M`.",
       "startLine": 122,
-      "endLine": 171
+      "endLine": 171,
+      "mathContext": "Uses the algebra isomorphism `matPolyEquiv` to transfer the Cramer identity from `Matrix n n R[X]` to `(Matrix n n R)[X]`, converting `charmatrix M` to `X - C M`."
     },
     {
       "id": "evaluation-step",
       "title": "The Evaluation Step",
       "summary": "Uses `eval_mul_X_sub_C` to show that evaluating `B(X) * (X - M)` at `X = M` gives 0. This is the algebraic heart of the proof.",
       "startLine": 172,
-      "endLine": 221
+      "endLine": 221,
+      "mathContext": "Uses `eval_mul_X_sub_C` to show that evaluating `B(X) * (X - M)` at `X = M` gives 0. This is the algebraic heart of the proof."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Cayley-Hamilton from Cramer",
       "summary": "The main theorem: `aeval M (charpoly M) = 0`, derived as a corollary of the adjugate identity. Includes both the short proof via Mathlib's `aeval_self_charpoly` and an explicit step-by-step derivation.",
       "startLine": 222,
-      "endLine": 261
+      "endLine": 261,
+      "mathContext": "The main theorem: `aeval M (charpoly M) = 0`, derived as a corollary of the adjugate identity. Includes both the short proof via Mathlib's `aeval_self_charpoly` and an explicit step-by-step derivation"
     },
     {
       "id": "further-corollaries",
       "title": "Further Corollaries",
       "summary": "Additional results including the matrix inverse formula (Cramer → A⁻¹ = Ring.inverse(det A) * adj(A)), the charpoly-as-determinant formula, and the monic property of charpoly.",
       "startLine": 262,
-      "endLine": 282
+      "endLine": 282,
+      "mathContext": "Additional results including the matrix inverse formula (Cramer → A⁻¹ = Ring.inverse(det A) * adj(A)), the charpoly-as-determinant formula, and the monic property of charpoly."
     },
     {
       "id": "unified-picture",
       "title": "The Unified Picture",
       "summary": "The capstone theorem `cramer_implies_cayley_hamilton` formally states that Cayley-Hamilton follows as a corollary of the adjugate identity. Takes the adjugate identity as a hypothesis and derives aeval M (charpoly M) = 0.",
       "startLine": 282,
-      "endLine": 282
+      "endLine": 282,
+      "mathContext": "The capstone theorem `cramer_implies_cayley_hamilton` formally states that Cayley-Hamilton follows as a corollary of the adjugate identity. Takes the adjugate identity as a hypothesis and derives aeva"
     }
   ],
   "conclusion": {

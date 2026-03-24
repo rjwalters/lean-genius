@@ -82,70 +82,80 @@
       "title": "Header and Imports",
       "summary": "Problem documentation referencing Erdős-Pyber-Tuza (1991), Clemen-Wagner (2023), and Axenovich-Clemen (2024); imports SimpleGraph, Finset, Fintype, and tactics",
       "startLine": 1,
-      "endLine": 35
+      "endLine": 35,
+      "mathContext": "Problem documentation referencing Erdős-Pyber-Tuza (1991), Clemen-Wagner (2023), and Axenovich-Clemen (2024); imports SimpleGraph, Finset, Fintype, and tactics"
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines completeEdgeCount (n choose 2), EdgeColoring structure with symmetry/irreflexivity, and noncomputable colorDegree via Finset filtering",
       "startLine": 36,
-      "endLine": 52
+      "endLine": 52,
+      "mathContext": "Defines completeEdgeCount (n choose 2), EdgeColoring structure with symmetry/irreflexivity, and noncomputable colorDegree via Finset filtering"
     },
     {
       "id": "balanced",
       "title": "Balanced Colorings",
       "summary": "IsBalanced predicate (uniform color degree) and balanced_existence axiom requiring n ≡ 1 (mod m)",
       "startLine": 53,
-      "endLine": 64
+      "endLine": 64,
+      "mathContext": "IsBalanced predicate (uniform color degree) and balanced_existence axiom requiring n ≡ 1 (mod m)"
     },
     {
       "id": "rainbow",
       "title": "Rainbow Subgraphs",
       "summary": "GraphEmbedding (injective vertex map), IsRainbow (edge-color injectivity), ContainsRainbow (existential rainbow copy)",
       "startLine": 65,
-      "endLine": 84
+      "endLine": 84,
+      "mathContext": "GraphEmbedding (injective vertex map), IsRainbow (edge-color injectivity), ContainsRainbow (existential rainbow copy)"
     },
     {
       "id": "rainbow-property",
       "title": "The Rainbow Property",
       "summary": "HasRainbowProperty: for large n ≡ 1 (mod m), every balanced coloring contains a rainbow G",
       "startLine": 85,
-      "endLine": 94
+      "endLine": 94,
+      "mathContext": "HasRainbowProperty: for large n ≡ 1 (mod m), every balanced coloring contains a rainbow G"
     },
     {
       "id": "known-results",
       "title": "Known Results: K₄ and Complete Graphs",
       "summary": "Clemen-Wagner axiom (K₄ fails), Axenovich-Clemen axiom (infinitely many K_m fail), and the AxenovichClemenConjecture (all K_m fail for m ≥ 4)",
       "startLine": 95,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "Clemen-Wagner axiom (K₄ fails), Axenovich-Clemen axiom (infinitely many K_m fail), and the AxenovichClemenConjecture (all K_m fail for m ≥ 4)"
     },
     {
       "id": "quantitative",
       "title": "Quantitative Version: Rainbow Minimum Degree",
       "summary": "Axiomatized rainbowMinDegree function; Erdős-Tuza bounds for C₄: ⌊n/6⌋ ≤ d_{C₄}(n) ≤ (1/4 - c)n",
       "startLine": 117,
-      "endLine": 134
+      "endLine": 134,
+      "mathContext": "Axiomatized rainbowMinDegree function; Erdős-Tuza bounds for C₄: ⌊n/6⌋ ≤ d_{C₄}(n) ≤ (1/4 - c)n"
     },
     {
       "id": "erdos-challenge",
       "title": "Erdős's Specific Challenge",
       "summary": "ErdosChallenge: rainbow C₆ or K₄ in balanced 6-colorings of K_{6n+1}; K₄ part resolved negatively",
       "startLine": 135,
-      "endLine": 153
+      "endLine": 153,
+      "mathContext": "ErdosChallenge: rainbow C₆ or K₄ in balanced 6-colorings of K_{6n+1}; K₄ part resolved negatively"
     },
     {
       "id": "small-cases",
       "title": "Small Cases: Trees and Stars",
       "summary": "Axioms: trees have the rainbow property (folklore); stars K_{1,m} have the rainbow property",
       "startLine": 154,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "Axioms: trees have the rainbow property (folklore); stars K_{1,m} have the rainbow property"
     },
     {
       "id": "summary",
       "title": "Main Theorem and Summary",
       "summary": "erdos_811 combines K₄ failure and infinitely-many-K_m failure as conjunction; proved by pairing axioms",
       "startLine": 168,
-      "endLine": 193
+      "endLine": 193,
+      "mathContext": "erdos_811 combines K₄ failure and infinitely-many-K_m failure as conjunction; proved by pairing axioms"
     }
   ],
   "conclusion": {

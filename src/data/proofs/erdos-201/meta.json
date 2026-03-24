@@ -46,70 +46,80 @@
       "title": "Library Imports",
       "startLine": 23,
       "endLine": 26,
-      "summary": "Imports Mathlib for `Finset`, cardinality, $\\mathbb{Z}$-arithmetic, and tactics."
+      "summary": "Imports Mathlib for `Finset`, cardinality, $\\mathbb{Z}$-arithmetic, and tactics.",
+      "mathContext": "Imports Mathlib for `Finset`, cardinality, $\\mathbb{Z}$-arithmetic, and tactics."
     },
     {
       "id": "ap-definitions",
       "title": "Arithmetic Progressions and AP-Free Sets",
       "startLine": 33,
       "endLine": 39,
-      "summary": "Defines ContainsAPOfLength$(A, k)$ via $\\exists a, d \\neq 0: \\{a, a+d, \\ldots\\} \\subseteq A$ and IsAPFree as its negation."
+      "summary": "Defines ContainsAPOfLength$(A, k)$ via $\\exists a, d \\neq 0: \\{a, a+d, \\ldots\\} \\subseteq A$ and IsAPFree as its negation.",
+      "mathContext": "Defines ContainsAPOfLength$(A, k)$ via $\\exists a, d \\neq 0: \\{a, a+d, \\ldots\\} \\subseteq A$ and IsAPFree as its negation."
     },
     {
       "id": "structural-lemmas",
       "title": "Structural Lemmas (Proved)",
       "startLine": 42,
       "endLine": 57,
-      "summary": "AP transfer ($k \\leq l$ AP containment), AP-freeness inheritance ($k$-free $\\implies$ $l$-free), and subset closure — all proved in Lean."
+      "summary": "AP transfer ($k \\leq l$ AP containment), AP-freeness inheritance ($k$-free $\\implies$ $l$-free), and subset closure — all proved in Lean.",
+      "mathContext": "AP transfer ($k \\leq l$ AP containment), AP-freeness inheritance ($k$-free $\\implies$ $l$-free), and subset closure — all proved in Lean."
     },
     {
       "id": "rk-definition",
       "title": "$R_k(N)$ Definition",
       "startLine": 64,
       "endLine": 67,
-      "summary": "$R_k(N) = \\sup\\{|A| : A \\subseteq \\text{Icc}\\,1\\,N, \\text{IsAPFree}\\,A\\,k\\}$ via powerset filtration."
+      "summary": "$R_k(N) = \\sup\\{|A| : A \\subseteq \\text{Icc}\\,1\\,N, \\text{IsAPFree}\\,A\\,k\\}$ via powerset filtration.",
+      "mathContext": "$R_k(N) = \\sup\\{|A| : A \\subseteq \\text{Icc}\\,1\\,N, \\text{IsAPFree}\\,A\\,k\\}$ via powerset filtration."
     },
     {
       "id": "gk-definition",
       "title": "$G_k(N)$ Definition and Properties",
       "startLine": 74,
       "endLine": 83,
-      "summary": "$G_k(N)$ axiomatized with Prop-level characterization gk_prop$(k, N, m)$. Quantification over all $N$-element sets makes this non-computable."
+      "summary": "$G_k(N)$ axiomatized with Prop-level characterization gk_prop$(k, N, m)$. Quantification over all $N$-element sets makes this non-computable.",
+      "mathContext": "$G_k(N)$ axiomatized with Prop-level characterization gk_prop$(k, N, m)$. Quantification over all $N$-element sets makes this non-computable."
     },
     {
       "id": "basic-bounds",
       "title": "Basic Bounds and Examples",
       "startLine": 89,
       "endLine": 100,
-      "summary": "$G_k(N) \\leq R_k(N)$ (trivial) with strict examples: $G_3(5) = 3 < 4 = R_3(5)$ and $G_3(14) \\leq 7 < 8 = R_3(14)$."
+      "summary": "$G_k(N) \\leq R_k(N)$ (trivial) with strict examples: $G_3(5) = 3 < 4 = R_3(5)$ and $G_3(14) \\leq 7 < 8 = R_3(14)$.",
+      "mathContext": "$G_k(N) \\leq R_k(N)$ (trivial) with strict examples: $G_3(5) = 3 < 4 = R_3(5)$ and $G_3(14) \\leq 7 < 8 = R_3(14)$."
     },
     {
       "id": "kss-bound",
       "title": "Komlós–Sulyok–Szemerédi Bound",
       "startLine": 108,
       "endLine": 109,
-      "summary": "$\\exists C > 0: R_k(N) \\leq C \\cdot G_k(N)$ for all $N$, establishing $R_k \\asymp G_k$ (1975)."
+      "summary": "$\\exists C > 0: R_k(N) \\leq C \\cdot G_k(N)$ for all $N$, establishing $R_k \\asymp G_k$ (1975).",
+      "mathContext": "$\\exists C > 0: R_k(N) \\leq C \\cdot G_k(N)$ for all $N$, establishing $R_k \\asymp G_k$ (1975)."
     },
     {
       "id": "main-conjecture",
       "title": "The Open Conjecture",
       "startLine": 119,
       "endLine": 122,
-      "summary": "ErdosProblem201: $\\forall \\varepsilon > 0, \\exists N_0: \\forall N \\geq N_0, R_3(N) \\leq (1 + \\varepsilon) \\cdot G_3(N)$."
+      "summary": "ErdosProblem201: $\\forall \\varepsilon > 0, \\exists N_0: \\forall N \\geq N_0, R_3(N) \\leq (1 + \\varepsilon) \\cdot G_3(N)$.",
+      "mathContext": "ErdosProblem201: $\\forall \\varepsilon > 0, \\exists N_0: \\forall N \\geq N_0, R_3(N) \\leq (1 + \\varepsilon) \\cdot G_3(N)$."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties (Proved)",
       "startLine": 129,
       "endLine": 149,
-      "summary": "$R_k$ monotone in $N$ and anti-monotone in $k$, both proved structurally using Icc nesting and AP transfer."
+      "summary": "$R_k$ monotone in $N$ and anti-monotone in $k$, both proved structurally using Icc nesting and AP transfer.",
+      "mathContext": "$R_k$ monotone in $N$ and anti-monotone in $k$, both proved structurally using Icc nesting and AP transfer."
     },
     {
       "id": "consequences",
       "title": "Consequences and Base Cases",
       "startLine": 156,
       "endLine": 197,
-      "summary": "Proved: $G_3(5) < R_3(5)$, empty/singleton AP-freeness, $R_k(N) \\geq 1$, and a summary theorem via `Classical.em`."
+      "summary": "Proved: $G_3(5) < R_3(5)$, empty/singleton AP-freeness, $R_k(N) \\geq 1$, and a summary theorem via `Classical.em`.",
+      "mathContext": "Proved: $G_3(5) < R_3(5)$, empty/singleton AP-freeness, $R_k(N) \\geq 1$, and a summary theorem via `Classical.em`."
     }
   ],
   "conclusion": {

@@ -85,56 +85,64 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 30,
-      "summary": "File header with problem statement, references (Erdos 1998, Kovac-Luca 2025), status (OPEN). Imports `Nat.Basic`, `Finset.Basic`, `Real.Basic`, `Filter.Basic`, `Tactic`. Opens `Finset`, declares `Erdos893` namespace."
+      "summary": "File header with problem statement, references (Erdos 1998, Kovac-Luca 2025), status (OPEN). Imports `Nat.Basic`, `Finset.Basic`, `Real.Basic`, `Filter.Basic`, `Tactic`. Opens `Finset`, declares `Erdos893` namespace.",
+      "mathContext": "File header with problem statement, references (Erdos 1998, Kovac-Luca 2025), status (OPEN). Imports `Nat.Basic`, `Finset.Basic`, `Real.Basic`, `Filter.Basic`, `Tactic`. Opens `Finset`, declares `Erdo"
     },
     {
       "id": "sec-893-tau",
       "title": "Divisor Counting Function $\\tau$",
       "startLine": 31,
       "endLine": 71,
-      "summary": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau(2^k-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors."
+      "summary": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau(2^k-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors.",
+      "mathContext": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau(2^k-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors."
     },
     {
       "id": "sec-893-f",
       "title": "Cumulative Sum $f(n)$",
       "startLine": 72,
       "endLine": 110,
-      "summary": "Defines `f n` as $\\sum_{k=1}^n \\tau(2^k-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`."
+      "summary": "Defines `f n` as $\\sum_{k=1}^n \\tau(2^k-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`.",
+      "mathContext": "Defines `f n` as $\\sum_{k=1}^n \\tau(2^k-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`."
     },
     {
       "id": "sec-893-mono",
       "title": "Monotonicity and Positivity",
       "startLine": 111,
       "endLine": 125,
-      "summary": "Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$."
+      "summary": "Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$.",
+      "mathContext": "Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$."
     },
     {
       "id": "sec-893-ratio",
       "title": "The Ratio $f(2n)/f(n)$",
       "startLine": 126,
       "endLine": 140,
-      "summary": "Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$."
+      "summary": "Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$.",
+      "mathContext": "Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$."
     },
     {
       "id": "sec-893-known",
       "title": "Known Results: Kovac-Luca",
       "startLine": 141,
       "endLine": 156,
-      "summary": "Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction."
+      "summary": "Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction.",
+      "mathContext": "Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction."
     },
     {
       "id": "sec-893-main",
       "title": "Main Question: $f(2n)/f(n) \\to \\infty$",
       "startLine": 157,
       "endLine": 173,
-      "summary": "States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement."
+      "summary": "States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement.",
+      "mathContext": "States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement."
     },
     {
       "id": "sec-893-summary",
       "title": "Summary Theorem",
       "startLine": 174,
       "endLine": 187,
-      "summary": "Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness."
+      "summary": "Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness.",
+      "mathContext": "Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness."
     }
   ],
   "conclusion": {
