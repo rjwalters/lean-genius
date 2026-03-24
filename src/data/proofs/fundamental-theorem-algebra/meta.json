@@ -248,6 +248,46 @@
       "id": "liouville-theorem",
       "relationship": "uses",
       "description": "The Mathlib proof of FTA relies on Liouville's theorem (bounded entire function is constant): if p(z) ≠ 0 everywhere, then 1/p is bounded entire, hence constant — contradiction"
+    },
+    {
+      "id": "general-quartic",
+      "relationship": "specializes",
+      "description": "Ferrari's quartic formula provides explicit complex roots for degree-4 polynomials; FTA guarantees such roots exist for "
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem on subgroup orders underpins the group-theoretic proof of FTA via Sylow theory: the non-existence of "
+    },
+    {
+      "id": "vietas-formulas",
+      "relationship": "complementary",
+      "description": "Vieta's formulas express polynomial coefficients as elementary symmetric functions of roots: $a_{n-k}/a_n = (-1)^k e_k(r"
+    },
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root (by IVT, since it"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Both FTA and Brouwer's fixed point theorem are topological results about continuous maps on compact sets. The topologica"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} = -1$ reveals the structure of $\\mathbb{C}$ that makes FTA true: the complex exponential $e^{"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "complementary",
+      "description": "FTA guarantees that all polynomial roots exist in $\\mathbb{C}$, while the area-of-circle formalization uses $\\mathbb{C} "
+    },
+    {
+      "id": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem ($p_A(A) = 0$ for the characteristic polynomial $p_A$) combined with FTA guarantees every co"
     }
   ],
   "references": [
