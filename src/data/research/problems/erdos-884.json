@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T10:46:46.306Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,12 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 12 axioms, divisorList is noncomputable so no native_decide. Most axioms are structural or the open conjecture.",
-    "builtItems": [],
+    "progressSummary": "AXIOM CLEANUP: Proved 3 axioms (allPairsSum_nonneg, consecutivePairsSum_nonneg, numDivisors_mul_coprime). Axioms: 12→9.",
+    "builtItems": [
+      "theorem allPairsSum_nonneg: sum_nonneg + div_nonneg",
+      "theorem consecutivePairsSum_nonneg: sum_nonneg + div_nonneg",
+      "theorem numDivisors_mul_coprime: from Nat.Coprime.divisors_mul"
+    ],
     "insights": [
       "divisorList is noncomputable (prevents native_decide for concrete values like divisors_6)",
       "allPairsSum_nonneg and consecutivePairsSum_nonneg could be provable if sums over positive terms are proved to be non-negative",
-      "Main conjecture erdos_884 is open (though Tao considers it tractable)"
+      "Main conjecture erdos_884 is open (though Tao considers it tractable)",
+      "allPairsSum_nonneg and consecutivePairsSum_nonneg: trivially sums of 1/gap ≥ 0 terms",
+      "numDivisors_mul_coprime: in Mathlib as Nat.Coprime.divisors_mul + Finset.card_map"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -61,9 +67,9 @@
     {
       "path": "Proofs/Erdos884Problem.lean",
       "filename": "Erdos884Problem.lean",
-      "lineCount": 156,
-      "theoremCount": 2,
-      "axiomCount": 12,
+      "lineCount": 168,
+      "theoremCount": 5,
+      "axiomCount": 9,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,

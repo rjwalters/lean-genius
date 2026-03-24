@@ -60,9 +60,9 @@
       "divisorHarmonicSum definition: σ_{-1}(n)",
       "Examples: divisors of 6, prime divisors, prime case equality"
     ],
-    "axiomCount": 12,
-    "assumptions": "12 axiom declarations: divisor list properties (sorted, membership, positive gaps), the main conjecture (∃ C, allPairsSum ≤ C(1 + consecutivePairsSum)), nonnegativity of both sums, gap lower bound (general gaps ≥ consecutive gaps), multiplicativity of τ, and concrete examples (divisors of 6, prime divisors). Most encode basic divisor arithmetic properties.",
-    "lineCount": 155
+    "axiomCount": 9,
+    "assumptions": "9 axioms: divisorList_sorted, mem_divisorList_iff, consecutiveGap_pos, generalGap_pos, erdos_884 (main conjecture), divisors_6, divisors_prime, prime_case_equality, gap_lower_bound. 3 proved: allPairsSum_nonneg (sum_nonneg), consecutivePairsSum_nonneg (sum_nonneg), numDivisors_mul_coprime (Mathlib).",
+    "lineCount": 168
   },
   "overview": {
     "historicalContext": "Erdős Problem #884 appears in [Er98] and asks about the relationship between two sums over divisor gaps. Given the divisors d₁ < d₂ < ··· < d_t of a positive integer n, one can form either the all-pairs sum (summing 1/(d_j - d_i) over all i < j) or the consecutive-pairs sum (summing only over adjacent divisors). The question is whether the all-pairs sum is controlled by the consecutive-pairs sum up to an absolute constant.\n\nThe problem is related to Erdős Problem #144 on divisor arithmetic. Terence Tao has indicated that this problem appears tractable, suggesting it may be amenable to combinatorial or analytic arguments about divisor distributions.\n\nThe trivial observation is that for primes p, both sums equal 1/(p-1) since there is only one pair of divisors {1, p}. For composite numbers with many divisors, the all-pairs sum has O(τ²) terms while the consecutive-pairs sum has only O(τ) terms, making the conjectured bound non-trivial.",
@@ -214,9 +214,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos884",
-    "lineCount": 155,
-    "axiomCount": 12,
-    "theoremCount": 2,
+    "lineCount": 168,
+    "axiomCount": 9,
+    "theoremCount": 5,
     "definitionCount": 9
   }
 }
