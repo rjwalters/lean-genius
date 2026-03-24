@@ -122,7 +122,8 @@ theorem fourier_translate_halfperiod (n : ℤ) (hn : n ≠ 0) (x : AddCircle T) 
     2. Pointwise: (f(x)-f(x+s))·e_{-n}(x) = g(x) + g(x+s) where g = e_{-n}·f
     3. By Haar invariance: ∫ g(x+s) dμ = ∫ g(x) dμ
     4. Split: ∫ (g + g∘T) = ∫ g + ∫ g∘T = 2·∫ g = 2·ĉ_n(f) -/
-theorem fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0) :
+theorem fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0)
+    (hf_cont : Continuous f) :
     2 * fourierCoeff f n =
       ∫ x : AddCircle T,
         (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle := by
@@ -138,25 +139,26 @@ theorem fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn 
       fourier (-n) x • f x + fourier (-n) (x + s) • f (x + s) := by
     intro x; simp only [smul_eq_mul, hp x]; ring
   simp_rw [hpw]
+  -- Integrability: continuous on compact ⟹ integrable
+  have hint : Integrable (fun x => fourier (-n) x • f x) haarAddCircle := by
+    have hc : Continuous (fun x : AddCircle T => fourier (-n) x • f x) :=
+      (fourier (-n)).continuous.smul hf_cont
+    have : IntegrableOn (fun x => fourier (-n) x • f x) Set.univ haarAddCircle :=
+      hc.continuousOn.integrableOn_compact isCompact_univ
+    rwa [integrableOn_univ] at this
   -- Haar invariance: ∫ g(x+s) dμ = ∫ g(x) dμ where g(x) = e(-n)(x) • f(x)
   have haar : ∫ x : AddCircle T, fourier (-n) (x + s) • f (x + s) ∂haarAddCircle =
       ∫ x, fourier (-n) x • f x ∂haarAddCircle :=
     integral_add_right_eq_self (μ := haarAddCircle) (fun x => fourier (-n) x • f x) s
-  -- Split the integral into a sum using integrability
-  by_cases hint : Integrable (fun x => fourier (-n) x • f x) haarAddCircle
-  · -- Integrable: split ∫ (a + b) = ∫ a + ∫ b, then use Haar invariance
-    have h_split : ∫ x : AddCircle T,
-        fourier (-n) x • f x + fourier (-n) (x + s) • f (x + s) ∂haarAddCircle =
-        ∫ x, fourier (-n) x • f x ∂haarAddCircle +
-        ∫ x, fourier (-n) (x + s) • f (x + s) ∂haarAddCircle :=
-      integral_add hint ((measurePreserving_add_right haarAddCircle s).integrable_comp
-        hint.aestronglyMeasurable |>.mpr hint)
-    rw [h_split, haar]
-    unfold fourierCoeff; ring
-  · -- Non-integrable: both sides vanish (edge case, cannot occur for Hölder f)
-    have : fourierCoeff f n = 0 := integral_undef hint
-    rw [this, mul_zero]
-    sorry
+  -- Split the integral and use Haar invariance
+  have h_split : ∫ x : AddCircle T,
+      fourier (-n) x • f x + fourier (-n) (x + s) • f (x + s) ∂haarAddCircle =
+      ∫ x, fourier (-n) x • f x ∂haarAddCircle +
+      ∫ x, fourier (-n) (x + s) • f (x + s) ∂haarAddCircle :=
+    integral_add hint ((measurePreserving_add_right haarAddCircle s).integrable_comp
+      hint.aestronglyMeasurable |>.mpr hint)
+  rw [h_split, haar]
+  unfold fourierCoeff; ring
 
 /-- Hölder bound on translation differences:
     ‖f(x) - f(x + T/(2n))‖ ≤ C · (T/(2|n|))^α
@@ -237,9 +239,9 @@ PART IV: MAIN THEOREM — FOURIER COEFFICIENT DECAY
     2. Bound the integral: ‖...‖ ≤ C · (T/(2|n|))^α
     3. Divide by 2: ‖ĉ_n‖ ≤ (C/2) · (T/(2|n|))^α -/
 theorem fourierCoeff_holder_decay (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
-    (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) :
+    (hf : IsHolderOnCircle C α f) (hα : 0 < α) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ (↑C / 2) * (T / (2 * |↑n|)) ^ (α : ℝ) := by
-  have hdiff := fourierCoeff_difference_formula f n hn
+  have hdiff := fourierCoeff_difference_formula f n hn (holder_continuous hf hα)
   have hbound : ‖2 * fourierCoeff f n‖ ≤
       ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
     rw [hdiff]
@@ -257,7 +259,7 @@ PART V: COROLLARIES
 theorem fourierCoeff_lipschitz_decay (C : ℝ≥0) (f : AddCircle T → ℂ)
     (hf : LipschitzWith C f) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ (↑C / 2) * (T / (2 * |↑n|)) := by
-  have h := fourierCoeff_holder_decay C 1 f (lipschitz_is_holder_one hf) n hn
+  have h := fourierCoeff_holder_decay C 1 f (lipschitz_is_holder_one hf) one_pos n hn
   simp only [NNReal.coe_one, Real.rpow_one] at h
   exact h
 
@@ -343,9 +345,9 @@ theorem holder_parseval_range :
 
 /-- Synonym: quantitative Riemann-Lebesgue with explicit rate. -/
 theorem quantitative_riemannLebesgue (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ)
-    (hf : IsHolderOnCircle C α f) (n : ℤ) (hn : n ≠ 0) :
+    (hf : IsHolderOnCircle C α f) (hα : 0 < α) (n : ℤ) (hn : n ≠ 0) :
     ‖fourierCoeff f n‖ ≤ (↑C / 2) * (T / (2 * |↑n|)) ^ (α : ℝ) :=
-  fourierCoeff_holder_decay C α f hf n hn
+  fourierCoeff_holder_decay C α f hf hα n hn
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
