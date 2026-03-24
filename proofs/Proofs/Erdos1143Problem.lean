@@ -93,7 +93,23 @@ theorem expectedDensity_pos (primes : Finset ℕ) (hne : primes.Nonempty)
     0 < expectedDensity primes := by
   unfold expectedDensity
   simp only [sub_pos]
-  sorry -- Need Finset.prod_lt_one: each factor < 1, nonempty → product < 1
+  -- Each factor (1 - 1/p) satisfies 0 < f < 1 for primes p ≥ 2
+  have h_pos : ∀ p ∈ primes, (0 : ℝ) < 1 - 1 / (p : ℝ) := fun p hp => by
+    have hp_pos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast (hprime p hp).pos
+    have hp1 : (p : ℝ) > 1 := by exact_mod_cast (hprime p hp).one_lt
+    have : 1 / (p : ℝ) < 1 := by rw [div_lt_one hp_pos]; linarith
+    linarith
+  have h_le : ∀ p ∈ primes, 1 - 1 / (p : ℝ) ≤ 1 := fun p hp => by
+    linarith [div_pos one_pos (show (0:ℝ) < p from by exact_mod_cast (hprime p hp).pos)]
+  -- Split product as f(p₀) * ∏(rest), bound rest ≤ 1, deduce product ≤ f(p₀) < 1
+  obtain ⟨p₀, hp₀⟩ := hne
+  calc ∏ p ∈ primes, (1 - 1 / (p : ℝ))
+      = (1 - 1 / (p₀ : ℝ)) * ∏ p ∈ primes.erase p₀, (1 - 1 / (p : ℝ)) :=
+        (Finset.mul_prod_erase _ _ hp₀).symm
+    _ ≤ (1 - 1 / (p₀ : ℝ)) := mul_le_of_le_one_right (le_of_lt (h_pos p₀ hp₀))
+        (Finset.prod_le_one (fun p hp => le_of_lt (h_pos p (Finset.mem_of_mem_erase hp)))
+          (fun p hp => h_le p (Finset.mem_of_mem_erase hp)))
+    _ < 1 := by linarith [div_pos one_pos (show (0:ℝ) < p₀ from by exact_mod_cast (hprime p₀ hp₀).pos)]
 
 theorem expectedDensity_lt_one (primes : Finset ℕ) (hne : primes.Nonempty)
     (hprime : ∀ p ∈ primes, Nat.Prime p) :
