@@ -1,6 +1,6 @@
 {
   "slug": "erdos-472",
-  "title": "Erd\u0151s #472",
+  "title": "Erdős #472",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-01-13T04:11:10.513Z",
     "iteration": 2,
-    "focus": "Fixed build issues: deprecated List.Sorted \u2192 List.Pairwise, incorrect theorem hypothesis, import consolidation",
+    "focus": "Fixed build issues: deprecated List.Sorted → List.Pairwise, incorrect theorem hypothesis, import consolidation",
     "blockers": [],
     "nextAction": "File now compiles cleanly. Only 1 irreducible axiom remains (open conjecture).",
     "attemptCounts": {
@@ -49,7 +49,7 @@
       "Could extend computational verification beyond 8 terms",
       "Could prove the conjectured equivalence: Ulam {3,5} sequence = all odd primes"
     ],
-    "markdown": "# Erd\u0151s #472 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven some initial finite sequence of primes $q_1<\\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?\n\n\n\nA problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\\ldots$. It is possible that this sequence is infinite.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #471\n- Problem #473\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erdős #472 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven some initial finite sequence of primes $q_1<\\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?\n\n\n\nA problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\\ldots$. It is possible that this sequence is infinite.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #471\n- Problem #473\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
     "erdos"
@@ -72,7 +72,7 @@
     {
       "path": "Proofs/Erdos472Problem.lean",
       "filename": "Erdos472Problem.lean",
-      "lineCount": 227,
+      "lineCount": 224,
       "theoremCount": 19,
       "axiomCount": 1,
       "defCount": 8,
