@@ -16,11 +16,10 @@ A problem of Erdős (with Berend, and independently Freud) [Er92c].
 Reference: https://erdosproblems.com/863
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
+
+open Classical in
+noncomputable section
 
 /- ## B₂[r] Sets -/
 
@@ -66,10 +65,10 @@ noncomputable def maxDiffB2rSize (r N : ℕ) : ℕ :=
 /-- For r = 1 (Sidon sets), both constants equal 1:
     |A| ~ √N for both sum and difference versions -/
 axiom sidon_classical :
-  (∀ε > 0, ∀ᶠ N in Filter.atTop,
+  (∀ε > (0 : ℝ), ∀ᶠ (N : ℕ) in Filter.atTop,
     (1 - ε) * Real.sqrt (N : ℝ) ≤ (maxB2rSize 1 N : ℝ) ∧
     (maxB2rSize 1 N : ℝ) ≤ (1 + ε) * Real.sqrt (N : ℝ)) ∧
-  (∀ε > 0, ∀ᶠ N in Filter.atTop,
+  (∀ε > (0 : ℝ), ∀ᶠ (N : ℕ) in Filter.atTop,
     (1 - ε) * Real.sqrt (N : ℝ) ≤ (maxDiffB2rSize 1 N : ℝ) ∧
     (maxDiffB2rSize 1 N : ℝ) ≤ (1 + ε) * Real.sqrt (N : ℝ))
 
@@ -81,16 +80,16 @@ axiom sidon_classical :
 axiom ErdosProblem863 :
   ∀ r : ℕ, 2 ≤ r →
     ∃ (c c' : ℝ), c > 0 ∧ c' > 0 ∧ c' < c ∧
-      (∀ε > 0, ∀ᶠ N in Filter.atTop,
+      (∀ε > (0 : ℝ), ∀ᶠ (N : ℕ) in Filter.atTop,
         |((maxB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c| < ε) ∧
-      (∀ε > 0, ∀ᶠ N in Filter.atTop,
+      (∀ε > (0 : ℝ), ∀ᶠ (N : ℕ) in Filter.atTop,
         |((maxDiffB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c'| < ε)
 
 /-- Weaker version: just prove cᵣ ≠ c'ᵣ for some r ≥ 2 -/
 axiom erdos_863_weak :
   ∃ r : ℕ, 2 ≤ r ∧
     ∃ (c c' : ℝ), c > 0 ∧ c' > 0 ∧ c ≠ c' ∧
-      (∀ε > 0, ∀ᶠ N in Filter.atTop,
+      (∀ε > (0 : ℝ), ∀ᶠ (N : ℕ) in Filter.atTop,
         |((maxB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c| < ε) ∧
-      (∀ε > 0, ∀ᶠ N in Filter.atTop,
+      (∀ε > (0 : ℝ), ∀ᶠ (N : ℕ) in Filter.atTop,
         |((maxDiffB2rSize r N : ℝ) / Real.sqrt (N : ℝ)) - c'| < ε)
