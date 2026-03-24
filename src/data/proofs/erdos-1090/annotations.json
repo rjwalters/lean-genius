@@ -15,7 +15,8 @@
       "EuclideanSpace",
       "Finset",
       "module structure"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-point-def",
@@ -33,7 +34,8 @@
       "EuclideanSpace",
       "abbrev vs def",
       "typeclass transparency"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-two-coloring",
@@ -51,7 +53,8 @@
       "Bool",
       "subtype",
       "coloring functions"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-collinear-def",
@@ -69,7 +72,8 @@
       "scalar multiplication",
       "vector subtraction",
       "line parameterization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-line-structure",
@@ -87,7 +91,8 @@
       "structure type",
       "non-degeneracy condition",
       "parametric line"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-monochromatic-def",
@@ -105,7 +110,8 @@
       "subtype quantification",
       "color uniformity",
       "Bool equality"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-k-collinear-def",
@@ -123,7 +129,8 @@
       "Finset.card",
       "Finset subset",
       "existential witness"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-ramsey-property",
@@ -141,7 +148,8 @@
       "universal quantification",
       "Ramsey property",
       "vacuous truth"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-graham-selfridge",
@@ -159,7 +167,8 @@
       "axiom",
       "existential construction",
       "base case"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-combinatorial-line",
@@ -177,7 +186,8 @@
       "Hales-Jewett",
       "Fin type",
       "Disjoint predicate"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-hales-jewett",
@@ -195,7 +205,8 @@
       "Hales-Jewett theorem",
       "van der Waerden",
       "Ramsey dimension"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-generic-projection",
@@ -213,7 +224,8 @@
       "generic position",
       "algebraic independence",
       "structure preservation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-hunter-observation",
@@ -231,7 +243,8 @@
       "pullback coloring",
       "transfer principle",
       "composition of axioms"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-main-theorem",
@@ -249,7 +262,8 @@
       "intro tactic",
       "exact tactic",
       "corollary"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-bounds",
@@ -268,7 +282,8 @@
       "Nat.find",
       "sorry",
       "optimization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-sylvester-gallai",
@@ -286,7 +301,8 @@
       "ordinary lines",
       "Finset.filter",
       "incidence geometry"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-generalizations",
@@ -304,7 +320,8 @@
       "Fin r",
       "higher dimensions",
       "Hales-Jewett generalization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-summary",
@@ -322,6 +339,7 @@
       "anonymous constructor",
       "definitional equality",
       "theorem summary"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

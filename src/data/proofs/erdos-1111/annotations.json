@@ -16,7 +16,8 @@
       "Clique number",
       "Anticomplete sets",
       "Graph coloring"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1111-anticomplete",
@@ -34,7 +35,8 @@
       "Disjoint sets",
       "Graph adjacency",
       "Independent sets"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1111-chromatic-clique",
@@ -52,7 +54,8 @@
       "Clique",
       "Induced subgraph"
     ],
-    "mathContext": "See annotation content for formal details of chromatic and clique numbers"
+    "mathContext": "See annotation content for formal details of chromatic and clique numbers",
+    "prerequisites": []
   },
   {
     "id": "ann-e1111-property",
@@ -70,7 +73,8 @@
       "Graph property",
       "Chromatic threshold",
       "Extremal function"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1111-small-cases",
@@ -87,7 +91,8 @@
     "relatedConcepts": [
       "Triangle-free graphs",
       "Exact computation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1111-wagon",
@@ -105,7 +110,8 @@
       "Binomial coefficient",
       "Upper bound",
       "Recursive bound"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1111-reduction",
@@ -122,7 +128,8 @@
     "relatedConcepts": [
       "Problem reduction",
       "Cubic bound"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1111-nss",
@@ -140,7 +147,8 @@
       "Minimum degree",
       "Structural strengthening",
       "2024 result"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1111-connections",
@@ -158,7 +166,8 @@
       "Ramsey theory",
       "Chi-boundedness",
       "Graph structure"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e1111-summary",
@@ -171,6 +180,8 @@
     "title": "Problem Summary",
     "content": "**Erdos Problem #1111: OPEN**\n\n**Known:**\n- Exact values: d(2,2)=2, d(3,2)=4, d(4,2)=5 (erdos_1111_known_values)\n- Upper bounds: d(t,2) <= C(t,2)+1, d(3,3) <= 8\n- Existence: NSS 2024 proves existence with degree constraint (erdos_1111_summary)\n\n**Open:** Determine d(t, c) for general t, c.\n\nThe summary theorem combines Wagon's bound, El Zahar-Erdos bound, and NSS existence.",
     "mathContext": "The problem requires new structural insights to determine exact values. Progress requires infinite analysis, not finite computation.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

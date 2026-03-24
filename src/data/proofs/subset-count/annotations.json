@@ -15,7 +15,8 @@
       "combinatorics",
       "binary counting"
     ],
-    "mathContext": "See annotation content for formal details of counting subsets"
+    "mathContext": "See annotation content for formal details of counting subsets",
+    "prerequisites": []
   },
   {
     "id": "ann-main-theorem",
@@ -33,7 +34,8 @@
       "Finset",
       "powerset",
       "cardinality"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-binary-bijection",
@@ -51,7 +53,8 @@
       "characteristic function",
       "binary representation",
       "bijection"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-empty-set",
@@ -68,7 +71,8 @@
     "relatedConcepts": [
       "empty set",
       "base case"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-singleton",
@@ -85,7 +89,8 @@
     "relatedConcepts": [
       "singleton",
       "binary choice"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-three-elements",
@@ -102,7 +107,8 @@
     "relatedConcepts": [
       "enumeration",
       "verification"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-doubling",
@@ -119,7 +125,8 @@
     "relatedConcepts": [
       "induction",
       "recursive counting"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-binomial",
@@ -137,7 +144,8 @@
       "binomial coefficients",
       "binomial theorem",
       "Pascal's triangle"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-fintype",
@@ -155,7 +163,8 @@
       "Fintype",
       "type theory",
       "cardinality"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-powerset-properties",
@@ -172,7 +181,8 @@
     "relatedConcepts": [
       "subset relation",
       "membership"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-nonempty",
@@ -189,6 +199,7 @@
     "relatedConcepts": [
       "nonempty sets",
       "lower bounds"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

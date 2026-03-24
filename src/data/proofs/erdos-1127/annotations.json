@@ -15,7 +15,8 @@
       "Continuum Hypothesis",
       "Set theory",
       "Distance geometry"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-1127-2",
@@ -34,7 +35,8 @@
       "point configurations",
       "metric geometry"
     ],
-    "mathContext": "See annotation content for formal details of distinct distances property"
+    "mathContext": "See annotation content for formal details of distinct distances property",
+    "prerequisites": []
   },
   {
     "id": "ann-1127-3",
@@ -47,7 +49,9 @@
     "title": "Countable Decomposition",
     "content": "**CountableDecomposition X P:**\n\nA set X admits a countable decomposition with property P if X can be written as a disjoint union ⋃ᵢ Sᵢ where each Sᵢ satisfies P.\n\nThe key question: can this be done with P = HasDistinctDistances?",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of countable decomposition"
+    "mathContext": "See annotation content for formal details of countable decomposition",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-1127-4",
@@ -65,7 +69,8 @@
       "Cardinal numbers",
       "ZFC",
       "Independence"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-1127-5",
@@ -78,7 +83,9 @@
     "title": "ℚ-Linear Independence",
     "content": "**IsQLinearlyIndependent S:**\n\nA set S ⊆ ℝ is ℚ-linearly independent if no finite nontrivial linear combination over ℚ equals zero.\n\nEquivalently: the elements of S are 'algebraically unrelated' over the rationals.",
     "mathContext": "For any distinct x₁,...,xₙ ∈ S and rationals a₁,...,aₙ, if Σaᵢxᵢ = 0 then all aᵢ = 0.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-1127-6",
@@ -96,7 +103,8 @@
       "CH characterization",
       "Linear algebra",
       "Decomposition"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-1127-7",
@@ -109,7 +117,9 @@
     "title": "Davies' Theorem (1972)",
     "content": "**davies_theorem:**\n\nAssuming CH, ℝ² can be decomposed into countably many sets with distinct pairwise distances.\n\nThis extended Erdős-Kakutani from dimension 1 to dimension 2.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of davies' theorem (1972)"
+    "mathContext": "See annotation content for formal details of davies' theorem (1972)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-1127-8",
@@ -122,7 +132,9 @@
     "title": "Kunen's Theorem (1987)",
     "content": "**kunen_theorem:**\n\nAssuming CH, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for ALL dimensions n.\n\nThis completely solves the problem under CH.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of kunen's theorem (1987)"
+    "mathContext": "See annotation content for formal details of kunen's theorem (1987)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-1127-9",
@@ -135,7 +147,9 @@
     "title": "Erdős-Hajnal Necessity",
     "content": "**erdos_hajnal_necessity:**\n\nIf CH is FALSE, then for any finite partition of ℝ, there exist 4 points in one piece determining at most 4 distinct distances (instead of the required 6).\n\nThis shows CH is NECESSARY for the decomposition to work.",
     "mathContext": "¬CH → finite partitions fail the distinct distances property",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-1127-10",
@@ -148,6 +162,8 @@
     "title": "Main Result",
     "content": "**erdos_1127:**\n\nCH → ∀n, Erdos1127Question' n\n\nAssuming the Continuum Hypothesis, ℝⁿ can be decomposed into countably many sets with distinct pairwise distances, for every dimension n.\n\nThis follows immediately from Kunen's theorem.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of main result"
+    "mathContext": "See annotation content for formal details of main result",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

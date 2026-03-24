@@ -15,7 +15,8 @@
       "Mathlib imports",
       "namespace scoping",
       "module structure"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-proper-unitary-divisors",
@@ -34,7 +35,8 @@
       "Finset.filter",
       "Nat.Coprime",
       "unitary divisors"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-is-unitary-perfect",
@@ -53,7 +55,8 @@
       "native_decide",
       "Finset.sum",
       "computational verification"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-one-mem",
@@ -72,7 +75,8 @@
       "one_dvd",
       "Nat.Coprime",
       "omega tactic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-mem-characterization",
@@ -90,7 +94,8 @@
       "simp lemmas",
       "Finset.mem_filter",
       "characterization lemma"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-odd-divisor",
@@ -109,7 +114,8 @@
       "dvd_trans",
       "Odd.not_two_dvd_nat",
       "proof by contradiction"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-sum-parity",
@@ -128,7 +134,8 @@
       "Odd.add_even",
       "Odd.add_odd",
       "parity arithmetic"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-unitary-prime-char",
@@ -147,7 +154,8 @@
       "Nat.dvd_gcd",
       "Nat.gcd_dvd_left",
       "prime factorization"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-unitary-complement",
@@ -166,7 +174,8 @@
       "Coprime.symm",
       "divisor pairing",
       "involution"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-divisor-sum",
@@ -184,7 +193,8 @@
       "divisor sum functions",
       "sigma-star function",
       "Finset.Ico range difference"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-even-theorem",
@@ -203,7 +213,8 @@
       "product formula",
       "2-adic valuation",
       "axiom with proof sketch"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-examples",
@@ -221,7 +232,8 @@
       "native_decide",
       "computational verification",
       "known unitary perfect numbers"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-prime-power",
@@ -239,7 +251,8 @@
       "prime powers",
       "Finset equality",
       "base case for multiplicativity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-multiplicativity",
@@ -257,7 +270,8 @@
       "multiplicative arithmetic functions",
       "Coprime.mul",
       "product formula derivation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-pairing",
@@ -275,7 +289,8 @@
       "divisor pairing",
       "involution on Finset",
       "square root divisor"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-conjecture",
@@ -293,6 +308,7 @@
       "Set.Finite",
       "open conjectures",
       "computational search bounds"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

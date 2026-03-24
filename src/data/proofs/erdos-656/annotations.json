@@ -15,7 +15,8 @@
       "Lower density",
       "Natural density",
       "Asymptotic density"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e656-lower-density",
@@ -95,7 +96,8 @@
     "relatedConcepts": [
       "Shifted sumset",
       "Minkowski sum"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e656-shifted-sumset",
@@ -133,7 +135,8 @@
       "Hindman's theorem",
       "IP sets"
     ],
-    "mathContext": "$\\text{FS}(B) = \\{\\sum_{i \\in I} b_i : I \\subseteq B, I \\text{ finite nonempty}\\}$"
+    "mathContext": "$\\text{FS}(B) = \\{\\sum_{i \\in I} b_i : I \\subseteq B, I \\text{ finite nonempty}\\}$",
+    "prerequisites": []
   },
   {
     "id": "ann-e656-coloring",
@@ -193,7 +196,8 @@
     "relatedConcepts": [
       "Ramsey theory",
       "Ergodic Ramsey theory"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e656-conjecture",
@@ -296,7 +300,8 @@
       "Furstenberg-Sárközy theorem",
       "Density theorems"
     ],
-    "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists a_1, a_2 \\in A, \\exists k > 0: a_1 - a_2 = k^2$ (Sárközy 1978)"
+    "mathContext": "$\\bar{d}(A) > 0 \\implies \\exists a_1, a_2 \\in A, \\exists k > 0: a_1 - a_2 = k^2$ (Sárközy 1978)",
+    "prerequisites": []
   },
   {
     "id": "ann-e656-furstenberg",

@@ -15,7 +15,8 @@
       "chromatic-number",
       "complete-graph",
       "edge-disjoint"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-background",
@@ -33,7 +34,8 @@
       "graph-coloring",
       "hypergraph",
       "combinatorics"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-graphdef",
@@ -51,7 +53,8 @@
       "simple-graph",
       "complete-graph",
       "edge-disjoint"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-chromatic",
@@ -69,7 +72,8 @@
       "proper-coloring",
       "np-hard",
       "minimum"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-eflfamily",
@@ -87,7 +91,8 @@
       "structure",
       "clique",
       "union-graph"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-lowerbound",
@@ -105,7 +110,8 @@
       "lower-bound",
       "clique-number",
       "trivial"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-hindman",
@@ -123,7 +129,8 @@
       "small-cases",
       "verification",
       "base-case"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-kahn",
@@ -141,7 +148,8 @@
       "asymptotic",
       "kahn-1992",
       "consolation-prize"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-mainresult",
@@ -159,7 +167,8 @@
       "resolution",
       "absorbing-method",
       "2021"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-hypergraph",
@@ -177,7 +186,8 @@
       "hypergraph",
       "chromatic-index",
       "linear"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-nearlydisjoint",
@@ -195,7 +205,8 @@
       "nearly-disjoint",
       "rainbow-partition",
       "transversal"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-special",
@@ -208,7 +219,9 @@
     "title": "Special Cases",
     "content": "**projective_plane_case (axiom):** When cliques come from a projective plane of order n-1, χ(G) = n exactly.\n\n**steiner_system_case (axiom):** S(2, n, n²) Steiner systems provide explicit EFL families with optimal colorings.\n\nThese special cases are easier to analyze due to their regular algebraic structure.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of special cases"
+    "mathContext": "See annotation content for formal details of special cases",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-extensions",
@@ -221,7 +234,9 @@
     "title": "Erdős-Füredi Generalization",
     "content": "**erdos_furedi_generalization (axiom):** If cliques can share up to k vertices (instead of 1), then χ(G) ≤ n + k - 1.\n\nThe EFL conjecture is the k = 1 case. Kang et al. also proved this more general bound.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of erdős-füredi generalization"
+    "mathContext": "See annotation content for formal details of erdős-füredi generalization",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e19-summary",
@@ -234,6 +249,8 @@
     "title": "Summary Theorem",
     "content": "**erdos_19_summary (proved from axioms):**\n\nCombines the two main results:\n1. EFLConjecture holds for all n (from efl_conjecture_resolved)\n2. Asymptotic proof threshold exists (from kang_kelly_kuhn_methuku_osthus)\n\nProved by: `⟨efl_conjecture_resolved, kang_kelly_kuhn_methuku_osthus⟩`\n\n**Timeline:** Boulder 1972 → Hindman (n<10) → Kahn 1992 (asymptotic) → KKMO 2021 (full proof).",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

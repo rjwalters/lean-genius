@@ -15,7 +15,8 @@
       "SimpleGraph",
       "Finset"
     ],
-    "mathContext": "We import key Mathlib modules: `Finset."
+    "mathContext": "We import key Mathlib modules: `Finset.",
+    "prerequisites": []
   },
   {
     "id": "ann-maxcut-theorem2",
@@ -33,7 +34,8 @@
       "bijection",
       "involution",
       "double counting"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-maxcut-toggle",
@@ -93,7 +95,8 @@
       "Sym2",
       "diagonal"
     ],
-    "mathContext": "To prove something about an unordered pair $e$, we use `induction e using Sym2."
+    "mathContext": "To prove something about an unordered pair $e$, we use `induction e using Sym2.",
+    "prerequisites": []
   },
   {
     "id": "ann-maxcut-theorem4",
@@ -154,7 +157,8 @@
       "supremum",
       "optimization",
       "NP-hardness"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-maxcut-theorem6",

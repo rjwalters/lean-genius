@@ -15,7 +15,8 @@
       "factorization",
       "divisors",
       "arithmetic structure"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e885-definition",
@@ -33,7 +34,8 @@
       "Int.natAbs",
       "factorization",
       "divisors"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e885-square-zero",
@@ -50,7 +52,8 @@
       "IsSquare",
       "perfect squares"
     ],
-    "mathContext": "See annotation content for formal details of perfect squares have 0 in d(n)"
+    "mathContext": "See annotation content for formal details of perfect squares have 0 in d(n)",
+    "prerequisites": []
   },
   {
     "id": "ann-e885-pred",
@@ -66,7 +69,8 @@
     "relatedConcepts": [
       "trivial factorization"
     ],
-    "mathContext": "See annotation content for formal details of d(n) always contains n-1"
+    "mathContext": "See annotation content for formal details of d(n) always contains n-1",
+    "prerequisites": []
   },
   {
     "id": "ann-e885-k-common",
@@ -83,7 +87,8 @@
     "relatedConcepts": [
       "set intersection",
       "cardinality"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e885-conjecture",
@@ -100,7 +105,8 @@
       "open problem",
       "existence conjecture"
     ],
-    "mathContext": "See annotation content for formal details of main conjecture (partially open)"
+    "mathContext": "See annotation content for formal details of main conjecture (partially open)",
+    "prerequisites": []
   },
   {
     "id": "ann-e885-k2",
@@ -117,7 +123,8 @@
     "relatedConcepts": [
       "k = 2 case",
       "base case"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e885-k3",
@@ -133,7 +140,8 @@
     "relatedConcepts": [
       "highly composite numbers"
     ],
-    "mathContext": "See annotation content for formal details of jiménez-urroz (1999): k = 3"
+    "mathContext": "See annotation content for formal details of jiménez-urroz (1999): k = 3",
+    "prerequisites": []
   },
   {
     "id": "ann-e885-k4",
@@ -150,7 +158,8 @@
       "computational search",
       "number theory"
     ],
-    "mathContext": "See annotation content for formal details of bremner (2019): k = 4"
+    "mathContext": "See annotation content for formal details of bremner (2019): k = 4",
+    "prerequisites": []
   },
   {
     "id": "ann-e885-open",
@@ -167,7 +176,8 @@
     "relatedConcepts": [
       "open problem",
       "computational complexity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e885-cardinality",
@@ -184,7 +194,8 @@
       "divisor function",
       "highly composite numbers"
     ],
-    "mathContext": "See annotation content for formal details of size of d(n)"
+    "mathContext": "See annotation content for formal details of size of d(n)",
+    "prerequisites": []
   },
   {
     "id": "ann-e885-divisor-char",
@@ -201,7 +212,8 @@
       "Nat.divisors",
       "divisor pairs"
     ],
-    "mathContext": "See annotation content for formal details of divisor characterization"
+    "mathContext": "See annotation content for formal details of divisor characterization",
+    "prerequisites": []
   },
   {
     "id": "ann-e885-examples",
@@ -218,6 +230,7 @@
     "relatedConcepts": [
       "explicit witnesses",
       "type-checked computation"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

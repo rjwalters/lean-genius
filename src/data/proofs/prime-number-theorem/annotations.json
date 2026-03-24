@@ -26,7 +26,8 @@
         "proofId": "riemann-hypothesis",
         "relationship": "RH would sharpen PNT's error term from O(x·exp(-c√ln x)) to O(√x·ln x) — the zeros of ζ(s) control prime distribution"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-prime-pi",
@@ -45,7 +46,8 @@
       "counting functions",
       "Chebyshev functions",
       "Mathlib.NumberTheory.PrimeCounting"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-prime-approx",
@@ -63,7 +65,8 @@
       "asymptotic equivalence",
       "logarithm",
       "partial function"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-li",
@@ -88,7 +91,8 @@
         "proofId": "prime-reciprocal-divergence",
         "relationship": "The divergence of Σ 1/p (Euler) is a consequence of Li(x) → ∞; both reflect the logarithmic density of primes"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-pnt-ratio",
@@ -107,7 +111,8 @@
       "Tendsto",
       "atTop filter",
       "neighborhood filter"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-pnt-equiv",
@@ -126,7 +131,8 @@
       "IsEquivalent",
       "big-O notation",
       "little-o notation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-pnt-error",
@@ -145,7 +151,8 @@
       "IsLittleO",
       "Vinogradov",
       "Korobov"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-pnt-li",
@@ -164,7 +171,8 @@
       "Gauss",
       "asymptotic expansion",
       "transitivity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-equivalences",
@@ -183,7 +191,8 @@
       "Chebyshev ψ-function",
       "von Mangoldt function",
       "Tauberian theorems"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-main-axiom",
@@ -208,7 +217,8 @@
         "proofId": "riemann-hypothesis",
         "relationship": "PNT uses the weakest form of zeta zero information (no zeros on Re(s)=1); RH asserts all zeros lie on Re(s)=1/2"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-density",
@@ -232,7 +242,8 @@
         "proofId": "infinitude-primes",
         "relationship": "Euclid proved primes are infinite; this corollary shows their density nonetheless vanishes — they become ever sparser"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-nth-prime",
@@ -257,7 +268,8 @@
         "proofId": "bertrands-postulate",
         "relationship": "Bertrand's postulate (pₙ₊₁ < 2pₙ) gives a crude bound; PNT's inverse gives the precise asymptotics pₙ ~ n ln n"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-mertens",
@@ -282,7 +294,8 @@
         "proofId": "prime-reciprocal-divergence",
         "relationship": "Euler (1737) proved Σ 1/p diverges; Mertens (1874) quantified the rate as ln ln x + M"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-gaps",
@@ -307,7 +320,8 @@
         "proofId": "bertrands-postulate",
         "relationship": "Bertrand's postulate gives gap < p (i.e., ε=1); PNT improves this to gap = o(p) for any ε>0"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-rh",
@@ -332,7 +346,8 @@
         "proofId": "riemann-hypothesis",
         "relationship": "The gallery's dedicated RH entry formalizes equivalent forms (Robin's inequality, explicit formula) and partial results"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-von-koch",
@@ -351,7 +366,8 @@
       "explicit formula",
       "Riemann Hypothesis",
       "square root cancellation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-chebyshev",
@@ -376,7 +392,8 @@
         "proofId": "bertrands-postulate",
         "relationship": "Erdős's 1932 proof of Bertrand's postulate uses Chebyshev-style analysis of binomial coefficient prime factorizations"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-euler-product",
@@ -405,7 +422,8 @@
         "proofId": "prime-reciprocal-divergence",
         "relationship": "Euler's product at s=1 diverges (ζ has a pole), directly yielding Σ 1/p = ∞"
       }
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-numerical",
@@ -424,6 +442,7 @@
       "Skewes' number",
       "Littlewood's theorem",
       "approximation quality"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

@@ -15,7 +15,8 @@
       "modular arithmetic",
       "exponential congruences",
       "Graham's conjecture"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e479-solution-set",
@@ -33,7 +34,8 @@
       "set builder notation",
       "modular equivalence",
       "ZMOD"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e479-why-k1-fails",
@@ -51,7 +53,8 @@
       "parity",
       "divisibility",
       "case analysis"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e479-partial-results",
@@ -69,7 +72,8 @@
       "Graham-Lehmer-Lehmer theorem",
       "multiplicative order",
       "special cases"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e479-conjecture",
@@ -87,7 +91,8 @@
       "open conjecture",
       "asymptotic density",
       "existence of solutions"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e479-k3-difficulty",
@@ -105,7 +110,8 @@
       "OEIS A036236",
       "computational number theory",
       "sparse solutions"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e479-fermat",
@@ -123,7 +129,8 @@
       "Fermat's Little Theorem",
       "prime numbers",
       "infinitude of primes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e479-examples",
@@ -141,7 +148,8 @@
       "decidability",
       "computational verification",
       "OEIS"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e479-summary",
@@ -154,6 +162,8 @@
     "title": "Summary Theorem",
     "content": "**erdos_479_summary (proved from axioms):**\n\nCombines three key results:\n1. SolutionSet(1) is finite (k = 1 impossible)\n2. SolutionSet(2^i) is infinite for all i ≥ 1 (powers of 2)\n3. SolutionSet(2) is infinite (via Fermat's Little Theorem)\n\nProved by: `⟨solution_set_one_finite, powers_of_two_infinite, solution_set_two_infinite⟩`",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

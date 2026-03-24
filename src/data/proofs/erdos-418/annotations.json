@@ -16,7 +16,8 @@
       "totient",
       "cototient",
       "non-cototient"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-cototient-def",
@@ -34,7 +35,8 @@
       "totient",
       "coprime",
       "complement"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-cototient-value",
@@ -52,7 +54,8 @@
       "range",
       "existence",
       "preimage"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-non-cototient-def",
@@ -70,7 +73,8 @@
       "complement",
       "non-existence",
       "OEIS-A005278"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-cototient-one",
@@ -87,7 +91,8 @@
     "relatedConcepts": [
       "base-case",
       "totient-one"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-cototient-two",
@@ -104,7 +109,8 @@
     "relatedConcepts": [
       "computation",
       "native-decide"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-cototient-prime",
@@ -122,7 +128,8 @@
       "prime",
       "totient-prime",
       "omega"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-small-cototients",
@@ -140,7 +147,8 @@
       "verification",
       "witnesses",
       "native-decide"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-ten-non-cototient",
@@ -158,7 +166,8 @@
       "smallest",
       "exhaustive-search",
       "OEIS"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-browkin-schinzel-base",
@@ -176,7 +185,8 @@
       "magic-number",
       "covering-systems",
       "construction"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-witness-seq",
@@ -194,7 +204,8 @@
       "witness",
       "infinite-family",
       "powers-of-two"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-main-theorem",
@@ -212,7 +223,8 @@
       "main-result",
       "infinitely-many",
       "solved"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-goldbach",
@@ -230,7 +242,8 @@
       "goldbach",
       "conjecture",
       "distinct-primes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-odd-conditional",
@@ -248,7 +261,8 @@
       "conditional",
       "odd-numbers",
       "product-of-primes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-small-odd",
@@ -266,7 +280,8 @@
       "base-cases",
       "verification",
       "small-numbers"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-density",
@@ -284,7 +299,8 @@
       "density",
       "open-problem",
       "positive-lower-density"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-nonaliquot",
@@ -302,7 +318,8 @@
       "nonaliquot",
       "positive-density",
       "contrast"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e418-summary",
@@ -320,6 +337,7 @@
       "summary",
       "verification",
       "packaging"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

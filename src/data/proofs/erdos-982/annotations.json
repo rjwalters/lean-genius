@@ -15,7 +15,8 @@
       "Convex polygon",
       "Distinct distances",
       "Discrete geometry"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-plane",
@@ -28,7 +29,9 @@
     "title": "Euclidean Plane",
     "content": "**Plane:**\n\nWe define the 2-dimensional Euclidean plane using Mathlib's EuclideanSpace:\n\n```lean\nabbrev Plane : Type := EuclideanSpace R (Fin 2)\n```\n\nThis gives us the full metric space structure with the standard Euclidean distance.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of euclidean plane"
+    "mathContext": "See annotation content for formal details of euclidean plane",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-distinct-distances",
@@ -41,7 +44,9 @@
     "title": "Distinct Distances From a Point",
     "content": "**distinctDistancesFrom:**\n\nCounts the number of distinct distances from point p to points in a finite set S.\n\n```lean\ndef distinctDistancesFrom (p : Plane) (S : Finset Plane) : N :=\n  (S.image (fun q => dist p q)).card\n```\n\n**Example:** In a regular hexagon, each vertex has 3 distinct distances to the other 5 vertices.",
     "mathContext": "This is the key quantity in Erdos's conjecture.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-max-distances",
@@ -54,7 +59,9 @@
     "title": "Maximum Distinct Distances",
     "content": "**maxDistinctDistances:**\n\nThe maximum number of distinct distances achieved by any vertex in the polygon.\n\n```lean\ndef maxDistinctDistances (S : Finset Plane) : N :=\n  S.sup (fun p => distinctDistancesFrom p (S.erase p))\n```\n\nThe conjecture asks: is this at least floor(n/2)?",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of maximum distinct distances"
+    "mathContext": "See annotation content for formal details of maximum distinct distances",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-convex-position",
@@ -67,7 +74,9 @@
     "title": "Convex Position",
     "content": "**InConvexPosition:**\n\nA set of points is in convex position if no point lies strictly between any two others (on the line segment).\n\nThis means all points are extreme points of their convex hull, forming the vertices of a convex polygon.\n\n**Note:** This is a simplified characterization; the full formal-conjectures uses EuclideanGeometry.IsConvexPolygon.",
     "mathContext": "Convex position is essential - the conjecture fails for non-convex point sets.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-guaranteed-f",
@@ -80,7 +89,9 @@
     "title": "Guaranteed Distinct Distances f(n)",
     "content": "**guaranteedDistinctDistances:**\n\nf(n) is the largest k such that EVERY convex n-gon has a vertex with at least k distinct distances.\n\nThis is the extremal quantity - the conjecture states f(n) >= floor(n/2).\n\n**Known bounds:**\n- f(n) >= ceil(n/3) (Moser 1952)\n- f(n) <= ceil(n/2) (regular polygon)",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of guaranteed distinct distances f(n)"
+    "mathContext": "See annotation content for formal details of guaranteed distinct distances f(n)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-conjecture",
@@ -97,7 +108,8 @@
     "relatedConcepts": [
       "Open problem",
       "Extremal geometry"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-moser",
@@ -110,7 +122,9 @@
     "title": "Moser's Bound (1952)",
     "content": "**moser_bound:**\n\nLeo Moser proved in 1952 that f(n) >= ceil(n/3).\n\nThis was the first lower bound on the problem, published in \"On the different distances determined by n points\".\n\n**Proof idea:** Pigeonhole argument on distance classes.",
     "mathContext": "Moser's paper established the field of distinct distances problems.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-erdos-fishburn",
@@ -123,7 +137,9 @@
     "title": "Erdos-Fishburn Bound (1994)",
     "content": "**erdos_fishburn_bound:**\n\nErdos and Fishburn improved Moser's bound to f(n) >= floor(n/3 + 1).\n\nPublished in \"A postscript on distances in convex n-gons\" (1994).\n\nThis is a small but significant improvement over Moser's ceil(n/3).",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of erdos-fishburn bound (1994)"
+    "mathContext": "See annotation content for formal details of erdos-fishburn bound (1994)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-dumitrescu",
@@ -136,7 +152,9 @@
     "title": "Dumitrescu's Bound (2006)",
     "content": "**dumitrescu_bound:**\n\nAdrian Dumitrescu proved f(n) >= ceil((13n-6)/36) in 2006.\n\nThis is approximately 0.361n, a substantial improvement over the n/3 bounds.\n\nPublished in \"On distinct distances from a vertex of a convex polygon\".",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of dumitrescu's bound (2006)"
+    "mathContext": "See annotation content for formal details of dumitrescu's bound (2006)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-nppz",
@@ -149,7 +167,9 @@
     "title": "Nivasch et al. Bound (2013)",
     "content": "**nppz_bound:**\n\nNivasch, Pach, Pinchasi, and Zerbib achieved the current best bound:\n\nf(n) >= (13/36 + 1/22701)n - O(1)\n\nThis is approximately 0.3611n, a tiny improvement over Dumitrescu.\n\nPublished in \"The number of distinct distances from a vertex of a convex polygon\" (2013).",
     "mathContext": "This is the current state of the art - no improvement in over a decade.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-regular-polygon",
@@ -167,7 +187,8 @@
       "Regular polygon",
       "Symmetry",
       "Optimality"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-triangle",
@@ -180,7 +201,9 @@
     "title": "Triangle Case (n=3)",
     "content": "**triangle_case:**\n\nEvery triangle vertex has at least 1 distinct distance.\n\nThe conjecture requires floor(3/2) = 1.\n\n**Proof:** In a triangle, each vertex sees exactly 2 other vertices, giving at least 1 distinct distance (and usually 2).",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of triangle case (n=3)"
+    "mathContext": "See annotation content for formal details of triangle case (n=3)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-pentagon",
@@ -193,7 +216,9 @@
     "title": "Pentagon Case (n=5)",
     "content": "**pentagon_case:**\n\nEvery convex pentagon has a vertex with at least 2 distinct distances.\n\nThe conjecture requires floor(5/2) = 2.\n\n**Proof:** Direct from Moser's bound: (5+2)/3 = 2.\n\n```lean\nexact moser_bound 5 (by norm_num) S hcard hconv\n```",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of pentagon case (n=5)"
+    "mathContext": "See annotation content for formal details of pentagon case (n=5)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-stronger-false",
@@ -210,7 +235,8 @@
     "relatedConcepts": [
       "Problem #97",
       "Counterexample"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-curve-counterexample",
@@ -223,7 +249,9 @@
     "title": "Curve Conjecture (False)",
     "content": "**acute_triangle_counterexample:**\n\nErdos conjectured a continuous version: every convex curve has a point p where circles centered at p intersect the curve in at most 2 points.\n\nBarany and Roldan-Pensado (2013) showed this is FALSE: the boundary of any acute triangle is a counterexample.",
     "mathContext": "The discrete and continuous settings behave differently.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-barany",
@@ -236,7 +264,9 @@
     "title": "Weakened Curve Result",
     "content": "**barany_roldan_pensado:**\n\nBarany and Roldan-Pensado proved a weaker version: for any convex body, there's a boundary point p where circles centered at p hit the boundary in O(1) points (constant depending on the body).\n\nThey conjecture this can be bounded by an absolute constant - a potential new direction.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of weakened curve result"
+    "mathContext": "See annotation content for formal details of weakened curve result",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-gap",
@@ -249,7 +279,9 @@
     "title": "Gap Analysis",
     "content": "**currentGap:**\n\nThe gap between known bounds and the conjecture:\n\n- Known: f(n) >= 0.361n (approximately 13/36)\n- Conjectured: f(n) >= 0.5n (exactly 1/2)\n- Gap: 0.139n (approximately 5/36)\n\n```lean\ntheorem gap_value : currentGap 1 = 5 / 36 := by native_decide\n```\n\nClosing this gap is the main open problem.",
     "mathContext": "The gap of nearly 14% represents substantial mathematical territory.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-status",
@@ -262,7 +294,9 @@
     "title": "Problem Status Summary",
     "content": "**erdos_982_status:**\n\nSummarizes the current state of knowledge:\n\n1. Lower bound: f(n) >= (13n)/36 for large n (Nivasch et al.)\n2. Upper bound: Regular polygon achieves ceil(n/2)\n\nThe theorem combines the NPPZ bound with the regular polygon construction to give both directions.\n\n**Status:** OPEN - the gap between 0.361n and 0.5n remains.",
     "mathContext": "This is a complete formalization of what we know about Problem #982.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e982-summary",
@@ -275,6 +309,8 @@
     "title": "Final Summary",
     "content": "**erdos_982_summary:**\n\nThe complete summary theorem:\n\n1. f(n) >= n/3 + 1 for all n >= 3 (Erdos-Fishburn)\n2. The conjecture f(n) >= n/2 remains OPEN\n3. The stronger \"no equidistant triples\" conjecture is FALSE\n\nThis encapsulates 80 years of work on this beautiful geometric problem.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of final summary"
+    "mathContext": "See annotation content for formal details of final summary",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

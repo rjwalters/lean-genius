@@ -16,7 +16,8 @@
       "Smallest prime factor",
       "Reciprocal sums",
       "Multiplicative structure"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-spf",
@@ -29,7 +30,9 @@
     "title": "Smallest Prime Factor",
     "content": "**smallestPrimeFactor:**\n\nThe smallest prime factor of n > 1, or 0 if n ≤ 1.\n\n```lean\nnoncomputable def smallestPrimeFactor (n : ℕ) : ℕ :=\n  if h : n > 1 then n.minFac else 0\n```\n\nThis uses Mathlib's `minFac` function which computes the smallest prime divisor.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of smallest prime factor"
+    "mathContext": "See annotation content for formal details of smallest prime factor",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-condition",
@@ -42,7 +45,9 @@
     "title": "The Multiplicative Condition",
     "content": "**SatisfiesCondition:**\n\nA set A satisfies the condition if there is no at = b with a,b ∈ A and spf(t) > a.\n\n```lean\ndef SatisfiesCondition (A : Finset ℕ) : Prop :=\n  ∀ a b t : ℕ, a ∈ A → b ∈ A → t > 1 → a * t = b →\n    smallestPrimeFactor t ≤ a\n```\n\nThis says: if a divides b via multiplier t, then t must have a small prime factor (≤ a).",
     "mathContext": "This is weaker than primitivity because it allows some divisibility relations.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-primitive",
@@ -55,7 +60,9 @@
     "title": "Primitive Sets",
     "content": "**IsPrimitive:**\n\nA set A is primitive if no element divides another (except itself).\n\n```lean\ndef IsPrimitive (A : Finset ℕ) : Prop :=\n  ∀ a b : ℕ, a ∈ A → b ∈ A → a ∣ b → a = b\n```\n\nPrimitive sets automatically satisfy the multiplicative condition.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of primitive sets"
+    "mathContext": "See annotation content for formal details of primitive sets",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-primitive-implies",
@@ -68,7 +75,9 @@
     "title": "Primitive Implies Condition",
     "content": "**primitive_satisfies_condition:**\n\nEvery primitive set satisfies the multiplicative condition.\n\n```lean\ntheorem primitive_satisfies_condition (A : Finset ℕ) (hA : IsPrimitive A) :\n    SatisfiesCondition A\n```\n\n**Proof idea:** If a | b in a primitive set, then a = b, so t = 1 (contradiction with t > 1).",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of primitive implies condition"
+    "mathContext": "See annotation content for formal details of primitive implies condition",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-reciprocal-sum",
@@ -81,7 +90,9 @@
     "title": "Reciprocal Sum",
     "content": "**reciprocalSum:**\n\nThe sum Σ_{n ∈ A} 1/n.\n\n```lean\nnoncomputable def reciprocalSum (A : Finset ℕ) : ℝ :=\n  ∑ n ∈ A.filter (· > 0), (1 : ℝ) / n\n```\n\nWe filter out 0 to avoid division issues.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of reciprocal sum"
+    "mathContext": "See annotation content for formal details of reciprocal sum",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-weighted-sum",
@@ -94,7 +105,9 @@
     "title": "Weighted Sum",
     "content": "**weightedSum:**\n\nThe normalized sum (1/log N) · Σ_{n ∈ A} 1/n.\n\n```lean\nnoncomputable def weightedSum (A : Finset ℕ) (N : ℕ) : ℝ :=\n  if N ≤ 1 then 0 else reciprocalSum A / log N\n```\n\nThis is the quantity Erdős asked about - does it go to 0?",
     "mathContext": "The normalization by 1/log N accounts for the fact that the harmonic sum grows like log N.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-alexander",
@@ -113,7 +126,8 @@
       "multiplicative number theory",
       "weighted sums",
       "primitive sets"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-ess",
@@ -132,7 +146,8 @@
       "asymptotic vanishing",
       "sieve methods",
       "additive combinatorics"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-behrend",
@@ -145,7 +160,9 @@
     "title": "Behrend's Bound (1935)",
     "content": "**behrend_primitive_bound:**\n\nFor primitive sets: (1/log N) Σ 1/n = O(1/√(log log N)).\n\n```lean\naxiom behrend_primitive_bound :\n    ∃ C : ℝ, C > 0 ∧\n    ∀ N : ℕ, N ≥ 10 → ∀ A : Finset ℕ,\n    InRange A N → IsPrimitive A →\n    weightedSum A N ≤ C / Real.sqrt (log (log N))\n```\n\nThis is a stronger (quantitative) bound for the stronger (primitive) condition.",
     "mathContext": "Behrend's 1935 result predates the problem but applies to the stronger case.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-example",
@@ -158,7 +175,9 @@
     "title": "Example Construction",
     "content": "**exampleSet:**\n\nIntegers in [√N, N] divisible by some prime > √N.\n\n```lean\ndef exampleSet (N : ℕ) : Finset ℕ :=\n  (range (N + 1)).filter (fun n =>\n    n ≥ Nat.sqrt N ∧ ∃ p : ℕ, p.Prime ∧ p > Nat.sqrt N ∧ p ∣ n)\n```\n\nThis set satisfies the condition and achieves a relatively large weighted sum, showing the o(1) bound cannot be significantly improved.",
     "significance": "supporting",
-    "mathContext": "See annotation content for formal details of example construction"
+    "mathContext": "See annotation content for formal details of example construction",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-solution",
@@ -171,7 +190,9 @@
     "title": "Erdős Problem #858: SOLVED",
     "content": "**erdos_858_solution:**\n\nThe maximum of (1/log N) Σ 1/n over sets satisfying the condition is o(1).\n\n```lean\ntheorem erdos_858_solution :\n    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,\n    ∀ A : Finset ℕ, InRange A N → SatisfiesCondition A →\n    weightedSum A N < ε :=\n  alexander_1966\n```\n\nThe solution follows directly from Alexander's result.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of erdős problem #858: solved"
+    "mathContext": "See annotation content for formal details of erdős problem #858: solved",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-connection",
@@ -187,7 +208,8 @@
     "significance": "supporting",
     "relatedConcepts": [
       "Erdős Problem #143"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e858-summary",
@@ -200,6 +222,8 @@
     "title": "Summary",
     "content": "**erdos_858_summary:**\n\nCombines the main results.\n\n```lean\ntheorem erdos_858_summary :\n    (∀ A, IsPrimitive A → SatisfiesCondition A) ∧\n    (∀ ε > 0, ∃ N₀, ∀ N ≥ N₀, ∀ A, InRange A N → SatisfiesCondition A →\n     weightedSum A N < ε)\n```\n\n**Key Results:**\n1. Primitive ⟹ Condition\n2. Maximum weighted sum is o(1)\n3. Behrend: O(1/√(log log N)) for primitive sets\n\n**Status:** SOLVED",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary"
+    "mathContext": "See annotation content for formal details of summary",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

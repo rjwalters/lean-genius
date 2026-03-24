@@ -16,7 +16,8 @@
       "clique numbers",
       "graph density"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "erdos-667-edge-count",
@@ -34,7 +35,8 @@
       "local-to-global principles",
       "Ramsey multiplicity"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "erdos-667-clique-guarantee",
@@ -52,7 +54,8 @@
       "extremal functions",
       "clique number guarantees"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "erdos-667-boundary-values",
@@ -70,7 +73,8 @@
       "Turan-type problems",
       "boundary analysis"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "erdos-667-cpq",
@@ -88,7 +92,8 @@
       "lim inf",
       "asymptotic analysis"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "erdos-667-ramsey-bounds",
@@ -106,7 +111,8 @@
       "probabilistic lower bounds",
       "entropy methods"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "erdos-667-efrs",
@@ -124,7 +130,8 @@
       "phase transitions",
       "extremal density thresholds"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   },
   {
     "id": "erdos-667-proved-theorems",
@@ -142,7 +149,8 @@
       "structural lemmas",
       "Lean 4 tactics"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "erdos-667-small-cases",
@@ -160,7 +168,8 @@
       "case analysis",
       "native_decide tactic"
     ],
-    "significance": "supporting"
+    "significance": "supporting",
+    "prerequisites": []
   },
   {
     "id": "erdos-667-conjecture",
@@ -178,6 +187,7 @@
       "density-structure trade-offs",
       "open Erdos problems"
     ],
-    "significance": "key"
+    "significance": "key",
+    "prerequisites": []
   }
 ]

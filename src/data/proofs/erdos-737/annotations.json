@@ -15,7 +15,8 @@
       "Chromatic number",
       "Infinite graphs",
       "Cycles"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-737-chromatic",
@@ -33,7 +34,8 @@
       "Coloring",
       "Cardinal",
       "Aleph one"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-737-cycles",
@@ -46,7 +48,9 @@
     "title": "Cycle and Edge Predicates",
     "content": "**hasCycleOfLength G n:** G contains a cycle of length n (axiomatized).\n\n**edgeInCycleOfLength G u v h n:** Edge (u,v) belongs to a cycle of length n.\n\n**edgeInAllLargeCycles:** Edge is in cycles of all lengths ≥ N.\n\n**existsEdgeInAllLargeCycles:** The main property: ∃ edge in all large cycles.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of cycle and edge predicates"
+    "mathContext": "See annotation content for formal details of cycle and edge predicates",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-737-ehs",
@@ -59,7 +63,9 @@
     "title": "Erdős-Hajnal-Shelah (1974)",
     "content": "**erdos_hajnal_shelah_1974:** If χ(G) = ℵ₁, then G contains all sufficiently large cycles.\n\n∃ N, ∀ n ≥ N: G has a cycle of length n.\n\nThis established cycle existence but not the edge routing property.",
     "mathContext": "Published in Topics in Topology, 1974.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-737-thomassen",
@@ -77,7 +83,8 @@
       "Thomassen 1983",
       "Routing",
       "Combinatorica"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-737-pancyclic",
@@ -90,7 +97,9 @@
     "title": "Eventually Pancyclic",
     "content": "**eventually_pancyclic:** Graphs with χ = ℵ₁ contain cycles of all sufficiently large lengths.\n\nFollows directly from EHS 1974. This is a weaker form of Thomassen's result.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of eventually pancyclic"
+    "mathContext": "See annotation content for formal details of eventually pancyclic",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-737-universal",
@@ -107,7 +116,8 @@
       "Universal edge",
       "Edge characterization"
     ],
-    "mathContext": "See annotation content for formal details of universal cycle edges"
+    "mathContext": "See annotation content for formal details of universal cycle edges",
+    "prerequisites": []
   },
   {
     "id": "ann-737-summary",
@@ -120,6 +130,8 @@
     "title": "Summary Theorem",
     "content": "**erdos_737_summary:** For χ(G) = ℵ₁, there exists an edge in all large cycles.\n\nThomassen's theorem as the definitive resolution of Erdős Problem #737.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]

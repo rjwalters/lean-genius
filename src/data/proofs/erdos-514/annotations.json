@@ -16,7 +16,8 @@
       "Maximum modulus",
       "Transcendental functions",
       "Complex analysis"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-entire",
@@ -34,7 +35,8 @@
       "Analytic functions",
       "Taylor series",
       "Complex differentiability"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-maxmodulus",
@@ -52,7 +54,8 @@
       "Maximum modulus principle",
       "Growth rates",
       "Level curves"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-transcendental",
@@ -70,7 +73,8 @@
       "Polynomial functions",
       "Taylor coefficients",
       "Liouville numbers"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-path-to-infinity",
@@ -88,7 +92,8 @@
       "Continuous curves",
       "Filters",
       "Limits at infinity"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-super-polynomial",
@@ -106,7 +111,8 @@
       "Polynomial domination",
       "Asymptotic analysis",
       "Growth rates"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-boas",
@@ -124,7 +130,8 @@
       "Wiman-Valiron theory",
       "Maximum modulus points",
       "Central index"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-part1",
@@ -137,7 +144,9 @@
     "title": "Erdős #514 Part 1: SOLVED",
     "content": "**erdos_514_part1:**\n\n```lean\ntheorem erdos_514_part1 (f : ℂ → ℂ) (hf : IsTranscendental f) :\n    ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ :=\n  boas_existence f hf\n```\n\nThe answer to Part 1 is YES: such a path always exists.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of erdős #514 part 1: solved"
+    "mathContext": "See annotation content for formal details of erdős #514 part 1: solved",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-part2-open",
@@ -155,7 +164,8 @@
       "Arc length",
       "Geometric measure theory",
       "Quantitative bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-max-modulus-power",
@@ -173,7 +183,8 @@
       "Maximum modulus",
       "Exceptional sets",
       "Density of values"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-part3-open",
@@ -186,7 +197,9 @@
     "title": "Part 3: Faster Than M^ε (OPEN)",
     "content": "**faster_than_max_modulus_conjecture:**\n\nDoes there exist a path γ for every transcendental f such that |f(γ(t))| grows faster than M(|γ(t)|)^ε for any ε > 0?\n\n```lean\naxiom faster_than_max_modulus_conjecture (f : ℂ → ℂ) (hf : IsTranscendental f) :\n    ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ DominatesMaxModulusPower f γ\n```\n\n**Status:** OPEN. This would be remarkable: the path would find points where f is exceptionally large even compared to its maximum modulus at that radius.",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of part 3: faster than m^ε (open)"
+    "mathContext": "See annotation content for formal details of part 3: faster than m^ε (open)",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-exponential",
@@ -204,7 +217,8 @@
       "Order of growth",
       "Maximum modulus",
       "Real and imaginary axes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-wiman-valiron",
@@ -222,7 +236,8 @@
       "Taylor series",
       "Central index",
       "Local polynomial approximation"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-max-modulus-props",
@@ -240,7 +255,8 @@
       "Monotone functions",
       "Limits"
     ],
-    "mathContext": "See annotation content for formal details of properties of m(r)"
+    "mathContext": "See annotation content for formal details of properties of m(r)",
+    "prerequisites": []
   },
   {
     "id": "ann-e514-summary",
@@ -253,7 +269,9 @@
     "title": "Summary Theorem",
     "content": "**erdos_514_summary:**\n\nPart 1 is resolved: for any transcendental entire function, a path with super-polynomial growth exists.\n\n```lean\ntheorem erdos_514_summary :\n    ∀ f : ℂ → ℂ, IsTranscendental f →\n      ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ :=\n  fun f hf => erdos_514_part1 f hf\n```\n\n**Status:**\n- Part 1: SOLVED (Boas) — formalized as erdos_514_part1\n- Parts 2, 3: OPEN — formalized as conjectures",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   },
   {
     "id": "ann-e514-key-insight",
@@ -271,6 +289,7 @@
       "Continuity",
       "Path connectedness",
       "Exceptional sets"
-    ]
+    ],
+    "prerequisites": []
   }
 ]

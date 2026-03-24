@@ -15,7 +15,8 @@
       "block designs",
       "projective planes"
     ],
-    "mathContext": "See annotation content for formal details of problem overview"
+    "mathContext": "See annotation content for formal details of problem overview",
+    "prerequisites": []
   },
   {
     "id": "ann-e665-pbd",
@@ -33,7 +34,8 @@
       "block designs",
       "BIBD",
       "covering designs"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e665-question",
@@ -50,7 +52,8 @@
       "deficiency function",
       "optimization over designs"
     ],
-    "mathContext": "See annotation content for formal details of the erdős question and h(n)"
+    "mathContext": "See annotation content for formal details of the erdős question and h(n)",
+    "prerequisites": []
   },
   {
     "id": "ann-e665-erdos-larson",
@@ -67,7 +70,8 @@
     "relatedConcepts": [
       "Erdős-Larson 1982",
       "unconditional bounds"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e665-projective",
@@ -85,7 +89,8 @@
       "projective planes",
       "Shrikhande-Singhi 1985",
       "prime power conjecture"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e665-prime-gaps",
@@ -103,7 +108,8 @@
       "prime gaps",
       "Cramér's conjecture",
       "affine planes"
-    ]
+    ],
+    "prerequisites": []
   },
   {
     "id": "ann-e665-special",
@@ -121,7 +127,8 @@
       "AG(2,q)",
       "optimal constructions"
     ],
-    "mathContext": "See annotation content for formal details of special case constructions"
+    "mathContext": "See annotation content for formal details of special case constructions",
+    "prerequisites": []
   },
   {
     "id": "ann-e665-summary",
@@ -134,6 +141,8 @@
     "title": "Summary Theorem",
     "content": "**erdos_665_summary (proved from axioms):**\n\nCombines three key results:\n1. Erdős-Larson: h(n) ≤ n^{1/2-c} unconditionally\n2. Prime power planes ⟹ h(n) unbounded (negative answer)\n3. h(n) correlates with largest prime gap H(n)\n\nProved by: `⟨erdos_larson_bound, prime_power_planes_implies_unbounded, h_correlates_with_prime_gap⟩`",
     "significance": "key",
-    "mathContext": "See annotation content for formal details of summary theorem"
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "relatedConcepts": [],
+    "prerequisites": []
   }
 ]
