@@ -43,18 +43,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created full Lean 4 formalization (279 lines, 5 axioms). Defined UniformHypergraph, containsKtr via transversals, exHypergraph as Turán number. Stated conjecture with ε-formulation. Axiomatized upper/lower bounds and stepping-up lemma. Proved known cases summary theorem.",
+    "progressSummary": "PROGRESS: Fixed all compilation errors, proved exponent_t2 sorry (rpow_neg_one), added 3 structural theorems (exponent_lt_t, exponent_ge_t_sub_one, exponent_pos). File now compiles cleanly: 320 lines, 5 axioms, 7 theorems, 0 sorries.",
     "builtItems": [
       "proofs/Proofs/Erdos1158Problem.lean: full formalization (279 lines)",
       "src/data/proofs/erdos-1158/: gallery integration (meta.json, annotations.json, index.ts)",
-      "research/problems/erdos-1158/knowledge.md: session notes"
+      "research/problems/erdos-1158/knowledge.md: session notes",
+      "exponent_t2 theorem: proved using Real.rpow_neg_one",
+      "exponent_lt_t, exponent_ge_t_sub_one, exponent_pos: structural bounds on hypergraphExponent"
     ],
     "insights": [
       "The exponent t - r^{1-t} unifies graph (2-1/r) and hypergraph cases",
       "The constant gap (C>1 vs C=1 in exponent) is the essential difficulty",
       "Stepping-up lemma compounds the constant gap across uniformities",
       "Only algebraic constructions (not probabilistic) achieve tight graph bounds",
-      "Connects to Problem #714 as the t=2 specialization"
+      "Connects to Problem #714 as the t=2 specialization",
+      "Real.rpow_neg_one is unconditional - no hypothesis needed",
+      "Original file had pre-existing compilation errors (Fintype synthesis, existential syntax, noncomputable)"
     ],
     "mathlibGaps": [
       "No t-uniform hypergraph theory in Mathlib",
