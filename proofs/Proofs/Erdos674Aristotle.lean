@@ -53,15 +53,12 @@ theorem koY_value : koY = 1679616 := by sorry
 theorem koZ_value : koZ = 4478976 := by sorry
 
 -- ═══════════════════════════════════════════════════════════════════
--- Section 2: Conjectured Formula Properties
+-- Section 2: Symmetry and Small Cases
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- The conjectured formula: (k-1)(n-1) + 1. -/
-def ConjecturedFormula (k n : ℕ) : ℕ := (k - 1) * (n - 1) + 1
-
-/-- The conjectured formula is monotone in both arguments. -/
-theorem formula_mono (k₁ k₂ n₁ n₂ : ℕ) (hk : k₁ ≤ k₂) (hn : n₁ ≤ n₂) :
-    ConjecturedFormula k₁ n₁ ≤ ConjecturedFormula k₂ n₂ := by sorry
+/-- Swapping x and y preserves the product x^x * y^y. -/
+theorem swap_preserves_eq (x y z : ℕ) :
+    x ^ x * y ^ y = z ^ z → y ^ y * x ^ x = z ^ z := by sorry
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 3: GCD and Divisibility Lemmas
