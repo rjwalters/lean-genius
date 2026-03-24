@@ -38,7 +38,7 @@
   "overview": {
     "historicalContext": "This problem sits at the intersection of multiplicative number theory and extremal combinatorics. The foundational insight, recognized by Erdős, is that prime factorization creates a bijection between positive integers and finite subsets of primes (with multiplicities), under which lcm corresponds to set union. Harold Davenport and Erdős proved in 1936 that any set of integers with positive upper density contains arbitrarily long divisibility chains a₁ | a₂ | ··· | aₖ, establishing that dense sets carry rich multiplicative structure. The LCM triple question asks whether this extends to the weaker relation lcm(a,b) = c. Daniel Kleitman resolved it affirmatively in 1971 via a purely combinatorial argument: he proved that union-free families of subsets of an n-element set have size at most (1+o(1))·C(n, ⌊n/2⌋), which is exponentially smaller than 2^n. Under the prime factorization correspondence, an LCM-free set of integers maps to a union-free collection, and Kleitman's bound forces such sets to have density zero. The proof is elegant in its use of the bijection to transfer a number-theoretic question to an extremal set system result.",
     "problemStatement": "Let A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A such that [a,b] = c (where [a,b] is the least common multiple of a and b)?",
-    "text": "Let A ⊆ ℕ have positive density. Must there exist distinct a, b, c ∈ A such that lcm(a,b) = c? YES - follows from Kleitman's 1971 theorem on union-free collections.",
+    "text": "This formalization addresses Erdős Problem #487, which asks whether every subset of the natural numbers with positive density must contain distinct elements a, b, c satisfying lcm(a,b) = c. The Lean development axiomatizes the key components of Kleitman's 1971 affirmative resolution: it defines positive upper and lower density, LCM triples, union-free collections, and the prime factorization bijection that translates the number-theoretic question into extremal set theory. The formalization includes the Davenport-Erdős 1936 theorem on divisibility chains in dense sets (axiomatized), Kleitman's bound showing union-free families have size at most (1+o(1))C(n, floor(n/2)), and a fully machine-checked proof that this bound implies union-free collections are o(2^n). The main theorem and its infinitary strengthening are axiomatized, reflecting that the full proof requires deep analytic number theory connecting the prime factorization map to density counting. Three concrete examples are verified: multiples of 6 and even numbers exhibit LCM triples (proved via native_decide), while powers of 2 provably avoid LCM triples but have density zero, demonstrating the density hypothesis is necessary.",
     "proofStrategy": "The proof works by contradiction using the prime factorization bijection. If A has positive density δ > 0 but no LCM triples, then the image of A under the prime factorization map is a union-free collection of sets. By Kleitman's theorem, such collections have size o(2^n), which translates to o(N) elements up to N. But positive density requires at least δN elements, a contradiction for large N.",
     "keyInsights": [
       "Prime factorization creates a bijection where lcm(a,b) = c corresponds to union of factorization sets",
@@ -110,7 +110,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #487 is SOLVED. Sets with positive density must contain distinct elements a, b, c with lcm(a,b) = c. This follows from Kleitman's 1971 bound on union-free collections, using the prime factorization bijection between LCM triples and set unions.",
-    "implications": "The result establishes a fundamental constraint on dense subsets of ℕ: they cannot avoid LCM relationships. This connects number-theoretic density to extremal combinatorics of set systems.",
+    "implications": "The resolution of Erdős Problem #487 establishes a fundamental rigidity principle for dense subsets of the natural numbers: no set with positive upper density can avoid the LCM relation lcm(a,b) = c among its elements. This places LCM triples alongside arithmetic progressions (Szemerédi's theorem) and sum-free constraints (Schur's theorem) as unavoidable configurations in dense sets, reinforcing the broader theme that density forces structured patterns.\n\nThe proof strategy is notable for its use of the prime factorization bijection to transfer a multiplicative number theory problem into the domain of extremal set theory. Under this correspondence, each positive integer maps to its multiset of prime-exponent pairs, and the LCM operation becomes set union (taking componentwise maxima of exponents). An LCM-free subset of the integers thus corresponds to a union-free family of sets, and Kleitman's 1971 bound shows such families are asymptotically negligible compared to the full power set. This translation technique has become a standard tool in combinatorial number theory.\n\nThe quantitative aspects of the result remain an active area of investigation. Kleitman's bound gives |F| <= (1+o(1))C(n, floor(n/2)) for union-free families F of subsets of [n], which by Stirling's approximation is roughly 2^n / sqrt(pi*n/2). While this suffices to prove the density-zero conclusion for LCM-free sets, the exact threshold density below which LCM-free sets can exist is not precisely characterized. Similarly, the counting question -- how many LCM triples a set of density delta contains up to N -- remains open.\n\nFrom the formalization perspective, this entry demonstrates how axiomatized deep results (the Davenport-Erdős theorem, Kleitman's bound) can be composed with machine-checked reasoning to produce a rigorous development. The key verified component is the theorem union_free_is_little_o, which chains Kleitman's bound with central binomial coefficient asymptotics to derive the o(2^n) conclusion. The coprime_multipliers_lcm_triple theorem is also fully proved, showing that coprime multipliers produce valid LCM triples via Nat.Coprime.lcm_eq_mul. The three example theorems provide concrete computational verification.\n\nThe problem also connects to the broader Erdős program of understanding which combinatorial configurations are forced by density. Erdős Problem #447, on the maximum size of union-free collections, is the direct combinatorial prerequisite. The Davenport-Erdős 1936 theorem on divisibility chains is a multiplicative analogue of the density results that eventually led to Szemerédi's theorem in the additive setting. These connections illustrate how Erdős's problems form an interconnected web, where progress on one problem often illuminates others.",
     "openQuestions": [
       "What is the minimum density required to guarantee an LCM triple?",
       "For density δ, how many distinct LCM triples exist up to N?",
@@ -126,22 +126,85 @@
       "note": "Proved the bound on union-free families that implies the LCM triple result"
     },
     {
+      "authors": "Davenport, Harold; Erdős, Paul",
+      "title": "On sequences of positive integers",
+      "year": "1936",
+      "venue": "Acta Arithmetica 2, pp. 147-151",
+      "note": "Proved that sets with positive upper density contain infinite divisibility chains"
+    },
+    {
       "authors": "Erdős, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
       "venue": "Monographies de L'Enseignement Mathématique 28",
-      "note": "Where Problem 487 appears"
+      "note": "Where Problem 487 appears among Erdős's collected problems"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Some remarks on number theory",
+      "year": "1965",
+      "venue": "Riveon Lematematika 9, pp. 45-48",
+      "note": "Early formulation of the LCM triple question and related density problems"
+    },
+    {
+      "authors": "Bollobás, Béla",
+      "title": "Combinatorics: Set Systems, Hypergraphs, Families of Vectors and Combinatorial Probability",
+      "year": "1986",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for extremal set theory including union-free families and Kleitman-type bounds"
     }
   ],
   "crossReferences": [
     {
+      "targetId": "erdos-447",
+      "relationship": "prerequisite",
+      "description": "Erdős Problem #447 is the direct combinatorial prerequisite: it asks for the maximum size of union-free collections of subsets of [n]. Kleitman's bound on union-free families is the key tool used to resolve #487 via the prime factorization bijection."
+    },
+    {
       "targetId": "erdos-483",
       "relationship": "related",
-      "description": "Both are Erdős problems about additive/multiplicative structure forced by density: #483 studies Schur numbers (avoiding a+b=c), #487 studies LCM triples in dense sets"
+      "description": "Both are Erdős problems about structure forced by density: #483 studies Schur numbers (avoiding monochromatic a+b=c), #487 studies LCM triples in dense sets. Both show that certain algebraic configurations are unavoidable in sufficiently large or dense structures."
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "thematic",
+      "description": "Szemerédi's theorem proves dense sets contain arithmetic progressions of any length. Problem #487 proves dense sets contain LCM triples. Both are instances of the density Ramsey principle: positive density forces structured configurations."
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "thematic",
+      "description": "Roth's theorem (the k=3 case of Szemerédi) shows sets without 3-term arithmetic progressions have density o(1). Similarly, #487 shows LCM-free sets have density zero. Both use analytic/combinatorial methods to obtain density-zero conclusions."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "thematic",
+      "description": "Ramsey's theorem guarantees monochromatic structures in colorings, while #487 guarantees LCM structures in dense sets. Both exemplify the Ramsey-theoretic principle that sufficiently large structures must contain ordered substructures."
+    },
+    {
+      "targetId": "erdos-25",
+      "relationship": "related",
+      "description": "Problem #25 studies logarithmic density of sets defined by congruence conditions. Problem #487 uses upper density to force LCM triples. Both explore how density conditions on subsets of ℕ constrain their arithmetic structure."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem underlies the prime factorization bijection central to #487. The distribution of primes governs how the factorization map translates between integers up to N and subsets of primes up to log N."
+    },
+    {
+      "targetId": "erdos-905",
+      "relationship": "thematic",
+      "description": "Problem #905 shows graphs above the Turán density threshold must contain edges in many triangles. Problem #487 shows integer sets above the density threshold must contain LCM triples. Both are density-forces-structure results in combinatorics."
     }
   ],
   "relatedProofs": [
-    "erdos-483"
+    "erdos-447",
+    "erdos-483",
+    "szemeredi-theorem",
+    "roth-theorem-k3",
+    "ramseys-theorem",
+    "erdos-25",
+    "prime-number-theorem",
+    "erdos-905"
   ],
   "leanFile": {
     "imports": [
