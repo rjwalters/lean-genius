@@ -167,14 +167,55 @@ theorem inf_connected_no_finite_separator :
   obtain ⟨p, hp, hpgood⟩ := hgood
   refine ⟨p, (hpath p hp).1, (hpath p hp).2, ?_⟩
   -- Show all vertices of p avoid S
-  intro w hw
-  -- Case analysis: w is either an endpoint or internal
-  simp only [bad, Set.mem_sep_iff, not_and, not_exists] at hpgood
-  intro hw_in_S
-  -- Since p ∉ bad, no internal vertex of p is in S
-  -- We need: w is the head (= u) or tail (= v), hence not in S by hypothesis,
-  -- OR w is internal, hence not in S by the good path property
-  sorry
+  intro w hw hw_in_S
+  -- Since p ∉ bad: for all s ∈ S, s is NOT both in drop 1 and dropLast
+  have hpgood' : ¬ ∃ s ∈ (S : Set V),
+      s ∈ p.vertices.drop 1 ∧ s ∈ p.vertices.dropLast := by
+    intro ⟨s, hs_S, hs_int⟩
+    exact hpgood (show p ∈ bad from ⟨hp, s, hs_S, hs_int⟩)
+  -- In particular, w ∈ S, so NOT (w ∈ drop 1 ∧ w ∈ dropLast)
+  have hw_not_internal : ¬(w ∈ p.vertices.drop 1 ∧ w ∈ p.vertices.dropLast) := by
+    intro ⟨h1, h2⟩; exact hpgood' ⟨w, hw_in_S, h1, h2⟩
+  -- So w ∉ drop 1 ∨ w ∉ dropLast
+  rw [not_and_or] at hw_not_internal
+  cases hw_not_internal with
+  | inl hndrop1 =>
+    -- w ∈ p.vertices but w ∉ p.vertices.drop 1 → w is the head = u
+    have hne : p.vertices ≠ [] := List.ne_nil_of_mem hw
+    obtain ⟨hd, tl, heq⟩ := List.exists_cons_of_ne_nil hne
+    rw [heq] at hw hndrop1
+    -- p.vertices = hd :: tl, drop 1 = tl, so w ∉ tl
+    simp [List.drop] at hndrop1
+    -- w ∈ hd :: tl and w ∉ tl, so w = hd
+    rcases List.mem_cons.mp hw with rfl | hw_tl
+    · -- w = hd, and head? = some hd = some u
+      have hhead := (hpath p hp).1
+      rw [heq] at hhead
+      simp at hhead
+      rw [hhead] at hw_in_S
+      exact hu hw_in_S
+    · -- w ∈ tl, contradicting w ∉ tl
+      exact absurd hw_tl hndrop1
+  | inr hndropLast =>
+    -- w ∈ p.vertices but w ∉ p.vertices.dropLast → w is the last = v
+    have hne : p.vertices ≠ [] := List.ne_nil_of_mem hw
+    -- Decompose: L = L.dropLast ++ [L.getLast]
+    have hdecomp : p.vertices = p.vertices.dropLast ++ [p.vertices.getLast hne] :=
+      (List.dropLast_append_getLast hne).symm
+    rw [hdecomp] at hw
+    rcases List.mem_append.mp hw with h | h
+    · -- w ∈ dropLast, contradicting hndropLast
+      exact absurd h hndropLast
+    · -- w ∈ [getLast], so w = getLast
+      have hw_last : w = p.vertices.getLast hne := by
+        simp [List.mem_singleton] at h; exact h
+      have hlast := (hpath p hp).2
+      rw [show p.vertices.getLast? = some (p.vertices.getLast hne) from
+        List.getLast?_eq_some_getLast hne] at hlast
+      rw [hw_last]
+      simp at hlast
+      rw [hlast] at hw_in_S
+      exact hv hw_in_S
 
 /-- **Set-theoretic sensitivity**: Problems about uncountable chromatic
     numbers and infinite connectivity often depend on set-theoretic axioms
