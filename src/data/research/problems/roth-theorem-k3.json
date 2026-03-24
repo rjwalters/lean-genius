@@ -18,15 +18,12 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 10,
-    "focus": "Session 10: Proved mul_L_r_eq_zero (ZMod round-trip). Added apFree_filter_affine. 6→5 sorries.",
+    "iteration": 11,
+    "focus": "Session 11: Fixed all Mathlib API breakages (29 errors). Build succeeds. 0 axioms, 1 sorry (N=1 edge case - architectural gap for prime N).",
     "blockers": [
-      "coset_char_sum_zero: character sum vanishes",
-      "coset_density_increment: pigeonhole formalization",
-      "Box partition for g<sqrt(N) (prime N)",
-      "Even N and N=1 edge cases"
+      "N=1 edge case: density_increment_lemma unprovable for N=1 due to coset decomposition giving M=1 for prime N. Fix requires reduction to N=3^k or Bohr sets."
     ],
-    "nextAction": "Prove coset_char_sum_zero via root_unity_sum_zero + exp algebra",
+    "nextAction": "Fix N=1 edge case by restructuring to handle prime N (reduction to N=3^k or Bohr set approach)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -34,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 axioms, 4 sorries remain. N=1 edge case is unprovable as stated (need N>1 guard). coset_partition_sum needs bijection proof. Total sorry count: 4.",
+    "progressSummary": "PROGRESS: 0 axioms, 1 sorry remain. All 29 Mathlib API breakages fixed. Build succeeds. The remaining sorry (N=1 in density_increment_lemma) is an architectural gap: for prime N, the coset decomposition always gives M=1, making the iteration chain unprovable.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -56,7 +53,8 @@
       "apFree_card_le_half: 2|A|≤N+1 for APFree A⊆ZMod N, N>1 — PROVED in RothTheorem.lean",
       "Fixed 5 Mathlib API breakages: ZMod.isUnit_natCast_iff, natCast_zmod_eq_zero_iff_dvd, exact_mod_cast, card_pos direction, eq_univ_of_card",
       "Proved mul_L_r_eq_zero: L*r=0 in ZMod N via val round-trip + Fin.ext injectivity",
-      "Added apFree_filter_affine: AP-freeness under affine maps when q not zero divisor"
+      "Added apFree_filter_affine: AP-freeness under affine maps when q not zero divisor",
+      "Session 11: Fixed 29 Mathlib API breakages across fourier_large_coefficient, coset_density_increment, and supporting lemmas. Build now succeeds with only 1 sorry."
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -96,7 +94,9 @@
       "N=1 edge case in density_increment_lemma is UNPROVABLE as stated: when delta=1 and N=1, need B.card >= 1.01*M but B.card <= M. Fix: require N>1 (or fold into the by_cases already there)",
       "coset_partition_sum requires bijection between A and disjoint union of cosets. Needs map a↦(a.val%g, a.val/g) and its inverse",
       "fourier_coset_decomp requires regrouping Fourier sums by coset; ψ(r·) constant on cosets when (N/g) | val(r)",
-      "Pigeonhole sorry: standard averaging argument, find coset with density above mean+delta²/4N/g"
+      "Pigeonhole sorry: standard averaging argument, find coset with density above mean+delta²/4N/g",
+      "The N=1 sorry is fundamentally about prime N, not just N=1. For prime N, gcd(val(r), N)=1 for all r≠0, so coset decomposition always gives M=1. The density iteration chain breaks when the formal density d_k exceeds 1 while M stays at 1.",
+      "Fix options: (a) reduce to N=3^k where M≥3 always, (b) use Bohr sets instead of cosets, (c) restructure chain to short-circuit when d_k > 1 at M=1 (requires proving False from APFree bound in the enclosing context)."
     ],
     "mathlibGaps": [],
     "nextSteps": [

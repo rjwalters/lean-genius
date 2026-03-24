@@ -246,12 +246,47 @@ fourier_large_coefficient (1 sorry: norm bound in Case 2)
 ### Key Insight: Annihilator Partition
 The RIGHT partition is cosets of H = ⟨N/g⟩ (annihilator of ⟨r⟩), NOT cosets of ⟨r⟩ itself. On these cosets, ψ(r·) is EXACTLY constant (no phase approximation needed). This is because ⟨r⟩ ⊆ H⊥, so the Fourier coefficient at r contributes to the energy.
 
-### Sorry Chain (Session 9)
+### Sorry Chain (Session 9, updated Session 11)
 ```
-mul_L_r_eq_zero (ZMod API) ──→ psi_const_on_coset (PROVED)
-coset_char_sum_zero (sorry) ──→ coset_density_increment (sorry)
-                                  ──→ density_increment_lemma
-g<√N box partition (sorry) ────→    └→ density_increment_step (PROVED)
-N even (sorry) ────────────────→        └→ density_iteration (PROVED)
-N=1 (sorry, FALSE) ───────────→            └→ roth_density_bound (PROVED)
+PROVED: coset_partition_sum, fourier_coset_decomp, coset_density_increment (pigeonhole)
+PROVED: char_sum_cosets_zero, coset_fiber_card_eq
+REMAINING: density_increment_lemma N=1 case (1 sorry)
+  └→ density_increment_step (PROVED)
+      └→ density_iteration (PROVED)
+          └→ roth_density_bound (PROVED modulo the sorry)
 ```
+
+## Session 11 (2026-03-23, researcher-1)
+
+### What Was Done
+1. **Fixed 29 Mathlib API breakages** across the entire file
+   - `ZMod.val_one_lt_of_lt` removed → replaced with `ZMod.natCast_zmod_eq_zero_iff_dvd` argument
+   - `Exists.some`/`some_mem` → `.choose`/`.choose_spec` (Lean 4)
+   - `Finset.card_nbij` API changes → `Set.InjOn`/`Set.SurjOn` rewrites
+   - `Nat.div_lt_of_lt_mul` argument reordering
+   - `Nat.mod_add_div` commutativity fixes
+   - `exact_mod_cast` failures → explicit `push_cast`/`Nat.cast_sub` intermediaries
+   - `set_option maxHeartbeats` placement before docstrings
+   - Various `linarith`/`nlinarith` failures → added intermediate `have` steps
+2. **Build now succeeds**: 0 axioms, 1 sorry (N=1 edge case in density_increment_lemma)
+3. **Deep analysis of N=1 sorry**: Determined it's an architectural gap, not a simple edge case
+
+### N=1 Sorry Analysis
+The N=1 case in `density_increment_lemma` is **unprovable as stated** for a fundamental reason:
+
+**For prime N**: The coset decomposition always gives M = gcd(val(r), N) = 1 for all r ≠ 0 (since gcd(k, p) = 1 for 0 < k < p). This means:
+- The density increment produces subprogressions of size M = 1
+- ZMod 1 has only one element, so any subset has density 0 or 1
+- The iteration chain needs d_k+1 ≤ 1 to produce the trivial M=1 witness
+- When d_k+1 > 1 (which happens after ~44 steps for delta=3/4), the chain breaks
+
+**Fix options** (all require major restructuring):
+1. **Reduce to N = 3^k** (Roth's original approach): In Z/3^k Z, the order of any nonzero r divides 3^k, so the coset decomposition gives M = gcd(val(r), 3^k) which is always a power of 3, hence ≥ 3.
+2. **Use Bohr sets** (Bourgain-style): Replace coset decomposition with Bohr set containment.
+3. **Restructure the chain**: Instead of ∀ k ∃ M B ..., use a well-founded recursion that terminates when d > 1 or M ≥ 2 at every step.
+
+### Current File Statistics
+- **Lines**: ~1400
+- **Axioms**: 0
+- **Sorries**: 1 (N=1 edge case at line ~1336)
+- **Build**: ✓ Succeeds (with sorry warning)
