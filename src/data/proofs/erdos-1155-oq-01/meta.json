@@ -401,37 +401,37 @@
     {
       "id": "erdos-1104",
       "relationship": "related",
-      "description": "Maximum chromatic number of triangle-free graphs: the terminal graph of the triangle removal process is triangle-free, s"
+      "description": "Maximum chromatic number of triangle-free graphs: the terminal graph of the triangle removal process is triangle-free, so its chromatic number is bounded by results in #1104. The chromatic structure may constrain the edge count f(n)"
     },
     {
       "id": "szemeredi-theorem",
       "relationship": "related",
-      "description": "Szemerédi's theorem on arithmetic progressions in dense sets is a cornerstone of additive combinatorics. The triangle re"
+      "description": "The triangle removal lemma (a consequence of Szemerédi regularity) is the deterministic counterpart to the random triangle removal process studied here — it states graphs with few triangles can be made triangle-free by removing few edges"
     },
     {
       "id": "roth-theorem-k3",
       "relationship": "related",
-      "description": "The triangle removal lemma — a key consequence of Szemerédi regularity — states that graphs with o(n³) triangles can be "
+      "description": "Ruzsa-Szemerédi used the triangle removal lemma to prove Roth's theorem (no 3-AP in dense sets) via a graph construction where triangles encode 3-APs. The random triangle removal process is the greedy counterpart to this deterministic result"
     },
     {
       "id": "szemeredi-counting",
       "relationship": "related",
-      "description": "Szemerédi's counting lemma quantifies triangle density in ε-regular triples: if (A, B, C) are pairwise ε-regular with ed"
+      "description": "Szemerédi's counting lemma quantifies triangle density in ε-regular triples, governing the early dense phase of the triangle removal process — the rate of triangle depletion determines how quickly the process transitions to the critical n^{3/2} phase"
     },
     {
       "id": "prob-method-alteration",
       "relationship": "related",
-      "description": "The alteration method (Erdős 1963) constructs combinatorial objects by starting with a random structure and modifying it"
+      "description": "The alteration method starts with a random structure and modifies it. The triangle removal process is a natural extension: start with K_n and greedily remove random triangles, with the n^{3/2} scaling reflecting the balance between deletions and surviving structure"
     },
     {
       "id": "prob-method-lovasz-local",
       "relationship": "related",
-      "description": "The Lovász Local Lemma provides bounds on the probability that no 'bad event' occurs when events have limited dependency"
+      "description": "The Lovász Local Lemma handles limited dependencies — relevant because triangle deletions create complex dependencies in the removal process. BFL's proof uses martingale concentration (a related tool) during the critical phase"
     },
     {
       "id": "prob-method-second-moment",
       "relationship": "related",
-      "description": "The second moment method bounds P(X > 0) via E[X]²/E[X²], providing concentration for the triangle count during the remo"
+      "description": "The second moment method provides concentration for triangle counts. BFL tracks variance of edge and triangle counts through the process, using second-moment arguments to show concentration around the ODE trajectory until the n^{3/2} threshold"
     }
   ]
 }
