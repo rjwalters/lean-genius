@@ -140,9 +140,125 @@ theorem density_monotone (c₁ c₂ : ℝ) (hc : c₁ ≤ c₂) :
   apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg N)
   exact Nat.cast_le.mpr (countSmallNormGaps_mono N c₁ c₂ hc)
 
-/-- f(c) → 1 as c → ∞: eventually all normalized gaps are below c. -/
-axiom density_at_infinity :
-    ∀ ε > 0, ∃ c₀ : ℝ, ∀ c ≥ c₀, ∀ᶠ N in atTop, gapProportion N c > 1 - ε
+/-
+## Section IV': Proving density_at_infinity via Markov's Inequality
+
+The following derives density_at_infinity from average_normalized_gap,
+reducing the axiom count from 5 to 4. The argument:
+
+1. Markov bound: for non-negative normalizedGap and c > 0,
+   #{n < N : gap(n) ≥ c} ≤ (∑ gap(n)) / c
+2. Therefore gapProportion N c ≥ 1 - (average gap) / c
+3. Since average gap → 1 (by PNT, axiom average_normalized_gap),
+   for any ε > 0, eventually gapProportion N c > 1 - ε when c is large enough.
+-/
+
+/-- Finite Markov bound for normalizedGap: the number of indices where the
+gap is at least c times the sum divided by c. -/
+private lemma finset_markov_bound (N : ℕ) (c : ℝ) (hc : c > 0) :
+    c * ↑((Finset.range N).filter (fun n => ¬(normalizedGap n < c))).card
+    ≤ ∑ n ∈ Finset.range N, normalizedGap n := by
+  calc c * ↑((Finset.range N).filter (fun n => ¬(normalizedGap n < c))).card
+      = ∑ _n ∈ (Finset.range N).filter (fun n => ¬(normalizedGap n < c)), c := by
+        rw [Finset.sum_const, nsmul_eq_mul]
+    _ ≤ ∑ n ∈ (Finset.range N).filter (fun n => ¬(normalizedGap n < c)), normalizedGap n := by
+        apply Finset.sum_le_sum
+        intro n hn
+        exact le_of_not_lt (Finset.mem_filter.mp hn).2
+    _ ≤ ∑ n ∈ Finset.range N, normalizedGap n := by
+        apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+        intro i _ _
+        exact normalizedGap_nonneg i
+
+/-- Complement card: #{n < N : gap ≥ c} = N - countSmallNormGaps N c. -/
+private lemma complement_card (N : ℕ) (c : ℝ) :
+    ((Finset.range N).filter (fun n => ¬(normalizedGap n < c))).card
+    = N - countSmallNormGaps N c := by
+  unfold countSmallNormGaps
+  have := Finset.filter_card_add_filter_neg_card_eq_card
+    (Finset.range N) (fun n => normalizedGap n < c)
+  rw [Finset.card_range] at this
+  omega
+
+/-- Markov bound on gap proportion: gapProportion N c ≥ 1 - (avg gap)/c. -/
+private lemma gapProportion_markov (N : ℕ) (hN : 0 < N) (c : ℝ) (hc : c > 0) :
+    gapProportion N c ≥
+    1 - (∑ n ∈ Finset.range N, normalizedGap n) / (↑N * c) := by
+  -- From finset_markov_bound: c * |B| ≤ ∑ gap
+  -- From complement_card: |B| = N - count
+  -- So c * (N - count) ≤ ∑ gap, i.e. N*c - count*c ≤ ∑ gap
+  -- Rearranging: count*c ≥ N*c - ∑ gap, count ≥ N - (∑ gap)/c
+  -- Dividing by N: gapProportion ≥ 1 - (∑ gap)/(N*c)
+  have hNr : (0 : ℝ) < ↑N := Nat.cast_pos.mpr hN
+  have hNc : (0 : ℝ) < ↑N * c := mul_pos hNr hc
+  have hmark := finset_markov_bound N c hc
+  have hcomp := complement_card N c
+  unfold gapProportion
+  rw [ge_iff_le, ← sub_nonneg]
+  -- Goal: 0 ≤ countSmallNormGaps N c / N - (1 - sum / (N * c))
+  -- = countSmallNormGaps N c / N - 1 + sum / (N * c)
+  -- = (countSmallNormGaps N c * c + sum - N * c) / (N * c)
+  -- From hmark: c * (N - countSmallNormGaps N c) ≤ sum (in ℕ then ℝ)
+  -- i.e. N*c - count*c ≤ sum, i.e. count*c + sum ≥ N*c
+  -- So numerator ≥ 0.
+  have h_count_le : countSmallNormGaps N c ≤ N := by
+    unfold countSmallNormGaps
+    exact Finset.card_filter_le _ _
+  -- Cast to ℝ: ↑(N - count) = ↑N - ↑count since count ≤ N
+  have h_sub_cast : (↑(N - countSmallNormGaps N c) : ℝ) = ↑N - ↑(countSmallNormGaps N c) := by
+    exact Nat.cast_sub h_count_le
+  -- From hmark with complement_card substituted:
+  -- c * ↑(N - count) ≤ sum
+  rw [hcomp] at hmark
+  rw [h_sub_cast] at hmark
+  -- hmark : c * (↑N - ↑count) ≤ sum
+  -- Goal: 0 ≤ ↑count / ↑N - 1 + sum / (↑N * c)
+  rw [div_add_div _ _ (ne_of_gt hNr) (ne_of_gt hNc)]
+  rw [sub_nonneg, div_le_div_iff (by positivity) (mul_pos hNr hNc)]
+  -- After simplification: 1 * (↑N * (↑N * c)) ≤ ↑count * (↑N * c) + sum * ↑N
+  -- From hmark: c * ↑N - c * ↑count ≤ sum
+  -- So sum * ↑N ≥ (c * ↑N - c * ↑count) * ↑N = c * ↑N² - c * ↑count * ↑N
+  -- ↑count * (↑N * c) + sum * ↑N ≥ ↑count * ↑N * c + c * ↑N² - c * ↑count * ↑N = c * ↑N²
+  -- = ↑N * (↑N * c) = 1 * (↑N * (↑N * c))
+  nlinarith [mul_comm c (↑N - ↑(countSmallNormGaps N c))]
+
+/-- **density_at_infinity** (previously an axiom, now derived):
+f(c) → 1 as c → ∞ — eventually all normalized gaps are below c.
+Proved from average_normalized_gap via Markov's inequality. -/
+theorem density_at_infinity :
+    ∀ ε > 0, ∃ c₀ : ℝ, ∀ c ≥ c₀, ∀ᶠ N in atTop, gapProportion N c > 1 - ε := by
+  intro ε hε
+  -- Choose c₀ = 2/ε + 1 so that (1 + ε/2)/c₀ < ε
+  refine ⟨2 / ε + 1, fun c hc => ?_⟩
+  have hc_pos : c > 0 := by positivity
+  -- From average_normalized_gap: eventually (∑ gap) / N < 1 + ε/2
+  have h_avg : ∀ᶠ N in atTop,
+      (∑ n ∈ Finset.range N, normalizedGap n) / ↑N < 1 + ε / 2 := by
+    have h1 : (1 : ℝ) < 1 + ε / 2 := by linarith
+    exact average_normalized_gap.eventually (Iio_mem_nhds h1)
+  -- Eventually N > 0
+  have h_pos : ∀ᶠ N in atTop, (0 : ℕ) < N :=
+    eventually_atTop.mpr ⟨1, fun n hn => by omega⟩
+  -- Combine
+  filter_upwards [h_avg, h_pos] with N hN_avg hN_pos
+  -- By Markov: gapProportion N c ≥ 1 - (sum/N)/c
+  have hmarkov := gapProportion_markov N hN_pos c hc_pos
+  -- Since sum/N < 1 + ε/2, we have (sum/N)/c < (1 + ε/2)/c ≤ (1 + ε/2)/c₀
+  -- And (1 + ε/2)/(2/ε + 1) = ε(1 + ε/2)/(2 + ε) ≤ ε/2 < ε
+  -- So gapProportion N c > 1 - ε
+  -- sum/(N*c) = (sum/N)/c < (1 + ε/2)/c since sum/N < 1 + ε/2
+  have h_bound : (∑ n ∈ Finset.range N, normalizedGap n) / (↑N * c)
+    < (1 + ε / 2) / c := by
+    rw [← div_div]
+    exact (div_lt_div_right hc_pos).mpr hN_avg
+  -- (1 + ε/2)/c ≤ ε/2 since c ≥ 2/ε + 1
+  have h_bound2 : (1 + ε / 2) / c ≤ ε / 2 := by
+    rw [div_le_div_iff hc_pos (by positivity : (0 : ℝ) < 2)]
+    -- Goal: (1 + ε/2) * 2 ≤ ε * c, i.e., 2 + ε ≤ ε * c
+    have h_key : ε * (2 / ε + 1) = 2 + ε := by field_simp
+    have h_prod : ε * (2 / ε + 1) ≤ ε * c := mul_le_mul_of_nonneg_left hc hε.le
+    nlinarith
+  linarith
 
 /-
 ## Section V: Cramér's Model
