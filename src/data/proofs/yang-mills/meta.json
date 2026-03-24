@@ -291,6 +291,16 @@
       "id": "yang-mills-transfer-matrix",
       "relationship": "has-submodule",
       "description": "Proven finite-volume mass gap via transfer matrix / Perron-Frobenius — the strongest rigorous result in this formalization"
+    },
+    {
+      "id": "yang-mills-lattice",
+      "relationship": "has-submodule",
+      "description": "Lattice gauge theory with proven plaquette gauge invariance and action bounds"
+    },
+    {
+      "id": "yang-mills-2d",
+      "relationship": "has-submodule",
+      "description": "Exact 2D Yang-Mills solution via Migdal formula with proven area law and mass gap"
     }
   ],
   "leanFile": {

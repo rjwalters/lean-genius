@@ -211,6 +211,16 @@
       "id": "prime-number-theorem",
       "relationship": "related",
       "description": "PNT explains WHY the harmonic series diverges logarithmically: the integral test gives $H_n \\sim \\int_1^n dx/x = \\ln n$."
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "contrasts",
+      "description": "Geometric $\\sum r^n$ converges (exponential decay) vs harmonic $\\sum 1/n$ diverges (polynomial decay). The boundary betw"
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Both $H_n = \\ln n + \\gamma + O(1/n)$ and $\\ln(n!) = n\\ln n - n + O(\\ln n)$ are logarithmic estimates proved by Euler-Mac"
     }
   ],
   "leanFile": {

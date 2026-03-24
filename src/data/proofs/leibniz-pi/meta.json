@@ -210,6 +210,16 @@
       "id": "taylor-theorem",
       "relationship": "foundational",
       "description": "The Leibniz series is the Taylor expansion of $\\arctan(x)$ at $x = 0$ evaluated at $x = 1$: $\\arctan(x) = x - x^3/3 + x^"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "related",
+      "description": "The Leibniz series $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ is the value $L(1, \\chi_4)$ of the Dirichlet $L$-function for the no"
+    },
+    {
+      "id": "geometric-series",
+      "relationship": "foundational",
+      "description": "The derivation of $\\arctan(x) = \\int_0^x 1/(1+t^2)\\,dt$ starts from the geometric series $1/(1+t^2) = 1 - t^2 + t^4 - \\c"
     }
   ],
   "references": [

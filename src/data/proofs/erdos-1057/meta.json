@@ -234,6 +234,16 @@
       "id": "dirichlets-theorem",
       "relationship": "key construction tool",
       "description": "Dirichlet's theorem on primes in arithmetic progressions is used in the AGP construction; finding sufficiently many primes $p$ with $(p-1) \\mid L$ for a suitable $L$ is the core step in building large sets of Carmichael numbers."
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "structural prerequisite",
+      "description": "The Fundamental Theorem of Arithmetic underpins both Korselt's criterion and the squarefreeness requirement: Carmichael "
+    },
+    {
+      "id": "bertrands-postulate",
+      "relationship": "sieve-method context",
+      "description": "Bertrand's postulate (a prime between $n$ and $2n$) and the AGP Carmichael lower bound both use sieve-theoretic and anal"
     }
   ],
   "references": [

@@ -201,6 +201,16 @@
       "id": "law-of-cosines",
       "relationship": "foundational",
       "description": "The law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ provides the algebraic foundation for computing angles between points via the dot product formula used to define $\\angle(x,y,z)$"
+    },
+    {
+      "id": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem underpins the Euclidean norm $\\|v\\| = \\sqrt{v_1^2 + v_2^2}$ used in the angle definition $\\angle"
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "thematic",
+      "description": "The inscribed angle theorem — central to proving regular polygon optimality for $\\alpha_{2^n}$ — is intimately connected"
     }
   ],
   "references": [

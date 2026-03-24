@@ -217,6 +217,16 @@
       "id": "erdos-9",
       "relationship": "related",
       "description": "Both concern representations involving powers of 2: #9 asks about p + 2^k + 2^l, #205 asks about 2^k + m with Ω constraints"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "uses",
+      "description": "The Chinese Remainder Theorem underlies the covering system construction: simultaneous congruences mod {3,5,7,13,17,241}"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The Erdős-Kac theorem (axiomatized here) is a number-theoretic analogue of the CLT: Ω(n) is asymptotically Gaussian, par"
     }
   ],
   "leanFile": {
