@@ -133,12 +133,17 @@
     {
       "targetId": "schauder-fixed-point",
       "relationship": "used-by",
-      "description": "The projection lemma is the key technical ingredient for the Schauder fixed point theorem"
+      "description": "The projection lemma is the key technical ingredient: it approximates a compact operator by finite-rank operators, reducing the infinite-dimensional Schauder theorem to the finite-dimensional Brouwer theorem. This entry resolves a sorry in SchauderFixedPoint.lean"
     },
     {
       "targetId": "brouwer-fixed-point",
       "relationship": "depends-on",
-      "description": "The Schauder theorem leverages Brouwer's theorem on the finite-dimensional convex hull produced by this projection"
+      "description": "Schauder's theorem generalizes Brouwer's from finite to infinite dimensions: the projection lemma maps into a finite-dimensional convex hull where Brouwer applies, then the approximation argument lifts the fixed point back to the infinite-dimensional space"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Both are topological fixed-point theorems with roots in algebraic topology. Borsuk-Ulam proves that any continuous map $S^n \\to \\mathbb{R}^n$ has a pair of antipodal points with the same image — a deeper result that implies Brouwer's theorem. The projection lemma here provides the functional-analytic bridge from finite-dimensional topology (Brouwer/Borsuk-Ulam) to infinite-dimensional fixed-point theory (Schauder)"
     }
   ],
   "conclusion": {
