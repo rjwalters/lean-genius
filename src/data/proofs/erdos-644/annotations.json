@@ -2,10 +2,6 @@
   {
     "id": "ann-644-kfamily",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 39,
-      "endLine": 42
-    },
     "type": "definition",
     "title": "KFamily",
     "content": "**KFamily.** A k-uniform family: a collection of sets each of cardinality exactly k. This is the basic object of study — families of k-element subsets of a ground set.",
@@ -26,10 +22,6 @@
   {
     "id": "ann-644-pair-intersects",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 44,
-      "endLine": 50
-    },
     "type": "definition",
     "title": "PairIntersects",
     "content": "**PairIntersects.** A pair {x, y} intersects a set A if x ∈ A or y ∈ A (i.e., the pair shares at least one element with A). This is the basic intersection primitive for the r-wise pair property.",
@@ -49,10 +41,6 @@
   {
     "id": "ann-644-rwise",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 52,
-      "endLine": 55
-    },
     "type": "definition",
     "title": "HasRWisePairProperty",
     "content": "**HasRWisePairProperty.** A family has the r-wise pair property if every r sets in the family share a common pair {x, y} that intersects all r of them. This strengthens pairwise intersection to r-wise coherence.",
@@ -73,10 +61,6 @@
   {
     "id": "ann-644-covering",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 57,
-      "endLine": 63
-    },
     "type": "definition",
     "title": "IsCoveringSet",
     "content": "**IsCoveringSet.** A set S is a covering set for a family if S intersects every set in the family: for every Aᵢ in the family, S ∩ Aᵢ ≠ ∅. The minimum such |S| is the covering number.",
@@ -97,10 +81,6 @@
   {
     "id": "ann-644-f",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 67,
-      "endLine": 70
-    },
     "type": "definition",
     "title": "f(k,r)",
     "content": "**f(k,r).** The minimum size of a covering set guaranteed to exist for any k-uniform family with the r-wise pair property. This is the central function of Problem #644.",
@@ -122,10 +102,6 @@
   {
     "id": "ann-644-known-values",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 78,
-      "endLine": 92
-    },
     "type": "technique",
     "title": "Known Values (EFKT92)",
     "content": "**Known exact values.** Erdős-Fon-Der-Flaass-Kostochka-Tuza (1992) determined: f(k,3) = 2k, f(k,4) = ⌊3k/2⌋, f(k,5) = ⌊5k/4⌋, f(k,6) = k. Each requires both an upper bound (covering algorithm) and matching lower bound (extremal construction).",
@@ -146,10 +122,6 @@
   {
     "id": "ann-644-coeff",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 96,
-      "endLine": 102
-    },
     "type": "definition",
     "title": "Coefficient Sequence",
     "content": "**coefficientSequence.** The sequence c₃ = 2, c₄ = 3/2, c₅ = 5/4, c₆ = 1, representing the leading coefficient of f(k,r) ≈ cᵣ · k. The pattern suggests c₇ = 3/4.",
@@ -169,10 +141,6 @@
   {
     "id": "ann-644-q1",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 122,
-      "endLine": 128
-    },
     "type": "concept",
     "title": "Question 1: f(k,7) = (3/4+o(1))k?",
     "content": "**Question 1.** Is f(k,7) = (3/4 + o(1))k? This asks whether the decreasing coefficient pattern continues to c₇ = 3/4, dropping below the natural barrier c₆ = 1.",
@@ -193,10 +161,6 @@
   {
     "id": "ann-644-q2",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 140,
-      "endLine": 147
-    },
     "type": "concept",
     "title": "Question 2: General Asymptotics",
     "content": "**Question 2.** For all r ≥ 3, does f(k,r) = (cᵣ + o(1))k for some constant cᵣ? This asks whether the linear-in-k behavior persists for all r, not just the computed cases r = 3,...,6.",
@@ -217,10 +181,6 @@
   {
     "id": "ann-644-extremal",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 156,
-      "endLine": 165
-    },
     "type": "definition",
     "title": "Extremal Families",
     "content": "**Extremal Families.** Constructions achieving the lower bounds for f(k,r). These show the known values are tight by exhibiting k-uniform families with the r-wise pair property that cannot be covered by fewer than f(k,r) elements.",
@@ -241,10 +201,6 @@
   {
     "id": "ann-644-mono",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 174,
-      "endLine": 180
-    },
     "type": "technique",
     "title": "Monotonicity Properties",
     "content": "**Monotonicity.** f(k,r) is non-increasing in r (stronger coherence allows smaller covers) and non-decreasing in k (larger sets need larger covers). These are natural structural properties.",
@@ -264,10 +220,6 @@
   {
     "id": "ann-644-sunflower",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 188,
-      "endLine": 199
-    },
     "type": "technique",
     "title": "Sunflower Connection",
     "content": "**Sunflower Connection.** The r-wise pair property relates to the sunflower lemma (Erdős-Ko 1960). A sunflower is a family where all pairwise intersections are the same 'core.' The Erdős-Ko sunflower lemma bounds family sizes, and the pair property provides a weaker structural guarantee that still enables efficient covering.",
@@ -289,10 +241,6 @@
   {
     "id": "ann-644-main",
     "proofId": "erdos-644",
-    "range": {
-      "startLine": 231,
-      "endLine": 236
-    },
     "type": "definition",
     "title": "Main Conjecture",
     "content": "**Main Conjecture.** The conjunction of Question 1 (f(k,7) = (3/4+o(1))k) and Question 2 (existence of limiting coefficients cᵣ for all r). These two questions together would establish the complete asymptotic picture of the covering function.",
