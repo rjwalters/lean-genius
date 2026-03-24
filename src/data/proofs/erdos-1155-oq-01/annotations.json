@@ -45,6 +45,27 @@
     ]
   },
   {
+    "id": "ann-e1155-asymptotic-header",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "type": "context",
+    "title": "§ 2: Asymptotic Infrastructure",
+    "content": "Section header for the axiomatization layer. This section declares the external mathematical infrastructure — the triangle removal function $f(n)$ and the Bohman-Frieze-Lubetzky bounds — as axioms. By axiomatizing these deep probabilistic results rather than proving them, the formalization cleanly separates the hard analysis (BFL's martingale concentration arguments, Wormald's ODE method) from the combinatorial-logical structure that can be independently verified in Lean.",
+    "mathContext": "The axiomatization pattern: declare externally-established results as `axiom` declarations, then prove all structural consequences with 0 sorries. This yields a formalization where the *logical architecture* is fully machine-checked even though the *analytical core* remains external.",
+    "significance": "context",
+    "relatedConcepts": [
+      "axiomatization strategy",
+      "separation of concerns",
+      "formal verification"
+    ],
+    "prerequisites": [
+      "Lean 4 axiom declarations"
+    ]
+  },
+  {
     "id": "ann-e1155-axioms",
     "proofId": "erdos-1155-oq-01",
     "range": {
@@ -98,7 +119,7 @@
     "id": "ann-e1155-gap-intro",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 110,
+      "startLine": 104,
       "endLine": 110
     },
     "type": "concept",
@@ -194,7 +215,7 @@
     "id": "ann-e1155-exponent-intro",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 226,
+      "startLine": 220,
       "endLine": 225
     },
     "type": "concept",
@@ -239,8 +260,8 @@
     "id": "ann-e1155-exponent-lower",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 239,
-      "endLine": 252
+      "startLine": 238,
+      "endLine": 253
     },
     "type": "technique",
     "title": "Lower Tightness: No Sub-3/2 Exponent Bound Holds",
@@ -262,7 +283,7 @@
     "id": "ann-e1155-small-values",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 260,
+      "startLine": 254,
       "endLine": 307
     },
     "type": "concept",
@@ -285,7 +306,7 @@
     "id": "ann-e1155-limit-sufficient",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 311,
+      "startLine": 305,
       "endLine": 329
     },
     "type": "concept",
@@ -334,7 +355,7 @@
     "id": "ann-e1155-lower-exponent",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 362,
+      "startLine": 356,
       "endLine": 369
     },
     "type": "concept",
@@ -357,7 +378,7 @@
     "id": "ann-e1155-mantel",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 382,
+      "startLine": 370,
       "endLine": 403
     },
     "type": "concept",
@@ -382,7 +403,7 @@
     "id": "ann-e1155-hierarchy",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 411,
+      "startLine": 404,
       "endLine": 433
     },
     "type": "concept",
@@ -406,7 +427,7 @@
     "id": "ann-e1155-tightness",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 441,
+      "startLine": 434,
       "endLine": 489
     },
     "type": "concept",
