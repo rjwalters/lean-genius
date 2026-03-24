@@ -18,11 +18,9 @@ Let p be a prime and A_p = { k! mod p : 1 ≤ k < p }. Is it true that
 - <https://erdosproblems.com/478>
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
+
+namespace Erdos478
 
 /- ## Core Definitions -/
 
@@ -39,13 +37,25 @@ noncomputable def conjecturedDensity : ℝ := 1 - Real.exp (-1)
 
 /- ## Wilson's Theorem Consequences -/
 
-/-- Wilson's theorem: (p-1)! ≡ -1 (mod p) for prime p. -/
-axiom wilson_factorial_residue (p : ℕ) [Fact (Nat.Prime p)] :
-  ((p - 1).factorial : ZMod p) = -1
+/-- Wilson's theorem: (p-1)! ≡ -1 (mod p) for prime p.
+    Proved from Mathlib's `ZMod.wilsons_lemma`. -/
+theorem wilson_factorial_residue (p : ℕ) [Fact (Nat.Prime p)] :
+    ((p - 1).factorial : ZMod p) = -1 :=
+  ZMod.wilsons_lemma p
 
-/-- The factorial residue set excludes 0 for primes p > 2. -/
-axiom factorial_residues_nonzero (p : ℕ) [Fact (Nat.Prime p)] (hp2 : p > 2) :
-  (0 : ZMod p) ∉ factorialResidueSet p
+/-- The factorial residue set excludes 0 for primes p > 2.
+    Proof: For 1 ≤ k < p, k! is a product of numbers < p, none divisible
+    by p (since p is prime). Hence p ∤ k!, so k! ≢ 0 (mod p). -/
+theorem factorial_residues_nonzero (p : ℕ) [hp : Fact (Nat.Prime p)] (hp2 : p > 2) :
+    (0 : ZMod p) ∉ factorialResidueSet p := by
+  intro hmem
+  simp [factorialResidueSet] at hmem
+  obtain ⟨k, hk, heq⟩ := hmem
+  -- heq : (↑(k+1)! : ZMod p) = 0 means p ∣ (k+1)!
+  rw [ZMod.natCast_eq_zero_iff] at heq
+  -- p divides (k+1)!, but p is prime and all factors of (k+1)! are < p
+  have := (Nat.Prime.dvd_factorial hp.out).mp heq
+  omega
 
 /-- Upper bound: |A_p| ≤ p - 2 for all primes p > 5. -/
 axiom factorial_residue_upper (p : ℕ) [Fact (Nat.Prime p)] (hp : p > 5) :
@@ -92,17 +102,24 @@ axiom random_model_heuristic :
   ∀ ε : ℝ, ε > 0 → ∃ P₀ : ℕ, ∀ p : ℕ,
     p > P₀ → |(1 - (1 - 1 / (p : ℝ)) ^ (p - 1)) - (1 - Real.exp (-1))| < ε
 
-/-- Consecutive factorials: k! = k · (k-1)!, so the sequence of
-    factorial residues is a multiplicative random walk on (Z/pZ)*. -/
-axiom factorial_as_multiplicative_walk (p : ℕ) [Fact (Nat.Prime p)] :
-  ∀ k : ℕ, k ≥ 1 → k < p →
-    ((k + 1).factorial : ZMod p) = ((k + 1 : ℕ) : ZMod p) * (k.factorial : ZMod p)
+/-- Consecutive factorials: (k+1)! = (k+1) · k! in ZMod p.
+    Proved from Mathlib's `Nat.factorial_succ`. -/
+theorem factorial_as_multiplicative_walk (p : ℕ) [Fact (Nat.Prime p)] :
+    ∀ k : ℕ, k ≥ 1 → k < p →
+      ((k + 1).factorial : ZMod p) = ((k + 1 : ℕ) : ZMod p) * (k.factorial : ZMod p) := by
+  intro k _ _
+  rw [Nat.factorial_succ]
+  push_cast
+  ring
 
 /- ## Average Results -/
 
 /-- Klurman–Munsch (2017): On average over primes p ≤ x,
-    the factorial residue count is (1 - 1/e + o(1)) · p. -/
-axiom klurman_munsch_average :
-  ∀ ε : ℝ, ε > 0 → ∃ X₀ : ℝ, X₀ > 0 ∧
-    ∀ x : ℝ, x > X₀ → True  -- The precise averaging statement
-    -- Σ_{p ≤ x prime} |A_p| / Σ_{p ≤ x prime} p → (1 - 1/e)
+    the factorial residue count is (1 - 1/e + o(1)) · p.
+    (The precise statement is not formalized; this is a placeholder.) -/
+theorem klurman_munsch_average :
+    ∀ ε : ℝ, ε > 0 → ∃ X₀ : ℝ, X₀ > 0 ∧
+      ∀ x : ℝ, x > X₀ → True :=
+  fun _ _ => ⟨1, one_pos, fun _ _ => trivial⟩
+
+end Erdos478
