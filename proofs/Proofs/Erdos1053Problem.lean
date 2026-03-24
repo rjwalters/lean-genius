@@ -29,16 +29,20 @@ import Mathlib.Tactic
 
 /- ## Core Definitions -/
 
-/-- The sum-of-divisors function σ(n). -/
-axiom sigma (n : ℕ) : ℕ
+/-- The sum-of-divisors function σ(n), computed as the sum of all divisors. -/
+def sigma (n : ℕ) : ℕ := (Nat.divisors n).sum id
 
-/-- σ(n) equals the sum of all positive divisors of n. -/
-axiom sigma_def (n : ℕ) (hn : n > 0) :
-    sigma n = (Nat.divisors n).sum id
+/-- σ(n) equals the sum of all positive divisors of n (definitional). -/
+theorem sigma_def (n : ℕ) (_hn : n > 0) :
+    sigma n = (Nat.divisors n).sum id := rfl
 
 /-- A number n is k-perfect if σ(n) = k·n. -/
 def IsKPerfect (n k : ℕ) : Prop :=
   n > 0 ∧ sigma n = k * n
+
+/-- IsKPerfect is decidable since sigma is computable. -/
+instance (n k : ℕ) : Decidable (IsKPerfect n k) := by
+  unfold IsKPerfect; exact instDecidableAnd
 
 /-- The multiplicity of n: the ratio σ(n)/n when it is an integer. -/
 def perfectMultiplicity (n : ℕ) : ℕ :=
@@ -46,12 +50,30 @@ def perfectMultiplicity (n : ℕ) : ℕ :=
 
 /- ## Classical Perfect Numbers (k = 2) -/
 
-/-- k=1: only n=1 satisfies σ(n) = n. -/
-axiom one_perfect_unique : ∀ n : ℕ, IsKPerfect n 1 → n = 1
+/-- k=1: only n=1 satisfies σ(n) = n.
+    Proof: For n ≥ 2, σ(n) ≥ 1 + n > n since both 1 and n divide n. -/
+theorem one_perfect_unique : ∀ n : ℕ, IsKPerfect n 1 → n = 1 := by
+  intro n ⟨hn, hσ⟩
+  simp only [one_mul] at hσ
+  by_contra h
+  have h1 : (1 : ℕ) ∈ n.divisors := by
+    rw [Nat.mem_divisors]; exact ⟨one_dvd n, by omega⟩
+  have hn_mem : n ∈ n.divisors := by
+    rw [Nat.mem_divisors]; exact ⟨dvd_refl n, by omega⟩
+  have hsub : ({1, n} : Finset ℕ) ⊆ n.divisors := by
+    intro x hx; simp at hx; rcases hx with rfl | rfl <;> assumption
+  have hpair : ({1, n} : Finset ℕ).sum id = 1 + n := by
+    rw [Finset.sum_pair (by omega : (1 : ℕ) ≠ n)]; simp
+  have hle := Finset.sum_le_sum_of_subset (f := id) hsub
+  unfold sigma at hσ
+  have : 1 + n ≤ n := by linarith [hpair, hle, hσ]
+  omega
 
-/-- k=2: classical perfect numbers. The first few: 6, 28, 496, 8128. -/
-axiom perfect_examples :
-    IsKPerfect 6 2 ∧ IsKPerfect 28 2 ∧ IsKPerfect 496 2 ∧ IsKPerfect 8128 2
+/-- k=2: classical perfect numbers. The first few: 6, 28, 496, 8128.
+    Proved by computation: σ(6) = 12 = 2·6, σ(28) = 56 = 2·28, etc. -/
+theorem perfect_examples :
+    IsKPerfect 6 2 ∧ IsKPerfect 28 2 ∧ IsKPerfect 496 2 ∧ IsKPerfect 8128 2 := by
+  native_decide
 
 /-- Euler's characterization: even perfect numbers are exactly
     2^(p-1) · (2^p - 1) where 2^p - 1 is a Mersenne prime. -/
@@ -61,16 +83,18 @@ axiom euler_even_perfect (n : ℕ) (hn : n > 0) (heven : n % 2 = 0) :
 
 /- ## Multiperfect Numbers (k ≥ 3) -/
 
-/-- k=3 (triperfect): 120, 672, 523776, 459818240, 1476304896, 51001180160. -/
-axiom triperfect_examples :
-    IsKPerfect 120 3 ∧ IsKPerfect 672 3 ∧ IsKPerfect 523776 3
+/-- k=3 (triperfect): 120, 672, 523776.
+    Proved by computation: σ(120) = 360 = 3·120, σ(672) = 2016 = 3·672, etc. -/
+theorem triperfect_examples :
+    IsKPerfect 120 3 ∧ IsKPerfect 672 3 ∧ IsKPerfect 523776 3 := by
+  native_decide
 
 /-- The largest known k for which a k-perfect number exists is k=11.
-    The k=11 examples are extremely large. -/
+    The k=11 examples are extremely large (thousands of digits). -/
 axiom largest_known_k :
     ∃ n : ℕ, IsKPerfect n 11
 
-/-- For each k ≥ 3, only finitely many k-perfect numbers are known. -/
+-- For each k ≥ 3, only finitely many k-perfect numbers are known.
 
 /- ## The Main Conjecture -/
 
