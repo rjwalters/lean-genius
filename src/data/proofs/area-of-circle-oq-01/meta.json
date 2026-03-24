@@ -16,7 +16,7 @@
       "differentiation",
       "extension"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -52,7 +52,7 @@
       "Chain rule and power rule for derivatives",
       "Pi and trigonometric function properties"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 axioms, 0 sorries. Main result is a direct application of Mathlib hasDerivAt_pow.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
