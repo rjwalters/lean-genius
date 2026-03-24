@@ -240,9 +240,11 @@ theorem hard_case_constraint (n k d : ℕ) (hk : 2 ≤ k)
   obtain ⟨p, hp, hpsq⟩ := lpf_le_sqrt (n + k) hm hm2
   have hkd := hlpf p hp
   -- k^d < p and p² ≤ n + k, so k^{2d} < p² ≤ n + k
+  have hkd_pos : 0 < k ^ d := by positivity
   calc k ^ (2 * d) = (k ^ d) ^ 2 := by ring
     _ = k ^ d * k ^ d := by ring
-    _ < p * p := by nlinarith
+    _ < k ^ d * p := Nat.mul_lt_mul_of_pos_left hkd hkd_pos
+    _ ≤ p * p := Nat.mul_le_mul_right p (le_of_lt hkd)
     _ ≤ n + k := hpsq
 
 /-- Generalises `hard_case_constraint` with the weaker hypothesis k ≥ 1.
@@ -257,8 +259,10 @@ theorem general_constraint (n k d : ℕ) (hk : 0 < k) (hm : ¬(n + k).Prime)
   have h2d : k ^ (2 * d) = k ^ d * k ^ d := by
     rw [show 2 * d = d + d from by omega, pow_add]
   rw [h2d]
-  calc k ^ d * k ^ d < p * p := by nlinarith
-    _ ≤ n + k := hpsq
+  calc k ^ d * k ^ d
+      _ < k ^ d * p := Nat.mul_lt_mul_of_pos_left hkd hkd_pos
+      _ ≤ p * p := Nat.mul_le_mul_right p (le_of_lt hkd)
+      _ ≤ n + k := hpsq
 
 /- ## Connection to Erdős 680 -/
 
