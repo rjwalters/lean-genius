@@ -248,52 +248,55 @@ The RIGHT partition is cosets of H = ⟨N/g⟩ (annihilator of ⟨r⟩), NOT cos
 
 ### Sorry Chain (Session 9)
 ```
-density_increment_iter:
-  N>=2 case: PROVED (delegates to density_increment_lemma)
-  N=1, delta+delta^2/100<=1: PROVED (M=1, B=Finset.univ, APFree via Subsingleton)
-  N=1, delta+delta^2/100>1: sorry (PROVABLY FALSE as stated — needs Dirichlet restructuring)
-    └→ density_iteration (PROVED)
-          └→ roth_density_bound (PROVED from density_iteration)
+mul_L_r_eq_zero (ZMod API) ──→ psi_const_on_coset (PROVED)
+coset_char_sum_zero (sorry) ──→ coset_density_increment (sorry)
+                                  ──→ density_increment_lemma
+g<√N box partition (sorry) ────→    └→ density_increment_step (PROVED)
+N even (sorry) ────────────────→        └→ density_iteration (PROVED)
+N=1, δ+δ²/100≤1 (PROVED, S11)─→            └→ roth_density_bound (PROVED)
+N=1, δ+δ²/100>1 (sorry, FALSE)→
 ```
 
-## Session 12 (2026-03-23, researcher-2)
+## Session 11 (2026-03-23, researcher-8)
 
 ### What Was Done
-1. **Confirmed build compiles**: 0 axioms, 1 sorry, all Mathlib API breakages already fixed
-2. **Partially closed N=1 sorry** in density_increment_iter:
-   - Handled delta + delta²/100 ≤ 1 case: M=1, B=Finset.univ in ZMod 1
-   - APFree proved via `Subsingleton.elim d 0` (ZMod 1 has one element, so d=0 always)
-   - Card bound: `ZMod.card 1` gives Fintype.card = 1
-3. **Proved density_increment_iter is FALSE** for N=1, delta > ~0.99:
-   - Hypotheses: APFree A in ZMod 1 (vacuously true), |A| ≥ delta (A={0}, so delta ≤ 1) — CONSISTENT
-   - Conclusion: ∃ M > 0, B APFree, |B| ≥ (delta+delta²/100)·M > M — IMPOSSIBLE
-   - Not a gap in the proof but a bug in the theorem STATEMENT
-4. **Documented Dirichlet integration path** in detail
+1. **Proved N=1 subcase for small delta**: When delta + delta²/100 ≤ 1 (i.e., delta ≤ ~0.995),
+   the N=1 case of density_increment_lemma is proved using the witness (M=1, B=Finset.univ).
+   - APFree on ZMod 1 is vacuously true (Subsingleton.elim d 0)
+   - Cardinality: |ZMod 1| = 1 ≥ delta + delta²/100 (from hle)
+2. **Documented architectural gap**: For delta > ~0.995 at N=1, the conclusion requires
+   density > 1 on some (M, B), which is impossible for finite sets. This is a genuine
+   theorem-statement-level gap, not a proof gap.
 
-### Key Mathematical Analysis
+### Architectural Analysis
+The coset-based density increment can reduce the universe to size 1 when N is prime
+(since gcd(val(r), N) = 1 for all r ≠ 0). This means:
+- For prime starting N, M₁ = 1 after one step
+- All subsequent iterations have M = 1
+- The density approaches 1 but the iteration stalls at delta + delta²/100 > 1
 
-**Why the sorry can't be closed without restructuring:**
-- density_increment_lemma gives M = gcd(val(r), N). For prime N, gcd = 1 always.
-- g ≥ 2 gives M ≤ N/2 (upper bound), but M CAN be 1 from any N.
-- The iteration chain hits M=1 at some step, then can't continue when density > ~0.99.
-- This is NOT a missing proof technique — the STATEMENT is false for these inputs.
+**Resolution requires one of:**
+1. **Dirichlet approximation**: Find arithmetic progressions of length ≥ √N where
+   the character χ_r is approximately constant, giving M ≥ √N at each step
+2. **Bohr sets**: Generalization of APs to higher dimensions, giving larger substructures
+3. **Different proof architecture**: Triangle removal lemma or regularity-based proof
 
-**Why Dirichlet fixes this:**
-- DirichletApproximation.lean (already proved) gives q ≤ √N with |q·val(r)/N - p| < 1/√N
-- Instead of exact cosets (M = gcd), use subprogressions of length L = ⌊N/q⌋ ≥ √N ≥ 2
-- Character ψ_r is approximately constant (not exactly) on these subprogressions
-- Requires handling approximate constancy in the density increment argument
+### Pre-existing Build Failures
+The file has ~20 Mathlib API breakages in `fourier_large_coefficient` and related code:
+- `ZMod.val_one_lt_of_lt` removed (need alternative for `1 ≠ 0` in ZMod N)
+- `Finset.card_sdiff` / `Finset.sdiff_eq_empty_iff_subset` API changes
+- `Exists.some` / `.some_mem` → need `.choose` / `.choose_spec`
+- `exact_mod_cast` / `push_cast` behavior changes
+- `linarith` on ℂ goals (ℂ not linearly ordered)
+- Various `rw` pattern matching failures
 
-**Integration effort estimate:** ~200-300 lines of new Lean code:
-1. Dirichlet-based partition of ZMod N into subprogressions
-2. Approximate character constancy on subprogressions
-3. Density increment under approximate constancy
-4. AP-freeness transfer to subprogressions
-5. Modified iteration guaranteeing M ≥ 2
+These were NOT introduced by this session — they are pre-existing from Mathlib updates.
 
-### Current Sorry Chain
-```
-density_increment_iter (1 sorry: N=1, delta>0.99 case)
-    └→ density_iteration (PROVED)
-          └→ roth_density_bound (PROVED)
-```
+### Attempted Fixes (Reverted)
+Attempted to fix the Mathlib breakages but could not verify without interactive Lean:
+- `Finset.eq_univ_of_card` → use `refine` + `rw [ZMod.card]`
+- `ZMod.val_one_lt_of_lt` → use `ZMod.natCast_zmod_eq_zero_iff_dvd` for `1 ≠ 0`
+- `Exists.some` → `Exists.choose`
+- `push_cast; linarith` → explicit `Nat.cast_sub` + `linarith`
+- `linarith` on ℂ → `linear_combination`
+Reverted these changes as the full fix requires an interactive Lean session.
