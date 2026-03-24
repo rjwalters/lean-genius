@@ -17,9 +17,9 @@
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/28",
     "erdosUrl": "https://erdosproblems.com/28",
-    "proofRepoPath": "Proofs/Erdos28Problem.lean",
-    "axiomCount": 6,
-    "assumptions": "6 axiom declarations: erdos_turan_conjecture (main conjecture), erdos_turan_strong (logarithmic growth), erdos_turan_density_version (density variant), basis_counting_lower (sqrt(N) bound), erdos_fuchs_theorem (fluctuation), average_rep_unbounded (average divergence). Former axioms sidon_not_basis and erdos_40_from_28 proved.",
+    "proofRepoPath": "Proofs/Erdos28AdditiveBases.lean",
+    "axiomCount": 4,
+    "assumptions": "4 axioms: grekos_lower_bound (Grekos et al. 2003: r_A(n) ≥ 6 infinitely often), borwein_lower_bound (Borwein et al.: r_A(n) ≥ 8 infinitely often), sidon_density_bound (Sidon density ≤ √(2N)+1, duplicated from Erdos340), sidon_not_basis (infinite Sidon sets cannot be bases). 18 theorems proved including isAsymptoticBasis_iff, sidon_repFunc_bounded, erdos_turan_holds_for_nat, basis_element_count_sq.",
     "badge": "axiom",
     "prerequisites": [
       "Additive number theory (sumsets, representation functions)",
@@ -212,9 +212,9 @@
       "Pointwise"
     ],
     "namespace": "",
-    "lineCount": 111,
-    "axiomCount": 6,
-    "theoremCount": 0,
-    "definitionCount": 3
+    "lineCount": 497,
+    "axiomCount": 4,
+    "theoremCount": 18,
+    "definitionCount": 10
   }
 }
