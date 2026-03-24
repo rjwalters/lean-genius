@@ -129,21 +129,25 @@ axiom atherfold_upper_bound :
 theorem partialSum_zero (f : ℕ → ℤ) : partialSum f 0 = 0 := by
   simp [partialSum]
 
-/-- Atherfold's bound implies that the partial sums grow at most as
-√N · (log N)^{1+ε}, which gives an asymptotic bound strictly below
-N^{1/2+δ} for any δ > 0.
+/-- **FALSE as stated**: The constant function f ≡ 1 is Rademacher multiplicative
+(with f(p) = 1 for all primes), and its partial sum is N-1 (linear growth),
+which exceeds N^(1/2+δ) for any δ < 1/2. The actual Atherfold result is
+probabilistic (holds almost surely), not deterministic (for all f).
 
-**Note**: This statement is FALSE as stated for all Rademacher multiplicative functions.
-Aristotle found a counterexample: the constant function f ≡ 1 is Rademacher multiplicative
-(with f(p) = 1 for all primes p), and its partial sum is N-1 (linear growth),
-which grows faster than N^(3/4) for large N. The actual Atherfold result is
-probabilistic (holds almost surely), not deterministic (for all f). -/
-theorem atherfold_implies_subpolynomial :
-    ∀ δ : ℝ, 0 < δ →
+The following counterexample witnesses that the deterministic version fails. -/
+theorem atherfold_subpolynomial_false :
+    ¬(∀ δ : ℝ, 0 < δ →
       ∃ C : ℝ, 0 < C ∧
         ∀ f : ℕ → ℤ, IsRademacherMultiplicative f →
           ∀ᶠ (N : ℕ) in atTop,
-            |(partialSum f N : ℝ)| ≤ C * (N : ℝ) ^ (1/2 + δ) := by
+            |(partialSum f N : ℝ)| ≤ C * (N : ℝ) ^ (1/2 + δ)) := by
+  push_neg
+  refine ⟨1/4, by norm_num, ?_⟩
+  intro C hC
+  -- The all-ones function: f(n) = 1 for all n
+  -- It is Rademacher multiplicative with f(p) = 1
+  -- Its partial sum ∑_{m=1}^{N} 1 = N-1 (since range N filters m ≥ 1)
+  -- For large N: N-1 > C · N^(3/4), so the bound fails
   sorry
 
 /-- The trivial upper bound: |∑_{m ≤ N} f(m)| ≤ N for any
