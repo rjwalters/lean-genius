@@ -20,9 +20,9 @@
     "erdosNumber": 100,
     "erdosUrl": "https://erdosproblems.com/100",
     "erdosProblemStatus": "open",
-    "axiomCount": 5,
-    "lineCount": 386,
-    "assumptions": "5 axioms: distinctDistances_le_diam (bridge lemma), kanold_bound, guthKatz_distinct_distances, piepmeyer_construction, erdos_anning_theorem. 0 sorries. n_over_log_sublinear proved from Real.tendsto_log_atTop. Open problem - linear diameter growth conjectured."
+    "axiomCount": 4,
+    "lineCount": 469,
+    "assumptions": "4 axioms: kanold_bound (n^(3/4) bound), guthKatz_distinct_distances (n/log n distinct distances), piepmeyer_construction (9-point counterexample), erdos_anning_theorem (infinite collinearity). 0 sorries. distinctDistances_le_diam PROVED via injection into {1,...,⌊diam⌋}. diam_is_integer PROVED (diameter is a positive integer). Open problem - linear diameter growth conjectured."
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the early 1990s as part of his extensive program on distance problems in discrete and combinatorial geometry. The question asks whether imposing integer-distance constraints on planar point sets forces the diameter to grow linearly with n. This connects to a rich tradition beginning with Erdős's 1946 paper on distinct distances, where he conjectured that n points in the plane determine at least ~n/√(log n) distinct distances. Kanold obtained the first non-trivial lower bound of n^(3/4) on the diameter using combinatorial counting. The landscape changed dramatically when Guth and Katz (2015) resolved Erdős's distinct distances conjecture up to a logarithmic factor, proving ≥ cn/log n distinct distances; this immediately implies diam ≥ cn/log n for restricted distance sets. On the upper-bound side, Piepmeyer constructed 9 points in the plane with all pairwise distances positive integers and diameter less than 5, showing the strong conjecture diam ≥ n-1 fails for small n. The problem also connects to the Erdős-Anning theorem (1945): any infinite set of points with all mutual distances integers must be collinear. The gap between n/log n and n remains one of the central open problems in combinatorial geometry.",
@@ -65,51 +65,51 @@
     {
       "id": "diameter",
       "title": "Diameter",
-      "summary": "Diameter as maximum pairwise distance; nonnegativity proof",
+      "summary": "Diameter as maximum pairwise distance; nonnegativity, integrality proofs",
       "startLine": 81,
-      "endLine": 109
+      "endLine": 139
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "Erdos100Conjecture (diam ≥ cn) and Erdos100StrongConjecture (diam ≥ n-1)",
-      "startLine": 110,
-      "endLine": 143
+      "startLine": 140,
+      "endLine": 173
     },
     {
       "id": "distinct-distances-bridge",
       "title": "Key Connection: Distinct Distances ≤ Diameter",
       "summary": "Bridge lemma: for integer distance sets, #distinct distances ≤ diam",
-      "startLine": 144,
-      "endLine": 162
+      "startLine": 174,
+      "endLine": 244
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "summary": "diam_ge_one, Kanold n^(3/4), Guth-Katz n/log n, and the main theorem diam_ge_n_over_log_n",
-      "startLine": 163,
-      "endLine": 234
+      "startLine": 245,
+      "endLine": 330
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "summary": "Piepmeyer's 9-point construction, ratio bound, strong conjecture failure",
-      "startLine": 235,
-      "endLine": 273
+      "startLine": 331,
+      "endLine": 368
     },
     {
       "id": "erdos-anning",
       "title": "The Erdős-Anning Theorem",
       "summary": "Infinite integer distance sets must be collinear",
-      "startLine": 274,
-      "endLine": 298
+      "startLine": 369,
+      "endLine": 394
     },
     {
       "id": "implications",
       "title": "Implications and Sublinearity",
       "summary": "Conjecture implies Kanold; Guth-Katz bound is sublinear (o(n))",
-      "startLine": 299,
-      "endLine": 386
+      "startLine": 395,
+      "endLine": 469
     }
   ],
   "conclusion": {
@@ -162,9 +162,9 @@
       "Topology"
     ],
     "namespace": "Erdos100",
-    "lineCount": 386,
-    "axiomCount": 5,
-    "theoremCount": 9,
+    "lineCount": 469,
+    "axiomCount": 4,
+    "theoremCount": 11,
     "definitionCount": 9
   }
 }

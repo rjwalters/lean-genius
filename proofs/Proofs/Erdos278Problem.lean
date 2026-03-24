@@ -167,18 +167,8 @@ private lemma mod_add_right (x y n : ℕ) : (x % n + y) % n = (x + y) % n := by
 
 /-- If a ≡ b (mod k) and b ≤ a, then k | (a - b). -/
 private lemma dvd_sub_of_mod_eq {a b k : ℕ} (h : a % k = b % k) (hab : b ≤ a) :
-    k ∣ (a - b) := by
-  by_cases hk : k = 0
-  · subst hk; simp
-  · have hk_pos : 0 < k := Nat.pos_of_ne_zero hk
-    -- a = b + (a-b), so a%k = (b%k + (a-b)%k) % k = b%k, hence (a-b)%k = 0
-    have hab2 : a = b + (a - b) := by omega
-    have hmodeq : b % k = (b % k + (a - b) % k) % k := by
-      conv_lhs => rw [← h, hab2, Nat.add_mod]
-    have hbk := Nat.mod_lt b hk_pos
-    have habk := Nat.mod_lt (a - b) hk_pos
-    have hzero : (a - b) % k = 0 := by omega
-    rwa [Nat.dvd_iff_mod_eq_zero]
+    k ∣ (a - b) :=
+  (Nat.modEq_iff_dvd' hab).mp h.symm
 
 /-- The coverage filter for constant residue a has the same cardinality as for
     constant residue 0, via the cyclic shift bijection on {0,...,L-1}.
