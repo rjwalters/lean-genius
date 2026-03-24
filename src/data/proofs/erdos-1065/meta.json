@@ -2,7 +2,7 @@
   "id": "erdos-1065",
   "title": "Erdős Problem #1065: Primes of the Form 2^k · q + 1",
   "slug": "erdos-1065",
-  "description": "Erdős Problem #1065 (Guy's B46): Are there infinitely many primes $p = 2^k \\cdot q + 1$ with $q$ prime and $k \\geq 0$? More generally, $p = 2^k \\cdot 3^l \\cdot q + 1$? Connected to safe primes ($k=1$) and smooth-minus-one primes. The formalization axiomatizes both conjecture variants and proves concrete witnesses via `decide`, with structural theorems connecting the two forms. 162 lines, 0 sorries, 2 axioms. OEIS A074781, A339465.",
+  "description": "Erdős Problem #1065 (Guy's B46): Are there infinitely many primes $p = 2^k \\cdot q + 1$ with $q$ prime and $k \\geq 0$? More generally, $p = 2^k \\cdot 3^l \\cdot q + 1$? Connected to safe primes ($k=1$) and smooth-minus-one primes. The formalization axiomatizes both conjecture variants, verifies all 14 Form A primes ≤ 100, proves strict inclusion Form A ⊊ Form B with formal non-examples, and includes structural theorems. 301 lines, 0 sorries, 2 axioms. OEIS A074781, A339465.",
   "meta": {
     "author": "Erdős",
     "erdosNumber": 1065,
@@ -224,10 +224,10 @@
     "prime-number-theorem"
   ],
   "leanFile": {
-    "lineCount": 163,
+    "lineCount": 301,
     "structureCount": 0,
     "axiomCount": 2,
-    "theoremCount": 14,
+    "theoremCount": 28,
     "lemmaCount": 0,
     "defCount": 3,
     "imports": [
@@ -240,17 +240,22 @@
     "namespace": null,
     "mainTheorems": [
       {
-        "name": "example_101_formA",
+        "name": "fourteen_examples_le_100",
         "type": "verified",
-        "description": "8 Form A primes ≤ 100 verified: 3, 5, 7, 11, 13, 29, 41, 97"
+        "description": "All 14 Form A primes ≤ 100 verified: 3, 5, 7, 11, 13, 23, 29, 41, 47, 53, 59, 83, 89, 97"
       },
       {
-        "name": "example_61_formB_not_A",
-        "type": "verified",
-        "description": "61 = 2²·3·5 + 1 is Form B but not Form A (separating example)"
+        "name": "strict_inclusion_37",
+        "type": "proved",
+        "description": "37 witnesses Form A ⊊ Form B: 37 = 2·3²·2 + 1 is Form B but not Form A"
       },
       {
-        "name": "form_a_implies_form_b",
+        "name": "not_form_b_71",
+        "type": "proved",
+        "description": "71 is not Form B: 70 = 2·5·7 has no 2^k·3^l·q factorization with q prime"
+      },
+      {
+        "name": "form_a_implies_b",
         "type": "proved",
         "description": "Form A ⊆ Form B via l = 0 specialization"
       },
