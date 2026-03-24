@@ -67,58 +67,6 @@
       "erdos1057Conjecture, pomeranceConjecture: formal conjectures"
     ],
     "dateAdded": "2026-01-19",
-    "leanFile": {
-      "path": "Proofs/Erdos1057Problem.lean",
-      "lineCount": 1055,
-      "namespace": "root (opens Nat BigOperators Finset Classical)",
-      "imports": [
-        "Mathlib"
-      ],
-      "mainTheorems": [
-        "carmichael_561",
-        "carmichael_1105",
-        "carmichael_1729",
-        "carmichael_2465",
-        "carmichael_2821",
-        "carmichael_6601",
-        "carmichael_8911",
-        "carmichael_10585",
-        "carmichael_15841",
-        "carmichael_odd",
-        "carmichael_not_semiprime",
-        "carmichael_at_least_3_primes",
-        "carmichael_not_prime_power",
-        "C_mono",
-        "C_unbounded",
-        "C_561_pos",
-        "C_2821_ge_5",
-        "C_8911_ge_7",
-        "no_carmichael_below_561",
-        "carmichael_ge_561",
-        "carmichael_smallest_prime_cube_le",
-        "carmichael_prod_pred_dvd_pow",
-        "carmichael_lcm_dvd"
-      ],
-      "mainDefinitions": [
-        "satisfiesKorselt",
-        "IsCarmichael",
-        "satisfiesFermat",
-        "C",
-        "isCarmichaelCheck",
-        "smallCarmichaels",
-        "smallCarmichaelsExtended",
-        "erdos1057Conjecture",
-        "erdos1057ConjectureAlt",
-        "pomeranceConjecture",
-        "pomeranceOrder",
-        "upperExponent",
-        "lowerExponent",
-        "erdos1057OpenProblem"
-      ],
-      "axiomCount": 5,
-      "theoremCount": 38,
-      "sorryCount": 0
-    },
     "crossReferences": [
       {
         "id": "subset-count",
