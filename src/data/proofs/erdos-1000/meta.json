@@ -7,7 +7,7 @@
     "author": "J.W.S. Cassels, Paul Erdős, J.A. Haight",
     "sourceUrl": "https://erdosproblems.com/1000",
     "date": "1950-1964",
-    "status": "pending",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1000Problem.lean",
     "tags": [
       "erdos",
@@ -16,14 +16,14 @@
       "totient-function",
       "cesaro-averages"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1000,
     "erdosUrl": "https://erdosproblems.com/1000",
     "erdosProblemStatus": "solved",
-    "axiomCount": 0,
-    "lineCount": 1,
-    "assumptions": "Lean file corrupted (contains Aristotle job UUID reference instead of code). Previous status was \"formalized\".",
+    "axiomCount": 4,
+    "lineCount": 304,
+    "assumptions": "Four deep axioms: erdos_no_zero_limit (φ_A(k)/n_k cannot converge to 0), erdos_dichotomy (liminf=0 implies limsup=1), cassels_liminf_zero (liminf of Cesàro average can be 0), haight_resolution (vanishing Cesàro average exists). Previously axiomatized naturalSeq_phiA_eq_totient now proved via filter/coprimality argument.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -177,12 +177,12 @@
     }
   ],
   "leanFile": {
-    "imports": [],
-    "opens": [],
-    "namespace": null,
-    "lineCount": 1,
-    "axiomCount": 0,
-    "theoremCount": 0,
-    "definitionCount": 0
+    "imports": ["Mathlib"],
+    "opens": ["Finset", "Filter", "Topology"],
+    "namespace": "Erdos1000",
+    "lineCount": 304,
+    "axiomCount": 4,
+    "theoremCount": 12,
+    "definitionCount": 8
   }
 }
