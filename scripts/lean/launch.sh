@@ -2318,6 +2318,16 @@ cmd_spawn() {
                 echo -e "${GREEN}✓ Herald agent spawned${NC}"
             fi
             ;;
+        auditor)
+            echo -e "${BLUE}Spawning Auditor agent...${NC}"
+            if tmux has-session -t "auditor-agent" 2>/dev/null; then
+                echo -e "${YELLOW}Auditor agent already running${NC}"
+            else
+                ./scripts/auditor/launch-agent.sh &
+                sleep 1
+                echo -e "${GREEN}✓ Auditor agent spawned${NC}"
+            fi
+            ;;
         peer-reviewer)
             echo -e "${BLUE}Spawning Peer Reviewer...${NC}"
             for i in 1 2; do
