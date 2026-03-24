@@ -102,7 +102,10 @@ theorem semiprime_isAlmostPrime {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prime q
   constructor
   · exact le_trans (by norm_num : 2 ≤ 4) (semiprime_ge_four hp hq)
   · unfold bigOmega
-    sorry -- Ω(p*q) = Ω(p) + Ω(q) = 1 + 1 = 2
+    rw [Nat.factorization_mul hp.ne_zero hq.ne_zero]
+    rw [Finsupp.sum_add_index (fun _ _ => rfl) (fun _ _ _ _ => rfl)]
+    rw [Nat.Prime.factorization hp, Nat.Prime.factorization hq]
+    simp [Finsupp.sum_single_index]
 
 -- ## Part 5: Counting
 
@@ -135,10 +138,15 @@ theorem cube_gap_obstruction (n : ℕ) (hn : 2 ≤ n)
     (m : ℕ) (hm1 : n ^ 3 < m) (hm2 : m < (n + 1) ^ 3)
     (hdiv : 8 ∣ m) : ¬IsAlmostPrime m := by
   intro ⟨_, hΩ⟩
-  unfold bigOmega at hΩ
   obtain ⟨k, rfl⟩ := hdiv
-  -- Ω(8k) ≥ Ω(8) = 3 > 2, contradiction
-  sorry
+  have hk_ne : k ≠ 0 := by nlinarith [show n ^ 3 ≥ 8 from by nlinarith]
+  -- Ω(8k) = Ω(8) + Ω(k) ≥ 3 > 2, contradicting hΩ
+  have h_split : bigOmega (8 * k) = bigOmega 8 + bigOmega k := by
+    unfold bigOmega
+    rw [Nat.factorization_mul (by norm_num : (8 : ℕ) ≠ 0) hk_ne]
+    exact Finsupp.sum_add_index (fun _ _ => rfl) (fun _ _ _ _ => rfl)
+  have h8 : bigOmega 8 = 3 := by unfold bigOmega; native_decide
+  linarith
 
 -- ## Part 8: Density and Asymptotic Counting
 
