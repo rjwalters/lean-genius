@@ -70,7 +70,7 @@
   "overview": {
     "historicalContext": "This problem belongs to the rich tradition of **Egyptian fraction** problems — the study of representations of rationals as sums of distinct unit fractions $1/n$. The ancient Egyptians used such representations exclusively, and the modern study was revitalized by Erdős, who made dozens of conjectures about unit fraction sums.\n\nErdős and Graham posed this specific question in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*. The conjecture seemed natural: if a set's reciprocal sum is below 2, the 'spare capacity' should allow a balanced bisection. This intuition works for most random sets but fails for carefully constructed ones.\n\nThe conjecture remained open for 17 years until Csaba Sándor disproved it in 1997 in his paper \"On a problem of Erdős\" published in the *Journal of Number Theory*. Sándor not only found a counterexample but proved a more general negative result: for every $n \\ge 2$, there exists a set with reciprocal sum $< n$ that resists $n$-partition.\n\nThe minimal counterexample set $\\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$ was discovered by Tom Stobart through computational search over subsets of $\\{2, \\ldots, 15\\}$. This 11-element set has reciprocal sum $4234829/2162160 \\approx 1.9586$, yet any partition into two parts must have at least one part with reciprocal sum $\\ge 1$. The gap of $2 - 1.9586 \\approx 0.041$ is precisely too small for any balanced split.",
     "problemStatement": "**Conjecture (Erdős-Graham)**: Is it true that if $A \\subseteq \\mathbb{N} \\setminus \\{1\\}$ is a finite set with $\\sum_{n \\in A} \\frac{1}{n} < 2$, then there exists a partition $A = A_1 \\sqcup A_2$ such that $\\sum_{n \\in A_i} \\frac{1}{n} < 1$ for $i = 1, 2$?\n\n**Answer**: NO. The set $\\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$ is a counterexample.",
-    "text": "Can every finite set with reciprocal sum < 2 be partitioned into two parts each with sum < 1? Answer: NO - disproved by Sándor (1997).",
+    "text": "This formalization addresses Erdős Problem #316, a conjecture from the Erdős-Graham 1980 monograph asking whether every finite set $A \\subseteq \\mathbb{N} \\setminus \\{1\\}$ with reciprocal sum less than 2 can always be partitioned into two parts each with reciprocal sum less than 1. The Lean proof constructs the minimal counterexample $\\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$, verifies its reciprocal sum equals $4234829/2162160 \\approx 1.9586 < 2$ via exact rational arithmetic, and then uses the `decide +kernel` tactic to exhaustively certify that none of the $2^{11} = 2048$ possible bipartitions yields two parts each with sum below 1. The formalization also includes a multiset variant using the simpler counterexample $\\{2, 3, 3, 5, 5, 5, 5\\}$, and states Sándor's full 1997 generalization (for all $n \\ge 2$, there exist sets with reciprocal sum below $n$ that resist $n$-partition) as an axiom, since the general case requires an infinite family of constructions beyond computational verification.",
     "proofStrategy": "The proof is a constructive disproof by counterexample. We exhibit the specific finite set A = {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15} and prove two things:\n\n1. The sum of reciprocals satisfies ∑(1/n) = 4234829/2162160 ≈ 1.9586 < 2\n\n2. For every possible partition of A into two disjoint subsets, at least one subset has reciprocal sum ≥ 1\n\nThe second claim is verified exhaustively by checking all 2^11 = 2048 possible subsets. For each subset B ⊆ A with ∑_{n ∈ B}(1/n) < 1, we verify that the complement A \\ B has ∑_{n ∈ A\\B}(1/n) ≥ 1. This exhaustive verification is performed using Lean's `decide +kernel` tactic.",
     "keyInsights": [
       "**Unit fractions**: Reciprocals of natural numbers (1/2, 1/3, 1/4, ...) have special properties in additive combinatorics. The harmonic series diverges but specific finite sums have structured behavior.",
@@ -123,7 +123,7 @@
   ],
   "conclusion": {
     "summary": "We have formally verified that Erdős's conjecture about partitioning sets by reciprocal sums is FALSE. The minimal counterexample {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15} has reciprocal sum approximately 1.96, yet cannot be split into two parts each summing to less than 1. The proof uses exhaustive computational verification of all 2048 possible partitions.",
-    "implications": "**Theoretical Significance**: This result shows that the additive structure of unit fractions is more complex than naive intuition suggests.\n\nEven with 'room to spare' (total sum well below 2), the specific values can conspire to prevent any balanced partition. Sándor's generalization shows this phenomenon extends to all partition numbers n ≥ 2.",
+    "implications": "**Theoretical Significance**: This disproof reveals that the additive structure of unit fractions is fundamentally more rigid than naive intuition suggests. The Erdős-Graham conjecture rested on the plausible heuristic that if a set's reciprocal sum falls below the threshold $n$, the 'spare capacity' of $n - \\sum 1/k$ should distribute evenly across $n$ parts. The counterexample demonstrates that individual unit fractions create interlocking constraints: the values $1/2, 1/3, 1/4, \\ldots, 1/15$ (with gaps at $8, 9, 12$) form a configuration where every subset summing below 1 necessarily leaves too much weight in its complement. This is a structural phenomenon, not a numerical coincidence.\n\n**Connection to Egyptian Fraction Theory**: The result fits into a broader pattern in the theory of Egyptian fractions, where unit fraction sums exhibit surprising rigidity. The Erdős-Straus conjecture ($4/n = 1/a + 1/b + 1/c$), the Erdős-Graham conjecture on coloring integers (proved by Croot in 2003), and this partition problem all demonstrate that decomposing rationals into unit fractions is governed by subtle number-theoretic constraints that resist simple greedy or averaging arguments.\n\n**Formalization Methodology**: The proof exemplifies a powerful paradigm in formal verification: reducing a combinatorial conjecture to a finite computational check, then using Lean's kernel to certify the computation. The `decide +kernel` tactic does not merely run a program and trust its output — it constructs a proof term that the Lean kernel independently verifies step-by-step. This gives the result a level of certainty impossible with pen-and-paper case analysis or unverified computation. The 2048-case exhaustive search completes within Lean's kernel, making this one of the cleanest examples of certified computational disproof in the gallery.\n\n**Sándor's Generalization and Its Implications**: The axiomatized generalization — that for every $n \\ge 2$ there exist sets with reciprocal sum below $n$ resisting $n$-partition — shows that the $n = 2$ case is not an isolated pathology but the simplest instance of a universal phenomenon. Constructing counterexamples for larger $n$ requires increasingly sophisticated techniques, and the growth rate of the minimal counterexample size as a function of $n$ remains an open question with connections to the theory of covering systems and the distribution of smooth numbers.\n\n**Multiset Extension**: The multiset variant, using the 7-element counterexample $\\{2, 3, 3, 5, 5, 5, 5\\}$, shows that allowing repeated elements makes the partition problem even harder. With repetitions, fewer distinct denominators can generate the same obstructions, suggesting that the underlying difficulty is arithmetic rather than combinatorial. The multiset formulation also connects naturally to questions about representations of rationals as sums of unit fractions with bounded denominators, a topic with applications in scheduling theory and fair division.",
     "openQuestions": [
       "What is the minimum cardinality of a counterexample for each partition number n?",
       "Are there structural characterizations of sets that CAN be partitioned as Erdős conjectured?",
@@ -134,7 +134,42 @@
     {
       "targetProofId": "erdos-191",
       "relationship": "related-problem",
-      "description": "Both involve reciprocal sums of natural numbers; #191 studies monochromatic sets with large 1/log sum while #316 studies partition constraints on 1/n sums"
+      "description": "Both involve reciprocal sums of natural numbers; #191 studies monochromatic sets with large 1/log sum while #316 studies partition constraints on 1/n sums. Both address Ramsey-type questions about how sums of reciprocals behave under partitioning."
+    },
+    {
+      "targetProofId": "erdos-315",
+      "relationship": "related-problem",
+      "description": "Adjacent problem in the Erdős Egyptian fractions series; #315 studies Sylvester's sequence and asymptotic growth of Egyptian fraction denominators, providing context for the structural constraints that make #316's partition problem hard."
+    },
+    {
+      "targetProofId": "erdos-305",
+      "relationship": "related-problem",
+      "description": "Both study Egyptian fractions and unit fraction representations; #305 addresses maximum denominators in Egyptian fraction decompositions, complementing #316's focus on partition obstructions."
+    },
+    {
+      "targetProofId": "erdos-317",
+      "relationship": "related-problem",
+      "description": "Adjacent Erdős conjecture on signed unit fraction approximations; both explore how unit fractions interact under combination operations (partition vs signed sums)."
+    },
+    {
+      "targetProofId": "harmonic-divergence",
+      "relationship": "foundation",
+      "description": "The divergence of the harmonic series $\\sum 1/n$ is the foundational context for #316: it ensures arbitrarily large finite partial sums of unit fractions exist, making the partition question non-trivial."
+    },
+    {
+      "targetProofId": "prime-reciprocal-divergence",
+      "relationship": "thematic",
+      "description": "Divergence of $\\sum 1/p$ over primes illustrates that even sparse subsequences of unit fractions have rich additive structure, a theme underlying the rigidity exhibited in #316's counterexample."
+    },
+    {
+      "targetProofId": "erdos-36",
+      "relationship": "technique",
+      "description": "Both are partition problems: #36 studies minimum overlap in partitions of integers, while #316 studies partition constraints on reciprocal sums. Both demonstrate that balanced partition is harder than expected."
+    },
+    {
+      "targetProofId": "erdos-25",
+      "relationship": "thematic",
+      "description": "Both involve density and summation over subsets of natural numbers; #25 studies logarithmic density of sieved sets while #316 studies reciprocal sum constraints on partitioned sets."
     }
   ],
   "leanFile": {
@@ -149,21 +184,56 @@
     "definitionCount": 1
   },
   "relatedProofs": [
-    ""
+    "erdos-191",
+    "erdos-315",
+    "erdos-305",
+    "erdos-317",
+    "harmonic-divergence",
+    "prime-reciprocal-divergence",
+    "erdos-36",
+    "erdos-25"
   ],
   "references": [
     {
       "cite": "Sándor 1997",
       "title": "On a problem of Erdős",
       "journal": "Journal of Number Theory",
+      "volume": "63",
+      "pages": "203-210",
       "year": 1997,
       "relevance": "Disproved the conjecture and proved the generalization for all n ≥ 2"
     },
     {
       "cite": "Erdős–Graham 1980",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "publisher": "Université de Genève, L'Enseignement Mathématique",
       "year": 1980,
       "relevance": "Original source of the conjecture (monograph on combinatorial number theory problems)"
+    },
+    {
+      "cite": "Guy 2004",
+      "title": "Unsolved Problems in Number Theory",
+      "publisher": "Springer",
+      "edition": "3rd",
+      "year": 2004,
+      "relevance": "Section D11 discusses Egyptian fraction problems including partition questions related to #316"
+    },
+    {
+      "cite": "Croot 2003",
+      "title": "On a coloring conjecture about unit fractions",
+      "journal": "Annals of Mathematics",
+      "volume": "157",
+      "pages": "545-556",
+      "year": 2003,
+      "relevance": "Proved the Erdős-Graham conjecture on coloring integers so that one color class has unit fractions summing to 1; closely related partition question for unit fractions"
+    },
+    {
+      "cite": "Graham 2013",
+      "title": "Paul Erdős and Egyptian Fractions",
+      "journal": "Erdős Centennial (Bolyai Society Mathematical Studies)",
+      "volume": "25",
+      "year": 2013,
+      "relevance": "Survey of Erdős's contributions to Egyptian fraction theory, providing context for problem #316 within the broader program"
     }
   ]
 }
