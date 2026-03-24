@@ -153,6 +153,58 @@ noncomputable def coprimeDensity (moduli : Finset ℕ) : ℝ :=
 noncomputable def sumReciprocalDensity (moduli : Finset ℕ) : ℝ :=
   moduli.sum (fun n => (1 : ℝ) / n)
 
+-- ## Coprime LCM = Product
+
+/-- For pairwise coprime elements, foldl Nat.lcm = foldl (· * ·). -/
+private lemma foldl_lcm_eq_foldl_mul (l : List ℕ) (acc : ℕ)
+    (hcop_acc : ∀ x ∈ l, Nat.Coprime acc x)
+    (hcop_pairs : l.Pairwise Nat.Coprime) :
+    l.foldl Nat.lcm acc = l.foldl (· * ·) acc := by
+  induction l generalizing acc with
+  | nil => rfl
+  | cons a t ih =>
+    simp only [List.foldl_cons]
+    have hpw := List.pairwise_cons.mp hcop_pairs
+    have ha_cop : Nat.Coprime acc a := hcop_acc a (by simp)
+    rw [Nat.Coprime.lcm_eq_mul ha_cop]
+    exact ih (acc * a)
+      (fun x hx => Nat.Coprime.mul_left
+        (hcop_acc x (by simp [hx]))
+        (hpw.1 x hx))
+      hpw.2
+
+/-- For pairwise coprime moduli, the system LCM equals the product of moduli. -/
+lemma systemLCM_coprime_eq_prod (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n)
+    (hcop : ∀ m ∈ moduli, ∀ n ∈ moduli, m ≠ n → Nat.Coprime m n) (r : ℕ → ℕ) :
+    systemLCM ⟨moduli, r, hpos⟩ = moduli.prod id := by
+  unfold systemLCM
+  set l := moduli.val.toList with hl_def
+  -- Convert pairwise coprime from Finset to List
+  have hpw : l.Pairwise Nat.Coprime := by
+    have hnd := moduli.nodup
+    rw [hl_def]
+    rw [List.pairwise_iff_getElem]
+    intro i j hi hj hij
+    have hlt := Nat.lt_of_lt_of_le (Nat.lt_of_lt_of_le hij (Nat.le_of_lt_succ hj)) (by omega)
+    have hi' : l[i] ∈ moduli := by
+      rw [hl_def]; exact Finset.mem_def.mpr (Multiset.mem_toList.mpr
+        (Multiset.mem_toList.mp (List.getElem_mem (by rw [← hl_def]; exact hi))))
+    have hj' : l[j] ∈ moduli := by
+      rw [hl_def]; exact Finset.mem_def.mpr (Multiset.mem_toList.mpr
+        (Multiset.mem_toList.mp (List.getElem_mem (by rw [← hl_def]; exact hj))))
+    have hne : l[i] ≠ l[j] := by
+      intro heq
+      have hnd' : l.Nodup := by rw [hl_def]; exact Multiset.toList_nodup moduli.val hnd
+      exact absurd heq (List.Nodup.getElem_ne hnd' (by omega))
+    exact hcop l[i] hi' l[j] hj' hne
+  rw [foldl_lcm_eq_foldl_mul l 1 (fun x _ => Nat.coprime_one_left x) hpw]
+  -- Relate List.foldl (· * ·) 1 to Finset.prod
+  rw [← List.prod_eq_foldl]
+  -- l.prod = moduli.val.prod = moduli.prod id
+  change l.prod = moduli.prod id
+  rw [Finset.prod_eq_multiset_prod, Multiset.map_id']
+  exact (Multiset.prod_toList moduli.val).symm
+
 -- ## Simpson's Theorem (1986)
 
 /-- Simpson's theorem: the minimum coverage density is achieved when
