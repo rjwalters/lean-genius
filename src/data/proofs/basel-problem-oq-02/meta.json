@@ -79,7 +79,7 @@
       "startLine": 30,
       "endLine": 36,
       "summary": "Definition of zetaValue(s) = ∑ 1/n^s as a tsum over ℕ.",
-      "mathContext": "Definition of zetaValue(s) = ∑ 1/n^s as a tsum over ℕ."
+      "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} \\frac{1}{n^s}$ for $s > 1$. Defined via `tsum` (topological sum) in Lean, converging absolutely for $s \\geq 2$. Euler computed $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k} / (2(2k)!)$ where $B_{2k}$ are Bernoulli numbers."
     },
     {
       "id": "even-closed-forms",
@@ -87,7 +87,7 @@
       "startLine": 38,
       "endLine": 46,
       "summary": "ζ(2) = π²/6 and ζ(4) = π⁴/90 proved directly from Mathlib.",
-      "mathContext": "ζ(2) = π²/6 and ζ(4) = π⁴/90 proved directly from Mathlib."
+      "mathContext": "$\\zeta(2) = \\pi^2/6$ (Basel problem, Euler 1734) and $\\zeta(4) = \\pi^4/90$. Both are instances of Euler's general formula $\\zeta(2k) = (-1)^{k+1} B_{2k} (2\\pi)^{2k}/(2(2k)!)$. The closed forms involve $\\pi^{2k}$, making even zeta values transcendental — in stark contrast to odd zeta values where no closed form is known."
     },
     {
       "id": "deep-axioms",
@@ -95,7 +95,7 @@
       "startLine": 48,
       "endLine": 59,
       "summary": "Lindemann's theorem (π transcendental) and Apéry's theorem (ζ(3) irrational) axiomatized.",
-      "mathContext": "Lindemann's theorem (π transcendental) and Apéry's theorem (ζ(3) irrational) axiomatized."
+      "mathContext": "Two deep axioms: (1) $\\pi \\notin \\overline{\\mathbb{Q}}$ (Lindemann 1882) and (2) $\\zeta(3) \\notin \\mathbb{Q}$ (Apéry 1978). Lindemann proved $e^\\alpha$ is transcendental for nonzero algebraic $\\alpha$; since $e^{i\\pi} = -1$, this forces $\\pi$ transcendental. Apéry's proof used rapidly convergent series for $\\zeta(3)$ with carefully constructed rational approximations."
     },
     {
       "id": "conjectures",
@@ -103,7 +103,7 @@
       "startLine": 61,
       "endLine": 75,
       "summary": "Transcendence and irrationality conjectures for odd zeta values.",
-      "mathContext": "Transcendence and irrationality conjectures for odd zeta values."
+      "mathContext": "Two conjectures: (1) $\\zeta(2k+1) \\notin \\overline{\\mathbb{Q}}$ for all $k \\geq 1$ (transcendence), (2) $\\zeta(2k+1) \\notin \\mathbb{Q}$ for all $k \\geq 1$ (irrationality). The transcendence conjecture implies the irrationality conjecture. Neither has been proved for any single value beyond $\\zeta(3)$."
     },
     {
       "id": "structural-part1",
@@ -111,7 +111,7 @@
       "startLine": 77,
       "endLine": 96,
       "summary": "Transcendence ⟹ irrationality, conjecture specializes to Apéry and ζ(3)∧ζ(5).",
-      "mathContext": "Transcendence ⟹ irrationality, conjecture specializes to Apéry and ζ(3)∧ζ(5)."
+      "mathContext": "The logical chain: $\\alpha \\notin \\overline{\\mathbb{Q}} \\Rightarrow \\alpha \\notin \\mathbb{Q}$ (transcendence implies irrationality). Specializing the conjecture: $\\forall k \\geq 1,\\, \\zeta(2k+1) \\notin \\mathbb{Q}$ implies both Apéry's result ($\\zeta(3) \\notin \\mathbb{Q}$) and the conjecture that $\\zeta(5) \\notin \\mathbb{Q}$ — each as an individual corollary."
     },
     {
       "id": "even-odd-contrast",
@@ -119,7 +119,7 @@
       "startLine": 98,
       "endLine": 107,
       "summary": "Definition of the rational multiple property for even zeta values.",
-      "mathContext": "Definition of the rational multiple property for even zeta values."
+      "mathContext": "Even zeta values satisfy $\\zeta(2k) = r_k \\cdot \\pi^{2k}$ with $r_k \\in \\mathbb{Q}^\\times$ (e.g., $r_1 = 1/6$, $r_2 = 1/90$). Odd zeta values have NO known analogous representation — this even/odd dichotomy is one of the deepest mysteries in analytic number theory."
     },
     {
       "id": "even-transcendence",
@@ -127,7 +127,7 @@
       "startLine": 109,
       "endLine": 128,
       "summary": "ζ(2) and ζ(4) transcendence theorems, fully proved from Lindemann axiom via transcendental_pow_of_transcendental.",
-      "mathContext": "ζ(2) and ζ(4) transcendence theorems, fully proved from Lindemann axiom via transcendental_pow_of_transcendental."
+      "mathContext": "$\\pi \\notin \\overline{\\mathbb{Q}} \\Rightarrow \\pi^2 \\notin \\overline{\\mathbb{Q}} \\Rightarrow \\pi^2/6 \\notin \\overline{\\mathbb{Q}}$, i.e., $\\zeta(2)$ is transcendental. Similarly for $\\zeta(4) = \\pi^4/90$. The chain uses: (1) $\\alpha$ transcendental $\\Rightarrow \\alpha^n$ transcendental for $n \\geq 1$, (2) nonzero rational times transcendental is transcendental."
     },
     {
       "id": "rivoal-zudilin",
@@ -135,7 +135,7 @@
       "startLine": 130,
       "endLine": 145,
       "summary": "Even-odd hierarchy theorem connecting ζ(2) transcendence, ζ(3) irrationality (Apéry), and structural relationships.",
-      "mathContext": "Even-odd hierarchy theorem connecting ζ(2) transcendence, ζ(3) irrationality (Apéry), and structural relationships."
+      "mathContext": "Rivoal (2000): infinitely many $\\zeta(2k+1)$ are irrational. Zudilin (2001): at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational. Both are axiomatized. The hierarchy: $\\zeta(2)$ transcendental (proved) $\\supset$ $\\zeta(3)$ irrational (Apéry, axiom) $\\supset$ $\\zeta(5)$ irrationality (open)."
     },
     {
       "id": "irrationality-landscape",
@@ -143,7 +143,7 @@
       "startLine": 146,
       "endLine": 185,
       "summary": "Proved: irrationality conjecture implies Rivoal and Zudilin; transcendence conjecture recovers all known results.",
-      "mathContext": "Proved: irrationality conjecture implies Rivoal and Zudilin; transcendence conjecture recovers all known results."
+      "mathContext": "The implication landscape: $\\forall k,\\, \\zeta(2k+1) \\notin \\mathbb{Q}$ implies Rivoal's 'infinitely many irrational' and Zudilin's 'one of $\\{\\zeta(5),\\zeta(7),\\zeta(9),\\zeta(11)\\}$ irrational'. The stronger transcendence conjecture $\\forall k,\\, \\zeta(2k+1) \\notin \\overline{\\mathbb{Q}}$ recovers ALL known results as corollaries — a strong consistency check."
     }
   ],
   "conclusion": {
@@ -205,24 +205,39 @@
   },
   "references": [
     {
-      "key": "Lin82",
-      "citation": "Lindemann, F., Über die Zahl π, Mathematische Annalen 20 (1882), 213–225.",
-      "type": "paper"
+      "authors": "Lindemann, Ferdinand",
+      "title": "Über die Zahl π",
+      "year": "1882",
+      "venue": "Mathematische Annalen, vol. 20, pp. 213-225",
+      "note": "Proved π is transcendental ($e^\\alpha$ transcendental for nonzero algebraic $\\alpha$), establishing the key axiom used here for even-zeta transcendence"
     },
     {
-      "key": "Ap79",
-      "citation": "Apéry, R., Irrationalité de ζ(2) et ζ(3), Astérisque 61 (1979), 11–13.",
-      "type": "paper"
+      "authors": "Apéry, Roger",
+      "title": "Irrationalité de ζ(2) et ζ(3)",
+      "year": "1979",
+      "venue": "Astérisque, vol. 61, pp. 11-13",
+      "note": "Proved the irrationality of $\\zeta(3)$ using rapidly convergent series and clever recurrences — the only odd zeta value whose irrationality is known individually. The proof stunned the mathematical community and remains the gold standard for Diophantine approximation to zeta values"
     },
     {
-      "key": "Ri00",
-      "citation": "Rivoal, T., La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs, Comptes Rendus 331(4) (2000), 267–270.",
-      "type": "paper"
+      "authors": "Rivoal, Tanguy",
+      "title": "La fonction zêta de Riemann prend une infinité de valeurs irrationnelles aux entiers impairs",
+      "year": "2000",
+      "venue": "Comptes Rendus de l'Académie des Sciences, vol. 331(4), pp. 267-270",
+      "note": "Proved that infinitely many odd zeta values $\\zeta(2k+1)$ are irrational — a breakthrough that went beyond Apéry's single result for $\\zeta(3)$"
     },
     {
-      "key": "Zu01",
-      "citation": "Zudilin, W., One of the numbers ζ(5), ζ(7), ζ(9), ζ(11) is irrational, Russian Mathematical Surveys 56(4) (2001), 774–776.",
-      "type": "paper"
+      "authors": "Zudilin, Wadim",
+      "title": "One of the numbers ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
+      "year": "2001",
+      "venue": "Russian Mathematical Surveys, vol. 56(4), pp. 774-776",
+      "note": "Sharpened Rivoal's result to a finite explicit disjunction: at least one of four specific odd zeta values is irrational. The tightest known explicit bound on which odd zeta values are irrational"
+    },
+    {
+      "authors": "Fischler, Stéphane; Sprang, Johannes; Zudilin, Wadim",
+      "title": "Many odd zeta values are irrational",
+      "year": "2019",
+      "venue": "Compositio Mathematica, vol. 155(5), pp. 938-952",
+      "note": "Proved that among $\\zeta(3), \\zeta(5), \\ldots, \\zeta(s)$, at least $(1-\\varepsilon)\\frac{\\log s}{1+\\log 2}$ are irrational — the current state of the art, dramatically extending Rivoal's qualitative result"
     }
   ],
   "relatedProofs": [

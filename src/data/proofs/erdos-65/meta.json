@@ -118,9 +118,11 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #65 is PARTIALLY SOLVED. The logarithmic lower bound Σ 1/aᵢ ≫ log k was proved by Gyárfás-Komlós-Szemerédi (1984), with sharp constant by Liu-Montgomery (2020). The minimization question remains open.",
-    "implications": "Establishes fundamental connection between edge density and cycle variety in extremal graph theory.",
+    "implications": "The logarithmic lower bound $\\sum 1/a_i \\gg \\log k$ reveals a structural principle: dense graphs contain not just many cycles, but cycles of many different lengths, with the reciprocal-length sum growing logarithmically with edge density. The sharp constant by Liu-Montgomery (2020) quantifies this bridge between Turán-type density ($kn$ edges) and the cycle spectrum. The complete bipartite minimization conjecture, if resolved, would identify the extremal structure — analogous to how Turán's theorem identifies the $K_{r+1}$-free extremal graph. This connects to the broader program in extremal graph theory of understanding how local substructure (cycle lengths) is constrained by global density.",
     "openQuestions": [
-      "Is the reciprocal sum minimized by complete bipartite graphs among all graphs with the same edge count?"
+      "Is the reciprocal sum minimized by complete bipartite graphs among all graphs with the same edge count?",
+      "What is the analogous result for odd cycle lengths only — does parity restriction change the extremal structure?",
+      "Can the Liu-Montgomery sharp constant be formalized in Lean using Mathlib's graph theory infrastructure?"
     ]
   },
   "crossReferences": [

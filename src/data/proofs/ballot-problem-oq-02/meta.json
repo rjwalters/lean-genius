@@ -63,7 +63,8 @@
       "First passage time $\\tau_a = \\inf\\{t \\geq 0 : W_t \\geq a\\}$ is defined via `sInf`, with measurability from path continuity",
       "Lévy's arcsine distribution $P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$ shows BM spends most time entirely positive or entirely negative",
       "Donsker's invariance principle $S_{\\lfloor nt \\rfloor}/\\sqrt{n} \\Rightarrow W_t$ connects the discrete formula $(p-q)/(p+q)$ to the continuous reflection principle",
-      "The axiomatic formalization isolates precisely which properties of Brownian motion are needed: symmetry (Gaussian marginals) for the reflection principle, the strong Markov property for first passage times, and path regularity for the arcsine law — providing a roadmap for future Mathlib development"
+      "The axiomatic formalization isolates precisely which properties of Brownian motion are needed: symmetry (Gaussian marginals) for the reflection principle, the strong Markov property for first passage times, and path regularity for the arcsine law — providing a roadmap for future Mathlib development",
+      "The arcsine law is deeply counterintuitive: the density $f(x) = 1/(\\pi\\sqrt{x(1-x)})$ diverges at $x = 0$ and $x = 1$, meaning Brownian motion most likely spends nearly all its time positive or nearly all its time negative — not half and half. A fair coin-toss game is overwhelmingly likely to be one-sided, with the lead rarely changing. Feller called this the 'arcsine paradox' in his classic textbook"
     ],
     "prerequisites": [
       "Brownian motion and stochastic processes",
@@ -115,12 +116,20 @@
       "mathContext": "$P(L_T / T \\leq r) = (2/\\pi) \\arcsin(\\sqrt{r})$ where $L_T = \\text{Leb}\\{s \\leq T : W_s > 0\\}$"
     },
     {
+      "id": "donsker-connection",
+      "title": "Donsker's Functional CLT and Discrete-Continuous Bridge",
+      "startLine": 258,
+      "endLine": 276,
+      "summary": "Commentary on Donsker's invariance principle (1951): the scaled random walk $S_{\\lfloor nt \\rfloor}/\\sqrt{n}$ converges to Brownian motion in distribution, making the discrete ballot formula $(p-q)/(p+q)$ a finite approximation of the continuous reflection principle.",
+      "mathContext": "Donsker's theorem: $S_{\\lfloor nt \\rfloor}/\\sqrt{n} \\Rightarrow W_t$ in $C[0,1]$. Under this convergence, the maximum of the random walk scales to the maximum of Brownian motion, so discrete ballot probabilities converge to the continuous reflection principle formula."
+    },
+    {
       "id": "main-theorem",
       "title": "Main Continuous Ballot Theorem",
-      "startLine": 283,
+      "startLine": 278,
       "endLine": 315,
       "summary": "continuous_ballot_theorem combining reflection principle, first passage CDF, and positive probability in one package.",
-      "mathContext": "Main theorem: conjunction of reflection principle, $\\{\\tau_a \\leq T\\} = \\text{maxEvent}$, and $P(\\tau_a \\leq T) > 0$"
+      "mathContext": "Main theorem: conjunction of reflection principle ($P(\\max W \\geq a) = 2P(W_T \\geq a)$), first passage characterization ($\\{\\tau_a \\leq T\\} = \\text{maxEvent}$), and positive passage probability ($P(\\tau_a \\leq T) > 0$)"
     },
     {
       "id": "discrete-connection",
@@ -152,6 +161,34 @@
       "year": "1991",
       "venue": "Springer Graduate Texts in Mathematics 113",
       "note": "Standard reference for the reflection principle (§2.8) and first passage time distributions"
+    },
+    {
+      "authors": "André, Désiré",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, 105, pp. 436-437",
+      "note": "First combinatorial proof of the ballot problem using the reflection principle for lattice paths — the discrete ancestor of Lévy's Brownian motion reflection principle formalized here"
+    },
+    {
+      "authors": "Donsker, Monroe D.",
+      "title": "An invariance principle for certain probability limit theorems",
+      "year": "1951",
+      "venue": "Memoirs of the American Mathematical Society, 6",
+      "note": "The functional central limit theorem: the scaled random walk converges to Brownian motion in distribution, providing the rigorous bridge between the discrete ballot formula (p-q)/(p+q) and the continuous reflection principle"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. II",
+      "year": "1971",
+      "venue": "John Wiley & Sons, 2nd edition",
+      "note": "Chapter III contains the definitive textbook treatment of the arcsine law, first passage times, and the reflection principle — the three pillars of this formalization. Feller's exposition of the 'arcsine paradox' (the gambler who leads most of the time is not the one who plays longest) is the probabilistic heart of the continuous ballot theorem"
+    },
+    {
+      "authors": "Bachelier, Louis",
+      "title": "Théorie de la spéculation",
+      "year": "1900",
+      "venue": "Annales Scientifiques de l'École Normale Supérieure, 17, pp. 21-86",
+      "note": "First mathematical treatment of Brownian motion as a model for stock price fluctuations, predating Einstein's 1905 paper. Bachelier derived the reflection principle and first passage distributions in the context of financial speculation — the direct antecedent of the barrier option pricing discussed in this entry's implications"
     }
   ],
   "conclusion": {
@@ -189,6 +226,11 @@
       "targetId": "ballot-problem-oq-03",
       "relationship": "sibling",
       "description": "The LGV lemma via 2D reflection provides a discrete determinantal approach to ballot counting, complementing this file's continuous-time Brownian motion formulation. Both generalize the original ballot problem: this file to continuous time via stochastic processes, LGV to multiple non-crossing paths via linear algebra"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "Donsker's functional CLT (1951) is the bridge between the discrete and continuous ballot theorems: the rescaled random walk $S_{\\lfloor nt \\rfloor}/\\sqrt{n} \\Rightarrow W_t$ converges to Brownian motion, making the discrete ballot formula $(p-q)/(p+q)$ a finite approximation of the continuous reflection principle. The CLT is the marginal (single-time) version of Donsker's process-level result"
     }
   ],
   "leanFile": {
