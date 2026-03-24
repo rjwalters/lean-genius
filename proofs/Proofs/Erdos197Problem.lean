@@ -27,12 +27,7 @@ References:
 - [ErGr80] Erdős and Graham, follow-up work on arithmetic progressions
 -/
 
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Function
-import Mathlib.Data.Set.Finite
-import Mathlib.Data.Nat.Basic
-import Mathlib.Logic.Function.Basic
-import Mathlib.Order.Basic
+import Mathlib
 
 open Set Function
 
@@ -166,16 +161,12 @@ axiom erdos_graham_three_sets :
 -/
 
 /--
-**Constant Sequence Avoids 3-AP:**
-A constant sequence trivially avoids non-trivial 3-APs since we require i < j < k.
+**Constant sequences have 3-APs:**
+The sequence f(n) = c for all n has a monotone 3-AP at any three distinct indices,
+since c + c = 2 * c always holds.
 -/
-theorem constant_avoids_3AP (c : ℕ) : avoids3AP (fun _ => c) := by
-  intro ⟨i, j, k, hij, hjk, hap⟩
-  simp only [isArithmeticProgression] at hap
-  -- c + c = 2 * c is always true, so this is actually not a contradiction
-  -- The issue is that constant sequences DO have "trivial" 3-APs
-  -- Let me reconsider - we need stricter definition
-  omega
+theorem constant_has_3AP (c : ℕ) : hasMonotone3AP (fun _ => c) := by
+  exact ⟨0, 1, 2, by omega, by omega, by simp [isArithmeticProgression]; omega⟩
 
 /--
 **Strictly Increasing Sequences:**
@@ -208,25 +199,37 @@ theorem identity_has_3AP : hasMonotone3AP id := by
 /--
 **Powers of 2 avoid 3-APs:**
 The sequence 1, 2, 4, 8, 16, ... avoids 3-APs.
-This is because 2^a + 2^c = 2 * 2^b implies a = b = c (for distinct a, b, c).
+If 2^i + 2^k = 2 * 2^j = 2^(j+1) with i < j < k, then:
+- k ≥ j+1, so 2^k ≥ 2^(j+1). Since i ≥ 0, 2^i + 2^k > 2^(j+1) when k > j+1.
+- If k = j+1: 2^i + 2^(j+1) = 2^(j+1) requires 2^i = 0, impossible.
 -/
-axiom powers_of_2_avoid_3AP :
-    avoids3AP (fun n => 2 ^ n)
+theorem powers_of_2_avoid_3AP : avoids3AP (fun n => 2 ^ n) := by
+  intro ⟨i, j, k, hij, hjk, hap⟩
+  simp only [isArithmeticProgression] at hap
+  -- hap : 2 ^ i + 2 ^ k = 2 * 2 ^ j = 2 ^ (j + 1)
+  have hj1 : j + 1 ≤ k := hjk
+  have hi_lt_j : i < j := hij
+  -- 2^k ≥ 2^(j+1) since k ≥ j+1
+  have hk_ge : 2 ^ (j + 1) ≤ 2 ^ k := Nat.pow_le_pow_right (by omega) hj1
+  -- 2^i ≥ 1
+  have hi_pos : 0 < 2 ^ i := Nat.pos_of_ne_zero (by positivity)
+  -- 2^i + 2^k ≥ 1 + 2^(j+1) > 2^(j+1) = 2 * 2^j
+  have : 2 ^ i + 2 ^ k ≥ 2 ^ (j + 1) + 1 := by omega
+  -- But hap says 2^i + 2^k = 2 * 2^j = 2^(j+1)
+  have : 2 * 2 ^ j = 2 ^ (j + 1) := by ring
+  omega
 
 /-
 ## Part VIII: Computational Intractability
 -/
 
-/--
-**Non-Computability:**
-The two-set version cannot be resolved by finite computation.
-Any finite portion of ℕ can be partitioned to avoid 3-APs in both parts,
-but this doesn't extend to all of ℕ.
+/-
+**Computational Intractability (meta-mathematical):**
+The two-set version cannot be resolved by finite computation alone.
+Any finite portion {1,...,N} of ℕ can be partitioned to avoid 3-APs
+in both parts, but such finite partitions don't extend to all of ℕ.
+This is a statement about the problem's nature, not a formal theorem.
 -/
-axiom erdos_197_not_finite_checkable :
-    ¬∃ N : ℕ, ∀ A B : Set ℕ, isTwoPartition A B →
-      ((∃ f : ℕ → ℕ, isEnumeration A f ∧ avoids3AP f) ↔
-       (∃ f : Fin N → ℕ, True))  -- Placeholder for finite verification
 
 /-
 ## Part IX: Related Sequences
@@ -241,10 +244,11 @@ Begins: 0, 1, 3, 5, 9, 11, 13, 15, 25, 27, ...
 -/
 def isStanleySequence (f : ℕ → ℕ) : Prop :=
   f 0 = 0 ∧ f 1 = 1 ∧
+  StrictlyIncreasing f ∧
   avoids3AP f ∧
-  ∀ n ≥ 2, f n = Nat.find (fun m =>
-    m > f (n - 1) ∧
-    ∀ i j, i < j → j < n → ¬isArithmeticProgression (f i) (f j) m)
+  -- Greedy: f(n) is the smallest value > f(n-1) that doesn't create a 3-AP
+  ∀ n ≥ 2, ∀ m, f (n - 1) < m → m < f n →
+    ∃ i j, i < j ∧ j < n ∧ isArithmeticProgression (f i) (f j) m
 
 /--
 **Stanley Sequence Avoids 3-AP:**

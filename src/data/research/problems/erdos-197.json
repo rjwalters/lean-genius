@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-12T16:01:50.837Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Session 2: Proved powers_of_2_avoid_3AP (eliminated 1 axiom), fixed constant_avoids_3AP (was FALSE→correct), removed broken erdos_197_not_finite_checkable axiom, fixed imports. 3 axioms, 0 sorries.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (5→3). Proved powers_of_2_avoid_3AP via 2^i+2^k>2^(j+1) for i<j<k. Fixed constant_avoids_3AP (was FALSE: constant sequences have 3-APs). Removed erdos_197_not_finite_checkable (broken placeholder). Fixed Mathlib imports.",
+    "builtItems": [
+      "PROVED powers_of_2_avoid_3AP: 2^i+2^k≠2*2^j for i<j<k (eliminated axiom)",
+      "FIXED constant_avoids_3AP→constant_has_3AP: constant sequences DO have 3-APs (c+c=2c)",
+      "REMOVED erdos_197_not_finite_checkable: RHS was always-true placeholder",
+      "Fixed imports: Mathlib.Data.Set.Finite→import Mathlib",
+      "Fixed isStanleySequence: replaced broken Nat.find with greedy minimality property"
+    ],
+    "insights": [
+      "powers_of_2_avoid_3AP proof: for i<j<k, 2^k≥2^(j+1) and 2^i≥1, so 2^i+2^k>2^(j+1)=2*2^j",
+      "constant_avoids_3AP was FALSE: f(n)=c gives AP at any i<j<k since c+c=2c. Bug went undetected because omega sometimes closes goals unexpectedly",
+      "Remaining 3 axioms are all justified: erdos_197_conjecture (open problem), erdos_graham_three_sets (deep result), stanley_avoids_3AP (provable but non-trivial)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove stanley_avoids_3AP: construct greedy sequence, prove well-definedness and 3-AP-freeness",
+      "Alternatively: prove erdos_graham_three_sets from explicit partition construction"
+    ],
     "markdown": "# Erdős #197 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan $\\mathbb{N}$ be partitioned into two sets, each of which can be permuted to avoid monotone 3-term arithmetic progressions?\n\n\n\nIf three sets are allowed then this is possible.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #196\n- Problem #198\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr79\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
