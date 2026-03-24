@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-557-header",
+    "proofId": "erdos-557",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "context",
+    "title": "Multicolor Tree Ramsey Problem",
+    "content": "Module docstring and imports for Erdős Problem #557: is the multicolor Ramsey number $R(T; k)$ at most linear in $k$ and $n$ for any tree $T$ on $n$ vertices? The problem asks whether $R(T; k) \\leq k \\cdot n + O(1)$, where $R(T; k)$ is the minimum $m$ such that any $k$-coloring of $K_m$ contains a monochromatic copy of $T$. The star $S_n = K_{1,n-1}$ shows this would be tight. Imports include `SimpleGraph.Basic` for graph structures and `Fintype.Basic` for finite types.",
+    "mathContext": "$R(T; k) = \\min\\{m : \\forall \\chi: E(K_m) \\to [k],\\; \\exists \\text{monochromatic } T\\}$. Conjecture: $R(T; k) \\leq ck \\cdot n$ for some absolute constant $c$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "graph coloring",
+      "trees",
+      "SimpleGraph"
+    ],
+    "prerequisites": [
+      "Ramsey numbers",
+      "graph theory",
+      "SimpleGraph.Basic"
+    ]
+  },
+  {
     "id": "ann-557-defs",
     "proofId": "erdos-557",
     "range": {
@@ -99,7 +123,7 @@
     "proofId": "erdos-557",
     "range": {
       "startLine": 114,
-      "endLine": 129
+      "endLine": 128
     },
     "type": "technique",
     "title": "Connection to Burr-Erdős Conjecture and Problem #548",
