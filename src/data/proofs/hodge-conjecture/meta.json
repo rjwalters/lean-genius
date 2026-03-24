@@ -41,7 +41,7 @@
   "overview": {
     "historicalContext": "The Hodge Conjecture was proposed by Sir William Vallance Douglas Hodge at the 1950 International Congress of Mathematicians in Cambridge. Hodge developed his theory of harmonic integrals in the 1930s–1940s, building on Solomon Lefschetz's 1924 theorem that every (1,1) integral Hodge class is algebraic (the Lefschetz theorem on (1,1) classes). Hodge conjectured this should extend to all codimensions p.\n\nFor over 70 years the conjecture has resisted resolution. Key milestones: Atiyah–Hirzebruch (1962) disproved the integral version using topological K-theory and Steenrod operations, showing rational coefficients are essential. Grothendieck (1968) proposed his Standard Conjectures, which would imply the Hodge Conjecture as a corollary; they also remain open. Deligne proved the Weil conjectures (1974), which are related but distinct. Voisin (2002) proved the conjecture fails for compact Kähler manifolds that are not projective, confirming projectivity is an essential hypothesis.\n\nIn 2000, the Clay Mathematics Institute designated the Hodge Conjecture as one of seven Millennium Prize Problems with a $1,000,000 prize. The only proven cases are: divisors on any variety (Lefschetz (1,1)), curves, surfaces, and special abelian varieties (Deligne, Hazama). The conjecture stands as one of the deepest open questions in mathematics.",
     "problemStatement": "**Conjecture:** On a smooth projective variety X over C, every Hodge class is a rational linear combination of algebraic cycle classes.\n\nFormally: H^{p,p}(X) intersect H^{2p}(X,Q) equals the Q-span of algebraic subvariety classes.",
-    "text": "One of the seven Millennium Prize Problems. Every Hodge class on a projective variety is a rational combination of algebraic cycle classes.",
+    "text": "Formalizes the Hodge Conjecture (Millennium Prize): every Hodge class on a smooth projective variety over $\\mathbb{C}$ is a $\\mathbb{Q}$-linear combination of algebraic cycle classes. Constructs Hodge structures with complexification, proves $h^{p,q} = h^{q,p}$ from conjugation, develops the Hodge filtration, and covers counterexamples (Atiyah-Hirzebruch integral, Voisin Kähler), known cases (Lefschetz (1,1)), Standard Conjectures, absolute Hodge classes, Tate Conjecture, derived categories, and non-abelian Hodge theory.",
     "proofStrategy": "This file provides:\n1. Abstract Hodge structures with complexification maps and injectivity\n2. Hodge filtration (decreasing filtration F^p) and Hodge numbers h^{p,q}\n3. Hodge symmetry h^{p,q} = h^{q,p} proved from conjugation axiom\n4. Integral Hodge conjecture and proof that rational follows from integral\n5. Formal counterexample axioms (Atiyah-Hirzebruch, Voisin)\n6. Proven cases (Lefschetz theorem, curves, surfaces)\n7. Equivalent formulations (Standard Conjectures, Mumford-Tate)\n8. Morphisms of Hodge structures with functoriality on Hodge/algebraic classes\n9. Polarizations with proved symmetry/antisymmetry for even/odd weight\n10. Mixed Hodge structures with pure-to-mixed embedding",
     "keyInsights": [
       "The conjecture is OPEN - one of the Millennium Prize Problems",
@@ -52,7 +52,10 @@
       "The complexification map connects rational classes to complex decomposition"
     ],
     "prerequisites": [
-      "Point-set topology"
+      "Algebraic geometry (projective varieties, algebraic cycles, cohomology)",
+      "Complex geometry (Hodge decomposition, Kähler manifolds, Dolbeault cohomology)",
+      "Homological algebra (derived categories, spectral sequences)",
+      "Representation theory (Mumford-Tate groups, Hodge filtration)"
     ]
   },
   "sections": [
@@ -68,7 +71,8 @@
       "title": "Hodge Decomposition and Numbers",
       "startLine": 148,
       "endLine": 197,
-      "summary": "Hodge conjugation symmetry axiom, Hodge numbers h^{p,q}, and proved Hodge symmetry h^{p,q} = h^{q,p}."
+      "summary": "Hodge conjugation symmetry axiom, Hodge numbers h^{p,q}, and proved Hodge symmetry h^{p,q} = h^{q,p}.",
+      "mathContext": "$H^k(X, \\mathbb{C}) = \\bigoplus_{p+q=k} H^{p,q}(X)$ with $\\overline{H^{p,q}} = H^{q,p}$. Hodge numbers: $h^{p,q} = \\dim H^{p,q}$; symmetry $h^{p,q} = h^{q,p}$ proved."
     },
     {
       "id": "hodge-filtration",
@@ -82,21 +86,24 @@
       "title": "Hodge Classes",
       "startLine": 235,
       "endLine": 258,
-      "summary": "Hodge classes defined as rational classes whose complexification lies in V^{p,p}."
+      "summary": "Hodge classes defined as rational classes whose complexification lies in V^{p,p}.",
+      "mathContext": "$\\text{Hdg}^p(X) = H^{2p}(X, \\mathbb{Q}) \\cap H^{p,p}(X)$. Hodge classes: rational cohomology classes of pure type $(p,p)$."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 342,
       "endLine": 365,
-      "summary": "Formal statement of the Hodge Conjecture."
+      "summary": "Formal statement of the Hodge Conjecture.",
+      "mathContext": "$\\text{Hdg}^p(X) = \\mathbb{Q}\\text{-span}\\{[Z] : Z \\subset X \\text{ algebraic of codim } p\\}$. Every Hodge class is algebraic."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
       "startLine": 472,
       "endLine": 536,
-      "summary": "Integral Hodge conjecture, Atiyah-Hirzebruch failure, Voisin Kähler counterexample, and proof that rational follows from integral."
+      "summary": "Integral Hodge conjecture, Atiyah-Hirzebruch failure, Voisin Kähler counterexample, and proof that rational follows from integral.",
+      "mathContext": "Integral Hodge fails: Atiyah-Hirzebruch (1962) via Steenrod operations. Voisin (2002): fails for Kähler non-projective. Rational $\\Leftarrow$ integral is proved."
     },
     {
       "id": "morphisms",
@@ -117,7 +124,8 @@
       "title": "Polarizations",
       "startLine": 1390,
       "endLine": 1450,
-      "summary": "Polarized Hodge structures with proved symmetry for even weight and antisymmetry for odd weight."
+      "summary": "Polarized Hodge structures with proved symmetry for even weight and antisymmetry for odd weight.",
+      "mathContext": "Polarization $Q : V \\times V \\to \\mathbb{Q}$ with $Q(u,v) = (-1)^k Q(v,u)$ for weight $k$. Hodge-Riemann: $i^{p-q} Q(v, \\bar{v}) > 0$ on primitive classes."
     },
     {
       "id": "mixed-hodge",
@@ -152,7 +160,8 @@
       "title": "Part LXXVII: The Tate Conjecture — p-adic Analogue",
       "startLine": 9531,
       "endLine": 9680,
-      "summary": "The Tate Conjecture is the p-adic/arithmetic analogue of the Hodge Conjecture: for varieties over finite fields, the cycle class map to ℓ-adic cohomology is surjective onto Galois-invariant classes. Proved for divisors on abelian varieties (Tate, Faltings). The Hodge-Tate comparison theorem connects the two."
+      "summary": "The Tate Conjecture is the p-adic/arithmetic analogue of the Hodge Conjecture: for varieties over finite fields, the cycle class map to ℓ-adic cohomology is surjective onto Galois-invariant classes. Proved for divisors on abelian varieties (Tate, Faltings). The Hodge-Tate comparison theorem connects the two.",
+      "mathContext": "Tate: $\\text{cl} : \\text{CH}^p(X) \\otimes \\mathbb{Q}_\\ell \\to H^{2p}_{\\text{ét}}(X, \\mathbb{Q}_\\ell(p))^{G_k}$ surjective. $p$-adic analogue of Hodge via Hodge-Tate decomposition."
     },
     {
       "id": "derived-categories-hms",

@@ -80,7 +80,10 @@
       "The stationary Liouville critical exponent 9/2 vs the regularity exponent 3 measures the gap to solving the Millennium Problem"
     ],
     "prerequisites": [
-      "Mathematical analysis"
+      "Partial differential equations (incompressible Navier-Stokes, vorticity formulation)",
+      "Functional analysis (Sobolev spaces, Leray-Hopf weak solutions, semigroups)",
+      "Harmonic analysis (Calderon-Zygmund, Besov spaces, Littlewood-Paley)",
+      "Measure theory (Bochner integrals, energy estimates)"
     ]
   },
   "sections": [
@@ -96,7 +99,8 @@
       "title": "Ancient Solutions and ESS Theorem",
       "summary": "Part III: Ancient solutions, bounded ancient solutions, Liouville theorem (bounded ancient = zero), ESS exclusion of Type I blowup.",
       "startLine": 353,
-      "endLine": 605
+      "endLine": 605,
+      "mathContext": "Ancient solutions: defined for $t \\in (-\\infty, 0)$. Liouville: bounded ancient $\\Rightarrow u \\equiv 0$. ESS: Type I ($\\|u\\| \\lesssim (T-t)^{-1/2}$) excluded by backward uniqueness."
     },
     {
       "id": "ns-structure",
@@ -110,7 +114,8 @@
       "title": "NS Axioms and Main Theorem",
       "summary": "Part VII: NSAxioms structure, Type II scenario construction, main global regularity theorem (conditional).",
       "startLine": 889,
-      "endLine": 954
+      "endLine": 954,
+      "mathContext": "Main theorem: Type I excluded (ESS) + Type II excluded (stability) $\\Rightarrow$ no finite-time blowup under `NSAxioms` (5 structure-encoded assumptions)."
     },
     {
       "id": "ckn-concentration",
@@ -124,21 +129,24 @@
       "title": "2D Global Existence (PROVEN)",
       "summary": "Parts X, X-B: Complete 2D Navier-Stokes global existence and uniqueness. Enstrophy bound without axioms, exponential decay under Poincare inequality. The fully proved result.",
       "startLine": 1967,
-      "endLine": 2669
+      "endLine": 2669,
+      "mathContext": "2D: $\\omega_t + u \\cdot \\nabla \\omega = \\nu \\Delta \\omega$ (no stretching). Enstrophy $E = \\int |\\omega|^2$ satisfies $E' = -2\\nu P \\leq 0$, giving global bounds. Fully proved, 0 axioms."
     },
     {
       "id": "gronwall-leray-hopf",
       "title": "Gronwall, Leray-Hopf, Serrin",
       "summary": "Parts XII-XIV: Gronwall stability, Leray-Hopf weak solutions (energy inequality, weak-strong uniqueness bootstrap), Serrin regularity criterion (2/p + 3/q <= 1).",
       "startLine": 2671,
-      "endLine": 3288
+      "endLine": 3288,
+      "mathContext": "Leray-Hopf: $\\|u(t)\\|^2 + 2\\nu \\int_0^t \\|\\nabla u\\|^2 \\leq \\|u_0\\|^2$. Serrin: $u \\in L^p_t L^q_x$ with $2/p + 3/q \\leq 1$ $\\Rightarrow$ regularity."
     },
     {
       "id": "turbulence-bkm",
       "title": "Turbulence and BKM Criterion",
       "summary": "Parts XV-XVI: Kolmogorov K41 energy spectrum, Reynolds number scaling, BKM blowup criterion (vorticity controls regularity).",
       "startLine": 3289,
-      "endLine": 3503
+      "endLine": 3503,
+      "mathContext": "K41: $E(k) \\sim \\varepsilon^{2/3} k^{-5/3}$. BKM: $\\int_0^T \\|\\omega\\|_{L^\\infty} < \\infty$ $\\Rightarrow$ no blowup at $T$."
     },
     {
       "id": "weak-strong-kolmogorov",
@@ -152,7 +160,8 @@
       "title": "Onsager Conjecture and Dissipation Anomaly",
       "summary": "Parts XX-XXI: Energy conservation above 1/3 Holder, anomalous dissipation (zeroth law of turbulence).",
       "startLine": 3696,
-      "endLine": 4177
+      "endLine": 4177,
+      "mathContext": "Onsager: $u \\in C^{0,\\alpha}$ with $\\alpha > 1/3$ $\\Rightarrow$ energy conserved. $\\alpha < 1/3$: non-uniqueness via convex integration (Buckmaster-De Lellis-Székelyhidi-Vicol)."
     },
     {
       "id": "regularity-scaling",
