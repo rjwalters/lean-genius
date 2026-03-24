@@ -72,10 +72,49 @@ axiom cramer_implies_large_lpf :
 /- ## Basic Properties -/
 
 /-- The quadratic bound k² + 1 grows slower than the exponential e^{(1+ε)√k}
-    for large k, so the main conjecture is weaker than the exponential version. -/
-axiom quadratic_weaker_than_exponential (ε : ℝ) (hε : 0 < ε) :
+    for large k, so the main conjecture is weaker than the exponential version.
+    Proof: x^4 · exp(-(1+ε)x) → 0 composed with x = √k gives k² · exp(-(1+ε)√k) → 0,
+    so eventually k² < (1/2)exp((1+ε)√k) and 1 < (1/2)exp((1+ε)√k). -/
+theorem quadratic_weaker_than_exponential (ε : ℝ) (hε : 0 < ε) :
     ∃ K₀ : ℕ, ∀ k : ℕ, K₀ ≤ k →
-      (k ^ 2 + 1 : ℝ) < Real.exp ((1 + ε) * Real.sqrt k)
+      (k ^ 2 + 1 : ℝ) < Real.exp ((1 + ε) * Real.sqrt k) := by
+  have hc : 0 < 1 + ε := by linarith
+  -- x^4 * exp(-(1+ε)*x) → 0 as x → ∞
+  have h_tend := Real.tendsto_pow_mul_exp_neg_atTop_nhds 4 (1 + ε) hc
+  -- Compose with √· : ℕ → ℝ (which tends to atTop)
+  have h_sqrt_atTop : Tendsto (fun k : ℕ => Real.sqrt (↑k)) atTop atTop :=
+    (Real.tendsto_sqrt_atTop).comp tendsto_natCast_atTop_atTop
+  have h_comp := h_tend.comp h_sqrt_atTop
+  -- h_comp : (√k)^4 * exp(-(1+ε)*√k) → 0
+  -- Eventually < 1/2
+  have h_ev : ∀ᶠ k in atTop, (Real.sqrt (↑k)) ^ 4 * Real.exp (-(1 + ε) * Real.sqrt (↑k)) < 1/2 :=
+    h_comp.eventually (Iio_mem_nhds (by norm_num : (0:ℝ) < 1/2))
+  -- exp((1+ε)*√k) → ∞, so eventually > 2
+  have h_exp_large : ∀ᶠ k in atTop, 2 < Real.exp ((1 + ε) * Real.sqrt (↑k)) := by
+    have : Tendsto (fun k : ℕ => (1 + ε) * Real.sqrt (↑k)) atTop atTop :=
+      (tendsto_atTop_atTop_of_monotone (fun a b h => by nlinarith [Real.sqrt_le_sqrt (by exact_mod_cast h : (a:ℝ) ≤ b)]) ⟨0, fun b => ⟨⌈(b / (1 + ε))^2⌉₊, by nlinarith [Real.sq_sqrt (Nat.cast_nonneg ⌈(b / (1 + ε))^2⌉₊)]⟩⟩)
+    exact (Real.tendsto_exp_atTop.comp this).eventually (Ioi_mem_atTop 2)
+  -- Extract K₀ from both eventually conditions
+  obtain ⟨K₀, hK₀⟩ := (h_ev.and h_exp_large).exists_forall_of_atTop
+  refine ⟨K₀, fun k hk => ?_⟩
+  obtain ⟨h1, h2⟩ := hK₀ k hk
+  -- (√k)^4 = k² for k ≥ 0
+  have h_sq : (Real.sqrt (↑k)) ^ 4 = (↑k : ℝ) ^ 2 := by
+    have := Real.sq_sqrt (Nat.cast_nonneg k)
+    nlinarith [sq_nonneg (Real.sqrt ↑k)]
+  -- From h1: k² * exp(-c√k) < 1/2, so k² < (1/2) * exp(c√k)
+  have hexp_pos : 0 < Real.exp ((1 + ε) * Real.sqrt ↑k) := Real.exp_pos _
+  have hk2_bound : (↑k : ℝ) ^ 2 < (1/2) * Real.exp ((1 + ε) * Real.sqrt ↑k) := by
+    rw [← h_sq] at h1
+    have : (Real.sqrt ↑k) ^ 4 < (1/2) * Real.exp ((1 + ε) * Real.sqrt ↑k) := by
+      rw [show Real.exp (-(1 + ε) * Real.sqrt ↑k) = (Real.exp ((1 + ε) * Real.sqrt ↑k))⁻¹ from
+        by rw [Real.exp_neg]] at h1
+      rwa [mul_inv_lt_iff₀ hexp_pos] at h1
+    rwa [h_sq] at this
+  -- From h2: exp(c√k) > 2, so 1 < (1/2) * exp(c√k)
+  have h1_bound : 1 < (1/2) * Real.exp ((1 + ε) * Real.sqrt ↑k) := by linarith
+  -- Combine: k²+1 < (1/2)*exp + (1/2)*exp = exp
+  linarith
 
 /-- For k = 1, the condition minFac(n+1) > 2 means n+1 is odd and not 2. -/
 theorem lpf_k1_means_odd (n : ℕ) (h : (n + 1).minFac > 1 ^ 2 + 1) :
