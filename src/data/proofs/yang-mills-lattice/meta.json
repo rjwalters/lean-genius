@@ -132,12 +132,17 @@
     {
       "targetId": "yang-mills",
       "relationship": "part-of",
-      "description": "Sub-module of the comprehensive Yang-Mills formalization"
+      "description": "Sub-module of the comprehensive Yang-Mills formalization — this file provides the lattice gauge theory infrastructure (discrete gauge fields, Wilson loops, plaquette actions) that the parent module uses for the mass gap argument"
     },
     {
       "targetId": "yang-mills-transfer-matrix",
       "relationship": "supports",
-      "description": "Lattice structures are used by the transfer matrix formalism to prove the mass gap"
+      "description": "Lattice gauge theory discretizes the path integral into a finite-dimensional partition function. The transfer matrix formalism then diagonalizes this operator to extract the mass gap as the spectral gap between ground state and first excited state"
+    },
+    {
+      "targetId": "yang-mills-2d",
+      "relationship": "sibling",
+      "description": "The 2D Yang-Mills theory is exactly solvable (Migdal 1975): the lattice gauge theory simplifies because each plaquette contributes independently. This sibling entry exploits the 2D simplification while the lattice formalism here works in arbitrary dimension"
     }
   ],
   "relatedProofs": [
