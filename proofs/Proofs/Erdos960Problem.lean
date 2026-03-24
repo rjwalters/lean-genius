@@ -101,7 +101,13 @@ theorem turan_upper_bound (r k n : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
 
 /-- The trivial upper bound: at most C(n,2) ordinary lines total. -/
 theorem trivial_bound (P : PointConfig) :
-  ordinaryLineCount P ≤ P.n * (P.n - 1) / 2 := by sorry
+  ordinaryLineCount P ≤ P.n * (P.n - 1) / 2 := by
+  unfold ordinaryLineCount
+  -- filtered offDiag has card ≤ offDiag.card = n*(n-1)
+  have h1 : (P.points.offDiag.filter fun pq => IsOrdinaryLine P pq.1 pq.2).card ≤
+      P.points.offDiag.card := Finset.card_filter_le _ _
+  rw [Finset.card_offDiag, P.card_eq] at h1
+  exact Nat.div_le_div_right h1
 
 -- ## Part VII: Known Cases and Connections
 
