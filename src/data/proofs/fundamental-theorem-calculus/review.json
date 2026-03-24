@@ -3,14 +3,12 @@
   "proofId": "fundamental-theorem-calculus",
   "reviewDate": "2026-03-24T16:00:00Z",
   "reviewer": "peer-reviewer-1",
-
   "overallAssessment": {
     "grade": "C+",
     "oneLiner": "Pedagogically rich Mathlib wrapper with honest in-file documentation but significantly overclaimed originalContributions and fabricated declarations in meta.json overview text.",
     "tier": "B",
     "tierJustification": "The core FTC results (Part 1, Part 2) are single-line delegations to Mathlib's integral_hasDerivAt_right and integral_eq_sub_of_hasDerivAt_of_le. The file adds the IsAntiderivative definition, a convenience wrapper ftc_part1_continuous, and the antiderivatives_differ_by_constant theorem (the only multi-step proof). This is a well-organized Mathlib bridge, not an original formalization. Tier B is appropriate."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -97,49 +95,48 @@
       "recommendation": "Consider whether the #check section adds value. It could be removed or shortened in the Lean file."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "high",
       "target": "enricher",
       "description": "Remove fabricated content from meta.json overview.text: delete references to integration_by_parts, mvt_for_integrals, integral_nonneg, and the concrete example 'integral from 0 to 1 of 2x dx = 1 via norm_num'. Replace with accurate description of the 7 theorems and 2 definitions actually present.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite meta.json originalContributions to match the Lean file's honest self-description: (1) 'Pedagogical wrapper of FTC Part 1 with clean API', (2) 'Generalized FTC Part 2 without ordering assumption', (3) 'Antiderivative uniqueness theorem with multi-step proof'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "high",
       "target": "enricher",
       "description": "Fix wiedijkNumber from 15 to 46 in meta.json.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Expand mathlibDependencies to list the actual workhorse functions: integral_hasDerivAt_right, integral_eq_sub_of_hasDerivAt_of_le, integral_eq_sub_of_hasDeriv_right, is_const_of_deriv_eq_zero.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix annotation line ranges: ann-integral-function to 59-61, ann-ftc-part1 to 65-78. Add annotations for ftc_part2_general and hasDerivAt_zero_implies_constant. Differentiate significance ratings.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "medium",
       "target": "enricher",
       "description": "Correct declaration count in overview.text from '16 declarations' to '9 declarations (7 theorems, 2 definitions)'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-7",
@@ -149,7 +146,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 5,
     "originalityAccuracy": 4,
@@ -159,6 +155,5 @@
     "internalConsistency": 4,
     "overall": 5.3
   },
-
   "suggestedBestFraming": "A pedagogical Mathlib bridge for the Fundamental Theorem of Calculus (Wiedijk #46): wraps Mathlib's integral_hasDerivAt_right and integral_eq_sub_of_hasDerivAt for FTC Parts 1 and 2, defines IsAntiderivative, and provides an original multi-step proof that antiderivatives differ by constants via the mean value theorem."
 }
