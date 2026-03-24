@@ -18,6 +18,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
 
+namespace Erdos345
+
 /- ## Subset sums and completeness -/
 
 /-- The set of finite subset sums of `A ⊆ ℕ`. -/
@@ -26,7 +28,7 @@ def subsetSums (A : Set ℕ) : Set ℕ :=
 
 /-- A sequence `A` is complete if all sufficiently large integers are
 in `P(A)`. -/
-def IsComplete (A : Set ℕ) : Prop :=
+def IsCompleteSeq (A : Set ℕ) : Prop :=
     ∃ m : ℕ, ∀ n : ℕ, m ≤ n → n ∈ subsetSums A
 
 /- ## Completeness threshold -/
@@ -37,12 +39,12 @@ minimum requires decidability. -/
 axiom threshold : Set ℕ → ℕ
 
 /-- `threshold A` is correct: all `n ≥ T(A)` are in `P(A)`. -/
-axiom threshold_spec (A : Set ℕ) (hA : IsComplete A) :
+axiom threshold_spec (A : Set ℕ) (hA : IsCompleteSeq A) :
     ∀ n : ℕ, threshold A ≤ n → n ∈ subsetSums A
 
 /-- `threshold A` is minimal: some `n < T(A)` is not in `P(A)`,
 unless `T(A) = 0`. -/
-axiom threshold_minimal (A : Set ℕ) (hA : IsComplete A)
+axiom threshold_minimal (A : Set ℕ) (hA : IsCompleteSeq A)
     (ht : 0 < threshold A) :
     ∃ n : ℕ, n < threshold A ∧ n ∉ subsetSums A
 
@@ -52,8 +54,15 @@ axiom threshold_minimal (A : Set ℕ) (hA : IsComplete A)
 def powerSeq (k : ℕ) : Set ℕ :=
     { m | ∃ n : ℕ, 1 ≤ n ∧ m = n ^ k }
 
-/-- The sequence of natural numbers is complete with `T(n) = 1`. -/
-axiom powerSeq_1_complete : IsComplete (powerSeq 1)
+/-- The sequence of natural numbers is complete with `T(n) = 1`.
+    Every n ≥ 1 is a subset sum of {1^1, 2^1, 3^1, ...} via the singleton {n}. -/
+theorem powerSeq_1_complete : IsCompleteSeq (powerSeq 1) := by
+  refine ⟨1, fun n hn => ?_⟩
+  refine ⟨{n}, ?_, ?_⟩
+  · simp only [Finset.coe_singleton, Set.singleton_subset_iff]
+    exact ⟨n, hn, (pow_one n).symm⟩
+  · simp
+
 axiom threshold_powerSeq_1 : threshold (powerSeq 1) = 1
 
 /- ## Known threshold values -/
@@ -75,7 +84,7 @@ axiom threshold_fifth : threshold (powerSeq 5) = 67898771
 /-- Power sequences `{n^k}` are complete for all `k ≥ 1`
 (Waring's problem guarantees this). -/
 axiom powerSeq_complete (k : ℕ) (hk : 1 ≤ k) :
-    IsComplete (powerSeq k)
+    IsCompleteSeq (powerSeq k)
 
 /- ## Main conjecture -/
 
@@ -87,10 +96,15 @@ def ErdosProblem345 : Prop :=
 
 /- ## Monotonicity observations -/
 
-/-- The known values suggest `T(n^k)` is rapidly increasing, but the
-conjecture asks whether the sequence ever decreases. -/
-axiom threshold_mono_small :
+/-- The known values show `T(n^k)` is rapidly increasing for small k:
+    1 < 128 < 12758 < 5134240 < 67898771. -/
+theorem threshold_mono_small :
     threshold (powerSeq 1) < threshold (powerSeq 2) ∧
     threshold (powerSeq 2) < threshold (powerSeq 3) ∧
     threshold (powerSeq 3) < threshold (powerSeq 4) ∧
-    threshold (powerSeq 4) < threshold (powerSeq 5)
+    threshold (powerSeq 4) < threshold (powerSeq 5) := by
+  rw [threshold_powerSeq_1, threshold_squares, threshold_cubes,
+      threshold_fourth, threshold_fifth]
+  omega
+
+end Erdos345
