@@ -73,6 +73,30 @@
       "startLine": 76,
       "endLine": 89,
       "summary": "Three remarks (in comments, not formalized): the **Egyptian fraction** connection (every rational has a unit fraction decomposition), the **greedy construction** strategy for lower bounds, and related **OEIS sequences** A384927, A391592 tracking computed values of $R(N)$."
+    },
+    {
+      "id": "pair-sorry",
+      "title": "Pair Distinct Sums (Sorry)",
+      "startLine": 85,
+      "endLine": 91,
+      "summary": "States `pair_hasDistinctReciprocalSums`: for $m < n$, $\\{m, n\\}$ has distinct reciprocal subset sums. Contains a sorry — the proof that the 4 subsets $\\emptyset, \\{m\\}, \\{n\\}, \\{m,n\\}$ all yield distinct sums $0, 1/m, 1/n, 1/m+1/n$ is left incomplete.",
+      "mathContext": "The 4 subset sums are $0 < 1/n < 1/m < 1/m + 1/n$, distinct because $m < n$ implies $1/m > 1/n > 0$. The sorry likely requires working with `Finset.sum` over subsets and `Rat` arithmetic."
+    },
+    {
+      "id": "r-of-n-def",
+      "title": "R(N) Definition and Known Bounds",
+      "startLine": 93,
+      "endLine": 122,
+      "summary": "Defines `maxDistinctReciprocal N` as the maximum card over subsets of $\\{1,\\ldots,N\\}$ with distinct reciprocal sums, via `Finset.sup`. Axiomatizes Bleicher-Erdős bounds: $R(N) \\geq N/\\log N$ (1975) and $R(N) \\leq C \\cdot N \\log\\log N / \\log N$ (1976). States asymptotic form: $R(N) = \\Theta(N/\\log N)$.",
+      "mathContext": "The gap: $\\frac{N}{\\log N} \\prod_{i=3}^{k} \\log_i N \\leq R(N) \\leq C \\frac{N \\log\\log N}{\\log N}$. The lower and upper bounds differ by essentially one iterated logarithm factor."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Erdős Problem #321: Exact Asymptotics (OPEN)",
+      "startLine": 124,
+      "endLine": 137,
+      "summary": "States the tautological existence of an asymptotic function (take $f = R$). The real open problem is finding an explicit closed-form. The `rfl` proof acknowledges this is a definitional tautology.",
+      "mathContext": "The conjecture asks: is $R(N) \\sim c \\cdot N/\\log N$ for some constant $c$, or does the iterated logarithm factor in the bounds reflect genuine complexity? Erdős conjectured the former."
     }
   ],
   "overview": {
