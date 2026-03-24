@@ -83,35 +83,35 @@
       "priority": "high",
       "target": "enricher",
       "description": "Replace the two placeholder theorems (lines 108 and 130) with either (a) properly sorry'd theorem stubs stating the actual intended theorems, or (b) remove the theorem declarations entirely and keep the docstring content as comments. Update meta.json theoremCount, originalContributions, and sorries count accordingly.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite conclusion.summary to remove the claim about the full cycle lemma being 'proved with 0 sorries'. Focus on what THIS file proves: ballot_discrete_ivt. Note the connection to BallotProblemOQ01.lean without claiming completeness.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite originalContributions: keep item [0] (ballot_discrete_ivt — genuinely original), replace items [1] and [2] with a single item noting the detailed proof sketches in docstrings are not yet formalized.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Change badge from 'verified' to 'original' to reflect genuine proof work in ballot_discrete_ivt.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Fix overlapping section boundaries: consolidate into non-overlapping 'lower-bound-sketch' (91-108) and 'rightmost-good-sketch' (110-131), remove redundant 'placeholder-theorems' section.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
