@@ -83,21 +83,21 @@
       "priority": "low",
       "target": "enricher",
       "description": "Add hasDerivAt_iff_tendsto_slope to mathlibDependencies in meta.json. Also add tendsto_nhds_unique and Real.sin_two_mul.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Reframe archimedes_exhaustion_unique in originalContributions to acknowledge it is a one-line Mathlib call (tendsto_nhds_unique), not a substantive original proof.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Clarify the conclusion summary to distinguish Archimedes' original argument (ancient) from the Lean formalization (modern calculus-based).",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 

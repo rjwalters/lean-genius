@@ -37,7 +37,7 @@
       "startLine": 1,
       "endLine": 44,
       "summary": "Module docstring stating the conjecture and its $500 bounty, Mathlib imports, namespace opens.",
-      "mathContext": "Module docstring stating the conjecture and its $500 bounty, Mathlib imports, namespace opens."
+      "mathContext": "Erdos-Turan conjecture: if $A + A \\supseteq \\{N_0, N_0+1, \\ldots\\}$, then $\\limsup_{n \\to \\infty} r_A(n) = \\infty$ where $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$."
     },
     {
       "id": "representation-function",
@@ -53,7 +53,7 @@
       "startLine": 61,
       "endLine": 108,
       "summary": "Sumset definition, Sidon set predicate (IsSidon), asymptotic basis of order 2 (IsAsymptoticBasis), and finiteness lemmas.",
-      "mathContext": "Sumset definition, Sidon set predicate (IsSidon), asymptotic basis of order 2 (IsAsymptoticBasis), and finiteness lemmas."
+      "mathContext": "$A + A = \\{a+b : a,b \\in A\\}$ (Minkowski sum). IsSidon: $r_A(n) \\leq 1$ for all $n$. IsAsymptoticBasis: $|\\mathbb{N} \\setminus (A+A)| < \\infty$."
     },
     {
       "id": "basic-properties",
@@ -61,7 +61,7 @@
       "startLine": 109,
       "endLine": 200,
       "summary": "Proved lemmas: Sidon representation bound (r_A(n) ≤ 2), exact computation of r_ℕ(n), and helper lemmas.",
-      "mathContext": "Proved lemmas: Sidon representation bound (r_A(n) ≤ 2), exact computation of r_ℕ(n), and helper lemmas."
+      "mathContext": "IsSidon $A \\Rightarrow r_A(n) \\leq 2$ (ordered count). For $A = \\mathbb{N}$: $r_{\\mathbb{N}}(n) = n + 1$ (ordered pairs $(a, n-a)$ for $0 \\leq a \\leq n$)."
     },
     {
       "id": "main-conjecture",
@@ -77,7 +77,7 @@
       "startLine": 225,
       "endLine": 234,
       "summary": "Grekos et al. (2003): r_A(n) ≥ 6 i.o. Borwein et al.: r_A(n) ≥ 8 i.o.",
-      "mathContext": "Grekos et al. (2003): r_A(n) ≥ 6 i.o. Borwein et al.: r_A(n) ≥ 8 i.o."
+      "mathContext": "Best known: $\\exists$ infinitely many $n$ with $r_A(n) \\geq 8$ (Borwein et al.). Previously: $r_A(n) \\geq 6$ i.o. (Grekos et al. 2003). The conjecture requires $r_A(n) \\to \\infty$."
     },
     {
       "id": "examples",
@@ -85,7 +85,7 @@
       "startLine": 235,
       "endLine": 347,
       "summary": "ℕ as a basis, computation of r_ℕ(n) = n/2+1 or (n+1)/2, Finset-to-Set conversion lemmas.",
-      "mathContext": "ℕ as a basis, computation of r_ℕ(n) = n/2+1 or (n+1)/2, Finset-to-Set conversion lemmas."
+      "mathContext": "$r_{\\mathbb{N}}(2k) = k+1$ and $r_{\\mathbb{N}}(2k+1) = k+1$ (unordered). Demonstrates $\\mathbb{N}$ is an asymptotic basis of order 2 trivially ($\\mathbb{N} + \\mathbb{N} = \\mathbb{N}$) with unbounded $r$."
     },
     {
       "id": "sidon-connection",
@@ -93,7 +93,7 @@
       "startLine": 348,
       "endLine": 412,
       "summary": "Sidon density bound and proof outline for why infinite Sidon sets cannot be asymptotic bases.",
-      "mathContext": "Sidon density bound and proof outline for why infinite Sidon sets cannot be asymptotic bases."
+      "mathContext": "Sidon ($B_2$) sets satisfy $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$, but bases require $|A \\cap [1,N]| \\gg \\sqrt{N}$ with constant exceeding the Sidon threshold. Hence infinite Sidon sets cannot be bases."
     },
     {
       "id": "ordered-vs-unordered",
@@ -101,15 +101,15 @@
       "startLine": 413,
       "endLine": 425,
       "summary": "Proved: r_A(n) ≥ r_A^≤(n) since unordered pairs are a subset of ordered pairs.",
-      "mathContext": "Proved: r_A(n) ≥ r_A^≤(n) since unordered pairs are a subset of ordered pairs."
+      "mathContext": "$r_A(n) \\geq r_A^{\\leq}(n)$ since $\\{(a,b) : a \\leq b, a+b=n\\} \\subseteq \\{(a,b) : a+b=n\\}$. The ordered count double-counts pairs with $a \\neq b$."
     },
     {
       "id": "conjecture-for-nat",
       "title": "Part IX: Conjecture Holds for ℕ",
       "startLine": 426,
       "endLine": 446,
-      "summary": "Proved: the Erdős-Turán conjecture holds trivially for A = ℕ, since r_ℕ(2k+2) = k+2 > k.",
-      "mathContext": "Proved: the Erdős-Turán conjecture holds trivially for A = ℕ, since r_ℕ(2k+2) = k+2 > k."
+      "summary": "Proved: the Erdos-Turan conjecture holds trivially for A = ℕ, since r_ℕ(2k+2) = k+2 > k.",
+      "mathContext": "For $A = \\mathbb{N}$: $r_{\\mathbb{N}}(2k+2) = k+2 > k$ for all $k$, so $\\limsup r_{\\mathbb{N}}(n) = \\infty$. This is the trivial case — the conjecture's difficulty lies in sparse bases."
     },
     {
       "id": "basis-density",

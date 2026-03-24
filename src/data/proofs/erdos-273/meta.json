@@ -23,28 +23,19 @@
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
       {
-        "theorem": "Mathlib.Data.Nat.Basic",
-        "description": "Basic from Mathlib.Data.Nat"
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate and decidability — used for IsPrimeMinusOne and easyPrimes verification",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
       },
       {
-        "theorem": "Mathlib.Data.Nat.Prime.Basic",
-        "description": "Basic from Mathlib.Data.Nat.Prime"
+        "theorem": "Int.emod_emod_of_dvd",
+        "description": "Integer modular arithmetic — used for the covering property z ≡ r_i (mod m_i)",
+        "module": "Mathlib.Data.Int.Basic"
       },
       {
-        "theorem": "Mathlib.Data.Int.Basic",
-        "description": "Basic from Mathlib.Data.Int"
-      },
-      {
-        "theorem": "Mathlib.Data.Finset.Basic",
-        "description": "Basic from Mathlib.Data.Finset"
-      },
-      {
-        "theorem": "Mathlib.Data.Fintype.Basic",
-        "description": "Basic from Mathlib.Data.Fintype"
-      },
-      {
-        "theorem": "Mathlib.Tactic",
-        "description": "Tactic from Mathlib"
+        "theorem": "Finset.prod / Finset.sum",
+        "description": "Finite set operations — used for easyPrimes, moduli enumeration, and reciprocal sum computation",
+        "module": "Mathlib.Data.Finset.Basic"
       }
     ],
     "originalContributions": [
@@ -55,7 +46,7 @@
       "Enumeration of easy primes for 360-based constructions and connection to Hough's theorem"
     ],
     "axiomCount": 2,
-    "assumptions": "4 axiom declarations: selfridge_example (p>=3 covering exists), covering_reciprocal_sum (reciprocal sum >= 1 necessary), difficulty_even_coverage (no modulus 2 obstacle), min_modulus_ge_4 (all moduli >= 4 for p>=5)",
+    "assumptions": "2 axioms: selfridge_example (p>=3 covering system exists, Selfridge construction), covering_reciprocal_sum (reciprocal sum of moduli >= 1 is necessary for covering). The 8 theorems are proved, including difficulty_even_coverage, min_modulus_ge_4, moduli_even, and the easyPrimes reciprocal sum bound.",
     "lineCount": 182,
     "mathlib_version": "4.26.0"
   },
@@ -175,7 +166,7 @@
     "namespace": null,
     "lineCount": 182,
     "axiomCount": 2,
-    "theoremCount": 2,
+    "theoremCount": 8,
     "definitionCount": 6
   },
   "crossReferences": [
