@@ -206,6 +206,21 @@ theorem general_d1_at_composite_succ (n : ℕ) (hn : 3 ≤ n) (hc : ¬(n + 1).Pr
       ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ 1 < p :=
   ⟨1, Nat.one_pos, hc, by omega, fun p ⟨hp, _, _⟩ => by simp; exact hp.one_lt⟩
 
+/-- For odd n ≥ 3, the d=1 generalisation holds with k = 1: n+1 is even
+and ≥ 4 hence composite, with p(n+1) ≥ 2 > 1 = 1^1. This covers all
+odd integers ≥ 3 without requiring a hypothesis that n+1 is composite. -/
+theorem general_d1_odd (n : ℕ) (hn : 3 ≤ n) (hodd : Odd n) :
+    ∃ k : ℕ, 0 < k ∧ ¬(n + k).Prime ∧ 2 ≤ n + k ∧
+      ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ 1 < p := by
+  refine ⟨1, one_pos, ?_, by omega, ?_⟩
+  · intro hp
+    obtain ⟨m, hm⟩ := hodd
+    have h2 : 2 ∣ (n + 1) := ⟨m + 1, by omega⟩
+    rcases hp.eq_one_or_self_of_dvd 2 h2 with h | h <;> omega
+  · intro p ⟨hp, _, _⟩
+    simp
+    exact hp.one_lt
+
 /-- **The original d=2 conjecture holds whenever n+1 is composite.**
 Since p(n+1) ≥ 2 > 1 = 1², k = 1 always works. -/
 theorem conjecture_at_composite_succ (n : ℕ) (hn : 3 ≤ n) (hc : ¬(n + 1).Prime) :
@@ -228,6 +243,21 @@ theorem hard_case_constraint (n k d : ℕ) (hk : 2 ≤ k)
   calc k ^ (2 * d) = (k ^ d) ^ 2 := by ring
     _ = k ^ d * k ^ d := by ring
     _ < p * p := by nlinarith
+    _ ≤ n + k := hpsq
+
+/-- Generalises `hard_case_constraint` with the weaker hypothesis k ≥ 1.
+Shows k^(2d) < n+k for any valid (n, k, d) triple, bounding the search
+range at O(n^{1/(2d)}). -/
+theorem general_constraint (n k d : ℕ) (hk : 0 < k) (hm : ¬(n + k).Prime)
+    (hm2 : 2 ≤ n + k) (hlpf : ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ d < p) :
+    k ^ (2 * d) < n + k := by
+  obtain ⟨p, hp, hpsq⟩ := lpf_le_sqrt (n + k) hm hm2
+  have hkd := hlpf p hp
+  have hkd_pos : 0 < k ^ d := pow_pos hk d
+  have h2d : k ^ (2 * d) = k ^ d * k ^ d := by
+    rw [show 2 * d = d + d from by omega, pow_add]
+  rw [h2d]
+  calc k ^ d * k ^ d < p * p := by nlinarith
     _ ≤ n + k := hpsq
 
 /- ## Connection to Erdős 680 -/
