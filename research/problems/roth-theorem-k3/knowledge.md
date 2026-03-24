@@ -290,3 +290,48 @@ The N=1 case in `density_increment_lemma` is **unprovable as stated** for a fund
 - **Axioms**: 0
 - **Sorries**: 1 (N=1 edge case at line ~1336)
 - **Build**: ✓ Succeeds (with sorry warning)
+
+## Session 14 (2026-03-23, researcher-1)
+
+### What Was Done
+1. **FIXED PROOF ARCHITECTURE**: Replaced 1 FALSE sorry with 2 TRUE sorries
+   - **Before**: density_increment_lemma had `hN : 0 < N` with sorry at N=1 case (PROVABLY FALSE for delta > 0.99)
+   - **After**: density_increment_lemma has `hN : 1 < N` with `M < N` in conclusion (SORRY-FREE)
+
+2. **Added density_increment_dirichlet** (TRUE sorry):
+   - For N ≥ 4: tries coset partition; if M ≥ 2, done; if M = 1, uses Dirichlet fallback
+   - Dirichlet fallback: apply DirichletApproximation with Q = √N, partition into subprogressions of length ≥ √N ≥ 2
+   - Standard result (Tao-Vu Ch. 10, Lemma 10.20), needs ~200 lines to formalize
+
+3. **Proved density_bound_from_increment**: delta + delta²/100 ≤ 1 for any APFree set on ZMod N with N ≥ 2
+
+4. **Restructured roth_density_bound**:
+   - N₀ = 4 (was N₀ = 1)
+   - N ≥ 4: uses density_iteration with density_increment_dirichlet (M ≥ 2 guaranteed)
+   - M ≤ 3: uses density_increment_lemma directly (M can be 1)
+   - M = 1: takes B = Finset.univ on ZMod 1 (sorry for density bound, becomes unreachable)
+
+### Why This Matters
+- **FALSE sorry → TRUE sorries**: The old sorry at N=1 was provably unsatisfiable (conclusion requires |B| > M but |B| ≤ M always). It could NEVER be closed. The new sorries are for standard mathematical results that CAN be proved.
+- **Proof architecture is now correct**: once density_increment_dirichlet is proved, BOTH remaining sorries close (the M=1 chain case becomes unreachable since M ≥ 2 everywhere).
+
+### Sorry Classification (Updated)
+| Sorry | Location | Status | Difficulty |
+|-------|----------|--------|-----------|
+| density_increment_dirichlet | Part V-B | TRUE (standard result) | Medium (~200 lines) |
+| hboost_le in M=1 chain | Part VI | TRUE (unreachable once Dirichlet proved) | Easy |
+
+### Remaining Sorry Dependency
+```
+density_increment_dirichlet (sorry) ── standard Dirichlet argument
+    └→ density_iteration (uses it for N ≥ 4)
+          └→ roth_density_bound chain (M ≥ 4 case)
+                ├→ M ∈ {2,3}: density_increment_lemma (proved)
+                └→ M = 1: hboost_le (sorry, unreachable once Dirichlet proved)
+```
+
+### Technical Notes
+- density_increment_lemma M = gcd(val(r), N) = 1 when N is prime → Dirichlet needed
+- DirichletApproximation.dirichlet_approximation already proved (142 lines)
+- apFree_filter_affine already proved (AP-freeness under affine maps)
+- Remaining for Dirichlet proof: subprogression partition definition, injectivity, approximate character constancy, density pigeonhole argument

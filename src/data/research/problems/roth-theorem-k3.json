@@ -18,12 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 11,
-    "focus": "Session 11: Fixed all Mathlib API breakages (29 errors). Build succeeds. 0 axioms, 1 sorry (N=1 edge case - architectural gap for prime N).",
+    "iteration": 14,
+    "focus": "Session 14: Fixed proof architecture - replaced FALSE sorry (N=1 edge case) with TRUE sorries (Dirichlet fallback + density bound). density_increment_lemma now requires 1<N with M<N guarantee. Added density_increment_dirichlet and density_bound_from_increment. Build succeeds: 0 axioms, 2 TRUE sorries, 1539 lines.",
     "blockers": [
-      "N=1 edge case: density_increment_lemma unprovable for N=1 due to coset decomposition giving M=1 for prime N. Fix requires reduction to N=3^k or Bohr sets."
+      "density_increment_dirichlet: Dirichlet subprogression argument when coset gives M=1 (~200 lines)",
+      "hboost_le in roth_density_bound M=1 chain case (becomes unreachable once Dirichlet is proved)"
     ],
-    "nextAction": "Fix N=1 edge case by restructuring to handle prime N (reduction to N=3^k or Bohr set approach)",
+    "nextAction": "Prove density_increment_dirichlet: formalize Dirichlet subprogression partition + density analysis",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 axioms, 1 sorry remain. All 29 Mathlib API breakages fixed. Build succeeds. The remaining sorry (N=1 in density_increment_lemma) is an architectural gap: for prime N, the coset decomposition always gives M=1, making the iteration chain unprovable.",
+    "progressSummary": "PROGRESS: Session 14 fixed proof architecture. Replaced 1 FALSE sorry (provably unsatisfiable N=1 edge case) with 2 TRUE sorries (Dirichlet-based density increment + density bound). density_increment_lemma now has 1<N hypothesis with M<N in conclusion (sorry-free). Added density_increment_dirichlet (Dirichlet fallback for M=1, TRUE sorry), density_bound_from_increment (proved). Restructured roth_density_bound chain to use Dirichlet path for N>=4 and handle small N separately. File: 0 axioms, 2 sorries, 1539 lines.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -54,7 +55,11 @@
       "Fixed 5 Mathlib API breakages: ZMod.isUnit_natCast_iff, natCast_zmod_eq_zero_iff_dvd, exact_mod_cast, card_pos direction, eq_univ_of_card",
       "Proved mul_L_r_eq_zero: L*r=0 in ZMod N via val round-trip + Fin.ext injectivity",
       "Added apFree_filter_affine: AP-freeness under affine maps when q not zero divisor",
-      "Session 11: Fixed 29 Mathlib API breakages across fourier_large_coefficient, coset_density_increment, and supporting lemmas. Build now succeeds with only 1 sorry."
+      "Session 11: Fixed 29 Mathlib API breakages across fourier_large_coefficient, coset_density_increment, and supporting lemmas. Build now succeeds with only 1 sorry.",
+      "RESTRUCTURED density_increment_lemma: now requires 1<N, outputs M<N, sorry-free (was 0<N with FALSE sorry for N=1)",
+      "PROVED density_bound_from_increment: delta+delta²/100≤1 for any APFree set on ZMod N with N≥2",
+      "ADDED density_increment_dirichlet: Dirichlet fallback when coset gives M=1, guarantees M≥2 for N≥4 (TRUE sorry)",
+      "RESTRUCTURED roth_density_bound: uses N₀=4, handles N≥4 via Dirichlet path, small N via density_increment_lemma"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -100,13 +105,16 @@
       "N=1 sorry analysis: for d=1, N=1, density_increment_lemma needs |B|≥1.01*M which is impossible (|B|≤M for any B⊆ZMod M). No valid witness exists.",
       "Adding 2≤N hypothesis does NOT fix the issue: the iteration can produce M=1 when N is prime (gcd(val(r),N)=1 for coprime r)",
       "Adding d+d²/100≤1 hypothesis fails: the iteration density exceeds 1 BEFORE reaching the contradiction step",
-      "True fix requires: (a) restrict to N=3^k (cosets preserve structure), (b) Bohr sets, or (c) restructure proof type to return disjunction (witness OR density>1 contradiction)"
+      "True fix requires: (a) restrict to N=3^k (cosets preserve structure), (b) Bohr sets, or (c) restructure proof type to return disjunction (witness OR density>1 contradiction)",
+      "Replacing FALSE sorry with TRUE sorry is genuine progress: FALSE sorries can NEVER be closed, TRUE sorries can be closed by future sessions",
+      "density_increment_dirichlet key: when gcd(val(r),N)=1 (prime N), use Dirichlet approx with Q=√N to get subprogs of length ≥√N≥2",
+      "Chain M=1 case: density_bound_from_increment ensures d+d²/100≤1 from M_prev≥2, so boosted density fits in ZMod 1. Becomes unreachable once Dirichlet guarantees M≥2 everywhere"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "ARCHITECTURAL: Restructure density_increment_lemma and iteration chain. Options: (a) N=3^k reduction, (b) Bohr sets, (c) disjunctive return type",
-      "Each option requires 200-400 lines of new proof code across multiple theorems",
-      "The sorry is unreachable in the actual Roth proof (N₀ is large enough), but Lean needs the universal statement"
+      "Prove density_increment_dirichlet (~200 lines): subprogression partition, approximate character constancy, density pigeonhole",
+      "Alternative: prove hboost_le directly by tracking provenance of M=1 from density_bound_from_increment on previous step",
+      "Once density_increment_dirichlet proved: both remaining sorries close (Dirichlet directly + M=1 unreachable)"
     ]
   },
   "tags": [
