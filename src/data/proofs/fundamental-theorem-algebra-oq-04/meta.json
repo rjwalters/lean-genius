@@ -5,6 +5,8 @@
   "description": "Proves that the complex numbers C form the unique algebraic closure of the reals R: C is algebraically closed and algebraic over R (making it an algebraic closure), any algebraic closure of R is R-algebra isomorphic to C (Steinitz uniqueness), [C:R] = 2 with no intermediate fields, and R is not algebraically closed (X^2+1 has no real root).",
   "meta": {
     "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Algebraic_closure",
+    "date": "1910",
     "status": "verified",
     "proofRepoPath": "Proofs/FundamentalTheoremAlgebraOQ04.lean",
     "tags": [
@@ -60,6 +62,7 @@
     "dateAdded": "2026-03-24"
   },
   "overview": {
+    "historicalContext": "The fundamental theorem of algebra — that ℂ is algebraically closed — was first proved by d'Alembert (1746, incomplete), with the first rigorous proof by Gauss in his 1799 doctoral thesis. But the question of whether ℂ is *unique* as an algebraic closure of ℝ belongs to a different tradition: Ernst Steinitz's 1910 paper *Algebraische Theorie der Körper* established the abstract theory of field extensions and proved that every field has an algebraic closure, unique up to isomorphism. Steinitz's uniqueness proof uses Zorn's lemma (before Zorn — he used the well-ordering theorem). For ℝ specifically, the uniqueness is more elementary: since $[\\mathbb{C}:\\mathbb{R}] = 2$ is prime, there are no intermediate fields, and the algebraic closure is determined by the single choice of a root of $X^2 + 1$. The Artin-Schreier theorem (1927) provides the deeper explanation: ℝ is *real-closed* (ordered field where every positive element has a square root and every odd-degree polynomial has a root), and for any real-closed field $F$, $F(\\sqrt{-1})$ is algebraically closed. This makes FTA a special case of a purely algebraic theorem about real-closed fields.",
     "problemStatement": "Is $\\mathbb{C}$ the unique algebraic closure of $\\mathbb{R}$? Formally: (1) Is $\\mathbb{C}$ an algebraic closure of $\\mathbb{R}$ (algebraically closed + algebraic over $\\mathbb{R}$)? (2) Is any algebraic closure of $\\mathbb{R}$ isomorphic to $\\mathbb{C}$ as an $\\mathbb{R}$-algebra? (3) Is $\\mathbb{C}$ minimal (no proper intermediate algebraically closed field)?",
     "text": "A 207-line verified formalization proving $\\mathbb{C}$ is the unique algebraic closure of $\\mathbb{R}$, with 0 sorries and 0 axioms. The proof establishes eight results: (1) $[\\mathbb{C}:\\mathbb{R}] = 2$ via Mathlib's `finrank_real_complex`; (2) $\\mathbb{C}/\\mathbb{R}$ is algebraic since finite extensions are algebraic; (3) $\\mathbb{C}$ is an algebraic closure combining algebraic closure with algebraicity; (4) any algebraic closure $L$ of $\\mathbb{R}$ satisfies $L \\cong_{\\mathbb{R}} \\mathbb{C}$ by Steinitz's theorem; (5) $\\mathbb{R}$ is not algebraically closed ($X^2 + 1 > 0$ for all $x \\in \\mathbb{R}$); (6) every $z \\in \\mathbb{C}$ is a root of $X^2 - 2\\mathrm{Re}(z)X + |z|^2 \\in \\mathbb{R}[X]$; (7) the tower law forces any intermediate field to have degree 1 or 2 over $\\mathbb{R}$; (8) the single quadratic extension $\\mathbb{R} \\to \\mathbb{C} = \\mathbb{R}[i]/(i^2+1)$ suffices.",
     "proofStrategy": "The proof combines three threads from Mathlib:\n\n1. **Algebraic closure**: `Complex.isAlgClosed` (via Liouville's theorem) gives that $\\mathbb{C}$ is algebraically closed. Since $[\\mathbb{C}:\\mathbb{R}] = 2 < \\infty$, the extension is finite $\\implies$ integral $\\implies$ algebraic. Combining these yields `IsAlgClosure \\mathbb{R} \\mathbb{C}`.\n\n2. **Uniqueness (Steinitz)**: `IsAlgClosure.equiv` provides an $\\mathbb{R}$-algebra isomorphism between any two algebraic closures. Applying it with $L$ and $\\mathbb{C}$ gives $L \\cong_{\\mathbb{R}} \\mathbb{C}$.\n\n3. **Minimality (Tower Law)**: For any intermediate field $\\mathbb{R} \\subseteq K \\subseteq \\mathbb{C}$, the tower law gives $[\\mathbb{C}:K] \\cdot [K:\\mathbb{R}] = [\\mathbb{C}:\\mathbb{R}] = 2$. Since both factors are positive, $[K:\\mathbb{R}] \\in \\{1, 2\\}$, meaning $K = \\mathbb{R}$ or $K = \\mathbb{C}$.",
@@ -68,9 +71,23 @@
       "**Degree 2 is Minimal and Maximal**: $[\\mathbb{C}:\\mathbb{R}] = 2$ is simultaneously the smallest possible nontrivial extension and already enough to close the field. The Artin-Schreier theorem explains why: a field $F$ is real-closed iff $F(\\sqrt{-1})$ is algebraically closed, and any finite extension of a real-closed field has degree 1 or 2.",
       "**Steinitz Uniqueness**: All algebraic closures of a given field are isomorphic (Steinitz 1910). This is a non-constructive result: the isomorphism uses Zorn's lemma to extend embeddings. For $\\mathbb{R}$, the isomorphism is actually computable (every algebraic closure is $\\mathbb{R}$-isomorphic to $\\mathbb{C}$ via explicit coordinates), but the general theorem applies uniformly.",
       "**No Intermediate Algebraically Closed Fields**: The tower law argument shows there are no fields properly between $\\mathbb{R}$ and $\\mathbb{C}$. Combined with the fact that $\\mathbb{R}$ is not algebraically closed ($X^2 + 1$ has no real root), this means $\\mathbb{C}$ is the unique minimal algebraically closed extension."
+    ],
+    "prerequisites": [
+      "Field theory (algebraic extensions, algebraic closure)",
+      "Linear algebra (vector space dimension, tower law)",
+      "Complex numbers (Re, Im, conjugation, modulus)",
+      "Familiarity with Lean 4 and Mathlib"
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Imports, Docstring, and Namespace",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Imports Mathlib, opens Polynomial and Complex namespaces, and documents the seven-result architecture. The file proves C is the unique algebraic closure of R from modular Mathlib components.",
+      "mathContext": "The file combines `Complex.isAlgClosed`, `finrank_real_complex`, `IsAlgClosure.equiv`, and `Algebra.IsAlgebraic.of_finite` into a unified treatment of $\\mathbb{C} = \\overline{\\mathbb{R}}$."
+    },
     {
       "id": "extension-degree",
       "title": "Extension Degree [C:R] = 2",
@@ -154,6 +171,23 @@
       "targetId": "abel-ruffini",
       "relationship": "complementary",
       "description": "FTA+uniqueness guarantees roots exist in the unique C; Abel-Ruffini shows they cannot always be expressed by radicals"
+    }
+  ],
+  "references": [
+    {
+      "key": "St10",
+      "citation": "Steinitz, E., Algebraische Theorie der Körper, Journal für die reine und angewandte Mathematik 137 (1910), 167-309. Established the abstract theory of field extensions and proved existence and uniqueness of algebraic closures.",
+      "type": "paper"
+    },
+    {
+      "key": "AS27",
+      "citation": "Artin, E. and Schreier, O., Eine Kennzeichnung der reell abgeschlossenen Körper, Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 5 (1927), 225-231. Characterized real-closed fields and proved F(√-1) is algebraically closed iff F is real-closed.",
+      "type": "paper"
+    },
+    {
+      "key": "La02",
+      "citation": "Lang, S., Algebra, 3rd ed., Springer GTM 211 (2002), Chapter V. Standard reference for algebraic closure theory and the Steinitz uniqueness theorem.",
+      "type": "book"
     }
   ],
   "leanFile": {

@@ -1,56 +1,98 @@
 [
   {
-    "id": "ann-fta-oq04-header",
+    "id": "ann-header",
     "proofId": "fundamental-theorem-algebra-oq-04",
     "range": { "startLine": 1, "endLine": 35 },
     "type": "context",
-    "title": "Overview: C as Unique Algebraic Closure",
-    "content": "The file proves seven results about the relationship between R and C: extension degree [C:R] = 2, algebraicity, algebraic closure, uniqueness via Steinitz, non-closure of R, the characteristic quadratic, and minimality via the tower law. The key insight is that Mathlib provides the heavy machinery (Complex.isAlgClosed, IsAlgClosure.equiv) and this proof assembles these into a comprehensive picture.",
-    "significance": "context"
+    "title": "Module Header, Imports, and Architecture",
+    "content": "The file imports the full Mathlib library and opens `Polynomial` and `Complex` namespaces. The docstring outlines seven results: extension degree, algebraicity, algebraic closure, Steinitz uniqueness, non-closure of ℝ, the characteristic quadratic, and minimality via the tower law. The namespace `FTAUniqueAlgebraicClosure` scopes all definitions and theorems. The key architectural decision is assembling a comprehensive picture of ℂ as an algebraic closure from modular Mathlib components rather than proving any single deep result.",
+    "mathContext": "The file builds a complete characterization of $\\mathbb{C}$ as $\\overline{\\mathbb{R}}$ from Mathlib's `Complex.isAlgClosed`, `finrank_real_complex`, `IsAlgClosure.equiv`, and `Algebra.IsAlgebraic.of_finite`.",
+    "significance": "supporting",
+    "relatedConcepts": ["algebraic closure", "Mathlib integration", "modular proof architecture"],
+    "prerequisites": ["Lean 4 basics", "Mathlib conventions"]
   },
   {
-    "id": "ann-fta-oq04-finrank",
+    "id": "ann-extension-degree",
     "proofId": "fundamental-theorem-algebra-oq-04",
-    "range": { "startLine": 44, "endLine": 46 },
-    "type": "key-step",
-    "title": "Extension Degree [C:R] = 2",
-    "content": "The extension degree $[\\mathbb{C}:\\mathbb{R}] = 2$ follows from `Complex.finrank_real_complex`, which computes the dimension of $\\mathbb{C}$ as an $\\mathbb{R}$-vector space. The basis is $\\{1, i\\}$.",
-    "significance": "major"
+    "range": { "startLine": 37, "endLine": 49 },
+    "type": "technique",
+    "title": "Extension Degree [ℂ:ℝ] = 2",
+    "content": "Establishes $[\\mathbb{C}:\\mathbb{R}] = 2$ from Mathlib's `Complex.finrank_real_complex`, which computes the dimension of ℂ as an ℝ-vector space with basis $\\{1, i\\}$. This single fact — that ℂ is a degree-2 extension — drives the entire file: it implies algebraicity (finite ⟹ algebraic), forces the tower law constraint (factors of 2 are 1 and 2), and makes ℂ the minimal nontrivial extension of ℝ.",
+    "mathContext": "$[\\mathbb{C}:\\mathbb{R}] = \\dim_{\\mathbb{R}} \\mathbb{C} = 2$, with $\\mathbb{R}$-basis $\\{1, i\\}$. Every $z \\in \\mathbb{C}$ can be written $z = a + bi$ with $a, b \\in \\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": ["extension degree", "vector space dimension", "basis", "finite extension"],
+    "prerequisites": ["linear algebra", "field extensions"]
   },
   {
-    "id": "ann-fta-oq04-algebraic",
+    "id": "ann-algebraicity",
     "proofId": "fundamental-theorem-algebra-oq-04",
-    "range": { "startLine": 58, "endLine": 60 },
-    "type": "key-step",
-    "title": "Finite Extension implies Algebraic",
-    "content": "Since $[\\mathbb{C}:\\mathbb{R}] = 2 < \\infty$, Mathlib's `Algebra.IsAlgebraic.of_finite` establishes that every complex number is algebraic over $\\mathbb{R}$. This is the bridge from linear algebra (finite dimension) to field theory (algebraicity).",
-    "significance": "major"
+    "range": { "startLine": 51, "endLine": 60 },
+    "type": "technique",
+    "title": "ℂ/ℝ is Algebraic via Finite Extension",
+    "content": "Since $[\\mathbb{C}:\\mathbb{R}] = 2 < \\infty$, `Algebra.IsAlgebraic.of_finite` establishes that every complex number is algebraic over ℝ. The chain is: finite extension ⟹ every element satisfies a polynomial of degree ≤ 2 over the base field. Concretely, every $z \\in \\mathbb{C}$ satisfies its characteristic quadratic $X^2 - 2\\text{Re}(z)X + |z|^2 \\in \\mathbb{R}[X]$ (proved explicitly later in the file). This is the bridge from the linear-algebraic fact ($\\dim = 2$) to the field-theoretic property (algebraicity).",
+    "mathContext": "Finite $\\Rightarrow$ integral $\\Rightarrow$ algebraic: if $[K:F] = n < \\infty$, then $\\{1, \\alpha, \\alpha^2, \\ldots, \\alpha^n\\}$ is linearly dependent over $F$, giving a polynomial relation.",
+    "significance": "key",
+    "relatedConcepts": ["algebraic extension", "integral extension", "Cayley-Hamilton", "minimal polynomial"],
+    "prerequisites": ["field extensions", "linear algebra"]
   },
   {
-    "id": "ann-fta-oq04-closure",
+    "id": "ann-alg-closure",
     "proofId": "fundamental-theorem-algebra-oq-04",
-    "range": { "startLine": 72, "endLine": 75 },
-    "type": "key-step",
-    "title": "IsAlgClosure Instance",
-    "content": "Assembles the `IsAlgClosure R C` instance from two components: algebraic closure (`Complex.isAlgClosed` from Mathlib) and algebraicity over $\\mathbb{R}$ (from the finite extension argument). This is the central definition of the file.",
-    "significance": "major"
+    "range": { "startLine": 62, "endLine": 75 },
+    "type": "technique",
+    "title": "ℂ is an Algebraic Closure of ℝ",
+    "content": "Assembles the `IsAlgClosure ℝ ℂ` instance from two ingredients: (1) `Complex.isAlgClosed` — ℂ is algebraically closed, ultimately from Liouville's theorem or the topological winding-number argument in Mathlib; (2) algebraicity over ℝ (from the finite extension argument above). An algebraic closure of $F$ is defined as a field extension that is both algebraically closed and algebraic over $F$. This is the standard definition (Bourbaki, Lang), and the instance packages the two properties together for downstream use.",
+    "mathContext": "$\\mathbb{C}$ is an algebraic closure of $\\mathbb{R}$: it is algebraically closed (Mathlib's `Complex.isAlgClosed`) and algebraic over $\\mathbb{R}$ (since $[\\mathbb{C}:\\mathbb{R}] = 2 < \\infty$).",
+    "significance": "key",
+    "relatedConcepts": ["algebraic closure", "algebraically closed field", "IsAlgClosure", "Liouville's theorem"],
+    "prerequisites": ["field theory", "algebraic extensions"]
   },
   {
-    "id": "ann-fta-oq04-steinitz",
+    "id": "ann-steinitz",
     "proofId": "fundamental-theorem-algebra-oq-04",
-    "range": { "startLine": 84, "endLine": 88 },
-    "type": "key-step",
-    "title": "Steinitz Uniqueness",
-    "content": "The uniqueness theorem: any algebraic closure $L$ of $\\mathbb{R}$ is $\\mathbb{R}$-algebra isomorphic to $\\mathbb{C}$, via `IsAlgClosure.equiv`. This is Steinitz's 1910 result, which uses Zorn's lemma to extend embeddings of algebraic closures.",
-    "significance": "major"
+    "range": { "startLine": 77, "endLine": 88 },
+    "type": "technique",
+    "title": "Steinitz Uniqueness: Any Algebraic Closure of ℝ ≅ ℂ",
+    "content": "The uniqueness theorem: any algebraic closure $L$ of ℝ is ℝ-algebra isomorphic to ℂ, via `IsAlgClosure.equiv`. Ernst Steinitz proved in 1910 that algebraic closures exist and are unique up to isomorphism. The proof constructs the isomorphism by Zorn's lemma: start with the identity embedding $\\mathbb{R} \\hookrightarrow L$, extend it to algebraic elements one at a time, and use Zorn to find a maximal extension — which must be surjective since both fields are algebraic closures. For ℝ specifically, the isomorphism sends $i \\in \\mathbb{C}$ to a root of $X^2 + 1$ in $L$.",
+    "mathContext": "Steinitz (1910): if $K_1, K_2$ are algebraic closures of $F$, there exists an $F$-algebra isomorphism $K_1 \\cong_F K_2$. Applied here: any algebraic closure $L$ of $\\mathbb{R}$ satisfies $L \\cong_{\\mathbb{R}} \\mathbb{C}$.",
+    "significance": "key",
+    "relatedConcepts": ["Steinitz theorem", "uniqueness of algebraic closure", "Zorn's lemma", "field isomorphism"],
+    "prerequisites": ["field theory", "algebraic closures", "Zorn's lemma"]
   },
   {
-    "id": "ann-fta-oq04-tower",
+    "id": "ann-reals-not-closed",
     "proofId": "fundamental-theorem-algebra-oq-04",
-    "range": { "startLine": 156, "endLine": 173 },
-    "type": "key-step",
-    "title": "No Intermediate Fields (Tower Law)",
-    "content": "Uses the tower law $[\\mathbb{C}:K] \\cdot [K:\\mathbb{R}] = [\\mathbb{C}:\\mathbb{R}] = 2$ to show any intermediate field $K$ has $[K:\\mathbb{R}] \\in \\{1, 2\\}$. The proof derives the upper bound from the multiplicative constraint and uses `interval_cases` to enumerate possibilities.",
-    "significance": "major"
+    "range": { "startLine": 90, "endLine": 111 },
+    "type": "technique",
+    "title": "ℝ is Not Algebraically Closed",
+    "content": "Proves $\\mathbb{R}$ is not algebraically closed by exhibiting $X^2 + 1 \\in \\mathbb{R}[X]$ with no real root. The proof shows $x^2 + 1 > 0$ for all $x \\in \\mathbb{R}$ via `positivity` (since $x^2 \\geq 0$). This result is the motivation for the entire file: ℝ is incomplete as a polynomial solution space, and ℂ is the minimal completion.",
+    "mathContext": "$\\forall x \\in \\mathbb{R},\\, x^2 + 1 > 0$, so $X^2 + 1$ has no real root. Therefore $\\mathbb{R}$ is not algebraically closed.",
+    "significance": "supporting",
+    "relatedConcepts": ["algebraically closed field", "positivity", "real-closed field", "polynomial root"],
+    "prerequisites": ["real analysis", "polynomial evaluation"]
+  },
+  {
+    "id": "ann-char-quadratic",
+    "proofId": "fundamental-theorem-algebra-oq-04",
+    "range": { "startLine": 113, "endLine": 143 },
+    "type": "technique",
+    "title": "Characteristic Real Quadratic of a Complex Number",
+    "content": "Defines $\\text{charQuad}(z) = X^2 - 2\\text{Re}(z)X + |z|^2 \\in \\mathbb{R}[X]$ and proves that both $z$ and $\\bar{z}$ are roots. This is the explicit witness for algebraicity: every complex number satisfies a real quadratic. The proof reduces to the identity $(z - \\text{Re}(z))^2 = -(\\text{Im}(z))^2$, which holds in ℂ because $i^2 = -1$. The characteristic quadratic is the minimal polynomial of $z$ over ℝ when $z \\notin \\mathbb{R}$ (i.e., $\\text{Im}(z) \\neq 0$), and reduces to $(X - z)$ when $z \\in \\mathbb{R}$.",
+    "mathContext": "For $z = a + bi$: $\\text{charQuad}(z) = X^2 - 2aX + (a^2 + b^2)$. Roots: $z$ and $\\bar{z} = a - bi$. Discriminant: $4a^2 - 4(a^2 + b^2) = -4b^2 \\leq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimal polynomial", "complex conjugate", "discriminant", "quadratic formula"],
+    "prerequisites": ["complex numbers", "polynomial evaluation"]
+  },
+  {
+    "id": "ann-tower-law",
+    "proofId": "fundamental-theorem-algebra-oq-04",
+    "range": { "startLine": 145, "endLine": 198 },
+    "type": "technique",
+    "title": "No Intermediate Fields and the Quadratic Extension",
+    "content": "Uses the tower law $[\\mathbb{C}:K] \\cdot [K:\\mathbb{R}] = [\\mathbb{C}:\\mathbb{R}] = 2$ to show any intermediate field $\\mathbb{R} \\subseteq K \\subseteq \\mathbb{C}$ has $[K:\\mathbb{R}] \\in \\{1, 2\\}$, meaning $K = \\mathbb{R}$ or $K = \\mathbb{C}$. The proof derives the upper bound from the multiplicative constraint (both factors are positive and their product is 2, so each is at most 2) and uses `interval_cases` to enumerate possibilities. The section concludes by establishing the concrete structure: $i^2 = -1$ and $z = \\text{Re}(z) + \\text{Im}(z) \\cdot i$, confirming that ℂ = ℝ[i]/(i²+1) is a single quadratic extension.",
+    "mathContext": "Tower law: $[\\mathbb{C}:K] \\cdot [K:\\mathbb{R}] = 2$. Since both factors are positive integers dividing 2, $[K:\\mathbb{R}] \\in \\{1, 2\\}$, giving $K = \\mathbb{R}$ or $K = \\mathbb{C}$. No proper intermediate fields exist.",
+    "significance": "key",
+    "relatedConcepts": ["tower law", "intermediate field", "simple extension", "degree of extension"],
+    "prerequisites": ["field extensions", "tower law", "interval arithmetic"]
   }
 ]
