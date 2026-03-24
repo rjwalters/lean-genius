@@ -177,11 +177,4 @@ theorem triangular_mul_two (n : ℕ) : triangular n * 2 = n * (n + 1) := by
   · rw [hk]
     exact ⟨(2 * k + 1) * (k + 1), by ring⟩
 
-#check gauss_sum
-#check gauss_sum_zero_indexed
-#check arithmetic_series_sum
-#check sum_odd_numbers
-#check triangular
-#check triangular_recurrence
-
 end ArithmeticSeries

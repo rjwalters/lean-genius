@@ -272,8 +272,3 @@ perfectly squared), this question has been studied but may not be fully resolved
 -/
 
 end DissectionOfCubesOQ01
-
--- Check key results compile
-#check DissectionOfCubesOQ01.every_dissection_has_collision
-#check DissectionOfCubesOQ01.at_least_two_colliding_cubes
-#check DissectionOfCubesOQ01.collision_class_at_least_two

@@ -261,9 +261,3 @@ concurrence results:
 - **Mass point geometry**: Physical interpretation using lever principles
 -/
 
--- Export main results
-#check @cevas_theorem
-#check @medians_satisfy_ceva
-#check @equal_params_ceva_iff
-#check @ceva_product_implies_param
-#check @ceva_param_implies_product

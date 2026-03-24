@@ -248,8 +248,4 @@ P(good) = [C(p+q,p) - C(p+q,q)] / C(p+q,p)
 This elegant simplification is the heart of the ballot problem!
 -/
 
-#check ballot_theorem
-#check ballot_unanimous
-#check ballot_tie
-
 end BallotProblem
