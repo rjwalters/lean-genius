@@ -169,4 +169,42 @@ theorem erdos_890_known_lower_bound :
       LiminfAtLeast (cumulativeOmega k) (k + pi k - 1) :=
   erdos_selfridge_lower_bound
 
+-- ## Part VII: Additional Structural Lemmas
+
+/-- S_0(n) = 0: the empty sum. -/
+theorem cumulativeOmega_zero (n : ℕ) : cumulativeOmega 0 n = 0 := by
+  unfold cumulativeOmega; simp
+
+/-- S_1(n) = ω(n): the single-term sum reduces to a single ω evaluation. -/
+theorem cumulativeOmega_one (n : ℕ) : cumulativeOmega 1 n = ω n := by
+  unfold cumulativeOmega; simp [Finset.sum_range_one]
+
+/-- Sum splitting: S_{k+j}(n) = S_k(n) + S_j(n + k). -/
+theorem cumulativeOmega_add (k j n : ℕ) :
+    cumulativeOmega (k + j) n = cumulativeOmega k n + cumulativeOmega j (n + k) := by
+  unfold cumulativeOmega; rw [Finset.sum_range_add]
+  congr 1; apply Finset.sum_congr rfl; intro i _; congr 1; omega
+
+-- ## Part VIII: Conjecture 1 Verified for k = 1
+
+/-- ω(p) = 1 for any prime p: a prime has exactly one distinct prime factor. -/
+theorem omega_prime {p : ℕ} (hp : Nat.Prime p) : ω p = 1 := by
+  have h : p.primeFactors = {p} := by
+    ext q; simp only [Nat.mem_primeFactors, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hq, hqp, -⟩
+      exact (hp.eq_one_or_self_of_dvd q hqp).resolve_left hq.one_lt.ne'
+    · rintro rfl; exact ⟨hp, dvd_refl p, hp.ne_zero⟩
+  simp [ArithmeticFunction.omega, h]
+
+/-- **Conjecture 1 verified for k = 1:**
+    For k = 1, S₁(n) = ω(n). Every prime p has ω(p) = 1 ≤ 1 + π(1), and primes
+    are unbounded (Euclid), so lim inf S₁(n) ≤ 1 + π(1). -/
+theorem conjecture1_k1 : LiminfAtMost (cumulativeOmega 1) (1 + pi 1) := by
+  intro N₀
+  obtain ⟨p, hN, hp⟩ := Nat.exists_infinite_primes N₀
+  exact ⟨p, hN, by rw [cumulativeOmega_one]
+                     calc ω p = 1 := omega_prime hp
+                       _ ≤ 1 + pi 1 := by omega⟩
+
 end Erdos890
