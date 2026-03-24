@@ -33,6 +33,29 @@ def HasClique {V : Type*} (G : SimpleGraph V) (n : ℕ) : Prop :=
     ∃ (S : Finset V), S.card = n ∧
       ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v
 
+/- ## Clique auxiliary lemmas -/
+
+/-- Clique size is monotone: a graph with a clique of size `n` also has
+one of size `m ≤ n`, by extracting a subset. -/
+lemma HasClique_mono {V : Type*} {G : SimpleGraph V} {m n : ℕ}
+    (hmn : m ≤ n) (hc : HasClique G n) : HasClique G m := by
+  obtain ⟨S, hcard, hadj⟩ := hc
+  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_subset_card_eq (by omega : m ≤ S.card)
+  exact ⟨T, hTcard, fun u hu v hv huv => hadj u (hTS hu) v (hTS hv) huv⟩
+
+/-- A clique of size `n` in a graph on a finite type requires at least
+`n` vertices. -/
+lemma HasClique_card_le {V : Type*} [Fintype V] {G : SimpleGraph V} {n : ℕ}
+    (hc : HasClique G n) : n ≤ Fintype.card V := by
+  obtain ⟨S, hcard, _⟩ := hc
+  calc n = S.card := hcard.symm
+    _ ≤ Fintype.card V := S.card_le_univ
+
+/-- The empty graph has no 4-cycle (no edges means no cycle). -/
+lemma bot_not_HasC4 {V : Type*} : ¬HasC4 (⊥ : SimpleGraph V) := by
+  rintro ⟨_, _, _, _, -, -, -, -, -, -, hab, -, -, -⟩
+  exact hab
+
 /- ## Ramsey number R(C₄, Kₙ) -/
 
 /-- `R(C₄, Kₙ)` is the smallest `N` such that every 2-colouring of `K_N`
@@ -78,13 +101,32 @@ def ErdosProblem159 : Prop :=
         ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n →
           (ramseyC4Kn n : ℝ) ≤ C * (n : ℝ) ^ (2 - c)
 
-/- ## Basic properties -/
+/- ## Proved properties -/
 
-/-- `R(C₄, Kₙ)` is monotone in `n`: larger complete graphs require at
-least as many vertices. -/
-axiom ramseyC4Kn_mono (m n : ℕ) (h : m ≤ n) :
-    ramseyC4Kn m ≤ ramseyC4Kn n
+/-- `R(C₄, Kₙ)` is monotone: for `1 ≤ m ≤ n`, `R(C₄, Kₘ) ≤ R(C₄, Kₙ)`.
+Proved from the specification: if the Ramsey property holds at level `n`,
+it also holds at level `m` since any independent set of size `≥ n`
+contains one of size `m`. -/
+theorem ramseyC4Kn_mono (m n : ℕ) (hm : 1 ≤ m) (h : m ≤ n) :
+    ramseyC4Kn m ≤ ramseyC4Kn n := by
+  by_contra hlt
+  push_neg at hlt
+  have hn : 1 ≤ n := le_trans hm h
+  obtain ⟨G, hnoC4, hnoClique⟩ := (ramseyC4Kn_spec m hm).2 (ramseyC4Kn n) hlt
+  rcases (ramseyC4Kn_spec n hn).1 G with hC4 | hClique
+  · exact hnoC4 hC4
+  · exact hnoClique (HasClique_mono h hClique)
 
-/-- Trivial lower bound: `R(C₄, Kₙ) ≥ n` since `K_{n-1}` has no `C₄`
-(for `n ≤ 4`) or the complement has clique number `< n`. -/
-axiom ramseyC4Kn_ge (n : ℕ) (hn : 1 ≤ n) : n ≤ ramseyC4Kn n
+/-- Trivial lower bound: `R(C₄, Kₙ) ≥ n` for `n ≥ 1`. The empty graph
+on fewer than `n` vertices has no `C₄` and its complement cannot contain
+a clique of size `n` (not enough vertices). -/
+theorem ramseyC4Kn_ge (n : ℕ) (hn : 1 ≤ n) : n ≤ ramseyC4Kn n := by
+  by_contra hlt
+  push_neg at hlt
+  rcases (ramseyC4Kn_spec n hn).1 (⊥ : SimpleGraph (Fin (ramseyC4Kn n)))
+    with hC4 | hClique
+  · exact bot_not_HasC4 hC4
+  · have hle := HasClique_card_le hClique
+    have hfin : Fintype.card (Fin (ramseyC4Kn n)) = ramseyC4Kn n :=
+      Fintype.card_fin _
+    omega

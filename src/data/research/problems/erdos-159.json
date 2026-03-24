@@ -1,8 +1,8 @@
 {
   "slug": "erdos-159",
-  "title": "Erdős #159",
+  "title": "Erd\u0151s #159",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-12T09:56:05.235Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom elimination: proved monotonicity and lower bound from specification",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,12 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Eliminated 2 axioms by proving monotonicity and trivial lower bound from spec. File now has 4 axioms (necessary), 5 proved lemmas/theorems, 132 lines.",
+    "builtItems": [
+      "HasClique_mono lemma in Erdos159Problem.lean:40-44",
+      "HasClique_card_le lemma in Erdos159Problem.lean:48-52",
+      "bot_not_HasC4 lemma in Erdos159Problem.lean:55-57",
+      "ramseyC4Kn_mono theorem (proved) in Erdos159Problem.lean:110-118",
+      "ramseyC4Kn_ge theorem (proved) in Erdos159Problem.lean:123-132"
+    ],
+    "insights": [
+      "ramseyC4Kn_mono and ramseyC4Kn_ge are provable from ramseyC4Kn_spec (eliminated 2 axioms)",
+      "Monotonicity proof uses HasClique_mono (Finset subset extraction) + contradiction with spec",
+      "Lower bound proof uses empty graph (bot) which has no C4, combined with cardinality bound on cliques",
+      "Remaining 4 axioms (function def, spec, Szemeredi upper, Spencer lower) are necessary - cannot be proved from Mathlib"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #159 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists some constant $c>0$ such that\n\n$$R(C_4,K_n) \\ll n^{2-c}.$$\n\n\n\nThe current bounds are\\[ \\frac{n^{3/2}}{(\\log n)^{3/2}}\\ll R(C_4,K_n)\\ll \\frac{n^2}{(\\log n)^2}.\\]The upper bound is due to Szemer\\'{e}di (mentioned in \\cite{EFRS78}), and the lower bound is due to Spencer \\cite{Sp77}.\n\nThis problem is #17 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[EFRS78] Erd\\H{o}s, Paul and Faudree, R. J. and Rousseau, C. C. and Schelp, R. H., On cycle-complete graph Ramsey numbers. J. Graph Theory (1978), 53-64.\n\n[Sp77] Spencer, J., Asymptotic lower bounds for Ramsey functions. Discrete Math. (1977), 69-76.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #17\n- Problem #158\n- Problem #160\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n- Er84d\n- EFRS78\n- Sp77\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "nextSteps": [
+      "Create Aristotle companion file for any routine supporting lemmas",
+      "Consider adding theorem about consistency of upper/lower bounds",
+      "Investigate whether bounds can be connected to Mathlib Ramsey theory infrastructure"
+    ],
+    "markdown": "# Erd\u0151s #159 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists some constant $c>0$ such that\n\n$$R(C_4,K_n) \\ll n^{2-c}.$$\n\n\n\nThe current bounds are\\[ \\frac{n^{3/2}}{(\\log n)^{3/2}}\\ll R(C_4,K_n)\\ll \\frac{n^2}{(\\log n)^2}.\\]The upper bound is due to Szemer\\'{e}di (mentioned in \\cite{EFRS78}), and the lower bound is due to Spencer \\cite{Sp77}.\n\nThis problem is #17 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[EFRS78] Erd\\H{o}s, Paul and Faudree, R. J. and Rousseau, C. C. and Schelp, R. H., On cycle-complete graph Ramsey numbers. J. Graph Theory (1978), 53-64.\n\n[Sp77] Spencer, J., Asymptotic lower bounds for Ramsey functions. Discrete Math. (1977), 69-76.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #17\n- Problem #158\n- Problem #160\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n- Er84d\n- EFRS78\n- Sp77\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
