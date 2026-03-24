@@ -74,51 +74,58 @@
     {
       "id": "transfinite-diameter",
       "title": "Transfinite Diameter",
-      "summary": "transfiniteDiameter axiom, nonnegativity, disc and interval examples",
+      "summary": "`transfiniteDiameter` axiom, nonnegativity, disc and interval examples. The disc $\\{|z| \\leq r\\}$ has transfinite diameter $r$ and $[-1,1]$ has transfinite diameter $1/2$.",
       "startLine": 31,
-      "endLine": 50
+      "endLine": 50,
+      "mathContext": "The transfinite diameter (logarithmic capacity) of a compact set $F \\subset \\mathbb{C}$ is $d(F) = \\lim_{n \\to \\infty} \\max_{z_1,\\ldots,z_n \\in F} \\left(\\prod_{i<j} |z_i - z_j|\\right)^{2/(n(n-1))}$. Key values: $d(\\overline{\\mathbb{D}}_r) = r$ and $d([-1,1]) = 1/2$. This quantity governs the asymptotic behavior of $\\max_F |f(z)|$ for degree-$n$ monic $f$ with roots in $F$."
     },
     {
       "id": "lemniscates",
       "title": "Polynomial Lemniscates",
-      "summary": "PolynomialWithRoots, lemniscate, numComponents, maxComponents",
+      "summary": "`PolynomialWithRoots`, `lemniscate` ($\\{z : |f(z)| \\leq 1\\}$), `numComponents`, `maxComponents` definitions.",
       "startLine": 51,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "The polynomial lemniscate $\\Lambda_f = \\{z : |f(z)| \\leq 1\\}$ for a degree-$n$ monic $f$ is a compact set bounded by the algebraic curve $\\{z : |f(z)| = 1\\}$. It has at most $n$ connected components (one per root cluster). The question: how does the geometry of the root set $F$ constrain $\\max_{\\deg f = n} \\text{numComponents}(\\Lambda_f)$?"
     },
     {
       "id": "original-problem",
       "title": "The Original Problem",
-      "summary": "mainQuestion1 and mainQuestion2 definitions",
+      "summary": "`mainQuestion1` (is $\\max \\text{components} = n$ for $d(F) = 1$?) and `mainQuestion2` (is $\\max < n$ for $d(F) < 1$?).",
       "startLine": 71,
-      "endLine": 87
+      "endLine": 87,
+      "mathContext": "The Erdős-Herzog-Piranian question: if the root set $F$ has transfinite diameter $d(F) < 1$, must the maximum number of lemniscate components be strictly less than $n$ (the degree)? For $d(F) = 1$, $f(z) = z^n + 1$ achieves $n$ components via the $n$th roots of unity — is this the boundary?"
     },
     {
       "id": "ehp-result",
       "title": "Erdős-Herzog-Piranian Result (1958)",
-      "summary": "ehp_disc_result and roots_of_unity_example axioms",
+      "summary": "`ehp_disc_result`: for the unit disc ($d = 1$), $f(z) = z^n + 1$ achieves $n$ components. `roots_of_unity_example`: explicit $n$-component witness.",
       "startLine": 88,
-      "endLine": 102
+      "endLine": 102,
+      "mathContext": "For $f(z) = z^n + 1$ with roots at the $n$th roots of $-1$: the sublevel set $\\{z : |z^n + 1| \\leq 1\\}$ has exactly $n$ connected components, each a small 'petal' around one root. This is optimal: degree $n$ allows at most $n$ components. The question becomes: can this be replicated for $d(F) < 1$?"
     },
     {
       "id": "gr-solution",
       "title": "Ghosh-Ramachandran Solution (2024)",
-      "summary": "Three main GR theorems: small diameter, small connected, diameter-1",
+      "summary": "Three main GR theorems: `gr_small_diameter` ($d < 1$ implies $\\leq (1-c)n$ components), `gr_small_connected` ($d \\leq 1/4$ and connected $F$ implies 1 component), `gr_diameter_one` ($d = 1$ implies $n$ components achievable).",
       "startLine": 103,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "Ghosh-Ramachandran (2024) completely resolved the problem: (1) For $d(F) < 1$: $\\max \\text{components} \\leq (1 - c(F))n$ for a constant $c > 0$ depending on $F$ — strictly sublinear. (2) For connected $F$ with $d(F) \\leq 1/4$: the lemniscate is always connected (1 component). (3) For $d(F) = 1$: $n$ components achievable. The proof uses potential theory and Chebyshev polynomial estimates."
     },
     {
       "id": "counterexample",
       "title": "The Counterexample",
-      "summary": "diameter_not_sufficient: geometry ≠ diameter",
+      "summary": "`diameter_not_sufficient`: the disc $\\{|z| \\leq 1/2\\}$ (always 1 component) and $[-1,1]$ (can have many) have the same transfinite diameter $1/2$ but different behavior — geometry matters.",
       "startLine": 126,
-      "endLine": 138
+      "endLine": 138,
+      "mathContext": "Both $\\overline{\\mathbb{D}}_{1/2}$ and $[-1,1]$ have $d = 1/2$, but $\\overline{\\mathbb{D}}_{1/2}$ is connected with $d \\leq 1/4$, forcing 1 component (by GR), while $[-1,1]$ is connected but has $d = 1/2 > 1/4$, allowing multiple components. This shows transfinite diameter alone does not determine the answer — the shape of $F$ matters."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_1042_summary theorem combining key results",
+      "summary": "`erdos_1042_summary`: combines all key results into a single theorem encapsulating the complete resolution of Erdős Problem #1042.",
       "startLine": 139,
-      "endLine": 151
+      "endLine": 151,
+      "mathContext": "The complete picture: $d(F) = 1 \\Rightarrow n$ achievable; $d(F) < 1 \\Rightarrow \\leq (1-c)n$; connected $F$ with $d(F) \\leq 1/4 \\Rightarrow 1$ component. The answer depends on both the logarithmic capacity and the geometry of the root set $F$."
     }
   ],
   "conclusion": {
@@ -163,18 +170,12 @@
     }
   ],
   "relatedProofs": [
-    {
-      "target": "erdos-1040",
-      "description": "Parallel question: does transfinite diameter alone determine the Lebesgue measure of the sublevel set, or does geometry also play a role? GR 2024 answers the analogous question for component counts."
-    },
-    {
-      "target": "erdos-1046",
-      "description": "Pommerenke's containment theorem (lemniscate connected ⟹ contained in disc of radius 2) is a key geometric tool for bounding component behaviour when d ≤ 1/4."
-    },
-    {
-      "target": "erdos-1041",
-      "description": "Paths of length < 2 inside sublevel sets with roots in the unit disk — a length-analogue of the component-count problem studied in #1042."
-    }
+    "erdos-1040",
+    "erdos-1041",
+    "erdos-1043",
+    "erdos-1046",
+    "erdos-1047",
+    "erdos-1048"
   ],
   "references": [
     {
