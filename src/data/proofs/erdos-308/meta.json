@@ -166,24 +166,24 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "harmonic-divergence",
-      "relationship": "The harmonic series $H_N = \\sum_{k=1}^N 1/k$ is the key quantity bounding representability; harmonic-divergence proves $H_N \\to \\infty$, which implies $f(N) \\to \\infty$"
+      "relationship": "The harmonic series $H_N = \\sum_{k=1}^N 1/k$ is the key quantity bounding representability; harmonic-divergence proves $H_N \\to \\infty$, which implies $f(N) \\to \\infty$",
+      "targetId": "harmonic-divergence"
     },
     {
-      "targetProofId": "prime-reciprocal-divergence",
-      "relationship": "Both study sums of reciprocals: prime-reciprocal-divergence shows $\\sum 1/p$ diverges, while #308 studies which integers arise as subset sums of $\\{1/k : k \\leq N\\}$"
+      "relationship": "Both study sums of reciprocals: prime-reciprocal-divergence shows $\\sum 1/p$ diverges, while #308 studies which integers arise as subset sums of $\\{1/k : k \\leq N\\}$",
+      "targetId": "prime-reciprocal-divergence"
     },
     {
-      "targetProofId": "basel-problem",
-      "relationship": "The Basel problem computes $\\sum_{k=1}^\\infty 1/k^2 = \\pi^2/6$; both results concern sums of reciprocals, and the harmonic number $H_N$ is the degree-1 analogue of the Basel sum"
+      "relationship": "The Basel problem computes $\\sum_{k=1}^\\infty 1/k^2 = \\pi^2/6$; both results concern sums of reciprocals, and the harmonic number $H_N$ is the degree-1 analogue of the Basel sum",
+      "targetId": "basel-problem"
     },
     {
-      "targetProofId": "erdos-306",
-      "relationship": "Adjacent Erdős–Graham Egyptian fraction problem: #306 concerns decompositions of rationals into distinct unit fractions, complementing #308's bounded-denominator representability question"
+      "relationship": "Adjacent Erdős–Graham Egyptian fraction problem: #306 concerns decompositions of rationals into distinct unit fractions, complementing #308's bounded-denominator representability question",
+      "targetId": "erdos-306"
     },
     {
-      "targetProofId": "erdos-124-complete-sequences",
-      "relationship": "Both study completeness of integer sequences: #124 asks when a sequence is complete (every large integer is a subset sum), while #308 asks which integers are subset sums of $\\{1/k\\}$ mapped to $\\mathbb{Z}$"
+      "relationship": "Both study completeness of integer sequences: #124 asks when a sequence is complete (every large integer is a subset sum), while #308 asks which integers are subset sums of $\\{1/k\\}$ mapped to $\\mathbb{Z}$",
+      "targetId": "erdos-124-complete-sequences"
     }
   ],
   "leanFile": {
@@ -206,29 +206,29 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "harmonic-divergence",
+      "relationship": "The harmonic series $H_N = \\sum_{k=1}^N 1/k$ is the key quantity bounding representability; harmonic-divergence proves $H_N \\to \\infty$, which implies $f(N) \\to \\infty$",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "prime-reciprocal-divergence",
+      "relationship": "Both study sums of reciprocals: prime-reciprocal-divergence shows $\\sum 1/p$ diverges, while #308 studies which integers arise as subset sums of $\\{1/k : k \\leq N\\}$",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "basel-problem",
+      "relationship": "The Basel problem computes $\\sum_{k=1}^\\infty 1/k^2 = \\pi^2/6$; both results concern sums of reciprocals, and the harmonic number $H_N$ is the degree-1 analogue of the Basel sum",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-306",
+      "relationship": "Adjacent Erdős–Graham Egyptian fraction problem: #306 concerns decompositions of rationals into distinct unit fractions, complementing #308's bounded-denominator representability question",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-124-complete-sequences",
+      "relationship": "Both study completeness of integer sequences: #124 asks when a sequence is complete (every large integer is a subset sum), while #308 asks which integers are subset sums of $\\{1/k\\}$ mapped to $\\mathbb{Z}$",
+      "description": ""
     }
   ]
 }

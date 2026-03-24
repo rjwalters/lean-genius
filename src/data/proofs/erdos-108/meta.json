@@ -147,9 +147,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "ramseys-theorem",
-      "relationship": "foundational result",
-      "description": "Ramsey's Theorem underlies the Ramsey-theoretic arguments used in the proof of #108. The probabilistic method that Rödl employed to prove the r=4 case was partly inspired by Erdős's probabilistic lower bounds for Ramsey numbers."
+      "id": "erdos-58",
+      "relationship": "companion problem",
+      "description": "Erdős Problem #58 asks whether graphs with sufficiently high chromatic number must contain odd cycles of every length, a complementary question abo..."
+    },
+    {
+      "id": "erdos-57",
+      "relationship": "closely related result",
+      "description": "Erdős Problem #57 addresses whether graphs of infinite chromatic number must contain odd cycles, an infinite analogue of the finite chromatic/cycle..."
+    },
+    {
+      "id": "erdos-61",
+      "relationship": "related conjecture",
+      "description": "The Erdős–Hajnal Conjecture (#61) asks whether every graph with a forbidden induced subgraph has a large clique or independent set. It shares the t..."
+    },
+    {
+      "id": "erdos-77",
+      "relationship": "shared technique",
+      "description": "Erdős Problem #77 concerns Ramsey number growth rates and relies on the same probabilistic method (random graph constructions) that underlies Rödl'..."
+    },
+    {
+      "id": "erdos-78",
+      "relationship": "shared technique",
+      "description": "Erdős Problem #78 seeks constructive lower bounds for Ramsey numbers, using probabilistic arguments similar to those in the proof of #108. The girt..."
+    },
+    {
+      "id": "erdos-74",
+      "relationship": "related problem",
+      "description": "Erdős Problem #74 asks whether graphs of high chromatic number contain almost-bipartite subgraphs of high chromatic number—a variant of the same th..."
     }
   ],
   "references": [

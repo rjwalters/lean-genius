@@ -132,29 +132,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1065",
-      "strength": "strong",
-      "description": "Primes of the form 2^k · q + 1 are a special case of class-1 and class-2 primes in the Erdős–Selfridge classification. Resolving #1065 would directly imply infinitude of class-2 primes for specific factorization patterns."
+      "id": "erdos-1065",
+      "relationship": "companion",
+      "description": "Erdős #1065 asks whether there are infinitely many primes of the form 2^k · q + 1, directly related to class-1 primes in the #1055 classification (..."
     },
     {
-      "target": "erdos-1146",
-      "strength": "strong",
-      "description": "The 3-smooth numbers {2^m · 3^n} are precisely the numbers whose prime factors are at most 3. Class-1 primes p are those for which p+1 is 3-smooth, so the density and structure of this set is foundational to #1055."
+      "id": "erdos-1146",
+      "relationship": "companion",
+      "description": "Erdős #1146 studies whether the 3-smooth numbers {2^m · 3^n} form an essential component, exactly the set adjacent to class-1 primes in #1055. The ..."
     },
     {
-      "target": "bertrands-postulate",
-      "strength": "moderate",
-      "description": "Bertrand's postulate provides prime gap bounds used to establish existence of primes with specific successor factorizations, supporting the known computations of p_1 through p_5 in the classification."
+      "id": "erdos-1095",
+      "relationship": "companion",
+      "description": "Erdős #1095 involves the Erdős–Selfridge function and smooth prime factors of binomial coefficients. Both #1055 and #1095 stem from collaborative E..."
     },
     {
-      "target": "prime-number-theorem",
-      "strength": "moderate",
-      "description": "The asymptotic n^{o(1)} density bound for class-r primes uses PNT combined with smooth number estimates; the PNT formalization provides infrastructure for this sparsity argument."
+      "id": "bertrands-postulate",
+      "relationship": "prerequisite",
+      "description": "Bertrand's Postulate guarantees at least one prime between n and 2n, providing the density lower bound used to argue that each class in the #1055 c..."
     },
     {
-      "target": "dirichlets-theorem",
-      "strength": "moderate",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions is invoked heuristically to argue each class should contain infinitely many primes, since the factorization constraint on p+1 restricts p to certain residue classes."
+      "id": "infinitude-primes",
+      "relationship": "prerequisite",
+      "description": "The Euclid infinitude-of-primes result is the baseline: #1055 asks whether each subclass (classified by factorization depth of p+1) is itself infin..."
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The Prime Number Theorem governs the overall density of primes; the #1055 density result (class-r primes have density n^{o(1)}) is proved by combin..."
     }
   ],
   "references": [

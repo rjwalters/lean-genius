@@ -150,16 +150,29 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1053",
-      "description": "Studies σ(n)/n for k-perfect numbers, a parallel ratio problem using the full divisor sum instead of the partial ordered sum used in Problem 1054."
+      "id": "fundamental-arithmetic",
+      "relationship": "prerequisite",
+      "description": "Divisor structure underlying f(n) relies on the fundamental theorem of arithmetic; smallest divisors of m are determined by its prime factorization."
     },
     {
-      "target": "erdos-1049",
-      "description": "Explores arithmetic properties of series built from divisor counts; shares the theme of extracting asymptotic or algebraic information from divisor-indexed sequences."
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "Primes play a key role in the divisor sum structure: for a prime product m = pq the divisors are {1, p, q, pq}, giving the connection to Goldbach-t..."
     },
     {
-      "target": "fundamental-arithmetic",
-      "description": "Provides the algebraic foundation for the ordered-divisor structure that defines f(n): smallest divisors are exactly the prime-power factors in increasing order."
+      "id": "erdos-1053",
+      "relationship": "related",
+      "description": "Erdős Problem #1053 studies the ratio σ(n)/n for k-perfect numbers; both problems investigate how sums of divisors (total or partial) can be contro..."
+    },
+    {
+      "id": "erdos-1049",
+      "relationship": "related",
+      "description": "Erdős Problem #1049 connects divisor counts τ(n) to series involving divisor sums; both problems arise from Erdős's broader program on the arithmet..."
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "The Euler totient function is a sibling multiplicative function; techniques for bounding φ(n)/n and σ(n)/n inform density arguments relevant to f(n..."
     }
   ],
   "references": [

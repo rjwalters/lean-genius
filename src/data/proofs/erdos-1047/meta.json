@@ -218,19 +218,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "fundamental-theorem-algebra",
-      "relationship": "foundational",
-      "description": "Guarantees that degree-n polynomials have exactly n roots (counted with multiplicity), underpinning the component-counting argument that associates one lemniscate component per root for small c."
-    },
-    {
-      "target": "erdos-1044",
+      "id": "erdos-1046",
       "relationship": "companion-problem",
-      "description": "Boundary length of polynomial level set components — Tang's result on the infimum of boundary length complements the convexity question: non-convex components can still have controlled perimeter."
+      "description": "Pommerenke's 1959 lemniscate containment result (connected lemniscates lie in a disc of radius 2) is a positive geometric result for the same class..."
     },
     {
-      "target": "erdos-114",
+      "id": "erdos-1048",
+      "relationship": "companion-problem",
+      "description": "Diameter bounds for polynomial lemniscate components — Pommerenke (1961) also disproved this bound conjecture, the same paper that gave the first c..."
+    },
+    {
+      "id": "erdos-1042",
+      "relationship": "companion-problem",
+      "description": "Counts connected components of polynomial lemniscates as a function of transfinite diameter of the root set — directly related to the component-lev..."
+    },
+    {
+      "id": "erdos-511",
       "relationship": "related-result",
-      "description": "Lemniscate length maximization problem — asks for the maximum arc-length of a lemniscate {z : |p(z)| = 1}, a classical extremal problem intertwined with the geometry studied here."
+      "description": "Bounded components of polynomial lemniscates: whether the number of components with diameter > c is bounded by degree. Also disproved, illustrating..."
+    },
+    {
+      "id": "erdos-1043",
+      "relationship": "companion-problem",
+      "description": "Projection lengths of polynomial level sets — another 1961 Pommerenke result showing the same sets {z : |f(z)| ≤ 1} that fail convexity also have u..."
+    },
+    {
+      "id": "erdos-1039",
+      "relationship": "related-result",
+      "description": "Inner disc radius of polynomial lemniscates — studies how large a convex disc can be inscribed inside a lemniscate component, a positive counterpar..."
     }
   ],
   "references": [

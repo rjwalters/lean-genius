@@ -148,9 +148,9 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "erdos-254",
       "relationship": "related-problem",
-      "description": "Both concern subset sum properties: #254 asks when all sufficiently large integers are representable as subset sums, while #362 bounds how many subsets can sum to a fixed value"
+      "description": "Both concern subset sum properties: #254 asks when all sufficiently large integers are representable as subset sums, while #362 bounds how many subsets can sum to a fixed value",
+      "targetId": "erdos-254"
     }
   ],
   "leanFile": {
@@ -177,9 +177,9 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-254",
+      "relationship": "related-problem",
+      "description": "Both concern subset sum properties: #254 asks when all sufficiently large integers are representable as subset sums, while #362 bounds how many sub..."
     }
   ],
   "references": [

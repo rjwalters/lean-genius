@@ -146,24 +146,34 @@
   ],
   "relatedProofs": [
     {
-      "slug": "erdos-803",
-      "title": "Erdős Problem #803: D-Balanced Subgraphs in Dense Graphs",
-      "relevance": "Near-duplicate problem: asks for D-balanced subgraphs in dense graphs with essentially the same setup as #1077 but under slightly different density hypotheses."
+      "id": "erdos-803",
+      "relationship": "closely-related",
+      "description": "Erdős #803 asks an almost identical question about D-balanced subgraphs in dense graphs, differing only in minor parameter choices; the two problem..."
     },
     {
-      "slug": "erdos-82",
-      "title": "Erdős Problem #82: Regular Induced Subgraphs",
-      "relevance": "D=1 specialization: asks whether dense graphs must contain large induced regular subgraphs, the perfectly balanced limiting case of the D-balanced question."
+      "id": "erdos-82",
+      "relationship": "related",
+      "description": "Erdős #82 asks for regular induced subgraphs in dense graphs; the quest for perfectly regular subgraphs is the limiting case (D=1) of D-balanced su..."
     },
     {
-      "slug": "erdos-715",
-      "title": "Erdős Problem #715: Regular Subgraphs in Regular Graphs",
-      "relevance": "Studies the existence of regular subgraphs within regular host graphs, illuminating the structural constraints that balance the degree sequence."
+      "id": "erdos-715",
+      "relationship": "related",
+      "description": "Erdős #715 studies regular subgraphs inside regular host graphs; both problems investigate how much regularity can be extracted from a given graph."
     },
     {
-      "slug": "erdos-814",
-      "title": "Erdős Problem #814: Dense Graphs Contain Smaller Min-Degree-k Subgraphs",
-      "relevance": "Provides the minimum-degree lifting technique that anchors iterative regularization, a core component of the lower-bound proof for #1077."
+      "id": "erdos-182",
+      "relationship": "related",
+      "description": "Erdős #182 asks for the maximum number of edges in a graph with no k-regular subgraph, the extremal complement of guaranteeing balanced subgraphs."
+    },
+    {
+      "id": "erdos-814",
+      "relationship": "related",
+      "description": "Erdős #814 establishes that dense graphs contain subgraphs with large minimum degree, a key intermediate step used in iterative-regularization argu..."
+    },
+    {
+      "id": "szemeredi-regularity",
+      "relationship": "foundational",
+      "description": "Szemerédi's regularity lemma is the principal tool behind iterative-regularization proofs; the Jiang-Longbrake argument for #1077 uses a regulariza..."
     }
   ],
   "references": [

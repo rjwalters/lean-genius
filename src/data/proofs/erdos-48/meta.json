@@ -216,26 +216,35 @@
   ],
   "relatedProofs": [
     {
-      "targetId": "euler-totient",
+      "id": "euler-totient",
       "relationship": "uses",
-      "note": "φ(n) is one of the two central arithmetic functions; the formalization imports Nat.totient directly."
+      "description": "Euler's totient function φ(n) is one of the two arithmetic functions at the heart of this problem; the formalization imports Nat.totient from Mathl..."
     },
     {
-      "targetId": "erdos-49",
+      "id": "erdos-49",
       "relationship": "related",
-      "note": "Both problems study the range Im(φ) and properties of totient values."
+      "description": "Erdős #49 also studies sets defined by totient values and uses the same range Im(φ); understanding which values appear in Im(φ) is central to both ..."
     },
     {
-      "targetId": "erdos-1003",
+      "id": "erdos-1003",
       "relationship": "related",
-      "note": "Shares the twin-prime construction linking consecutive totient equalities to φ(p+2) = σ(p) = p+1."
+      "description": "Erdős #1003 asks about consecutive equal totient values φ(n) = φ(n+1); the twin-prime construction used in erdos-48 (φ(p+2) = σ(p) = p+1 for twin p..."
     },
-    "euler-totient",
-    "erdos-49",
-    "erdos-1003",
-    "erdos-1004",
-    "infinitude-primes",
-    "fundamental-arithmetic"
+    {
+      "id": "erdos-1004",
+      "relationship": "related",
+      "description": "Erdős #1004 studies the distribution of distinct consecutive totient values; the density and value-distribution techniques (EPS bounds) are closely..."
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "uses",
+      "description": "The infinite supply of twin primes (conjectural) and ordinary primes underpins the Ford-Luca-Pomerance construction; the infinitude of primes is th..."
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "uses",
+      "description": "Unique factorization is required for the multiplicativity of both φ and σ; the multiplicative structure exploited throughout the proof rests on the..."
+    }
   ],
   "references": [
     {

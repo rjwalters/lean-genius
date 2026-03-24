@@ -150,24 +150,34 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-508",
-      "note": "Hadwiger-Nelson chromatic number of the plane"
+      "id": "erdos-508",
+      "relationship": "The Hadwiger-Nelson problem asks for the chromatic number χ(ℝ²); since any independent set in a unit distance graph is a color class, f(n) ≥ n/χ(ℝ²). The current bounds 5 ≤ χ ≤ 7 yield n/7 ≤ f(n), and resolving the chromatic number would immediately sharpen the independence bound.",
+      "description": ""
     },
     {
-      "target": "erdos-232",
-      "note": "Maximum density of unit-distance-free sets; the m₁ constant"
+      "id": "erdos-232",
+      "relationship": "The maximum density m₁ of a measurable unit-distance-free set in ℝ² is the continuous counterpart of f(n)/n. The Larman-Rogers theorem f(n) ≥ m₁·n connects both problems; the ACMVZ result m₁ ≤ 0.247 < 1/4 (formalized in erdos-232) provides the density barrier central to this formalization.",
+      "description": ""
     },
     {
-      "target": "erdos-1066",
-      "note": "Strict variant with minimum pairwise distance ≥ 1"
+      "id": "erdos-1066",
+      "relationship": "The strict variant: n points in ℝ² with all pairwise distances ≥ 1, edges between points at distance exactly 1. Relaxing the 'no two points closer than 1' constraint changes the extremal behavior and leads to different bounds on the independence number.",
+      "description": ""
     },
     {
-      "target": "erdos-1069",
-      "note": "Szemerédi-Trotter incidence geometry in ℝ²"
+      "id": "erdos-1069",
+      "relationship": "The Szemerédi-Trotter theorem on k-rich lines is proved via incidence geometry techniques in ℝ². Both problems concern extremal properties of finite point configurations in the Euclidean plane, and Szemerédi-Trotter machinery has been applied to bounding distances and independence in discrete geometry.",
+      "description": ""
     },
     {
-      "target": "prob-method-expectation",
-      "note": "First moment method underlying Larman-Rogers theorem"
+      "id": "four-color-theorem",
+      "relationship": "Graph colorings of planar graphs satisfy χ ≤ 4; unit distance graphs in ℝ² are not in general planar, but both problems study the tension between graph structure and geometric embedding. The Moser spindle, which gives the upper bound f(n) ≤ 2n/7, is also a graph with chromatic number 4.",
+      "description": ""
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "The Larman-Rogers theorem — the key lower bound f(n) ≥ m₁·n — is proved via a first-moment probabilistic argument: a random translate of a high-density unit-distance-free set captures at least m₁·n of any given n points in expectation, so some translate achieves this bound deterministically.",
+      "description": ""
     }
   ],
   "references": [

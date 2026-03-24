@@ -128,24 +128,34 @@
   ],
   "relatedProofs": [
     {
-      "slug": "erdos-102",
-      "title": "Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines",
-      "relevance": "Structural converse: if cn² four-rich lines exist, how many points must be maximally collinear?"
+      "id": "erdos-102",
+      "relationship": "companion",
+      "description": "Erdős Problem #102 asks for the maximum collinearity forced when n points contain cn² four-rich lines—the direct structural companion to #101's que..."
     },
     {
-      "slug": "erdos-588",
-      "title": "Erdős Problem #588: k-Point Lines in General Position",
-      "relevance": "Generalization of #101 to arbitrary k ≥ 4; shares the Solymosi–Stojaković lower bound and the o(n²) conjecture."
+      "id": "erdos-588",
+      "relationship": "generalization",
+      "description": "Erdős Problem #588 generalizes #101: is f_k(n) = o(n²) for all k ≥ 4? The Solymosi–Stojaković n^{2−o(1)} lower bound applies to both problems, and ..."
     },
     {
-      "slug": "erdos-669",
-      "title": "Erdős Problem #669: k-Point Lines and the Orchard Problem",
-      "relevance": "Companion extremal problem: maximize lines through exactly k points, with the same combinatorial objects as #101."
+      "id": "erdos-669",
+      "relationship": "related",
+      "description": "Erdős Problem #669 (Orchard Problem) studies lines through exactly k points—the same combinatorial object as #101 but asks for the maximum rather t..."
     },
     {
-      "slug": "erdos-107",
-      "title": "Erdős Problem #107: The Happy Ending Problem",
-      "relevance": "Shares the finite planar point set setting and general-position conditions; both involve extremal combinatorial geometry in ℝ²."
+      "id": "erdos-107",
+      "relationship": "related",
+      "description": "Erdős Problem #107 (Happy Ending Problem) also concerns finite planar point sets in general position; both problems study extremal configurations u..."
+    },
+    {
+      "id": "erdos-100",
+      "relationship": "related",
+      "description": "Erdős Problem #100 studies planar point sets with restricted pairwise distances, sharing the combinatorial geometry setting and the use of incidenc..."
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "tool",
+      "description": "The Szemerédi–Trotter incidence theorem (formalized in this project) is the primary upper-bound tool referenced in #101: it bounds point-line incid..."
     }
   ],
   "references": [

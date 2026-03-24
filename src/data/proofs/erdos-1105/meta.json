@@ -217,26 +217,35 @@
   ],
   "relatedProofs": [
     {
-      "targetId": "ramseys-theorem",
-      "relationshipType": "dual",
-      "notes": "Anti-Ramsey theory (maximize colors, avoid rainbow H) is the dual of classical Ramsey theory (minimize colors, force monochromatic H). The two theories were explicitly contrasted by Erdős, Simonovits, and Sós in the founding 1975 paper."
+      "id": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's Theorem is the foundational result in Ramsey theory. Anti-Ramsey theory asks the complementary question: how many colors can be used while..."
     },
     {
-      "targetId": "erdos-1079",
-      "relationshipType": "technique",
-      "notes": "Turán density arguments appear in both. The Turán number ex(n, H) provides a lower bound for anti-Ramsey numbers via AR(n,H) ≥ ex(n,H)+1, connecting neighborhood Turán density (Erdős #1079) to anti-Ramsey bounds."
+      "id": "erdos-1014",
+      "relationship": "related",
+      "description": "Both problems concern asymptotic behavior of extremal numbers in complete graphs. Erdős #1014 studies ratio convergence of classical Ramsey numbers..."
     },
     {
-      "targetId": "erdos-136",
-      "relationshipType": "technique",
-      "notes": "The Erdős-Gyárfás function f(n,4,5) concerns edge-colorings of K_n with local color constraints, a structural cousin of anti-Ramsey coloring. Both involve optimizing the number of colors in edge-colorings of complete graphs subject to subgraph color restrictions."
+      "id": "erdos-129",
+      "relationship": "related",
+      "description": "Erdős #129 studies edge-colorings of K_n avoiding monochromatic cliques, a classical Ramsey coloring problem. Anti-Ramsey #1105 studies the opposit..."
     },
-    "ramseys-theorem",
-    "erdos-1014",
-    "erdos-129",
-    "erdos-1008",
-    "erdos-1009",
-    "erdos-1012"
+    {
+      "id": "erdos-1008",
+      "relationship": "related",
+      "description": "Erdős #1008 studies extremal numbers for C₄-free subgraphs (Zarankiewicz-type). Problem #1105 studies anti-Ramsey numbers for cycles C_k. Both conc..."
+    },
+    {
+      "id": "erdos-1009",
+      "relationship": "related",
+      "description": "Erdős #1009 establishes bounds for edge-disjoint triangles beyond the Turán number. The Turán connection is central to #1105 as well: the lower bou..."
+    },
+    {
+      "id": "erdos-1012",
+      "relationship": "related",
+      "description": "Erdős #1012 studies long cycles in dense graphs from an extremal perspective. Problem #1105 studies anti-Ramsey numbers for cycles C_k and paths P_..."
+    }
   ],
   "references": [
     {

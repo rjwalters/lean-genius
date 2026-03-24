@@ -217,14 +217,14 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "picks-theorem",
       "relationship": "Pick's theorem is the d=2 specialization of Ehrhart's theorem. This file derives Pick's formula from the 2D Ehrhart polynomial and explains why it fails in 3D.",
       "sharedConcepts": [
         "lattice-points",
         "area",
         "volume",
         "discrete-geometry"
-      ]
+      ],
+      "targetId": "picks-theorem"
     }
   ],
   "leanFile": {
@@ -240,9 +240,9 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "picks-theorem",
+      "relationship": "Pick's theorem is the d=2 specialization of Ehrhart's theorem. This file derives Pick's formula from the 2D Ehrhart polynomial and explains why it fails in 3D.",
+      "description": ""
     }
   ]
 }

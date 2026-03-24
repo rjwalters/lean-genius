@@ -114,44 +114,44 @@
   ],
   "crossReferences": [
     {
-      "targetProofId": "erdos-321",
       "relationship": "Both from Erdős-Graham (1980) on polynomial additive combinatorics",
       "sharedConcepts": [
         "polynomial arithmetic",
         "additive combinatorics"
-      ]
+      ],
+      "targetId": "erdos-321"
     },
     {
-      "targetProofId": "erdos-325",
       "relationship": "Adjacent Erdős problem on polynomial representations",
       "sharedConcepts": [
         "polynomial evaluation",
         "Erdős-Graham"
-      ]
+      ],
+      "targetId": "erdos-325"
     },
     {
-      "targetProofId": "erdos-332",
       "relationship": "Both involve additive structure of polynomial images",
       "sharedConcepts": [
         "additive combinatorics",
         "integer polynomials"
-      ]
+      ],
+      "targetId": "erdos-332"
     },
     {
-      "targetProofId": "lagrange-four-squares",
       "relationship": "Lagrange's theorem gives representation bounds; pair sums of squares relate to this",
       "sharedConcepts": [
         "sums of powers",
         "representation theory"
-      ]
+      ],
+      "targetId": "lagrange-four-squares"
     },
     {
-      "targetProofId": "cauchy-schwarz",
       "relationship": "Cauchy-Schwarz bounds additive energy, connected to distinct pair sum counting",
       "sharedConcepts": [
         "inequalities",
         "counting arguments"
-      ]
+      ],
+      "targetId": "cauchy-schwarz"
     }
   ],
   "references": [
@@ -198,29 +198,29 @@
   },
   "relatedProofs": [
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-321",
+      "relationship": "Both from Erdős-Graham (1980) on polynomial additive combinatorics",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-325",
+      "relationship": "Adjacent Erdős problem on polynomial representations",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "erdos-332",
+      "relationship": "Both involve additive structure of polynomial images",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "lagrange-four-squares",
+      "relationship": "Lagrange's theorem gives representation bounds; pair sums of squares relate to this",
+      "description": ""
     },
     {
-      "id": "",
-      "relationship": "related",
-      "description": "Related gallery proof"
+      "id": "cauchy-schwarz",
+      "relationship": "Cauchy-Schwarz bounds additive energy, connected to distinct pair sum counting",
+      "description": ""
     }
   ]
 }

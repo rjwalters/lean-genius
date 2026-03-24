@@ -144,8 +144,14 @@
   ],
   "relatedProofs": [
     {
-      "target": "erdos-1010",
-      "description": "Parent problem: triangle supersaturation beyond Turán threshold (SOLVED)"
+      "id": "erdos-1010",
+      "relationship": "Parent problem: triangle supersaturation (t extra edges force t·⌊n/2⌋ triangles)",
+      "description": ""
+    },
+    {
+      "id": "erdos-340",
+      "relationship": "Sidon sets — another extremal combinatorics problem using counting arguments",
+      "description": ""
     }
   ],
   "references": [
