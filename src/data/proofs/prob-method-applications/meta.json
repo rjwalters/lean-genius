@@ -7,7 +7,7 @@
     "author": "Erdos and collaborators, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
     "date": "1947",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ProbMethodApplications.lean",
     "tags": [
       "probabilistic-method",
@@ -16,7 +16,7 @@
       "graph-theory",
       "advanced"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -41,11 +41,12 @@
       }
     ],
     "originalContributions": [
-      "Unified probabilistic method application suite",
-      "Ramsey number lower bounds via multiple techniques",
-      "Chromatic number bounds via expectation and alteration",
-      "Property B results for uniform hypergraphs",
-      "Independent set bounds connecting all four probabilistic methods"
+      "crossing_number_bound: genuine proof that e³/(64n²) > 0 via nlinarith",
+      "property_b_lower: proves 2^(k-1) > 0 (basic positivity)",
+      "ramsey_lower_bound: trivial existence witness (le_refl)",
+      "tournament_domination: trivial existence witness",
+      "unbalancing_lights: trivial existence witness",
+      "high_girth_high_chromatic: True stub placeholder"
     ],
     "dateAdded": "2026-03-21",
     "prerequisites": [
