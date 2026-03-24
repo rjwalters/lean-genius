@@ -251,6 +251,28 @@
     "lineCount": 255,
     "axiomCount": 4,
     "theoremCount": 2,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "mainTheorems": [
+      {
+        "name": "g_exponential_growth",
+        "type": "proved",
+        "description": "g(k) grows exponentially: g(k) ≥ 2^k"
+      },
+      {
+        "name": "erdos_1100_summary",
+        "type": "proved",
+        "description": "Summary: τ⊥(n) ≥ ω(n) and g(k) ≥ 2^k"
+      },
+      {
+        "name": "tau_perp_lower_bound",
+        "type": "axiom",
+        "description": "τ⊥(n) ≥ ω(n) for n > 0"
+      },
+      {
+        "name": "erdos_simonovits_bounds",
+        "type": "axiom",
+        "description": "Erdős-Simonovits bounds on g(k)"
+      }
+    ]
   }
 }
