@@ -27,14 +27,14 @@
     ],
     "badge": "axiom",
     "sorries": 2,
-    "axiomCount": 2,
+    "axiomCount": 3,
     "prerequisites": [
       "Galois theory (field extensions, Galois groups, splitting fields)",
       "Cyclotomic fields and Kronecker-Weber theorem",
       "Group theory (symmetric and alternating groups, Sylow theorems, solvability)",
       "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
     ],
-    "assumptions": "2 axiom(s) and 2 sorry(s).",
+    "assumptions": "3 axiom declarations across 2 files: abelian_realizable, shafarevich_theorem (InverseGalois.lean), three_dvd_gal_card (InverseGaloisA5.lean). 2 sorry(s).",
     "leanFile": {
       "lineCount": 1881,
       "theoremCount": 107,
