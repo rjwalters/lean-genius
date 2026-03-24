@@ -185,19 +185,57 @@ axiom erdos_1137 :
       (((Finset.range x).sup primeGap : ℕ) : ℝ) ^ 2)
     atTop (𝓝 0)
 
--- ## Part VI: Consequences and Context
+-- ## Part VI: Infrastructure for Axiom Elimination
 
-/-- The ratio is trivially bounded above by 1 for x ≥ 1.
-    For any n < x: d_n ≤ maxGap x and d_{n-1} ≤ maxGap(x+1),
-    so d_n · d_{n-1} ≤ maxGap(x) · maxGap(x+1) ≤ maxGap(x+1)².
-    The tighter bound max_{n<x}(d_n · d_{n-1}) ≤ (maxGap x)² requires
-    careful handling of the d_{n-1} index relative to range x. -/
-axiom erdosRatio_le_one (x : ℕ) (hx : x ≥ 2) : erdosRatio x ≤ 1
+/-- k divides n! when 1 ≤ k ≤ n (standard factorial divisibility). -/
+private lemma dvd_factorial (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) : k ∣ n ! := by
+  induction n with
+  | zero => omega
+  | succ n ih =>
+    rw [Nat.factorial_succ]
+    rcases eq_or_lt_of_le hkn with h | h
+    · exact h ▸ dvd_mul_right k n !
+    · exact dvd_mul_of_dvd_right (ih (by omega)) (n + 1)
+
+/-- n! + k is not prime when 2 ≤ k ≤ n: k divides both n! and k. -/
+private lemma not_prime_factorial_add (n k : ℕ) (hk : 2 ≤ k) (hkn : k ≤ n) :
+    ¬ Nat.Prime (n ! + k) := by
+  intro hp
+  have h1 : k ∣ n ! + k := dvd_add (dvd_factorial n k (by omega) hkn) (dvd_refl k)
+  have h2 : k < n ! + k := by have := Nat.factorial_pos n; omega
+  rcases hp.eq_one_or_self_of_dvd k h1 with h | h
+  · omega
+  · linarith [Nat.factorial_pos n]
+
+-- ## Part VII: Consequences and Context
+
+/-- The ratio is trivially bounded above by 1 for x ≥ 2.
+    Each product d_n · d_{n-1} ≤ (maxGap x)² since both factors are
+    ≤ maxGap x (as elements of the range). -/
+theorem erdosRatio_le_one (x : ℕ) (hx : x ≥ 2) : erdosRatio x ≤ 1 := by
+  unfold erdosRatio maxGap
+  suffices h : (Finset.range x).sup (fun n => primeGap n * primeGap (n - 1)) ≤
+      (Finset.range x).sup primeGap * (Finset.range x).sup primeGap by
+    have h_pos : 0 < (Finset.range x).sup primeGap := by
+      have h_le : primeGap 0 ≤ (Finset.range x).sup primeGap :=
+        Finset.le_sup (f := primeGap) (Finset.mem_range.mpr (by omega))
+      have := primeGap_pos 0; omega
+    rw [div_le_one (pow_pos (Nat.cast_pos.mpr h_pos) 2), sq]
+    exact_mod_cast h
+  apply Finset.sup_le
+  intro n hn
+  have h1 : primeGap n ≤ (Finset.range x).sup primeGap :=
+    Finset.le_sup (f := primeGap) hn
+  have h2 : primeGap (n - 1) ≤ (Finset.range x).sup primeGap :=
+    Finset.le_sup (f := primeGap) (Finset.mem_range.mpr (by
+      have := Finset.mem_range.mp hn; omega))
+  exact Nat.mul_le_mul h1 h2
 
 /-- The maximal prime gap tends to infinity.
-    This follows from Bertrand's postulate: for any N, there exist
-    consecutive primes p_n, p_{n+1} with p_n > N, and eventually
-    the gaps must exceed any bound (since primes thin out). -/
+    Proof outline: For any B, the B-1 consecutive composites B!+2, ..., B!+B
+    (proved composite by not_prime_factorial_add) witness a prime gap ≥ B.
+    Full proof requires connecting the factorial composites to the nth-prime
+    enumeration (available via Nat.nth_surjective). -/
 axiom maxGap_tendsto_atTop : Tendsto (fun x => (maxGap x : ℝ)) atTop atTop
 
 /-
@@ -209,24 +247,14 @@ Erdős Problem #1137 asks whether the ratio of the maximum product
 of consecutive prime gaps to the square of the maximum gap tends to 0.
 
 **Proved Theorems (0 sorries)**:
-- nth_prime_strictMono: primes are strictly increasing
-- nth_prime_zero/one/two/three/four: p_0 = 2, p_1 = 3, p_2 = 5, p_3 = 7, p_4 = 11
-- nth_prime_lt_succ: p_{n+1} > p_n
-- nth_prime_is_prime: p_n is prime
-- nth_prime_ge_three: for n ≥ 1, p_n ≥ 3
-- nth_prime_not_even: for n ≥ 1, p_n is odd
-- primeGap_pos: d_n ≥ 1 for all n
-- primeGap_zero: d_0 = 1
-- primeGap_one: d_1 = 2
-- primeGap_two: d_2 = 2
-- primeGap_three: d_3 = 4
-- primeGap_even: d_n is even for n ≥ 1
-- primeGap_ge_two: d_n ≥ 2 for n ≥ 1
+- All 13 original theorems about prime gaps (positivity, parity, specific values)
+- dvd_factorial: k divides n! when 1 ≤ k ≤ n
+- not_prime_factorial_add: n!+k is composite for 2 ≤ k ≤ n
+- erdosRatio_le_one: ratio ≤ 1 (previously axiom, now PROVED)
 
-**Axioms (3)**:
+**Axioms (2)**:
 - erdos_1137: the main open conjecture (ratio → 0)
-- erdosRatio_le_one: trivial upper bound ≤ 1
-- maxGap_tendsto_atTop: max gap → ∞
+- maxGap_tendsto_atTop: max gap → ∞ (provable via factorial, see doc)
 
 **Key Insights**:
 1. The unique odd prime gap is d_0 = 1 (between 2 and 3)
