@@ -38,14 +38,14 @@
       "Four Lines Theorem stated with explicit general position conditions",
       "Partition and SchubertClass structures for abstract Schubert calculus",
       "Schubert basis theorem and Littlewood-Richardson rule axiomatized",
-      "σ₁⁴ = 2σ₂₂ computation verified via LR coefficients"
+      "σ₁⁴ = 2σ₂₂ formula axiomatized with supporting Schubert class infrastructure"
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 15,
     "proofRepoPath": "Proofs/Hilbert15SchubertCalculus.lean",
     "axiomCount": 8,
     "lineCount": 452,
-    "assumptions": "8 axioms: linesMeet_iff_linesMeet', four_lines_theorem, transversal_count, and 5 more. See Lean source for complete statements.",
+    "assumptions": "8 axioms: linesMeet_iff_linesMeet', four_lines_theorem, transversal_count, schubert_basis_theorem, littlewoodRichardsonCoeff, littlewood_richardson_rule, pieris_rule, sigma1_fourth_power.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -58,7 +58,7 @@
       "The Four Lines Theorem exemplifies how a concrete geometric question — counting transversal lines — reduces to a cohomological computation σ₁⁴ = 2σ₂₂",
       "Schubert classes form a free Z-basis for H*(Gr(k,n)) indexed by partitions fitting in a k × (n-k) box, connecting geometry to combinatorics",
       "The Littlewood-Richardson rule reduces intersection products to a purely combinatorial computation on Young tableaux",
-      "The step-by-step computation σ₁² = σ₂ + σ₁₁, σ₁³ = 2σ₂₁, σ₁⁴ = 2σ₂₂ reveals how Pieri's rule iteratively builds up the answer",
+      "The step-by-step computation (described in annotations) σ₁² = σ₂ + σ₁₁, σ₁³ = 2σ₂₁, σ₁⁴ = 2σ₂₂ shows how Pieri's rule iteratively builds up the answer — the final result is axiomatized in Lean",
       "Steiner's erroneous count of 7776 conics (corrected to 3264) illustrates precisely the rigor Hilbert demanded — naive counting overcounts degenerate configurations"
     ],
     "prerequisites": [
@@ -184,9 +184,6 @@
     "definitionCount": 14
   },
   "relatedProofs": [
-    "",
-    "",
-    "",
     "hilbert-16",
     "hilbert-17",
     "fundamental-theorem-algebra"
