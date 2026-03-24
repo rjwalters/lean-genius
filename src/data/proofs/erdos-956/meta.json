@@ -101,77 +101,77 @@
       "title": "Distance Between Sets",
       "summary": "Defines the set distance $\\delta(C, D) = \\inf\\{\\mathrm{dist}(c,d) : c \\in C, d \\in D\\}$ as the infimum of pairwise point distances, then proves symmetry ($\\delta(C,D) = \\delta(D,C)$) and non-negativity ($\\delta(C,D) \\geq 0$), and characterizes when $\\delta(C,D) = 0$.",
       "startLine": 31,
-      "endLine": 58
+      "endLine": 59
     },
     {
       "id": "convex",
       "title": "Convex Sets and Translates",
       "summary": "Introduces the `CompactConvex` structure bundling a carrier set in $\\mathbb{R}^2$ with proofs of convexity, compactness, and non-emptiness. Defines the translate operation $C +_s x = \\{c + x : c \\in C\\}$ and proves that translations preserve both convexity and compactness.",
       "startLine": 60,
-      "endLine": 89
+      "endLine": 90
     },
     {
       "id": "configuration",
       "title": "Disjoint Translates Configuration",
       "summary": "Defines the `DisjointTranslates n` structure packaging a base compact convex set with $n$ center points and a proof that all translates $C + x_i$ are pairwise disjoint. Introduces `HasUnitDistance` for when $\\delta(C + x_i, C + x_j) = 1$ and `unitDistanceCount` counting such pairs.",
       "startLine": 91,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "h-function",
       "title": "The Function h(n)",
       "summary": "Defines the extremal function $h(n) = \\sup\\{\\text{unitDistanceCount}(\\text{config})\\}$ over all valid disjoint translate configurations. Proves monotonicity ($n \\leq m \\Rightarrow h(n) \\leq h(m)$) and the trivial bound $h(n) \\geq 0$.",
       "startLine": 115,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "unit-distance",
       "title": "Connection to Unit Distance Problem",
       "summary": "Defines the classical point unit distance function $f(n)$ and proves the key comparison $h(n) \\geq f(n)$: any point configuration can be realized as translates of tiny disks. Axiomatizes the Spencer-Szemerédi-Trotter upper bound $f(n) \\leq n^{4/3}$ and a lower bound $f(n) \\geq n^{1+c/2}$.",
       "startLine": 132,
-      "endLine": 157
+      "endLine": 158
     },
     {
       "id": "upper-bound",
       "title": "Erdős-Pach Upper Bound",
       "summary": "Axiomatizes the 1990 Erdős-Pach result: $h(n) \\leq 2n^{4/3}$ for disjoint translates of any compact convex set. This is derived via a reduction to the Szemerédi-Trotter incidence bound applied to the boundary curves of the translates.",
       "startLine": 159,
-      "endLine": 170
+      "endLine": 171
     },
     {
       "id": "general",
       "title": "General Convex Sets",
       "summary": "Extends to disjoint convex sets that are not necessarily translates. Defines `DisjointConvexSets n` and the corresponding extremal function $h_{\\text{gen}}(n)$. Axiomatizes the weaker bound $h_{\\text{gen}}(n) \\leq 2n^{7/5}$, proves $h(n) \\leq h_{\\text{gen}}(n)$, and verifies $7/5 > 4/3$ by `norm_num`.",
       "startLine": 172,
-      "endLine": 202
+      "endLine": 203
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "Formally states the Erdős-Pach conjecture $\\exists c > 0, \\forall n \\geq 10, h(n) > n^{1+c}$ and its equivalent superlinear formulation. Shows the conjecture follows from the analogous statement for the point unit distance function $f(n)$, via $h(n) \\geq f(n)$.",
       "startLine": 204,
-      "endLine": 221
+      "endLine": 222
     },
     {
       "id": "constructions",
       "title": "Known Constructions",
       "summary": "Axiomatizes the two main lower bound constructions: lattice arrangements achieving at least $n-1$ unit distances, and grid constructions giving $\\Omega(n \\log n / \\log\\log n)$ unit distances by exploiting the number-theoretic structure of sums of two squares.",
       "startLine": 223,
-      "endLine": 235
+      "endLine": 236
     },
     {
       "id": "incidence",
       "title": "Connections to Incidence Geometry",
       "summary": "Records the connection to the Szemerédi-Trotter point-line incidence theorem: at most $O(n^{2/3}m^{2/3} + n + m)$ incidences between $n$ points and $m$ lines. Notes that the $h(n)$ upper bound proof reduces unit distance pairs to point-curve incidences.",
       "startLine": 237,
-      "endLine": 251
+      "endLine": 252
     },
     {
       "id": "special",
       "title": "Special Cases",
       "summary": "Examines specific convex shapes: for disk translates, unit distances are bounded by $f(n) + n$ since boundaries are circles; for line segment translates, one can achieve $2(n-1)$ unit distances by careful alignment.",
       "startLine": 253,
-      "endLine": 267
+      "endLine": 268
     },
     {
       "id": "main-result",

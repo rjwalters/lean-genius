@@ -103,49 +103,49 @@
       "title": "Header and Imports",
       "summary": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics.",
       "startLine": 1,
-      "endLine": 37
+      "endLine": 38
     },
     {
       "id": "seq-properties",
       "title": "Sequence Properties",
       "summary": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn\\sqrt{\\log n \\cdot \\log\\log n}$).",
       "startLine": 39,
-      "endLine": 57
+      "endLine": 58
     },
     {
       "id": "series-def",
       "title": "Series Definition and Convergence",
       "summary": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$), and the `seriesSum` limit extracted via `Classical.choose`.",
       "startLine": 59,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "known-results",
       "title": "Known Irrationality Results",
       "summary": "Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture.",
       "startLine": 80,
-      "endLine": 99
+      "endLine": 100
     },
     {
       "id": "implications",
       "title": "Growth Condition Implications",
       "summary": "The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`).",
       "startLine": 101,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "examples",
       "title": "Example: Square Sequence",
       "summary": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition).",
       "startLine": 115,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture and Counterexample Specification",
       "summary": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like.",
       "startLine": 154,
-      "endLine": 179
+      "endLine": 180
     },
     {
       "id": "summary",

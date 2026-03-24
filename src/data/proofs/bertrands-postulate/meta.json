@@ -45,7 +45,8 @@
         "relationship": "Extensions and generalizations of Bertrand's postulate"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Joseph Bertrand conjectured this result in 1845 after verifying it for all integers up to 3,000,000. He stated the conjecture in his *Traité d'Algèbre* without proof, noting that a prime always appears between $n$ and $2n-2$ for every $n$ he checked.\n\nPafnuty Chebyshev provided the first proof in 1852 using analytic methods involving what are now called the Chebyshev functions $\\theta(x) = \\sum_{p \\leq x} \\log p$ and $\\psi(x) = \\sum_{p^k \\leq x} \\log p$. He proved the stronger result that $(1 - \\epsilon)x/\\log x < \\pi(x) < (1 + \\epsilon)x/\\log x$ for large $x$ and specific constants, from which Bertrand's postulate follows.\n\nIn 1932, the 19-year-old Paul Erdős published an elegant elementary proof in *Acta Litt. Sci. Szeged* that avoided complex analysis entirely, relying instead on clever analysis of the prime factorization of $\\binom{2n}{n}$. This became his first published paper and launched his legendary mathematical career — Erdős later called it his favorite proof. The key insight: $\\binom{2n}{n} \\geq 4^n/(2n)$ (from $(1+1)^{2n} = \\sum \\binom{2n}{k}$), but if no prime lies in $(n, 2n]$, all prime power factors of $\\binom{2n}{n}$ are $\\leq n$, making the product too small to match $4^n/(2n)$ for $n \\geq 512$.\n\nThe theorem is sometimes called the 'Bertrand-Chebyshev theorem' in honor of both the conjecturer and first prover. Srinivasa Ramanujan gave another proof in his first published paper (1919), using the gamma function. Bertrand's Postulate is a stepping stone toward the Prime Number Theorem: while Bertrand guarantees at least one prime in $(n, 2n]$, the PNT (proved independently by Hadamard and de la Vallée Poussin in 1896) gives the asymptotic density $\\pi(x) \\sim x/\\log x$.",
@@ -78,7 +79,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 52,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Bertrand's Postulate: for any positive n, there exists a prime p with n < p ≤ 2n. Includes an alias using Mathlib's naming convention.",
       "mathContext": "$\\forall n > 0,\\; \\exists p \\text{ prime}: n < p \\leq 2n$. Wraps `Nat.exists_prime_lt_and_le_two_mul` with a `0 < n` hypothesis (converted from Mathlib's `n \\neq 0` via `Nat.pos_iff_ne_zero`)."
     },
@@ -86,7 +87,7 @@
       "id": "corollaries",
       "title": "Corollaries",
       "startLine": 69,
-      "endLine": 106,
+      "endLine": 107,
       "summary": "Consequences including: existence of primes in intervals, prime gaps are bounded, and infinitude of primes (derived from Bertrand).",
       "mathContext": "Three corollaries: (1) $\\forall n > 0, \\exists p$ prime with $p > n$ (primes are unbounded); (2) if $p$ is prime, the next prime $q$ satisfies $q \\leq 2p$ (prime gaps bounded by $p$); (3) there are infinitely many primes (from unboundedness). The gap bound $p_{n+1} - p_n < p_n$ is weaker than Cramér's conjecture $O((\\log p)^2)$ but is unconditional."
     },
@@ -94,7 +95,7 @@
       "id": "large-n",
       "title": "Stronger Bounds for Large n",
       "startLine": 108,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "The theorem for n ≥ 512, where the Erdős-style analysis of C(2n,n) applies directly.",
       "mathContext": "For $n \\geq 512$: $\\frac{4^n}{2n} < \\binom{2n}{n} \\leq \\prod_{p \\leq \\sqrt{2n}} p^{\\lfloor \\log_p(2n) \\rfloor} \\cdot \\prod_{\\sqrt{2n} < p \\leq 2n/3} p$. If no prime lies in $(n, 2n]$, all prime factors of $\\binom{2n}{n}$ are $\\leq n$, making the right side too small."
     },
@@ -102,7 +103,7 @@
       "id": "small-cases",
       "title": "Small Cases: The Descending Prime Chain",
       "startLine": 121,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "For n < 512, an explicit descending chain of primes (983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2) covers all cases. Each prime is more than half but at most double the next.",
       "mathContext": "The chain $983 > 491 > 241 > 127 > 61 > 31 > 17 > 11 > 7 > 5 > 3 > 2$ satisfies $p_{i} > p_{i+1}/2$ for consecutive elements. For any $n < 521$, some chain element $p$ satisfies $n < p \\leq 2n$. Verified by `decide` or `norm_num` for each gap."
     },
@@ -110,7 +111,7 @@
       "id": "pnt-connection",
       "title": "Connection to the Prime Number Theorem",
       "startLine": 143,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "Bertrand's Postulate as a stepping stone toward the Prime Number Theorem: π(x) ~ x/ln(x). While Bertrand guarantees ≥1 prime in (n, 2n], the PNT predicts ~n/ln(n) primes.",
       "mathContext": "$\\pi(2n) - \\pi(n) \\geq 1$ (Bertrand) vs $\\pi(2n) - \\pi(n) \\sim \\frac{n}{\\ln n}$ (PNT). The PNT ($\\pi(x) \\sim x/\\ln x$, proved 1896 by Hadamard and de la Vallée-Poussin) implies Bertrand for sufficiently large $n$, but Bertrand's elementary proof covers all $n$."
     },

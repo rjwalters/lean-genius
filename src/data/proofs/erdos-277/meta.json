@@ -85,7 +85,7 @@
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Module docstring stating Erdős #277 and its resolution by Haight (1979). Imports `NumberTheory.Divisors` for $n.\\text{divisors}$, `BigOperators` for $\\sum$ notation, and `Data.Real.Basic` for the abundancy ratio $\\sigma(n)/n$."
     },
     {
@@ -127,7 +127,7 @@
       "id": "nontrivial-refinement",
       "title": "Non-Trivial Covering Refinement",
       "startLine": 152,
-      "endLine": 169,
+      "endLine": 170,
       "summary": "Defines `HasDistinctModuli`, `IsNonTrivialCovering` ($\\geq 2$ distinct moduli), and `HasNonTrivialCoveringWithDivisorModuli`. Axiomatizes `haight_strong_theorem`: the stronger result excluding non-trivial coverings."
     },
     {

@@ -90,14 +90,14 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 22,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Defines `IsSubsetSum A n` ($\\exists B \\subseteq A, \\sum_{b \\in B} b = n$), `NonRepresenting A n` (negation: no subset sums to $n$), and `maxNonReprSize c n` as the supremum of $|A|$ over the powerset of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ filtered by `NonRepresenting`, using `Finset.powerset`, `Finset.filter`, and `Finset.sup`."
     },
     {
       "id": "conjecture",
       "title": "Main Conjectures",
       "startLine": 39,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "States two conjectures: `ErdosProblem361` asserts non-monotonicity of `maxNonReprSize c` (the irregularity question), and `MaxNonReprUnbounded` asserts the function tends to infinity via `Filter.Tendsto atTop atTop`."
     },
     {
@@ -111,14 +111,14 @@
       "id": "basic-properties",
       "title": "Proved Basic Properties",
       "startLine": 65,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Three fully proved results: `nonRepresenting_empty` (the empty set is non-representing for $n > 0$ since $\\sum \\emptyset = 0 \\neq n$), `nonRepresenting_subset` (subsets of non-representing sets are non-representing, by transitivity of $\\subseteq$), and `singleton_one_nonRepr` ($\\{1\\}$ is non-representing for $n \\geq 2$ since subsets sum to 0 or 1)."
     },
     {
       "id": "structural-lemmas",
       "title": "Structural Lemmas",
       "startLine": 92,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "`nonRepresenting_of_sum_lt`: If the sum of all elements of $A$ is less than $n$, then $A$ is non-representing. The proof uses `Finset.sum_le_sum_of_subset_of_nonneg` to show any subset has an even smaller sum."
     },
     {

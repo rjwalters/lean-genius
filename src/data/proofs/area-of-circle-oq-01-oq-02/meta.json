@@ -53,7 +53,8 @@
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
     "lineCount": 146,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Archimedes of Syracuse (~287–212 BCE) conceived of the disk as being composed of infinitely many concentric circular rings (annuli). Each ring at radius ρ has circumference $2\\pi\\rho$ and infinitesimal width $d\\rho$, contributing area $2\\pi\\rho\\, d\\rho$ to the total. Summing all rings from $\\rho = 0$ to $\\rho = r$ gives the total area $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. This argument—though not stated in integral notation by Archimedes—is the conceptual foundation of his proof in *Measurement of a Circle* and anticipates Leibniz's integral calculus by nearly two millennia. The formal statement $A(r) = \\int_0^r C(\\rho)\\, d\\rho$ follows from the Fundamental Theorem of Calculus (Newton–Leibniz, 1660s–1680s): since $\\frac{dA}{dr} = C(r)$, which was proved in the companion entry (*Circumference via Area Differentiation*), the FTC gives $A(r) - A(0) = \\int_0^r C(\\rho)\\, d\\rho$, and $A(0) = 0$ yields the formula.",
@@ -115,21 +116,21 @@
       "id": "imports-setup",
       "title": "Imports and Module Setup",
       "startLine": 1,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Imports Mathlib's calculus and interval integral infrastructure. Opens `Real`, `MeasureTheory`, `intervalIntegral`, and `Topology` namespaces within `AreaFromCircumferenceIntegral`."
     },
     {
       "id": "definitions",
       "title": "Area and Circumference Functions",
       "startLine": 46,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines `circleArea(r) = π * r²` and `circumference(ρ) = 2 * π * ρ` as noncomputable real-valued functions. Proves continuity of both functions."
     },
     {
       "id": "derivative",
       "title": "Derivative of Area Equals Circumference",
       "startLine": 58,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "Proves `hasDerivAt_circleArea`: the area function has derivative `circumference r` at every point `r`, using the power rule and constant multiplication. This is the bridge to FTC."
     },
     {

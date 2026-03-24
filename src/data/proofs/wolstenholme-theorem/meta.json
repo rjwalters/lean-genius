@@ -40,7 +40,8 @@
       "Harmonic numbers and their p-adic divisibility",
       "Fermat quotients and p-adic analysis",
       "Babbage's theorem (mod p^2 congruence)"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Charles Babbage observed in 1819 that $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^2}$ for primes $p \\geq 3$, as part of his study of the difference engine and computational number theory. Joseph Wolstenholme strengthened this in 1862 to $\\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}$ for primes $p \\geq 5$, discovering an unexpectedly deep divisibility property of central binomial coefficients.\n\nThe theorem is equivalent to the statement that the numerator of the harmonic sum $H_{p-1} = 1 + \\frac{1}{2} + \\cdots + \\frac{1}{p-1}$, when written in lowest terms, is divisible by $p^2$. This connects to Fermat quotients: $q_p(a) = (a^{p-1} - 1)/p$, since Wolstenholme's theorem implies $q_p(2) \\equiv 0 \\pmod{p}$. Primes where the congruence holds modulo $p^4$ are called Wolstenholme primes; only two are known: 16843 and 2124679 (McIntosh, 1995). It is conjectured (but unproved) that infinitely many exist. The theorem has been central to $p$-adic analysis and the study of Bernoulli numbers.",
@@ -67,7 +68,7 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 40,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Central binomial coefficient and formal theorem statements.",
       "mathContext": "Define centralBinomial(p) = C(2p-1, p-1). Wolstenholme: for prime p >= 5, C(2p-1,p-1) ≡ 1 (mod p³). Babbage: for prime p >= 3, the congruence holds mod p²."
     },
@@ -75,7 +76,7 @@
       "id": "verification",
       "title": "Computational Verification",
       "startLine": 51,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Verification for p = 5, 7, 11, 13 using native_decide.",
       "mathContext": "Computational verification: C(9,4) = 126 = 125+1 ≡ 1 (mod 5³), C(13,6) = 1716 = 5·343+1 ≡ 1 (mod 7³), C(21,10) = 352716 = 265·1331+1 ≡ 1 (mod 11³), C(25,12) = 5200300 = 2367·2197+1 ≡ 1 (mod 13³). All proved by native_decide."
     },
@@ -91,7 +92,7 @@
       "id": "wolstenholme-primes",
       "title": "Wolstenholme Primes",
       "startLine": 146,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "Definition and non-examples (5 and 7 are not Wolstenholme primes).",
       "mathContext": "A prime p is a Wolstenholme prime if C(2p-1,p-1) ≡ 1 (mod p⁴), one power beyond the theorem. Only two known: 16843 and 2124679 (none below 10⁹). Equivalent to p³ | B_{p-3} where B_k is a Bernoulli number."
     },
@@ -99,7 +100,7 @@
       "id": "harmonic",
       "title": "Harmonic Connection",
       "startLine": 173,
-      "endLine": 191,
+      "endLine": 214,
       "summary": "The equivalent formulation using harmonic numbers.",
       "mathContext": "Wolstenholme is equivalent to p² | num(H_{p-1}) where H_{p-1} = Σ_{k=1}^{p-1} 1/k. Connects to Fermat quotient q_p(a) = (a^{p-1}-1)/p via H_{p-1} ≡ -Σ q_p(k) (mod p)."
     }

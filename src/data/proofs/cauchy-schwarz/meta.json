@@ -100,7 +100,7 @@
       "title": "Imports and Namespace",
       "summary": "Imports `InnerProductSpace.Basic`, `InnerProductSpace.PiL2` (for `EuclideanSpace`), `BigOperators.Ring.Finset` (for $\\sum$), and general tactics.",
       "startLine": 1,
-      "endLine": 49,
+      "endLine": 50,
       "mathContext": "Provides `InnerProductSpace ℝ F` (real inner product spaces), `EuclideanSpace ℝ (Fin n)` ($\\mathbb{R}^n$ with standard inner product), and `∑` notation over finite sets."
     },
     {
@@ -108,7 +108,7 @@
       "title": "Inner Product Form",
       "summary": "States and proves $|\\langle u,v\\rangle_{\\mathbb{R}}| \\leq \\|u\\|\\|v\\|$ via `abs_real_inner_le_norm`. Also derives the squared form $\\langle u,v\\rangle^2 \\leq \\langle u,u\\rangle\\langle v,v\\rangle$.",
       "startLine": 51,
-      "endLine": 79,
+      "endLine": 80,
       "mathContext": "$|\\langle u,v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$ and equivalently $\\langle u,v \\rangle^2 \\leq \\langle u,u \\rangle \\langle v,v \\rangle$ since $\\|u\\|^2 = \\langle u,u \\rangle$."
     },
     {
@@ -116,7 +116,7 @@
       "title": "Two-Variable Algebraic Form",
       "summary": "Elementary proof of $(a_1b_1+a_2b_2)^2 \\leq (a_1^2+a_2^2)(b_1^2+b_2^2)$ using the Lagrange identity $(a_1b_2-a_2b_1)^2 \\geq 0$, plus the equality characterization $a_1b_2 = a_2b_1$.",
       "startLine": 81,
-      "endLine": 114,
+      "endLine": 115,
       "mathContext": "Lagrange identity: $(a_1^2+a_2^2)(b_1^2+b_2^2) - (a_1b_1+a_2b_2)^2 = (a_1b_2-a_2b_1)^2 \\geq 0$."
     },
     {
@@ -124,7 +124,7 @@
       "title": "Finite Sum Form",
       "summary": "Proves $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ by embedding into `EuclideanSpace $\\mathbb{R}$ (Fin $n$)` and the non-squared form via `Real.sqrt_le_sqrt`.",
       "startLine": 116,
-      "endLine": 157,
+      "endLine": 158,
       "mathContext": "$(\\sum_{i=1}^n a_ib_i)^2 \\leq (\\sum_{i=1}^n a_i^2)(\\sum_{i=1}^n b_i^2)$ — the classical Cauchy inequality for finite sums."
     },
     {
@@ -132,7 +132,7 @@
       "title": "Equality Characterization",
       "summary": "Proves $|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c: u = cv$ for nonzero vectors, using `norm_inner_eq_norm_iff` and `inner_smul_left`.",
       "startLine": 159,
-      "endLine": 179,
+      "endLine": 180,
       "mathContext": "$|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c \\in \\mathbb{R}: u = cv$ — equality iff vectors are collinear."
     },
     {
@@ -140,7 +140,7 @@
       "title": "Verified Examples",
       "summary": "Numerical verifications: strict inequality $(196 < 200)$ for non-proportional vectors, equality $(100 = 100)$ for proportional vectors $(1,2)$ and $(2,4)$, and $\\mathbb{R}^2$ specialization.",
       "startLine": 181,
-      "endLine": 196,
+      "endLine": 197,
       "mathContext": "Strict: $(1 \\cdot 2 + 3 \\cdot 4)^2 = 196 < 200 = (1^2+3^2)(2^2+4^2)$. Equality: $(1 \\cdot 2 + 2 \\cdot 4)^2 = 100 = (1^2+2^2)(2^2+4^2)$ because $(2,4) = 2(1,2)$."
     },
     {
@@ -148,7 +148,7 @@
       "title": "Application: Triangle Inequality",
       "summary": "Derives $\\|u+v\\|^2 \\leq (\\|u\\|+\\|v\\|)^2$ from Cauchy-Schwarz via `norm_add_sq_real` expansion and $\\langle u,v\\rangle \\leq |\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$.",
       "startLine": 198,
-      "endLine": 212,
+      "endLine": 213,
       "mathContext": "$\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v\\rangle + \\|v\\|^2 \\leq \\|u\\|^2 + 2\\|u\\|\\|v\\| + \\|v\\|^2 = (\\|u\\|+\\|v\\|)^2$"
     },
     {

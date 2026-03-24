@@ -75,7 +75,8 @@
       }
     ],
     "lineCount": 290,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "summary": "Generalizes the 2D result A(r) = ∫₀ʳ C(ρ) dρ to n dimensions, proving V_n(r) = ∫₀ʳ S_n(ρ) dρ where S_n(ρ) = n·ω_n·ρ^(n-1) is the sphere surface area. The proof exploits the polynomial structure V_n(r) = ω_n·r^n: differentiation gives the surface area (power rule), and the Fundamental Theorem of Calculus recovers the volume as an integral. Rich consequences include shell volumes, scaling laws, and the surface-to-volume ratio n/r.",
@@ -103,28 +104,28 @@
       "id": "definitions",
       "title": "Volume and Surface Area Functions",
       "startLine": 33,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines unit ball volume ω_n = π^(n/2)/Γ(n/2+1), n-ball volume V_n(r) = ω_n·r^n, and sphere surface area S_n(r) = n·ω_n·r^(n-1)."
     },
     {
       "id": "unit-ball-properties",
       "title": "Unit Ball Volume Properties",
       "startLine": 51,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Proves ω_n ≥ 0 and explicit values ω_0=1, ω_1=2, ω_2=π, ω_3=4π/3 via Gamma function identities Γ(1/2) = √π, Γ(3/2) = √π/2, Γ(5/2) = 3√π/4."
     },
     {
       "id": "derivative-relation",
       "title": "The Derivative Relation",
       "startLine": 106,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "d/dr[V_n(r)] = S_n(r) via the power rule (hasDerivAt_pow), plus continuity of V_n and S_n. This is the n-dimensional 'onion peeling' principle."
     },
     {
       "id": "integral-formula",
       "title": "The Integral Formula (Main Theorem)",
       "startLine": 133,
-      "endLine": 165,
+      "endLine": 166,
       "summary": "V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2, using V_n(0) = 0. Also proves FTC Part 1 recovery: d/dr[∫₀ʳ S_n] = S_n(r)."
     },
     {
@@ -138,14 +139,14 @@
       "id": "shell-volumes",
       "title": "Shell/Annulus Generalization",
       "startLine": 213,
-      "endLine": 230,
+      "endLine": 231,
       "summary": "∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) for shells. The 3D spherical shell formula is given as a corollary."
     },
     {
       "id": "scaling",
       "title": "Scaling Properties and Surface-to-Volume Ratio",
       "startLine": 232,
-      "endLine": 262,
+      "endLine": 263,
       "summary": "Scaling laws V_n(cr) = c^n·V_n(r), S_n(cr) = c^(n-1)·S_n(r), and the key ratio S_n/V_n = n/r explaining concentration of measure in high dimensions."
     },
     {
