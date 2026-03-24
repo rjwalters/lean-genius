@@ -530,21 +530,5 @@
       "venue": "Proceedings of the London Mathematical Society, 2(1), pp. 388–392",
       "note": "Proved that every group of order p^a q^b (two primes) is solvable, establishing that non-solvability requires at least three distinct prime factors. A₅ (order 60 = 2²·3·5) is the smallest group escaping this criterion, making the connection to Abel-Ruffini explicit: the minimal non-solvable group has exactly the structure needed to block quintic radical solutions"
     }
-  ],
-  "leanFile": {
-    "imports": [
-      "Mathlib.FieldTheory.AbelRuffini",
-      "Mathlib.GroupTheory.Solvable",
-      "Mathlib.GroupTheory.SpecificGroups.Alternating",
-      "Mathlib.FieldTheory.Galois.Basic"
-    ],
-    "opens": [],
-    "namespace": "AbelRuffini",
-    "lineCount": 185,
-    "axiomCount": 0,
-    "theoremCount": 9,
-    "substantiveTheoremCount": 3,
-    "trivialSpecializations": 6,
-    "definitionCount": 0
-  }
+  ]
 }
