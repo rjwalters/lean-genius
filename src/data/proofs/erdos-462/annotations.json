@@ -50,7 +50,7 @@
     "type": "definition",
     "range": {
       "startLine": 19,
-      "endLine": 22
+      "endLine": 23
     },
     "title": "Least Prime Factor Definition",
     "content": "The least prime factor $p(n)$ returns 0 for $n \\leq 1$ and `Nat.minFac n` otherwise. For $n \\geq 2$, $p(n)$ is the smallest prime dividing $n$. For primes, $p(p) = p$; for composites, $p(n) \\leq \\sqrt{n}$.",
@@ -99,7 +99,7 @@
     "type": "definition",
     "range": {
       "startLine": 42,
-      "endLine": 48
+      "endLine": 49
     },
     "title": "Composite Sum Definition",
     "content": "Defines `compositeSum(x) = \\sum_{n=2}^{x-1} [n \\text{ composite}] \\cdot p(n)/n`. Sums over `Finset.Icc 2 (x-1)`, filtering out primes by setting their contribution to 0. This captures the global behavior: the sum over composites grows as $\\Theta(\\sqrt{x}/(\\log x)^2)$.",
@@ -123,7 +123,7 @@
     "type": "definition",
     "range": {
       "startLine": 50,
-      "endLine": 53
+      "endLine": 54
     },
     "title": "Interval Sum Definition",
     "content": "Defines `intervalSum(a, b) = \\sum_{n=a}^{b} p(n)/n` over `Finset.Icc a b`. Unlike `compositeSum`, this includes primes (for which $p(n)/n = 1$). The conjecture asks whether this sum is bounded below on intervals of the natural length scale.",
@@ -147,7 +147,7 @@
     "type": "technique",
     "range": {
       "startLine": 55,
-      "endLine": 63
+      "endLine": 64
     },
     "title": "Known Asymptotic: $\\Theta(\\sqrt{x}/(\\log x)^2)$",
     "content": "The composite sum satisfies $c_1 \\cdot \\sqrt{x}/(\\log x)^2 \\leq S(x) \\leq c_2 \\cdot \\sqrt{x}/(\\log x)^2$ for constants $0 < c_1 \\leq c_2$ and all $x \\geq x_0$. This two-sided bound establishes the growth rate and motivates the interval length $C\\sqrt{x}(\\log x)^2$ in the conjecture.",
@@ -172,7 +172,7 @@
     "type": "concept",
     "range": {
       "startLine": 65,
-      "endLine": 74
+      "endLine": 77
     },
     "title": "Main Conjecture: Short Interval Equidistribution",
     "content": "There exist $C > 0$ and $\\delta > 0$ such that $\\sum_{x \\leq n \\leq x + C\\sqrt{x}(\\log x)^2} p(n)/n \\geq \\delta$ for all sufficiently large $x$. This asks whether the least prime factor sum is equidistributed on its natural scale: intervals of length $\\sqrt{x}(\\log x)^2$ should capture a bounded-below fraction of the global sum.",
@@ -197,7 +197,7 @@
     "type": "technique",
     "range": {
       "startLine": 78,
-      "endLine": 84
+      "endLine": 85
     },
     "title": "Least Prime Factor of a Prime",
     "content": "For a prime $p$, $p(p) = p$ — the least prime factor of a prime is itself. Proved by unfolding leastPrimeFactor and applying `Nat.Prime.minFac_eq`.",
@@ -219,7 +219,7 @@
     "type": "technique",
     "range": {
       "startLine": 86,
-      "endLine": 90
+      "endLine": 91
     },
     "title": "Lower Bound: $p(n) \\geq 2$",
     "content": "For $n \\geq 2$, the least prime factor satisfies $p(n) \\geq 2$. This is immediate since the smallest prime is 2. Bounds individual terms in the sum: $p(n)/n \\geq 2/n$.",

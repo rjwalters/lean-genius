@@ -4,11 +4,11 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 1,
-      "endLine": 20
+      "endLine": 33
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erd\u0151s Problem #1048: Polynomial Lemniscate Diameter**\n\nFor a monic polynomial $f \\in \\mathbb{C}[x]$ with all roots satisfying $|z| \\le r$ where $r < 2$, must the sublevel set $L(f,1) = \\{z : |f(z)| < 1\\}$ contain a connected component with diameter greater than $2 - r$? Pommerenke (1961) showed this is FALSE for $r > 1$ using the counterexample $f(z) = z^n - r^n$, whose lemniscate splits into $n$ components with vanishing diameter as $n \\to \\infty$.",
+    "content": "**Erdős Problem #1048: Polynomial Lemniscate Diameter**\n\nFor a monic polynomial $f \\in \\mathbb{C}[x]$ with all roots satisfying $|z| \\le r$ where $r < 2$, must the sublevel set $L(f,1) = \\{z : |f(z)| < 1\\}$ contain a connected component with diameter greater than $2 - r$? Pommerenke (1961) showed this is FALSE for $r > 1$ using the counterexample $f(z) = z^n - r^n$, whose lemniscate splits into $n$ components with vanishing diameter as $n \\to \\infty$.",
     "mathContext": "$L(f, 1) = \\{z \\in \\mathbb{C} : |f(z)| < 1\\}$; question: $\\exists$ component with $\\text{diam} > 2 - r$?",
     "significance": "key",
     "relatedConcepts": [
@@ -28,7 +28,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 34,
-      "endLine": 35
+      "endLine": 36
     },
     "type": "definition",
     "title": "Monic Polynomial",
@@ -50,7 +50,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 37,
-      "endLine": 39
+      "endLine": 40
     },
     "type": "definition",
     "title": "Roots",
@@ -72,7 +72,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 41,
-      "endLine": 43
+      "endLine": 44
     },
     "type": "definition",
     "title": "Root Bound",
@@ -94,7 +94,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 45,
-      "endLine": 50
+      "endLine": 57
     },
     "type": "definition",
     "title": "BoundedMonicPoly",
@@ -117,7 +117,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 58,
-      "endLine": 60
+      "endLine": 64
     },
     "type": "definition",
     "title": "Lemniscate",
@@ -140,7 +140,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 65,
-      "endLine": 66
+      "endLine": 67
     },
     "type": "definition",
     "title": "Unit Lemniscate",
@@ -160,7 +160,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 68,
-      "endLine": 71
+      "endLine": 72
     },
     "type": "technique",
     "title": "Lemniscates Open",
@@ -181,7 +181,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 73,
-      "endLine": 76
+      "endLine": 83
     },
     "type": "technique",
     "title": "Lemniscates Bounded",
@@ -203,7 +203,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 84,
-      "endLine": 86
+      "endLine": 87
     },
     "type": "definition",
     "title": "Connected Component",
@@ -225,7 +225,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 88,
-      "endLine": 90
+      "endLine": 91
     },
     "type": "definition",
     "title": "Diameter",
@@ -246,7 +246,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 92,
-      "endLine": 94
+      "endLine": 101
     },
     "type": "definition",
     "title": "Max Component Diameter",
@@ -267,11 +267,11 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 102,
-      "endLine": 107
+      "endLine": 114
     },
     "type": "definition",
     "title": "EHP Conjecture",
-    "content": "The Erd\u0151s-Herzog-Piranian conjecture (1958): for any monic polynomial with roots in $|z| \\le r$ ($r < 2$), the unit lemniscate has a component with diameter exceeding $2 - r$. The intuition was that root confinement near the origin forces a large central lobe.",
+    "content": "The Erdős-Herzog-Piranian conjecture (1958): for any monic polynomial with roots in $|z| \\le r$ ($r < 2$), the unit lemniscate has a component with diameter exceeding $2 - r$. The intuition was that root confinement near the origin forces a large central lobe.",
     "mathContext": "$\\forall r < 2,\\ \\forall f \\in \\text{BoundedMonic}(r): \\text{maxCompDiam}(f, 1) > 2 - r$",
     "significance": "key",
     "relatedConcepts": [
@@ -289,7 +289,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 115,
-      "endLine": 117
+      "endLine": 118
     },
     "type": "definition",
     "title": "Counterexample",
@@ -311,7 +311,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 119,
-      "endLine": 122
+      "endLine": 123
     },
     "type": "technique",
     "title": "Counterexample Monic",
@@ -330,7 +330,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 124,
-      "endLine": 128
+      "endLine": 129
     },
     "type": "technique",
     "title": "Counterexample Roots",
@@ -352,7 +352,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 130,
-      "endLine": 133
+      "endLine": 134
     },
     "type": "technique",
     "title": "Counterexample Bounded",
@@ -371,7 +371,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 135,
-      "endLine": 138
+      "endLine": 139
     },
     "type": "concept",
     "title": "N Components",
@@ -393,7 +393,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 140,
-      "endLine": 143
+      "endLine": 144
     },
     "type": "concept",
     "title": "Diameters Vanish",
@@ -415,7 +415,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 145,
-      "endLine": 147
+      "endLine": 154
     },
     "type": "technique",
     "title": "Conjecture False",
@@ -435,7 +435,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 155,
-      "endLine": 156
+      "endLine": 161
     },
     "type": "definition",
     "title": "Golden Ratio",
@@ -457,10 +457,10 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 162,
-      "endLine": 165
+      "endLine": 166
     },
     "type": "concept",
-    "title": "Case r \u2264 1/2",
+    "title": "Case r ≤ 1/2",
     "content": "For $r \\le 1/2$, the component containing the origin has diameter $\\ge 2$. Roots tightly clustered near the origin ($r \\le 1/2$) keep the lemniscate close to the unit disk. The bound is sharp: $f(z) = z^n$ achieves exactly diameter 2.",
     "mathContext": "$r \\le 1/2,\\ 0 \\in L(f,1) \\Rightarrow \\text{diam}(C_0) \\ge 2$",
     "significance": "key",
@@ -478,10 +478,10 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 167,
-      "endLine": 170
+      "endLine": 171
     },
     "type": "concept",
-    "title": "Case 1/2 < r \u2264 \u03c6-1",
+    "title": "Case 1/2 < r ≤ φ-1",
     "content": "For $1/2 < r \\le (\\sqrt{5}-1)/2$, the central component has diameter $> 1/r$. The bound transitions at $r = 1/2$; at $r = (\\sqrt{5}-1)/2$ it gives $1/r = \\varphi \\approx 1.618$, matching the third regime.",
     "mathContext": "$1/2 < r \\le (\\sqrt{5}-1)/2 \\Rightarrow \\text{diam}(C_0) > 1/r$",
     "significance": "key",
@@ -498,10 +498,10 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 172,
-      "endLine": 175
+      "endLine": 182
     },
     "type": "concept",
-    "title": "Case \u03c6-1 \u2264 r \u2264 1",
+    "title": "Case φ-1 ≤ r ≤ 1",
     "content": "For $(\\sqrt{5}-1)/2 \\le r \\le 1$, the central component has diameter $> 2 - r^2$. At $r = 1$ this gives diameter $> 1$. The three regimes join continuously at the thresholds $r = 1/2$ and $r = (\\sqrt{5}-1)/2$.",
     "mathContext": "$(\\sqrt{5}-1)/2 \\le r \\le 1 \\Rightarrow \\text{diam}(C_0) > 2 - r^2$",
     "significance": "key",
@@ -518,7 +518,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 183,
-      "endLine": 186
+      "endLine": 187
     },
     "type": "technique",
     "title": "z^n Diameter",
@@ -539,7 +539,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 188,
-      "endLine": 191
+      "endLine": 192
     },
     "type": "technique",
     "title": "Bound Sharp",
@@ -559,7 +559,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 193,
-      "endLine": 196
+      "endLine": 203
     },
     "type": "concept",
     "title": "r = 1 Case",
@@ -579,7 +579,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 204,
-      "endLine": 207
+      "endLine": 208
     },
     "type": "concept",
     "title": "Component Count",
@@ -599,7 +599,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 209,
-      "endLine": 212
+      "endLine": 219
     },
     "type": "technique",
     "title": "Exterior Unbounded",
@@ -619,7 +619,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 220,
-      "endLine": 221
+      "endLine": 222
     },
     "type": "definition",
     "title": "Log Capacity",
@@ -641,7 +641,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 223,
-      "endLine": 225
+      "endLine": 226
     },
     "type": "concept",
     "title": "Lemniscate Capacity",
@@ -662,7 +662,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 227,
-      "endLine": 229
+      "endLine": 236
     },
     "type": "concept",
     "title": "Capacity-Diameter",
@@ -683,12 +683,12 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 237,
-      "endLine": 250
+      "endLine": 251
     },
     "type": "technique",
     "title": "Main Result",
     "content": "The main formalized result: $\\neg\\text{EHPConjecture}$. The proof uses Pommerenke's counterexample for $r > 1$, while the formalization also records the three positive regimes for $r \\le 1$.",
-    "mathContext": "$\\neg \\text{EHPConjecture}$, resolving Erd\u0151s Problem #1048",
+    "mathContext": "$\\neg \\text{EHPConjecture}$, resolving Erdős Problem #1048",
     "significance": "key",
     "relatedConcepts": [
       "problem resolution",
@@ -703,16 +703,16 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 252,
-      "endLine": 260
+      "endLine": 261
     },
     "type": "technique",
     "title": "Final Answer",
-    "content": "Erd\u0151s Problem #1048: DISPROVED for $r > 1$ by Pommerenke (1961). The theorem `erdos_1048 : \\neg \\text{EHPConjecture}` is a direct synonym for `EHP_false_for_r_gt_1`. The accompanying definitions provide human-readable answer and status strings. For $r \\le 1$, modified positive results hold with the golden ratio inverse as a critical threshold.",
+    "content": "Erdős Problem #1048: DISPROVED for $r > 1$ by Pommerenke (1961). The theorem `erdos_1048 : \\neg \\text{EHPConjecture}` is a direct synonym for `EHP_false_for_r_gt_1`. The accompanying definitions provide human-readable answer and status strings. For $r \\le 1$, modified positive results hold with the golden ratio inverse as a critical threshold.",
     "mathContext": "$\\text{erdos\\_1048} : \\neg \\text{EHPConjecture} := \\text{EHP\\_false\\_for\\_r\\_gt\\_1}$",
     "significance": "key",
     "relatedConcepts": [
       "problem status",
-      "Erd\u0151s problem resolution"
+      "Erdős problem resolution"
     ],
     "prerequisites": [
       "EHP_false_for_r_gt_1"
@@ -723,7 +723,7 @@
     "proofId": "erdos-1048",
     "range": {
       "startLine": 262,
-      "endLine": 267
+      "endLine": 273
     },
     "type": "technique",
     "title": "Pommerenke's Insight",
