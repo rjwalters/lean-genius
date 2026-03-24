@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "proofId": "area-of-circle-oq-01-oq-02-oq-01",
+  "reviewDate": "2026-03-23T19:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "A remarkably complete n-dimensional generalization with genuine Gamma function computations and clean FTC application, slightly inflating its originality claims.",
+    "tier": "B",
+    "tierJustification": "The core result (V_n = integral of S_n) is an FTC application from Mathlib, but the substantial bridge work — Gamma function half-integer computations, 3 clean definitions, scaling laws, and the surface-to-volume ratio proof — constitutes real formalization effort. Badge 'mathlib' honestly reflects this. 0 sorries, 0 axioms, verified status genuinely earned."
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "unitBallVolume_one (lines 66-76) and unitBallVolume_three (lines 87-104)",
+      "finding": "The Gamma function computations for omega_1 = 2 and omega_3 = 4pi/3 are genuinely non-trivial Lean work. Computing omega_1 requires Gamma_add_one, Gamma_one_half_eq, sqrt manipulation, and field_simp. Computing omega_3 chains two Gamma recurrences (3/2 and 5/2), rpow_add, sqrt_eq_rpow, and field_simp with ring. These are the file's most technically demanding proofs and represent real formalization effort.",
+      "recommendation": "Preserve. These computations are where the file adds value beyond what a mathematician would call 'obvious from the definitions'."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Overall file structure, lines 1-290",
+      "finding": "Excellent organization following a clean logical progression: definitions (Part I) -> properties (Part II) -> derivative relation (Part III) -> main theorem (Part IV) -> special cases (Part V) -> shells (Part VI) -> scaling (Part VII) -> summary (Part VIII). Each section builds on the previous, and the docstrings accurately describe what follows. The file tells a coherent mathematical story.",
+      "recommendation": "Preserve this structure as a model for future formalization files."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "surface_to_volume_ratio, lines 248-262",
+      "finding": "The surface-to-volume ratio proof S_n/V_n = n/r is the most technically intricate theorem. It requires showing omega_n != 0 (via rpow_pos_of_pos and Gamma_pos_of_pos), r^n != 0, then field_simp and pow_sub_0 to simplify. This is genuine algebraic reasoning in Lean, not a one-line Mathlib call.",
+      "recommendation": "Preserve. This is a good example of non-trivial field_simp usage."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Completeness of stated scope",
+      "finding": "The file delivers everything it promises: definitions, main theorem, FTC recovery, special cases for n=1,2,3, explicit formulas, shell volumes, scaling laws, and the surface-to-volume ratio. No gaps, no unacknowledged omissions. 26 theorems with 0 sorries is a clean result.",
+      "recommendation": "Preserve this level of thoroughness."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions (8 items)",
+      "finding": "The 8-item originalContributions list reads more like a theorem inventory than a list of genuine novelties. Several items are thin: (1) 'FTC Part 1 recovery' (item 4) is a direct 3-line call to Mathlib's integral_hasDerivAt_right — this is not an original contribution; (2) 'Explicit formulas: S2 = 2pi*r, ...' (item 8) are 1-2 line substitutions of computed omega_n values; (3) 'Shell volume generalization' (item 5) uses the identical pattern as the main theorem with different endpoints. The genuine contributions are: Gamma computations, main theorem, scaling laws, and surface-to-volume ratio.",
+      "recommendation": "Trim to 4-5 items reflecting genuine contributions: (1) Gamma function computations for omega_n, (2) main theorem V_n = integral S_n via FTC, (3) surface-to-volume ratio n/r, (4) scaling laws. Move the rest to a 'derived results' list or remove."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "hasDerivAt_rpow_nat, lines 110-112",
+      "finding": "hasDerivAt_rpow_nat is defined as 'hasDerivAt_pow n r' — a pure synonym for a Mathlib lemma with no added content. The docstring says 'This wraps Mathlib's HasDerivAt for natural number powers' which is honest, but the wrapper adds nothing (same type signature, same proof body).",
+      "recommendation": "Remove and use hasDerivAt_pow directly in hasDerivAt_nBallVol. If kept, do not count as an original contribution."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json tags: 'wiedijk-100'",
+      "finding": "The 'wiedijk-100' tag suggests this entry IS one of the 100 theorems. In reality, it is a sub-entry (OQ01 of OQ02 of OQ01 of area-of-circle, which IS Wiedijk #9). The connection is real but the tag may mislead users filtering for actual Wiedijk theorems.",
+      "recommendation": "Replace with a tag like 'wiedijk-100-extension' or 'wiedijk-9-chain' to indicate the relationship without implying this is a Wiedijk theorem itself."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json historicalContext (line 64)",
+      "finding": "The historicalContext says 'The n-ball volume formula omega_n = pi^(n/2)/Gamma(n/2+1) was first computed by Schlafli (1852)'. This is correct but incomplete — it doesn't mention that the volume-surface integral relation V_n = integral S_n (the file's main result) is a standard consequence that doesn't require attribution to a specific discoverer. The historical context could better emphasize that the main theorem's novelty is in its formalization, not in the mathematics.",
+      "recommendation": "Add a note that the integral relation is a standard textbook result and the contribution is its formal verification in Lean 4."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json lineCount: 290 vs actual file",
+      "finding": "The file has 291 lines (the closing 'end' on line 291 is counted). lineCount says 290. Off by one.",
+      "recommendation": "Update to 291."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Trim originalContributions from 8 to 4-5 items: keep Gamma computations, main theorem, surface-to-volume ratio, scaling laws. Remove or downgrade FTC Part 1 recovery (thin Mathlib wrapper), explicit formulas (trivial substitutions), and shell volume (same pattern as main theorem).",
+      "status": "open"
+    },
+    {
+      "id": "ai-2",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Replace 'wiedijk-100' tag with 'wiedijk-100-extension' or 'wiedijk-9-chain' to accurately reflect that this is a sub-entry extending Wiedijk #9, not itself one of the 100 theorems.",
+      "status": "open"
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix lineCount from 290 to 291. Add a note to historicalContext that the V_n = integral S_n relation is a standard textbook result and the contribution is its formalization.",
+      "status": "open"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Consider removing hasDerivAt_rpow_nat (lines 110-112) which is a pure synonym for Mathlib's hasDerivAt_pow. Use hasDerivAt_pow directly in hasDerivAt_nBallVol.",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 7,
+    "completeness": 9,
+    "framingPrecision": 8,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 9,
+    "overall": 8.0
+  },
+
+  "suggestedBestFraming": "A complete formalization of the n-dimensional volume-surface integration formula V_n(r) = integral_0^r S_n(rho) d_rho, proved via FTC from the polynomial structure V_n = omega_n * r^n, with non-trivial Gamma function computations for explicit omega_n values and the key ratio S_n/V_n = n/r connecting to concentration of measure."
+}
