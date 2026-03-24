@@ -56,7 +56,12 @@ noncomputable def expectedDensity (primes : Finset ℕ) : ℝ :=
 /-- The covering count is at most k (trivially, since we're in an interval of length k). -/
 theorem covering_le_k (primes : Finset ℕ) (k : ℕ) :
     coveringFunction primes k ≤ k := by
-  sorry
+  unfold coveringFunction
+  apply ciInf_le_of_le ⟨0, fun _ ⟨_, h⟩ => h ▸ Nat.zero_le _⟩ 0
+  unfold coveredInInterval
+  calc ((Finset.Ico 0 (0 + k)).filter _).card
+      ≤ (Finset.Ico 0 (0 + k)).card := Finset.card_filter_le _ _
+    _ = k := by simp
 
 /-- For a single prime p, F_k({p}) = ⌊k/p⌋ or ⌈k/p⌉.
     More precisely, in any k consecutive integers, at least ⌊k/p⌋ are
@@ -125,13 +130,14 @@ axiom alpha_gt_3_open (primes : Finset ℕ)
 theorem density_two_three :
     expectedDensity ({2, 3} : Finset ℕ) = 1 - (1 - 1/2) * (1 - 1/3) := by
   unfold expectedDensity
-  sorry
+  norm_num [Finset.prod_pair (show (2:ℕ) ≠ 3 by omega)]
 
 /-- For primes {2, 3, 5}, expectedDensity = 1 - (1/2)(2/3)(4/5) = 11/15. -/
 theorem density_two_three_five :
     expectedDensity ({2, 3, 5} : Finset ℕ) = 1 - (1 - 1/2) * (1 - 1/3) * (1 - 1/5) := by
   unfold expectedDensity
-  sorry
+  norm_num [Finset.prod_insert (show (2:ℕ) ∉ ({3, 5} : Finset ℕ) by decide),
+            Finset.prod_pair (show (3:ℕ) ≠ 5 by omega)]
 
 /-
 ## Connection to Jacobsthal's Function
