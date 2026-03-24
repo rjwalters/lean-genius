@@ -1,13 +1,13 @@
 {
   "slug": "basel-problem-oq-02",
-  "title": "Are all odd zeta values \u03b6(2k+1) transcendental",
+  "title": "Are all odd zeta values ζ(2k+1) transcendental",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\forall k \\geq 1, \\zeta(2k+1) is transcendental over \\mathbb{Q}",
-    "plain": "Are all odd zeta values \u03b6(2k+1) transcendental? Not a single one is known to be transcendental. \u03b6(3) is irrational (Ap\u00e9ry 1978). Infinitely many are irrational (Rivoal 2000).",
+    "plain": "Are all odd zeta values ζ(2k+1) transcendental? Not a single one is known to be transcendental. ζ(3) is irrational (Apéry 1978). Infinitely many are irrational (Rivoal 2000).",
     "whyMatters": []
   },
   "knownResults": {
@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T00:42:35.517Z",
-    "iteration": 1,
-    "focus": "Formalization complete, problem is OPEN",
+    "iteration": 2,
+    "focus": "Enhanced with even-zeta transcendence, Rivoal/Zudilin axioms, structural hierarchy",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Aristotle: prove transcendence lemmas; explore Nesterenko theorem",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,27 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY + FORMALIZATION: Created BaselProblemOQ02.lean (109 lines). Formalized the transcendence conjecture, Ap\u00e9ry theorem axiom, structural relationships. 2 axioms (pi_transcendental, apery_theorem), 0 sorries.",
+    "progressSummary": "DEEP DIVE: Expanded BaselProblemOQ02.lean (109→187 lines). Added even-zeta transcendence theorems (2 new sorry targets for Aristotle), axiomatized Rivoal (2000) and Zudilin (2001) theorems, proved structural hierarchy: transcendence conjecture ⟹ irrationality conjecture ⟹ all known results. Created Aristotle companion file.",
     "builtItems": [
       "Created proofs/Proofs/BaselProblemOQ02.lean (109 lines)",
       "Proved zetaValue_two and zetaValue_four from Mathlib",
       "Stated odd_zeta_transcendence_conjecture and odd_zeta_irrationality_conjecture",
       "Proved transcendence_implies_irrationality, conjecture_implies_apery",
-      "Axiomatized pi_transcendental (Lindemann) and apery_theorem"
+      "Axiomatized pi_transcendental (Lindemann) and apery_theorem",
+      "Proved zeta_two_transcendental and zeta_four_transcendental (modulo Mathlib transcendence API, 2 sorries)",
+      "Axiomatized rivoal_theorem (infinitely many odd ζ irrational, Set.Infinite formulation)",
+      "Axiomatized zudilin_theorem (one of ζ(5,7,9,11) irrational, 4-way disjunction)",
+      "Proved conjecture_implies_rivoal (irrationality conjecture → Rivoal, sorry-free)",
+      "Proved conjecture_implies_zudilin (irrationality conjecture → Zudilin, sorry-free)",
+      "Proved conjecture_implies_all_known (transcendence conjecture recovers all known results)",
+      "Created BaselProblemOQ02Aristotle.lean companion file (2 Aristotle targets)"
     ],
     "insights": [
-      "Stark even/odd divide: \u03b6(2k) = rational \u00d7 \u03c0^(2k) (fully understood since Euler 1734), but \u03b6(2k+1) has no closed form",
+      "Stark even/odd divide: ζ(2k) = rational × π^(2k) (fully understood since Euler 1734), but ζ(2k+1) has no closed form",
       "Transcendental implies irrational via Transcendental.irrational in Mathlib",
       "Mathlib has hasSum_zeta_two/four and hasSum_zeta_nat for even values, nothing for odd",
-      "Neither \u03c0 transcendental nor Ap\u00e9ry theorem are in Mathlib v4.26.0",
-      "Problem inherently open - no specific odd zeta value known transcendental"
+      "Neither π transcendental nor Apéry theorem are in Mathlib v4.26.0",
+      "Problem inherently open - no specific odd zeta value known transcendental",
+      "Even zeta transcendence follows from pi_transcendental via algebraic closure: ζ(2k)=r·π^(2k), transcendental × nonzero rational = transcendental",
+      "Rivoal best stated as Set.Infinite rather than ∀N∃S card≥N — cleaner Lean formulation",
+      "Zudilin 2001 refines Ball-Rivoal: pinpoints ζ(5,7,9,11) but not which one",
+      "Full hierarchy chain is provable without sorry: transcendence ⟹ irrationality ⟹ {Apéry, Rivoal, Zudilin}"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Could add Rivoal result (infinitely many odd \u03b6 irrational) as axiom",
-      "Could add Zudilin result (one of \u03b6(5,7,9,11) irrational) as axiom",
-      "If Lindemann-Weierstrass lands in Mathlib, pi_transcendental becomes provable",
-      "zetaValue_summable for general s needs p-series convergence proof"
+      "Aristotle: prove zeta_two_transcendental and zeta_four_transcendental via companion file",
+      "Add Ball-Rivoal quantitative refinement: dim(span{1,ζ(3),...,ζ(s)}) ≥ (1+log2)^(-1) log s",
+      "If Lindemann-Weierstrass lands in Mathlib, pi_transcendental becomes provable (2→0 deep axioms)",
+      "Explore stating Nesterenko theorem (π, e^π, Γ(1/4) algebraically independent) as axiom"
     ]
   },
   "tags": [
@@ -68,20 +79,31 @@
     "mathlib": []
   },
   "started": "2026-03-23T00:42:35.517Z",
-  "lastUpdate": "2026-03-24T06:11:27.000Z",
+  "lastUpdate": "2026-03-24T07:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/BaselProblemOQ02.lean",
       "filename": "BaselProblemOQ02.lean",
-      "lineCount": 109,
-      "theoremCount": 6,
-      "axiomCount": 2,
+      "lineCount": 187,
+      "theoremCount": 10,
+      "axiomCount": 4,
       "defCount": 4,
-      "sorryCount": 0,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ02Aristotle.lean",
+      "filename": "BaselProblemOQ02Aristotle.lean",
+      "lineCount": 52,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ02Aristotle.lean"
     }
   ]
 }

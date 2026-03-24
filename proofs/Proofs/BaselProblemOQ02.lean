@@ -105,6 +105,82 @@ theorem apery_weaker_than_conjecture :
 def even_zeta_rational_multiple (k : ℕ) (_ : k ≠ 0) : Prop :=
   ∃ q : ℚ, q ≠ 0 ∧ zetaValue (2 * k) = q * π ^ (2 * k)
 
+-- ## Part 7: Even Zeta Values Are Transcendental
+
+/-- ζ(2) is transcendental over ℚ.
+    Proof sketch: ζ(2) = π²/6. If ζ(2) were algebraic, then π² = 6·ζ(2)
+    would be algebraic, hence π would be algebraic — contradicting Lindemann. -/
+theorem zeta_two_transcendental : Transcendental ℚ (zetaValue 2) := by
+  rw [zetaValue_two]
+  intro ⟨p, hp, hpx⟩
+  apply pi_transcendental
+  -- π²/6 algebraic → π² algebraic → π algebraic
+  -- Needs Mathlib: algebraic closure under field ops + algebraic_of_pow
+  sorry
+
+/-- ζ(4) is transcendental over ℚ.
+    Proof sketch: ζ(4) = π⁴/90. Same argument as ζ(2) via Lindemann. -/
+theorem zeta_four_transcendental : Transcendental ℚ (zetaValue 4) := by
+  rw [zetaValue_four]
+  intro ⟨p, hp, hpx⟩
+  apply pi_transcendental
+  sorry
+
+-- ## Part 8: Deep Results on Odd Zeta Irrationality
+
+/-- **Rivoal's Theorem (2000)**: Infinitely many odd zeta values are irrational.
+    Proved using very-well-poised hypergeometric series and a linear independence
+    criterion. The precise result: the ℚ-vector space spanned by
+    1, ζ(3), ζ(5), ..., ζ(s) has dimension ≥ c · log s as s → ∞.
+    Not yet in Mathlib. -/
+axiom rivoal_theorem :
+  {k : ℕ | 1 ≤ k ∧ Irrational (zetaValue (2 * k + 1))}.Infinite
+
+/-- **Zudilin's Theorem (2001)**: At least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational.
+    Refines Ball–Rivoal method with well-poised hypergeometric series.
+    Not yet in Mathlib. -/
+axiom zudilin_theorem :
+  Irrational (zetaValue 5) ∨ Irrational (zetaValue 7) ∨
+  Irrational (zetaValue 9) ∨ Irrational (zetaValue 11)
+
+-- ## Part 9: The Irrationality Landscape
+
+/-- The full irrationality conjecture implies Rivoal's theorem:
+    if ALL odd zeta values are irrational, certainly infinitely many are. -/
+theorem conjecture_implies_rivoal :
+    odd_zeta_irrationality_conjecture →
+    {k : ℕ | 1 ≤ k ∧ Irrational (zetaValue (2 * k + 1))}.Infinite := by
+  intro h
+  apply Set.infinite_of_injective_forall_mem (f := fun n => n + 1)
+    (fun a b hab => by omega)
+  intro n
+  exact ⟨by omega, h (n + 1) (by omega)⟩
+
+/-- The full irrationality conjecture implies Zudilin's theorem. -/
+theorem conjecture_implies_zudilin :
+    odd_zeta_irrationality_conjecture →
+    Irrational (zetaValue 5) ∨ Irrational (zetaValue 7) ∨
+    Irrational (zetaValue 9) ∨ Irrational (zetaValue 11) := by
+  intro h
+  exact Or.inl (h 2 (by omega))
+
+/-- The hierarchy of known results:
+    Transcendence conjecture ⟹ Irrationality conjecture ⟹ Rivoal + Zudilin + Apéry.
+    This gives a concrete summary: knowing the conjecture recovers all known results. -/
+theorem conjecture_implies_all_known :
+    odd_zeta_transcendence_conjecture →
+    (Irrational (zetaValue 3)) ∧
+    ({k : ℕ | 1 ≤ k ∧ Irrational (zetaValue (2 * k + 1))}.Infinite) ∧
+    (Irrational (zetaValue 5) ∨ Irrational (zetaValue 7) ∨
+     Irrational (zetaValue 9) ∨ Irrational (zetaValue 11)) := by
+  intro h
+  have hirr := transcendence_implies_irrationality h
+  exact ⟨conjecture_implies_apery hirr,
+         conjecture_implies_rivoal hirr,
+         conjecture_implies_zudilin hirr⟩
+
+-- ## Part 10: Summary
+
 /-- Problem status: OPEN for the transcendence conjecture. -/
 def problem_status : String := "OPEN (no odd zeta value known to be transcendental)"
 
