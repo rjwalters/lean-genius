@@ -44,28 +44,49 @@
         "theorem": "totient_prime",
         "description": "φ(p) = p - 1 for prime p",
         "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_even",
+        "description": "φ(n) is even for n ≥ 3",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime_pow",
+        "description": "φ(p^k) = p^(k-1)(p-1) for prime p",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.infinite_setOf_prime",
+        "description": "The set of primes is infinite",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.infinite_of_injective_forall_mem",
+        "description": "Injective function into a set implies the set is infinite",
+        "module": "Mathlib.Data.Set.Finite.Basic"
       }
     ],
     "originalContributions": [
       "totientDivisors definition: {n : φ(n) | n + a}",
-      "totient_dvd_self_iff axiom: a = 0 characterization",
-      "totientDivisors_zero_infinite axiom",
+      "totient_dvd_self_iff axiom: a = 0 characterization (deep, not in Mathlib)",
+      "totientDivisors_zero_infinite: proved via powers-of-2 family and Set.infinite_of_injective_forall_mem",
       "lehmerConjecture definition",
-      "prime_totient_dvd_pred theorem: constructive proof",
-      "totientDivisors_neg_one_infinite axiom",
+      "prime_totient_dvd_pred theorem: constructive proof via totient_prime",
+      "totientDivisors_neg_one_infinite: proved via Set.Infinite.mono with Nat.infinite_setOf_prime",
       "erdos828Conjecture definition",
-      "totient_even, totient_prime_pow_formula axioms",
+      "totient_even: proved from Nat.totient_even",
+      "totient_prime_pow_formula: proved from Nat.totient_prime_pow",
       "erdos_828_summary theorem"
     ],
-    "axiomCount": 5,
-    "lineCount": 105,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "axiomCount": 1,
+    "lineCount": 132,
+    "assumptions": "1 axiom: totient_dvd_self_iff (deep characterization of when φ(n) | n, not in Mathlib). 4 former axioms proved from Mathlib."
   },
   "overview": {
     "historicalContext": "Erdős Problem #828, from [Er83], asks a sweeping question about Euler's totient function: for every integer a, must there be infinitely many n with φ(n) | n + a? The conjecture is attributed to Graham and appears as Problem B37 in Guy's 'Unsolved Problems in Number Theory' (2004). It unifies several classical problems about totient divisibility into a single framework.\n\nThe case a = 0 is completely understood: φ(n) | n if and only if n ≤ 1 or n = 2^a · 3^b for some a > 0 (the 3-smooth numbers with a factor of 2). This characterization follows from the multiplicative formula φ(n)/n = ∏_{p|n}(1 - 1/p), which yields an integer ratio only when the prime factors are 2 and 3. The case a = -1 is far more famous: asking when φ(n) | n - 1 is essentially Lehmer's conjecture (1932), which asserts that the only solutions with n > 1 are the primes (where φ(p) = p - 1 trivially divides p - 1).\n\nThe general conjecture remains wide open. While the a = 0 and a = -1 cases have rich structure, extending the analysis to arbitrary a ∈ ℤ requires understanding the arithmetic of the totient function at a much deeper level. The problem connects to Carmichael's totient conjecture and to the Fermat-Euler theorem, which shows a^{φ(n)} ≡ 1 (mod n) for gcd(a,n) = 1.",
     "problemStatement": "**Problem Statement (Open)**\n\nFor any integer $a \\in \\mathbb{Z}$, are there infinitely many $n$ such that $\\varphi(n) \\mid n + a$?\n\n**Known Cases:**\n- $a = 0$: Completely characterized — $\\varphi(n) \\mid n$ iff $n = 2^a \\cdot 3^b$\n- $a = -1$: Lehmer's conjecture (1932) — only primes satisfy $\\varphi(n) \\mid n-1$ for $n > 1$ (OPEN)\n\n**Attribution:** Conjecture of Graham. See Guy (2004), Problem B37.",
     "text": "For any integer a, are there infinitely many n such that φ(n) divides n + a? Generalizes Lehmer's conjecture (a = -1) and the characterized case a = 0 (n = 2^a · 3^b). OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines totientDivisors(a) as the set {n ∈ ℕ : φ(n) | n + a} using integer arithmetic to handle negative a. The a = 0 characterization and infiniteness are axiomatized as totient_dvd_self_iff and totientDivisors_zero_infinite.\n\nFor a = -1, Lehmer's conjecture is stated as a definition (not axiomatized as true, since it's open), while the easy direction (primes satisfy φ(p) | p - 1) is proved constructively using Mathlib's totient_prime. Structural properties of the totient (evenness for n > 2, prime power formula) are axiomatized.\n\nThe summary theorem combines the two known infiniteness results using exact ⟨...⟩.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines totientDivisors(a) as the set {n ∈ ℕ : φ(n) | n + a} using integer arithmetic to handle negative a. Only the deep characterization totient_dvd_self_iff (φ(n)|n iff n=2^a·3^b) remains axiomatized.\n\nThe infiniteness of totientDivisors(0) is proved constructively by showing all powers of 2 are members (φ(2^(k+1))=2^k | 2^(k+1)) using Set.infinite_of_injective_forall_mem. The infiniteness of totientDivisors(-1) is proved via Set.Infinite.mono from Nat.infinite_setOf_prime, since all primes p satisfy φ(p)=p-1 | p+(-1).\n\nStructural properties (totient_even, totient_prime_pow_formula) are proved directly from Mathlib's Nat.totient_even and Nat.totient_prime_pow.",
     "keyInsights": [
       "**a = 0 Characterized:** φ(n) | n iff n = 2^a · 3^b — only 3-smooth numbers with a factor of 2",
       "**Lehmer's Conjecture (a = -1):** No composite n > 1 known with φ(n) | n - 1; open since 1932",
@@ -89,41 +110,41 @@
     {
       "id": "case-zero",
       "title": "Special Case a = 0",
-      "summary": "totient_dvd_self_iff axiom and totientDivisors_zero_infinite axiom",
+      "summary": "totient_dvd_self_iff axiom and totientDivisors_zero_infinite theorem (proved via 2^k family)",
       "startLine": 42,
-      "endLine": 49
+      "endLine": 63
     },
     {
       "id": "lehmer",
       "title": "Lehmer's Conjecture (a = -1)",
-      "summary": "lehmerConjecture definition, prime_totient_dvd_pred theorem, totientDivisors_neg_one_infinite axiom",
-      "startLine": 51,
-      "endLine": 67
+      "summary": "lehmerConjecture definition, prime_totient_dvd_pred theorem, totientDivisors_neg_one_infinite theorem (proved from primes)",
+      "startLine": 65,
+      "endLine": 92
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos828Conjecture: ∀ a : ℤ, (totientDivisors a).Infinite",
-      "startLine": 69,
-      "endLine": 77
+      "startLine": 94,
+      "endLine": 99
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
-      "summary": "totient_even, totient_prime', totient_prime_pow_formula",
-      "startLine": 79,
-      "endLine": 90
+      "summary": "totient_even (proved), totient_prime', totient_prime_pow_formula (proved from Mathlib)",
+      "startLine": 101,
+      "endLine": 118
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_828_summary: both a=0 and a=-1 cases are infinite",
-      "startLine": 92,
-      "endLine": 105
+      "startLine": 120,
+      "endLine": 132
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #828 asks whether totientDivisors(a) is infinite for every integer a. The a = 0 case is fully characterized (3-smooth numbers), and the a = -1 case is Lehmer's famous 1932 conjecture. The formalization proves φ(p) | p - 1 constructively and axiomatizes the characterization and infiniteness results.",
+    "summary": "Erdős Problem #828 asks whether totientDivisors(a) is infinite for every integer a. The a = 0 case is fully characterized (3-smooth numbers), and the a = -1 case is Lehmer's famous 1932 conjecture. The formalization constructively proves infiniteness for both a=0 (via powers of 2) and a=-1 (via primes), plus structural properties from Mathlib. Only the deep characterization totient_dvd_self_iff remains axiomatized.",
     "implications": "**Theoretical Significance**: **Number Theory Connections**\n\n1. **Lehmer's Conjecture:** The a = -1 case is one of the most famous open problems about the totient function\n\n**2. Totient Arithmetic:** Resolution would illuminate the divisibility structure of Euler's totient at a deep level\n\n3. **Carmichael's Conjecture:** Related conjecture that φ(n) = φ(m) always has a solution m ≠ n\n\n4. **Unification:** The problem unifies infinitely many specific divisibility questions into one conjecture.",
     "openQuestions": [
       "Are there composite Lehmer numbers (φ(n) | n - 1 with n > 1 composite)?",
@@ -145,9 +166,9 @@
       "Set"
     ],
     "namespace": "Erdos828",
-    "lineCount": 105,
-    "axiomCount": 5,
-    "theoremCount": 3,
+    "lineCount": 132,
+    "axiomCount": 1,
+    "theoremCount": 7,
     "definitionCount": 3
   }
 }
