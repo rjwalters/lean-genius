@@ -49,6 +49,11 @@ theorem isSidon_singleton (x : ℤ) : IsSidon {x} := by
   rw [Finset.mem_singleton] at ha hb hc hd
   exact ⟨by rw [ha, hc], by rw [hb, hd]⟩
 
+/-- Any subset of a Sidon set is Sidon. -/
+theorem isSidon_subset {S T : Finset ℤ} (hT : T ⊆ S) (hS : IsSidon S) : IsSidon T :=
+  fun a ha b hb c hc d hd hab hcd heq =>
+    hS a (hT ha) b (hT hb) c (hT hc) d (hT hd) hab hcd heq
+
 /-
 ## Section 2: Maximum Sidon subset size
 
@@ -89,6 +94,27 @@ theorem maxSidonSize_le_card (A : Finset ℤ) : maxSidonSize A ≤ A.card := by
   apply Finset.sup_le (fun S hS => ?_)
   exact Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1)
 
+/-- maxSidonSize is monotone: A ⊆ B → maxSidonSize A ≤ maxSidonSize B. -/
+theorem maxSidonSize_mono {A B : Finset ℤ} (h : A ⊆ B) : maxSidonSize A ≤ maxSidonSize B := by
+  unfold maxSidonSize
+  apply Finset.sup_le
+  intro S hS
+  have hSf := Finset.mem_filter.mp hS
+  have hSB : S ∈ B.powerset.filter (fun S => IsSidon S) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr
+      (Finset.Subset.trans (Finset.mem_powerset.mp hSf.1) h), hSf.2⟩
+  exact Finset.le_sup hSB
+
+/-- A nonempty set has maxSidonSize ≥ 1 (any singleton is Sidon). -/
+theorem maxSidonSize_pos {A : Finset ℤ} (hA : A.Nonempty) : 1 ≤ maxSidonSize A := by
+  obtain ⟨a, ha⟩ := hA
+  unfold maxSidonSize
+  have hmem : {a} ∈ A.powerset.filter (fun S => IsSidon S) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr ha),
+      isSidon_singleton a⟩
+  calc 1 = ({a} : Finset ℤ).card := by simp
+    _ ≤ _ := Finset.le_sup hmem
+
 /-- Trivial upper bound: (maxSidonSize A)² ≤ |A|². Since any Sidon subset
     of A has at most |A| elements, squaring preserves the inequality.
     Note: the actual conjecture is the much stronger maxSidonSize A ≤ (1+o(1))√|A|. -/
@@ -105,13 +131,28 @@ Erdős conjectured that `ℓ(N) ~ N^{1/2}`, i.e., the lower and upper
 bounds are of the same order.
 -/
 
-/-- Erdős Problem 530: The maximum Sidon subset size ℓ(N) satisfies
-    c₁ · N^{1/2} ≤ ℓ(N) ≤ c₂ · N^{1/2} for absolute constants c₁, c₂. -/
+/-- Erdős Problem 530: ℓ(N) ~ N^{1/2}, where ℓ(N) = min over all A of size N of maxSidonSize A.
+
+    Two parts:
+    - Lower bound (universal): every set of size ≥ 4 has a Sidon subset of size ≥ c₁√N.
+      This is KSS (1975).
+    - Upper bound (existential): for each N, some set of size N has no Sidon subset > c₂√N.
+      Note: the upper bound must be existential — a Sidon set A has maxSidonSize(A) = |A| ≫ √|A|,
+      so a universal upper bound maxSidonSize(A)² ≤ c₂|A| for ALL A is false. -/
 def ErdosProblem530 : Prop :=
-  ∃ c₁ c₂ : ℕ, c₁ ≥ 1 ∧ c₂ ≥ 1 ∧
+  (∃ c₁ : ℕ, c₁ ≥ 1 ∧
     ∀ A : Finset ℤ, A.card ≥ 4 →
-      maxSidonSize A * maxSidonSize A ≥ c₁ * A.card ∧
-      maxSidonSize A * maxSidonSize A ≤ c₂ * A.card
+      maxSidonSize A * maxSidonSize A ≥ c₁ * A.card) ∧
+  (∃ c₂ : ℕ, c₂ ≥ 1 ∧
+    ∀ N : ℕ, N ≥ 4 →
+      ∃ A : Finset ℤ, A.card = N ∧
+        maxSidonSize A * maxSidonSize A ≤ c₂ * N)
+
+/-- The lower bound of Problem 530 follows directly from Komlós–Sulyok–Szemerédi. -/
+theorem erdos530_lower_bound :
+    ∃ c₁ : ℕ, c₁ ≥ 1 ∧ ∀ A : Finset ℤ, A.card ≥ 4 →
+      maxSidonSize A * maxSidonSize A ≥ c₁ * A.card :=
+  komlos_sulyok_szemeredi
 
 /-
 ## Section 5: Sidon set partition conjecture
