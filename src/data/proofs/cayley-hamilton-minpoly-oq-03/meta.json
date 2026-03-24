@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)#Computation",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ03.lean",
     "tags": [
       "linear-algebra",
@@ -18,8 +18,8 @@
       "computational-complexity",
       "research"
     ],
-    "badge": "formalized",
-    "sorries": 3,
+    "badge": "original",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.monic",
@@ -79,8 +79,8 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 326,
-    "assumptions": "3 sorries: aeval_mulVec_eq_krylov_sum (polynomial-Krylov expansion), krylov_dependent_at_minpoly_degree (termination), nonderogatory_krylov_optimal (cyclic vector independence). No axioms.",
+    "lineCount": 368,
+    "assumptions": "0 axioms, 0 sorries. All 12 theorems fully proved. Uses Mathlib's minpoly infrastructure (monic, aeval, dvd_charpoly) as foundation for original Krylov theory.",
     "mathlib_version": "4.26.0"
   },
   "leanFile": {
@@ -88,8 +88,8 @@
     "theoremCount": 12,
     "defCount": 1,
     "axiomCount": 0,
-    "sorryCount": 3,
-    "lineCount": 326
+    "sorryCount": 0,
+    "lineCount": 368
   },
   "sections": [
     {
@@ -104,7 +104,7 @@
       "title": "Polynomial Evaluation via Krylov Vectors",
       "startLine": 89,
       "endLine": 107,
-      "summary": "States the key structural theorem: evaluating polynomial p at matrix M and applying to v gives a linear combination of Krylov vectors with p's coefficients. (1 sorry)"
+      "summary": "States the key structural theorem: evaluating polynomial p at matrix M and applying to v gives a linear combination of Krylov vectors with p's coefficients."
     },
     {
       "id": "krylov-annihilation",
@@ -118,7 +118,7 @@
       "title": "Krylov Termination Theorem",
       "startLine": 128,
       "endLine": 157,
-      "summary": "States that the first deg(minpoly)+1 Krylov vectors are linearly dependent, since the monic minimal polynomial provides a nontrivial relation. (1 sorry)"
+      "summary": "States that the first deg(minpoly)+1 Krylov vectors are linearly dependent, since the monic minimal polynomial provides a nontrivial relation."
     },
     {
       "id": "krylov-dimension",
@@ -139,7 +139,7 @@
       "title": "Nonderogatory Optimality",
       "startLine": 226,
       "endLine": 250,
-      "summary": "States that for nonderogatory matrices with a cyclic vector, exactly n Krylov vectors are linearly independent -- the method is optimal. (1 sorry)"
+      "summary": "States that for nonderogatory matrices with a cyclic vector, exactly n Krylov vectors are linearly independent -- the method is optimal."
     },
     {
       "id": "invariance-recurrence",
@@ -150,7 +150,7 @@
     }
   ],
   "overview": "The minimal polynomial of an n\u00d7n matrix M over a field K can be computed in O(n\u00b3) field operations using the Krylov method. Starting from any vector v, compute the sequence v, Mv, M\u00b2v, ...; when M^d\u00b7v first becomes a linear combination of the previous vectors, d equals the degree of v's annihilating polynomial (which divides \u03bc_M). Since d \u2264 deg(\u03bc_M) \u2264 n, at most n matrix-vector products (each O(n\u00b2)) suffice. This formalization defines Krylov sequences, proves the recurrence relation enabling efficient computation, establishes termination via the minimal polynomial, and bounds the iteration count. For nonderogatory matrices (\u03bc_M = \u03c7_M), a single cyclic vector's Krylov sequence extracts the full minimal polynomial.",
-  "conclusion": "The Krylov method provides an O(n\u00b3) algorithm for computing the minimal polynomial, with the key structural insight that polynomial evaluation at a matrix distributes through the Krylov sequence. The formalization establishes 9 proved results including the recurrence, annihilation, and dimension bounds, with 3 sorries in the polynomial-to-Krylov expansion chain suitable for Aristotle proof search.",
+  "conclusion": "The Krylov method provides an O(n\u00b3) algorithm for computing the minimal polynomial, with the key structural insight that polynomial evaluation at a matrix distributes through the Krylov sequence. The formalization establishes 12 fully proved theorems including the recurrence, annihilation, dimension bounds, and nonderogatory optimality. All sorries have been resolved.",
   "references": [
     {
       "type": "paper",
