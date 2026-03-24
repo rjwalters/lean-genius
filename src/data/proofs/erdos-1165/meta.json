@@ -32,7 +32,9 @@
     "keyInsights": [
       "**Dimensional dichotomy**: In 1D, the favourite site is unique for large n (Bass-Griffin 1985). In 2D, the marginal recurrence allows multiple favourite sites, but the walk's diffusive behaviour limits this to exactly 3.",
       "**23-year gap**: Tóth's 2001 upper bound (≤ 3) took over two decades to match with a lower bound (≥ 3, Hao et al. 2024), reflecting the extreme technical difficulty of proving that three-way ties persist.",
-      "**Marginal recurrence**: ℤ² random walks return to the origin with probability 1 but have infinite expected return time. This 'barely recurrent' behaviour is key: enough returns to create ties, but not enough for four-way ties to persist."
+      "**Marginal recurrence**: ℤ² random walks return to the origin with probability 1 but have infinite expected return time. This 'barely recurrent' behaviour is key: enough returns to create ties, but not enough for four-way ties to persist.",
+      "**Local time structure**: The visit count $f_n(x)$ is essentially the discrete local time of the random walk. In 2D, Ray-Knight-type theorems describe the local time as a branching process, and the favourite site question reduces to understanding the maximum of this process.",
+      "**Three is the magic number**: The fact that exactly 3 (not 2 or 4) favourite sites recur is connected to the geometry of the simple random walk's four cardinal directions — the walk can create three-way ties along different axes, but sustaining a four-way tie requires coordination that the walk's independence structure prevents."
     ],
     "prerequisites": [
       "Probability theory",
@@ -125,6 +127,35 @@
       "pages": "417–436",
       "note": "Establishes uniqueness of the favourite site in 1D, motivating the question about higher dimensions."
     }
+  ],
+  "crossReferences": [
+    {
+      "target": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "The CLT governs the diffusive behaviour of random walks: the position after n steps scales as √n. The favourite site problem depends on the finer local time structure beyond CLT's scope."
+    },
+    {
+      "target": "erdos-1139",
+      "relationship": "thematic",
+      "description": "Both study 'infinitely often' phenomena in sequences with number-theoretic or probabilistic structure. Erdős #1139 asks about lim sup of gaps in almost-primes; #1165 asks about lim sup of favourite site counts."
+    },
+    {
+      "target": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "Second moment methods are central to random walk analysis: Tóth's proof uses second moment bounds on the local time to exclude four favourite sites, while Hao et al. use refined moment estimates to construct three-way ties."
+    },
+    {
+      "target": "bertrands-postulate",
+      "relationship": "thematic",
+      "description": "Both demonstrate that precise quantitative bounds (Bertrand: a prime in (n, 2n]; Tóth: at most 3 favourite sites) can require decades of effort to prove, even when the statement is simple."
+    }
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "erdos-1139",
+    "prob-method-second-moment",
+    "bertrands-postulate",
+    "buffons-needle"
   ],
   "leanFile": {
     "imports": [
