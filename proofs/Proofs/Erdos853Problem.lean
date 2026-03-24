@@ -166,7 +166,10 @@ theorem exists_even_not_in_gapSet (x : ℕ) (_hx : x ≥ 3) :
     Set.infinite_range_of_injective (fun a b hab => by omega)
   have h_sub_gap : Set.range (fun k : ℕ => 2 * k + 2) ⊆ gapSet x := by
     rintro t ⟨k, rfl⟩
-    exact h _ (by omega) (by rw [show 2 * k + 2 = 2 * (k + 1) from by ring]; exact Nat.mul_mod_right 2 _)
+    refine h _ (by omega) ?_
+    show (2 * k + 2) % 2 = 0
+    rw [show 2 * k + 2 = 2 * (k + 1) from by ring]
+    exact Nat.mul_mod_right 2 _
   exact (h_range_inf.mono h_sub_gap) (gapSet_finite x)
 
 noncomputable instance decidableMemGapSet (x t : ℕ) : Decidable (t ∈ gapSet x) :=
