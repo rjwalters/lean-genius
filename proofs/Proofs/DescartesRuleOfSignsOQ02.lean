@@ -421,17 +421,82 @@ theorem iterDeriv_eval_zero (p : ℝ[X]) (k : ℕ) :
   rw [poly_eval_at_zero, iterDeriv_coeff]
   simp [Nat.descFactorial_self]
 
-/-- Since k! > 0, the sign of p⁽ᵏ⁾(0) equals the sign of aₖ.
-    Therefore V_p(0) = signVariations of the coefficient sequence.
+/-
+## Sign Change Invariance Lemmas
+-/
 
-    Proof sketch: (iterDeriv p k).eval 0 = k! * p.coeff k by iterDeriv_eval_zero.
-    Since k! > 0, each entry has the same sign as the coefficient.
-    Therefore signChangesInList produces the same count.
-    Requires: signChangesInList invariance under element-wise positive scaling. -/
+/-- Two lists with the same zero/sign pattern produce identical sign lists,
+    hence the same signChangesInList count. Proved by induction on the lists. -/
+private theorem signList_eq_of_same_signs : ∀ (l₁ l₂ : List ℝ),
+    l₁.length = l₂.length →
+    (∀ i, (h₁ : i < l₁.length) → (l₁[i] = 0 ↔ l₂[i]'(by omega) = 0)) →
+    (∀ i, (h₁ : i < l₁.length) → (l₁[i] > 0 ↔ l₂[i]'(by omega) > 0)) →
+    (l₁.filter (· ≠ 0)).map (fun x => if x > 0 then (1 : ℤ) else -1) =
+    (l₂.filter (· ≠ 0)).map (fun x => if x > 0 then (1 : ℤ) else -1)
+  | [], [], _, _, _ => by simp
+  | [], _ :: _, h, _, _ => by simp at h
+  | _ :: _, [], h, _, _ => by simp at h
+  | hd₁ :: tl₁, hd₂ :: tl₂, hlen, hzero, hsign => by
+    have hlen' : tl₁.length = tl₂.length := by simp at hlen; omega
+    have hzero0 : hd₁ = 0 ↔ hd₂ = 0 := hzero 0 (by simp)
+    have hsign0 : hd₁ > 0 ↔ hd₂ > 0 := hsign 0 (by simp)
+    have hzero' : ∀ i, (h₁ : i < tl₁.length) → (tl₁[i] = 0 ↔ tl₂[i]'(by omega) = 0) :=
+      fun i hi => hzero (i + 1) (by simp; omega)
+    have hsign' : ∀ i, (h₁ : i < tl₁.length) → (tl₁[i] > 0 ↔ tl₂[i]'(by omega) > 0) :=
+      fun i hi => hsign (i + 1) (by simp; omega)
+    by_cases h0 : hd₁ = 0
+    · have h0' : hd₂ = 0 := hzero0.mp h0
+      simp only [List.filter_cons]
+      rw [show (fun x : ℝ => decide (x ≠ 0)) hd₁ = false from by simp [h0]]
+      rw [show (fun x : ℝ => decide (x ≠ 0)) hd₂ = false from by simp [h0']]
+      simp only [Bool.false_eq_true, ↓reduceIte]
+      exact signList_eq_of_same_signs tl₁ tl₂ hlen' hzero' hsign'
+    · have h0' : hd₂ ≠ 0 := fun he => h0 (hzero0.mpr he)
+      simp only [List.filter_cons]
+      rw [show (fun x : ℝ => decide (x ≠ 0)) hd₁ = true from by simp [h0]]
+      rw [show (fun x : ℝ => decide (x ≠ 0)) hd₂ = true from by simp [h0']]
+      simp only [↓reduceIte, List.map_cons]
+      congr 1
+      · rw [show (hd₁ > 0) = (hd₂ > 0) from propext hsign0]
+      · exact signList_eq_of_same_signs tl₁ tl₂ hlen' hzero' hsign'
+
+/-- If two lists have the same zero/sign pattern, signChangesInList is equal. -/
+private theorem signChangesInList_congr (l₁ l₂ : List ℝ)
+    (hlen : l₁.length = l₂.length)
+    (hzero : ∀ i, (h₁ : i < l₁.length) → (l₁[i] = 0 ↔ l₂[i]'(by omega) = 0))
+    (hsign : ∀ i, (h₁ : i < l₁.length) → (l₁[i] > 0 ↔ l₂[i]'(by omega) > 0)) :
+    signChangesInList l₁ = signChangesInList l₂ := by
+  show countAdjacentDiffs _ = countAdjacentDiffs _
+  congr 1
+  exact signList_eq_of_same_signs l₁ l₂ hlen hzero hsign
+
+/-- Since k! > 0, the sign of p⁽ᵏ⁾(0) equals the sign of aₖ.
+    Therefore V_p(0) = signVariations of the coefficient sequence. -/
 theorem budanCount_zero_eq_coeff_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :
     budanCount p 0 = signChangesInList
       ((List.range (p.natDegree + 1)).map p.coeff) := by
-  sorry
+  -- budanCount p 0 = signChangesInList (budanSequence p n 0)
+  -- budanSequence at 0: entry k is (iterDeriv p k).eval 0 = k! * p.coeff k
+  change signChangesInList (budanSequence p p.natDegree 0) = _
+  -- Rewrite budanSequence entries using iterDeriv_eval_zero
+  have hseq : budanSequence p p.natDegree 0 =
+      (List.range (p.natDegree + 1)).map (fun k => (k.factorial : ℝ) * p.coeff k) := by
+    simp only [budanSequence, iterDeriv_eval_zero]
+  rw [hseq]
+  -- The two lists are (range (n+1)).map (fun k => k! * a_k) and (range (n+1)).map a_k
+  -- They have the same length and same zero/sign pattern since k! > 0
+  apply signChangesInList_congr
+  · simp
+  · intro i hi
+    simp only [List.length_map, List.length_range] at hi
+    simp only [List.getElem_map, List.getElem_range]
+    constructor
+    · intro h; exact (mul_eq_zero.mp h).resolve_left (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _))
+    · intro h; simp [h]
+  · intro i hi
+    simp only [List.length_map, List.length_range] at hi
+    simp only [List.getElem_map, List.getElem_range]
+    exact mul_pos_iff_of_pos_left (Nat.cast_pos.mpr (Nat.factorial_pos _))
 
 /-
 ## Part IX: Structural Theorems
@@ -453,15 +518,96 @@ theorem iterDeriv_C_mul (c : ℝ) (p : ℝ[X]) (k : ℕ) :
   | zero => simp
   | succ k ih => simp only [iterDeriv_succ, ih, derivative_C_mul]
 
-/-- Scaling by a nonzero constant preserves the Budan count.
-    Since (c·p)⁽ᵏ⁾ = c·p⁽ᵏ⁾ and c ≠ 0, all evaluations are scaled by c.
-    For c > 0, signs are preserved; for c < 0, all signs flip but
-    countAdjacentDiffs is invariant under negation.
-    Requires: signChangesInList invariance under constant nonzero scaling
-    (filter+sign on List ℝ with decide predicates). -/
+/-- Negating all entries in a list preserves countAdjacentDiffs. -/
+private theorem countAdjacentDiffs_neg : ∀ (l : List ℤ),
+    countAdjacentDiffs (l.map (- ·)) = countAdjacentDiffs l
+  | [] => by simp
+  | [_] => by simp
+  | a :: b :: rest => by
+    change (if -a ≠ -b then 1 else 0) + countAdjacentDiffs ((-b) :: rest.map (-·)) =
+           (if a ≠ b then 1 else 0) + countAdjacentDiffs (b :: rest)
+    rw [show (-a ≠ -b) = (a ≠ b) from propext (by constructor <;> intro h he <;> exact h (neg_inj.mpr he))]
+    congr 1
+    exact countAdjacentDiffs_neg (b :: rest)
+
+/-- Filter commutes with constant nonzero multiplication. -/
+private theorem filter_ne_zero_map_mul (l : List ℝ) (c : ℝ) (hc : c ≠ 0) :
+    (l.map (c * ·)).filter (· ≠ (0 : ℝ)) =
+    (l.filter (· ≠ (0 : ℝ))).map (c * ·) := by
+  induction l with
+  | nil => simp
+  | cons hd tl ih =>
+    simp only [List.map_cons, List.filter_cons]
+    by_cases h : hd = 0
+    · rw [show (fun x : ℝ => decide (x ≠ 0)) (c * hd) = false from by simp [h]]
+      rw [show (fun x : ℝ => decide (x ≠ 0)) hd = false from by simp [h]]
+      simp only [Bool.false_eq_true, ↓reduceIte]
+      exact ih
+    · have hne : c * hd ≠ 0 := mul_ne_zero hc h
+      rw [show (fun x : ℝ => decide (x ≠ 0)) (c * hd) = true from by simp [hne]]
+      rw [show (fun x : ℝ => decide (x ≠ 0)) hd = true from by simp [h]]
+      simp only [↓reduceIte, List.map_cons]
+      congr 1
+      exact ih
+
+/-- signChangesInList is invariant under nonzero scalar multiplication.
+    Uses filter commutation and sign analysis (positive preserves, negative flips + negation invariance). -/
+private theorem signChangesInList_map_mul (l : List ℝ) (c : ℝ) (hc : c ≠ 0) :
+    signChangesInList (l.map (c * ·)) = signChangesInList l := by
+  -- Unfold to countAdjacentDiffs
+  show countAdjacentDiffs (((l.map (c * ·)).filter (· ≠ 0)).map (fun x => if x > 0 then (1:ℤ) else -1)) =
+       countAdjacentDiffs ((l.filter (· ≠ 0)).map (fun x => if x > 0 then (1:ℤ) else -1))
+  -- Step 1: Commute filter past map
+  rw [filter_ne_zero_map_mul l c hc, List.map_map]
+  -- Now LHS: countAdjacentDiffs ((l.filter (·≠0)).map (sign ∘ (c*·)))
+  -- RHS: countAdjacentDiffs ((l.filter (·≠0)).map sign)
+  rcases lt_or_gt_of_ne hc with hcn | hcp
+  · -- Case c < 0: sign(c*x) = -sign(x) for x ≠ 0
+    have key : (l.filter (· ≠ 0)).map ((fun x => if x > 0 then (1:ℤ) else -1) ∘ (c * ·)) =
+               ((l.filter (· ≠ 0)).map (fun x => if x > 0 then (1:ℤ) else -1)).map (-·) := by
+      rw [List.map_map]
+      apply List.map_congr_left
+      intro x hx
+      have hxne : x ≠ 0 := of_decide_eq_true (List.of_mem_filter hx)
+      simp only [Function.comp]
+      by_cases hxp : x > 0
+      · have : c * x < 0 := mul_neg_of_neg_of_pos hcn hxp
+        simp [show ¬(c * x > 0) from not_lt.mpr (le_of_lt this), hxp]
+      · have hxn : x < 0 := lt_of_le_of_ne (not_lt.mp hxp) (Ne.symm hxne)
+        have : c * x > 0 := mul_pos_of_neg_of_neg hcn hxn
+        simp [this, hxp]
+    rw [key, countAdjacentDiffs_neg]
+  · -- Case c > 0: sign(c*x) = sign(x) for x ≠ 0
+    congr 1
+    apply List.map_congr_left
+    intro x hx
+    have hxne : x ≠ 0 := of_decide_eq_true (List.of_mem_filter hx)
+    simp only [Function.comp]
+    by_cases hxp : x > 0
+    · simp [mul_pos hcp hxp, hxp]
+    · have hxn : x < 0 := lt_of_le_of_ne (not_lt.mp hxp) (Ne.symm hxne)
+      have : ¬(c * x > 0) := not_lt.mpr (le_of_lt (mul_neg_of_pos_of_neg hcp hxn))
+      simp [this, hxp]
+
+/-- Scaling by a nonzero constant preserves the Budan count. -/
 theorem budanCount_smul (p : ℝ[X]) (c : ℝ) (hc : c ≠ 0) (x : ℝ) :
     budanCount (C c * p) x = budanCount p x := by
-  sorry
+  by_cases hp : p = 0
+  · simp [hp]
+  · -- (C c * p).natDegree = p.natDegree since c ≠ 0 and p ≠ 0
+    unfold budanCount
+    have hdeg : (C c * p).natDegree = p.natDegree := by
+      rw [Polynomial.natDegree_mul (C_ne_zero.mpr hc) hp, natDegree_C, zero_add]
+    rw [hdeg]
+    -- budanSequence (C c * p) at n is the budanSequence of p scaled by c
+    have hseq : budanSequence (C c * p) p.natDegree x =
+        (budanSequence p p.natDegree x).map (c * ·) := by
+      simp only [budanSequence, List.map_map]
+      apply List.map_congr_left
+      intro k _
+      simp [iterDeriv_C_mul, Polynomial.eval_mul, Polynomial.eval_C]
+    rw [hseq]
+    exact signChangesInList_map_mul _ c hc
 
 /-
 ## Part X: Root Count Additivity

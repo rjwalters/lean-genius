@@ -115,3 +115,28 @@ evaluation sequence [p(x), p'(x), ..., p^(n)(x)].
 - 552 lines, 36 theorems, 8 definitions, 3 axioms, 2 sorries
 - 2 sorries eliminated: descartes_from_budan, chainVariation_budanChain
 - 2 remaining: budanCount_zero_eq_coeff_sign_changes, budanCount_smul (both need sign scaling invariance)
+
+## Session 2026-03-24 (Session 4) — Final 2 Sorries Eliminated (COMPLETED)
+
+**Mode**: REVISIT (RICH knowledge, score 35)
+**Outcome**: COMPLETED (0 sorries, 3 axioms remain)
+
+### What I Did
+- Proved `budanCount_zero_eq_coeff_sign_changes`: V_p(0) = sign changes of coefficient sequence
+  - Built `signList_eq_of_same_signs`: lists with same zero/sign pattern produce identical sign lists (by induction with filter_cons case analysis)
+  - Built `signChangesInList_congr`: wraps sign list equality to signChangesInList equality
+  - Used `iterDeriv_eval_zero` + `Nat.factorial_pos` to show factorial scaling preserves signs
+- Proved `budanCount_smul`: nonzero scalar multiplication preserves Budan count
+  - Built `countAdjacentDiffs_neg`: negating ±1 list preserves adjacent diff count
+  - Built `filter_ne_zero_map_mul`: filter commutes with nonzero scalar map
+  - Built `signChangesInList_map_mul`: positive case (signs preserved) + negative case (signs flipped, countAdjacentDiffs_neg)
+  - Used `natDegree_mul` + `iterDeriv_C_mul` + `eval_mul/eval_C` for budanSequence scaling
+
+### Key Findings
+- Direct filter+map manipulation worked — no need for recursive `scAux` alternative
+- `propext` converts `↔` to `=` for rewriting inside `if`/`decide` conditions
+- `of_decide_eq_true (List.of_mem_filter hx)` extracts `x ≠ 0` from filter membership
+- `mul_pos_of_neg_of_neg hc hxn` gives `c * x > 0` for negative * negative case
+
+### Stats
+- 698 lines, 42 theorems, 9 definitions, 3 axioms, **0 sorries** — FILE IS SORRY-FREE
