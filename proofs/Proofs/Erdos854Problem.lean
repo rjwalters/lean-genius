@@ -16,17 +16,39 @@ Reference: https://erdosproblems.com/854
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.List.Pairwise
 import Mathlib.Tactic
 
 /- ## Primorial and Coprime Residues -/
 
-/-- The k-th prime number (1-indexed: nthPrime 1 = 2, nthPrime 2 = 3, ...) -/
-axiom nthPrime : ℕ → ℕ
-axiom nthPrime_prime (k : ℕ) (hk : 1 ≤ k) : Nat.Prime (nthPrime k)
-axiom nthPrime_mono : StrictMono nthPrime
-axiom nthPrime_vals : nthPrime 1 = 2 ∧ nthPrime 2 = 3 ∧ nthPrime 3 = 5
+/-- The k-th prime number (1-indexed: nthPrime 1 = 2, nthPrime 2 = 3, ...).
+    Defined via Mathlib's Nat.nth with index shift: nthPrime 0 = 0 (sentinel). -/
+noncomputable def nthPrime : ℕ → ℕ
+  | 0 => 0
+  | k + 1 => Nat.nth Nat.Prime k
+
+theorem nthPrime_prime (k : ℕ) (hk : 1 ≤ k) : Nat.Prime (nthPrime k) := by
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime j
+
+theorem nthPrime_mono : StrictMono nthPrime := by
+  intro a b hab
+  match a, b, hab with
+  | 0, b + 1, _ =>
+    simp only [nthPrime]
+    exact (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime b).pos
+  | a + 1, b + 1, hab =>
+    simp only [nthPrime]
+    exact Nat.nth_strictMono Nat.infinite_setOf_prime (by omega)
+
+theorem nthPrime_vals : nthPrime 1 = 2 ∧ nthPrime 2 = 3 ∧ nthPrime 3 = 5 := by
+  refine ⟨?_, ?_, ?_⟩
+  · show Nat.nth Nat.Prime 0 = 2; exact Nat.nth_prime_zero_eq_two
+  · show Nat.nth Nat.Prime 1 = 3; exact Nat.nth_prime_one_eq_three
+  · show Nat.nth Nat.Prime 2 = 5; exact Nat.nth_prime_two_eq_five
 
 /-- The k-th primorial: product of the first k primes -/
 noncomputable def primorial : ℕ → ℕ
@@ -39,7 +61,7 @@ def coprimeResidues (n : ℕ) : Finset ℕ :=
 
 /-- Sorted list of coprime residues -/
 axiom sortedCoprimes (n : ℕ) : List ℕ
-axiom sortedCoprimes_sorted (n : ℕ) : List.Sorted (· < ·) (sortedCoprimes n)
+axiom sortedCoprimes_sorted (n : ℕ) : List.Pairwise (· < ·) (sortedCoprimes n)
 axiom sortedCoprimes_mem (n : ℕ) (a : ℕ) :
   a ∈ sortedCoprimes n ↔ a ∈ coprimeResidues n
 
