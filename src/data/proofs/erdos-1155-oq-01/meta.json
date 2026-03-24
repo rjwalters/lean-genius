@@ -110,15 +110,15 @@
       "id": "asymptotic-setup",
       "title": "Asymptotic Infrastructure",
       "summary": "Axiomatizes the triangle removal function f(n) with basic properties and BFL bounds. States the Erdős conjecture as ∃ c₁, c₂ > 0 with c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} eventually.",
-      "startLine": 83,
-      "endLine": 104,
+      "startLine": 77,
+      "endLine": 103,
       "mathContext": "Axioms: $0 \\leq f(n) \\leq \\binom{n}{2}$, BFL: $\\forall \\varepsilon > 0, \\; n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually."
     },
     {
       "id": "bfl-sandwich",
       "title": "BFL Sandwich and Conjecture Implications",
       "summary": "Combines BFL bounds into a sandwich n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}. Proves the conjecture strictly implies BFL via constant-to-sub-polynomial reduction.",
-      "startLine": 105,
+      "startLine": 104,
       "endLine": 184,
       "mathContext": "Conjecture $\\Longrightarrow$ BFL: $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ implies $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ since $c, C$ are constants absorbed by $n^{\\pm \\varepsilon}$."
     },
@@ -135,22 +135,22 @@
       "title": "Exact Exponent Characterization",
       "summary": "Proves 3/2 is the exact critical exponent via two theorems: `bfl_exponent_is_three_halves` ($f(n) = O(n^\\alpha)$ for all $\\alpha > 3/2$) and `bfl_lower_tight` ($f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$, by contradiction using the intermediate exponent trick).",
       "startLine": 220,
-      "endLine": 253,
+      "endLine": 252,
       "mathContext": "Critical exponent: $\\inf\\{\\alpha : f(n) = O(n^\\alpha)\\} = 3/2$. Upper: substitute $\\varepsilon = \\alpha - 3/2$ in BFL. Lower: assume $f(n) \\leq n^\\beta$, take $\\varepsilon' = (3/2 - \\beta)/2$, get $n^{3/2-\\varepsilon'} \\leq f(n) \\leq n^\\beta$ with $3/2 - \\varepsilon' > \\beta$, contradiction."
     },
     {
       "id": "small-values-ratio",
       "title": "Small Values and BFL Ratio Reformulation",
       "summary": "Base cases ($f(0) \\leq 0$, $f(1) \\leq 0$, $f(2) \\leq 1$) from the complete graph edge bound. Then `bfl_ratio_characterization`: BFL reformulated as the ratio $f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$ eventually, making the gap with the conjecture (constant bounds) maximally transparent.",
-      "startLine": 254,
-      "endLine": 304,
+      "startLine": 253,
+      "endLine": 310,
       "mathContext": "Base cases: $f(n) \\leq n(n-1)/2$ gives $f(0) \\leq 0$, $f(2) \\leq 1$. Ratio: $R(n) = f(n)/n^{3/2}$. BFL $\\iff R(n) \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$. Conjecture $\\iff R(n) \\in [c_1, c_2]$."
     },
     {
       "id": "sufficient-conditions",
       "title": "Sufficient Conditions for the Conjecture",
       "summary": "If f(n)/n^{3/2} → L > 0, the conjecture holds with c₁ = L/2, c₂ = 3L/2. The weaker limsup/liminf boundedness condition also suffices.",
-      "startLine": 305,
+      "startLine": 311,
       "endLine": 355,
       "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies$ conjecture with $c_1 = L/2, c_2 = 3L/2$. Weaker: $0 < \\liminf \\leq \\limsup < \\infty$ also suffices."
     },
@@ -342,20 +342,6 @@
       "venue": "Annals of Mathematics, vol. 174, pp. 561–579",
       "note": "Improved quantitative bounds for the triangle removal lemma without using Szemerédi regularity, achieving a tower-function improvement. Relevant to understanding the deterministic-vs-random removal gap"
     }
-  ],
-  "relatedProofs": [
-    "erdos-1155",
-    "ramseys-theorem",
-    "szemeredi-regularity",
-    "erdos-1009",
-    "erdos-1010",
-    "erdos-1104",
-    "szemeredi-theorem",
-    "roth-theorem-k3",
-    "szemeredi-counting",
-    "prob-method-alteration",
-    "prob-method-lovasz-local",
-    "prob-method-second-moment"
   ],
   "leanFile": {
     "lineCount": 489,
