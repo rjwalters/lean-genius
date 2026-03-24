@@ -100,42 +100,48 @@
       "title": "GCD Divides All Linear Combinations",
       "startLine": 50,
       "endLine": 55,
-      "summary": "gcd_divides_linear_combination: (Int.gcd a b : ℤ) ∣ a*x + b*y for any x, y. One-line proof: gcd | a and gcd | b, so gcd | a*x + b*y by dvd_add and dvd_mul_of_dvd_left. This is the structural fact that the ideal {ax+by} ⊆ gcd(a,b)·ℤ."
+      "summary": "gcd_divides_linear_combination: (Int.gcd a b : ℤ) ∣ a*x + b*y for any x, y. One-line proof: gcd | a and gcd | b, so gcd | a*x + b*y by dvd_add and dvd_mul_of_dvd_left. This is the structural fact that the ideal {ax+by} ⊆ gcd(a,b)·ℤ.",
+      "mathContext": "For any $x, y \\in \\mathbb{Z}$: $\\gcd(a,b) \\mid a$ and $\\gcd(a,b) \\mid b$ implies $\\gcd(a,b) \\mid (ax + by)$. In ideal notation: $(a,b) \\subseteq (\\gcd(a,b))$. Combined with Bézout ($\\gcd(a,b) \\in (a,b)$), this gives $(a,b) = (\\gcd(a,b))$."
     },
     {
       "id": "null-space",
       "title": "The Null Space: ax + by = 0 when gcd = 1",
       "startLine": 63,
       "endLine": 107,
-      "summary": "coprime_linear_null_space: when gcd(a,b)=1, ax+by=0 ↔ ∃t, x=bt ∧ y=-at. Proof: build IsCoprime from Bezout coefficients. Case b=0: isCoprime_zero_right gives IsUnit a (a=±1), so x=0, take t=-a*y. Case b≠0: Bezout witnesses give b∣x directly (x = u*(a*x)+v*b*x = u*(b*m)+v*b*x = b*(u*m+v*x)), then a*t+y=0 from b*(a*t+y)=0."
+      "summary": "coprime_linear_null_space: when gcd(a,b)=1, ax+by=0 ↔ ∃t, x=bt ∧ y=-at. Proof: build IsCoprime from Bezout coefficients. Case b=0: isCoprime_zero_right gives IsUnit a (a=±1), so x=0, take t=-a*y. Case b≠0: Bezout witnesses give b∣x directly (x = u*(a*x)+v*b*x = u*(b*m)+v*b*x = b*(u*m+v*x)), then a*t+y=0 from b*(a*t+y)=0.",
+      "mathContext": "The null space $\\ker(\\phi) = \\{(x,y) : ax + by = 0\\}$ of the linear form $\\phi(x,y) = ax + by$ is a rank-1 free $\\mathbb{Z}$-module when $\\gcd(a,b) = 1$: $\\ker(\\phi) = \\mathbb{Z} \\cdot (b, -a)$. The generator $(b, -a)$ is perpendicular to $(a, b)$ in the lattice $\\mathbb{Z}^2$."
     },
     {
       "id": "complete-param",
       "title": "Complete Parametrization of All Solutions",
       "startLine": 112,
       "endLine": 184,
-      "summary": "diophantine_complete_parameterization: with d=gcd(a,b)>0 and one solution (x₀,y₀), all solutions are (x₀+(b/d)t, y₀-(a/d)t). Key steps: gcd(a/d, b/d)=1 proved via Nat.dvd_one (gcd divides Bezout combination = 1); reduce to null space of coprime equation; backward direction uses linear_combination h₀ + key*t where key: a*(b/d) = b*(a/d)."
+      "summary": "diophantine_complete_parameterization: with d=gcd(a,b)>0 and one solution (x₀,y₀), all solutions are (x₀+(b/d)t, y₀-(a/d)t). Key steps: gcd(a/d, b/d)=1 proved via Nat.dvd_one (gcd divides Bezout combination = 1); reduce to null space of coprime equation; backward direction uses linear_combination h₀ + key*t where key: a*(b/d) = b*(a/d).",
+      "mathContext": "The solution set of $ax + by = c$ is an affine lattice (coset of the null space): $\\{(x_0, y_0) + t(b/d, -a/d) : t \\in \\mathbb{Z}\\}$ where $d = \\gcd(a,b)$. Geometrically, solutions lie on the line $ax + by = c$ in $\\mathbb{R}^2$, spaced at intervals of $\\|(b/d, -a/d)\\| = \\sqrt{(a^2+b^2)}/d$. The step vector $(b/d, -a/d)$ is the primitive lattice vector in the null space direction."
     },
     {
       "id": "three-variable",
       "title": "Three-Variable Diophantine Criterion",
       "startLine": 185,
       "endLine": 232,
-      "summary": "bezout_three: ∃x,y,z: ax+by+cz = gcd(gcd(a,b),c). Proof applies Bezout twice: get x₀,y₀ with gcd(a,b)=ax₀+by₀, then u,v with gcd(gcd(a,b),c)=gcd(a,b)*u+c*v. Solution: x=x₀*u, y=y₀*u, z=v. diophantine_three_solvable: ax+by+cz=k has solutions ↔ gcd(gcd(a,b),c) | k. Proves the criterion extends inductively to three variables."
+      "summary": "bezout_three: ∃x,y,z: ax+by+cz = gcd(gcd(a,b),c). Proof applies Bezout twice: get x₀,y₀ with gcd(a,b)=ax₀+by₀, then u,v with gcd(gcd(a,b),c)=gcd(a,b)*u+c*v. Solution: x=x₀*u, y=y₀*u, z=v. diophantine_three_solvable: ax+by+cz=k has solutions ↔ gcd(gcd(a,b),c) | k. Proves the criterion extends inductively to three variables.",
+      "mathContext": "Three-variable Bézout: $\\gcd(\\gcd(a,b), c) = ax + by + cz$ for some $x, y, z \\in \\mathbb{Z}$. The solvability criterion: $a_1 x_1 + \\cdots + a_n x_n = k$ has integer solutions $\\Leftrightarrow$ $\\gcd(a_1, \\ldots, a_n) \\mid k$. This extends inductively since $\\gcd(a_1, \\ldots, a_n) = \\gcd(\\gcd(a_1, \\ldots, a_{n-1}), a_n)$."
     },
     {
       "id": "gcd-minimality",
       "title": "GCD as Minimum Positive Linear Combination",
       "startLine": 235,
       "endLine": 262,
-      "summary": "gcd_eq_min_pos_linear_comb: gcd(a,b) ≤ c for any positive c achievable as a*x+b*y (since gcd ∣ c and c > 0). gcd_achievable: gcd(a,b) is itself achievable via Nat.gcdA, Nat.gcdB and Nat.gcd_eq_gcd_ab. Together: gcd(a,b) is the minimum element of the positive linear combinations."
+      "summary": "gcd_eq_min_pos_linear_comb: gcd(a,b) ≤ c for any positive c achievable as a*x+b*y (since gcd ∣ c and c > 0). gcd_achievable: gcd(a,b) is itself achievable via Nat.gcdA, Nat.gcdB and Nat.gcd_eq_gcd_ab. Together: gcd(a,b) is the minimum element of the positive linear combinations.",
+      "mathContext": "The GCD admits an alternative characterization: $\\gcd(a,b) = \\min\\{ax + by : x, y \\in \\mathbb{Z},\\, ax + by > 0\\}$. This is equivalent to saying the ideal $(a,b) \\cap \\mathbb{N}_{>0}$ has minimum $\\gcd(a,b)$. The proof uses $d \\mid c$ and $c > 0$ to conclude $d \\leq c$ via `Nat.le_of_dvd`."
     },
     {
       "id": "ideal-characterization",
       "title": "Complete GCD Ideal Characterization",
       "startLine": 265,
       "endLine": 349,
-      "summary": "gcd_complete_characterization: d = gcd(a,b) ↔ (d is achievable as ax+by) AND (d divides all achievable values). Forward: d | gcd (d divides Nat.gcdA,gcdB combination = gcd) and gcd | d (gcd divides the achieving combination = d), so d = gcd by Nat.dvd_antisymm. Backward: gcd_achievable and gcd divides all ax+by by gcd_divides_linear_combination."
+      "summary": "gcd_complete_characterization: d = gcd(a,b) ↔ (d is achievable as ax+by) AND (d divides all achievable values). Forward: d | gcd (d divides Nat.gcdA,gcdB combination = gcd) and gcd | d (gcd divides the achieving combination = d), so d = gcd by Nat.dvd_antisymm. Backward: gcd_achievable and gcd divides all ax+by by gcd_divides_linear_combination.",
+      "mathContext": "The ideal characterization: $d = \\gcd(a,b)$ iff $(a,b) = (d)$ as ideals in $\\mathbb{Z}$. Equivalently: $d \\in (a,b)$ (achievability) AND $(a,b) \\subseteq (d)$ (divisibility). The proof uses double divisibility: $\\gcd \\mid d$ (from achievability of $d$) and $d \\mid \\gcd$ (from divisibility of Bézout witnesses), hence $d = \\gcd$ by `Nat.dvd_antisymm`."
     }
   ],
   "conclusion": {
@@ -204,5 +210,35 @@
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "Bézout, Étienne",
+      "title": "Théorie générale des équations algébriques",
+      "year": "1779",
+      "venue": "Paris: Ph.-D. Pierres",
+      "note": "Contains the original statement of Bézout's identity for polynomials and integers, establishing that gcd(a,b) is expressible as a linear combination ax + by"
+    },
+    {
+      "authors": "Hardy, G.H.; Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1938",
+      "venue": "Oxford University Press (6th edition 2008)",
+      "note": "Chapter 2 covers the Euclidean algorithm, Bézout's identity, and the complete parametrization of solutions to linear Diophantine equations ax + by = c"
+    },
+    {
+      "authors": "Niven, Ivan; Zuckerman, Herbert S.; Montgomery, Hugh L.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1991",
+      "venue": "John Wiley & Sons, 5th edition",
+      "note": "Section 1.3: complete treatment of linear Diophantine equations, including the solution lattice structure and the GCD ideal characterization"
+    },
+    {
+      "authors": "Ireland, Kenneth; Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer GTM 84, 2nd edition",
+      "note": "Chapter 1 presents the ideal-theoretic characterization of GCD in ℤ and its connection to the principal ideal domain structure"
+    }
+  ]
 }
