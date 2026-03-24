@@ -3,14 +3,12 @@
   "proofId": "hilbert-10",
   "reviewDate": "2026-03-24T12:30:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B-",
     "oneLiner": "Well-architected formalization with genuine intermediate proofs (diagonal argument, reduction construction) and excellent pedagogy, but the main theorem is axiomatically short-circuited rather than derived from the existing machinery.",
     "tier": "C",
     "tierJustification": "The main theorem (hilbert_10_undecidable) relies on axiom halting_reduction_contradiction which directly asserts its conclusion. The MRDP theorem is also axiomatized (appropriate for such a deep result). However, the file has genuine proofs: a self-contained diagonal argument for halting undecidability, the reduction construction from H10 to halting, and a substantive corollary. This is a high-quality Tier C — the scaffold is well-designed and partially proved."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -83,7 +81,6 @@
       "recommendation": "Enricher: Consider 'Formalization of the undecidability of Diophantine equations, axiomatizing the MRDP theorem and proving the reduction from the halting problem.'"
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
@@ -97,24 +94,23 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix docstring overclaim: change 'We prove that...' to 'We formalize the reduction...' and update status checklist. Fix ann-main-theorem to note the axiomatized final step.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Distinguish load-bearing axioms (mrdp_theorem, halting_reduction_contradiction) from contextual axioms (exponential_is_diophantine, linear_diophantine_decidable) in the assumptions field. Update defCount from 10 to 12.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Qualify originalContributions: 'Reduction from Halting Problem to H10' should note the final connection is axiomatized. Update description to avoid conflating historical result with formalization.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 6,
     "originalityAccuracy": 7,
@@ -124,6 +120,5 @@
     "internalConsistency": 7,
     "overall": 6.7
   },
-
   "suggestedBestFraming": "A formalization of the undecidability of Diophantine equations (Hilbert's 10th Problem) that proves the halting-problem diagonal argument from scratch and constructs the MRDP-based reduction, axiomatizing the MRDP theorem itself and the final step connecting the reduction to the contradiction."
 }
