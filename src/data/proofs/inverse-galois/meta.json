@@ -26,7 +26,7 @@
       "Proofs/AbelRuffini.lean"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 14,
     "axiomCount": 2,
     "prerequisites": [
       "Galois theory (field extensions, Galois groups, splitting fields)",
@@ -34,14 +34,14 @@
       "Group theory (symmetric and alternating groups, Sylow theorems, solvability)",
       "Algebraic number theory (Eisenstein criterion, Dedekind's theorem)"
     ],
-    "assumptions": "2 axiom(s) and 2 sorry(s).",
+    "assumptions": "2 axiom(s) and 14 sorry(s).",
     "leanFile": {
       "lineCount": 1881,
       "theoremCount": 107,
       "lemmaCount": 1,
       "defCount": 1,
       "axiomCount": 2,
-      "sorryCount": 2,
+      "sorryCount": 14,
       "imports": [
         "Mathlib.NumberTheory.Cyclotomic.Basic",
         "Mathlib.NumberTheory.Cyclotomic.Gal",
