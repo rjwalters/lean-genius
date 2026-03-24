@@ -19,7 +19,7 @@
     "mathlibDependencies": [],
     "originalContributions": [
       "Formal definition of Diophantine sets",
-      "Reduction from Halting Problem to H10",
+      "Reduction from Halting Problem to H10 (final connection axiomatized)",
       "MRDP theorem statement (axiomatized)",
       "Connection to recursively enumerable sets"
     ],
@@ -37,7 +37,8 @@
       "mrdp_theorem: Every recursively enumerable set is Diophantine — the central deep result of the MRDP theorem",
       "halting_reduction_contradiction: Technical axiom for the halting-to-H10 reduction",
       "exponential_is_diophantine: Exponential relations can be represented by polynomial equations — key step proved by Matiyasevich using Fibonacci/Pell equations",
-      "linear_diophantine_decidable: Linear Diophantine equations are decidable — used as contrast with the general case"
+      "linear_diophantine_decidable: Linear Diophantine equations are decidable — used as contrast with the general case",
+      "Load-bearing axioms: mrdp_theorem, halting_reduction_contradiction. Contextual axioms: exponential_is_diophantine, linear_diophantine_decidable."
     ],
     "proofRepoPath": "Proofs/Hilbert10.lean",
     "mathlib_version": "4.26.0"
