@@ -50,49 +50,56 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation, imports for SimpleGraph, Finset, and real arithmetic",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Imports `Mathlib.Combinatorics.SimpleGraph.Basic` for the graph abstraction, `Mathlib.Data.Finset.Basic` for finite vertex sets, and `Mathlib.Data.Real.Basic` for the edge-count exponents $m^{2/3}$, $m^{1/2}$, $m^{3/4}$."
     },
     {
       "id": "c4-definition",
       "title": "4-Cycles and C₄-Freeness",
       "summary": "hasC4 (4-cycle detection) and isC4Free predicates; C₄ = K_{2,2}",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "A 4-cycle $C_4$ in a graph $G$ is a sequence of distinct vertices $a, b, c, d$ with edges $ab, bc, cd, da$. Equivalently, $C_4 \\cong K_{2,2}$: four vertices forming a complete bipartite subgraph with parts $\\{a,c\\}$ and $\\{b,d\\}$. A graph is $C_4$-free if it contains no such subgraph."
     },
     {
       "id": "subgraph",
       "title": "Subgraphs and Edge Count",
       "summary": "Subgraph relation, edge counting, problem formulation",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "A subgraph $H \\subseteq G$ satisfies $V(H) \\subseteq V(G)$ and $E(H) \\subseteq E(G)$. The edge count $e(G) = |E(G)|$ is the key parameter. The problem: given $G$ with $e(G) = m$, find $H \\subseteq G$ with $H$ being $C_4$-free and $e(H) = \\Omega(m^{2/3})$."
     },
     {
       "id": "trivial-bound",
       "title": "Trivial Bound: m^{1/2}",
       "summary": "The easy Ω(√m) bound via Kővári-Sós-Turán and greedy deletion",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "The Kővári-Sós-Turán theorem gives $\\text{ex}(n, K_{2,2}) = O(n^{3/2})$: any $n$-vertex $C_4$-free graph has $O(n^{3/2})$ edges. Greedily deleting vertices of degree $> \\sqrt{m}$ from a graph with $m$ edges yields a $C_4$-free subgraph with $\\Omega(\\sqrt{m})$ edges. This $m^{1/2}$ bound is weaker than the optimal $m^{2/3}$."
     },
     {
       "id": "folkman",
       "title": "Folkman's Counterexample",
       "summary": "K_{n,n²} disproves m^{3/4} and proves optimality of 2/3 exponent",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "The complete bipartite graph $K_{n,n^2}$ has $m = n \\cdot n^2 = n^3$ edges. By Kővári-Sós-Turán, any $C_4$-free subgraph $H \\subseteq K_{n,n^2}$ has $e(H) = O(n^2) = O(m^{2/3})$. This proves: (1) the exponent $3/4$ proposed by Bollobás-Erdős is too large, and (2) the exponent $2/3$ is best possible."
     },
     {
       "id": "main-result",
       "title": "Main Result: m^{2/3}",
       "summary": "Conlon-Fox-Sudakov theorem: Ω(m^{2/3}) C₄-free edges always exist",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "**Theorem (Conlon-Fox-Sudakov, 2014):** Every graph $G$ with $m$ edges contains a $C_4$-free subgraph with $\\Omega(m^{2/3})$ edges. The proof uses dependent random choice: sample a random vertex set $S$, consider the common neighborhood $N(S)$, and show the induced subgraph on $N(S)$ is $C_4$-free with many edges in expectation."
     },
     {
       "id": "generalization",
       "title": "Generalization to K_{s,t}",
       "summary": "Extension to K_{s,t}-free subgraphs with exponent 1-1/s; Zarankiewicz connection",
       "startLine": 1,
-      "endLine": 1
+      "endLine": 1,
+      "mathContext": "Every graph with $m$ edges contains a $K_{s,t}$-free subgraph with $\\Omega(m^{1-1/s})$ edges (for $t \\ge s \\ge 2$). The $C_4$ case is $s = t = 2$: $1 - 1/2 = 1/2$ for the trivial bound, but the actual answer $2/3$ is tighter. This connects to the Zarankiewicz problem $z(n; s, t) = \\text{ex}(n, K_{s,t})$."
     }
   ],
   "conclusion": {

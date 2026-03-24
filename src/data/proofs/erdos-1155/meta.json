@@ -33,49 +33,56 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 39,
-      "summary": "Problem documentation describing the triangle removal process on K_n and imports from Mathlib for graphs, filters, and real-valued powers."
+      "summary": "Problem documentation describing the triangle removal process on K_n and imports from Mathlib for graphs, filters, and real-valued powers.",
+      "mathContext": "Start with $K_n$ ($\\binom{n}{2}$ edges). Repeat: choose a triangle $\\{a,b,c\\}$ uniformly at random, delete edges $ab$, $bc$, $ac$. Stop when triangle-free. Let $f(n)$ = edges remaining. Imports: `SimpleGraph.Clique` for `CliqueFree`, `Filter.AtTopBot` for $\\forall^\\infty$, `Pow.Real` for $n^{3/2 \\pm \\varepsilon}$."
     },
     {
       "id": "process-axioms",
       "title": "Process Axiomatization",
       "startLine": 40,
       "endLine": 62,
-      "summary": "Axiomatizes f(n) = triangleRemovalEdges as ℕ → ℝ with basic bounds: f(n) ≥ 0 and f(n) ≤ n(n-1)/2."
+      "summary": "Axiomatizes f(n) = triangleRemovalEdges as ℕ → ℝ with basic bounds: f(n) ≥ 0 and f(n) ≤ n(n-1)/2.",
+      "mathContext": "`triangleRemovalEdges : ℕ → ℝ` axiomatized with: $f(n) \\ge 0$ (non-negative edge count) and $f(n) \\le n(n-1)/2$ (cannot exceed $|E(K_n)|$). The function represents $\\mathbb{E}[f(n)]$ or a typical realization — the formalization is agnostic about this distinction."
     },
     {
       "id": "known-results",
       "title": "Known Results: BFL and Grable Bounds",
       "startLine": 63,
       "endLine": 95,
-      "summary": "BFL (2015): n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε} eventually (axiomatized). Grable (1997): f(n) ≤ n^{7/4+ε} (now proved from BFL, no longer an axiom)."
+      "summary": "BFL (2015): n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε} eventually (axiomatized). Grable (1997): f(n) ≤ n^{7/4+ε} (now proved from BFL, no longer an axiom).",
+      "mathContext": "Bohman-Frieze-Lubetzky (2015): $\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; n^{3/2 - \\varepsilon} \\le f(n) \\le n^{3/2 + \\varepsilon}$, i.e., $f(n) = n^{3/2 + o(1)}$. Grable (1997): $f(n) \\le n^{7/4 + o(1)}$ — now a proved consequence of BFL since $3/2 + \\varepsilon < 7/4 + \\varepsilon$ for small $\\varepsilon$."
     },
     {
       "id": "conjecture",
       "title": "Erdős Conjecture",
       "startLine": 96,
       "endLine": 111,
-      "summary": "The open conjecture: ∃ c₁,c₂ > 0 such that c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} for large n. Stronger than BFL's sub-polynomial precision."
+      "summary": "The open conjecture: ∃ c₁,c₂ > 0 such that c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} for large n. Stronger than BFL's sub-polynomial precision.",
+      "mathContext": "**Conjecture (Erdős):** $\\exists\\, c_1, c_2 > 0$ such that $c_1 \\cdot n^{3/2} \\le f(n) \\le c_2 \\cdot n^{3/2}$ for all large $n$, i.e., $f(n) = \\Theta(n^{3/2})$. This is strictly stronger than BFL's $f(n) = n^{3/2 + o(1)}$ because it excludes logarithmic corrections like $n^{3/2} \\sqrt{\\log n}$. Status: OPEN."
     },
     {
       "id": "derived-results",
       "title": "Derived Theorems",
       "startLine": 112,
       "endLine": 154,
-      "summary": "Four proved theorems: BFL implies Grable (via exponent arithmetic), the conjecture implies Θ(n^{3/2}), BFL exponent characterization, and the generic implication."
+      "summary": "Four proved theorems: BFL implies Grable (via exponent arithmetic), the conjecture implies Θ(n^{3/2}), BFL exponent characterization, and the generic implication.",
+      "mathContext": "Proved theorems: (1) BFL $\\Rightarrow$ Grable: $n^{3/2+\\varepsilon} \\le n^{7/4+\\varepsilon}$ for $\\varepsilon < 1/4$; (2) Conjecture $\\Rightarrow \\Theta(n^{3/2})$: linear bounds $c_1 n^{3/2} \\le f(n) \\le c_2 n^{3/2}$ imply $n^{3/2-\\varepsilon} \\le f(n) \\le n^{3/2+\\varepsilon}$; (3) BFL exponent sandwich: $\\forall \\varepsilon > 0,\\; \\alpha - \\varepsilon \\le \\liminf \\frac{\\log f(n)}{\\log n} \\le \\limsup \\le \\alpha + \\varepsilon$ with $\\alpha = 3/2$."
     },
     {
       "id": "graph-basics",
       "title": "Graph-Theoretic Foundations",
       "startLine": 155,
       "endLine": 211,
-      "summary": "Defines IsTriangle, IsTriangleFree'. Proves equivalence with CliqueFree 3 (via Finset.card_eq_three) and that K_n has triangles for n ≥ 3. All proofs complete."
+      "summary": "Defines IsTriangle, IsTriangleFree'. Proves equivalence with CliqueFree 3 (via Finset.card_eq_three) and that K_n has triangles for n ≥ 3. All proofs complete.",
+      "mathContext": "`IsTriangle G a b c` := edges $ab$, $bc$, $ac$ all present with $a, b, c$ distinct. `IsTriangleFree' G` := $\\neg \\exists\\, a\\,b\\,c,\\; \\text{IsTriangle}\\,G\\,a\\,b\\,c$. Proved equivalent to Mathlib's `CliqueFree G 3` via `Finset.card_eq_three`. `complete_has_triangles`: $K_n$ has triangles for $n \\ge 3$ — explicit construction with vertices $0, 1, 2 \\in \\text{Fin}\\,n$."
     },
     {
       "id": "mantel",
       "title": "Mantel Bound and Trivial Upper Bound",
       "startLine": 212,
       "endLine": 226,
-      "summary": "Axiomatizes the direct Mantel bound f(n) ≤ n²/4 and derives it as an eventually-true statement. Fully proved."
+      "summary": "Axiomatizes the direct Mantel bound f(n) ≤ n²/4 and derives it as an eventually-true statement. Fully proved.",
+      "mathContext": "Mantel's theorem (1907): every triangle-free graph on $n$ vertices has $\\le \\lfloor n^2/4 \\rfloor$ edges (achieved by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$). Since the removal process terminates at a triangle-free graph, $f(n) \\le n^2/4$. This is a trivial upper bound — much weaker than BFL's $n^{3/2+o(1)}$ but useful as a sanity check."
     }
   ],
   "overview": {
