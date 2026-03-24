@@ -40,8 +40,7 @@
       }
     ],
     "originalContributions": [
-      "Bridge infrastructure connecting Mathlib's classification to pedagogical presentation",
-      "Algebraic verification that the parametric form always produces valid triples (ring tactic)",
+      "Bridge formalization connecting Mathlib's classification to pedagogical examples",
       "Verification of classic triples (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29)",
       "Scaling examples (6,8,10) and (9,12,15)"
     ],
@@ -49,7 +48,7 @@
     "wiedijkNumber": 23,
     "axiomCount": 0,
     "lineCount": 268,
-    "assumptions": "0 axioms, 0 sorries. Core classification theorem derived from Mathlib's PythagoreanTriple module."
+    "assumptions": "0 axioms, 0 sorries. Core classification theorem derived from Mathlib's PythagoreanTriple module (isPrimitiveClassified_of_coprime, classified)."
   },
   "overview": {
     "historicalContext": "The Pythagorean triple formula is one of the oldest results in mathematics, with roots stretching back nearly four millennia. The Plimpton 322 clay tablet (c. 1800 BCE), discovered in Iraq in 1922, contains a table of 15 Pythagorean triples including large examples like $(4601, 4800, 6649)$, demonstrating that Babylonian mathematicians understood the parametric generation of these triples long before Pythagoras.\n\nThe systematic study of the formula is traditionally attributed to Euclid, whose *Elements* (Book X, Lemma 1, c. 300 BCE) contains the first known proof that the parametric form $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ generates all primitive triples. Diophantus of Alexandria (c. 250 CE) further developed the theory in his *Arithmetica*, connecting it to rational points on the unit circle — the same geometric insight that underlies the modern proof.\n\nThe result appears as #23 on Freek Wiedijk's list of 100 greatest theorems, reflecting its foundational importance. The classification theorem connects number theory (coprimality, parity), algebra (polynomial identities), and geometry (the unit circle parametrization) in a single elegant statement. It also serves as the historical precursor to Fermat's Last Theorem: while $a^2 + b^2 = c^2$ has infinitely many integer solutions, Fermat conjectured (and Wiles proved in 1995) that $a^n + b^n = c^n$ has none for $n \\geq 3$.",
