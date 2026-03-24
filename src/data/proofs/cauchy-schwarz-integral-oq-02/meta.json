@@ -199,5 +199,32 @@
       "relationship": "sibling",
       "description": "Sibling open question from the same parent: Finite-Dimensional Cauchy-Schwarz, AM-GM, Nesbitt, and Titu'"
     }
+  ],
+  "references": [
+    {
+      "key": "Mi96",
+      "citation": "Minkowski, H., Geometrie der Zahlen, Teubner, Leipzig (1896). Introduced the inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p as a triangle inequality for L^p spaces.",
+      "type": "book"
+    },
+    {
+      "key": "Ho89",
+      "citation": "Hölder, O., Ueber einen Mittelwerthssatz, Nachrichten von der Königlichen Gesellschaft der Wissenschaften und der Georg-Augusts-Universität zu Göttingen (1889), 38–47. Proved Hölder's inequality, which generalizes Cauchy-Schwarz to L^p/L^q duality.",
+      "type": "paper"
+    },
+    {
+      "key": "RS80",
+      "citation": "Reed, M. and Simon, B., Methods of Modern Mathematical Physics I: Functional Analysis, Academic Press (1980), Chapter II. Standard reference for L^p space theory including Minkowski and Hölder inequalities.",
+      "type": "book"
+    },
+    {
+      "key": "Ru87",
+      "citation": "Rudin, W., Real and Complex Analysis, 3rd ed., McGraw-Hill (1987), Chapter 3. Systematic development of L^p spaces with Minkowski and Hölder inequalities via measure theory.",
+      "type": "book"
+    },
+    {
+      "key": "LL01",
+      "citation": "Lieb, E.H. and Loss, M., Analysis, 2nd ed., AMS Graduate Studies in Mathematics 14 (2001), Chapter 2. Modern treatment of integral inequalities including the two-variable Minkowski integral inequality.",
+      "type": "book"
+    }
   ]
 }

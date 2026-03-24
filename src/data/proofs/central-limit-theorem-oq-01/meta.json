@@ -195,5 +195,27 @@
       "relationship": "sibling",
       "description": "Sibling open question from the same parent: Categorical Structure of Distributions Under Convolution"
     }
+  ],
+  "references": [
+    {
+      "key": "GK54",
+      "citation": "Gnedenko, B.V. and Kolmogorov, A.N., Limit Distributions for Sums of Independent Random Variables, Addison-Wesley (1954, English translation by K.L. Chung). Foundational treatment of stable distributions and domains of attraction.",
+      "type": "book"
+    },
+    {
+      "key": "Fe71",
+      "citation": "Feller, W., An Introduction to Probability Theory and Its Applications, Vol. II, 2nd ed., Wiley (1971), Chapters VIII–XVII. Comprehensive treatment of stable laws, infinite variance, and generalized CLT.",
+      "type": "book"
+    },
+    {
+      "key": "ST94",
+      "citation": "Samorodnitsky, G. and Taqqu, M.S., Stable Non-Gaussian Random Processes: Stochastic Models with Infinite Variance, Chapman & Hall/CRC (1994). Standard reference for stable distributions and their applications.",
+      "type": "book"
+    },
+    {
+      "key": "No07",
+      "citation": "Nolan, J.P., Stable Distributions: Models for Heavy Tailed Data, Birkhäuser (2007, in progress). Modern treatment emphasizing computational aspects of stable distributions.",
+      "type": "book"
+    }
   ]
 }
