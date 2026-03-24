@@ -67,16 +67,18 @@
       "The non-integrable edge case in fourierCoeff_difference_formula is genuinely hard: f-f∘τ can be integrable when f isn't. Needs Continuous f hypothesis.",
       "ContinuousOn.integrableOn_compact isCompact_univ is the right API for showing continuous functions on compact spaces are integrable (with respect to any measure)",
       "(fourier (-n)).continuous.smul hf_cont gives continuity of fun x => fourier(-n) x • f x in Lean 4 Mathlib",
-      "Metric.tendsto_nhds unfolds Tendsto into epsilon-delta form; Filter.eventually_cofinite characterizes the cofinite filter"
+      "Metric.tendsto_nhds unfolds Tendsto into epsilon-delta form; Filter.eventually_cofinite characterizes the cofinite filter",
+      "riemannLebesgue: proof via tendsto_const_nhds.div_atTop + rpow_const + Set.finite_Icc; main blocker is rpow monotonicity + ℤ↔ℕ casts",
+      "fourierCoeff_sq_summable: proof via Real.summable_nat_rpow_inv + Summable.of_nonneg_of_le; main blocker is ℤ-sum conversion",
+      "All 4 remaining axioms are deep (Weierstrass, Sobolev, IBP, complex analysis) — no routine eliminations possible"
     ],
     "mathlibGaps": [
       "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
     ],
     "nextSteps": [
-      "Prove riemannLebesgue_of_holder: either via Mathlib R-L for L¹ or squeeze theorem with decay bound",
-      "Prove fourierCoeff_sq_summable_of_holder: decay bound + p-series convergence",
-      "Prove fourierCoeff_smooth_decay: integration by parts for C^k functions",
-      "holder_decay_is_optimal and decay_implies_regularity are deep results — likely stay as axioms"
+      "Fill riemannLebesgue sorry: C=0 case is trivial, C>0 needs tendsto+rpow composition (detailed strategy in knowledge.md)",
+      "Fill sq_summable sorry: comparison with p-series via Real.summable_nat_rpow_inv",
+      "fourierCoeff_smooth_decay axiom is moderate difficulty (IBP on AddCircle) but still substantial"
     ]
   },
   "tags": [
