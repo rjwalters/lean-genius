@@ -96,13 +96,17 @@
       "fourier_coset_decomp requires regrouping Fourier sums by coset; ψ(r·) constant on cosets when (N/g) | val(r)",
       "Pigeonhole sorry: standard averaging argument, find coset with density above mean+delta²/4N/g",
       "The N=1 sorry is fundamentally about prime N, not just N=1. For prime N, gcd(val(r), N)=1 for all r≠0, so coset decomposition always gives M=1. The density iteration chain breaks when the formal density d_k exceeds 1 while M stays at 1.",
-      "Fix options: (a) reduce to N=3^k where M≥3 always, (b) use Bohr sets instead of cosets, (c) restructure chain to short-circuit when d_k > 1 at M=1 (requires proving False from APFree bound in the enclosing context)."
+      "Fix options: (a) reduce to N=3^k where M≥3 always, (b) use Bohr sets instead of cosets, (c) restructure chain to short-circuit when d_k > 1 at M=1 (requires proving False from APFree bound in the enclosing context).",
+      "N=1 sorry analysis: for d=1, N=1, density_increment_lemma needs |B|≥1.01*M which is impossible (|B|≤M for any B⊆ZMod M). No valid witness exists.",
+      "Adding 2≤N hypothesis does NOT fix the issue: the iteration can produce M=1 when N is prime (gcd(val(r),N)=1 for coprime r)",
+      "Adding d+d²/100≤1 hypothesis fails: the iteration density exceeds 1 BEFORE reaching the contradiction step",
+      "True fix requires: (a) restrict to N=3^k (cosets preserve structure), (b) Bohr sets, or (c) restructure proof type to return disjunction (witness OR density>1 contradiction)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix fourier_large_coefficient: add hypothesis δ²N≥2 (bound δ²N/2 fails for N=1 since ZMod 1 has no r≠0)",
-      "Prove fourier_large_coefficient: AP-free → tripleCount=0, Fourier identity gives Σ_{r≠0}Â(r)²conj(Â(2r)) = N|A|-|A|³, triangle inequality + Parseval extracts large coefficient",
-      "Prove density_increment_lemma: use fourier_large_coefficient to find large Â(r), partition Z/NZ by character r into APs of length ~√N, pigeonhole for density increment, preserve AP-freeness"
+      "ARCHITECTURAL: Restructure density_increment_lemma and iteration chain. Options: (a) N=3^k reduction, (b) Bohr sets, (c) disjunctive return type",
+      "Each option requires 200-400 lines of new proof code across multiple theorems",
+      "The sorry is unreachable in the actual Roth proof (N₀ is large enough), but Lean needs the universal statement"
     ]
   },
   "tags": [
