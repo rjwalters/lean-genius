@@ -273,5 +273,18 @@
       "venue": "Oxford Logic Guides 19, Oxford University Press",
       "note": "Rigorous modern treatment emphasizing the role of the diagonal lemma and Löb's theorem — the approach most closely matching this formalization's use of fixed-point sentences and derivability conditions"
     }
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 468,
+    "structureCount": 1,
+    "axiomCount": 3,
+    "theoremCount": 14,
+    "lemmaCount": 0,
+    "defCount": 12,
+    "imports": [
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  }
 }

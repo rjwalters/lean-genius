@@ -61,7 +61,8 @@
       "Real number arithmetic and absolute value",
       "Basic number theory: GCD, LCM, modular arithmetic"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
     "historicalContext": "Peter Gustav Lejeune Dirichlet (1805-1859) proved this theorem in 1842, establishing the foundation of Diophantine approximation. The result shows that every real number can be well-approximated by rationals, with quality inversely proportional to the denominator. The proof introduced the 'pigeonhole principle' (Schubfachprinzip) to number theory.\n\nThe theorem was later refined by Hurwitz (1891), who showed the optimal constant is 1/√5, achieved by the golden ratio φ = (1+√5)/2. The connection to the Chinese Remainder Theorem arises through lattice geometry: CRT solvability corresponds to lattice coset membership, and Dirichlet-style counting arguments on lattice points yield approximation results.\n\nThe Stern-Brocot tree (Stern 1858, Brocot 1861) provides the algorithmic structure for generating best rational approximations, with the mediant operation as its fundamental building block. This connects to continued fractions, which give the sequence of best approximations to any real number.",
@@ -177,6 +178,20 @@
       "Can the pigeonhole-based proof be extended to simultaneous Diophantine approximation in Lean, formalizing Minkowski's lattice point theorem for convex bodies?",
       "What is the formal relationship between the Stern-Brocot mediant operation and the convergents of continued fraction expansions — can this be unified in Lean's Mathlib?",
       "The Littlewood conjecture (1930, still open): for all real α, β, is it true that lim inf n·‖nα‖·‖nβ‖ = 0? This is the natural two-dimensional extension of Dirichlet's theorem."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 240,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "lemmaCount": 4,
+    "defCount": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
     ]
   }
 }

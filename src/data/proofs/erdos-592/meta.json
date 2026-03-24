@@ -70,7 +70,8 @@
     ],
     "axiomCount": 10,
     "assumptions": "10 axiom declarations: ordinalPartition, specker_beta_two, specker_finite_fail, chang_beta_omega, galvin_larson_necessary, cantorNFLength, schipperus_leq_two, schipperus_geq_four, erdos_592_open_case, partition_ordinal_classification",
-    "proofRepoPath": "Proofs/Erdos592Problem.lean"
+    "proofRepoPath": "Proofs/Erdos592Problem.lean",
+    "lineCount": 115
   },
   "sections": [
     {
@@ -189,5 +190,19 @@
       "citation": "Erdős Problems, Problem #592, https://erdosproblems.com/592.",
       "type": "website"
     }
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 115,
+    "structureCount": 0,
+    "axiomCount": 10,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 4,
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  }
 }

@@ -176,5 +176,28 @@
       "venue": "Clay Mathematics Institute Millennium Prize Problems",
       "note": "The Clay Millennium Prize problem statement for Yang-Mills existence and mass gap. The 2D case formalized here is exactly solvable and exhibits the mass gap, providing a template for the unsolved 4D problem"
     }
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 28002,
+    "structureCount": 365,
+    "axiomCount": 0,
+    "theoremCount": 1786,
+    "lemmaCount": 0,
+    "defCount": 251,
+    "imports": [
+      "Proofs.YangMills.Classical",
+      "Proofs.YangMills.Quantum"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Real",
+      "Set",
+      "Filter",
+      "Topology",
+      "scoped",
+      "Topology",
+      "BigOperators",
+      "Matrix"
+    ]
+  }
 }

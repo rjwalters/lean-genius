@@ -25,7 +25,8 @@
     "axiomCount": 3,
     "assumptions": "3 axiom declarations. 4 sorry(s) remain in the formalization.",
     "proofRepoPath": "Proofs/Erdos662Problem.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 109
   },
   "sections": [
     {
@@ -118,5 +119,24 @@
     "Harborth (1974): Lösung zu Problem 664A (contact number formula)",
     "Swanepoel (2009): Combinatorial distance geometry in normed spaces",
     "https://erdosproblems.com/662"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 109,
+    "structureCount": 0,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "lemmaCount": 0,
+    "defCount": 2,
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Classical"
+    ]
+  }
 }

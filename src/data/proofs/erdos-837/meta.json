@@ -48,7 +48,8 @@
     "badge": "axiom",
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
     "proofRepoPath": "Proofs/Erdos837Problem.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 87
   },
   "sections": [
     {
@@ -149,5 +150,20 @@
     "Frankl & Rödl (1984): Ramsey multiplicity approach for hypergraph jumps",
     "Razborov (2007): flag algebra method for extremal problems",
     "https://erdosproblems.com/837"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 87,
+    "structureCount": 1,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 2,
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  }
 }

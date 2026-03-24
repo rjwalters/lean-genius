@@ -43,7 +43,8 @@
     "badge": "axiom",
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
     "proofRepoPath": "Proofs/Erdos574Problem.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 96
   },
   "sections": [
     {
@@ -118,5 +119,20 @@
     "Lazebnik, Ustimenko & Woldar (1995): algebraic constructions for k = 2, 3, 5",
     "Wenger (1991): explicit C_{2k}-free constructions via algebraic geometry",
     "https://erdosproblems.com/574"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 96,
+    "structureCount": 1,
+    "axiomCount": 4,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 2,
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  }
 }

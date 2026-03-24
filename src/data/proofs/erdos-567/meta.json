@@ -24,7 +24,8 @@
     "badge": "axiom",
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
     "proofRepoPath": "Proofs/Erdos567Problem.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 104
   },
   "sections": [
     {
@@ -126,5 +127,19 @@
     "Bradač, Gishboliner & Sudakov (2024): Size Ramsey numbers of K₄-subdivisions",
     "Special case of Problem #566",
     "https://erdosproblems.com/567"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 104,
+    "structureCount": 1,
+    "axiomCount": 6,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 4,
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": []
+  }
 }

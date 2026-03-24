@@ -20,7 +20,8 @@
     "badge": "axiom",
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
     "proofRepoPath": "Proofs/Erdos112Problem.lean",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "lineCount": 102
   },
   "sections": [
     {
@@ -219,5 +220,19 @@
     "Larson–Mitchell (1997): k(n,3) ≤ n²",
     "Hunter–Steiner: directed path variant",
     "https://erdosproblems.com/112"
-  ]
+  ],
+  "leanFile": {
+    "lineCount": 102,
+    "structureCount": 0,
+    "axiomCount": 7,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "defCount": 3,
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": []
+  }
 }

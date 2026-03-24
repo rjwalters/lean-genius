@@ -26,7 +26,8 @@
     "dateAdded": "2026-03-24",
     "axiomCount": 6,
     "lineCount": 212,
-    "assumptions": "6 axioms: turan_theorem (Turán's theorem for K_r), erdos_simonovits_supersaturation (asymptotic supersaturation), kruskal_katona (shadow bound), razborov_triangle_density (Razborov 2010 for K_3), reiher_k4_density (Reiher 2016 for K_4), kr_density_conjecture (open for r≥5). All are deep results from extremal graph theory."
+    "assumptions": "6 axioms: turan_theorem (Turán's theorem for K_r), erdos_simonovits_supersaturation (asymptotic supersaturation), kruskal_katona (shadow bound), razborov_triangle_density (Razborov 2010 for K_3), reiher_k4_density (Reiher 2016 for K_4), kr_density_conjecture (open for r≥5). All are deep results from extremal graph theory.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**From Turán to Supersaturation**\n\nTurán's theorem (1941) is the cornerstone of extremal graph theory: the maximum number of edges in a K_r-free graph on n vertices is achieved by the complete (r-1)-partite graph with balanced parts. Erdős asked the natural follow-up: if we have *more* edges than this threshold, how many copies of K_r are forced?\n\n**The Triangle Case (r=3)**\n\nRademacher (unpublished, c. 1940s) proved the first supersaturation result: one extra edge over ⌊n²/4⌋ forces ⌊n/2⌋ triangles. Erdős (#1010) conjectured that t extra edges force t·⌊n/2⌋ triangles for t < ⌊n/2⌋, proved by Lovász-Simonovits (1976). Razborov (2010) determined the *exact* minimum triangle density for all edge densities using his flag algebra method, a landmark result.\n\n**Beyond Triangles**\n\nReiher (2016) extended flag algebras to K_4, confirming the Lovász-Simonovits conjecture for 4-cliques. For r ≥ 5, the exact minimum K_r density remains one of the central open problems in extremal combinatorics. The Kruskal-Katona theorem provides structural lower bounds, but exact results require the still-developing theory of flag algebras for hypergraphs.",
@@ -140,7 +141,9 @@
   ],
   "references": [
     {
-      "authors": ["A. Razborov"],
+      "authors": [
+        "A. Razborov"
+      ],
       "title": "On the minimal density of triangles in graphs",
       "venue": "Combinatorics, Probability and Computing",
       "year": 2010,
@@ -149,7 +152,9 @@
       "notes": "Exact minimum triangle density via flag algebras: g₃(d) = d(2d-1)²/2 for d ≥ 1/2"
     },
     {
-      "authors": ["C. Reiher"],
+      "authors": [
+        "C. Reiher"
+      ],
       "title": "The clique density theorem",
       "venue": "Annals of Mathematics",
       "year": 2016,
@@ -158,7 +163,9 @@
       "notes": "Extended flag algebra methods to determine exact K₄ density, confirming Lovász-Simonovits conjecture"
     },
     {
-      "authors": ["J.B. Kruskal"],
+      "authors": [
+        "J.B. Kruskal"
+      ],
       "title": "The number of simplices in a complex",
       "venue": "Mathematical Optimization Techniques",
       "year": 1963,
@@ -166,7 +173,9 @@
       "notes": "The Kruskal-Katona theorem: minimum shadow size for k-uniform set families"
     },
     {
-      "authors": ["G.O.H. Katona"],
+      "authors": [
+        "G.O.H. Katona"
+      ],
       "title": "A theorem of finite sets",
       "venue": "Theory of Graphs (Proc. Colloq. Tihany 1966)",
       "year": 1968,
@@ -174,7 +183,9 @@
       "notes": "Independent proof of the Kruskal-Katona theorem"
     },
     {
-      "authors": ["A. Razborov"],
+      "authors": [
+        "A. Razborov"
+      ],
       "title": "Flag algebras",
       "venue": "Journal of Symbolic Logic",
       "year": 2007,
@@ -184,8 +195,13 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["SimpleGraph", "Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
     "namespace": null,
     "lineCount": 212,
     "axiomCount": 6,
