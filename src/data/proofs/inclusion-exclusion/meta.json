@@ -208,17 +208,17 @@
     {
       "id": "birthday-problem",
       "relationship": "applies",
-      "description": "The birthday problem can be solved via inclusion-exclusion: P(at least one shared birthday) = 1 - P(all distinct), where"
+      "description": "The birthday problem can be solved via inclusion-exclusion: P(at least one shared birthday) = 1 - P(all distinct), where P(all distinct) avoids the overcounting that inclusion-exclusion corrects"
     },
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "The sieve of Eratosthenes is an inclusion-exclusion argument: count integers not divisible by any prime up to √n by alte"
+      "description": "The sieve of Eratosthenes is an inclusion-exclusion argument: count integers not divisible by any prime up to √n by alternately subtracting and adding multiples of prime products"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization enables inclusion-exclusion over prime divisors: φ(n) = n·∏(1-1/p) uses I-E with sets A_p = {"
+      "description": "Unique prime factorization enables inclusion-exclusion over prime divisors: φ(n) = n·∏(1-1/p) uses I-E with sets A_p = {k ≤ n : p | k} for each prime p | n"
     }
   ],
   "leanFile": {

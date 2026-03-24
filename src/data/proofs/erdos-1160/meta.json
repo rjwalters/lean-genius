@@ -170,22 +170,26 @@
     {
       "id": "sylow-theorems",
       "title": "Sylow's Theorems",
-      "relationship": "foundation — Sylow theorems provide the structural decomposition underpinning group enumeration"
+      "relationship": "foundation — Sylow theorems provide the structural decomposition underpinning group enumeration",
+      "description": "The Sylow theorems provide the structural decomposition of finite groups into p-subgroups that underpins group enumeration. Pantelidakis's partial result for odd n relies on Sylow-theoretic bounds."
     },
     {
       "id": "lagrange-theorem",
       "title": "Lagrange's Theorem",
-      "relationship": "foundation — subgroup order divides group order, basic ingredient in group enumeration"
+      "relationship": "foundation — subgroup order divides group order, basic ingredient in group enumeration",
+      "description": "Lagrange's theorem (subgroup order divides group order) constrains which orders can appear as subgroup orders, a basic ingredient in group enumeration."
     },
     {
       "id": "inverse-galois",
       "title": "The Inverse Galois Problem",
-      "relationship": "related — both concern the structure and diversity of finite groups"
+      "relationship": "related — both concern the structure and diversity of finite groups",
+      "description": "Both problems concern the structure and diversity of finite groups. The inverse Galois problem asks which groups arise as Galois groups, while Erdős #1160 asks which orders maximize the group counting function."
     },
     {
       "id": "abel-ruffini",
       "title": "Abel-Ruffini Theorem",
-      "relationship": "related — the solvable/non-solvable distinction is relevant to Pantelidakis's approach"
+      "relationship": "related — the solvable/non-solvable distinction is relevant to Pantelidakis's approach",
+      "description": "The Abel–Ruffini theorem connects to group theory through the non-solvability of the symmetric group S₅. The distinction between solvable and non-solvable groups is relevant to Pantelidakis's approach, which exploits solvability of odd-order groups."
     }
   ]
 }

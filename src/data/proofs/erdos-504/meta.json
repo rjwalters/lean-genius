@@ -205,12 +205,12 @@
     {
       "id": "pythagorean-theorem",
       "relationship": "foundational",
-      "description": "The Pythagorean theorem underpins the Euclidean norm $\\|v\\| = \\sqrt{v_1^2 + v_2^2}$ used in the angle definition $\\angle"
+      "description": "The Pythagorean theorem underpins the Euclidean norm $\\|v\\| = \\sqrt{v_1^2 + v_2^2}$ used in the angle definition $\\angle(x,y,z) = \\arccos\\bigl(\\frac{(x-y)\\cdot(z-y)}{\\|x-y\\|\\|z-y\\|}\\bigr)$"
     },
     {
       "id": "area-of-circle",
       "relationship": "thematic",
-      "description": "The inscribed angle theorem — central to proving regular polygon optimality for $\\alpha_{2^n}$ — is intimately connected"
+      "description": "The inscribed angle theorem — central to proving regular polygon optimality for $\\alpha_{2^n}$ — is intimately connected to the circle geometry formalized in the area-of-circle entry"
     }
   ],
   "references": [

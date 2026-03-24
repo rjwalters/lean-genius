@@ -218,32 +218,32 @@
     {
       "id": "sqrt2-irrational",
       "relationship": "related",
-      "description": "The failure of IVT over $\\mathbb{Q}$ is witnessed by $f(x) = x^2 - 2$: $f(1) < 0 < f(2)$ but $\\sqrt{2} \\notin \\mathbb{Q}"
+      "description": "The failure of IVT over $\\mathbb{Q}$ is witnessed by $f(x) = x^2 - 2$: $f(1) < 0 < f(2)$ but $\\sqrt{2} \\notin \\mathbb{Q}$. The irrationality of $\\sqrt{2}$ thus demonstrates why completeness is essential for IVT"
     },
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "foundational",
-      "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root because $\\lim_{x "
+      "description": "Gauss's algebraic proof of FTA (1849) reduces to IVT: every odd-degree real polynomial has a real root because $\\lim_{x \\to \\pm\\infty} f(x) = \\pm\\infty$, so $f$ takes both positive and negative values — IVT gives a root. This is the minimal analytic prerequisite for FTA"
     },
     {
       "id": "area-of-circle",
       "relationship": "related",
-      "description": "Archimedes' method of exhaustion — the ancient precursor to IVT — proved $A = \\pi r^2$ by showing the difference between"
+      "description": "Archimedes' method of exhaustion — the ancient precursor to IVT — proved $A = \\pi r^2$ by showing the difference between area and $\\pi r^2$ is less than any positive quantity. IVT formalizes this type of continuity argument rigorously using the completeness of $\\mathbb{R}$"
     },
     {
       "id": "angle-trisection",
       "relationship": "related",
-      "description": "IVT guarantees that $\\cos(\\theta/3)$ exists for any angle $\\theta$ (as a real value between -1 and 1). The impossibility"
+      "description": "IVT guarantees that $\\cos(\\theta/3)$ exists for any angle $\\theta$ (as a real value between -1 and 1). The impossibility of angle trisection is not about existence of the value but about constructibility — $\\cos(20°)$ exists by IVT but is not constructible because its minimal polynomial has degree 3"
     },
     {
       "id": "schroeder-bernstein",
       "relationship": "thematic",
-      "description": "Both establish existence of 'intermediate' objects: IVT proves a continuous function attains all values between $f(a)$ a"
+      "description": "Both establish existence of 'intermediate' objects: IVT proves a continuous function attains all values between $f(a)$ and $f(b)$, while Schröder-Bernstein proves a bijection exists between sets with injections in both directions. Both are powerful existence theorems that avoid explicit construction"
     },
     {
       "id": "cantor-diagonalization",
       "relationship": "thematic",
-      "description": "IVT relies on the completeness of $\\mathbb{R}$ (which has uncountably many points, by Cantor's argument). Over $\\mathbb{"
+      "description": "IVT relies on the completeness of $\\mathbb{R}$ (which has uncountably many points, by Cantor's argument). Over $\\mathbb{Q}$ (countable), IVT fails: there are 'gaps' where intermediate values should exist but don't. Cantor's proof that $\\mathbb{R}$ is uncountable ensures that $\\mathbb{R}$ has 'no gaps' — the topological completeness that IVT requires"
     }
   ],
   "references": [

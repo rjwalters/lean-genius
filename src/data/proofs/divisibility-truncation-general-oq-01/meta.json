@@ -176,7 +176,7 @@
     {
       "id": "bezout-identity",
       "relationship": "foundational",
-      "description": "Bézout's identity guarantees the existence of the osculator $c$: since $\\gcd(10, d) = 1$, there exist $s, t$ with $10s +"
+      "description": "Bézout's identity guarantees the existence of the osculator $c$: since $\\gcd(10, d) = 1$, there exist $s, t$ with $10s + dt = 1$, giving $c = s$ as the multiplicative inverse of 10 mod $d$"
     },
     {
       "id": "fundamental-arithmetic",
@@ -196,7 +196,7 @@
     {
       "id": "chinese-remainder-constructive",
       "relationship": "related",
-      "description": "CRT provides an alternative approach to osculator construction: for composite $d = d_1 d_2$ with $\\gcd(d_1, d_2) = 1$, t"
+      "description": "CRT provides an alternative approach to osculator construction: for composite $d = d_1 d_2$ with $\\gcd(d_1, d_2) = 1$, the osculator can be computed via the Chinese Remainder Theorem from the osculators of $d_1$ and $d_2$"
     }
   ],
   "leanFile": {

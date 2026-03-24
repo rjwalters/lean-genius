@@ -248,7 +248,7 @@
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Both concern multiplicative arithmetic functions: $\\sigma_1(n) = \\sum_{d \\mid n} d$ (sum of divisors) and $\\phi(n) = |\\{"
+      "description": "Both concern multiplicative arithmetic functions: $\\sigma_1(n) = \\sum_{d \\mid n} d$ (sum of divisors) and $\\phi(n) = |\\{k \\leq n : \\gcd(k,n)=1\\}|$ (Euler's totient). Multiplicativity ($f(mn) = f(m)f(n)$ for $\\gcd(m,n)=1$) is the key property enabling both Euclid's and Euler's proofs. The relationship $\\sum_{d \\mid n} \\phi(d) = n$ gives $\\sigma_0 * \\phi = \\text{id}$ under Dirichlet convolution"
     },
     {
       "id": "infinitude-primes",
@@ -258,7 +258,7 @@
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime between $n$ and $2n$, but no analogous result is known for Mersenne primes. The "
+      "description": "Bertrand's postulate guarantees a prime between $n$ and $2n$, but no analogous result is known for Mersenne primes. The distribution of Mersenne primes is far sparser and more mysterious than ordinary primes — the 51st known Mersenne prime has over 41 million digits"
     },
     {
       "id": "fundamental-arithmetic",
@@ -273,27 +273,27 @@
     {
       "id": "fermat-two-squares",
       "relationship": "related",
-      "description": "Both rely on the multiplicativity of arithmetic functions: Fermat's theorem uses the multiplicativity of the Gaussian in"
+      "description": "Both rely on the multiplicativity of arithmetic functions: Fermat's theorem uses the multiplicativity of the Gaussian integer norm $N(a+bi) = a^2+b^2$, while perfect numbers use the multiplicativity of $\\sigma_1$. Mersenne primes $2^p - 1$ are related to the factorization of $x^p - 1$ in algebraic number theory"
     },
     {
       "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Both are characterizations of primes — Wilson's theorem characterizes primes via factorial congruence, while the Euclid-"
+      "description": "Both are characterizations of primes — Wilson's theorem characterizes primes via factorial congruence, while the Euclid-Euler theorem characterizes even perfect numbers via Mersenne primes. The primality of $2^p - 1$ can be tested by the Lucas-Lehmer test, which is far more efficient than Wilson's factorial test"
     },
     {
       "id": "arithmetic-series",
       "relationship": "related",
-      "description": "The formula $\\sigma_1(2^k) = 2^{k+1} - 1$ used in Euclid's proof is the sum of a geometric series $1 + 2 + 4 + \\cdots + "
+      "description": "The formula $\\sigma_1(2^k) = 2^{k+1} - 1$ used in Euclid's proof is the sum of a geometric series $1 + 2 + 4 + \\cdots + 2^k$, a special case of the arithmetic/geometric series. The Mersenne number $M_k = 2^k - 1$ is itself a geometric sum"
     },
     {
       "id": "gcd-algorithm",
       "relationship": "foundational",
-      "description": "The proof uses $\\gcd(2^k, 2^{k+1}-1) = 1$ repeatedly to invoke multiplicativity of $\\sigma_1$. Computing GCDs via the Eu"
+      "description": "The proof uses $\\gcd(2^k, 2^{k+1}-1) = 1$ repeatedly to invoke multiplicativity of $\\sigma_1$. Computing GCDs via the Euclidean algorithm is foundational to verifying the coprimality conditions that make the Euclid-Euler proof work"
     },
     {
       "id": "binomial-theorem",
       "relationship": "related",
-      "description": "The Mersenne number $M_p = 2^p - 1$ factors as $(2-1)(2^{p-1} + 2^{p-2} + \\cdots + 1)$ when $p$ is composite (via the fa"
+      "description": "The Mersenne number $M_p = 2^p - 1$ factors as $(2-1)(2^{p-1} + 2^{p-2} + \\cdots + 1)$ when $p$ is composite (via the factorization $x^{ab} - 1 = (x^a - 1)(x^{a(b-1)} + \\cdots + 1)$). This explains why Mersenne primes require $p$ to be prime: if $p = ab$ then $2^a - 1 \\mid 2^p - 1$"
     }
   ]
 }

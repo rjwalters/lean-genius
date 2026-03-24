@@ -234,17 +234,17 @@
     {
       "id": "fourier-series",
       "relationship": "foundational",
-      "description": "Fourier decomposition and Parseval's identity underpin the spectral proof of the isoperimetric inequality"
+      "description": "The Fourier decomposition and Parseval's identity from Fourier series theory underpin the spectral proof: the isoperimetric inequality reduces to comparing Fourier coefficient norms"
     },
     {
       "id": "cauchy-schwarz",
       "relationship": "uses",
-      "description": "2D Cauchy-Schwarz (xv-yu)² ≤ (x²+y²)(u²+v²) used in the arithmetic kernel of the proof"
+      "description": "The 2D Cauchy-Schwarz inequality (xv-yu)² ≤ (x²+y²)(u²+v²) proved here as cross_product_sq_le is used in the arithmetic kernel of the isoperimetric proof"
     },
     {
       "id": "borsuk-ulam",
       "relationship": "thematic",
-      "description": "Both reveal geometric rigidity: isoperimetric characterizes the circle as area-optimal, Borsuk-Ulam constrains continuous sphere maps"
+      "description": "The Borsuk-Ulam theorem and the isoperimetric inequality are both topological/geometric results about the structure of continuous maps on spheres. While the isoperimetric inequality characterizes the circle as the area-optimal curve, Borsuk-Ulam provides topological constraints on continuous mappings of spheres — both reveal deep geometric rigidity phenomena"
     }
   ],
   "references": [

@@ -139,32 +139,32 @@
     {
       "id": "erdos-1094",
       "relationship": "sibling",
-      "description": "Erdős Problem #1094 asks about the least prime factor of C(n,k), requiring it to be ≤ max(n/k, k) with finitely many exceptions. Both problems stud..."
+      "description": "Erdős Problem #1094 asks about the least prime factor of C(n,k), requiring it to be ≤ max(n/k, k) with finitely many exceptions. Both problems study the prime-factor structure of binomial coefficients under the condition n ≥ 2k, and share the same NoSmallPrimeFactors setting."
     },
     {
       "id": "kummer-theorem",
       "relationship": "dependency",
-      "description": "Kummer's theorem (1852) characterizes v_p(C(n,k)) as the number of carries when adding k and n-k in base p. The NoSmallPrimeFactors condition in Pr..."
+      "description": "Kummer's theorem (1852) characterizes v_p(C(n,k)) as the number of carries when adding k and n-k in base p. The NoSmallPrimeFactors condition in Problem #1093 is equivalent to zero carries in every base p ≤ k, making Kummer's theorem the central structural tool for the formalization."
     },
     {
       "id": "erdos-728-factorial-divisibility",
       "relationship": "related",
-      "description": "Erdős Problem #728 concerns divisibility properties of factorials and was autonomously solved via Aristotle. Both problems involve p-adic valuation..."
+      "description": "Erdős Problem #728 concerns divisibility properties of factorials and was autonomously solved via Aristotle. Both problems involve p-adic valuations of products of consecutive integers (falling factorials vs. n!), and both depend on prime factorization machinery in Mathlib."
     },
     {
       "id": "binomial-theorem",
       "relationship": "foundation",
-      "description": "The Binomial Theorem provides the algebraic identity whose coefficient C(n,k) is the subject of Problem #1093. Understanding the prime structure of..."
+      "description": "The Binomial Theorem provides the algebraic identity whose coefficient C(n,k) is the subject of Problem #1093. Understanding the prime structure of C(n,k) presupposes familiarity with its combinatorial definition as a falling factorial quotient."
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's Postulate guarantees a prime between k and 2k. Combined with the condition n ≥ 2k, it implies that any prime p in (k, n-k] divides the n..."
+      "description": "Bertrand's Postulate guarantees a prime between k and 2k. Combined with the condition n ≥ 2k, it implies that any prime p in (k, n-k] divides the numerator but not the denominator of C(n,k), which feeds into the smooth-number analysis underlying the deficiency count."
     },
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "The Prime Number Theorem governs the density of primes and underpins Dickman's function ρ(u) = Ψ(x, x^{1/u})/x for smooth-number counts. The Dickma..."
+      "description": "The Prime Number Theorem governs the density of primes and underpins Dickman's function ρ(u) = Ψ(x, x^{1/u})/x for smooth-number counts. The Dickman function appears in the ELS bound analysis and in heuristic estimates for the number of deficiency-1 pairs."
     }
   ],
   "references": [

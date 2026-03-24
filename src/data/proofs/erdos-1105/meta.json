@@ -219,32 +219,32 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey's Theorem is the foundational result in Ramsey theory. Anti-Ramsey theory asks the complementary question: how many colors can be used while..."
+      "description": "Ramsey's Theorem is the foundational result in Ramsey theory. Anti-Ramsey theory asks the complementary question: how many colors can be used while avoiding a rainbow (all-distinct-colors) subgraph, inverting the classical goal of forcing monochromatic subgraphs."
     },
     {
       "id": "erdos-1014",
       "relationship": "related",
-      "description": "Both problems concern asymptotic behavior of extremal numbers in complete graphs. Erdős #1014 studies ratio convergence of classical Ramsey numbers..."
+      "description": "Both problems concern asymptotic behavior of extremal numbers in complete graphs. Erdős #1014 studies ratio convergence of classical Ramsey numbers R(k, l), while #1105 studies the linear growth rate of anti-Ramsey numbers AR(n, C_k)."
     },
     {
       "id": "erdos-129",
       "relationship": "related",
-      "description": "Erdős #129 studies edge-colorings of K_n avoiding monochromatic cliques, a classical Ramsey coloring problem. Anti-Ramsey #1105 studies the opposit..."
+      "description": "Erdős #129 studies edge-colorings of K_n avoiding monochromatic cliques, a classical Ramsey coloring problem. Anti-Ramsey #1105 studies the opposite extremal: maximizing colors in K_n while avoiding rainbow cycles, making both problems extremal edge-coloring questions on complete graphs."
     },
     {
       "id": "erdos-1008",
       "relationship": "related",
-      "description": "Erdős #1008 studies extremal numbers for C₄-free subgraphs (Zarankiewicz-type). Problem #1105 studies anti-Ramsey numbers for cycles C_k. Both conc..."
+      "description": "Erdős #1008 studies extremal numbers for C₄-free subgraphs (Zarankiewicz-type). Problem #1105 studies anti-Ramsey numbers for cycles C_k. Both concern extremal properties of cycles in complete or dense graphs, and the Turán connection AR(n,H) ≥ ex(n,H)+1 links these two frameworks."
     },
     {
       "id": "erdos-1009",
       "relationship": "related",
-      "description": "Erdős #1009 establishes bounds for edge-disjoint triangles beyond the Turán number. The Turán connection is central to #1105 as well: the lower bou..."
+      "description": "Erdős #1009 establishes bounds for edge-disjoint triangles beyond the Turán number. The Turán connection is central to #1105 as well: the lower bound AR(n, H) ≥ ex(n, H) + 1 links anti-Ramsey numbers to Turán extremal numbers, so results in Turán theory directly inform anti-Ramsey bounds."
     },
     {
       "id": "erdos-1012",
       "relationship": "related",
-      "description": "Erdős #1012 studies long cycles in dense graphs from an extremal perspective. Problem #1105 studies anti-Ramsey numbers for cycles C_k and paths P_..."
+      "description": "Erdős #1012 studies long cycles in dense graphs from an extremal perspective. Problem #1105 studies anti-Ramsey numbers for cycles C_k and paths P_k. Both problems address extremal properties of cycles in dense graphs, with #1012 focusing on cycle length and #1105 on rainbow-free colorings."
     }
   ],
   "references": [

@@ -201,17 +201,17 @@
     {
       "id": "erdos-97",
       "relationship": "thematic",
-      "description": "Erdős #97 concerns equidistant vertices in convex polygons — the finite, purely geometric side of distance problems. #11"
+      "description": "Erdős #97 concerns equidistant vertices in convex polygons — the finite, purely geometric side of distance problems. #1127 takes distance constraints to the set-theoretic extreme: partitioning all of ℝⁿ (uncountable) into countably many pieces each with ALL pairwise distances distinct, a property qualitatively different from any finite geometric constraint."
     },
     {
       "id": "cantor-diagonalization",
       "relationship": "foundational",
-      "description": "Cantor's diagonal argument establishes that ℝ is uncountable (|ℝ| = 2^ℵ₀ > ℵ₀). This is the reason the decomposition in "
+      "description": "Cantor's diagonal argument establishes that ℝ is uncountable (|ℝ| = 2^ℵ₀ > ℵ₀). This is the reason the decomposition in #1127 is non-trivial: any countable cover of the uncountable space ℝⁿ must have uncountably many points in at least one piece, and the ℚ-linear independence argument is needed to control the distance structure of these uncountable pieces."
     },
     {
       "id": "erdos-100",
       "relationship": "thematic",
-      "description": "Erdős #100 studies finite planar point sets with all pairwise distances being integers (restricted distance sets), while"
+      "description": "Erdős #100 studies finite planar point sets with all pairwise distances being integers (restricted distance sets), while #1127 asks about decomposing all of ℝⁿ into countably many sets with ALL pairwise distances DISTINCT. Both problems impose global constraints on the distance set of a point configuration, but at radically different scales: finite geometry vs. transfinite set theory."
     }
   ],
   "references": [

@@ -266,12 +266,12 @@
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ can be proved via Parseval's theorem applied to $f(x) = x$ on $[-\\pi, \\pi]$: $\\sum|c_n|^2"
+      "description": "Euler's $\\sum 1/n^2 = \\pi^2/6$ can be proved via Parseval's theorem applied to $f(x) = x$ on $[-\\pi, \\pi]$: $\\sum|c_n|^2 = \\|f\\|^2$ gives $\\zeta(2) = \\pi^2/6$. This is one of the most elegant applications of Fourier analysis"
     },
     {
       "id": "cauchy-schwarz",
       "relationship": "foundational",
-      "description": "The $L^2$ inner product $\\langle f, g \\rangle = \\int f\\bar{g}\\, d\\mu$ satisfies Cauchy-Schwarz, which is the foundation "
+      "description": "The $L^2$ inner product $\\langle f, g \\rangle = \\int f\\bar{g}\\, d\\mu$ satisfies Cauchy-Schwarz, which is the foundation of the Hilbert space structure that makes Fourier analysis work — orthogonal projection onto $e_n$ extracts the $n$-th coefficient"
     },
     {
       "id": "isoperimetric-theorem",
@@ -286,12 +286,12 @@
     {
       "id": "area-of-circle",
       "relationship": "related",
-      "description": "The Fourier basis functions $e^{in\\theta}$ parameterize circles in $\\mathbb{C}$ — each $e^{in\\theta}$ traces the unit ci"
+      "description": "The Fourier basis functions $e^{in\\theta}$ parameterize circles in $\\mathbb{C}$ — each $e^{in\\theta}$ traces the unit circle $n$ times. The $L^2$ inner product on $\\mathbb{R}/2\\pi\\mathbb{Z}$ is integration over the circle, connecting Fourier analysis to the geometry of circles and the area formula $A = \\pi r^2$"
     },
     {
       "id": "fundamental-theorem-calculus",
       "relationship": "foundational",
-      "description": "FTC underpins the computation of Fourier coefficients $c_n = \\int f e^{-inx}\\,dx$ and integration by parts, which shows "
+      "description": "FTC underpins the computation of Fourier coefficients $c_n = \\int f e^{-inx}\\,dx$ and integration by parts, which shows that smoothness of $f$ implies faster decay of $c_n$: $f \\in C^k \\Rightarrow c_n = O(n^{-k})$"
     }
   ]
 }

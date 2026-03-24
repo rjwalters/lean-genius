@@ -183,7 +183,7 @@
     {
       "id": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "Ramsey theory underpins the EGP proof: after greedily extracting triangles from a graph, the remainder is triangle-free "
+      "description": "Ramsey theory underpins the EGP proof: after greedily extracting triangles from a graph, the remainder is triangle-free and hence (by a Ramsey-style argument) bipartite, reducing the partition to individual edges bounded by ⌊n²/4⌋."
     },
     {
       "id": "erdos-1015",
@@ -198,7 +198,7 @@
     {
       "id": "erdos-500",
       "relationship": "thematic",
-      "description": "Erdős #500 studies Turán-type density questions for hypergraphs. The EGP bound ⌊n²/4⌋ equals the Turán number ex(n,K₃), "
+      "description": "Erdős #500 studies Turán-type density questions for hypergraphs. The EGP bound ⌊n²/4⌋ equals the Turán number ex(n,K₃), linking clique partition numbers to Turán density and making Problem #1017 part of the broader Turán extremal program."
     }
   ],
   "references": [

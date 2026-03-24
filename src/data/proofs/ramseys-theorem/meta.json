@@ -216,12 +216,12 @@
     {
       "id": "mathematical-induction",
       "relationship": "foundational",
-      "description": "Ramsey's theorem is proved by strong induction on $r + s$, the same principle formalized in mathematical-induction. The "
+      "description": "Ramsey's theorem is proved by strong induction on $r + s$, the same principle formalized in mathematical-induction. The inductive structure requires strong induction because the step from $R(r,s)$ uses both $R(r-1,s)$ and $R(r,s-1)$, not just the immediately preceding value"
     },
     {
       "id": "erdos-szekeres",
       "relationship": "related",
-      "description": "The Erdos-Szekeres theorem (every sequence of length $rs+1$ contains a monotone subsequence of length $r+1$ or $s+1$) ca"
+      "description": "The Erdos-Szekeres theorem (every sequence of length $rs+1$ contains a monotone subsequence of length $r+1$ or $s+1$) can be proved via Ramsey's theorem applied to a 2-coloring where edges are colored by the relative order of sequence elements"
     }
   ],
   "conclusion": {

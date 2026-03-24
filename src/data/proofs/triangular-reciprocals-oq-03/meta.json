@@ -158,7 +158,7 @@
     {
       "id": "basel-problem",
       "relationship": "related",
-      "description": "Both evaluate reciprocal series over structured sequences: Basel computes ∑1/n² = π²/6 while this computes ∑(-1)^{n+1}·2"
+      "description": "Both evaluate reciprocal series over structured sequences: Basel computes ∑1/n² = π²/6 while this computes ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2. Both yield transcendental closed forms from rational term sequences."
     }
   ],
   "leanFile": {

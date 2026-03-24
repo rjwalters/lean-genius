@@ -246,17 +246,17 @@
     {
       "id": "dirichlets-theorem",
       "relationship": "related",
-      "description": "Dirichlet's theorem on primes in arithmetic progressions is the prototype for prime distribution in structured sets; Erd"
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is the prototype for prime distribution in structured sets; Erdős asks about a more restrictive structured set"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient $\\varphi(p) = p - 1$ connects directly: Form A primes have $\\varphi(p) = 2^k q$ with $\\omega(\\varphi(p))"
+      "description": "Euler's totient $\\varphi(p) = p - 1$ connects directly: Form A primes have $\\varphi(p) = 2^k q$ with $\\omega(\\varphi(p)) \\leq 2$. Pomerance's work on popular totient values studies exactly this structure — how often $\\varphi(n)$ has restricted factorization"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees primes in every interval $(n, 2n)$; similar density arguments underlie the heuristic pre"
+      "description": "Bertrand's postulate guarantees primes in every interval $(n, 2n)$; similar density arguments underlie the heuristic prediction that Form A primes have positive density among all primes"
     }
   ],
   "leanFile": {

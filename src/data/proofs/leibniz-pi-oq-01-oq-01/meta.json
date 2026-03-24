@@ -217,7 +217,7 @@
     {
       "id": "pi-transcendental",
       "relationship": "related",
-      "description": "Both concern fundamental properties of pi; Machin's formula accelerates the computation of a number whose transcendence "
+      "description": "Both concern fundamental properties of pi; Machin's formula accelerates the computation of a number whose transcendence was proved by Lindemann in 1882"
     },
     {
       "id": "basel-problem",
@@ -232,12 +232,12 @@
     {
       "id": "taylor-theorem",
       "relationship": "uses-concept",
-      "description": "The arctan series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ that Machin's formula accelerates is a special case of Taylo"
+      "description": "The arctan series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ that Machin's formula accelerates is a special case of Taylor expansion"
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Both results connect pi to analytic function identities; Euler's identity uses $e^{i\\pi}$ while Machin uses arctan compo"
+      "description": "Both results connect pi to analytic function identities; Euler's identity uses $e^{i\\pi}$ while Machin uses arctan composition — both are ultimately statements about arguments of complex numbers"
     }
   ]
 }

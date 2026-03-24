@@ -247,7 +247,7 @@
     {
       "id": "cauchy-schwarz",
       "relationship": "foundational",
-      "description": "The Cauchy-Schwarz inequality underpins the SDP relaxation: inner products v_i . v_j of unit vectors satisfy |v_i . v_j|"
+      "description": "The Cauchy-Schwarz inequality underpins the SDP relaxation: inner products v_i . v_j of unit vectors satisfy |v_i . v_j| <= 1, and the SDP optimizes over these inner products"
     }
   ],
   "references": [

@@ -168,12 +168,12 @@
     {
       "id": "bezout-identity",
       "relationship": "extends",
-      "description": "The root formalization: Bézout's identity ($\\gcd(a,b) = ax + by$). The CRT builds on coprimality ($\\gcd = 1$), which is "
+      "description": "The root formalization: Bézout's identity ($\\gcd(a,b) = ax + by$). The CRT builds on coprimality ($\\gcd = 1$), which is the Bézout case yielding $1 = ax + by$."
     },
     {
       "id": "bezout-identity-oq-03",
       "relationship": "extends",
-      "description": "Direct grandparent: explores the 2-fold CRT and its ring-theoretic formulation. This entry generalizes to arbitrary $k$-"
+      "description": "Direct grandparent: explores the 2-fold CRT and its ring-theoretic formulation. This entry generalizes to arbitrary $k$-fold products."
     },
     {
       "id": "fundamental-arithmetic",
@@ -193,7 +193,7 @@
     {
       "id": "chinese-remainder-non-coprime",
       "relationship": "related",
-      "description": "Generalizes the CRT to non-coprime moduli: when $\\gcd(m,n) > 1$, the system $x \\equiv a \\pmod{m}$, $x \\equiv b \\pmod{n}$"
+      "description": "Generalizes the CRT to non-coprime moduli: when $\\gcd(m,n) > 1$, the system $x \\equiv a \\pmod{m}$, $x \\equiv b \\pmod{n}$ has a solution iff $a \\equiv b \\pmod{\\gcd(m,n)}$. The coprime k-fold CRT here is the clean isomorphism case; the non-coprime version shows what happens when the coprimality hypothesis is dropped."
     }
   ],
   "leanFile": {

@@ -182,17 +182,17 @@
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Erdős's proof of Bertrand's postulate analyzes prime factors of the central binomial coefficient C(2n,n) using the same "
+      "description": "Erdős's proof of Bertrand's postulate analyzes prime factors of the central binomial coefficient C(2n,n) using the same 'prime factorization of a binomial coefficient' technique that underlies the EES bounds on g(k). Both use the combinatorial sieve squeeze: lower-bound the binomial coefficient globally, upper-bound it via its prime factorization, then extract conclusions about prime distribution."
     },
     {
       "id": "prime-number-theorem",
       "relationship": "related",
-      "description": "The Prime Number Theorem via Chebyshev's ψ-function gives log L_k = ψ(k) ~ k, establishing the asymptotic log L_k / k → "
+      "description": "The Prime Number Theorem via Chebyshev's ψ-function gives log L_k = ψ(k) ~ k, establishing the asymptotic log L_k / k → 1 for the LCM L_k = lcm(1,…,k). This PNT-equivalent asymptotic is the natural scale for the upper bound on g(k): since L_k ~ e^k, the EES bound g(k) ≤ e^{(1+o(1))k} essentially says g(k) ≤ L_k^{1+o(1)}."
     },
     {
       "id": "binomial-theorem",
       "relationship": "foundational",
-      "description": "The binomial coefficients C(n,k) are the central object of study: g(k) is the smallest n > k+1 where C(n,k) is k-rough. "
+      "description": "The binomial coefficients C(n,k) are the central object of study: g(k) is the smallest n > k+1 where C(n,k) is k-rough. Properties of binomial coefficients — their prime factorizations, divisibility by small primes, and the role of Pascal's identity — underpin all results on g(k)."
     }
   ],
   "references": [

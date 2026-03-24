@@ -168,7 +168,7 @@
     {
       "id": "cauchy-schwarz",
       "relationship": "extends",
-      "description": "Strengthens the base Cauchy-Schwarz equality characterization from 'exists c, u = cv' to the exact constant c = inner(u,"
+      "description": "Strengthens the base Cauchy-Schwarz equality characterization from 'exists c, u = cv' to the exact constant c = inner(u,v)/norm(v)^2."
     },
     {
       "id": "cauchy-schwarz-oq-03",

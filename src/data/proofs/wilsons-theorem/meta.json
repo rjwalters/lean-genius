@@ -203,7 +203,7 @@
     {
       "id": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Both concern the structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$. Wilson's theorem uses the pairing $a \\leftrightarrow a^{-1}$"
+      "description": "Both concern the structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$. Wilson's theorem uses the pairing $a \\leftrightarrow a^{-1}$; Euler's criterion $a^{(p-1)/2} \\equiv (a/p) \\pmod{p}$ (used in QR proofs) splits the group by quadratic character. Gauss's proof of QR via Gauss's lemma counts sign changes in products related to $(p-1)!$"
     },
     {
       "id": "lagrange-theorem",
@@ -213,47 +213,47 @@
     {
       "id": "infinitude-primes",
       "relationship": "related",
-      "description": "Wilson's theorem can give a non-constructive proof of infinitely many primes: for each $n$, $(n!-1)$ is either 1 or has "
+      "description": "Wilson's theorem can give a non-constructive proof of infinitely many primes: for each $n$, $(n!-1)$ is either 1 or has a prime factor $> n$ (since $(n!-1) \\bmod p \\neq 0$ for all $p \\leq n$). This mirrors Euclid's argument but uses factorials instead of products of known primes"
     },
     {
       "id": "fermat-two-squares",
       "relationship": "related",
-      "description": "Wilson's theorem and Fermat's two-squares theorem both concern primes modulo 4. Wilson's theorem shows $(p-1)! \\equiv -1"
+      "description": "Wilson's theorem and Fermat's two-squares theorem both concern primes modulo 4. Wilson's theorem shows $(p-1)! \\equiv -1 \\pmod{p}$; for $p \\equiv 1 \\pmod{4}$, the element $((p-1)/2)!$ satisfies $((p-1)/2)!^2 \\equiv -1 \\pmod{p}$, providing a square root of $-1$ that connects to Fermat's representation $p = a^2 + b^2$"
     },
     {
       "id": "primitive-roots",
       "relationship": "extends",
-      "description": "The existence of primitive roots (generators of $(\\mathbb{Z}/p\\mathbb{Z})^*$) is closely related to Wilson's theorem. If"
+      "description": "The existence of primitive roots (generators of $(\\mathbb{Z}/p\\mathbb{Z})^*$) is closely related to Wilson's theorem. If $g$ is a primitive root mod $p$, then $(p-1)! = \\prod_{k=0}^{p-2} g^k = g^{(p-1)(p-2)/2}$, and the exponent $(p-1)(p-2)/2$ is odd (for $p > 2$), giving $g^{(p-1)/2} \\cdot (\\text{even power}) = (-1) \\cdot 1 = -1$"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Both concern the distribution of primes. Bertrand's postulate (a prime exists between $n$ and $2n$) and Wilson's theorem"
+      "description": "Both concern the distribution of primes. Bertrand's postulate (a prime exists between $n$ and $2n$) and Wilson's theorem ($(p-1)! \\equiv -1$ characterizes primes) are complementary: Wilson gives a characterization of individual primes, while Bertrand guarantees their density"
     },
     {
       "id": "factor-remainder-theorem",
       "relationship": "related",
-      "description": "The Factor Theorem's polynomial-root connection parallels Wilson's arithmetic-root connection: the Factor Theorem says $"
+      "description": "The Factor Theorem's polynomial-root connection parallels Wilson's arithmetic-root connection: the Factor Theorem says $(x-a) \\mid p(x) \\iff p(a) = 0$, while Wilson's backward direction uses that if $n = ab$ then $a \\mid (n-1)!$ (since $a$ appears as a 'factor' in the factorial product)"
     },
     {
       "id": "bezout-identity",
       "relationship": "foundational",
-      "description": "Bézout's identity ($\\gcd(a,n) = 1 \\Rightarrow \\exists a^{-1}$ with $a \\cdot a^{-1} \\equiv 1 \\pmod{n}$) provides the mult"
+      "description": "Bézout's identity ($\\gcd(a,n) = 1 \\Rightarrow \\exists a^{-1}$ with $a \\cdot a^{-1} \\equiv 1 \\pmod{n}$) provides the multiplicative inverses that make the pairing argument work. Every $a \\in \\{1, \\ldots, p-1\\}$ has a unique inverse because $\\gcd(a,p) = 1$ for prime $p$"
     },
     {
       "id": "sylow-theorems",
       "relationship": "related",
-      "description": "Sylow's theorems describe subgroup structure of finite groups. Applied to $(\\mathbb{Z}/p\\mathbb{Z})^*$ (cyclic of order "
+      "description": "Sylow's theorems describe subgroup structure of finite groups. Applied to $(\\mathbb{Z}/p\\mathbb{Z})^*$ (cyclic of order $p-1$), Sylow theory guarantees subgroups of every prime-power order dividing $p-1$. Wilson's theorem uses the simpler fact that the only element of order $\\leq 2$ (besides identity) is $-1$"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "related",
-      "description": "Unique prime factorization connects to Wilson's backward direction: if $n$ is composite with smallest prime factor $p \\l"
+      "description": "Unique prime factorization connects to Wilson's backward direction: if $n$ is composite with smallest prime factor $p \\leq \\sqrt{n}$, then $p \\leq n-1$ and $p \\mid (n-1)!$, so $(n-1)! \\not\\equiv -1 \\pmod{n}$. The fundamental theorem of arithmetic ensures the smallest prime factor exists"
     },
     {
       "id": "abel-ruffini",
       "relationship": "related",
-      "description": "Both Wilson's theorem and Abel-Ruffini analyze the structure of symmetric/cyclic groups. Wilson's theorem shows $(\\mathb"
+      "description": "Both Wilson's theorem and Abel-Ruffini analyze the structure of symmetric/cyclic groups. Wilson's theorem shows $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic with product of all elements equal to $-1$. Abel-Ruffini uses the non-solvability of $S_5$ — a fundamentally different group-theoretic property that determines polynomial solvability"
     }
   ],
   "leanFile": {

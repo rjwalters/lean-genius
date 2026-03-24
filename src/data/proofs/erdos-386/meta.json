@@ -154,7 +154,7 @@
     {
       "id": "erdos-385",
       "relationship": "related",
-      "description": "Problem #385 concerns smooth numbers in products of consecutive integers — closely related since $\\binom{n}{k} = \\prod_{"
+      "description": "Problem #385 concerns smooth numbers in products of consecutive integers — closely related since $\\binom{n}{k} = \\prod_{i=1}^{k} (n-k+i)/i$ and the 'consecutive prime product' condition is a strong form of smoothness"
     },
     {
       "id": "erdos-387",
@@ -174,7 +174,7 @@
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization is the basis for asking whether $\\binom{n}{k}$ equals a product of consecutive primes — witho"
+      "description": "Unique prime factorization is the basis for asking whether $\\binom{n}{k}$ equals a product of consecutive primes — without FTA, the question is not well-defined"
     }
   ],
   "leanFile": {

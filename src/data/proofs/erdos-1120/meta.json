@@ -201,12 +201,12 @@
     {
       "id": "erdos-1115",
       "relationship": "analogous",
-      "description": "Problem #1115 asks for the growth rate of paths to infinity along which an entire function of finite order grows slowly "
+      "description": "Problem #1115 asks for the growth rate of paths to infinity along which an entire function of finite order grows slowly (analogous to shortest paths in sublevel sets for entire rather than polynomial functions). Both probe how efficiently one can traverse regions where a complex function stays bounded, and results for entire functions (Gol'dberg-Eremenko disproof) inform expectations for the polynomial case."
     },
     {
       "id": "erdos-509",
       "relationship": "related",
-      "description": "Problem #509 asks whether the sublevel set {|f(z)| ≤ 1} of a degree-n monic polynomial can always be covered by discs wi"
+      "description": "Problem #509 asks whether the sublevel set {|f(z)| ≤ 1} of a degree-n monic polynomial can always be covered by discs with total radius ≤ 2 (Cartan's lemma gives total radius ≤ 2e). Disc-cover bounds on the sublevel set directly constrain the geometry through which any path from 0 to |z| = 1 must navigate, providing complementary estimates to the path-length problem."
     }
   ],
   "references": [

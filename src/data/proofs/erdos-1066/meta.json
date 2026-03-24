@@ -166,27 +166,27 @@
     {
       "id": "erdos-1070",
       "relationship": "sibling problem",
-      "description": "Erdős Problem #1070 asks the same independence-number question for unit distance graphs, with slightly different notation f(n) and the Hadwiger-Nel..."
+      "description": "Erdős Problem #1070 asks the same independence-number question for unit distance graphs, with slightly different notation f(n) and the Hadwiger-Nelson connection. The two problems share the same best-known bounds and are often studied together."
     },
     {
       "id": "erdos-1085",
       "relationship": "prerequisite context",
-      "description": "The unit distance problem (#1085) counts maximum unit-distance pairs among n points in ℝ²; the extremal configurations used to establish upper boun..."
+      "description": "The unit distance problem (#1085) counts maximum unit-distance pairs among n points in ℝ²; the extremal configurations used to establish upper bounds on g(n) arise from point sets that nearly maximize the unit-distance count."
     },
     {
       "id": "erdos-1084",
       "relationship": "closely related",
-      "description": "Erdős Problem #1084 studies unit distances among points with all pairwise distances ≥ 1 — exactly the minimum-distance-1 assumption of #1066 — and ..."
+      "description": "Erdős Problem #1084 studies unit distances among points with all pairwise distances ≥ 1 — exactly the minimum-distance-1 assumption of #1066 — and bounds f_d(n) in higher dimensions, paralleling the g_d(n) generalisation asked in #1066."
     },
     {
       "id": "four-color-theorem",
       "relationship": "foundational dependency",
-      "description": "Pollack's 1985 lower bound g(n) ≥ n/4 is a direct corollary of the Four Color Theorem: unit distance graphs with minimum pairwise distance 1 are pl..."
+      "description": "Pollack's 1985 lower bound g(n) ≥ n/4 is a direct corollary of the Four Color Theorem: unit distance graphs with minimum pairwise distance 1 are planar, so the 4CT gives a 4-coloring and the largest color class has ≥ n/4 vertices."
     },
     {
       "id": "erdos-1024",
       "relationship": "analogous problem",
-      "description": "Erdős Problem #1024 asks for guaranteed independence numbers in 3-uniform linear hypergraphs; the structural techniques (greedy algorithms, fractio..."
+      "description": "Erdős Problem #1024 asks for guaranteed independence numbers in 3-uniform linear hypergraphs; the structural techniques (greedy algorithms, fractional relaxations) used there inform the lower-bound arguments for unit distance independence as well."
     }
   ],
   "references": [

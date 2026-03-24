@@ -181,12 +181,12 @@
     {
       "id": "geometric-series",
       "relationship": "related",
-      "description": "Both are classical infinite series with exact closed-form sums. The geometric series sum(r^n) = 1/(1-r) and sum(2/(n(n+1"
+      "description": "Both are classical infinite series with exact closed-form sums. The geometric series sum(r^n) = 1/(1-r) and sum(2/(n(n+1))) = 2 are paradigmatic examples of convergent series."
     },
     {
       "id": "harmonic-divergence",
       "relationship": "related",
-      "description": "The harmonic series sum(1/n) diverges, but sum(2/(n(n+1))) converges to 2. The key difference is the extra factor 1/(n+1"
+      "description": "The harmonic series sum(1/n) diverges, but sum(2/(n(n+1))) converges to 2. The key difference is the extra factor 1/(n+1) which provides sufficient decay via telescoping."
     }
   ],
   "leanFile": {

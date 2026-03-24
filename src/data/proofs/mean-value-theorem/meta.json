@@ -225,12 +225,12 @@
     {
       "id": "intermediate-value-theorem",
       "relationship": "related",
-      "description": "IVT and MVT are the two central existence theorems for continuous/differentiable functions on intervals. IVT guarantees "
+      "description": "IVT and MVT are the two central existence theorems for continuous/differentiable functions on intervals. IVT guarantees intermediate values for continuous $f$; MVT guarantees an intermediate slope $f'(c) = (f(b)-f(a))/(b-a)$ for differentiable $f$. Rolle's theorem ($f(a) = f(b) \\Rightarrow f'(c) = 0$) is the bridge between them"
     },
     {
       "id": "greens-theorem",
       "relationship": "foundational",
-      "description": "MVT is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to estimate $\\int_a^b "
+      "description": "MVT is used in the proof of Green's theorem for rectangles: the Fubini + FTC approach applies MVT to estimate $\\int_a^b \\partial F/\\partial x\\,dx = F(b,y) - F(a,y)$ on each subinterval. The MVT-based error estimates are what make the limiting argument rigorous as the partition becomes finer"
     },
     {
       "id": "brouwer-fixed-point",
@@ -245,17 +245,17 @@
     {
       "id": "harmonic-divergence",
       "relationship": "related",
-      "description": "The integral test for series convergence uses MVT: comparing $\\sum_{k=1}^n f(k)$ with $\\int_1^n f(x)\\,dx$ requires bound"
+      "description": "The integral test for series convergence uses MVT: comparing $\\sum_{k=1}^n f(k)$ with $\\int_1^n f(x)\\,dx$ requires bounding $f(k) - \\int_k^{k+1} f(x)\\,dx$, which MVT controls via $|f(k) - f(c)| \\leq |f'(\\xi)|$ for some $\\xi$. The harmonic series diverges because $\\int_1^n 1/x\\,dx = \\ln n \\to \\infty$, an argument mediated by MVT"
     },
     {
       "id": "taylor-theorem",
       "relationship": "extended-by",
-      "description": "Taylor's theorem is the $n$th-order generalization of MVT: MVT is the $n=0$ case ($f(b) = f(a) + f'(c)(b-a)$), while Tay"
+      "description": "Taylor's theorem is the $n$th-order generalization of MVT: MVT is the $n=0$ case ($f(b) = f(a) + f'(c)(b-a)$), while Taylor gives $f(b) = \\sum f^{(k)}(a)(b-a)^k/k! + R_n$. The Lagrange remainder directly generalizes MVT's intermediate point"
     },
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "MVT bounds $|e^x - 1 - x| \\leq (e^c/2)x^2$ — the kind of estimate used in Hermite's transcendence proof, where controlli"
+      "description": "MVT bounds $|e^x - 1 - x| \\leq (e^c/2)x^2$ — the kind of estimate used in Hermite's transcendence proof, where controlling exponential approximation errors is essential"
     }
   ],
   "leanFile": {

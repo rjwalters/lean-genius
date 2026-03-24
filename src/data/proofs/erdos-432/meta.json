@@ -221,7 +221,7 @@
     {
       "id": "erdos-1",
       "relationship": "related",
-      "description": "Both are extremal problems on integer subsets: #1 studies distinct subset sums (additive uniqueness), #432 studies sumsets with pairwise coprimality (multiplicative uniqueness)"
+      "description": "Both are extremal problems on integer subsets: #1 studies sets with distinct subset sums (additive uniqueness), while #432 studies sumsets with pairwise coprimality (multiplicative uniqueness). Both ask how density constraints interact with structural requirements"
     },
     {
       "id": "infinitude-primes",
@@ -236,17 +236,17 @@
     {
       "id": "gcd-algorithm",
       "relationship": "supports",
-      "description": "The GCD algorithm is the computational tool for checking pairwise coprimality $\\gcd(x,y) = 1$, the central constraint in"
+      "description": "The GCD algorithm is the computational tool for checking pairwise coprimality $\\gcd(x,y) = 1$, the central constraint in Problem #432"
     },
     {
       "id": "euler-totient",
       "relationship": "related",
-      "description": "Euler's totient $\\varphi(n)$ counts integers coprime to $n$, the same coprimality concept central to #432. The density o"
+      "description": "Euler's totient $\\varphi(n)$ counts integers coprime to $n$, the same coprimality concept central to #432. The density of coprime pairs relates to $\\prod(1 - 1/p)$ over primes, connecting to Euler product formulas"
     },
     {
       "id": "chinese-remainder-constructive",
       "relationship": "related",
-      "description": "CRT constructs integers with prescribed remainders modulo coprime moduli — the same coprimality machinery. Building pair"
+      "description": "CRT constructs integers with prescribed remainders modulo coprime moduli — the same coprimality machinery. Building pairwise coprime sumset elements requires assigning prime factors to elements, a CRT-style construction"
     }
   ],
   "leanFile": {

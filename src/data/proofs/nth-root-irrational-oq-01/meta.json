@@ -215,7 +215,7 @@
     {
       "id": "angle-trisection-oq-02",
       "relationship": "foundational",
-      "description": "Imported by the angle trisection impossibility proof: constructibility requires the minimal polynomial to have degree a "
+      "description": "Imported by the angle trisection impossibility proof: constructibility requires the minimal polynomial to have degree a power of 2, and this module provides the algebraic degree machinery to establish that trisecting 60 degrees requires solving a degree-3 irreducible polynomial"
     },
     {
       "id": "sqrt2-irrational",
@@ -235,12 +235,12 @@
     {
       "id": "abel-ruffini",
       "relationship": "related",
-      "description": "Abel-Ruffini uses the irreducibility of the generic polynomial to prove radical unsolvability. This module's Eisenstein "
+      "description": "Abel-Ruffini uses the irreducibility of the generic polynomial to prove radical unsolvability. This module's Eisenstein criterion is the workhorse for establishing irreducibility of X^n - p, which generates the non-solvable extensions central to Abel-Ruffini"
     },
     {
       "id": "e-transcendental",
       "relationship": "related",
-      "description": "The transcendence of e implies e is not a root of any polynomial over Q, a strictly stronger statement than irrationalit"
+      "description": "The transcendence of e implies e is not a root of any polynomial over Q, a strictly stronger statement than irrationality. This module's approach (irreducible polynomial -> irrational) is the first step in the algebraic hierarchy that culminates in transcendence theory"
     }
   ]
 }

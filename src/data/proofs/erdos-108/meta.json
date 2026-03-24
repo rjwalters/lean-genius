@@ -149,32 +149,32 @@
     {
       "id": "erdos-58",
       "relationship": "companion problem",
-      "description": "Erdős Problem #58 asks whether graphs with sufficiently high chromatic number must contain odd cycles of every length, a complementary question abo..."
+      "description": "Erdős Problem #58 asks whether graphs with sufficiently high chromatic number must contain odd cycles of every length, a complementary question about how chromatic number forces cycle structure. Together with #108, it forms part of Erdős's program relating chromatic number to cycle properties."
     },
     {
       "id": "erdos-57",
       "relationship": "closely related result",
-      "description": "Erdős Problem #57 addresses whether graphs of infinite chromatic number must contain odd cycles, an infinite analogue of the finite chromatic/cycle..."
+      "description": "Erdős Problem #57 addresses whether graphs of infinite chromatic number must contain odd cycles, an infinite analogue of the finite chromatic/cycle questions. The relationship between girth and chromatic number studied in #108 is directly relevant."
     },
     {
       "id": "erdos-61",
       "relationship": "related conjecture",
-      "description": "The Erdős–Hajnal Conjecture (#61) asks whether every graph with a forbidden induced subgraph has a large clique or independent set. It shares the t..."
+      "description": "The Erdős–Hajnal Conjecture (#61) asks whether every graph with a forbidden induced subgraph has a large clique or independent set. It shares the theme of extracting structured subgraphs from dense/chromatic graphs, and Erdős and Hajnal are co-authors of both problems."
     },
     {
       "id": "erdos-77",
       "relationship": "shared technique",
-      "description": "Erdős Problem #77 concerns Ramsey number growth rates and relies on the same probabilistic method (random graph constructions) that underlies Rödl'..."
+      "description": "Erdős Problem #77 concerns Ramsey number growth rates and relies on the same probabilistic method (random graph constructions) that underlies Rödl's proof of the r=4 case of #108. Both illustrate the power of the probabilistic method in extremal combinatorics."
     },
     {
       "id": "erdos-78",
       "relationship": "shared technique",
-      "description": "Erdős Problem #78 seeks constructive lower bounds for Ramsey numbers, using probabilistic arguments similar to those in the proof of #108. The girt..."
+      "description": "Erdős Problem #78 seeks constructive lower bounds for Ramsey numbers, using probabilistic arguments similar to those in the proof of #108. The girth control in #108's proof uses random subgraph selection analogous to Ramsey constructions."
     },
     {
       "id": "erdos-74",
       "relationship": "related problem",
-      "description": "Erdős Problem #74 asks whether graphs of high chromatic number contain almost-bipartite subgraphs of high chromatic number—a variant of the same th..."
+      "description": "Erdős Problem #74 asks whether graphs of high chromatic number contain almost-bipartite subgraphs of high chromatic number—a variant of the same theme in #108 where the structural constraint is near-bipartiteness rather than large girth."
     }
   ],
   "references": [

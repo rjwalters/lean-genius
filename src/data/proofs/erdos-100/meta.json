@@ -250,7 +250,7 @@
     {
       "id": "erdos-89",
       "relationship": "foundation",
-      "description": "Erdős #89 (distinct distances) provides the current best lower bound via Guth-Katz: $\\Delta(A) \\geq cn/\\log n$ implies $"
+      "description": "Erdős #89 (distinct distances) provides the current best lower bound via Guth-Katz: $\\Delta(A) \\geq cn/\\log n$ implies $\\text{diam}(A) \\geq cn/\\log n$ for restricted distance sets. The bridge lemma distinctDistances_le_diam formalizes this reduction."
     },
     {
       "id": "erdos-94",

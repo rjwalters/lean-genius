@@ -235,47 +235,47 @@
     {
       "id": "abel-ruffini",
       "relationship": "related",
-      "description": "Both are landmark results where Galois theory plays a central role: Abel-Ruffini uses non-solvability of $S_5$ to block "
+      "description": "Both are landmark results where Galois theory plays a central role: Abel-Ruffini uses non-solvability of $S_5$ to block radical solutions, while Wiles analyzes 2-dimensional Galois representations $\\rho: \\text{Gal}(\\overline{\\mathbb{Q}}/\\mathbb{Q}) \\to GL_2(\\mathbb{Z}_p)$ to prove modularity"
     },
     {
       "id": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "Lagrange's theorem constrains group structure throughout the proof: the order of Galois groups, the structure of decompo"
+      "description": "Lagrange's theorem constrains group structure throughout the proof: the order of Galois groups, the structure of decomposition groups at primes, and the analysis of Selmer groups all rely on subgroup index formulas"
     },
     {
       "id": "pythagorean-triples",
       "relationship": "complementary",
-      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2=c^2$ are completely classified: $a = m^2-n^2$, $b=2mn$, $c=m^2+n^2$. FLT sho"
+      "description": "Pythagorean triples $(a,b,c)$ with $a^2+b^2=c^2$ are completely classified: $a = m^2-n^2$, $b=2mn$, $c=m^2+n^2$. FLT shows the analogous equation $a^n+b^n=c^n$ has NO positive integer solutions for $n \\geq 3$ — the transition from rich structure at $n=2$ to emptiness at $n=3$ is the theorem's content"
     },
     {
       "id": "fundamental-theorem-algebra",
       "relationship": "related",
-      "description": "FTA guarantees all algebraic numbers embed in $\\mathbb{C}$, providing the complex-analytic tools for Wiles's proof. Modu"
+      "description": "FTA guarantees all algebraic numbers embed in $\\mathbb{C}$, providing the complex-analytic tools for Wiles's proof. Modular forms are complex-analytic objects, and Galois representations act on number fields embedded in $\\mathbb{C}$ — FTA ensures this algebraic/analytic bridge exists"
     },
     {
       "id": "quadratic-reciprocity",
       "relationship": "foundational",
-      "description": "Gauss's quadratic reciprocity (1801) is the starting point of the class field theory that Wiles's proof generalizes: Art"
+      "description": "Gauss's quadratic reciprocity (1801) is the starting point of the class field theory that Wiles's proof generalizes: Artin reciprocity for 1-dimensional representations extends to Langlands reciprocity for 2-dimensional representations, which is what the modularity theorem establishes for elliptic curves"
     },
     {
       "id": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "The failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ for irregular primes blocked Kummer's 1847 approach to FLT."
+      "description": "The failure of unique factorization in $\\mathbb{Z}[\\zeta_p]$ for irregular primes blocked Kummer's 1847 approach to FLT. FLT for regular primes succeeds because these rings retain unique factorization — illustrating that the arithmetic of number rings is the structural core of the problem"
     },
     {
       "id": "godel-incompleteness",
       "relationship": "thematic",
-      "description": "FLT was once conjectured to be unprovable in PA or even ZFC. Wiles's proof shows it is provable in ZFC, but the question"
+      "description": "FLT was once conjectured to be unprovable in PA or even ZFC. Wiles's proof shows it is provable in ZFC, but the question of whether a simpler proof exists in weaker systems remains open. The proof's reliance on cohomological methods raises foundational questions about which axioms are truly necessary"
     },
     {
       "id": "euler-identity",
       "relationship": "related",
-      "description": "Wiles's proof uses modular forms with $q$-expansions $f(\\tau) = \\sum a_n e^{2\\pi i n \\tau}$ — directly using Euler's for"
+      "description": "Wiles's proof uses modular forms with $q$-expansions $f(\\tau) = \\sum a_n e^{2\\pi i n \\tau}$ — directly using Euler's formula. The exponential map $e^{2\\pi i\\tau}$ bridges the additive structure of the upper half-plane and the multiplicative structure of modular forms, making Euler's identity essential infrastructure"
     },
     {
       "id": "hilbert-10",
       "relationship": "related",
-      "description": "Both concern integer solutions of polynomial equations: FLT proves $x^n + y^n = z^n$ has none for $n > 2$, while Hilbert"
+      "description": "Both concern integer solutions of polynomial equations: FLT proves $x^n + y^n = z^n$ has none for $n > 2$, while Hilbert's 10th shows no algorithm decides arbitrary Diophantine equations. FLT resolves a specific Diophantine question positively (decidable, answer is 'no solutions') within the generally undecidable landscape"
     }
   ],
   "references": [

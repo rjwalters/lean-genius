@@ -219,7 +219,7 @@
     {
       "id": "sylow-theorems",
       "relationship": "foundational",
-      "description": "Lagrange's theorem is a prerequisite for the Sylow theorems: Sylow's first theorem provides a partial converse, showing "
+      "description": "Lagrange's theorem is a prerequisite for the Sylow theorems: Sylow's first theorem provides a partial converse, showing subgroups of prime-power order exist for every prime power dividing |G|"
     },
     {
       "id": "abel-ruffini",
@@ -244,27 +244,27 @@
     {
       "id": "angle-trisection",
       "relationship": "foundational",
-      "description": "The tower law for field extension degrees ([F_n:Q] = ∏[F_{i+1}:F_i] = 2^n) is a consequence of Lagrange's theorem on sub"
+      "description": "The tower law for field extension degrees ([F_n:Q] = ∏[F_{i+1}:F_i] = 2^n) is a consequence of Lagrange's theorem on subgroup indices, underpinning the degree-divisibility argument for constructibility"
     },
     {
       "id": "inverse-galois",
       "relationship": "related",
-      "description": "Lagrange's original 1771 work on permutations of polynomial roots was the direct precursor to Galois theory. The Inverse"
+      "description": "Lagrange's original 1771 work on permutations of polynomial roots was the direct precursor to Galois theory. The Inverse Galois Problem asks which groups appear as Galois groups — Lagrange's theorem constrains which subgroups can appear in any finite group"
     },
     {
       "id": "wilsons-theorem",
       "relationship": "related",
-      "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) can be proved via Lagrange's theorem: in $(\\mathbb{Z}/p\\mathbb{Z})^\\times"
+      "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod{p}$) can be proved via Lagrange's theorem: in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, every element pairs with its inverse in the product $(p-1)!$, except the elements equal to their own inverse ($a^2 \\equiv 1$), which by Lagrange applied to the equation $x^2 = 1$ are exactly $\\pm 1$. So $(p-1)! \\equiv 1 \\cdot (-1) = -1 \\pmod{p}$"
     },
     {
       "id": "quadratic-reciprocity",
       "relationship": "related",
-      "description": "Quadratic reciprocity concerns the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, specifically whether elements are qua"
+      "description": "Quadratic reciprocity concerns the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, specifically whether elements are quadratic residues. By Lagrange's theorem, $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ has order $p-1$, and the quadratic residues form a subgroup of index 2 (order $(p-1)/2$). This index-2 subgroup structure is the foundation for the Legendre symbol and reciprocity"
     },
     {
       "id": "primitive-roots",
       "relationship": "related",
-      "description": "The existence of primitive roots modulo $p$ — generators of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — is a co"
+      "description": "The existence of primitive roots modulo $p$ — generators of the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — is a consequence of the structure theorem for finite abelian groups combined with Lagrange's theorem. By Lagrange, the polynomial $x^d - 1$ has at most $d$ roots in $\\mathbb{Z}/p\\mathbb{Z}$, which forces $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ to be cyclic"
     }
   ],
   "references": [

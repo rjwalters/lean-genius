@@ -202,7 +202,7 @@
     {
       "id": "bounded-prime-gaps",
       "relationship": "related",
-      "description": "Bounded prime gaps (Maynard-Tao) ensure small differences exist, but cluster primes require ALL small even differences —"
+      "description": "Bounded prime gaps (Maynard-Tao) ensure small differences exist, but cluster primes require ALL small even differences — a much stronger condition"
     },
     {
       "id": "erdos-16",
@@ -227,12 +227,12 @@
     {
       "id": "prime-number-theorem",
       "relationship": "uses",
-      "description": "The prime number theorem $\\pi(x) \\sim x/\\log x$ is needed to interpret the Blecksmith-Erdős-Selfridge and Elsholtz upper"
+      "description": "The prime number theorem $\\pi(x) \\sim x/\\log x$ is needed to interpret the Blecksmith-Erdős-Selfridge and Elsholtz upper bounds and to establish that cluster primes have density 0 among all primes"
     },
     {
       "id": "bertrands-postulate",
       "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime in $(n, 2n)$, bounding prime gaps from above. Small prime gaps help the cluster "
+      "description": "Bertrand's postulate guarantees a prime in $(n, 2n)$, bounding prime gaps from above. Small prime gaps help the cluster property, but Bertrand's gap bound of $n$ is too weak — cluster primes need gaps on the order of $\\log p$"
     }
   ],
   "leanFile": {
