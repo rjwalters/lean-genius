@@ -83,7 +83,8 @@
       "**One Extension Suffices**: Adjoining a single element $i = \\sqrt{-1}$ to $\\mathbb{R}$ creates an algebraically closed field. This is exceptional: $\\overline{\\mathbb{Q}}$ requires infinitely many extensions, and $p$-adic fields $\\mathbb{Q}_p$ need uncountably many. The special property of $\\mathbb{R}$ is that it is real-closed: an ordered field where every positive element has a square root and every odd-degree polynomial has a root.",
       "**Degree 2 is Minimal and Maximal**: $[\\mathbb{C}:\\mathbb{R}] = 2$ is simultaneously the smallest possible nontrivial extension and already enough to close the field. The Artin-Schreier theorem explains why: a field $F$ is real-closed iff $F(\\sqrt{-1})$ is algebraically closed, and any finite extension of a real-closed field has degree 1 or 2.",
       "**Steinitz Uniqueness**: All algebraic closures of a given field are isomorphic (Steinitz 1910). This is a non-constructive result: the isomorphism uses Zorn's lemma to extend embeddings. For $\\mathbb{R}$, the isomorphism is actually computable (every algebraic closure is $\\mathbb{R}$-isomorphic to $\\mathbb{C}$ via explicit coordinates), but the general theorem applies uniformly.",
-      "**No Intermediate Algebraically Closed Fields**: The tower law argument shows there are no fields properly between $\\mathbb{R}$ and $\\mathbb{C}$. Combined with the fact that $\\mathbb{R}$ is not algebraically closed ($X^2 + 1$ has no real root), this means $\\mathbb{C}$ is the unique minimal algebraically closed extension."
+      "**No Intermediate Algebraically Closed Fields**: The tower law argument shows there are no fields properly between $\\mathbb{R}$ and $\\mathbb{C}$. Combined with the fact that $\\mathbb{R}$ is not algebraically closed ($X^2 + 1$ has no real root), this means $\\mathbb{C}$ is the unique minimal algebraically closed extension.",
+      "**Frobenius Perspective**: By Frobenius's theorem (1877), the only finite-dimensional associative division algebras over $\\mathbb{R}$ are $\\mathbb{R}$, $\\mathbb{C}$, and $\\mathbb{H}$ (quaternions). Since $\\mathbb{C}$ is the only commutative option beyond $\\mathbb{R}$, the extension $\\mathbb{R} \\to \\mathbb{C}$ is forced: any commutative algebraic closure of $\\mathbb{R}$ must be $\\mathbb{C}$. The quaternions $\\mathbb{H}$, despite being 4-dimensional, are non-commutative and so cannot serve as a field extension."
     ]
   },
   "sections": [
@@ -213,7 +214,7 @@
         "name": "unique_algebraic_closure",
         "type": "bridge",
         "description": "Any algebraic closure L of R is R-algebra isomorphic to C (Steinitz)",
-        "leanType": "(L : Type*) → [Field L] → [Algebra ℝ L] → [IsAlgClosure ℝ L] → L ≃ₐ[ℝ] ℂ"
+        "leanType": "(L : Type*) → [Field L] → [Algebra ℝ L] → [Module.IsTorsionFree ℝ L] → [IsAlgClosure ℝ L] → L ≃ₐ[ℝ] ℂ"
       },
       {
         "name": "no_intermediate_field",
