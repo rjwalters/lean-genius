@@ -83,7 +83,7 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib and opens `Finset`, `Function`, `SimpleGraph`, `Nat` namespaces. Declares the `Erdos613` namespace with type variables $V$ carrying `Fintype` and `DecidableEq` instances.",
       "startLine": 22,
-      "endLine": 28,
+      "endLine": 29,
       "mathContext": "Uses `SimpleGraph V` ($G = (V,E)$ with symmetric irreflexive adjacency), `Fintype V` for finite vertex sets, and `DecidableEq V` for computational equality checking."
     },
     {
@@ -91,7 +91,7 @@
       "title": "Edge Counts and Binomial Coefficients",
       "summary": "Defines `criticalEdgeCount n` $= \\binom{2n+1}{2} - \\binom{n}{2} - 1$ and states a simplification formula. Verifies $\\text{criticalEdgeCount}(3) = 17$ and $\\text{criticalEdgeCount}(5) = 44$ via `native_decide`.",
       "startLine": 30,
-      "endLine": 45,
+      "endLine": 46,
       "mathContext": "$\\text{criticalEdgeCount}(n) = \\binom{2n+1}{2} - \\binom{n}{2} - 1 = \\frac{3n^2+n}{2} - 1$. Concrete values: $\\text{criticalEdgeCount}(3) = 17$, $\\text{criticalEdgeCount}(5) = 44$. Verified by `native_decide`."
     },
     {
@@ -99,7 +99,7 @@
       "title": "Graph Decomposition Definitions",
       "summary": "Defines `IsBipartite`, `maxDegree`, `HasMaxDegreeLT`, `IsUnionOf`, and `HasDecomposition G n` — asserting $G = H_1 \\cup H_2$ with $H_1$ bipartite and $\\Delta(H_2) < n$. These form the core predicates for the conjecture.",
       "startLine": 47,
-      "endLine": 70,
+      "endLine": 71,
       "mathContext": "$\\text{HasDecomposition}(G, n) \\iff \\exists H_1, H_2: E(G) = E(H_1) \\sqcup E(H_2),\\; H_1 \\text{ bipartite},\\; \\Delta(H_2) < n$. Bipartiteness is characterized by $\\chi(G) \\le 2$ or equivalently the absence of odd cycles."
     },
     {
@@ -107,7 +107,7 @@
       "title": "Original Conjecture",
       "summary": "States `OriginalConjecture` as $\\forall n \\ge 3,\\, \\forall V, G,\\, |E(G)| = \\text{criticalEdgeCount}(n) \\Rightarrow \\text{HasDecomposition}(G, n)$. This is the claim to be disproved.",
       "startLine": 72,
-      "endLine": 79,
+      "endLine": 80,
       "mathContext": "$\\forall n \\ge 3,\\; \\forall V,\\, G : \\text{SimpleGraph}\\,V,\\; |E(G)| = \\text{criticalEdgeCount}(n) \\implies \\text{HasDecomposition}(G, n)$. Equivalently: $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$. This statement is FALSE."
     },
     {
@@ -115,7 +115,7 @@
       "title": "Size Ramsey Number Machinery",
       "summary": "Defines star graphs $K_{1,n}$, `ContainsStar`, `ContainsOddCycle`, `sizeRamseyStarOddCycle`, and the `conjecturedSizeRamsey` value $\\binom{2n+1}{2} - \\binom{n}{2}$. Connects decomposition to the Ramsey-theoretic formulation.",
       "startLine": 81,
-      "endLine": 103,
+      "endLine": 104,
       "mathContext": "$\\hat{r}(H_1, H_2) = \\min\\{|E(G)| : G \\to (H_1, H_2)\\}$ where $G \\to (H_1, H_2)$ means every 2-coloring of $E(G)$ yields monochromatic $H_1$ or $H_2$. Here $H_1 = K_{1,n}$ and $H_2 = C_{2k+1}$."
     },
     {
@@ -123,7 +123,7 @@
       "title": "Pikhurko's Disproof",
       "summary": "Axiomatizes Pikhurko's bounds: $\\hat{r} > n^2 + cn^{3/2}$ for $c > 0.5$ (lower) and $\\hat{r} < n^2 + \\sqrt{2}\\,n^{3/2} + n$ (upper). Derives `original_conjecture_false` since the lower bound exceeds the conjectured value.",
       "startLine": 105,
-      "endLine": 120,
+      "endLine": 121,
       "mathContext": "Lower bound: $\\hat{r} > n^2 + c\\,n^{3/2}$ for $c > 0.5$. Upper bound: $\\hat{r} < n^2 + \\sqrt{2}\\,n^{3/2} + n$. Combined: $\\hat{r} = n^2 + \\Theta(n^{3/2})$, disproving the conjecture's $n^2 + O(n)$ prediction."
     },
     {
@@ -131,7 +131,7 @@
       "title": "Counterexample at n = 5",
       "summary": "Axiomatizes Tao's Lean-verified counterexample: $\\exists G$ with $|E| = 44$ and $\\neg\\text{HasDecomposition}(G, 5)$. Proves $n = 5$ is the smallest counterexample by combining with the small case verifications.",
       "startLine": 122,
-      "endLine": 139,
+      "endLine": 140,
       "mathContext": "$\\exists G : \\text{SimpleGraph}\\,V$ with $|E(G)| = 44 = \\text{criticalEdgeCount}(5)$ and $\\neg\\text{HasDecomposition}(G, 5)$. Lean-verified by Tao. The counterexample graph has $|V| > 11 = 2(5)+1$."
     },
     {
@@ -139,7 +139,7 @@
       "title": "Faudree's Partial Result and Vertex Dichotomy",
       "summary": "Axiomatizes Faudree's result that the conjecture holds when $|V| = 2n+1$. Proves `vertex_count_matters`: at $n = 5$, graphs on $\\text{Fin}(11)$ decompose but some larger graphs do not — a clean separation by vertex count.",
       "startLine": 141,
-      "endLine": 161,
+      "endLine": 162,
       "mathContext": "$\\forall n \\ge 3,\\; \\forall G : \\text{SimpleGraph}(\\text{Fin}(2n+1)),\\; |E(G)| = \\text{criticalEdgeCount}(n) \\implies \\text{HasDecomposition}(G, n)$. The vertex count restriction $|V| = 2n+1$ suffices to restore the conjecture."
     },
     {
@@ -147,7 +147,7 @@
       "title": "Asymptotic Analysis and Ramsey Connection",
       "summary": "Defines `boundGap n` and proves $\\Theta(n^{3/2})$ growth. Analyzes the conjecture error and connects size Ramsey numbers to classical $R(s,t)$ via the trivial bound $\\hat{r} \\le \\binom{R(s,t)}{2}$.",
       "startLine": 163,
-      "endLine": 195,
+      "endLine": 196,
       "mathContext": "$\\text{boundGap}(n) = (\\sqrt{2} - 0.577) \\cdot n^{3/2} + n = \\Theta(n^{3/2})$. The trivial bound $\\hat{r}(K_{1,s}, \\mathcal{F}) \\le \\binom{R(s,t)}{2}$ connects size Ramsey numbers to classical Ramsey numbers."
     },
     {
@@ -155,7 +155,7 @@
       "title": "Special Cases and Maximal Decomposition",
       "summary": "States $n = 3$ (17 edges) and $n = 4$ (29 edges) cases where the conjecture holds. Also proves that any decomposition can be refined to make the bipartite component maximal.",
       "startLine": 197,
-      "endLine": 225,
+      "endLine": 226,
       "mathContext": "$n = 3$: $\\text{criticalEdgeCount}(3) = 17$, conjecture holds. $n = 4$: $\\text{criticalEdgeCount}(4) = 29$, conjecture holds. Maximal bipartite extraction: any decomposition can be refined so $H_1$ is a maximal bipartite subgraph."
     },
     {
