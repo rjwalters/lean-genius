@@ -29,17 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM HUNT: Eliminated 3 of 5 axioms. Proved singleton count formula, monotonicity, and subset monotonicity. Remaining 2 axioms are deep results.",
+    "progressSummary": "PROGRESS: Proved constant_2_optimal axiom. Axioms 2→1 (only Davenport density remains). Proof uses Archimedean property to choose a > 1/ε, then singleton_multiplesCount + field_simp.",
     "builtItems": [
       "theorem singleton_multiplesCount (bijection proof, ~25 lines)",
       "theorem multiplesCount_mono (4 lines)",
-      "theorem multiplesCount_subset (5 lines)"
+      "theorem multiplesCount_subset (5 lines)",
+      "PROVED constant_2_optimal: optimality of constant 2 via Archimedean choice a > 1/ε, singleton_multiplesCount for (2a-1)/a = 2 - 1/a"
     ],
     "insights": [
       "singleton_multiplesCount proved via bijection: Finset.range (N/a) → (Icc 1 N).filter (a∣·) via k↦(k+1)*a",
       "multiplesCount_mono proved: filter subset from Icc monotonicity",
       "multiplesCount_subset proved: predicate weakening on existential",
-      "Axiom count reduced 5→2: remaining are constant_2_optimal and Davenport density theorem"
+      "Axiom count reduced 5→2: remaining are constant_2_optimal and Davenport density theorem",
+      "constant_2_optimal proof: choose a = max(⌈1/ε⌉, 2), use singleton_multiplesCount to compute counts, field_simp for rational arithmetic, div_lt_iff₀ for reciprocal inequality"
     ],
     "mathlibGaps": [],
     "nextSteps": [
