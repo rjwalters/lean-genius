@@ -106,6 +106,36 @@ theorem diam_nonneg (S : Finset (EuclideanSpace ℝ (Fin 2))) : diam S ≥ 0 := 
     exact le_of_lt (Finset.mem_filter.mp hmem |>.2)
   · case isFalse => linarith
 
+/--
+For integer distance sets with ≥ 2 points, the diameter is a positive integer.
+
+Since every pairwise distance is a positive integer (from `hasIntegerDistances`),
+and the diameter is the maximum pairwise distance, the diameter itself is
+a positive integer.
+-/
+theorem diam_is_integer (S : Finset (EuclideanSpace ℝ (Fin 2)))
+    (hint : hasIntegerDistances S) (h2 : S.card ≥ 2) :
+    ∃ k : ℕ, k ≥ 1 ∧ diam S = k := by
+  -- Every element of pairwiseDistances is a positive integer
+  have hint_mem : ∀ d ∈ pairwiseDistances S, ∃ k : ℕ, k ≥ 1 ∧ d = ↑k := by
+    intro d hd
+    simp only [pairwiseDistances, Finset.mem_filter, Finset.mem_image] at hd
+    obtain ⟨⟨⟨p, q⟩, hmem, rfl⟩, _⟩ := hd
+    simp only [Finset.mem_offDiag] at hmem
+    exact hint p hmem.1 q hmem.2.1 hmem.2.2
+  -- pairwiseDistances is nonempty (S has ≥ 2 points)
+  have hne : (pairwiseDistances S).Nonempty := by
+    obtain ⟨p, hp, q, hq, hpq⟩ := Finset.one_lt_card.mp (by omega : 1 < S.card)
+    obtain ⟨k, hk1, hkd⟩ := hint p hp q hq hpq
+    exact ⟨dist p q, Finset.mem_filter.mpr
+      ⟨Finset.mem_image.mpr ⟨(p, q), Finset.mem_offDiag.mpr ⟨hp, hq, hpq⟩, rfl⟩,
+       by rw [hkd]; positivity⟩⟩
+  -- diam = max' of pairwiseDistances, which is a member
+  have hdiam_eq : diam S = (pairwiseDistances S).max' hne := by
+    simp [diam, dif_pos hne]
+  obtain ⟨k, hk1, hkd⟩ := hint_mem _ (Finset.max'_mem _ hne)
+  exact ⟨k, hk1, hdiam_eq.trans hkd⟩
+
 /-
 ## The Main Conjecture
 -/
