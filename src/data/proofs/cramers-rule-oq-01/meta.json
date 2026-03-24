@@ -194,9 +194,15 @@
       "targetId": "cramers-rule",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cramers-rule-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question: Complexity Analysis: Cramer's Rule vs Gaussian Elimination"
     }
   ],
   "relatedProofs": [
-    "cramers-rule"
+    "cramers-rule",
+    "cramers-rule-oq-02"
   ]
 }

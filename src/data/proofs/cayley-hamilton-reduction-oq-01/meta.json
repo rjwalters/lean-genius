@@ -149,9 +149,15 @@
       "targetId": "cayley-hamilton-reduction",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question: Minimal Polynomial vs Characteristic Polynomial Reduction"
     }
   ],
   "relatedProofs": [
-    "cayley-hamilton-reduction"
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-reduction-oq-02"
   ]
 }
