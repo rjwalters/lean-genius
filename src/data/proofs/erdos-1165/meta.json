@@ -46,42 +46,48 @@
       "title": "Problem Statement and Context",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Module docstring: the problem statement about favourite sites of 2D random walks, the complete resolution by Tóth (2001) and Hao-Li-Okada-Zheng (2024), and background on dimensional differences in favourite site behaviour."
+      "summary": "Module docstring: the problem statement about favourite sites of 2D random walks, the complete resolution by Tóth (2001) and Hao-Li-Okada-Zheng (2024), and background on dimensional differences in favourite site behaviour.",
+      "mathContext": "Find $\\mathbb{P}(|F(n)| = r \\text{ i.o.})$ for $r \\ge 3$, where $F(n) = \\{x : f_n(x) = \\max_y f_n(y)\\}$."
     },
     {
       "id": "infrastructure",
       "title": "Random Walk Infrastructure",
       "startLine": 37,
       "endLine": 70,
-      "summary": "Axiomatizes the core objects: ℤ² lattice, visit count function, maximum visit count, and favourite sites as a Finset. These form the interface needed to state the problem."
+      "summary": "Axiomatizes the core objects: ℤ² lattice, visit count function, maximum visit count, and favourite sites as a Finset. These form the interface needed to state the problem.",
+      "mathContext": "$f_n(x) = |\\{k \\le n : s_k = x\\}|$, $M_n = \\max_x f_n(x)$, $F(n) = \\{x : f_n(x) = M_n\\}$ as `Finset Z2`."
     },
     {
       "id": "probability-events",
       "title": "Probability Events",
       "startLine": 71,
       "endLine": 95,
-      "summary": "Axiomatizes the probability of the infinitely-often event for favourite site counts, with basic probability bounds (non-negative, at most 1)."
+      "summary": "Axiomatizes the probability of the infinitely-often event for favourite site counts, with basic probability bounds (non-negative, at most 1).",
+      "mathContext": "$\\mathbb{P}(|F(n)| = r \\text{ i.o.}) \\in [0, 1]$. Limsup event: $\\bigcap_N \\bigcup_{n \\ge N} \\{|F(n)| = r\\}$."
     },
     {
       "id": "main-results",
       "title": "Main Results (SOLVED)",
       "startLine": 96,
       "endLine": 128,
-      "summary": "States the two axioms that resolve the problem: Tóth (2001) proves P = 0 for r ≥ 4, Hao-Li-Okada-Zheng (2024) proves P = 1 for r = 3."
+      "summary": "States the two axioms that resolve the problem: Tóth (2001) proves P = 0 for r ≥ 4, Hao-Li-Okada-Zheng (2024) proves P = 1 for r = 3.",
+      "mathContext": "Tóth: $r \\ge 4 \\Rightarrow \\mathbb{P} = 0$. Hao-Li-Okada-Zheng: $r = 3 \\Rightarrow \\mathbb{P} = 1$."
     },
     {
       "id": "consequences",
       "title": "Derived Consequences",
       "startLine": 129,
       "endLine": 147,
-      "summary": "Three proved theorems: the complete resolution combining both results, the finite occurrence corollary for r ≥ 4, and the almost-sure three-favourite-sites theorem."
+      "summary": "Three proved theorems: the complete resolution combining both results, the finite occurrence corollary for r ≥ 4, and the almost-sure three-favourite-sites theorem.",
+      "mathContext": "$\\mathbb{P}(|F(n)| = r \\text{ i.o.}) = \\begin{cases} 1 & r = 3 \\\\ 0 & r \\ge 4 \\end{cases}$. All proved from axioms."
     },
     {
       "id": "background",
       "title": "Background Results",
       "startLine": 148,
       "endLine": 157,
-      "summary": "Bass-Griffin (1985) 1D uniqueness result, providing context for why the 2D case is fundamentally different."
+      "summary": "Bass-Griffin (1985) 1D uniqueness result, providing context for why the 2D case is fundamentally different.",
+      "mathContext": "1D: $|F(n)| = 1$ for large $n$ a.s. (Bass-Griffin 1985). Contrast: 2D has $|F(n)| = 3$ i.o. a.s."
     }
   ],
   "conclusion": {
