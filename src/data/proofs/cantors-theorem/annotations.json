@@ -98,7 +98,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 96,
-      "endLine": 106
+      "endLine": 96
     },
     "type": "lemma",
     "title": "The Self-Reference Paradox",
@@ -121,7 +121,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 108,
-      "endLine": 114
+      "endLine": 108
     },
     "type": "theorem",
     "title": "Strict Cardinality Inequality",
@@ -144,7 +144,7 @@
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 116,
-      "endLine": 121
+      "endLine": 116
     },
     "type": "theorem",
     "title": "No Bijection Corollary",
@@ -162,35 +162,11 @@
     ]
   },
   {
-    "id": "ann-cardinal-inequality",
-    "proofId": "cantors-theorem",
-    "range": {
-      "startLine": 122,
-      "endLine": 131
-    },
-    "type": "concept",
-    "title": "Cardinal Arithmetic Perspective",
-    "content": "The `cantor_cardinal_inequality` theorem restates the non-surjectivity result in the language of cardinal arithmetic. While the current formulation only proves $\\neg\\exists f$ surjective (which implies $|A| \\leq |\\mathcal{P}(A)|$ and $|A| \\neq |\\mathcal{P}(A)|$, hence $|A| < |\\mathcal{P}(A)|$), the full cardinal inequality $\\text{Cardinal.mk}(A) < \\text{Cardinal.mk}(\\text{Set } A)$ is available in Mathlib as `Cardinal.mk_set_lt`.\n\nThe cardinal version is more powerful: it places $|A|$ and $|\\mathcal{P}(A)|$ in the well-ordered hierarchy of cardinals, enabling transfinite arithmetic. Cantor's theorem in cardinal form gives the beth number sequence: $\\beth_0 = \\aleph_0$, $\\beth_{n+1} = 2^{\\beth_n}$, with $\\beth_n < \\beth_{n+1}$ for all $n$. The Generalized Continuum Hypothesis (GCH) asserts $\\beth_n = \\aleph_n$ for all $n$ — independent of ZFC by Gödel and Cohen's results.",
-    "mathContext": "$|A| < |\\mathcal{P}(A)| = 2^{|A|}$. In Mathlib's cardinal arithmetic: `Cardinal.mk_set_lt : Cardinal.mk α < Cardinal.mk (Set α)`. The beth numbers: $\\beth_0 = \\aleph_0$, $\\beth_{n+1} = 2^{\\beth_n}$. GCH: $\\beth_n = \\aleph_n$ for all $n$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "cardinal arithmetic",
-      "beth numbers",
-      "aleph numbers",
-      "Generalized Continuum Hypothesis",
-      "Cardinal.mk_set_lt"
-    ],
-    "prerequisites": [
-      "cardinal numbers",
-      "cantor_no_surjection_set"
-    ]
-  },
-  {
     "id": "ann-constructive",
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 133,
-      "endLine": 151
+      "endLine": 140
     },
     "type": "concept",
     "title": "Constructive Witness",
@@ -210,32 +186,11 @@
     ]
   },
   {
-    "id": "ann-verification",
-    "proofId": "cantors-theorem",
-    "range": {
-      "startLine": 153,
-      "endLine": 157
-    },
-    "type": "context",
-    "title": "Type-Check Verification",
-    "content": "Three `#check` commands verify the signatures of the main theorems: `cantor_no_surjection` (Mathlib-based, using `A → Prop`), `cantor_no_surjection_set` (original proof using `Set A`), and `cantor_witness` (constructive witness). The namespace `CantorsTheorem` closes, scoping all definitions.\n\nThe three checked theorems represent the full proof architecture: impossibility (two formulations) and constructive witness. Any downstream formalization can import these by name with guaranteed types.",
-    "mathContext": "Verified types: `cantor_no_surjection : ∀ (A : Type*), ¬∃ f, Surjective f` (for `A → Prop`), `cantor_no_surjection_set : ∀ (A : Type*), ¬∃ f, Surjective f` (for `Set A`), `cantor_witness : ∀ (A : Type*) (f : A → Set A), ∃ D, ∀ a, f a ≠ D`.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "#check command",
-      "API surface",
-      "namespace scoping"
-    ],
-    "prerequisites": [
-      "Lean 4 meta-commands"
-    ]
-  },
-  {
     "id": "ann-russell",
     "proofId": "cantors-theorem",
     "range": {
       "startLine": 5,
-      "endLine": 36
+      "endLine": 46
     },
     "type": "concept",
     "title": "Connection to Russell's Paradox",
@@ -258,7 +213,7 @@
     "id": "ann-connection",
     "proofId": "cantors-theorem",
     "range": {
-      "startLine": 37,
+      "startLine": 5,
       "endLine": 46
     },
     "type": "concept",

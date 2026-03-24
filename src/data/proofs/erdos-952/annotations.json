@@ -22,7 +22,7 @@
     "id": "ann-952-gaussian-prime",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 48,
+      "startLine": 49,
       "endLine": 52
     },
     "type": "definition",
@@ -41,7 +41,7 @@
     "id": "ann-952-classification",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 63,
+      "startLine": 64,
       "endLine": 75
     },
     "type": "definition",
@@ -60,7 +60,7 @@
     "id": "ann-952-walk",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 83,
+      "startLine": 84,
       "endLine": 89
     },
     "type": "definition",
@@ -78,7 +78,7 @@
     "id": "ann-952-conjecture",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 91,
+      "startLine": 92,
       "endLine": 97
     },
     "type": "definition",
@@ -96,7 +96,7 @@
     "id": "ann-952-jordan-rabung",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 105,
+      "startLine": 106,
       "endLine": 107
     },
     "type": "concept",
@@ -114,7 +114,7 @@
     "id": "ann-952-tsuchimura",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 109,
+      "startLine": 110,
       "endLine": 111
     },
     "type": "concept",
@@ -132,7 +132,7 @@
     "id": "ann-952-moat-width",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 126,
+      "startLine": 127,
       "endLine": 135
     },
     "type": "definition",
@@ -150,10 +150,10 @@
     "id": "ann-952-density",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 143,
+      "startLine": 144,
       "endLine": 151
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Gaussian Prime Density",
     "content": "gaussian_prime_theorem: π_ℤ[i](R) ~ R² / log(R). Similar to rational prime counting function.",
     "mathContext": "Gaussian primes are dense enough locally, but gaps can still grow.",
@@ -168,7 +168,7 @@
     "id": "ann-952-mod4",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 166,
+      "startLine": 167,
       "endLine": 170
     },
     "type": "concept",
@@ -204,7 +204,7 @@
     "id": "ann-952-variants",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 190,
+      "startLine": 191,
       "endLine": 197
     },
     "type": "definition",
@@ -222,10 +222,10 @@
     "id": "ann-952-status",
     "proofId": "erdos-952",
     "range": {
-      "startLine": 205,
+      "startLine": 206,
       "endLine": 239
     },
-    "type": "concept",
+    "type": "definition",
     "title": "Problem Status",
     "content": "The problem is OPEN. Known: no walk with steps ≤ √26. Unknown: whether any bounded step suffices.",
     "mathContext": "Note: NOT actually an Erdős problem despite the attribution.",

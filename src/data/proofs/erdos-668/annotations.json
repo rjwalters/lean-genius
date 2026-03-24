@@ -22,7 +22,7 @@
     "id": "ann-e668-plane",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 36,
+      "startLine": 42,
       "endLine": 45
     },
     "type": "definition",
@@ -75,8 +75,8 @@
     "id": "ann-e668-u-n",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 74,
-      "endLine": 78
+      "startLine": 57,
+      "endLine": 58
     },
     "type": "definition",
     "title": "Maximum Unit Distances u(n)",
@@ -90,8 +90,8 @@
     "id": "ann-e668-extremal",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 84,
-      "endLine": 100
+      "startLine": 61,
+      "endLine": 66
     },
     "type": "definition",
     "title": "Extremal Configurations",
@@ -113,8 +113,8 @@
     "id": "ann-e668-congruent",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 106,
-      "endLine": 130
+      "startLine": 69,
+      "endLine": 70
     },
     "type": "definition",
     "title": "Congruence of Point Sets",
@@ -128,8 +128,8 @@
     "id": "ann-e668-f-n",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 146,
-      "endLine": 165
+      "startLine": 131,
+      "endLine": 132
     },
     "type": "definition",
     "title": "The Counting Function f(n)",
@@ -152,10 +152,10 @@
     "id": "ann-e668-f-four",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 175,
-      "endLine": 195
+      "startLine": 136,
+      "endLine": 136
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The n=4 Case",
     "content": "**f(4) = 1:**\n\nThe unique 4-point extremal configuration is the **double triangle**: two equilateral triangles sharing an edge.\n\nThis rhombus-like shape has 5 unit distances:\n- The shared edge (1)\n- Two sides from each triangle (4)\n\n**u(4) = 5** is also known.",
     "mathContext": "The double triangle is a well-known configuration in discrete geometry.",
@@ -167,10 +167,10 @@
     "id": "ann-e668-unique",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 197,
-      "endLine": 202
+      "startLine": 139,
+      "endLine": 140
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Uniqueness for n=4",
     "content": "**four_config_unique:**\n\nAny two 4-point extremal configurations are congruent.\n\n```lean\naxiom four_config_unique :\n  forall S T : Finset Plane,\n    S.card = 4 -> T.card = 4 -> isExtremal S -> isExtremal T ->\n    areCongruent S T\n```",
     "significance": "key",
@@ -182,10 +182,10 @@
     "id": "ann-e668-computational",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 208,
-      "endLine": 220
+      "startLine": 146,
+      "endLine": 147
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Computational Evidence",
     "content": "**Computational results:**\n\nFor 5 <= n <= 21, computational searches suggest f(n) = 1.\n\n**Important caveat:** These checks verified only graph isomorphism, not full geometric congruence.\n\n**Contributors:**\n- Engel, Hammond-Lee, Su, Varga, Zsamboki [EHSVZ25]\n- Alexeev, Mixon, Parshall [AMP25]",
     "significance": "key",
@@ -197,8 +197,8 @@
     "id": "ann-e668-question-one",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 230,
-      "endLine": 240
+      "startLine": 150,
+      "endLine": 151
     },
     "type": "definition",
     "title": "Question 1: Does f(n) -> infinity?",
@@ -212,8 +212,8 @@
     "id": "ann-e668-question-two",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 242,
-      "endLine": 260
+      "startLine": 155,
+      "endLine": 160
     },
     "type": "definition",
     "title": "Question 2: Is f(n) > 1?",
@@ -227,10 +227,10 @@
     "id": "ann-e668-problem-90",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 268,
-      "endLine": 280
+      "startLine": 173,
+      "endLine": 176
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Connection to Problem #90",
     "content": "**Relationship to u(n):**\n\nProblem #668 builds on Problem #90 (maximum unit distances).\n\n**Key bounds on u(n):**\n- Lower: u(n) >= n - 1\n- Upper: u(n) < c * n^(4/3) (Erdos)\n\nUnderstanding u(n) is prerequisite to studying f(n).",
     "significance": "key",
@@ -245,8 +245,8 @@
     "id": "ann-e668-summary",
     "proofId": "erdos-668",
     "range": {
-      "startLine": 301,
-      "endLine": 320
+      "startLine": 179,
+      "endLine": 183
     },
     "type": "insight",
     "title": "Summary",
