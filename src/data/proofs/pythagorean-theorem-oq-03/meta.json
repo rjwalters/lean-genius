@@ -7,7 +7,7 @@
     "author": "Lobachevsky & Bolyai (1830s), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hyperbolic_law_of_cosines",
     "date": "c. 1830",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PythagoreanTheoremOQ03.lean",
     "tags": [
       "geometry",
@@ -17,7 +17,7 @@
       "pythagorean-theorem",
       "generalization"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -62,9 +62,9 @@
         "relationship": "The original Euclidean Pythagorean theorem proof that posed the open question answered by this formalization"
       }
     ],
-    "axiomCount": 0,
+    "axiomCount": 3,
     "lineCount": 1431,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 sorries but 3 structure-encoded assumptions: HyperbolicRightTriangle.law (cosh c = cosh a · cosh b), SphericalRightTriangle.law (cos c = cos a · cos b), SphericalRightTriangleR.law (cos(c/R) = cos(a/R) · cos(b/R)). These metric laws are axiomatized as structure fields; all 50+ consequence theorems are fully proved.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -254,7 +254,7 @@
     ],
     "namespace": "PythagoreanNonEuclidean",
     "lineCount": 1431,
-    "axiomCount": 0,
+    "axiomCount": 3,
     "theoremCount": 105,
     "definitionCount": 18
   }
