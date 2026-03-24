@@ -227,8 +227,8 @@
       "endLine": 234
     },
     "type": "context",
-    "title": "Asymptotic Vanishing (Sorry)",
-    "content": "States that $\\alpha_n \\to 0$ as $n \\to \\infty$: in high dimensions, a random unit vector concentrates its mass equally across all coordinates, so the expected absolute projection onto any single axis vanishes. The proof would use the product representation $\\alpha_{2k} = \\frac{2}{\\pi}\\prod_{j=1}^{k-1}\\frac{2j}{2j+1}$, which is a Wallis-type product converging to zero (since $\\sum 1/(2j+1)$ diverges). This remains as the sole `sorry` in the file — a natural target for Aristotle proof search.",
+    "title": "Asymptotic Vanishing",
+    "content": "Proves that $\\alpha_n \\to 0$ as $n \\to \\infty$: in high dimensions, a random unit vector concentrates its mass equally across all coordinates, so the expected absolute projection onto any single axis vanishes. Uses a squeeze argument with a $1/\\sqrt{n}$ upper bound derived from the recurrence relation.",
     "mathContext": "$\\alpha_n \\to 0$ as $n \\to \\infty$; equivalently $\\prod_{j=1}^{\\infty}\\frac{j}{j+1} = 0$ (Wallis product divergence)",
     "significance": "supporting",
     "relatedConcepts": [
