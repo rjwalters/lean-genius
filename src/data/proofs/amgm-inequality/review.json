@@ -97,28 +97,28 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Rephrase originalContributions[3] from 'Three-variable AM-GM via weighted means' to 'Three-variable specialization of Mathlib weighted AM-GM (pedagogical curation)'. Currently overstates the adaptation work.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Add four missing mathlibDependencies: Real.sq_sqrt (critical to elementary proof and equality characterization, used 6 times), Real.geom_mean_le_arith_mean3_weighted (three-variable case), pow_eq_zero (equality characterization key step), sq_le_sq' (product-sum corollary).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Adjust overview.text to distinguish original proofs from Mathlib wrappers (e.g., 'two original proofs and five Mathlib-based results'). Add qualifier to equality condition noting it is proved for two variables only. Remove confusing unchecked checkbox from Lean docstring.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Change annotation significance for am_ge_gm (ann-mean-chain) from 'key' to 'supporting' — a one-line alias does not warrant 'key' status.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
