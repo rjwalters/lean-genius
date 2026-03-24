@@ -1,6 +1,6 @@
 {
   "slug": "erdos-361",
-  "title": "Erd\u0151s #361",
+  "title": "Erdős #361",
   "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
@@ -31,7 +31,7 @@
     "iteration": 1,
     "focus": "Eliminated all sorries, fixed incorrect theorem, added structural lemmas.",
     "blockers": [],
-    "nextAction": "None \u2014 formalization complete. 2 axioms remain (open Erd\u0151s conjecture).",
+    "nextAction": "None — formalization complete. 2 axioms remain (open Erdős conjecture).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 2 axioms (open Erd\u0151s conjectures), 8 theorems proved.",
+    "progressSummary": "COMPLETE: 0 sorries, 2 axioms (open Erdős conjectures), 8 theorems proved.",
     "builtItems": [
       "nonRepresenting_empty: empty set is non-representing",
       "nonRepresenting_subset: monotone under subsets",
@@ -81,8 +81,8 @@
     {
       "path": "Proofs/Erdos361Problem.lean",
       "filename": "Erdos361Problem.lean",
-      "lineCount": 146,
-      "theoremCount": 8,
+      "lineCount": 147,
+      "theoremCount": 6,
       "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,
