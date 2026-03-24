@@ -69,21 +69,21 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Fix exists_quintic: either remove it or add a comment clarifying it is a trivial witness, not the substantive statement needed (which would be ∃ q : Polynomial ℚ, Irreducible q ∧ q.natDegree = 5 ∧ ¬ IsSolvable q.Gal). Cross-reference the open question about formalizing x⁵-x-1.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "low",
       "target": "enricher",
       "description": "Align the Lean file docstring (lines 18-21) with the meta.json assumptions field: change 'Explicit proofs of S₅ not solvable...' to 'Pedagogical wrappers around Mathlib's solvability theory' for consistency.",
-      "status": "open"
+      "status": "deferred"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Change originalContributions[2] from 'Quintic unsolvability demonstration' to 'General contrapositive form of Abel-Ruffini' for precision.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
