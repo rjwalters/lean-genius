@@ -78,49 +78,56 @@
       "title": "Core Definitions",
       "startLine": 23,
       "endLine": 42,
-      "summary": "TwoPowAddSet and lowerDensity definitions capturing the representability condition."
+      "summary": "TwoPowAddSet and lowerDensity definitions capturing the representability condition.",
+      "mathContext": "$\\mathrm{TwoPowAddSet}(r) = \\{m \\mid \\exists\\, k,n,\\; m = 2^k + n,\\; \\omega(n) \\leq r\\}$"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 43,
       "endLine": 63,
-      "summary": "Powers of 2 plus 1 are always representable; TwoPowAddSet is monotone; union covers all m ≥ 2."
+      "summary": "Powers of 2 plus 1 are always representable; TwoPowAddSet is monotone; union covers all m ≥ 2.",
+      "mathContext": "$r \\leq s \\Rightarrow \\mathrm{TwoPowAddSet}(r) \\subseteq \\mathrm{TwoPowAddSet}(s)$; $\\bigcup_{r \\geq 0} \\mathrm{TwoPowAddSet}(r) \\supseteq \\{m \\in \\mathbb{N} \\mid m \\geq 2\\}$"
     },
     {
       "id": "romanoff",
       "title": "Romanoff's Theorem (1934)",
       "startLine": 64,
       "endLine": 77,
-      "summary": "The foundational result: 2^k + p has positive lower density, approximately 0.0868."
+      "summary": "The foundational result: 2^k + p has positive lower density, approximately 0.0868.",
+      "mathContext": "$\\liminf_{N \\to \\infty} \\frac{|\\mathrm{TwoPowAddSet}(1) \\cap [1,N]|}{N} \\approx 0.0868 > 0$"
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 78,
       "endLine": 92,
-      "summary": "Erdős's question about achieving density arbitrarily close to 1."
+      "summary": "Erdős's question about achieving density arbitrarily close to 1.",
+      "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists r \\in \\mathbb{N},\\; \\liminf_{N \\to \\infty} \\frac{|\\mathrm{TwoPowAddSet}(r) \\cap [1,N]|}{N} \\geq 1 - \\varepsilon$"
     },
     {
       "id": "density-properties",
       "title": "Density Properties",
       "startLine": 93,
       "endLine": 117,
-      "summary": "Monotonicity of density in r, upper bound of 1, and equivalence to limit being 1."
+      "summary": "Monotonicity of density in r, upper bound of 1, and equivalence to limit being 1.",
+      "mathContext": "$r \\leq s \\Rightarrow d^-(\\mathrm{TwoPowAddSet}(r)) \\leq d^-(\\mathrm{TwoPowAddSet}(s)) \\leq 1$; conjecture $\\Leftrightarrow \\lim_{r \\to \\infty} d^-(\\mathrm{TwoPowAddSet}(r)) = 1$"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 118,
       "endLine": 130,
-      "summary": "Uncovered integers, Erdős-Odlyzko bounds, and covering problem status."
+      "summary": "Uncovered integers, Erdős-Odlyzko bounds, and covering problem status.",
+      "mathContext": "$d^-(\\mathrm{TwoPowAddSet}(1)^c) > 0$; Erdős–Odlyzko (1979): $d^-(\\mathrm{TwoPowAddSet}(1)) > 0.0868$"
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 131,
       "endLine": 195,
-      "summary": "Specific integers 3, 5, 9, 17 verified to be in TwoPowAddSet 0."
+      "summary": "Specific integers 3, 5, 9, 17 verified to be in TwoPowAddSet 0.",
+      "mathContext": "$3 = 2^1 + 1,\\; 5 = 2^2 + 1,\\; 9 = 2^3 + 1,\\; 17 = 2^4 + 1$; Fermat numbers $F_n = 2^{2^n} + 1 \\in \\mathrm{TwoPowAddSet}(0)$"
     }
   ],
   "conclusion": {
