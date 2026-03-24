@@ -74,56 +74,64 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 16,
-      "summary": "Overview of the fallacy and its origins in physics."
+      "summary": "Overview of the fallacy and its origins in physics.",
+      "mathContext": "Overview of the fallacy and its origins in physics."
     },
     {
       "id": "convergence",
       "title": "Lean Requires Convergence Proofs",
       "startLine": 17,
       "endLine": 38,
-      "summary": "How Mathlib's tsum function handles infinite series."
+      "summary": "How Mathlib's tsum function handles infinite series.",
+      "mathContext": "How Mathlib's tsum function handles infinite series."
     },
     {
       "id": "grandi",
       "title": "The Grandi Series Fallacy",
       "startLine": 39,
       "endLine": 60,
-      "summary": "Why 1-1+1-1+... cannot be assigned the value 1/2."
+      "summary": "Why 1-1+1-1+... cannot be assigned the value 1/2.",
+      "mathContext": "Why 1-1+1-1+... cannot be assigned the value 1/2."
     },
     {
       "id": "shift-add",
       "title": "The Shift-and-Add Manipulation",
       "startLine": 61,
       "endLine": 90,
-      "summary": "Why series manipulation requires convergence proofs."
+      "summary": "Why series manipulation requires convergence proofs.",
+      "mathContext": "Why series manipulation requires convergence proofs."
     },
     {
       "id": "core-theorem",
       "title": "The Core Theorem: Naturals Diverge",
       "startLine": 91,
       "endLine": 117,
-      "summary": "Lean proves the natural number series diverges."
+      "summary": "Lean proves the natural number series diverges.",
+      "mathContext": "Lean proves the natural number series diverges."
     },
     {
       "id": "zeta",
       "title": "What -1/12 Actually Means",
       "startLine": 118,
       "endLine": 144,
-      "summary": "The distinction between summation and zeta regularization."
+      "summary": "The distinction between summation and zeta regularization.",
+      "mathContext": "The distinction between summation and zeta regularization."
     },
     {
       "id": "step-by-step",
       "title": "Where Each Step Fails",
       "startLine": 145,
       "endLine": 178,
-      "summary": "Tracing through the Numberphile proof and marking each fallacy."
+      "summary": "Tracing through the Numberphile proof and marking each fallacy.",
+      "mathContext": "Tracing through the Numberphile proof and marking each fallacy."
     },
     {
       "id": "conclusion",
       "title": "Conclusion",
       "startLine": 179,
       "endLine": 282,
-      "summary": "Summary of how Lean enforces mathematical rigor."
+      "summary": "Summary of how Lean enforces mathematical rigor.",
+      "mathContext": "Summary of how Lean enforces mathematical rigor."
     }
   ],
   "conclusion": {

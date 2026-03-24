@@ -95,84 +95,96 @@
       "title": "Problem Statement and Imports",
       "summary": "Littlewood's conjecture statement, references to Konyagin 1981 and MPS 1981; imports Complex.Exponential, Bochner integration, Complex.Log",
       "startLine": 1,
-      "endLine": 36
+      "endLine": 36,
+      "mathContext": "Littlewood's conjecture statement, references to Konyagin 1981 and MPS 1981; imports Complex.Exponential, Bochner integration, Complex.Log"
     },
     {
       "id": "exponential-functions",
       "title": "Exponential Functions",
       "summary": "expTwoPiI definition e(x) = e^{2πix}; proved: periodicity (e(x+1) = e(x)), unit norm (|e(x)| = 1), multiplicativity (e(x+y) = e(x)e(y))",
       "startLine": 37,
-      "endLine": 60
+      "endLine": 60,
+      "mathContext": "expTwoPiI definition e(x) = e^{2πix}; proved: periodicity (e(x+1) = e(x)), unit norm (|e(x)| = 1), multiplicativity (e(x+y) = e(x)e(y))"
     },
     {
       "id": "exponential-sums",
       "title": "Exponential Sums",
       "summary": "expSum for ℤ and ℕ, expSumNorm modulus, expSum_bound (proved: triangle inequality |S_A| ≤ N)",
       "startLine": 61,
-      "endLine": 85
+      "endLine": 85,
+      "mathContext": "expSum for ℤ and ℕ, expSumNorm modulus, expSum_bound (proved: triangle inequality |S_A| ≤ N)"
     },
     {
       "id": "l1-norm",
       "title": "The L¹ Norm",
       "summary": "L1norm via Bochner integral on [0,1]; proved: nonnegativity; sorry: upper bound L¹ ≤ N",
       "startLine": 86,
-      "endLine": 105
+      "endLine": 105,
+      "mathContext": "L1norm via Bochner integral on [0,1]; proved: nonnegativity; sorry: upper bound L¹ ≤ N"
     },
     {
       "id": "littlewood-conjecture",
       "title": "Littlewood's Conjecture",
       "summary": "LittlewoodConjecture (∃c > 0, L¹ ≥ c log N) and asymptotic variant LittlewoodConjecture'",
       "startLine": 106,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "LittlewoodConjecture (∃c > 0, L¹ ≥ c log N) and asymptotic variant LittlewoodConjecture'"
     },
     {
       "id": "solution",
       "title": "The Solution (1981)",
       "summary": "konyagin_theorem and mcgehee_pigno_smith_theorem axioms; littlewoodConstant = 1/(4π); littlewood_explicit axiom",
       "startLine": 123,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "konyagin_theorem and mcgehee_pigno_smith_theorem axioms; littlewoodConstant = 1/(4π); littlewood_explicit axiom"
     },
     {
       "id": "sharpness",
       "title": "Sharpness: log N is Optimal",
       "summary": "littlewood_sharpness axiom; geometricProgression = {0,...,N-1}; arithmetic_progression_bound: L¹ ≍ log N for APs (Lebesgue constant)",
       "startLine": 142,
-      "endLine": 160
+      "endLine": 160,
+      "mathContext": "littlewood_sharpness axiom; geometricProgression = {0,...,N-1}; arithmetic_progression_bound: L¹ ≍ log N for APs (Lebesgue constant)"
     },
     {
       "id": "hardy-connection",
       "title": "Hardy's Inequality Connection",
       "summary": "Discrete Hardy inequality axiom with constant 4; hardyConnection noting MPS proof technique",
       "startLine": 161,
-      "endLine": 175
+      "endLine": 175,
+      "mathContext": "Discrete Hardy inequality axiom with constant 4; hardyConnection noting MPS proof technique"
     },
     {
       "id": "related-results",
       "title": "Related Results: Parseval, Flat Polynomials",
       "summary": "L2_norm = √N (Parseval, sorry); L1 vs L2 comparison; flat polynomial problem connection",
       "startLine": 176,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "L2_norm = √N (Parseval, sorry); L1 vs L2 comparison; flat polynomial problem connection"
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "summary": "weightedExpSum with unit weights; weighted_littlewood axiom (same log N bound); higher-dimensional placeholder",
       "startLine": 197,
-      "endLine": 215
+      "endLine": 215,
+      "mathContext": "weightedExpSum with unit weights; weighted_littlewood axiom (same log N bound); higher-dimensional placeholder"
     },
     {
       "id": "applications",
       "title": "Applications",
       "summary": "Connections to Diophantine approximation (Weyl's criterion) and analytic number theory (character sums)",
       "startLine": 216,
-      "endLine": 231
+      "endLine": 231,
+      "mathContext": "Connections to Diophantine approximation (Weyl's criterion) and analytic number theory (character sums)"
     },
     {
       "id": "summary",
       "title": "Summary and Main Theorems",
       "summary": "erdos_512 = konyagin_theorem; erdos_512_solved packages both proofs; konyagin_equals_mps shows logical equivalence",
       "startLine": 232,
-      "endLine": 261
+      "endLine": 261,
+      "mathContext": "erdos_512 = konyagin_theorem; erdos_512_solved packages both proofs; konyagin_equals_mps shows logical equivalence"
     }
   ],
   "conclusion": {

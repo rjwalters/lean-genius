@@ -36,56 +36,64 @@
       "title": "Imports and Setup",
       "startLine": 22,
       "endLine": 30,
-      "summary": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$, $\\texttt{Finset.Basic}$, and general tactics. Opens $\\texttt{Finset}$ namespace for $\\texttt{Ico}$ and $\\texttt{prod}$."
+      "summary": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$, $\\texttt{Finset.Basic}$, and general tactics. Opens $\\texttt{Finset}$ namespace for $\\texttt{Ico}$ and $\\texttt{prod}$.",
+      "mathContext": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$, $\\texttt{Finset.Basic}$, and general tactics. Opens $\\texttt{Finset}$ namespace for $\\texttt{Ico}$ and $\\texttt{prod}$."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 31,
       "endLine": 53,
-      "summary": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and $\\text{HasSolution}(k)$."
+      "summary": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and $\\text{HasSolution}(k)$.",
+      "mathContext": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p"
     },
     {
       "id": "infrastructure",
       "title": "Infrastructure Lemmas",
       "startLine": 54,
       "endLine": 94,
-      "summary": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under multiplication ($a \\equiv 1, b \\equiv 1 \\implies ab \\equiv 1$)."
+      "summary": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under multiplication ($a \\equiv 1, b \\equiv 1 \\implies ab \\equiv 1$).",
+      "mathContext": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under mult"
     },
     {
       "id": "verified-solutions",
       "title": "Verified Solutions",
       "startLine": 95,
       "endLine": 151,
-      "summary": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-triviality proof, and observation that both solutions use odd primes $p > 2$."
+      "summary": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-triviality proof, and observation that both solutions use odd primes $p > 2$.",
+      "mathContext": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-trivia"
     },
     {
       "id": "wilson-connection",
       "title": "Wilson's Theorem Connection",
       "startLine": 152,
       "endLine": 172,
-      "summary": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\ldots, p-1\\}$."
+      "summary": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\ldots, p-1\\}$.",
+      "mathContext": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\l"
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 173,
       "endLine": 179,
-      "summary": "Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known."
+      "summary": "Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known.",
+      "mathContext": "Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known."
     },
     {
       "id": "noll-simmons",
       "title": "Noll–Simmons Generalization",
       "startLine": 180,
       "endLine": 193,
-      "summary": "Axiomatizes the Noll–Simmons conjecture: $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. Weaker than the interval product conjecture since it drops consecutiveness."
+      "summary": "Axiomatizes the Noll–Simmons conjecture: $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. Weaker than the interval product conjecture since it drops consecutiveness.",
+      "mathContext": "Axiomatizes the Noll–Simmons conjecture: $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. Weaker than the interval product co"
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 194,
       "endLine": 204,
-      "summary": "Packages all verified results: $\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$."
+      "summary": "Packages all verified results: $\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$.",
+      "mathContext": "Packages all verified results: $\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$."
     }
   ],
   "overview": {

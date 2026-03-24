@@ -82,56 +82,64 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 31,
-      "summary": "Module documentation explaining the problem history and Mathlib imports for sets, filters, and real analysis."
+      "summary": "Module documentation explaining the problem history and Mathlib imports for sets, filters, and real analysis.",
+      "mathContext": "Module documentation explaining the problem history and Mathlib imports for sets, filters, and real analysis."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 32,
       "endLine": 43,
-      "summary": "Define IsSidonSet (all pairwise sums distinct) and the counting function A(N)."
+      "summary": "Define IsSidonSet (all pairwise sums distinct) and the counting function A(N).",
+      "mathContext": "Define IsSidonSet (all pairwise sums distinct) and the counting function A(N)."
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "startLine": 44,
       "endLine": 56,
-      "summary": "Formal statement of Erdős Problem #39 as a Lean proposition."
+      "summary": "Formal statement of Erdős Problem #39 as a Lean proposition.",
+      "mathContext": "Formal statement of Erdős Problem #39 as a Lean proposition."
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 57,
       "endLine": 73,
-      "summary": "Erdős's theorem that liminf A(N)/√N = 0 for any infinite Sidon set."
+      "summary": "Erdős's theorem that liminf A(N)/√N = 0 for any infinite Sidon set.",
+      "mathContext": "Erdős's theorem that liminf A(N)/√N = 0 for any infinite Sidon set."
     },
     {
       "id": "constructions",
       "title": "Known Constructions",
       "startLine": 74,
       "endLine": 110,
-      "summary": "Axioms encoding greedy (N^{1/3}), AKS ((N log N)^{1/3}), and Ruzsa (N^{√2-1}) constructions."
+      "summary": "Axioms encoding greedy (N^{1/3}), AKS ((N log N)^{1/3}), and Ruzsa (N^{√2-1}) constructions.",
+      "mathContext": "Axioms encoding greedy (N^{1/3}), AKS ((N log N)^{1/3}), and Ruzsa (N^{√2-1}) constructions."
     },
     {
       "id": "gap",
       "title": "The Gap Analysis",
       "startLine": 111,
       "endLine": 133,
-      "summary": "Verified theorem showing √2 - 1 < 1/2, quantifying the remaining gap."
+      "summary": "Verified theorem showing √2 - 1 < 1/2, quantifying the remaining gap.",
+      "mathContext": "Verified theorem showing √2 - 1 < 1/2, quantifying the remaining gap."
     },
     {
       "id": "related",
       "title": "Related Results",
       "startLine": 134,
       "endLine": 149,
-      "summary": "Erdős-Rényi construction achieving N^{1/2-ε} with bounded representation numbers."
+      "summary": "Erdős-Rényi construction achieving N^{1/2-ε} with bounded representation numbers.",
+      "mathContext": "Erdős-Rényi construction achieving N^{1/2-ε} with bounded representation numbers."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 170,
       "endLine": 194,
-      "summary": "Concrete Sidon sets verified in Lean: singletons and {1,2,5,10}."
+      "summary": "Concrete Sidon sets verified in Lean: singletons and {1,2,5,10}.",
+      "mathContext": "Concrete Sidon sets verified in Lean: singletons and {1,2,5,10}."
     }
   ],
   "conclusion": {

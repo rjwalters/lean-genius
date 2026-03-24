@@ -81,56 +81,64 @@
       "title": "Problem Statement and Overview",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Header explaining OQ-03: Is 246 optimal for 50-tuple Maynard-Tao sieve? Answer: YES. Engelsma (2013) exhaustive search confirms. Imports from BoundedPrimeGaps.lean for IsAdmissible."
+      "summary": "Header explaining OQ-03: Is 246 optimal for 50-tuple Maynard-Tao sieve? Answer: YES. Engelsma (2013) exhaustive search confirms. Imports from BoundedPrimeGaps.lean for IsAdmissible.",
+      "mathContext": "Header explaining OQ-03: Is 246 optimal for 50-tuple Maynard-Tao sieve? Answer: YES. Engelsma (2013) exhaustive search confirms. Imports from BoundedPrimeGaps.lean for IsAdmissible."
     },
     {
       "id": "engelsma-tuple",
       "title": "Part I: The Engelsma/Polymath 50-Tuple",
       "startLine": 37,
       "endLine": 58,
-      "summary": "engelsma50Tuple: explicit Finset with 50 elements {0,4,6,...,244,246}. Theorems: card=50, nonempty, 0∈tuple, 246∈tuple, all elements ≤246. All proved by native_decide."
+      "summary": "engelsma50Tuple: explicit Finset with 50 elements {0,4,6,...,244,246}. Theorems: card=50, nonempty, 0∈tuple, 246∈tuple, all elements ≤246. All proved by native_decide.",
+      "mathContext": "engelsma50Tuple: explicit Finset with 50 elements {0,4,6,...,244,246}. Theorems: card=50, nonempty, 0∈tuple, 246∈tuple, all elements ≤246. All proved by native_decide."
     },
     {
       "id": "admissibility",
       "title": "Part II: Admissibility Verification",
       "startLine": 59,
       "endLine": 101,
-      "summary": "engelsma50Tuple_admissible: IsAdmissible proof. For p∈{2,3,...,47}: native_decide. For p≥53: card(image mod p) ≤ 50 < 53 ≤ p by Finset.card_image_le + linarith. Uses interval_cases to eliminate composites in [48,52]."
+      "summary": "engelsma50Tuple_admissible: IsAdmissible proof. For p∈{2,3,...,47}: native_decide. For p≥53: card(image mod p) ≤ 50 < 53 ≤ p by Finset.card_image_le + linarith. Uses interval_cases to eliminate composites in [48,52].",
+      "mathContext": "engelsma50Tuple_admissible: IsAdmissible proof. For p∈{2,3,...,47}: native_decide. For p≥53: card(image mod p) ≤ 50 < 53 ≤ p by Finset.card_image_le + linarith. Uses interval_cases to eliminate compos"
     },
     {
       "id": "diameter",
       "title": "Part III: Exact Diameter = 246",
       "startLine": 102,
       "endLine": 123,
-      "summary": "engelsma50Tuple_max=246 and engelsma50Tuple_min=0 via native_decide. engelsma50Tuple_diam=246 by rewriting. engelsma50Tuple_mem_range: all elements between min and max via Finset.min'_le/le_max' (new API: no explicit Nonempty arg)."
+      "summary": "engelsma50Tuple_max=246 and engelsma50Tuple_min=0 via native_decide. engelsma50Tuple_diam=246 by rewriting. engelsma50Tuple_mem_range: all elements between min and max via Finset.min'_le/le_max' (new API: no explicit Nonempty arg).",
+      "mathContext": "engelsma50Tuple_max=246 and engelsma50Tuple_min=0 via native_decide. engelsma50Tuple_diam=246 by rewriting. engelsma50Tuple_mem_range: all elements between min and max via Finset.min'_le/le_max' (new "
     },
     {
       "id": "lower-bound",
       "title": "Part IV: Engelsma Lower Bound (Axiom)",
       "startLine": 124,
       "endLine": 137,
-      "summary": "engelsma_lower_bound: axiom encoding Engelsma's 2013 exhaustive computer search. States: ∀ H admissible with card ≥ 50, diameter ≥ 246."
+      "summary": "engelsma_lower_bound: axiom encoding Engelsma's 2013 exhaustive computer search. States: ∀ H admissible with card ≥ 50, diameter ≥ 246.",
+      "mathContext": "engelsma_lower_bound: axiom encoding Engelsma's 2013 exhaustive computer search. States: ∀ H admissible with card ≥ 50, diameter ≥ 246."
     },
     {
       "id": "optimality",
       "title": "Part V: Optimality of the 246 Bound",
       "startLine": 138,
       "endLine": 175,
-      "summary": "admissible_50_tuple_diam_achieved: ∃ admissible 50-tuple of diam 246. admissible_50_tuple_diam_ge_246: diameter ≥ 246 for any admissible 50-tuple. admissible_50_tuple_min_diam: conjunction of both. admissible_50_tuple_large_spread: explicit pair ≥246 apart."
+      "summary": "admissible_50_tuple_diam_achieved: ∃ admissible 50-tuple of diam 246. admissible_50_tuple_diam_ge_246: diameter ≥ 246 for any admissible 50-tuple. admissible_50_tuple_min_diam: conjunction of both. admissible_50_tuple_large_spread: explicit pair ≥246 apart.",
+      "mathContext": "admissible_50_tuple_diam_achieved: ∃ admissible 50-tuple of diam 246. admissible_50_tuple_diam_ge_246: diameter ≥ 246 for any admissible 50-tuple. admissible_50_tuple_min_diam: conjunction of both. ad"
     },
     {
       "id": "consequences",
       "title": "Part VI: Consequences",
       "startLine": 176,
       "endLine": 216,
-      "summary": "no_admissible_50_tuple_diam_le_245: diam≤245 implies not admissible. tight_246_via_admissibility: diam<246 iff not admissible. polymath_strictly_improves_zhang: 246 < 70M. optimal_prime_gap_via_50_tuple: the complete characterization theorem."
+      "summary": "no_admissible_50_tuple_diam_le_245: diam≤245 implies not admissible. tight_246_via_admissibility: diam<246 iff not admissible. polymath_strictly_improves_zhang: 246 < 70M. optimal_prime_gap_via_50_tuple: the complete characterization theorem.",
+      "mathContext": "no_admissible_50_tuple_diam_le_245: diam≤245 implies not admissible. tight_246_via_admissibility: diam<246 iff not admissible. polymath_strictly_improves_zhang: 246 < 70M. optimal_prime_gap_via_50_tup"
     },
     {
       "id": "synthesis",
       "title": "Part VII: Synthesis — Optimality and Prime Gap Bounds",
       "startLine": 217,
       "endLine": 279,
-      "summary": "polymath_achieves_246: restates Polymath axiom (primeGap n ≤ 246 eventually). no_smaller_50_tuple_diameter: ∀ D < 246, no 50-tuple achieves diameter D. polymath_246_is_tight: master theorem — 246 is both achievable (infinitely many prime gaps ≤ 246) and sieve-optimal (minimum diameter for admissible 50-tuples is exactly 246)."
+      "summary": "polymath_achieves_246: restates Polymath axiom (primeGap n ≤ 246 eventually). no_smaller_50_tuple_diameter: ∀ D < 246, no 50-tuple achieves diameter D. polymath_246_is_tight: master theorem — 246 is both achievable (infinitely many prime gaps ≤ 246) and sieve-optimal (minimum diameter for admissible 50-tuples is exactly 246).",
+      "mathContext": "polymath_achieves_246: restates Polymath axiom (primeGap n ≤ 246 eventually). no_smaller_50_tuple_diameter: ∀ D < 246, no 50-tuple achieves diameter D. polymath_246_is_tight: master theorem — 246 is b"
     }
   ],
   "conclusion": {

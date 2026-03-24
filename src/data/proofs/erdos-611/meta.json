@@ -80,70 +80,80 @@
       "title": "Header and Problem Statement",
       "summary": "OPEN (partially resolved). Two questions on clique size vs transversal number. Known results: EGT bound, Bollobás-Erdős threshold. Related to #610. Imports Mathlib via bulk import",
       "startLine": 1,
-      "endLine": 31
+      "endLine": 31,
+      "mathContext": "OPEN (partially resolved). Two questions on clique size vs transversal number. Known results: EGT bound, Bollobás-Erdős threshold. Related to #610. Imports Mathlib via bulk import"
     },
     {
       "id": "cliques-transversals",
       "title": "Core Definitions: Cliques, Transversals, Clique Size Predicates",
       "summary": "IsClique, IsMaximalClique, maximalCliques (filter univ). IsCliqueTransversal: T ∩ C nonempty. τ(G) (sorry). minMaximalCliqueSize (sorry). AllCliquesLarge G k, AllCliquesLinear G c with 0 < c ≤ 1",
       "startLine": 32,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "IsClique, IsMaximalClique, maximalCliques (filter univ). IsCliqueTransversal: T ∩ C nonempty. τ(G) (sorry). minMaximalCliqueSize (sorry). AllCliquesLarge G k, AllCliquesLinear G c with 0 < c ≤ 1"
     },
     {
       "id": "question1",
       "title": "Question 1: Linear Clique Size Forces Sublinear τ",
       "summary": "Question1_LinearCliques: ∀ε>0, ∃N, |V|≥N → τ < εn. Question1_Alternative: τ/n → 0 via Filter.Tendsto. Both formalize 'is τ = o(n)?'",
       "startLine": 73,
-      "endLine": 92
+      "endLine": 92,
+      "mathContext": "Question1_LinearCliques: ∀ε>0, ∃N, |V|≥N → τ < εn. Question1_Alternative: τ/n → 0 via Filter.Tendsto. Both formalize 'is τ = o(n)?'"
     },
     {
       "id": "question2",
       "title": "Question 2: Threshold Function k_c(n)",
       "summary": "k_threshold c n (sorry). ThresholdProperty: cliques ≥ k → τ < (1-c)n. Question2_ThresholdEstimate: find bounds on k_c(n). The deeper open problem",
       "startLine": 93,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "k_threshold c n (sorry). ThresholdProperty: cliques ≥ k → τ < (1-c)n. Question2_ThresholdEstimate: find bounds on k_c(n). The deeper open problem"
     },
     {
       "id": "known-results",
       "title": "Erdős-Gallai-Tuza Bound and Its Consequence",
       "summary": "erdos_gallai_tuza_large_cliques (axiom): τ ≤ n - √(kn). linear_cliques_sublinear: k=cn → τ ≤ (1-√c)n (sorry). question1_positive: τ < n (sorry). Answers Q1",
       "startLine": 114,
-      "endLine": 136
+      "endLine": 136,
+      "mathContext": "erdos_gallai_tuza_large_cliques (axiom): τ ≤ n - √(kn). linear_cliques_sublinear: k=cn → τ ≤ (1-√c)n (sorry). question1_positive: τ < n (sorry). Answers Q1"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound on k_c(n): n^{c'/log log n}",
       "summary": "threshold_lower_bound (axiom): k_c(n) ≥ n^{c'/log log n}. threshold_grows_slowly: k_c(n) ≤ n^ε eventually (sorry). Intermediate growth rate from random graphs",
       "startLine": 137,
-      "endLine": 153
+      "endLine": 153,
+      "mathContext": "threshold_lower_bound (axiom): k_c(n) ≥ n^{c'/log log n}. threshold_grows_slowly: k_c(n) ≤ n^ε eventually (sorry). Intermediate growth rate from random graphs"
     },
     {
       "id": "bollobas-erdos",
       "title": "Bollobás-Erdős Threshold: τ = 1 at n + 3 - 2√n",
       "summary": "bollobas_erdos_threshold = n + 3 - 2√n. bollobas_erdos_tau_one (axiom): above threshold → τ = 1. bollobas_erdos_optimal (axiom): below threshold → τ ≥ 2 possible. Exact result",
       "startLine": 154,
-      "endLine": 175
+      "endLine": 175,
+      "mathContext": "bollobas_erdos_threshold = n + 3 - 2√n. bollobas_erdos_tau_one (axiom): above threshold → τ = 1. bollobas_erdos_optimal (axiom): below threshold → τ ≥ 2 possible. Exact result"
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Complete, Bipartite, Turán Graphs",
       "summary": "complete_graph_tau: τ(Kₙ) = 1 (sorry). complete_bipartite_tau: τ(K_{n/2,n/2}) = n/2 (sorry). turan_graph_tau (sorry). Extreme cases illustrating the spectrum",
       "startLine": 176,
-      "endLine": 192
+      "endLine": 192,
+      "mathContext": "complete_graph_tau: τ(Kₙ) = 1 (sorry). complete_bipartite_tau: τ(K_{n/2,n/2}) = n/2 (sorry). turan_graph_tau (sorry). Extreme cases illustrating the spectrum"
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Lower Bounds and Relation to #610",
       "summary": "random_graph_clique_transversal (axiom): G(n,p) witnesses k_c(n) lower bound. refines_610: k=2 case recovers #610 (sorry). Connection to random graph theory",
       "startLine": 193,
-      "endLine": 214
+      "endLine": 214,
+      "mathContext": "random_graph_clique_transversal (axiom): G(n,p) witnesses k_c(n) lower bound. refines_610: k=2 case recovers #610 (sorry). Connection to random graph theory"
     },
     {
       "id": "main-status",
       "title": "Problem Status Summary",
       "summary": "erdos_611_status: Q1 answered (τ ≤ (1-√c)n) ∧ Q2 lower bound (k_c(n) ≥ n^{c'/log log n}). Combines EGT and threshold results. #check statements verify types",
       "startLine": 215,
-      "endLine": 245
+      "endLine": 245,
+      "mathContext": "erdos_611_status: Q1 answered (τ ≤ (1-√c)n) ∧ Q2 lower bound (k_c(n) ≥ n^{c'/log log n}). Combines EGT and threshold results. #check statements verify types"
     }
   ],
   "conclusion": {

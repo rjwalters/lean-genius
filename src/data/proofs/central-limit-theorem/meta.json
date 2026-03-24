@@ -79,70 +79,80 @@
       "title": "Introduction and Imports",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Module documentation explaining both perspectives, with imports for measure theory and probability."
+      "summary": "Module documentation explaining both perspectives, with imports for measure theory and probability.",
+      "mathContext": "Module documentation explaining both perspectives, with imports for measure theory and probability."
     },
     {
       "id": "characteristic-functions",
       "title": "Characteristic Functions",
       "startLine": 27,
       "endLine": 58,
-      "summary": "Defining characteristic functions and their key multiplicative property for sums."
+      "summary": "Defining characteristic functions and their key multiplicative property for sums.",
+      "mathContext": "Defining characteristic functions and their key multiplicative property for sums."
     },
     {
       "id": "taylor-expansion",
       "title": "Taylor Expansion of Characteristic Functions",
       "startLine": 60,
       "endLine": 95,
-      "summary": "The crucial expansion showing how moments appear in characteristic functions."
+      "summary": "The crucial expansion showing how moments appear in characteristic functions.",
+      "mathContext": "The crucial expansion showing how moments appear in characteristic functions."
     },
     {
       "id": "limit-computation",
       "title": "Computing the Limit",
       "startLine": 97,
       "endLine": 135,
-      "summary": "Showing the normalized characteristic function converges to the Gaussian."
+      "summary": "Showing the normalized characteristic function converges to the Gaussian.",
+      "mathContext": "Showing the normalized characteristic function converges to the Gaussian."
     },
     {
       "id": "levy-continuity",
       "title": "Lévy Continuity Theorem",
       "startLine": 137,
       "endLine": 165,
-      "summary": "The bridge from characteristic function convergence to distributional convergence."
+      "summary": "The bridge from characteristic function convergence to distributional convergence.",
+      "mathContext": "The bridge from characteristic function convergence to distributional convergence."
     },
     {
       "id": "main-theorem",
       "title": "Central Limit Theorem",
       "startLine": 167,
       "endLine": 195,
-      "summary": "The main theorem combining all ingredients: sums converge to Normal distribution."
+      "summary": "The main theorem combining all ingredients: sums converge to Normal distribution.",
+      "mathContext": "The main theorem combining all ingredients: sums converge to Normal distribution."
     },
     {
       "id": "topological-interpretation",
       "title": "Topological Interpretation",
       "startLine": 197,
       "endLine": 255,
-      "summary": "Understanding CLT through the lens of dynamical systems and fixed point theory."
+      "summary": "Understanding CLT through the lens of dynamical systems and fixed point theory.",
+      "mathContext": "Understanding CLT through the lens of dynamical systems and fixed point theory."
     },
     {
       "id": "renormalization-flow",
       "title": "The Renormalization Group Flow",
       "startLine": 257,
       "endLine": 300,
-      "summary": "Formalizing the convolution-rescaling operation as a dynamical system on measure space."
+      "summary": "Formalizing the convolution-rescaling operation as a dynamical system on measure space.",
+      "mathContext": "Formalizing the convolution-rescaling operation as a dynamical system on measure space."
     },
     {
       "id": "gaussian-as-attractor",
       "title": "Gaussian as Universal Attractor",
       "startLine": 302,
       "endLine": 345,
-      "summary": "Why the Gaussian emerges: it is the unique stable fixed point of the renormalization flow."
+      "summary": "Why the Gaussian emerges: it is the unique stable fixed point of the renormalization flow.",
+      "mathContext": "Why the Gaussian emerges: it is the unique stable fixed point of the renormalization flow."
     },
     {
       "id": "connections",
       "title": "Connections and Generalizations",
       "startLine": 347,
       "endLine": 390,
-      "summary": "Links to information geometry, stable distributions, and modern applied topology."
+      "summary": "Links to information geometry, stable distributions, and modern applied topology.",
+      "mathContext": "Links to information geometry, stable distributions, and modern applied topology."
     }
   ],
   "references": [

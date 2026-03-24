@@ -89,70 +89,80 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib's `SimpleGraph.Basic`, `SimpleGraph.Connectivity.Subgraph`, `SimpleGraph.Maps` for graph infrastructure, and `Data.Fintype.Card` for finite cardinality. Opens the `SimpleGraph` and `Finset` namespaces within `Erdos580`.",
       "startLine": 26,
-      "endLine": 34
+      "endLine": 34,
+      "mathContext": "Imports Mathlib's `SimpleGraph.Basic`, `SimpleGraph.Connectivity.Subgraph`, `SimpleGraph.Maps` for graph infrastructure, and `Data.Fintype.Card` for finite cardinality. Opens the `SimpleGraph` and `Fi"
     },
     {
       "id": "graph-definitions",
       "title": "Basic Graph Definitions",
       "summary": "Defines `vertexDegree G v` as $|N_G(v)|$ via `neighborFinset`, `highDegreeVertices G k` as the Finset of vertices with degree $\\geq k$, and `numVertices V` as `Fintype.card V`. These form the vocabulary for stating the LKS degree condition.",
       "startLine": 35,
-      "endLine": 61
+      "endLine": 61,
+      "mathContext": "Defines `vertexDegree G v` as $|N_G(v)|$ via `neighborFinset`, `highDegreeVertices G k` as the Finset of vertices with degree $\\geq k$, and `numVertices V` as `Fintype.card V`. These form the vocabula"
     },
     {
       "id": "trees",
       "title": "Tree Structure and Cayley's Formula",
       "summary": "Introduces the `Tree k` structure carrying a vertex Finset, edge Finset, and cardinality proof. Defines `allTrees k` as the universal set. Axiomatizes Cayley's formula: the number of labeled trees on $k$ vertices is $k^{k-2}$.",
       "startLine": 62,
-      "endLine": 89
+      "endLine": 89,
+      "mathContext": "Introduces the `Tree k` structure carrying a vertex Finset, edge Finset, and cardinality proof. Defines `allTrees k` as the universal set. Axiomatizes Cayley's formula: the number of labeled trees on "
     },
     {
       "id": "embedding",
       "title": "Tree Embedding Predicate",
       "summary": "Defines `TreeEmbeds T G` as existence of an injective edge-preserving map $f: \\mathrm{Fin}\\, k \\to V$, and `ContainsAllTreesUpTo G k` requiring all trees of size $\\leq k$ to embed. These predicates capture the graph-theoretic notion of subgraph isomorphism for trees.",
       "startLine": 90,
-      "endLine": 111
+      "endLine": 111,
+      "mathContext": "Defines `TreeEmbeds T G` as existence of an injective edge-preserving map $f: \\mathrm{Fin}\\, k \\to V$, and `ContainsAllTreesUpTo G k` requiring all trees of size $\\leq k$ to embed. These predicates ca"
     },
     {
       "id": "lks-condition",
       "title": "The LKS Degree Condition",
       "summary": "Defines `satisfiesLKS G` requiring $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$ and its generalization `satisfiesGeneralizedLKS G k` where the degree threshold $k$ is decoupled from $n/2$, capturing the Komlós-Sós generalization.",
       "startLine": 112,
-      "endLine": 133
+      "endLine": 133,
+      "mathContext": "Defines `satisfiesLKS G` requiring $|\\{v : \\deg(v) \\geq n/2\\}| \\geq n/2$ and its generalization `satisfiesGeneralizedLKS G k` where the degree threshold $k$ is decoupled from $n/2$, capturing the Koml"
     },
     {
       "id": "main-conjecture",
       "title": "Formal Conjecture Statements",
       "summary": "States `LKSConjecture` (the full $(n/2, n/2, n/2)$ conjecture) and `KomlosSosConjecture` (the generalization with independent parameter $k$) as Lean propositions quantifying over all finite types $V$ and simple graphs $G$.",
       "startLine": 134,
-      "endLine": 158
+      "endLine": 158,
+      "mathContext": "States `LKSConjecture` (the full $(n/2, n/2, n/2)$ conjecture) and `KomlosSosConjecture` (the generalization with independent parameter $k$) as Lean propositions quantifying over all finite types $V$ "
     },
     {
       "id": "partial-results",
       "title": "Asymptotic and Exact Results",
       "summary": "Axiomatizes `AKS_theorem` (the 1995 asymptotic version with $(1+\\varepsilon)$ factor) and `zhao_theorem` (the 2011 exact result for large $n$). Derives `erdos_580` directly from Zhao's theorem, establishing the main result as a one-line proof.",
       "startLine": 159,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "Axiomatizes `AKS_theorem` (the 1995 asymptotic version with $(1+\\varepsilon)$ factor) and `zhao_theorem` (the 2011 exact result for large $n$). Derives `erdos_580` directly from Zhao's theorem, establ"
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Paths and Stars",
       "summary": "Axiomatizes `path_case` (all paths of length $\\leq n/2 - 1$ embed under LKS) and `star_case` (all stars $K_{1,k-1}$ with $k \\leq n/2$ embed). These represent the 'easy' end of the tree difficulty spectrum where greedy arguments suffice.",
       "startLine": 197,
-      "endLine": 222
+      "endLine": 222,
+      "mathContext": "Axiomatizes `path_case` (all paths of length $\\leq n/2 - 1$ embed under LKS) and `star_case` (all stars $K_{1,k-1}$ with $k \\leq n/2$ embed). These represent the 'easy' end of the tree difficulty spec"
     },
     {
       "id": "tightness",
       "title": "Tightness of the LKS Condition",
       "summary": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ threshold is sharp.",
       "startLine": 223,
-      "endLine": 237
+      "endLine": 237,
+      "mathContext": "Axiomatizes `LKS_tightness`: for every $n \\geq 4$, there exists a graph with $n/2 - 1$ vertices of degree $n/2 - 1$ that fails to contain some tree on $n/2$ vertices, proving the $(n/2, n/2, n/2)$ thr"
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Restates the main result `erdos_580_summary` as a single self-documenting theorem with an extensive docstring summarizing the problem status, history, key techniques, and remaining open questions.",
       "startLine": 238,
-      "endLine": 267
+      "endLine": 267,
+      "mathContext": "Restates the main result `erdos_580_summary` as a single self-documenting theorem with an extensive docstring summarizing the problem status, history, key techniques, and remaining open questions."
     }
   ],
   "conclusion": {

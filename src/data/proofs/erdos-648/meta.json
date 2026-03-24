@@ -110,84 +110,96 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib modules for `Nat.Prime`, `Nat.Factorization`, `Finset`, `Real.Sqrt`, and `Real.log`. Opens `Nat` and `Finset` namespaces within the `Erdos648` namespace.",
       "startLine": 33,
-      "endLine": 42
+      "endLine": 42,
+      "mathContext": "Imports Mathlib modules for `Nat.Prime`, `Nat.Factorization`, `Finset`, `Real.Sqrt`, and `Real.log`. Opens `Nat` and `Finset` namespaces within the `Erdos648` namespace."
     },
     {
       "id": "gpf",
       "title": "Greatest Prime Factor $P(n)$",
       "summary": "Axiomatizes the greatest prime factor function with `gpfAx`, defines `gpf n` as $P(n)$ (returning 0 for $n \\le 1$), and establishes four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is prime, and $P(n)$ is maximal among prime divisors.",
       "startLine": 43,
-      "endLine": 81
+      "endLine": 81,
+      "mathContext": "Axiomatizes the greatest prime factor function with `gpfAx`, defines `gpf n` as $P(n)$ (returning 0 for $n \\le 1$), and establishes four key properties: $P(p) = p$ for primes, $P(n) \\mid n$, $P(n)$ is"
     },
     {
       "id": "examples",
       "title": "Concrete GPF Computations",
       "summary": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key pattern that prime powers $p^k$ have $P(p^k) = p$.",
       "startLine": 82,
-      "endLine": 118
+      "endLine": 118,
+      "mathContext": "Verifies $P(n)$ for eleven small integers: $P(2) = 2$, $P(3) = 3$, $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Demonstrates the key"
     },
     {
       "id": "sequences",
       "title": "GPF-Descending Sequence Definitions",
       "summary": "Defines `isGPFDescendingSeq` (strictly increasing values with strictly decreasing GPFs via `List.Chain'`), `isValidGPFSeq` (bounded in $[2, n)$), and the extremal function $g(n) = \\sup\\{|\\text{seq}| : \\text{isValidGPFSeq}\\, n\\, \\text{seq}\\}$.",
       "startLine": 119,
-      "endLine": 148
+      "endLine": 148,
+      "mathContext": "Defines `isGPFDescendingSeq` (strictly increasing values with strictly decreasing GPFs via `List.Chain'`), `isValidGPFSeq` (bounded in $[2, n)$), and the extremal function $g(n) = \\sup\\{|\\text{seq}| :"
     },
     {
       "id": "example-sequences",
       "title": "Example GPF-Descending Sequences",
       "summary": "Proves three concrete examples: $[3, 4]$ with GPFs $[3, 2]$, $[7, 9, 16]$ with GPFs $[7, 3, 2]$, and $[7, 10, 27, 64]$ with GPFs $[7, 5, 3, 2]$. Each is verified by rewriting GPF values and using `omega`.",
       "startLine": 149,
-      "endLine": 199
+      "endLine": 199,
+      "mathContext": "Proves three concrete examples: $[3, 4]$ with GPFs $[3, 2]$, $[7, 9, 16]$ with GPFs $[7, 3, 2]$, and $[7, 10, 27, 64]$ with GPFs $[7, 5, 3, 2]$. Each is verified by rewriting GPF values and using `ome"
     },
     {
       "id": "lower-bounds",
       "title": "Small Lower Bounds on $g(n)$",
       "summary": "States (with sorry) that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses.",
       "startLine": 200,
-      "endLine": 219
+      "endLine": 219,
+      "mathContext": "States (with sorry) that $g(n) \\ge 1$ for $n \\ge 3$, $g(n) \\ge 2$ for $n \\ge 5$, $g(n) \\ge 3$ for $n \\ge 17$, and $g(n) \\ge 4$ for $n \\ge 65$, using the example sequences as witnesses."
     },
     {
       "id": "smooth",
       "title": "Smooth Numbers",
       "summary": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (with sorry) that $2^k$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$.",
       "startLine": 220,
-      "endLine": 241
+      "endLine": 241,
+      "mathContext": "Defines `isSmooth B n` ($P(n) \\le B$, i.e., $n$ is $B$-smooth/friable). Proves (with sorry) that $2^k$ is 2-smooth and $p^k$ is $p$-smooth for any prime $p$ with $k \\ge 1$."
     },
     {
       "id": "cambie",
       "title": "Cambie's Theorem: $g(n) \\asymp \\sqrt{n/\\log n}$",
       "summary": "Axiomatizes Cambie's lower bound ($g(n) \\ge c_1\\sqrt{n/\\log n}$ with $c_1 \\ge 2$) and upper bound ($g(n) \\le c_2\\sqrt{n/\\log n}$ with $c_2 \\le 2\\sqrt{2}$). The main theorem `cambie_main` combines both directions into a $\\Theta$-bound, proved by extracting and repacking the axiomatized constants.",
       "startLine": 242,
-      "endLine": 279
+      "endLine": 279,
+      "mathContext": "Axiomatizes Cambie's lower bound ($g(n) \\ge c_1\\sqrt{n/\\log n}$ with $c_1 \\ge 2$) and upper bound ($g(n) \\le c_2\\sqrt{n/\\log n}$ with $c_2 \\le 2\\sqrt{2}$). The main theorem `cambie_main` combines both"
     },
     {
       "id": "constant",
       "title": "The Asymptotic Constant Question",
       "summary": "Axiomatizes Cambie's conjecture that $g(n)/\\sqrt{n/\\log n} \\to c$ for some $c \\in [2, 2\\sqrt{2}]$ using `Filter.Tendsto`. Defines `c_lower = 2` and `c_upper = 2\\sqrt{2}`, and proves $2\\sqrt{2} < 3$ via `nlinarith`.",
       "startLine": 280,
-      "endLine": 310
+      "endLine": 310,
+      "mathContext": "Axiomatizes Cambie's conjecture that $g(n)/\\sqrt{n/\\log n} \\to c$ for some $c \\in [2, 2\\sqrt{2}]$ using `Filter.Tendsto`. Defines `c_lower = 2` and `c_upper = 2\\sqrt{2}`, and proves $2\\sqrt{2} < 3$ vi"
     },
     {
       "id": "construction",
       "title": "Construction Strategy",
       "summary": "Documents the construction principle: pick descending primes $p_1 > \\cdots > p_k$, then find representatives with $P(a_i) = p_i$ and $a_1 < \\cdots < a_k$. Smaller primes allow larger powers, enabling the increasing-value condition. Defines `primePowerSequence` as a concrete example.",
       "startLine": 311,
-      "endLine": 335
+      "endLine": 335,
+      "mathContext": "Documents the construction principle: pick descending primes $p_1 > \\cdots > p_k$, then find representatives with $P(a_i) = p_i$ and $a_1 < \\cdots < a_k$. Smaller primes allow larger powers, enabling "
     },
     {
       "id": "related-functions",
       "title": "Smallest Prime Factor and Duality",
       "summary": "Defines the smallest prime factor $p(n) = n.\\text{minFac}$, axiomatizes $p(n) \\le P(n)$, and proves $p(p) = P(p) = p$ for primes. Introduces the dual problem of increasing-SPF sequences.",
       "startLine": 336,
-      "endLine": 353
+      "endLine": 353,
+      "mathContext": "Defines the smallest prime factor $p(n) = n.\\text{minFac}$, axiomatizes $p(n) \\le P(n)$, and proves $p(p) = P(p) = p$ for primes. Introduces the dual problem of increasing-SPF sequences."
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "Packages the solution: `erdos_648_summary` states both bounds, `erdos_648` gives the full $\\Theta$-result, and `length_four_exists` provides a concrete verified witness that $g(100) \\ge 4$ using $[7, 10, 27, 64]$.",
       "startLine": 354,
-      "endLine": 399
+      "endLine": 399,
+      "mathContext": "Packages the solution: `erdos_648_summary` states both bounds, `erdos_648` gives the full $\\Theta$-result, and `length_four_exists` provides a concrete verified witness that $g(100) \\ge 4$ using $[7, "
     }
   ],
   "conclusion": {

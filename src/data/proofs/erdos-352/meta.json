@@ -79,70 +79,80 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 32,
-      "summary": "Problem statement, status, known results, and references."
+      "summary": "Problem statement, status, known results, and references.",
+      "mathContext": "Problem statement, status, known results, and references."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 33,
       "endLine": 42,
-      "summary": "Mathlib imports for measure theory, inner products, determinants."
+      "summary": "Mathlib imports for measure theory, inner products, determinants.",
+      "mathContext": "Mathlib imports for measure theory, inner products, determinants."
     },
     {
       "id": "triangle-area",
       "title": "Triangle Area Definition",
       "startLine": 43,
       "endLine": 77,
-      "summary": "2D cross product, signed and unsigned triangle area, basic properties."
+      "summary": "2D cross product, signed and unsigned triangle area, basic properties.",
+      "mathContext": "2D cross product, signed and unsigned triangle area, basic properties."
     },
     {
       "id": "main-property",
       "title": "The Main Property",
       "startLine": 78,
       "endLine": 89,
-      "summary": "ContainsTriangleOfArea and ContainsUnitTriangle definitions."
+      "summary": "ContainsTriangleOfArea and ContainsUnitTriangle definitions.",
+      "mathContext": "ContainsTriangleOfArea and ContainsUnitTriangle definitions."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 90,
       "endLine": 107,
-      "summary": "The open problem axiomatized, plus formal statement."
+      "summary": "The open problem axiomatized, plus formal statement.",
+      "mathContext": "The open problem axiomatized, plus formal statement."
     },
     {
       "id": "conjectured-constant",
       "title": "The Conjectured Constant",
       "startLine": 108,
       "endLine": 135,
-      "summary": "erdosConstant = 4pi/sqrt(27), conjecture and optimality statement."
+      "summary": "erdosConstant = 4pi/sqrt(27), conjecture and optimality statement.",
+      "mathContext": "erdosConstant = 4pi/sqrt(27), conjecture and optimality statement."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 136,
       "endLine": 162,
-      "summary": "Infinite measure case, unbounded case, Freiling-Mauldin for compact convex."
+      "summary": "Infinite measure case, unbounded case, Freiling-Mauldin for compact convex.",
+      "mathContext": "Infinite measure case, unbounded case, Freiling-Mauldin for compact convex."
     },
     {
       "id": "critical-circle",
       "title": "The Critical Circle Witness",
       "startLine": 163,
       "endLine": 192,
-      "summary": "criticalRadius, circle area equals constant, max inscribed triangle area."
+      "summary": "criticalRadius, circle area equals constant, max inscribed triangle area.",
+      "mathContext": "criticalRadius, circle area equals constant, max inscribed triangle area."
     },
     {
       "id": "reduction",
       "title": "Reduction to Finite Unions",
       "startLine": 193,
       "endLine": 216,
-      "summary": "Mauldin's reduction and Freiling-Mauldin result for n <= 3 sets."
+      "summary": "Mauldin's reduction and Freiling-Mauldin result for n <= 3 sets.",
+      "mathContext": "Mauldin's reduction and Freiling-Mauldin result for n <= 3 sets."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 217,
       "endLine": 240,
-      "summary": "Summary packaging verified results: constant positive, example triangle."
+      "summary": "Summary packaging verified results: constant positive, example triangle.",
+      "mathContext": "Summary packaging verified results: constant positive, example triangle."
     }
   ],
   "conclusion": {

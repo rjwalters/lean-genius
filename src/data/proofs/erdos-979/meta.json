@@ -80,70 +80,80 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Problem statement, status, known results for k=2,3, and references."
+      "summary": "Problem statement, status, known results for k=2,3, and references.",
+      "mathContext": "Problem statement, status, known results for k=2,3, and references."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 24,
       "endLine": 34,
-      "summary": "Mathlib imports for primes, multisets, BigOperators, and filters."
+      "summary": "Mathlib imports for primes, multisets, BigOperators, and filters.",
+      "mathContext": "Mathlib imports for primes, multisets, BigOperators, and filters."
     },
     {
       "id": "solution-set",
       "title": "Solution Set Definition",
       "startLine": 35,
       "endLine": 51,
-      "summary": "Define solutionSet(n,k) as multisets of k primes whose k-th powers sum to n, and f(k,n) as its cardinality."
+      "summary": "Define solutionSet(n,k) as multisets of k primes whose k-th powers sum to n, and f(k,n) as its cardinality.",
+      "mathContext": "Define solutionSet(n,k) as multisets of k primes whose k-th powers sum to n, and f(k,n) as its cardinality."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "startLine": 52,
       "endLine": 67,
-      "summary": "Handle edge cases: n=0 with k=0 has unique empty solution; n=0 with k>=1 has no solutions."
+      "summary": "Handle edge cases: n=0 with k=0 has unique empty solution; n=0 with k>=1 has no solutions.",
+      "mathContext": "Handle edge cases: n=0 with k=0 has unique empty solution; n=0 with k>=1 has no solutions."
     },
     {
       "id": "examples-k2",
       "title": "Examples: Sum of Two Squares",
       "startLine": 68,
       "endLine": 82,
-      "summary": "Concrete examples for k=2: 8 = 2^2 + 2^2 and 50 = 5^2 + 5^2."
+      "summary": "Concrete examples for k=2: 8 = 2^2 + 2^2 and 50 = 5^2 + 5^2.",
+      "mathContext": "Concrete examples for k=2: 8 = 2^2 + 2^2 and 50 = 5^2 + 5^2."
     },
     {
       "id": "examples-k3",
       "title": "Examples: Sum of Three Cubes",
       "startLine": 83,
       "endLine": 92,
-      "summary": "Concrete example for k=3: 24 = 2^3 + 2^3 + 2^3."
+      "summary": "Concrete example for k=3: 24 = 2^3 + 2^3 + 2^3.",
+      "mathContext": "Concrete example for k=3: 24 = 2^3 + 2^3 + 2^3."
     },
     {
       "id": "main-results",
       "title": "Main Theorems",
       "startLine": 93,
       "endLine": 115,
-      "summary": "Erdős's results: lim sup f_2(n) = infinity and lim sup f_3(n) = infinity. The k>=4 case remains open."
+      "summary": "Erdős's results: lim sup f_2(n) = infinity and lim sup f_3(n) = infinity. The k>=4 case remains open.",
+      "mathContext": "Erdős's results: lim sup f_2(n) = infinity and lim sup f_3(n) = infinity. The k>=4 case remains open."
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "startLine": 116,
       "endLine": 130,
-      "summary": "Relationships to Goldbach conjecture, Waring's problem, and Hardy-Littlewood method."
+      "summary": "Relationships to Goldbach conjecture, Waring's problem, and Hardy-Littlewood method.",
+      "mathContext": "Relationships to Goldbach conjecture, Waring's problem, and Hardy-Littlewood method."
     },
     {
       "id": "properties",
       "title": "Properties of Solution Counts",
       "startLine": 131,
       "endLine": 148,
-      "summary": "Bounds: no solutions for n < 2^k; smallest k=2 solution is n=8."
+      "summary": "Bounds: no solutions for n < 2^k; smallest k=2 solution is n=8.",
+      "mathContext": "Bounds: no solutions for n < 2^k; smallest k=2 solution is n=8."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 149,
       "endLine": 166,
-      "summary": "Summary packaging the verified example solutions."
+      "summary": "Summary packaging the verified example solutions.",
+      "mathContext": "Summary packaging the verified example solutions."
     }
   ],
   "conclusion": {

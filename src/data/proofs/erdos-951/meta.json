@@ -89,56 +89,64 @@
       "title": "Beurling Prime Numbers",
       "summary": "Defines `WellSeparatedProducts a` ($|\\prod a_i^{k_i} - \\prod a_j^{\\ell_j}| \\ge 1$ for distinct `Finsupp` tuples) and `BeurlingPrimes` structure (strictly increasing, all $> 1$, well-separated).",
       "startLine": 44,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "Defines `WellSeparatedProducts a` ($|\\prod a_i^{k_i} - \\prod a_j^{\\ell_j}| \\ge 1$ for distinct `Finsupp` tuples) and `BeurlingPrimes` structure (strictly increasing, all $> 1$, well-separated)."
     },
     {
       "id": "counting-functions",
       "title": "Counting Functions",
       "summary": "Defines `beurlingPi a x := \\text{Set.ncard}\\{n : a_n \\le x\\}$ and `primePi x := \\text{Nat.primeCounting}(\\lfloor x \\rfloor)$. States `beurlingPi_finite` (sorry) for finiteness of the counting set.",
       "startLine": 56,
-      "endLine": 73
+      "endLine": 73,
+      "mathContext": "Defines `beurlingPi a x := \\text{Set.ncard}\\{n : a_n \\le x\\}$ and `primePi x := \\text{Nat.primeCounting}(\\lfloor x \\rfloor)$. States `beurlingPi_finite` (sorry) for finiteness of the counting set."
     },
     {
       "id": "actual-primes",
       "title": "Actual Primes as Beurling Primes",
       "summary": "Defines `primeSeq n := \\text{Nat.nth Prime } n$. Axiomatizes strict monotonicity, $> 1$, and well-separation (via FTA). Constructs `actualPrimes : BeurlingPrimes` and proves `actualPrimes_counting : \\pi_a(x) = \\pi(x)$.",
       "startLine": 72,
-      "endLine": 93
+      "endLine": 93,
+      "mathContext": "Defines `primeSeq n := \\text{Nat.nth Prime } n$. Axiomatizes strict monotonicity, $> 1$, and well-separation (via FTA). Constructs `actualPrimes : BeurlingPrimes` and proves `actualPrimes_counting : \\"
     },
     {
       "id": "examples",
       "title": "Powers of 2 Example",
       "summary": "Defines `powersOfTwo n := 2^{n+1}$. Proves strict monotonicity (via `pow_lt_pow_right`) and $> 1$ (via `pow_le_pow_right`). Axiomatizes well-separation. Constructs `powersOfTwoBeurling : BeurlingPrimes`.",
       "startLine": 96,
-      "endLine": 120
+      "endLine": 120,
+      "mathContext": "Defines `powersOfTwo n := 2^{n+1}$. Proves strict monotonicity (via `pow_lt_pow_right`) and $> 1$ (via `pow_le_pow_right`). Axiomatizes well-separation. Constructs `powersOfTwoBeurling : BeurlingPrime"
     },
     {
       "id": "separation-analysis",
       "title": "Separation Implies Distinctness",
       "summary": "Proves `separation_implies_distinct`: well-separation ($|P_1 - P_2| \\ge 1$) implies $P_1 \\neq P_2$, by contradiction using `abs_zero` and `linarith`.",
       "startLine": 121,
-      "endLine": 130
+      "endLine": 130,
+      "mathContext": "Proves `separation_implies_distinct`: well-separation ($|P_1 - P_2| \\ge 1$) implies $P_1 \\neq P_2$, by contradiction using `abs_zero` and `linarith`."
     },
     {
       "id": "beurling-integers",
       "title": "Beurling Integers and Beurling's Conjecture",
       "summary": "Defines `IsBeurlingInteger a x` ($x = \\prod a_i^{k_i}$) and `beurlingN a x$ (counting function). Axiomatizes `beurlings_conjecture`: if $|N_a(x) - x| \\le \\varepsilon \\log x$ for all $\\varepsilon > 0$ eventually, then $a = \\text{primeSeq}$.",
       "startLine": 131,
-      "endLine": 148
+      "endLine": 148,
+      "mathContext": "Defines `IsBeurlingInteger a x` ($x = \\prod a_i^{k_i}$) and `beurlingN a x$ (counting function). Axiomatizes `beurlings_conjecture`: if $|N_a(x) - x| \\le \\varepsilon \\log x$ for all $\\varepsilon > 0$ "
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "Defines `erdos951_conjecture`: $\\forall$ bp, $\\forall x > 0$, $\\pi_a(x) \\le \\pi(x)$. NOT axiomatized since it's OPEN. Axiomatizes `powersOfTwo_sparser` as a special case.",
       "startLine": 145,
-      "endLine": 154
+      "endLine": 154,
+      "mathContext": "Defines `erdos951_conjecture`: $\\forall$ bp, $\\forall x > 0$, $\\pi_a(x) \\le \\pi(x)$. NOT axiomatized since it's OPEN. Axiomatizes `powersOfTwo_sparser` as a special case."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Proves `erdos_951_summary`: conjunction of `powersOfTwo_sparser` and `actualPrimes_counting` via term-mode $\\langle \\cdot, \\cdot \\rangle$. Problem remains OPEN.",
       "startLine": 155,
-      "endLine": 161
+      "endLine": 161,
+      "mathContext": "Proves `erdos_951_summary`: conjunction of `powersOfTwo_sparser` and `actualPrimes_counting` via term-mode $\\langle \\cdot, \\cdot \\rangle$. Problem remains OPEN."
     }
   ],
   "conclusion": {

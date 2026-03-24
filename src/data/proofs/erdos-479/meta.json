@@ -77,56 +77,64 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 17,
-      "summary": "Problem statement, status, and references including OEIS."
+      "summary": "Problem statement, status, and references including OEIS.",
+      "mathContext": "Problem statement, status, and references including OEIS."
     },
     {
       "id": "solution-set",
       "title": "The Solution Set",
       "startLine": 28,
       "endLine": 67,
-      "summary": "Definition of SolutionSet(k) and why k = 1 is impossible."
+      "summary": "Definition of SolutionSet(k) and why k = 1 is impossible.",
+      "mathContext": "Definition of SolutionSet(k) and why k = 1 is impossible."
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
       "startLine": 68,
       "endLine": 87,
-      "summary": "Powers of 2 and k = -1 cases proved by Graham, Lehmer, and Lehmer."
+      "summary": "Powers of 2 and k = -1 cases proved by Graham, Lehmer, and Lehmer.",
+      "mathContext": "Powers of 2 and k = -1 cases proved by Graham, Lehmer, and Lehmer."
     },
     {
       "id": "conjecture",
       "title": "Graham's Conjecture",
       "startLine": 88,
       "endLine": 103,
-      "summary": "Statement of the main open conjecture."
+      "summary": "Statement of the main open conjecture.",
+      "mathContext": "Statement of the main open conjecture."
     },
     {
       "id": "computational",
       "title": "Computational Difficulty",
       "startLine": 104,
       "endLine": 129,
-      "summary": "The k = 3 case with smallest n = 4700063497."
+      "summary": "The k = 3 case with smallest n = 4700063497.",
+      "mathContext": "The k = 3 case with smallest n = 4700063497."
     },
     {
       "id": "structure",
       "title": "Understanding the Structure",
       "startLine": 130,
       "endLine": 158,
-      "summary": "Fermat's Little Theorem and the infinitude of SolutionSet(2)."
+      "summary": "Fermat's Little Theorem and the infinitude of SolutionSet(2).",
+      "mathContext": "Fermat's Little Theorem and the infinitude of SolutionSet(2)."
     },
     {
       "id": "examples",
       "title": "Verified Examples and OEIS",
       "startLine": 159,
       "endLine": 200,
-      "summary": "Concrete verifications using decide tactic and OEIS connection."
+      "summary": "Concrete verifications using decide tactic and OEIS connection.",
+      "mathContext": "Concrete verifications using decide tactic and OEIS connection."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 201,
       "endLine": 221,
-      "summary": "Summary combining key results: k=1 impossible, powers of 2 infinite, k=2 infinite."
+      "summary": "Summary combining key results: k=1 impossible, powers of 2 infinite, k=2 infinite.",
+      "mathContext": "Summary combining key results: k=1 impossible, powers of 2 infinite, k=2 infinite."
     }
   ],
   "conclusion": {

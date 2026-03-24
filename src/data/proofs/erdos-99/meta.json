@@ -82,56 +82,64 @@
       "title": "Basic Geometric Definitions",
       "summary": "Plane, dist, minPairwiseDistance, diameter definitions",
       "startLine": 39,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "Plane, dist, minPairwiseDistance, diameter definitions"
     },
     {
       "id": "equilateral-triangles",
       "title": "Unit Distance and Equilateral Triangles",
       "summary": "HasMinDistanceOne, IsUnitEquilateralTriangle, ContainsUnitEquilateralTriangle",
       "startLine": 72,
-      "endLine": 86
+      "endLine": 86,
+      "mathContext": "HasMinDistanceOne, IsUnitEquilateralTriangle, ContainsUnitEquilateralTriangle"
     },
     {
       "id": "optimal-configurations",
       "title": "Optimal Point Configurations",
       "summary": "HasMinimalDiameter, IsOptimalConfiguration definitions",
       "startLine": 87,
-      "endLine": 97
+      "endLine": 97,
+      "mathContext": "HasMinimalDiameter, IsOptimalConfiguration definitions"
     },
     {
       "id": "triangular-lattice",
       "title": "The Triangular Lattice",
       "summary": "triangularLatticePoint, TriangularLattice, unit distance and equilateral axioms",
       "startLine": 98,
-      "endLine": 128
+      "endLine": 128,
+      "mathContext": "triangularLatticePoint, TriangularLattice, unit distance and equilateral axioms"
     },
     {
       "id": "thue-theorem",
       "title": "Thue's Theorem and Lattice Structure",
       "summary": "thue_diameter_consequence axiom",
       "startLine": 129,
-      "endLine": 141
+      "endLine": 141,
+      "mathContext": "thue_diameter_consequence axiom"
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "case_n3 and case_n4_no_equilateral axioms",
       "startLine": 142,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "case_n3 and case_n4_no_equilateral axioms"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "Erdos99Conjecture, StrongerConjecture, triangularPackingDensity",
       "startLine": 158,
-      "endLine": 185
+      "endLine": 185,
+      "mathContext": "Erdos99Conjecture, StrongerConjecture, triangularPackingDensity"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_99_summary theorem",
       "startLine": 186,
-      "endLine": 200
+      "endLine": 200,
+      "mathContext": "erdos_99_summary theorem"
     }
   ],
   "conclusion": {

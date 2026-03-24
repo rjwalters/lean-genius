@@ -72,56 +72,64 @@
       "title": "Problem Statement and Answer",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Overview: the open question, the answer (YES, generalizes to CommRing), and the proof strategy."
+      "summary": "Overview: the open question, the answer (YES, generalizes to CommRing), and the proof strategy.",
+      "mathContext": "Overview: the open question, the answer (YES, generalizes to CommRing), and the proof strategy."
     },
     {
       "id": "cross-product",
       "title": "Cross Product Setup Over K",
       "startLine": 45,
       "endLine": 66,
-      "summary": "Custom cross product definition for K³, with component lemmas and anticommutativity."
+      "summary": "Custom cross product definition for K³, with component lemmas and anticommutativity.",
+      "mathContext": "Custom cross product definition for K³, with component lemmas and anticommutativity."
     },
     {
       "id": "determinant",
       "title": "Three-Vector Matrix Determinant",
       "startLine": 67,
       "endLine": 83,
-      "summary": "threeVecMat: rows as vectors, explicit 3×3 det expansion proved by ring."
+      "summary": "threeVecMat: rows as vectors, explicit 3×3 det expansion proved by ring.",
+      "mathContext": "threeVecMat: rows as vectors, explicit 3×3 det expansion proved by ring."
     },
     {
       "id": "lagrange",
       "title": "Lagrange Cross Product Identity",
       "startLine": 84,
       "endLine": 116,
-      "summary": "Key lemma: (a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d over any CommRing K."
+      "summary": "Key lemma: (a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d over any CommRing K.",
+      "mathContext": "Key lemma: (a×b)×(c×d) = det(a,b,d)·c − det(a,b,c)·d over any CommRing K."
     },
     {
       "id": "collinearity",
       "title": "Collinearity and Concurrence",
       "startLine": 117,
       "endLine": 126,
-      "summary": "Definitions using determinant = 0 over K."
+      "summary": "Definitions using determinant = 0 over K.",
+      "mathContext": "Definitions using determinant = 0 over K."
     },
     {
       "id": "main-identity",
       "title": "The Desargues Master Identity",
       "startLine": 127,
       "endLine": 200,
-      "summary": "det(P,Q,R) = det(AA',BB',CC')·det(A,B,C)·det(A',B',C') — three-step algebraic proof."
+      "summary": "det(P,Q,R) = det(AA',BB',CC')·det(A,B,C)·det(A',B',C') — three-step algebraic proof.",
+      "mathContext": "det(P,Q,R) = det(AA',BB',CC')·det(A,B,C)·det(A',B',C') — three-step algebraic proof."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
       "startLine": 201,
       "endLine": 260,
-      "summary": "Forward (CommRing), converse (IntegralDomain), and biconditional forms."
+      "summary": "Forward (CommRing), converse (IntegralDomain), and biconditional forms.",
+      "mathContext": "Forward (CommRing), converse (IntegralDomain), and biconditional forms."
     },
     {
       "id": "corollaries",
       "title": "Corollaries for Specific Rings",
       "startLine": 261,
       "endLine": 285,
-      "summary": "Immediate specializations to ℚ, ℤ, ZMod p, and polynomial rings."
+      "summary": "Immediate specializations to ℚ, ℤ, ZMod p, and polynomial rings.",
+      "mathContext": "Immediate specializations to ℚ, ℤ, ZMod p, and polynomial rings."
     }
   ],
   "conclusion": {

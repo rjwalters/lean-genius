@@ -72,56 +72,64 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 58,
-      "summary": "States the Fundamental Theorem of Arithmetic ($n = p_1^{a_1} \\cdots p_k^{a_k}$ uniquely), proof approach via strong induction and Euclid's Lemma, Mathlib dependencies, and historical note (Euclid c. 300 BCE, Gauss 1801, Wiedijk #80)."
+      "summary": "States the Fundamental Theorem of Arithmetic ($n = p_1^{a_1} \\cdots p_k^{a_k}$ uniquely), proof approach via strong induction and Euclid's Lemma, Mathlib dependencies, and historical note (Euclid c. 300 BCE, Gauss 1801, Wiedijk #80).",
+      "mathContext": "States the Fundamental Theorem of Arithmetic ($n = p_1^{a_1} \\cdots p_k^{a_k}$ uniquely), proof approach via strong induction and Euclid's Lemma, Mathlib dependencies, and historical note (Euclid c. 3"
     },
     {
       "id": "existence",
       "title": "Existence of Prime Factorization",
       "startLine": 59,
       "endLine": 80,
-      "summary": "Proves `n.primeFactorsList.prod = n` (existence), that all factors are prime, and that the factor list is sorted. All via Mathlib's `Nat.prod_primeFactorsList`, `Nat.prime_of_mem_primeFactorsList`, `Nat.primeFactorsList_sorted`."
+      "summary": "Proves `n.primeFactorsList.prod = n` (existence), that all factors are prime, and that the factor list is sorted. All via Mathlib's `Nat.prod_primeFactorsList`, `Nat.prime_of_mem_primeFactorsList`, `Nat.primeFactorsList_sorted`.",
+      "mathContext": "Proves `n.primeFactorsList.prod = n` (existence), that all factors are prime, and that the factor list is sorted. All via Mathlib's `Nat.prod_primeFactorsList`, `Nat.prime_of_mem_primeFactorsList`, `N"
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness of Prime Factorization",
       "startLine": 81,
       "endLine": 105,
-      "summary": "Proves two prime lists with the same product are permutations (`prime_lists_perm_of_prod_eq`), and that equal factor lists imply equal numbers. Uses `Nat.primeFactorsList_unique`."
+      "summary": "Proves two prime lists with the same product are permutations (`prime_lists_perm_of_prod_eq`), and that equal factor lists imply equal numbers. Uses `Nat.primeFactorsList_unique`.",
+      "mathContext": "Proves two prime lists with the same product are permutations (`prime_lists_perm_of_prod_eq`), and that equal factor lists imply equal numbers. Uses `Nat.primeFactorsList_unique`."
     },
     {
       "id": "full-theorem",
       "title": "Complete FTA Statement",
       "startLine": 106,
       "endLine": 132,
-      "summary": "States and proves the full theorem: $\\forall n \\ge 2$, $\\exists$ sorted prime list $\\ell$ with $\\prod \\ell = n$ and any other prime list with same product is a permutation of $\\ell$."
+      "summary": "States and proves the full theorem: $\\forall n \\ge 2$, $\\exists$ sorted prime list $\\ell$ with $\\prod \\ell = n$ and any other prime list with same product is a permutation of $\\ell$.",
+      "mathContext": "States and proves the full theorem: $\\forall n \\ge 2$, $\\exists$ sorted prime list $\\ell$ with $\\prod \\ell = n$ and any other prime list with same product is a permutation of $\\ell$."
     },
     {
       "id": "ufd",
       "title": "Unique Factorization Domain",
       "startLine": 133,
       "endLine": 141,
-      "summary": "Proves $\\mathbb{N}$ is a `UniqueFactorizationMonoid` via `inferInstance`, connecting to the algebraic theory of UFDs."
+      "summary": "Proves $\\mathbb{N}$ is a `UniqueFactorizationMonoid` via `inferInstance`, connecting to the algebraic theory of UFDs.",
+      "mathContext": "Proves $\\mathbb{N}$ is a `UniqueFactorizationMonoid` via `inferInstance`, connecting to the algebraic theory of UFDs."
     },
     {
       "id": "euclid-lemma",
       "title": "Euclid's Lemma",
       "startLine": 142,
       "endLine": 151,
-      "summary": "Proves $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ for prime $p$ via `Nat.Prime.dvd_mul` — the key lemma for uniqueness."
+      "summary": "Proves $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ for prime $p$ via `Nat.Prime.dvd_mul` — the key lemma for uniqueness.",
+      "mathContext": "Proves $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$ for prime $p$ via `Nat.Prime.dvd_mul` — the key lemma for uniqueness."
     },
     {
       "id": "examples",
       "title": "Worked Examples",
       "startLine": 152,
       "endLine": 172,
-      "summary": "Verifies factorizations by `native_decide`: $12 = [2,2,3]$, $30 = [2,3,5]$, $60 = [2,2,3,5]$, $17 = [17]$. Confirms product and sorted properties."
+      "summary": "Verifies factorizations by `native_decide`: $12 = [2,2,3]$, $30 = [2,3,5]$, $60 = [2,2,3,5]$, $17 = [17]$. Confirms product and sorted properties.",
+      "mathContext": "Verifies factorizations by `native_decide`: $12 = [2,2,3]$, $30 = [2,3,5]$, $60 = [2,2,3,5]$, $17 = [17]$. Confirms product and sorted properties."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Applications",
       "startLine": 173,
       "endLine": 224,
-      "summary": "Proves prime iff singleton factorization, coprime implies disjoint factors ($\\gcd(m,n) = 1 \\Rightarrow$ disjoint lists), and connects `primeFactorsList.count` to `Nat.factorization` (the Finsupp representation)."
+      "summary": "Proves prime iff singleton factorization, coprime implies disjoint factors ($\\gcd(m,n) = 1 \\Rightarrow$ disjoint lists), and connects `primeFactorsList.count` to `Nat.factorization` (the Finsupp representation).",
+      "mathContext": "Proves prime iff singleton factorization, coprime implies disjoint factors ($\\gcd(m,n) = 1 \\Rightarrow$ disjoint lists), and connects `primeFactorsList.count` to `Nat.factorization` (the Finsupp repre"
     }
   ],
   "references": [

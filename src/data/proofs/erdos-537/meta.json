@@ -81,70 +81,80 @@
       "title": "Imports and Setup",
       "summary": "Imports from Mathlib: $\\text{Nat.Prime}$, $\\text{Squarefree}$, $\\text{Finset}$, and natural number arithmetic",
       "startLine": 1,
-      "endLine": 34
+      "endLine": 34,
+      "mathContext": "Imports from Mathlib: $\\text{Nat.Prime}$, $\\text{Squarefree}$, $\\text{Finset}$, and natural number arithmetic"
     },
     {
       "id": "basic-definitions",
       "title": "Density Definitions",
       "summary": "Defines $\\text{HasPositiveDensity}(A)$ via $\\liminf |A \\cap [1,N]|/N > 0$, and $\\text{IsDenseSubset}(A, \\epsilon, N)$ for $|A| \\geq \\epsilon N$",
       "startLine": 35,
-      "endLine": 48
+      "endLine": 48,
+      "mathContext": "Defines $\\text{HasPositiveDensity}(A)$ via $\\liminf |A \\cap [1,N]|/N > 0$, and $\\text{IsDenseSubset}(A, \\epsilon, N)$ for $|A| \\geq \\epsilon N$"
     },
     {
       "id": "three-products",
       "title": "Three Equal Prime Products",
       "summary": "Defines $\\text{HasThreeEqualPrimeProducts}(A)$: existence of $a_1, a_2, a_3 \\in A$ and distinct primes $p_1, p_2, p_3$ with $a_1 p_1 = a_2 p_2 = a_3 p_3$",
       "startLine": 49,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "Defines $\\text{HasThreeEqualPrimeProducts}(A)$: existence of $a_1, a_2, a_3 \\in A$ and distinct primes $p_1, p_2, p_3$ with $a_1 p_1 = a_2 p_2 = a_3 p_3$"
     },
     {
       "id": "conjecture",
       "title": "The Erdős #537 Conjecture",
       "summary": "Formalizes the conjecture: $\\forall \\epsilon > 0, \\exists N_0, \\forall N \\geq N_0$, every $\\epsilon$-dense subset has three equal prime products (FALSE)",
       "startLine": 64,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "Formalizes the conjecture: $\\forall \\epsilon > 0, \\exists N_0, \\forall N \\geq N_0$, every $\\epsilon$-dense subset has three equal prime products (FALSE)"
     },
     {
       "id": "ruzsa-construction",
       "title": "Ruzsa's Construction",
       "summary": "Defines $\\text{IsLacunarySquarefree}(n)$: squarefree with consecutive prime divisors satisfying $q > 2p$. The $\\text{RuzsaSet}(N)$ restricts to $[1,N]$ with axiomatized positive density",
       "startLine": 77,
-      "endLine": 112
+      "endLine": 112,
+      "mathContext": "Defines $\\text{IsLacunarySquarefree}(n)$: squarefree with consecutive prime divisors satisfying $q > 2p$. The $\\text{RuzsaSet}(N)$ restricts to $[1,N]$ with axiomatized positive density"
     },
     {
       "id": "key-lemma",
       "title": "The Key Lemma and Contradiction",
       "summary": "Gap property: if $pq | n$ with $p < q$ consecutive, then $q > 2p$. The $\\text{ratio\\_bound}$ theorem: for $a_2, a_3 \\in (N/2, N)$, $a_2/a_3 \\in (1,2)$. Axiomatized contradiction via incompatibility",
       "startLine": 113,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "Gap property: if $pq | n$ with $p < q$ consecutive, then $q > 2p$. The $\\text{ratio\\_bound}$ theorem: for $a_2, a_3 \\in (N/2, N)$, $a_2/a_3 \\in (1,2)$. Axiomatized contradiction via incompatibility"
     },
     {
       "id": "disproof",
       "title": "The Disproof",
       "summary": "Assembles $\\text{ruzsa\\_no\\_three\\_products}$ (proved) and $\\text{erdos\\_537\\_disproved}$ (1 sorry) to negate the conjecture by exhibiting the Ruzsa set counterexample",
       "startLine": 158,
-      "endLine": 199
+      "endLine": 199,
+      "mathContext": "Assembles $\\text{ruzsa\\_no\\_three\\_products}$ (proved) and $\\text{erdos\\_537\\_disproved}$ (1 sorry) to negate the conjecture by exhibiting the Ruzsa set counterexample"
     },
     {
       "id": "understanding",
       "title": "Understanding Ruzsa's Construction",
       "summary": "Explains why the lacunary condition works: the ratio argument forces $p_3/p_2 > 2$ but $a_2/a_3 < 2$, a simple pigeonhole contradiction. Density estimate via sieve methods",
       "startLine": 200,
-      "endLine": 226
+      "endLine": 226,
+      "mathContext": "Explains why the lacunary condition works: the ratio argument forces $p_3/p_2 > 2$ but $a_2/a_3 < 2$, a simple pigeonhole contradiction. Density estimate via sieve methods"
     },
     {
       "id": "connections",
       "title": "Connection to Related Problems",
       "summary": "Link to Erdős #536 (two equal prime products): #537 was proposed as a stepping stone. Also connects to multiplicative Szemerédi-type questions and the Erdős multiplicative functions program",
       "startLine": 227,
-      "endLine": 246
+      "endLine": 246,
+      "mathContext": "Link to Erdős #536 (two equal prime products): #537 was proposed as a stepping stone. Also connects to multiplicative Szemerédi-type questions and the Erdős multiplicative functions program"
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "Final theorems: $\\text{erdos\\_537}$ (alias for disproof), $\\text{erdos\\_537\\_summary}$ combining counterexample existence with the negation of the conjecture",
       "startLine": 247,
-      "endLine": 276
+      "endLine": 276,
+      "mathContext": "Final theorems: $\\text{erdos\\_537}$ (alias for disproof), $\\text{erdos\\_537\\_summary}$ combining counterexample existence with the negation of the conjecture"
     }
   ],
   "conclusion": {

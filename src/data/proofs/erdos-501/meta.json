@@ -50,56 +50,64 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 34,
-      "summary": "Module docstring stating the problem and known results. Imports `MeasureTheory.Measure.Lebesgue.Basic` for outer measure, `Topology.MetricSpace.Basic` for closedness, `Data.Set.Finite` for finiteness, and `Tactic`."
+      "summary": "Module docstring stating the problem and known results. Imports `MeasureTheory.Measure.Lebesgue.Basic` for outer measure, `Topology.MetricSpace.Basic` for closedness, `Data.Set.Finite` for finiteness, and `Tactic`.",
+      "mathContext": "Module docstring stating the problem and known results. Imports `MeasureTheory.Measure.Lebesgue.Basic` for outer measure, `Topology.MetricSpace.Basic` for closedness, `Data.Set.Finite` for finiteness,"
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 38,
       "endLine": 55,
-      "summary": "Defines `SetFamily` ($\\mathbb{R} \\to \\mathcal{P}(\\mathbb{R})$), `IsBoundedSet` ($A \\subseteq [-M, M]$), `outerMeasure` via Lebesgue measure, `BoundedOuterMeasureFamily` (bounded + measure $< 1$), and `ClosedMeasureFamily` (closed + measure $< 1$)."
+      "summary": "Defines `SetFamily` ($\\mathbb{R} \\to \\mathcal{P}(\\mathbb{R})$), `IsBoundedSet` ($A \\subseteq [-M, M]$), `outerMeasure` via Lebesgue measure, `BoundedOuterMeasureFamily` (bounded + measure $< 1$), and `ClosedMeasureFamily` (closed + measure $< 1$).",
+      "mathContext": "Defines `SetFamily` ($\\mathbb{R} \\to \\mathcal{P}(\\mathbb{R})$), `IsBoundedSet` ($A \\subseteq [-M, M]$), `outerMeasure` via Lebesgue measure, `BoundedOuterMeasureFamily` (bounded + measure $< 1$), and "
     },
     {
       "id": "independence",
       "title": "Independence Definitions",
       "startLine": 59,
       "endLine": 69,
-      "summary": "Defines `IsIndependent A X` ($\\forall x \\neq y \\in X,\\; x \\notin A_y$), `IsIndependentOfSize A n` (finite independent set of size $n$), and `HasInfiniteIndependent A` (existence of an infinite independent set)."
+      "summary": "Defines `IsIndependent A X` ($\\forall x \\neq y \\in X,\\; x \\notin A_y$), `IsIndependentOfSize A n` (finite independent set of size $n$), and `HasInfiniteIndependent A` (existence of an infinite independent set).",
+      "mathContext": "Defines `IsIndependent A X` ($\\forall x \\neq y \\in X,\\; x \\notin A_y$), `IsIndependentOfSize A n` (finite independent set of size $n$), and `HasInfiniteIndependent A` (existence of an infinite indepen"
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal Theorem (1960)",
       "startLine": 73,
       "endLine": 82,
-      "summary": "States and uses the Erdős-Hajnal theorem: for any bounded outer measure family, $\\forall n,\\; \\exists$ independent set of size $n$. Derives size-2 as a corollary."
+      "summary": "States and uses the Erdős-Hajnal theorem: for any bounded outer measure family, $\\forall n,\\; \\exists$ independent set of size $n$. Derives size-2 as a corollary.",
+      "mathContext": "States and uses the Erdős-Hajnal theorem: for any bounded outer measure family, $\\forall n,\\; \\exists$ independent set of size $n$. Derives size-2 as a corollary."
     },
     {
       "id": "ch-result",
       "title": "Continuum Hypothesis and Hechler (1972)",
       "startLine": 86,
       "endLine": 96,
-      "summary": "Axiomatizes CH and states Hechler's 1972 theorem: under CH, $\\exists$ a bounded outer measure family with no infinite independent set."
+      "summary": "Axiomatizes CH and states Hechler's 1972 theorem: under CH, $\\exists$ a bounded outer measure family with no infinite independent set.",
+      "mathContext": "Axiomatizes CH and states Hechler's 1972 theorem: under CH, $\\exists$ a bounded outer measure family with no infinite independent set."
     },
     {
       "id": "closed-results",
       "title": "Closed Set Results: Gladysz and NPS",
       "startLine": 100,
       "endLine": 109,
-      "summary": "Gladysz (1962): size-2 for closed families. NPS (1987): infinite independence for closed families, provable in ZFC without extra axioms."
+      "summary": "Gladysz (1962): size-2 for closed families. NPS (1987): infinite independence for closed families, provable in ZFC without extra axioms.",
+      "mathContext": "Gladysz (1962): size-2 for closed families. NPS (1987): infinite independence for closed families, provable in ZFC without extra axioms."
     },
     {
       "id": "main-questions",
       "title": "The Main Open Questions",
       "startLine": 113,
       "endLine": 139,
-      "summary": "Defines Question 1 (infinite independence for general families — independent of ZFC) and Question 2 (size-3 for closed families — open). Proves the ZFC-independence of Q1 by combining Hechler and NPS."
+      "summary": "Defines Question 1 (infinite independence for general families — independent of ZFC) and Question 2 (size-3 for closed families — open). Proves the ZFC-independence of Q1 by combining Hechler and NPS.",
+      "mathContext": "Defines Question 1 (infinite independence for general families — independent of ZFC) and Question 2 (size-3 for closed families — open). Proves the ZFC-independence of Q1 by combining Hechler and NPS."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 143,
       "endLine": 206,
-      "summary": "Proves independence is hereditary (subsets of independent sets are independent) and the insertion lemma (extending by one element). Defines `maxIndependentSize` and states it is infinite by Erdős-Hajnal."
+      "summary": "Proves independence is hereditary (subsets of independent sets are independent) and the insertion lemma (extending by one element). Defines `maxIndependentSize` and states it is infinite by Erdős-Hajnal.",
+      "mathContext": "Proves independence is hereditary (subsets of independent sets are independent) and the insertion lemma (extending by one element). Defines `maxIndependentSize` and states it is infinite by Erdős-Hajn"
     }
   ],
   "conclusion": {

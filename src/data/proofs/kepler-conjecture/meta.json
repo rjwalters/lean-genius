@@ -67,56 +67,64 @@
       "title": "Module Docstring",
       "startLine": 5,
       "endLine": 65,
-      "summary": "Historical introduction covering Kepler (1611), Gauss (1831), Thue (1892), Hales (1998), Flyspeck (2014), and Viazovska (2016). Lists formalization status and references."
+      "summary": "Historical introduction covering Kepler (1611), Gauss (1831), Thue (1892), Hales (1998), Flyspeck (2014), and Viazovska (2016). Lists formalization status and references.",
+      "mathContext": "Historical introduction covering Kepler (1611), Gauss (1831), Thue (1892), Hales (1998), Flyspeck (2014), and Viazovska (2016). Lists formalization status and references."
     },
     {
       "id": "basic-definitions",
       "title": "Part 1: Basic Definitions",
       "startLine": 77,
       "endLine": 98,
-      "summary": "Defines sphereVolume (4/3)πr³, diskArea πr², and PackingDensity structure with 0 ≤ density ≤ 1 invariants."
+      "summary": "Defines sphereVolume (4/3)πr³, diskArea πr², and PackingDensity structure with 0 ≤ density ≤ 1 invariants.",
+      "mathContext": "Defines sphereVolume (4/3)πr³, diskArea πr², and PackingDensity structure with 0 ≤ density ≤ 1 invariants."
     },
     {
       "id": "hexagonal-2d",
       "title": "Part 2: Hexagonal Packing (2D)",
       "startLine": 103,
       "endLine": 158,
-      "summary": "Defines hexagonalDensity2D = π/(2√3), proves positivity, axiomatizes < 1, defines kissingNumber2D = 6, and axiomatizes Thue's optimality theorem via Voronoi cell argument."
+      "summary": "Defines hexagonalDensity2D = π/(2√3), proves positivity, axiomatizes < 1, defines kissingNumber2D = 6, and axiomatizes Thue's optimality theorem via Voronoi cell argument.",
+      "mathContext": "Defines hexagonalDensity2D = π/(2√3), proves positivity, axiomatizes < 1, defines kissingNumber2D = 6, and axiomatizes Thue's optimality theorem via Voronoi cell argument."
     },
     {
       "id": "fcc-3d",
       "title": "Part 3: FCC Lattice (3D)",
       "startLine": 164,
       "endLine": 240,
-      "summary": "Defines fccDensity = π/(3√2) with positivity proof, alternative fccDensityAlt = π√2/6, kissingNumber3D = 12, and axiomatized numerical bounds 0.74 < δ < 0.75."
+      "summary": "Defines fccDensity = π/(3√2) with positivity proof, alternative fccDensityAlt = π√2/6, kissingNumber3D = 12, and axiomatized numerical bounds 0.74 < δ < 0.75.",
+      "mathContext": "Defines fccDensity = π/(3√2) with positivity proof, alternative fccDensityAlt = π√2/6, kissingNumber3D = 12, and axiomatized numerical bounds 0.74 < δ < 0.75."
     },
     {
       "id": "kepler-conjecture",
       "title": "Part 4: The Kepler Conjecture",
       "startLine": 246,
       "endLine": 291,
-      "summary": "Axiomatizes kepler_conjecture (all packings ≤ fccDensity), proves fcc_is_optimal_3D, and axiomatizes gauss_lattice_theorem (lattice-only version)."
+      "summary": "Axiomatizes kepler_conjecture (all packings ≤ fccDensity), proves fcc_is_optimal_3D, and axiomatizes gauss_lattice_theorem (lattice-only version).",
+      "mathContext": "Axiomatizes kepler_conjecture (all packings ≤ fccDensity), proves fcc_is_optimal_3D, and axiomatizes gauss_lattice_theorem (lattice-only version)."
     },
     {
       "id": "higher-dimensions",
       "title": "Part 5: Higher Dimensions",
       "startLine": 296,
       "endLine": 350,
-      "summary": "Defines e8Density = π⁴/384 with positivity proof, kissing numbers k(8) = 240, k(24) = 196560, and axiomatizes viazovska_theorem_8d."
+      "summary": "Defines e8Density = π⁴/384 with positivity proof, kissing numbers k(8) = 240, k(24) = 196560, and axiomatizes viazovska_theorem_8d.",
+      "mathContext": "Defines e8Density = π⁴/384 with positivity proof, kissing numbers k(8) = 240, k(24) = 196560, and axiomatizes viazovska_theorem_8d."
     },
     {
       "id": "applications",
       "title": "Part 6: Applications",
       "startLine": 356,
       "endLine": 374,
-      "summary": "Documents applications to error-correcting codes (E₈, Leech lattice), crystallography (FCC metals), digital communications (Shannon bounds), and computational geometry."
+      "summary": "Documents applications to error-correcting codes (E₈, Leech lattice), crystallography (FCC metals), digital communications (Shannon bounds), and computational geometry.",
+      "mathContext": "Documents applications to error-correcting codes (E₈, Leech lattice), crystallography (FCC metals), digital communications (Shannon bounds), and computational geometry."
     },
     {
       "id": "density-comparison",
       "title": "Part 7: Density Comparison",
       "startLine": 380,
       "endLine": 430,
-      "summary": "Axiomatizes hexagonal_gt_fcc and fcc_gt_e8, then proves density_decreases_with_dimension: δ₂D > δ₃D > δ₈D. Exports section verifies all major results."
+      "summary": "Axiomatizes hexagonal_gt_fcc and fcc_gt_e8, then proves density_decreases_with_dimension: δ₂D > δ₃D > δ₈D. Exports section verifies all major results.",
+      "mathContext": "Axiomatizes hexagonal_gt_fcc and fcc_gt_e8, then proves density_decreases_with_dimension: δ₂D > δ₃D > δ₈D. Exports section verifies all major results."
     }
   ],
   "conclusion": {

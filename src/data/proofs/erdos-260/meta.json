@@ -77,56 +77,64 @@
       "title": "Header and Imports",
       "summary": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics.",
       "startLine": 1,
-      "endLine": 38
+      "endLine": 38,
+      "mathContext": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics."
     },
     {
       "id": "seq-properties",
       "title": "Sequence Properties",
       "summary": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn\\sqrt{\\log n \\cdot \\log\\log n}$).",
       "startLine": 39,
-      "endLine": 58
+      "endLine": 58,
+      "mathContext": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn"
     },
     {
       "id": "series-def",
       "title": "Series Definition and Convergence",
       "summary": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$), and the `seriesSum` limit extracted via `Classical.choose`.",
       "startLine": 59,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$), and the `seriesSum` limit extracted via `Classical.choose`."
     },
     {
       "id": "known-results",
       "title": "Known Irrationality Results",
       "summary": "Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture.",
       "startLine": 80,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture."
     },
     {
       "id": "implications",
       "title": "Growth Condition Implications",
       "summary": "The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`).",
       "startLine": 101,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`)."
     },
     {
       "id": "examples",
       "title": "Example: Square Sequence",
       "summary": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition).",
       "startLine": 115,
-      "endLine": 153
+      "endLine": 153,
+      "mathContext": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by comp"
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture and Counterexample Specification",
       "summary": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like.",
       "startLine": 154,
-      "endLine": 180
+      "endLine": 180,
+      "mathContext": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) "
     },
     {
       "id": "summary",
       "title": "Summary Comments",
       "summary": "End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require.",
       "startLine": 181,
-      "endLine": 203
+      "endLine": 203,
+      "mathContext": "End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require."
     }
   ],
   "conclusion": {

@@ -81,70 +81,80 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Problem statement with dimension-by-dimension breakdown of known results."
+      "summary": "Problem statement with dimension-by-dimension breakdown of known results.",
+      "mathContext": "Problem statement with dimension-by-dimension breakdown of known results."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 52,
       "endLine": 84,
-      "summary": "PointConfig, distinctPairs, unitDistanceCount, and maxUnitDistances (f_d(n))."
+      "summary": "PointConfig, distinctPairs, unitDistanceCount, and maxUnitDistances (f_d(n)).",
+      "mathContext": "PointConfig, distinctPairs, unitDistanceCount, and maxUnitDistances (f_d(n))."
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "startLine": 85,
       "endLine": 99,
-      "summary": "Upper bound n(n-1)/2 and lower bound n-1 for any dimension."
+      "summary": "Upper bound n(n-1)/2 and lower bound n-1 for any dimension.",
+      "mathContext": "Upper bound n(n-1)/2 and lower bound n-1 for any dimension."
     },
     {
       "id": "dimension-2",
       "title": "Dimension 2: Classical Unit Distance Problem",
       "startLine": 100,
       "endLine": 126,
-      "summary": "Erdős 1946 lower bound, Spencer-Szemerédi-Trotter 1984 upper bound, open conjecture."
+      "summary": "Erdős 1946 lower bound, Spencer-Szemerédi-Trotter 1984 upper bound, open conjecture.",
+      "mathContext": "Erdős 1946 lower bound, Spencer-Szemerédi-Trotter 1984 upper bound, open conjecture."
     },
     {
       "id": "dimension-3",
       "title": "Dimension 3",
       "startLine": 126,
       "endLine": 126,
-      "summary": "Erdős 1960 lower bound, Clarkson et al. 1990 upper bound, partially open."
+      "summary": "Erdős 1960 lower bound, Clarkson et al. 1990 upper bound, partially open.",
+      "mathContext": "Erdős 1960 lower bound, Clarkson et al. 1990 upper bound, partially open."
     },
     {
       "id": "high-dimensions",
       "title": "Dimension ≥ 4: High-Dimensional Case",
       "startLine": 126,
       "endLine": 126,
-      "summary": "Lenz construction, Erdős-Stone upper bound - essentially solved."
+      "summary": "Lenz construction, Erdős-Stone upper bound - essentially solved.",
+      "mathContext": "Lenz construction, Erdős-Stone upper bound - essentially solved."
     },
     {
       "id": "exact-results",
       "title": "Exact Results for d ≥ 4",
       "startLine": 126,
       "endLine": 126,
-      "summary": "Brass d=4, Swanepoel even d≥6, Erdős-Pach odd d≥5."
+      "summary": "Brass d=4, Swanepoel even d≥6, Erdős-Pach odd d≥5.",
+      "mathContext": "Brass d=4, Swanepoel even d≥6, Erdős-Pach odd d≥5."
     },
     {
       "id": "examples",
       "title": "Examples and Special Values",
       "startLine": 126,
       "endLine": 126,
-      "summary": "Small cases: f_2(3)=3, f_2(4)=5, f_2(5)=7, f_3(4)=6."
+      "summary": "Small cases: f_2(3)=3, f_2(4)=5, f_2(5)=7, f_3(4)=6.",
+      "mathContext": "Small cases: f_2(3)=3, f_2(4)=5, f_2(5)=7, f_3(4)=6."
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "startLine": 126,
       "endLine": 126,
-      "summary": "Relations to crossing numbers, incidence geometry, distinct distances."
+      "summary": "Relations to crossing numbers, incidence geometry, distinct distances.",
+      "mathContext": "Relations to crossing numbers, incidence geometry, distinct distances."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 126,
       "endLine": 126,
-      "summary": "Overall status: high dimensions solved, d=2,3 partially open."
+      "summary": "Overall status: high dimensions solved, d=2,3 partially open.",
+      "mathContext": "Overall status: high dimensions solved, d=2,3 partially open."
     }
   ],
   "conclusion": {

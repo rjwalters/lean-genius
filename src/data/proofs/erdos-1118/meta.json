@@ -101,70 +101,80 @@
       "title": "Header, Imports, and Namespace",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Module documentation citing Hayman's Problem 2.40, Camera (1977) and Gol'dberg (1979) references, imports of Complex.Basic, Real.Basic, Analysis.Complex.Basic, MeasureTheory.Measure.Lebesgue.Basic, and Analysis.SpecialFunctions.Log.Basic"
+      "summary": "Module documentation citing Hayman's Problem 2.40, Camera (1977) and Gol'dberg (1979) references, imports of Complex.Basic, Real.Basic, Analysis.Complex.Basic, MeasureTheory.Measure.Lebesgue.Basic, and Analysis.SpecialFunctions.Log.Basic",
+      "mathContext": "Module documentation citing Hayman's Problem 2.40, Camera (1977) and Gol'dberg (1979) references, imports of Complex.Basic, Real.Basic, Analysis.Complex.Basic, MeasureTheory.Measure.Lebesgue.Basic, an"
     },
     {
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 37,
       "endLine": 60,
-      "summary": "Defines IsEntire (Differentiable ℂ f), IsNonConstantEntire, superlevelSet f c = {z : |f(z)| > c}, HasFiniteMeasure via volume < ⊤, and maxModulus via indexed supremum ⨆ over the circle |z| = r"
+      "summary": "Defines IsEntire (Differentiable ℂ f), IsNonConstantEntire, superlevelSet f c = {z : |f(z)| > c}, HasFiniteMeasure via volume < ⊤, and maxModulus via indexed supremum ⨆ over the circle |z| = r",
+      "mathContext": "Defines IsEntire (Differentiable ℂ f), IsNonConstantEntire, superlevelSet f c = {z : |f(z)| > c}, HasFiniteMeasure via volume < ⊤, and maxModulus via indexed supremum ⨆ over the circle |z| = r"
     },
     {
       "id": "erdos-questions",
       "title": "Part II: The Erdős Questions",
       "startLine": 61,
       "endLine": 78,
-      "summary": "Defines thresholdSet T(f) = {c > 0 : HasFiniteMeasure f c}, GrowthRateQuestion (Q1), and ThresholdMonotonicityQuestion (Q2) as placeholder propositions"
+      "summary": "Defines thresholdSet T(f) = {c > 0 : HasFiniteMeasure f c}, GrowthRateQuestion (Q1), and ThresholdMonotonicityQuestion (Q2) as placeholder propositions",
+      "mathContext": "Defines thresholdSet T(f) = {c > 0 : HasFiniteMeasure f c}, GrowthRateQuestion (Q1), and ThresholdMonotonicityQuestion (Q2) as placeholder propositions"
     },
     {
       "id": "hayman-conjecture",
       "title": "Part III: Hayman's Conjecture and Growth Rate",
       "startLine": 79,
       "endLine": 105,
-      "summary": "Defines growthIntegral and HaymanConjecture biconditional, then axiomatizes camera_goldberg_theorem plus separate growth_necessary and growth_sufficient directions"
+      "summary": "Defines growthIntegral and HaymanConjecture biconditional, then axiomatizes camera_goldberg_theorem plus separate growth_necessary and growth_sufficient directions",
+      "mathContext": "Defines growthIntegral and HaymanConjecture biconditional, then axiomatizes camera_goldberg_theorem plus separate growth_necessary and growth_sufficient directions"
     },
     {
       "id": "goldberg-counterexample",
       "title": "Part IV: Gol'dberg's Counterexample",
       "startLine": 106,
       "endLine": 125,
-      "summary": "Axiomatizes goldberg_counterexample (∃ f with T(f) = [m,∞)) and goldberg_threshold_classification (all four threshold types ∅, (0,∞), [m,∞), (m,∞) are realizable)"
+      "summary": "Axiomatizes goldberg_counterexample (∃ f with T(f) = [m,∞)) and goldberg_threshold_classification (all four threshold types ∅, (0,∞), [m,∞), (m,∞) are realizable)",
+      "mathContext": "Axiomatizes goldberg_counterexample (∃ f with T(f) = [m,∞)) and goldberg_threshold_classification (all four threshold types ∅, (0,∞), [m,∞), (m,∞) are realizable)"
     },
     {
       "id": "max-modulus-properties",
       "title": "Part V: Properties of the Maximum Modulus",
       "startLine": 126,
       "endLine": 143,
-      "summary": "Axiomatizes M(r) → ∞ for non-constant entire functions (Liouville), monotonicity of M(r), and polynomial growth bound M(r) ≤ C·r^d"
+      "summary": "Axiomatizes M(r) → ∞ for non-constant entire functions (Liouville), monotonicity of M(r), and polynomial growth bound M(r) ≤ C·r^d",
+      "mathContext": "Axiomatizes M(r) → ∞ for non-constant entire functions (Liouville), monotonicity of M(r), and polynomial growth bound M(r) ≤ C·r^d"
     },
     {
       "id": "examples",
       "title": "Part VI: Examples",
       "startLine": 144,
       "endLine": 161,
-      "summary": "Axiomatizes threshold sets for canonical examples: polynomials (T = (0,∞)), exp(z) (T = ∅), and fast-growing entire functions (T bounded below)"
+      "summary": "Axiomatizes threshold sets for canonical examples: polynomials (T = (0,∞)), exp(z) (T = ∅), and fast-growing entire functions (T bounded below)",
+      "mathContext": "Axiomatizes threshold sets for canonical examples: polynomials (T = (0,∞)), exp(z) (T = ∅), and fast-growing entire functions (T bounded below)"
     },
     {
       "id": "measure-theory-aspects",
       "title": "Part VII: Measure Theory Aspects",
       "startLine": 162,
       "endLine": 192,
-      "summary": "Axiomatizes measurability of superlevel sets; PROVES superlevel_nested (linarith), finite_measure_monotone (measure_mono), and threshold_is_upper_set — the constructive core"
+      "summary": "Axiomatizes measurability of superlevel sets; PROVES superlevel_nested (linarith), finite_measure_monotone (measure_mono), and threshold_is_upper_set — the constructive core",
+      "mathContext": "Axiomatizes measurability of superlevel sets; PROVES superlevel_nested (linarith), finite_measure_monotone (measure_mono), and threshold_is_upper_set — the constructive core"
     },
     {
       "id": "connections",
       "title": "Part VIII: Connections",
       "startLine": 193,
       "endLine": 210,
-      "summary": "Placeholder connections to Nevanlinna theory, value distribution theory, and Hayman's Problem 2.40"
+      "summary": "Placeholder connections to Nevanlinna theory, value distribution theory, and Hayman's Problem 2.40",
+      "mathContext": "Placeholder connections to Nevanlinna theory, value distribution theory, and Hayman's Problem 2.40"
     },
     {
       "id": "main-theorems",
       "title": "Part IX: Summary and Main Theorems",
       "startLine": 211,
       "endLine": 276,
-      "summary": "Main results: erdos_1118_question1 (= camera_goldberg_theorem), erdos_1118_question2_negative (derived counterexample with witnesses m+1, m/2), erdos_1118 (conjunction), and erdos_1118_summary (with classification)"
+      "summary": "Main results: erdos_1118_question1 (= camera_goldberg_theorem), erdos_1118_question2_negative (derived counterexample with witnesses m+1, m/2), erdos_1118 (conjunction), and erdos_1118_summary (with classification)",
+      "mathContext": "Main results: erdos_1118_question1 (= camera_goldberg_theorem), erdos_1118_question2_negative (derived counterexample with witnesses m+1, m/2), erdos_1118 (conjunction), and erdos_1118_summary (with c"
     }
   ],
   "conclusion": {

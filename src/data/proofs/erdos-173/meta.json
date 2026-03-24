@@ -82,56 +82,64 @@
       "title": "Basic Definitions",
       "summary": "PlaneColoring (ℝ² → Bool), Triangle (three nondegenerate vertices), sideLengths, Congruent (SSS via permutation), IsMonochromatic.",
       "startLine": 34,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "PlaneColoring (ℝ² → Bool), Triangle (three nondegenerate vertices), sideLengths, Congruent (SSS via permutation), IsMonochromatic."
     },
     {
       "id": "triangle-types",
       "title": "Triangle Types",
       "summary": "IsEquilateral (all sides equal), IsRightTriangle (Pythagorean relation), IsIsosceles (at least two sides equal).",
       "startLine": 77,
-      "endLine": 104
+      "endLine": 104,
+      "mathContext": "IsEquilateral (all sides equal), IsRightTriangle (Pythagorean relation), IsIsosceles (at least two sides equal)."
     },
     {
       "id": "ramsey-property",
       "title": "Ramsey Property",
       "summary": "IsRamseyTriangle (every coloring has monochromatic copy), AlmostAllTrianglesRamsey (at most one exception).",
       "startLine": 105,
-      "endLine": 123
+      "endLine": 123,
+      "mathContext": "IsRamseyTriangle (every coloring has monochromatic copy), AlmostAllTrianglesRamsey (at most one exception)."
     },
     {
       "id": "shader-theorem",
       "title": "Shader's Theorem (1976)",
       "summary": "All right triangles are Ramsey; applied concretely to the 3-4-5 right triangle.",
       "startLine": 124,
-      "endLine": 150
+      "endLine": 150,
+      "mathContext": "All right triangles are Ramsey; applied concretely to the 3-4-5 right triangle."
     },
     {
       "id": "strip-coloring",
       "title": "Strip Coloring Counterexample",
       "summary": "Alternating strip coloring, equilateral triangle counterexample, tightness of the 'at most one' bound.",
       "startLine": 151,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "Alternating strip coloring, equilateral triangle counterexample, tightness of the 'at most one' bound."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "summary": "AlmostAllTrianglesRamsey axiomatized as the main open problem.",
       "startLine": 184,
-      "endLine": 192
+      "endLine": 192,
+      "mathContext": "AlmostAllTrianglesRamsey axiomatized as the main open problem."
     },
     {
       "id": "similarity",
       "title": "Similarity Invariance",
       "summary": "Similar triangles (proportional sides), similarity preserves the Ramsey property.",
       "startLine": 193,
-      "endLine": 210
+      "endLine": 210,
+      "mathContext": "Similar triangles (proportional sides), similarity preserves the Ramsey property."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Packages Shader's theorem, tightness of the bound, and the open conjecture into one result.",
       "startLine": 211,
-      "endLine": 234
+      "endLine": 234,
+      "mathContext": "Packages Shader's theorem, tightness of the bound, and the open conjecture into one result."
     }
   ],
   "conclusion": {

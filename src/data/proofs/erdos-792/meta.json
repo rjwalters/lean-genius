@@ -89,56 +89,64 @@
       "title": "Problem Overview",
       "summary": "Header documentation with problem statement and known bounds",
       "startLine": 1,
-      "endLine": 23
+      "endLine": 23,
+      "mathContext": "Header documentation with problem statement and known bounds"
     },
     {
       "id": "imports-setup",
       "title": "Imports and Setup",
       "summary": "Mathlib imports and namespace declaration",
       "startLine": 24,
-      "endLine": 34
+      "endLine": 34,
+      "mathContext": "Mathlib imports and namespace declaration"
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "SumFree, SumFreeFinset, IsSumFreeSubset, maxSumFreeSize",
       "startLine": 35,
-      "endLine": 52
+      "endLine": 52,
+      "mathContext": "SumFree, SumFreeFinset, IsSumFreeSubset, maxSumFreeSize"
     },
     {
       "id": "f-axiom",
       "title": "Axiomatized f(n)",
       "summary": "f(n) axiom with specification and tightness properties",
       "startLine": 53,
-      "endLine": 65
+      "endLine": 65,
+      "mathContext": "f(n) axiom with specification and tightness properties"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "summary": "Erdős, Alon-Kleitman, Bourgain, Bedert bounds as axioms",
       "startLine": 66,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "Erdős, Alon-Kleitman, Bourgain, Bedert bounds as axioms"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Eberhard-Green-Manners bound and asymptotic limit",
       "startLine": 81,
-      "endLine": 89
+      "endLine": 89,
+      "mathContext": "Eberhard-Green-Manners bound and asymptotic limit"
     },
     {
       "id": "constructions",
       "title": "Examples and Constructions",
       "summary": "Interval sum-free and middle-third construction axioms",
       "startLine": 90,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "Interval sum-free and middle-third construction axioms"
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
       "summary": "Proved theorems combining the axiomatized bounds",
       "startLine": 100,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "Proved theorems combining the axiomatized bounds"
     }
   ],
   "conclusion": {

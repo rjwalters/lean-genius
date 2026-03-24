@@ -80,84 +80,96 @@
       "title": "Part I: 3-Uniform Hypergraphs",
       "summary": "Hypergraph3 structure, numEdges, numVertices, IsInFamilyF definitions.",
       "startLine": 38,
-      "endLine": 55
+      "endLine": 55,
+      "mathContext": "Hypergraph3 structure, numEdges, numVertices, IsInFamilyF definitions."
     },
     {
       "id": "family-fk",
       "title": "Part II: The Family F_k",
       "summary": "FamilyF definition, descriptions for k=4,5,6.",
       "startLine": 56,
-      "endLine": 79
+      "endLine": 79,
+      "mathContext": "FamilyF definition, descriptions for k=4,5,6."
     },
     {
       "id": "subgraph-containment",
       "title": "Part III: Subgraph Containment",
       "summary": "ContainsSubgraph with 6 permutations, IsFkFree predicate.",
       "startLine": 80,
-      "endLine": 95
+      "endLine": 95,
+      "mathContext": "ContainsSubgraph with 6 permutations, IsFkFree predicate."
     },
     {
       "id": "extremal-numbers",
       "title": "Part IV: Extremal Numbers",
       "summary": "ex3 axiom, ex3_achieved and ex3_is_max characterization.",
       "startLine": 96,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "ex3 axiom, ex3_achieved and ex3_is_max characterization."
     },
     {
       "id": "bes-1973",
       "title": "Part V: Brown-Erdős-Sós Results (1973)",
       "summary": "brown_erdos_sos_k4 (k=4 case) and brown_erdos_sos_general (Θ_k(n²)).",
       "startLine": 111,
-      "endLine": 121
+      "endLine": 121,
+      "mathContext": "brown_erdos_sos_k4 (k=4 case) and brown_erdos_sos_general (Θ_k(n²))."
     },
     {
       "id": "erdos-1974",
       "title": "Part VI: Erdős's Supporting Theorem (1974)",
       "summary": "erdos_1974_supporting, thresholdEdges, threshold_asymptotic.",
       "startLine": 122,
-      "endLine": 138
+      "endLine": 138,
+      "mathContext": "erdos_1974_supporting, thresholdEdges, threshold_asymptotic."
     },
     {
       "id": "main-conjecture",
       "title": "Part VII: The Main Conjecture",
       "summary": "BrownErdosSosConjecture and BrownErdosSosConjecture' definitions.",
       "startLine": 139,
-      "endLine": 149
+      "endLine": 149,
+      "mathContext": "BrownErdosSosConjecture and BrownErdosSosConjecture' definitions."
     },
     {
       "id": "solution",
       "title": "Part VIII: The Solution",
       "summary": "bohman_warnke_theorem, glock_kuhn_lo_osthus_theorem, ex3_asymptotic.",
       "startLine": 150,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "bohman_warnke_theorem, glock_kuhn_lo_osthus_theorem, ex3_asymptotic."
     },
     {
       "id": "bounds",
       "title": "Part IX: Upper and Lower Bounds",
       "summary": "ex3_upper_bound and ex3_lower_bound axioms.",
       "startLine": 166,
-      "endLine": 179
+      "endLine": 179,
+      "mathContext": "ex3_upper_bound and ex3_lower_bound axioms."
     },
     {
       "id": "steiner-systems",
       "title": "Part X: Connection to Steiner Triple Systems",
       "summary": "IsSteinerTripleSystem, sts_num_edges, extremal_sts_connection.",
       "startLine": 180,
-      "endLine": 201
+      "endLine": 201,
+      "mathContext": "IsSteinerTripleSystem, sts_num_edges, extremal_sts_connection."
     },
     {
       "id": "exact-results",
       "title": "Part XI: Exact Results for Special k",
       "summary": "exact_values_divisibility for k with divisibility conditions.",
       "startLine": 202,
-      "endLine": 210
+      "endLine": 210,
+      "mathContext": "exact_values_divisibility for k with divisibility conditions."
     },
     {
       "id": "summary",
       "title": "Part XII: Summary",
       "summary": "erdos_1076 and erdos_1076_solved: main result theorems.",
       "startLine": 211,
-      "endLine": 229
+      "endLine": 229,
+      "mathContext": "erdos_1076 and erdos_1076_solved: main result theorems."
     }
   ],
   "conclusion": {

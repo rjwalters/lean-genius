@@ -49,70 +49,80 @@
       "title": "Mathlib Imports",
       "startLine": 16,
       "endLine": 19,
-      "summary": "Imports Nat.Prime.Basic, List.Basic, and tactics from Mathlib."
+      "summary": "Imports Nat.Prime.Basic, List.Basic, and tactics from Mathlib.",
+      "mathContext": "Imports Nat.Prime.Basic, List.Basic, and tactics from Mathlib."
     },
     {
       "id": "candidate-rule",
       "title": "Candidate Extension Rule",
       "startLine": 20,
       "endLine": 26,
-      "summary": "Defines IsCandidateNext: p is prime and equals last + qᵢ − 1 for some qᵢ in the sequence."
+      "summary": "Defines IsCandidateNext: p is prime and equals last + qᵢ − 1 for some qᵢ in the sequence.",
+      "mathContext": "Defines IsCandidateNext: p is prime and equals last + qᵢ − 1 for some qᵢ in the sequence."
     },
     {
       "id": "sequence-spec",
       "title": "Ulam Prime Sequence Specification",
       "startLine": 27,
       "endLine": 43,
-      "summary": "Defines IsUlamPrimeSeq with four conjuncts: seed matching, primality, monotonicity, minimality."
+      "summary": "Defines IsUlamPrimeSeq with four conjuncts: seed matching, primality, monotonicity, minimality.",
+      "mathContext": "Defines IsUlamPrimeSeq with four conjuncts: seed matching, primality, monotonicity, minimality."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 44,
       "endLine": 54,
-      "summary": "States Erdős Problem 472: existence of a seed producing an infinite Ulam prime sequence."
+      "summary": "States Erdős Problem 472: existence of a seed producing an infinite Ulam prime sequence.",
+      "mathContext": "States Erdős Problem 472: existence of a seed producing an infinite Ulam prime sequence."
     },
     {
       "id": "seed-verification",
       "title": "Seed [3, 5] Verification",
       "startLine": 55,
       "endLine": 69,
-      "summary": "Defines ulamSeed35 and proves it satisfies all seed requirements (prime, sorted, length ≥ 2) via decide."
+      "summary": "Defines ulamSeed35 and proves it satisfies all seed requirements (prime, sorted, length ≥ 2) via decide.",
+      "mathContext": "Defines ulamSeed35 and proves it satisfies all seed requirements (prime, sorted, length ≥ 2) via decide."
     },
     {
       "id": "basic-properties",
       "title": "Basic Structural Properties",
       "startLine": 70,
       "endLine": 114,
-      "summary": "Proves self-candidate oddness, terms ≥ 2, and the consecutive gap bound f(n+1) ≥ f(n) + 2."
+      "summary": "Proves self-candidate oddness, terms ≥ 2, and the consecutive gap bound f(n+1) ≥ f(n) + 2.",
+      "mathContext": "Proves self-candidate oddness, terms ≥ 2, and the consecutive gap bound f(n+1) ≥ f(n) + 2."
     },
     {
       "id": "computable-impl",
       "title": "Computable Implementation",
       "startLine": 115,
       "endLine": 141,
-      "summary": "Implements listMin, ulamNextCandidate, ulamStep, and ulamExtend for computational verification."
+      "summary": "Implements listMin, ulamNextCandidate, ulamStep, and ulamExtend for computational verification.",
+      "mathContext": "Implements listMin, ulamNextCandidate, ulamStep, and ulamExtend for computational verification."
     },
     {
       "id": "term-verification",
       "title": "Computational Term Verification",
       "startLine": 142,
       "endLine": 170,
-      "summary": "Verifies the first 6 terms [3,5,7,11,13,17] step-by-step and as a batch via native_decide."
+      "summary": "Verifies the first 6 terms [3,5,7,11,13,17] step-by-step and as a batch via native_decide.",
+      "mathContext": "Verifies the first 6 terms [3,5,7,11,13,17] step-by-step and as a batch via native_decide."
     },
     {
       "id": "parity-analysis",
       "title": "Parity Analysis",
       "startLine": 171,
       "endLine": 200,
-      "summary": "Proves odd+odd−1 is odd, seed element 2 gives even candidates, and odd inputs give odd candidates."
+      "summary": "Proves odd+odd−1 is odd, seed element 2 gives even candidates, and odd inputs give odd candidates.",
+      "mathContext": "Proves odd+odd−1 is odd, seed element 2 gives even candidates, and odd inputs give odd candidates."
     },
     {
       "id": "extended-verification",
       "title": "Extended Verification and Growth",
       "startLine": 201,
       "endLine": 223,
-      "summary": "Extends verification to 8 terms [3,5,7,11,13,17,19,23] and states the all-odd-primes conjecture."
+      "summary": "Extends verification to 8 terms [3,5,7,11,13,17,19,23] and states the all-odd-primes conjecture.",
+      "mathContext": "Extends verification to 8 terms [3,5,7,11,13,17,19,23] and states the all-odd-primes conjecture."
     }
   ],
   "conclusion": {

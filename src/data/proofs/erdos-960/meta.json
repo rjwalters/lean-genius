@@ -64,56 +64,64 @@
       "title": "Part I: Point Configurations and Collinearity",
       "startLine": 25,
       "endLine": 42,
-      "summary": "Defines PointConfig structure and NoKCollinear predicate."
+      "summary": "Defines PointConfig structure and NoKCollinear predicate.",
+      "mathContext": "Defines PointConfig structure and NoKCollinear predicate."
     },
     {
       "id": "ordinary-lines",
       "title": "Part II: Ordinary Lines",
       "startLine": 43,
       "endLine": 57,
-      "summary": "Defines IsOrdinaryLine and ordinaryLineCount."
+      "summary": "Defines IsOrdinaryLine and ordinaryLineCount.",
+      "mathContext": "Defines IsOrdinaryLine and ordinaryLineCount."
     },
     {
       "id": "all-ordinary",
       "title": "Part III: All-Ordinary Subsets",
       "startLine": 58,
       "endLine": 66,
-      "summary": "Defines AllOrdinary: every pair in a subset determines an ordinary line."
+      "summary": "Defines AllOrdinary: every pair in a subset determines an ordinary line.",
+      "mathContext": "Defines AllOrdinary: every pair in a subset determines an ordinary line."
     },
     {
       "id": "threshold",
       "title": "Part IV: The Threshold Function",
       "startLine": 67,
       "endLine": 78,
-      "summary": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets."
+      "summary": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets.",
+      "mathContext": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets."
     },
     {
       "id": "conjecture",
       "title": "Part V: The Main Conjecture",
       "startLine": 79,
       "endLine": 96,
-      "summary": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture."
+      "summary": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture.",
+      "mathContext": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture."
     },
     {
       "id": "turan-bound",
       "title": "Part VI: Turán Upper Bound",
       "startLine": 97,
       "endLine": 110,
-      "summary": "Axioms: turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines)."
+      "summary": "Axioms: turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines).",
+      "mathContext": "Axioms: turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines)."
     },
     {
       "id": "connections",
       "title": "Part VII: Known Cases and Connections",
       "startLine": 111,
       "endLine": 133,
-      "summary": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets."
+      "summary": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets.",
+      "mathContext": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
       "startLine": 134,
       "endLine": 148,
-      "summary": "erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN."
+      "summary": "erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN.",
+      "mathContext": "erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN."
     }
   ],
   "conclusion": {

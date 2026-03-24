@@ -50,70 +50,80 @@
       "title": "Pair Functions",
       "summary": "PairFunction, isValidPairFunction definitions",
       "startLine": 24,
-      "endLine": 42
+      "endLine": 42,
+      "mathContext": "PairFunction, isValidPairFunction definitions"
     },
     {
       "id": "independent-sets",
       "title": "Independent Sets",
       "summary": "isIndependent, empty_independent, singleton_independent",
       "startLine": 43,
-      "endLine": 69
+      "endLine": 69,
+      "mathContext": "isIndependent, empty_independent, singleton_independent"
     },
     {
       "id": "extremal",
       "title": "The Extremal Function g(n)",
       "summary": "validPairFunctions, maxIndependent, g, g_spec axiom",
       "startLine": 70,
-      "endLine": 91
+      "endLine": 91,
+      "mathContext": "validPairFunctions, maxIndependent, g, g_spec axiom"
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal Bounds (1958)",
       "summary": "erdos_hajnal_lower, erdos_hajnal_upper axioms, erdos_hajnal_bounds",
       "startLine": 92,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "erdos_hajnal_lower, erdos_hajnal_upper axioms, erdos_hajnal_bounds"
     },
     {
       "id": "spencer",
       "title": "Spencer's Improvement (1972)",
       "summary": "spencer_lower axiom, spencer_improves_eh axiom",
       "startLine": 118,
-      "endLine": 131
+      "endLine": 131,
+      "mathContext": "spencer_lower axiom, spencer_improves_eh axiom"
     },
     {
       "id": "cfs",
       "title": "Conlon-Fox-Sudakov (2016)",
       "summary": "cfs_upper axiom, cfs_improves_eh axiom",
       "startLine": 132,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "cfs_upper axiom, cfs_improves_eh axiom"
     },
     {
       "id": "main-result",
       "title": "The Main Result and Answer",
       "summary": "g_asymptotic, erdos_1025_question, erdos_1025_solved",
       "startLine": 146,
-      "endLine": 179
+      "endLine": 179,
+      "mathContext": "g_asymptotic, erdos_1025_question, erdos_1025_solved"
     },
     {
       "id": "set-mappings",
       "title": "Related: Set Mappings",
       "summary": "SetMapping, isFreeSet, pairToSetMapping",
       "startLine": 180,
-      "endLine": 196
+      "endLine": 196,
+      "mathContext": "SetMapping, isFreeSet, pairToSetMapping"
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Approach",
       "summary": "expectedIndependent, probabilistic_lower_sketch axiom",
       "startLine": 197,
-      "endLine": 212
+      "endLine": 212,
+      "mathContext": "expectedIndependent, probabilistic_lower_sketch axiom"
     },
     {
       "id": "construction",
       "title": "Upper Bound and Historical",
       "summary": "construction_upper axiom, historical_bounds",
       "startLine": 213,
-      "endLine": 263
+      "endLine": 263,
+      "mathContext": "construction_upper axiom, historical_bounds"
     }
   ],
   "conclusion": {

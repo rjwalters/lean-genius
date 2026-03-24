@@ -93,56 +93,64 @@
       "title": "The Ω Function",
       "startLine": 48,
       "endLine": 86,
-      "summary": "Definition of bigOmega via primeFactorsList.length, with all four properties PROVED from Mathlib: Ω(1)=0, Ω(p)=1, Ω(p^k)=k (by induction), Ω(ab)=Ω(a)+Ω(b) (via perm_primeFactorsList_mul)"
+      "summary": "Definition of bigOmega via primeFactorsList.length, with all four properties PROVED from Mathlib: Ω(1)=0, Ω(p)=1, Ω(p^k)=k (by induction), Ω(ab)=Ω(a)+Ω(b) (via perm_primeFactorsList_mul)",
+      "mathContext": "Definition of bigOmega via primeFactorsList.length, with all four properties PROVED from Mathlib: Ω(1)=0, Ω(p)=1, Ω(p^k)=k (by induction), Ω(ab)=Ω(a)+Ω(b) (via perm_primeFactorsList_mul)"
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "startLine": 87,
       "endLine": 100,
-      "summary": "HasSmallOmegaRep (n = 2^k + m with Ω(m) < log log m) and Erdos205Conjecture (all sufficiently large n have such a representation)"
+      "summary": "HasSmallOmegaRep (n = 2^k + m with Ω(m) < log log m) and Erdos205Conjecture (all sufficiently large n have such a representation)",
+      "mathContext": "HasSmallOmegaRep (n = 2^k + m with Ω(m) < log log m) and Erdos205Conjecture (all sufficiently large n have such a representation)"
     },
     {
       "id": "counterexample",
       "title": "The Counterexample and Disproof",
       "startLine": 101,
       "endLine": 230,
-      "summary": "minOmegaRemainder and thresholdFunction definitions, Barreto-Leeham counterexample (axiom), auxiliary lemmas (threshold_dominates_loglog axiom, remainder_achieves_min and loglog_mono_nat proved), and the verified 47-line disproof erdos_205_disproved"
+      "summary": "minOmegaRemainder and thresholdFunction definitions, Barreto-Leeham counterexample (axiom), auxiliary lemmas (threshold_dominates_loglog axiom, remainder_achieves_min and loglog_mono_nat proved), and the verified 47-line disproof erdos_205_disproved",
+      "mathContext": "minOmegaRemainder and thresholdFunction definitions, Barreto-Leeham counterexample (axiom), auxiliary lemmas (threshold_dominates_loglog axiom, remainder_achieves_min and loglog_mono_nat proved), and "
     },
     {
       "id": "romanoff",
       "title": "Romanoff's Theorem and Covering Obstruction",
       "startLine": 231,
       "endLine": 254,
-      "summary": "IsPowerPlusePrime definition, Romanoff positive density (axiom: δ > 0 fraction are 2^k + p), and Erdős covering obstruction (axiom: positive density of odds are NOT 2^k + p)"
+      "summary": "IsPowerPlusePrime definition, Romanoff positive density (axiom: δ > 0 fraction are 2^k + p), and Erdős covering obstruction (axiom: positive density of odds are NOT 2^k + p)",
+      "mathContext": "IsPowerPlusePrime definition, Romanoff positive density (axiom: δ > 0 fraction are 2^k + p), and Erdős covering obstruction (axiom: positive density of odds are NOT 2^k + p)"
     },
     {
       "id": "concrete-omega",
       "title": "Concrete Ω Computations",
       "startLine": 255,
       "endLine": 294,
-      "summary": "12 verified Ω values via native_decide: from Ω(2)=1 to Ω(30030)=6, including prime powers (Ω(1024)=10) and primorials (Ω(2310)=5, Ω(30030)=6)"
+      "summary": "12 verified Ω values via native_decide: from Ω(2)=1 to Ω(30030)=6, including prime powers (Ω(1024)=10) and primorials (Ω(2310)=5, Ω(30030)=6)",
+      "mathContext": "12 verified Ω values via native_decide: from Ω(2)=1 to Ω(30030)=6, including prime powers (Ω(1024)=10) and primorials (Ω(2310)=5, Ω(30030)=6)"
     },
     {
       "id": "covering-systems",
       "title": "Covering Systems and de Polignac Numbers",
       "startLine": 295,
       "endLine": 385,
-      "summary": "IsCoveringSystem definition, Erdős modulus 5592405, orders of 2 mod {3,5,7,13,17,241} verified, LCM = 24 covering check, de Polignac numbers 127 and 149 verified (all 15 remainders proved composite via native_decide)"
+      "summary": "IsCoveringSystem definition, Erdős modulus 5592405, orders of 2 mod {3,5,7,13,17,241} verified, LCM = 24 covering check, de Polignac numbers 127 and 149 verified (all 15 remainders proved composite via native_decide)",
+      "mathContext": "IsCoveringSystem definition, Erdős modulus 5592405, orders of 2 mod {3,5,7,13,17,241} verified, LCM = 24 covering check, de Polignac numbers 127 and 149 verified (all 15 remainders proved composite vi"
     },
     {
       "id": "analytic-bounds",
       "title": "Related Analytic Bounds",
       "startLine": 386,
       "endLine": 405,
-      "summary": "Hardy-Ramanujan average (axiom: average Ω ~ log log N) and Erdős-Kac concentration (axiom: Ω(n) is asymptotically Gaussian around log log n)"
+      "summary": "Hardy-Ramanujan average (axiom: average Ω ~ log log N) and Erdős-Kac concentration (axiom: Ω(n) is asymptotically Gaussian around log log n)",
+      "mathContext": "Hardy-Ramanujan average (axiom: average Ω ~ log log N) and Erdős-Kac concentration (axiom: Ω(n) is asymptotically Gaussian around log log n)"
     },
     {
       "id": "summary",
       "title": "Summary and Status",
       "startLine": 406,
       "endLine": 444,
-      "summary": "Complete audit: 6 axioms (all deep analytic results), ~85 declarations, 0 sorries. Three axioms eliminated during formalization."
+      "summary": "Complete audit: 6 axioms (all deep analytic results), ~85 declarations, 0 sorries. Three axioms eliminated during formalization.",
+      "mathContext": "Complete audit: 6 axioms (all deep analytic results), ~85 declarations, 0 sorries. Three axioms eliminated during formalization."
     }
   ],
   "conclusion": {

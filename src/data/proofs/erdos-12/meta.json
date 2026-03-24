@@ -127,56 +127,64 @@
       "title": "Core Definitions",
       "summary": "Defines IsDivisibilityFree(A): ∀ distinct a < b, c in A, a ∤ (b+c). Also defines countingFunction via Set.ncard(A ∩ Set.Icc 1 N). The predicate has eight quantified variables (a, b, c, five inequality/distinctness conditions).",
       "startLine": 23,
-      "endLine": 34
+      "endLine": 34,
+      "mathContext": "Defines IsDivisibilityFree(A): ∀ distinct a < b, c in A, a ∤ (b+c). Also defines countingFunction via Set.ncard(A ∩ Set.Icc 1 N). The predicate has eight quantified variables (a, b, c, five inequality"
     },
     {
       "id": "examples",
       "title": "Examples: Powers of 2 and Prime Squares",
       "summary": "Proves powersOfTwo_not_divisibility_free (counterexample: 2|4+8). Defines primeSquares3mod4 = {p² : p prime, p ≡ 3 mod 4}. Three fully-proved lemmas establish the construction: neg_one_not_square via QR supplementary law, prime_3mod4_not_div_sum_squares via ZMod calculation, and primeSquares3mod4_divisibility_free combining them.",
       "startLine": 35,
-      "endLine": 189
+      "endLine": 189,
+      "mathContext": "Proves powersOfTwo_not_divisibility_free (counterexample: 2|4+8). Defines primeSquares3mod4 = {p² : p prime, p ≡ 3 mod 4}. Three fully-proved lemmas establish the construction: neg_one_not_square via "
     },
     {
       "id": "density",
       "title": "Density Results",
       "summary": "Defines HasDensityZero (Tendsto of A(N)/N to 0). Axiomatizes erdos_sarkozy_density_zero: every infinite divisibility-free set has density 0. The proof uses the sum-free residue class constraint but the deep argument is not formalized.",
       "startLine": 190,
-      "endLine": 199
+      "endLine": 199,
+      "mathContext": "Defines HasDensityZero (Tendsto of A(N)/N to 0). Axiomatizes erdos_sarkozy_density_zero: every infinite divisibility-free set has density 0. The proof uses the sum-free residue class constraint but th"
     },
     {
       "id": "question1",
       "title": "Question 1: √N Density (OPEN)",
       "summary": "Defines sqrtLiminfDensity (∃ c > 0 with A(N)/√N ≥ c eventually) and Erdos12Question1 (∃ A with this property). Axiomatizes elsholtz_planitzer_construction: A(N) ≥ √N/(√(log N)·(log log N)²), the best known bound falling short of √N by logarithmic factors.",
       "startLine": 200,
-      "endLine": 216
+      "endLine": 216,
+      "mathContext": "Defines sqrtLiminfDensity (∃ c > 0 with A(N)/√N ≥ c eventually) and Erdos12Question1 (∃ A with this property). Axiomatizes elsholtz_planitzer_construction: A(N) ≥ √N/(√(log N)·(log log N)²), the best "
     },
     {
       "id": "question2",
       "title": "Question 2: Sparse Infinitely Often (OPEN)",
       "summary": "Defines Erdos12Question2: ∀ A div-free, ∃ c > 0 with A(N) < N^{1-c} for infinitely many N. This asks whether the counting function must dip below polynomial growth infinitely often, even if it occasionally reaches √N.",
       "startLine": 217,
-      "endLine": 224
+      "endLine": 224,
+      "mathContext": "Defines Erdos12Question2: ∀ A div-free, ∃ c > 0 with A(N) < N^{1-c} for infinitely many N. This asks whether the counting function must dip below polynomial growth infinitely often, even if it occasio"
     },
     {
       "id": "question3",
       "title": "Question 3: Convergent Reciprocal Sum (OPEN)",
       "summary": "Defines reciprocalSum via tsum and Erdos12Question3: ∀ A div-free, Summable(1/n over A). This is the strongest sparseness condition. By partial summation, √N growth allows divergent reciprocal sum, so Q3 would force A(N) = o(√N/log N) on average.",
       "startLine": 225,
-      "endLine": 235
+      "endLine": 235,
+      "mathContext": "Defines reciprocalSum via tsum and Erdos12Question3: ∀ A div-free, Summable(1/n over A). This is the strongest sparseness condition. By partial summation, √N growth allows divergent reciprocal sum, so"
     },
     {
       "id": "coprime",
       "title": "Coprime Case (Solved)",
       "summary": "Defines IsPairwiseCoprime and axiomatizes coprime_upper_bound: pairwise coprime divisibility-free sets satisfy A(N) = O(N^{2/3}/log N). The Schoen-Baier bound uses the large sieve inequality. The N^{2/3} exponent is dramatically below the √N threshold from Q1.",
       "startLine": 236,
-      "endLine": 247
+      "endLine": 247,
+      "mathContext": "Defines IsPairwiseCoprime and axiomatizes coprime_upper_bound: pairwise coprime divisibility-free sets satisfy A(N) = O(N^{2/3}/log N). The Schoen-Baier bound uses the large sieve inequality. The N^{2"
     },
     {
       "id": "main",
       "title": "Main Problem Statement",
       "summary": "Packages all three questions into Erdos12Problem. Also includes primeSquares3mod4_is_good (fully proved conjunction of infiniteness and divisibility-freedom), density axioms for the construction (~√N/log N), and the liminf positivity statement.",
       "startLine": 248,
-      "endLine": 295
+      "endLine": 295,
+      "mathContext": "Packages all three questions into Erdos12Problem. Also includes primeSquares3mod4_is_good (fully proved conjunction of infiniteness and divisibility-freedom), density axioms for the construction (~√N/"
     }
   ],
   "conclusion": {

@@ -103,63 +103,72 @@
       "title": "Antichain Definitions",
       "summary": "IsDivisibilityAntichain, IsPrimitiveSet, antichain_iff_primitive",
       "startLine": 46,
-      "endLine": 78
+      "endLine": 78,
+      "mathContext": "IsDivisibilityAntichain, IsPrimitiveSet, antichain_iff_primitive"
     },
     {
       "id": "game-board",
       "title": "The Game Board",
       "summary": "gameBoard, gameBoard_card, IsLegalMove, legal_move_iff",
       "startLine": 79,
-      "endLine": 110
+      "endLine": 110,
+      "mathContext": "gameBoard, gameBoard_card, IsLegalMove, legal_move_iff"
     },
     {
       "id": "game-state",
       "title": "Game State and Termination",
       "summary": "IsMaximalAntichain, game_terminates axiom",
       "startLine": 111,
-      "endLine": 131
+      "endLine": 131,
+      "mathContext": "IsMaximalAntichain, game_terminates axiom"
     },
     {
       "id": "bounds",
       "title": "Bounds on Game Length",
       "summary": "Antichain upper bound n/2, prime antichain lower bound",
       "startLine": 132,
-      "endLine": 154
+      "endLine": 154,
+      "mathContext": "Antichain upper bound n/2, prime antichain lower bound"
     },
     {
       "id": "erdos-questions",
       "title": "Erdős's Questions",
       "summary": "gameLastsLinear, gameLastsNearOptimal, open status",
       "startLine": 155,
-      "endLine": 190
+      "endLine": 190,
+      "mathContext": "gameLastsLinear, gameLastsNearOptimal, open status"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "Füredi-Seress triangle-free game, Biró-Horn-Wildstrom bound",
       "startLine": 191,
-      "endLine": 210
+      "endLine": 210,
+      "mathContext": "Füredi-Seress triangle-free game, Biró-Horn-Wildstrom bound"
     },
     {
       "id": "examples",
       "title": "Special Cases and Examples",
       "summary": "primes_antichain, upper_half_antichain, firstPlayerAdvantage",
       "startLine": 211,
-      "endLine": 254
+      "endLine": 254,
+      "mathContext": "primes_antichain, upper_half_antichain, firstPlayerAdvantage"
     },
     {
       "id": "game-theory",
       "title": "Game-Theoretic Formulation",
       "summary": "gameValue axiom with properties, erdos_872_conjecture",
       "startLine": 255,
-      "endLine": 277
+      "endLine": 277,
+      "mathContext": "gameValue axiom with properties, erdos_872_conjecture"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_872_summary combining primes_antichain and gameValue_upper",
       "startLine": 278,
-      "endLine": 292
+      "endLine": 292,
+      "mathContext": "erdos_872_summary combining primes_antichain and gameValue_upper"
     }
   ],
   "conclusion": {

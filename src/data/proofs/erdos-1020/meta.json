@@ -54,84 +54,96 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure",
       "startLine": 1,
-      "endLine": 40
+      "endLine": 40,
+      "mathContext": "Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure"
     },
     {
       "id": "basics",
       "title": "Hypergraph Basics",
       "summary": "Definitions of r-uniform hypergraphs (RUniformHypergraph) and matchings (IsMatching) as collections of pairwise disjoint edges",
       "startLine": 41,
-      "endLine": 68
+      "endLine": 68,
+      "mathContext": "Definitions of r-uniform hypergraphs (RUniformHypergraph) and matchings (IsMatching) as collections of pairwise disjoint edges"
     },
     {
       "id": "function",
       "title": "The Function f(n; r, k)",
       "summary": "Definition of erdosMatchingFunction as the supremum of edge counts over r-uniform hypergraphs on n vertices avoiding k-matchings",
       "startLine": 69,
-      "endLine": 80
+      "endLine": 80,
+      "mathContext": "Definition of erdosMatchingFunction as the supremum of edge counts over r-uniform hypergraphs on n vertices avoiding k-matchings"
     },
     {
       "id": "formula",
       "title": "The Conjectured Formula",
       "summary": "Two extremal constructions: complete r-graph on rk-1 vertices and (k-1)-sunflower construction, with conjecture that f equals their maximum",
       "startLine": 81,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "Two extremal constructions: complete r-graph on rk-1 vertices and (k-1)-sunflower construction, with conjecture that f equals their maximum"
     },
     {
       "id": "r2",
       "title": "The Case r = 2 (Graphs)",
       "summary": "Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))",
       "startLine": 101,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))"
     },
     {
       "id": "r3",
       "title": "The Case r = 3",
       "summary": "Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods",
       "startLine": 117,
-      "endLine": 127
+      "endLine": 127,
+      "mathContext": "Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods"
     },
     {
       "id": "partial",
       "title": "Partial Results",
       "summary": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n ≥ 3kr²)",
       "startLine": 128,
-      "endLine": 149
+      "endLine": 149,
+      "mathContext": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n ≥ 3kr²)"
     },
     {
       "id": "upper",
       "title": "Upper Bounds",
       "summary": "Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound",
       "startLine": 150,
-      "endLine": 165
+      "endLine": 165,
+      "mathContext": "Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound"
     },
     {
       "id": "lower",
       "title": "Lower Bounds",
       "summary": "Construction-based lower bounds establishing the conjectured value as achievable",
       "startLine": 166,
-      "endLine": 189
+      "endLine": 189,
+      "mathContext": "Construction-based lower bounds establishing the conjectured value as achievable"
     },
     {
       "id": "mono",
       "title": "Monotonicity",
       "summary": "f(n;r,k) is non-decreasing in n and k: adding vertices or relaxing the matching condition cannot decrease the extremal number",
       "startLine": 190,
-      "endLine": 201
+      "endLine": 201,
+      "mathContext": "f(n;r,k) is non-decreasing in n and k: adding vertices or relaxing the matching condition cannot decrease the extremal number"
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
       "summary": "Large n regime where the sunflower construction dominates and asymptotic analysis of the extremal function",
       "startLine": 202,
-      "endLine": 218
+      "endLine": 218,
+      "mathContext": "Large n regime where the sunflower construction dominates and asymptotic analysis of the extremal function"
     },
     {
       "id": "open",
       "title": "The Open Problem",
       "summary": "Statement that the conjecture remains open for r ≥ 4, with summary of known partial results and current state",
       "startLine": 219,
-      "endLine": 238
+      "endLine": 238,
+      "mathContext": "Statement that the conjecture remains open for r ≥ 4, with summary of known partial results and current state"
     }
   ],
   "conclusion": {

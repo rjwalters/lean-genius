@@ -49,70 +49,80 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Header documenting Erdős Problem #856 with full background, key results, and references. Imports `Nat.GCD.Basic`, `Finset.Basic`, `Real.Basic`, `Real.log`, and `BigOperators` for the formalization."
+      "summary": "Header documenting Erdős Problem #856 with full background, key results, and references. Imports `Nat.GCD.Basic`, `Finset.Basic`, `Real.Basic`, `Real.log`, and `BigOperators` for the formalization.",
+      "mathContext": "Header documenting Erdős Problem #856 with full background, key results, and references. Imports `Nat.GCD.Basic`, `Finset.Basic`, `Real.Basic`, `Real.log`, and `BigOperators` for the formalization."
     },
     {
       "id": "lcm-basics",
       "title": "Least Common Multiple",
       "startLine": 47,
       "endLine": 65,
-      "summary": "Defines `myLcm a b = Nat.lcm a b` and proves commutativity $\\text{lcm}(a,b) = \\text{lcm}(b,a)$ and idempotence $\\text{lcm}(a,a) = a$. These are genuine Lean proofs using `Nat.lcm_comm` and `Nat.lcm_self`."
+      "summary": "Defines `myLcm a b = Nat.lcm a b` and proves commutativity $\\text{lcm}(a,b) = \\text{lcm}(b,a)$ and idempotence $\\text{lcm}(a,a) = a$. These are genuine Lean proofs using `Nat.lcm_comm` and `Nat.lcm_self`.",
+      "mathContext": "Defines `myLcm a b = Nat.lcm a b` and proves commutativity $\\text{lcm}(a,b) = \\text{lcm}(b,a)$ and idempotence $\\text{lcm}(a,a) = a$. These are genuine Lean proofs using `Nat.lcm_comm` and `Nat.lcm_se"
     },
     {
       "id": "uniform-lcm",
       "title": "Uniform Pairwise LCM and LCM-Free Sets",
       "startLine": 66,
       "endLine": 89,
-      "summary": "Defines `HasUniformPairwiseLCM A t` (all distinct pairs have $\\text{lcm} = t$), `ContainsUniformLCMSubset A k` ($\\exists$ $k$-subset with uniform LCM), and `IsLCMFree A k` (no such $k$-subset). These capture the forbidden pattern."
+      "summary": "Defines `HasUniformPairwiseLCM A t` (all distinct pairs have $\\text{lcm} = t$), `ContainsUniformLCMSubset A k` ($\\exists$ $k$-subset with uniform LCM), and `IsLCMFree A k` (no such $k$-subset). These capture the forbidden pattern.",
+      "mathContext": "Defines `HasUniformPairwiseLCM A t` (all distinct pairs have $\\text{lcm} = t$), `ContainsUniformLCMSubset A k` ($\\exists$ $k$-subset with uniform LCM), and `IsLCMFree A k` (no such $k$-subset). These "
     },
     {
       "id": "log-density",
       "title": "Harmonic Sum and $f_k(N)$",
       "startLine": 90,
       "endLine": 107,
-      "summary": "Defines `harmonicSum A = \\sum_{n \\in A} 1/n$ (with $1/0 = 0$ guard) and $f_k(k, N) = \\sup\\{\\text{harmonicSum}(A) : A \\subseteq [N],\\, \\text{IsLCMFree}(A, k)\\}$. The `sSup` formulation axiomatizes the extremal function."
+      "summary": "Defines `harmonicSum A = \\sum_{n \\in A} 1/n$ (with $1/0 = 0$ guard) and $f_k(k, N) = \\sup\\{\\text{harmonicSum}(A) : A \\subseteq [N],\\, \\text{IsLCMFree}(A, k)\\}$. The `sSup` formulation axiomatizes the extremal function.",
+      "mathContext": "Defines `harmonicSum A = \\sum_{n \\in A} 1/n$ (with $1/0 = 0$ guard) and $f_k(k, N) = \\sup\\{\\text{harmonicSum}(A) : A \\subseteq [N],\\, \\text{IsLCMFree}(A, k)\\}$. The `sSup` formulation axiomatizes the "
     },
     {
       "id": "erdos-bound",
       "title": "Erdős 1970 Upper Bound",
       "startLine": 108,
       "endLine": 132,
-      "summary": "Axiomatizes $f_k(N) \\leq C \\cdot \\log N / \\log\\log N$ for some $C > 0$, and the key lemma: for each $t$, the set $\\{a \\in A : \\exists p \\text{ prime},\\, t = ap\\}$ has $< k$ elements."
+      "summary": "Axiomatizes $f_k(N) \\leq C \\cdot \\log N / \\log\\log N$ for some $C > 0$, and the key lemma: for each $t$, the set $\\{a \\in A : \\exists p \\text{ prime},\\, t = ap\\}$ has $< k$ elements.",
+      "mathContext": "Axiomatizes $f_k(N) \\leq C \\cdot \\log N / \\log\\log N$ for some $C > 0$, and the key lemma: for each $t$, the set $\\{a \\in A : \\exists p \\text{ prime},\\, t = ap\\}$ has $< k$ elements."
     },
     {
       "id": "tang-zhang",
       "title": "Tang–Zhang 2025 Bounds",
       "startLine": 133,
       "endLine": 158,
-      "summary": "Axiomatizes $\\exists b_k \\leq c_k$ with $(\\log N)^{b_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$ for all $\\varepsilon > 0$ eventually. For $k = 3$: $(\\log N)^{0.438} \\leq f_3(N) \\leq (\\log N)^{0.889}$."
+      "summary": "Axiomatizes $\\exists b_k \\leq c_k$ with $(\\log N)^{b_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$ for all $\\varepsilon > 0$ eventually. For $k = 3$: $(\\log N)^{0.438} \\leq f_3(N) \\leq (\\log N)^{0.889}$.",
+      "mathContext": "Axiomatizes $\\exists b_k \\leq c_k$ with $(\\log N)^{b_k - \\varepsilon} \\leq f_k(N) \\leq (\\log N)^{c_k + \\varepsilon}$ for all $\\varepsilon > 0$ eventually. For $k = 3$: $(\\log N)^{0.438} \\leq f_3(N) \\l"
     },
     {
       "id": "sunflower",
       "title": "Sunflower Conjecture Connection",
       "startLine": 159,
       "endLine": 196,
-      "summary": "Defines $k$-sunflowers (sets with common pairwise intersection) and the sunflower conjecture for $k$. Axiomatizes the equivalence: $c_k < 1 \\iff \\text{SunflowerConjectureForK}(k)$."
+      "summary": "Defines $k$-sunflowers (sets with common pairwise intersection) and the sunflower conjecture for $k$. Axiomatizes the equivalence: $c_k < 1 \\iff \\text{SunflowerConjectureForK}(k)$.",
+      "mathContext": "Defines $k$-sunflowers (sets with common pairwise intersection) and the sunflower conjecture for $k$. Axiomatizes the equivalence: $c_k < 1 \\iff \\text{SunflowerConjectureForK}(k)$."
     },
     {
       "id": "natural-density",
       "title": "Natural Density Variant",
       "startLine": 197,
       "endLine": 225,
-      "summary": "Defines $g_k(N) = \\max |A|$ over $k$-LCM-free subsets (natural density). Axiomatizes Erdős's result $g_4(N) \\gg N$ and the $k = 3$ variant, connecting to Problem #536."
+      "summary": "Defines $g_k(N) = \\max |A|$ over $k$-LCM-free subsets (natural density). Axiomatizes Erdős's result $g_4(N) \\gg N$ and the $k = 3$ variant, connecting to Problem #536.",
+      "mathContext": "Defines $g_k(N) = \\max |A|$ over $k$-LCM-free subsets (natural density). Axiomatizes Erdős's result $g_4(N) \\gg N$ and the $k = 3$ variant, connecting to Problem #536."
     },
     {
       "id": "examples",
       "title": "Examples and Gap Analysis",
       "startLine": 226,
       "endLine": 274,
-      "summary": "Proves divisor sets satisfy $\\text{lcm}(a,b) \\mid n$ (genuine Lean proof). Axiomatizes prime power LCM $\\text{lcm}(p^j, p^k) = p^k$, the open problem formalization, and gap analysis for $k = 3$."
+      "summary": "Proves divisor sets satisfy $\\text{lcm}(a,b) \\mid n$ (genuine Lean proof). Axiomatizes prime power LCM $\\text{lcm}(p^j, p^k) = p^k$, the open problem formalization, and gap analysis for $k = 3$.",
+      "mathContext": "Proves divisor sets satisfy $\\text{lcm}(a,b) \\mid n$ (genuine Lean proof). Axiomatizes prime power LCM $\\text{lcm}(p^j, p^k) = p^k$, the open problem formalization, and gap analysis for $k = 3$."
     },
     {
       "id": "summary",
       "title": "Problem Summary",
       "startLine": 275,
       "endLine": 307,
-      "summary": "Summary theorem (trivially proved): the problem is OPEN, Erdős gave initial bounds, Tang–Zhang improved them, and the problem connects to the sunflower conjecture."
+      "summary": "Summary theorem (trivially proved): the problem is OPEN, Erdős gave initial bounds, Tang–Zhang improved them, and the problem connects to the sunflower conjecture.",
+      "mathContext": "Summary theorem (trivially proved): the problem is OPEN, Erdős gave initial bounds, Tang–Zhang improved them, and the problem connects to the sunflower conjecture."
     }
   ],
   "conclusion": {

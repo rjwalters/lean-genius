@@ -56,63 +56,72 @@
       "title": "Basic Definitions",
       "startLine": 41,
       "endLine": 69,
-      "summary": "Defines perfect squares, intervals, HasSquareProduct, HasSquareSubset, and the axiomatized function t_n."
+      "summary": "Defines perfect squares, intervals, HasSquareProduct, HasSquareSubset, and the axiomatized function t_n.",
+      "mathContext": "Defines perfect squares, intervals, HasSquareProduct, HasSquareSubset, and the axiomatized function t_n."
     },
     {
       "id": "example",
       "title": "The Example t_6 = 6",
       "startLine": 70,
       "endLine": 79,
-      "summary": "Proves 6·8·12 = 24² and axiomatizes t_6 = 6."
+      "summary": "Proves 6·8·12 = 24² and axiomatizes t_6 = 6.",
+      "mathContext": "Proves 6·8·12 = 24² and axiomatizes t_6 = 6."
     },
     {
       "id": "prime-divisor",
       "title": "The Largest Prime Divisor",
       "startLine": 80,
       "endLine": 92,
-      "summary": "Defines largestPrimeDivisor P(n) and the trivial lower bound t_n ≥ P(n)."
+      "summary": "Defines largestPrimeDivisor P(n) and the trivial lower bound t_n ≥ P(n).",
+      "mathContext": "Defines largestPrimeDivisor P(n) and the trivial lower bound t_n ≥ P(n)."
     },
     {
       "id": "selfridge",
       "title": "Selfridge's Theorem",
       "startLine": 93,
       "endLine": 108,
-      "summary": "Selfridge's equality t_n = P(n) when P(n) > √(2n)+1, and upper bound t_n ≤ O(√n) otherwise."
+      "summary": "Selfridge's equality t_n = P(n) when P(n) > √(2n)+1, and upper bound t_n ≤ O(√n) otherwise.",
+      "mathContext": "Selfridge's equality t_n = P(n) when P(n) > √(2n)+1, and upper bound t_n ≤ O(√n) otherwise."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 109,
       "endLine": 118,
-      "summary": "Universal lower bound (log log n)^{6/5} / (log log log n)^{1/5}."
+      "summary": "Universal lower bound (log log n)^{6/5} / (log log log n)^{1/5}.",
+      "mathContext": "Universal lower bound (log log n)^{6/5} / (log log log n)^{1/5}."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 119,
       "endLine": 130,
-      "summary": "Upper bound exp(O(√(log n · log log n))) for most n."
+      "summary": "Upper bound exp(O(√(log n · log log n))) for most n.",
+      "mathContext": "Upper bound exp(O(√(log n · log log n))) for most n."
     },
     {
       "id": "distribution",
       "title": "Bui-Pratt-Zaharescu (2024)",
       "startLine": 131,
       "endLine": 141,
-      "summary": "Distribution of t_n follows P(n)'s distribution."
+      "summary": "Distribution of t_n follows P(n)'s distribution.",
+      "mathContext": "Distribution of t_n follows P(n)'s distribution."
     },
     {
       "id": "smooth",
       "title": "Connection to Smooth Numbers",
       "startLine": 142,
       "endLine": 154,
-      "summary": "IsSmooth definition and smooth_numbers_small_t bound."
+      "summary": "IsSmooth definition and smooth_numbers_small_t bound.",
+      "mathContext": "IsSmooth definition and smooth_numbers_small_t bound."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 155,
       "endLine": 197,
-      "summary": "Complete characterization combining trivial bound, Selfridge equality, and Selfridge upper bound."
+      "summary": "Complete characterization combining trivial bound, Selfridge equality, and Selfridge upper bound.",
+      "mathContext": "Complete characterization combining trivial bound, Selfridge equality, and Selfridge upper bound."
     }
   ],
   "conclusion": {

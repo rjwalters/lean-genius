@@ -88,56 +88,64 @@
       "title": "Part I: The Coprime Graph",
       "startLine": 38,
       "endLine": 64,
-      "summary": "Defines coprimeGraph using SimpleGraph, threshold value floor(n/2) + floor(n/3) - floor(n/6), and threshold_eq_divisible_2_or_3 axiom."
+      "summary": "Defines coprimeGraph using SimpleGraph, threshold value floor(n/2) + floor(n/3) - floor(n/6), and threshold_eq_divisible_2_or_3 axiom.",
+      "mathContext": "Defines coprimeGraph using SimpleGraph, threshold value floor(n/2) + floor(n/3) - floor(n/6), and threshold_eq_divisible_2_or_3 axiom."
     },
     {
       "id": "extremal-example",
       "title": "Part II: The Extremal Example",
       "startLine": 65,
       "endLine": 84,
-      "summary": "Defines extremalSet (multiples of 2 or 3). Axiomatizes extremal_set_triangle_free: no triangles in coprime graph."
+      "summary": "Defines extremalSet (multiples of 2 or 3). Axiomatizes extremal_set_triangle_free: no triangles in coprime graph.",
+      "mathContext": "Defines extremalSet (multiples of 2 or 3). Axiomatizes extremal_set_triangle_free: no triangles in coprime graph."
     },
     {
       "id": "erdos-sarkozy",
       "title": "Part III: Erdős-Sárkőzy Theorem on Odd Cycles",
       "startLine": 85,
       "endLine": 99,
-      "summary": "Axiomatizes erdos_sarkozy_odd_cycles: above threshold, G(A) contains odd cycles of length at most cn."
+      "summary": "Axiomatizes erdos_sarkozy_odd_cycles: above threshold, G(A) contains odd cycles of length at most cn.",
+      "mathContext": "Axiomatizes erdos_sarkozy_odd_cycles: above threshold, G(A) contains odd cycles of length at most cn."
     },
     {
       "id": "question-1",
       "title": "Part IV: Question 1 - All Short Odd Cycles",
       "startLine": 100,
       "endLine": 121,
-      "summary": "Defines erdos_883_question_1: does G(A) contain all odd cycles of length at most n/3 + 1? Axiom question_1_open."
+      "summary": "Defines erdos_883_question_1: does G(A) contain all odd cycles of length at most n/3 + 1? Axiom question_1_open.",
+      "mathContext": "Defines erdos_883_question_1: does G(A) contain all odd cycles of length at most n/3 + 1? Axiom question_1_open."
     },
     {
       "id": "sarkozy-tripartite",
       "title": "Part V: Sárkőzy's Theorem on Complete Tripartite Subgraphs",
       "startLine": 122,
       "endLine": 153,
-      "summary": "Defines hasTripartite for (1,l,l) tripartite graphs. Axiomatizes sarkozy_tripartite: above threshold with l > 0."
+      "summary": "Defines hasTripartite for (1,l,l) tripartite graphs. Axiomatizes sarkozy_tripartite: above threshold with l > 0.",
+      "mathContext": "Defines hasTripartite for (1,l,l) tripartite graphs. Axiomatizes sarkozy_tripartite: above threshold with l > 0."
     },
     {
       "id": "main-results",
       "title": "Part VI: Main Results",
       "startLine": 154,
       "endLine": 194,
-      "summary": "Proved theorems: erdos_883_question_2_solved, erdos_883_partial, and erdos_883. Q2 solved, Q1 partial."
+      "summary": "Proved theorems: erdos_883_question_2_solved, erdos_883_partial, and erdos_883. Q2 solved, Q1 partial.",
+      "mathContext": "Proved theorems: erdos_883_question_2_solved, erdos_883_partial, and erdos_883. Q2 solved, Q1 partial."
     },
     {
       "id": "graph-properties",
       "title": "Part VII: Properties of the Coprime Graph",
       "startLine": 195,
       "endLine": 223,
-      "summary": "Placeholder chromatic number axiom, isCoprimeCycle definition, triangles_above_threshold axiom."
+      "summary": "Placeholder chromatic number axiom, isCoprimeCycle definition, triangles_above_threshold axiom.",
+      "mathContext": "Placeholder chromatic number axiom, isCoprimeCycle definition, triangles_above_threshold axiom."
     },
     {
       "id": "inclusion-exclusion",
       "title": "Part VIII: Connection to Inclusion-Exclusion",
       "startLine": 224,
       "endLine": 245,
-      "summary": "Proved threshold_by_inclusion_exclusion (rfl). Axiom threshold_asymptotic: threshold(n) at most 2n/3 + 1."
+      "summary": "Proved threshold_by_inclusion_exclusion (rfl). Axiom threshold_asymptotic: threshold(n) at most 2n/3 + 1.",
+      "mathContext": "Proved threshold_by_inclusion_exclusion (rfl). Axiom threshold_asymptotic: threshold(n) at most 2n/3 + 1."
     }
   ],
   "conclusion": {

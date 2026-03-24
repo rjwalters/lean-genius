@@ -80,77 +80,88 @@
       "title": "Iterated Logarithms",
       "startLine": 42,
       "endLine": 63,
-      "summary": "Definitions of log⁺, log₂⁺, log₃⁺ with basic properties"
+      "summary": "Definitions of log⁺, log₂⁺, log₃⁺ with basic properties",
+      "mathContext": "Definitions of log⁺, log₂⁺, log₃⁺ with basic properties"
     },
     {
       "id": "reciprocal-sum",
       "title": "The Reciprocal Sum",
       "startLine": 64,
       "endLine": 84,
-      "summary": "Definition of Σ_{n∈A, n≤N} 1/n over subsets of ℕ"
+      "summary": "Definition of Σ_{n∈A, n≤N} 1/n over subsets of ℕ",
+      "mathContext": "Definition of Σ_{n∈A, n≤N} 1/n over subsets of ℕ"
     },
     {
       "id": "lcm-sum",
       "title": "The LCM Sum",
       "startLine": 85,
       "endLine": 100,
-      "summary": "Definition of Σ_{a,b∈A, a<b≤N} 1/lcm(a,b) and normalized version"
+      "summary": "Definition of Σ_{a,b∈A, a<b≤N} 1/lcm(a,b) and normalized version",
+      "mathContext": "Definition of Σ_{a,b∈A, a<b≤N} 1/lcm(a,b) and normalized version"
     },
     {
       "id": "density",
       "title": "The Density Condition",
       "startLine": 101,
       "endLine": 112,
-      "summary": "When a set has reciprocal sum growing faster than log log x"
+      "summary": "When a set has reciprocal sum growing faster than log log x",
+      "mathContext": "When a set has reciprocal sum growing faster than log log x"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture and Refutation",
       "startLine": 113,
       "endLine": 137,
-      "summary": "Erdős's question and Tao's negative answer"
+      "summary": "Erdős's question and Tao's negative answer",
+      "mathContext": "Erdős's question and Tao's negative answer"
     },
     {
       "id": "tao-construction",
       "title": "Tao's Construction",
       "startLine": 138,
       "endLine": 156,
-      "summary": "The counterexample set with bounded normalized LCM sum"
+      "summary": "The counterexample set with bounded normalized LCM sum",
+      "mathContext": "The counterexample set with bounded normalized LCM sum"
     },
     {
       "id": "optimality",
       "title": "Optimality",
       "startLine": 157,
       "endLine": 171,
-      "summary": "The threshold is sharp: faster growth implies divergence"
+      "summary": "The threshold is sharp: faster growth implies divergence",
+      "mathContext": "The threshold is sharp: faster growth implies divergence"
     },
     {
       "id": "key-insight",
       "title": "Why the Counterexample Works",
       "startLine": 172,
       "endLine": 186,
-      "summary": "Structure vs density: smooth numbers in careful patterns"
+      "summary": "Structure vs density: smooth numbers in careful patterns",
+      "mathContext": "Structure vs density: smooth numbers in careful patterns"
     },
     {
       "id": "lcm-properties",
       "title": "LCM Properties",
       "startLine": 187,
       "endLine": 207,
-      "summary": "The fundamental identity lcm(a,b)·gcd(a,b) = a·b"
+      "summary": "The fundamental identity lcm(a,b)·gcd(a,b) = a·b",
+      "mathContext": "The fundamental identity lcm(a,b)·gcd(a,b) = a·b"
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 208,
       "endLine": 218,
-      "summary": "Computational verification of LCM values"
+      "summary": "Computational verification of LCM values",
+      "mathContext": "Computational verification of LCM values"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 219,
       "endLine": 265,
-      "summary": "Main theorem combining the negative answer and existence"
+      "summary": "Main theorem combining the negative answer and existence",
+      "mathContext": "Main theorem combining the negative answer and existence"
     }
   ],
   "conclusion": {

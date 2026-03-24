@@ -84,56 +84,64 @@
       "title": "Open Question and Mathematical Context",
       "startLine": 1,
       "endLine": 56,
-      "summary": "Overview of LLN for heavy-tailed distributions. Key insight: Kolmogorov's SLLN requires only E[|X|] < ∞, not finite variance."
+      "summary": "Overview of LLN for heavy-tailed distributions. Key insight: Kolmogorov's SLLN requires only E[|X|] < ∞, not finite variance.",
+      "mathContext": "Overview of LLN for heavy-tailed distributions. Key insight: Kolmogorov's SLLN requires only E[|X|] < ∞, not finite variance."
     },
     {
       "id": "slln",
       "title": "Kolmogorov's SLLN Under Finite Mean Only",
       "startLine": 57,
       "endLine": 92,
-      "summary": "slln_under_finite_mean_only: direct application of strong_law_ae. Requires only Integrable, not L²."
+      "summary": "slln_under_finite_mean_only: direct application of strong_law_ae. Requires only Integrable, not L².",
+      "mathContext": "slln_under_finite_mean_only: direct application of strong_law_ae. Requires only Integrable, not L²."
     },
     {
       "id": "wlln",
       "title": "WLLN for Heavy-Tailed Distributions",
       "startLine": 93,
       "endLine": 117,
-      "summary": "wlln_for_heavy_tails: derives WLLN (convergence in probability) from SLLN via tendstoInMeasure_of_tendsto_ae."
+      "summary": "wlln_for_heavy_tails: derives WLLN (convergence in probability) from SLLN via tendstoInMeasure_of_tendsto_ae.",
+      "mathContext": "wlln_for_heavy_tails: derives WLLN (convergence in probability) from SLLN via tendstoInMeasure_of_tendsto_ae."
     },
     {
       "id": "necessity",
       "title": "Necessity of Finite Mean (Converse)",
       "startLine": 118,
       "endLine": 153,
-      "summary": "slln_necessity (axiom): SLLN ⟹ E[|X|] < ∞. Completes Kolmogorov's characterization. Requires Borel-Cantelli."
+      "summary": "slln_necessity (axiom): SLLN ⟹ E[|X|] < ∞. Completes Kolmogorov's characterization. Requires Borel-Cantelli.",
+      "mathContext": "slln_necessity (axiom): SLLN ⟹ E[|X|] < ∞. Completes Kolmogorov's characterization. Requires Borel-Cantelli."
     },
     {
       "id": "pareto",
       "title": "Pareto Distribution: Key Example",
       "startLine": 154,
       "endLine": 168,
-      "summary": "pareto_lln_analysis: documents the α > 1 threshold for Pareto. Chebyshev requires α > 2; Kolmogorov only α > 1."
+      "summary": "pareto_lln_analysis: documents the α > 1 threshold for Pareto. Chebyshev requires α > 2; Kolmogorov only α > 1.",
+      "mathContext": "pareto_lln_analysis: documents the α > 1 threshold for Pareto. Chebyshev requires α > 2; Kolmogorov only α > 1."
     },
     {
       "id": "main-theorem",
       "title": "Main Answer to the Open Question",
       "startLine": 191,
       "endLine": 229,
-      "summary": "kolmogorov_slln_characterization (iff theorem) and lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞. The iff form combines slln_under_finite_mean_only (sufficient) and slln_necessity (necessary)."
+      "summary": "kolmogorov_slln_characterization (iff theorem) and lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞. The iff form combines slln_under_finite_mean_only (sufficient) and slln_necessity (necessary).",
+      "mathContext": "kolmogorov_slln_characterization (iff theorem) and lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞. The iff form combines slln_under_finite_mean_on"
     },
     {
       "id": "lp-distributions",
       "title": "SLLN for Lᵖ and Mean-Zero Distributions",
       "startLine": 238,
       "endLine": 280,
-      "summary": "slln_for_Lp_distributions: any Lᵖ (p ≥ 1) implies L¹, so SLLN applies for all moment classes. slln_mean_zero: for centered distributions E[X₀]=0, sample mean converges to 0 a.s."
+      "summary": "slln_for_Lp_distributions: any Lᵖ (p ≥ 1) implies L¹, so SLLN applies for all moment classes. slln_mean_zero: for centered distributions E[X₀]=0, sample mean converges to 0 a.s.",
+      "mathContext": "slln_for_Lp_distributions: any Lᵖ (p ≥ 1) implies L¹, so SLLN applies for all moment classes. slln_mean_zero: for centered distributions E[X₀]=0, sample mean converges to 0 a.s."
     },
     {
       "id": "derived-results",
       "title": "Derived Convergence Results",
       "startLine": 288,
       "endLine": 403,
-      "summary": "Extensions of SLLN: slln_for_Linfty (bounded RVs), slln_for_composed (f(Xᵢ) — Monte Carlo foundation), slln_negated, slln_affine_transform, slln_for_bounded_measurable. All reduce to slln_under_finite_mean_only via integrability arguments."
+      "summary": "Extensions of SLLN: slln_for_Linfty (bounded RVs), slln_for_composed (f(Xᵢ) — Monte Carlo foundation), slln_negated, slln_affine_transform, slln_for_bounded_measurable. All reduce to slln_under_finite_mean_only via integrability arguments.",
+      "mathContext": "Extensions of SLLN: slln_for_Linfty (bounded RVs), slln_for_composed (f(Xᵢ) — Monte Carlo foundation), slln_negated, slln_affine_transform, slln_for_bounded_measurable. All reduce to slln_under_finite"
     }
   ],
   "conclusion": {

@@ -50,63 +50,72 @@
       "title": "Imports and Setup",
       "startLine": 16,
       "endLine": 22,
-      "summary": "Imports SimpleGraph.Basic, Fin.Basic, Filter.Basic, and tactics."
+      "summary": "Imports SimpleGraph.Basic, Fin.Basic, Filter.Basic, and tactics.",
+      "mathContext": "Imports SimpleGraph.Basic, Fin.Basic, Filter.Basic, and tactics."
     },
     {
       "id": "diagonal-ramsey",
       "title": "Diagonal Ramsey Number",
       "startLine": 23,
       "endLine": 31,
-      "summary": "Axiomatizes R(k) with positivity for k ≥ 1."
+      "summary": "Axiomatizes R(k) with positivity for k ≥ 1.",
+      "mathContext": "Axiomatizes R(k) with positivity for k ≥ 1."
     },
     {
       "id": "graph-ramsey",
       "title": "Graph Ramsey Number",
       "startLine": 32,
       "endLine": 38,
-      "summary": "Axiomatizes R(G) for SimpleGraph (Fin n) with positivity."
+      "summary": "Axiomatizes R(G) for SimpleGraph (Fin n) with positivity.",
+      "mathContext": "Axiomatizes R(G) for SimpleGraph (Fin n) with positivity."
     },
     {
       "id": "chromatic-number",
       "title": "Chromatic Number",
       "startLine": 39,
       "endLine": 49,
-      "summary": "Axiomatizes χ(G) with bounds: 1 ≤ χ(G) ≤ n for non-empty graphs."
+      "summary": "Axiomatizes χ(G) with bounds: 1 ≤ χ(G) ≤ n for non-empty graphs.",
+      "mathContext": "Axiomatizes χ(G) with bounds: 1 ≤ χ(G) ≤ n for non-empty graphs."
     },
     {
       "id": "weak-conjecture",
       "title": "Weak Form: R(G) > (1-ε)^k · R(k)",
       "startLine": 50,
       "endLine": 60,
-      "summary": "The weak form as a Prop-valued definition: exponentially decaying factor allowed."
+      "summary": "The weak form as a Prop-valued definition: exponentially decaying factor allowed.",
+      "mathContext": "The weak form as a Prop-valued definition: exponentially decaying factor allowed."
     },
     {
       "id": "strong-conjecture",
       "title": "Strong Form: R(G) > c · R(k)",
       "startLine": 61,
       "endLine": 69,
-      "summary": "The strong form as a Prop-valued definition: absolute constant c independent of k."
+      "summary": "The strong form as a Prop-valued definition: absolute constant c independent of k.",
+      "mathContext": "The strong form as a Prop-valued definition: absolute constant c independent of k."
     },
     {
       "id": "exponential-lower",
       "title": "Exponential Lower Bound",
       "startLine": 70,
       "endLine": 78,
-      "summary": "Random colouring argument giving R(G) ≫ 2^{k/2} for χ(G) = k."
+      "summary": "Random colouring argument giving R(G) ≫ 2^{k/2} for χ(G) = k.",
+      "mathContext": "Random colouring argument giving R(G) ≫ 2^{k/2} for χ(G) = k."
     },
     {
       "id": "ramsey-upper",
       "title": "Ramsey Upper Bound R(k) ≤ 4^k",
       "startLine": 79,
       "endLine": 82,
-      "summary": "The classical Erdős-Szekeres upper bound on diagonal Ramsey numbers."
+      "summary": "The classical Erdős-Szekeres upper bound on diagonal Ramsey numbers.",
+      "mathContext": "The classical Erdős-Szekeres upper bound on diagonal Ramsey numbers."
     },
     {
       "id": "counterexample",
       "title": "Faudree-McKay Counterexample",
       "startLine": 83,
       "endLine": 89,
-      "summary": "Pentagonal wheel W: χ(W) = 4, R(W) = 17, R(4) = 18, disproving R(G) ≥ R(k)."
+      "summary": "Pentagonal wheel W: χ(W) = 4, R(W) = 17, R(4) = 18, disproving R(G) ≥ R(k).",
+      "mathContext": "Pentagonal wheel W: χ(W) = 4, R(W) = 17, R(4) = 18, disproving R(G) ≥ R(k)."
     }
   ],
   "conclusion": {

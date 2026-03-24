@@ -68,56 +68,64 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 18,
-      "summary": "States Erdős Problem 1130 on the $\\Upsilon$ functional for Lagrange interpolation: $\\Upsilon = \\min_i \\max_{x \\in [x_i, x_{i+1}]} \\sum |l_k(x)|$. Summarizes proved results: $\\Upsilon < \\sqrt{n}$ (Erdős), $\\Upsilon \\le (2/\\pi) \\log n + O(1)$ (de Boor–Pinkus)."
+      "summary": "States Erdős Problem 1130 on the $\\Upsilon$ functional for Lagrange interpolation: $\\Upsilon = \\min_i \\max_{x \\in [x_i, x_{i+1}]} \\sum |l_k(x)|$. Summarizes proved results: $\\Upsilon < \\sqrt{n}$ (Erdős), $\\Upsilon \\le (2/\\pi) \\log n + O(1)$ (de Boor–Pinkus).",
+      "mathContext": "States Erdős Problem 1130 on the $\\Upsilon$ functional for Lagrange interpolation: $\\Upsilon = \\min_i \\max_{x \\in [x_i, x_{i+1}]} \\sum |l_k(x)|$. Summarizes proved results: $\\Upsilon < \\sqrt{n}$ (Erdő"
     },
     {
       "id": "imports",
       "title": "Imports",
       "startLine": 19,
       "endLine": 24,
-      "summary": "Imports `Mathlib.Analysis.SpecialFunctions.Log.Basic` for $\\log$, `InnerProductSpace.Basic` for real analysis infrastructure, `Fin.Basic` for node indexing, and `Tactic` for automation."
+      "summary": "Imports `Mathlib.Analysis.SpecialFunctions.Log.Basic` for $\\log$, `InnerProductSpace.Basic` for real analysis infrastructure, `Fin.Basic` for node indexing, and `Tactic` for automation.",
+      "mathContext": "Imports `Mathlib.Analysis.SpecialFunctions.Log.Basic` for $\\log$, `InnerProductSpace.Basic` for real analysis infrastructure, `Fin.Basic` for node indexing, and `Tactic` for automation."
     },
     {
       "id": "lagrange",
       "title": "Lagrange Interpolation Basis",
       "startLine": 25,
       "endLine": 44,
-      "summary": "Defines `InterpolationNodes n` (n nodes in $[-1,1]$, strictly ordered), `lagrangeBasis` $l_k(x) = \\prod_{j \\ne k} (x - x_j)/(x_k - x_j)$, and `lebesgueFunction` $\\Lambda(x) = \\sum_k |l_k(x)|$."
+      "summary": "Defines `InterpolationNodes n` (n nodes in $[-1,1]$, strictly ordered), `lagrangeBasis` $l_k(x) = \\prod_{j \\ne k} (x - x_j)/(x_k - x_j)$, and `lebesgueFunction` $\\Lambda(x) = \\sum_k |l_k(x)|$.",
+      "mathContext": "Defines `InterpolationNodes n` (n nodes in $[-1,1]$, strictly ordered), `lagrangeBasis` $l_k(x) = \\prod_{j \\ne k} (x - x_j)/(x_k - x_j)$, and `lebesgueFunction` $\\Lambda(x) = \\sum_k |l_k(x)|$."
     },
     {
       "id": "upsilon",
       "title": "The Υ Functional",
       "startLine": 45,
       "endLine": 62,
-      "summary": "Defines `subintervalEndpoint` ($x_0 = -1$, $x_{n+1} = 1$), `maxLebesgueOnInterval` ($\\text{sSup}$ of $\\Lambda$ on each subinterval), and `upsilon` ($\\text{sInf}$ over subintervals — the min-max functional)."
+      "summary": "Defines `subintervalEndpoint` ($x_0 = -1$, $x_{n+1} = 1$), `maxLebesgueOnInterval` ($\\text{sSup}$ of $\\Lambda$ on each subinterval), and `upsilon` ($\\text{sInf}$ over subintervals — the min-max functional).",
+      "mathContext": "Defines `subintervalEndpoint` ($x_0 = -1$, $x_{n+1} = 1$), `maxLebesgueOnInterval` ($\\text{sSup}$ of $\\Lambda$ on each subinterval), and `upsilon` ($\\text{sInf}$ over subintervals — the min-max functi"
     },
     {
       "id": "sqrt-bound",
       "title": "Erdős's √n Bound",
       "startLine": 63,
       "endLine": 68,
-      "summary": "Axiomatizes Erdős (1947): $\\Upsilon(P) < \\sqrt{n}$ for all node configurations $P$ with $n \\ge 1$."
+      "summary": "Axiomatizes Erdős (1947): $\\Upsilon(P) < \\sqrt{n}$ for all node configurations $P$ with $n \\ge 1$.",
+      "mathContext": "Axiomatizes Erdős (1947): $\\Upsilon(P) < \\sqrt{n}$ for all node configurations $P$ with $n \\ge 1$."
     },
     {
       "id": "log-bound",
       "title": "Sharp Logarithmic Bound",
       "startLine": 69,
       "endLine": 76,
-      "summary": "Axiomatizes the optimal bound: $\\Upsilon \\le (2/\\pi) \\log n + C$ for an absolute constant $C$, confirming Erdős's conjecture that $\\Upsilon = O(\\log n)$."
+      "summary": "Axiomatizes the optimal bound: $\\Upsilon \\le (2/\\pi) \\log n + C$ for an absolute constant $C$, confirming Erdős's conjecture that $\\Upsilon = O(\\log n)$.",
+      "mathContext": "Axiomatizes the optimal bound: $\\Upsilon \\le (2/\\pi) \\log n + C$ for an absolute constant $C$, confirming Erdős's conjecture that $\\Upsilon = O(\\log n)$."
     },
     {
       "id": "de-boor-pinkus",
       "title": "De Boor–Pinkus Equioscillation",
       "startLine": 77,
       "endLine": 86,
-      "summary": "Axiomatizes de Boor–Pinkus (1978): optimal nodes equalize $\\max_{[x_i,x_{i+1}]} \\Lambda$ across all subintervals. The optimal $P$ satisfies both maximality ($\\forall Q, \\Upsilon(Q) \\le \\Upsilon(P)$) and equalization."
+      "summary": "Axiomatizes de Boor–Pinkus (1978): optimal nodes equalize $\\max_{[x_i,x_{i+1}]} \\Lambda$ across all subintervals. The optimal $P$ satisfies both maximality ($\\forall Q, \\Upsilon(Q) \\le \\Upsilon(P)$) and equalization.",
+      "mathContext": "Axiomatizes de Boor–Pinkus (1978): optimal nodes equalize $\\max_{[x_i,x_{i+1}]} \\Lambda$ across all subintervals. The optimal $P$ satisfies both maximality ($\\forall Q, \\Upsilon(Q) \\le \\Upsilon(P)$) a"
     },
     {
       "id": "main-result",
       "title": "Erdős Problem 1130 (Proved)",
       "startLine": 87,
       "endLine": 95,
-      "summary": "States `ErdosProblem1130`: $\\exists C > 0,\\, \\forall n \\ge 2,\\, \\forall P,\\, \\Upsilon(P) \\le C \\cdot \\log n$. This is the final $O(\\log n)$ statement combining all prior results."
+      "summary": "States `ErdosProblem1130`: $\\exists C > 0,\\, \\forall n \\ge 2,\\, \\forall P,\\, \\Upsilon(P) \\le C \\cdot \\log n$. This is the final $O(\\log n)$ statement combining all prior results.",
+      "mathContext": "States `ErdosProblem1130`: $\\exists C > 0,\\, \\forall n \\ge 2,\\, \\forall P,\\, \\Upsilon(P) \\le C \\cdot \\log n$. This is the final $O(\\log n)$ statement combining all prior results."
     }
   ],
   "crossReferences": [

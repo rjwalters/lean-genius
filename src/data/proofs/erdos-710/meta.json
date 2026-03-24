@@ -90,21 +90,24 @@
       "title": "Basic Setup",
       "summary": "IsValidSelection, IntervalAdmitsSelection, minimalIntervalLength definitions",
       "startLine": 42,
-      "endLine": 88
+      "endLine": 88,
+      "mathContext": "IsValidSelection, IntervalAdmitsSelection, minimalIntervalLength definitions"
     },
     {
       "id": "constraint-analysis",
       "title": "Divisibility Constraint Analysis",
       "summary": "multiplesInInterval, multiples_sparse",
       "startLine": 89,
-      "endLine": 112
+      "endLine": 112,
+      "mathContext": "multiplesInInterval, multiples_sparse"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "erdos_pomerance_lower_bound, erdos_pomerance_upper_bound, bounds_gap",
       "startLine": 113,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "erdos_pomerance_lower_bound, erdos_pomerance_upper_bound, bounds_gap"
     },
     {
       "id": "open-problem",
@@ -118,28 +121,32 @@
       "title": "Small Examples",
       "summary": "example_n1, example_n2, example_n3",
       "startLine": 176,
-      "endLine": 229
+      "endLine": 229,
+      "mathContext": "example_n1, example_n2, example_n3"
     },
     {
       "id": "heuristics",
       "title": "Heuristic Analysis",
       "summary": "constraintDensity, critical_constraint_heuristic",
       "startLine": 230,
-      "endLine": 263
+      "endLine": 263,
+      "mathContext": "constraintDensity, critical_constraint_heuristic"
     },
     {
       "id": "greedy",
       "title": "Greedy Algorithm Insight",
       "summary": "smallest_multiple_bound theorem",
       "startLine": 264,
-      "endLine": 290
+      "endLine": 290,
+      "mathContext": "smallest_multiple_bound theorem"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_710_summary theorem",
       "startLine": 303,
-      "endLine": 337
+      "endLine": 337,
+      "mathContext": "erdos_710_summary theorem"
     }
   ],
   "conclusion": {

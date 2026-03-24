@@ -94,70 +94,80 @@
       "title": "Problem Documentation",
       "summary": "Header with problem statement, known results, references, and OEIS link",
       "startLine": 1,
-      "endLine": 27
+      "endLine": 27,
+      "mathContext": "Header with problem statement, known results, references, and OEIS link"
     },
     {
       "id": "imports-setup",
       "title": "Imports and Setup",
       "summary": "Specific Mathlib imports and namespace opening",
       "startLine": 28,
-      "endLine": 46
+      "endLine": 46,
+      "mathContext": "Specific Mathlib imports and namespace opening"
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "IsComposite, leastPrimeDivisor, and their properties",
       "startLine": 47,
-      "endLine": 75
+      "endLine": 75,
+      "mathContext": "IsComposite, leastPrimeDivisor, and their properties"
     },
     {
       "id": "function-f",
       "title": "The Function F(n)",
       "summary": "F(n) using Finset.sup' and alternative FSet definition",
       "startLine": 76,
-      "endLine": 94
+      "endLine": 94,
+      "mathContext": "F(n) using Finset.sup' and alternative FSet definition"
     },
     {
       "id": "bounds",
       "title": "Basic Properties",
       "summary": "Upper bound F(n) ≤ n + √n",
       "startLine": 95,
-      "endLine": 100
+      "endLine": 100,
+      "mathContext": "Upper bound F(n) ≤ n + √n"
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures",
       "summary": "Question 1 (F(n) > n) and Question 2 (F(n) - n → ∞)",
       "startLine": 101,
-      "endLine": 121
+      "endLine": 121,
+      "mathContext": "Question 1 (F(n) > n) and Question 2 (F(n) - n → ∞)"
     },
     {
       "id": "connection-430",
       "title": "Connection to Problem #430",
       "summary": "Equivalence with Problem #430, q2_implies_q1",
       "startLine": 122,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "Equivalence with Problem #430, q2_implies_q1"
     },
     {
       "id": "lower-bound",
       "title": "Conjectured Lower Bound",
       "summary": "F(n) ≥ n + (1 - ε)√n conjecture using real analysis",
       "startLine": 133,
-      "endLine": 144
+      "endLine": 144,
+      "mathContext": "F(n) ≥ n + (1 - ε)√n conjecture using real analysis"
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Verified composites: 4, 6, 9",
       "startLine": 145,
-      "endLine": 155
+      "endLine": 155,
+      "mathContext": "Verified composites: 4, 6, 9"
     },
     {
       "id": "difficulty",
       "title": "Why This Is Hard",
       "summary": "Connections to prime distribution, sieve theory, Siegel zeros",
       "startLine": 156,
-      "endLine": 175
+      "endLine": 175,
+      "mathContext": "Connections to prime distribution, sieve theory, Siegel zeros"
     }
   ],
   "conclusion": {

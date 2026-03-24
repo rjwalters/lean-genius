@@ -170,77 +170,88 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib's `NumberTheory.Divisors`, `ArithmeticFunction`, `Nat.Factorial.Basic`, `Padics.PadicVal`, and `SpecificLimits.Basic`. Opens `Nat` and `ArithmeticFunction` namespaces.",
       "startLine": 22,
-      "endLine": 30
+      "endLine": 30,
+      "mathContext": "Imports Mathlib's `NumberTheory.Divisors`, `ArithmeticFunction`, `Nat.Factorial.Basic`, `Padics.PadicVal`, and `SpecificLimits.Basic`. Opens `Nat` and `ArithmeticFunction` namespaces."
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines $\\tau(n) = |\\{d : d \\mid n\\}|$ via `n.divisors.card`, axiomatizes the multiplicative formula $\\tau(n) = \\prod_{p \\mid n} (v_p(n) + 1)$, and defines the factorial divisor ratio $\\tau((n+1)!)/\\tau(n!) \\in \\mathbb{Q}$.",
       "startLine": 37,
-      "endLine": 48
+      "endLine": 48,
+      "mathContext": "Defines $\\tau(n) = |\\{d : d \\mid n\\}|$ via `n.divisors.card`, axiomatizes the multiplicative formula $\\tau(n) = \\prod_{p \\mid n} (v_p(n) + 1)$, and defines the factorial divisor ratio $\\tau((n+1)!)/\\t"
     },
     {
       "id": "ratio-formula",
       "title": "The Ratio Formula",
       "summary": "Defines `padicValFactorial` via Legendre's formula $v_p(n!) = \\sum_{i \\ge 1} \\lfloor n/p^i \\rfloor$, axiomatizes the identity with `padicValNat`, and states the key product formula: $\\tau((n+1)!)/\\tau(n!) = \\prod_{p \\mid n+1} (1 + v_p(n+1)/(v_p(n!)+1))$.",
       "startLine": 56,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "Defines `padicValFactorial` via Legendre's formula $v_p(n!) = \\sum_{i \\ge 1} \\lfloor n/p^i \\rfloor$, axiomatizes the identity with `padicValNat`, and states the key product formula: $\\tau((n+1)!)/\\tau"
     },
     {
       "id": "prime-bounds",
       "title": "Prime Factorization Bounds",
       "summary": "Axiomatizes three bounds: $\\omega(n) < \\log_2 n$, $v_p(n) < \\log_2 n$, and at most one prime $p \\mid n+1$ with $p > n^{2/3}$. These control the product structure of the ratio.",
       "startLine": 79,
-      "endLine": 88
+      "endLine": 88,
+      "mathContext": "Axiomatizes three bounds: $\\omega(n) < \\log_2 n$, $v_p(n) < \\log_2 n$, and at most one prime $p \\mid n+1$ with $p > n^{2/3}$. These control the product structure of the ratio."
     },
     {
       "id": "small-primes",
       "title": "Small Primes Contribution",
       "summary": "Shows the product over primes $p \\le n^{2/3}$ satisfies $1 \\le S \\le 1 + (\\log n)^2/n^{1/3} \\to 1$. Each factor is $1 + O(\\log n / n^{1/3})$ by Legendre's bound $v_p(n!) \\ge n/p \\ge n^{1/3}$.",
       "startLine": 96,
-      "endLine": 108
+      "endLine": 108,
+      "mathContext": "Shows the product over primes $p \\le n^{2/3}$ satisfies $1 \\le S \\le 1 + (\\log n)^2/n^{1/3} \\to 1$. Each factor is $1 + O(\\log n / n^{1/3})$ by Legendre's bound $v_p(n!) \\ge n/p \\ge n^{1/3}$."
     },
     {
       "id": "large-primes",
       "title": "Large Prime Contribution",
       "summary": "If $p > n^{2/3}$ divides $n+1$, then $v_p(n+1) = 1$ (since $p^2 > n+1$) and $v_p(n!) = k-1$ where $n+1 = pk$. The factor is $(k+1)/k = 1 + 1/k$. When $n+1$ is prime ($k=1$), the ratio $\\approx 2$.",
       "startLine": 116,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "If $p > n^{2/3}$ divides $n+1$, then $v_p(n+1) = 1$ (since $p^2 > n+1$) and $v_p(n!) = k-1$ where $n+1 = pk$. The factor is $(k+1)/k = 1 + 1/k$. When $n+1$ is prime ($k=1$), the ratio $\\approx 2$."
     },
     {
       "id": "limit-points",
       "title": "The Set of Limit Points",
       "summary": "Defines $L = \\{1\\} \\cup \\{1 + 1/k : k \\ge 1\\}$ and axiomatizes: $1 \\in L$ (smooth numbers), $1+1/k \\in L$ (Dirichlet's theorem ensures infinitely many $n+1 = pk$), and $L$ contains all limit points.",
       "startLine": 130,
-      "endLine": 150
+      "endLine": 150,
+      "mathContext": "Defines $L = \\{1\\} \\cup \\{1 + 1/k : k \\ge 1\\}$ and axiomatizes: $1 \\in L$ (smooth numbers), $1+1/k \\in L$ (Dirichlet's theorem ensures infinitely many $n+1 = pk$), and $L$ contains all limit points."
     },
     {
       "id": "examples",
       "title": "Examples and Concrete Cases",
       "summary": "Four cases: $n+1$ prime $\\Rightarrow$ ratio $\\approx 2$; $n+1 = 2p \\Rightarrow \\approx 3/2$; $n+1 = 3p \\Rightarrow \\approx 4/3$; $n+1$ smooth $\\Rightarrow \\approx 1$. Verified: $1+1/1=2$, $1+1/2=3/2$, $1+1/3=4/3$, $1+1/4=5/4$.",
       "startLine": 158,
-      "endLine": 172
+      "endLine": 172,
+      "mathContext": "Four cases: $n+1$ prime $\\Rightarrow$ ratio $\\approx 2$; $n+1 = 2p \\Rightarrow \\approx 3/2$; $n+1 = 3p \\Rightarrow \\approx 4/3$; $n+1$ smooth $\\Rightarrow \\approx 1$. Verified: $1+1/1=2$, $1+1/2=3/2$,"
     },
     {
       "id": "proof-structure",
       "title": "The Proof Structure and Main Theorem",
       "summary": "Axiomatizes `ratio_decomposition`: ratio $= S \\cdot L$ with $S \\to 1$ and $L \\in \\{1\\} \\cup \\{1+1/k\\}$. Proves `sawhney_characterization`: $x$ is a limit point $\\iff x \\in L$, via `Set.mem_union` case analysis.",
       "startLine": 180,
-      "endLine": 201
+      "endLine": 201,
+      "mathContext": "Axiomatizes `ratio_decomposition`: ratio $= S \\cdot L$ with $S \\to 1$ and $L \\in \\{1\\} \\cup \\{1+1/k\\}$. Proves `sawhney_characterization`: $x$ is a limit point $\\iff x \\in L$, via `Set.mem_union` case"
     },
     {
       "id": "asymptotics",
       "title": "Asymptotics of $\\tau(n!)$",
       "summary": "Axiomatizes $\\tau(n!) \\ge 2^{n/\\log n}$ and $\\log \\tau(n!) \\sim n \\log n / \\log \\log n$. Provides context: both numerator and denominator are astronomically large, explaining why the ratio stays in $[1, 2]$.",
       "startLine": 209,
-      "endLine": 215
+      "endLine": 215,
+      "mathContext": "Axiomatizes $\\tau(n!) \\ge 2^{n/\\log n}$ and $\\log \\tau(n!) \\sim n \\log n / \\log \\log n$. Provides context: both numerator and denominator are astronomically large, explaining why the ratio stays in $["
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Proves `limit_set_properties` ($1 \\in L$, $1+1/k \\in L$, all $\\ge 1$) by constructive case analysis with `linarith`. Proves `erdos_419_summary` packaging the characterization, existence of $1$, and existence of $1+1/k$.",
       "startLine": 223,
-      "endLine": 252
+      "endLine": 252,
+      "mathContext": "Proves `limit_set_properties` ($1 \\in L$, $1+1/k \\in L$, all $\\ge 1$) by constructive case analysis with `linarith`. Proves `erdos_419_summary` packaging the characterization, existence of $1$, and ex"
     }
   ],
   "conclusion": {

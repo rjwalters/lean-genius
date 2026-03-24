@@ -83,63 +83,72 @@
       "title": "Arithmetic Progressions",
       "summary": "Defines IsThreeAP(a,b,c) for a < b < c with 2b = a + c, and two equivalent AP-free predicates: IsAPFree (no three elements form a 3-AP) and IsAPFree' (explicit formulation with ordered triples).",
       "startLine": 39,
-      "endLine": 67
+      "endLine": 67,
+      "mathContext": "Defines IsThreeAP(a,b,c) for a < b < c with 2b = a + c, and two equivalent AP-free predicates: IsAPFree (no three elements form a 3-AP) and IsAPFree' (explicit formulation with ordered triples)."
     },
     {
       "id": "stanley-sequences",
       "title": "Stanley Sequences",
       "summary": "Constructs A(n) via the greedy algorithm: a₀ = 0, a₁ = n, each subsequent term is the smallest integer preserving AP-freeness. Axiomatizes strict monotonicity and the AP-free property of all initial segments.",
       "startLine": 68,
-      "endLine": 108
+      "endLine": 108,
+      "mathContext": "Constructs A(n) via the greedy algorithm: a₀ = 0, a₁ = n, each subsequent term is the smallest integer preserving AP-freeness. Axiomatizes strict monotonicity and the AP-free property of all initial s"
     },
     {
       "id": "a1-characterization",
       "title": "The Sequence A(1)",
       "summary": "Complete characterization: n ∈ A(1) iff n has no digit 2 in base 3 (equivalently, n is a sum of distinct powers of 3). Lists initial elements 0,1,3,4,9,10,12,13,27,... and proves growth rate a_k ~ k^{log₂3} ≈ k^{1.585}.",
       "startLine": 109,
-      "endLine": 157
+      "endLine": 157,
+      "mathContext": "Complete characterization: n ∈ A(1) iff n has no digit 2 in base 3 (equivalently, n is a sum of distinct powers of 3). Lists initial elements 0,1,3,4,9,10,12,13,27,... and proves growth rate a_k ~ k^{"
     },
     {
       "id": "odlyzko-stanley",
       "title": "Odlyzko-Stanley Characterizations",
       "summary": "Axiomatizes that A(3^k) and A(2·3^k) also admit explicit base-3 characterizations (Odlyzko-Stanley 1978), generalizing the A(1) result to two infinite families of 'structured' Stanley sequences.",
       "startLine": 158,
-      "endLine": 179
+      "endLine": 179,
+      "mathContext": "Axiomatizes that A(3^k) and A(2·3^k) also admit explicit base-3 characterizations (Odlyzko-Stanley 1978), generalizing the A(1) result to two infinite families of 'structured' Stanley sequences."
     },
     {
       "id": "growth-conjectures",
       "title": "Growth Rate Conjectures",
       "summary": "Defines the two conjectured growth rates: hasPolynomialGrowth (a_k ~ k^{log₂3}) and hasQuadraticLogGrowth (a_k ~ k²/log k). States the Odlyzko-Stanley dichotomy conjecture (every A(n) has one of these rates) and Lindhurst's conjecture that A(4) has quadratic-log growth.",
       "startLine": 180,
-      "endLine": 228
+      "endLine": 228,
+      "mathContext": "Defines the two conjectured growth rates: hasPolynomialGrowth (a_k ~ k^{log₂3}) and hasQuadraticLogGrowth (a_k ~ k²/log k). States the Odlyzko-Stanley dichotomy conjecture (every A(n) has one of these"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Axiomatizes Moy's asymptotic bound a_k ≤ (1/2+ε)k² for large k, the van Doorn-Sothanaphan explicit bound a_k ≤ (k-1)(k+2)/2 + n for all k, and derives the simplified quadratic upper bound a_k = O(k²).",
       "startLine": 229,
-      "endLine": 259
+      "endLine": 259,
+      "mathContext": "Axiomatizes Moy's asymptotic bound a_k ≤ (1/2+ε)k² for large k, the van Doorn-Sothanaphan explicit bound a_k ≤ (k-1)(k+2)/2 + n for all k, and derives the simplified quadratic upper bound a_k = O(k²)."
     },
     {
       "id": "specific-values",
       "title": "Specific Values",
       "summary": "Lists computed initial segments: A(1) = OEIS A003278 (sums of distinct powers of 3), A(2) = OEIS A033157 (widening gaps), A(4) = OEIS A005487 (dense initial terms, conjectured k²/log k growth).",
       "startLine": 260,
-      "endLine": 284
+      "endLine": 284,
+      "mathContext": "Lists computed initial segments: A(1) = OEIS A003278 (sums of distinct powers of 3), A(2) = OEIS A033157 (widening gaps), A(4) = OEIS A005487 (dense initial terms, conjectured k²/log k growth)."
     },
     {
       "id": "sum-free-connection",
       "title": "Connection to Sum-Free Sets",
       "summary": "Defines IsSumFree (no a+b=c with a,b,c ∈ S) and proves AP-freeness and sum-freeness are logically independent: {1,2,4} is AP-free but not sum-free since 2+2=4. Connects to Schur numbers and Ramsey theory.",
       "startLine": 285,
-      "endLine": 313
+      "endLine": 313,
+      "mathContext": "Defines IsSumFree (no a+b=c with a,b,c ∈ S) and proves AP-freeness and sum-freeness are logically independent: {1,2,4} is AP-free but not sum-free since 2+2=4. Connects to Schur numbers and Ramsey the"
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "The theorem erdos_271 packages two proven results: A(1) has the base-3 characterization, and a_k ≤ (k-1)(k+2)/2 + n holds universally. Records the historical timeline (1978-2011) and restates the open dichotomy conjecture.",
       "startLine": 314,
-      "endLine": 364
+      "endLine": 364,
+      "mathContext": "The theorem erdos_271 packages two proven results: A(1) has the base-3 characterization, and a_k ≤ (k-1)(k+2)/2 + n holds universally. Records the historical timeline (1978-2011) and restates the open"
     }
   ],
   "conclusion": {

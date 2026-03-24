@@ -29,56 +29,64 @@
       "title": "Problem Statement and Context",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Module docstring stating Erdős Problem #568: do linear tree Ramsey and quadratic clique Ramsey bounds for $G$ imply Ramsey size linearity? Notes the crude bound $\\hat{r}(G,H) \\le R(G,H) \\cdot |V(H)|$ and connection to Problem #567."
+      "summary": "Module docstring stating Erdős Problem #568: do linear tree Ramsey and quadratic clique Ramsey bounds for $G$ imply Ramsey size linearity? Notes the crude bound $\\hat{r}(G,H) \\le R(G,H) \\cdot |V(H)|$ and connection to Problem #567.",
+      "mathContext": "Module docstring stating Erdős Problem #568: do linear tree Ramsey and quadratic clique Ramsey bounds for $G$ imply Ramsey size linearity? Notes the crude bound $\\hat{r}(G,H) \\le R(G,H) \\cdot |V(H)|$ "
     },
     {
       "id": "imports",
       "title": "Library Imports",
       "startLine": 20,
       "endLine": 22,
-      "summary": "Imports Mathlib foundations: $\\mathbb{N}$ for graph sizes, $\\mathbb{R}$ for bound constants $C$ in $R(G,T_n) \\le Cn$ and $R(G,K_n) \\le Cn^2$."
+      "summary": "Imports Mathlib foundations: $\\mathbb{N}$ for graph sizes, $\\mathbb{R}$ for bound constants $C$ in $R(G,T_n) \\le Cn$ and $R(G,K_n) \\le Cn^2$.",
+      "mathContext": "Imports Mathlib foundations: $\\mathbb{N}$ for graph sizes, $\\mathbb{R}$ for bound constants $C$ in $R(G,T_n) \\le Cn$ and $R(G,K_n) \\le Cn^2$."
     },
     {
       "id": "graph-infrastructure",
       "title": "Graph Infrastructure",
       "startLine": 26,
       "endLine": 39,
-      "summary": "Defines $\\text{SGraph}(n)$ with symmetric irreflexive adjacency, edge counting $|E(G)|$, and the no-isolated-vertices condition $\\forall v,\\;\\deg(v) \\ge 1$."
+      "summary": "Defines $\\text{SGraph}(n)$ with symmetric irreflexive adjacency, edge counting $|E(G)|$, and the no-isolated-vertices condition $\\forall v,\\;\\deg(v) \\ge 1$.",
+      "mathContext": "Defines $\\text{SGraph}(n)$ with symmetric irreflexive adjacency, edge counting $|E(G)|$, and the no-isolated-vertices condition $\\forall v,\\;\\deg(v) \\ge 1$."
     },
     {
       "id": "ramsey-axioms",
       "title": "Ramsey Number Axioms",
       "startLine": 41,
       "endLine": 50,
-      "summary": "Axiomatizes both the classical Ramsey number $R(G,H) = \\min\\{N : K_N \\to (G,H)\\}$ and the size Ramsey number $\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$."
+      "summary": "Axiomatizes both the classical Ramsey number $R(G,H) = \\min\\{N : K_N \\to (G,H)\\}$ and the size Ramsey number $\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$.",
+      "mathContext": "Axiomatizes both the classical Ramsey number $R(G,H) = \\min\\{N : K_N \\to (G,H)\\}$ and the size Ramsey number $\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$."
     },
     {
       "id": "graph-predicates",
       "title": "Tree and Complete Graph Predicates",
       "startLine": 52,
       "endLine": 58,
-      "summary": "Defines trees ($|E| = n-1$, $n \\ge 1$) and complete graphs ($\\forall i \\ne j,\\;\\text{adj}(i,j)$) — the two extremes of graph density that appear in the hypothesis."
+      "summary": "Defines trees ($|E| = n-1$, $n \\ge 1$) and complete graphs ($\\forall i \\ne j,\\;\\text{adj}(i,j)$) — the two extremes of graph density that appear in the hypothesis.",
+      "mathContext": "Defines trees ($|E| = n-1$, $n \\ge 1$) and complete graphs ($\\forall i \\ne j,\\;\\text{adj}(i,j)$) — the two extremes of graph density that appear in the hypothesis."
     },
     {
       "id": "hypothesis-conditions",
       "title": "Tree and Clique Ramsey Conditions",
       "startLine": 60,
       "endLine": 70,
-      "summary": "Defines $\\text{LinearTreeRamsey}(G)$: $\\exists C,\\;R(G,T_n) \\le Cn$ and $\\text{QuadraticCliqueRamsey}(G)$: $\\exists C,\\;R(G,K_n) \\le Cn^2$. These are the two hypotheses of the EFRS conjecture."
+      "summary": "Defines $\\text{LinearTreeRamsey}(G)$: $\\exists C,\\;R(G,T_n) \\le Cn$ and $\\text{QuadraticCliqueRamsey}(G)$: $\\exists C,\\;R(G,K_n) \\le Cn^2$. These are the two hypotheses of the EFRS conjecture.",
+      "mathContext": "Defines $\\text{LinearTreeRamsey}(G)$: $\\exists C,\\;R(G,T_n) \\le Cn$ and $\\text{QuadraticCliqueRamsey}(G)$: $\\exists C,\\;R(G,K_n) \\le Cn^2$. These are the two hypotheses of the EFRS conjecture."
     },
     {
       "id": "size-linearity",
       "title": "Size Linearity Definition",
       "startLine": 72,
       "endLine": 78,
-      "summary": "Defines $\\text{IsRamseySizeLinear}(G)$: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$. This is the conclusion of the conjecture."
+      "summary": "Defines $\\text{IsRamseySizeLinear}(G)$: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$. This is the conclusion of the conjecture.",
+      "mathContext": "Defines $\\text{IsRamseySizeLinear}(G)$: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$. This is the conclusion of the conjecture."
     },
     {
       "id": "main-conjecture",
       "title": "The EFRS Conjecture",
       "startLine": 80,
       "endLine": 87,
-      "summary": "States the open conjecture: $\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$. Formalized as an axiom since the problem is unresolved."
+      "summary": "States the open conjecture: $\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$. Formalized as an axiom since the problem is unresolved.",
+      "mathContext": "States the open conjecture: $\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$. Formalized as an axiom since the problem is unresolved."
     }
   ],
   "overview": {

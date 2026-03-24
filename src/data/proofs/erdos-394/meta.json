@@ -87,70 +87,80 @@
       "title": "Basic Definitions",
       "startLine": 38,
       "endLine": 67,
-      "summary": "consecutiveProduct, t_k(n), divides_consecutive"
+      "summary": "consecutiveProduct, t_k(n), divides_consecutive",
+      "mathContext": "consecutiveProduct, t_k(n), divides_consecutive"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties of t_k",
       "startLine": 68,
       "endLine": 95,
-      "summary": "Well-definedness, t₂(p) = p - 1 for primes"
+      "summary": "Well-definedness, t₂(p) = p - 1 for primes",
+      "mathContext": "Well-definedness, t₂(p) = p - 1 for primes"
     },
     {
       "id": "sum-t2",
       "title": "The Sum Σ t₂(n)",
       "startLine": 96,
       "endLine": 124,
-      "summary": "Sum function S, trivial lower bound, original conjecture"
+      "summary": "Sum function S, trivial lower bound, original conjecture",
+      "mathContext": "Sum function S, trivial lower bound, original conjecture"
     },
     {
       "id": "erdos-hall",
       "title": "Erdős-Hall Theorem (1978)",
       "startLine": 125,
       "endLine": 143,
-      "summary": "(log log log x / log log x)x² upper bound"
+      "summary": "(log log log x / log log x)x² upper bound",
+      "mathContext": "(log log log x / log log x)x² upper bound"
     },
     {
       "id": "erdos-hall-conjecture",
       "title": "Erdős-Hall Conjecture",
       "startLine": 144,
       "endLine": 166,
-      "summary": "o(x²/(log x)^c) for c < log 2"
+      "summary": "o(x²/(log x)^c) for c < log 2",
+      "mathContext": "o(x²/(log x)^c) for c < log 2"
     },
     {
       "id": "hierarchy",
       "title": "The Hierarchy Question",
       "startLine": 167,
       "endLine": 181,
-      "summary": "Σ t_{k+1} = o(Σ t_k)?"
+      "summary": "Σ t_{k+1} = o(Σ t_k)?",
+      "mathContext": "Σ t_{k+1} = o(Σ t_k)?"
     },
     {
       "id": "factorials",
       "title": "Special Cases (Factorials)",
       "startLine": 182,
       "endLine": 214,
-      "summary": "t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n"
+      "summary": "t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n",
+      "mathContext": "t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n"
     },
     {
       "id": "selfridge",
       "title": "The Selfridge Result",
       "startLine": 215,
       "endLine": 233,
-      "summary": "Strict decrease property, n = 10 case"
+      "summary": "Strict decrease property, n = 10 case",
+      "mathContext": "Strict decrease property, n = 10 case"
     },
     {
       "id": "connections",
       "title": "Why This is Interesting",
       "startLine": 234,
       "endLine": 262,
-      "summary": "Factorial divisibility, probabilistic intuition, smooth numbers"
+      "summary": "Factorial divisibility, probabilistic intuition, smooth numbers",
+      "mathContext": "Factorial divisibility, probabilistic intuition, smooth numbers"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 263,
       "endLine": 306,
-      "summary": "Summary theorem and main result"
+      "summary": "Summary theorem and main result",
+      "mathContext": "Summary theorem and main result"
     }
   ],
   "conclusion": {

@@ -30,56 +30,64 @@
       "title": "Part I: Imports and Setup",
       "startLine": 20,
       "endLine": 23,
-      "summary": "Imports `Mathlib.Data.Nat.Basic`, `Mathlib.Data.Real.Basic`, `Mathlib.Data.Finset.Basic`, and `Mathlib.Tactic` for arithmetic, real analysis, finite sets, and proof tactics."
+      "summary": "Imports `Mathlib.Data.Nat.Basic`, `Mathlib.Data.Real.Basic`, `Mathlib.Data.Finset.Basic`, and `Mathlib.Tactic` for arithmetic, real analysis, finite sets, and proof tactics.",
+      "mathContext": "Imports `Mathlib.Data.Nat.Basic`, `Mathlib.Data.Real.Basic`, `Mathlib.Data.Finset.Basic`, and `Mathlib.Tactic` for arithmetic, real analysis, finite sets, and proof tactics."
     },
     {
       "id": "point-distance",
       "title": "Part II: Points and Distance",
       "startLine": 28,
       "endLine": 37,
-      "summary": "Defines $\\text{Point2} = \\mathbb{R} \\times \\mathbb{R}$ and squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$. The bipartite distance set $\\text{bipartiteDistSet}(X,Y) = \\{d^2(x,y) \\mid x \\in X, y \\in Y\\}$ captures all cross-pair distances."
+      "summary": "Defines $\\text{Point2} = \\mathbb{R} \\times \\mathbb{R}$ and squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$. The bipartite distance set $\\text{bipartiteDistSet}(X,Y) = \\{d^2(x,y) \\mid x \\in X, y \\in Y\\}$ captures all cross-pair distances.",
+      "mathContext": "Defines $\\text{Point2} = \\mathbb{R} \\times \\mathbb{R}$ and squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$. The bipartite distance set $\\text{bipartiteDistSet}(X,Y) = \\{d^2(x,y) "
     },
     {
       "id": "extremal-functions",
       "title": "Part III: Extremal Functions F(2n) and f(2n)",
       "startLine": 38,
       "endLine": 45,
-      "summary": "Axiomatizes $F(2n)$, the minimum bipartite distinct distances between two $n$-point sets, and $f(2n)$, the minimum over all $2n$-point sets. The central question is whether $F(2n) = o(f(2n))$."
+      "summary": "Axiomatizes $F(2n)$, the minimum bipartite distinct distances between two $n$-point sets, and $f(2n)$, the minimum over all $2n$-point sets. The central question is whether $F(2n) = o(f(2n))$.",
+      "mathContext": "Axiomatizes $F(2n)$, the minimum bipartite distinct distances between two $n$-point sets, and $f(2n)$, the minimum over all $2n$-point sets. The central question is whether $F(2n) = o(f(2n))$."
     },
     {
       "id": "main-conjecture",
       "title": "Part IV: The Erdős–Pach Conjecture",
       "startLine": 46,
       "endLine": 55,
-      "summary": "States the main conjecture: $\\forall \\varepsilon > 0, \\exists N_0$ such that $n \\ge N_0 \\Rightarrow F(2n) \\le \\varepsilon \\cdot f(2n)$, formalized as `erdos_661_bipartite_advantage`. This asserts the bipartite structure provides asymptotically fewer distances."
+      "summary": "States the main conjecture: $\\forall \\varepsilon > 0, \\exists N_0$ such that $n \\ge N_0 \\Rightarrow F(2n) \\le \\varepsilon \\cdot f(2n)$, formalized as `erdos_661_bipartite_advantage`. This asserts the bipartite structure provides asymptotically fewer distances.",
+      "mathContext": "States the main conjecture: $\\forall \\varepsilon > 0, \\exists N_0$ such that $n \\ge N_0 \\Rightarrow F(2n) \\le \\varepsilon \\cdot f(2n)$, formalized as `erdos_661_bipartite_advantage`. This asserts the "
     },
     {
       "id": "guth-katz",
       "title": "Part V: Guth–Katz Lower Bound",
       "startLine": 56,
       "endLine": 64,
-      "summary": "Axiomatizes the landmark Guth–Katz (2015) result: $f(2n) \\ge C \\cdot n / \\log n$ for some constant $C > 0$. This essentially resolved Erdős's distinct distances problem (Problem #89) and sets the benchmark for the bipartite variant."
+      "summary": "Axiomatizes the landmark Guth–Katz (2015) result: $f(2n) \\ge C \\cdot n / \\log n$ for some constant $C > 0$. This essentially resolved Erdős's distinct distances problem (Problem #89) and sets the benchmark for the bipartite variant.",
+      "mathContext": "Axiomatizes the landmark Guth–Katz (2015) result: $f(2n) \\ge C \\cdot n / \\log n$ for some constant $C > 0$. This essentially resolved Erdős's distinct distances problem (Problem #89) and sets the benc"
     },
     {
       "id": "lattice-upper",
       "title": "Part VI: Lattice Upper Bound",
       "startLine": 65,
       "endLine": 71,
-      "summary": "Axiomatizes the lattice upper bound: $f(2n) \\le C \\cdot n / \\sqrt{\\log n}$, achieved by the integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$. The gap between $n/\\log n$ and $n/\\sqrt{\\log n}$ remains open even for general point sets."
+      "summary": "Axiomatizes the lattice upper bound: $f(2n) \\le C \\cdot n / \\sqrt{\\log n}$, achieved by the integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$. The gap between $n/\\log n$ and $n/\\sqrt{\\log n}$ remains open even for general point sets.",
+      "mathContext": "Axiomatizes the lattice upper bound: $f(2n) \\le C \\cdot n / \\sqrt{\\log n}$, achieved by the integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$. The gap between $n/\\log n$ and $n/\\sqrt{\\log n}$ remains open eve"
     },
     {
       "id": "lenz-construction",
       "title": "Part VII: Lenz Construction in ℝ⁴",
       "startLine": 72,
       "endLine": 77,
-      "summary": "Records Lenz's construction in $\\mathbb{R}^4$: place $n$ points on each of two orthogonal unit circles; every bipartite distance equals $\\sqrt{2}$, so $F(2n) = 1$. This dramatic saving is impossible in $\\mathbb{R}^2$."
+      "summary": "Records Lenz's construction in $\\mathbb{R}^4$: place $n$ points on each of two orthogonal unit circles; every bipartite distance equals $\\sqrt{2}$, so $F(2n) = 1$. This dramatic saving is impossible in $\\mathbb{R}^2$.",
+      "mathContext": "Records Lenz's construction in $\\mathbb{R}^4$: place $n$ points on each of two orthogonal unit circles; every bipartite distance equals $\\sqrt{2}$, so $F(2n) = 1$. This dramatic saving is impossible i"
     },
     {
       "id": "observations",
       "title": "Part VIII: Observations and Connections",
       "startLine": 78,
       "endLine": 84,
-      "summary": "Notes the connection to Erdős Problem #89 (general distinct distances), states Erdős's \\$50 reward, and links the bipartite variant to broader questions in incidence geometry."
+      "summary": "Notes the connection to Erdős Problem #89 (general distinct distances), states Erdős's \\$50 reward, and links the bipartite variant to broader questions in incidence geometry.",
+      "mathContext": "Notes the connection to Erdős Problem #89 (general distinct distances), states Erdős's \\$50 reward, and links the bipartite variant to broader questions in incidence geometry."
     }
   ],
   "overview": {

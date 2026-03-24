@@ -48,56 +48,64 @@
       "title": "Part I: Basic Definitions",
       "startLine": 46,
       "endLine": 59,
-      "summary": "nthPrime via Nat.nth, primeGap = p_{n+1} - p_n, normalizedGap = gap/log(n)"
+      "summary": "nthPrime via Nat.nth, primeGap = p_{n+1} - p_n, normalizedGap = gap/log(n)",
+      "mathContext": "nthPrime via Nat.nth, primeGap = p_{n+1} - p_n, normalizedGap = gap/log(n)"
     },
     {
       "id": "limit-points",
       "title": "Part II: The Set of Limit Points",
       "startLine": 60,
       "endLine": 73,
-      "summary": "IsLimitPoint via subsequential convergence, limitPointSet, InfinityIsLimitPoint"
+      "summary": "IsLimitPoint via subsequential convergence, limitPointSet, InfinityIsLimitPoint",
+      "mathContext": "IsLimitPoint via subsequential convergence, limitPointSet, InfinityIsLimitPoint"
     },
     {
       "id": "conjecture",
       "title": "Part III: The Main Conjecture",
       "startLine": 74,
       "endLine": 82,
-      "summary": "erdos_5: every C ≥ 0 is a limit point ∧ ∞ is a limit point"
+      "summary": "erdos_5: every C ≥ 0 is a limit point ∧ ∞ is a limit point",
+      "mathContext": "erdos_5: every C ≥ 0 is a limit point ∧ ∞ is a limit point"
     },
     {
       "id": "known-results",
       "title": "Part IV: Known Results (Axioms)",
       "startLine": 83,
       "endLine": 105,
-      "summary": "Westzynthius (∞ ∈ S), Erdős-Ricci (positive measure, noted), Merikoski (bounded gaps in S)"
+      "summary": "Westzynthius (∞ ∈ S), Erdős-Ricci (positive measure, noted), Merikoski (bounded gaps in S)",
+      "mathContext": "Westzynthius (∞ ∈ S), Erdős-Ricci (positive measure, noted), Merikoski (bounded gaps in S)"
     },
     {
       "id": "basic-properties",
       "title": "Part V: Basic Properties",
       "startLine": 106,
       "endLine": 166,
-      "summary": "nthPrime values, primeGap positivity, strict monotonicity, growth bounds"
+      "summary": "nthPrime values, primeGap positivity, strict monotonicity, growth bounds",
+      "mathContext": "nthPrime values, primeGap positivity, strict monotonicity, growth bounds"
     },
     {
       "id": "gap-distribution",
       "title": "Part VI: Gap Distribution",
       "startLine": 167,
       "endLine": 177,
-      "summary": "averageGap, Cramér's conjecture definition"
+      "summary": "averageGap, Cramér's conjecture definition",
+      "mathContext": "averageGap, Cramér's conjecture definition"
     },
     {
       "id": "connections",
       "title": "Part VII: Connections",
       "startLine": 178,
       "endLine": 340,
-      "summary": "strictly_increasing_from_frequently, twin_prime_implies_zero_limit, zhang_implies_zero_limit, GPY derived from Zhang"
+      "summary": "strictly_increasing_from_frequently, twin_prime_implies_zero_limit, zhang_implies_zero_limit, GPY derived from Zhang",
+      "mathContext": "strictly_increasing_from_frequently, twin_prime_implies_zero_limit, zhang_implies_zero_limit, GPY derived from Zhang"
     },
     {
       "id": "structural",
       "title": "Part VIII: Structural Results",
       "startLine": 341,
       "endLine": 380,
-      "summary": "westzynthius_implies_frequently_large, limitPointSet_nonempty, limitPointSet_unbounded, erdos5_from_full, erdos5_known_partial"
+      "summary": "westzynthius_implies_frequently_large, limitPointSet_nonempty, limitPointSet_unbounded, erdos5_from_full, erdos5_known_partial",
+      "mathContext": "westzynthius_implies_frequently_large, limitPointSet_nonempty, limitPointSet_unbounded, erdos5_from_full, erdos5_known_partial"
     }
   ],
   "conclusion": {

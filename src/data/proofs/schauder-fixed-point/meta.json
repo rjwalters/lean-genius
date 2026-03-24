@@ -83,63 +83,72 @@
       "title": "Fixed Point Framework",
       "startLine": 68,
       "endLine": 77,
-      "summary": "Basic definitions of fixed points and the HasFixedPtIn predicate."
+      "summary": "Basic definitions of fixed points and the HasFixedPtIn predicate.",
+      "mathContext": "Basic definitions of fixed points and the HasFixedPtIn predicate."
     },
     {
       "id": "foundational-axioms",
       "title": "Foundational Axioms",
       "startLine": 79,
       "endLine": 148,
-      "summary": "The axioms: Schauder projection lemma, Brouwer FPT, Brouwer for finite-dim subsets, and Mazur's theorem."
+      "summary": "The axioms: Schauder projection lemma, Brouwer FPT, Brouwer for finite-dim subsets, and Mazur's theorem.",
+      "mathContext": "The axioms: Schauder projection lemma, Brouwer FPT, Brouwer for finite-dim subsets, and Mazur's theorem."
     },
     {
       "id": "schauder-normed",
       "title": "Schauder Fixed Point Theorem (PROVED)",
       "startLine": 150,
       "endLine": 330,
-      "summary": "The main theorem proved from projection lemma + Brouwer via finite-dimensional approximation and sequential compactness. 1 sorry for closedness of convex hull in finite-dim subspace."
+      "summary": "The main theorem proved from projection lemma + Brouwer via finite-dimensional approximation and sequential compactness. 1 sorry for closedness of convex hull in finite-dim subspace.",
+      "mathContext": "The main theorem proved from projection lemma + Brouwer via finite-dimensional approximation and sequential compactness. 1 sorry for closedness of convex hull in finite-dim subspace."
     },
     {
       "id": "compact-operator",
       "title": "Compact Operator Version (PROVED)",
       "startLine": 332,
       "endLine": 350,
-      "summary": "Extension to non-compact domains with compact operators, proved from Schauder + Mazur's theorem. No sorry."
+      "summary": "Extension to non-compact domains with compact operators, proved from Schauder + Mazur's theorem. No sorry.",
+      "mathContext": "Extension to non-compact domains with compact operators, proved from Schauder + Mazur's theorem. No sorry."
     },
     {
       "id": "tychonoff",
       "title": "Tychonoff Fixed Point Theorem (PROVED)",
       "startLine": 352,
       "endLine": 374,
-      "summary": "Normed space case proved directly from Schauder. No sorry."
+      "summary": "Normed space case proved directly from Schauder. No sorry.",
+      "mathContext": "Normed space case proved directly from Schauder. No sorry."
     },
     {
       "id": "hierarchy",
       "title": "Theorem Hierarchy",
       "startLine": 376,
       "endLine": 410,
-      "summary": "The implication chain: interval FPT (fully proved), Brouwer from Schauder, Schauder from Tychonoff."
+      "summary": "The implication chain: interval FPT (fully proved), Brouwer from Schauder, Schauder from Tychonoff.",
+      "mathContext": "The implication chain: interval FPT (fully proved), Brouwer from Schauder, Schauder from Tychonoff."
     },
     {
       "id": "peano",
       "title": "Application: Peano Existence Theorem",
       "startLine": 412,
       "endLine": 435,
-      "summary": "How Schauder proves existence of ODE solutions where Brouwer cannot reach."
+      "summary": "How Schauder proves existence of ODE solutions where Brouwer cannot reach.",
+      "mathContext": "How Schauder proves existence of ODE solutions where Brouwer cannot reach."
     },
     {
       "id": "banach",
       "title": "Banach Contraction Mapping (PROVED)",
       "startLine": 437,
       "endLine": 475,
-      "summary": "Contractions as a special case, with uniqueness proved via Mathlib's ContractingWith API."
+      "summary": "Contractions as a special case, with uniqueness proved via Mathlib's ContractingWith API.",
+      "mathContext": "Contractions as a special case, with uniqueness proved via Mathlib's ContractingWith API."
     },
     {
       "id": "counterexample",
       "title": "Infinite-Dimensional Counterexample",
       "startLine": 520,
       "endLine": 537,
-      "summary": "Brouwer fails without compactness: continuous fixed-point-free self-maps of the unit ball exist in infinite dimensions."
+      "summary": "Brouwer fails without compactness: continuous fixed-point-free self-maps of the unit ball exist in infinite dimensions.",
+      "mathContext": "Brouwer fails without compactness: continuous fixed-point-free self-maps of the unit ball exist in infinite dimensions."
     }
   ],
   "conclusion": {

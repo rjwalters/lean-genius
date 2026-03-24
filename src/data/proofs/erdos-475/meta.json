@@ -92,63 +92,72 @@
       "title": "Imports and Setup",
       "startLine": 34,
       "endLine": 42,
-      "summary": "Imports `ZMod.Basic`, `Finset.Basic`, `List.Basic`, `Nat.Prime.Basic`, and `Real.Basic`. Opens the `Erdos475` namespace and `Finset` for notation."
+      "summary": "Imports `ZMod.Basic`, `Finset.Basic`, `List.Basic`, `Nat.Prime.Basic`, and `Real.Basic`. Opens the `Erdos475` namespace and `Finset` for notation.",
+      "mathContext": "Imports `ZMod.Basic`, `Finset.Basic`, `List.Basic`, `Nat.Prime.Basic`, and `Real.Basic`. Opens the `Erdos475` namespace and `Finset` for notation."
     },
     {
       "id": "valid-orderings",
       "title": "Valid Orderings",
       "startLine": 47,
       "endLine": 60,
-      "summary": "Defines `partialSums` via `List.scanl (· + ·) 0`, `IsValidOrdering A ordering` requiring $\\text{ordering.toFinset} = A$, no duplicates in the ordering, and no duplicates in partial sums. `GrahamConjecture p` universally quantifies over all non-zero $A \\subseteq \\mathbb{F}_p$."
+      "summary": "Defines `partialSums` via `List.scanl (· + ·) 0`, `IsValidOrdering A ordering` requiring $\\text{ordering.toFinset} = A$, no duplicates in the ordering, and no duplicates in partial sums. `GrahamConjecture p` universally quantifies over all non-zero $A \\subseteq \\mathbb{F}_p$.",
+      "mathContext": "Defines `partialSums` via `List.scanl (· + ·) 0`, `IsValidOrdering A ordering` requiring $\\text{ordering.toFinset} = A$, no duplicates in the ordering, and no duplicates in partial sums. `GrahamConjec"
     },
     {
       "id": "small-cases",
       "title": "Small Cases (Costa-Pellegrini 2020)",
       "startLine": 69,
       "endLine": 78,
-      "summary": "Axiomatizes `costa_pellegrini_2020` for $|A| \\leq 12$ with $p > 12$. The wrapper `small_sets_have_valid_orderings` directly applies the axiom. Costa and Pellegrini verified this via computation and theoretical reductions."
+      "summary": "Axiomatizes `costa_pellegrini_2020` for $|A| \\leq 12$ with $p > 12$. The wrapper `small_sets_have_valid_orderings` directly applies the axiom. Costa and Pellegrini verified this via computation and theoretical reductions.",
+      "mathContext": "Axiomatizes `costa_pellegrini_2020` for $|A| \\leq 12$ with $p > 12$. The wrapper `small_sets_have_valid_orderings` directly applies the axiom. Costa and Pellegrini verified this via computation and th"
     },
     {
       "id": "large-cases",
       "title": "Large Cases (Hicks-Ollis-Schmitt 2019)",
       "startLine": 87,
       "endLine": 99,
-      "summary": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$ and `graham_full_set` for $|A| = p - 1$. When $A$ is nearly all of $\\mathbb{F}_p \\setminus \\{0\\}$, structural arguments using the polynomial method suffice."
+      "summary": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$ and `graham_full_set` for $|A| = p - 1$. When $A$ is nearly all of $\\mathbb{F}_p \\setminus \\{0\\}$, structural arguments using the polynomial method suffice.",
+      "mathContext": "Axiomatizes `hicks_ollis_schmitt_2019` for $p - 3 \\leq |A| \\leq p - 1$ and `graham_full_set` for $|A| = p - 1$. When $A$ is nearly all of $\\mathbb{F}_p \\setminus \\{0\\}$, structural arguments using the"
     },
     {
       "id": "logarithmic",
       "title": "Logarithmic Range (Kravitz 2024)",
       "startLine": 109,
       "endLine": 113,
-      "summary": "Axiomatizes `kravitz_2024` for $|A| \\leq \\log p / \\log \\log p$. This was the strongest small-side bound before the rectification barrier was broken, independently observed by Will Sawin."
+      "summary": "Axiomatizes `kravitz_2024` for $|A| \\leq \\log p / \\log \\log p$. This was the strongest small-side bound before the rectification barrier was broken, independently observed by Will Sawin.",
+      "mathContext": "Axiomatizes `kravitz_2024` for $|A| \\leq \\log p / \\log \\log p$. This was the strongest small-side bound before the rectification barrier was broken, independently observed by Will Sawin."
     },
     {
       "id": "rectification-barrier",
       "title": "Beyond the Rectification Barrier (Bedert-Kravitz 2024)",
       "startLine": 128,
       "endLine": 132,
-      "summary": "Axiomatizes `bedert_kravitz_2024` for $|A| \\leq \\exp((\\log p)^{1/4})$. This breakthrough circumvents the rectification barrier that limited all previous methods to $\\log p / \\log \\log p$."
+      "summary": "Axiomatizes `bedert_kravitz_2024` for $|A| \\leq \\exp((\\log p)^{1/4})$. This breakthrough circumvents the rectification barrier that limited all previous methods to $\\log p / \\log \\log p$.",
+      "mathContext": "Axiomatizes `bedert_kravitz_2024` for $|A| \\leq \\exp((\\log p)^{1/4})$. This breakthrough circumvents the rectification barrier that limited all previous methods to $\\log p / \\log \\log p$."
     },
     {
       "id": "alspach",
       "title": "Alspach's Conjecture",
       "startLine": 141,
       "endLine": 149,
-      "summary": "Defines `AlspachConjecture G` for arbitrary finite abelian groups. Proves `graham_is_alspach_for_prime_field`: $\\text{GrahamConjecture}\\, p \\iff \\text{AlspachConjecture}\\, (\\mathbb{Z}/p\\mathbb{Z})$ by unfolding definitions."
+      "summary": "Defines `AlspachConjecture G` for arbitrary finite abelian groups. Proves `graham_is_alspach_for_prime_field`: $\\text{GrahamConjecture}\\, p \\iff \\text{AlspachConjecture}\\, (\\mathbb{Z}/p\\mathbb{Z})$ by unfolding definitions.",
+      "mathContext": "Defines `AlspachConjecture G` for arbitrary finite abelian groups. Proves `graham_is_alspach_for_prime_field`: $\\text{GrahamConjecture}\\, p \\iff \\text{AlspachConjecture}\\, (\\mathbb{Z}/p\\mathbb{Z})$ by"
     },
     {
       "id": "constructive",
       "title": "Constructive vs Existential",
       "startLine": 158,
       "endLine": 170,
-      "summary": "Defines `HasExplicitValidOrdering A` requiring a computable function producing a valid ordering. Axiomatizes `graham_constructive` for the full non-zero set, reflecting Graham's original constructive proof."
+      "summary": "Defines `HasExplicitValidOrdering A` requiring a computable function producing a valid ordering. Axiomatizes `graham_constructive` for the full non-zero set, reflecting Graham's original constructive proof.",
+      "mathContext": "Defines `HasExplicitValidOrdering A` requiring a computable function producing a valid ordering. Axiomatizes `graham_constructive` for the full non-zero set, reflecting Graham's original constructive "
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 192,
       "endLine": 209,
-      "summary": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN."
+      "summary": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ remains OPEN.",
+      "mathContext": "Proves `erdos_475_summary` combining small ($t \\leq 12$), large ($t \\geq p-3$), and medium ($t \\leq \\exp((\\log p)^{1/4})$) cases into a single conjunction. The general conjecture for arbitrary $t$ rem"
     }
   ],
   "conclusion": {

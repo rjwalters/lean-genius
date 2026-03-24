@@ -83,63 +83,72 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 21,
-      "summary": "Module docstring describing set A, Erdős's bounds, connection to simple group orders. Imports Mathlib."
+      "summary": "Module docstring describing set A, Erdős's bounds, connection to simple group orders. Imports Mathlib.",
+      "mathContext": "Module docstring describing set A, Erdős's bounds, connection to simple group orders. Imports Mathlib."
     },
     {
       "id": "set-a-definition",
       "title": "The Set A",
       "startLine": 22,
       "endLine": 43,
-      "summary": "Defines hasWitnessDivisor, inSetA, setA, and the alternative definition inSetA' using primeFactors and divisors."
+      "summary": "Defines hasWitnessDivisor, inSetA, setA, and the alternative definition inSetA' using primeFactors and divisors.",
+      "mathContext": "Defines hasWitnessDivisor, inSetA, setA, and the alternative definition inSetA' using primeFactors and divisors."
     },
     {
       "id": "basic-properties",
       "title": "Basic Membership Properties",
       "startLine": 44,
       "endLine": 76,
-      "summary": "Proves 1 ∈ A (vacuously), prime powers ∉ A (partial, with sorry), and states a criterion for products of special primes."
+      "summary": "Proves 1 ∈ A (vacuously), prime powers ∉ A (partial, with sorry), and states a criterion for products of special primes.",
+      "mathContext": "Proves 1 ∈ A (vacuously), prime powers ∉ A (partial, with sorry), and states a criterion for products of special primes."
     },
     {
       "id": "counting-density",
       "title": "Counting Function and Density",
       "startLine": 77,
       "endLine": 101,
-      "summary": "Defines countA via Finset.filter, densityA as the ratio, and exponentFunc = √(log N)·log log N."
+      "summary": "Defines countA via Finset.filter, densityA as the ratio, and exponentFunc = √(log N)·log log N.",
+      "mathContext": "Defines countA via Finset.filter, densityA as the ratio, and exponentFunc = √(log N)·log log N."
     },
     {
       "id": "erdos-bounds",
       "title": "Erdős's Density Bounds",
       "startLine": 102,
       "endLine": 127,
-      "summary": "States Erdős's lower bound (density ≥ exp(-c·f(N))) and upper bound (density ≤ exp(-(1+o(1))√(log N·log log N))) as axioms. Main conjecture as a disjunction."
+      "summary": "States Erdős's lower bound (density ≥ exp(-c·f(N))) and upper bound (density ≤ exp(-(1+o(1))√(log N·log log N))) as axioms. Main conjecture as a disjunction.",
+      "mathContext": "States Erdős's lower bound (density ≥ exp(-c·f(N))) and upper bound (density ≤ exp(-(1+o(1))√(log N·log log N))) as axioms. Main conjecture as a disjunction."
     },
     {
       "id": "simple-groups",
       "title": "Connection to Simple Groups",
       "startLine": 128,
       "endLine": 148,
-      "summary": "Defines isSimpleGroupOrder and isNonCyclicSimpleGroupOrder using Mathlib's IsSimpleGroup and IsCyclic. States that non-cyclic simple group orders are in A."
+      "summary": "Defines isSimpleGroupOrder and isNonCyclicSimpleGroupOrder using Mathlib's IsSimpleGroup and IsCyclic. States that non-cyclic simple group orders are in A.",
+      "mathContext": "Defines isSimpleGroupOrder and isNonCyclicSimpleGroupOrder using Mathlib's IsSimpleGroup and IsCyclic. States that non-cyclic simple group orders are in A."
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
       "startLine": 149,
       "endLine": 166,
-      "summary": "Squarefree part structure theorem (sorry) and existence of smallest non-trivial element of A."
+      "summary": "Squarefree part structure theorem (sorry) and existence of smallest non-trivial element of A.",
+      "mathContext": "Squarefree part structure theorem (sorry) and existence of smallest non-trivial element of A."
     },
     {
       "id": "asymptotic-analysis",
       "title": "Asymptotic Analysis and OEIS",
       "startLine": 167,
       "endLine": 206,
-      "summary": "Log-log density definition, scaling axiom, small elements from OEIS A352287, and proof that 6 ∈ A via interval_cases."
+      "summary": "Log-log density definition, scaling axiom, small elements from OEIS A352287, and proof that 6 ∈ A via interval_cases.",
+      "mathContext": "Log-log density definition, scaling axiom, small elements from OEIS A352287, and proof that 6 ∈ A via interval_cases."
     },
     {
       "id": "main-problem",
       "title": "Main Open Problem",
       "startLine": 207,
       "endLine": 230,
-      "summary": "Formal statement: there exist c₁ ≤ c₂ bounding the density between exp(-c₂·f(N)) and exp(-c₁·f(N)) for all N ≥ 10."
+      "summary": "Formal statement: there exist c₁ ≤ c₂ bounding the density between exp(-c₂·f(N)) and exp(-c₁·f(N)) for all N ≥ 10.",
+      "mathContext": "Formal statement: there exist c₁ ≤ c₂ bounding the density between exp(-c₂·f(N)) and exp(-c₁·f(N)) for all N ≥ 10."
     }
   ],
   "conclusion": {

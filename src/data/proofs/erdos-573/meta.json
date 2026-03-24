@@ -76,70 +76,80 @@
       "title": "Basic Definitions",
       "startLine": 45,
       "endLine": 70,
-      "summary": "Triangle-free, C₄-free, and {C₃, C₄}-free predicates"
+      "summary": "Triangle-free, C₄-free, and {C₃, C₄}-free predicates",
+      "mathContext": "Triangle-free, C₄-free, and {C₃, C₄}-free predicates"
     },
     {
       "id": "edge-counting",
       "title": "Edge Counting",
       "startLine": 71,
       "endLine": 76,
-      "summary": "Edge count for simple graphs"
+      "summary": "Edge count for simple graphs",
+      "mathContext": "Edge count for simple graphs"
     },
     {
       "id": "extremal-function",
       "title": "Extremal Function",
       "startLine": 77,
       "endLine": 94,
-      "summary": "Definition of ex(n; {C₃, C₄}) and ex(n; C₄) with trivial bound"
+      "summary": "Definition of ex(n; {C₃, C₄}) and ex(n; C₄) with trivial bound",
+      "mathContext": "Definition of ex(n; {C₃, C₄}) and ex(n; C₄) with trivial bound"
     },
     {
       "id": "kst-theorem",
       "title": "Kővári-Sós-Turán Theorem",
       "startLine": 95,
       "endLine": 109,
-      "summary": "Upper bound ex(n; C₄) ≤ (1/2)n^(3/2) + O(n) and asymptotic"
+      "summary": "Upper bound ex(n; C₄) ≤ (1/2)n^(3/2) + O(n) and asymptotic",
+      "mathContext": "Upper bound ex(n; C₄) ≤ (1/2)n^(3/2) + O(n) and asymptotic"
     },
     {
       "id": "erdos-simonovits",
       "title": "Erdős-Simonovits Result",
       "startLine": 110,
       "endLine": 121,
-      "summary": "ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)"
+      "summary": "ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)",
+      "mathContext": "ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 122,
       "endLine": 132,
-      "summary": "Formal statement: ex(n; {C₃, C₄}) ~ (n/2)^(3/2)"
+      "summary": "Formal statement: ex(n; {C₃, C₄}) ~ (n/2)^(3/2)",
+      "mathContext": "Formal statement: ex(n; {C₃, C₄}) ~ (n/2)^(3/2)"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 133,
       "endLine": 145,
-      "summary": "Upper and lower bounds on ex(n; {C₃, C₄})"
+      "summary": "Upper and lower bounds on ex(n; {C₃, C₄})",
+      "mathContext": "Upper and lower bounds on ex(n; {C₃, C₄})"
     },
     {
       "id": "constructions",
       "title": "Special Constructions",
       "startLine": 146,
       "endLine": 161,
-      "summary": "Polarity graphs and projective plane constructions"
+      "summary": "Polarity graphs and projective plane constructions",
+      "mathContext": "Polarity graphs and projective plane constructions"
     },
     {
       "id": "asymptotic-gap",
       "title": "The Asymptotic Gap",
       "startLine": 162,
       "endLine": 173,
-      "summary": "Gap between C₄-free and {C₃,C₄}-free leading constants"
+      "summary": "Gap between C₄-free and {C₃,C₄}-free leading constants",
+      "mathContext": "Gap between C₄-free and {C₃,C₄}-free leading constants"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 174,
       "endLine": 198,
-      "summary": "Main theorems: erdos_573 and erdos_573_summary"
+      "summary": "Main theorems: erdos_573 and erdos_573_summary",
+      "mathContext": "Main theorems: erdos_573 and erdos_573_summary"
     }
   ],
   "conclusion": {

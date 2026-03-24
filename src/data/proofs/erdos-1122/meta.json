@@ -122,63 +122,72 @@
       "title": "Additive Functions",
       "startLine": 44,
       "endLine": 64,
-      "summary": "Defines `IsAdditive f` (f(ab) = f(a) + f(b) for coprime a,b ≥ 1) and `IsCompletelyAdditive f` (for all a,b ≥ 1). Proves `log_completely_additive` via `Nat.cast_mul` and `Real.log_mul`. Defines `valueDeterminedByPrimes` using `Nat.primeFactors` and `Nat.factorization`."
+      "summary": "Defines `IsAdditive f` (f(ab) = f(a) + f(b) for coprime a,b ≥ 1) and `IsCompletelyAdditive f` (for all a,b ≥ 1). Proves `log_completely_additive` via `Nat.cast_mul` and `Real.log_mul`. Defines `valueDeterminedByPrimes` using `Nat.primeFactors` and `Nat.factorization`.",
+      "mathContext": "Defines `IsAdditive f` (f(ab) = f(a) + f(b) for coprime a,b ≥ 1) and `IsCompletelyAdditive f` (for all a,b ≥ 1). Proves `log_completely_additive` via `Nat.cast_mul` and `Real.log_mul`. Defines `valueD"
     },
     {
       "id": "sec-defect-set",
       "title": "Monotonicity Defect Set",
       "startLine": 65,
       "endLine": 92,
-      "summary": "Defines `monotonicityDefectSet f` = {n ≥ 1 : f(n+1) < f(n)}, `defectCount` via `Finset.filter` on `Finset.range`, `defectIsLittleO` (ε-N formulation), and `hasEmptyDefectSet`. Proves `empty_defect_means_increasing` by contradiction with `Set.mem_empty`."
+      "summary": "Defines `monotonicityDefectSet f` = {n ≥ 1 : f(n+1) < f(n)}, `defectCount` via `Finset.filter` on `Finset.range`, `defectIsLittleO` (ε-N formulation), and `hasEmptyDefectSet`. Proves `empty_defect_means_increasing` by contradiction with `Set.mem_empty`.",
+      "mathContext": "Defines `monotonicityDefectSet f` = {n ≥ 1 : f(n+1) < f(n)}, `defectCount` via `Finset.filter` on `Finset.range`, `defectIsLittleO` (ε-N formulation), and `hasEmptyDefectSet`. Proves `empty_defect_mea"
     },
     {
       "id": "sec-logarithmic",
       "title": "Logarithmic Form",
       "startLine": 93,
       "endLine": 112,
-      "summary": "Defines `hasLogarithmicForm f` = ∃ c, f(n) = c·log(n). Proves `zero_is_logarithmic` (use 0, simp) and `logarithmic_is_additive` via `obtain ⟨c, hc⟩`, `Real.log_mul`, and `ring`."
+      "summary": "Defines `hasLogarithmicForm f` = ∃ c, f(n) = c·log(n). Proves `zero_is_logarithmic` (use 0, simp) and `logarithmic_is_additive` via `obtain ⟨c, hc⟩`, `Real.log_mul`, and `ring`.",
+      "mathContext": "Defines `hasLogarithmicForm f` = ∃ c, f(n) = c·log(n). Proves `zero_is_logarithmic` (use 0, simp) and `logarithmic_is_additive` via `obtain ⟨c, hc⟩`, `Real.log_mul`, and `ring`."
     },
     {
       "id": "sec-erdos-results",
       "title": "Erdős's Known Results",
       "startLine": 113,
       "endLine": 127,
-      "summary": "Axiomatizes `erdos_empty_defect` (1946) and `erdos_vanishing_increments` (Kátai-Wirsing). Defines `incrementsVanish` using `Tendsto (fun n => f(n+1) - f n) atTop (nhds 0)`."
+      "summary": "Axiomatizes `erdos_empty_defect` (1946) and `erdos_vanishing_increments` (Kátai-Wirsing). Defines `incrementsVanish` using `Tendsto (fun n => f(n+1) - f n) atTop (nhds 0)`.",
+      "mathContext": "Axiomatizes `erdos_empty_defect` (1946) and `erdos_vanishing_increments` (Kátai-Wirsing). Defines `incrementsVanish` using `Tendsto (fun n => f(n+1) - f n) atTop (nhds 0)`."
     },
     {
       "id": "sec-mangerel",
       "title": "Mangerel's Progress",
       "startLine": 128,
       "endLine": 145,
-      "summary": "Defines `satisfiesMangerelDensity` (X/(log X)^{2+c} bound with ∃ c > 0, C > 0) and `hasBoundedPrimeValues` (|f(p)| ≤ ε·log(p) eventually). Axiomatizes `mangerel_2022`."
+      "summary": "Defines `satisfiesMangerelDensity` (X/(log X)^{2+c} bound with ∃ c > 0, C > 0) and `hasBoundedPrimeValues` (|f(p)| ≤ ε·log(p) eventually). Axiomatizes `mangerel_2022`.",
+      "mathContext": "Defines `satisfiesMangerelDensity` (X/(log X)^{2+c} bound with ∃ c > 0, C > 0) and `hasBoundedPrimeValues` (|f(p)| ≤ ε·log(p) eventually). Axiomatizes `mangerel_2022`."
     },
     {
       "id": "sec-conjecture",
       "title": "The Conjecture",
       "startLine": 146,
       "endLine": 155,
-      "summary": "Defines `erdos1122Conjecture : Prop := ∀ f, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f`. Axiomatizes `erdos_1122 : erdos1122Conjecture` as OPEN."
+      "summary": "Defines `erdos1122Conjecture : Prop := ∀ f, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f`. Axiomatizes `erdos_1122 : erdos1122Conjecture` as OPEN.",
+      "mathContext": "Defines `erdos1122Conjecture : Prop := ∀ f, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f`. Axiomatizes `erdos_1122 : erdos1122Conjecture` as OPEN."
     },
     {
       "id": "sec-hierarchy",
       "title": "Condition Hierarchy",
       "startLine": 156,
       "endLine": 180,
-      "summary": "Proves `empty_implies_littleO` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. Axiomatizes `mangerel_implies_littleO`. Defines `conditionHierarchy` as the conjunction of both implications."
+      "summary": "Proves `empty_implies_littleO` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. Axiomatizes `mangerel_implies_littleO`. Defines `conditionHierarchy` as the conjunction of both implications.",
+      "mathContext": "Proves `empty_implies_littleO` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. Axiomatizes `mangerel_implies_littleO`. Defines `conditionHierarchy` as the conjunction of both implications."
     },
     {
       "id": "sec-examples",
       "title": "Examples",
       "startLine": 181,
       "endLine": 200,
-      "summary": "Proves `log_has_empty_defect` via `Real.log_le_log` and `ext`/`simp`. Defines `omega` via `Nat.primeFactors.card`. Axiomatizes `omega_is_additive` and `omega_not_logarithmic`."
+      "summary": "Proves `log_has_empty_defect` via `Real.log_le_log` and `ext`/`simp`. Defines `omega` via `Nat.primeFactors.card`. Axiomatizes `omega_is_additive` and `omega_not_logarithmic`.",
+      "mathContext": "Proves `log_has_empty_defect` via `Real.log_le_log` and `ext`/`simp`. Defines `omega` via `Nat.primeFactors.card`. Axiomatizes `omega_is_additive` and `omega_not_logarithmic`."
     },
     {
       "id": "sec-summary",
       "title": "Summary of Known Results",
       "startLine": 201,
       "endLine": 217,
-      "summary": "Proves `erdos_1122_summary` as a triple conjunction via `refine ⟨?_, ?_, ?_⟩` with `exact erdos_empty_defect`, `exact erdos_vanishing_increments`, `exact mangerel_2022`."
+      "summary": "Proves `erdos_1122_summary` as a triple conjunction via `refine ⟨?_, ?_, ?_⟩` with `exact erdos_empty_defect`, `exact erdos_vanishing_increments`, `exact mangerel_2022`.",
+      "mathContext": "Proves `erdos_1122_summary` as a triple conjunction via `refine ⟨?_, ?_, ?_⟩` with `exact erdos_empty_defect`, `exact erdos_vanishing_increments`, `exact mangerel_2022`."
     }
   ],
   "conclusion": {

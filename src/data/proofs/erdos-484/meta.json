@@ -54,56 +54,64 @@
       "title": "Basic Definitions",
       "startLine": 34,
       "endLine": 64,
-      "summary": "Defines **Coloring N k** = Fin N → Fin k, **colorClass χ c** via Finset.filter, **isMonochromaticSum χ s** (s = a+b with same color, a≠b), and **monochromaticSums χ** = {s | isMonochromaticSum χ s}. These encode the partition and sumset structure."
+      "summary": "Defines **Coloring N k** = Fin N → Fin k, **colorClass χ c** via Finset.filter, **isMonochromaticSum χ s** (s = a+b with same color, a≠b), and **monochromaticSums χ** = {s | isMonochromaticSum χ s}. These encode the partition and sumset structure.",
+      "mathContext": "Defines **Coloring N k** = Fin N → Fin k, **colorClass χ c** via Finset.filter, **isMonochromaticSum χ s** (s = a+b with same color, a≠b), and **monochromaticSums χ** = {s | isMonochromaticSum χ s}. T"
     },
     {
       "id": "roth-conjecture",
       "title": "Roth's Conjecture (Proved)",
       "startLine": 65,
       "endLine": 83,
-      "summary": "**roth_conjecture**: ∃ c > 0, ∀ k ≥ 1, ∃ N₀, ∀ N ≥ N₀, ∀ χ, |monochromaticSums χ| ≥ cN. **roth_conjecture_true**: axiomatized as proved by Erdős-Sárközy-Sós (1989). The nested quantifiers separate the universal constant from the k-dependent threshold."
+      "summary": "**roth_conjecture**: ∃ c > 0, ∀ k ≥ 1, ∃ N₀, ∀ N ≥ N₀, ∀ χ, |monochromaticSums χ| ≥ cN. **roth_conjecture_true**: axiomatized as proved by Erdős-Sárközy-Sós (1989). The nested quantifiers separate the universal constant from the k-dependent threshold.",
+      "mathContext": "**roth_conjecture**: ∃ c > 0, ∀ k ≥ 1, ∃ N₀, ∀ N ≥ N₀, ∀ χ, |monochromaticSums χ| ≥ cN. **roth_conjecture_true**: axiomatized as proved by Erdős-Sárközy-Sós (1989). The nested quantifiers separate the"
     },
     {
       "id": "ess-theorem",
       "title": "Erdős-Sárközy-Sós Theorem",
       "startLine": 84,
       "endLine": 119,
-      "summary": "**ESS_theorem**: ≥ N/2 − C·N^{1−1/2^{k+1}} even numbers are representable monochromatic sums. **even_sum_parity**: parity is additive. **exponent_sublinear**: error exponent < 1 always. Uses Fourier analysis and the large sieve inequality."
+      "summary": "**ESS_theorem**: ≥ N/2 − C·N^{1−1/2^{k+1}} even numbers are representable monochromatic sums. **even_sum_parity**: parity is additive. **exponent_sublinear**: error exponent < 1 always. Uses Fourier analysis and the large sieve inequality.",
+      "mathContext": "**ESS_theorem**: ≥ N/2 − C·N^{1−1/2^{k+1}} even numbers are representable monochromatic sums. **even_sum_parity**: parity is additive. **exponent_sublinear**: error exponent < 1 always. Uses Fourier a"
     },
     {
       "id": "two-coloring",
       "title": "Two-Coloring Case (k = 2)",
       "startLine": 120,
       "endLine": 158,
-      "summary": "**ESS_two_coloring**: N/2 − O(log N) even sums for k=2. **two_coloring_optimal**: ∃ 2-coloring blocking all powers of 2. **optimal_construction_exists**: the 2-adic valuation coloring χ(n) = ν₂(n) mod 2 achieves this — the O(log N) bound is tight."
+      "summary": "**ESS_two_coloring**: N/2 − O(log N) even sums for k=2. **two_coloring_optimal**: ∃ 2-coloring blocking all powers of 2. **optimal_construction_exists**: the 2-adic valuation coloring χ(n) = ν₂(n) mod 2 achieves this — the O(log N) bound is tight.",
+      "mathContext": "**ESS_two_coloring**: N/2 − O(log N) even sums for k=2. **two_coloring_optimal**: ∃ 2-coloring blocking all powers of 2. **optimal_construction_exists**: the 2-adic valuation coloring χ(n) = ν₂(n) mod"
     },
     {
       "id": "proof-ideas",
       "title": "Key Proof Ideas",
       "startLine": 159,
       "endLine": 199,
-      "summary": "**sumset_lower_bound**: pigeonhole gives color class of size ≥ N/k. **sumset_density**: restricted sumset of size m set has ≥ m−1 elements. **fourier_representation_count**: Fourier analysis bounds unrepresented even numbers at ≤ N^{1−1/2^{k+1}}."
+      "summary": "**sumset_lower_bound**: pigeonhole gives color class of size ≥ N/k. **sumset_density**: restricted sumset of size m set has ≥ m−1 elements. **fourier_representation_count**: Fourier analysis bounds unrepresented even numbers at ≤ N^{1−1/2^{k+1}}.",
+      "mathContext": "**sumset_lower_bound**: pigeonhole gives color class of size ≥ N/k. **sumset_density**: restricted sumset of size m set has ≥ m−1 elements. **fourier_representation_count**: Fourier analysis bounds un"
     },
     {
       "id": "consequences",
       "title": "Consequences and Density",
       "startLine": 200,
       "endLine": 225,
-      "summary": "**positive_density**: proved (not axiom) by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: c = 1/2 − ε works for N large enough. The limiting density 1/2 is optimal since only even sums are guaranteed."
+      "summary": "**positive_density**: proved (not axiom) by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: c = 1/2 − ε works for N large enough. The limiting density 1/2 is optimal since only even sums are guaranteed.",
+      "mathContext": "**positive_density**: proved (not axiom) by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: c = 1/2 − ε works for N large enough. The limiting density 1/2 is optimal since only even sum"
     },
     {
       "id": "extensions",
       "title": "Extensions: Schur and Hindman",
       "startLine": 226,
       "endLine": 266,
-      "summary": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are deeper partition regularity results contextualizing #484."
+      "summary": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are deeper partition regularity results contextualizing #484.",
+      "mathContext": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are "
     },
     {
       "id": "summary",
       "title": "Complete Solution",
       "startLine": 267,
       "endLine": 322,
-      "summary": "**erdos_484**: proved by `⟨roth_conjecture_true, ESS_two_coloring, two_coloring_optimal⟩` — packages all three results. **erdos_484_status** and **power_of_two_obstruction** extract individual components. 0 sorries; all deep results axiomatized."
+      "summary": "**erdos_484**: proved by `⟨roth_conjecture_true, ESS_two_coloring, two_coloring_optimal⟩` — packages all three results. **erdos_484_status** and **power_of_two_obstruction** extract individual components. 0 sorries; all deep results axiomatized.",
+      "mathContext": "**erdos_484**: proved by `⟨roth_conjecture_true, ESS_two_coloring, two_coloring_optimal⟩` — packages all three results. **erdos_484_status** and **power_of_two_obstruction** extract individual compone"
     }
   ],
   "overview": {

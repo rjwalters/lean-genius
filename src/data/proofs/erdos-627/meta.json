@@ -84,77 +84,88 @@
       "title": "Imports and Setup",
       "summary": "Imports full Mathlib for `SimpleGraph`, `Filter.Tendsto`, and `Real.log`. Declares vertex type $V$ with `Fintype` and `DecidableEq` instances.",
       "startLine": 22,
-      "endLine": 29
+      "endLine": 29,
+      "mathContext": "Imports full Mathlib for `SimpleGraph`, `Filter.Tendsto`, and `Real.log`. Declares vertex type $V$ with `Fintype` and `DecidableEq` instances."
     },
     {
       "id": "basic-parameters",
       "title": "Basic Graph Parameters",
       "summary": "Defines clique number $\\omega(G)$ and chromatic number $\\chi(G)$ as noncomputable functions. Defines $k$-colorability (`IsKColorable`) and clique containment (`ContainsClique`) via `Finset V`.",
       "startLine": 30,
-      "endLine": 47
+      "endLine": 47,
+      "mathContext": "Defines clique number $\\omega(G)$ and chromatic number $\\chi(G)$ as noncomputable functions. Defines $k$-colorability (`IsKColorable`) and clique containment (`ContainsClique`) via `Finset V`."
     },
     {
       "id": "ratio",
       "title": "The Ratio χ/ω",
       "summary": "Defines `chiOmegaRatio G = (χ(G) : ℝ) / (ω(G) : ℝ)`. Proves $\\chi \\geq \\omega$ always and that the ratio $\\geq 1$ when $\\omega > 0$.",
       "startLine": 48,
-      "endLine": 63
+      "endLine": 63,
+      "mathContext": "Defines `chiOmegaRatio G = (χ(G) : ℝ) / (ω(G) : ℝ)`. Proves $\\chi \\geq \\omega$ always and that the ratio $\\geq 1$ when $\\omega > 0$."
     },
     {
       "id": "f-function",
       "title": "The Function f(n)",
       "summary": "Defines $f(n) = \\sup_{|V(G)|=n} \\chi(G)/\\omega(G)$. Proves $f(n) \\geq 1$ for $n \\geq 1$ and monotonicity of $f$.",
       "startLine": 64,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "Defines $f(n) = \\sup_{|V(G)|=n} \\chi(G)/\\omega(G)$. Proves $f(n) \\geq 1$ for $n \\geq 1$ and monotonicity of $f$."
     },
     {
       "id": "tutte-zykov",
       "title": "Tutte-Zykov Construction",
       "summary": "Axiomatizes the Tutte-Zykov theorem: $\\forall k,\\, \\exists G$ with $\\omega(G) = 2$ and $\\chi(G) \\geq k$. Derives $f(n) \\to \\infty$ and existence of triangle-free graphs with large $\\chi$.",
       "startLine": 78,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "Axiomatizes the Tutte-Zykov theorem: $\\forall k,\\, \\exists G$ with $\\omega(G) = 2$ and $\\chi(G) \\geq k$. Derives $f(n) \\to \\infty$ and existence of triangle-free graphs with large $\\chi$."
     },
     {
       "id": "erdos-asymptotics",
       "title": "Erdős's Asymptotic Bounds",
       "summary": "Axiomatizes $f(n) \\asymp n/(\\log n)^2$ with explicit constants $c_1, c_2$. Defines `fNormalized` and proves the normalized ratio is bounded. States a weaker lower bound $f(n) \\gg n^{1/2}/\\log n$.",
       "startLine": 100,
-      "endLine": 129
+      "endLine": 129,
+      "mathContext": "Axiomatizes $f(n) \\asymp n/(\\log n)^2$ with explicit constants $c_1, c_2$. Defines `fNormalized` and proves the normalized ratio is bounded. States a weaker lower bound $f(n) \\gg n^{1/2}/\\log n$."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "Defines `LimitExists` via `Filter.Tendsto fNormalized atTop (nhds L)`. Axiomatizes the conditional bound: if $L$ exists, $L \\in (\\log 2)^2 \\cdot [1/4, 1]$. Defines numerical limit bounds $\\approx [0.12, 0.48]$.",
       "startLine": 130,
-      "endLine": 149
+      "endLine": 149,
+      "mathContext": "Defines `LimitExists` via `Filter.Tendsto fNormalized atTop (nhds L)`. Axiomatizes the conditional bound: if $L$ exists, $L \\in (\\log 2)^2 \\cdot [1/4, 1]$. Defines numerical limit bounds $\\approx [0.1"
     },
     {
       "id": "perfect-graphs",
       "title": "Perfect Graphs",
       "summary": "Defines `IsPerfect G` as $\\chi(H) = \\omega(H)$ for all induced subgraphs $H$. Proves perfect graphs have ratio exactly 1. Axiomatizes the Strong Perfect Graph Theorem (Chudnovsky et al. 2006).",
       "startLine": 150,
-      "endLine": 169
+      "endLine": 169,
+      "mathContext": "Defines `IsPerfect G` as $\\chi(H) = \\omega(H)$ for all induced subgraphs $H$. Proves perfect graphs have ratio exactly 1. Axiomatizes the Strong Perfect Graph Theorem (Chudnovsky et al. 2006)."
     },
     {
       "id": "ramsey",
       "title": "Ramsey Theory Connection",
       "summary": "Defines `ramseyNumber k` and proves $f(R(k,k)) \\geq k$. Axiomatizes $R(k,k) \\leq 4^k$ connecting diagonal Ramsey bounds to the $\\chi/\\omega$ extremal function.",
       "startLine": 170,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "Defines `ramseyNumber k` and proves $f(R(k,k)) \\geq k$. Axiomatizes $R(k,k) \\leq 4^k$ connecting diagonal Ramsey bounds to the $\\chi/\\omega$ extremal function."
     },
     {
       "id": "constructions",
       "title": "Explicit Constructions",
       "summary": "Defines Mycielski graphs ($\\omega = 2$, $\\chi = k$) and Kneser graphs $K(n,k)$. Axiomatizes Lovász's theorem $\\chi(K(n,k)) = n - 2k + 2$ (1978, via Borsuk-Ulam).",
       "startLine": 185,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "Defines Mycielski graphs ($\\omega = 2$, $\\chi = k$) and Kneser graphs $K(n,k)$. Axiomatizes Lovász's theorem $\\chi(K(n,k)) = n - 2k + 2$ (1978, via Borsuk-Ulam)."
     },
     {
       "id": "main-status",
       "title": "Main Problem Status",
       "summary": "Combines the Erdős asymptotic and Tutte-Zykov construction into `erdos_627_status`, proving both hold simultaneously. Includes `#check` commands for key axioms.",
       "startLine": 224,
-      "endLine": 236
+      "endLine": 236,
+      "mathContext": "Combines the Erdős asymptotic and Tutte-Zykov construction into `erdos_627_status`, proving both hold simultaneously. Includes `#check` commands for key axioms."
     }
   ],
   "conclusion": {

@@ -82,56 +82,64 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 2,
-      "summary": "Single `import Mathlib` — the proof uses IsBezout, IsRelPrime, GaussianInt, Polynomial, and DecompositionMonoid from across Mathlib."
+      "summary": "Single `import Mathlib` — the proof uses IsBezout, IsRelPrime, GaussianInt, Polynomial, and DecompositionMonoid from across Mathlib.",
+      "mathContext": "Single `import Mathlib` — the proof uses IsBezout, IsRelPrime, GaussianInt, Polynomial, and DecompositionMonoid from across Mathlib."
     },
     {
       "id": "module-doc",
       "title": "Module Documentation",
       "startLine": 3,
       "endLine": 52,
-      "summary": "Documents the open question (can euclids_lemma_int generalize to IsBezout domains?), the answer (yes — to all CommRings!), the proof hierarchy, and the key Mathlib API discovered: IsRelPrime.isCoprime, IsBezout.span_pair_isPrincipal, irreducible_iff_prime."
+      "summary": "Documents the open question (can euclids_lemma_int generalize to IsBezout domains?), the answer (yes — to all CommRings!), the proof hierarchy, and the key Mathlib API discovered: IsRelPrime.isCoprime, IsBezout.span_pair_isPrincipal, irreducible_iff_prime.",
+      "mathContext": "Documents the open question (can euclids_lemma_int generalize to IsBezout domains?), the answer (yes — to all CommRings!), the proof hierarchy, and the key Mathlib API discovered: IsRelPrime.isCoprime"
     },
     {
       "id": "euclids-ring",
       "title": "Part I: Euclid's Lemma in Any CommRing",
       "startLine": 58,
       "endLine": 81,
-      "summary": "euclids_lemma_ring: the master theorem. Works in ANY CommRing with IsCoprime. Witness u*c + v*k proved by linear_combination v * hk - c * huv. Also euclids_lemma_ring' (right multiplication form)."
+      "summary": "euclids_lemma_ring: the master theorem. Works in ANY CommRing with IsCoprime. Witness u*c + v*k proved by linear_combination v * hk - c * huv. Also euclids_lemma_ring' (right multiplication form).",
+      "mathContext": "euclids_lemma_ring: the master theorem. Works in ANY CommRing with IsCoprime. Witness u*c + v*k proved by linear_combination v * hk - c * huv. Also euclids_lemma_ring' (right multiplication form)."
     },
     {
       "id": "isbezout-connection",
       "title": "Part II: IsBezout Connection",
       "startLine": 82,
       "endLine": 136,
-      "summary": "isBezout_relPrime_to_isCoprime: uses IsBezout.span_pair_isPrincipal to install the principal ideal instance, then IsRelPrime.isCoprime. isCoprime_to_relPrime: if d | a and d | b then d | 1. isBezout_coprime_iff: complete equivalence. euclids_lemma_isbezout: applies both."
+      "summary": "isBezout_relPrime_to_isCoprime: uses IsBezout.span_pair_isPrincipal to install the principal ideal instance, then IsRelPrime.isCoprime. isCoprime_to_relPrime: if d | a and d | b then d | 1. isBezout_coprime_iff: complete equivalence. euclids_lemma_isbezout: applies both.",
+      "mathContext": "isBezout_relPrime_to_isCoprime: uses IsBezout.span_pair_isPrincipal to install the principal ideal instance, then IsRelPrime.isCoprime. isCoprime_to_relPrime: if d | a and d | b then d | 1. isBezout_c"
     },
     {
       "id": "euclidean-version",
       "title": "Part III: EuclideanDomain Version",
       "startLine": 137,
       "endLine": 156,
-      "summary": "euclids_lemma_euclidean: EuclideanDomain implies IsBezout, so IsRelPrime → IsCoprime → Euclid's lemma applies directly."
+      "summary": "euclids_lemma_euclidean: EuclideanDomain implies IsBezout, so IsRelPrime → IsCoprime → Euclid's lemma applies directly.",
+      "mathContext": "euclids_lemma_euclidean: EuclideanDomain implies IsBezout, so IsRelPrime → IsCoprime → Euclid's lemma applies directly."
     },
     {
       "id": "irreducible-prime",
       "title": "Part IV: Irreducible = Prime in DecompositionMonoids",
       "startLine": 157,
       "endLine": 181,
-      "summary": "irred_iff_prime_decomp and euclids_lemma_irreducible: in CancelCommMonoidWithZero + DecompositionMonoid (ℤ, k[X], ℤ[i]), irreducible_iff_prime gives the classical prime version."
+      "summary": "irred_iff_prime_decomp and euclids_lemma_irreducible: in CancelCommMonoidWithZero + DecompositionMonoid (ℤ, k[X], ℤ[i]), irreducible_iff_prime gives the classical prime version.",
+      "mathContext": "irred_iff_prime_decomp and euclids_lemma_irreducible: in CancelCommMonoidWithZero + DecompositionMonoid (ℤ, k[X], ℤ[i]), irreducible_iff_prime gives the classical prime version."
     },
     {
       "id": "instances",
       "title": "Part V: Concrete Instances",
       "startLine": 182,
       "endLine": 251,
-      "summary": "euclids_lemma_int, euclids_lemma_poly, euclids_lemma_gaussian — all one-liners calling euclids_lemma_ring. Confirms IsBezout and DecompositionMonoid instances for ℤ, Polynomial ℚ, GaussianInt."
+      "summary": "euclids_lemma_int, euclids_lemma_poly, euclids_lemma_gaussian — all one-liners calling euclids_lemma_ring. Confirms IsBezout and DecompositionMonoid instances for ℤ, Polynomial ℚ, GaussianInt.",
+      "mathContext": "euclids_lemma_int, euclids_lemma_poly, euclids_lemma_gaussian — all one-liners calling euclids_lemma_ring. Confirms IsBezout and DecompositionMonoid instances for ℤ, Polynomial ℚ, GaussianInt."
     },
     {
       "id": "uniform-principle",
       "title": "Part VI: The Uniform Proof Principle",
       "startLine": 252,
       "endLine": 285,
-      "summary": "euclids_lemma_uniform: the master theorem alias. euclids_lemma_explicit: term-mode proof showing ring identity alone suffices. Table: how each ring establishes IsCoprime."
+      "summary": "euclids_lemma_uniform: the master theorem alias. euclids_lemma_explicit: term-mode proof showing ring identity alone suffices. Table: how each ring establishes IsCoprime.",
+      "mathContext": "euclids_lemma_uniform: the master theorem alias. euclids_lemma_explicit: term-mode proof showing ring identity alone suffices. Table: how each ring establishes IsCoprime."
     }
   ],
   "conclusion": {

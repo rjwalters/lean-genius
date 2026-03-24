@@ -95,77 +95,88 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 39,
-      "summary": "Documentation header with problem statement, Alon's disproof via projective plane construction, references to [Er81] and Problem #1159"
+      "summary": "Documentation header with problem statement, Alon's disproof via projective plane construction, references to [Er81] and Problem #1159",
+      "mathContext": "Documentation header with problem statement, Alon's disproof via projective plane construction, references to [Er81] and Problem #1159"
     },
     {
       "id": "set-families",
       "title": "Set Families with Bounded Intersection",
       "startLine": 42,
       "endLine": 66,
-      "summary": "Defines $\\text{SetFamily}(n,m)$ as $\\text{Fin}\\,m \\to \\text{Finset}\\,(\\text{Fin}\\,n)$, $\\text{AllLargerThan}$ ($|A_i| > c\\sqrt{n}$), $\\text{PairwiseSmallIntersection}$ ($|A_i \\cap A_j| \\leq 1$), and the $\\text{NearLinearFamily}$ structure bundling both conditions"
+      "summary": "Defines $\\text{SetFamily}(n,m)$ as $\\text{Fin}\\,m \\to \\text{Finset}\\,(\\text{Fin}\\,n)$, $\\text{AllLargerThan}$ ($|A_i| > c\\sqrt{n}$), $\\text{PairwiseSmallIntersection}$ ($|A_i \\cap A_j| \\leq 1$), and the $\\text{NearLinearFamily}$ structure bundling both conditions",
+      "mathContext": "Defines $\\text{SetFamily}(n,m)$ as $\\text{Fin}\\,m \\to \\text{Finset}\\,(\\text{Fin}\\,n)$, $\\text{AllLargerThan}$ ($|A_i| > c\\sqrt{n}$), $\\text{PairwiseSmallIntersection}$ ($|A_i \\cap A_j| \\leq 1$), and t"
     },
     {
       "id": "blocking-sets",
       "title": "Blocking Sets",
       "startLine": 67,
       "endLine": 82,
-      "summary": "Defines $\\text{IsBlocker}$ (transversal meeting every set), $\\text{HasBoundedIntersection}$ ($|B \\cap A_i| \\leq k$ for all $i$), and $\\text{IsGoodBlocker}$ (both conditions combined)"
+      "summary": "Defines $\\text{IsBlocker}$ (transversal meeting every set), $\\text{HasBoundedIntersection}$ ($|B \\cap A_i| \\leq k$ for all $i$), and $\\text{IsGoodBlocker}$ (both conditions combined)",
+      "mathContext": "Defines $\\text{IsBlocker}$ (transversal meeting every set), $\\text{HasBoundedIntersection}$ ($|B \\cap A_i| \\leq k$ for all $i$), and $\\text{IsGoodBlocker}$ (both conditions combined)"
     },
     {
       "id": "erdos-question",
       "title": "The Erdős Question",
       "startLine": 83,
       "endLine": 99,
-      "summary": "Formal statement $\\text{ErdosQuestion664}$: $\\forall c \\in (0,1),\\, \\exists k,\\, \\forall n,m \\geq 10,\\, \\forall \\mathcal{F},\\, \\exists B$ with $\\text{IsGoodBlocker}(\\mathcal{F}, B, k)$"
+      "summary": "Formal statement $\\text{ErdosQuestion664}$: $\\forall c \\in (0,1),\\, \\exists k,\\, \\forall n,m \\geq 10,\\, \\forall \\mathcal{F},\\, \\exists B$ with $\\text{IsGoodBlocker}(\\mathcal{F}, B, k)$",
+      "mathContext": "Formal statement $\\text{ErdosQuestion664}$: $\\forall c \\in (0,1),\\, \\exists k,\\, \\forall n,m \\geq 10,\\, \\forall \\mathcal{F},\\, \\exists B$ with $\\text{IsGoodBlocker}(\\mathcal{F}, B, k)$"
     },
     {
       "id": "alon-counterexample",
       "title": "Alon's Counterexample",
       "startLine": 100,
       "endLine": 139,
-      "summary": "Axiomatizes Alon's disproof ($\\neg\\text{ErdosQuestion664}$), projective plane parameters ($q^2+q+1$), and the explicit construction giving families where any blocker has $|B \\cap A_j| \\geq (\\log n)/10$ for some $j$"
+      "summary": "Axiomatizes Alon's disproof ($\\neg\\text{ErdosQuestion664}$), projective plane parameters ($q^2+q+1$), and the explicit construction giving families where any blocker has $|B \\cap A_j| \\geq (\\log n)/10$ for some $j$",
+      "mathContext": "Axiomatizes Alon's disproof ($\\neg\\text{ErdosQuestion664}$), projective plane parameters ($q^2+q+1$), and the explicit construction giving families where any blocker has $|B \\cap A_j| \\geq (\\log n)/10"
     },
     {
       "id": "mechanism",
       "title": "Why the Counterexample Works",
       "startLine": 140,
       "endLine": 167,
-      "summary": "Three axiomatized properties: projective lines have $q+1$ points, two lines meet in exactly one point, random thinning preserves near-linearity while forcing blocker concentration. The logarithmic lower bound via coupon-collector argument"
+      "summary": "Three axiomatized properties: projective lines have $q+1$ points, two lines meet in exactly one point, random thinning preserves near-linearity while forcing blocker concentration. The logarithmic lower bound via coupon-collector argument",
+      "mathContext": "Three axiomatized properties: projective lines have $q+1$ points, two lines meet in exactly one point, random thinning preserves near-linearity while forcing blocker concentration. The logarithmic low"
     },
     {
       "id": "balanced-designs",
       "title": "Balanced Block Designs (Original Version)",
       "startLine": 168,
       "endLine": 186,
-      "summary": "Defines $\\text{IsBalancedBlockDesign}$ (every pair in exactly one block) and $\\text{ErdosQuestion664\\_Original}$ — the 1981 formulation that remains OPEN"
+      "summary": "Defines $\\text{IsBalancedBlockDesign}$ (every pair in exactly one block) and $\\text{ErdosQuestion664\\_Original}$ — the 1981 formulation that remains OPEN",
+      "mathContext": "Defines $\\text{IsBalancedBlockDesign}$ (every pair in exactly one block) and $\\text{ErdosQuestion664\\_Original}$ — the 1981 formulation that remains OPEN"
     },
     {
       "id": "finite-geometry",
       "title": "Finite Geometry Interpretation",
       "startLine": 187,
       "endLine": 206,
-      "summary": "Blocking sets in projective planes, Bruen's bound $q + \\sqrt{q} + 1$ for minimum blocking set size, connection to Problem #1159"
+      "summary": "Blocking sets in projective planes, Bruen's bound $q + \\sqrt{q} + 1$ for minimum blocking set size, connection to Problem #1159",
+      "mathContext": "Blocking sets in projective planes, Bruen's bound $q + \\sqrt{q} + 1$ for minimum blocking set size, connection to Problem #1159"
     },
     {
       "id": "constant-analysis",
       "title": "The Constant 2/5",
       "startLine": 207,
       "endLine": 223,
-      "summary": "Analysis of the retention probability $p \\approx 2/5$: any $c < 1/2$ works via Chernoff concentration bounds"
+      "summary": "Analysis of the retention probability $p \\approx 2/5$: any $c < 1/2$ works via Chernoff concentration bounds",
+      "mathContext": "Analysis of the retention probability $p \\approx 2/5$: any $c < 1/2$ works via Chernoff concentration bounds"
     },
     {
       "id": "related-problems",
       "title": "Related Problems",
       "startLine": 224,
       "endLine": 243,
-      "summary": "Connections to Problem #1159 (bounded blocking sets in projective planes), set cover/transversal theory, and hypergraph coloring"
+      "summary": "Connections to Problem #1159 (bounded blocking sets in projective planes), set cover/transversal theory, and hypergraph coloring",
+      "mathContext": "Connections to Problem #1159 (bounded blocking sets in projective planes), set cover/transversal theory, and hypergraph coloring"
     },
     {
       "id": "summary",
       "title": "Summary and Main Theorems",
       "startLine": 244,
       "endLine": 281,
-      "summary": "Four equivalent formulations: $\\texttt{erdos\\_664}$, $\\texttt{erdos\\_664\\_main}$, $\\texttt{erdos\\_664\\_disproved}$ (all $\\neg\\text{ErdosQuestion664}$), and $\\texttt{erdos\\_664\\_constructive}$ (explicit counterexample for each prime $q \\geq 100$)"
+      "summary": "Four equivalent formulations: $\\texttt{erdos\\_664}$, $\\texttt{erdos\\_664\\_main}$, $\\texttt{erdos\\_664\\_disproved}$ (all $\\neg\\text{ErdosQuestion664}$), and $\\texttt{erdos\\_664\\_constructive}$ (explicit counterexample for each prime $q \\geq 100$)",
+      "mathContext": "Four equivalent formulations: $\\texttt{erdos\\_664}$, $\\texttt{erdos\\_664\\_main}$, $\\texttt{erdos\\_664\\_disproved}$ (all $\\neg\\text{ErdosQuestion664}$), and $\\texttt{erdos\\_664\\_constructive}$ (explici"
     }
   ],
   "conclusion": {

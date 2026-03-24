@@ -81,70 +81,80 @@
       "title": "Part I: Lacunary Sequences",
       "startLine": 38,
       "endLine": 74,
-      "summary": "Defines IsLacunary(a, ε). Proves lacunary_exponential_growth by induction. Defines geometricSequence, proves geometric_is_lacunary."
+      "summary": "Defines IsLacunary(a, ε). Proves lacunary_exponential_growth by induction. Defines geometricSequence, proves geometric_is_lacunary.",
+      "mathContext": "Defines IsLacunary(a, ε). Proves lacunary_exponential_growth by induction. Defines geometricSequence, proves geometric_is_lacunary."
     },
     {
       "id": "colorings",
       "title": "Part II: Colorings and Cayley Graphs",
       "startLine": 75,
       "endLine": 93,
-      "summary": "Defines Coloring(k), AvoidsMonochromatic, IsFinitelyColorable, chromaticNumber (axiom)."
+      "summary": "Defines Coloring(k), AvoidsMonochromatic, IsFinitelyColorable, chromaticNumber (axiom).",
+      "mathContext": "Defines Coloring(k), AvoidsMonochromatic, IsFinitelyColorable, chromaticNumber (axiom)."
     },
     {
       "id": "diophantine",
       "title": "Part III: The Diophantine Approximation Connection",
       "startLine": 94,
       "endLine": 106,
-      "summary": "Defines fractionalDistance. Axiom problem_464_result: lacunary sequences have badly approximable θ."
+      "summary": "Defines fractionalDistance. Axiom problem_464_result: lacunary sequences have badly approximable θ.",
+      "mathContext": "Defines fractionalDistance. Axiom problem_464_result: lacunary sequences have badly approximable θ."
     },
     {
       "id": "katznelson",
       "title": "Part IV: Katznelson's Coloring Construction",
       "startLine": 107,
       "endLine": 124,
-      "summary": "Defines katznelsonColoring using circle intervals. Axiom katznelson_theorem: coloring avoids monochromatic differences."
+      "summary": "Defines katznelsonColoring using circle intervals. Axiom katznelson_theorem: coloring avoids monochromatic differences.",
+      "mathContext": "Defines katznelsonColoring using circle intervals. Axiom katznelson_theorem: coloring avoids monochromatic differences."
     },
     {
       "id": "main-result",
       "title": "Part V: The Main Result",
       "startLine": 125,
       "endLine": 140,
-      "summary": "Proves lacunary_finitely_colorable from Problem #464 and Katznelson. Defines ErdosConjecture894, proves erdos_894."
+      "summary": "Proves lacunary_finitely_colorable from Problem #464 and Katznelson. Defines ErdosConjecture894, proves erdos_894.",
+      "mathContext": "Proves lacunary_finitely_colorable from Problem #464 and Katznelson. Defines ErdosConjecture894, proves erdos_894."
     },
     {
       "id": "quantitative",
       "title": "Part VI: Quantitative Bounds (Peres-Schlag 2010)",
       "startLine": 141,
       "endLine": 154,
-      "summary": "Axioms: peres_schlag_bound (O(ε⁻¹ log(1/ε)) colors), peres_schlag_optimality (essentially optimal)."
+      "summary": "Axioms: peres_schlag_bound (O(ε⁻¹ log(1/ε)) colors), peres_schlag_optimality (essentially optimal).",
+      "mathContext": "Axioms: peres_schlag_bound (O(ε⁻¹ log(1/ε)) colors), peres_schlag_optimality (essentially optimal)."
     },
     {
       "id": "cayley-graphs",
       "title": "Part VII: Cayley Graphs",
       "startLine": 155,
       "endLine": 186,
-      "summary": "Defines CayleyGraph structure, lacunaryCayleyGraph (proved symmetric and generated_by_A). Defines cayleyChromatic."
+      "summary": "Defines CayleyGraph structure, lacunaryCayleyGraph (proved symmetric and generated_by_A). Defines cayleyChromatic.",
+      "mathContext": "Defines CayleyGraph structure, lacunaryCayleyGraph (proved symmetric and generated_by_A). Defines cayleyChromatic."
     },
     {
       "id": "connection-464",
       "title": "Part VIII: Connection to Problem #464",
       "startLine": 187,
       "endLine": 201,
-      "summary": "Defines Problem464Statement. Proves problem_464_implies_894."
+      "summary": "Defines Problem464Statement. Proves problem_464_implies_894.",
+      "mathContext": "Defines Problem464Statement. Proves problem_464_implies_894."
     },
     {
       "id": "special-cases",
       "title": "Part IX: Special Cases",
       "startLine": 202,
       "endLine": 221,
-      "summary": "Proves powers_of_2_colorable and powers_of_3_colorable from main theorem."
+      "summary": "Proves powers_of_2_colorable and powers_of_3_colorable from main theorem.",
+      "mathContext": "Proves powers_of_2_colorable and powers_of_3_colorable from main theorem."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
       "startLine": 222,
       "endLine": 233,
-      "summary": "Proves erdos_894_summary combining main result and Problem #464 implication. Problem SOLVED: YES."
+      "summary": "Proves erdos_894_summary combining main result and Problem #464 implication. Problem SOLVED: YES.",
+      "mathContext": "Proves erdos_894_summary combining main result and Problem #464 implication. Problem SOLVED: YES."
     }
   ],
   "conclusion": {

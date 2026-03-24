@@ -83,63 +83,72 @@
       "title": "Core Definitions",
       "summary": "Defines `primesUpTo` (primes ≤ n via Finset.filter), `primeDifferences` (all q₁ - q₂ for prime pairs ≤ p), `IsClusterPrime` (every even n ≤ p-3 is a prime difference), and `ClusterPrimes` (the set of all cluster primes)",
       "startLine": 49,
-      "endLine": 68
+      "endLine": 68,
+      "mathContext": "Defines `primesUpTo` (primes ≤ n via Finset.filter), `primeDifferences` (all q₁ - q₂ for prime pairs ≤ p), `IsClusterPrime` (every even n ≤ p-3 is a prime difference), and `ClusterPrimes` (the set of "
     },
     {
       "id": "small-primes",
       "title": "Small Examples",
       "summary": "Proves 2 and 3 are cluster primes by vacuous truth (omega), axiomatizes 5 and 7. Illustrates the transition from trivial (empty range) to substantive (must check Finset membership) cases",
       "startLine": 69,
-      "endLine": 93
+      "endLine": 93,
+      "mathContext": "Proves 2 and 3 are cluster primes by vacuous truth (omega), axiomatizes 5 and 7. Illustrates the transition from trivial (empty range) to substantive (must check Finset membership) cases"
     },
     {
       "id": "first-non-cluster",
       "title": "First Non-Cluster Prime",
       "summary": "97 is the minimal non-cluster prime",
       "startLine": 94,
-      "endLine": 121
+      "endLine": 121,
+      "mathContext": "97 is the minimal non-cluster prime"
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "InfinitelyManyClusterPrimes conjecture",
       "startLine": 122,
-      "endLine": 132
+      "endLine": 132,
+      "mathContext": "InfinitelyManyClusterPrimes conjecture"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Axiomatizes two key results: Blecksmith-Erdős-Selfridge (1999) bound π_cluster(x) ≪ x/(log x)^A for all A > 0, and Elsholtz (2003) improved bound with double-logarithmic exponential decay. Includes the noncomputable counting function `clusterPrimeCount`",
       "startLine": 133,
-      "endLine": 159
+      "endLine": 159,
+      "mathContext": "Axiomatizes two key results: Blecksmith-Erdős-Selfridge (1999) bound π_cluster(x) ≪ x/(log x)^A for all A > 0, and Elsholtz (2003) improved bound with double-logarithmic exponential decay. Includes th"
     },
     {
       "id": "density",
       "title": "Density Results",
       "summary": "Two consequences: cluster primes have natural density 0 among all primes (via Filter.Tendsto), and they are rarer than primes in any arithmetic progression a mod d (comparison with Dirichlet density 1/φ(d))",
       "startLine": 160,
-      "endLine": 177
+      "endLine": 177,
+      "mathContext": "Two consequences: cluster primes have natural density 0 among all primes (via Filter.Tendsto), and they are rarer than primes in any arithmetic progression a mod d (comparison with Dirichlet density 1"
     },
     {
       "id": "prime-gaps",
       "title": "Connection to Prime Gaps",
       "summary": "primeGap definition and small_gaps_help_cluster: small gaps between consecutive primes help the cluster property",
       "startLine": 178,
-      "endLine": 193
+      "endLine": 193,
+      "mathContext": "primeGap definition and small_gaps_help_cluster: small gaps between consecutive primes help the cluster property"
     },
     {
       "id": "oeis-sequence",
       "title": "OEIS Sequence and Known Cluster Primes",
       "summary": "knownClusterPrimes list (all 24 primes up to 89) and axiom that they are all cluster primes. References OEIS A038133/A038134.",
       "startLine": 194,
-      "endLine": 210
+      "endLine": 210,
+      "mathContext": "knownClusterPrimes list (all 24 primes up to 89) and axiom that they are all cluster primes. References OEIS A038133/A038134."
     },
     {
       "id": "difficulty-heuristics",
       "title": "Difficulty Assessment and Heuristics",
       "summary": "Tao's assessment that the problem is 'difficult', requiring control of all prime differences simultaneously. Probabilistic heuristic suggesting ~log x cluster primes up to x.",
       "startLine": 211,
-      "endLine": 268
+      "endLine": 268,
+      "mathContext": "Tao's assessment that the problem is 'difficult', requiring control of all prime differences simultaneously. Probabilistic heuristic suggesting ~log x cluster primes up to x."
     }
   ],
   "conclusion": {

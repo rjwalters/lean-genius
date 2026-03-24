@@ -84,70 +84,80 @@
       "title": "Problem Statement",
       "startLine": 1,
       "endLine": 26,
-      "summary": "Introduction to the subset sum AP-avoidance problem"
+      "summary": "Introduction to the subset sum AP-avoidance problem",
+      "mathContext": "Introduction to the subset sum AP-avoidance problem"
     },
     {
       "id": "ap-free",
       "title": "Arithmetic Progressions",
       "startLine": 34,
       "endLine": 64,
-      "summary": "Definition of k-AP-free sets with two equivalent formulations"
+      "summary": "Definition of k-AP-free sets with two equivalent formulations",
+      "mathContext": "Definition of k-AP-free sets with two equivalent formulations"
     },
     {
       "id": "subset-sums",
       "title": "Subset Sums",
       "startLine": 65,
       "endLine": 103,
-      "summary": "Definition of subset sum set and basic properties"
+      "summary": "Definition of subset sum set and basic properties",
+      "mathContext": "Definition of subset sum set and basic properties"
     },
     {
       "id": "g-function",
       "title": "The Function g_k(n)",
       "startLine": 104,
       "endLine": 129,
-      "summary": "Definition of the extremal function via infimum"
+      "summary": "Definition of the extremal function via infimum",
+      "mathContext": "Definition of the extremal function via infimum"
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 130,
       "endLine": 150,
-      "summary": "Statement of the open problem g₃(n) ≫ 3ⁿ"
+      "summary": "Statement of the open problem g₃(n) ≫ 3ⁿ",
+      "mathContext": "Statement of the open problem g₃(n) ≫ 3ⁿ"
     },
     {
       "id": "partial",
       "title": "Erdős-Sárközy Partial Result",
       "startLine": 151,
       "endLine": 164,
-      "summary": "The known bound g₃(n) ≫ 3ⁿ/n^{O(1)}"
+      "summary": "The known bound g₃(n) ≫ 3ⁿ/n^{O(1)}",
+      "mathContext": "The known bound g₃(n) ≫ 3ⁿ/n^{O(1)}"
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 165,
       "endLine": 180,
-      "summary": "Trivial bounds on g_k(n)"
+      "summary": "Trivial bounds on g_k(n)",
+      "mathContext": "Trivial bounds on g_k(n)"
     },
     {
       "id": "examples",
       "title": "Small Cases",
       "startLine": 181,
       "endLine": 197,
-      "summary": "Values of g₃(1) and g₃(2)"
+      "summary": "Values of g₃(1) and g₃(2)",
+      "mathContext": "Values of g₃(1) and g₃(2)"
     },
     {
       "id": "heuristic",
       "title": "Heuristic Analysis",
       "startLine": 198,
       "endLine": 225,
-      "summary": "Why exponential growth is expected"
+      "summary": "Why exponential growth is expected",
+      "mathContext": "Why exponential growth is expected"
     },
     {
       "id": "szemeredi",
       "title": "Connection to Szemerédi",
       "startLine": 226,
       "endLine": 239,
-      "summary": "Relation to density-based AP results"
+      "summary": "Relation to density-based AP results",
+      "mathContext": "Relation to density-based AP results"
     }
   ],
   "crossRefs": [

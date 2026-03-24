@@ -133,63 +133,72 @@
       "title": "Imports and Namespace",
       "summary": "Imports `Real.Basic`, `Nat.Basic`, `Pow.Real` (for $n^\\nu$), `Log.Basic` (for $(\\log n)^{1/8}$ corrections), and `MetricSpace.Basic`. Opens `Real` namespace within `Erdos529`.",
       "startLine": 30,
-      "endLine": 39
+      "endLine": 39,
+      "mathContext": "Imports `Real.Basic`, `Nat.Basic`, `Pow.Real` (for $n^\\nu$), `Log.Basic` (for $(\\log n)^{1/8}$ corrections), and `MetricSpace.Basic`. Opens `Real` namespace within `Erdos529`."
     },
     {
       "id": "saw-definition",
       "title": "Self-Avoiding Walk Definition",
       "summary": "Defines `SelfAvoidingWalk k` as a structure with `steps`, `selfAvoiding`, and `validSteps` properties. Axiomatizes `endToEndDistance` ($|X_n|$) and `expectedEndDistance` ($d_k(n) = \\mathbb{E}[|X_n|]$) with custom notation `d_k(n)`.",
       "startLine": 40,
-      "endLine": 76
+      "endLine": 76,
+      "mathContext": "Defines `SelfAvoidingWalk k` as a structure with `steps`, `selfAvoiding`, and `validSteps` properties. Axiomatizes `endToEndDistance` ($|X_n|$) and `expectedEndDistance` ($d_k(n) = \\mathbb{E}[|X_n|]$)"
     },
     {
       "id": "critical-exponent",
       "title": "Critical Exponent $\\nu$",
       "summary": "Defines `criticalExponent k` returning $3/4$ for $k=2$, $0.588$ for $k=3$, $1/2$ otherwise. Proves `meanField_exponent`: $\\nu_k = 1/2$ for $k \\ge 5$ via `simp` + `omega`.",
       "startLine": 77,
-      "endLine": 107
+      "endLine": 107,
+      "mathContext": "Defines `criticalExponent k` returning $3/4$ for $k=2$, $0.588$ for $k=3$, $1/2$ otherwise. Proves `meanField_exponent`: $\\nu_k = 1/2$ for $k \\ge 5$ via `simp` + `omega`."
     },
     {
       "id": "high-dim",
       "title": "High-Dimensional Results ($k \\ge 5$)",
       "summary": "Axiomatizes `tendsTo` for asymptotic limits. `slade_high_dim` (1987): $d_k(n)/\\sqrt{n} \\to D$ for large $k$. `haraSlade_five_dim` (1991-92): extends to all $k \\ge 5$. `high_dim_sqrt` derives directly from Hara-Slade using the lace expansion.",
       "startLine": 108,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "Axiomatizes `tendsTo` for asymptotic limits. `slade_high_dim` (1987): $d_k(n)/\\sqrt{n} \\to D$ for large $k$. `haraSlade_five_dim` (1991-92): extends to all $k \\ge 5$. `high_dim_sqrt` derives directly "
     },
     {
       "id": "question1",
       "title": "Question 1: Two Dimensions",
       "summary": "Formalizes `question1`: $d_2(n)/\\sqrt{n} \\to \\infty$. Axiomatizes `duminilCopin_subBallistic`: $d_2(n)/n \\to 0$ (2013). States `conjecture_2d`: $d_2(n) \\sim D \\cdot n^{3/4}$, which would imply Question 1 via $n^{1/4} \\to \\infty$.",
       "startLine": 144,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "Formalizes `question1`: $d_2(n)/\\sqrt{n} \\to \\infty$. Axiomatizes `duminilCopin_subBallistic`: $d_2(n)/n \\to 0$ (2013). States `conjecture_2d`: $d_2(n) \\sim D \\cdot n^{3/4}$, which would imply Questio"
     },
     {
       "id": "question2",
       "title": "Question 2: Three and Four Dimensions",
       "summary": "Formalizes `question2 k`: $d_k(n) \\le C\\sqrt{n}$. Now believed FALSE for $k = 3$ ($\\nu \\approx 0.588 > 1/2$) and $k = 4$ (logarithmic correction $(\\log n)^{1/8}$). TRUE for $k \\ge 5$ (Hara-Slade). Includes conditional refutation `question2_false_3d`.",
       "startLine": 184,
-      "endLine": 232
+      "endLine": 232,
+      "mathContext": "Formalizes `question2 k`: $d_k(n) \\le C\\sqrt{n}$. Now believed FALSE for $k = 3$ ($\\nu \\approx 0.588 > 1/2$) and $k = 4$ (logarithmic correction $(\\log n)^{1/8}$). TRUE for $k \\ge 5$ (Hara-Slade). Inc"
     },
     {
       "id": "critical-dimension",
       "title": "Upper Critical Dimension $d_c = 4$",
       "summary": "Defines `upperCriticalDimension = 4`. Axiomatizes the trichotomy: `below_critical` ($\\nu > 1/2$ for $k < 4$), `above_critical` ($\\nu = 1/2$ for $k > 4$), `at_critical` ($\\nu = 1/2$ with logarithmic corrections at $k = 4$).",
       "startLine": 233,
-      "endLine": 266
+      "endLine": 266,
+      "mathContext": "Defines `upperCriticalDimension = 4`. Axiomatizes the trichotomy: `below_critical` ($\\nu > 1/2$ for $k < 4$), `above_critical` ($\\nu = 1/2$ for $k > 4$), `at_critical` ($\\nu = 1/2$ with logarithmic co"
     },
     {
       "id": "flory",
       "title": "Flory's Prediction: $\\nu = 3/(d+2)$",
       "summary": "Defines `floryExponent d = 3/(d+2)` (Flory 1949). Proves `flory_2d`: $3/4$ and `flory_3d`: $3/5$ by `norm_num`. The 2D value is conjectured exact; the 3D value ($0.6$) approximates the numerical $\\nu \\approx 0.5876$.",
       "startLine": 267,
-      "endLine": 289
+      "endLine": 289,
+      "mathContext": "Defines `floryExponent d = 3/(d+2)` (Flory 1949). Proves `flory_2d`: $3/4$ and `flory_3d`: $3/5$ by `norm_num`. The 2D value is conjectured exact; the 3D value ($0.6$) approximates the numerical $\\nu "
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "`erdos_529_summary` combines Hara-Slade ($k \\ge 5$), sub-ballistic ($k = 2$), and $\\nu_2 = 3/4$ via $\\langle$`haraSlade_five_dim, duminilCopin_subBallistic, rfl`$\\rangle$. `erdos_529` adds Question 2 resolution for $k \\ge 5$. **Status: OPEN** for $k = 2, 3, 4$.",
       "startLine": 290,
-      "endLine": 328
+      "endLine": 328,
+      "mathContext": "`erdos_529_summary` combines Hara-Slade ($k \\ge 5$), sub-ballistic ($k = 2$), and $\\nu_2 = 3/4$ via $\\langle$`haraSlade_five_dim, duminilCopin_subBallistic, rfl`$\\rangle$. `erdos_529` adds Question 2 "
     }
   ],
   "conclusion": {

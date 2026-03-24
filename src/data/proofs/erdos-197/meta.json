@@ -82,70 +82,80 @@
       "title": "Arithmetic Progressions",
       "summary": "isArithmeticProgression, hasMonotone3AP, avoids3AP definitions",
       "startLine": 41,
-      "endLine": 68
+      "endLine": 68,
+      "mathContext": "isArithmeticProgression, hasMonotone3AP, avoids3AP definitions"
     },
     {
       "id": "set-permutations",
       "title": "Permutations of Sets",
       "summary": "isEnumeration, canPermuteTo3APFree definitions",
       "startLine": 69,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "isEnumeration, canPermuteTo3APFree definitions"
     },
     {
       "id": "partitions",
       "title": "Partitions of ℕ",
       "summary": "isTwoPartition definition and partition_mem_iff theorem",
       "startLine": 91,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "isTwoPartition definition and partition_mem_iff theorem"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos_197_conjecture axiom - the open two-set question",
       "startLine": 123,
-      "endLine": 142
+      "endLine": 142,
+      "mathContext": "erdos_197_conjecture axiom - the open two-set question"
     },
     {
       "id": "three-set-case",
       "title": "The Three-Set Case (Solved)",
       "summary": "isThreePartition and erdos_graham_three_sets axiom",
       "startLine": 143,
-      "endLine": 163
+      "endLine": 163,
+      "mathContext": "isThreePartition and erdos_graham_three_sets axiom"
     },
     {
       "id": "properties",
       "title": "Properties of 3-AP Avoidance",
       "summary": "constant_avoids_3AP, StrictlyIncreasing, StrictlyDecreasing",
       "startLine": 164,
-      "endLine": 191
+      "endLine": 191,
+      "mathContext": "constant_avoids_3AP, StrictlyIncreasing, StrictlyDecreasing"
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "summary": "identity_has_3AP theorem and powers_of_2_avoid_3AP axiom",
       "startLine": 192,
-      "endLine": 215
+      "endLine": 215,
+      "mathContext": "identity_has_3AP theorem and powers_of_2_avoid_3AP axiom"
     },
     {
       "id": "computational",
       "title": "Computational Intractability",
       "summary": "erdos_197_not_finite_checkable axiom",
       "startLine": 216,
-      "endLine": 230
+      "endLine": 230,
+      "mathContext": "erdos_197_not_finite_checkable axiom"
     },
     {
       "id": "related-sequences",
       "title": "Related Sequences",
       "summary": "Stanley sequence definition and properties",
       "startLine": 231,
-      "endLine": 255
+      "endLine": 255,
+      "mathContext": "Stanley sequence definition and properties"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_197_status and erdos_197_open_question theorems",
       "startLine": 256,
-      "endLine": 287
+      "endLine": 287,
+      "mathContext": "erdos_197_status and erdos_197_open_question theorems"
     }
   ],
   "conclusion": {

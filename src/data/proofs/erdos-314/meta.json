@@ -83,56 +83,64 @@
       "title": "Harmonic Sum Definitions",
       "summary": "harmonicNumber, partialHarmonicSum",
       "startLine": 33,
-      "endLine": 51
+      "endLine": 51,
+      "mathContext": "harmonicNumber, partialHarmonicSum"
     },
     {
       "id": "m-function",
       "title": "The Function m(n)",
       "summary": "Minimal m with partial sum ≥ 1",
       "startLine": 52,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "Minimal m with partial sum ≥ 1"
     },
     {
       "id": "epsilon",
       "title": "The Error Term ε(n)",
       "summary": "Definition and basic bounds",
       "startLine": 72,
-      "endLine": 91
+      "endLine": 91,
+      "mathContext": "Definition and basic bounds"
     },
     {
       "id": "approximation",
       "title": "Approximation of m(n)",
       "summary": "m(n)/n → e asymptotically",
       "startLine": 92,
-      "endLine": 104
+      "endLine": 104,
+      "mathContext": "m(n)/n → e asymptotically"
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "Is lim inf n²ε(n) = 0?",
       "startLine": 105,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "Is lim inf n²ε(n) = 0?"
     },
     {
       "id": "solution",
       "title": "Lim-Steinerberger Theorem (2024)",
       "summary": "YES with explicit bounds",
       "startLine": 115,
-      "endLine": 131
+      "endLine": 131,
+      "mathContext": "YES with explicit bounds"
     },
     {
       "id": "optimal",
       "title": "Optimal Exponent Conjecture",
       "summary": "Exponent 2 conjectured optimal",
       "startLine": 132,
-      "endLine": 143
+      "endLine": 143,
+      "mathContext": "Exponent 2 conjectured optimal"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Main results and open questions",
       "startLine": 158,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "Main results and open questions"
     }
   ],
   "conclusion": {

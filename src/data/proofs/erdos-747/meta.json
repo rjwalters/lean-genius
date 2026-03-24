@@ -97,70 +97,80 @@
       "title": "Hypergraph Basics",
       "summary": "Hypergraph structure, r-uniform hyperedges",
       "startLine": 35,
-      "endLine": 64
+      "endLine": 64,
+      "mathContext": "Hypergraph structure, r-uniform hyperedges"
     },
     {
       "id": "matchings",
       "title": "Matchings in Hypergraphs",
       "summary": "IsMatching, IsPerfectMatching, HasDisjointEdges definitions",
       "startLine": 65,
-      "endLine": 92
+      "endLine": 92,
+      "mathContext": "IsMatching, IsPerfectMatching, HasDisjointEdges definitions"
     },
     {
       "id": "random-model",
       "title": "Random Hypergraphs",
       "summary": "RandomHypergraph3Model, AlmostSurely, IsThreshold definitions",
       "startLine": 93,
-      "endLine": 122
+      "endLine": 122,
+      "mathContext": "RandomHypergraph3Model, AlmostSurely, IsThreshold definitions"
     },
     {
       "id": "shamir-problem",
       "title": "Shamir's Problem",
       "summary": "ShamirProperty, ShamirQuestion definitions",
       "startLine": 123,
-      "endLine": 144
+      "endLine": 144,
+      "mathContext": "ShamirProperty, ShamirQuestion definitions"
     },
     {
       "id": "answer",
       "title": "The Answer",
       "summary": "shamirThreshold, johansson_kahn_vu, kahn_precise_threshold axioms",
       "startLine": 145,
-      "endLine": 186
+      "endLine": 186,
+      "mathContext": "shamirThreshold, johansson_kahn_vu, kahn_precise_threshold axioms"
     },
     {
       "id": "below-threshold",
       "title": "Below the Threshold",
       "summary": "below_threshold_fails, isolated_vertices_obstruction axioms",
       "startLine": 187,
-      "endLine": 207
+      "endLine": 207,
+      "mathContext": "below_threshold_fails, isolated_vertices_obstruction axioms"
     },
     {
       "id": "above-threshold",
       "title": "Above the Threshold",
       "summary": "above_threshold_succeeds axiom",
       "startLine": 208,
-      "endLine": 228
+      "endLine": 228,
+      "mathContext": "above_threshold_succeeds axiom"
     },
     {
       "id": "comparison",
       "title": "Comparison with Graphs",
       "summary": "graph_matching_threshold, uniformity_independence",
       "startLine": 229,
-      "endLine": 250
+      "endLine": 250,
+      "mathContext": "graph_matching_threshold, uniformity_independence"
     },
     {
       "id": "history",
       "title": "Historical Notes",
       "summary": "erdos_comment, shamir_1979, factor_problems",
       "startLine": 251,
-      "endLine": 275
+      "endLine": 275,
+      "mathContext": "erdos_comment, shamir_1979, factor_problems"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_747 axiom, erdos_747_answer theorem, erdos_747_summary theorem",
       "startLine": 276,
-      "endLine": 330
+      "endLine": 330,
+      "mathContext": "erdos_747 axiom, erdos_747_answer theorem, erdos_747_summary theorem"
     }
   ],
   "conclusion": {

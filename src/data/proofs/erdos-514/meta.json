@@ -91,70 +91,80 @@
       "title": "Complex Analysis Foundations",
       "summary": "IsEntire, maxModulus, DominatesPolynomial, IsTranscendental definitions",
       "startLine": 39,
-      "endLine": 88
+      "endLine": 88,
+      "mathContext": "IsEntire, maxModulus, DominatesPolynomial, IsTranscendental definitions"
     },
     {
       "id": "paths-to-infinity",
       "title": "Paths to Infinity",
       "summary": "IsPathToInfinity, pathImage, radialPath definitions",
       "startLine": 89,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "IsPathToInfinity, pathImage, radialPath definitions"
     },
     {
       "id": "boas-result",
       "title": "The Boas Result",
       "summary": "HasSuperPolynomialGrowth, boas_existence axiom, erdos_514_part1 theorem",
       "startLine": 118,
-      "endLine": 153
+      "endLine": 153,
+      "mathContext": "HasSuperPolynomialGrowth, boas_existence axiom, erdos_514_part1 theorem"
     },
     {
       "id": "path-length",
       "title": "Path Length Estimates",
       "summary": "pathLengthUpTo, path_length_bound_conjecture (Part 2 open problem)",
       "startLine": 154,
-      "endLine": 186
+      "endLine": 186,
+      "mathContext": "pathLengthUpTo, path_length_bound_conjecture (Part 2 open problem)"
     },
     {
       "id": "faster-growth",
       "title": "Faster Than M(r)^ε Growth",
       "summary": "DominatesMaxModulusPower, faster_than_max_modulus_conjecture (Part 3 open problem)",
       "startLine": 187,
-      "endLine": 212
+      "endLine": 212,
+      "mathContext": "DominatesMaxModulusPower, faster_than_max_modulus_conjecture (Part 3 open problem)"
     },
     {
       "id": "examples",
       "title": "Examples of Entire Functions",
       "summary": "expFunction, sinFunction, maxModulus_exp",
       "startLine": 213,
-      "endLine": 246
+      "endLine": 246,
+      "mathContext": "expFunction, sinFunction, maxModulus_exp"
     },
     {
       "id": "growth-orders",
       "title": "Growth Orders",
       "summary": "orderOfGrowth definition, exp_has_order_one",
       "startLine": 247,
-      "endLine": 271
+      "endLine": 271,
+      "mathContext": "orderOfGrowth definition, exp_has_order_one"
     },
     {
       "id": "wiman-valiron",
       "title": "Connection to Wiman-Valiron Theory",
       "summary": "centralIndex, wiman_valiron_intuition",
       "startLine": 272,
-      "endLine": 300
+      "endLine": 300,
+      "mathContext": "centralIndex, wiman_valiron_intuition"
     },
     {
       "id": "max-modulus-props",
       "title": "Properties of Maximum Modulus",
       "summary": "maxModulus_monotone, maxModulus_ge_origin, maxModulus_tendsto_infinity",
       "startLine": 301,
-      "endLine": 318
+      "endLine": 318,
+      "mathContext": "maxModulus_monotone, maxModulus_ge_origin, maxModulus_tendsto_infinity"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_514_summary, key_insight",
       "startLine": 319,
-      "endLine": 355
+      "endLine": 355,
+      "mathContext": "erdos_514_summary, key_insight"
     }
   ],
   "conclusion": {

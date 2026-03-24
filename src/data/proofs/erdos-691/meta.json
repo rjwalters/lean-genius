@@ -50,56 +50,64 @@
       "title": "Imports and Namespace",
       "startLine": 18,
       "endLine": 29,
-      "summary": "Imports Nat.Basic, Set.Basic, Finset, Real.Basic, Filter.AtTopBot, and opens the Erdos691 namespace."
+      "summary": "Imports Nat.Basic, Set.Basic, Finset, Real.Basic, Filter.AtTopBot, and opens the Erdos691 namespace.",
+      "mathContext": "Imports Nat.Basic, Set.Basic, Finset, Real.Basic, Filter.AtTopBot, and opens the Erdos691 namespace."
     },
     {
       "id": "density-infrastructure",
       "title": "Density Infrastructure",
       "startLine": 30,
       "endLine": 50,
-      "summary": "Defines countingFunction, upperDensity, lowerDensity, HasDensity, and HasDensityOne using Filter.atTop."
+      "summary": "Defines countingFunction, upperDensity, lowerDensity, HasDensity, and HasDensityOne using Filter.atTop.",
+      "mathContext": "Defines countingFunction, upperDensity, lowerDensity, HasDensity, and HasDensityOne using Filter.atTop."
     },
     {
       "id": "multiples-behrend",
       "title": "Set of Multiples and Behrend Property",
       "startLine": 51,
       "endLine": 60,
-      "summary": "Defines multiplesOf and IsBehrend (density 1 for the set of multiples)."
+      "summary": "Defines multiplesOf and IsBehrend (density 1 for the set of multiples).",
+      "mathContext": "Defines multiplesOf and IsBehrend (density 1 for the set of multiples)."
     },
     {
       "id": "structural-lemmas",
       "title": "Structural Lemmas (Fully Proved)",
       "startLine": 61,
       "endLine": 110,
-      "summary": "Seven fully proved lemmas: membership, monotonicity, empty set, self-membership, multiples, closure, and union decomposition."
+      "summary": "Seven fully proved lemmas: membership, monotonicity, empty set, self-membership, multiples, closure, and union decomposition.",
+      "mathContext": "Seven fully proved lemmas: membership, monotonicity, empty set, self-membership, multiples, closure, and union decomposition."
     },
     {
       "id": "counting-bounds",
       "title": "Counting Function Bounds (Fully Proved)",
       "startLine": 111,
       "endLine": 122,
-      "summary": "Proves counting function monotonicity for subsets and the n+1 upper bound."
+      "summary": "Proves counting function monotonicity for subsets and the n+1 upper bound.",
+      "mathContext": "Proves counting function monotonicity for subsets and the n+1 upper bound."
     },
     {
       "id": "coprime-characterization",
       "title": "Pairwise Coprime Characterization",
       "startLine": 123,
       "endLine": 143,
-      "summary": "Defines coprimality, divergent reciprocal sum, and axiomatizes the coprime Behrend criterion and primes-are-Behrend."
+      "summary": "Defines coprimality, divergent reciprocal sum, and axiomatizes the coprime Behrend criterion and primes-are-Behrend.",
+      "mathContext": "Defines coprimality, divergent reciprocal sum, and axiomatizes the coprime Behrend criterion and primes-are-Behrend."
     },
     {
       "id": "block-sequences",
       "title": "Block Sequences and Tenenbaum's Theorem",
       "startLine": 144,
       "endLine": 179,
-      "summary": "Defines lacunary block sequences, axiomatizes the convergent η obstruction, and states Tenenbaum's log 2 threshold."
+      "summary": "Defines lacunary block sequences, axiomatizes the convergent η obstruction, and states Tenenbaum's log 2 threshold.",
+      "mathContext": "Defines lacunary block sequences, axiomatizes the convergent η obstruction, and states Tenenbaum's log 2 threshold."
     },
     {
       "id": "main-problem",
       "title": "The Erdős Problem (Open)",
       "startLine": 180,
       "endLine": 196,
-      "summary": "States the main open problem: existence of a general characterization of Behrend sequences."
+      "summary": "States the main open problem: existence of a general characterization of Behrend sequences.",
+      "mathContext": "States the main open problem: existence of a general characterization of Behrend sequences."
     }
   ],
   "conclusion": {

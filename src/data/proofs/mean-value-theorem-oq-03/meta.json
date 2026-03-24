@@ -101,70 +101,80 @@
       "title": "The Mean Value Inequality",
       "summary": "The central theorem: for $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, $\\|f(x) - f(a)\\| \\leq C \\cdot (x-a)$ for all $x \\in [a,b]$. One-line proof delegating to Mathlib's `norm_image_sub_le_of_norm_deriv_le_segment'`.",
       "startLine": 49,
-      "endLine": 82
+      "endLine": 82,
+      "mathContext": "The central theorem: for $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\leq C$ on $[a,b]$, $\\|f(x) - f(a)\\| \\leq C \\cdot (x-a)$ for all $x \\in [a,b]$. One-line proof delegating to Mathlib's `norm_image_sub_l"
     },
     {
       "id": "scalar-special-case",
       "title": "Scalar MVT as Special Case",
       "summary": "When $E = \\mathbb{R}$, the vector inequality reduces to $|f(x) - f(a)| \\leq C(x-a)$. The classical scalar MVT ($\\exists c, f'(c) = \\text{slope}$) is strictly stronger, using `exists_deriv_eq_slope`.",
       "startLine": 83,
-      "endLine": 114
+      "endLine": 114,
+      "mathContext": "When $E = \\mathbb{R}$, the vector inequality reduces to $|f(x) - f(a)| \\leq C(x-a)$. The classical scalar MVT ($\\exists c, f'(c) = \\text{slope}$) is strictly stronger, using `exists_deriv_eq_slope`."
     },
     {
       "id": "counterexample",
       "title": "Circular Motion Counterexample",
       "summary": "Canonical counterexample: $f(t) = (\\cos t, \\sin t)$ has $f(2\\pi) = f(0)$ but $\\|f'(t)\\| = 1$ everywhere. Proves $\\cos(2\\pi) = 1 \\wedge \\sin(2\\pi) = 0$ and $\\sin^2 t + \\cos^2 t = 1$.",
       "startLine": 115,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "Canonical counterexample: $f(t) = (\\cos t, \\sin t)$ has $f(2\\pi) = f(0)$ but $\\|f'(t)\\| = 1$ everywhere. Proves $\\cos(2\\pi) = 1 \\wedge \\sin(2\\pi) = 0$ and $\\sin^2 t + \\cos^2 t = 1$."
     },
     {
       "id": "lipschitz",
       "title": "Lipschitz Consequences",
       "summary": "Derivative bound $\\Rightarrow$ Lipschitz: if $\\|Df(x)\\|_{\\text{op}} \\leq L$ on a convex set, then $f$ is $L$-Lipschitz. Also proves: zero derivative implies constant function via MVT with $C = 0$.",
       "startLine": 146,
-      "endLine": 186
+      "endLine": 186,
+      "mathContext": "Derivative bound $\\Rightarrow$ Lipschitz: if $\\|Df(x)\\|_{\\text{op}} \\leq L$ on a convex set, then $f$ is $L$-Lipschitz. Also proves: zero derivative implies constant function via MVT with $C = 0$."
     },
     {
       "id": "contraction-bounds",
       "title": "Contraction-Type Bounds",
       "summary": "If $\\|T'(x)\\| \\leq q$ on $[a,b]$, then $\\|T(x) - T(a)\\| \\leq q(x-a)$. Foundation for proving contraction mappings are contractive.",
       "startLine": 187,
-      "endLine": 211
+      "endLine": 211,
+      "mathContext": "If $\\|T'(x)\\| \\leq q$ on $[a,b]$, then $\\|T(x) - T(a)\\| \\leq q(x-a)$. Foundation for proving contraction mappings are contractive."
     },
     {
       "id": "displacement-bound",
       "title": "Displacement Bound and Gronwall Connection",
       "summary": "Simplest form: $\\|f(T) - f(0)\\| \\leq CT$ for $\\|f'\\| \\leq C$ on $[0,T]$. Connection to Gronwall's inequality, which generalizes to $f'(t) \\leq \\alpha f(t)$.",
       "startLine": 212,
-      "endLine": 238
+      "endLine": 238,
+      "mathContext": "Simplest form: $\\|f(T) - f(0)\\| \\leq CT$ for $\\|f'\\| \\leq C$ on $[0,T]$. Connection to Gronwall's inequality, which generalizes to $f'(t) \\leq \\alpha f(t)$."
     },
     {
       "id": "banach-space",
       "title": "General Banach Space MVT",
       "summary": "For $f : E \\to F$ between normed spaces, Fréchet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction mapping theorem.",
       "startLine": 239,
-      "endLine": 272
+      "endLine": 272,
+      "mathContext": "For $f : E \\to F$ between normed spaces, Fréchet differentiable on a convex set with $\\|Df\\| \\leq C$: $\\|f(b) - f(a)\\| \\leq C \\cdot \\|b-a\\|$. Foundation for implicit function theorem and contraction m"
     },
     {
       "id": "ode-uniqueness",
       "title": "ODE Difference Bound",
       "summary": "For $f, g$ with $f(a) = g(a)$ and $\\|f'(t) - g'(t)\\| \\leq q$: $\\|f(x) - g(x)\\| \\leq q(x-a)$. Core argument behind Picard-Lindelöf uniqueness, applying MVT to $h = f - g$.",
       "startLine": 273,
-      "endLine": 306
+      "endLine": 306,
+      "mathContext": "For $f, g$ with $f(a) = g(a)$ and $\\|f'(t) - g'(t)\\| \\leq q$: $\\|f(x) - g(x)\\| \\leq q(x-a)$. Core argument behind Picard-Lindelöf uniqueness, applying MVT to $h = f - g$."
     },
     {
       "id": "scalar-vs-vector",
       "title": "Scalar vs Vector: Strict Monotonicity and Antiderivatives",
       "summary": "Strict monotonicity ($f' > 0 \\Rightarrow f(a) < f(b)$) requires the scalar MVT equality. Antiderivative uniqueness ($f' = g' \\Rightarrow f - g$ constant) uses the vector inequality with $C = 0$.",
       "startLine": 307,
-      "endLine": 363
+      "endLine": 363,
+      "mathContext": "Strict monotonicity ($f' > 0 \\Rightarrow f(a) < f(b)$) requires the scalar MVT equality. Antiderivative uniqueness ($f' = g' \\Rightarrow f - g$ constant) uses the vector inequality with $C = 0$."
     },
     {
       "id": "banach-extensions",
       "title": "Extended Banach Space Results",
       "summary": "Three additional variants: Banach MVT with `DifferentiableAt`, with `HasFDerivWithinAt`, and zero Fréchet derivative implies constant. Plus Lipschitz from pointwise differentiability.",
       "startLine": 389,
-      "endLine": 461
+      "endLine": 461,
+      "mathContext": "Three additional variants: Banach MVT with `DifferentiableAt`, with `HasFDerivWithinAt`, and zero Fréchet derivative implies constant. Plus Lipschitz from pointwise differentiability."
     }
   ],
   "conclusion": {

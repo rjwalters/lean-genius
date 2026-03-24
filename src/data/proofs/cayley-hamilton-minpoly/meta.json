@@ -101,84 +101,96 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 52,
-      "summary": "Imports `Matrix.Charpoly.Minpoly`, `Algebra.Polynomial.Div`, and tactics. Opens `Matrix`, `Polynomial`, `BigOperators`. Variables: $n$ a finite decidable type for matrix dimension."
+      "summary": "Imports `Matrix.Charpoly.Minpoly`, `Algebra.Polynomial.Div`, and tactics. Opens `Matrix`, `Polynomial`, `BigOperators`. Variables: $n$ a finite decidable type for matrix dimension.",
+      "mathContext": "Imports `Matrix.Charpoly.Minpoly`, `Algebra.Polynomial.Div`, and tactics. Opens `Matrix`, `Polynomial`, `BigOperators`. Variables: $n$ a finite decidable type for matrix dimension."
     },
     {
       "id": "minpoly-reduction",
       "title": "Minimal Polynomial Reduction",
       "startLine": 53,
       "endLine": 84,
-      "summary": "Core theorem: $\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\mu_M)$. Uses the division algorithm $f = q \\cdot \\mu_M + r$ and $\\text{aeval}_M(\\mu_M) = 0$. Companion: $\\text{aeval}_M(f - f \\bmod \\mu_M) = 0$."
+      "summary": "Core theorem: $\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\mu_M)$. Uses the division algorithm $f = q \\cdot \\mu_M + r$ and $\\text{aeval}_M(\\mu_M) = 0$. Companion: $\\text{aeval}_M(f - f \\bmod \\mu_M) = 0$.",
+      "mathContext": "Core theorem: $\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\mu_M)$. Uses the division algorithm $f = q \\cdot \\mu_M + r$ and $\\text{aeval}_M(\\mu_M) = 0$. Companion: $\\text{aeval}_M(f - f \\bmod \\mu_M) = "
     },
     {
       "id": "degree-bounds",
       "title": "Degree Bounds from Minimal Polynomial",
       "startLine": 85,
       "endLine": 115,
-      "summary": "Degree bounds: $\\deg(f \\bmod \\mu_M) < \\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. For derogatory $M$ ($\\mu_M \\neq \\chi_M$), the minpoly bound is strictly tighter."
+      "summary": "Degree bounds: $\\deg(f \\bmod \\mu_M) < \\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. For derogatory $M$ ($\\mu_M \\neq \\chi_M$), the minpoly bound is strictly tighter.",
+      "mathContext": "Degree bounds: $\\deg(f \\bmod \\mu_M) < \\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. For derogatory $M$ ($\\mu_M \\neq \\chi_M$), the minpoly bound is strictly tighter."
     },
     {
       "id": "annihilator-ideal",
       "title": "The Annihilator Ideal",
       "startLine": 116,
       "endLine": 164,
-      "summary": "Annihilator characterization: $\\text{aeval}_M(f) = 0 \\iff \\mu_M \\mid f$. The kernel $\\ker(\\text{aeval}_M) = (\\mu_M)$ is a principal ideal in the PID $K[X]$. Closure under $+$ and $\\times$ proved."
+      "summary": "Annihilator characterization: $\\text{aeval}_M(f) = 0 \\iff \\mu_M \\mid f$. The kernel $\\ker(\\text{aeval}_M) = (\\mu_M)$ is a principal ideal in the PID $K[X]$. Closure under $+$ and $\\times$ proved.",
+      "mathContext": "Annihilator characterization: $\\text{aeval}_M(f) = 0 \\iff \\mu_M \\mid f$. The kernel $\\ker(\\text{aeval}_M) = (\\mu_M)$ is a principal ideal in the PID $K[X]$. Closure under $+$ and $\\times$ proved."
     },
     {
       "id": "congruence",
       "title": "Congruence via Minimal Polynomial",
       "startLine": 165,
       "endLine": 190,
-      "summary": "$\\text{aeval}_M(f) = \\text{aeval}_M(g) \\iff \\mu_M \\mid (f - g)$. Yields the isomorphism $K[X]/(\\mu_M) \\cong K[M]$, a finer quotient than $K[X]/(\\chi_M)$."
+      "summary": "$\\text{aeval}_M(f) = \\text{aeval}_M(g) \\iff \\mu_M \\mid (f - g)$. Yields the isomorphism $K[X]/(\\mu_M) \\cong K[M]$, a finer quotient than $K[X]/(\\chi_M)$.",
+      "mathContext": "$\\text{aeval}_M(f) = \\text{aeval}_M(g) \\iff \\mu_M \\mid (f - g)$. Yields the isomorphism $K[X]/(\\mu_M) \\cong K[M]$, a finer quotient than $K[X]/(\\chi_M)$."
     },
     {
       "id": "power-reduction",
       "title": "Power Reduction via Minimal Polynomial",
       "startLine": 191,
       "endLine": 223,
-      "summary": "$M^k = \\text{aeval}_M(X^k \\bmod \\mu_M)$, expressing every matrix power as a polynomial in $M$ of degree $< \\deg(\\mu_M)$. The set $\\{I, M, \\ldots, M^{d-1}\\}$ spans $K[M]$."
+      "summary": "$M^k = \\text{aeval}_M(X^k \\bmod \\mu_M)$, expressing every matrix power as a polynomial in $M$ of degree $< \\deg(\\mu_M)$. The set $\\{I, M, \\ldots, M^{d-1}\\}$ spans $K[M]$.",
+      "mathContext": "$M^k = \\text{aeval}_M(X^k \\bmod \\mu_M)$, expressing every matrix power as a polynomial in $M$ of degree $< \\deg(\\mu_M)$. The set $\\{I, M, \\ldots, M^{d-1}\\}$ spans $K[M]$."
     },
     {
       "id": "comparison",
       "title": "Comparison with Characteristic Polynomial",
       "startLine": 224,
       "endLine": 272,
-      "summary": "$\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$, $\\deg(\\mu_M) > 0$, and the refinement: $\\text{aeval}_M(f \\bmod \\chi_M) = \\text{aeval}_M(f \\bmod \\mu_M)$."
+      "summary": "$\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$, $\\deg(\\mu_M) > 0$, and the refinement: $\\text{aeval}_M(f \\bmod \\chi_M) = \\text{aeval}_M(f \\bmod \\mu_M)$.",
+      "mathContext": "$\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$, $\\deg(\\mu_M) > 0$, and the refinement: $\\text{aeval}_M(f \\bmod \\chi_M) = \\text{aeval}_M(f \\bmod \\mu_M)$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Scalar, Identity, Zero Matrices",
       "startLine": 273,
       "endLine": 304,
-      "summary": "$\\mu_I = X - 1$, $\\mu_0 = X$, $\\mu_{cI} \\mid X - c$ — all degree 1, maximally derogatory vs. $\\deg(\\chi_M) = n$. Zero matrix: $0^k = 0$ for $k \\geq 1$."
+      "summary": "$\\mu_I = X - 1$, $\\mu_0 = X$, $\\mu_{cI} \\mid X - c$ — all degree 1, maximally derogatory vs. $\\deg(\\chi_M) = n$. Zero matrix: $0^k = 0$ for $k \\geq 1$.",
+      "mathContext": "$\\mu_I = X - 1$, $\\mu_0 = X$, $\\mu_{cI} \\mid X - c$ — all degree 1, maximally derogatory vs. $\\deg(\\chi_M) = n$. Zero matrix: $0^k = 0$ for $k \\geq 1$."
     },
     {
       "id": "nilpotent",
       "title": "Nilpotent Matrices via Minimal Polynomial",
       "startLine": 305,
       "endLine": 331,
-      "summary": "$\\mu_M = X^d \\Rightarrow M^d = 0$ with nilpotency index $d = \\deg(\\mu_M) \\leq n$. Higher powers vanish: $M^k = 0$ for all $k \\geq d$."
+      "summary": "$\\mu_M = X^d \\Rightarrow M^d = 0$ with nilpotency index $d = \\deg(\\mu_M) \\leq n$. Higher powers vanish: $M^k = 0$ for all $k \\geq d$.",
+      "mathContext": "$\\mu_M = X^d \\Rightarrow M^d = 0$ with nilpotency index $d = \\deg(\\mu_M) \\leq n$. Higher powers vanish: $M^k = 0$ for all $k \\geq d$."
     },
     {
       "id": "identities",
       "title": "Polynomial Identities via Annihilator Theory",
       "startLine": 332,
       "endLine": 366,
-      "summary": "Systematic identity verification: $f - g = \\mu_M \\cdot q \\Rightarrow \\text{aeval}_M(f) = \\text{aeval}_M(g)$. Degree lower bound: nonzero annihilators have $\\deg \\geq \\deg(\\mu_M)$."
+      "summary": "Systematic identity verification: $f - g = \\mu_M \\cdot q \\Rightarrow \\text{aeval}_M(f) = \\text{aeval}_M(g)$. Degree lower bound: nonzero annihilators have $\\deg \\geq \\deg(\\mu_M)$.",
+      "mathContext": "Systematic identity verification: $f - g = \\mu_M \\cdot q \\Rightarrow \\text{aeval}_M(f) = \\text{aeval}_M(g)$. Degree lower bound: nonzero annihilators have $\\deg \\geq \\deg(\\mu_M)$."
     },
     {
       "id": "idempotent-involutory",
       "title": "Idempotent and Involutory Matrices",
       "startLine": 367,
       "endLine": 404,
-      "summary": "Idempotent ($M^2 = M$): $\\mu_M \\mid X(X-1)$, so $\\mu_M \\in \\{X, X-1, X(X-1)\\}$. Involutory ($M^2 = I$): $\\mu_M \\mid (X-1)(X+1)$."
+      "summary": "Idempotent ($M^2 = M$): $\\mu_M \\mid X(X-1)$, so $\\mu_M \\in \\{X, X-1, X(X-1)\\}$. Involutory ($M^2 = I$): $\\mu_M \\mid (X-1)(X+1)$.",
+      "mathContext": "Idempotent ($M^2 = M$): $\\mu_M \\mid X(X-1)$, so $\\mu_M \\in \\{X, X-1, X(X-1)\\}$. Involutory ($M^2 = I$): $\\mu_M \\mid (X-1)(X+1)$."
     },
     {
       "id": "summary",
       "title": "Summary and Verification",
       "startLine": 405,
       "endLine": 447,
-      "summary": "Summary of all 25+ theorems. `#check` commands verify key theorem signatures. 0 sorries — all results fully proved."
+      "summary": "Summary of all 25+ theorems. `#check` commands verify key theorem signatures. 0 sorries — all results fully proved.",
+      "mathContext": "Summary of all 25+ theorems. `#check` commands verify key theorem signatures. 0 sorries — all results fully proved."
     }
   ],
   "conclusion": {

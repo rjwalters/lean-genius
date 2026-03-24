@@ -95,63 +95,72 @@
       "title": "Imports and Setup",
       "startLine": 39,
       "endLine": 48,
-      "summary": "Imports `AEMeasurableOrder`, `Lebesgue.Basic`, `ContinuousAffineMap`, `Integrals`, `Group.Basic`. Opens `MeasureTheory` and `Set` for $\\lambda$-a.e. notation and `Measurable`."
+      "summary": "Imports `AEMeasurableOrder`, `Lebesgue.Basic`, `ContinuousAffineMap`, `Integrals`, `Group.Basic`. Opens `MeasureTheory` and `Set` for $\\lambda$-a.e. notation and `Measurable`.",
+      "mathContext": "Imports `AEMeasurableOrder`, `Lebesgue.Basic`, `ContinuousAffineMap`, `Integrals`, `Group.Basic`. Opens `MeasureTheory` and `Set` for $\\lambda$-a.e. notation and `Measurable`."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines `HasMeasurableDifferences f` ($\\Delta_h f$ measurable $\\forall h > 0$), `IsAdditive h` ($h(x+y) = h(x) + h(y)$), and `IsRigid r` ($r(x+h) = r(x)$ $\\lambda$-a.e.).",
       "startLine": 49,
-      "endLine": 66
+      "endLine": 66,
+      "mathContext": "Defines `HasMeasurableDifferences f` ($\\Delta_h f$ measurable $\\forall h > 0$), `IsAdditive h` ($h(x+y) = h(x) + h(y)$), and `IsRigid r` ($r(x+h) = r(x)$ $\\lambda$-a.e.)."
     },
     {
       "id": "additive-properties",
       "title": "Properties of Additive Functions",
       "summary": "Verified: $h(0) = 0$ and $h(-x) = -h(x)$. Axioms: $h(qx) = qh(x)$ for $q \\in \\mathbb{Q}$, $\\exists$ discontinuous additive (via Hamel bases), continuous additive $\\Rightarrow h(x) = cx$.",
       "startLine": 67,
-      "endLine": 96
+      "endLine": 96,
+      "mathContext": "Verified: $h(0) = 0$ and $h(-x) = -h(x)$. Axioms: $h(qx) = qh(x)$ for $q \\in \\mathbb{Q}$, $\\exists$ discontinuous additive (via Hamel bases), continuous additive $\\Rightarrow h(x) = cx$."
     },
     {
       "id": "rigid-properties",
       "title": "Properties of Rigid Functions",
       "summary": "Axioms: rigid + continuous $\\Rightarrow$ constant (periodic with every period). Rigid $\\Rightarrow$ measurable differences ($\\Delta_h r = 0$ $\\lambda$-a.e.).",
       "startLine": 97,
-      "endLine": 109
+      "endLine": 109,
+      "mathContext": "Axioms: rigid + continuous $\\Rightarrow$ constant (periodic with every period). Rigid $\\Rightarrow$ measurable differences ($\\Delta_h r = 0$ $\\lambda$-a.e.)."
     },
     {
       "id": "decomposition-theorem",
       "title": "The Decomposition Theorem",
       "summary": "Axiomatizes `laczkovich_decomposition`: $\\forall f \\in \\text{MD},\\; \\exists g \\in C(\\mathbb{R}),\\; h$ additive, $r$ rigid: $f = g + h + r$. Essential uniqueness: $g_1 - g_2 = cx$, $r_1 = r_2$ $\\lambda$-a.e.",
       "startLine": 110,
-      "endLine": 144
+      "endLine": 144,
+      "mathContext": "Axiomatizes `laczkovich_decomposition`: $\\forall f \\in \\text{MD},\\; \\exists g \\in C(\\mathbb{R}),\\; h$ additive, $r$ rigid: $f = g + h + r$. Essential uniqueness: $g_1 - g_2 = cx$, $r_1 = r_2$ $\\lambda"
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Verifications",
       "summary": "If $f$ is measurable, $h = 0$ ($f = g + r$). Verified: continuous $\\Rightarrow \\text{MD}$ (via `hCont.sub`). Verified: additive $\\Rightarrow \\text{MD}$ ($\\Delta_h f = f(h)$ constant, hence `measurable_const`).",
       "startLine": 145,
-      "endLine": 182
+      "endLine": 182,
+      "mathContext": "If $f$ is measurable, $h = 0$ ($f = g + r$). Verified: continuous $\\Rightarrow \\text{MD}$ (via `hCont.sub`). Verified: additive $\\Rightarrow \\text{MD}$ ($\\Delta_h f = f(h)$ constant, hence `measurable"
     },
     {
       "id": "related-problems",
       "title": "Connection to Erdős #907",
       "summary": "Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity.",
       "startLine": 183,
-      "endLine": 198
+      "endLine": 198,
+      "mathContext": "Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity."
     },
     {
       "id": "de-bruijn",
       "title": "The de Bruijn Perspective",
       "summary": "Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation.",
       "startLine": 199,
-      "endLine": 216
+      "endLine": 216,
+      "mathContext": "Defines `DifferenceClosed C`: $\\Delta_h f \\in C$ $\\forall h \\Rightarrow f = g + h + r$ with $g \\in C$. Axiom: $\\{\\text{measurable}\\}$ is difference closed. This is de Bruijn's 1951 formulation."
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
       "summary": "`erdos_908_solved` and `de_bruijn_erdos_conjecture` state the main result (both reference `laczkovich_decomposition`). `erdos_908_summary` combines decomposition $\\wedge$ continuous verification $\\wedge$ additive verification.",
       "startLine": 217,
-      "endLine": 258
+      "endLine": 258,
+      "mathContext": "`erdos_908_solved` and `de_bruijn_erdos_conjecture` state the main result (both reference `laczkovich_decomposition`). `erdos_908_summary` combines decomposition $\\wedge$ continuous verification $\\wed"
     }
   ],
   "conclusion": {

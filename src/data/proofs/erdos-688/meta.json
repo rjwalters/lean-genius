@@ -35,63 +35,72 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Module docstring introducing Erdős Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erdős's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and notes the problem is open."
+      "summary": "Module docstring introducing Erdős Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erdős's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and notes the problem is open.",
+      "mathContext": "Module docstring introducing Erdős Problem #688: define the covering exponent $\\varepsilon_n$ and estimate it. Cites Erdős's 1979 lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ and note"
     },
     {
       "id": "imports",
       "title": "Library Imports",
       "startLine": 20,
       "endLine": 23,
-      "summary": "Imports Mathlib's prime number API, real arithmetic, logarithm special functions, and tactics for stating asymptotic bounds with iterated logarithms."
+      "summary": "Imports Mathlib's prime number API, real arithmetic, logarithm special functions, and tactics for stating asymptotic bounds with iterated logarithms.",
+      "mathContext": "Imports Mathlib's prime number API, real arithmetic, logarithm special functions, and tactics for stating asymptotic bounds with iterated logarithms."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 27,
       "endLine": 50,
-      "summary": "Defines the covering assignment (one residue class per prime), interval coverage predicate ($[1,n] \\subseteq \\bigcup_p \\{m \\equiv a_p\\}$), prime range $(n^\\varepsilon, n]$, and the covering exponent $\\varepsilon_n = \\sup\\{\\varepsilon : \\text{coverage possible}\\}$."
+      "summary": "Defines the covering assignment (one residue class per prime), interval coverage predicate ($[1,n] \\subseteq \\bigcup_p \\{m \\equiv a_p\\}$), prime range $(n^\\varepsilon, n]$, and the covering exponent $\\varepsilon_n = \\sup\\{\\varepsilon : \\text{coverage possible}\\}$.",
+      "mathContext": "Defines the covering assignment (one residue class per prime), interval coverage predicate ($[1,n] \\subseteq \\bigcup_p \\{m \\equiv a_p\\}$), prime range $(n^\\varepsilon, n]$, and the covering exponent $"
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 54,
       "endLine": 57,
-      "summary": "States $\\varepsilon_n \\to 0$: for any $\\delta > 0$, primes in $(n^\\delta, n]$ with one class each cover $[1, n]$ for sufficiently large $n$. Formalized via $\\text{Filter.Tendsto}$."
+      "summary": "States $\\varepsilon_n \\to 0$: for any $\\delta > 0$, primes in $(n^\\delta, n]$ with one class each cover $[1, n]$ for sufficiently large $n$. Formalized via $\\text{Filter.Tendsto}$.",
+      "mathContext": "States $\\varepsilon_n \\to 0$: for any $\\delta > 0$, primes in $(n^\\delta, n]$ with one class each cover $[1, n]$ for sufficiently large $n$. Formalized via $\\text{Filter.Tendsto}$."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 61,
       "endLine": 72,
-      "summary": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\log n)/(\\log\\log n)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$."
+      "summary": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\log n)/(\\log\\log n)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$.",
+      "mathContext": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\log n)/(\\log\\log n)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$."
     },
     {
       "id": "per-prime-coverage",
       "title": "Per-Prime Coverage",
       "startLine": 76,
       "endLine": 80,
-      "summary": "Each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering."
+      "summary": "Each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering.",
+      "mathContext": "Each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering."
     },
     {
       "id": "mertens-estimate",
       "title": "Mertens Coverage Estimate",
       "startLine": 82,
       "endLine": 88,
-      "summary": "By Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) + O(1)$."
+      "summary": "By Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) + O(1)$.",
+      "mathContext": "By Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) "
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
       "startLine": 90,
       "endLine": 101,
-      "summary": "Monotonicity (smaller $\\varepsilon$ includes more primes), well-definedness of $\\varepsilon_n$ via supremum, and full prime covering ($\\varepsilon = 0$) by CRT and PNT for large $n$."
+      "summary": "Monotonicity (smaller $\\varepsilon$ includes more primes), well-definedness of $\\varepsilon_n$ via supremum, and full prime covering ($\\varepsilon = 0$) by CRT and PNT for large $n$.",
+      "mathContext": "Monotonicity (smaller $\\varepsilon$ includes more primes), well-definedness of $\\varepsilon_n$ via supremum, and full prime covering ($\\varepsilon = 0$) by CRT and PNT for large $n$."
     },
     {
       "id": "sieve-duality",
       "title": "Sieve Duality",
       "startLine": 103,
       "endLine": 110,
-      "summary": "Covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors). Placeholder axiomatization of this structural connection."
+      "summary": "Covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors). Placeholder axiomatization of this structural connection.",
+      "mathContext": "Covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors). Placeholder axiomatization of this structural connection."
     }
   ],
   "overview": {

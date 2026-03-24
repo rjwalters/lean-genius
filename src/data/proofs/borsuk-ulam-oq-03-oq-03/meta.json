@@ -83,77 +83,88 @@
       "title": "Tucker's Lemma (Axiom) and Dominant Component Labeling",
       "summary": "States Tucker's lemma axiomatically for arbitrary triangulated balls. Defines the dominant component labeling: maps 2D vectors to {+1,-1,+2,-2} based on which coordinate has larger absolute value. Proves the labeling is antipodal: g(-x) = -g(x) implies complementary labels.",
       "startLine": 46,
-      "endLine": 119
+      "endLine": 119,
+      "mathContext": "States Tucker's lemma axiomatically for arbitrary triangulated balls. Defines the dominant component labeling: maps 2D vectors to {+1,-1,+2,-2} based on which coordinate has larger absolute value. Pro"
     },
     {
       "id": "triangulated-disk",
       "title": "Triangulated Disk and Continuous Functions",
       "summary": "Defines TriangulatedDisk2D structure with vertices, edges, boundary, and antipodal map. Defines the antisymmetric difference g(x)=f(x)-f(-x) and proves it is odd and continuous.",
       "startLine": 120,
-      "endLine": 210
+      "endLine": 210,
+      "mathContext": "Defines TriangulatedDisk2D structure with vertices, edges, boundary, and antipodal map. Defines the antisymmetric difference g(x)=f(x)-f(-x) and proves it is odd and continuous."
     },
     {
       "id": "odd-framework",
       "title": "Odd Function Framework and Approximate Solutions",
       "summary": "Establishes properties of odd functions on S¹/S²: g(0)=0, symmetric zero set, norm preservation. Defines ε-approximate antipodal pairs and proves the approximate→exact bridge via compactness.",
       "startLine": 400,
-      "endLine": 575
+      "endLine": 575,
+      "mathContext": "Establishes properties of odd functions on S¹/S²: g(0)=0, symmetric zero set, norm preservation. Defines ε-approximate antipodal pairs and proves the approximate→exact bridge via compactness."
     },
     {
       "id": "corrected-bu",
       "title": "Corrected 2D Borsuk-Ulam (S² → ℝ²)",
       "summary": "The correct 2D BU statement uses S² ⊂ ℝ³ (not S¹). Defines neg3, antisymmetricDiff3, sphere compactness. Proves approximate and exact BU via Tucker on the disk + hemisphere projection.",
       "startLine": 595,
-      "endLine": 845
+      "endLine": 845,
+      "mathContext": "The correct 2D BU statement uses S² ⊂ ℝ³ (not S¹). Defines neg3, antisymmetricDiff3, sphere compactness. Proves approximate and exact BU via Tucker on the disk + hemisphere projection."
     },
     {
       "id": "hemisphere-projection",
       "title": "Hemisphere Projection Infrastructure",
       "summary": "Maps D² to upper hemisphere of S² via diskLift: (u,v) ↦ (u,v,√(1-u²-v²)). Proves the crucial boundary property: diskLift(-p) = neg3(diskLift(p)) on ∂D², making Tucker's lemma applicable.",
       "startLine": 846,
-      "endLine": 920
+      "endLine": 920,
+      "mathContext": "Maps D² to upper hemisphere of S² via diskLift: (u,v) ↦ (u,v,√(1-u²-v²)). Proves the crucial boundary property: diskLift(-p) = neg3(diskLift(p)) on ∂D², making Tucker's lemma applicable."
     },
     {
       "id": "ivt-segments",
       "title": "IVT on Line Segments",
       "summary": "Proves the Intermediate Value Theorem on parameterized line segments in ℝ². Given a complementary edge where g changes sign in coordinate k, extracts a point where g(w)_k = 0. Key tool for converting Tucker's complementary edges into approximate zeros.",
       "startLine": 921,
-      "endLine": 1080
+      "endLine": 1080,
+      "mathContext": "Proves the Intermediate Value Theorem on parameterized line segments in ℝ². Given a complementary edge where g changes sign in coordinate k, extracts a point where g(w)_k = 0. Key tool for converting "
     },
     {
       "id": "dominant-bounds",
       "title": "Dominant Component Modulus of Continuity",
       "summary": "At a dominant-component vertex near an IVT zero, both components of g are bounded by the modulus of continuity. Proves |g(w)_{3-k}| ≤ 2·dist(g(u),g(w)), enabling the mesh refinement argument.",
       "startLine": 1081,
-      "endLine": 1150
+      "endLine": 1150,
+      "mathContext": "At a dominant-component vertex near an IVT zero, both components of g are bounded by the modulus of continuity. Proves |g(w)_{3-k}| ≤ 2·dist(g(u),g(w)), enabling the mesh refinement argument."
     },
     {
       "id": "tucker-5v",
       "title": "Tucker 2D: 5-Vertex Disk (Computational)",
       "summary": "Verifies Tucker's 2D lemma for the minimal centrally-symmetric triangulated disk (4 boundary + 1 center vertex, 8 edges). Exhaustive check over 4³ = 64 valid labelings via decide.",
       "startLine": 1153,
-      "endLine": 1260
+      "endLine": 1260,
+      "mathContext": "Verifies Tucker's 2D lemma for the minimal centrally-symmetric triangulated disk (4 boundary + 1 center vertex, 8 edges). Exhaustive check over 4³ = 64 valid labelings via decide."
     },
     {
       "id": "tucker-9v",
       "title": "Tucker 2D: 9-Vertex Grid (Computational)",
       "summary": "Verifies Tucker's 2D lemma for a 3×3 grid triangulation (8 boundary + 1 interior vertex, 16 edges). Exhaustive check over 4⁵ = 1024 valid labelings via native_decide.",
       "startLine": 1261,
-      "endLine": 1330
+      "endLine": 1330,
+      "mathContext": "Verifies Tucker's 2D lemma for a 3×3 grid triangulation (8 boundary + 1 interior vertex, 16 edges). Exhaustive check over 4⁵ = 1024 valid labelings via native_decide."
     },
     {
       "id": "antipodal-necessity",
       "title": "Necessity of Antipodal Condition",
       "summary": "Proves the antipodal boundary condition is necessary: a constant labeling (all vertices +1) with no antipodal constraint has zero complementary edges.",
       "startLine": 1331,
-      "endLine": 1370
+      "endLine": 1370,
+      "mathContext": "Proves the antipodal boundary condition is necessary: a constant labeling (all vertices +1) with no antipodal constraint has zero complementary edges."
     },
     {
       "id": "boundary-parity",
       "title": "Boundary Parity Theorem (Computational)",
       "summary": "Proves that for any antipodal labeling of the boundary, the number of complementary boundary edges is even. Verified for 5-vertex (16 cases, decide) and 9-vertex (256 cases, native_decide).",
       "startLine": 1371,
-      "endLine": 2633
+      "endLine": 2633,
+      "mathContext": "Proves that for any antipodal labeling of the boundary, the number of complementary boundary edges is even. Verified for 5-vertex (16 cases, decide) and 9-vertex (256 cases, native_decide)."
     }
   ],
   "conclusion": {

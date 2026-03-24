@@ -60,84 +60,96 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib's `SimpleGraph`, `Subgraph`, `Fintype`, and `Real` modules. Opens the `SimpleGraph` namespace and begins the `Erdos79` namespace for the formalization.",
       "startLine": 16,
-      "endLine": 24
+      "endLine": 24,
+      "mathContext": "Imports Mathlib's `SimpleGraph`, `Subgraph`, `Fintype`, and `Real` modules. Opens the `SimpleGraph` namespace and begins the `Erdos79` namespace for the formalization."
     },
     {
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers",
       "summary": "Defines $R(G,H) = \\min\\{n : \\text{every 2-coloring of } K_n \\text{ has red } G \\text{ or blue } H\\}$ as a noncomputable function using `Nat.find`. The existence witness is a placeholder; the full Ramsey existence theorem (1930) requires a deeper combinatorial argument.",
       "startLine": 25,
-      "endLine": 44
+      "endLine": 44,
+      "mathContext": "Defines $R(G,H) = \\min\\{n : \\text{every 2-coloring of } K_n \\text{ has red } G \\text{ or blue } H\\}$ as a noncomputable function using `Nat.find`. The existence witness is a placeholder; the full Rams"
     },
     {
       "id": "no-isolated",
       "title": "Graphs with No Isolated Vertices",
       "summary": "Defines `noIsolatedVertices` ($\\forall v,\\; \\deg(v) \\geq 1$) and `edgeCount` ($|E(G)|$). These restrict the domain of Ramsey size linearity to graphs where the edge count is a meaningful measure of size.",
       "startLine": 45,
-      "endLine": 60
+      "endLine": 60,
+      "mathContext": "Defines `noIsolatedVertices` ($\\forall v,\\; \\deg(v) \\geq 1$) and `edgeCount` ($|E(G)|$). These restrict the domain of Ramsey size linearity to graphs where the edge count is a meaningful measure of si"
     },
     {
       "id": "ramsey-linear",
       "title": "Ramsey Size Linearity",
       "summary": "Defines `isRamseySizeLinear` ($\\exists C > 0,\\; \\forall H,\\; R(G,H) \\leq C \\cdot |E(H)|$) and its negation `isRamseySizeSuperlinear`. The linear bound captures graphs whose Ramsey numbers grow at most proportionally to the size of the second argument.",
       "startLine": 61,
-      "endLine": 77
+      "endLine": 77,
+      "mathContext": "Defines `isRamseySizeLinear` ($\\exists C > 0,\\; \\forall H,\\; R(G,H) \\leq C \\cdot |E(H)|$) and its negation `isRamseySizeSuperlinear`. The linear bound captures graphs whose Ramsey numbers grow at most"
     },
     {
       "id": "hereditary",
       "title": "Subgraphs and Hereditary Property",
       "summary": "Defines `isProperSubgraph` via the lattice ordering on `SimpleGraph` and axiomatizes that Ramsey size linearity is **hereditary**: $H \\subsetneq G \\wedge \\text{linear}(G) \\implies \\text{linear}(H)$. This is the structural foundation for defining minimal obstructions.",
       "startLine": 78,
-      "endLine": 92
+      "endLine": 92,
+      "mathContext": "Defines `isProperSubgraph` via the lattice ordering on `SimpleGraph` and axiomatizes that Ramsey size linearity is **hereditary**: $H \\subsetneq G \\wedge \\text{linear}(G) \\implies \\text{linear}(H)$. T"
     },
     {
       "id": "minimal",
       "title": "Minimally Non-Linear Graphs",
       "summary": "Defines `isMinimallyNonLinear` as the conjunction $\\neg\\text{linear}(G) \\wedge \\forall H \\subsetneq G,\\; \\text{linear}(H)$. These are the minimal obstructions to Ramsey size linearity — the forbidden subgraphs whose removal from any non-linear graph restores linearity.",
       "startLine": 93,
-      "endLine": 106
+      "endLine": 106,
+      "mathContext": "Defines `isMinimallyNonLinear` as the conjunction $\\neg\\text{linear}(G) \\wedge \\forall H \\subsetneq G,\\; \\text{linear}(H)$. These are the minimal obstructions to Ramsey size linearity — the forbidden "
     },
     {
       "id": "K4",
       "title": "The Complete Graph K₄",
       "summary": "Defines `completeGraph n` on `Fin n` with adjacency $u \\neq v$, then axiomatizes $K_4$'s superlinearity and its subgraphs' linearity. Proves `K4_is_minimal` by combining both axioms via `constructor`. $K_4$ with $\\binom{4}{2} = 6$ edges is the unique known explicit minimally non-linear graph.",
       "startLine": 107,
-      "endLine": 133
+      "endLine": 133,
+      "mathContext": "Defines `completeGraph n` on `Fin n` with adjacency $u \\neq v$, then axiomatizes $K_4$'s superlinearity and its subgraphs' linearity. Proves `K4_is_minimal` by combining both axioms via `constructor`."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "Defines the set $\\mathcal{M} = \\{G : G \\text{ is minimally non-linear}\\}$ and formalizes Erdős Problem #79 as the proposition $|\\mathcal{M}| = \\infty$. This 1993 question by Erdős, Faudree, Rousseau, and Schelp stood open for 31 years.",
       "startLine": 134,
-      "endLine": 148
+      "endLine": 148,
+      "mathContext": "Defines the set $\\mathcal{M} = \\{G : G \\text{ is minimally non-linear}\\}$ and formalizes Erdős Problem #79 as the proposition $|\\mathcal{M}| = \\infty$. This 1993 question by Erdős, Faudree, Rousseau, "
     },
     {
       "id": "wigderson",
       "title": "Wigderson's Theorem (2024)",
       "summary": "Axiomatizes Wigderson's breakthrough: $|\\mathcal{M}| = \\infty$. The proof is non-constructive, using probabilistic and extremal methods. Derives `erdos_79_solved` as a direct application of the axiom.",
       "startLine": 149,
-      "endLine": 162
+      "endLine": 162,
+      "mathContext": "Axiomatizes Wigderson's breakthrough: $|\\mathcal{M}| = \\infty$. The proof is non-constructive, using probabilistic and extremal methods. Derives `erdos_79_solved` as a direct application of the axiom."
     },
     {
       "id": "explicit",
       "title": "Explicit Construction Problem",
       "summary": "Defines `knownExamples = {K_4}` and the open problem `explicit_construction_open`: $\\exists G \\in \\mathcal{M},\\; G \\not\\cong K_4$. Despite Wigderson's existence proof, constructing a second explicit example remains one of the central open problems in Ramsey theory.",
       "startLine": 163,
-      "endLine": 185
+      "endLine": 185,
+      "mathContext": "Defines `knownExamples = {K_4}` and the open problem `explicit_construction_open`: $\\exists G \\in \\mathcal{M},\\; G \\not\\cong K_4$. Despite Wigderson's existence proof, constructing a second explicit e"
     },
     {
       "id": "K4-structure",
       "title": "Why K₄ Is Special",
       "summary": "Proves $|E(K_4)| = 6$ (sorry), axiomatizes $R(K_3, H) = O(|E(H)|)$ (Chvátal–Rödl–Szemerédi–Trotter 1983), and that paths are Ramsey size linear (Lee 2017). These results show that every proper subgraph of $K_4$ is linear, placing $K_4$ precisely at the boundary.",
       "startLine": 186,
-      "endLine": 204
+      "endLine": 204,
+      "mathContext": "Proves $|E(K_4)| = 6$ (sorry), axiomatizes $R(K_3, H) = O(|E(H)|)$ (Chvátal–Rödl–Szemerédi–Trotter 1983), and that paths are Ramsey size linear (Lee 2017). These results show that every proper subgrap"
     },
     {
       "id": "antichain",
       "title": "Antichain Structure",
       "summary": "States that elements of $\\mathcal{M}$ form an **antichain**: $\\forall G, H \\in \\mathcal{M},\\; G \\neq H \\implies G \\not\\subsetneq H$. Combined with Wigderson's theorem, this gives an infinite antichain in the subgraph ordering, showing that Ramsey size linearity cannot be characterized by finitely many forbidden subgraphs.",
       "startLine": 205,
-      "endLine": 243
+      "endLine": 243,
+      "mathContext": "States that elements of $\\mathcal{M}$ form an **antichain**: $\\forall G, H \\in \\mathcal{M},\\; G \\neq H \\implies G \\not\\subsetneq H$. Combined with Wigderson's theorem, this gives an infinite antichain"
     }
   ],
   "conclusion": {
