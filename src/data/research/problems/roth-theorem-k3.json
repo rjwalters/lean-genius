@@ -1,8 +1,8 @@
 {
   "slug": "roth-theorem-k3",
   "title": "Roth's Theorem (Szemeredi k=3)",
-  "phase": "OBSERVE",
-  "status": "surveyed",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -18,15 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-21",
-    "iteration": 11,
-    "focus": "Session 11: Proved N=1 subcase (delta+delta²/100≤1). Documented architectural gap. Pre-existing Mathlib breakages identified.",
+    "iteration": 14,
+    "focus": "Session 14: Verified build, assessed sorry. Fix requires ~220 lines Dirichlet integration.",
     "blockers": [
-      "coset_char_sum_zero: character sum vanishes",
-      "coset_density_increment: pigeonhole formalization",
-      "Box partition for g<sqrt(N) (prime N)",
-      "Even N and N=1 edge cases"
+      "Pre-existing Mathlib API breakages in fourier_large_coefficient (lines 583-800)",
+      "Dirichlet approximation needed for N=1 iteration case (in density_increment_iter)"
     ],
-    "nextAction": "Prove coset_char_sum_zero via root_unity_sum_zero + exp algebra",
+    "nextAction": "Integrate DirichletApproximation.lean: (1) Dirichlet-based subprogression partition, (2) approximate character constancy, (3) density increment under constancy, (4) modified lemma guaranteeing M≥2.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -34,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 11 proved density_increment_lemma N=1 subcase for small delta. Identified and documented architectural gap: coset decomposition produces M=1 for prime N, blocking iteration. ~20 pre-existing Mathlib API breakages in fourier_large_coefficient.",
+    "progressSummary": "PROGRESS: Session 13 added density_bound_from_increment lemma (d+d²/100≤1 from density_increment_lemma+card_le_nat), apFree_density_lt_two_thirds lemma (δ≤2/3 for N≥3), fixed 4 linter warnings, improved sorry documentation with detailed fix path. File: 0 axioms, 1 sorry, 1476 lines.",
     "builtItems": [
       "Fixed apFree_singleton proof, Complex.abs -> norm, added apFree_subset, removed incorrect apFree_pair",
       "Build now succeeds: 0 axioms, 3 sorries",
@@ -56,7 +54,20 @@
       "apFree_card_le_half: 2|A|≤N+1 for APFree A⊆ZMod N, N>1 — PROVED in RothTheorem.lean",
       "Fixed 5 Mathlib API breakages: ZMod.isUnit_natCast_iff, natCast_zmod_eq_zero_iff_dvd, exact_mod_cast, card_pos direction, eq_univ_of_card",
       "Proved mul_L_r_eq_zero: L*r=0 in ZMod N via val round-trip + Fin.ext injectivity",
-      "Added apFree_filter_affine: AP-freeness under affine maps when q not zero divisor"
+      "Added apFree_filter_affine: AP-freeness under affine maps when q not zero divisor",
+      "PROVED density_increment_lemma sorry-free: requires 1<N, produces 0<M<N with density boost",
+      "Added strict descent M<N via gcd(val(r),N) < N for r≠0",
+      "Restructured roth_density_bound: density_increment_iter wrapper isolates N=1 sorry",
+      "Fixed ~10 pre-existing Mathlib API breakages (Finset.eq_univ_of_card, ZMod.val_one_lt_of_lt, etc.)",
+      "PROVED fourier_large_coefficient Case 2 norm bound (6 Mathlib API fixes)",
+      "PROVED density_increment_iter N=1 easy case (delta+delta²/100≤1)",
+      "Fixed Complex.norm_real → Complex.norm_real + Real.norm_eq_abs pattern",
+      "Fixed lt_div_iff → lt_div_iff₀ for new Mathlib naming",
+      "Restructured hn_gt_B proof: use delta<1 from n<N instead of strict division",
+      "Split nlinarith timeout into intermediate lemma hcaseN + linarith",
+      "PROVED density_bound_from_increment: δ+δ²/100≤1 from density_increment_lemma+card_le_nat",
+      "PROVED apFree_density_lt_two_thirds: δ≤2/3 for APFree on ZMod N with N≥3",
+      "Fixed 4 linter warnings: unused simp args (true_and, Finset.mem_univ), unused vars (_hg, _hAP, _hdelta1, _hdelta)"
     ],
     "insights": [
       "RothTheorem.lean had 3 build errors: deprecated Finset.not_mem_empty, broken apFree_singleton, non-existent Complex.abs",
@@ -93,20 +104,27 @@
       "Fix requires 2≤M in density increment conclusion (not just M≥sqrt(N)) to maintain APFree→density<1",
       "ZMod.val injectivity: cases N | zero=>absurd | succ n=>Fin.ext",
       "apFree_filter_affine: d!=0 and hq gives d*q!=0, lift 3-AP via ring rewrites",
-      "N=1 edge case in density_increment_lemma is UNPROVABLE as stated: when delta=1 and N=1, need B.card >= 1.01*M but B.card <= M. Fix: require N>1 (or fold into the by_cases already there)",
-      "coset_partition_sum requires bijection between A and disjoint union of cosets. Needs map a↦(a.val%g, a.val/g) and its inverse",
-      "fourier_coset_decomp requires regrouping Fourier sums by coset; ψ(r·) constant on cosets when (N/g) | val(r)",
-      "Pigeonhole sorry: standard averaging argument, find coset with density above mean+delta²/4N/g",
-      "density_increment_lemma N=1 case: for delta+delta²/100≤1, use (M=1, B=Finset.univ) as witness. APFree vacuous on ZMod 1 (Subsingleton).",
-      "density_increment_lemma N=1 case: for delta>~0.995, conclusion requires density>1, genuinely impossible — theorem statement false for these inputs",
-      "Pre-existing Mathlib breakages: ZMod.val_one_lt_of_lt removed, Exists.some→choose, exact_mod_cast changes, linarith fails on ℂ, card_sdiff API change",
-      "Coset decomposition gives M=gcd(val(r),N)=1 for prime N. All subsequent iterations stall at M=1. Fix needs Dirichlet approximation or Bohr sets for M≥√N guarantee."
+      "density_increment_lemma N=1 case is genuinely FALSE for delta > 0.99 — not fixable without Dirichlet approximation",
+      "Strict descent M<N proved via: val(r)>0 (r≠0), gcd≤val(r), val(r)<N → gcd<N",
+      "Coset decomposition gives M=gcd(val(r),N)=1 for prime N — fundamental limitation needing Dirichlet",
+      "N₀=K+2 descent approach fails because M can drop from N to 1 in one step (prime N)",
+      "fourier_large_coefficient Case 2 fully proved: fixed 6 Mathlib API breakages (Complex.norm_real→norm_real+norm_eq_abs, lt_div_iff→lt_div_iff₀, nlinarith hint needs, norm_pow congr pattern)",
+      "density_increment_iter N=1 easy case proved: for delta+delta²/100≤1, take M=1 B=Finset.univ (APFree on ZMod 1 is vacuous since only one element)",
+      "density_increment_iter N=1 hard case (delta∈(0.99,1]) is genuinely FALSE — conclusion requires |B|>(delta+delta²/100)*M>M but |B|≤M always. Needs Dirichlet approximation to prevent descent reaching N=1 with high density",
+      "Proof now has 0 axioms, 1 sorry, 1442 lines — all 6 Parts fully compilable",
+      "density_bound_from_increment proves d+d²/100≤1 for ANY application of density_increment_lemma — this is the exact threshold L≈0.99 that the iteration cannot cross at M=1",
+      "apFree_card_le_two_thirds (3|A|≤2N for N≥3) gives δ≤2/3 directly — handles Roth for δ>2/3 without any iteration",
+      "The sorry is provably FALSE as stated (hypotheses consistent, conclusion unsatisfiable) — NOT a missing proof technique but a wrong theorem statement requiring Dirichlet",
+      "Without Dirichlet, density_increment_lemma can produce M=1 from ANY N≥2 (M=gcd(val(r),N)=1 for prime N), allowing descent to reach N=1 in one step",
+      "The sorry at density_increment_iter line 1408 is provably unreachable via Dirichlet approximation, but the formal proof requires restructuring the iteration to track M≥√N at each step",
+      "density_bound_from_increment already proves d+d²/100≤1 for N≥2, so density never exceeds ~0.99 while M≥2. The issue is that M can drop to 1 in a single step, where density=1 and the next increment exceeds 1.",
+      "DirichletApproximation.lean is fully proved (0 sorries, 142 lines) and ready for integration"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix ~20 pre-existing Mathlib API breakages in fourier_large_coefficient (interactive Lean session needed)",
-      "Implement Dirichlet approximation to guarantee subprogression length ≥ √N, fixing the architectural gap",
-      "Alternative: change proof architecture to triangle removal / regularity-based approach"
+      "Integrate DirichletApproximation.lean into density_increment_lemma (~220 lines): use Dirichlet-based subprogression partition to guarantee M≥2",
+      "Alternative: restructure roth_density_bound to use apFree_card_le_two_thirds (δ≤2/3) as the contradiction target instead of card_le_nat (δ≤1) — would work if M≥2 can be guaranteed",
+      "Alternative: prove density_increment_lemma_dirichlet that uses approximate character constancy on Dirichlet subprogressions instead of exact constancy on cosets"
     ]
   },
   "tags": [
@@ -125,7 +143,7 @@
     "mathlib": []
   },
   "started": "2026-03-22T06:10:36.236Z",
-  "lastUpdate": "2026-03-23T12:00:00Z",
+  "lastUpdate": "2026-03-23T04:30:00Z",
   "significance": 9,
   "tractability": 6
 }
