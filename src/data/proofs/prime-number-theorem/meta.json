@@ -52,7 +52,13 @@
     "axiomCount": 13,
     "lineCount": 463,
     "assumptions": "13 axioms: ratio_iff_equiv_axiom, equiv_iff_error_axiom, li_equiv_approx_axiom, and 10 more. See Lean source for complete statements.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Real analysis (limits, integrals, asymptotic analysis)",
+      "Complex analysis (contour integration, analytic functions)",
+      "Number theory (prime counting function, arithmetic functions)",
+      "Logarithmic integral and asymptotic notation"
+    ]
   },
   "overview": {
     "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798) and Gauss (1849, in the form π(x) ~ Li(x)), then proved independently by Hadamard and de la Vallée Poussin in 1896 using the non-vanishing of ζ(1+it). Erdős and Selberg gave an elementary proof in 1949. Avigad et al. provided the first formal proof in Isabelle (2004), and Kontorovich, Tao, et al. completed a full Lean 4 formalization (2024) in the PrimeNumberTheoremAnd project. The theorem was a major landmark in analytic number theory: Riemann's 1859 memoir introduced the zeta function and sketched the connection between its zeros and prime distribution, but the proof required controlling ζ on the entire critical strip Re(s) = 1, achieved by Hadamard's product formula and de la Vallée Poussin's zero-free region.",
