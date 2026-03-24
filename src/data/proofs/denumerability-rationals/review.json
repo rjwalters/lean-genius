@@ -3,14 +3,12 @@
   "proofId": "denumerability-rationals",
   "reviewDate": "2026-03-23T22:30:00Z",
   "reviewer": "peer-reviewer",
-
   "overallAssessment": {
     "grade": "B",
     "oneLiner": "Exemplary pedagogical presentation of a Mathlib result — every proof is a 1-2 line wrapper, but the multi-perspective formulations, cardinal arithmetic bridge, and rich historical exposition make this a model gallery entry for a Tier B proof.",
     "tier": "B",
     "tierJustification": "Tier B: Formalized using Mathlib. The core result (Denumerable ℚ) is entirely provided by Mathlib.Data.Rat.Denumerable via inferInstance. The file adds pedagogical value through alternative formulations (bijection, countability, surjection, injection), encode/decode wrappers with round-trip proofs, and a cardinal arithmetic connection — but no original mathematical reasoning."
   },
-
   "findings": [
     {
       "severity": "positive",
@@ -69,35 +67,34 @@
       "recommendation": "Remove."
     }
   ],
-
   "actionItems": [
     {
       "id": "ai-1",
       "priority": "medium",
       "target": "enricher",
       "description": "Reframe originalContributions to honestly reflect pedagogical repackaging rather than claiming inferInstance calls as original. Suggested: ['Multi-perspective formalization of Denumerable ℚ through bijection, surjection, injection, countability, and cardinal arithmetic', 'Round-trip encode/decode with verified proofs', 'Pedagogical documentation with diagonal visualization and historical context'].",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "low",
       "target": "enricher",
       "description": "Fix historical note in file header: Cantor used enumeration by anti-diagonals (not the diagonal argument) to prove ℚ is countable. The diagonal argument was his 1891 proof of uncountability of ℝ.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "low",
       "target": "enricher",
       "description": "Remove duplicate reference: Ca74 and Ca74b are the same paper. Keep Ca74b (has note), remove Ca74.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "low",
       "target": "enricher",
       "description": "Update meta.json leanFile.theoremCount from 7 to 9 (8 named theorems + rationals_infinite).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
@@ -107,7 +104,6 @@
       "status": "open"
     }
   ],
-
   "qualityScores": {
     "mathematicalSubstance": 5,
     "originalityAccuracy": 5,
@@ -117,6 +113,5 @@
     "internalConsistency": 8,
     "overall": 7.2
   },
-
   "suggestedBestFraming": "A comprehensive pedagogical presentation of Mathlib's proof that ℚ is denumerable (Wiedijk #3), packaging the Denumerable typeclass instance into six complementary perspectives — explicit bijection, existential statement, surjection, injection, round-trip encoding, and cardinal arithmetic — with excellent historical exposition tracing Cantor's 1874 result through its foundational impact."
 }

@@ -103,7 +103,7 @@
     },
     "type": "definition",
     "title": "Generalized Continuum Hypothesis",
-    "content": "**GCH** extends CH to all infinite cardinals:\n\n$$\\forall \\alpha : 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$$\n\nThis says the power set operation always produces the \"next\" aleph. GCH implies CH (set α = 0).\n\nGöran proved GCH holds in L, and Cohen showed GCH can fail via forcing.",
+    "content": "**GCH** extends CH to all infinite cardinals:\n\n$$\\forall \\alpha : 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$$\n\nThis says the power set operation always produces the \"next\" aleph. GCH implies CH (set α = 0).\n\nGödel proved GCH holds in L, and Cohen showed GCH can fail via forcing.",
     "mathContext": "$2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$",
     "significance": "key",
     "relatedConcepts": [

@@ -39,10 +39,9 @@
       }
     ],
     "originalContributions": [
-      "cyclotomic_galois_comm: genuinely proved that Gal(ℚ(ζₙ)/ℚ) is abelian via Mathlib's autEquivPow isomorphism to (ℤ/nℤ)×",
-      "Mathlib application: cyclotomic degree [ℚ(ζₙ):ℚ] = φ(n) via IsCyclotomicExtension.finrank",
-      "Mathlib application: cyclotomic polynomial irreducibility via Polynomial.Cyclotomic.irreducible",
-      "Pedagogical survey of Hilbert's 12th Problem with 4 placeholder axioms (Kronecker-Weber, CM, Artin reciprocity, Stark conjectures) and type definitions for IsImaginaryQuadratic, IsRealQuadratic"
+      "cyclotomic_galois_comm: proved Gal(ℚ(ζₙ)/ℚ) is abelian via Mathlib's autEquivPow isomorphism to (ℤ/nℤ)×",
+      "Mathlib applications: cyclotomic degree φ(n) via IsCyclotomicExtension.finrank and irreducibility via Polynomial.Cyclotomic.irreducible",
+      "Pedagogical survey of Hilbert's 12th Problem with type definitions for IsImaginaryQuadratic, IsRealQuadratic and 4 axiomatized milestones (Kronecker-Weber, CM theory, Artin reciprocity, Stark conjectures)"
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 12,
