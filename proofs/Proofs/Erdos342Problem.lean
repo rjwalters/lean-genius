@@ -22,9 +22,7 @@ Reference: [ErGr80, p.53]
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset
 
@@ -121,8 +119,9 @@ def DensityZero : Prop :=
     Filter.atTop
     (nhds 0)
 
-/-- The density question is also open. -/
-axiom ulam_density_open : DensityZero ∨ ¬DensityZero
+/-- The density question is open, but A ∨ ¬A holds by excluded middle. -/
+theorem ulam_density_open : DensityZero ∨ ¬DensityZero :=
+  Classical.em DensityZero
 
 /- ##Part VII: Growth Rate -/
 
