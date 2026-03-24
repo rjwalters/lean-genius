@@ -49,70 +49,80 @@
       "title": "Fractional Part",
       "summary": "$\\{x\\} = x - \\lfloor x \\rfloor$ fractional part definition and deviation from midpoint",
       "startLine": 34,
-      "endLine": 41
+      "endLine": 41,
+      "mathContext": "$\\{x\\} = x - \\lfloor x \\rfloor \\in [0,1)$. The deviation $1/2 - \\{x\\}$ measures distance from the midpoint; its sum over $k$ captures the asymmetry of the orbit $\\{\\alpha k\\}_{k=1}^n$."
     },
     {
       "id": "weighted-sum",
       "title": "The Weighted Sum f(α, n)",
       "summary": "$S(\\alpha, n) = \\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ and $f(\\alpha, n) = S(\\alpha, n)/\\log n$",
       "startLine": 43,
-      "endLine": 57
+      "endLine": 57,
+      "mathContext": "$f(\\alpha, n) = \\frac{1}{\\log n}\\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$. The $\\log n$ normalization is set by Weyl equidistribution: for irrational $\\alpha$, partial sums grow at most logarithmically."
     },
     {
       "id": "distribution-functions",
       "title": "Distribution Functions",
       "summary": "$g : \\mathbb{R} \\to [0,1]$ non-decreasing with $g(-\\infty) = 0$, $g(+\\infty) = 1$",
       "startLine": 59,
-      "endLine": 70
+      "endLine": 70,
+      "mathContext": "A distribution function $g: \\mathbb{R} \\to [0,1]$ with $g(-\\infty) = 0$, $g(+\\infty) = 1$ represents the limiting CDF of $f(\\alpha,n)$ as $n \\to \\infty$."
     },
     {
       "id": "asymptotic-distribution",
       "title": "Asymptotic Distribution",
       "summary": "Level set $L(n,c) = \\{\\alpha : f(\\alpha,n) \\le c\\}$ and $\\mu(L(n,c)) \\to g(c)$ convergence",
       "startLine": 72,
-      "endLine": 90
+      "endLine": 90,
+      "mathContext": "$L(n,c) = \\{\\alpha \\in (0,1) : f(\\alpha,n) \\leq c\\}$. The conjecture: $\\mu(L(n,c)) \\to g(c)$ for some distribution function $g$, where $\\mu$ is Lebesgue measure."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "OPEN: $\\exists\\, g,\\; \\mu(\\{\\alpha : f(\\alpha,n) \\le c\\}) \\to g(c)$ as $n \\to \\infty$",
       "startLine": 92,
-      "endLine": 99
+      "endLine": 99,
+      "mathContext": "Main conjecture: $\\exists g,\\; \\forall c \\in \\mathbb{R},\\; \\lim_{n \\to \\infty} \\mu(\\{\\alpha : f(\\alpha,n) \\leq c\\}) = g(c)$. Neither existence nor form of $g$ is known."
     },
     {
       "id": "kesten-theorem",
       "title": "Kesten's Theorem (1960)",
       "summary": "Kesten (1960): Two-parameter variant has Cauchy limit $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$",
       "startLine": 101,
-      "endLine": 140
+      "endLine": 140,
+      "mathContext": "Kesten (1960): the two-parameter variant $f(\\alpha,\\beta,n) = \\frac{1}{\\log n}\\sum(1/2 - \\{\\beta + \\alpha k\\})$ converges in distribution to a Cauchy CDF $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$. The shift $\\beta$ provides ergodic independence; fixing $\\beta = 0$ destroys this."
     },
     {
       "id": "relationship",
       "title": "Relationship Between Problems",
       "summary": "$f(\\alpha, n) = f(\\alpha, 0, n)$: one-parameter case is $\\beta = 0$ specialization (proved)",
       "startLine": 142,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "$f(\\alpha,n) = f(\\alpha, 0, n)$: the one-parameter problem is the $\\beta = 0$ specialization. Understanding why $\\beta = 0$ breaks Kesten's proof is the central difficulty."
     },
     {
       "id": "difficulty",
       "title": "Why the Problem is Difficult",
       "summary": "Boundedness of $f$ for irrational $\\alpha$ and $|S(\\alpha, n)| \\le C \\log n$ bound",
       "startLine": 154,
-      "endLine": 167
+      "endLine": 167,
+      "mathContext": "For irrational $\\alpha$: $|S(\\alpha,n)| \\leq C\\log n$ (so $f = O(1)$), but the distribution of values across different $\\alpha$ remains intractable without Kesten's parameter-averaging."
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
       "summary": "Weyl equidistribution implies sublinear growth; rational periodicity of inner sum",
       "startLine": 169,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "Weyl: $\\{\\alpha k\\}$ equidistributed for irrational $\\alpha$, so $S(\\alpha,n) = o(n)$. For rational $\\alpha = p/q$: $\\{\\alpha k\\}$ is periodic with period $q$, giving exact closed forms."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Complete formalization: 7 axioms, 0 sorries, 2 theorems; main conjecture OPEN (mathematical gap, not formalization gap)",
       "startLine": 185,
-      "endLine": 211
+      "endLine": 211,
+      "mathContext": "7 axioms encoding Kesten's theorem, Weyl equidistribution, and the main conjecture. 2 proved theorems: $f(\\alpha,n) = f(\\alpha,0,n)$ and rational periodicity. The open mathematical problem cannot be resolved by formal methods alone."
     }
   ],
   "conclusion": {
