@@ -223,23 +223,6 @@
       "description": "Szemeredi's theorem (dense sets contain APs) is the fundamental result underlying the ENR condition and AP-free set analysis"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-818",
-      "relationship": "related",
-      "description": "Both are Erdős problems from the combinatorial number theory collection"
-    },
-    {
-      "id": "erdos-774",
-      "relationship": "related",
-      "description": "Both ask whether a proportionality condition on subsets forces finite union decomposition; #774 for dissociated sets (open), #847 for AP-free sets (disproved)"
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "foundational",
-      "description": "Szemeredi's theorem (dense sets contain APs) is the fundamental result underlying the ENR condition and AP-free set analysis"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

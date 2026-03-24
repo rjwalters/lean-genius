@@ -175,23 +175,6 @@
       "description": "The distribution of primes underlies the O(log n) bound via digit sum estimates"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "kummer-theorem",
-      "relationship": "related",
-      "description": "Kummer's theorem and Legendre's formula both connect factorial divisibility to digit structure in various bases"
-    },
-    {
-      "id": "erdos-731",
-      "relationship": "related",
-      "description": "Problem 731 also studies divisibility of binomial-type expressions, focusing on central binomial coefficients"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The distribution of primes underlies the O(log n) bound via digit sum estimates"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Factorial.Basic",

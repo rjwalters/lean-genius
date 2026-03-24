@@ -240,53 +240,6 @@
       "Is the ratio g_d(n)/d^{n-1} monotone in d, which would imply convergence?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-1083",
-      "relationship": "complementary",
-      "description": "Problem #1083 studies $f_d(n)$ = max distinct distances from $n$ points in $\\mathbb{R}^d$; Problem #1089's $g_d(n) = \\inf\\{m : f_d(m) \\geq n\\}$ is the inverse threshold. They are dual perspectives on the same phenomenon"
-    },
-    {
-      "id": "erdos-1082",
-      "relationship": "related",
-      "description": "Both concern distinct distances in Euclidean space. Problem #1082 studies points in general position (no three collinear) in $\\mathbb{R}^d$, while #1089 studies all configurations. General position constraints can tighten the bounds"
-    },
-    {
-      "id": "erdos-1088",
-      "relationship": "related",
-      "description": "Distinct distance subsets in high dimensions: #1088 asks for the largest subset of $n$ points with all pairwise distances distinct, dual to #1089 which asks for the minimum points guaranteeing $n$ distinct distances. Both probe how dimension affects distance structure"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "supports",
-      "description": "The number of pairwise distances from $n$ points is $\\binom{n}{2}$, so $|\\Delta(P)| \\leq \\binom{n}{2}$. The combinatorial counting of pairs is the starting point for all distinct distance bounds"
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "related",
-      "description": "The distinct distances threshold $g_d(n)$ is a Ramsey-type quantity: it asks for the minimum set size guaranteeing a structured subset (many distinct distances). The polynomial lower bound $g_d(n) \\gg d^{n-1}$ parallels Ramsey-type tower growth phenomena in combinatorics"
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "related",
-      "description": "Both are central results in combinatorial geometry/graph theory. Szemerédi's regularity lemma provides pseudorandom partition tools applicable to geometric incidence problems, which underlie bounds on distinct distances"
-    },
-    {
-      "id": "borsuk-ulam",
-      "relationship": "related",
-      "description": "The Borsuk-Ulam theorem is a key topological tool in combinatorial geometry: it implies that any continuous map $S^n \\to \\mathbb{R}^n$ identifies antipodal points. In distance problems, topological methods complement algebraic and combinatorial approaches — the Borsuk conjecture on partitions of sets with diameter constraints is closely tied to distance set questions in high dimensions"
-    },
-    {
-      "id": "minkowski-theorem",
-      "relationship": "related",
-      "description": "Minkowski's theorem on convex bodies and lattice points provides geometric constraints in Euclidean space relevant to distance problems. The integer lattice $\\mathbb{Z}^d \\cap B(0,R)$ produces $O(R^d)$ points with controlled distance sets — the interplay between lattice structure and distance counting is central to constructing few-distance point configurations in high dimensions, which provide lower bounds on $g_d(n)$"
-    },
-    {
-      "id": "isoperimetric-theorem",
-      "relationship": "thematic",
-      "description": "Both concern fundamental geometric constraints in Euclidean space. The isoperimetric inequality (the sphere minimizes surface area for given volume) reveals the geometry of optimal shapes, while the distinct distances problem reveals the geometry of optimal point configurations. In high dimensions, concentration of measure (a consequence of isoperimetric theory) governs distance behavior: random points on $S^{d-1}$ have pairwise distances concentrating near $\\sqrt{2}$ as $d \\to \\infty$, explaining why few-distance configurations require careful algebraic construction rather than random placement"
-    }
-  ],
   "leanFile": {
     "lineCount": 239,
     "structureCount": 0,

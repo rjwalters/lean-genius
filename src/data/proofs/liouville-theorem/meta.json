@@ -221,48 +221,6 @@
     "theoremCount": 12,
     "definitionCount": 0
   },
-  "relatedProofs": [
-    {
-      "id": "e-transcendental",
-      "relationship": "related",
-      "description": "Hermite's 1873 proof that e is transcendental — the second specific transcendental number proved, using auxiliary polynomial methods rather than Diophantine approximation"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "related",
-      "description": "Lindemann's 1882 proof that π is transcendental, resolving the ancient problem of squaring the circle and building on techniques from Hermite-Lindemann"
-    },
-    {
-      "id": "hermite-lindemann",
-      "relationship": "generalizes",
-      "description": "The Hermite-Lindemann theorem provides a much more powerful transcendence criterion (e^α transcendental for algebraic α ≠ 0), superseding Liouville's approximation approach for specific constants"
-    },
-    {
-      "id": "gelfond-schneider",
-      "relationship": "related",
-      "description": "The Gelfond-Schneider theorem (1934) resolved Hilbert's 7th problem using transcendence methods that evolved from the tradition Liouville began"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "specializes",
-      "description": "Irrationality of √2 is the simplest case of the algebraic-transcendental hierarchy: √2 is algebraic of degree 2, hence not Liouville, while Liouville numbers go further and are transcendental"
-    },
-    {
-      "id": "denumerability-rationals",
-      "relationship": "related",
-      "description": "Countability of rationals contextualizes Liouville's result: algebraic numbers are countable while transcendentals (including Liouville numbers) are uncountable"
-    },
-    {
-      "id": "fundamental-theorem-algebra",
-      "relationship": "related",
-      "description": "FTA (every polynomial has complex roots) establishes that algebraic numbers form a field. Liouville's theorem shows this field is a proper subset of R — there exist reals satisfying no polynomial equation"
-    },
-    {
-      "id": "abel-ruffini",
-      "relationship": "related",
-      "description": "Abel-Ruffini shows some algebraic numbers can't be expressed by radicals; Liouville goes further, exhibiting numbers that aren't algebraic at all — a hierarchy of inexpressibility"
-    }
-  ],
   "references": [
     {
       "authors": "Liouville, Joseph",

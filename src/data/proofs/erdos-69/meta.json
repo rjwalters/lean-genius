@@ -154,33 +154,6 @@
       "description": "The simplest irrationality proof ($\\sqrt{2} \\notin \\mathbb{Q}$) uses a descent argument. The irrationality of $\\sum \\omega(n)/2^n$ requires far more sophisticated methods — deep analytic number theory rather than elementary algebra — illustrating the vast gap in difficulty between different irrationality results"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "geometric-series",
-      "relationship": "foundational",
-      "description": "The geometric series formula $\\sum_{k=1}^{\\infty} r^k = r/(1-r)$ is the core computational tool: applied with $r = 2^{-p}$ to evaluate each inner sum $\\sum_{k \\geq 1} 2^{-pk} = 1/(2^p - 1)$ in Tao's identity"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "foundational",
-      "description": "The sum $\\sum_p 1/(2^p - 1)$ ranges over the infinite set of primes. The infinitude of primes ensures this is a genuine infinite series, not a finite sum — and the rapid growth of $2^p$ ensures convergence"
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "contrasts",
-      "description": "The sum $\\sum 1/p$ over primes diverges (Euler), while $\\sum 1/(2^p - 1)$ converges (and is irrational). The exponential denominator $2^p - 1$ decays fast enough to ensure convergence, while the polynomial denominator $p$ does not"
-    },
-    {
-      "id": "e-transcendental",
-      "relationship": "thematic",
-      "description": "Both results concern irrationality/transcendence of specific infinite series. The transcendence of $e = \\sum 1/k!$ was proved by Hermite (1873); the irrationality of $\\sum \\omega(n)/2^n$ was proved by Tao-Teräväinen (2025) — both require going beyond elementary summation techniques"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "thematic",
-      "description": "The simplest irrationality proof ($\\sqrt{2} \\notin \\mathbb{Q}$) uses a descent argument. The irrationality of $\\sum \\omega(n)/2^n$ requires far more sophisticated methods — deep analytic number theory rather than elementary algebra — illustrating the vast gap in difficulty between different irrationality results"
-    }
-  ],
   "references": [
     {
       "authors": "Tao, Terence; Teräväinen, Joni",

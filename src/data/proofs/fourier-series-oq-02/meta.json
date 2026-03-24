@@ -223,17 +223,5 @@
       "text": "Bernstein, S.N. (1912). Sur l'ordre de la meilleure approximation des fonctions continues par des polynômes de degré donné.",
       "url": "https://en.wikipedia.org/wiki/Bernstein%27s_theorem_(approximation_theory)"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "fourier-series",
-      "relationship": "extends",
-      "description": "Provides quantitative decay rates for Fourier coefficients under Hölder regularity, extending the qualitative Riemann-Lebesgue lemma from the parent entry. Answers OQ-02."
-    },
-    {
-      "id": "fourier-series-oq-03",
-      "relationship": "related",
-      "description": "Both study Fourier convergence under regularity conditions. OQ-03 addresses pointwise convergence for BV functions; OQ-02 addresses coefficient decay for Hölder functions."
-    }
   ]
 }

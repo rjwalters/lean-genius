@@ -211,33 +211,6 @@
     "theoremCount": 2,
     "definitionCount": 11
   },
-  "relatedProofs": [
-    {
-      "id": "borsuk-ulam",
-      "relationship": "foundational",
-      "description": "The Borsuk-Ulam theorem is the key topological tool in Lovász's 1978 proof of Kneser's conjecture and the AFL 1986 generalization. The topological argument shows the neighborhood/independence complex has high connectivity, forcing the chromatic lower bound"
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "related",
-      "description": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, while the AFL theorem guarantees monochromatic matchings in colored hypergraphs. Both establish unavoidable monochromatic substructures"
-    },
-    {
-      "id": "combinations-formula",
-      "relationship": "supports",
-      "description": "The binomial coefficient $\\binom{n}{r}$ counts the vertices of the Kneser graph (the $r$-subsets of $[n]$), and $\\binom{n-1}{r-1}$ gives the Erdős-Ko-Rado independence number bound — central to the chromatic number computation"
-    },
-    {
-      "id": "erdos-1104",
-      "relationship": "related",
-      "description": "Both concern chromatic numbers of combinatorially defined graphs. The Kneser graph chromatic number $\\chi(KG(n,r)) = n - 2r + 2$ and triangle-free chromatic bounds are both instances of topological lower bound methods in graph coloring"
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "related",
-      "description": "Both are powerful tools for analyzing structure in large combinatorial objects. Szemerédi regularity gives pseudorandom graph decompositions, while the AFL theorem gives chromatic structure in Kneser-type hypergraphs — both are used to prove existence of substructures in large systems"
-    }
-  ],
   "references": [
     {
       "authors": "Lovász, László",

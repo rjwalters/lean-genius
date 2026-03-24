@@ -131,33 +131,6 @@
       "description": "Unique prime factorization underpins the multiplicative structure that makes coprime sieve analysis via CRT possible. The coprimality hypothesis in `sieve_density_positive` is meaningful precisely because of FTA"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-486",
-      "relationship": "specialization",
-      "description": "Problem #486 is the general version: does logarithmic density exist for a broader class of sieve constructions? Problem #25 is a special case with congruence exclusions"
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "relationship": "foundational",
-      "description": "CRT provides the independence framework for coprime sieves: when moduli are pairwise coprime, the exclusion events $m \\equiv a_i \\pmod{n_i}$ are independent, so $\\delta_\\ell(A) \\approx \\prod(1 - 1/n_i)$. The axiom `sieve_density_positive` relies on this CRT-based analysis"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "PNT establishes that $\\pi(x) \\sim x/\\ln x$, and the logarithmic density framework used here is closely related to the Dirichlet density used in the proof of PNT for arithmetic progressions. Both involve harmonic-type sums weighted by $1/m$"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "related",
-      "description": "The sieve of Eratosthenes (excluding residue 0 mod each prime) is the prototypical congruence sieve. Its sieved set is the primes (augmented by 1), which have logarithmic density 0 by Mertens' theorem — an instance of Problem 25 where the density exists"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization underpins the multiplicative structure that makes coprime sieve analysis via CRT possible. The coprimality hypothesis in `sieve_density_positive` is meaningful precisely because of FTA"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Proofs.Erdos25LogDensity",

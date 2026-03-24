@@ -278,22 +278,5 @@
       "venue": "Preprint",
       "note": "Proved minEdges(5) = 15, showing d=5 returns to the complete graph pattern"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1007",
-      "relationship": "Parent formalization of Erdos Problem #1007; this OQ-01 extends the investigation to the general minEdges(d) function",
-      "description": ""
-    },
-    {
-      "id": "erdos-924",
-      "relationship": "Both study extremal functions known for small parameters (R(s,t) vs minEdges(d)) with open general asymptotics",
-      "description": ""
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "Ramsey theory provides an analogous extremal function where exact values are known for small cases, paralleling the structure of minEdges(d)",
-      "description": ""
-    }
   ]
 }

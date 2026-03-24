@@ -202,42 +202,5 @@
       "relationship": "related",
       "description": "Both results connect pi to analytic function identities; Euler's identity uses $e^{i\\pi}$ while Machin uses arctan composition — both are ultimately statements about arguments of complex numbers"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "leibniz-pi",
-      "relationship": "extends",
-      "description": "Provides a constructive derivation of the faster-converging alternative to the Leibniz series"
-    },
-    {
-      "id": "leibniz-pi-oq-01",
-      "relationship": "resolves",
-      "description": "Answers the open question about deriving Machin's formula from the arctan addition formula"
-    },
-    {
-      "id": "pi-transcendental",
-      "relationship": "related",
-      "description": "Both concern fundamental properties of pi; Machin's formula accelerates the computation of a number whose transcendence was proved by Lindemann in 1882"
-    },
-    {
-      "id": "basel-problem",
-      "relationship": "related",
-      "description": "Another classical identity involving pi (pi^2/6 = sum of 1/n^2); both demonstrate exact closed-form evaluations via analytic methods"
-    },
-    {
-      "id": "geometric-series",
-      "relationship": "related",
-      "description": "The arctan Taylor series arctan(x) = x - x^3/3 + x^5/5 - ... is a variant of the geometric series identity; Machin's formula exploits its rapid convergence at small arguments"
-    },
-    {
-      "id": "taylor-theorem",
-      "relationship": "uses-concept",
-      "description": "The arctan series $\\arctan(x) = x - x^3/3 + x^5/5 - \\cdots$ that Machin's formula accelerates is a special case of Taylor expansion"
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "related",
-      "description": "Both results connect pi to analytic function identities; Euler's identity uses $e^{i\\pi}$ while Machin uses arctan composition — both are ultimately statements about arguments of complex numbers"
-    }
   ]
 }

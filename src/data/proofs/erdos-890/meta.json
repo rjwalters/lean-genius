@@ -105,23 +105,6 @@
       "How does $S_k(n)$ behave in short intervals $[x, x + x^\\theta]$ for $\\theta < 1$?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-126",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: asymptotics, number-theory, prime-factors"
-    },
-    {
-      "id": "erdos-369",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: consecutive-integers, number-theory, prime-factors"
-    },
-    {
-      "id": "erdos-394",
-      "relationship": "related",
-      "description": "Related Erdős problem sharing themes: asymptotics, consecutive-integers, number-theory"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.ArithmeticFunction.Defs",

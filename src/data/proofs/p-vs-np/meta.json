@@ -275,28 +275,6 @@
       "Does NP = coNP? This is closely related to P vs NP — if P ≠ NP, most complexity theorists believe NP ≠ coNP as well."
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "halting-problem",
-      "relationship": "related",
-      "description": "The Halting Problem (undecidability) uses the same abstract TM model and diagonalization technique that underlies the Time Hierarchy Theorem stated here"
-    },
-    {
-      "id": "cantors-theorem",
-      "relationship": "related",
-      "description": "Cantor's diagonalization argument is the precursor to the computational diagonalization used in the Time Hierarchy Theorem and Ladner's Theorem"
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "related",
-      "description": "Ramsey theory problems are frequently NP-hard — determining Ramsey numbers is an NP-hard problem related to the CLIQUE problem formalized here"
-    },
-    {
-      "id": "erdos-szekeres",
-      "relationship": "related",
-      "description": "The Erdős-Szekeres theorem connects to combinatorial optimization problems whose decision versions are often NP-complete"
-    }
-  ],
   "references": [
     {
       "authors": "Cook, Stephen A.",

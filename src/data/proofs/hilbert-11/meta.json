@@ -188,43 +188,6 @@
       "description": "Hilbert's 12th Problem (Kronecker's Jugendtraum) seeks explicit class field theory, connecting to the reciprocity phenomena underlying quadratic form classification."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "foundational",
-      "description": "Quadratic reciprocity determines which primes are quadratic residues, directly governing solvability of binary quadratic forms over Q_p."
-    },
-    {
-      "id": "hilbert-9-reciprocity",
-      "relationship": "parallel",
-      "description": "Hilbert's 9th Problem generalizes quadratic reciprocity to the Artin reciprocity law, which connects to the Hilbert symbol product formula used in Hilbert 11."
-    },
-    {
-      "id": "lagrange-four-squares",
-      "relationship": "related",
-      "description": "Lagrange's theorem that every natural number is a sum of four squares is a special case of the representation theory of quaternary quadratic forms, axiomatized in this file."
-    },
-    {
-      "id": "minkowski-theorem",
-      "relationship": "foundational",
-      "description": "Minkowski's geometry of numbers provides the geometric tools used in proving the Hasse-Minkowski theorem for ternary forms."
-    },
-    {
-      "id": "fermat-two-squares",
-      "relationship": "related",
-      "description": "Fermat's two squares theorem characterizes which primes are represented by the binary form x^2 + y^2, a special case of quadratic form representation theory."
-    },
-    {
-      "id": "pell-equation",
-      "relationship": "related",
-      "description": "Pell's equation x^2 - Dy^2 = 1 concerns the indefinite binary quadratic form x^2 - Dy^2, with solutions governed by units in Z[sqrt(D)]."
-    },
-    {
-      "id": "kroneckers-jugendtraum",
-      "relationship": "related",
-      "description": "Hilbert's 12th Problem (Kronecker's Jugendtraum) seeks explicit class field theory, connecting to the reciprocity phenomena underlying quadratic form classification."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.LinearAlgebra.QuadraticForm.Basic",

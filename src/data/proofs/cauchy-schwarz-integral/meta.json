@@ -176,63 +176,6 @@
       "description": "Extends the integral Cauchy-Schwarz to complex-valued $L^2$ functions via a bridge theorem connecting the real and complex inner product space formulations. Completes the Cauchy-Schwarz development across real, complex, and abstract $\\text{RCLike}$ fields"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "extends",
-      "description": "The discrete Cauchy-Schwarz inequality (∑ aᵢbᵢ)² ≤ (∑ aᵢ²)(∑ bᵢ²) is the finite-dimensional ancestor. The integral form generalizes from finite sums to measure-theoretic integrals, with L² replacing ℝⁿ."
-    },
-    {
-      "id": "cauchy-schwarz-oq-01",
-      "relationship": "extended-by",
-      "description": "Extends Cauchy-Schwarz to complex inner product spaces: $\\|\\langle u, v \\rangle_{\\mathbb{C}}\\| \\leq \\|u\\| \\cdot \\|v\\|$. Mathlib's `norm_inner_le_norm` works uniformly for all `RCLike` fields, answering the open question about complex-valued $L^2$ functions and providing the foundation for complex Fourier analysis and quantum mechanics"
-    },
-    {
-      "id": "cauchy-schwarz-oq-01-oq-01",
-      "relationship": "extended-by",
-      "description": "Equality characterization for complex inner product spaces: $\\|\\langle u, v \\rangle\\| = \\|u\\| \\cdot \\|v\\|$ iff $u$ and $v$ are linearly dependent. Extends the real equality characterization (`cauchy_schwarz_L2_eq_iff`) to the complex setting, completing the Cauchy-Schwarz trilogy across real, complex, and general `RCLike` fields"
-    },
-    {
-      "id": "fourier-series",
-      "relationship": "technique",
-      "description": "The Cauchy-Schwarz integral inequality is the backbone of Fourier analysis: Parseval's identity, Bessel's inequality, and the convergence theory of Fourier series all depend on the L² inner product structure that Cauchy-Schwarz validates."
-    },
-    {
-      "id": "basel-problem",
-      "relationship": "related",
-      "description": "The Basel identity ζ(2) = π²/6 can be derived using Parseval's theorem applied to f(x) = x on [-π,π], which is a direct application of the L² inner product structure that the Cauchy-Schwarz integral inequality governs."
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "implication",
-      "description": "The Minkowski inequality (L^p triangle inequality) ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p for p=2 follows directly from the integral Cauchy-Schwarz, exactly as the discrete triangle inequality follows from the discrete Cauchy-Schwarz"
-    },
-    {
-      "id": "amgm-inequality-oq-03",
-      "relationship": "related",
-      "description": "Power mean monotonicity M₁ ≤ M₂ is the discrete Cauchy-Schwarz for equal weights; the integral analog extends this to continuous power means on measure spaces, connecting power mean theory to L^p analysis"
-    },
-    {
-      "id": "fundamental-theorem-calculus",
-      "relationship": "related",
-      "description": "FTC connects differentiation and integration — the same Lebesgue integral framework that defines the $L^2$ inner product $\\langle f, g \\rangle = \\int fg\\,d\\mu$. Both theorems rely on Mathlib's Bochner integration infrastructure"
-    },
-    {
-      "id": "cauchy-schwarz-integral-oq-01",
-      "relationship": "extended-by",
-      "description": "Hölder's inequality $\\|fg\\|_1 \\leq \\|f\\|_p \\cdot \\|g\\|_q$ (for $1/p + 1/q = 1$) generalizes the integral Cauchy-Schwarz from $p = q = 2$ to arbitrary conjugate exponents. The $p = 2$ case recovers Cauchy-Schwarz exactly: $\\int |fg| \\leq (\\int |f|^2)^{1/2}(\\int |g|^2)^{1/2}$"
-    },
-    {
-      "id": "cauchy-schwarz-integral-oq-02",
-      "relationship": "extended-by",
-      "description": "The Minkowski integral inequality $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ is the $L^p$ triangle inequality. For $p = 2$, it follows directly from the integral Cauchy-Schwarz via expanding $\\|f+g\\|_2^2 = \\|f\\|_2^2 + 2\\langle f,g \\rangle + \\|g\\|_2^2 \\leq (\\|f\\|_2 + \\|g\\|_2)^2$"
-    },
-    {
-      "id": "cauchy-schwarz-integral-oq-03",
-      "relationship": "extended-by",
-      "description": "Extends the integral Cauchy-Schwarz to complex-valued $L^2$ functions via a bridge theorem connecting the real and complex inner product space formulations. Completes the Cauchy-Schwarz development across real, complex, and abstract $\\text{RCLike}$ fields"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.MeasureTheory.Function.L2Space",

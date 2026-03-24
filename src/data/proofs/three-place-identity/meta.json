@@ -192,38 +192,6 @@
       "description": "The halting problem's undecidability constrains what any foundational system can prove — Etter's identity theory, being mutually interpretable with ZF, inherits the same computability-theoretic limitations"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "godel-incompleteness",
-      "relationship": "thematic",
-      "description": "Gödel's incompleteness theorems demonstrate the limits of formal foundations — the meta-level/object-level distinction central to evaluating Etter's universality claim is precisely the distinction Gödel exploited in his diagonal argument"
-    },
-    {
-      "id": "russell-1-plus-1",
-      "relationship": "foundational",
-      "description": "Russell and Whitehead's proof that 1+1=2 in Principia Mathematica exemplifies the traditional set-theoretic foundation that Etter's identity theory proposes to replace — both address the question of what constitutes a sufficient foundation for arithmetic"
-    },
-    {
-      "id": "cantors-theorem",
-      "relationship": "thematic",
-      "description": "Cantor's theorem ($|S| < |\\mathcal{P}(S)|$) is a core result of ZF set theory — the system whose axioms Etter's bridges translate to and from three-place identity structures"
-    },
-    {
-      "id": "cantor-diagonalization",
-      "relationship": "thematic",
-      "description": "Cantor's diagonal argument establishes the uncountability of the reals within set-theoretic foundations — a result that identity theory must be able to express if it is truly foundationally adequate"
-    },
-    {
-      "id": "schroeder-bernstein",
-      "relationship": "thematic",
-      "description": "The Schröder-Bernstein theorem on set bijections relies on the membership relation that Etter's D1 bridge derives from identity — showing how classical set-theoretic results emerge from the identity-first perspective"
-    },
-    {
-      "id": "halting-problem",
-      "relationship": "thematic",
-      "description": "The halting problem's undecidability constrains what any foundational system can prove — Etter's identity theory, being mutually interpretable with ZF, inherits the same computability-theoretic limitations"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic.Tauto",

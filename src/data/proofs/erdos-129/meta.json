@@ -115,18 +115,6 @@
       "description": "Both concern coloring constraints on graphs. While the four-color theorem bounds the chromatic number of planar graphs, Erdős #129 studies the minimum graph size needed to force monochromatic cliques in multicolor colorings"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "ramseys-theorem",
-      "relationship": "foundational",
-      "description": "Ramsey's theorem is the foundation of this problem. Erdős #129 asks for Ramsey numbers $R(k_1, \\ldots, k_r)$ avoiding monochromatic cliques of specified sizes in multicolor edge-colorings — a direct generalization of the classical $R(s,t)$"
-    },
-    {
-      "id": "four-color-theorem",
-      "relationship": "thematic",
-      "description": "Both concern coloring constraints on graphs. While the four-color theorem bounds the chromatic number of planar graphs, Erdős #129 studies the minimum graph size needed to force monochromatic cliques in multicolor colorings"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",

@@ -186,13 +186,6 @@
       "description": "Both concern arithmetic properties of divisor sequences; Problem #1059 studies divisor sum inequalities while #884 studies divisor gap sums"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1059",
-      "relationship": "related",
-      "description": "Both concern arithmetic properties of divisor sequences; Problem #1059 studies divisor sum inequalities while #884 studies divisor gap sums"
-    }
-  ],
   "conclusion": {
     "summary": "Erdős Problem #884 remains open. The formalization defines both the all-pairs and consecutive-pairs divisor gap sums, states the conjecture that the former is bounded by an absolute constant times the latter (plus 1), and provides structural lemmas and examples. The prime case shows both sums are equal, and the gap lower bound explains why the conjecture is plausible.",
     "implications": "Resolution would clarify the arithmetic structure of divisor sequences — specifically how local gap information (consecutive pairs) controls global gap information (all pairs). The telescoping property of gaps is the key structural ingredient.",

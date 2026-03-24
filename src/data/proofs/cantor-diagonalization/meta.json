@@ -237,68 +237,6 @@
       "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and Cantor's diagonal argument share the same logical structure: define an object by 'negating the diagonal' of a self-referential predicate. Russell's paradox (1901) was directly inspired by Cantor's work on cardinal arithmetic, applying the diagonal method to the 'set of all sets'"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "cantors-theorem",
-      "relationship": "generalizes",
-      "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbitrary sets. The diagonal argument is the special case S = ℕ."
-    },
-    {
-      "id": "continuum-hypothesis",
-      "relationship": "motivates",
-      "description": "Diagonalization proves |ℕ| < |ℝ|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (independent of ZFC) addresses exactly this gap."
-    },
-    {
-      "id": "halting-problem",
-      "relationship": "technique",
-      "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, then build a program D that does the opposite of what H predicts for D — a direct analogue of flipping the diagonal bit."
-    },
-    {
-      "id": "godel-incompleteness",
-      "relationship": "technique",
-      "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provable.' The diagonal construction of unprovable truths parallels Cantor's construction of unlisted sequences."
-    },
-    {
-      "id": "schroeder-bernstein",
-      "relationship": "complementary",
-      "description": "The Schröder-Bernstein theorem (injections in both directions imply bijection) provides the positive tool for establishing cardinality equalities, while Cantor's diagonal argument provides the negative tool for establishing strict inequalities. Together they form the complete toolkit for comparing infinite cardinalities."
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "thematic",
-      "description": "Both are existence proofs via contradiction: Euclid shows no finite list contains all primes (construct p₁···pₙ + 1), Cantor shows no countable list contains all reals (construct the diagonal). The diagonal argument is the cardinality-theoretic analogue of Euclid's prime construction."
-    },
-    {
-      "id": "cantor-diagonalization-oq-01",
-      "relationship": "extended-by",
-      "description": "Explores the Continuum Hypothesis — whether there exists a cardinality strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. Cantor's diagonalization proves $|\\mathbb{N}| < |\\mathbb{R}|$ but leaves the gap open; CH's independence from ZFC (Gödel 1938, Cohen 1963) shows this question cannot be settled by the standard axioms"
-    },
-    {
-      "id": "cantor-diagonalization-oq-02",
-      "relationship": "extended-by",
-      "description": "Establishes the cardinality of the set of countable ordinals $\\omega_1$, extending the diagonal argument's study of cardinality beyond the natural numbers and reals to transfinite ordinals"
-    },
-    {
-      "id": "abel-ruffini",
-      "relationship": "thematic",
-      "description": "Both belong to the impossibility proof tradition: Cantor proves no enumeration captures all reals (1891), Abel-Ruffini proves no radical formula captures all quintic roots (1824). Both show that natural-seeming operations (enumeration, radical extraction) have provable limitations — the targets 'outnumber' the tools"
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "thematic",
-      "description": "Both prove existence of 'unreachable' quantities: $\\sqrt{2} \\notin \\mathbb{Q}$ (irrationals exist) is the earliest impossibility result, while Cantor's diagonal argument proves irrationals are uncountably many. The irrationality of $\\sqrt{2}$ provides a single witness; Cantor shows such numbers overwhelmingly dominate"
-    },
-    {
-      "id": "hilbert-10",
-      "relationship": "related",
-      "description": "Matiyasevich's theorem uses the diagonal argument's undecidability legacy: the halting problem (proved undecidable via diagonalization) reduces to Diophantine solvability, making Hilbert's 10th problem undecidable. The chain runs: Cantor's diagonal → Turing's halting problem → Hilbert's 10th"
-    },
-    {
-      "id": "russell-1-plus-1",
-      "relationship": "related",
-      "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and Cantor's diagonal argument share the same logical structure: define an object by 'negating the diagonal' of a self-referential predicate. Russell's paradox (1901) was directly inspired by Cantor's work on cardinal arithmetic, applying the diagonal method to the 'set of all sets'"
-    }
-  ],
   "alternativeInterpretation": {
     "title": "The Constructivist View: Why the Reals Don't Exist",
     "summary": "The same formal proof supports a radically different conclusion depending on foundational assumptions. Where classical mathematicians see proof of uncountability, constructivists see proof that 'the set of all real numbers' is an incoherent concept.",

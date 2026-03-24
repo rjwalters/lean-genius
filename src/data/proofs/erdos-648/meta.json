@@ -288,37 +288,5 @@
       "relationship": "related",
       "description": "The divergence $\\sum_{p} 1/p = \\infty$ (Euler, 1737) implies the set of primes is dense enough to support arbitrarily long GPF-descending sequences, consistent with $g(n) \\to \\infty$."
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The prime number theorem $\\pi(x) \\sim x/\\ln x$ is essential for counting available primes in Cambie's bound. The number of distinct GPF values below $n$ is $\\pi(n)$, and the PNT determines the growth rate of $g(n)$."
-    },
-    {
-      "id": "erdos-1055",
-      "relationship": "related",
-      "description": "Both problems study the interplay between prime factorization structure and classification. Erdős #1055 classifies primes by the smoothness of $p+1$, while #648 builds sequences ordered by greatest prime factor."
-    },
-    {
-      "id": "erdos-1095",
-      "relationship": "related",
-      "description": "The Erdős-Selfridge function also involves greatest prime factors of combinatorial objects (binomial coefficients), connecting smooth number theory to extremal problems."
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate (proved by Erdős in 1932) guarantees prime existence in intervals — relevant for ensuring enough distinct primes are available to build long GPF-descending sequences."
-    },
-    {
-      "id": "erdos-4",
-      "relationship": "related",
-      "description": "Both are solved Erdős problems involving prime distribution asymptotics. Erdős #4 (large prime gaps, solved by Maynard 2016) uses sieve methods that also appear in smooth number estimates underlying #648."
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "related",
-      "description": "The divergence $\\sum_{p} 1/p = \\infty$ (Euler, 1737) implies the set of primes is dense enough to support arbitrarily long GPF-descending sequences, consistent with $g(n) \\to \\infty$."
-    }
   ]
 }

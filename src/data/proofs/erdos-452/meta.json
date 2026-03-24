@@ -227,32 +227,5 @@
     "axiomCount": 16,
     "theoremCount": 1,
     "definitionCount": 9
-  },
-  "relatedProofs": [
-    {
-      "id": "prime-number-theorem",
-      "relationship": "The prime number theorem governs the density of primes in $[x, 2x]$ — approximately $x/\\log x$ primes — and hence the typical spacing between prime obstructions",
-      "description": ""
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "The divergence $\\sum 1/p = \\infty$ underlies the Hardy–Ramanujan theorem: since small primes contribute to most factorizations, $\\omega(n) \\sim \\log\\log n$ follows from the additive structure of $\\sum_{p \\mid n} 1$",
-      "description": ""
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "Euclid's theorem guarantees primes are dense enough to obstruct long valid intervals; the quantitative refinement via PNT determines how dense the obstructions are",
-      "description": ""
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "Bertrand's postulate guarantees a prime in $[x, 2x]$, ensuring every valid interval in that range has a prime obstruction — the question is how close the prime must be",
-      "description": ""
-    },
-    {
-      "id": "erdos-222",
-      "relationship": "Both problems study the distribution of integers with special arithmetic properties in short intervals: #222 concerns sums of two squares, #452 concerns integers with many prime factors",
-      "description": ""
-    }
-  ]
+  }
 }

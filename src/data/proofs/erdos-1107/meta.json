@@ -142,33 +142,6 @@
       "description": "The definition of r-powerful numbers is rooted in the prime factorization guaranteed by the Fundamental Theorem of Arithmetic: n is r-powerful iff every prime p in its factorization appears with exponent ≥ r. The Lean formalization uses Nat.primeFactors and the factorization API directly."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-941",
-      "relationship": "special-case",
-      "description": "Problem #941 (Heath-Brown's theorem for r=2) is the r=2 case of Problem #1107: every sufficiently large integer is a sum of at most 3 = r+1 squarefull (2-powerful) numbers. Heath-Brown's 1988 result is axiomatized in both formalizations."
-    },
-    {
-      "id": "erdos-940",
-      "relationship": "companion",
-      "description": "Problem #940 asks the complementary density question: does the set of sums of r r-powerful numbers (the diagonal case) have density 0 for r ≥ 3? Problem #1107 asks for the universal representation threshold (r+1 summands). Together they characterize the additive structure of r-powerful numbers."
-    },
-    {
-      "id": "erdos-1081",
-      "relationship": "related",
-      "description": "Problem #1081 studies the counting function A(x) for integers expressible as sums of two squarefull numbers, disproving Erdős's conjectured asymptotic. The correct exponent α = 1 - 2^(-1/3) ≈ 0.206 reflects how squarefull sums cluster — directly relevant to understanding the density arguments for Problem #1107."
-    },
-    {
-      "id": "erdos-935",
-      "relationship": "related",
-      "description": "Problem #935 studies the r-powerful part of consecutive integer products, probing the multiplicative structure of powerful numbers. Both problems stem from the same 1986 Oberwolfach problem book and concern the interplay between prime factorization multiplicities and additive/multiplicative decompositions."
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "The definition of r-powerful numbers is rooted in the prime factorization guaranteed by the Fundamental Theorem of Arithmetic: n is r-powerful iff every prime p in its factorization appears with exponent ≥ r. The Lean formalization uses Nat.primeFactors and the factorization API directly."
-    }
-  ],
   "references": [
     {
       "authors": "Erdős, Paul; Ivić, Aleksandar",

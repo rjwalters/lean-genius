@@ -181,22 +181,5 @@
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 5
-  },
-  "relatedProofs": [
-    {
-      "id": "erdos-1006-oq-02",
-      "relationship": "Sibling formalization studying the minimum chromatic number for non-robustly-orientable graphs; this OQ-03 provides the direct FFLLW proof that OQ-02 references",
-      "description": ""
-    },
-    {
-      "id": "erdos-1006",
-      "relationship": "Parent Erdos Problem #1006 on graphs with chromatic number less than girth; this file proves the FFLLW theorem as a direct corollary",
-      "description": ""
-    },
-    {
-      "id": "prob-method-expectation",
-      "relationship": "The probabilistic method is used classically for high-girth high-chromatic-number graph constructions (Erdos 1959), which motivate Problem #1006",
-      "description": ""
-    }
-  ]
+  }
 }

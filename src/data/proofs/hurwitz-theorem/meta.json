@@ -281,33 +281,6 @@
     "theoremCount": 30,
     "definitionCount": 13
   },
-  "relatedProofs": [
-    {
-      "id": "lagrange-four-squares",
-      "relationship": "The four-square identity proved in Hurwitz's theorem ($n = 4$) is the key algebraic ingredient in Lagrange's theorem: Euler's identity shows that the product of two sums of four squares is again a sum of four squares, reducing the proof to prime cases.",
-      "description": ""
-    },
-    {
-      "id": "fermat-two-squares",
-      "relationship": "Fermat's two-square theorem characterizes which primes are sums of two squares, using the Brahmagupta-Fibonacci identity ($n = 2$ case of Hurwitz). The Gaussian integer norm $|z_1 z_2|^2 = |z_1|^2 |z_2|^2$ is precisely the 2-square identity encoding complex multiplication.",
-      "description": ""
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "Euler's identity $e^{i\\pi} + 1 = 0$ relies on complex number arithmetic, which is the $n = 2$ normed division algebra. The norm-multiplicativity $|z_1 z_2| = |z_1| |z_2|$ underlying Euler's formula is the 2-square identity.",
-      "description": ""
-    },
-    {
-      "id": "cayley-hamilton",
-      "relationship": "The $n = 3$ impossibility proof uses matrix invertibility (a $3 \\times 3$ matrix with orthonormal rows has unit determinant). Cayley-Hamilton provides the general framework for matrix algebra and characteristic polynomials used in such arguments.",
-      "description": ""
-    },
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "Quadratic reciprocity governs which integers are squares modulo primes, connecting to the sum-of-squares representations central to Hurwitz's theorem. The Legendre symbol machinery underlies the arithmetic of quadratic forms that Hurwitz studied.",
-      "description": ""
-    }
-  ],
   "references": [
     {
       "authors": "Hurwitz, Adolf",

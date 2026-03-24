@@ -144,38 +144,6 @@
       "targetId": "szemeredi-regularity"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-803",
-      "relationship": "closely-related",
-      "description": "Erdős #803 asks an almost identical question about D-balanced subgraphs in dense graphs, differing only in minor parameter choices; the two problems are studied together in the literature."
-    },
-    {
-      "id": "erdos-82",
-      "relationship": "related",
-      "description": "Erdős #82 asks for regular induced subgraphs in dense graphs; the quest for perfectly regular subgraphs is the limiting case (D=1) of D-balanced subgraphs studied here."
-    },
-    {
-      "id": "erdos-715",
-      "relationship": "related",
-      "description": "Erdős #715 studies regular subgraphs inside regular host graphs; both problems investigate how much regularity can be extracted from a given graph."
-    },
-    {
-      "id": "erdos-182",
-      "relationship": "related",
-      "description": "Erdős #182 asks for the maximum number of edges in a graph with no k-regular subgraph, the extremal complement of guaranteeing balanced subgraphs."
-    },
-    {
-      "id": "erdos-814",
-      "relationship": "related",
-      "description": "Erdős #814 establishes that dense graphs contain subgraphs with large minimum degree, a key intermediate step used in iterative-regularization arguments like the one resolving #1077."
-    },
-    {
-      "id": "szemeredi-regularity",
-      "relationship": "foundational",
-      "description": "Szemerédi's regularity lemma is the principal tool behind iterative-regularization proofs; the Jiang-Longbrake argument for #1077 uses a regularization procedure conceptually descended from it."
-    }
-  ],
   "references": [
     {
       "authors": [

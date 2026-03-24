@@ -143,28 +143,6 @@
       "description": "Ramsey theory and graph dimension both study how combinatorial structure forces geometric or structural properties. The appearance of $K_{3,3}$ as the unique minimizer echoes Ramsey-type phenomena where specific substructures must appear"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-135",
-      "relationship": "related",
-      "description": "Both are Erdős problems connecting graph combinatorics with Euclidean distance geometry: #135 concerns distinct distances determined by point sets in the plane, while #1007 asks for minimum edges among unit-distance graphs of a given dimension"
-    },
-    {
-      "id": "erdos-1007-oq-01",
-      "relationship": "extended-by",
-      "description": "OQ-01 generalizes the main result by studying $e(d) = \\min\\{|E(G)| : \\dim(G) = d\\}$ for arbitrary dimension $d$, extending beyond the $d=4$ and $d=5$ cases formalized here"
-    },
-    {
-      "id": "erdos-1008",
-      "relationship": "related",
-      "description": "Both are Erdős problems about extremal graph properties: #1008 asks about C₄-free subgraphs of dense graphs, while #1007 asks about minimum-edge graphs of a given dimension — both seek extremal configurations under structural constraints"
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "related",
-      "description": "Ramsey theory and graph dimension both study how combinatorial structure forces geometric or structural properties. The appearance of $K_{3,3}$ as the unique minimizer echoes Ramsey-type phenomena where specific substructures must appear"
-    }
-  ],
   "references": [
     {
       "authors": "Erdős, Paul; Harary, Frank; Tutte, William T.",

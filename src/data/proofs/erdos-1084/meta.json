@@ -150,20 +150,6 @@
       "relationship": "Erdős Problem #97 on equidistant vertices in convex polygons is another discrete-geometry problem about distance multiplicity in point configurations. The kissing-number constraint τ(2) = 6 that drives f₂(n) ≤ 3n also bounds the number of vertices equidistant from a given point in convex position, linking the two problems via the hexagonal lattice geometry."
     }
   ],
-  "relatedProofs": [
-    {
-      "slug": "kepler-conjecture",
-      "note": "The FCC packing (Hales 1998, Flyspeck 2014) is the conjectured optimal configuration achieving f₃(n) ~ 6n - Θ(n^{2/3}). This gallery entry formalizes the infinite-volume sphere packing density; #1084 concerns the finite-n contact count for the same geometry."
-    },
-    {
-      "slug": "erdos-1085",
-      "note": "The unseparated unit distance problem. Removing the pairwise-distance ≥ 1 constraint transforms sphere-packing combinatorics into incidence geometry; the two Lean formalizations use the same SeparatedConfig / EuclideanSpace setup but diverge in the bound type (linear vs. superlinear in n)."
-    },
-    {
-      "slug": "erdos-1083",
-      "note": "Distinct distances in ℝ^d. The Lean formalization shares the EuclideanSpace ℝ (Fin d) type infrastructure and uses the same dimension-indexed counting framework, making it a natural companion for understanding the full geometry of distance distributions in high-dimensional point sets."
-    }
-  ],
   "references": [
     {
       "citation": "Harborth, H. (1974). Lösung zu Problem 664A. Elemente der Mathematik, 29, 14–15.",

@@ -175,18 +175,6 @@
       "note": "Binary digit construction giving unique representations: the counterexample showing the ratio condition is necessary"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-28",
-      "relationship": "generalizes",
-      "description": "Problem #1145 generalizes #28: setting A = B recovers the Erdős–Turán conjecture. The implication is proved as erdos_1145_implies_28."
-    },
-    {
-      "id": "erdos-331",
-      "relationship": "related",
-      "description": "Problem #331 (disproved by Ruzsa) provides the counterexample showing the ratio condition aₙ/bₙ → 1 is necessary in Problem #1145."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

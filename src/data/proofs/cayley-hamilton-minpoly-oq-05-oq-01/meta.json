@@ -238,48 +238,6 @@
       "description": "Similar matrices share the same minimal polynomial. Combined with the nonderogatory characterization, this shows the cyclic vector property is a similarity invariant: if $M$ is nonderogatory, so is $P^{-1}MP$"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "cayley-hamilton",
-      "relationship": "extends",
-      "description": "Cayley-Hamilton ($\\chi_M(M) = 0$) implies $\\mu_M | \\chi_M$. This proof shows that when equality holds (nonderogatory), the matrix has a cyclic vector — connecting the algebraic condition to the geometric structure of the Krylov space"
-    },
-    {
-      "id": "cayley-hamilton-minpoly",
-      "relationship": "extends",
-      "description": "Root entry for the minimal polynomial/Cayley-Hamilton family. This OQ-05-OQ-01 result completes the backward direction of the nonderogatory characterization"
-    },
-    {
-      "id": "bezout-identity",
-      "relationship": "uses",
-      "description": "Bezout's identity in Euclidean domains ($d = ap + b\\mu$) is the key algebraic tool: it converts the GCD into a linear combination that annihilates the vector via $d(M)v = a(M)p(M)v + b(M)\\mu(M)v = 0$"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "uses",
-      "description": "Unique factorization in $K[X]$ (a Euclidean domain, hence UFD) provides the irreducible factor decomposition of the minimal polynomial, which drives the union avoidance construction"
-    },
-    {
-      "id": "cayley-hamilton-reduction",
-      "relationship": "related",
-      "description": "Both extend the Cayley-Hamilton theorem in different directions: reduction develops computational aspects, while this proof develops the structural characterization via cyclic vectors"
-    },
-    {
-      "id": "gcd-algorithm",
-      "relationship": "uses-concept",
-      "description": "The Euclidean algorithm for polynomial GCD is the computational backbone of the Bezout identity used in the GCD annihilation lemma"
-    },
-    {
-      "id": "cayley-hamilton-minpoly-oq-05",
-      "relationship": "extends",
-      "description": "Parent entry on minimal polynomial reduction in K-algebras. This OQ-01 entry specializes the theory to matrices and proves the key structural consequence: nonderogatory matrices have cyclic vectors"
-    },
-    {
-      "id": "cayley-hamilton-minpoly-oq-02",
-      "relationship": "related",
-      "description": "Similar matrices share the same minimal polynomial. Combined with the nonderogatory characterization, this shows the cyclic vector property is a similarity invariant: if $M$ is nonderogatory, so is $P^{-1}MP$"
-    }
-  ],
   "references": [
     {
       "authors": "Hoffman, Kenneth; Kunze, Ray",

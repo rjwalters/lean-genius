@@ -250,53 +250,6 @@
       "description": "Euler's proof that $\\sum 1/p$ diverges over primes uses the Euler product $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$, where each factor is a geometric series $\\sum p^{-ks}$. The divergence of the prime reciprocal series follows from the divergence of $\\log \\zeta(s)$ as $s \\to 1^+$, connecting geometric series directly to the distribution of primes"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "harmonic-divergence",
-      "relationship": "contrasts",
-      "description": "The geometric series $\\sum r^n$ converges for $|r| < 1$, while the harmonic series $\\sum 1/n$ diverges despite its terms approaching zero. Together they illustrate the boundary between convergent and divergent series — the harmonic series is the 'limit case' where the ratio between consecutive terms approaches 1 (from below), exactly the geometric series threshold"
-    },
-    {
-      "id": "basel-problem",
-      "relationship": "related",
-      "description": "The Basel series $\\sum 1/n^2 = \\pi^2/6$ generalizes from geometric to Dirichlet series. The geometric series $1/(1-r)$ is the simplest power series with a pole, while the Basel problem connects infinite series to $\\pi$ via the Weierstrass product for $\\sin(\\pi z)/\\pi z$"
-    },
-    {
-      "id": "arithmetic-series",
-      "relationship": "sibling",
-      "description": "Arithmetic and geometric series are the two fundamental finite summation formulas. Arithmetic series sum sequences with constant differences ($\\sum_{k=0}^{n} (a + kd)$); geometric series sum sequences with constant ratios ($\\sum_{k=0}^{n} ar^k$). The arithmetic sum is always a polynomial in $n$, while the geometric sum involves exponentials"
-    },
-    {
-      "id": "binomial-theorem",
-      "relationship": "extends",
-      "description": "The geometric series $1/(1-r) = \\sum r^k$ is the case $\\alpha = -1$ of the generalized binomial series $(1+x)^\\alpha = \\sum \\binom{\\alpha}{k} x^k$. Newton's generalized binomial theorem extends the geometric series to arbitrary real exponents, with the geometric series as its simplest non-trivial instance"
-    },
-    {
-      "id": "taylor-theorem",
-      "relationship": "foundational",
-      "description": "The geometric series $\\sum r^k = 1/(1-r)$ is the Taylor expansion of $f(r) = (1-r)^{-1}$ at $r = 0$. Taylor's theorem guarantees that any analytic function has a power series expansion, with the geometric series being the prototypical example — its radius of convergence $|r| < 1$ is determined by the nearest singularity at $r = 1$"
-    },
-    {
-      "id": "euler-identity",
-      "relationship": "related",
-      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the exponential series $e^z = \\sum z^k/k!$ (which converges for all $z$) to the geometric series (which converges only for $|r| < 1$). The exponential series is 'universally convergent' while the geometric series has a finite radius of convergence — the factorials in the denominators make the critical difference"
-    },
-    {
-      "id": "leibniz-pi",
-      "relationship": "related",
-      "description": "The Leibniz formula $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ arises from integrating the geometric series: $\\int_0^1 \\frac{1}{1+t^2} dt = \\int_0^1 \\sum_{k=0}^{\\infty} (-t^2)^k dt = \\sum_{k=0}^{\\infty} \\frac{(-1)^k}{2k+1}$. This is a foundational example of computing transcendental constants via term-by-term integration of geometric-type series"
-    },
-    {
-      "id": "e-transcendental",
-      "relationship": "related",
-      "description": "The exponential function $e^x = \\sum x^k/k!$ and the geometric series $1/(1-x) = \\sum x^k$ are the two most fundamental power series. The transcendence of $e$ uses properties of the exponential series that parallel geometric series arguments, including comparison of growth rates and the ratio test"
-    },
-    {
-      "id": "prime-reciprocal-divergence",
-      "relationship": "extends",
-      "description": "Euler's proof that $\\sum 1/p$ diverges over primes uses the Euler product $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$, where each factor is a geometric series $\\sum p^{-ks}$. The divergence of the prime reciprocal series follows from the divergence of $\\log \\zeta(s)$ as $s \\to 1^+$, connecting geometric series directly to the distribution of primes"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Algebra.GeomSum",

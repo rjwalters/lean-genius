@@ -195,27 +195,5 @@
       "citation": "Erdős, P. (1932). Beweis eines Satzes von Tschebyschef. Acta Scientiarum Mathematicarum (Szeged), 5, 194-198.",
       "type": "paper"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "foundational",
-      "description": "Provides prime gap infrastructure (nth prime bounds, prime counting bounds) imported directly by the Bounded Prime Gaps formalization"
-    },
-    {
-      "id": "bertrands-postulate-oq-03",
-      "relationship": "foundational",
-      "description": "Extends the Bertrand's Postulate OQ-03 entry with derived bounds on prime counting and the n-th prime"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "extends",
-      "description": "Builds on Bertrand's postulate (from Mathlib) to derive explicit quantitative bounds"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "related",
-      "description": "The PNT gives p_n ~ n log n asymptotically; this module provides the weaker but elementary bound p_n <= 2^(n+1) provable from Bertrand alone"
-    }
   ]
 }

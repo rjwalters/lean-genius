@@ -161,43 +161,6 @@
       "description": "The Chinese Remainder Theorem allows the four-squares problem to be decomposed by prime powers: proving $p = a^2+b^2+c^2+d^2$ for each prime $p$ and extending via Euler's multiplicative identity. CRT provides the algebraic framework for this prime-by-prime analysis"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "fermat-two-squares",
-      "relationship": "contrasts",
-      "description": "Two squares vs four: Fermat's theorem restricts which numbers are sums of two squares (only primes $p \\equiv 1 \\pmod{4}$), while Lagrange's theorem says ALL positive integers are sums of four. The contrast reveals the arithmetic structure: $\\mathbb{Z}[i]$ (Gaussian integers) handles two squares, but quaternions $\\mathbb{H}$ are needed for four"
-    },
-    {
-      "id": "quadratic-reciprocity",
-      "relationship": "related",
-      "description": "Quadratic residues modulo $p$ determine which primes are sums of two squares ($p = a^2 + b^2 \\iff p \\equiv 1 \\pmod{4}$) and play a role in the four-square proof's descent step via the characterization of $-1$ as a quadratic residue"
-    },
-    {
-      "id": "hurwitz-theorem",
-      "relationship": "related",
-      "description": "Hurwitz's 1898 theorem on composition algebras explains why sum-of-squares identities exist only for 1, 2, 4, and 8 squares, connected to the normed division algebras $\\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\mathbb{O}$ — Euler's four-square identity is the quaternion norm being multiplicative"
-    },
-    {
-      "id": "fundamental-arithmetic",
-      "relationship": "foundational",
-      "description": "Unique prime factorization is essential to the proof strategy: Euler's identity reduces the problem to proving every prime is a sum of four squares, then the multiplicativity extends to all positive integers via $n = p_1^{a_1} \\cdots p_k^{a_k}$"
-    },
-    {
-      "id": "perfect-numbers",
-      "relationship": "related",
-      "description": "Both results connect to the multiplicative structure of $\\mathbb{N}$: Lagrange shows every $n$ decomposes as $a^2 + b^2 + c^2 + d^2$, while perfect numbers satisfy $\\sigma(n) = 2n$. Both use descent arguments and the factorization of integers into primes"
-    },
-    {
-      "id": "pythagorean-triples",
-      "relationship": "complementary",
-      "description": "Pythagorean triples solve $a^2 + b^2 = c^2$ — the two-variable sum-of-squares equation. Lagrange's theorem concerns the representation $n = a^2 + b^2 + c^2 + d^2$ — the four-variable version. Both connect to the norm equations of number rings: $\\mathbb{Z}[i]$ for two squares (Pythagorean), $\\mathbb{H}$ for four squares (Lagrange)"
-    },
-    {
-      "id": "chinese-remainder-non-coprime",
-      "relationship": "foundational",
-      "description": "The Chinese Remainder Theorem allows the four-squares problem to be decomposed by prime powers: proving $p = a^2+b^2+c^2+d^2$ for each prime $p$ and extending via Euler's multiplicative identity. CRT provides the algebraic framework for this prime-by-prime analysis"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.SumFourSquares",

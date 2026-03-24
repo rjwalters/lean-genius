@@ -168,23 +168,6 @@
       "Can the epsilon-net theorem be formalized in Lean to get the tighter sample complexity bound without the log(1/ε) factor?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "shannon-entropy",
-      "relationship": "related",
-      "description": "Information-theoretic lower bounds on sample complexity use entropy and Fano's inequality"
-    },
-    {
-      "id": "prob-method-expectation",
-      "relationship": "related",
-      "description": "The probabilistic method underlies the random sampling arguments in PAC learning bounds"
-    },
-    {
-      "id": "prob-method-second-moment",
-      "relationship": "related",
-      "description": "Concentration inequalities from the second moment method appear in the uniform convergence proofs"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

@@ -241,32 +241,5 @@
       "relationship": "thematic",
       "description": "Both are foundational results about planar geometric/combinatorial structures: the four-color theorem concerns graph coloring on the plane, while Desargues's theorem concerns projective configurations — both involve deep structural analysis"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "pascals-hexagon",
-      "relationship": "complementary",
-      "description": "Desargues's and Pascal's theorems are the two fundamental theorems of projective geometry: Desargues concerns perspective triangles, while Pascal concerns hexagons inscribed in conics — together they form the backbone of projective geometry"
-    },
-    {
-      "id": "cevas-theorem",
-      "relationship": "related",
-      "description": "Both concern concurrency and collinearity in triangle configurations: Ceva's theorem characterizes cevian concurrency, while Desargues's theorem relates the perspective center (concurrency) to the perspective axis (collinearity)"
-    },
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "foundational",
-      "description": "The Pythagorean theorem operates in Euclidean (metric) geometry, while Desargues's theorem operates in projective geometry — the contrast illustrates how different geometric frameworks reveal different truths about figures"
-    },
-    {
-      "id": "euler-polyhedral-formula",
-      "relationship": "thematic",
-      "description": "Both concern fundamental structural properties of geometric objects: Euler's formula constrains polyhedra topologically (V-E+F=2), while Desargues's theorem constrains triangle configurations projectively"
-    },
-    {
-      "id": "four-color-theorem",
-      "relationship": "thematic",
-      "description": "Both are foundational results about planar geometric/combinatorial structures: the four-color theorem concerns graph coloring on the plane, while Desargues's theorem concerns projective configurations — both involve deep structural analysis"
-    }
   ]
 }

@@ -178,23 +178,6 @@
       "description": "Heron's formula computes triangle area from side lengths; Green's theorem gives area via line integrals around the boundary"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "greens-theorem-oq-01",
-      "relationship": "extends",
-      "description": "OQ01 proves Green's theorem for rectangles; OQ03 generalizes to curved-boundary TypeI regions"
-    },
-    {
-      "id": "greens-theorem",
-      "relationship": "extends",
-      "description": "Base Green's theorem file with abstract GreenRegion placeholder; OQ03 provides a concrete replacement"
-    },
-    {
-      "id": "herons-formula",
-      "relationship": "related",
-      "description": "Heron's formula computes triangle area from side lengths; Green's theorem gives area via line integrals around the boundary"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib",

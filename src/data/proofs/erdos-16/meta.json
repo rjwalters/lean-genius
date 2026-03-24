@@ -202,28 +202,6 @@
       "description": "Density bounds on the exceptional set use the prime number theorem and sieve estimates"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-17",
-      "relationship": "related",
-      "description": "Both concern representations involving primes: #16 asks about 2^k + prime representations, #17 asks about prime difference coverage"
-    },
-    {
-      "id": "erdos-205",
-      "relationship": "related",
-      "description": "Generalization: #205 relaxes the prime condition to Ω(m) < log log m, asking about 2^k + m with few prime factors"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "uses",
-      "description": "The covering system constructions and de Polignac number analysis rely on the infinitude and distribution of primes"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "uses",
-      "description": "Density bounds on the exceptional set use the prime number theorem and sieve estimates"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

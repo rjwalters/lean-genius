@@ -153,23 +153,6 @@
       "description": "When a = 2, the terms 2^n − 1 are Mersenne numbers; h(n) measures when their gcd with 3^n − 1, etc. vanishes"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "fermat-little-theorem",
-      "relationship": "foundational",
-      "description": "Fermat's little theorem is the key mechanism: p | a^(p-1) − 1 creates the shared factors that determine h(n)"
-    },
-    {
-      "id": "cyclotomic-polynomials",
-      "relationship": "related",
-      "description": "The factorization a^n − 1 = ∏_{d|n} Φ_d(a) connects gcd computations to cyclotomic structure"
-    },
-    {
-      "id": "mersenne-numbers",
-      "relationship": "related",
-      "description": "When a = 2, the terms 2^n − 1 are Mersenne numbers; h(n) measures when their gcd with 3^n − 1, etc. vanishes"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

@@ -211,42 +211,5 @@
       "citation": "Alon, N., Duke, R.A., Lefmann, H., Rödl, V., and Yuster, R., The algorithmic aspects of the regularity lemma, JCSS 52 (1996), 480-491.",
       "type": "paper"
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "szemeredi-core",
-      "relationship": "foundational",
-      "description": "Imports core definitions (edgeDensity, IsEpsilonRegular, IsRegularPartition, partitionEnergy) and re-exports them for downstream use"
-    },
-    {
-      "id": "szemeredi-counting",
-      "relationship": "extends",
-      "description": "The counting and removal lemmas are the primary applications of regularity — they use epsilon-regular pairs to count and remove subgraph copies"
-    },
-    {
-      "id": "szemeredi-full",
-      "relationship": "extends",
-      "description": "The full Szemerédi theorem on arithmetic progressions uses this regularity lemma as its structural backbone"
-    },
-    {
-      "id": "szemeredi-theorem",
-      "relationship": "extends",
-      "description": "The main Szemerédi theorem statement depends on the partition infrastructure provided by this file"
-    },
-    {
-      "id": "roth-theorem-k3",
-      "relationship": "related",
-      "description": "Roth's theorem (1953) on 3-term APs can be proved via regularity + triangle removal — the regularity lemma provides the structural decomposition, and the triangle removal lemma extracts the arithmetic progression"
-    },
-    {
-      "id": "ramseys-theorem",
-      "relationship": "related",
-      "description": "Ramsey theory and regularity are complementary tools: Ramsey guarantees monochromatic complete subgraphs, while regularity decomposes any dense graph into pseudorandom pieces"
-    },
-    {
-      "id": "prob-method-alteration",
-      "relationship": "related",
-      "description": "Regularity captures pseudo-randomness: epsilon-regular pairs behave like random bipartite graphs for counting purposes, bridging deterministic graph structure and probabilistic arguments"
-    }
   ]
 }

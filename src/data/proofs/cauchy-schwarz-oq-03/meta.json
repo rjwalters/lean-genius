@@ -206,37 +206,5 @@
       "relationship": "extended-by",
       "description": "Sub-entry further exploring consequences or refinements of the Hölder generalization established here."
     }
-  ],
-  "relatedProofs": [
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "extends",
-      "description": "Parent formalization proving Cauchy-Schwarz as an inner product space result. This entry generalizes it by showing CS is the $p=q=2$ special case of Hölder's inequality."
-    },
-    {
-      "id": "cauchy-schwarz-oq-04",
-      "relationship": "sibling",
-      "description": "Sibling entry exploring other generalizations/applications of Cauchy-Schwarz; both extend the parent from different angles."
-    },
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "related",
-      "description": "The integral form of Cauchy-Schwarz. This entry's holder_lintegral provides the Hölder generalization of the integral CS inequality."
-    },
-    {
-      "id": "amgm-inequality",
-      "relationship": "related",
-      "description": "AM-GM and Hölder are both proved via convexity arguments. Young's inequality $ab \\leq a^p/p + b^q/q$ (the engine behind Hölder) is itself a weighted AM-GM: the point $(a^p, b^q)$ lies above the secant line of the concave function $t \\mapsto t^{1/p}$ (resp. $t^{1/q}$)."
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "related",
-      "description": "Hölder's inequality implies Minkowski's inequality (the triangle inequality for $L^p$ spaces): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$. The proof applies Hölder to $|f+g|^{p-1}$ paired with $f$ and $g$ separately."
-    },
-    {
-      "id": "cauchy-schwarz-oq-03-oq-01",
-      "relationship": "extended-by",
-      "description": "Sub-entry further exploring consequences or refinements of the Hölder generalization established here."
-    }
   ]
 }

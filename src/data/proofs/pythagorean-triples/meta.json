@@ -179,33 +179,6 @@
       "description": "The GCD algorithm is essential for the classification: primitive Pythagorean triples require $\\gcd(m, n) = 1$ with $m, n$ of opposite parity. The reduction from general to primitive triples uses GCD."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "fermats-last-theorem",
-      "relationship": "extends",
-      "description": "FLT proves $a^n + b^n = c^n$ has no positive integer solutions for $n \\geq 3$. Pythagorean triples show the $n = 2$ case has infinitely many solutions — the complete parametrization here contrasts with FLT's impossibility."
-    },
-    {
-      "id": "pythagorean-theorem",
-      "relationship": "foundational",
-      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ is the geometric statement; this entry characterizes ALL integer solutions. The classification (m²-n², 2mn, m²+n²) is the number-theoretic complement to the geometric fact."
-    },
-    {
-      "id": "sqrt2-irrational",
-      "relationship": "related",
-      "description": "The irrationality of $\\sqrt{2}$ is equivalent to $(1,1,\\sqrt{2})$ not being a Pythagorean triple. More generally, the study of which $\\sqrt{n}$ are irrational connects to which integers are sums of two squares."
-    },
-    {
-      "id": "fermat-two-squares",
-      "relationship": "related",
-      "description": "Fermat's two-squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) is the prime-level analog: Pythagorean triples ask which integers are hypotenuses ($c = m^2 + n^2$), and the answer depends on the prime factorization via Fermat's criterion."
-    },
-    {
-      "id": "gcd-algorithm",
-      "relationship": "foundational",
-      "description": "The GCD algorithm is essential for the classification: primitive Pythagorean triples require $\\gcd(m, n) = 1$ with $m, n$ of opposite parity. The reduction from general to primitive triples uses GCD."
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.PythagoreanTriples",

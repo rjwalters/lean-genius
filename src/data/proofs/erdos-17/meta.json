@@ -198,43 +198,6 @@
       "description": "Bertrand's postulate guarantees a prime in $(n, 2n)$, bounding prime gaps from above. Small prime gaps help the cluster property, but Bertrand's gap bound of $n$ is too weak — cluster primes need gaps on the order of $\\log p$"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "bounded-prime-gaps",
-      "relationship": "related",
-      "description": "Bounded prime gaps (Maynard-Tao) ensure small differences exist, but cluster primes require ALL small even differences — a much stronger condition"
-    },
-    {
-      "id": "erdos-16",
-      "relationship": "related",
-      "description": "Both are Erdős problems about prime distribution: #16 concerns representing odds as $2^k + p$, while #17 concerns covering even differences with prime pairs"
-    },
-    {
-      "id": "twin-primes-special",
-      "relationship": "related",
-      "description": "Twin primes $(p, p+2)$ provide the smallest prime differences; cluster primes require ALL small even differences to be realized, making it a much stronger condition"
-    },
-    {
-      "id": "infinitude-primes",
-      "relationship": "uses",
-      "description": "The infinitude of primes is a prerequisite; the cluster prime question asks whether a specific sparse subset of primes is also infinite"
-    },
-    {
-      "id": "dirichlets-theorem",
-      "relationship": "related",
-      "description": "Dirichlet's theorem guarantees primes in arithmetic progressions have positive relative density $1/\\varphi(d)$; the formalization proves cluster primes are rarer than primes in any fixed AP, highlighting how extreme the cluster sparsity condition is"
-    },
-    {
-      "id": "prime-number-theorem",
-      "relationship": "uses",
-      "description": "The prime number theorem $\\pi(x) \\sim x/\\log x$ is needed to interpret the Blecksmith-Erdős-Selfridge and Elsholtz upper bounds and to establish that cluster primes have density 0 among all primes"
-    },
-    {
-      "id": "bertrands-postulate",
-      "relationship": "related",
-      "description": "Bertrand's postulate guarantees a prime in $(n, 2n)$, bounding prime gaps from above. Small prime gaps help the cluster property, but Bertrand's gap bound of $n$ is too weak — cluster primes need gaps on the order of $\\log p$"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

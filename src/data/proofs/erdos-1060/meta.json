@@ -159,13 +159,6 @@
       "What is the maximum of f(n) for n ≤ N?"
     ]
   },
-  "relatedProofs": [
-    {
-      "id": "erdos-1058",
-      "relationship": "thematic",
-      "description": "Both problems concern restricted prime factorization of expressions involving factorials or divisor functions — the interplay between rapid growth and few prime factors"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.Divisors",

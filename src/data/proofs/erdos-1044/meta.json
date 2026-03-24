@@ -124,38 +124,6 @@
       "targetId": "fundamental-theorem-algebra"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1042",
-      "relationship": "companion",
-      "description": "Erdős #1042 studies the number of connected components of polynomial lemniscates and their transfinite diameter. Problem #1044 asks about the boundary length of those same components — the two problems share the same geometric setup (sublevel sets of monic polynomials with roots in the unit disk) and together characterize both the topology and the metric geometry of polynomial lemniscates."
-    },
-    {
-      "id": "erdos-1041",
-      "relationship": "companion",
-      "description": "Erdős #1041 asks whether any two points in the same connected component of a polynomial sublevel set can be joined by a short path. Problem #1044 bounds the boundary length of those components. Both results quantify how 'thin' or 'large' the components can be."
-    },
-    {
-      "id": "erdos-1047",
-      "relationship": "related",
-      "description": "Erdős #1047 investigates convexity of polynomial lemniscate components. Convex components have boundary length directly controlled by diameter, so convexity results and the boundary-length infimum of #1044 are closely linked."
-    },
-    {
-      "id": "erdos-1048",
-      "relationship": "related",
-      "description": "Erdős #1048 studies the diameter of polynomial lemniscate level sets. The infimum-of-boundary-length result in #1044 involves the limiting 'slit' configuration of diameter 2, directly connecting to diameter estimates."
-    },
-    {
-      "id": "erdos-1040",
-      "relationship": "related",
-      "description": "Erdős #1040 connects the transfinite diameter of the sublevel set to measure estimates for monic polynomials. The transfinite diameter (logarithmic capacity) framework underpins the potential-theory interpretation of Problem #1044."
-    },
-    {
-      "id": "fundamental-theorem-algebra",
-      "relationship": "prerequisite",
-      "description": "The fundamental theorem of algebra guarantees that every degree-n polynomial has exactly n roots (counted with multiplicity), which is essential for the root-in-disk hypothesis and the roots-of-unity construction used by Tang."
-    }
-  ],
   "references": [
     {
       "authors": [

@@ -204,58 +204,6 @@
       "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (p_k/n)^(1/k) for equal weights. The duality M_r(z) = M_{-r}(z⁻¹)⁻¹ corresponds to the power sum identity p_{-k}(z) = p_k(z⁻¹)"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "amgm-inequality-oq-03",
-      "relationship": "extends",
-      "description": "Contains the positive-exponent monotonicity theorem power_mean_monotone_pos used by this proof's duality reduction"
-    },
-    {
-      "id": "amgm-inequality",
-      "relationship": "related",
-      "description": "The AM-GM inequality is the r=1, s=0 case of the general power mean monotonicity chain"
-    },
-    {
-      "id": "amgm-inequality-oq-02",
-      "relationship": "related",
-      "description": "Maclaurin's inequalities via elementary symmetric polynomials give an alternative chain between AM and GM using e_k means — complementary to the power mean approach used here"
-    },
-    {
-      "id": "amgm-inequality-oq-03-oq-02",
-      "relationship": "related",
-      "description": "Together with this negative case, only the mixed-sign crossing (r < 0 < s) remains to complete the full power mean chain"
-    },
-    {
-      "id": "cauchy-schwarz",
-      "relationship": "related",
-      "description": "Both are fundamental inequalities in analysis; Cauchy-Schwarz can be derived from the r=2 power mean"
-    },
-    {
-      "id": "cauchy-schwarz-integral",
-      "relationship": "related",
-      "description": "The Bunyakovsky-Schwarz integral inequality is the continuous/L² analog of the discrete M₁ ≤ M₂ power mean inequality"
-    },
-    {
-      "id": "triangle-inequality",
-      "relationship": "related",
-      "description": "For p ≥ 1, power mean monotonicity M₁ ≤ M_p implies Minkowski's inequality (the L^p triangle inequality), connecting the discrete mean hierarchy to normed space geometry"
-    },
-    {
-      "id": "shannon-entropy",
-      "relationship": "related",
-      "description": "Shannon entropy H(X) = -∑ pᵢ log pᵢ is the α→1 limit of Rényi entropy H_α = (1/(1-α))·log ∑ pᵢ^α. Since H_α ∝ log M_{α-1}, the duality M_r(z) = M_{-r}(z⁻¹)⁻¹ translates to a duality on Rényi entropies — the negative power mean monotonicity here implies the corresponding Rényi entropy monotonicity for α > 1"
-    },
-    {
-      "id": "mean-value-theorem",
-      "relationship": "related",
-      "description": "The mean value theorem underpins the r→0 limit case: proving lim_{r→0} M_r = GM requires L'Hôpital's rule (which depends on MVT). While this file handles only the r < 0 case, the mixed-sign crossing r < 0 < s ultimately depends on the r=0 bridge that MVT enables"
-    },
-    {
-      "id": "sum-of-kth-powers",
-      "relationship": "related",
-      "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (p_k/n)^(1/k) for equal weights. The duality M_r(z) = M_{-r}(z⁻¹)⁻¹ corresponds to the power sum identity p_{-k}(z) = p_k(z⁻¹)"
-    }
-  ],
   "references": [
     {
       "authors": "Hardy, G.H.; Littlewood, J.E.; Pólya, G.",

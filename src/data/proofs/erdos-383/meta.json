@@ -199,23 +199,6 @@
       "description": "Both concern the largest prime factor of products of consecutive integers: #368 studies P(n(n+1)), #383 studies P(∏(p²+i))"
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-382",
-      "relationship": "related",
-      "description": "Directly related: #382 concerns prime powers in factorial products, and a positive answer to #383 would resolve part of "
-    },
-    {
-      "id": "erdos-334",
-      "relationship": "related",
-      "description": "Both involve smooth numbers: #334 asks about sums of smooth numbers, #383 asks about smooth numbers near prime squares"
-    },
-    {
-      "id": "erdos-368",
-      "relationship": "related",
-      "description": "Both concern the largest prime factor of products of consecutive integers: #368 studies P(n(n+1)), #383 studies P(∏(p²+i))"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"

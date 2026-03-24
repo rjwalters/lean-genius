@@ -149,20 +149,6 @@
       "note": "Unique factorization underlies the multiplicativity of φ and the anatomy-of-integers techniques (used by Ford and Tao) to control the distribution of totient values."
     }
   ],
-  "relatedProofs": [
-    {
-      "slug": "euler-totient",
-      "description": "Euler's theorem a^φ(n) ≡ 1 (mod n) provides the classical context for the totient function that is maximized over in Problem #49."
-    },
-    {
-      "slug": "erdos-1003",
-      "description": "The question of when φ(n) = φ(n+1) is the collision counterpart to Problem #49's requirement of strict distinctness; resolved tools overlap."
-    },
-    {
-      "slug": "infinitude-primes",
-      "description": "Euclid's infinitude-of-primes result ensures the prime witness set grows without bound, making the asymptotic statement of Problem #49 non-vacuous."
-    }
-  ],
   "references": [
     {
       "citation": "T. Tao, 'The set of primes is the most efficient set with increasing Euler totient values', preprint, 2023.",

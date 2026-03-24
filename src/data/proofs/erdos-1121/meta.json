@@ -155,38 +155,6 @@
       "description": "The Area of a Circle formalizes basic circle geometry (radius, area, circumference) in Lean. The Goodman-Goodman theorem depends on the standard Euclidean properties of circles — distance from center, containment, and radius — which are the foundational concepts formalized in this entry."
     }
   ],
-  "relatedProofs": [
-    {
-      "id": "erdos-1046",
-      "relationship": "thematic",
-      "description": "Lemniscate Containment in a Disc (Pommerenke 1959) establishes that a connected polynomial sublevel set E = {z : |f(z)| < 1} is always contained in a disc of radius 2 centered at the root centroid. Both results concern covering a connected geometric configuration — defined by a connectivity condition — with a single disc of radius bounded by a sum: in #1046 the sum of the degree, in #1121 the sum of individual radii. The center choice (centroid vs. arbitrary) differs, but the structural theme is identical."
-    },
-    {
-      "id": "isoperimetric-theorem",
-      "relationship": "thematic",
-      "description": "The Isoperimetric Theorem characterizes the circle as the shape of minimum perimeter for a given area, establishing the circle as the extremally efficient covering shape in ℝ². The Goodman-Goodman theorem uses a single covering circle optimally: the radius Σrᵢ is tight. Both results reflect the fundamental geometric role of circles as optimal covering bodies in the plane."
-    },
-    {
-      "id": "minkowski-theorem",
-      "relationship": "related",
-      "description": "Minkowski's Fundamental Theorem concerns convex, centrally symmetric bodies in ℝⁿ and their interaction with lattices. The Goodman-Goodman theorem generalizes to balls in ℝⁿ with no separating hyperplane; both results are part of convex geometry in higher dimensions, where the geometry of convex bodies (including balls) and covering arguments play a central role."
-    },
-    {
-      "id": "erdos-505",
-      "relationship": "thematic",
-      "description": "Borsuk's Conjecture asks whether every diameter-1 set in ℝⁿ can be partitioned into ≤ n+1 parts of smaller diameter — a covering/partition problem for sets in ℝⁿ. Like the Goodman-Goodman theorem, it connects the geometry of a configuration (diameter) to a covering bound, and generalizes naturally to higher dimensions. Both problems lie in the intersection of combinatorial and convex geometry."
-    },
-    {
-      "id": "kepler-conjecture",
-      "relationship": "related",
-      "description": "The Kepler Conjecture (Hales 1998) determines the densest sphere packing in ℝ³. While sphere packing asks how efficiently spheres can fill space, circle covering asks how efficiently a single sphere can cover a connected configuration. Both problems concern the geometry of spherical/circular configurations in ℝⁿ and extend naturally to higher dimensions, where the Goodman-Goodman theorem also holds for balls."
-    },
-    {
-      "id": "area-of-circle",
-      "relationship": "foundational",
-      "description": "The Area of a Circle formalizes basic circle geometry (radius, area, circumference) in Lean. The Goodman-Goodman theorem depends on the standard Euclidean properties of circles — distance from center, containment, and radius — which are the foundational concepts formalized in this entry."
-    }
-  ],
   "references": [
     {
       "authors": "Goodman, Adolph W.; Goodman, Gary",
