@@ -130,6 +130,54 @@ function countInFile(filePath: string, pattern: RegExp): number {
   return matches ? matches.length : 0
 }
 
+/**
+ * Resolve all Lean source files for a proof, including:
+ * - The main proofRepoPath file
+ * - Any files listed in meta.additionalFiles
+ * - Any submodule imports (import Proofs.X.Y → proofs/Proofs/X/Y.lean)
+ */
+function resolveAllLeanFiles(mainLeanPath: string, proofMeta: any): string[] {
+  const files: string[] = []
+  if (mainLeanPath && fs.existsSync(mainLeanPath)) {
+    files.push(mainLeanPath)
+  }
+
+  // Check additionalFiles from meta
+  const additionalFiles: unknown[] = proofMeta.additionalFiles || []
+  for (const af of additionalFiles) {
+    if (typeof af !== 'string') continue
+    const afPath = path.join('proofs', af.replace(/^proofs\//, ''))
+    if (fs.existsSync(afPath) && !files.includes(afPath)) {
+      files.push(afPath)
+    }
+  }
+
+  // Detect submodule imports from main file (import Proofs.X.Y)
+  // Only follow imports into subdirectories that are prefixes of the main file name,
+  // to avoid counting sorries in shared libraries (e.g., GraphCore).
+  if (mainLeanPath && fs.existsSync(mainLeanPath)) {
+    const mainBaseName = path.basename(mainLeanPath, '.lean')
+    const content = fs.readFileSync(mainLeanPath, 'utf-8')
+    const importRegex = /^import (Proofs\.\S+)/gm
+    let match
+    while ((match = importRegex.exec(content)) !== null) {
+      const moduleParts = match[1].split('.')
+      // Only follow multi-level imports (Proofs.X.Y) where X is a prefix of the main file name
+      if (moduleParts.length < 3) continue
+      const subDirName = moduleParts[1]
+      if (!mainBaseName.startsWith(subDirName)) continue
+
+      const modulePath = moduleParts.join('/')
+      const subPath = path.join('proofs', modulePath + '.lean')
+      if (fs.existsSync(subPath) && !files.includes(subPath)) {
+        files.push(subPath)
+      }
+    }
+  }
+
+  return files
+}
+
 function detectIssues(target: AuditTarget): string[] {
   const issues: string[] = []
 
@@ -175,23 +223,25 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
   }
 
   const proofMeta = meta.meta || {}
-  const leanFileRaw = proofMeta.leanFile || proofMeta.proofRepoPath || ''
+  // proofRepoPath is always a string path; leanFile may be an object (metadata)
+  const leanFileRaw = proofMeta.proofRepoPath || (typeof proofMeta.leanFile === 'string' ? proofMeta.leanFile : '')
   const leanFile = typeof leanFileRaw === 'string' ? leanFileRaw : ''
   const leanPath = leanFile ? path.join('proofs', leanFile.replace(/^proofs\//, '')) : null
 
-  // Actual counts from Lean file
+  // Actual counts from Lean file(s) — includes submodules and additionalFiles
   let sorryCount = 0
   let axiomCount = 0
   let trueStubCount = 0
   let hasMajorMathlibDep = false
 
-  if (leanPath && fs.existsSync(leanPath)) {
-    const rawContent = fs.readFileSync(leanPath, 'utf-8')
+  const allLeanFiles = leanPath ? resolveAllLeanFiles(leanPath, proofMeta) : []
+  for (const filePath of allLeanFiles) {
+    const rawContent = fs.readFileSync(filePath, 'utf-8')
     // Strip comments to avoid counting sorry/True in comments (Issue #6130)
     const content = stripLeanComments(rawContent)
 
-    sorryCount = (content.match(/\bsorry\b/g) || []).length
-    axiomCount = (content.match(/^axiom /gm) || []).length
+    sorryCount += (content.match(/\bsorry\b/g) || []).length
+    axiomCount += (content.match(/^axiom /gm) || []).length
 
     // True stubs: only count theorem/lemma declarations, not example (Issue #6130)
     for (const line of content.split('\n')) {
@@ -200,8 +250,6 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
         trueStubCount++
       }
     }
-
-    // hasMajorMathlibDep left as false -- automated detection removed (unreliable)
   }
 
   const trackerEntry = tracker.entries[id]
