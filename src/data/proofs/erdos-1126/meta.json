@@ -86,49 +86,56 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 34,
-      "summary": "Problem statement, references (Jurkat 1965, de Bruijn 1966, Erdős 1960), and imports from `Mathlib.Data.Real.Basic`, `Mathlib.MeasureTheory.Measure.Lebesgue.Basic`, `Mathlib.Topology.Basic`"
+      "summary": "Problem statement, references (Jurkat 1965, de Bruijn 1966, Erdős 1960), and imports from `Mathlib.Data.Real.Basic`, `Mathlib.MeasureTheory.Measure.Lebesgue.Basic`, `Mathlib.Topology.Basic`",
+      "mathContext": "Imports Mathlib's real number type $\\mathbb{R}$, Lebesgue measure $\\lambda$ on $\\mathbb{R}$ and $\\mathbb{R}^2$, and topological continuity for `continuous_additive_is_linear`. The measure-theoretic imports are essential: 'almost everywhere' means 'outside a $\\lambda$-null set'."
     },
     {
       "id": "cauchy",
       "title": "Cauchy's Functional Equation",
       "startLine": 35,
       "endLine": 58,
-      "summary": "Defines `IsAdditive f` as $\\forall x\\,y,\\, f(x+y) = f(x) + f(y)$. Proves `id_is_additive` ($f = \\text{id}$) and `scalar_is_additive` ($f(x) = cx$) by `ring`. Axiomatizes `continuous_additive_is_linear`: continuous + additive $\\Rightarrow f(x) = cx$."
+      "summary": "Defines `IsAdditive f` as $\\forall x\\,y,\\, f(x+y) = f(x) + f(y)$. Proves `id_is_additive` ($f = \\text{id}$) and `scalar_is_additive` ($f(x) = cx$) by `ring`. Axiomatizes `continuous_additive_is_linear`: continuous + additive $\\Rightarrow f(x) = cx$.",
+      "mathContext": "`IsAdditive f` := $\\forall x\\,y \\in \\mathbb{R},\\; f(x+y) = f(x) + f(y)$ (Cauchy's functional equation). Examples: $f(x) = x$ and $f(x) = cx$ are additive. Cauchy (1821): continuous additive $\\Rightarrow f(x) = f(1) \\cdot x$. This is axiomatized as `continuous_additive_is_linear`."
     },
     {
       "id": "almost-everywhere",
       "title": "Almost-Everywhere Definitions",
       "startLine": 59,
       "endLine": 78,
-      "summary": "Defines `ae_holds P` (property holds outside a null set in $\\mathbb{R}$), `ae_pairs P` (holds outside a null set in $\\mathbb{R}^2$), `IsAlmostAdditive f` ($f(x+y) = f(x) + f(y)$ for a.e. pairs), and `ae_eq f g` ($f = g$ a.e.)."
+      "summary": "Defines `ae_holds P` (property holds outside a null set in $\\mathbb{R}$), `ae_pairs P` (holds outside a null set in $\\mathbb{R}^2$), `IsAlmostAdditive f` ($f(x+y) = f(x) + f(y)$ for a.e. pairs), and `ae_eq f g` ($f = g$ a.e.).",
+      "mathContext": "Custom measure-theoretic definitions: `ae_holds P` := $\\exists N \\subset \\mathbb{R},\\; \\lambda(N) = 0 \\wedge \\forall x \\notin N,\\; P(x)$. `ae_pairs P` := same for $N \\subset \\mathbb{R}^2$ with $\\lambda^2(N) = 0$. `IsAlmostAdditive f` := $f(x+y) = f(x) + f(y)$ for $\\lambda^2$-a.e. $(x,y)$. Uses explicit null sets rather than Mathlib's `Filter.Eventually` for pedagogical clarity."
     },
     {
       "id": "main-theorem",
       "title": "The de Bruijn-Jurkat Theorem",
       "startLine": 79,
       "endLine": 97,
-      "summary": "The main result axiomatized as `de_bruijn_jurkat_theorem`: $\\forall f,\\, \\text{IsAlmostAdditive}(f) \\Rightarrow \\exists g,\\, \\text{IsAdditive}(g) \\wedge f =_{\\text{a.e.}} g$. Wrapped as `erdos_1126_main` for clarity."
+      "summary": "The main result axiomatized as `de_bruijn_jurkat_theorem`: $\\forall f,\\, \\text{IsAlmostAdditive}(f) \\Rightarrow \\exists g,\\, \\text{IsAdditive}(g) \\wedge f =_{\\text{a.e.}} g$. Wrapped as `erdos_1126_main` for clarity.",
+      "mathContext": "$\\text{IsAlmostAdditive}(f) \\Rightarrow \\exists g : \\mathbb{R} \\to \\mathbb{R},\\; \\text{IsAdditive}(g) \\wedge f =_{\\text{a.e.}} g$. The proof (axiomatized) uses Fubini's theorem: for a.e. $x$, the function $y \\mapsto f(x+y) - f(x) - f(y)$ vanishes for a.e. $y$. Defining $g(x) = \\lim_{n \\to \\infty} f(nx)/n$ (which exists a.e.) yields the additive correction."
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness of the Correction",
       "startLine": 98,
       "endLine": 109,
-      "summary": "Two uniqueness axioms: `additive_ae_unique` ($g_1, g_2$ additive, $g_1 =_{\\text{a.e.}} g_2 \\Rightarrow g_1 = g_2$) and `additive_zero_ae` ($g$ additive, $g =_{\\text{a.e.}} 0 \\Rightarrow g = 0$). Together they show the repair $g$ is unique."
+      "summary": "Two uniqueness axioms: `additive_ae_unique` ($g_1, g_2$ additive, $g_1 =_{\\text{a.e.}} g_2 \\Rightarrow g_1 = g_2$) and `additive_zero_ae` ($g$ additive, $g =_{\\text{a.e.}} 0 \\Rightarrow g = 0$). Together they show the repair $g$ is unique.",
+      "mathContext": "Key fact: if $g$ is additive and $g(x) = 0$ for a.e. $x$, then $g \\equiv 0$. Proof sketch: the zero set $Z = \\{x : g(x) = 0\\}$ has full measure, so $Z + Z = \\{x + y : x, y \\in Z\\}$ covers $\\mathbb{R}$ (by Steinhaus's theorem, $Z + Z$ contains an interval). Since $g(x+y) = g(x) + g(y) = 0$ for $x, y \\in Z$, $g$ vanishes on a dense set, hence everywhere by additivity."
     },
     {
       "id": "wild-functions",
       "title": "Wild Additive Functions and Regularity",
       "startLine": 110,
       "endLine": 124,
-      "summary": "Context axioms: `wild_additive_exist` (AC $\\Rightarrow \\exists$ discontinuous additive $f$) and `measurable_additive_is_linear` (additive + measurable $\\Rightarrow f(x) = cx$). Shows measurability is the sharp threshold for 'tame' behavior."
+      "summary": "Context axioms: `wild_additive_exist` (AC $\\Rightarrow \\exists$ discontinuous additive $f$) and `measurable_additive_is_linear` (additive + measurable $\\Rightarrow f(x) = cx$). Shows measurability is the sharp threshold for 'tame' behavior.",
+      "mathContext": "Using AC, choose a Hamel basis $B$ for $\\mathbb{R}$ over $\\mathbb{Q}$ and define $f$ to be $\\mathbb{Q}$-linear with $f(b_1) = 1$, $f(b_2) = \\sqrt{2}$ for two basis elements. Then $f$ is additive but $f(x)/x$ takes infinitely many values, so $f$ is nowhere continuous. The graph $\\{(x, f(x))\\}$ is dense in $\\mathbb{R}^2$. Measurability rules this out: additive + Lebesgue measurable $\\Rightarrow$ continuous $\\Rightarrow f(x) = cx$."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 125,
       "endLine": 143,
-      "summary": "Theorem `erdos_1126_summary` combines the de Bruijn-Jurkat theorem with uniqueness: $\\text{IsAlmostAdditive}(f) \\Rightarrow \\exists! g,\\, \\text{IsAdditive}(g) \\wedge f =_{\\text{a.e.}} g$. Proved by pairing the two axioms."
+      "summary": "Theorem `erdos_1126_summary` combines the de Bruijn-Jurkat theorem with uniqueness: $\\text{IsAlmostAdditive}(f) \\Rightarrow \\exists! g,\\, \\text{IsAdditive}(g) \\wedge f =_{\\text{a.e.}} g$. Proved by pairing the two axioms.",
+      "mathContext": "The summary packages both parts: existence (de Bruijn-Jurkat) and uniqueness (additive + a.e. equal $\\Rightarrow$ equal) into a single $\\exists!$ statement. Proved by `⟨de_bruijn_jurkat_theorem f hf, additive_ae_unique⟩` — the only non-axiom theorem in the file (besides trivial examples)."
     }
   ],
   "crossReferences": [
