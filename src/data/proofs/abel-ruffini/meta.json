@@ -233,6 +233,11 @@
       "targetId": "hilbert-10",
       "relationship": "related",
       "description": "Matiyasevich's negative resolution of Hilbert's 10th problem (1970) — no algorithm decides solvability of arbitrary Diophantine equations — is the number-theoretic descendant of Abel-Ruffini's impossibility. Both concern the limits of what can be 'solved' within a given formal framework"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots and cyclotomic extensions supply the abelian Galois groups $(\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ that form each layer of a radical tower via Kummer theory. Each radical step $K \\to K(\\sqrt[n]{a})$ has cyclic Galois group precisely because the $n$th roots of unity form a cyclic group. Abel-Ruffini's impossibility arises when the target Galois group $S_5$ cannot be decomposed into such abelian cyclotomic layers"
     }
   ],
   "relatedProofs": [
@@ -251,7 +256,8 @@
     "e-transcendental",
     "godel-incompleteness",
     "halting-problem",
-    "hilbert-10"
+    "hilbert-10",
+    "primitive-roots"
   ],
   "references": [
     {
