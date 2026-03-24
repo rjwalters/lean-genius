@@ -32,12 +32,12 @@
       }
     ],
     "originalContributions": [
-      "Formalization of increasing/decreasing subsequences",
-      "Structure definitions for subsequences with positions",
-      "Main theorem statement with pigeonhole approach",
-      "Classic n²+1 corollary",
-      "Tightness bound construction",
-      "Erdős–Szekeres number function and properties"
+      "Type-safe structure definitions for increasing and decreasing subsequences using Fin-indexed positions with StrictMono/StrictAnti",
+      "Main existence theorem statement (axiomatized; pigeonhole proof not yet formalized)",
+      "Classic n²+1 corollary derived from the axiomatized existence result",
+      "Tightness bound statement (axiomatized; block-decomposition construction not yet formalized)",
+      "Proved base case: two_element_monotonic (22-line proof via case analysis on f(0) vs f(1))",
+      "Erdős–Szekeres number function ES(r,s) with symmetry property"
     ],
     "dateAdded": "2024-12-27",
     "wiedijkNumber": 73,
@@ -49,8 +49,8 @@
   "overview": {
     "historicalContext": "Paul Erdős and George Szekeres proved this theorem in 1935 in their paper \"A combinatorial problem in geometry.\" It was one of Erdős's first major results, published when he was just 22 years old. The theorem arose from the Happy Ending Problem about convex polygons and has since become a cornerstone of combinatorics and Ramsey theory. The elegant pigeonhole proof gives an exact tight bound. Dilworth's theorem (1950) generalized it: in any finite partially ordered set, the minimum number of chains covering it equals the maximum antichain size; the Erdős-Szekeres theorem is the linear order special case. The result is also a foundational instance of the general Ramsey principle that any large enough structure must contain order.",
     "problemStatement": "**Erdős–Szekeres Theorem**: Any sequence of at least $(r-1)(s-1) + 1$ distinct real numbers contains either:\n- An increasing subsequence of length $r$, OR\n- A decreasing subsequence of length $s$\n\n**Corollary (Classic Form)**: Any sequence of $n^2 + 1$ distinct numbers contains a monotonic subsequence of length $n + 1$.\n\nThis is Wiedijk's 100 Theorems #73.",
-    "text": "A 280-line formalization of the Erdős-Szekeres theorem (Wiedijk #73) in Lean 4: any sequence of at least $(r-1)(s-1)+1$ distinct numbers contains an increasing subsequence of length $r$ or a decreasing one of length $s$. The proof formalizes the elegant pigeonhole argument assigning each position a pair $(a_i, b_i)$ of longest increasing/decreasing subsequence lengths. The file includes the classic $n^2+1$ corollary, the tightness construction (concatenating $s-1$ increasing blocks of length $r-1$ in decreasing order), concrete examples, and the Ramsey-theoretic perspective via the Erdős-Szekeres number $ES(r,s)$. Two axioms encode the main existence and tightness results; 8 theorems are proved with 0 sorries.",
-    "proofStrategy": "**The Pigeonhole Argument:**\n\nFor each position $i$ in the sequence, assign a pair $(a_i, b_i)$ where:\n- $a_i$ = length of longest increasing subsequence ending at position $i$\n- $b_i$ = length of longest decreasing subsequence ending at position $i$\n\n**Key insight**: All pairs $(a_i, b_i)$ are distinct!\n\nIf $i < j$ and $(a_i, b_i) = (a_j, b_j)$:\n- If $f(i) < f(j)$: the increasing subsequence ending at $i$ extends to $j$, so $a_j > a_i$\n- If $f(i) > f(j)$: the decreasing subsequence ending at $i$ extends to $j$, so $b_j > b_i$\n\nThis contradicts $(a_i, b_i) = (a_j, b_j)$. Since all pairs are distinct and bounded by $(r-1, s-1)$, we can have at most $(r-1)(s-1)$ elements. But we have $(r-1)(s-1) + 1$, contradiction!",
+    "text": "A 280-line axiomatized formalization of the Erdős-Szekeres theorem (Wiedijk #73) in Lean 4. The core existence result and tightness bound are axiomatized; supporting results are proved. The file introduces clean type-safe structure definitions for increasing/decreasing subsequences (`IncreasingSubseq`/`DecreasingSubseq` with `Fin`-indexed positions), derives the classic $n^2+1$ corollary from the axiomatized existence theorem, proves the 2-element base case (`two_element_monotonic` — the only non-trivial proof, 22 lines), and defines the Erdős-Szekeres number $ES(r,s)$ with symmetry. Two axioms encode the main results; 8 theorems are stated with 0 sorries, though most are thin wrappers over the axioms.",
+    "proofStrategy": "**What is formalized:** The file defines type-safe structures for increasing/decreasing subsequences (`IncreasingSubseq`/`DecreasingSubseq` using `Fin`-indexed positions with `StrictMono`/`StrictAnti`), states the main existence theorem and tightness bound as axioms, derives the classic $n^2+1$ corollary, proves the 2-element base case via case analysis, and defines the Erdős–Szekeres number.\n\n**What is axiomatized:** The core existence result (`erdos_szekeres_existence_axiom`) and the tightness construction (`erdos_szekeres_tight_axiom`) are axiom declarations. The intended proof approach is Seidenberg's (1959) pigeonhole argument: assign each position $i$ a pair $(a_i, b_i)$ of longest increasing/decreasing subsequence lengths; all pairs are distinct (extending subsequences increases one coordinate); so $(r-1)(s-1)+1$ positions cannot all have pairs in $\\{1,\\ldots,r-1\\}\\times\\{1,\\ldots,s-1\\}$. Scaffolding definitions (`HasIncreasingEndingAt`/`HasDecreasingEndingAt`) exist but are unused.\n\n**The one non-trivial proof:** `two_element_monotonic` proves the base case via `Fin.lastCases` and case analysis on `f(0) < f(1)` vs `f(0) > f(1)`, using injectivity to derive strict inequality.",
     "keyInsights": [
       "The pigeonhole principle on (longest-inc, longest-dec) pairs",
       "Pairs are distinct because extending subsequences increases at least one coordinate",
@@ -78,8 +78,8 @@
       "title": "The Main Theorem",
       "startLine": 111,
       "endLine": 153,
-      "summary": "Statement and proof of the Erdős–Szekeres theorem in existence form.",
-      "mathContext": "$n \\ge (r-1)(s-1) + 1 \\implies$ any injective $f : \\text{Fin}\\, n \\to \\alpha$ has an increasing subsequence of length $r$ or decreasing of length $s$. Proved via pigeonhole on $(a_i, b_i)$ pairs."
+      "summary": "Statement of the Erdős–Szekeres theorem (axiomatized via `erdos_szekeres_existence_axiom`). The theorem is stated and the pigeonhole approach is described in comments, but the proof body delegates to the axiom.",
+      "mathContext": "$n \\ge (r-1)(s-1) + 1 \\implies$ any injective $f : \\text{Fin}\\, n \\to \\alpha$ has an increasing subsequence of length $r$ or decreasing of length $s$. Axiomatized; intended proof via pigeonhole on $(a_i, b_i)$ pairs."
     },
     {
       "id": "classic-form",
@@ -94,8 +94,8 @@
       "title": "Tightness of Bound",
       "startLine": 155,
       "endLine": 184,
-      "summary": "Construction showing the bound (r-1)(s-1) + 1 cannot be improved.",
-      "mathContext": "$\\exists f : \\text{Fin}\\, ((r-1)(s-1)) \\to \\mathbb{N}$ injective with no increasing length $r$ and no decreasing length $s$. Construction: $s-1$ increasing blocks of $r-1$ elements, blocks in decreasing order."
+      "summary": "Tightness bound statement (axiomatized via `erdos_szekeres_tight_axiom`). The block-decomposition construction is described in comments but not formalized.",
+      "mathContext": "$\\exists f : \\text{Fin}\\, ((r-1)(s-1)) \\to \\mathbb{N}$ injective with no increasing length $r$ and no decreasing length $s$. Axiomatized; intended construction: $s-1$ increasing blocks of $r-1$ elements, blocks in decreasing order."
     },
     {
       "id": "examples",
@@ -137,7 +137,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Erdős–Szekeres theorem provides an elegant and exact bound for the existence of monotonic subsequences. The formalization introduces formal definitions of increasing and decreasing subsequences, states the main theorem using the pigeonhole principle, and proves the classic n²+1 corollary.",
+    "summary": "An axiomatized formalization of the Erdős–Szekeres theorem with clean type-safe subsequence definitions, the classic $n^2+1$ corollary, a proved base case, and excellent scholarly exposition. The core existence and tightness results await full proof — completing the pigeonhole argument (for which scaffolding definitions exist) would elevate this entry significantly.",
     "implications": "**Theoretical Significance:**\n\n**1. Ramsey Theory**\nThe theorem is a foundational result in Ramsey theory, showing that order (monotonicity) emerges from sufficiently long sequences.\n\n**2. Combinatorics**\nUsed extensively in combinatorics for proving existence of structured subsequences.\n\n**3. Computer Science**\nConnects to longest increasing subsequence algorithms (O(n log n) via patience sorting).\n\n**4. The Happy Ending Problem**\nThe original application: any 5 points in general position contain a convex quadrilateral.",
     "openQuestions": [
       "How can the pigeonhole argument be fully formalized with explicit pair tracking?",

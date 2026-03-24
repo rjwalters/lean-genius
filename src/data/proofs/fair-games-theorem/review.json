@@ -104,14 +104,15 @@
       "priority": "high",
       "target": "enricher",
       "description": "Critical reframing: rewrite meta.json description, overview.problemStatement, overview.text, and overview.proofStrategy to describe the Optional Stopping Theorem (what the file proves) instead of gambler's ruin (what it doesn't prove). Change sourceUrl from Gambler's Ruin to Optional Stopping Theorem. This is the single most important fix.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Fix status and badge: change status from 'axiomatized' to 'verified', badge from 'axiom' to 'mathlib'. The main theorem IS proved; the single axiom is for a supplementary characterization, not the main result. Update assumptions to clarify.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Kept status=axiomatized and badge=axiom per CLAUDE.md axiom integrity policy (file has 1 axiom declaration → status must be axiomatized). Updated assumptions field to clarify the axiom is for supplementary characterization only, not the main result."
     },
     {
       "id": "ai-3",
@@ -125,21 +126,22 @@
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite originalContributions to reflect the actual proof: le_antisymm sandwich argument, E[X_τ]=E[X_0] corollary, partial submartingale characterization. Remove claims about 'framework' and 'ruin probability calculations'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "medium",
       "target": "enricher",
       "description": "Rewrite keyInsights to focus on formalized content (sandwich proof technique, bounded stopping time requirement, sub/supermartingale duality). Remove insights about gambler's ruin, Pólya's theorem, and Harrison-Pliska that are not formalized.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "low",
       "target": "enricher",
       "description": "Remove spurious cross-reference to infinitude-primes. Update mathlibDependencies to list specific API used (expected_stoppedValue_mono, Submartingale.neg, etc.) instead of just the general module. Fix theoremCount after filler removal.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Removed infinitude-primes cross-reference. Updated mathlibDependencies with 5 specific APIs. Added substantiveTheoremCount/fillerTheoremCount/fillerNote to leanFile section (filler not removed since that's researcher scope, but clearly documented)."
     }
   ],
 

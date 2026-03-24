@@ -96,6 +96,29 @@
     ]
   },
   {
+    "id": "ann-characterization",
+    "proofId": "fair-games-theorem",
+    "range": {
+      "startLine": 269,
+      "endLine": 348
+    },
+    "type": "technique",
+    "title": "Submartingale Characterization via Stopped Values",
+    "content": "Part IV establishes a deep characterization: a process is a submartingale if and only if stopped expectations are monotone ($E[f_\\tau] \\leq E[f_\\pi]$ for all bounded $\\tau \\leq \\pi$). This connects the local conditional expectation property to a global stopping-time property.\n\n**Forward direction** (`submartingale_characterization`, $\\Rightarrow$): If $f$ is a submartingale, then $E[f_\\tau] \\leq E[f_\\pi]$ for all bounded $\\tau \\leq \\pi$. This comes directly from Mathlib's `expected_stoppedValue_mono`.\n\n**Converse direction** (`submartingale_of_stoppedValue_mono`, $\\Leftarrow$): This is the file's single axiom. It states that if stopped expectations are monotone for all bounded stopping times, then $f$ is a submartingale. The proof requires showing that global stopping-time monotonicity implies the local conditional expectation inequality $E[f_{n+1} | \\mathcal{F}_n] \\geq f_n$.\n\n**Martingale corollary** (`martingale_equality_characterization`): For martingales, both sub- and supermartingale inequalities hold, giving equality $E[f_\\tau] = E[f_\\pi]$ — this is just `fair_games_theorem` restated.",
+    "mathContext": "$\\text{Submartingale}(f) \\Leftrightarrow \\forall \\tau \\leq \\pi \\leq N,\\; E[f_\\tau] \\leq E[f_\\pi]$.\n\nThe $\\Rightarrow$ direction is Mathlib's `expected_stoppedValue_mono`. The $\\Leftarrow$ direction (axiomatized) requires constructing specific stopping times that isolate the conditional expectation at each step.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "submartingale characterization",
+      "stopped value monotonicity",
+      "conditional expectation"
+    ],
+    "prerequisites": [
+      "submartingale definition",
+      "stopping times",
+      "expected_stoppedValue_mono"
+    ]
+  },
+  {
     "id": "ann-applications",
     "proofId": "fair-games-theorem",
     "range": {
@@ -103,21 +126,20 @@
       "endLine": 427
     },
     "type": "context",
-    "title": "Applications",
-    "content": "**Why This Matters**:\n\n1. **Gambler's Ruin**: Starting with wealth $W_0$, targeting $W_0 + a$ before 0:\n   $$P(\\text{success}) = \\frac{W_0}{W_0 + a}$$\n   Derived from $E[W_\\tau] = W_0$.\n\n2. **Betting Systems Fail**:\n   - Martingale system (double after loss)\n   - D'Alembert, Fibonacci systems\n   - All fail because bounded stopping \u2192 $E[\\text{final}] = E[\\text{initial}]$\n\n3. **Financial Mathematics**:\n   - Discounted asset prices are martingales under risk-neutral measure\n   - Option pricing = expected discounted payoff\n   - American option exercise = stopping time problem\n\n4. **Doob's Maximal Inequality**:\n   $$P(\\max_{n \\leq N} f_n \\geq \\lambda) \\leq \\frac{E[f_N]}{\\lambda}$$",
-    "summary": "Gambler's ruin probability, failure of betting systems, and connections to Black-Scholes option pricing.",
-    "significance": "supporting",
+    "title": "Applications Section (Placeholder Theorems)",
+    "content": "**Note**: This section contains 5 placeholder theorems that prove `(1:ℕ)+1=2` with substantive docstrings discussing applications. The docstrings sketch gambler's ruin probabilities, betting system analysis, option pricing, and Doob's maximal inequality, but **none of these results are formalized** — the theorem bodies are trivial.\n\nThe mathematical content described in the docstrings is accurate and represents natural extensions of the Optional Stopping Theorem:\n- **Gambler's ruin**: $P(\\text{success}) = W_0/(W_0+a)$ follows from $E[W_\\tau] = W_0$\n- **Betting systems fail**: bounded stopping times force $E[\\text{final}] = E[\\text{initial}]$\n- **Option pricing**: arbitrage-free prices are martingales under risk-neutral measure\n- **Doob's inequality**: $P(\\max_{n\\leq N} f_n \\geq \\lambda) \\leq E[f_N]/\\lambda$\n\nThese represent future formalization targets, not current achievements.",
+    "summary": "5 placeholder theorems (prove 1+1=2) with substantive docstrings about applications — not yet formalized.",
+    "significance": "context",
     "relatedConcepts": [
-      "gambler's ruin probability W\u2080/(W\u2080+a)",
-      "Black-Scholes option pricing",
-      "Doob's maximal inequality"
+      "gambler's ruin",
+      "betting systems",
+      "Doob's maximal inequality",
+      "option pricing"
     ],
     "prerequisites": [
-      "fair games theorem",
-      "random walks",
-      "risk-neutral pricing"
+      "Optional Stopping Theorem (fair_games_theorem)"
     ],
-    "mathContext": "See annotation content for formal details of applications"
+    "mathContext": "The docstrings describe genuine mathematical applications of the Optional Stopping Theorem, but the formal content is trivial (`(1:ℕ)+1=2 := rfl`). These are placeholders for future formalization."
   },
   {
     "id": "ann-history",
@@ -128,8 +150,8 @@
     },
     "type": "context",
     "title": "Historical Context",
-    "content": "**Timeline**:\n- **1906**: Bachelier applies fair game concepts to finance\n- **1934**: L\u00e9vy develops martingale theory\n- **1939**: Ville coins \"martingale\"\n- **1953**: Doob proves optional stopping theorem\n\n**Wiedijk's Summary** (#62):\n\n*\"You cannot beat a fair game with any strategy.\"*\n\n**Three Connected Ideas**:\n1. **Fairness** (martingale): future expectation = current value\n2. **Strategy** (stopping time): when to stop based on past\n3. **Invariance** (theorem): strategy can't change expected outcome\n\nThis explains why casinos profit (games are unfair) and why \"systems\" don't work.",
-    "summary": "Timeline from Bachelier (1906) to Doob (1953); explains the name 'martingale' and Wiedijk's characterization.",
+    "content": "**Timeline**:\n- **1900**: Bachelier applies proto-martingale reasoning to financial markets\n- **1930s**: L\u00e9vy develops key probabilistic machinery\n- **1939**: Ville formalizes 'martingale' concept in his thesis\n- **1953**: Doob proves Optional Stopping Theorem in *Stochastic Processes*\n- **1979**: Harrison-Pliska connect martingales to arbitrage-free pricing\n\n**Wiedijk's Summary** (#62):\n\n*\"You cannot beat a fair game with any strategy.\"*\n\n**Three Connected Ideas formalized in this file**:\n1. **Fairness** (martingale): $E[X_{n+1} | \\mathcal{F}_n] = X_n$ (via Mathlib's `Martingale`)\n2. **Strategy** (stopping time): when to stop based on past (via `IsStoppingTime`)\n3. **Invariance** (Optional Stopping Theorem): $E[X_\\tau] = E[X_\\pi]$ (via `fair_games_theorem`)\n\nThe file also contains a `fair_games_summary` placeholder theorem (proves `1+1=2`) with a summary docstring.",
+    "summary": "Timeline from Bachelier (1900) to Harrison-Pliska (1979); formalizes Wiedijk #62's three connected ideas: fairness, strategy, invariance.",
     "significance": "supporting",
     "relatedConcepts": [
       "Joseph Doob (1953)",
