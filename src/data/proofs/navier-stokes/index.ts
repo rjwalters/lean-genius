@@ -1,4 +1,4 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, ProofVersionInfo, VersionHistoryEntry, VersionContent } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, ProofVersionInfo, VersionHistoryEntry, VersionContent, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/NavierStokes.lean?raw'
@@ -7,7 +7,7 @@ import v2Json from './versions/v2.json'
 
 // Version content mapping
 // Note: v1 doesn't have objection field, v2 does
-const v1 = v1Json as { description: string; overview: ProofOverview; conclusion: ProofConclusion, CrossReference }
+const v1 = v1Json as { description: string; overview: ProofOverview; conclusion: ProofConclusion; crossReferences?: CrossReference[] }
 const v2 = v2Json as { description: string; overview: ProofOverview; conclusion: ProofConclusion; objection?: { verdict: string; summary: string; coreIssue?: string } }
 
 const versionContent: Record<string, VersionContent> = {
