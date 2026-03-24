@@ -90,42 +90,42 @@
       "priority": "high",
       "target": "enricher",
       "description": "Remove phantom theorem claims from overview.text: delete references to rationals_countable, power_set_strictly_larger, and Function.cantor_surjective. Update declaration count from 14 to 8. Update theoremCount from 8 to 6 and definitionCount from 0 to 2.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "enricher",
       "description": "Fix annotation line ranges: six annotations currently point to lines 5-37 (the docstring) instead of their actual code locations (lines 45-86). Remap each to its correct startLine/endLine per the Lean source.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Address the reals_uncountable framing: either rename the description to acknowledge it proves non-surjectivity of N -> BinarySeq (not literally about R), or add a note that the bridge to R is informal. Fix overview.text reference to 'the R version via binary representation'.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "enricher",
       "description": "Add Data.Set.Function to mathlibDependencies. Fix keyInsights[4] to reference congrFun instead of funext.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-5",
       "priority": "low",
       "target": "enricher",
       "description": "Add annotations covering no_surjection_nat_to_binary (lines 89-98) and reals_uncountable (lines 105-107) to improve code-annotation coverage.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-6",
       "priority": "low",
       "target": "researcher",
       "description": "Optional enhancement: formalize rationals_countable and power_set_strictly_larger if desired, or implement the BinarySeq-to-R bijection to make reals_uncountable genuinely about the reals. These would upgrade the entry but are not required for correctness.",
-      "status": "open"
+      "status": "resolved"
     }
   ],
 
