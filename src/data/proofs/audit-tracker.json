@@ -9199,5 +9199,25 @@
       "result": "clean",
       "issues": []
     }
+  },
+  "descartes-rule-of-signs-oq-02": {
+    "lastAudit": "2026-03-24T21:47:21Z",
+    "auditCount": 1,
+    "result": "issues-fixed",
+    "issues": [
+      "sorries 7->5 (code evolved)",
+      "lineCount 418->491",
+      "theoremCount 28->33"
+    ]
+  },
+  "erdos-668": {
+    "lastAudit": "2026-03-24T21:47:21Z",
+    "auditCount": 1,
+    "result": "issues-fixed",
+    "issues": [
+      "sorries 1->0 (sorry eliminated)",
+      "axiomCount 7->8",
+      "lineCount 216->228"
+    ]
   }
 }
