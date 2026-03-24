@@ -70,12 +70,13 @@ noncomputable def chromaticNumber {α I : Type*} (A : I → Set α) : Cardinal :
   sInf {C | SufficientColors A C}
 
 -- The problem asks for the supremum over all valid families
-def ErdosConjecture603 (C : Cardinal) : Prop :=
-  ∀ {α I : Type*} (A : I → Set α), IsValidFamily A → SufficientColors A C
+-- Universe-annotated to avoid metavariable issues
+def ErdosConjecture603 (C : Cardinal.{u}) : Prop :=
+  ∀ {α I : Type u} (A : I → Set α), IsValidFamily A → SufficientColors A C
 
 -- The minimum such C
-noncomputable def minimalChromatic : Cardinal :=
-  sInf {C | ErdosConjecture603 C}
+noncomputable def minimalChromatic : Cardinal.{u} :=
+  sInf {C : Cardinal.{u} | ErdosConjecture603 C}
 
 /-
 # Part 3: Related Problem - Intersection ≠ 1
@@ -101,15 +102,36 @@ axiom komjath_not1 : ∀ {α I : Type*} (A : I → Set α),
 What bounds do we know for the ≠2 case?
 -/
 
+-- Helper: every set in a valid family is nonempty (from infiniteness)
+lemma IsCountablyInfiniteFamily.nonempty {α I : Type*} {A : I → Set α}
+    (hf : IsCountablyInfiniteFamily A) (i : I) : (A i).Nonempty :=
+  (hf i).2.nonempty
+
 -- Trivial lower bound: need at least 2 colors (for infinite sets)
 theorem lower_bound_2 {α I : Type*} (A : I → Set α)
     (h : IsValidFamily A) (hne : ∃ i, (A i).Nonempty) :
     ∀ C, SufficientColors A C → C ≥ 2 := by
-  intro C ⟨Γ, _, c, hc⟩
+  intro C ⟨Γ, hΓ, c, hc⟩
   by_contra h'
   push_neg at h'
-  -- With < 2 colors, either 0 or 1 color
-  sorry
+  -- h' : C < 2, hΓ : #Γ ≤ C, so #Γ < 2
+  obtain ⟨i₀, a₀, ha₀⟩ := hne
+  apply hc i₀
+  -- Goal: IsMonochromatic (A i₀) c
+  -- Since #Γ < 2, Γ has at most 1 element, so all colors are equal
+  refine ⟨c a₀, fun x _ => ?_⟩
+  have hΓlt : #Γ < 2 := lt_of_le_of_lt hΓ h'
+  -- Γ is finite (since #Γ < 2 < ℵ₀)
+  have : Finite Γ := Cardinal.lt_aleph0_iff_finite.mp
+    (lt_trans hΓlt (Cardinal.nat_lt_aleph0 2))
+  haveI : Fintype Γ := Fintype.ofFinite Γ
+  -- Fintype.card Γ < 2, so Γ has at most 1 element
+  have hcard : Fintype.card Γ < 2 := by
+    rw [Cardinal.mk_fintype] at hΓlt
+    exact_mod_cast hΓlt
+  have : Subsingleton Γ := by
+    rw [← Fintype.card_le_one_iff_subsingleton]; omega
+  exact Subsingleton.elim _ _
 
 -- Countably many colors is an upper bound (trivially)
 -- Each element gets a different color
@@ -118,11 +140,11 @@ axiom countable_suffices_trivial : ∀ {α I : Type*} (A : I → Set α),
 
 -- The question: can we do better than ℵ₀?
 def CanDoBetterThanAleph0 : Prop :=
-  ∃ n : ℕ, ErdosConjecture603 n
+  ∃ n : ℕ, ErdosConjecture603.{0} n
 
 -- Or: is ℵ₀ necessary?
 def Aleph0Necessary : Prop :=
-  ∀ n : ℕ, ¬ ErdosConjecture603 n
+  ∀ n : ℕ, ¬ ErdosConjecture603.{0} n
 
 /-
 # Part 5: Hypergraph Perspective
@@ -151,10 +173,44 @@ noncomputable def weakChromatic {α I : Type*}
 Specific families that might require many colors.
 -/
 
--- A disjoint family (intersection empty) trivially works with 2 colors
+-- A disjoint family of infinite sets trivially works with 2 colors
+-- Note: infiniteness is needed — singletons are always monochromatic
 theorem disjoint_2_colors {α I : Type*} (A : I → Set α)
-    (h : ∀ i j, i ≠ j → A i ∩ A j = ∅) : SufficientColors A 2 := by
-  sorry
+    (hdisj : ∀ i j, i ≠ j → A i ∩ A j = ∅)
+    (hinf : ∀ i, (A i).Infinite) : SufficientColors A 2 := by
+  classical
+  -- For each A i, choose a distinguished element d i ∈ A i
+  choose d hd using fun i => (hinf i).nonempty
+  -- For each A i, choose a second element e i ∈ A i with e i ≠ d i
+  have hexist : ∀ i, ∃ b, b ∈ A i ∧ b ≠ d i := by
+    intro i
+    obtain ⟨b, hb⟩ := ((hinf i).diff (Set.finite_singleton (d i))).nonempty
+    rw [Set.mem_diff, Set.mem_singleton_iff] at hb
+    exact ⟨b, hb.1, hb.2⟩
+  choose e he hne using hexist
+  -- Use ULift (Fin 2) as a universe-polymorphic 2-element type
+  refine ⟨ULift (Fin 2), ?_,
+    fun x => ⟨if ∃ j, x = d j then 0 else 1⟩, ?_⟩
+  · simp
+  · -- No A i is monochromatic
+    intro i ⟨color, hcolor⟩
+    -- Force beta reduction with explicit type annotations
+    have h_di : (⟨if ∃ j, d i = d j then (0 : Fin 2) else 1⟩ : ULift (Fin 2)) = color :=
+      hcolor (d i) (hd i)
+    rw [if_pos ⟨i, rfl⟩] at h_di
+    have h2 : ¬ ∃ j, e i = d j := by
+      rintro ⟨j, hj⟩
+      by_cases hij : i = j
+      · exact hne i (hij ▸ hj)
+      · have hmem : e i ∈ A i ∩ A j := ⟨he i, hj ▸ hd j⟩
+        rw [hdisj i j hij] at hmem
+        exact Set.not_mem_empty _ hmem
+    have h_ei : (⟨if ∃ j, e i = d j then (0 : Fin 2) else 1⟩ : ULift (Fin 2)) = color :=
+      hcolor (e i) (he i)
+    rw [if_neg h2] at h_ei
+    -- h_di : ⟨0⟩ = color, h_ei : ⟨1⟩ = color → ⟨0⟩ = ⟨1⟩
+    have := congr_arg ULift.down (h_di.trans h_ei.symm)
+    exact absurd this (by decide)
 
 -- A family where all pairs have intersection size 0, 1, or ≥3
 -- These satisfy both ≠1 and ≠2 constraints
@@ -183,17 +239,13 @@ def erdos_603_status : String := "OPEN"
 -- 3. For ≠1: C = ℵ₀ (Komjáth)
 -- 4. For ≠2: C = ? (OPEN)
 
--- The formal statement
+-- The formal statement (universe-fixed for consistency)
 theorem erdos_603_statement :
-    (∃ C, ErdosConjecture603 C) ↔
-    ∃ C, ∀ {α I : Type*} (A : I → Set α),
+    (∃ C : Cardinal.{u}, ErdosConjecture603 C) ↔
+    ∃ C : Cardinal.{u}, ∀ {α I : Type u} (A : I → Set α),
       (IsCountablyInfiniteFamily A ∧ IntersectionNot2 A) →
       SufficientColors A C := by
-  constructor
-  · intro ⟨C, hC⟩
-    exact ⟨C, fun A ⟨h1, h2⟩ => hC A ⟨h1, h2⟩⟩
-  · intro ⟨C, hC⟩
-    exact ⟨C, fun A h => hC A h⟩
+  simp only [ErdosConjecture603, IsValidFamily]
 
 /-
 # Part 8: Summary
