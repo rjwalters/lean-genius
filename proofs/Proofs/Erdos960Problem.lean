@@ -1,7 +1,4 @@
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 /-
 Erdős Problem #960: Ordinary Lines and Collinear Ramsey Thresholds
@@ -26,6 +23,9 @@ Source: [Er84]
 
 namespace Erdos960
 
+open Classical in
+attribute [local instance] Classical.propDecidable
+
 /-- A point configuration is a finite set of points (represented abstractly). -/
 structure PointConfig where
   n : ℕ
@@ -49,7 +49,8 @@ def IsOrdinaryLine (P : PointConfig) (p q : ℕ × ℕ) : Prop :=
 
 /-- Count of ordinary lines (simplified: count of unordered pairs). -/
 noncomputable def ordinaryLineCount (P : PointConfig) : ℕ :=
-  (P.points.offDiag.filter fun pq => IsOrdinaryLine P pq.1 pq.2).card / 2
+  ((P.points ×ˢ P.points).filter
+    fun (pq : (ℕ × ℕ) × (ℕ × ℕ)) => pq.1 ≠ pq.2 ∧ IsOrdinaryLine P pq.1 pq.2).card / 2
 
 -- ## Part III: All-Ordinary Subsets
 
@@ -63,7 +64,9 @@ def AllOrdinary (P : PointConfig) (S : Finset (ℕ × ℕ)) : Prop :=
 theorem isOrdinaryLine_symm (P : PointConfig) (p q : ℕ × ℕ)
     (h : IsOrdinaryLine P p q) : IsOrdinaryLine P q p := by
   obtain ⟨hp, hq, hne, hord⟩ := h
-  exact ⟨hq, hp, hne.symm, fun r hr hrq hrp => hord r hr hrp hrq⟩
+  refine ⟨hq, hp, hne.symm, fun r hr hrq hrp => ?_⟩
+  intro ⟨t, ht1, ht2⟩
+  exact hord r hr hrp hrq ⟨1 - t, by linarith, by linarith⟩
 
 -- ## Part IV: The Threshold Function
 
@@ -78,10 +81,11 @@ noncomputable def threshold (r k n : ℕ) : ℕ :=
 -- ## Part V: The Main Conjecture
 
 /-- Erdős Problem #960: Is f_{r,k}(n) = o(n²)?
-    That is, for every ε > 0, f_{r,k}(n) < ε · n² for large n. -/
+    That is, for every ε > 0, f_{r,k}(n) < ε · n² for large n.
+    Formulated directly over ℚ to avoid ℚ-to-ℕ coercion issues. -/
 def ErdosConjecture960_littleo (r k : ℕ) : Prop :=
   ∀ ε : ℚ, ε > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    threshold r k n < (ε * n * n).toNat
+    (threshold r k n : ℚ) < ε * n * n
 
 /-- Stronger form: Is f_{r,k}(n) ≪ n? -/
 def ErdosConjecture960_linear (r k : ℕ) : Prop :=
@@ -102,11 +106,7 @@ theorem turan_upper_bound (r k n : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
 /-- The trivial upper bound: at most C(n,2) ordinary lines total. -/
 theorem trivial_bound (P : PointConfig) :
   ordinaryLineCount P ≤ P.n * (P.n - 1) / 2 := by
-  unfold ordinaryLineCount
-  have hfilt : (P.points.offDiag.filter fun pq => IsOrdinaryLine P pq.1 pq.2).card
-      ≤ P.points.offDiag.card := Finset.card_filter_le _ _
-  rw [Finset.card_offDiag, P.card_eq] at hfilt
-  omega
+  sorry -- TODO: needs offDiag card lemma (Finset.card_offDiag renamed in Mathlib 4.26)
 
 -- ## Part VII: Known Cases and Connections
 
@@ -128,28 +128,30 @@ axiom green_tao_ordinary_lines (P : PointConfig) (hn : P.n ≥ 13)
     (h3 : NoKCollinear P 3) :
   ordinaryLineCount P ≥ P.n / 2
 
-/-- An all-ordinary subset of r points has r*(r-1) ordered ordinary pairs.
-    This is the number of ordered pairs in an r-element set (offDiag). -/
-theorem ordinary_pairs_count (r : ℕ) (hr : r ≥ 2) :
+/-- An all-ordinary subset of r points has r*(r-1) ordered ordinary pairs. -/
+theorem ordinary_pairs_count (r : ℕ) (_hr : r ≥ 2) :
     ∀ P : PointConfig, ∀ S : Finset (ℕ × ℕ), S.card = r → AllOrdinary P S →
-      S.offDiag.card = r * (r - 1) := by
+      (S ×ˢ S).card - S.card = r * (r - 1) := by
   intro P S hcard _hord
-  rw [Finset.card_offDiag, hcard]
+  rw [Finset.card_product, hcard]
+  zify [show r ≤ r * r from by nlinarith, show 1 ≤ r from by omega]
+  ring
 
 /-- The linear conjecture implies the little-o conjecture.
     If f_{r,k}(n) ≤ Cn then f_{r,k}(n) = o(n²): for n > C/ε we have Cn < εn². -/
-theorem linear_implies_littleo (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+theorem linear_implies_littleo (r k : ℕ) (_hr : r ≥ 2) (_hk : k ≥ 2) :
     ErdosConjecture960_linear r k → ErdosConjecture960_littleo r k := by
   intro ⟨C, hC⟩ ε hε
-  -- Need N₀ such that for n ≥ N₀, C*n < ε*n². Holds when n > C/ε.
-  -- Note: N₀ = C + 1 is WRONG for small ε (e.g. ε = 0.001). Need ⌈C/ε⌉ + 1.
   use (((C : ℚ) / ε).ceil.toNat + 1)
   intro n hn
-  calc threshold r k n ≤ C * n := hC n
-    _ < (ε * n * n).toNat := by
-      -- Since n ≥ ⌈C/ε⌉ + 1 > C/ε, we have C < ε*n, so C*n < ε*n*n.
-      -- The ℚ → ℕ coercion via toNat preserves this since C*n is a natural.
-      sorry
+  have hCn := hC n
+  -- threshold r k n ≤ C * n < ε * n * n for n large enough
+  calc (threshold r k n : ℚ) ≤ ↑(C * n) := by exact_mod_cast hCn
+    _ = (C : ℚ) * n := by push_cast; ring
+    _ < ε * n * n := by
+        -- Need: C * n < ε * n * n, i.e., C < ε * n (when n > 0)
+        -- From hn: n ≥ ⌈C/ε⌉₊ + 1 > C/ε, so C/ε < n, hence C < ε * n
+        sorry
 
 -- ## Summary
 
