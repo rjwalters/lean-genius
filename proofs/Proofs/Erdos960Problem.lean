@@ -97,11 +97,46 @@ axiom erdos_960_littleo_conjecture : ∀ r k : ℕ, r ≥ 2 → k ≥ 2 →
 
 -- ## Part VI: Turán Upper Bound
 
+/-- Turán's theorem for ordinary line graphs: If a point configuration has no
+    r-element all-ordinary subset, the ordinary line graph is K_r-free, so the
+    count is bounded by the Turán number ex(n, K_r) ≤ (1 - 1/(r-1)) · n²/2.
+    Axiomatized: Turán's theorem (1941) is not yet in Mathlib. -/
+axiom turan_ordinary_bound (P : PointConfig) (r : ℕ) (hr : r ≥ 2)
+    (hno : ¬∃ S : Finset (ℕ × ℕ), S.card = r ∧ AllOrdinary P S) :
+  (ordinaryLineCount P : ℚ) ≤ (1 - 1 / ((r : ℚ) - 1)) * (P.n : ℚ) ^ 2 / 2
+
 /-- Turán's theorem gives an upper bound on the threshold.
     For r ≥ 2, f_{r,k}(n) ≤ (1 - 1/(r-1)) · n²/2 + 1.
-    Stated over ℚ to avoid natural number underflow. -/
-theorem turan_upper_bound (r k n : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
-  (threshold r k n : ℚ) ≤ (1 - 1 / (r - 1 : ℚ)) * n^2 / 2 + 1 := by sorry
+    Derived from `turan_ordinary_bound` via sSup reasoning. -/
+theorem turan_upper_bound (r k n : ℕ) (hr : r ≥ 2) (_hk : k ≥ 2) :
+    (threshold r k n : ℚ) ≤ (1 - 1 / (r - 1 : ℚ)) * n ^ 2 / 2 + 1 := by
+  -- Work in ℕ: show threshold ≤ ⌊B⌋₊, then cast to ℚ
+  set B : ℚ := (1 - 1 / ((r : ℚ) - 1)) * (n : ℚ) ^ 2 / 2
+  -- B ≥ 0 (Turán coefficient is nonneg for r ≥ 2)
+  have hr1 : (1 : ℚ) ≤ (r : ℚ) - 1 := by
+    have : (2 : ℚ) ≤ (r : ℚ) := by exact_mod_cast hr
+    linarith
+  have hB_nonneg : 0 ≤ B := by
+    apply div_nonneg _ (by norm_num : (0 : ℚ) ≤ 2)
+    apply mul_nonneg _ (sq_nonneg _)
+    have h_div : 1 / ((r : ℚ) - 1) ≤ 1 :=
+      (div_le_one (by linarith : (0 : ℚ) < (r : ℚ) - 1)).mpr hr1
+    linarith
+  -- Bound threshold in ℕ: threshold ≤ ⌊B⌋₊
+  have hthresh_le : threshold r k n ≤ ⌊B⌋₊ := by
+    unfold threshold
+    apply csSup_le'
+    intro m ⟨P, hPn, _, hm, hno⟩
+    exact Nat.le_floor
+      (show (m : ℚ) ≤ B from
+        calc (m : ℚ) ≤ (ordinaryLineCount P : ℚ) := by exact_mod_cast hm
+          _ ≤ (1 - 1 / ((r : ℚ) - 1)) * (P.n : ℚ) ^ 2 / 2 :=
+              turan_ordinary_bound P r hr hno
+          _ = B := by rw [hPn])
+  -- Cast to ℚ: threshold ≤ ⌊B⌋₊ ≤ B ≤ B + 1
+  calc (threshold r k n : ℚ) ≤ (⌊B⌋₊ : ℚ) := by exact_mod_cast hthresh_le
+    _ ≤ B := Nat.floor_le hB_nonneg
+    _ ≤ B + 1 := le_add_of_nonneg_right (by norm_num)
 
 /-- The trivial upper bound: at most C(n,2) ordinary lines total. -/
 theorem trivial_bound (P : PointConfig) :
@@ -125,14 +160,48 @@ theorem trivial_bound (P : PointConfig) :
 
 -- ## Part VII: Known Cases and Connections
 
-/-- For r = 2: the threshold is 0. With the sSup-based definition of `threshold`,
-    which computes the maximum m where a counterexample exists, there are no
-    counterexamples for r = 2: any configuration with ≥ 1 ordinary line has a
-    2-element all-ordinary subset (the two points on that line). By Sylvester-Gallai,
-    every finite non-collinear set has ordinary lines.
-    Proof: the set in the sSup is empty, so sSup = 0. -/
+/-- If ordinaryLineCount P ≥ 1, there exists a 2-element all-ordinary subset:
+    the two points on any ordinary line. -/
+private lemma ordinary_count_pos_gives_pair (P : PointConfig)
+    (h : ordinaryLineCount P ≥ 1) :
+    ∃ S : Finset (ℕ × ℕ), S.card = 2 ∧ AllOrdinary P S := by
+  -- ordinaryLineCount = filtered.card / 2 ≥ 1, so filtered set is nonempty
+  simp only [ordinaryLineCount] at h
+  set F := (P.points ×ˢ P.points).filter
+    (fun (pq : (ℕ × ℕ) × (ℕ × ℕ)) => pq.1 ≠ pq.2 ∧ IsOrdinaryLine P pq.1 pq.2) with hF_def
+  have hF_pos : 0 < F.card := by
+    have h1 := Nat.mul_le_mul_right 2 h  -- 1 * 2 ≤ F.card / 2 * 2
+    have h2 := Nat.div_mul_le_self F.card 2  -- F.card / 2 * 2 ≤ F.card
+    linarith
+  obtain ⟨⟨p, q⟩, hpq⟩ := Finset.card_pos.mp hF_pos
+  simp only [hF_def, Finset.mem_filter, Finset.mem_product] at hpq
+  obtain ⟨⟨hp, hq⟩, hne, hord⟩ := hpq
+  refine ⟨{p, q}, ?_, ?_, ?_⟩
+  · rw [Finset.card_insert_of_notMem (by simp [hne]), Finset.card_singleton]
+  · intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> assumption
+  · intro a ha b hb hab
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb
+    rcases ha with ha_eq | ha_eq <;> rcases hb with hb_eq | hb_eq
+    · exact absurd (ha_eq.trans hb_eq.symm) hab
+    · rw [ha_eq, hb_eq]; exact hord
+    · rw [ha_eq, hb_eq]; exact isOrdinaryLine_symm P p q hord
+    · exact absurd (ha_eq.trans hb_eq.symm) hab
+
+/-- For r = 2: the threshold is 0. Any configuration with ≥ 1 ordinary line has a
+    2-element all-ordinary subset (the two points on that line). So any m ≥ 1 in the
+    sSup set leads to contradiction, forcing the set ⊆ {0} and sSup = 0. -/
 theorem threshold_r2 (k n : ℕ) (_hk : k ≥ 2) (_hn : n ≥ 2) :
-  threshold 2 k n = 0 := by sorry
+  threshold 2 k n = 0 := by
+  unfold threshold
+  apply Nat.le_zero.mp
+  apply csSup_le'
+  intro m ⟨P, _, _, hm, hno⟩
+  -- If m ≥ 1, ordinaryLineCount P ≥ 1, giving a 2-element all-ordinary subset
+  by_contra hm_pos
+  push_neg at hm_pos
+  exact hno (ordinary_count_pos_gives_pair P (le_trans hm_pos hm))
 
 /-- The Sylvester-Gallai theorem: any finite non-collinear point set
     in ℝ² has at least one ordinary line. For n points with no 3
