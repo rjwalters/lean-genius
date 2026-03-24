@@ -1,13 +1,13 @@
 {
   "slug": "fourier-series-oq-02",
-  "title": "Fourier Coefficient Decay Under H\u00f6lder Continuity",
+  "title": "Fourier Coefficient Decay Under Hölder Continuity",
   "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\u2200 (C : \u211d\u22650) (\u03b1 : \u211d\u22650) (f : AddCircle T \u2192 \u2102), IsHolderOnCircle C \u03b1 f \u2192 \u2200 n \u2260 0, \u2016fourierCoeff f n\u2016 \u2264 (C/2) * (T / (2|n|))^\u03b1",
-    "plain": "Prove that the Fourier coefficients of an \u03b1-H\u00f6lder continuous function on the circle decay at rate O(1/|n|^\u03b1), and that this bound is optimal.",
+    "formal": "∀ (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T → ℂ), IsHolderOnCircle C α f → ∀ n ≠ 0, ‖fourierCoeff f n‖ ≤ (C/2) * (T / (2|n|))^α",
+    "plain": "Prove that the Fourier coefficients of an α-Hölder continuous function on the circle decay at rate O(1/|n|^α), and that this bound is optimal.",
     "whyMatters": [
       "Fundamental result in harmonic analysis connecting smoothness to frequency decay",
       "Bridges Faulhaber integer power sums to real-exponent zeta theory"
@@ -15,15 +15,15 @@
   },
   "knownResults": {
     "proven": [
-      "fourier_norm_one: \u2016fourier n x\u2016 = 1 (via toCircle)",
+      "fourier_norm_one: ‖fourier n x‖ = 1 (via toCircle)",
       "fourier_translate_halfperiod: fourier(-n)(x + T/(2n)) = -fourier(-n)(x)",
       "fourierCoeff_holder_decay: main theorem from axioms",
       "fourierCoeff_lipschitz_decay: Lipschitz special case",
-      "holder_continuous: H\u00f6lder \u27f9 continuous",
-      "lipschitz_is_holder_one: Lipschitz \u2282 H\u00f6lder(1)"
+      "holder_continuous: Hölder ⟹ continuous",
+      "lipschitz_is_holder_one: Lipschitz ⊂ Hölder(1)"
     ],
     "open": [
-      "Prove remaining 10 axioms: difference formula, H\u00f6lder translation bound, integral product bound, summability, optimality, converse, C^k/C^\u221e/analytic decay"
+      "Prove remaining 10 axioms: difference formula, Hölder translation bound, integral product bound, summability, optimality, converse, C^k/C^∞/analytic decay"
     ],
     "goal": "Reduce axiom count further by proving core analytical infrastructure"
   },
@@ -44,26 +44,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved fourierCoeff_difference_formula (critical path axiom). Axiom count: 7\u21926. 2 sorries remain (integrability edge case + quotient norm API).",
+    "progressSummary": "PROGRESS: Proved fourierCoeff_difference_formula (critical path axiom). Axiom count: 7→6. 2 sorries remain (integrability edge case + quotient norm API).",
     "builtItems": [
-      "fourier_norm_one: proved via simp [fourier_apply] \u2014 toCircle maps to unit circle",
+      "fourier_norm_one: proved via simp [fourier_apply] — toCircle maps to unit circle",
       "fourier_translate_halfperiod: proved via fourier_neg + fourier_add_half_inv_index + map_neg",
-      "Proved fourierCoeff_Cinfty_rapid_decay: C^\u221e \u27f9 rapid decay, trivially from fourierCoeff_smooth_decay (C^\u221e \u27f9 C^k for all k)",
+      "Proved fourierCoeff_Cinfty_rapid_decay: C^∞ ⟹ rapid decay, trivially from fourierCoeff_smooth_decay (C^∞ ⟹ C^k for all k)",
       "fourierCoeff_difference_formula: proved via half-period identity + Haar measure translation invariance + integral splitting"
     ],
     "insights": [
-      "fourier_apply unfolds to \u2191(n \u2022 x).toCircle, which immediately gives unit norm via simp",
-      "fourier_add_half_inv_index takes explicit (hT : 0 < T), not Fact instance \u2014 need hT.out",
+      "fourier_apply unfolds to ↑(n • x).toCircle, which immediately gives unit norm via simp",
+      "fourier_add_half_inv_index takes explicit (hT : 0 < T), not Fact instance — need hT.out",
       "fourier_neg relates fourier(-n) to starRingEnd(fourier n), enabling conjugation approach",
       "T/(2*n) vs T/2/n: ring normalizes between these equivalent forms",
-      "holder_translation_bound needs QuotientAddGroup dist API \u2014 dist(x, x+\u2191s) \u2264 |s| on AddCircle",
+      "holder_translation_bound needs QuotientAddGroup dist API — dist(x, x+↑s) ≤ |s| on AddCircle",
       "integral_product_bound needs norm_integral_le + fourier_norm_one + holder_bound + probability measure",
-      "fourierCoeff_Cinfty_rapid_decay is a trivial consequence of fourierCoeff_smooth_decay \u2014 C^\u221e means C^k for all k",
+      "fourierCoeff_Cinfty_rapid_decay is a trivial consequence of fourierCoeff_smooth_decay — C^∞ means C^k for all k",
       "MeasurePreserving.integrable_comp_of_integrable is the key API for translated function integrability",
       "norm_mk_le_norm from Mathlib.Analysis.Normed.Group.Quotient exists but may need explicit import or @-notation to resolve"
     ],
     "mathlibGaps": [
-      "No obvious dist(x, x+\u2191s) \u2264 |s| lemma found for AddCircle quotient metric"
+      "No obvious dist(x, x+↑s) ≤ |s| lemma found for AddCircle quotient metric"
     ],
     "nextSteps": [
       "Fix quotient norm sorry: find correct way to invoke norm_mk_le_norm for AddCircle coercion",
@@ -101,22 +101,22 @@
     {
       "path": "Proofs/FourierSeries.lean",
       "filename": "FourierSeries.lean",
-      "lineCount": 467,
-      "theoremCount": 13,
-      "axiomCount": 2,
+      "lineCount": 453,
+      "theoremCount": 15,
+      "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeries.lean"
     },
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 329,
-      "theoremCount": 12,
-      "axiomCount": 7,
+      "lineCount": 371,
+      "theoremCount": 13,
+      "axiomCount": 6,
       "defCount": 3,
-      "sorryCount": 0,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02.lean"
     },
