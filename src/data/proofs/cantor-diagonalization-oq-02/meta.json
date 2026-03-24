@@ -213,9 +213,21 @@
       "targetId": "cantor-diagonalization",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: The Continuum Hypothesis: Is There a Cardinality Between Cou"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: ω₁ Properties: Aleph Hierarchy, Regularity, and Cofinality"
     }
   ],
   "relatedProofs": [
-    "cantor-diagonalization"
+    "cantor-diagonalization",
+    "cantor-diagonalization-oq-01",
+    "cantor-diagonalization-oq-02-oq-01"
   ]
 }

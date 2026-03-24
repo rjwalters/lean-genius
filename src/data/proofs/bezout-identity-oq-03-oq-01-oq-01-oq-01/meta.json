@@ -53,7 +53,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Chinese Remainder Theorem was first generalized from integers to arbitrary rings by Emmy Noether's school in the early 20th century. In modern commutative algebra, the CRT is stated for ideals: if I and J are coprime (meaning I + J = R), then R/(I ∩ J) ≅ R/I × R/J. This is Proposition 1.10 in Atiyah-Macdonald. The k-fold version states R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals. The key structural insight is that coprime ideals satisfy I ∩ J = I · J, connecting the intersection (lattice operation) with the product (ring operation).",
+    "historicalContext": "The Chinese Remainder Theorem originates with Sun-tzu's *Sunzi Suanjing* (3rd–5th century CE), which posed the problem of finding a number simultaneously congruent to 2 mod 3, 3 mod 5, and 2 mod 7. The systematic algorithm was developed by Qin Jiushao in *Shushu Jiuzhang* (1247), who called it the *dayan qiushu* ('great extension seeking unity') method. In Europe, Euler used equivalent techniques in his number-theoretic work (1730s–1760s), and Gauss gave the first modern formulation in *Disquisitiones Arithmeticae* (1801, §36), framing it in terms of simultaneous congruences modulo coprime integers.\n\nThe transition from integers to ideals came through Dedekind's creation of ideal theory (1871) for algebraic number fields and Noether's axiomatization of ring theory in the 1920s. Noether's school recognized that the CRT is fundamentally about the lattice structure of ideals: $I + J = R$ (coprimality) forces $I \\cap J = I \\cdot J$, and the quotient map $R \\to R/I \\times R/J$ becomes an isomorphism modulo the intersection. This formulation appears as Proposition 1.10 in Atiyah and Macdonald's *Introduction to Commutative Algebra* (1969) and as a core result in Lang's *Algebra* (2002, Ch. II §2).\n\nThe ideal-theoretic CRT is the algebraic engine behind fundamental constructions in modern mathematics: localization of rings at prime ideals, completion of number fields at places, the structure theorem for modules over PIDs (via its connection to the CRT for $\\mathbb{Z}$), and the sheaf-theoretic description of affine schemes in algebraic geometry — where coprimality of ideals corresponds to the geometric disconnection of the corresponding closed subsets of Spec $R$.",
     "problemStatement": "**Theorem (crt_general)**: For a finite family of pairwise coprime ideals {Iᵢ} in a commutative ring R,\n  R ⧸ (⨅ i, I i) ≃+* ∀ i, R ⧸ I i\n\n**Key structural result (inf_eq_mul_of_coprime)**: For coprime ideals I + J = R,\n  I ∩ J = I · J",
     "text": "The Chinese Remainder Theorem generalized from ℤ/nℤ to arbitrary commutative rings: for pairwise coprime ideals I₁, ..., Iₖ in a commutative ring R, the quotient R/(⨅ Iᵢ) is isomorphic to the product ∏ R/Iᵢ as rings. This formalization wraps Mathlib's quotientInfRingEquivPiQuotient with explicit coprimality characterizations, proves that coprime ideals have I ∩ J = I · J, and establishes coprimality inheritance (coprime to both J and K implies coprime to J ∩ K).",
     "proofStrategy": "The formalization leverages Mathlib's existing infrastructure:\n\n1. **Coprimality**: Uses Ideal.isCoprime_iff_sup_eq to characterize coprimality as I ⊔ J = ⊤\n2. **2-fold CRT**: Wraps Ideal.quotientInfEquivQuotientProd for R/(I∩J) ≅ R/I × R/J\n3. **k-fold CRT**: Wraps Ideal.quotientInfRingEquivPiQuotient for the general case\n4. **I∩J = I·J**: Proved from elements using Bézout-style decomposition 1 = a + b\n5. **Product CRT**: Combines I∩J = I·J with 2-fold CRT for R/(I·J) ≅ R/I × R/J\n6. **Coprimality inheritance**: IsCoprime I J ∧ IsCoprime I K ⟹ IsCoprime I (J∩K) via mul_right and mul_le_inf",
@@ -65,10 +65,21 @@
       "The formalization's value lies not in the CRT itself (one Mathlib call) but in making coprimality explicit, connecting ∩ with ·, and proving closure properties needed for applications"
     ],
     "prerequisites": [
-      "Abstract algebra"
+      "Ring theory (commutative rings, ideals, quotient rings)",
+      "Lattice operations on ideals (sup, inf, product)",
+      "Ring homomorphisms and isomorphisms",
+      "Classical Chinese Remainder Theorem for integers"
     ]
   },
   "sections": [
+    {
+      "id": "header-and-setup",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring referencing Lang (2002) and Atiyah-Macdonald (1969), import of Mathlib, namespace declaration, open Ideal, and universe-polymorphic ring variable {R : Type*} [CommRing R].",
+      "mathContext": "The single `import Mathlib` provides the entire Galois theory and ideal theory infrastructure. The `CommRing R` constraint restricts to commutative rings — the CRT fails for non-commutative rings where left and right ideals diverge."
+    },
     {
       "id": "coprimality",
       "title": "Coprimality of Ideals",
@@ -120,14 +131,36 @@
       "targetId": "chinese-remainder-non-coprime-oq-02",
       "relationship": "related",
       "description": "The non-coprime CRT for Euclidean domains with the ideal bridge IsCoprime ↔ Ideal.span coprime."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "extends",
+      "description": "Root ancestor: Bézout's identity $\\gcd(a,b) = ax + by$ over $\\mathbb{Z}$. The coprimality condition $I + J = R$ in the ideal CRT is the direct generalization of $\\gcd(m,n) = 1 \\Leftrightarrow \\exists a,b: am + bn = 1$."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Constructive CRT providing an explicit solution algorithm for simultaneous congruences, complementing the abstract isomorphism established here."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m,n$ is a direct corollary of the integer CRT $(\\mathbb{Z}/mn\\mathbb{Z})^\\times \\cong (\\mathbb{Z}/m\\mathbb{Z})^\\times \\times (\\mathbb{Z}/n\\mathbb{Z})^\\times$, which is a special case of the ideal-theoretic CRT proved here."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The CRT underlies the proof of quadratic reciprocity via Gauss sums: decomposing $\\mathbb{Z}/p\\mathbb{Z}$-computations through the CRT isomorphism is a standard technique in algebraic number theory."
     }
   ],
   "conclusion": {
     "summary": "This formalization proves the ideal-theoretic CRT with 12 theorems, 0 axioms, 0 sorries. The k-fold CRT R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ is the abstract algebra crown of the Bézout identity chain, generalizing from ℤ/nℤ to arbitrary commutative rings.",
     "implications": "**For algebra**: The ideal-theoretic CRT provides the foundation for localization, completion, and sheaf theory on Spec R.\n\n**For number theory**: Specializes to ℤ/nℤ for the classical CRT, and to number fields for applications in algebraic number theory.\n\n**For the gallery**: Answers the open question from the parent file about generalizing to ideals.",
     "openQuestions": [
-      "Prove I ∩ J = I · J using Mathlib's lattice theory (without element-level decomposition)",
-      "Connect to Spec R: the CRT reflects the disconnection of Spec(R/I) ⊔ Spec(R/J) when I + J = R"
+      "Prove I ∩ J = I · J using Mathlib's lattice theory (without element-level decomposition) — Mathlib may already have this as a direct lemma for coprime ideals in Dedekind domains",
+      "Connect to Spec R: the CRT reflects the disconnection of Spec(R/I) ⊔ Spec(R/J) when I + J = R, since V(I) ∩ V(J) = V(I + J) = ∅ when I + J = R",
+      "Formalize the CRT for non-commutative rings: when does a two-sided ideal version hold? The Artin-Wedderburn theorem (a semisimple ring is a product of matrix rings) can be seen as a non-commutative CRT",
+      "Prove the multiplicativity of Euler's totient $\\varphi(mn) = \\varphi(m)\\varphi(n)$ as a corollary of the ideal CRT applied to $\\mathbb{Z}/(mn)\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$"
     ]
   },
   "relatedProofs": [
@@ -135,7 +168,10 @@
     "bezout-identity-oq-03",
     "bezout-identity-oq-03-oq-01",
     "bezout-identity-oq-03-oq-01-oq-01",
-    "chinese-remainder-non-coprime-oq-02"
+    "chinese-remainder-non-coprime-oq-02",
+    "chinese-remainder-constructive",
+    "euler-totient",
+    "quadratic-reciprocity"
   ],
   "leanFile": {
     "imports": [

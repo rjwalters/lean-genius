@@ -69,8 +69,10 @@
       "**Three levels of abstraction**: The formalization progresses from concrete (finite sums over NNReal) through intermediate (signed reals, abstract inner product spaces) to abstract (Lebesgue integrals on measure spaces), demonstrating how the same algebraic idea — Young's pointwise bound summed over a domain — scales across mathematical frameworks"
     ],
     "prerequisites": [
-      "Mathematical analysis",
-      "Inequalities and optimization"
+      "Real analysis (sequences, sums, integrals)",
+      "Inner product spaces and norms",
+      "Young's inequality ($ab \\leq a^p/p + b^q/q$)",
+      "Measure theory and Lebesgue integration (for the integral form)"
     ]
   },
   "sections": [
@@ -177,10 +179,40 @@
     {
       "targetId": "cauchy-schwarz",
       "relationship": "extends",
-      "description": "Parent formalization; this entry extends it with further exploration"
+      "description": "Parent formalization proving Cauchy-Schwarz as an inner product space result. This entry generalizes it by showing CS is the $p=q=2$ special case of Hölder's inequality."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling entry exploring other generalizations/applications of Cauchy-Schwarz; both extend the parent from different angles."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The integral form of Cauchy-Schwarz. This entry's holder_lintegral provides the Hölder generalization of the integral CS inequality."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM and Hölder are both proved via convexity arguments. Young's inequality $ab \\leq a^p/p + b^q/q$ (the engine behind Hölder) is itself a weighted AM-GM: the point $(a^p, b^q)$ lies above the secant line of the concave function $t \\mapsto t^{1/p}$ (resp. $t^{1/q}$)."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Hölder's inequality implies Minkowski's inequality (the triangle inequality for $L^p$ spaces): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$. The proof applies Hölder to $|f+g|^{p-1}$ paired with $f$ and $g$ separately."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry further exploring consequences or refinements of the Hölder generalization established here."
     }
   ],
   "relatedProofs": [
-    "cauchy-schwarz"
+    "cauchy-schwarz",
+    "cauchy-schwarz-oq-04",
+    "cauchy-schwarz-integral",
+    "amgm-inequality",
+    "triangle-inequality",
+    "cauchy-schwarz-oq-03-oq-01"
   ]
 }

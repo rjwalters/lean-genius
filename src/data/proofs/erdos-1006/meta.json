@@ -40,8 +40,10 @@
       "The probabilistic method shows counterexamples exist for ALL girths"
     ],
     "prerequisites": [
-      "Combinatorics and number theory",
-      "Graph theory (vertices, edges, colorings)"
+      "Graph theory (simple graphs, cycles, girth, chromatic number)",
+      "Graph orientations and directed graphs",
+      "Probabilistic method in combinatorics",
+      "Erdős's theorem on high-girth high-chromatic graphs (1959)"
     ]
   },
   "sections": [
@@ -90,25 +92,51 @@
     "summary": "Erdős Problem #1006 is resolved NEGATIVELY. The conjecture that graphs with girth > 4 admit robustly acyclic orientations is false. Nešetřil and Rödl (1978) proved counterexamples exist for all girths g ≥ 3.",
     "implications": "This result shows that sparsity (high girth) alone cannot guarantee robust orientability. The chromatic number plays a crucial role: graphs with high girth AND high chromatic number necessarily fail to have robust orientations.",
     "openQuestions": [
-      "Characterize which graphs admit robustly acyclic orientations",
-      "What is the minimum chromatic number of a graph with girth g that fails robust orientability?"
+      "Characterize which graphs admit robustly acyclic orientations — is there a forbidden-subgraph or structural characterization?",
+      "What is the minimum chromatic number $\\chi(g)$ such that every graph with girth $g$ and $\\chi(G) \\geq \\chi(g)$ fails robust orientability? The Nešetřil-Rödl proof gives existence but not sharp bounds.",
+      "Can the Grötzsch graph counterexample (girth 4) be formalized constructively in Lean, replacing the grotzsch_counterexample axiom with an explicit verification?",
+      "Is robust acyclicity decidable in polynomial time? Given a graph $G$, can we efficiently determine whether $G$ admits a robustly acyclic orientation, or is this NP-hard?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "four-color-theorem",
       "relationship": "related",
-      "description": "Both concern structural properties of graph orientations and colorings. The four-color theorem constrains planar graph colorings; Erdős #1006 asks about acyclic orientations robust to edge reversal, connecting graph orientation theory to chromatic properties"
+      "description": "Both concern structural properties of graph colorings. The four-color theorem constrains planar graph colorings; Erdős #1006 reveals that chromatic number — not girth — governs robust orientability."
     },
     {
       "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey theory and this problem share the theme of unavoidable structures: Ramsey shows large enough graphs must contain monochromatic substructures; the Nešetřil-Rödl disproof uses Ramsey-type constructions to show high-girth graphs cannot always admit robustly acyclic orientations"
+      "description": "Ramsey theory and this problem share the theme of unavoidable structures: Ramsey shows large enough graphs must contain monochromatic substructures; the Nešetřil-Rödl disproof uses similar combinatorial constructions."
+    },
+    {
+      "targetId": "erdos-1006-oq-02",
+      "relationship": "extended-by",
+      "description": "Sub-entry investigating the minimum chromatic number $\\chi$ such that a graph with girth $g$ and $\\chi(G) \\geq \\chi$ necessarily fails robust orientability — the quantitative refinement of the Nešetřil-Rödl disproof."
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Both concern extremal graph theory with forbidden substructures: #1006 forbids short cycles (high girth) and asks about orientations; #1008 forbids $C_4$ and asks about maximum edges. The Erdős girth-chromatic-number theorem (1959) connects both via random constructions."
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Both connect chromatic number to structural graph properties: #1006 shows high chromatic number obstructs robust orientability; #1011 studies triangles forced by high chromatic number, exploring the same chromatic-extremal theme."
+    },
+    {
+      "targetId": "randomized-maxcut",
+      "relationship": "related",
+      "description": "Both use probabilistic arguments in graph theory: the Nešetřil-Rödl disproof relies on the probabilistic method (random graphs with high girth and high chromatic number), while randomized MaxCut uses randomized rounding — different probabilistic tools for graph optimization."
     }
   ],
   "relatedProofs": [
     "four-color-theorem",
-    "ramseys-theorem"
+    "ramseys-theorem",
+    "erdos-1006-oq-02",
+    "erdos-1008",
+    "erdos-1011",
+    "randomized-maxcut"
   ],
   "references": [
     {

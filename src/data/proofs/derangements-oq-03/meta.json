@@ -204,9 +204,21 @@
       "targetId": "derangements",
       "relationship": "extends",
       "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "derangements-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Partial Derangements: Permutations with Exactly k Fixed Poin"
+    },
+    {
+      "targetId": "derangements-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Partial Derangements for Arbitrary Finite Types"
     }
   ],
   "relatedProofs": [
-    "derangements"
+    "derangements",
+    "derangements-oq-02",
+    "derangements-oq-02-oq-01"
   ]
 }
