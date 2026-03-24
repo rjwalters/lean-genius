@@ -78,7 +78,7 @@
     ],
     "axiomCount": 10,
     "lineCount": 293,
-    "assumptions": "10 axioms encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axioms: (1) hopf_pannwitz — largest distance multiplicity ≤ n, (2) bhowmick_construction — existence of point set with rich distances, (3) bhowmick_main — ⌊n/4⌋ rich distances for large n, (4) bhowmick_general — ⌊n/(2(m+1))⌋ distances with multiplicity ≥ n+m, (5) clemen_dumitrescu_liu — superpolynomial grid richness, (6-10) supporting axioms for distance counting, grid construction, and asymptotic bounds. 1 sorry in construction details."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #756: Rich Distances in the Plane**\n\nThis problem, asked by Erdős and Pach, concerns distance multiplicities in finite point sets in the plane.\n\n**Historical Timeline:**\n- **1934:** Hopf and Pannwitz proved the largest distance among n points occurs at most n times (this is tight for regular polygons)\n- **Erdős-Pach:** Asked whether ALL other distances can have multiplicity > n (the \"strong\" form)\n- **2024:** Bhowmick answered affirmatively with an explicit construction achieving ⌊n/4⌋ rich distances\n- **2025:** Clemen, Dumitrescu, and Liu studied the square grid, finding superpolynomial richness\n\n**The Surprise:**\nDespite the classical Hopf-Pannwitz constraint on the largest distance, Bhowmick showed that MANY distances can be \"rich\" (occurring more than n times). The phenomenon is even stronger on structured sets like square grids.",
@@ -106,7 +106,7 @@
       "summary": "Point, distSq, dist, PointSet definitions",
       "startLine": 40,
       "endLine": 57,
-      "mathContext": "Point, distSq, dist, PointSet definitions"
+      "mathContext": "$\\text{Point} = \\mathbb{R}^2$ (via `EuclideanSpace ℝ (Fin 2)`), $d(p,q) = \\|p - q\\|$, $d^2(p,q) = \\|p - q\\|^2$. `PointSet = Finset Point` for finite subsets of $\\mathbb{R}^2$."
     },
     {
       "id": "distance-counting",
@@ -114,7 +114,7 @@
       "summary": "allDistances, numDistinctDistances, distanceMultiplicity, IsRichDistance, numRichDistances",
       "startLine": 58,
       "endLine": 81,
-      "mathContext": "allDistances, numDistinctDistances, distanceMultiplicity, IsRichDistance, numRichDistances"
+      "mathContext": "For $A \\subseteq \\mathbb{R}^2$ with $|A| = n$: $\\Delta(A) = \\{d(p,q) : p,q \\in A, p \\neq q\\}$ is the distance set, $\\text{mult}(A, d) = |\\{(p,q) \\in A^2 : d(p,q) = d\\}|$, and $d$ is **rich** iff $\\text{mult}(A,d) > n$."
     },
     {
       "id": "erdos-pach",
@@ -122,7 +122,7 @@
       "summary": "ErdosPachQuestion, StrongErdosPachQuestion definitions",
       "startLine": 82,
       "endLine": 97,
-      "mathContext": "ErdosPachQuestion, StrongErdosPachQuestion definitions"
+      "mathContext": "Weak form: $\\exists A \\subseteq \\mathbb{R}^2,\\, |A|=n$ with $\\gg n$ rich distances. Strong form (Erdős-Pach): can ALL distances except the largest be rich simultaneously?"
     },
     {
       "id": "hopf-pannwitz",
@@ -130,7 +130,7 @@
       "summary": "maxDistance, hopf_pannwitz axiom, max_distance_not_rich theorem",
       "startLine": 98,
       "endLine": 116,
-      "mathContext": "maxDistance, hopf_pannwitz axiom, max_distance_not_rich theorem"
+      "mathContext": "Hopf-Pannwitz (1934): $\\text{mult}(A, \\max \\Delta(A)) \\leq n$. Consequence: $\\max \\Delta(A)$ is never rich, i.e., the largest distance is always excluded. This is tight for regular $n$-gons."
     },
     {
       "id": "bhowmick",
@@ -138,7 +138,7 @@
       "summary": "bhowmick_construction, bhowmick_main, bhowmick_general axioms",
       "startLine": 117,
       "endLine": 137,
-      "mathContext": "bhowmick_construction, bhowmick_main, bhowmick_general axioms"
+      "mathContext": "Bhowmick (2024): $\\exists A \\subseteq \\mathbb{R}^2,\\, |A| = n$ with $\\lfloor n/4 \\rfloor$ rich distances. General: for any $m$, $\\lfloor n/(2(m+1)) \\rfloor$ distances with multiplicity $\\geq n + m$."
     },
     {
       "id": "answer",
@@ -146,7 +146,7 @@
       "summary": "erdos_756_answer theorem, rich_distances_exist",
       "startLine": 138,
       "endLine": 156,
-      "mathContext": "erdos_756_answer theorem, rich_distances_exist"
+      "mathContext": "Main theorem: `ErdosPachQuestion` holds — for sufficiently large $n$, there exist $n$ points in $\\mathbb{R}^2$ with $\\lfloor n/4 \\rfloor > 0$ rich distances, answering YES to Erdős Problem #756."
     },
     {
       "id": "grid-results",
@@ -154,7 +154,7 @@
       "summary": "squareGrid, clemen_dumitrescu_liu, grid_super_linear_multiplicity",
       "startLine": 157,
       "endLine": 178,
-      "mathContext": "squareGrid, clemen_dumitrescu_liu, grid_super_linear_multiplicity"
+      "mathContext": "Clemen-Dumitrescu-Liu (2025): on the $\\sqrt{n} \\times \\sqrt{n}$ integer grid, $n^{c/\\log\\log n}$ distances have multiplicity $\\geq n^{1+c/\\log\\log n}$ — superpolynomial richness from lattice point theory."
     },
     {
       "id": "related",
@@ -162,7 +162,7 @@
       "summary": "UnitDistanceProblem, SecondDistanceQuestion",
       "startLine": 179,
       "endLine": 198,
-      "mathContext": "UnitDistanceProblem, SecondDistanceQuestion"
+      "mathContext": "Unit distance problem (Erdős): $\\max u(n) = ?$ where $u(n)$ = max unit distance pairs among $n$ points. Second distance question: can the second-largest distance always be rich?"
     },
     {
       "id": "asymptotics",
@@ -170,7 +170,7 @@
       "summary": "richDistanceRatio, bhowmick_ratio, SupremumRatioQuestion",
       "startLine": 199,
       "endLine": 224,
-      "mathContext": "richDistanceRatio, bhowmick_ratio, SupremumRatioQuestion"
+      "mathContext": "Rich distance ratio $\\rho(A) = |\\{d \\in \\Delta(A) : \\text{mult}(A,d) > n\\}|/n$. Bhowmick achieves $\\rho \\geq 1/4$. Open: $\\sup_A \\rho(A) = ?$ Is it $1 - o(1)$?"
     },
     {
       "id": "constructions",
@@ -178,7 +178,7 @@
       "summary": "regularPolygon, latticeInDisk, RandomPointSetModel",
       "startLine": 225,
       "endLine": 239,
-      "mathContext": "regularPolygon, latticeInDisk, RandomPointSetModel"
+      "mathContext": "Candidate constructions: regular $n$-gon (only $\\lfloor n/2 \\rfloor$ distinct distances), lattice points in a disk $\\{(a,b) \\in \\mathbb{Z}^2 : a^2+b^2 \\leq R^2\\}$, and random point sets."
     },
     {
       "id": "upper-bounds",
@@ -186,7 +186,7 @@
       "summary": "multiplicity_trivial_upper, rich_distances_trivial_upper",
       "startLine": 240,
       "endLine": 257,
-      "mathContext": "multiplicity_trivial_upper, rich_distances_trivial_upper"
+      "mathContext": "Trivial bounds: $\\text{mult}(A,d) \\leq n^2$ (all pairs), $|\\text{rich distances}| \\leq |\\Delta(A)| \\leq \\binom{n}{2}$. Non-trivial: Szemerédi-Trotter gives $\\text{mult}(A,d) = O(n^{4/3})$."
     },
     {
       "id": "summary",
@@ -194,7 +194,7 @@
       "summary": "erdos_756, erdos_756_main theorems",
       "startLine": 258,
       "endLine": 293,
-      "mathContext": "erdos_756, erdos_756_main theorems"
+      "mathContext": "Final summary: Erdős #756 is SOLVED. Bhowmick's construction gives $\\lfloor n/4 \\rfloor$ rich distances (a constant fraction of $n$), with the Hopf-Pannwitz constraint being the only obstruction to ALL distances being rich."
     }
   ],
   "conclusion": {
