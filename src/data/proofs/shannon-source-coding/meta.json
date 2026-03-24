@@ -63,7 +63,8 @@
       "Typical sequences have probability approximately 2^(-nH) each, and there are approximately 2^(nH) of them -- a tiny fraction of all |X|^n possible sequences",
       "The achievability proof is constructive: encode typical sequences with fixed-length codes and flag atypical ones",
       "The converse uses a counting argument: too few codewords cannot cover enough probability mass",
-      "Block coding (encoding sequences rather than individual symbols) is essential: per-symbol optimal codes exist (Huffman) but block coding achieves the limit"
+      "Block coding (encoding sequences rather than individual symbols) is essential: per-symbol optimal codes exist (Huffman) but block coding achieves the limit",
+      "The formalization is currently placeholder stubs (all theorems prove True) — a genuine proof would require Mathlib's probability measure framework, i.i.d. product measures, and the weak law of large numbers applied to log-probability"
     ],
     "prerequisites": [
       "Shannon entropy as information content",
@@ -119,7 +120,7 @@
     {
       "targetId": "shannon-entropy",
       "relationship": "depends-on",
-      "description": "The source coding theorem characterizes entropy H(X) operationally as the compression limit"
+      "description": "The source coding theorem characterizes entropy H(X) operationally as the compression limit — giving entropy its concrete meaning as 'minimum bits per symbol'"
     },
     {
       "targetId": "shannon-channel-coding",
@@ -130,6 +131,16 @@
       "targetId": "shannon-source-coding-oq-02",
       "relationship": "extended-by",
       "description": "Extends the source coding theorem to explore connections with Kolmogorov complexity and algorithmic information theory"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both use probabilistic counting arguments: the birthday problem counts collisions in random mappings, while source coding counts typical sequences — in both cases, the exponential growth of combinatorial possibilities is the core phenomenon"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "The AEP (information-theoretic law of large numbers) that underlies source coding is closely related to the CLT: both describe concentration of averages of i.i.d. random variables, but the AEP concerns log-probability while the CLT concerns sums"
     }
   ],
   "conclusion": {
@@ -144,7 +155,9 @@
   "relatedProofs": [
     "shannon-entropy",
     "shannon-channel-coding",
-    "shannon-source-coding-oq-02"
+    "shannon-source-coding-oq-02",
+    "birthday-problem",
+    "central-limit-theorem"
   ],
   "leanFile": {
     "imports": [
