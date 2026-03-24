@@ -68,7 +68,7 @@
       "id": "definitions",
       "title": "Schur Property and Schur Number",
       "startLine": 28,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Defines SchurProp, proves existence and monotonicity, defines schurNumber via Nat.find with specification and minimality theorems.",
       "mathContext": "$S(k) = \\min\\{N : \\forall c : \\{1,\\ldots,N\\} \\to [k], \\; \\exists x,y,z \\text{ monochromatic with } x+y=z\\}$"
     },
@@ -76,7 +76,7 @@
       "id": "s1-proof",
       "title": "S(1) = 2 (Fully Proved)",
       "startLine": 78,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Proves S(1) = 2: upper bound from SchursTheorem (1+1=2 in any 1-coloring), lower bound by showing {1} has no Schur triple.",
       "mathContext": "$S(1) = 2$: with one color, $\\{1,2\\}$ forces $1+1=2$; $\\{1\\}$ alone has no valid triple"
     },
@@ -84,7 +84,7 @@
       "id": "s2-proof",
       "title": "S(2) = 5 (Fully Proved)",
       "startLine": 107,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Proves S(2) = 5: upper bound from schur_2_upper (case analysis on 2-colorings of {1,...,5}), lower bound from sum-free partition {1,4},{2,3} of {1,...,4}.",
       "mathContext": "$S(2) = 5$: partition $\\{1,4\\},\\{2,3\\}$ of $\\{1,2,3,4\\}$ is sum-free; every 2-coloring of $\\{1,\\ldots,5\\}$ forces a triple"
     },
@@ -92,7 +92,7 @@
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 133,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "Proves positivity (S(k) ≥ 1 for k ≥ 1) and monotonicity (k₁ ≤ k₂ ⟹ S(k₁) ≤ S(k₂)) via color embedding argument.",
       "mathContext": "$S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$: embed $k_1$ colors into $k_2$ colors via $\\text{Fin}\\, k_1 \\hookrightarrow \\text{Fin}\\, k_2$"
     },
@@ -100,7 +100,7 @@
       "id": "known-values",
       "title": "Known Values (Axiomatized)",
       "startLine": 169,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "Axiomatizes S(3)=14, S(4)=45, S(5)=161 (Heule 2017). Exhaustive Lean verification would be prohibitively expensive.",
       "mathContext": "$S(3)=14, S(4)=45, S(5)=161$. Ratios $\\approx 2.8, 3.2, 3.6$ suggest growth around $3^k$"
     },

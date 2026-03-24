@@ -80,7 +80,8 @@
     "dateAdded": "2026-03-23",
     "axiomCount": 0,
     "lineCount": 79,
-    "leanFile": "proofs/Proofs/MachinFromAddition.lean"
+    "leanFile": "proofs/Proofs/MachinFromAddition.lean",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1706, John Machin, professor of astronomy at Gresham College, London, discovered that $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$. He used this to compute 100 digits of $\\pi$, a record at the time. The formula's power lies in replacing the arctan series at $x=1$ (the Leibniz series, converging at rate $O(1/N)$) with evaluations at $x = 1/5$ and $x = 1/239$, where convergence is exponential.\n\nWilliam Shanks used Machin's formula in 1873 to compute 707 digits (later found to have an error after digit 527). Machin-like formulas dominated $\\pi$ computation for over 250 years until the Borwein and Chudnovsky algorithms introduced fundamentally faster approaches.\n\nThis formalization derives Machin's formula from scratch, applying the arctan addition formula three times. The derivation reveals the beautiful algebraic coincidence: $4\\arctan(1/5) = \\arctan(120/119)$, and $120/119$ is close enough to 1 that subtracting $\\arctan(1/239)$ yields exactly $\\arctan(1)$. The numerics work out because $169^2 = 28561$ appears in both numerator and denominator of the final fraction.",
@@ -101,7 +102,7 @@
       "id": "preamble",
       "title": "Imports, Module Documentation, and Namespace",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Imports Mathlib's arctan API (`Arctan`, `ArctanDeriv`) and general tactics. The module docstring outlines the three-step strategy for deriving Machin's formula from the addition formula alone, without using Mathlib's pre-packaged identity. Opens the `Real` namespace for direct access to `arctan`, `arctan_add`, `arctan_neg`, and `arctan_one`.",
       "mathContext": "Dependencies: $\\arctan(x) + \\arctan(y) = \\arctan\\!\\left(\\frac{x+y}{1-xy}\\right)$ for $xy < 1$, $\\arctan(-x) = -\\arctan(x)$, and $\\arctan(1) = \\pi/4$."
     },
@@ -109,7 +110,7 @@
       "id": "step1",
       "title": "Step 1: Doubling arctan(1/5)",
       "startLine": 40,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Proves $\\arctan(1/5) + \\arctan(1/5) = \\arctan(5/12)$ via the addition formula with $xy = 1/25 < 1$. The rational arithmetic $(2/5)/(24/25) = 5/12$ is verified by `norm_num`.",
       "mathContext": "$\\arctan\\frac{1}{5} + \\arctan\\frac{1}{5} = \\arctan\\frac{5}{12}$ via $\\frac{2/5}{1 - 1/25} = \\frac{2/5}{24/25} = \\frac{5}{12}$."
     },
@@ -117,7 +118,7 @@
       "id": "step2",
       "title": "Step 2: Doubling to arctan(120/119)",
       "startLine": 51,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Proves $4 \\cdot \\arctan(1/5) = \\arctan(120/119)$ by expressing $4 \\cdot \\arctan(1/5) = 2 \\cdot \\arctan(5/12)$ and applying the addition formula again with $xy = 25/144 < 1$.",
       "mathContext": "$4\\arctan\\frac{1}{5} = 2\\arctan\\frac{5}{12} = \\arctan\\frac{120}{119}$ via $\\frac{10/12}{119/144} = \\frac{120}{119}$."
     },
@@ -125,7 +126,7 @@
       "id": "step3",
       "title": "Step 3: Subtracting arctan(1/239)",
       "startLine": 67,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Proves $\\arctan(120/119) - \\arctan(1/239) = \\arctan(1)$ by rewriting the subtraction as addition of $\\arctan(-1/239)$ and applying arctan_add. The key computation: $(28561/28441)/(28561/28441) = 1$.",
       "mathContext": "$\\frac{120/119 - 1/239}{1 + 120/(119 \\cdot 239)} = \\frac{28561/28441}{28561/28441} = 1$ where $28561 = 169^2$."
     },
@@ -154,7 +155,9 @@
       "Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv",
       "Mathlib.Tactic"
     ],
-    "opens": ["Real"],
+    "opens": [
+      "Real"
+    ],
     "namespace": "MachinFromAddition",
     "lineCount": 79,
     "axiomCount": 0,

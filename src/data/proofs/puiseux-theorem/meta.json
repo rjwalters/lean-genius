@@ -52,7 +52,8 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 3,
     "lineCount": 469,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Newton discovered the algorithm for computing fractional power series roots of polynomials in 1676. Puiseux gave the first rigorous proof in 1850 that these series provide the algebraic closure of the Laurent series field, establishing that allowing fractional exponents suffices to solve all polynomial equations over formal power series (in characteristic 0). The study of algebraic curves via local parametrization goes back to Newton who introduced the Newton polygon method to compute the branches of an algebraic curve at a singular point. The formal algebraic closure result was refined in the 20th century by Hironaka and others in connection with resolution of singularities, and the characteristic-0 hypothesis is essential: in characteristic p, the Artin-Schreier phenomenon means p-th power extensions cannot be captured by Puiseux series.",
@@ -83,7 +84,7 @@
       "id": "algebraic-closure",
       "title": "Algebraic Closure Theorem",
       "startLine": 160,
-      "endLine": 203,
+      "endLine": 204,
       "summary": "Main theorem axiomatized: K{{x}} is algebraically closed when K is algebraically closed of characteristic 0."
     },
     {
@@ -111,14 +112,14 @@
       "id": "calculations",
       "title": "Concrete Calculations",
       "startLine": 352,
-      "endLine": 397,
+      "endLine": 398,
       "summary": "Worked examples: Y² = x (square root), Y² = x³ (cusp), Y³ = x (cube root) with Newton polygon analysis."
     },
     {
       "id": "connections",
       "title": "Connections: Hensel's Lemma and Characteristic Zero",
       "startLine": 399,
-      "endLine": 444,
+      "endLine": 469,
       "summary": "p-adic analogy via Hensel's lemma; failure in characteristic p demonstrated by Artin-Schreier counterexample."
     }
   ],

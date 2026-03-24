@@ -73,7 +73,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 315,
-    "assumptions": "0 axioms, 0 sorries. Core ring isomorphism derived from Mathlib's ZMod.chineseRemainder."
+    "assumptions": "0 axioms, 0 sorries. Core ring isomorphism derived from Mathlib's ZMod.chineseRemainder.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Chinese Remainder Theorem as Ring Isomorphism**\n\nThe Chinese Remainder Theorem (CRT) dates to Sun Zi's Suanjing (~3rd century). In its modern algebraic form, for coprime ideals $I, J$ of a ring $R$, the natural map $R/(I \\cap J) \\to R/I \\times R/J$ is a ring isomorphism. For $R = \\mathbb{Z}$, $I = m\\mathbb{Z}$, $J = n\\mathbb{Z}$ with $\\gcd(m,n) = 1$: $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.\n\nThis formalization wraps Mathlib's `ZMod.chineseRemainder` and extends it with applications: orthogonal idempotent decomposition, explicit Bézout solutions, and unit group characterization.",
@@ -98,49 +99,49 @@
       "title": "The CRT Ring Isomorphism",
       "summary": "Wraps ZMod.chineseRemainder as crtRingIso and proves ring homomorphism properties: additivity, multiplicativity, unit preservation, bijectivity.",
       "startLine": 34,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "inverse-map",
       "title": "The Inverse Map and Round-Trips",
       "summary": "Defines crtInverse via .symm and proves both round-trip identities: forward-then-inverse and inverse-then-forward.",
       "startLine": 86,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "coprimality",
       "title": "CRT and Coprimality",
       "summary": "Coprimality is symmetric, and the isomorphism works with swapped factors ℤ/(nm)ℤ ≅ ℤ/nℤ × ℤ/mℤ.",
       "startLine": 114,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "idempotents",
       "title": "Orthogonal Idempotent Decomposition",
       "summary": "Constructs idempotents e₁ = φ⁻¹(1,0) and e₂ = φ⁻¹(0,1) satisfying e₁+e₂=1, e₁e₂=0, eᵢ²=eᵢ.",
       "startLine": 128,
-      "endLine": 181
+      "endLine": 182
     },
     {
       "id": "bezout-connection",
       "title": "Connecting to Bézout's Identity",
       "summary": "Shows the explicit CRT solution formula x = a·nv + b·mu from Bézout coefficients mu + nv = 1.",
       "startLine": 183,
-      "endLine": 214
+      "endLine": 215
     },
     {
       "id": "cardinality",
       "title": "Cardinality and Counting",
       "summary": "Card(ℤ/mnℤ) = Card(ℤ/mℤ) × Card(ℤ/nℤ) and Euler totient multiplicativity φ(mn) = φ(m)φ(n).",
       "startLine": 216,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "applications",
       "title": "Applications: Simultaneous Congruences",
       "summary": "Existence and uniqueness of simultaneous solutions, power preservation, and unit characterization.",
       "startLine": 235,
-      "endLine": 279
+      "endLine": 315
     }
   ],
   "conclusion": {

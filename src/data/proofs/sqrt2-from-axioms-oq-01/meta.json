@@ -42,7 +42,8 @@
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "lineCount": 365,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The irrationality of $\\sqrt{2}$ was first proved by the ancient Greeks, traditionally attributed to Hippasus of Metapontum (~500 BCE). According to legend, Hippasus was drowned at sea by fellow Pythagoreans for revealing that $\\sqrt{2}$ is incommensurable with 1, shattering their belief that all quantities are ratios of whole numbers.\n\nThe proof by contradiction—assuming $\\sqrt{2} = a/b$ in lowest terms and deriving that both $a$ and $b$ must be even—is one of the most celebrated arguments in mathematics. Theodorus of Cyrene (~465–398 BCE) extended the result to $\\sqrt{3}, \\sqrt{5}, \\ldots, \\sqrt{17}$ (as reported in Plato's *Theaetetus*), though his methods are debated. His student Theaetetus provided a general classification: $\\sqrt{n}$ is irrational whenever $n$ is not a perfect square.\n\nThe key insight enabling the generalization is Euclid's lemma (Elements VII.30, ~300 BCE): if a prime divides a product, it divides one of the factors. This property was used implicitly in the $\\sqrt{2}$ proof (the \"even/odd\" trick) but Euclid recognized it as a general property of primes. In modern algebra, this multiplicative property is taken as the *definition* of a prime element in a ring, distinguishing it from the weaker notion of irreducibility.\n\nThis formalization makes the connection explicit by defining primality via Euclid's criterion rather than the divisor property, revealing why the $\\sqrt{2}$ proof generalizes immediately to all primes.",
@@ -65,28 +66,28 @@
       "id": "divisibility",
       "title": "Divisibility (Built from Scratch)",
       "startLine": 48,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Defines `Divides p n` as $\\exists k, n = p \\cdot k$ with basic lemmas: every number divides 0 and itself, divisibility through multiplication, and small numbers less than $p$ are not divisible by $p$"
     },
     {
       "id": "primality",
       "title": "Primality via Euclid's Criterion",
       "startLine": 84,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Defines `EuclidPrime p` as $p > 1$ and $p \\mid ab \\Rightarrow p \\mid a \\lor p \\mid b$. This is the exact property needed for irrationality proofs, equivalent to classical primality via Bezout's identity"
     },
     {
       "id": "small-primes",
       "title": "Verifying Small Primes",
       "startLine": 98,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "Proves 2, 3, and 5 satisfy Euclid's criterion using modular arithmetic (`Nat.mul_mod`). For prime $p$, the verification reduces to checking that $\\mathbb{Z}/p\\mathbb{Z}$ has no zero divisors"
     },
     {
       "id": "bridge",
       "title": "Bridge to Mathlib",
       "startLine": 154,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Proves every `Nat.Prime` is an `EuclidPrime`, connecting our from-axioms development to Mathlib's library for users who need the classical definition"
     },
     {
@@ -107,7 +108,7 @@
       "id": "main-theorem",
       "title": "Main Theorem: √p is Irrational",
       "startLine": 197,
-      "endLine": 260,
+      "endLine": 261,
       "summary": "Proves that for any Euclid prime $p$, if $a^2 = p \\cdot b^2$ with $b > 0$, then $p$ divides both $a$ and $b$. Includes helper lemmas for the arithmetic cancellation step ($p^2k^2 = pb^2 \\Rightarrow pk^2 = b^2$)"
     },
     {
@@ -128,7 +129,7 @@
       "id": "educational-notes",
       "title": "Educational Notes and Extensions",
       "startLine": 304,
-      "endLine": 363,
+      "endLine": 365,
       "summary": "Documents the correspondence between the √2 and √p proofs, explains the relationship between Euclid's criterion and the classical prime definition via Bézout's identity, and discusses limitations for non-prime radicands like √6"
     }
   ],

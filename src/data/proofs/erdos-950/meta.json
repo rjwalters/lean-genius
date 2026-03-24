@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 9,
     "lineCount": 241,
-    "assumptions": "9 axiom(s): 4 open conjectures (Q1-Q3 + strong Q3), 2 de Bruijn-Erdős-Turán results, 1 conditional bound (weaker conjecture), 1 dense interval implication, 1 open on f at primes. 0 sorries."
+    "assumptions": "9 axiom(s): 4 open conjectures (Q1-Q3 + strong Q3), 2 de Bruijn-Erdős-Turán results, 1 conditional bound (weaker conjecture), 1 dense interval implication, 1 open on f at primes. 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem concerns the function f(n) = ∑_{p<n} 1/(n−p), which measures how close n is to primes by weighting nearby primes more heavily. De Bruijn, Erdős, and Turán showed that ∑_{n<x} f(n) ~ x and ∑_{n<x} f(n)² ~ x, meaning f(n) averages to 1 and concentrates near 1. The three questions probe the extremal behavior. Functions measuring proximity of integers to primes connect to the Hardy-Ramanujan theorem on additive arithmetic functions and Cramér model of primes; the harmonic weighting 1/(n-p) echoes the classical harmonic series and Mertens theorem on ∑ 1/p. Understanding when f(n) is large or unusually small yields information about local prime gaps and prime distribution.",
@@ -49,28 +50,28 @@
       "id": "function-definition",
       "title": "Part 1: The Function f(n)",
       "startLine": 38,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "primesLessThan, f(n) = ∑_{p<n} 1/(n−p), and real-valued variant fReal."
     },
     {
       "id": "three-questions",
       "title": "Part 2: The Three Questions",
       "startLine": 69,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "question1 (lim inf = 1), question2 (lim sup = ∞), question3 (o(log log n)), fLittleO. All OPEN."
     },
     {
       "id": "known-results",
       "title": "Part 3: Known Results (de Bruijn–Erdős–Turán)",
       "startLine": 121,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "∑ f(n) ~ x and ∑ f(n)² ~ x as axioms. f_average_one proved from axiom."
     },
     {
       "id": "basic-properties",
       "title": "Part 4: Basic Properties",
       "startLine": 154,
-      "endLine": 185,
+      "endLine": 186,
       "summary": "f_nonneg proved, f_two proved by simp, f_three and f_four as axioms, prime_contributes proved."
     },
     {
@@ -98,7 +99,7 @@
       "id": "summary",
       "title": "Part 8: Summary",
       "startLine": 269,
-      "endLine": 208,
+      "endLine": 241,
       "summary": "erdos_950_summary theorem combining both average results and True. Status: OPEN."
     }
   ],

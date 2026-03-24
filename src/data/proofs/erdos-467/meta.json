@@ -51,7 +51,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 241,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph (p.93), asking whether the redundancy in prime residue classes — captured by the divergence of $\\sum 1/p$ — is sufficient to split primes into two halves that each independently cover everything. The original quantifier structure is subtle: 'for sufficiently large $x$' means $\\exists X,\\, \\forall x \\geq X$. The problem connects covering congruences (a classical Erdős theme) to the Chinese Remainder Theorem and Mertens' product estimates.",
@@ -118,7 +119,7 @@
       "id": "crt-mertens",
       "title": "CRT and Mertens Estimates",
       "startLine": 215,
-      "endLine": 229,
+      "endLine": 241,
       "summary": "Two axiomatized deep results: `crt_for_primes` (CRT for distinct primes, provable via `ZMod.chineseRemainder`) and `mertens_product` (Mertens' third theorem $\\prod(1-1/p) \\sim e^{-\\gamma}/\\log x$). CRT establishes independence of coverage events; Mertens bounds the uncovered probability."
     }
   ],

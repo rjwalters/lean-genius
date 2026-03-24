@@ -111,56 +111,56 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 38,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "IsRegular, IsSubgraphOf, HasKRegularSubgraph, extremalFunction."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 64,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Zero-regular graphs, edge counting, parity, complete graphs."
     },
     {
       "id": "janzer-sudakov",
       "title": "Janzer-Sudakov Theorem (2023)",
       "startLine": 84,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Upper bound: graphs with >= C·n·log(log n) edges have k-regular subgraphs."
     },
     {
       "id": "pyber-rodl-szemeredi",
       "title": "Pyber-Rödl-Szemerédi Lower Bound (1995)",
       "startLine": 109,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Lower bound construction: Ω(n log log n) edges without 3-regular subgraph."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 133,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "k=2 (forests), k=1 (matchings), cycle avoidance."
     },
     {
       "id": "connected-variant",
       "title": "Connected Variant",
       "startLine": 150,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Connected k-regular subgraphs, Erdős's O(n^{5/3}) bound."
     },
     {
       "id": "density",
       "title": "Density and Probabilistic Aspects",
       "startLine": 174,
-      "endLine": 191,
+      "endLine": 192,
       "summary": "Dense graphs, typical thresholds for random graphs."
     },
     {
       "id": "main-theorem",
       "title": "Main Resolution",
       "startLine": 193,
-      "endLine": 220,
+      "endLine": 224,
       "summary": "Combined theorem: extremal function is Θ(n log log n)."
     }
   ],

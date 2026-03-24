@@ -84,35 +84,35 @@
       "id": "header-and-imports",
       "title": "Header, Imports, and Opens",
       "startLine": 1,
-      "endLine": 19,
+      "endLine": 20,
       "summary": "Module documentation with problem statement and known bounds; imports SimpleGraph.Basic, Fin.Basic, Real.Basic, and Tactic; opens SimpleGraph"
     },
     {
       "id": "graph-predicates",
       "title": "Graph Predicates",
       "startLine": 21,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Defines HasC4 (4-cycle via four distinct vertices with cycle adjacency a-b-c-d-a) and HasClique (pairwise adjacent Finset of size n)"
     },
     {
       "id": "ramsey-number",
       "title": "Ramsey Number R(C₄, Kₙ)",
       "startLine": 36,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "Axiomatizes ramseyC4Kn : ℕ → ℕ with full threshold specification: above R, HasC4 G ∨ HasClique Gᶜ n; below, counterexample exists"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 52,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Szemerédi upper bound R ≤ C·n²/(log n)² and Spencer lower bound R ≥ c·n^{3/2}/(log n)^{3/2}"
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture: Power Saving",
       "startLine": 68,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "ErdosProblem159: ∃ c > 0, C > 0, n₀ such that R(C₄, Kₙ) ≤ C·n^{2-c} for n ≥ n₀"
     },
     {

@@ -31,7 +31,8 @@
       "Roth's theorem and the corners theorem (k=3 case)"
     ],
     "lineCount": 261,
-    "assumptions": "4 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
+    "assumptions": "4 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Pál Turán conjectured in 1936 that any set of integers with positive upper density contains arbitrarily long arithmetic progressions. Klaus Roth proved the $k=3$ case in 1953 (earning a Fields Medal in 1958 partly for this work), and Endre Szemerédi proved the full conjecture in 1975 using a groundbreaking combinatorial regularity lemma, receiving the $\\$1000$ prize from Erdős.\n\nHillel Furstenberg gave a fundamentally different proof in 1977 using ergodic theory (the Furstenberg correspondence principle), opening a new bridge between combinatorics and dynamics. Timothy Gowers (2001) gave a quantitative proof using higher-order Fourier analysis, introducing the Gowers norms $\\|f\\|_{U^k}$. The quantitative bounds have been dramatically improved: Green and Tao (2017) gave polynomial bounds for $k=4$, and Kelley and Meka (2023) achieved the breakthrough bound $r_3(N) \\leq N \\cdot \\exp(-c(\\log N)^{1/12})$ for 3-term progressions, nearly matching the Behrend (1946) lower bound.",
@@ -58,14 +59,14 @@
       "id": "definitions",
       "title": "Arithmetic Progression Definitions",
       "startLine": 35,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Core definitions for k-term arithmetic progressions and AP-free sets"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem Statement",
       "startLine": 58,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Erdős #139: r_k(N)/N → 0 as N → ∞"
     },
     {
@@ -79,14 +80,14 @@
       "id": "roth-theorem",
       "title": "Roth's Theorem (k=3)",
       "startLine": 128,
-      "endLine": 186,
+      "endLine": 187,
       "summary": "Connection to Mathlib's ThreeAPFree and proof via corners theorem"
     },
     {
       "id": "bounds",
       "title": "Quantitative Bounds",
       "startLine": 188,
-      "endLine": 223,
+      "endLine": 261,
       "summary": "Axiomatized bounds from Kelley-Meka, Gowers, and Behrend"
     }
   ],

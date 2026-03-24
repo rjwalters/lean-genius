@@ -112,49 +112,49 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 26,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines properUnitaryDivisors (n : ℕ) : Finset ℕ via Finset.Ico 1 n filtered by d ∣ n ∧ d.Coprime (n / d). Defines IsUnitaryPerfect as sum equality plus positivity. Derives Decidable instance for native_decide."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 43,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Proves one_mem_properUnitaryDivisors (1 is always unitary for n > 1) and mem_properUnitaryDivisors (membership ↔ characterization) using simp and omega."
     },
     {
       "id": "parity-lemmas",
       "title": "Parity Lemmas",
       "startLine": 60,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "Proves odd_of_unitaryDivisor_of_odd (odd n, d | n implies d odd) via contradiction and dvd_trans. Proves sum_odd_parity by Finset.induction using Odd.add_even / Odd.add_odd arithmetic."
     },
     {
       "id": "unitary-structure",
       "title": "Unitary Divisor Structure",
       "startLine": 100,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Proves unitary_iff_no_common_prime (coprime ↔ no common prime divisor) via Nat.exists_prime_and_dvd. Proves unitary_complement via Nat.div_div_self and Coprime.symm. Defines unitaryDivisorSum."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Even Unitary Perfect Numbers",
       "startLine": 131,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Axiomatizes even_of_isUnitaryPerfect with detailed proof sketch: σ*(n) = ∏(1 + pᵢ^aᵢ) factors, odd n makes all factors even, 2^ω(n) | 2n forces contradiction for k ≥ 2, k = 1 gives 1 = p^a impossible, k = 0 gives n = 1 not perfect."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 152,
-      "endLine": 166,
+      "endLine": 167,
       "summary": "Proves isUnitaryPerfect_6, isUnitaryPerfect_60, isUnitaryPerfect_90 by native_decide — the Lean kernel evaluates the Finset computation and checks sum = n."
     },
     {
       "id": "further-properties",
       "title": "Further Properties",
       "startLine": 168,
-      "endLine": 186,
+      "endLine": 187,
       "summary": "Axiomatizes unitaryDivisors_primePow (only 1 and p^k for prime powers), unitaryDivisorSum_mul_coprime (multiplicativity), and properUnitaryDivisors_pairing (d ↔ n/d pairing structure)."
     },
     {

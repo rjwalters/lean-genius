@@ -23,7 +23,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 12,
     "lineCount": 371,
-    "assumptions": "12 axiom(s) and 16 sorry(s). See the Lean source for details."
+    "assumptions": "12 axiom(s) and 16 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was conjectured by Erdős and Pomerance in 1978. They proved that both the set {n : P(n) < P(n+1)} and its complement have positive upper density, but couldn't establish the exact density. The problem attracted significant attention from analytic number theorists.\n\nTeräväinen (2018) proved that the logarithmic density is exactly 1/2. Tao and Teräväinen (2019) showed the asymptotic density is 1/2 at 'almost all scales'. Finally, Wang (2021) proved the full result (natural density = 1/2) conditionally on the Elliott-Halberstam conjecture for friable integers.\n\nThe best unconditional lower bound is due to Lü and Wang (2025), who proved that both sets have density at least 0.2017. The sequence of n with P(n) < P(n+1) is A070089 in OEIS.",
@@ -49,7 +50,7 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's primorial, prime basics, real logarithm, real topology, and tactics. Opens the `Erdos371` namespace with `Nat`, `Real`, `Filter`, `Finset` in scope.",
       "startLine": 28,
-      "endLine": 36,
+      "endLine": 37,
       "mathContext": "Imports `Nat.Primorial`, `Nat.Prime.Basic`, `Real.Log`, `Real.Topology` from Mathlib."
     },
     {
@@ -57,7 +58,7 @@
       "title": "Greatest Prime Factor",
       "summary": "Defines $P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ via `Finset.max'` on `n.primeFactors`, with $P(n) = 0$ for $n \\le 1$. Proves five basic properties: divisibility, primality, maximality, $P(p) = p$, and $P(n) \\le n$ (all sorry).",
       "startLine": 38,
-      "endLine": 65,
+      "endLine": 66,
       "mathContext": "$P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ with $P(n) = 0$ for $n \\leq 1$. Properties: $P(n) \\mid n$, $P(n)$ is prime for $n \\geq 2$, $P(p) = p$, $P(n) \\leq n$."
     },
     {
@@ -65,7 +66,7 @@
       "title": "Density Definitions",
       "summary": "Defines four density notions: `countingFunction` $\\pi_S(x) = |\\{n < x : n \\in S\\}|$, `HasNaturalDensity` via $\\lim \\pi_S(x)/x$, `HasPositiveUpperDensity` ($\\limsup > 0$), `HasLowerDensity` ($\\liminf \\ge d$), and `HasLogDensity` via $\\lim (\\sum_{n \\in S} 1/n) / \\log x$.",
       "startLine": 67,
-      "endLine": 88,
+      "endLine": 89,
       "mathContext": "Natural density $d(S) = \\lim_{x \\to \\infty} |S \\cap [1,x]|/x$. Logarithmic density $\\delta(S) = \\lim_{x \\to \\infty} (\\sum_{n \\in S, n \\leq x} 1/n) / \\log x$. When $d(S)$ exists, $\\delta(S) = d(S)$."
     },
     {
@@ -73,7 +74,7 @@
       "title": "The Main Sets",
       "summary": "Defines $S^+ = \\{n \\ge 2 : P(n) < P(n+1)\\}$ and $S^- = \\{n \\ge 2 : P(n) \\ge P(n+1)\\}$. Proves the partition property: every $n \\ge 2$ lies in exactly one set (the only non-sorry result in this section).",
       "startLine": 90,
-      "endLine": 105,
+      "endLine": 106,
       "mathContext": "$S^+ = \\{n \\geq 2 : P(n) < P(n+1)\\}$, $S^- = \\{n \\geq 2 : P(n) \\geq P(n+1)\\}$. Partition: $S^+ \\cup S^- = \\{n \\geq 2\\}$ and $S^+ \\cap S^- = \\emptyset$."
     },
     {
@@ -81,7 +82,7 @@
       "title": "Erdos-Pomerance (1978)",
       "summary": "Axiomatizes the foundational result: $\\overline{d}(S^+) > 0$ and $\\overline{d}(S^-) > 0$. Both sets have positive upper density, establishing the density question as nontrivial.",
       "startLine": 107,
-      "endLine": 118,
+      "endLine": 119,
       "mathContext": "Erdős-Pomerance (1978): $\\overline{d}(S^+) > 0$ and $\\overline{d}(S^-) > 0$. Both sets have positive upper density."
     },
     {
@@ -89,7 +90,7 @@
       "title": "Lu-Wang Lower Bound (2025)",
       "summary": "Axiomatizes the best unconditional bound: $\\underline{d}(S^+) \\ge 0.2017$ and $\\underline{d}(S^-) \\ge 0.2017$. This constrains the density to $[0.2017, 0.7983]$.",
       "startLine": 120,
-      "endLine": 133,
+      "endLine": 134,
       "mathContext": "Lü-Wang (2025): $\\underline{d}(S^+) \\geq 0.2017$ and $\\underline{d}(S^-) \\geq 0.2017$. Best unconditional bound: $d \\in [0.2017, 0.7983]$."
     },
     {
@@ -97,7 +98,7 @@
       "title": "Teravanen (2018): Logarithmic Density",
       "summary": "Axiomatizes Teräväinen's breakthrough: $\\delta(S^+) = 1/2$. The first result achieving the conjectured value, albeit in the weaker logarithmic density notion. Complement result `teravanen_complement` is sorry.",
       "startLine": 135,
-      "endLine": 147,
+      "endLine": 148,
       "mathContext": "Teräväinen (2018): $\\delta(S^+) = 1/2$. Logarithmic density equals $1/2$, the first result achieving the conjectured value (in a weaker density notion)."
     },
     {
@@ -105,7 +106,7 @@
       "title": "Tao-Teravanen (2019): Almost All Scales",
       "summary": "Defines `DensityAtAlmostAllScales` requiring $|\\pi_{S^+}(x)/x - 1/2| < \\varepsilon$ outside an exceptional set $E$ of vanishing proportion. Axiomatizes the Tao-Teräväinen result for $S^+$.",
       "startLine": 149,
-      "endLine": 162,
+      "endLine": 163,
       "mathContext": "Tao-Teräväinen (2019): $|\\pi_{S^+}(x)/x - 1/2| < \\varepsilon$ for all $x \\notin E$, where $|E \\cap [1,X]|/X \\to 0$. Density $1/2$ at almost all scales."
     },
     {
@@ -113,7 +114,7 @@
       "title": "Wang (2021): Conditional Result",
       "summary": "Axiomatizes `ElliottHalberstamForFriable` as an opaque `Prop` and Wang's conditional theorem: $\\text{EH-friable} \\Rightarrow d(S^+) = 1/2$.",
       "startLine": 164,
-      "endLine": 180,
+      "endLine": 181,
       "mathContext": "Wang (2021): Elliott-Halberstam for friable integers $\\implies d(S^+) = 1/2$. Conditional on a generalized equidistribution hypothesis for smooth numbers in arithmetic progressions."
     },
     {
@@ -121,7 +122,7 @@
       "title": "Main Conjecture",
       "summary": "Defines `Erdos371Conjecture` as $d(S^+) = 1/2$ and proves `erdos_371_from_elliott_halberstam`: Elliott-Halberstam implies the conjecture (non-sorry, applies `wang_2021` directly).",
       "startLine": 182,
-      "endLine": 199,
+      "endLine": 200,
       "mathContext": "Conjecture: $d(S^+) = 1/2$, i.e., $\\lim_{x \\to \\infty} |\\{n \\leq x : P(n) < P(n+1)\\}|/x = 1/2$. Proved conditionally (Wang 2021) from Elliott-Halberstam."
     },
     {
@@ -129,7 +130,7 @@
       "title": "Generalized Form with $\\alpha$",
       "summary": "Defines $S_\\alpha = \\{n \\ge 2 : P(n+1) > P(n) \\cdot n^\\alpha\\}$ for $\\alpha \\in [0,1]$. Axiomatizes Teräväinen's generalized result: logarithmic density of $S_\\alpha$ exists for all $\\alpha$.",
       "startLine": 201,
-      "endLine": 217,
+      "endLine": 218,
       "mathContext": "$S_\\alpha = \\{n \\geq 2 : P(n+1) > P(n) \\cdot n^\\alpha\\}$ for $\\alpha \\in [0,1]$. At $\\alpha = 0$: $S_0 = S^+$. As $\\alpha$ increases, the condition becomes harder to satisfy."
     },
     {
@@ -137,7 +138,7 @@
       "title": "Dickman Function and Density Formula",
       "summary": "Axiomatizes the Dickman function $\\rho(u)$ with delay DDE $u\\rho'(u) = -\\rho(u-1)$. Defines `densityKernel` $u(x) = x^{-1}\\rho(x^{-1}-1)$ and `theoreticalDensity` via double integral. States $d_0 = 1/2$ by symmetry (sorry).",
       "startLine": 219,
-      "endLine": 245,
+      "endLine": 246,
       "mathContext": "Dickman function $\\rho(u)$: $\\rho(u) = 1$ for $0 \\leq u \\leq 1$, $u\\rho'(u) = -\\rho(u-1)$ for $u > 1$. Density kernel $u(x) = x^{-1}\\rho(x^{-1} - 1)$. Theoretical density $d_0 = \\int_0^1 \\int_{x+\\alpha}^1 u(x)u(y)\\,dy\\,dx$."
     },
     {
@@ -145,7 +146,7 @@
       "title": "Small Examples",
       "summary": "Computes $P(2)=2, P(3)=3, P(4)=2, P(5)=5, P(6)=3$ (sorry). Proves $2, 4 \\in S^+$ and $5 \\in S^-$ from these values (sorry).",
       "startLine": 247,
-      "endLine": 274,
+      "endLine": 275,
       "mathContext": "$P(2)=2, P(3)=3, P(4)=2, P(5)=5, P(6)=3$. So $2, 4 \\in S^+$ (since $P(2)<P(3)$ and $P(4)<P(5)$) and $5 \\in S^-$ (since $P(5)>P(6)$)."
     },
     {
@@ -153,7 +154,7 @@
       "title": "Related Problems",
       "summary": "Defines formal connections to Erdős problems #372 (density of $\\{n : P(n)/P(n+1) < 1\\}$) and #928 (consecutive integers with shared prime factors).",
       "startLine": 276,
-      "endLine": 284,
+      "endLine": 285,
       "mathContext": "Related: #372 (descending chains $P(n) > P(n+1) > P(n+2)$), #928 (consecutive integers with shared prime factors)."
     },
     {
@@ -161,7 +162,7 @@
       "title": "OEIS Sequence A070089",
       "summary": "Defines `isOEIS_A070089` as $S^+$ membership. Proves that even $n$ with $n+1$ prime satisfy $n \\in S^+$ (sorry), explaining the prevalence of even numbers in the sequence.",
       "startLine": 286,
-      "endLine": 296,
+      "endLine": 371,
       "mathContext": "OEIS A070089: $S^+ = \\{2, 4, 8, 9, 14, 15, 16, 20, 21, \\ldots\\}$. Even $n$ with $n+1$ prime are always in $S^+$ since $P(n) \\leq n/2 < n+1 = P(n+1)$."
     }
   ],

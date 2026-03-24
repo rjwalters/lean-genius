@@ -68,7 +68,8 @@
       "Minimal polynomials and algebraic elements",
       "Real analysis (irrational numbers, algebraMap Q R)"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The irrationality of $\\sqrt{2}$ was discovered by the Pythagoreans around 500 BCE, traditionally attributed to Hippasus of Metapontum, and reportedly met with hostility from the Pythagorean school, which held that all magnitudes are commensurable. Theodorus of Cyrene (5th century BCE) extended this to $\\sqrt{3}, \\sqrt{5}, \\ldots, \\sqrt{17}$ using geometric arguments (the 'spiral of Theodorus'). These classical proofs are ad hoc, requiring case-specific reasoning for each new root.\n\nThe modern algebraic approach consolidates all such results into a single principle: a real number $\\alpha$ is irrational whenever it satisfies an irreducible polynomial of degree $\\geq 2$ over $\\mathbb{Q}$. This insight connects irrationality to field extension degree via the minimal polynomial, placing it squarely within Galois theory.\n\nThe key technical tool is Eisenstein's criterion, published by Gotthold Eisenstein in 1850 in Crelle's Journal, though a closely related result was discovered earlier by Theodor Schonemann in 1846. It provides a practical sufficient condition for irreducibility over $\\mathbb{Z}$ based on prime divisibility of coefficients. Combined with Gauss's lemma from the *Disquisitiones Arithmeticae* (1801), which transfers $\\mathbb{Z}$-irreducibility to $\\mathbb{Q}$-irreducibility for primitive polynomials, Eisenstein's criterion yields the irreducibility of $X^n - p$ for any prime $p$, immediately implying that all nth roots of primes are irrational.\n\nThis module serves as shared infrastructure for four downstream formalizations in the gallery: the Inverse Galois Problem (main, $D_4$, and $F_{20}$ variants) uses Eisenstein irreducibility for computing Galois groups of radical extensions, and the Angle Trisection impossibility proof uses the algebraic degree machinery to show that trisecting $60°$ requires solving an irreducible cubic.",
@@ -96,7 +97,7 @@
       "id": "preamble",
       "title": "Preamble and Imports",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 37,
       "summary": "Module docstring explaining the algebraic irrationality approach. Imports Mathlib, opens Polynomial namespace, declares NthRootIrrationalOQ01 namespace with noncomputable section.",
       "mathContext": "Sets up the algebraic framework: polynomials over Q, irreducibility, and the connection to irrationality of real numbers."
     },
@@ -104,7 +105,7 @@
       "id": "core-theorem",
       "title": "Irreducible Polynomial Has No Rational Root",
       "startLine": 38,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Proves irreducible_no_rational_root: if p in Q[X] is irreducible with degree >= 2, then p has no rational root. The proof uses the factorization p = (X - r) * q from a root r, then applies irreducibility to show either X - r or q is a unit, both leading to contradictions.",
       "mathContext": "If $p \\in \\mathbb{Q}[X]$ is irreducible with $\\deg(p) \\geq 2$ and $r \\in \\mathbb{Q}$, then $p(r) \\neq 0$. Key step: $p = (X - r) \\cdot q$ forces $\\deg(q) = 0$ (unit), giving $\\deg(p) = 1$, contradiction."
     },
@@ -112,7 +113,7 @@
       "id": "irrationality-lift",
       "title": "Irrational Roots of Irreducible Polynomials",
       "startLine": 61,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Proves irrational_root_of_irreducible and irrational_of_minpoly_degree_ge_two. The first lifts the rational non-root result to real roots via injectivity of algebraMap Q -> R. The second applies this to minimal polynomials.",
       "mathContext": "If $\\alpha \\in \\mathbb{R}$ satisfies $p(\\alpha) = 0$ for irreducible $p$ with $\\deg(p) \\geq 2$, then $\\alpha \\notin \\mathbb{Q}$. Equivalently, $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\geq 2 \\implies \\alpha$ is irrational."
     },
@@ -120,7 +121,7 @@
       "id": "eisenstein",
       "title": "Eisenstein Criterion for X^n - p",
       "startLine": 91,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "Proves X^n - p is irreducible over Z (via Eisenstein at the prime ideal (p)) and then over Q (via the Gauss lemma). The Eisenstein verification checks: leading coefficient not in (p), lower coefficients in (p), constant term not in (p^2), and the polynomial is primitive (monic).",
       "mathContext": "For prime $p$ and $n \\geq 2$: $X^n - p \\in \\mathbb{Z}[X]$ is irreducible by Eisenstein's criterion at $(p)$, hence irreducible in $\\mathbb{Q}[X]$ by the Gauss lemma. Also proves $\\deg(X^n - c) = n$ for $c \\neq 0$."
     },
@@ -128,7 +129,7 @@
       "id": "nth-root-irrationality",
       "title": "Irrationality of Nth Roots of Primes",
       "startLine": 156,
-      "endLine": 206,
+      "endLine": 209,
       "summary": "Proves irrational_nthRoot_of_prime: for prime p and n >= 2, p^(1/n) is irrational. Combines Eisenstein irreducibility with the irrationality lift. Concrete applications: sqrt(2), cbrt(2), cbrt(3), 5th-root(7). The structural_subsumes_counting theorem highlights that this approach subsumes counting arguments.",
       "mathContext": "For prime $p$ and $n \\geq 2$: $p^{1/n}$ is a root of the irreducible polynomial $X^n - p$, hence irrational. Concrete: $\\sqrt{2}$, $\\sqrt[3]{2}$, $\\sqrt[3]{3}$, $\\sqrt[5]{7}$ are all irrational."
     }

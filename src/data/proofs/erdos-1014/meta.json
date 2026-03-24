@@ -24,7 +24,8 @@
     "dateAdded": "2025-01-01",
     "axiomCount": 14,
     "lineCount": 134,
-    "assumptions": "14 axiom(s): 1 definition (ramseyNumber), 13 mathematical hypotheses. 2 former axioms proved as theorems: diagonal_ramsey_upper (from Erdős-Szekeres bound) and ratio_equiv_difference (from real analysis + monotonicity + positivity)."
+    "assumptions": "14 axiom(s): 1 definition (ramseyNumber), 13 mathematical hypotheses. 2 former axioms proved as theorems: diagonal_ramsey_upper (from Erdős-Szekeres bound) and ratio_equiv_difference (from real analysis + monotonicity + positivity).",
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -85,14 +86,14 @@
       "id": "special-cases",
       "title": "Special Cases and Known Values",
       "startLine": 92,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Trivial case $R(2,l) = l$ with ratio $(l+1)/l \\to 1$. Known exact values $R(3,3) = 6$, $R(3,4) = 9$, $R(3,5) = 14$ show slow convergence."
     },
     {
       "id": "diagonal",
       "title": "Diagonal Ramsey Connection",
       "startLine": 101,
-      "endLine": 104,
+      "endLine": 134,
       "summary": "Diagonal bound $R(k,k) \\leq \\binom{2k-2}{k-1}$, connecting to Problem #1030 on diagonal Ramsey asymptotics."
     }
   ],

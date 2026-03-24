@@ -53,35 +53,36 @@
     ],
     "axiomCount": 8,
     "lineCount": 113,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 27,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Defines `sumRepCount A n` as $|\\{(a,b) \\in A \\times A : a \\leq b,\\, a+b = n\\}|$, `multiRepSet A` as $\\{n : \\text{sumRepCount}(A, n) \\geq 2\\}$, `IsAlmostSidon A` as $|\\text{multiRepSet}(A)| \\leq 1$, `IsSidon A` as $|\\text{multiRepSet}(A)| = 0$, and `maxAlmostSidon N` as $\\sup$ over almost-Sidon subsets of $[1, N]$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 50,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Axiomatizes `erdos_864_conjecture`: the maximum almost-Sidon set in $\\{1, \\ldots, N\\}$ has size $(1 + o(1)) \\cdot \\frac{2}{\\sqrt{3}} \\cdot \\sqrt{N}$. Currently a placeholder `True` axiom."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "startLine": 59,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Axiomatizes three bounds: Erdős-Freud lower bound $\\geq (2/\\sqrt{3} - \\varepsilon)\\sqrt{N}$, the classical Sidon upper bound $\\leq \\sqrt{N} + O(N^{1/4})$, and `almost_sidon_exceeds_sidon`: almost-Sidon can exceed $\\sqrt{N} + 1$. Proves `sidon_is_almost_sidon` via `omega`."
     },
     {
       "id": "difference",
       "title": "Difference Version",
       "startLine": 86,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Axiomatizes `erdos_freud_difference_version`: for the difference analogue (at most one difference collision), the maximum is asymptotically $\\sqrt{N}$. Currently a placeholder `True` axiom."
     },
     {

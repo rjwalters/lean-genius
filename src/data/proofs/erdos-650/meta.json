@@ -79,7 +79,8 @@
     ],
     "axiomCount": 2,
     "lineCount": 92,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Sarányi posed this problem in 1959, establishing the lower bound f(m) ≥ c√m using a pigeonhole argument. The question asks: given a set A of m integers in {1,...,N}, how many integers in any interval of length 2N must be divisible by some element of A?\n\nThe lower bound proof counts the total number of (divisor, multiple) pairs and uses the constraint that each integer has a bounded number of divisors to extract √m distinct covered integers. The matching upper bound — that f(m) ≤ C√m for some constant C — remains open, making this one of the longer-standing open problems in multiplicative number theory.\n\nThe problem connects to several areas: sieve theory (counting integers with prescribed divisibility), extremal combinatorics (finding worst-case sets), and multiplicative number theory (distribution of multiples in intervals). The √m threshold appears naturally from the harmonic sum structure of divisor counts.",
@@ -113,28 +114,28 @@
       "title": "Definitions",
       "summary": "Defines `countDivisible` (count multiples of A-elements in [a, a+2N] via `Finset.filter`), `minCoverage` (worst-case over interval positions via `sInf`), and `f` (extremal over all sets A ⊆ {1,...,N} with |A| = m).",
       "startLine": 24,
-      "endLine": 47
+      "endLine": 48
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound",
       "summary": "Axiomatizes the Erdős-Sarányi result: ∃ c > 0 such that f(m, N) ≥ c√m for all m ≥ 1 and N ≥ m.",
       "startLine": 49,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "upper-conjecture",
       "title": "Upper Bound Conjecture",
       "summary": "States the open conjecture: ∃ C > 0 such that f(m, N) ≤ C√m for appropriate N. Combined with lower bound gives f(m) ≍ √m.",
       "startLine": 64,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "summary": "Restates the Erdős-Sarányi lower bound as the main theorem `erdos_650`, recording the current state of knowledge.",
       "startLine": 77,
-      "endLine": 91
+      "endLine": 92
     }
   ],
   "conclusion": {

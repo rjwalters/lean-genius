@@ -97,7 +97,7 @@
       "id": "density",
       "title": "Density Definitions",
       "startLine": 20,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Defines **countingFn** ($|A \\cap \\{1, \\ldots, N\\}|$), **asympDensity** ($\\lim_{N \\to \\infty} |A \\cap [1,N]|/N$), **DensityExists** (the limit converges), and **HasPositiveDensity** ($d(A) > 0$). All built on Mathlib's **Filter.limUnder** and **Set.ncard**.",
       "mathContext": "$d(A) = \\lim_{N \\to \\infty} |A \\cap [1,N]| / N$ (asymptotic density). Uses `Filter.Tendsto` for the limit formulation."
     },
@@ -105,7 +105,7 @@
       "id": "sumset",
       "title": "Sumset and Density Additivity",
       "startLine": 45,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines **Sumset** ($A + B = \\{a + b : a \\in A, b \\in B\\}$) and **DensityAdditive**, the four-part conjunction requiring density existence for $A$, $B$, and $A+B$, plus the exact equality $d(A+B) = d(A) + d(B)$.",
       "mathContext": "$A + B = \\{a + b : a \\in A, b \\in B\\}$. Density additivity: $d(A + B) = d(A) + d(B)$ (equality, not just inequality)."
     },
@@ -113,7 +113,7 @@
       "id": "construction",
       "title": "Fractional Part Construction",
       "startLine": 58,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Defines **frac** ($x - \\lfloor x \\rfloor$) and **FractionalPartSet** ($\\{n > 0 : \\{n\\theta\\} \\in X\\}$). Axiomatizes **weyl_equidistribution** (density exists for these sets) and **fractional_part_density_additive** (the known construction achieving exact additivity).",
       "mathContext": "Construction: $A_\\alpha = \\{n : \\{n\\alpha\\} < d\\}$ for irrational $\\alpha$ gives $d(A_\\alpha) = d$. Conjecture: all density-additive pairs arise from such fractional part sets."
     },
@@ -129,7 +129,7 @@
       "id": "properties",
       "title": "Basic Properties and Tightness",
       "startLine": 97,
-      "endLine": 122,
+      "endLine": 180,
       "summary": "States **density_nonneg** ($d(A) \\geq 0$), **density_le_one** ($d(A) \\leq 1$), **additive_sum_le_one** ($d(A) + d(B) \\leq 1$), and **plunnecke_ruzsa_lower** ($d(A+B) \\geq \\min(d(A)+d(B), 1)$). PROVES **additive_implies_tight**: density additivity makes the Plünnecke–Ruzsa bound an equality.",
       "mathContext": "$d(A) \\in [0,1]$ always. $d(A+B) \\geq d(A) + d(B) - 1$ (Kneser). $d(A+B) \\leq 1$ trivially."
     }

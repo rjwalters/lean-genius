@@ -75,28 +75,28 @@
       "id": "least-prime-factor",
       "title": "Least Prime Factor Infrastructure",
       "startLine": 19,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Defines leastPrimeFactor via Nat.minFac and IsLeastPrimeFactor. Proves minFac_is_lpf, composite_has_lpf, prime_lpf_self, lpf_le_sqrt, lpf_unique, leastPrimeFactor_eq_minFac, leastPrimeFactor_prime, lpf_dvd, lpf_prime — 10 proved theorems."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 98,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Defines ErdosProblem681: for large n, exists k with n+k composite and p(n+k) > k²."
     },
     {
       "id": "generalisation",
       "title": "Generalisation to Arbitrary Exponent",
       "startLine": 109,
-      "endLine": 123,
+      "endLine": 124,
       "summary": "Defines ErdosProblem681General(d) and proves erdos681_is_general_d2: original is exactly the d=2 case."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
       "startLine": 125,
-      "endLine": 184,
+      "endLine": 185,
       "summary": "Proves prime_offset_gives_large_lpf, composite_constraint (k⁴ < n+k), d1_k1_trivial, general_d0_trivial (fully proved), and general_monotone."
     },
     {

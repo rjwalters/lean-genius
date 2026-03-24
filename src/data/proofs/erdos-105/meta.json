@@ -85,49 +85,49 @@
       "title": "Basic Definitions",
       "summary": "$p \\in \\mathbb{R}^2$, $\\ell = \\{p_0 + td : d \\neq 0\\}$, `Line.contains` ($p \\in \\ell \\iff \\exists t,\\, p = p_0 + td$), `isRich` ($|\\ell \\cap A| \\geq 2$), `unblocked` ($\\ell \\cap B = \\emptyset$)",
       "startLine": 45,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Purdy Conjecture",
       "summary": "$\\text{NonCollinear}(A) \\iff \\nexists \\ell : A \\subseteq \\ell$; $\\text{ErdosPurdyConj}: \\forall A, B,\\, |A| = n \\geq 4,\\, |B| = n-3,\\, \\text{disjoint} \\implies \\exists$ rich unblocked $\\ell$",
       "startLine": 72,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "disproof",
       "title": "The Disproof",
       "summary": "`xichuan_counterexample`: $\\exists A, B$ with $|B| = n-3$ blocking all rich lines; `erdos_105_disproved`: $\\neg\\text{ErdosPurdyConj}$ by contradiction via counterexample",
       "startLine": 90,
-      "endLine": 116
+      "endLine": 117
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "`hickerson_n_minus_2`: $\\exists A, B$ with $|B| = n-2$ blocking all rich lines; `beck_szemeredi_trotter_positive`: $\\exists c > 0,\\, |B| \\leq cn \\implies \\exists$ rich unblocked $\\ell$",
       "startLine": 118,
-      "endLine": 140
+      "endLine": 141
     },
     {
       "id": "szemeredi-trotter",
       "title": "Szemerédi-Trotter Theorem",
       "summary": "`incidenceCount` via `Finset.filter`; `szemeredi_trotter`: $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$; `many_rich_lines_exist`: non-collinear sets determine $\\geq 1$ rich line",
       "startLine": 142,
-      "endLine": 164
+      "endLine": 165
     },
     {
       "id": "threshold",
       "title": "Threshold Function",
       "summary": "$f(n) = \\max\\{k : |B| \\leq k \\implies \\exists$ rich unblocked $\\ell\\}$; bounds $cn \\leq f(n) \\leq n - 4$",
       "startLine": 166,
-      "endLine": 179
+      "endLine": 180
     },
     {
       "id": "open-problems",
       "title": "Open Problems",
       "summary": "`openProblem_n_minus_4`: does the conjecture hold at $|B| = n - 4$?; `openProblem_exact_threshold`: $\\exists c_1, c_2 > 0 : c_1 n \\leq f(n) \\leq c_2 n$?",
       "startLine": 181,
-      "endLine": 197
+      "endLine": 198
     },
     {
       "id": "summary",

@@ -88,56 +88,56 @@
       "id": "consecutive-sums",
       "title": "Part I: Consecutive Sums",
       "startLine": 36,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines consecutiveSubsum, consecutiveSums Finset, and distinctConsecutiveSums counting function."
     },
     {
       "id": "trivial-sequence",
       "title": "Part II: The Trivial Sequence",
       "startLine": 62,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "trivialSequence {1,...,n}. Axioms: trivial_fails (O(n) distinct sums), trivial_collision_structure (sub-quadratic)."
     },
     {
       "id": "increasing-sequences",
       "title": "Part III: Strictly Increasing Sequences",
       "startLine": 93,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "isStrictlyIncreasing, boundedBy, isValidSequence definitions."
     },
     {
       "id": "main-conjecture",
       "title": "Part IV: The Main Conjecture",
       "startLine": 116,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "erdosGrahamConjecture definition. beker_theorem axiom resolving it."
     },
     {
       "id": "permutation-variant",
       "title": "Part V: The Permutation Variant",
       "startLine": 139,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "isPermutation, permutationConjecture, konieczny_theorem axiom."
     },
     {
       "id": "constructions",
       "title": "Part VI: Construction Insights",
       "startLine": 170,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "beker_construction_yields_quadratic: explicit constant exists with c < 1."
     },
     {
       "id": "related-problems",
       "title": "Part VII: Related Problems",
       "startLine": 185,
-      "endLine": 209,
+      "endLine": 210,
       "summary": "Connections to Problems #34, #357. permutation_implies_increasing axiom. erdos357Question definition."
     },
     {
       "id": "bounds",
       "title": "Part VIII: Upper and Lower Bounds",
       "startLine": 211,
-      "endLine": 231,
+      "endLine": 232,
       "summary": "upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn² achievable)."
     },
     {

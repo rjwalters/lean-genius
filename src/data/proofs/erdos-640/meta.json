@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 279,
-    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal posed this problem in the 1997 paper [Er97d, p.84], as part of their systematic study of how large chromatic number forces specific substructures in graphs. The problem is a chromatic analogue of the Erdős-Hajnal conjecture on clique/independent set sizes in graphs avoiding fixed induced subgraphs. For $k = 3$, the answer is immediate: any graph with $\\chi(G) \\ge 3$ is non-bipartite, hence contains an odd cycle, and every odd cycle has $\\chi = 3$. For $k \\ge 4$, the problem remains completely open—no value of $f(k)$ is known. Raphael Steiner made a key contribution by showing the conjecture is equivalent to a path formulation: replacing 'odd cycle whose vertices span $\\chi \\ge k$' with 'path whose vertices span $\\chi \\ge k$' gives the same conjecture. This equivalence is surprising since paths are much simpler structures than cycles. The problem connects to the broader Gyárfás-Sumner conjecture (every tree is $\\chi$-bounded), the Erdős-Hajnal conjecture on hereditary graph classes, and the study of $\\chi$-boundedness where graph families are constrained by their chromatic number relative to clique number.",
@@ -49,49 +50,49 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's `SimpleGraph.Basic`, `SimpleGraph.Subgraph`, `WalkCounting` for connectivity, `Nat.Basic`, `Finset.Basic`, and `Tactic`. Opens the `SimpleGraph` namespace.",
       "startLine": 31,
-      "endLine": 40
+      "endLine": 41
     },
     {
       "id": "chromatic-number",
       "title": "Part I: Chromatic Number",
       "summary": "Defines `IsKColorable G k` (existence of a proper $k$-coloring $c: V \\to \\mathrm{Fin}\\, k$ with $G.\\mathrm{Adj}(v,w) \\implies c(v) \\ne c(w)$) and `chromaticNumber` $= \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$ via `Nat.find`.",
       "startLine": 42,
-      "endLine": 58
+      "endLine": 59
     },
     {
       "id": "odd-cycles",
       "title": "Part II: Odd Cycles",
       "summary": "Defines `HasOddCycleWithVertices G S`: $|S| \\ge 3$, $|S|$ odd, vertices pairwise reachable, and $\\exists$ a cyclic ordering $\\sigma: \\mathrm{Fin}\\, |S| \\to V$ with consecutive vertices adjacent. This captures odd cycles as vertex-labeled closed walks.",
       "startLine": 60,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "induced-chromatic",
       "title": "Part III: Induced Subgraph Chromatic Number",
       "summary": "Defines `inducedSubgraph G S` (restricts adjacency to vertex set $S$) and `InducedChromaticAtLeast G S k` ($\\neg\\mathrm{IsKColorable}(G[S], k-1)$, i.e., $\\chi(G[S]) \\ge k$).",
       "startLine": 77,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "conjecture",
       "title": "Part IV: The Erdős-Hajnal Conjecture",
       "summary": "States `ErdosHajnalConjecture640`: $\\forall k \\ge 3,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\implies \\exists$ odd cycle $S$ with $\\chi(G[S]) \\ge k$. Also states `SteinerPathVariant` (same with paths) and axiomatizes their equivalence.",
       "startLine": 95,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "trivial-case",
       "title": "Part V: The Trivial Case $k = 3$",
       "summary": "Axiomatizes the $k = 3$ case: $\\chi(G) \\ge 3 \\implies \\exists$ odd cycle $S$ with $\\chi(G[S]) \\ge 3$. This follows because non-bipartite graphs contain odd cycles, and odd cycles have $\\chi = 3$.",
       "startLine": 135,
-      "endLine": 148
+      "endLine": 149
     },
     {
       "id": "summary",
       "title": "Part VI: Summary Theorem",
       "summary": "Proves `erdos_640_summary`: the conjecture is equivalent to Steiner's path variant, directly applying the `steiner_equivalence` axiom.",
       "startLine": 150,
-      "endLine": 162
+      "endLine": 279
     }
   ],
   "conclusion": {

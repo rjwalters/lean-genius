@@ -29,7 +29,8 @@
     ],
     "axiomCount": 11,
     "lineCount": 197,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Products and Perfect Squares in Short Intervals**\n\nThis problem was posed by Erdős, Graham, and Selfridge. Given n, what is the smallest t such that we can find a subset S of {n+1, ..., n+t} where n·∏S is a perfect square?\n\n**Example**: t_6 = 6 because 6·8·12 = 576 = 24².\n\n**The Key Player**: The largest prime divisor P(n). If p^(2k+1) || n, we need another factor of p to make the exponent even. The trivial bound is t_n ≥ P(n).\n\n**Selfridge's Theorem**: When P(n) > √(2n)+1 (n is 'rough'), we have exactly t_n = P(n). When P(n) ≤ √(2n)+1 (n is 'smooth'), we have t_n ≤ O(√n).\n\n**Recent Progress**: Bui-Pratt-Zaharescu (2024) proved that the distribution of t_n mirrors P(n)'s distribution precisely.",
@@ -54,56 +55,56 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 41,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Defines perfect squares, intervals, HasSquareProduct, HasSquareSubset, and the axiomatized function t_n."
     },
     {
       "id": "example",
       "title": "The Example t_6 = 6",
       "startLine": 70,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Proves 6·8·12 = 24² and axiomatizes t_6 = 6."
     },
     {
       "id": "prime-divisor",
       "title": "The Largest Prime Divisor",
       "startLine": 80,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Defines largestPrimeDivisor P(n) and the trivial lower bound t_n ≥ P(n)."
     },
     {
       "id": "selfridge",
       "title": "Selfridge's Theorem",
       "startLine": 93,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Selfridge's equality t_n = P(n) when P(n) > √(2n)+1, and upper bound t_n ≤ O(√n) otherwise."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 109,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Universal lower bound (log log n)^{6/5} / (log log log n)^{1/5}."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 119,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Upper bound exp(O(√(log n · log log n))) for most n."
     },
     {
       "id": "distribution",
       "title": "Bui-Pratt-Zaharescu (2024)",
       "startLine": 131,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Distribution of t_n follows P(n)'s distribution."
     },
     {
       "id": "smooth",
       "title": "Connection to Smooth Numbers",
       "startLine": 142,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "IsSmooth definition and smooth_numbers_small_t bound."
     },
     {

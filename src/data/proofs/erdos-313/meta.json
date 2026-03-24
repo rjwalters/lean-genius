@@ -83,35 +83,35 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 30,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Imports Mathlib's **Tactic**, **Nat.Prime.Basic**, and **Rat.Defs**. Opens **Finset** and **BigOperators** for finite set operations and $\\sum$ notation."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 36,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Defines **erdos313Solutions** (pairs $(m, P)$ with $\\sum_{p \\in P} 1/p = 1 - 1/m$) and **IsPrimaryPseudoperfect** ($\\exists P$ such that $(n, P)$ is a solution). The solution set requires $m \\geq 2$, nonempty $P$, all primes in $P$, and the exact rational equation."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 51,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "States the two equivalent forms of the main OPEN question: **erdos_313_conjecture** (infinitely many solution pairs) and **primary_pseudoperfect_infinite** (infinitely many primary pseudoperfect numbers)."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 62,
-      "endLine": 78,
+      "endLine": 79,
       "summary": "Records the first 5 known solutions as axioms: $m = 2$ ($P = \\{2\\}$), $m = 6$ ($P = \\{2,3\\}$), $m = 42$ ($P = \\{2,3,7\\}$), $m = 1806$ ($P = \\{2,3,7,43\\}$), $m = 47058$ ($P = \\{2,3,11,23,31\\}$). The Sylvester-like pattern breaks at $m = 47058$."
     },
     {
       "id": "structure",
       "title": "Structural Properties",
       "startLine": 80,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "States **product_constraint** ($m = \\prod P$), **uniqueness** (at most one $P$ per $m$), and **at_least_eight** ($\\geq 8$ primary pseudoperfect numbers known). These structural results show the solution map $(m, P) \\mapsto m$ is injective."
     },
     {

@@ -92,7 +92,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 1337,
-    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -148,7 +149,7 @@
       "id": "irrefl-embedding",
       "title": "Embedding Existence for Irreflexive Graphs",
       "startLine": 272,
-      "endLine": 316,
+      "endLine": 317,
       "summary": "Constructive proof of `hasUnitEmbedding_exists_irrefl`: every finite irreflexive graph embeds in some $\\mathbb{R}^n$ via the simplex construction. Uses `Fintype.truncEquivFin` to reduce to `Fin |V|`."
     },
     {
@@ -170,7 +171,7 @@
       "title": "Deficiency Function",
       "summary": "Deficiency $\\delta(d) = \\binom{d+1}{2} - \\text{minEdges}(d)$. Computed: $\\delta = 0$ for $d \\in \\{1,2,3,5\\}$, $\\delta(4) = 1$. Proves the equivalence: optimality conjecture $\\iff$ $\\delta(d) = 0$ for all $d \\neq 4$. Confirms $d = 4$ is the unique anomaly for $d \\le 5$ via `interval_cases`.",
       "startLine": 375,
-      "endLine": 418
+      "endLine": 1337
     }
   ],
   "overview": {

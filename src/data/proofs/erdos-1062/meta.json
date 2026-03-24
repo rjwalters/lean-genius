@@ -21,7 +21,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 104,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem appears as B24 in Richard Guy's *Unsolved Problems in Number Theory* (3rd ed., 2004) and originates from Erdős's extensive work on divisibility-restricted subsets of $\\{1,\\ldots,n\\}$. Kenneth Lebensold (1976, *Studies in Applied Mathematics*, Vol. 56, pp. 291–294) established the tight bounds $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$, narrowing the asymptotic density to an interval of width $0.0011$. The basic lower bound $f(n) \\geq \\lceil 2n/3 \\rceil$ was observed earlier using the interval $[m+1, 3m+2]$, where ratios stay below 3. The problem connects to Erdős's pioneering work on primitive sets with Besicovitch (1934) — sets where no element divides any other — and to Dilworth's theorem (1950) on antichains in partially ordered sets. The divisibility poset on $\\{1,\\ldots,n\\}$ forms a rich combinatorial structure where the NDTO condition defines a relaxed antichain: allowing one divisibility per element but forbidding two. Lichtman's 2022 proof of the Erdős primitive set conjecture (that primes maximize $\\sum 1/(a \\log a)$ over all primitive sets) renewed interest in divisibility-restricted extremal problems, though Lebensold's bounds for NDTO sets remain unimproved after nearly 50 years.",
@@ -47,28 +48,28 @@
       "id": "preamble",
       "title": "Problem Description and Imports",
       "startLine": 1,
-      "endLine": 20,
+      "endLine": 21,
       "summary": "Module docstring stating the problem, its open status, and references to Guy (2004) B24 and Lebensold (1976). Imports Mathlib libraries for natural numbers, finite sets, cardinality, reals, irrationality, filters, and tactics."
     },
     {
       "id": "divisibility-condition",
       "title": "The NDTO Condition",
       "startLine": 22,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Defines `NoDividesTwoOthers`: no element $a \\in A$ divides two distinct elements $b, c \\in A$. Equivalent to out-degree $\\leq 1$ in the divisibility graph on $A$."
     },
     {
       "id": "extremal-function",
       "title": "The Extremal Function",
       "startLine": 33,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Defines `maxNDTOSize n` as $f(n) = \\max\\{|A| : A \\subseteq [n],\\, \\text{NDTO}(A)\\}$ using `Finset.sup` over the power set filtered by NDTO."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound Construction",
       "startLine": 44,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Axiomatizes $f(n) \\geq \\lceil 2n/3 \\rceil$ via the interval $[m+1, 3m+2]$ where $\\max/\\min < 3$ ensures each element has at most one multiple in the range.",
       "mathContext": "Lebensold (1978): $0.6725n \\leq f(n) \\leq 0.6736n$."
     },
@@ -76,7 +77,7 @@
       "id": "lebensold-bounds",
       "title": "Lebensold's Bounds (1976)",
       "startLine": 54,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Axiomatizes Lebensold's bounds: $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$. The lower bound improves the $2/3$ construction; the upper bound uses divisibility counting arguments.",
       "mathContext": "Lebensold (1978): $0.6725n \\leq f(n) \\leq 0.6736n$."
     },
@@ -84,7 +85,7 @@
       "id": "conjectures",
       "title": "Limiting Density and the Irrationality Conjecture",
       "startLine": 68,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Axiomatizes existence of $\\lambda = \\lim f(n)/n \\in [0.6725, 0.6736]$ and states `ErdosProblem1062`: $\\lambda$ is irrational. The limit exists by subadditivity (Fekete's lemma)."
     },
     {

@@ -29,7 +29,8 @@
       "Set.Infinite and natural density concepts"
     ],
     "lineCount": 267,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Sums of Consecutive Terms Sequence**\n\nThis problem belongs to a family of greedy integer sequences studied by Erdős, where each term is determined by a minimality condition. The construction is reminiscent of the Ulam sequence (Problem #342, 1964), where terms are integers uniquely representable as a sum of two earlier terms. Problem #423 appeared in Erdős's 1977 paper [Er77c, p.71] and was included in the 1980 Erdős-Graham monograph [ErGr80, p.83]. The sequence $a_1 = 1, a_2 = 2$, and $a_k = \\min\\{m > a_{k-1} : m = a_i + a_{i+1} + \\cdots + a_j \\text{ for some } i \\leq j < k\\}$ is catalogued as OEIS A005243.\n\n**Chronological Development:**\n- **1964 (Ulam):** Introduced the Ulam sequence, the prototype for greedy additive sequence constructions\n- **1977 (Erdős):** Problem posed in [Er77c], asking about the asymptotic behavior of $a(n)$\n- **1980 (Erdős-Graham):** Included as Problem #423 in the monograph\n- **2024-2025 (Bolan, Tang):** Major progress — proved that the excess $a(n) - n$ is nondecreasing and unbounded, and that infinitely many integers are missing from the sequence\n\nThe sequence begins $1, 2, 3, 5, 6, 8, 10, 11, 14, 16, 17, 18, 19, 21, 22, \\ldots$ — note the gaps at $4, 7, 9, 12, 13, 15, 20, \\ldots$ The number 4 is the first missing integer because at the time it would be needed, no contiguous block of earlier terms sums to 4. Despite recent progress establishing superlinear growth, the precise asymptotic behavior — whether $a(n)/n$ converges, and to what — remains completely open.",
@@ -57,7 +58,7 @@
       "id": "computable-definition",
       "title": "Part I: Computable Sequence Definition",
       "startLine": 33,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Computable sequence construction: isConsecSum checks consecutive sum property, buildSeq constructs terms greedily, consSeq extracts the nth term.",
       "mathContext": "The sequence is computed greedily: `isConsecSum` checks all contiguous sublists for sums matching the candidate, and `buildSeq` finds the smallest valid next term. This gives a computable `consSeq : ℕ → ℕ`."
     },
@@ -65,7 +66,7 @@
       "id": "initial-values",
       "title": "Part II: Verified Initial Values",
       "startLine": 77,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "First 8 terms verified by native_decide: 1, 2, 3, 5, 6, 8, 10, 11. Combined in consSeq_values theorem.",
       "mathContext": "Each term is verified computationally: `consSeq 0 = 1`, `consSeq 1 = 2`, ..., `consSeq 7 = 11`. All proofs use `native_decide`, leveraging the computable definition."
     },
@@ -73,7 +74,7 @@
       "id": "consecutive-sum-verification",
       "title": "Part III: Verified Consecutive Sum Property",
       "startLine": 105,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "Computational verification that early terms are consecutive sums: 3=1+2, 5=2+3, 6=1+2+3, 8=3+5, 10=2+3+5, 11=1+2+3+5.",
       "mathContext": "Each verification proves $a_k = \\sum_{j=i}^{k-1} a_j$ for specific $i$. For example, $6 = a_0 + a_1 + a_2 = 1+2+3$ shows 6 is representable as a sum of three consecutive terms."
     },
@@ -81,7 +82,7 @@
       "id": "monotonicity",
       "title": "Part IV: Monotonicity",
       "startLine": 126,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "Strict monotonicity verified on first 8 terms (native_decide) and axiomatized globally (consSeq_strictMono).",
       "mathContext": "StrictMono consSeq follows from the definition: each $a_k$ is the *least* integer *greater than* $a_{k-1}$. The axiom `consSeq_strictMono : StrictMono consSeq` packages this."
     },
@@ -89,7 +90,7 @@
       "id": "consecutive-sum-predicate",
       "title": "Part V: Consecutive Sum Predicate",
       "startLine": 139,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "Formal predicate IsConsecutiveSum and axioms: consSeq_is_consecutive_sum (each term is a consecutive sum), consSeq_minimal (no smaller valid candidate exists).",
       "mathContext": "$\\text{IsConsecutiveSum}(m, n)$ asserts $m = \\sum_{k=i}^{j} a_k$ for some $i < j < n$. The minimality axiom says no $m'$ with $a_{k-1} < m' < a_k$ is a consecutive sum — the greedy choice is formalized."
     },
@@ -97,7 +98,7 @@
       "id": "growth",
       "title": "Part VI: Growth Properties",
       "startLine": 156,
-      "endLine": 174,
+      "endLine": 175,
       "summary": "Linear lower bound proved (consSeq n ≥ n+1). Axioms from Bolan-Tang: excess nondecreasing and unbounded.",
       "mathContext": "The lower bound $a(n) \\geq n+1$ is proved by induction using strict monotonicity. The Bolan-Tang results (2024-2025) show $a(n) - n$ is nondecreasing and $a(n) - n \\to \\infty$, implying superlinear growth."
     },
@@ -105,7 +106,7 @@
       "id": "missing",
       "title": "Part VII: Missing Numbers",
       "startLine": 176,
-      "endLine": 226,
+      "endLine": 227,
       "summary": "Defines seqRange and missingNumbers. Axiom: infinitely many missing. Proved: 4, 7, 9 are missing (computational + monotonicity arguments).",
       "mathContext": "The missing number proofs use a hybrid approach: verify $a_k \\neq m$ for small $k$ by computation, then use $a_k > m$ for large $k$ via monotonicity. This gives a complete proof that $m \\notin \\text{seqRange}$ without checking infinitely many terms."
     },
@@ -113,7 +114,7 @@
       "id": "main-question",
       "title": "Part VIII: The Main Question",
       "startLine": 228,
-      "endLine": 241,
+      "endLine": 242,
       "summary": "Open question: does a(n)/n converge to some C > 1? Formalized as ErdosQuestion423_convergence using Filter.Tendsto.",
       "mathContext": "The convergence question asks whether $\\lim_{n \\to \\infty} a(n)/n = C$ exists for some $C > 1$. If so, the sequence has natural density $1/C$, giving the proportion of integers that appear."
     },

@@ -71,49 +71,49 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 19,
-      "endLine": 21,
+      "endLine": 22,
       "summary": "Imports `Finset.Card` for finite set cardinality, `Data.Nat.Basic` for natural number arithmetic, and `Tactic` for general proof automation."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 23,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Defines `PointConfig` (a finset of $\\mathbb{R}^2$ points with positive cardinality), `collinear₃` via the cross-product determinant, `richLineCount` counting 4-element collinear subsets, and `maxCollinear` as the supremum of collinear subset sizes."
     },
     {
       "id": "main-problem",
       "title": "Main Problem: Divergence of $h_c(n)$",
       "startLine": 46,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Axiomatizes `erdos_102_divergence`: for fixed $c > 0$, given $cn^2$ rich lines, $\\max$-collinear $\\to \\infty$ with $n$. This is the central open question."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound: $h_c(n) \\le C\\sqrt{n}$",
       "startLine": 56,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Axiomatizes the $O(\\sqrt{n})$ upper bound on maximum collinear count, derived from the Szemerédi–Trotter incidence theorem."
     },
     {
       "id": "hunter",
       "title": "Hunter's Counterexample",
       "startLine": 65,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Axiomatizes Hunter's construction disproving Erdős's $\\sqrt{n}$ lower conjecture: lattice-point configurations achieve $h_c(n) \\ll n^{1/\\log(1/c)}$."
     },
     {
       "id": "connection-101",
       "title": "Connection to Problem #101",
       "startLine": 75,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Axiomatizes the logical implication: if $h_c(n) \\to \\infty$ (Problem #102), then the four-point line count is $o(n^2)$ for no-five-collinear configurations (Problem #101)."
     },
     {
       "id": "szemeredi-trotter",
       "title": "Szemerédi–Trotter Context",
       "startLine": 88,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Axiomatizes the Szemerédi–Trotter incidence bound $I(P,L) \\le C(n^{2/3}m^{2/3} + n + m)$, the foundational tool constraining rich-line configurations."
     },
     {

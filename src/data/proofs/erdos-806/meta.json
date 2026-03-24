@@ -80,7 +80,7 @@
       "title": "Sumsets and Bases",
       "summary": "Defines `finsetSumset` ($B + B$ via Cartesian product), `IsBasisFor` ($A \\subseteq B + B$), and proves `sumset_card_bound` ($|B+B| \\leq |B|^2$) — the foundational building blocks for the problem",
       "startLine": 40,
-      "endLine": 70,
+      "endLine": 71,
       "mathContext": "$B + B = \\{b_1 + b_2 : b_1, b_2 \\in B\\}$, $\\text{IsBasisFor}(B, A) \\iff A \\subseteq B + B$"
     },
     {
@@ -88,7 +88,7 @@
       "title": "The Interval {1, ..., n}",
       "summary": "Defines the ambient set $\\{1, \\ldots, n\\}$ as a `Finset ℕ` using `Finset.range` with a filter",
       "startLine": 72,
-      "endLine": 80,
+      "endLine": 81,
       "mathContext": "$\\{1, \\ldots, n\\} = \\{k \\in \\text{range}(n) : k \\geq 1\\}$"
     },
     {
@@ -96,7 +96,7 @@
       "title": "Erdős-Newman Lower Bound (1977)",
       "summary": "Axiomatizes the existence of 'hard' sets $A$ requiring any basis $B$ to satisfy $|B| \\geq (1-\\varepsilon) \\cdot \\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}$",
       "startLine": 82,
-      "endLine": 99,
+      "endLine": 100,
       "mathContext": "$\\exists A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$ such that $\\forall B$, $A \\subseteq B+B \\implies |B| = \\Omega\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$"
     },
     {
@@ -104,7 +104,7 @@
       "title": "Alon-Bukh-Sudakov Upper Bound (2009)",
       "summary": "Axiomatizes the resolution: every $A$ with $|A| \\leq \\sqrt{n}$ admits a basis $B$ of size $O\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$, plus the qualitative corollary `erdos_806`",
       "startLine": 101,
-      "endLine": 130,
+      "endLine": 131,
       "mathContext": "$\\forall A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$, $\\exists B$ with $A \\subseteq B+B$ and $|B| \\leq C \\cdot \\frac{\\log\\log n}{\\log n} \\cdot \\sqrt{n}$"
     },
     {
@@ -112,7 +112,7 @@
       "title": "The Tight Bound",
       "summary": "Combines both bounds into a verified theorem: the optimal basis size is $\\Theta\\left(\\frac{\\log\\log n}{\\log n} \\cdot \\sqrt{n}\\right)$",
       "startLine": 132,
-      "endLine": 155,
+      "endLine": 156,
       "mathContext": "$|B|_{\\text{opt}} = \\Theta\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$"
     },
     {
@@ -120,7 +120,7 @@
       "title": "Related Results",
       "summary": "Defines Sidon sets (`IsSidonSet`) where all pairwise sums are distinct — the dual problem to finding small bases",
       "startLine": 157,
-      "endLine": 174,
+      "endLine": 175,
       "mathContext": "$S$ is Sidon $\\iff a+b = c+d \\implies \\{a,b\\} = \\{c,d\\}$ for $a,b,c,d \\in S$"
     },
     {
@@ -128,7 +128,7 @@
       "title": "Examples",
       "summary": "Proves `trivial_basis`: $A \\cup \\{0\\}$ is always a basis (since $a = a + 0$), establishing the $|B| = |A|+1$ baseline that Erdős asked to improve",
       "startLine": 176,
-      "endLine": 196,
+      "endLine": 197,
       "mathContext": "$B = A \\cup \\{0\\} \\implies A \\subseteq B + B$ since $a = a + 0 \\in B + B$"
     },
     {
@@ -136,7 +136,7 @@
       "title": "Asymptotic Notation",
       "summary": "Axiomatizes $\\frac{\\log\\log n}{\\log n} \\to 0$ — the key analytic fact ensuring the Alon-Bukh-Sudakov bound gives $|B| = o(\\sqrt{n})$",
       "startLine": 198,
-      "endLine": 209,
+      "endLine": 210,
       "mathContext": "$\\lim_{n \\to \\infty} \\frac{\\log\\log n}{\\log n} = 0$"
     },
     {

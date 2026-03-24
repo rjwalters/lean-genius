@@ -71,7 +71,8 @@
       "Ring theory (units, inverses, non-commutativity)",
       "Operator theory basics",
       "Familiarity with Lean 4 and Mathlib"
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -126,63 +127,63 @@
       "id": "summability",
       "title": "Convergence and Summability",
       "startLine": 48,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "The power series ∑ T^n is summable when ‖T‖ < 1, using comparison with the scalar geometric series."
     },
     {
       "id": "invertibility",
       "title": "Invertibility",
       "startLine": 64,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "If ‖T‖ < 1, then (1-T) is a unit via Units.oneSub construction."
     },
     {
       "id": "sum-formula",
       "title": "The Sum Formula",
       "startLine": 77,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "The fundamental identity ∑ T^n = Ring.inverse(1-T), bridging the tsum to the ring-theoretic inverse."
     },
     {
       "id": "finite-sums",
       "title": "Finite Partial Sums",
       "startLine": 102,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "The finite identities (1-T)·∑ T^k = 1-T^n and their right-multiply counterparts."
     },
     {
       "id": "inverse-identities",
       "title": "Left and Right Inverses",
       "startLine": 121,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Both (1-T)·∑T^n = 1 and ∑T^n·(1-T) = 1, crucial for non-commutative settings."
     },
     {
       "id": "norm-bounds",
       "title": "Norm Bounds",
       "startLine": 142,
-      "endLine": 164,
+      "endLine": 165,
       "summary": "Bounds on ‖T^n‖ and the full series norm ‖∑ T^n‖ ≤ (1-‖T‖)⁻¹."
     },
     {
       "id": "convergence",
       "title": "Partial Sums Convergence",
       "startLine": 166,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "Finite partial sums converge to Ring.inverse(1-T) in the norm topology."
     },
     {
       "id": "perturbation",
       "title": "Perturbation of Identity",
       "startLine": 180,
-      "endLine": 202,
+      "endLine": 203,
       "summary": "Any element within distance 1 of the identity is invertible, with explicit inverse formula."
     },
     {
       "id": "commutativity",
       "title": "Commutativity with Generator",
       "startLine": 204,
-      "endLine": 234,
+      "endLine": 237,
       "summary": "T commutes with ∑ T^n, proved via the left/right inverse identities and additive cancellation."
     }
   ],

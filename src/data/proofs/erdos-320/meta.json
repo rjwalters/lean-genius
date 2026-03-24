@@ -87,77 +87,77 @@
       "id": "header",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Problem header documenting the OPEN status, known bounds from Bleicher-Erdős (1975-76) and BGMS (2025), references to the three key papers, and connection to Problem #321. Imports Mathlib for natural numbers, rationals, finite sets, logarithms, and big operators."
     },
     {
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 39,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines the core objects over ℚ for exact arithmetic: harmonicSum H_n = Σ 1/i, subsetSum for arbitrary subsets (with filter for positivity), allSubsetSums via Finset.powerset.image (automatic deduplication), and the central counting function S(N) = |allSubsetSums(N)|. Includes S_pos (sorry) asserting S(N) > 0 from the empty-set sum."
     },
     {
       "id": "iterated-logarithms",
       "title": "Part II: Iterated Logarithms",
       "startLine": 62,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Recursive definition of iterLog: log_0(x) = x, log_{i+1}(x) = log(log_i(x)). Convenience abbreviations log₁, log₂, log₃ for readability. The product iterLogProduct(N, k) = ∏_{i=3}^k log_i(N) via Finset.prod over Finset.Icc captures the correction factor appearing in all bounds. Starting at i=3 because the first two logarithmic levels are absorbed into the leading N/log N term."
     },
     {
       "id": "lower-bound",
       "title": "Part III: Bleicher-Erdős Lower Bound (1975)",
       "startLine": 83,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Axiomatizes the 1975 lower bound: log S(N) ≥ (N/log N)(log 2 · ∏ log_i N) for k ≥ 4 and log_k(N) ≥ k. The constant log 2 arises from binary choices among prime denominators. The derived theorem lower_bound_growth (sorry) extracts the simpler corollary S(N) ≥ exp(N/log N)."
     },
     {
       "id": "upper-bound",
       "title": "Part IV: Bleicher-Erdős Upper Bound (1976)",
       "startLine": 98,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "Axiomatizes the 1976 upper bound: log S(N) ≤ (N/log N)(log_r(N) · ∏ log_i N) for r ≥ 1 and log_{2r}(N) ≥ 1. The critical difference from the lower bound: the constant log 2 is replaced by the slowly growing log_r(N). The function boundGap explicitly measures the gap between bounds."
     },
     {
       "id": "bgms-improvement",
       "title": "Part V: BGMS Improved Lower Bound (2025)",
       "startLine": 112,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Axiomatizes the Bettin-Grenié-Molteni-Sanna improvement: constant 2 log 2 with correction factor (1 - 3/(2 log_k N)). The theorem bgms_improves_bleicher_erdos is GENUINELY PROVED via nlinarith: it shows 2 log 2 · (1 - 3/(2t)) > log 2 when t ≥ 4 by establishing 1 - 3/(2t) > 1/2 and then 2 · (1/2) = 1. One of only two fully verified results in the file."
     },
     {
       "id": "main-problem",
       "title": "Part VI: The Main Problem",
       "startLine": 133,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "Formalizes ErdosProblem320 as the existence of c > 0 with |log S(N) - c · (N/log N) · Π₃(N)| ≤ N/(log N)². The axiom erdos_320_open_bounds captures the weaker sandwich N/log N ≤ log S(N) ≤ (N/log N) · log log N. Status: OPEN — the exact constant c is unknown."
     },
     {
       "id": "egyptian-fractions",
       "title": "Part VII: Connection to Egyptian Fractions",
       "startLine": 150,
-      "endLine": 165,
+      "endLine": 166,
       "summary": "Defines IsEgyptianFraction (A represents q as sum of distinct unit fractions) and egyptianCount (number of representations of q using {1,...,N}). The axiom problem_321_connection formalizes egyptianCount(q, N) ≤ S(N), linking to Erdős Problem #321 which asks about representation counts directly."
     },
     {
       "id": "specific-values",
       "title": "Part VIII: Specific Values and Bounds",
       "startLine": 167,
-      "endLine": 186,
+      "endLine": 187,
       "summary": "Individual theorems S_one = 2, S_two = 4, S_three = 8 (all sorry — require Finset computation). The axiom S_small asserts S(N) = 2^N for N ≤ 6. The axiom S_collisions asserts S(N) < 2^N for N ≥ 8. The gap at N = 7: S(7) = 128 = 2^7 (no collision) is covered by the OEIS axiom."
     },
     {
       "id": "oeis-values",
       "title": "Part IX: OEIS Sequence A072207",
       "startLine": 188,
-      "endLine": 203,
+      "endLine": 204,
       "summary": "Axiomatizes the first 8 values of S(N) from OEIS A072207 as a conjunction. The theorem first_collision is GENUINELY PROVED: extracts S(8) = 255 from oeis_A072207, then norm_num dispatches 255 < 256. This is the key computational result in the formalization."
     },
     {
       "id": "growth-rate",
       "title": "Part X: Growth Rate Analysis",
       "startLine": 205,
-      "endLine": 217,
+      "endLine": 218,
       "summary": "Defines asymptotic_exponent(N) = N/log N as the leading term of log S(N). The theorem log_S_leading_term (sorry) asserts sandwich bounds c₁ · N/log N ≤ log S(N) ≤ c₂ · (N/log N) · log log N, showing N/log N ~ π(N) is the leading behavior."
     },
     {

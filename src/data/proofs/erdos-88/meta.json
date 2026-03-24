@@ -101,56 +101,56 @@
       "title": "Simple Graphs and Basic Definitions",
       "summary": "Sets up the graph-theoretic framework: `Graph V` as an alias for `SimpleGraph V`, `edgeSet` as the set of adjacent pairs, and `edgeCount` via `G.edgeFinset.card`. All definitions are noncomputable due to decidability requirements.",
       "startLine": 28,
-      "endLine": 44
+      "endLine": 45
     },
     {
       "id": "cliques-independent",
       "title": "Cliques and Independent Sets",
       "summary": "Defines `IsClique` and `IsIndependent` as universal quantifications over subset pairs. The extremal numbers `cliqueNumber` (ω) and `independenceNumber` (α) are defined via `iSup` over finsets, returning values in `ℕ∞`.",
       "startLine": 46,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "ramsey-graphs",
       "title": "Ramsey Graphs",
       "summary": "Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). Axiomatizes `ramsey_size_bound`: ε-Ramsey graphs have bounded size by Ramsey's theorem.",
       "startLine": 68,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "induced-subgraphs",
       "title": "Induced Subgraphs",
       "summary": "Defines `inducedSubgraph G S` as a `SimpleGraph S` with adjacency inherited from G. The `inducedEdgeCount` filters `edgeFinset` for edges within S. `HasInducedWithEdges G m` asserts existence of a subset achieving exactly m edges.",
       "startLine": 88,
-      "endLine": 108
+      "endLine": 109
     },
     {
       "id": "edge-count-range",
       "title": "The Edge Count Range Property",
       "summary": "Defines `AchievesAllEdgeCounts G M` (∀ m ≤ M, ∃ S with e(G[S]) = m) and `EdgeCountRangeProperty G δ` which specializes M = ⌊δn²⌋. The quadratic scale is justified by Erdős-Szemerédi density.",
       "startLine": 110,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "erdos-mckay",
       "title": "The Erdős-McKay Conjecture",
       "summary": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also states the weaker `ErdosMcKayWeakBound` with (log n)² scale, axiomatized as `erdos_mckay_weak` (Erdős-McKay original result).",
       "startLine": 127,
-      "endLine": 153
+      "endLine": 154
     },
     {
       "id": "erdos-szemeredi",
       "title": "Erdős-Szemerédi Density",
       "summary": "Axiomatizes `erdos_szemeredi_density`: for fixed ε > 0, ε-Ramsey graphs satisfy c₁n² ≤ |E(G)| ≤ c₂n². This 1972 result establishes that Θ(n²) is the correct edge count scale for Ramsey graphs.",
       "startLine": 155,
-      "endLine": 171
+      "endLine": 172
     },
     {
       "id": "anticoncentration",
       "title": "Anticoncentration",
       "summary": "Defines `IsAnticoncentrated X bound` (pointwise probability bound) and axiomatizes `random_induced_anticoncentration` (placeholder: random induced subgraph edge counts are well-spread). This is the key KSSS technique.",
       "startLine": 173,
-      "endLine": 194
+      "endLine": 195
     },
     {
       "id": "ksss-theorem",
@@ -164,7 +164,7 @@
       "title": "Main Result",
       "summary": "The main theorem `erdos_88 : ErdosMcKayConjecture := ksss_theorem` is a one-line proof aliasing the KSSS axiom. Also defines `delta` via Classical.choose with proved `delta_pos`, and axiomatizes `ksss_optimality` and Ramsey number connections.",
       "startLine": 264,
-      "endLine": 296
+      "endLine": 298
     }
   ],
   "conclusion": {

@@ -76,7 +76,8 @@
       "Antichain theory in partially ordered sets",
       "Multiplicative number theory"
     ],
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Sárközy studied sets A ⊆ {1,...,N} avoiding the divisibility relation a | (b+c) with a < min(b,c). They observed that the interval (2N/3, N] ∩ ℕ is divisibility-free and has size approximately N/3, and conjectured this is optimal: every divisibility-free set has |A| ≤ N/3 + O(1).\n\nThe problem sat open for decades until Benjamin Bedert solved it in 2023, earning Erdős's $100 prize. Bedert's proof confirmed the tight bound, showing the upper third construction cannot be significantly improved. The solution required careful analysis of divisibility constraints and additive structure.\n\nThe problem connects to several areas: sum-free sets (the upper third is also sum-free since a + b > 4N/3 > N ≥ c), extremal combinatorics, and the theory of restricted arithmetic structures. The natural generalization to r-element sums — asking whether |A| ≤ N/(r+1) + O(1) when no a divides b₁ + ··· + bᵣ with a < min(bᵢ) — remains open for r ≥ 3.",
@@ -103,42 +104,42 @@
       "title": "Core Definitions",
       "summary": "Defines IsBadTriple (a | (b+c) with a < min(b,c)), DivisibilityFree (no bad triples), and proves their equivalence.",
       "startLine": 46,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "upper-third",
       "title": "The Upper Third Construction",
       "summary": "Defines upperThird(N) = {k : 2N < 3k, k ≤ N}, axiomatizes it is divisibility-free and has cardinality N - 2N/3.",
       "startLine": 69,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "bedert",
       "title": "Bedert's Theorem (2023)",
       "summary": "Axiomatizes the main result: |A| ≤ N/3 + C for divisibility-free A ⊆ {1,...,N}, and the optimality of the upper third.",
       "startLine": 102,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "generalization",
       "title": "The r-Sum Generalization",
       "summary": "Defines RDivisibilityFree for r-element sums, proves r=2 recovers original, defines upperFraction and ErdosRSumConjecture, proves r=2 case is Bedert.",
       "startLine": 128,
-      "endLine": 179
+      "endLine": 180
     },
     {
       "id": "intuition",
       "title": "Why N/3?",
       "summary": "Intuition via residue classes mod 3 and membership characterization mem_upperThird_iff (proved).",
       "startLine": 181,
-      "endLine": 204
+      "endLine": 205
     },
     {
       "id": "sum-free",
       "title": "Connection to Sum-Free Sets",
       "summary": "Defines SumFree and axiomatizes that the upper third is also sum-free: a + b > 4N/3 > N ≥ c.",
       "startLine": 206,
-      "endLine": 226
+      "endLine": 227
     },
     {
       "id": "summary",

@@ -40,7 +40,8 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 8,
     "lineCount": 374,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The problem of squaring the circle dates to the Rhind Papyrus (c. 1650 BCE) and was a central challenge in ancient Greek mathematics, studied by Anaxagoras, Hippocrates of Chios, and Archimedes. In 1761, Johann Heinrich Lambert proved $\\pi$ is irrational, but transcendence required entirely new methods. Charles Hermite's landmark 1873 proof that $e$ is transcendental introduced the auxiliary polynomial technique. Ferdinand von Lindemann, building directly on Hermite's method, proved $\\pi$ transcendental in 1882, definitively resolving the 2,000-year-old circle-squaring problem. Karl Weierstrass later generalized Lindemann's result to the full Lindemann-Weierstrass theorem (1885), establishing that $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent when $\\alpha_1, \\ldots, \\alpha_n$ are linearly independent algebraic numbers. This line of work opened transcendental number theory as a distinct field, leading to Gelfond-Schneider (1934), Baker's theorem (1966), and modern Diophantine analysis.",
@@ -64,63 +65,63 @@
       "id": "imports-setup",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Imports from Mathlib: `RingTheory.Algebraic.Basic` for `Transcendental`, `SpecialFunctions.ExpDeriv` for `Complex.exp`, and `Complex.Circle` for Euler's identity. Opens `Real`, `Complex`, and `Polynomial` namespaces."
     },
     {
       "id": "definitions-background",
       "title": "Definitions and Background",
       "startLine": 44,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Documents the definition of transcendental numbers: $x$ is transcendental over $R$ if no nonzero $P \\in R[X]$ satisfies $P(x) = 0$. Explains the key insight linking $\\pi$'s transcendence to Euler's identity $e^{i\\pi} = -1$ via Lindemann-Weierstrass."
     },
     {
       "id": "key-properties",
       "title": "Key Properties of $\\pi$ from Mathlib",
       "startLine": 64,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Proves $\\pi > 0$ from `Real.pi_pos` and demonstrates Euler's identity $e^{i\\pi} = -1$ via `Complex.exp_pi_mul_I`."
     },
     {
       "id": "lindemann-proof",
       "title": "Lindemann's Proof Strategy (1882)",
       "startLine": 75,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Detailed documentation of Lindemann's proof outline: the Lindemann-Weierstrass theorem on linear independence of $e^{\\alpha_i}$, the corollary for single exponents, and the contraposition argument via Euler's identity."
     },
     {
       "id": "main-axioms",
       "title": "The Main Theorem (Axiomatized)",
       "startLine": 115,
-      "endLine": 143,
+      "endLine": 144,
       "summary": "Axiomatizes Lindemann's theorem (`lindemann_theorem`) and the main result `Transcendental ℤ Real.pi`, plus `Transcendental ℚ Real.pi`. These await Mathlib's Lindemann-Weierstrass formalization."
     },
     {
       "id": "algebraic-numbers",
       "title": "Why $\\pi$ Cannot Be Algebraic",
       "startLine": 145,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "Proves the supporting lemmas: Euler's identity $e^{i\\pi} = -1$, that $-1$ is algebraic (root of $X + 1$), and that $i$ is algebraic (root of $X^2 + 1$). These are the key ingredients for the contraposition argument."
     },
     {
       "id": "corollaries",
       "title": "Corollaries of Transcendence",
       "startLine": 185,
-      "endLine": 236,
+      "endLine": 237,
       "summary": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each via polynomial composition arguments."
     },
     {
       "id": "squaring-circle",
       "title": "The Squaring of the Circle",
       "startLine": 238,
-      "endLine": 288,
+      "endLine": 289,
       "summary": "Connects $\\pi$'s transcendence to the ancient impossibility result. Since constructible numbers are algebraic of degree $2^n$, and $\\sqrt{\\pi}$ is transcendental, a square with area $\\pi r^2$ cannot be constructed by ruler and compass."
     },
     {
       "id": "connections",
       "title": "Connections to Other Results",
       "startLine": 290,
-      "endLine": 318,
+      "endLine": 319,
       "summary": "Links to related transcendence results: Hermite (1873, $e$), Lindemann-Weierstrass (1882), Gelfond-Schneider (1934, $\\alpha^\\beta$), and Baker (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental?"
     },
     {

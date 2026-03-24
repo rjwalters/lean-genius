@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "lineCount": 205,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem originates from the Erdős–Hajnal program (1966, *Acta Math. Acad. Sci. Hungar.* 17:61–99) connecting chromatic number with structural graph properties. Erdős and Hajnal conjectured that uncountable chromatic number forces subgraphs of infinite connectivity. The specific formulation about countable subgraphs appears in Vatter's 1999 problem collection (Problem 7.90) and is catalogued as Problem B24-adjacent in Guy's survey. Soukup (2015, *Combinatorica*) gave the first ZFC construction of an uncountably chromatic graph where every uncountable vertex set is only finitely connected, using ladder systems on non-special $\\omega_1$-trees. This disproved Problem 1067 but left Problem 1068 (the countable case) open. Bowler and Pitz (2024, *Electronic J. Combinatorics*) simplified Soukup's construction using elementary ladder graphs. Earlier, Komjáth (2013, *Israel J. Math.*) had shown a related question is independent of ZFC, highlighting the set-theoretic depth of the problem. The infinite Menger theorem, proved by Aharoni and Berger (2009, *Inventiones mathematicae*), provides the key characterization: infinite connectivity is equivalent to the absence of finite vertex separators. The De Bruijn–Erdős theorem (1951) connects infinite and finite graph coloring, ensuring $\\chi(G) \\geq \\aleph_1$ implies arbitrarily large finite chromatic number.",
@@ -47,56 +48,56 @@
       "id": "preamble",
       "title": "Problem Statement and Context",
       "startLine": 1,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Detailed module docstring: the problem statement, its relationship to Problem 1067, Soukup's counterexample, Bowler–Pitz simplification, and key references. Explains the countable/uncountable distinction that makes Problem 1068 the remaining open case."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 34,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Imports Mathlib's `SimpleGraph`, `Cardinal`, and `Set.Countable`. Opens `Cardinal` and `SimpleGraph` namespaces. Sets up universe-polymorphic vertex type variable."
     },
     {
       "id": "graph-infrastructure",
       "title": "Graph Infrastructure: Paths and Disjointness",
       "startLine": 45,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Defines `PathInGraph` (vertex-list paths), `InternallyDisjoint` (no shared internal vertices), `PairwiseInternallyDisjoint`, `InfinitelyManyDisjointPaths`, and `InfinitelyConnected`. These build toward Menger-style connectivity characterization."
     },
     {
       "id": "chromatic-infrastructure",
       "title": "Chromatic Number and Induced Subgraphs",
       "startLine": 78,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Defines `hasAleph1ChromaticNumber` ($\\chi(G) \\geq \\aleph_1$ via non-existence of countable proper coloring) and `inducedSubgraph` ($G[S]$ for a vertex set $S$). Together these set up the problem: find countable $S$ with $G[S]$ $\\infty$-connected."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (Problem 1068)",
       "startLine": 94,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "Axiomatizes `erdos_1068`: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. This is the central open problem."
     },
     {
       "id": "known-results",
       "title": "Known Results: Soukup and Problem 1067",
       "startLine": 106,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "Axiomatizes Soukup's (2015) counterexample (uncountable sets can fail) and the disproof of Problem 1067 (no uncountable $\\infty$-connected subgraph with $\\chi \\geq \\aleph_1$ is forced). These establish why the countable case is the key remaining question."
     },
     {
       "id": "structural-observations",
       "title": "Structural Observations",
       "startLine": 129,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "Axiomatizes the no-finite-separator property (consequence of Aharoni–Berger infinite Menger theorem), set-theoretic sensitivity (Komjáth 2013), and Bowler–Pitz (2024) simplified construction. The latter two are `True` placeholders."
     },
     {
       "id": "proved-implications",
       "title": "Proved Structural Implications",
       "startLine": 158,
-      "endLine": 179,
+      "endLine": 180,
       "summary": "Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file."
     },
     {

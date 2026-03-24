@@ -45,7 +45,8 @@
     "wiedijkNumber": 58,
     "axiomCount": 0,
     "lineCount": 400,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The binomial coefficient formula has roots in multiple ancient civilizations. In China, Yang Hui's triangle (1261 CE) displayed the same pattern now known as Pascal's triangle in the West. The Persian mathematician Al-Karaji (953–1029 CE) and Omar Khayyam (1048–1131) studied binomial expansions, and Pingala's Meru-prastaara from ancient India (around 200 BCE) encoded the same combinatorial structure in a different form.\n\nBlaise Pascal's 1654 treatise 'Traité du Triangle Arithmétique' gave the first systematic Western treatment, proving the recurrence C(n+1,k+1) = C(n,k) + C(n,k+1) and connecting the triangle to combinatorics, probability, and the binomial theorem. The factorial formula n!/(k!(n-k)!) emerged as the algebraic expression of the combinatorial count, with the divisibility n!/(k!(n-k)!) ∈ ℕ being a non-trivial fact requiring proof.\n\nIn modern mathematics, binomial coefficients appear throughout combinatorics (subset counting, multinomials), algebra (polynomial identities, generating functions), number theory (Lucas's theorem mod p, Kummer's theorem), and analysis (integral formulas for the Beta function, Vandermonde's identity). The Lean formalization as Wiedijk #58 uses Mathlib's `Nat.choose_eq_factorial_div_factorial` and `Finset.powersetCard` to connect the algebraic formula to the combinatorial interpretation.",
@@ -68,7 +69,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 55,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "The fundamental formula C(n,k) = n! / (k!(n-k)!) and divisibility property.",
       "mathContext": "The fundamental formula C(n,k) = n! / (k!(n-k)!) and divisibility property."
     },
@@ -76,7 +77,7 @@
       "id": "properties",
       "title": "Properties of Binomial Coefficients",
       "startLine": 74,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Symmetry, boundary cases (k=0, k=n, k=1), and their combinatorial interpretations.",
       "mathContext": "Symmetry, boundary cases (k=0, k=n, k=1), and their combinatorial interpretations."
     },
@@ -84,7 +85,7 @@
       "id": "pascal",
       "title": "Pascal's Triangle Relationship",
       "startLine": 101,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Pascal's identity: each entry is the sum of two entries above it.",
       "mathContext": "Pascal's identity: each entry is the sum of two entries above it."
     },
@@ -92,7 +93,7 @@
       "id": "factorial-interpretation",
       "title": "Factorial Interpretation",
       "startLine": 111,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Connection between permutations P(n,k) and combinations C(n,k) via the falling factorial.",
       "mathContext": "Connection between permutations P(n,k) and combinations C(n,k) via the falling factorial."
     },
@@ -100,7 +101,7 @@
       "id": "examples",
       "title": "Verification Examples",
       "startLine": 130,
-      "endLine": 163,
+      "endLine": 400,
       "summary": "Concrete examples verifying the formula and properties for specific values.",
       "mathContext": "Concrete examples verifying the formula and properties for specific values."
     }

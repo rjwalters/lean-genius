@@ -79,7 +79,8 @@
         "id": "amgm-inequality",
         "relationship": "Root AM-GM inequality; this limit establishes M₀ = GM, the bridge between AM and HM in the power mean chain"
       }
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -189,7 +190,7 @@
       "id": "main-limit",
       "title": "Core Slope Limit via Derivative Definition",
       "startLine": 143,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "tendsto_log_sum_div_rpow: the key intermediate limit (log ∑ wᵢzᵢ^r)/r → ∑ wᵢ log zᵢ. Uses hasDerivAt_iff_tendsto_slope to convert HasDerivAt at r=0 (with g(0) = 0) into the slope limit g(r)/r → g'(0).",
       "mathContext": "$\\frac{g(r)}{r} = \\frac{g(r) - g(0)}{r - 0} \\to g'(0) = \\sum w_i \\log z_i$ by the definition of derivative, since $g(0) = 0$."
     },
@@ -197,7 +198,7 @@
       "id": "supporting-identities",
       "title": "Supporting Identities: GM via exp/log and M_r Representation",
       "startLine": 173,
-      "endLine": 214,
+      "endLine": 215,
       "summary": "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ) via Real.log_prod and Real.log_rpow. powerMean_one_eq_arithMean: M₁ = AM via rpow_one. powerMean_eq_exp_log: M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) for r ≠ 0 via rpow_def_of_pos.",
       "mathContext": "$\\text{GM} = \\prod z_i^{w_i} = \\exp(\\sum w_i \\log z_i)$ via `log_prod` + `log_rpow`. The exp/log representation $M_r = \\exp(f(r)/r)$ connects the power mean to the slope limit, making the main theorem's proof a composition of continuity and the derivative result."
     },
@@ -205,7 +206,7 @@
       "id": "main-theorem",
       "title": "Main Theorem: lim_{r→0} M_r = GM",
       "startLine": 216,
-      "endLine": 247,
+      "endLine": 248,
       "summary": "tendsto_powerMean_zero: the headline result proving Filter.Tendsto (fun r => (∑ wᵢzᵢ^r)^(1/r)) (nhdsWithin 0 {0}ᶜ) (nhds (∏ zᵢ^wᵢ)). Proof: rewrite both sides to exp form, compose the slope limit with Real.continuous_exp.",
       "mathContext": "$\\lim_{r \\to 0} M_r = \\lim_{r \\to 0} e^{f(r)/r} = e^{\\sum w_i \\log z_i} = \\prod z_i^{w_i} = \\text{GM}$. The proof is a 4-step composition: (1) get the slope limit, (2) rewrite GM to exp form, (3) rewrite M_r to exp form via congr, (4) apply continuity of exp."
     },

@@ -94,35 +94,35 @@
       "title": "Graph Basics",
       "summary": "Defines the complete graph $K_r$ via `completeGraphOnFin` and the minimum degree $\\delta(G) = \\min_{v} \\deg(v)$ via `Finset.min'` with nonemptiness from `Finset.univ_nonempty`.",
       "startLine": 43,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "cliques",
       "title": "Cliques and Clique Covers",
       "summary": "Defines `IsRClique G S r` ($|S| = r \\land G.\\texttt{IsClique}\\, S$), `AreVertexDisjoint` (pairwise disjoint), `HasMDisjointRCliques` ($m$ disjoint $K_r$'s), and `HasPerfectKrFactor` (covering property $\\bigcup = V$).",
       "startLine": 62,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "Axiomatizes $r = 2$ (Dirac's theorem: $2m$ vertices, $\\delta \\ge m$ implies $m$ disjoint edges) and $r = 3$ (Corrádi–Hajnal 1963: $3m$ vertices, $\\delta \\ge 2m$ implies $m$ disjoint triangles).",
       "startLine": 98,
-      "endLine": 117
+      "endLine": 118
     },
     {
       "id": "main-theorem",
       "title": "Hajnal-Szemerédi Theorem",
       "summary": "The main theorem: $rm$ vertices, $r \\ge 2$, $m \\ge 1$, $\\delta(G) \\ge m(r-1)$ implies $m$ vertex-disjoint $K_r$'s. Also the perfect factor form with `biUnion = univ`.",
       "startLine": 119,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "tightness",
       "title": "Tightness",
       "summary": "Tightness: $\\exists$ graph on $rm$ vertices with $\\delta = m(r-1)-1$ and no $m$ disjoint $K_r$'s, showing the degree bound is optimal.",
       "startLine": 148,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "summary",

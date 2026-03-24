@@ -89,21 +89,21 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 22,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines `nextGeneration A = \\{xy - 1 : x, y \\in A, x \\neq y, xy \\geq 2\\}$, `sequenceSet n` (the $n$-th generation starting from $\\{2, 3\\}$), `generatedSet = \\bigcup_n S_n$, and `generatedCount N = |S \\cap [1, N]|$ via `Finset.Icc.filter`."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 43,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Axiomatizes `erdos_424_conjecture`: $\\exists c > 0, \\forall N > 0, |S \\cap [1, N]| \\geq cN$, i.e., the generated set has positive lower density."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 51,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Axiomatizes `mod_3_obstruction` (no element $\\equiv 1 \\pmod{3}$), `density_upper_bound` (density $\\leq 2/3 + \\varepsilon$ for large $N$), and `initial_elements` (the first six elements $2, 3, 5, 9, 14, 17$ are in the set)."
     },
     {

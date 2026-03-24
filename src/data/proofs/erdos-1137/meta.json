@@ -146,35 +146,35 @@
       "id": "definitions",
       "title": "Part I: Core Definitions",
       "startLine": 33,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Defines `primeGap n = p_{n+1} - p_n`, `maxGap x = max_{n<x} d_n`, and `erdosRatio x` as the conjectured-to-vanish ratio."
     },
     {
       "id": "basic-properties",
       "title": "Part II: Basic Properties",
       "startLine": 54,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Proves strict monotonicity of primes, positivity of gaps ($d_n \\geq 1$), and computes $d_0 = 1$, $d_1 = 2$ via `Nat.nth_count`."
     },
     {
       "id": "parity",
       "title": "Part III: Parity of Prime Gaps",
       "startLine": 105,
-      "endLine": 140,
+      "endLine": 141,
       "summary": "Proves $d_n$ is even for $n \\geq 1$ (odd minus odd) and consequently $d_n \\geq 2$. The parity proof uses `eq_one_or_self_of_dvd` and `Nat.even_sub`."
     },
     {
       "id": "computations",
       "title": "Part IV: Computations",
       "startLine": 142,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "Computes $p_3 = 7$, $p_4 = 11$ and gaps $d_2 = 2$, $d_3 = 4$ via `Nat.nth_count`."
     },
     {
       "id": "conjecture",
       "title": "Part V: Main Conjecture",
       "startLine": 172,
-      "endLine": 195,
+      "endLine": 210,
       "summary": "States the main conjecture as an axiom: `Tendsto erdosRatio atTop (nhds 0)`. Also axiomatizes the trivial bound ($\\leq 1$) and max gap $\\to \\infty$."
     }
   ],

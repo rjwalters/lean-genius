@@ -46,7 +46,8 @@
     "hilbertNumber": 14,
     "axiomCount": 0,
     "lineCount": 364,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Hilbert's fourteenth problem arose from 19th century invariant theory, which sought to describe polynomial functions unchanged by group transformations. In 1890, Hilbert revolutionized the field by proving that finitely many invariants always suffice for classical groups like GL_n and SL_n, using his new Basis Theorem.\n\nIn 1900, Hilbert posed the general question: Is the ring of invariants always finitely generated? This remained open for nearly 60 years.\n\n**Timeline:**\n- 1890: Hilbert proves finiteness for classical invariant theory\n- 1900: Hilbert poses the general problem\n- 1959: Nagata constructs a counterexample\n- 1965: Mumford proves finiteness for reductive groups (char 0)\n- 1975: Haboush extends to all characteristics",
@@ -69,35 +70,35 @@
       "id": "basis-theorem",
       "title": "Hilbert's Basis Theorem (Foundation)",
       "startLine": 56,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "The foundation: if R is Noetherian, then polynomial rings R[X] and R[x_1,...,x_n] are also Noetherian."
     },
     {
       "id": "invariant-rings",
       "title": "Invariant Ring Structure",
       "startLine": 102,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Definition of the ring of invariants R^G = {r : g(r) = r for all g} and its basic properties."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 152,
-      "endLine": 195,
+      "endLine": 196,
       "summary": "Formal statement of Hilbert's 14th problem: is R^G always finitely generated?"
     },
     {
       "id": "reductive-case",
       "title": "Hilbert's Finiteness Theorem (Positive Case)",
       "startLine": 197,
-      "endLine": 260,
+      "endLine": 261,
       "summary": "For reductive groups, the answer is YES. Proof uses Reynolds operator and Hilbert's Basis Theorem."
     },
     {
       "id": "nagata",
       "title": "Nagata's Counterexample (Negative Case)",
       "startLine": 262,
-      "endLine": 320,
+      "endLine": 321,
       "summary": "Nagata (1959) constructed a counterexample: G_a^13 acting on k^32 has non-finitely-generated invariants."
     },
     {

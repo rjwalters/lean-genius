@@ -61,7 +61,8 @@
       "derangements",
       "bertrands-postulate"
     ],
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -134,7 +135,7 @@
       "id": "stirling-sequence",
       "title": "The Stirling Sequence",
       "startLine": 51,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Definition of stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n].",
       "mathContext": "$S_n = \\frac{n!}{\\sqrt{2n} \\cdot (n/e)^n}$. The Stirling sequence normalizes $n!$ by the leading approximation, and $S_n \\to \\sqrt{\\pi}$ yields the formula."
     },
@@ -142,7 +143,7 @@
       "id": "convergence",
       "title": "Convergence to sqrt(pi)",
       "startLine": 73,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "The Stirling sequence converges to sqrt(pi).",
       "mathContext": "$\\lim_{n\\to\\infty} S_n = \\sqrt{\\pi}$, proved via the Wallis product $\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}$."
     },
@@ -150,7 +151,7 @@
       "id": "asymptotic",
       "title": "Asymptotic Equivalence",
       "startLine": 99,
-      "endLine": 121,
+      "endLine": 122,
       "summary": "Stirling's formula as asymptotic equivalence.",
       "mathContext": "$n! \\sim \\sqrt{2\\pi n} \\cdot (n/e)^n$, i.e., $\\lim_{n\\to\\infty} \\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1$."
     },
@@ -166,7 +167,7 @@
       "id": "applications",
       "title": "Applications",
       "startLine": 209,
-      "endLine": 271,
+      "endLine": 497,
       "summary": "Log-factorial approximation and connections to entropy.",
       "mathContext": "$\\log(n!) \\approx n\\log n - n + \\frac{1}{2}\\log(2\\pi n)$. Entropy: $H = \\log\\binom{n}{k} \\approx nH(k/n)$ where $H(p) = -p\\log p - (1-p)\\log(1-p)$."
     }

@@ -60,7 +60,8 @@
     ],
     "dateAdded": "2025-12-29",
     "lineCount": 514,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Hilbert's 3rd Problem was posed at the Second International Congress of Mathematicians in Paris on August 8, 1900. Hilbert asked whether Euclid's theory of volumes for polyhedra — which relied on an infinite process (Cavalieri's principle or exhaustion) — could be replaced by purely finitary dissection arguments, as was possible in 2D via the Bolyai-Gerwien theorem (1833).\n\nMax Dehn (1878–1952), Hilbert's own doctoral student, solved the problem in the same year — making it the first of Hilbert's 23 problems to be completely resolved. Dehn introduced a new algebraic invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$ that is preserved under scissors congruence but distinguishes the cube from the regular tetrahedron. The key insight: the dihedral angle of a cube ($\\pi/2$) is a rational multiple of $\\pi$, while the tetrahedron's angle ($\\arccos(1/3)$) is not — a fact that follows from Niven's theorem on rational values of trigonometric functions.\n\nThe story continued: in 1965, Jean-Pierre Sydler proved the converse — volume and Dehn invariant completely classify scissors congruence in $\\mathbb{R}^3$. In the 1980s, Dupont and Sah discovered deep connections between the scissors congruence group $\\mathcal{P}(\\mathbb{R}^3)$ and algebraic K-theory ($K_3(\\mathbb{C})$), linking elementary geometry to modern abstract algebra. In dimensions $\\geq 4$, the classification remains open.",
@@ -98,7 +99,7 @@
       "id": "scissors",
       "title": "Part 3: Scissors Congruence",
       "startLine": 150,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "Defines `scissorsCongruent P Q := True` (placeholder). Documents that scissors congruence requires decomposition into finitely many pieces rearranged by rigid motions."
     },
     {
@@ -140,7 +141,7 @@
       "id": "bolyai-gerwien",
       "title": "Part 9: 2D Contrast — Bolyai-Gerwien",
       "startLine": 402,
-      "endLine": 469,
+      "endLine": 470,
       "summary": "Defines `Polygon` with positive `area`. Axiom `bolyai_gerwien_theorem`: equal area implies 2D scissors congruence. **Fully proved** `dimension_contrast` combining the 2D result with the 3D counterexample."
     },
     {

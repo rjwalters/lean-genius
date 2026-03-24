@@ -88,56 +88,56 @@
       "id": "basic-defs",
       "title": "Basis and Restricted Order Definitions",
       "startLine": 43,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Defines IsBasisOfOrder(A, h) using Multiset ℕ (allowing repetition): every sufficiently large n = x₁ + ··· + xₖ with xᵢ ∈ A and k ≤ h. IsExactOrder requires minimality (order h but not h−1). HasRestrictedOrder(A, t) uses Finset ℕ (requiring distinctness). HasFiniteRestrictedOrder is the existential ∃ t, and minimalRestrictedOrder computes the least such t via Nat.find. The type-level Multiset/Finset distinction is the formal backbone of the entire formalization."
     },
     {
       "id": "bateman",
       "title": "Bateman's Observation: Order ≥ 3 Doesn't Imply Restricted Order",
       "startLine": 94,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Defines batemanSet(h) = {1} ∪ {x > 0 : h | x} and axiomatizes it as a basis of order h with no finite restricted order for h ≥ 3. The theorem bateman_observation is genuinely proved by pairing the two axioms. The key insight: n = qh + r uses q + r ≤ h summands with repetition, but distinct multiples of h sum to h·t(t+1)/2, requiring t ~ √(2n/h) → ∞ distinct summands."
     },
     {
       "id": "kelly",
       "title": "Kelly's Theorem and Conjecture (1957)",
       "startLine": 119,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "Axiomatizes Kelly's theorem: every basis of order 2 has restricted order ≤ 4. Formalizes kellyConjecture as the stronger claim (restricted order ≤ 3). The theorem kelly_conjecture_false has a sorry because the direct proof uses Hennecart's construction; the genuine disproof appears later as hennecart_disproves_kelly. Kelly's pigeonhole argument exploits the many representations n = a + b to find 4 distinct elements summing to n."
     },
     {
       "id": "hennecart",
       "title": "Hennecart's Counterexample (2005)",
       "startLine": 146,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "Axiomatizes hennecart_basis as an order-2 basis with restricted order exactly 4 (HasRestrictedOrder 4 ∧ ¬HasRestrictedOrder 3). The theorem hennecart_disproves_kelly is genuinely proved: assume Kelly's conjecture → apply to Hennecart's basis → get restricted order ≤ 3 → contradiction with ¬HasRestrictedOrder 3. This resolved a 50-year-old conjecture by showing Kelly's bound of 4 is sharp."
     },
     {
       "id": "examples",
       "title": "Classical Examples: Squares and Triangular Numbers",
       "startLine": 169,
-      "endLine": 213,
+      "endLine": 214,
       "summary": "Defines squares = {k² : k ≥ 0} and triangular = {k(k+1)/2 : k ≥ 0}. Axiomatizes: squares have order 4 (Lagrange, 1770) and restricted order 5 (Pall, 1933); triangulars have order 3 (Gauss Eureka, 1796) and restricted order 3 (Schinzel, 1954). The theorems triangular_orders_equal and squares_orders_differ are genuinely proved by pairing the respective axioms, exhibiting the two contrasting behaviors."
     },
     {
       "id": "hhp",
       "title": "HHP Exponential Lower Bound (2007)",
       "startLine": 215,
-      "endLine": 236,
+      "endLine": 237,
       "summary": "Axiomatizes hhp_lower_bound: for k ≥ 2, there exists a basis of order k whose restricted order is at least 2^{k−2} + k − 1. The theorem exponential_gap is genuinely proved by obtaining the basis A from the axiom, then showing ∀ t, HasRestrictedOrder A t → t ≥ 2^{k−2} + k − 1 by contraposition using push_neg. Values: k=3 gives ≥4, k=4 gives ≥7, k=10 gives ≥265."
     },
     {
       "id": "open-questions",
       "title": "The Four Main Open Questions",
       "startLine": 238,
-      "endLine": 274,
+      "endLine": 275,
       "summary": "Formalizes four Prop definitions capturing Erdős's open questions. Q1 (characterization): ∃ predicate P with HasFiniteRestrictedOrder A ↔ P A. Q2 (bounding): ∃ f with restricted order ≤ f(order). Q3 (equality): ∃ P characterizing when order = restricted order. Q4 (robustness): defines IsRobustBasis as ∀ F : Finset ℕ, IsBasisOfOrder (A \\ ↑F) h, and asks whether robustness implies HasFiniteRestrictedOrder."
     },
     {
       "id": "properties",
       "title": "Basic Properties of Restricted Order",
       "startLine": 276,
-      "endLine": 318,
+      "endLine": 319,
       "summary": "Three structural results. restricted_implies_regular (genuinely proved): HasRestrictedOrder A t → IsBasisOfOrder A t, converting Finset to Multiset via s.val. order_le_restricted_order (sorry): IsExactOrder A h ∧ HasRestrictedOrder A t → h ≤ t. restricted_order_monotone (genuinely proved): HasRestrictedOrder A t → HasRestrictedOrder A (t+1) via Nat.le_succ_of_le on cardinality."
     },
     {

@@ -33,7 +33,8 @@
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 182,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The tension between classical existence proofs and constructive algorithms is one of the deepest themes in the foundations of mathematics. Euclid's original algorithm (c. 300 BCE) in Book VII of the Elements was inherently constructive — it computed the GCD by iterated subtraction. The extended Euclidean algorithm, which produces Bézout coefficients $x, y$ such that $ax + by = \\gcd(a,b)$, was developed by Étienne Bézout in 1779 and later formalized by Bachet and others. In modern proof assistants like Lean 4, the classical axiom of choice (via `Exists.choose`) allows extracting witnesses from existence proofs but marks definitions as `noncomputable`, preventing evaluation. This formalization demonstrates a general technique in constructive algebra: replacing choice-extracted witnesses with decidable operations (here, integer division) to recover computability while preserving correctness. The approach connects to Bishop's constructive mathematics program and the Curry-Howard correspondence, where computational content is extracted from proofs.",
@@ -56,35 +57,35 @@
       "id": "header-imports",
       "title": "Module Header and Problem Statement",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Documents the open question origin (from bezout-identity-oq-02-oq-02-oq-01: 'Can the noncomputable annotation be removed?') and the affirmative answer: replacing hdvd.choose with computable integer division (b*c)/a. Imports Mathlib's natural number GCD, integer GCD, and general tactic libraries. Opens the BezoutConstructive namespace for the formalization."
     },
     {
       "id": "ext-gcd",
       "title": "Extended Euclidean Algorithm",
       "startLine": 29,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Implements `extGcd` as a recursive function returning Bézout coefficients $(x, y, g)$ with $ax + by = g = \\gcd(a,b)$, along with correctness proofs `extGcd_gcd` and `extGcd_bezout` by strong induction on $b$."
     },
     {
       "id": "computable-div",
       "title": "Fully Computable Constructive Quotient",
       "startLine": 81,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Defines `constructive_div_computable` using $q = xc + y \\cdot \\lfloor bc/a \\rfloor$ and proves its correctness via `Int.mul_ediv_cancel'` and the Bézout identity. The function passes Lean's computability checker."
     },
     {
       "id": "eval-examples",
       "title": "Computational Verification",
       "startLine": 136,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Demonstrates computability with `native_decide` examples and `#eval` evaluations, confirming the function produces correct quotients for concrete inputs like $\\gcd(3,7)=1, 3 \\mid 42$ giving $q=2$."
     },
     {
       "id": "key-insight",
       "title": "Why Integer Division Works",
       "startLine": 160,
-      "endLine": 181,
+      "endLine": 182,
       "summary": "The theorem `div_witness_correct` isolates the core insight: when $a \\mid bc$, the integer division $\\lfloor bc/a \\rfloor$ is exact, so $a \\cdot (bc/a) = bc$. This is what eliminates the need for classical choice."
     }
   ],

@@ -26,7 +26,8 @@
     ],
     "axiomCount": 2,
     "assumptions": "2 axiom declarations: simpson_theorem (minimum with equal residues — deep 1986 result), max_density_coprime_case (CRT coprime maximum). Previously axiomatized equal_residues_minimize, single_modulus_density, and erdos_278_density_le_one are now fully proved.",
-    "lineCount": 334
+    "lineCount": 334,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.28), as part of their systematic study of covering systems — a topic Erdős championed from his groundbreaking 1950 paper showing that covering systems with distinct moduli greater than 1 exist. The problem asks: given fixed moduli, how should one choose residues to optimize coverage? R.J. Simpson resolved the minimum question in 1986 (Discrete Mathematics 59), proving by an elegant averaging argument that equal residues minimize coverage density. The maximum question remains open and connects to the broader structure theory of covering systems, which saw a major breakthrough when Bob Hough (2015, Annals of Mathematics) proved the minimum modulus conjecture — showing that any covering system with distinct moduli must include a modulus at most $10^{16}$. The interplay between coprime and non-coprime moduli connects to the Chinese Remainder Theorem and to sieve-theoretic methods in analytic number theory.",
@@ -60,7 +61,7 @@
       "id": "congruence-system",
       "title": "Congruence System Structure",
       "startLine": 29,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Defines `CongruenceSystem` (moduli with residue function and positivity proof) and `isCovered` ($m \\equiv a_i \\pmod{n_i}$ for some $i$).",
       "mathContext": "$\\{a_i \\pmod{n_i}\\}_{i=1}^{r}$ with $n_i > 0$. Covered: $m \\in \\bigcup_{i} (a_i + n_i\\mathbb{Z})$."
     },
@@ -68,7 +69,7 @@
       "id": "density-definitions",
       "title": "Density Definitions",
       "startLine": 39,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Defines `systemLCM` ($L = \\mathrm{lcm}(n_1, \\ldots, n_r)$), `coverageDensity` ($|\\{\\text{covered}\\} \\cap [0,L)|/L$), and `maxCoverageDensity`/`minCoverageDensity` as $\\sup$/$\\inf$ over residue choices.",
       "mathContext": "$L = \\text{lcm}(n_1,\\ldots,n_r)$; $\\delta = |\\{m \\in [0,L) : \\text{covered}(m)\\}|/L$; $\\delta_{\\max} = \\sup_a \\delta$."
     },
@@ -76,7 +77,7 @@
       "id": "helper-lemmas",
       "title": "Helper Lemmas",
       "startLine": 57,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "Proves `foldl_lcm_pos` (LCM of positive list is positive by induction) and `systemLCM_pos` ($L > 0$). Also proves `coverage_card_le_lcm` ($|\\text{filtered set}| \\leq L$) for the density upper bound.",
       "mathContext": "$L = \\text{lcm}(n_1,\\ldots,n_r) > 0$ (by induction on positive list). $|\\text{covered} \\cap [0,L)| \\leq L$."
     },
@@ -84,7 +85,7 @@
       "id": "density-bounds",
       "title": "Proved Density Bounds",
       "startLine": 90,
-      "endLine": 109,
+      "endLine": 110,
       "summary": "Three fully proved theorems: $\\delta \\geq 0$ (ratio of naturals), $\\delta \\leq 1$ (via `div_le_one` and `systemLCM_pos`), and the combined bound $0 \\leq \\delta \\leq 1$.",
       "mathContext": "$0 \\leq \\delta \\leq 1$. Fully proved from $\\delta = |S|/L$ with $|S| \\leq L$ and $L > 0$."
     },
@@ -92,7 +93,7 @@
       "id": "inclusion-exclusion",
       "title": "Inclusion-Exclusion Formula",
       "startLine": 111,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Defines `inclusionExclusionDensity` as the first-order term $\\sum_{i=1}^r 1/n_i$. The full alternating-sign formula $\\sum_{\\emptyset \\neq S} (-1)^{|S|+1}/\\mathrm{lcm}_{i \\in S}(n_i)$ is noted but not fully formalized.",
       "mathContext": "First-order approximation: $\\delta \\approx \\sum_{i=1}^{r} 1/n_i$. Exact: $\\delta = \\sum_{\\emptyset \\neq S} (-1)^{|S|+1}/\\text{lcm}_{i \\in S}(n_i)$."
     },
@@ -100,7 +101,7 @@
       "id": "simpson-theorem",
       "title": "Simpson's Theorem (1986)",
       "startLine": 119,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Axiomatizes Simpson's theorem: $\\delta(\\{0 \\pmod{n_i}\\}) \\leq \\delta(\\{r(n_i) \\pmod{n_i}\\})$ for all residue functions $r$. Proves equal_residues_minimize: coverage density with constant residue $a$ equals that with residue 0, via cyclic shift bijection $m \\mapsto (m+a) \\bmod L$ on $\\{0, \\ldots, L-1\\}$.",
       "mathContext": "Simpson: $\\delta_{\\min} = \\delta(\\{0 \\pmod{n_i}\\})$; all-zero residues minimize density. Shift invariance: $\\delta(a) = \\delta(0)$ for constant $a$."
     },
@@ -108,7 +109,7 @@
       "id": "open-question",
       "title": "Maximum Density (Open)",
       "startLine": 133,
-      "endLine": 148,
+      "endLine": 334,
       "summary": "Axiomatized coprime maximum ($\\delta_{\\max} = 1 - \\prod(1 - 1/n_i)$ by CRT), proved $\\delta_{\\max} \\leq 1$ for general moduli, and the single modulus base case ($\\delta = 1/n$).",
       "mathContext": "Coprime case: $\\gcd(n_i, n_j) = 1 \\Rightarrow \\delta_{\\max} = 1 - \\prod(1 - 1/n_i)$ (CRT independence). Open: general formula for $\\delta_{\\max}$."
     }

@@ -64,7 +64,8 @@
     "dateAdded": "2026-02-26",
     "axiomCount": 0,
     "lineCount": 405,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The Convergence Rate of Derangements**\n\nA derangement is a permutation with no fixed points. The probability that a random permutation of $n$ elements is a derangement is $D(n)/n!$, which famously converges to $1/e \\approx 36.79\\%$ as $n \\to \\infty$.\n\nThis convergence is remarkably precise: Euler showed in 1751 that\n$$\\frac{D(n)}{n!} = \\sum_{k=0}^n \\frac{(-1)^k}{k!}$$\nwhich is exactly the $n$-th partial sum of the Taylor series for $e^{-1} = \\sum_{k=0}^\\infty (-1)^k/k!$.\n\nBy the **Alternating Series Estimation Theorem** (Leibniz 1682), the error in an alternating series with decreasing terms is bounded by the first omitted term. This immediately gives the sharp bound:\n$$\\left|\\frac{D(n)}{n!} - \\frac{1}{e}\\right| \\leq \\frac{1}{(n+1)!}$$\n\nMoreover, the approximation alternates: even-index partial sums (n=0,2,4,...) overshoot $1/e$ from above, while odd-index partial sums undershoot from below.",
@@ -89,49 +90,49 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Overview of the sharp convergence rate |D(n)/n! - 1/e| ≤ 1/(n+1)! and imports (Derangements.Finite, SpecificLimits.Normed, ExpDeriv, InfiniteSum.Basic)."
     },
     {
       "id": "section-i",
       "title": "The Alternating Factorial Series",
       "startLine": 41,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Definition of altFactTerm k = (-1)^k/k! and altFactPartialSum n = ∑_{k=0}^n altFactTerm k. Helper lemmas: factorial_cast_pos, factorial_cast_ne_zero, altFactTerm_abs, altFactPartialSum_succ."
     },
     {
       "id": "section-ii",
       "title": "The Derangement-Factorial Identity",
       "startLine": 67,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "numDerangements_eq_factorial_mul_altSum: D(n) = n! · ∑_{k=0}^n (-1)^k/k! by strong induction. derangements_div_factorial: D(n)/n! = altFactPartialSum n."
     },
     {
       "id": "section-iii",
       "title": "The Exponential Series for e⁻¹",
       "startLine": 92,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "summable_altFactTerm: the alternating series is summable. exp_neg_one_eq_tsum_alt: e^{-1} = ∑ (-1)^k/k! via NormedSpace.exp_eq_tsum."
     },
     {
       "id": "section-iv",
       "title": "Error Bound via Alternating Series",
       "startLine": 115,
-      "endLine": 260,
+      "endLine": 261,
       "summary": "tsum_eq_partial_sum_add_tail: tail decomposition. alt_partial_sum_nonneg: non-negativity of ∑_{k<N} (-1)^k/(m+k)! (strong induction on pairs). alt_partial_sum_le_first: bounded above by 1/m!. alternating_tail_bound: |tail| ≤ 1/(n+1)!."
     },
     {
       "id": "section-v",
       "title": "Main Convergence Results",
       "startLine": 262,
-      "endLine": 309,
+      "endLine": 310,
       "summary": "derangements_convergence_rate: |D(n)/n! - e^{-1}| ≤ 1/(n+1)! (sharp bound). derangements_tendsto_inv_e: D(n)/n! → e^{-1} using Metric.tendsto_atTop and factorial tail convergence."
     },
     {
       "id": "section-vi",
       "title": "Consequences and Corollaries",
       "startLine": 311,
-      "endLine": 341,
+      "endLine": 342,
       "summary": "convergence_rate_monotone: error bound decreases with n. derangements_div_factorial_nonneg: ratio always ≥ 0. Concrete error bounds for n=0,1,2,3: |error| ≤ 1, 1/2, 1/6, 1/24."
     },
     {

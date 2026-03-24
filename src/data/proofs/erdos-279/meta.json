@@ -29,7 +29,8 @@
     ],
     "axiomCount": 4,
     "lineCount": 86,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question asks whether arithmetic progressions with prime moduli can cover all large integers when the starting index is shifted by at least k steps. For k = 1 or k = 2, classical results on divergence of the harmonic sum over primes (Σ 1/p = ∞, proved by Euler in 1737) suffice to show covering. The case k ≥ 3 introduces a qualitatively different obstacle: the constraint t ≥ k means each prime p can only cover integers n ≡ aₚ (mod p) that are at least kp above the base residue, creating a 'gap' of size kp near the beginning of each progression. Erdős noted that even k = 3 seems difficult. The generalization to arbitrary dense sets (with prime-like counting function and log-log reciprocal divergence) was proposed to isolate the essential density condition from the specific arithmetic properties of primes.",
@@ -62,21 +63,21 @@
       "id": "covering-setup",
       "title": "Covering by Shifted Progressions",
       "startLine": 24,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Defines ResidueChoice as a dependent function from primes to ℕ (residue classes), IsCoveredBy checking that n = aₚ + t·p for some prime p with t ≥ k via existential quantification over p, its primality proof, and t, and CoversEventually requiring coverage for all n ≥ N for some threshold N."
     },
     {
       "id": "small-k",
       "title": "Known Results for Small k",
       "startLine": 39,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Records the classical result: for k ≤ 2, any set with divergent reciprocal sum (including primes, since Σ 1/p = ∞) can cover all sufficiently large integers. Currently axiomatized with a placeholder body — the proof would require formalizing the greedy covering argument."
     },
     {
       "id": "density-conditions",
       "title": "Density Conditions for Generalization",
       "startLine": 48,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Defines two density conditions for the generalized conjecture: HasPrimeLikeDensity requiring |A ∩ [1,N]| ≥ c·N/log N for some c > 0 (matching the prime counting function up to a constant), and HasLogLogDivergence requiring that Σ_{n∈A,n≤N} 1/n exceeds log log N by an unbounded amount. Both are currently placeholder definitions."
     },
     {

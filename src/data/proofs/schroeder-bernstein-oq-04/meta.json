@@ -50,7 +50,8 @@
     ],
     "dateAdded": "2026-03-23",
     "axiomCount": 0,
-    "lineCount": 314
+    "lineCount": 314,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Schroeder-Bernstein theorem (1887-1898), independently proved by Dedekind, Schroeder, and Bernstein, states that mutual injections imply a bijection. The classical proof requires excluded middle to classify elements into orbit types (A, B, or C), making it inherently non-constructive.\n\nThis raises a natural question: for which classes of sets can we avoid excluded middle? For finite types, the answer is yes — chains terminate by pigeonhole, making orbit classification decidable. This was known folklore but rarely formalized.\n\nIn Lean 4/Mathlib, the standard CBS proof (`Function.Embedding.schroeder_bernstein`) is `noncomputable` because it uses `Classical.choice` for orbit classification. Our proof demonstrates that for `Fintype` types, the classification is fully computable.",
@@ -69,49 +70,49 @@
       "id": "definitions",
       "title": "Definitions: Base Set, Expansion, and Reachable Set",
       "startLine": 42,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Defines the three core objects: `baseSet` (elements of $\\alpha$ not in range of $g$), `expand` (one step of the orbit expansion $S \\cup (g \\circ f)''(S)$), and `reachableSet` (iterate expansion $|\\alpha|$ times from base set)"
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity of Expansion",
       "startLine": 57,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Proves `expand` is monotone on finsets and the iteration sequence is non-decreasing: $S_n \\subseteq S_{n+1}$ for all $n$. Uses induction with explicit iterate rewrites"
     },
     {
       "id": "stabilization",
       "title": "Stabilization via Pigeonhole",
       "startLine": 94,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "The key technical result: a non-decreasing bounded sequence of naturals must repeat, so the expansion stabilizes after $|\\alpha|$ steps. This gives `expand(reachableSet) = reachableSet` — the fixed-point property"
     },
     {
       "id": "closure-decomposition",
       "title": "Closure and Decomposition Properties",
       "startLine": 169,
-      "endLine": 219,
+      "endLine": 220,
       "summary": "Proves three structural properties: reachable set is closed under $g \\circ f$, elements outside it are in range of $g$, and every reachable element is either in the base set or is $g(f(a'))$ for a reachable $a'$"
     },
     {
       "id": "bijection",
       "title": "The Constructive CBS Bijection",
       "startLine": 221,
-      "endLine": 240,
+      "endLine": 241,
       "summary": "Defines the bijection: $h(a) = f(a)$ if $a$ is reachable, else $h(a) = g^{-1}(a)$. The orbit classification (`a ∈ reachableSet`) is decidable; only the preimage extraction uses `Classical.choose`"
     },
     {
       "id": "injectivity",
       "title": "Injectivity Proof",
       "startLine": 242,
-      "endLine": 272,
+      "endLine": 273,
       "summary": "Proves injectivity by four cases. The cross-cases (one reachable, one not) derive a contradiction: $g(f(a_1)) = a_2$ would put $a_2$ in the reachable set by closure"
     },
     {
       "id": "surjectivity",
       "title": "Surjectivity Proof",
       "startLine": 274,
-      "endLine": 297,
+      "endLine": 298,
       "summary": "Proves surjectivity: for any $b \\in \\beta$, either some reachable $a$ maps to $b$ via $f$, or $g(b)$ is not reachable (by decomposition + injectivity of $g$) and maps back to $b$"
     },
     {

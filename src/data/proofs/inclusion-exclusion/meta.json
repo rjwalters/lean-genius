@@ -47,7 +47,8 @@
     "wiedijkNumber": 96,
     "axiomCount": 0,
     "lineCount": 218,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The inclusion-exclusion principle was first formulated by Abraham de Moivre in 1718 for computing probabilities. It was later generalized by Daniel da Silva (1854) and Joseph Sylvester. The principle is fundamental in combinatorics, probability theory, and number theory (e.g., Euler's totient function uses inclusion-exclusion).\n\nThe basic idea addresses a common counting problem: when we add the sizes of two sets, elements in their intersection get counted twice. The principle systematically corrects for this overcounting.",
@@ -81,7 +82,7 @@
       "id": "two-set-case",
       "title": "The Two-Set Case",
       "startLine": 56,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "The fundamental inclusion-exclusion identity for two sets.",
       "mathContext": "$|A \\cup B| = |A| + |B| - |A \\cap B|$. Derived from Mathlib's `card_union_add_card_inter`: $|A \\cup B| + |A \\cap B| = |A| + |B|$"
     },
@@ -89,7 +90,7 @@
       "id": "three-set-case",
       "title": "The Three-Set Case",
       "startLine": 85,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "Generalization to three sets with all pairwise and triple intersections.",
       "mathContext": "$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$"
     },
@@ -97,7 +98,7 @@
       "id": "special-cases",
       "title": "Special Cases and Applications",
       "startLine": 126,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Disjoint unions, upper/lower bounds for cardinality.",
       "mathContext": "Disjoint case: $A \\cap B = \\emptyset \\implies |A \\cup B| = |A| + |B|$. Bonferroni: $|A \\cup B| \\leq |A| + |B|$ always"
     },
@@ -105,7 +106,7 @@
       "id": "symmetric-difference",
       "title": "Symmetric Difference",
       "startLine": 152,
-      "endLine": 193,
+      "endLine": 194,
       "summary": "Cardinality of the symmetric difference using inclusion-exclusion.",
       "mathContext": "$|A \\triangle B| = |A| + |B| - 2|A \\cap B|$. The symmetric difference $A \\triangle B = (A \\setminus B) \\cup (B \\setminus A)$"
     },
@@ -113,7 +114,7 @@
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 195,
-      "endLine": 216,
+      "endLine": 218,
       "summary": "Computational verification on specific finite sets.",
       "mathContext": "Verified on concrete `Finset` examples using `decide` and `native_decide` tactics for computational proof"
     }

@@ -119,42 +119,42 @@
       "title": "Basic Definitions",
       "summary": "Defines polyEval (P.eval x wrapper), maxNormOnInterval (sSup of |P(x)| on [-1,1] — the Chebyshev/L∞ norm), SamplePoints n (functions Fin n → [-1,1] for sample locations), and TargetValues n (functions Fin n → [-1,1] for chosen values). These are the building blocks for the interpolation game.",
       "startLine": 46,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "interpolation",
       "title": "Interpolation Conditions",
       "summary": "Defines ApproximatelyInterpolates: ∃ S ⊆ Fin n with |S| ≥ n - ⌊εn⌋ and P(x_i) = y_i on S — the polynomial matches at least (1-ε)n points exactly. Defines HasBoundedDegree: natDegree P < ⌊(1+ε)n⌋. For ε = 0, these reduce to exact Lagrange interpolation of degree < n through all n points.",
       "startLine": 75,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "summary": "ErdosConjecture1133 as a five-quantifier Lean Prop: ∀ C > 0, ∃ ε > 0, ∃ N, ∀ n ≥ N, ∀ x ∈ [-1,1]^n, ∃ y ∈ [-1,1]^n, ∀ P with bounded degree and approximate interpolation: ‖P‖_∞ > C. The adversarial ∃y∀P structure makes this a minimax problem. Status: OPEN since 1967.",
       "startLine": 95,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "related",
       "title": "Related Result (Known by Erdős)",
       "summary": "Axiomatizes Erdős's weaker existence theorem: for any C > 0, ∃ ε > 0 such that for large n and m = ⌊(1+ε)n⌋ sample points, ∃ P of degree ≤ n with |P(x_i)| ≤ 1 for all i yet ‖P‖_∞ > C. The key difference: this quantifies ∃P (finds one bad polynomial) while the conjecture quantifies ∀P (all polynomials matching y are bad).",
       "startLine": 117,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "lagrange",
       "title": "Lagrange Interpolation Theory",
       "summary": "Two axioms: lagrange_interpolation (∃! P of degree < n through n distinct points — the classical existence-uniqueness theorem) and lagrange_divergence (∃ f ∈ C[-1,1] such that Lagrange interpolation on uniform nodes diverges — Runge's phenomenon). The Lebesgue constant Λ_n → ∞ for ANY node sequence (Faber 1914).",
       "startLine": 139,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "chebyshev",
       "title": "Chebyshev Connection",
       "summary": "Defines chebyshevNodes(n, k) = cos(π(2k+1)/(2n)) — the roots of the Chebyshev polynomial T_n. Axiomatizes chebyshev_optimal: if deg P = n and |P(x_k)| ≤ 1 at all n+1 Chebyshev nodes, then ‖P‖_∞ ≤ 1. These nodes minimize the Lebesgue constant at (2/π)log n + O(1), but don't resolve the conjecture since the adversary chooses arbitrary nodes.",
       "startLine": 164,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "summary",

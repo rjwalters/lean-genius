@@ -86,35 +86,35 @@
       "title": "Complexity Models",
       "summary": "Defines three complexity functions: `detMuls n = n * n!` (multiplications for one n×n determinant via Leibniz formula), `cramersRuleMuls n = (n+1) * detMuls n` (Cramer's rule on an n×n system: n+1 determinants), and `gaussMuls n = n³` (Gaussian elimination conservative upper bound).",
       "startLine": 57,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "factorial-growth-lemma",
       "title": "Key Growth Lemma: n! > n² for n ≥ 4",
       "summary": "Proves `factorial_gt_sq`: for n ≥ 4, n! > n². The inductive step shows (m+1)! = (m+1)*m! > (m+1)*m² > (m+1)² when m! > m², using `nlinarith [Nat.factorial_pos m]`. The base case (m=3, n=4) is handled by `decide`.",
       "startLine": 90,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "main-comparison",
       "title": "Main Comparison: Gaussian Beats Cramer for n ≥ 4",
       "summary": "Proves `gauss_beats_cramer`: for n ≥ 4, `gaussMuls n < cramersRuleMuls n` (i.e., n³ < (n+1)*n*n!). Key step: from n²<n! and 0<n, `nlinarith` deduces n³ < (n+1)*n*n!. Includes concrete speedup theorems: at n=4 (7.5×), n=5 (28.8×), n=6 (139×).",
       "startLine": 114,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "asymptotic-superiority",
       "title": "Asymptotic Superiority: Gaussian K-times Faster Eventually",
       "summary": "Proves `cramer_asymptotically_worse`: for any K, ∃N=max(4,K), ∀n≥N, K*n³ < (n+1)*n*n!. Uses explicit three-step chain: (1) K*n³ ≤ n*n³ via `mul_le_mul_right'`, (2) n*n³ = n*n*n² < n*n*n! via `mul_lt_mul_of_pos_left`, (3) n*n*n! ≤ (n+1)*n*n! via two applications of `mul_le_mul_right'`.",
       "startLine": 135,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "threshold-analysis",
       "title": "Threshold Analysis: All n ≥ 1",
       "summary": "Corrects the naive expectation: `complexity_threshold` shows Gaussian beats Cramer for all n ≥ 1 (not just n ≥ 4). Concrete values: cramersRuleMuls 1=2>1=gaussMuls 1, cramersRuleMuls 2=12>8=gaussMuls 2, cramersRuleMuls 3=72>27=gaussMuls 3. There is no equal-complexity point.",
       "startLine": 170,
-      "endLine": 190
+      "endLine": 191
     },
     {
       "id": "summary",

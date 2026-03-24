@@ -45,7 +45,8 @@
       "Sophie Germain's work on Fermat's Last Theorem",
       "Structure of primes modulo 6"
     ],
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Sophie Germain (1776-1831) was a pioneering French mathematician who made significant contributions to number theory and elasticity theory. Working in an era when women were excluded from formal mathematical education, she corresponded with Gauss and Lagrange under a male pseudonym.\n\nHer work on Fermat's Last Theorem introduced what we now call Sophie Germain primes. She proved that if p is a Sophie Germain prime, then the first case of Fermat's Last Theorem holds for exponent p. This was a major breakthrough, as it provided infinitely many exponents for which FLT was partially verified.\n\nThe conjecture that there are infinitely many Sophie Germain primes remains open, analogous to the twin prime conjecture.",
@@ -88,7 +89,7 @@
       "id": "non-examples",
       "title": "Non-Examples",
       "startLine": 103,
-      "endLine": 125,
+      "endLine": 126,
       "summary": "Primes that are NOT Sophie Germain: 7, 13, 17, 19.",
       "mathContext": "$2 \\cdot 7 + 1 = 15 = 3 \\times 5$, $2 \\cdot 13 + 1 = 27 = 3^3$, $2 \\cdot 17 + 1 = 35 = 5 \\times 7$, $2 \\cdot 19 + 1 = 39 = 3 \\times 13$."
     },
@@ -96,7 +97,7 @@
       "id": "structure-theorem",
       "title": "Structure Theorem",
       "startLine": 127,
-      "endLine": 212,
+      "endLine": 213,
       "summary": "The main result: Sophie Germain primes > 3 must satisfy p ≡ 5 (mod 6). Key lemma: primes > 3 are ≡ 1 or 5 (mod 6), and p ≡ 1 implies 3 | (2p+1).",
       "mathContext": "$p > 3 \\wedge \\text{IsSophieGermainPrime}(p) \\implies p \\equiv 5 \\pmod{6}$. Proof: $p \\equiv 1 \\pmod{6} \\implies 2p+1 \\equiv 3 \\pmod{6} \\implies 3 \\mid (2p+1)$, contradiction."
     },
@@ -112,7 +113,7 @@
       "id": "chain",
       "title": "Cunningham Chain",
       "startLine": 282,
-      "endLine": 294,
+      "endLine": 296,
       "summary": "The chain 2 → 5 → 11 → 23 where each is 2p+1 of the previous.",
       "mathContext": "$2 \\xrightarrow{2p+1} 5 \\xrightarrow{2p+1} 11 \\xrightarrow{2p+1} 23 \\xrightarrow{2p+1} 47$. Each element is a Sophie Germain prime; $47$ is not ($2 \\cdot 47 + 1 = 95$)."
     }

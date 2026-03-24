@@ -91,77 +91,77 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 44,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Defines $\\text{PowersOfTwo} = \\{n \\mid \\exists k,\\; n = 2^k\\}$, the additive complement predicate $\\text{IsAdditiveComplementForLarge}(A, B)$, and specializes to $\\text{IsComplementToPowersOfTwo}(A)$."
     },
     {
       "id": "counting-functions",
       "title": "Counting Functions and Density Bounds",
       "startLine": 61,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Defines $\\text{countingFunction}(A, N) = |A \\cap \\{1,\\ldots,N\\}|$ via `Finset.filter`, the density bound $\\text{HasDensityNOverLogN}$ requiring $\\leq C \\cdot N/\\log N$, Lorentz's weaker bound $O(N \\log\\log N / \\log N)$, and Ruzsa's optimal asymptotic density $\\sim N/\\log_2 N$."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Problem Statement",
       "startLine": 85,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "States $\\text{Erdos221Conjecture} : \\exists A,\\; \\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasDensityNOverLogN}(A)$."
     },
     {
       "id": "lorentz-1954",
       "title": "Lorentz's Result (1954)",
       "startLine": 93,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Axiomatizes `lorentz_1954`: $\\exists A$ with $\\text{IsComplementToPowersOfTwo}(A) \\wedge \\text{HasLorentzDensity}(A)$. The first positive answer, but with the suboptimal density $O(N \\log\\log N / \\log N)$."
     },
     {
       "id": "ruzsa-construction",
       "title": "Ruzsa's Construction (1972)",
       "startLine": 101,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "Defines $C = 1/(5 \\log 2)$, the core set $\\{5^n \\cdot m : 5^n \\geq C \\log m\\}$, and $\\text{RuzsaSet} = \\text{Core} + \\{0,1\\}$. Axiomatizes the primitive root property, complement property, and density bound. Proves `ruzsa_1972 : Erdos221Conjecture` from axioms."
     },
     {
       "id": "solved",
       "title": "Problem #221 — SOLVED",
       "startLine": 132,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "States `erdos_221_answer : Erdos221Conjecture := ruzsa_1972`. The answer is YES."
     },
     {
       "id": "optimal-construction",
       "title": "Ruzsa's Exact Complement (2001)",
       "startLine": 139,
-      "endLine": 148,
+      "endLine": 149,
       "summary": "Defines $\\text{ExactComplementExists}$ requiring asymptotic density $\\sim N/\\log_2 N$, and axiomatizes `ruzsa_2001_exact_complement`. This is the sharpest known result."
     },
     {
       "id": "optimality",
       "title": "Why $N/\\log N$ is Optimal",
       "startLine": 150,
-      "endLine": 168,
+      "endLine": 169,
       "summary": "Axiomatizes `density_lower_bound`: any complement requires $\\Omega(N/\\log N)$ elements. Proves `optimal_density` combining the upper bound (Ruzsa) and lower bound to show $N/\\log N$ is tight up to constants."
     },
     {
       "id": "primitive-roots",
       "title": "Connection to Primitive Roots",
       "startLine": 170,
-      "endLine": 188,
+      "endLine": 189,
       "summary": "Axiomatizes `primitive_root_order`: $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$, and `powers_cover_residues`: $\\forall r$ coprime to $5^n$, $\\exists k$ with $2^k \\equiv r \\pmod{5^n}$. These are the algebraic foundations of Ruzsa's construction."
     },
     {
       "id": "generalizations",
       "title": "Generalizations to Other Bases",
       "startLine": 190,
-      "endLine": 204,
+      "endLine": 205,
       "summary": "Defines $\\text{GeneralizedComplement}(g, A)$ for arbitrary base $g$, and axiomatizes `generalization_to_any_base`: for any $g \\geq 2$, sparse complements to $\\{g^k\\}$ exist with density $O(N/\\log N)$."
     },
     {
       "id": "related",
       "title": "Related Sumset Problems",
       "startLine": 206,
-      "endLine": 225,
+      "endLine": 226,
       "summary": "Axiomatizes `sumset_covering` ($A + \\{2^k\\}$ covers all large integers) and `additive_basis_order_two` ($A \\cup \\text{PowersOfTwo}$ forms a thin additive basis of order 2). Connects to the broader theory of additive bases."
     },
     {

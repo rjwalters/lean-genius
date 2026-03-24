@@ -43,7 +43,8 @@
     "historicalContext": "The algebraic structure of probability distributions under convolution has been studied since Lévy (1925). Cramér's theorem (1936) revealed that the Gaussian is 'indecomposable' in this structure, and the CLT can be interpreted as a convergence statement in the convolution monoid.",
     "axiomCount": 14,
     "lineCount": 241,
-    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -51,49 +52,49 @@
       "title": "Probability Measure Type",
       "summary": "Defines ProbMeasure wrapping Mathlib's Measure R with IsProbabilityMeasure constraint, and diracProb for Dirac delta measures.",
       "startLine": 35,
-      "endLine": 47
+      "endLine": 48
     },
     {
       "id": "convolution",
       "title": "Convolution Operation",
       "summary": "Axiomatizes convolution of probability measures and its preservation of the probability measure property.",
       "startLine": 49,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "monoid",
       "title": "Monoid Structure",
       "summary": "Axioms for the commutative monoid: associativity, left/right identity (Dirac at 0), commutativity.",
       "startLine": 62,
-      "endLine": 80
+      "endLine": 81
     },
     {
       "id": "conv-pow",
       "title": "Convolution Powers",
       "summary": "Defines convPow mu n recursively, proves convPow_zero, convPow_one, and the distribution law convPow_add by induction.",
       "startLine": 82,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "char-fun",
       "title": "Characteristic Functions",
       "summary": "Axiomatizes the characteristic function, proves it is a monoid homomorphism (charFun_convolution, charFun_dirac_zero), and derives charFun_convPow.",
       "startLine": 115,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "normalization-clt",
       "title": "Normalization and the CLT",
       "summary": "Axiomatizes normalization, mean, variance, the standard Gaussian, and the CLT as convergence of normalized convolution powers.",
       "startLine": 146,
-      "endLine": 189
+      "endLine": 190
     },
     {
       "id": "gaussian-fixed-point",
       "title": "Gaussian as Fixed Point",
       "summary": "Axiomatizes Gaussian stability under all convolution powers and Cramer's indecomposability theorem.",
       "startLine": 191,
-      "endLine": 213
+      "endLine": 214
     },
     {
       "id": "categorical-perspective",

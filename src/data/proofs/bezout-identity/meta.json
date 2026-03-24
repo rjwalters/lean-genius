@@ -87,7 +87,8 @@
         "relationship": "Further extensions"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Bézout's identity is named after the French mathematician **Étienne Bézout** (1730--1783), who stated it in his 1770 *Théorie générale des équations algébriques*. However, the result was known earlier: **Claude Gaspard Bachet de Méziriac** gave a proof in his 1624 commentary on Diophantus, and the underlying algorithm — the **extended Euclidean algorithm** — goes back to Euclid's *Elements* (c. 300 BCE). The key insight is computational: the standard Euclidean algorithm for computing $\\gcd(a, b)$ can be run 'in reverse' to express the gcd as a linear combination $ax + by = \\gcd(a, b)$, with the coefficients $x, y$ tracked through each division step.\n\nThe identity is foundational to number theory and its applications. Its most important consequence is the **coprimality characterization**: $\\gcd(a, b) = 1$ if and only if there exist integers $x, y$ with $ax + by = 1$. This characterization is the engine behind **Euclid's lemma** (if a prime divides a product, it divides one of the factors), which in turn implies the **fundamental theorem of arithmetic** (unique prime factorization). In applied mathematics, Bézout's identity is the basis for computing **modular inverses** — given $\\gcd(a, n) = 1$, the coefficient $x$ in $ax + ny = 1$ satisfies $ax \\equiv 1 \\pmod{n}$ — which is central to **RSA cryptography** for computing private keys.\n\nThe Lean 4 formalization leverages Mathlib's `Nat.gcd_eq_gcd_ab` and `Int.gcd_eq_gcd_ab`, which provide Bézout's identity with constructive witnesses via `gcdA` and `gcdB`. The file builds substantially on these foundations: it proves the coprimality characterization as a full `↔` (using divisibility arguments for the reverse direction), derives modular inverse existence, establishes the Diophantine solvability criterion ($ax + by = c$ has solutions iff $\\gcd(a, b) \\mid c$), and provides six verified numerical examples. This is entry #60 on Wiedijk's list of 100 famous theorems.",
@@ -110,7 +111,7 @@
       "id": "imports",
       "title": "Imports",
       "startLine": 1,
-      "endLine": 3,
+      "endLine": 4,
       "summary": "Imports `Nat.GCD.Basic` (natural number GCD and Bézout coefficients), `Int.GCD` (integer GCD), and `Tactic` (general tactics).",
       "mathContext": "Three Mathlib imports provide the foundation: `Nat.GCD.Basic` supplies `Nat.gcd`, `Nat.gcdA`, `Nat.gcdB`, and `Nat.gcd_eq_gcd_ab`; `Int.GCD` provides the integer analogues; `Tactic` enables `linarith`, `ring`, `norm_num`, and `native_decide`."
     },
@@ -118,7 +119,7 @@
       "id": "module-docstring",
       "title": "Module Docstring",
       "startLine": 5,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Extensive documentation covering: the Bézout identity statement, Mathlib dependencies (gcd_eq_gcd_ab, gcdA, gcdB), proof status, historical note on Étienne Bézout (1730–1783), applications (modular inverses, Diophantine equations, CRT, RSA), explanation of the extended Euclidean algorithm, and Wiedijk #60 reference.",
       "mathContext": "Bézout's identity: $\\forall a, b \\in \\mathbb{Z}, \\exists x, y \\in \\mathbb{Z}: ax + by = \\gcd(a, b)$. The extended Euclidean algorithm computes $x, y$ in $O(\\log(\\min(a,b)))$ steps by tracking the back-substitution through Euclid's algorithm: if $a = qb + r$, and $\\gcd(b, r) = bx' + ry'$, then $\\gcd(a, b) = a \\cdot y' + b \\cdot (x' - qy')$."
     },
@@ -126,7 +127,7 @@
       "id": "namespace",
       "title": "Namespace Declaration",
       "startLine": 65,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Opens the `BezoutIdentity` namespace enclosing all theorems and examples.",
       "mathContext": "The `BezoutIdentity` namespace scopes 12 theorems, 6 examples, and documentation sections covering the full development from basic identity to Diophantine solvability."
     },

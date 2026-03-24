@@ -83,7 +83,7 @@
       "id": "definitions",
       "title": "Part I: Product Minus Sum Representation",
       "startLine": 19,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Defines HasProdMinusSum2 (k=2: ∃ a,b ≥ 2 with n = ab - (a+b)) and HasProdMinusSumK (general k using Fin k → ℤ).",
       "mathContext": "$n = ab - (a+b) = (a-1)(b-1) - 1$, so the $k=2$ representation exists iff $n + 1 \\geq 1$"
     },
@@ -91,7 +91,7 @@
       "id": "solution",
       "title": "Part II: The Solution (k = 2)",
       "startLine": 33,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Proves prod_minus_sum_identity (2(n+2)-(2+(n+2))=n by ring) and erdos_493_nonneg (representation for all n ≥ 0).",
       "mathContext": "$2(n+2) - (2 + (n+2)) = 2n + 4 - n - 4 = n$, with $a = 2 \\geq 2$ and $b = n+2 \\geq 2$"
     },
@@ -99,7 +99,7 @@
       "id": "negative",
       "title": "Part III: Sufficiently Large Threshold",
       "startLine": 47,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Proves erdos_493_sufficiently_large with N₀ = 0. Discusses why negative integers don't work (b = n+2 < 2 when n < 0).",
       "mathContext": "$N_0 = 0$: every $n \\geq 0$ is representable. For the Erdős problem, 'sufficiently large' is satisfied"
     },
@@ -107,7 +107,7 @@
       "id": "main-theorem",
       "title": "Part IV: The Main Theorem",
       "startLine": 61,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Proves erdos_493: ∃ k, ∃ N₀, ∀ n ≥ N₀, HasProdMinusSumK n k. Uses k=2 with Fin 2 → ℤ witness ![2, n+2].",
       "mathContext": "$\\exists k = 2, N_0 = 0 : \\forall n \\geq 0, \\; n = \\prod_{i \\in \\text{Fin}\\, 2} a_i - \\sum_{i \\in \\text{Fin}\\, 2} a_i$"
     },
@@ -115,7 +115,7 @@
       "id": "examples",
       "title": "Part V: Explicit Examples",
       "startLine": 75,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "Three explicit instances verified by ring/norm_num: 0 = 2·2-(2+2), 1 = 2·3-(2+3), 10 = 2·12-(2+12).",
       "mathContext": "$n = 0: (2,2); \\; n = 1: (2,3); \\; n = 10: (2,12)$"
     },

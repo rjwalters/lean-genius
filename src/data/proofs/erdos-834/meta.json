@@ -54,7 +54,8 @@
     ],
     "axiomCount": 3,
     "lineCount": 197,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Lovász in their influential 1973 paper 'Problems and results on 3-chromatic hypergraphs and some related questions', which initiated the systematic study of hypergraph coloring extremal problems. The question asks about the minimum degree achievable in 3-critical 3-uniform hypergraphs. A key subtlety, discovered over decades of study, is that the answer depends entirely on the interpretation of '3-critical': the transversal interpretation ($\\tau(H) = 3$, every edge essential for the cover) gives a fundamentally different answer than the chromatic interpretation ($\\chi(H) = 3$, every edge essential for the coloring). Lovász had already shown that chromatic-critical hypergraphs can have arbitrarily high minimum degree via product constructions. The transversal case remained open until Li (2025) proved the tight bound $\\delta(H) \\le 6$, completing the picture for both interpretations.",
@@ -78,49 +79,49 @@
       "id": "sec-834-definitions",
       "title": "Hypergraph Definitions",
       "startLine": 35,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Namespace `Erdos834`. Defines `Hypergraph V` (edge set as `Set (Finset V)`), `IsUniform H k` ($|e| = k$ for all edges), `degree H v` (via `Set.ncard`), and `minDegree H` (via `⨅` over active vertices)."
     },
     {
       "id": "sec-834-transversal",
       "title": "Transversal Number $\\tau(H)$",
       "startLine": 59,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Defines `IsTransversal H T` ($T$ hits every edge) and `transversalNumber H` ($\\min |T|$ over transversals) using conditional infimum."
     },
     {
       "id": "sec-834-tau-critical",
       "title": "Transversal-Criticality",
       "startLine": 73,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Defines `removeEdge H e` and `IsTransversalCritical H k`: $\\tau(H) = k$ and every edge removal reduces $\\tau$."
     },
     {
       "id": "sec-834-chromatic",
       "title": "Chromatic Number $\\chi(H)$",
       "startLine": 89,
-      "endLine": 106,
+      "endLine": 107,
       "summary": "Defines `IsProperColoring H k c` (no monochromatic edge of size $\\ge 2$), `chromaticNumber H` (min colors), and `IsChromaticCritical H k` ($\\chi = k$ and every edge removal reduces $\\chi$)."
     },
     {
       "id": "sec-834-questions",
       "title": "Main Question Formulations",
       "startLine": 108,
-      "endLine": 122,
+      "endLine": 123,
       "summary": "States `transversal_question` and `chromatic_question` as existential propositions: does there exist a 3-uniform, 3-critical hypergraph with $\\delta \\ge 7$ under each interpretation?"
     },
     {
       "id": "sec-834-li",
       "title": "Li's Theorem (2025)",
       "startLine": 124,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "Axiomatizes `li_bound` ($\\delta \\le 6$ for $\\tau$-critical) and proves `transversal_answer_no` by contradiction with `omega`."
     },
     {
       "id": "sec-834-lovasz",
       "title": "Lovász's Construction",
       "startLine": 139,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "Axiomatizes `lovasz_construction` ($\\forall d$, $\\chi$-critical with $\\delta \\ge d$ exists) and proves `chromatic_answer_yes` by instantiating with $d = 7$."
     },
     {

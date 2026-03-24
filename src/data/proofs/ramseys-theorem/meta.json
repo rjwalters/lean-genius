@@ -54,7 +54,8 @@
       "Cliques and independent sets in graphs",
       "Induction on graph size and neighborhood structure"
     ],
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Ramsey's theorem was proved by Frank Plumpton Ramsey in 1930, just before his untimely death at age 26. The theorem appeared in his paper 'On a Problem of Formal Logic' where he was investigating decision procedures for first-order logic.\n\nThe result spawned an entire branch of combinatorics now called Ramsey theory, which studies the emergence of order in sufficiently large structures. The guiding principle is that complete disorder is impossible—given enough elements, some regular pattern must appear.\n\nThe most famous special case is the 'party problem': at any party of 6 people, either 3 mutually know each other or 3 are mutual strangers. This corresponds to R(3,3) = 6.",
@@ -121,7 +122,7 @@
       "id": "ramsey-bounds",
       "title": "Ramsey Bounds",
       "startLine": 247,
-      "endLine": 265,
+      "endLine": 266,
       "summary": "The classical bound `ramseyBound r s = C(r+s-2, r-1)` and concrete computations for small cases via `native_decide`.",
       "mathContext": "$R(r,s) \\leq \\binom{r+s-2}{r-1}$. Concrete: $R(3,3) \\leq 6$ (tight!), $R(3,4) \\leq 10$, $R(4,4) \\leq 20$ (actual: 18)."
     },
@@ -173,8 +174,7 @@
       "targetId": "kummer-theorem",
       "relationship": "related",
       "description": "Binomial coefficient structure determines the Ramsey bound R(r,s) ≤ C(r+s-2, r-1)"
-    }
-    ,
+    },
     {
       "targetId": "binomial-theorem",
       "relationship": "foundational",

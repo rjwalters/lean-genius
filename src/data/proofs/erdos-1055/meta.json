@@ -24,28 +24,29 @@
     "assumptions": "4 axiom declarations: infinitely_many_in_each_class (infinitely many primes per class), erdos_growth_conjecture (p_r^(1/r) tends to infinity), selfridge_bounded_conjecture (p_r^(1/r) is bounded), class_density_subpolynomial (class-r primes have n^o(1) density)",
     "lineCount": 305,
     "theoremCount": 36,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "termination",
       "title": "Termination Lemma",
       "startLine": 30,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Proves $\\texttt{nonSmooth\\_factor\\_lt}$: any prime factor $q \\mid (p+1)$ with $q \\notin \\{2,3\\}$ satisfies $q < p$. This is the key termination argument for well-founded prime classification."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 65,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Defines $c(p)$ via well-founded recursion ($\\texttt{primeClassWF}$): $c(p) = 1$ if $p + 1$ is $3$-smooth, else $c(p) = 1 + \\max\\{c(q) : q \\mid p+1, q \\notin \\{2,3\\}\\}$. Provides the $\\text{IsInClass}$ predicate."
     },
     {
       "id": "verified-values",
       "title": "Verified Class Values and Least Primes",
       "startLine": 93,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Verifies $c(2)=1, c(13)=2, c(37)=3, c(73)=4, c(1021)=5$ by $\\texttt{native\\_decide}$. Confirms least primes $p_r$ from OEIS A005113. All computed without axioms."
     },
     {

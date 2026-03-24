@@ -74,49 +74,49 @@
       "title": "Definitions: Prime Gap Set and Maximal Gap",
       "summary": "Defines primeGapSet x (set of gaps d = q-p for consecutive primes p<q<=x) and maxPrimeGap x (sSup of this set).",
       "startLine": 27,
-      "endLine": 38
+      "endLine": 39
     },
     {
       "id": "bddabove",
       "title": "BddAbove and Basic Bounds",
       "summary": "Proves every gap <= x (primeGap_le_x), BddAbove (primeGapSet_bddAbove), and maxPrimeGap_le (sSup <= x) with empty/nonempty case split.",
       "startLine": 40,
-      "endLine": 60
+      "endLine": 61
     },
     {
       "id": "empty-cases",
       "title": "Small Values: Empty Gap Sets",
       "summary": "Proves primeGapSet is empty for x = 0, 1, 2 (no pair of distinct primes exists). maxPrimeGap 2 = 0.",
       "startLine": 62,
-      "endLine": 83
+      "endLine": 84
     },
     {
       "id": "bertrand",
       "title": "Bertrand-Based Bounds (was axiom)",
       "summary": "Proves prime_gap_le_prev_prime (gap <= p via Bertrand) and maxPrimeGap_le_half (gap <= x/2 for x >= 25). Both were previously axioms.",
       "startLine": 85,
-      "endLine": 112
+      "endLine": 113
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
       "summary": "Proves primeGapSet_mono (gap set inclusion for x <= y) and maxPrimeGap_mono (maximal gap is monotone).",
       "startLine": 114,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "cramer",
       "title": "Cramer Sublinearity (was sorry)",
       "summary": "Proves cramer_implies_gap_sublinear: for all epsilon>0 and C>0, C*(log x)^2 <= epsilon*x for large x. Uses Real.log_le_rpow_div with delta=1/4, squaring to get x^(1/2), then comparing against x.",
       "startLine": 132,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "bhp-axiom",
       "title": "Baker-Harman-Pintz (Axiom)",
       "summary": "Axiomizes the unconditional bound maxPrimeGap(x) <= x^0.525 (Baker-Harman-Pintz 2001). This deep result is beyond Mathlib's current scope.",
       "startLine": 198,
-      "endLine": 204
+      "endLine": 228
     }
   ],
   "conclusion": {

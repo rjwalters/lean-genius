@@ -87,7 +87,8 @@
     ],
     "lineCount": 248,
     "axiomCount": 0,
-    "assumptions": "No axioms. 14 sorry(s) remain in the formalization."
+    "assumptions": "No axioms. 14 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős conjectured that for any tree T bipartite with k vertices in one class and 2k in the other, the Ramsey number R(T) = 4k - 1. This would have been a clean exact formula for a large natural class of trees, extending known results like R(P_n) = n for paths and R(S_n) = 2n - 1 for stars.\n\nThe conjecture was motivated by the lower bound construction: coloring K_{4k-2} by splitting into K_{2k-1,2k-1} (red within parts, blue between) avoids any bipartite (k, 2k) tree in both colors, proving R(T) >= 4k - 1. Erdős believed this construction was tight.\n\nNorin, Sun, and Zhao disproved the conjecture by analyzing the double star — the tree formed by connecting the centers of a k-star and a 2k-star. Using probabilistic and algebraic arguments, they showed R(double star) >= (4.2 - o(1))k, exceeding 4k - 1. The upper bound was obtained via Razborov's flag algebra method (semidefinite programming over graph homomorphism densities), giving R(T) <= (4.21526 + o(1))k for all bipartite (k, 2k) trees. The true constant for the double star thus lies in the narrow interval [4.2, 4.21526].\n\nImportantly, the conjecture survives for restricted classes: trees with bounded maximum degree, brooms (path + star), and certain other structured trees still satisfy R(T) = 4k - 1. The counterexample requires unbounded degree — the star centers have degrees k+1 and 2k+1.",
@@ -114,7 +115,7 @@
       "title": "Trees and Bipartite Graphs",
       "summary": "Defines IsTree (connected + acyclic), IsBipartiteWith (partition into two independent sets), and BipartiteTree k (tree with parts of size k and 2k).",
       "startLine": 29,
-      "endLine": 54,
+      "endLine": 55,
       "mathContext": "IsTree $G \\iff G$ connected $\\wedge G$ acyclic. BipartiteTree $k$: tree with partition $|A| = k$, $|B| = 2k$, so $|V| = 3k$."
     },
     {
@@ -122,7 +123,7 @@
       "title": "Ramsey Numbers",
       "summary": "Defines EdgeTwoColoring, HasMonochromaticCopy (injective edge-preserving monochromatic embedding), RamseyNumber via Nat.find, and IsRamseyNumber predicate.",
       "startLine": 56,
-      "endLine": 83,
+      "endLine": 84,
       "mathContext": "$R(H) = \\min\\{n : \\forall$ 2-colorings of $K_n$, $\\exists$ monochromatic copy of $H\\}$. IsRamseyNumber requires both upper bound ($K_n$ forces copy) and lower bound ($K_{n-1}$ avoids it)."
     },
     {
@@ -130,7 +131,7 @@
       "title": "Star and Double Star Graphs",
       "summary": "Constructs starGraph (center + n leaves) and doubleStar (S_k and S_{2k} with connected centers, 3k+2 vertices). Proves doubleStar_vertices by simp.",
       "startLine": 85,
-      "endLine": 108,
+      "endLine": 109,
       "mathContext": "$S_n$: center vertex adjacent to $n$ leaves. Double star: $S_k$ and $S_{2k}$ with centers connected, $|V| = 3k + 2$. The double star is the counterexample tree."
     },
     {
@@ -138,7 +139,7 @@
       "title": "The Original Conjecture",
       "summary": "States erdosConjecture549: for all k >= 1 and all BipartiteTree k, RamseyNumber = 4k - 1.",
       "startLine": 110,
-      "endLine": 115,
+      "endLine": 116,
       "mathContext": "Conjecture: $\\forall k \\geq 1,\\; \\forall T$ bipartite $(k, 2k)$: $R(T) = 4k - 1$. **FALSE** — disproved by Norin-Sun-Zhao."
     },
     {
@@ -146,7 +147,7 @@
       "title": "The Norin-Sun-Zhao Counterexample",
       "summary": "States norin_sun_zhao_counterexample, double_star_lower_bound (constant > 4), double_star_asymptotic (constant = 4.2), and defines norinSunZhaoConstant.",
       "startLine": 117,
-      "endLine": 135,
+      "endLine": 136,
       "mathContext": "$R(\\text{doubleStar}(k)) \\geq (4.2 - o(1))k > 4k - 1$ for large $k$. The constant $4.2$ exceeds the conjectured coefficient $4$."
     },
     {
@@ -154,7 +155,7 @@
       "title": "Flag Algebra Upper Bounds",
       "summary": "Defines flagAlgebraConstant = 4.21526, states flag_algebra_upper_bound, and proves bounds_gap < 0.02 via native_decide.",
       "startLine": 137,
-      "endLine": 149,
+      "endLine": 150,
       "mathContext": "$R(T) \\leq (4.21526 + o(1))k$ for all bipartite $(k, 2k)$ trees $T$. Gap: $4.21526 - 4.2 < 0.02$ (proved by `native_decide`)."
     },
     {
@@ -162,7 +163,7 @@
       "title": "Special Cases Where Conjecture Holds",
       "summary": "Constructs pathGraph and broomGraph, states bounded_degree_conjecture (max degree Delta implies R = 4k-1) and broom_ramsey.",
       "startLine": 151,
-      "endLine": 181,
+      "endLine": 182,
       "mathContext": "For bounded $\\Delta$: $\\max \\deg(T) \\leq \\Delta \\Rightarrow R(T) = 4k - 1$ for large $k$ (Szemerédi regularity). Brooms (path + star) also satisfy $R = 4k - 1$."
     },
     {
@@ -170,7 +171,7 @@
       "title": "General Lower Bound Construction",
       "summary": "States general_lower_bound (R(T) >= 4k-1 always) and lower_bound_construction using K_{2k-1,2k-1} coloring.",
       "startLine": 183,
-      "endLine": 195,
+      "endLine": 196,
       "mathContext": "$R(T) \\geq 4k - 1$ for all bipartite $(k, 2k)$ trees. Construction: color $K_{4k-2}$ as $K_{2k-1,2k-1}$ (red within parts, blue between). Neither color contains a bipartite $(k, 2k)$ tree."
     },
     {

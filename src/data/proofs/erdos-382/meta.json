@@ -90,63 +90,63 @@
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 44,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom."
     },
     {
       "id": "largest-prime",
       "title": "Part II: Largest Prime Divisor",
       "startLine": 65,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "largestPrimeDivisor via primeFactorsList maximum. Axioms: divides n, is prime, is maximal."
     },
     {
       "id": "exponent",
       "title": "Part III: Exponent of Prime in Product",
       "startLine": 89,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom."
     },
     {
       "id": "condition",
       "title": "Part IV: The Condition",
       "startLine": 106,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on exponent behavior."
     },
     {
       "id": "questions",
       "title": "Part V: The Questions",
       "startLine": 132,
-      "endLine": 159,
+      "endLine": 160,
       "summary": "question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions."
     },
     {
       "id": "ramachandra",
       "title": "Part VI: Known Upper Bound",
       "startLine": 161,
-      "endLine": 173,
+      "endLine": 174,
       "summary": "Ramachandra's bound axiom: v−u ≤ v^{1/2+ε} for large v."
     },
     {
       "id": "cramer",
       "title": "Part VII: Connection to Cramér's Conjecture",
       "startLine": 175,
-      "endLine": 191,
+      "endLine": 192,
       "summary": "cramersConjecture definition, cramer_implies_q1 axiom."
     },
     {
       "id": "examples",
       "title": "Part VIII: Examples",
       "startLine": 193,
-      "endLine": 206,
+      "endLine": 207,
       "summary": "Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom."
     },
     {
       "id": "prime-free",
       "title": "Part IX: Prime-Free Interval Perspective",
       "startLine": 208,
-      "endLine": 224,
+      "endLine": 225,
       "summary": "noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime."
     },
     {

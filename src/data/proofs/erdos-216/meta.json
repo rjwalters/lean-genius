@@ -102,63 +102,63 @@
       "title": "Basic Definitions",
       "summary": "Defines Point as EuclideanSpace ℝ (Fin 2) and PointSet as Finset Point. Axiomatizes InGeneralPosition (no three collinear) and IsConvexKGon (k vertices in convex position) with the cardinality axiom convexKGon_card.",
       "startLine": 49,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "empty-polygons",
       "title": "Empty Convex Polygons",
       "summary": "Axiomatizes IsEmptyConvexKGon — a convex k-gon whose interior contains no other points of S. The structural axiom emptyConvexKGon_sub ensures vertices lie in S. Defines ContainsEmptyKGon as the existential wrapper.",
       "startLine": 71,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "function-g",
       "title": "The Function g(k)",
       "summary": "Defines g(k) as Option ℕ via Nat.find: returns some n when a finite threshold exists, none otherwise. The predicate gExists checks Option.isSome. This design enables clean biconditional characterization.",
       "startLine": 88,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "known-values",
       "title": "Known Values",
       "summary": "Axiomatizes four exact values: g(3)=3 (trivial), g(4)=5 (Erdős), g(5)=10 (Harborth 1978), g(6)=30 (Heule-Scheucher 2024). Each is documented with historical attribution.",
       "startLine": 102,
-      "endLine": 120
+      "endLine": 121
     },
     {
       "id": "horton-theorem",
       "title": "Horton's Theorem",
       "summary": "Defines IsHortonSet as InGeneralPosition ∧ ¬ContainsEmptyKGon 7. Axiomatizes existence of arbitrarily large Horton sets. Proves g_7_not_exists as a genuine theorem by contradiction: any threshold n is refuted by a Horton set of size n.",
       "startLine": 122,
-      "endLine": 148
+      "endLine": 149
     },
     {
       "id": "bounds-growth",
       "title": "Bounds and Growth",
       "summary": "Axiomatizes the lower bound g(k) ≥ 2k−3 for k ∈ {3,...,6}. Proves g_exists_le_6 by case analysis using interval_cases tactic, dispatching each case via the known-value axioms.",
       "startLine": 150,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "horton-construction",
       "title": "The Horton Construction",
       "summary": "Defines hortonBase as a single-point set. Axiomatizes the recursive construction: merging two equal-size Horton sets produces a larger Horton set. Records that Horton sets with ≥ 30 points contain empty hexagons (consistent with g(6)=30).",
       "startLine": 164,
-      "endLine": 180
+      "endLine": 181
     },
     {
       "id": "happy-ending",
       "title": "Connection to Happy Ending Problem",
       "summary": "Defines happyEnding (g'(k)) for the non-empty variant. Axiomatizes happy_ending_exists for all k ≥ 3. Formalizes the Erdős-Szekeres conjecture g'(k) = 2^(k−2)+1. Proves the monotonicity empty_implies_nonempty: g(k) ≥ g'(k).",
       "startLine": 182,
-      "endLine": 203
+      "endLine": 204
     },
     {
       "id": "computational",
       "title": "Computational Results",
       "summary": "Axiomatizes both directions for g(6)=30: a 29-point witness with no empty hexagon (lower bound) and the universal property that every 30-point general-position set contains an empty hexagon (upper bound).",
       "startLine": 205,
-      "endLine": 215
+      "endLine": 216
     },
     {
       "id": "summary",

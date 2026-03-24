@@ -21,7 +21,8 @@
     "badge": "axiom",
     "lineCount": 227,
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
-    "proofRepoPath": "Proofs/Erdos469Problem.lean"
+    "proofRepoPath": "Proofs/Erdos469Problem.lean",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -35,14 +36,14 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 22,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "IsPseudoperfect, IsPrimitivePseudoperfect, primitivePseudoperfectSet."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 39,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "6 is primitive pseudoperfect, perfect numbers are pseudoperfect, infinitely many exist, multiples inherit property."
     },
     {
@@ -56,7 +57,7 @@
       "id": "implications",
       "title": "Implications and Context",
       "startLine": 71,
-      "endLine": 85,
+      "endLine": 227,
       "summary": "Connection to analytic number theory, density questions, and OEIS A006036."
     }
   ],

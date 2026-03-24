@@ -125,35 +125,35 @@
       "title": "Core Definitions",
       "summary": "Defines `repFunction` (representation count via Finset.filter), `sumSet` (A + A), and axiomatized `lowerDensity`/`upperDensity` with basic properties (bounds, ordering).",
       "startLine": 26,
-      "endLine": 49
+      "endLine": 50
     },
     {
       "id": "bounded-dense",
       "title": "Bounded Representation and Dense Sumset",
       "summary": "Defines `HasBoundedRep` (∃ C, ∀ n, r(n) ≤ C) and `HasDenseSumset` (d(A+A) ≥ 1-ε). These are the two properties whose simultaneous achievability is the main question.",
       "startLine": 51,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "States `erdos_749_conjecture` as a dichotomy: either for all ε > 0 such sets exist, or there is a critical ε₀ below which no such A exists. Captures both possible answers.",
       "startLine": 61,
-      "endLine": 70
+      "endLine": 71
     },
     {
       "id": "context",
       "title": "Sidon Sets and Erdős-Turán Connection",
       "summary": "Axiomatizes that Sidon sets have bounded r(n) but density-0 sumsets. Connects to the Erdős-Turán conjecture (#28): full bases require unbounded r(n). Problem #749 probes the gap between these extremes.",
       "startLine": 72,
-      "endLine": 95
+      "endLine": 96
     },
     {
       "id": "upper-variant",
       "title": "Upper Density Variant",
       "summary": "States the analogous question for upper density d̄(A+A) ≥ 1-ε. This is weaker than the lower density version and the answer may differ.",
       "startLine": 97,
-      "endLine": 104
+      "endLine": 106
     }
   ],
   "conclusion": {

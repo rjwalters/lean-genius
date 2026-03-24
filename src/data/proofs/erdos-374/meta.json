@@ -50,7 +50,8 @@
       "infinitude-primes",
       "fundamental-arithmetic"
     ],
-    "assumptions": "5 axiom(s) encoding deep results from Erdős-Graham 1976. bigF and bigF_ge_two replaced with definition and proof. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding deep results from Erdős-Graham 1976. bigF and bigF_ge_two replaced with definition and proof. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -96,7 +97,7 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 25,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "IsPerfectSquare (∃ k, n = k*k), factorialProduct (∏ aᵢ!), HasSquareFactorialProduct (the square product condition), bigF (axiomatized F(m)), inDk (membership in Dₖ).",
       "mathContext": "$\\text{IsPerfectSquare}(n) :\\Leftrightarrow \\exists k, n = k^2$. $F(m) = \\min k$ with $\\exists a_1 < \\cdots < a_k = m$, $\\prod a_i!$ a square."
     },
@@ -112,7 +113,7 @@
       "id": "d6-finiteness",
       "title": "Finiteness and D₆ Structure",
       "startLine": 63,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Dₖ = ∅ for k > 6; smallest element of D₆ is 527.",
       "mathContext": "$D_k = \\emptyset$ for $k > 6$: at most 6 factorials needed. $\\min D_6 = 527$: verified by exhaustive computation."
     },
@@ -120,7 +121,7 @@
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 71,
-      "endLine": 79,
+      "endLine": 149,
       "summary": "Growth rate of |Dₖ ∩ {1,...,n}| for 3 ≤ k ≤ 6 — the main open problem.",
       "mathContext": "For $3 \\leq k \\leq 6$: $|D_k \\cap \\{1,\\ldots,n\\}| = ?$ asymptotically. Known: $|D_2| \\sim \\sqrt{n}$. Unknown: growth rates for $D_3, D_4, D_5, D_6$."
     }
@@ -140,7 +141,9 @@
       "Mathlib.Tactic",
       "Mathlib.Data.Nat.Basic"
     ],
-    "opens": ["Classical"],
+    "opens": [
+      "Classical"
+    ],
     "namespace": "",
     "lineCount": 149,
     "axiomCount": 5,

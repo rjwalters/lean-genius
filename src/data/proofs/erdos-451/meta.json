@@ -78,28 +78,28 @@
       "id": "nk-definition",
       "title": "The Function n_k",
       "startLine": 53,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Axiomatizes nk with nk_gt_2k, nk_avoids, and nk_minimal (minimality)."
     },
     {
       "id": "crt-lemmas",
       "title": "CRT Structural Lemmas",
       "startLine": 67,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "States at_most_one_div (at most one factor divisible by p), prime_dvd_descendingProduct (product divisibility), card_safeResidues (p-k safe residues). All have sorries."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 94,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Axiomatizes Erdős-Graham lower bound k^{1+c} and Adenwalla upper bound 2^{Ck}. Proves nk_trivial_lower and adenwalla_crt_idea."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures",
       "startLine": 120,
-      "endLine": 135,
+      "endLine": 155,
       "summary": "Defines ErdosProblem451_superpolynomial, ErdosProblem451_subexponential, and ErdosProblem451 (conjunction)."
     }
   ],

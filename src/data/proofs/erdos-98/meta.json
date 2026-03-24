@@ -74,21 +74,21 @@
       "title": "General Position Conditions",
       "summary": "Defines `PointConfig n` ($\\text{Fin } n \\to \\text{EuclideanSpace } \\mathbb{R} \\; (\\text{Fin } 2)$), `NoThreeCollinear` (no affine line through 3 points via $ax + by + c = 0$), `NoFourConcyclic` (no circle through 4 points via equidistance to center), and `InGeneralPosition` (injective + both conditions).",
       "startLine": 22,
-      "endLine": 46
+      "endLine": 47
     },
     {
       "id": "distances",
       "title": "Distinct Distances and $h(n)$",
       "summary": "Defines `numDistinctDistances P` by imaging all pairs into $\\mathbb{R}$, filtering positive distances, and counting. Defines $h(n)$ via `sInf` over general-position configurations: $h(n) = \\inf_{P \\in \\text{GenPos}(n)} |\\text{dist}(P)|$.",
       "startLine": 48,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "summary": "Axiomatizes Pach's bound $h(n) < n^{\\log_2 3} \\approx n^{1.585}$ and the Erdős-Füredi-Pach bound $h(n) < n \\cdot \\exp(c\\sqrt{\\log n})$ for some $c > 0$, both via `Filter.atTop`. The EFP bound is the best known upper bound.",
       "startLine": 61,
-      "endLine": 72
+      "endLine": 73
     },
     {
       "id": "conjecture",

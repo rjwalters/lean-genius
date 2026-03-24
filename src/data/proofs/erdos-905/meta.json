@@ -29,7 +29,8 @@
       "Complete bipartite graphs"
     ],
     "lineCount": 215,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Bollobás and Erdős conjectured this result about edge-triangle multiplicity. It was independently proved by Edwards (unpublished) and Hadziivanov-Nikiforov in 1979. The problem connects to Turán's classical theorem on triangle-free graphs. Turán's theorem (1941) established that the complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} is the unique triangle-free graph on n vertices maximizing the number of edges, at exactly ⌊n²/4⌋. The question posed by Bollobás and Erdős pushed beyond mere existence of triangles to ask about their concentration: once the Turán bound is exceeded, must some edge bear a disproportionate share of the triangle count? The answer n/6 is tight, achieved by graphs close to the balanced complete bipartite graph with a small clique added. Nikiforov subsequently extended these ideas into a broader program on the distribution of cliques above Turán thresholds.",
@@ -56,42 +57,42 @@
       "id": "graph-definitions",
       "title": "Part I: Graph Definitions",
       "startLine": 41,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Defines Graph structure with symmetric irreflexive edge set, edgeCount, and Adj predicate."
     },
     {
       "id": "triangles",
       "title": "Part II: Triangles",
       "startLine": 68,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Defines IsTriangle, triangleCountEdge for a given edge, and maxTriangleMultiplicity over all edges."
     },
     {
       "id": "turan-threshold",
       "title": "Part III: Turán's Threshold",
       "startLine": 95,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "Defines turanNumber n = n²/4 and AboveTuran predicate. Axiomatizes Turán's theorem."
     },
     {
       "id": "main-theorem",
       "title": "Part IV: The Main Theorem",
       "startLine": 119,
-      "endLine": 144,
+      "endLine": 145,
       "summary": "Defines BollobasErdosConjecture and axiomatizes it as proved. Alternate formulation via maxTriangleMultiplicity."
     },
     {
       "id": "tightness-turan",
       "title": "Part V: Tightness and Turán Theory",
       "startLine": 146,
-      "endLine": 186,
+      "endLine": 187,
       "summary": "Axiomatizes tightness of n/6 constant. Defines IsTuranGraph and axiomatizes triangle-free property and that adding any edge creates triangles."
     },
     {
       "id": "key-lemma",
       "title": "Part VI: Key Lemma",
       "startLine": 188,
-      "endLine": 201,
+      "endLine": 202,
       "summary": "Triangle count lower bound: T(G) ≥ (e(G) - n²/4) · n/6."
     },
     {

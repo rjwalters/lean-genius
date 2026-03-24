@@ -29,7 +29,8 @@
       "Extremal set theory fundamentals"
     ],
     "lineCount": 320,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Chvátal's conjecture (1974) generalizes the Erdős-Ko-Rado theorem to hereditary families. The conjecture asserts that the maximum intersecting subfamily is always a 'star' - all sets containing a fixed element. Despite nearly 50 years of research, the general case remains open. Partial results exist for injection-based orderings (Chvátal 1974), Sterboul conditions (1974), covering number 2 (Frankl-Kupavskii 2023), and weighted versions (Borg 2011). The Erdős-Ko-Rado theorem itself (1961) established that for uniform k-element families on an n-element set with n ≥ 2k, the maximum intersecting family has size C(n-1, k-1) and is achieved by a star; Chvátal's conjecture aims to extend this star-maximality to the much broader setting of hereditary families, where sets of varying sizes are allowed. The conjecture has been verified for several structured classes including families with covering number at most 2 and families arising from matroids.",
@@ -90,7 +91,7 @@
     {
       "id": "ekr",
       "startLine": 221,
-      "endLine": 265,
+      "endLine": 320,
       "summary": "Connection to Erdős-Ko-Rado; proof that uniform families are not hereditary.",
       "title": "Connection to Erdős-Ko-Rado; proof that uniform families are not hereditary."
     }

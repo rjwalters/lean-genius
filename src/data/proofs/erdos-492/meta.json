@@ -24,7 +24,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 5,
     "lineCount": 321,
-    "assumptions": "5 axiom(s) and 6 sorry(s). See the Lean source for details."
+    "assumptions": "5 axiom(s) and 6 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #492** concerns the equidistribution of generalized fractional parts. For a strictly increasing sequence $A = \\{a_1 < a_2 < \\cdots\\}$ with $a_{n+1}/a_n \\to 1$ (unity ratio), define the **generalized fractional part** $f(x) = (x - a_i)/(a_{i+1} - a_i)$ for $x \\in [a_i, a_{i+1})$. Erdős conjectured that for almost all $\\alpha$, the sequence $f(\\alpha n)$ is **uniformly distributed** in $[0,1)$.\n\nThe history: **Le Veque** (1953) posed related problems, proving special cases. **Davenport-LeVeque** (1963, Michigan Math. J.) showed the conjecture holds when gaps are monotonically increasing. **Davenport-Erdős** (1963) proved it for sequences with $a_n \\gg n^{1/2+\\varepsilon}$. **Schmidt** (1969, Studia Sci. Math. Hungar.) finally **disproved** the general conjecture by constructing a unity ratio sequence with oscillating gaps for which equidistribution fails on a positive-measure set of $\\alpha$. The problem is thus **SOLVED** (negatively).",
@@ -49,56 +50,56 @@
       "title": "Part I: Increasing Sequences Approaching Unity Ratio",
       "summary": "UnityRatioSeq structure, naturalsSeq example, powers_not_unity",
       "startLine": 40,
-      "endLine": 72
+      "endLine": 73
     },
     {
       "id": "generalized-frac",
       "title": "Part II: The Generalized Fractional Part Function",
       "summary": "intervalIndex, generalizedFrac definition, naturals_frac_eq",
       "startLine": 74,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "uniform-distribution",
       "title": "Part III: Uniform Distribution",
       "summary": "isUniformlyDistributed, weyl_equidistribution, erdosDavenportSeq",
       "startLine": 113,
-      "endLine": 140
+      "endLine": 141
     },
     {
       "id": "conjecture-fate",
       "title": "Part IV: The Conjecture and Its Fate",
       "summary": "erdosConjecture definition, schmidt_counterexample axiom, erdos_492_disproved",
       "startLine": 142,
-      "endLine": 166
+      "endLine": 167
     },
     {
       "id": "positive-cases",
       "title": "Part V: Positive Cases",
       "summary": "hasMonotonicGaps, davenport_leveque, hasPolynomialGrowth, davenport_erdos, naturals_case",
       "startLine": 168,
-      "endLine": 210
+      "endLine": 211
     },
     {
       "id": "counterexample-structure",
       "title": "Part VI: The Structure of Counterexamples",
       "summary": "gap definition, hasOscillatingGaps, monotonic_vs_oscillating",
       "startLine": 212,
-      "endLine": 257
+      "endLine": 258
     },
     {
       "id": "measure-theory",
       "title": "Part VII: Measure-Theoretic Formulation",
       "summary": "almostAllUniform, conjecture_iff_ae, schmidt_positive_measure",
       "startLine": 259,
-      "endLine": 283
+      "endLine": 284
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
       "summary": "erdos_492_summary, erdos_492 main theorem, openQuestion",
       "startLine": 285,
-      "endLine": 320
+      "endLine": 321
     }
   ],
   "conclusion": {

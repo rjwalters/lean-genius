@@ -25,35 +25,36 @@
     ],
     "axiomCount": 8,
     "lineCount": 93,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 20,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines the ordinal partition relation $\\alpha \\to (\\alpha, k)^2$ (axiomatized), the `IsPartitionOrd` predicate, and the Erdős–Hajnal conjecture: $\\alpha \\to (\\alpha,3)^2 \\implies \\forall n \\ge 3,\\, \\alpha \\to (\\alpha,n)^2$."
     },
     {
       "id": "counterexample",
       "title": "The Counterexample",
       "startLine": 40,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Defines the counterexample ordinal $\\omega^{\\omega^2}$ and axiomatizes the two key facts: $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$ (Schipperus) and $\\omega^{\\omega^2} \\not\\to (\\omega^{\\omega^2}, 5)^2$ (Larson). Together these witness the failure of the conjecture."
     },
     {
       "id": "disproof",
       "title": "Formal Disproof",
       "startLine": 54,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Proves $\\neg$ ErdosHajnalConjecture by instantiating the conjecture at the counterexample ordinal with $n = 5$, deriving a contradiction. This is the only fully-proved theorem in the file — a clean application of modus ponens and contradiction."
     },
     {
       "id": "monotonicity",
       "title": "Partition Threshold and Monotonicity",
       "startLine": 63,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "Introduces the partition threshold $\\text{thr}(\\alpha) = \\max\\{k : \\alpha \\to (\\alpha,k)^2\\}$, axiomatizes monotonicity ($j \\le k$ preserves the relation), and bounds $\\text{thr}(\\omega^{\\omega^2}) \\in \\{3, 4\\}$. The exact value remains open."
     },
     {

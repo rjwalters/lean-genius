@@ -75,49 +75,49 @@
       "id": "header-and-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Module docstring stating the problem, its status (DISPROVED by Marstrand 1970), and key references. Imports `Mathlib.Data.Real.Basic`, `MeasureTheory.Measure.Lebesgue.Basic`, `Order.Filter.Basic`, and `Topology.Basic`."
     },
     {
       "id": "basic-definitions",
       "title": "Fractional Parts and Indicator",
       "startLine": 40,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "Defines `frac x = x - ⌊x⌋` with proved bounds $0 \\leq \\{x\\} < 1$ (via `Int.floor_le` and `Int.sub_one_lt_floor`). Defines `fracSequence α k = \\{k\\alpha\\}$ and the indicator function for set membership."
     },
     {
       "id": "counting-hits",
       "title": "Counting Hits and Empirical Frequency",
       "startLine": 62,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Defines `countInE α E n` using `Finset.filter` to count $|\\{k \\leq n : \\{k\\alpha\\} \\in E\\}|$. Defines `empiricalFrequency` as this count divided by $n$, and `IsEquidistributed α E μ` as the `Tendsto` limit condition."
     },
     {
       "id": "weyl-theorem",
       "title": "Weyl's Theorem (What IS True)",
       "startLine": 78,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Axiomatizes Weyl's equidistribution theorem: for fixed measurable $E \\subseteq (0,1)$, $\\forall^{\\text{a.e.}} \\alpha$, the empirical frequency converges to $\\lambda(E)$. Defines `WeylStatement` and proves `weyl_is_true` from the axiom."
     },
     {
       "id": "khintchine-conjecture",
       "title": "Khintchine's Conjecture (What Was Conjectured)",
       "startLine": 98,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Defines `KhintchineConjecture` as $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$ (the quantifier-exchanged version of Weyl). Provides an equivalent formulation `KhintchineConjecture'` with an explicit null set $S$ of measure zero."
     },
     {
       "id": "key-difference",
       "title": "The Key Quantifier Difference",
       "startLine": 115,
-      "endLine": 132,
+      "endLine": 133,
       "summary": "Defines `WeylOrder` ($\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$) and `KhintchineOrder` ($\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$) side by side. Axiomatizes `quantifier_exchange_fails`: Weyl being true does NOT imply Khintchine is true."
     },
     {
       "id": "marstrand-disproof",
       "title": "Marstrand's Disproof",
       "startLine": 134,
-      "endLine": 152,
+      "endLine": 153,
       "summary": "Axiomatizes `marstrand_disproof` ($\\neg$`KhintchineConjecture`), `marstrand_construction` (existential witness of $\\alpha$ and $E$), and `bad_set_exists` (for any irrational $\\alpha$, a measurable $E$ can be constructed where equidistribution fails)."
     },
     {

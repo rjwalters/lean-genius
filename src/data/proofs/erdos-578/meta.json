@@ -92,7 +92,7 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 40,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "Hypercube structure, vertex count 2^d, edge count d·2^{d-1}",
       "mathContext": "$Q_d$ has $2^d$ vertices (binary strings of length $d$) and $d \\cdot 2^{d-1}$ edges (pairs differing in exactly one coordinate). It is $d$-regular."
     },
@@ -100,7 +100,7 @@
       "id": "random-graphs",
       "title": "Random Graphs",
       "startLine": 59,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "G(n,p) model, standard G(2^d, 1/2), Riordan's G(2^d, p>1/4)",
       "mathContext": "$G(n,p)$: each potential edge appears independently with probability $p$. The standard instance $G(2^d, 1/2)$ has each edge equally likely; Riordan's strengthening uses $p > 1/4$."
     },
@@ -108,7 +108,7 @@
       "id": "almost-sure",
       "title": "Almost Sure Containment",
       "startLine": 82,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "AlmostSurely definition, ContainsHypercube property",
       "mathContext": "`AlmostSurely P` means $\\Pr[P(G)] \\to 1$ as $d \\to \\infty$. `ContainsHypercube G d` asserts $Q_d \\subseteq G$ as a subgraph."
     },
@@ -116,21 +116,21 @@
       "id": "conjecture",
       "title": "The Erdős-Bollobás Conjecture",
       "startLine": 93,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Original conjecture: G(2^d, 1/2) contains Q_d a.s."
     },
     {
       "id": "riordan",
       "title": "Riordan's Theorem (2000)",
       "startLine": 99,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "Strengthened result for p > 1/4, proves original conjecture"
     },
     {
       "id": "threshold-distribution",
       "title": "Threshold and Distribution",
       "startLine": 112,
-      "endLine": 125,
+      "endLine": 126,
       "summary": "Threshold at 1/4 is optimal, copies normally distributed",
       "mathContext": "Threshold: $p \\leq 1/4 \\implies Q_d \\not\\subseteq G(2^d,p)$ a.s. Distribution: the standardized count $(X - \\mathbb{E}[X])/\\sqrt{\\text{Var}(X)} \\to N(0,1)$."
     },
@@ -138,7 +138,7 @@
       "id": "properties",
       "title": "Hypercube Properties",
       "startLine": 127,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "d-regular, automorphism group d!·2^d"
     },
     {

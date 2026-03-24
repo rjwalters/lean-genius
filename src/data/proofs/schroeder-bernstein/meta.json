@@ -50,7 +50,8 @@
       "Function.Embedding and Equiv types in Lean/Mathlib"
     ],
     "lineCount": 198,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Schroeder-Bernstein theorem has a rich and tangled history, with at least four independent discoveries spanning two decades of foundational set theory.\n\n**Georg Cantor (1887)** stated the result without proof in a letter to Dedekind, recognizing its importance for his theory of transfinite cardinals. He relied on the well-ordering principle but sought a proof independent of this assumption.\n\n**Richard Dedekind (1887)** provided the first correct proof, using his chain theory (*Kettentheorie*): given injections $f: A \\to B$ and $g: B \\to A$, consider the chain $C = \\bigcup_{n=0}^{\\infty} (g \\circ f)^n(A \\setminus g(B))$. Then $h(a) = f(a)$ if $a \\in C$, $h(a) = g^{-1}(a)$ otherwise. Dedekind communicated this to Cantor but never published it; it was found in his *Nachlass* and published posthumously.\n\n**Ernst Schroder (1896)** published a proof that contained a gap identified by Alwin Korselt in 1902. Schroder's name persists in the theorem's attribution despite the flawed proof.\n\n**Felix Bernstein (1898)**, then a 19-year-old student of Cantor at Halle, presented a correct proof using the orbit decomposition that has become the standard textbook approach. His proof was published in Borel's *Lecons sur la theorie des fonctions* (1898).\n\nThe theorem holds in ZF (without choice), unlike many other results in cardinal arithmetic. The name varies by tradition: Cantor-Bernstein (Germany), Schroder-Bernstein (English-speaking countries), or Cantor-Bernstein-Schroder.",
@@ -76,9 +77,9 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Overview of the Schroeder-Bernstein theorem, its historical significance, and Mathlib dependencies.",
-      "mathContext": "Statement: if $\\exists f: A \\hookrightarrow B$ and $\\exists g: B \\hookrightarrow A$ (injections), then $A \\cong B$ (bijection). Equivalently: $|A| \\leq |B| \\wedge |B| \\leq |A| \\Rightarrow |A| = |B|$ \u2014 antisymmetry of cardinal ordering."
+      "mathContext": "Statement: if $\\exists f: A \\hookrightarrow B$ and $\\exists g: B \\hookrightarrow A$ (injections), then $A \\cong B$ (bijection). Equivalently: $|A| \\leq |B| \\wedge |B| \\leq |A| \\Rightarrow |A| = |B|$ — antisymmetry of cardinal ordering."
     },
     {
       "id": "main-theorem",
@@ -92,9 +93,9 @@
       "id": "embedding-form",
       "title": "Embedding Formulation",
       "startLine": 79,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "The embedding form using Lean's Function.Embedding type for bundled injective functions.",
-      "mathContext": "`Function.Embedding \u03b1 \u03b2` bundles a function with an injectivity proof. The embedding form: $(\\alpha \\hookrightarrow \\beta) \\to (\\beta \\hookrightarrow \\alpha) \\to (\\alpha \\simeq \\beta)$, where $\\simeq$ is `Equiv`."
+      "mathContext": "`Function.Embedding α β` bundles a function with an injectivity proof. The embedding form: $(\\alpha \\hookrightarrow \\beta) \\to (\\beta \\hookrightarrow \\alpha) \\to (\\alpha \\simeq \\beta)$, where $\\simeq$ is `Equiv`."
     },
     {
       "id": "cardinality-form",
@@ -102,13 +103,13 @@
       "startLine": 95,
       "endLine": 106,
       "summary": "The cardinal arithmetic form: embeddings both ways implies equal cardinalities.",
-      "mathContext": "Cardinal form: $|\\alpha| \\leq |\\beta| \\wedge |\\beta| \\leq |\\alpha| \\Rightarrow |\\alpha| = |\\beta|$, where $|\\alpha| = \\text{Cardinal.mk}\\ \\alpha$. This is `Cardinal.antisymm` in Mathlib \u2014 the antisymmetry that makes cardinal ordering a partial order."
+      "mathContext": "Cardinal form: $|\\alpha| \\leq |\\beta| \\wedge |\\beta| \\leq |\\alpha| \\Rightarrow |\\alpha| = |\\beta|$, where $|\\alpha| = \\text{Cardinal.mk}\\ \\alpha$. This is `Cardinal.antisymm` in Mathlib — the antisymmetry that makes cardinal ordering a partial order."
     },
     {
       "id": "proof-strategy",
       "title": "The Proof Strategy",
       "startLine": 107,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Detailed explanation of the orbit-based proof technique.",
       "mathContext": "Partition $\\alpha$ into orbits: for each $a \\in \\alpha$, trace the backward chain $a, g^{-1}(a), f^{-1}(g^{-1}(a)), \\ldots$. Type A: chain ends in $\\alpha$; Type B: chain ends in $\\beta$; Type C: chain is infinite. Define $h(a) = f(a)$ for Types A,C and $h(a) = g^{-1}(a)$ for Type B. Injectivity of $f$ and $g$ ensures $h$ is bijective."
     },

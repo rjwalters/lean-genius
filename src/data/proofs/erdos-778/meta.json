@@ -85,49 +85,49 @@
       "title": "Basic Definitions",
       "summary": "EdgeColor, GameState, Kn, numEdges",
       "startLine": 38,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "colored-subgraphs",
       "title": "Colored Subgraphs",
       "summary": "redSubgraph, blueSubgraph, hasClique using Mathlib's IsClique",
       "startLine": 65,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "game-mechanics",
       "title": "Game Mechanics",
       "summary": "isAliceTurn, gameOver predicates",
       "startLine": 86,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "winning-conditions",
       "title": "Winning Conditions",
       "summary": "aliceWinsCliqueGame, bobWinsModifiedGame, aliceWinsDegreeGame",
       "startLine": 99,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "strategies",
       "title": "Strategies",
       "summary": "AliceStrategy, BobStrategy, playGame, winning strategy definitions",
       "startLine": 125,
-      "endLine": 148
+      "endLine": 149
     },
     {
       "id": "conjecture-and-results",
       "title": "Erdős's Conjecture and Known Results",
       "summary": "ErdosConjecture, Malekshahian-Spiro density and periodicity axioms",
       "startLine": 150,
-      "endLine": 180
+      "endLine": 181
     },
     {
       "id": "consequences",
       "title": "Consequences of Known Results",
       "summary": "alice_no_four_consecutive proved theorem, game_determined axiom",
       "startLine": 182,
-      "endLine": 204
+      "endLine": 205
     },
     {
       "id": "summary",

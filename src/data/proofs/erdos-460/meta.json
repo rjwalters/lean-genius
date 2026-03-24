@@ -118,42 +118,42 @@
       "id": "sieve-sequence",
       "title": "The Greedy Coprime Sieve Sequence",
       "startLine": 23,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines greedyCoprimeSieve axiomatically with sieve_initial and sieve_greedy"
     },
     {
       "id": "sieve-count",
       "title": "The Sequence Terminates Before n",
       "startLine": 47,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "sieveCount via Finset.filter on Finset.range n"
     },
     {
       "id": "reciprocal-sum",
       "title": "The Reciprocal Sum",
       "startLine": 56,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "sieveReciprocalSum with conditional summation excluding a_0 = 0"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 67,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "ErdosProblem460: divergence of reciprocal sums in ε-N form"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 81,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Eggleton-Erdős-Selfridge k^{2+o(1)} bound and conjectured k log k bound"
     },
     {
       "id": "least-prime-factor",
       "title": "Least Prime Factor Connection",
       "startLine": 98,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "leastPrimeFactor, leastPrimeFilteredSum, and sufficiency axiom"
     },
     {

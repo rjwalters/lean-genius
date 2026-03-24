@@ -56,7 +56,8 @@
       "Basic real arithmetic and positivity reasoning",
       "Lever principle and center of mass"
     ],
-    "assumptions": "Fully verified. 0 axioms, 0 sorries."
+    "assumptions": "Fully verified. 0 axioms, 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Mass point geometry traces its roots to Archimedes' lever principle (c. 250 BCE): a lever balances when $m_1 d_1 = m_2 d_2$. August Ferdinand Möbius formalized barycentric coordinates in 'Der barycentrische Calcul' (1827), giving the first rigorous algebraic framework for mass-weighted point combinations. Giovanni Ceva's original theorem (De lineis rectis, 1678) states that cevians $AD$, $BE$, $CF$ of triangle $ABC$ are concurrent if and only if $(BD/DC)(CE/EA)(AF/FB) = 1$.\n\nThe mass point technique assigns positive real masses $m_A, m_B, m_C$ to vertices and computes cevian foot positions as centers of mass. This approach is widely taught in mathematical olympiad preparation (AMC/AIME/Olympiad curricula) as an elementary method for solving concurrence and ratio problems without coordinates. The key insight is that mass assignments ARE barycentric coordinates, so mass points provide a constructive algebraic certificate for Ceva configurations.\n\nThis formalization proves the complete biconditional: the Ceva condition $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$ holds if and only if there exists a mass assignment realizing the ratios. Both directions are constructive, using only basic real arithmetic (field_simp, ring, nlinarith) — no affine geometry infrastructure needed.",
@@ -83,7 +84,7 @@
       "id": "mass-point-structure",
       "title": "Mass Point Structure",
       "startLine": 38,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "MassPoint structure with positive masses mA, mB, mC. Derived positivity lemmas for sums. Cevian ratio functions rD, rE, rF.",
       "mathContext": "$r_D = m_C/(m_B+m_C)$, $r_E = m_A/(m_C+m_A)$, $r_F = m_B/(m_A+m_B)$."
     },
@@ -91,7 +92,7 @@
       "id": "positivity-bounds",
       "title": "Positivity and Bounds",
       "startLine": 64,
-      "endLine": 101,
+      "endLine": 102,
       "summary": "rD, rE, rF are in (0,1). Complement lemmas: 1-rD = mB/(mB+mC), etc.",
       "mathContext": "$0 < r_D < 1$. Complements: $1 - r_D = m_B/(m_B+m_C)$, etc."
     },
@@ -99,7 +100,7 @@
       "id": "ceva-identity",
       "title": "Main Ceva Identity",
       "startLine": 103,
-      "endLine": 115,
+      "endLine": 116,
       "summary": "ceva_identity: rD·rE·rF = (1-rD)·(1-rE)·(1-rF) for any mass assignment.",
       "mathContext": "$r_D r_E r_F = (1-r_D)(1-r_E)(1-r_F) = m_A m_B m_C / \\prod(m_i + m_j)$."
     },
@@ -107,7 +108,7 @@
       "id": "converse-construction",
       "title": "Constructive Converse",
       "startLine": 117,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "masses_from_ceva: explicit mass assignment from Ceva condition. Verified by field_simp + ring (rD, rE) and nlinarith (rF).",
       "mathContext": "$m_A = 1$, $m_C = (1-e)/e$, $m_B = (1-e)(1-d)/(ed)$."
     },
@@ -115,7 +116,7 @@
       "id": "biconditional",
       "title": "Biconditional and Ratio Balance",
       "startLine": 158,
-      "endLine": 210,
+      "endLine": 211,
       "summary": "mass_point_iff: Ceva condition ↔ mass assignment exists. ratio_balance: BD/DC = mC/mB. ceva_ratio_product_one: product = 1.",
       "mathContext": "$def = (1-d)(1-e)(1-f) \\iff \\exists\\,\\text{mp}$. Lever: $BD/DC = m_C/m_B$. Product: $\\prod m_C/m_B = 1$."
     },

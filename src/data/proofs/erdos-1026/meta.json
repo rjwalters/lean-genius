@@ -68,7 +68,8 @@
     "dateAdded": "2025-12-28",
     "axiomCount": 13,
     "lineCount": 285,
-    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The Monotonic Subsequence Sum Problem**\n\nErdős (1971) posed this optimization problem: given a sequence of distinct real numbers, what is the maximum sum achievable by a monotonic subsequence?\n\n**Timeline:**\n- **1935**: Erdős-Szekeres prove every sequence of n²+1 elements has a monotonic subsequence of length n+1\n- **1957**: Hanani shows every sequence decomposes into ≤ (√2+o(1))√n monotonic parts, giving c ≥ 1/√2\n- **1995**: Steele surveys variations on the Erdős-Szekeres theme, highlighting open weighted versions\n- **2016**: Tidor-Wang-Yang prove the weighted version, showing c = 1; Cambie independently conjectures and proves the upper bound c ≤ 1\n- **2017**: Wagner gives an independent proof via tournament theory\n\nThe problem sits at the intersection of extremal combinatorics and optimization. The classical Erdős-Szekeres theorem guarantees long monotonic subsequences; Erdős's question asks the deeper 'weighted' version: not just how many elements, but how much total value can a monotonic subsequence capture? The answer c = 1 is remarkably clean.",
@@ -97,7 +98,7 @@
       "title": "Sequences and Monotonicity",
       "summary": "RealSeq, Subsequence, IsIncreasing, IsDecreasing, IsMonotonic, subsequenceSum",
       "startLine": 49,
-      "endLine": 81,
+      "endLine": 82,
       "mathContext": "Definitions: $\\text{RealSeq}(n) = \\text{Fin}\\,n \\to \\mathbb{R}$, $\\text{Subsequence}(n,m)$ with StrictMono indices. Increasing: $\\text{StrictMono}(\\text{seq} \\circ \\sigma)$. Decreasing: pointwise $i < j \\implies x_{\\sigma(j)} < x_{\\sigma(i)}$. Sum: $\\sum_{i} x_{\\sigma(i)}$."
     },
     {
@@ -105,7 +106,7 @@
       "title": "The Erdős-Szekeres Theorem",
       "summary": "Classical (r-1)(s-1)+1 bound and n²+1 corollary",
       "startLine": 83,
-      "endLine": 106,
+      "endLine": 107,
       "mathContext": "Axiomatized: any injective $x: \\text{Fin}((r-1)(s-1)+1) \\to \\mathbb{R}$ has an increasing subsequence of length $r$ or decreasing of length $s$. Corollary: $k^2+1$ elements yield monotonic length $\\geq k+1$."
     },
     {
@@ -113,7 +114,7 @@
       "title": "Hanani's Decomposition",
       "summary": "MonotonicDecomposition structure and √(2n) bound",
       "startLine": 108,
-      "endLine": 139,
+      "endLine": 140,
       "mathContext": "Structure with `numParts`, `parts : Fin p → Σ m, Subsequence n m`, monotonicity, disjointness, covering. Hanani: $\\exists$ decomposition with $p \\leq \\sqrt{2n} + 1$. Dilworth variant: $p \\leq 2\\sqrt{n}$."
     },
     {
@@ -121,7 +122,7 @@
       "title": "The Maximum Monotonic Sum Problem",
       "summary": "maxMonotonicSumLength, maxMonotonicSum, normalizedRatio",
       "startLine": 141,
-      "endLine": 158,
+      "endLine": 159,
       "mathContext": "$\\text{maxMonotonicSum} = \\sup\\{\\sum x_{\\sigma(i)} : \\sigma \\text{ monotonic}\\}$ via `sSup`. Normalized ratio: $c_n(\\text{seq}) = \\text{maxMonotonicSum} \\cdot \\sqrt{n} / \\text{totalSum}$."
     },
     {
@@ -129,7 +130,7 @@
       "title": "The Main Conjecture",
       "summary": "Hanani lower bound (c ≥ 1/√2), Cambie upper bound (c ≤ 1)",
       "startLine": 160,
-      "endLine": 185,
+      "endLine": 186,
       "mathContext": "Lower: $\\text{maxMonotonicSum} \\geq S/(\\sqrt{2n}+1)$, so $c \\geq 1/\\sqrt{2}$. Upper: $\\forall \\varepsilon > 0,\\; \\exists$ seq with $\\text{maxMonotonicSum} \\leq (1+\\varepsilon) \\cdot S/\\sqrt{n}$, so $c \\leq 1$."
     },
     {
@@ -137,7 +138,7 @@
       "title": "The Weighted Erdős-Szekeres Theorem",
       "summary": "weighted_erdos_szekeres, tidor_wang_yang, optimal_constant_is_one",
       "startLine": 187,
-      "endLine": 225,
+      "endLine": 226,
       "mathContext": "Weighted ES: for $n = k^2$ distinct positive reals with $\\sum x_i = 1$, $\\text{maxMonotonicSum} \\geq 1/k$. Tidor-Wang-Yang proved this in 2016. Optimal constant: $\\forall \\varepsilon > 0,\\; \\text{maxMonotonicSum} \\geq (1-\\varepsilon) \\cdot S/\\sqrt{n}$."
     },
     {
@@ -145,7 +146,7 @@
       "title": "Related Results",
       "summary": "LIS, LDS definitions and bounds",
       "startLine": 227,
-      "endLine": 249,
+      "endLine": 250,
       "mathContext": "$\\text{LIS} = \\sup\\{m : \\exists \\text{ increasing subseq of length } m\\}$. $\\text{LIS} \\cdot \\text{LDS} \\geq n$ (Erdős-Szekeres). $\\max(\\text{LIS}, \\text{LDS}) \\geq \\sqrt{n}$."
     },
     {

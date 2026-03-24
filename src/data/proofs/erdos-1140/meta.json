@@ -106,28 +106,28 @@
       "title": "Basic Definitions",
       "summary": "Defines AllShiftsArePrime(n) as ∀ x, 2x² < n → Nat.Prime(n - 2x²), the core predicate. Also defines KnownValues = {2, 5, 7, 13, 31, 61, 181, 199} as a Finset. The quantifier ranges over x ∈ {0, ..., ⌊√((n-1)/2)⌋}, with x = 0 forcing n itself to be prime.",
       "startLine": 26,
-      "endLine": 39
+      "endLine": 40
     },
     {
       "id": "examples",
       "title": "Verified Examples and Counterexample",
       "summary": "Computationally verifies AllShiftsArePrime for n = 2 (trivial: only x = 0), n = 5, 7 (x ∈ {0,1}), and n = 13 (x ∈ {0,1,2}) using interval_cases + decide. Also verifies ¬AllShiftsArePrime(4) since 4 is composite. These are fully-proved theorems with no axioms.",
       "startLine": 41,
-      "endLine": 72
+      "endLine": 73
     },
     {
       "id": "epure-gica",
       "title": "Epure-Gica Theorem (Axiomatized)",
       "summary": "Two axioms from Epure-Gica (2010): epure_gica_mod_1 (n ≡ 1 mod 4 → n ∈ {5,13,61,181}) and epure_gica_mod_3 (n ≡ 3 mod 4 → n ∈ {7,31,199} or n > 199). Plus the fully-proved even_case theorem eliminating even n > 2 via the parity argument (n must be prime).",
       "startLine": 74,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "main-result",
       "title": "Main Result: DISPROVED",
       "summary": "States erdos_1140_finite (∃ B, ∀ n > B, ¬AllShiftsArePrime n) as an axiom packaging the three cases. Derives erdos_1140: ¬(∀ N, ∃ n > N, AllShiftsArePrime n) by contradiction — assuming infinitely many exist, find one above the bound B, contradicting finiteness. This is fully proved from the axiom.",
       "startLine": 98,
-      "endLine": 114
+      "endLine": 200
     }
   ],
   "conclusion": {

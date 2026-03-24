@@ -109,42 +109,42 @@
       "title": "Basic Definitions",
       "summary": "Hypergraph3 structure with vertices, edges, edge_card (3-uniformity), edge_subset proofs. vertexCount = |V|, edgeCount = |E|.",
       "startLine": 46,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "target-subgraphs",
       "title": "Target Subgraphs",
       "summary": "ContainsK4Minus: ∃ S with |S|=4, S ⊆ V, and (E filtered by e ⊆ S).card = 3. Contains5_7: ∃ S with |S|=5 and 7 edges within.",
       "startLine": 69,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "balogh",
       "title": "Balogh's Observation",
       "summary": "balogh_observation axiom: Contains5_7 → ContainsK4Minus (double counting: 7 edges × 2 subsets = 14, averaging 2.8 per 4-vertex subset). second_condition_redundant applies the axiom.",
       "startLine": 89,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "conjecture",
       "title": "Original and Simplified Conjectures",
       "summary": "Erdos794Conjecture (both conditions), Erdos794Simplified (K₄⁻ only). simplified_implies_original PROVED via left injection. The two are equivalent via Balogh.",
       "startLine": 106,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "counterexample",
       "title": "Harris's Counterexample",
       "summary": "HarrisCounterexample structure (9 vertices, 28 edges). n3_threshold PROVED: 3³+1=28. harris_counterexample_exists axiom: ∃ H on Fin 9 with 9 vertices, 28 edges, ¬ContainsK4Minus. Tripartite product plus {1,2,3}.",
       "startLine": 137,
-      "endLine": 176
+      "endLine": 177
     },
     {
       "id": "disproof",
       "title": "Disproof",
       "summary": "erdos_794_disproved PROVED: ¬Erdos794Simplified by applying Harris to the simplified conjecture. erdos_794_original_false PROVED: ¬Erdos794Conjecture by chaining with Balogh.",
       "startLine": 178,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "density",

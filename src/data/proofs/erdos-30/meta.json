@@ -76,7 +76,7 @@
       "title": "Core Definitions",
       "summary": "Defines IsSidonSet (ordered pairwise sum distinctness), HasDistinctSums (unordered variant), and proves their equivalence via case analysis on orderings.",
       "startLine": 29,
-      "endLine": 71,
+      "endLine": 72,
       "mathContext": "$A$ is Sidon if all pairwise sums $a_i + a_j$ ($i < j$) are distinct. Equivalently: $a + b = c + d$ with $\\{a,b\\} \\neq \\{c,d\\}$ never happens."
     },
     {
@@ -84,7 +84,7 @@
       "title": "The Sidon Number h(N)",
       "summary": "Defines sidonNumber as the supremum of cardinalities over all Sidon subsets of {0,...,N}, and proves existence (empty set is Sidon).",
       "startLine": 73,
-      "endLine": 86,
+      "endLine": 87,
       "mathContext": "$h(N) = \\max\\{|A| : A \\subseteq [N],, A \\text{ Sidon}\\}$. Known: $h(N) = \\sqrt{N} + O(N^{1/4})$."
     },
     {
@@ -92,7 +92,7 @@
       "title": "The Erdős-Turán Conjecture",
       "summary": "OPEN ($1,000): States Erdos30Conjecture (h(N) = √N + O_ε(N^ε)) and StrongerConjecture (h(N) = √N + O(1)).",
       "startLine": 88,
-      "endLine": 102,
+      "endLine": 103,
       "mathContext": "Conjecture (): $h(N) = \\sqrt{N} + O_\\varepsilon(N^\\varepsilon)$ for any $\\varepsilon > 0$. Stronger: $h(N) = \\sqrt{N} + O(1)$."
     },
     {
@@ -100,7 +100,7 @@
       "title": "Upper Bounds",
       "summary": "Historical progression: Erdős-Turán (1941, +N^{1/4}+1), Lindström (1969, +N^{1/4}+1/2), Balogh-Füredi-Roy (2021, +0.998·N^{1/4}), Carter-Hunter-O'Bryant (2025, +0.98183·N^{1/4}+O(1)).",
       "startLine": 104,
-      "endLine": 125,
+      "endLine": 126,
       "mathContext": "Upper bounds: Erdős-Turán (1941): $h(N) \\leq \\sqrt{N} + N^{1/4} + 1$. Lindström (1969): $\\leq \\sqrt{N} + N^{1/4} + 1/2$. Cilleruelo (2010): $\\leq \\sqrt{N} + 0.998 N^{1/4}$."
     },
     {
@@ -108,7 +108,7 @@
       "title": "Lower Bounds",
       "summary": "Singer's asymptotic bound h(N) ≥ (1-o(1))√N and the explicit quantitative version h(N) ≥ √N - N^{0.525} for infinitely many N.",
       "startLine": 127,
-      "endLine": 140,
+      "endLine": 141,
       "mathContext": "Lower bounds: Singer difference sets give $h(N) \\geq (1-o(1))\\sqrt{N}$ when $N$ is near a prime power."
     },
     {
@@ -116,7 +116,7 @@
       "title": "The Gap Analysis",
       "summary": "Formalizes RequiredUpperBound(ε) and the reduction theorem: any single improvement to ε < 1/4 implies the full conjecture.",
       "startLine": 142,
-      "endLine": 166,
+      "endLine": 167,
       "mathContext": "Gap: the error term $h(N) - \\sqrt{N}$ is between $O(1)$ (conjectured) and $O(N^{1/4})$ (best known). Any improvement to $O(N^{1/4-\\delta})$ would be progress."
     },
     {
@@ -124,7 +124,7 @@
       "title": "Perfect Difference Sets",
       "summary": "Defines IsPerfectDifferenceSet, axiomatizes that they are Sidon, and states Singer's construction for prime power q giving sets of size q+1 mod q²+q+1.",
       "startLine": 168,
-      "endLine": 183,
+      "endLine": 184,
       "mathContext": "Perfect difference set: $D \\subseteq \\mathbb{Z}/n\\mathbb{Z}$ with every nonzero element represented exactly once as $d_i - d_j$. These are optimal Sidon sets."
     },
     {
@@ -132,7 +132,7 @@
       "title": "Examples and Computations",
       "summary": "Proves {1,2,5,10} is Sidon by exhaustive case analysis, and records computed values h(10)=5, h(100)=13.",
       "startLine": 185,
-      "endLine": 205,
+      "endLine": 206,
       "mathContext": "Example: $\\{1, 2, 5, 10\\} \\subseteq [10]$ is Sidon (6 distinct pairwise sums: 3,6,7,11,12,15). $h(10) = 5$."
     },
     {
@@ -140,7 +140,7 @@
       "title": "B_h Sets Generalization",
       "summary": "Defines IsBhSet using multiset sums and axiomatizes that Sidon sets are exactly B₂ sets.",
       "startLine": 207,
-      "endLine": 219,
+      "endLine": 220,
       "mathContext": "$B_h$ set: all $h$-element sums distinct (Sidon = $B_2$). Generalizes to higher-order additive combinatorics."
     },
     {

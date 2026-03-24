@@ -46,7 +46,8 @@
     ],
     "axiomCount": 8,
     "lineCount": 118,
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Trotter studied extremal problems on antichains in the Boolean lattice $2^{[n]}$, extending Sperner's celebrated 1928 theorem that the maximum antichain has size $\\binom{n}{\\lfloor n/2 \\rfloor}$. Problem 776 adds a *multiplicity constraint*: every occurring set size must appear at least $r$ times. For $r = 1$ (no constraint), Griggs showed in 1983 that an antichain can use at most $n - 2$ distinct set sizes for $n > 3$, since sizes $0$ and $n$ correspond to $\\{\\emptyset\\}$ and $\\{[n]\\}$ which are incomparable to nothing else non-trivially. For $r \\geq 2$, the constraint $\\binom{n}{k} \\geq r$ excludes the extreme layers $k \\in \\{0, 1, n-1, n\\}$ for small $r$ and more layers as $r$ grows. Erdős and Trotter showed the maximum drops to $n - 3$ for large $n$, but the precise threshold $N(r)$ remains open. This connects to the 'anatomy' of the Boolean lattice and the LYM inequality.",
@@ -79,7 +80,7 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 28,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "Defines `SubsetFamily n` as `Finset (Finset (Fin n))`, `IsAntichain` via pairwise non-containment, `distinctSizes` via `Finset.image Finset.card`, `HasMultiplicity F r` requiring each size to appear $\\geq r$ times, and `maxDistinctSizes n r` as the supremum over all valid families.",
       "mathContext": "$\\mathcal{F} \\subseteq 2^{[n]}$, antichain $\\iff \\forall A \\neq B \\in \\mathcal{F}: A \\not\\subseteq B$, $d(\\mathcal{F}) = |\\{|A| : A \\in \\mathcal{F}\\}|$, multiplicity $\\geq r$ $\\iff$ each size appears $\\geq r$ times. $\\text{maxDistinctSizes}(n,r) = \\max_\\mathcal{F} d(\\mathcal{F})$."
     },
@@ -87,7 +88,7 @@
       "id": "results",
       "title": "Erdős-Trotter Results",
       "startLine": 55,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Axiomatizes `erdos_trotter_r1` ($r = 1$: max is $n - 2$ for $n > 3$), `erdos_trotter_upper` ($r > 1$: max $\\leq n - 3$ for large $n$), and `erdos_trotter_achievable` ($r > 1$: max $\\geq n - 3$ for large $n$). Proves `erdos_trotter_exact` combining the bounds via `omega`.",
       "mathContext": "$r = 1: \\text{max} = n - 2$. $r > 1: \\exists N_1,\\, n \\geq N_1 \\Rightarrow \\text{max} \\leq n-3$ and $\\exists N_2,\\, n \\geq N_2 \\Rightarrow \\text{max} \\geq n-3$. **Proved**: $n \\geq \\max(N_1, N_2) \\Rightarrow \\text{max} = n - 3$ via `omega`."
     },

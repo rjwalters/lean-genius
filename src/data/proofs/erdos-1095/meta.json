@@ -24,7 +24,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 10,
     "assumptions": "10 axiom declarations: ees_lower_bound (polynomial-exponential lower bound), ees_upper_bound (exponential upper bound), konyagin_lower_bound (superpolynomial lower bound), lcm_asymptotic (LCM PNT asymptotic), els_consensus_bound (heuristic lower bound), g_2 (g(2) = 3), g_3 (g(3) = 7), g_4 (g(4) = 23), g_5 (g(5) = 62), g_6 (g(6) = 143)",
-    "lineCount": 197
+    "lineCount": 197,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Erdős-Selfridge function was introduced by Ecklund, Erdős, and Selfridge in their 1974 paper 'A new function associated with the prime factors of C(n,k)' in Mathematics of Computation. They proved the first bounds: k^{1+c} < g(k) ≤ exp((1+o(1))k). Konyagin (1999) dramatically improved the lower bound to exp(c·(log k)²) using Rankin's method and smooth number estimates from Canfield–Erdős–Pomerance (1983). Erdős, Lacampagne, and Selfridge (1993) conjectured that any 'right-thinking person' would believe g(k) ≥ exp(c·k/log k), but this remains unproven. The problem connects to Kummer's theorem (1852) on the p-adic valuation of binomial coefficients, the distribution of smooth numbers (Dickman ρ-function), and the Prime Number Theorem via Chebyshev's ψ-function. Sorenson, Sorenson, and Webster (2020) computed g(k) for k ≤ 200, revealing the wildly irregular behavior predicted by the ratio conjectures. The sequence is OEIS A003458.",
@@ -114,7 +115,7 @@
       "id": "open-problem",
       "title": "The Main Open Problem",
       "startLine": 189,
-      "endLine": 192,
+      "endLine": 197,
       "summary": "Formalized as: find $f(k)$ with $\\log g(k) / f(k) \\to 1$. Conjecture: $f(k) = ck/\\log k$. The enormous gap between known bounds ($c(\\log k)^2$ vs $(1+o(1))k$) makes this wide open.",
       "mathContext": "Find $f(k)$: $\\log g(k)/f(k) \\to 1$. Conjecture: $f(k) = ck/\\log k$. Gap: $(\\log k)^2$ to $k$."
     }

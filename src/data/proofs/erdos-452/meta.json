@@ -85,77 +85,77 @@
       "title": "Imports and Problem Statement",
       "summary": "Problem description and Lean header; imports `Nat.primeFactors` for $\\omega(n)$, `ArithmeticFunction` for multiplicative function framework, `Real.log` for $\\log\\log n$",
       "startLine": 1,
-      "endLine": 32
+      "endLine": 33
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines $\\omega(n) = |n.\\text{primeFactors}|$, `satisfiesCondition` ($\\omega(n) > \\log\\log n$), `validInterval` ($[a,b] \\subseteq [x,2x]$ with universal condition), `intervalLength`",
       "startLine": 34,
-      "endLine": 56
+      "endLine": 57
     },
     {
       "id": "hardy-ramanujan",
       "title": "Hardy–Ramanujan and Erdős Density",
       "summary": "Axiomatizes Hardy–Ramanujan ($|\\omega(n) - \\log\\log n| < \\varepsilon \\cdot \\log\\log n$ eventually) and Erdős 1937 density ($\\frac{|\\{n \\leq x : \\omega(n) > \\log\\log n\\}|}{x} \\to \\frac{1}{2}$)",
       "startLine": 58,
-      "endLine": 72
+      "endLine": 73
     },
     {
       "id": "crt-bound",
       "title": "Lower Bound via Chinese Remainder Theorem",
       "summary": "Axiomatizes CRT construction: $\\exists [a,b] \\subseteq [x,2x]$ valid with $|I| \\geq (1 - o(1))\\frac{\\log x}{(\\log\\log x)^2}$; also `crt_construction_idea` that $P_k \\mid n \\Rightarrow \\omega(n) \\geq k$",
       "startLine": 74,
-      "endLine": 88
+      "endLine": 89
     },
     {
       "id": "main-question",
       "title": "The Main Question and Conjecture",
       "summary": "Axiomatizes `maxValidIntervalLength(x)`, the known lower bound, and the open conjecture that $(\\log x)^k$-length intervals exist for any $k$",
       "startLine": 90,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds: Prime Obstruction",
       "summary": "Axiomatizes: primes $p > 16$ fail the condition ($\\omega(p) = 1 < \\log\\log p$ since $e^e \\approx 15.15$), so valid intervals cannot contain primes, connecting to prime gap theory",
       "startLine": 108,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "primorial",
       "title": "Primorial Connection",
       "summary": "Defines $n\\# = \\prod_{p \\leq n, p \\text{ prime}} p$; axiomatizes $\\omega(n\\#) = \\pi(n)$ and $n\\# \\mid k \\Rightarrow \\omega(k) \\geq \\omega(n\\#)$",
       "startLine": 127,
-      "endLine": 143
+      "endLine": 144
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "summary": "Proves $\\omega(1) = 0$, $\\omega(2) = 1$, $\\omega(6) = 2$, $\\omega(30) = 3$, $\\omega(210) = 4$ via `simp` and `native_decide`, illustrating primorial structure",
       "startLine": 145,
-      "endLine": 163
+      "endLine": 164
     },
     {
       "id": "consecutive",
       "title": "Consecutive Integers with Many Factors",
       "summary": "Axiomatizes: for any $k, L$, there exist $L$ consecutive integers each with $\\omega(n) \\geq k$ (a strong existence result, though without the $\\omega(n) > \\log\\log n$ constraint)",
       "startLine": 165,
-      "endLine": 171
+      "endLine": 172
     },
     {
       "id": "related",
       "title": "Related Functions: $\\Omega(n)$ and $\\text{rad}(n)$",
       "summary": "Defines $\\Omega(n)$ (prime factors with multiplicity), `radical(n)` (squarefree part); axiomatizes $\\omega(n) \\leq \\Omega(n)$ and $\\omega(n) = \\omega(\\text{rad}(n))$",
       "startLine": 173,
-      "endLine": 192
+      "endLine": 193
     },
     {
       "id": "current-state",
       "title": "Current State of Knowledge",
       "summary": "Restates the known lower bound $\\frac{\\log x}{(\\log\\log x)^2}$ in simplified form as the current best result",
       "startLine": 194,
-      "endLine": 203
+      "endLine": 204
     },
     {
       "id": "summary",

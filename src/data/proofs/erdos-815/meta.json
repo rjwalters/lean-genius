@@ -102,14 +102,14 @@
       "title": "Header and Imports",
       "summary": "Problem documentation with references to EFGS (1988), Erdős (1991), and Narins-Pokrovskiy-Szabó (2017); imports SimpleGraph, Subgraph, Connectivity, and Finset.Card",
       "startLine": 1,
-      "endLine": 50
+      "endLine": 51
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines minDegree via Finset.min', IsDegree3Critical (edge count + proper subgraph condition), vertexCount, edgeCount",
       "startLine": 52,
-      "endLine": 74
+      "endLine": 75
     },
     {
       "id": "cycles",
@@ -144,14 +144,14 @@
       "title": "What Remains Open: Even k",
       "summary": "evenKConjecture: degree 3 critical graphs contain C_k for all even k ≥ 4? (OPEN)",
       "startLine": 166,
-      "endLine": 179
+      "endLine": 180
     },
     {
       "id": "explanation",
       "title": "Motivation and Construction Idea",
       "summary": "Why 'degree 3 critical': average degree ≈ 4 but no dense cores. NPS construction uses recursion, graph products, local cycle analysis",
       "startLine": 181,
-      "endLine": 216
+      "endLine": 217
     },
     {
       "id": "summary",

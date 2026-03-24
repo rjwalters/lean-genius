@@ -35,7 +35,8 @@
     "wiedijkNumber": 61,
     "axiomCount": 0,
     "lineCount": 269,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Ceva's Theorem was published by Italian mathematician Giovanni Ceva in 1678 in his work 'De lineis rectis se invicem secantibus statica constructio' (On straight lines intersecting each other in a static construction). The theorem is closely related to Menelaus's theorem (which deals with collinear points rather than concurrent lines) and both are fundamental results in triangle geometry.\n\nThe theorem provides a unified framework for understanding classical concurrence results including medians meeting at the centroid, altitudes meeting at the orthocenter, and angle bisectors meeting at the incenter.",
@@ -61,7 +62,7 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Overview of Ceva's theorem, its historical context, and the approach taken in this formalization.",
       "mathContext": "Ceva's Theorem (Wiedijk #61): cevians $AD$, $BE$, $CF$ in triangle $ABC$ are concurrent $\\iff$ $(AF/FB) \\cdot (BD/DC) \\cdot (CE/EA) = 1$. The formalization uses signed ratios and algebraic parameters rather than synthetic geometry."
     },
@@ -117,7 +118,7 @@
       "id": "historical-context",
       "title": "Historical Context",
       "startLine": 209,
-      "endLine": 262,
+      "endLine": 269,
       "summary": "Extended discussion of Menelaus's theorem, applications, and generalizations.",
       "mathContext": "Menelaus's theorem (dual): points $D, E, F$ on sides $BC, CA, AB$ are collinear $\\iff$ $(AF/FB) \\cdot (BD/DC) \\cdot (CE/EA) = -1$. The sign difference ($+1$ for Ceva, $-1$ for Menelaus) reflects the parity: concurrent cevians require an even number of external divisions, while a transversal requires an odd number."
     }

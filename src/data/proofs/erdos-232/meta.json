@@ -95,7 +95,7 @@
       "title": "Basic Definitions",
       "summary": "Defines `euclideanDist` as a wrapper around Mathlib's `dist` for $\\mathbb{R}^2$, and `IsUnitDistance` as the predicate that two points have distance exactly 1.",
       "startLine": 46,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "unit-distance-free",
@@ -109,63 +109,63 @@
       "title": "Balls and Lebesgue Measure",
       "summary": "Defines `ballR R` as the closed ball of radius $R$ at the origin and axiomatizes the area formula $\\lambda(B_R) = \\pi R^2$.",
       "startLine": 93,
-      "endLine": 109
+      "endLine": 110
     },
     {
       "id": "upper-density",
       "title": "Upper Density",
       "summary": "Defines the asymptotic upper density $\\overline{\\delta}(A) = \\limsup_{R \\to \\infty} \\lambda(A \\cap B_R)/\\lambda(B_R)$ with a placeholder implementation, and axiomatizes its boundedness ($[0,1]$) and monotonicity.",
       "startLine": 111,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "max-density",
       "title": "Maximum Density m_1",
       "summary": "Defines $m_1 = \\sup\\{\\overline{\\delta}(A) : A \\text{ unit-distance-free}\\}$ using Mathlib's `sSup` and axiomatizes $0 \\leq m_1 \\leq 1$.",
       "startLine": 137,
-      "endLine": 151
+      "endLine": 152
     },
     {
       "id": "trivial-bound",
       "title": "Trivial Upper Bound",
       "summary": "Axiomatizes the translation argument giving $m_1 \\leq 1/2$ and formalizes the key lemma `translation_disjoint`: $A \\cap (A + u) = \\emptyset$ for unit $u$.",
       "startLine": 153,
-      "endLine": 174
+      "endLine": 175
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds (Constructions)",
       "summary": "Axiomatizes the hexagonal lattice lower bound $m_1 \\geq \\pi/(8\\sqrt{3}) \\approx 0.2267$ and Croft's refinement $m_1 \\geq 0.22936$ from 1967.",
       "startLine": 176,
-      "endLine": 193
+      "endLine": 194
     },
     {
       "id": "solution",
       "title": "The Solution",
       "summary": "Axiomatizes the Ambrus et al. (2023) upper bound $m_1 \\leq 0.247$ and derives the main result $m_1 < 1/4$ via `calc` with `norm_num`, plus the weak bound $m_1 \\leq 1/4$ via `linarith`.",
       "startLine": 195,
-      "endLine": 227
+      "endLine": 228
     },
     {
       "id": "bounds-summary",
       "title": "Current Bounds Summary",
       "summary": "Combines the lower and upper bounds into `current_bounds`: $0.22936 \\leq m_1 \\leq 0.247$, and computes the explicit gap $0.247 - 0.22936 = 0.01764$ via `norm_num`.",
       "startLine": 229,
-      "endLine": 244
+      "endLine": 245
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Proves the empty set and singletons are unit-distance-free (by vacuity and uniqueness) and states that open balls of radius $1/2$ are unit-distance-free (via the triangle inequality, still a `sorry`).",
       "startLine": 246,
-      "endLine": 274
+      "endLine": 275
     },
     {
       "id": "chromatic-connection",
       "title": "Connection to Chromatic Number",
       "summary": "Defines the unit distance graph adjacency and proves unit-distance-free sets are independent sets. Axiomatizes $4 \\leq \\chi(\\mathbb{R}^2) \\leq 7$ with $m_1 \\leq 1/\\chi$, connecting the density problem to the Hadwiger-Nelson problem.",
       "startLine": 276,
-      "endLine": 305
+      "endLine": 306
     },
     {
       "id": "summary",

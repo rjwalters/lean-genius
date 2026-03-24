@@ -111,28 +111,28 @@
       "id": "corollaries",
       "title": "Famous Corollaries",
       "startLine": 283,
-      "endLine": 395,
+      "endLine": 396,
       "summary": "Proves $2^{\\sqrt{2}}$, $e^\\pi = (-1)^{-i}$, $(\\sqrt{2})^{\\sqrt{2}}$, and $2^{\\sqrt[3]{2}}$ are transcendental. Each follows by verifying the hypotheses of `gelfond_schneider_real`. The $e^\\pi$ proof uses Euler's identity cleverly."
     },
     {
       "id": "connections",
       "title": "Connections to Hermite-Lindemann",
       "startLine": 397,
-      "endLine": 445,
+      "endLine": 446,
       "summary": "Discusses the relationship: $a^b = e^{b \\log a}$, so Hermite-Lindemann (if $\\alpha$ is algebraic nonzero, $e^\\alpha$ is transcendental) implies $\\log$ of algebraic $\\neq 1$ is transcendental. States Baker's 1966 generalization to linear forms in logarithms."
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques (Pedagogical)",
       "startLine": 447,
-      "endLine": 512,
+      "endLine": 513,
       "summary": "Describes the Gelfond-Schneider method: (1) assume $a^b$ algebraic, (2) construct auxiliary function $f(z) = \\sum p(m,n) a^{mz} a^{bnz}$, (3) apply Siegel's lemma for integer coefficients, (4) count zeros via analytic function theory, (5) derive contradiction."
     },
     {
       "id": "open-problems",
       "title": "Open Problems",
       "startLine": 514,
-      "endLine": 559,
+      "endLine": 560,
       "summary": "Lists open questions: is $e^e$ transcendental? $\\pi^e$? $2^e$? States Schanuel's conjecture: if $z_1, \\ldots, z_n$ are $\\mathbb{Q}$-linearly independent, then $\\mathrm{trdeg}_{\\mathbb{Q}} \\mathbb{Q}(z_i, e^{z_i}) \\geq n$."
     }
   ],

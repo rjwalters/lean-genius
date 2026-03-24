@@ -51,7 +51,8 @@
       "Legendre's formula for factorial valuations",
       "Lucas' theorem for binomial coefficients mod p"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Ernst Eduard Kummer proved this remarkable theorem in 1852, in a paper titled \"Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen\" (On the supplementary theorems to the general reciprocity laws). Kummer was investigating cyclotomic fields and needed to understand the divisibility properties of binomial coefficients.\n\nThe theorem reveals a surprising connection: the prime power dividing a binomial coefficient is completely determined by the pattern of carries in base-p addition. This bridges combinatorics (counting) with number theory (divisibility) through the arithmetic of positional numeral systems.\n\nKummer's work on cyclotomic fields and regular primes was part of his larger project to prove Fermat's Last Theorem for specific classes of primes — he proved FLT for all regular primes in 1850, and the divisibility properties of binomial coefficients were central to his criterion for regularity. The theorem has since found applications far beyond its original context: in p-adic analysis, combinatorial number theory, and even fractal geometry (the Sierpiński triangle arises from C(n,k) mod 2 via Kummer's carry criterion).",
@@ -94,7 +95,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 64,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Kummer's theorem: multiplicity equals the count of carry positions when adding k and n-k in base p.",
       "mathContext": "`Nat.Prime.multiplicity_choose`: for prime $p$ and $k \\leq n$, $\\nu_p\\binom{n}{k}$ equals the number of positions where adding $k$ and $n-k$ in base $p$ produces a carry."
     },
@@ -102,7 +103,7 @@
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 92,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Verification with specific binomial coefficients: C(10,4), C(6,3), C(4,2), C(5,2), C(8,2).",
       "mathContext": "Example: $\\binom{10}{4} = 210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$. Adding $4 + 6$ in base 2: $100 + 110 = 1010$ with 1 carry, so $\\nu_2(210) = 1$."
     },
@@ -110,7 +111,7 @@
       "id": "prime-power",
       "title": "Prime Power Case",
       "startLine": 131,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "Special case: p divides C(p^n, k) for 0 < k < p^n.",
       "mathContext": "$p \\mid \\binom{p^n}{k}$ for $0 < k < p^n$: adding $k + (p^n - k)$ in base $p$ always produces a carry from the lowest nonzero digit of $k$."
     },
@@ -118,7 +119,7 @@
       "id": "lucas-connection",
       "title": "Connection to Lucas' Theorem",
       "startLine": 140,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "How Kummer's theorem relates to Lucas' theorem on binomial coefficients mod p.",
       "mathContext": "Lucas: $\\binom{n}{k} \\equiv \\prod_i \\binom{n_i}{k_i} \\pmod{p}$ where $n = \\sum n_i p^i$, $k = \\sum k_i p^i$. Kummer explains this: $p \\mid \\binom{n}{k} \\iff$ at least one carry $\\iff$ some $k_i > n_i$."
     },
@@ -126,7 +127,7 @@
       "id": "digit-sum",
       "title": "Digit Sum Formulation",
       "startLine": 156,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "The equivalent formula using digit sums: (p-1)·ν_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n).",
       "mathContext": "Legendre-Kummer: $(p-1)\\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k) - S_p(n)$. Each carry reduces the digit sum by $p-1$, so carries $= (S_p(k) + S_p(n-k) - S_p(n))/(p-1)$."
     },

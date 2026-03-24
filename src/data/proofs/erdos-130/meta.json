@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 128,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
@@ -43,7 +44,7 @@
       "id": "degeneracy",
       "title": "Collinearity and Cocircularity",
       "startLine": 37,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines collinearity via the $2 \\times 2$ cross product determinant and cocircularity via existence of a circumscribed circle."
     },
     {
@@ -78,7 +79,7 @@
       "id": "anning-erdos",
       "title": "Anning–Erdős and Known Results",
       "startLine": 96,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "The classical Anning–Erdős theorem (1945), its consequence for finite cliques in general position, and the quantitative diameter bound $|S| \\leq O(\\text{diam}^2)$."
     },
     {

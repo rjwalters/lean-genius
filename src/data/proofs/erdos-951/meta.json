@@ -101,7 +101,7 @@
       "title": "Beurling Prime Numbers",
       "summary": "Defines `WellSeparatedProducts a` ($|\\prod a_i^{k_i} - \\prod a_j^{\\ell_j}| \\ge 1$ for distinct `Finsupp` tuples) and `BeurlingPrimes` structure (strictly increasing, all $> 1$, well-separated).",
       "startLine": 44,
-      "endLine": 54
+      "endLine": 55
     },
     {
       "id": "counting-functions",
@@ -122,14 +122,14 @@
       "title": "Powers of 2 Example",
       "summary": "Defines `powersOfTwo n := 2^{n+1}$. Proves strict monotonicity (via `pow_lt_pow_right`) and $> 1$ (via `pow_le_pow_right`). Axiomatizes well-separation. Constructs `powersOfTwoBeurling : BeurlingPrimes`.",
       "startLine": 96,
-      "endLine": 119
+      "endLine": 120
     },
     {
       "id": "separation-analysis",
       "title": "Separation Implies Distinctness",
       "summary": "Proves `separation_implies_distinct`: well-separation ($|P_1 - P_2| \\ge 1$) implies $P_1 \\neq P_2$, by contradiction using `abs_zero` and `linarith`.",
       "startLine": 121,
-      "endLine": 129
+      "endLine": 130
     },
     {
       "id": "beurling-integers",
@@ -143,7 +143,7 @@
       "title": "The Main Conjecture (OPEN)",
       "summary": "Defines `erdos951_conjecture`: $\\forall$ bp, $\\forall x > 0$, $\\pi_a(x) \\le \\pi(x)$. NOT axiomatized since it's OPEN. Axiomatizes `powersOfTwo_sparser` as a special case.",
       "startLine": 145,
-      "endLine": 153
+      "endLine": 154
     },
     {
       "id": "summary",

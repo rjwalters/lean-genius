@@ -105,28 +105,28 @@
       "title": "Hypergraph Definitions",
       "summary": "Defines `Hypergraph V r` as a structure with `edges : Finset (Finset V)` and uniformity constraint. `Hypergraph.numEdges` counts edges. `Hypergraph.induced H S` restricts to edges $\\subseteq S$ with a proof term showing the result is still $r$-uniform. `thresholdConstant r = r^{-r}` gives the random selection baseline.",
       "startLine": 39,
-      "endLine": 61
+      "endLine": 62
     },
     {
       "id": "known-result",
       "title": "Erdős's Known Result (1964)",
       "summary": "Axiomatizes `erdos_1964_result`: with edge threshold $\\varepsilon n^r$, a dense $m$-vertex subhypergraph with $\\ge r^{-r} m^r$ edges exists. Also axiomatizes `threshold_decreasing` ($(r+1)^{-(r+1)} < r^{-r}$) and `threshold_values` ($3^{-3} = 1/27$, $4^{-4} = 1/256$, $5^{-5} = 1/3125$). These establish the baseline that Problem #1075 seeks to improve.",
       "startLine": 63,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "summary": "Defines `ErdosConjecture1075` as a `Prop`: $\\exists c_r > r^{-r}$ with edge threshold $(1+\\varepsilon)(n/r)^r$. The `def` (not `axiom`) signals an unresolved question. Also axiomatizes `threshold_comparison`: $(n/r)^r < n^r$ for $r \\ge 3$, quantifying the gap between the two thresholds. The conjecture is a supersaturation question — does slight density excess force structural improvements?",
       "startLine": 100,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "asymptotics",
       "title": "Complete Hypergraphs and Asymptotics",
       "summary": "Defines `completeHypergraphEdges m r = Nat.choose m r` and axiomatizes `binomial_asymptotic`: $\\binom{m}{r}/(m^r/r!) \\to 1$ as $m \\to \\infty$. This bridges the combinatorial edge count $\\binom{m}{r}$ with the density measure $m^r$ used in the problem statement, using `Filter.Tendsto` for the asymptotic.",
       "startLine": 135,
-      "endLine": 148
+      "endLine": 149
     },
     {
       "id": "summary",

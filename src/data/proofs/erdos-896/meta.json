@@ -79,14 +79,14 @@
       "id": "imports-setup",
       "title": "Imports and Setup",
       "startLine": 21,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Imports `Finset.Basic` for finite set operations ($\\times^s$, filter, image, card), `Real.Basic` for $\\log N$ in asymptotic bounds, and `Tactic` for proof automation."
     },
     {
       "id": "definitions",
       "title": "Product Representations",
       "startLine": 25,
-      "endLine": 40,
+      "endLine": 41,
       "summary": "Defines `reprCount A B m = |\\{(a,b) \\in A \\times B : ab = m\\}|$, `uniqueProductCount A B = F(A,B) = |\\{m : \\text{reprCount}=1\\}|$, and `SubsetsOfRange A B N` constraining $A, B \\subseteq \\{1,\\ldots,N\\}$."
     },
     {
@@ -100,14 +100,14 @@
       "id": "van-doorn",
       "title": "Van Doorn's Bounds",
       "startLine": 62,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "States `VanDoornLowerBound`: $(1-\\varepsilon)N^2/\\log N \\leq \\max F$ eventually. States `VanDoornUpperBound`: $\\max F \\leq C N^2/(\\log N)^\\delta (\\log\\log N)^{3/2}$ where $\\delta = 1 - (1+\\log\\log 2)/\\log 2 \\approx 0.086$."
     },
     {
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 92,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "Proves $F(A,B) \\leq |A| \\cdot |B|$ via `card_filter_le \\circ card_image_le \\circ card_product`. Axiomatizes $F(A,B) = F(B,A)$ by multiplicative commutativity. Proves $F(\\emptyset, B) = 0$ by `simp`."
     },
     {

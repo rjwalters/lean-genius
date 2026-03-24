@@ -70,7 +70,8 @@
     "axioms": 0,
     "axiomCount": 0,
     "lineCount": 588,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The binomial distribution — the probability of $k$ successes in $n$ independent Bernoulli trials — is one of the most fundamental objects in probability theory and combinatorics. **Jacob Bernoulli** established its core properties in *Ars Conjectandi* (published posthumously in 1713), where he proved the weak law of large numbers for Bernoulli trials. The algebraic connection to the binomial theorem $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ was already known to **Isaac Newton** (1665) and **Blaise Pascal** (1654), but Bernoulli was the first to interpret the expansion probabilistically. **Abraham de Moivre** (1733) proved the normal approximation $\\text{Bin}(n,p) \\approx \\mathcal{N}(np, np(1-p))$ for large $n$ (later generalized by **Pierre-Simon Laplace**). **Siméon Denis Poisson** (1837) proved the law of rare events: when $n \\to \\infty$ and $p = r/n$, $\\text{Bin}(n, r/n) \\to \\text{Poi}(r)$ pointwise. The absorption identity $k\\binom{n}{k} = n\\binom{n-1}{k-1}$ was known to **Leonhard Euler** and is the algebraic engine for computing moments. **Alexandre-Théophile Vandermonde** (1772) proved his convolution identity $\\binom{m+n}{k} = \\sum_j \\binom{m}{j}\\binom{n}{k-j}$, which translates directly to the reproductive property of the binomial family. This formalization proves all these results purely algebraically from the binomial theorem, including a first-principles proof of $(1+x/n)^n \\to e^x$ via the derivative of $\\log$ at 1 — a result not available in Mathlib v4.26.0.",
@@ -97,70 +98,70 @@
       "id": "pmf",
       "title": "The Binomial Distribution PMF",
       "startLine": 25,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Defines $\\text{binomPMF}(n, p, k) = \\binom{n}{k} p^k (1-p)^{n-k}$ as a real-valued function. Proves boundary values $P(0) = (1-p)^n$, $P(n) = p^n$, and non-negativity $P(k) \\geq 0$ for $p \\in [0,1]$."
     },
     {
       "id": "normalization",
       "title": "Normalization from the Binomial Theorem",
       "startLine": 46,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Proves $\\sum_{k=0}^{n} \\text{PMF}(k) = 1$ by substituting $q = 1-p$ into the binomial expansion $(p+q)^n$, giving $(p + (1-p))^n = 1^n = 1$. Also shows the sum is independent of $p$."
     },
     {
       "id": "symmetry",
       "title": "Symmetry",
       "startLine": 66,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Proves $P(k; n, p) = P(n-k; n, 1-p)$ for $k \\leq n$, using the symmetry $\\binom{n}{k} = \\binom{n}{n-k}$. Swapping success and failure probabilities reflects the distribution."
     },
     {
       "id": "mean",
       "title": "Mean via Absorption Identity",
       "startLine": 75,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "Proves $E[X] = np$ using the **absorption identity** $(k+1)\\binom{n+1}{k+1} = (n+1)\\binom{n}{k}$. Each term $k \\cdot \\text{PMF}(k)$ is rewritten as $(n+1)p$ times a degree-$(n-1)$ binomial term, and the resulting sum equals 1 by normalization."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 129,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Four concrete instances: **fair coin** $P(k) = \\binom{n}{k}/2^n$, **Bernoulli** $P(1; 1, p) = p$ and $P(0; 1, p) = 1-p$, **certain event** $P(n; n, 1) = 1$, and **impossible event** $P(0; n, 0) = 1$."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
       "startLine": 163,
-      "endLine": 171,
+      "endLine": 172,
       "summary": "The mean $np$ is monotone in $p$: if $p \\leq q$ then $np \\leq nq$. A simple consequence of $n \\geq 0$."
     },
     {
       "id": "pgf",
       "title": "Probability Generating Function",
       "startLine": 173,
-      "endLine": 207,
+      "endLine": 208,
       "summary": "Proves $E[t^X] = (pt + 1-p)^n$ by replacing $p$ with $pt$ in the binomial expansion. Verifies: PGF at $t=1$ recovers normalization ($=1$), and the formal derivative at $t=1$ gives the mean $np$."
     },
     {
       "id": "second-factorial-moment",
       "title": "Double Absorption and Second Factorial Moment",
       "startLine": 209,
-      "endLine": 268,
+      "endLine": 269,
       "summary": "Proves double absorption $(k+2)(k+1)\\binom{n+2}{k+2} = (n+2)(n+1)\\binom{n}{k}$, giving $E[X(X-1)] = n(n-1)p^2$. Then derives $\\text{Var}(X) = E[X^2] - (E[X])^2 = n(n-1)p^2 + np - n^2p^2 = np(1-p)$."
     },
     {
       "id": "convolution",
       "title": "Convolution via Vandermonde's Identity",
       "startLine": 270,
-      "endLine": 329,
+      "endLine": 330,
       "summary": "Proves Vandermonde's identity $\\binom{n+m}{k} = \\sum_{j=0}^{k} \\binom{n}{j}\\binom{m}{k-j}$ using `Nat.add_choose_eq`, then translates it to: $\\sum_j \\text{PMF}_n(j) \\cdot \\text{PMF}_m(k-j) = \\text{PMF}_{n+m}(k)$. This is the reproductive property: $\\text{Bin}(n,p) * \\text{Bin}(m,p) = \\text{Bin}(n+m,p)$."
     },
     {
       "id": "poisson-limit",
       "title": "Poisson Limit Theorem",
       "startLine": 331,
-      "endLine": 558,
+      "endLine": 559,
       "summary": "The centerpiece: proves $(1+x/n)^n \\to e^x$ from first principles (via $\\text{HasDerivAt}(\\log(1+t), 1, 0)$ and continuity of $\\exp$), defines the Poisson PMF $e^{-r} r^k / k!$, and proves the Poisson limit theorem $\\text{Bin}(n, r/n) \\to \\text{Poi}(r)$ pointwise by induction on $k$, using the PMF ratio $\\text{PMF}(k+1)/\\text{PMF}(k) \\to r/(k+1)$."
     },
     {

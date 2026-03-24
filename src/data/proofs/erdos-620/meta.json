@@ -96,84 +96,84 @@
       "id": "imports-setup",
       "title": "Imports and Setup",
       "startLine": 32,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Imports Mathlib modules for simple graphs, cliques, subgraphs, cardinality, and logarithms. Opens `SimpleGraph` and `Finset` namespaces with generic finite type variable $V$."
     },
     {
       "id": "cliques-forbidden",
       "title": "Cliques and Forbidden Subgraphs",
       "startLine": 45,
-      "endLine": 67,
+      "endLine": 68,
       "summary": "Defines `HasTriangle`, `TriangleFree`, `HasK4`, and `K4Free`. Includes a complete Lean proof of `triangleFree_implies_K4Free` via existential destruction — one of the file's fully verified results."
     },
     {
       "id": "induced-subgraphs",
       "title": "Induced Subgraphs",
       "startLine": 69,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Defines `inducedSubgraph G S` as the graph on subtype $S$ inheriting adjacency from $G$. Defines `InducedTriangleFree` and `maxTriangleFreeInduced` via $\\sup$ over triangle-free induced subgraph sizes."
     },
     {
       "id": "erdos-rogers-function",
       "title": "The Erdős-Rogers Function",
       "startLine": 88,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Defines the core function `erdosRogers n` $= \\inf\\{k : \\forall G \\text{ on Fin}(n),\\, K_4\\text{-free} \\Rightarrow \\text{maxTF}(G) \\ge k\\}$ and the alternative `ErdosRogersProperty n k` as an explicit universal statement."
     },
     {
       "id": "main-problem",
       "title": "Main Problem Statement",
       "startLine": 105,
-      "endLine": 115,
+      "endLine": 116,
       "summary": "Formalizes `Erdos620Statement`: existence of a tight function $f$ with $\\forall G,\\, f(n) \\le \\text{maxTF}(G)$ and attainment $\\exists G,\\, \\text{maxTF}(G) = f(n)$."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds (1991-2024)",
       "startLine": 117,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "Axiomatizes six bounds: trivial lower ($c\\sqrt{n}$), Shearer ($\\sqrt{n}\\sqrt{\\log n}/\\log\\log n$), Bollobás-Hind ($n^{7/10+o(1)}$), Krivelevich ($n^{2/3}(\\log n)^{1/3}$), Wolfovitz ($\\sqrt{n}(\\log n)^{120}$), and Mubayi-Verstraëte ($\\sqrt{n}\\log n$)."
     },
     {
       "id": "current-state",
       "title": "Current State of Knowledge",
       "startLine": 169,
-      "endLine": 187,
+      "endLine": 188,
       "summary": "Complete proof of `current_bounds` combining Shearer and Mubayi-Verstraëte. Complete proof of `gap_analysis` extracting constants $c, C > 0$ with the full sandwich inequality for $n \\ge 16$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 189,
-      "endLine": 204,
+      "endLine": 205,
       "summary": "Sparse graph case: $|E| \\le n$ implies triangle-free induced subgraph of size $\\ge n/3$. Defines the Turán graph $T(n,3)$ via $i \\bmod 3 \\ne j \\bmod 3$ adjacency and states $K_4$-freeness."
     },
     {
       "id": "ramsey-connection",
       "title": "Ramsey Connection",
       "startLine": 206,
-      "endLine": 224,
+      "endLine": 225,
       "summary": "Defines `ramsey3k k` and axiomatizes Kim's theorem $R(3,k) = \\Theta(k^2/\\log k)$. States the Erdős-Rogers to Ramsey connection: if $n \\ge R(3,k)$, then $f(n) \\ge k$ or every $K_4$-free graph has a triangle."
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Bounds",
       "startLine": 226,
-      "endLine": 242,
+      "endLine": 243,
       "summary": "Axiomatizes probabilistic upper bound (near-tight construction achieving $(1+\\varepsilon)\\sqrt{n}\\log n$) and dependent random choice lower bound ($c\\sqrt{n}$ baseline). Both directions use randomized arguments."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "startLine": 244,
-      "endLine": 262,
+      "endLine": 263,
       "summary": "Defines $f_{s,t}(n)$ via `generalizedErdosRogers` using Mathlib's `CliqueFree`. States `original_is_f43` and axiomatizes $f_{s,2}(n) = \\Theta(n^{1/(s-1)} \\cdot (\\log n)^{O(1)})$ from Ramsey theory."
     },
     {
       "id": "open-status",
       "title": "Open Status",
       "startLine": 264,
-      "endLine": 278,
+      "endLine": 314,
       "summary": "Formalizes the problem's openness as non-existence of a pure power-law $f(n) \\asymp n^\\alpha$. The theorem `erdos_620_unsolved` (sorry'd) encodes that no single exponent captures the logarithmic correction."
     }
   ],

@@ -101,49 +101,49 @@
       "id": "point-geometry",
       "title": "Basic Definitions for Point Sets",
       "startLine": 37,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Defines $\\texttt{Point2} = \\mathbb{R} \\times \\mathbb{R}$, Euclidean distance $d(p,q) = \\sqrt{(\\Delta x)^2 + (\\Delta y)^2}$, and proves symmetry, non-negativity, and positive-definiteness."
     },
     {
       "id": "isosceles-free",
       "title": "Isosceles-Free Sets",
       "startLine": 60,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "Defines $\\texttt{Triple}(A)$ for three distinct points, $\\texttt{IsIsosceles}$ (two of three distances equal), and $\\texttt{IsIsoscelesFree}$ ($\\forall t,\\; \\neg\\texttt{IsIsosceles}(t)$). Proves equivalence with $\\texttt{AllTriplesDistinct}$."
     },
     {
       "id": "distances",
       "title": "Distinct Distances",
       "startLine": 98,
-      "endLine": 112,
+      "endLine": 113,
       "summary": "Defines $\\Delta(A) = \\{d(p,q) : p, q \\in A\\}$ via $\\texttt{Finset.image}$ on $A \\times A$, and $|\\Delta(A)|$ as the cardinality. Axiomatizes the trivial upper bound $|\\Delta(A)| \\le \\binom{n}{2} + 1$."
     },
     {
       "id": "question",
       "title": "The Erdős-Davies Question",
       "startLine": 114,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Defines $f(n) = \\inf\\{|\\Delta(A)|/n\\}$ over isosceles-free $n$-point sets. Two equivalent formulations of the question: $\\forall M,\\; \\exists N$ (epsilon-delta) and $\\exists f$ with $\\texttt{Filter.Tendsto}$."
     },
     {
       "id": "dumitrescu",
       "title": "Dumitrescu's Bounds (2008)",
       "startLine": 136,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "Axiomatizes $(\\log n)^c \\le f(n)$ (lower, via pigeonhole on distance multiplicities) and $f(n) \\le 2^{O(\\sqrt{\\log n})}$ (upper, via Behrend's 3-AP-free construction)."
     },
     {
       "id": "kelley-meka",
       "title": "Kelley-Meka/Bloom-Sisask (2023)",
       "startLine": 156,
-      "endLine": 166,
+      "endLine": 167,
       "summary": "Axiomatizes the improved lower bound $f(n) \\ge 2^{c(\\log n)^{1/9}}$ from the Kelley-Meka breakthrough on $r_3(N) \\le N/2^{c(\\log N)^{1/9}}$."
     },
     {
       "id": "3ap-connection",
       "title": "Connection to 3-AP Free Sets",
       "startLine": 168,
-      "endLine": 204,
+      "endLine": 205,
       "summary": "Defines $\\texttt{Is3APFree}$, difference sets, and axiomatizes the key reduction: in $\\mathbb{R}$, isosceles-free $\\Leftrightarrow$ 3-AP-free, so progress on Roth-type bounds translates directly."
     },
     {

@@ -24,7 +24,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 220,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #535** connects number theory to extremal combinatorics through $\\gcd$-defined hypergraphs. The function $f_r(N)$ measures the maximum size of a subset $A \\subseteq \\{1, \\ldots, N\\}$ such that no $r$ elements share the same pairwise $\\gcd$.\n\nErdős first studied this in 1964 in his paper 'On a problem in elementary number theory and a combinatorial problem,' establishing both the first non-trivial upper bound $f_r(N) \\leq N^{3/4+o(1)}$ via double-counting arguments, and the lower bound $f_3(N) > N^{c/\\log \\log N}$ using multiplicative constructions with smooth numbers. Abbott and Hanson (1970) improved the upper bound to $f_r(N) \\leq N^{1/2+o(1)}$ in *Bull. London Math. Soc.*, using the insight that $\\gcd$-cliques correspond to cliques in auxiliary graphs, then applying Turán's theorem.\n\nThe gap between the polynomial upper bound $N^{1/2}$ and the quasi-polynomial lower bound $N^{c/\\log \\log N}$ is enormous — it spans the entire range between polynomial and sub-polynomial growth rates. Erdős conjectured that the lower bound is tight: $f_r(N) \\leq N^{c/\\log \\log N}$. This conjecture would follow from a strengthened version of the Erdős-Rado Sunflower Lemma (1960), specifically removing the factorial factor from the sunflower bound. The recent breakthrough by Alweiss, Lovett, Wu, and Zhang (2020) on the sunflower conjecture, improving the bound to $(C \\log k)^k$, represents significant progress but does not yet resolve Problem #535.",
@@ -49,63 +50,63 @@
       "title": "Imports and Setup",
       "summary": "Imports from Mathlib: $\\gcd$, $\\text{Finset}$, $\\text{sSup}$, logarithms, and natural number arithmetic",
       "startLine": 1,
-      "endLine": 41
+      "endLine": 42
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines `HasNoRGCDSubset` (no $r$ elements with equal pairwise $\\gcd$), `HasNoGCDClique`, and the extremal function $f_r(N) = \\sup\\{|A| : A \\subseteq [N],\\, \\text{gcd-clique-free}\\}$",
       "startLine": 43,
-      "endLine": 64
+      "endLine": 65
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "summary": "Establishes $f_r(N) \\leq N$ (universe bound) and the requirement $r \\geq 3$ for non-degeneracy",
       "startLine": 66,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "erdos-upper",
       "title": "Erdős's Original Upper Bound (1964)",
       "summary": "Axiom: $f_r(N) \\leq N^{3/4+o(1)}$ via double-counting arguments on divisor pairs",
       "startLine": 78,
-      "endLine": 91
+      "endLine": 92
     },
     {
       "id": "abbott-hanson",
       "title": "Abbott-Hanson Upper Bound (1970)",
       "summary": "Axiom: $f_r(N) \\leq N^{1/2+o(1)}$ via auxiliary graph construction and Turán's theorem; `exponent_improvement` verifies $3/4 > 1/2$",
       "startLine": 93,
-      "endLine": 110
+      "endLine": 111
     },
     {
       "id": "lower-bound",
       "title": "Erdős's Lower Bound",
       "summary": "Axiom: $f_3(N) > N^{c/\\log \\log N}$ using smooth numbers with $\\leq k$ prime factors for $k \\sim \\log \\log N$",
       "startLine": 112,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "gap-conjecture",
       "title": "The Gap and Erdős's Conjecture",
       "summary": "Defines `ErdosConjecture`: $f_r(N) \\leq N^{c/\\log \\log N}$, asserting the lower bound is tight and the polynomial upper bound can be dramatically improved",
       "startLine": 128,
-      "endLine": 145
+      "endLine": 146
     },
     {
       "id": "sunflower",
       "title": "Connection to Sunflower Problem",
       "summary": "Maps $\\gcd$-cliques to sunflowers via prime factorizations; `StrongerSunflowerLemma` would imply `ErdosConjecture` by removing the factorial from the Erdős-Rado bound",
       "startLine": 147,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "techniques",
       "title": "Proof Techniques",
       "summary": "Discussion of methods: double counting, Turán graph embedding, smooth number constructions, and the prime factor multiset encoding",
       "startLine": 164,
-      "endLine": 191
+      "endLine": 192
     },
     {
       "id": "summary",

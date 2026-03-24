@@ -40,7 +40,8 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 4,
     "lineCount": 374,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Charles Hermite's 1873 paper \"Sur la fonction exponentielle\" proved $e$ is transcendental, introducing the **auxiliary polynomial method** that became the foundation of transcendence theory. Hermite's key innovation was constructing a polynomial $f(x) = x^{p-1}(x-1)^p \\cdots (x-n)^p / (p-1)!$ whose integral against $e^x$ yields simultaneously a nonzero integer and a quantity less than 1 — a contradiction. Ferdinand von Lindemann generalized this in his 1882 paper \"Über die Zahl $\\pi$\" to show $e^\\alpha$ is transcendental for any nonzero algebraic $\\alpha$, immediately proving $\\pi$ transcendental via Euler's identity and settling the ancient circle-squaring problem. Karl Weierstrass published the definitive generalization in 1885: if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent. This hierarchy — Hermite to Lindemann to Weierstrass — established the template that Gelfond, Schneider, and Baker would later extend.",
@@ -63,7 +64,7 @@
       "id": "imports-documentation",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 107,
+      "endLine": 108,
       "summary": "Imports Mathlib algebraic, exponential, and linear algebra modules. Extensive documentation covers the theorem statements, historical context (Hermite 1873, Lindemann 1882, Weierstrass 1885), proof outline, and connections to Wiedijk #53, #56, #67."
     },
     {
@@ -77,7 +78,7 @@
       "id": "hermite-lindemann-theorem",
       "title": "Part II: The Hermite-Lindemann Theorem",
       "startLine": 127,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "Axiomatizes the main theorem: $\\alpha \\neq 0$ algebraic $\\Rightarrow e^\\alpha$ transcendental. Also states the contrapositive: $e^\\alpha$ algebraic $\\Rightarrow \\alpha$ transcendental."
     },
     {
@@ -91,21 +92,21 @@
       "id": "fundamental-corollaries",
       "title": "Part IV: Fundamental Corollaries",
       "startLine": 207,
-      "endLine": 281,
+      "endLine": 282,
       "summary": "Derives transcendence of $e$ (Wiedijk #67), $\\pi$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\alpha}$ for algebraic $\\alpha$."
     },
     {
       "id": "applications",
       "title": "Part V: Applications",
       "startLine": 283,
-      "endLine": 317,
+      "endLine": 318,
       "summary": "Axiomatizes $\\sqrt{\\pi}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties."
     },
     {
       "id": "connections",
       "title": "Part VI: Connections to Other Results",
       "startLine": 319,
-      "endLine": 352,
+      "endLine": 353,
       "summary": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental? Describes Schanuel's conjecture."
     },
     {

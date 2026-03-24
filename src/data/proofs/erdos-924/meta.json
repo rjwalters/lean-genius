@@ -120,49 +120,49 @@
       "title": "Basic Graph Concepts",
       "summary": "Defines `completeGraph` as $\\top$ in the `SimpleGraph` lattice, `IsCliqueOfSize` via `Finset`/`IsClique`, `IsCliqueFree` ($\\neg \\text{IsCliqueOfSize}$), and `ContainsClique` (semantic alias).",
       "startLine": 36,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "edge-colorings",
       "title": "Edge Colorings",
       "summary": "`EdgeColoring` as $G.\\text{edgeSet} \\to \\text{Fin}\\, k$, `MonochromaticSubgraph` with `symm`/`loopless` proofs via `Sym2.eq_swap`, and `HasMonochromaticClique` ($\\exists c,\\; K_l \\subseteq G_c$).",
       "startLine": 69,
-      "endLine": 104
+      "endLine": 105
     },
     {
       "id": "ramsey-property",
       "title": "The Ramsey Property",
       "summary": "`HasRamseyProperty`: $\\forall \\chi,\\; \\exists c,\\; K_l \\subseteq G_c$. `ErdosHajnalQuestion`: $\\exists G,\\; \\omega(G) \\le l \\land G \\to (K_l)^k_2$.",
       "startLine": 106,
-      "endLine": 125
+      "endLine": 126
     },
     {
       "id": "folkman-graphs",
       "title": "Folkman Graphs",
       "summary": "`IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber` $f(l;k)$ defined via `Nat.find` from the existence guarantee.",
       "startLine": 127,
-      "endLine": 145
+      "endLine": 146
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "summary": "Axioms: `folkman_1970` ($k=2$, $\\forall l \\ge 3$) and `nesetril_rodl_1976` ($\\forall k \\ge 2, l \\ge 3$). The general theorem completely solves the Erdős-Hajnal question.",
       "startLine": 147,
-      "endLine": 165
+      "endLine": 166
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "`FolkmanNumber_3_2` definition, Graham's upper bound $f(3;2) \\le 941$, and exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014).",
       "startLine": 167,
-      "endLine": 196
+      "endLine": 197
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
       "summary": "`RamseyNumber` $R(l,l)$ definition via `Nat.find`. Comparison: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$.",
       "startLine": 198,
-      "endLine": 220
+      "endLine": 221
     },
     {
       "id": "proof-techniques",

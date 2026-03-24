@@ -63,7 +63,8 @@
     ],
     "dateAdded": "2026-03-14",
     "relatedProblems": [],
-    "lineCount": 22350
+    "lineCount": 22350,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Navier-Stokes Existence and Smoothness (Millennium Prize Problem)**\n\nThe Navier-Stokes equations describe fluid motion: $\\partial_t u + (u \\cdot \\nabla)u = \\nu\\Delta u - \\nabla p + f$ with $\\nabla \\cdot u = 0$. The Millennium Prize asks whether smooth solutions exist globally in 3D. Leray (1934) proved weak solutions exist; Ladyzhenskaya (1962/1969) solved the 2D case; Caffarelli-Kohn-Nirenberg (1982) showed the 3D singular set has Hausdorff dimension at most 1. The 3D problem remains open after 90+ years.\n\nThis formalization is the largest single proof file in the gallery at 20,000+ lines across 110 parts, containing 1200+ definitions/theorems with 0 sorries. The 3D conditional result uses the NSAxioms structure (5 structure-encoded assumptions).",
@@ -129,7 +130,7 @@
       "title": "2D Global Existence (PROVEN)",
       "summary": "Parts X, X-B: Complete 2D Navier-Stokes global existence and uniqueness. Enstrophy bound without axioms, exponential decay under Poincare inequality. The fully proved result.",
       "startLine": 1967,
-      "endLine": 2669,
+      "endLine": 2670,
       "mathContext": "2D: $\\omega_t + u \\cdot \\nabla \\omega = \\nu \\Delta \\omega$ (no stretching). Enstrophy $E = \\int |\\omega|^2$ satisfies $E' = -2\\nu P \\leq 0$, giving global bounds. Fully proved, 0 axioms."
     },
     {
@@ -203,7 +204,7 @@
       "title": "Helicity, Pressure, Liouville Theorems",
       "summary": "Parts XXXVIII-XL: Helicity conservation and Beltrami flows, pressure estimates via Calderon-Zygmund, KNSS Liouville theorem, Seregin zero theorem, Landau solution, millennium connection.",
       "startLine": 6663,
-      "endLine": 7272
+      "endLine": 22350
     }
   ],
   "conclusion": {

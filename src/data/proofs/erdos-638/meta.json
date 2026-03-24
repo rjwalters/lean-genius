@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "lineCount": 84,
-    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem connecting finite Ramsey theory with infinite combinatorics. The classical Ramsey theorem (1930) guarantees that for every n, some complete graph K_N forces a monochromatic triangle under n-colourings. The multicolour Ramsey numbers R(3,3,...,3) with n arguments grow exponentially, as established through work of Erdős and Szekeres (1935) and subsequent improvements. Problem #638 asks whether this finite phenomenon can be 'compiled' into an infinite-cardinal version: given a Ramsey family S (where for each n, some member handles n colours), can one always find a single graph that handles infinitely many colours simultaneously? This is a compactness-type question, but classical compactness (König's lemma or the compactness theorem of logic) does not directly apply because the colourings are not over a fixed finite set. The Nešetřil–Rödl theorem (1977) on structural Ramsey theory and the Erdős–Rado partition calculus provide relevant context. Erdős himself noted that an affirmative answer would enable many extensions and generalisations, suggesting he believed the answer was positive.",
@@ -46,35 +47,35 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 23,
       "summary": "Docstring with the problem statement, Erdős's note on extensions, and reference. Imports Mathlib's SimpleGraph, Fin, and Tactic modules."
     },
     {
       "id": "ramsey-property",
       "title": "Ramsey Property for Triangles",
       "startLine": 24,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines HasMonoTriangle (monochromatic triangle under a vertex-pair colouring) and HasTriangleRamsey (every n-colouring yields a monochromatic triangle)."
     },
     {
       "id": "ramsey-families",
       "title": "Ramsey Families and Cardinal Ramsey",
       "startLine": 40,
-      "endLine": 54,
+      "endLine": 55,
       "summary": "Defines IsRamseyFamily (for every n, some member forces monochromatic triangles) and HasCardinalTriangleRamsey (the Ramsey property for arbitrary colour types κ)."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 56,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "States ErdosProblem638: for every Ramsey family S and every infinite colour type κ, there exists a graph G with the cardinal triangle Ramsey property."
     },
     {
       "id": "classical-ramsey",
       "title": "Classical Ramsey Theorem",
       "startLine": 67,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Axiomatizes the classical Ramsey theorem for triangles and the fact that the family of complete graphs forms a Ramsey family."
     },
     {

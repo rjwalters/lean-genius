@@ -71,28 +71,28 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Documents the problem and imports Mathlib dependencies"
     },
     {
       "id": "definitions",
       "title": "Definitions",
       "startLine": 27,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines IsSquareSumFree predicate and MaxNotSqSum function"
     },
     {
       "id": "lower-bound",
       "title": "Erdős Lower Bound Construction",
       "startLine": 47,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Erdős's constructive lower bound Ω(N^{1/3}): take multiples of a prime p ≈ N^{2/3}. Sums of distinct multiples of p are multiples of p but not p², hence non-squares."
     },
     {
       "id": "upper-bound-combined",
       "title": "Nguyen-Vu Upper Bound and Tight Bound",
       "startLine": 66,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Nguyen-Vu (2010) proved MaxNotSqSum(N) = O(N^{1/3} · (log N)^{O(1)}) using additive combinatorics. Combined with Erdős's lower bound: MaxNotSqSum(N) = Θ(N^{1/3}) up to logarithmic factors."
     },
     {

@@ -26,7 +26,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 280,
-    "assumptions": "6 axiom(s) and 5 sorry(s). See the Lean source for details."
+    "assumptions": "6 axiom(s) and 5 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Ramsey Theory and Non-Ramsey Graphs**\n\nFrank Ramsey's theorem (1930) guarantees that every graph on $n$ vertices contains either a clique or independent set of size $\\ge \\frac{1}{2}\\log_2 n$. The Erdős-Szekeres bound (1935) $R(k,k) \\le \\binom{2k-2}{k-1}$ and Erdős's probabilistic lower bound (1947) $R(k,k) \\ge 2^{k/2}$ establish $\\log n$ as the natural scale. Graphs where the largest trivial (empty or complete) induced subgraph has size only $O(\\log n)$ are called **non-Ramsey** or **Ramsey-extremal**.\n\n**The Erdős-Fajtlowicz-Staton Question (1988)**: In their paper on regular subgraphs of random graphs, Erdős, Fajtlowicz, and Staton asked: if $G$ on $n$ vertices has no trivial subgraph on $\\ge 10\\log n$ vertices, must $G$ contain an induced non-trivial regular subgraph on $\\gg \\log n$ vertices? The intuition: forbidding simple structure should force complex structure.\n\n**Prömel-Rödl Resolution (1999)**: Hans Jürgen Prömel and Vojtěch Rödl proved the far stronger result in 'Non-Ramsey graphs are $c\\log n$-universal' (J. Combin. Theory Ser. A 88, 379–384): such graphs contain ALL graphs on $O(\\log n)$ vertices as induced subgraphs. The proof uses Szemerédi's regularity lemma to extract diverse edge structure from the non-Ramsey hypothesis. This universality trivially implies the existence of non-trivial regular subgraphs of size $\\Theta(\\log n)$.",
@@ -52,70 +53,70 @@
       "title": "Simple Graphs",
       "summary": "$K_S = \\top$ (complete) and $\\overline{K}_S = \\bot$ (empty) graph definitions",
       "startLine": 25,
-      "endLine": 39
+      "endLine": 40
     },
     {
       "id": "trivial",
       "title": "Trivial Subgraphs",
       "summary": "Trivial = independent set $\\lor$ clique; `isTrivialInduced ↔ isIndependentSet ∨ isClique`",
       "startLine": 41,
-      "endLine": 63
+      "endLine": 64
     },
     {
       "id": "regular",
       "title": "Regular Subgraphs",
       "summary": "$\\deg_S(v)$, $k$-regular induced ($\\forall v \\in S,\\, \\deg_S(v) = k$), non-trivially regular",
       "startLine": 65,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "non-ramsey",
       "title": "The Non-Ramsey Property",
       "summary": "`noLargeTrivial` $G$ $k$: no trivial subgraph $\\ge k$; Ramsey bound: $\\exists c,\\, \\text{trivial size} \\ge c\\log n$",
       "startLine": 87,
-      "endLine": 101
+      "endLine": 102
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "$\\exists c > 0$: no trivial $\\ge 10\\log n$ $\\Rightarrow$ $\\exists$ non-trivial regular of size $\\ge c\\log n$",
       "startLine": 103,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "promel-rodl",
       "title": "Prömel-Rödl Theorem (1999)",
       "summary": "$k$-universality: $G$ contains all $k$-vertex graphs; Prömel-Rödl: non-Ramsey $\\Rightarrow$ $c'\\log n$-universal",
       "startLine": 117,
-      "endLine": 144
+      "endLine": 145
     },
     {
       "id": "solution",
       "title": "The Solution",
       "summary": "For $k \\ge 3$, non-trivial $k$-regular graphs exist; `erdos_1031_solved`: conjecture TRUE via universality",
       "startLine": 146,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
       "summary": "$R(k,k)$ via `Nat.find`; bounds $2^{k/2} \\le R(k,k) \\le 4^k$; trivial subgraph $\\ge \\frac{1}{2}\\log_4 n$",
       "startLine": 174,
-      "endLine": 202
+      "endLine": 203
     },
     {
       "id": "non-ramsey-graphs",
       "title": "Non-Ramsey Graphs",
       "summary": "`isNonRamsey` $G$ $c$: no trivial $\\ge c\\log n$; existence via $G(n,1/2)$ probabilistic construction",
       "startLine": 204,
-      "endLine": 219
+      "endLine": 220
     },
     {
       "id": "universality",
       "title": "Universality and Regular Subgraphs",
       "summary": "`nonRamsey_universal`: corollary of Prömel-Rödl; `universal_has_regular`: $k$-universal $\\Rightarrow$ $\\exists$ non-trivial regular",
       "startLine": 221,
-      "endLine": 251
+      "endLine": 280
     }
   ],
   "conclusion": {

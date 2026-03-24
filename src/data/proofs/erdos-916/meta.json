@@ -81,56 +81,56 @@
       "title": "Basic Graph Definitions",
       "summary": "SimpleGraph setup, hasVerticesAndEdges predicate",
       "startLine": 32,
-      "endLine": 46
+      "endLine": 47
     },
     {
       "id": "k4-subdivisions",
       "title": "K₄ Subdivisions",
       "summary": "isK4Subdivision definition, Dirac's theorem",
       "startLine": 48,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "cycle-structure",
       "title": "Cycles with Adjacent Vertices",
       "summary": "hasCycle, hasVertexTriplyAdjacentToCycle definitions",
       "startLine": 80,
-      "endLine": 115
+      "endLine": 116
     },
     {
       "id": "main-theorem",
       "title": "Thomassen's Result",
       "summary": "thomassen_cycle_structure axiom, erdos_916 theorem",
       "startLine": 117,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "relationship",
       "title": "Relationship to Dirac's Theorem",
       "summary": "triply_adjacent_implies_k4, thomassen_implies_dirac",
       "startLine": 149,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "edge-analysis",
       "title": "Edge Count Analysis",
       "summary": "edgeThreshold definition, tree_edge_count",
       "startLine": 174,
-      "endLine": 200
+      "endLine": 201
     },
     {
       "id": "small-cases",
       "title": "Concrete Small Cases",
       "summary": "case_n_eq_4, case_n_eq_5, case_n_eq_6",
       "startLine": 202,
-      "endLine": 233
+      "endLine": 234
     },
     {
       "id": "degree-analysis",
       "title": "Average Degree Analysis",
       "summary": "averageDegreeNumerator, avg_degree_numerator_formula",
       "startLine": 235,
-      "endLine": 252
+      "endLine": 253
     },
     {
       "id": "summary",

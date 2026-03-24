@@ -99,28 +99,28 @@
       "title": "Points in General Position",
       "summary": "Defines Point as ℝ × ℝ, distSq (squared Euclidean distance), and GeneralPosition (no three collinear via cross-product test)",
       "startLine": 21,
-      "endLine": 34
+      "endLine": 35
     },
     {
       "id": "circumradius",
       "title": "Circumradius",
       "summary": "Defines circumRadiusSq via R² = a²b²c²/(4·Area²) and AllDistinctCircumradii requiring all triple pairs to have different radii",
       "startLine": 36,
-      "endLine": 55
+      "endLine": 56
     },
     {
       "id": "minimal-nk",
       "title": "The Minimal Number n_k",
       "summary": "NkExists (threshold existence), minimalNk axiomatized with validity (minimalNk_valid) and sharpness (minimalNk_sharp)",
       "startLine": 57,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "main-problem",
       "title": "Main Problem",
       "summary": "ErdosProblem827: n_k exists for all k ≥ 3",
       "startLine": 80,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "bounds",

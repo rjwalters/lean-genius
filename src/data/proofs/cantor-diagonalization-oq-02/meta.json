@@ -108,21 +108,21 @@
       "title": "The First Uncountable Ordinal ω₁",
       "summary": "Defines ω₁ = (Cardinal.aleph 1).ord and proves ω₁.card = aleph 1 via Cardinal.card_ord. This is the initial ordinal of ℵ₁.",
       "startLine": 53,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "aleph1-successor",
       "title": "ℵ₁ as Successor of ℵ₀",
       "summary": "Proves aleph 1 = Order.succ ℵ₀ and the key characterization κ < ℵ₁ ↔ κ ≤ ℵ₀. Establishes ℵ₁ as the minimum uncountable cardinal.",
       "startLine": 70,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "uncountability",
       "title": "Uncountability of ω₁",
       "summary": "Proves ℵ₀ < ℵ₁ via aleph_lt_aleph, then ω₁.card > ℵ₀ (ω₁ is uncountable). Also establishes ℵ₁ is minimum uncountable with no cardinal between ℵ₀ and ℵ₁.",
       "startLine": 88,
-      "endLine": 121
+      "endLine": 122
     },
     {
       "id": "countable-ordinals",
@@ -136,21 +136,21 @@
       "title": "The Cantor Diagonal Argument",
       "summary": "Proves cantor_diagonal_countable_ordinals: for any f : ℕ → Ordinal with all f(n) < omega1, there exists β < omega1 exceeding all f(n). Uses sSup of range f plus ordinal successor.",
       "startLine": 155,
-      "endLine": 193
+      "endLine": 194
     },
     {
       "id": "no-surjection",
       "title": "No Surjection from ℕ onto Countable Ordinals",
       "summary": "Derives that no function f : ℕ → Ordinal can surject onto all countable ordinals. Uses a clipping technique to handle f values that may exceed ω₁, then applies the diagonal argument.",
       "startLine": 195,
-      "endLine": 226
+      "endLine": 227
     },
     {
       "id": "summary",
       "title": "Summary: Four Key Results",
       "summary": "Capstone theorem combining: (1) ℵ₀ < ℵ₁, (2) ℵ₁ is minimum uncountable, (3) no surjection ℕ → countable ordinals, (4) ω₁.card = ℵ₁.",
       "startLine": 228,
-      "endLine": 248
+      "endLine": 272
     }
   ],
   "conclusion": {

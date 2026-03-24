@@ -29,7 +29,8 @@
       "Lacunary series: gap series with controlled coefficient growth"
     ],
     "relatedProofs": [],
-    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [],
   "overview": {
@@ -64,7 +65,7 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 26,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "maxTerm (axiomatized μ(r)), maxModulus (axiomatized M(r)), termModulusRatio (μ/M), IsTranscendentalEntire.",
       "mathContext": "$\\mu(r) = \\max_n |a_n|r^n$ (maximum term), $M(r) = \\max_{|z|=r}|f(z)|$ (maximum modulus). Ratio: $\\mu(r)/M(r) \\in [0,1]$."
     },
@@ -80,7 +81,7 @@
       "id": "structural-theorems",
       "title": "Proved Structural Theorems",
       "startLine": 89,
-      "endLine": 120,
+      "endLine": 121,
       "summary": "Five proved theorems from axioms: ratio in [0,1], set membership, degenerate case (ratio = 0 when M(r) = 0), and ratio-equals-quotient.",
       "mathContext": "Proved: $0 \\leq \\mu(r)/M(r) \\leq 1$, and $\\mu(r)/M(r) = \\mu(r) \\cdot M(r)^{-1}$ when $M(r) > 0$."
     },

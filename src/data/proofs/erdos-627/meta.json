@@ -58,7 +58,8 @@
     ],
     "axiomCount": 8,
     "lineCount": 252,
-    "assumptions": "8 axiom(s) and 18 sorry(s). See the Lean source for details."
+    "assumptions": "8 axiom(s) and 18 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The gap between chromatic number and clique number has been a central theme in graph theory since the 1940s. Tutte (1947) and Zykov (1949) independently constructed triangle-free graphs with arbitrarily large chromatic number, disproving the intuition that local sparsity implies easy colorability. Their recursive constructions showed $\\omega = 2$ is compatible with $\\chi = k$ for any $k$.\n\nErdős transformed the field in 1959 with his celebrated probabilistic proof that graphs of arbitrarily high girth and chromatic number exist—a non-constructive argument that stunned the mathematical community. This result, along with his asymptotic analysis, established $f(n) = \\Theta(n/(\\log n)^2)$ where $f(n) = \\max_{|V(G)|=n} \\chi(G)/\\omega(G)$. The lower bound comes from random graphs $G(n, n^{-1/2})$, which have $\\omega = O(\\sqrt{n} \\log n)$ and $\\chi = \\Omega(\\sqrt{n}/\\log n)$.\n\nMycielski (1955) gave the first explicit construction: a recursive family $M_k$ with $\\omega(M_k) = 2$ and $\\chi(M_k) = k$. Lovász (1978) proved $\\chi(K(n,k)) = n - 2k + 2$ for Kneser graphs using the Borsuk-Ulam theorem, founding topological combinatorics. The Strong Perfect Graph Theorem (Chudnovsky, Robertson, Seymour, Thomas 2006) characterized graphs where $\\chi = \\omega$ always holds, settling Berge's 1961 conjecture after 45 years.\n\nProblem #627 asks whether the normalized function $f(n)/(n/(\\log n)^2)$ converges. If the limit $L$ exists, it lies in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$. The $4\\times$ gap between these bounds reflects deep uncertainty about the precise constant.",
@@ -83,63 +84,63 @@
       "title": "Imports and Setup",
       "summary": "Imports full Mathlib for `SimpleGraph`, `Filter.Tendsto`, and `Real.log`. Declares vertex type $V$ with `Fintype` and `DecidableEq` instances.",
       "startLine": 22,
-      "endLine": 28
+      "endLine": 29
     },
     {
       "id": "basic-parameters",
       "title": "Basic Graph Parameters",
       "summary": "Defines clique number $\\omega(G)$ and chromatic number $\\chi(G)$ as noncomputable functions. Defines $k$-colorability (`IsKColorable`) and clique containment (`ContainsClique`) via `Finset V`.",
       "startLine": 30,
-      "endLine": 46
+      "endLine": 47
     },
     {
       "id": "ratio",
       "title": "The Ratio χ/ω",
       "summary": "Defines `chiOmegaRatio G = (χ(G) : ℝ) / (ω(G) : ℝ)`. Proves $\\chi \\geq \\omega$ always and that the ratio $\\geq 1$ when $\\omega > 0$.",
       "startLine": 48,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "f-function",
       "title": "The Function f(n)",
       "summary": "Defines $f(n) = \\sup_{|V(G)|=n} \\chi(G)/\\omega(G)$. Proves $f(n) \\geq 1$ for $n \\geq 1$ and monotonicity of $f$.",
       "startLine": 64,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "tutte-zykov",
       "title": "Tutte-Zykov Construction",
       "summary": "Axiomatizes the Tutte-Zykov theorem: $\\forall k,\\, \\exists G$ with $\\omega(G) = 2$ and $\\chi(G) \\geq k$. Derives $f(n) \\to \\infty$ and existence of triangle-free graphs with large $\\chi$.",
       "startLine": 78,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "erdos-asymptotics",
       "title": "Erdős's Asymptotic Bounds",
       "summary": "Axiomatizes $f(n) \\asymp n/(\\log n)^2$ with explicit constants $c_1, c_2$. Defines `fNormalized` and proves the normalized ratio is bounded. States a weaker lower bound $f(n) \\gg n^{1/2}/\\log n$.",
       "startLine": 100,
-      "endLine": 128
+      "endLine": 129
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "Defines `LimitExists` via `Filter.Tendsto fNormalized atTop (nhds L)`. Axiomatizes the conditional bound: if $L$ exists, $L \\in (\\log 2)^2 \\cdot [1/4, 1]$. Defines numerical limit bounds $\\approx [0.12, 0.48]$.",
       "startLine": 130,
-      "endLine": 148
+      "endLine": 149
     },
     {
       "id": "perfect-graphs",
       "title": "Perfect Graphs",
       "summary": "Defines `IsPerfect G` as $\\chi(H) = \\omega(H)$ for all induced subgraphs $H$. Proves perfect graphs have ratio exactly 1. Axiomatizes the Strong Perfect Graph Theorem (Chudnovsky et al. 2006).",
       "startLine": 150,
-      "endLine": 168
+      "endLine": 169
     },
     {
       "id": "ramsey",
       "title": "Ramsey Theory Connection",
       "summary": "Defines `ramseyNumber k` and proves $f(R(k,k)) \\geq k$. Axiomatizes $R(k,k) \\leq 4^k$ connecting diagonal Ramsey bounds to the $\\chi/\\omega$ extremal function.",
       "startLine": 170,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "constructions",

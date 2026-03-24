@@ -79,7 +79,7 @@
       "title": "q-Expansions",
       "summary": "Definition of q-representable numbers and proved examples",
       "startLine": 39,
-      "endLine": 70,
+      "endLine": 71,
       "mathContext": "$Q_q = \\{\\sum_{i \\in S} q^i : S \\subseteq \\mathbb{N},\\, |S| < \\infty\\}$ with verified examples: $0, 1, q \\in Q_q$."
     },
     {
@@ -87,7 +87,7 @@
       "title": "The Ordered Sequence",
       "summary": "Axiomatized enumeration and gap definition",
       "startLine": 72,
-      "endLine": 89,
+      "endLine": 90,
       "mathContext": "Enumeration $0 = x_1 < x_2 < \\cdots$ and gap function $g(k) = x_{k+1} - x_k$."
     },
     {
@@ -95,7 +95,7 @@
       "title": "Pisot-Vijayaraghavan Numbers",
       "summary": "Pisot predicate, smallest Pisot q₀, golden ratio φ",
       "startLine": 91,
-      "endLine": 117,
+      "endLine": 118,
       "mathContext": "$\\text{IsPisot}(\\theta) :\\Leftrightarrow \\theta > 1$ algebraic integer, all conjugates $|\\theta_i| < 1$. Smallest: $q_0 \\approx 1.3247$ (root of $x^3 - x - 1$)."
     },
     {
@@ -103,7 +103,7 @@
       "title": "Erdős-Joó-Komornik Results (1990)",
       "summary": "Pisot numbers lack gap property; universal gap bound ≤ 1",
       "startLine": 119,
-      "endLine": 134,
+      "endLine": 135,
       "mathContext": "$\\theta$ Pisot $\\Rightarrow \\neg\\text{HasGapProperty}(\\theta)$. $\\forall q \\in (1,2]: g_q(k) \\leq 1$."
     },
     {
@@ -111,7 +111,7 @@
       "title": "The Main Conjecture",
       "summary": "Erdős-Joó conjecture with proved second part",
       "startLine": 136,
-      "endLine": 151,
+      "endLine": 152,
       "mathContext": "Conjecture: $\\text{HasGapProperty}(q) \\iff q < q_0$."
     },
     {
@@ -119,7 +119,7 @@
       "title": "Characterization via m-Digit Expansions",
       "summary": "Bugeaud's characterization and EJS refinement",
       "startLine": 153,
-      "endLine": 179,
+      "endLine": 180,
       "mathContext": "$q$ Pisot $\\iff \\liminf g_q^{(m)}(k) > 0$ for all $m$ (Bugeaud 1996). For $q < \\varphi$: need only $m = 2$ (EJS 1996)."
     },
     {
@@ -127,7 +127,7 @@
       "title": "Density Result",
       "summary": "q-representable numbers become dense as q → 1⁺",
       "startLine": 181,
-      "endLine": 190
+      "endLine": 191
     },
     {
       "id": "summary",

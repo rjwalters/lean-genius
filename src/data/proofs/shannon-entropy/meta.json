@@ -52,7 +52,8 @@
       "Conditional entropy and mutual information",
       "Data processing inequality and sufficient statistics"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Claude Shannon's 1948 paper 'A Mathematical Theory of Communication' founded information theory and introduced entropy as the fundamental measure of information content. Shannon showed that the quantity H(X) = -sum p(x) log p(x) is the unique function (up to a constant) satisfying natural axioms for an information measure: continuity, monotonicity in the number of equally likely outcomes, and a composition law for sequential experiments.\n\nShannon entropy quantifies the irreducible uncertainty in a random variable, measured in bits (when using log base 2). A fair coin has entropy 1 bit; a deterministic variable has entropy 0. The entropy of English text is approximately 1.0-1.5 bits per character, far below the 4.7 bits per character of uniform random text, reflecting the redundancy of natural language.\n\nBeyond its foundational role in information theory, Shannon entropy has deep connections to thermodynamic entropy (via Boltzmann's formula), combinatorics (via the method of types), statistics (via maximum entropy distributions), and even pure mathematics (via the entropy method in additive combinatorics, used by Tao and others to prove sumset bounds).",
@@ -79,7 +80,7 @@
       "id": "introduction",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "Overview of Shannon entropy as the foundation of information theory. Lists key results: entropy definition, non-negativity, maximum entropy, Gibbs inequality, log-sum inequality.",
       "mathContext": "$H(X) = -\\sum_x p(x) \\log p(x)$"
     },
@@ -87,7 +88,7 @@
       "id": "entropy-definition",
       "title": "Entropy Definition and Non-Negativity",
       "startLine": 20,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Defines Shannon entropy with the 0·log(0) = 0 convention. States non-negativity H(p) >= 0 for probability distributions (sorry'd). Uses natural log (Real.log), not log₂.",
       "mathContext": "$H(X) = -\\sum_x p(x) \\ln p(x) \\geq 0$ for $p(x) \\geq 0$, $\\sum p(x) = 1$"
     },
@@ -95,7 +96,7 @@
       "id": "max-entropy",
       "title": "Maximum Entropy (Uniform Distribution)",
       "startLine": 31,
-      "endLine": 34,
+      "endLine": 35,
       "summary": "Entropy is maximized by the uniform distribution: H(p) <= log|X|. Proved via Gibbs inequality with q = uniform.",
       "mathContext": "$H(X) \\leq \\ln |\\mathcal{X}|$ with equality iff $p$ is uniform"
     },
@@ -103,7 +104,7 @@
       "id": "gibbs",
       "title": "Gibbs Inequality",
       "startLine": 36,
-      "endLine": 40,
+      "endLine": 41,
       "summary": "H(p) <= -sum p(x) log q(x) for any distribution q, equivalently D(p||q) >= 0. Proved from KL divergence non-negativity using the inequality log(x) <= x - 1.",
       "mathContext": "$D(p \\| q) = \\sum_x p(x) \\ln \\frac{p(x)}{q(x)} \\geq 0$ (Gibbs inequality)"
     },
@@ -119,7 +120,7 @@
       "id": "kl-divergence-def",
       "title": "KL Divergence Definition and Key Inequality",
       "startLine": 73,
-      "endLine": 131,
+      "endLine": 132,
       "summary": "Defines KL divergence D(p||q), conditional entropy H(X|Y), and mutual information I(X;Y). Proves the pointwise bound p*log(p/q) >= p-q from ln(t) <= t-1 (Real.log_le_sub_one_of_pos).",
       "mathContext": "$D(p \\| q) = \\sum p(x) \\ln(p(x)/q(x))$. Pointwise: $p \\ln(p/q) \\geq p - q$ from $\\ln t \\leq t - 1$."
     },
@@ -135,7 +136,7 @@
       "id": "mutual-info-chain",
       "title": "Mutual Information, Chain Rule, and Conditioning",
       "startLine": 230,
-      "endLine": 408,
+      "endLine": 459,
       "summary": "Proves I(X;Y) >= 0 via the pointwise KL technique. The chain rule I(X;Y) = H(X) - H(X|Y) is proved by a detailed term-by-term decomposition using log_div, log_mul, and marginal telescoping. Corollary: H(X|Y) <= H(X). All fully proved (0 sorries).",
       "mathContext": "$I(X;Y) \\geq 0$. Chain rule: $I(X;Y) = H(X) - H(X|Y)$. Corollary: $H(X|Y) \\leq H(X)$ (conditioning reduces entropy)."
     }

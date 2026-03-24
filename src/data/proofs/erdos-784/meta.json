@@ -80,7 +80,7 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 37,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines reciprocal sum Σ 1/n for a set A, the sieved set of elements not divisible by any a ∈ A, and the sieving function H_C(x).",
       "mathContext": "$\\text{reciprocalSum}(A) = \\sum_{n \\in A} 1/n$; $\\text{sievedSet}(A, x) = \\{m \\leq x : a \\nmid m \\text{ for all } a \\in A\\}$; $H_C(x) = \\min\\{|\\text{sievedSet}(A,x)| : \\sum_{A} 1/n \\leq C\\}$."
     },
@@ -88,7 +88,7 @@
       "id": "the-question",
       "title": "The Question",
       "startLine": 64,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Formalizes the main question: Does H_C(x) ≫ x/(log x)^c for some c depending on C?",
       "mathContext": "$\\text{HasPolynomialLogBound}(C) :\\iff \\exists c > 0, \\exists K > 0, \\forall x \\geq 2: H_C(x) \\geq K \\cdot x/(\\log x)^c$."
     },
@@ -96,7 +96,7 @@
       "id": "case-c-equals-1",
       "title": "The Case C = 1",
       "startLine": 75,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "States Ruzsa's lower bound and Saias's upper bound giving H₁(x) ≍ x/log x. Includes Weingartner's precise asymptotic constant c ≈ 0.878.",
       "mathContext": "Ruzsa (1982): $H_1(x) \\geq K_1 \\cdot x/\\log x$. Saias (1998): $H_1(x) \\leq K_2 \\cdot x/\\log x$. Combined: $H_1(x) \\asymp x/\\log x$ with $c = 1$."
     },
@@ -104,7 +104,7 @@
       "id": "case-small-c",
       "title": "The Case 0 < C < 1",
       "startLine": 107,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "The trivial case: union bound gives (1-C)x, which beats any polynomial-log bound. Answer is YES for all c.",
       "mathContext": "For $C < 1$: at most $\\sum_{a \\in A} \\lfloor x/a \\rfloor \\leq Cx$ elements are sieved, so $\\geq (1-C)x$ survive — linear growth trivially dominates $x/(\\log x)^c$."
     },
@@ -112,7 +112,7 @@
       "id": "case-large-c",
       "title": "The Case C > 1",
       "startLine": 126,
-      "endLine": 156,
+      "endLine": 157,
       "summary": "Ruzsa's negative answer: H_C(x) ≍ x^{e^{1-C}}/log x. Since e^{1-C} < 1 for C > 1, this is sublinear—no polynomial-log bound exists.",
       "mathContext": "For $C > 1$: $\\alpha = e^{1-C} < 1$, so $H_C(x) \\asymp x^\\alpha/\\log x = o(x/(\\log x)^c)$ for any $c > 0$. The sublinear exponent kills any polynomial-log bound."
     },
@@ -120,7 +120,7 @@
       "id": "schinzel-szekeres",
       "title": "Schinzel-Szekeres Example",
       "startLine": 158,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "The 1959 construction showing the x/(log x)^c bound is best possible (up to the value of c).",
       "mathContext": "Schinzel-Szekeres: $\\forall c > 0, \\exists A$ with $\\sum 1/n \\leq 1$ and $|\\text{sievedSet}(A,x)| \\leq 2x/(\\log x)^c$. This shows the log-polynomial form is tight."
     },
@@ -128,7 +128,7 @@
       "id": "trivial-cases",
       "title": "The Trivial Cases",
       "startLine": 174,
-      "endLine": 191,
+      "endLine": 192,
       "summary": "If 1 ∈ A, all elements are divisible. Hence we assume 1 ∉ A (validSet requires a ≥ 2).",
       "mathContext": "Since $1 \\mid m$ for all $m$, including 1 in $A$ trivially sieves everything. The `validSet` predicate requires $a \\geq 2$ to avoid this degeneracy."
     },
@@ -136,7 +136,7 @@
       "id": "connections",
       "title": "Connection to Dense Divisors",
       "startLine": 193,
-      "endLine": 210,
+      "endLine": 211,
       "summary": "Connection to Problem #542 and the phase transition principle for reciprocal sum control of sieving.",
       "mathContext": "Dense divisor problems study the distribution of integers with many small divisors — the dual perspective to sieving. The phase transition at $C = 1$ mirrors phenomena in probabilistic number theory."
     },
@@ -144,7 +144,7 @@
       "id": "complete-answer",
       "title": "Complete Answer",
       "startLine": 212,
-      "endLine": 234,
+      "endLine": 235,
       "summary": "Combines all cases: YES for C ≤ 1, NO for C > 1. The transition at C = 1 is sharp.",
       "mathContext": "$(C \\leq 1 \\implies \\text{HasPolynomialLogBound}(C)) \\wedge (C > 1 \\implies \\neg\\text{HasPolynomialLogBound}(C))$. The dichotomy is exhaustive."
     },

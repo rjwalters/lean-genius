@@ -92,7 +92,7 @@
       "title": "Imports",
       "summary": "Imports Mathlib's natural number arithmetic, GCD, primality, and tactic libraries.",
       "startLine": 20,
-      "endLine": 23,
+      "endLine": 24,
       "mathContext": "Requires `Nat.Composite` ($n$ has a nontrivial factorization), `Nat.Coprime` ($\\gcd(a,b) = 1$), `Nat.Prime`, and divisibility ($\\mid$) from Mathlib."
     },
     {
@@ -100,7 +100,7 @@
       "title": "Core Definitions",
       "summary": "Defines **IsLucasSequence** ($a_{n+2} = a_{n+1} + a_n$), **IsPrimefree** ($\\forall k, a_k$ composite), and **HasNoUniversalDivisor** ($\\forall d > 1, \\exists k, d \\nmid a_k$). These three predicates capture the problem's requirements precisely.",
       "startLine": 25,
-      "endLine": 38,
+      "endLine": 39,
       "mathContext": "Three predicates: $\\text{IsLucasSequence}(a) :\\equiv \\forall n,\\, a(n+2) = a(n+1) + a(n)$; $\\text{IsPrimefree}(a) :\\equiv \\forall k,\\, a(k).\\text{Composite}$; $\\text{HasNoUniversalDivisor}(a) :\\equiv \\forall d > 1,\\, \\exists k,\\, d \\nmid a(k)$."
     },
     {
@@ -108,7 +108,7 @@
       "title": "Main Question (Existence)",
       "summary": "Axiomatizes **erdos_276_existence**: there exists a Lucas sequence that is primefree with no universal divisor. This is the resolved part of the problem (Graham 1964).",
       "startLine": 40,
-      "endLine": 47,
+      "endLine": 48,
       "mathContext": "$\\exists a : \\mathbb{N} \\to \\mathbb{N},\\; \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\text{HasNoUniversalDivisor}(a)$. Graham (1964) proved existence via covering congruences."
     },
     {
@@ -116,7 +116,7 @@
       "title": "Graham's Construction",
       "summary": "Axiomatizes **graham_construction** (coprime primefree Lucas sequence exists) and **coprime_necessary** (any common divisor of $a_0, a_1$ divides all terms). Together, these show coprimality is the right condition for nontriviality.",
       "startLine": 49,
-      "endLine": 63,
+      "endLine": 64,
       "mathContext": "Graham's strengthening: $\\exists a,\\, \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\gcd(a_0, a_1) = 1$. GCD propagation: $d \\mid a_0 \\wedge d \\mid a_1 \\Rightarrow \\forall k,\\, d \\mid a_k$ (by induction on $a_{n+2} = a_{n+1} + a_n$)."
     },
     {
@@ -124,7 +124,7 @@
       "title": "Covering Congruence Mechanism",
       "summary": "Axiomatizes **covering_system_mechanism**: a finite set of primes covers all index positions via Pisano period residue classes. This captures how Graham's construction works and poses the open question of whether this mechanism is necessary.",
       "startLine": 65,
-      "endLine": 77,
+      "endLine": 78,
       "mathContext": "$\\exists S \\subseteq \\{\\text{primes}\\},\\; \\forall a,\\; \\text{IsLucas}(a) \\wedge \\gcd(a_0,a_1)=1 \\wedge \\text{Primefree}(a) \\Rightarrow \\forall k,\\, \\exists p \\in S,\\, p \\mid a_k$. The Lucas sequence is periodic mod $p$ with Pisano period $\\pi(p)$."
     },
     {

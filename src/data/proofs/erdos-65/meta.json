@@ -22,7 +22,8 @@
     "erdosProblemStatus": "partially-solved",
     "axiomCount": 9,
     "lineCount": 287,
-    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Posed by Erdős and Hajnal, this problem connects edge density to cycle structure in extremal graph theory. The first part was proved by Gyárfás, Komlós, and Szemerédi in their 1984 paper 'On a problem of K. Zarankiewicz,' establishing that Σ 1/aᵢ grows at least logarithmically with edge density. Liu and Montgomery (2020) proved the sharp constant is (1/2 - o(1)), resolving the quantitative question completely. The second part — whether complete bipartite graphs minimize the cycle variety — remains open and connects to deep questions about the interaction between graph symmetry and cycle structure.",
@@ -54,49 +55,49 @@
       "title": "Core Definitions",
       "summary": "ContainsCycleLength, CycleLengthSet, cycleLengthFinset, Fin.succMod for cycles",
       "startLine": 44,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "edge-density",
       "title": "Edge Density and Reciprocal Sum",
       "summary": "edgeCount, edgeDensity, cycleLengthReciprocalSum definitions",
       "startLine": 69,
-      "endLine": 85
+      "endLine": 86
     },
     {
       "id": "gks-theorem",
       "title": "GKS Theorem (1984)",
       "summary": "Gyárfás-Komlós-Szemerédi: Σ 1/aᵢ ≥ c·log(e/n) for graphs with e edges on n vertices",
       "startLine": 87,
-      "endLine": 107
+      "endLine": 108
     },
     {
       "id": "open-question",
       "title": "Open Minimization Question",
       "summary": "Erdos65Question: is the reciprocal sum minimized by complete bipartite graphs?",
       "startLine": 109,
-      "endLine": 130
+      "endLine": 131
     },
     {
       "id": "bipartite-structure",
       "title": "Complete Bipartite Cycle Structure",
       "summary": "complete_bipartite_cycle_lengths, bipartiteCycleSum, bipartiteCycleSum_eq",
       "startLine": 132,
-      "endLine": 159
+      "endLine": 160
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds on Cycle Variety",
       "summary": "min_degree_implies_short_cycle, high_avg_to_min_degree, Zarankiewicz connection",
       "startLine": 161,
-      "endLine": 201
+      "endLine": 202
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "density_one_has_cycle, triangle_free_larger_sum, bipartite parity",
       "startLine": 203,
-      "endLine": 262
+      "endLine": 263
     },
     {
       "id": "summary",

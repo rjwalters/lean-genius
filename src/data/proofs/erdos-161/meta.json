@@ -53,7 +53,8 @@
     ],
     "axiomCount": 10,
     "lineCount": 188,
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Erdős Problem #161** is a $500 prize problem about phase transitions in hypergraph coloring. It asks whether the function F^(t)(n,α), which measures how well 2-colorings of t-uniform hypergraphs can be balanced, has discontinuities as α varies from 0 to 1/2.\n\nThe α=0 case reduces to classical Ramsey theory, where F^(t)(n,0) grows like the iterated logarithm log_{t-1}(n). For positive α, the Erdős-Spencer lower bound shows F grows much faster, like (log n)^{1/(t-1)}. Erdős believed there is exactly one jump, at α=0, where the behavior changes dramatically.\n\nConlon, Fox, and Sudakov (2011) resolved the t=3 case by proving F^(3)(n,α) = Θ(√(log n)) for all α > 0, confirming the one-jump structure. For t > 3, the exact behavior remains open, though the same phase transition pattern is expected.",
@@ -79,49 +80,49 @@
       "title": "Basic Definitions",
       "summary": "Complete t-uniform hypergraph, 2-colorings, color counting, balanced property",
       "startLine": 39,
-      "endLine": 58
+      "endLine": 59
     },
     {
       "id": "f-function",
       "title": "The Function F^(t)(n,α)",
       "summary": "F axiom and specification",
       "startLine": 60,
-      "endLine": 69
+      "endLine": 70
     },
     {
       "id": "ramsey-case",
       "title": "Classical Ramsey Case (α = 0)",
       "summary": "FZero, Erdős-Hajnal-Rado conjecture, iterated logarithm",
       "startLine": 71,
-      "endLine": 86
+      "endLine": 87
     },
     {
       "id": "positive-alpha",
       "title": "Positive α: Bounds",
       "summary": "Erdős-Spencer lower bound, upper bound near 1/2",
       "startLine": 88,
-      "endLine": 100
+      "endLine": 101
     },
     {
       "id": "jump-question",
       "title": "The Jump Question",
       "summary": "HasJumpAt, erdos_one_jump_belief",
       "startLine": 102,
-      "endLine": 114
+      "endLine": 115
     },
     {
       "id": "main-result",
       "title": "Main Result: t = 3",
       "summary": "Conlon-Fox-Sudakov upper bound, F3_characterization, one_jump_for_t3",
       "startLine": 116,
-      "endLine": 132
+      "endLine": 133
     },
     {
       "id": "general-t",
       "title": "General t and Gap Analysis",
       "summary": "general_lower_bound, alpha_zero_growth, alpha_positive_growth",
       "startLine": 134,
-      "endLine": 155
+      "endLine": 156
     },
     {
       "id": "summary",

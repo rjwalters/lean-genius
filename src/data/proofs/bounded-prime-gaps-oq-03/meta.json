@@ -55,7 +55,8 @@
     "dateAdded": "2026-02-25",
     "axiomCount": 1,
     "lineCount": 279,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Zhang (2013) proved the first bounded prime gaps result: liminf(p_{n+1} - p_n) ≤ 70,000,000. The Polymath 8 project (2013-2014) systematically reduced this bound. Polymath 8b, led by Maynard and Tao, achieved liminf ≤ 246 using the 'admissible k-tuple sieve.'\n\nThe key insight: if we can find an admissible k-tuple with small diameter, we get a prime gap bound equal to that diameter. A set H = {h₁,...,hₖ} is admissible if for every prime p, not all residues mod p are represented in H.\n\nEngelsma (2013) conducted an exhaustive computer search showing that the minimum diameter among all admissible 50-tuples is exactly 246, achieved by the tuple {0,4,6,...,244,246}. This makes 246 the exact optimal bound for the 50-tuple Maynard-Tao approach.\n\nThe 'open question' aspect: while 246 is optimal for the 50-tuple approach, the true value of liminf(p_{n+1} - p_n) may be 2 (Twin Prime Conjecture) — this is still open. Larger k-tuples could improve the unconditional bound further.",
@@ -128,7 +129,7 @@
       "id": "synthesis",
       "title": "Part VII: Synthesis — Optimality and Prime Gap Bounds",
       "startLine": 217,
-      "endLine": 275,
+      "endLine": 279,
       "summary": "polymath_achieves_246: restates Polymath axiom (primeGap n ≤ 246 eventually). no_smaller_50_tuple_diameter: ∀ D < 246, no 50-tuple achieves diameter D. polymath_246_is_tight: master theorem — 246 is both achievable (infinitely many prime gaps ≤ 246) and sieve-optimal (minimum diameter for admissible 50-tuples is exactly 246)."
     }
   ],

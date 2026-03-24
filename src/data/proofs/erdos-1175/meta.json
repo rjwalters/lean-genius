@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "lineCount": 202,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #1175 as part of his broader program on chromatic number and graph structure, asking whether large chromatic number forces the existence of triangle-free subgraphs with large chromatic number. The question sits at the intersection of infinite combinatorics and set theory. Mycielski (1955) showed that for every finite $k$, triangle-free graphs with $\\chi = k$ exist, via an iterative construction producing graphs $M_k$ on $3 \\cdot 2^{k-2} - 1$ vertices. Erdős (1959) proved the stronger result that for every $k \\geq 1$ and $g \\geq 3$, there exist finite graphs with girth $\\geq g$ and $\\chi \\geq k$, using the probabilistic method — one of its earliest applications. These results show the finite case of the conjecture holds (via Ramsey-type arguments), but the uncountable case is fundamentally different. Shelah proved that a negative answer is consistent with ZFC for $\\kappa = \\lambda = \\aleph_1$: there consistently exists a graph $G$ with $\\chi(G) = \\aleph_1$ whose every triangle-free induced subgraph has countable chromatic number. This uses sophisticated forcing techniques and demonstrates that the problem is genuinely set-theoretic — its answer may depend on which axioms of set theory one adopts beyond ZFC.",
@@ -48,49 +49,49 @@
       "id": "imports-setup",
       "title": "Problem Context and Imports",
       "startLine": 1,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Header documenting the conjecture, Shelah's consistency result, and imports for Cardinal.Ordinal (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic (graph structure, adjacency)."
     },
     {
       "id": "coloring-defs",
       "title": "Cardinal Coloring Infrastructure",
       "startLine": 30,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Defines IsProperColoring (adjacent vertices get different colors from a cardinal-indexed type), IsColorable, and the axiomatized cardinalChromaticNumber with chromaticNumber_le_iff connecting it to colorability."
     },
     {
       "id": "triangle-free",
       "title": "Triangle-Free Subgraphs",
       "startLine": 54,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Defines IsTriangleFree (no three mutually adjacent vertices), inducedSubgraphOn (restricts G to a vertex subset S via subtypes), and HasTriangleFreeSubgraphWithChromatic (∃ S with G[S] triangle-free and χ(G[S]) ≥ κ)."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 77,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "States erdos1175: for each uncountable κ, ∃ λ such that ∀ G, χ(G) ≥ λ implies G has a triangle-free subgraph with χ ≥ κ. Universally quantified over all types V and graphs G."
     },
     {
       "id": "shelah-consistency",
       "title": "Shelah's Consistency Result",
       "startLine": 94,
-      "endLine": 130,
+      "endLine": 131,
       "summary": "Axiomatizes Shelah's result: consistently ∃ G with χ(G) = ℵ₁ where every triangle-free induced subgraph has χ ≤ ℵ₀. The theorem shelah_implies_failure_at_aleph1 derives that λ = ℵ₁ fails for κ = ℵ₁ by contradiction."
     },
     {
       "id": "finite-case",
       "title": "Finite Case and Mycielski",
       "startLine": 132,
-      "endLine": 150,
+      "endLine": 151,
       "summary": "Two positive results: Mycielski's theorem (∀ k ≥ 1, ∃ triangle-free G with χ(G) = k) and the finite case of the conjecture (∀ finite k, ∃ n such that χ(G) ≥ n implies G has triangle-free subgraph with χ ≥ k)."
     },
     {
       "id": "girth-variant",
       "title": "Girth Variant",
       "startLine": 152,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Generalizes triangle-freeness to girth ≥ g via HasGirthAtLeast (no injective cycle of length < g). States erdos1175_girth_variant: for each g ≥ 4 and uncountable κ, ∃ λ with the analogous property."
     },
     {

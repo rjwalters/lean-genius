@@ -97,56 +97,56 @@
       "id": "consecutive-products",
       "title": "Part I: Consecutive Products",
       "startLine": 38,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines consecutiveProduct(n, k). Axioms for positivity and small_primes_divide (primes ≤ k divide the product)."
     },
     {
       "id": "smallest-prime",
       "title": "Part II: The Smallest Non-Dividing Prime",
       "startLine": 64,
-      "endLine": 90,
+      "endLine": 91,
       "summary": "Defines q(n, k) via Nat.find. Axioms: q_prime, q_not_dvd, q_minimal, q_lower_trivial."
     },
     {
       "id": "main-conjecture",
       "title": "Part III: The Main Conjecture (OPEN)",
       "startLine": 92,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "ErdosConjecture457: ∃ ε > 0 with infinitely many n where all primes ≤ (2+ε)log(n) divide. Axiom erdos_457."
     },
     {
       "id": "q-formulation",
       "title": "Part IV: Equivalent Formulation via q(n, k)",
       "startLine": 113,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "ErdosConjecture457_q and conjecture_equivalence axiom."
     },
     {
       "id": "construction",
       "title": "Part V: Known Construction — The (2 + o(1)) Barrier",
       "startLine": 130,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "construction_lower axiom: (2+o(1))log(n) achievable. two_barrier_significance axiom."
     },
     {
       "id": "upper-bound",
       "title": "Part VI: Upper Bound Sub-Question",
       "startLine": 156,
-      "endLine": 170,
+      "endLine": 171,
       "summary": "UpperBoundConjecture: q < (1-ε)(log n)² eventually. Axiom erdos_457_upper."
     },
     {
       "id": "smooth-numbers",
       "title": "Part VII: Connection to Smooth Numbers",
       "startLine": 172,
-      "endLine": 187,
+      "endLine": 188,
       "summary": "IsSmooth definition. consecutive_product_smooth_support axiom."
     },
     {
       "id": "related",
       "title": "Part VIII: Relationship to Problem #663",
       "startLine": 189,
-      "endLine": 194,
+      "endLine": 195,
       "summary": "Connection to Erdős Problem #663 on prime factors of consecutive products."
     },
     {

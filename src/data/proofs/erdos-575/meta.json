@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 6,
     "lineCount": 103,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős and Simonovits posed this problem in 1982 as part of their systematic investigation of extremal functions for graph families. The question sits at the crossroads of two regimes in extremal graph theory. For non-bipartite forbidden graphs, the Erdős–Stone–Simonovits theorem (1966) determines ex(n; H) up to the o(n²) error, and the answer depends only on the chromatic number χ(H). But when the forbidden family contains a bipartite graph, the extremal function drops to o(n²) and the precise order of growth depends on the fine structure of the forbidden graph — a much harder problem. Simonovits had earlier (1966) shown that for a single forbidden bipartite graph the extremal function exhibits polynomial growth n^{1+c} for some c < 1, but determining this exponent remains open in most cases. Problem #575 asks whether, for families, the analysis reduces to a single bipartite member: a powerful structural simplification if true. The conjecture has been verified for families of complete bipartite graphs and certain degenerate families, but the general case remains open after four decades.",
@@ -47,28 +48,28 @@
       "id": "header",
       "title": "Problem Statement and Background",
       "startLine": 1,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Docstring stating the problem, historical background on the Erdős–Stone–Simonovits theorem and the bipartite regime, and imports of Mathlib's SimpleGraph and Finset modules."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 31,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Defines the Turán extremal number ex(n; H) as a supremum over edge counts, the family extremal function ex(n; F) using a predicate-based forbidden subgraph condition, and the bipartite graph predicate via 2-colorability."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 53,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "States the Erdős–Simonovits conjecture (Problem #575): for any finite family F containing a bipartite graph, some bipartite member G ∈ F satisfies ex(n; G) = O(ex(n; F)). Axiomatized as True due to the complexity of formalizing graph homomorphisms."
     },
     {
       "id": "context",
       "title": "Erdős–Stone–Simonovits and Kővári–Sós–Turán",
       "startLine": 68,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "States the Erdős–Stone–Simonovits theorem for non-bipartite graphs (Turán density = 1 − 1/(χ−1)) and the Kővári–Sós–Turán upper bound for complete bipartite Turán numbers, establishing the two asymptotic regimes."
     },
     {

@@ -40,7 +40,8 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 6,
     "assumptions": "6 axiom declarations: ch_implies_no_intermediate (CH implies no cardinal between aleph_0 and continuum), no_intermediate_implies_ch (no intermediate cardinal implies CH), L_exists (constructible universe L exists as ZFC model), L_satisfies_CH (L satisfies CH), forcing_extension_exists (Cohen forcing extension exists), forcing_violates_CH (forcing model violates CH)",
-    "lineCount": 366
+    "lineCount": 366,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Cantor first posed the Continuum Hypothesis in his 1878 paper *Ein Beitrag zur Mannigfaltigkeitslehre*, conjecturing that $2^{\\aleph_0} = \\aleph_1$ after proving the reals are uncountable (1873). Hilbert placed it as Problem #1 in his famous 1900 Paris address, calling it the most important open problem in mathematics. After decades of failed attempts, Gödel resolved half the question in 1940 by constructing the *Constructible Universe* L—a minimal model of ZFC in which CH holds—proving Con(ZFC) → Con(ZFC+CH). Cohen revolutionised logic in 1963 by inventing *forcing*, a general method for extending set-theoretic models, and used it to produce models where CH fails (Con(ZFC) → Con(ZFC+¬CH)). Cohen received the Fields Medal in 1966, the only one awarded for work in logic. Together, Gödel and Cohen showed CH is *independent* of ZFC—Hilbert's first problem was answered, but not by deciding its truth.",
@@ -63,7 +64,7 @@
       "id": "module-header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Lean 4 imports, ZFC axiom framework, and problem description for the independence of CH."
     },
     {
@@ -91,7 +92,7 @@
       "id": "independence",
       "title": "The Independence Theorem",
       "startLine": 225,
-      "endLine": 280,
+      "endLine": 366,
       "summary": "Main result: CH is independent of ZFC."
     }
   ],

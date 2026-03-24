@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 11,
     "lineCount": 274,
-    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem originates from the foundational work of Erdős and Simonovits in 1970 on extremal problems for bipartite graphs. The hypercube graph Q_k is a fundamental structure in combinatorics, appearing in coding theory, Boolean function analysis, and theoretical computer science. Determining the Turán number ex(n; Q_k) asks: what is the maximum number of edges in an n-vertex graph that contains no copy of Q_k as a subgraph? While the Erdős-Stone theorem completely resolves this question for non-bipartite graphs, the bipartite case remains notoriously difficult. The hypercube Turán problem exemplifies this difficulty and has attracted attention from leading combinatorialists for over 50 years.",
@@ -48,63 +49,63 @@
       "title": "Hypercube Graph Definition",
       "summary": "HypercubeVertex, hammingDistance, hypercubeAdj, hypercubeGraph definitions",
       "startLine": 42,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "hypercube-properties",
       "title": "Properties of Hypercube Graphs",
       "summary": "hypercube_vertex_count, hypercube_degree, hypercube_edge_count",
       "startLine": 79,
-      "endLine": 98
+      "endLine": 99
     },
     {
       "id": "turan-numbers",
       "title": "Turán Numbers",
       "summary": "IsSubgraphFree, turanNumber definitions for extremal graph theory",
       "startLine": 100,
-      "endLine": 121
+      "endLine": 122
     },
     {
       "id": "erdos-simonovits-bounds",
       "title": "Erdős-Simonovits Bounds (1970)",
       "summary": "erdos_simonovits_lower_bound, erdos_simonovits_upper_bound axioms",
       "startLine": 123,
-      "endLine": 146
+      "endLine": 147
     },
     {
       "id": "recent-progress",
       "title": "Recent Progress",
       "summary": "sudakov_tomon_bound, janzerSudakovExponent, janzer_sudakov_bound",
       "startLine": 148,
-      "endLine": 172
+      "endLine": 173
     },
     {
       "id": "open-conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos_conjecture_Q3, bound_gap, janzer_sudakov_vs_conjecture",
       "startLine": 174,
-      "endLine": 194
+      "endLine": 195
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "summary": "erdos_simonovits_minus_edge showing sensitivity to single edge removal",
       "startLine": 196,
-      "endLine": 209
+      "endLine": 210
     },
     {
       "id": "bipartite-context",
       "title": "Bipartite Turán Theory",
       "summary": "hypercube_bipartite, bipartite_turan_subquadratic context",
       "startLine": 211,
-      "endLine": 231
+      "endLine": 232
     },
     {
       "id": "kovari-sos-turan",
       "title": "The Kővári-Sós-Turán Theorem",
       "summary": "kovari_sos_turan, hypercube_contains_complete_bipartite",
       "startLine": 233,
-      "endLine": 248
+      "endLine": 249
     },
     {
       "id": "summary",

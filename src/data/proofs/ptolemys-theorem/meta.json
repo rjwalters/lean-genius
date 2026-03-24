@@ -38,7 +38,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 267,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Claudius Ptolemy of Alexandria (c. 100-170 AD) proved this theorem in Book I, Chapter 10 of his astronomical treatise *Almagest* (c. 150 AD), where it was the key tool for computing a table of chords — the ancient equivalent of trigonometric tables. The chord table allowed Ptolemy to compute $\\text{chord}(\\alpha + \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$, which is equivalent to the modern addition formula $\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$. The theorem was fundamental to astronomy and navigation for over 1500 years. The elegant complex-number proof — $(A-C)(B-D) = (A-B)(C-D) + (A-D)(B-C)$ — was discovered much later and reveals the deep algebraic structure behind the geometric identity. The converse is also true: Ptolemy's equality characterizes cyclic quadrilaterals. The inequality version $AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff the points are concyclic.",
@@ -61,56 +62,56 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Documentation header explaining Ptolemy's Theorem as Wiedijk #95, with historical notes on the Almagest (c. 150 AD), the cospherical approach, and Mathlib dependencies."
     },
     {
       "id": "setup",
       "title": "Setup and Definitions",
       "startLine": 48,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Variable declarations for a general Euclidean space (inner product space V, metric space P) and abbreviation Vec2 for the Euclidean plane."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 64,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "Ptolemy's theorem: $\\text{dist}(A,B) \\cdot \\text{dist}(C,D) + \\text{dist}(B,C) \\cdot \\text{dist}(D,A) = \\text{dist}(A,C) \\cdot \\text{dist}(B,D)$ for `Cospherical` points with diagonal intersection $P$ satisfying $\\angle APC = \\pi$ and $\\angle BPD = \\pi$. One-liner via `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical`."
     },
     {
       "id": "alternative",
       "title": "Alternative Formulations",
       "startLine": 88,
-      "endLine": 115,
+      "endLine": 116,
       "summary": "Three equivalent formulations: diagonals form (same), symmetric form (diagonals on left), and rearranged form (using commutativity of multiplication)."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Special Cases",
       "startLine": 117,
-      "endLine": 128,
+      "endLine": 129,
       "summary": "Diagonal product from sides: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$ can be computed from the four side lengths alone, eliminating the need for trigonometric computation of diagonals."
     },
     {
       "id": "connections",
       "title": "Connections to Other Theorems",
       "startLine": 130,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture."
     },
     {
       "id": "examples",
       "title": "Numerical Examples",
       "startLine": 163,
-      "endLine": 207,
+      "endLine": 208,
       "summary": "Three verified examples: rectangle ($3 \\cdot 3 + 4 \\cdot 4 = 5 \\cdot 5$, recovering the Pythagorean theorem), square ($2s^2 = (s\\sqrt{2})^2$ via `Real.mul_self_sqrt`), and isosceles trapezoid ($5^2 + 6^2 = 61$, diagonal $= \\sqrt{61}$). All verified by `norm_num`."
     },
     {
       "id": "converse",
       "title": "Converse and Ptolemy's Inequality",
       "startLine": 209,
-      "endLine": 231,
+      "endLine": 232,
       "summary": "The converse: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ implies concyclicity. Ptolemy's inequality $AC \\cdot BD \\le AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff concyclic. Related to the cross-ratio being real and positive."
     },
     {

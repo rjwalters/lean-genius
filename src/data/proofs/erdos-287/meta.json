@@ -72,7 +72,7 @@
   "overview": {
     "historicalContext": "**Erdős Problem #287: Egyptian Fraction Gap**\n\nThis problem concerns Egyptian fraction representations of 1 — writing 1 = 1/n₁ + 1/n₂ + ··· + 1/nₖ with distinct integers n₁ < n₂ < ··· < nₖ. Egyptian fractions have a remarkably long history: the Rhind Mathematical Papyrus (c. 1650 BCE, copied by the scribe Ahmes from an even older document) contains extensive tables for decomposing fractions as sums of distinct unit fractions. The ancient Egyptians used only unit fractions (with the exception of 2/3), making these decompositions a practical necessity for arithmetic.\n\nThe specific question of how 'dense' such a representation can be — how small the maximum gap between consecutive denominators can be — was posed by Erdős in connection with his 1932 result on consecutive integer reciprocals.\n\n**Erdős's 1932 Theorem:** The sum 1/n + 1/(n+1) + ··· + 1/(n+k) is never equal to 1 for n ≥ 2. The elegant proof uses Bertrand's postulate (Chebyshev's theorem): the largest prime p ≤ n+k satisfies p > (n+k)/2, so p appears exactly once among {n, ..., n+k}. Multiplying the sum by lcm(n, ..., n+k), exactly one term has odd p-adic valuation, making the numerator indivisible by p and hence not equal to the denominator.\n\nThis theorem immediately implies maxGap ≥ 2 for any Egyptian fraction representation of 1 (since gap 1 everywhere means consecutive integers). Erdős then asked the natural strengthening: must the maximum gap be at least 3?\n\n**The Conjecture (OPEN):** Every representation 1 = Σ 1/nᵢ has max(nᵢ₊₁ − nᵢ) ≥ 3. The example 1 = 1/2 + 1/3 + 1/6 with max gap 3 shows this would be sharp. Despite over 90 years of attention, the conjecture remains open. The difficulty lies in ruling out representations where gaps alternate between 1 and 2 — such sequences have more complex LCM structure than purely consecutive integers.\n\n**Connection to Prime Distribution:** Erdős observed that the conjecture would follow (for all but finitely many cases) from a conjecture in prime distribution theory: for all sufficiently large N, there exists a prime p ∈ [N, 2N] such that (p+1)/2 is also prime. This connects the Egyptian fraction gap problem to deep questions about prime pairs.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $k \\ge 2$. For any distinct integers $1 < n_1 < n_2 < \\cdots < n_k$ such that\n$$1 = \\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k},$$\nmust we have $\\max_{1 \\le i < k}(n_{i+1} - n_i) \\ge 3$?\n\n**Known Results:**\n- $\\max(n_{i+1} - n_i) \\ge 2$: **PROVED** (Erdős, 1932)\n- $\\max(n_{i+1} - n_i) = 3$ achievable: $1 = 1/2 + 1/3 + 1/6$\n- $\\max(n_{i+1} - n_i) \\ge 3$: **OPEN CONJECTURE**\n\n**Status**: OPEN",
-    "text": "For 1 = 1/n\u2081 + \u22ef + 1/n\u2096 with distinct integers, must max(n\u1d62\u208a\u2081 - n\u1d62) \u2265 3? The example 1 = 1/2 + 1/3 + 1/6 shows 3 is optimal. Gap \u2265 2 is proven. Status: OPEN.",
+    "text": "For 1 = 1/n₁ + ⋯ + 1/nₖ with distinct integers, must max(nᵢ₊₁ - nᵢ) ≥ 3? The example 1 = 1/2 + 1/3 + 1/6 shows 3 is optimal. Gap ≥ 2 is proven. Status: OPEN.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** IsUnitFractionDecomp encodes a valid representation as a sorted list of distinct integers > 1 with rational reciprocals summing to 1. maxGap computes the maximum consecutive difference via zip/fold\n\n2. **The Example:** example_2_3_6 axiomatizes that [2, 3, 6] is valid with maxGap = 3 (could be proved by norm_num but kept as axiom for simplicity)\n\n3. **Lower Bound:** no_consecutive_reciprocals axiomatizes Erdős's 1932 result (gap ≥ 2). The proof via Bertrand's postulate is beyond the current formalization\n\n4. **Conjecture:** erdos_287_conjecture axiomatizes the open gap ≥ 3 conjecture, recording it as an axiom since it is unproved\n\n5. **Main Theorem:** erdos_287 is a genuine theorem proving gap ≥ 2 by invoking no_consecutive_reciprocals. This is the strongest proved result\n\n6. **Compactness:** The entire formalization is 91 lines, reflecting the clarity of the problem statement and the simplicity of the known partial results",
     "keyInsights": [
       "**LCM Obstruction via Bertrand's Postulate:** The proof that gap ≥ 2 works because consecutive integers always contain a prime p > (n+k)/2, and this prime appears exactly once in {n, ..., n+k}. Multiplying the sum by the LCM, the p-adic valuation argument shows the numerator cannot equal the denominator. For gap ≥ 3, one would need to handle sequences with gaps of 1 and 2, where the prime structure is more complex",
@@ -103,7 +103,7 @@
       "summary": "Defines IsUnitFractionDecomp as a sorted list of distinct integers > 1 with rational reciprocal sum = 1, and maxGap via zip/tail/foldl over consecutive differences. These are the two core building blocks for stating both the conjecture and the known results.",
       "mathContext": "$\\text{IsUnitFractionDecomp}(ns) \\iff |ns| \\ge 2 \\land ns \\text{ sorted} \\land (\\forall n \\in ns, n > 1) \\land \\sum_{n \\in ns} 1/n = 1$. $\\text{maxGap}(ns) = \\max_i(n_{i+1} - n_i)$.",
       "startLine": 25,
-      "endLine": 41
+      "endLine": 42
     },
     {
       "id": "example",
@@ -111,7 +111,7 @@
       "summary": "Axiomatizes example_2_3_6: [2, 3, 6] is a valid decomposition with maxGap = 3. This is the simplest representation of 1 and shows the conjectured bound 3 would be tight. Note: this axiom is trivially provable by computation (norm_num/decide) — an Aristotle candidate.",
       "mathContext": "$1/2 + 1/3 + 1/6 = 1$, gaps $= (1, 3)$, maxGap $= 3$. Provable axiom.",
       "startLine": 43,
-      "endLine": 49
+      "endLine": 50
     },
     {
       "id": "known-lower-bound",
@@ -119,7 +119,7 @@
       "summary": "Axiomatizes no_consecutive_reciprocals: Erdős's 1932 theorem that consecutive integer reciprocals never sum to 1, implying maxGap ≥ 2 for all representations. The proof uses Bertrand's postulate and p-adic valuation arguments.",
       "mathContext": "Erdős 1932: $\\sum_{i=n}^{n+k} 1/i \\neq 1$ for $n \\ge 2$. Proof uses Bertrand's postulate: the largest prime $p \\le n+k$ satisfies $v_p(\\text{lcm}(n,\\ldots,n+k)) = 1$.",
       "startLine": 51,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "conjecture",
@@ -127,7 +127,7 @@
       "summary": "Axiomatizes erdos_287_conjecture: the OPEN conjecture that maxGap ≥ 3 for all representations. Combined with the example [2, 3, 6], this would give a complete characterization: the minimum achievable maximum gap is exactly 3.",
       "mathContext": "Conjecture: $\\max_i(n_{i+1} - n_i) \\ge 3$ for all representations $\\sum 1/n_i = 1$. OPEN since 1932.",
       "startLine": 64,
-      "endLine": 74
+      "endLine": 75
     },
     {
       "id": "main-theorem",

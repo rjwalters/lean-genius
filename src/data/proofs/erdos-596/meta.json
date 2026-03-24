@@ -75,7 +75,7 @@
       "id": "dichotomy-definitions",
       "title": "Part I: Graph Coloring Dichotomy",
       "startLine": 25,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Defines GraphProperty, FiniteRamseyProperty, CountableColoringProperty, and HasDichotomy.",
       "mathContext": "FiniteRamseyProperty$(G_1, G_2)$: $\\forall n, \\exists H$ $G_1$-free such that every $n$-coloring of $E(H)$ has monochromatic $G_2$. CountableColoringProperty: every $G_1$-free $H$ admits $c : E(H) \\to \\mathbb{N}$ with no monochromatic $G_2$."
     },
@@ -83,7 +83,7 @@
       "id": "known-examples",
       "title": "Part II: Known Examples",
       "startLine": 54,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Defines IsC4Free, ContainsC6. Axioms: nesetril_rodl_c4_c6 (Ramsey for C₄-free/C₆), erdos_hajnal_c4_trees (C₄-free → countable decomposition).",
       "mathContext": "Nešetřil-Rödl: $\\forall n, \\exists$ $C_4$-free $H$ with every $n$-coloring containing monochromatic $C_6$. Erdős-Hajnal: $C_4$-free graphs decompose into countably many forests."
     },
@@ -91,7 +91,7 @@
       "id": "dichotomy-pair",
       "title": "Part III: The Known Dichotomy Pair",
       "startLine": 79,
-      "endLine": 85,
+      "endLine": 86,
       "summary": "Theorem c4_c6_dichotomy: (C₄, C₆) has the dichotomy property.",
       "mathContext": "$(C_4, C_6)$ satisfies both properties simultaneously — initially thought impossible by Erdős-Hajnal."
     },
@@ -99,7 +99,7 @@
       "id": "main-conjecture",
       "title": "Part IV: The Main Conjecture",
       "startLine": 87,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Defines ErdosProblem596: existence of a structural characterization. Axiom erdos_596.",
       "mathContext": "The problem asks for a classification: which $(G_1, G_2)$ satisfy HasDichotomy? Is there a structural characterization?"
     },
@@ -107,7 +107,7 @@
       "id": "related-problem",
       "title": "Part V: Related Problem (K₄, K₃)",
       "startLine": 101,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Defines IsK4Free, ContainsK3. Axiom erdos_595_k4_k3 for the (K₄, K₃) case.",
       "mathContext": "Problem #595: Does $(K_4, K_3)$ satisfy the dichotomy? Can $K_4$-free graphs always avoid monochromatic triangles with countably many colors?"
     },
@@ -115,7 +115,7 @@
       "id": "properties",
       "title": "Part VI: Properties",
       "startLine": 120,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "Theorem dichotomy_pairs_exist: at least one dichotomy pair exists.",
       "mathContext": "Existence via $(C_4, C_6)$: `⟨IsC4Free, ContainsC6, c4_c6_dichotomy⟩`."
     },
@@ -123,7 +123,7 @@
       "id": "summary",
       "title": "Part VII: Summary",
       "startLine": 129,
-      "endLine": 144,
+      "endLine": 146,
       "summary": "erdos_596_summary: conjunction of dichotomy and existence results. Problem remains OPEN.",
       "mathContext": "Packages known results: $(C_4, C_6)$ has dichotomy and dichotomy pairs exist. Classification for all pairs remains open."
     }

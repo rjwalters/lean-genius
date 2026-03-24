@@ -81,7 +81,8 @@
         "relationship": "Sub-entry connecting to the Gauss-Wantzel theorem for regular polygon constructibility"
       }
     ],
-    "assumptions": "1 axiom: wantzel_galois_characterization — the Wantzel-Galois biconditional: an algebraic number α is constructible by compass and straightedge iff the Galois group of its minimal polynomial over ℚ is a 2-group (IsPGroup 2 (minpoly ℚ α).Gal). Axiomatized because the full proof requires the Galois correspondence for intermediate fields. All other results (non-constructibility of ∛2 and cos(20°), constructibility of √2 and 2^{1/4}, hierarchy of criteria) are fully proved from this axiom with 0 sorries."
+    "assumptions": "1 axiom: wantzel_galois_characterization — the Wantzel-Galois biconditional: an algebraic number α is constructible by compass and straightedge iff the Galois group of its minimal polynomial over ℚ is a 2-group (IsPGroup 2 (minpoly ℚ α).Gal). Axiomatized because the full proof requires the Galois correspondence for intermediate fields. All other results (non-constructibility of ∛2 and cos(20°), constructibility of √2 and 2^{1/4}, hierarchy of criteria) are fully proved from this axiom with 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "crossReferences": [
     {
@@ -181,7 +182,7 @@
       "id": "header",
       "title": "Module Header, Imports, and Problem Statement",
       "startLine": 1,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Module docstring (lines 1-36) explaining the upgrade from OQ-01's degree criterion to OQ-02's Galois 2-group biconditional, with key examples. Imports (lines 38-42): Mathlib plus four project-local files (InverseGalois, InverseGaloisD4, NthRootIrrationalOQ01, AngleTrisectionCos20Gal). Opens Polynomial, IntermediateField, FiniteDimensional namespaces.",
       "mathContext": "The fundamental upgrade: $\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group — not merely $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^n$."
     },
@@ -189,7 +190,7 @@
       "id": "2-groups",
       "title": "2-Groups: Basic Facts",
       "startLine": 46,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Part I: Three proved theorems about 2-groups: `isPGroup_iff_card_pow_two` (2-group ↔ order is 2^n), `isPGroup_of_card_pow_two` (2-power order → 2-group), and `isPGroup_card_is_pow_two` (converse: 2-group → order is 2^n). All delegate to Mathlib's `IsPGroup.iff_card` / `IsPGroup.of_card`.",
       "mathContext": "A finite group $G$ is a 2-group $\\iff |G| = 2^n$ for some $n \\geq 0$. Examples: $\\mathbb{Z}/2\\mathbb{Z}$, $\\mathbb{Z}/4\\mathbb{Z}$, $D_4$ (order 8), $Q_8$ (order 8). Non-examples: $S_3$ (order 6), $\\mathbb{Z}/3\\mathbb{Z}$ (order 3). The order characterization `IsPGroup.iff_card` bridges between Mathlib's element-wise definition and the cardinality condition needed for the constructibility criterion."
     },
@@ -197,7 +198,7 @@
       "id": "constructibility",
       "title": "Definition of Constructibility",
       "startLine": 65,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "IsConstructibleFromQ: α is constructible iff it lies in some K ⊇ ℚ inside ℝ with FiniteDimensional ℚ K and [K:ℚ] = 2^n for some n.",
       "mathContext": "$\\alpha$ constructible $\\iff \\exists$ tower $\\mathbb{Q} = K_0 \\subset K_1 \\subset \\cdots \\subset K_n$ with $[K_{i+1}:K_i] = 2$ and $\\alpha \\in K_n$."
     },
@@ -205,7 +206,7 @@
       "id": "wantzel-galois",
       "title": "Wantzel-Galois Theorem (Axiomatized)",
       "startLine": 77,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Part III: The main axiom `wantzel_galois_characterization`: IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal. Axiomatized because the full proof requires the Galois correspondence for intermediate fields. Docstring outlines both proof directions.",
       "mathContext": "$\\alpha$ constructible $\\iff$ $\\text{Gal}(\\text{minpoly}(\\mathbb{Q}, \\alpha))$ is a 2-group. ($\\Rightarrow$): constructible tower gives 2-power Galois closure; ($\\Leftarrow$): 2-group composition series gives degree-2 extension tower."
     },
@@ -213,7 +214,7 @@
       "id": "non-constructible",
       "title": "Non-Constructibility: ∛2 and cos(20°)",
       "startLine": 95,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "Proved: Gal(x³-2/ℚ) (order 6) and Gal(8x³-6x-1/ℚ) (order 3) are NOT 2-groups. Key: 3 divides both orders but gcd(3,2^n)=1, so neither is a power of 2.",
       "mathContext": "$|\\text{Gal}(x^3-2/\\mathbb{Q})| = 6 = 2 \\cdot 3$: since $\\gcd(3, 2) = 1$, we get $\\gcd(3, 2^n) = 1$ by `Nat.Coprime.pow_right`, so $3 \\nmid 2^n$, but $3 \\mid 6$, contradiction with $6 = 2^n$. Same argument for $|\\text{Gal}(8x^3-6x-1/\\mathbb{Q})| = 3$. The private lemma `not_pow_two_of_eq_six` encapsulates this coprimality argument and is reused for both non-constructibility proofs ($\\sqrt[3]{2}$ and $\\cos 20°$)."
     },
@@ -229,7 +230,7 @@
       "id": "oq01-connection",
       "title": "Connection to OQ-01 (Degree Criterion)",
       "startLine": 208,
-      "endLine": 242,
+      "endLine": 243,
       "summary": "Part VI: `galois_2group_implies_degree_pow2` (PROVED: 2-group Gal → natDegree | 2^k via tower law and IsPGroup.iff_card) and `constructible_implies_degree_dvd_pow2` (chains constructibility → 2-group Gal → degree criterion). Shows OQ-02 strictly implies OQ-01.",
       "mathContext": "The chain: $\\text{natDegree}(\\text{minpoly}) \\mid [\\text{SplittingField}:\\mathbb{Q}] = |\\text{Gal}| = 2^k$ (by the tower law and the Galois group order theorem), so $\\text{natDegree} = 2^j$ for some $j \\leq k$. This shows OQ-02's Galois criterion strictly implies OQ-01's degree criterion: constructible $\\Rightarrow$ 2-group Gal $\\Rightarrow$ $\\deg \\mid 2^n$. The reverse fails: some degree-$2^k$ polynomials have non-2-group Galois groups."
     },
@@ -237,7 +238,7 @@
       "id": "contrapositives",
       "title": "Contrapositive Non-Constructibility Results",
       "startLine": 244,
-      "endLine": 261,
+      "endLine": 262,
       "summary": "Two contrapositive theorems: constructible_implies_degree_dvd_pow2 (Galois criterion → degree criterion), not_constructible_of_not_2group (¬2-group → ¬constructible), not_constructible_of_degree (degree ∤ 2^n → ¬constructible).",
       "mathContext": "Contrapositives: $\\text{Gal} \\not\\cong 2\\text{-group} \\Rightarrow \\alpha$ not constructible, and $\\deg(\\text{minpoly}) \\nmid 2^n$ for all $n \\Rightarrow \\alpha$ not constructible."
     },

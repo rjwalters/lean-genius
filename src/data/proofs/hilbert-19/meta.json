@@ -46,7 +46,8 @@
     "hilbertNumber": 19,
     "axiomCount": 7,
     "lineCount": 337,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1900, David Hilbert posed 23 problems to guide 20th-century mathematics. The nineteenth problem asked whether solutions of 'regular' variational problems are necessarily analytic (infinitely differentiable with convergent Taylor series).\n\nThis question lies at the heart of PDE theory: if we minimize a well-behaved functional, how smooth is the minimizer?\n\n**Key Contributors:**\n- **Bernstein (1904)**: Solved the 2D case\n- **Schauder (1934)**: Developed Holder estimates for bootstrapping\n- **De Giorgi (1957)**: Revolutionary proof for general dimensions\n- **Nash (1958)**: Independent proof (parabolic case)\n- **Moser (1960)**: Simplified proofs using Harnack inequality\n\nThe resolution established modern elliptic regularity theory.",
@@ -67,42 +68,42 @@
       "id": "variational",
       "title": "The Calculus of Variations",
       "startLine": 59,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "Setup of variational problems: Lagrangian densities, action functionals, and critical points."
     },
     {
       "id": "euler-lagrange",
       "title": "The Euler-Lagrange Equation",
       "startLine": 91,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "Characterization of critical points via the Euler-Lagrange differential equation."
     },
     {
       "id": "ellipticity",
       "title": "Ellipticity - The Key Condition",
       "startLine": 118,
-      "endLine": 149,
+      "endLine": 150,
       "summary": "The ellipticity (Legendre) condition ensuring the PDE is well-behaved."
     },
     {
       "id": "regularity",
       "title": "Regularity Theory",
       "startLine": 151,
-      "endLine": 206,
+      "endLine": 207,
       "summary": "The main theorems: De Giorgi-Nash-Moser for Holder regularity, Schauder for smoothness."
     },
     {
       "id": "degiorgi",
       "title": "The De Giorgi Method",
       "startLine": 208,
-      "endLine": 251,
+      "endLine": 252,
       "summary": "De Giorgi's elegant approach via Caccioppoli inequality and oscillation decay."
     },
     {
       "id": "examples",
       "title": "Examples and Non-Examples",
       "startLine": 253,
-      "endLine": 286,
+      "endLine": 287,
       "summary": "Dirichlet problem as prototypical example; minimal surfaces as non-example in high dimensions."
     },
     {

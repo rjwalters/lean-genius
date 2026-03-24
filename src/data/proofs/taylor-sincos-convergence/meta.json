@@ -68,7 +68,8 @@
         "Mathlib.Topology.Algebra.InfiniteSum.Real",
         "Mathlib.Tactic"
       ]
-    }
+    },
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Taylor series for $\\sin$ and $\\cos$ have a remarkable history spanning nearly seven centuries. The Kerala school mathematician Madhava of Sangamagrama (c. 1350) discovered these infinite series around 1400 CE, roughly 300 years before Brook Taylor's 1715 *Methodus Incrementorum Directa et Inversa*. Madhava's result, preserved in Nilakantha's *Tantrasangraha* (1501) and Jyeshthadeva's *Yuktibhasa* (c. 1530), expressed $\\sin x = x - x^3/3! + x^5/5! - \\cdots$ in the language of arc-length and chord-length ratios.\n\nIn Europe, Newton independently discovered the series for $\\sin$ and $\\cos$ around 1665 using his generalized binomial methods, and Euler systematically exploited them in his *Introductio in analysin infinitorum* (1748). The rigorous convergence proof came later: Cauchy's *Cours d'analyse* (1821) provided the framework of limits and convergence, while Lagrange's remainder formula gave the quantitative bound $|R_n(x)| \\leq M|x|^{n+1}/(n+1)!$ where $M = \\sup|f^{(n+1)}|$.\n\nWhat makes the trig series special is the uniform derivative bound: since $\\sin$ and $\\cos$ cycle through $\\{\\sin, \\cos, -\\sin, -\\cos\\}$ with period 4, every iterated derivative is bounded by 1 in absolute value. This eliminates the exponential growth factor that appears in the $e^x$ remainder bound, giving the cleaner estimate $|R_n(x)| \\leq |x|^{n+1}/n!$. This formalization makes this simplification explicit and proves it is strictly tighter than the analogous $\\exp$ bound.",
@@ -94,7 +95,7 @@
       "id": "imports-and-setup",
       "title": "Imports and Module Setup",
       "startLine": 1,
-      "endLine": 33,
+      "endLine": 34,
       "summary": "Five Mathlib imports (Taylor calculus, trig derivatives, normed limits, infinite sums, tactics), module docstring describing the convergence proof strategy, and namespace opening.",
       "mathContext": "The proof depends on Mathlib's `summable_pow_div_factorial` ($|x|^n/n!$ is summable), `Real.hasDerivAt_sin/cos` (derivative formulas), and `Real.contDiff_sin/cos` (infinite differentiability)."
     },
@@ -102,7 +103,7 @@
       "id": "derivative-lemmas",
       "title": "Section I: Derivative Lemmas",
       "startLine": 35,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Four foundational derivative facts: $\\sin' = \\cos$, $\\cos' = -\\sin$, $(-\\sin)' = -\\cos$, $(-\\cos)' = \\sin$. These form the period-4 cycle used throughout the proof.",
       "mathContext": "$\\frac{d}{dx}\\sin = \\cos, \\quad \\frac{d}{dx}\\cos = -\\sin, \\quad \\frac{d}{dx}(-\\sin) = -\\cos, \\quad \\frac{d}{dx}(-\\cos) = \\sin$"
     },
@@ -110,7 +111,7 @@
       "id": "base-cases-period-four",
       "title": "Section II: Base Cases and Period-4 Property",
       "startLine": 53,
-      "endLine": 174,
+      "endLine": 175,
       "summary": "Establishes the 8 base cases (iterated derivatives 0-3 for both sin and cos), proves the period-4 recurrence ($\\sin^{(n+4)} = \\sin^{(n)}$, $\\cos^{(n+4)} = \\cos^{(n)}$), and derives the universal bound $\\|\\sin^{(n)}(x)\\| \\leq 1$ by reducing to $n \\bmod 4$.",
       "mathContext": "$\\sin^{(n+4)} = \\sin^{(n)}$ and $\\cos^{(n+4)} = \\cos^{(n)}$ for all $n \\in \\mathbb{N}$, hence $\\|\\sin^{(n)}\\|_\\infty \\leq 1$ and $\\|\\cos^{(n)}\\|_\\infty \\leq 1$ for all $n$."
     },
@@ -118,7 +119,7 @@
       "id": "taylor-partial-sums",
       "title": "Section III: Taylor Partial Sums",
       "startLine": 176,
-      "endLine": 187,
+      "endLine": 188,
       "summary": "Defines `sinPartialSum` and `cosPartialSum` as $S_n(x) = \\sum_{k=0}^{n} f^{(k)}(0) \\cdot x^k / k!$ using iterated derivatives evaluated at 0.",
       "mathContext": "$S_n^{\\sin}(x) = \\sum_{k=0}^{n} \\frac{\\sin^{(k)}(0)}{k!} x^k, \\quad S_n^{\\cos}(x) = \\sum_{k=0}^{n} \\frac{\\cos^{(k)}(0)}{k!} x^k$"
     },
@@ -126,7 +127,7 @@
       "id": "remainder-bounds",
       "title": "Section IV: Remainder Bounds",
       "startLine": 189,
-      "endLine": 216,
+      "endLine": 217,
       "summary": "Proves `iteratedDerivWithin` agrees with `iteratedDeriv` for sin/cos on `UniqueDiffOn` sets, then axiomatizes the Lagrange remainder bound $\\|f(x) - S_n(x)\\| \\leq |x|^{n+1}/n!$ for both functions.",
       "mathContext": "$\\|\\sin(x) - S_n^{\\sin}(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$ and $\\|\\cos(x) - S_n^{\\cos}(x)\\| \\leq \\frac{|x|^{n+1}}{n!}$"
     },
@@ -134,7 +135,7 @@
       "id": "convergence",
       "title": "Section V: Convergence of Taylor Series",
       "startLine": 218,
-      "endLine": 260,
+      "endLine": 261,
       "summary": "Proves $|x|^n/n! \\to 0$ via Mathlib's summability, then uses the squeeze theorem (`squeeze_zero_norm'`) to show the Taylor remainder tends to 0, yielding $S_n^{\\sin}(x) \\to \\sin(x)$ and $S_n^{\\cos}(x) \\to \\cos(x)$.",
       "mathContext": "$\\lim_{n \\to \\infty} S_n^{\\sin}(x) = \\sin(x)$ and $\\lim_{n \\to \\infty} S_n^{\\cos}(x) = \\cos(x)$ for all $x \\in \\mathbb{R}$"
     },
@@ -142,7 +143,7 @@
       "id": "explicit-series",
       "title": "Section VI: Explicit Series Forms and Summability",
       "startLine": 262,
-      "endLine": 292,
+      "endLine": 293,
       "summary": "Defines `sinSeries` and `cosSeries` as the alternating series terms $(-1)^n x^{2n+1}/(2n+1)!$ and $(-1)^n x^{2n}/(2n)!$, then proves summability via subseries comparison with $\\exp(|x|)$.",
       "mathContext": "$\\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{(2n+1)!}$ and $\\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{(2n)!}$ are absolutely convergent for all $x \\in \\mathbb{R}$"
     },
@@ -150,7 +151,7 @@
       "id": "approximation-bounds",
       "title": "Section VII: Values at Zero and Approximation Bounds",
       "startLine": 294,
-      "endLine": 319,
+      "endLine": 320,
       "summary": "Verifies $\\sin(0) = 0$ and $\\cos(0) = 1$ from partial sums, then derives concrete approximation error bounds: $|\\sin x - x| \\leq |x|^2$ and $|\\cos x - (1 - x^2/2)| \\leq |x|^3/2$.",
       "mathContext": "$|\\sin x - x| \\leq x^2$ and $|\\cos x - (1 - x^2/2)| \\leq |x|^3/2$"
     },
@@ -239,7 +240,13 @@
       "Mathlib.Topology.Algebra.InfiniteSum.Real",
       "Mathlib.Tactic"
     ],
-    "opens": ["Set", "Filter", "Topology", "Finset", "Real"],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology",
+      "Finset",
+      "Real"
+    ],
     "namespace": "TaylorSinCosConvergence",
     "lineCount": 348,
     "axiomCount": 2,

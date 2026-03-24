@@ -72,7 +72,8 @@
     "dateUpdated": "2026-02-12",
     "axiomCount": 1,
     "lineCount": 222,
-    "assumptions": "1 axiom(s) and 14 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom(s) and 14 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem concerns the remarkable regularity of ordering patterns in sequences of Euler's totient function. Given k consecutive values φ(m+1), ..., φ(m+k), their relative ordering is one of k! possible permutations. Erdős asked: how large can k be such that ALL k! patterns appear somewhere in φ(1), ..., φ(n)?\n\nIn 1936, Erdős proved F(n) ≍ log log log n — an astonishingly slow growth rate, answering a question of Chowla. Sarvadaman Chowla had asked about consecutive values of arithmetic functions in the early 1930s at the Punjab University in Lahore. Erdős, then 23, solved the problem using sieve methods and published it in the Proceedings of the National Institute of Sciences of India.\n\nThe same triple-log behavior holds for other arithmetic functions like σ(n), τ(n), and ω(n), suggesting a universal phenomenon rooted in the combinatorial structure of arithmetic functions rather than any specific number-theoretic property.\n\nThe problem connects two seemingly unrelated areas: the combinatorics of permutation patterns (studied intensively since the Stanley-Wilf conjecture, proved by Marcus and Tardos in 2004) and the distribution of values of multiplicative functions (a central topic in analytic number theory since Erdős and Kac's foundational 1940 paper). Despite nearly 90 years of work, three fundamental questions remain open.",
@@ -123,70 +124,70 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib and opens `Nat`, `Function`, `Finset` namespaces providing access to `Nat.totient`, `Equiv.Perm`, `Real.log`, `Filter.atTop`, and `Nat.find`.",
       "startLine": 27,
-      "endLine": 29
+      "endLine": 30
     },
     {
       "id": "arithmetic-functions",
       "title": "Arithmetic Functions",
       "summary": "Defines the four arithmetic functions studied: $\\varphi$ (Euler's totient via `Nat.totient`), $\\sigma$ (sum of divisors via `Nat.divisors.sum id`), $\\tau$ (divisor count via `Nat.divisors.card`), and $\\omega$ (distinct prime factors via `primeFactors.card`). All four satisfy the same triple-log ordering pattern bound $F(n) \\asymp \\log\\log\\log n$.",
       "startLine": 31,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "ordering-patterns",
       "title": "Ordering Patterns",
       "summary": "Defines `OrderingPattern k` as $\\text{Equiv.Perm}(\\text{Fin } k)$, proves $|S_k| = k!$ via `Fintype.card_perm`, defines `RealizesPattern` as an order-isomorphism condition ($\\sigma(i) < \\sigma(j) \\leftrightarrow \\text{seq}(i) < \\text{seq}(j)$), and `PhiRealizesPattern` for totient sequences.",
       "startLine": 45,
-      "endLine": 62
+      "endLine": 63
     },
     {
       "id": "f-function",
       "title": "The Function F(n)",
       "summary": "Defines `PatternAchievable` ($\\exists m,\\; m + k \\leq n \\land \\text{PhiRealizesPattern}$), `AllPatternsAchievable` ($\\forall \\sigma \\in S_k$), and $F(n)$ via `Nat.find` as the largest $k$ where all $k!$ patterns appear. Also defines $F'$ as the supremum formulation.",
       "startLine": 64,
-      "endLine": 84
+      "endLine": 85
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "States `AsymptoticTripleLog` as $c_1 \\log\\log\\log n \\leq F(n) \\leq c_2 \\log\\log\\log n$ using `Real.log` composed three times. The main theorem `erdos_1936_F_asymptotic` is sorry'd — this is Erdős's 1936 result proving $F(n) \\asymp \\log\\log\\log n$.",
       "startLine": 86,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "open-questions",
       "title": "The Main Questions (OPEN)",
       "summary": "Formalizes three open questions: Q1 (exact constant $c$ via limit of $F(n)/\\log\\log\\log n$), Q2 (strictly decreasing first to fail, via $\\neg\\text{AllPatternsAchievable} \\to \\neg\\text{PatternAchievable}$ for decreasing), Q3 (natural pattern most common, via `Finset.filter` cardinality comparison). Defines `StrictlyDecreasingPattern` as the reversal permutation $i \\mapsto k-1-i$ and `NaturalPattern` with a sorry.",
       "startLine": 99,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "specific-patterns",
       "title": "Specific Pattern Analysis",
       "summary": "Defines `StrictlyIncreasingPattern` as `Equiv.refl` (identity permutation) and `AlternatingPattern` (sorry'd). States that for $k = 2$ ($n \\geq 10$) and $k = 3$ ($n \\geq 100$) all patterns are achievable — both sorry'd.",
       "startLine": 128,
-      "endLine": 147
+      "endLine": 148
     },
     {
       "id": "phi-properties",
       "title": "Properties of φ",
       "summary": "Proves $\\varphi(p) = p - 1$ from `Nat.totient_prime` (one of the few non-sorry results). States $\\varphi(2p) = p - 1$, consecutive primes give increasing $\\varphi$, and $\\varphi(n)/n$ can be arbitrarily small (via `Filter.atTop` and primorial numbers where $\\varphi(n)/n = \\prod(1-1/p) \\to 0$).",
       "startLine": 149,
-      "endLine": 167
+      "endLine": 168
     },
     {
       "id": "other-functions",
       "title": "Extension to Other Functions",
       "summary": "Defines `F_sigma` analogously and states its triple-log asymptotic $F_\\sigma(n) \\asymp \\log\\log\\log n$. Declares `F_tau` as an axiom and states its asymptotic. Demonstrates the universality of the triple-log phenomenon across multiplicative and additive arithmetic functions.",
       "startLine": 169,
-      "endLine": 186
+      "endLine": 187
     },
     {
       "id": "why-triple-log",
       "title": "Why Triple Log?",
       "summary": "Provides heuristic: $k! \\lesssim n/k$ windows gives $k \\approx \\log n / \\log\\log n$ naively, but $\\varphi$ correlations add a third log. Proves the range $|\\{\\varphi(1),\\ldots,\\varphi(n)\\}| = O(n/\\log n)$ (Ford 1998) and that $\\varphi$ has arbitrarily high multiplicity collisions ($\\varphi(n) = \\varphi(2n)$ for odd $n$).",
       "startLine": 188,
-      "endLine": 202
+      "endLine": 222
     }
   ],
   "conclusion": {

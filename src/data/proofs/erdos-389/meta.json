@@ -22,7 +22,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 7,
     "assumptions": "7 axiom declarations: erdos_389 (main open conjecture), erdos_389_n2 (n=2 k=5 case), erdos_389_n3 (n=3 k=4 case), mehta_n4_minimal (minimalK(4) = 207), mehta_n4_minimality (207 is minimal), ratio_identity (product ratio formulation), consecutiveProd_binomial (binomial coefficient identity)",
-    "lineCount": 98
+    "lineCount": 98,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős and Ernst Straus, appearing in the influential monograph *Old and New Problems and Results in Combinatorial Number Theory* by Erdős and Ronald Graham (1980). The question asks whether for every starting point $n$, one can always find a block length $k$ such that the product of $k$ consecutive integers starting at $n$ divides the product of the next $k$ consecutive integers. The problem connects to classical questions about the multiplicative structure of consecutive integers, studied since Chebyshev's 1852 work on prime gaps and Sylvester's 1892 theorem that the product of $k$ consecutive integers greater than $k$ always has a prime factor exceeding $k$. The problem remained computationally intractable for decades due to the apparent irregularity of the minimal $k$ values. A breakthrough came when Bhavik Mehta (a Lean community contributor and Cambridge mathematician) computed that the minimal $k$ for $n = 4$ is 207 — an unexpectedly large value given that $n = 1, 2, 3$ require only $k = 1, 5, 4$ respectively. Mehta's computation, using careful prime factorization tracking, led to the creation of OEIS sequence A375071 cataloging these minimal values. The erratic behavior of this sequence suggests deep connections to the distribution of prime powers among consecutive integers.",
@@ -48,7 +49,7 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib tactics and $\\texttt{Finset.LocallyFinite}$ for finite product constructions. Opens the $\\texttt{Finset}$ namespace.",
       "startLine": 30,
-      "endLine": 33,
+      "endLine": 34,
       "mathContext": "Imports: `Finset.LocallyFinite` for $\\prod_{i=0}^{k-1}(n+i)$, tactics for verified small cases."
     },
     {
@@ -56,7 +57,7 @@
       "title": "Core Definitions",
       "summary": "Defines $\\texttt{consecutiveProd}(n, k) = (n)_k = \\prod_{i=0}^{k-1}(n+i)$, the divisibility condition $(n)_k \\mid (n+k)_k$, and the minimal $k$ function via $\\texttt{Nat.find}$.",
       "startLine": 35,
-      "endLine": 50,
+      "endLine": 51,
       "mathContext": "$(n)_k = \\prod_{i=0}^{k-1}(n+i)$. Divisibility: $(n)_k \\mid (n+k)_k$, i.e., $\\binom{n+2k-1}{2k-1}/\\binom{n+k-1}{k-1} \\in \\mathbb{Z}$."
     },
     {
@@ -64,7 +65,7 @@
       "title": "Main Conjecture",
       "summary": "States the Erdős-Straus conjecture as an axiom: $\\forall n \\geq 1,\\; \\exists k \\geq 1,\\; (n)_k \\mid (n+k)_k$. Open problem.",
       "startLine": 52,
-      "endLine": 58,
+      "endLine": 59,
       "mathContext": "Erdős-Straus: $\\forall n \\geq 1,\\, \\exists k \\geq 1: (n)_k \\mid (n+k)_k$. Open."
     },
     {
@@ -72,7 +73,7 @@
       "title": "Small Cases",
       "summary": "Verifies $n = 1$ ($k = 1$, proved by $\\texttt{simp}$), $n = 2$ ($k = 5$, $720 \\mid 55440$), and $n = 3$ ($k = 4$, $360 \\mid 5040$).",
       "startLine": 60,
-      "endLine": 70,
+      "endLine": 71,
       "mathContext": "$n=1$: $k=1$ (trivial). $n=2$: $k=5$ ($720 \\mid 55440$). $n=3$: $k=4$ ($360 \\mid 30240$)."
     },
     {
@@ -80,7 +81,7 @@
       "title": "Mehta's Computation",
       "summary": "Records Bhavik Mehta's result: $\\texttt{minimalK}(4) = 207$, meaning $4 \\cdot 5 \\cdots 210 \\mid 211 \\cdot 212 \\cdots 417$. Proves minimality: no $k \\in [1, 206]$ works.",
       "startLine": 72,
-      "endLine": 82,
+      "endLine": 83,
       "mathContext": "Mehta: $\\text{minimalK}(4) = 207$. Product $4 \\cdot 5 \\cdots 210 \\mid 211 \\cdots 417$."
     },
     {

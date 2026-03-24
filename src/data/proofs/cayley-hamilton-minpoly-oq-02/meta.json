@@ -79,7 +79,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 131,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**Similarity Invariance of the Minimal Polynomial**\n\nTwo matrices $A$ and $B$ are *similar* if $B = P^{-1}AP$ for some invertible matrix $P$. Similarity is the natural equivalence relation on matrices over a field: it corresponds to change of basis for a linear map. A fundamental fact is that similar matrices share all their intrinsic invariants — determinant, trace, characteristic polynomial, and minimal polynomial.\n\nThe minimal polynomial $\\mu_M$ is the monic polynomial of least degree annihilating $M$, i.e., the generator of the kernel of the evaluation map $K[X] \\to M_n(K)$, $p \\mapsto p(M)$. That $\\mu_A = \\mu_B$ for similar $A, B$ follows from the observation that any polynomial relation $p(A) = 0$ immediately gives $p(B) = p(P^{-1}AP) = P^{-1}p(A)P = 0$, since polynomial evaluation commutes with conjugation by an invertible matrix.\n\nThis invariance is key to the Jordan canonical form theory (Jordan, 1870): similar matrices share all elementary divisors, and the minimal polynomial determines the sizes of the largest Jordan blocks per eigenvalue. The result was well-known to Frobenius and Weierstrass by the 1880s.\n\nThis Lean 4 formalization establishes the result by defining the conjugation map as a $K$-algebra endomorphism and applying Mathlib's `Polynomial.aeval_algHom_apply`.",
@@ -102,42 +103,42 @@
       "id": "imports-setup",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 26,
+      "endLine": 27,
       "summary": "Imports `Matrix.Charpoly.Minpoly` and `Tactic`. Variables: `K` a field, `n` a finite decidable type."
     },
     {
       "id": "conjugation-alghom",
       "title": "Conjugation as an Algebra Endomorphism",
       "startLine": 28,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Defines `conjAlgHom P : Matrix n n K →ₐ[K] Matrix n n K` by `A ↦ P⁻¹.val * A * P.val`. Verifies all algebra homomorphism axioms: `map_one'` (via `Units.inv_mul`), `map_mul'` (via `simp [mul_assoc]` + `Units.mul_inv`), `map_zero'`, `map_add'`, `commutes'` (scalars central via `smul_mul_assoc`)."
     },
     {
       "id": "aeval-conj",
       "title": "Polynomial Evaluation Commutes with Conjugation",
       "startLine": 57,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Lemma `aeval_conj`: `aeval (P⁻¹AP) p = P⁻¹ · aeval(A)(p) · P`. Proved by `aeval_algHom_apply (conjAlgHom P) A p` in 4 lines."
     },
     {
       "id": "conj-zero",
       "title": "Conjugation Preserves Zero",
       "startLine": 70,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Lemma `conj_eq_zero_iff`: `P⁻¹MP = 0 ↔ M = 0`. The forward direction inverts conjugation using `P.val * P⁻¹.val = 1`."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Similar Matrices, Same Minimal Polynomial",
       "startLine": 82,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Theorem `minpoly_similar`: `minpoly K A = minpoly K (P⁻¹AP)`. Applied via `minpoly.unique` with three goals: monic, annihilation, minimality."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Reformulations",
       "startLine": 99,
-      "endLine": 127,
+      "endLine": 131,
       "summary": "Symmetric form `minpoly_similar_symm`, witness form `minpoly_of_similar` (explicit `B = P⁻¹AP` hypothesis), inverse conjugation `minpoly_conj_inv` (minpoly(PAP⁻¹) = minpoly(A)), and divisibility `minpoly_dvd_charpoly`."
     }
   ],

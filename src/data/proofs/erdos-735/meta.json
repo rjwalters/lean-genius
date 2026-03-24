@@ -23,7 +23,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 13,
     "lineCount": 239,
-    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Murty conjectured in the 1970s that only four types of point configurations in the plane can be 'magic' — admitting positive weights with equal sums on all lines through at least two points. The conjecture remained open for decades until Ackerman, Buchin, Knauer, Pinchasi, and Rote proved it in their 2008 paper 'There are not too many magic configurations.' Their proof analyzes the linear system of equations $Aw = c\\mathbf{1}$ (where $A$ is the point-line incidence matrix) and shows that for configurations outside the four classes, the positive orthant intersected with this affine subspace is empty. The problem connects to classical topics in incidence geometry: the Sylvester-Gallai theorem (every non-collinear set has an ordinary line), the Melchior-Hirzebruch inequality on line arrangements, and the theory of weighted incidence structures in projective geometry. The four magic classes are: (1) collinear, (2) general position (no 3 collinear), (3) near-pencil ($n-1$ points on a line), and (4) projective images of the triangle-incenter configuration.",
@@ -47,56 +48,56 @@
       "id": "imports",
       "title": "Part 0: Imports and Setup",
       "startLine": 32,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Imports `InnerProductSpace.PiL2` for `EuclideanSpace ℝ (Fin 2)`, `AffineSubspace` for lines, `Finset` for finite point sets, and `Tactic` for proof automation."
     },
     {
       "id": "basic",
       "title": "Part I: Basic Setup",
       "startLine": 39,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "Defines `PointConfig` (finite set of points in $\\mathbb{R}^2$), `Weighting` (positive real weights), `ConfigLine` (lines through $\\ge 2$ points via `AffineSubspace` with rank-1 direction), and `lineSum` (sum of weights on a line)."
     },
     {
       "id": "magic",
       "title": "Part II: Magic Configurations",
       "startLine": 58,
-      "endLine": 66,
+      "endLine": 67,
       "summary": "Defines `IsMagic P`: there exist positive weights $w$ and constant $c > 0$ such that every configuration line has weight sum $c$. Defines the `magicConstant` via `Classical.choose`."
     },
     {
       "id": "classes",
       "title": "Part III: The Four Magic Classes",
       "startLine": 68,
-      "endLine": 113,
+      "endLine": 114,
       "summary": "Defines the four classes: `IsCollinear` (all points on one line), `IsGeneralPosition` (no 3 collinear), `IsNearPencil` ($n-1$ on a line), `IsIncenterConfig` (triangle + incenter + bisector points). Axiomatizes each class as magic."
     },
     {
       "id": "projective",
       "title": "Part IV: Projective Equivalence",
       "startLine": 115,
-      "endLine": 126,
+      "endLine": 127,
       "summary": "Defines `ProjectivelyEquivalent` (bijective image) and axiomatizes that the magic property is preserved: $P$ magic $\\Leftrightarrow$ $f(P)$ magic for bijective $f$."
     },
     {
       "id": "classification",
       "title": "Part V: The Main Classification",
       "startLine": 128,
-      "endLine": 164,
+      "endLine": 165,
       "summary": "Defines `IsMagicClass` (disjunction of the four classes), `murty_conjecture` (magic $\\Leftrightarrow$ magic class for $|P| \\ge 3$), axiomatizes `magic_classification`, and proves the contrapositive `not_magic_outside_classes`."
     },
     {
       "id": "examples",
       "title": "Part VI: Examples",
       "startLine": 166,
-      "endLine": 186,
+      "endLine": 187,
       "summary": "Constructs `threeCollinear` $= \\{(0,0), (1,0), (2,0)\\}$ and `triangle` $= \\{(0,0), (1,0), (0,1)\\}$. Proves both are magic via the class axioms."
     },
     {
       "id": "linear",
       "title": "Part VII: Linear Algebra Perspective",
       "startLine": 188,
-      "endLine": 213,
+      "endLine": 239,
       "summary": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). Axiomatizes `magic_iff_positive_solution` and the `weighting_dimension_bound`: outside the four classes, the positive orthant misses the solution space."
     }
   ],

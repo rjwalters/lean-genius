@@ -96,7 +96,7 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 30,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "StrictIncSeq, factorialSum, dividesByPrimePower, f(a, p) = sSup",
       "mathContext": "The function $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\text{ for some }a = a_1 < \\cdots < a_n\\}$ is defined using sSup over ℕ, allowing $f(a,p) = \\infty$ if arbitrarily high powers are achievable."
     },
@@ -104,7 +104,7 @@
       "id": "main-questions",
       "title": "Main Questions",
       "startLine": 50,
-      "endLine": 57,
+      "endLine": 58,
       "summary": "secondaryQuestion and erdos404Conjecture (OPEN)",
       "mathContext": "Two open questions: (1) Is $f(a,p) < \\infty$ for all $(a,p)$? (2) Does there exist a prime $p$ and strictly increasing sequence $\\{a_i\\}$ with $v_p(\\sum_{i \\leq k} a_i!) \\to \\infty$?"
     },
@@ -112,7 +112,7 @@
       "id": "known-results",
       "title": "Known Results",
       "startLine": 59,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Lin's bound: f(2, 2) ≤ 254",
       "mathContext": "Lin proved $f(2,2) \\leq 254$: no sum $2! + a_2! + \\cdots + a_n!$ with $2 < a_2 < \\cdots < a_n$ is divisible by $2^{255}$. Combined with $2^3 \\mid 2! + 3! = 8$, we have $3 \\leq f(2,2) \\leq 254$."
     },
@@ -120,7 +120,7 @@
       "id": "padic-analysis",
       "title": "p-adic Analysis of Factorials",
       "startLine": 64,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Legendre's formula and factorial valuation asymptotics",
       "mathContext": "Legendre's formula: $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$. Asymptotically, $v_p(n!)/n \\to 1/(p-1)$ as $n \\to \\infty$. This means $v_p(n!) \\approx n/(p-1)$, so factorial valuations grow linearly."
     },
@@ -128,7 +128,7 @@
       "id": "factorial-structure",
       "title": "Structure of Factorial Sums",
       "startLine": 75,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Modular structure and factorization of factorial sums",
       "mathContext": "The key factorization: $a_1! + a_2! = a_1!(1 + a_2!/a_1!)$ since $a_1! \\mid a_2!$ when $a_1 \\leq a_2$. So $v_p(a_1! + a_2!) = v_p(a_1!) + v_p(1 + a_2!/a_1!)$. The second term depends on the $p$-adic structure of the ratio."
     },
@@ -136,7 +136,7 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 83,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Three proved examples: 2³ | 2!+3!, 3 | 1!+2!, and 3² | 1!+2!+3!",
       "mathContext": "$2! + 3! = 2 + 6 = 8 = 2^3$, so $v_2(2!+3!) = 3$. Also $1! + 2! = 3$, so $v_3 = 1$. And $1!+2!+3! = 9 = 3^2$. These are verified by `native_decide`."
     },

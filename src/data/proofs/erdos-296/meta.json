@@ -96,56 +96,56 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 41,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Imports the full **Mathlib** library. Opens **Finset** and **BigOperators** for finite set operations and $\\sum$ notation."
     },
     {
       "id": "unit-fractions",
       "title": "Unit Fraction Sums",
       "startLine": 45,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "Defines **reciprocalSum** ($\\sum 1/n$ over $\\mathbb{Q}$), **isUnitSet** (reciprocals sum to $1$), and proves the classic example $\\{2,3,6\\}$ is a unit set."
     },
     {
       "id": "packings",
       "title": "Disjoint Unit Set Packings",
       "startLine": 64,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Defines **arePairwiseDisjoint** and the **UnitSetPacking** structure bundling disjoint unit sets within $\\{1, \\ldots, N\\}$ with a **size** function."
     },
     {
       "id": "k-definition",
       "title": "The Function k(N)",
       "startLine": 85,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "Defines **k N** as $\\sup\\{p.\\mathrm{size}\\}$ over all valid packings. The central quantity measuring maximum packing density."
     },
     {
       "id": "basic-bounds",
       "title": "Basic Bounds",
       "startLine": 95,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "States **k_ge_one** ($k(N) \\geq 1$ for $N \\geq 6$) and **k_le_N** ($k(N) \\leq N$). Trivial bounds establishing $k(N)$ is nontrivial and finite."
     },
     {
       "id": "sunflower",
       "title": "Sunflower Lower Bound",
       "startLine": 105,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "States **sunflower_lower_bound**: $\\geq N \\cdot e^{-c\\sqrt{\\log N}}$ disjoint sets with equal sums, via the Erdős-Rado sunflower lemma. A weaker intermediate result."
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "startLine": 119,
-      "endLine": 136,
+      "endLine": 137,
       "summary": "States **hunter_sawhney_lower** ($k(N) \\geq (1-\\varepsilon)\\log N$), **k_upper_bound** ($k(N) \\leq \\log N + C$), and **erdos_296_main** ($k(N)/\\log N \\to 1$). The complete asymptotic picture."
     },
     {
       "id": "answer",
       "title": "Answer to Erdős's Question",
       "startLine": 138,
-      "endLine": 169,
+      "endLine": 173,
       "summary": "PROVES **k_not_sublogarithmic** ($k(N) \\neq o(\\log N)$, answering Erdős negatively) and **k_infinitely_often_large** (constructive corollary). These are genuine Lean proofs, not axioms."
     }
   ],

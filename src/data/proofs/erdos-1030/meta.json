@@ -79,70 +79,70 @@
       "title": "Ramsey Numbers",
       "summary": "Edge colorings of $K_n$ and the Ramsey property: $\\forall\\,\\text{col},\\; \\text{red } k\\text{-clique} \\lor \\text{blue } \\ell\\text{-clique}$",
       "startLine": 28,
-      "endLine": 54
+      "endLine": 55
     },
     {
       "id": "ramsey-definition",
       "title": "The Ramsey Number R(k, ℓ)",
       "summary": "$R(k, \\ell) = \\min\\{n : \\text{RamseyProperty}(n, k, \\ell)\\}$ via `Nat.find`",
       "startLine": 56,
-      "endLine": 78
+      "endLine": 79
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "$R(k,\\ell) = R(\\ell,k)$, recursive bound $R(k,\\ell) \\le R(k-1,\\ell) + R(k,\\ell-1)$, binomial bound $\\le \\binom{k+\\ell-2}{k-1}$",
       "startLine": 80,
-      "endLine": 106
+      "endLine": 107
     },
     {
       "id": "diagonal",
       "title": "Diagonal Ramsey Numbers",
       "summary": "$R_{\\text{diag}}(k) = R(k,k)$ with bounds $2^{k/2} \\le R(k,k) \\le \\binom{2k-2}{k-1}$",
       "startLine": 108,
-      "endLine": 133
+      "endLine": 134
     },
     {
       "id": "off-diagonal",
       "title": "The Off-Diagonal Difference",
       "summary": "$\\text{RamseyDiff}(k) = R(k+1,k) - R(k,k) \\ge k - 2$ (trivial bound)",
       "startLine": 135,
-      "endLine": 152
+      "endLine": 153
     },
     {
       "id": "befs",
       "title": "Burr-Erdős-Faudree-Schelp Theorem",
       "summary": "BEFS theorem: $R(k+1,k) - R(k,k) \\ge 2k - 5$, doubling the trivial bound",
       "startLine": 154,
-      "endLine": 171
+      "endLine": 172
     },
     {
       "id": "growth-ratio",
       "title": "The Growth Ratio",
       "summary": "$\\text{GrowthRatio}(k) = R(k+1,k)/R(k,k) = 1 + \\text{diff}/R(k,k)$ and $\\liminf$ definition",
       "startLine": 173,
-      "endLine": 193
+      "endLine": 194
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture",
       "summary": "$\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ — conjecture statement and BEFS-based resolution",
       "startLine": 195,
-      "endLine": 234
+      "endLine": 235
     },
     {
       "id": "known-values",
       "title": "Known Ramsey Numbers",
       "summary": "Known exact values $R(3,3)=6$, $R(4,4)=18$, $R(4,5)=25$ and $R(3,k)$ bounds",
       "startLine": 236,
-      "endLine": 249
+      "endLine": 250
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "summary": "Problem #544 ($R(3,k) \\le Ck^2/\\log k$) and Problem #1014 ($R(k+j,k)/R(k,k) > 1 + c_j$ for general $j$)",
       "startLine": 251,
-      "endLine": 265
+      "endLine": 266
     },
     {
       "id": "main-result",

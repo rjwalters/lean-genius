@@ -127,42 +127,42 @@
       "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 21,
+      "endLine": 22,
       "summary": "Imports `Nat.Prime.Basic`, `Data.Real.Basic`, `Filter.Basic`, `LiminfLimsup`, `Tactic`. Module docstring states the problem: $\\liminf |A \\cap [1,x]|/\\pi(x) > 0$ with infinitely many prime-generating $n$."
     },
     {
       "id": "density",
       "title": "Prime Counting and Density",
       "startLine": 23,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "Defines `primeCounting` $\\pi(n) = |\\{p \\leq n : p \\text{ prime}\\}|$ via `Finset.filter` and `primeDensityRatio` $= |A \\cap [1,n]|_{\\text{ncard}} / \\pi(n)$. Both noncomputable due to `Set.ncard`."
     },
     {
       "id": "offset",
       "title": "Prime Offset Property",
       "startLine": 33,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Defines `AllOffsetsPrime A n`: $\\forall a \\in A,\\, 0 < a < n \\implies (n - a)$ is prime. The number $n$ acts as a 'prime hub' for offset set $A$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 39,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "`ErdosProblem428`: $\\exists A,\\, (\\exists^\\infty n,\\, \\text{AllOffsetsPrime}\\, A\\, n) \\wedge \\liminf \\text{primeDensityRatio}(A) > 0$. Uses `Filter.liminf` and `Filter.Frequently`."
     },
     {
       "id": "limsup",
       "title": "Limsup Variant and Implication",
       "startLine": 48,
-      "endLine": 62,
+      "endLine": 63,
       "summary": "`ErdosProblem428Limsup` (weaker variant with `Filter.limsup`). Proved: `liminf_implies_limsup` via $\\liminf \\leq \\limsup$ from `Filter.liminf_le_limsup`."
     },
     {
       "id": "ktuple",
       "title": "Prime $k$-Tuple Conjecture",
       "startLine": 64,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "`PrimeKTupleConjecture` (Hardy-Littlewood): admissible tuples occur infinitely often. Axiom `erdos_graham_limsup`: $k$-tuple conjecture $\\implies$ limsup variant."
     },
     {

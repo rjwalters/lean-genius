@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 144,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was formulated by Erdos in 1981 and connects to fundamental questions in finite geometry. A blocking set in a projective plane is a set of points that intersects every line. Trivially, any line is a blocking set, but with n+1 points per line intersection. The question is whether one can find blocking sets with uniformly bounded line intersections. Erdos, Silverman, and Stein (1983) proved that every projective plane of order n admits a blocking set meeting each line in at most O(log n) points, using the probabilistic method: include each point independently with probability c*log(n)/n. The open question is whether the logarithmic dependence on n can be eliminated entirely, replaced by an absolute constant C independent of the plane's order. This connects to deep questions about the structure of non-Desarguesian planes and whether 'exotic' projective planes might force large intersections. Problem 664 extends this to general block designs.",
@@ -47,49 +48,49 @@
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Header documentation with problem statement, ESS background, and references. Imports Mathlib and opens Configuration namespace for ProjectivePlane."
     },
     {
       "id": "blocking-set-def",
       "title": "Blocking Set Definition",
       "startLine": 40,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "Defines IsBlockingSet S as the property that every line contains at least one point of S, generic over any incidence structure."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 46,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Proves monotonicity (supersets of blocking sets are blocking) and non-triviality (empty set is never blocking)."
     },
     {
       "id": "projective-plane",
       "title": "Projective Plane Structure",
       "startLine": 63,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Extracts n+1 points per line, n+1 lines per point, and n^2+n+1 total points/lines from Mathlib's ProjectivePlane."
     },
     {
       "id": "ess-theorem",
       "title": "ESS Theorem (1983)",
       "startLine": 89,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "Axiomatizes the Erdos-Silverman-Stein result: O(log n)-bounded blocking sets exist in any plane of order n."
     },
     {
       "id": "main-conjecture",
       "title": "The Open Conjecture",
       "startLine": 107,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "Defines BoundedBlockingSetConjecture: exists an absolute constant C such that every plane has a C-bounded blocking set."
     },
     {
       "id": "implication",
       "title": "ESS Implication",
       "startLine": 126,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "Proves ESS implies per-order bounds, highlighting the gap between non-uniform (known) and uniform (conjectured) bounds."
     },
     {

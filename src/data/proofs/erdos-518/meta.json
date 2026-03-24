@@ -88,7 +88,7 @@
       "title": "Two-Coloring of Complete Graphs",
       "summary": "Color type and TwoColoring definition",
       "startLine": 35,
-      "endLine": 55,
+      "endLine": 56,
       "mathContext": "A two-coloring of $K_n$ is a function $\\chi : \\{(i,j) : i < j\\} \\to \\{\\text{Red}, \\text{Blue}\\}$ assigning a color to each edge."
     },
     {
@@ -96,7 +96,7 @@
       "title": "Paths in Graphs",
       "summary": "Path structure with vertices, vertexSet, and length",
       "startLine": 57,
-      "endLine": 82,
+      "endLine": 83,
       "mathContext": "A path is a vertex sequence $(v_1, \\ldots, v_k)$ with no repeated vertices. In $K_n$ all edges exist, so any such sequence is a valid path."
     },
     {
@@ -104,7 +104,7 @@
       "title": "Monochromatic Paths",
       "summary": "IsMonochromaticPath, IsRedPath, IsBluePath definitions",
       "startLine": 84,
-      "endLine": 109,
+      "endLine": 110,
       "mathContext": "A monochromatic path has all edges the same color: $\\chi(v_i, v_{i+1}) = c$ for all consecutive pairs. The same-color constraint is what distinguishes this from the easier mixed-color problem."
     },
     {
@@ -112,7 +112,7 @@
       "title": "Path Covers",
       "summary": "PathCover structure and IsMonochromaticCover definition",
       "startLine": 111,
-      "endLine": 136,
+      "endLine": 137,
       "mathContext": "A path cover partitions the vertex set $\\{1, \\ldots, n\\}$ into vertex-disjoint paths. A monochromatic cover requires all paths to be the same color."
     },
     {
@@ -120,7 +120,7 @@
       "title": "Classical Results",
       "summary": "Gerencsér-Gyárfás (1967): 2 mixed-color paths suffice. Erdős-Gyárfás (1995): $2\\sqrt{n}$ same-color paths suffice. Lower bound: $\\sqrt{n} - 1$ paths sometimes needed",
       "startLine": 138,
-      "endLine": 166,
+      "endLine": 167,
       "mathContext": "Gerencsér-Gyárfás: $\\forall \\chi, \\exists$ a cover by 2 paths (colors may differ). Erdős-Gyárfás: $\\forall \\chi, \\exists$ a same-color cover by $\\le 2\\sqrt{n}$ paths. Lower bound: $\\exists \\chi$ requiring $\\ge \\sqrt{n} - 1$ same-color paths."
     },
     {
@@ -128,7 +128,7 @@
       "title": "The Erdős-Gyárfás Conjecture",
       "summary": "Statement of the $\\sqrt{n}$ conjecture",
       "startLine": 168,
-      "endLine": 181,
+      "endLine": 182,
       "mathContext": "Conjecture (1995): $\\forall n, \\forall \\chi$ on $K_n$, $\\exists$ a monochromatic path cover of size $\\le \\lceil\\sqrt{n}\\rceil$, all paths the same color."
     },
     {
@@ -136,7 +136,7 @@
       "title": "The Solution (PVW 2024)",
       "summary": "Main theorem confirming the conjecture",
       "startLine": 183,
-      "endLine": 208,
+      "endLine": 209,
       "mathContext": "Pokrovskiy-Versteegen-Williams (2024): the conjecture is true. For every two-coloring $\\chi$ of $K_n$, $\\sqrt{n}$ same-color paths suffice."
     },
     {
@@ -144,7 +144,7 @@
       "title": "Tightness of the Bound",
       "summary": "Combining upper and lower bounds to show $\\sqrt{n}$ is optimal",
       "startLine": 210,
-      "endLine": 229,
+      "endLine": 230,
       "mathContext": "The bound $\\sqrt{n}$ is tight up to lower-order terms: $\\sqrt{n} - 1 \\le \\text{opt}(n) \\le \\sqrt{n}$."
     },
     {
@@ -152,7 +152,7 @@
       "title": "Comparison with Two-Colored Cover",
       "summary": "color_matters theorem contrasting mixed vs same color requirements",
       "startLine": 231,
-      "endLine": 251,
+      "endLine": 252,
       "mathContext": "The gap between 2 (mixed colors) and $\\sqrt{n}$ (same color) quantifies how much harder the same-color constraint makes the covering problem."
     },
     {
@@ -160,7 +160,7 @@
       "title": "Summary",
       "summary": "erdos_518_summary combining all results into a single conjunction",
       "startLine": 253,
-      "endLine": 283,
+      "endLine": 286,
       "mathContext": "Summary theorem: $\\forall n \\ge 1, \\forall \\chi$: (1) $\\exists$ 2-path mixed cover, (2) $\\exists$ $\\sqrt{n}$ same-color cover, (3) the bound is tight."
     }
   ],

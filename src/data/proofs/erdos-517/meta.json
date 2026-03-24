@@ -111,7 +111,7 @@
       "id": "preamble",
       "title": "File Headers and Imports",
       "startLine": 1,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Aristotle proof attribution header, module docstring with problem statement, historical references (Fejér 1908, Biernacki 1928, Pólya 1929), and Mathlib imports.",
       "mathContext": "Problem: if $f(z) = \\sum a_k z^{n_k}$ is entire with Fabry gaps ($n_k/k \\to \\infty$), does $f$ assume every value infinitely often? **OPEN.** Solved under stronger Fejér gaps ($\\sum 1/n_k < \\infty$)."
     },
@@ -135,7 +135,7 @@
       "id": "biernacki",
       "title": "Biernacki's Theorem (1928)",
       "startLine": 128,
-      "endLine": 149,
+      "endLine": 150,
       "summary": "States Biernacki's theorem as an axiom: under Fejér gaps, entire functions assume every value infinitely often. Axiomatized because the proof requires deep complex analysis (Picard theory, growth estimates) beyond Mathlib.",
       "mathContext": "Axiom `biernacki_theorem`: $\\text{HasFejerGaps}(n) \\wedge (\\forall z,\\; \\sum a_k z^{n_k} = f(z)) \\Rightarrow \\forall w,\\; \\{z : f(z) = w\\}$ is infinite. Combines Picard's theorem, lacunary series boundary behavior, and growth analysis."
     },

@@ -22,49 +22,50 @@
     "erdosProblemStatus": "open",
     "axiomCount": 4,
     "lineCount": 226,
-    "assumptions": "4 axiom(s): maxPrimeCount (budget-to-count function), maxPrimeCount_spec (its specification), erdos_783_conjecture (the open conjecture), primes_minimize_product (deep sieve-theoretic result). Reduced from 10 axioms by replacing nthPrime with Mathlib's Nat.nth and proving coprime_sieve_estimate, optimal_sieving_set_exists, and sieving_reduces_unsieved."
+    "assumptions": "4 axiom(s): maxPrimeCount (budget-to-count function), maxPrimeCount_spec (its specification), erdos_783_conjecture (the open conjecture), primes_minimize_product (deep sieve-theoretic result). Reduced from 10 axioms by replacing nthPrime with Mathlib's Nat.nth and proving coprime_sieve_estimate, optimal_sieving_set_exists, and sieving_reduces_unsieved.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "imports",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Problem statement, conjecture description, and Mathlib import."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 27,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Defines `IsValidSievingSet` (coprime elements with reciprocal sum budget), `unsievedCount` (integers surviving the sieve), and proves existence of an optimal set via `Nat.find` (well-ordering of ℕ)."
     },
     {
       "id": "prime-infrastructure",
       "title": "Prime Number Infrastructure",
       "startLine": 60,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "Defines `nthPrime` via Mathlib's `Nat.nth Nat.Prime` with proved primality, strict monotonicity, injectivity, and coprimality of distinct primes. All previously axiomatized — now fully proved."
     },
     {
       "id": "prime-sieving-set",
       "title": "Prime Sieving Set",
       "startLine": 96,
-      "endLine": 143,
+      "endLine": 144,
       "summary": "Constructs `primeSievingSet` as the first $k$ primes. Proves cardinality, all-prime, $\\geq 2$, pairwise coprime, and reciprocal sum bound properties. Axiomatizes `maxPrimeCount` for budget-constrained $k$."
     },
     {
       "id": "validity",
       "title": "Validity Proof",
       "startLine": 145,
-      "endLine": 157,
+      "endLine": 158,
       "summary": "Proves the prime sieving set is a valid sieving set for large enough $n$, assembling range, coprimality, and budget conditions."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 159,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "Erdős Problem #783: the prime sieving set minimizes unsieved count among all valid sets for large $n$."
     },
     {
@@ -118,7 +119,10 @@
     "imports": [
       "Mathlib"
     ],
-    "opens": ["Finset", "Nat"],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
     "namespace": "Erdos783",
     "lineCount": 226,
     "axiomCount": 4,

@@ -93,7 +93,8 @@
         "id": "brouwer-fixed-point-oq-02",
         "relationship": "Extension of brouwer fixed point"
       }
-    ]
+    ],
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Luitzen Egbertus Jan Brouwer proved this theorem in 1911 in *Mathematische Annalen*. Earlier special cases were known: Poincaré proved a version for smooth maps in 1886, and Hadamard proved the 2D case in 1910 using degree theory. Brouwer's contribution was the full generalization to continuous maps in arbitrary dimension.\n\nThe result is beautifully intuitive: no matter how you continuously 'stir' a disk, some point must end up exactly where it started. Multiple proofs exist: Brouwer's original via degree theory, Sperner's 1928 combinatorial proof via his lemma on triangulations, Milnor's 1965 differential topology proof via Sard's theorem, and modern proofs via singular homology.\n\nThe theorem's applications are vast. John Nash used it in 1950 to prove equilibrium existence in non-cooperative games (Nobel Prize 1994). It guarantees solutions to differential equations via Schauder's extension to Banach spaces. In computational complexity, finding Brouwer fixed points is PPAD-complete (Papadimitriou 1994), explaining why Nash equilibrium computation is hard.\n\nIronically, Brouwer later founded **intuitionism** (1920s), rejecting the law of excluded middle and the non-constructive proof-by-contradiction his own theorem relies upon. He came to view the theorem as an example of mathematics that proves existence without construction — precisely what intuitionists object to.",
@@ -127,7 +128,7 @@
       "id": "topological-foundations",
       "title": "Part 1: The Closed Ball and Sphere",
       "startLine": 54,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Defines `ClosedBall n = Metric.closedBall 0 1` and `UnitSphere n = Metric.sphere 0 1` in `EuclideanSpace ℝ (Fin n)`. Proves `closedBall_compact` (via `isCompact_closedBall`), `closedBall_nonempty` (via `Metric.nonempty_closedBall`), `closedBall_convex` (via `convex_closedBall`).",
       "mathContext": "$B^n = \\{x \\in \\mathbb{R}^n : \\|x\\| \\leq 1\\} = \\text{Metric.closedBall}\\ 0\\ 1$. $S^{n-1} = \\{x \\in \\mathbb{R}^n : \\|x\\| = 1\\} = \\text{Metric.sphere}\\ 0\\ 1$. Key properties: $B^n$ is compact (finite-dimensional closed bounded), nonempty ($0 \\in B^n$), and convex ($\\lambda x + (1-\\lambda)y \\in B^n$ for $x, y \\in B^n$, $\\lambda \\in [0,1]$)."
     },
@@ -135,7 +136,7 @@
       "id": "continuous-functions",
       "title": "Part 2: Continuous Self-Maps and Fixed Points",
       "startLine": 78,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "`SelfMap n` structure: a function `toFun : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (Fin n)` with `continuous'` and `maps_ball` constraints. `IsFixedPoint f x := f x = x`. `HasFixedPoint n f := ∃ x ∈ ClosedBall n, IsFixedPoint f.toFun x`.",
       "mathContext": "A self-map is a continuous $f: \\mathbb{R}^n \\to \\mathbb{R}^n$ with $f(B^n) \\subseteq B^n$. A fixed point satisfies $f(x) = x$. The theorem states: $\\text{HasFixedPoint}\\ n\\ f$ for all `SelfMap n`."
     },
@@ -143,7 +144,7 @@
       "id": "retractions",
       "title": "Part 3: Retractions",
       "startLine": 95,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "`Retraction n` structure: `toFun` with `continuous'`, `maps_to_sphere` ($r(B^n) \\subseteq S^{n-1}$), and `fixes_sphere` ($r(x) = x$ for $x \\in S^{n-1}$). This formalizes the key topological concept: a continuous left inverse to the inclusion $\\iota: S^{n-1} \\hookrightarrow B^n$.",
       "mathContext": "A retraction $r: B^n \\to S^{n-1}$ satisfies $r \\circ \\iota = \\text{id}_{S^{n-1}}$ where $\\iota: S^{n-1} \\hookrightarrow B^n$ is the inclusion. On homology: $r_* \\circ \\iota_* = \\text{id}_{H_{n-1}(S^{n-1})}$, but $\\iota_*$ factors through $H_{n-1}(B^n) = 0$ — contradiction."
     },
@@ -151,7 +152,7 @@
       "id": "no-retraction-theorem",
       "title": "Part 4: No-Retraction Theorem (Axiom)",
       "startLine": 107,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "`no_retraction_axiom`: axiomatizes that no `Retraction n` exists for $n \\geq 1$. The docstring sketches the homology proof: $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ factors through $H_{n-1}(B^n) = 0$, forcing $\\text{id}_{\\mathbb{Z}}$ to factor through $0$. `no_retraction` wraps the axiom.",
       "mathContext": "Axiom: $\\nexists r: B^n \\to S^{n-1}$ continuous with $r|_{S^{n-1}} = \\text{id}$. Proof sketch: on $(n-1)$-homology, $\\text{id}: H_{n-1}(S^{n-1}) \\to H_{n-1}(S^{n-1})$ factors as $H_{n-1}(S^{n-1}) \\xrightarrow{\\iota_*} H_{n-1}(B^n) \\xrightarrow{r_*} H_{n-1}(S^{n-1})$. But $H_{n-1}(B^n) = 0$, so $\\text{id}_{\\mathbb{Z}} = 0$. $\\bot$."
     },
@@ -159,7 +160,7 @@
       "id": "construction",
       "title": "Part 5: Ray Construction and Main Theorem",
       "startLine": 131,
-      "endLine": 202,
+      "endLine": 203,
       "summary": "`retraction_construction` (axiom): given `SelfMap n` with no fixed point, constructs a `Retraction n` via ray-casting from $f(x)$ through $x$ to $S^{n-1}$. The `brouwer_fixed_point` theorem: `by_contra h; let r := retraction_from_no_fixpoint n f h; exact no_retraction hn ⟨r, trivial⟩`. Three lines of Lean.",
       "mathContext": "Ray construction: for $x \\in B^n$ with $f(x) \\neq x$, define $\\text{ray}(t) = f(x) + t(x - f(x))$. Solve $\\|\\text{ray}(t)\\|^2 = 1$ (quadratic in $t$), take the larger root $t_+ > 0$, set $r(x) = \\text{ray}(t_+) \\in S^{n-1}$. For $x \\in S^{n-1}$: $t_+ = 1$, so $r(x) = x$. Main theorem: assume $\\neg\\text{HasFixedPoint}$; construct $r: B^n \\to S^{n-1}$; apply `no_retraction`; $\\bot$."
     },

@@ -98,28 +98,28 @@
       "id": "infrastructure",
       "title": "Mathlib-Based Prime Infrastructure",
       "startLine": 40,
-      "endLine": 111,
+      "endLine": 112,
       "summary": "Defines `nthPrime(n) = \\mathrm{Nat.nth}\\,\\mathrm{Prime}\\,n$ and `primeGap(n) = p_{n+1} - p_n$`. Proves 9 structural theorems: `nthPrime_prime`, `nthPrime_strictMono`, `primeGap_pos`, `primeGap_zero` ($d_0 = 1$), `primeGap_even` ($2 \\mid d_n$ for $n \\ge 1$), `primeGap_ge_two`, `nthPrime_zero` ($p_0 = 2$), `nthPrime_one` ($p_1 = 3$), `nthPrime_mono`."
     },
     {
       "id": "gap-set",
       "title": "Gap Set and r(x)",
       "startLine": 113,
-      "endLine": 157,
+      "endLine": 158,
       "summary": "Defines $G(x) = \\{d_n : n \\ge 1, p_n \\le x\\}$. Proves `gapSet_mono` ($G(x) \\subseteq G(y)$), `gapSet_even`, `gapSet_pos`, `gapSet_ge_two`. Axiomatizes $r(x)$ with `r_even_pos`, `r_not_gap`, `r_minimal`."
     },
     {
       "id": "monotonicity",
       "title": "Proved Properties of r(x)",
       "startLine": 159,
-      "endLine": 173,
+      "endLine": 174,
       "summary": "Proves `r_monotone` ($x \\le y \\Rightarrow r(x) \\le r(y)$) by contradiction using `r_minimal` and `gapSet_mono`. Axiomatizes trivial upper bound $r(x) \\le x$."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures",
       "startLine": 175,
-      "endLine": 203,
+      "endLine": 204,
       "summary": "States `erdos_853_weak` ($r(x) \\to \\infty$) and `erdos_853_strong` ($r(x)/\\log x \\to \\infty$). Proves `weak_implies_all_even_gaps`: the weak conjecture implies every even $t \\ge 2$ eventually enters $G(x)$."
     },
     {

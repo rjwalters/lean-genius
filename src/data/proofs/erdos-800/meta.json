@@ -108,42 +108,42 @@
       "title": "Header and Imports",
       "summary": "Problem documentation with references to Alon (1994), Burr-Erdős (1975), and Lee (2016); imports Mathlib graph theory, clique, coloring, and real number modules",
       "startLine": 1,
-      "endLine": 45
+      "endLine": 46
     },
     {
       "id": "basic-definitions",
       "title": "Structural Condition Definitions",
       "summary": "Defines vertexDegree, isHighDegree (deg ≥ 3), and noAdjacentHighDegree — the key predicate that high-degree vertices form an independent set",
       "startLine": 47,
-      "endLine": 73
+      "endLine": 74
     },
     {
       "id": "subdivisions",
       "title": "Subdivisions and Verified Theorem",
       "summary": "Defines subdivision/original vertices and proves subdivision_implies_no_adjacent_high_degree using omega — one of the few fully verified results",
       "startLine": 75,
-      "endLine": 103
+      "endLine": 104
     },
     {
       "id": "ramsey-numbers",
       "title": "Ramsey Number Infrastructure",
       "summary": "Builds complete graphs, edge colorings, monochromatic copies, and axiomatizes the Ramsey number R(G) with its specification and hasLinearRamseyNumber",
       "startLine": 105,
-      "endLine": 159
+      "endLine": 160
     },
     {
       "id": "main-theorem",
       "title": "Alon's Theorem and Subdivision Corollary",
       "summary": "Axiomatizes R(G) ≤ 12n for graphs with no adjacent high-degree vertices; proves subdivided_graphs_linear_ramsey as corollary",
       "startLine": 161,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "degeneracy",
       "title": "Degeneracy and Burr-Erdős Conjecture",
       "summary": "Defines p-degeneracy, axiomatizes 2-degeneracy of the graph class, axiomatizes Lee's Burr-Erdős theorem, proves Problem #800 as p=2 special case",
       "startLine": 185,
-      "endLine": 227
+      "endLine": 228
     },
     {
       "id": "summary",

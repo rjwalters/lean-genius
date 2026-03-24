@@ -113,28 +113,28 @@
       "title": "Distance Set and L(r)",
       "summary": "Defines `IsDistanceSet` (finite subset of positive reals) and `multiDistChromatic` (axiomatized L(r) = max χ(G_A) over distance sets A of size r). The function is noncomputable since it involves a supremum over uncountably many geometric configurations.",
       "startLine": 22,
-      "endLine": 31
+      "endLine": 32
     },
     {
       "id": "main-conjecture",
       "title": "Polynomial Bound Conjecture",
       "summary": "States `erdos_706_polynomial_bound`: ∃ C, k > 0 such that L(r) ≤ C · r^k for all r ≥ 1. This is the central open question — whether chromatic number grows polynomially or superpolynomially in the number of forbidden distances.",
       "startLine": 33,
-      "endLine": 40
+      "endLine": 41
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds: Hadwiger-Nelson and Monotonicity",
       "summary": "Records `erdos_706_base_case` (5 ≤ L(1) ≤ 7 from de Grey and Isbell), `erdos_706_monotone` (L is non-decreasing), and `erdos_706_lower` (L(r) ≥ 5 for r ≥ 1, combining monotonicity with de Grey's result).",
       "startLine": 42,
-      "endLine": 57
+      "endLine": 58
     },
     {
       "id": "exponential-upper",
       "title": "Exponential Upper Bound",
       "summary": "Records `erdos_706_exponential_upper`: ∃ C > 1 such that L(r) ≤ C^r. This exponential bound from Frankl-Wilson methods is the best known upper bound, and the polynomial conjecture asks whether it can be dramatically improved.",
       "startLine": 59,
-      "endLine": 67
+      "endLine": 68
     },
     {
       "id": "observations",

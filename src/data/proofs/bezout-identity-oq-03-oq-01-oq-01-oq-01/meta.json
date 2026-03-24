@@ -49,7 +49,8 @@
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "lineCount": 161,
-    "assumptions": "0 axioms, 0 sorries. Ideal-theoretic CRT derived from Mathlib Ideal.quotientInfRingEquivPiQuotient."
+    "assumptions": "0 axioms, 0 sorries. Ideal-theoretic CRT derived from Mathlib Ideal.quotientInfRingEquivPiQuotient.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Chinese Remainder Theorem was first generalized from integers to arbitrary rings by Emmy Noether's school in the early 20th century. In modern commutative algebra, the CRT is stated for ideals: if I and J are coprime (meaning I + J = R), then R/(I ∩ J) ≅ R/I × R/J. This is Proposition 1.10 in Atiyah-Macdonald. The k-fold version states R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals. The key structural insight is that coprime ideals satisfy I ∩ J = I · J, connecting the intersection (lattice operation) with the product (ring operation).",
@@ -72,7 +73,7 @@
       "id": "coprimality",
       "title": "Coprimality of Ideals",
       "startLine": 27,
-      "endLine": 49,
+      "endLine": 50,
       "summary": "Characterization of ideal coprimality as I ⊔ J = ⊤, and the key structural theorem inf_eq_mul_of_coprime: for coprime ideals, the intersection equals the product."
     },
     {
@@ -86,21 +87,21 @@
       "id": "k-fold-crt",
       "title": "General k-Fold CRT",
       "startLine": 62,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "The k-fold ideal CRT: R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals, wrapping Mathlib's quotientInfRingEquivPiQuotient."
     },
     {
       "id": "product-crt",
       "title": "CRT for Products",
       "startLine": 89,
-      "endLine": 98,
+      "endLine": 99,
       "summary": "R/(I·J) ≅ R/I × R/J for coprime ideals, using I∩J = I·J to reduce to the intersection case."
     },
     {
       "id": "corollaries",
       "title": "Key Corollaries",
       "startLine": 100,
-      "endLine": 130,
+      "endLine": 161,
       "summary": "Uniqueness of CRT solutions modulo I∩J, coprimality symmetry, and coprimality inheritance: coprime to both J and K implies coprime to J∩K."
     }
   ],

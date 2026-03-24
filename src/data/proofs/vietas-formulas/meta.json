@@ -37,7 +37,8 @@
     "dateAdded": "2025-12-31",
     "axiomCount": 0,
     "lineCount": 179,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "François Viète (1540-1603) was a French mathematician who introduced *In artem analyticem isagoge* (1591), the first systematic use of letters for both unknowns and known quantities — founding symbolic algebra as we know it. His formulas relating polynomial coefficients to symmetric functions of roots were published posthumously in *De aequationum recognitione et emendatione tractatus duo* (1615).\n\nThe formulas had profound consequences. Isaac Newton (1643-1727) extended them to **Newton's identities** (1666), expressing power sums Σrᵢᵏ recursively in terms of the elementary symmetric polynomials. Galois (1811-1832) recognized that the polynomial's Galois group *permutes the roots* while preserving all its coefficients — precisely because coefficients are symmetric functions of roots — making Vieta's formulas the conceptual foundation of Galois theory and ultimately the Abel-Ruffini theorem (no radical solution for degree ≥ 5).",
@@ -60,7 +61,7 @@
       "id": "quadratic",
       "title": "Quadratic Case",
       "startLine": 29,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "For x^2 - bx + c = 0 with roots r, s: sum = b, product = c.",
       "mathContext": "For x^2 - bx + c = 0 with roots r, s: sum = b, product = c."
     },
@@ -68,7 +69,7 @@
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 46,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Verification with specific polynomials and their roots.",
       "mathContext": "Verification with specific polynomials and their roots."
     },
@@ -76,7 +77,7 @@
       "id": "general",
       "title": "General Polynomial Case",
       "startLine": 94,
-      "endLine": 114,
+      "endLine": 115,
       "summary": "The core Vieta relation for polynomials of any degree.",
       "mathContext": "The core Vieta relation for polynomials of any degree."
     },
@@ -84,7 +85,7 @@
       "id": "applications",
       "title": "Applications",
       "startLine": 116,
-      "endLine": 141,
+      "endLine": 142,
       "summary": "Reconstructing polynomials from roots and vice versa.",
       "mathContext": "Reconstructing polynomials from roots and vice versa."
     },
@@ -92,7 +93,7 @@
       "id": "sign-pattern",
       "title": "Sign Pattern",
       "startLine": 143,
-      "endLine": 157,
+      "endLine": 179,
       "summary": "The alternating sign (-1)^k in Vieta's formulas explained: each coefficient collects products of k roots with appropriate sign.",
       "mathContext": "The alternating sign (-1)^k in Vieta's formulas explained: each coefficient collects products of k roots with appropriate sign."
     }

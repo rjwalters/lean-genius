@@ -34,7 +34,8 @@
     "dateAdded": "2025-12-27",
     "axiomCount": 1,
     "lineCount": 1092,
-    "assumptions": "1 axiom(s) and 2 sorry(s). See the Lean source for details."
+    "assumptions": "1 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Euler discovered this formula in 1758 while studying polyhedra, though René Descartes had noticed a closely related result in 1639 (remaining unpublished until 1860). The formula V - E + F = 2 is one of the most beautiful results in mathematics, connecting three apparently unrelated counts — vertices, edges, and faces — through a single universal constant.\n\nCauchy provided the first rigorous proof in 1813 using triangulation, reducing a general polyhedron to the sphere. Legendre gave an independent spherical geometry proof the same year. The formula is equivalent to the topological statement that every convex polyhedron is homeomorphic to a sphere, whose Euler characteristic χ = 2. Poincaré generalized this in 1895 to all compact orientable surfaces: χ = 2 − 2g for genus g, founding algebraic topology. The Euler characteristic became the first example of a topological invariant preserved under continuous deformation.",
@@ -58,21 +59,21 @@
       "id": "polyhedral-structure",
       "title": "Polyhedral Graph Structure",
       "startLine": 57,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "The correspondence between polyhedra and planar graphs."
     },
     {
       "id": "platonic-solids",
       "title": "The Platonic Solids",
       "startLine": 93,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "Verification of Euler's formula for all five Platonic solids."
     },
     {
       "id": "proof-strategy",
       "title": "General Proof Strategy",
       "startLine": 174,
-      "endLine": 217,
+      "endLine": 218,
       "summary": "Proof by edge reduction preserving the Euler characteristic."
     },
     {
@@ -86,7 +87,7 @@
       "id": "topology",
       "title": "Connection to Topology",
       "startLine": 295,
-      "endLine": 342,
+      "endLine": 1092,
       "summary": "The Euler characteristic as a topological invariant."
     }
   ],

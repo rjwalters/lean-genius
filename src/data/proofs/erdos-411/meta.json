@@ -100,42 +100,42 @@
       "id": "header",
       "title": "Problem Statement and References",
       "startLine": 1,
-      "endLine": 17,
+      "endLine": 18,
       "summary": "Module docstring stating the problem: characterize $(n, r)$ with $g^{k+r}(n) = 2 \\cdot g^k(n)$. References Erdős--Graham (1980) and Steinerberger (2025). Imports `Mathlib.Data.Nat.Totient`, `Mathlib.Data.Nat.Basic`, `Mathlib.Order.Filter.Basic`, `Mathlib.Tactic`."
     },
     {
       "id": "iteration-function",
       "title": "The Iteration Function",
       "startLine": 19,
-      "endLine": 29,
+      "endLine": 30,
       "summary": "Defines `totientStep` $g(n) = n + \\varphi(n)$ and `iteratedTotientStep` $g^k(n)$ by recursion: $g^0(n) = n$, $g^{k+1}(n) = g(g^k(n))$."
     },
     {
       "id": "doubling-relation",
       "title": "The Doubling Relation",
       "startLine": 31,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Defines `DoublingRelation n r`: $\\exists K,\\, \\forall k \\geq K,\\, g^{k+r}(n) = 2 \\cdot g^k(n)$. Uses existential quantification over the transient period $K$."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 40,
-      "endLine": 50,
+      "endLine": 51,
       "summary": "`ErdosProblem411`: characterize all $(n, r)$ with the doubling property. Formalized as $\\exists S \\subseteq \\mathbb{N} \\times \\mathbb{N}$ capturing all solutions with $S \\neq \\emptyset$."
     },
     {
       "id": "known-solutions",
       "title": "Known Solutions",
       "startLine": 52,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Axiomatized solutions: $n = 10, 94$ for $r = 2$; `GeneralRatioRelation` definition; Cambie's ratio-3 ($n = 738$, $r = 4$) and ratio-4 ($n = 148646, 4325798$, $r = 4$) solutions."
     },
     {
       "id": "steinerberger-reduction",
       "title": "Steinerberger's Reduction",
       "startLine": 75,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Axiomatized equivalence: $\\text{DoublingRelation}(n, 2) \\iff \\varphi(n) + \\varphi(n + \\varphi(n)) = n$. Reduces asymptotic dynamics to a single finite equation (Steinerberger 2025)."
     },
     {

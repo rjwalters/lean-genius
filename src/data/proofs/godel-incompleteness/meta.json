@@ -47,7 +47,8 @@
       "Modal logic of provability (Hilbert-Bernays-Löb conditions)"
     ],
     "lineCount": 467,
-    "proofRepoPath": "Proofs/GodelIncompleteness.lean"
+    "proofRepoPath": "Proofs/GodelIncompleteness.lean",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "In 1931, Kurt Gödel, a 25-year-old logician in Vienna, published a paper that would fundamentally change our understanding of mathematics and logic. His Incompleteness Theorems demonstrated that the dream of a complete, consistent foundation for mathematics—Hilbert's Program—was impossible.\n\nDavid Hilbert had proposed that all mathematical truths could be derived from a fixed set of axioms using formal rules. Gödel showed this was a fantasy: any system powerful enough to do arithmetic would contain truths it could never prove. The implications rippled through philosophy, computer science (anticipating the Halting Problem), and our understanding of the limits of human knowledge.",
@@ -81,7 +82,7 @@
       "id": "formal-system",
       "title": "Part 1: The Formal System",
       "startLine": 56,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "`Formula` structure (code : Nat), `Provable : Formula → Prop := fun _ => False` (placeholder), `neg` (simplified: code + 1). The `⊢ φ` notation for `Provable φ` and `¬ᶠ` prefix for `neg`.",
       "mathContext": "`Formula` models a sentence in a formal system via its Gödel number. `Provable φ` = \"$\\varphi$ is provable in $F$\". In the full formalization, `Provable` would be defined as $\\exists p,\\ \\text{IsProof}(p, \\ulcorner \\varphi \\urcorner)$ where `IsProof` is a primitive recursive proof-checking predicate. The placeholder `fun _ => False` makes all theorems about `Provable` vacuously true."
     },
@@ -89,7 +90,7 @@
       "id": "consistency",
       "title": "Part 2: Consistency and Completeness",
       "startLine": 86,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "`Consistent := ∀ φ, ¬(Provable φ ∧ Provable (neg φ))` — no formula is both provable and refutable. `Complete := ∀ φ, Provable φ ∨ Provable (neg φ)` — every formula is decidable. The first incompleteness theorem shows: Consistent → ¬Complete.",
       "mathContext": "Consistency: $\\neg\\exists \\varphi,\\ \\vdash \\varphi \\wedge \\vdash \\neg\\varphi$. Completeness: $\\forall \\varphi,\\ \\vdash \\varphi \\vee \\vdash \\neg\\varphi$. Gödel proves: if $F$ is consistent and sufficiently strong, then $F$ is not complete."
     },
@@ -97,7 +98,7 @@
       "id": "godel-numbering",
       "title": "Part 3: Gödel Numbering",
       "startLine": 98,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "`godelNum φ = φ.code` extracts the natural number encoding. `godelNum_injective`: the encoding is injective (distinct formulas have distinct codes), proved by `cases`/`congr`.",
       "mathContext": "Gödel numbering: $\\ulcorner \\varphi \\urcorner : \\mathbb{N}$, an injective map from formulas to natural numbers. This allows the formal system to \"talk about\" its own syntax via arithmetic predicates on Gödel numbers. In practice, $\\ulcorner \\varphi \\urcorner$ encodes the syntax tree of $\\varphi$ using prime factorization."
     },
@@ -105,7 +106,7 @@
       "id": "representability",
       "title": "Part 4: The Provability Predicate",
       "startLine": 112,
-      "endLine": 120,
+      "endLine": 121,
       "summary": "`Prov : Nat → Formula := fun n => ⟨n * 2⟩` — simplified encoding of \"the formula with Gödel number $n$ is provable.\" In a full formalization, `Prov(n)` would be a $\\Sigma_1^0$ formula expressing the existence of a proof.",
       "mathContext": "$\\text{Prov}(n)$ is a formula in $F$ asserting \"the formula with Gödel number $n$ is provable in $F$.\" The key property: $F$ can talk about its own provability. If $\\vdash \\varphi$, then $\\vdash \\text{Prov}(\\ulcorner \\varphi \\urcorner)$ — the system can verify its own proofs internally."
     },
@@ -113,7 +114,7 @@
       "id": "diagonal-lemma",
       "title": "Part 5: The Diagonal Lemma",
       "startLine": 122,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "`diagonal_lemma`: for any property $P$, there exists $\\gamma$ (simplified to `⟨0⟩, trivial`). In a full formalization, this would produce $\\gamma$ satisfying $F \\vdash (\\gamma \\leftrightarrow P(\\ulcorner\\gamma\\urcorner))$.",
       "mathContext": "Diagonal Lemma (fixed point theorem for formal systems): $\\forall P,\\ \\exists \\gamma,\\ F \\vdash (\\gamma \\leftrightarrow P(\\ulcorner\\gamma\\urcorner))$. This enables self-reference: applying $P = \\neg\\text{Prov}$ gives the Gödel sentence $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$, i.e., \"$G$ says: I am not provable.\""
     },
@@ -121,7 +122,7 @@
       "id": "godel-sentence",
       "title": "Part 6: The Gödel Sentence",
       "startLine": 136,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "`G : Formula := ⟨42⟩` (arbitrary code; real construction via diagonal lemma). `G_self_reference` (axiom): encapsulates the diagonal lemma result that $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$.",
       "mathContext": "The Gödel sentence $G$ satisfies $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$: \"I am not provable.\" This is the rigorous version of the Liar Paradox — replacing \"false\" with \"unprovable\" avoids logical contradiction while creating undecidability. The axiom `G_self_reference` encapsulates the full diagonal construction."
     },
@@ -129,7 +130,7 @@
       "id": "incompleteness-argument",
       "title": "Part 7: The Incompleteness Proof",
       "startLine": 163,
-      "endLine": 194,
+      "endLine": 195,
       "summary": "`G_not_provable`: Consistent → ¬Provable G. `not_G_not_provable`: Consistent → ¬Provable (neg G). Both are vacuously true in this formalization (Provable is constantly False), but the docstrings give the full conceptual argument.",
       "mathContext": "If $\\vdash G$: by representability, $\\vdash \\text{Prov}(\\ulcorner G \\urcorner)$. But $G \\leftrightarrow \\neg\\text{Prov}(\\ulcorner G \\urcorner)$, so $\\vdash \\neg\\text{Prov}(\\ulcorner G \\urcorner)$. Contradiction with consistency. If $\\vdash \\neg G$: then $\\vdash \\text{Prov}(\\ulcorner G \\urcorner)$, but $G$ is actually not provable, contradicting $\\omega$-consistency. Therefore $G$ is true but undecidable in $F$."
     },
@@ -137,7 +138,7 @@
       "id": "first-incompleteness-theorem",
       "title": "First Incompleteness Theorem",
       "startLine": 196,
-      "endLine": 210,
+      "endLine": 211,
       "summary": "`first_incompleteness_theorem`: Consistent → ¬Complete. Proof: G is neither provable nor refutable (by `G_not_provable` and `not_G_not_provable`), contradicting completeness.",
       "mathContext": "$\\text{Consistent}(F) \\Rightarrow \\neg\\text{Complete}(F)$. Proof: if Complete, then $\\vdash G$ or $\\vdash \\neg G$. Both are ruled out by `G_not_provable` and `not_G_not_provable`. $\\square$"
     },

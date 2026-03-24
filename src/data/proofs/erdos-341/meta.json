@@ -23,7 +23,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 9,
     "assumptions": "9 axiom declarations: erdos_341_conjecture (eventual periodicity conjecture), dickson_strictly_increasing (strict monotonicity), dickson_diff_pos (positive differences), dickson_avoids_sums (sum avoidance property), dickson_minimal (greedy minimality), singleton_one_example (Mian-Chowla special case), squares_slow_periodicity (slow emergence for squares), period_depends_on_initial (period varies with start), dickson_linear_growth (at-least-linear growth)",
-    "lineCount": 116
+    "lineCount": 116,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This is an old problem of Dickson from the early 20th century, brought to wider attention by Erdős and Graham in their 1980 monograph (p. 53). The construction is beautifully simple: start with any finite set of positive integers, then repeatedly adjoin the smallest integer not expressible as a sum of two elements already in the set. The resulting sequence always appears to develop eventually periodic differences, but proving this has resisted all attempts. The problem connects greedy algorithms to questions of periodicity in dynamical systems — a theme that appears throughout number theory (Collatz conjecture, continued fractions, digit patterns). Even starting from the first five perfect squares {1,4,9,16,25}, periodicity takes thousands of terms to emerge, making computational verification impractical for all but small starting sets. Ben Green includes this as Problem 7 on his influential open problems list, reflecting its position at the frontier of additive combinatorics. The singleton starting set {1} produces the Mian-Chowla sequence (Problem #340), creating a direct link between the two problems.",
@@ -82,21 +83,21 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 23,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "`pairwiseSums`, `IsSumRepresentable`, `dicksonSeq` (greedy extension via `Nat.find`), `dicksonDiff`, and `IsEventuallyPeriodic`."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 55,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Erdos-Dickson conjecture: for every finite nonempty starting set, the difference sequence is eventually periodic."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 63,
-      "endLine": 87,
+      "endLine": 88,
       "summary": "Strict monotonicity, positive differences, sum avoidance at each step, and minimality of the greedy choice."
     },
     {

@@ -46,35 +46,36 @@
       "Multiplicative number theory",
       "Distribution of totient values"
     ],
-    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 34,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Defines **totientPreimage** (fiber φ⁻¹(a)), **IsTotientValue** (range membership), and **smallestTotientPreimage** (minimum of fiber, via Nat.find with Classical.choice)."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 53,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "Axiom **erdos_51_conjecture**: ∃ infinite A ⊆ ℕ of totient values with n_a/a → ∞. Formalized with ∀ C > 0, ∃ N, ∀ a ∈ A ∩ [N, ∞), n_a/a > C. The central open question."
     },
     {
       "id": "totient-properties",
       "title": "Basic Totient Properties",
       "startLine": 66,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Theorem **totient_one** (φ(1) = 1, by simp). Axioms **totient_prime** (φ(p) = p−1), **totient_le** (φ(n) ≤ n), and **totient_even** (φ(n) even for n ≥ 3)."
     },
     {
       "id": "preimage-structure",
       "title": "Preimage Structure",
       "startLine": 83,
-      "endLine": 99,
+      "endLine": 100,
       "summary": "Axioms: **even_totient_values** (even a ≥ 2 are totient values), **smallest_preimage_lower** (n_a ≥ a+1 for a ≥ 2), and **erdos_carmichael** (unique preimage ⇒ infinitely many unique preimages)."
     },
     {

@@ -87,70 +87,70 @@
       "title": "Problem Documentation",
       "summary": "Header documentation with problem statement, references, and OEIS link",
       "startLine": 1,
-      "endLine": 24
+      "endLine": 25
     },
     {
       "id": "imports-setup",
       "title": "Imports and Setup",
       "summary": "Specific Mathlib imports and namespace opening",
       "startLine": 26,
-      "endLine": 45
+      "endLine": 46
     },
     {
       "id": "powerful-def",
       "title": "Powerful Number Definitions",
       "summary": "Powerful and PowerfulAlt definitions, powerfulSet",
       "startLine": 47,
-      "endLine": 56
+      "endLine": 57
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "Verification that 1, 4, 8, 9 are powerful numbers",
       "startLine": 58,
-      "endLine": 76
+      "endLine": 77
     },
     {
       "id": "enumeration",
       "title": "Enumeration of Powerful Numbers",
       "summary": "infinite_powerful theorem, nthPowerful via Nat.nth with proved monotonicity, membership, surjectivity",
       "startLine": 78,
-      "endLine": 96
+      "endLine": 97
     },
     {
       "id": "ap-condition",
       "title": "Arithmetic Progression Condition",
       "summary": "ConsecutivePowerfulAP, apIndices, powerfulGap, ap_iff_equal_gaps",
       "startLine": 98,
-      "endLine": 123
+      "endLine": 124
     },
     {
       "id": "main-problem",
       "title": "Main Problem Statement",
       "summary": "erdos_938 axiom: finiteness of apIndices (OPEN)",
       "startLine": 125,
-      "endLine": 138
+      "endLine": 139
     },
     {
       "id": "problem-364",
       "title": "Connection to Problem #364",
       "summary": "NoThreeConsecutivePowerful and erdos_364_conjecture",
       "startLine": 140,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "asymptotics",
       "title": "Counting Function and Asymptotics",
       "summary": "countPowerful and powerful_count_asymptotic axiom",
       "startLine": 156,
-      "endLine": 173
+      "endLine": 174
     },
     {
       "id": "ap-differences",
       "title": "AP Differences",
       "summary": "ConsecutivePowerfulAPWithDiff, apDifferences, finiteness lemma",
       "startLine": 175,
-      "endLine": 201
+      "endLine": 217
     }
   ],
   "conclusion": {

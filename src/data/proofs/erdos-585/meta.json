@@ -21,7 +21,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 4,
     "lineCount": 99,
-    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in 1976, asking for the maximum number of edges in a graph on n vertices that contains no two edge-disjoint cycles on the same vertex set. The condition is equivalent to saying that no subset S of vertices supports two distinct Hamiltonian cycles with disjoint edge sets. The problem remained wide open for nearly two decades until Pyber, Rödl, and Szemerédi (1995) established the lower bound f(n) = Ω(n log log n) using an intricate probabilistic and Ramsey-theoretic construction. Their iterated-logarithm growth rate revealed the extremal function to be only barely superlinear. Progress on upper bounds was slower: the first nontrivial bound of O(n√(log n)) was eventually improved dramatically by Chakraborti, Janzer, Methuku, and Montgomery in 2024, who proved f(n) ≤ O(n(log n)^C) using structural graph decomposition and dependent random choice. Their result also generalized to k pairwise edge-disjoint cycles for any fixed k ≥ 2. The remaining gap between log log n and (log n)^C is one of the most tantalizing open problems in extremal graph theory.",
@@ -52,35 +53,35 @@
       "id": "cycles",
       "title": "Cycles and Edge-Disjointness",
       "startLine": 21,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines a cycle on vertex set S via injective vertex sequences with consecutive adjacencies, and edge-disjoint cycles on the same vertex set as two Hamiltonian cycles on S sharing at least one different edge."
     },
     {
       "id": "extremal",
       "title": "The Extremal Function f(n)",
       "startLine": 48,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Defines f(n) as the supremum of edge counts over n-vertex simple graphs avoiding the forbidden configuration of two edge-disjoint cycles on any common vertex set."
     },
     {
       "id": "lower-bound",
       "title": "Pyber–Rödl–Szemerédi Lower Bound",
       "startLine": 57,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "Axiomatizes the 1995 result: f(n) ≥ c·n·log log n, stated using Filter.atTop for the asymptotic quantifier."
     },
     {
       "id": "upper-bound",
       "title": "CJMM Upper Bound (2024)",
       "startLine": 67,
-      "endLine": 76,
+      "endLine": 77,
       "summary": "Axiomatizes the 2024 breakthrough by Chakraborti, Janzer, Methuku, and Montgomery: f(n) ≤ C·n·(log n)^α for positive constants C, α."
     },
     {
       "id": "main-problem",
       "title": "Combined Bounds and the Erdős Problem",
       "startLine": 78,
-      "endLine": 89,
+      "endLine": 90,
       "summary": "States both bounds together as a single axiom capturing the current state of knowledge: Ω(n log log n) ≤ f(n) ≤ O(n(log n)^C)."
     },
     {

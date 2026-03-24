@@ -34,7 +34,8 @@
     ],
     "axiomCount": 6,
     "lineCount": 97,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Paul Erdős and András Gyárfás introduced R(n;k,r) in their 1997 paper 'A variant of the classical Ramsey problem' [Er97b], proposing that the growth rate is precisely exponential in n^{1/(k-1)}. This generalizes the classical Ramsey number R(n) = R(n;2,2) from Ramsey (1930), where the exponent 1/(k-1) reduces to 1 for k=2. Erdős and Gyárfás proved the lower bound R(n;3,r) > C^{√n} using a probabilistic argument — a random 2-coloring of K_N typically has no large monochromatic-clique-free sets when N is subexponential. The upper bound R(n;3,r) < C^{√n} remains open as of 2025. Girão observed that the original formulation of the problem has an ambiguity regarding whether R(n;k,r) requires the n vertices to avoid all monochromatic K_k or just K_k in a single color, leading to different interpretations in the literature.",
@@ -67,21 +68,21 @@
       "id": "coloring",
       "title": "Edge Coloring and Clique Avoidance",
       "startLine": 23,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines EdgeColoring N r as functions from ordered edge pairs (with i < j constraint) to Fin r, avoiding directed-edge redundancy. AvoidsMono checks that no k-subset of a vertex set is monochromatic in a given color via existential witness of a non-matching edge. NoMonoClique universally quantifies over all colors. HasRamseyAvoid combines these into the full Ramsey property: every r-coloring admits an n-vertex set avoiding all monochromatic K_k."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture: Exponential Bounds",
       "startLine": 48,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "States the Erdős–Gyárfás conjecture in two forms: the general version ErdosProblem129 asserting C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}} for k ≥ 2, r ≥ 2, and the specialized ErdosProblem129_k3 for k=3 where the exponent simplifies to √n. Both use Filter.atTop for 'eventually for large n' and encode the lower/upper bounds as separate conditions on the witness N."
     },
     {
       "id": "known",
       "title": "Known Results: Erdős–Gyárfás Lower Bound",
       "startLine": 67,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Axiomatizes the Erdős–Gyárfás lower bound: for r ≥ 2, there exists C > 1 such that for large n, no N < C^{√n} satisfies HasRamseyAvoid N n 3 r. This is the contrapositive form — stated as non-existence below the threshold rather than existence above it — which is more natural for the Lean formalization."
     },
     {

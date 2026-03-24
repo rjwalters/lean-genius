@@ -101,7 +101,7 @@
       "id": "definitions",
       "title": "The Counting Function F(A,X,k)",
       "startLine": 31,
-      "endLine": 46,
+      "endLine": 47,
       "summary": "Defines `consecutiveLcm(a,i,k)` as `(Finset.range k).lcm (fun m => a(i+m))` and `F(a,X,k)` as the extended cardinality of positions where the LCM falls below $X$.",
       "mathContext": "$\\text{consecutiveLcm}(a,i,k) = [a_i, a_{i+1}, \\ldots, a_{i+k-1}]$. $F(a,X,k) = |\\{i : \\text{consecutiveLcm}(a,i,k) < X\\}|$ using `Set.encard`."
     },
@@ -109,7 +109,7 @@
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 48,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "Proves LCM monotonicity: $\\text{lcm}(a_i,\\ldots,a_{i+k_1-1}) \\mid \\text{lcm}(a_i,\\ldots,a_{i+k_2-1})$ for $k_1 \\leq k_2$, and $F$ monotonicity: $F(a,X,k_2) \\leq F(a,X,k_1)$ for $k_1 \\leq k_2$.",
       "mathContext": "LCM over a subset divides LCM over a superset. Larger windows yield larger LCMs, so fewer positions qualify: $k_1 \\leq k_2 \\implies F(a,X,k_2) \\leq F(a,X,k_1)$."
     },
@@ -117,7 +117,7 @@
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
       "startLine": 77,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "States the open conjecture: for any strictly increasing $A \\subseteq \\mathbb{N}$ and $\\varepsilon > 0$, there exists $k$ such that $F(A,X,k) < X^\\varepsilon$ for all large $X$.",
       "mathContext": "$\\forall A$ strictly increasing, $\\forall \\varepsilon > 0,\\, \\exists k,\\, \\forall X \\gg 1: F(A,X,k) < X^\\varepsilon$. This asserts multiplicative dependence is always bounded."
     },
@@ -125,7 +125,7 @@
       "id": "known-results",
       "title": "Known Results",
       "startLine": 96,
-      "endLine": 116,
+      "endLine": 117,
       "summary": "Axiomatizes Erdős-Szemerédi bounds for $k=3$: upper bound $F(A,X,3) \\ll X^{1/3} \\log X$ and matching lower bound showing tightness.",
       "mathContext": "$F(A,X,3) \\ll X^{1/3} \\log X$ for all $A$, and $\\exists A$ with $F(A,X,3) \\gg X^{1/3} \\log X$ infinitely often. The exponent $1/3$ is optimal for $k = 3$."
     },
@@ -133,7 +133,7 @@
       "id": "examples",
       "title": "Examples",
       "startLine": 118,
-      "endLine": 146,
+      "endLine": 155,
       "summary": "Verified LCM computations: $[6,7]=42$ (coprime consecutive naturals) and $[2^3,2^4]=2^4$ (geometric progression where each term divides the next).",
       "mathContext": "Consecutive naturals: $\\gcd(n,n+1) = 1$, so $[n,n+1] = n(n+1)$. Powers of 2: $2^a \\mid 2^b$ for $a \\leq b$, so $[2^a, 2^b] = 2^b$."
     }

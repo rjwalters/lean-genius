@@ -83,70 +83,70 @@
       "title": "Sum of Divisors Function",
       "summary": "Definition of sigma(n) and basic values",
       "startLine": 36,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "additive-equation",
       "title": "The Additive Divisor Equation",
       "summary": "Definition of isAdditiveDivisorPair and additiveDivisorPairs set",
       "startLine": 68,
-      "endLine": 87
+      "endLine": 88
     },
     {
       "id": "counting-function",
       "title": "The Counting Function S(x)",
       "summary": "Definition of S(x) and base cases S(0)=0, S(1)=0",
       "startLine": 89,
-      "endLine": 113
+      "endLine": 114
     },
     {
       "id": "known-solutions",
       "title": "Known Solutions",
       "summary": "Verified examples: (1,2), (2,1) are solutions; many pairs are not",
       "startLine": 115,
-      "endLine": 175
+      "endLine": 176
     },
     {
       "id": "structure-theorems",
       "title": "Structure Theorems",
       "summary": "Non-subadditivity and non-superadditivity of sigma",
       "startLine": 177,
-      "endLine": 200
+      "endLine": 201
     },
     {
       "id": "asymptotic-question",
       "title": "Asymptotic Question",
       "summary": "hasLinearGrowth and isAsymptoticToLinear formulations",
       "startLine": 202,
-      "endLine": 226
+      "endLine": 227
     },
     {
       "id": "bounds",
       "title": "Bounds and Estimates",
       "summary": "Lower bound S(x)>=2 for x>=3, upper bound S(x)<=x^2/4",
       "startLine": 228,
-      "endLine": 250
+      "endLine": 251
     },
     {
       "id": "open-problem",
       "title": "The Open Problem",
       "summary": "Erdos 1061 statement as an axiom placeholder",
       "startLine": 252,
-      "endLine": 278
+      "endLine": 279
     },
     {
       "id": "oeis",
       "title": "Related OEIS Sequence",
       "summary": "A110177: sums n with sigma(n) = sigma(a) + sigma(n-a)",
       "startLine": 280,
-      "endLine": 304
+      "endLine": 305
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_1061_summary combining verified facts",
       "startLine": 306,
-      "endLine": 330
+      "endLine": 380
     }
   ],
   "conclusion": {

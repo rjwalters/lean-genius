@@ -53,7 +53,8 @@
     "dateAdded": "2026-02-26",
     "axiomCount": 0,
     "lineCount": 242,
-    "assumptions": "0 axioms, 0 sorries. Core Hölder inequality derived from Mathlib's NNReal.inner_le_Lp_mul_Lq and ENNReal.lintegral_mul_le_Lp_mul_Lq. Lagrange identity proof of Cauchy-Schwarz is independent."
+    "assumptions": "0 axioms, 0 sorries. Core Hölder inequality derived from Mathlib's NNReal.inner_le_Lp_mul_Lq and ENNReal.lintegral_mul_le_Lp_mul_Lq. Lagrange identity proof of Cauchy-Schwarz is independent.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**From Cauchy-Schwarz to Hölder: A Family of Inequalities**\n\nThe Cauchy-Schwarz inequality $(\\sum f_i g_i)^2 \\leq (\\sum f_i^2)(\\sum g_i^2)$ was discovered by Cauchy (1821) for finite sums and extended to integrals by Bunyakovsky (1859) and Schwarz (1885). In 1889, Otto Hölder proved its sweeping generalization:\n\n$$\\sum_{i} f_i g_i \\leq \\left(\\sum_i f_i^p\\right)^{1/p} \\cdot \\left(\\sum_i g_i^q\\right)^{1/q}$$\n\nfor any **conjugate exponents** $p, q > 1$ satisfying $\\frac{1}{p} + \\frac{1}{q} = 1$. Setting $p = q = 2$ recovers Cauchy-Schwarz.\n\n**The Open Question**: Can we build an elementary proof chain from Young's inequality through Hölder to Cauchy-Schwarz, showing CS as a special case?\n\n**The Answer**: YES — using Mathlib's `NNReal.inner_le_Lp_mul_Lq` as the core, the full chain is formalized: Young normalization → Hölder → Lagrange identity → Cauchy-Schwarz → abstract inner product spaces → Lebesgue integral form.",
@@ -78,42 +79,42 @@
       "title": "Imports and Setup",
       "summary": "Imports Mathlib (for NNReal, ENNReal, Finset, MeasureTheory) and opens Finset, NNReal, Real, MeasureTheory, ENNReal namespaces.",
       "startLine": 1,
-      "endLine": 24
+      "endLine": 25
     },
     {
       "id": "holder-nnreal",
       "title": "Hölder's Inequality for NNReal",
       "summary": "General Hölder (holder_nnreal) via Mathlib's NNReal.inner_le_Lp_mul_Lq. Normalized Hölder (holder_normalized) for unit-norm inputs. Educational Young-normalization derivation in comments.",
       "startLine": 26,
-      "endLine": 81
+      "endLine": 82
     },
     {
       "id": "cauchy-schwarz-lagrange",
       "title": "Cauchy-Schwarz via Lagrange's Identity",
       "summary": "Elementary proof of Cauchy-Schwarz (cauchy_schwarz_finite) via Lagrange's identity: 2[(∑f²)(∑g²)-(∑fg)²] = ∑_i∑_j(f_i·g_j-f_j·g_i)² ≥ 0. The Hölder bridge (cauchy_schwarz_from_holder) shows CS = Hölder at p=q=2.",
       "startLine": 83,
-      "endLine": 132
+      "endLine": 133
     },
     {
       "id": "holder-real",
       "title": "Hölder for Real-Valued Functions",
       "summary": "Holder_real: |∑f_i·g_i| ≤ (∑|f_i|^p)^(1/p)·(∑|g_i|^q)^(1/q) for signed reals. Proved by lifting |f_i|, |g_i| to NNReal and applying the NNReal Hölder inequality.",
       "startLine": 134,
-      "endLine": 163
+      "endLine": 164
     },
     {
       "id": "holder-lintegral",
       "title": "Hölder for Lebesgue Integral",
       "summary": "Holder_lintegral: ∫f·g dμ ≤ (∫f^p dμ)^(1/p)·(∫g^q dμ)^(1/q) for ENNReal-valued measurable functions. Mathlib's ENNReal.lintegral_mul_le_Lp_mul_Lq provides this directly.",
       "startLine": 165,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "cauchy-schwarz-abstract",
       "title": "Cauchy-Schwarz for Inner Product Spaces",
       "summary": "Abstract CS (cauchy_schwarz_inner): |⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖ via abs_real_inner_le_norm. The Hölder bridge (cauchy_schwarz_holder_bridge): CS = Hölder at p=q=2 for NNReal, proved by HolderConjugate 2 2.",
       "startLine": 185,
-      "endLine": 213
+      "endLine": 214
     },
     {
       "id": "summary",

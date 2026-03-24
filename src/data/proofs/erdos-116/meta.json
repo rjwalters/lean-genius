@@ -21,7 +21,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 6,
     "lineCount": 98,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This conjecture was posed by Paul Erdős, Fritz Herzog, and George Piranian in their 1958 paper on metric properties of polynomials. They asked: for a monic polynomial $p(z) = \\prod(z - z_i)$ of degree $n$ with all roots in the closed unit disk $\\overline{\\mathbb{D}}$, how small can the 2D Lebesgue measure of the sublevel set $\\{z \\in \\mathbb{C} : |p(z)| < 1\\}$ be? They conjectured the measure is at least $n^{-O(1)}$, or even $(\\log n)^{-O(1)}$.\n\nThe sublevel set $\\{|p(z)| < 1\\}$ is a polynomial lemniscate — the region where the polynomial is small. Its geometry depends intricately on the root configuration: when roots cluster, the lemniscate concentrates into a single blob of area $\\pi$; when roots spread across the disk, it fragments into many small components whose total area shrinks.\n\nThe first major progress came from Pommerenke, who proved the measure is at least $c/n^4$ using logarithmic potential theory and transfinite diameter estimates. This established the polynomial decay rate but left a large gap.\n\nThe problem was fully resolved by Manjunath Krishnapur, Erik Lundberg, and Koushik Ramachandran, who proved the optimal lower bound $c/\\log n$. Their proof combined probabilistic methods with careful estimates on the polynomial's value distribution. They also showed this is nearly tight by constructing polynomials achieving measure at most $C/\\log\\log n$, leaving only a small gap between $1/\\log n$ and $1/\\log\\log n$.",
@@ -44,7 +45,7 @@
       "id": "header",
       "title": "Problem Statement and History",
       "startLine": 1,
-      "endLine": 18,
+      "endLine": 19,
       "summary": "Documents the Erdős-Herzog-Piranian conjecture, its resolution by KLR, Pommerenke's earlier bound, and the near-matching upper bound. References erdosproblems.com/116."
     },
     {
@@ -58,35 +59,35 @@
       "id": "setup",
       "title": "Unit Disk Polynomials",
       "startLine": 26,
-      "endLine": 39,
+      "endLine": 40,
       "summary": "Defines the `UnitDiskPoly` structure (monic degree-$n$ polynomial with roots in $\\overline{\\mathbb{D}}$), polynomial evaluation via root product, and the sublevel set $\\{|p(z)| < 1\\}$."
     },
     {
       "id": "measure",
       "title": "Sublevel Set Measure",
       "startLine": 41,
-      "endLine": 47,
+      "endLine": 48,
       "summary": "Defines `sublevelMeasure` as the 2D Lebesgue measure of the sublevel set, identifying $\\mathbb{C}$ with $\\mathbb{R}^2$ via the standard measure space."
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Bound",
       "startLine": 49,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "States the first polynomial lower bound: $\\mu(S_P) \\geq c/n^4$ for all unit disk polynomials. Proved using logarithmic potential theory."
     },
     {
       "id": "klr",
       "title": "KLR Bounds",
       "startLine": 57,
-      "endLine": 72,
+      "endLine": 73,
       "summary": "States the optimal KLR lower bound $c/\\log n$ (resolving the conjecture) and the near-tight upper bound $C/\\log\\log n$ from extremal polynomial constructions."
     },
     {
       "id": "polya",
       "title": "Pólya's Upper Bound",
       "startLine": 74,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "States $\\mu(S_P) \\leq \\pi$ for all unit disk polynomials, with equality iff all roots coincide."
     },
     {

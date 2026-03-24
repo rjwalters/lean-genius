@@ -50,7 +50,8 @@
     ],
     "axiomCount": 19,
     "lineCount": 243,
-    "assumptions": "19 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "19 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "**The Density Version of Hindman's Theorem**\n\nHindman's theorem (1974) is a cornerstone of Ramsey theory: for any finite coloring of ℕ, there exists an infinite set B such that all finite sums of distinct elements of B (the set FS(B)) are monochromatic.\n\nErdős (1975) asked whether a density analogue holds. Instead of coloring, consider a set A ⊆ ℕ with positive upper density. Must A contain a shifted sumset B + B + t for some infinite B?\n\n**Timeline:**\n- **1974**: Hindman proves his finite sums theorem\n- **1975**: Erdős poses the density conjecture in 'Problems and results in combinatorial number theory'\n- **1991**: Bergelson-Furstenberg-Weiss make partial progress using ergodic theory\n- **2024**: Kra, Moreira, Richter, and Robertson prove the conjecture!\n\nThe proof uses deep techniques from ergodic theory and dynamics on nilmanifolds.",
@@ -79,56 +80,56 @@
       "title": "Upper Density",
       "summary": "Definitions of upperDensity, lowerDensity, HasPositiveUpperDensity, HasNaturalDensity",
       "startLine": 39,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "sumsets",
       "title": "Sumsets and Shifted Sumsets",
       "summary": "Definitions of sumset, shiftedSumset, liftToInt and basic properties",
       "startLine": 70,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "hindman",
       "title": "Hindman's Theorem (Background)",
       "summary": "Finite sums FS(B), colorings, IsMonochromatic, and Hindman's theorem",
       "startLine": 96,
-      "endLine": 126
+      "endLine": 127
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "summary": "HasShiftedSumsetIn, ErdosConjecture656, alternative formulation",
       "startLine": 128,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "solution",
       "title": "The Solution (2024)",
       "summary": "Kra-Moreira-Richter-Robertson theorem and high density case",
       "startLine": 156,
-      "endLine": 177
+      "endLine": 178
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Erdős #172, #109, Sárközy's theorem, Furstenberg-Sárközy",
       "startLine": 179,
-      "endLine": 199
+      "endLine": 200
     },
     {
       "id": "furstenberg",
       "title": "Furstenberg Correspondence",
       "summary": "MeasurePreservingSystem and correspondence principle",
       "startLine": 201,
-      "endLine": 217
+      "endLine": 218
     },
     {
       "id": "main",
       "title": "Main Results Summary",
       "summary": "erdos_656 theorem, necessity of shift, quantitative version",
       "startLine": 219,
-      "endLine": 241
+      "endLine": 243
     }
   ],
   "conclusion": {

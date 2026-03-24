@@ -106,56 +106,56 @@
       "id": "header-and-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 30,
+      "endLine": 31,
       "summary": "Documents the problem statement, its resolution, key ingredients (Erdős–Révész bound and Erdős–Taylor theorem), and imports Mathlib modules for finite sets, real analysis, logarithms, and powers."
     },
     {
       "id": "random-walk-definitions",
       "title": "Random Walk on $\\mathbb{Z}^2$",
       "startLine": 32,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Defines the integer lattice, origin, and axiomatizes random walks as an abstract type with trajectories starting at the origin."
     },
     {
       "id": "visit-counts",
       "title": "Visit Counts and Properties",
       "startLine": 47,
-      "endLine": 61,
+      "endLine": 62,
       "summary": "Axiomatizes the visit count function $f_k(x, \\omega)$ with non-negativity, monotonicity in $k$, and initial visit to the origin."
     },
     {
       "id": "max-visit-count",
       "title": "Maximum Visit Count $T_k$",
       "startLine": 63,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "Defines the maximum visit count $T_k$ and proves it is always at least 1, combining the origin's visit count with monotonicity."
     },
     {
       "id": "most-visited-set",
       "title": "Most-Visited Set $F(k)$",
       "startLine": 84,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "Axiomatizes the set of points achieving maximum visit count, with membership characterization and nonemptiness."
     },
     {
       "id": "cumulative-set",
       "title": "Cumulative Most-Visited Set",
       "startLine": 99,
-      "endLine": 119,
+      "endLine": 120,
       "summary": "Defines $\\bigcup_{k \\leq n} F(k)$ with containment and subset axioms, and proves monotonicity of the cumulative set."
     },
     {
       "id": "almost-surely",
       "title": "Almost Sure Events",
       "startLine": 121,
-      "endLine": 134,
+      "endLine": 135,
       "summary": "Axiomatizes almost sure events with monotonicity and conjunction properties, abstracting away the probability space."
     },
     {
       "id": "key-ingredients",
       "title": "Key Ingredients: Erdős–Révész and Erdős–Taylor",
       "startLine": 136,
-      "endLine": 154,
+      "endLine": 155,
       "summary": "States the two main ingredients: $|F(n)| \\leq 3$ a.s. for large $n$ (Erdős–Révész) and $T_n \\leq C(\\log n)^2$ a.s. (Erdős–Taylor)."
     },
     {

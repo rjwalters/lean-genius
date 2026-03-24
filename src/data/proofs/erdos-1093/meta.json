@@ -21,7 +21,8 @@
     "erdosProblemStatus": "open",
     "axiomCount": 5,
     "lineCount": 107,
-    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Lacampagne, and Selfridge developed this problem across two papers (1988, 1993) and first presented it at the 1986 West Coast Number Theory conference. The question arose from their broader investigation into the prime factorization of binomial coefficients, specifically when $\\binom{n}{k}$ has no 'small' prime factors (all primes dividing it exceed $k$). Under this condition, the falling factorial $n(n-1)\\cdots(n-k+1)$ has a delicate balance: the small prime factors must cancel exactly with $k!$, and the 'deficiency' measures excess smoothness. The ELS upper bound $n \\ll 2^k \\sqrt{k}$ (1993) constrains the search space but leaves both parts of the conjecture open. The problem connects to Dickman's function ($\\Psi(x, y)$ counting $y$-smooth numbers up to $x$), Kummer's theorem (1852) on carries in base-$p$ addition characterizing $v_p(\\binom{n}{k})$, and the broader Erdős program on arithmetic properties of binomial coefficients. The record deficiency of 9 for $\\binom{284}{28}$ has stood since the original investigation, and computational searches have found at least 58 deficiency-1 examples for $n \\leq 10^5$.",
@@ -53,35 +54,35 @@
       "id": "smooth-numbers",
       "title": "Smooth Numbers",
       "startLine": 22,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Defines `IsKSmooth k m`: all prime factors of $m$ are $\\leq k$. The fundamental smoothness predicate used throughout."
     },
     {
       "id": "deficiency",
       "title": "Deficiency Definition",
       "startLine": 30,
-      "endLine": 41,
+      "endLine": 42,
       "summary": "Defines `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$) and `deficiency` (count of $k$-smooth terms in the falling factorial via `Finset.filter`)."
     },
     {
       "id": "conjectures",
       "title": "The Two Conjectures",
       "startLine": 43,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Part (i): $\\text{Set.Infinite}$ for deficiency-1 pairs. Part (ii): $\\text{Set.Finite}$ for deficiency $> 1$ pairs. Combined as `ErdosProblem1093`."
     },
     {
       "id": "examples",
       "title": "Known Examples",
       "startLine": 65,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "Computed values: $d(7,3) = 1$, $d(13,4) = 1$, and $d(284,28) = 9$ (the record)."
     },
     {
       "id": "upper-bound",
       "title": "ELS Upper Bound and Census",
       "startLine": 79,
-      "endLine": 93,
+      "endLine": 94,
       "summary": "ELS (1993) bound $n \\leq C \\cdot 2^k \\sqrt{k}$ for positive deficiency. At least 58 deficiency-1 examples known for $n \\leq 10^5$."
     },
     {

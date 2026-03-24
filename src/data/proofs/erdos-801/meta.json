@@ -104,7 +104,7 @@
       "id": "definitions",
       "title": "Basic Graph Definitions",
       "startLine": 40,
-      "endLine": 58,
+      "endLine": 59,
       "summary": "Defines `FiniteGraph` as `SimpleGraph (Fin n)`, $\\alpha(G)$ via `sSup` over `IsIndependent` sets, `HasBoundedIndependence`, and `inducedEdges` via `Finset.filter` on ordered pairs.",
       "mathContext": "$\\alpha(G) = \\sup\\{|S| : S \\subseteq V, G.\\text{IsIndependent}\\, S\\}$. Induced edges: $e_G(S) = |\\{(u,v) \\in S \\times S : u < v \\wedge G.\\text{Adj}\\, u\\, v\\}|$."
     },

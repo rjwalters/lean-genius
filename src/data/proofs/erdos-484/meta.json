@@ -45,56 +45,57 @@
     ],
     "axiomCount": 14,
     "lineCount": 322,
-    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 34,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "Defines **Coloring N k** = Fin N → Fin k, **colorClass χ c** via Finset.filter, **isMonochromaticSum χ s** (s = a+b with same color, a≠b), and **monochromaticSums χ** = {s | isMonochromaticSum χ s}. These encode the partition and sumset structure."
     },
     {
       "id": "roth-conjecture",
       "title": "Roth's Conjecture (Proved)",
       "startLine": 65,
-      "endLine": 82,
+      "endLine": 83,
       "summary": "**roth_conjecture**: ∃ c > 0, ∀ k ≥ 1, ∃ N₀, ∀ N ≥ N₀, ∀ χ, |monochromaticSums χ| ≥ cN. **roth_conjecture_true**: axiomatized as proved by Erdős-Sárközy-Sós (1989). The nested quantifiers separate the universal constant from the k-dependent threshold."
     },
     {
       "id": "ess-theorem",
       "title": "Erdős-Sárközy-Sós Theorem",
       "startLine": 84,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "**ESS_theorem**: ≥ N/2 − C·N^{1−1/2^{k+1}} even numbers are representable monochromatic sums. **even_sum_parity**: parity is additive. **exponent_sublinear**: error exponent < 1 always. Uses Fourier analysis and the large sieve inequality."
     },
     {
       "id": "two-coloring",
       "title": "Two-Coloring Case (k = 2)",
       "startLine": 120,
-      "endLine": 157,
+      "endLine": 158,
       "summary": "**ESS_two_coloring**: N/2 − O(log N) even sums for k=2. **two_coloring_optimal**: ∃ 2-coloring blocking all powers of 2. **optimal_construction_exists**: the 2-adic valuation coloring χ(n) = ν₂(n) mod 2 achieves this — the O(log N) bound is tight."
     },
     {
       "id": "proof-ideas",
       "title": "Key Proof Ideas",
       "startLine": 159,
-      "endLine": 198,
+      "endLine": 199,
       "summary": "**sumset_lower_bound**: pigeonhole gives color class of size ≥ N/k. **sumset_density**: restricted sumset of size m set has ≥ m−1 elements. **fourier_representation_count**: Fourier analysis bounds unrepresented even numbers at ≤ N^{1−1/2^{k+1}}."
     },
     {
       "id": "consequences",
       "title": "Consequences and Density",
       "startLine": 200,
-      "endLine": 224,
+      "endLine": 225,
       "summary": "**positive_density**: proved (not axiom) by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: c = 1/2 − ε works for N large enough. The limiting density 1/2 is optimal since only even sums are guaranteed."
     },
     {
       "id": "extensions",
       "title": "Extensions: Schur and Hindman",
       "startLine": 226,
-      "endLine": 265,
+      "endLine": 266,
       "summary": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are deeper partition regularity results contextualizing #484."
     },
     {

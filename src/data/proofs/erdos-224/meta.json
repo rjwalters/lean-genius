@@ -33,7 +33,8 @@
     ],
     "axiomCount": 7,
     "lineCount": 256,
-    "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
+    "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős posed this problem in the context of discrete geometry, asking how many points in $\\mathbb{R}^d$ can avoid forming any obtuse angle. The question connects to the geometry of the hypercube: the $2^d$ vertices of $\\{0,1\\}^d$ form an obtuse-free set because all angles between triples of binary vectors are $\\leq 90°$ (specifically $60°$ or $90°$). For $d = 2$, any 5 points in the plane trivially contain an obtuse triple (via convex position arguments). For $d = 3$, Kuiper and Boerdijk proved the 9-point case independently. The general result was established by Ludwig Danzer and Branko Grünbaum in their 1962 paper in *Mathematische Zeitschrift*, resolving the problem for all dimensions. The proof uses induction on dimension with a projection argument, showing that $2^d + 1$ points must contain an obtuse triple. Erdős and Füredi (1983) later studied the related problem of the greatest angle among $n$ points, extending the analysis beyond the threshold case.",
@@ -58,63 +59,63 @@
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib's **InnerProductSpace**, **Finset**, **Real**, and **Finrank** for the `Erdos224` namespace.",
       "startLine": 24,
-      "endLine": 29
+      "endLine": 30
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines **EuclideanPoint** ($\\text{Fin}\\, d \\to \\mathbb{R}$), **angle** via $\\arccos(\\langle A-B, C-B\\rangle / (\\|A-B\\| \\cdot \\|C-B\\|))$, **IsObtuseAngle** ($\\theta > \\pi/2$), and **FormsObtuseAngle**.",
       "startLine": 31,
-      "endLine": 59
+      "endLine": 60
     },
     {
       "id": "set-predicates",
       "title": "Set Predicates",
       "summary": "Defines **ContainsObtuseTriple** ($\\exists$ distinct $A, B, C \\in P$ with obtuse angle at $B$) and **IsObtuseFree** ($\\neg$ContainsObtuseTriple).",
       "startLine": 61,
-      "endLine": 75
+      "endLine": 76
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "summary": "States **ErdosObtuseConjecture**: $|P| = 2^d + 1 \\Rightarrow \\text{ContainsObtuseTriple}(P)$. Axiomatizes **danzer_grunbaum** (1962) resolving it for all $d$.",
       "startLine": 77,
-      "endLine": 92
+      "endLine": 93
     },
     {
       "id": "special-cases",
       "title": "Special Cases: d = 2 and d = 3",
       "summary": "Axiomatizes **case_d2** (5 points in $\\mathbb{R}^2$, trivial) and **case_d3** (9 points in $\\mathbb{R}^3$, Kuiper-Boerdijk).",
       "startLine": 94,
-      "endLine": 116
+      "endLine": 117
     },
     {
       "id": "extremal-config",
       "title": "The Extremal Configuration",
       "summary": "Defines **hypercubeVertices** $= \\{0,1\\}^d$ (sorry), axiomatizes **hypercube_card** ($= 2^d$) and **hypercube_obtuse_free**, and proves **hypercube_extremal**.",
       "startLine": 118,
-      "endLine": 151
+      "endLine": 152
     },
     {
       "id": "hypercube-angles",
       "title": "Angles in the Hypercube",
       "summary": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\pi/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60°$ and $90°$ angles occur.",
       "startLine": 153,
-      "endLine": 176
+      "endLine": 177
     },
     {
       "id": "why-2d-plus-1",
       "title": "Why 2^d + 1 Forces Obtuse",
       "summary": "Axiomatizes **pigeonhole_orthants**: $2^d + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Grünbaum argument.",
       "startLine": 178,
-      "endLine": 203
+      "endLine": 204
     },
     {
       "id": "related",
       "title": "Related Results",
       "summary": "Discusses connections to **acute sets** (all angles $< 90°$), **spherical codes**, and high-dimensional geometry phenomena.",
       "startLine": 205,
-      "endLine": 228
+      "endLine": 229
     },
     {
       "id": "main-results",

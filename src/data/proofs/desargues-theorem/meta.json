@@ -43,7 +43,8 @@
     "wiedijkNumber": 87,
     "axiomCount": 0,
     "lineCount": 447,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Girard Desargues (1591-1661) was a French mathematician who is considered one of the founders of projective geometry. He published this theorem in 1639 in a work on conic sections. The theorem is remarkable because it is self-dual in projective geometry (the dual statement is also Desargues's theorem), it characterizes Desarguesian planes (those where the theorem holds), and it fails in some non-Desarguesian projective planes.\n\nDesargues's theorem is fundamental to projective geometry and has applications in computer graphics, computer vision, and perspective drawing in art and architecture.",
@@ -69,7 +70,7 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Overview of Desargues's theorem, its historical context, and the projective geometry approach.",
       "mathContext": "Desargues's theorem (Wiedijk #87): triangles $ABC$, $A'B'C'$ in perspective from point $O$ (i.e., $AA'$, $BB'$, $CC'$ concurrent) $\\iff$ in perspective from a line (i.e., $AB \\cap A'B'$, $BC \\cap B'C'$, $CA \\cap C'A'$ collinear). Formalized using homogeneous coordinates in $\\mathbb{R}^3$ with cross products."
     },
@@ -144,7 +145,7 @@
       "id": "connections",
       "title": "Historical Context and Connections",
       "startLine": 291,
-      "endLine": 330,
+      "endLine": 447,
       "summary": "Discussion of projective duality, non-Desarguesian planes, and applications."
     }
   ],

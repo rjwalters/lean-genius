@@ -52,7 +52,8 @@
     "dateAdded": "2026-02-10",
     "axiomCount": 0,
     "lineCount": 550,
-    "assumptions": "0 axioms, 0 sorries. Core digit-sum congruence from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum."
+    "assumptions": "0 axioms, 0 sorries. Core digit-sum congruence from Mathlib's Nat.modEq_digits_sum and Nat.dvd_iff_dvd_digits_sum.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Divisibility rules have been known since ancient times. This extension formalizes a comprehensive collection of such rules in Lean 4, going far beyond the basic divisibility-by-3 rule.\n\nThe rules fall into three families:\n1. **Last-k-digits rules**: When d divides the base power (e.g., 4|100), check the last k digits\n2. **Digit-sum rules**: When base ≡ 1 (mod d), check the digit sum\n3. **Truncation rules**: Reduce the number by removing a digit and adjusting (e.g., for 7 and 13)\n\nAll three families are unified through modular arithmetic.",
@@ -75,21 +76,21 @@
       "id": "last-k-digits",
       "title": "General Last-k-Digits Framework",
       "startLine": 28,
-      "endLine": 95,
+      "endLine": 96,
       "summary": "Unified theorem for last-digit rules (2, 4, 8, 16, 32, 5, 25, 125) including binary and hexadecimal bases."
     },
     {
       "id": "power-generalizations",
       "title": "Power-of-2 and Power-of-5 Theorems",
       "startLine": 97,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "General theorems: 2^k | n ↔ 2^k | (n mod 10^k), and similarly for 5^k."
     },
     {
       "id": "truncation-13",
       "title": "Divisibility by 13 via Truncation",
       "startLine": 120,
-      "endLine": 153,
+      "endLine": 154,
       "summary": "The 'add 4 times the last digit' rule for 13, proved via integer arithmetic and coprimality."
     },
     {
@@ -103,14 +104,14 @@
       "id": "casting-out",
       "title": "Casting Out Nines and Threes",
       "startLine": 220,
-      "endLine": 268,
+      "endLine": 269,
       "summary": "Casting out nines/threes preserves addition and multiplication modulo 9/3."
     },
     {
       "id": "digital-root",
       "title": "Digital Root Theory",
       "startLine": 270,
-      "endLine": 331,
+      "endLine": 332,
       "summary": "Digital root definition, bound ≤ 9, positivity, divisibility-by-9 characterization, and mod-3 property."
     },
     {
@@ -124,21 +125,21 @@
       "id": "truncation-7-11",
       "title": "Truncation Methods for 7 and 11",
       "startLine": 375,
-      "endLine": 440,
+      "endLine": 441,
       "summary": "Divisibility by 7 via subtract-2x-last-digit and divisibility by 11 via subtract-last-digit, both proved via integer arithmetic and coprimality."
     },
     {
       "id": "truncation-17-19",
       "title": "Truncation Methods for 17 and 19",
       "startLine": 442,
-      "endLine": 510,
+      "endLine": 511,
       "summary": "Divisibility by 17 via subtract-5x-last-digit and divisibility by 19 via add-2x-last-digit."
     },
     {
       "id": "alternating-grouping",
       "title": "Alternating Digit Grouping",
       "startLine": 512,
-      "endLine": 538,
+      "endLine": 539,
       "summary": "Observations about alternating 3-digit groups: 1001 = 7·11·13 implies 1000 ≡ -1 (mod 7, 11, 13)."
     },
     {

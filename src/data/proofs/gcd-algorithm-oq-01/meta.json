@@ -57,7 +57,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 460,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Euclidean algorithm, described in Book VII of Euclid's *Elements* (c. 300 BCE), is one of the oldest algorithms still in active use. Gabriel Lamé proved in 1844 that the algorithm requires at most $5k$ division steps when the smaller input has $k$ decimal digits, making this one of the first computational complexity results in history. Lamé's key insight was that consecutive Fibonacci numbers are worst-case inputs: $\\gcd(F_{n+2}, F_{n+1})$ requires exactly $n$ steps, and since $F_n \\sim \\varphi^n/\\sqrt{5}$ (where $\\varphi = (1+\\sqrt{5})/2$), inputs with $k$ digits satisfy $n \\leq 5k$. The connection between Fibonacci numbers and the Euclidean algorithm was noted even earlier by Léger (1837). The average-case analysis came much later: Dixon (1970) proved the average number of steps is $(12 \\ln 2 / \\pi^2) \\ln N \\approx 0.8427 \\ln N$ using the ergodic theory of the Gauss map $T(x) = \\{1/x\\}$ and its invariant measure $d\\mu = (\\ln 2)^{-1}(1+x)^{-1}dx$. Heilbronn (1969) obtained the leading constant independently. The variance was computed by Hensley (1994).",
@@ -80,35 +81,35 @@
       "id": "sec-gcd-oq01-imports",
       "title": "Imports and Namespace",
       "startLine": 1,
-      "endLine": 30,
+      "endLine": 31,
       "summary": "Imports `Data.Nat.Fib.Basic` (Fibonacci lemmas), `Data.Nat.GCD.Basic`, `Data.Nat.Log` (for $\\lfloor \\log_b n \\rfloor$), and `Tactic`. Opens `Nat` namespace and documents the open question status."
     },
     {
       "id": "sec-gcd-oq01-step-counting",
       "title": "Step Counting Function",
       "startLine": 32,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "Defines `euclideanSteps` with termination proof via `Nat.mod_lt`, plus 10 verification examples showing $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n = 0, \\ldots, 8$."
     },
     {
       "id": "sec-gcd-oq01-unfolding",
       "title": "Unfolding Lemmas",
       "startLine": 55,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "Three interface lemmas: `euclideanSteps_zero` (simp), `euclideanSteps_pos_eq` ($b > 0$ recursive case), and `euclideanSteps_ge_one` ($b > 0 \\implies \\text{steps} \\geq 1$)."
     },
     {
       "id": "sec-gcd-oq01-lame",
       "title": "Lamé's Theorem",
       "startLine": 71,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "Core result by strong induction: $\\text{euclideanSteps}(a,b) = n \\wedge b > 0 \\implies \\text{fib}(n+1) \\leq b$. Includes classical form `lame_theorem` and contrapositive `lame_step_bound`: $b < \\text{fib}(k+2) \\implies \\text{steps} \\leq k$."
     },
     {
       "id": "sec-gcd-oq01-worst-case",
       "title": "Worst Case: Consecutive Fibonacci Numbers",
       "startLine": 157,
-      "endLine": 196,
+      "endLine": 197,
       "summary": "Proves $\\text{euclideanSteps}(F_{n+2}, F_{n+1}) = n$ for $n \\geq 1$ via `fib_mod_fib`: $F_{n+2} \\bmod F_{n+1} = F_n$. Includes saturation verification examples."
     },
     {
@@ -129,21 +130,21 @@
       "id": "sec-gcd-oq01-gcd-preservation",
       "title": "GCD Preservation and Structural Properties",
       "startLine": 268,
-      "endLine": 305,
+      "endLine": 306,
       "summary": "Proves bidirectional characterization (`steps = 0 ↔ b = 0`), divisibility shortcut (`b | a → steps = 1`), one-step termination (`steps = 1 → a%b = 0`), and Lamé remainder bound extraction."
     },
     {
       "id": "sec-gcd-oq01-tight-lame",
       "title": "Tight Lamé Bound and Monotonicity",
       "startLine": 307,
-      "endLine": 345,
+      "endLine": 346,
       "summary": "Proves translation invariance (`steps(a + kb, b) = steps(a, b)`) and the swap lemma (`a < b → steps(a,b) = steps(b,a) + 1`), establishing that step count depends only on the remainder sequence."
     },
     {
       "id": "sec-gcd-oq01-average",
       "title": "Finite Average Computation and Dixon's Theorem",
       "startLine": 347,
-      "endLine": 395,
+      "endLine": 460,
       "summary": "Defines `totalSteps N` and `pairCount N` for exact finite averages. Documents Dixon's theorem: average steps $\\sim (12\\ln 2/\\pi^2)\\ln N \\approx 0.8427 \\ln N$, requiring continued fractions and ergodic theory not yet in Mathlib."
     }
   ],

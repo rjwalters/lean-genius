@@ -22,7 +22,8 @@
     "erdosProblemStatus": "disproved",
     "axiomCount": 7,
     "lineCount": 96,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Erdős, Sós, and Sárközy studied the extremal function F_k(N), the maximum size of A ⊆ {1,...,N} with no k-element product of distinct elements forming a perfect square. They established F_2(N) ~ 6N/π² (exactly the squarefree integers, by Gegenbauer 1885), F_3(N) ~ N (full density), and F_4(N) = o(N) (density tending to zero). These results revealed a striking parity phenomenon: odd k appeared to allow near-full density while even k forced density to zero. Erdős conjectured this even/odd dichotomy persisted for all k, predicting F_{2k+1}(N) = (1−o(1))N for every k ≥ 1. The conjecture stood for decades until Tao's 2024 disproof: using the polynomial method and character sum estimates over finite fields, he showed F_k(N) ≤ (1−c_k)N for all k ≥ 4, definitively disproving the odd-k conjecture for k ≥ 5. The boundary between k = 3 (full density) and k = 4 (sub-full density) remains the central mystery.",
@@ -45,35 +46,35 @@
       "id": "square-free-products",
       "title": "Square-Free Product Sets",
       "startLine": 20,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "IsSquare, IsKSquareFree, and F_k(N) = squareFreeMax: the extremal function for k-square-free subsets."
     },
     {
       "id": "known-results",
       "title": "Known Results for Small k",
       "startLine": 39,
-      "endLine": 60,
+      "endLine": 61,
       "summary": "F_2 ~ 6N/π², F_3 ~ N, F_4 = o(N): the known asymptotics for k = 2, 3, 4."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture (Disproved)",
       "startLine": 62,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Erdős's conjecture F_{2k+1}(N) ~ N for all k ≥ 1."
     },
     {
       "id": "tao-disproof",
       "title": "Tao's Disproof (2024)",
       "startLine": 72,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "Tao proved F_k(N) ≤ (1-c_k)N for k ≥ 4, disproving the conjecture."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
       "startLine": 85,
-      "endLine": 94,
+      "endLine": 96,
       "summary": "F_k is monotone in N and anti-monotone in k."
     }
   ],

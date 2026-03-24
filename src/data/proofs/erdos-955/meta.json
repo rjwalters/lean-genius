@@ -99,63 +99,63 @@
       "title": "The Sum of Proper Divisors Function",
       "summary": "Defines $\\sigma(n) = \\sum_{d | n} d$ using Mathlib's `Nat.divisors`, then the aliquot sum $s(n) = \\sigma(n) - n$. An alternative definition `s_alt` sums directly over `Nat.properDivisors`, and an axiom asserts the two definitions agree for $n > 0$.",
       "startLine": 38,
-      "endLine": 57
+      "endLine": 58
     },
     {
       "id": "perfect-numbers",
       "title": "Perfect, Deficient, and Abundant Numbers",
       "summary": "Classifies natural numbers by comparing $s(n)$ with $n$: perfect ($s(n) = n$), deficient ($s(n) < n$), and abundant ($s(n) > n$). Axiomatizes that 6 and 28 are perfect numbers, the first two examples known since antiquity.",
       "startLine": 59,
-      "endLine": 74
+      "endLine": 75
     },
     {
       "id": "density",
       "title": "Natural Density",
       "summary": "Defines the counting function $|A \\cap [1,x]|$ via `Finset.range.filter`, then natural density as the limit $\\lim_{x \\to \\infty} |A \\cap [1,x]|/x = d$. Introduces `HasZeroDensity` and `HasPositiveDensity` predicates. Uses Mathlib's `Filter.atTop` for the limit formulation.",
       "startLine": 76,
-      "endLine": 93
+      "endLine": 94
     },
     {
       "id": "preimage",
       "title": "The Preimage s⁻¹(A)",
       "summary": "Defines the set-theoretic preimage $s^{-1}(A) = \\{n \\in \\mathbb{N} : s(n) \\in A\\}$. This is the central object of the EGPS conjecture: the question is whether $d(A) = 0$ forces $d(s^{-1}(A)) = 0$.",
       "startLine": 95,
-      "endLine": 101
+      "endLine": 102
     },
     {
       "id": "egps-conjecture",
       "title": "The EGPS Conjecture",
       "summary": "Formally states the Erdős-Granville-Pomerance-Spiro conjecture as $\\forall A \\subset \\mathbb{N}, d(A) = 0 \\Rightarrow d(s^{-1}(A)) = 0$. This is Problem #955 in the Erdős Problems database and remains OPEN after 35+ years.",
       "startLine": 103,
-      "endLine": 111
+      "endLine": 112
     },
     {
       "id": "contrasts",
       "title": "Contrasting Behaviors",
       "summary": "Axiomatizes two striking contrasts: (1) Forward failure—there exist density-0 sets $A$ with $s(A)$ having positive density (e.g., semiprimes). (2) Empty preimages—untouchable numbers like 2 and 5 are never values of $s(n)$, so even large target sets can have empty fibers.",
       "startLine": 113,
-      "endLine": 135
+      "endLine": 136
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
       "summary": "Axiomatizes three key results: Pollack (2014) proved the conjecture for $A$ = primes using modular distribution of $s(n)$. Troupe (2015) handled integers with many prime factors. Troupe (2020) proved the case $A$ = sums of two squares, exploiting the known density $\\sim x/\\sqrt{\\log x}$ and multiplicative structure.",
       "startLine": 137,
-      "endLine": 161
+      "endLine": 162
     },
     {
       "id": "ppt-bound",
       "title": "The PPT Bound",
       "summary": "Axiomatizes the Pollack-Pomerance-Thompson (2018) threshold: the conjecture holds for all sets $A$ with $|A \\cap [1,x]| \\leq x^{1/2+o(1)}$. The theorem `sparse_sets_work` is a direct corollary. Closing the gap between this threshold and general density-0 sets is the main open challenge.",
       "startLine": 163,
-      "endLine": 179
+      "endLine": 180
     },
     {
       "id": "growth-bound",
       "title": "Growth Bound on s(n)",
       "summary": "Axiomatizes $s(n) \\leq n(2 + \\log\\log n)$, explaining why the PPT threshold is $1/2$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range are too sparse to capture enough preimages.",
       "startLine": 181,
-      "endLine": 189
+      "endLine": 190
     },
     {
       "id": "summary",

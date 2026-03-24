@@ -60,7 +60,8 @@
       }
     ],
     "lineCount": 82,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "summary": "Proves the integration by parts formula for Fourier coefficients of periodic functions: ĉₙ(f') = i·n·ĉₙ(f) for 2π-periodic C¹ functions f and n ≠ 0. The proof lifts real functions to complex via ofRealCLM, applies Mathlib's fourierCoeffOn_of_hasDerivAt, and uses periodicity f(2π) = f(0) to eliminate the boundary term.",
@@ -120,7 +121,7 @@
       "id": "preamble",
       "title": "File Header and Setup",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Module docstring, imports Mathlib, opens namespaces (Real, Filter, Topology, Complex, MeasureTheory), and declares the IsoperimetricFourier namespace.",
       "mathContext": "Uses fourierCoeffOn from Mathlib.Analysis.Fourier.AddCircle for Fourier coefficients on intervals."
     },
@@ -128,7 +129,7 @@
       "id": "chain-rule",
       "title": "Chain Rule for ofReal Composition",
       "startLine": 27,
-      "endLine": 45,
+      "endLine": 46,
       "summary": "Proves HasDerivAt (ofReal ∘ f) ((ofReal ∘ deriv f) x) x for C¹ real f. Uses ContinuousLinearMap.hasDerivAt for ofRealCLM and HasDerivAt.scomp for the chain rule.",
       "mathContext": "Chain rule: d/dx(ofReal ∘ f)(x) = ofReal(f'(x)) since ofRealCLM' = id and (g ∘ f)' = f' · g'."
     },

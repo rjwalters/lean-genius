@@ -88,7 +88,8 @@
     },
     "dateAdded": "2025-12-29",
     "millenniumProblem": "poincare",
-    "lineCount": 17663
+    "lineCount": 17663,
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Henri Poincaré posed the conjecture in 1904 in his fifth complement to Analysis Situs, after discovering that homology alone does not characterize the 3-sphere (the Poincaré homology sphere $\\Sigma(2,3,5)$ has $H_*(M) \\cong H_*(S^3)$ but $|\\pi_1| = 120$). The problem resisted all attempts for nearly a century.\n\nRichard Hamilton introduced Ricci flow in his landmark 1982 paper in J. Differential Geometry, proving that closed 3-manifolds with positive Ricci curvature are diffeomorphic to $S^3$. Grigori Perelman extended this in three arXiv preprints (2002–2003): 'The entropy formula for the Ricci flow' (math/0211159), 'Ricci flow with surgery on three-manifolds' (math/0303109), and 'Finite extinction time for the solutions to the Ricci flow' (math/0307245). His proof also established Thurston's Geometrization Conjecture.\n\nPerelman was awarded the Fields Medal in 2006 (declined) and the Clay Millennium Prize of $1 million in 2010 (also declined), saying 'I'm not interested in money or fame.' The detailed verification was completed by Kleiner–Lott (2008), Morgan–Tian (2007), and Cao–Zhu (2006).",
@@ -114,7 +115,7 @@
       "id": "sphere3",
       "title": "The 3-Sphere $S^3$",
       "startLine": 110,
-      "endLine": 145,
+      "endLine": 146,
       "summary": "Defines $S^3 = \\{x \\in \\mathbb{R}^4 : \\|x\\| = 1\\}$ and **proves** nonemptiness, compactness, connectedness, and path-connectedness using Mathlib's sphere API.",
       "mathContext": "$S^3 = \\{x \\in \\mathbb{R}^4 : \\|x\\| = 1\\}$. Properties: compact (closed bounded in $\\mathbb{R}^4$), connected, path-connected, nonempty."
     },
@@ -122,28 +123,28 @@
       "id": "simply-connected",
       "title": "Simply Connected Spaces",
       "startLine": 147,
-      "endLine": 167,
+      "endLine": 168,
       "summary": "Uses Mathlib's `SimplyConnectedSpace` and **proves** that simply connected spaces have null-homotopic loops and are path-connected."
     },
     {
       "id": "closed-manifolds",
       "title": "Closed Manifolds",
       "startLine": 169,
-      "endLine": 182,
+      "endLine": 183,
       "summary": "Defines `ClosedManifold n M` requiring compact, connected, nonempty, and locally homeomorphic to $\\mathbb{R}^n$. Abbreviation `Closed3Manifold` for $n = 3$."
     },
     {
       "id": "homeomorphism",
       "title": "Homeomorphism",
       "startLine": 184,
-      "endLine": 201,
+      "endLine": 202,
       "summary": "Defines `AreHomeomorphic X Y` and **proves** reflexivity, symmetry, transitivity — establishing homeomorphism as an equivalence relation."
     },
     {
       "id": "poincare-statement",
       "title": "The Poincaré Conjecture (Statement)",
       "startLine": 203,
-      "endLine": 212,
+      "endLine": 213,
       "summary": "States `PoincareConjectureStatement` : $\\forall M$, closed 3-manifold $\\wedge$ simply connected $\\implies M \\cong_t S^3$.",
       "mathContext": "$\\forall M,\\; \\text{Closed3Manifold}(M) \\land \\text{SimplyConnectedSpace}(M) \\Rightarrow M \\cong_t S^3$."
     },
@@ -151,7 +152,7 @@
       "id": "ricci-flow",
       "title": "Ricci Flow and Perelman's Axioms",
       "startLine": 214,
-      "endLine": 266,
+      "endLine": 267,
       "summary": "Axiomatizes Ricci curvature, Riemannian metric, Ricci flow, Perelman's surgery and finite extinction, Thurston's 8 geometries, $W$-entropy monotonicity, and Hamilton's positive Ricci theorem.",
       "mathContext": "Ricci flow: $\\partial g/\\partial t = -2\\operatorname{Ric}(g)$. Surgery: cut at neck singularities, cap with standard pieces. Finite extinction: $\\pi_1 = 1 \\Rightarrow$ flow terminates, manifold converges to $S^3$."
     },
@@ -159,7 +160,7 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 268,
-      "endLine": 277,
+      "endLine": 278,
       "summary": "**Proves** `poincare_conjecture_holds` by extracting the homeomorphism from `perelman_finite_extinction`.",
       "mathContext": "`poincare_conjecture_holds`: $\\text{Closed3Manifold}(M) \\to \\text{SimplyConnected}(M) \\to M \\cong_t S^3$. Proof: apply `perelman_finite_extinction` to get the homeomorphism."
     },
@@ -167,7 +168,7 @@
       "id": "generalized-dims",
       "title": "Generalized Poincaré (Per Dimension)",
       "startLine": 279,
-      "endLine": 296,
+      "endLine": 297,
       "summary": "Axiomatizes the generalized conjecture for $n = 2$ (uniformization), $n = 4$ (Freedman), $n \\geq 5$ (Smale).",
       "mathContext": "Generalized Poincaré: $n = 2$ (classification of surfaces), $n = 4$ (Freedman 1982, topological), $n \\geq 5$ (Smale 1961, h-cobordism). Smooth $n = 4$ remains open."
     },
@@ -182,14 +183,14 @@
       "id": "sphere-properties",
       "title": "Generalized $n$-Sphere Properties",
       "startLine": 351,
-      "endLine": 376,
+      "endLine": 377,
       "summary": "**Proves** connectedness, path-connectedness, nonemptiness, and compactness of $S^n \\subset \\mathbb{R}^{n+1}$ for all $n$."
     },
     {
       "id": "all-dimensions",
       "title": "Poincaré for All Dimensions $\\geq 2$",
       "startLine": 378,
-      "endLine": 417,
+      "endLine": 418,
       "summary": "**Proves** `poincare_all_dimensions` by case analysis: Smale for $n \\geq 5$, then `interval_cases` dispatching $n \\in \\{2, 3, 4\\}$.",
       "mathContext": "$\\forall n \\geq 2$, every simply connected closed $n$-manifold is homeomorphic to $S^n$. Unifies all dimensions via case split on $n$."
     },
@@ -197,14 +198,14 @@
       "id": "historical-notes",
       "title": "Historical Notes",
       "startLine": 419,
-      "endLine": 430,
+      "endLine": 431,
       "summary": "Timeline: Smale (1961, $n \\geq 5$), Freedman (1982, $n = 4$), Perelman (2003, $n = 3$). Smooth 4D case still open."
     },
     {
       "id": "fundamental-group",
       "title": "Fundamental Group Characterization",
       "startLine": 432,
-      "endLine": 442,
+      "endLine": 443,
       "summary": "**Proves** `fundamental_group_trivial_of_sc`: for simply connected spaces, $\\pi_1(X, x)$ is trivial (Subsingleton) at every point.",
       "mathContext": "$\\text{SimplyConnectedSpace}(X) \\Rightarrow \\forall x,\\; |\\pi_1(X, x)| = 1$. The fundamental group is the automorphism group at $x$ in the fundamental groupoid."
     },
@@ -212,42 +213,42 @@
       "id": "sphere-retraction",
       "title": "Sphere Retraction",
       "startLine": 444,
-      "endLine": 466,
+      "endLine": 467,
       "summary": "**Proves** the normalization map $x \\mapsto x/\\|x\\|$ sends nonzero vectors to $S^{n-1}$ and fixes sphere points."
     },
     {
       "id": "s3-instances",
       "title": "$S^3$ Type Class Instances",
       "startLine": 468,
-      "endLine": 520,
+      "endLine": 521,
       "summary": "Lifts $S^3$ properties to type class instances. Axiomatizes locally Euclidean and simple connectivity (Seifert–van Kampen needed)."
     },
     {
       "id": "classification",
       "title": "3-Manifold Classification",
       "startLine": 522,
-      "endLine": 545,
+      "endLine": 546,
       "summary": "**Proves** `closed_3_manifold_classification`: simply connected $\\iff$ homeomorphic to $S^3$."
     },
     {
       "id": "connected-sum",
       "title": "Connected Sum and Prime Decomposition",
       "startLine": 547,
-      "endLine": 605,
+      "endLine": 606,
       "summary": "Axiomatizes connected sum $M \\# N$ with commutativity and identity. Defines primality, states Kneser's theorem, **proves** $S^3$ is prime."
     },
     {
       "id": "geometrization-consequence",
       "title": "Geometrization Consequences",
       "startLine": 607,
-      "endLine": 627,
+      "endLine": 628,
       "summary": "**Proves** `simply_connected_geometry`: simply connected 3-manifolds admit only spherical Thurston geometry."
     },
     {
       "id": "summary",
       "title": "Summary of Verified Results",
       "startLine": 629,
-      "endLine": 698,
+      "endLine": 17663,
       "summary": "Catalogues all proved results (15+) and axiomatized components (~12), with `#check` statements verifying each declaration."
     }
   ],

@@ -85,56 +85,56 @@
       "title": "Basic Definitions",
       "summary": "tau, IsHighlyComposite, HC, Q(x)",
       "startLine": 36,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "examples",
       "title": "Small Highly Composite Numbers",
       "summary": "1, 2, 4, 6, 12 are HC; divisor counts; OEIS A002182",
       "startLine": 68,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "erdos-lower",
       "title": "Erdős's Lower Bound (1944)",
       "summary": "Q(x) ≫ (log x)^{1+c} for some c > 0",
       "startLine": 141,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "question",
       "title": "The Erdős Question",
       "summary": "Is Q(x) ≫_k (log x)^k for all k?",
       "startLine": 164,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "nicolas",
       "title": "Nicolas's Disproof (1971)",
       "summary": "Q(x) ≪ (log x)^C disproves the conjecture",
       "startLine": 184,
-      "endLine": 218
+      "endLine": 219
     },
     {
       "id": "bounds",
       "title": "Tight Bounds",
       "summary": "(log x)^{1+c} ≪ Q(x) ≪ (log x)^C",
       "startLine": 220,
-      "endLine": 240
+      "endLine": 241
     },
     {
       "id": "structure",
       "title": "Structure of HC Numbers",
       "summary": "Prime factorization properties, Ramanujan characterization, superior HC numbers",
       "startLine": 242,
-      "endLine": 271
+      "endLine": 272
     },
     {
       "id": "comparison",
       "title": "Comparison with Other Sequences",
       "summary": "HC vs primes (Q(x)/π(x) → 0), highly abundant numbers",
       "startLine": 273,
-      "endLine": 292
+      "endLine": 293
     },
     {
       "id": "summary",

@@ -44,7 +44,8 @@
     "dateAdded": "2025-12-31",
     "axiomCount": 1,
     "lineCount": 335,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Szemeredi's theorem is one of the crown jewels of combinatorics. The progression of proofs reflects major developments:\n\n- 1936: Erdos-Turan conjecture formulated\n- 1953: Roth proves k=3 (analytic method)\n- 1969: Szemeredi proves k=4 (combinatorial tour de force)\n- 1975: Szemeredi proves general case (regularity lemma)\n- 1977: Furstenberg proves via ergodic theory\n- 2001: Gowers proves with improved bounds (Fourier analysis)\n\nThe regularity lemma, developed for this proof, became a fundamental tool in combinatorics.",
@@ -76,7 +77,7 @@
       "id": "definitions",
       "title": "Arithmetic Progressions",
       "startLine": 40,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "Defines `HasAPOfLength S k` (set contains $k$-term AP with positive common difference), `IsAPFree S k` (no $k$-AP in $S$), `hasAPOfLengthFinset`, and the formal `SzemerediTheorem` statement.",
       "mathContext": "$S$ has a $k$-AP: $\\exists a, d > 0, \\{a, a+d, \\ldots, a+(k-1)d\\} \\subseteq S$. Szemerédi: $\\forall k, \\delta > 0, \\exists N_0$: dense subsets of $[N]$ contain a $k$-AP."
     },
@@ -100,7 +101,7 @@
       "id": "mathlib-connection",
       "title": "Mathlib Connection",
       "startLine": 127,
-      "endLine": 186,
+      "endLine": 187,
       "summary": "**Proved.** Establishes `threeAPFree_iff_isAPFree`: equivalence between Mathlib's `ThreeAPFree` and our `IsAPFree S 3`. Bridges the two API styles.",
       "mathContext": "`ThreeAPFree S` $\\iff$ `IsAPFree S 3`. The key step: Mathlib's 3-AP is defined via $x + z = 2y$, ours via $\\{a, a+d, a+2d\\} \\subseteq S$."
     },
@@ -108,7 +109,7 @@
       "id": "roth",
       "title": "Roth's Theorem (k=3)",
       "startLine": 188,
-      "endLine": 271,
+      "endLine": 272,
       "summary": "**Proved.** Derives `szemeredi_k3` from Mathlib's `roth_3ap_theorem_nat` via the ThreeAPFree equivalence. This is the deepest proved case.",
       "mathContext": "Roth (1953): $\\forall \\delta > 0, \\exists N_0: |S \\cap [N]| \\geq \\delta N, N \\geq N_0 \\Rightarrow S$ has a 3-AP. Proved in Mathlib via corners $\\to$ triangle removal $\\to$ regularity."
     },

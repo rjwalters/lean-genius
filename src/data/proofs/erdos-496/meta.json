@@ -22,7 +22,8 @@
     "erdosProblemStatus": "solved",
     "axiomCount": 6,
     "lineCount": 132,
-    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
+    "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Oppenheim conjectured in 1929 that any indefinite irrational quadratic form in $n \\geq 3$ variables takes values arbitrarily close to zero at integer points. Meyer (1884) had already shown that indefinite integral (rational) forms in $\\geq 5$ variables represent zero exactly, but the irrational case is fundamentally different. Davenport and Heilbronn (1946) proved the conjecture for $n \\geq 5$ using the Hardy–Littlewood circle method. The cases $n = 3, 4$ resisted analytic approaches for decades. Margulis achieved the breakthrough in 1987 by translating the problem into dynamics on homogeneous spaces: values of the quadratic form at integer points correspond to orbits of $\\mathrm{SO}(2,1)$ on $\\mathrm{SL}(3,\\mathbb{R})/\\mathrm{SL}(3,\\mathbb{Z})$, and Ratner-type results on unipotent flows show these orbits are either closed (rational form) or dense (irrational form). This was one of the results cited for Margulis's 1978 Fields Medal work on dynamics of lattice subgroups. Eskin, Margulis, and Mozes (1998) obtained quantitative refinements, showing the number of integer solutions with $|Q| < \\delta$ and $\\max|x_i| \\leq T$ grows as $c \\cdot \\delta \\cdot T$ for large $T$.",
@@ -52,14 +53,14 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 29,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Defines `ternaryForm α x y z = x^2 + y^2 - \\alpha z^2$, `IsIndefinite α` ($\\alpha > 0$), and `ApproxZero α ε` ($\\exists x,y,z > 0$ with $|Q(x,y,z)| < \\varepsilon$)."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem (Margulis 1987)",
       "startLine": 44,
-      "endLine": 51,
+      "endLine": 52,
       "summary": "Margulis's theorem: $\\text{Irrational}(\\alpha) \\land \\alpha > 0 \\implies \\forall \\varepsilon > 0,\\; \\text{ApproxZero}(\\alpha, \\varepsilon)$. The resolution of the Oppenheim conjecture for $n = 3$."
     },
     {
@@ -73,28 +74,28 @@
       "id": "dense-implies-approx",
       "title": "Dense Values Implies Approximation",
       "startLine": 63,
-      "endLine": 75,
+      "endLine": 76,
       "summary": "A fully proved theorem: density of values implies zero can be approximated, by specializing the target to $t = 0$."
     },
     {
       "id": "rational-bound",
       "title": "Rational Forms Bounded Away from Zero",
       "startLine": 77,
-      "endLine": 86,
+      "endLine": 87,
       "summary": "For $\\alpha = p/q$ rational, $\\exists \\delta > 0$ such that $|Q(x,y,z)| \\geq \\delta$ at all nonzero integer points with $Q \\neq 0$. Irrationality is essential."
     },
     {
       "id": "davenport-heilbronn",
       "title": "Davenport–Heilbronn for Five Variables",
       "startLine": 88,
-      "endLine": 96,
+      "endLine": 97,
       "summary": "The diagonal form $x_1^2 + x_2^2 + x_3^2 + x_4^2 - \\alpha x_5^2$ approximates zero for irrational $\\alpha > 0$. Proved by the circle method (1946)."
     },
     {
       "id": "orbit-dichotomy",
       "title": "Margulis Orbit Dichotomy",
       "startLine": 98,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "The dynamical heart: either $\\alpha$ is rational (closed orbit, bounded away from zero) or values are dense in $\\mathbb{R}$ (dense orbit). Includes the proved `irrational_not_rational` lemma."
     },
     {

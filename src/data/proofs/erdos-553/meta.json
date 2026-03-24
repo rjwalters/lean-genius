@@ -47,7 +47,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 210,
-    "assumptions": "No axioms. 15 sorry(s) remain in the formalization."
+    "assumptions": "No axioms. 15 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and Sós, motivated by the observation that additional colors in Ramsey problems can qualitatively change the asymptotics.  The 2-color off-diagonal Ramsey number R(3,n) — the minimum m such that any 2-coloring of K_m contains a red triangle or blue K_n — was bounded by Shearer (1983) as R(3,n) ≤ Cn²/log n using his celebrated entropy method, and by Kim (1995) as R(3,n) ≥ cn²/log n using the semi-random 'triangle-free process', establishing R(3,n) = Θ(n²/log n).  The 3-color variant R(3,3,n) was far less understood until Alon and Rödl (2005) proved R(3,3,n) ≍ n³(log n)^{O(1)}, confirming the Erdős–Sós conjecture that the ratio diverges.  Their proof combines dependent random choice (for the upper bound) with algebraic constructions based on norm graphs over finite fields (for the lower bound).  The result reveals that each additional triangle color adds a power of n to the Ramsey threshold — a striking structural phenomenon whose full generalization to r triangle colors remains open.",
@@ -73,7 +74,7 @@
       "title": "Graph Coloring Basics",
       "summary": "Defines EdgeColoring as Fin n × Fin n → Fin k with symmetry predicate, monochromatic cliques (sets with all edges one color), and monochromatic triangles (three distinct vertices with matching edges).",
       "startLine": 32,
-      "endLine": 53,
+      "endLine": 54,
       "mathContext": "Edge colorings $c : \\binom{[m]}{2} \\to [k]$ are the fundamental objects of Ramsey theory.  The formalization uses ordered pairs with a symmetry predicate rather than unordered pairs for simplicity.  A monochromatic $K_s$ in color $i$ is a set $S$ of $s$ vertices with $c(u,v) = i$ for all $u \\neq v \\in S$."
     },
     {
@@ -81,7 +82,7 @@
       "title": "Two-Color Ramsey R(3,n)",
       "summary": "Defines R_3_n via Nat.find as the least m with the 2-color Ramsey property for (3,n). Includes propositional alternative IsR3n with minimality condition.",
       "startLine": 55,
-      "endLine": 71,
+      "endLine": 72,
       "mathContext": "$R(3,n)$ is the smallest $m$ such that every 2-coloring of $K_m$ yields a red $K_3$ or a blue $K_n$.  Known: $R(3,n) = \\Theta(n^2/\\log n)$ — the quadratic growth with logarithmic correction is a hallmark of the off-diagonal regime where one parameter is fixed."
     },
     {
@@ -89,7 +90,7 @@
       "title": "Three-Color Ramsey R(3,3,n)",
       "summary": "Defines R_3_3_n via Nat.find for the 3-color Ramsey property: red-K₃ or blue-K₃ or green-Kₙ. Includes propositional alternative IsR33n.",
       "startLine": 73,
-      "endLine": 92,
+      "endLine": 93,
       "mathContext": "$R(3,3,n)$ allows *two* triangle colors and one clique color.  The two triangle-free color classes can together cover up to $m^2/2$ edges (double what one can), so the clique color is much sparser, requiring $m \\approx n^3$ before $K_n$ is forced."
     },
     {
@@ -97,7 +98,7 @@
       "title": "Shearer and Alon–Rödl Bounds",
       "summary": "States four axiomatized bounds: Shearer's R(3,n) ≤ Cn²/log n, the R(3,n) ≥ cn²/(log n)² lower bound, and Alon–Rödl's two-sided R(3,3,n) ≍ n³(log n)^{O(1)}.",
       "startLine": 94,
-      "endLine": 113,
+      "endLine": 114,
       "mathContext": "Shearer's bound: if $G$ is triangle-free with $\\alpha(G) < n$, the entropy of the degree sequence yields $|V(G)| \\leq C n^2/\\log n$.  Alon–Rödl upper: dependent random choice gives a large 'common neighborhood' structure that forces triangles or large cliques.  Alon–Rödl lower: norm graphs over $\\mathbb{F}_q$ provide explicit triangle-free graphs with $\\Theta(q^{3/2})$ edges, two copies of which cover enough edges to delay $K_n$."
     },
     {
@@ -105,7 +106,7 @@
       "title": "Main Divergence Result",
       "summary": "Defines RatioTendsToInfinity as ∀ M > 0, ∃ N, ∀ n ≥ N: R(3,3,n)/R(3,n) > M. Proves erdos_553_main from the bounds.",
       "startLine": 115,
-      "endLine": 128,
+      "endLine": 129,
       "mathContext": "The ratio $R(3,3,n)/R(3,n) \\geq (c/C) \\cdot n \\cdot (\\log n)^{1-k} \\to \\infty$ as $n \\to \\infty$, since $n$ dominates any power of $\\log n$.  This is the core result solving Erdős Problem 553."
     },
     {
@@ -113,7 +114,7 @@
       "title": "Turán-Style Intuition",
       "summary": "Proves (modulo sorry) the Turán bound for triangle-free graphs (≤ n²/4 edges) and that two triangle-free graphs together have ≤ n²/2 edges, explaining why the third color helps.",
       "startLine": 130,
-      "endLine": 145,
+      "endLine": 146,
       "mathContext": "Mantel (1907) / Turán (1941): $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$.  Two triangle-free graphs on $n$ vertices cover at most $n^2/2$ edges.  In a 3-coloring of $K_m$, the clique color gets at least $\\binom{m}{2} - m^2/2 \\approx 0$ edges when $m$ is small, requiring much larger $m$ before $K_n$ can form."
     },
     {
@@ -121,7 +122,7 @@
       "title": "Off-Diagonal Ramsey Numbers",
       "summary": "Defines general R(s,t) via Nat.find, states R(3,3) = 6, and shows R_3_n agrees with R 3 n.",
       "startLine": 147,
-      "endLine": 163,
+      "endLine": 164,
       "mathContext": "The off-diagonal Ramsey number $R(s,t)$ generalizes the problem.  $R(3,3) = 6$ is the simplest nontrivial case (the 'party problem').  The proof that $R(3,3) \\leq 6$ uses pigeonhole on vertex degrees; $R(3,3) > 5$ is witnessed by the 5-cycle $C_5$ (self-complementary, triangle-free)."
     },
     {
@@ -129,7 +130,7 @@
       "title": "Asymptotic Notation and Generalizations",
       "summary": "Defines AsymptoticEquiv (≍ notation), restates Alon–Rödl and Shearer in asymptotic form, defines MultiColorRamsey for general parameters, and states the Erdős–Sós generalization conjecture.",
       "startLine": 165,
-      "endLine": 206,
+      "endLine": 210,
       "mathContext": "The Erdős–Sós generalization predicts $R(\\underbrace{3,\\ldots,3}_{s}, n) / R(\\underbrace{3,\\ldots,3}_{r}, n) \\to \\infty$ for $r < s$.  The heuristic $R(\\underbrace{3,\\ldots,3}_{r}, n) \\asymp n^{r+1}$ follows from $r$ triangle-free color classes covering $r \\cdot m^2/4$ edges."
     }
   ],
