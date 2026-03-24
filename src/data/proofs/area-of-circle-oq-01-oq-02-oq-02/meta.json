@@ -42,7 +42,7 @@
       "Periodicity kills boundary term: f(2π) - f(0) = 0 simplifies IBP to a clean algebraic identity",
       "Full field_simp/ring closure of the Fourier coefficient algebra"
     ],
-    "historicalContext": "The relationship between differentiation and Fourier coefficients is fundamental to harmonic analysis. For a smooth periodic function, differentiation in the time domain corresponds to multiplication by in in the frequency domain. This formula, a discrete analogue of the Fourier transform property, was central to Hurwitz's 1902 Fourier-analytic proof of the isoperimetric inequality.",
+    "historicalContext": "The IBP formula for Fourier coefficients originates in Fourier's *Théorie analytique de la chaleur* (1822). It encodes the fundamental principle that differentiation in the time domain corresponds to multiplication by $in$ in the frequency domain. Hurwitz (1902) used this to give the first Fourier-analytic proof of the isoperimetric inequality.",
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
     "relatedProblems": [
@@ -65,7 +65,7 @@
   },
   "overview": {
     "summary": "Proves the integration by parts formula for Fourier coefficients of periodic functions: ĉₙ(f') = i·n·ĉₙ(f) for 2π-periodic C¹ functions f and n ≠ 0. The proof lifts real functions to complex via ofRealCLM, applies Mathlib's fourierCoeffOn_of_hasDerivAt, and uses periodicity f(2π) = f(0) to eliminate the boundary term.",
-    "historicalContext": "The formula $\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$ is a cornerstone of Fourier analysis. It states that differentiation in the time domain corresponds to multiplication by $in$ in the frequency domain. Adolf Hurwitz used this property in his celebrated 1902 proof of the isoperimetric inequality: by expressing the perimeter $L$ and area $A$ of a closed curve in terms of Fourier coefficients and applying the IBP formula, one derives $L^2 - 4\\pi A = \\sum_{n \\neq 0,1} (|a'_n|^2 - n^2|a_n|^2 + \\ldots) \\geq 0$, with equality only for circles.",
+    "historicalContext": "The relationship between differentiation and Fourier series goes back to the origins of the subject. Joseph Fourier, in his *Théorie analytique de la chaleur* (1822, based on his 1807 memoir), implicitly used term-by-term differentiation of trigonometric series to solve the heat equation — the first systematic exploitation of the frequency-domain view of differentiation. Peter Gustav Lejeune Dirichlet made this rigorous in 1829 by establishing convergence conditions for Fourier series, showing when term-by-term operations are justified.\n\nThe formula $\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$ in its modern form appears naturally once Fourier coefficients are expressed as complex exponentials rather than separate sine and cosine terms — a notational shift that became standard through the work of Charles-Jean de la Vallée Poussin and others in the early 20th century. The key observation is that $\\frac{d}{dt}e^{int} = in \\cdot e^{int}$, so integration by parts transfers the derivative from $f$ to the exponential basis function, picking up a factor of $in$.\n\nAdolf Hurwitz gave the most celebrated application in his 1902 paper *Sur quelques applications géométriques des séries de Fourier*: he expressed both the perimeter $L$ and enclosed area $A$ of a closed plane curve in terms of its Fourier coefficients, applied the IBP formula to relate the coefficients of the parametric derivatives $(x'(t), y'(t))$ to those of $(x(t), y(t))$, and obtained $L^2 - 4\\pi A \\geq 0$ from Parseval's identity — an elegant proof of the isoperimetric inequality with equality precisely for circles. This Fourier-analytic approach, later refined by Wirtinger and others, remains one of the most beautiful applications of harmonic analysis to geometry.",
     "problemStatement": "**Open Question**: Can the isoperimetric inequality $C^2 \\geq 4\\pi A$ be proved using Fourier analysis?\n\n**This entry**: Proves the IBP formula for Fourier coefficients, which is the key analytical ingredient. For a $C^1$ function $f: \\mathbb{R} \\to \\mathbb{R}$ with period $2\\pi$ and $n \\neq 0$:\n$$\\hat{c}_n(f') = in \\cdot \\hat{c}_n(f)$$\nwhere $\\hat{c}_n(g) = \\frac{1}{2\\pi} \\int_0^{2\\pi} g(t) e^{-int} \\, dt$.",
     "text": "Proves the integration by parts formula for Fourier coefficients: for a C¹ periodic function f with period 2π, the Fourier coefficient of the derivative satisfies ĉₙ(f') = i·n·ĉₙ(f). This is key infrastructure for the Fourier-analytic proof of the isoperimetric inequality.",
     "proofStrategy": "1. **Lift to complex**: Prove that for C¹ real f, HasDerivAt (ofReal ∘ f) ((ofReal ∘ deriv f) x) x via the chain rule (ofRealCLM is a ContinuousLinearMap).\n2. **Apply Mathlib IBP**: Use fourierCoeffOn_of_hasDerivAt to get the Fourier IBP formula with boundary term.\n3. **Kill boundary**: Periodicity f(2π) = f(0) makes the boundary term f(2π) - f(0) = 0.\n4. **Algebraic cleanup**: field_simp and ring close the goal after simplification.",
@@ -114,6 +114,16 @@
       "targetId": "area-of-circle-oq-01-oq-02-oq-01",
       "relationship": "sibling",
       "description": "Sibling entry generalizing circumference integration to n-dimensional volume from surface area — both extend the parent's radial integration technique, with this file applying it to periodic function analysis via IBP and the sibling extending to higher-dimensional geometry"
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "extends",
+      "description": "Root ancestor: the area of a circle $A = \\pi r^2$ via integration. This entry provides Fourier infrastructure toward the isoperimetric inequality $L^2 \\geq 4\\pi A$, which characterizes the circle as the shape maximizing area for a given perimeter."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus-oq-01",
+      "relationship": "related",
+      "description": "Integration by parts — the core technique in this proof — is a direct corollary of the product rule and FTC. The Fourier IBP formula specializes general IBP to the setting of exponential basis functions $e^{-int}$."
     }
   ],
   "sections": [
@@ -168,12 +178,14 @@
     ]
   },
   "relatedProofs": [
+    "area-of-circle",
     "area-of-circle-oq-01-oq-02",
     "area-of-circle-oq-01-oq-03",
     "area-of-circle-oq-01-oq-02-oq-01",
     "fourier-series",
     "isoperimetric-theorem",
-    "fundamental-theorem-calculus"
+    "fundamental-theorem-calculus",
+    "fundamental-theorem-calculus-oq-01"
   ],
   "leanFile": {
     "imports": [
