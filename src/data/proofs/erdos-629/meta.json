@@ -1,10 +1,10 @@
 {
   "id": "erdos-629",
-  "title": "Erdős #629: List Chromatic Number of Bipartite Graphs",
+  "title": "Erd\u0151s #629: List Chromatic Number of Bipartite Graphs",
   "slug": "erdos-629",
-  "description": "Find n(k) = minimal vertices in bipartite G with list chromatic number χ_L(G) > k. Surprisingly, χ_L can be arbitrarily large even though χ ≤ 2!",
+  "description": "Find n(k) = minimal vertices in bipartite G with list chromatic number \u03c7_L(G) > k. Surprisingly, \u03c7_L can be arbitrarily large even though \u03c7 \u2264 2!",
   "meta": {
-    "author": "Paul Erdős, Arthur Rubin, Herbert Taylor",
+    "author": "Paul Erd\u0151s, Arthur Rubin, Herbert Taylor",
     "sourceUrl": "https://erdosproblems.com/629",
     "date": "1980",
     "status": "formalized",
@@ -26,16 +26,16 @@
     "assumptions": "No axioms. 8 sorry(s) remain in the formalization."
   },
   "overview": {
-    "historicalContext": "Erdős, Rubin, and Taylor introduced the concept of list coloring (choosability) in their landmark 1979/1980 paper, which revealed a fundamental surprise: bipartite graphs, though 2-colorable, can have arbitrarily large list chromatic number. They proved the first bounds $2^{k-1} < n(k) < k^2 \\cdot 2^{k+2}$ and computed $n(2) = 6$ using $K_{3,3}$ with a clever adversarial list assignment. Hanson, MacGillivray, and Toft (1996) determined $n(3) = 14$ through exhaustive case analysis and gave the recursive bound $n(k) \\leq k \\cdot n(k-2) + 2^k$. Radhakrishnan and Srinivasan (2000) improved the lower bound to $n(k) \\geq c \\cdot 2^k \\sqrt{k/\\ln k}$ using an entropy-based refinement of the probabilistic method. Galvin's 1995 theorem that $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$, proved via the kernel method, provides the key structural result for complete bipartite graphs. The problem connects to Property B (Erdős Problem #901) via the sandwich inequality $m(k) \\leq n(k) \\leq m(k+1)$, linking list coloring to hypergraph 2-coloring theory.",
+    "historicalContext": "Erd\u0151s, Rubin, and Taylor introduced the concept of list coloring (choosability) in their landmark 1979/1980 paper, which revealed a fundamental surprise: bipartite graphs, though 2-colorable, can have arbitrarily large list chromatic number. They proved the first bounds $2^{k-1} < n(k) < k^2 \\cdot 2^{k+2}$ and computed $n(2) = 6$ using $K_{3,3}$ with a clever adversarial list assignment. Hanson, MacGillivray, and Toft (1996) determined $n(3) = 14$ through exhaustive case analysis and gave the recursive bound $n(k) \\leq k \\cdot n(k-2) + 2^k$. Radhakrishnan and Srinivasan (2000) improved the lower bound to $n(k) \\geq c \\cdot 2^k \\sqrt{k/\\ln k}$ using an entropy-based refinement of the probabilistic method. Galvin's 1995 theorem that $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$, proved via the kernel method, provides the key structural result for complete bipartite graphs. The problem connects to Property B (Erd\u0151s Problem #901) via the sandwich inequality $m(k) \\leq n(k) \\leq m(k+1)$, linking list coloring to hypergraph 2-coloring theory.",
     "problemStatement": "The list chromatic number $\\chi_L(G)$ is the minimal $k$ such that for any assignment of lists of $k$ colors to vertices, a proper coloring exists from the lists. Find $n(k) =$ minimum number of vertices in a bipartite graph $G$ with $\\chi_L(G) > k$.",
-    "text": "Find n(k) = minimal vertices in bipartite G with list chromatic number χ_L(G) > k. Surprisingly, χ_L can be arbitrarily large even though χ ≤ 2!",
+    "text": "Find n(k) = minimal vertices in bipartite G with list chromatic number \u03c7_L(G) > k. Surprisingly, \u03c7_L can be arbitrarily large even though \u03c7 \u2264 2!",
     "proofStrategy": "The formalization builds on Mathlib's `SimpleGraph` and defines list coloring from scratch: `ColorListAssignment`, `RespectsLists`, `IsKListColorable`, and `listChromaticNumber` via infimum. The function $n(k)$ is defined as the infimum over bipartite witnesses. Aristotle proved 6 key results: `bipartite_chromatic_le_two`, `bipartite_list_chromatic_unbounded` (via the hitting-set construction on $(k+1)$-subsets), `n_well_defined`, `n_mono`, `n_2_eq_6` (using $K_{3,3}$ + case analysis), and `ert_lower_bound` (via the probabilistic method with random 2-coloring of colors). The remaining 8 sorries include $n(3) = 14$, the upper bound, improved bounds, Property B connection, and asymptotic results.",
     "keyInsights": [
-      "**The choosability surprise**: Bipartite graphs have $\\chi(G) \\leq 2$ but $\\chi_L(G)$ can be arbitrarily large — list coloring is fundamentally harder than ordinary coloring because an adversary controls the color lists",
+      "**The choosability surprise**: Bipartite graphs have $\\chi(G) \\leq 2$ but $\\chi_L(G)$ can be arbitrarily large \u2014 list coloring is fundamentally harder than ordinary coloring because an adversary controls the color lists",
       "**Hitting set construction**: The unboundedness proof uses $V = \\binom{[2k+1]}{k+1}$ as vertices of a complete bipartite graph; each vertex's list is its subset; the pigeonhole principle forces $\\geq k+1$ colors per side from only $2k+1$ total, guaranteeing a collision",
-      "**Probabilistic lower bound**: The proof that $2^{k-1} < n(k)$ uses a random 2-partition of colors — if $|V| < 2^k$, the union bound shows with positive probability every vertex has a usable color from its partition side",
+      "**Probabilistic lower bound**: The proof that $2^{k-1} < n(k)$ uses a random 2-partition of colors \u2014 if $|V| < 2^k$, the union bound shows with positive probability every vertex has a usable color from its partition side",
       "**Property B bridge**: The inequality $m(k) \\leq n(k) \\leq m(k+1)$ connects list coloring of bipartite graphs to Property B of set families, reducing questions about $n(k)$ to hypergraph 2-coloring thresholds",
-      "**Galvin's theorem context**: $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ (Galvin 1995) via the kernel method shows that for balanced complete bipartite graphs, the list chromatic number grows logarithmically — a key structural result underlying the bounds on $n(k)$"
+      "**Galvin's theorem context**: $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ (Galvin 1995) via the kernel method shows that for balanced complete bipartite graphs, the list chromatic number grows logarithmically \u2014 a key structural result underlying the bounds on $n(k)$"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -59,7 +59,7 @@
     },
     {
       "id": "bipartite",
-      "title": "Bipartite Graphs and the χ vs χ_L Gap",
+      "title": "Bipartite Graphs and the \u03c7 vs \u03c7_L Gap",
       "summary": "Defines `IsBipartite G` (2-colorable via `Fin 2`), proves `bipartite_chromatic_le_two` ($\\chi(G) \\leq 2$, Aristotle), and builds the `MyGraph k` construction with Aristotle-proved lemmas showing `MyGraph k` is bipartite and not $(k+1)$-list-colorable via the hitting-set argument.",
       "startLine": 91,
       "endLine": 258
@@ -102,21 +102,21 @@
     {
       "id": "property-b",
       "title": "Property B Connection",
-      "summary": "Defines `propertyB_threshold k` ($m(k)$ = smallest family of $k$-sets without Property B). States `n_property_b_bounds` (sorry): $m(k) \\leq n(k) \\leq m(k+1)$, connecting list coloring to Erdős Problem #901.",
+      "summary": "Defines `propertyB_threshold k` ($m(k)$ = smallest family of $k$-sets without Property B). States `n_property_b_bounds` (sorry): $m(k) \\leq n(k) \\leq m(k+1)$, connecting list coloring to Erd\u0151s Problem #901.",
       "startLine": 831,
       "endLine": 845
     },
     {
       "id": "constructions",
       "title": "Complete Bipartite Graphs and Asymptotics",
-      "summary": "Defines `completeBipartite m n` ($K_{m,n}$ on `Fin m ⊕ Fin n`). States `knn_list_chromatic` (sorry): $\\chi_L(K_{n,n}) \\approx \\log_2 n + 1$. States `n_exponential_growth` (sorry) and defines `ExactAsymptoticConjecture`: $n(k) = \\Theta(2^k \\cdot k^\\alpha)$.",
+      "summary": "Defines `completeBipartite m n` ($K_{m,n}$ on `Fin m \u2295 Fin n`). States `knn_list_chromatic` (sorry): $\\chi_L(K_{n,n}) \\approx \\log_2 n + 1$. States `n_exponential_growth` (sorry) and defines `ExactAsymptoticConjecture`: $n(k) = \\Theta(2^k \\cdot k^\\alpha)$.",
       "startLine": 847,
       "endLine": 907
     }
   ],
   "conclusion": {
-    "summary": "This 907-line formalization captures Erdős Problem #629 on list chromatic numbers of bipartite graphs. Aristotle proved 6 of the 14 key results, including the unboundedness of $\\chi_L$ for bipartite graphs, $n(2) = 6$, monotonicity of $n$, and the lower bound $2^{k-1} < n(k)$ via the probabilistic method. The 8 remaining sorries cover the upper bound, improved bounds, $n(3) = 14$, Property B connection, and asymptotic behavior.",
-    "implications": "**Theoretical Significance**: The gap between $\\chi(G)$ and $\\chi_L(G)$ for bipartite graphs reveals that list coloring is a fundamentally different problem from ordinary coloring. The connection to Property B links this to hypergraph coloring theory and Erdős Problem #901.\n\nUnderstanding the exact asymptotics of $n(k)$ would clarify the probabilistic-vs-structural boundary in extremal combinatorics. The formalization demonstrates that even for 'simple' graph classes (bipartite), list coloring problems can be remarkably deep.",
+    "summary": "This 907-line formalization captures Erd\u0151s Problem #629 on list chromatic numbers of bipartite graphs. Aristotle proved 6 of the 14 key results, including the unboundedness of $\\chi_L$ for bipartite graphs, $n(2) = 6$, monotonicity of $n$, and the lower bound $2^{k-1} < n(k)$ via the probabilistic method. The 8 remaining sorries cover the upper bound, improved bounds, $n(3) = 14$, Property B connection, and asymptotic behavior.",
+    "implications": "**Theoretical Significance**: The gap between $\\chi(G)$ and $\\chi_L(G)$ for bipartite graphs reveals that list coloring is a fundamentally different problem from ordinary coloring. The connection to Property B links this to hypergraph coloring theory and Erd\u0151s Problem #901.\n\nUnderstanding the exact asymptotics of $n(k)$ would clarify the probabilistic-vs-structural boundary in extremal combinatorics. The formalization demonstrates that even for 'simple' graph classes (bipartite), list coloring problems can be remarkably deep.",
     "openQuestions": [
       "What is the exact asymptotic exponent $\\alpha$ in $n(k) = \\Theta(2^k \\cdot k^\\alpha)$? Current bounds: $\\alpha \\in [1/2, 2]$",
       "Can $n(4)$ be computed exactly? ($n(2) = 6$, $n(3) = 14$ are known)",
@@ -129,7 +129,12 @@
     "erdos-87",
     "erdos-60",
     "randomized-maxcut",
-    "ramseys-theorem"
+    "ramseys-theorem",
+    "erdos-630",
+    "erdos-111",
+    "erdos-631",
+    "erdos-753",
+    "erdos-799"
   ],
   "leanFile": {
     "imports": [
@@ -175,5 +180,32 @@
     "axiomCount": 0,
     "theoremCount": 37,
     "definitionCount": 14
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-630",
+      "relationship": "related",
+      "description": "Share graph-theoretic, bipartite-graphs, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Share graph-theoretic, bipartite-graphs, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-631",
+      "relationship": "related",
+      "description": "Share graph-theoretic, chromatic, and list-coloring themes"
+    },
+    {
+      "targetId": "erdos-753",
+      "relationship": "related",
+      "description": "Share graph-theoretic, chromatic, and list-coloring themes"
+    },
+    {
+      "targetId": "erdos-799",
+      "relationship": "related",
+      "description": "Share graph-theoretic, chromatic, and list-coloring themes"
+    }
+  ]
 }

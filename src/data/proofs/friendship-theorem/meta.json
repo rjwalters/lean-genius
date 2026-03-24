@@ -2,9 +2,9 @@
   "id": "friendship-theorem",
   "title": "Friendship Theorem",
   "slug": "friendship-theorem",
-  "description": "The Friendship Theorem (Erdős–Rényi–Sós, 1966): In any finite graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others.",
+  "description": "The Friendship Theorem (Erd\u0151s\u2013R\u00e9nyi\u2013S\u00f3s, 1966): In any finite graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others.",
   "meta": {
-    "author": "Erdős, Rényi, and Sós (formalized in Lean 4)",
+    "author": "Erd\u0151s, R\u00e9nyi, and S\u00f3s (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Friendship_theorem",
     "date": "1966",
     "status": "verified",
@@ -38,21 +38,21 @@
       "Definition of the friendship property for simple graphs",
       "Definition of windmill graphs",
       "Statement of the main theorem with proof structure",
-      "Example windmill graph W₂ with five vertices"
+      "Example windmill graph W\u2082 with five vertices"
     ],
     "dateAdded": "2025-12-27",
     "wiedijkNumber": 83,
     "axiomCount": 0,
-    "assumptions": "Fully verified: 0 axioms, 0 sorries. FriendshipTheorem.lean imports FriendshipTheoremOQ01.lean which provides both key results: (1) regularity of friendship graphs without universal vertex (via A³ commutativity + complement-connectivity), and (2) k-regular friendship implies k=2 (via characteristic polynomial analysis). Both former axioms eliminated.",
+    "assumptions": "Fully verified: 0 axioms, 0 sorries. FriendshipTheorem.lean imports FriendshipTheoremOQ01.lean which provides both key results: (1) regularity of friendship graphs without universal vertex (via A\u00b3 commutativity + complement-connectivity), and (2) k-regular friendship implies k=2 (via characteristic polynomial analysis). Both former axioms eliminated.",
     "lineCount": 373
   },
   "overview": {
-    "historicalContext": "In 1966, Paul Erdős, Alfréd Rényi, and Vera T. Sós proved the Friendship Theorem in their paper 'On a problem of K. Zarankiewicz' (Acta Math. Hungar.). The theorem has a beautiful sociological interpretation: if in any group of people, every pair has exactly one mutual friend, then there must be a 'politician' who is friends with everyone.\n\nThe original 1966 proof uses spectral graph theory — analyzing eigenvalues of the adjacency matrix $A$ satisfying $A^2 = J - I + (k-1)A$ (for $k$-regular friendship graphs) to derive contradictions for non-windmill structures. This spectral approach, requiring linear algebra over the reals, was noted as surprisingly deep for such a clean combinatorial statement.\n\nSubsequent proofs avoided spectral methods: Herbert Wilf (1971) gave a purely combinatorial argument, and Craig Huneke (2002, American Mathematical Monthly) presented a slick algebraic proof accessible to undergraduates. The theorem is Wiedijk's #83 in the '100 theorems' list and appears in Proofs from THE BOOK.",
+    "historicalContext": "In 1966, Paul Erd\u0151s, Alfr\u00e9d R\u00e9nyi, and Vera T. S\u00f3s proved the Friendship Theorem in their paper 'On a problem of K. Zarankiewicz' (Acta Math. Hungar.). The theorem has a beautiful sociological interpretation: if in any group of people, every pair has exactly one mutual friend, then there must be a 'politician' who is friends with everyone.\n\nThe original 1966 proof uses spectral graph theory \u2014 analyzing eigenvalues of the adjacency matrix $A$ satisfying $A^2 = J - I + (k-1)A$ (for $k$-regular friendship graphs) to derive contradictions for non-windmill structures. This spectral approach, requiring linear algebra over the reals, was noted as surprisingly deep for such a clean combinatorial statement.\n\nSubsequent proofs avoided spectral methods: Herbert Wilf (1971) gave a purely combinatorial argument, and Craig Huneke (2002, American Mathematical Monthly) presented a slick algebraic proof accessible to undergraduates. The theorem is Wiedijk's #83 in the '100 theorems' list and appears in Proofs from THE BOOK.",
     "problemStatement": "**The Friendship Theorem:**\n\nLet $G = (V, E)$ be a finite simple graph satisfying the **friendship property**:\n$$\\forall u, v \\in V, \\, u \\neq v \\implies |\\{w : w \\sim u \\land w \\sim v\\}| = 1$$\n\n(Every pair of distinct vertices has exactly one common neighbor.)\n\n**Theorem:** There exists a vertex $c \\in V$ adjacent to all other vertices:\n$$\\exists c \\in V : \\forall v \\in V, \\, v \\neq c \\implies c \\sim v$$",
-    "text": "The Friendship Theorem (Erdős–Rényi–Sós, 1966): In any finite graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others.",
+    "text": "The Friendship Theorem (Erd\u0151s\u2013R\u00e9nyi\u2013S\u00f3s, 1966): In any finite graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others.",
     "proofStrategy": "The proof follows the classical spectral approach:\n\n1. **Assume no universal vertex**: If all vertices have degree less than $n-1$, analyze the structure.\n\n2. **Show regularity**: Use the friendship property to establish that either a universal vertex exists or all vertices have the same degree.\n\n3. **Spectral analysis**: For regular friendship graphs, the adjacency matrix $A$ satisfies $A^2 = J - I + (k-1)A$. The eigenvalues must satisfy specific constraints.\n\n4. **Derive contradiction**: For $n > 3$ with no universal vertex, these constraints lead to a contradiction, proving that a universal vertex must exist.\n\n5. **Windmill structure**: Once a universal vertex exists, the friendship property forces the remaining graph to be a disjoint union of edges.",
     "keyInsights": [
-      "The friendship property is extremely restrictive — only windmill graphs satisfy it",
+      "The friendship property is extremely restrictive \u2014 only windmill graphs satisfy it",
       "The spectral method reveals hidden algebraic structure in combinatorial conditions",
       "The 'politician' name captures the sociological intuition: someone friends with everyone",
       "Windmill graphs are the unique family satisfying the property",
@@ -94,14 +94,14 @@
       "startLine": 152,
       "endLine": 201,
       "summary": "Statement and proof of the Friendship Theorem.",
-      "mathContext": "The spectral argument: if $G$ has no universal vertex, then all eigenvalues besides the largest are equal, forcing the graph to be regular. But a regular friendship graph must be a cycle $C_5$, and $C_5$ does not satisfy the common-neighbor property — contradiction."
+      "mathContext": "The spectral argument: if $G$ has no universal vertex, then all eigenvalues besides the largest are equal, forcing the graph to be regular. But a regular friendship graph must be a cycle $C_5$, and $C_5$ does not satisfy the common-neighbor property \u2014 contradiction."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 203,
       "endLine": 260,
-      "summary": "The windmill graph W₂ as a concrete example satisfying the friendship property.",
+      "summary": "The windmill graph W\u2082 as a concrete example satisfying the friendship property.",
       "mathContext": "Examples: $\\text{Wd}(1) = K_3$ (triangle), $\\text{Wd}(2) = $ butterfly graph (two triangles sharing a vertex), $\\text{Wd}(3) = $ three triangles sharing a vertex (7 vertices, 9 edges)."
     },
     {
@@ -110,12 +110,12 @@
       "startLine": 262,
       "endLine": 295,
       "summary": "The 1966 paper and alternative proof approaches.",
-      "mathContext": "The friendship theorem was proved by Paul Erdős, Alfréd Rényi, and Vera T. Sós in 1966. Their original proof used the spectral method (eigenvalues of the adjacency matrix). Elementary combinatorial proofs exist but are longer. The theorem is sometimes called the 'handshake lemma' of friendship graphs."
+      "mathContext": "The friendship theorem was proved by Paul Erd\u0151s, Alfr\u00e9d R\u00e9nyi, and Vera T. S\u00f3s in 1966. Their original proof used the spectral method (eigenvalues of the adjacency matrix). Elementary combinatorial proofs exist but are longer. The theorem is sometimes called the 'handshake lemma' of friendship graphs."
     }
   ],
   "conclusion": {
-    "summary": "This formalization fully verifies the Friendship Theorem: every friendship graph has a universal ('politician') vertex. The proof combines two results from FriendshipTheoremOQ01.lean: (1) regularity of friendship graphs without universal vertex (via A³ matrix commutativity and complement-connectivity), and (2) spectral analysis showing k-regular friendship graphs have k=2 (via characteristic polynomial factorization). 0 axioms, 0 sorries.",
-    "implications": "The Friendship Theorem demonstrates the power of algebraic methods in combinatorics. The spectral approach — analyzing eigenvalues to prove combinatorial results — has become a cornerstone technique in graph theory, with applications to expander graphs, random walks, and network analysis.",
+    "summary": "This formalization fully verifies the Friendship Theorem: every friendship graph has a universal ('politician') vertex. The proof combines two results from FriendshipTheoremOQ01.lean: (1) regularity of friendship graphs without universal vertex (via A\u00b3 matrix commutativity and complement-connectivity), and (2) spectral analysis showing k-regular friendship graphs have k=2 (via characteristic polynomial factorization). 0 axioms, 0 sorries.",
+    "implications": "The Friendship Theorem demonstrates the power of algebraic methods in combinatorics. The spectral approach \u2014 analyzing eigenvalues to prove combinatorial results \u2014 has become a cornerstone technique in graph theory, with applications to expander graphs, random walks, and network analysis.",
     "openQuestions": [
       "What generalizations exist for directed graphs or hypergraphs?",
       "How does the theorem relate to strongly regular graphs?",
@@ -124,27 +124,21 @@
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Rényi, Alfréd; Sós, Vera T.",
+      "authors": "Erd\u0151s, Paul; R\u00e9nyi, Alfr\u00e9d; S\u00f3s, Vera T.",
       "title": "On a problem of graph theory",
       "year": "1966",
       "venue": "Studia Scientiarum Mathematicarum Hungarica, 1, pp. 215-235",
-      "note": "Original proof of the Friendship Theorem using spectral methods — every friendship graph is a windmill"
+      "note": "Original proof of the Friendship Theorem using spectral methods \u2014 every friendship graph is a windmill"
     }
   ],
   "crossReferences": [
     {
-      "targetId": "friendship-theorem-oq-01",
-      "relationship": "extended-by",
-      "description": "Sub-entry proving the regularity dichotomy and spectral analysis components used by the main theorem"
-    },
-    {
       "targetId": "erdos-szekeres",
       "relationship": "related",
-      "description": "Both are celebrated results in combinatorics by Erdős and collaborators — Erdős-Szekeres uses pigeonhole while friendship uses spectral graph theory"
+      "description": "Both are celebrated results in combinatorics by Erd\u0151s and collaborators \u2014 Erd\u0151s-Szekeres uses pigeonhole while friendship uses spectral graph theory"
     }
   ],
   "relatedProofs": [
-    "friendship-theorem-oq-01",
     "erdos-szekeres"
   ],
   "leanFile": {

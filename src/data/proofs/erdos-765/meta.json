@@ -82,7 +82,7 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**The Pre-Turan Era and the Origins of Extremal Graph Theory (1936-1938)**\n\nErdos first encountered this problem in 1936 while studying B2 sequences (Sidon sets) in additive number theory — Problem #425 in his collection. He proved ex(n; C4) = O(n^{3/2}) using a double-counting argument: in a C4-free graph, each pair of vertices shares at most one common neighbor, so the number of 2-paths is at most C(n,2). He later wrote with characteristic self-deprecation: 'Being struck by a curious blindness and lack of imagination, I did not at that time extend the problem from C4 to other graphs and thus missed founding an interesting and fruitful new branch of graph theory.' Turan's systematic study of extremal numbers began in 1941, five years later.\n\n**The Race for the Exact Constant (1958-1983)**\n\nReiman (1958) proved that the limit L = lim ex(n;C4)/n^{3/2} exists and satisfies 1/(2*sqrt(2)) <= L <= 1/2. The lower bound uses the Erdos-Renyi-Brown construction: the incidence graph of the projective plane PG(2,q) is C4-free (two points determine a unique line, so no two vertices share more than one common neighbor) with (1/2)q(q+1)^2 edges on q^2+q+1 vertices. For n = q^2 + q + 1, this achieves ratio approaching 1/2. Furedi (1983) completed the picture by proving exact equality for q > 13: the projective plane graph is the unique extremal graph.\n\n**Recent Developments: The Ma-Yang Breakthrough (2023)**\n\nErdos conjectured the more precise formula ex(n;C4) = (1/2)n^{3/2} + (1/4)n + O(sqrt(n)) but cautioned he had 'limited evidence.' Ma and Yang (2023) spectacularly disproved this by showing the coefficient 1/4 can be improved to 1/4 - c for some c > 0, for a positive density of values of n. The exact lower-order terms remain an active research area.\n\n**The Lean formalization** axiomatizes the historical progression from Erdos-Klein through Furedi and Ma-Yang, proving 6 results (main theorem, 4 projective plane examples, summary) and establishing the complete story of Problem #765.",
+    "historicalContext": "**The Pre-Turan Era and the Origins of Extremal Graph Theory (1936-1938)**\n\nErdos first encountered this problem in 1936 while studying B2 sequences (Sidon sets) in additive number theory \u2014 Problem #425 in his collection. He proved ex(n; C4) = O(n^{3/2}) using a double-counting argument: in a C4-free graph, each pair of vertices shares at most one common neighbor, so the number of 2-paths is at most C(n,2). He later wrote with characteristic self-deprecation: 'Being struck by a curious blindness and lack of imagination, I did not at that time extend the problem from C4 to other graphs and thus missed founding an interesting and fruitful new branch of graph theory.' Turan's systematic study of extremal numbers began in 1941, five years later.\n\n**The Race for the Exact Constant (1958-1983)**\n\nReiman (1958) proved that the limit L = lim ex(n;C4)/n^{3/2} exists and satisfies 1/(2*sqrt(2)) <= L <= 1/2. The lower bound uses the Erdos-Renyi-Brown construction: the incidence graph of the projective plane PG(2,q) is C4-free (two points determine a unique line, so no two vertices share more than one common neighbor) with (1/2)q(q+1)^2 edges on q^2+q+1 vertices. For n = q^2 + q + 1, this achieves ratio approaching 1/2. Furedi (1983) completed the picture by proving exact equality for q > 13: the projective plane graph is the unique extremal graph.\n\n**Recent Developments: The Ma-Yang Breakthrough (2023)**\n\nErdos conjectured the more precise formula ex(n;C4) = (1/2)n^{3/2} + (1/4)n + O(sqrt(n)) but cautioned he had 'limited evidence.' Ma and Yang (2023) spectacularly disproved this by showing the coefficient 1/4 can be improved to 1/4 - c for some c > 0, for a positive density of values of n. The exact lower-order terms remain an active research area.\n\n**The Lean formalization** axiomatizes the historical progression from Erdos-Klein through Furedi and Ma-Yang, proving 6 results (main theorem, 4 projective plane examples, summary) and establishing the complete story of Problem #765.",
     "problemStatement": "**Problem**: Give an asymptotic formula for ex(n; C4), where ex(n; C4) denotes the maximum number of edges in an n-vertex graph containing no 4-cycle (quadrilateral).\n\n**Answer**: ex(n; C4) ~ (1/2)n^{3/2}\n\nMore precisely:\n- lim_{n -> inf} ex(n;C4)/n^{3/2} = 1/2\n- For n = q^2 + q + 1 (q prime power > 13): ex(n;C4) = (1/2)q(q+1)^2 exactly\n- Erdos's refined conjecture ex(n;C4) = (1/2)n^{3/2} + (1/4)n + O(sqrt(n)) was DISPROVED by Ma-Yang (2023)",
     "text": "Determine an asymptotic formula for ex(n; C4), the maximum number of edges in an n-vertex graph with no 4-cycle. Answer: ex(n; C4) ~ (1/2)n^{3/2}.",
     "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds the complete story of Problem #765 in 8 sections:\n\n1. **Basic Definitions** (hasFourCycle, isFourCycleFree, edgeCount): C4 defined via 4 distinct vertices with 6 distinctness + 4 adjacency conditions\n\n2. **Extremal Function** (ex_C4, ex_C4_realized): Axiomatized maximum with existence guarantee\n\n3. **Historical Bounds**: Erdos-Klein O(n^{3/2}) upper bound, Reiman's refined constants, projective plane construction\n\n4. **Asymptotic Formula** (asymptotic_ratio, asymptotic_formula, erdos_765): Main result via limit definition\n\n5. **Furedi's Exact Result**: ex(n;C4) = (1/2)q(q+1)^2 for q > 13 prime power\n\n6. **Erdos's Conjecture and Disproof**: Refined upper bound, conjecture definition, Ma-Yang counterexample via positive-density sets\n\n7. **B2 Sequences**: Connection to Sidon sets in additive combinatorics\n\n8. **Examples** (4 PROVED): Projective plane vertex counts for q = 2,3,4,5",
@@ -96,7 +96,7 @@
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -191,5 +191,39 @@
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-147",
+      "relationship": "related",
+      "description": "Share turan-numbers, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-766",
+      "relationship": "related",
+      "description": "Share turan-numbers, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Share turan-numbers and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-59",
+      "relationship": "related",
+      "description": "Share turan-numbers and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Share graph-theoretic and extremal graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-147",
+    "erdos-766",
+    "erdos-1009",
+    "erdos-59",
+    "erdos-1011"
+  ]
 }

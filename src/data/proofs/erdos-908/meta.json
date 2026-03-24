@@ -1,10 +1,10 @@
 {
   "id": "erdos-908",
-  "title": "Erdős Problem #908: Functions with Measurable Differences",
+  "title": "Erd\u0151s Problem #908: Functions with Measurable Differences",
   "slug": "erdos-908",
-  "description": "If f : ℝ → ℝ has measurable differences (f(x+h) - f(x) is measurable for all h > 0), can f be decomposed as f = g + h + r where g is continuous, h is additive, and r is rigid? SOLVED: YES (Laczkovich, 1980).",
+  "description": "If f : \u211d \u2192 \u211d has measurable differences (f(x+h) - f(x) is measurable for all h > 0), can f be decomposed as f = g + h + r where g is continuous, h is additive, and r is rigid? SOLVED: YES (Laczkovich, 1980).",
   "meta": {
-    "author": "de Bruijn-Erdős (conjecture), Laczkovich (1980 solution)",
+    "author": "de Bruijn-Erd\u0151s (conjecture), Laczkovich (1980 solution)",
     "sourceUrl": "https://erdosproblems.com/908",
     "date": "1980",
     "status": "axiomatized",
@@ -33,7 +33,7 @@
       },
       {
         "theorem": "volume",
-        "description": "Lebesgue measure on ℝ",
+        "description": "Lebesgue measure on \u211d",
         "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
       },
       {
@@ -83,10 +83,10 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #908: Functions with Measurable Differences**\n\nThis problem originated from **Nicolaas Govert de Bruijn's** 1951 study of functions whose differences belong to given classes. In his paper \"Functions whose differences belong to a given class\" (*Nieuw Archief voor Wiskunde*), de Bruijn asked: if the difference operator $\\Delta_h f(x) = f(x+h) - f(x)$ maps $f$ into a \"nice\" class of functions for every $h$, what can we say about $f$ itself?\n\nThe specific conjecture, formulated by de Bruijn and Erdős, concerned the class of **Lebesgue measurable** functions: if $\\Delta_h f$ is measurable for all $h > 0$, is $f$ a sum of a continuous function, an additive function, and a \"rigid\" function? The motivation came from the observation that **discontinuous additive functions** (solutions of Cauchy's equation $h(x+y) = h(x) + h(y)$ constructed via Hamel bases and the Axiom of Choice) have the property that $\\Delta_t h = h(t)$ is constant — hence measurable — despite $h$ itself being non-measurable.\n\n**Miklós Laczkovich** resolved the conjecture affirmatively in 1980 in his paper \"Functions with measurable differences\" (*Acta Mathematica Academiae Scientiarum Hungaricae 35*, 217-235). His proof used deep measure-theoretic techniques, including **Steinhaus's theorem** (if $A$ has positive measure, then $A - A$ contains an interval) and properties of measurable sets under translation.\n\nThe result fits into a broader program in real analysis: understanding the interplay between algebraic structure (additivity), topological structure (continuity), and measure-theoretic structure (measurability). The three components — continuous, additive, rigid — represent three fundamentally different \"modes\" of behavior for functions on $\\mathbb{R}$.",
+    "historicalContext": "**Erd\u0151s Problem #908: Functions with Measurable Differences**\n\nThis problem originated from **Nicolaas Govert de Bruijn's** 1951 study of functions whose differences belong to given classes. In his paper \"Functions whose differences belong to a given class\" (*Nieuw Archief voor Wiskunde*), de Bruijn asked: if the difference operator $\\Delta_h f(x) = f(x+h) - f(x)$ maps $f$ into a \"nice\" class of functions for every $h$, what can we say about $f$ itself?\n\nThe specific conjecture, formulated by de Bruijn and Erd\u0151s, concerned the class of **Lebesgue measurable** functions: if $\\Delta_h f$ is measurable for all $h > 0$, is $f$ a sum of a continuous function, an additive function, and a \"rigid\" function? The motivation came from the observation that **discontinuous additive functions** (solutions of Cauchy's equation $h(x+y) = h(x) + h(y)$ constructed via Hamel bases and the Axiom of Choice) have the property that $\\Delta_t h = h(t)$ is constant \u2014 hence measurable \u2014 despite $h$ itself being non-measurable.\n\n**Mikl\u00f3s Laczkovich** resolved the conjecture affirmatively in 1980 in his paper \"Functions with measurable differences\" (*Acta Mathematica Academiae Scientiarum Hungaricae 35*, 217-235). His proof used deep measure-theoretic techniques, including **Steinhaus's theorem** (if $A$ has positive measure, then $A - A$ contains an interval) and properties of measurable sets under translation.\n\nThe result fits into a broader program in real analysis: understanding the interplay between algebraic structure (additivity), topological structure (continuity), and measure-theoretic structure (measurability). The three components \u2014 continuous, additive, rigid \u2014 represent three fundamentally different \"modes\" of behavior for functions on $\\mathbb{R}$.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $f : \\mathbb{R} \\to \\mathbb{R}$ be such that $f(x+h) - f(x)$ is Lebesgue measurable for every $h > 0$.\n\nIs it true that $f = g + h + r$ where:\n- $g$ is continuous\n- $h$ is additive: $h(x+y) = h(x) + h(y)$\n- $r$ is rigid: $r(x+h) = r(x)$ for $\\lambda$-a.e. $x$ (the null set may depend on $h$)\n\n**Answer:** YES (Laczkovich, 1980). The decomposition exists and is essentially unique.",
-    "text": "If f : ℝ → ℝ has measurable differences (f(x+h) - f(x) is measurable for all h > 0), can f be decomposed as f = g + h + r where g is continuous, h is additive, and r is rigid? SOLVED: YES (Laczkovich, 1980).",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines the three predicates and builds to the main theorem:\n\n1. **Core Definitions (Lines 52–64):** `HasMeasurableDifferences f` ($\\Delta_h f$ measurable $\\forall h > 0$), `IsAdditive h` ($h(x+y) = h(x)+h(y)$), `IsRigid r` ($r(x+h) = r(x)$ $\\lambda$-a.e.).\n\n2. **Additive Properties (Lines 69–93):** Verified proofs of $h(0) = 0$ and $h(-x) = -h(x)$. Axioms for $\\mathbb{Q}$-linearity, existence of discontinuous additive functions, and characterization of continuous additive functions as $h(x) = cx$.\n\n3. **Rigid Properties (Lines 98–106):** Axioms that rigid + continuous $\\Rightarrow$ constant, and rigid $\\Rightarrow$ measurable differences.\n\n4. **Main Theorem (Lines 117–138):** `laczkovich_decomposition` axiomatizes $f = g + h + r$. `decomposition_uniqueness` axiomatizes essential uniqueness ($g_1 - g_2$ linear, $r_1 = r_2$ a.e.).\n\n5. **Special Cases (Lines 143–175):** Measurable $f \\Rightarrow h = 0$. Verified proofs that continuous and additive functions have measurable differences.\n\n6. **de Bruijn Formulation (Lines 200–207):** `DifferenceClosed C` and proof that measurable functions are difference closed.\n\n7. **Summary (Lines 232–256):** `erdos_908_summary` combines decomposition with verification theorems.",
+    "text": "If f : \u211d \u2192 \u211d has measurable differences (f(x+h) - f(x) is measurable for all h > 0), can f be decomposed as f = g + h + r where g is continuous, h is additive, and r is rigid? SOLVED: YES (Laczkovich, 1980).",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines the three predicates and builds to the main theorem:\n\n1. **Core Definitions (Lines 52\u201364):** `HasMeasurableDifferences f` ($\\Delta_h f$ measurable $\\forall h > 0$), `IsAdditive h` ($h(x+y) = h(x)+h(y)$), `IsRigid r` ($r(x+h) = r(x)$ $\\lambda$-a.e.).\n\n2. **Additive Properties (Lines 69\u201393):** Verified proofs of $h(0) = 0$ and $h(-x) = -h(x)$. Axioms for $\\mathbb{Q}$-linearity, existence of discontinuous additive functions, and characterization of continuous additive functions as $h(x) = cx$.\n\n3. **Rigid Properties (Lines 98\u2013106):** Axioms that rigid + continuous $\\Rightarrow$ constant, and rigid $\\Rightarrow$ measurable differences.\n\n4. **Main Theorem (Lines 117\u2013138):** `laczkovich_decomposition` axiomatizes $f = g + h + r$. `decomposition_uniqueness` axiomatizes essential uniqueness ($g_1 - g_2$ linear, $r_1 = r_2$ a.e.).\n\n5. **Special Cases (Lines 143\u2013175):** Measurable $f \\Rightarrow h = 0$. Verified proofs that continuous and additive functions have measurable differences.\n\n6. **de Bruijn Formulation (Lines 200\u2013207):** `DifferenceClosed C` and proof that measurable functions are difference closed.\n\n7. **Summary (Lines 232\u2013256):** `erdos_908_summary` combines decomposition with verification theorems.",
     "keyInsights": [
       "**The Three-Way Decomposition:** Every $f$ with measurable differences splits uniquely (up to a linear function) as $f = g + h + r$: continuous ($g$), additive ($h$), rigid ($r$). Each component captures a fundamentally different \"mode\" of non-measurability: $g$ contributes smoothness, $h$ contributes algebraic structure, and $r$ contributes translation-invariant noise.",
       "**Hamel Functions as Non-Measurability Source:** Discontinuous additive functions, constructed via Hamel bases for $\\mathbb{R}/\\mathbb{Q}$, are the only source of non-measurability in functions with measurable differences. If $f$ itself is measurable, the additive part vanishes ($h = 0$). This explains the precise mechanism by which measurable differences can coexist with non-measurability.",
@@ -144,7 +144,7 @@
     },
     {
       "id": "related-problems",
-      "title": "Connection to Erdős #907",
+      "title": "Connection to Erd\u0151s #907",
       "summary": "Formalizes Problem #907: additive + bounded on $(a,b) \\Rightarrow$ continuous. Axiom `erdos_907_connection` asserts this. Connects to #908 via the additive component's (dis)continuity.",
       "startLine": 183,
       "endLine": 197
@@ -165,8 +165,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #908 asked whether functions with measurable differences decompose as continuous + additive + rigid. Laczkovich (1980) proved YES, resolving the de Bruijn-Erdős conjecture. The formalization has 0 sorry statements, with verified proofs for additive properties ($h(0)=0$, $h(-x)=-h(x)$), continuous/additive verification theorems, and the summary theorem combining all results.",
-    "implications": "**Theoretical Significance**: **Broader Mathematical Connections**\n\n1. **Functional Equations:** The result is central to the theory of Cauchy's functional equation $h(x+y) = h(x) + h(y)$, which has been studied since Cauchy (1821). The dichotomy — continuous solutions are linear, discontinuous solutions are pathological — is a cornerstone of real analysis.\n\n2. **Axiom of Choice in Analysis:** Discontinuous additive functions require the Axiom of Choice (specifically, the existence of a Hamel basis for $\\mathbb{R}/\\mathbb{Q}$). Problem #908 shows that these are the *only* source of non-measurability in functions with measurable differences, clarifying the role of Choice in this setting.\n\n**3. Steinhaus's Theorem:** The proof technique — using Steinhaus's theorem to convert measure-theoretic information into topological structure — is a powerful paradigm in real analysis. It also appears in the proof that measurable group homomorphisms are continuous.\n\n4. **Descriptive Set Theory:** The question of which function classes are \"difference closed\" connects to the Borel hierarchy and descriptive complexity of function classes. The measurable case is resolved; the Baire hierarchy and higher descriptive classes remain partially open.\n\n5. **Ergodic Theory Connection:** Rigid functions ($r(x+h) = r(x)$ a.e.) are related to invariant functions in ergodic theory. The decomposition $f = g + h + r$ parallels the decomposition of functions into deterministic, algebraic, and \"noise\" components.",
+    "summary": "Erd\u0151s Problem #908 asked whether functions with measurable differences decompose as continuous + additive + rigid. Laczkovich (1980) proved YES, resolving the de Bruijn-Erd\u0151s conjecture. The formalization has 0 sorry statements, with verified proofs for additive properties ($h(0)=0$, $h(-x)=-h(x)$), continuous/additive verification theorems, and the summary theorem combining all results.",
+    "implications": "**Theoretical Significance**: **Broader Mathematical Connections**\n\n1. **Functional Equations:** The result is central to the theory of Cauchy's functional equation $h(x+y) = h(x) + h(y)$, which has been studied since Cauchy (1821). The dichotomy \u2014 continuous solutions are linear, discontinuous solutions are pathological \u2014 is a cornerstone of real analysis.\n\n2. **Axiom of Choice in Analysis:** Discontinuous additive functions require the Axiom of Choice (specifically, the existence of a Hamel basis for $\\mathbb{R}/\\mathbb{Q}$). Problem #908 shows that these are the *only* source of non-measurability in functions with measurable differences, clarifying the role of Choice in this setting.\n\n**3. Steinhaus's Theorem:** The proof technique \u2014 using Steinhaus's theorem to convert measure-theoretic information into topological structure \u2014 is a powerful paradigm in real analysis. It also appears in the proof that measurable group homomorphisms are continuous.\n\n4. **Descriptive Set Theory:** The question of which function classes are \"difference closed\" connects to the Borel hierarchy and descriptive complexity of function classes. The measurable case is resolved; the Baire hierarchy and higher descriptive classes remain partially open.\n\n5. **Ergodic Theory Connection:** Rigid functions ($r(x+h) = r(x)$ a.e.) are related to invariant functions in ergodic theory. The decomposition $f = g + h + r$ parallels the decomposition of functions into deterministic, algebraic, and \"noise\" components.",
     "openQuestions": [
       "For which other function classes $C$ (e.g., $L^p$, bounded variation, Baire class $\\alpha$) is difference closure true in the sense of de Bruijn?",
       "Can the Laczkovich decomposition be made effective or constructive, avoiding the Axiom of Choice in the additive component?",
@@ -192,5 +192,39 @@
     "axiomCount": 11,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1126",
+      "relationship": "related",
+      "description": "Share functional-equations, measure-theory, and analytic themes"
+    },
+    {
+      "targetId": "erdos-907",
+      "relationship": "related",
+      "description": "Share functional-equations, additive-functions, and analytic themes"
+    },
+    {
+      "targetId": "erdos-1125",
+      "relationship": "related",
+      "description": "Share functional-equations and analytic themes"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Share measure-theory and analytic themes"
+    },
+    {
+      "targetId": "erdos-994",
+      "relationship": "related",
+      "description": "Share measure-theory and analytic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1126",
+    "erdos-907",
+    "erdos-1125",
+    "cauchy-schwarz-integral",
+    "erdos-994"
+  ]
 }

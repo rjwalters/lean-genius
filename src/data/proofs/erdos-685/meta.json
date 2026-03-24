@@ -1,10 +1,10 @@
 {
   "id": "erdos-685",
-  "title": "Erdős Problem #685: Prime Divisors of Binomial Coefficients",
+  "title": "Erd\u0151s Problem #685: Prime Divisors of Binomial Coefficients",
   "slug": "erdos-685",
-  "description": "For n^ε < k ≤ n^{1-ε}, is ω(C(n,k)) = (1+o(1))·k·Σ_{k<p<n} 1/p? Trivial lower bound: log C(n,k)/log n, tight when k > n^{1-o(1)}.",
+  "description": "For n^\u03b5 < k \u2264 n^{1-\u03b5}, is \u03c9(C(n,k)) = (1+o(1))\u00b7k\u00b7\u03a3_{k<p<n} 1/p? Trivial lower bound: log C(n,k)/log n, tight when k > n^{1-o(1)}.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/685",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos685Problem.lean",
@@ -47,8 +47,8 @@
     "originalContributions": [
       "Defined omega (distinct prime divisor count) using Nat.primeFactors",
       "Defined primeSumInRange for the prime reciprocal sum over (k,n)",
-      "Stated ErdosProblem685 as an asymptotic equality for ω(C(n,k))",
-      "Stated trivial lower bound ω(C(n,k)) ≥ log C(n,k)/log n",
+      "Stated ErdosProblem685 as an asymptotic equality for \u03c9(C(n,k))",
+      "Stated trivial lower bound \u03c9(C(n,k)) \u2265 log C(n,k)/log n",
       "Stated tightness of the lower bound for k near n",
       "Proved omega_one, omega_choose_zero, omega_choose_one",
       "Stated omega_eq_zero_iff as characterization"
@@ -58,16 +58,16 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős studied the prime factorization structure of binomial coefficients throughout his career. The function ω(n), counting distinct prime divisors, is a fundamental quantity in analytic number theory. For binomial coefficients C(n,k), Kummer's theorem relates the p-adic valuation to carries in base-p addition, but counting the number of distinct primes dividing C(n,k) is a subtler question.\n\nThe conjecture gives a precise asymptotic formula: ω(C(n,k)) ~ k · Σ_{k<p<n} 1/p, where the sum runs over primes in the interval (k,n). By Mertens' theorem, this prime reciprocal sum is approximately log(log n/log k), so the formula predicts ω(C(n,k)) ~ k · log(log n/log k). The result should hold in the 'middle range' n^ε < k ≤ n^{1-ε}, where both k and n/k grow polynomially.\n\nThe trivial lower bound ω(C(n,k)) ≥ log C(n,k)/log n comes from the fact that each prime factor of C(n,k) is at most n. This bound is tight when k is near n (specifically for k > n^{1-o(1)}), since then C(n,k) is small and its prime factors are constrained. Erdős speculated that the conjecture might extend to k as small as (log n)^c.",
-    "problemStatement": "For n^ε < k ≤ n^{1-ε}, is ω(C(n,k)) = (1+o(1))·k·Σ_{k<p<n} 1/p?",
-    "text": "For n^ε < k ≤ n^{1-ε}, is ω(C(n,k)) = (1+o(1))·k·Σ_{k<p<n} 1/p? Trivial lower bound: log C(n,k)/log n, tight when k > n^{1-o(1)}.",
+    "historicalContext": "Erd\u0151s studied the prime factorization structure of binomial coefficients throughout his career. The function \u03c9(n), counting distinct prime divisors, is a fundamental quantity in analytic number theory. For binomial coefficients C(n,k), Kummer's theorem relates the p-adic valuation to carries in base-p addition, but counting the number of distinct primes dividing C(n,k) is a subtler question.\n\nThe conjecture gives a precise asymptotic formula: \u03c9(C(n,k)) ~ k \u00b7 \u03a3_{k<p<n} 1/p, where the sum runs over primes in the interval (k,n). By Mertens' theorem, this prime reciprocal sum is approximately log(log n/log k), so the formula predicts \u03c9(C(n,k)) ~ k \u00b7 log(log n/log k). The result should hold in the 'middle range' n^\u03b5 < k \u2264 n^{1-\u03b5}, where both k and n/k grow polynomially.\n\nThe trivial lower bound \u03c9(C(n,k)) \u2265 log C(n,k)/log n comes from the fact that each prime factor of C(n,k) is at most n. This bound is tight when k is near n (specifically for k > n^{1-o(1)}), since then C(n,k) is small and its prime factors are constrained. Erd\u0151s speculated that the conjecture might extend to k as small as (log n)^c.",
+    "problemStatement": "For n^\u03b5 < k \u2264 n^{1-\u03b5}, is \u03c9(C(n,k)) = (1+o(1))\u00b7k\u00b7\u03a3_{k<p<n} 1/p?",
+    "text": "For n^\u03b5 < k \u2264 n^{1-\u03b5}, is \u03c9(C(n,k)) = (1+o(1))\u00b7k\u00b7\u03a3_{k<p<n} 1/p? Trivial lower bound: log C(n,k)/log n, tight when k > n^{1-o(1)}.",
     "proofStrategy": "We define omega as the prime factors count using Nat.primeFactors, and primeSumInRange for the prime reciprocal sum. The main conjecture ErdosProblem685 is stated as an asymptotic equality with explicit error terms. The trivial lower bound and its tightness for k near n are axioms. Basic properties omega_one, omega_choose_zero, and omega_choose_one are proved.",
     "keyInsights": [
-      "**Asymptotic Formula**: ω(C(n,k)) ~ k · Σ 1/p over primes in (k,n), combining the prime counting function with the structure of binomial coefficients",
-      "**Mertens Connection**: By Mertens' theorem, the prime sum is ≈ log(log n/log k), giving ω(C(n,k)) ~ k · log(log n/log k) in the middle range",
-      "**Kummer's Theorem**: The p-adic valuation of C(n,k) equals the number of carries when adding k and n-k in base p — this underlies the divisibility structure",
-      "**Trivial Bound Tightness**: The bound ω ≥ log C(n,k)/log n is tight only when k > n^{1-o(1)}, where the binomial coefficient is small",
-      "**Extended Range**: The conjecture may hold for k ≥ (log n)^c, well below the polynomial threshold n^ε"
+      "**Asymptotic Formula**: \u03c9(C(n,k)) ~ k \u00b7 \u03a3 1/p over primes in (k,n), combining the prime counting function with the structure of binomial coefficients",
+      "**Mertens Connection**: By Mertens' theorem, the prime sum is \u2248 log(log n/log k), giving \u03c9(C(n,k)) ~ k \u00b7 log(log n/log k) in the middle range",
+      "**Kummer's Theorem**: The p-adic valuation of C(n,k) equals the number of carries when adding k and n-k in base p \u2014 this underlies the divisibility structure",
+      "**Trivial Bound Tightness**: The bound \u03c9 \u2265 log C(n,k)/log n is tight only when k > n^{1-o(1)}, where the binomial coefficient is small",
+      "**Extended Range**: The conjecture may hold for k \u2265 (log n)^c, well below the polynomial threshold n^\u03b5"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -80,7 +80,7 @@
       "title": "Module Header and Problem Context",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Documents Erdős Problem #685: the number of distinct prime divisors of C(n,k) is asymptotically k·Σ_{k<p≤n} 1/p for n^ε < k ≤ n^{1-ε}. This connects the prime factorization of binomial coefficients to Mertens' theorem. Status: OPEN. Imports Mathlib."
+      "summary": "Documents Erd\u0151s Problem #685: the number of distinct prime divisors of C(n,k) is asymptotically k\u00b7\u03a3_{k<p\u2264n} 1/p for n^\u03b5 < k \u2264 n^{1-\u03b5}. This connects the prime factorization of binomial coefficients to Mertens' theorem. Status: OPEN. Imports Mathlib."
     },
     {
       "id": "omega",
@@ -94,14 +94,14 @@
       "title": "Main Conjecture",
       "startLine": 31,
       "endLine": 41,
-      "summary": "States ErdosProblem685: ω(C(n,k)) = (1±δ)·k·Σ 1/p for n^ε < k ≤ n^{1-ε}, with explicit quantifiers over ε and δ."
+      "summary": "States ErdosProblem685: \u03c9(C(n,k)) = (1\u00b1\u03b4)\u00b7k\u00b7\u03a3 1/p for n^\u03b5 < k \u2264 n^{1-\u03b5}, with explicit quantifiers over \u03b5 and \u03b4."
     },
     {
       "id": "lower",
       "title": "Trivial Lower Bound",
       "startLine": 43,
       "endLine": 55,
-      "summary": "Trivial bound ω(C(n,k)) ≥ log C(n,k)/log n and tightness for k > n^{1-ε}."
+      "summary": "Trivial bound \u03c9(C(n,k)) \u2265 log C(n,k)/log n and tightness for k > n^{1-\u03b5}."
     },
     {
       "id": "basic",
@@ -112,11 +112,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 685 on distinct prime divisors of binomial coefficients, the trivial lower bound, and its tightness near k = n. Three theorems are proved directly; two bounds and one characterization are axiomatized.",
+    "summary": "The formalization captures Erd\u0151s Problem 685 on distinct prime divisors of binomial coefficients, the trivial lower bound, and its tightness near k = n. Three theorems are proved directly; two bounds and one characterization are axiomatized.",
     "implications": "A resolution would quantify the prime factor structure of binomial coefficients across the full range of k, connecting Kummer's theorem to asymptotic prime counting and extending Mertens' theorem to combinatorial settings.",
     "openQuestions": [
-      "Is ω(C(n,k)) = (1+o(1))·k·Σ 1/p for n^ε < k ≤ n^{1-ε}?",
-      "Does the asymptotic hold for k ≥ (log n)^c?",
+      "Is \u03c9(C(n,k)) = (1+o(1))\u00b7k\u00b7\u03a3 1/p for n^\u03b5 < k \u2264 n^{1-\u03b5}?",
+      "Does the asymptotic hold for k \u2265 (log n)^c?",
       "What is the error term in the asymptotic formula?",
       "How does the distribution of prime factors of C(n,k) compare to that of a 'random' integer of similar size?"
     ]
@@ -138,5 +138,39 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Share prime-factors, number-theoretic, and binomial-coefficients themes"
+    },
+    {
+      "targetId": "erdos-683",
+      "relationship": "related",
+      "description": "Share number-theoretic, binomial-coefficients, and prime number themes"
+    },
+    {
+      "targetId": "erdos-684",
+      "relationship": "related",
+      "description": "Share number-theoretic, binomial-coefficients, and prime number themes"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Share prime-factors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-126",
+      "relationship": "related",
+      "description": "Share prime-factors and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1095",
+    "erdos-683",
+    "erdos-684",
+    "erdos-1106",
+    "erdos-126"
+  ]
 }

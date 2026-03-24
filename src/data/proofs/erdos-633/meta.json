@@ -1,10 +1,10 @@
 {
   "id": "erdos-633",
-  "title": "Erdős Problem #633: Square Number Triangle Dissections",
+  "title": "Erd\u0151s Problem #633: Square Number Triangle Dissections",
   "slug": "erdos-633",
   "description": "Which triangles can ONLY be cut into a perfect square number of congruent triangles? Classification remains OPEN with $25 prize.",
   "meta": {
-    "author": "Erdős, investigated by Soifer",
+    "author": "Erd\u0151s, investigated by Soifer",
     "sourceUrl": "https://erdosproblems.com/633",
     "date": "",
     "status": "formalized",
@@ -55,29 +55,29 @@
       "CongruentDissection structure with area compatibility and tiling",
       "CanDissectInto and DissectionCounts predicates",
       "HasSquareOnlyProperty definition (square-only dissection counts)",
-      "universal_square_dissection: n² always works",
-      "soiferTriangle construction with (√2, √3, √4) sides",
+      "universal_square_dissection: n\u00b2 always works",
+      "soiferTriangle construction with (\u221a2, \u221a3, \u221a4) sides",
       "IntegrallyIndependent definition for angle triples",
       "Counterexamples: equilateral (3 pieces), right isosceles (2 pieces)",
       "similar_dissection_complete: characterization for similar case",
       "erdos_633_classification: formal statement of the open problem",
-      "SoiferFamily generalization to (√p, √q, √r) triangles"
+      "SoiferFamily generalization to (\u221ap, \u221aq, \u221ar) triangles"
     ],
     "axiomCount": 0,
     "lineCount": 1,
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "This problem concerns the geometry of triangle dissections — partitioning a triangle into congruent triangular pieces. Every triangle can be dissected into n² congruent copies by subdividing each side into n equal segments and connecting corresponding points, forming an n × n grid of congruent sub-triangles.\n\nThe question is: are there triangles where n² is the ONLY achievable dissection count? Alexander Soifer investigated this systematically in his book 'How Does One Cut a Triangle?' (2009). He showed that the triangle with sides √2, √3, √4 has this 'square-only' property — it cannot be dissected into any non-square number of congruent triangles. The key constraint comes from the irrational side lengths: any tiling must respect algebraic relationships between the sides, and the only way to achieve area compatibility with matching angles forces the count to be a perfect square.\n\nSoifer's analysis connects to the concept of 'integral independence' of angles: if the three angles α, β, γ of a triangle satisfy no non-trivial integer linear relation (beyond α + β + γ = π), then dissection constraints force square-only counts. Equilateral triangles (angles π/3, π/3, π/3 — integrally dependent via α = β = γ) can be dissected into 3 pieces, and right isosceles triangles (π/4, π/4, π/2 — integrally dependent via α = β, γ = 2α) can be dissected into 2 pieces.\n\nThe complete classification of square-only triangles remains OPEN with a $25 Erdős prize. The conjecture is that integral independence of angles is the precise characterization.",
-    "problemStatement": "**Classification Problem (OPEN, $25 prize):**\n\nCharacterize all triangles T such that: if T can be dissected into n congruent triangles, then n must be a perfect square.\n\n**Known:**\n- Every triangle can be dissected into n² copies (for any n >= 1)\n- The triangle with sides √2, √3, √4 can ONLY be dissected into square counts\n- Triangles with 'integrally independent' angles have this property\n- Equilateral (3 pieces) and right isosceles (2 pieces) do NOT have this property\n\n**Unknown:**\n- Complete characterization of square-only triangles\n- Whether integral independence is necessary and sufficient",
+    "historicalContext": "This problem concerns the geometry of triangle dissections \u2014 partitioning a triangle into congruent triangular pieces. Every triangle can be dissected into n\u00b2 congruent copies by subdividing each side into n equal segments and connecting corresponding points, forming an n \u00d7 n grid of congruent sub-triangles.\n\nThe question is: are there triangles where n\u00b2 is the ONLY achievable dissection count? Alexander Soifer investigated this systematically in his book 'How Does One Cut a Triangle?' (2009). He showed that the triangle with sides \u221a2, \u221a3, \u221a4 has this 'square-only' property \u2014 it cannot be dissected into any non-square number of congruent triangles. The key constraint comes from the irrational side lengths: any tiling must respect algebraic relationships between the sides, and the only way to achieve area compatibility with matching angles forces the count to be a perfect square.\n\nSoifer's analysis connects to the concept of 'integral independence' of angles: if the three angles \u03b1, \u03b2, \u03b3 of a triangle satisfy no non-trivial integer linear relation (beyond \u03b1 + \u03b2 + \u03b3 = \u03c0), then dissection constraints force square-only counts. Equilateral triangles (angles \u03c0/3, \u03c0/3, \u03c0/3 \u2014 integrally dependent via \u03b1 = \u03b2 = \u03b3) can be dissected into 3 pieces, and right isosceles triangles (\u03c0/4, \u03c0/4, \u03c0/2 \u2014 integrally dependent via \u03b1 = \u03b2, \u03b3 = 2\u03b1) can be dissected into 2 pieces.\n\nThe complete classification of square-only triangles remains OPEN with a $25 Erd\u0151s prize. The conjecture is that integral independence of angles is the precise characterization.",
+    "problemStatement": "**Classification Problem (OPEN, $25 prize):**\n\nCharacterize all triangles T such that: if T can be dissected into n congruent triangles, then n must be a perfect square.\n\n**Known:**\n- Every triangle can be dissected into n\u00b2 copies (for any n >= 1)\n- The triangle with sides \u221a2, \u221a3, \u221a4 can ONLY be dissected into square counts\n- Triangles with 'integrally independent' angles have this property\n- Equilateral (3 pieces) and right isosceles (2 pieces) do NOT have this property\n\n**Unknown:**\n- Complete characterization of square-only triangles\n- Whether integral independence is necessary and sufficient",
     "text": "Which triangles can ONLY be cut into a perfect square number of congruent triangles? Classification remains OPEN with $25 prize.",
-    "proofStrategy": "The formalization proceeds in eight sections:\n\n1. **Triangle representations**: Triangle (by sides) and TriangleByAngles (by angles), with heronArea\n2. **Dissection definitions**: CongruentDissection, CanDissectInto, DissectionCounts\n3. **Square-only property**: IsSquare, HasSquareOnlyProperty\n4. **Universal result**: universal_square_dissection (n² always works)\n5. **Soifer's example**: soiferTriangle (√2, √3, √4), soifer_square_only\n6. **Integral independence**: IntegrallyIndependent, connection to angles\n7. **Counterexamples**: equilateral (3 pieces), right isosceles (2 pieces)\n8. **Open problem**: erdos_633_classification, SoiferFamily generalization",
+    "proofStrategy": "The formalization proceeds in eight sections:\n\n1. **Triangle representations**: Triangle (by sides) and TriangleByAngles (by angles), with heronArea\n2. **Dissection definitions**: CongruentDissection, CanDissectInto, DissectionCounts\n3. **Square-only property**: IsSquare, HasSquareOnlyProperty\n4. **Universal result**: universal_square_dissection (n\u00b2 always works)\n5. **Soifer's example**: soiferTriangle (\u221a2, \u221a3, \u221a4), soifer_square_only\n6. **Integral independence**: IntegrallyIndependent, connection to angles\n7. **Counterexamples**: equilateral (3 pieces), right isosceles (2 pieces)\n8. **Open problem**: erdos_633_classification, SoiferFamily generalization",
     "keyInsights": [
-      "**Universal n² dissections**: Every triangle can be subdivided into n² congruent copies by grid construction — the question is whether NON-square counts are also achievable",
-      "**Soifer's example**: The triangle (√2, √3, √4) can only be dissected into square counts — irrational side lengths severely constrain tiling possibilities",
-      "**Integral independence of angles**: If no non-trivial integer relation holds between the angles, dissection constraints force square-only counts. Dependent angles (like equilateral: α = β = γ) allow non-square dissections",
+      "**Universal n\u00b2 dissections**: Every triangle can be subdivided into n\u00b2 congruent copies by grid construction \u2014 the question is whether NON-square counts are also achievable",
+      "**Soifer's example**: The triangle (\u221a2, \u221a3, \u221a4) can only be dissected into square counts \u2014 irrational side lengths severely constrain tiling possibilities",
+      "**Integral independence of angles**: If no non-trivial integer relation holds between the angles, dissection constraints force square-only counts. Dependent angles (like equilateral: \u03b1 = \u03b2 = \u03b3) allow non-square dissections",
       "**Similar vs congruent**: For similar (not congruent) dissections, the problem is solved: every n except 2, 3, 5 works. The congruent case is much harder",
-      "**Open classification**: The precise characterization of square-only triangles is worth $25 — conjectured to be integral independence"
+      "**Open classification**: The precise characterization of square-only triangles is worth $25 \u2014 conjectured to be integral independence"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -88,7 +88,7 @@
     {
       "id": "triangle-rep",
       "title": "Triangle Representation",
-      "summary": "Defines Triangle (by sides with triangle inequality), TriangleByAngles (by angles with sum π), and heronArea via Heron's formula.",
+      "summary": "Defines Triangle (by sides with triangle inequality), TriangleByAngles (by angles with sum \u03c0), and heronArea via Heron's formula.",
       "startLine": 37,
       "endLine": 1
     },
@@ -102,21 +102,21 @@
     {
       "id": "square-property",
       "title": "Square Number Property",
-      "summary": "Defines IsSquare (n = k²) and HasSquareOnlyProperty (all dissection counts are perfect squares).",
+      "summary": "Defines IsSquare (n = k\u00b2) and HasSquareOnlyProperty (all dissection counts are perfect squares).",
       "startLine": 84,
       "endLine": 1
     },
     {
       "id": "universal",
       "title": "Universal Square Dissections",
-      "summary": "States universal_square_dissection: every triangle admits n² dissections via grid subdivision.",
+      "summary": "States universal_square_dissection: every triangle admits n\u00b2 dissections via grid subdivision.",
       "startLine": 98,
       "endLine": 1
     },
     {
       "id": "soifer",
       "title": "Soifer's Example",
-      "summary": "Constructs soiferTriangle (√2, √3, √4) with verified triangle inequalities, and states soifer_square_only.",
+      "summary": "Constructs soiferTriangle (\u221a2, \u221a3, \u221a4) with verified triangle inequalities, and states soifer_square_only.",
       "startLine": 113,
       "endLine": 1
     },
@@ -130,26 +130,26 @@
     {
       "id": "similar",
       "title": "Similar Dissections and Counterexamples",
-      "summary": "Counterexamples (equilateral: 3 pieces, right isosceles: 2 pieces) and similar_dissection_complete (n ≠ 2,3,5 always works for similar).",
+      "summary": "Counterexamples (equilateral: 3 pieces, right isosceles: 2 pieces) and similar_dissection_complete (n \u2260 2,3,5 always works for similar).",
       "startLine": 165,
       "endLine": 1
     },
     {
       "id": "classification",
       "title": "The Open Classification Problem",
-      "summary": "States erdos_633_classification (find the predicate), defines SoiferFamily (√p, √q, √r), and erdos_633_exists (square-only triangles exist).",
+      "summary": "States erdos_633_classification (find the predicate), defines SoiferFamily (\u221ap, \u221aq, \u221ar), and erdos_633_exists (square-only triangles exist).",
       "startLine": 199,
       "endLine": 1
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #633 asks for a classification of triangles that can only be dissected into perfect square numbers of congruent triangles. Soifer showed the triangle (√2, √3, √4) has this property, connected to the concept of integrally independent angles. Counterexamples include equilateral (3 pieces) and right isosceles (2 pieces) triangles, whose angle dependence enables non-square dissections. The complete classification remains OPEN with a $25 prize.",
-    "implications": "**Theoretical Significance**: This problem sits at the intersection of combinatorial geometry, tiling theory, and algebraic number theory.\n\nThe constraint that dissection counts must be perfect squares arises from algebraic relationships between triangle side lengths and angles, connecting to linear independence over the rationals. The contrast between the solved similar case (n ≠ 2,3,5) and the open congruent case highlights how congruence constraints add significant complexity to tiling problems.",
+    "summary": "Erd\u0151s Problem #633 asks for a classification of triangles that can only be dissected into perfect square numbers of congruent triangles. Soifer showed the triangle (\u221a2, \u221a3, \u221a4) has this property, connected to the concept of integrally independent angles. Counterexamples include equilateral (3 pieces) and right isosceles (2 pieces) triangles, whose angle dependence enables non-square dissections. The complete classification remains OPEN with a $25 prize.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of combinatorial geometry, tiling theory, and algebraic number theory.\n\nThe constraint that dissection counts must be perfect squares arises from algebraic relationships between triangle side lengths and angles, connecting to linear independence over the rationals. The contrast between the solved similar case (n \u2260 2,3,5) and the open congruent case highlights how congruence constraints add significant complexity to tiling problems.",
     "openQuestions": [
       "Give a complete characterization of square-only triangles (the $25 prize!)",
       "Is integral independence of angles both necessary and sufficient for the square-only property?",
       "Is the set of square-only triangles dense or sparse among all triangles?",
-      "Are there square-only triangles not in Soifer's family (sides √p, √q, √r)?"
+      "Are there square-only triangles not in Soifer's family (sides \u221ap, \u221aq, \u221ar)?"
     ]
   },
   "leanFile": {
@@ -175,9 +175,37 @@
       "venue": "Springer"
     },
     {
-      "title": "Erdős Problems",
+      "title": "Erd\u0151s Problems",
       "author": "Thomas Bloom",
       "url": "https://erdosproblems.com/633"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Share geometric and triangles themes"
+    },
+    {
+      "targetId": "erdos-173",
+      "relationship": "related",
+      "description": "Share geometric and triangles themes"
+    },
+    {
+      "targetId": "erdos-634",
+      "relationship": "related",
+      "description": "Share geometric and dissection themes"
+    },
+    {
+      "targetId": "erdos-898",
+      "relationship": "related",
+      "description": "Share geometric and triangles themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1086",
+    "erdos-173",
+    "erdos-634",
+    "erdos-898"
   ]
 }

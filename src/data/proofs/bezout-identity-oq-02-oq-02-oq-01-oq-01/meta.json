@@ -20,7 +20,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Int.mul_ediv_cancel'",
-        "description": "a * (b / a) = b when a ∣ b — connects computable division to divisibility witness",
+        "description": "a * (b / a) = b when a \u2223 b \u2014 connects computable division to divisibility witness",
         "module": "Mathlib.Data.Int.Lemmas"
       }
     ],
@@ -36,12 +36,12 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The tension between classical existence proofs and constructive algorithms is one of the deepest themes in the foundations of mathematics. Euclid's original algorithm (c. 300 BCE) in Book VII of the Elements was inherently constructive — it computed the GCD by iterated subtraction. The extended Euclidean algorithm, which produces Bézout coefficients $x, y$ such that $ax + by = \\gcd(a,b)$, was developed by Étienne Bézout in 1779 and later formalized by Bachet and others. In modern proof assistants like Lean 4, the classical axiom of choice (via `Exists.choose`) allows extracting witnesses from existence proofs but marks definitions as `noncomputable`, preventing evaluation. This formalization demonstrates a general technique in constructive algebra: replacing choice-extracted witnesses with decidable operations (here, integer division) to recover computability while preserving correctness. The approach connects to Bishop's constructive mathematics program and the Curry-Howard correspondence, where computational content is extracted from proofs.",
+    "historicalContext": "The tension between classical existence proofs and constructive algorithms is one of the deepest themes in the foundations of mathematics. Euclid's original algorithm (c. 300 BCE) in Book VII of the Elements was inherently constructive \u2014 it computed the GCD by iterated subtraction. The extended Euclidean algorithm, which produces B\u00e9zout coefficients $x, y$ such that $ax + by = \\gcd(a,b)$, was developed by \u00c9tienne B\u00e9zout in 1779 and later formalized by Bachet and others. In modern proof assistants like Lean 4, the classical axiom of choice (via `Exists.choose`) allows extracting witnesses from existence proofs but marks definitions as `noncomputable`, preventing evaluation. This formalization demonstrates a general technique in constructive algebra: replacing choice-extracted witnesses with decidable operations (here, integer division) to recover computability while preserving correctness. The approach connects to Bishop's constructive mathematics program and the Curry-Howard correspondence, where computational content is extracted from proofs.",
     "problemStatement": "Given coprime natural numbers $a, b$ with $a \\mid bc$, construct a **computable** function that produces a quotient $q$ satisfying $aq = c$, without using Lean's `noncomputable` annotation or classical choice (`Exists.choose`).",
     "text": "The parent file's constructive_div used classical choice (hdvd.choose) and required the noncomputable annotation. This formalization replaces the choice-based witness with computable integer division (b*c)/a, producing a fully computable constructive_div_computable that can be evaluated with #eval. The key insight: the divisibility proof is only needed at verification time, not at runtime.",
-    "proofStrategy": "The algorithm uses the extended Euclidean algorithm to find Bézout coefficients $x, y$ with $ax + by = 1$, then computes $q = xc + y \\cdot \\lfloor bc/a \\rfloor$. The key step replaces the classical witness `hdvd.choose` (which extracts a value from a divisibility proof using the axiom of choice) with computable integer division $\\lfloor bc/a \\rfloor$. The correctness proof uses `Int.mul_ediv_cancel'` to show that $a \\cdot \\lfloor bc/a \\rfloor = bc$ when $a \\mid bc$, and then the Bézout identity to reduce $a(xc + yk) = (ax + by)c = 1 \\cdot c = c$. The `calc` chain makes this algebraic reduction transparent.",
+    "proofStrategy": "The algorithm uses the extended Euclidean algorithm to find B\u00e9zout coefficients $x, y$ with $ax + by = 1$, then computes $q = xc + y \\cdot \\lfloor bc/a \\rfloor$. The key step replaces the classical witness `hdvd.choose` (which extracts a value from a divisibility proof using the axiom of choice) with computable integer division $\\lfloor bc/a \\rfloor$. The correctness proof uses `Int.mul_ediv_cancel'` to show that $a \\cdot \\lfloor bc/a \\rfloor = bc$ when $a \\mid bc$, and then the B\u00e9zout identity to reduce $a(xc + yk) = (ax + by)c = 1 \\cdot c = c$. The `calc` chain makes this algebraic reduction transparent.",
     "keyInsights": [
-      "The divisibility hypothesis $a \\mid bc$ is a proof-level artifact: the algorithm only needs the values $a, b, c$ at runtime, and the divisibility proof is consumed only during verification — a clean separation of computation from verification",
+      "The divisibility hypothesis $a \\mid bc$ is a proof-level artifact: the algorithm only needs the values $a, b, c$ at runtime, and the divisibility proof is consumed only during verification \u2014 a clean separation of computation from verification",
       "Replacing `Exists.choose` with `Int.ediv` (integer division) is a general strategy: whenever a constructive proof extracts a witness from a divisibility fact, computable division can often serve as the witness directly",
       "The `calc` chain decomposes the correctness proof into a sequence of rewriting steps that mirror the algebraic identity $a(xc + yk) = (xa + yb)c = c$, making the proof both machine-checkable and human-readable",
       "The `#eval` demonstrations at the end serve as computational certificates: they prove that Lean's kernel can actually evaluate the function, confirming the absence of any hidden noncomputable dependencies",
@@ -64,14 +64,14 @@
       "title": "Extended Euclidean Algorithm",
       "startLine": 29,
       "endLine": 79,
-      "summary": "Implements `extGcd` as a recursive function returning Bézout coefficients $(x, y, g)$ with $ax + by = g = \\gcd(a,b)$, along with correctness proofs `extGcd_gcd` and `extGcd_bezout` by strong induction on $b$."
+      "summary": "Implements `extGcd` as a recursive function returning B\u00e9zout coefficients $(x, y, g)$ with $ax + by = g = \\gcd(a,b)$, along with correctness proofs `extGcd_gcd` and `extGcd_bezout` by strong induction on $b$."
     },
     {
       "id": "computable-div",
       "title": "Fully Computable Constructive Quotient",
       "startLine": 81,
       "endLine": 134,
-      "summary": "Defines `constructive_div_computable` using $q = xc + y \\cdot \\lfloor bc/a \\rfloor$ and proves its correctness via `Int.mul_ediv_cancel'` and the Bézout identity. The function passes Lean's computability checker."
+      "summary": "Defines `constructive_div_computable` using $q = xc + y \\cdot \\lfloor bc/a \\rfloor$ and proves its correctness via `Int.mul_ediv_cancel'` and the B\u00e9zout identity. The function passes Lean's computability checker."
     },
     {
       "id": "eval-examples",
@@ -99,11 +99,11 @@
   },
   "references": [
     {
-      "authors": "Bézout, Étienne",
-      "title": "Théorie générale des équations algébriques",
+      "authors": "B\u00e9zout, \u00c9tienne",
+      "title": "Th\u00e9orie g\u00e9n\u00e9rale des \u00e9quations alg\u00e9briques",
       "year": "1779",
       "venue": "Paris",
-      "note": "Introduced Bézout's identity: for coprime a,b there exist x,y with ax + by = 1, the foundation of the extended Euclidean algorithm"
+      "note": "Introduced B\u00e9zout's identity: for coprime a,b there exist x,y with ax + by = 1, the foundation of the extended Euclidean algorithm"
     },
     {
       "authors": "Knuth, Donald E.",
@@ -122,34 +122,34 @@
   ],
   "crossReferences": [
     {
-      "id": "bezout-identity",
       "relationship": "ancestor",
-      "description": "The root formalization of Bézout's identity, which establishes the extended Euclidean algorithm used here"
+      "description": "The root formalization of B\u00e9zout's identity, which establishes the extended Euclidean algorithm used here",
+      "targetId": "bezout-identity"
     },
     {
-      "id": "bezout-identity-oq-02",
       "relationship": "ancestor",
-      "description": "Euclid's lemma via coprimality — the classical (noncomputable) version that this entry makes computable"
+      "description": "Euclid's lemma via coprimality \u2014 the classical (noncomputable) version that this entry makes computable",
+      "targetId": "bezout-identity-oq-02"
     },
     {
-      "id": "bezout-identity-oq-02-oq-02-oq-01",
       "relationship": "parent",
-      "description": "The direct parent: constructive divisibility via Bézout coefficients using classical choice (`hdvd.choose`)"
+      "description": "The direct parent: constructive divisibility via B\u00e9zout coefficients using classical choice (`hdvd.choose`)",
+      "targetId": "bezout-identity-oq-02-oq-02-oq-01"
     },
     {
-      "id": "bezout-identity-oq-02-oq-02",
       "relationship": "related",
-      "description": "Euclid's lemma in Bézout domains and PIDs — the abstract algebraic generalization"
+      "description": "Euclid's lemma in B\u00e9zout domains and PIDs \u2014 the abstract algebraic generalization",
+      "targetId": "bezout-identity-oq-02-oq-02"
     },
     {
-      "id": "bezout-identity-oq-02-oq-01",
       "relationship": "related",
-      "description": "The Fundamental Theorem of Arithmetic from Euclid's lemma — a key application of the divisibility result made computable here"
+      "description": "The Fundamental Theorem of Arithmetic from Euclid's lemma \u2014 a key application of the divisibility result made computable here",
+      "targetId": "bezout-identity-oq-02-oq-01"
     },
     {
-      "id": "chinese-remainder-non-coprime",
       "relationship": "related",
-      "description": "The Chinese Remainder Theorem uses similar coprimality and Bézout coefficient techniques"
+      "description": "The Chinese Remainder Theorem uses similar coprimality and B\u00e9zout coefficient techniques",
+      "targetId": "chinese-remainder-non-coprime"
     }
   ],
   "relatedProofs": [

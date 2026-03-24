@@ -1,10 +1,10 @@
 {
   "id": "erdos-64",
-  "title": "Erdős Problem #64: Power of Two Cycles in Min Degree 3 Graphs",
+  "title": "Erd\u0151s Problem #64: Power of Two Cycles in Min Degree 3 Graphs",
   "slug": "erdos-64",
-  "description": "Does every finite graph with minimum degree ≥ 3 contain a cycle of length 2^k for some k ≥ 2? OPEN ($1000 prize).",
+  "description": "Does every finite graph with minimum degree \u2265 3 contain a cycle of length 2^k for some k \u2265 2? OPEN ($1000 prize).",
   "meta": {
-    "author": "Erdős-Gyárfás",
+    "author": "Erd\u0151s-Gy\u00e1rf\u00e1s",
     "sourceUrl": "https://erdosproblems.com/64",
     "date": "1990s",
     "status": "axiomatized",
@@ -30,7 +30,7 @@
       "level": "research",
       "centralObjects": [
         "cycle containment C_{2^k}",
-        "minimum degree δ(G)",
+        "minimum degree \u03b4(G)",
         "powers of two set {4,8,16,...}",
         "finite simple graph"
       ],
@@ -41,24 +41,24 @@
         "Bondy's pancyclicity",
         "infinite 3-regular tree counterexample"
       ],
-      "significance": "One of the most prominent open problems in extremal graph theory, carrying a $1000 Erdős prize. The set {2^k : k ≥ 2} is exponentially sparse yet conjectured to be unavoidable for minimum degree 3. Liu-Montgomery (2020) resolved the large-degree case by showing every graph with δ(G) ≥ D contains all even cycle lengths in a geometric range, but the critical case δ = 3 remains completely open. The difficulty is concentrated entirely in the sparse regime."
+      "significance": "One of the most prominent open problems in extremal graph theory, carrying a $1000 Erd\u0151s prize. The set {2^k : k \u2265 2} is exponentially sparse yet conjectured to be unavoidable for minimum degree 3. Liu-Montgomery (2020) resolved the large-degree case by showing every graph with \u03b4(G) \u2265 D contains all even cycle lengths in a geometric range, but the critical case \u03b4 = 3 remains completely open. The difficulty is concentrated entirely in the sparse regime."
     },
     "relatedProofs": [
       {
         "id": "erdos-63",
-        "relationship": "Problem #63 (cycles of length 2^n in infinite chromatic graphs) was solved by Liu-Montgomery using the same even-cycle theorem that is central to #64. The proof chains de Bruijn-Erdős compactness with Liu-Montgomery's cycle spectrum result"
+        "relationship": "Problem #63 (cycles of length 2^n in infinite chromatic graphs) was solved by Liu-Montgomery using the same even-cycle theorem that is central to #64. The proof chains de Bruijn-Erd\u0151s compactness with Liu-Montgomery's cycle spectrum result"
       },
       {
         "id": "erdos-65",
-        "relationship": "Problem #65 studies cycle length diversity in dense graphs via Σ 1/aᵢ. Both involve Gyárfás's work on cycle structure and show that edge density forces specific cycle lengths"
+        "relationship": "Problem #65 studies cycle length diversity in dense graphs via \u03a3 1/a\u1d62. Both involve Gy\u00e1rf\u00e1s's work on cycle structure and show that edge density forces specific cycle lengths"
       },
       {
         "id": "erdos-705",
-        "relationship": "Problem #705 asks whether large girth in unit distance graphs forces χ ≤ 3. Both concern the interplay between cycle constraints (specific lengths vs. minimum length) and graph parameters"
+        "relationship": "Problem #705 asks whether large girth in unit distance graphs forces \u03c7 \u2264 3. Both concern the interplay between cycle constraints (specific lengths vs. minimum length) and graph parameters"
       },
       {
         "id": "erdos-704",
-        "relationship": "Problem #704 studies chromatic numbers of unit distance graphs in ℝⁿ. The Frankl-Wilson exponential bounds used there also appear in the exponential upper bound for multi-distance chromatic numbers (#706)"
+        "relationship": "Problem #704 studies chromatic numbers of unit distance graphs in \u211d\u207f. The Frankl-Wilson exponential bounds used there also appear in the exponential upper bound for multi-distance chromatic numbers (#706)"
       }
     ],
     "mathlibDependencies": [
@@ -89,22 +89,22 @@
       }
     ],
     "originalContributions": [
-      "Fin.succMod: cyclic successor in ℤ/kℤ for cycle adjacency",
+      "Fin.succMod: cyclic successor in \u2124/k\u2124 for cycle adjacency",
       "ContainsCycleLength: injective k-cycle embedding predicate",
-      "minDegree: noncomputable δ(G) via Finset.inf'",
-      "HasMinDegree: minimum degree ≥ d predicate",
+      "minDegree: noncomputable \u03b4(G) via Finset.inf'",
+      "HasMinDegree: minimum degree \u2265 d predicate",
       "PowersOfTwoAtLeast4: target set {4, 8, 16, ...}",
-      "power_two_ge_four: proved 2^k ≥ 4 for k ≥ 2",
-      "power_two_even: proved 2^k is even for k ≥ 2",
-      "erdos_64_conjecture: main open conjecture (δ ≥ 3 → ∃ C_{2^k})",
+      "power_two_ge_four: proved 2^k \u2265 4 for k \u2265 2",
+      "power_two_even: proved 2^k is even for k \u2265 2",
+      "erdos_64_conjecture: main open conjecture (\u03b4 \u2265 3 \u2192 \u2203 C_{2^k})",
       "erdos_gyarfas_conjecture: disproved counter-conjecture",
-      "liu_montgomery_threshold: axiomatized ∃ D, δ ≥ D → ∃ C_{2^k}",
+      "liu_montgomery_threshold: axiomatized \u2203 D, \u03b4 \u2265 D \u2192 \u2203 C_{2^k}",
       "liu_montgomery_even_cycles: axiomatized even cycle spectrum theorem",
-      "range_contains_power_of_two: proved [4, L] contains 2^k for L ≥ 16",
+      "range_contains_power_of_two: proved [4, L] contains 2^k for L \u2265 16",
       "InfGraph: infinite graph structure (for tree counterexample)",
       "infinite_3_regular_tree_exists: axiomatized finiteness necessity",
-      "degree_3_conjecture: explicit δ = 3 restatement",
-      "dirac_theorem: axiomatized Hamiltonicity for δ ≥ n/2",
+      "degree_3_conjecture: explicit \u03b4 = 3 restatement",
+      "dirac_theorem: axiomatized Hamiltonicity for \u03b4 \u2265 n/2",
       "bondy_pancyclic: axiomatized pancyclicity for dense graphs",
       "random_graph_cycles: axiomatized probabilistic evidence"
     ],
@@ -113,20 +113,20 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Gyárfás posed this problem in the 1990s, conjecturing that the answer is NO: for every $r$, there should exist a graph with minimum degree $r$ avoiding all $2^k$-length cycles. This belief stemmed from the seeming rigidity of exponential cycle lengths compared to the flexibility available in dense graphs. The problem carries a $1000 Erdős prize, one of his highest bounties, reflecting its perceived difficulty. A breakthrough came from Hong Liu and Richard Montgomery (2020), who proved that for sufficiently large minimum degree $D$, every graph must contain a cycle of length $2^k$. Their proof, published as part of a broader result on even cycle lengths in graphs of large average degree, leverages the regularity method and a deep structural analysis showing that dense graphs contain cycles of every even length in a geometric range $[(\\log \\ell)^8, \\ell]$. Since this range contains a power of 2 whenever $\\ell \\ge 16$, the Erdős-Gyárfás conjecture is disproved for large $r$. However, the exact value of the threshold $D$ is not known, and the critical case $r = 3$ (minimum degree exactly 3) remains completely open. The problem connects to Dirac's theorem (1952), Bondy's pancyclicity theorem (1971), and the broader study of unavoidable cycle lengths in graph theory.",
+    "historicalContext": "Erd\u0151s and Gy\u00e1rf\u00e1s posed this problem in the 1990s, conjecturing that the answer is NO: for every $r$, there should exist a graph with minimum degree $r$ avoiding all $2^k$-length cycles. This belief stemmed from the seeming rigidity of exponential cycle lengths compared to the flexibility available in dense graphs. The problem carries a $1000 Erd\u0151s prize, one of his highest bounties, reflecting its perceived difficulty. A breakthrough came from Hong Liu and Richard Montgomery (2020), who proved that for sufficiently large minimum degree $D$, every graph must contain a cycle of length $2^k$. Their proof, published as part of a broader result on even cycle lengths in graphs of large average degree, leverages the regularity method and a deep structural analysis showing that dense graphs contain cycles of every even length in a geometric range $[(\\log \\ell)^8, \\ell]$. Since this range contains a power of 2 whenever $\\ell \\ge 16$, the Erd\u0151s-Gy\u00e1rf\u00e1s conjecture is disproved for large $r$. However, the exact value of the threshold $D$ is not known, and the critical case $r = 3$ (minimum degree exactly 3) remains completely open. The problem connects to Dirac's theorem (1952), Bondy's pancyclicity theorem (1971), and the broader study of unavoidable cycle lengths in graph theory.",
     "problemStatement": "Does every finite graph with minimum degree at least $3$ contain a cycle of length $2^k$ for some $k \\ge 2$?",
-    "text": "Does every finite graph with minimum degree ≥ 3 contain a cycle of length 2^k for some k ≥ 2? OPEN ($1000 prize).",
-    "proofStrategy": "The formalization defines cycle containment via injective vertex maps with cyclic adjacency (using `Fin.succMod`), minimum degree via `Finset.inf'` over neighbor counts, and the set $\\{2^k : k \\ge 2\\} = \\{4, 8, 16, \\ldots\\}$. The main conjecture and the disproved Erdős-Gyárfás conjecture are stated as Lean `Prop` definitions. Liu-Montgomery's threshold result and even-cycle theorem are axiomatized. An infinite counterexample (the infinite 3-regular tree) is formalized via a custom `InfGraph` structure, demonstrating that finiteness is essential. Supporting results include Dirac's theorem (Hamiltonicity from high degree), Bondy's pancyclicity theorem (dense graphs have all cycle lengths), and a probabilistic argument that random graphs contain power-of-two cycles.",
+    "text": "Does every finite graph with minimum degree \u2265 3 contain a cycle of length 2^k for some k \u2265 2? OPEN ($1000 prize).",
+    "proofStrategy": "The formalization defines cycle containment via injective vertex maps with cyclic adjacency (using `Fin.succMod`), minimum degree via `Finset.inf'` over neighbor counts, and the set $\\{2^k : k \\ge 2\\} = \\{4, 8, 16, \\ldots\\}$. The main conjecture and the disproved Erd\u0151s-Gy\u00e1rf\u00e1s conjecture are stated as Lean `Prop` definitions. Liu-Montgomery's threshold result and even-cycle theorem are axiomatized. An infinite counterexample (the infinite 3-regular tree) is formalized via a custom `InfGraph` structure, demonstrating that finiteness is essential. Supporting results include Dirac's theorem (Hamiltonicity from high degree), Bondy's pancyclicity theorem (dense graphs have all cycle lengths), and a probabilistic argument that random graphs contain power-of-two cycles.",
     "keyInsights": [
-      "Liu-Montgomery breakthrough: ∃ D such that δ(G) ≥ D forces a C_{2^k} cycle. The proof shows dense graphs contain every even cycle length in a range [(log ℓ)^8, ℓ], which must include some 2^k",
-      "Erdős-Gyárfás disproof: The conjecture that counterexamples exist for all r was disproved for large r, but r = 3 remains completely open",
-      "Finiteness is essential: The infinite 3-regular tree has δ = 3 and no cycles at all",
+      "Liu-Montgomery breakthrough: \u2203 D such that \u03b4(G) \u2265 D forces a C_{2^k} cycle. The proof shows dense graphs contain every even cycle length in a range [(log \u2113)^8, \u2113], which must include some 2^k",
+      "Erd\u0151s-Gy\u00e1rf\u00e1s disproof: The conjecture that counterexamples exist for all r was disproved for large r, but r = 3 remains completely open",
+      "Finiteness is essential: The infinite 3-regular tree has \u03b4 = 3 and no cycles at all",
       "Power-of-two special structure: {4, 8, 16, ...} is exponentially sparse (logarithmic density), making unavoidability a much stronger condition than for dense sets of cycle lengths",
       "Probabilistic evidence: Random graphs G(n, c/n) almost surely satisfy the conjecture, so counterexamples must be highly structured"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
-      "Extremal graph theory (Turán-type problems)",
+      "Extremal graph theory (Tur\u00e1n-type problems)",
       "Graph theory (vertices, edges, colorings)"
     ]
   },
@@ -141,35 +141,35 @@
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "summary": "Defines `Fin.succMod` for cyclic adjacency in ℤ/kℤ, `ContainsCycleLength G k` (injective k-cycle embedding), `minDegree` (via `Finset.inf'`), and `HasMinDegree G d` (δ(G) ≥ d). These are the fundamental building blocks for stating cycle containment under degree constraints.",
+      "summary": "Defines `Fin.succMod` for cyclic adjacency in \u2124/k\u2124, `ContainsCycleLength G k` (injective k-cycle embedding), `minDegree` (via `Finset.inf'`), and `HasMinDegree G d` (\u03b4(G) \u2265 d). These are the fundamental building blocks for stating cycle containment under degree constraints.",
       "startLine": 33,
       "endLine": 51
     },
     {
       "id": "powers-of-two",
       "title": "Powers of Two",
-      "summary": "Defines `PowersOfTwoAtLeast4` = {2^k : k ≥ 2} = {4, 8, 16, ...}. Proves 2^k ≥ 4 for k ≥ 2 (valid cycle length) and 2^k is even (connecting to Liu-Montgomery's even cycle result).",
+      "summary": "Defines `PowersOfTwoAtLeast4` = {2^k : k \u2265 2} = {4, 8, 16, ...}. Proves 2^k \u2265 4 for k \u2265 2 (valid cycle length) and 2^k is even (connecting to Liu-Montgomery's even cycle result).",
       "startLine": 53,
       "endLine": 67
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN, $1000)",
-      "summary": "States `erdos_64_conjecture`: every finite graph with δ(G) ≥ 3 contains C_{2^k} for some k ≥ 2. Universally quantified over all finite types W with simple graphs.",
+      "summary": "States `erdos_64_conjecture`: every finite graph with \u03b4(G) \u2265 3 contains C_{2^k} for some k \u2265 2. Universally quantified over all finite types W with simple graphs.",
       "startLine": 69,
       "endLine": 79
     },
     {
       "id": "erdos-gyarfas",
-      "title": "Erdős-Gyárfás Conjecture (Disproved)",
-      "summary": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ ≥ r avoiding all 2^k-cycles) and axiomatizes `liu_montgomery_threshold` disproving it for large r.",
+      "title": "Erd\u0151s-Gy\u00e1rf\u00e1s Conjecture (Disproved)",
+      "summary": "States `erdos_gyarfas_conjecture` (for every r, \u2203 graph with \u03b4 \u2265 r avoiding all 2^k-cycles) and axiomatizes `liu_montgomery_threshold` disproving it for large r.",
       "startLine": 81,
       "endLine": 105
     },
     {
       "id": "partial-results",
       "title": "Partial Results: Even Cycle Ranges",
-      "summary": "Axiomatizes Liu-Montgomery's stronger result: δ(G) ≥ D implies all even cycle lengths in [4, L] for some L ≥ 16. Proves `range_contains_power_of_two`: [4, L] always contains 2^2 = 4.",
+      "summary": "Axiomatizes Liu-Montgomery's stronger result: \u03b4(G) \u2265 D implies all even cycle lengths in [4, L] for some L \u2265 16. Proves `range_contains_power_of_two`: [4, L] always contains 2^2 = 4.",
       "startLine": 107,
       "endLine": 131
     },
@@ -183,70 +183,75 @@
     {
       "id": "degree-3",
       "title": "Degree 3 Case (Open)",
-      "summary": "Restates the conjecture as `degree_3_conjecture` with δ(G) = 3 explicitly. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous.",
+      "summary": "Restates the conjecture as `degree_3_conjecture` with \u03b4(G) = 3 explicitly. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous.",
       "startLine": 162,
       "endLine": 174
     },
     {
       "id": "known-results",
       "title": "Known Cycle Results",
-      "summary": "Axiomatizes `dirac_theorem` (δ ≥ n/2 → Hamiltonian) and `bondy_pancyclic` (≥ n²/4 edges → pancyclic or bipartite). These classical results show high degree forces cycles but don't resolve specific lengths at δ = 3.",
+      "summary": "Axiomatizes `dirac_theorem` (\u03b4 \u2265 n/2 \u2192 Hamiltonian) and `bondy_pancyclic` (\u2265 n\u00b2/4 edges \u2192 pancyclic or bipartite). These classical results show high degree forces cycles but don't resolve specific lengths at \u03b4 = 3.",
       "startLine": 176,
       "endLine": 199
     },
     {
       "id": "random-graphs",
       "title": "Probabilistic Bounds",
-      "summary": "Axiomatizes that random graphs G(n, c/n) have δ ≥ 3 and contain C_{2^k} for k ≤ 10, providing probabilistic evidence that counterexamples must be highly structured.",
+      "summary": "Axiomatizes that random graphs G(n, c/n) have \u03b4 \u2265 3 and contain C_{2^k} for k \u2264 10, providing probabilistic evidence that counterexamples must be highly structured.",
       "startLine": 199,
       "endLine": 210
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #64 is one of the most prominent open problems in extremal graph theory, carrying a $1000 Erdős prize. The formalization captures the main conjecture (δ ≥ 3 → ∃ C_{2^k}), the disproved Erdős-Gyárfás counter-conjecture, the Liu-Montgomery breakthrough (resolved for large degree), the infinite tree counterexample (finiteness essential), and classical supporting results (Dirac, Bondy, random graphs). The difficulty is entirely concentrated at δ = 3.",
-    "implications": "A positive resolution would establish that {4, 8, 16, ...} is unavoidable for δ = 3, a remarkable rigidity result for exponentially sparse cycle lengths A counterexample would require a finite graph with δ ≥ 3 avoiding all 2^k-cycles, revealing deep structure about cycle avoidance The Liu-Montgomery result shows the problem is about the sparse regime — reducing threshold D toward 3 is the path forward Connects to unavoidable subgraph theory and the broader question of which cycle length sets are forced by degree conditions",
+    "summary": "Erd\u0151s Problem #64 is one of the most prominent open problems in extremal graph theory, carrying a $1000 Erd\u0151s prize. The formalization captures the main conjecture (\u03b4 \u2265 3 \u2192 \u2203 C_{2^k}), the disproved Erd\u0151s-Gy\u00e1rf\u00e1s counter-conjecture, the Liu-Montgomery breakthrough (resolved for large degree), the infinite tree counterexample (finiteness essential), and classical supporting results (Dirac, Bondy, random graphs). The difficulty is entirely concentrated at \u03b4 = 3.",
+    "implications": "A positive resolution would establish that {4, 8, 16, ...} is unavoidable for \u03b4 = 3, a remarkable rigidity result for exponentially sparse cycle lengths A counterexample would require a finite graph with \u03b4 \u2265 3 avoiding all 2^k-cycles, revealing deep structure about cycle avoidance The Liu-Montgomery result shows the problem is about the sparse regime \u2014 reducing threshold D toward 3 is the path forward Connects to unavoidable subgraph theory and the broader question of which cycle length sets are forced by degree conditions",
     "openQuestions": [
-      "Does the conjecture hold for minimum degree exactly 3? ($1000 Erdős prize)",
+      "Does the conjecture hold for minimum degree exactly 3? ($1000 Erd\u0151s prize)",
       "What is the exact threshold D from Liu-Montgomery? Can it be reduced to a small constant?",
-      "Are there almost-counterexamples with δ ≥ 3 and very few power-of-two cycles?",
+      "Are there almost-counterexamples with \u03b4 \u2265 3 and very few power-of-two cycles?",
       "Can the result be extended to other sparse sequences (Fibonacci numbers, primes) as unavoidable cycle lengths?"
     ]
   },
   "crossReferences": [
     {
-      "id": "erdos-65",
-      "title": "Erdős Problem #65: Cycle Lengths in Dense Graphs",
-      "relationship": "Companion problem on cycle length diversity: #65 asks whether Σ 1/aᵢ ≫ log k for cycle lengths in kn-edge graphs, while #64 asks whether the specific sparse set {4,8,16,...} is unavoidable. Both are driven by Gyárfás's work on cycle structure and use the Liu-Montgomery even-cycle spectrum as a key tool."
+      "title": "Erd\u0151s Problem #65: Cycle Lengths in Dense Graphs",
+      "relationship": "related",
+      "targetId": "erdos-65",
+      "description": "Companion problem on cycle length diversity: #65 asks whether \u03a3 1/a\u1d62 \u226b log k for cycle lengths in kn-edge graphs, while #64 asks whether the specific sparse set {4,8,16,...} is unavoidable. Both are driven by Gy\u00e1rf\u00e1s's work on cycle structure and use the Liu-Montgomery even-cycle spectrum as a key tool."
     },
     {
-      "id": "erdos-72",
-      "title": "Erdős Problem #72: Unavoidable Cycle Lengths",
-      "relationship": "Direct thematic sibling: #72 asks which sparse sets A of natural numbers become unavoidable cycle lengths at high enough average degree. Problem #64 is the special case A = {2^k : k ≥ 2}. Both problems resist the same proof strategies and illustrate how exponentially sparse sets are hardest to force."
+      "title": "Erd\u0151s Problem #72: Unavoidable Cycle Lengths",
+      "relationship": "related",
+      "targetId": "erdos-72",
+      "description": "Direct thematic sibling: #72 asks which sparse sets A of natural numbers become unavoidable cycle lengths at high enough average degree. Problem #64 is the special case A = {2^k : k \u2265 2}. Both problems resist the same proof strategies and illustrate how exponentially sparse sets are hardest to force."
     },
     {
-      "id": "erdos-1012",
-      "title": "Erdős Problem #1012: Long Cycles in Dense Graphs",
-      "relationship": "Complements #64 from the dense end: #1012 (Woodall's conjecture) concerns near-Hamiltonian long cycles in graphs above a clique-density threshold, while #64 concerns sparse power-of-two cycles at minimum degree 3. Together they span the degree spectrum of cycle-forcing results."
+      "title": "Erd\u0151s Problem #1012: Long Cycles in Dense Graphs",
+      "relationship": "related",
+      "targetId": "erdos-1012",
+      "description": "Complements #64 from the dense end: #1012 (Woodall's conjecture) concerns near-Hamiltonian long cycles in graphs above a clique-density threshold, while #64 concerns sparse power-of-two cycles at minimum degree 3. Together they span the degree spectrum of cycle-forcing results."
     },
     {
-      "id": "ramseys-theorem",
       "title": "Ramsey's Theorem",
-      "relationship": "Foundational unavoidability result that motivates the framework of #64. Ramsey theory establishes that sufficiently dense structures must contain ordered substructures; #64 asks an analogous question in the cycle-length setting: does minimum degree 3 force a combinatorially structured cycle length."
+      "relationship": "related",
+      "targetId": "ramseys-theorem",
+      "description": "Foundational unavoidability result that motivates the framework of #64. Ramsey theory establishes that sufficiently dense structures must contain ordered substructures; #64 asks an analogous question in the cycle-length setting: does minimum degree 3 force a combinatorially structured cycle length."
     },
     {
-      "id": "szemeredi-regularity",
-      "title": "Szemerédi Regularity Lemma",
-      "relationship": "The Liu-Montgomery proof (which resolves #64 for large minimum degree) relies on regularity-method ideas to find even cycles in a geometric length range. The regularity lemma is the key technical engine behind this partial resolution, making this the most important proof-technique cross-reference for #64."
+      "title": "Szemer\u00e9di Regularity Lemma",
+      "relationship": "related",
+      "targetId": "szemeredi-regularity",
+      "description": "The Liu-Montgomery proof (which resolves #64 for large minimum degree) relies on regularity-method ideas to find even cycles in a geometric length range. The regularity lemma is the key technical engine behind this partial resolution, making this the most important proof-technique cross-reference for #64."
     }
   ],
   "relatedProofs": [
     {
       "id": "erdos-65",
-      "relationship": "Problem #65 studies cycle length diversity in dense graphs via Σ 1/aᵢ. Both involve Gyárfás's work on cycle structure and use the Liu-Montgomery even-cycle spectrum theorem as a central tool."
+      "relationship": "Problem #65 studies cycle length diversity in dense graphs via \u03a3 1/a\u1d62. Both involve Gy\u00e1rf\u00e1s's work on cycle structure and use the Liu-Montgomery even-cycle spectrum theorem as a central tool."
     },
     {
       "id": "erdos-72",
-      "relationship": "Problem #72 asks about unavoidable cycle lengths for sparse sets A at high average degree — the direct generalization of #64's question about A = {4,8,16,...}."
+      "relationship": "Problem #72 asks about unavoidable cycle lengths for sparse sets A at high average degree \u2014 the direct generalization of #64's question about A = {4,8,16,...}."
     },
     {
       "id": "erdos-1012",
@@ -260,27 +265,27 @@
   "references": [
     {
       "key": "EG97",
-      "citation": "Erdős, P. and Gyárfás, A., A variant of the classical Ramsey problem, Combinatorica 17 (1997), 459–467.",
+      "citation": "Erd\u0151s, P. and Gy\u00e1rf\u00e1s, A., A variant of the classical Ramsey problem, Combinatorica 17 (1997), 459\u2013467.",
       "type": "paper"
     },
     {
       "key": "LM23",
-      "citation": "Liu, H. and Montgomery, R., A solution to Erdős and Hajnal's odd cycle problem, Journal of the American Mathematical Society 36 (2023), 1191–1234.",
+      "citation": "Liu, H. and Montgomery, R., A solution to Erd\u0151s and Hajnal's odd cycle problem, Journal of the American Mathematical Society 36 (2023), 1191\u20131234.",
       "type": "paper"
     },
     {
       "key": "Dir52",
-      "citation": "Dirac, G.A., Some theorems on abstract graphs, Proceedings of the London Mathematical Society 3 (1952), 69–81.",
+      "citation": "Dirac, G.A., Some theorems on abstract graphs, Proceedings of the London Mathematical Society 3 (1952), 69\u201381.",
       "type": "paper"
     },
     {
       "key": "Bon71",
-      "citation": "Bondy, J.A., Pancyclic graphs, Journal of Combinatorial Theory Series B 11 (1971), 80–84.",
+      "citation": "Bondy, J.A., Pancyclic graphs, Journal of Combinatorial Theory Series B 11 (1971), 80\u201384.",
       "type": "paper"
     },
     {
       "key": "Ver96",
-      "citation": "Verstraëte, J., On arithmetic progressions of cycle lengths in graphs, Combinatorics, Probability and Computing 9 (2000), 369–373.",
+      "citation": "Verstra\u00ebte, J., On arithmetic progressions of cycle lengths in graphs, Combinatorics, Probability and Computing 9 (2000), 369\u2013373.",
       "type": "paper"
     }
   ],

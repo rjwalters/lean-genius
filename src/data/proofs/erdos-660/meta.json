@@ -2,9 +2,9 @@
   "id": "erdos-660",
   "title": "Distinct Distances in Convex Polyhedra",
   "slug": "erdos-660",
-  "description": "For vertices of a convex polyhedron in ℝ³, are there at least (1-o(1))·n/2 distinct pairwise distances? This extends Altman's 2D result to three dimensions.",
+  "description": "For vertices of a convex polyhedron in \u211d\u00b3, are there at least (1-o(1))\u00b7n/2 distinct pairwise distances? This extends Altman's 2D result to three dimensions.",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/660",
     "date": "1975",
     "status": "verified",
@@ -46,12 +46,12 @@
       }
     ],
     "originalContributions": [
-      "Point3D via EuclideanSpace ℝ (Fin 3) with Mathlib metric structure",
+      "Point3D via EuclideanSpace \u211d (Fin 3) with Mathlib metric structure",
       "ConvexPolyhedronVertices predicate using extreme points of convex hull",
       "pairwiseDistances and distinctDistances for counting distinct positive distances",
-      "Altman's theorem (2D analogue): convex n-gon has ≥⌊n/2⌋ distances",
+      "Altman's theorem (2D analogue): convex n-gon has \u2265\u230an/2\u230b distances",
       "Little-o notation formalization for asymptotic bounds",
-      "Main conjecture: (1-o(1))·n/2 distances for 3D convex polyhedra",
+      "Main conjecture: (1-o(1))\u00b7n/2 distances for 3D convex polyhedra",
       "Weaker linear conjecture: cn distances for some constant c",
       "Platonic solid examples: tetrahedron (1), octahedron (2), cube (3) distances",
       "Guth-Katz theorem statement for general distinct distances"
@@ -79,13 +79,13 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Origins: Erdős and the Convex Distance Problem (1975)**\n\nProblem #660 was posed by Erdős in 1975, building on a rich tradition of distance problems in convex geometry. The question is deceptively simple: must the vertices of a convex polyhedron in $\\mathbb{R}^3$ determine many distinct distances?\n\n**Altman's 2D Solution (1963)**\n\nThe 2D analogue was solved by Edward Altman in 1963: the $n$ vertices of a convex polygon determine at least $\\lfloor n/2 \\rfloor$ distinct distances. Altman's proof exploits the cyclic ordering of vertices on the convex hull — for each 'diagonal length,' there are at most 2 diagonals of that length connecting vertices of a convex polygon, giving the $n/2$ bound. Erdős mentioned that Altman may have proved an even stronger result ($\\gg n$ distances), but no reference was provided.\n\n**The Convexity Advantage**\n\nFor arbitrary point sets, the Guth-Katz theorem (2015) gives $\\Omega(n/\\log n)$ distinct distances — nearly optimal but with a logarithmic loss. For points in convex position, the rigidity of the convex hull is expected to eliminate this loss entirely, yielding a clean $\\Theta(n)$ bound. The conjecture's constant $1/2$ matches Altman's 2D result.\n\n**The 3D Challenge**\n\nThe jump from 2D to 3D is non-trivial because convex polyhedra lack the cyclic ordering that makes Altman's argument work. In 3D, the combinatorial structure of the face lattice (vertices, edges, faces) is far more complex, and the relationship between convex hull geometry and distance distributions is not well understood. Even proving a linear bound (without the $1/2$ constant) remains open.\n\n**Platonic Solid Tests**\n\nThe five Platonic solids provide test cases: tetrahedron (4 vertices, 1 distance), octahedron (6 vertices, 2 distances), cube (8 vertices, 3 distances), icosahedron (12 vertices, 3 distances), dodecahedron (20 vertices, 5 distances). All satisfy the conjecture, but they represent only highly symmetric special cases.",
+    "historicalContext": "**Origins: Erd\u0151s and the Convex Distance Problem (1975)**\n\nProblem #660 was posed by Erd\u0151s in 1975, building on a rich tradition of distance problems in convex geometry. The question is deceptively simple: must the vertices of a convex polyhedron in $\\mathbb{R}^3$ determine many distinct distances?\n\n**Altman's 2D Solution (1963)**\n\nThe 2D analogue was solved by Edward Altman in 1963: the $n$ vertices of a convex polygon determine at least $\\lfloor n/2 \\rfloor$ distinct distances. Altman's proof exploits the cyclic ordering of vertices on the convex hull \u2014 for each 'diagonal length,' there are at most 2 diagonals of that length connecting vertices of a convex polygon, giving the $n/2$ bound. Erd\u0151s mentioned that Altman may have proved an even stronger result ($\\gg n$ distances), but no reference was provided.\n\n**The Convexity Advantage**\n\nFor arbitrary point sets, the Guth-Katz theorem (2015) gives $\\Omega(n/\\log n)$ distinct distances \u2014 nearly optimal but with a logarithmic loss. For points in convex position, the rigidity of the convex hull is expected to eliminate this loss entirely, yielding a clean $\\Theta(n)$ bound. The conjecture's constant $1/2$ matches Altman's 2D result.\n\n**The 3D Challenge**\n\nThe jump from 2D to 3D is non-trivial because convex polyhedra lack the cyclic ordering that makes Altman's argument work. In 3D, the combinatorial structure of the face lattice (vertices, edges, faces) is far more complex, and the relationship between convex hull geometry and distance distributions is not well understood. Even proving a linear bound (without the $1/2$ constant) remains open.\n\n**Platonic Solid Tests**\n\nThe five Platonic solids provide test cases: tetrahedron (4 vertices, 1 distance), octahedron (6 vertices, 2 distances), cube (8 vertices, 3 distances), icosahedron (12 vertices, 3 distances), dodecahedron (20 vertices, 5 distances). All satisfy the conjecture, but they represent only highly symmetric special cases.",
     "problemStatement": "Let $x_1, \\ldots, x_n \\in \\mathbb{R}^3$ be the vertices of a convex polyhedron. Are there at least $(1 - o(1)) \\cdot n/2$ distinct distances among the $x_i$? The $(1 - o(1))$ notation means the ratio of distinct distances to $n/2$ approaches 1 as $n \\to \\infty$.",
-    "text": "For vertices of a convex polyhedron in ℝ³, are there at least (1-o(1))·n/2 distinct pairwise distances? This extends Altman's 2D result to three dimensions.",
+    "text": "For vertices of a convex polyhedron in \u211d\u00b3, are there at least (1-o(1))\u00b7n/2 distinct pairwise distances? This extends Altman's 2D result to three dimensions.",
     "proofStrategy": "This problem remains **OPEN**. The formalization defines convex polyhedron vertices via extreme points of convex hulls in $\\mathbb{R}^3$ (using Mathlib's `EuclideanSpace` and convex hull API) and the distinct distances function via `Finset.image` on the Cartesian product. The conjecture is stated using little-o notation formalized through epsilon-N limits. Supporting content includes: (1) Altman's solved 2D theorem as motivation; (2) Platonic solid examples as concrete test cases; (3) the Guth-Katz theorem as context for the general problem; (4) weaker conjectures (any linear bound) as stepping stones.",
     "keyInsights": [
       "Altman's 2D result ($\\geq \\lfloor n/2 \\rfloor$ distances for convex polygons) uses the cyclic ordering of vertices, which has no direct 3D analogue",
-      "The conjecture is asymptotic: the constant $1/2$ may not hold exactly for small $n$ — Platonic solids show $|\\Delta^+|$ can be well below $n/2$",
+      "The conjecture is asymptotic: the constant $1/2$ may not hold exactly for small $n$ \u2014 Platonic solids show $|\\Delta^+|$ can be well below $n/2$",
       "Convexity should eliminate the $\\log n$ factor present in the general Guth-Katz bound, as the convex hull structure prevents distance-rich collinear configurations",
       "Even proving a weaker linear bound $|\\Delta^+| \\geq cn$ for any constant $c > 0$ remains open in 3D",
       "The face lattice of a convex polyhedron (Euler's formula: $V - E + F = 2$) constrains which vertex pairs can be close, but this has not been sufficient to prove the conjecture",
@@ -115,7 +115,7 @@
       "title": "The Open Conjecture",
       "startLine": 94,
       "endLine": 1,
-      "summary": "States Erdős Problem #660 formally: $\\exists \\varepsilon(n) \\to 0$ such that convex polyhedron vertices determine $\\geq (1 - \\varepsilon(n)) \\cdot n/2$ distinct distances, using little-o notation"
+      "summary": "States Erd\u0151s Problem #660 formally: $\\exists \\varepsilon(n) \\to 0$ such that convex polyhedron vertices determine $\\geq (1 - \\varepsilon(n)) \\cdot n/2$ distinct distances, using little-o notation"
     },
     {
       "id": "partial-results",
@@ -140,8 +140,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #660 remains open. The conjecture that convex polyhedron vertices in $\\mathbb{R}^3$ determine at least $(1-o(1)) \\cdot n/2$ distinct distances extends Altman's solved 2D result ($\\geq \\lfloor n/2 \\rfloor$ for convex polygons) to three dimensions. The formalization captures the conjecture using extreme points of convex hulls and little-o asymptotics, with Platonic solids as concrete test cases and the Guth-Katz theorem providing context from the general distinct distances problem.",
-    "implications": "**Theoretical Significance**: Resolution would establish that the convexity constraint forces a clean linear distance count in 3D, without the logarithmic loss present in the general Guth-Katz bound. This would illuminate the fundamental question of how geometric structure (convex position vs.\n\narbitrary position) affects distance distributions. The 2D → 3D transition is a key test case for understanding how dimension affects combinatorial geometry problems, and progress here could inform analogous questions in higher dimensions.",
+    "summary": "Erd\u0151s Problem #660 remains open. The conjecture that convex polyhedron vertices in $\\mathbb{R}^3$ determine at least $(1-o(1)) \\cdot n/2$ distinct distances extends Altman's solved 2D result ($\\geq \\lfloor n/2 \\rfloor$ for convex polygons) to three dimensions. The formalization captures the conjecture using extreme points of convex hulls and little-o asymptotics, with Platonic solids as concrete test cases and the Guth-Katz theorem providing context from the general distinct distances problem.",
+    "implications": "**Theoretical Significance**: Resolution would establish that the convexity constraint forces a clean linear distance count in 3D, without the logarithmic loss present in the general Guth-Katz bound. This would illuminate the fundamental question of how geometric structure (convex position vs.\n\narbitrary position) affects distance distributions. The 2D \u2192 3D transition is a key test case for understanding how dimension affects combinatorial geometry problems, and progress here could inform analogous questions in higher dimensions.",
     "openQuestions": [
       "Does the conjecture hold with constant exactly $1/2$, or only asymptotically approaching $1/2$?",
       "Can even the weaker bound $|\\Delta^+| \\geq cn$ for some absolute constant $c > 0$ be proved in 3D?",
@@ -158,5 +158,39 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and convex-geometry themes"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distinct-distances themes"
+    },
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distinct-distances themes"
+    },
+    {
+      "targetId": "erdos-652",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distinct-distances themes"
+    },
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distinct-distances themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-1089",
+    "erdos-604",
+    "erdos-652",
+    "erdos-653"
+  ]
 }

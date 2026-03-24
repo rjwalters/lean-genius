@@ -1,10 +1,10 @@
 {
   "id": "erdos-782",
-  "title": "Erdős Problem #782: Quasi-Progressions and Cubes in the Squares",
+  "title": "Erd\u0151s Problem #782: Quasi-Progressions and Cubes in the Squares",
   "slug": "erdos-782",
   "description": "Two questions about structure in perfect squares: (1) Do squares contain arbitrarily long quasi-progressions with uniform bound C? (2) Do squares contain arbitrarily large combinatorial cubes?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/782",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos782Problem.lean",
@@ -64,15 +64,15 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Brown, Erdős, and Freedman in [BEF90]. It connects classical results about arithmetic progressions in squares with modern questions in additive combinatorics.\n\nThe classical result that squares contain no 4-term APs (related to Fermat's Last Theorem for n=4) motivates asking about weaker structures. Quasi-progressions relax the exact gap requirement to bounded gaps.\n\nSolymosi (2007) conjectured that even combinatorial cubes don't appear in unbounded sizes. Cilleruelo and Granville (2007) showed this would follow from the Bombieri-Lang conjecture in algebraic geometry.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\n**Question 1 (Quasi-Progressions):**\nDoes there exist a constant C > 0 such that for any k, the squares contain a sequence x₁ < ... < xₖ where d ≤ xᵢ₊₁ - xᵢ ≤ d + C for some d?\n\n**Question 2 (Cubes in Squares):**\nDo the squares contain arbitrarily large combinatorial cubes of the form {a + ∑_{i∈I} bᵢ : I ⊆ {1,...,k}}?\n\n**Key Facts:**\n- An affirmative answer to Q1 implies affirmative to Q2\n- Squares contain no 4-term arithmetic progressions (classical)",
+    "historicalContext": "This problem was posed by Brown, Erd\u0151s, and Freedman in [BEF90]. It connects classical results about arithmetic progressions in squares with modern questions in additive combinatorics.\n\nThe classical result that squares contain no 4-term APs (related to Fermat's Last Theorem for n=4) motivates asking about weaker structures. Quasi-progressions relax the exact gap requirement to bounded gaps.\n\nSolymosi (2007) conjectured that even combinatorial cubes don't appear in unbounded sizes. Cilleruelo and Granville (2007) showed this would follow from the Bombieri-Lang conjecture in algebraic geometry.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\n**Question 1 (Quasi-Progressions):**\nDoes there exist a constant C > 0 such that for any k, the squares contain a sequence x\u2081 < ... < x\u2096 where d \u2264 x\u1d62\u208a\u2081 - x\u1d62 \u2264 d + C for some d?\n\n**Question 2 (Cubes in Squares):**\nDo the squares contain arbitrarily large combinatorial cubes of the form {a + \u2211_{i\u2208I} b\u1d62 : I \u2286 {1,...,k}}?\n\n**Key Facts:**\n- An affirmative answer to Q1 implies affirmative to Q2\n- Squares contain no 4-term arithmetic progressions (classical)",
     "text": "Two questions about structure in perfect squares: (1) Do squares contain arbitrarily long quasi-progressions with uniform bound C? (2) Do squares contain arbitrarily large combinatorial cubes?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Squares:** Define as {n | ∃ k, n = k²}\n\n2. **Arithmetic Progressions:** ArithProg and ContainsAP\n\n3. **Quasi-Progressions:** IsQuasiProg with bounded gap condition\n\n4. **Combinatorial Cubes:** CubeVertices as sums over subsets\n\n5. **Questions:** Question1 (uniform C) and Question2 (all k)\n\n6. **Implications:** Q1 → Q2, and conditional results under Bombieri-Lang",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Squares:** Define as {n | \u2203 k, n = k\u00b2}\n\n2. **Arithmetic Progressions:** ArithProg and ContainsAP\n\n3. **Quasi-Progressions:** IsQuasiProg with bounded gap condition\n\n4. **Combinatorial Cubes:** CubeVertices as sums over subsets\n\n5. **Questions:** Question1 (uniform C) and Question2 (all k)\n\n6. **Implications:** Q1 \u2192 Q2, and conditional results under Bombieri-Lang",
     "keyInsights": [
       "**No 4-AP:** Classical result that squares have no 4-term APs motivates relaxation",
       "**Uniform vs Non-uniform:** Q1 asks for uniform C; non-uniform version is easier",
       "**Cubes Generalize APs:** k-cubes have 2^k elements; APs have k elements",
-      "**Implication:** Q1 affirmative → Q2 affirmative (via Ramsey-type argument)",
+      "**Implication:** Q1 affirmative \u2192 Q2 affirmative (via Ramsey-type argument)",
       "**Conditional Negative:** Bombieri-Lang implies Q2 negative (Cilleruelo-Granville)"
     ],
     "prerequisites": [
@@ -154,7 +154,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #782 poses two questions about structure in perfect squares: whether they contain arbitrarily long quasi-progressions with a uniform bound, and whether they contain arbitrarily large combinatorial cubes. Both questions remain open.",
+    "summary": "Erd\u0151s Problem #782 poses two questions about structure in perfect squares: whether they contain arbitrarily long quasi-progressions with a uniform bound, and whether they contain arbitrarily large combinatorial cubes. Both questions remain open.",
     "implications": "Understanding these structures would reveal deep connections between additive combinatorics (progression-like structures) and algebraic geometry (via the Bombieri-Lang conjecture). The problem bridges number theory and combinatorics.",
     "openQuestions": [
       "Do squares contain arbitrarily long quasi-progressions with uniform C?",
@@ -178,5 +178,39 @@
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 19
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-33",
+      "relationship": "related",
+      "description": "Share additive-combinatorial, squares, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-438",
+      "relationship": "related",
+      "description": "Share additive-combinatorial, squares, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-587",
+      "relationship": "related",
+      "description": "Share additive-combinatorial, squares, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-773",
+      "relationship": "related",
+      "description": "Share additive-combinatorial, squares, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Share additive-combinatorial and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-33",
+    "erdos-438",
+    "erdos-587",
+    "erdos-773",
+    "erdos-11"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-505",
-  "title": "Erdős Problem #505: Borsuk's Conjecture",
+  "title": "Erd\u0151s Problem #505: Borsuk's Conjecture",
   "slug": "erdos-505",
-  "description": "Can every diameter-1 set in ℝⁿ be partitioned into ≤ n+1 parts of smaller diameter? TRUE for n ≤ 3, FALSE for n ≥ 64 (Brouwer–Jenrich 2014). Open for 4 ≤ n ≤ 63.",
+  "description": "Can every diameter-1 set in \u211d\u207f be partitioned into \u2264 n+1 parts of smaller diameter? TRUE for n \u2264 3, FALSE for n \u2265 64 (Brouwer\u2013Jenrich 2014). Open for 4 \u2264 n \u2264 63.",
   "meta": {
-    "author": "Erdős, Borsuk",
+    "author": "Erd\u0151s, Borsuk",
     "sourceUrl": "https://erdosproblems.com/505",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos505Problem.lean",
@@ -25,16 +25,16 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Karol Borsuk conjectured in 1933 that every bounded set in $\\mathbb{R}^n$ can be partitioned into at most $n + 1$ parts of strictly smaller diameter. The conjecture was inspired by the observation that a ball in $\\mathbb{R}^n$ requires exactly $n + 1$ pieces, and it generalized earlier results of Lenz and Hadwiger for $n = 2$. The conjecture was widely believed to be true and was verified for $n \\leq 3$: the case $n = 2$ by classical methods and $n = 3$ by Eggleston (1955), Grünbaum, and Heppes. Erdős discussed the problem with Coxeter and others, and was among those who suspected it might fail in high dimensions. In 1993, Jeff Kahn and Gil Kalai produced one of the most dramatic counterexamples in combinatorial geometry: using a carefully chosen subset of the Boolean cube $\\{0,1\\}^n$ and the Frankl-Wilson theorem on intersecting families, they showed $\\alpha(n) \\geq (1.2)^{\\sqrt{n}}$, which exceeds $n + 1$ for $n \\geq 2015$. This was later refined to $n \\geq 2014$. In 2014, Andries Brouwer and Thomas Jenrich used computer-assisted search over two-distance sets to lower the counterexample threshold to $n \\geq 64$, the current best result. On the upper bound side, Oded Schramm showed $\\alpha(n) \\leq (\\sqrt{3/2} + o(1))^n \\approx 1.225^n$ using the illumination body technique. The problem remains open for $4 \\leq n \\leq 63$, a gap that has resisted all known approaches.",
+    "historicalContext": "Karol Borsuk conjectured in 1933 that every bounded set in $\\mathbb{R}^n$ can be partitioned into at most $n + 1$ parts of strictly smaller diameter. The conjecture was inspired by the observation that a ball in $\\mathbb{R}^n$ requires exactly $n + 1$ pieces, and it generalized earlier results of Lenz and Hadwiger for $n = 2$. The conjecture was widely believed to be true and was verified for $n \\leq 3$: the case $n = 2$ by classical methods and $n = 3$ by Eggleston (1955), Gr\u00fcnbaum, and Heppes. Erd\u0151s discussed the problem with Coxeter and others, and was among those who suspected it might fail in high dimensions. In 1993, Jeff Kahn and Gil Kalai produced one of the most dramatic counterexamples in combinatorial geometry: using a carefully chosen subset of the Boolean cube $\\{0,1\\}^n$ and the Frankl-Wilson theorem on intersecting families, they showed $\\alpha(n) \\geq (1.2)^{\\sqrt{n}}$, which exceeds $n + 1$ for $n \\geq 2015$. This was later refined to $n \\geq 2014$. In 2014, Andries Brouwer and Thomas Jenrich used computer-assisted search over two-distance sets to lower the counterexample threshold to $n \\geq 64$, the current best result. On the upper bound side, Oded Schramm showed $\\alpha(n) \\leq (\\sqrt{3/2} + o(1))^n \\approx 1.225^n$ using the illumination body technique. The problem remains open for $4 \\leq n \\leq 63$, a gap that has resisted all known approaches.",
     "problemStatement": "Is every set of diameter 1 in $\\mathbb{R}^n$ the union of at most $n + 1$ sets of diameter $< 1$? Equivalently, what is $\\alpha(n)$, the minimum number of smaller-diameter pieces needed?",
-    "text": "Can every diameter-1 set in ℝⁿ be partitioned into ≤ n+1 parts of smaller diameter? TRUE for n ≤ 3, FALSE for n ≥ 64 (Brouwer–Jenrich 2014). Open for 4 ≤ n ≤ 63.",
+    "text": "Can every diameter-1 set in \u211d\u207f be partitioned into \u2264 n+1 parts of smaller diameter? TRUE for n \u2264 3, FALSE for n \u2265 64 (Brouwer\u2013Jenrich 2014). Open for 4 \u2264 n \u2264 63.",
     "proofStrategy": "The formalization defines the Borsuk number $\\alpha(n)$ as an axiomatized function, states the conjecture as a predicate $\\alpha(n) \\leq n + 1$, records the positive results for $n = 2$ (classical) and $n = 3$ (Eggleston 1955), the counterexamples for $n \\geq 2014$ (Kahn-Kalai) and $n \\geq 64$ (Brouwer-Jenrich), and the quantitative bounds $\\alpha(n) \\geq 1.2^{\\sqrt{n}}$ and $\\alpha(n) \\leq (\\sqrt{3/2} + o(1))^n$. The intermediate case $\\alpha(4) \\in [4, 5]$ is also recorded.",
     "keyInsights": [
       "TRUE for $n \\leq 3$, FALSE for $n \\geq 64$: the conjecture has a phase transition somewhere in $4 \\leq n \\leq 63$ that remains completely unresolved",
       "Kahn-Kalai used the Frankl-Wilson theorem on layers of $\\{0,1\\}^n$ to construct sets requiring $\\geq (1.2)^{\\sqrt{n}}$ partition pieces, spectacularly exceeding the conjectured $n + 1$",
       "Schramm's illumination body technique gives the upper bound $\\alpha(n) \\leq (\\sqrt{3/2} + o(1))^n$, so $\\alpha(n)$ is between $\\exp(c\\sqrt{n})$ and $\\exp(Cn)$",
       "The Borsuk graph (vertices = points, edges = diameter-achieving pairs) has chromatic number $\\alpha(n)$, connecting the partition problem to graph coloring",
-      "Brouwer-Jenrich's computer-assisted approach to $n \\geq 64$ used two-distance sets, linking Borsuk's problem to Erdős Problem 502 on few-distance sets"
+      "Brouwer-Jenrich's computer-assisted approach to $n \\geq 64$ used two-distance sets, linking Borsuk's problem to Erd\u0151s Problem 502 on few-distance sets"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -47,21 +47,21 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Module documentation describing Borsuk's conjecture history and key results (n ≤ 3 true, n ≥ 64 false, quantitative bounds), with Mathlib imports for real analysis, finite sets, and inner product spaces."
+      "summary": "Module documentation describing Borsuk's conjecture history and key results (n \u2264 3 true, n \u2265 64 false, quantitative bounds), with Mathlib imports for real analysis, finite sets, and inner product spaces."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 48,
-      "summary": "Defines BoundedSet, diameter (supremum of pairwise distances), IsSmallDiamPartition (k pieces covering S with diameter < d), and the Borsuk number α(n) axiomatized as a function ℕ → ℕ."
+      "summary": "Defines BoundedSet, diameter (supremum of pairwise distances), IsSmallDiamPartition (k pieces covering S with diameter < d), and the Borsuk number \u03b1(n) axiomatized as a function \u2115 \u2192 \u2115."
     },
     {
       "id": "conjecture",
       "title": "Borsuk's Conjecture",
       "startLine": 50,
       "endLine": 55,
-      "summary": "Defines borsukConjecture n as the predicate α(n) ≤ n + 1, the central claim of the problem."
+      "summary": "Defines borsukConjecture n as the predicate \u03b1(n) \u2264 n + 1, the central claim of the problem."
     },
     {
       "id": "low-dim",
@@ -75,32 +75,32 @@
       "title": "Counterexamples",
       "startLine": 65,
       "endLine": 76,
-      "summary": "Axioms: Kahn-Kalai (1993) disprove the conjecture for n ≥ 2014; Brouwer-Jenrich (2014) improve the threshold to n ≥ 64."
+      "summary": "Axioms: Kahn-Kalai (1993) disprove the conjecture for n \u2265 2014; Brouwer-Jenrich (2014) improve the threshold to n \u2265 64."
     },
     {
       "id": "quantitative-bounds",
-      "title": "Quantitative Bounds on α(n)",
+      "title": "Quantitative Bounds on \u03b1(n)",
       "startLine": 78,
       "endLine": 90,
-      "summary": "Axioms: Kahn-Kalai lower bound α(n) ≥ 1.2^√n and Schramm upper bound α(n) ≤ (√(3/2) + o(1))^n, establishing α(n) between exp(c√n) and exp(Cn)."
+      "summary": "Axioms: Kahn-Kalai lower bound \u03b1(n) \u2265 1.2^\u221an and Schramm upper bound \u03b1(n) \u2264 (\u221a(3/2) + o(1))^n, establishing \u03b1(n) between exp(c\u221an) and exp(Cn)."
     },
     {
       "id": "intermediate",
       "title": "Intermediate Dimensions",
       "startLine": 92,
       "endLine": 98,
-      "summary": "Axiom: α(4) ∈ [4, 5], representing the open frontier 4 ≤ n ≤ 63 where neither proof nor counterexample is known."
+      "summary": "Axiom: \u03b1(4) \u2208 [4, 5], representing the open frontier 4 \u2264 n \u2264 63 where neither proof nor counterexample is known."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Borsuk's conjecture as a precisely defined predicate on the Borsuk number α(n), recording the complete known picture: positive results for n ≤ 3, counterexamples for n ≥ 64, and quantitative bounds showing α(n) grows between exp(c√n) and exp(Cn). The gap 4 ≤ n ≤ 63 remains the central open question.",
-    "implications": "**Theoretical Significance**: The Kahn-Kalai counterexample was a landmark in discrete geometry, demonstrating that high-dimensional combinatorial structure can force partition numbers far beyond naive geometric expectations.\n\nThe techniques connect Borsuk's problem to algebraic combinatorics (Frankl-Wilson type bounds), graph theory (Borsuk graph chromatic number), and convex geometry (illumination bodies). The problem's resolution pattern — true in low dimensions, false in high dimensions — is a recurring theme in discrete geometry.",
+    "summary": "The formalization captures Borsuk's conjecture as a precisely defined predicate on the Borsuk number \u03b1(n), recording the complete known picture: positive results for n \u2264 3, counterexamples for n \u2265 64, and quantitative bounds showing \u03b1(n) grows between exp(c\u221an) and exp(Cn). The gap 4 \u2264 n \u2264 63 remains the central open question.",
+    "implications": "**Theoretical Significance**: The Kahn-Kalai counterexample was a landmark in discrete geometry, demonstrating that high-dimensional combinatorial structure can force partition numbers far beyond naive geometric expectations.\n\nThe techniques connect Borsuk's problem to algebraic combinatorics (Frankl-Wilson type bounds), graph theory (Borsuk graph chromatic number), and convex geometry (illumination bodies). The problem's resolution pattern \u2014 true in low dimensions, false in high dimensions \u2014 is a recurring theme in discrete geometry.",
     "openQuestions": [
       "What is the smallest dimension n for which Borsuk's conjecture fails? Is it n = 4?",
-      "What are the exact values α(4), α(5), ..., α(63)?",
-      "Can the Kahn-Kalai lower bound (1.2)^√n be improved to exp(cn) for some c > 0?",
-      "What is the true exponential growth rate of α(n): exp(Θ(√n)) or exp(Θ(n))?",
-      "Is there a structural characterization of extremal sets achieving α(n) partition pieces?"
+      "What are the exact values \u03b1(4), \u03b1(5), ..., \u03b1(63)?",
+      "Can the Kahn-Kalai lower bound (1.2)^\u221an be improved to exp(cn) for some c > 0?",
+      "What is the true exponential growth rate of \u03b1(n): exp(\u0398(\u221an)) or exp(\u0398(n))?",
+      "Is there a structural characterization of extremal sets achieving \u03b1(n) partition pieces?"
     ]
   },
   "leanFile": {
@@ -116,5 +116,21 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-502",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial geometry themes"
+    },
+    {
+      "targetId": "erdos-506",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial geometry themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-502",
+    "erdos-506"
+  ]
 }

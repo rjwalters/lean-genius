@@ -2,9 +2,9 @@
   "id": "erdos-181",
   "title": "Ramsey Number of the Hypercube",
   "slug": "erdos-181",
-  "description": "Prove R(Q_n) ≪ 2^n (Burr-Erdős). Best known: R(Q_n) ≪ 2^{(2-c)n} (Tikhomirov 2022). The conjecture says the Ramsey number is linear in the vertex count. Open.",
+  "description": "Prove R(Q_n) \u226a 2^n (Burr-Erd\u0151s). Best known: R(Q_n) \u226a 2^{(2-c)n} (Tikhomirov 2022). The conjecture says the Ramsey number is linear in the vertex count. Open.",
   "meta": {
-    "author": "Burr, Erdős (1975)",
+    "author": "Burr, Erd\u0151s (1975)",
     "sourceUrl": "https://erdosproblems.com/181",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos181Problem.lean",
@@ -44,21 +44,21 @@
       }
     ],
     "originalContributions": [
-      "hypercubeAdj: Q_n adjacency via unique bit difference using ∃! i : Fin n",
+      "hypercubeAdj: Q_n adjacency via unique bit difference using \u2203! i : Fin n",
       "hypercubeAdj_symm, hypercubeAdj_irrefl: proved symmetry and irreflexivity",
       "hypercube_vertex_count: |V(Q_n)| = 2^n via Fintype.card_fin",
-      "hypercube_edge_count_formula: n·2^n/2 = n·2^(n-1) (handshaking)",
+      "hypercube_edge_count_formula: n\u00b72^n/2 = n\u00b72^(n-1) (handshaking)",
       "ramseyNumber: R(Q_n) defined as sInf over 2-colorings of K_N",
-      "ramseyNumber_zero_bound: R(Q_0) ≤ 1 proved constructively",
-      "erdos_181_conjecture: ∃ C > 0, ∀ n, R(Q_n) ≤ C · 2^n",
-      "tikhomirov_2022: R(Q_n) ≤ C · 2^{(2-c)n} for c > 0",
-      "lower_bound: R(Q_n) ≥ 2^n from vertex count",
-      "bound_gap_description: 2^n ≤ 2^{2n} proved (gap illustration)"
+      "ramseyNumber_zero_bound: R(Q_0) \u2264 1 proved constructively",
+      "erdos_181_conjecture: \u2203 C > 0, \u2200 n, R(Q_n) \u2264 C \u00b7 2^n",
+      "tikhomirov_2022: R(Q_n) \u2264 C \u00b7 2^{(2-c)n} for c > 0",
+      "lower_bound: R(Q_n) \u2265 2^n from vertex count",
+      "bound_gap_description: 2^n \u2264 2^{2n} proved (gap illustration)"
     ],
     "relatedProofs": [
       {
         "id": "ramseys-theorem",
-        "relationship": "The classical Ramsey theorem R(s,t) < ∞ provides the trivial upper bound R(Q_n) ≤ R(K_{2^n}) used as the starting point for this problem"
+        "relationship": "The classical Ramsey theorem R(s,t) < \u221e provides the trivial upper bound R(Q_n) \u2264 R(K_{2^n}) used as the starting point for this problem"
       }
     ],
     "axiomCount": 7,
@@ -66,16 +66,16 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Burr and Erdős conjectured in 1975 that the Ramsey number of the $n$-dimensional hypercube $Q_n$ is at most linear in its vertex count $2^n$. The hypercube $Q_n$ has $2^n$ vertices (binary strings of length $n$) with edges between strings differing in exactly one coordinate, giving each vertex degree $n$. The 2-color Ramsey number $R(Q_n)$ is the minimum $N$ such that every 2-coloring of $K_N$'s edges contains a monochromatic copy of $Q_n$.\n\nThe conjecture is part of the broader Burr-Erdős program on Ramsey numbers of sparse graphs. For bounded-degree graphs $G$ on $m$ vertices, Burr and Erdős conjectured $R(G) = O(m)$, which Lee proved in 2017 using the regularity method. However, $Q_n$ has degree $n = \\log_2(2^n)$, which grows with the graph size, so Lee's result does not apply. The hypercube sits precisely at the boundary between bounded and unbounded degree, making it a critical test case for extending Ramsey-linear behavior.\n\nThe trivial bound $R(Q_n) \\leq R(K_{2^n})$ is doubly-exponential in $n$. Tikhomirov (2022) obtained the best current bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ for $c \\approx 0.0366$, which is subquadratic in $2^n$ but still superlinear. The lower bound $R(Q_n) \\geq 2^n$ is immediate from the vertex count. Erdős and Sós raised the question of whether $R(Q_n)/2^n \\to \\infty$; the conjecture would imply this ratio is bounded, but current bounds show it still diverges.\n\nThe gap between the trivial lower bound $2^n$ and Tikhomirov's upper bound $2^{(2-c)n}$ (exponent gap between 1 and $\\approx 1.964$) remains one of the most prominent open problems in Ramsey theory.\n\n**Status**: OPEN — The Burr-Erdős conjecture for hypercubes is unresolved.",
+    "historicalContext": "Burr and Erd\u0151s conjectured in 1975 that the Ramsey number of the $n$-dimensional hypercube $Q_n$ is at most linear in its vertex count $2^n$. The hypercube $Q_n$ has $2^n$ vertices (binary strings of length $n$) with edges between strings differing in exactly one coordinate, giving each vertex degree $n$. The 2-color Ramsey number $R(Q_n)$ is the minimum $N$ such that every 2-coloring of $K_N$'s edges contains a monochromatic copy of $Q_n$.\n\nThe conjecture is part of the broader Burr-Erd\u0151s program on Ramsey numbers of sparse graphs. For bounded-degree graphs $G$ on $m$ vertices, Burr and Erd\u0151s conjectured $R(G) = O(m)$, which Lee proved in 2017 using the regularity method. However, $Q_n$ has degree $n = \\log_2(2^n)$, which grows with the graph size, so Lee's result does not apply. The hypercube sits precisely at the boundary between bounded and unbounded degree, making it a critical test case for extending Ramsey-linear behavior.\n\nThe trivial bound $R(Q_n) \\leq R(K_{2^n})$ is doubly-exponential in $n$. Tikhomirov (2022) obtained the best current bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ for $c \\approx 0.0366$, which is subquadratic in $2^n$ but still superlinear. The lower bound $R(Q_n) \\geq 2^n$ is immediate from the vertex count. Erd\u0151s and S\u00f3s raised the question of whether $R(Q_n)/2^n \\to \\infty$; the conjecture would imply this ratio is bounded, but current bounds show it still diverges.\n\nThe gap between the trivial lower bound $2^n$ and Tikhomirov's upper bound $2^{(2-c)n}$ (exponent gap between 1 and $\\approx 1.964$) remains one of the most prominent open problems in Ramsey theory.\n\n**Status**: OPEN \u2014 The Burr-Erd\u0151s conjecture for hypercubes is unresolved.",
     "problemStatement": "**Problem (OPEN)**\n\nLet $Q_n$ be the $n$-dimensional hypercube graph with $2^n$ vertices.\n\nProve that $R(Q_n) \\ll 2^n$, i.e., $\\exists C > 0 : \\forall n, R(Q_n) \\leq C \\cdot 2^n$.\n\n**Known Results:**\n- Lower bound: $R(Q_n) \\geq 2^n$ (trivial, from vertex count)\n- Best upper bound: $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ for $c \\approx 0.0366$ (Tikhomirov 2022)\n- Trivial upper bound: $R(Q_n) \\leq C^{2^n}$ (from Ramsey number of $K_{2^n}$)\n- Lee (2017) proved $R(G) = O(|V(G)|)$ for bounded-degree $G$, but $Q_n$ has degree $n \\to \\infty$\n\n**Open**: Close the exponent gap between 1 and $2-c \\approx 1.964$.",
-    "text": "Prove R(Q_n) ≪ 2^n (Burr-Erdős). Best known: R(Q_n) ≪ 2^{(2-c)n} (Tikhomirov 2022). The conjecture says the Ramsey number is linear in the vertex count. Open.",
-    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (211 lines) formalizes the problem in five parts with several actual proofs:\n\n1. **Hypercube graph** (lines 33–71): Defines `hypercubeAdj n x y` via $\\exists! i : \\text{Fin } n$ with differing bit at position $i$, using integer division and modular arithmetic on `Fin (2^n)`. Proves symmetry (`hypercubeAdj_symm`), irreflexivity (`hypercubeAdj_irrefl`), vertex count $|V(Q_n)| = 2^n$ (`hypercube_vertex_count`), and edge count formula $n \\cdot 2^n / 2 = n \\cdot 2^{n-1}$ (`hypercube_edge_count_formula`).\n\n2. **Ramsey number** (lines 73–97): Defines `ramseyNumber n` as `sInf` over $N$ such that every 2-coloring $c : \\text{Fin } N \\to \\text{Fin } N \\to \\text{Fin } 2$ contains an injective monochromatic $Q_n$-copy. Proves $R(Q_0) \\leq 1$ constructively.\n\n3. **Main conjecture** (lines 99–112): Axiomatizes `erdos_181_conjecture`: $\\exists C > 0, \\forall n, R(Q_n) \\leq C \\cdot 2^n$.\n\n4. **Known bounds** (lines 114–144): Axiomatizes the trivial upper bound $R(Q_n) \\leq C^{2^n}$, Tikhomirov's bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$, and the lower bound $R(Q_n) \\geq 2^n$.\n\n5. **Context and gap** (lines 146–211): Axiomatizes Lee's bounded-degree result (simplified), the Erdős-Sós divergence question, proves the bound gap $2^n \\leq 2^{2n}$, and restates the main conjecture as `erdos_181`.",
+    "text": "Prove R(Q_n) \u226a 2^n (Burr-Erd\u0151s). Best known: R(Q_n) \u226a 2^{(2-c)n} (Tikhomirov 2022). The conjecture says the Ramsey number is linear in the vertex count. Open.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (211 lines) formalizes the problem in five parts with several actual proofs:\n\n1. **Hypercube graph** (lines 33\u201371): Defines `hypercubeAdj n x y` via $\\exists! i : \\text{Fin } n$ with differing bit at position $i$, using integer division and modular arithmetic on `Fin (2^n)`. Proves symmetry (`hypercubeAdj_symm`), irreflexivity (`hypercubeAdj_irrefl`), vertex count $|V(Q_n)| = 2^n$ (`hypercube_vertex_count`), and edge count formula $n \\cdot 2^n / 2 = n \\cdot 2^{n-1}$ (`hypercube_edge_count_formula`).\n\n2. **Ramsey number** (lines 73\u201397): Defines `ramseyNumber n` as `sInf` over $N$ such that every 2-coloring $c : \\text{Fin } N \\to \\text{Fin } N \\to \\text{Fin } 2$ contains an injective monochromatic $Q_n$-copy. Proves $R(Q_0) \\leq 1$ constructively.\n\n3. **Main conjecture** (lines 99\u2013112): Axiomatizes `erdos_181_conjecture`: $\\exists C > 0, \\forall n, R(Q_n) \\leq C \\cdot 2^n$.\n\n4. **Known bounds** (lines 114\u2013144): Axiomatizes the trivial upper bound $R(Q_n) \\leq C^{2^n}$, Tikhomirov's bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$, and the lower bound $R(Q_n) \\geq 2^n$.\n\n5. **Context and gap** (lines 146\u2013211): Axiomatizes Lee's bounded-degree result (simplified), the Erd\u0151s-S\u00f3s divergence question, proves the bound gap $2^n \\leq 2^{2n}$, and restates the main conjecture as `erdos_181`.",
     "keyInsights": [
-      "The hypercube $Q_n$ has degree $n = \\log_2 |V(Q_n)|$, placing it exactly at the boundary of the Burr-Erdős bounded-degree conjecture proved by Lee (2017). The conjecture asks whether Ramsey-linear behavior extends to this logarithmic-degree regime.",
+      "The hypercube $Q_n$ has degree $n = \\log_2 |V(Q_n)|$, placing it exactly at the boundary of the Burr-Erd\u0151s bounded-degree conjecture proved by Lee (2017). The conjecture asks whether Ramsey-linear behavior extends to this logarithmic-degree regime.",
       "Tikhomirov's bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ with $c \\approx 0.0366$ is subquadratic in vertex count $2^n$ (exponent $2-c < 2$) but still superlinear, leaving an exponent gap between 1 and $\\approx 1.964$",
       "The trivial lower bound $R(Q_n) \\geq 2^n$ comes from the vertex count: any host graph must have at least $2^n$ vertices to embed $Q_n$. The conjecture asserts $R(Q_n)$ is only a constant factor above this.",
       "The bit-level formalization of hypercube adjacency via $\\exists! i : \\text{Fin } n$ with $(x / 2^i) \\bmod 2 \\neq (y / 2^i) \\bmod 2$ captures the Hamming distance-1 condition using integer arithmetic on `Fin (2^n)`",
-      "The Erdős-Sós question ($R(Q_n)/2^n \\to \\infty$?) is logically complementary to the conjecture: if the conjecture holds, the ratio is bounded; if the ratio diverges, the conjecture is false"
+      "The Erd\u0151s-S\u00f3s question ($R(Q_n)/2^n \\to \\infty$?) is logically complementary to the conjecture: if the conjecture holds, the ratio is bounded; if the ratio diverges, the conjecture is false"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -100,7 +100,7 @@
     },
     {
       "id": "main-conjecture",
-      "title": "Burr-Erdős Conjecture",
+      "title": "Burr-Erd\u0151s Conjecture",
       "startLine": 99,
       "endLine": 112,
       "summary": "Axiomatizes the main conjecture `erdos_181_conjecture`: $\\exists C > 0, \\forall n, R(Q_n) \\leq C \\cdot 2^n$. This asserts the Ramsey number is at most linear in the vertex count $2^n$, making $R(Q_n) = O(2^n)$."
@@ -117,15 +117,15 @@
       "title": "Context, Related Results, and Gap Analysis",
       "startLine": 146,
       "endLine": 211,
-      "summary": "Axiomatizes Lee's bounded-degree Ramsey result (which does not apply to $Q_n$ since $\\deg(Q_n) = n \\to \\infty$) and the Erdős-Sós divergence question ($R(Q_n)/2^n \\to \\infty$?). Proves the bound gap illustration $2^n \\leq 2^{2n}$. Restates the main conjecture as `erdos_181`."
+      "summary": "Axiomatizes Lee's bounded-degree Ramsey result (which does not apply to $Q_n$ since $\\deg(Q_n) = n \\to \\infty$) and the Erd\u0151s-S\u00f3s divergence question ($R(Q_n)/2^n \\to \\infty$?). Proves the bound gap illustration $2^n \\leq 2^{2n}$. Restates the main conjecture as `erdos_181`."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #181 with both proved and axiomatized results: the hypercube adjacency via bit arithmetic with proved symmetry and irreflexivity, the Ramsey number $R(Q_n)$ via `sInf` with proved base case $R(Q_0) \\leq 1$, the Burr-Erdős conjecture $R(Q_n) \\leq C \\cdot 2^n$, Tikhomirov's best bound $2^{(2-c)n}$, and the Erdős-Sós divergence question. The exponent gap between 1 and $2-c \\approx 1.964$ is the central open challenge.",
-    "implications": "1. **Ramsey Theory Frontier**: Resolving this conjecture would extend Ramsey-linear behavior beyond bounded-degree graphs to the logarithmic-degree regime, a qualitative advance in understanding when $R(G) = O(|V(G)|)$\n\n2. **Regularity Methods**: Current approaches (Tikhomirov) use the regularity lemma and embedding techniques.\n\nA proof of the conjecture would likely require new embedding methods for structured sparse graphs\n\n3. **Burr-Erdős Program**: This is the most prominent remaining case of the general Burr-Erdős question about Ramsey numbers of sparse graphs, after Lee's resolution of the bounded-degree case\n\n4. **Combinatorial Optimization**: The hypercube is a fundamental object in computer science (Boolean lattice, error-correcting codes); understanding its Ramsey properties has implications for coding theory and network design.",
+    "summary": "This formalization captures Erd\u0151s Problem #181 with both proved and axiomatized results: the hypercube adjacency via bit arithmetic with proved symmetry and irreflexivity, the Ramsey number $R(Q_n)$ via `sInf` with proved base case $R(Q_0) \\leq 1$, the Burr-Erd\u0151s conjecture $R(Q_n) \\leq C \\cdot 2^n$, Tikhomirov's best bound $2^{(2-c)n}$, and the Erd\u0151s-S\u00f3s divergence question. The exponent gap between 1 and $2-c \\approx 1.964$ is the central open challenge.",
+    "implications": "1. **Ramsey Theory Frontier**: Resolving this conjecture would extend Ramsey-linear behavior beyond bounded-degree graphs to the logarithmic-degree regime, a qualitative advance in understanding when $R(G) = O(|V(G)|)$\n\n2. **Regularity Methods**: Current approaches (Tikhomirov) use the regularity lemma and embedding techniques.\n\nA proof of the conjecture would likely require new embedding methods for structured sparse graphs\n\n3. **Burr-Erd\u0151s Program**: This is the most prominent remaining case of the general Burr-Erd\u0151s question about Ramsey numbers of sparse graphs, after Lee's resolution of the bounded-degree case\n\n4. **Combinatorial Optimization**: The hypercube is a fundamental object in computer science (Boolean lattice, error-correcting codes); understanding its Ramsey properties has implications for coding theory and network design.",
     "openQuestions": [
-      "Is R(Q_n) ≪ 2^n? Can the Tikhomirov exponent 2-c be improved toward 1?",
-      "Does R(Q_n)/2^n → ∞ (Erdős-Sós question)?",
+      "Is R(Q_n) \u226a 2^n? Can the Tikhomirov exponent 2-c be improved toward 1?",
+      "Does R(Q_n)/2^n \u2192 \u221e (Erd\u0151s-S\u00f3s question)?",
       "What are the exact values of R(Q_n) for small n (n = 3, 4, 5)?",
       "Can the regularity method give exponent below 3/2, or is a fundamentally different approach needed?",
       "Does the bounded-degree Ramsey approach extend to graphs with degree O(log |V|)?"
@@ -148,7 +148,7 @@
   "references": [
     {
       "key": "BuEr75",
-      "citation": "Burr, S.A. and Erdős, P. (1975). On the magnitude of generalized Ramsey numbers for graphs. Colloquia Mathematica Societatis János Bolyai 10, Infinite and Finite Sets, 214-240.",
+      "citation": "Burr, S.A. and Erd\u0151s, P. (1975). On the magnitude of generalized Ramsey numbers for graphs. Colloquia Mathematica Societatis J\u00e1nos Bolyai 10, Infinite and Finite Sets, 214-240.",
       "type": "paper"
     },
     {
@@ -163,8 +163,42 @@
     },
     {
       "key": "Er93",
-      "citation": "Erdős, P. (1993). On some of my problems in graph theory. Combinatorics, Graph Theory, and Algorithms, Vol. I, 365-377.",
+      "citation": "Erd\u0151s, P. (1993). On some of my problems in graph theory. Combinatorics, Graph Theory, and Algorithms, Vol. I, 365-377.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1035",
+      "relationship": "related",
+      "description": "Share hypercube and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-666",
+      "relationship": "related",
+      "description": "Share hypercube and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-86",
+      "relationship": "related",
+      "description": "Share hypercube and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1035",
+    "erdos-666",
+    "erdos-86",
+    "erdos-1014",
+    "erdos-1029"
   ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-164",
-  "title": "Erdős Problem #164: Maximum Sum for Primitive Sets",
+  "title": "Erd\u0151s Problem #164: Maximum Sum for Primitive Sets",
   "slug": "erdos-164",
-  "description": "Is the sum Σ 1/(n log n) over a primitive set A ⊆ ℕ maximized when A is the set of primes? YES — proved by Lichtman (2023).",
+  "description": "Is the sum \u03a3 1/(n log n) over a primitive set A \u2286 \u2115 maximized when A is the set of primes? YES \u2014 proved by Lichtman (2023).",
   "meta": {
-    "author": "Lichtman (2023 proof), Erdős (1935 convergence, 1976 conjecture)",
+    "author": "Lichtman (2023 proof), Erd\u0151s (1935 convergence, 1976 conjecture)",
     "sourceUrl": "https://erdosproblems.com/164",
     "date": "2023",
     "status": "axiomatized",
@@ -44,8 +44,8 @@
       "IsPrimitive definition: no element divides another",
       "primes_primitive theorem: primes form a primitive set",
       "Concrete example: {6, 10, 15} is primitive",
-      "f, primitiveSumFinite, primitiveSum definitions for Σ 1/(n log n)",
-      "erdos_convergence axiom: Erdős 1935 convergence theorem",
+      "f, primitiveSumFinite, primitiveSum definitions for \u03a3 1/(n log n)",
+      "erdos_convergence axiom: Erd\u0151s 1935 convergence theorem",
       "lichtman_theorem axiom: primes maximize the sum",
       "lichtman_uniqueness axiom: primes are the unique maximizer",
       "IsMaximizedByPrimes generalization framework",
@@ -56,15 +56,15 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős proved in 1935 that for any primitive set A ⊆ ℕ (where no element divides another), the sum Σ_{n ∈ A} 1/(n log n) converges. This was a foundational result in the study of primitive sets, establishing that they are \"thin\" in a precise analytic sense.\n\nIn 1976, Erdős conjectured that this sum is maximized when A is the set of all prime numbers, with the prime sum Σ_p 1/(p log p) ≈ 1.6366. He repeated this conjecture in 1986. The intuition is that primes are the \"atoms\" of multiplicative number theory — they form the most natural primitive set.\n\nJared Lichtman proved the conjecture in 2023 (arXiv:2202.02384), showing not only that the primes maximize the sum but that they are the unique maximizer. The proof uses a delicate comparison argument exploiting the multiplicative structure of the integers. This resolved one of the most natural questions about primitive sets that had remained open for nearly 50 years.",
+    "historicalContext": "Erd\u0151s proved in 1935 that for any primitive set A \u2286 \u2115 (where no element divides another), the sum \u03a3_{n \u2208 A} 1/(n log n) converges. This was a foundational result in the study of primitive sets, establishing that they are \"thin\" in a precise analytic sense.\n\nIn 1976, Erd\u0151s conjectured that this sum is maximized when A is the set of all prime numbers, with the prime sum \u03a3_p 1/(p log p) \u2248 1.6366. He repeated this conjecture in 1986. The intuition is that primes are the \"atoms\" of multiplicative number theory \u2014 they form the most natural primitive set.\n\nJared Lichtman proved the conjecture in 2023 (arXiv:2202.02384), showing not only that the primes maximize the sum but that they are the unique maximizer. The proof uses a delicate comparison argument exploiting the multiplicative structure of the integers. This resolved one of the most natural questions about primitive sets that had remained open for nearly 50 years.",
     "problemStatement": "A set $A \\subseteq \\mathbb{N}$ is *primitive* if no member of $A$ divides another. Is the sum $\\sum_{n \\in A} \\frac{1}{n \\log n}$ maximized over all primitive sets when $A$ is the set of primes?\n\n**Answer: YES** (Lichtman 2023). The primes uniquely maximize this sum, with $\\sum_p \\frac{1}{p \\log p} \\approx 1.6366$.",
-    "text": "Is the sum Σ 1/(n log n) over a primitive set A ⊆ ℕ maximized when A is the set of primes? YES — proved by Lichtman (2023).",
-    "proofStrategy": "The formalization defines IsPrimitive for sets of natural numbers, proves that the primes satisfy this property, and constructs the sum functional Σ 1/(n log n) via suprema of finite partial sums. Erdős's 1935 convergence theorem and Lichtman's 2023 maximality result are axiomatized. The proof that primes are primitive uses Nat.Prime.eq_one_or_self_of_dvd from Mathlib. A generalization framework (IsMaximizedByPrimes) captures the broader question of which functions are extremal at the primes.",
+    "text": "Is the sum \u03a3 1/(n log n) over a primitive set A \u2286 \u2115 maximized when A is the set of primes? YES \u2014 proved by Lichtman (2023).",
+    "proofStrategy": "The formalization defines IsPrimitive for sets of natural numbers, proves that the primes satisfy this property, and constructs the sum functional \u03a3 1/(n log n) via suprema of finite partial sums. Erd\u0151s's 1935 convergence theorem and Lichtman's 2023 maximality result are axiomatized. The proof that primes are primitive uses Nat.Prime.eq_one_or_self_of_dvd from Mathlib. A generalization framework (IsMaximizedByPrimes) captures the broader question of which functions are extremal at the primes.",
     "keyInsights": [
-      "**Primitive sets**: A set where no element divides another — primes are the canonical example since distinct primes never divide each other",
-      "**Erdős convergence (1935)**: Σ 1/(n log n) converges for ANY primitive set, so the maximization question is well-posed",
+      "**Primitive sets**: A set where no element divides another \u2014 primes are the canonical example since distinct primes never divide each other",
+      "**Erd\u0151s convergence (1935)**: \u03a3 1/(n log n) converges for ANY primitive set, so the maximization question is well-posed",
       "**Lichtman's theorem (2023)**: Not only do primes maximize the sum, they are the UNIQUE maximizer",
-      "**Prime sum value**: Σ_p 1/(p log p) ≈ 1.6366, a specific numerical constant",
+      "**Prime sum value**: \u03a3_p 1/(p log p) \u2248 1.6366, a specific numerical constant",
       "**Multiplicative structure**: The proof exploits that primes are the building blocks of all integers via unique factorization"
     ],
     "prerequisites": [
@@ -82,14 +82,14 @@
     },
     {
       "id": "sum-definition",
-      "title": "Part 2: The Sum Σ 1/(n log n)",
+      "title": "Part 2: The Sum \u03a3 1/(n log n)",
       "summary": "f, primitiveSumFinite, primitiveSum, primeSum definitions.",
       "startLine": 64,
       "endLine": 82
     },
     {
       "id": "convergence",
-      "title": "Part 3: Erdős's Convergence Theorem (1935)",
+      "title": "Part 3: Erd\u0151s's Convergence Theorem (1935)",
       "summary": "erdos_convergence axiom, primes_sum_converges theorem, primes_sum_value.",
       "startLine": 84,
       "endLine": 98
@@ -117,11 +117,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #164 asked whether the sum Σ 1/(n log n) over a primitive set is maximized by the primes. The answer is YES, proved by Jared Lichtman in 2023. The primes are not just a maximizer but the unique one. The formalization captures the key definitions, Erdős's convergence theorem, and Lichtman's main result.",
-    "implications": "**Theoretical Significance**: This result confirms Erdős's intuition that primes are extremal among primitive sets.\n\nIt connects analytic number theory (convergence of sums) with the combinatorial structure of divisibility. The generalization framework (IsMaximizedByPrimes) captures the broader open question of which weight functions are also maximized by primes.",
+    "summary": "Erd\u0151s Problem #164 asked whether the sum \u03a3 1/(n log n) over a primitive set is maximized by the primes. The answer is YES, proved by Jared Lichtman in 2023. The primes are not just a maximizer but the unique one. The formalization captures the key definitions, Erd\u0151s's convergence theorem, and Lichtman's main result.",
+    "implications": "**Theoretical Significance**: This result confirms Erd\u0151s's intuition that primes are extremal among primitive sets.\n\nIt connects analytic number theory (convergence of sums) with the combinatorial structure of divisibility. The generalization framework (IsMaximizedByPrimes) captures the broader open question of which weight functions are also maximized by primes.",
     "openQuestions": [
-      "For which other weight functions g is Σ g(n) maximized by primes among primitive sets?",
-      "What is the exact value of Σ_p 1/(p log p) — is it transcendental?",
+      "For which other weight functions g is \u03a3 g(n) maximized by primes among primitive sets?",
+      "What is the exact value of \u03a3_p 1/(p log p) \u2014 is it transcendental?",
       "Are there quantitative stability results (if the sum is close to the maximum, must A be close to the primes)?"
     ]
   },
@@ -144,5 +144,39 @@
     "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Share primitive-sets, number-theoretic, and prime number themes"
+    },
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Share primitive-sets and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-858",
+      "relationship": "related",
+      "description": "Share primitive-sets and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-892",
+      "relationship": "related",
+      "description": "Share primitive-sets and number-theoretic themes"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Share number-theoretic and prime number themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-793",
+    "erdos-143",
+    "erdos-858",
+    "erdos-892",
+    "bertrands-postulate"
+  ]
 }

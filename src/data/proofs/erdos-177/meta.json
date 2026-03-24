@@ -1,10 +1,10 @@
 {
   "id": "erdos-177",
-  "title": "Erdős Problem #177: Discrepancy of Arithmetic Progressions",
+  "title": "Erd\u0151s Problem #177: Discrepancy of Arithmetic Progressions",
   "slug": "erdos-177",
-  "description": "Find the smallest h(d) such that there exists f: ℕ → {-1,1} with max discrepancy ≤ h(d) over all APs with difference d. Known: d^{1/2} ≤ h(d) ≤ d^{8+ε}. Status: OPEN.",
+  "description": "Find the smallest h(d) such that there exists f: \u2115 \u2192 {-1,1} with max discrepancy \u2264 h(d) over all APs with difference d. Known: d^{1/2} \u2264 h(d) \u2264 d^{8+\u03b5}. Status: OPEN.",
   "meta": {
-    "author": "Erdős, Roth (1964 lower bound), Beck (2017 upper bound), Cantor-Erdős-Schreiber-Straus (1966)",
+    "author": "Erd\u0151s, Roth (1964 lower bound), Beck (2017 upper bound), Cantor-Erd\u0151s-Schreiber-Straus (1966)",
     "sourceUrl": "https://erdosproblems.com/177",
     "date": "1966",
     "status": "axiomatized",
@@ -59,7 +59,7 @@
       "h function: $h(d) = \\inf_f \\text{disc}(f, d)$ via sInf over valid colorings",
       "roth_lower_bound axiom: $\\exists c > 0,\\; h(d) \\geq c\\sqrt{d}$",
       "beck_upper_bound axiom: $\\forall \\varepsilon > 0,\\; h(d) \\leq Cd^{8+\\varepsilon}$",
-      "factorial_bound axiom: $h(d) \\leq d!$ (Cantor-Erdős-Schreiber-Straus 1966)",
+      "factorial_bound axiom: $h(d) \\leq d!$ (Cantor-Erd\u0151s-Schreiber-Straus 1966)",
       "erdos_177 theorem: main result proved via roth_lower_bound"
     ],
     "relatedProblems": [
@@ -70,13 +70,13 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The discrepancy of arithmetic progressions is one of the central problems in combinatorial number theory, originating from Erdős's deep interest in the interplay between coloring and arithmetic structure. The problem asks: how well can we color the natural numbers with $\\pm 1$ so that the partial sums along every arithmetic progression of common difference $d$ remain bounded?\n\nThe first quantitative result was obtained by Cantor, Erdős, Schreiber, and Straus (1966), who showed that $h(d) \\leq d!$ — there exist colorings achieving at most factorial discrepancy. While far from optimal, this was the first proof that $h(d)$ is finite for all $d$, a non-trivial fact given that Van der Waerden's theorem (1927) forces $h(d) \\to \\infty$.\n\nKlaus Roth proved the landmark lower bound $h(d) \\geq c\\sqrt{d}$ in 1964, using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$. Roth's technique — bounding the $L^2$ norm of the Fourier transform of the coloring restricted to residue classes — was one of the earliest applications of harmonic analysis to discrepancy theory and established the $\\sqrt{d}$ barrier.\n\nFor over 50 years, the gap between $\\sqrt{d}$ and $d!$ remained open. In 2017, József Beck achieved a dramatic breakthrough: $h(d) \\leq d^{8+\\varepsilon}$ for every $\\varepsilon > 0$, the first polynomial upper bound. Beck's probabilistic construction with careful derandomization reduced the exponent from factorial to polynomial.\n\nThe problem is intimately connected to Terence Tao's resolution of the Erdős Discrepancy Problem (2015), which proved that for any coloring $f : \\mathbb{N} \\to \\{-1,+1\\}$, the discrepancy along the sequence $f(d), f(2d), f(3d), \\ldots$ is unbounded. The current state of knowledge is $c\\sqrt{d} \\leq h(d) \\leq Cd^{8+\\varepsilon}$, and the true exponent $\\alpha$ in $h(d) \\approx d^\\alpha$ remains unknown.",
-    "problemStatement": "**Problem Statement (Open)**\n\nFind the smallest function $h(d)$ such that there exists a coloring $f: \\mathbb{N} \\to \\{-1, 1\\}$ satisfying:\n\n$$\\forall d \\geq 1: \\sup_{a \\geq 0,\\, k \\geq 1} \\left|\\sum_{i=0}^{k-1} f(a + id)\\right| \\leq h(d)$$\n\n**Known Bounds:**\n- **Lower**: $h(d) \\geq c\\sqrt{d}$ (Roth 1964, Fourier analysis)\n- **Upper**: $h(d) \\leq Cd^{8+\\varepsilon}$ for all $\\varepsilon > 0$ (Beck 2017, probabilistic construction)\n- **Historical**: $h(d) \\leq C \\cdot d!$ (Cantor-Erdős-Schreiber-Straus 1966)\n\n**Open:** What is the correct polynomial exponent $\\alpha$ in $h(d) \\approx d^\\alpha$?",
-    "text": "Find the smallest h(d) such that there exists f: ℕ → {-1,1} with max discrepancy ≤ h(d) over all APs with difference d. Known: d^{1/2} ≤ h(d) ≤ d^{8+ε}. Status: OPEN.",
+    "historicalContext": "The discrepancy of arithmetic progressions is one of the central problems in combinatorial number theory, originating from Erd\u0151s's deep interest in the interplay between coloring and arithmetic structure. The problem asks: how well can we color the natural numbers with $\\pm 1$ so that the partial sums along every arithmetic progression of common difference $d$ remain bounded?\n\nThe first quantitative result was obtained by Cantor, Erd\u0151s, Schreiber, and Straus (1966), who showed that $h(d) \\leq d!$ \u2014 there exist colorings achieving at most factorial discrepancy. While far from optimal, this was the first proof that $h(d)$ is finite for all $d$, a non-trivial fact given that Van der Waerden's theorem (1927) forces $h(d) \\to \\infty$.\n\nKlaus Roth proved the landmark lower bound $h(d) \\geq c\\sqrt{d}$ in 1964, using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$. Roth's technique \u2014 bounding the $L^2$ norm of the Fourier transform of the coloring restricted to residue classes \u2014 was one of the earliest applications of harmonic analysis to discrepancy theory and established the $\\sqrt{d}$ barrier.\n\nFor over 50 years, the gap between $\\sqrt{d}$ and $d!$ remained open. In 2017, J\u00f3zsef Beck achieved a dramatic breakthrough: $h(d) \\leq d^{8+\\varepsilon}$ for every $\\varepsilon > 0$, the first polynomial upper bound. Beck's probabilistic construction with careful derandomization reduced the exponent from factorial to polynomial.\n\nThe problem is intimately connected to Terence Tao's resolution of the Erd\u0151s Discrepancy Problem (2015), which proved that for any coloring $f : \\mathbb{N} \\to \\{-1,+1\\}$, the discrepancy along the sequence $f(d), f(2d), f(3d), \\ldots$ is unbounded. The current state of knowledge is $c\\sqrt{d} \\leq h(d) \\leq Cd^{8+\\varepsilon}$, and the true exponent $\\alpha$ in $h(d) \\approx d^\\alpha$ remains unknown.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFind the smallest function $h(d)$ such that there exists a coloring $f: \\mathbb{N} \\to \\{-1, 1\\}$ satisfying:\n\n$$\\forall d \\geq 1: \\sup_{a \\geq 0,\\, k \\geq 1} \\left|\\sum_{i=0}^{k-1} f(a + id)\\right| \\leq h(d)$$\n\n**Known Bounds:**\n- **Lower**: $h(d) \\geq c\\sqrt{d}$ (Roth 1964, Fourier analysis)\n- **Upper**: $h(d) \\leq Cd^{8+\\varepsilon}$ for all $\\varepsilon > 0$ (Beck 2017, probabilistic construction)\n- **Historical**: $h(d) \\leq C \\cdot d!$ (Cantor-Erd\u0151s-Schreiber-Straus 1966)\n\n**Open:** What is the correct polynomial exponent $\\alpha$ in $h(d) \\approx d^\\alpha$?",
+    "text": "Find the smallest h(d) such that there exists f: \u2115 \u2192 {-1,1} with max discrepancy \u2264 h(d) over all APs with difference d. Known: d^{1/2} \u2264 h(d) \u2264 d^{8+\u03b5}. Status: OPEN.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Coloring Definitions:** $f : \\mathbb{N} \\to \\mathbb{Z}$ with `IsValidColoring` requiring $f(n) \\in \\{-1, +1\\}$.\n2. **Partial Sums:** `apSum f a d k` computes $\\sum_{i=0}^{k-1} f(a + id)$ via `Finset.range`.\n3. **Discrepancy:** `discrepancy f d = \\sup \\{|\\text{apSum}\\;f\\;a\\;d\\;n| : a, n\\}$ via `sSup`.\n4. **The Function $h(d)$:** `h d = \\inf \\{\\text{disc}(f, d) : f \\text{ valid}\\}$ via `sInf`.\n5. **Axiomatized Bounds:** Roth's lower bound, Beck's upper bound, and the factorial bound are axiomatized as the proofs require deep analytic and probabilistic techniques.\n6. **Main Theorem:** `erdos_177` states the Roth lower bound, proved via the axiom.",
     "keyInsights": [
       "**Discrepancy measure**: The sum $\\sum f(n)$ over a set measures the imbalance between $+1$ and $-1$ values; the discrepancy is the worst-case absolute value over all APs of given difference $d$",
-      "**Van der Waerden connection**: Van der Waerden's theorem (1927) implies $h(d) \\to \\infty$ — any finite bound would yield a coloring avoiding long monochromatic APs",
+      "**Van der Waerden connection**: Van der Waerden's theorem (1927) implies $h(d) \\to \\infty$ \u2014 any finite bound would yield a coloring avoiding long monochromatic APs",
       "**Roth's Fourier method**: The $\\sqrt{d}$ lower bound uses $L^2$ Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$, exploiting the large Fourier mass of AP indicator functions",
       "**Beck's breakthrough**: The polynomial upper bound $d^{8+\\varepsilon}$ improved the 50-year-old factorial bound via probabilistic construction with derandomization",
       "**The exponent gap**: The true exponent $\\alpha$ satisfies $1/2 \\leq \\alpha \\leq 8$; it is conjectured that $\\alpha = 1/2$ (possibly with logarithmic corrections $h(d) \\approx \\sqrt{d}\\,(\\log d)^c$)"
@@ -139,8 +139,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #177 asks for the optimal growth rate of the discrepancy function $h(d)$ for arithmetic progressions. The formalization defines colorings $f : \\mathbb{N} \\to \\{-1,+1\\}$, the discrepancy $\\text{disc}(f,d)$ as the worst-case absolute partial sum over all APs with common difference $d$, and $h(d) = \\inf_f \\text{disc}(f,d)$. Three key bounds are axiomatized: Roth's lower bound $h(d) \\geq c\\sqrt{d}$ (1964), Beck's polynomial upper bound $h(d) \\leq Cd^{8+\\varepsilon}$ (2017), and the historical factorial bound $h(d) \\leq d!$ (1966). The main theorem states the Roth lower bound.",
-    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Erdős Discrepancy Problem**: Tao (2015) proved that for any $f : \\mathbb{N} \\to \\{-1,+1\\}$, the partial sums $\\sum_{i=1}^{n} f(id)$ are unbounded — the homogeneous case of this problem\n**2. Harmonic Analysis**: Roth's proof pioneered Fourier-analytic methods in discrepancy theory, later refined by Matoušek and Spencer\n3. **Probabilistic Combinatorics**: Beck's upper bound uses the probabilistic method with derandomization, connecting to the Lovász Local Lemma framework\n4. **Van der Waerden Theory**: The finiteness of $h(d)$ and its growth rate are quantitative refinements of Van der Waerden's theorem on monochromatic arithmetic progressions.",
+    "summary": "Erd\u0151s Problem #177 asks for the optimal growth rate of the discrepancy function $h(d)$ for arithmetic progressions. The formalization defines colorings $f : \\mathbb{N} \\to \\{-1,+1\\}$, the discrepancy $\\text{disc}(f,d)$ as the worst-case absolute partial sum over all APs with common difference $d$, and $h(d) = \\inf_f \\text{disc}(f,d)$. Three key bounds are axiomatized: Roth's lower bound $h(d) \\geq c\\sqrt{d}$ (1964), Beck's polynomial upper bound $h(d) \\leq Cd^{8+\\varepsilon}$ (2017), and the historical factorial bound $h(d) \\leq d!$ (1966). The main theorem states the Roth lower bound.",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Erd\u0151s Discrepancy Problem**: Tao (2015) proved that for any $f : \\mathbb{N} \\to \\{-1,+1\\}$, the partial sums $\\sum_{i=1}^{n} f(id)$ are unbounded \u2014 the homogeneous case of this problem\n**2. Harmonic Analysis**: Roth's proof pioneered Fourier-analytic methods in discrepancy theory, later refined by Matou\u0161ek and Spencer\n3. **Probabilistic Combinatorics**: Beck's upper bound uses the probabilistic method with derandomization, connecting to the Lov\u00e1sz Local Lemma framework\n4. **Van der Waerden Theory**: The finiteness of $h(d)$ and its growth rate are quantitative refinements of Van der Waerden's theorem on monochromatic arithmetic progressions.",
     "openQuestions": [
       "What is the correct polynomial exponent $\\alpha$ in $h(d) \\approx d^\\alpha$? Is $\\alpha = 1/2$?",
       "Can Beck's exponent 8 be improved to $1 + \\varepsilon$ or even $1/2 + \\varepsilon$?",
@@ -166,23 +166,57 @@
   "references": [
     {
       "key": "Ro64",
-      "citation": "Roth, K. F., Remark concerning integer sequences, Acta Arith. 9 (1964), 257–260.",
+      "citation": "Roth, K. F., Remark concerning integer sequences, Acta Arith. 9 (1964), 257\u2013260.",
       "type": "paper"
     },
     {
       "key": "CESS66",
-      "citation": "Cantor, D. G., Erdős, P., Schreiber, S., Straus, E. G., Coloring of integers with bounded discrepancy (1966, unpublished).",
+      "citation": "Cantor, D. G., Erd\u0151s, P., Schreiber, S., Straus, E. G., Coloring of integers with bounded discrepancy (1966, unpublished).",
       "type": "paper"
     },
     {
       "key": "Be17",
-      "citation": "Beck, J., Roth's estimate of the discrepancy of integer sequences is nearly sharp, Combinatorica 1 (2017), 319–325.",
+      "citation": "Beck, J., Roth's estimate of the discrepancy of integer sequences is nearly sharp, Combinatorica 1 (2017), 319\u2013325.",
       "type": "paper"
     },
     {
       "key": "Ta15",
-      "citation": "Tao, T., The Erdős discrepancy problem, Discrete Analysis 1 (2015), 29 pp.",
+      "citation": "Tao, T., The Erd\u0151s discrepancy problem, Discrete Analysis 1 (2015), 29 pp.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-645",
+      "relationship": "related",
+      "description": "Share coloring, arithmetic progression, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-253",
+      "relationship": "related",
+      "description": "Share arithmetic progression, number-theoretic, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-443",
+      "relationship": "related",
+      "description": "Share arithmetic progression, number-theoretic, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Share coloring and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Share coloring and arithmetic progression themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-645",
+    "erdos-253",
+    "erdos-443",
+    "erdos-1105",
+    "erdos-160"
   ]
 }

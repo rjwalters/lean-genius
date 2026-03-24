@@ -1,10 +1,10 @@
 {
   "id": "erdos-200",
-  "title": "Erdős Problem #200: Longest Arithmetic Progression of Primes",
+  "title": "Erd\u0151s Problem #200: Longest Arithmetic Progression of Primes",
   "slug": "erdos-200",
-  "description": "Does the longest arithmetic progression of primes in {1,...,N} have length o(log N)? PNT gives an upper bound of (1+o(1))·log N. Green-Tao proved primes contain arbitrarily long APs. Status: OPEN.",
+  "description": "Does the longest arithmetic progression of primes in {1,...,N} have length o(log N)? PNT gives an upper bound of (1+o(1))\u00b7log N. Green-Tao proved primes contain arbitrarily long APs. Status: OPEN.",
   "meta": {
-    "author": "Erdős, Graham, Green, Tao",
+    "author": "Erd\u0151s, Graham, Green, Tao",
     "sourceUrl": "https://erdosproblems.com/200",
     "date": "1979",
     "status": "axiomatized",
@@ -58,7 +58,7 @@
     "originalContributions": [
       "IsAPSequence, IsPrimeAP: Definitions of arithmetic progressions and prime APs in {1,...,N}",
       "longestPrimeAP: Central function via sSup over prime AP lengths",
-      "prime_ap_upper_pnt: Axiom encoding PNT upper bound (1+ε)·log N",
+      "prime_ap_upper_pnt: Axiom encoding PNT upper bound (1+\u03b5)\u00b7log N",
       "green_tao: Axiom encoding the Green-Tao theorem (arbitrarily long prime APs exist)",
       "longest_prime_ap_unbounded: Axiom for unboundedness consequence of Green-Tao",
       "erdos_200_conjecture: Formal statement of the o(log N) open problem",
@@ -72,7 +72,7 @@
       },
       {
         "proofId": "erdos-1",
-        "relationship": "Both involve prime gaps and distribution; Erdős #1 concerns gaps while #200 concerns long progressions"
+        "relationship": "Both involve prime gaps and distribution; Erd\u0151s #1 concerns gaps while #200 concerns long progressions"
       }
     ],
     "dateAdded": "2026-01-19",
@@ -81,9 +81,9 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this question in the late 1970s [ErGr79, ErGr80], asking whether the longest prime AP in $\\{1, \\ldots, N\\}$ grows sublogarithmically. The Prime Number Theorem gives a natural upper bound: $\\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$, since primes have density $\\sim 1/\\log N$. For decades, even the existence of arbitrarily long prime APs was unknown. The breakthrough came in 2008 when Green and Tao proved that primes contain APs of every length, using a transference principle that lifts Szemerédi's theorem to the primes. However, their quantitative bounds are tower-type ($N(k) \\leq \\exp^{(3)}(ck)$), far from establishing the growth rate of $\\text{longestPrimeAP}(N)$. The Hardy-Littlewood $k$-tuple conjecture predicts $\\text{longestPrimeAP}(N) \\sim c \\cdot \\log N$ for some $c \\in (0,1)$, suggesting the answer to Erdős's question may be NO. This tension between the conjecture and the heuristic makes Problem #200 particularly delicate and deep.",
+    "historicalContext": "Erd\u0151s and Graham posed this question in the late 1970s [ErGr79, ErGr80], asking whether the longest prime AP in $\\{1, \\ldots, N\\}$ grows sublogarithmically. The Prime Number Theorem gives a natural upper bound: $\\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$, since primes have density $\\sim 1/\\log N$. For decades, even the existence of arbitrarily long prime APs was unknown. The breakthrough came in 2008 when Green and Tao proved that primes contain APs of every length, using a transference principle that lifts Szemer\u00e9di's theorem to the primes. However, their quantitative bounds are tower-type ($N(k) \\leq \\exp^{(3)}(ck)$), far from establishing the growth rate of $\\text{longestPrimeAP}(N)$. The Hardy-Littlewood $k$-tuple conjecture predicts $\\text{longestPrimeAP}(N) \\sim c \\cdot \\log N$ for some $c \\in (0,1)$, suggesting the answer to Erd\u0151s's question may be NO. This tension between the conjecture and the heuristic makes Problem #200 particularly delicate and deep.",
     "problemStatement": "Does the longest arithmetic progression of primes in $\\{1, \\ldots, N\\}$ have length $o(\\log N)$? That is, does $\\text{longestPrimeAP}(N)/\\log N \\to 0$ as $N \\to \\infty$?",
-    "text": "Does the longest arithmetic progression of primes in {1,...,N} have length o(log N)? PNT gives an upper bound of (1+o(1))·log N. Green-Tao proved primes contain arbitrarily long APs. Status: OPEN.",
+    "text": "Does the longest arithmetic progression of primes in {1,...,N} have length o(log N)? PNT gives an upper bound of (1+o(1))\u00b7log N. Green-Tao proved primes contain arbitrarily long APs. Status: OPEN.",
     "proofStrategy": "The formalization defines prime APs via `IsPrimeAP k N` (existential over first term $a$ and common difference $d > 0$ with all terms prime and $\\leq N$), and `longestPrimeAP N` via `sSup`. The PNT upper bound, Green-Tao existence theorem, and the $o(\\log N)$ conjecture are axiomatized as quantified statements over $\\varepsilon > 0$. Concrete examples ($\\{3,5,7\\}$, $\\{5,11,17,23,29\\}$) are axiomatized. The structural primorial constraint ($p \\leq k \\Rightarrow p \\mid d$) is axiomatized, and the Hardy-Littlewood heuristic (suggesting $\\Theta(\\log N)$ rather than $o(\\log N)$) is noted as a `True` placeholder.",
     "keyInsights": [
       "**PNT gives the ceiling:** $\\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$ because prime density in $[1,N]$ is $\\sim 1/\\log N$, constraining how many terms of an AP can simultaneously be prime.",
@@ -91,7 +91,7 @@
       "**Hardy-Littlewood heuristic suggests $\\Theta(\\log N)$:** The $k$-tuple conjecture predicts $\\text{longestPrimeAP}(N) \\sim c \\cdot \\log N$ with $c < 1$, which would refute the $o(\\log N)$ conjecture. This makes the problem unusually delicate.",
       "**Primorial constraint:** The common difference of a prime AP of length $k$ must satisfy $p \\mid d$ for all primes $p \\leq k$, forcing $d \\geq k\\# \\sim e^k$. This exponential growth of $d$ is the key structural reason why long prime APs are rare.",
       "**Open status persists:** Despite Green-Tao and extensive computation (longest known prime AP has 27 terms, found in 2019), the growth rate of $\\text{longestPrimeAP}(N)$ between $\\omega(1)$ and $(1+o(1))\\log N$ remains unknown.",
-      "**Connection to Szemerédi's theorem:** Green-Tao extends Szemerédi's theorem (dense sets contain long APs) to the primes via a transference principle, using Goldston-Pintz-Yıldırım sieve estimates for the pseudorandomness of primes."
+      "**Connection to Szemer\u00e9di's theorem:** Green-Tao extends Szemer\u00e9di's theorem (dense sets contain long APs) to the primes via a transference principle, using Goldston-Pintz-Y\u0131ld\u0131r\u0131m sieve estimates for the pseudorandomness of primes."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -119,7 +119,7 @@
       "title": "Green-Tao Theorem",
       "startLine": 59,
       "endLine": 68,
-      "summary": "Axiomatizes `green_tao` ($\\forall k,\\, \\exists N:\\, \\text{IsPrimeAP}(k, N)$) and `longest_prime_ap_unbounded` ($\\forall M,\\, \\exists N:\\, \\text{longestPrimeAP}(N) \\geq M$). The 2008 landmark result using transference from Szemerédi's theorem."
+      "summary": "Axiomatizes `green_tao` ($\\forall k,\\, \\exists N:\\, \\text{IsPrimeAP}(k, N)$) and `longest_prime_ap_unbounded` ($\\forall M,\\, \\exists N:\\, \\text{longestPrimeAP}(N) \\geq M$). The 2008 landmark result using transference from Szemer\u00e9di's theorem."
     },
     {
       "id": "main-conjecture",
@@ -151,10 +151,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #200 remains open. The longest prime AP in $\\{1, \\ldots, N\\}$ satisfies $\\omega(1) \\leq \\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$. Whether it is $o(\\log N)$ (Erdős's conjecture) or $\\Theta(\\log N)$ (Hardy-Littlewood prediction) is unknown. The formalization captures the definitions, the Green-Tao existence theorem, the PNT upper bound, concrete examples, the primorial constraint, and the delicate tension between the conjecture and the heuristic.",
+    "summary": "Erd\u0151s Problem #200 remains open. The longest prime AP in $\\{1, \\ldots, N\\}$ satisfies $\\omega(1) \\leq \\text{longestPrimeAP}(N) \\leq (1+o(1))\\log N$. Whether it is $o(\\log N)$ (Erd\u0151s's conjecture) or $\\Theta(\\log N)$ (Hardy-Littlewood prediction) is unknown. The formalization captures the definitions, the Green-Tao existence theorem, the PNT upper bound, concrete examples, the primorial constraint, and the delicate tension between the conjecture and the heuristic.",
     "implications": "Resolving this would determine whether the primes are 'additively structured enough' to support APs of logarithmic length, or whether combinatorial obstructions (primorial constraints, sieve limitations) prevent this. A positive answer would show that prime APs are fundamentally shorter than what the PNT allows, while a negative answer would confirm deep additive structure in the primes.",
     "openQuestions": [
-      "Is $\\text{longestPrimeAP}(N) = \\Theta(\\log N)$ or $o(\\log N)$? The Hardy-Littlewood heuristic and Erdős's conjecture disagree.",
+      "Is $\\text{longestPrimeAP}(N) = \\Theta(\\log N)$ or $o(\\log N)$? The Hardy-Littlewood heuristic and Erd\u0151s's conjecture disagree.",
       "What is the exact constant $c$ if $\\text{longestPrimeAP}(N) \\sim c \\cdot \\log N$? Is $c$ related to the twin prime constant?",
       "Can the Green-Tao method yield bounds better than triple-exponential for $N(k)$, the least $N$ containing a prime $k$-AP?",
       "Can the primorial constraint `ap_difference_primorial` or the small AP examples be fully verified in Lean rather than axiomatized?"
@@ -173,5 +173,39 @@
     "axiomCount": 11,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Share additive-combinatorial, prime number, and arithmetic progression themes"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Share analytic-number-theory, prime number, and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-971",
+      "relationship": "related",
+      "description": "Share analytic-number-theory, prime number, and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-236",
+      "relationship": "related",
+      "description": "Share additive-combinatorial, prime number, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Share additive-combinatorial, prime number, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-141",
+    "dirichlets-theorem",
+    "erdos-971",
+    "erdos-236",
+    "erdos-237"
+  ]
 }

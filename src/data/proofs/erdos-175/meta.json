@@ -1,10 +1,10 @@
 {
   "id": "erdos-175",
-  "title": "Erdős Problem #175: Central Binomial Coefficient Not Squarefree",
+  "title": "Erd\u0151s Problem #175: Central Binomial Coefficient Not Squarefree",
   "slug": "erdos-175",
-  "description": "Show that for n ≥ 5, C(2n,n) is not squarefree. Proved by Granville-Ramaré (1996). The function f(n) = max prime power exponent satisfies (log n)^{1/4} ≪ f(n) ≪ log n.",
+  "description": "Show that for n \u2265 5, C(2n,n) is not squarefree. Proved by Granville-Ramar\u00e9 (1996). The function f(n) = max prime power exponent satisfies (log n)^{1/4} \u226a f(n) \u226a log n.",
   "meta": {
-    "author": "Granville-Ramaré (1996), Sárközy (1985), Sander, Erdős-Kolesnik",
+    "author": "Granville-Ramar\u00e9 (1996), S\u00e1rk\u00f6zy (1985), Sander, Erd\u0151s-Kolesnik",
     "sourceUrl": "https://erdosproblems.com/175",
     "date": "1996",
     "status": "formalized",
@@ -39,7 +39,7 @@
       }
     ],
     "originalContributions": [
-      "Formalized central binomial squarefreeness for n ≥ 5",
+      "Formalized central binomial squarefreeness for n \u2265 5",
       "Axiomatized bounds on maximum prime power exponent f(n)",
       "Connected Kummer's theorem to divisibility analysis",
       "Included explicit computations for small cases"
@@ -49,11 +49,11 @@
     "references": [
       {
         "title": "The largest prime factor of (2n choose n)",
-        "authors": "A. Granville, O. Ramaré",
+        "authors": "A. Granville, O. Ramar\u00e9",
         "year": 1996,
         "venue": "Acta Arithmetica",
         "url": "https://doi.org/10.4064/aa-73-2-131-150",
-        "description": "Proves C(2n,n) is not squarefree for all n ≥ 5, completing the solution to Erdős's problem"
+        "description": "Proves C(2n,n) is not squarefree for all n \u2265 5, completing the solution to Erd\u0151s's problem"
       },
       {
         "title": "On the maximal exponent of the prime power divisor of C(2n,n)",
@@ -61,13 +61,13 @@
         "year": 1992,
         "venue": "Mathematische Nachrichten",
         "url": "https://doi.org/10.1002/mana.19921570122",
-        "description": "Proves f(n) → ∞ and establishes the initial lower bound (log n)^{1/10}"
+        "description": "Proves f(n) \u2192 \u221e and establishes the initial lower bound (log n)^{1/10}"
       },
       {
-        "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+        "title": "\u00dcber die Erg\u00e4nzungss\u00e4tze zu den allgemeinen Reciprocit\u00e4tsgesetzen",
         "authors": "E. E. Kummer",
         "year": 1852,
-        "venue": "Journal für die reine und angewandte Mathematik",
+        "venue": "Journal f\u00fcr die reine und angewandte Mathematik",
         "url": "https://doi.org/10.1515/crll.1852.44.93",
         "description": "Kummer's classical theorem relating p-adic valuations of binomial coefficients to carries in base-p arithmetic"
       }
@@ -75,15 +75,15 @@
     "assumptions": "15 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős first asked whether $\\binom{2n}{n}$ is squarefree for infinitely many $n$ in the 1970s, noting the connection to prime power divisibility of factorials via Legendre's formula. The question traces back to Kummer's 1852 theorem relating $v_p\\binom{m+n}{m}$ to carries in base-$p$ addition — one of the earliest results in $p$-adic number theory. Sárközy (1985) proved $\\binom{2n}{n}$ is not squarefree for all sufficiently large $n$ using analytic estimates on smooth numbers and the distribution of prime powers. Granville and Ramaré (1996) completed the proof for all $n \\ge 5$ by combining Sárközy's asymptotic result with direct verification of small cases and a delicate analysis of the power-of-2 case. The associated function $f(n) = \\max_p v_p\\binom{2n}{n}$ was studied by Sander (1992, 1995), who proved $f(n) \\to \\infty$ with lower bound $(\\log n)^{1/10}$, later improved to $(\\log n)^{1/4}$ by Erdős and Kolesnik (1999). The upper bound $f(n) = O(\\log n)$ is immediate from Kummer's theorem, and the gap between $(\\log n)^{1/4}$ and $\\log n$ remains open.",
+    "historicalContext": "Erd\u0151s first asked whether $\\binom{2n}{n}$ is squarefree for infinitely many $n$ in the 1970s, noting the connection to prime power divisibility of factorials via Legendre's formula. The question traces back to Kummer's 1852 theorem relating $v_p\\binom{m+n}{m}$ to carries in base-$p$ addition \u2014 one of the earliest results in $p$-adic number theory. S\u00e1rk\u00f6zy (1985) proved $\\binom{2n}{n}$ is not squarefree for all sufficiently large $n$ using analytic estimates on smooth numbers and the distribution of prime powers. Granville and Ramar\u00e9 (1996) completed the proof for all $n \\ge 5$ by combining S\u00e1rk\u00f6zy's asymptotic result with direct verification of small cases and a delicate analysis of the power-of-2 case. The associated function $f(n) = \\max_p v_p\\binom{2n}{n}$ was studied by Sander (1992, 1995), who proved $f(n) \\to \\infty$ with lower bound $(\\log n)^{1/10}$, later improved to $(\\log n)^{1/4}$ by Erd\u0151s and Kolesnik (1999). The upper bound $f(n) = O(\\log n)$ is immediate from Kummer's theorem, and the gap between $(\\log n)^{1/4}$ and $\\log n$ remains open.",
     "problemStatement": "Show that for any $n \\ge 5$, the central binomial coefficient $\\binom{2n}{n}$ is not squarefree. Furthermore, characterize the growth of $f(n) = \\max_p v_p\\binom{2n}{n}$.",
-    "text": "Show that for n ≥ 5, C(2n,n) is not squarefree. Proved by Granville-Ramaré (1996). The function f(n) = max prime power exponent satisfies (log n)^{1/4} ≪ f(n) ≪ log n.",
-    "proofStrategy": "The proof splits into two cases based on the binary structure of $n$. **Case 1**: If $n$ is not a power of 2, then $s_2(n) \\ge 2$, so by Kummer's theorem $v_2\\binom{2n}{n} \\ge 2$, meaning $4 \\mid \\binom{2n}{n}$ and it is not squarefree. **Case 2**: If $n = 2^k$, then $v_2\\binom{2n}{n} = 1$ (no help from 2), but Granville–Ramaré showed an odd prime $p$ with $p^2 \\mid \\binom{2n}{n}$ exists for $k \\ge 3$. The small cases $n \\in \\{5, 6, 7\\}$ are verified directly. The formalization axiomatizes the deep results (Kummer, Granville–Ramaré, Sander, Erdős–Kolesnik) and assembles them into the complete statement.",
+    "text": "Show that for n \u2265 5, C(2n,n) is not squarefree. Proved by Granville-Ramar\u00e9 (1996). The function f(n) = max prime power exponent satisfies (log n)^{1/4} \u226a f(n) \u226a log n.",
+    "proofStrategy": "The proof splits into two cases based on the binary structure of $n$. **Case 1**: If $n$ is not a power of 2, then $s_2(n) \\ge 2$, so by Kummer's theorem $v_2\\binom{2n}{n} \\ge 2$, meaning $4 \\mid \\binom{2n}{n}$ and it is not squarefree. **Case 2**: If $n = 2^k$, then $v_2\\binom{2n}{n} = 1$ (no help from 2), but Granville\u2013Ramar\u00e9 showed an odd prime $p$ with $p^2 \\mid \\binom{2n}{n}$ exists for $k \\ge 3$. The small cases $n \\in \\{5, 6, 7\\}$ are verified directly. The formalization axiomatizes the deep results (Kummer, Granville\u2013Ramar\u00e9, Sander, Erd\u0151s\u2013Kolesnik) and assembles them into the complete statement.",
     "keyInsights": [
-      "**Binary digit structure governs 2-divisibility**: $v_2\\binom{2n}{n} = s_2(n)$ (popcount), so $4 \\mid \\binom{2n}{n}$ precisely when $n$ has $\\ge 2$ ones in binary — this immediately handles all non-powers of 2",
+      "**Binary digit structure governs 2-divisibility**: $v_2\\binom{2n}{n} = s_2(n)$ (popcount), so $4 \\mid \\binom{2n}{n}$ precisely when $n$ has $\\ge 2$ ones in binary \u2014 this immediately handles all non-powers of 2",
       "**Kummer's theorem as the master tool**: The 1852 result connecting $v_p\\binom{m+n}{m}$ to carries in base-$p$ addition underpins the entire analysis, reducing prime factorization questions to digit arithmetic",
-      "**Power-of-2 case requires odd primes**: When $n = 2^k$, the 2-adic valuation gives only $v_2 = 1$, so the squarefreeness obstruction must come from odd primes — this is the hard case resolved by Granville–Ramaré",
-      "**The exponent gap $(\\log n)^{1/4}$ to $\\log n$ persists**: Despite Sander's and Erdős–Kolesnik's improvements, the true growth rate of $f(n)$ remains unknown — it is $\\Theta(\\log n)$ for almost all $n$ but potentially smaller for special values",
+      "**Power-of-2 case requires odd primes**: When $n = 2^k$, the 2-adic valuation gives only $v_2 = 1$, so the squarefreeness obstruction must come from odd primes \u2014 this is the hard case resolved by Granville\u2013Ramar\u00e9",
+      "**The exponent gap $(\\log n)^{1/4}$ to $\\log n$ persists**: Despite Sander's and Erd\u0151s\u2013Kolesnik's improvements, the true growth rate of $f(n)$ remains unknown \u2014 it is $\\Theta(\\log n)$ for almost all $n$ but potentially smaller for special values",
       "**Threshold at n = 786**: Computational searches show $n = 786$ is the largest value where $\\binom{2n}{n}$ has no odd prime square factor, suggesting a phase transition in the prime power structure of central binomials"
     ],
     "prerequisites": [
@@ -118,14 +118,14 @@
       "title": "The Main Theorem",
       "startLine": 77,
       "endLine": 93,
-      "summary": "Axiomatizes Granville–Ramaré (1996): $\\binom{2n}{n}$ not squarefree for $n \\ge 5$. Also includes Sárközy (1985) for large $n$ and direct small-case verification up to $n = 100$."
+      "summary": "Axiomatizes Granville\u2013Ramar\u00e9 (1996): $\\binom{2n}{n}$ not squarefree for $n \\ge 5$. Also includes S\u00e1rk\u00f6zy (1985) for large $n$ and direct small-case verification up to $n = 100$."
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "startLine": 95,
       "endLine": 128,
-      "summary": "Defines $f(n) = \\max_p v_p\\binom{2n}{n}$ and axiomatizes: Sander (1992) $f(n) \\to \\infty$, upper bound $f(n) = O(\\log n)$, Sander (1995) lower bound $(\\log n)^{1/10}$, and Erdős–Kolesnik (1999) improvement to $(\\log n)^{1/4}$."
+      "summary": "Defines $f(n) = \\max_p v_p\\binom{2n}{n}$ and axiomatizes: Sander (1992) $f(n) \\to \\infty$, upper bound $f(n) = O(\\log n)$, Sander (1995) lower bound $(\\log n)^{1/10}$, and Erd\u0151s\u2013Kolesnik (1999) improvement to $(\\log n)^{1/4}$."
     },
     {
       "id": "power-of-2-case",
@@ -164,13 +164,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #175 is solved: $\\binom{2n}{n}$ is not squarefree for all $n \\ge 5$, proved by Granville–Ramaré (1996). The formalization captures both the main result and the deeper question about $f(n) = \\max_p v_p\\binom{2n}{n}$, which satisfies $(\\log n)^{1/4} \\ll f(n) \\ll \\log n$. The Lean file axiomatizes the key results (Kummer's theorem, Granville–Ramaré, Sander, Erdős–Kolesnik) and includes concrete verified examples.",
+    "summary": "Erd\u0151s Problem #175 is solved: $\\binom{2n}{n}$ is not squarefree for all $n \\ge 5$, proved by Granville\u2013Ramar\u00e9 (1996). The formalization captures both the main result and the deeper question about $f(n) = \\max_p v_p\\binom{2n}{n}$, which satisfies $(\\log n)^{1/4} \\ll f(n) \\ll \\log n$. The Lean file axiomatizes the key results (Kummer's theorem, Granville\u2013Ramar\u00e9, Sander, Erd\u0151s\u2013Kolesnik) and includes concrete verified examples.",
     "implications": "The result reveals that central binomial coefficients have fundamentally non-trivial prime power structure, governed by the digit arithmetic of Kummer's theorem. The analysis of $f(n)$ connects to deep questions about the distribution of primes in short intervals and the fine structure of factorial prime factorizations.",
     "openQuestions": [
       "Does $f(n) \\gg \\log n$ hold for ALL $n$, not just almost all? The exponent gap from $1/4$ to $1$ has persisted since 1999.",
-      "Are there $n > 786$ where $\\binom{2n}{n}$ has no odd prime square factor? Erdős conjectured the answer is no.",
-      "Can the Granville–Ramaré result be formalized constructively in Lean, without axiomatizing the main theorem?",
-      "What is the distribution of the \"champion prime\" $p_n = \\arg\\max_p v_p\\binom{2n}{n}$ — is it typically small or large?"
+      "Are there $n > 786$ where $\\binom{2n}{n}$ has no odd prime square factor? Erd\u0151s conjectured the answer is no.",
+      "Can the Granville\u2013Ramar\u00e9 result be formalized constructively in Lean, without axiomatizing the main theorem?",
+      "What is the distribution of the \"champion prime\" $p_n = \\arg\\max_p v_p\\binom{2n}{n}$ \u2014 is it typically small or large?"
     ]
   },
   "leanFile": {
@@ -188,19 +188,22 @@
   },
   "crossReferences": [
     {
-      "id": "kummer-theorem",
       "title": "Kummer's Theorem on Binomial Coefficients",
-      "relationship": "Kummer's theorem is the central tool: v_p(C(2n,n)) equals the number of carries in base-p addition of n+n, governing the prime power structure of central binomial coefficients"
+      "relationship": "related",
+      "targetId": "kummer-theorem",
+      "description": "Kummer's theorem is the central tool: v_p(C(2n,n)) equals the number of carries in base-p addition of n+n, governing the prime power structure of central binomial coefficients"
     },
     {
-      "id": "erdos-728-factorial-divisibility",
-      "title": "Erdős Problem #728: Factorial Divisibility",
-      "relationship": "Both study p-adic valuations of combinatorial quantities — #175 examines v_p(C(2n,n)), #728 examines divisibility properties of factorials"
+      "title": "Erd\u0151s Problem #728: Factorial Divisibility",
+      "relationship": "related",
+      "targetId": "erdos-728-factorial-divisibility",
+      "description": "Both study p-adic valuations of combinatorial quantities \u2014 #175 examines v_p(C(2n,n)), #728 examines divisibility properties of factorials"
     },
     {
-      "id": "binomial-theorem",
       "title": "The Binomial Theorem",
-      "relationship": "The binomial theorem provides the algebraic foundation for binomial coefficients whose squarefreeness is studied in this problem"
+      "relationship": "related",
+      "targetId": "binomial-theorem",
+      "description": "The binomial theorem provides the algebraic foundation for binomial coefficients whose squarefreeness is studied in this problem"
     }
   ]
 }

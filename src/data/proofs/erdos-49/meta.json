@@ -1,10 +1,10 @@
 {
   "id": "erdos-49",
-  "title": "Erdős Problem #49: Sets with Increasing Euler Totient Values",
+  "title": "Erd\u0151s Problem #49: Sets with Increasing Euler Totient Values",
   "slug": "erdos-49",
-  "description": "Let A ⊆ {1,…,N} with φ(a₁) < ⋯ < φ(aₜ). The primes form such a set. Tao (2023) proved |A| ≤ (1+o(1))π(N), confirming primes are asymptotically largest.",
+  "description": "Let A \u2286 {1,\u2026,N} with \u03c6(a\u2081) < \u22ef < \u03c6(a\u209c). The primes form such a set. Tao (2023) proved |A| \u2264 (1+o(1))\u03c0(N), confirming primes are asymptotically largest.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/49",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos49Problem.lean",
@@ -25,14 +25,14 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in the 1930s, observing that the primes $\\{2, 3, 5, 7, 11, \\ldots\\}$ naturally form a set with strictly increasing totient values since $\\varphi(p) = p - 1$ for primes. He conjectured that primes are asymptotically optimal: no subset of $\\{1, \\ldots, N\\}$ with increasing totient values can be much larger than $\\pi(N)$. Pomerance (1979) obtained the first non-trivial bounds using sieve methods, showing $|A| \\leq c \\cdot \\pi(N)$ for some constant $c > 1$. Ford (1998) improved the constant using his work on the anatomy of integers and the distribution of $\\varphi$-values. The problem was fully resolved by Terence Tao in 2023, who proved $|A| \\leq (1 + O((\\log\\log x)^5 / \\log x)) \\pi(x)$, confirming Erdős's conjecture with an explicit error term. Tao's proof combines multiplicative number theory, the Selberg sieve, and a careful analysis of the distribution of totient values among smooth numbers. The result exemplifies the extremal role of primes in number-theoretic optimization problems.",
-    "problemStatement": "Let A = {a₁ < ⋯ < aₜ} ⊆ {1,…,N} with φ(a₁) < ⋯ < φ(aₜ). Is |A| ≤ (1 + o(1))π(N)?",
-    "text": "Let A ⊆ {1,…,N} with φ(a₁) < ⋯ < φ(aₜ). The primes form such a set. Tao (2023) proved |A| ≤ (1+o(1))π(N), confirming primes are asymptotically largest.",
+    "historicalContext": "Erd\u0151s posed this problem in the 1930s, observing that the primes $\\{2, 3, 5, 7, 11, \\ldots\\}$ naturally form a set with strictly increasing totient values since $\\varphi(p) = p - 1$ for primes. He conjectured that primes are asymptotically optimal: no subset of $\\{1, \\ldots, N\\}$ with increasing totient values can be much larger than $\\pi(N)$. Pomerance (1979) obtained the first non-trivial bounds using sieve methods, showing $|A| \\leq c \\cdot \\pi(N)$ for some constant $c > 1$. Ford (1998) improved the constant using his work on the anatomy of integers and the distribution of $\\varphi$-values. The problem was fully resolved by Terence Tao in 2023, who proved $|A| \\leq (1 + O((\\log\\log x)^5 / \\log x)) \\pi(x)$, confirming Erd\u0151s's conjecture with an explicit error term. Tao's proof combines multiplicative number theory, the Selberg sieve, and a careful analysis of the distribution of totient values among smooth numbers. The result exemplifies the extremal role of primes in number-theoretic optimization problems.",
+    "problemStatement": "Let A = {a\u2081 < \u22ef < a\u209c} \u2286 {1,\u2026,N} with \u03c6(a\u2081) < \u22ef < \u03c6(a\u209c). Is |A| \u2264 (1 + o(1))\u03c0(N)?",
+    "text": "Let A \u2286 {1,\u2026,N} with \u03c6(a\u2081) < \u22ef < \u03c6(a\u209c). The primes form such a set. Tao (2023) proved |A| \u2264 (1+o(1))\u03c0(N), confirming primes are asymptotically largest.",
     "proofStrategy": "The formalization defines increasing totient sets, the maximum size function via powerset filtration, and the prime counting function. The primes-are-optimal lower bound $\\text{maxIncTotientSize}(N) \\geq \\pi(N)$ is stated, and Tao's asymptotic upper bound is axiomatized with the $(1+\\varepsilon)$ formulation. A density-zero corollary follows from the Prime Number Theorem.",
     "keyInsights": [
       "**Primes as natural witnesses**: $\\varphi(p) = p - 1$ for primes, so primes ordered by size automatically have increasing totient values, giving $|A| \\geq \\pi(N)$",
-      "**Asymptotic optimality**: Tao's theorem $|A| \\leq (1 + O((\\log\\log x)^5/\\log x))\\pi(x)$ shows primes are not just good — they are essentially the best possible, with only a vanishing multiplicative overhead",
-      "**Density zero corollary**: Since $\\pi(N) = o(N)$ by the PNT, any increasing totient set has density zero in $\\{1, \\ldots, N\\}$ — the totient function is too 'collapsing' to support dense increasing subsequences",
+      "**Asymptotic optimality**: Tao's theorem $|A| \\leq (1 + O((\\log\\log x)^5/\\log x))\\pi(x)$ shows primes are not just good \u2014 they are essentially the best possible, with only a vanishing multiplicative overhead",
+      "**Density zero corollary**: Since $\\pi(N) = o(N)$ by the PNT, any increasing totient set has density zero in $\\{1, \\ldots, N\\}$ \u2014 the totient function is too 'collapsing' to support dense increasing subsequences",
       "**Non-injectivity of $\\varphi$**: The totient function is far from injective ($\\varphi(n) = \\varphi(2n)$ for odd $n$), which creates competition among elements for distinct totient values and limits set size",
       "**Sieve-theoretic approach**: Tao's proof uses the Selberg sieve to control the number of integers with prescribed totient value ranges, converting the combinatorial problem into an analytic one about the distribution of $\\varphi$-values"
     ],
@@ -99,8 +99,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #49 asks whether primes are the largest subset of $\\{1, \\ldots, N\\}$ with strictly increasing Euler totient values. Tao (2023) proved the affirmative: $|A| \\leq (1 + o(1))\\pi(N)$. The formalization captures the definitions, the primes-as-witnesses lower bound, Tao's asymptotic upper bound, and the density-zero corollary via the PNT.",
-    "implications": "Tao's resolution confirms primes' extremal role for the totient function, analogous to how primes are extremal for many other number-theoretic optimization problems. The techniques — combining sieve methods with the distribution of $\\varphi$-values — have potential applications to similar questions for other multiplicative functions like $\\sigma(n)$ or $\\omega(n)$.",
+    "summary": "Erd\u0151s Problem #49 asks whether primes are the largest subset of $\\{1, \\ldots, N\\}$ with strictly increasing Euler totient values. Tao (2023) proved the affirmative: $|A| \\leq (1 + o(1))\\pi(N)$. The formalization captures the definitions, the primes-as-witnesses lower bound, Tao's asymptotic upper bound, and the density-zero corollary via the PNT.",
+    "implications": "Tao's resolution confirms primes' extremal role for the totient function, analogous to how primes are extremal for many other number-theoretic optimization problems. The techniques \u2014 combining sieve methods with the distribution of $\\varphi$-values \u2014 have potential applications to similar questions for other multiplicative functions like $\\sigma(n)$ or $\\omega(n)$.",
     "openQuestions": [
       "Can the error term $O((\\log\\log x)^5/\\log x)$ in Tao's bound be improved to $O(1/\\log x)$?",
       "What is the answer for the divisor sum function $\\sigma(n)$: is the maximum $\\sigma$-increasing set also asymptotically the primes?",
@@ -110,44 +110,50 @@
   },
   "crossReferences": [
     {
-      "slug": "euler-totient",
       "relationship": "foundation",
-      "note": "Euler's totient function φ(n) is the central object of this problem; its properties (φ(p) = p−1 for primes, multiplicativity, distribution) drive the entire analysis."
+      "note": "Euler's totient function \u03c6(n) is the central object of this problem; its properties (\u03c6(p) = p\u22121 for primes, multiplicativity, distribution) drive the entire analysis.",
+      "description": "Related via foundation",
+      "targetId": "euler-totient"
     },
     {
-      "slug": "erdos-48",
       "relationship": "sibling",
-      "note": "A neighboring Erdős problem concerning the interaction of φ(n) and σ(m); both problems probe the collision structure of multiplicative arithmetic functions."
+      "note": "A neighboring Erd\u0151s problem concerning the interaction of \u03c6(n) and \u03c3(m); both problems probe the collision structure of multiplicative arithmetic functions.",
+      "description": "Related via sibling",
+      "targetId": "erdos-48"
     },
     {
-      "slug": "erdos-1003",
       "relationship": "sibling",
-      "note": "Asks whether φ(n) = φ(n+1) infinitely often — directly about the collision structure of φ that limits the size of increasing-totient sets studied here."
+      "note": "Asks whether \u03c6(n) = \u03c6(n+1) infinitely often \u2014 directly about the collision structure of \u03c6 that limits the size of increasing-totient sets studied here.",
+      "description": "Related via sibling",
+      "targetId": "erdos-1003"
     },
     {
-      "slug": "erdos-1004",
       "relationship": "sibling",
-      "note": "Asks about long runs of distinct consecutive totient values; the distribution of φ-values is the same analytic ingredient underlying Tao's proof of Problem #49."
+      "note": "Asks about long runs of distinct consecutive totient values; the distribution of \u03c6-values is the same analytic ingredient underlying Tao's proof of Problem #49.",
+      "description": "Related via sibling",
+      "targetId": "erdos-1004"
     },
     {
-      "slug": "infinitude-primes",
       "relationship": "prerequisite",
-      "note": "The infinitude of primes guarantees that the lower bound π(N) → ∞, and the set of primes is the explicit witness achieving asymptotic optimality in this problem."
+      "note": "The infinitude of primes guarantees that the lower bound \u03c0(N) \u2192 \u221e, and the set of primes is the explicit witness achieving asymptotic optimality in this problem.",
+      "description": "Related via prerequisite",
+      "targetId": "infinitude-primes"
     },
     {
-      "slug": "fundamental-arithmetic",
       "relationship": "prerequisite",
-      "note": "Unique factorization underlies the multiplicativity of φ and the anatomy-of-integers techniques (used by Ford and Tao) to control the distribution of totient values."
+      "note": "Unique factorization underlies the multiplicativity of \u03c6 and the anatomy-of-integers techniques (used by Ford and Tao) to control the distribution of totient values.",
+      "description": "Related via prerequisite",
+      "targetId": "fundamental-arithmetic"
     }
   ],
   "relatedProofs": [
     {
       "slug": "euler-totient",
-      "description": "Euler's theorem a^φ(n) ≡ 1 (mod n) provides the classical context for the totient function that is maximized over in Problem #49."
+      "description": "Euler's theorem a^\u03c6(n) \u2261 1 (mod n) provides the classical context for the totient function that is maximized over in Problem #49."
     },
     {
       "slug": "erdos-1003",
-      "description": "The question of when φ(n) = φ(n+1) is the collision counterpart to Problem #49's requirement of strict distinctness; resolved tools overlap."
+      "description": "The question of when \u03c6(n) = \u03c6(n+1) is the collision counterpart to Problem #49's requirement of strict distinctness; resolved tools overlap."
     },
     {
       "slug": "infinitude-primes",
@@ -158,21 +164,21 @@
     {
       "citation": "T. Tao, 'The set of primes is the most efficient set with increasing Euler totient values', preprint, 2023.",
       "url": "https://arxiv.org/abs/2309.02325",
-      "note": "Resolves Erdős Problem #49: |A| ≤ (1 + O((log log x)^5 / log x)) π(x)."
+      "note": "Resolves Erd\u0151s Problem #49: |A| \u2264 (1 + O((log log x)^5 / log x)) \u03c0(x)."
     },
     {
-      "citation": "C. Pomerance, 'On the distribution of amicable numbers', Journal für die reine und angewandte Mathematik, 293/294 (1977), 217–222.",
-      "note": "Contains early bounds on sets with increasing totient values using sieve methods; the precursor work cited by Erdős."
+      "citation": "C. Pomerance, 'On the distribution of amicable numbers', Journal f\u00fcr die reine und angewandte Mathematik, 293/294 (1977), 217\u2013222.",
+      "note": "Contains early bounds on sets with increasing totient values using sieve methods; the precursor work cited by Erd\u0151s."
     },
     {
-      "citation": "K. Ford, 'The distribution of totients', Ramanujan Journal 2 (1998), 67–151.",
+      "citation": "K. Ford, 'The distribution of totients', Ramanujan Journal 2 (1998), 67\u2013151.",
       "url": "https://doi.org/10.1023/A:1009761909132",
-      "note": "Definitive study of the distribution of φ-values; Ford's anatomy-of-integers techniques were essential to subsequent progress on Problem #49."
+      "note": "Definitive study of the distribution of \u03c6-values; Ford's anatomy-of-integers techniques were essential to subsequent progress on Problem #49."
     },
     {
-      "citation": "P. Erdős, 'Some remarks on Euler's φ-function and some related problems', Bulletin of the American Mathematical Society 51 (1945), 540–544.",
+      "citation": "P. Erd\u0151s, 'Some remarks on Euler's \u03c6-function and some related problems', Bulletin of the American Mathematical Society 51 (1945), 540\u2013544.",
       "url": "https://doi.org/10.1090/S0002-9904-1945-08378-9",
-      "note": "Erdős's original paper raising questions about the size of sets with increasing totient values."
+      "note": "Erd\u0151s's original paper raising questions about the size of sets with increasing totient values."
     },
     {
       "citation": "H. L. Montgomery and R. C. Vaughan, 'Multiplicative Number Theory I: Classical Theory', Cambridge University Press, 2007.",

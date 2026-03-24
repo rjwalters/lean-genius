@@ -1,8 +1,8 @@
 {
   "id": "erdos-491",
-  "title": "Erdős Problem #491: Characterization of Additive Functions",
+  "title": "Erd\u0151s Problem #491: Characterization of Additive Functions",
   "slug": "erdos-491",
-  "description": "If f: ℕ → ℝ is additive and |f(n+1) - f(n)| < c for all n, then f(n) = c'·log(n) + O(1). Proved by Wirsing (1970).",
+  "description": "If f: \u2115 \u2192 \u211d is additive and |f(n+1) - f(n)| < c for all n, then f(n) = c'\u00b7log(n) + O(1). Proved by Wirsing (1970).",
   "meta": {
     "author": "Wirsing (1970)",
     "sourceUrl": "https://erdosproblems.com/491",
@@ -49,10 +49,10 @@
       "IsAdditive: additive function predicate",
       "IsCompletelyAdditive: completely additive predicate",
       "HasBoundedDifferences: bounded consecutive differences",
-      "IsLogPlusO1: f = c·log + O(1)",
-      "wirsing_theorem axiom: bounded differences ⟹ log + O(1)",
-      "erdos_1946_o1 axiom: o(1) differences ⟹ exact log",
-      "erdos_1946_monotone axiom: monotone ⟹ exact log",
+      "IsLogPlusO1: f = c\u00b7log + O(1)",
+      "wirsing_theorem axiom: bounded differences \u27f9 log + O(1)",
+      "erdos_1946_o1 axiom: o(1) differences \u27f9 exact log",
+      "erdos_1946_monotone axiom: monotone \u27f9 exact log",
       "erdos_491 theorem: main result",
       "erdos_491_summary theorem: combining all results"
     ],
@@ -61,14 +61,14 @@
     "assumptions": "16 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #491 asks whether additive arithmetic functions with bounded consecutive differences must be essentially logarithmic. An additive function f: ℕ → ℝ satisfies f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. The natural logarithm is the prototypical example. Erdős posed the question: if |f(n+1) - f(n)| < c for some constant c, must f(n) = c'·log(n) + O(1)?\n\nErdős himself proved two weaker results in 1946 that hinted at the answer. First, if f(n+1) - f(n) = o(1) (differences tend to zero), then f(n) = c·log(n) exactly — no O(1) error is needed. Second, if f is monotone (f(n+1) ≥ f(n) for all n), then again f(n) = c·log(n) with c ≥ 0. These results showed that mild regularity conditions on additive functions force logarithmic behavior.\n\nWirsing (1970) resolved the full conjecture affirmatively. Under the weaker hypothesis of merely bounded differences (not tending to zero), f(n) = c'·log(n) + O(1) where the O(1) error cannot generally be removed. The result demonstrates that the logarithm is essentially the unique additive function with bounded consecutive differences, up to scaling and bounded perturbation. This connects to the broader theme in analytic number theory that additive functions are determined by their values on prime powers.",
-    "problemStatement": "Let f: ℕ → ℝ be an additive function (f(ab) = f(a) + f(b) when gcd(a,b) = 1). If there exists c such that |f(n+1) - f(n)| < c for all n, must there exist c' such that f(n) = c'·log(n) + O(1)?",
-    "text": "If f: ℕ → ℝ is additive and |f(n+1) - f(n)| < c for all n, then f(n) = c'·log(n) + O(1). Proved by Wirsing (1970).",
-    "proofStrategy": "The formalization defines additive functions, bounded consecutive differences, and the characterization f(n) = c'·log(n) + O(1). Wirsing's theorem is stated as an axiom, along with Erdős's 1946 results as special cases. The uniqueness of the coefficient c' and connections to prime factorization are included.",
+    "historicalContext": "Erd\u0151s Problem #491 asks whether additive arithmetic functions with bounded consecutive differences must be essentially logarithmic. An additive function f: \u2115 \u2192 \u211d satisfies f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. The natural logarithm is the prototypical example. Erd\u0151s posed the question: if |f(n+1) - f(n)| < c for some constant c, must f(n) = c'\u00b7log(n) + O(1)?\n\nErd\u0151s himself proved two weaker results in 1946 that hinted at the answer. First, if f(n+1) - f(n) = o(1) (differences tend to zero), then f(n) = c\u00b7log(n) exactly \u2014 no O(1) error is needed. Second, if f is monotone (f(n+1) \u2265 f(n) for all n), then again f(n) = c\u00b7log(n) with c \u2265 0. These results showed that mild regularity conditions on additive functions force logarithmic behavior.\n\nWirsing (1970) resolved the full conjecture affirmatively. Under the weaker hypothesis of merely bounded differences (not tending to zero), f(n) = c'\u00b7log(n) + O(1) where the O(1) error cannot generally be removed. The result demonstrates that the logarithm is essentially the unique additive function with bounded consecutive differences, up to scaling and bounded perturbation. This connects to the broader theme in analytic number theory that additive functions are determined by their values on prime powers.",
+    "problemStatement": "Let f: \u2115 \u2192 \u211d be an additive function (f(ab) = f(a) + f(b) when gcd(a,b) = 1). If there exists c such that |f(n+1) - f(n)| < c for all n, must there exist c' such that f(n) = c'\u00b7log(n) + O(1)?",
+    "text": "If f: \u2115 \u2192 \u211d is additive and |f(n+1) - f(n)| < c for all n, then f(n) = c'\u00b7log(n) + O(1). Proved by Wirsing (1970).",
+    "proofStrategy": "The formalization defines additive functions, bounded consecutive differences, and the characterization f(n) = c'\u00b7log(n) + O(1). Wirsing's theorem is stated as an axiom, along with Erd\u0151s's 1946 results as special cases. The uniqueness of the coefficient c' and connections to prime factorization are included.",
     "keyInsights": [
       "Additive functions with bounded consecutive differences are essentially logarithmic",
       "The logarithm is characterized as the unique additive function (up to scaling) with this regularity",
-      "Bounded differences give f = c'·log + O(1), while vanishing differences give exact f = c·log",
+      "Bounded differences give f = c'\u00b7log + O(1), while vanishing differences give exact f = c\u00b7log",
       "Additive functions are determined by their values on prime powers",
       "The coefficient c' in the characterization is unique"
     ],
@@ -94,7 +94,7 @@
     },
     {
       "id": "erdos-1946",
-      "title": "Erdős's Earlier Results (1946)",
+      "title": "Erd\u0151s's Earlier Results (1946)",
       "summary": "DifferencesTendToZero, IsMonotone, erdos_1946_o1, erdos_1946_monotone",
       "startLine": 70,
       "endLine": 91
@@ -108,7 +108,7 @@
     },
     {
       "id": "main-theorem",
-      "title": "Erdős Problem #491 Statement",
+      "title": "Erd\u0151s Problem #491 Statement",
       "summary": "erdos_491, erdos_491_explicit",
       "startLine": 112,
       "endLine": 128
@@ -157,7 +157,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #491 was resolved by Wirsing (1970): if f is additive with bounded consecutive differences, then f(n) = c'·log(n) + O(1). The logarithm is essentially the unique additive function with this regularity property.",
+    "summary": "Erd\u0151s Problem #491 was resolved by Wirsing (1970): if f is additive with bounded consecutive differences, then f(n) = c'\u00b7log(n) + O(1). The logarithm is essentially the unique additive function with this regularity property.",
     "implications": "This result characterizes the logarithm among additive functions and shows that boundedness of consecutive differences is a strong constraint that forces logarithmic behavior up to O(1) error.",
     "openQuestions": [
       "What is the optimal constant in the O(1) bound in terms of c?",
@@ -180,5 +180,27 @@
     "axiomCount": 16,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1122",
+      "relationship": "related",
+      "description": "Share additive-functions and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-878",
+      "relationship": "related",
+      "description": "Share additive-functions and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-897",
+      "relationship": "related",
+      "description": "Share additive-functions and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1122",
+    "erdos-878",
+    "erdos-897"
+  ]
 }

@@ -47,7 +47,7 @@
       }
     ],
     "originalContributions": [
-      "Comparable definition: A and B comparable iff A ⊆ B or B ⊆ A",
+      "Comparable definition: A and B comparable iff A \u2286 B or B \u2286 A",
       "comparabilityEdges: edge set of the comparability graph G_F",
       "edgeCount: number of comparable pairs in a family",
       "baseSet and powerSetOfBase: working with {0,...,n-1}",
@@ -186,5 +186,39 @@
     "axiomCount": 10,
     "theoremCount": 8,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share graph-theoretic and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share graph-theoretic and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Share graph-theoretic and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Share graph-theoretic and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1155",
+      "relationship": "related",
+      "description": "Share graph-theoretic and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1080",
+    "erdos-1105",
+    "erdos-1155"
+  ]
 }

@@ -45,15 +45,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The gambler's ruin problem has been studied since the origins of probability theory. Pascal and Fermat exchanged letters in 1654 about 'le problème des partis' (the division problem), effectively founding the theory of probability. Christiaan Huygens formalized the gambler's ruin in his 1657 treatise *De Ratiociniis in Ludo Aleae*, computing ruin probabilities as the first systematic results in probability. Nicholas Bernoulli studied the problem in his 1713 doctoral dissertation, discovering the St. Petersburg paradox as a related curiosity about infinite expected values.\n\nThe modern framework emerged in the 20th century. Louis Bachelier's 1900 thesis applied martingale-like reasoning to financial markets. Paul Lévy developed the theory of martingales in the 1930s, and Jean Ville coined the term 'martingale' in 1939 to describe fair betting sequences. Joseph Doob's 1953 masterwork *Stochastic Processes* established the Optional Stopping Theorem (also called the Fair Games Theorem) as a cornerstone of modern probability: for any bounded stopping time $\\tau$, $E[X_\\tau] = E[X_0]$.\n\nThis is Wiedijk's theorem #62 ('You cannot beat a fair game with any strategy'). The theorem explains why betting systems like the martingale doubling strategy, the D'Alembert system, and Fibonacci betting all fail: bounded capital means bounded stopping time, so expected earnings remain zero.",
+    "historicalContext": "The gambler's ruin problem has been studied since the origins of probability theory. Pascal and Fermat exchanged letters in 1654 about 'le probl\u00e8me des partis' (the division problem), effectively founding the theory of probability. Christiaan Huygens formalized the gambler's ruin in his 1657 treatise *De Ratiociniis in Ludo Aleae*, computing ruin probabilities as the first systematic results in probability. Nicholas Bernoulli studied the problem in his 1713 doctoral dissertation, discovering the St. Petersburg paradox as a related curiosity about infinite expected values.\n\nThe modern framework emerged in the 20th century. Louis Bachelier's 1900 thesis applied martingale-like reasoning to financial markets. Paul L\u00e9vy developed the theory of martingales in the 1930s, and Jean Ville coined the term 'martingale' in 1939 to describe fair betting sequences. Joseph Doob's 1953 masterwork *Stochastic Processes* established the Optional Stopping Theorem (also called the Fair Games Theorem) as a cornerstone of modern probability: for any bounded stopping time $\\tau$, $E[X_\\tau] = E[X_0]$.\n\nThis is Wiedijk's theorem #62 ('You cannot beat a fair game with any strategy'). The theorem explains why betting systems like the martingale doubling strategy, the D'Alembert system, and Fibonacci betting all fail: bounded capital means bounded stopping time, so expected earnings remain zero.",
     "problemStatement": "**Fair Games Theorem**: In a fair game where a player wins or loses $1 with equal probability, a player starting with finite capital n playing against an opponent with infinite capital will eventually go bankrupt with probability 1.\n\nThe expected time to ruin is infinite, but ruin is certain.",
     "text": "In a fair game (expected gain is zero), a gambler with finite wealth playing against an infinitely wealthy opponent will eventually go bankrupt with probability 1.",
     "proofStrategy": "Model the game as a random walk on integers. The player's wealth is a martingale. By the martingale convergence theorem and recurrence properties of 1D random walks, the walk will hit 0 with probability 1.",
     "keyInsights": [
       "Fair games are still ruinous for the finite player: starting with wealth $W_0$ against an infinitely rich opponent, ruin probability is 1, even though $E[W_n] = W_0$ (wealth is constant in expectation)",
-      "The random walk is recurrent in 1D by Pólya's theorem (1921): a simple random walk on $\\mathbb{Z}$ returns to every point with probability 1. This is why ruin is certain — the walk must eventually hit 0.",
+      "The random walk is recurrent in 1D by P\u00f3lya's theorem (1921): a simple random walk on $\\mathbb{Z}$ returns to every point with probability 1. This is why ruin is certain \u2014 the walk must eventually hit 0.",
       "Expected time to ruin is infinite despite certain ruin: $E[\\tau] = \\infty$ while $P(\\tau < \\infty) = 1$. This is a classic example where the event is almost sure but takes 'forever' on average.",
-      "No betting strategy can beat a fair game: the Optional Stopping Theorem says $E[X_\\tau] = E[X_0]$ for any bounded stopping time $\\tau$, so clever strategies cannot change expected outcomes — only redistribute variance.",
+      "No betting strategy can beat a fair game: the Optional Stopping Theorem says $E[X_\\tau] = E[X_0]$ for any bounded stopping time $\\tau$, so clever strategies cannot change expected outcomes \u2014 only redistribute variance.",
       "Connection to financial mathematics: arbitrage-free prices are martingales under a risk-neutral measure by the First Fundamental Theorem of Asset Pricing (Harrison-Pliska 1979). The fair games theorem is thus the foundation of modern option pricing theory (Black-Scholes, 1973)."
     ],
     "prerequisites": [
@@ -86,7 +86,7 @@
       "title": "The Optional Stopping Theorem",
       "startLine": 163,
       "endLine": 266,
-      "summary": "E[f_τ] = E[f_π] for bounded stopping times τ ≤ π. Proved via sub- and supermartingale sandwich. Wiedijk #62.",
+      "summary": "E[f_\u03c4] = E[f_\u03c0] for bounded stopping times \u03c4 \u2264 \u03c0. Proved via sub- and supermartingale sandwich. Wiedijk #62.",
       "mathContext": "$\\int f_{\\tau} \\, d\\mu = \\int f_{\\pi} \\, d\\mu$ for $\\tau \\leq \\pi \\leq N$. Proof: submartingale gives $\\leq$, supermartingale gives $\\geq$, then $\\text{le\\_antisymm}$."
     },
     {
@@ -102,7 +102,7 @@
       "title": "Historical Context",
       "startLine": 429,
       "endLine": 450,
-      "summary": "Timeline from Bachelier (1906) through Lévy (1934), Ville (1939), Doob (1953). Explains the name 'martingale' and Wiedijk's characterization.",
+      "summary": "Timeline from Bachelier (1906) through L\u00e9vy (1934), Ville (1939), Doob (1953). Explains the name 'martingale' and Wiedijk's characterization.",
       "mathContext": "Doob (1953): $E[X_\\tau] = E[X_0]$ for bounded $\\tau$. Ville (1939) coined 'martingale'. Bachelier (1900) applied to finance."
     }
   ],
@@ -111,11 +111,6 @@
       "targetId": "ballot-problem",
       "relationship": "related",
       "description": "The ballot problem studies first-passage times of random walks, which are stopping times for the martingale of cumulative votes"
-    },
-    {
-      "targetId": "law-of-large-numbers",
-      "relationship": "related",
-      "description": "LLN shows averages converge to the mean; the fair games theorem shows stopping times cannot exploit deviations from the mean"
     },
     {
       "targetId": "infinitude-primes",
@@ -134,7 +129,6 @@
   },
   "relatedProofs": [
     "ballot-problem",
-    "law-of-large-numbers",
     "infinitude-primes"
   ],
   "leanFile": {

@@ -1,8 +1,8 @@
 {
   "id": "erdos-964",
-  "title": "Erdős Problem #964: Divisor Function Ratios",
+  "title": "Erd\u0151s Problem #964: Divisor Function Ratios",
   "slug": "erdos-964",
-  "description": "Is {τ(n+1)/τ(n) : n ≥ 1} dense in (0, ∞)? YES - Eberhard (2025) proved all positive rationals appear as such ratios.",
+  "description": "Is {\u03c4(n+1)/\u03c4(n) : n \u2265 1} dense in (0, \u221e)? YES - Eberhard (2025) proved all positive rationals appear as such ratios.",
   "meta": {
     "author": "Eberhard (2025)",
     "sourceUrl": "https://erdosproblems.com/964",
@@ -39,7 +39,7 @@
       "tau definition via Nat.divisors.card",
       "tau_one, tau_prime, tau_prime_power theorems",
       "tau_multiplicative theorem",
-      "divisorRatio definition τ(n+1)/τ(n)",
+      "divisorRatio definition \u03c4(n+1)/\u03c4(n)",
       "ratioSet definition",
       "isDenseInPositives definition",
       "ErdosConjecture964 statement",
@@ -54,13 +54,13 @@
     "assumptions": "7 axiom(s) and 8 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem asks whether consecutive divisor function values can have any prescribed ratio. The prime k-tuple conjecture would imply YES, but Eberhard (2025) proved it unconditionally. In fact, Eberhard proved the stronger result that ALL positive rationals appear as τ(n+1)/τ(n). The divisor function τ has been central to analytic number theory since Dirichlet's 1849 work on the average order τ(1)+⋯+τ(n) ≈ n log n. Questions about the range and distribution of τ(n+1)/τ(n) are part of a broader study of multiplicative functions at consecutive integers, a notoriously difficult area since τ is not additive and consecutive integers are coprime.",
-    "problemStatement": "**Question:** Is {τ(n+1)/τ(n) : n ≥ 1} everywhere dense in (0, ∞)?\n\n**Answer: YES** (Eberhard 2025)\n\nEven stronger: ALL positive rationals p/q appear as τ(n+1)/τ(n).",
-    "text": "Is {τ(n+1)/τ(n) : n ≥ 1} dense in (0, ∞)? YES - Eberhard (2025) proved all positive rationals appear as such ratios.",
-    "proofStrategy": "We formalize:\n\n1. **Divisor function:** τ(n) = number of divisors\n2. **Divisor ratio:** divisorRatio(n) = τ(n+1)/τ(n)\n3. **Density:** isDenseInPositives via ε-δ\n4. **Eberhard's theorem:** All rationals appear\n5. **Main result:** Density follows from rationals being dense",
+    "historicalContext": "This problem asks whether consecutive divisor function values can have any prescribed ratio. The prime k-tuple conjecture would imply YES, but Eberhard (2025) proved it unconditionally. In fact, Eberhard proved the stronger result that ALL positive rationals appear as \u03c4(n+1)/\u03c4(n). The divisor function \u03c4 has been central to analytic number theory since Dirichlet's 1849 work on the average order \u03c4(1)+\u22ef+\u03c4(n) \u2248 n log n. Questions about the range and distribution of \u03c4(n+1)/\u03c4(n) are part of a broader study of multiplicative functions at consecutive integers, a notoriously difficult area since \u03c4 is not additive and consecutive integers are coprime.",
+    "problemStatement": "**Question:** Is {\u03c4(n+1)/\u03c4(n) : n \u2265 1} everywhere dense in (0, \u221e)?\n\n**Answer: YES** (Eberhard 2025)\n\nEven stronger: ALL positive rationals p/q appear as \u03c4(n+1)/\u03c4(n).",
+    "text": "Is {\u03c4(n+1)/\u03c4(n) : n \u2265 1} dense in (0, \u221e)? YES - Eberhard (2025) proved all positive rationals appear as such ratios.",
+    "proofStrategy": "We formalize:\n\n1. **Divisor function:** \u03c4(n) = number of divisors\n2. **Divisor ratio:** divisorRatio(n) = \u03c4(n+1)/\u03c4(n)\n3. **Density:** isDenseInPositives via \u03b5-\u03b4\n4. **Eberhard's theorem:** All rationals appear\n5. **Main result:** Density follows from rationals being dense",
     "keyInsights": [
-      "**τ(n) is multiplicative:** τ(mn) = τ(m)τ(n) for coprime m, n",
-      "**Ratios vary wildly:** τ(n+1)/τ(n) can be very small or very large",
+      "**\u03c4(n) is multiplicative:** \u03c4(mn) = \u03c4(m)\u03c4(n) for coprime m, n",
+      "**Ratios vary wildly:** \u03c4(n+1)/\u03c4(n) can be very small or very large",
       "**Unconditional proof:** Eberhard proved this without prime k-tuple conjecture",
       "**All rationals appear:** The stronger result that every p/q is achieved",
       "**Related to #946:** Part of a family of divisor function problems"
@@ -137,12 +137,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #964 asked whether divisor function ratios τ(n+1)/τ(n) are dense in (0, ∞). Eberhard (2025) proved YES unconditionally, and even showed that ALL positive rationals appear as such ratios.",
+    "summary": "Erd\u0151s Problem #964 asked whether divisor function ratios \u03c4(n+1)/\u03c4(n) are dense in (0, \u221e). Eberhard (2025) proved YES unconditionally, and even showed that ALL positive rationals appear as such ratios.",
     "implications": "**Theoretical Significance**: **Number Theory Connections:**\n\n1. **Divisor function structure:** The divisor function has rich multiplicative properties.\n\n**2. Prime k-tuple conjecture:** Would imply the result, but Eberhard found an unconditional proof.\n\n3. **Consecutive integers:** Their factorizations are 'independent' enough for density.\n\n4. **Arithmetic sequences:** Related questions about divisors in progressions.",
     "openQuestions": [
-      "What is the smallest n achieving τ(n+1)/τ(n) = p/q?",
+      "What is the smallest n achieving \u03c4(n+1)/\u03c4(n) = p/q?",
       "Distribution of ratios: what is the 'typical' ratio?",
-      "Higher consecutive ratios: τ(n+k)/τ(n)?",
+      "Higher consecutive ratios: \u03c4(n+k)/\u03c4(n)?",
       "Analogues for other arithmetic functions"
     ]
   },
@@ -165,5 +165,39 @@
     "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-692",
+      "relationship": "related",
+      "description": "Share divisor-function, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Share divisor-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Share divisor-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-122",
+      "relationship": "related",
+      "description": "Share divisor-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-257",
+      "relationship": "related",
+      "description": "Share divisor-function and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-692",
+    "erdos-1049",
+    "erdos-1053",
+    "erdos-122",
+    "erdos-257"
+  ]
 }

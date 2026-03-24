@@ -1,8 +1,8 @@
 {
   "id": "erdos-275",
-  "title": "Erdős Problem #275: Covering Congruences",
+  "title": "Erd\u0151s Problem #275: Covering Congruences",
   "slug": "erdos-275",
-  "description": "If r congruences {aᵢ (mod nᵢ)} cover 2^r consecutive integers, they cover all integers. This bound is tight: {2^(i-1) (mod 2^i)} shows 2^r-1 doesn't suffice.",
+  "description": "If r congruences {a\u1d62 (mod n\u1d62)} cover 2^r consecutive integers, they cover all integers. This bound is tight: {2^(i-1) (mod 2^i)} shows 2^r-1 doesn't suffice.",
   "meta": {
     "author": "Selfridge, Crittenden-Vanden Eynden",
     "sourceUrl": "https://erdosproblems.com/275",
@@ -50,16 +50,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #275** lies at the heart of *covering systems*, a subject Erdős pioneered starting in the 1950s. A covering system is a finite collection of congruence classes $a_i \\pmod{n_i}$ whose union is all of $\\mathbb{Z}$. Erdős asked: if $r$ congruences cover $2^r$ consecutive integers, must they cover all integers?\n\n**Historical Development:**\n- **Erdős (1950s):** Introduced covering systems and formulated numerous problems, including #275. His earliest covering system work dates to his 1950 proof that there exist infinitely many odd integers not of the form $2^k + p$, using a covering system with moduli $\\{2, 3, 4, 8, 12, 24\\}$.\n- **Selfridge (1970):** Independently solved Problem #275, showing $2^r$ is the exact threshold.\n- **Crittenden and Vanden Eynden (1970):** Published the proof in *Proceedings of the AMS*, using induction on the structure of moduli with careful analysis modulo 2.\n- **Hough (2015):** Proved the minimum modulus conjecture (Erdős #2), showing every covering system with distinct moduli $> 1$ must have a modulus $\\leq 10^{16}$ — later improved to $616{,}000$ by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (2022).\n\n**Key Insight:** The exponential bound $2^r$ reflects binary structure — the optimal counterexample uses powers of 2 as moduli, and coverage depends on the binary digits of integers.",
+    "historicalContext": "**Erd\u0151s Problem #275** lies at the heart of *covering systems*, a subject Erd\u0151s pioneered starting in the 1950s. A covering system is a finite collection of congruence classes $a_i \\pmod{n_i}$ whose union is all of $\\mathbb{Z}$. Erd\u0151s asked: if $r$ congruences cover $2^r$ consecutive integers, must they cover all integers?\n\n**Historical Development:**\n- **Erd\u0151s (1950s):** Introduced covering systems and formulated numerous problems, including #275. His earliest covering system work dates to his 1950 proof that there exist infinitely many odd integers not of the form $2^k + p$, using a covering system with moduli $\\{2, 3, 4, 8, 12, 24\\}$.\n- **Selfridge (1970):** Independently solved Problem #275, showing $2^r$ is the exact threshold.\n- **Crittenden and Vanden Eynden (1970):** Published the proof in *Proceedings of the AMS*, using induction on the structure of moduli with careful analysis modulo 2.\n- **Hough (2015):** Proved the minimum modulus conjecture (Erd\u0151s #2), showing every covering system with distinct moduli $> 1$ must have a modulus $\\leq 10^{16}$ \u2014 later improved to $616{,}000$ by Balister, Bollob\u00e1s, Morris, Sahasrabudhe, and Tiba (2022).\n\n**Key Insight:** The exponential bound $2^r$ reflects binary structure \u2014 the optimal counterexample uses powers of 2 as moduli, and coverage depends on the binary digits of integers.",
     "problemStatement": "**Problem Statement**\n\nLet $\\{a_i \\pmod{n_i} : 1 \\leq i \\leq r\\}$ be a finite system of $r$ congruence classes with $n_i \\geq 1$. If this system covers $2^r$ consecutive integers, then it covers all of $\\mathbb{Z}$.\n\n**This bound is tight:** The system $\\{2^{i-1} \\pmod{2^i} : 1 \\leq i \\leq r\\}$ covers exactly the integers NOT divisible by $2^r$, showing that $2^r - 1$ consecutive integers do not suffice.",
-    "text": "If r congruences {aᵢ (mod nᵢ)} cover 2^r consecutive integers, they cover all integers. This bound is tight: {2^(i-1) (mod 2^i)} shows 2^r-1 doesn't suffice.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** CongruenceClass, CoveringSystem (as a Lean structure with residues, moduli, positivity), IsCovered, CoversSet, CoversAll, ConsecutiveIntegers.\n\n2. **Main Theorem:** Axiomatized — if $r$ congruences cover $2^r$ consecutive integers starting at any $a \\in \\mathbb{Z}$, they cover all integers.\n\n3. **Alternative Formulation:** Crittenden–Vanden Eynden's version phrased over $\\{0, \\ldots, 2^r - 1\\}$.\n\n4. **Tightness:** Constructive OptimalExample using $\\{2^{i-1} \\pmod{2^i}\\}$, with axiomatized coverage characterization.\n\n5. **Summary Theorem:** Proved by combining the main result and tightness via $\\langle$erdos_275_theorem, not_covered_2r_minus_1$\\rangle$.",
+    "text": "If r congruences {a\u1d62 (mod n\u1d62)} cover 2^r consecutive integers, they cover all integers. This bound is tight: {2^(i-1) (mod 2^i)} shows 2^r-1 doesn't suffice.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** CongruenceClass, CoveringSystem (as a Lean structure with residues, moduli, positivity), IsCovered, CoversSet, CoversAll, ConsecutiveIntegers.\n\n2. **Main Theorem:** Axiomatized \u2014 if $r$ congruences cover $2^r$ consecutive integers starting at any $a \\in \\mathbb{Z}$, they cover all integers.\n\n3. **Alternative Formulation:** Crittenden\u2013Vanden Eynden's version phrased over $\\{0, \\ldots, 2^r - 1\\}$.\n\n4. **Tightness:** Constructive OptimalExample using $\\{2^{i-1} \\pmod{2^i}\\}$, with axiomatized coverage characterization.\n\n5. **Summary Theorem:** Proved by combining the main result and tightness via $\\langle$erdos_275_theorem, not_covered_2r_minus_1$\\rangle$.",
     "keyInsights": [
-      "**Exponential threshold $2^r$:** The number of consecutive integers needed grows exponentially with the number of congruences $r$, not polynomially — reflecting the $2^r$ possible bit patterns in binary representations of residues.",
+      "**Exponential threshold $2^r$:** The number of consecutive integers needed grows exponentially with the number of congruences $r$, not polynomially \u2014 reflecting the $2^r$ possible bit patterns in binary representations of residues.",
       "**Binary structure of the optimal example:** The system $\\{2^{i-1} \\pmod{2^i} : 1 \\leq i \\leq r\\}$ covers $x$ iff the $i$-th binary digit of $x$ is 1 for some $1 \\leq i \\leq r$. Only multiples of $2^r$ (with all first $r$ bits zero) escape coverage.",
-      "**Finite-to-infinite extension:** The theorem bridges finite verification (checking $2^r$ values) with infinite coverage (all of $\\mathbb{Z}$). This is characteristic of periodicity arguments in modular arithmetic — if moduli are $n_1, \\ldots, n_r$, then coverage is periodic with period $\\text{lcm}(n_1, \\ldots, n_r)$.",
+      "**Finite-to-infinite extension:** The theorem bridges finite verification (checking $2^r$ values) with infinite coverage (all of $\\mathbb{Z}$). This is characteristic of periodicity arguments in modular arithmetic \u2014 if moduli are $n_1, \\ldots, n_r$, then coverage is periodic with period $\\text{lcm}(n_1, \\ldots, n_r)$.",
       "**Inductive proof strategy:** Crittenden and Vanden Eynden's proof proceeds by induction on $r$, partitioning the congruences by their behavior modulo 2. The key step reduces an $r$-congruence problem to an $(r-1)$-congruence problem on even or odd integers.",
-      "**Connection to Erdős's covering system program:** This is one of many problems (#2, #7, #275–281) in Erdős's systematic study of covering systems, which also produced his famous $1000 conjecture on odd covering systems (recently refuted for the 'all odd' version by Hough–Nielsen 2019)."
+      "**Connection to Erd\u0151s's covering system program:** This is one of many problems (#2, #7, #275\u2013281) in Erd\u0151s's systematic study of covering systems, which also produced his famous $1000 conjecture on odd covering systems (recently refuted for the 'all odd' version by Hough\u2013Nielsen 2019)."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -104,7 +104,7 @@
     },
     {
       "id": "alternative-formulation",
-      "title": "Crittenden–Vanden Eynden Formulation",
+      "title": "Crittenden\u2013Vanden Eynden Formulation",
       "summary": "Alternative axiom: $r$ progressions covering $\\{0, 1, \\ldots, 2^r - 1\\}$ cover all of $\\mathbb{Z}$; published in *Proc. AMS* (1970)",
       "startLine": 89,
       "endLine": 98
@@ -139,11 +139,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #275 is **SOLVED** (Selfridge 1970, Crittenden–Vanden Eynden 1970). If $r$ congruence classes cover $2^r$ consecutive integers, they cover all of $\\mathbb{Z}$. The bound $2^r$ is optimal, demonstrated by the binary-structured example $\\{2^{i-1} \\pmod{2^i} : 1 \\leq i \\leq r\\}$, which covers exactly the integers not divisible by $2^r$. The formalization axiomatizes the main theorem and its tightness, with the summary theorem proved by pairing both results.",
-    "implications": "**Theoretical Significance**: **Implications for Number Theory and Combinatorics**\n\n1. **Finite verification principle:** Establishes that global coverage of $\\mathbb{Z}$ by congruences can be checked by testing a finite (but exponentially large) set of consecutive integers.\n\n**2. Binary optimality:** The exponential threshold $2^r$ and the binary-structured optimal example illuminate the role of 2-adic structure in covering problems.\n\n3. **Foundation for covering system theory:** Complements Erdős #2 (minimum modulus of covering systems) and #7 (odd covering systems) as part of the foundational framework for studying what covering systems can achieve.\n\n4. **Extensions:** The exactly-$k$-covering generalization connects to partition problems on $\\mathbb{Z}$ and to questions about the structure of $k$-fold covering systems studied by Porubský and others.",
+    "summary": "Erd\u0151s Problem #275 is **SOLVED** (Selfridge 1970, Crittenden\u2013Vanden Eynden 1970). If $r$ congruence classes cover $2^r$ consecutive integers, they cover all of $\\mathbb{Z}$. The bound $2^r$ is optimal, demonstrated by the binary-structured example $\\{2^{i-1} \\pmod{2^i} : 1 \\leq i \\leq r\\}$, which covers exactly the integers not divisible by $2^r$. The formalization axiomatizes the main theorem and its tightness, with the summary theorem proved by pairing both results.",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory and Combinatorics**\n\n1. **Finite verification principle:** Establishes that global coverage of $\\mathbb{Z}$ by congruences can be checked by testing a finite (but exponentially large) set of consecutive integers.\n\n**2. Binary optimality:** The exponential threshold $2^r$ and the binary-structured optimal example illuminate the role of 2-adic structure in covering problems.\n\n3. **Foundation for covering system theory:** Complements Erd\u0151s #2 (minimum modulus of covering systems) and #7 (odd covering systems) as part of the foundational framework for studying what covering systems can achieve.\n\n4. **Extensions:** The exactly-$k$-covering generalization connects to partition problems on $\\mathbb{Z}$ and to questions about the structure of $k$-fold covering systems studied by Porubsk\u00fd and others.",
     "openQuestions": [
-      "Does there exist a covering system with all distinct odd moduli greater than 1? (Erdős's famous $1000 problem, now known to be false for the 'all odd, all distinct' version by Hough–Nielsen 2019, but the original Erdős–Selfridge conjecture remains open.)",
-      "Can the Crittenden–Vanden Eynden induction be carried out formally in Lean, replacing the axioms with constructive proofs?",
+      "Does there exist a covering system with all distinct odd moduli greater than 1? (Erd\u0151s's famous $1000 problem, now known to be false for the 'all odd, all distinct' version by Hough\u2013Nielsen 2019, but the original Erd\u0151s\u2013Selfridge conjecture remains open.)",
+      "Can the Crittenden\u2013Vanden Eynden induction be carried out formally in Lean, replacing the axioms with constructive proofs?",
       "What is the minimum number of consecutive integers needed to verify coverage when the moduli are restricted (e.g., all moduli at most M)?",
       "How does the threshold change for k-fold covering systems where every integer must be covered exactly k times?",
       "What is the computational complexity of deciding whether r given congruences form a covering system?"
@@ -151,24 +151,29 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "erdos-2",
-      "relationship": "Complementary covering system constraint: #2 bounds the minimum modulus of distinct covering systems (≤ 616,000), while #275 characterizes the finite verification threshold"
+      "relationship": "related",
+      "targetId": "erdos-2",
+      "description": "Complementary covering system constraint: #2 bounds the minimum modulus of distinct covering systems (\u2264 616,000), while #275 characterizes the finite verification threshold"
     },
     {
-      "targetProofId": "erdos-7",
-      "relationship": "Both address structural constraints on covering systems: #7 concerns parity of moduli (Erdős–Selfridge conjecture on odd covering), #275 concerns the verification threshold"
+      "relationship": "related",
+      "targetId": "erdos-7",
+      "description": "Both address structural constraints on covering systems: #7 concerns parity of moduli (Erd\u0151s\u2013Selfridge conjecture on odd covering), #275 concerns the verification threshold"
     },
     {
-      "targetProofId": "erdos-276",
-      "relationship": "Direct application: #276 uses covering congruences via Graham's construction to build primefree Lucas sequences; the covering system theory from #275 provides the foundational mechanism"
+      "relationship": "related",
+      "targetId": "erdos-276",
+      "description": "Direct application: #276 uses covering congruences via Graham's construction to build primefree Lucas sequences; the covering system theory from #275 provides the foundational mechanism"
     },
     {
-      "targetProofId": "erdos-278",
-      "relationship": "Adjacent covering system problem: #278 studies the maximum covering density achievable by r congruences, complementing #275's all-or-nothing coverage threshold"
+      "relationship": "related",
+      "targetId": "erdos-278",
+      "description": "Adjacent covering system problem: #278 studies the maximum covering density achievable by r congruences, complementing #275's all-or-nothing coverage threshold"
     },
     {
-      "targetProofId": "erdos-281",
-      "relationship": "Density complement: #281 studies asymptotic density properties of covering systems via the Davenport–Erdős theorem, contrasting with #275's discrete consecutive-integer criterion"
+      "relationship": "related",
+      "targetId": "erdos-281",
+      "description": "Density complement: #281 studies asymptotic density properties of covering systems via the Davenport\u2013Erd\u0151s theorem, contrasting with #275's discrete consecutive-integer criterion"
     }
   ],
   "leanFile": {

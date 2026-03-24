@@ -171,16 +171,19 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "erdos-370",
-      "relationship": "Both problems involve prime factorization structure of arithmetic sequences -- Problem #370 studies greatest prime factors of consecutive integers while Problem #1113 studies prime divisors covering the Sierpinski sequence $2^k \\cdot m + 1$"
+      "relationship": "related",
+      "targetId": "erdos-370",
+      "description": "Both problems involve prime factorization structure of arithmetic sequences -- Problem #370 studies greatest prime factors of consecutive integers while Problem #1113 studies prime divisors covering the Sierpinski sequence $2^k \\cdot m + 1$"
     },
     {
-      "targetProofId": "erdos-984",
-      "relationship": "Both involve combinatorial number theory with finite set constructions -- Sidon sets (finite sets with unique pairwise sums) and covering sets (finite prime sets with complete divisibility coverage)"
+      "relationship": "related",
+      "targetId": "erdos-984",
+      "description": "Both involve combinatorial number theory with finite set constructions -- Sidon sets (finite sets with unique pairwise sums) and covering sets (finite prime sets with complete divisibility coverage)"
     },
     {
-      "targetProofId": "erdos-107",
-      "relationship": "Both are Erdos problems where existence questions connect to deep structural phenomena -- the Happy Ending problem asks about convex subsets while Problem #1113 asks about uncovered Sierpinski numbers"
+      "relationship": "related",
+      "targetId": "erdos-107",
+      "description": "Both are Erdos problems where existence questions connect to deep structural phenomena -- the Happy Ending problem asks about convex subsets while Problem #1113 asks about uncovered Sierpinski numbers"
     }
   ],
   "leanFile": {

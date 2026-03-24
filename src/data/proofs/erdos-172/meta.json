@@ -1,8 +1,8 @@
 {
   "id": "erdos-172",
-  "title": "Erdős Problem #172: Monochromatic Sums and Products",
+  "title": "Erd\u0151s Problem #172: Monochromatic Sums and Products",
   "slug": "erdos-172",
-  "description": "In any finite coloring of ℕ, do there exist arbitrarily large sets A with all sums and products of elements monochromatic?",
+  "description": "In any finite coloring of \u2115, do there exist arbitrarily large sets A with all sums and products of elements monochromatic?",
   "meta": {
     "author": "Hindman (original); Moreira 2017 (partial); OPEN for full conjecture",
     "sourceUrl": "https://erdosproblems.com/172",
@@ -49,20 +49,20 @@
     "lineCount": 145,
     "references": [
       {
-        "title": "Monochromatic sums and products in ℕ",
+        "title": "Monochromatic sums and products in \u2115",
         "authors": "J. Moreira",
         "year": 2017,
         "venue": "Annals of Mathematics",
         "url": "https://doi.org/10.4007/annals.2017.185.3.10",
-        "description": "Proves monochromatic {x, x+y, xy} exists in any finite coloring of ℕ"
+        "description": "Proves monochromatic {x, x+y, xy} exists in any finite coloring of \u2115"
       },
       {
-        "title": "Monochromatic sums and products in ℚ",
+        "title": "Monochromatic sums and products in \u211a",
         "authors": "R. Alweiss",
         "year": 2023,
         "venue": "Preprint",
         "url": "https://arxiv.org/abs/2305.02065",
-        "description": "Proves the full sum-product monochromatic conjecture over the rationals ℚ\\{0}"
+        "description": "Proves the full sum-product monochromatic conjecture over the rationals \u211a\\{0}"
       },
       {
         "title": "Finite sums from sequences within cells of a partition of N",
@@ -70,20 +70,20 @@
         "year": 1974,
         "venue": "Journal of Combinatorial Theory, Series A",
         "url": "https://doi.org/10.1016/0097-3165(74)90023-5",
-        "description": "Hindman's theorem on monochromatic finite sums — the additive-only precursor to Erdős #172"
+        "description": "Hindman's theorem on monochromatic finite sums \u2014 the additive-only precursor to Erd\u0151s #172"
       }
     ],
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was first asked by Neil Hindman and concerns the interplay between additive and multiplicative structure in Ramsey theory. The question asks whether the additive and multiplicative structures of ℕ can be simultaneously exploited to find arbitrarily large monochromatic configurations.\n\nHindman himself proved in 1980 that the infinite version is false - with 7 colors, no infinite set can have all sums and products monochromatic. This left open the finite version.\n\nJoel Moreira made breakthrough progress in 2017, proving that for any finite coloring, there exist x, y such that {x, x+y, xy} are all the same color. This was the first non-trivial case (|A| = 2). Ryan Alweiss (2023) proved the full conjecture over ℚ\\{0}, suggesting the answer over ℕ might also be positive.",
+    "historicalContext": "This problem was first asked by Neil Hindman and concerns the interplay between additive and multiplicative structure in Ramsey theory. The question asks whether the additive and multiplicative structures of \u2115 can be simultaneously exploited to find arbitrarily large monochromatic configurations.\n\nHindman himself proved in 1980 that the infinite version is false - with 7 colors, no infinite set can have all sums and products monochromatic. This left open the finite version.\n\nJoel Moreira made breakthrough progress in 2017, proving that for any finite coloring, there exist x, y such that {x, x+y, xy} are all the same color. This was the first non-trivial case (|A| = 2). Ryan Alweiss (2023) proved the full conjecture over \u211a\\{0}, suggesting the answer over \u2115 might also be positive.",
     "problemStatement": "**Problem**: In any finite coloring of $\\mathbb{N}$, do there exist arbitrarily large finite sets $A$ such that all sums and products of distinct elements of $A$ are the same color?\n\n**Status**: OPEN\n\n**Partial results**:\n- Moreira (2017): TRUE for |A| = 2\n- Alweiss (2023): TRUE over $\\mathbb{Q}\\setminus\\{0\\}$\n- Hindman (1980): FALSE for infinite A with 7 colors",
-    "text": "In any finite coloring of ℕ, do there exist arbitrarily large sets A with all sums and products of elements monochromatic?",
-    "proofStrategy": "Since the problem is open, we formalize:\n\n1. **The conjecture**: For any k-coloring and m, there exists A with |A| ≥ m where all subset sums and products share a color\n2. **Moreira's theorem**: Axiomatized - monochromatic {x, x+y, xy} exists\n3. **Alweiss's theorem**: Axiomatized - full conjecture holds over rationals\n4. **Hindman's counterexample**: Axiomatized - infinite version fails\n\nWe also prove basic properties: singletons are trivially monochromatic, and the empty set satisfies the property vacuously.",
+    "text": "In any finite coloring of \u2115, do there exist arbitrarily large sets A with all sums and products of elements monochromatic?",
+    "proofStrategy": "Since the problem is open, we formalize:\n\n1. **The conjecture**: For any k-coloring and m, there exists A with |A| \u2265 m where all subset sums and products share a color\n2. **Moreira's theorem**: Axiomatized - monochromatic {x, x+y, xy} exists\n3. **Alweiss's theorem**: Axiomatized - full conjecture holds over rationals\n4. **Hindman's counterexample**: Axiomatized - infinite version fails\n\nWe also prove basic properties: singletons are trivially monochromatic, and the empty set satisfies the property vacuously.",
     "keyInsights": [
-      "**Sum-product monochromatic**: A set A where for every nonempty S ⊆ A, both Σ S and Π S have the same color.",
+      "**Sum-product monochromatic**: A set A where for every nonempty S \u2286 A, both \u03a3 S and \u03a0 S have the same color.",
       "**Finite vs infinite**: The infinite version fails (Hindman 1980), but the finite version remains open.",
-      "**Rationals vs naturals**: Alweiss proved the full conjecture over ℚ\\{0}, but naturals remain elusive.",
+      "**Rationals vs naturals**: Alweiss proved the full conjecture over \u211a\\{0}, but naturals remain elusive.",
       "**Moreira's breakthrough**: The |A| = 2 case (monochromatic {x, x+y, xy}) was only proved in 2017.",
       "**Ramsey theory meets arithmetic**: This combines partition regularity with additive/multiplicative structure."
     ],
@@ -106,7 +106,7 @@
       "title": "The Main Conjecture",
       "startLine": 44,
       "endLine": 58,
-      "summary": "Formal statement of Erdős Problem #172."
+      "summary": "Formal statement of Erd\u0151s Problem #172."
     },
     {
       "id": "positive",
@@ -138,10 +138,10 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #172, which asks whether any finite coloring of ℕ admits arbitrarily large sum-product monochromatic sets. The problem remains open despite significant partial progress: Moreira (2017) proved the |A| = 2 case, and Alweiss (2023) proved the full conjecture over rationals.",
+    "summary": "We formalize Erd\u0151s Problem #172, which asks whether any finite coloring of \u2115 admits arbitrarily large sum-product monochromatic sets. The problem remains open despite significant partial progress: Moreira (2017) proved the |A| = 2 case, and Alweiss (2023) proved the full conjecture over rationals.",
     "implications": "**Theoretical Significance**: This problem lies at the intersection of Ramsey theory and arithmetic combinatorics.\n\nA positive answer would reveal deep structural properties of how addition and multiplication interact under partitions. The fact that the rational case is solved suggests the integer case may also be true.",
     "openQuestions": [
-      "Does the full conjecture hold for ℕ?",
+      "Does the full conjecture hold for \u2115?",
       "What is the minimum number of colors needed to avoid infinite monochromatic sets?",
       "Can Moreira's result be extended to |A| = 3?",
       "Is there a quantitative version giving bounds on the smallest such A?"
@@ -162,19 +162,22 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-160",
-      "title": "Erdős Problem #160: Rainbow-Free Colorings of Arithmetic Progressions",
-      "relationship": "Both concern partition regularity and monochromatic structures under finite colorings of ℕ — #172 seeks monochromatic sum-product sets, #160 avoids rainbow APs"
+      "title": "Erd\u0151s Problem #160: Rainbow-Free Colorings of Arithmetic Progressions",
+      "relationship": "related",
+      "targetId": "erdos-160",
+      "description": "Both concern partition regularity and monochromatic structures under finite colorings of \u2115 \u2014 #172 seeks monochromatic sum-product sets, #160 avoids rainbow APs"
     },
     {
-      "id": "ramseys-theorem",
       "title": "Ramsey's Theorem",
-      "relationship": "Ramsey's theorem is the foundational result in partition regularity; Erdős #172 extends the Ramsey paradigm to combined additive and multiplicative structure"
+      "relationship": "related",
+      "targetId": "ramseys-theorem",
+      "description": "Ramsey's theorem is the foundational result in partition regularity; Erd\u0151s #172 extends the Ramsey paradigm to combined additive and multiplicative structure"
     },
     {
-      "id": "erdos-174",
-      "title": "Erdős Problem #174: Euclidean Ramsey Sets",
-      "relationship": "Both are Ramsey-type problems asking for unavoidable monochromatic configurations — #172 in arithmetic, #174 in geometry"
+      "title": "Erd\u0151s Problem #174: Euclidean Ramsey Sets",
+      "relationship": "related",
+      "targetId": "erdos-174",
+      "description": "Both are Ramsey-type problems asking for unavoidable monochromatic configurations \u2014 #172 in arithmetic, #174 in geometry"
     }
   ]
 }

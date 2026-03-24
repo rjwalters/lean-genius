@@ -1,10 +1,10 @@
 {
   "id": "erdos-576",
-  "title": "Erdős Problem #576: Turán Numbers for Hypercube Graphs",
+  "title": "Erd\u0151s Problem #576: Tur\u00e1n Numbers for Hypercube Graphs",
   "slug": "erdos-576",
-  "description": "Determine the behavior of ex(n; Q_k), the Turán number for the k-dimensional hypercube graph. This is one of the major open problems in extremal graph theory.",
+  "description": "Determine the behavior of ex(n; Q_k), the Tur\u00e1n number for the k-dimensional hypercube graph. This is one of the major open problems in extremal graph theory.",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/576",
     "date": "1970",
     "status": "axiomatized",
@@ -26,12 +26,12 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem originates from the foundational work of Erdős and Simonovits in 1970 on extremal problems for bipartite graphs. The hypercube graph Q_k is a fundamental structure in combinatorics, appearing in coding theory, Boolean function analysis, and theoretical computer science. Determining the Turán number ex(n; Q_k) asks: what is the maximum number of edges in an n-vertex graph that contains no copy of Q_k as a subgraph? While the Erdős-Stone theorem completely resolves this question for non-bipartite graphs, the bipartite case remains notoriously difficult. The hypercube Turán problem exemplifies this difficulty and has attracted attention from leading combinatorialists for over 50 years.",
-    "problemStatement": "Let Q_k be the k-dimensional hypercube graph (so that Q_k has 2^k vertices and k·2^(k-1) edges). Determine the behaviour of ex(n; Q_k), the maximum number of edges in an n-vertex Q_k-free graph.",
-    "text": "Determine the behavior of ex(n; Q_k), the Turán number for the k-dimensional hypercube graph. This is one of the major open problems in extremal graph theory.",
-    "proofStrategy": "The formalization establishes the key definitions (hypercube graph, Turán number) and states the known bounds as axioms. For the 3-dimensional hypercube Q_3, Erdős and Simonovits (1970) proved (1/2 + o(1))n^(3/2) ≤ ex(n; Q_3) ≪ n^(8/5). Recent work by Sudakov-Tomon (2022) and Janzer-Sudakov (2022) has improved upper bounds for general k. The problem asks whether ex(n; Q_3) ≍ n^(8/5), which remains open. The formalization also captures the broader context of bipartite Turán theory and the Kővári-Sós-Turán theorem.",
+    "historicalContext": "This problem originates from the foundational work of Erd\u0151s and Simonovits in 1970 on extremal problems for bipartite graphs. The hypercube graph Q_k is a fundamental structure in combinatorics, appearing in coding theory, Boolean function analysis, and theoretical computer science. Determining the Tur\u00e1n number ex(n; Q_k) asks: what is the maximum number of edges in an n-vertex graph that contains no copy of Q_k as a subgraph? While the Erd\u0151s-Stone theorem completely resolves this question for non-bipartite graphs, the bipartite case remains notoriously difficult. The hypercube Tur\u00e1n problem exemplifies this difficulty and has attracted attention from leading combinatorialists for over 50 years.",
+    "problemStatement": "Let Q_k be the k-dimensional hypercube graph (so that Q_k has 2^k vertices and k\u00b72^(k-1) edges). Determine the behaviour of ex(n; Q_k), the maximum number of edges in an n-vertex Q_k-free graph.",
+    "text": "Determine the behavior of ex(n; Q_k), the Tur\u00e1n number for the k-dimensional hypercube graph. This is one of the major open problems in extremal graph theory.",
+    "proofStrategy": "The formalization establishes the key definitions (hypercube graph, Tur\u00e1n number) and states the known bounds as axioms. For the 3-dimensional hypercube Q_3, Erd\u0151s and Simonovits (1970) proved (1/2 + o(1))n^(3/2) \u2264 ex(n; Q_3) \u226a n^(8/5). Recent work by Sudakov-Tomon (2022) and Janzer-Sudakov (2022) has improved upper bounds for general k. The problem asks whether ex(n; Q_3) \u224d n^(8/5), which remains open. The formalization also captures the broader context of bipartite Tur\u00e1n theory and the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem.",
     "keyInsights": [
-      "The hypercube Q_k is bipartite (vertices partition by parity of 1-bits), making Turán theory more difficult",
+      "The hypercube Q_k is bipartite (vertices partition by parity of 1-bits), making Tur\u00e1n theory more difficult",
       "Lower bound construction uses probabilistic methods and algebraic constructions",
       "Upper bounds rely on dependent random choice and regularity methods",
       "The exponent gap (3/2 to 8/5) for Q_3 has remained open for 50+ years",
@@ -39,7 +39,7 @@
     ],
     "prerequisites": [
       "Combinatorics and number theory",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -59,14 +59,14 @@
     },
     {
       "id": "turan-numbers",
-      "title": "Turán Numbers",
+      "title": "Tur\u00e1n Numbers",
       "summary": "IsSubgraphFree, turanNumber definitions for extremal graph theory",
       "startLine": 100,
       "endLine": 121
     },
     {
       "id": "erdos-simonovits-bounds",
-      "title": "Erdős-Simonovits Bounds (1970)",
+      "title": "Erd\u0151s-Simonovits Bounds (1970)",
       "summary": "erdos_simonovits_lower_bound, erdos_simonovits_upper_bound axioms",
       "startLine": 123,
       "endLine": 146
@@ -94,14 +94,14 @@
     },
     {
       "id": "bipartite-context",
-      "title": "Bipartite Turán Theory",
+      "title": "Bipartite Tur\u00e1n Theory",
       "summary": "hypercube_bipartite, bipartite_turan_subquadratic context",
       "startLine": 211,
       "endLine": 231
     },
     {
       "id": "kovari-sos-turan",
-      "title": "The Kővári-Sós-Turán Theorem",
+      "title": "The K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n Theorem",
       "summary": "kovari_sos_turan, hypercube_contains_complete_bipartite",
       "startLine": 233,
       "endLine": 248
@@ -115,10 +115,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #576 asks for the behavior of ex(n; Q_k), the Turán number for hypercube graphs. Despite 50+ years of work, even the case k=3 remains open: we know n^(3/2) ≪ ex(n; Q_3) ≪ n^(8/5) but the exact exponent is unknown. The problem exemplifies the difficulty of bipartite Turán theory.",
+    "summary": "Erd\u0151s Problem #576 asks for the behavior of ex(n; Q_k), the Tur\u00e1n number for hypercube graphs. Despite 50+ years of work, even the case k=3 remains open: we know n^(3/2) \u226a ex(n; Q_3) \u226a n^(8/5) but the exact exponent is unknown. The problem exemplifies the difficulty of bipartite Tur\u00e1n theory.",
     "implications": "Resolution would significantly advance our understanding of extremal graph theory for bipartite graphs. The hypercube's role in coding theory and computer science adds practical relevance.",
     "openQuestions": [
-      "Is ex(n; Q_3) ≍ n^(8/5)?",
+      "Is ex(n; Q_3) \u224d n^(8/5)?",
       "What is the correct exponent for ex(n; Q_k) for general k?",
       "Can dependent random choice methods close the gap for Q_3?",
       "Are there algebraic constructions that match the conjectured lower bound?"
@@ -143,5 +143,39 @@
     "axiomCount": 11,
     "theoremCount": 8,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1035",
+      "relationship": "related",
+      "description": "Share hypercube and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-666",
+      "relationship": "related",
+      "description": "Share hypercube and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Share bipartite-graphs and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-113",
+      "relationship": "related",
+      "description": "Share bipartite-graphs and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-127",
+      "relationship": "related",
+      "description": "Share bipartite-graphs and extremal graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1035",
+    "erdos-666",
+    "erdos-1080",
+    "erdos-113",
+    "erdos-127"
+  ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "erdos-442",
-  "title": "Erdős #442: LCM Sums Over Dense Subsets",
+  "title": "Erd\u0151s #442: LCM Sums Over Dense Subsets",
   "slug": "erdos-442",
-  "description": "If a subset A ⊆ ℕ has reciprocal sum growing faster than log log x, must the normalized LCM sum diverge? NO — Tao (2024) constructed a counterexample and proved the threshold is sharp.",
+  "description": "If a subset A \u2286 \u2115 has reciprocal sum growing faster than log log x, must the normalized LCM sum diverge? NO \u2014 Tao (2024) constructed a counterexample and proved the threshold is sharp.",
   "meta": {
     "author": "Terence Tao (2024)",
     "sourceUrl": "https://erdosproblems.com/442",
@@ -46,27 +46,27 @@
       }
     ],
     "originalContributions": [
-      "Formalization of iterated logarithms log⁺, log₂⁺, log₃⁺",
+      "Formalization of iterated logarithms log\u207a, log\u2082\u207a, log\u2083\u207a",
       "Definition of reciprocal sum and LCM sum over subsets",
       "The density condition: reciprocal sum >> log log x",
       "Tao's counterexample: bounded normalized LCM sum despite density",
-      "Tao's optimality theorem: sharp threshold at exp(√(log log x)·log log log x)",
-      "Verified LCM examples and identity lcm(a,b)·gcd(a,b) = a·b"
+      "Tao's optimality theorem: sharp threshold at exp(\u221a(log log x)\u00b7log log log x)",
+      "Verified LCM examples and identity lcm(a,b)\u00b7gcd(a,b) = a\u00b7b"
     ],
     "axiomCount": 5,
     "lineCount": 265,
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #442 appeared in Erdős and Graham's 'Old and New Problems and Results in Combinatorial Number Theory' (1980, p.88). The problem asks about the relationship between density of a set and the behavior of pairwise LCMs.\n\nThe question sat open for 44 years until Terence Tao resolved it in July 2024 with his paper 'Dense sets of natural numbers with unusually large least common multiples' (arXiv:2407.04226).\n\nTao not only answered the question negatively but also determined the exact threshold: sets growing faster than exp(C√(log log x)·log log log x) for any constant C DO have divergent normalized LCM sums, while at exactly this growth rate, the normalized LCM sum can remain bounded.",
-    "problemStatement": "Let A ⊆ ℕ be a set of natural numbers. Define:\n- **Reciprocal sum**: S(x) = Σ_{n∈A, n≤x} 1/n\n- **LCM sum**: L(x) = Σ_{a,b∈A, a<b≤x} 1/lcm(a,b)\n- **Normalized LCM sum**: L(x)/S(x)²\n\n**Erdős's Question**: If (1/log log x)·S(x) → ∞ (A is 'dense'), must L(x)/S(x)² → ∞?\n\n**Answer**: NO (Tao 2024)\n\n**Tao's Theorem**: There exists A ⊂ ℕ such that:\n- S(x) ~ exp((1/2+o(1))√(log log x)·log log log x)\n- Yet L(x)/S(x)² stays bounded!\n\nMoreover, this threshold is **sharp**: faster growth implies LCM divergence.",
-    "text": "If a subset A ⊆ ℕ has reciprocal sum growing faster than log log x, must the normalized LCM sum diverge? NO — Tao (2024) constructed a counterexample and proved the threshold is sharp.",
-    "proofStrategy": "The formalization captures the problem structure and Tao's results:\n\n1. **Iterated logarithms**: Define log⁺(x) = max(log x, 1) and iterate to get log₂⁺, log₃⁺.\n\n2. **Sums over subsets**: The reciprocal sum and LCM sum are defined using Finset.sum with classical decidability.\n\n3. **The density condition**: A set is 'dense' if (reciprocalSum A N)/(log₂⁺ N) → ∞.\n\n4. **Tao's counterexample**: An axiom asserting the existence of a set with bounded normalized LCM sum despite density.\n\n5. **Optimality**: An axiom stating that faster growth implies divergence.\n\n6. **LCM properties**: We prove lcm(a,b)·gcd(a,b) = a·b and verify small examples.\n\nThe deep results from Tao's paper are axiomatized since they require sophisticated techniques from analytic number theory.",
+    "historicalContext": "Erd\u0151s Problem #442 appeared in Erd\u0151s and Graham's 'Old and New Problems and Results in Combinatorial Number Theory' (1980, p.88). The problem asks about the relationship between density of a set and the behavior of pairwise LCMs.\n\nThe question sat open for 44 years until Terence Tao resolved it in July 2024 with his paper 'Dense sets of natural numbers with unusually large least common multiples' (arXiv:2407.04226).\n\nTao not only answered the question negatively but also determined the exact threshold: sets growing faster than exp(C\u221a(log log x)\u00b7log log log x) for any constant C DO have divergent normalized LCM sums, while at exactly this growth rate, the normalized LCM sum can remain bounded.",
+    "problemStatement": "Let A \u2286 \u2115 be a set of natural numbers. Define:\n- **Reciprocal sum**: S(x) = \u03a3_{n\u2208A, n\u2264x} 1/n\n- **LCM sum**: L(x) = \u03a3_{a,b\u2208A, a<b\u2264x} 1/lcm(a,b)\n- **Normalized LCM sum**: L(x)/S(x)\u00b2\n\n**Erd\u0151s's Question**: If (1/log log x)\u00b7S(x) \u2192 \u221e (A is 'dense'), must L(x)/S(x)\u00b2 \u2192 \u221e?\n\n**Answer**: NO (Tao 2024)\n\n**Tao's Theorem**: There exists A \u2282 \u2115 such that:\n- S(x) ~ exp((1/2+o(1))\u221a(log log x)\u00b7log log log x)\n- Yet L(x)/S(x)\u00b2 stays bounded!\n\nMoreover, this threshold is **sharp**: faster growth implies LCM divergence.",
+    "text": "If a subset A \u2286 \u2115 has reciprocal sum growing faster than log log x, must the normalized LCM sum diverge? NO \u2014 Tao (2024) constructed a counterexample and proved the threshold is sharp.",
+    "proofStrategy": "The formalization captures the problem structure and Tao's results:\n\n1. **Iterated logarithms**: Define log\u207a(x) = max(log x, 1) and iterate to get log\u2082\u207a, log\u2083\u207a.\n\n2. **Sums over subsets**: The reciprocal sum and LCM sum are defined using Finset.sum with classical decidability.\n\n3. **The density condition**: A set is 'dense' if (reciprocalSum A N)/(log\u2082\u207a N) \u2192 \u221e.\n\n4. **Tao's counterexample**: An axiom asserting the existence of a set with bounded normalized LCM sum despite density.\n\n5. **Optimality**: An axiom stating that faster growth implies divergence.\n\n6. **LCM properties**: We prove lcm(a,b)\u00b7gcd(a,b) = a\u00b7b and verify small examples.\n\nThe deep results from Tao's paper are axiomatized since they require sophisticated techniques from analytic number theory.",
     "keyInsights": [
       "**The surprise**: Intuitively, 'more elements' should mean 'more LCM interactions' leading to divergence. Tao shows structure can defeat density.",
-      "**Tao's growth rate**: exp((1/2+o(1))√(log log x)·log log log x) is precisely the threshold — faster implies divergence, at or below allows boundedness.",
+      "**Tao's growth rate**: exp((1/2+o(1))\u221a(log log x)\u00b7log log log x) is precisely the threshold \u2014 faster implies divergence, at or below allows boundedness.",
       "**Smooth numbers**: Tao's construction uses numbers with controlled prime factorizations. The careful structure makes lcm(a,b) large enough to prevent the normalized sum from growing.",
-      "**The LCM-GCD identity**: lcm(a,b)·gcd(a,b) = a·b connects LCM behavior to GCD structure. For coprime a,b, lcm = a·b (maximal), while shared factors reduce the LCM.",
+      "**The LCM-GCD identity**: lcm(a,b)\u00b7gcd(a,b) = a\u00b7b connects LCM behavior to GCD structure. For coprime a,b, lcm = a\u00b7b (maximal), while shared factors reduce the LCM.",
       "**Historical significance**: This resolves a 44-year-old problem and reveals a precise phase transition in the density-LCM relationship."
     ],
     "prerequisites": [
@@ -80,21 +80,21 @@
       "title": "Iterated Logarithms",
       "startLine": 42,
       "endLine": 62,
-      "summary": "Definitions of log⁺, log₂⁺, log₃⁺ with basic properties"
+      "summary": "Definitions of log\u207a, log\u2082\u207a, log\u2083\u207a with basic properties"
     },
     {
       "id": "reciprocal-sum",
       "title": "The Reciprocal Sum",
       "startLine": 64,
       "endLine": 83,
-      "summary": "Definition of Σ_{n∈A, n≤N} 1/n over subsets of ℕ"
+      "summary": "Definition of \u03a3_{n\u2208A, n\u2264N} 1/n over subsets of \u2115"
     },
     {
       "id": "lcm-sum",
       "title": "The LCM Sum",
       "startLine": 85,
       "endLine": 99,
-      "summary": "Definition of Σ_{a,b∈A, a<b≤N} 1/lcm(a,b) and normalized version"
+      "summary": "Definition of \u03a3_{a,b\u2208A, a<b\u2264N} 1/lcm(a,b) and normalized version"
     },
     {
       "id": "density",
@@ -108,7 +108,7 @@
       "title": "The Conjecture and Refutation",
       "startLine": 113,
       "endLine": 136,
-      "summary": "Erdős's question and Tao's negative answer"
+      "summary": "Erd\u0151s's question and Tao's negative answer"
     },
     {
       "id": "tao-construction",
@@ -136,7 +136,7 @@
       "title": "LCM Properties",
       "startLine": 187,
       "endLine": 206,
-      "summary": "The fundamental identity lcm(a,b)·gcd(a,b) = a·b"
+      "summary": "The fundamental identity lcm(a,b)\u00b7gcd(a,b) = a\u00b7b"
     },
     {
       "id": "examples",
@@ -154,7 +154,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #442, resolved by Terence Tao in 2024. The question asked whether 'density' (reciprocal sum >> log log x) implies LCM divergence. Tao showed the answer is NO and identified the exact threshold at exp(√(log log x)·log log log x).",
+    "summary": "This formalization captures Erd\u0151s Problem #442, resolved by Terence Tao in 2024. The question asked whether 'density' (reciprocal sum >> log log x) implies LCM divergence. Tao showed the answer is NO and identified the exact threshold at exp(\u221a(log log x)\u00b7log log log x).",
     "implications": "**Theoretical Significance**: The result reveals that the relationship between density and LCM behavior has a precise phase transition.\n\nIt demonstrates that algebraic structure (how elements share prime factors) can dominate mere cardinality. This has implications for understanding the distribution of multiplicative structures in dense sets.",
     "openQuestions": [
       "Can Tao's construction be made explicit for all x, rather than just asymptotically?",
@@ -188,5 +188,39 @@
     "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-440",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-441",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-458",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-487",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-269",
+    "erdos-440",
+    "erdos-441",
+    "erdos-458",
+    "erdos-487"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-896",
-  "title": "Erdős Problem #896: Unique Product Representations",
+  "title": "Erd\u0151s Problem #896: Unique Product Representations",
   "slug": "erdos-896",
-  "description": "Estimate max F(A,B) where F counts products ab with exactly one representation. Van Doorn: N²/log N ≤ max F ≪ N²/(log N)^δ.",
+  "description": "Estimate max F(A,B) where F counts products ab with exactly one representation. Van Doorn: N\u00b2/log N \u2264 max F \u226a N\u00b2/(log N)^\u03b4.",
   "meta": {
-    "author": "Erdős (1972)",
+    "author": "Erd\u0151s (1972)",
     "sourceUrl": "https://erdosproblems.com/896",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos896Problem.lean",
@@ -37,8 +37,8 @@
     "originalContributions": [
       "Defined reprCount and uniqueProductCount computationally",
       "Axiomatized maxUniqueProducts with existence witness",
-      "Stated Van Doorn's lower bound (1+o(1))N²/log N",
-      "Stated Van Doorn's upper bound with exponent δ ≈ 0.086",
+      "Stated Van Doorn's lower bound (1+o(1))N\u00b2/log N",
+      "Stated Van Doorn's upper bound with exponent \u03b4 \u2248 0.086",
       "Proved uniqueProductCount_le_product (trivial upper bound)",
       "Proved uniqueProductCount_empty_left",
       "Stated ExactOrderConjecture and van_doorn_implies_lower"
@@ -46,11 +46,11 @@
     "crossReferences": [
       {
         "targetProof": "erdos-490",
-        "relationship": "Problem #490 asks whether |A||B| ≪ N²/log N when all products ab are distinct. This is the 'all-unique' case of Problem #896: if every product has unique representation, then F(A,B) = |A·B| and the question reduces to bounding the product set. Szemerédi's 1976 solution confirms this, providing context for the #896 lower bound."
+        "relationship": "Problem #490 asks whether |A||B| \u226a N\u00b2/log N when all products ab are distinct. This is the 'all-unique' case of Problem #896: if every product has unique representation, then F(A,B) = |A\u00b7B| and the question reduces to bounding the product set. Szemer\u00e9di's 1976 solution confirms this, providing context for the #896 lower bound."
       },
       {
         "targetProof": "szemeredi-theorem",
-        "relationship": "Szemerédi's regularity lemma and combinatorial techniques underpin many results in multiplicative combinatorics. The counting arguments used in Van Doorn's bounds share structural similarities with regularity-based approaches to arithmetic structure in dense sets."
+        "relationship": "Szemer\u00e9di's regularity lemma and combinatorial techniques underpin many results in multiplicative combinatorics. The counting arguments used in Van Doorn's bounds share structural similarities with regularity-based approaches to arithmetic structure in dense sets."
       }
     ],
     "axiomCount": 4,
@@ -58,15 +58,15 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #896: Unique Product Representations**\n\nPaul Erdős posed this problem in 1972 [Er72, p. 81], asking: for $A, B \\subseteq \\{1, \\ldots, N\\}$, how many products $ab$ can have exactly one representation as such a product? The question lies at the intersection of multiplicative number theory and extremal combinatorics.\n\nThe problem is intimately connected to the **Erdős multiplication table problem** (Problem #490), which asks how many distinct products appear in the $N \\times N$ multiplication table. Kevin Ford (2008) resolved the multiplication table problem, showing the number of distinct products is $\\Theta(N^2/(\\log N)^\\delta (\\log\\log N)^{3/2})$ where $\\delta = 1 - (1 + \\log\\log 2)/\\log 2 \\approx 0.086$. The same exponent $\\delta$ appears in Problem #896's upper bound — this is no coincidence, as the distribution of the divisor function $d(n)$ governs both problems.\n\n**Van Doorn** established the best known bounds:\n- **Lower bound:** $(1 + o(1))N^2/\\log N \\leq \\max F(A,B)$. The construction uses sets $A, B$ of primes in $[N/2, N]$, where products of distinct primes automatically have unique factorization.\n- **Upper bound:** $\\max F(A,B) \\ll N^2/(\\log N)^\\delta \\cdot (\\log\\log N)^{3/2}$ with $\\delta \\approx 0.086$. This relies on estimates for the number of integers with exactly one divisor in a given range.\n\nThe gap between the exponents — $1$ in the lower bound versus $\\approx 0.086$ in the upper bound — remains the central open question. The **Exact Order Conjecture** asserts that the true answer is $\\Theta(N^2/\\log N)$, which would mean the prime-based construction is asymptotically optimal.\n\nThe problem also connects to Erdős and Szemerédi's work on sum-product phenomena: understanding when arithmetic operations on finite sets produce few collisions is a fundamental theme in additive combinatorics.",
+    "historicalContext": "**Erd\u0151s Problem #896: Unique Product Representations**\n\nPaul Erd\u0151s posed this problem in 1972 [Er72, p. 81], asking: for $A, B \\subseteq \\{1, \\ldots, N\\}$, how many products $ab$ can have exactly one representation as such a product? The question lies at the intersection of multiplicative number theory and extremal combinatorics.\n\nThe problem is intimately connected to the **Erd\u0151s multiplication table problem** (Problem #490), which asks how many distinct products appear in the $N \\times N$ multiplication table. Kevin Ford (2008) resolved the multiplication table problem, showing the number of distinct products is $\\Theta(N^2/(\\log N)^\\delta (\\log\\log N)^{3/2})$ where $\\delta = 1 - (1 + \\log\\log 2)/\\log 2 \\approx 0.086$. The same exponent $\\delta$ appears in Problem #896's upper bound \u2014 this is no coincidence, as the distribution of the divisor function $d(n)$ governs both problems.\n\n**Van Doorn** established the best known bounds:\n- **Lower bound:** $(1 + o(1))N^2/\\log N \\leq \\max F(A,B)$. The construction uses sets $A, B$ of primes in $[N/2, N]$, where products of distinct primes automatically have unique factorization.\n- **Upper bound:** $\\max F(A,B) \\ll N^2/(\\log N)^\\delta \\cdot (\\log\\log N)^{3/2}$ with $\\delta \\approx 0.086$. This relies on estimates for the number of integers with exactly one divisor in a given range.\n\nThe gap between the exponents \u2014 $1$ in the lower bound versus $\\approx 0.086$ in the upper bound \u2014 remains the central open question. The **Exact Order Conjecture** asserts that the true answer is $\\Theta(N^2/\\log N)$, which would mean the prime-based construction is asymptotically optimal.\n\nThe problem also connects to Erd\u0151s and Szemer\u00e9di's work on sum-product phenomena: understanding when arithmetic operations on finite sets produce few collisions is a fundamental theme in additive combinatorics.",
     "problemStatement": "**Problem Statement (Open)**\n\nFor $A, B \\subseteq \\{1, \\ldots, N\\}$, let $F(A,B)$ count the number of products $m = ab$ ($a \\in A$, $b \\in B$) that have exactly one such representation.\n\n**Questions:**\n1. Estimate $\\max_{A,B} F(A,B)$ as a function of $N$.\n2. Is the true order $\\Theta(N^2/\\log N)$?\n\n**Known:**\n- Van Doorn: $(1+o(1))N^2/\\log N \\leq \\max F \\ll N^2/(\\log N)^{0.086} (\\log\\log N)^{3/2}$\n- Conjecture: $\\max F(A,B) = \\Theta(N^2/\\log N)$",
-    "text": "Estimate max F(A,B) where F counts products ab with exactly one representation. Van Doorn: N²/log N ≤ max F ≪ N²/(log N)^δ.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds the problem from computational definitions to asymptotic bounds:\n\n1. **Computational Core (Lines 29–40):** `reprCount A B m` counts representations of $m$ as $ab$, and `uniqueProductCount A B` ($= F(A,B)$) counts products with exactly one representation. Both use `Finset.filter` and `Finset.image` for finite computation.\n\n2. **Problem Statement (Lines 47–60):** `maxUniqueProducts N` axiomatizes the maximum, with an existence witness. `ErdosProblem896` states the exact order conjecture: $\\Theta(N^2/\\log N)$.\n\n3. **Van Doorn's Bounds (Lines 75–90):** `VanDoornLowerBound` encodes $(1-\\varepsilon)N^2/\\log N$ as asymptotic lower bound. `VanDoornUpperBound` encodes $CN^2/(\\log N)^\\delta (\\log\\log N)^{3/2}$ with $\\delta = 1 - (1+\\log\\log 2)/\\log 2$.\n\n4. **Verified Properties (Lines 97–116):** Proves $F(A,B) \\leq |A| \\cdot |B|$ via `card_filter_le`, `card_image_le`, `card_product`. Also proves $F(\\emptyset, B) = 0$.\n\n5. **Conjecture and Summary (Lines 128–146):** States `ExactOrderConjecture` ($= \\Theta(N^2/\\log N)$) and the summary theorem combining both Van Doorn bounds.",
+    "text": "Estimate max F(A,B) where F counts products ab with exactly one representation. Van Doorn: N\u00b2/log N \u2264 max F \u226a N\u00b2/(log N)^\u03b4.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds the problem from computational definitions to asymptotic bounds:\n\n1. **Computational Core (Lines 29\u201340):** `reprCount A B m` counts representations of $m$ as $ab$, and `uniqueProductCount A B` ($= F(A,B)$) counts products with exactly one representation. Both use `Finset.filter` and `Finset.image` for finite computation.\n\n2. **Problem Statement (Lines 47\u201360):** `maxUniqueProducts N` axiomatizes the maximum, with an existence witness. `ErdosProblem896` states the exact order conjecture: $\\Theta(N^2/\\log N)$.\n\n3. **Van Doorn's Bounds (Lines 75\u201390):** `VanDoornLowerBound` encodes $(1-\\varepsilon)N^2/\\log N$ as asymptotic lower bound. `VanDoornUpperBound` encodes $CN^2/(\\log N)^\\delta (\\log\\log N)^{3/2}$ with $\\delta = 1 - (1+\\log\\log 2)/\\log 2$.\n\n4. **Verified Properties (Lines 97\u2013116):** Proves $F(A,B) \\leq |A| \\cdot |B|$ via `card_filter_le`, `card_image_le`, `card_product`. Also proves $F(\\emptyset, B) = 0$.\n\n5. **Conjecture and Summary (Lines 128\u2013146):** States `ExactOrderConjecture` ($= \\Theta(N^2/\\log N)$) and the summary theorem combining both Van Doorn bounds.",
     "keyInsights": [
       "**Divisor Function Connection:** The exponent $\\delta = 1 - (1 + \\log\\log 2)/\\log 2 \\approx 0.086$ appears in both the multiplication table problem and the unique product upper bound. It arises from the distribution of the number-of-divisors function $d(n)$: the proportion of $n \\leq x$ with $d(n) = k$ is controlled by $x/(\\log x)^\\delta$ when $k$ is fixed, by the Selberg-Sathe theorem.",
       "**Prime Construction for Lower Bound:** Van Doorn's lower bound uses $A = B = \\{\\text{primes in } [N/2, N]\\}$. By the prime number theorem, $|A| \\sim N/(2\\log N)$, so $|A|^2 \\sim N^2/(4(\\log N)^2)$. But products of distinct primes have unique factorization, and the product set has size $\\sim |A|^2/2$, giving $F \\sim N^2/(\\log N)^2 \\cdot \\log N = N^2/\\log N$ after accounting for the prime distribution.",
-      "**Logarithmic Gap:** The gap between exponent $1$ (lower bound) and $\\delta \\approx 0.086$ (upper bound) on $\\log N$ is enormous in practice: for $N = 10^6$, $N^2/\\log N \\approx 7.2 \\times 10^{10}$ while $N^2/(\\log N)^{0.086} \\approx 6.7 \\times 10^{11}$ — roughly a factor of $10$ apart.",
-      "**Trivial vs Optimal:** The trivial bound $F(A,B) \\leq N^2$ loses only a $\\log N$ factor compared to the conjectured optimum $\\Theta(N^2/\\log N)$. This small gap reflects the fact that most products of integers in $[N]$ already have few representations — the logarithmic saving comes from products with $\\geq 2$ representations.",
+      "**Logarithmic Gap:** The gap between exponent $1$ (lower bound) and $\\delta \\approx 0.086$ (upper bound) on $\\log N$ is enormous in practice: for $N = 10^6$, $N^2/\\log N \\approx 7.2 \\times 10^{10}$ while $N^2/(\\log N)^{0.086} \\approx 6.7 \\times 10^{11}$ \u2014 roughly a factor of $10$ apart.",
+      "**Trivial vs Optimal:** The trivial bound $F(A,B) \\leq N^2$ loses only a $\\log N$ factor compared to the conjectured optimum $\\Theta(N^2/\\log N)$. This small gap reflects the fact that most products of integers in $[N]$ already have few representations \u2014 the logarithmic saving comes from products with $\\geq 2$ representations.",
       "**Symmetry Reduction:** $F(A,B) = F(B,A)$ by commutativity of multiplication. This means the optimization can be restricted to the 'diagonal' case $A = B$ without loss of generality (up to constant factors), since the extremal sets in known constructions satisfy $A \\approx B$."
     ],
     "prerequisites": [
@@ -119,8 +119,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #896 asks for the maximum number of uniquely representable products from two subsets of $\\{1,\\ldots,N\\}$. Van Doorn established $(1+o(1))N^2/\\log N \\leq \\max F \\ll N^2/(\\log N)^{0.086} (\\log\\log N)^{3/2}$. The formalization has 0 sorry statements, with the trivial bound $F \\leq |A|\\cdot|B|$ and the empty set case verified, while Van Doorn's bounds and commutativity are axiomatized.",
-    "implications": "**Theoretical Significance**: **Broader Mathematical Connections**\n\n1. **Erdős Multiplication Table (Problem #490):** The same exponent $\\delta \\approx 0.086$ governs the count of distinct entries in the $N \\times N$ multiplication table (Ford 2008). Problem #896 asks the complementary question: among all products, how many have *unique* factorization?\n\n2. **Sum-Product Phenomena:** Erdős and Szemerédi's conjecture that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{2-\\varepsilon}$ reflects the tension between additive and multiplicative structure. Problem #896 probes the multiplicative side: when can products be 'injective'?\n\n**3. Analytic Number Theory:** The divisor function $d(n)$ and the Selberg-Sathe formula for the distribution of $d(n)$ are central tools. The exponent $\\delta$ is a fundamental constant in multiplicative number theory, appearing in the Erdős-Kac theorem and related results.\n\n4. **Extremal Combinatorics:** The problem is an instance of extremal function estimation: given a combinatorial constraint (unique representation), maximize the count. This paradigm appears throughout Turán-type problems and Ramsey theory.\n\n5. **Computational Aspects:** Determining $\\max F(A,B)$ for specific $N$ is computationally feasible for small $N$ and could provide evidence for or against the Exact Order Conjecture.",
+    "summary": "Erd\u0151s Problem #896 asks for the maximum number of uniquely representable products from two subsets of $\\{1,\\ldots,N\\}$. Van Doorn established $(1+o(1))N^2/\\log N \\leq \\max F \\ll N^2/(\\log N)^{0.086} (\\log\\log N)^{3/2}$. The formalization has 0 sorry statements, with the trivial bound $F \\leq |A|\\cdot|B|$ and the empty set case verified, while Van Doorn's bounds and commutativity are axiomatized.",
+    "implications": "**Theoretical Significance**: **Broader Mathematical Connections**\n\n1. **Erd\u0151s Multiplication Table (Problem #490):** The same exponent $\\delta \\approx 0.086$ governs the count of distinct entries in the $N \\times N$ multiplication table (Ford 2008). Problem #896 asks the complementary question: among all products, how many have *unique* factorization?\n\n2. **Sum-Product Phenomena:** Erd\u0151s and Szemer\u00e9di's conjecture that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{2-\\varepsilon}$ reflects the tension between additive and multiplicative structure. Problem #896 probes the multiplicative side: when can products be 'injective'?\n\n**3. Analytic Number Theory:** The divisor function $d(n)$ and the Selberg-Sathe formula for the distribution of $d(n)$ are central tools. The exponent $\\delta$ is a fundamental constant in multiplicative number theory, appearing in the Erd\u0151s-Kac theorem and related results.\n\n4. **Extremal Combinatorics:** The problem is an instance of extremal function estimation: given a combinatorial constraint (unique representation), maximize the count. This paradigm appears throughout Tur\u00e1n-type problems and Ramsey theory.\n\n5. **Computational Aspects:** Determining $\\max F(A,B)$ for specific $N$ is computationally feasible for small $N$ and could provide evidence for or against the Exact Order Conjecture.",
     "openQuestions": [
       "Is the true order $\\Theta(N^2/\\log N)$, making Van Doorn's lower bound tight? This is the central open question of Problem #896.",
       "Can the upper bound exponent $\\delta \\approx 0.086$ be improved toward $1$? Even reaching $\\delta = 0.5$ would be significant progress.",
@@ -141,5 +141,33 @@
     "axiomCount": 4,
     "theoremCount": 4,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-304",
+      "relationship": "related",
+      "description": "Share asymptotic-bounds and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-663",
+      "relationship": "related",
+      "description": "Share asymptotic-bounds and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-424",
+      "relationship": "related",
+      "description": "Share multiplicative-combinatorics and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-490",
+      "relationship": "related",
+      "description": "Share product-sets and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-304",
+    "erdos-663",
+    "erdos-424",
+    "erdos-490"
+  ]
 }

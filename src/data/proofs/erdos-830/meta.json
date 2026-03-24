@@ -1,10 +1,10 @@
 {
   "id": "erdos-830",
-  "title": "Erdős Problem #830: Amicable Pairs",
+  "title": "Erd\u0151s Problem #830: Amicable Pairs",
   "slug": "erdos-830",
   "description": "Are there infinitely many amicable pairs? Two numbers are amicable if each is the sum of the other's proper divisors, like 220 and 284.",
   "meta": {
-    "author": "Open Problem (Upper bounds by Erdős 1955, Pomerance 1981/2015)",
+    "author": "Open Problem (Upper bounds by Erd\u0151s 1955, Pomerance 1981/2015)",
     "sourceUrl": "https://erdosproblems.com/830",
     "date": "",
     "status": "axiomatized",
@@ -25,12 +25,12 @@
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.sigma",
-        "description": "Sum of divisors function σ_k(n)",
+        "description": "Sum of divisors function \u03c3_k(n)",
         "module": "Mathlib.NumberTheory.ArithmeticFunction"
       },
       {
         "theorem": "Filter.atTop",
-        "description": "The filter of neighborhoods of +∞",
+        "description": "The filter of neighborhoods of +\u221e",
         "module": "Mathlib.Order.Filter.AtTopBot"
       },
       {
@@ -42,14 +42,14 @@
     "originalContributions": [
       "Formal definition of amicable pairs using Mathlib's sigma function",
       "Machine-verified examples: (220,284), (1184,1210), (2620,2924)",
-      "Formal statements of Erdős and Pomerance upper bounds",
+      "Formal statements of Erd\u0151s and Pomerance upper bounds",
       "Counting function A(x) formalization"
     ],
     "axiomCount": 5,
     "lineCount": 158,
     "dateAdded": "2025-12-22",
     "prerequisites": [
-      "Divisor sum function σ(n) from Mathlib",
+      "Divisor sum function \u03c3(n) from Mathlib",
       "Amicable and perfect numbers",
       "Multiplicative functions",
       "Asymptotic density of number-theoretic sets"
@@ -57,26 +57,26 @@
     "assumptions": [
       "infinitely_many_amicable_pairs: There exist infinitely many amicable pairs (OPEN)",
       "amicable_lower_bound: A(x) > x^{1-o(1)} (OPEN)",
-      "erdos_amicable_bound: A(x) = o(x) (Erdős 1955)",
-      "pomerance_1981: A(x) ≤ x·exp(-(log x)^{1/3}) (Pomerance 1981)",
-      "pomerance_2015: A(x) ≤ x·exp(-(1/2+o(1))√(log x · log log x)) (Pomerance 2015)"
+      "erdos_amicable_bound: A(x) = o(x) (Erd\u0151s 1955)",
+      "pomerance_1981: A(x) \u2264 x\u00b7exp(-(log x)^{1/3}) (Pomerance 1981)",
+      "pomerance_2015: A(x) \u2264 x\u00b7exp(-(1/2+o(1))\u221a(log x \u00b7 log log x)) (Pomerance 2015)"
     ],
     "crossReferences": [
       {
         "targetId": "erdos-1052",
-        "relationship": "Unitary perfect numbers — both study special values of the divisor function σ. Perfect numbers satisfy σ(n) = 2n, while amicable pairs satisfy σ(a) = σ(b) = a+b."
+        "relationship": "Unitary perfect numbers \u2014 both study special values of the divisor function \u03c3. Perfect numbers satisfy \u03c3(n) = 2n, while amicable pairs satisfy \u03c3(a) = \u03c3(b) = a+b."
       },
       {
         "targetId": "erdos-1053",
-        "relationship": "Growth of k-perfect numbers — parallel question about the counting function for numbers satisfying σ(n) = kn, analogous to A(x) for amicable pairs."
+        "relationship": "Growth of k-perfect numbers \u2014 parallel question about the counting function for numbers satisfying \u03c3(n) = kn, analogous to A(x) for amicable pairs."
       },
       {
         "targetId": "erdos-1049",
-        "relationship": "Irrationality of divisor sums — explores analytic properties of the σ function, the same arithmetic function underlying amicable pairs."
+        "relationship": "Irrationality of divisor sums \u2014 explores analytic properties of the \u03c3 function, the same arithmetic function underlying amicable pairs."
       },
       {
         "targetId": "erdos-1060",
-        "relationship": "Counting solutions to k·σ(k) = n — inverse problem for the divisor function, complementary to asking when σ(a) = a+b."
+        "relationship": "Counting solutions to k\u00b7\u03c3(k) = n \u2014 inverse problem for the divisor function, complementary to asking when \u03c3(a) = a+b."
       }
     ],
     "relatedProofs": [
@@ -89,19 +89,19 @@
     ]
   },
   "overview": {
-    "historicalContext": "Amicable numbers have fascinated mathematicians since antiquity. The pair (220, 284) was known to the Pythagoreans and appears in Arabic and medieval European mathematical texts. The definition is elegant: two numbers are amicable if each equals the sum of the proper divisors (all divisors except the number itself) of the other.\n\nFor 220: proper divisors are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55, 110, which sum to 284.\nFor 284: proper divisors are 1, 2, 4, 71, 142, which sum to 220.\n\nWhile thousands of amicable pairs are now known (discovered computationally), whether infinitely many exist remains one of the oldest unsolved problems in number theory. Erdős established the first non-trivial upper bound A(x) = o(x) in 1955, and Carl Pomerance made major improvements in 1981 and 2015.",
-    "problemStatement": "Two natural numbers $a$ and $b$ are **amicable** if $\\sigma(a) = \\sigma(b) = a + b$, where $\\sigma(n)$ is the sum of all divisors of $n$.\n\n**Open Questions**:\n1. Are there infinitely many amicable pairs?\n2. If $A(x)$ counts amicable pairs with $1 \\leq a \\leq b \\leq x$, is $A(x) > x^{1-o(1)}$?\n\n**Known Upper Bounds** (SOLVED):\n- Erdős (1955): $A(x) = o(x)$\n- Pomerance (1981): $A(x) \\leq x \\cdot \\exp(-(\\log x)^{1/3})$\n- Pomerance (2015): $A(x) \\leq x \\cdot \\exp(-(\\frac{1}{2}+o(1))\\sqrt{\\log x \\cdot \\log\\log x})$",
+    "historicalContext": "Amicable numbers have fascinated mathematicians since antiquity. The pair (220, 284) was known to the Pythagoreans and appears in Arabic and medieval European mathematical texts. The definition is elegant: two numbers are amicable if each equals the sum of the proper divisors (all divisors except the number itself) of the other.\n\nFor 220: proper divisors are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55, 110, which sum to 284.\nFor 284: proper divisors are 1, 2, 4, 71, 142, which sum to 220.\n\nWhile thousands of amicable pairs are now known (discovered computationally), whether infinitely many exist remains one of the oldest unsolved problems in number theory. Erd\u0151s established the first non-trivial upper bound A(x) = o(x) in 1955, and Carl Pomerance made major improvements in 1981 and 2015.",
+    "problemStatement": "Two natural numbers $a$ and $b$ are **amicable** if $\\sigma(a) = \\sigma(b) = a + b$, where $\\sigma(n)$ is the sum of all divisors of $n$.\n\n**Open Questions**:\n1. Are there infinitely many amicable pairs?\n2. If $A(x)$ counts amicable pairs with $1 \\leq a \\leq b \\leq x$, is $A(x) > x^{1-o(1)}$?\n\n**Known Upper Bounds** (SOLVED):\n- Erd\u0151s (1955): $A(x) = o(x)$\n- Pomerance (1981): $A(x) \\leq x \\cdot \\exp(-(\\log x)^{1/3})$\n- Pomerance (2015): $A(x) \\leq x \\cdot \\exp(-(\\frac{1}{2}+o(1))\\sqrt{\\log x \\cdot \\log\\log x})$",
     "text": "Are there infinitely many amicable pairs? Two numbers are amicable if each is the sum of the other's proper divisors, like 220 and 284.",
-    "proofStrategy": "Since the main questions are open, we cannot prove them. Our formalization:\n\n1. **Defines amicable pairs** using Mathlib's `ArithmeticFunction.sigma` for the sum of divisors\n2. **Verifies concrete examples** (220,284), (1184,1210), (2620,2924) using `native_decide`\n3. **Defines the counting function** A(x) formally\n4. **States the open conjectures** as axioms\n5. **Records proven upper bounds** (Erdős 1955, Pomerance 1981, 2015) as axioms pending full formalization",
+    "proofStrategy": "Since the main questions are open, we cannot prove them. Our formalization:\n\n1. **Defines amicable pairs** using Mathlib's `ArithmeticFunction.sigma` for the sum of divisors\n2. **Verifies concrete examples** (220,284), (1184,1210), (2620,2924) using `native_decide`\n3. **Defines the counting function** A(x) formally\n4. **States the open conjectures** as axioms\n5. **Records proven upper bounds** (Erd\u0151s 1955, Pomerance 1981, 2015) as axioms pending full formalization",
     "keyInsights": [
-      "**Sum of Divisors**: σ(n) = Σ_{d|n} d. For amicable (a,b): σ(a) = σ(b) = a+b, which means the 'excess' of each (σ(n)-n) equals the other number.",
+      "**Sum of Divisors**: \u03c3(n) = \u03a3_{d|n} d. For amicable (a,b): \u03c3(a) = \u03c3(b) = a+b, which means the 'excess' of each (\u03c3(n)-n) equals the other number.",
       "**Ancient History**: The (220, 284) pair was known to Pythagoras (~500 BCE). The next pair (1184, 1210) wasn't found until 1866, by a 16-year-old Nicolo Paganini.",
-      "**Density Bounds**: Pomerance's bounds show amicable pairs are extremely rare—A(x) grows slower than x/exp(√(log x · log log x)).",
-      "**Computational Search**: Over 1.2 billion amicable pairs are known, but this doesn't prove infinitude—the pattern could theoretically stop.",
-      "**Connection to Perfect Numbers**: Amicable pairs generalize perfect numbers (σ(n) = 2n). While Euclid-Euler characterized even perfect numbers, the analogous classification for amicable pairs remains entirely open, and no structural pattern like the Mersenne prime connection has been found."
+      "**Density Bounds**: Pomerance's bounds show amicable pairs are extremely rare\u2014A(x) grows slower than x/exp(\u221a(log x \u00b7 log log x)).",
+      "**Computational Search**: Over 1.2 billion amicable pairs are known, but this doesn't prove infinitude\u2014the pattern could theoretically stop.",
+      "**Connection to Perfect Numbers**: Amicable pairs generalize perfect numbers (\u03c3(n) = 2n). While Euclid-Euler characterized even perfect numbers, the analogous classification for amicable pairs remains entirely open, and no structural pattern like the Mersenne prime connection has been found."
     ],
     "prerequisites": [
-      "Divisor sum function σ(n) from Mathlib",
+      "Divisor sum function \u03c3(n) from Mathlib",
       "Amicable and perfect numbers",
       "Multiplicative functions",
       "Asymptotic density of number-theoretic sets"
@@ -113,7 +113,7 @@
       "title": "Sum of Divisors Function",
       "startLine": 26,
       "endLine": 43,
-      "summary": "Defines σ(n) via Mathlib's ArithmeticFunction.sigma and the IsAmicable predicate: a and b are amicable iff σ(a) = σ(b) = a + b.",
+      "summary": "Defines \u03c3(n) via Mathlib's ArithmeticFunction.sigma and the IsAmicable predicate: a and b are amicable iff \u03c3(a) = \u03c3(b) = a + b.",
       "mathContext": "$\\sigma(n) = \\sum_{d | n} d$. IsAmicable$(a, b) :\\iff \\sigma(a) = a + b \\wedge \\sigma(b) = a + b$."
     },
     {
@@ -121,7 +121,7 @@
       "title": "Classic Example: 220 and 284",
       "startLine": 45,
       "endLine": 60,
-      "summary": "Machine-verified proof that (220, 284) is amicable via `native_decide`. Computes σ(220) = σ(284) = 504 = 220 + 284.",
+      "summary": "Machine-verified proof that (220, 284) is amicable via `native_decide`. Computes \u03c3(220) = \u03c3(284) = 504 = 220 + 284.",
       "mathContext": "$\\sigma(220) = 504 = 220 + 284$ and $\\sigma(284) = 504 = 220 + 284$. Verified by kernel computation."
     },
     {
@@ -129,7 +129,7 @@
       "title": "The Counting Function A(x)",
       "startLine": 62,
       "endLine": 72,
-      "summary": "Defines A(x) counting amicable pairs (a,b) with 1 ≤ a ≤ b ≤ x. Uses Finset filtering on the amicable predicate.",
+      "summary": "Defines A(x) counting amicable pairs (a,b) with 1 \u2264 a \u2264 b \u2264 x. Uses Finset filtering on the amicable predicate.",
       "mathContext": "$A(x) = |\\{(a,b) : 1 \\leq a \\leq b \\leq \\lfloor x \\rfloor,\\, \\text{IsAmicable}(a,b)\\}|$."
     },
     {
@@ -145,7 +145,7 @@
       "title": "Proven Upper Bounds",
       "startLine": 102,
       "endLine": 128,
-      "summary": "Erdős (1955): A(x) = o(x). Pomerance (1981): A(x) ≤ x·exp(-(log x)^{1/3}). Pomerance (2015): A(x) ≤ x·exp(-(1/2+o(1))√(log x · log log x)).",
+      "summary": "Erd\u0151s (1955): A(x) = o(x). Pomerance (1981): A(x) \u2264 x\u00b7exp(-(log x)^{1/3}). Pomerance (2015): A(x) \u2264 x\u00b7exp(-(1/2+o(1))\u221a(log x \u00b7 log log x)).",
       "mathContext": "Best known: $A(x) \\leq x \\cdot \\exp\\left(-\\left(\\frac{1}{2}+o(1)\\right)\\sqrt{\\log x \\cdot \\log\\log x}\\right)$ (Pomerance 2015)."
     },
     {
@@ -158,8 +158,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #830, one of the oldest unsolved problems in number theory: are there infinitely many amicable pairs? We define amicable pairs formally, verify several concrete examples, and state both the open conjectures and the proven upper bounds on the counting function A(x).",
-    "implications": "**Theoretical Significance**: Resolving this problem would have significant implications for understanding the structure of the divisor function.\n\nA proof of infinitude might reveal new patterns in how divisors interact across numbers. The Pomerance bounds suggest that if amicable pairs are infinite, they are astonishingly rare — sparser than primes, twin primes, or even Carmichael numbers — making any existence proof necessarily deep.",
+    "summary": "This formalization captures Erd\u0151s Problem #830, one of the oldest unsolved problems in number theory: are there infinitely many amicable pairs? We define amicable pairs formally, verify several concrete examples, and state both the open conjectures and the proven upper bounds on the counting function A(x).",
+    "implications": "**Theoretical Significance**: Resolving this problem would have significant implications for understanding the structure of the divisor function.\n\nA proof of infinitude might reveal new patterns in how divisors interact across numbers. The Pomerance bounds suggest that if amicable pairs are infinite, they are astonishingly rare \u2014 sparser than primes, twin primes, or even Carmichael numbers \u2014 making any existence proof necessarily deep.",
     "openQuestions": [
       "Are there infinitely many amicable pairs?",
       "Can the Pomerance upper bound be improved further?",
@@ -184,7 +184,7 @@
   },
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "On amicable numbers",
       "year": "1955",
       "venue": "Publicationes Mathematicae Debrecen, 4, pp. 108-111",
@@ -194,15 +194,49 @@
       "authors": "Pomerance, Carl",
       "title": "On the distribution of amicable numbers",
       "year": "1981",
-      "venue": "Journal für die reine und angewandte Mathematik, 293-294, pp. 217-222",
-      "note": "Improved bound to A(x) ≤ x·exp(-(log x)^{1/3})"
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik, 293-294, pp. 217-222",
+      "note": "Improved bound to A(x) \u2264 x\u00b7exp(-(log x)^{1/3})"
     },
     {
       "authors": "Pomerance, Carl",
       "title": "On the distribution of amicable numbers, II",
       "year": "2015",
-      "venue": "Journal für die reine und angewandte Mathematik, 325, pp. 183-188",
-      "note": "Current best bound: A(x) ≤ x·exp(-(1/2+o(1))√(log x · log log x))"
+      "venue": "Journal f\u00fcr die reine und angewandte Mathematik, 325, pp. 183-188",
+      "note": "Current best bound: A(x) \u2264 x\u00b7exp(-(1/2+o(1))\u221a(log x \u00b7 log log x))"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1099",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1100",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-204",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-1099",
+    "erdos-1100",
+    "erdos-144",
+    "erdos-204"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "id": "erdos-219",
-  "title": "Erdős Problem #219: Arbitrarily Long Arithmetic Progressions of Primes",
+  "title": "Erd\u0151s Problem #219: Arbitrarily Long Arithmetic Progressions of Primes",
   "slug": "erdos-219",
   "description": "Are there arbitrarily long arithmetic progressions of primes? Answer: YES (Green-Tao 2008).",
   "meta": {
@@ -59,7 +59,7 @@
     "keyInsights": [
       "**Arithmetic progression of primes**: A sequence p, p+d, p+2d, ..., p+(k-1)d where all terms are prime.",
       "**Green-Tao (2008)**: For every k, there exists an AP of k primes. This resolved a longstanding conjecture.",
-      "**Szemerédi's theorem connection**: Green-Tao builds on Szemerédi's theorem about APs in dense sets.",
+      "**Szemer\u00e9di's theorem connection**: Green-Tao builds on Szemer\u00e9di's theorem about APs in dense sets.",
       "**Current record**: k = 23 (as of 2019). Finding longer progressions is computationally intensive.",
       "**Open problem**: Are there arbitrarily long APs of CONSECUTIVE primes? The longest known has 10 terms."
     ],
@@ -113,7 +113,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #219, which asks whether there exist arbitrarily long arithmetic progressions of primes. The Green-Tao theorem (2008) proves the answer is YES. We axiomatize this deep result and verify concrete examples for k = 3 and k = 5.",
+    "summary": "We formalize Erd\u0151s Problem #219, which asks whether there exist arbitrarily long arithmetic progressions of primes. The Green-Tao theorem (2008) proves the answer is YES. We axiomatize this deep result and verify concrete examples for k = 3 and k = 5.",
     "implications": "**Theoretical Significance**: The Green-Tao theorem is a cornerstone of modern additive combinatorics.\n\nIt shows that primes, despite being 'sparse' (density 1/log n), still contain enough structure to guarantee arbitrarily long arithmetic progressions. This has inspired significant research in ergodic methods for number theory.",
     "openQuestions": [
       "Are there arbitrarily long APs of CONSECUTIVE primes?",
@@ -136,5 +136,39 @@
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Share prime-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Share prime-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-238",
+      "relationship": "related",
+      "description": "Share prime-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-382",
+      "relationship": "related",
+      "description": "Share prime-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-386",
+      "relationship": "related",
+      "description": "Share prime-numbers and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1065",
+    "erdos-1072",
+    "erdos-238",
+    "erdos-382",
+    "erdos-386"
+  ]
 }

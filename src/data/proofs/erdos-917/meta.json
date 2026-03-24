@@ -1,10 +1,10 @@
 {
   "id": "erdos-917",
-  "title": "Erdős Problem #917: Critical Graphs and Edge Density",
+  "title": "Erd\u0151s Problem #917: Critical Graphs and Edge Density",
   "slug": "erdos-917",
-  "description": "Let k ≥ 4 and f_k(n) be the maximum edges in a k-critical graph on n vertices. Is f_k(n) ≫_k n²? Is f_6(n) ~ n²/4? For k ≥ 6, is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n²? PARTIALLY SOLVED: Question 1 YES (Toft 1970). Question 3 FALSE for k ≢ 0 (mod 3) (Stiebitz 1987).",
+  "description": "Let k \u2265 4 and f_k(n) be the maximum edges in a k-critical graph on n vertices. Is f_k(n) \u226b_k n\u00b2? Is f_6(n) ~ n\u00b2/4? For k \u2265 6, is f_k(n) ~ (1/2)(1 - 1/\u230ak/3\u230b)n\u00b2? PARTIALLY SOLVED: Question 1 YES (Toft 1970). Question 3 FALSE for k \u2262 0 (mod 3) (Stiebitz 1987).",
   "meta": {
-    "author": "Dirac (1952), Erdős (1969), Toft (1970), Stiebitz (1987), Luo-Ma-Yang (2023)",
+    "author": "Dirac (1952), Erd\u0151s (1969), Toft (1970), Stiebitz (1987), Luo-Ma-Yang (2023)",
     "sourceUrl": "https://erdosproblems.com/917",
     "date": "1949",
     "status": "axiomatized",
@@ -48,11 +48,11 @@
       "edgeCount for SimpleGraph",
       "f axiom for maximum edges in k-critical graphs",
       "Question1, Question2, Question3 formal definitions",
-      "toft_1970 axiom: f_k(n) ≫_k n² for k ≥ 4",
+      "toft_1970 axiom: f_k(n) \u226b_k n\u00b2 for k \u2265 4",
       "question1_answered theorem",
       "dirac_construction axiom for k=6",
-      "erdos_construction axiom for k ≡ 0 (mod 3)",
-      "stiebitz_1987_disproof axiom for k ≢ 0 (mod 3)",
+      "erdos_construction axiom for k \u2261 0 (mod 3)",
+      "stiebitz_1987_disproof axiom for k \u2262 0 (mod 3)",
       "turan_upper and stiebitz_upper bound axioms",
       "luo_ma_yang_2023 improved upper bound",
       "erdos_917 summary theorem"
@@ -62,15 +62,15 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #917 concerns the maximum number of edges in k-critical graphs, where a graph is k-critical if its chromatic number is exactly k but removing any edge decreases the chromatic number. The central object is f_k(n), the maximum number of edges in a k-critical graph on n vertices. Erdős originally asked (1949) whether f_k(n) = o(n²), expecting that critical graphs could not be too dense.\n\nDirac (1952) surprised Erdős by constructing 6-critical graphs with approximately n²/4 edges, using two disjoint odd cycles with all cross edges. Erdős (1969) generalized this construction for k divisible by 3, and Toft (1970) settled the quadratic growth question completely: f_k(n) grows at least quadratically for all k ≥ 4. The natural next question was whether a precise asymptotic f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n² holds for all k ≥ 6.\n\nStiebitz (1987) disproved the asymptotic conjecture for k not divisible by 3, showing that the mod 3 structure of k fundamentally matters. He also improved the upper bound to f_k(n) < ex(n; K_{k-1}). Luo-Ma-Yang (2023) further tightened the upper bound. The problem remains partially open: the precise asymptotic for k divisible by 3 and the exact value for k = 6 are still unknown.",
+    "historicalContext": "Erd\u0151s Problem #917 concerns the maximum number of edges in k-critical graphs, where a graph is k-critical if its chromatic number is exactly k but removing any edge decreases the chromatic number. The central object is f_k(n), the maximum number of edges in a k-critical graph on n vertices. Erd\u0151s originally asked (1949) whether f_k(n) = o(n\u00b2), expecting that critical graphs could not be too dense.\n\nDirac (1952) surprised Erd\u0151s by constructing 6-critical graphs with approximately n\u00b2/4 edges, using two disjoint odd cycles with all cross edges. Erd\u0151s (1969) generalized this construction for k divisible by 3, and Toft (1970) settled the quadratic growth question completely: f_k(n) grows at least quadratically for all k \u2265 4. The natural next question was whether a precise asymptotic f_k(n) ~ (1/2)(1 - 1/\u230ak/3\u230b)n\u00b2 holds for all k \u2265 6.\n\nStiebitz (1987) disproved the asymptotic conjecture for k not divisible by 3, showing that the mod 3 structure of k fundamentally matters. He also improved the upper bound to f_k(n) < ex(n; K_{k-1}). Luo-Ma-Yang (2023) further tightened the upper bound. The problem remains partially open: the precise asymptotic for k divisible by 3 and the exact value for k = 6 are still unknown.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet $k \\geq 4$ and let $f_k(n)$ be the maximum number of edges in a $k$-critical graph on $n$ vertices.\n\n**Question 1:** Is $f_k(n) \\gg_k n^2$? (Does edge count grow quadratically?)\n**Answer: YES** (Toft 1970)\n\n**Question 2:** Is $f_6(n) \\sim n^2/4$?\n**Status: OPEN** (Lower bound established by Dirac, upper bound not proven)\n\n**Question 3:** For $k \\geq 6$, is $f_k(n) \\sim \\frac{1}{2}(1 - \\frac{1}{\\lfloor k/3 \\rfloor})n^2$?\n**Partially Answered:**\n- FALSE for $k \\not\\equiv 0 \\pmod{3}$ (Stiebitz 1987)\n- OPEN for $k \\equiv 0 \\pmod{3}$",
-    "text": "Let k ≥ 4 and f_k(n) be the maximum edges in a k-critical graph on n vertices. Is f_k(n) ≫_k n²? Is f_6(n) ~ n²/4? For k ≥ 6, is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n²? PARTIALLY SOLVED: Question 1 YES (Toft 1970). Question 3 FALSE for k ≢ 0 (mod 3) (Stiebitz 1987).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - chromaticNumber via Nat.find on Colorable\n   - IsKChromatic: chromatic number equals k\n   - IsKCritical: k-chromatic AND edge-critical\n   - edgeCount via edgeFinset.card\n\n2. **Central Function:**\n   - f k n: maximum edges in k-critical graph on n vertices\n\n3. **Three Questions:**\n   - Question1: ∃ c > 0, f_k(n) ≥ c·n²\n   - Question2: f_6(n)/n² → 1/4\n   - Question3: f_k(n)/n² → (1/2)(1 - 1/⌊k/3⌋)\n\n4. **Key Results:**\n   - toft_1970: Question1 is YES\n   - dirac_construction: f_6(4n+2) ≥ 4n² + 8n + 3\n   - stiebitz_1987_disproof: Question3 FALSE for k ≢ 0 (mod 3)\n   - luo_ma_yang_2023: improved upper bounds\n\n5. **Summary Theorem:**\n   - Combines all partial results into erdos_917_summary",
+    "text": "Let k \u2265 4 and f_k(n) be the maximum edges in a k-critical graph on n vertices. Is f_k(n) \u226b_k n\u00b2? Is f_6(n) ~ n\u00b2/4? For k \u2265 6, is f_k(n) ~ (1/2)(1 - 1/\u230ak/3\u230b)n\u00b2? PARTIALLY SOLVED: Question 1 YES (Toft 1970). Question 3 FALSE for k \u2262 0 (mod 3) (Stiebitz 1987).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - chromaticNumber via Nat.find on Colorable\n   - IsKChromatic: chromatic number equals k\n   - IsKCritical: k-chromatic AND edge-critical\n   - edgeCount via edgeFinset.card\n\n2. **Central Function:**\n   - f k n: maximum edges in k-critical graph on n vertices\n\n3. **Three Questions:**\n   - Question1: \u2203 c > 0, f_k(n) \u2265 c\u00b7n\u00b2\n   - Question2: f_6(n)/n\u00b2 \u2192 1/4\n   - Question3: f_k(n)/n\u00b2 \u2192 (1/2)(1 - 1/\u230ak/3\u230b)\n\n4. **Key Results:**\n   - toft_1970: Question1 is YES\n   - dirac_construction: f_6(4n+2) \u2265 4n\u00b2 + 8n + 3\n   - stiebitz_1987_disproof: Question3 FALSE for k \u2262 0 (mod 3)\n   - luo_ma_yang_2023: improved upper bounds\n\n5. **Summary Theorem:**\n   - Combines all partial results into erdos_917_summary",
     "keyInsights": [
-      "**Critical vs Chromatic:** k-critical graphs are the 'minimal' k-chromatic graphs—every edge is essential",
-      "**Quadratic Growth:** Toft's 1970 result shows f_k(n) grows like n², answering Question 1 affirmatively",
-      "**Dirac's Construction:** Two disjoint odd cycles C_{2n+1} with all cross edges gives a 6-critical graph with ~n²/4 edges",
-      "**Mod 3 Matters:** The asymptotic behavior depends on k mod 3; Stiebitz showed the conjectured formula fails for k ≢ 0 (mod 3)",
+      "**Critical vs Chromatic:** k-critical graphs are the 'minimal' k-chromatic graphs\u2014every edge is essential",
+      "**Quadratic Growth:** Toft's 1970 result shows f_k(n) grows like n\u00b2, answering Question 1 affirmatively",
+      "**Dirac's Construction:** Two disjoint odd cycles C_{2n+1} with all cross edges gives a 6-critical graph with ~n\u00b2/4 edges",
+      "**Mod 3 Matters:** The asymptotic behavior depends on k mod 3; Stiebitz showed the conjectured formula fails for k \u2262 0 (mod 3)",
       "**Upper Bounds:** Stiebitz proved f_k(n) < ex(n; K_{k-1}), improved by Luo-Ma-Yang (2023)"
     ],
     "prerequisites": [
@@ -130,12 +130,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #917 asks about the maximum edge density of k-critical graphs. Question 1 (quadratic growth) is answered YES by Toft (1970). Question 2 (f_6(n) ~ n²/4) remains OPEN. Question 3 (general asymptotic) is FALSE for k ≢ 0 (mod 3) by Stiebitz (1987) but remains open for k ≡ 0 (mod 3). The formalization captures all known results including the 2023 improved upper bounds by Luo-Ma-Yang.",
-    "implications": "**Theoretical Significance**: **Connections to Graph Theory**\n\n1. **Turán-Type Problems:** Upper bounds come from extremal graph theory (avoiding K_{k-1})\n\n2. **Critical Graph Structure:** Understanding which graphs are k-critical reveals fundamental chromatic structure\n\n**3. Extremal Combinatorics:** The interplay between local (edge removal) and global (chromatic number) properties\n\n4. **Dirac's Construction:** Shows that odd cycles joined completely produce critical graphs with high edge density\n\n5. **Arithmetic Dependence:** The k mod 3 phenomenon connects to the odd cycle structure in Dirac-type constructions.",
+    "summary": "Erd\u0151s Problem #917 asks about the maximum edge density of k-critical graphs. Question 1 (quadratic growth) is answered YES by Toft (1970). Question 2 (f_6(n) ~ n\u00b2/4) remains OPEN. Question 3 (general asymptotic) is FALSE for k \u2262 0 (mod 3) by Stiebitz (1987) but remains open for k \u2261 0 (mod 3). The formalization captures all known results including the 2023 improved upper bounds by Luo-Ma-Yang.",
+    "implications": "**Theoretical Significance**: **Connections to Graph Theory**\n\n1. **Tur\u00e1n-Type Problems:** Upper bounds come from extremal graph theory (avoiding K_{k-1})\n\n2. **Critical Graph Structure:** Understanding which graphs are k-critical reveals fundamental chromatic structure\n\n**3. Extremal Combinatorics:** The interplay between local (edge removal) and global (chromatic number) properties\n\n4. **Dirac's Construction:** Shows that odd cycles joined completely produce critical graphs with high edge density\n\n5. **Arithmetic Dependence:** The k mod 3 phenomenon connects to the odd cycle structure in Dirac-type constructions.",
     "openQuestions": [
-      "Is f_6(n) ~ n²/4? (Question 2)",
-      "For k ≡ 0 (mod 3), is f_k(n) ~ (1/2)(1 - 1/(k/3))n²?",
-      "Find the exact asymptotic for f_k(n) when k ≢ 0 (mod 3)",
+      "Is f_6(n) ~ n\u00b2/4? (Question 2)",
+      "For k \u2261 0 (mod 3), is f_k(n) ~ (1/2)(1 - 1/(k/3))n\u00b2?",
+      "Find the exact asymptotic for f_k(n) when k \u2262 0 (mod 3)",
       "Close the gap between current upper and lower bounds",
       "Characterize which graphs achieve f_k(n)"
     ]
@@ -156,5 +156,39 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Share graph-theoretic, chromatic, and turan-type themes"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Share graph-theoretic, critical-graphs, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-744",
+      "relationship": "related",
+      "description": "Share graph-theoretic, critical-graphs, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-944",
+      "relationship": "related",
+      "description": "Share graph-theoretic, critical-graphs, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Share graph-theoretic and turan-type themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-1032",
+    "erdos-744",
+    "erdos-944",
+    "erdos-1021"
+  ]
 }

@@ -2,9 +2,9 @@
   "id": "erdos-247",
   "title": "Transcendence of Lacunary Sums",
   "slug": "erdos-247",
-  "description": "A problem about the transcendence of infinite series with lacunary (rapidly growing) exponents. Erdős proved transcendence under strong growth conditions, but the general conjecture remains open.",
+  "description": "A problem about the transcendence of infinite series with lacunary (rapidly growing) exponents. Erd\u0151s proved transcendence under strong growth conditions, but the general conjecture remains open.",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/247",
     "date": "1975",
     "status": "axiomatized",
@@ -26,16 +26,16 @@
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem about transcendental numbers in the context of lacunary series - infinite sums where the terms become increasingly sparse. The study of transcendental numbers began with Liouville (1844) who constructed the first explicit examples. Hermite (1873) proved e is transcendental, and Lindemann (1882) proved π is transcendental. Erdős's problem asks about a family of numbers defined by their binary expansions: when n_k grows quickly, the number Σ 1/2^{n_k} has 1s at increasingly sparse positions in its binary expansion. In 1975, Erdős proved transcendence under the strong condition that n_k grows faster than any polynomial. The general conjecture (just faster-than-linear growth) remains open and was described by Erdős in 1988 as 'hopeless at present'.",
-    "problemStatement": "Let n₁ < n₂ < ⋯ be a strictly increasing sequence of positive integers such that lim sup n_k/k = ∞. Is the sum Σ_{k=1}^∞ 1/2^{n_k} necessarily transcendental? Erdős proved YES under the stronger condition that lim sup n_k/k^t = ∞ for ALL t ≥ 1 (superpolynomial growth). The general case remains open.",
-    "text": "A problem about the transcendence of infinite series with lacunary (rapidly growing) exponents. Erdős proved transcendence under strong growth conditions, but the general conjecture remains open.",
-    "proofStrategy": "The proof of Erdős's partial result uses Liouville-type approximation arguments. If α is algebraic of degree d, then for any rational p/q, we have |α - p/q| > c/q^d for some constant c > 0. This is because the minimal polynomial of α cannot be too small at rational points. For lacunary sums with superpolynomial growth, we can construct very good rational approximations by truncating the series - the tail is exponentially small. When growth is faster than any polynomial, these approximations are too good for any algebraic number, forcing transcendence.",
+    "historicalContext": "Erd\u0151s posed this problem about transcendental numbers in the context of lacunary series - infinite sums where the terms become increasingly sparse. The study of transcendental numbers began with Liouville (1844) who constructed the first explicit examples. Hermite (1873) proved e is transcendental, and Lindemann (1882) proved \u03c0 is transcendental. Erd\u0151s's problem asks about a family of numbers defined by their binary expansions: when n_k grows quickly, the number \u03a3 1/2^{n_k} has 1s at increasingly sparse positions in its binary expansion. In 1975, Erd\u0151s proved transcendence under the strong condition that n_k grows faster than any polynomial. The general conjecture (just faster-than-linear growth) remains open and was described by Erd\u0151s in 1988 as 'hopeless at present'.",
+    "problemStatement": "Let n\u2081 < n\u2082 < \u22ef be a strictly increasing sequence of positive integers such that lim sup n_k/k = \u221e. Is the sum \u03a3_{k=1}^\u221e 1/2^{n_k} necessarily transcendental? Erd\u0151s proved YES under the stronger condition that lim sup n_k/k^t = \u221e for ALL t \u2265 1 (superpolynomial growth). The general case remains open.",
+    "text": "A problem about the transcendence of infinite series with lacunary (rapidly growing) exponents. Erd\u0151s proved transcendence under strong growth conditions, but the general conjecture remains open.",
+    "proofStrategy": "The proof of Erd\u0151s's partial result uses Liouville-type approximation arguments. If \u03b1 is algebraic of degree d, then for any rational p/q, we have |\u03b1 - p/q| > c/q^d for some constant c > 0. This is because the minimal polynomial of \u03b1 cannot be too small at rational points. For lacunary sums with superpolynomial growth, we can construct very good rational approximations by truncating the series - the tail is exponentially small. When growth is faster than any polynomial, these approximations are too good for any algebraic number, forcing transcendence.",
     "keyInsights": [
-      "The sum $\\sum 1/2^{n_k}$ is a binary number with 1s at positions $n_k$ — its transcendence depends on how 'randomly' these 1s are distributed. If they are too regularly spaced, the number might be algebraic; if too sparse, it must be transcendental.",
+      "The sum $\\sum 1/2^{n_k}$ is a binary number with 1s at positions $n_k$ \u2014 its transcendence depends on how 'randomly' these 1s are distributed. If they are too regularly spaced, the number might be algebraic; if too sparse, it must be transcendental.",
       "Liouville's theorem: algebraic numbers of degree $d$ cannot be approximated by rationals better than $|\\alpha - p/q| > c/q^d$; the Liouville constant $\\sum 1/10^{k!}$ was the first explicit transcendental number, constructed precisely to violate this bound.",
       "Truncating the lacunary sum $\\sum_{k=1}^N 1/2^{n_k}$ gives a rational approximation $p/2^{n_N}$ with error $\\sum_{k=N+1}^\\infty 1/2^{n_k} \\leq 2/2^{n_{N+1}}$; superpolynomial growth makes this error smaller than any Liouville bound, forcing transcendence.",
-      "The gap between weak growth ($n_k/k \\to \\infty$) and strong growth ($n_k/k^t \\to \\infty$ for all $t$) remains unbridged — even quadratic growth $n_k = k^2$ is open. Erdős described the general case as 'hopeless at present' in 1988.",
-      "Connection to Mahler's method (1929): Mahler proved that certain 'Mahler functions' (power series satisfying functional equations like $f(x^d) = R(x, f(x))$) take transcendental values at algebraic arguments. The lacunary sum $\\sum x^{n_k}$ satisfies Mahler-type relations when $n_k = d^k$, connecting Erdős #247 to deep algebraic number theory."
+      "The gap between weak growth ($n_k/k \\to \\infty$) and strong growth ($n_k/k^t \\to \\infty$ for all $t$) remains unbridged \u2014 even quadratic growth $n_k = k^2$ is open. Erd\u0151s described the general case as 'hopeless at present' in 1988.",
+      "Connection to Mahler's method (1929): Mahler proved that certain 'Mahler functions' (power series satisfying functional equations like $f(x^d) = R(x, f(x))$) take transcendental values at algebraic arguments. The lacunary sum $\\sum x^{n_k}$ satisfies Mahler-type relations when $n_k = d^k$, connecting Erd\u0151s #247 to deep algebraic number theory."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -49,7 +49,7 @@
       "title": "The Lacunary Sum",
       "startLine": 36,
       "endLine": 38,
-      "summary": "Definition of the lacunary sum Σ 1/2^{n_k}"
+      "summary": "Definition of the lacunary sum \u03a3 1/2^{n_k}"
     },
     {
       "id": "growth-conditions",
@@ -63,11 +63,11 @@
       "title": "The Open Conjecture",
       "startLine": 54,
       "endLine": 62,
-      "summary": "Statement of Erdős Problem #247"
+      "summary": "Statement of Erd\u0151s Problem #247"
     },
     {
       "id": "erdos-theorem",
-      "title": "Erdős's Theorem (1975)",
+      "title": "Erd\u0151s's Theorem (1975)",
       "startLine": 66,
       "endLine": 79,
       "summary": "Transcendence under strong growth conditions"
@@ -84,7 +84,7 @@
       "title": "The Gap Between Conditions",
       "startLine": 161,
       "endLine": 207,
-      "summary": "The sequence k² has weak growth but NOT strong growth — the simplest open case of Erdős's conjecture"
+      "summary": "The sequence k\u00b2 has weak growth but NOT strong growth \u2014 the simplest open case of Erd\u0151s's conjecture"
     },
     {
       "id": "summary",
@@ -98,17 +98,17 @@
       "title": "Axiom-Free Factorial Transcendence via Liouville Numbers",
       "startLine": 225,
       "endLine": 506,
-      "summary": "Two independent axiom-free proofs that Σ 1/2^{k!} is transcendental: (A) via connection to liouvilleNumber 2, and (B) direct Liouville number proof with full rational approximation bounds"
+      "summary": "Two independent axiom-free proofs that \u03a3 1/2^{k!} is transcendental: (A) via connection to liouvilleNumber 2, and (B) direct Liouville number proof with full rational approximation bounds"
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #247 on the transcendence of lacunary sums. Erdős's 1975 theorem (axiomatized) establishes transcendence under superpolynomial growth. The growth rate lemmas (factorial and exponential dominate any polynomial) are fully proved. The general conjecture for just-faster-than-linear growth remains one of the tantalizing open problems in transcendental number theory.",
+    "summary": "This formalization captures Erd\u0151s Problem #247 on the transcendence of lacunary sums. Erd\u0151s's 1975 theorem (axiomatized) establishes transcendence under superpolynomial growth. The growth rate lemmas (factorial and exponential dominate any polynomial) are fully proved. The general conjecture for just-faster-than-linear growth remains one of the tantalizing open problems in transcendental number theory.",
     "implications": "If the full conjecture were proved, it would establish a clean characterization: any infinite binary number with 1s growing faster than linearly sparse must be transcendental. This would connect the arithmetic complexity (algebraic vs transcendental) to the combinatorial sparseness of the binary representation.",
     "openQuestions": [
-      "Is Σ 1/2^{k²} transcendental? (The simplest open case)",
-      "Can we at least prove Σ 1/2^{k²} is not a root of any quadratic polynomial?",
+      "Is \u03a3 1/2^{k\u00b2} transcendental? (The simplest open case)",
+      "Can we at least prove \u03a3 1/2^{k\u00b2} is not a root of any quadratic polynomial?",
       "What is the exact threshold: how slowly can n_k grow while still guaranteeing transcendence?",
-      "Does the base matter? Is the analogous result for Σ 1/3^{n_k} also true?"
+      "Does the base matter? Is the analogous result for \u03a3 1/3^{n_k} also true?"
     ]
   },
   "leanFile": {
@@ -128,5 +128,39 @@
     "axiomCount": 1,
     "theoremCount": 27,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Share analytic and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Share analytic and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Share analytic and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1161",
+      "relationship": "related",
+      "description": "Share analytic and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-260",
+      "relationship": "related",
+      "description": "Share analytic and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "e-transcendental",
+    "erdos-1138",
+    "erdos-1144",
+    "erdos-1161",
+    "erdos-260"
+  ]
 }

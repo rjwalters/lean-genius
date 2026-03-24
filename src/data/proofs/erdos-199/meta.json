@@ -1,8 +1,8 @@
 {
   "id": "erdos-199",
-  "title": "Erdős Problem #199: Arithmetic Progressions in Set Complements",
+  "title": "Erd\u0151s Problem #199: Arithmetic Progressions in Set Complements",
   "slug": "erdos-199",
-  "description": "If A ⊂ ℝ contains no 3-term arithmetic progression, must ℝ \\ A contain an infinite arithmetic progression? NO - disproved by Baumgartner (1975) using the axiom of choice.",
+  "description": "If A \u2282 \u211d contains no 3-term arithmetic progression, must \u211d \\ A contain an infinite arithmetic progression? NO - disproved by Baumgartner (1975) using the axiom of choice.",
   "meta": {
     "author": "Baumgartner, J.E. (1975 disproof)",
     "sourceUrl": "https://erdosproblems.com/199",
@@ -29,7 +29,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Set.compl",
-        "description": "Set complement notation Aᶜ"
+        "description": "Set complement notation A\u1d9c"
       },
       {
         "theorem": "Set.univ",
@@ -56,14 +56,14 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in the 1970s, asking whether avoiding 3-term arithmetic progressions forces the complement to contain infinite progressions. The question connects to Ramsey theory and van der Waerden's theorem, which guarantees arbitrarily long APs in finite colorings of ℕ.\n\nBaumgartner (1975) provided a surprising negative answer using the axiom of choice. His construction uses a Hamel basis for ℝ over ℚ to partition the reals into two sets, neither containing an infinite AP.\n\nThis result highlights the fundamental difference between finite and infinite combinatorics, and the essential role of the axiom of choice in such constructions.",
+    "historicalContext": "Erd\u0151s posed this problem in the 1970s, asking whether avoiding 3-term arithmetic progressions forces the complement to contain infinite progressions. The question connects to Ramsey theory and van der Waerden's theorem, which guarantees arbitrarily long APs in finite colorings of \u2115.\n\nBaumgartner (1975) provided a surprising negative answer using the axiom of choice. His construction uses a Hamel basis for \u211d over \u211a to partition the reals into two sets, neither containing an infinite AP.\n\nThis result highlights the fundamental difference between finite and infinite combinatorics, and the essential role of the axiom of choice in such constructions.",
     "problemStatement": "If $A \\subset \\mathbb{R}$ does not contain a 3-term arithmetic progression, must $\\mathbb{R} \\setminus A$ contain an infinite arithmetic progression?\n\n**Answer: NO**\n\nBaumgartner showed this is false using an axiom-of-choice construction.",
-    "text": "If A ⊂ ℝ contains no 3-term arithmetic progression, must ℝ \\ A contain an infinite arithmetic progression? NO - disproved by Baumgartner (1975) using the axiom of choice.",
-    "proofStrategy": "The formalization axiomatizes Baumgartner's result since the construction requires:\n1. A Hamel basis for ℝ over ℚ (non-constructive via AC)\n2. A careful partition using the algebraic structure\n\nWe define the key predicates (has3AP, is3APFree, containsInfiniteAP), state Erdős's conjecture formally, and prove it false via the axiomatized counterexample.",
+    "text": "If A \u2282 \u211d contains no 3-term arithmetic progression, must \u211d \\ A contain an infinite arithmetic progression? NO - disproved by Baumgartner (1975) using the axiom of choice.",
+    "proofStrategy": "The formalization axiomatizes Baumgartner's result since the construction requires:\n1. A Hamel basis for \u211d over \u211a (non-constructive via AC)\n2. A careful partition using the algebraic structure\n\nWe define the key predicates (has3AP, is3APFree, containsInfiniteAP), state Erd\u0151s's conjecture formally, and prove it false via the axiomatized counterexample.",
     "keyInsights": [
       "**Axiom of Choice Essential**: Baumgartner's construction uses a Hamel basis, requiring AC",
-      "**Partition Both Ways**: ℝ splits into two sets, NEITHER having an infinite AP",
-      "**Contrast with van der Waerden**: VdW gives long APs in ℕ colorings, but infinite APs are different",
+      "**Partition Both Ways**: \u211d splits into two sets, NEITHER having an infinite AP",
+      "**Contrast with van der Waerden**: VdW gives long APs in \u2115 colorings, but infinite APs are different",
       "**ZF Question Open**: Without AC, the answer might be different",
       "**Non-constructive**: The counterexample cannot be explicitly described"
     ],
@@ -82,7 +82,7 @@
     },
     {
       "id": "conjecture",
-      "title": "Erdős's Conjecture",
+      "title": "Erd\u0151s's Conjecture",
       "startLine": 56,
       "endLine": 64,
       "summary": "Formal statement of the original question"
@@ -99,7 +99,7 @@
       "title": "Main Result",
       "startLine": 85,
       "endLine": 103,
-      "summary": "Proof that Erdős's conjecture is false"
+      "summary": "Proof that Erd\u0151s's conjecture is false"
     },
     {
       "id": "related-results",
@@ -124,7 +124,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #199 asked whether avoiding 3-term APs forces infinite APs in the complement. Baumgartner (1975) showed the answer is NO, using an axiom-of-choice construction based on a Hamel basis for ℝ over ℚ.",
+    "summary": "Erd\u0151s Problem #199 asked whether avoiding 3-term APs forces infinite APs in the complement. Baumgartner (1975) showed the answer is NO, using an axiom-of-choice construction based on a Hamel basis for \u211d over \u211a.",
     "implications": "**Theoretical Significance**: This result demonstrates:\n1. The gap between finite and infinite Ramsey theory\n2.\n\nThe essential role of the axiom of choice in combinatorics\n3. Non-constructive objects can have surprising combinatorial properties.",
     "openQuestions": [
       "What is the answer in ZF without the axiom of choice?",
@@ -147,5 +147,39 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-139",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-177",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-194",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-138",
+    "erdos-139",
+    "erdos-176",
+    "erdos-177",
+    "erdos-194"
+  ]
 }

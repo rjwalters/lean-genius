@@ -1,10 +1,10 @@
 {
   "id": "erdos-814",
-  "title": "Erdős Problem #814: Dense Graphs Contain Smaller Min-Degree-k Subgraphs",
+  "title": "Erd\u0151s Problem #814: Dense Graphs Contain Smaller Min-Degree-k Subgraphs",
   "slug": "erdos-814",
-  "description": "For k ≥ 2, does every dense graph contain a small induced subgraph with minimum degree k? YES, proved by Sauermann (2019).",
+  "description": "For k \u2265 2, does every dense graph contain a small induced subgraph with minimum degree k? YES, proved by Sauermann (2019).",
   "meta": {
-    "author": "Sauermann (2019 proof), Erdős-Faudree-Rousseau-Schelp (1990 conjecture)",
+    "author": "Sauermann (2019 proof), Erd\u0151s-Faudree-Rousseau-Schelp (1990 conjecture)",
     "sourceUrl": "https://erdosproblems.com/814",
     "date": "2019",
     "status": "axiomatized",
@@ -49,8 +49,8 @@
     "originalContributions": [
       "edgeThreshold definition: the critical edge count (k-1)(n-k+2) + C(k-2,2) + 1",
       "minDegree definition: minimum degree over all vertices",
-      "sauermann_constant axiom: existence of cₖ ≫ 1/k³",
-      "efrs_original_bound axiom: original 1990 bound with √n savings",
+      "sauermann_constant axiom: existence of c\u2096 \u226b 1/k\u00b3",
+      "efrs_original_bound axiom: original 1990 bound with \u221an savings",
       "mns_bound axiom: 2017 improvement with n/log(n) savings",
       "sauermann_theorem axiom: full 2019 resolution",
       "erdos_814 theorem: main result restated",
@@ -65,15 +65,15 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #814: Minimum Degree Subgraphs**\n\nThis problem concerns a fundamental question in extremal graph theory: given a dense graph, can we always find a small induced subgraph with high minimum degree?\n\n**Key History:**\n- Erdős and Hajnal [Er91]: Studied the case k=3 as a standalone problem\n- Erdős, Faudree, Rousseau, Schelp (1990): Formulated the general conjecture and proved the first quantitative bound of n - cₖ√n vertices\n- Mousset, Noever, Skorić (2017): Improved to n - cₖ·n/log(n) vertices\n- Sauermann (2019): Fully resolved the conjecture with cₖ ≫ 1/k³\n\n**Mathematical Setting:**\nThe edge threshold (k-1)(n-k+2) + C(k-2,2) + 1 is precisely chosen. Graphs with fewer edges can be constructed to avoid the desired subgraph, showing the bound is tight. The conjecture asks whether exceeding this threshold by even one edge forces a small minimum-degree-k subgraph.",
+    "historicalContext": "**Erd\u0151s Problem #814: Minimum Degree Subgraphs**\n\nThis problem concerns a fundamental question in extremal graph theory: given a dense graph, can we always find a small induced subgraph with high minimum degree?\n\n**Key History:**\n- Erd\u0151s and Hajnal [Er91]: Studied the case k=3 as a standalone problem\n- Erd\u0151s, Faudree, Rousseau, Schelp (1990): Formulated the general conjecture and proved the first quantitative bound of n - c\u2096\u221an vertices\n- Mousset, Noever, Skori\u0107 (2017): Improved to n - c\u2096\u00b7n/log(n) vertices\n- Sauermann (2019): Fully resolved the conjecture with c\u2096 \u226b 1/k\u00b3\n\n**Mathematical Setting:**\nThe edge threshold (k-1)(n-k+2) + C(k-2,2) + 1 is precisely chosen. Graphs with fewer edges can be constructed to avoid the desired subgraph, showing the bound is tight. The conjecture asks whether exceeding this threshold by even one edge forces a small minimum-degree-k subgraph.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet $k \\geq 2$ and $G$ be a graph with $n \\geq k-1$ vertices and\n$$(k-1)(n-k+2) + \\binom{k-2}{2} + 1$$\nedges. Does there exist some $c_k > 0$ such that $G$ must contain an induced subgraph on at most $(1-c_k)n$ vertices with minimum degree at least $k$?\n\n**Answer: YES**\n\nSauermann (2019) proved the conjecture with $c_k \\gg 1/k^3$. This means for any $k$, there exists a constant $c_k$ of order at least $1/k^3$ such that every sufficiently dense graph contains a proper induced subgraph with minimum degree $k$.",
-    "text": "For k ≥ 2, does every dense graph contain a small induced subgraph with minimum degree k? YES, proved by Sauermann (2019).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Threshold:** Define the critical edge count using binomial coefficients from Mathlib\n\n2. **Key Axioms:**\n   - sauermann_constant: Existence of cₖ with the right asymptotic behavior\n   - sauermann_theorem: The main result about induced subgraphs\n   - Historical bounds: efrs_original_bound and mns_bound\n\n3. **Main Theorem:** erdos_814 states that for every k ≥ 2, the desired constant exists\n\n4. **Special Cases:** Explicit analysis of k=2 and k=3 cases\n\n5. **Auxiliary Results:** Handshaking lemma and degree averaging arguments",
+    "text": "For k \u2265 2, does every dense graph contain a small induced subgraph with minimum degree k? YES, proved by Sauermann (2019).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Threshold:** Define the critical edge count using binomial coefficients from Mathlib\n\n2. **Key Axioms:**\n   - sauermann_constant: Existence of c\u2096 with the right asymptotic behavior\n   - sauermann_theorem: The main result about induced subgraphs\n   - Historical bounds: efrs_original_bound and mns_bound\n\n3. **Main Theorem:** erdos_814 states that for every k \u2265 2, the desired constant exists\n\n4. **Special Cases:** Explicit analysis of k=2 and k=3 cases\n\n5. **Auxiliary Results:** Handshaking lemma and degree averaging arguments",
     "keyInsights": [
       "**Edge Threshold Significance:** The formula (k-1)(n-k+2) + C(k-2,2) + 1 is tight - graphs with one fewer edge can avoid the conclusion",
-      "**Progressive Improvement:** The savings went from √n (1990) to n/log(n) (2017) to cn (2019)",
-      "**Constant Bounds:** Sauermann showed cₖ ≫ 1/k³, meaning the subgraph can be a constant fraction smaller",
-      "**k=3 Origin:** The case k=3 (minimum degree 3 subgraphs) was the original Erdős-Hajnal problem",
+      "**Progressive Improvement:** The savings went from \u221an (1990) to n/log(n) (2017) to cn (2019)",
+      "**Constant Bounds:** Sauermann showed c\u2096 \u226b 1/k\u00b3, meaning the subgraph can be a constant fraction smaller",
+      "**k=3 Origin:** The case k=3 (minimum degree 3 subgraphs) was the original Erd\u0151s-Hajnal problem",
       "**Extremal Constructions:** The tightness comes from explicit graph constructions that barely avoid the property"
     ],
     "prerequisites": [
@@ -112,7 +112,7 @@
     },
     {
       "id": "erdos-hajnal",
-      "title": "Erdős-Hajnal k=3 Case",
+      "title": "Erd\u0151s-Hajnal k=3 Case",
       "summary": "The original case with k=3 that started the investigation",
       "startLine": 206,
       "endLine": 239
@@ -133,10 +133,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #814 asked whether dense graphs must contain small induced subgraphs with high minimum degree. The answer is YES, fully proved by Lisa Sauermann in 2019. For any k ≥ 2, there exists cₖ > 0 (with cₖ ≫ 1/k³) such that any graph exceeding the edge threshold contains an induced subgraph on at most (1-cₖ)n vertices with minimum degree k.",
-    "implications": "**Theoretical Significance**: **Implications for Extremal Graph Theory**\n\n1. **Density vs Structure:** Sufficiently dense graphs necessarily contain structured induced subgraphs\n\n**2. Tight Bounds:** The edge threshold is optimal - one fewer edge allows counterexamples\n\n3. **Quantitative Extremal Theory:** The progression from √n to n/log(n) to cn savings shows refinement of probabilistic and algebraic methods\n\n4. **Connections to Ramsey Theory:** Related to questions about guaranteed substructures in large graphs.",
+    "summary": "Erd\u0151s Problem #814 asked whether dense graphs must contain small induced subgraphs with high minimum degree. The answer is YES, fully proved by Lisa Sauermann in 2019. For any k \u2265 2, there exists c\u2096 > 0 (with c\u2096 \u226b 1/k\u00b3) such that any graph exceeding the edge threshold contains an induced subgraph on at most (1-c\u2096)n vertices with minimum degree k.",
+    "implications": "**Theoretical Significance**: **Implications for Extremal Graph Theory**\n\n1. **Density vs Structure:** Sufficiently dense graphs necessarily contain structured induced subgraphs\n\n**2. Tight Bounds:** The edge threshold is optimal - one fewer edge allows counterexamples\n\n3. **Quantitative Extremal Theory:** The progression from \u221an to n/log(n) to cn savings shows refinement of probabilistic and algebraic methods\n\n4. **Connections to Ramsey Theory:** Related to questions about guaranteed substructures in large graphs.",
     "openQuestions": [
-      "Optimal value of cₖ for each specific k",
+      "Optimal value of c\u2096 for each specific k",
       "Extensions to hypergraphs or directed graphs",
       "Algorithmic aspects: efficiently finding the subgraph",
       "Generalizations with other degree constraints",
@@ -162,5 +162,39 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, extremal-combinatorial, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, extremal-combinatorial, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-914",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, minimum-degree, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1036",
+      "relationship": "related",
+      "description": "Share induced-subgraphs and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "Share induced-subgraphs and graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-565",
+    "erdos-88",
+    "erdos-914",
+    "erdos-1036",
+    "erdos-620"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-382",
-  "title": "Erdős Problem #382: Prime Powers in Factorial Products",
+  "title": "Erd\u0151s Problem #382: Prime Powers in Factorial Products",
   "slug": "erdos-382",
-  "description": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent ≥ 2, is v−u = v^o(1)? Can v−u be arbitrarily large? Ramachandra showed v−u ≤ v^{1/2+o(1)}. OPEN.",
+  "description": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent \u2265 2, is v\u2212u = v^o(1)? Can v\u2212u be arbitrarily large? Ramachandra showed v\u2212u \u2264 v^{1/2+o(1)}. OPEN.",
   "meta": {
-    "author": "Erdős-Graham (1980 problem), Ramachandra (partial result)",
+    "author": "Erd\u0151s-Graham (1980 problem), Ramachandra (partial result)",
     "sourceUrl": "https://erdosproblems.com/382",
     "date": "1980",
     "status": "axiomatized",
@@ -47,7 +47,7 @@
       },
       {
         "theorem": "Real.log",
-        "description": "Real logarithm for Cramér's conjecture statement",
+        "description": "Real logarithm for Cram\u00e9r's conjecture statement",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       }
     ],
@@ -55,10 +55,10 @@
       "prodInterval definition: product of integers in [u,v] via Finset.Icc",
       "largestPrimeDivisor definition: largest prime in factorization",
       "exponent / exponentInProduct: p-adic valuation wrappers",
-      "satisfiesCondition: Erdős-Graham condition formalized",
-      "question1: subpolynomial growth conjecture (v−u = v^o(1))",
+      "satisfiesCondition: Erd\u0151s-Graham condition formalized",
+      "question1: subpolynomial growth conjecture (v\u2212u = v^o(1))",
       "question2: unbounded length conjecture",
-      "ramachandra_bound axiom: v−u ≤ v^{1/2+ε}",
+      "ramachandra_bound axiom: v\u2212u \u2264 v^{1/2+\u03b5}",
       "cramersConjecture definition and cramer_implies_q1 axiom",
       "noPrimeLargerThanSqrt: equivalent prime-free interval formulation",
       "erdos_382_summary: combined known results theorem",
@@ -69,16 +69,16 @@
     "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #382 originates from the 1980 monograph by Erdős and Graham [ErGr80], which systematically cataloged open problems in combinatorial number theory. The problem studies the factorization structure of products of consecutive integers u·(u+1)·...·v, specifically asking about the exponent of the largest prime divisor.\n\nThe key constraint is that the largest prime p dividing the product must appear with exponent ≥ 2. Since p² must divide some integer in [u,v], this forces p ≤ √v, meaning the interval [u,v] is 'prime-free' above √v. The problem asks two questions: whether v−u grows subpolynomially in v, and whether v−u can be arbitrarily large.\n\nRamachandra established the best known upper bound v−u ≤ v^{1/2+o(1)}, using techniques from the distribution of primes in short intervals. Cramér's famous conjecture on prime gaps would imply the stronger result that v−u = v^o(1). Cambie's heuristic analysis suggests that v−u can indeed be arbitrarily large, but both questions remain open.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $u \\leq v$ be positive integers such that the largest prime dividing the product $\\prod_{m=u}^{v} m$ appears with exponent at least 2.\n\n**Question 1:** Is $v - u = v^{o(1)}$? That is, for every $\\varepsilon > 0$ and sufficiently large $v$, is $v - u < v^\\varepsilon$?\n\n**Question 2:** Can $v - u$ be arbitrarily large?\n\n**Known:** Ramachandra: $v - u \\leq v^{1/2 + o(1)}$. Under Cramér's conjecture, Question 1 has answer YES.",
-    "text": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent ≥ 2, is v−u = v^o(1)? Can v−u be arbitrarily large? Ramachandra showed v−u ≤ v^{1/2+o(1)}. OPEN.",
-    "proofStrategy": "The formalization defines the product of an interval via Finset.Icc, the largest prime divisor via primeFactorsList maximum, and the p-adic valuation via Nat.factorization. The Erdős-Graham condition (largest prime has exponent ≥ 2) is captured by satisfiesCondition. Both questions are stated as formal Prop values. Known results (Ramachandra's bound, Cramér's implication) are axiomatized since they require deep analytic number theory beyond Mathlib. The key equivalence — the condition means no prime larger than √v lies in [u,v] — is formalized via noPrimeLargerThanSqrt. A summary theorem combines all known results.",
+    "historicalContext": "Erd\u0151s Problem #382 originates from the 1980 monograph by Erd\u0151s and Graham [ErGr80], which systematically cataloged open problems in combinatorial number theory. The problem studies the factorization structure of products of consecutive integers u\u00b7(u+1)\u00b7...\u00b7v, specifically asking about the exponent of the largest prime divisor.\n\nThe key constraint is that the largest prime p dividing the product must appear with exponent \u2265 2. Since p\u00b2 must divide some integer in [u,v], this forces p \u2264 \u221av, meaning the interval [u,v] is 'prime-free' above \u221av. The problem asks two questions: whether v\u2212u grows subpolynomially in v, and whether v\u2212u can be arbitrarily large.\n\nRamachandra established the best known upper bound v\u2212u \u2264 v^{1/2+o(1)}, using techniques from the distribution of primes in short intervals. Cram\u00e9r's famous conjecture on prime gaps would imply the stronger result that v\u2212u = v^o(1). Cambie's heuristic analysis suggests that v\u2212u can indeed be arbitrarily large, but both questions remain open.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $u \\leq v$ be positive integers such that the largest prime dividing the product $\\prod_{m=u}^{v} m$ appears with exponent at least 2.\n\n**Question 1:** Is $v - u = v^{o(1)}$? That is, for every $\\varepsilon > 0$ and sufficiently large $v$, is $v - u < v^\\varepsilon$?\n\n**Question 2:** Can $v - u$ be arbitrarily large?\n\n**Known:** Ramachandra: $v - u \\leq v^{1/2 + o(1)}$. Under Cram\u00e9r's conjecture, Question 1 has answer YES.",
+    "text": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent \u2265 2, is v\u2212u = v^o(1)? Can v\u2212u be arbitrarily large? Ramachandra showed v\u2212u \u2264 v^{1/2+o(1)}. OPEN.",
+    "proofStrategy": "The formalization defines the product of an interval via Finset.Icc, the largest prime divisor via primeFactorsList maximum, and the p-adic valuation via Nat.factorization. The Erd\u0151s-Graham condition (largest prime has exponent \u2265 2) is captured by satisfiesCondition. Both questions are stated as formal Prop values. Known results (Ramachandra's bound, Cram\u00e9r's implication) are axiomatized since they require deep analytic number theory beyond Mathlib. The key equivalence \u2014 the condition means no prime larger than \u221av lies in [u,v] \u2014 is formalized via noPrimeLargerThanSqrt. A summary theorem combines all known results.",
     "keyInsights": [
-      "**Prime-Free Reformulation**: The condition is equivalent to all primes in [u,v] being ≤ √v, since a prime p > √v has p² > v and thus exponent exactly 1",
-      "**Ramachandra's Bound**: v − u ≤ v^{1/2+o(1)} is the best known upper bound, derived from prime distribution in short intervals",
-      "**Cramér Connection**: Cramér's conjecture (prime gaps are O((log p)²)) would imply Question 1 is YES, since it prevents long prime-free intervals above √v",
-      "**Heuristic for Question 2**: Near squares of large primes, prime-free intervals can be long, suggesting v−u can be arbitrarily large",
-      "**Concrete Example**: [2,4] has product 24 = 2³·3 where the largest prime 3 has exponent 1, so it does NOT satisfy the condition"
+      "**Prime-Free Reformulation**: The condition is equivalent to all primes in [u,v] being \u2264 \u221av, since a prime p > \u221av has p\u00b2 > v and thus exponent exactly 1",
+      "**Ramachandra's Bound**: v \u2212 u \u2264 v^{1/2+o(1)} is the best known upper bound, derived from prime distribution in short intervals",
+      "**Cram\u00e9r Connection**: Cram\u00e9r's conjecture (prime gaps are O((log p)\u00b2)) would imply Question 1 is YES, since it prevents long prime-free intervals above \u221av",
+      "**Heuristic for Question 2**: Near squares of large primes, prime-free intervals can be long, suggesting v\u2212u can be arbitrarily large",
+      "**Concrete Example**: [2,4] has product 24 = 2\u00b3\u00b73 where the largest prime 3 has exponent 1, so it does NOT satisfy the condition"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -112,7 +112,7 @@
       "title": "Part IV: The Condition",
       "startLine": 106,
       "endLine": 130,
-      "summary": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on exponent behavior."
+      "summary": "satisfiesCondition: largest prime has exponent \u2265 2. Structural axioms on exponent behavior."
     },
     {
       "id": "questions",
@@ -126,11 +126,11 @@
       "title": "Part VI: Known Upper Bound",
       "startLine": 161,
       "endLine": 173,
-      "summary": "Ramachandra's bound axiom: v−u ≤ v^{1/2+ε} for large v."
+      "summary": "Ramachandra's bound axiom: v\u2212u \u2264 v^{1/2+\u03b5} for large v."
     },
     {
       "id": "cramer",
-      "title": "Part VII: Connection to Cramér's Conjecture",
+      "title": "Part VII: Connection to Cram\u00e9r's Conjecture",
       "startLine": 175,
       "endLine": 191,
       "summary": "cramersConjecture definition, cramer_implies_q1 axiom."
@@ -154,17 +154,17 @@
       "title": "Part X: Summary",
       "startLine": 226,
       "endLine": 266,
-      "summary": "erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN."
+      "summary": "erdos_382_summary theorem combining Ramachandra bound, Cram\u00e9r implication, and problem statement. Consistency theorem. Status: OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #382 asks about intervals [u,v] where the largest prime in the product u(u+1)...v has exponent ≥ 2. Both questions — whether v−u is subpolynomial and whether v−u can be arbitrarily large — remain open. The key insight is that the condition is equivalent to the interval being prime-free above √v. Ramachandra established v−u ≤ v^{1/2+o(1)}, and Cramér's conjecture would resolve Question 1.",
-    "implications": "Resolution of this problem would illuminate the relationship between prime distribution in short intervals and the multiplicative structure of products of consecutive integers. It connects to fundamental open questions in analytic number theory including Cramér's conjecture on prime gaps and the structure of prime-free intervals.",
+    "summary": "Erd\u0151s Problem #382 asks about intervals [u,v] where the largest prime in the product u(u+1)...v has exponent \u2265 2. Both questions \u2014 whether v\u2212u is subpolynomial and whether v\u2212u can be arbitrarily large \u2014 remain open. The key insight is that the condition is equivalent to the interval being prime-free above \u221av. Ramachandra established v\u2212u \u2264 v^{1/2+o(1)}, and Cram\u00e9r's conjecture would resolve Question 1.",
+    "implications": "Resolution of this problem would illuminate the relationship between prime distribution in short intervals and the multiplicative structure of products of consecutive integers. It connects to fundamental open questions in analytic number theory including Cram\u00e9r's conjecture on prime gaps and the structure of prime-free intervals.",
     "openQuestions": [
-      "Is v − u = v^o(1) for all intervals satisfying the condition?",
-      "Can v − u be made arbitrarily large?",
-      "Can the Ramachandra bound v−u ≤ v^{1/2+o(1)} be improved unconditionally?",
-      "Are there explicit constructions yielding large v−u satisfying the condition?"
+      "Is v \u2212 u = v^o(1) for all intervals satisfying the condition?",
+      "Can v \u2212 u be made arbitrarily large?",
+      "Can the Ramachandra bound v\u2212u \u2264 v^{1/2+o(1)} be improved unconditionally?",
+      "Are there explicit constructions yielding large v\u2212u satisfying the condition?"
     ]
   },
   "leanFile": {
@@ -189,5 +189,39 @@
     "axiomCount": 13,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-238",
+      "relationship": "related",
+      "description": "Share prime-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-680",
+      "relationship": "related",
+      "description": "Share prime-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-950",
+      "relationship": "related",
+      "description": "Share prime-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-968",
+      "relationship": "related",
+      "description": "Share prime-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-391",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-238",
+    "erdos-680",
+    "erdos-950",
+    "erdos-968",
+    "erdos-391"
+  ]
 }

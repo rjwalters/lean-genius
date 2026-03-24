@@ -1,10 +1,10 @@
 {
   "id": "erdos-115",
-  "title": "Erdős Problem #115: Polynomial Derivatives on Connected Lemniscates",
+  "title": "Erd\u0151s Problem #115: Polynomial Derivatives on Connected Lemniscates",
   "slug": "erdos-115",
-  "description": "For a degree-n polynomial with connected lemniscate, max|p'(z)| ≤ (1/2 + o(1))n². Proved by Eremenko and Lempert; Chebyshev polynomials are extremal.",
+  "description": "For a degree-n polynomial with connected lemniscate, max|p'(z)| \u2264 (1/2 + o(1))n\u00b2. Proved by Eremenko and Lempert; Chebyshev polynomials are extremal.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/115",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos115Problem.lean",
@@ -35,10 +35,10 @@
       "Abstract axiomatization of complex polynomials with degree tracking via ComplexPoly type",
       "Lemniscate connectivity predicate IsLemniscateConnected",
       "Maximum derivative functional maxDerivOnLemniscate with non-negativity axiom",
-      "Lower bound axiom: max|p'| ≥ n for connected lemniscates (monomial achieves equality)",
-      "Pommerenke's upper bound axiom: max|p'| ≤ (e/2)n² with rational approximation e ≈ 2.718",
+      "Lower bound axiom: max|p'| \u2265 n for connected lemniscates (monomial achieves equality)",
+      "Pommerenke's upper bound axiom: max|p'| \u2264 (e/2)n\u00b2 with rational approximation e \u2248 2.718",
       "Chebyshev polynomial axioms: connectivity and asymptotic derivative behavior",
-      "Eremenko-Lempert theorem axiom: max|p'| ≤ (1/2 + ε)n² for all ε > 0 and large n",
+      "Eremenko-Lempert theorem axiom: max|p'| \u2264 (1/2 + \u03b5)n\u00b2 for all \u03b5 > 0 and large n",
       "Sharpness theorem proved from Chebyshev asymptotics (the only non-axiom result)"
     ],
     "axiomCount": 15,
@@ -46,9 +46,9 @@
     "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "A **lemniscate** of a polynomial $p(z)$ of degree $n$ is the sublevel set $L(p) = \\{z \\in \\mathbb{C} : |p(z)| \\leq 1\\}$. When $L(p)$ is connected (i.e., a single component rather than $n$ separate 'lobes'), the polynomial's behavior is constrained in remarkable ways. Erdős conjectured that connectivity forces the derivative to be bounded: $\\max_{z \\in L(p)} |p'(z)| \\leq (1/2 + o(1)) n^2$. Szabados observed that the $o(1)$ correction term is necessary — the exact constant $1/2$ cannot hold for all $n$.\n\nThe problem sits at the intersection of polynomial inequalities, potential theory, and extremal problems in complex analysis. The simplest case is the monomial $p(z) = z^n$, whose lemniscate is the unit disk $\\{|z| \\leq 1\\}$ (always connected), with $\\max |p'| = n \\cdot 1^{n-1} = n$. This gives the lower bound $\\max |p'| \\geq n$. At the other extreme, the **Chebyshev polynomials** $T_n(z)$ — defined by $T_n(\\cos\\theta) = \\cos(n\\theta)$ — have connected lemniscates and achieve $\\max |T_n'| \\sim n^2/2$, saturating the conjectured bound. Pommerenke proved the intermediate upper bound $\\max |p'| \\leq (e/2) n^2 \\approx 1.359 n^2$ in 1961 using potential-theoretic methods.\n\nThe conjecture was **resolved** by Eremenko and Lempert [EL07], who proved the sharp bound $\\max |p'| \\leq (1/2 + o(1)) n^2$ for polynomials with connected lemniscates. Their proof uses conformal mapping techniques and the theory of Green's functions. The formalization axiomatizes the result and proves sharpness from the Chebyshev asymptotic, making this one of the few Erdős problems in our collection with status 'proved' and 0 sorries in the main theorem.",
-    "problemStatement": "Let $p(z)$ be a polynomial of degree $n$ with connected lemniscate $L(p) = \\{z \\in \\mathbb{C} : |p(z)| \\leq 1\\}$.\n\n**Conjecture (Erdős)**: $\\max_{z \\in L(p)} |p'(z)| \\leq \\left(\\frac{1}{2} + o(1)\\right) n^2$.\n\n**Proved** by Eremenko and Lempert. Sharp: Chebyshev polynomials achieve $\\max |T_n'| \\sim n^2/2$.",
-    "text": "For a degree-n polynomial with connected lemniscate, max|p'(z)| ≤ (1/2 + o(1))n². Proved by Eremenko and Lempert; Chebyshev polynomials are extremal.",
+    "historicalContext": "A **lemniscate** of a polynomial $p(z)$ of degree $n$ is the sublevel set $L(p) = \\{z \\in \\mathbb{C} : |p(z)| \\leq 1\\}$. When $L(p)$ is connected (i.e., a single component rather than $n$ separate 'lobes'), the polynomial's behavior is constrained in remarkable ways. Erd\u0151s conjectured that connectivity forces the derivative to be bounded: $\\max_{z \\in L(p)} |p'(z)| \\leq (1/2 + o(1)) n^2$. Szabados observed that the $o(1)$ correction term is necessary \u2014 the exact constant $1/2$ cannot hold for all $n$.\n\nThe problem sits at the intersection of polynomial inequalities, potential theory, and extremal problems in complex analysis. The simplest case is the monomial $p(z) = z^n$, whose lemniscate is the unit disk $\\{|z| \\leq 1\\}$ (always connected), with $\\max |p'| = n \\cdot 1^{n-1} = n$. This gives the lower bound $\\max |p'| \\geq n$. At the other extreme, the **Chebyshev polynomials** $T_n(z)$ \u2014 defined by $T_n(\\cos\\theta) = \\cos(n\\theta)$ \u2014 have connected lemniscates and achieve $\\max |T_n'| \\sim n^2/2$, saturating the conjectured bound. Pommerenke proved the intermediate upper bound $\\max |p'| \\leq (e/2) n^2 \\approx 1.359 n^2$ in 1961 using potential-theoretic methods.\n\nThe conjecture was **resolved** by Eremenko and Lempert [EL07], who proved the sharp bound $\\max |p'| \\leq (1/2 + o(1)) n^2$ for polynomials with connected lemniscates. Their proof uses conformal mapping techniques and the theory of Green's functions. The formalization axiomatizes the result and proves sharpness from the Chebyshev asymptotic, making this one of the few Erd\u0151s problems in our collection with status 'proved' and 0 sorries in the main theorem.",
+    "problemStatement": "Let $p(z)$ be a polynomial of degree $n$ with connected lemniscate $L(p) = \\{z \\in \\mathbb{C} : |p(z)| \\leq 1\\}$.\n\n**Conjecture (Erd\u0151s)**: $\\max_{z \\in L(p)} |p'(z)| \\leq \\left(\\frac{1}{2} + o(1)\\right) n^2$.\n\n**Proved** by Eremenko and Lempert. Sharp: Chebyshev polynomials achieve $\\max |T_n'| \\sim n^2/2$.",
+    "text": "For a degree-n polynomial with connected lemniscate, max|p'(z)| \u2264 (1/2 + o(1))n\u00b2. Proved by Eremenko and Lempert; Chebyshev polynomials are extremal.",
     "proofStrategy": "The formalization takes an axiomatic approach, since the proof relies on deep complex analysis (conformal mappings, Green's functions) beyond current Mathlib. An abstract type `ComplexPoly n` represents degree-$n$ polynomials, with axioms for lemniscate connectivity (`IsLemniscateConnected`) and the derivative maximum (`maxDerivOnLemniscate`). The known bounds are axiomatized: lower bound $n$ (with monomial witness), Pommerenke's upper bound $(e/2)n^2$, and Chebyshev asymptotics. The Eremenko-Lempert theorem is the main axiom. The **only proved result** is `ErdosProblem115_sharp`: using the Chebyshev asymptotic axiom, it constructs witnesses showing the bound is tight for every $\\varepsilon > 0$.",
     "keyInsights": [
       "**Connectivity is the essential hypothesis**: Without it, lemniscates can have $n$ separate lobes, and the derivative on the union can be arbitrarily large. Connectivity forces the polynomial to behave 'globally coherently', constraining derivative growth",
@@ -68,7 +68,7 @@
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Problem statement: max|p'| on connected lemniscates. Status PROVED by Eremenko-Lempert. Known bounds: lower n (monomial), upper (e/2)n² (Pommerenke), sharp (1/2 + o(1))n². Reference to erdosproblems.com/115."
+      "summary": "Problem statement: max|p'| on connected lemniscates. Status PROVED by Eremenko-Lempert. Known bounds: lower n (monomial), upper (e/2)n\u00b2 (Pommerenke), sharp (1/2 + o(1))n\u00b2. Reference to erdosproblems.com/115."
     },
     {
       "id": "imports",
@@ -89,42 +89,42 @@
       "title": "Lower Bound and Monomial Witness",
       "startLine": 43,
       "endLine": 57,
-      "summary": "Axiom lemniscate_deriv_lower: max|p'| ≥ n for connected lemniscates. Monomial axioms: monomial_poly, monomial_connected, monomial_deriv_eq show p(z) = zⁿ achieves equality."
+      "summary": "Axiom lemniscate_deriv_lower: max|p'| \u2265 n for connected lemniscates. Monomial axioms: monomial_poly, monomial_connected, monomial_deriv_eq show p(z) = z\u207f achieves equality."
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Upper Bound",
       "startLine": 58,
       "endLine": 62,
-      "summary": "Axiom pommerenke_upper: max|p'| ≤ (2718/1000)/2 · n² ≈ (e/2)n². Uses rational approximation of e since ℝ doesn't have a native e constant here."
+      "summary": "Axiom pommerenke_upper: max|p'| \u2264 (2718/1000)/2 \u00b7 n\u00b2 \u2248 (e/2)n\u00b2. Uses rational approximation of e since \u211d doesn't have a native e constant here."
     },
     {
       "id": "chebyshev",
       "title": "Chebyshev Polynomial Asymptotics",
       "startLine": 63,
       "endLine": 73,
-      "summary": "Axioms for Chebyshev polynomials: chebyshev_poly (constructor), chebyshev_connected (lemniscate is connected), chebyshev_deriv_asymptotic (max|p'| in [(1/2-ε)n², (1/2+ε)n²] for large n)."
+      "summary": "Axioms for Chebyshev polynomials: chebyshev_poly (constructor), chebyshev_connected (lemniscate is connected), chebyshev_deriv_asymptotic (max|p'| in [(1/2-\u03b5)n\u00b2, (1/2+\u03b5)n\u00b2] for large n)."
     },
     {
       "id": "eremenko-lempert",
       "title": "Eremenko-Lempert Theorem",
       "startLine": 74,
       "endLine": 82,
-      "summary": "The main axiom ErdosProblem115_proved: ∀ ε > 0, ∃ N, ∀ n ≥ N, ∀ p with connected lemniscate: max|p'| ≤ (1/2 + ε)n². This resolves Erdős Problem #115."
+      "summary": "The main axiom ErdosProblem115_proved: \u2200 \u03b5 > 0, \u2203 N, \u2200 n \u2265 N, \u2200 p with connected lemniscate: max|p'| \u2264 (1/2 + \u03b5)n\u00b2. This resolves Erd\u0151s Problem #115."
     },
     {
       "id": "sharpness",
       "title": "Sharpness Theorem",
       "startLine": 83,
       "endLine": 91,
-      "summary": "The only proved (non-axiom) result: ErdosProblem115_sharp constructs Chebyshev witnesses showing ∀ ε > 0, ∃ N, ∀ n ≥ N, ∃ p with connected lemniscate and max|p'| ≥ (1/2 - ε)n². Proof: obtain Chebyshev asymptotic, provide chebyshev_poly n as witness."
+      "summary": "The only proved (non-axiom) result: ErdosProblem115_sharp constructs Chebyshev witnesses showing \u2200 \u03b5 > 0, \u2203 N, \u2200 n \u2265 N, \u2203 p with connected lemniscate and max|p'| \u2265 (1/2 - \u03b5)n\u00b2. Proof: obtain Chebyshev asymptotic, provide chebyshev_poly n as witness."
     }
   ],
   "conclusion": {
-    "summary": "This 92-line formalization of Erdős Problem #115 axiomatizes connected lemniscates and polynomial derivative bounds, states the Eremenko-Lempert theorem resolving the conjecture, and proves sharpness via Chebyshev polynomial witnesses. The clean axiomatic structure — with the sharpness theorem as the only non-axiom result — makes this one of the most concise Erdős formalizations in the collection, with 0 sorries.",
+    "summary": "This 92-line formalization of Erd\u0151s Problem #115 axiomatizes connected lemniscates and polynomial derivative bounds, states the Eremenko-Lempert theorem resolving the conjecture, and proves sharpness via Chebyshev polynomial witnesses. The clean axiomatic structure \u2014 with the sharpness theorem as the only non-axiom result \u2014 makes this one of the most concise Erd\u0151s formalizations in the collection, with 0 sorries.",
     "implications": "The result precisely characterizes the extremal constant 1/2 for derivative bounds on connected lemniscates, settling a question in the theory of polynomial inequalities. The Chebyshev extremality connects to the broader phenomenon of Chebyshev polynomials being extremal for many polynomial optimization problems (minimax approximation, coefficient bounds, etc.).",
     "openQuestions": [
-      "What is the exact rate of the o(1) correction term — is max|p'|/n² - 1/2 = O(1/n), O(1/log n), or something else?",
+      "What is the exact rate of the o(1) correction term \u2014 is max|p'|/n\u00b2 - 1/2 = O(1/n), O(1/log n), or something else?",
       "Can the result be extended to rational functions or other analytic function families?",
       "Is there a quantitative version with explicit constants for all n (not just asymptotic)?",
       "Can the abstract axiomatization be replaced with concrete Mathlib definitions when complex polynomial theory is more developed?"
@@ -152,5 +152,39 @@
       "key": "Pom61",
       "citation": "Ch. Pommerenke, 'On the derivative of a polynomial', Michigan Mathematical Journal (1961)"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Share analytic and polynomial themes"
+    },
+    {
+      "targetId": "erdos-1114",
+      "relationship": "related",
+      "description": "Share analytic and polynomial themes"
+    },
+    {
+      "targetId": "erdos-1132",
+      "relationship": "related",
+      "description": "Share analytic and polynomial themes"
+    },
+    {
+      "targetId": "erdos-1133",
+      "relationship": "related",
+      "description": "Share analytic and polynomial themes"
+    },
+    {
+      "targetId": "erdos-1150",
+      "relationship": "related",
+      "description": "Share analytic and polynomial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1048",
+    "erdos-1114",
+    "erdos-1132",
+    "erdos-1133",
+    "erdos-1150"
   ]
 }

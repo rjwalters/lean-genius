@@ -130,16 +130,19 @@
   },
   "crossReferences": [
     {
-      "relationship": "Parent formalization that this OQ-03 extends by resolving all sorries and converting axioms to proved theorems",
-      "targetId": "erdos-1138"
+      "relationship": "related",
+      "targetId": "erdos-1138",
+      "description": "Parent formalization that this OQ-03 extends by resolving all sorries and converting axioms to proved theorems"
     },
     {
-      "relationship": "Bertrand's postulate (Nat.bertrand in Mathlib) is the key ingredient for proving prime_gap_le_prev_prime and maxPrimeGap_le_half",
-      "targetId": "bertrands-postulate"
+      "relationship": "related",
+      "targetId": "bertrands-postulate",
+      "description": "Bertrand's postulate (Nat.bertrand in Mathlib) is the key ingredient for proving prime_gap_le_prev_prime and maxPrimeGap_le_half"
     },
     {
-      "relationship": "Related formalization of prime gap bounds; both study the growth rate of maximal prime gaps G(x)",
-      "targetId": "prime-gap-bounds"
+      "relationship": "related",
+      "targetId": "prime-gap-bounds",
+      "description": "Related formalization of prime gap bounds; both study the growth rate of maximal prime gaps G(x)"
     }
   ],
   "relatedProblems": [

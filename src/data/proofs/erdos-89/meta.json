@@ -1,10 +1,10 @@
 {
   "id": "erdos-89",
-  "title": "Erdős Problem #89: Distinct Distances in the Plane",
+  "title": "Erd\u0151s Problem #89: Distinct Distances in the Plane",
   "slug": "erdos-89",
-  "description": "Does every set of n distinct points in ℝ² determine ≫ n/√(log n) many distinct distances?",
+  "description": "Does every set of n distinct points in \u211d\u00b2 determine \u226b n/\u221a(log n) many distinct distances?",
   "meta": {
-    "author": "Erdős (1946); Guth-Katz partial result (2015)",
+    "author": "Erd\u0151s (1946); Guth-Katz partial result (2015)",
     "sourceUrl": "https://erdosproblems.com/89",
     "date": "1946",
     "status": "axiomatized",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space ℝ^n with norm",
+        "description": "Euclidean space \u211d^n with norm",
         "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
       },
       {
@@ -49,9 +49,9 @@
     "originalContributions": [
       "Definition of distinct distances for point sets",
       "Minimum distinct distances function g(n)",
-      "Erdos89Conjecture as Ω(n/√(log n)) lower bound",
-      "Axiom for Guth-Katz Ω(n/log n) result",
-      "Axiom for grid upper bound O(n/√(log n))",
+      "Erdos89Conjecture as \u03a9(n/\u221a(log n)) lower bound",
+      "Axiom for Guth-Katz \u03a9(n/log n) result",
+      "Axiom for grid upper bound O(n/\u221a(log n))",
       "Theorem showing conjecture implies Guth-Katz",
       "Historical bounds from Chung and Tardos"
     ],
@@ -60,14 +60,14 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The distinct distances problem is one of Erdős's most famous problems in combinatorial geometry, posed in 1946. Given n points in the plane, how many distinct pairwise distances must exist?\n\nThe √n × √n integer grid has only O(n/√(log n)) distinct distances, showing this bound would be tight if true. Erdős offered $500 for a proof.\n\nAfter decades of progress (Chung 1992, Solymosi-Tóth 2001, Tardos 2004), Guth and Katz made a breakthrough in 2015, proving Ω(n/log n) distinct distances using algebraic methods. This is tantalizingly close to Erdős's conjecture, differing only by a factor of √(log n).",
-    "problemStatement": "**Erdős Problem #89 (OPEN)**\n\nDoes every set of $n$ distinct points in $\\mathbb{R}^2$ determine at least $\\Omega(n/\\sqrt{\\log n})$ distinct distances?\n\n**Known Results**:\n- Guth-Katz (2015): $\\Omega(n/\\log n)$ distinct distances\n- Grid construction: $O(n/\\sqrt{\\log n})$ is achievable\n\n**Prize**: $500",
-    "text": "Does every set of n distinct points in ℝ² determine ≫ n/√(log n) many distinct distances?",
-    "proofStrategy": "We formalize the key concepts and partial results:\n\n1. **distinctDistances**: Set of pairwise distances for a point set\n\n2. **minDistinctDistances**: Minimum over all n-point sets\n\n3. **Erdos89Conjecture**: The Ω(n/√(log n)) lower bound\n\n4. **guthKatz** (axiom): The Ω(n/log n) partial result\n\n5. **gridUpperBound** (axiom): The O(n/√(log n)) construction\n\n6. **conjecture_implies_guthKatz**: Conjecture implies Guth-Katz",
+    "historicalContext": "The distinct distances problem is one of Erd\u0151s's most famous problems in combinatorial geometry, posed in 1946. Given n points in the plane, how many distinct pairwise distances must exist?\n\nThe \u221an \u00d7 \u221an integer grid has only O(n/\u221a(log n)) distinct distances, showing this bound would be tight if true. Erd\u0151s offered $500 for a proof.\n\nAfter decades of progress (Chung 1992, Solymosi-T\u00f3th 2001, Tardos 2004), Guth and Katz made a breakthrough in 2015, proving \u03a9(n/log n) distinct distances using algebraic methods. This is tantalizingly close to Erd\u0151s's conjecture, differing only by a factor of \u221a(log n).",
+    "problemStatement": "**Erd\u0151s Problem #89 (OPEN)**\n\nDoes every set of $n$ distinct points in $\\mathbb{R}^2$ determine at least $\\Omega(n/\\sqrt{\\log n})$ distinct distances?\n\n**Known Results**:\n- Guth-Katz (2015): $\\Omega(n/\\log n)$ distinct distances\n- Grid construction: $O(n/\\sqrt{\\log n})$ is achievable\n\n**Prize**: $500",
+    "text": "Does every set of n distinct points in \u211d\u00b2 determine \u226b n/\u221a(log n) many distinct distances?",
+    "proofStrategy": "We formalize the key concepts and partial results:\n\n1. **distinctDistances**: Set of pairwise distances for a point set\n\n2. **minDistinctDistances**: Minimum over all n-point sets\n\n3. **Erdos89Conjecture**: The \u03a9(n/\u221a(log n)) lower bound\n\n4. **guthKatz** (axiom): The \u03a9(n/log n) partial result\n\n5. **gridUpperBound** (axiom): The O(n/\u221a(log n)) construction\n\n6. **conjecture_implies_guthKatz**: Conjecture implies Guth-Katz",
     "keyInsights": [
-      "**The grid construction**: A √n × √n integer grid achieves O(n/√(log n)) distinct distances, showing the conjecture would be tight.",
-      "**Guth-Katz breakthrough**: Their 2015 proof used polynomial partitioning and incidence geometry, achieving Ω(n/log n).",
-      "**The gap**: Between Ω(n/log n) and O(n/√(log n)) lies a √(log n) factor—small but significant.",
+      "**The grid construction**: A \u221an \u00d7 \u221an integer grid achieves O(n/\u221a(log n)) distinct distances, showing the conjecture would be tight.",
+      "**Guth-Katz breakthrough**: Their 2015 proof used polynomial partitioning and incidence geometry, achieving \u03a9(n/log n).",
+      "**The gap**: Between \u03a9(n/log n) and O(n/\u221a(log n)) lies a \u221a(log n) factor\u2014small but significant.",
       "**Historical progress**: From n^(4/5) (Chung 1992) to n/log n (Guth-Katz 2015) took over 20 years.",
       "**Related problems**: Problem #604 asks if a single point determines many distances."
     ],
@@ -127,11 +127,11 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #89, the famous distinct distances problem. The original conjecture (Ω(n/√(log n))) remains open, but Guth and Katz's 2015 result (Ω(n/log n)) came remarkably close.",
+    "summary": "We formalize Erd\u0151s Problem #89, the famous distinct distances problem. The original conjecture (\u03a9(n/\u221a(log n))) remains open, but Guth and Katz's 2015 result (\u03a9(n/log n)) came remarkably close.",
     "implications": "This problem connects combinatorial geometry to algebraic methods. The Guth-Katz proof introduced polynomial partitioning techniques that have since revolutionized incidence geometry.",
     "openQuestions": [
-      "Can the Guth-Katz bound be improved to Ω(n/√(log n))?",
-      "Is there a single point determining Ω(n/√(log n)) distances (Problem #604)?",
+      "Can the Guth-Katz bound be improved to \u03a9(n/\u221a(log n))?",
+      "Is there a single point determining \u03a9(n/\u221a(log n)) distances (Problem #604)?",
       "What are the optimal bounds in higher dimensions?",
       "Can the grid construction be improved?"
     ]
@@ -151,5 +151,39 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-85",
+      "relationship": "related",
+      "description": "Share conjecture and extremal themes"
+    },
+    {
+      "targetId": "erdos-92",
+      "relationship": "related",
+      "description": "Share conjecture and combinatorial-geometric themes"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distinct-distances themes"
+    },
+    {
+      "targetId": "erdos-503",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and extremal themes"
+    },
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distinct-distances themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-85",
+    "erdos-92",
+    "erdos-1089",
+    "erdos-503",
+    "erdos-604"
+  ]
 }

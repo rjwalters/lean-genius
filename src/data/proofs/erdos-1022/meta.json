@@ -1,10 +1,10 @@
 {
   "id": "erdos-1022",
-  "title": "Erdős Problem #1022: Property B and Sparse Set Families",
+  "title": "Erd\u0151s Problem #1022: Property B and Sparse Set Families",
   "slug": "erdos-1022",
-  "description": "Is there c_t → ∞ such that if F is a family of sets of size ≥ t, and for every X there are < c_t|X| subsets of X in F, then F has property B (2-colorable)? Known: c_2 = 1 (Lovász 1968).",
+  "description": "Is there c_t \u2192 \u221e such that if F is a family of sets of size \u2265 t, and for every X there are < c_t|X| subsets of X in F, then F has property B (2-colorable)? Known: c_2 = 1 (Lov\u00e1sz 1968).",
   "meta": {
-    "author": "Erdős, Lovász (1968)",
+    "author": "Erd\u0151s, Lov\u00e1sz (1968)",
     "sourceUrl": "https://erdosproblems.com/1022",
     "date": "1971",
     "status": "formalized",
@@ -27,14 +27,14 @@
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Property B was introduced by E.W. Miller in 1937, who named it after Felix Bernstein's 1908 work on set partitions. The property asks: given a family $\\mathcal{F}$ of sets, can the elements be 2-colored so that no set in $\\mathcal{F}$ is monochromatic? This is precisely hypergraph 2-colorability, where $\\mathcal{F}$ is the set of hyperedges.\n\nThe study of property B became central to combinatorics through the work of Erdős and Hajnal in the 1960s. Erdős (1963) proved the foundational probabilistic bound: if all sets in $\\mathcal{F}$ have size $\\ge t$ and $|\\mathcal{F}| < 2^{t-1}$, then $\\mathcal{F}$ has property B. The proof is a beautiful application of the probabilistic method—a uniformly random 2-coloring fails to properly color a set of size $s$ with probability exactly $2^{1-s}$, and a union bound gives the result. This is tight: Erdős also constructed families of $2^{t-1}$ sets of size $t$ without property B.\n\nProblem #1022 asks a more refined question. Instead of bounding the total number of sets, it imposes a *local density* condition: for every set $X$, the number of family members that are subsets of $X$ must be fewer than $c_t |X|$. The conjecture is that the threshold $c_t$ can be chosen to tend to infinity with $t$, meaning that as the minimum set size grows, increasingly denser families can still be 2-colored.\n\nThe only solved case is $t = 2$, due to Lovász (1968): if every element of the ground set appears in fewer than $|X|$ of the subfamily of sets contained in $X$, the family has property B. Lovász's proof is related to his later work on the Lovász Local Lemma (1975, with Erdős), which provides a general framework for proving that events with limited dependencies cannot all occur simultaneously.\n\nThe problem connects to several major threads in combinatorics: the Lovász Local Lemma (which provides 2-colorings when dependencies are controlled), the theory of VC dimension (which bounds the combinatorial complexity of set families), Turán-type extremal problems (bounding structure by density), and the theory of cover-free families from combinatorial group testing and information theory. The sparseness condition $|\\{A \\in \\mathcal{F} : A \\subseteq X\\}| < c_t |X|$ is a 'trace' condition, bounding how many family members can appear inside any given set—a concept closely related to the Sauer-Shelah lemma and VC theory.",
-    "problemStatement": "Does there exist a function $c: \\mathbb{N} \\to \\mathbb{R}$ with $c_t \\to \\infty$ as $t \\to \\infty$ such that the following holds?\n\nFor all $t \\ge 2$ and every finite family $\\mathcal{F}$ of finite sets:\n$$\\text{minSize}(\\mathcal{F}) \\ge t \\wedge \\text{isSparse}(\\mathcal{F}, c_t) \\Rightarrow \\text{hasPropertyB}(\\mathcal{F})$$\n\nwhere $\\text{isSparse}(\\mathcal{F}, c)$ means $|\\{A \\in \\mathcal{F} : A \\subseteq X\\}| < c \\cdot |X|$ for every finite set $X$.\n\n**Status**: OPEN\n\n**Known**: $c_2 = 1$ (Lovász 1968). For $t = 2$, if every set $X$ has fewer than $|X|$ family members as subsets, the family has property B.",
-    "text": "Is there c_t → ∞ such that if F is a family of sets of size ≥ t, and for every X there are < c_t|X| subsets of X in F, then F has property B (2-colorable)? Known: c_2 = 1 (Lovász 1968).",
-    "proofStrategy": "The formalization builds the theory of property B and the sparseness conjecture in five layers across ~250 lines.\n\n**Layer 1 — Set family infrastructure (lines 22–39)**: Defines `SetFamily α` as `Finset (Finset α)`, the `groundSet` as $\\bigcup \\mathcal{F}$ (via `Finset.sup`), and `minSetSize` returning $\\min_{A \\in \\mathcal{F}} |A|$. These parametrize the problem.\n\n**Layer 2 — Property B and chromatic number (lines 41–87)**: Defines `hasPropertyB` via existence of a 2-coloring $c: \\alpha \\to \\text{Bool}$ making every set non-monochromatic. Generalizes to $k$-colorability with `isKColorable` and `chromaticNumber` via `Nat.find`. Proves `propertyB_iff_chromatic_le2`.\n\n**Layer 3 — Sparseness and the conjecture (lines 89–124)**: Defines `subsetCount F X`, `isSparse F c`, and `hasMinSize F t`. States the conjecture as `erdos_1022_conjecture`: existence of a `ThresholdFunction` $c_t \\to \\infty$ guaranteeing property B.\n\n**Layer 4 — Lovász's theorem and hypergraph formulation (lines 126–172)**: Axiomatizes `lovasz_theorem` ($c_2 = 1$ case). Defines `Hypergraph` as an alias for `SetFamily` and restates the conjecture in hypergraph language. Proves `formulations_equiv` showing logical equivalence.\n\n**Layer 5 — Analysis and connections (lines 174–244)**: Proves necessary conditions (`threshold_positive`, `threshold_grows`). Defines `subsetDensity` (normalized count) and `expectedMonochromatic` (first-moment bound). Connects to cover-free families via `coverFree_implies_sparse`.",
+    "historicalContext": "Property B was introduced by E.W. Miller in 1937, who named it after Felix Bernstein's 1908 work on set partitions. The property asks: given a family $\\mathcal{F}$ of sets, can the elements be 2-colored so that no set in $\\mathcal{F}$ is monochromatic? This is precisely hypergraph 2-colorability, where $\\mathcal{F}$ is the set of hyperedges.\n\nThe study of property B became central to combinatorics through the work of Erd\u0151s and Hajnal in the 1960s. Erd\u0151s (1963) proved the foundational probabilistic bound: if all sets in $\\mathcal{F}$ have size $\\ge t$ and $|\\mathcal{F}| < 2^{t-1}$, then $\\mathcal{F}$ has property B. The proof is a beautiful application of the probabilistic method\u2014a uniformly random 2-coloring fails to properly color a set of size $s$ with probability exactly $2^{1-s}$, and a union bound gives the result. This is tight: Erd\u0151s also constructed families of $2^{t-1}$ sets of size $t$ without property B.\n\nProblem #1022 asks a more refined question. Instead of bounding the total number of sets, it imposes a *local density* condition: for every set $X$, the number of family members that are subsets of $X$ must be fewer than $c_t |X|$. The conjecture is that the threshold $c_t$ can be chosen to tend to infinity with $t$, meaning that as the minimum set size grows, increasingly denser families can still be 2-colored.\n\nThe only solved case is $t = 2$, due to Lov\u00e1sz (1968): if every element of the ground set appears in fewer than $|X|$ of the subfamily of sets contained in $X$, the family has property B. Lov\u00e1sz's proof is related to his later work on the Lov\u00e1sz Local Lemma (1975, with Erd\u0151s), which provides a general framework for proving that events with limited dependencies cannot all occur simultaneously.\n\nThe problem connects to several major threads in combinatorics: the Lov\u00e1sz Local Lemma (which provides 2-colorings when dependencies are controlled), the theory of VC dimension (which bounds the combinatorial complexity of set families), Tur\u00e1n-type extremal problems (bounding structure by density), and the theory of cover-free families from combinatorial group testing and information theory. The sparseness condition $|\\{A \\in \\mathcal{F} : A \\subseteq X\\}| < c_t |X|$ is a 'trace' condition, bounding how many family members can appear inside any given set\u2014a concept closely related to the Sauer-Shelah lemma and VC theory.",
+    "problemStatement": "Does there exist a function $c: \\mathbb{N} \\to \\mathbb{R}$ with $c_t \\to \\infty$ as $t \\to \\infty$ such that the following holds?\n\nFor all $t \\ge 2$ and every finite family $\\mathcal{F}$ of finite sets:\n$$\\text{minSize}(\\mathcal{F}) \\ge t \\wedge \\text{isSparse}(\\mathcal{F}, c_t) \\Rightarrow \\text{hasPropertyB}(\\mathcal{F})$$\n\nwhere $\\text{isSparse}(\\mathcal{F}, c)$ means $|\\{A \\in \\mathcal{F} : A \\subseteq X\\}| < c \\cdot |X|$ for every finite set $X$.\n\n**Status**: OPEN\n\n**Known**: $c_2 = 1$ (Lov\u00e1sz 1968). For $t = 2$, if every set $X$ has fewer than $|X|$ family members as subsets, the family has property B.",
+    "text": "Is there c_t \u2192 \u221e such that if F is a family of sets of size \u2265 t, and for every X there are < c_t|X| subsets of X in F, then F has property B (2-colorable)? Known: c_2 = 1 (Lov\u00e1sz 1968).",
+    "proofStrategy": "The formalization builds the theory of property B and the sparseness conjecture in five layers across ~250 lines.\n\n**Layer 1 \u2014 Set family infrastructure (lines 22\u201339)**: Defines `SetFamily \u03b1` as `Finset (Finset \u03b1)`, the `groundSet` as $\\bigcup \\mathcal{F}$ (via `Finset.sup`), and `minSetSize` returning $\\min_{A \\in \\mathcal{F}} |A|$. These parametrize the problem.\n\n**Layer 2 \u2014 Property B and chromatic number (lines 41\u201387)**: Defines `hasPropertyB` via existence of a 2-coloring $c: \\alpha \\to \\text{Bool}$ making every set non-monochromatic. Generalizes to $k$-colorability with `isKColorable` and `chromaticNumber` via `Nat.find`. Proves `propertyB_iff_chromatic_le2`.\n\n**Layer 3 \u2014 Sparseness and the conjecture (lines 89\u2013124)**: Defines `subsetCount F X`, `isSparse F c`, and `hasMinSize F t`. States the conjecture as `erdos_1022_conjecture`: existence of a `ThresholdFunction` $c_t \\to \\infty$ guaranteeing property B.\n\n**Layer 4 \u2014 Lov\u00e1sz's theorem and hypergraph formulation (lines 126\u2013172)**: Axiomatizes `lovasz_theorem` ($c_2 = 1$ case). Defines `Hypergraph` as an alias for `SetFamily` and restates the conjecture in hypergraph language. Proves `formulations_equiv` showing logical equivalence.\n\n**Layer 5 \u2014 Analysis and connections (lines 174\u2013244)**: Proves necessary conditions (`threshold_positive`, `threshold_grows`). Defines `subsetDensity` (normalized count) and `expectedMonochromatic` (first-moment bound). Connects to cover-free families via `coverFree_implies_sparse`.",
     "keyInsights": [
-      "**Sparseness is a local density condition on all supersets**: Unlike bounds on $|\\mathcal{F}|$ (global) or maximum degree (local to elements), the sparseness condition $|\\{A \\subseteq X\\}| < c_t |X|$ is quantified over *all* sets $X$, not just family members. This universality makes the condition very strong—it controls the 'trace' of $\\mathcal{F}$ on every possible superset.",
-      "**The divergence $c_t \\to \\infty$ captures the phase transition**: For fixed $c$, there exist families of arbitrarily large sets that are $c$-sparse but lack property B. The conjecture asserts that as minimum set size grows, the sparseness threshold for 2-colorability grows without bound—a quantitative strengthening of the intuition that 'large sets are easier to 2-color.'",
-      "**Lovász's $c_2 = 1$ is the unique solved case**: For $t = 2$, every set has $\\ge 2$ elements, and the threshold $c_2 = 1$ means fewer than $|X|$ subsets of $X$ lie in $\\mathcal{F}$. The proof uses a Hall-type matching argument. No other value of $c_t$ is known, making this one of the most basic open problems in hypergraph coloring.",
+      "**Sparseness is a local density condition on all supersets**: Unlike bounds on $|\\mathcal{F}|$ (global) or maximum degree (local to elements), the sparseness condition $|\\{A \\subseteq X\\}| < c_t |X|$ is quantified over *all* sets $X$, not just family members. This universality makes the condition very strong\u2014it controls the 'trace' of $\\mathcal{F}$ on every possible superset.",
+      "**The divergence $c_t \\to \\infty$ captures the phase transition**: For fixed $c$, there exist families of arbitrarily large sets that are $c$-sparse but lack property B. The conjecture asserts that as minimum set size grows, the sparseness threshold for 2-colorability grows without bound\u2014a quantitative strengthening of the intuition that 'large sets are easier to 2-color.'",
+      "**Lov\u00e1sz's $c_2 = 1$ is the unique solved case**: For $t = 2$, every set has $\\ge 2$ elements, and the threshold $c_2 = 1$ means fewer than $|X|$ subsets of $X$ lie in $\\mathcal{F}$. The proof uses a Hall-type matching argument. No other value of $c_t$ is known, making this one of the most basic open problems in hypergraph coloring.",
       "**The probabilistic method gives partial results via the first-moment bound**: A random 2-coloring makes each set $A$ monochromatic with probability $2^{1-|A|}$. If $\\mathbb{E}[\\text{mono}] = \\sum_{A \\in \\mathcal{F}} 2^{1-|A|} < 1$, property B holds. Sparseness bounds this expectation: $\\mathbb{E}[\\text{mono}] \\le c_t \\cdot |\\bigcup \\mathcal{F}| \\cdot 2^{1-t}$, which is $< 1$ when the ground set is small relative to $2^t / c_t$.",
       "**Cover-free families provide a structural bridge**: An $r$-cover-free family (no set is contained in the union of $r$ others) is automatically $(r+1)$-sparse. Cover-free families arise in combinatorial group testing, where they identify defective items in pooled tests. This connection links property B to information-theoretic questions about identification codes."
     ],
@@ -47,14 +47,14 @@
     {
       "id": "header",
       "title": "Problem Documentation and Imports",
-      "summary": "Documents Erdős Problem #1022 on property B for sparse set families. Imports Mathlib's `Finset`, `Fintype`, and `Real` modules for finite combinatorics and real-valued thresholds.",
+      "summary": "Documents Erd\u0151s Problem #1022 on property B for sparse set families. Imports Mathlib's `Finset`, `Fintype`, and `Real` modules for finite combinatorics and real-valued thresholds.",
       "startLine": 1,
       "endLine": 1
     },
     {
       "id": "set-families",
       "title": "Set Family Infrastructure",
-      "summary": "Defines `SetFamily α` as `Finset (Finset α)`, the `groundSet` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `minSetSize` returning $\\min_{A \\in \\mathcal{F}} |A|$. These are the basic objects parametrizing the hypergraph coloring problem.",
+      "summary": "Defines `SetFamily \u03b1` as `Finset (Finset \u03b1)`, the `groundSet` as $\\bigcup \\mathcal{F}$ via `Finset.sup`, and `minSetSize` returning $\\min_{A \\in \\mathcal{F}} |A|$. These are the basic objects parametrizing the hypergraph coloring problem.",
       "startLine": 22,
       "endLine": 1
     },
@@ -88,7 +88,7 @@
     },
     {
       "id": "lovasz",
-      "title": "Lovász's Theorem (1968): $c_2 = 1$",
+      "title": "Lov\u00e1sz's Theorem (1968): $c_2 = 1$",
       "summary": "Axiomatizes `lovasz_theorem`: for $t = 2$, if every set $X$ has fewer than $|X|$ family members as subsets, the family has property B. Derives `t2_case_solved` packaging this as an existential witness ($c = 1 > 0$). The only solved case of the conjecture.",
       "startLine": 126,
       "endLine": 1
@@ -96,7 +96,7 @@
     {
       "id": "hypergraph",
       "title": "Hypergraph Formulation",
-      "summary": "Defines `Hypergraph α` as an alias for `SetFamily α` and `hypergraphChromaticNumber` as `chromaticNumber`. Restates the conjecture as `erdos_1022_hypergraph` ($\\chi(H) \\le 2$). Proves `formulations_equiv` showing logical equivalence of the two viewpoints.",
+      "summary": "Defines `Hypergraph \u03b1` as an alias for `SetFamily \u03b1` and `hypergraphChromaticNumber` as `chromaticNumber`. Restates the conjecture as `erdos_1022_hypergraph` ($\\chi(H) \\le 2$). Proves `formulations_equiv` showing logical equivalence of the two viewpoints.",
       "startLine": 149,
       "endLine": 1
     },
@@ -123,88 +123,94 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1022 on property B for sparse set families in a ~250-line Lean file spanning 11 sections. The framework builds from `SetFamily` through property B, chromatic number, and sparseness to state the main conjecture ($c_t \\to \\infty$). Lovász's theorem ($c_2 = 1$) is axiomatized as the unique solved case. The dual hypergraph formulation is shown equivalent. Analysis includes necessary conditions, the probabilistic first-moment method, and the connection to cover-free families.",
-    "implications": "**Theoretical Significance**: This problem sits at a nexus of several major areas in combinatorics:\n\n1. **Hypergraph coloring theory**: Property B is the simplest case of hypergraph chromatic number theory. The Erdős-Hajnal conjecture on $\\chi(\\mathcal{F})$ for $t$-uniform families, the Lovász Local Lemma, and the Hales-Jewett theorem all connect to understanding when hypergraphs are $k$-colorable under structural constraints.\n\n2. **The probabilistic method and the Local Lemma**: The first-moment bound ($\\mathbb{E}[\\text{mono}] < 1 \\Rightarrow$ property B) is the simplest probabilistic tool. The Lovász Local Lemma (1975) extends this to handle dependencies: if each set $A$ shares elements with few other sets, a 2-coloring exists even when the expectation is large.\n\nThe sparseness condition in Problem #1022 is a global version of the dependency condition in the Local Lemma.\n\n3. **VC dimension and trace theory**: The sparseness condition bounds the 'trace' of $\\mathcal{F}$ on supersets. The Sauer-Shelah lemma bounds traces by VC dimension: a family with VC dimension $d$ has $|\\{A \\cap X : A \\in \\mathcal{F}\\}| \\le \\binom{|X|}{\\le d}$. While the subset-count condition in Problem #1022 is different (counting $A \\subseteq X$ rather than traces), the two are related through inclusion-exclusion.\n\n4. **Combinatorial group testing**: Cover-free families, which imply sparseness, are the mathematical foundation of non-adaptive group testing—identifying $d$ defective items among $n$ by pooling tests. The bound $r$-cover-free $\\Rightarrow$ $(r+1)$-sparse connects 2-colorability to testability.",
+    "summary": "This formalization captures Erd\u0151s Problem #1022 on property B for sparse set families in a ~250-line Lean file spanning 11 sections. The framework builds from `SetFamily` through property B, chromatic number, and sparseness to state the main conjecture ($c_t \\to \\infty$). Lov\u00e1sz's theorem ($c_2 = 1$) is axiomatized as the unique solved case. The dual hypergraph formulation is shown equivalent. Analysis includes necessary conditions, the probabilistic first-moment method, and the connection to cover-free families.",
+    "implications": "**Theoretical Significance**: This problem sits at a nexus of several major areas in combinatorics:\n\n1. **Hypergraph coloring theory**: Property B is the simplest case of hypergraph chromatic number theory. The Erd\u0151s-Hajnal conjecture on $\\chi(\\mathcal{F})$ for $t$-uniform families, the Lov\u00e1sz Local Lemma, and the Hales-Jewett theorem all connect to understanding when hypergraphs are $k$-colorable under structural constraints.\n\n2. **The probabilistic method and the Local Lemma**: The first-moment bound ($\\mathbb{E}[\\text{mono}] < 1 \\Rightarrow$ property B) is the simplest probabilistic tool. The Lov\u00e1sz Local Lemma (1975) extends this to handle dependencies: if each set $A$ shares elements with few other sets, a 2-coloring exists even when the expectation is large.\n\nThe sparseness condition in Problem #1022 is a global version of the dependency condition in the Local Lemma.\n\n3. **VC dimension and trace theory**: The sparseness condition bounds the 'trace' of $\\mathcal{F}$ on supersets. The Sauer-Shelah lemma bounds traces by VC dimension: a family with VC dimension $d$ has $|\\{A \\cap X : A \\in \\mathcal{F}\\}| \\le \\binom{|X|}{\\le d}$. While the subset-count condition in Problem #1022 is different (counting $A \\subseteq X$ rather than traces), the two are related through inclusion-exclusion.\n\n4. **Combinatorial group testing**: Cover-free families, which imply sparseness, are the mathematical foundation of non-adaptive group testing\u2014identifying $d$ defective items among $n$ by pooling tests. The bound $r$-cover-free $\\Rightarrow$ $(r+1)$-sparse connects 2-colorability to testability.",
     "openQuestions": [
-      "Does $c_t \\to \\infty$ as $t \\to \\infty$? This is the core of Problem #1022. Even showing $c_3 > 1$ (that the $t = 3$ threshold strictly exceeds Lovász's $t = 2$ threshold) would be significant progress.",
+      "Does $c_t \\to \\infty$ as $t \\to \\infty$? This is the core of Problem #1022. Even showing $c_3 > 1$ (that the $t = 3$ threshold strictly exceeds Lov\u00e1sz's $t = 2$ threshold) would be significant progress.",
       "If $c_t$ exists, what is its growth rate? Is $c_t = \\Theta(t)$, or does it grow more slowly (e.g., $c_t = \\Theta(\\log t)$)? The probabilistic first-moment bound suggests $c_t$ could grow exponentially in a complementary parameter, but no explicit bounds are known.",
-      "Can the Lovász Local Lemma (or its constructive versions, e.g., Moser-Tardos 2010) be applied to prove property B under the sparseness condition for general $t$? The sparseness condition controls the 'local density' of dependencies, which is precisely the setting where the Local Lemma is most effective.",
+      "Can the Lov\u00e1sz Local Lemma (or its constructive versions, e.g., Moser-Tardos 2010) be applied to prove property B under the sparseness condition for general $t$? The sparseness condition controls the 'local density' of dependencies, which is precisely the setting where the Local Lemma is most effective.",
       "What is the relationship between the sparseness condition and VC dimension? If $\\mathcal{F}$ has bounded VC dimension $d$, can one derive sparseness bounds and hence property B? The Sauer-Shelah lemma gives $|\\text{trace}| \\le \\binom{n}{\\le d}$, which is polynomial in $|X|$.",
       "Are there constructions giving lower bounds on $c_t$? That is, for each $t$, what is the densest family of $t$-sets (in the subset-count sense) that still fails property B? Such constructions would complement any positive resolution of the conjecture."
     ]
   },
   "crossReferences": [
     {
-      "target": "prob-method-lovasz-local",
-      "relationship": "The Lovász Local Lemma (1975) is the direct probabilistic successor to the sparseness condition in Problem #1022. The LLL proves property B when each hyperedge shares elements with few others; Problem #1022 asks whether a global subset-density bound (sparseness) likewise guarantees property B. The two conditions are formally related: sparseness bounds the expected number of 'bad' monochromatic events, while the LLL handles dependent bad events explicitly."
+      "relationship": "related",
+      "targetId": "prob-method-lovasz-local",
+      "description": "The Lov\u00e1sz Local Lemma (1975) is the direct probabilistic successor to the sparseness condition in Problem #1022. The LLL proves property B when each hyperedge shares elements with few others; Problem #1022 asks whether a global subset-density bound (sparseness) likewise guarantees property B. The two conditions are formally related: sparseness bounds the expected number of 'bad' monochromatic events, while the LLL handles dependent bad events explicitly."
     },
     {
-      "target": "prob-method-applications",
-      "relationship": "This library demonstrates the classical applications of the probabilistic method, including the Erdős (1963) first-moment proof that families of t-sets with fewer than 2^{t-1} members have property B — the global-size predecessor to Problem #1022's local-density (sparseness) condition. Property B is one of the canonical showcases for the probabilistic method."
+      "relationship": "related",
+      "targetId": "prob-method-applications",
+      "description": "This library demonstrates the classical applications of the probabilistic method, including the Erd\u0151s (1963) first-moment proof that families of t-sets with fewer than 2^{t-1} members have property B \u2014 the global-size predecessor to Problem #1022's local-density (sparseness) condition. Property B is one of the canonical showcases for the probabilistic method."
     },
     {
-      "target": "erdos-836",
-      "relationship": "Erdős Problem #836 studies intersecting hypergraphs with chromatic number 3, citing the Erdős-Lovász (1975) paper that established the Lovász Local Lemma. The bound ≫ r/log r on edge intersections comes from an early LLL application. Problem #1022 was posed in the same 1968–1975 period by Erdős and Lovász and sits in the same circle of hypergraph coloring questions."
+      "relationship": "related",
+      "targetId": "erdos-836",
+      "description": "Erd\u0151s Problem #836 studies intersecting hypergraphs with chromatic number 3, citing the Erd\u0151s-Lov\u00e1sz (1975) paper that established the Lov\u00e1sz Local Lemma. The bound \u226b r/log r on edge intersections comes from an early LLL application. Problem #1022 was posed in the same 1968\u20131975 period by Erd\u0151s and Lov\u00e1sz and sits in the same circle of hypergraph coloring questions."
     },
     {
-      "target": "erdos-1020",
-      "relationship": "The Erdős Matching Conjecture (Problem #1020) is a parallel r-uniform hypergraph extremal problem: bounding the maximum number of edges in a hypergraph with no k independent edges. Both problems impose structural constraints on set families — matching-freeness versus sparseness — and both are open for r ≥ 4, reflecting the difficulty of r-uniform hypergraph combinatorics."
+      "relationship": "related",
+      "targetId": "erdos-1020",
+      "description": "The Erd\u0151s Matching Conjecture (Problem #1020) is a parallel r-uniform hypergraph extremal problem: bounding the maximum number of edges in a hypergraph with no k independent edges. Both problems impose structural constraints on set families \u2014 matching-freeness versus sparseness \u2014 and both are open for r \u2265 4, reflecting the difficulty of r-uniform hypergraph combinatorics."
     },
     {
-      "target": "erdos-1023",
-      "relationship": "Problem #1023 on union-free families is complementary: it asks how large a set family can be if no member is the union of others (a 'union-free' condition). Both problems constrain set families via inclusion/union structure. Problem #1022's sparseness bounds the number of sub-family members inside any superset; #1023 forbids unions entirely. The solved answer F(n) = C(n,n/2) for #1023 contrasts with the open status of #1022."
+      "relationship": "related",
+      "targetId": "erdos-1023",
+      "description": "Problem #1023 on union-free families is complementary: it asks how large a set family can be if no member is the union of others (a 'union-free' condition). Both problems constrain set families via inclusion/union structure. Problem #1022's sparseness bounds the number of sub-family members inside any superset; #1023 forbids unions entirely. The solved answer F(n) = C(n,n/2) for #1023 contrasts with the open status of #1022."
     },
     {
-      "target": "erdos-562",
-      "relationship": "Problem #562 on hypergraph Ramsey tower growth concerns r-uniform hypergraph Ramsey numbers, where r-colorings of complete hypergraphs are forced to contain monochromatic cliques. The tower-growth phenomenon arises from the difficulty of r-uniform hypergraph coloring, the same difficulty underlying Problem #1022's open cases for t ≥ 3."
+      "relationship": "related",
+      "targetId": "erdos-562",
+      "description": "Problem #562 on hypergraph Ramsey tower growth concerns r-uniform hypergraph Ramsey numbers, where r-colorings of complete hypergraphs are forced to contain monochromatic cliques. The tower-growth phenomenon arises from the difficulty of r-uniform hypergraph coloring, the same difficulty underlying Problem #1022's open cases for t \u2265 3."
     }
   ],
   "relatedProofs": [
     {
       "target": "prob-method-lovasz-local",
-      "description": "The Lovász Local Lemma formalizes the dependency-controlled probabilistic argument that is the natural tool for proving property B under sparseness conditions."
+      "description": "The Lov\u00e1sz Local Lemma formalizes the dependency-controlled probabilistic argument that is the natural tool for proving property B under sparseness conditions."
     },
     {
       "target": "prob-method-applications",
-      "description": "Formalizes the classical first-moment probabilistic proof of property B for t-uniform families with fewer than 2^{t-1} sets — the global-count predecessor to Problem #1022's local sparseness condition."
+      "description": "Formalizes the classical first-moment probabilistic proof of property B for t-uniform families with fewer than 2^{t-1} sets \u2014 the global-count predecessor to Problem #1022's local sparseness condition."
     },
     {
       "target": "erdos-836",
-      "description": "Uses the Erdős-Lovász 1975 Local Lemma in the context of intersecting hypergraphs with chromatic number 3, directly linking to the circle of results around Problem #1022."
+      "description": "Uses the Erd\u0151s-Lov\u00e1sz 1975 Local Lemma in the context of intersecting hypergraphs with chromatic number 3, directly linking to the circle of results around Problem #1022."
     }
   ],
   "references": [
     {
       "authors": [
-        "P. Erdős",
-        "L. Lovász"
+        "P. Erd\u0151s",
+        "L. Lov\u00e1sz"
       ],
       "title": "Problems and Results on 3-Chromatic Hypergraphs and Some Related Questions",
       "venue": "Infinite and Finite Sets (Colloq. Math. Soc. J. Bolyai, Vol. 10)",
       "year": 1975,
-      "pages": "609–627",
-      "note": "Introduces the Lovász Local Lemma and applies it to hypergraph coloring; the paper in which the Erdős-Lovász collaboration on property B and related problems (including #1022) is most fully developed."
+      "pages": "609\u2013627",
+      "note": "Introduces the Lov\u00e1sz Local Lemma and applies it to hypergraph coloring; the paper in which the Erd\u0151s-Lov\u00e1sz collaboration on property B and related problems (including #1022) is most fully developed."
     },
     {
       "authors": [
-        "L. Lovász"
+        "L. Lov\u00e1sz"
       ],
       "title": "Coverings and Colorings of Hypergraphs",
       "venue": "Proceedings of the 4th Southeastern Conference on Combinatorics, Graph Theory and Computing",
       "year": 1973,
-      "pages": "3–12",
-      "note": "Contains Lovász's proof of the t=2 case (c_2 = 1) of Problem #1022: a sparse family of 2-sets has property B. The only solved case of the conjecture."
+      "pages": "3\u201312",
+      "note": "Contains Lov\u00e1sz's proof of the t=2 case (c_2 = 1) of Problem #1022: a sparse family of 2-sets has property B. The only solved case of the conjecture."
     },
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "On a Combinatorial Problem",
       "venue": "Nordisk Mat. Tidskr.",
       "year": 1963,
       "volume": 11,
-      "pages": "5–10",
-      "note": "Erdős's original probabilistic proof that families of t-sets with fewer than 2^{t-1} members have property B; establishes the probabilistic method approach that underlies the conjecture in Problem #1022."
+      "pages": "5\u201310",
+      "note": "Erd\u0151s's original probabilistic proof that families of t-sets with fewer than 2^{t-1} members have property B; establishes the probabilistic method approach that underlies the conjecture in Problem #1022."
     },
     {
       "authors": [
@@ -215,7 +221,7 @@
       "venue": "John Wiley & Sons",
       "edition": "4th",
       "year": 2016,
-      "note": "Standard reference for the probabilistic method in combinatorics. Chapter 15 covers the Lovász Local Lemma; Chapter 3 covers property B and hypergraph 2-colorability, including the first-moment argument and its relation to sparseness conditions."
+      "note": "Standard reference for the probabilistic method in combinatorics. Chapter 15 covers the Lov\u00e1sz Local Lemma; Chapter 3 covers property B and hypergraph 2-colorability, including the first-moment argument and its relation to sparseness conditions."
     },
     {
       "authors": [

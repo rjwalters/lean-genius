@@ -1,8 +1,8 @@
 {
   "id": "erdos-1008",
-  "title": "Erdős Problem #1008: C₄-Free Subgraphs",
+  "title": "Erd\u0151s Problem #1008: C\u2084-Free Subgraphs",
   "slug": "erdos-1008",
-  "description": "Does every graph with m edges contain a C₄-free subgraph with ≫ m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n²}.",
+  "description": "Does every graph with m edges contain a C\u2084-free subgraph with \u226b m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n\u00b2}.",
   "meta": {
     "author": "Conlon-Fox-Sudakov (2014)",
     "sourceUrl": "https://erdosproblems.com/1008",
@@ -27,16 +27,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "This problem was originally posed by Bollobás and Erdős at the 1966 Tihany graph theory colloquium in Hungary, asking whether every m-edge graph contains a C₄-free subgraph with ≫ m^{3/4} edges. Folkman quickly disproved this using the bipartite graph K_{n,n²}: it has n³ edges but every C₄-free subgraph has only O(n²) = O(m^{2/3}) edges, by the Kővári-Sós-Turán theorem. Erdős revised the conjecture to exponent 2/3 in 1971, noting that the trivial bound m^{1/2} follows easily from Kővári-Sós-Turán. He mentioned that Szemerédi had proved the 2/3 bound but gave no published reference. The problem remained formally open until Conlon, Fox, and Sudakov proved it in their 2014 paper using dependent random choice, a powerful probabilistic technique developed in the 2000s. A simpler proof was later given by Hunter. The result fits into the broader program of understanding Turán-type and Zarankiewicz-type problems: how dense can a graph be while avoiding a fixed forbidden subgraph? The C₄ case is special because C₄ = K_{2,2}, linking cycle-free conditions to bipartite Ramsey theory.",
-    "problemStatement": "Does every graph with m edges contain a subgraph with ≫ m^{2/3} edges which contains no C₄ (4-cycle)?",
-    "text": "Does every graph with m edges contain a C₄-free subgraph with ≫ m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n²}.",
-    "proofStrategy": "Conlon, Fox, and Sudakov (2014) proved the result using dependent random choice and the Kővári-Sós-Turán theorem. The idea is to randomly select vertices, consider common neighborhoods, and show the induced subgraph avoids 4-cycles while retaining many edges. The formalization axiomatizes this result along with Folkman's counterexample, the trivial √m bound, and the K_{s,t} generalization.",
+    "historicalContext": "This problem was originally posed by Bollob\u00e1s and Erd\u0151s at the 1966 Tihany graph theory colloquium in Hungary, asking whether every m-edge graph contains a C\u2084-free subgraph with \u226b m^{3/4} edges. Folkman quickly disproved this using the bipartite graph K_{n,n\u00b2}: it has n\u00b3 edges but every C\u2084-free subgraph has only O(n\u00b2) = O(m^{2/3}) edges, by the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem. Erd\u0151s revised the conjecture to exponent 2/3 in 1971, noting that the trivial bound m^{1/2} follows easily from K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n. He mentioned that Szemer\u00e9di had proved the 2/3 bound but gave no published reference. The problem remained formally open until Conlon, Fox, and Sudakov proved it in their 2014 paper using dependent random choice, a powerful probabilistic technique developed in the 2000s. A simpler proof was later given by Hunter. The result fits into the broader program of understanding Tur\u00e1n-type and Zarankiewicz-type problems: how dense can a graph be while avoiding a fixed forbidden subgraph? The C\u2084 case is special because C\u2084 = K_{2,2}, linking cycle-free conditions to bipartite Ramsey theory.",
+    "problemStatement": "Does every graph with m edges contain a subgraph with \u226b m^{2/3} edges which contains no C\u2084 (4-cycle)?",
+    "text": "Does every graph with m edges contain a C\u2084-free subgraph with \u226b m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n\u00b2}.",
+    "proofStrategy": "Conlon, Fox, and Sudakov (2014) proved the result using dependent random choice and the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem. The idea is to randomly select vertices, consider common neighborhoods, and show the induced subgraph avoids 4-cycles while retaining many edges. The formalization axiomatizes this result along with Folkman's counterexample, the trivial \u221am bound, and the K_{s,t} generalization.",
     "keyInsights": [
-      "**C₄ = K_{2,2}:** The 4-cycle is the smallest complete bipartite graph, making C₄-freeness equivalent to K_{2,2}-freeness and connecting to the Zarankiewicz problem",
-      "**Folkman's Optimality Proof:** K_{n,n²} has m = n³ edges but only O(n²) = O(m^{2/3}) edges in any C₄-free subgraph, proving the exponent 2/3 cannot be improved",
-      "**Dependent Random Choice:** The Conlon-Fox-Sudakov proof selects a random vertex set S, takes common neighborhoods, and uses the probabilistic method to find a large C₄-free subgraph",
-      "**Zarankiewicz Generalization:** The result extends to K_{s,t}-free subgraphs with exponent 1-1/s, where the C₄ case is s=t=2",
-      "**Exponent Landscape:** 1/2 (trivial via Kővári-Sós-Turán) → 2/3 (optimal, Conlon-Fox-Sudakov) → 3/4 (impossible, Folkman)"
+      "**C\u2084 = K_{2,2}:** The 4-cycle is the smallest complete bipartite graph, making C\u2084-freeness equivalent to K_{2,2}-freeness and connecting to the Zarankiewicz problem",
+      "**Folkman's Optimality Proof:** K_{n,n\u00b2} has m = n\u00b3 edges but only O(n\u00b2) = O(m^{2/3}) edges in any C\u2084-free subgraph, proving the exponent 2/3 cannot be improved",
+      "**Dependent Random Choice:** The Conlon-Fox-Sudakov proof selects a random vertex set S, takes common neighborhoods, and uses the probabilistic method to find a large C\u2084-free subgraph",
+      "**Zarankiewicz Generalization:** The result extends to K_{s,t}-free subgraphs with exponent 1-1/s, where the C\u2084 case is s=t=2",
+      "**Exponent Landscape:** 1/2 (trivial via K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n) \u2192 2/3 (optimal, Conlon-Fox-Sudakov) \u2192 3/4 (impossible, Folkman)"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -53,8 +53,8 @@
     },
     {
       "id": "c4-definition",
-      "title": "4-Cycles and C₄-Freeness",
-      "summary": "hasC4 (4-cycle detection) and isC4Free predicates; C₄ = K_{2,2}",
+      "title": "4-Cycles and C\u2084-Freeness",
+      "summary": "hasC4 (4-cycle detection) and isC4Free predicates; C\u2084 = K_{2,2}",
       "startLine": 45,
       "endLine": 1
     },
@@ -68,21 +68,21 @@
     {
       "id": "trivial-bound",
       "title": "Trivial Bound: m^{1/2}",
-      "summary": "The easy Ω(√m) bound via Kővári-Sós-Turán and greedy deletion",
+      "summary": "The easy \u03a9(\u221am) bound via K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n and greedy deletion",
       "startLine": 71,
       "endLine": 1
     },
     {
       "id": "folkman",
       "title": "Folkman's Counterexample",
-      "summary": "K_{n,n²} disproves m^{3/4} and proves optimality of 2/3 exponent",
+      "summary": "K_{n,n\u00b2} disproves m^{3/4} and proves optimality of 2/3 exponent",
       "startLine": 88,
       "endLine": 1
     },
     {
       "id": "main-result",
       "title": "Main Result: m^{2/3}",
-      "summary": "Conlon-Fox-Sudakov theorem: Ω(m^{2/3}) C₄-free edges always exist",
+      "summary": "Conlon-Fox-Sudakov theorem: \u03a9(m^{2/3}) C\u2084-free edges always exist",
       "startLine": 104,
       "endLine": 1
     },
@@ -95,31 +95,31 @@
     }
   ],
   "conclusion": {
-    "summary": "Every graph with m edges contains a C₄-free subgraph with Ω(m^{2/3}) edges, proved by Conlon-Fox-Sudakov (2014) using dependent random choice. The exponent 2/3 is optimal, matching Folkman's upper bound from K_{n,n²}. The result generalizes to K_{s,t}-free subgraphs with exponent 1-1/s, connecting to the classical Zarankiewicz problem.",
+    "summary": "Every graph with m edges contains a C\u2084-free subgraph with \u03a9(m^{2/3}) edges, proved by Conlon-Fox-Sudakov (2014) using dependent random choice. The exponent 2/3 is optimal, matching Folkman's upper bound from K_{n,n\u00b2}. The result generalizes to K_{s,t}-free subgraphs with exponent 1-1/s, connecting to the classical Zarankiewicz problem.",
     "implications": "**Theoretical Significance**: This result exemplifies the power of dependent random choice in extremal combinatorics. It shows that even dense graphs contain large sparse (forbidden-subgraph-free) subgraphs, with tight bounds.\n\nThe technique has applications in additive combinatorics, theoretical computer science (graph sparsification), and Ramsey theory. The Zarankiewicz-type generalization provides a unified framework for understanding how different forbidden subgraphs control the density of extractable subgraphs.",
     "openQuestions": [
-      "What are the optimal constants in the Ω(m^{2/3}) bound?",
+      "What are the optimal constants in the \u03a9(m^{2/3}) bound?",
       "Can such subgraphs be found algorithmically in polynomial time?",
-      "What happens for odd cycle-freeness (C₅, C₇, ...) instead of C₄?",
+      "What happens for odd cycle-freeness (C\u2085, C\u2087, ...) instead of C\u2084?",
       "Can the K_{s,t} generalization be extended to non-bipartite forbidden graphs?",
-      "What is the weighted version: maximize edge-weight sum in a C₄-free subgraph?"
+      "What is the weighted version: maximize edge-weight sum in a C\u2084-free subgraph?"
     ]
   },
   "crossReferences": [
     {
-      "id": "erdos-1009",
       "relationship": "related",
-      "description": "Erdős #1009 (edge-disjoint triangles beyond Turán) studies related extremal graph questions about finding structured subgraphs in dense graphs."
+      "description": "Erd\u0151s #1009 (edge-disjoint triangles beyond Tur\u00e1n) studies related extremal graph questions about finding structured subgraphs in dense graphs.",
+      "targetId": "erdos-1009"
     },
     {
-      "id": "erdos-613",
       "relationship": "related",
-      "description": "Erdős #613 (graph decomposition and size Ramsey numbers) connects to the problem of partitioning graphs into forbidden-subgraph-free pieces."
+      "description": "Erd\u0151s #613 (graph decomposition and size Ramsey numbers) connects to the problem of partitioning graphs into forbidden-subgraph-free pieces.",
+      "targetId": "erdos-613"
     },
     {
-      "id": "erdos-1006",
       "relationship": "related",
-      "description": "Erdős #1006 (robust acyclic orientations) uses the probabilistic method in graph theory, sharing the dependent random choice technique."
+      "description": "Erd\u0151s #1006 (robust acyclic orientations) uses the probabilistic method in graph theory, sharing the dependent random choice technique.",
+      "targetId": "erdos-1006"
     }
   ],
   "relatedProofs": [

@@ -1,10 +1,10 @@
 {
   "id": "erdos-193",
-  "title": "Erdős Problem #193: Collinear Points in Lattice Walks",
+  "title": "Erd\u0151s Problem #193: Collinear Points in Lattice Walks",
   "slug": "erdos-193",
-  "description": "Let S ⊆ ℤ³ be a finite step set and A an infinite S-walk in ℤ³. Must A contain three collinear points? Proved for ℤ² by Gerver–Ramsey; the ℤ³ case remains open.",
+  "description": "Let S \u2286 \u2124\u00b3 be a finite step set and A an infinite S-walk in \u2124\u00b3. Must A contain three collinear points? Proved for \u2124\u00b2 by Gerver\u2013Ramsey; the \u2124\u00b3 case remains open.",
   "meta": {
-    "author": "Gerver–Ramsey (attributed by Erdős)",
+    "author": "Gerver\u2013Ramsey (attributed by Erd\u0151s)",
     "sourceUrl": "https://erdosproblems.com/193",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos193Problem.lean",
@@ -25,16 +25,16 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Joseph Gerver and L. Thomas Ramsey posed this problem in 1979 while studying self-avoiding walks on integer lattices with bounded step sets. They proved that in $\\mathbb{Z}^2$, every infinite injective $S$-walk must contain three collinear points, using a pigeonhole argument on the finitely many directions determined by the step set. The argument exploits the fact that in two dimensions, finitely many step directions constrain visited points to finitely many slopes from the origin, forcing three points to lie on a common line. Erdős recorded the problem and highlighted the open three-dimensional case, where the vastly larger direction space ($S^2$ vs. $S^1$) prevents the same pigeonhole approach. The problem connects to broader questions about unavoidable geometric patterns in discrete walks, a theme running through Erdős's work on combinatorial geometry from the 1970s onward. The 3D case has resisted all approaches for over 40 years and remains one of the most accessible yet stubbornly open problems in lattice combinatorics.",
+    "historicalContext": "Joseph Gerver and L. Thomas Ramsey posed this problem in 1979 while studying self-avoiding walks on integer lattices with bounded step sets. They proved that in $\\mathbb{Z}^2$, every infinite injective $S$-walk must contain three collinear points, using a pigeonhole argument on the finitely many directions determined by the step set. The argument exploits the fact that in two dimensions, finitely many step directions constrain visited points to finitely many slopes from the origin, forcing three points to lie on a common line. Erd\u0151s recorded the problem and highlighted the open three-dimensional case, where the vastly larger direction space ($S^2$ vs. $S^1$) prevents the same pigeonhole approach. The problem connects to broader questions about unavoidable geometric patterns in discrete walks, a theme running through Erd\u0151s's work on combinatorial geometry from the 1970s onward. The 3D case has resisted all approaches for over 40 years and remains one of the most accessible yet stubbornly open problems in lattice combinatorics.",
     "problemStatement": "Given a finite set $S \\subseteq \\mathbb{Z}^3$ and an infinite injective $S$-walk $w: \\mathbb{N} \\to \\mathbb{Z}^3$ with $w(i+1) - w(i) \\in S$ for all $i$, must $w$ contain three collinear points $w(i), w(j), w(k)$ with $i < j < k$?",
-    "text": "Let S ⊆ ℤ³ be a finite step set and A an infinite S-walk in ℤ³. Must A contain three collinear points? Proved for ℤ² by Gerver–Ramsey; the ℤ³ case remains open.",
-    "proofStrategy": "The formalization defines lattice points as $\\text{Fin}\\,d \\to \\mathbb{Z}$ (dimension-generic), step walks via membership $w(i+1) - w(i) \\in S$, and collinearity via integer parallelism: $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq (0,0), \\forall j: a(q_j - p_j) = b(r_j - p_j)$. The open 3D conjecture and the known Gerver–Ramsey 2D result are stated as axioms. Basic collinearity properties (reflexivity, symmetry, constant-walk degeneracy) are proved to validate the definition.",
+    "text": "Let S \u2286 \u2124\u00b3 be a finite step set and A an infinite S-walk in \u2124\u00b3. Must A contain three collinear points? Proved for \u2124\u00b2 by Gerver\u2013Ramsey; the \u2124\u00b3 case remains open.",
+    "proofStrategy": "The formalization defines lattice points as $\\text{Fin}\\,d \\to \\mathbb{Z}$ (dimension-generic), step walks via membership $w(i+1) - w(i) \\in S$, and collinearity via integer parallelism: $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq (0,0), \\forall j: a(q_j - p_j) = b(r_j - p_j)$. The open 3D conjecture and the known Gerver\u2013Ramsey 2D result are stated as axioms. Basic collinearity properties (reflexivity, symmetry, constant-walk degeneracy) are proved to validate the definition.",
     "keyInsights": [
-      "**Gerver–Ramsey (1979)**: In $\\mathbb{Z}^2$, every infinite injective $S$-walk contains three collinear points, proved via pigeonhole on the finitely many step directions",
+      "**Gerver\u2013Ramsey (1979)**: In $\\mathbb{Z}^2$, every infinite injective $S$-walk contains three collinear points, proved via pigeonhole on the finitely many step directions",
       "**Dimension gap**: The 2D proof relies on slopes lying in $\\mathbb{P}^1(\\mathbb{Q})$ with finitely many values; in 3D, directions lie in $\\mathbb{P}^2(\\mathbb{Q})$ and the pigeonhole argument fails",
       "**Integer parallelism**: Collinearity is formalized as $a(q-p) = b(r-p)$ coordinatewise, the integer analogue of the cross product condition $(q-p) \\times (r-p) = 0$",
-      "**Injectivity is essential**: Without requiring $w$ to be injective, any walk revisiting a point gives a trivially collinear triple — the problem is non-trivial only for self-avoiding walks",
-      "**Finite step set constraint**: The finiteness of $S$ ensures that asymptotically, the walk cannot escape to infinity fast enough to avoid all collinear configurations — but proving this in 3D remains open"
+      "**Injectivity is essential**: Without requiring $w$ to be injective, any walk revisiting a point gives a trivially collinear triple \u2014 the problem is non-trivial only for self-avoiding walks",
+      "**Finite step set constraint**: The finiteness of $S$ ensures that asymptotically, the walk cannot escape to infinity fast enough to avoid all collinear configurations \u2014 but proving this in 3D remains open"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -55,7 +55,7 @@
       "title": "Lattice Points and Walks",
       "startLine": 20,
       "endLine": 27,
-      "summary": "Defines $\\text{LatticePoint}\\,d = \\text{Fin}\\,d \\to \\mathbb{Z}$, $\\text{Walk}\\,d = \\mathbb{N} \\to \\mathbb{Z}^d$, and $\\text{StepSet}\\,d = \\text{Finset}(\\mathbb{Z}^d)$ — dimension-generic setup."
+      "summary": "Defines $\\text{LatticePoint}\\,d = \\text{Fin}\\,d \\to \\mathbb{Z}$, $\\text{Walk}\\,d = \\mathbb{N} \\to \\mathbb{Z}^d$, and $\\text{StepSet}\\,d = \\text{Finset}(\\mathbb{Z}^d)$ \u2014 dimension-generic setup."
     },
     {
       "id": "step-walk",
@@ -69,7 +69,7 @@
       "title": "Collinearity via Integer Parallelism",
       "startLine": 39,
       "endLine": 44,
-      "summary": "Defines AreCollinear$(p, q, r)$ via $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq 0, \\forall j: a(q_j - p_j) = b(r_j - p_j)$ — the integer cross product condition."
+      "summary": "Defines AreCollinear$(p, q, r)$ via $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq 0, \\forall j: a(q_j - p_j) = b(r_j - p_j)$ \u2014 the integer cross product condition."
     },
     {
       "id": "three-collinear",
@@ -87,7 +87,7 @@
     },
     {
       "id": "gerver-ramsey",
-      "title": "Gerver–Ramsey Theorem (ℤ² Case)",
+      "title": "Gerver\u2013Ramsey Theorem (\u2124\u00b2 Case)",
       "startLine": 61,
       "endLine": 65,
       "summary": "The known 2D result: every infinite injective $S$-walk in $\\mathbb{Z}^2$ contains three collinear points. Proved by pigeonhole on step directions."
@@ -97,17 +97,17 @@
       "title": "Basic Collinearity Properties",
       "startLine": 69,
       "endLine": 80,
-      "summary": "Proves collinearity reflexivity (via `ring`), axiomatizes symmetry in the outer points, and derives collinearity for constant walks — validating the definition and motivating injectivity."
+      "summary": "Proves collinearity reflexivity (via `ring`), axiomatizes symmetry in the outer points, and derives collinearity for constant walks \u2014 validating the definition and motivating injectivity."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 193 — the question of whether infinite injective lattice walks in $\\mathbb{Z}^3$ must contain three collinear points. It records the known Gerver–Ramsey 2D result, formalizes collinearity via integer parallelism, and proves basic structural properties of the collinearity relation.",
+    "summary": "The formalization captures Erd\u0151s Problem 193 \u2014 the question of whether infinite injective lattice walks in $\\mathbb{Z}^3$ must contain three collinear points. It records the known Gerver\u2013Ramsey 2D result, formalizes collinearity via integer parallelism, and proves basic structural properties of the collinearity relation.",
     "implications": "Resolution would illuminate the geometric structure of self-avoiding walks on three-dimensional lattices and establish new bounds on unavoidable linear patterns in discrete geometry. The dimension gap between $d = 2$ (resolved) and $d = 3$ (open) highlights a fundamental threshold in combinatorial geometry.",
     "openQuestions": [
       "Does every infinite injective $S$-walk in $\\mathbb{Z}^3$ contain three collinear points?",
       "What is the maximum walk length before three collinear points must appear as a function of $|S|$?",
       "Does the result extend to $\\mathbb{Z}^d$ for all $d \\geq 3$, or is there a dimension threshold?",
-      "Can the Gerver–Ramsey pigeonhole argument be generalized using higher-dimensional direction counting?"
+      "Can the Gerver\u2013Ramsey pigeonhole argument be generalized using higher-dimensional direction counting?"
     ]
   },
   "leanFile": {
@@ -122,5 +122,39 @@
     "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-589",
+      "relationship": "related",
+      "description": "Share collinearity and combinatorial themes"
+    },
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "related",
+      "description": "Share collinearity and geometric themes"
+    },
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-589",
+    "pascals-hexagon",
+    "dissection-of-cubes",
+    "erdos-1086",
+    "erdos-1090"
+  ]
 }

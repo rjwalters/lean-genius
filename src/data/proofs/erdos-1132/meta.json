@@ -1,10 +1,10 @@
 {
   "id": "erdos-1132",
-  "title": "Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions",
+  "title": "Erd\u0151s Problem #1132: Lagrange Interpolation and Lebesgue Functions",
   "slug": "erdos-1132",
-  "description": "Two open questions about Lebesgue functions Lₙ(x) for infinite node sequences: must there exist x with large Lₙ(x) infinitely often, and is the growth property satisfied almost everywhere?",
+  "description": "Two open questions about Lebesgue functions L\u2099(x) for infinite node sequences: must there exist x with large L\u2099(x) infinitely often, and is the growth property satisfied almost everywhere?",
   "meta": {
-    "author": "Erdős (1967 problem), Bernstein (1931), Erdős (1961)",
+    "author": "Erd\u0151s (1967 problem), Bernstein (1931), Erd\u0151s (1961)",
     "sourceUrl": "https://erdosproblems.com/1132",
     "date": "1967",
     "status": "axiomatized",
@@ -53,16 +53,16 @@
     ],
     "originalContributions": [
       "lagrangeBasis definition: Lagrange basis polynomials",
-      "lebesgueFunction definition: Lₙ(x) = Σₖ |lₖ(x)|",
-      "lebesgueConstant definition: Λₙ = max Lₙ(x)",
+      "lebesgueFunction definition: L\u2099(x) = \u03a3\u2096 |l\u2096(x)|",
+      "lebesgueConstant definition: \u039b\u2099 = max L\u2099(x)",
       "chebyshevNodes definition: optimal interpolation nodes",
       "equidistantNodes definition: equally spaced nodes",
       "InfiniteNodeSequence type: sequences in [-1,1]",
-      "existsGoodPoint predicate: Erdős Question 1",
-      "almostEverywhereGrowth predicate: Erdős Question 2",
+      "existsGoodPoint predicate: Erd\u0151s Question 1",
+      "almostEverywhereGrowth predicate: Erd\u0151s Question 2",
       "denseGoodPoints predicate: Bernstein's result",
       "bernstein_density_theorem: dense good points",
-      "erdos_lower_bound: (2/π)log(n) lower bound",
+      "erdos_lower_bound: (2/\u03c0)log(n) lower bound",
       "erdos_max_theorem: maximum exceeds threshold"
     ],
     "axiomCount": 9,
@@ -70,15 +70,15 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1132: Lebesgue Functions in Polynomial Interpolation**\n\nThis problem concerns the Lebesgue function Lₙ(x), a fundamental quantity in polynomial interpolation theory. For any set of nodes x₁,...,xₙ, the Lebesgue function measures how much the Lagrange interpolation can magnify errors.\n\n**Key History:**\n- Bernstein (1931): Proved that 'good' points are dense in (-1,1)\n- Erdős (1961): Proved the maximum of Lₙ always exceeds (2/π)log(n) - O(1)\n- Erdős (1967): Posed the two questions in this problem\n\n**Mathematical Context:**\nThe Lebesgue function Lₙ(x) = Σₖ |lₖ(x)| where lₖ are Lagrange basis polynomials controls interpolation error. For Chebyshev nodes, Λₙ ~ (2/π)log(n), which is optimal. The questions ask whether this growth rate is achieved at fixed points (not just at the maximum) for infinite node sequences.",
-    "problemStatement": "**Problem Statement (Open)**\n\nFor an infinite sequence $x_1, x_2, \\ldots \\in [-1,1]$, define the Lebesgue function:\n$$L_n(x) = \\sum_{k=1}^n |l_k(x)|$$\nwhere $l_k$ are the Lagrange basis polynomials for $x_1, \\ldots, x_n$.\n\n**Question 1:** Must there exist $x \\in (-1,1)$ such that $L_n(x) > \\frac{2}{\\pi}\\log n - O(1)$ for infinitely many $n$?\n\n**Question 2:** Is $\\limsup_{n\\to\\infty} \\frac{L_n(x)}{\\log n} \\geq \\frac{2}{\\pi}$ for almost all $x \\in (-1,1)$?\n\n**Status: OPEN**\n\nWe know:\n- The 'good' points are **dense** (Bernstein 1931)\n- The **maximum** always exceeds the threshold (Erdős 1961)\n\nThe gap between 'dense' and 'almost everywhere' remains unresolved.",
-    "text": "Two open questions about Lebesgue functions Lₙ(x) for infinite node sequences: must there exist x with large Lₙ(x) infinitely often, and is the growth property satisfied almost everywhere?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Lagrange Basis:** Define the basis polynomials lₖ(x) satisfying lₖ(xₖ)=1 and lₖ(xᵢ)=0 for i≠k\n\n2. **Lebesgue Function:** Define Lₙ(x) = Σₖ |lₖ(x)| measuring interpolation error amplification\n\n3. **Lebesgue Constant:** Define Λₙ = max Lₙ(x) and state the (2/π)log(n) growth bounds\n\n4. **Infinite Sequences:** Define InfiniteNodeSequence type for sequences in [-1,1]\n\n5. **Open Questions:** Formally state the existence and almost-everywhere questions\n\n6. **Partial Results:** Formalize Bernstein's density theorem and Erdős's maximum bound\n\n7. **Status:** Record that both questions remain open",
+    "historicalContext": "**Erd\u0151s Problem #1132: Lebesgue Functions in Polynomial Interpolation**\n\nThis problem concerns the Lebesgue function L\u2099(x), a fundamental quantity in polynomial interpolation theory. For any set of nodes x\u2081,...,x\u2099, the Lebesgue function measures how much the Lagrange interpolation can magnify errors.\n\n**Key History:**\n- Bernstein (1931): Proved that 'good' points are dense in (-1,1)\n- Erd\u0151s (1961): Proved the maximum of L\u2099 always exceeds (2/\u03c0)log(n) - O(1)\n- Erd\u0151s (1967): Posed the two questions in this problem\n\n**Mathematical Context:**\nThe Lebesgue function L\u2099(x) = \u03a3\u2096 |l\u2096(x)| where l\u2096 are Lagrange basis polynomials controls interpolation error. For Chebyshev nodes, \u039b\u2099 ~ (2/\u03c0)log(n), which is optimal. The questions ask whether this growth rate is achieved at fixed points (not just at the maximum) for infinite node sequences.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFor an infinite sequence $x_1, x_2, \\ldots \\in [-1,1]$, define the Lebesgue function:\n$$L_n(x) = \\sum_{k=1}^n |l_k(x)|$$\nwhere $l_k$ are the Lagrange basis polynomials for $x_1, \\ldots, x_n$.\n\n**Question 1:** Must there exist $x \\in (-1,1)$ such that $L_n(x) > \\frac{2}{\\pi}\\log n - O(1)$ for infinitely many $n$?\n\n**Question 2:** Is $\\limsup_{n\\to\\infty} \\frac{L_n(x)}{\\log n} \\geq \\frac{2}{\\pi}$ for almost all $x \\in (-1,1)$?\n\n**Status: OPEN**\n\nWe know:\n- The 'good' points are **dense** (Bernstein 1931)\n- The **maximum** always exceeds the threshold (Erd\u0151s 1961)\n\nThe gap between 'dense' and 'almost everywhere' remains unresolved.",
+    "text": "Two open questions about Lebesgue functions L\u2099(x) for infinite node sequences: must there exist x with large L\u2099(x) infinitely often, and is the growth property satisfied almost everywhere?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Lagrange Basis:** Define the basis polynomials l\u2096(x) satisfying l\u2096(x\u2096)=1 and l\u2096(x\u1d62)=0 for i\u2260k\n\n2. **Lebesgue Function:** Define L\u2099(x) = \u03a3\u2096 |l\u2096(x)| measuring interpolation error amplification\n\n3. **Lebesgue Constant:** Define \u039b\u2099 = max L\u2099(x) and state the (2/\u03c0)log(n) growth bounds\n\n4. **Infinite Sequences:** Define InfiniteNodeSequence type for sequences in [-1,1]\n\n5. **Open Questions:** Formally state the existence and almost-everywhere questions\n\n6. **Partial Results:** Formalize Bernstein's density theorem and Erd\u0151s's maximum bound\n\n7. **Status:** Record that both questions remain open",
     "keyInsights": [
-      "**Lebesgue Function:** Lₙ(x) = Σₖ |lₖ(x)| controls how interpolation error compares to best approximation error",
-      "**Optimal Growth:** The best possible growth rate is (2/π)log(n), achieved by Chebyshev nodes",
+      "**Lebesgue Function:** L\u2099(x) = \u03a3\u2096 |l\u2096(x)| controls how interpolation error compares to best approximation error",
+      "**Optimal Growth:** The best possible growth rate is (2/\u03c0)log(n), achieved by Chebyshev nodes",
       "**Dense vs Almost Everywhere:** Bernstein showed good points are dense, but almost-everywhere remains open",
-      "**Chebyshev Nodes:** xₖ = cos((2k-1)π/(2n)) minimize the Lebesgue constant",
+      "**Chebyshev Nodes:** x\u2096 = cos((2k-1)\u03c0/(2n)) minimize the Lebesgue constant",
       "**Runge Phenomenon:** Equidistant nodes have exponentially growing Lebesgue constants, causing interpolation instability"
     ],
     "prerequisites": [
@@ -97,14 +97,14 @@
     {
       "id": "lebesgue-function",
       "title": "The Lebesgue Function",
-      "summary": "lebesgueFunction, lebesgueConstant, lower bound ≥ 1",
+      "summary": "lebesgueFunction, lebesgueConstant, lower bound \u2265 1",
       "startLine": 69,
       "endLine": 93
     },
     {
       "id": "growth-bounds",
       "title": "Growth of Lebesgue Constants",
-      "summary": "Erdős lower bound, Chebyshev nodes, optimal growth rate",
+      "summary": "Erd\u0151s lower bound, Chebyshev nodes, optimal growth rate",
       "startLine": 95,
       "endLine": 124
     },
@@ -138,8 +138,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1132 poses two open questions about Lebesgue functions for infinite node sequences in polynomial interpolation. Question 1 asks whether every sequence has a 'witness' point with large Lebesgue function infinitely often. Question 2 asks whether the optimal growth rate holds for almost all points. We know good points are dense (Bernstein), but the measure-theoretic question remains open.",
-    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Numerical Analysis:** Lebesgue constants determine polynomial interpolation stability\n\n2. **Approximation Theory:** The (2/π)log(n) bound is fundamental to polynomial approximation\n\n**3. Measure Theory:** Question 2 asks about measure-theoretic vs topological density\n\n4. **Complex Analysis:** Runge phenomenon connects to singularities in the complex plane\n\n5. **Computational Mathematics:** Node selection affects numerical algorithms.",
+    "summary": "Erd\u0151s Problem #1132 poses two open questions about Lebesgue functions for infinite node sequences in polynomial interpolation. Question 1 asks whether every sequence has a 'witness' point with large Lebesgue function infinitely often. Question 2 asks whether the optimal growth rate holds for almost all points. We know good points are dense (Bernstein), but the measure-theoretic question remains open.",
+    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Numerical Analysis:** Lebesgue constants determine polynomial interpolation stability\n\n2. **Approximation Theory:** The (2/\u03c0)log(n) bound is fundamental to polynomial approximation\n\n**3. Measure Theory:** Question 2 asks about measure-theoretic vs topological density\n\n4. **Complex Analysis:** Runge phenomenon connects to singularities in the complex plane\n\n5. **Computational Mathematics:** Node selection affects numerical algorithms.",
     "openQuestions": [
       "Question 1: Does every infinite sequence have a 'witness' point?",
       "Question 2: Is the growth property satisfied almost everywhere?",
@@ -150,41 +150,41 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-1129",
-      "title": "Erdős Problem #1129: Optimal Lagrange Interpolation Nodes",
-      "relationship": "Directly related: #1129 asks which node sequences minimize the Lebesgue constant Λₙ, while #1132 asks about pointwise growth of Lₙ(x) for fixed infinite sequences. Together they frame the full optimality picture for Lagrange interpolation."
+      "relationship": "related",
+      "description": "Directly related: #1129 asks which node sequences minimize the Lebesgue constant \u039b\u2099, while #1132 asks about pointwise growth of L\u2099(x) for fixed infinite sequences. Together they frame the full optimality picture for Lagrange interpolation.",
+      "targetId": "erdos-1129"
     },
     {
-      "slug": "erdos-1130",
-      "title": "Erdős Problem #1130: Lagrange Basis Function Sums",
-      "relationship": "Closely related: both problems study pointwise behavior of sums of Lagrange basis polynomials. #1130 considers sum magnitudes; #1132 asks about the limsup growth rate of the same Lebesgue function Lₙ(x)."
+      "relationship": "related",
+      "description": "Closely related: both problems study pointwise behavior of sums of Lagrange basis polynomials. #1130 considers sum magnitudes; #1132 asks about the limsup growth rate of the same Lebesgue function L\u2099(x).",
+      "targetId": "erdos-1130"
     },
     {
-      "slug": "erdos-1131",
-      "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
-      "relationship": "Companion problem: #1131 optimizes integral norms of Lagrange basis polynomials (related to Legendre polynomials), while #1132 studies pointwise supremum behavior. Both concern extremal properties of Lagrange interpolation."
+      "relationship": "related",
+      "description": "Companion problem: #1131 optimizes integral norms of Lagrange basis polynomials (related to Legendre polynomials), while #1132 studies pointwise supremum behavior. Both concern extremal properties of Lagrange interpolation.",
+      "targetId": "erdos-1131"
     },
     {
-      "slug": "erdos-1133",
-      "title": "Erdős Problem #1133: Large Polynomial Interpolation Bound",
-      "relationship": "Neighboring open problem in the same 1967 Erdős cluster on interpolation theory. #1133 studies lower bounds for max|pₙ(x)| over node sequences, complementing #1132's focus on Lebesgue function growth rates."
+      "relationship": "related",
+      "description": "Neighboring open problem in the same 1967 Erd\u0151s cluster on interpolation theory. #1133 studies lower bounds for max|p\u2099(x)| over node sequences, complementing #1132's focus on Lebesgue function growth rates.",
+      "targetId": "erdos-1133"
     },
     {
-      "slug": "erdos-671",
-      "title": "Erdos Problem #671: Lagrange Interpolation Convergence",
-      "relationship": "Foundational context: #671 asks whether Lagrange interpolants can converge for continuous functions, a classical problem intimately linked to Lebesgue function growth — large Lₙ(x) is the obstruction to uniform convergence."
+      "relationship": "related",
+      "description": "Foundational context: #671 asks whether Lagrange interpolants can converge for continuous functions, a classical problem intimately linked to Lebesgue function growth \u2014 large L\u2099(x) is the obstruction to uniform convergence.",
+      "targetId": "erdos-671"
     },
     {
-      "slug": "lebesgue-measure",
-      "title": "Lebesgue Measure",
-      "relationship": "Measure-theoretic foundation: Question 2 of #1132 is explicitly a Lebesgue measure question (does the growth condition hold a.e.?). The Lebesgue measure entry formalizes the underlying measure theory used to interpret 'almost everywhere'."
+      "relationship": "related",
+      "description": "Measure-theoretic foundation: Question 2 of #1132 is explicitly a Lebesgue measure question (does the growth condition hold a.e.?). The Lebesgue measure entry formalizes the underlying measure theory used to interpret 'almost everywhere'.",
+      "targetId": "lebesgue-measure"
     }
   ],
   "relatedProofs": [
     {
       "slug": "fourier-series",
       "title": "Fourier Series",
-      "relationship": "Structural analogy: Fourier partial sums and Lagrange interpolants share the Lebesgue function as a common error amplification tool. The Dirichlet kernel in Fourier analysis plays a role analogous to Lagrange basis polynomials, and the (2/π)log(n) Lebesgue constant growth rate arises in both settings."
+      "relationship": "Structural analogy: Fourier partial sums and Lagrange interpolants share the Lebesgue function as a common error amplification tool. The Dirichlet kernel in Fourier analysis plays a role analogous to Lagrange basis polynomials, and the (2/\u03c0)log(n) Lebesgue constant growth rate arises in both settings."
     },
     {
       "slug": "lebesgue-measure",
@@ -195,21 +195,21 @@
   "references": [
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "Problems and Results on the Theory of Interpolation, II",
       "venue": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "year": 1961,
-      "note": "Proves the lower bound Λₙ ≥ (2/π)log(n) − O(1) for the Lebesgue constant of any node sequence; this is the key quantitative result underlying both questions in Problem #1132."
+      "note": "Proves the lower bound \u039b\u2099 \u2265 (2/\u03c0)log(n) \u2212 O(1) for the Lebesgue constant of any node sequence; this is the key quantitative result underlying both questions in Problem #1132."
     },
     {
       "authors": [
         "S. N. Bernstein"
       ],
-      "title": "Sur la limitation des valeurs d'un polynôme P_n(x) de degré n sur tout un segment par ses valeurs en n+1 points du segment",
+      "title": "Sur la limitation des valeurs d'un polyn\u00f4me P_n(x) de degr\u00e9 n sur tout un segment par ses valeurs en n+1 points du segment",
       "venue": "Izvestia Akademii Nauk SSSR",
       "year": 1931,
-      "note": "Establishes that the set of 'good' points x where Lₙ(x) grows like (2/π)log(n) is dense in (-1,1), the density result formalized as bernstein_density_theorem in this entry."
+      "note": "Establishes that the set of 'good' points x where L\u2099(x) grows like (2/\u03c0)log(n) is dense in (-1,1), the density result formalized as bernstein_density_theorem in this entry."
     },
     {
       "authors": [
@@ -218,7 +218,7 @@
       "title": "An Introduction to the Approximation of Functions",
       "venue": "Blaisdell Publishing Company (reprinted Dover, 1981)",
       "year": 1969,
-      "note": "Classical graduate text covering Lebesgue functions, Lebesgue constants, Chebyshev nodes, and the (2/π)log(n) asymptotic in depth; standard reference for the background to Problem #1132."
+      "note": "Classical graduate text covering Lebesgue functions, Lebesgue constants, Chebyshev nodes, and the (2/\u03c0)log(n) asymptotic in depth; standard reference for the background to Problem #1132."
     },
     {
       "authors": [
@@ -227,16 +227,16 @@
       "title": "Introduction to Approximation Theory",
       "venue": "McGraw-Hill (reprinted AMS Chelsea, 1998)",
       "year": 1966,
-      "note": "Covers Chebyshev nodes, equidistant node instability (Runge phenomenon), and the optimality of Chebyshev interpolation in terms of Lebesgue constants, providing the context for the (2/π)log(n) lower bound."
+      "note": "Covers Chebyshev nodes, equidistant node instability (Runge phenomenon), and the optimality of Chebyshev interpolation in terms of Lebesgue constants, providing the context for the (2/\u03c0)log(n) lower bound."
     },
     {
       "authors": [
         "L. Brutman"
       ],
-      "title": "Lebesgue Functions for Polynomial Interpolation — A Survey",
+      "title": "Lebesgue Functions for Polynomial Interpolation \u2014 A Survey",
       "venue": "Annals of Numerical Mathematics",
       "year": 1997,
-      "note": "Survey article covering known results on Lebesgue constants, growth rates, and extremal node sequences up to 1997; directly surveys the state of knowledge relevant to Problems #1129–#1133."
+      "note": "Survey article covering known results on Lebesgue constants, growth rates, and extremal node sequences up to 1997; directly surveys the state of knowledge relevant to Problems #1129\u2013#1133."
     }
   ],
   "leanFile": {

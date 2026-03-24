@@ -1,10 +1,10 @@
 {
   "id": "erdos-111",
-  "title": "Erdős Problem #111: Edge Deletion to Bipartiteness for Large Chromatic Graphs",
+  "title": "Erd\u0151s Problem #111: Edge Deletion to Bipartiteness for Large Chromatic Graphs",
   "slug": "erdos-111",
-  "description": "For graphs with chromatic number ℵ₁, does the ratio h_G(n)/n tend to infinity, where h_G(n) measures edges needed to make n-vertex subgraphs bipartite?",
+  "description": "For graphs with chromatic number \u2135\u2081, does the ratio h_G(n)/n tend to infinity, where h_G(n) measures edges needed to make n-vertex subgraphs bipartite?",
   "meta": {
-    "author": "Erdős-Hajnal-Szemerédi (1982 partial results), Erdős (1981 conjecture)",
+    "author": "Erd\u0151s-Hajnal-Szemer\u00e9di (1982 partial results), Erd\u0151s (1981 conjecture)",
     "sourceUrl": "https://erdosproblems.com/111",
     "date": "1982",
     "status": "axiomatized",
@@ -43,7 +43,7 @@
       },
       {
         "theorem": "Cardinal.aleph",
-        "description": "Aleph cardinals (ℵ₀, ℵ₁, etc.)",
+        "description": "Aleph cardinals (\u2135\u2080, \u2135\u2081, etc.)",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       },
       {
@@ -57,13 +57,13 @@
       "edgeDeletionFunction h_G: max edges to remove for bipartiteness",
       "IsProperColoring definition: proper graph coloring",
       "cardinalChromaticNumber: chromatic number as a cardinal",
-      "hasAleph1ChromaticNumber: graphs with χ = ℵ₁",
+      "hasAleph1ChromaticNumber: graphs with \u03c7 = \u2135\u2081",
       "hasOddCycle definition: odd cycles in graphs",
       "bipartite_iff_no_odd_cycle axiom: classical characterization",
       "hasVertexDisjointOddCycles: uncountable cycle families",
-      "ehs_lower_bound axiom: h_G(n) ≫ n for χ = ℵ₁",
-      "ehs_upper_bound axiom: existence of graph with h_G(n) ≪ n^(3/2)",
-      "erdosConjecture111: h_G(n) ≪ n^(1+ε) conjecture",
+      "ehs_lower_bound axiom: h_G(n) \u226b n for \u03c7 = \u2135\u2081",
+      "ehs_upper_bound axiom: existence of graph with h_G(n) \u226a n^(3/2)",
+      "erdosConjecture111: h_G(n) \u226a n^(1+\u03b5) conjecture",
       "erdos111_question: the main open problem statement",
       "erdos_111_summary theorem: combining known bounds"
     ],
@@ -72,16 +72,16 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #111: Edge Deletion and Chromatic Number**\n\nThis problem explores the structure of graphs with uncountable chromatic number through the lens of bipartiteness. It was posed by Erdős, Hajnal, and Szemerédi in their 1982 paper \"On almost bipartite large chromatic graphs.\"\n\n**Key History:**\n- Erdős-Hajnal-Szemerédi (1982): Established that graphs with χ(G) = ℵ₁ satisfy h_G(n) ≫ n (they contain uncountably many vertex-disjoint odd cycles)\n- Erdős-Hajnal-Szemerédi (1982): Constructed a graph with χ = ℵ₁ where h_G(n) ≪ n^(3/2)\n- Erdős (1981): Conjectured this upper bound can be improved to n^(1+ε) for any ε > 0\n\n**Mathematical Setting:**\n- h_G(n) measures how \"far from bipartite\" the densest n-vertex subgraphs of G are\n- The chromatic number ℵ₁ is the smallest uncountable cardinal\n- Such graphs cannot be properly colored with countably many colors\n\nThe problem lies at the intersection of graph theory, combinatorics, and set theory, involving infinite structures that cannot be resolved by finite computation.",
-    "problemStatement": "**Problem Statement (Open)**\n\nFor a graph G, let h_G(n) be the maximum number of edges that must be deleted from any n-vertex subgraph of G to make it bipartite.\n\n**Question:** Is it true that h_G(n)/n → ∞ for every graph G with chromatic number ℵ₁?\n\n**Answer: UNKNOWN**\n\n**Known Results:**\n- **Lower bound:** h_G(n) ≫ n for all graphs with χ(G) = ℵ₁\n- **Upper bound:** There exists G with χ(G) = ℵ₁ and h_G(n) = O(n^{3/2})\n- **Conjecture:** h_G(n) = O(n^{1+ε}) should be achievable for all ε > 0",
-    "text": "For graphs with chromatic number ℵ₁, does the ratio h_G(n)/n tend to infinity, where h_G(n) measures edges needed to make n-vertex subgraphs bipartite?",
+    "historicalContext": "**Erd\u0151s Problem #111: Edge Deletion and Chromatic Number**\n\nThis problem explores the structure of graphs with uncountable chromatic number through the lens of bipartiteness. It was posed by Erd\u0151s, Hajnal, and Szemer\u00e9di in their 1982 paper \"On almost bipartite large chromatic graphs.\"\n\n**Key History:**\n- Erd\u0151s-Hajnal-Szemer\u00e9di (1982): Established that graphs with \u03c7(G) = \u2135\u2081 satisfy h_G(n) \u226b n (they contain uncountably many vertex-disjoint odd cycles)\n- Erd\u0151s-Hajnal-Szemer\u00e9di (1982): Constructed a graph with \u03c7 = \u2135\u2081 where h_G(n) \u226a n^(3/2)\n- Erd\u0151s (1981): Conjectured this upper bound can be improved to n^(1+\u03b5) for any \u03b5 > 0\n\n**Mathematical Setting:**\n- h_G(n) measures how \"far from bipartite\" the densest n-vertex subgraphs of G are\n- The chromatic number \u2135\u2081 is the smallest uncountable cardinal\n- Such graphs cannot be properly colored with countably many colors\n\nThe problem lies at the intersection of graph theory, combinatorics, and set theory, involving infinite structures that cannot be resolved by finite computation.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFor a graph G, let h_G(n) be the maximum number of edges that must be deleted from any n-vertex subgraph of G to make it bipartite.\n\n**Question:** Is it true that h_G(n)/n \u2192 \u221e for every graph G with chromatic number \u2135\u2081?\n\n**Answer: UNKNOWN**\n\n**Known Results:**\n- **Lower bound:** h_G(n) \u226b n for all graphs with \u03c7(G) = \u2135\u2081\n- **Upper bound:** There exists G with \u03c7(G) = \u2135\u2081 and h_G(n) = O(n^{3/2})\n- **Conjecture:** h_G(n) = O(n^{1+\u03b5}) should be achievable for all \u03b5 > 0",
+    "text": "For graphs with chromatic number \u2135\u2081, does the ratio h_G(n)/n tend to infinity, where h_G(n) measures edges needed to make n-vertex subgraphs bipartite?",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define bipartiteness, edge deletion, and chromatic number using Mathlib's SimpleGraph\n\n2. **Cardinal Chromatic Number:** Extend to infinite graphs using Mathlib's Cardinal type\n\n3. **Key Function:** Define h_G(n) as the supremum of edges needed over all n-vertex subgraphs\n\n4. **Lower Bound:** Axiomatize the EHS result on vertex-disjoint odd cycles\n\n5. **Upper Bound:** Axiomatize the existence of the EHS construction\n\n6. **Open Question:** State the main problem without resolving it\n\n7. **Summary:** Combine known bounds into a summary theorem\n\nAxioms are needed because the results involve sophisticated infinite combinatorics beyond Mathlib's current scope.",
     "keyInsights": [
       "**Bipartite Characterization:** A graph is bipartite iff it has no odd cycles - this is why deleting edges matters",
-      "**Uncountable Chromatic Number:** ℵ₁ is the cardinality of the first uncountable ordinal - such graphs are inherently infinite",
-      "**Vertex-Disjoint Cycles:** Graphs with χ = ℵ₁ contain uncountably many vertex-disjoint odd cycles of some fixed length",
-      "**Lower vs Upper Bounds:** We know n ≪ h_G(n) ≪ n^{3/2}, but the exact growth rate is unknown",
-      "**Erdős's Conjecture:** The upper bound might be improvable to n^{1+ε} for any ε > 0",
+      "**Uncountable Chromatic Number:** \u2135\u2081 is the cardinality of the first uncountable ordinal - such graphs are inherently infinite",
+      "**Vertex-Disjoint Cycles:** Graphs with \u03c7 = \u2135\u2081 contain uncountably many vertex-disjoint odd cycles of some fixed length",
+      "**Lower vs Upper Bounds:** We know n \u226a h_G(n) \u226a n^{3/2}, but the exact growth rate is unknown",
+      "**Erd\u0151s's Conjecture:** The upper bound might be improvable to n^{1+\u03b5} for any \u03b5 > 0",
       "**Connection to Problem #74:** Related questions about edge-chromatic number and bipartite subgraphs"
     ],
     "prerequisites": [
@@ -142,7 +142,7 @@
     },
     {
       "id": "erdos-conjecture",
-      "title": "Erdős's Conjecture",
+      "title": "Erd\u0151s's Conjecture",
       "summary": "erdosConjecture111 definition",
       "startLine": 228,
       "endLine": 246
@@ -170,114 +170,114 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #111 remains open. The question asks whether h_G(n)/n → ∞ for every graph G with chromatic number ℵ₁. We know h_G(n) ≫ n (from vertex-disjoint odd cycles) and that h_G(n) ≪ n^(3/2) is achievable (from the EHS construction). Erdős conjectured this can be improved to h_G(n) ≪ n^(1+ε) for all ε > 0. The problem cannot be resolved by finite computation and lies at the frontier of infinite combinatorics.",
-    "implications": "**Theoretical Significance**: **Graph-Theoretic Significance**\n\n1. **Infinite Combinatorics:** The problem probes the structure of uncountably chromatic graphs\n\n2. **Bipartiteness Measures:** h_G(n) quantifies deviation from bipartiteness\n\n**3. Extremal Graph Theory:** Finding optimal bounds on h_G(n) is an extremal problem\n\n4. **Set-Theoretic Methods:** The problem inherently involves ℵ₁ and infinite cardinal arithmetic\n\n5. **Open Problems:** Part of a family of related questions (including #74) about large chromatic graphs.",
+    "summary": "Erd\u0151s Problem #111 remains open. The question asks whether h_G(n)/n \u2192 \u221e for every graph G with chromatic number \u2135\u2081. We know h_G(n) \u226b n (from vertex-disjoint odd cycles) and that h_G(n) \u226a n^(3/2) is achievable (from the EHS construction). Erd\u0151s conjectured this can be improved to h_G(n) \u226a n^(1+\u03b5) for all \u03b5 > 0. The problem cannot be resolved by finite computation and lies at the frontier of infinite combinatorics.",
+    "implications": "**Theoretical Significance**: **Graph-Theoretic Significance**\n\n1. **Infinite Combinatorics:** The problem probes the structure of uncountably chromatic graphs\n\n2. **Bipartiteness Measures:** h_G(n) quantifies deviation from bipartiteness\n\n**3. Extremal Graph Theory:** Finding optimal bounds on h_G(n) is an extremal problem\n\n4. **Set-Theoretic Methods:** The problem inherently involves \u2135\u2081 and infinite cardinal arithmetic\n\n5. **Open Problems:** Part of a family of related questions (including #74) about large chromatic graphs.",
     "openQuestions": [
-      "Does h_G(n)/n → ∞ for all graphs with χ(G) = ℵ₁?",
-      "Can the n^(3/2) upper bound be improved to n^(1+ε)?",
-      "What is the optimal growth rate of h_G(n) for χ = ℵ₁ graphs?",
+      "Does h_G(n)/n \u2192 \u221e for all graphs with \u03c7(G) = \u2135\u2081?",
+      "Can the n^(3/2) upper bound be improved to n^(1+\u03b5)?",
+      "What is the optimal growth rate of h_G(n) for \u03c7 = \u2135\u2081 graphs?",
       "How do these results extend to larger uncountable chromatic numbers?",
       "Is there a constructive characterization of graphs with small h_G(n)?"
     ]
   },
   "crossReferences": [
     {
-      "slug": "erdos-74",
-      "title": "Erdős Problem #74: Almost Bipartite Graphs with High Chromatic Number",
-      "relationship": "Direct companion problem: #74 asks whether infinite-chromatic graphs can have every n-vertex subgraph made bipartite by deleting ≤ f(n) edges, which is essentially the same quantity h_G(n) studied in #111 but for countably-infinite chromatic number rather than χ = ℵ₁."
+      "relationship": "related",
+      "description": "Direct companion problem: #74 asks whether infinite-chromatic graphs can have every n-vertex subgraph made bipartite by deleting \u2264 f(n) edges, which is essentially the same quantity h_G(n) studied in #111 but for countably-infinite chromatic number rather than \u03c7 = \u2135\u2081.",
+      "targetId": "erdos-74"
     },
     {
-      "slug": "erdos-75",
-      "title": "Erdős Problem #75: Uncountable Chromatic Number and Large Independent Sets",
-      "relationship": "Companion problem on ℵ₁ chromatic graphs: #75 asks about large independent sets in finite subgraphs of χ = ℵ₁ graphs, connecting the local independence structure to the same EHS (Erdős-Hajnal-Szemerédi 1982) framework used in #111."
+      "relationship": "related",
+      "description": "Companion problem on \u2135\u2081 chromatic graphs: #75 asks about large independent sets in finite subgraphs of \u03c7 = \u2135\u2081 graphs, connecting the local independence structure to the same EHS (Erd\u0151s-Hajnal-Szemer\u00e9di 1982) framework used in #111.",
+      "targetId": "erdos-75"
     },
     {
-      "slug": "erdos-57",
-      "title": "Erdős Problem #57: Odd Cycles in Graphs with Infinite Chromatic Number",
-      "relationship": "Odd cycles are the core obstruction to bipartiteness; #57 characterizes their lengths when χ(G) is infinite, directly underpinning the odd-cycle structure exploited in the EHS lower bound for h_G(n) in #111."
+      "relationship": "related",
+      "description": "Odd cycles are the core obstruction to bipartiteness; #57 characterizes their lengths when \u03c7(G) is infinite, directly underpinning the odd-cycle structure exploited in the EHS lower bound for h_G(n) in #111.",
+      "targetId": "erdos-57"
     },
     {
-      "slug": "erdos-594",
-      "title": "Erdős Problem #594: Graphs with Chromatic Number ≥ ℵ₁ and Odd Cycles",
-      "relationship": "Proves that every graph with χ ≥ ℵ₁ contains all sufficiently large odd cycles (Erdős-Hajnal-Shelah 1974), which is the structural backbone for the vertex-disjoint odd cycle result that gives the h_G(n) ≫ n lower bound in #111."
+      "relationship": "related",
+      "description": "Proves that every graph with \u03c7 \u2265 \u2135\u2081 contains all sufficiently large odd cycles (Erd\u0151s-Hajnal-Shelah 1974), which is the structural backbone for the vertex-disjoint odd cycle result that gives the h_G(n) \u226b n lower bound in #111.",
+      "targetId": "erdos-594"
     },
     {
-      "slug": "erdos-750",
-      "title": "Erdős Problem #750: Almost Bipartite Graphs with Infinite Chromatic Number",
-      "relationship": "Directly adjacent problem: asks whether infinite-chromatic graphs can have subgraphs with independent sets of size ≥ m/2 − f(m), a bipartiteness measure closely related to h_G(n). The EHS 1982 paper that bounds h_G(n) in #111 also settles the linear-f(m) case of #750."
+      "relationship": "related",
+      "description": "Directly adjacent problem: asks whether infinite-chromatic graphs can have subgraphs with independent sets of size \u2265 m/2 \u2212 f(m), a bipartiteness measure closely related to h_G(n). The EHS 1982 paper that bounds h_G(n) in #111 also settles the linear-f(m) case of #750.",
+      "targetId": "erdos-750"
     },
     {
-      "slug": "erdos-110",
-      "title": "Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs",
-      "relationship": "Neighboring problem on the behavior of chromatic number in uncountable graphs; shares the set-theoretic framework (ℵ₁ cardinals, infinite combinatorics) and the Erdős-Hajnal research program that produced the results cited in #111."
+      "relationship": "related",
+      "description": "Neighboring problem on the behavior of chromatic number in uncountable graphs; shares the set-theoretic framework (\u2135\u2081 cardinals, infinite combinatorics) and the Erd\u0151s-Hajnal research program that produced the results cited in #111.",
+      "targetId": "erdos-110"
     }
   ],
   "relatedProofs": [
     {
       "slug": "erdos-58",
-      "title": "Erdős Problem #58: Chromatic Number vs Odd Cycle Lengths",
-      "connection": "Establishes that the number of distinct odd cycle lengths controls χ(G) (Gyárfás 1992), complementing #111's use of odd cycles as the measure of deviation from bipartiteness."
+      "title": "Erd\u0151s Problem #58: Chromatic Number vs Odd Cycle Lengths",
+      "connection": "Establishes that the number of distinct odd cycle lengths controls \u03c7(G) (Gy\u00e1rf\u00e1s 1992), complementing #111's use of odd cycles as the measure of deviation from bipartiteness."
     },
     {
       "slug": "erdos-62",
-      "title": "Erdős Problem #62: Common Subgraphs of Graphs with Chromatic Number ℵ₁",
-      "connection": "Investigates shared subgraph structure among χ = ℵ₁ graphs; the common-subgraph questions and the edge-deletion questions in #111 both arise from asking what local finite structure is forced by large chromatic number."
+      "title": "Erd\u0151s Problem #62: Common Subgraphs of Graphs with Chromatic Number \u2135\u2081",
+      "connection": "Investigates shared subgraph structure among \u03c7 = \u2135\u2081 graphs; the common-subgraph questions and the edge-deletion questions in #111 both arise from asking what local finite structure is forced by large chromatic number."
     },
     {
       "slug": "ramseys-theorem",
       "title": "Ramsey's Theorem",
-      "connection": "Ramsey-theoretic reasoning underlies the EHS construction: the n^(3/2) upper bound graph is built using probabilistic/Ramsey methods, and the lower bound uses the infinite Ramsey property of ℵ₁ graphs."
+      "connection": "Ramsey-theoretic reasoning underlies the EHS construction: the n^(3/2) upper bound graph is built using probabilistic/Ramsey methods, and the lower bound uses the infinite Ramsey property of \u2135\u2081 graphs."
     }
   ],
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "A. Hajnal",
-        "E. Szemerédi"
+        "E. Szemer\u00e9di"
       ],
       "title": "On almost bipartite large chromatic graphs",
       "venue": "Annals of Discrete Mathematics",
       "volume": "12",
       "year": 1982,
-      "pages": "117–123",
-      "note": "The primary source: proves h_G(n) ≫ n for χ = ℵ₁ (vertex-disjoint odd cycles) and constructs the n^(3/2) upper-bound graph."
+      "pages": "117\u2013123",
+      "note": "The primary source: proves h_G(n) \u226b n for \u03c7 = \u2135\u2081 (vertex-disjoint odd cycles) and constructs the n^(3/2) upper-bound graph."
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "A. Hajnal",
         "S. Shelah"
       ],
       "title": "On some general properties of chromatic number",
-      "venue": "Topics in Topology (Proc. Colloq., Keszthely, 1972), Colloq. Math. Soc. János Bolyai",
+      "venue": "Topics in Topology (Proc. Colloq., Keszthely, 1972), Colloq. Math. Soc. J\u00e1nos Bolyai",
       "volume": "8",
       "year": 1974,
-      "pages": "243–255",
-      "note": "Proves that every graph with chromatic number ≥ ℵ₁ contains all sufficiently large odd cycles, the key tool for the lower bound in Problem #111."
+      "pages": "243\u2013255",
+      "note": "Proves that every graph with chromatic number \u2265 \u2135\u2081 contains all sufficiently large odd cycles, the key tool for the lower bound in Problem #111."
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "A. Hajnal"
       ],
       "title": "Chromatic number of finite and infinite graphs and hypergraphs",
       "venue": "Discrete Mathematics",
       "volume": "53",
       "year": 1985,
-      "pages": "281–285",
-      "note": "Survey by Erdős and Hajnal on chromatic numbers of infinite graphs, placing Problem #111 in the broader context of uncountably chromatic graph theory."
+      "pages": "281\u2013285",
+      "note": "Survey by Erd\u0151s and Hajnal on chromatic numbers of infinite graphs, placing Problem #111 in the broader context of uncountably chromatic graph theory."
     },
     {
       "authors": [
-        "A. Gyárfás"
+        "A. Gy\u00e1rf\u00e1s"
       ],
       "title": "Problems from the world surrounding perfect graphs",
       "venue": "Zastosowania Matematyki (Applicationes Mathematicae)",
       "volume": "19",
       "year": 1987,
-      "pages": "413–441",
-      "note": "Contains Gyárfás's work on chromatic number, odd cycles, and bipartite substructure, closely related to the odd-cycle machinery in Problem #111."
+      "pages": "413\u2013441",
+      "note": "Contains Gy\u00e1rf\u00e1s's work on chromatic number, odd cycles, and bipartite substructure, closely related to the odd-cycle machinery in Problem #111."
     },
     {
       "authors": [

@@ -1,8 +1,8 @@
 {
   "id": "erdos-986",
-  "title": "Erdős Problem #986: Ramsey Number Lower Bounds",
+  "title": "Erd\u0151s Problem #986: Ramsey Number Lower Bounds",
   "slug": "erdos-986",
-  "description": "For fixed k ≥ 3, is R(k,n) ≫ n^(k-1)/(log n)^c? YES for k=3 (Spencer 1977), YES for k=4 (Mattheus-Verstraete 2023), OPEN for k≥5. Gap between known bounds grows with k.",
+  "description": "For fixed k \u2265 3, is R(k,n) \u226b n^(k-1)/(log n)^c? YES for k=3 (Spencer 1977), YES for k=4 (Mattheus-Verstraete 2023), OPEN for k\u22655. Gap between known bounds grows with k.",
   "meta": {
     "author": "Spencer (1977, k=3), Mattheus-Verstraete (2023, k=4)",
     "sourceUrl": "https://erdosproblems.com/986",
@@ -43,13 +43,13 @@
     ],
     "originalContributions": [
       "RamseyNumber definition: smallest N for monochromatic K_k or K_n",
-      "AsymptoticLowerBound (≫) and AsymptoticUpperBound (≪) notation",
+      "AsymptoticLowerBound (\u226b) and AsymptoticUpperBound (\u226a) notation",
       "erdos_986_conjecture: the conjectured lower bound for fixed k",
       "spencer_1977 axiom: k=3 case proved",
       "mattheus_verstraete_2023 axiom: k=4 case proved (major breakthrough)",
       "bohman_keevash_2010 axiom: best known general lower bound",
       "aks_1980_upper axiom: best known upper bound",
-      "exponent_gap: analysis of the polynomial gap for k≥5",
+      "exponent_gap: analysis of the polynomial gap for k\u22655",
       "erdos_986_summary: combined results"
     ],
     "axiomCount": 8,
@@ -57,10 +57,10 @@
     "assumptions": "8 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #986: Ramsey Number Lower Bounds**\n\nThis problem concerns asymptotic lower bounds for off-diagonal Ramsey numbers R(k,n) where k is fixed and n grows.\n\n**Key History:**\n- Erdős conjectured that R(k,n) ≫ n^(k-1)/(log n)^c for fixed k ≥ 3\n- Spencer (1977): Proved the conjecture for k = 3\n- Ajtai-Komlós-Szemerédi (1980): Upper bound R(k,n) ≪ n^(k-1)/(log n)^(k-2)\n- Bohman-Keevash (2010): Best general lower bound n^((k+1)/2)/...\n- Mattheus-Verstraete (2023): Major breakthrough proving k = 4 case\n\n**Mathematical Setting:**\nR(k,n) is the smallest N such that any 2-coloring of K_N edges contains a monochromatic K_k or K_n. The problem asks how fast R(k,n) grows for fixed k.",
+    "historicalContext": "**Erd\u0151s Problem #986: Ramsey Number Lower Bounds**\n\nThis problem concerns asymptotic lower bounds for off-diagonal Ramsey numbers R(k,n) where k is fixed and n grows.\n\n**Key History:**\n- Erd\u0151s conjectured that R(k,n) \u226b n^(k-1)/(log n)^c for fixed k \u2265 3\n- Spencer (1977): Proved the conjecture for k = 3\n- Ajtai-Koml\u00f3s-Szemer\u00e9di (1980): Upper bound R(k,n) \u226a n^(k-1)/(log n)^(k-2)\n- Bohman-Keevash (2010): Best general lower bound n^((k+1)/2)/...\n- Mattheus-Verstraete (2023): Major breakthrough proving k = 4 case\n\n**Mathematical Setting:**\nR(k,n) is the smallest N such that any 2-coloring of K_N edges contains a monochromatic K_k or K_n. The problem asks how fast R(k,n) grows for fixed k.",
     "problemStatement": "**Problem Statement (Partially Solved)**\n\nFor any fixed $k \\geq 3$, prove that:\n$$R(k,n) \\gg \\frac{n^{k-1}}{(\\log n)^c}$$\nfor some constant $c = c(k) > 0$.\n\n**Status:**\n- $k = 3$: **YES** (Spencer, 1977)\n- $k = 4$: **YES** (Mattheus-Verstraete, 2023)\n- $k \\geq 5$: **OPEN**\n\n**Best Known Bounds (general k):**\n- Lower: $R(k,n) \\gg_k n^{(k+1)/2} / (\\log n)^{\\alpha}$ [Bohman-Keevash 2010]\n- Upper: $R(k,n) \\ll_k n^{k-1} / (\\log n)^{k-2}$ [AKS 1980]",
-    "text": "For fixed k ≥ 3, is R(k,n) ≫ n^(k-1)/(log n)^c? YES for k=3 (Spencer 1977), YES for k=4 (Mattheus-Verstraete 2023), OPEN for k≥5. Gap between known bounds grows with k.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Ramsey Numbers:** Define R(k,n) as the minimum N for monochromatic cliques.\n\n2. **Asymptotic Notation:** Define ≫ and ≪ for asymptotic bounds.\n\n3. **Conjecture:** Formalize erdos_986_conjecture(k) for each fixed k.\n\n4. **Spencer 1977:** Axiomatize the k = 3 result.\n\n5. **Mattheus-Verstraete 2023:** Axiomatize the k = 4 breakthrough.\n\n6. **General Bounds:** Axiomatize Bohman-Keevash and AKS bounds.\n\n7. **Gap Analysis:** Compute the polynomial exponent gap for k ≥ 5.\n\n8. **Summary:** Combine all known results.",
+    "text": "For fixed k \u2265 3, is R(k,n) \u226b n^(k-1)/(log n)^c? YES for k=3 (Spencer 1977), YES for k=4 (Mattheus-Verstraete 2023), OPEN for k\u22655. Gap between known bounds grows with k.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Ramsey Numbers:** Define R(k,n) as the minimum N for monochromatic cliques.\n\n2. **Asymptotic Notation:** Define \u226b and \u226a for asymptotic bounds.\n\n3. **Conjecture:** Formalize erdos_986_conjecture(k) for each fixed k.\n\n4. **Spencer 1977:** Axiomatize the k = 3 result.\n\n5. **Mattheus-Verstraete 2023:** Axiomatize the k = 4 breakthrough.\n\n6. **General Bounds:** Axiomatize Bohman-Keevash and AKS bounds.\n\n7. **Gap Analysis:** Compute the polynomial exponent gap for k \u2265 5.\n\n8. **Summary:** Combine all known results.",
     "keyInsights": [
       "**Partial Progress:** k=3 solved 1977, k=4 solved 2023; general case open",
       "**Exponent Gap:** Known lower bound has exponent (k+1)/2, conjecture has k-1",
@@ -87,14 +87,14 @@
     {
       "id": "asymptotic",
       "title": "Asymptotic Notation",
-      "summary": "Definitions of ≫ and ≪ for asymptotic bounds",
+      "summary": "Definitions of \u226b and \u226a for asymptotic bounds",
       "startLine": 67,
       "endLine": 87
     },
     {
       "id": "conjecture",
       "title": "The Conjectured Lower Bound",
-      "summary": "Erdős's conjecture: R(k,n) ≫ n^(k-1)/(log n)^c",
+      "summary": "Erd\u0151s's conjecture: R(k,n) \u226b n^(k-1)/(log n)^c",
       "startLine": 89,
       "endLine": 102
     },
@@ -121,7 +121,7 @@
     },
     {
       "id": "gap-analysis",
-      "title": "The Gap for k≥5",
+      "title": "The Gap for k\u22655",
       "summary": "Analysis of the polynomial exponent gap",
       "startLine": 174,
       "endLine": 200
@@ -129,17 +129,17 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Combined results: k=3,4 YES; k≥5 OPEN",
+      "summary": "Combined results: k=3,4 YES; k\u22655 OPEN",
       "startLine": 216,
       "endLine": 249
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #986 asks whether R(k,n) ≫ n^(k-1)/(log n)^c for fixed k ≥ 3. The answer is YES for k=3 (Spencer 1977) and k=4 (Mattheus-Verstraete 2023), but OPEN for k≥5. The gap between the known lower bound (polynomial exponent (k+1)/2) and the conjectured bound (exponent k-1) grows as (k-3)/2, making the general case a major open problem in Ramsey theory.",
+    "summary": "Erd\u0151s Problem #986 asks whether R(k,n) \u226b n^(k-1)/(log n)^c for fixed k \u2265 3. The answer is YES for k=3 (Spencer 1977) and k=4 (Mattheus-Verstraete 2023), but OPEN for k\u22655. The gap between the known lower bound (polynomial exponent (k+1)/2) and the conjectured bound (exponent k-1) grows as (k-3)/2, making the general case a major open problem in Ramsey theory.",
     "implications": "**Theoretical Significance**: **Implications in Ramsey Theory**\n\n1. **Asymptotic Behavior:** Determines the growth rate of off-diagonal Ramsey numbers\n\n2. **Probabilistic Methods:** Spencer's proof used probabilistic combinatorics\n\n**3. Algebraic Geometry:** Mattheus-Verstraete used algebraic techniques\n\n4. **H-free Process:** Bohman-Keevash analyzed random graph evolution\n\n5. **Computational Hardness:** Exact Ramsey numbers are notoriously difficult to compute.",
     "openQuestions": [
       "Prove the conjecture for k = 5 (next case after k = 4)",
-      "Prove the conjecture for general k ≥ 5",
+      "Prove the conjecture for general k \u2265 5",
       "Determine the optimal constant c(k) in the logarithmic factor",
       "Improve the polynomial exponent in general lower bounds",
       "Find new techniques beyond probabilistic and algebraic methods"
@@ -160,5 +160,39 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share graph-theoretic, Ramsey-theoretic, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share graph-theoretic, Ramsey-theoretic, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Share graph-theoretic, Ramsey-theoretic, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Share graph-theoretic, Ramsey-theoretic, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1174",
+      "relationship": "related",
+      "description": "Share graph-theoretic, Ramsey-theoretic, and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1105",
+    "erdos-1169",
+    "erdos-1174"
+  ]
 }

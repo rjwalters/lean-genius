@@ -1,8 +1,8 @@
 {
   "id": "erdos-391",
-  "title": "Erdős Problem #391: Factorizing n! with Large Minimum Factor",
+  "title": "Erd\u0151s Problem #391: Factorizing n! with Large Minimum Factor",
   "slug": "erdos-391",
-  "description": "Let t(n) be maximal such that n! = a₁···aₙ with t(n) = a₁ ≤ ··· ≤ aₙ. Is lim t(n)/n = 1/e? YES, proved by Alexeev-Conway-Rosenfeld-Sutherland-Tao-Uhr-Ventullo (2025).",
+  "description": "Let t(n) be maximal such that n! = a\u2081\u00b7\u00b7\u00b7a\u2099 with t(n) = a\u2081 \u2264 \u00b7\u00b7\u00b7 \u2264 a\u2099. Is lim t(n)/n = 1/e? YES, proved by Alexeev-Conway-Rosenfeld-Sutherland-Tao-Uhr-Ventullo (2025).",
   "meta": {
     "author": "Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, Ventullo (2025)",
     "sourceUrl": "https://erdosproblems.com/391",
@@ -50,12 +50,12 @@
       "minFactor definition: smallest factor in an ordered factorization",
       "t(n) definition: maximum minimum factor over all n-factorizations of n!",
       "ratio definition: t(n)/n, the key asymptotic quantity",
-      "easy_upper_bound axiom: lim sup t(n)/n ≤ 1/e",
-      "acrstuv_theorem axiom: t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c})",
+      "easy_upper_bound axiom: lim sup t(n)/n \u2264 1/e",
+      "acrstuv_theorem axiom: t(n)/n = 1/e - c\u2080/log(n) + O(1/(log n)^{1+c})",
       "limit_is_one_over_e axiom: lim t(n)/n = 1/e",
-      "second_order_correction axiom: t(n)/n ≤ 1/e - c/log(n) for large n",
-      "upper_bound_explicit axiom: t(n) ≤ n/e for n ≠ 1, 2, 4",
-      "lower_bound_explicit axiom: t(n) ≥ n/3 for n ≥ 43632",
+      "second_order_correction axiom: t(n)/n \u2264 1/e - c/log(n) for large n",
+      "upper_bound_explicit axiom: t(n) \u2264 n/e for n \u2260 1, 2, 4",
+      "lower_bound_explicit axiom: t(n) \u2265 n/3 for n \u2265 43632",
       "Guy-Selfridge conjecture definitions and proofs",
       "erdos_391_summary theorem: assembles all main results"
     ],
@@ -64,16 +64,16 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #391 asks about the most balanced way to write n! as a product of exactly n positive integers. Define t(n) as the maximum over all such factorizations of the minimum factor. The central question is: what is the asymptotic behavior of t(n)/n? It is easy to show that lim sup t(n)/n ≤ 1/e using Stirling's approximation, and Erdős asked whether the limit equals 1/e and whether a second-order correction of the form c/log(n) exists.\n\nThe problem has a remarkable history. Erdős, Selfridge, and Straus claimed to have proved lim t(n)/n = 1/e, and Straus was tasked with writing up the proof. However, Straus died suddenly and no trace of his notes was ever found. Erdős and Selfridge could never reconstruct the proof, so the result reverted to conjecture status. The problem also appears as B22 in Guy's \"Unsolved Problems in Number Theory\" and was studied by Guy and Selfridge (1998), who made explicit conjectures about upper and lower bounds.\n\nIn 2025, Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, and Ventullo resolved both questions completely. They proved t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c}), where c₀ ≈ 0.3044 is an explicit constant. They also verified Guy-Selfridge conjectures: t(n) ≤ n/e for all n except 1, 2, and 4, and t(n) ≥ n/3 for n ≥ 43632, with 43632 being the optimal threshold.",
+    "historicalContext": "Erd\u0151s Problem #391 asks about the most balanced way to write n! as a product of exactly n positive integers. Define t(n) as the maximum over all such factorizations of the minimum factor. The central question is: what is the asymptotic behavior of t(n)/n? It is easy to show that lim sup t(n)/n \u2264 1/e using Stirling's approximation, and Erd\u0151s asked whether the limit equals 1/e and whether a second-order correction of the form c/log(n) exists.\n\nThe problem has a remarkable history. Erd\u0151s, Selfridge, and Straus claimed to have proved lim t(n)/n = 1/e, and Straus was tasked with writing up the proof. However, Straus died suddenly and no trace of his notes was ever found. Erd\u0151s and Selfridge could never reconstruct the proof, so the result reverted to conjecture status. The problem also appears as B22 in Guy's \"Unsolved Problems in Number Theory\" and was studied by Guy and Selfridge (1998), who made explicit conjectures about upper and lower bounds.\n\nIn 2025, Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, and Ventullo resolved both questions completely. They proved t(n)/n = 1/e - c\u2080/log(n) + O(1/(log n)^{1+c}), where c\u2080 \u2248 0.3044 is an explicit constant. They also verified Guy-Selfridge conjectures: t(n) \u2264 n/e for all n except 1, 2, and 4, and t(n) \u2265 n/3 for n \u2265 43632, with 43632 being the optimal threshold.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $t(n)$ be maximal such that there is a representation $n! = a_1 \\cdots a_n$ with $t(n) = a_1 \\leq a_2 \\leq \\cdots \\leq a_n$. Obtain good bounds for $t(n)/n$.\n\n1. Is it true that $\\lim t(n)/n = 1/e$?\n2. Does there exist $c > 0$ such that $t(n)/n \\leq 1/e - c/\\log n$ for infinitely many $n$?\n\n**Answer:** YES to both. Alexeev et al. (2025) proved $t(n)/n = 1/e - c_0/\\log n + O(1/(\\log n)^{1+c})$ where $c_0 \\approx 0.3044$.",
-    "text": "Let t(n) be maximal such that n! = a₁···aₙ with t(n) = a₁ ≤ ··· ≤ aₙ. Is lim t(n)/n = 1/e? YES, proved by Alexeev-Conway-Rosenfeld-Sutherland-Tao-Uhr-Ventullo (2025).",
+    "text": "Let t(n) be maximal such that n! = a\u2081\u00b7\u00b7\u00b7a\u2099 with t(n) = a\u2081 \u2264 \u00b7\u00b7\u00b7 \u2264 a\u2099. Is lim t(n)/n = 1/e? YES, proved by Alexeev-Conway-Rosenfeld-Sutherland-Tao-Uhr-Ventullo (2025).",
     "proofStrategy": "The formalization defines the key structures and states the main results as axioms, since the proofs require deep analytic number theory beyond Mathlib's current scope. We define OrderedFactorization as a structure capturing factorizations of m into n non-decreasing positive factors, then define t(n) as the supremum of the minimum factor over all such factorizations of n!. The main asymptotic theorem (ACRSTUV 2025) and its corollaries are axiomatized, along with the explicit bounds from Guy-Selfridge. A summary theorem assembles all four key results into a single statement.",
     "keyInsights": [
-      "**Balanced Factorization:** t(n) measures how evenly n! can be split into n factors — the 'most balanced' factorization maximizes the minimum factor",
-      "**The 1/e Barrier:** By Stirling's approximation, (n/e)^n ≈ n!, so if all n factors were equal they would each be about n/e, giving the natural upper bound",
-      "**Lost Proof:** Erdős-Selfridge-Straus claimed to prove the limit but the proof died with Straus — one of the most famous 'lost proofs' in mathematics",
-      "**Second-Order Term:** The correction -c₀/log(n) with c₀ ≈ 0.3044 shows that t(n)/n approaches 1/e from below, answering both questions simultaneously",
-      "**Sharp Threshold 43632:** The lower bound t(n) ≥ n/3 holds for n ≥ 43632 and this threshold is optimal — a remarkably precise explicit result"
+      "**Balanced Factorization:** t(n) measures how evenly n! can be split into n factors \u2014 the 'most balanced' factorization maximizes the minimum factor",
+      "**The 1/e Barrier:** By Stirling's approximation, (n/e)^n \u2248 n!, so if all n factors were equal they would each be about n/e, giving the natural upper bound",
+      "**Lost Proof:** Erd\u0151s-Selfridge-Straus claimed to prove the limit but the proof died with Straus \u2014 one of the most famous 'lost proofs' in mathematics",
+      "**Second-Order Term:** The correction -c\u2080/log(n) with c\u2080 \u2248 0.3044 shows that t(n)/n approaches 1/e from below, answering both questions simultaneously",
+      "**Sharp Threshold 43632:** The lower bound t(n) \u2265 n/3 holds for n \u2265 43632 and this threshold is optimal \u2014 a remarkably precise explicit result"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -91,14 +91,14 @@
     {
       "id": "easy-upper-bound",
       "title": "Easy Upper Bound",
-      "summary": "lim sup t(n)/n ≤ 1/e via Stirling-type argument",
+      "summary": "lim sup t(n)/n \u2264 1/e via Stirling-type argument",
       "startLine": 75,
       "endLine": 93
     },
     {
       "id": "lost-proof",
       "title": "The Lost Proof",
-      "summary": "Erdős-Selfridge-Straus conjecture definition",
+      "summary": "Erd\u0151s-Selfridge-Straus conjecture definition",
       "startLine": 95,
       "endLine": 104
     },
@@ -112,7 +112,7 @@
     {
       "id": "explicit-bounds",
       "title": "Explicit Bounds",
-      "summary": "t(n) ≤ n/e for n ≠ 1,2,4; t(n) ≥ n/3 for n ≥ 43632; sharpness of 43632",
+      "summary": "t(n) \u2264 n/e for n \u2260 1,2,4; t(n) \u2265 n/3 for n \u2265 43632; sharpness of 43632",
       "startLine": 139,
       "endLine": 160
     },
@@ -133,7 +133,7 @@
     {
       "id": "factorization-perspective",
       "title": "The Factorization Perspective",
-      "summary": "Balanced factorization view — optimal factorization always exists",
+      "summary": "Balanced factorization view \u2014 optimal factorization always exists",
       "startLine": 198,
       "endLine": 208
     },
@@ -146,10 +146,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #391 asked for the asymptotic behavior of t(n)/n, where t(n) is the maximum of the minimum factor over all factorizations of n! into n non-decreasing parts. The formalization captures the complete resolution by Alexeev et al. (2025): the limit equals 1/e, with a precise second-order correction of -c₀/log(n), and explicit upper and lower bounds confirming the Guy-Selfridge conjectures.",
-    "implications": "**Theoretical Significance**: This result connects combinatorial optimization (balanced factorization) with analytic number theory (Stirling's formula, prime distribution in factorials).\n\nThe explicit constant c₀ ≈ 0.3044 and the sharp threshold 43632 demonstrate that highly precise quantitative results are achievable even for problems that remained open for decades. The problem also illustrates the interplay between computational and theoretical mathematics.",
+    "summary": "Erd\u0151s Problem #391 asked for the asymptotic behavior of t(n)/n, where t(n) is the maximum of the minimum factor over all factorizations of n! into n non-decreasing parts. The formalization captures the complete resolution by Alexeev et al. (2025): the limit equals 1/e, with a precise second-order correction of -c\u2080/log(n), and explicit upper and lower bounds confirming the Guy-Selfridge conjectures.",
+    "implications": "**Theoretical Significance**: This result connects combinatorial optimization (balanced factorization) with analytic number theory (Stirling's formula, prime distribution in factorials).\n\nThe explicit constant c\u2080 \u2248 0.3044 and the sharp threshold 43632 demonstrate that highly precise quantitative results are achievable even for problems that remained open for decades. The problem also illustrates the interplay between computational and theoretical mathematics.",
     "openQuestions": [
-      "Exact value of c₀ and whether it has a closed-form expression",
+      "Exact value of c\u2080 and whether it has a closed-form expression",
       "Analogous results when factors are restricted to prime powers (Alladi-Grinstead direction)",
       "Higher-order terms in the asymptotic expansion of t(n)/n",
       "Efficient algorithms for computing t(n) for specific large n"
@@ -174,5 +174,39 @@
     "axiomCount": 11,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-392",
+      "relationship": "related",
+      "description": "Share factorization, asymptotics, and factorial themes"
+    },
+    {
+      "targetId": "erdos-382",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-786",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-885",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-933",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-392",
+    "erdos-382",
+    "erdos-786",
+    "erdos-885",
+    "erdos-933"
+  ]
 }

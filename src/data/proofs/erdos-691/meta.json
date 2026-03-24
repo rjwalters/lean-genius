@@ -1,10 +1,10 @@
 {
   "id": "erdos-691",
-  "title": "Erdős Problem #691: Behrend Sequences and Density of Multiples",
+  "title": "Erd\u0151s Problem #691: Behrend Sequences and Density of Multiples",
   "slug": "erdos-691",
-  "description": "Find a necessary and sufficient condition for a set A ⊆ ℕ to be a Behrend sequence (its multiples have density 1). Known for coprime sets: Σ 1/a = ∞. General criterion remains open.",
+  "description": "Find a necessary and sufficient condition for a set A \u2286 \u2115 to be a Behrend sequence (its multiples have density 1). Known for coprime sets: \u03a3 1/a = \u221e. General criterion remains open.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/691",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos691Problem.lean",
@@ -26,16 +26,16 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The study of sets of multiples dates to the 1930s with Davenport and Erdős, who proved that every set of multiples has a natural density (the Davenport-Erdős theorem). Felix Behrend investigated when this density equals 1, leading to the concept of 'Behrend sequences'. For pairwise coprime sets A (with all elements > 1), the classical result states that A is Behrend iff Σ 1/a = ∞. This follows from inclusion-exclusion: the density of integers not divisible by any of a₁,...,aₖ is exactly ∏(1 - 1/aᵢ) when the aᵢ are coprime, and this product vanishes iff the reciprocal sum diverges. Erdős asked for a general characterization without the coprimality assumption—a much harder problem since inclusion-exclusion becomes non-multiplicative when elements share common factors. Tenenbaum (1996) found a sharp threshold for lacunary block sequences: with block widths η_k = (k+1)^{-β} and geometrically growing positions, the sequence is Behrend iff β < log 2 ≈ 0.693. This unexpected threshold (not at β = 1 where Σ η_k diverges) reveals that the Behrend property depends on subtle interactions between block positions and widths. The general characterization remains one of the central open problems in multiplicative number theory.",
-    "problemStatement": "Find a necessary and sufficient condition on A ⊆ ℕ for the set of multiples M_A = {n : a|n for some a ∈ A} to have asymptotic density 1.",
-    "text": "Find a necessary and sufficient condition for a set A ⊆ ℕ to be a Behrend sequence (its multiples have density 1). Known for coprime sets: Σ 1/a = ∞. General criterion remains open.",
-    "proofStrategy": "The formalization builds a complete density infrastructure: countingFunction, upperDensity, lowerDensity, HasDensity, and HasDensityOne using Mathlib's Filter.atTop with limsup/liminf. The set of multiples and Behrend property are defined, followed by 9 fully proved structural lemmas establishing algebraic properties of M_A (monotonicity, union decomposition, closure under multiples, counting bounds). The coprime criterion, primes-are-Behrend, block sequence theory (lacunary sequences, convergent η obstruction, Tenenbaum's threshold), and the main open problem are axiomatized.",
+    "historicalContext": "The study of sets of multiples dates to the 1930s with Davenport and Erd\u0151s, who proved that every set of multiples has a natural density (the Davenport-Erd\u0151s theorem). Felix Behrend investigated when this density equals 1, leading to the concept of 'Behrend sequences'. For pairwise coprime sets A (with all elements > 1), the classical result states that A is Behrend iff \u03a3 1/a = \u221e. This follows from inclusion-exclusion: the density of integers not divisible by any of a\u2081,...,a\u2096 is exactly \u220f(1 - 1/a\u1d62) when the a\u1d62 are coprime, and this product vanishes iff the reciprocal sum diverges. Erd\u0151s asked for a general characterization without the coprimality assumption\u2014a much harder problem since inclusion-exclusion becomes non-multiplicative when elements share common factors. Tenenbaum (1996) found a sharp threshold for lacunary block sequences: with block widths \u03b7_k = (k+1)^{-\u03b2} and geometrically growing positions, the sequence is Behrend iff \u03b2 < log 2 \u2248 0.693. This unexpected threshold (not at \u03b2 = 1 where \u03a3 \u03b7_k diverges) reveals that the Behrend property depends on subtle interactions between block positions and widths. The general characterization remains one of the central open problems in multiplicative number theory.",
+    "problemStatement": "Find a necessary and sufficient condition on A \u2286 \u2115 for the set of multiples M_A = {n : a|n for some a \u2208 A} to have asymptotic density 1.",
+    "text": "Find a necessary and sufficient condition for a set A \u2286 \u2115 to be a Behrend sequence (its multiples have density 1). Known for coprime sets: \u03a3 1/a = \u221e. General criterion remains open.",
+    "proofStrategy": "The formalization builds a complete density infrastructure: countingFunction, upperDensity, lowerDensity, HasDensity, and HasDensityOne using Mathlib's Filter.atTop with limsup/liminf. The set of multiples and Behrend property are defined, followed by 9 fully proved structural lemmas establishing algebraic properties of M_A (monotonicity, union decomposition, closure under multiples, counting bounds). The coprime criterion, primes-are-Behrend, block sequence theory (lacunary sequences, convergent \u03b7 obstruction, Tenenbaum's threshold), and the main open problem are axiomatized.",
     "keyInsights": [
-      "**Substantial proved content**: 9 fully proved lemmas/theorems establish the algebraic structure of M_A—monotonicity, union decomposition, closure under multiples, counting function bounds—all without sorry",
-      "**Coprime vs general**: For coprime sets, Behrend ↔ Σ 1/a = ∞ via multiplicative inclusion-exclusion; without coprimality, the product formula breaks and a new approach is needed",
-      "**Tenenbaum's log 2 threshold**: For block sequences with η_k = (k+1)^{-β}, the Behrend threshold is β₀ = log 2, not β₀ = 1—the geometric growth of block positions creates a correction factor",
-      "**Filter-based density**: Using Mathlib's limsup/liminf on Filter.atTop gives a clean, topological definition of upper/lower density that avoids explicit ε-N quantifiers",
-      "**Existential formulation**: The open problem is stated as ∃ P, ∀ A, IsBehrend A ↔ P(A)—asking for the existence of a universal characterization that specializes to Σ 1/a = ∞ for coprime sets"
+      "**Substantial proved content**: 9 fully proved lemmas/theorems establish the algebraic structure of M_A\u2014monotonicity, union decomposition, closure under multiples, counting function bounds\u2014all without sorry",
+      "**Coprime vs general**: For coprime sets, Behrend \u2194 \u03a3 1/a = \u221e via multiplicative inclusion-exclusion; without coprimality, the product formula breaks and a new approach is needed",
+      "**Tenenbaum's log 2 threshold**: For block sequences with \u03b7_k = (k+1)^{-\u03b2}, the Behrend threshold is \u03b2\u2080 = log 2, not \u03b2\u2080 = 1\u2014the geometric growth of block positions creates a correction factor",
+      "**Filter-based density**: Using Mathlib's limsup/liminf on Filter.atTop gives a clean, topological definition of upper/lower density that avoids explicit \u03b5-N quantifiers",
+      "**Existential formulation**: The open problem is stated as \u2203 P, \u2200 A, IsBehrend A \u2194 P(A)\u2014asking for the existence of a universal characterization that specializes to \u03a3 1/a = \u221e for coprime sets"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -91,23 +91,23 @@
       "title": "Block Sequences and Tenenbaum's Theorem",
       "startLine": 144,
       "endLine": 178,
-      "summary": "Defines lacunary block sequences, axiomatizes the convergent η obstruction, and states Tenenbaum's log 2 threshold."
+      "summary": "Defines lacunary block sequences, axiomatizes the convergent \u03b7 obstruction, and states Tenenbaum's log 2 threshold."
     },
     {
       "id": "main-problem",
-      "title": "The Erdős Problem (Open)",
+      "title": "The Erd\u0151s Problem (Open)",
       "startLine": 180,
       "endLine": 196,
       "summary": "States the main open problem: existence of a general characterization of Behrend sequences."
     }
   ],
   "conclusion": {
-    "summary": "This formalization of Erdős Problem 691 stands out for its substantial proved content: 9 fully proved lemmas establishing the algebraic structure of sets of multiples, complemented by a complete density infrastructure using Mathlib's Filter framework. The coprime characterization (Behrend ↔ Σ 1/a = ∞) and Tenenbaum's sharp log 2 threshold for block sequences represent the state of the art, while the general characterization—a unifying condition without coprimality assumptions—remains wide open.",
+    "summary": "This formalization of Erd\u0151s Problem 691 stands out for its substantial proved content: 9 fully proved lemmas establishing the algebraic structure of sets of multiples, complemented by a complete density infrastructure using Mathlib's Filter framework. The coprime characterization (Behrend \u2194 \u03a3 1/a = \u221e) and Tenenbaum's sharp log 2 threshold for block sequences represent the state of the art, while the general characterization\u2014a unifying condition without coprimality assumptions\u2014remains wide open.",
     "implications": "A general Behrend criterion would unify multiplicative number theory results on density of multiples, connect to probabilistic number theory (when does a random integer avoid all elements of A?), and extend sieve-theoretic methods beyond the coprime setting. It would also clarify the role of arithmetic interactions between elements of A in determining the density of their multiples.",
     "openQuestions": [
       "What is a necessary and sufficient condition for A to be a Behrend sequence?",
-      "Does the general criterion involve logarithmic density, Davenport-Erdős type conditions, or something entirely new?",
-      "Is there a continuous interpolation between the coprime criterion (Σ 1/a = ∞) and Tenenbaum's block threshold (β < log 2)?",
+      "Does the general criterion involve logarithmic density, Davenport-Erd\u0151s type conditions, or something entirely new?",
+      "Is there a continuous interpolation between the coprime criterion (\u03a3 1/a = \u221e) and Tenenbaum's block threshold (\u03b2 < log 2)?",
       "How does the Behrend property interact with the multiplicative structure and common factors of elements of A?",
       "Can the 9 proved structural lemmas be extended to derive new density results for specific families of sets?"
     ]
@@ -132,5 +132,39 @@
     "axiomCount": 5,
     "theoremCount": 9,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-25",
+      "relationship": "related",
+      "description": "Share sieve-theory, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Share sieve-theory and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Share sieve-theory and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-248",
+      "relationship": "related",
+      "description": "Share sieve-theory and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-385",
+      "relationship": "related",
+      "description": "Share sieve-theory and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-25",
+    "bounded-prime-gaps",
+    "erdos-1101",
+    "erdos-248",
+    "erdos-385"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-836",
-  "title": "Erdős Problem #836: Intersecting 3-Chromatic Hypergraphs",
+  "title": "Erd\u0151s Problem #836: Intersecting 3-Chromatic Hypergraphs",
   "slug": "erdos-836",
-  "description": "For r-uniform hypergraphs with chromatic number 3 where any two edges intersect: Must there be O(r²) vertices? NO (Alon). Must two edges meet in ≫r vertices? Erdős-Lovász proved ≫r/log r.",
+  "description": "For r-uniform hypergraphs with chromatic number 3 where any two edges intersect: Must there be O(r\u00b2) vertices? NO (Alon). Must two edges meet in \u226br vertices? Erd\u0151s-Lov\u00e1sz proved \u226br/log r.",
   "meta": {
-    "author": "Erdős-Lovász (1975), Alon (counterexample)",
+    "author": "Erd\u0151s-Lov\u00e1sz (1975), Alon (counterexample)",
     "sourceUrl": "https://erdosproblems.com/836",
     "date": "1975",
     "status": "axiomatized",
@@ -40,7 +40,7 @@
       },
       {
         "theorem": "Real.log",
-        "description": "Logarithm for Erdős-Lovász bound",
+        "description": "Logarithm for Erd\u0151s-Lov\u00e1sz bound",
         "module": "Mathlib.Data.Real.Basic"
       }
     ],
@@ -50,9 +50,9 @@
       "IsIntersecting: every pair of edges shares a vertex",
       "IsProperColouring: k-colouring with no monochromatic edge",
       "IsThreeChromatic: 3-colourable but not 2-colourable",
-      "Question1: O(r²) vertex bound conjecture (FALSE)",
+      "Question1: O(r\u00b2) vertex bound conjecture (FALSE)",
       "question1_false: Alon's disproof",
-      "AlonVertexCount: ~4^r/√r vertex formula",
+      "AlonVertexCount: ~4^r/\u221ar vertex formula",
       "alon_construction: existence of counterexample",
       "ErdosLovaszBound: r/log r intersection bound",
       "erdos_836_summary: combined results"
@@ -63,16 +63,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem originates from Erdős and Shelah's study of hypergraph coloring, with key results appearing in the landmark 1975 paper by Erdős and Lovász, \"Problems and results on 3-chromatic hypergraphs and some related questions.\" The paper investigated the structural constraints imposed by chromatic number 3 on intersecting uniform hypergraphs, asking two fundamental questions about vertex count and edge intersection size.\n\nThe first question asked whether every r-uniform, intersecting, 3-chromatic hypergraph must have O(r²) vertices. Noga Alon provided a decisive counterexample using a partition-based construction: given a set X of size 2r-2 and the set Y of balanced partitions of X, the resulting hypergraph is r-uniform, intersecting, and 3-chromatic, but has approximately 4^r/√r vertices — exponentially larger than r². This was a major surprise, showing that the chromatic constraint allows far more complex structures than anticipated.\n\nThe second question asked whether two edges must share many vertices. Erdős and Lovász proved that in any r-uniform, intersecting, 3-chromatic hypergraph, some pair of edges must intersect in at least Ω(r/log r) vertices. Whether this bound can be improved to Ω(r) remains open. The Fano plane (projective plane of order 2) serves as an important extremal example: it is 3-uniform, intersecting, and 3-chromatic, with no two edges sharing r-1 = 2 vertices.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet r ≥ 2 and G be an r-uniform hypergraph with chromatic number 3 where any two edges intersect.\n\n**Q1:** Must G have O(r²) vertices?\n**Answer: NO** — Alon's counterexample has ~4^r/√r vertices.\n\n**Q2:** Must two edges meet in ≫ r vertices?\n**Answer: PARTIAL** — Erdős-Lovász proved two edges meet in Ω(r/log r) vertices. Whether Ω(r) is achievable remains open.",
-    "text": "For r-uniform hypergraphs with chromatic number 3 where any two edges intersect: Must there be O(r²) vertices? NO (Alon). Must two edges meet in ≫r vertices? Erdős-Lovász proved ≫r/log r.",
-    "proofStrategy": "The formalization builds hypergraph theory from scratch: defining Hypergraph as a set of edge-sets, then formalizing uniformity, intersection, and chromatic number. Question 1 is formalized as the existence of a constant C with |V| ≤ Cr², and its negation is axiomatized via Alon's construction. The Erdős-Lovász bound is axiomatized as a lower bound on pairwise edge intersection. The summary theorem combines both results using anonymous constructor syntax.",
+    "historicalContext": "This problem originates from Erd\u0151s and Shelah's study of hypergraph coloring, with key results appearing in the landmark 1975 paper by Erd\u0151s and Lov\u00e1sz, \"Problems and results on 3-chromatic hypergraphs and some related questions.\" The paper investigated the structural constraints imposed by chromatic number 3 on intersecting uniform hypergraphs, asking two fundamental questions about vertex count and edge intersection size.\n\nThe first question asked whether every r-uniform, intersecting, 3-chromatic hypergraph must have O(r\u00b2) vertices. Noga Alon provided a decisive counterexample using a partition-based construction: given a set X of size 2r-2 and the set Y of balanced partitions of X, the resulting hypergraph is r-uniform, intersecting, and 3-chromatic, but has approximately 4^r/\u221ar vertices \u2014 exponentially larger than r\u00b2. This was a major surprise, showing that the chromatic constraint allows far more complex structures than anticipated.\n\nThe second question asked whether two edges must share many vertices. Erd\u0151s and Lov\u00e1sz proved that in any r-uniform, intersecting, 3-chromatic hypergraph, some pair of edges must intersect in at least \u03a9(r/log r) vertices. Whether this bound can be improved to \u03a9(r) remains open. The Fano plane (projective plane of order 2) serves as an important extremal example: it is 3-uniform, intersecting, and 3-chromatic, with no two edges sharing r-1 = 2 vertices.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet r \u2265 2 and G be an r-uniform hypergraph with chromatic number 3 where any two edges intersect.\n\n**Q1:** Must G have O(r\u00b2) vertices?\n**Answer: NO** \u2014 Alon's counterexample has ~4^r/\u221ar vertices.\n\n**Q2:** Must two edges meet in \u226b r vertices?\n**Answer: PARTIAL** \u2014 Erd\u0151s-Lov\u00e1sz proved two edges meet in \u03a9(r/log r) vertices. Whether \u03a9(r) is achievable remains open.",
+    "text": "For r-uniform hypergraphs with chromatic number 3 where any two edges intersect: Must there be O(r\u00b2) vertices? NO (Alon). Must two edges meet in \u226br vertices? Erd\u0151s-Lov\u00e1sz proved \u226br/log r.",
+    "proofStrategy": "The formalization builds hypergraph theory from scratch: defining Hypergraph as a set of edge-sets, then formalizing uniformity, intersection, and chromatic number. Question 1 is formalized as the existence of a constant C with |V| \u2264 Cr\u00b2, and its negation is axiomatized via Alon's construction. The Erd\u0151s-Lov\u00e1sz bound is axiomatized as a lower bound on pairwise edge intersection. The summary theorem combines both results using anonymous constructor syntax.",
     "keyInsights": [
-      "**Q1 is FALSE:** Alon's counterexample has ~4^r/√r vertices, exponentially exceeding r²",
-      "**Q2 is PARTIAL:** Erdős-Lovász proved Ω(r/log r) edge intersection, improving to Ω(r) is open",
-      "**Fano Plane:** The projective plane of order 2 is extremal — 3-uniform, intersecting, 3-chromatic with no two edges sharing r-1 vertices",
-      "**2-chromatic ⟹ star:** A 2-chromatic intersecting hypergraph forces all edges to share a common vertex",
-      "**3-chromatic allows complexity:** The jump from χ=2 to χ=3 allows exponentially many vertices"
+      "**Q1 is FALSE:** Alon's counterexample has ~4^r/\u221ar vertices, exponentially exceeding r\u00b2",
+      "**Q2 is PARTIAL:** Erd\u0151s-Lov\u00e1sz proved \u03a9(r/log r) edge intersection, improving to \u03a9(r) is open",
+      "**Fano Plane:** The projective plane of order 2 is extremal \u2014 3-uniform, intersecting, 3-chromatic with no two edges sharing r-1 vertices",
+      "**2-chromatic \u27f9 star:** A 2-chromatic intersecting hypergraph forces all edges to share a common vertex",
+      "**3-chromatic allows complexity:** The jump from \u03c7=2 to \u03c7=3 allows exponentially many vertices"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -99,21 +99,21 @@
       "title": "Vertex Count Question",
       "startLine": 92,
       "endLine": 127,
-      "summary": "Question 1 about O(r²) vertex bound — shown FALSE"
+      "summary": "Question 1 about O(r\u00b2) vertex bound \u2014 shown FALSE"
     },
     {
       "id": "alon",
       "title": "Alon's Counterexample",
       "startLine": 129,
       "endLine": 166,
-      "summary": "Construction with ~4^r/√r vertices disproving Q1"
+      "summary": "Construction with ~4^r/\u221ar vertices disproving Q1"
     },
     {
       "id": "intersection",
       "title": "Edge Intersection Question",
       "startLine": 168,
       "endLine": 198,
-      "summary": "Question 2 and Erdős-Lovász bound r/log r"
+      "summary": "Question 2 and Erd\u0151s-Lov\u00e1sz bound r/log r"
     },
     {
       "id": "fano",
@@ -138,10 +138,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #836 is SOLVED. Question 1 (O(r²) vertices) is FALSE — Alon's counterexample has exponentially many vertices (~4^r/√r). Question 2 (large edge intersection) has partial answer: Erdős-Lovász proved two edges meet in Ω(r/log r) vertices.",
+    "summary": "Erd\u0151s Problem #836 is SOLVED. Question 1 (O(r\u00b2) vertices) is FALSE \u2014 Alon's counterexample has exponentially many vertices (~4^r/\u221ar). Question 2 (large edge intersection) has partial answer: Erd\u0151s-Lov\u00e1sz proved two edges meet in \u03a9(r/log r) vertices.",
     "implications": "This result reveals a dramatic structural phase transition at chromatic number 3: while 2-chromatic intersecting hypergraphs are forced to be stars (all edges share one vertex), 3-chromatic ones can have exponentially many vertices. The Fano plane remains a key extremal example.",
     "openQuestions": [
-      "Can the Erdős-Lovász r/log r intersection bound be improved to Ω(r)?",
+      "Can the Erd\u0151s-Lov\u00e1sz r/log r intersection bound be improved to \u03a9(r)?",
       "Are there other examples besides Fano where no two edges share r-1 vertices?",
       "What is the exact growth rate of maximum vertex count as a function of r?"
     ]
@@ -160,5 +160,39 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-780",
+      "relationship": "related",
+      "description": "Share combinatorial, hypergraphs, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-834",
+      "relationship": "related",
+      "description": "Share combinatorial, hypergraphs, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1022",
+      "relationship": "related",
+      "description": "Share combinatorial and hypergraphs themes"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Share combinatorial and hypergraphs themes"
+    },
+    {
+      "targetId": "erdos-161",
+      "relationship": "related",
+      "description": "Share combinatorial and hypergraphs themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-780",
+    "erdos-834",
+    "erdos-1022",
+    "erdos-1075",
+    "erdos-161"
+  ]
 }

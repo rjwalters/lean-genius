@@ -1,10 +1,10 @@
 {
   "id": "erdos-1114",
-  "title": "Erdős Problem #1114: Monotonicity of Critical Point Gaps",
+  "title": "Erd\u0151s Problem #1114: Monotonicity of Critical Point Gaps",
   "slug": "erdos-1114",
   "description": "For a polynomial with all real roots in arithmetic progression, the gaps between consecutive critical points of its derivative increase monotonically from the midpoint outward.",
   "meta": {
-    "author": "Bálint (1960)",
+    "author": "B\u00e1lint (1960)",
     "sourceUrl": "https://erdosproblems.com/1114",
     "date": "1960",
     "status": "axiomatized",
@@ -62,12 +62,12 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1114** concerns the behavior of critical points of polynomials whose roots form arithmetic progressions. Erdős conjectured that the gaps between consecutive critical points exhibit a monotonicity property, communicating the conjecture personally to Bálint.\n\n**Key History:**\n- Erdős posed this problem, likely in the late 1950s, motivated by questions about root-derivative relationships\n- Bálint (1960) proved the conjecture: the gaps between consecutive zeros of f' increase monotonically from the midpoint outward\n- Lorch (1976) generalized the result to higher derivatives f'', f''', etc.\n\n**Mathematical Context:** By Rolle's theorem, a degree-(n+1) polynomial with n+1 distinct real roots has exactly n critical points (roots of its derivative). When the roots are evenly spaced, the polynomial inherits a symmetry about the midpoint of its root interval. This symmetry forces the critical points to cluster toward the center, making the gaps between them smallest near the middle and largest near the endpoints.",
-    "problemStatement": "**Problem Statement (Proved)**\n\nLet $f(x) \\in \\mathbb{R}[x]$ be a polynomial of degree $n$ whose roots $\\{a_0 < a_1 < \\cdots < a_n\\}$ are all real and form an arithmetic progression. Then the differences between consecutive zeros of $f'(x)$, beginning from the midpoint of $(a_0, a_n)$ towards the endpoints, are monotonically increasing.\n\n**Answer: PROVED** by Bálint (1960).\n\nAll zeros of $f'(x)$ are distinct real numbers in $(a_0, a_n)$ by Rolle's theorem, and their gaps increase outward from the center.",
+    "historicalContext": "**Erd\u0151s Problem #1114** concerns the behavior of critical points of polynomials whose roots form arithmetic progressions. Erd\u0151s conjectured that the gaps between consecutive critical points exhibit a monotonicity property, communicating the conjecture personally to B\u00e1lint.\n\n**Key History:**\n- Erd\u0151s posed this problem, likely in the late 1950s, motivated by questions about root-derivative relationships\n- B\u00e1lint (1960) proved the conjecture: the gaps between consecutive zeros of f' increase monotonically from the midpoint outward\n- Lorch (1976) generalized the result to higher derivatives f'', f''', etc.\n\n**Mathematical Context:** By Rolle's theorem, a degree-(n+1) polynomial with n+1 distinct real roots has exactly n critical points (roots of its derivative). When the roots are evenly spaced, the polynomial inherits a symmetry about the midpoint of its root interval. This symmetry forces the critical points to cluster toward the center, making the gaps between them smallest near the middle and largest near the endpoints.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $f(x) \\in \\mathbb{R}[x]$ be a polynomial of degree $n$ whose roots $\\{a_0 < a_1 < \\cdots < a_n\\}$ are all real and form an arithmetic progression. Then the differences between consecutive zeros of $f'(x)$, beginning from the midpoint of $(a_0, a_n)$ towards the endpoints, are monotonically increasing.\n\n**Answer: PROVED** by B\u00e1lint (1960).\n\nAll zeros of $f'(x)$ are distinct real numbers in $(a_0, a_n)$ by Rolle's theorem, and their gaps increase outward from the center.",
     "text": "For a polynomial with all real roots in arithmetic progression, the gaps between consecutive critical points of its derivative increase monotonically from the midpoint outward.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Setup:** Define IsAPRoots and HasAPRoots to capture polynomials with arithmetic progression roots\n\n2. **Rolle Application:** Axiomatize that f' has n strictly increasing critical points between consecutive roots\n\n3. **Gap Definitions:** Define Gap, Midpoint, and DistFromMidpoint to measure the outward monotonicity\n\n4. **Main Theorem:** Axiomatize Bálint's result: gaps increase as distance from midpoint increases\n\n5. **Special Cases:** Formalize the quartic case and Lorch's generalization to higher derivatives\n\n6. **Summary:** Combine the main theorem and quartic case into a proved summary theorem",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Setup:** Define IsAPRoots and HasAPRoots to capture polynomials with arithmetic progression roots\n\n2. **Rolle Application:** Axiomatize that f' has n strictly increasing critical points between consecutive roots\n\n3. **Gap Definitions:** Define Gap, Midpoint, and DistFromMidpoint to measure the outward monotonicity\n\n4. **Main Theorem:** Axiomatize B\u00e1lint's result: gaps increase as distance from midpoint increases\n\n5. **Special Cases:** Formalize the quartic case and Lorch's generalization to higher derivatives\n\n6. **Summary:** Combine the main theorem and quartic case into a proved summary theorem",
     "keyInsights": [
-      "**Rolle's Theorem:** Between any two consecutive roots of f, there exists exactly one root of f' — giving n critical points for a degree-(n+1) polynomial",
+      "**Rolle's Theorem:** Between any two consecutive roots of f, there exists exactly one root of f' \u2014 giving n critical points for a degree-(n+1) polynomial",
       "**Symmetry of AP Roots:** Polynomials with evenly spaced roots have a natural symmetry about the midpoint of the root interval",
       "**Center Clustering:** Critical points cluster toward the center of the root interval, making outer gaps larger than inner gaps",
       "**Convexity Arguments:** The proof uses convexity properties of auxiliary functions to establish the monotonicity",
@@ -105,7 +105,7 @@
       "title": "The Main Theorem",
       "startLine": 107,
       "endLine": 138,
-      "summary": "Bálint's theorem: gaps increase outward from midpoint. Also symmetric formulation: outer gaps dominate inner gaps."
+      "summary": "B\u00e1lint's theorem: gaps increase outward from midpoint. Also symmetric formulation: outer gaps dominate inner gaps."
     },
     {
       "id": "quartic-case",
@@ -126,11 +126,11 @@
       "title": "Summary",
       "startLine": 169,
       "endLine": 193,
-      "summary": "erdos_1114_summary theorem combining Bálint's main result with the quartic special case."
+      "summary": "erdos_1114_summary theorem combining B\u00e1lint's main result with the quartic special case."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1114 is PROVED. Bálint (1960) showed that for polynomials with evenly spaced real roots, the gaps between consecutive critical points of the derivative increase monotonically as one moves from the midpoint of the root interval toward the endpoints. Lorch (1976) generalized this to higher derivatives.",
+    "summary": "Erd\u0151s Problem #1114 is PROVED. B\u00e1lint (1960) showed that for polynomials with evenly spaced real roots, the gaps between consecutive critical points of the derivative increase monotonically as one moves from the midpoint of the root interval toward the endpoints. Lorch (1976) generalized this to higher derivatives.",
     "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Root-Derivative Relationships:** Reveals precise structure in how polynomial differentiation transforms root distributions\n\n**2. Symmetry Exploitation:** The arithmetic progression structure provides the symmetry needed for the monotonicity result\n\n3. **Higher Derivatives:** Lorch's generalization shows the pattern is preserved through repeated differentiation\n\n4. **Polynomial Geometry:** Connects algebraic properties (AP roots) to geometric properties (gap monotonicity) of polynomial curves.",
     "openQuestions": [
       "Can the result be extended to polynomials with geometric progression roots?",
@@ -141,29 +141,34 @@
   },
   "crossReferences": [
     {
-      "id": "mean-value-theorem",
       "title": "Mean Value Theorem",
-      "relationship": "Rolle's Theorem — the engine of this proof — is the special case of the Mean Value Theorem where f(a) = f(b). Every critical point between consecutive AP roots is supplied by a single application of Rolle's Theorem."
+      "relationship": "related",
+      "targetId": "mean-value-theorem",
+      "description": "Rolle's Theorem \u2014 the engine of this proof \u2014 is the special case of the Mean Value Theorem where f(a) = f(b). Every critical point between consecutive AP roots is supplied by a single application of Rolle's Theorem."
     },
     {
-      "id": "fundamental-theorem-algebra",
       "title": "Fundamental Theorem of Algebra",
-      "relationship": "Guarantees that a degree-n real polynomial has exactly n roots (counted with multiplicity). Bálint's theorem takes root structure one step further by analyzing how a specific root geometry (arithmetic progression) shapes the root geometry of the derivative."
+      "relationship": "related",
+      "targetId": "fundamental-theorem-algebra",
+      "description": "Guarantees that a degree-n real polynomial has exactly n roots (counted with multiplicity). B\u00e1lint's theorem takes root structure one step further by analyzing how a specific root geometry (arithmetic progression) shapes the root geometry of the derivative."
     },
     {
-      "id": "erdos-1125",
-      "title": "Erdős Problem #1125: Kemperman's Inequality and Monotonicity",
-      "relationship": "Both problems study outward monotonicity arising from convexity arguments on the real line. Kemperman's inequality derives sub-additivity from concavity; Bálint's theorem derives gap monotonicity from the convexity of auxiliary functions built from the AP root structure."
+      "title": "Erd\u0151s Problem #1125: Kemperman's Inequality and Monotonicity",
+      "relationship": "related",
+      "targetId": "erdos-1125",
+      "description": "Both problems study outward monotonicity arising from convexity arguments on the real line. Kemperman's inequality derives sub-additivity from concavity; B\u00e1lint's theorem derives gap monotonicity from the convexity of auxiliary functions built from the AP root structure."
     },
     {
-      "id": "erdos-229",
-      "title": "Erdős Problem #229: Zeros of Derivatives of Entire Functions",
-      "relationship": "Shares the central theme of understanding how zeros of f' relate to zeros of f. Problem #229 asks about density of derivative zeros for entire functions; Problem #1114 answers a precise spacing question for the polynomial case when roots are in arithmetic progression."
+      "title": "Erd\u0151s Problem #229: Zeros of Derivatives of Entire Functions",
+      "relationship": "related",
+      "targetId": "erdos-229",
+      "description": "Shares the central theme of understanding how zeros of f' relate to zeros of f. Problem #229 asks about density of derivative zeros for entire functions; Problem #1114 answers a precise spacing question for the polynomial case when roots are in arithmetic progression."
     },
     {
-      "id": "erdos-906",
-      "title": "Erdős Problem #906: Dense Zeros of Derivative Subsequences",
-      "relationship": "Another problem in the root–derivative relationship cluster. Problem #906 studies density of zeros for subsequences of derivatives of entire functions; Problem #1114 studies monotone gap structure of zeros of the first derivative for polynomial families."
+      "title": "Erd\u0151s Problem #906: Dense Zeros of Derivative Subsequences",
+      "relationship": "related",
+      "targetId": "erdos-906",
+      "description": "Another problem in the root\u2013derivative relationship cluster. Problem #906 studies density of zeros for subsequences of derivatives of entire functions; Problem #1114 studies monotone gap structure of zeros of the first derivative for polynomial families."
     }
   ],
   "relatedProofs": [
@@ -181,33 +186,33 @@
     },
     {
       "id": "erdos-1038",
-      "title": "Erdős Problem #1038: Sublevel Sets of Monic Polynomials",
+      "title": "Erd\u0151s Problem #1038: Sublevel Sets of Monic Polynomials",
       "connection": "thematic",
-      "description": "Concerns the geometry of real polynomials — specifically how root structure governs measure-theoretic properties of level sets. Complements Problem #1114's focus on how AP root structure governs the spacing of derivative zeros."
+      "description": "Concerns the geometry of real polynomials \u2014 specifically how root structure governs measure-theoretic properties of level sets. Complements Problem #1114's focus on how AP root structure governs the spacing of derivative zeros."
     },
     {
       "id": "erdos-1125",
-      "title": "Erdős Problem #1125: Kemperman's Inequality and Monotonicity",
+      "title": "Erd\u0151s Problem #1125: Kemperman's Inequality and Monotonicity",
       "connection": "thematic",
-      "description": "Both results establish monotonicity via convexity on the real line. Kemperman's work and Bálint's argument belong to the same tradition of extracting ordered structure from analytic inequalities."
+      "description": "Both results establish monotonicity via convexity on the real line. Kemperman's work and B\u00e1lint's argument belong to the same tradition of extracting ordered structure from analytic inequalities."
     },
     {
       "id": "erdos-1129",
-      "title": "Erdős Problem #1129: Optimal Lagrange Interpolation Nodes",
+      "title": "Erd\u0151s Problem #1129: Optimal Lagrange Interpolation Nodes",
       "connection": "thematic",
-      "description": "Chebyshev nodes — the optimal interpolation nodes — cluster at endpoints and spread outward, the opposite pattern to AP-root critical points (which cluster near the center). The two results together illuminate the extremal geometry of polynomial node configurations."
+      "description": "Chebyshev nodes \u2014 the optimal interpolation nodes \u2014 cluster at endpoints and spread outward, the opposite pattern to AP-root critical points (which cluster near the center). The two results together illuminate the extremal geometry of polynomial node configurations."
     }
   ],
   "references": [
     {
       "authors": [
-        "Bálint, V."
+        "B\u00e1lint, V."
       ],
       "title": "On a property of polynomials",
       "year": 1960,
       "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
       "volume": "11",
-      "pages": "221–226",
+      "pages": "221\u2013226",
       "notes": "Original proof that the gaps between consecutive zeros of f' increase monotonically outward from the midpoint when f has equally spaced real roots."
     },
     {
@@ -218,20 +223,20 @@
       "year": 1976,
       "journal": "Proceedings of the American Mathematical Society",
       "volume": "58",
-      "pages": "297–302",
+      "pages": "297\u2013302",
       "doi": "10.2307/2041400",
-      "notes": "Generalizes Bálint's result to higher derivatives: zeros of f^(k) also exhibit outward gap monotonicity for polynomials with arithmetic progression roots."
+      "notes": "Generalizes B\u00e1lint's result to higher derivatives: zeros of f^(k) also exhibit outward gap monotonicity for polynomials with arithmetic progression roots."
     },
     {
       "authors": [
         "Schur, I."
       ],
-      "title": "Über algebraische Gleichungen, die nur reelle Wurzeln besitzen",
+      "title": "\u00dcber algebraische Gleichungen, die nur reelle Wurzeln besitzen",
       "year": 1933,
-      "journal": "Zeitschrift für Angewandte Mathematik und Mechanik",
+      "journal": "Zeitschrift f\u00fcr Angewandte Mathematik und Mechanik",
       "volume": "13",
-      "pages": "361–362",
-      "notes": "Early study of polynomials constrained to have only real roots; provides background for the symmetry arguments used in Bálint's proof."
+      "pages": "361\u2013362",
+      "notes": "Early study of polynomials constrained to have only real roots; provides background for the symmetry arguments used in B\u00e1lint's proof."
     },
     {
       "authors": [
@@ -243,19 +248,19 @@
       "series": "Mathematical Surveys",
       "volume": "3",
       "edition": "2nd",
-      "notes": "Comprehensive reference for the geometry of polynomial zeros and their derivatives; the Gauss–Lucas theorem and related results provide the broader context for Bálint's monotonicity theorem."
+      "notes": "Comprehensive reference for the geometry of polynomial zeros and their derivatives; the Gauss\u2013Lucas theorem and related results provide the broader context for B\u00e1lint's monotonicity theorem."
     },
     {
       "authors": [
-        "Pólya, G.",
-        "Szegő, G."
+        "P\u00f3lya, G.",
+        "Szeg\u0151, G."
       ],
       "title": "Problems and Theorems in Analysis II",
       "year": 1976,
       "publisher": "Springer-Verlag",
       "series": "Grundlehren der mathematischen Wissenschaften",
       "volume": "216",
-      "notes": "Contains the classical convexity and interlacing results for zeros of real polynomials and their derivatives that underlie Bálint's argument."
+      "notes": "Contains the classical convexity and interlacing results for zeros of real polynomials and their derivatives that underlie B\u00e1lint's argument."
     }
   ],
   "leanFile": {

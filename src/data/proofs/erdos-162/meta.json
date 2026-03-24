@@ -2,9 +2,9 @@
   "id": "erdos-162",
   "title": "Discrepancy in 2-Coloured Complete Graphs",
   "slug": "erdos-162",
-  "description": "For 0 < α ≤ 1/2, is F(n, α) ~ c_α log n, where F(n, α) is the largest k such that some 2-colouring of K_n has every k-vertex subgraph α-balanced?",
+  "description": "For 0 < \u03b1 \u2264 1/2, is F(n, \u03b1) ~ c_\u03b1 log n, where F(n, \u03b1) is the largest k such that some 2-colouring of K_n has every k-vertex subgraph \u03b1-balanced?",
   "meta": {
-    "author": "Erdős (1990)",
+    "author": "Erd\u0151s (1990)",
     "sourceUrl": "https://erdosproblems.com/162",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos162Problem.lean",
@@ -27,16 +27,16 @@
     "assumptions": "7 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem around 1990, asking for the precise asymptotic of F(n, α) — the largest k such that some 2-colouring of K_n has every induced subgraph on at least k vertices α-balanced (each colour appears on more than α fraction of edges). The problem sits at the intersection of Ramsey theory and discrepancy theory.\n\nThe probabilistic method readily establishes that F(n, α) = Θ(log n) for each fixed 0 < α ≤ 1/2: a random 2-colouring of K_n is α-balanced on all sets of size ≤ c₁ log n with positive probability (via Chernoff bounds and a union bound over subsets), while a Ramsey-type counting argument shows any colouring must have an imbalanced induced subgraph of size ≤ c₂ log n.\n\nThe conjecture goes beyond these order-of-magnitude bounds to assert that the ratio F(n, α)/log n converges to a definite limit c_α. Determining this constant as a function of α would give a precise quantitative understanding of how balanced large 2-colourings can be. The case α = 1/2 is extremal (requiring near-equal colour distribution) and is related to Problems #161, #163, and #617 on balanced colourings. The formalization at 187 lines includes 2 sorries for counting lemmas and computational verification examples.",
-    "problemStatement": "Prove that F(n, α) ~ c_α log n for some constant c_α depending on α.",
-    "text": "For 0 < α ≤ 1/2, is F(n, α) ~ c_α log n, where F(n, α) is the largest k such that some 2-colouring of K_n has every k-vertex subgraph α-balanced?",
-    "proofStrategy": "The formalization defines EdgeColouring as a symmetric Bool-valued function on pairs, IsBalancedOn requiring each colour class to exceed α · C(|S|,2) edges, and IsKBalanced for all subsets of size ≥ k. The function discrepancyF is axiomatized with characterization spec and monotonicity properties. Logarithmic bounds from the probabilistic method are stated. The main conjecture asserts ε-δ convergence of F(n,α)/log n to c_α.",
+    "historicalContext": "Erd\u0151s posed this problem around 1990, asking for the precise asymptotic of F(n, \u03b1) \u2014 the largest k such that some 2-colouring of K_n has every induced subgraph on at least k vertices \u03b1-balanced (each colour appears on more than \u03b1 fraction of edges). The problem sits at the intersection of Ramsey theory and discrepancy theory.\n\nThe probabilistic method readily establishes that F(n, \u03b1) = \u0398(log n) for each fixed 0 < \u03b1 \u2264 1/2: a random 2-colouring of K_n is \u03b1-balanced on all sets of size \u2264 c\u2081 log n with positive probability (via Chernoff bounds and a union bound over subsets), while a Ramsey-type counting argument shows any colouring must have an imbalanced induced subgraph of size \u2264 c\u2082 log n.\n\nThe conjecture goes beyond these order-of-magnitude bounds to assert that the ratio F(n, \u03b1)/log n converges to a definite limit c_\u03b1. Determining this constant as a function of \u03b1 would give a precise quantitative understanding of how balanced large 2-colourings can be. The case \u03b1 = 1/2 is extremal (requiring near-equal colour distribution) and is related to Problems #161, #163, and #617 on balanced colourings. The formalization at 187 lines includes 2 sorries for counting lemmas and computational verification examples.",
+    "problemStatement": "Prove that F(n, \u03b1) ~ c_\u03b1 log n for some constant c_\u03b1 depending on \u03b1.",
+    "text": "For 0 < \u03b1 \u2264 1/2, is F(n, \u03b1) ~ c_\u03b1 log n, where F(n, \u03b1) is the largest k such that some 2-colouring of K_n has every k-vertex subgraph \u03b1-balanced?",
+    "proofStrategy": "The formalization defines EdgeColouring as a symmetric Bool-valued function on pairs, IsBalancedOn requiring each colour class to exceed \u03b1 \u00b7 C(|S|,2) edges, and IsKBalanced for all subsets of size \u2265 k. The function discrepancyF is axiomatized with characterization spec and monotonicity properties. Logarithmic bounds from the probabilistic method are stated. The main conjecture asserts \u03b5-\u03b4 convergence of F(n,\u03b1)/log n to c_\u03b1.",
     "keyInsights": [
-      "**F(n, α) measures discrepancy-free vertex sets**: The function F captures the largest substructure on which a 2-colouring remains α-balanced — no large monochromatic or near-monochromatic induced subgraph exists.",
-      "**Probabilistic lower bound**: A random 2-colouring is α-balanced on sets of size ≤ c₁ log n with positive probability (Chernoff + union bound over O(n^k) subsets of size k). This establishes F(n, α) > c₁ log n.",
-      "**Ramsey-type upper bound**: By a counting argument, any 2-colouring of K_n must have an imbalanced induced subgraph of size ≤ c₂ log n, giving F(n, α) < c₂ log n.",
-      "**Convergence vs order**: The conjecture is strictly stronger than Θ(log n) bounds — it asserts that F(n,α)/log n converges to a definite limit, not just that it's bounded between constants.",
-      "**α = 1/2 is extremal**: F(n, 1/2) ≤ F(n, α) for all α ≤ 1/2 (proved via monotonicity). The half-balanced case requires near-equal colour distribution and is the hardest."
+      "**F(n, \u03b1) measures discrepancy-free vertex sets**: The function F captures the largest substructure on which a 2-colouring remains \u03b1-balanced \u2014 no large monochromatic or near-monochromatic induced subgraph exists.",
+      "**Probabilistic lower bound**: A random 2-colouring is \u03b1-balanced on sets of size \u2264 c\u2081 log n with positive probability (Chernoff + union bound over O(n^k) subsets of size k). This establishes F(n, \u03b1) > c\u2081 log n.",
+      "**Ramsey-type upper bound**: By a counting argument, any 2-colouring of K_n must have an imbalanced induced subgraph of size \u2264 c\u2082 log n, giving F(n, \u03b1) < c\u2082 log n.",
+      "**Convergence vs order**: The conjecture is strictly stronger than \u0398(log n) bounds \u2014 it asserts that F(n,\u03b1)/log n converges to a definite limit, not just that it's bounded between constants.",
+      "**\u03b1 = 1/2 is extremal**: F(n, 1/2) \u2264 F(n, \u03b1) for all \u03b1 \u2264 1/2 (proved via monotonicity). The half-balanced case requires near-equal colour distribution and is the hardest."
     ],
     "mathlibDependencies": [
       "Mathlib.Data.Nat.Choose.Basic",
@@ -46,15 +46,15 @@
       "EdgeColouring: symmetric Bool-valued function with irreflexivity",
       "colourEdgeCount: count edges of given colour in induced subgraph",
       "colourEdgeCount_total: total edges equals C(|S|,2) (sorry)",
-      "IsBalancedOn: α-balanced colouring on vertex set S",
-      "IsKBalanced: every subset of size ≥ k is α-balanced",
-      "balanced_requires_le_half: α > 1/2 makes balance impossible (sorry)",
-      "discrepancyF: axiomatized F(n,α) with spec and monotonicity",
-      "discrepancy_lower: c₁ log n lower bound from probabilistic method",
-      "discrepancy_upper: c₂ log n upper bound from Ramsey counting",
-      "discrepancy_theta_log: proved Θ(log n) sandwich from lower/upper",
-      "half_is_extremal: proved F(n,1/2) ≤ F(n,α) via monotonicity",
-      "ErdosProblem162: convergence of F(n,α)/log n to c_α (ε-δ form)"
+      "IsBalancedOn: \u03b1-balanced colouring on vertex set S",
+      "IsKBalanced: every subset of size \u2265 k is \u03b1-balanced",
+      "balanced_requires_le_half: \u03b1 > 1/2 makes balance impossible (sorry)",
+      "discrepancyF: axiomatized F(n,\u03b1) with spec and monotonicity",
+      "discrepancy_lower: c\u2081 log n lower bound from probabilistic method",
+      "discrepancy_upper: c\u2082 log n upper bound from Ramsey counting",
+      "discrepancy_theta_log: proved \u0398(log n) sandwich from lower/upper",
+      "half_is_extremal: proved F(n,1/2) \u2264 F(n,\u03b1) via monotonicity",
+      "ErdosProblem162: convergence of F(n,\u03b1)/log n to c_\u03b1 (\u03b5-\u03b4 form)"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -72,31 +72,31 @@
     },
     {
       "id": "function-f",
-      "title": "The Function F(n, α)",
+      "title": "The Function F(n, \u03b1)",
       "startLine": 76,
       "endLine": 102,
-      "summary": "Axiomatizes discrepancyF with characterization spec, monotonicity in α, F(n,0)=n, and F(n,α) ≤ n."
+      "summary": "Axiomatizes discrepancyF with characterization spec, monotonicity in \u03b1, F(n,0)=n, and F(n,\u03b1) \u2264 n."
     },
     {
       "id": "log-bounds",
       "title": "Logarithmic Bounds",
       "startLine": 104,
       "endLine": 128,
-      "summary": "Axiomatizes lower and upper bounds c₁ log n < F < c₂ log n. Proves Θ(log n) sandwich theorem."
+      "summary": "Axiomatizes lower and upper bounds c\u2081 log n < F < c\u2082 log n. Proves \u0398(log n) sandwich theorem."
     },
     {
       "id": "derived",
       "title": "Derived Results",
       "startLine": 130,
       "endLine": 134,
-      "summary": "Proves half_is_extremal: F(n,1/2) ≤ F(n,α) directly from monotonicity axiom."
+      "summary": "Proves half_is_extremal: F(n,1/2) \u2264 F(n,\u03b1) directly from monotonicity axiom."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 136,
       "endLine": 148,
-      "summary": "Defines ErdosProblem162: F(n,α)/log n → c_α via ε-δ convergence for every 0 < α ≤ 1/2."
+      "summary": "Defines ErdosProblem162: F(n,\u03b1)/log n \u2192 c_\u03b1 via \u03b5-\u03b4 convergence for every 0 < \u03b1 \u2264 1/2."
     },
     {
       "id": "examples",
@@ -107,11 +107,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 162 at 187 lines, defining edge 2-colourings, α-balanced subgraphs, the function F(n,α), and the convergence conjecture. The Θ(log n) sandwich is proved from axiomatized bounds. 2 sorries remain for counting lemmas.",
-    "implications": "Determining c_α would give a precise quantitative understanding of how balanced large 2-colourings can be across all induced subgraphs, bridging Ramsey theory and discrepancy theory.",
+    "summary": "The formalization captures Erd\u0151s Problem 162 at 187 lines, defining edge 2-colourings, \u03b1-balanced subgraphs, the function F(n,\u03b1), and the convergence conjecture. The \u0398(log n) sandwich is proved from axiomatized bounds. 2 sorries remain for counting lemmas.",
+    "implications": "Determining c_\u03b1 would give a precise quantitative understanding of how balanced large 2-colourings can be across all induced subgraphs, bridging Ramsey theory and discrepancy theory.",
     "openQuestions": [
-      "Does the limit c_α = lim F(n,α)/log n exist for each α?",
-      "What is c_α as a function of α? Is it continuous? Monotone?",
+      "Does the limit c_\u03b1 = lim F(n,\u03b1)/log n exist for each \u03b1?",
+      "What is c_\u03b1 as a function of \u03b1? Is it continuous? Monotone?",
       "Can the probabilistic method bounds be tightened to match?",
       "What happens for r-colourings with r > 2?"
     ]
@@ -127,5 +127,39 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Share combinatorial, Ramsey-theoretic, and discrepancy themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share combinatorial and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share combinatorial and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Share combinatorial and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Share combinatorial and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-176",
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1090",
+    "erdos-1105"
+  ]
 }

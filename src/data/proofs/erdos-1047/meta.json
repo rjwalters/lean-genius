@@ -1,10 +1,10 @@
 {
   "id": "erdos-1047",
-  "title": "Erdős Problem #1047: Convexity of Polynomial Lemniscates",
+  "title": "Erd\u0151s Problem #1047: Convexity of Polynomial Lemniscates",
   "slug": "erdos-1047",
-  "description": "Must the connected components of {z : |f(z)| ≤ c} be convex for small c? No! Grunsky's conjecture was disproved by Pommerenke (1961) and Goodman (1966) with explicit counterexamples.",
+  "description": "Must the connected components of {z : |f(z)| \u2264 c} be convex for small c? No! Grunsky's conjecture was disproved by Pommerenke (1961) and Goodman (1966) with explicit counterexamples.",
   "meta": {
-    "author": "Grunsky (question), Erdős-Herzog-Piranian (1958), Pommerenke (1961), Goodman (1966)",
+    "author": "Grunsky (question), Erd\u0151s-Herzog-Piranian (1958), Pommerenke (1961), Goodman (1966)",
     "sourceUrl": "https://erdosproblems.com/1047",
     "date": "1961",
     "status": "axiomatized",
@@ -62,21 +62,21 @@
     "assumptions": "17 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**The Geometry of Polynomial Level Sets**\n\nThis problem originated with Helmut Grunsky and was reported by Erdős, Herzog, and Piranian in their 1958 paper 'Metric properties of polynomials' (EHP58). The question asks about the geometry of **polynomial lemniscates** — the level sets {z : |f(z)| ≤ c}.\n\nFor small c, the lemniscate breaks into separate components around each root. Near a simple root z₀, the component looks like a small disk: |z - z₀| ≤ c^(1/k) where k is multiplicity. Grunsky asked: must these components always be convex?\n\n**The Surprising Answer**: NO! The intuition that 'small regions around roots are nearly circular' breaks down when roots interact. Pommerenke (1961) gave the first counterexample, and Goodman (1966) provided explicit constructions including one with all simple roots.",
-    "problemStatement": "**Problem Statement**\n\nLet f ∈ ℂ[x] be a monic polynomial with m distinct roots. For small enough c > 0, the set {z : |f(z)| ≤ c} has m connected components (one around each root).\n\n**Grunsky's Question:** Must all these components be convex?\n\n**Answer:** NO\n\n**Counterexamples:**\n1. **Pommerenke (1961):** f(z) = z^k(z-a) for large k and a ≈ (1+1/k)k^(1/(k+1))\n2. **Goodman (1966):** f(z) = (z²+1)(z-2)² with c = 5^(3/2)/4\n3. **Referee:** f(z) = z(z⁵-1) with c = 5.6^(-6/5)",
-    "text": "Must the connected components of {z : |f(z)| ≤ c} be convex for small c? No! Grunsky's conjecture was disproved by Pommerenke (1961) and Goodman (1966) with explicit counterexamples.",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean proof develops a complete framework for lemniscate geometry:\n\n1. **Definitions:** `lemniscate f c` = {z : |f(z)| ≤ c}, with strict and boundary variants\n\n2. **Basic Properties:** Lemniscates are closed and compact (for degree > 0)\n\n3. **Component Counting:** For small c, exactly m components exist (m = distinct roots)\n\n4. **Convexity in ℂ:** Segment-based definition of convex subsets\n\n5. **The Conjecture:** `grunskyConjecture` and its negation `grunskyConjecture_false`\n\n6. **Counterexamples:** Formal statements of Pommerenke, Goodman, and referee examples\n\n7. **Positive Results:** Single-root case proves lemniscates CAN be convex (they're disks)",
+    "historicalContext": "**The Geometry of Polynomial Level Sets**\n\nThis problem originated with Helmut Grunsky and was reported by Erd\u0151s, Herzog, and Piranian in their 1958 paper 'Metric properties of polynomials' (EHP58). The question asks about the geometry of **polynomial lemniscates** \u2014 the level sets {z : |f(z)| \u2264 c}.\n\nFor small c, the lemniscate breaks into separate components around each root. Near a simple root z\u2080, the component looks like a small disk: |z - z\u2080| \u2264 c^(1/k) where k is multiplicity. Grunsky asked: must these components always be convex?\n\n**The Surprising Answer**: NO! The intuition that 'small regions around roots are nearly circular' breaks down when roots interact. Pommerenke (1961) gave the first counterexample, and Goodman (1966) provided explicit constructions including one with all simple roots.",
+    "problemStatement": "**Problem Statement**\n\nLet f \u2208 \u2102[x] be a monic polynomial with m distinct roots. For small enough c > 0, the set {z : |f(z)| \u2264 c} has m connected components (one around each root).\n\n**Grunsky's Question:** Must all these components be convex?\n\n**Answer:** NO\n\n**Counterexamples:**\n1. **Pommerenke (1961):** f(z) = z^k(z-a) for large k and a \u2248 (1+1/k)k^(1/(k+1))\n2. **Goodman (1966):** f(z) = (z\u00b2+1)(z-2)\u00b2 with c = 5^(3/2)/4\n3. **Referee:** f(z) = z(z\u2075-1) with c = 5.6^(-6/5)",
+    "text": "Must the connected components of {z : |f(z)| \u2264 c} be convex for small c? No! Grunsky's conjecture was disproved by Pommerenke (1961) and Goodman (1966) with explicit counterexamples.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean proof develops a complete framework for lemniscate geometry:\n\n1. **Definitions:** `lemniscate f c` = {z : |f(z)| \u2264 c}, with strict and boundary variants\n\n2. **Basic Properties:** Lemniscates are closed and compact (for degree > 0)\n\n3. **Component Counting:** For small c, exactly m components exist (m = distinct roots)\n\n4. **Convexity in \u2102:** Segment-based definition of convex subsets\n\n5. **The Conjecture:** `grunskyConjecture` and its negation `grunskyConjecture_false`\n\n6. **Counterexamples:** Formal statements of Pommerenke, Goodman, and referee examples\n\n7. **Positive Results:** Single-root case proves lemniscates CAN be convex (they're disks)",
     "keyInsights": [
-      "**Lemniscate Geometry:** Near a root of multiplicity k, |f(z)| ≈ |z-root|^k · const, giving circular local shape",
+      "**Lemniscate Geometry:** Near a root of multiplicity k, |f(z)| \u2248 |z-root|^k \u00b7 const, giving circular local shape",
       "**Root Interaction:** When roots are close, their 'gravitational' effects create saddle points and non-convex pinching",
       "**Pommerenke's Insight:** High-multiplicity roots (z^k factor) create asymmetric distortion that breaks convexity",
       "**Goodman's Contribution:** Even with all simple roots, non-convexity can occur (degree 4 example)",
-      "**Referee's Example:** f(z) = z(z⁵-1) shows non-convexity with symmetric root configurations",
+      "**Referee's Example:** f(z) = z(z\u2075-1) shows non-convexity with symmetric root configurations",
       "**Open Question:** Goodman asked for the maximum number of non-convex components vs polynomial degree"
     ],
     "prerequisites": [
       "Complex polynomial evaluation and norms",
-      "Sublevel sets and connected components in ℂ",
+      "Sublevel sets and connected components in \u2102",
       "Convexity in normed spaces",
       "Polynomial roots, multiplicity, and critical points",
       "Compactness (Heine-Borel) for bounded closed sets"
@@ -106,7 +106,7 @@
     },
     {
       "id": "convexity",
-      "title": "Convexity in ℂ",
+      "title": "Convexity in \u2102",
       "summary": "IsConvexComplex definition and closedBall convexity",
       "startLine": 104,
       "endLine": 117
@@ -128,14 +128,14 @@
     {
       "id": "goodman",
       "title": "Goodman's Counterexamples",
-      "summary": "(z²+1)(z-2)² and the simple-roots degree-4 example",
+      "summary": "(z\u00b2+1)(z-2)\u00b2 and the simple-roots degree-4 example",
       "startLine": 168,
       "endLine": 196
     },
     {
       "id": "referee",
       "title": "Referee's Example",
-      "summary": "z(z⁵-1) with symmetric root configuration",
+      "summary": "z(z\u2075-1) with symmetric root configuration",
       "startLine": 198,
       "endLine": 219
     },
@@ -162,8 +162,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1047 asked whether polynomial lemniscate components must be convex. Grunsky's conjecture was FALSE: Pommerenke (1961) and Goodman (1966) constructed explicit counterexamples. Our formalization defines lemniscates, states the disproved conjecture, captures three distinct counterexamples, and proves positive results for the single-root case.",
-    "implications": "**Theoretical Significance**: **Theoretical Connections**\n\n1. **Potential Theory:** Lemniscates are equipotential curves for the logarithmic potential log|f(z)|\n\n2. **Approximation Theory:** Lemniscates appear in polynomial approximation bounds (Bernstein's inequality)\n\n**3. Algebraic Geometry:** Real algebraic geometry of polynomial level sets in ℂ ≅ ℝ²\n\n4. **Numerical Analysis:** Relates to stability regions for polynomial iteration and root-finding\n\n5. **Function Theory:** Connects to Chebyshev polynomials and capacity of compact sets.",
+    "summary": "Erd\u0151s Problem #1047 asked whether polynomial lemniscate components must be convex. Grunsky's conjecture was FALSE: Pommerenke (1961) and Goodman (1966) constructed explicit counterexamples. Our formalization defines lemniscates, states the disproved conjecture, captures three distinct counterexamples, and proves positive results for the single-root case.",
+    "implications": "**Theoretical Significance**: **Theoretical Connections**\n\n1. **Potential Theory:** Lemniscates are equipotential curves for the logarithmic potential log|f(z)|\n\n2. **Approximation Theory:** Lemniscates appear in polynomial approximation bounds (Bernstein's inequality)\n\n**3. Algebraic Geometry:** Real algebraic geometry of polynomial level sets in \u2102 \u2245 \u211d\u00b2\n\n4. **Numerical Analysis:** Relates to stability regions for polynomial iteration and root-finding\n\n5. **Function Theory:** Connects to Chebyshev polynomials and capacity of compact sets.",
     "openQuestions": [
       "What is the maximum number of non-convex components for degree d polynomials? (Goodman's question)",
       "Characterize which polynomials have all convex lemniscate components",
@@ -174,34 +174,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1046",
       "relationship": "companion-problem",
-      "description": "Pommerenke's 1959 lemniscate containment result (connected lemniscates lie in a disc of radius 2) is a positive geometric result for the same class of level sets, contrasting with the non-convexity shown here."
+      "description": "Pommerenke's 1959 lemniscate containment result (connected lemniscates lie in a disc of radius 2) is a positive geometric result for the same class of level sets, contrasting with the non-convexity shown here.",
+      "targetId": "erdos-1046"
     },
     {
-      "target": "erdos-1048",
       "relationship": "companion-problem",
-      "description": "Diameter bounds for polynomial lemniscate components — Pommerenke (1961) also disproved this bound conjecture, the same paper that gave the first counterexample to the Grunsky convexity conjecture."
+      "description": "Diameter bounds for polynomial lemniscate components \u2014 Pommerenke (1961) also disproved this bound conjecture, the same paper that gave the first counterexample to the Grunsky convexity conjecture.",
+      "targetId": "erdos-1048"
     },
     {
-      "target": "erdos-1042",
       "relationship": "companion-problem",
-      "description": "Counts connected components of polynomial lemniscates as a function of transfinite diameter of the root set — directly related to the component-level analysis central to this problem."
+      "description": "Counts connected components of polynomial lemniscates as a function of transfinite diameter of the root set \u2014 directly related to the component-level analysis central to this problem.",
+      "targetId": "erdos-1042"
     },
     {
-      "target": "erdos-511",
       "relationship": "related-result",
-      "description": "Bounded components of polynomial lemniscates: whether the number of components with diameter > c is bounded by degree. Also disproved, illustrating the rich non-convex geometry of lemniscate level sets."
+      "description": "Bounded components of polynomial lemniscates: whether the number of components with diameter > c is bounded by degree. Also disproved, illustrating the rich non-convex geometry of lemniscate level sets.",
+      "targetId": "erdos-511"
     },
     {
-      "target": "erdos-1043",
       "relationship": "companion-problem",
-      "description": "Projection lengths of polynomial level sets — another 1961 Pommerenke result showing the same sets {z : |f(z)| ≤ 1} that fail convexity also have unexpectedly large projections onto lines."
+      "description": "Projection lengths of polynomial level sets \u2014 another 1961 Pommerenke result showing the same sets {z : |f(z)| \u2264 1} that fail convexity also have unexpectedly large projections onto lines.",
+      "targetId": "erdos-1043"
     },
     {
-      "target": "erdos-1039",
       "relationship": "related-result",
-      "description": "Inner disc radius of polynomial lemniscates — studies how large a convex disc can be inscribed inside a lemniscate component, a positive counterpart to the non-convexity studied here."
+      "description": "Inner disc radius of polynomial lemniscates \u2014 studies how large a convex disc can be inscribed inside a lemniscate component, a positive counterpart to the non-convexity studied here.",
+      "targetId": "erdos-1039"
     }
   ],
   "relatedProofs": [
@@ -213,12 +213,12 @@
     {
       "target": "erdos-1044",
       "relationship": "companion-problem",
-      "description": "Boundary length of polynomial level set components — Tang's result on the infimum of boundary length complements the convexity question: non-convex components can still have controlled perimeter."
+      "description": "Boundary length of polynomial level set components \u2014 Tang's result on the infimum of boundary length complements the convexity question: non-convex components can still have controlled perimeter."
     },
     {
       "target": "erdos-114",
       "relationship": "related-result",
-      "description": "Lemniscate length maximization problem — asks for the maximum arc-length of a lemniscate {z : |p(z)| = 1}, a classical extremal problem intertwined with the geometry studied here."
+      "description": "Lemniscate length maximization problem \u2014 asks for the maximum arc-length of a lemniscate {z : |p(z)| = 1}, a classical extremal problem intertwined with the geometry studied here."
     }
   ],
   "references": [
@@ -230,7 +230,7 @@
       "venue": "Michigan Mathematical Journal",
       "year": 1961,
       "volume": "8",
-      "pages": "97–100",
+      "pages": "97\u2013100",
       "doi": "10.1307/mmj/1028998512",
       "note": "Contains the first counterexample to Grunsky's conjecture: f(z) = z^k(z-a) for large k."
     },
@@ -239,26 +239,26 @@
         "A. W. Goodman"
       ],
       "title": "On the convexity of the lemniscates",
-      "venue": "Journal d'Analyse Mathématique",
+      "venue": "Journal d'Analyse Math\u00e9matique",
       "year": 1966,
       "volume": "19",
-      "pages": "35–47",
+      "pages": "35\u201347",
       "doi": "10.1007/BF02788706",
       "note": "Provides explicit degree-4 counterexamples including one with all simple roots, and raises the open question of maximum non-convex components."
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "F. Herzog",
         "G. Piranian"
       ],
       "title": "Metric properties of polynomials",
-      "venue": "Journal d'Analyse Mathématique",
+      "venue": "Journal d'Analyse Math\u00e9matique",
       "year": 1958,
       "volume": "6",
-      "pages": "125–148",
+      "pages": "125\u2013148",
       "doi": "10.1007/BF02790232",
-      "note": "Reports Grunsky's conjecture and surveys metric and geometric properties of polynomial lemniscates; origin of Erdős Problems #1038–#1048."
+      "note": "Reports Grunsky's conjecture and surveys metric and geometric properties of polynomial lemniscates; origin of Erd\u0151s Problems #1038\u2013#1048."
     },
     {
       "authors": [
@@ -269,9 +269,9 @@
       "year": 1959,
       "volume": "s1-34",
       "issue": "1",
-      "pages": "111–122",
+      "pages": "111\u2013122",
       "doi": "10.1112/jlms/s1-34.1.111",
-      "note": "Establishes the containment of connected lemniscates in a disc of radius 2 (Erdős #1046 positive result), providing context for the convexity question."
+      "note": "Establishes the containment of connected lemniscates in a disc of radius 2 (Erd\u0151s #1046 positive result), providing context for the convexity question."
     },
     {
       "authors": [

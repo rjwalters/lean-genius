@@ -1,10 +1,10 @@
 {
   "id": "erdos-320",
-  "title": "Erdős Problem #320: Distinct Sums of Unit Fractions",
+  "title": "Erd\u0151s Problem #320: Distinct Sums of Unit Fractions",
   "slug": "erdos-320",
-  "description": "Estimate S(N), the number of distinct sums ∑_{n∈A} 1/n for A ⊆ {1,...,N}. OPEN - Bleicher-Erdős (1975-76) gave bounds with iterated logarithms. BGMS (2025) improved the lower bound.",
+  "description": "Estimate S(N), the number of distinct sums \u2211_{n\u2208A} 1/n for A \u2286 {1,...,N}. OPEN - Bleicher-Erd\u0151s (1975-76) gave bounds with iterated logarithms. BGMS (2025) improved the lower bound.",
   "meta": {
-    "author": "Bleicher-Erdős (1975-76), Bettin-Grenié-Molteni-Sanna (2025)",
+    "author": "Bleicher-Erd\u0151s (1975-76), Bettin-Greni\u00e9-Molteni-Sanna (2025)",
     "sourceUrl": "https://erdosproblems.com/320",
     "date": "1975-2025",
     "status": "formalized",
@@ -50,9 +50,9 @@
     "originalContributions": [
       "harmonicSum, subsetSum, allSubsetSums: exact rational unit fraction arithmetic",
       "S(N) counting function via Finset.powerset.image with automatic deduplication",
-      "iterLog recursive definition with log₁/log₂/log₃ convenience abbreviations",
-      "iterLogProduct for the ∏_{i=3}^k log_i N correction factor",
-      "bleicher_erdos_lower_bound axiom: (1975) with k ≥ 4 validity condition",
+      "iterLog recursive definition with log\u2081/log\u2082/log\u2083 convenience abbreviations",
+      "iterLogProduct for the \u220f_{i=3}^k log_i N correction factor",
+      "bleicher_erdos_lower_bound axiom: (1975) with k \u2265 4 validity condition",
       "bleicher_erdos_upper_bound axiom: (1976) with 2r validity condition",
       "bgms_improved_lower_bound axiom: (2025) constant 2 log 2 with correction",
       "bgms_improves_bleicher_erdos: genuinely proved comparison via nlinarith",
@@ -66,16 +66,16 @@
     "assumptions": "8 axiom(s) and 6 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #320: Distinct Sums of Unit Fractions**\n\nThis problem asks for the asymptotic behavior of S(N), the number of distinct rational numbers that can be expressed as sums of distinct unit fractions 1/n with denominators from {1,...,N}. It connects ancient questions about Egyptian fractions to modern combinatorial number theory.\n\n**The Ancient Roots:** Sums of distinct unit fractions — called Egyptian fractions — appear in the Rhind Papyrus (c. 1650 BCE), where scribes represented fractions as ∑ 1/nᵢ with distinct denominators. The number-theoretic question of how many such sums exist for denominators ≤ N was first studied systematically by Bleicher and Erdős in the 1970s.\n\n**The Counting Problem:** Each subset A ⊆ {1,...,N} gives a rational sum ∑_{n∈A} 1/n. There are 2^N subsets, but some may give the same sum — these 'collisions' are rare for small N but become dominant as N grows. The function S(N) = |{∑_{n∈A} 1/n : A ⊆ {1,...,N}}| counts the distinct values.\n\n**Key Discovery — First Collision at N = 8:** For N ≤ 7, every subset gives a distinct sum (S(N) = 2^N). At N = 8, the first collision occurs: two different subsets of {1,...,8} have the same unit fraction sum, giving S(8) = 255 < 256. This reflects the arithmetic of the LCM: lcm(1,...,7) = 420 admits no collisions, but lcm(1,...,8) = 840 does.\n\n**Timeline:**\n- 1975: Bleicher and Erdős prove the lower bound log S(N) ≥ (N/log N)(log 2 · ∏ log_i N), using the prime number theorem to count independent choices among prime denominators\n- 1976: Bleicher and Erdős prove the upper bound log S(N) ≤ (N/log N)(log_r N · ∏ log_i N), using LCD constraints on achievable denominators\n- The gap between these bounds involves iterated logarithms — extraordinarily slowly growing functions — making the problem technically delicate\n- 2025: Bettin, Grenié, Molteni, and Sanna improve the lower bound constant from log 2 to 2 log 2, nearly doubling it, by refining the multiplicative counting argument\n\n**Why It's Hard:** The bounds involve products of iterated logarithms ∏ log_i N, which grow so slowly that distinguishing them computationally is almost impossible. The gap between the constant log 2 (lower) and the function log_r N (upper) is the crux of the open problem. The appearance of iterated logarithms reflects the deeply nested inductive structure of the Bleicher-Erdős argument, where each step peels off one layer of logarithmic composition.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $S(N) = |\\{\\sum_{n \\in A} 1/n : A \\subseteq \\{1, \\ldots, N\\}\\}|$ count the number of distinct unit fraction subset sums.\n\n**Question:** Estimate $S(N)$ asymptotically.\n\n**Known Bounds:**\n- **Lower** (Bleicher-Erdős 1975): $\\log S(N) \\ge \\frac{N}{\\log N} \\cdot \\log 2 \\cdot \\prod_{i=3}^{k} \\log_i N$\n- **Upper** (Bleicher-Erdős 1976): $\\log S(N) \\le \\frac{N}{\\log N} \\cdot \\log_r N \\cdot \\prod_{i=3}^{r} \\log_i N$\n- **Improved Lower** (BGMS 2025): constant improved from $\\log 2$ to $2 \\log 2$\n\n**Key Facts:**\n- $S(N) = 2^N$ for $N \\le 7$ (all sums distinct)\n- First collision at $N = 8$: $S(8) = 255 < 256 = 2^8$\n- OEIS A072207: $S(1) = 2, S(2) = 4, \\ldots, S(7) = 128, S(8) = 255$\n\n**Status: OPEN** — The gap between upper and lower bounds remains significant.",
-    "text": "Estimate S(N), the number of distinct sums ∑_{n∈A} 1/n for A ⊆ {1,...,N}. OPEN - Bleicher-Erdős (1975-76) gave bounds with iterated logarithms. BGMS (2025) improved the lower bound.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Exact Rational Arithmetic:** All definitions use ℚ (not ℝ) since the problem concerns equality of sums. harmonicSum, subsetSum, allSubsetSums work over Finset ℚ with Finset.powerset and Finset.image for automatic deduplication\n\n2. **Iterated Logarithms:** Recursive definition of iterLog with convenience abbreviations log₁, log₂, log₃. The product iterLogProduct captures ∏_{i=3}^k log_i N via Finset.prod over Finset.Icc\n\n3. **Bleicher-Erdős Bounds:** Both bounds axiomatized with explicit validity conditions (k ≥ 4, log_k N ≥ k for lower; r ≥ 1, log_{2r} N ≥ 1 for upper). The boundGap function measures the explicit gap\n\n4. **BGMS Improvement:** Axiomatized with the 2 log 2 constant and correction term. The comparison theorem bgms_improves_bleicher_erdos is genuinely proved via nlinarith — one of the key verified results\n\n5. **Main Problem:** Formalized as an asymptotic statement with explicit error bound. The erdos_320_open_bounds axiom captures the weaker known sandwich\n\n6. **Egyptian Fraction Link:** IsEgyptianFraction connects to Problem #321 via the monotonicity egyptianCount(q, N) ≤ S(N)\n\n7. **Concrete Values:** OEIS A072207 axiomatized; first_collision proved from axiom via norm_num\n\n8. **Summary:** erdos_320_summary genuinely proved by extracting four values from the OEIS conjunction",
+    "historicalContext": "**Erd\u0151s Problem #320: Distinct Sums of Unit Fractions**\n\nThis problem asks for the asymptotic behavior of S(N), the number of distinct rational numbers that can be expressed as sums of distinct unit fractions 1/n with denominators from {1,...,N}. It connects ancient questions about Egyptian fractions to modern combinatorial number theory.\n\n**The Ancient Roots:** Sums of distinct unit fractions \u2014 called Egyptian fractions \u2014 appear in the Rhind Papyrus (c. 1650 BCE), where scribes represented fractions as \u2211 1/n\u1d62 with distinct denominators. The number-theoretic question of how many such sums exist for denominators \u2264 N was first studied systematically by Bleicher and Erd\u0151s in the 1970s.\n\n**The Counting Problem:** Each subset A \u2286 {1,...,N} gives a rational sum \u2211_{n\u2208A} 1/n. There are 2^N subsets, but some may give the same sum \u2014 these 'collisions' are rare for small N but become dominant as N grows. The function S(N) = |{\u2211_{n\u2208A} 1/n : A \u2286 {1,...,N}}| counts the distinct values.\n\n**Key Discovery \u2014 First Collision at N = 8:** For N \u2264 7, every subset gives a distinct sum (S(N) = 2^N). At N = 8, the first collision occurs: two different subsets of {1,...,8} have the same unit fraction sum, giving S(8) = 255 < 256. This reflects the arithmetic of the LCM: lcm(1,...,7) = 420 admits no collisions, but lcm(1,...,8) = 840 does.\n\n**Timeline:**\n- 1975: Bleicher and Erd\u0151s prove the lower bound log S(N) \u2265 (N/log N)(log 2 \u00b7 \u220f log_i N), using the prime number theorem to count independent choices among prime denominators\n- 1976: Bleicher and Erd\u0151s prove the upper bound log S(N) \u2264 (N/log N)(log_r N \u00b7 \u220f log_i N), using LCD constraints on achievable denominators\n- The gap between these bounds involves iterated logarithms \u2014 extraordinarily slowly growing functions \u2014 making the problem technically delicate\n- 2025: Bettin, Greni\u00e9, Molteni, and Sanna improve the lower bound constant from log 2 to 2 log 2, nearly doubling it, by refining the multiplicative counting argument\n\n**Why It's Hard:** The bounds involve products of iterated logarithms \u220f log_i N, which grow so slowly that distinguishing them computationally is almost impossible. The gap between the constant log 2 (lower) and the function log_r N (upper) is the crux of the open problem. The appearance of iterated logarithms reflects the deeply nested inductive structure of the Bleicher-Erd\u0151s argument, where each step peels off one layer of logarithmic composition.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $S(N) = |\\{\\sum_{n \\in A} 1/n : A \\subseteq \\{1, \\ldots, N\\}\\}|$ count the number of distinct unit fraction subset sums.\n\n**Question:** Estimate $S(N)$ asymptotically.\n\n**Known Bounds:**\n- **Lower** (Bleicher-Erd\u0151s 1975): $\\log S(N) \\ge \\frac{N}{\\log N} \\cdot \\log 2 \\cdot \\prod_{i=3}^{k} \\log_i N$\n- **Upper** (Bleicher-Erd\u0151s 1976): $\\log S(N) \\le \\frac{N}{\\log N} \\cdot \\log_r N \\cdot \\prod_{i=3}^{r} \\log_i N$\n- **Improved Lower** (BGMS 2025): constant improved from $\\log 2$ to $2 \\log 2$\n\n**Key Facts:**\n- $S(N) = 2^N$ for $N \\le 7$ (all sums distinct)\n- First collision at $N = 8$: $S(8) = 255 < 256 = 2^8$\n- OEIS A072207: $S(1) = 2, S(2) = 4, \\ldots, S(7) = 128, S(8) = 255$\n\n**Status: OPEN** \u2014 The gap between upper and lower bounds remains significant.",
+    "text": "Estimate S(N), the number of distinct sums \u2211_{n\u2208A} 1/n for A \u2286 {1,...,N}. OPEN - Bleicher-Erd\u0151s (1975-76) gave bounds with iterated logarithms. BGMS (2025) improved the lower bound.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Exact Rational Arithmetic:** All definitions use \u211a (not \u211d) since the problem concerns equality of sums. harmonicSum, subsetSum, allSubsetSums work over Finset \u211a with Finset.powerset and Finset.image for automatic deduplication\n\n2. **Iterated Logarithms:** Recursive definition of iterLog with convenience abbreviations log\u2081, log\u2082, log\u2083. The product iterLogProduct captures \u220f_{i=3}^k log_i N via Finset.prod over Finset.Icc\n\n3. **Bleicher-Erd\u0151s Bounds:** Both bounds axiomatized with explicit validity conditions (k \u2265 4, log_k N \u2265 k for lower; r \u2265 1, log_{2r} N \u2265 1 for upper). The boundGap function measures the explicit gap\n\n4. **BGMS Improvement:** Axiomatized with the 2 log 2 constant and correction term. The comparison theorem bgms_improves_bleicher_erdos is genuinely proved via nlinarith \u2014 one of the key verified results\n\n5. **Main Problem:** Formalized as an asymptotic statement with explicit error bound. The erdos_320_open_bounds axiom captures the weaker known sandwich\n\n6. **Egyptian Fraction Link:** IsEgyptianFraction connects to Problem #321 via the monotonicity egyptianCount(q, N) \u2264 S(N)\n\n7. **Concrete Values:** OEIS A072207 axiomatized; first_collision proved from axiom via norm_num\n\n8. **Summary:** erdos_320_summary genuinely proved by extracting four values from the OEIS conjunction",
     "keyInsights": [
-      "**Primes as Independent Generators:** The leading term N/log N in all bounds reflects the prime number theorem π(N) ~ N/log N. Each prime p ≤ N provides an essentially independent binary choice (include 1/p or not) that creates a distinct sum, because 1/p cannot be decomposed into other unit fractions with smaller denominators. This gives the 'base' of 2^(N/log N) distinct sums before iterated-log corrections",
-      "**Iterated Logarithms from Nested Induction:** The appearance of iterated logarithms is not an artifact of weak techniques — it reflects the genuine structure of the problem. The Bleicher-Erdős proof works by induction on logarithmic layers: first handle primes (giving N/log N), then prime powers (giving a log log N factor), then higher prime-power structures (giving log log log N), and so on. Each layer peels off one iterated logarithm from the product",
-      "**First Collision at N = 8 via LCM Structure:** For N ≤ 7, all subset sums are distinct because the integers lcm(1,...,N)/n for n = 1,...,N are 'sufficiently independent' when viewed modulo appropriate primes. At N = 8, the LCM = 840, and the numerators 840/n lose enough independence that two subsets can coincide. The transition at exactly N = 8 is a number-theoretic coincidence related to the factorization structure of small integers",
-      "**BGMS Doubling: log 2 → 2 log 2:** The 2025 improvement by Bettin, Grenié, Molteni, and Sanna nearly doubles the lower bound constant. Their refined argument better exploits the multiplicative structure of denominators — when n = p·m with p prime, the fraction 1/n provides additional combinatorial freedom beyond the prime contribution. The Lean verification that 2 log 2(1 - 3/(2t)) > log 2 for t ≥ 4 confirms the strict improvement",
-      "**Open Gap: Constant vs Growing Factor:** The fundamental open question is whether the true asymptotic has a constant (like the lower bound's log 2 or 2 log 2) or a slowly growing factor (like the upper bound's log_r N). If the upper bound is sharp, S(N) grows slightly faster than any fixed exponential of N/log N; if the lower bound is sharp, S(N) ~ exp(c · N/log N · ∏ log_i N) for a specific constant c. No one currently knows which scenario holds"
+      "**Primes as Independent Generators:** The leading term N/log N in all bounds reflects the prime number theorem \u03c0(N) ~ N/log N. Each prime p \u2264 N provides an essentially independent binary choice (include 1/p or not) that creates a distinct sum, because 1/p cannot be decomposed into other unit fractions with smaller denominators. This gives the 'base' of 2^(N/log N) distinct sums before iterated-log corrections",
+      "**Iterated Logarithms from Nested Induction:** The appearance of iterated logarithms is not an artifact of weak techniques \u2014 it reflects the genuine structure of the problem. The Bleicher-Erd\u0151s proof works by induction on logarithmic layers: first handle primes (giving N/log N), then prime powers (giving a log log N factor), then higher prime-power structures (giving log log log N), and so on. Each layer peels off one iterated logarithm from the product",
+      "**First Collision at N = 8 via LCM Structure:** For N \u2264 7, all subset sums are distinct because the integers lcm(1,...,N)/n for n = 1,...,N are 'sufficiently independent' when viewed modulo appropriate primes. At N = 8, the LCM = 840, and the numerators 840/n lose enough independence that two subsets can coincide. The transition at exactly N = 8 is a number-theoretic coincidence related to the factorization structure of small integers",
+      "**BGMS Doubling: log 2 \u2192 2 log 2:** The 2025 improvement by Bettin, Greni\u00e9, Molteni, and Sanna nearly doubles the lower bound constant. Their refined argument better exploits the multiplicative structure of denominators \u2014 when n = p\u00b7m with p prime, the fraction 1/n provides additional combinatorial freedom beyond the prime contribution. The Lean verification that 2 log 2(1 - 3/(2t)) > log 2 for t \u2265 4 confirms the strict improvement",
+      "**Open Gap: Constant vs Growing Factor:** The fundamental open question is whether the true asymptotic has a constant (like the lower bound's log 2 or 2 log 2) or a slowly growing factor (like the upper bound's log_r N). If the upper bound is sharp, S(N) grows slightly faster than any fixed exponential of N/log N; if the lower bound is sharp, S(N) ~ exp(c \u00b7 N/log N \u00b7 \u220f log_i N) for a specific constant c. No one currently knows which scenario holds"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -88,63 +88,63 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 37,
-      "summary": "Problem header documenting the OPEN status, known bounds from Bleicher-Erdős (1975-76) and BGMS (2025), references to the three key papers, and connection to Problem #321. Imports Mathlib for natural numbers, rationals, finite sets, logarithms, and big operators."
+      "summary": "Problem header documenting the OPEN status, known bounds from Bleicher-Erd\u0151s (1975-76) and BGMS (2025), references to the three key papers, and connection to Problem #321. Imports Mathlib for natural numbers, rationals, finite sets, logarithms, and big operators."
     },
     {
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 39,
       "endLine": 60,
-      "summary": "Defines the core objects over ℚ for exact arithmetic: harmonicSum H_n = Σ 1/i, subsetSum for arbitrary subsets (with filter for positivity), allSubsetSums via Finset.powerset.image (automatic deduplication), and the central counting function S(N) = |allSubsetSums(N)|. Includes S_pos (sorry) asserting S(N) > 0 from the empty-set sum."
+      "summary": "Defines the core objects over \u211a for exact arithmetic: harmonicSum H_n = \u03a3 1/i, subsetSum for arbitrary subsets (with filter for positivity), allSubsetSums via Finset.powerset.image (automatic deduplication), and the central counting function S(N) = |allSubsetSums(N)|. Includes S_pos (sorry) asserting S(N) > 0 from the empty-set sum."
     },
     {
       "id": "iterated-logarithms",
       "title": "Part II: Iterated Logarithms",
       "startLine": 62,
       "endLine": 81,
-      "summary": "Recursive definition of iterLog: log_0(x) = x, log_{i+1}(x) = log(log_i(x)). Convenience abbreviations log₁, log₂, log₃ for readability. The product iterLogProduct(N, k) = ∏_{i=3}^k log_i(N) via Finset.prod over Finset.Icc captures the correction factor appearing in all bounds. Starting at i=3 because the first two logarithmic levels are absorbed into the leading N/log N term."
+      "summary": "Recursive definition of iterLog: log_0(x) = x, log_{i+1}(x) = log(log_i(x)). Convenience abbreviations log\u2081, log\u2082, log\u2083 for readability. The product iterLogProduct(N, k) = \u220f_{i=3}^k log_i(N) via Finset.prod over Finset.Icc captures the correction factor appearing in all bounds. Starting at i=3 because the first two logarithmic levels are absorbed into the leading N/log N term."
     },
     {
       "id": "lower-bound",
-      "title": "Part III: Bleicher-Erdős Lower Bound (1975)",
+      "title": "Part III: Bleicher-Erd\u0151s Lower Bound (1975)",
       "startLine": 83,
       "endLine": 96,
-      "summary": "Axiomatizes the 1975 lower bound: log S(N) ≥ (N/log N)(log 2 · ∏ log_i N) for k ≥ 4 and log_k(N) ≥ k. The constant log 2 arises from binary choices among prime denominators. The derived theorem lower_bound_growth (sorry) extracts the simpler corollary S(N) ≥ exp(N/log N)."
+      "summary": "Axiomatizes the 1975 lower bound: log S(N) \u2265 (N/log N)(log 2 \u00b7 \u220f log_i N) for k \u2265 4 and log_k(N) \u2265 k. The constant log 2 arises from binary choices among prime denominators. The derived theorem lower_bound_growth (sorry) extracts the simpler corollary S(N) \u2265 exp(N/log N)."
     },
     {
       "id": "upper-bound",
-      "title": "Part IV: Bleicher-Erdős Upper Bound (1976)",
+      "title": "Part IV: Bleicher-Erd\u0151s Upper Bound (1976)",
       "startLine": 98,
       "endLine": 110,
-      "summary": "Axiomatizes the 1976 upper bound: log S(N) ≤ (N/log N)(log_r(N) · ∏ log_i N) for r ≥ 1 and log_{2r}(N) ≥ 1. The critical difference from the lower bound: the constant log 2 is replaced by the slowly growing log_r(N). The function boundGap explicitly measures the gap between bounds."
+      "summary": "Axiomatizes the 1976 upper bound: log S(N) \u2264 (N/log N)(log_r(N) \u00b7 \u220f log_i N) for r \u2265 1 and log_{2r}(N) \u2265 1. The critical difference from the lower bound: the constant log 2 is replaced by the slowly growing log_r(N). The function boundGap explicitly measures the gap between bounds."
     },
     {
       "id": "bgms-improvement",
       "title": "Part V: BGMS Improved Lower Bound (2025)",
       "startLine": 112,
       "endLine": 131,
-      "summary": "Axiomatizes the Bettin-Grenié-Molteni-Sanna improvement: constant 2 log 2 with correction factor (1 - 3/(2 log_k N)). The theorem bgms_improves_bleicher_erdos is GENUINELY PROVED via nlinarith: it shows 2 log 2 · (1 - 3/(2t)) > log 2 when t ≥ 4 by establishing 1 - 3/(2t) > 1/2 and then 2 · (1/2) = 1. One of only two fully verified results in the file."
+      "summary": "Axiomatizes the Bettin-Greni\u00e9-Molteni-Sanna improvement: constant 2 log 2 with correction factor (1 - 3/(2 log_k N)). The theorem bgms_improves_bleicher_erdos is GENUINELY PROVED via nlinarith: it shows 2 log 2 \u00b7 (1 - 3/(2t)) > log 2 when t \u2265 4 by establishing 1 - 3/(2t) > 1/2 and then 2 \u00b7 (1/2) = 1. One of only two fully verified results in the file."
     },
     {
       "id": "main-problem",
       "title": "Part VI: The Main Problem",
       "startLine": 133,
       "endLine": 148,
-      "summary": "Formalizes ErdosProblem320 as the existence of c > 0 with |log S(N) - c · (N/log N) · Π₃(N)| ≤ N/(log N)². The axiom erdos_320_open_bounds captures the weaker sandwich N/log N ≤ log S(N) ≤ (N/log N) · log log N. Status: OPEN — the exact constant c is unknown."
+      "summary": "Formalizes ErdosProblem320 as the existence of c > 0 with |log S(N) - c \u00b7 (N/log N) \u00b7 \u03a0\u2083(N)| \u2264 N/(log N)\u00b2. The axiom erdos_320_open_bounds captures the weaker sandwich N/log N \u2264 log S(N) \u2264 (N/log N) \u00b7 log log N. Status: OPEN \u2014 the exact constant c is unknown."
     },
     {
       "id": "egyptian-fractions",
       "title": "Part VII: Connection to Egyptian Fractions",
       "startLine": 150,
       "endLine": 165,
-      "summary": "Defines IsEgyptianFraction (A represents q as sum of distinct unit fractions) and egyptianCount (number of representations of q using {1,...,N}). The axiom problem_321_connection formalizes egyptianCount(q, N) ≤ S(N), linking to Erdős Problem #321 which asks about representation counts directly."
+      "summary": "Defines IsEgyptianFraction (A represents q as sum of distinct unit fractions) and egyptianCount (number of representations of q using {1,...,N}). The axiom problem_321_connection formalizes egyptianCount(q, N) \u2264 S(N), linking to Erd\u0151s Problem #321 which asks about representation counts directly."
     },
     {
       "id": "specific-values",
       "title": "Part VIII: Specific Values and Bounds",
       "startLine": 167,
       "endLine": 186,
-      "summary": "Individual theorems S_one = 2, S_two = 4, S_three = 8 (all sorry — require Finset computation). The axiom S_small asserts S(N) = 2^N for N ≤ 6. The axiom S_collisions asserts S(N) < 2^N for N ≥ 8. The gap at N = 7: S(7) = 128 = 2^7 (no collision) is covered by the OEIS axiom."
+      "summary": "Individual theorems S_one = 2, S_two = 4, S_three = 8 (all sorry \u2014 require Finset computation). The axiom S_small asserts S(N) = 2^N for N \u2264 6. The axiom S_collisions asserts S(N) < 2^N for N \u2265 8. The gap at N = 7: S(7) = 128 = 2^7 (no collision) is covered by the OEIS axiom."
     },
     {
       "id": "oeis-values",
@@ -158,7 +158,7 @@
       "title": "Part X: Growth Rate Analysis",
       "startLine": 205,
       "endLine": 217,
-      "summary": "Defines asymptotic_exponent(N) = N/log N as the leading term of log S(N). The theorem log_S_leading_term (sorry) asserts sandwich bounds c₁ · N/log N ≤ log S(N) ≤ c₂ · (N/log N) · log log N, showing N/log N ~ π(N) is the leading behavior."
+      "summary": "Defines asymptotic_exponent(N) = N/log N as the leading term of log S(N). The theorem log_S_leading_term (sorry) asserts sandwich bounds c\u2081 \u00b7 N/log N \u2264 log S(N) \u2264 c\u2082 \u00b7 (N/log N) \u00b7 log log N, showing N/log N ~ \u03c0(N) is the leading behavior."
     },
     {
       "id": "summary",
@@ -169,13 +169,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #320 asks for the asymptotic behavior of S(N), the count of distinct unit fraction subset sums from {1,...,N}. Bleicher and Erdős established bounds in 1975-76 involving iterated logarithms: log S(N) lies between (N/log N) · log 2 · ∏ log_i N and (N/log N) · log_r N · ∏ log_i N. Bettin, Grenié, Molteni, and Sanna improved the lower bound constant to 2 log 2 in 2025. The formalization captures this complete state of knowledge in 248 lines of Lean 4 with 8 axioms and 6 sorries. Two key results are genuinely proved: the BGMS improvement comparison via nlinarith, and the first collision S(8) = 255 < 2^8 via norm_num. The problem remains OPEN — closing the gap between the constant lower bound and the slowly growing upper bound is the main challenge.",
-    "implications": "**Theoretical Significance**: **Connections Across Mathematics**\n\n1. **Egyptian Fractions and Ancient Arithmetic:** S(N) counts the distinct values achievable by Egyptian fraction representations with bounded denominators. The Rhind Papyrus (c. 1650 BCE) tables of unit fraction decompositions represent the oldest known engagement with this counting problem. The modern bounds of Bleicher-Erdős quantify the richness of the Egyptian fraction system\n\n2. **Prime Number Theorem Connection:** The leading term N/log N in all bounds directly reflects the prime counting function π(N) ~ N/log N. Primes serve as 'independent generators' of distinct sums: 1/p cannot be decomposed into sums of unit fractions with smaller denominators, so each prime contributes a binary degree of freedom.\n\nThe iterated-log corrections come from composite numbers\n\n3. **Subset Sum Problem over ℚ:** Problem #320 is a rational variant of the classical subset sum problem. Over ℤ, the subset sum problem is NP-complete; over ℚ with unit fractions, the algebraic structure (denominators, LCMs, prime factorizations) provides more leverage, but the asymptotic counting question remains open\n\n4. **Problem #321 and Representation Counting:** While #320 asks how many distinct sums exist, the companion Problem #321 asks how many subsets represent a given sum. The bound egyptianCount(q, N) ≤ S(N) connects them: understanding S(N) constrains the representation count\n\n5. **Iterated Logarithms in Combinatorics:** The appearance of iterated logarithms is relatively rare in number theory but characteristic of problems where nested inductive arguments peel off one logarithmic layer at a time. Similar phenomena appear in Ramsey theory (Shelah's bounds for Hales-Jewett) and in the inverse Ackermann function in computer science.",
+    "summary": "Erd\u0151s Problem #320 asks for the asymptotic behavior of S(N), the count of distinct unit fraction subset sums from {1,...,N}. Bleicher and Erd\u0151s established bounds in 1975-76 involving iterated logarithms: log S(N) lies between (N/log N) \u00b7 log 2 \u00b7 \u220f log_i N and (N/log N) \u00b7 log_r N \u00b7 \u220f log_i N. Bettin, Greni\u00e9, Molteni, and Sanna improved the lower bound constant to 2 log 2 in 2025. The formalization captures this complete state of knowledge in 248 lines of Lean 4 with 8 axioms and 6 sorries. Two key results are genuinely proved: the BGMS improvement comparison via nlinarith, and the first collision S(8) = 255 < 2^8 via norm_num. The problem remains OPEN \u2014 closing the gap between the constant lower bound and the slowly growing upper bound is the main challenge.",
+    "implications": "**Theoretical Significance**: **Connections Across Mathematics**\n\n1. **Egyptian Fractions and Ancient Arithmetic:** S(N) counts the distinct values achievable by Egyptian fraction representations with bounded denominators. The Rhind Papyrus (c. 1650 BCE) tables of unit fraction decompositions represent the oldest known engagement with this counting problem. The modern bounds of Bleicher-Erd\u0151s quantify the richness of the Egyptian fraction system\n\n2. **Prime Number Theorem Connection:** The leading term N/log N in all bounds directly reflects the prime counting function \u03c0(N) ~ N/log N. Primes serve as 'independent generators' of distinct sums: 1/p cannot be decomposed into sums of unit fractions with smaller denominators, so each prime contributes a binary degree of freedom.\n\nThe iterated-log corrections come from composite numbers\n\n3. **Subset Sum Problem over \u211a:** Problem #320 is a rational variant of the classical subset sum problem. Over \u2124, the subset sum problem is NP-complete; over \u211a with unit fractions, the algebraic structure (denominators, LCMs, prime factorizations) provides more leverage, but the asymptotic counting question remains open\n\n4. **Problem #321 and Representation Counting:** While #320 asks how many distinct sums exist, the companion Problem #321 asks how many subsets represent a given sum. The bound egyptianCount(q, N) \u2264 S(N) connects them: understanding S(N) constrains the representation count\n\n5. **Iterated Logarithms in Combinatorics:** The appearance of iterated logarithms is relatively rare in number theory but characteristic of problems where nested inductive arguments peel off one logarithmic layer at a time. Similar phenomena appear in Ramsey theory (Shelah's bounds for Hales-Jewett) and in the inverse Ackermann function in computer science.",
     "openQuestions": [
       "Does log S(N) / (N/log N) converge to a constant, or does it grow like an iterated logarithm? Equivalently, is the true behavior closer to the lower bound (constant coefficient) or the upper bound (growing coefficient)?",
       "Can the gap between log 2 (or 2 log 2) and log_r N in the bounds be closed? What is the optimal constant or function?",
-      "What is the structure of collision pairs — subsets A ≠ B with ∑_{n∈A} 1/n = ∑_{n∈B} 1/n? Is there a characterization of when and why collisions occur?",
-      "How does the collision frequency grow? The ratio S(N)/2^N decreases (0.996, 0.986, 0.981, ...) — what is its asymptotic behavior?",
+      "What is the structure of collision pairs \u2014 subsets A \u2260 B with \u2211_{n\u2208A} 1/n = \u2211_{n\u2208B} 1/n? Is there a characterization of when and why collisions occur?",
+      "How does the collision frequency grow? The ratio S(N)/2^N decreases (0.996, 0.986, 0.981, ...) \u2014 what is its asymptotic behavior?",
       "Can the BGMS improvement be pushed further, e.g., to a constant 3 log 2 or higher? What is the barrier to improving the lower bound constant?"
     ]
   },
@@ -199,5 +199,39 @@
     "axiomCount": 8,
     "theoremCount": 9,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Share counting, Egyptian fraction, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-297",
+      "relationship": "related",
+      "description": "Share counting, Egyptian fraction, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, number-theoretic, and unit-fractions themes"
+    },
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, number-theoretic, and unit-fractions themes"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, number-theoretic, and unit-fractions themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-297",
+    "erdos-242",
+    "erdos-284",
+    "erdos-286"
+  ]
 }

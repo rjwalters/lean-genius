@@ -163,5 +163,39 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Share number-theoretic and prime number themes"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Share number-theoretic and prime number themes"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Share number-theoretic and prime number themes"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Share number-theoretic and prime number themes"
+    },
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Share number-theoretic and prime number themes"
+    }
+  ],
+  "relatedProofs": [
+    "bertrands-postulate",
+    "bounded-prime-gaps",
+    "dirichlets-theorem",
+    "elementary-quadratic-reciprocity",
+    "erdos-1059"
+  ]
 }

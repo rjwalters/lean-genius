@@ -189,5 +189,39 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1130",
+      "relationship": "related",
+      "description": "Share interpolation, analytic, and approximation-theory themes"
+    },
+    {
+      "targetId": "erdos-1132",
+      "relationship": "related",
+      "description": "Share interpolation, analytic, and lebesgue-function themes"
+    },
+    {
+      "targetId": "erdos-1133",
+      "relationship": "related",
+      "description": "Share interpolation, analytic, and approximation-theory themes"
+    },
+    {
+      "targetId": "erdos-1129",
+      "relationship": "related",
+      "description": "Share interpolation and approximation-theory themes"
+    },
+    {
+      "targetId": "erdos-1131",
+      "relationship": "related",
+      "description": "Share interpolation and approximation-theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1130",
+    "erdos-1132",
+    "erdos-1133",
+    "erdos-1129",
+    "erdos-1131"
+  ]
 }

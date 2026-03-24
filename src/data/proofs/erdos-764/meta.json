@@ -79,16 +79,16 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**From Erdos-Fuchs to Vaughan: The Impossibility of Linear Representation Functions**\n\nThe representation function r_h(n) counts the number of ways to write n as a sum of h elements from a set A. For h = 2, the cumulative sum R_2(N) = sum_{n<=N} r_2(n) counts the total number of representations up to N. If A has density d, one expects R_2(N) ~ d^2 * N, so the question is: how close can R_2(N) be to a linear function?\n\n**Erdos-Fuchs (1956):** Proved that R_2(N) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible for any set A and constant c > 0. This resolved Problem #763 and established that representation functions must fluctuate significantly. The proof uses exponential sums and Parseval's identity.\n\n**Erdos's Question (#764):** Does the same hold for 3-fold convolutions? Can R_3(N) = cN + O(1)?\n\n**Vaughan (1972):** Proved the answer is NO. Even R_3(N) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible for any h-fold convolution with h >= 2. Vaughan extended the Erdos-Fuchs exponential sum technique to higher-order convolutions.\n\n**Montgomery-Vaughan (1990):** Refined the result, removing the logarithmic factor: o(N^{1/4}) is impossible for 2-fold convolutions. They also showed the 1/4 exponent is best possible — there exist sets achieving O(N^{1/4+epsilon}) error for any epsilon > 0.\n\n**The Lean formalization** axiomatizes all major theorems (Erdos-Fuchs, Vaughan, Montgomery-Vaughan) and proves two results: squares_not_linear (application to perfect squares) and erdos_764_summary (combining three impossibility results). The error bound hierarchy IsLinearBounded / IsLinearVaughan / IsLinearLittleO cleanly separates the strength of different impossibility statements.",
+    "historicalContext": "**From Erdos-Fuchs to Vaughan: The Impossibility of Linear Representation Functions**\n\nThe representation function r_h(n) counts the number of ways to write n as a sum of h elements from a set A. For h = 2, the cumulative sum R_2(N) = sum_{n<=N} r_2(n) counts the total number of representations up to N. If A has density d, one expects R_2(N) ~ d^2 * N, so the question is: how close can R_2(N) be to a linear function?\n\n**Erdos-Fuchs (1956):** Proved that R_2(N) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible for any set A and constant c > 0. This resolved Problem #763 and established that representation functions must fluctuate significantly. The proof uses exponential sums and Parseval's identity.\n\n**Erdos's Question (#764):** Does the same hold for 3-fold convolutions? Can R_3(N) = cN + O(1)?\n\n**Vaughan (1972):** Proved the answer is NO. Even R_3(N) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible for any h-fold convolution with h >= 2. Vaughan extended the Erdos-Fuchs exponential sum technique to higher-order convolutions.\n\n**Montgomery-Vaughan (1990):** Refined the result, removing the logarithmic factor: o(N^{1/4}) is impossible for 2-fold convolutions. They also showed the 1/4 exponent is best possible \u2014 there exist sets achieving O(N^{1/4+epsilon}) error for any epsilon > 0.\n\n**The Lean formalization** axiomatizes all major theorems (Erdos-Fuchs, Vaughan, Montgomery-Vaughan) and proves two results: squares_not_linear (application to perfect squares) and erdos_764_summary (combining three impossibility results). The error bound hierarchy IsLinearBounded / IsLinearVaughan / IsLinearLittleO cleanly separates the strength of different impossibility statements.",
     "problemStatement": "**Problem**: Let $A \\subseteq \\mathbb{N}$. Can there exist some constant $c > 0$ such that\n$$\\sum_{n \\leq N} 1_A * 1_A * 1_A(n) = cN + O(1)?$$\n\n**Answer**: NO\n\n**Vaughan's Theorem** (1972): Even the weaker bound\n$$\\sum_{n \\leq N} 1_A * 1_A * 1_A(n) = cN + o\\left(\\frac{N^{1/4}}{(\\log N)^{1/2}}\\right)$$\nis impossible. This generalizes to any h-fold convolution with h >= 2.",
     "text": "Can sum_{n<=N} 1_A * 1_A * 1_A(n) = cN + O(1) for some A subset N and c > 0? Answer: NO (Vaughan 1972).",
-    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds a layered framework for representation function error bounds:\n\n1. **Convolution Definitions** (charFun, conv2, conv3, convH): Representation counting via Finset.filter on Finset.product. conv2 and conv3 are explicit; convH is axiomatized for the general case.\n\n2. **Error Bound Hierarchy** (IsLinearBounded, IsLinearVaughan, IsLinearLittleO): Three levels of approximation quality forming a strict chain: O(1) implies o(N^{1/4}/sqrt(log N)) implies o(N^{1/4}).\n\n3. **Erdos-Fuchs Baseline** (erdos_fuchs_theorem, erdos_fuchs_corollary): 2-fold impossibility axioms establishing the foundational case.\n\n4. **Vaughan's Theorem** (vaughan_3fold_theorem, vaughan_corollary, vaughan_hfold_theorem): 3-fold and general h-fold impossibility axioms — the core of Problem #764.\n\n5. **Error Oscillation** (ErrorOscillates, error_oscillation): Strengthening showing the error must change sign infinitely often with amplitude >= N^{1/4}.\n\n6. **Applications** (squares_not_linear — PROVED): Concrete application to perfect squares.\n\n7. **Refinements** (montgomery_vaughan_refinement, quarter_exponent_tight): Optimal exponent results.\n\n8. **Summary** (erdos_764_summary — PROVED): Combines all three impossibility results.",
+    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds a layered framework for representation function error bounds:\n\n1. **Convolution Definitions** (charFun, conv2, conv3, convH): Representation counting via Finset.filter on Finset.product. conv2 and conv3 are explicit; convH is axiomatized for the general case.\n\n2. **Error Bound Hierarchy** (IsLinearBounded, IsLinearVaughan, IsLinearLittleO): Three levels of approximation quality forming a strict chain: O(1) implies o(N^{1/4}/sqrt(log N)) implies o(N^{1/4}).\n\n3. **Erdos-Fuchs Baseline** (erdos_fuchs_theorem, erdos_fuchs_corollary): 2-fold impossibility axioms establishing the foundational case.\n\n4. **Vaughan's Theorem** (vaughan_3fold_theorem, vaughan_corollary, vaughan_hfold_theorem): 3-fold and general h-fold impossibility axioms \u2014 the core of Problem #764.\n\n5. **Error Oscillation** (ErrorOscillates, error_oscillation): Strengthening showing the error must change sign infinitely often with amplitude >= N^{1/4}.\n\n6. **Applications** (squares_not_linear \u2014 PROVED): Concrete application to perfect squares.\n\n7. **Refinements** (montgomery_vaughan_refinement, quarter_exponent_tight): Optimal exponent results.\n\n8. **Summary** (erdos_764_summary \u2014 PROVED): Combines all three impossibility results.",
     "keyInsights": [
       "**Convolution counts representations**: (1_A * 1_A * 1_A)(n) counts ways to write n = a + b + c with a, b, c in A. The cumulative sum R_3(N) measures how 'regular' these representations are.",
       "**Error cannot be bounded**: No matter what set A you choose, the cumulative sum cannot grow like cN + O(1). The fluctuations in representation counts are inherent.",
       "**The 1/4 exponent is critical**: The error must exceed N^{1/4}/(log N)^{1/2} infinitely often (Vaughan). Montgomery-Vaughan showed even o(N^{1/4}) is impossible, and the exponent 1/4 cannot be improved.",
       "**Generalizes to all h-fold**: Vaughan's argument works for any h >= 2, not just h = 2 or h = 3. The impossibility is universal for all additive representation functions.",
-      "**Error oscillates both ways**: The error term must be both large positive and large negative infinitely often — it cannot even stay on one side of zero."
+      "**Error oscillates both ways**: The error term must be both large positive and large negative infinitely often \u2014 it cannot even stay on one side of zero."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -141,7 +141,7 @@
     {
       "id": "refinements",
       "title": "Montgomery-Vaughan Refinement",
-      "summary": "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible for 2-fold (removes log factor). quarter_exponent_tight (axiom): 1/4 exponent is best possible — sets exist with O(N^alpha) error for any alpha > 1/4.",
+      "summary": "montgomery_vaughan_refinement (axiom): o(N^{1/4}) impossible for 2-fold (removes log factor). quarter_exponent_tight (axiom): 1/4 exponent is best possible \u2014 sets exist with O(N^alpha) error for any alpha > 1/4.",
       "startLine": 163,
       "endLine": 181
     },
@@ -177,5 +177,39 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-763",
+      "relationship": "related",
+      "description": "Share representation-functions, analytic-number-theory, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Share representation-functions and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-829",
+      "relationship": "related",
+      "description": "Share representation-functions and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-954",
+      "relationship": "related",
+      "description": "Share representation-functions and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Share analytic-number-theory and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-763",
+    "erdos-28",
+    "erdos-829",
+    "erdos-954",
+    "erdos-200"
+  ]
 }

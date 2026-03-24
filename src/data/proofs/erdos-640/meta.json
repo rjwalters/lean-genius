@@ -1,10 +1,10 @@
 {
   "id": "erdos-640",
-  "title": "Erdős Problem #640: Chromatic Number of Odd Cycle Spans",
+  "title": "Erd\u0151s Problem #640: Chromatic Number of Odd Cycle Spans",
   "slug": "erdos-640",
-  "description": "Does there exist f(k) such that every graph with χ(G) ≥ f(k) contains an odd cycle whose vertices span a subgraph of chromatic number ≥ k? Trivial for k=3; open for k ≥ 4. OPEN.",
+  "description": "Does there exist f(k) such that every graph with \u03c7(G) \u2265 f(k) contains an odd cycle whose vertices span a subgraph of chromatic number \u2265 k? Trivial for k=3; open for k \u2265 4. OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/640",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos640Problem.lean",
@@ -25,15 +25,15 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Hajnal posed this problem in the 1997 paper [Er97d, p.84], as part of their systematic study of how large chromatic number forces specific substructures in graphs. The problem is a chromatic analogue of the Erdős-Hajnal conjecture on clique/independent set sizes in graphs avoiding fixed induced subgraphs. For $k = 3$, the answer is immediate: any graph with $\\chi(G) \\ge 3$ is non-bipartite, hence contains an odd cycle, and every odd cycle has $\\chi = 3$. For $k \\ge 4$, the problem remains completely open—no value of $f(k)$ is known. Raphael Steiner made a key contribution by showing the conjecture is equivalent to a path formulation: replacing 'odd cycle whose vertices span $\\chi \\ge k$' with 'path whose vertices span $\\chi \\ge k$' gives the same conjecture. This equivalence is surprising since paths are much simpler structures than cycles. The problem connects to the broader Gyárfás-Sumner conjecture (every tree is $\\chi$-bounded), the Erdős-Hajnal conjecture on hereditary graph classes, and the study of $\\chi$-boundedness where graph families are constrained by their chromatic number relative to clique number.",
+    "historicalContext": "Erd\u0151s and Hajnal posed this problem in the 1997 paper [Er97d, p.84], as part of their systematic study of how large chromatic number forces specific substructures in graphs. The problem is a chromatic analogue of the Erd\u0151s-Hajnal conjecture on clique/independent set sizes in graphs avoiding fixed induced subgraphs. For $k = 3$, the answer is immediate: any graph with $\\chi(G) \\ge 3$ is non-bipartite, hence contains an odd cycle, and every odd cycle has $\\chi = 3$. For $k \\ge 4$, the problem remains completely open\u2014no value of $f(k)$ is known. Raphael Steiner made a key contribution by showing the conjecture is equivalent to a path formulation: replacing 'odd cycle whose vertices span $\\chi \\ge k$' with 'path whose vertices span $\\chi \\ge k$' gives the same conjecture. This equivalence is surprising since paths are much simpler structures than cycles. The problem connects to the broader Gy\u00e1rf\u00e1s-Sumner conjecture (every tree is $\\chi$-bounded), the Erd\u0151s-Hajnal conjecture on hereditary graph classes, and the study of $\\chi$-boundedness where graph families are constrained by their chromatic number relative to clique number.",
     "problemStatement": "For $k \\ge 3$, does there exist $f(k)$ such that $\\chi(G) \\ge f(k)$ implies $G$ contains an odd cycle whose vertices induce a subgraph of chromatic number $\\ge k$?",
-    "text": "Does there exist f(k) such that every graph with χ(G) ≥ f(k) contains an odd cycle whose vertices span a subgraph of chromatic number ≥ k? Trivial for k=3; open for k ≥ 4. OPEN.",
+    "text": "Does there exist f(k) such that every graph with \u03c7(G) \u2265 f(k) contains an odd cycle whose vertices span a subgraph of chromatic number \u2265 k? Trivial for k=3; open for k \u2265 4. OPEN.",
     "proofStrategy": "The formalization defines `IsKColorable G k` (proper $k$-coloring existence), `chromaticNumber` via `Nat.find`, `HasOddCycleWithVertices G S` (odd-length cycle on vertex set $S$ via cyclic ordering), and `InducedChromaticAtLeast G S k` (the induced subgraph on $S$ is not $(k-1)$-colorable). The main conjecture `ErdosHajnalConjecture640` and Steiner's path variant `SteinerPathVariant` are stated. Their equivalence is axiomatized via `steiner_equivalence`. The trivial case $k = 3$ is axiomatized separately. A summary theorem proves the equivalence from the axiom.",
     "keyInsights": [
       "**Trivial case $k = 3$**: Any graph with $\\chi(G) \\ge 3$ is non-bipartite, so it contains an odd cycle $C_{2m+1}$. Since odd cycles have $\\chi = 3$, the induced subgraph on the cycle vertices has $\\chi \\ge 3$. Thus $f(3) = 3$ works.",
       "**Steiner's path equivalence**: Replacing 'odd cycle' with 'path' yields an equivalent conjecture. This is a deep structural observation: if high $\\chi$ forces a path whose span has high $\\chi$, then it also forces an odd cycle with the same property, and vice versa.",
       "**The $k \\ge 4$ barrier**: No value of $f(k)$ is known for $k \\ge 4$. The difficulty is that high chromatic number forces many odd cycles, but controlling the chromatic number of the subgraph they span requires understanding the global structure of the graph, not just local cycle existence.",
-      "**Connection to $\\chi$-boundedness**: The conjecture relates to whether 'odd cycle span chromatic number' is $\\chi$-bounded—whether there exists a function bounding how high $\\chi(G)$ must be to guarantee a specific span chromatic number.",
+      "**Connection to $\\chi$-boundedness**: The conjecture relates to whether 'odd cycle span chromatic number' is $\\chi$-bounded\u2014whether there exists a function bounding how high $\\chi(G)$ must be to guarantee a specific span chromatic number.",
       "**Induced subgraph chromatic number**: The key predicate `InducedChromaticAtLeast G S k` uses $\\neg\\mathrm{IsKColorable}(G[S], k-1)$, which is equivalent to $\\chi(G[S]) \\ge k$. This captures the hardness: it is not enough to find an odd cycle; its vertex neighborhood must resist coloring with few colors."
     ],
     "prerequisites": [
@@ -74,7 +74,7 @@
     },
     {
       "id": "conjecture",
-      "title": "Part IV: The Erdős-Hajnal Conjecture",
+      "title": "Part IV: The Erd\u0151s-Hajnal Conjecture",
       "summary": "States `ErdosHajnalConjecture640`: $\\forall k \\ge 3,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\implies \\exists$ odd cycle $S$ with $\\chi(G[S]) \\ge k$. Also states `SteinerPathVariant` (same with paths) and axiomatizes their equivalence.",
       "startLine": 95,
       "endLine": 133
@@ -95,13 +95,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #640 on chromatic number of odd cycle spans. The chromatic number, odd cycle with vertex set, and induced subgraph chromatic threshold are defined using Mathlib's `SimpleGraph` API. The conjecture and Steiner's path equivalence are stated and axiomatically linked. The trivial case $k = 3$ is axiomatized. The problem remains open for all $k \\ge 4$.",
+    "summary": "This formalization captures Erd\u0151s Problem #640 on chromatic number of odd cycle spans. The chromatic number, odd cycle with vertex set, and induced subgraph chromatic threshold are defined using Mathlib's `SimpleGraph` API. The conjecture and Steiner's path equivalence are stated and axiomatically linked. The trivial case $k = 3$ is axiomatized. The problem remains open for all $k \\ge 4$.",
     "implications": "**Theoretical Significance**: A positive resolution would establish a fundamental link between global chromatic number and local cycle structure: not only does high $\\chi$ force many odd cycles (which is elementary), but it forces odd cycles whose neighborhoods are themselves chromatically complex.\n\nThis would be a major step in understanding how chromatic number propagates through graph substructures. The Steiner path equivalence suggests that the difficulty is not in the cycle structure itself but in the chromatic complexity of induced subgraphs along connected substructures.",
     "openQuestions": [
       "Does $f(k)$ exist for $k = 4$? Even the first non-trivial case is unknown. A construction showing $f(4)$ exists would be a breakthrough.",
-      "If $f(k)$ exists, what is its growth rate? Is it polynomial, exponential, or worse in $k$? The Erdős-Hajnal conjecture for hereditary classes suggests exponential growth is typical.",
-      "Can the conjecture be strengthened to even cycles, or is oddness essential? Even cycles have $\\chi = 2$, so the induced subgraph chromatic number cannot come from the cycle itself—it must come from chords.",
-      "What is the relationship to the Gyárfás-Sumner conjecture? Both involve forcing specific substructures in graphs of high chromatic number, and a unified framework could resolve both."
+      "If $f(k)$ exists, what is its growth rate? Is it polynomial, exponential, or worse in $k$? The Erd\u0151s-Hajnal conjecture for hereditary classes suggests exponential growth is typical.",
+      "Can the conjecture be strengthened to even cycles, or is oddness essential? Even cycles have $\\chi = 2$, so the induced subgraph chromatic number cannot come from the cycle itself\u2014it must come from chords.",
+      "What is the relationship to the Gy\u00e1rf\u00e1s-Sumner conjecture? Both involve forcing specific substructures in graphs of high chromatic number, and a unified framework could resolve both."
     ]
   },
   "leanFile": {
@@ -123,5 +123,39 @@
     "axiomCount": 2,
     "theoremCount": 11,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1091",
+      "relationship": "related",
+      "description": "Share odd-cycles, graph-theoretic, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-554",
+      "relationship": "related",
+      "description": "Share odd-cycles and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Share odd-cycles and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1091",
+    "erdos-554",
+    "erdos-569",
+    "erdos-1011",
+    "erdos-1032"
+  ]
 }

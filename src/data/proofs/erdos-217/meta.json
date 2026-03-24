@@ -1,10 +1,10 @@
 {
   "id": "erdos-217",
-  "title": "Erdős Problem #217: Point Configurations with Distance Multiplicities",
+  "title": "Erd\u0151s Problem #217: Point Configurations with Distance Multiplicities",
   "slug": "erdos-217",
-  "description": "For which n are there n points in R² in general position with n-1 distinct distances where the i-th distance appears exactly i times? OPEN. Known for n ≤ 8 (Pomerance, Palásti), conjectured impossible for large n.",
+  "description": "For which n are there n points in R\u00b2 in general position with n-1 distinct distances where the i-th distance appears exactly i times? OPEN. Known for n \u2264 8 (Pomerance, Pal\u00e1sti), conjectured impossible for large n.",
   "meta": {
-    "author": "Erdős, Pomerance, Palásti",
+    "author": "Erd\u0151s, Pomerance, Pal\u00e1sti",
     "sourceUrl": "https://erdosproblems.com/217",
     "date": "1983",
     "status": "axiomatized",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Points in R²",
+        "description": "Points in R\u00b2",
         "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
       },
       {
@@ -58,7 +58,7 @@
       },
       {
         "proofId": "erdos-94",
-        "relationship": "Studies distance multiplicities in convex polygons — a closely related extremal question about how distances distribute in structured point sets."
+        "relationship": "Studies distance multiplicities in convex polygons \u2014 a closely related extremal question about how distances distribute in structured point sets."
       },
       {
         "proofId": "erdos-95",
@@ -74,7 +74,7 @@
       },
       {
         "proofId": "erdos-91",
-        "relationship": "Studies uniqueness of optimal distance configurations — relevant since Problem #217 asks whether distance patterns can be realized at all."
+        "relationship": "Studies uniqueness of optimal distance configurations \u2014 relevant since Problem #217 asks whether distance patterns can be realized at all."
       }
     ],
     "axiomCount": 4,
@@ -82,16 +82,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #217: Distance Multiplicities in Point Configurations**\n\nThis problem was posed by Paul Erdős around 1983 in his survey \"Combinatorial problems in geometry.\" It sits at the intersection of combinatorial geometry and discrete distance theory — two areas Erdős helped create.\n\nThe central question is deceptively elegant: given $n$ points in **general position** (no three collinear, no four concyclic), can we arrange them so that their $\\binom{n}{2}$ pairwise distances form a precise **staircase pattern** — exactly $n - 1$ distinct distances where the $i$-th smallest occurs exactly $i$ times? The triangular number identity $1 + 2 + \\cdots + (n{-}1) = \\binom{n}{2}$ ensures this accounting is consistent.\n\n**Known Constructions:**\n- **$n = 4$ (Erdős):** An isosceles triangle with a carefully placed interior point yields 3 distinct distances with multiplicities 1, 2, 3. Note that an *equilateral* triangle with its center gives only 2 distinct distances, so the construction requires breaking symmetry.\n- **$n = 5$ (Carl Pomerance, c. 1983):** This surprised Erdős, who had initially believed that $n \\geq 5$ was already impossible. Pomerance (then at University of Georgia, now Dartmouth) exhibited an explicit 5-point configuration achieving multiplicities 1, 2, 3, 4.\n- **$n \\leq 8$ (Ilona Palásti, 1989):** Working at the Alfréd Rényi Institute of Mathematics in Budapest, Palásti (1924–1991) extended the constructions to all $n \\leq 8$. Her paper in *Periodica Mathematica Hungarica* used lattice-point methods. For $n = 8$, this requires 7 distinct distances with multiplicities 1 through 7, totaling $\\binom{8}{2} = 28$ pairs.\n\n**Erdős's Conjecture:** Despite Palásti's success, Erdős maintained that the property must fail for sufficiently large $n$. His intuition was rooted in the Guth–Katz (2015) philosophy: $n$ points generically determine $\\Omega(n / \\log n)$ distinct distances, and constraining these to exactly $n - 1$ with a precise multiplicity pattern becomes increasingly overdetermined.\n\n**Current Status:** The problem remains **OPEN**. No construction is known for $n = 9$, nor is there a proof of impossibility for any $n > 8$. The gap between $n = 8$ (known possible) and the conjectured impossibility threshold is one of the intriguing open questions in Erdős-style combinatorial geometry.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nFor which $n$ are there $n$ points in $\\mathbb{R}^2$ satisfying:\n1. **General position:** No three points are collinear, no four points lie on a common circle\n2. **Distance spectrum:** The points determine exactly $n-1$ distinct distances\n3. **Staircase multiplicities:** In some ordering $d_1, d_2, \\ldots, d_{n-1}$ of the distinct distances, the distance $d_i$ appears exactly $i$ times among the $\\binom{n}{2}$ pairwise distances\n\nThe total count $\\sum_{i=1}^{n-1} i = \\frac{n(n-1)}{2} = \\binom{n}{2}$ ensures the multiplicities account for every pair.\n\n**Known Results:**\n- $n \\in \\{4, 5, 6, 7, 8\\}$: YES (Erdős, Pomerance, Palásti)\n- $n = 1, 2, 3$: Trivially NO (insufficient pairs or forced equalities)\n- $n \\geq 9$: **OPEN** (neither construction nor impossibility proof known)\n- $n$ sufficiently large: Conjectured NO (Erdős)\n\n**Formalization note:** The Lean file omits the 'no four concyclic' condition, focusing on the collinearity constraint and the multiplicity property.",
-    "text": "For which n are there n points in R² in general position with n-1 distinct distances where the i-th distance appears exactly i times? OPEN. Known for n ≤ 8 (Pomerance, Palásti), conjectured impossible for large n.",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures Problem #217 through a clean definitional hierarchy:\n\n1. **Base type:** `PointConfig n := Fin n → ℝ × ℝ` — labeled points in coordinate form, using `abbrev` for transparency.\n\n2. **General position:** `NoThreeCollinear` via the cross-product (determinant) criterion. The 'no four concyclic' condition is omitted to keep the formalization tractable.\n\n3. **Squared distance:** `sqDist` avoids square roots, keeping all computations in $\\mathbb{R}$.\n\n4. **Staircase property:** `HasTriangularMultiplicity` uses `Finset.filter` on ordered pairs $(i, j)$ with $i < j$ to count pairs at each distance, checking that the $k$-th distance has exactly $k$ occurrences.\n\n5. **Axiomatized results:** The known constructions (n = 4, 5) and Palásti's general result (4 ≤ n ≤ 8) are axiomatized, as explicit coordinate constructions would be lengthy.\n\n6. **The conjecture:** Stated as an axiom asserting the existence of a threshold $N_0$.\n\n7. **Main theorem:** Combines the n = 4 and n = 5 existence results into a conjunction.",
+    "historicalContext": "**Erd\u0151s Problem #217: Distance Multiplicities in Point Configurations**\n\nThis problem was posed by Paul Erd\u0151s around 1983 in his survey \"Combinatorial problems in geometry.\" It sits at the intersection of combinatorial geometry and discrete distance theory \u2014 two areas Erd\u0151s helped create.\n\nThe central question is deceptively elegant: given $n$ points in **general position** (no three collinear, no four concyclic), can we arrange them so that their $\\binom{n}{2}$ pairwise distances form a precise **staircase pattern** \u2014 exactly $n - 1$ distinct distances where the $i$-th smallest occurs exactly $i$ times? The triangular number identity $1 + 2 + \\cdots + (n{-}1) = \\binom{n}{2}$ ensures this accounting is consistent.\n\n**Known Constructions:**\n- **$n = 4$ (Erd\u0151s):** An isosceles triangle with a carefully placed interior point yields 3 distinct distances with multiplicities 1, 2, 3. Note that an *equilateral* triangle with its center gives only 2 distinct distances, so the construction requires breaking symmetry.\n- **$n = 5$ (Carl Pomerance, c. 1983):** This surprised Erd\u0151s, who had initially believed that $n \\geq 5$ was already impossible. Pomerance (then at University of Georgia, now Dartmouth) exhibited an explicit 5-point configuration achieving multiplicities 1, 2, 3, 4.\n- **$n \\leq 8$ (Ilona Pal\u00e1sti, 1989):** Working at the Alfr\u00e9d R\u00e9nyi Institute of Mathematics in Budapest, Pal\u00e1sti (1924\u20131991) extended the constructions to all $n \\leq 8$. Her paper in *Periodica Mathematica Hungarica* used lattice-point methods. For $n = 8$, this requires 7 distinct distances with multiplicities 1 through 7, totaling $\\binom{8}{2} = 28$ pairs.\n\n**Erd\u0151s's Conjecture:** Despite Pal\u00e1sti's success, Erd\u0151s maintained that the property must fail for sufficiently large $n$. His intuition was rooted in the Guth\u2013Katz (2015) philosophy: $n$ points generically determine $\\Omega(n / \\log n)$ distinct distances, and constraining these to exactly $n - 1$ with a precise multiplicity pattern becomes increasingly overdetermined.\n\n**Current Status:** The problem remains **OPEN**. No construction is known for $n = 9$, nor is there a proof of impossibility for any $n > 8$. The gap between $n = 8$ (known possible) and the conjectured impossibility threshold is one of the intriguing open questions in Erd\u0151s-style combinatorial geometry.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFor which $n$ are there $n$ points in $\\mathbb{R}^2$ satisfying:\n1. **General position:** No three points are collinear, no four points lie on a common circle\n2. **Distance spectrum:** The points determine exactly $n-1$ distinct distances\n3. **Staircase multiplicities:** In some ordering $d_1, d_2, \\ldots, d_{n-1}$ of the distinct distances, the distance $d_i$ appears exactly $i$ times among the $\\binom{n}{2}$ pairwise distances\n\nThe total count $\\sum_{i=1}^{n-1} i = \\frac{n(n-1)}{2} = \\binom{n}{2}$ ensures the multiplicities account for every pair.\n\n**Known Results:**\n- $n \\in \\{4, 5, 6, 7, 8\\}$: YES (Erd\u0151s, Pomerance, Pal\u00e1sti)\n- $n = 1, 2, 3$: Trivially NO (insufficient pairs or forced equalities)\n- $n \\geq 9$: **OPEN** (neither construction nor impossibility proof known)\n- $n$ sufficiently large: Conjectured NO (Erd\u0151s)\n\n**Formalization note:** The Lean file omits the 'no four concyclic' condition, focusing on the collinearity constraint and the multiplicity property.",
+    "text": "For which n are there n points in R\u00b2 in general position with n-1 distinct distances where the i-th distance appears exactly i times? OPEN. Known for n \u2264 8 (Pomerance, Pal\u00e1sti), conjectured impossible for large n.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures Problem #217 through a clean definitional hierarchy:\n\n1. **Base type:** `PointConfig n := Fin n \u2192 \u211d \u00d7 \u211d` \u2014 labeled points in coordinate form, using `abbrev` for transparency.\n\n2. **General position:** `NoThreeCollinear` via the cross-product (determinant) criterion. The 'no four concyclic' condition is omitted to keep the formalization tractable.\n\n3. **Squared distance:** `sqDist` avoids square roots, keeping all computations in $\\mathbb{R}$.\n\n4. **Staircase property:** `HasTriangularMultiplicity` uses `Finset.filter` on ordered pairs $(i, j)$ with $i < j$ to count pairs at each distance, checking that the $k$-th distance has exactly $k$ occurrences.\n\n5. **Axiomatized results:** The known constructions (n = 4, 5) and Pal\u00e1sti's general result (4 \u2264 n \u2264 8) are axiomatized, as explicit coordinate constructions would be lengthy.\n\n6. **The conjecture:** Stated as an axiom asserting the existence of a threshold $N_0$.\n\n7. **Main theorem:** Combines the n = 4 and n = 5 existence results into a conjunction.",
     "keyInsights": [
-      "**Triangular number coincidence is structural:** The identity $1 + 2 + \\cdots + (n{-}1) = \\binom{n}{2}$ is not merely a numerical coincidence — it means the staircase multiplicity pattern *perfectly partitions* all pairwise distances, leaving no pair unaccounted for. This is the deepest constraint: every pair must participate.",
+      "**Triangular number coincidence is structural:** The identity $1 + 2 + \\cdots + (n{-}1) = \\binom{n}{2}$ is not merely a numerical coincidence \u2014 it means the staircase multiplicity pattern *perfectly partitions* all pairwise distances, leaving no pair unaccounted for. This is the deepest constraint: every pair must participate.",
       "**General position prevents degeneracy:** Without the 'no three collinear' condition, trivial solutions exist (e.g., $n$ points on a line with carefully spaced distances). The collinearity and concyclicity constraints force the configuration into truly 2-dimensional arrangements, making the problem dramatically harder.",
-      "**Pomerance's $n = 5$ was a key surprise:** Erdős initially believed the property fails for all $n \\geq 5$. Pomerance's explicit construction showed that small cases can behave unexpectedly — the arithmetic constraints are satisfiable in ways that geometric intuition doesn't immediately predict.",
-      "**The overdetermination heuristic:** For large $n$, the triangular multiplicity property imposes $O(n)$ independent constraints (one multiplicity per distance value) on the $2n$ coordinates of the points. As $n$ grows, the ratio constraints/degrees-of-freedom increases, suggesting eventual impossibility — but this heuristic has resisted formalization.",
-      "**Connection to Guth-Katz and distinct distances:** The celebrated Guth-Katz theorem (2015) shows $n$ points determine $\\Omega(n / \\log n)$ distinct distances. Problem #217 asks for configurations with exactly $n - 1$ distinct distances — well below the Guth-Katz lower bound for general configurations, placing them in a very special (and potentially empty for large $n$) class.",
+      "**Pomerance's $n = 5$ was a key surprise:** Erd\u0151s initially believed the property fails for all $n \\geq 5$. Pomerance's explicit construction showed that small cases can behave unexpectedly \u2014 the arithmetic constraints are satisfiable in ways that geometric intuition doesn't immediately predict.",
+      "**The overdetermination heuristic:** For large $n$, the triangular multiplicity property imposes $O(n)$ independent constraints (one multiplicity per distance value) on the $2n$ coordinates of the points. As $n$ grows, the ratio constraints/degrees-of-freedom increases, suggesting eventual impossibility \u2014 but this heuristic has resisted formalization.",
+      "**Connection to Guth-Katz and distinct distances:** The celebrated Guth-Katz theorem (2015) shows $n$ points determine $\\Omega(n / \\log n)$ distinct distances. Problem #217 asks for configurations with exactly $n - 1$ distinct distances \u2014 well below the Guth-Katz lower bound for general configurations, placing them in a very special (and potentially empty for large $n$) class.",
       "**Squared distances simplify formalization:** Using $\\|p - q\\|^2$ instead of $\\|p - q\\|$ keeps computations in $\\mathbb{R}$ without square roots, at no mathematical cost since the ordering of distances is preserved."
     ],
     "prerequisites": [
@@ -110,7 +110,7 @@
     {
       "id": "definitions",
       "title": "Point Configurations and Distance Definitions",
-      "summary": "Core definitions: `PointConfig n` as labeled points via `Fin n → ℝ × ℝ`, squared Euclidean distance `sqDist`, and the `NoThreeCollinear` general position predicate using the cross-product (determinant) criterion.",
+      "summary": "Core definitions: `PointConfig n` as labeled points via `Fin n \u2192 \u211d \u00d7 \u211d`, squared Euclidean distance `sqDist`, and the `NoThreeCollinear` general position predicate using the cross-product (determinant) criterion.",
       "startLine": 28,
       "endLine": 43
     },
@@ -124,13 +124,13 @@
     {
       "id": "known-constructions",
       "title": "Known Constructions (Axiomatized)",
-      "summary": "Axiomatized existence results: `example_n_eq_4` (isosceles triangle + center), `pomerance_n_eq_5` (Pomerance's surprising construction), and `palasti_small_n` (Palásti's extension to all $4 \\leq n \\leq 8$). These are stated as `axiom` since explicit coordinate constructions would be extensive.",
+      "summary": "Axiomatized existence results: `example_n_eq_4` (isosceles triangle + center), `pomerance_n_eq_5` (Pomerance's surprising construction), and `palasti_small_n` (Pal\u00e1sti's extension to all $4 \\leq n \\leq 8$). These are stated as `axiom` since explicit coordinate constructions would be extensive.",
       "startLine": 55,
       "endLine": 70
     },
     {
       "id": "conjecture",
-      "title": "Erdős's Conjecture",
+      "title": "Erd\u0151s's Conjecture",
       "summary": "The main open conjecture `erdos_217_conjecture`: there exists a threshold $N_0$ such that for all $n \\geq N_0$, no configuration in general position has the triangular multiplicity property. Stated as `axiom` reflecting its unproven status.",
       "startLine": 72,
       "endLine": 83
@@ -138,18 +138,18 @@
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "summary": "The theorem `erdos_217` combines existence for $n = 4$ (Erdős) and $n = 5$ (Pomerance) into a conjunction, proved by the anonymous constructor $\\langle \\texttt{example\\_n\\_eq\\_4}, \\texttt{pomerance\\_n\\_eq\\_5} \\rangle$. This demonstrates satisfiability of the Erdős-217 property.",
+      "summary": "The theorem `erdos_217` combines existence for $n = 4$ (Erd\u0151s) and $n = 5$ (Pomerance) into a conjunction, proved by the anonymous constructor $\\langle \\texttt{example\\_n\\_eq\\_4}, \\texttt{pomerance\\_n\\_eq\\_5} \\rangle$. This demonstrates satisfiability of the Erd\u0151s-217 property.",
       "startLine": 85,
       "endLine": 100
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #217 — the question of which $n$ admit $n$-point configurations in general position with a staircase pattern of distance multiplicities. The Lean file provides a clean definitional framework (point configurations, collinearity, triangular multiplicity) and axiomatizes the known constructions (Pomerance for $n = 5$, Palásti for $n \\leq 8$) alongside Erdős's open conjecture of eventual impossibility. The problem remains one of the elegant open questions in Erdős-style combinatorial geometry, sitting at the intersection of discrete distance theory, extremal combinatorics, and geometric configuration theory.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Distance spectrum theory:** Problem #217 constrains not just the *number* of distinct distances (as in Problem #98) but their precise *multiplicity profile*. This is a strictly finer invariant, and understanding when specific profiles are realizable is central to discrete distance geometry.\n\n2. **Algebraic geometry connections:** Each distance equation $\\|P_i - P_j\\|^2 = d_k^2$ defines an algebraic variety in $\\mathbb{R}^{2n}$.\n\nThe triangular multiplicity condition asks for the intersection of these varieties to be nonempty, connecting to real algebraic geometry and polynomial system theory.\n\n3. **Computational geometry:** The known constructions for $n \\leq 8$ provide test cases for algorithms that enumerate point configurations with prescribed distance properties. Settling $n = 9$ computationally would be a significant advance.\n\n4. **Connection to the Guth-Katz revolution:** The 2015 resolution of the Erdős distinct distances conjecture (up to a log factor) fundamentally changed the landscape. Its polynomial partitioning technique might eventually yield insights into multiplicity-constrained problems like #217.",
+    "summary": "This formalization captures Erd\u0151s Problem #217 \u2014 the question of which $n$ admit $n$-point configurations in general position with a staircase pattern of distance multiplicities. The Lean file provides a clean definitional framework (point configurations, collinearity, triangular multiplicity) and axiomatizes the known constructions (Pomerance for $n = 5$, Pal\u00e1sti for $n \\leq 8$) alongside Erd\u0151s's open conjecture of eventual impossibility. The problem remains one of the elegant open questions in Erd\u0151s-style combinatorial geometry, sitting at the intersection of discrete distance theory, extremal combinatorics, and geometric configuration theory.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Distance spectrum theory:** Problem #217 constrains not just the *number* of distinct distances (as in Problem #98) but their precise *multiplicity profile*. This is a strictly finer invariant, and understanding when specific profiles are realizable is central to discrete distance geometry.\n\n2. **Algebraic geometry connections:** Each distance equation $\\|P_i - P_j\\|^2 = d_k^2$ defines an algebraic variety in $\\mathbb{R}^{2n}$.\n\nThe triangular multiplicity condition asks for the intersection of these varieties to be nonempty, connecting to real algebraic geometry and polynomial system theory.\n\n3. **Computational geometry:** The known constructions for $n \\leq 8$ provide test cases for algorithms that enumerate point configurations with prescribed distance properties. Settling $n = 9$ computationally would be a significant advance.\n\n4. **Connection to the Guth-Katz revolution:** The 2015 resolution of the Erd\u0151s distinct distances conjecture (up to a log factor) fundamentally changed the landscape. Its polynomial partitioning technique might eventually yield insights into multiplicity-constrained problems like #217.",
     "openQuestions": [
       "Does a 9-point configuration in general position with the (1,2,3,4,5,6,7,8) multiplicity pattern exist? This is the key computational frontier.",
-      "Can Palásti's lattice-point method be extended, or does it fundamentally break down at n = 9?",
-      "Is there a polynomial-method proof (à la Guth-Katz) that the staircase property fails for large n?",
+      "Can Pal\u00e1sti's lattice-point method be extended, or does it fundamentally break down at n = 9?",
+      "Is there a polynomial-method proof (\u00e0 la Guth-Katz) that the staircase property fails for large n?",
       "What is the precise relationship between the multiplicity constraints of Problem #217 and the distinct distance lower bounds of Problem #98?",
       "Can the 'no four concyclic' condition (omitted in this formalization) be added, and does it change the answer for any n?"
     ]
@@ -170,18 +170,52 @@
   "references": [
     {
       "key": "Er83c",
-      "citation": "Erdős, P., Combinatorial problems in geometry (1983), 35-54.",
+      "citation": "Erd\u0151s, P., Combinatorial problems in geometry (1983), 35-54.",
       "type": "paper"
     },
     {
       "key": "Pa89",
-      "citation": "Palásti, I., Lattice-point examples for a question of Erdős, Periodica Mathematica Hungarica 20 (1989), 231-235.",
+      "citation": "Pal\u00e1sti, I., Lattice-point examples for a question of Erd\u0151s, Periodica Mathematica Hungarica 20 (1989), 231-235.",
       "type": "paper"
     },
     {
       "key": "GK15",
-      "citation": "Guth, L. and Katz, N.H., On the Erdős distinct distances problem in the plane, Annals of Mathematics 181 (2015), 155-190.",
+      "citation": "Guth, L. and Katz, N.H., On the Erd\u0151s distinct distances problem in the plane, Annals of Mathematics 181 (2015), 155-190.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-958",
+      "relationship": "related",
+      "description": "Share point-configurations, geometric, and distances themes"
+    },
+    {
+      "targetId": "erdos-831",
+      "relationship": "related",
+      "description": "Share extremal-geometry and geometric themes"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Share point-configurations and distances themes"
+    },
+    {
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Share geometric and distances themes"
+    },
+    {
+      "targetId": "erdos-1127",
+      "relationship": "related",
+      "description": "Share geometric and distances themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-958",
+    "erdos-831",
+    "erdos-1087",
+    "erdos-103",
+    "erdos-1127"
   ]
 }

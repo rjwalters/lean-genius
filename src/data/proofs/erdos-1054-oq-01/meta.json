@@ -1,10 +1,10 @@
 {
   "id": "erdos-1054-oq-01",
-  "title": "Erdős #1054: f(n) = o(n) for Almost All n",
+  "title": "Erd\u0151s #1054: f(n) = o(n) for Almost All n",
   "slug": "erdos-1054-oq-01",
-  "description": "Erdős asked whether the function f(n) — the minimal m whose partial divisor sums include n — satisfies f(n) = o(n) for almost all n. Tao disproved the unconditional form, but the 'almost all' version remains open. We formalize the density framework and prove accessible bounds via the sigma bound f(σ(m)) ≤ m, showing the ratio m/σ(m) → 0 along superabundant numbers.",
+  "description": "Erd\u0151s asked whether the function f(n) \u2014 the minimal m whose partial divisor sums include n \u2014 satisfies f(n) = o(n) for almost all n. Tao disproved the unconditional form, but the 'almost all' version remains open. We formalize the density framework and prove accessible bounds via the sigma bound f(\u03c3(m)) \u2264 m, showing the ratio m/\u03c3(m) \u2192 0 along superabundant numbers.",
   "meta": {
-    "author": "Erdős (via Guy's 'Unsolved Problems in Number Theory')",
+    "author": "Erd\u0151s (via Guy's 'Unsolved Problems in Number Theory')",
     "sourceUrl": "https://erdosproblems.com/1054",
     "date": "",
     "status": "formalized",
@@ -50,27 +50,27 @@
     ],
     "originalContributions": [
       "Formal density framework for 'f(n) = o(n) for almost all n'",
-      "Concrete σ-witnesses: f(σ(m)) ≤ m for m ∈ {6,12,24,120,720,5040}",
-      "Decreasing ratio sequence along superabundant numbers (σ_ratio_decreasing)",
-      "Proof that infinitely many n satisfy f(n)/n ≤ 1/3",
-      "sigma_prime: σ(p) = p + 1 for primes p",
-      "sigma_ge_succ: σ(m) ≥ m + 1 for m ≥ 2"
+      "Concrete \u03c3-witnesses: f(\u03c3(m)) \u2264 m for m \u2208 {6,12,24,120,720,5040}",
+      "Decreasing ratio sequence along superabundant numbers (\u03c3_ratio_decreasing)",
+      "Proof that infinitely many n satisfy f(n)/n \u2264 1/3",
+      "sigma_prime: \u03c3(p) = p + 1 for primes p",
+      "sigma_ge_succ: \u03c3(m) \u2265 m + 1 for m \u2265 2"
     ],
     "axiomCount": 2,
     "lineCount": 234,
     "assumptions": "2 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1054 concerns the function f(n): the minimal m such that n appears as a partial sum of the divisors of m (sorted ascending). Erdős asked three questions:\n\n1. Is f(n) = o(n) for all n? (DISPROVED by Tao)\n2. Is f(n) = o(n) for almost all n? (OPEN)\n3. Is limsup f(n)/n = ∞? (OPEN)\n\nTerry Tao's disproof of Part I showed that the density of {n : f(n) ≤ δn} is at most O(δ²), so many values of n have f(n) ≈ n. But this is consistent with f(n)/n → 0 for 'most' n.\n\nThe key tool for the 'almost all' version is the sigma bound: since σ(m) is always a partial divisor sum of m, we have f(σ(m)) ≤ m. When σ(m)/m → ∞ (which happens for superabundant numbers via Gronwall's theorem), f(σ(m))/σ(m) → 0.",
-    "problemStatement": "Let $f(n)$ be the minimal $m \\geq 1$ such that $n$ is a partial sum of the divisors of $m$ (sorted in increasing order). Part II of Erdős Problem 1054 asks:\n\n$$\\text{For each } \\varepsilon > 0, \\text{ does } \\frac{|\\{k \\leq N : f(k)/k \\geq \\varepsilon\\}|}{N} \\to 0?$$\n\nEquivalently: does $\\{n : f(n)/n \\geq \\varepsilon\\}$ have natural density 0 for each $\\varepsilon > 0$?\n\n**Status**: OPEN after Tao's disproof of the unconditional form.",
-    "text": "Erdős asked whether the function f(n) — the minimal m whose partial divisor sums include n — satisfies f(n) = o(n) for almost all n. Tao disproved the unconditional form, but the 'almost all' version remains open. We formalize the density framework and prove accessible bounds via the sigma bound f(σ(m)) ≤ m, showing the ratio m/σ(m) → 0 along superabundant numbers.",
-    "proofStrategy": "The sigma bound approach:\n\n1. **Define f via IsRepresentable**: n is representable with witness m if n ∈ partialDivisorSums(m)\n\n2. **Key bound**: σ(m) ∈ partialDivisorSums(m) (last partial sum = total), so f(σ(m)) ≤ m\n\n3. **Ratio shrinks**: f(σ(m))/σ(m) ≤ m/σ(m) = 1/(σ(m)/m)\n\n4. **Superabundant numbers**: For m ∈ {6, 12, 120, 720, 5040, ...}, σ(m)/m > 2, giving ratio < 1/2\n\n5. **Gronwall's theorem**: σ(m)/m → ∞ for primorials m_k (Mertens' theorem), so ratio → 0\n\nBlocking step: proving density 0 (not just liminf = 0) requires Mertens theorem not yet in Mathlib.",
+    "historicalContext": "Erd\u0151s Problem #1054 concerns the function f(n): the minimal m such that n appears as a partial sum of the divisors of m (sorted ascending). Erd\u0151s asked three questions:\n\n1. Is f(n) = o(n) for all n? (DISPROVED by Tao)\n2. Is f(n) = o(n) for almost all n? (OPEN)\n3. Is limsup f(n)/n = \u221e? (OPEN)\n\nTerry Tao's disproof of Part I showed that the density of {n : f(n) \u2264 \u03b4n} is at most O(\u03b4\u00b2), so many values of n have f(n) \u2248 n. But this is consistent with f(n)/n \u2192 0 for 'most' n.\n\nThe key tool for the 'almost all' version is the sigma bound: since \u03c3(m) is always a partial divisor sum of m, we have f(\u03c3(m)) \u2264 m. When \u03c3(m)/m \u2192 \u221e (which happens for superabundant numbers via Gronwall's theorem), f(\u03c3(m))/\u03c3(m) \u2192 0.",
+    "problemStatement": "Let $f(n)$ be the minimal $m \\geq 1$ such that $n$ is a partial sum of the divisors of $m$ (sorted in increasing order). Part II of Erd\u0151s Problem 1054 asks:\n\n$$\\text{For each } \\varepsilon > 0, \\text{ does } \\frac{|\\{k \\leq N : f(k)/k \\geq \\varepsilon\\}|}{N} \\to 0?$$\n\nEquivalently: does $\\{n : f(n)/n \\geq \\varepsilon\\}$ have natural density 0 for each $\\varepsilon > 0$?\n\n**Status**: OPEN after Tao's disproof of the unconditional form.",
+    "text": "Erd\u0151s asked whether the function f(n) \u2014 the minimal m whose partial divisor sums include n \u2014 satisfies f(n) = o(n) for almost all n. Tao disproved the unconditional form, but the 'almost all' version remains open. We formalize the density framework and prove accessible bounds via the sigma bound f(\u03c3(m)) \u2264 m, showing the ratio m/\u03c3(m) \u2192 0 along superabundant numbers.",
+    "proofStrategy": "The sigma bound approach:\n\n1. **Define f via IsRepresentable**: n is representable with witness m if n \u2208 partialDivisorSums(m)\n\n2. **Key bound**: \u03c3(m) \u2208 partialDivisorSums(m) (last partial sum = total), so f(\u03c3(m)) \u2264 m\n\n3. **Ratio shrinks**: f(\u03c3(m))/\u03c3(m) \u2264 m/\u03c3(m) = 1/(\u03c3(m)/m)\n\n4. **Superabundant numbers**: For m \u2208 {6, 12, 120, 720, 5040, ...}, \u03c3(m)/m > 2, giving ratio < 1/2\n\n5. **Gronwall's theorem**: \u03c3(m)/m \u2192 \u221e for primorials m_k (Mertens' theorem), so ratio \u2192 0\n\nBlocking step: proving density 0 (not just liminf = 0) requires Mertens theorem not yet in Mathlib.",
     "keyInsights": [
-      "**Sigma bound**: σ(m) = sum of ALL divisors is a partial divisor sum, so f(σ(m)) ≤ m always",
-      "**Abundant numbers**: σ(m) > 2m (abundant) gives f(σ(m))/σ(m) < 1/2 immediately",
-      "**Superabundant sequence**: m ∈ {6, 12, 24, 120, 720, 5040}: ratios 1/2, 3/7, 2/5, 1/3, 0.298, 0.261",
-      "**Consistency with Tao**: Exceptional set {n : f(n) ≥ εn} has density 0, consistent with Tao finding such n",
-      "**Gronwall's theorem gap**: σ(m)/(m log log m) → e^γ (Gronwall 1913) not yet in Mathlib 4.26"
+      "**Sigma bound**: \u03c3(m) = sum of ALL divisors is a partial divisor sum, so f(\u03c3(m)) \u2264 m always",
+      "**Abundant numbers**: \u03c3(m) > 2m (abundant) gives f(\u03c3(m))/\u03c3(m) < 1/2 immediately",
+      "**Superabundant sequence**: m \u2208 {6, 12, 24, 120, 720, 5040}: ratios 1/2, 3/7, 2/5, 1/3, 0.298, 0.261",
+      "**Consistency with Tao**: Exceptional set {n : f(n) \u2265 \u03b5n} has density 0, consistent with Tao finding such n",
+      "**Gronwall's theorem gap**: \u03c3(m)/(m log log m) \u2192 e^\u03b3 (Gronwall 1913) not yet in Mathlib 4.26"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -112,7 +112,7 @@
       "title": "Concrete Computations",
       "startLine": 112,
       "endLine": 160,
-      "summary": "Six native_decide theorems showing σ-witnesses for m = 6, 12, 24, 120, 720, 5040."
+      "summary": "Six native_decide theorems showing \u03c3-witnesses for m = 6, 12, 24, 120, 720, 5040."
     },
     {
       "id": "ratios",
@@ -126,31 +126,34 @@
       "title": "Sigma Function Properties and File Summary",
       "startLine": 166,
       "endLine": 234,
-      "summary": "Parts VII-VIII: sigma_prime (σ(p)=p+1 via Nat.Prime.divisors + Finset.sum_pair), sigma_ge_succ (σ(m)≥m+1 via subset bound on {1,m}), sigma_ratio_2a_3b formula and bound (2 sorries using multiplicativity/geometric series). Summary block lists all proved results, 2 axioms, 3 sorries, and open questions."
+      "summary": "Parts VII-VIII: sigma_prime (\u03c3(p)=p+1 via Nat.Prime.divisors + Finset.sum_pair), sigma_ge_succ (\u03c3(m)\u2265m+1 via subset bound on {1,m}), sigma_ratio_2a_3b formula and bound (2 sorries using multiplicativity/geometric series). Summary block lists all proved results, 2 axioms, 3 sorries, and open questions."
     }
   ],
   "conclusion": {
-    "summary": "We formalize the density framework for Part II of Erdős Problem #1054. The key structural result is the sigma bound f(σ(m)) ≤ m, proved via concrete native_decide computations for superabundant numbers. The ratio m/σ(m) is explicitly shown to decrease along m ∈ {6, 12, 24, 120, 720, 5040} from 1/2 to 0.26. The main open conjecture (density-0 of large-f set) is axiomatized; proving it requires Gronwall's theorem or Mertens' theorem, not yet in Mathlib.",
-    "implications": "**Theoretical Significance**: Resolving this would show most integers have 'efficiently representable' partial divisor sums.\n\nThe connection to Gronwall's theorem (σ(m)/(m log log m) → e^γ) and Mertens' theorem suggests analytic number theory techniques will be needed. The sigma bound provides a clear constructive path once these tools are available.",
+    "summary": "We formalize the density framework for Part II of Erd\u0151s Problem #1054. The key structural result is the sigma bound f(\u03c3(m)) \u2264 m, proved via concrete native_decide computations for superabundant numbers. The ratio m/\u03c3(m) is explicitly shown to decrease along m \u2208 {6, 12, 24, 120, 720, 5040} from 1/2 to 0.26. The main open conjecture (density-0 of large-f set) is axiomatized; proving it requires Gronwall's theorem or Mertens' theorem, not yet in Mathlib.",
+    "implications": "**Theoretical Significance**: Resolving this would show most integers have 'efficiently representable' partial divisor sums.\n\nThe connection to Gronwall's theorem (\u03c3(m)/(m log log m) \u2192 e^\u03b3) and Mertens' theorem suggests analytic number theory techniques will be needed. The sigma bound provides a clear constructive path once these tools are available.",
     "openQuestions": [
-      "Does {n : f(n) ≥ εn} have natural density 0? (Main conjecture, OPEN)",
-      "Is limsup f(n)/n = ∞? (Part III of Erdős 1054, OPEN)",
+      "Does {n : f(n) \u2265 \u03b5n} have natural density 0? (Main conjecture, OPEN)",
+      "Is limsup f(n)/n = \u221e? (Part III of Erd\u0151s 1054, OPEN)",
       "Can Mertens/Gronwall theorem be added to Mathlib to complete the proof?",
-      "Does the primorial sequence σ(p_1·...·p_k)/(p_1·...·p_k) → ∞ suffice for density-0?"
+      "Does the primorial sequence \u03c3(p_1\u00b7...\u00b7p_k)/(p_1\u00b7...\u00b7p_k) \u2192 \u221e suffice for density-0?"
     ]
   },
   "crossReferences": [
     {
-      "relationship": "Parent formalization of Erdos Problem #1054; this OQ-01 tackles the 'almost all' version that remains open after Tao's disproof",
-      "targetId": "erdos-1054"
+      "relationship": "related",
+      "targetId": "erdos-1054",
+      "description": "Parent formalization of Erdos Problem #1054; this OQ-01 tackles the 'almost all' version that remains open after Tao's disproof"
     },
     {
-      "relationship": "The prime number theorem underpins the asymptotic analysis of sigma(m)/m via Mertens' theorem for primorials",
-      "targetId": "prime-number-theorem"
+      "relationship": "related",
+      "targetId": "prime-number-theorem",
+      "description": "The prime number theorem underpins the asymptotic analysis of sigma(m)/m via Mertens' theorem for primorials"
     },
     {
-      "relationship": "Dirichlet's theorem on primes in arithmetic progressions relates to the distribution of divisors used in the sigma bound approach",
-      "targetId": "dirichlets-theorem"
+      "relationship": "related",
+      "targetId": "dirichlets-theorem",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions relates to the distribution of divisors used in the sigma bound approach"
     }
   ],
   "references": [

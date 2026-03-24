@@ -1,10 +1,10 @@
 {
   "id": "erdos-708",
-  "title": "Erdős Problem #708: Divisibility of Products by Consecutive Integers",
+  "title": "Erd\u0151s Problem #708: Divisibility of Products by Consecutive Integers",
   "slug": "erdos-708",
-  "description": "Let g(n) be minimal such that for any set A of n integers and any interval I of consecutive integers, some B ⊆ I with |B| = g(n) has product divisible by the product of A. Is g(n) ≤ (2 + o(1))n?",
+  "description": "Let g(n) be minimal such that for any set A of n integers and any interval I of consecutive integers, some B \u2286 I with |B| = g(n) has product divisible by the product of A. Is g(n) \u2264 (2 + o(1))n?",
   "meta": {
-    "author": "Erdős-Surányi (1959 problem and partial results), Gallai (early work)",
+    "author": "Erd\u0151s-Sur\u00e1nyi (1959 problem and partial results), Gallai (early work)",
     "sourceUrl": "https://erdosproblems.com/708",
     "date": "1959",
     "status": "axiomatized",
@@ -49,10 +49,10 @@
       "validSubset: subset satisfying divisibility condition",
       "g: the function g(n) via Nat.find",
       "g_two axiom: g(2) = 2 (Gallai)",
-      "g_three axiom: g(3) = 4 (Erdős-Surányi)",
-      "erdos_suranyi_lower: lower bound g(n) ≥ (2-o(1))n",
-      "ErdosConjecture: the open problem g(n) ≤ (2+o(1))n",
-      "StrongerConjecture: possibly g(n) ≤ 2n",
+      "g_three axiom: g(3) = 4 (Erd\u0151s-Sur\u00e1nyi)",
+      "erdos_suranyi_lower: lower bound g(n) \u2265 (2-o(1))n",
+      "ErdosConjecture: the open problem g(n) \u2264 (2+o(1))n",
+      "StrongerConjecture: possibly g(n) \u2264 2n",
       "Related variant: interval length c_n"
     ],
     "axiomCount": 8,
@@ -60,17 +60,17 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #708 concerns divisibility of products by consecutive integers. The function g(n) measures the minimum number of consecutive integers needed so that their product is divisible by the product of any n given integers ≥ 2. Gallai first considered such problems, establishing g(2) = 2 and g(3) ≥ 4.\n\nErdős and Surányi (1959) made the key contributions: they proved g(3) = 4 and established the lower bound g(n) ≥ (2 - o(1))n using an elegant construction based on products of prime pairs. Specifically, they chose A = {p_i · p_j : i ≠ j} for carefully chosen primes p_1 < ... < p_ℓ with 2p₁² > p_ℓ², forcing the prime factors to be spread across many distinct primes.\n\nErdős offered '$100 or 1000 rupees, whichever is more' in 1992 for a proof or disproof that g(n) ≤ (2 + o(1))n. Combined with the Erdős-Surányi lower bound, this would determine the asymptotic behavior as g(n) = (2 + o(1))n. The problem remains open after over 60 years.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $g(n)$ be minimal such that for any $A \\subseteq [2,\\infty) \\cap \\mathbb{N}$ with $|A| = n$ and any set $I$ of $\\max(A)$ consecutive integers, there exists $B \\subseteq I$ with $|B| = g(n)$ such that:\n$$\\prod_{a \\in A} a \\mid \\prod_{b \\in B} b$$\n\n**Question:** Is $g(n) \\leq (2 + o(1))n$? Or perhaps even $g(n) \\leq 2n$?\n\n**Known:**\n- $g(2) = 2$ (Gallai)\n- $g(3) = 4$ (Erdős-Surányi)\n- $g(n) \\geq (2 - o(1))n$ (lower bound)\n\n**Prize:** $100 (offered by Erdős)",
-    "text": "Let g(n) be minimal such that for any set A of n integers and any interval I of consecutive integers, some B ⊆ I with |B| = g(n) has product divisible by the product of A. Is g(n) ≤ (2 + o(1))n?",
-    "proofStrategy": "The formalization defines setProduct, consecutiveSet, and productDivides as computable predicates, then axiomatizes g_exists to guarantee the minimum value exists. The function g(n) is defined via Nat.find for minimality. Known values g(2) = 2 and g(3) = 4 are axiomatized, along with the Erdős-Surányi lower bound and a trivial upper bound. The open conjecture and its stronger variant are stated as Prop definitions. A related variant concerning interval length scaling factors c_n is also formalized.",
+    "historicalContext": "Erd\u0151s Problem #708 concerns divisibility of products by consecutive integers. The function g(n) measures the minimum number of consecutive integers needed so that their product is divisible by the product of any n given integers \u2265 2. Gallai first considered such problems, establishing g(2) = 2 and g(3) \u2265 4.\n\nErd\u0151s and Sur\u00e1nyi (1959) made the key contributions: they proved g(3) = 4 and established the lower bound g(n) \u2265 (2 - o(1))n using an elegant construction based on products of prime pairs. Specifically, they chose A = {p_i \u00b7 p_j : i \u2260 j} for carefully chosen primes p_1 < ... < p_\u2113 with 2p\u2081\u00b2 > p_\u2113\u00b2, forcing the prime factors to be spread across many distinct primes.\n\nErd\u0151s offered '$100 or 1000 rupees, whichever is more' in 1992 for a proof or disproof that g(n) \u2264 (2 + o(1))n. Combined with the Erd\u0151s-Sur\u00e1nyi lower bound, this would determine the asymptotic behavior as g(n) = (2 + o(1))n. The problem remains open after over 60 years.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $g(n)$ be minimal such that for any $A \\subseteq [2,\\infty) \\cap \\mathbb{N}$ with $|A| = n$ and any set $I$ of $\\max(A)$ consecutive integers, there exists $B \\subseteq I$ with $|B| = g(n)$ such that:\n$$\\prod_{a \\in A} a \\mid \\prod_{b \\in B} b$$\n\n**Question:** Is $g(n) \\leq (2 + o(1))n$? Or perhaps even $g(n) \\leq 2n$?\n\n**Known:**\n- $g(2) = 2$ (Gallai)\n- $g(3) = 4$ (Erd\u0151s-Sur\u00e1nyi)\n- $g(n) \\geq (2 - o(1))n$ (lower bound)\n\n**Prize:** $100 (offered by Erd\u0151s)",
+    "text": "Let g(n) be minimal such that for any set A of n integers and any interval I of consecutive integers, some B \u2286 I with |B| = g(n) has product divisible by the product of A. Is g(n) \u2264 (2 + o(1))n?",
+    "proofStrategy": "The formalization defines setProduct, consecutiveSet, and productDivides as computable predicates, then axiomatizes g_exists to guarantee the minimum value exists. The function g(n) is defined via Nat.find for minimality. Known values g(2) = 2 and g(3) = 4 are axiomatized, along with the Erd\u0151s-Sur\u00e1nyi lower bound and a trivial upper bound. The open conjecture and its stronger variant are stated as Prop definitions. A related variant concerning interval length scaling factors c_n is also formalized.",
     "keyInsights": [
       "**Key Function:** g(n) measures minimum consecutive integers needed for divisibility",
-      "**Lower Bound:** g(n) ≥ (2 - o(1))n proved via products of prime pairs",
+      "**Lower Bound:** g(n) \u2265 (2 - o(1))n proved via products of prime pairs",
       "**Small Cases:** g(2) = 2, g(3) = 4 are exactly computed",
-      "**Open Question:** Is the upper bound g(n) ≤ (2 + o(1))n achievable?",
-      "**Prize Problem:** $100 reward offered by Erdős in 1992",
-      "**Construction:** Lower bound uses A = {p_i·p_j} for carefully chosen primes"
+      "**Open Question:** Is the upper bound g(n) \u2264 (2 + o(1))n achievable?",
+      "**Prize Problem:** $100 reward offered by Erd\u0151s in 1992",
+      "**Construction:** Lower bound uses A = {p_i\u00b7p_j} for carefully chosen primes"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -95,14 +95,14 @@
     {
       "id": "known-values",
       "title": "Known Values",
-      "summary": "g(2) = 2 (Gallai), g(3) = 4 (Erdős-Surányi)",
+      "summary": "g(2) = 2 (Gallai), g(3) = 4 (Erd\u0151s-Sur\u00e1nyi)",
       "startLine": 89,
       "endLine": 97
     },
     {
       "id": "bounds",
       "title": "Bounds on g(n)",
-      "summary": "Trivial upper bound, Erdős-Surányi lower bound",
+      "summary": "Trivial upper bound, Erd\u0151s-Sur\u00e1nyi lower bound",
       "startLine": 99,
       "endLine": 112
     },
@@ -116,7 +116,7 @@
     {
       "id": "variant",
       "title": "Related Variant",
-      "summary": "Interval length c_n problem, c₂ = 1, c₃ = √2",
+      "summary": "Interval length c_n problem, c\u2082 = 1, c\u2083 = \u221a2",
       "startLine": 129,
       "endLine": 143
     },
@@ -136,11 +136,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #708 remains OPEN with a $100 prize. The problem asks whether g(n) ≤ (2 + o(1))n, where g(n) is the minimum number of consecutive integers needed to guarantee divisibility. Erdős-Surányi proved g(n) ≥ (2 - o(1))n, so if the conjecture is true, g(n) = (2 + o(1))n exactly.",
+    "summary": "Erd\u0151s Problem #708 remains OPEN with a $100 prize. The problem asks whether g(n) \u2264 (2 + o(1))n, where g(n) is the minimum number of consecutive integers needed to guarantee divisibility. Erd\u0151s-Sur\u00e1nyi proved g(n) \u2265 (2 - o(1))n, so if the conjecture is true, g(n) = (2 + o(1))n exactly.",
     "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Prime Factorization:** The problem deeply involves how prime factors distribute among consecutive integers\n\n**2. Extremal Combinatorics:** Finding optimal constructions for lower bounds\n\n3. **Product Divisibility:** Understanding when products of consecutive integers divide given products\n\n4. **Related Problems:** Connected to Problem 709 about interval length variants.",
     "openQuestions": [
-      "Is g(n) ≤ (2 + o(1))n? (THE main open question)",
-      "Is g(n) ≤ 2n exactly?",
+      "Is g(n) \u2264 (2 + o(1))n? (THE main open question)",
+      "Is g(n) \u2264 2n exactly?",
       "What is g(4)? g(5)?",
       "Can the lower bound construction be improved?",
       "What are the exact constants in the o(1) terms?"
@@ -163,5 +163,39 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-394",
+      "relationship": "related",
+      "description": "Share divisibility, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-962",
+      "relationship": "related",
+      "description": "Share divisibility, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-686",
+      "relationship": "related",
+      "description": "Share consecutive-integers, products, and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-394",
+    "erdos-962",
+    "erdos-686",
+    "divisibility-by-3",
+    "divisibility-truncation-general"
+  ]
 }

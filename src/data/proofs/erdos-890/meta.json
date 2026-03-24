@@ -1,10 +1,10 @@
 {
   "id": "erdos-890",
-  "title": "Erdős Problem #890: Sum of ω over Consecutive Integers",
+  "title": "Erd\u0151s Problem #890: Sum of \u03c9 over Consecutive Integers",
   "slug": "erdos-890",
-  "description": "Is lim inf S_k(n) ≤ k + π(k) where S_k(n) = ∑ ω(n+i)? Is lim sup S_k(n) · log log n / log n = 1? Known: lim inf ≥ k + π(k) − 1 (Erdős–Selfridge). OPEN.",
+  "description": "Is lim inf S_k(n) \u2264 k + \u03c0(k) where S_k(n) = \u2211 \u03c9(n+i)? Is lim sup S_k(n) \u00b7 log log n / log n = 1? Known: lim inf \u2265 k + \u03c0(k) \u2212 1 (Erd\u0151s\u2013Selfridge). OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/890",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos890Problem.lean",
@@ -25,14 +25,14 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Selfridge studied $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$ in their 1967 paper [ErSe67], where $\\omega(m)$ counts the distinct prime divisors of $m$. The Hardy-Ramanujan theorem (1917) established that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erdős-Kac theorem (1940) showed $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n}$ is asymptotically normal. For the cumulative function $S_k(n)$, Erdős and Selfridge proved the lower bound $\\liminf_{n \\to \\infty} S_k(n) \\geq k + \\pi(k) - 1$ using Pólya's 1918 theorem that $k$-smooth numbers (those with all prime factors $\\leq k$) have unbounded gaps: among $n, n+1, \\ldots, n+k-1$, all but at most one must have a prime factor $> k$. This yields at least $k + \\pi(k) - 1$ distinct prime factors in total. The two open conjectures sharpen this: (1) $\\liminf S_k(n) \\leq k + \\pi(k)$, which combined with the lower bound would pin the liminf to $k + \\pi(k) - 1$ or $k + \\pi(k)$; and (2) $\\limsup S_k(n) \\cdot \\log\\log n / \\log n = 1$, generalizing the classical single-integer result to consecutive blocks. The problem connects to Jacobsthal's function $g(k)$ (the maximal gap in $\\{1, \\ldots, m\\}$ coprime to the first $k$ primes) and to recent work on the distribution of $\\omega$ in short intervals.",
+    "historicalContext": "Erd\u0151s and Selfridge studied $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$ in their 1967 paper [ErSe67], where $\\omega(m)$ counts the distinct prime divisors of $m$. The Hardy-Ramanujan theorem (1917) established that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erd\u0151s-Kac theorem (1940) showed $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n}$ is asymptotically normal. For the cumulative function $S_k(n)$, Erd\u0151s and Selfridge proved the lower bound $\\liminf_{n \\to \\infty} S_k(n) \\geq k + \\pi(k) - 1$ using P\u00f3lya's 1918 theorem that $k$-smooth numbers (those with all prime factors $\\leq k$) have unbounded gaps: among $n, n+1, \\ldots, n+k-1$, all but at most one must have a prime factor $> k$. This yields at least $k + \\pi(k) - 1$ distinct prime factors in total. The two open conjectures sharpen this: (1) $\\liminf S_k(n) \\leq k + \\pi(k)$, which combined with the lower bound would pin the liminf to $k + \\pi(k) - 1$ or $k + \\pi(k)$; and (2) $\\limsup S_k(n) \\cdot \\log\\log n / \\log n = 1$, generalizing the classical single-integer result to consecutive blocks. The problem connects to Jacobsthal's function $g(k)$ (the maximal gap in $\\{1, \\ldots, m\\}$ coprime to the first $k$ primes) and to recent work on the distribution of $\\omega$ in short intervals.",
     "problemStatement": "Let $\\omega(n)$ denote the number of distinct prime factors of $n$, and define $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$. Two conjectures: (1) For every $k \\geq 1$, $\\liminf_{n \\to \\infty} S_k(n) \\leq k + \\pi(k)$. (2) $\\limsup_{n \\to \\infty} S_k(n) \\cdot \\frac{\\log\\log n}{\\log n} = 1$. Both remain open.",
-    "text": "Is lim inf S_k(n) ≤ k + π(k) where S_k(n) = ∑ ω(n+i)? Is lim sup S_k(n) · log log n / log n = 1? Known: lim inf ≥ k + π(k) − 1 (Erdős–Selfridge). OPEN.",
-    "proofStrategy": "The formalization defines `cumulativeOmega k n` using Mathlib's `ArithmeticFunction.omega` and `Finset.range k`. Liminf and limsup are captured by custom predicates `LiminfAtMost`, `LiminfAtLeast`, and `LimsupRatioIsOne` (using $\\varepsilon$-neighborhoods with `Real.log`). The Erdős-Selfridge lower bound and Hardy-Ramanujan $\\omega$ limsup are axiomatized. Four theorems are proved in Lean: monotonicity $S_{k+1}(n) \\geq S_k(n)$ via `Finset.sum_le_sum_of_subset`, the lower bound at $k=1$, the sandwich theorem conditional on Conjecture 1, and a restated lower bound.",
+    "text": "Is lim inf S_k(n) \u2264 k + \u03c0(k) where S_k(n) = \u2211 \u03c9(n+i)? Is lim sup S_k(n) \u00b7 log log n / log n = 1? Known: lim inf \u2265 k + \u03c0(k) \u2212 1 (Erd\u0151s\u2013Selfridge). OPEN.",
+    "proofStrategy": "The formalization defines `cumulativeOmega k n` using Mathlib's `ArithmeticFunction.omega` and `Finset.range k`. Liminf and limsup are captured by custom predicates `LiminfAtMost`, `LiminfAtLeast`, and `LimsupRatioIsOne` (using $\\varepsilon$-neighborhoods with `Real.log`). The Erd\u0151s-Selfridge lower bound and Hardy-Ramanujan $\\omega$ limsup are axiomatized. Four theorems are proved in Lean: monotonicity $S_{k+1}(n) \\geq S_k(n)$ via `Finset.sum_le_sum_of_subset`, the lower bound at $k=1$, the sandwich theorem conditional on Conjecture 1, and a restated lower bound.",
     "keyInsights": [
       "**Cumulative prime factors**: $S_k(n) = \\sum_{i<k} \\omega(n+i)$ counts total distinct prime factors across $k$ consecutive integers. For $k = 1$, this reduces to $\\omega(n)$ itself.",
-      "**Erdős-Selfridge lower bound**: The product $n(n+1)\\cdots(n+k-1)$ is divisible by all primes $\\leq k$, so $S_k(n) \\geq k + \\pi(k) - 1$ eventually. The proof uses Pólya's 1918 theorem that $k$-smooth numbers have gaps tending to infinity.",
-      "**Tight sandwich**: If Conjecture 1 holds, $\\liminf S_k(n) \\in \\{k + \\pi(k) - 1,\\, k + \\pi(k)\\}$ — determined to within 1. The Lean `erdos_890_liminf_sandwich` theorem formalizes this conditional result.",
+      "**Erd\u0151s-Selfridge lower bound**: The product $n(n+1)\\cdots(n+k-1)$ is divisible by all primes $\\leq k$, so $S_k(n) \\geq k + \\pi(k) - 1$ eventually. The proof uses P\u00f3lya's 1918 theorem that $k$-smooth numbers have gaps tending to infinity.",
+      "**Tight sandwich**: If Conjecture 1 holds, $\\liminf S_k(n) \\in \\{k + \\pi(k) - 1,\\, k + \\pi(k)\\}$ \u2014 determined to within 1. The Lean `erdos_890_liminf_sandwich` theorem formalizes this conditional result.",
       "**Limsup generalization**: The classical Hardy-Ramanujan result $\\limsup \\omega(n) \\cdot \\log\\log n / \\log n = 1$ is conjectured to hold for $S_k(n)$ as well, meaning the maximum growth rate is dominated by a single highly composite integer in each block.",
       "**Monotonicity**: $S_{k+1}(n) \\geq S_k(n)$ is proved in Lean via `Finset.sum_le_sum_of_subset`, since $\\text{range}\\,k \\subseteq \\text{range}\\,(k+1)$."
     ],
@@ -49,7 +49,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Header documenting Erdős Problem #890 with references to Erdős-Selfridge [ErSe67] and Pólya's theorem. Imports `ArithmeticFunction.Defs` (for $\\omega$), `PrimeCounting` (for $\\pi$), `Finset.Basic`, `Filter.Basic`, `SpecialFunctions.Log.Basic` (for $\\log$), and `Tactic`. Opens `Nat`, `Finset`, `Filter`, and `ArithmeticFunction.omega` namespaces."
+      "summary": "Header documenting Erd\u0151s Problem #890 with references to Erd\u0151s-Selfridge [ErSe67] and P\u00f3lya's theorem. Imports `ArithmeticFunction.Defs` (for $\\omega$), `PrimeCounting` (for $\\pi$), `Finset.Basic`, `Filter.Basic`, `SpecialFunctions.Log.Basic` (for $\\log$), and `Tactic`. Opens `Nat`, `Finset`, `Filter`, and `ArithmeticFunction.omega` namespaces."
     },
     {
       "id": "primitives",
@@ -70,7 +70,7 @@
       "title": "Conjecture 1: Liminf Upper Bound",
       "startLine": 87,
       "endLine": 98,
-      "summary": "Defines `ErdosConjecture890_liminf : Prop` as $\\forall k \\geq 1,\\, \\text{LiminfAtMost}\\,(S_k)\\,(k + \\pi(k))$. This would show $\\liminf S_k(n) \\leq k + \\pi(k)$, complementing the Erdős-Selfridge lower bound."
+      "summary": "Defines `ErdosConjecture890_liminf : Prop` as $\\forall k \\geq 1,\\, \\text{LiminfAtMost}\\,(S_k)\\,(k + \\pi(k))$. This would show $\\liminf S_k(n) \\leq k + \\pi(k)$, complementing the Erd\u0151s-Selfridge lower bound."
     },
     {
       "id": "conjecture-limsup",
@@ -91,16 +91,16 @@
       "title": "Structural Theorems",
       "startLine": 132,
       "endLine": 172,
-      "summary": "Proves `cumulativeOmega_mono`: $S_k(n) \\leq S_{k+1}(n)$ via `Finset.sum_le_sum_of_subset`. Proves `erdos_890_lower_bound_k1`: the Erdős-Selfridge bound at $k=1$. Proves `erdos_890_liminf_sandwich`: conditional on Conjecture 1, $k + \\pi(k) - 1 \\leq \\liminf S_k(n) \\leq k + \\pi(k)$. Proves `erdos_890_known_lower_bound`: restates the Erdős-Selfridge axiom."
+      "summary": "Proves `cumulativeOmega_mono`: $S_k(n) \\leq S_{k+1}(n)$ via `Finset.sum_le_sum_of_subset`. Proves `erdos_890_lower_bound_k1`: the Erd\u0151s-Selfridge bound at $k=1$. Proves `erdos_890_liminf_sandwich`: conditional on Conjecture 1, $k + \\pi(k) - 1 \\leq \\liminf S_k(n) \\leq k + \\pi(k)$. Proves `erdos_890_known_lower_bound`: restates the Erd\u0151s-Selfridge axiom."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #890 formalizes two open conjectures about the sum $S_k(n) = \\sum_{i<k} \\omega(n+i)$ of distinct prime factors across consecutive integers. The Lean file includes genuine proofs of monotonicity ($S_{k+1} \\geq S_k$ via `Finset.sum_le_sum_of_subset`), the Erdős-Selfridge bound at $k=1$, a conditional sandwich theorem, and a restated lower bound. The Erdős-Selfridge lower bound $\\liminf S_k(n) \\geq k + \\pi(k) - 1$ and the Hardy-Ramanujan $\\omega$ limsup are axiomatized.",
-    "implications": "Resolving Conjecture 1 would determine $\\liminf S_k(n)$ to within 1, revealing how 'smooth' the distribution of prime factors is across consecutive integer blocks. Conjecture 2 would show that the maximum rate of prime factor accumulation in a block of $k$ consecutive integers matches the single-integer Hardy-Ramanujan rate — the dominant contribution comes from one highly composite number in the block.",
+    "summary": "Erd\u0151s Problem #890 formalizes two open conjectures about the sum $S_k(n) = \\sum_{i<k} \\omega(n+i)$ of distinct prime factors across consecutive integers. The Lean file includes genuine proofs of monotonicity ($S_{k+1} \\geq S_k$ via `Finset.sum_le_sum_of_subset`), the Erd\u0151s-Selfridge bound at $k=1$, a conditional sandwich theorem, and a restated lower bound. The Erd\u0151s-Selfridge lower bound $\\liminf S_k(n) \\geq k + \\pi(k) - 1$ and the Hardy-Ramanujan $\\omega$ limsup are axiomatized.",
+    "implications": "Resolving Conjecture 1 would determine $\\liminf S_k(n)$ to within 1, revealing how 'smooth' the distribution of prime factors is across consecutive integer blocks. Conjecture 2 would show that the maximum rate of prime factor accumulation in a block of $k$ consecutive integers matches the single-integer Hardy-Ramanujan rate \u2014 the dominant contribution comes from one highly composite number in the block.",
     "openQuestions": [
       "Is $\\liminf S_k(n)$ exactly $k + \\pi(k) - 1$ or $k + \\pi(k)$ for each $k$?",
       "Does $\\limsup S_k(n) \\cdot \\log\\log n / \\log n = 1$ hold for all $k \\geq 2$?",
-      "Can Jacobsthal's function $g(k)$ provide sharper bounds on the Erdős-Selfridge lower bound?",
+      "Can Jacobsthal's function $g(k)$ provide sharper bounds on the Erd\u0151s-Selfridge lower bound?",
       "How does $S_k(n)$ behave in short intervals $[x, x + x^\\theta]$ for $\\theta < 1$?"
     ]
   },
@@ -109,7 +109,12 @@
     "erdos-852",
     "erdos-867",
     "erdos-533",
-    "erdos-347"
+    "erdos-347",
+    "erdos-126",
+    "erdos-394",
+    "erdos-648",
+    "erdos-369",
+    "erdos-677"
   ],
   "leanFile": {
     "imports": [
@@ -131,5 +136,32 @@
     "axiomCount": 2,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-126",
+      "relationship": "related",
+      "description": "Share asymptotics, prime-factors, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-394",
+      "relationship": "related",
+      "description": "Share asymptotics, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-648",
+      "relationship": "related",
+      "description": "Share asymptotics, prime-factors, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Share prime-factors, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-677",
+      "relationship": "related",
+      "description": "Share prime-factors, consecutive-integers, and number-theoretic themes"
+    }
+  ]
 }

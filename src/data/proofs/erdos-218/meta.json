@@ -1,10 +1,10 @@
 {
   "id": "erdos-218",
-  "title": "Erdős Problem #218: Prime Gap Densities",
+  "title": "Erd\u0151s Problem #218: Prime Gap Densities",
   "slug": "erdos-218",
-  "description": "Let d_n = p_{n+1} - p_n be the prime gap. Erdős conjectured that the sets where d_{n+1} ≥ d_n and d_{n+1} ≤ d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN.",
+  "description": "Let d_n = p_{n+1} - p_n be the prime gap. Erd\u0151s conjectured that the sets where d_{n+1} \u2265 d_n and d_{n+1} \u2264 d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN.",
   "meta": {
-    "author": "Erdős (1955-1985)",
+    "author": "Erd\u0151s (1955-1985)",
     "sourceUrl": "https://erdosproblems.com/218",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos218Problem.lean",
@@ -28,16 +28,16 @@
       "Natural density and asymptotic density of integer sets",
       "Arithmetic progressions in the primes",
       "Green-Tao theorem (arbitrarily long APs in primes)",
-      "Cramér probabilistic model for primes"
+      "Cram\u00e9r probabilistic model for primes"
     ],
     "lineCount": 340,
     "assumptions": "22 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem across several papers from 1955-1985, asking about the local statistical behavior of prime gaps $d_n = p_{n+1} - p_n$. While the Prime Number Theorem (Hadamard, de la Vallée-Poussin 1896) shows $d_n \\sim \\log p_n$ on average, the local behavior — whether consecutive gaps tend to increase, decrease, or stay equal — is far subtler. Cramér's probabilistic model (1936) suggests that gap comparisons should behave like independent coin flips, yielding density $1/2$ for both increasing and decreasing gaps. However, primes exhibit nontrivial correlations (e.g., the Hardy-Littlewood prime $k$-tuples conjecture) that could affect local gap statistics. The equal-gap conjecture ($d_n = d_{n+1}$ infinitely often) is equivalent to asking for infinitely many 3-term arithmetic progressions of consecutive primes. The Green-Tao theorem (2004) gives arbitrarily long APs in primes, but not of consecutive primes. Terence Tao assessed this problem as 'looks difficult' on his blog.",
-    "problemStatement": "Let d_n = p_{n+1} - p_n. Conjectures: (1) {n : d_{n+1} ≥ d_n} has density 1/2, (2) {n : d_{n+1} ≤ d_n} has density 1/2, (3) infinitely many n have d_n = d_{n+1}. All three remain OPEN. Conjecture 3 is equivalent to infinitely many 3-term APs of consecutive primes.",
-    "text": "Let d_n = p_{n+1} - p_n be the prime gap. Erdős conjectured that the sets where d_{n+1} ≥ d_n and d_{n+1} ≤ d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN.",
-    "proofStrategy": "The formalization defines nthPrime (via Nat.nth), primeGap, HasDensity (via Tendsto), and the three key sets (gapIncreasingSet, gapDecreasingSet, gapEqualSet). The three conjectures are axioms. Key proved results: primeGap_pos, gapEqualSet_eq_inter, partition of ℕ by gap comparison. The connection gapEqual ↔ threePrimesInAP is axiomatized. Green-Tao theorem is stated for context.",
+    "historicalContext": "Erd\u0151s posed this problem across several papers from 1955-1985, asking about the local statistical behavior of prime gaps $d_n = p_{n+1} - p_n$. While the Prime Number Theorem (Hadamard, de la Vall\u00e9e-Poussin 1896) shows $d_n \\sim \\log p_n$ on average, the local behavior \u2014 whether consecutive gaps tend to increase, decrease, or stay equal \u2014 is far subtler. Cram\u00e9r's probabilistic model (1936) suggests that gap comparisons should behave like independent coin flips, yielding density $1/2$ for both increasing and decreasing gaps. However, primes exhibit nontrivial correlations (e.g., the Hardy-Littlewood prime $k$-tuples conjecture) that could affect local gap statistics. The equal-gap conjecture ($d_n = d_{n+1}$ infinitely often) is equivalent to asking for infinitely many 3-term arithmetic progressions of consecutive primes. The Green-Tao theorem (2004) gives arbitrarily long APs in primes, but not of consecutive primes. Terence Tao assessed this problem as 'looks difficult' on his blog.",
+    "problemStatement": "Let d_n = p_{n+1} - p_n. Conjectures: (1) {n : d_{n+1} \u2265 d_n} has density 1/2, (2) {n : d_{n+1} \u2264 d_n} has density 1/2, (3) infinitely many n have d_n = d_{n+1}. All three remain OPEN. Conjecture 3 is equivalent to infinitely many 3-term APs of consecutive primes.",
+    "text": "Let d_n = p_{n+1} - p_n be the prime gap. Erd\u0151s conjectured that the sets where d_{n+1} \u2265 d_n and d_{n+1} \u2264 d_n each have density 1/2, and that infinitely many equal gaps d_n = d_{n+1} exist. OPEN.",
+    "proofStrategy": "The formalization defines nthPrime (via Nat.nth), primeGap, HasDensity (via Tendsto), and the three key sets (gapIncreasingSet, gapDecreasingSet, gapEqualSet). The three conjectures are axioms. Key proved results: primeGap_pos, gapEqualSet_eq_inter, partition of \u2115 by gap comparison. The connection gapEqual \u2194 threePrimesInAP is axiomatized. Green-Tao theorem is stated for context.",
     "keyInsights": [
       "d_n = p_{n+1} - p_n measures gaps between consecutive primes",
       "Natural density captures the asymptotic proportion of integers with a property",
@@ -52,7 +52,7 @@
       "Natural density and asymptotic density of integer sets",
       "Arithmetic progressions in the primes",
       "Green-Tao theorem (arbitrarily long APs in primes)",
-      "Cramér probabilistic model for primes"
+      "Cram\u00e9r probabilistic model for primes"
     ]
   },
   "sections": [
@@ -135,14 +135,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #218 asks about the natural density of indices where consecutive prime gaps increase, decrease, or stay equal. All three parts remain OPEN. The equal gap conjecture is equivalent to infinitely many 3-term APs of consecutive primes. Green-Tao gives arbitrarily long APs in primes but not necessarily consecutive.",
-    "implications": "**Theoretical Significance**: Resolution would reveal whether local prime gap statistics match the Cramér random model or exhibit deeper correlations.\n\nThe equal-gap conjecture connects to the Hardy-Littlewood prime $k$-tuples conjecture (for $k=3$): if the $k$-tuples conjecture is true, then infinitely many consecutive prime triples form APs. This tests the boundary between what the Green-Tao methods can reach and what remains beyond current technology.",
+    "summary": "Erd\u0151s Problem #218 asks about the natural density of indices where consecutive prime gaps increase, decrease, or stay equal. All three parts remain OPEN. The equal gap conjecture is equivalent to infinitely many 3-term APs of consecutive primes. Green-Tao gives arbitrarily long APs in primes but not necessarily consecutive.",
+    "implications": "**Theoretical Significance**: Resolution would reveal whether local prime gap statistics match the Cram\u00e9r random model or exhibit deeper correlations.\n\nThe equal-gap conjecture connects to the Hardy-Littlewood prime $k$-tuples conjecture (for $k=3$): if the $k$-tuples conjecture is true, then infinitely many consecutive prime triples form APs. This tests the boundary between what the Green-Tao methods can reach and what remains beyond current technology.",
     "openQuestions": [
       "Do the sets $\\{n : d_{n+1} \\geq d_n\\}$ and $\\{n : d_{n+1} \\leq d_n\\}$ each have natural density $1/2$?",
       "Are there infinitely many $n$ with $d_n = d_{n+1}$ (i.e., infinitely many 3-term APs of consecutive primes)?",
       "What is the natural density of $\\{n : d_n = d_{n+1}\\}$? Expected to be 0 by Hardy-Littlewood heuristics",
       "Can sieve methods or the Green-Tao machinery be adapted to consecutive primes?",
-      "What is the distribution of $d_{n+1}/d_n$? Is it concentrated near 1 (as Cramér predicts)?"
+      "What is the distribution of $d_{n+1}/d_n$? Is it concentrated near 1 (as Cram\u00e9r predicts)?"
     ]
   },
   "leanFile": {
@@ -164,5 +164,39 @@
     "axiomCount": 22,
     "theoremCount": 5,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-932",
+      "relationship": "related",
+      "description": "Share natural-density, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-456",
+      "relationship": "related",
+      "description": "Share natural-density and number-theoretic themes"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Share arithmetic progression and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Share arithmetic progression and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-177",
+      "relationship": "related",
+      "description": "Share arithmetic progression and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-932",
+    "erdos-456",
+    "dirichlets-theorem",
+    "erdos-141",
+    "erdos-177"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-100",
-  "title": "Erdős #100: Point Sets with Restricted Distances",
+  "title": "Erd\u0151s #100: Point Sets with Restricted Distances",
   "slug": "erdos-100",
-  "description": "Let A be n points in ℝ² with all pairwise distances ≥ 1 and any two distinct distances differing by ≥ 1. Must the diameter be ≫ n? Known: n^(3/4) (Kanold), n/log n (Guth-Katz). Piepmeyer: 9 points with diameter < 5.",
+  "description": "Let A be n points in \u211d\u00b2 with all pairwise distances \u2265 1 and any two distinct distances differing by \u2265 1. Must the diameter be \u226b n? Known: n^(3/4) (Kanold), n/log n (Guth-Katz). Piepmeyer: 9 points with diameter < 5.",
   "meta": {
-    "author": "Paul Erdős, Kanold, Piepmeyer, Guth-Katz",
+    "author": "Paul Erd\u0151s, Kanold, Piepmeyer, Guth-Katz",
     "sourceUrl": "https://erdosproblems.com/100",
     "date": "1990-2015",
     "status": "axiomatized",
@@ -25,16 +25,16 @@
     "assumptions": "5 axioms: distinctDistances_le_diam (bridge lemma), kanold_bound, guthKatz_distinct_distances, piepmeyer_construction, erdos_anning_theorem. 0 sorries. n_over_log_sublinear proved from Real.tendsto_log_atTop. Open problem - linear diameter growth conjectured."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in the early 1990s as part of his extensive program on distance problems in discrete and combinatorial geometry. The question asks whether imposing integer-distance constraints on planar point sets forces the diameter to grow linearly with n. This connects to a rich tradition beginning with Erdős's 1946 paper on distinct distances, where he conjectured that n points in the plane determine at least ~n/√(log n) distinct distances. Kanold obtained the first non-trivial lower bound of n^(3/4) on the diameter using combinatorial counting. The landscape changed dramatically when Guth and Katz (2015) resolved Erdős's distinct distances conjecture up to a logarithmic factor, proving ≥ cn/log n distinct distances; this immediately implies diam ≥ cn/log n for restricted distance sets. On the upper-bound side, Piepmeyer constructed 9 points in the plane with all pairwise distances positive integers and diameter less than 5, showing the strong conjecture diam ≥ n-1 fails for small n. The problem also connects to the Erdős-Anning theorem (1945): any infinite set of points with all mutual distances integers must be collinear. The gap between n/log n and n remains one of the central open problems in combinatorial geometry.",
-    "problemStatement": "Let A be a set of n points in ℝ² such that all pairwise distances are at least 1 and any two distinct distances differ by at least 1 (equivalently, all distances are positive integers). Is the diameter of A ≫ n?",
-    "text": "Let A be n points in ℝ² with all pairwise distances ≥ 1 and any two distinct distances differing by ≥ 1. Must the diameter be ≫ n? Known: n^(3/4) (Kanold), n/log n (Guth-Katz). Piepmeyer: 9 points with diameter < 5.",
+    "historicalContext": "Erd\u0151s posed this problem in the early 1990s as part of his extensive program on distance problems in discrete and combinatorial geometry. The question asks whether imposing integer-distance constraints on planar point sets forces the diameter to grow linearly with n. This connects to a rich tradition beginning with Erd\u0151s's 1946 paper on distinct distances, where he conjectured that n points in the plane determine at least ~n/\u221a(log n) distinct distances. Kanold obtained the first non-trivial lower bound of n^(3/4) on the diameter using combinatorial counting. The landscape changed dramatically when Guth and Katz (2015) resolved Erd\u0151s's distinct distances conjecture up to a logarithmic factor, proving \u2265 cn/log n distinct distances; this immediately implies diam \u2265 cn/log n for restricted distance sets. On the upper-bound side, Piepmeyer constructed 9 points in the plane with all pairwise distances positive integers and diameter less than 5, showing the strong conjecture diam \u2265 n-1 fails for small n. The problem also connects to the Erd\u0151s-Anning theorem (1945): any infinite set of points with all mutual distances integers must be collinear. The gap between n/log n and n remains one of the central open problems in combinatorial geometry.",
+    "problemStatement": "Let A be a set of n points in \u211d\u00b2 such that all pairwise distances are at least 1 and any two distinct distances differ by at least 1 (equivalently, all distances are positive integers). Is the diameter of A \u226b n?",
+    "text": "Let A be n points in \u211d\u00b2 with all pairwise distances \u2265 1 and any two distinct distances differing by \u2265 1. Must the diameter be \u226b n? Known: n^(3/4) (Kanold), n/log n (Guth-Katz). Piepmeyer: 9 points with diameter < 5.",
     "proofStrategy": "We formalize the restricted distance property (minimum distance 1 + integer distances), diameter, and the known bounds. Key results axiomatized include Kanold's n^(3/4) bound, the Guth-Katz n/log n bound (via the distinct distances theorem), and Piepmeyer's 9-point counterexample to the strong conjecture. The formalization also defines unit distance graphs and connects to the distinct distances problem.",
     "keyInsights": [
       "**Integer Distance Forcing:** The combination of minimum distance 1 and integer separation forces all pairwise distances into {1, 2, 3, ...}, making the distance set a subset of {1, ..., diam(A)}",
-      "**Kanold's Bound:** The first non-trivial result: diam(A) ≥ n^(3/4), proved by pigeonhole counting on distance multiplicities and geometric constraints on distance-k graphs",
-      "**Guth-Katz Connection:** The breakthrough distinct distances result (≥ cn/log n) directly implies diam ≥ cn/log n for restricted distance sets, since |{d(p,q)}| ≤ diam(A)",
-      "**Piepmeyer's Counterexample:** 9 points with diameter < 5 show the strong conjecture (diam ≥ n-1) fails for small n, and the optimal linear constant c ≤ 5/9 ≈ 0.556",
-      "**Erdős-Anning Theorem:** An infinite set in ℝ² with all integer distances must be collinear—so the finite case studied here is fundamentally different from the infinite case"
+      "**Kanold's Bound:** The first non-trivial result: diam(A) \u2265 n^(3/4), proved by pigeonhole counting on distance multiplicities and geometric constraints on distance-k graphs",
+      "**Guth-Katz Connection:** The breakthrough distinct distances result (\u2265 cn/log n) directly implies diam \u2265 cn/log n for restricted distance sets, since |{d(p,q)}| \u2264 diam(A)",
+      "**Piepmeyer's Counterexample:** 9 points with diameter < 5 show the strong conjecture (diam \u2265 n-1) fails for small n, and the optimal linear constant c \u2264 5/9 \u2248 0.556",
+      "**Erd\u0151s-Anning Theorem:** An infinite set in \u211d\u00b2 with all integer distances must be collinear\u2014so the finite case studied here is fundamentally different from the infinite case"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -51,7 +51,7 @@
     {
       "id": "plane-distance",
       "title": "The Plane and Distance",
-      "summary": "Euclidean distance in ℝ² with symmetry and nonnegativity",
+      "summary": "Euclidean distance in \u211d\u00b2 with symmetry and nonnegativity",
       "startLine": 31,
       "endLine": 54
     },
@@ -72,14 +72,14 @@
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "Erdos100Conjecture (diam ≥ cn) and Erdos100StrongConjecture (diam ≥ n-1)",
+      "summary": "Erdos100Conjecture (diam \u2265 cn) and Erdos100StrongConjecture (diam \u2265 n-1)",
       "startLine": 110,
       "endLine": 143
     },
     {
       "id": "distinct-distances-bridge",
-      "title": "Key Connection: Distinct Distances ≤ Diameter",
-      "summary": "Bridge lemma: for integer distance sets, #distinct distances ≤ diam",
+      "title": "Key Connection: Distinct Distances \u2264 Diameter",
+      "summary": "Bridge lemma: for integer distance sets, #distinct distances \u2264 diam",
       "startLine": 144,
       "endLine": 162
     },
@@ -99,7 +99,7 @@
     },
     {
       "id": "erdos-anning",
-      "title": "The Erdős-Anning Theorem",
+      "title": "The Erd\u0151s-Anning Theorem",
       "summary": "Infinite integer distance sets must be collinear",
       "startLine": 274,
       "endLine": 298
@@ -113,36 +113,36 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #100 on point sets with restricted distances in ℝ². The combination of minimum distance 1 and integer separation forces all pairwise distances to be positive integers, and the central question asks whether diameter must grow linearly with n. The current best lower bound is n/log n (Guth-Katz, 2015), while the conjectured linear bound remains open. Piepmeyer's 9-point construction shows the optimal constant is at most 5/9.",
+    "summary": "This formalization captures Erd\u0151s Problem #100 on point sets with restricted distances in \u211d\u00b2. The combination of minimum distance 1 and integer separation forces all pairwise distances to be positive integers, and the central question asks whether diameter must grow linearly with n. The current best lower bound is n/log n (Guth-Katz, 2015), while the conjectured linear bound remains open. Piepmeyer's 9-point construction shows the optimal constant is at most 5/9.",
     "implications": "**Theoretical Significance**: The problem sits at the intersection of discrete geometry, combinatorial geometry, and algebraic methods.\n\nResolution would require either (a) closing the logarithmic gap between n/log n and n, advancing beyond polynomial partitioning methods, or (b) constructing a family of restricted distance sets with sublinear diameter growth, which would be a major surprise. The connection to the Guth-Katz theorem means progress here is closely tied to advances in incidence geometry and algebraic methods.",
     "openQuestions": [
-      "Is diameter ≫ n (linear growth), or does the logarithmic factor in the Guth-Katz bound reflect a genuine obstruction?",
-      "Is diameter ≥ n-1 for sufficiently large n (strong conjecture)?",
-      "What is the optimal constant c in the linear bound diam ≥ c·n, if it holds?",
+      "Is diameter \u226b n (linear growth), or does the logarithmic factor in the Guth-Katz bound reflect a genuine obstruction?",
+      "Is diameter \u2265 n-1 for sufficiently large n (strong conjecture)?",
+      "What is the optimal constant c in the linear bound diam \u2265 c\u00b7n, if it holds?",
       "Can Piepmeyer's 9-point construction be extended to arbitrarily large n with sublinear diameter?",
-      "Does the problem change qualitatively in higher dimensions ℝ^d for d ≥ 3?"
+      "Does the problem change qualitatively in higher dimensions \u211d^d for d \u2265 3?"
     ]
   },
   "crossReferences": [
     {
-      "id": "erdos-89",
       "relationship": "foundation",
-      "description": "Erdős #89 (distinct distances) provides the current best lower bound via Guth-Katz: Δ(A) ≥ cn/log n implies diam ≥ cn/log n for restricted distance sets."
+      "description": "Erd\u0151s #89 (distinct distances) provides the current best lower bound via Guth-Katz: \u0394(A) \u2265 cn/log n implies diam \u2265 cn/log n for restricted distance sets.",
+      "targetId": "erdos-89"
     },
     {
-      "id": "erdos-104",
       "relationship": "related",
-      "description": "Erdős #104 (unit circles through points) shares the discrete geometry setting and incidence-counting techniques."
+      "description": "Erd\u0151s #104 (unit circles through points) shares the discrete geometry setting and incidence-counting techniques.",
+      "targetId": "erdos-104"
     },
     {
-      "id": "erdos-1066",
       "relationship": "related",
-      "description": "Erdős #1066 (independence number of unit distance graphs) studies graph-theoretic properties of the same unit distance structure used here."
+      "description": "Erd\u0151s #1066 (independence number of unit distance graphs) studies graph-theoretic properties of the same unit distance structure used here.",
+      "targetId": "erdos-1066"
     },
     {
-      "id": "erdos-1007",
       "relationship": "related",
-      "description": "Erdős #1007 (graph dimension and unit distance embedding) connects to the geometric embedding questions underlying restricted distance sets."
+      "description": "Erd\u0151s #1007 (graph dimension and unit distance embedding) connects to the geometric embedding questions underlying restricted distance sets.",
+      "targetId": "erdos-1007"
     }
   ],
   "relatedProofs": [

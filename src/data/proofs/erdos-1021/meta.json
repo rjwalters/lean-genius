@@ -1,10 +1,10 @@
 {
   "id": "erdos-1021",
-  "title": "Erdős Problem #1021: Extremal Numbers for Bipartite Pair Graphs",
+  "title": "Erd\u0151s Problem #1021: Extremal Numbers for Bipartite Pair Graphs",
   "slug": "erdos-1021",
-  "description": "For k ≥ 3, does there exist c_k > 0 such that ex(n, G_k) ≪ n^(3/2 - c_k)? Here G_k is the bipartite graph with k primary vertices and C(k,2) pair vertices. Even ex(n, G_k) = o(n^(3/2)) is unknown.",
+  "description": "For k \u2265 3, does there exist c_k > 0 such that ex(n, G_k) \u226a n^(3/2 - c_k)? Here G_k is the bipartite graph with k primary vertices and C(k,2) pair vertices. Even ex(n, G_k) = o(n^(3/2)) is unknown.",
   "meta": {
-    "author": "Erdős-Simonovits",
+    "author": "Erd\u0151s-Simonovits",
     "sourceUrl": "https://erdosproblems.com/1021",
     "date": "1971",
     "status": "formalized",
@@ -30,15 +30,15 @@
     "assumptions": "7 axiom(s) and 5 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Bipartite Extremal Numbers and the Zarankiewicz Problem**\n\nThe extremal number $\\text{ex}(n, H)$—the maximum edges in an $n$-vertex $H$-free graph—is central to Turán-type combinatorics. For bipartite $H$, the Kővári-Sós-Turán theorem (1954) gives the baseline: $\\text{ex}(n, K_{s,t}) = O(n^{2-1/s})$, yielding $O(n^{3/2})$ when $s = 2$.\n\nErdős and Simonovits introduced the **bipartite pair graph** $G_k$: $k$ primary vertices $\\{y_1, \\ldots, y_k\\}$ and $\\binom{k}{2}$ pair vertices, each connected to exactly one pair of primaries. This graph captures the incidence structure of pairs, making it a natural test case for whether the KST bound can be improved.\n\nThe $k = 3$ case is solved: $G_3 \\cong C_6$ (the 6-cycle), and Bondy-Simonovits (1974) proved $\\text{ex}(n, C_{2k}) = O(n^{1+1/k})$, giving $\\text{ex}(n, C_6) = O(n^{7/6})$ with $c_3 = 1/3$. For $k \\ge 4$, no improvement over the KST bound is known.\n\nErdős and Simonovits proved (unpublished) that if the conjecture holds, then $c_k \\to 0$ as $k \\to \\infty$, showing the $n^{3/2}$ barrier becomes tight for large $k$. The problem connects to the broader program of understanding which bipartite graphs have extremal numbers below the KST threshold—a question related to dependent random choice (Fox-Sudakov 2011) and algebraic constructions.",
-    "problemStatement": "**Problem Statement**\n\nIs it true that for every k ≥ 3, there exists a constant c_k > 0 such that\n\nex(n, G_k) ≪ n^(3/2 - c_k)?\n\n**Status**: OPEN\n\n**Weak Version**: Even ex(n, G_k) = o(n^(3/2)) is unknown for general k.\n\n**Note**: The trivial bound from Kővári-Sós-Turán is ex(n, G_k) ≪ n^(3/2).",
-    "text": "For k ≥ 3, does there exist c_k > 0 such that ex(n, G_k) ≪ n^(3/2 - c_k)? Here G_k is the bipartite graph with k primary vertices and C(k,2) pair vertices. Even ex(n, G_k) = o(n^(3/2)) is unknown.",
-    "proofStrategy": "**What Would Be Needed**\n\n1. **Beating the Trivial Bound**: The Kővári-Sós-Turán theorem gives n^(3/2). Any improvement requires new techniques.\n\n2. **Structure of G_k**: The specific pair-connectivity structure of G_k should be exploitable.\n\n3. **Dependent Random Choice**: Modern extremal techniques might help.\n\n4. **Connection to H_k**: G_k is H_k (Problem 926) minus one vertex - this relationship may be useful.\n\n**Known Approach (k=3)**: For C_6, algebraic and probabilistic methods give n^(7/6).",
+    "historicalContext": "**Bipartite Extremal Numbers and the Zarankiewicz Problem**\n\nThe extremal number $\\text{ex}(n, H)$\u2014the maximum edges in an $n$-vertex $H$-free graph\u2014is central to Tur\u00e1n-type combinatorics. For bipartite $H$, the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem (1954) gives the baseline: $\\text{ex}(n, K_{s,t}) = O(n^{2-1/s})$, yielding $O(n^{3/2})$ when $s = 2$.\n\nErd\u0151s and Simonovits introduced the **bipartite pair graph** $G_k$: $k$ primary vertices $\\{y_1, \\ldots, y_k\\}$ and $\\binom{k}{2}$ pair vertices, each connected to exactly one pair of primaries. This graph captures the incidence structure of pairs, making it a natural test case for whether the KST bound can be improved.\n\nThe $k = 3$ case is solved: $G_3 \\cong C_6$ (the 6-cycle), and Bondy-Simonovits (1974) proved $\\text{ex}(n, C_{2k}) = O(n^{1+1/k})$, giving $\\text{ex}(n, C_6) = O(n^{7/6})$ with $c_3 = 1/3$. For $k \\ge 4$, no improvement over the KST bound is known.\n\nErd\u0151s and Simonovits proved (unpublished) that if the conjecture holds, then $c_k \\to 0$ as $k \\to \\infty$, showing the $n^{3/2}$ barrier becomes tight for large $k$. The problem connects to the broader program of understanding which bipartite graphs have extremal numbers below the KST threshold\u2014a question related to dependent random choice (Fox-Sudakov 2011) and algebraic constructions.",
+    "problemStatement": "**Problem Statement**\n\nIs it true that for every k \u2265 3, there exists a constant c_k > 0 such that\n\nex(n, G_k) \u226a n^(3/2 - c_k)?\n\n**Status**: OPEN\n\n**Weak Version**: Even ex(n, G_k) = o(n^(3/2)) is unknown for general k.\n\n**Note**: The trivial bound from K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n is ex(n, G_k) \u226a n^(3/2).",
+    "text": "For k \u2265 3, does there exist c_k > 0 such that ex(n, G_k) \u226a n^(3/2 - c_k)? Here G_k is the bipartite graph with k primary vertices and C(k,2) pair vertices. Even ex(n, G_k) = o(n^(3/2)) is unknown.",
+    "proofStrategy": "**What Would Be Needed**\n\n1. **Beating the Trivial Bound**: The K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem gives n^(3/2). Any improvement requires new techniques.\n\n2. **Structure of G_k**: The specific pair-connectivity structure of G_k should be exploitable.\n\n3. **Dependent Random Choice**: Modern extremal techniques might help.\n\n4. **Connection to H_k**: G_k is H_k (Problem 926) minus one vertex - this relationship may be useful.\n\n**Known Approach (k=3)**: For C_6, algebraic and probabilistic methods give n^(7/6).",
     "keyInsights": [
-      "**Bipartite pair structure**: $G_k$ has $k + \\binom{k}{2}$ vertices encoding all pairs of $k$ primary vertices, making it a natural 'incidence graph' that tests whether specific bipartite structure can improve Turán bounds",
-      "**KST barrier at $n^{3/2}$**: The Kővári-Sós-Turán theorem gives $\\text{ex}(n, G_k) = O(n^{3/2})$ via $G_k \\supseteq K_{2, \\binom{k}{2}}$; the conjecture asks for a power savings $n^{3/2 - c_k}$ beyond this baseline",
-      "**Solved case $k = 3$**: $G_3 \\cong C_6$ and the Bondy-Simonovits even-cycle theorem gives $\\text{ex}(n, C_6) = O(n^{7/6}) = O(n^{3/2 - 1/3})$, so $c_3 = 1/3$—the only case where the conjecture is verified",
-      "**Degrading exponent**: Erdős-Simonovits showed $c_k \\to 0$ as $k \\to \\infty$, meaning the improvement over $n^{3/2}$ becomes vanishingly small for large $k$—the KST bound is asymptotically tight in the family $\\{G_k\\}$",
+      "**Bipartite pair structure**: $G_k$ has $k + \\binom{k}{2}$ vertices encoding all pairs of $k$ primary vertices, making it a natural 'incidence graph' that tests whether specific bipartite structure can improve Tur\u00e1n bounds",
+      "**KST barrier at $n^{3/2}$**: The K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem gives $\\text{ex}(n, G_k) = O(n^{3/2})$ via $G_k \\supseteq K_{2, \\binom{k}{2}}$; the conjecture asks for a power savings $n^{3/2 - c_k}$ beyond this baseline",
+      "**Solved case $k = 3$**: $G_3 \\cong C_6$ and the Bondy-Simonovits even-cycle theorem gives $\\text{ex}(n, C_6) = O(n^{7/6}) = O(n^{3/2 - 1/3})$, so $c_3 = 1/3$\u2014the only case where the conjecture is verified",
+      "**Degrading exponent**: Erd\u0151s-Simonovits showed $c_k \\to 0$ as $k \\to \\infty$, meaning the improvement over $n^{3/2}$ becomes vanishingly small for large $k$\u2014the KST bound is asymptotically tight in the family $\\{G_k\\}$",
       "**Even $o(n^{3/2})$ is open**: The weak conjecture $\\text{ex}(n, G_k) = o(n^{3/2})$ is unknown for $k \\ge 4$, highlighting how little is known about beating the KST threshold for specific bipartite graphs"
     ],
     "prerequisites": [
@@ -92,7 +92,7 @@
     {
       "id": "known-results",
       "title": "Known Results and Weak Conjecture",
-      "summary": "Erdős-Simonovits: $c_k \\to 0$ as $k \\to \\infty$. Weak conjecture: even $\\text{ex}(n, G_k) = o(n^{3/2})$ is unknown for $k \\ge 4$.",
+      "summary": "Erd\u0151s-Simonovits: $c_k \\to 0$ as $k \\to \\infty$. Weak conjecture: even $\\text{ex}(n, G_k) = o(n^{3/2})$ is unknown for $k \\ge 4$.",
       "startLine": 139,
       "endLine": 169
     },
@@ -119,10 +119,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1021 asks whether extremal numbers for the bipartite pair graphs G_k satisfy ex(n, G_k) ≪ n^(3/2 - c_k) for some c_k > 0. Even the weaker statement ex(n, G_k) = o(n^(3/2)) is unknown. The k = 3 case (C_6) is solved with exponent 7/6.",
-    "implications": "1. **Extremal Graph Theory**: Fundamental question about Turán-type bounds\n\n**2. Bipartite Graphs**: Specific structure of G_k challenges current techniques\n\n3. **Connections**: Related to Problem 572 (C_6) and Problem 926 (H_k)\n\n4. **Limit Behavior**: c_k → 0 shows bounds degrade for larger k.",
+    "summary": "Erd\u0151s Problem #1021 asks whether extremal numbers for the bipartite pair graphs G_k satisfy ex(n, G_k) \u226a n^(3/2 - c_k) for some c_k > 0. Even the weaker statement ex(n, G_k) = o(n^(3/2)) is unknown. The k = 3 case (C_6) is solved with exponent 7/6.",
+    "implications": "1. **Extremal Graph Theory**: Fundamental question about Tur\u00e1n-type bounds\n\n**2. Bipartite Graphs**: Specific structure of G_k challenges current techniques\n\n3. **Connections**: Related to Problem 572 (C_6) and Problem 926 (H_k)\n\n4. **Limit Behavior**: c_k \u2192 0 shows bounds degrade for larger k.",
     "openQuestions": [
-      "Does ex(n, G_k) = o(n^(3/2)) hold for any k ≥ 4?",
+      "Does ex(n, G_k) = o(n^(3/2)) hold for any k \u2265 4?",
       "What is the optimal c_k for small values of k?",
       "Can dependent random choice improve bounds?",
       "How does the H_k connection help?",
@@ -131,48 +131,54 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-926",
-      "relation": "direct-generalization",
-      "note": "Problem 926 asks for ex(n, H_k) ≪ n^(3/2) where H_k = G_k + x (one extra central vertex). Since G_k ⊆ H_k, the H_k bound implies the G_k bound; problem 1021 is the harder question of beating the n^(3/2) threshold."
+      "note": "Problem 926 asks for ex(n, H_k) \u226a n^(3/2) where H_k = G_k + x (one extra central vertex). Since G_k \u2286 H_k, the H_k bound implies the G_k bound; problem 1021 is the harder question of beating the n^(3/2) threshold.",
+      "targetId": "erdos-926",
+      "description": "Related entry",
+      "relationship": "direct-generalization"
     },
     {
-      "target": "erdos-572",
-      "relation": "solved-base-case",
-      "note": "Problem 572 asks for ex(n, C_{2k}) ≫ n^{1+1/k}. The k=3 case gives the lower bound matching the C_6 upper bound n^{7/6}, resolving the k=3 instance of problem 1021 (since G_3 ≅ C_6)."
+      "note": "Problem 572 asks for ex(n, C_{2k}) \u226b n^{1+1/k}. The k=3 case gives the lower bound matching the C_6 upper bound n^{7/6}, resolving the k=3 instance of problem 1021 (since G_3 \u2245 C_6).",
+      "targetId": "erdos-572",
+      "description": "Related entry",
+      "relationship": "solved-base-case"
     },
     {
-      "target": "erdos-113",
-      "relation": "related-question",
-      "note": "Problem 113 concerns the Erdős-Simonovits conjecture that ex(n,G) ≪ n^{3/2} iff G is 2-degenerate (disproved by Janzer 2023). G_k is 2-degenerate for all k, making this directly relevant to understanding when KST-type bounds hold."
+      "note": "Problem 113 concerns the Erd\u0151s-Simonovits conjecture that ex(n,G) \u226a n^{3/2} iff G is 2-degenerate (disproved by Janzer 2023). G_k is 2-degenerate for all k, making this directly relevant to understanding when KST-type bounds hold.",
+      "targetId": "erdos-113",
+      "description": "Related entry",
+      "relationship": "related-question"
     },
     {
-      "target": "erdos-1080",
-      "relation": "related-problem",
-      "note": "Problem 1080 concerns C_6 in sparse bipartite graphs with parts of size n^{2/3}. The disproof by Dellamonica et al. uses constructions related to algebraic/projective-plane methods that also bear on ex(n, C_6) = ex(n, G_3)."
+      "note": "Problem 1080 concerns C_6 in sparse bipartite graphs with parts of size n^{2/3}. The disproof by Dellamonica et al. uses constructions related to algebraic/projective-plane methods that also bear on ex(n, C_6) = ex(n, G_3).",
+      "targetId": "erdos-1080",
+      "description": "Related entry",
+      "relationship": "related-problem"
     },
     {
-      "target": "erdos-1008",
-      "relation": "related-technique",
-      "note": "Problem 1008 (C_4-free subgraphs) uses Zarankiewicz-type arguments central to the KST theorem. The 2/3 exponent there mirrors the 3/2 barrier for bipartite graphs with K_{2,t} as a subgraph."
+      "note": "Problem 1008 (C_4-free subgraphs) uses Zarankiewicz-type arguments central to the KST theorem. The 2/3 exponent there mirrors the 3/2 barrier for bipartite graphs with K_{2,t} as a subgraph.",
+      "targetId": "erdos-1008",
+      "description": "Related entry",
+      "relationship": "related-technique"
     },
     {
-      "target": "erdos-1011",
-      "relation": "related-question",
-      "note": "Problem 1011 on triangles in high-chromatic-number graphs uses Turán-type extremal methods. The interplay between chromatic structure and edge density is analogous to how G_k's bipartite structure should force sub-KST bounds."
+      "note": "Problem 1011 on triangles in high-chromatic-number graphs uses Tur\u00e1n-type extremal methods. The interplay between chromatic structure and edge density is analogous to how G_k's bipartite structure should force sub-KST bounds.",
+      "targetId": "erdos-1011",
+      "description": "Related entry",
+      "relationship": "related-question"
     }
   ],
   "relatedProofs": [
     {
       "slug": "erdos-926",
-      "relationship": "The H_k graph is G_k plus one central vertex; ex(n, G_k) ≤ ex(n, H_k), so bounds for H_k apply to G_k. Problem 926 conjectures ex(n, H_k) ≪ n^{3/2}, the same threshold problem 1021 seeks to beat."
+      "relationship": "The H_k graph is G_k plus one central vertex; ex(n, G_k) \u2264 ex(n, H_k), so bounds for H_k apply to G_k. Problem 926 conjectures ex(n, H_k) \u226a n^{3/2}, the same threshold problem 1021 seeks to beat."
     },
     {
       "slug": "erdos-572",
-      "relationship": "The even-cycle extremal lower bounds ex(n, C_{2k}) ≫ n^{1+1/k} (proved for k=3,5 by Benson 1966) tightly bracket the C_6 = G_3 case of problem 1021 from below."
+      "relationship": "The even-cycle extremal lower bounds ex(n, C_{2k}) \u226b n^{1+1/k} (proved for k=3,5 by Benson 1966) tightly bracket the C_6 = G_3 case of problem 1021 from below."
     },
     {
       "slug": "erdos-113",
-      "relationship": "Erdős-Simonovits's bipartite degeneracy conjecture (that ex(n,G) ≪ n^{3/2} iff G is 2-degenerate) is the broader context for why G_k (2-degenerate) should satisfy the sub-KST bound."
+      "relationship": "Erd\u0151s-Simonovits's bipartite degeneracy conjecture (that ex(n,G) \u226a n^{3/2} iff G is 2-degenerate) is the broader context for why G_k (2-degenerate) should satisfy the sub-KST bound."
     },
     {
       "slug": "erdos-1080",
@@ -182,28 +188,28 @@
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "M. Simonovits"
       ],
       "title": "Compactness results in extremal graph theory",
       "venue": "Combinatorica",
       "year": 1982,
       "volume": "2",
-      "pages": "275–288",
-      "note": "Introduces the bipartite pair graphs G_k and H_k and proves c_k → 0 for any positive sequence c_k satisfying the conjecture."
+      "pages": "275\u2013288",
+      "note": "Introduces the bipartite pair graphs G_k and H_k and proves c_k \u2192 0 for any positive sequence c_k satisfying the conjecture."
     },
     {
       "authors": [
-        "T. Kővári",
-        "V. T. Sós",
-        "P. Turán"
+        "T. K\u0151v\u00e1ri",
+        "V. T. S\u00f3s",
+        "P. Tur\u00e1n"
       ],
       "title": "On a problem of K. Zarankiewicz",
       "venue": "Colloquium Mathematicum",
       "year": 1954,
       "volume": "3",
-      "pages": "50–57",
-      "note": "Proves ex(n, K_{s,t}) = O(n^{2-1/s}); the s=2 case gives the n^{3/2} upper bound for G_k via G_k ⊇ K_{2, C(k,2)}."
+      "pages": "50\u201357",
+      "note": "Proves ex(n, K_{s,t}) = O(n^{2-1/s}); the s=2 case gives the n^{3/2} upper bound for G_k via G_k \u2287 K_{2, C(k,2)}."
     },
     {
       "authors": [
@@ -214,7 +220,7 @@
       "venue": "Journal of Combinatorial Theory, Series B",
       "year": 1974,
       "volume": "16",
-      "pages": "97–105",
+      "pages": "97\u2013105",
       "note": "Proves ex(n, C_{2k}) = O(n^{1+1/k}); the k=3 case gives ex(n, C_6) = O(n^{7/6}), establishing c_3 = 1/3 and fully resolving the k=3 instance of problem 1021."
     },
     {
@@ -226,18 +232,18 @@
       "venue": "Random Structures & Algorithms",
       "year": 2011,
       "volume": "38",
-      "pages": "68–99",
+      "pages": "68\u201399",
       "note": "Develops the dependent random choice method, the primary modern technique for proving sub-KST extremal bounds for bipartite graphs; directly relevant to potential progress on problem 1021."
     },
     {
       "authors": [
-        "Z. Füredi"
+        "Z. F\u00fcredi"
       ],
-      "title": "New asymptotics for bipartite Turán numbers",
+      "title": "New asymptotics for bipartite Tur\u00e1n numbers",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 1996,
       "volume": "75",
-      "pages": "141–144",
+      "pages": "141\u2013144",
       "note": "Establishes tight asymptotics ex(n, C_6) ~ (1/2) n^{4/3} using polarity graphs of projective planes; gives the exact constant for the k=3 case."
     }
   ],

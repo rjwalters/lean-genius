@@ -1,10 +1,10 @@
 {
   "id": "erdos-145",
-  "title": "Erdős Problem #145: Moments of Squarefree Gaps",
+  "title": "Erd\u0151s Problem #145: Moments of Squarefree Gaps",
   "slug": "erdos-145",
-  "description": "Let s₁ < s₂ < ... be the sequence of squarefree numbers. Does the limit of (1/x) ∑_{sₙ≤x} (s_{n+1} - sₙ)^α exist for all α ≥ 0?",
+  "description": "Let s\u2081 < s\u2082 < ... be the sequence of squarefree numbers. Does the limit of (1/x) \u2211_{s\u2099\u2264x} (s_{n+1} - s\u2099)^\u03b1 exist for all \u03b1 \u2265 0?",
   "meta": {
-    "author": "Erdős (1951), Hooley (1973), Chan (2023)",
+    "author": "Erd\u0151s (1951), Hooley (1973), Chan (2023)",
     "sourceUrl": "https://erdosproblems.com/145",
     "date": "1951-2023",
     "status": "axiomatized",
@@ -42,7 +42,7 @@
     ],
     "originalContributions": [
       "Adapted from Google DeepMind formal-conjectures project",
-      "Added historical progression from Erdős to Chan",
+      "Added historical progression from Erd\u0151s to Chan",
       "Formalized connection to ABC conjecture via Granville's result"
     ],
     "axiomCount": 6,
@@ -50,16 +50,16 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem concerns the distribution of gaps between consecutive squarefree numbers. A number is squarefree if it is not divisible by any perfect square greater than 1. The density of squarefrees is 6/π² ≈ 60.8%, but the finer structure of gaps is more subtle.\n\nThe question asks whether the αth moment of these gaps, normalized by x, has a limit as x → ∞. The progression of results shows the power of increasingly sophisticated analytic number theory techniques:\n\n- **Erdős (1951)**: Proved for α ≤ 2 using elementary sieve methods\n- **Hooley (1973)**: Extended to α ≤ 3 via exponential sums\n- **Greaves-Harman-Huxley (1997)**: Reached α ≤ 11/3 ≈ 3.67 using sieve methods and exponential sums\n- **Chan (2023)**: Current record of α ≤ 3.75\n- **Granville (1998)**: Complete resolution (all α ≥ 0) conditional on the ABC conjecture",
+    "historicalContext": "This problem concerns the distribution of gaps between consecutive squarefree numbers. A number is squarefree if it is not divisible by any perfect square greater than 1. The density of squarefrees is 6/\u03c0\u00b2 \u2248 60.8%, but the finer structure of gaps is more subtle.\n\nThe question asks whether the \u03b1th moment of these gaps, normalized by x, has a limit as x \u2192 \u221e. The progression of results shows the power of increasingly sophisticated analytic number theory techniques:\n\n- **Erd\u0151s (1951)**: Proved for \u03b1 \u2264 2 using elementary sieve methods\n- **Hooley (1973)**: Extended to \u03b1 \u2264 3 via exponential sums\n- **Greaves-Harman-Huxley (1997)**: Reached \u03b1 \u2264 11/3 \u2248 3.67 using sieve methods and exponential sums\n- **Chan (2023)**: Current record of \u03b1 \u2264 3.75\n- **Granville (1998)**: Complete resolution (all \u03b1 \u2265 0) conditional on the ABC conjecture",
     "problemStatement": "Let $s_1 < s_2 < \\cdots$ be the sequence of squarefree numbers. Is it true that, for any $\\alpha \\geq 0$, the limit\n$$\\lim_{x \\to \\infty} \\frac{1}{x} \\sum_{s_n \\leq x} (s_{n+1} - s_n)^\\alpha$$\nexists?\n\n**Partially Solved**: Yes for $\\alpha \\leq 3.75$ (Chan 2023), and yes for all $\\alpha \\geq 0$ assuming the ABC conjecture (Granville 1998).\n\n**Still Open**: The unconditional case for $\\alpha > 3.75$.",
-    "text": "Let s₁ < s₂ < ... be the sequence of squarefree numbers. Does the limit of (1/x) ∑_{sₙ≤x} (s_{n+1} - sₙ)^α exist for all α ≥ 0?",
-    "proofStrategy": "We formalize the definitions and axiomatize the known results:\n\n1. **squarefreeSeq**: The nth squarefree number using Nat.nth\n2. **momentSum**: The normalized moment sum (1/x) ∑_{sₙ≤x} (s_{n+1} - sₙ)^α\n3. **Historical theorems**: Axioms for Erdős, Hooley, GHH, and Chan's results\n4. **Conditional result**: Granville's theorem assuming ABC\n\nThe proofs are axiomatized because they require:\n- Sieve methods and exponential sum bounds\n- Careful estimates on squarefree distribution\n- Advanced analytic number theory not yet in Mathlib",
+    "text": "Let s\u2081 < s\u2082 < ... be the sequence of squarefree numbers. Does the limit of (1/x) \u2211_{s\u2099\u2264x} (s_{n+1} - s\u2099)^\u03b1 exist for all \u03b1 \u2265 0?",
+    "proofStrategy": "We formalize the definitions and axiomatize the known results:\n\n1. **squarefreeSeq**: The nth squarefree number using Nat.nth\n2. **momentSum**: The normalized moment sum (1/x) \u2211_{s\u2099\u2264x} (s_{n+1} - s\u2099)^\u03b1\n3. **Historical theorems**: Axioms for Erd\u0151s, Hooley, GHH, and Chan's results\n4. **Conditional result**: Granville's theorem assuming ABC\n\nThe proofs are axiomatized because they require:\n- Sieve methods and exponential sum bounds\n- Careful estimates on squarefree distribution\n- Advanced analytic number theory not yet in Mathlib",
     "keyInsights": [
-      "**Squarefree density**: About 60.8% of integers are squarefree, giving an average gap of π²/6 ≈ 1.64",
-      "**Moment difficulty increases with α**: Higher moments are harder because they're more sensitive to rare large gaps",
+      "**Squarefree density**: About 60.8% of integers are squarefree, giving an average gap of \u03c0\u00b2/6 \u2248 1.64",
+      "**Moment difficulty increases with \u03b1**: Higher moments are harder because they're more sensitive to rare large gaps",
       "**ABC connection**: The ABC conjecture implies strong bounds on consecutive squarefree gaps, resolving the problem",
-      "**Sieve barrier**: Progress on α has slowed - each improvement requires increasingly sophisticated techniques",
-      "**Gap distribution**: The maximal gap between consecutive squarefree numbers up to $N$ is $O(N^{1/5})$ (Filaseta-Trifonov), far smaller than the trivial $O(N^{1/2})$ — the formalization captures how this gap control enables moment bounds"
+      "**Sieve barrier**: Progress on \u03b1 has slowed - each improvement requires increasingly sophisticated techniques",
+      "**Gap distribution**: The maximal gap between consecutive squarefree numbers up to $N$ is $O(N^{1/5})$ (Filaseta-Trifonov), far smaller than the trivial $O(N^{1/2})$ \u2014 the formalization captures how this gap control enables moment bounds"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -94,7 +94,7 @@
       "title": "Historical Results",
       "startLine": 66,
       "endLine": 109,
-      "summary": "Axioms for Erdős, Hooley, GHH, Chan, and Granville"
+      "summary": "Axioms for Erd\u0151s, Hooley, GHH, Chan, and Granville"
     },
     {
       "id": "summary",
@@ -112,10 +112,10 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #145 on the moments of gaps between consecutive squarefree numbers. The problem asks whether the limit of the normalized αth moment exists for all α ≥ 0. The current unconditional record is α ≤ 3.75 (Chan 2023), and the full result holds assuming the ABC conjecture (Granville 1998).",
+    "summary": "We formalize Erd\u0151s Problem #145 on the moments of gaps between consecutive squarefree numbers. The problem asks whether the limit of the normalized \u03b1th moment exists for all \u03b1 \u2265 0. The current unconditional record is \u03b1 \u2264 3.75 (Chan 2023), and the full result holds assuming the ABC conjecture (Granville 1998).",
     "implications": "This problem illustrates the interplay between elementary number theory, analytic methods, and deep conjectures like ABC. Progress on squarefree gaps often translates to other arithmetic sequences.",
     "openQuestions": [
-      "Can the unconditional bound α ≤ 3.75 be improved?",
+      "Can the unconditional bound \u03b1 \u2264 3.75 be improved?",
       "What is the growth rate of the largest gap between consecutive squarefrees up to x?",
       "Can techniques from squarefree gaps help with other multiplicative sequences?"
     ]
@@ -134,5 +134,39 @@
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-208",
+      "relationship": "related",
+      "description": "Share gaps, number-theoretic, and squarefree themes"
+    },
+    {
+      "targetId": "erdos-489",
+      "relationship": "related",
+      "description": "Share gaps, number-theoretic, and squarefree themes"
+    },
+    {
+      "targetId": "erdos-823",
+      "relationship": "related",
+      "description": "Share limits and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Share gaps and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-220",
+      "relationship": "related",
+      "description": "Share gaps and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-208",
+    "erdos-489",
+    "erdos-823",
+    "erdos-1101",
+    "erdos-220"
+  ]
 }

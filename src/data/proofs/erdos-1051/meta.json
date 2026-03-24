@@ -1,10 +1,10 @@
 {
   "id": "erdos-1051",
-  "title": "Erdős Problem #1051: Irrationality of Reciprocal Product Series",
+  "title": "Erd\u0151s Problem #1051: Irrationality of Reciprocal Product Series",
   "slug": "erdos-1051",
-  "description": "If a₁ < a₂ < ⋯ are integers with lim inf aₙ^{1/2ⁿ} > 1, is Σ 1/(aₙ·aₙ₊₁) irrational? Known for rapid growth aₙ₊₁ ≥ C·aₙ². OPEN in general.",
+  "description": "If a\u2081 < a\u2082 < \u22ef are integers with lim inf a\u2099^{1/2\u207f} > 1, is \u03a3 1/(a\u2099\u00b7a\u2099\u208a\u2081) irrational? Known for rapid growth a\u2099\u208a\u2081 \u2265 C\u00b7a\u2099\u00b2. OPEN in general.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1051",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1051Problem.lean",
@@ -25,13 +25,13 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p.64), as part of a broader investigation into when series with integer terms produce irrational sums. The growth condition $\\liminf a_n^{1/2^n} > 1$ captures sequences growing at least doubly exponentially—a natural threshold since slower-growing sequences can yield rational sums (e.g., arithmetic progressions give telescoping sums). Erdős made partial progress in a 1988 paper, proving irrationality for sequences satisfying the stronger condition $a_{n+1} \\geq C \\cdot a_n^2$. The proof technique uses rapid convergence of partial sums to derive contradictions from the assumption of rationality, building on methods going back to Liouville's 1844 construction of transcendental numbers. The gap between this quadratic recurrence condition and the general $\\liminf$ condition remains the central open challenge. The problem connects to the Erdős–Graham program of understanding irrationality of series involving integer sequences, and to classical work on Sylvester–Fibonacci expansions and Egyptian fraction representations by Kellogg (1921) and Curtiss (1922).",
+    "historicalContext": "Erd\u0151s and Graham posed this problem in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p.64), as part of a broader investigation into when series with integer terms produce irrational sums. The growth condition $\\liminf a_n^{1/2^n} > 1$ captures sequences growing at least doubly exponentially\u2014a natural threshold since slower-growing sequences can yield rational sums (e.g., arithmetic progressions give telescoping sums). Erd\u0151s made partial progress in a 1988 paper, proving irrationality for sequences satisfying the stronger condition $a_{n+1} \\geq C \\cdot a_n^2$. The proof technique uses rapid convergence of partial sums to derive contradictions from the assumption of rationality, building on methods going back to Liouville's 1844 construction of transcendental numbers. The gap between this quadratic recurrence condition and the general $\\liminf$ condition remains the central open challenge. The problem connects to the Erd\u0151s\u2013Graham program of understanding irrationality of series involving integer sequences, and to classical work on Sylvester\u2013Fibonacci expansions and Egyptian fraction representations by Kellogg (1921) and Curtiss (1922).",
     "problemStatement": "If $a_1 < a_2 < \\cdots$ is a strictly increasing integer sequence with $\\liminf a_n^{1/2^n} > 1$, is $\\sum_{n=1}^{\\infty} \\frac{1}{a_n \\cdot a_{n+1}}$ irrational?",
-    "text": "If a₁ < a₂ < ⋯ are integers with lim inf aₙ^{1/2ⁿ} > 1, is Σ 1/(aₙ·aₙ₊₁) irrational? Known for rapid growth aₙ₊₁ ≥ C·aₙ². OPEN in general.",
-    "proofStrategy": "The formalization defines the growth condition via Mathlib's `Filter.liminf` and the series via `tsum`. The main conjecture `ErdosProblem1051` is stated as a `Prop` (not an axiom), reflecting its status as an open problem awaiting proof. The solved rapid growth case ($a_{n+1} \\geq C \\cdot a_n^2$), convergence, positivity, and related results are axiomatized. The structure cleanly separates the open conjecture from established partial results, making clear what remains to be proved. The related simple reciprocal series $\\sum 1/a_n$ is also formalized, and a Sylvester–Fibonacci example provides an existential witness confirming non-vacuity.",
+    "text": "If a\u2081 < a\u2082 < \u22ef are integers with lim inf a\u2099^{1/2\u207f} > 1, is \u03a3 1/(a\u2099\u00b7a\u2099\u208a\u2081) irrational? Known for rapid growth a\u2099\u208a\u2081 \u2265 C\u00b7a\u2099\u00b2. OPEN in general.",
+    "proofStrategy": "The formalization defines the growth condition via Mathlib's `Filter.liminf` and the series via `tsum`. The main conjecture `ErdosProblem1051` is stated as a `Prop` (not an axiom), reflecting its status as an open problem awaiting proof. The solved rapid growth case ($a_{n+1} \\geq C \\cdot a_n^2$), convergence, positivity, and related results are axiomatized. The structure cleanly separates the open conjecture from established partial results, making clear what remains to be proved. The related simple reciprocal series $\\sum 1/a_n$ is also formalized, and a Sylvester\u2013Fibonacci example provides an existential witness confirming non-vacuity.",
     "keyInsights": [
-      "The condition $\\liminf a_n^{1/2^n} > 1$ implies doubly exponential growth: $a_n \\geq c^{2^n}$ for some $c > 1$, which is faster than any fixed tower of exponentials—the sequence survives repeated square-rooting",
-      "Erdős (1988) proved irrationality when $a_{n+1} \\geq C \\cdot a_n^2$, using rapid convergence of partial sums to derive contradictions from assumed rationality via denominator growth arguments",
+      "The condition $\\liminf a_n^{1/2^n} > 1$ implies doubly exponential growth: $a_n \\geq c^{2^n}$ for some $c > 1$, which is faster than any fixed tower of exponentials\u2014the sequence survives repeated square-rooting",
+      "Erd\u0151s (1988) proved irrationality when $a_{n+1} \\geq C \\cdot a_n^2$, using rapid convergence of partial sums to derive contradictions from assumed rationality via denominator growth arguments",
       "The gap between the $\\liminf$ condition and quadratic recurrence is subtle: the $\\liminf$ allows occasional slow-growth steps while quadratic recurrence enforces uniform rapid growth at every step",
       "Arithmetic progressions show the threshold is meaningful: $a_n = n$ gives $\\sum 1/(n(n+1)) = 1$ (rational, by telescoping), so some growth condition is necessary for irrationality",
       "The Sylvester sequence $a_{n+1} = a_n(a_n-1)+1$ demonstrates that reciprocal product series can telescope to rational values ($\\sum 1/(a_k(a_k-1)) = 1$), showing the conjecture requires genuinely non-constructive irrationality proofs",
@@ -48,7 +48,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Module docstring citing Erdős–Graham (1980) and Erdős (1988). Imports Mathlib's integer and real basics, irrationality predicate, filter library for liminf, infinite sums (tsum), and general tactics."
+      "summary": "Module docstring citing Erd\u0151s\u2013Graham (1980) and Erd\u0151s (1988). Imports Mathlib's integer and real basics, irrationality predicate, filter library for liminf, infinite sums (tsum), and general tactics."
     },
     {
       "id": "growth-condition",
@@ -76,7 +76,7 @@
       "title": "Rapid Growth Case (Solved)",
       "startLine": 53,
       "endLine": 63,
-      "summary": "Axiomatizes Erdős's 1988 result: irrationality holds when $a_{n+1} \\geq C \\cdot a_n^2$ for some $C > 0$. This is the strongest known partial result toward the full conjecture."
+      "summary": "Axiomatizes Erd\u0151s's 1988 result: irrationality holds when $a_{n+1} \\geq C \\cdot a_n^2$ for some $C > 0$. This is the strongest known partial result toward the full conjecture."
     },
     {
       "id": "convergence",
@@ -90,12 +90,12 @@
       "title": "Related Series and Examples",
       "startLine": 79,
       "endLine": 98,
-      "summary": "Defines simpleReciprocalSeries ($\\sum 1/a_n$) and states the parallel irrationality conjecture. The Sylvester–Fibonacci example provides an existential witness confirming the conjecture is non-vacuous."
+      "summary": "Defines simpleReciprocalSeries ($\\sum 1/a_n$) and states the parallel irrationality conjecture. The Sylvester\u2013Fibonacci example provides an existential witness confirming the conjecture is non-vacuous."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1051, an open problem in the irrationality theory of infinite series. The question asks whether doubly exponential growth of an integer sequence forces $\\sum 1/(a_n \\cdot a_{n+1})$ to be irrational. Erdős's 1988 result for quadratic recurrences ($a_{n+1} \\geq C \\cdot a_n^2$) is the strongest partial result, leaving a gap between uniform rapid growth and the general $\\liminf$ condition. The formalization cleanly separates the open conjecture (as a Prop) from established results (as axioms), providing a precise target for future proof efforts.",
-    "implications": "A positive resolution would establish a clean dichotomy: integer sequences growing doubly exponentially always produce irrational reciprocal product sums, while slower-growing sequences can produce rational sums. This would advance the Erdős–Graham program of classifying which growth rates force irrationality, with potential connections to transcendence theory and the algebraic independence of certain infinite sums.",
+    "summary": "This formalization captures Erd\u0151s Problem #1051, an open problem in the irrationality theory of infinite series. The question asks whether doubly exponential growth of an integer sequence forces $\\sum 1/(a_n \\cdot a_{n+1})$ to be irrational. Erd\u0151s's 1988 result for quadratic recurrences ($a_{n+1} \\geq C \\cdot a_n^2$) is the strongest partial result, leaving a gap between uniform rapid growth and the general $\\liminf$ condition. The formalization cleanly separates the open conjecture (as a Prop) from established results (as axioms), providing a precise target for future proof efforts.",
+    "implications": "A positive resolution would establish a clean dichotomy: integer sequences growing doubly exponentially always produce irrational reciprocal product sums, while slower-growing sequences can produce rational sums. This would advance the Erd\u0151s\u2013Graham program of classifying which growth rates force irrationality, with potential connections to transcendence theory and the algebraic independence of certain infinite sums.",
     "openQuestions": [
       "Is $\\sum 1/(a_n \\cdot a_{n+1})$ irrational under the full $\\liminf a_n^{1/2^n} > 1$ condition, or do counterexamples exist with slower-than-quadratic recurrence?",
       "Is the simpler series $\\sum 1/a_n$ also irrational under the same growth condition?",
@@ -105,44 +105,44 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1049",
       "relationship": "companion",
-      "description": "Erdős Problem #1049 is a neighboring irrationality problem for integer sequences; both problems belong to the Erdős–Graham program of classifying which growth conditions force irrationality of infinite series."
+      "description": "Erd\u0151s Problem #1049 is a neighboring irrationality problem for integer sequences; both problems belong to the Erd\u0151s\u2013Graham program of classifying which growth conditions force irrationality of infinite series.",
+      "targetId": "erdos-1049"
     },
     {
-      "target": "erdos-1053",
       "relationship": "companion",
-      "description": "Erdős Problem #1053 is another problem in the same cluster of irrationality questions for reciprocal sums, sharing the theme of doubly exponential growth and rational vs. irrational series sums."
+      "description": "Erd\u0151s Problem #1053 is another problem in the same cluster of irrationality questions for reciprocal sums, sharing the theme of doubly exponential growth and rational vs. irrational series sums.",
+      "targetId": "erdos-1053"
     },
     {
-      "target": "erdos-1003",
       "relationship": "related",
-      "description": "Erdős Problem #1003 involves series with integer denominators; both problems study when integer-sequence-defined series must be irrational, placing #1051 in the broader context of Erdős irrationality conjectures."
+      "description": "Erd\u0151s Problem #1003 involves series with integer denominators; both problems study when integer-sequence-defined series must be irrational, placing #1051 in the broader context of Erd\u0151s irrationality conjectures.",
+      "targetId": "erdos-1003"
     },
     {
-      "target": "sqrt2-irrational",
       "relationship": "prerequisite",
-      "description": "The irrationality of √2 is a foundational result establishing the Irrational predicate and contradiction-from-rationality proof technique that Erdős's 1988 argument for the rapid-growth case builds upon."
+      "description": "The irrationality of \u221a2 is a foundational result establishing the Irrational predicate and contradiction-from-rationality proof technique that Erd\u0151s's 1988 argument for the rapid-growth case builds upon.",
+      "targetId": "sqrt2-irrational"
     },
     {
-      "target": "e-transcendental",
       "relationship": "related",
-      "description": "The transcendence of e is a key result in transcendence theory; the open question of whether sums in #1051 are transcendental (not merely irrational) under the growth condition connects directly to methods from this area."
+      "description": "The transcendence of e is a key result in transcendence theory; the open question of whether sums in #1051 are transcendental (not merely irrational) under the growth condition connects directly to methods from this area.",
+      "targetId": "e-transcendental"
     },
     {
-      "target": "infinitude-primes",
       "relationship": "related",
-      "description": "The infinitude of primes underpins density arguments for integer sequences and is used in ruling out counterexamples in irrationality proofs where prime factorization constraints on denominators are exploited."
+      "description": "The infinitude of primes underpins density arguments for integer sequences and is used in ruling out counterexamples in irrationality proofs where prime factorization constraints on denominators are exploited.",
+      "targetId": "infinitude-primes"
     }
   ],
   "relatedProofs": [
     {
       "target": "erdos-1049",
-      "note": "Adjacent Erdős irrationality problem; both appear in the Erdős–Graham (1980) monograph in the same section on series irrationality."
+      "note": "Adjacent Erd\u0151s irrationality problem; both appear in the Erd\u0151s\u2013Graham (1980) monograph in the same section on series irrationality."
     },
     {
       "target": "erdos-1054",
-      "note": "Erdős Problem #1054 considers related series with integer denominators under growth conditions, part of the same cluster of problems in Erdős–Graham (1980)."
+      "note": "Erd\u0151s Problem #1054 considers related series with integer denominators under growth conditions, part of the same cluster of problems in Erd\u0151s\u2013Graham (1980)."
     },
     {
       "target": "sqrt2-irrational",
@@ -160,34 +160,34 @@
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "R. L. Graham"
       ],
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
-      "venue": "L'Enseignement Mathématique, Monograph No. 28",
+      "venue": "L'Enseignement Math\u00e9matique, Monograph No. 28",
       "year": 1980,
       "pages": "64",
       "note": "Original source posing Problem #1051; contains the growth condition and the general irrationality question for reciprocal product series."
     },
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "On the irrationality of certain series: problems and results",
       "venue": "Surveys in Combinatorics 1987, London Math. Soc. Lecture Note Ser. 123",
       "year": 1988,
-      "pages": "102–109",
-      "note": "Proves irrationality for the rapid-growth case a_{n+1} ≥ C·a_n^2; the strongest known partial result toward the general conjecture."
+      "pages": "102\u2013109",
+      "note": "Proves irrationality for the rapid-growth case a_{n+1} \u2265 C\u00b7a_n^2; the strongest known partial result toward the general conjecture."
     },
     {
       "authors": [
         "J. Liouville"
       ],
-      "title": "Sur des classes très étendues de quantités dont la valeur n'est ni algébrique, ni même réductible à des irrationnelles algébriques",
-      "venue": "Journal de Mathématiques Pures et Appliquées",
+      "title": "Sur des classes tr\u00e8s \u00e9tendues de quantit\u00e9s dont la valeur n'est ni alg\u00e9brique, ni m\u00eame r\u00e9ductible \u00e0 des irrationnelles alg\u00e9briques",
+      "venue": "Journal de Math\u00e9matiques Pures et Appliqu\u00e9es",
       "year": 1844,
-      "pages": "133–142",
-      "note": "Introduced the Liouville number construction; the proof technique of controlling denominator growth to derive irrationality is a direct ancestor of Erdős's method in the rapid-growth case."
+      "pages": "133\u2013142",
+      "note": "Introduced the Liouville number construction; the proof technique of controlling denominator growth to derive irrationality is a direct ancestor of Erd\u0151s's method in the rapid-growth case."
     },
     {
       "authors": [
@@ -197,22 +197,22 @@
       "venue": "The American Mathematical Monthly",
       "year": 1922,
       "volume": "29",
-      "pages": "380–387",
-      "note": "Studies Sylvester-type Egyptian fraction expansions; the Sylvester–Fibonacci example in the formalization (showing rational telescoping) is related to these constructions."
+      "pages": "380\u2013387",
+      "note": "Studies Sylvester-type Egyptian fraction expansions; the Sylvester\u2013Fibonacci example in the formalization (showing rational telescoping) is related to these constructions."
     },
     {
       "authors": [
-        "R. Apéry"
+        "R. Ap\u00e9ry"
       ],
-      "title": "Irrationalité de ζ(2) et ζ(3)",
-      "venue": "Astérisque",
+      "title": "Irrationalit\u00e9 de \u03b6(2) et \u03b6(3)",
+      "venue": "Ast\u00e9risque",
       "year": 1979,
       "volume": "61",
-      "pages": "11–13",
-      "note": "Apéry's proof that ζ(3) is irrational introduced rapid-convergence denominator arguments for series with integer terms; these ideas directly inform the study of rapid-growth irrationality questions like #1051."
+      "pages": "11\u201313",
+      "note": "Ap\u00e9ry's proof that \u03b6(3) is irrational introduced rapid-convergence denominator arguments for series with integer terms; these ideas directly inform the study of rapid-growth irrationality questions like #1051."
     },
-    "Erdős–Graham (1980), Old and New Problems and Results in Combinatorial Number Theory, p.64",
-    "Erdős (1988), 'On the irrationality of certain series: problems and results', pp. 102–109",
+    "Erd\u0151s\u2013Graham (1980), Old and New Problems and Results in Combinatorial Number Theory, p.64",
+    "Erd\u0151s (1988), 'On the irrationality of certain series: problems and results', pp. 102\u2013109",
     "https://erdosproblems.com/1051"
   ],
   "leanFile": {

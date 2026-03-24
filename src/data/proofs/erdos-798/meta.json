@@ -168,5 +168,39 @@
     "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-193",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "erdos-1086",
+    "erdos-1090",
+    "erdos-1166",
+    "erdos-193"
+  ]
 }

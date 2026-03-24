@@ -1,8 +1,8 @@
 {
   "id": "erdos-482",
-  "title": "Erdős Problem #482: Binary Digits via Recurrence",
+  "title": "Erd\u0151s Problem #482: Binary Digits via Recurrence",
   "slug": "erdos-482",
-  "description": "The recurrence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋ has the property that a_{2n+1} - 2a_{2n-1} gives the n-th binary digit of √2. Stoll (2005-2006) generalized to √m and other algebraic numbers.",
+  "description": "The recurrence a\u2081 = 1, a_{n+1} = \u230a\u221a2(a\u2099 + 1/2)\u230b has the property that a_{2n+1} - 2a_{2n-1} gives the n-th binary digit of \u221a2. Stoll (2005-2006) generalized to \u221am and other algebraic numbers.",
   "meta": {
     "author": "Graham & Pollak (1970); Stoll (2005-2006)",
     "sourceUrl": "https://erdosproblems.com/482",
@@ -27,15 +27,15 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #482 concerns a remarkable connection between integer sequences and binary expansions. Graham and Pollak discovered that for the sequence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋, the differences a_{2n+1} - 2a_{2n-1} yield the binary digits of √2. Erdős asked for similar results for √m and other algebraic numbers. Stoll (2005, 2006) provided wide-ranging generalizations of this phenomenon, connecting integer floor sequences to digit expansions of algebraic irrationals, settling the problem in a broader context than originally posed.",
+    "historicalContext": "Erd\u0151s Problem #482 concerns a remarkable connection between integer sequences and binary expansions. Graham and Pollak discovered that for the sequence a\u2081 = 1, a_{n+1} = \u230a\u221a2(a\u2099 + 1/2)\u230b, the differences a_{2n+1} - 2a_{2n-1} yield the binary digits of \u221a2. Erd\u0151s asked for similar results for \u221am and other algebraic numbers. Stoll (2005, 2006) provided wide-ranging generalizations of this phenomenon, connecting integer floor sequences to digit expansions of algebraic irrationals, settling the problem in a broader context than originally posed.",
     "problemStatement": "Define a sequence by $a_1=1$ and\\[a_{n+1}=\\lfloor\\sqrt{2}(a_n+1/2)\\rfloor\\]for $n\\geq 1$. The difference $a_{2n+1}-2a_{2n-1}$ is the $n$th digit in the binary expansion of $\\sqrt{2}$.\n\nFind similar results for $\\theta=\\sqrt{m}$, and other algebraic numbers.\n\n\n\nThe result for $\\sqrt{2}$ was obtained by Graham and Pollak \\cite{GrPo70}. The problem statement is open-ended, but presumably Erd\\H{o}s and Graham would have been satisfied with the wide-ranging generalisations of Stoll (\\cite{St05} and \\cite{St06}).\n\n\n\n\nReferences\n\n\n[GrPo70] Graham, R. L. and Pollak, H. O., Note on a nonlinear recurrence related to {$\\surd 2$}. Math. Mag. (1970), 143-145.\n\n[St05] Stoll, Th., On families of nonlinear recurrences related to digits. J. Integer Seq. (2005), Article 05.3.2, 8.\n\n[St06] Stoll, Thomas, On a problem of Erd\\H{o}s and Graham concerning digits. Acta Arith. (2006), 89-100.",
-    "text": "The recurrence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋ has the property that a_{2n+1} - 2a_{2n-1} gives the n-th binary digit of √2. Stoll (2005-2006) generalized to √m and other algebraic numbers.",
-    "proofStrategy": "The formalization defines the Graham-Pollak recurrence a_{n+1} = ⌊√2(aₙ + 1/2)⌋ and states the main theorem that odd-indexed differences give binary digits. Properties like growth rate (approximately √2 per step) and non-periodicity (from irrationality of √2) are axiomatized. Stoll's generalizations to quadratic irrationals and higher algebraic numbers via Pisot number theory are captured as axioms.",
+    "text": "The recurrence a\u2081 = 1, a_{n+1} = \u230a\u221a2(a\u2099 + 1/2)\u230b has the property that a_{2n+1} - 2a_{2n-1} gives the n-th binary digit of \u221a2. Stoll (2005-2006) generalized to \u221am and other algebraic numbers.",
+    "proofStrategy": "The formalization defines the Graham-Pollak recurrence a_{n+1} = \u230a\u221a2(a\u2099 + 1/2)\u230b and states the main theorem that odd-indexed differences give binary digits. Properties like growth rate (approximately \u221a2 per step) and non-periodicity (from irrationality of \u221a2) are axiomatized. Stoll's generalizations to quadratic irrationals and higher algebraic numbers via Pisot number theory are captured as axioms.",
     "keyInsights": [
-      "**Floor recurrence encodes digits**: The simple integer recurrence a_{n+1} = ⌊√2(aₙ + 1/2)⌋ hides the binary expansion of √2 in its odd-indexed differences",
-      "**Growth rate √2**: The sequence grows by approximately factor √2 at each step, reflecting the underlying irrational multiplier",
-      "**Non-periodicity**: Since √2 is irrational, its binary expansion is aperiodic, which transfers to the difference sequence",
-      "**Stoll's generalization**: Extended from √2 to all quadratic irrationals √m (square-free m) and certain higher-degree algebraic numbers via Pisot number theory",
+      "**Floor recurrence encodes digits**: The simple integer recurrence a_{n+1} = \u230a\u221a2(a\u2099 + 1/2)\u230b hides the binary expansion of \u221a2 in its odd-indexed differences",
+      "**Growth rate \u221a2**: The sequence grows by approximately factor \u221a2 at each step, reflecting the underlying irrational multiplier",
+      "**Non-periodicity**: Since \u221a2 is irrational, its binary expansion is aperiodic, which transfers to the difference sequence",
+      "**Stoll's generalization**: Extended from \u221a2 to all quadratic irrationals \u221am (square-free m) and certain higher-degree algebraic numbers via Pisot number theory",
       "**OEIS A004539**: The sequence 1, 2, 3, 4, 7, 10, 14, 20, 29, ... appears in the Online Encyclopedia of Integer Sequences"
     ],
     "prerequisites": [
@@ -63,18 +63,18 @@
       "title": "The Main Theorem",
       "startLine": 55,
       "endLine": 65,
-      "summary": "States that a_{2n+1} - 2a_{2n-1} ∈ {0, 1}, i.e., the differences are binary digits."
+      "summary": "States that a_{2n+1} - 2a_{2n-1} \u2208 {0, 1}, i.e., the differences are binary digits."
     },
     {
       "id": "part-3-properties-of-the-recur",
       "title": "Properties of the Recurrence",
       "startLine": 66,
       "endLine": 79,
-      "summary": "Growth rate approximation and bounds on √2."
+      "summary": "Growth rate approximation and bounds on \u221a2."
     },
     {
       "id": "part-4-generalization-to-m",
-      "title": "Generalization to √m",
+      "title": "Generalization to \u221am",
       "startLine": 80,
       "endLine": 103,
       "summary": "Stoll's generalization to square-free m and higher algebraic numbers."
@@ -84,7 +84,7 @@
       "title": "Non-Periodicity",
       "startLine": 104,
       "endLine": 116,
-      "summary": "Non-periodicity of the binary digit sequence from irrationality of √2."
+      "summary": "Non-periodicity of the binary digit sequence from irrationality of \u221a2."
     },
     {
       "id": "part-6-summary",
@@ -95,10 +95,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #482 asked to generalize the Graham-Pollak digit-extraction phenomenon beyond √2. Stoll (2005-2006) achieved this, extending to all quadratic irrationals and certain higher algebraic numbers.",
+    "summary": "Erd\u0151s Problem #482 asked to generalize the Graham-Pollak digit-extraction phenomenon beyond \u221a2. Stoll (2005-2006) achieved this, extending to all quadratic irrationals and certain higher algebraic numbers.",
     "implications": "The connection between simple integer recurrences and digit expansions of irrationals reveals deep structure in the interplay between discrete and continuous mathematics.",
     "openQuestions": [
-      "Can digit extraction be extended to transcendental numbers like π or e?",
+      "Can digit extraction be extended to transcendental numbers like \u03c0 or e?",
       "What is the computational complexity of extracting the n-th digit via this recurrence?",
       "Are there analogous results for non-integer bases?"
     ]
@@ -120,5 +120,15 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1096",
+      "relationship": "related",
+      "description": "Share number-theoretic and algebraic-numbers themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1096"
+  ]
 }

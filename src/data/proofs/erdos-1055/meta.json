@@ -1,8 +1,8 @@
 {
   "id": "erdos-1055",
-  "title": "Erdős Problem #1055: Prime Classification by p+1 Factorization",
+  "title": "Erd\u0151s Problem #1055: Prime Classification by p+1 Factorization",
   "slug": "erdos-1055",
-  "description": "Classify primes by the factorization depth of p+1. Class 1: p+1 is 3-smooth. Class r: all prime factors of p+1 have class ≤ r-1. Are there infinitely many primes in each class? How does p_r^{1/r} grow? Status: OPEN.",
+  "description": "Classify primes by the factorization depth of p+1. Class 1: p+1 is 3-smooth. Class r: all prime factors of p+1 have class \u2264 r-1. Are there infinitely many primes in each class? How does p_r^{1/r} grow? Status: OPEN.",
   "meta": {
     "erdosNumber": 1055,
     "status": "axiomatized",
@@ -60,19 +60,19 @@
       "title": "Main Conjectures (OPEN)",
       "startLine": 275,
       "endLine": 305,
-      "summary": "States the OPEN conjectures as axioms: infinitude of each class, Erdős growth conjecture ($p_r^{1/r} \\to \\infty$), Selfridge bounded conjecture ($p_r^{1/r}$ bounded), and subpolynomial density of each class."
+      "summary": "States the OPEN conjectures as axioms: infinitude of each class, Erd\u0151s growth conjecture ($p_r^{1/r} \\to \\infty$), Selfridge bounded conjecture ($p_r^{1/r}$ bounded), and subpolynomial density of each class."
     }
   ],
   "overview": {
-    "historicalContext": "**The Erdős–Selfridge Prime Classification: Measuring Factorization Depth**\n\nPaul Erdős and John Selfridge developed a recursive classification of primes that measures the **factorization depth** of $p + 1$. A prime $p$ is class 1 if $p + 1$ is $3$-smooth (has only 2 and 3 as prime factors). A prime is class $r$ if the largest class among the prime factors of $p + 1$ is $r - 1$. This creates a hierarchy where higher classes require deeper chains of factorizations.\n\nThe classification connects to smooth number theory: the $3$-smooth numbers $\\{2^a \\cdot 3^b\\}$ are the **regular numbers** studied since Babylonian mathematics, and class 1 primes are those adjacent to regular numbers. The sequence of least primes $p_1 = 2, p_2 = 13, p_3 = 37, p_4 = 73, p_5 = 1021$ (OEIS A005113) reveals a fascinating chain structure.\n\nRemarkably, Erdős and Selfridge made **contradictory conjectures** about the growth of $p_r$: Erdős believed $p_r^{1/r} \\to \\infty$ (superexponential growth), while Selfridge believed $p_r^{1/r}$ is bounded (at most exponential growth). The known data for $r \\le 5$ is too limited to distinguish these possibilities. The problem appears as A18 in Guy's *Unsolved Problems in Number Theory* and connects to the distribution of primes with prescribed factorization properties of $p + 1$.",
-    "problemStatement": "Are there infinitely many primes in each class? If p_r is the least prime in class r, how does p_r^{1/r} behave as r → ∞?",
-    "text": "Classify primes by the factorization depth of p+1. Class 1: p+1 is 3-smooth. Class r: all prime factors of p+1 have class ≤ r-1. Are there infinitely many primes in each class? How does p_r^{1/r} grow? Status: OPEN.",
-    "proofStrategy": "We formalize the recursive prime classification, axiomatize known values of p_r from OEIS A005113, state the infinitude conjecture, and present the competing Erdős (p_r^{1/r} → ∞) and Selfridge (bounded) conjectures about growth.",
+    "historicalContext": "**The Erd\u0151s\u2013Selfridge Prime Classification: Measuring Factorization Depth**\n\nPaul Erd\u0151s and John Selfridge developed a recursive classification of primes that measures the **factorization depth** of $p + 1$. A prime $p$ is class 1 if $p + 1$ is $3$-smooth (has only 2 and 3 as prime factors). A prime is class $r$ if the largest class among the prime factors of $p + 1$ is $r - 1$. This creates a hierarchy where higher classes require deeper chains of factorizations.\n\nThe classification connects to smooth number theory: the $3$-smooth numbers $\\{2^a \\cdot 3^b\\}$ are the **regular numbers** studied since Babylonian mathematics, and class 1 primes are those adjacent to regular numbers. The sequence of least primes $p_1 = 2, p_2 = 13, p_3 = 37, p_4 = 73, p_5 = 1021$ (OEIS A005113) reveals a fascinating chain structure.\n\nRemarkably, Erd\u0151s and Selfridge made **contradictory conjectures** about the growth of $p_r$: Erd\u0151s believed $p_r^{1/r} \\to \\infty$ (superexponential growth), while Selfridge believed $p_r^{1/r}$ is bounded (at most exponential growth). The known data for $r \\le 5$ is too limited to distinguish these possibilities. The problem appears as A18 in Guy's *Unsolved Problems in Number Theory* and connects to the distribution of primes with prescribed factorization properties of $p + 1$.",
+    "problemStatement": "Are there infinitely many primes in each class? If p_r is the least prime in class r, how does p_r^{1/r} behave as r \u2192 \u221e?",
+    "text": "Classify primes by the factorization depth of p+1. Class 1: p+1 is 3-smooth. Class r: all prime factors of p+1 have class \u2264 r-1. Are there infinitely many primes in each class? How does p_r^{1/r} grow? Status: OPEN.",
+    "proofStrategy": "We formalize the recursive prime classification, axiomatize known values of p_r from OEIS A005113, state the infinitude conjecture, and present the competing Erd\u0151s (p_r^{1/r} \u2192 \u221e) and Selfridge (bounded) conjectures about growth.",
     "keyInsights": [
-      "The recursive classification $c(p) = 1 + \\max\\{c(q) : q \\mid p+1\\}$ creates a natural hierarchy measuring how 'deep' the factorization of $p+1$ is—class 1 primes are adjacent to $3$-smooth numbers, and each higher class requires one more level of factorization recursion",
+      "The recursive classification $c(p) = 1 + \\max\\{c(q) : q \\mid p+1\\}$ creates a natural hierarchy measuring how 'deep' the factorization of $p+1$ is\u2014class 1 primes are adjacent to $3$-smooth numbers, and each higher class requires one more level of factorization recursion",
       "The known least primes $p_1 = 2, p_2 = 13, p_3 = 37, p_4 = 73, p_5 = 1021$ form chains: $73 + 1 = 2 \\cdot 37$ (class 3), $1021 + 1 = 2 \\cdot 7 \\cdot 73$ (class 4). The values $p_r^{1/r} \\in \\{2, 3.61, 3.33, 2.92, 4.01\\}$ are genuinely ambiguous about the growth rate",
-      "Erdős and Selfridge made **mutually exclusive** conjectures: Erdős said $p_r^{1/r} \\to \\infty$ (superexponential), Selfridge said $p_r^{1/r}$ is bounded (exponential). This is one of the rare cases where two leading mathematicians publicly disagreed on the likely answer to an open problem",
-      "Each class has density $n^{o(1)}$ among primes $\\le n$—the recursive depth requirement makes class-$r$ primes extremely sparse. For class 1, this follows from $\\Psi(n, 3) = O((\\log n)^c)$, and each additional class compounds the sparsity",
+      "Erd\u0151s and Selfridge made **mutually exclusive** conjectures: Erd\u0151s said $p_r^{1/r} \\to \\infty$ (superexponential), Selfridge said $p_r^{1/r}$ is bounded (exponential). This is one of the rare cases where two leading mathematicians publicly disagreed on the likely answer to an open problem",
+      "Each class has density $n^{o(1)}$ among primes $\\le n$\u2014the recursive depth requirement makes class-$r$ primes extremely sparse. For class 1, this follows from $\\Psi(n, 3) = O((\\log n)^c)$, and each additional class compounds the sparsity",
       "The $p + 1$ classification connects to **Cunningham chains** (sequences where each $2p + 1$ is also prime) and to the factorization of shifted primes, a central topic in cryptographic applications (e.g., Pollard's $p - 1$ method requires $p - 1$ to be smooth)"
     ],
     "prerequisites": [
@@ -80,57 +80,57 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #1055 asks whether each class in the Erdős–Selfridge prime classification contains infinitely many primes, and how the least prime $p_r$ grows with class $r$. **Status: OPEN.** The known sequence $p_1 = 2, p_2 = 13, p_3 = 37, p_4 = 73, p_5 = 1021$ gives ambiguous evidence about growth. Erdős and Selfridge made mutually exclusive conjectures: Erdős predicted $p_r^{1/r} \\to \\infty$ (superexponential), Selfridge predicted $p_r^{1/r}$ bounded (exponential). Each class has density $n^{o(1)}$, showing the classification creates extremely sparse subsets of primes.",
-    "implications": "**Theoretical Significance**\n\n1. **Shifted Prime Structure**: The problem probes the factorization of $p + 1$, which is central to both analytic number theory and cryptography. Understanding which primes have deeply factored successors connects to the security of RSA and Pollard's factoring algorithms.\n\n2. **Smooth Number Theory**: Class 1 primes are adjacent to $3$-smooth numbers, and higher classes relate to iterated smooth factorization.\n\nProgress would advance our understanding of the distribution of smooth numbers near primes.\n\n**3. Contradictory Expert Intuitions**: The Erdős vs Selfridge disagreement is instructive: even for concrete, well-defined sequences, expert intuition can diverge completely. Resolving which conjecture is correct would reveal fundamental properties of prime factorization chains.\n\n4. **Computational Number Theory**: Computing $p_6$ and beyond would provide crucial evidence. The difficulty grows rapidly with $r$, pushing computational methods.",
+    "summary": "Erd\u0151s Problem #1055 asks whether each class in the Erd\u0151s\u2013Selfridge prime classification contains infinitely many primes, and how the least prime $p_r$ grows with class $r$. **Status: OPEN.** The known sequence $p_1 = 2, p_2 = 13, p_3 = 37, p_4 = 73, p_5 = 1021$ gives ambiguous evidence about growth. Erd\u0151s and Selfridge made mutually exclusive conjectures: Erd\u0151s predicted $p_r^{1/r} \\to \\infty$ (superexponential), Selfridge predicted $p_r^{1/r}$ bounded (exponential). Each class has density $n^{o(1)}$, showing the classification creates extremely sparse subsets of primes.",
+    "implications": "**Theoretical Significance**\n\n1. **Shifted Prime Structure**: The problem probes the factorization of $p + 1$, which is central to both analytic number theory and cryptography. Understanding which primes have deeply factored successors connects to the security of RSA and Pollard's factoring algorithms.\n\n2. **Smooth Number Theory**: Class 1 primes are adjacent to $3$-smooth numbers, and higher classes relate to iterated smooth factorization.\n\nProgress would advance our understanding of the distribution of smooth numbers near primes.\n\n**3. Contradictory Expert Intuitions**: The Erd\u0151s vs Selfridge disagreement is instructive: even for concrete, well-defined sequences, expert intuition can diverge completely. Resolving which conjecture is correct would reveal fundamental properties of prime factorization chains.\n\n4. **Computational Number Theory**: Computing $p_6$ and beyond would provide crucial evidence. The difficulty grows rapidly with $r$, pushing computational methods.",
     "openQuestions": [
-      "Are there infinitely many primes in each class? Known for class 1 (Størmer's theorem), open for all $r \\ge 2$.",
-      "Does $p_r^{1/r} \\to \\infty$ (Erdős) or is it bounded (Selfridge)? The known data $\\{2, 3.61, 3.33, 2.92, 4.01\\}$ for $r = 1, \\ldots, 5$ is genuinely inconclusive.",
+      "Are there infinitely many primes in each class? Known for class 1 (St\u00f8rmer's theorem), open for all $r \\ge 2$.",
+      "Does $p_r^{1/r} \\to \\infty$ (Erd\u0151s) or is it bounded (Selfridge)? The known data $\\{2, 3.61, 3.33, 2.92, 4.01\\}$ for $r = 1, \\ldots, 5$ is genuinely inconclusive.",
       "What is $p_6$? Computing the next term of OEIS A005113 would provide valuable evidence for the growth rate question.",
       "Does the analogous $p - 1$ classification behave differently? The $p - 1$ variant connects to Cunningham chains and may have different growth properties."
     ]
   },
   "crossReferences": [
     {
-      "target": "erdos-1065",
       "relationship": "companion",
-      "description": "Erdős #1065 asks whether there are infinitely many primes of the form 2^k · q + 1, directly related to class-1 primes in the #1055 classification (those with p+1 being 2-smooth times a prime). Both problems study primes whose successor has constrained prime factors."
+      "description": "Erd\u0151s #1065 asks whether there are infinitely many primes of the form 2^k \u00b7 q + 1, directly related to class-1 primes in the #1055 classification (those with p+1 being 2-smooth times a prime). Both problems study primes whose successor has constrained prime factors.",
+      "targetId": "erdos-1065"
     },
     {
-      "target": "erdos-1146",
       "relationship": "companion",
-      "description": "Erdős #1146 studies whether the 3-smooth numbers {2^m · 3^n} form an essential component, exactly the set adjacent to class-1 primes in #1055. The counting function of 3-smooth numbers up to N (~C·(log N)²) directly governs the density of class-1 primes."
+      "description": "Erd\u0151s #1146 studies whether the 3-smooth numbers {2^m \u00b7 3^n} form an essential component, exactly the set adjacent to class-1 primes in #1055. The counting function of 3-smooth numbers up to N (~C\u00b7(log N)\u00b2) directly governs the density of class-1 primes.",
+      "targetId": "erdos-1146"
     },
     {
-      "target": "erdos-1095",
       "relationship": "companion",
-      "description": "Erdős #1095 involves the Erdős–Selfridge function and smooth prime factors of binomial coefficients. Both #1055 and #1095 stem from collaborative Erdős–Selfridge work on smooth numbers and prime factorization structure."
+      "description": "Erd\u0151s #1095 involves the Erd\u0151s\u2013Selfridge function and smooth prime factors of binomial coefficients. Both #1055 and #1095 stem from collaborative Erd\u0151s\u2013Selfridge work on smooth numbers and prime factorization structure.",
+      "targetId": "erdos-1095"
     },
     {
-      "target": "bertrands-postulate",
       "relationship": "prerequisite",
-      "description": "Bertrand's Postulate guarantees at least one prime between n and 2n, providing the density lower bound used to argue that each class in the #1055 classification is non-empty. The infinitude question for each class requires understanding prime gaps."
+      "description": "Bertrand's Postulate guarantees at least one prime between n and 2n, providing the density lower bound used to argue that each class in the #1055 classification is non-empty. The infinitude question for each class requires understanding prime gaps.",
+      "targetId": "bertrands-postulate"
     },
     {
-      "target": "infinitude-primes",
       "relationship": "prerequisite",
-      "description": "The Euclid infinitude-of-primes result is the baseline: #1055 asks whether each subclass (classified by factorization depth of p+1) is itself infinite. The class-1 case follows from Størmer's theorem on smooth numbers."
+      "description": "The Euclid infinitude-of-primes result is the baseline: #1055 asks whether each subclass (classified by factorization depth of p+1) is itself infinite. The class-1 case follows from St\u00f8rmer's theorem on smooth numbers.",
+      "targetId": "infinitude-primes"
     },
     {
-      "target": "prime-number-theorem",
       "relationship": "related",
-      "description": "The Prime Number Theorem governs the overall density of primes; the #1055 density result (class-r primes have density n^{o(1)}) is proved by combining PNT with the counting function of smooth numbers."
+      "description": "The Prime Number Theorem governs the overall density of primes; the #1055 density result (class-r primes have density n^{o(1)}) is proved by combining PNT with the counting function of smooth numbers.",
+      "targetId": "prime-number-theorem"
     }
   ],
   "relatedProofs": [
     {
       "target": "erdos-1065",
       "strength": "strong",
-      "description": "Primes of the form 2^k · q + 1 are a special case of class-1 and class-2 primes in the Erdős–Selfridge classification. Resolving #1065 would directly imply infinitude of class-2 primes for specific factorization patterns."
+      "description": "Primes of the form 2^k \u00b7 q + 1 are a special case of class-1 and class-2 primes in the Erd\u0151s\u2013Selfridge classification. Resolving #1065 would directly imply infinitude of class-2 primes for specific factorization patterns."
     },
     {
       "target": "erdos-1146",
       "strength": "strong",
-      "description": "The 3-smooth numbers {2^m · 3^n} are precisely the numbers whose prime factors are at most 3. Class-1 primes p are those for which p+1 is 3-smooth, so the density and structure of this set is foundational to #1055."
+      "description": "The 3-smooth numbers {2^m \u00b7 3^n} are precisely the numbers whose prime factors are at most 3. Class-1 primes p are those for which p+1 is 3-smooth, so the density and structure of this set is foundational to #1055."
     },
     {
       "target": "bertrands-postulate",
@@ -151,31 +151,31 @@
   "references": [
     {
       "key": "ErSe75",
-      "citation": "Erdős, P. and Selfridge, J.L. (1975). 'The product of consecutive integers is never a power.' Illinois Journal of Mathematics, 19(2), 292–301.",
+      "citation": "Erd\u0151s, P. and Selfridge, J.L. (1975). 'The product of consecutive integers is never a power.' Illinois Journal of Mathematics, 19(2), 292\u2013301.",
       "type": "paper",
-      "note": "Foundational Erdős–Selfridge collaboration; their prime classification work grew from this joint research program on prime factorization."
+      "note": "Foundational Erd\u0151s\u2013Selfridge collaboration; their prime classification work grew from this joint research program on prime factorization."
     },
     {
       "key": "Guy04-A18",
       "citation": "Guy, R.K. (2004). Unsolved Problems in Number Theory, 3rd ed. Springer. Problem A18: 'Primes and Smooth Numbers'.",
       "type": "book",
-      "note": "Section A18 discusses the Erdős–Selfridge prime classification and states the open problems about infinitude and growth of p_r."
+      "note": "Section A18 discusses the Erd\u0151s\u2013Selfridge prime classification and states the open problems about infinitude and growth of p_r."
     },
     {
       "key": "Sto97",
-      "citation": "Størmer, C. (1897). 'Quelques théorèmes sur l'équation de Pell x² − Dy² = ±1 et leurs applications.' Videnskabs-Selskabets Skrifter I, Christiania.",
+      "citation": "St\u00f8rmer, C. (1897). 'Quelques th\u00e9or\u00e8mes sur l'\u00e9quation de Pell x\u00b2 \u2212 Dy\u00b2 = \u00b11 et leurs applications.' Videnskabs-Selskabets Skrifter I, Christiania.",
       "type": "paper",
-      "note": "Størmer's theorem implies that there are only finitely many consecutive smooth numbers, establishing the distribution of class-1 primes (those with p+1 being 3-smooth)."
+      "note": "St\u00f8rmer's theorem implies that there are only finitely many consecutive smooth numbers, establishing the distribution of class-1 primes (those with p+1 being 3-smooth)."
     },
     {
       "key": "HiTe88",
-      "citation": "Hildebrand, A. and Tenenbaum, G. (1993). 'Integers without large prime factors.' Journal de Théorie des Nombres de Bordeaux, 5(2), 411–484.",
+      "citation": "Hildebrand, A. and Tenenbaum, G. (1993). 'Integers without large prime factors.' Journal de Th\u00e9orie des Nombres de Bordeaux, 5(2), 411\u2013484.",
       "type": "paper",
-      "note": "Provides the asymptotic count Ψ(x, y) of y-smooth numbers up to x, directly governing the density of class-1 primes (p+1 is 3-smooth) and the n^{o(1)} sparsity of each class."
+      "note": "Provides the asymptotic count \u03a8(x, y) of y-smooth numbers up to x, directly governing the density of class-1 primes (p+1 is 3-smooth) and the n^{o(1)} sparsity of each class."
     },
     {
       "key": "OEIS-A005113",
-      "citation": "OEIS Foundation. Sequence A005113: Least prime p in class r (Erdős–Selfridge classification). https://oeis.org/A005113.",
+      "citation": "OEIS Foundation. Sequence A005113: Least prime p in class r (Erd\u0151s\u2013Selfridge classification). https://oeis.org/A005113.",
       "type": "reference",
       "note": "Records p_1=2, p_2=13, p_3=37, p_4=73, p_5=1021 and documents the chain structure used in this formalization."
     }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-1014",
-  "title": "Erdős Problem #1014: Ramsey Number Ratio Convergence",
+  "title": "Erd\u0151s Problem #1014: Ramsey Number Ratio Convergence",
   "slug": "erdos-1014",
-  "description": "For fixed k ≥ 3, prove that R(k, l+1)/R(k, l) → 1 as l → ∞, where R(k, l) is the Ramsey number. Open even for k = 3. Status: OPEN.",
+  "description": "For fixed k \u2265 3, prove that R(k, l+1)/R(k, l) \u2192 1 as l \u2192 \u221e, where R(k, l) is the Ramsey number. Open even for k = 3. Status: OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "erdosNumber": 1014,
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1014Problem.lean",
@@ -28,14 +28,14 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1030",
       "relationship": "related",
-      "description": "Problem #1030 concerns diagonal Ramsey asymptotics R(k,k)^{1/k}; this file's diagonal_ramsey_upper connects to that question."
+      "description": "Problem #1030 concerns diagonal Ramsey asymptotics R(k,k)^{1/k}; this file's diagonal_ramsey_upper connects to that question.",
+      "targetId": "erdos-1030"
     },
     {
-      "id": "erdos-544",
       "relationship": "related",
-      "description": "Problem #544 studies R(3,k) behavior, directly relevant to the k=3 case of ratio convergence."
+      "description": "Problem #544 studies R(3,k) behavior, directly relevant to the k=3 case of ratio convergence.",
+      "targetId": "erdos-544"
     }
   ],
   "sections": [
@@ -58,7 +58,7 @@
       "title": "Classical Bounds",
       "startLine": 40,
       "endLine": 50,
-      "summary": "Erdős-Szekeres upper bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$, monotonicity $R(k,l) \\leq R(k,l+1)$, and the recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$."
+      "summary": "Erd\u0151s-Szekeres upper bound $R(k,l) \\leq \\binom{k+l-2}{k-1}$, monotonicity $R(k,l) \\leq R(k,l+1)$, and the recurrence $R(k,l+1) \\leq R(k,l) + R(k-1,l+1)$."
     },
     {
       "id": "r3-bounds",
@@ -72,7 +72,7 @@
       "title": "Main Conjecture: Ratio Convergence",
       "startLine": 66,
       "endLine": 70,
-      "summary": "**Erdős Problem #1014** (OPEN): $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$ for fixed $k \\geq 3$, formalized via $\\varepsilon$-$\\delta$ convergence."
+      "summary": "**Erd\u0151s Problem #1014** (OPEN): $R(k,l+1)/R(k,l) \\to 1$ as $l \\to \\infty$ for fixed $k \\geq 3$, formalized via $\\varepsilon$-$\\delta$ convergence."
     },
     {
       "id": "consequences",
@@ -97,12 +97,12 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1971 [Er71], asking whether Ramsey numbers grow smoothly as the second parameter increases. The question emerges from the Erdős-Szekeres (1935) upper bound R(k,l) ≤ C(k+l-2,k-1), which gives polynomial growth for fixed k, but says nothing about the regularity of that growth. For k=3, the landmark results of Ajtai-Komlós-Szemerédi (1980) establishing R(3,l) ≤ c·l²/log l and Kim (1995) proving the matching lower bound R(3,l) ≥ c'·l²/log l showed the order of magnitude is l²/log l. Mattheus-Verstraëte (2024) further improved the lower bound constant. Despite these advances, the ratio R(3,l+1)/R(3,l) → 1 remains unproved because the implicit constants c and c' in the upper and lower bounds differ, preventing direct comparison of consecutive values. This is one of the most natural open questions in Ramsey theory.",
-    "problemStatement": "For fixed k ≥ 3, prove R(k, l+1)/R(k, l) → 1 as l → ∞.",
-    "text": "For fixed k ≥ 3, prove that R(k, l+1)/R(k, l) → 1 as l → ∞, where R(k, l) is the Ramsey number. Open even for k = 3. Status: OPEN.",
+    "historicalContext": "Erd\u0151s posed this problem in 1971 [Er71], asking whether Ramsey numbers grow smoothly as the second parameter increases. The question emerges from the Erd\u0151s-Szekeres (1935) upper bound R(k,l) \u2264 C(k+l-2,k-1), which gives polynomial growth for fixed k, but says nothing about the regularity of that growth. For k=3, the landmark results of Ajtai-Koml\u00f3s-Szemer\u00e9di (1980) establishing R(3,l) \u2264 c\u00b7l\u00b2/log l and Kim (1995) proving the matching lower bound R(3,l) \u2265 c'\u00b7l\u00b2/log l showed the order of magnitude is l\u00b2/log l. Mattheus-Verstra\u00ebte (2024) further improved the lower bound constant. Despite these advances, the ratio R(3,l+1)/R(3,l) \u2192 1 remains unproved because the implicit constants c and c' in the upper and lower bounds differ, preventing direct comparison of consecutive values. This is one of the most natural open questions in Ramsey theory.",
+    "problemStatement": "For fixed k \u2265 3, prove R(k, l+1)/R(k, l) \u2192 1 as l \u2192 \u221e.",
+    "text": "For fixed k \u2265 3, prove that R(k, l+1)/R(k, l) \u2192 1 as l \u2192 \u221e, where R(k, l) is the Ramsey number. Open even for k = 3. Status: OPEN.",
     "proofStrategy": "We axiomatize the Ramsey number R(k,l) with basic properties (symmetry, monotonicity, recurrence), state classical bounds for R(3,l), and show the conjecture follows from precise enough asymptotics. The equivalence with the difference condition R(k,l+1) - R(k,l) = o(R(k,l)) is formalized, providing an alternative attack surface.",
     "keyInsights": [
-      "**Smooth growth conjecture**: R(k,l+1)/R(k,l) → 1 asserts that Ramsey numbers grow regularly, without large jumps between consecutive values",
+      "**Smooth growth conjecture**: R(k,l+1)/R(k,l) \u2192 1 asserts that Ramsey numbers grow regularly, without large jumps between consecutive values",
       "**Tight bounds insufficient**: For k=3, the bounds $R(3,l) = \\Theta(l^2/\\log l)$ are tight up to constants, but the ratio convergence needs finer information about the multiplicative constant",
       "**Power-law reduction**: The conjecture follows from any asymptotic of the form $R(k,l) \\sim c_k l^{k-1}/(\\log l)^{k-2}$, making it strictly weaker than the full asymptotic problem",
       "**Difference reformulation**: Equivalently, the discrete increment $R(k,l+1) - R(k,l)$ is $o(R(k,l))$, connecting to finite difference methods in number theory",
@@ -116,13 +116,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #1014 remains open. The smooth growth conjecture R(k,l+1)/R(k,l) → 1 is a fundamental question about Ramsey number regularity. Even for k=3, where R(3,l) = Θ(l²/log l) is completely determined up to constants, the ratio convergence has not been established. The formalization captures the complete logical structure: axioms, bounds, the main conjecture, its equivalence with the difference formulation, and the reduction to power-law asymptotics. 0 sorries.",
+    "summary": "Erd\u0151s Problem #1014 remains open. The smooth growth conjecture R(k,l+1)/R(k,l) \u2192 1 is a fundamental question about Ramsey number regularity. Even for k=3, where R(3,l) = \u0398(l\u00b2/log l) is completely determined up to constants, the ratio convergence has not been established. The formalization captures the complete logical structure: axioms, bounds, the main conjecture, its equivalence with the difference formulation, and the reduction to power-law asymptotics. 0 sorries.",
     "implications": "Proving this would demonstrate that Ramsey numbers behave regularly as one parameter varies, supporting the broader conjecture of polynomial asymptotics. It would also constrain the form of exact Ramsey number formulas and provide evidence for the conjectured smooth structure of the Ramsey function.",
     "openQuestions": [
-      "Can the ratio convergence be proved for k=3 using the known Θ(l²/log l) bounds with improved error terms?",
+      "Can the ratio convergence be proved for k=3 using the known \u0398(l\u00b2/log l) bounds with improved error terms?",
       "What is the rate of convergence of R(k,l+1)/R(k,l) to 1? Is it O(1/log l)?",
       "Does R(k,l+1) - R(k,l) have a meaningful asymptotic formula for fixed k?",
-      "Can the Mattheus-Verstraëte (2024) improved R(3,l) lower bound help establish ratio convergence?",
+      "Can the Mattheus-Verstra\u00ebte (2024) improved R(3,l) lower bound help establish ratio convergence?",
       "Is there a probabilistic or algebraic approach that gives ratio convergence without full asymptotics?"
     ]
   },
@@ -144,11 +144,11 @@
     "definitionCount": 0
   },
   "references": [
-    "Erdős [Er71], p. 99",
-    "Ajtai–Komlós–Szemerédi (1980)",
+    "Erd\u0151s [Er71], p. 99",
+    "Ajtai\u2013Koml\u00f3s\u2013Szemer\u00e9di (1980)",
     "Shearer (1983)",
     "Kim (1995)",
-    "Mattheus–Verstraëte (2024)",
+    "Mattheus\u2013Verstra\u00ebte (2024)",
     "https://erdosproblems.com/1014"
   ]
 }

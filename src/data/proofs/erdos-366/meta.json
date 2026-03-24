@@ -1,10 +1,10 @@
 {
   "id": "erdos-366",
-  "title": "Erdős Problem #366: Consecutive k-Full Numbers",
+  "title": "Erd\u0151s Problem #366: Consecutive k-Full Numbers",
   "slug": "erdos-366",
   "description": "Are there any 2-full (powerful) n such that n+1 is 3-full (cubeful)? A number is k-full if every prime factor appears with multiplicity at least k. Known: (8,9) and (12167,12168) are 3-full/2-full pairs, but no 2-full/3-full pairs are known.",
   "meta": {
-    "author": "Erdős, Golomb, Mahler",
+    "author": "Erd\u0151s, Golomb, Mahler",
     "sourceUrl": "https://erdosproblems.com/366",
     "date": "",
     "status": "axiomatized",
@@ -55,16 +55,16 @@
     "assumptions": "24 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "A natural number n is **k-full** (or k-powerful) if every prime factor of n appears with multiplicity at least k. Special cases:\n- **2-full = powerful**: Every prime appears at least squared (4, 8, 9, 16, 25, 27, 32, 36, ...)\n- **3-full = cubeful**: Every prime appears at least cubed (8, 16, 27, 32, 64, 81, ...)\n\n**Historical Background**:\nErdős originally asked Mahler about consecutive powerful numbers. Mahler immediately showed infinitely many exist via the Pell equation x² = 8y² + 1, which yields solutions like (8,9), (288,289), etc.\n\nThe harder question: What about mixed consecutive pairs?\n- **(n 3-full, n+1 2-full)**: Two known examples\n  - (8, 9): 8 = 2³ is cubeful, 9 = 3² is powerful\n  - (12167, 12168): 12167 = 23³ is cubeful, 12168 = 2³ × 3² × 13² is powerful (Golomb 1970)\n- **(n 2-full, n+1 3-full)**: NO KNOWN EXAMPLES (the main open question)\n\nOEIS A060355 lists 3-full n with 2-full n+1. Only {8, 12167} are known below 10²².",
-    "problemStatement": "**Erdős Problem #366**: Are there any 2-full n such that n+1 is 3-full?\n\nEquivalently: Does there exist n > 0 where:\n- For every prime p | n, we have p² | n (n is powerful)\n- For every prime q | (n+1), we have q³ | (n+1) (n+1 is cubeful)\n\n**Known Results**:\n- The reverse direction has solutions: (8,9) and (12167, 12168)\n- No (2-full, 3-full) consecutive pairs known\n- No other (3-full, 2-full) pairs below 10²²\n\n**Related Questions**:\n1. Are there infinitely many (3-full, 2-full) consecutive pairs?\n2. Do consecutive 3-full integers exist? (Even weaker, also open)\n\n**Status**: OPEN",
+    "historicalContext": "A natural number n is **k-full** (or k-powerful) if every prime factor of n appears with multiplicity at least k. Special cases:\n- **2-full = powerful**: Every prime appears at least squared (4, 8, 9, 16, 25, 27, 32, 36, ...)\n- **3-full = cubeful**: Every prime appears at least cubed (8, 16, 27, 32, 64, 81, ...)\n\n**Historical Background**:\nErd\u0151s originally asked Mahler about consecutive powerful numbers. Mahler immediately showed infinitely many exist via the Pell equation x\u00b2 = 8y\u00b2 + 1, which yields solutions like (8,9), (288,289), etc.\n\nThe harder question: What about mixed consecutive pairs?\n- **(n 3-full, n+1 2-full)**: Two known examples\n  - (8, 9): 8 = 2\u00b3 is cubeful, 9 = 3\u00b2 is powerful\n  - (12167, 12168): 12167 = 23\u00b3 is cubeful, 12168 = 2\u00b3 \u00d7 3\u00b2 \u00d7 13\u00b2 is powerful (Golomb 1970)\n- **(n 2-full, n+1 3-full)**: NO KNOWN EXAMPLES (the main open question)\n\nOEIS A060355 lists 3-full n with 2-full n+1. Only {8, 12167} are known below 10\u00b2\u00b2.",
+    "problemStatement": "**Erd\u0151s Problem #366**: Are there any 2-full n such that n+1 is 3-full?\n\nEquivalently: Does there exist n > 0 where:\n- For every prime p | n, we have p\u00b2 | n (n is powerful)\n- For every prime q | (n+1), we have q\u00b3 | (n+1) (n+1 is cubeful)\n\n**Known Results**:\n- The reverse direction has solutions: (8,9) and (12167, 12168)\n- No (2-full, 3-full) consecutive pairs known\n- No other (3-full, 2-full) pairs below 10\u00b2\u00b2\n\n**Related Questions**:\n1. Are there infinitely many (3-full, 2-full) consecutive pairs?\n2. Do consecutive 3-full integers exist? (Even weaker, also open)\n\n**Status**: OPEN",
     "text": "Are there any 2-full (powerful) n such that n+1 is 3-full (cubeful)? A number is k-full if every prime factor appears with multiplicity at least k. Known: (8,9) and (12167,12168) are 3-full/2-full pairs, but no 2-full/3-full pairs are known.",
-    "proofStrategy": "The formalization defines k-full numbers and states the open questions:\n\n1. **k-Full Definition**: n is k-full if ∀ prime p, p | n → p^k | n\n   Using factorization: ∀ p, p.Prime → p ∣ n → k ≤ n.factorization p\n\n2. **Special Cases**:\n   - IsPowerful = IsKFull 2\n   - IsCubeful = IsKFull 3\n\n3. **Known Pairs**: Define CubefulPowerfulPairs and prove (8,9) and (12167,12168) are members\n\n4. **Open Questions**:\n   - erdos_366_conjecture: ∃ n > 0, IsPowerful n ∧ IsCubeful (n + 1)\n   - erdos_366_weaker: ∃ n > 0, IsCubeful n ∧ IsCubeful (n + 1)\n\n5. **Related Results**: Mahler's theorem on consecutive powerful numbers",
+    "proofStrategy": "The formalization defines k-full numbers and states the open questions:\n\n1. **k-Full Definition**: n is k-full if \u2200 prime p, p | n \u2192 p^k | n\n   Using factorization: \u2200 p, p.Prime \u2192 p \u2223 n \u2192 k \u2264 n.factorization p\n\n2. **Special Cases**:\n   - IsPowerful = IsKFull 2\n   - IsCubeful = IsKFull 3\n\n3. **Known Pairs**: Define CubefulPowerfulPairs and prove (8,9) and (12167,12168) are members\n\n4. **Open Questions**:\n   - erdos_366_conjecture: \u2203 n > 0, IsPowerful n \u2227 IsCubeful (n + 1)\n   - erdos_366_weaker: \u2203 n > 0, IsCubeful n \u2227 IsCubeful (n + 1)\n\n5. **Related Results**: Mahler's theorem on consecutive powerful numbers",
     "keyInsights": [
       "**Asymmetry of the problem**: The reverse direction (n cubeful, n+1 powerful) has solutions, but the forward direction (n powerful, n+1 cubeful) has none known. This asymmetry is mysterious.",
-      "**Density matters**: Powerful numbers have density ~ √N, cubeful numbers have density ~ N^(1/3). For random n, P(n powerful AND n+1 cubeful) ~ n^(-7/6), suggesting only finitely many such pairs exist heuristically.",
-      "**Pell equations help**: Mahler used x² = 8y² + 1 to find consecutive powerful numbers. But similar approaches haven't found (powerful, cubeful) pairs.",
-      "**The gap at 12167**: After 12167, the next (cubeful, powerful) pair (if any) must be beyond 10²². The search space is vast.",
-      "**Structure constraints**: Powerful numbers can be written as a²b³. Cubeful numbers are products of cubes and higher powers. Consecutive integers with such rigid structure are extremely rare.",
+      "**Density matters**: Powerful numbers have density ~ \u221aN, cubeful numbers have density ~ N^(1/3). For random n, P(n powerful AND n+1 cubeful) ~ n^(-7/6), suggesting only finitely many such pairs exist heuristically.",
+      "**Pell equations help**: Mahler used x\u00b2 = 8y\u00b2 + 1 to find consecutive powerful numbers. But similar approaches haven't found (powerful, cubeful) pairs.",
+      "**The gap at 12167**: After 12167, the next (cubeful, powerful) pair (if any) must be beyond 10\u00b2\u00b2. The search space is vast.",
+      "**Structure constraints**: Powerful numbers can be written as a\u00b2b\u00b3. Cubeful numbers are products of cubes and higher powers. Consecutive integers with such rigid structure are extremely rare.",
       "**Weaker question also open**: Even consecutive cubeful integers (n, n+1 both 3-full) are unknown, showing how restrictive 3-full is."
     ],
     "prerequisites": [
@@ -92,14 +92,14 @@
       "title": "Basic Properties",
       "startLine": 60,
       "endLine": 95,
-      "summary": "Properties like 1 is k-full, prime powers are k-full iff exponent ≥ k."
+      "summary": "Properties like 1 is k-full, prime powers are k-full iff exponent \u2265 k."
     },
     {
       "id": "main-question",
       "title": "Main Open Question",
       "startLine": 97,
       "endLine": 113,
-      "summary": "The Erdős Problem #366 conjecture: 2-full n with 3-full n+1."
+      "summary": "The Erd\u0151s Problem #366 conjecture: 2-full n with 3-full n+1."
     },
     {
       "id": "reverse-direction",
@@ -127,11 +127,11 @@
       "title": "Density of k-Full Numbers",
       "startLine": 220,
       "endLine": 143,
-      "summary": "Growth rates: powerful ~ √N, cubeful ~ N^(1/3)."
+      "summary": "Growth rates: powerful ~ \u221aN, cubeful ~ N^(1/3)."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #366 on consecutive k-full numbers. The question of whether any 2-full n exists with 3-full n+1 remains OPEN. The reverse direction has exactly two known examples below 10²²: (8,9) and (12167,12168). The sparsity of k-full numbers makes such consecutive pairs extremely rare.",
+    "summary": "We formalize Erd\u0151s Problem #366 on consecutive k-full numbers. The question of whether any 2-full n exists with 3-full n+1 remains OPEN. The reverse direction has exactly two known examples below 10\u00b2\u00b2: (8,9) and (12167,12168). The sparsity of k-full numbers makes such consecutive pairs extremely rare.",
     "implications": "This problem connects to deep questions about the multiplicative structure of consecutive integers. The rigid prime factorization requirements of k-full numbers severely constrain when consecutive integers can both satisfy such conditions.",
     "openQuestions": [
       "Does any (2-full, 3-full) consecutive pair exist?",
@@ -160,5 +160,39 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-137",
+      "relationship": "related",
+      "description": "Share powerful-numbers, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-365",
+      "relationship": "related",
+      "description": "Share powerful-numbers, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Share powerful-numbers, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Share powerful-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1108",
+      "relationship": "related",
+      "description": "Share powerful-numbers and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-137",
+    "erdos-365",
+    "erdos-367",
+    "erdos-1107",
+    "erdos-1108"
+  ]
 }

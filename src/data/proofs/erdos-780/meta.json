@@ -1,10 +1,10 @@
 {
   "id": "erdos-780",
-  "title": "Erdős Problem #780: Chromatic Number of Kneser Hypergraphs",
+  "title": "Erd\u0151s Problem #780: Chromatic Number of Kneser Hypergraphs",
   "slug": "erdos-780",
-  "description": "If n ≥ kr + (t-1)(k-1) and edges of the complete r-uniform hypergraph on n vertices are t-colored, some color class contains k pairwise disjoint edges. SOLVED by Alon-Frankl-Lovász (1986), generalizing Lovász's proof of Kneser's conjecture.",
+  "description": "If n \u2265 kr + (t-1)(k-1) and edges of the complete r-uniform hypergraph on n vertices are t-colored, some color class contains k pairwise disjoint edges. SOLVED by Alon-Frankl-Lov\u00e1sz (1986), generalizing Lov\u00e1sz's proof of Kneser's conjecture.",
   "meta": {
-    "author": "Alon-Frankl-Lovász (1986)",
+    "author": "Alon-Frankl-Lov\u00e1sz (1986)",
     "sourceUrl": "https://erdosproblems.com/780",
     "date": "1986",
     "status": "axiomatized",
@@ -28,7 +28,7 @@
     "mathlibDependencies": [
       {
         "theorem": "SetFamily.Intersecting",
-        "description": "Intersecting set families: ∀ A B ∈ F, (A ∩ B).Nonempty",
+        "description": "Intersecting set families: \u2200 A B \u2208 F, (A \u2229 B).Nonempty",
         "module": "Mathlib.Combinatorics.SetFamily.Intersecting"
       },
       {
@@ -43,7 +43,7 @@
       },
       {
         "theorem": "Nat.choose",
-        "description": "Binomial coefficients C(n,r) for Erdős-Ko-Rado independence bound",
+        "description": "Binomial coefficients C(n,r) for Erd\u0151s-Ko-Rado independence bound",
         "module": "Mathlib.Data.Nat.Choose.Basic"
       }
     ],
@@ -52,10 +52,10 @@
       "PairwiseDisjoint predicate for k-matchings in hypergraphs",
       "EdgeColoring and colorClass definitions for t-colorings",
       "KneserHypergraph structure with vertices, edges, uniformity, and disjointness fields",
-      "Threshold function: n₀ = kr + (t-1)(k-1)",
+      "Threshold function: n\u2080 = kr + (t-1)(k-1)",
       "alon_frankl_lovasz_1986 main theorem (axiom) with kneser_hypergraph_chromatic_number equivalent",
       "tightness_construction showing the bound is optimal",
-      "kneser_conjecture axiom (k=2 special case, Lovász 1978)",
+      "kneser_conjecture axiom (k=2 special case, Lov\u00e1sz 1978)",
       "Four small cases: Petersen graph KG(5,2), KG(7,3), KG(2r,r), KG(2r+1,r)",
       "erdos_ko_rado axiom connecting independence number to intersecting families",
       "Two proved theorems (erdos_780_main, erdos_780_summary) wrapping axioms"
@@ -65,14 +65,14 @@
     "lineCount": 200
   },
   "overview": {
-    "historicalContext": "Erdős Problem #780 generalizes the famous Kneser conjecture to hypergraphs. **Kneser (1955)** conjectured that $\\chi(KG(n,r)) = n - 2r + 2$, i.e., any $(n - 2r + 1)$-coloring of the $r$-subsets of $[n]$ must contain two disjoint sets of the same color. This remained open until **Lovász's landmark 1978 proof** (*J. Comb. Theory A* 25, 319-324), which was the **first major application of algebraic topology to combinatorics**, using the Borsuk-Ulam theorem via the neighborhood complex $\\mathcal{N}(KG(n,r))$. Schrijver simultaneously found a vertex-critical subgraph (the stable Kneser graph) with the same chromatic number.\n\n**Alon, Frankl, and Lovász (1986)** extended this to $r$-uniform hypergraphs (*Trans. AMS* 298, 359-370): if $n \\geq kr + (t-1)(k-1)$, any $t$-coloring of $\\binom{[n]}{r}$ contains $k$ pairwise disjoint monochromatic edges. Their proof generalizes the topological approach using the independence complex and a Borsuk-Ulam-type argument via the Lusternik-Schnirelmann category. **Matoušek (2004)** later gave a purely combinatorial proof using Tucker's lemma. The problem connects to the Erdős-Ko-Rado theorem (1961): the maximum intersecting family gives $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, and the fractional chromatic number is $\\chi_f(KG(n,r)) = n/r$.",
-    "problemStatement": "**Theorem (Alon-Frankl-Lovász 1986):** Suppose $n \\geq kr + (t-1)(k-1)$ with $r \\geq 1$, $k \\geq 2$, $t \\geq 1$. If the edges of the complete $r$-uniform hypergraph $K_n^{(r)}$ are $t$-colored, some color class contains $k$ pairwise disjoint edges.\n\n**Equivalently:** $\\chi(KG^r(n,k)) = \\lceil (n - r(k-1))/(k-1) \\rceil$.\n\n**Special case ($k = 2$):** Kneser's conjecture: $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$.\n\n**Status:** SOLVED. The bound $n_0 = kr + (t-1)(k-1)$ is tight.",
-    "text": "If n ≥ kr + (t-1)(k-1) and edges of the complete r-uniform hypergraph on n vertices are t-colored, some color class contains k pairwise disjoint edges. SOLVED by Alon-Frankl-Lovász (1986), generalizing Lovász's proof of Kneser's conjecture.",
-    "proofStrategy": "The formalization axiomatizes the main theorems (AFL 1986, Kneser's conjecture, tightness construction, Erdős-Ko-Rado) since the proofs require topological methods not in Mathlib. The structure layer is fully defined: `UniformHypergraph`, `PairwiseDisjoint`, `EdgeColoring`, `KneserHypergraph`, `threshold`. Two summary theorems (`erdos_780_main`, `erdos_780_summary`) are proved from the axioms. Small cases (Petersen graph, $KG(7,3)$, $KG(2r,r)$, $KG(2r+1,r)$) are axiomatized as concrete instances.",
+    "historicalContext": "Erd\u0151s Problem #780 generalizes the famous Kneser conjecture to hypergraphs. **Kneser (1955)** conjectured that $\\chi(KG(n,r)) = n - 2r + 2$, i.e., any $(n - 2r + 1)$-coloring of the $r$-subsets of $[n]$ must contain two disjoint sets of the same color. This remained open until **Lov\u00e1sz's landmark 1978 proof** (*J. Comb. Theory A* 25, 319-324), which was the **first major application of algebraic topology to combinatorics**, using the Borsuk-Ulam theorem via the neighborhood complex $\\mathcal{N}(KG(n,r))$. Schrijver simultaneously found a vertex-critical subgraph (the stable Kneser graph) with the same chromatic number.\n\n**Alon, Frankl, and Lov\u00e1sz (1986)** extended this to $r$-uniform hypergraphs (*Trans. AMS* 298, 359-370): if $n \\geq kr + (t-1)(k-1)$, any $t$-coloring of $\\binom{[n]}{r}$ contains $k$ pairwise disjoint monochromatic edges. Their proof generalizes the topological approach using the independence complex and a Borsuk-Ulam-type argument via the Lusternik-Schnirelmann category. **Matou\u0161ek (2004)** later gave a purely combinatorial proof using Tucker's lemma. The problem connects to the Erd\u0151s-Ko-Rado theorem (1961): the maximum intersecting family gives $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, and the fractional chromatic number is $\\chi_f(KG(n,r)) = n/r$.",
+    "problemStatement": "**Theorem (Alon-Frankl-Lov\u00e1sz 1986):** Suppose $n \\geq kr + (t-1)(k-1)$ with $r \\geq 1$, $k \\geq 2$, $t \\geq 1$. If the edges of the complete $r$-uniform hypergraph $K_n^{(r)}$ are $t$-colored, some color class contains $k$ pairwise disjoint edges.\n\n**Equivalently:** $\\chi(KG^r(n,k)) = \\lceil (n - r(k-1))/(k-1) \\rceil$.\n\n**Special case ($k = 2$):** Kneser's conjecture: $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$.\n\n**Status:** SOLVED. The bound $n_0 = kr + (t-1)(k-1)$ is tight.",
+    "text": "If n \u2265 kr + (t-1)(k-1) and edges of the complete r-uniform hypergraph on n vertices are t-colored, some color class contains k pairwise disjoint edges. SOLVED by Alon-Frankl-Lov\u00e1sz (1986), generalizing Lov\u00e1sz's proof of Kneser's conjecture.",
+    "proofStrategy": "The formalization axiomatizes the main theorems (AFL 1986, Kneser's conjecture, tightness construction, Erd\u0151s-Ko-Rado) since the proofs require topological methods not in Mathlib. The structure layer is fully defined: `UniformHypergraph`, `PairwiseDisjoint`, `EdgeColoring`, `KneserHypergraph`, `threshold`. Two summary theorems (`erdos_780_main`, `erdos_780_summary`) are proved from the axioms. Small cases (Petersen graph, $KG(7,3)$, $KG(2r,r)$, $KG(2r+1,r)$) are axiomatized as concrete instances.",
     "keyInsights": [
-      "**Exact threshold:** $n_0 = kr + (t-1)(k-1)$ is both necessary and sufficient — the tightness construction partitions $[n_0 - 1] = X_1 \\cup \\cdots \\cup X_t$ with $|X_1| = kr - 1$, $|X_i| = k-1$, coloring by first intersection",
-      "**Topology meets combinatorics:** Lovász's 1978 proof revolutionized combinatorics by showing the neighborhood complex $\\mathcal{N}(KG(n,r))$ is $(n-2r)$-connected, giving $\\chi \\geq n - 2r + 2$ via the Borsuk-Ulam theorem",
-      "**Erdős-Ko-Rado duality:** Maximum intersecting families are independent sets in the Kneser graph: $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, giving the fractional chromatic number $\\chi_f = n/r$",
+      "**Exact threshold:** $n_0 = kr + (t-1)(k-1)$ is both necessary and sufficient \u2014 the tightness construction partitions $[n_0 - 1] = X_1 \\cup \\cdots \\cup X_t$ with $|X_1| = kr - 1$, $|X_i| = k-1$, coloring by first intersection",
+      "**Topology meets combinatorics:** Lov\u00e1sz's 1978 proof revolutionized combinatorics by showing the neighborhood complex $\\mathcal{N}(KG(n,r))$ is $(n-2r)$-connected, giving $\\chi \\geq n - 2r + 2$ via the Borsuk-Ulam theorem",
+      "**Erd\u0151s-Ko-Rado duality:** Maximum intersecting families are independent sets in the Kneser graph: $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, giving the fractional chromatic number $\\chi_f = n/r$",
       "**Chromatic number formula:** $\\chi(KG^r(n,k)) = \\lceil (n - r(k-1))/(k-1) \\rceil$ generalizes $\\chi(KG(n,r)) = n - 2r + 2$",
       "**Petersen graph as prototype:** $KG(5,2)$ is the Petersen graph with $\\chi = 3$, the smallest non-trivial example of the Kneser conjecture",
       "**Schrijver refinement:** There exists a vertex-critical subgraph (the stable Kneser graph) achieving the same chromatic number"
@@ -88,7 +88,7 @@
     {
       "id": "preamble",
       "title": "Problem Statement and Imports",
-      "summary": "Module docstring presenting Erdős Problem #780 and the AFL theorem. Imports `SetFamily.Intersecting`, `SimpleGraph.Basic`, `Finset.Basic`, `Nat.Choose.Basic`, and `Tactic`. Opens the `Finset` namespace.",
+      "summary": "Module docstring presenting Erd\u0151s Problem #780 and the AFL theorem. Imports `SetFamily.Intersecting`, `SimpleGraph.Basic`, `Finset.Basic`, `Nat.Choose.Basic`, and `Tactic`. Opens the `Finset` namespace.",
       "startLine": 1,
       "endLine": 35
     },
@@ -123,7 +123,7 @@
     {
       "id": "kneser-conjecture",
       "title": "Kneser's Conjecture ($k = 2$)",
-      "summary": "Axiomatizes `kneser_conjecture`: $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$ (Lovász 1978). Defines `KneserGraph` and `kneserAdj` (disjointness adjacency).",
+      "summary": "Axiomatizes `kneser_conjecture`: $\\chi(KG(n,r)) = n - 2r + 2$ for $n \\geq 2r$ (Lov\u00e1sz 1978). Defines `KneserGraph` and `kneserAdj` (disjointness adjacency).",
       "startLine": 115,
       "endLine": 132
     },
@@ -136,7 +136,7 @@
     },
     {
       "id": "connections",
-      "title": "Erdős-Ko-Rado Connection",
+      "title": "Erd\u0151s-Ko-Rado Connection",
       "summary": "Axiomatizes `erdos_ko_rado`: maximum intersecting family of $r$-subsets of $[n]$ has size $\\binom{n-1}{r-1}$ for $n \\geq 2r$, giving $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$.",
       "startLine": 152,
       "endLine": 165
@@ -151,19 +151,21 @@
   ],
   "crossReferences": [
     {
-      "relationship": "The Borsuk-Ulam theorem is the key topological tool in Lovász's 1978 proof of Kneser's conjecture and the AFL 1986 generalization. The topological argument shows the neighborhood/independence complex has high connectivity, forcing the chromatic lower bound.",
-      "targetId": "borsuk-ulam"
+      "relationship": "related",
+      "targetId": "borsuk-ulam",
+      "description": "The Borsuk-Ulam theorem is the key topological tool in Lov\u00e1sz's 1978 proof of Kneser's conjecture and the AFL 1986 generalization. The topological argument shows the neighborhood/independence complex has high connectivity, forcing the chromatic lower bound."
     },
     {
-      "relationship": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, while the AFL theorem guarantees monochromatic matchings in colored hypergraphs. Both establish unavoidable monochromatic substructures.",
-      "targetId": "ramseys-theorem"
+      "relationship": "related",
+      "targetId": "ramseys-theorem",
+      "description": "Both are Ramsey-type results: Ramsey's theorem guarantees monochromatic complete subgraphs in colored complete graphs, while the AFL theorem guarantees monochromatic matchings in colored hypergraphs. Both establish unavoidable monochromatic substructures."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #780 is SOLVED: the Alon-Frankl-Lovász theorem (1986) determines the exact chromatic number of Kneser hypergraphs. The formalization axiomatizes the main results (since the proofs require topology beyond Mathlib) and proves the summary theorems with 0 sorries. The threshold $n_0 = kr + (t-1)(k-1)$ is tight, with the tightness construction using a partition coloring.",
-    "implications": "**Theoretical Significance**: The AFL theorem established topological combinatorics as a major field.\n\nLovász's original 1978 proof of Kneser's conjecture demonstrated that the Borsuk-Ulam theorem could solve purely combinatorial problems, inspiring decades of research in topological methods. The Erdős-Ko-Rado connection provides the independence number $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, and the fractional chromatic number $\\chi_f(KG(n,r)) = n/r$ gives further structural information.",
+    "summary": "Erd\u0151s Problem #780 is SOLVED: the Alon-Frankl-Lov\u00e1sz theorem (1986) determines the exact chromatic number of Kneser hypergraphs. The formalization axiomatizes the main results (since the proofs require topology beyond Mathlib) and proves the summary theorems with 0 sorries. The threshold $n_0 = kr + (t-1)(k-1)$ is tight, with the tightness construction using a partition coloring.",
+    "implications": "**Theoretical Significance**: The AFL theorem established topological combinatorics as a major field.\n\nLov\u00e1sz's original 1978 proof of Kneser's conjecture demonstrated that the Borsuk-Ulam theorem could solve purely combinatorial problems, inspiring decades of research in topological methods. The Erd\u0151s-Ko-Rado connection provides the independence number $\\alpha(KG(n,r)) = \\binom{n-1}{r-1}$, and the fractional chromatic number $\\chi_f(KG(n,r)) = n/r$ gives further structural information.",
     "openQuestions": [
-      "Can Matoušek's 2004 combinatorial proof be formalized in Lean using only existing Mathlib?",
+      "Can Matou\u0161ek's 2004 combinatorial proof be formalized in Lean using only existing Mathlib?",
       "What is the chromatic number of generalized Kneser-type structures (q-analogs, multipartite versions)?",
       "Can the topological proof via Borsuk-Ulam be formalized once Mathlib has sufficient algebraic topology?",
       "What is the structure of optimal colorings achieving $\\chi(KG^r(n,k))$?"

@@ -1,10 +1,10 @@
 {
   "id": "erdos-999",
-  "title": "Erdős Problem #999: The Duffin-Schaeffer Conjecture",
+  "title": "Erd\u0151s Problem #999: The Duffin-Schaeffer Conjecture",
   "slug": "erdos-999",
-  "description": "For any f: ℕ → ℕ, almost all α have infinitely many coprime approximations |α - p/q| < f(q)/q iff ∑ φ(q)·f(q)/q = ∞. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
+  "description": "For any f: \u2115 \u2192 \u2115, almost all \u03b1 have infinitely many coprime approximations |\u03b1 - p/q| < f(q)/q iff \u2211 \u03c6(q)\u00b7f(q)/q = \u221e. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
   "meta": {
-    "author": "Duffin-Schaeffer (1941), Erdős (partial), Koukoulopoulos-Maynard (2020)",
+    "author": "Duffin-Schaeffer (1941), Erd\u0151s (partial), Koukoulopoulos-Maynard (2020)",
     "sourceUrl": "https://erdosproblems.com/999",
     "date": "2020",
     "status": "axiomatized",
@@ -40,14 +40,14 @@
       "eulerPhi: wrapper for Nat.totient",
       "IsApproximable: coprime rational approximation within f(q)/q",
       "IsInfinitelyApproximable: approximable for infinitely many q",
-      "DuffinSchaefferSum: partial sums of φ(q)·f(q)/q",
+      "DuffinSchaefferSum: partial sums of \u03c6(q)\u00b7f(q)/q",
       "SeriesDiverges/SeriesConverges: divergence/convergence conditions",
       "AlmostAll: measure-theoretic 'almost all' on [0,1]",
       "DuffinSchaefferConjecture: the full equivalence statement",
-      "easy_direction axiom: approximable → divergence (Borel-Cantelli)",
-      "hard_direction axiom: divergence → approximable (the actual conjecture)",
-      "ErdosCondition: f(q)·q bounded special case",
-      "erdos_bounded_case axiom: Erdős's partial result",
+      "easy_direction axiom: approximable \u2192 divergence (Borel-Cantelli)",
+      "hard_direction axiom: divergence \u2192 approximable (the actual conjecture)",
+      "ErdosCondition: f(q)\u00b7q bounded special case",
+      "erdos_bounded_case axiom: Erd\u0151s's partial result",
       "koukoulopoulos_maynard_2020 axiom: the full conjecture (2020)",
       "duffin_schaeffer_theorem: named version from the axiom",
       "convergence_case axiom: convergence implies almost none",
@@ -62,13 +62,13 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The Duffin-Schaeffer conjecture (1941) was one of the most famous open problems in metric number theory for nearly 80 years. It generalizes Khintchine's theorem (1924) to non-monotone approximation functions. Erdős proved the special case where f(q)·q is bounded. The easy direction (approximability implies divergence) follows from Borel-Cantelli. The hard direction was finally proved by Koukoulopoulos and Maynard in 2020, published in the Annals of Mathematics. Their proof introduced a remarkable new method combining graph theory and sieve techniques to estimate the measure of limsup sets, going far beyond standard Borel-Cantelli and resolving a problem that had resisted all previous attempts since Duffin and Schaeffer first formulated it.",
-    "problemStatement": "For any function f: ℕ → ℕ, the following are equivalent: (1) For almost all α ∈ [0,1], there exist infinitely many coprime pairs (p,q) with |α - p/q| < f(q)/q; (2) The series ∑_{q≥1} φ(q)·f(q)/q diverges. Here φ is Euler's totient function.",
-    "text": "For any f: ℕ → ℕ, almost all α have infinitely many coprime approximations |α - p/q| < f(q)/q iff ∑ φ(q)·f(q)/q = ∞. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
-    "proofStrategy": "The formalization defines approximability, the Duffin-Schaeffer sum, and the divergence/convergence conditions. It axiomatizes both directions of the equivalence separately (easy via Borel-Cantelli, hard via Koukoulopoulos-Maynard 2020), includes Erdős's partial result for bounded f·q, states the zero-one law, the convergence case, continued fractions, and connects to Khintchine's theorem for monotone functions. The summary theorem proves the conjunction of the main results.",
+    "historicalContext": "The Duffin-Schaeffer conjecture (1941) was one of the most famous open problems in metric number theory for nearly 80 years. It generalizes Khintchine's theorem (1924) to non-monotone approximation functions. Erd\u0151s proved the special case where f(q)\u00b7q is bounded. The easy direction (approximability implies divergence) follows from Borel-Cantelli. The hard direction was finally proved by Koukoulopoulos and Maynard in 2020, published in the Annals of Mathematics. Their proof introduced a remarkable new method combining graph theory and sieve techniques to estimate the measure of limsup sets, going far beyond standard Borel-Cantelli and resolving a problem that had resisted all previous attempts since Duffin and Schaeffer first formulated it.",
+    "problemStatement": "For any function f: \u2115 \u2192 \u2115, the following are equivalent: (1) For almost all \u03b1 \u2208 [0,1], there exist infinitely many coprime pairs (p,q) with |\u03b1 - p/q| < f(q)/q; (2) The series \u2211_{q\u22651} \u03c6(q)\u00b7f(q)/q diverges. Here \u03c6 is Euler's totient function.",
+    "text": "For any f: \u2115 \u2192 \u2115, almost all \u03b1 have infinitely many coprime approximations |\u03b1 - p/q| < f(q)/q iff \u2211 \u03c6(q)\u00b7f(q)/q = \u221e. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
+    "proofStrategy": "The formalization defines approximability, the Duffin-Schaeffer sum, and the divergence/convergence conditions. It axiomatizes both directions of the equivalence separately (easy via Borel-Cantelli, hard via Koukoulopoulos-Maynard 2020), includes Erd\u0151s's partial result for bounded f\u00b7q, states the zero-one law, the convergence case, continued fractions, and connects to Khintchine's theorem for monotone functions. The summary theorem proves the conjunction of the main results.",
     "keyInsights": [
       "The coprimality condition (p,q)=1 is essential - without it, the equivalence fails",
-      "The φ(q) factor counts reduced fractions with denominator q",
+      "The \u03c6(q) factor counts reduced fractions with denominator q",
       "Easy direction: Borel-Cantelli shows approximability implies divergence",
       "Hard direction: Required 79 years and graph-theoretic innovations by Koukoulopoulos-Maynard",
       "Zero-one law: Either almost all or almost no reals are infinitely approximable",
@@ -109,10 +109,10 @@
     },
     {
       "id": "erdos-partial",
-      "title": "Erdős's Partial Result",
+      "title": "Erd\u0151s's Partial Result",
       "startLine": 101,
       "endLine": 109,
-      "summary": "Erdős proved the case when f(q)·q is bounded."
+      "summary": "Erd\u0151s proved the case when f(q)\u00b7q is bounded."
     },
     {
       "id": "koukoulopoulos-maynard",
@@ -144,7 +144,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #999 (the Duffin-Schaeffer conjecture) is SOLVED. Koukoulopoulos and Maynard (2020) proved that for any f: ℕ → ℕ, almost all reals have infinitely many coprime rational approximations with error < f(q)/q if and only if ∑ φ(q)·f(q)/q = ∞. This landmark result in metric number theory took 79 years to prove.",
+    "summary": "Erd\u0151s Problem #999 (the Duffin-Schaeffer conjecture) is SOLVED. Koukoulopoulos and Maynard (2020) proved that for any f: \u2115 \u2192 \u2115, almost all reals have infinitely many coprime rational approximations with error < f(q)/q if and only if \u2211 \u03c6(q)\u00b7f(q)/q = \u221e. This landmark result in metric number theory took 79 years to prove.",
     "implications": "This result settles a fundamental question in Diophantine approximation: exactly when can 'typical' real numbers be well-approximated by rationals? It provides a complete characterization via a simple divergence condition, extending Khintchine's classical theorem.",
     "openQuestions": [
       "Effective versions: explicit bounds on the exceptional set",
@@ -169,5 +169,27 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1001",
+      "relationship": "related",
+      "description": "Share diophantine-approximation and measure-theory themes"
+    },
+    {
+      "targetId": "erdos-206",
+      "relationship": "related",
+      "description": "Share diophantine-approximation and measure-theory themes"
+    },
+    {
+      "targetId": "erdos-492",
+      "relationship": "related",
+      "description": "Share diophantine-approximation and measure-theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1001",
+    "erdos-206",
+    "erdos-492"
+  ]
 }

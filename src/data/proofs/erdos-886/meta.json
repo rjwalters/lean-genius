@@ -1,8 +1,8 @@
 {
   "id": "erdos-886",
-  "title": "Erdős Problem #886: Divisors Near the Square Root (Ruzsa's Conjecture)",
+  "title": "Erd\u0151s Problem #886: Divisors Near the Square Root (Ruzsa's Conjecture)",
   "slug": "erdos-886",
-  "description": "For ε > 0, is the count of divisors of n in the interval (√n, √n + n^{1/2-ε}) bounded by O_ε(1)? An open problem about divisor clustering attributed to Ruzsa.",
+  "description": "For \u03b5 > 0, is the count of divisors of n in the interval (\u221an, \u221an + n^{1/2-\u03b5}) bounded by O_\u03b5(1)? An open problem about divisor clustering attributed to Ruzsa.",
   "meta": {
     "author": "Ruzsa (conjecture), Open (unsolved)",
     "sourceUrl": "https://erdosproblems.com/886",
@@ -47,17 +47,17 @@
     ],
     "originalContributions": [
       "divisorsOf definition: divisors of n",
-      "divisorCount definition: τ(n)",
-      "criticalInterval definition: (√n, √n + n^{1/2-ε})",
-      "intervalWidth definition: n^{1/2-ε}",
+      "divisorCount definition: \u03c4(n)",
+      "criticalInterval definition: (\u221an, \u221an + n^{1/2-\u03b5})",
+      "intervalWidth definition: n^{1/2-\u03b5}",
       "divisorsInInterval definition: divisors in (a, b)",
-      "divisorsNearSqrt definition: count of divisors near √n",
+      "divisorsNearSqrt definition: count of divisors near \u221an",
       "ruzsaConjecture definition: formal statement",
-      "erdos_rosenfeld_four_divisors axiom: Erdős-Rosenfeld result",
+      "erdos_rosenfeld_four_divisors axiom: Erd\u0151s-Rosenfeld result",
       "factorDifferenceSet definition: differences between divisors",
       "localDivisorDensity definition: density measure",
       "ruzsaConjectureAlt definition: equivalent formulation",
-      "trivial_bound theorem: upper bound by τ(n)",
+      "trivial_bound theorem: upper bound by \u03c4(n)",
       "erdos_886_summary: main summary theorem"
     ],
     "relatedProblems": [
@@ -71,14 +71,14 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Ruzsa's Conjecture**\n\nThis problem is attributed by Erdős to Imre Z. Ruzsa, a Hungarian mathematician known for work in additive combinatorics and number theory.\n\n**The Question:** Given ε > 0, is there a constant C_ε such that for all sufficiently large n, the number of divisors of n lying in the narrow interval (√n, √n + n^{1/2-ε}) is at most C_ε?\n\n**Why It's Hard:** The interval shrinks relative to √n as n grows (since n^{1/2-ε} / √n = n^{-ε} → 0). Can divisors 'pile up' in this shrinking window?\n\n**Known Result:** Erdős and Rosenfeld (1997) showed there are infinitely many n with four divisors in (√n, √n + n^{1/4}). This uses ε = 1/4, giving a wider interval.\n\n**Current Status:** OPEN. The problem is considered tractable by some researchers.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet $\\varepsilon > 0$. Is it true that, for all large $n$, the number of divisors of $n$ in $(\\sqrt{n}, \\sqrt{n} + n^{1/2-\\varepsilon})$ is $O_\\varepsilon(1)$?\n\n**Interpretation:** As n grows, the interval (√n, √n + n^{1/2-ε}) becomes relatively narrower (width n^{-ε} times √n). The conjecture asks whether only boundedly many divisors can fit in this shrinking window.\n\n**Contrast with Erdős-Rosenfeld:** For ε = 1/4 (giving interval width n^{1/4}), infinitely many n have at least 4 divisors there. The conjecture asks about arbitrarily small ε.",
-    "text": "For ε > 0, is the count of divisors of n in the interval (√n, √n + n^{1/2-ε}) bounded by O_ε(1)? An open problem about divisor clustering attributed to Ruzsa.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Divisor Basics:**\n   - divisorsOf(n): the set n.divisors from Mathlib\n   - divisorCount(n): τ(n) = |divisors|\n\n2. **The Critical Interval:**\n   - criticalInterval: (√n, √n + n^{1/2-ε})\n   - intervalWidth: n^{1/2-ε}\n   - divisorsInInterval: filter divisors by range\n   - divisorsNearSqrt: count in critical interval\n\n3. **The Conjecture:**\n   - ruzsaConjecture: ∀ε > 0, ∃C_ε, ∀large n, count ≤ C_ε\n   - ruzsaConjectureAlt: equivalent density formulation\n\n4. **Known Results:**\n   - Erdős-Rosenfeld: infinitely many n with 4 divisors in (√n, √n + n^{1/4})\n   - Trivial bound: count ≤ τ(n)\n\n5. **Related Concepts:**\n   - factorDifferenceSet: differences between divisors\n   - localDivisorDensity: count / interval width",
+    "historicalContext": "**Ruzsa's Conjecture**\n\nThis problem is attributed by Erd\u0151s to Imre Z. Ruzsa, a Hungarian mathematician known for work in additive combinatorics and number theory.\n\n**The Question:** Given \u03b5 > 0, is there a constant C_\u03b5 such that for all sufficiently large n, the number of divisors of n lying in the narrow interval (\u221an, \u221an + n^{1/2-\u03b5}) is at most C_\u03b5?\n\n**Why It's Hard:** The interval shrinks relative to \u221an as n grows (since n^{1/2-\u03b5} / \u221an = n^{-\u03b5} \u2192 0). Can divisors 'pile up' in this shrinking window?\n\n**Known Result:** Erd\u0151s and Rosenfeld (1997) showed there are infinitely many n with four divisors in (\u221an, \u221an + n^{1/4}). This uses \u03b5 = 1/4, giving a wider interval.\n\n**Current Status:** OPEN. The problem is considered tractable by some researchers.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $\\varepsilon > 0$. Is it true that, for all large $n$, the number of divisors of $n$ in $(\\sqrt{n}, \\sqrt{n} + n^{1/2-\\varepsilon})$ is $O_\\varepsilon(1)$?\n\n**Interpretation:** As n grows, the interval (\u221an, \u221an + n^{1/2-\u03b5}) becomes relatively narrower (width n^{-\u03b5} times \u221an). The conjecture asks whether only boundedly many divisors can fit in this shrinking window.\n\n**Contrast with Erd\u0151s-Rosenfeld:** For \u03b5 = 1/4 (giving interval width n^{1/4}), infinitely many n have at least 4 divisors there. The conjecture asks about arbitrarily small \u03b5.",
+    "text": "For \u03b5 > 0, is the count of divisors of n in the interval (\u221an, \u221an + n^{1/2-\u03b5}) bounded by O_\u03b5(1)? An open problem about divisor clustering attributed to Ruzsa.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Divisor Basics:**\n   - divisorsOf(n): the set n.divisors from Mathlib\n   - divisorCount(n): \u03c4(n) = |divisors|\n\n2. **The Critical Interval:**\n   - criticalInterval: (\u221an, \u221an + n^{1/2-\u03b5})\n   - intervalWidth: n^{1/2-\u03b5}\n   - divisorsInInterval: filter divisors by range\n   - divisorsNearSqrt: count in critical interval\n\n3. **The Conjecture:**\n   - ruzsaConjecture: \u2200\u03b5 > 0, \u2203C_\u03b5, \u2200large n, count \u2264 C_\u03b5\n   - ruzsaConjectureAlt: equivalent density formulation\n\n4. **Known Results:**\n   - Erd\u0151s-Rosenfeld: infinitely many n with 4 divisors in (\u221an, \u221an + n^{1/4})\n   - Trivial bound: count \u2264 \u03c4(n)\n\n5. **Related Concepts:**\n   - factorDifferenceSet: differences between divisors\n   - localDivisorDensity: count / interval width",
     "keyInsights": [
-      "**Shrinking Window:** The interval (√n, √n + n^{1/2-ε}) shrinks relative to √n as n grows",
-      "**Divisor Clustering:** Can divisors 'cluster' near √n in this narrow band?",
-      "**Erdős-Rosenfeld (1997):** For ε = 1/4, infinitely many n have ≥ 4 divisors in the interval",
+      "**Shrinking Window:** The interval (\u221an, \u221an + n^{1/2-\u03b5}) shrinks relative to \u221an as n grows",
+      "**Divisor Clustering:** Can divisors 'cluster' near \u221an in this narrow band?",
+      "**Erd\u0151s-Rosenfeld (1997):** For \u03b5 = 1/4, infinitely many n have \u2265 4 divisors in the interval",
       "**Attributed to Ruzsa:** Imre Z. Ruzsa, Hungarian additive combinatorialist",
       "**Related to #887:** Companion problem about divisor distribution",
       "**Factor-Difference Set:** The spacing between divisors is key to understanding clustering"
@@ -98,7 +98,7 @@
     },
     {
       "id": "critical-interval",
-      "title": "The Interval Near √n",
+      "title": "The Interval Near \u221an",
       "summary": "criticalInterval, intervalWidth, intervalWidth_sublinear",
       "startLine": 51,
       "endLine": 67
@@ -119,7 +119,7 @@
     },
     {
       "id": "erdos-rosenfeld",
-      "title": "Erdős-Rosenfeld Result",
+      "title": "Erd\u0151s-Rosenfeld Result",
       "summary": "erdos_rosenfeld_four_divisors, erdos_rosenfeld axioms",
       "startLine": 95,
       "endLine": 109
@@ -133,7 +133,7 @@
     },
     {
       "id": "density",
-      "title": "Divisor Density Near √n",
+      "title": "Divisor Density Near \u221an",
       "summary": "localDivisorDensity, ruzsaConjectureAlt, conjecture_equivalence",
       "startLine": 125,
       "endLine": 142
@@ -155,19 +155,19 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_886_summary theorem combining trivial_bound and Erdős-Rosenfeld",
+      "summary": "erdos_886_summary theorem combining trivial_bound and Erd\u0151s-Rosenfeld",
       "startLine": 167,
       "endLine": 170
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #886 asks whether divisors of n can cluster in the narrow interval (√n, √n + n^{1/2-ε}). The conjecture, attributed to Ruzsa, asserts that only O_ε(1) divisors can fit there. The problem remains OPEN. Erdős-Rosenfeld (1997) showed that for ε = 1/4 (wider interval), infinitely many n have at least 4 divisors in the interval.",
-    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Divisor Distribution:** Understanding how divisors cluster near √n reveals structure in multiplication\n\n2. **Factor-Difference Set:** Related to the Erdős-Rosenfeld paper on factor differences\n\n**3. Analytic Number Theory:** Connects to estimates on divisor counting functions\n\n4. **Problem #887:** Companion problem asks related questions\n\n5. **Additive Combinatorics:** Ruzsa's involvement suggests connections to additive structure.",
+    "summary": "Erd\u0151s Problem #886 asks whether divisors of n can cluster in the narrow interval (\u221an, \u221an + n^{1/2-\u03b5}). The conjecture, attributed to Ruzsa, asserts that only O_\u03b5(1) divisors can fit there. The problem remains OPEN. Erd\u0151s-Rosenfeld (1997) showed that for \u03b5 = 1/4 (wider interval), infinitely many n have at least 4 divisors in the interval.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Divisor Distribution:** Understanding how divisors cluster near \u221an reveals structure in multiplication\n\n2. **Factor-Difference Set:** Related to the Erd\u0151s-Rosenfeld paper on factor differences\n\n**3. Analytic Number Theory:** Connects to estimates on divisor counting functions\n\n4. **Problem #887:** Companion problem asks related questions\n\n5. **Additive Combinatorics:** Ruzsa's involvement suggests connections to additive structure.",
     "openQuestions": [
-      "Is Ruzsa's conjecture true for any ε > 0?",
-      "What is the maximum number of divisors possible in (√n, √n + n^{1/2-ε})?",
-      "For which ε values can unbounded clustering occur?",
-      "What is the structure of n achieving maximal divisor count near √n?",
+      "Is Ruzsa's conjecture true for any \u03b5 > 0?",
+      "What is the maximum number of divisors possible in (\u221an, \u221an + n^{1/2-\u03b5})?",
+      "For which \u03b5 values can unbounded clustering occur?",
+      "What is the structure of n achieving maximal divisor count near \u221an?",
       "How does the answer depend on the prime factorization of n?"
     ]
   },
@@ -191,5 +191,39 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1099",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1100",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-204",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-1099",
+    "erdos-1100",
+    "erdos-144",
+    "erdos-204"
+  ]
 }

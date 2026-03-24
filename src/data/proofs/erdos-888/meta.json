@@ -1,10 +1,10 @@
 {
   "id": "erdos-888",
-  "title": "Erdős Problem #888: Square Products with ad = bc Constraint",
+  "title": "Erd\u0151s Problem #888: Square Products with ad = bc Constraint",
   "slug": "erdos-888",
-  "description": "What is the size of the largest A ⊆ {1,...,n} such that if a ≤ b ≤ c ≤ d ∈ A and abcd is a perfect square, then ad = bc? The exact answer is OPEN, but bounds are SOLVED: Sárközy proved |A| = o(n), while the primes show |A| ≫ n/log n.",
+  "description": "What is the size of the largest A \u2286 {1,...,n} such that if a \u2264 b \u2264 c \u2264 d \u2208 A and abcd is a perfect square, then ad = bc? The exact answer is OPEN, but bounds are SOLVED: S\u00e1rk\u00f6zy proved |A| = o(n), while the primes show |A| \u226b n/log n.",
   "meta": {
-    "author": "Erdős, Sárközy, Sós",
+    "author": "Erd\u0151s, S\u00e1rk\u00f6zy, S\u00f3s",
     "sourceUrl": "https://erdosproblems.com/888",
     "date": "",
     "status": "axiomatized",
@@ -50,9 +50,9 @@
     "originalContributions": [
       "Definition of square-product condition: if abcd square then ad = bc",
       "Statement of the main open problem for maximum set size",
-      "Axiomatization of Sárközy's sublinear upper bound: |A| = o(n)",
+      "Axiomatization of S\u00e1rk\u00f6zy's sublinear upper bound: |A| = o(n)",
       "Construction of primes satisfying the condition",
-      "Prime lower bound: maxValidSize(n) ≥ π(n) ≫ n/log n",
+      "Prime lower bound: maxValidSize(n) \u2265 \u03c0(n) \u226b n/log n",
       "Proofs: empty set and singletons satisfy condition",
       "Variants: weaker pair condition, squarefree restriction"
     ],
@@ -61,17 +61,17 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #888 was posed by Erdős, Sárközy, and Sós. It asks about the maximum size of subsets of {1,...,n} with a specific multiplicative constraint.\n\n**Key results**:\n- **Sárközy**: Proved |A| = o(n), meaning the maximum grows sublinearly. This uses counting arguments involving the multiplicative structure of integers.\n- **Prime construction**: The set of primes up to n satisfies the condition, giving |A| ≥ π(n) ~ n/log n by the Prime Number Theorem.\n\n**Why primes work**: If four distinct primes p₁ ≤ p₂ ≤ p₃ ≤ p₄ have p₁p₂p₃p₄ square, each prime must appear an even number of times. With distinct primes, this is impossible. With equal primes, ad = bc trivially holds.\n\nThe exact asymptotic for the maximum remains **OPEN** - it lies somewhere between n/log n and o(n).",
-    "problemStatement": "**Erdős Problem #888**: What is the maximum size of $A \\subseteq \\{1,\\ldots,n\\}$ such that whenever $a \\leq b \\leq c \\leq d \\in A$ and $abcd$ is a perfect square, then $ad = bc$?\n\n**Status**: Exact answer OPEN; bounds SOLVED\n\n**Known bounds**:\n$$\\frac{n}{\\log n} \\ll \\max|A| = o(n)$$\n\n**Lower bound**: Primes satisfy the condition, giving $|A| \\geq \\pi(n) \\sim n/\\log n$\n\n**Upper bound**: Sárközy proved $|A| = o(n)$ (sublinear growth)\n\nSee also Erdős Problem #121 for related questions.",
-    "text": "What is the size of the largest A ⊆ {1,...,n} such that if a ≤ b ≤ c ≤ d ∈ A and abcd is a perfect square, then ad = bc? The exact answer is OPEN, but bounds are SOLVED: Sárközy proved |A| = o(n), while the primes show |A| ≫ n/log n.",
-    "proofStrategy": "The formalization captures both the open problem and the known bounds:\n\n1. **Core Condition**: Define `squareProductCondition` as the implication: ordered quadruple with square product implies ad = bc.\n\n2. **Required Condition**: A set A satisfies the condition if all quadruples from A satisfy the square-product constraint.\n\n3. **Maximum Function**: Axiomatize `maxValidSize n` as the supremum of valid set sizes.\n\n4. **Sárközy's Upper Bound**: Axiomatize that for any ε > 0, eventually maxValidSize(n) < εn.\n\n5. **Prime Lower Bound**: Define `primesUpTo n` and axiomatize that primes satisfy the condition, giving the n/log n lower bound.\n\n6. **Examples**: Prove empty sets and singletons satisfy the condition; axiomatize pairs.",
+    "historicalContext": "Erd\u0151s Problem #888 was posed by Erd\u0151s, S\u00e1rk\u00f6zy, and S\u00f3s. It asks about the maximum size of subsets of {1,...,n} with a specific multiplicative constraint.\n\n**Key results**:\n- **S\u00e1rk\u00f6zy**: Proved |A| = o(n), meaning the maximum grows sublinearly. This uses counting arguments involving the multiplicative structure of integers.\n- **Prime construction**: The set of primes up to n satisfies the condition, giving |A| \u2265 \u03c0(n) ~ n/log n by the Prime Number Theorem.\n\n**Why primes work**: If four distinct primes p\u2081 \u2264 p\u2082 \u2264 p\u2083 \u2264 p\u2084 have p\u2081p\u2082p\u2083p\u2084 square, each prime must appear an even number of times. With distinct primes, this is impossible. With equal primes, ad = bc trivially holds.\n\nThe exact asymptotic for the maximum remains **OPEN** - it lies somewhere between n/log n and o(n).",
+    "problemStatement": "**Erd\u0151s Problem #888**: What is the maximum size of $A \\subseteq \\{1,\\ldots,n\\}$ such that whenever $a \\leq b \\leq c \\leq d \\in A$ and $abcd$ is a perfect square, then $ad = bc$?\n\n**Status**: Exact answer OPEN; bounds SOLVED\n\n**Known bounds**:\n$$\\frac{n}{\\log n} \\ll \\max|A| = o(n)$$\n\n**Lower bound**: Primes satisfy the condition, giving $|A| \\geq \\pi(n) \\sim n/\\log n$\n\n**Upper bound**: S\u00e1rk\u00f6zy proved $|A| = o(n)$ (sublinear growth)\n\nSee also Erd\u0151s Problem #121 for related questions.",
+    "text": "What is the size of the largest A \u2286 {1,...,n} such that if a \u2264 b \u2264 c \u2264 d \u2208 A and abcd is a perfect square, then ad = bc? The exact answer is OPEN, but bounds are SOLVED: S\u00e1rk\u00f6zy proved |A| = o(n), while the primes show |A| \u226b n/log n.",
+    "proofStrategy": "The formalization captures both the open problem and the known bounds:\n\n1. **Core Condition**: Define `squareProductCondition` as the implication: ordered quadruple with square product implies ad = bc.\n\n2. **Required Condition**: A set A satisfies the condition if all quadruples from A satisfy the square-product constraint.\n\n3. **Maximum Function**: Axiomatize `maxValidSize n` as the supremum of valid set sizes.\n\n4. **S\u00e1rk\u00f6zy's Upper Bound**: Axiomatize that for any \u03b5 > 0, eventually maxValidSize(n) < \u03b5n.\n\n5. **Prime Lower Bound**: Define `primesUpTo n` and axiomatize that primes satisfy the condition, giving the n/log n lower bound.\n\n6. **Examples**: Prove empty sets and singletons satisfy the condition; axiomatize pairs.",
     "keyInsights": [
       "**The ad = bc constraint**: This forces geometric-like structure. If a, b, c, d form a geometric progression, then b/a = c/b = d/c implies bc = ad.",
-      "**Why primes work**: A product p₁p₂p₃p₄ of primes is square only if each prime appears an even number of times. With at most 4 primes total, we need repetitions, which forces ad = bc.",
+      "**Why primes work**: A product p\u2081p\u2082p\u2083p\u2084 of primes is square only if each prime appears an even number of times. With at most 4 primes total, we need repetitions, which forces ad = bc.",
       "**The gap is logarithmic**: The gap between lower bound (n/log n) and upper bound (o(n)) is about a log n factor. Closing this gap is the open problem.",
-      "**Multiplicative number theory connection**: Sárközy's proof uses techniques from multiplicative number theory, counting representations of integers as products.",
+      "**Multiplicative number theory connection**: S\u00e1rk\u00f6zy's proof uses techniques from multiplicative number theory, counting representations of integers as products.",
       "**Squarefree variant**: Restricting to squarefree numbers might simplify the problem, as their prime factorizations are simpler.",
-      "**Connection to Problem 121**: Related multiplicative constraints appear in Erdős Problem #121."
+      "**Connection to Problem 121**: Related multiplicative constraints appear in Erd\u0151s Problem #121."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -103,7 +103,7 @@
     },
     {
       "id": "sarkozy-bound",
-      "title": "Sárközy's Upper Bound",
+      "title": "S\u00e1rk\u00f6zy's Upper Bound",
       "startLine": 101,
       "endLine": 118,
       "summary": "The sublinear upper bound |A| = o(n)."
@@ -113,7 +113,7 @@
       "title": "Prime Lower Bound",
       "startLine": 120,
       "endLine": 168,
-      "summary": "Primes satisfy the condition, giving |A| ≥ π(n) ≫ n/log n."
+      "summary": "Primes satisfy the condition, giving |A| \u2265 \u03c0(n) \u226b n/log n."
     },
     {
       "id": "examples",
@@ -131,14 +131,14 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #888, which asks for the maximum size of A ⊆ {1,...,n} such that ordered quadruples with square product satisfy ad = bc. The exact answer is OPEN, but we capture the known bounds: Sárközy's o(n) upper bound and the prime construction giving n/log n lower bound.",
+    "summary": "We formalize Erd\u0151s Problem #888, which asks for the maximum size of A \u2286 {1,...,n} such that ordered quadruples with square product satisfy ad = bc. The exact answer is OPEN, but we capture the known bounds: S\u00e1rk\u00f6zy's o(n) upper bound and the prime construction giving n/log n lower bound.",
     "implications": "**Theoretical Significance**: This problem connects combinatorial number theory with multiplicative structure.\n\nThe constraint ad = bc relates to geometric progressions and imposes strong restrictions on how elements can interact multiplicatively. Understanding the exact maximum would reveal deep facts about the distribution of square-free numbers and prime factorizations.",
     "openQuestions": [
       "What is the exact asymptotic formula for maxValidSize(n)?",
-      "Is there a construction better than primes achieving ω(n/log n)?",
+      "Is there a construction better than primes achieving \u03c9(n/log n)?",
       "What is the maximum for squarefree numbers only?",
       "How does the maximum change if we weaken 'square' to 'kth power'?",
-      "What techniques from Sárközy's proof can be improved?"
+      "What techniques from S\u00e1rk\u00f6zy's proof can be improved?"
     ]
   },
   "leanFile": {
@@ -158,5 +158,39 @@
     "axiomCount": 11,
     "theoremCount": 4,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-425",
+      "relationship": "related",
+      "description": "Share prime-numbers, number-theoretic, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Share partially-solved, number-theoretic, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-306",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-318",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-420",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-425",
+    "erdos-711",
+    "erdos-306",
+    "erdos-318",
+    "erdos-420"
+  ]
 }

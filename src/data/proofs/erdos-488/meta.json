@@ -1,10 +1,10 @@
 {
   "id": "erdos-488",
-  "title": "Erdős Problem #488: Divisibility Density in Multiples of Finite Sets",
+  "title": "Erd\u0151s Problem #488: Divisibility Density in Multiples of Finite Sets",
   "slug": "erdos-488",
-  "description": "Let A be a finite set and B = {n ≥ 1 : a | n for some a ∈ A}. Is |B ∩ [1,m]|/m < 2·|B ∩ [1,n]|/n for all m > n ≥ max(A)? The constant 2 is optimal.",
+  "description": "Let A be a finite set and B = {n \u2265 1 : a | n for some a \u2208 A}. Is |B \u2229 [1,m]|/m < 2\u00b7|B \u2229 [1,n]|/n for all m > n \u2265 max(A)? The constant 2 is optimal.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/488",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos488Problem.lean",
@@ -25,9 +25,9 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1961, asking whether the density of multiples of a finite set satisfies a doubling inequality. The 1961 formulation contained a likely typographic error (writing $a \\nmid n$ instead of $a \\mid n$), corrected in a 1966 paper. The problem sits within the classical theory of sequences of multiples, initiated by Davenport's 1933 theorem that the natural density of the set of multiples of any sequence exists (extending Schnirelmann density ideas). Besicovitch (1935) showed that for infinite sets, the asymptotic density of multiples need not exist, making the finite-set case fundamentally different. The optimality claim — that the constant 2 cannot be improved — connects to the behavior of the floor function $\\lfloor N/a \\rfloor$ near the transition points $N = 2a - 1$ and $N = 2a$, where the density ratio jumps discontinuously. Halberstam and Roth's 1966 monograph 'Sequences' provides the definitive treatment of this circle of ideas, placing Erdős's question in the context of additive and multiplicative number theory.",
+    "historicalContext": "Erd\u0151s posed this problem in 1961, asking whether the density of multiples of a finite set satisfies a doubling inequality. The 1961 formulation contained a likely typographic error (writing $a \\nmid n$ instead of $a \\mid n$), corrected in a 1966 paper. The problem sits within the classical theory of sequences of multiples, initiated by Davenport's 1933 theorem that the natural density of the set of multiples of any sequence exists (extending Schnirelmann density ideas). Besicovitch (1935) showed that for infinite sets, the asymptotic density of multiples need not exist, making the finite-set case fundamentally different. The optimality claim \u2014 that the constant 2 cannot be improved \u2014 connects to the behavior of the floor function $\\lfloor N/a \\rfloor$ near the transition points $N = 2a - 1$ and $N = 2a$, where the density ratio jumps discontinuously. Halberstam and Roth's 1966 monograph 'Sequences' provides the definitive treatment of this circle of ideas, placing Erd\u0151s's question in the context of additive and multiplicative number theory.",
     "problemStatement": "Let $A$ be a finite set of integers $\\geq 2$ and $B = \\{n \\geq 1 : a \\mid n \\text{ for some } a \\in A\\}$. Is it true that for every $m > n \\geq \\max(A)$, $\\frac{|B \\cap [1,m]|}{m} < 2 \\cdot \\frac{|B \\cap [1,n]|}{n}$?",
-    "text": "Let A be a finite set and B = {n ≥ 1 : a | n for some a ∈ A}. Is |B ∩ [1,m]|/m < 2·|B ∩ [1,n]|/n for all m > n ≥ max(A)? The constant 2 is optimal.",
+    "text": "Let A be a finite set and B = {n \u2265 1 : a | n for some a \u2208 A}. Is |B \u2229 [1,m]|/m < 2\u00b7|B \u2229 [1,n]|/n for all m > n \u2265 max(A)? The constant 2 is optimal.",
     "proofStrategy": "The formalization defines the multiples set $B(A)$ as a set comprehension, then introduces a counting function `multiplesCount` using `Finset.filter` on `Finset.Icc 1 N`, and the density ratio as a rational quotient. The main conjecture is stated as a universal inequality over all finite $A$ and valid pairs $(n, m)$. Supporting results include the singleton count formula $|B(\\{a\\}) \\cap [1, N]| = \\lfloor N/a \\rfloor$, monotonicity of the counting function, and Davenport's theorem on the existence of asymptotic density. The optimality of the constant 2 is axiomatized via the singleton example $A = \\{a\\}$ with $n = 2a - 1$, $m = 2a$.",
     "keyInsights": [
       "**Multiples set as union of arithmetic progressions**: $B(A) = \\bigcup_{a \\in A} a\\mathbb{Z}_{>0}$, so $|B \\cap [1,N]|$ can be computed by inclusion-exclusion over the $\\lfloor N/a \\rfloor$ terms",
@@ -47,14 +47,14 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Module docstring stating Erdős Problem 488 on the density doubling inequality for multiples of finite sets. Imports `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Rat.Basic`, and `Tactic`."
+      "summary": "Module docstring stating Erd\u0151s Problem 488 on the density doubling inequality for multiples of finite sets. Imports `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Rat.Basic`, and `Tactic`."
     },
     {
       "id": "multiples-set",
       "title": "Multiples Set Definition",
       "startLine": 27,
       "endLine": 30,
-      "summary": "Defines `multiplesSet A` as the set $B(A) = \\{n \\geq 1 : \\exists a \\in A,\\; a \\mid n\\}$ — the positive integers divisible by some element of $A$."
+      "summary": "Defines `multiplesSet A` as the set $B(A) = \\{n \\geq 1 : \\exists a \\in A,\\; a \\mid n\\}$ \u2014 the positive integers divisible by some element of $A$."
     },
     {
       "id": "counting-function",
@@ -93,7 +93,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem 488 on the density regularity of multiples of finite sets, defining the key objects (multiples set, counting function, density ratio) and stating the main doubling inequality as a universal proposition. Supporting axioms establish the singleton count formula, monotonicity properties, the optimality of the constant 2, and Davenport's theorem on asymptotic density existence.",
+    "summary": "This formalization captures Erd\u0151s Problem 488 on the density regularity of multiples of finite sets, defining the key objects (multiples set, counting function, density ratio) and stating the main doubling inequality as a universal proposition. Supporting axioms establish the singleton count formula, monotonicity properties, the optimality of the constant 2, and Davenport's theorem on asymptotic density existence.",
     "implications": "A proof of the conjecture would establish a fundamental uniformity property for the density of divisibility sequences: the density ratio can fluctuate but never more than doubles past the threshold $\\max(A)$. This connects to broader questions about the regularity of arithmetic functions and sieve methods, and would complement Davenport's density theorem with a quantitative stability bound.",
     "openQuestions": [
       "Can the density doubling inequality be proved using sieve methods (e.g., the Selberg sieve or Brun's sieve applied to multiples)?",
@@ -118,11 +118,45 @@
     "definitionCount": 4
   },
   "references": [
-    "Erdős (1961): original formulation (with likely typo)",
-    "Erdős (1966): corrected formulation with a | n",
+    "Erd\u0151s (1961): original formulation (with likely typo)",
+    "Erd\u0151s (1966): corrected formulation with a | n",
     "Davenport (1933): natural density of sequences of multiples",
     "Besicovitch (1935): sequences of multiples need not have asymptotic density",
     "Halberstam & Roth (1966): Sequences, Chapter 2",
     "https://erdosproblems.com/488"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-12",
+      "relationship": "related",
+      "description": "Share divisibility and density themes"
+    },
+    {
+      "targetId": "erdos-389",
+      "relationship": "related",
+      "description": "Share divisibility and number theory themes"
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Share density and number theory themes"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Share density and number theory themes"
+    },
+    {
+      "targetId": "erdos-690",
+      "relationship": "related",
+      "description": "Share density and number theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-12",
+    "erdos-389",
+    "erdos-10",
+    "erdos-281",
+    "erdos-690"
   ]
 }

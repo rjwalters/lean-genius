@@ -1,10 +1,10 @@
 {
   "id": "erdos-105",
-  "title": "Erdős Problem #105: Lines Avoiding a Point Set",
+  "title": "Erd\u0151s Problem #105: Lines Avoiding a Point Set",
   "slug": "erdos-105",
   "description": "Given n points A (not collinear) and n-3 points B, must some line hit 2+ points of A and miss B entirely? DISPROVED by Xichuan with explicit counterexamples. Variants with n-4 or (1-o(1))n remain open.",
   "meta": {
-    "author": "Erdős & Purdy (conjecture), Xichuan (disproof)",
+    "author": "Erd\u0151s & Purdy (conjecture), Xichuan (disproof)",
     "sourceUrl": "https://erdosproblems.com/105",
     "date": "2024",
     "status": "axiomatized",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space ℝ²",
+        "description": "Euclidean space \u211d\u00b2",
         "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
       },
       {
@@ -45,7 +45,7 @@
       "Point, Line, Line.contains, Line.isRich, Line.unblocked definitions",
       "NonCollinear and ErdosPurdyConjecture definitions",
       "xichuan_counterexample axiom (2024 disproof)",
-      "erdos_105_disproved: proved ¬ErdosPurdyConjecture",
+      "erdos_105_disproved: proved \u00acErdosPurdyConjecture",
       "hickerson_n_minus_2 and beck_szemeredi_trotter_positive axioms",
       "incidenceCount definition and szemeredi_trotter axiom",
       "thresholdFunction with lower and upper bound axioms",
@@ -56,7 +56,7 @@
     "relatedProblems": [
       {
         "id": "erdos-211",
-        "relationship": "Beck and Szemerédi-Trotter results on point-line incidences"
+        "relationship": "Beck and Szemer\u00e9di-Trotter results on point-line incidences"
       }
     ],
     "axiomCount": 8,
@@ -64,16 +64,16 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Point-Line Incidences and Blocking Sets**\n\nErdős Problem #105 sits at the intersection of incidence geometry and extremal combinatorics. A *rich line* for a point set $A \\subset \\mathbb{R}^2$ is one containing $\\geq 2$ points of $A$; the question is how many *obstacle* points are needed to *block* every rich line — i.e., place a point of $B$ on each.\n\n**Szemerédi-Trotter Foundation (1983)**: The Szemerédi-Trotter theorem $I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ implies that $n$ non-collinear points determine $\\Omega(n^2)$ rich lines (most through exactly 2 points). Beck (1983) independently proved that for any $c > 0$ sufficiently small, $cn$ obstacle points cannot block all rich lines — by a double-counting argument, $cn$ obstacles can lie on at most $O(cn \\cdot n) = O(cn^2)$ rich lines, which for small $c$ is fewer than the total.\n\n**The Erdős-Purdy Conjecture (1995)**: Erdős and Purdy conjectured that even $n - 3$ obstacles cannot block all rich lines of $n$ non-collinear points. They offered a \\$50 prize for proof or disproof. The number $n - 3$ was motivated by Hickerson's construction showing $n - 2$ obstacles *can* block all rich lines, making $n - 3$ the natural boundary case.\n\n**Hickerson's $n - 2$ Construction**: Hickerson exhibited, for each $n$, a configuration of $n$ non-collinear points $A$ and $n - 2$ obstacles $B$ such that every rich line of $A$ passes through a point of $B$. This established $f(n) \\leq n - 3$ for the threshold function.\n\n**Xichuan's Disproof (2024)**: Xichuan constructed three explicit counterexamples showing that $n - 3$ obstacles also suffice to block all rich lines. The constructions exploit point configurations where $A$ has unusually few rich lines relative to its size — specifically, configurations where the rich lines can be covered by $n - 3$ points. This disproved the Erdős-Purdy conjecture and earned the \\$50 prize, establishing $f(n) \\leq n - 4$.\n\n**Current State**: The threshold function $f(n)$ satisfies $cn \\leq f(n) \\leq n - 4$ for some constant $c > 0$. The enormous gap between linear and near-linear bounds is the central open problem.",
-    "problemStatement": "**Problem Statement**\n\nLet A, B ⊂ ℝ² be disjoint sets with |A| = n, |B| = n-3, and A not contained on a single line. Must there exist a line containing at least two points from A and no points from B?\n\n**Answer**: NO (DISPROVED)\n\n**Counterexamples**: Xichuan provided three explicit counterexamples.\n\n**Prize**: $50 (awarded for disproof)\n\n**Bounds History**:\n- n-2 obstacles: FALSE (Hickerson construction)\n- n-3 obstacles: FALSE (Xichuan counterexamples)\n- cn obstacles: TRUE for some c > 0 (Beck, Szemerédi-Trotter)\n\n**Open**: What is the largest f(n) such that the statement holds with f(n) obstacles?",
+    "historicalContext": "**Point-Line Incidences and Blocking Sets**\n\nErd\u0151s Problem #105 sits at the intersection of incidence geometry and extremal combinatorics. A *rich line* for a point set $A \\subset \\mathbb{R}^2$ is one containing $\\geq 2$ points of $A$; the question is how many *obstacle* points are needed to *block* every rich line \u2014 i.e., place a point of $B$ on each.\n\n**Szemer\u00e9di-Trotter Foundation (1983)**: The Szemer\u00e9di-Trotter theorem $I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ implies that $n$ non-collinear points determine $\\Omega(n^2)$ rich lines (most through exactly 2 points). Beck (1983) independently proved that for any $c > 0$ sufficiently small, $cn$ obstacle points cannot block all rich lines \u2014 by a double-counting argument, $cn$ obstacles can lie on at most $O(cn \\cdot n) = O(cn^2)$ rich lines, which for small $c$ is fewer than the total.\n\n**The Erd\u0151s-Purdy Conjecture (1995)**: Erd\u0151s and Purdy conjectured that even $n - 3$ obstacles cannot block all rich lines of $n$ non-collinear points. They offered a \\$50 prize for proof or disproof. The number $n - 3$ was motivated by Hickerson's construction showing $n - 2$ obstacles *can* block all rich lines, making $n - 3$ the natural boundary case.\n\n**Hickerson's $n - 2$ Construction**: Hickerson exhibited, for each $n$, a configuration of $n$ non-collinear points $A$ and $n - 2$ obstacles $B$ such that every rich line of $A$ passes through a point of $B$. This established $f(n) \\leq n - 3$ for the threshold function.\n\n**Xichuan's Disproof (2024)**: Xichuan constructed three explicit counterexamples showing that $n - 3$ obstacles also suffice to block all rich lines. The constructions exploit point configurations where $A$ has unusually few rich lines relative to its size \u2014 specifically, configurations where the rich lines can be covered by $n - 3$ points. This disproved the Erd\u0151s-Purdy conjecture and earned the \\$50 prize, establishing $f(n) \\leq n - 4$.\n\n**Current State**: The threshold function $f(n)$ satisfies $cn \\leq f(n) \\leq n - 4$ for some constant $c > 0$. The enormous gap between linear and near-linear bounds is the central open problem.",
+    "problemStatement": "**Problem Statement**\n\nLet A, B \u2282 \u211d\u00b2 be disjoint sets with |A| = n, |B| = n-3, and A not contained on a single line. Must there exist a line containing at least two points from A and no points from B?\n\n**Answer**: NO (DISPROVED)\n\n**Counterexamples**: Xichuan provided three explicit counterexamples.\n\n**Prize**: $50 (awarded for disproof)\n\n**Bounds History**:\n- n-2 obstacles: FALSE (Hickerson construction)\n- n-3 obstacles: FALSE (Xichuan counterexamples)\n- cn obstacles: TRUE for some c > 0 (Beck, Szemer\u00e9di-Trotter)\n\n**Open**: What is the largest f(n) such that the statement holds with f(n) obstacles?",
     "text": "Given n points A (not collinear) and n-3 points B, must some line hit 2+ points of A and miss B entirely? DISPROVED by Xichuan with explicit counterexamples. Variants with n-4 or (1-o(1))n remain open.",
-    "proofStrategy": "**Disproof by Counterexample with Positive Result Packaging**\n\nThe formalization captures three layers: (1) the disproof of the Erdős-Purdy conjecture, (2) the positive Beck-Szemerédi-Trotter result at the linear scale, and (3) the threshold function bounding the transition.\n\n**Layer 1 — Definitions (fully formalized)**: Points in $\\mathbb{R}^2$ are `EuclideanSpace \\mathbb{R} (\\text{Fin}\\, 2)` (Mathlib's standard representation). Lines are parametric: $\\ell = \\{p_0 + td : t \\in \\mathbb{R}\\}$ with $d \\neq 0$. `Line.isRich` requires $\\exists p, q \\in A$ distinct on $\\ell$; `Line.unblocked` requires $\\forall b \\in B,\\, b \\notin \\ell$. `NonCollinear(A)` asserts $\\nexists \\ell : A \\subseteq \\ell$. `ErdosPurdyConjecture` universally quantifies: for all $A, B$ with $|A| = n \\geq 4$, $|B| = n - 3$, disjoint, $A$ non-collinear, $\\exists$ rich unblocked line.\n\n**Layer 2 — Disproof (proved theorem)**: `xichuan_counterexample` is axiomatized: $\\exists A, B, n$ with $|A| = n$, $|B| = n - 3$, $A$ non-collinear, yet $\\forall \\ell : \\ell \\text{ rich for } A \\implies \\ell \\text{ blocked by } B$. The theorem `erdos_105_disproved : \\neg\\text{ErdosPurdyConjecture}` is proved by `intro h` (assume the conjecture), destructuring the counterexample to get $A, B, n$ and all hypotheses, applying $h$ to obtain a rich unblocked line $L$, then deriving a contradiction from `hblocked L hrich hunblocked`.\n\n**Layer 3 — Context (axiomatized results)**: `hickerson_n_minus_2` axiomatizes the stronger blocking at $n - 2$. `beck_szemeredi_trotter_positive` axiomatizes: $\\exists c > 0$ such that $|B| \\leq c|A|$ implies a rich unblocked line exists. The Szemerédi-Trotter theorem itself is axiomatized as $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$, with `incidenceCount` fully defined via `Finset.filter`. The threshold function $f(n)$ is axiomatized with bounds $cn \\leq f(n) \\leq n - 4$.\n\n**Layer 4 — Summary**: `erdos_105_summary` packages both the disproof and positive result as $\\neg\\text{ErdosPurdyConj} \\land \\text{beck\\_szemeredi\\_trotter\\_positive}$ via `exact ⟨erdos_105_disproved, beck_szemeredi_trotter_positive⟩`.",
+    "proofStrategy": "**Disproof by Counterexample with Positive Result Packaging**\n\nThe formalization captures three layers: (1) the disproof of the Erd\u0151s-Purdy conjecture, (2) the positive Beck-Szemer\u00e9di-Trotter result at the linear scale, and (3) the threshold function bounding the transition.\n\n**Layer 1 \u2014 Definitions (fully formalized)**: Points in $\\mathbb{R}^2$ are `EuclideanSpace \\mathbb{R} (\\text{Fin}\\, 2)` (Mathlib's standard representation). Lines are parametric: $\\ell = \\{p_0 + td : t \\in \\mathbb{R}\\}$ with $d \\neq 0$. `Line.isRich` requires $\\exists p, q \\in A$ distinct on $\\ell$; `Line.unblocked` requires $\\forall b \\in B,\\, b \\notin \\ell$. `NonCollinear(A)` asserts $\\nexists \\ell : A \\subseteq \\ell$. `ErdosPurdyConjecture` universally quantifies: for all $A, B$ with $|A| = n \\geq 4$, $|B| = n - 3$, disjoint, $A$ non-collinear, $\\exists$ rich unblocked line.\n\n**Layer 2 \u2014 Disproof (proved theorem)**: `xichuan_counterexample` is axiomatized: $\\exists A, B, n$ with $|A| = n$, $|B| = n - 3$, $A$ non-collinear, yet $\\forall \\ell : \\ell \\text{ rich for } A \\implies \\ell \\text{ blocked by } B$. The theorem `erdos_105_disproved : \\neg\\text{ErdosPurdyConjecture}` is proved by `intro h` (assume the conjecture), destructuring the counterexample to get $A, B, n$ and all hypotheses, applying $h$ to obtain a rich unblocked line $L$, then deriving a contradiction from `hblocked L hrich hunblocked`.\n\n**Layer 3 \u2014 Context (axiomatized results)**: `hickerson_n_minus_2` axiomatizes the stronger blocking at $n - 2$. `beck_szemeredi_trotter_positive` axiomatizes: $\\exists c > 0$ such that $|B| \\leq c|A|$ implies a rich unblocked line exists. The Szemer\u00e9di-Trotter theorem itself is axiomatized as $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$, with `incidenceCount` fully defined via `Finset.filter`. The threshold function $f(n)$ is axiomatized with bounds $cn \\leq f(n) \\leq n - 4$.\n\n**Layer 4 \u2014 Summary**: `erdos_105_summary` packages both the disproof and positive result as $\\neg\\text{ErdosPurdyConj} \\land \\text{beck\\_szemeredi\\_trotter\\_positive}$ via `exact \u27e8erdos_105_disproved, beck_szemeredi_trotter_positive\u27e9`.",
     "keyInsights": [
-      "**Counterexample at $n - 3$**: Xichuan (2024) found three explicit configurations of $n$ non-collinear points $A$ and $n - 3$ obstacles $B$ where every rich line of $A$ passes through some $b \\in B$ — the key insight is that some point configurations have anomalously few rich lines, allowing a sublinear number of obstacles to cover them all",
-      "**Proof structure**: The formal disproof `erdos_105_disproved` is a clean proof by contradiction — assume `ErdosPurdyConjecture`, apply it to `xichuan_counterexample` to get a rich unblocked line, then derive contradiction from the counterexample's blocking property",
-      "**Szemerédi-Trotter lower bound**: The incidence bound $I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ implies $cn$ obstacles cannot block all $\\Omega(n^2)$ rich lines (each obstacle lies on $O(n)$ lines, so $cn$ obstacles cover $O(cn^2)$ lines — for $c$ small, some survive)",
-      "**Threshold gap**: The function $f(n)$ satisfying $cn \\leq f(n) \\leq n - 4$ has a gap spanning from linear to near-linear — whether $f(n) = \\Theta(n)$ or $f(n) = n - O(1)$ is completely open, one of the cleanest unsolved problems in discrete geometry",
-      "**Hickerson's $n - 2$ boundary**: Hickerson showed $n - 2$ obstacles suffice to block all rich lines, establishing that the Erdős-Purdy conjecture targeted the exact boundary — Xichuan's result shifts the boundary one step lower to $n - 4$"
+      "**Counterexample at $n - 3$**: Xichuan (2024) found three explicit configurations of $n$ non-collinear points $A$ and $n - 3$ obstacles $B$ where every rich line of $A$ passes through some $b \\in B$ \u2014 the key insight is that some point configurations have anomalously few rich lines, allowing a sublinear number of obstacles to cover them all",
+      "**Proof structure**: The formal disproof `erdos_105_disproved` is a clean proof by contradiction \u2014 assume `ErdosPurdyConjecture`, apply it to `xichuan_counterexample` to get a rich unblocked line, then derive contradiction from the counterexample's blocking property",
+      "**Szemer\u00e9di-Trotter lower bound**: The incidence bound $I(P, L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ implies $cn$ obstacles cannot block all $\\Omega(n^2)$ rich lines (each obstacle lies on $O(n)$ lines, so $cn$ obstacles cover $O(cn^2)$ lines \u2014 for $c$ small, some survive)",
+      "**Threshold gap**: The function $f(n)$ satisfying $cn \\leq f(n) \\leq n - 4$ has a gap spanning from linear to near-linear \u2014 whether $f(n) = \\Theta(n)$ or $f(n) = n - O(1)$ is completely open, one of the cleanest unsolved problems in discrete geometry",
+      "**Hickerson's $n - 2$ boundary**: Hickerson showed $n - 2$ obstacles suffice to block all rich lines, establishing that the Erd\u0151s-Purdy conjecture targeted the exact boundary \u2014 Xichuan's result shifts the boundary one step lower to $n - 4$"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -89,7 +89,7 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erdős-Purdy Conjecture",
+      "title": "The Erd\u0151s-Purdy Conjecture",
       "summary": "$\\text{NonCollinear}(A) \\iff \\nexists \\ell : A \\subseteq \\ell$; $\\text{ErdosPurdyConj}: \\forall A, B,\\, |A| = n \\geq 4,\\, |B| = n-3,\\, \\text{disjoint} \\implies \\exists$ rich unblocked $\\ell$",
       "startLine": 72,
       "endLine": 88
@@ -110,7 +110,7 @@
     },
     {
       "id": "szemeredi-trotter",
-      "title": "Szemerédi-Trotter Theorem",
+      "title": "Szemer\u00e9di-Trotter Theorem",
       "summary": "`incidenceCount` via `Finset.filter`; `szemeredi_trotter`: $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$; `many_rich_lines_exist`: non-collinear sets determine $\\geq 1$ rich line",
       "startLine": 142,
       "endLine": 164
@@ -132,52 +132,58 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "`erdos_105_summary`: $\\neg\\text{ErdosPurdyConj} \\land \\text{beck\\_szemeredi\\_trotter\\_positive}$ via `exact ⟨erdos_105_disproved, beck_szemeredi_trotter_positive⟩`; historical timeline 1983–2024",
+      "summary": "`erdos_105_summary`: $\\neg\\text{ErdosPurdyConj} \\land \\text{beck\\_szemeredi\\_trotter\\_positive}$ via `exact \u27e8erdos_105_disproved, beck_szemeredi_trotter_positive\u27e9`; historical timeline 1983\u20132024",
       "startLine": 199,
       "endLine": 248
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the complete resolution of Erdős Problem #105. The Erdős-Purdy conjecture (1995) — that $n - 3$ obstacle points cannot block all rich lines of $n$ non-collinear points — is **false**, disproved by Xichuan (2024) with three explicit counterexamples. The formalization proves $\\neg\\text{ErdosPurdyConjecture}$ by contradiction: applying the conjecture to the axiomatized counterexample yields a rich unblocked line, contradicting the blocking property. The complementary positive result (Beck/Szemerédi-Trotter) shows $cn$ obstacles are insufficient for small $c > 0$. Both results are packaged in `erdos_105_summary`. The threshold function $f(n)$ with $cn \\leq f(n) \\leq n - 4$ is axiomatized, and two open problems ($n - 4$ version and linear threshold question) are formalized as Lean `Prop`s.",
-    "implications": "1. **Blocking vs. incidence bounds**: The Szemerédi-Trotter theorem guarantees $\\Omega(n^2)$ rich lines for $n$ non-collinear points, yet Xichuan's construction shows that special configurations have so few rich lines that $n - 3$ obstacles suffice to block all of them. This reveals that the Szemerédi-Trotter bound is not tight for *every* configuration — some have far fewer rich lines than the generic case.\n\n2. **Threshold function gap**: The gap $cn \\leq f(n) \\leq n - 4$ spans from linear to near-linear. Closing this gap would require fundamentally new techniques: improving the lower bound needs stronger incidence arguments (possibly via the polynomial method), while improving the upper bound needs more efficient blocking constructions.\n\n**3. Proof by contradiction pattern**: The formal disproof exemplifies a clean pattern — axiomatize the counterexample, assume the conjecture, apply the universal quantifier to the specific construction, derive a contradiction. This is a reusable template for Lean formalizations of disproved conjectures.\n\n4. **Connection to dual geometry**: In the dual plane (where points become lines and vice versa), blocking all rich lines corresponds to covering all intersection points of a line arrangement. Xichuan's construction thus yields an efficient dual covering — an object of independent interest in computational geometry.\n\n5. **Hickerson-Xichuan cascade**: The progression $n - 2$ (Hickerson) → $n - 3$ (Xichuan) naturally suggests asking about $n - 4, n - 5, \\ldots$, creating a 'cascade' problem. Each step requires more sophisticated constructions, and the cascade must terminate at some $n - k$ where $k = n - O(cn)$ by the Beck-Szemerédi-Trotter bound.",
+    "summary": "This formalization captures the complete resolution of Erd\u0151s Problem #105. The Erd\u0151s-Purdy conjecture (1995) \u2014 that $n - 3$ obstacle points cannot block all rich lines of $n$ non-collinear points \u2014 is **false**, disproved by Xichuan (2024) with three explicit counterexamples. The formalization proves $\\neg\\text{ErdosPurdyConjecture}$ by contradiction: applying the conjecture to the axiomatized counterexample yields a rich unblocked line, contradicting the blocking property. The complementary positive result (Beck/Szemer\u00e9di-Trotter) shows $cn$ obstacles are insufficient for small $c > 0$. Both results are packaged in `erdos_105_summary`. The threshold function $f(n)$ with $cn \\leq f(n) \\leq n - 4$ is axiomatized, and two open problems ($n - 4$ version and linear threshold question) are formalized as Lean `Prop`s.",
+    "implications": "1. **Blocking vs. incidence bounds**: The Szemer\u00e9di-Trotter theorem guarantees $\\Omega(n^2)$ rich lines for $n$ non-collinear points, yet Xichuan's construction shows that special configurations have so few rich lines that $n - 3$ obstacles suffice to block all of them. This reveals that the Szemer\u00e9di-Trotter bound is not tight for *every* configuration \u2014 some have far fewer rich lines than the generic case.\n\n2. **Threshold function gap**: The gap $cn \\leq f(n) \\leq n - 4$ spans from linear to near-linear. Closing this gap would require fundamentally new techniques: improving the lower bound needs stronger incidence arguments (possibly via the polynomial method), while improving the upper bound needs more efficient blocking constructions.\n\n**3. Proof by contradiction pattern**: The formal disproof exemplifies a clean pattern \u2014 axiomatize the counterexample, assume the conjecture, apply the universal quantifier to the specific construction, derive a contradiction. This is a reusable template for Lean formalizations of disproved conjectures.\n\n4. **Connection to dual geometry**: In the dual plane (where points become lines and vice versa), blocking all rich lines corresponds to covering all intersection points of a line arrangement. Xichuan's construction thus yields an efficient dual covering \u2014 an object of independent interest in computational geometry.\n\n5. **Hickerson-Xichuan cascade**: The progression $n - 2$ (Hickerson) \u2192 $n - 3$ (Xichuan) naturally suggests asking about $n - 4, n - 5, \\ldots$, creating a 'cascade' problem. Each step requires more sophisticated constructions, and the cascade must terminate at some $n - k$ where $k = n - O(cn)$ by the Beck-Szemer\u00e9di-Trotter bound.",
     "openQuestions": [
-      "Does the Erdős-Purdy property hold with $n - 4$ obstacles? Formalized as `openProblem_n_minus_4`: $\\forall A, B$ with $|A| = n \\geq 5$, $|B| = n - 4$, non-collinear $\\implies \\exists$ rich unblocked line.",
+      "Does the Erd\u0151s-Purdy property hold with $n - 4$ obstacles? Formalized as `openProblem_n_minus_4`: $\\forall A, B$ with $|A| = n \\geq 5$, $|B| = n - 4$, non-collinear $\\implies \\exists$ rich unblocked line.",
       "Is $f(n) = \\Theta(n)$? Equivalently, $\\exists c_1, c_2 > 0 : c_1 n \\leq f(n) \\leq c_2 n$ for all $n$? Formalized as `openProblem_exact_threshold`.",
-      "What is the optimal constant $c^*$ in Beck-Szemerédi-Trotter? Precisely, what is $\\sup\\{c : cn \\text{ obstacles never suffice}\\}$? Even the order of magnitude of $c^*$ is unknown.",
+      "What is the optimal constant $c^*$ in Beck-Szemer\u00e9di-Trotter? Precisely, what is $\\sup\\{c : cn \\text{ obstacles never suffice}\\}$? Even the order of magnitude of $c^*$ is unknown.",
       "Can Xichuan's three counterexamples be explicitly constructed in Lean without axiomatization? This would require formalizing the specific coordinates and verifying all incidence/non-incidence relations computationally.",
-      "Does the analogous problem in $\\mathbb{R}^d$ for $d \\geq 3$ (rich 2-flats avoiding obstacle points) exhibit a similar threshold phenomenon? The Szemerédi-Trotter theorem does not directly generalize, but Guth-Katz type bounds might apply."
+      "Does the analogous problem in $\\mathbb{R}^d$ for $d \\geq 3$ (rich 2-flats avoiding obstacle points) exhibit a similar threshold phenomenon? The Szemer\u00e9di-Trotter theorem does not directly generalize, but Guth-Katz type bounds might apply."
     ]
   },
   "crossReferences": [
     {
-      "target": "erdos-211",
-      "relationship": "Beck's theorem and the Szemerédi-Trotter incidence bound are the foundational positive results underpinning the lower bound f(n) ≥ cn in Erdős #105; both problems share the same incidence-geometry toolkit"
+      "relationship": "related",
+      "targetId": "erdos-211",
+      "description": "Beck's theorem and the Szemer\u00e9di-Trotter incidence bound are the foundational positive results underpinning the lower bound f(n) \u2265 cn in Erd\u0151s #105; both problems share the same incidence-geometry toolkit"
     },
     {
-      "target": "erdos-102",
-      "relationship": "Erdős #102 asks how many collinear points are forced when many rich lines exist — the dual perspective to #105, which asks how many obstacles are needed to block all rich lines of a given point set"
+      "relationship": "related",
+      "targetId": "erdos-102",
+      "description": "Erd\u0151s #102 asks how many collinear points are forced when many rich lines exist \u2014 the dual perspective to #105, which asks how many obstacles are needed to block all rich lines of a given point set"
     },
     {
-      "target": "erdos-101",
-      "relationship": "Erdős #101 studies four-point collinearities in planar point sets; the collinearity and incidence-geometry techniques (counting rich lines, blocking arguments) are shared with #105"
+      "relationship": "related",
+      "targetId": "erdos-101",
+      "description": "Erd\u0151s #101 studies four-point collinearities in planar point sets; the collinearity and incidence-geometry techniques (counting rich lines, blocking arguments) are shared with #105"
     },
     {
-      "target": "erdos-104",
-      "relationship": "Erdős #104 on unit-circle incidences uses the same Szemerédi-Trotter style incidence bounds in a circles-vs-points setting, providing a direct analogue to the points-vs-lines framework of #105"
+      "relationship": "related",
+      "targetId": "erdos-104",
+      "description": "Erd\u0151s #104 on unit-circle incidences uses the same Szemer\u00e9di-Trotter style incidence bounds in a circles-vs-points setting, providing a direct analogue to the points-vs-lines framework of #105"
     },
     {
-      "target": "szemeredi-regularity",
-      "relationship": "The Szemerédi regularity lemma is a structural tool underlying many incidence results; the Szemerédi-Trotter theorem axiomatized in #105 is in the same tradition of combinatorial structure theorems"
+      "relationship": "related",
+      "targetId": "szemeredi-regularity",
+      "description": "The Szemer\u00e9di regularity lemma is a structural tool underlying many incidence results; the Szemer\u00e9di-Trotter theorem axiomatized in #105 is in the same tradition of combinatorial structure theorems"
     },
     {
-      "target": "prob-method-expectation",
-      "relationship": "Beck's counting argument establishing f(n) ≥ cn is an instance of the first-moment (expectation) method: a random obstacle point lies on O(n) rich lines, so cn obstacles cover only O(cn²) rich lines, leaving some uncovered"
+      "relationship": "related",
+      "targetId": "prob-method-expectation",
+      "description": "Beck's counting argument establishing f(n) \u2265 cn is an instance of the first-moment (expectation) method: a random obstacle point lies on O(n) rich lines, so cn obstacles cover only O(cn\u00b2) rich lines, leaving some uncovered"
     }
   ],
   "relatedProofs": [
     {
       "target": "erdos-211",
-      "note": "Erdős #211 formalizes Beck's theorem on lines determined by point sets — directly relevant to the positive result in #105 that linear-size obstacle sets cannot block all rich lines"
+      "note": "Erd\u0151s #211 formalizes Beck's theorem on lines determined by point sets \u2014 directly relevant to the positive result in #105 that linear-size obstacle sets cannot block all rich lines"
     },
     {
       "target": "erdos-102",
@@ -185,64 +191,64 @@
     },
     {
       "target": "ramseys-theorem",
-      "note": "Ramsey theory provides the extremal combinatorics background; Erdős's combinatorial geometry problems, including #105, draw on the same double-counting and extremal principles"
+      "note": "Ramsey theory provides the extremal combinatorics background; Erd\u0151s's combinatorial geometry problems, including #105, draw on the same double-counting and extremal principles"
     }
   ],
   "references": [
     {
       "authors": [
-        "Endre Szemerédi",
+        "Endre Szemer\u00e9di",
         "William T. Trotter Jr."
       ],
       "title": "Extremal Problems in Discrete Geometry",
       "venue": "Combinatorica",
       "year": 1983,
       "volume": "3",
-      "pages": "381–392",
+      "pages": "381\u2013392",
       "note": "Proves I(P,L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|); the key incidence bound axiomatized as szemeredi_trotter in the formalization"
     },
     {
       "authors": [
-        "József Beck"
+        "J\u00f3zsef Beck"
       ],
-      "title": "On the Lattice Property of the Plane and Some Problems of Dirac, Motzkin and Erdős in Combinatorial Geometry",
+      "title": "On the Lattice Property of the Plane and Some Problems of Dirac, Motzkin and Erd\u0151s in Combinatorial Geometry",
       "venue": "Combinatorica",
       "year": 1983,
       "volume": "3",
-      "pages": "281–297",
-      "note": "Proves that cn non-collinear points determine Ω(n²) 2-point lines; establishes the lower bound f(n) ≥ cn formalized as beck_szemeredi_trotter_positive"
+      "pages": "281\u2013297",
+      "note": "Proves that cn non-collinear points determine \u03a9(n\u00b2) 2-point lines; establishes the lower bound f(n) \u2265 cn formalized as beck_szemeredi_trotter_positive"
     },
     {
       "authors": [
-        "Paul Erdős",
+        "Paul Erd\u0151s",
         "George B. Purdy"
       ],
       "title": "Extremal Problems in Combinatorial Geometry",
-      "venue": "Handbook of Combinatorics, Vol. 1 (R. Graham, M. Grötschel, L. Lovász, eds.), Elsevier",
+      "venue": "Handbook of Combinatorics, Vol. 1 (R. Graham, M. Gr\u00f6tschel, L. Lov\u00e1sz, eds.), Elsevier",
       "year": 1995,
-      "pages": "809–874",
-      "note": "Original source of the Erdős-Purdy conjecture (#105) that n-3 obstacle points cannot block all rich lines of n non-collinear points"
+      "pages": "809\u2013874",
+      "note": "Original source of the Erd\u0151s-Purdy conjecture (#105) that n-3 obstacle points cannot block all rich lines of n non-collinear points"
     },
     {
       "authors": [
         "Xichuan Liu"
       ],
-      "title": "A Counterexample to the Erdős-Purdy Conjecture",
+      "title": "A Counterexample to the Erd\u0151s-Purdy Conjecture",
       "venue": "arXiv preprint",
       "year": 2024,
-      "note": "Provides three explicit counterexamples disproving the Erdős-Purdy conjecture at n-3 obstacles, earning the $50 prize; formalized as xichuan_counterexample axiom"
+      "note": "Provides three explicit counterexamples disproving the Erd\u0151s-Purdy conjecture at n-3 obstacles, earning the $50 prize; formalized as xichuan_counterexample axiom"
     },
     {
       "authors": [
-        "Paul Erdős",
+        "Paul Erd\u0151s",
         "George B. Purdy"
       ],
       "title": "Some Combinatorial Problems in the Plane",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 1971,
       "volume": "25",
-      "pages": "205–210",
-      "note": "Earlier Erdős-Purdy paper on point-line combinatorial geometry that forms the background for Problem #105 and the Hickerson n-2 construction"
+      "pages": "205\u2013210",
+      "note": "Earlier Erd\u0151s-Purdy paper on point-line combinatorial geometry that forms the background for Problem #105 and the Hickerson n-2 construction"
     }
   ],
   "leanFile": {

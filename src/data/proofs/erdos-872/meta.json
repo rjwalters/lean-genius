@@ -1,10 +1,10 @@
 {
   "id": "erdos-872",
-  "title": "Erdős Problem #872: Antichain Saturation Game",
+  "title": "Erd\u0151s Problem #872: Antichain Saturation Game",
   "slug": "erdos-872",
   "description": "How long can a two-player game on divisibility antichains in {2,...,n} be guaranteed to last when one player maximizes and one minimizes game length?",
   "meta": {
-    "author": "Erdős (1992)",
+    "author": "Erd\u0151s (1992)",
     "sourceUrl": "https://erdosproblems.com/872",
     "date": "1992",
     "status": "axiomatized",
@@ -64,8 +64,8 @@
       "game_terminates axiom",
       "maximal_antichain_upper_bound axiom with explanation",
       "prime_antichain_bound axiom",
-      "gameLastsLinear: first Erdős question formalized with typed game length",
-      "gameLastsNearOptimal: second Erdős question formalized",
+      "gameLastsLinear: first Erd\u0151s question formalized with typed game length",
+      "gameLastsNearOptimal: second Erd\u0151s question formalized",
       "erdos_872_open_status: openness axiom replacing trivial placeholder",
       "furedi_seress_triangle_game: typed axiom with move count",
       "biro_horn_wildstrom_bound: typed axiom with move count",
@@ -81,16 +81,16 @@
     "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**The Antichain Saturation Game**\n\nErdős posed this problem in his 1992 survey paper [Er92c, p.47] \"Some of my favourite problems in various branches of combinatorics,\" published in Le Matematiche. The problem combines two rich mathematical traditions: the study of primitive sets (antichains under divisibility) and combinatorial game theory.\n\n**The Game and Its Rules**\n\nTwo players alternately choose integers from {2, 3, ..., n} to build a set A where no element divides another. The game ends when A becomes a maximal antichain — no further element can be added without creating a divisibility pair. One player (the Maximizer) wants the game to last as long as possible, while the other (the Minimizer) wants it to end quickly. Erdős asks: how many moves can the Maximizer guarantee?\n\n**Related Saturation Games**\n\nThis is a number-theoretic variant of Hajnal's triangle-free game, where players alternately add edges to a complete graph while keeping it triangle-free. For the graph version, Füredi and Seress (1991) proved the game lasts at least Omega(n log n) moves, while Biró, Horn, and Wildstrom (2016) showed the upper bound (26/121 + o(1))n². The divisibility antichain game remains much less understood — both of Erdős's specific questions are open.",
+    "historicalContext": "**The Antichain Saturation Game**\n\nErd\u0151s posed this problem in his 1992 survey paper [Er92c, p.47] \"Some of my favourite problems in various branches of combinatorics,\" published in Le Matematiche. The problem combines two rich mathematical traditions: the study of primitive sets (antichains under divisibility) and combinatorial game theory.\n\n**The Game and Its Rules**\n\nTwo players alternately choose integers from {2, 3, ..., n} to build a set A where no element divides another. The game ends when A becomes a maximal antichain \u2014 no further element can be added without creating a divisibility pair. One player (the Maximizer) wants the game to last as long as possible, while the other (the Minimizer) wants it to end quickly. Erd\u0151s asks: how many moves can the Maximizer guarantee?\n\n**Related Saturation Games**\n\nThis is a number-theoretic variant of Hajnal's triangle-free game, where players alternately add edges to a complete graph while keeping it triangle-free. For the graph version, F\u00fcredi and Seress (1991) proved the game lasts at least Omega(n log n) moves, while Bir\u00f3, Horn, and Wildstrom (2016) showed the upper bound (26/121 + o(1))n\u00b2. The divisibility antichain game remains much less understood \u2014 both of Erd\u0151s's specific questions are open.",
     "problemStatement": "**Problem Statement (Open)**\n\nConsider the two-player game on $\\{2, 3, \\ldots, n\\}$:\n- Players alternately choose integers for set $A$\n- Constraint: no $a \\mid b$ for distinct $a, b \\in A$ (antichain under divisibility)\n- Game ends when $A$ is maximal\n- One player maximizes, one minimizes duration\n\n**Questions:**\n1. Can the game last at least $\\varepsilon n$ moves for some $\\varepsilon > 0$?\n2. Can the game last at least $(1-\\varepsilon)\\frac{n}{2}$ moves?\n\n**Bounds:**\n- Upper: Any antichain in $\\{2,\\ldots,n\\}$ has size at most $\\lfloor n/2 \\rfloor$\n- Lower: Primes give antichains of size $\\sim n/(2 \\ln n)$",
     "text": "How long can a two-player game on divisibility antichains in {2,...,n} be guaranteed to last when one player maximizes and one minimizes game length?",
-    "proofStrategy": "We formalize the complete game structure: IsDivisibilityAntichain and IsPrimitiveSet with a constructive equivalence proof, gameBoard, IsLegalMove, IsMaximalAntichain, and game termination. Bounds are axiomatized: the upper bound n/2 from the chain decomposition argument, and the prime antichain lower bound from the prime number theorem. Erdős's two open questions are formalized as gameLastsLinear and gameLastsNearOptimal with proper typed game-length functions (replacing True placeholders). The game-theoretic formulation introduces gameValue with positivity and upper bound axioms. The key proved result is primes_antichain, using Mathlib's Nat.Prime.eq_one_or_self_of_dvd.",
+    "proofStrategy": "We formalize the complete game structure: IsDivisibilityAntichain and IsPrimitiveSet with a constructive equivalence proof, gameBoard, IsLegalMove, IsMaximalAntichain, and game termination. Bounds are axiomatized: the upper bound n/2 from the chain decomposition argument, and the prime antichain lower bound from the prime number theorem. Erd\u0151s's two open questions are formalized as gameLastsLinear and gameLastsNearOptimal with proper typed game-length functions (replacing True placeholders). The game-theoretic formulation introduces gameValue with positivity and upper bound axioms. The key proved result is primes_antichain, using Mathlib's Nat.Prime.eq_one_or_self_of_dvd.",
     "keyInsights": [
-      "**Primitive sets are antichains**: A divisibility antichain (no a | b for distinct elements) is equivalent to a primitive set — fundamental objects in multiplicative number theory",
+      "**Primitive sets are antichains**: A divisibility antichain (no a | b for distinct elements) is equivalent to a primitive set \u2014 fundamental objects in multiplicative number theory",
       "**Upper bound n/2**: The set {n/2+1, ..., n} shows the maximum antichain has floor(n/2) elements, since if a | b with both > n/2, then b >= 2a > n",
-      "**Primes form antichains**: Any set of primes is automatically an antichain since p | q with p,q prime implies p = q — this is the most natural source of antichains",
+      "**Primes form antichains**: Any set of primes is automatically an antichain since p | q with p,q prime implies p = q \u2014 this is the most natural source of antichains",
       "**Saturation game paradigm**: This belongs to the family of games where players build maximal structures, connecting to Hajnal's triangle-free game and Ramsey-type games",
-      "**First player matters**: Erdős notes the answer may depend on which player moves first — different maximal antichains can have different sizes",
+      "**First player matters**: Erd\u0151s notes the answer may depend on which player moves first \u2014 different maximal antichains can have different sizes",
       "**Graph vs number theory**: The triangle-free graph game has Omega(n log n) lower bound, but whether a similar result holds for divisibility antichains is unknown"
     ],
     "prerequisites": [
@@ -128,7 +128,7 @@
     },
     {
       "id": "erdos-questions",
-      "title": "Erdős's Questions",
+      "title": "Erd\u0151s's Questions",
       "summary": "gameLastsLinear, gameLastsNearOptimal, open status",
       "startLine": 155,
       "endLine": 189
@@ -136,7 +136,7 @@
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "Füredi-Seress triangle-free game, Biró-Horn-Wildstrom bound",
+      "summary": "F\u00fcredi-Seress triangle-free game, Bir\u00f3-Horn-Wildstrom bound",
       "startLine": 191,
       "endLine": 209
     },
@@ -163,14 +163,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #872 asks about the guaranteed length of a two-player saturation game on divisibility antichains in {2,...,n}. The formalization defines the complete game structure, proves primes form antichains (the key constructive result), axiomatizes bounds (max antichain size n/2, prime lower bound), and formalizes both of Erdős's open questions with properly typed game-length functions. All True := trivial placeholders and sorry proofs have been replaced with meaningful axioms.",
+    "summary": "Erd\u0151s Problem #872 asks about the guaranteed length of a two-player saturation game on divisibility antichains in {2,...,n}. The formalization defines the complete game structure, proves primes form antichains (the key constructive result), axiomatizes bounds (max antichain size n/2, prime lower bound), and formalizes both of Erd\u0151s's open questions with properly typed game-length functions. All True := trivial placeholders and sorry proofs have been replaced with meaningful axioms.",
     "implications": "**Theoretical Significance**: Understanding the game value would connect primitive set theory with combinatorial game theory.\n\nThe problem sits at the intersection of number theory (divisibility structure), extremal combinatorics (maximal antichains), and game theory (minimax analysis). Resolution would likely require new techniques beyond those used for the triangle-free graph game.",
     "openQuestions": [
       "Does the game last Theta(n) moves under optimal play?",
       "Can the maximizing player guarantee (1-epsilon)n/2 moves?",
       "Does the first player have a systematic advantage?",
       "What is the computational complexity of optimal play?",
-      "Is there a connection to the Erdős conjecture on primitive sets?"
+      "Is there a connection to the Erd\u0151s conjecture on primitive sets?"
     ]
   },
   "leanFile": {
@@ -192,5 +192,21 @@
     "axiomCount": 14,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Share divisibility and primitive-sets themes"
+    },
+    {
+      "targetId": "erdos-892",
+      "relationship": "related",
+      "description": "Share divisibility and primitive-sets themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-793",
+    "erdos-892"
+  ]
 }

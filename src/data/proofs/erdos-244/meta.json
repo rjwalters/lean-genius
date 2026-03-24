@@ -54,7 +54,7 @@
       },
       {
         "theorem": "MeasureTheory.volume",
-        "description": "Lebesgue measure on ℝ",
+        "description": "Lebesgue measure on \u211d",
         "module": "Mathlib.MeasureTheory.Measure.Lebesgue"
       },
       {
@@ -64,12 +64,12 @@
       }
     ],
     "originalContributions": [
-      "Lean formalization of representability as p + ⌊C^k⌋₊",
+      "Lean formalization of representability as p + \u230aC^k\u230b\u208a",
       "Bridge lemma: natural and real representability are equivalent for integer C",
       "Formal statement of Romanoff's 1934 theorem",
       "Formal statement of Ding's 2025 almost-all result using MeasureTheory.volume",
       "Three constructive representability proofs",
-      "Density vs universality connection to Erdős Problem #10"
+      "Density vs universality connection to Erd\u0151s Problem #10"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 2,
@@ -77,16 +77,16 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was originally asked to Erdős by the Hungarian mathematician László Kalmár and explores the intersection of prime numbers with geometric progressions. Romanoff's 1934 paper in Mathematische Annalen established the foundational result for integer bases, using Selberg-type sieve methods to show that primes combined with powers of integers create sets of positive density. The problem connects to the older question of de Polignac (1849), who conjectured every odd number is p + 2^k — disproved by Crocker numbers like 127 and 149. The problem remained open for non-integer C for over 80 years until Ding's 2025 breakthrough, which uses measure-theoretic arguments to show the result holds for all C > 1 outside a Lebesgue-null exceptional set.",
+    "historicalContext": "This problem was originally asked to Erd\u0151s by the Hungarian mathematician L\u00e1szl\u00f3 Kalm\u00e1r and explores the intersection of prime numbers with geometric progressions. Romanoff's 1934 paper in Mathematische Annalen established the foundational result for integer bases, using Selberg-type sieve methods to show that primes combined with powers of integers create sets of positive density. The problem connects to the older question of de Polignac (1849), who conjectured every odd number is p + 2^k \u2014 disproved by Crocker numbers like 127 and 149. The problem remained open for non-integer C for over 80 years until Ding's 2025 breakthrough, which uses measure-theoretic arguments to show the result holds for all C > 1 outside a Lebesgue-null exceptional set.",
     "problemStatement": "Let C > 1. Does the set of integers of the form p + floor(C^k), for some prime p and k >= 0, have positive lower density? Erdos believed the answer is yes for all C > 1.",
     "text": "For any real C > 1, does the set of integers of the form p + floor(C^k), for some prime p and k >= 0, have positive lower density? Originally asked to Erdos by Kalmar. Romanoff (1934) proved the answer is yes when C is a positive integer. Ding (2025) proved this holds for almost all C > 1.",
     "proofStrategy": "We formalize the problem statement using Mathlib's floor function and density concepts. Romanoff's theorem for integer C is stated as an axiom (the proof requires advanced sieve methods). Ding's almost-all result is similarly axiomatized using MeasureTheory.volume. We prove several concrete examples, establish the bridge between natural and real representations, and formalize the connection to Erdos Problem #10.",
     "keyInsights": [
-      "The integer case is simpler because floor(C^k) = C^k exactly, avoiding floor complications — proved via Nat.floor_natCast",
-      "Romanoff's proof uses Selberg sieve methods to count primes p ≤ N with N - p a power of C",
+      "The integer case is simpler because floor(C^k) = C^k exactly, avoiding floor complications \u2014 proved via Nat.floor_natCast",
+      "Romanoff's proof uses Selberg sieve methods to count primes p \u2264 N with N - p a power of C",
       "The set {p + 2^k} has positive density even though not every integer is representable (connecting to Problem #10 and de Polignac/Crocker numbers)",
-      "Ding's 2025 result shows the conjecture holds for Lebesgue-almost-all C > 1 — the exceptional set has measure zero",
-      "The bridge lemma representable_nat_iff_real shows the clean integer formulation and general real formulation are equivalent for C ∈ ℕ"
+      "Ding's 2025 result shows the conjecture holds for Lebesgue-almost-all C > 1 \u2014 the exceptional set has measure zero",
+      "The bridge lemma representable_nat_iff_real shows the clean integer formulation and general real formulation are equivalent for C \u2208 \u2115"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -110,7 +110,7 @@
       "startLine": 71,
       "endLine": 96,
       "summary": "Define counting function, lower density, upper density, and positive density using Filter.liminf",
-      "mathContext": "$\\underline{d}(S) = \\liminf_{N \\to \\infty} \\frac{|S \\cap [0,N]|}{N}$ via `Filter.liminf`. Uses `Nat.card` for counting, marked `noncomputable` because membership in arbitrary `Set ℕ` is not decidable."
+      "mathContext": "$\\underline{d}(S) = \\liminf_{N \\to \\infty} \\frac{|S \\cap [0,N]|}{N}$ via `Filter.liminf`. Uses `Nat.card` for counting, marked `noncomputable` because membership in arbitrary `Set \u2115` is not decidable."
     },
     {
       "id": "romanoff-theorem",
@@ -150,11 +150,11 @@
       "startLine": 217,
       "endLine": 233,
       "summary": "Combines all known partial results into a summary theorem via conjunction of Romanoff and Ding",
-      "mathContext": "`problem_244_summary` = `⟨romanoff_theorem, ding_almost_all⟩`. Packages the integer case (1934) and almost-all case (2025) as a single conjunction."
+      "mathContext": "`problem_244_summary` = `\u27e8romanoff_theorem, ding_almost_all\u27e9`. Packages the integer case (1934) and almost-all case (2025) as a single conjunction."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #244, establishing the problem statement, known results (Romanoff 1934 for integers, Ding 2025 for almost all C), and the connection to Problem #10. The general conjecture for all C > 1 remains open.",
+    "summary": "We formalize Erd\u0151s Problem #244, establishing the problem statement, known results (Romanoff 1934 for integers, Ding 2025 for almost all C), and the connection to Problem #10. The general conjecture for all C > 1 remains open.",
     "implications": "This problem connects additive number theory (prime distribution via sieve methods) with geometric sequences (powers of C) and measure theory (Ding's almost-all result). The formalization bridges the integer and real cases via floor_pow_nat and captures the subtle distinction between density and universality.",
     "openQuestions": [
       "Does the conjecture hold for ALL C > 1, or are there specific counterexamples?",
@@ -176,23 +176,23 @@
   "references": [
     {
       "authors": "Romanoff, N. P.",
-      "title": "Über einige Sätze der additiven Zahlentheorie",
+      "title": "\u00dcber einige S\u00e4tze der additiven Zahlentheorie",
       "year": "1934",
       "venue": "Math. Ann. 109, 668-678",
-      "note": "Proved {p + C^k} has positive density for integer C ≥ 2"
+      "note": "Proved {p + C^k} has positive density for integer C \u2265 2"
     },
     {
       "authors": "Ding, Y.",
-      "title": "On a Romanoff type problem of Erdős and Kalmár",
+      "title": "On a Romanoff type problem of Erd\u0151s and Kalm\u00e1r",
       "year": "2025",
       "venue": "arXiv:2503.22700",
       "note": "Proved the conjecture for Lebesgue-almost-all C > 1"
     },
     {
-      "authors": "Erdős, P. and Graham, R.",
+      "authors": "Erd\u0151s, P. and Graham, R.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "Problem statement and historical context"
     },
     {
@@ -202,5 +202,39 @@
       "venue": "C. R. Acad. Sci. Paris 29, 738-739",
       "note": "Conjectured every odd number is p + 2^k; counterexamples (Crocker numbers) exist"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Share prime number, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Share prime number, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Share prime number, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-236",
+      "relationship": "related",
+      "description": "Share prime number, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Share prime number, number-theoretic, and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-141",
+    "erdos-200",
+    "erdos-236",
+    "erdos-237"
   ]
 }

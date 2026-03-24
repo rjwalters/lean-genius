@@ -1,8 +1,8 @@
 {
   "id": "erdos-441",
-  "title": "Erdős Problem #441: LCM-Bounded Subsets",
+  "title": "Erd\u0151s Problem #441: LCM-Bounded Subsets",
   "slug": "erdos-441",
-  "description": "Find the maximum size g(N) of A ⊆ {1,...,N} such that lcm(a,b) ≤ N for all a,b ∈ A. Is Erdős' construction optimal? Answer: NO - Chen and Dai proved for infinitely many N, the optimal set is strictly larger than Erdős' construction. The asymptotic g(N) ~ (9N/8)^{1/2} is known.",
+  "description": "Find the maximum size g(N) of A \u2286 {1,...,N} such that lcm(a,b) \u2264 N for all a,b \u2208 A. Is Erd\u0151s' construction optimal? Answer: NO - Chen and Dai proved for infinitely many N, the optimal set is strictly larger than Erd\u0151s' construction. The asymptotic g(N) ~ (9N/8)^{1/2} is known.",
   "meta": {
     "author": "Chen-Dai",
     "sourceUrl": "https://erdosproblems.com/441",
@@ -27,7 +27,7 @@
       },
       {
         "id": "erdos-442",
-        "relationship": "Tao's 2024 result on density-LCM relationship with sharp threshold exp(√(log log x)·log log log x); extends LCM analysis to dense sets"
+        "relationship": "Tao's 2024 result on density-LCM relationship with sharp threshold exp(\u221a(log log x)\u00b7log log log x); extends LCM analysis to dense sets"
       },
       {
         "id": "erdos-536",
@@ -47,7 +47,7 @@
       },
       {
         "id": "erdos-402",
-        "relationship": "Graham's GCD conjecture (solved): for any set A, ∃a,b with gcd(a,b) ≤ a/|A|; uses divisibility structure underlying LCM problems"
+        "relationship": "Graham's GCD conjecture (solved): for any set A, \u2203a,b with gcd(a,b) \u2264 a/|A|; uses divisibility structure underlying LCM problems"
       },
       {
         "id": "gcd-algorithm",
@@ -59,16 +59,16 @@
     "assumptions": "14 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**LCM-Bounded Subsets: From Erdős to Chen-Dai**\n\nErdős proposed this problem in 1951, asking: given N, what is the largest set A ⊆ {1,...,N} such that every pair has lcm(a,b) ≤ N? He offered a specific two-part construction and asked whether it is always optimal.\n\n**The Construction**\n\nErdős' construction takes all integers up to ⌊√(N/2)⌋ (where any pair has lcm ≤ product ≤ N/2 < N) together with all even integers in [√(N/2), √(2N)] (where any pair 2k, 2l has lcm ≤ 2kl ≤ N since both factors are at most √(2N)/√2). The total size is approximately √(N/2) + (1/2)(√(2N) - √(N/2)) = 3√N/(2√2) = √(9N/8).\n\n**Early Progress**\n\nChoi (1972) studied the problem and obtained partial results on the structure of optimal sets. The breakthrough came from Yong-Gao Chen, who in 1998 established the definitive asymptotic g(N) ~ √(9N/8), confirming that Erdős' construction captures the correct leading term.\n\n**The Resolution (Chen-Dai 2006-2007)**\n\nChen and Dai proved two complementary results:\n\n1. **Upper bound** (2007): g(N) ≤ √(9N/8) + O(√(N/log N) · log log N). The error term is o(√N) but ω(1), leaving room for the construction to be suboptimal.\n\n2. **Non-optimality** (2006): For infinitely many N, g(N) > |ErdősConstruction(N)|. The proof identifies specific N values where highly composite numbers create additional elements that can be added to any LCM-bounded set — elements with favorable GCD structure that the rigid two-part partition misses.\n\nThis definitively answered Erdős' question: NO, the construction is not always optimal. The gap arises because the construction treats all integers uniformly within each part, while optimal sets exploit the detailed divisibility structure of specific integers.",
-    "problemStatement": "Let N ≥ 1. Define g(N) = max{|A| : A ⊆ {1,...,N}, lcm(a,b) ≤ N ∀a,b ∈ A}. Is g(N) = |ErdősConstruction(N)| for all N ≥ 1, where ErdősConstruction(N) = {1,...,⌊√(N/2)⌋} ∪ {2k : √(N/2) ≤ 2k ≤ √(2N)}?",
-    "text": "Find the maximum size g(N) of A ⊆ {1,...,N} such that lcm(a,b) ≤ N for all a,b ∈ A. Is Erdős' construction optimal? Answer: NO - Chen and Dai proved for infinitely many N, the optimal set is strictly larger than Erdős' construction. The asymptotic g(N) ~ (9N/8)^{1/2} is known.",
-    "proofStrategy": "**Formalization Structure**\n\nThe Lean formalization builds the problem in layers:\n\n1. **IsLCMBounded**: The pairwise LCM constraint on subsets of {1,...,N}, with the key equivalence lcm(a,b) = ab/gcd(a,b) ≤ N ⟺ ab ≤ N·gcd(a,b)\n\n2. **g(N) via sSup**: The extremal function defined as the supremum over cardinalities of LCM-bounded sets, using Lean's sSup for natural numbers (well-defined since the set is finite and non-empty)\n\n3. **Erdős' construction**: Two-part definition with IsqrtHalf (integers ≤ √(N/2)) and EvenRange (even integers in [√(N/2), √(2N)])\n\n4. **Axiomatized bounds**: Chen's asymptotic g(N) ~ √(9N/8), Chen-Dai's upper bound with error term, and the non-optimality result as axioms (deep analytic number theory not available in Mathlib)\n\n5. **Proved theorem**: erdos_question_disproved derives ¬ErdosQuestion from ConstructionNotOptimal via proof by contradiction using omega\n\n6. **The constant 9/8**: Algebraic verification that 3/(2√2) = √(9/8) via ring_nf and norm_num\n\n**What is Proved vs Axiomatized**\n\n- **Proved**: erdos_question_disproved (logic), constant_value (algebra), construction_valid (LCM bounds), erdos_441_solved (packaging)\n- **Axiomatized**: ChenAsymptotic, ChenDaiUpperBound, ConstructionNotOptimal (deep analytic results)",
+    "historicalContext": "**LCM-Bounded Subsets: From Erd\u0151s to Chen-Dai**\n\nErd\u0151s proposed this problem in 1951, asking: given N, what is the largest set A \u2286 {1,...,N} such that every pair has lcm(a,b) \u2264 N? He offered a specific two-part construction and asked whether it is always optimal.\n\n**The Construction**\n\nErd\u0151s' construction takes all integers up to \u230a\u221a(N/2)\u230b (where any pair has lcm \u2264 product \u2264 N/2 < N) together with all even integers in [\u221a(N/2), \u221a(2N)] (where any pair 2k, 2l has lcm \u2264 2kl \u2264 N since both factors are at most \u221a(2N)/\u221a2). The total size is approximately \u221a(N/2) + (1/2)(\u221a(2N) - \u221a(N/2)) = 3\u221aN/(2\u221a2) = \u221a(9N/8).\n\n**Early Progress**\n\nChoi (1972) studied the problem and obtained partial results on the structure of optimal sets. The breakthrough came from Yong-Gao Chen, who in 1998 established the definitive asymptotic g(N) ~ \u221a(9N/8), confirming that Erd\u0151s' construction captures the correct leading term.\n\n**The Resolution (Chen-Dai 2006-2007)**\n\nChen and Dai proved two complementary results:\n\n1. **Upper bound** (2007): g(N) \u2264 \u221a(9N/8) + O(\u221a(N/log N) \u00b7 log log N). The error term is o(\u221aN) but \u03c9(1), leaving room for the construction to be suboptimal.\n\n2. **Non-optimality** (2006): For infinitely many N, g(N) > |Erd\u0151sConstruction(N)|. The proof identifies specific N values where highly composite numbers create additional elements that can be added to any LCM-bounded set \u2014 elements with favorable GCD structure that the rigid two-part partition misses.\n\nThis definitively answered Erd\u0151s' question: NO, the construction is not always optimal. The gap arises because the construction treats all integers uniformly within each part, while optimal sets exploit the detailed divisibility structure of specific integers.",
+    "problemStatement": "Let N \u2265 1. Define g(N) = max{|A| : A \u2286 {1,...,N}, lcm(a,b) \u2264 N \u2200a,b \u2208 A}. Is g(N) = |Erd\u0151sConstruction(N)| for all N \u2265 1, where Erd\u0151sConstruction(N) = {1,...,\u230a\u221a(N/2)\u230b} \u222a {2k : \u221a(N/2) \u2264 2k \u2264 \u221a(2N)}?",
+    "text": "Find the maximum size g(N) of A \u2286 {1,...,N} such that lcm(a,b) \u2264 N for all a,b \u2208 A. Is Erd\u0151s' construction optimal? Answer: NO - Chen and Dai proved for infinitely many N, the optimal set is strictly larger than Erd\u0151s' construction. The asymptotic g(N) ~ (9N/8)^{1/2} is known.",
+    "proofStrategy": "**Formalization Structure**\n\nThe Lean formalization builds the problem in layers:\n\n1. **IsLCMBounded**: The pairwise LCM constraint on subsets of {1,...,N}, with the key equivalence lcm(a,b) = ab/gcd(a,b) \u2264 N \u27fa ab \u2264 N\u00b7gcd(a,b)\n\n2. **g(N) via sSup**: The extremal function defined as the supremum over cardinalities of LCM-bounded sets, using Lean's sSup for natural numbers (well-defined since the set is finite and non-empty)\n\n3. **Erd\u0151s' construction**: Two-part definition with IsqrtHalf (integers \u2264 \u221a(N/2)) and EvenRange (even integers in [\u221a(N/2), \u221a(2N)])\n\n4. **Axiomatized bounds**: Chen's asymptotic g(N) ~ \u221a(9N/8), Chen-Dai's upper bound with error term, and the non-optimality result as axioms (deep analytic number theory not available in Mathlib)\n\n5. **Proved theorem**: erdos_question_disproved derives \u00acErdosQuestion from ConstructionNotOptimal via proof by contradiction using omega\n\n6. **The constant 9/8**: Algebraic verification that 3/(2\u221a2) = \u221a(9/8) via ring_nf and norm_num\n\n**What is Proved vs Axiomatized**\n\n- **Proved**: erdos_question_disproved (logic), constant_value (algebra), construction_valid (LCM bounds), erdos_441_solved (packaging)\n- **Axiomatized**: ChenAsymptotic, ChenDaiUpperBound, ConstructionNotOptimal (deep analytic results)",
     "keyInsights": [
-      "The LCM constraint lcm(a,b) ≤ N is equivalent to ab ≤ N·gcd(a,b), so elements with large GCD can have larger product — this multiplicative structure is the key to the problem",
-      "The constant 9/8 arises from a beautiful computation: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2√2))√N = √(9N/8), verified formally via ring_nf",
+      "The LCM constraint lcm(a,b) \u2264 N is equivalent to ab \u2264 N\u00b7gcd(a,b), so elements with large GCD can have larger product \u2014 this multiplicative structure is the key to the problem",
+      "The constant 9/8 arises from a beautiful computation: \u221a(N/2) + (1/2)(\u221a(2N) - \u221a(N/2)) = (3/(2\u221a2))\u221aN = \u221a(9N/8), verified formally via ring_nf",
       "Chen-Dai's non-optimality proof exploits highly composite numbers whose divisor-rich structure creates LCM-bounded elements that the rigid two-part construction misses",
-      "The error term O(√(N/log N) · log log N) between the construction and upper bound is o(√N) but grows without bound — this gap is where counterexamples live",
-      "The proof that ¬ErdosQuestion follows from ConstructionNotOptimal is pure logic: ∃N (g(N) > |C(N)|) contradicts ∀N (g(N) = |C(N)|), resolved by omega"
+      "The error term O(\u221a(N/log N) \u00b7 log log N) between the construction and upper bound is o(\u221aN) but grows without bound \u2014 this gap is where counterexamples live",
+      "The proof that \u00acErdosQuestion follows from ConstructionNotOptimal is pure logic: \u2203N (g(N) > |C(N)|) contradicts \u2200N (g(N) = |C(N)|), resolved by omega"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -81,49 +81,49 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 42,
-      "summary": "Header docstring introducing Erdős Problem #441: LCM-bounded subsets of {1,...,N}. Defines the central question (is Erdős' construction optimal?), states the answer (NO, Chen-Dai 2006), and outlines the formalization structure covering definitions, bounds, and the disproof."
+      "summary": "Header docstring introducing Erd\u0151s Problem #441: LCM-bounded subsets of {1,...,N}. Defines the central question (is Erd\u0151s' construction optimal?), states the answer (NO, Chen-Dai 2006), and outlines the formalization structure covering definitions, bounds, and the disproof."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions: IsLCMBounded and g(N)",
       "startLine": 43,
       "endLine": 62,
-      "summary": "Defines IsLCMBounded (set A ⊆ {1,...,N} with lcm(a,b) ≤ N for all pairs) and g(N) = sSup{|A| : A is LCM-bounded}. The LCM condition is equivalent to ab ≤ N·gcd(a,b), connecting the problem to divisibility structure."
+      "summary": "Defines IsLCMBounded (set A \u2286 {1,...,N} with lcm(a,b) \u2264 N for all pairs) and g(N) = sSup{|A| : A is LCM-bounded}. The LCM condition is equivalent to ab \u2264 N\u00b7gcd(a,b), connecting the problem to divisibility structure."
     },
     {
       "id": "erdos-construction",
-      "title": "Erdős' Proposed Construction",
+      "title": "Erd\u0151s' Proposed Construction",
       "startLine": 63,
       "endLine": 87,
-      "summary": "Defines the two-part construction: IsqrtHalf (all integers ≤ ⌊√(N/2)⌋) ∪ EvenRange (even integers 2k with √(N/2) ≤ 2k ≤ √(2N)). Proves construction_valid: the construction is LCM-bounded by verifying three cases (small-small, even-even, cross) via the GCD-LCM identity."
+      "summary": "Defines the two-part construction: IsqrtHalf (all integers \u2264 \u230a\u221a(N/2)\u230b) \u222a EvenRange (even integers 2k with \u221a(N/2) \u2264 2k \u2264 \u221a(2N)). Proves construction_valid: the construction is LCM-bounded by verifying three cases (small-small, even-even, cross) via the GCD-LCM identity."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "startLine": 88,
       "endLine": 101,
-      "summary": "Formalizes ErdosQuestion as ∀ N ≥ 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N — a strong claim that turns out to be false."
+      "summary": "Formalizes ErdosQuestion as \u2200 N \u2265 1, g(N) = |ErdosConstruction(N)|. This is a universal statement asking whether the construction is optimal for every N \u2014 a strong claim that turns out to be false."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 102,
       "endLine": 119,
-      "summary": "Axiomatizes the lower bound g(N) ≥ |ErdosConstruction(N)| (the construction is a valid LCM-bounded set) and Chen's asymptotic lower bound g(N) ≥ √(9N/8) - O(1). The lower bound follows directly from the construction's existence."
+      "summary": "Axiomatizes the lower bound g(N) \u2265 |ErdosConstruction(N)| (the construction is a valid LCM-bounded set) and Chen's asymptotic lower bound g(N) \u2265 \u221a(9N/8) - O(1). The lower bound follows directly from the construction's existence."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds (Chen-Dai 2007)",
       "startLine": 120,
       "endLine": 140,
-      "summary": "Axiomatizes Chen-Dai's upper bound: g(N) ≤ √(9N/8) + C√(N/log N)·log log N. The error term O(√(N/log N)·log log N) = o(√N) but is ω(1), establishing g(N) ~ √(9N/8) while leaving room for the construction to be suboptimal."
+      "summary": "Axiomatizes Chen-Dai's upper bound: g(N) \u2264 \u221a(9N/8) + C\u221a(N/log N)\u00b7log log N. The error term O(\u221a(N/log N)\u00b7log log N) = o(\u221aN) but is \u03c9(1), establishing g(N) ~ \u221a(9N/8) while leaving room for the construction to be suboptimal."
     },
     {
       "id": "not-optimal",
       "title": "The Construction is Not Optimal (Chen-Dai 2006)",
       "startLine": 141,
       "endLine": 161,
-      "summary": "States ConstructionNotOptimal: ∀M, ∃N > M with g(N) > |ErdosConstruction(N)|. Derives erdos_question_disproved: ¬ErdosQuestion by extracting a witness N from the existential and deriving a contradiction with omega (x > y ∧ x = y → ⊥). This is fully proved in Lean."
+      "summary": "States ConstructionNotOptimal: \u2200M, \u2203N > M with g(N) > |ErdosConstruction(N)|. Derives erdos_question_disproved: \u00acErdosQuestion by extracting a witness N from the existential and deriving a contradiction with omega (x > y \u2227 x = y \u2192 \u22a5). This is fully proved in Lean."
     },
     {
       "id": "why-construction-fails",
@@ -137,39 +137,39 @@
       "title": "Special Cases",
       "startLine": 178,
       "endLine": 193,
-      "summary": "Examines small N values where the construction can be verified by exhaustive search. For N ≤ 100, the construction appears optimal; counterexamples arise only for larger N where the error term becomes significant."
+      "summary": "Examines small N values where the construction can be verified by exhaustive search. For N \u2264 100, the construction appears optimal; counterexamples arise only for larger N where the error term becomes significant."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 194,
       "endLine": 214,
-      "summary": "Contextualizes within the LCM problem family: connections to Erdős #440 (consecutive LCM), #442 (dense set LCM), and the broader multiplicative combinatorics literature including Szemerédi-type results for multiplicative structures."
+      "summary": "Contextualizes within the LCM problem family: connections to Erd\u0151s #440 (consecutive LCM), #442 (dense set LCM), and the broader multiplicative combinatorics literature including Szemer\u00e9di-type results for multiplicative structures."
     },
     {
       "id": "constant-9-8",
       "title": "The Constant 9/8",
       "startLine": 215,
       "endLine": 240,
-      "summary": "Derives the constant 9/8 algebraically: √(N/2) + (1/2)(√(2N) - √(N/2)) = (3/(2√2))√N = √(9N/8). The identity √(9/8) = 3/(2√2) ≈ 1.0607 is formally verified via ring_nf and norm_num in constant_value."
+      "summary": "Derives the constant 9/8 algebraically: \u221a(N/2) + (1/2)(\u221a(2N) - \u221a(N/2)) = (3/(2\u221a2))\u221aN = \u221a(9N/8). The identity \u221a(9/8) = 3/(2\u221a2) \u2248 1.0607 is formally verified via ring_nf and norm_num in constant_value."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 241,
       "endLine": 280,
-      "summary": "Packages all results into erdos_441_solved: conjunction of ChenAsymptotic (g(N) ~ √(9N/8)), ConstructionNotOptimal (infinitely many counterexamples), and ¬ErdosQuestion (the construction is not always optimal). Comprehensive docstring narrative of the full problem history and resolution."
+      "summary": "Packages all results into erdos_441_solved: conjunction of ChenAsymptotic (g(N) ~ \u221a(9N/8)), ConstructionNotOptimal (infinitely many counterexamples), and \u00acErdosQuestion (the construction is not always optimal). Comprehensive docstring narrative of the full problem history and resolution."
     }
   ],
   "conclusion": {
-    "summary": "Erdős' question about whether his two-part construction is optimal has a negative answer. While Chen (1998) confirmed the asymptotic g(N) ~ √(9N/8) — showing the construction captures the correct leading term — Chen and Dai (2006) proved that for infinitely many N, strictly larger LCM-bounded sets exist by exploiting divisor-rich integers that the rigid construction misses.",
-    "implications": "1. **Natural Constructions Can Be Suboptimal**: Even when a construction achieves the correct asymptotic, its rigid structure may miss problem-specific opportunities. This is a recurring theme in extremal combinatorics (cf. Ramsey constructions, Turán graphs).\n\n2. **Multiplicative vs Additive Structure**: The LCM constraint lcm(a,b) = ab/gcd(a,b) ≤ N fundamentally differs from additive constraints (a+b ≤ N).\n\nThe multiplicative structure creates rich interactions between elements based on their prime factorizations, making optimal sets depend on the detailed arithmetic of N.\n\n3. **Error Term Analysis**: The gap between the construction (√(9N/8) + O(1)) and the upper bound (√(9N/8) + O(√(N/log N)·log log N)) is where the action happens. Improving the error term would characterize exactly which N values are counterexamples.\n\n4. **Highly Composite Numbers**: The counterexamples arise from N values near highly composite numbers, where the divisor-rich structure creates additional LCM-compatible elements. This connects to Ramanujan's study of highly composite numbers and the Wigert-type bounds on d(n).\n\n5. **Formal Verification**: The proof that ¬ErdosQuestion follows from ConstructionNotOptimal is one of the cleanest examples of Lean's omega tactic resolving a contradiction between a universal and existential statement.",
+    "summary": "Erd\u0151s' question about whether his two-part construction is optimal has a negative answer. While Chen (1998) confirmed the asymptotic g(N) ~ \u221a(9N/8) \u2014 showing the construction captures the correct leading term \u2014 Chen and Dai (2006) proved that for infinitely many N, strictly larger LCM-bounded sets exist by exploiting divisor-rich integers that the rigid construction misses.",
+    "implications": "1. **Natural Constructions Can Be Suboptimal**: Even when a construction achieves the correct asymptotic, its rigid structure may miss problem-specific opportunities. This is a recurring theme in extremal combinatorics (cf. Ramsey constructions, Tur\u00e1n graphs).\n\n2. **Multiplicative vs Additive Structure**: The LCM constraint lcm(a,b) = ab/gcd(a,b) \u2264 N fundamentally differs from additive constraints (a+b \u2264 N).\n\nThe multiplicative structure creates rich interactions between elements based on their prime factorizations, making optimal sets depend on the detailed arithmetic of N.\n\n3. **Error Term Analysis**: The gap between the construction (\u221a(9N/8) + O(1)) and the upper bound (\u221a(9N/8) + O(\u221a(N/log N)\u00b7log log N)) is where the action happens. Improving the error term would characterize exactly which N values are counterexamples.\n\n4. **Highly Composite Numbers**: The counterexamples arise from N values near highly composite numbers, where the divisor-rich structure creates additional LCM-compatible elements. This connects to Ramanujan's study of highly composite numbers and the Wigert-type bounds on d(n).\n\n5. **Formal Verification**: The proof that \u00acErdosQuestion follows from ConstructionNotOptimal is one of the cleanest examples of Lean's omega tactic resolving a contradiction between a universal and existential statement.",
     "openQuestions": [
-      "What is the exact structure of optimal LCM-bounded sets for the counterexample values of N? Do they always extend Erdős' construction by adding specific highly composite numbers?",
-      "Can the Chen-Dai upper bound error term O(√(N/log N)·log log N) be improved to O(√(N/log N)) or even O((log N)^C)?",
-      "For which specific N values is Erdős' construction suboptimal? Is the set of counterexample N values of positive density, or is it sparse?",
+      "What is the exact structure of optimal LCM-bounded sets for the counterexample values of N? Do they always extend Erd\u0151s' construction by adding specific highly composite numbers?",
+      "Can the Chen-Dai upper bound error term O(\u221a(N/log N)\u00b7log log N) be improved to O(\u221a(N/log N)) or even O((log N)^C)?",
+      "For which specific N values is Erd\u0151s' construction suboptimal? Is the set of counterexample N values of positive density, or is it sparse?",
       "What is the connection between g(N) and the structure of the divisor lattice of N? Is g(N) monotonically related to the number of divisors of N?",
-      "Can the LCM-bounded subset problem be generalized to lcm(a₁,...,aₖ) ≤ N for k-wise constraints, and does Erdős' construction generalize?"
+      "Can the LCM-bounded subset problem be generalized to lcm(a\u2081,...,a\u2096) \u2264 N for k-wise constraints, and does Erd\u0151s' construction generalize?"
     ]
   },
   "leanFile": {
@@ -191,5 +191,39 @@
     "axiomCount": 14,
     "theoremCount": 6,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-542",
+      "relationship": "related",
+      "description": "Share lcm, number-theoretic, and extremal-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-440",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-442",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-458",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-542",
+    "erdos-269",
+    "erdos-440",
+    "erdos-442",
+    "erdos-458"
+  ]
 }

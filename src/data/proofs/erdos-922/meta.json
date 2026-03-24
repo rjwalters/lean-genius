@@ -1,6 +1,6 @@
 {
   "id": "erdos-922",
-  "title": "Erdős Problem #922: Folkman's Chromatic Number Bound",
+  "title": "Erd\u0151s Problem #922: Folkman's Chromatic Number Bound",
   "slug": "erdos-922",
   "description": "If every subgraph H of a graph G contains an independent set of size at least (n-k)/2, must G have chromatic number at most k+2? Answer: YES, proved by Folkman (1970).",
   "meta": {
@@ -26,12 +26,12 @@
     "assumptions": "7 axiom(s) and 4 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and Hajnal in 1967 as they studied connections between local graph properties and chromatic number. The condition that every subgraph has a large independent set is a strong structural constraint. Surprisingly, they could not prove even the k=1 case, though k=0 is trivial (it implies bipartiteness). Jon Folkman proved the general result in 1970, establishing that the chromatic bound k+2 always holds. This is a beautiful example of how local constraints (subgraph structure) control global properties (chromatic number).",
-    "problemStatement": "Let k ≥ 0. Let G be a graph such that every subgraph H contains an independent set of size at least (n-k)/2, where n is the number of vertices of H. Must G have chromatic number at most k+2? Answer: YES.",
+    "historicalContext": "This problem was posed by Erd\u0151s and Hajnal in 1967 as they studied connections between local graph properties and chromatic number. The condition that every subgraph has a large independent set is a strong structural constraint. Surprisingly, they could not prove even the k=1 case, though k=0 is trivial (it implies bipartiteness). Jon Folkman proved the general result in 1970, establishing that the chromatic bound k+2 always holds. This is a beautiful example of how local constraints (subgraph structure) control global properties (chromatic number).",
+    "problemStatement": "Let k \u2265 0. Let G be a graph such that every subgraph H contains an independent set of size at least (n-k)/2, where n is the number of vertices of H. Must G have chromatic number at most k+2? Answer: YES.",
     "text": "If every subgraph H of a graph G contains an independent set of size at least (n-k)/2, must G have chromatic number at most k+2? Answer: YES, proved by Folkman (1970).",
-    "proofStrategy": "The formalization defines the 'Folkman property' with parameter k: every induced subgraph on vertex set W has an independent set of size at least (|W|-k)/2. Folkman's theorem is stated as an axiom: this property implies χ(G) ≤ k+2. Special cases are explored: k=0 gives bipartiteness (χ ≤ 2), k=1 gives χ ≤ 3. The bound k+2 is shown to be tight via an axiom asserting existence of tight examples.",
+    "proofStrategy": "The formalization defines the 'Folkman property' with parameter k: every induced subgraph on vertex set W has an independent set of size at least (|W|-k)/2. Folkman's theorem is stated as an axiom: this property implies \u03c7(G) \u2264 k+2. Special cases are explored: k=0 gives bipartiteness (\u03c7 \u2264 2), k=1 gives \u03c7 \u2264 3. The bound k+2 is shown to be tight via an axiom asserting existence of tight examples.",
     "keyInsights": [
-      "The k=0 case forces bipartiteness: every subgraph has α ≥ n/2 means no odd cycles",
+      "The k=0 case forces bipartiteness: every subgraph has \u03b1 \u2265 n/2 means no odd cycles",
       "The condition propagates to all subgraphs, not just the original graph",
       "The bound k+2 is tight: there exist graphs achieving equality for each k",
       "Folkman's proof uses induction on graph size and careful case analysis",
@@ -60,14 +60,14 @@
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "k=0 case implies bipartiteness with χ ≤ 2",
+      "summary": "k=0 case implies bipartiteness with \u03c7 \u2264 2",
       "startLine": 89,
       "endLine": 108
     },
     {
       "id": "folkman-theorem",
       "title": "Folkman's Theorem",
-      "summary": "The main result: Folkman property with parameter k implies χ ≤ k+2",
+      "summary": "The main result: Folkman property with parameter k implies \u03c7 \u2264 k+2",
       "startLine": 110,
       "endLine": 124
     },
@@ -81,7 +81,7 @@
     {
       "id": "independence-ratio",
       "title": "Connection to Independence Ratio",
-      "summary": "Folkman property in terms of independence ratio ≥ (1-k/n)/2",
+      "summary": "Folkman property in terms of independence ratio \u2265 (1-k/n)/2",
       "startLine": 146,
       "endLine": 165
     },
@@ -94,7 +94,7 @@
     },
     {
       "id": "erdos-hajnal",
-      "title": "The Original Erdős-Hajnal Formulation",
+      "title": "The Original Erd\u0151s-Hajnal Formulation",
       "summary": "The 1967 formulation that Folkman resolved",
       "startLine": 183,
       "endLine": 199
@@ -115,13 +115,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #922 was solved affirmatively by Jon Folkman in 1970. If every subgraph H of a graph G contains an independent set of size at least (n-k)/2, then G has chromatic number at most k+2. The bound is tight for all k ≥ 0.",
+    "summary": "Erd\u0151s Problem #922 was solved affirmatively by Jon Folkman in 1970. If every subgraph H of a graph G contains an independent set of size at least (n-k)/2, then G has chromatic number at most k+2. The bound is tight for all k \u2265 0.",
     "implications": "Folkman's theorem provides a powerful tool for bounding chromatic numbers via local properties. It connects to Ramsey theory (existence of large independent sets) and has applications in graph coloring algorithms.",
     "openQuestions": [
       "Are there simpler proofs of Folkman's theorem?",
       "What is the computational complexity of checking the Folkman property?",
       "Are there generalizations to hypergraph coloring?",
-      "What are the extremal graphs achieving χ(G) = k+2?"
+      "What are the extremal graphs achieving \u03c7(G) = k+2?"
     ]
   },
   "leanFile": {
@@ -140,5 +140,39 @@
     "axiomCount": 7,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-805",
+      "relationship": "related",
+      "description": "Share independent-set and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1068",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-805",
+    "erdos-1011",
+    "erdos-1032",
+    "erdos-1067",
+    "erdos-1068"
+  ]
 }

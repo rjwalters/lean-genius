@@ -174,5 +174,39 @@
     "axiomCount": 8,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Share composite-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-276",
+      "relationship": "related",
+      "description": "Share composite-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-385",
+      "relationship": "related",
+      "description": "Share composite-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Share prime-gaps and number-theoretic themes"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Share prime-gaps and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1059",
+    "erdos-276",
+    "erdos-385",
+    "bertrands-postulate",
+    "bounded-prime-gaps"
+  ]
 }

@@ -34,7 +34,7 @@
       }
     ],
     "originalContributions": [
-      "Statement of Artin's theorem for multivariate polynomials over ℝ",
+      "Statement of Artin's theorem for multivariate polynomials over \u211d",
       "Motzkin polynomial counterexample with non-negativity and non-SOS proofs",
       "Robinson and Choi-Lam additional counterexamples",
       "Hilbert's 1888 classification of when PSD = polynomial-SOS",
@@ -48,14 +48,14 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Hilbert's 17th Problem emerged from a long investigation into the relationship between non-negativity and sums of squares. In 1888, Hilbert proved a remarkable non-constructive result: there exist non-negative polynomials that are not sums of squares of polynomials. He showed this happens in all but three exceptional cases — univariate polynomials, quadratic forms, and bivariate quartics — but gave no explicit example.\n\nIn his famous 1900 Paris lecture, Hilbert posed Problem 17: even if polynomial squares don't suffice, can every non-negative polynomial be written as a sum of squares of rational functions (quotients of polynomials)? This seemingly modest weakening turns out to be exactly right.\n\nEmil Artin resolved the problem affirmatively in 1927, as an application of his theory of formally real fields and real closures. The proof is a triumph of abstract algebra: if a non-negative polynomial were not a sum of squares of rational functions, one could construct an ordering of the function field making it negative, which contradicts non-negativity via the transfer principle for real closed fields.\n\nNearly 40 years after Hilbert's non-constructive existence proof, Theodore Motzkin (1967) gave the first explicit counterexample to polynomial SOS: M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 is non-negative everywhere (by AM-GM) but cannot be decomposed as a sum of squared polynomials (by degree analysis). In the same year, Albrecht Pfister proved that at most 2^n rational function squares are needed for n-variable polynomials.",
+    "historicalContext": "Hilbert's 17th Problem emerged from a long investigation into the relationship between non-negativity and sums of squares. In 1888, Hilbert proved a remarkable non-constructive result: there exist non-negative polynomials that are not sums of squares of polynomials. He showed this happens in all but three exceptional cases \u2014 univariate polynomials, quadratic forms, and bivariate quartics \u2014 but gave no explicit example.\n\nIn his famous 1900 Paris lecture, Hilbert posed Problem 17: even if polynomial squares don't suffice, can every non-negative polynomial be written as a sum of squares of rational functions (quotients of polynomials)? This seemingly modest weakening turns out to be exactly right.\n\nEmil Artin resolved the problem affirmatively in 1927, as an application of his theory of formally real fields and real closures. The proof is a triumph of abstract algebra: if a non-negative polynomial were not a sum of squares of rational functions, one could construct an ordering of the function field making it negative, which contradicts non-negativity via the transfer principle for real closed fields.\n\nNearly 40 years after Hilbert's non-constructive existence proof, Theodore Motzkin (1967) gave the first explicit counterexample to polynomial SOS: M(x,y) = x\u2074y\u00b2 + x\u00b2y\u2074 - 3x\u00b2y\u00b2 + 1 is non-negative everywhere (by AM-GM) but cannot be decomposed as a sum of squared polynomials (by degree analysis). In the same year, Albrecht Pfister proved that at most 2^n rational function squares are needed for n-variable polynomials.",
     "problemStatement": "**Question:** If f is a polynomial with f(x) >= 0 for all x, is f a sum of squares?\n\n**Answer (Artin):** Yes, but as a sum of squares of rational functions. Motzkin's polynomial shows polynomials don't suffice.",
     "text": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample).",
-    "proofStrategy": "The formalization is structured in nine parts mirroring the mathematical landscape. Part I defines SOS and PSD predicates for univariate, multivariate, and rational function settings. Part II axiomatizes Artin's theorem using algebraMap to embed polynomials into rational function fields. Part III constructs the Motzkin polynomial as an MvPolynomial and axiomatizes its non-negativity and non-SOS properties, then derives its rational-SOS representation by applying Artin's theorem — the key deduction. Part IV axiomatizes Hilbert's 1888 classification (univariate and quadratic cases). Part V gives Pfister's 2^n bound and Cassels' bivariate specialization. Part VI discusses real closed fields. Parts VII-IX cover applications, additional counterexamples (Robinson, Choi-Lam), and a summary.",
+    "proofStrategy": "The formalization is structured in nine parts mirroring the mathematical landscape. Part I defines SOS and PSD predicates for univariate, multivariate, and rational function settings. Part II axiomatizes Artin's theorem using algebraMap to embed polynomials into rational function fields. Part III constructs the Motzkin polynomial as an MvPolynomial and axiomatizes its non-negativity and non-SOS properties, then derives its rational-SOS representation by applying Artin's theorem \u2014 the key deduction. Part IV axiomatizes Hilbert's 1888 classification (univariate and quadratic cases). Part V gives Pfister's 2^n bound and Cassels' bivariate specialization. Part VI discusses real closed fields. Parts VII-IX cover applications, additional counterexamples (Robinson, Choi-Lam), and a summary.",
     "keyInsights": [
       "The gap between non-negativity and being a sum of polynomial squares is fundamental: Hilbert proved it exists (1888), Motzkin exhibited it (1967), and Artin showed rational functions bridge it (1927)",
       "Artin's proof is non-constructive and model-theoretic: it deduces the existence of an SOS decomposition from the theory of real closed fields without exhibiting one explicitly",
-      "Motzkin's polynomial M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 reveals the degree obstruction: the leading homogeneous form x²y²(x² + y²) cannot arise from squaring degree-3 polynomials",
+      "Motzkin's polynomial M(x,y) = x\u2074y\u00b2 + x\u00b2y\u2074 - 3x\u00b2y\u00b2 + 1 reveals the degree obstruction: the leading homogeneous form x\u00b2y\u00b2(x\u00b2 + y\u00b2) cannot arise from squaring degree-3 polynomials",
       "The motzkin_sos_ratfunc theorem is the file's key deduction: it combines motzkin_nonneg with artin_hilbert17 to derive that M is rational-SOS, despite not being polynomial-SOS",
       "Pfister's bound 2^n is sharp and connects to deep algebraic structures: Pfister forms are multiplicative quadratic forms arising from tensor products, linking the problem to algebraic K-theory",
       "The practical distinction between polynomial-SOS (computationally tractable via SDP) and rational-SOS (always exists by Artin) is the foundation of modern SOS programming and formal verification"
@@ -84,7 +84,7 @@
       "title": "Part II: Artin's Theorem",
       "startLine": 134,
       "endLine": 183,
-      "summary": "Axiomatizes artin_hilbert17 (multivariate PSD → rational-SOS) and artin_univariate (univariate PSD → rational-SOS, which is actually polynomial-SOS)."
+      "summary": "Axiomatizes artin_hilbert17 (multivariate PSD \u2192 rational-SOS) and artin_univariate (univariate PSD \u2192 rational-SOS, which is actually polynomial-SOS)."
     },
     {
       "id": "motzkin",
@@ -98,7 +98,7 @@
       "title": "Part IV: Hilbert's 1888 Classification",
       "startLine": 269,
       "endLine": 343,
-      "summary": "Axiomatizes univariate_psd_is_sos (complex factorization) and quadratic_psd_is_sos (Gram matrix / Cholesky) — the two tractable cases from Hilbert's classification."
+      "summary": "Axiomatizes univariate_psd_is_sos (complex factorization) and quadratic_psd_is_sos (Gram matrix / Cholesky) \u2014 the two tractable cases from Hilbert's classification."
     },
     {
       "id": "pfister",
@@ -119,7 +119,7 @@
       "title": "Part VII: Modern Applications",
       "startLine": 440,
       "endLine": 479,
-      "summary": "Documents SOS programming via SDP, Positivstellensatz, Stengle's and Schmüdgen's theorems, and applications to control theory, robotics, and formal verification."
+      "summary": "Documents SOS programming via SDP, Positivstellensatz, Stengle's and Schm\u00fcdgen's theorems, and applications to control theory, robotics, and formal verification."
     },
     {
       "id": "counterexamples",
@@ -133,11 +133,11 @@
       "title": "Part IX: Summary",
       "startLine": 543,
       "endLine": 572,
-      "summary": "Uses #check to verify main theorems and provides a final prose overview of the complete picture: PSD → rational-SOS (Artin), but PSD ↛ polynomial-SOS (Motzkin), with Pfister's 2^n bound."
+      "summary": "Uses #check to verify main theorems and provides a final prose overview of the complete picture: PSD \u2192 rational-SOS (Artin), but PSD \u219b polynomial-SOS (Motzkin), with Pfister's 2^n bound."
     }
   ],
   "conclusion": {
-    "summary": "Hilbert's 17th Problem is resolved: every non-negative polynomial over ℝ is a sum of squares of rational functions (Artin 1927), but the Motzkin polynomial demonstrates that polynomial squares alone do not suffice. The formalization covers the main theorem, the simplest counterexample, Hilbert's 1888 classification of when polynomial SOS does work, Pfister's quantitative 2^n bound, the underlying real closed field theory, and connections to modern SOS programming.",
+    "summary": "Hilbert's 17th Problem is resolved: every non-negative polynomial over \u211d is a sum of squares of rational functions (Artin 1927), but the Motzkin polynomial demonstrates that polynomial squares alone do not suffice. The formalization covers the main theorem, the simplest counterexample, Hilbert's 1888 classification of when polynomial SOS does work, Pfister's quantitative 2^n bound, the underlying real closed field theory, and connections to modern SOS programming.",
     "implications": "**Theoretical Significance**: Artin's theorem bridges the gap between algebraic and analytic non-negativity and is foundational for real algebraic geometry.\n\nThe practical consequence is the SOS hierarchy in optimization: polynomial-SOS is tractable via semidefinite programming, providing computable certificates of non-negativity whenever they exist. The gap identified by Motzkin means these certificates are incomplete, motivating ongoing research into tighter relaxations and the Positivstellensatz framework.",
     "openQuestions": [
       "What is the minimum number of rational function squares needed for specific classes of PSD polynomials (improving Pfister's general 2^n bound)?",
@@ -148,16 +148,19 @@
   },
   "crossReferences": [
     {
-      "relationship": "The univariate case of Hilbert 17 relies on complex root factorization, which is a consequence of the fundamental theorem of algebra",
-      "targetId": "fundamental-theorem-algebra"
+      "relationship": "related",
+      "targetId": "fundamental-theorem-algebra",
+      "description": "The univariate case of Hilbert 17 relies on complex root factorization, which is a consequence of the fundamental theorem of algebra"
     },
     {
-      "relationship": "Fellow Hilbert problem — Problem 10 (Diophantine equations) involves polynomial decidability, while Problem 17 involves polynomial positivity",
-      "targetId": "hilbert-10"
+      "relationship": "related",
+      "targetId": "hilbert-10",
+      "description": "Fellow Hilbert problem \u2014 Problem 10 (Diophantine equations) involves polynomial decidability, while Problem 17 involves polynomial positivity"
     },
     {
-      "relationship": "Adjacent Hilbert problem — Problem 16 (limit cycles) also concerns real polynomial geometry, specifically the topology of real algebraic curves",
-      "targetId": "hilbert-16"
+      "relationship": "related",
+      "targetId": "hilbert-16",
+      "description": "Adjacent Hilbert problem \u2014 Problem 16 (limit cycles) also concerns real polynomial geometry, specifically the topology of real algebraic curves"
     }
   ],
   "leanFile": {
@@ -192,15 +195,15 @@
       "authors": "Hilbert, David",
       "title": "Mathematische Probleme",
       "year": "1900",
-      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu G\u00f6ttingen, 253\u2013297",
       "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
     },
     {
       "authors": "Artin, Emil",
-      "title": "Über die Zerlegung definiter Funktionen in Quadrate",
+      "title": "\u00dcber die Zerlegung definiter Funktionen in Quadrate",
       "year": "1927",
-      "venue": "Abhandlungen aus dem mathematischen Seminar der Universität Hamburg 5, 100–115",
-      "note": "Proved every positive semidefinite rational function is a sum of squares of rational functions — solving Hilbert's 17th problem"
+      "venue": "Abhandlungen aus dem mathematischen Seminar der Universit\u00e4t Hamburg 5, 100\u2013115",
+      "note": "Proved every positive semidefinite rational function is a sum of squares of rational functions \u2014 solving Hilbert's 17th problem"
     }
   ]
 }

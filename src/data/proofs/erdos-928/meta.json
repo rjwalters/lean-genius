@@ -1,10 +1,10 @@
 {
   "id": "erdos-928",
-  "title": "Erdős Problem #928: Density of Consecutive Smooth Numbers",
+  "title": "Erd\u0151s Problem #928: Density of Consecutive Smooth Numbers",
   "slug": "erdos-928",
-  "description": "Does the natural density of n with P(n) < n^α and P(n+1) < (n+1)^β exist? Logarithmic density = ρ(1/α)ρ(1/β) (Teräväinen 2018). Natural density conditional on Elliott-Halberstam (Wang 2021). OPEN unconditionally.",
+  "description": "Does the natural density of n with P(n) < n^\u03b1 and P(n+1) < (n+1)^\u03b2 exist? Logarithmic density = \u03c1(1/\u03b1)\u03c1(1/\u03b2) (Ter\u00e4v\u00e4inen 2018). Natural density conditional on Elliott-Halberstam (Wang 2021). OPEN unconditionally.",
   "meta": {
-    "author": "Dickman (1930), Schinzel (1967), Teräväinen (2018), Wang (2021)",
+    "author": "Dickman (1930), Schinzel (1967), Ter\u00e4v\u00e4inen (2018), Wang (2021)",
     "sourceUrl": "https://erdosproblems.com/928",
     "date": "2021",
     "status": "axiomatized",
@@ -49,15 +49,15 @@
     ],
     "originalContributions": [
       "largestPrimeFactor definition: P(n) for natural numbers",
-      "isSmooth predicate: P(n) < n^α condition",
-      "isFriable predicate: P(n) ≤ y condition",
-      "dickman_function axiom: the Dickman-de Bruijn function ρ",
-      "psi counting function: Ψ(x, y) = #{n ≤ x : P(n) ≤ y}",
-      "dickman_theorem axiom: Ψ(x, x^α)/x → ρ(1/α)",
+      "isSmooth predicate: P(n) < n^\u03b1 condition",
+      "isFriable predicate: P(n) \u2264 y condition",
+      "dickman_function axiom: the Dickman-de Bruijn function \u03c1",
+      "psi counting function: \u03a8(x, y) = #{n \u2264 x : P(n) \u2264 y}",
+      "dickman_theorem axiom: \u03a8(x, x^\u03b1)/x \u2192 \u03c1(1/\u03b1)",
       "consecutiveSmooth definition: both n and n+1 smooth",
       "densityExists predicate: natural density existence",
       "erdos928Question: formal problem statement",
-      "independenceConjecture: density = ρ(1/α)ρ(1/β)",
+      "independenceConjecture: density = \u03c1(1/\u03b1)\u03c1(1/\u03b2)",
       "infinitely_many_exist axiom: from Schinzel/Meza",
       "teravainen_log_density axiom: log density result",
       "wang_conditional axiom: conditional on Elliott-Halberstam"
@@ -67,12 +67,12 @@
     "lineCount": 276
   },
   "overview": {
-    "historicalContext": "Smooth numbers — integers whose prime factors are all 'small' — have been central to analytic number theory since Karl Dickman's 1930 paper 'On the frequency of numbers containing prime factors of a certain relative magnitude', which established the density $\\rho(1/\\alpha)$ for $\\alpha$-smooth numbers. The Dickman function $\\rho$ was later studied rigorously by Nicolaas de Bruijn (1951), who gave precise asymptotic expansions. Erdős Problem #928 asks about a natural bivariate extension: when both $n$ and $n+1$ are smooth. The heuristic that consecutive integers should behave independently (since $\\gcd(n, n+1) = 1$) suggests density $\\rho(1/\\alpha)\\rho(1/\\beta)$. Andrzej Schinzel (1967) proved infinitely many such pairs exist using sieve methods applied to $P(n(n+1))$. The breakthrough came from Joni Teräväinen (2018), who established the logarithmic density using the pretentious approach to multiplicative functions developed by Granville and Soundararajan. Zhiwei Wang (2021) proved the natural density conditionally, assuming the Elliott-Halberstam conjecture for friable integers. The unconditional natural density remains one of the most natural open questions in the theory of smooth numbers.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet α, β ∈ (0,1) and P(n) = largest prime factor of n.\n\nDoes the density of integers n such that P(n) < n^α and P(n+1) < (n+1)^β exist?\n\n**Equivalently:** Is the event 'n is α-smooth' independent of 'n+1 is β-smooth'?\n\n**Conjectured Density:** ρ(1/α) · ρ(1/β) where ρ is the Dickman function.\n\n**Known:**\n- Logarithmic density exists and equals ρ(1/α)ρ(1/β) (Teräväinen)\n- Natural density equals ρ(1/α)ρ(1/β) under EH (Wang)\n\n**Open:** Unconditional natural density existence",
-    "text": "Does the natural density of n with P(n) < n^α and P(n+1) < (n+1)^β exist? Logarithmic density = ρ(1/α)ρ(1/β) (Teräväinen 2018). Natural density conditional on Elliott-Halberstam (Wang 2021). OPEN unconditionally.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Factors:** Define largestPrimeFactor P(n)\n\n2. **Smoothness:** isSmooth α n := P(n) < n^α\n\n3. **Dickman Function:** Axiomatize ρ(u) with properties\n\n4. **Dickman's Theorem:** Ψ(x, x^α)/x → ρ(1/α)\n\n5. **Main Problem:**\n   - densityExists: natural density limit exists\n   - erdos928Question: ∀ α,β ∈ (0,1), densityExists α β\n\n6. **Results:**\n   - infinitely_many_exist (Schinzel/Meza)\n   - teravainen_log_density (2018)\n   - wang_conditional (2021 under EH)",
+    "historicalContext": "Smooth numbers \u2014 integers whose prime factors are all 'small' \u2014 have been central to analytic number theory since Karl Dickman's 1930 paper 'On the frequency of numbers containing prime factors of a certain relative magnitude', which established the density $\\rho(1/\\alpha)$ for $\\alpha$-smooth numbers. The Dickman function $\\rho$ was later studied rigorously by Nicolaas de Bruijn (1951), who gave precise asymptotic expansions. Erd\u0151s Problem #928 asks about a natural bivariate extension: when both $n$ and $n+1$ are smooth. The heuristic that consecutive integers should behave independently (since $\\gcd(n, n+1) = 1$) suggests density $\\rho(1/\\alpha)\\rho(1/\\beta)$. Andrzej Schinzel (1967) proved infinitely many such pairs exist using sieve methods applied to $P(n(n+1))$. The breakthrough came from Joni Ter\u00e4v\u00e4inen (2018), who established the logarithmic density using the pretentious approach to multiplicative functions developed by Granville and Soundararajan. Zhiwei Wang (2021) proved the natural density conditionally, assuming the Elliott-Halberstam conjecture for friable integers. The unconditional natural density remains one of the most natural open questions in the theory of smooth numbers.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet \u03b1, \u03b2 \u2208 (0,1) and P(n) = largest prime factor of n.\n\nDoes the density of integers n such that P(n) < n^\u03b1 and P(n+1) < (n+1)^\u03b2 exist?\n\n**Equivalently:** Is the event 'n is \u03b1-smooth' independent of 'n+1 is \u03b2-smooth'?\n\n**Conjectured Density:** \u03c1(1/\u03b1) \u00b7 \u03c1(1/\u03b2) where \u03c1 is the Dickman function.\n\n**Known:**\n- Logarithmic density exists and equals \u03c1(1/\u03b1)\u03c1(1/\u03b2) (Ter\u00e4v\u00e4inen)\n- Natural density equals \u03c1(1/\u03b1)\u03c1(1/\u03b2) under EH (Wang)\n\n**Open:** Unconditional natural density existence",
+    "text": "Does the natural density of n with P(n) < n^\u03b1 and P(n+1) < (n+1)^\u03b2 exist? Logarithmic density = \u03c1(1/\u03b1)\u03c1(1/\u03b2) (Ter\u00e4v\u00e4inen 2018). Natural density conditional on Elliott-Halberstam (Wang 2021). OPEN unconditionally.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Factors:** Define largestPrimeFactor P(n)\n\n2. **Smoothness:** isSmooth \u03b1 n := P(n) < n^\u03b1\n\n3. **Dickman Function:** Axiomatize \u03c1(u) with properties\n\n4. **Dickman's Theorem:** \u03a8(x, x^\u03b1)/x \u2192 \u03c1(1/\u03b1)\n\n5. **Main Problem:**\n   - densityExists: natural density limit exists\n   - erdos928Question: \u2200 \u03b1,\u03b2 \u2208 (0,1), densityExists \u03b1 \u03b2\n\n6. **Results:**\n   - infinitely_many_exist (Schinzel/Meza)\n   - teravainen_log_density (2018)\n   - wang_conditional (2021 under EH)",
     "keyInsights": [
-      "**Dickman Function:** ρ(u) = 1 for u ≤ 1, then satisfies uρ'(u) = -ρ(u-1)",
+      "**Dickman Function:** \u03c1(u) = 1 for u \u2264 1, then satisfies u\u03c1'(u) = -\u03c1(u-1)",
       "**Independence Heuristic:** Consecutive n, n+1 share no common factors",
       "**Logarithmic vs Natural:** Log density is easier - smooths fluctuations",
       "**Elliott-Halberstam:** Controls prime distribution in progressions",
@@ -129,7 +129,7 @@
     {
       "id": "independence",
       "title": "Independence Conjecture",
-      "summary": "independenceConjecture: density = ρ(1/α)ρ(1/β)",
+      "summary": "independenceConjecture: density = \u03c1(1/\u03b1)\u03c1(1/\u03b2)",
       "startLine": 162,
       "endLine": 172,
       "mathContext": "$\\text{density} = \\rho(1/\\alpha) \\cdot \\rho(1/\\beta)$. Since $\\gcd(n, n+1) = 1$, smoothness of $n$ and $n+1$ should be independent events."
@@ -140,7 +140,7 @@
       "summary": "infinitely_many_exist, teravainen_log_density, wang_conditional",
       "startLine": 174,
       "endLine": 206,
-      "mathContext": "Schinzel/Meza: $\\infty$-many $n$ with both smooth. Teräväinen (2018): log density $= \\rho(1/\\alpha)\\rho(1/\\beta)$. Wang (2021): natural density $= \\rho(1/\\alpha)\\rho(1/\\beta)$ assuming Elliott-Halberstam for friable integers."
+      "mathContext": "Schinzel/Meza: $\\infty$-many $n$ with both smooth. Ter\u00e4v\u00e4inen (2018): log density $= \\rho(1/\\alpha)\\rho(1/\\beta)$. Wang (2021): natural density $= \\rho(1/\\alpha)\\rho(1/\\beta)$ assuming Elliott-Halberstam for friable integers."
     },
     {
       "id": "elliott-halberstam",
@@ -161,21 +161,24 @@
   ],
   "crossReferences": [
     {
-      "relationship": "Both concern the distribution of primes in structured patterns — bounded gaps uses sieve methods and the Elliott-Halberstam conjecture, the same conjecture that Wang uses for Erdős #928",
-      "targetId": "bounded-prime-gaps"
+      "relationship": "related",
+      "targetId": "bounded-prime-gaps",
+      "description": "Both concern the distribution of primes in structured patterns \u2014 bounded gaps uses sieve methods and the Elliott-Halberstam conjecture, the same conjecture that Wang uses for Erd\u0151s #928"
     },
     {
-      "relationship": "Both study prime factorization structure of integers — #1055 classifies primes by P(p+1) factorization while #928 studies the density of smooth consecutive pairs",
-      "targetId": "erdos-1055"
+      "relationship": "related",
+      "targetId": "erdos-1055",
+      "description": "Both study prime factorization structure of integers \u2014 #1055 classifies primes by P(p+1) factorization while #928 studies the density of smooth consecutive pairs"
     },
     {
-      "relationship": "Both concern additive/multiplicative structure involving primes — #10 asks about sums of primes and powers of 2 while #928 concerns smooth number density",
-      "targetId": "erdos-10"
+      "relationship": "related",
+      "targetId": "erdos-10",
+      "description": "Both concern additive/multiplicative structure involving primes \u2014 #10 asks about sums of primes and powers of 2 while #928 concerns smooth number density"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #928 asks whether the natural density of n with both P(n) < n^α and P(n+1) < (n+1)^β exists. The expected answer is yes, with density ρ(1/α)ρ(1/β) reflecting independence. Teräväinen (2018) proved the logarithmic density equals this. Wang (2021) proved the natural density equals this assuming Elliott-Halberstam for friable integers. The unconditional existence of natural density remains OPEN.",
-    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Multiplicative Functions:** Binary correlations of multiplicative functions\n\n2. **Sieve Theory:** Elliott-Halberstam controls distribution in progressions\n\n**3. Cryptography:** Smooth numbers in integer factorization (QS, NFS)\n\n4. **Analytic Number Theory:** Delay differential equations (Dickman's ρ)\n\n5. **Independence Phenomena:** Consecutive integers often behave independently.",
+    "summary": "Erd\u0151s Problem #928 asks whether the natural density of n with both P(n) < n^\u03b1 and P(n+1) < (n+1)^\u03b2 exists. The expected answer is yes, with density \u03c1(1/\u03b1)\u03c1(1/\u03b2) reflecting independence. Ter\u00e4v\u00e4inen (2018) proved the logarithmic density equals this. Wang (2021) proved the natural density equals this assuming Elliott-Halberstam for friable integers. The unconditional existence of natural density remains OPEN.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Multiplicative Functions:** Binary correlations of multiplicative functions\n\n2. **Sieve Theory:** Elliott-Halberstam controls distribution in progressions\n\n**3. Cryptography:** Smooth numbers in integer factorization (QS, NFS)\n\n4. **Analytic Number Theory:** Delay differential equations (Dickman's \u03c1)\n\n5. **Independence Phenomena:** Consecutive integers often behave independently.",
     "openQuestions": [
       "Does the natural density exist unconditionally?",
       "Can the Elliott-Halberstam hypothesis for friable integers be proved?",

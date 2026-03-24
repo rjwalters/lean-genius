@@ -1,10 +1,10 @@
 {
   "id": "erdos-82",
-  "title": "Erdős Problem #82: Regular Induced Subgraphs",
+  "title": "Erd\u0151s Problem #82: Regular Induced Subgraphs",
   "slug": "erdos-82",
-  "description": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) → ∞?",
+  "description": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) \u2192 \u221e?",
   "meta": {
-    "author": "Erdős, Fajtlowicz, Staton",
+    "author": "Erd\u0151s, Fajtlowicz, Staton",
     "sourceUrl": "https://erdosproblems.com/82",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos82Problem.lean",
@@ -50,13 +50,13 @@
       "IsRegular and IsRegularGraph definitions using SimpleGraph.degree",
       "inducedSubgraph construction as SimpleGraph on Finset subtype",
       "HasRegularInduced predicate and F(n) via sSup",
-      "F_ramsey_lower axiom: F(n) ≥ (1/2)log₂(n)",
-      "aks_upper_bound axiom: F(n) ≤ C·√n·(log n)^{C'}",
+      "F_ramsey_lower axiom: F(n) \u2265 (1/2)log\u2082(n)",
+      "aks_upper_bound axiom: F(n) \u2264 C\u00b7\u221an\u00b7(log n)^{C'}",
       "ramseyNumber axiom with classical upper bound",
       "ramsey_improvement_2023 axiom: (4-c)^k improvement",
       "G(k) inverse function definition via sInf",
       "F_small_values axiom: exact values for small n",
-      "erdos_82_conjecture: F(n)/log(n) → ∞ via Filter.Tendsto",
+      "erdos_82_conjecture: F(n)/log(n) \u2192 \u221e via Filter.Tendsto",
       "erdos_82_bounds_summary theorem combining lower and upper bounds"
     ],
     "axiomCount": 10,
@@ -64,14 +64,14 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős, Fajtlowicz, and Staton in 1988. It asks whether the function F(n) — the largest guaranteed regular induced subgraph in any n-vertex graph — grows superlogarithmically. The question sits at the intersection of Ramsey theory and structural graph theory.\n\nRamsey theory immediately gives F(n) ≥ c·log(n), since every graph on n vertices contains a clique or independent set of size ≈ (1/2)log₂(n), and both are regular. The 2023 breakthrough by Campos, Griffiths, Morris, and Sahasrabudhe on diagonal Ramsey numbers slightly improves the constant but not the growth rate.\n\nAlon, Krivelevich, and Sudakov (2007) proved the best known upper bound F(n) ≤ C·√n·(log n)^{O(1)} using probabilistic constructions. The enormous gap between log(n) and √n remains one of the major open questions in extremal graph theory.",
-    "problemStatement": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) → ∞ as n → ∞?",
-    "text": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) → ∞?",
-    "proofStrategy": "The formalization defines regular graphs, induced subgraphs, and the function F(n) using Lean 4 with Mathlib. Key bounds from Ramsey theory (lower) and Alon-Krivelevich-Sudakov (upper) are stated as axioms. The conjecture is formalized using Filter.Tendsto for the limit F(n)/log(n) → ∞, with an equivalent explicit ε-N formulation.",
+    "historicalContext": "This problem was posed by Erd\u0151s, Fajtlowicz, and Staton in 1988. It asks whether the function F(n) \u2014 the largest guaranteed regular induced subgraph in any n-vertex graph \u2014 grows superlogarithmically. The question sits at the intersection of Ramsey theory and structural graph theory.\n\nRamsey theory immediately gives F(n) \u2265 c\u00b7log(n), since every graph on n vertices contains a clique or independent set of size \u2248 (1/2)log\u2082(n), and both are regular. The 2023 breakthrough by Campos, Griffiths, Morris, and Sahasrabudhe on diagonal Ramsey numbers slightly improves the constant but not the growth rate.\n\nAlon, Krivelevich, and Sudakov (2007) proved the best known upper bound F(n) \u2264 C\u00b7\u221an\u00b7(log n)^{O(1)} using probabilistic constructions. The enormous gap between log(n) and \u221an remains one of the major open questions in extremal graph theory.",
+    "problemStatement": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) \u2192 \u221e as n \u2192 \u221e?",
+    "text": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) \u2192 \u221e?",
+    "proofStrategy": "The formalization defines regular graphs, induced subgraphs, and the function F(n) using Lean 4 with Mathlib. Key bounds from Ramsey theory (lower) and Alon-Krivelevich-Sudakov (upper) are stated as axioms. The conjecture is formalized using Filter.Tendsto for the limit F(n)/log(n) \u2192 \u221e, with an equivalent explicit \u03b5-N formulation.",
     "keyInsights": [
-      "Ramsey theory gives the baseline F(n) ≥ c·log(n) via guaranteed cliques or independent sets",
-      "The Alon-Krivelevich-Sudakov upper bound F(n) ≤ C·√n·(log n)^{O(1)} shows F(n) cannot grow polynomially",
-      "Regular subgraphs are harder to find than merely bounded-degree subgraphs — all vertices must have the SAME degree",
+      "Ramsey theory gives the baseline F(n) \u2265 c\u00b7log(n) via guaranteed cliques or independent sets",
+      "The Alon-Krivelevich-Sudakov upper bound F(n) \u2264 C\u00b7\u221an\u00b7(log n)^{O(1)} shows F(n) cannot grow polynomially",
+      "Regular subgraphs are harder to find than merely bounded-degree subgraphs \u2014 all vertices must have the SAME degree",
       "Exact values F(1..15) = 1,2,2,3,3,3,4,4,4,4,4,5,5,5,5 from OEIS A120414 show slow initial growth",
       "The 2023 Ramsey diagonal improvement marginally improves the lower bound constant but not the growth rate"
     ],
@@ -79,7 +79,7 @@
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
       "Ramsey theory (partition regularity)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -109,21 +109,21 @@
       "title": "Part 4: Trivial Lower Bound",
       "startLine": 115,
       "endLine": 141,
-      "summary": "F(n) ≥ 1 for n ≥ 1, and cliques/independent sets are regular."
+      "summary": "F(n) \u2265 1 for n \u2265 1, and cliques/independent sets are regular."
     },
     {
       "id": "ramsey-lower",
       "title": "Part 5: Ramsey-Theoretic Lower Bound",
       "startLine": 143,
       "endLine": 183,
-      "summary": "Ramsey numbers, the classical R(k,k) ≤ 4^k bound, and the key consequence F(n) ≥ (1/2)log₂(n)."
+      "summary": "Ramsey numbers, the classical R(k,k) \u2264 4^k bound, and the key consequence F(n) \u2265 (1/2)log\u2082(n)."
     },
     {
       "id": "aks-upper",
       "title": "Part 6: Alon-Krivelevich-Sudakov Upper Bound",
       "startLine": 185,
       "endLine": 205,
-      "summary": "The 2007 upper bound F(n) ≤ C·√n·(log n)^{O(1)} from probabilistic constructions."
+      "summary": "The 2007 upper bound F(n) \u2264 C\u00b7\u221an\u00b7(log n)^{O(1)} from probabilistic constructions."
     },
     {
       "id": "small-values",
@@ -134,17 +134,17 @@
     },
     {
       "id": "conjecture",
-      "title": "Part 8: The Erdős Conjecture",
+      "title": "Part 8: The Erd\u0151s Conjecture",
       "startLine": 244,
       "endLine": 274,
-      "summary": "The formal conjecture F(n)/log(n) → ∞ in both Filter.Tendsto and explicit ε-N forms."
+      "summary": "The formal conjecture F(n)/log(n) \u2192 \u221e in both Filter.Tendsto and explicit \u03b5-N forms."
     },
     {
       "id": "connections",
       "title": "Part 9: Related Results and Connections",
       "startLine": 276,
       "endLine": 318,
-      "summary": "Connections to Ramsey diagonal improvements, Erdős-Sauer problem, and random graph theory."
+      "summary": "Connections to Ramsey diagonal improvements, Erd\u0151s-Sauer problem, and random graph theory."
     },
     {
       "id": "summary",
@@ -155,10 +155,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #82 asks whether F(n)/log(n) → ∞, where F(n) is the largest regular induced subgraph guaranteed in any n-vertex graph. The Ramsey lower bound gives F(n) ≥ c·log(n) and the Alon-Krivelevich-Sudakov upper bound gives F(n) ≤ C·√n·(log n)^{O(1)}. The problem remains open with a large gap between the known bounds.",
+    "summary": "Erd\u0151s Problem #82 asks whether F(n)/log(n) \u2192 \u221e, where F(n) is the largest regular induced subgraph guaranteed in any n-vertex graph. The Ramsey lower bound gives F(n) \u2265 c\u00b7log(n) and the Alon-Krivelevich-Sudakov upper bound gives F(n) \u2264 C\u00b7\u221an\u00b7(log n)^{O(1)}. The problem remains open with a large gap between the known bounds.",
     "implications": "Resolution would clarify whether Euclidean regularity constraints fundamentally limit subgraph structure beyond what Ramsey theory provides, with connections to the chromatic number of random graphs and degree-constrained subgraph problems.",
     "openQuestions": [
-      "Does F(n)/log(n) → ∞?",
+      "Does F(n)/log(n) \u2192 \u221e?",
       "What is the precise growth rate of F(n)?",
       "Can the Alon-Krivelevich-Sudakov upper bound be improved?",
       "What is F(n) for random graphs G(n, 1/2)?"
@@ -185,5 +185,39 @@
     "axiomCount": 10,
     "theoremCount": 1,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1036",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-636",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, graph-theoretic, and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-620",
+    "erdos-1036",
+    "erdos-565",
+    "erdos-636",
+    "erdos-88"
+  ]
 }

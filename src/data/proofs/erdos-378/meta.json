@@ -177,5 +177,39 @@
     "axiomCount": 10,
     "theoremCount": 10,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Share squarefree, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-175",
+      "relationship": "related",
+      "description": "Share squarefree, number-theoretic, and binomial-coefficients themes"
+    },
+    {
+      "targetId": "erdos-537",
+      "relationship": "related",
+      "description": "Share squarefree, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Share squarefree and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Share squarefree and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1102",
+    "erdos-175",
+    "erdos-537",
+    "erdos-11",
+    "erdos-1103"
+  ]
 }

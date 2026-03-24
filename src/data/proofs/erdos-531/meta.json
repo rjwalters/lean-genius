@@ -1,8 +1,8 @@
 {
   "id": "erdos-531",
-  "title": "Erdős Problem #531: Folkman's Theorem - Monochromatic Subset Sums",
+  "title": "Erd\u0151s Problem #531: Folkman's Theorem - Monochromatic Subset Sums",
   "slug": "erdos-531",
-  "description": "Estimate F(k), the minimal N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums. Lower bound: F(k) ≥ 2^{2^{k-1}/k}.",
+  "description": "Estimate F(k), the minimal N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums. Lower bound: F(k) \u2265 2^{2^{k-1}/k}.",
   "meta": {
     "author": "Balogh-Eberhard-Narayanan-Treglown-Wagner (2017 lower bound), Folkman (existence)",
     "sourceUrl": "https://erdosproblems.com/531",
@@ -48,8 +48,8 @@
       "ExistsMonochromaticSet definition: N guarantees k-set with monochromatic sums",
       "F function: minimum N for given k",
       "folkman_theorem axiom: existence of F(k)",
-      "erdos_spencer_1989 axiom: F(k) ≥ 2^{ck²/log k}",
-      "balogh_2017 axiom: F(k) ≥ 2^{2^{k-1}/k}",
+      "erdos_spencer_1989 axiom: F(k) \u2265 2^{ck\u00b2/log k}",
+      "balogh_2017 axiom: F(k) \u2265 2^{2^{k-1}/k}",
       "Small cases F(1), F(2), F(3)",
       "folkman_from_rado axiom: connection to Rado's theorem",
       "erdos_531 theorem: main result"
@@ -59,13 +59,13 @@
     "assumptions": "6 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #531: Folkman's Theorem**\n\nThis problem asks about the quantitative aspects of Folkman's theorem, a fundamental result in Ramsey theory.\n\n**Key History:**\n- Sanders and Folkman (1960s): Proved the existence of F(k)\n- Rado's theorem (1933): Provides an alternative proof via partition regularity\n- Erdős-Spencer (1989): First non-trivial lower bound F(k) ≥ 2^{ck²/log k}\n- Balogh et al. (2017): Improved to F(k) ≥ 2^{2^{k-1}/k}\n\n**Mathematical Setting:**\nThe function F(k) is the Folkman number: the minimum N such that any 2-coloring of {1,...,N} contains a k-element subset where all 2^k - 1 non-empty subset sums are monochromatic.",
-    "problemStatement": "**Problem Statement (Bounds Established, Exact Growth Open)**\n\nLet F(k) be the minimal N such that if we two-colour {1,...,N}, there is a set A of size k such that all subset sums (for non-empty subsets) are monochromatic. Estimate F(k).\n\n**Known Results:**\n$$F(k) \\geq 2^{2^{k-1}/k}$$\n\nBalogh-Eberhard-Narayanan-Treglown-Wagner (2017) proved this doubly-exponential lower bound, improving on Erdős-Spencer (1989).\n\nThe upper bound (from Folkman's existence proof) is much larger, leaving a huge gap.",
-    "text": "Estimate F(k), the minimal N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums. Lower bound: F(k) ≥ 2^{2^{k-1}/k}.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - Coloring: ℕ → Bool\n   - SubsetSums: all non-empty subset sums of a finite set\n   - MonochromaticSubsetSums: all sums have same color\n   - F(k): minimum N using sInf\n\n2. **Main Theorems as Axioms:**\n   - folkman_theorem: F(k) exists (finite for all k ≥ 1)\n   - erdos_spencer_1989: F(k) ≥ 2^{ck²/log k}\n   - balogh_2017: F(k) ≥ 2^{2^{k-1}/k}\n\n3. **Small Cases:** F(1) = 1, F(2) = 3, F(3) ≥ 11\n\n4. **Connections:** Link to Rado's theorem on partition regularity",
+    "historicalContext": "**Erd\u0151s Problem #531: Folkman's Theorem**\n\nThis problem asks about the quantitative aspects of Folkman's theorem, a fundamental result in Ramsey theory.\n\n**Key History:**\n- Sanders and Folkman (1960s): Proved the existence of F(k)\n- Rado's theorem (1933): Provides an alternative proof via partition regularity\n- Erd\u0151s-Spencer (1989): First non-trivial lower bound F(k) \u2265 2^{ck\u00b2/log k}\n- Balogh et al. (2017): Improved to F(k) \u2265 2^{2^{k-1}/k}\n\n**Mathematical Setting:**\nThe function F(k) is the Folkman number: the minimum N such that any 2-coloring of {1,...,N} contains a k-element subset where all 2^k - 1 non-empty subset sums are monochromatic.",
+    "problemStatement": "**Problem Statement (Bounds Established, Exact Growth Open)**\n\nLet F(k) be the minimal N such that if we two-colour {1,...,N}, there is a set A of size k such that all subset sums (for non-empty subsets) are monochromatic. Estimate F(k).\n\n**Known Results:**\n$$F(k) \\geq 2^{2^{k-1}/k}$$\n\nBalogh-Eberhard-Narayanan-Treglown-Wagner (2017) proved this doubly-exponential lower bound, improving on Erd\u0151s-Spencer (1989).\n\nThe upper bound (from Folkman's existence proof) is much larger, leaving a huge gap.",
+    "text": "Estimate F(k), the minimal N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums. Lower bound: F(k) \u2265 2^{2^{k-1}/k}.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - Coloring: \u2115 \u2192 Bool\n   - SubsetSums: all non-empty subset sums of a finite set\n   - MonochromaticSubsetSums: all sums have same color\n   - F(k): minimum N using sInf\n\n2. **Main Theorems as Axioms:**\n   - folkman_theorem: F(k) exists (finite for all k \u2265 1)\n   - erdos_spencer_1989: F(k) \u2265 2^{ck\u00b2/log k}\n   - balogh_2017: F(k) \u2265 2^{2^{k-1}/k}\n\n3. **Small Cases:** F(1) = 1, F(2) = 3, F(3) \u2265 11\n\n4. **Connections:** Link to Rado's theorem on partition regularity",
     "keyInsights": [
       "**Folkman's Theorem:** Any 2-coloring of sufficiently large {1,...,N} contains a k-set with monochromatic subset sums",
-      "**Doubly Exponential:** F(k) ≥ 2^{2^{k-1}/k} shows very fast growth",
+      "**Doubly Exponential:** F(k) \u2265 2^{2^{k-1}/k} shows very fast growth",
       "**Ramsey Connection:** Related to Schur numbers (x+y=z) and Rado's theorem",
       "**Subset Sum Structure:** 2^k - 1 non-empty subsets create complex coloring constraints",
       "**Gap Problem:** Huge gap between known lower and upper bounds"
@@ -108,7 +108,7 @@
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Erdős-Spencer 1989 and Balogh et al. 2017 bounds",
+      "summary": "Erd\u0151s-Spencer 1989 and Balogh et al. 2017 bounds",
       "startLine": 80,
       "endLine": 96
     },
@@ -142,12 +142,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #531 asks to estimate F(k), the Folkman number for monochromatic subset sums. Folkman's theorem guarantees F(k) is finite for all k. The best known lower bound is F(k) ≥ 2^{2^{k-1}/k} (Balogh et al. 2017), showing doubly-exponential growth. The exact growth rate remains open.",
+    "summary": "Erd\u0151s Problem #531 asks to estimate F(k), the Folkman number for monochromatic subset sums. Folkman's theorem guarantees F(k) is finite for all k. The best known lower bound is F(k) \u2265 2^{2^{k-1}/k} (Balogh et al. 2017), showing doubly-exponential growth. The exact growth rate remains open.",
     "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Ramsey Theory:** Generalizes Schur numbers to subset sums\n\n2. **Rado's Theorem:** Special case of partition regularity\n\n**3. Additive Combinatorics:** Structure of sum-free sets and colorings\n\n4. **Extremal Combinatorics:** Tower-type bounds in combinatorial problems\n\n5. **Computational Complexity:** Computing F(k) for small k is very hard.",
     "openQuestions": [
       "Determine the exact growth rate of F(k)",
       "Close the gap between lower and upper bounds",
-      "Compute exact values F(k) for small k (k ≥ 4)",
+      "Compute exact values F(k) for small k (k \u2265 4)",
       "Extend to r-colorings (r > 2)",
       "Understand the structure of extremal colorings"
     ]
@@ -167,5 +167,39 @@
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-532",
+      "relationship": "related",
+      "description": "Share Ramsey-theoretic, combinatorial, and colorings themes"
+    },
+    {
+      "targetId": "erdos-781",
+      "relationship": "related",
+      "description": "Share Ramsey-theoretic, combinatorial, and colorings themes"
+    },
+    {
+      "targetId": "erdos-843",
+      "relationship": "related",
+      "description": "Share Ramsey-theoretic, combinatorial, and subset-sums themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share Ramsey-theoretic and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share Ramsey-theoretic and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-532",
+    "erdos-781",
+    "erdos-843",
+    "erdos-1014",
+    "erdos-1030"
+  ]
 }

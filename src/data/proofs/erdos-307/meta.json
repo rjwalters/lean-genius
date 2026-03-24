@@ -1,8 +1,8 @@
 {
   "id": "erdos-307",
-  "title": "Erdős #307: Prime Reciprocal Products",
+  "title": "Erd\u0151s #307: Prime Reciprocal Products",
   "slug": "erdos-307",
-  "description": "Are there two finite sets of primes P, Q with (Σ 1/p)(Σ 1/q) = 1? Prime version: OPEN. Coprime version: SOLVED by Cambie with (1 + 1/5)(1/2 + 1/3) = 1.",
+  "description": "Are there two finite sets of primes P, Q with (\u03a3 1/p)(\u03a3 1/q) = 1? Prime version: OPEN. Coprime version: SOLVED by Cambie with (1 + 1/5)(1/2 + 1/3) = 1.",
   "meta": {
     "author": "Barbeau (1976), Cambie",
     "sourceUrl": "https://erdosproblems.com/307",
@@ -43,7 +43,7 @@
       "Formalization of reciprocal sum products",
       "Verified Cambie's examples (coprime version)",
       "Strengthened coprime version definition",
-      "Lower bound |P ∪ Q| ≥ 60 for prime solutions",
+      "Lower bound |P \u222a Q| \u2265 60 for prime solutions",
       "Connection to Egyptian fractions",
       "Computational intractability analysis"
     ],
@@ -52,16 +52,16 @@
     "assumptions": "5 axiom(s) and 6 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #307 was posed by E.J. Barbeau in 1976 in 'Computer challenge corner: Problem 477: A brute force program' (Journal of Recreational Mathematics). Barbeau framed it as a computational challenge, not suspecting the problem would resist solution for nearly 50 years.\n\nThe problem sits at the intersection of three classical threads: (1) Euler's 1737 proof that $\\sum 1/p$ diverges (establishing that prime reciprocals are arithmetically rich), (2) Egyptian fraction theory dating to the Rhind papyrus (~1650 BCE, asking when rationals can be expressed as sums of unit fractions), and (3) Mertens' 1874 theorem that $\\sum_{p \\leq x} 1/p = \\ln\\ln x + M + O(1/\\ln x)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant.\n\nThe coprime relaxation was solved by Cambie, who found the elegant examples $(1 + 1/5)(1/2 + 1/3) = (6/5)(5/6) = 1$ and $(1 + 1/41)(1/2 + 1/3 + 1/7) = (42/41)(41/42) = 1$. Both exploit the pattern $1 + 1/n = (n+1)/n$ where $n+1$ is a product of small distinct primes. The prime version remains open: an AM-GM argument shows any solution requires $|P \\cup Q| \\geq 60$ primes, making the search space $\\sim 2^{60} \\approx 10^{18}$, computationally infeasible. The problem connects to the 300-310 Egyptian fraction cluster in Erdős's problem list.",
-    "problemStatement": "**Question**: Do there exist two finite sets of primes P, Q such that\n$$ \\left(\\sum_{p \\in P} \\frac{1}{p}\\right) \\left(\\sum_{q \\in Q} \\frac{1}{q}\\right) = 1? $$\n\n**Status**: OPEN (prime version)\n\n**Coprime Version**: SOLVED by Cambie\n- $(1 + \\frac{1}{5})(\\frac{1}{2} + \\frac{1}{3}) = \\frac{6}{5} \\cdot \\frac{5}{6} = 1$\n- $(1 + \\frac{1}{41})(\\frac{1}{2} + \\frac{1}{3} + \\frac{1}{7}) = \\frac{42}{41} \\cdot \\frac{41}{42} = 1$\n\n**Known**: If P, Q are primes with product 1, then |P ∪ Q| ≥ 60",
-    "text": "Are there two finite sets of primes P, Q with (Σ 1/p)(Σ 1/q) = 1? Prime version: OPEN. Coprime version: SOLVED by Cambie with (1 + 1/5)(1/2 + 1/3) = 1.",
-    "proofStrategy": "We formalize the problem by:\n\n1. **reciprocalSum**: Σ_{n ∈ S} 1/n as a rational number\n2. **reciprocalProduct**: The product of two reciprocal sums\n3. **IsSetOfPrimes**: All elements are prime\n4. **IsPairwiseCoprime**: All pairs are coprime\n5. **Cambie's examples**: Verified computationally\n6. **Constraints**: P ∩ Q = ∅, |P ∪ Q| ≥ 60 for prime solutions\n7. **Computational bounds**: Search space ≈ 2^60 is intractable",
+    "historicalContext": "Erd\u0151s Problem #307 was posed by E.J. Barbeau in 1976 in 'Computer challenge corner: Problem 477: A brute force program' (Journal of Recreational Mathematics). Barbeau framed it as a computational challenge, not suspecting the problem would resist solution for nearly 50 years.\n\nThe problem sits at the intersection of three classical threads: (1) Euler's 1737 proof that $\\sum 1/p$ diverges (establishing that prime reciprocals are arithmetically rich), (2) Egyptian fraction theory dating to the Rhind papyrus (~1650 BCE, asking when rationals can be expressed as sums of unit fractions), and (3) Mertens' 1874 theorem that $\\sum_{p \\leq x} 1/p = \\ln\\ln x + M + O(1/\\ln x)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant.\n\nThe coprime relaxation was solved by Cambie, who found the elegant examples $(1 + 1/5)(1/2 + 1/3) = (6/5)(5/6) = 1$ and $(1 + 1/41)(1/2 + 1/3 + 1/7) = (42/41)(41/42) = 1$. Both exploit the pattern $1 + 1/n = (n+1)/n$ where $n+1$ is a product of small distinct primes. The prime version remains open: an AM-GM argument shows any solution requires $|P \\cup Q| \\geq 60$ primes, making the search space $\\sim 2^{60} \\approx 10^{18}$, computationally infeasible. The problem connects to the 300-310 Egyptian fraction cluster in Erd\u0151s's problem list.",
+    "problemStatement": "**Question**: Do there exist two finite sets of primes P, Q such that\n$$ \\left(\\sum_{p \\in P} \\frac{1}{p}\\right) \\left(\\sum_{q \\in Q} \\frac{1}{q}\\right) = 1? $$\n\n**Status**: OPEN (prime version)\n\n**Coprime Version**: SOLVED by Cambie\n- $(1 + \\frac{1}{5})(\\frac{1}{2} + \\frac{1}{3}) = \\frac{6}{5} \\cdot \\frac{5}{6} = 1$\n- $(1 + \\frac{1}{41})(\\frac{1}{2} + \\frac{1}{3} + \\frac{1}{7}) = \\frac{42}{41} \\cdot \\frac{41}{42} = 1$\n\n**Known**: If P, Q are primes with product 1, then |P \u222a Q| \u2265 60",
+    "text": "Are there two finite sets of primes P, Q with (\u03a3 1/p)(\u03a3 1/q) = 1? Prime version: OPEN. Coprime version: SOLVED by Cambie with (1 + 1/5)(1/2 + 1/3) = 1.",
+    "proofStrategy": "We formalize the problem by:\n\n1. **reciprocalSum**: \u03a3_{n \u2208 S} 1/n as a rational number\n2. **reciprocalProduct**: The product of two reciprocal sums\n3. **IsSetOfPrimes**: All elements are prime\n4. **IsPairwiseCoprime**: All pairs are coprime\n5. **Cambie's examples**: Verified computationally\n6. **Constraints**: P \u2229 Q = \u2205, |P \u222a Q| \u2265 60 for prime solutions\n7. **Computational bounds**: Search space \u2248 2^60 is intractable",
     "keyInsights": [
       "**Coprime solved, prime open**: Including 1 in a set makes balancing easier: 1 + 1/n = (n+1)/n. For prime sets, we can't use 1.",
-      "**AM-GM constraint**: If (Σ 1/p)(Σ 1/q) = 1, then Σ 1/p + Σ 1/q ≥ 2 by AM-GM. This requires many primes since Σ 1/p grows like log log n.",
-      "**Size bound |P ∪ Q| ≥ 60**: The first 60 primes give Σ 1/p ≈ 2.009, the minimum needed. Any solution needs at least 60 primes.",
-      "**Computational intractability**: 2^60 ≈ 10^18 partitions to check. At 10^9/sec, this takes 36+ years.",
-      "**Disjointness P ∩ Q = ∅**: If a prime appears in both sums, the product structure prevents equality to 1."
+      "**AM-GM constraint**: If (\u03a3 1/p)(\u03a3 1/q) = 1, then \u03a3 1/p + \u03a3 1/q \u2265 2 by AM-GM. This requires many primes since \u03a3 1/p grows like log log n.",
+      "**Size bound |P \u222a Q| \u2265 60**: The first 60 primes give \u03a3 1/p \u2248 2.009, the minimum needed. Any solution needs at least 60 primes.",
+      "**Computational intractability**: 2^60 \u2248 10^18 partitions to check. At 10^9/sec, this takes 36+ years.",
+      "**Disjointness P \u2229 Q = \u2205**: If a prime appears in both sums, the product structure prevents equality to 1."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -88,7 +88,7 @@
       "title": "The Open Problem (Prime Version)",
       "startLine": 60,
       "endLine": 73,
-      "summary": "States `ErdosProblem307`: $\\exists P, Q \\subseteq \\text{Primes}$ with $(\\sum_P 1/p)(\\sum_Q 1/q) = 1$. This remains OPEN after nearly 50 years — no solution found, no impossibility proof known."
+      "summary": "States `ErdosProblem307`: $\\exists P, Q \\subseteq \\text{Primes}$ with $(\\sum_P 1/p)(\\sum_Q 1/q) = 1$. This remains OPEN after nearly 50 years \u2014 no solution found, no impossibility proof known."
     },
     {
       "id": "solved-coprime",
@@ -102,7 +102,7 @@
       "title": "Strengthened Coprime Version",
       "startLine": 147,
       "endLine": 158,
-      "summary": "Defines `ErdosProblem307CoprimeStrengthened`: require $1 \\notin P \\cup Q$. No examples known — all Cambie solutions use the $1 + 1/n = (n+1)/n$ trick. This is an intermediate open problem."
+      "summary": "Defines `ErdosProblem307CoprimeStrengthened`: require $1 \\notin P \\cup Q$. No examples known \u2014 all Cambie solutions use the $1 + 1/n = (n+1)/n$ trick. This is an intermediate open problem."
     },
     {
       "id": "constraints",
@@ -123,7 +123,7 @@
       "title": "Related Egyptian Fraction Problems",
       "startLine": 221,
       "endLine": 241,
-      "summary": "Defines `IsEgyptianOne` ($\\sum_S 1/n = 1$ with all $n > 0$). Proves $1 = 1/2 + 1/3 + 1/6$ via `norm_num`. Connects to the Erdős-Graham conjecture (Croot 2003) on unit fraction representations."
+      "summary": "Defines `IsEgyptianOne` ($\\sum_S 1/n = 1$ with all $n > 0$). Proves $1 = 1/2 + 1/3 + 1/6$ via `norm_num`. Connects to the Erd\u0151s-Graham conjecture (Croot 2003) on unit fraction representations."
     },
     {
       "id": "computational",
@@ -163,83 +163,89 @@
   ],
   "crossReferences": [
     {
-      "targetProofId": "erdos-300",
-      "relationship": "Maximum subsets avoiding unit fraction sum 1 — the avoidance analogue of the Egyptian fraction connection in #307",
+      "relationship": "related",
       "sharedConcepts": [
         "unit fraction sums",
         "Egyptian fractions",
         "subset selection"
-      ]
+      ],
+      "targetId": "erdos-300",
+      "description": "Maximum subsets avoiding unit fraction sum 1 \u2014 the avoidance analogue of the Egyptian fraction connection in #307"
     },
     {
-      "targetProofId": "erdos-304",
-      "relationship": "Egyptian fractions complexity — directly related to the unit fraction decomposition theory underlying #307",
+      "relationship": "related",
       "sharedConcepts": [
         "Egyptian fraction representations",
         "unit fractions",
         "complexity bounds"
-      ]
+      ],
+      "targetId": "erdos-304",
+      "description": "Egyptian fractions complexity \u2014 directly related to the unit fraction decomposition theory underlying #307"
     },
     {
-      "targetProofId": "erdos-306",
-      "relationship": "Egyptian fractions with semiprime denominators — intermediate constraint between coprime and prime conditions in #307",
+      "relationship": "related",
       "sharedConcepts": [
         "semiprime denominators",
         "unit fraction sums",
         "restricted denominator sets"
-      ]
+      ],
+      "targetId": "erdos-306",
+      "description": "Egyptian fractions with semiprime denominators \u2014 intermediate constraint between coprime and prime conditions in #307"
     },
     {
-      "targetProofId": "prime-reciprocal-divergence",
-      "relationship": "Euler's proof that ∑1/p diverges — the key analytic fact behind the |P ∪ Q| ≥ 60 bound in #307",
+      "relationship": "related",
       "sharedConcepts": [
         "prime reciprocal sums",
         "Euler product",
-        "divergence of ∑1/p"
-      ]
+        "divergence of \u22111/p"
+      ],
+      "targetId": "prime-reciprocal-divergence",
+      "description": "Euler's proof that \u22111/p diverges \u2014 the key analytic fact behind the |P \u222a Q| \u2265 60 bound in #307"
     },
     {
-      "targetProofId": "fundamental-arithmetic",
-      "relationship": "Prime factorization underpins both the p-adic valuation argument for P ∩ Q = ∅ and the LCD formulation",
+      "relationship": "related",
       "sharedConcepts": [
         "prime factorization",
         "unique factorization",
         "divisibility"
-      ]
+      ],
+      "targetId": "fundamental-arithmetic",
+      "description": "Prime factorization underpins both the p-adic valuation argument for P \u2229 Q = \u2205 and the LCD formulation"
     },
     {
-      "targetProofId": "bezout-identity",
-      "relationship": "Bézout's identity underlies coprimality verification in Cambie's examples and the modular arithmetic of reciprocal sums",
+      "relationship": "related",
       "sharedConcepts": [
         "coprimality",
         "gcd",
-        "Bézout coefficients"
-      ]
+        "B\u00e9zout coefficients"
+      ],
+      "targetId": "bezout-identity",
+      "description": "B\u00e9zout's identity underlies coprimality verification in Cambie's examples and the modular arithmetic of reciprocal sums"
     }
   ],
   "references": [
     {
       "citation": "Barbeau, E.J. (1976). 'Computer challenge corner: Problem 477: A brute force program.' Journal of Recreational Mathematics.",
-      "relevance": "Original problem statement asking for prime sets P, Q with (∑1/p)(∑1/q) = 1"
+      "relevance": "Original problem statement asking for prime sets P, Q with (\u22111/p)(\u22111/q) = 1"
     },
     {
-      "citation": "Mertens, F. (1874). 'Ein Beitrag zur analytischen Zahlentheorie.' Journal für die reine und angewandte Mathematik 78, 46-62.",
-      "relevance": "Established ∑_{p≤x} 1/p = ln ln x + M + O(1/ln x), the key asymptotic behind the 60-prime lower bound"
+      "citation": "Mertens, F. (1874). 'Ein Beitrag zur analytischen Zahlentheorie.' Journal f\u00fcr die reine und angewandte Mathematik 78, 46-62.",
+      "relevance": "Established \u2211_{p\u2264x} 1/p = ln ln x + M + O(1/ln x), the key asymptotic behind the 60-prime lower bound"
     },
     {
       "citation": "Euler, L. (1737). 'Variae observationes circa series infinitas.' Commentarii academiae scientiarum Petropolitanae 9, 160-188.",
-      "relevance": "First proof that ∑1/p diverges, axiomatized in the file as prime_reciprocal_divergence"
+      "relevance": "First proof that \u22111/p diverges, axiomatized in the file as prime_reciprocal_divergence"
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #307 on prime reciprocal products. The coprime version is solved (Cambie's examples), but the prime version remains open. Any prime solution requires at least 60 primes, making exhaustive search infeasible.",
+    "summary": "This formalization captures Erd\u0151s Problem #307 on prime reciprocal products. The coprime version is solved (Cambie's examples), but the prime version remains open. Any prime solution requires at least 60 primes, making exhaustive search infeasible.",
     "implications": "The problem connects number theory (primes, Egyptian fractions) with computational complexity (intractable search spaces). The contrast between the solved coprime version and open prime version illustrates how the structure of primes (no 1, slow-growing reciprocal sums) creates fundamental obstacles.",
     "openQuestions": [
-      "Does a prime solution exist? The search space (2^60 ≈ 10^18) makes brute force infeasible; new algebraic constraints are needed",
+      "Does a prime solution exist? The search space (2^60 \u2248 10^18) makes brute force infeasible; new algebraic constraints are needed",
       "Can the sorry theorems (disjointness via p-adic valuation, AM-GM bound, small case non-existence) be proved in Lean from Mathlib?",
-      "Does a coprime solution with 1 ∉ P ∪ Q exist? This intermediate problem may be more tractable than the prime version",
-      "Can the |P ∪ Q| ≥ 60 bound be improved using more refined estimates of partial prime reciprocal sums?",
-      "Are there additional Cambie-type examples beyond the (1+1/n)(∑_{p|n+1} 1/p) = 1 family?"
+      "Does a coprime solution with 1 \u2209 P \u222a Q exist? This intermediate problem may be more tractable than the prime version",
+      "Can the |P \u222a Q| \u2265 60 bound be improved using more refined estimates of partial prime reciprocal sums?",
+      "Are there additional Cambie-type examples beyond the (1+1/n)(\u2211_{p|n+1} 1/p) = 1 family?"
     ]
   },
   "leanFile": {

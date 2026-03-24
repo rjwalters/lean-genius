@@ -164,16 +164,19 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "erdos-984",
-      "relationship": "Both are Erdos problems in combinatorics involving structural constraints on graphs/sets with extremal colorings or partitions"
+      "relationship": "related",
+      "targetId": "erdos-984",
+      "description": "Both are Erdos problems in combinatorics involving structural constraints on graphs/sets with extremal colorings or partitions"
     },
     {
-      "targetProofId": "erdos-723",
-      "relationship": "Both involve combinatorial structures (graphs/projective planes) where counting arguments and explicit constructions determine extremal behavior"
+      "relationship": "related",
+      "targetId": "erdos-723",
+      "description": "Both involve combinatorial structures (graphs/projective planes) where counting arguments and explicit constructions determine extremal behavior"
     },
     {
-      "targetProofId": "erdos-107",
-      "relationship": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness"
+      "relationship": "related",
+      "targetId": "erdos-107",
+      "description": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness"
     }
   ],
   "leanFile": {

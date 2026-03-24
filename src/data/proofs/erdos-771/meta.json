@@ -202,5 +202,39 @@
     "axiomCount": 6,
     "theoremCount": 11,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-458",
+      "relationship": "related",
+      "description": "Share lcm and prime number themes"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Share subset-sums and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-817",
+      "relationship": "related",
+      "description": "Share subset-sums and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-874",
+      "relationship": "related",
+      "description": "Share subset-sums and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Share prime number and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-458",
+    "erdos-1",
+    "erdos-817",
+    "erdos-874",
+    "erdos-141"
+  ]
 }

@@ -39,9 +39,9 @@
     "millenniumProblem": "hodge"
   },
   "overview": {
-    "historicalContext": "The Hodge Conjecture was proposed by Sir William Vallance Douglas Hodge at the 1950 International Congress of Mathematicians in Cambridge. Hodge developed his theory of harmonic integrals in the 1930s–1940s, building on Solomon Lefschetz's 1924 theorem that every (1,1) integral Hodge class is algebraic (the Lefschetz theorem on (1,1) classes). Hodge conjectured this should extend to all codimensions p.\n\nFor over 70 years the conjecture has resisted resolution. Key milestones: Atiyah–Hirzebruch (1962) disproved the integral version using topological K-theory and Steenrod operations, showing rational coefficients are essential. Grothendieck (1968) proposed his Standard Conjectures, which would imply the Hodge Conjecture as a corollary; they also remain open. Deligne proved the Weil conjectures (1974), which are related but distinct. Voisin (2002) proved the conjecture fails for compact Kähler manifolds that are not projective, confirming projectivity is an essential hypothesis.\n\nIn 2000, the Clay Mathematics Institute designated the Hodge Conjecture as one of seven Millennium Prize Problems with a $1,000,000 prize. The only proven cases are: divisors on any variety (Lefschetz (1,1)), curves, surfaces, and special abelian varieties (Deligne, Hazama). The conjecture stands as one of the deepest open questions in mathematics.",
+    "historicalContext": "The Hodge Conjecture was proposed by Sir William Vallance Douglas Hodge at the 1950 International Congress of Mathematicians in Cambridge. Hodge developed his theory of harmonic integrals in the 1930s\u20131940s, building on Solomon Lefschetz's 1924 theorem that every (1,1) integral Hodge class is algebraic (the Lefschetz theorem on (1,1) classes). Hodge conjectured this should extend to all codimensions p.\n\nFor over 70 years the conjecture has resisted resolution. Key milestones: Atiyah\u2013Hirzebruch (1962) disproved the integral version using topological K-theory and Steenrod operations, showing rational coefficients are essential. Grothendieck (1968) proposed his Standard Conjectures, which would imply the Hodge Conjecture as a corollary; they also remain open. Deligne proved the Weil conjectures (1974), which are related but distinct. Voisin (2002) proved the conjecture fails for compact K\u00e4hler manifolds that are not projective, confirming projectivity is an essential hypothesis.\n\nIn 2000, the Clay Mathematics Institute designated the Hodge Conjecture as one of seven Millennium Prize Problems with a $1,000,000 prize. The only proven cases are: divisors on any variety (Lefschetz (1,1)), curves, surfaces, and special abelian varieties (Deligne, Hazama). The conjecture stands as one of the deepest open questions in mathematics.",
     "problemStatement": "**Conjecture:** On a smooth projective variety X over C, every Hodge class is a rational linear combination of algebraic cycle classes.\n\nFormally: H^{p,p}(X) intersect H^{2p}(X,Q) equals the Q-span of algebraic subvariety classes.",
-    "text": "Formalizes the Hodge Conjecture (Millennium Prize): every Hodge class on a smooth projective variety over $\\mathbb{C}$ is a $\\mathbb{Q}$-linear combination of algebraic cycle classes. Constructs Hodge structures with complexification, proves $h^{p,q} = h^{q,p}$ from conjugation, develops the Hodge filtration, and covers counterexamples (Atiyah-Hirzebruch integral, Voisin Kähler), known cases (Lefschetz (1,1)), Standard Conjectures, absolute Hodge classes, Tate Conjecture, derived categories, and non-abelian Hodge theory.",
+    "text": "Formalizes the Hodge Conjecture (Millennium Prize): every Hodge class on a smooth projective variety over $\\mathbb{C}$ is a $\\mathbb{Q}$-linear combination of algebraic cycle classes. Constructs Hodge structures with complexification, proves $h^{p,q} = h^{q,p}$ from conjugation, develops the Hodge filtration, and covers counterexamples (Atiyah-Hirzebruch integral, Voisin K\u00e4hler), known cases (Lefschetz (1,1)), Standard Conjectures, absolute Hodge classes, Tate Conjecture, derived categories, and non-abelian Hodge theory.",
     "proofStrategy": "This file provides:\n1. Abstract Hodge structures with complexification maps and injectivity\n2. Hodge filtration (decreasing filtration F^p) and Hodge numbers h^{p,q}\n3. Hodge symmetry h^{p,q} = h^{q,p} proved from conjugation axiom\n4. Integral Hodge conjecture and proof that rational follows from integral\n5. Formal counterexample axioms (Atiyah-Hirzebruch, Voisin)\n6. Proven cases (Lefschetz theorem, curves, surfaces)\n7. Equivalent formulations (Standard Conjectures, Mumford-Tate)\n8. Morphisms of Hodge structures with functoriality on Hodge/algebraic classes\n9. Polarizations with proved symmetry/antisymmetry for even/odd weight\n10. Mixed Hodge structures with pure-to-mixed embedding",
     "keyInsights": [
       "The conjecture is OPEN - one of the Millennium Prize Problems",
@@ -53,7 +53,7 @@
     ],
     "prerequisites": [
       "Algebraic geometry (projective varieties, algebraic cycles, cohomology)",
-      "Complex geometry (Hodge decomposition, Kähler manifolds, Dolbeault cohomology)",
+      "Complex geometry (Hodge decomposition, K\u00e4hler manifolds, Dolbeault cohomology)",
       "Homological algebra (derived categories, spectral sequences)",
       "Representation theory (Mumford-Tate groups, Hodge filtration)"
     ]
@@ -64,7 +64,7 @@
       "title": "Hodge Structures with Complexification",
       "startLine": 100,
       "endLine": 146,
-      "summary": "Pure Hodge structures with complexification map ι : V_ℚ →ₗ[ℚ] V_ℂ and Hodge components V^{p,q}."
+      "summary": "Pure Hodge structures with complexification map \u03b9 : V_\u211a \u2192\u2097[\u211a] V_\u2102 and Hodge components V^{p,q}."
     },
     {
       "id": "hodge-decomposition",
@@ -79,7 +79,7 @@
       "title": "Hodge Filtration",
       "startLine": 199,
       "endLine": 233,
-      "summary": "Decreasing filtration F^p on V_ℂ with F^0 = V_ℂ and F^{k+1} = 0."
+      "summary": "Decreasing filtration F^p on V_\u2102 with F^0 = V_\u2102 and F^{k+1} = 0."
     },
     {
       "id": "hodge-classes",
@@ -102,8 +102,8 @@
       "title": "Counterexamples",
       "startLine": 472,
       "endLine": 536,
-      "summary": "Integral Hodge conjecture, Atiyah-Hirzebruch failure, Voisin Kähler counterexample, and proof that rational follows from integral.",
-      "mathContext": "Integral Hodge fails: Atiyah-Hirzebruch (1962) via Steenrod operations. Voisin (2002): fails for Kähler non-projective. Rational $\\Leftarrow$ integral is proved."
+      "summary": "Integral Hodge conjecture, Atiyah-Hirzebruch failure, Voisin K\u00e4hler counterexample, and proof that rational follows from integral.",
+      "mathContext": "Integral Hodge fails: Atiyah-Hirzebruch (1962) via Steenrod operations. Voisin (2002): fails for K\u00e4hler non-projective. Rational $\\Leftarrow$ integral is proved."
     },
     {
       "id": "morphisms",
@@ -139,36 +139,36 @@
       "title": "Part LXIX: Absolute Hodge Classes and Deligne's Approach",
       "startLine": 8699,
       "endLine": 8761,
-      "summary": "Deligne's notion of absolute Hodge classes: those stable under all automorphisms of ℂ. Deligne proved: for abelian varieties, all Hodge classes are absolute Hodge. This is evidence for the Hodge Conjecture but does not prove it — absolute Hodge ≠ algebraic in general."
+      "summary": "Deligne's notion of absolute Hodge classes: those stable under all automorphisms of \u2102. Deligne proved: for abelian varieties, all Hodge classes are absolute Hodge. This is evidence for the Hodge Conjecture but does not prove it \u2014 absolute Hodge \u2260 algebraic in general."
     },
     {
       "id": "standard-conjectures",
       "title": "Part LXX: Grothendieck's Standard Conjectures",
       "startLine": 8762,
       "endLine": 8840,
-      "summary": "Grothendieck's four standard conjectures (Lefschetz, Künneth, Hodge, and algebraicity of numerical equivalence) would imply the Hodge Conjecture. They provide the motivic framework: the category of pure motives would be semisimple and abelian."
+      "summary": "Grothendieck's four standard conjectures (Lefschetz, K\u00fcnneth, Hodge, and algebraicity of numerical equivalence) would imply the Hodge Conjecture. They provide the motivic framework: the category of pure motives would be semisimple and abelian."
     },
     {
       "id": "known-cases",
       "title": "Part LXXI: Known Cases of the Hodge Conjecture",
       "startLine": 8850,
       "endLine": 8920,
-      "summary": "Survey of proven cases: divisors (Lefschetz 1,1 theorem, 1924), curves and surfaces, abelian varieties of CM type (Deligne), products of elliptic curves, K3 surfaces, varieties of dimension ≤ 3 in codimension 1. Each case uses different techniques."
+      "summary": "Survey of proven cases: divisors (Lefschetz 1,1 theorem, 1924), curves and surfaces, abelian varieties of CM type (Deligne), products of elliptic curves, K3 surfaces, varieties of dimension \u2264 3 in codimension 1. Each case uses different techniques."
     },
     {
       "id": "tate-conjecture",
-      "title": "Part LXXVII: The Tate Conjecture — p-adic Analogue",
+      "title": "Part LXXVII: The Tate Conjecture \u2014 p-adic Analogue",
       "startLine": 9531,
       "endLine": 9680,
-      "summary": "The Tate Conjecture is the p-adic/arithmetic analogue of the Hodge Conjecture: for varieties over finite fields, the cycle class map to ℓ-adic cohomology is surjective onto Galois-invariant classes. Proved for divisors on abelian varieties (Tate, Faltings). The Hodge-Tate comparison theorem connects the two.",
-      "mathContext": "Tate: $\\text{cl} : \\text{CH}^p(X) \\otimes \\mathbb{Q}_\\ell \\to H^{2p}_{\\text{ét}}(X, \\mathbb{Q}_\\ell(p))^{G_k}$ surjective. $p$-adic analogue of Hodge via Hodge-Tate decomposition."
+      "summary": "The Tate Conjecture is the p-adic/arithmetic analogue of the Hodge Conjecture: for varieties over finite fields, the cycle class map to \u2113-adic cohomology is surjective onto Galois-invariant classes. Proved for divisors on abelian varieties (Tate, Faltings). The Hodge-Tate comparison theorem connects the two.",
+      "mathContext": "Tate: $\\text{cl} : \\text{CH}^p(X) \\otimes \\mathbb{Q}_\\ell \\to H^{2p}_{\\text{\u00e9t}}(X, \\mathbb{Q}_\\ell(p))^{G_k}$ surjective. $p$-adic analogue of Hodge via Hodge-Tate decomposition."
     },
     {
       "id": "derived-categories-hms",
       "title": "Part LXXX: Derived Categories and Homological Mirror Symmetry",
       "startLine": 10113,
       "endLine": 10332,
-      "summary": "Kontsevich's homological mirror symmetry: D^b(Coh(X)) ≅ D^b(Fuk(Y)) for mirror pairs. Fourier-Mukai transforms preserve Hodge structures. Bridgeland stability conditions. The mirror of a Hodge class is a Lagrangian cycle — providing a potential physical approach to the Hodge Conjecture."
+      "summary": "Kontsevich's homological mirror symmetry: D^b(Coh(X)) \u2245 D^b(Fuk(Y)) for mirror pairs. Fourier-Mukai transforms preserve Hodge structures. Bridgeland stability conditions. The mirror of a Hodge class is a Lagrangian cycle \u2014 providing a potential physical approach to the Hodge Conjecture."
     },
     {
       "id": "non-abelian-hodge",
@@ -180,16 +180,19 @@
   ],
   "crossReferences": [
     {
-      "relationship": "Fellow Millennium Prize Problem. Hodge theory connects to the de Rham cohomology of gauge bundles; the Hodge decomposition underlies the Yang-Mills equations on compact manifolds.",
-      "targetId": "yang-mills"
+      "relationship": "related",
+      "targetId": "yang-mills",
+      "description": "Fellow Millennium Prize Problem. Hodge theory connects to the de Rham cohomology of gauge bundles; the Hodge decomposition underlies the Yang-Mills equations on compact manifolds."
     },
     {
-      "relationship": "Fellow Millennium Prize Problem. The Weil conjectures (proved by Deligne) relate to both: they concern the zeta function of varieties over finite fields and use Hodge-theoretic methods.",
-      "targetId": "riemann-hypothesis"
+      "relationship": "related",
+      "targetId": "riemann-hypothesis",
+      "description": "Fellow Millennium Prize Problem. The Weil conjectures (proved by Deligne) relate to both: they concern the zeta function of varieties over finite fields and use Hodge-theoretic methods."
     },
     {
-      "relationship": "Fellow Millennium Prize Problem. Both concern algebraic cycles: BSD relates to 0-cycles on elliptic curves, while Hodge concerns general algebraic cycles on projective varieties.",
-      "targetId": "birch-swinnerton-dyer"
+      "relationship": "related",
+      "targetId": "birch-swinnerton-dyer",
+      "description": "Fellow Millennium Prize Problem. Both concern algebraic cycles: BSD relates to 0-cycles on elliptic curves, while Hodge concerns general algebraic cycles on projective varieties."
     }
   ],
   "conclusion": {
@@ -207,14 +210,14 @@
       "authors": "Hodge, W.V.D.",
       "title": "The topological invariants of algebraic varieties",
       "year": "1950",
-      "venue": "Proceedings of the International Congress of Mathematicians 1, 181–192",
+      "venue": "Proceedings of the International Congress of Mathematicians 1, 181\u2013192",
       "note": "Original formulation of the Hodge conjecture relating de Rham cohomology to algebraic cycles"
     },
     {
       "authors": "Voisin, Claire",
       "title": "Hodge Theory and Complex Algebraic Geometry I & II",
       "year": "2002",
-      "venue": "Cambridge University Press, Cambridge Studies in Advanced Mathematics 76–77",
+      "venue": "Cambridge University Press, Cambridge Studies in Advanced Mathematics 76\u201377",
       "note": "Modern treatment including counterexamples to the integral Hodge conjecture and current state of knowledge"
     }
   ],

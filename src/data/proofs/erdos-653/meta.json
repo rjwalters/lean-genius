@@ -1,10 +1,10 @@
 {
   "id": "erdos-653",
-  "title": "Erdős Problem #653: Distinct Distance Counts in the Plane",
+  "title": "Erd\u0151s Problem #653: Distinct Distance Counts in the Plane",
   "slug": "erdos-653",
-  "description": "For n points in the plane, let R(xᵢ) count distinct distances from xᵢ. What is the maximum number of distinct R-values? Conjecture: g(n) ≥ (1-o(1))n. OPEN with bounds 0.7n < g(n) < n - cn^{2/3}.",
+  "description": "For n points in the plane, let R(x\u1d62) count distinct distances from x\u1d62. What is the maximum number of distinct R-values? Conjecture: g(n) \u2265 (1-o(1))n. OPEN with bounds 0.7n < g(n) < n - cn^{2/3}.",
   "meta": {
-    "author": "Erdős-Fishburn (3/8 bound), Csizmadia (7/10 bound)",
+    "author": "Erd\u0151s-Fishburn (3/8 bound), Csizmadia (7/10 bound)",
     "sourceUrl": "https://erdosproblems.com/653",
     "date": "1997",
     "status": "axiomatized",
@@ -50,7 +50,7 @@
       "euclidDist: Euclidean distance in the plane",
       "PointConfig: finite point configurations",
       "distanceSet: set of distances from a point",
-      "distinctDistCount: R(xᵢ) function",
+      "distinctDistCount: R(x\u1d62) function",
       "rValueSet: set of R-values for a configuration",
       "numDistinctRValues: count of distinct R-values",
       "g: maximum distinct R-values function",
@@ -68,13 +68,13 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #653**\n\nThis problem studies how the \"distance richness\" of individual points in a configuration can vary. For each point xᵢ, R(xᵢ) counts how many distinct distances emanate from it. The question asks: how many different values can R take across all points?\n\n**Key History:**\n- Erdős [Er97e]: Original problem formulation\n- Erdős-Fishburn: Proved g(n) > (3/8)n\n- Csizmadia: Improved to g(n) > (7/10)n\n- Both groups: Proved g(n) < n - cn^{2/3}\n\n**Mathematical Setting:**\n- Related to the famous Erdős distinct distances problem\n- Measures local distance diversity rather than global count\n- Connection to unit distance graphs and extremal combinatorics",
+    "historicalContext": "**Erd\u0151s Problem #653**\n\nThis problem studies how the \"distance richness\" of individual points in a configuration can vary. For each point x\u1d62, R(x\u1d62) counts how many distinct distances emanate from it. The question asks: how many different values can R take across all points?\n\n**Key History:**\n- Erd\u0151s [Er97e]: Original problem formulation\n- Erd\u0151s-Fishburn: Proved g(n) > (3/8)n\n- Csizmadia: Improved to g(n) > (7/10)n\n- Both groups: Proved g(n) < n - cn^{2/3}\n\n**Mathematical Setting:**\n- Related to the famous Erd\u0151s distinct distances problem\n- Measures local distance diversity rather than global count\n- Connection to unit distance graphs and extremal combinatorics",
     "problemStatement": "**Problem Statement (Open)**\n\nFor $n$ points $x_1, \\ldots, x_n \\in \\mathbb{R}^2$, define:\n$$R(x_i) = \\#\\{|x_j - x_i| : j \\neq i\\}$$\n\nLet $g(n)$ be the maximum number of distinct values the $R(x_i)$ can take.\n\n**Conjecture:** $g(n) \\geq (1 - o(1))n$\n\n**Known Bounds:**\n- Lower: $g(n) > \\frac{7}{10}n$ (Csizmadia)\n- Upper: $g(n) < n - cn^{2/3}$\n\n**Status: OPEN**",
-    "text": "For n points in the plane, let R(xᵢ) count distinct distances from xᵢ. What is the maximum number of distinct R-values? Conjecture: g(n) ≥ (1-o(1))n. OPEN with bounds 0.7n < g(n) < n - cn^{2/3}.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Point Configurations:** Define euclidDist for plane distance and PointConfig for n-point sets.\n\n2. **R-Function:** Define distanceSet and distinctDistCount (the R function) measuring distances from each point.\n\n3. **g(n) Definition:** Define rValueSet, numDistinctRValues, and g as the supremum over configurations.\n\n4. **Known Bounds:** Axiomatize Erdős-Fishburn (3/8) and Csizmadia (7/10) lower bounds, plus the n - cn^{2/3} upper bound.\n\n5. **The Conjecture:** State erdos653Conjecture as the limit statement g(n)/n → 1.\n\n6. **Special Cases:** Analyze collinear points and regular polygons.",
+    "text": "For n points in the plane, let R(x\u1d62) count distinct distances from x\u1d62. What is the maximum number of distinct R-values? Conjecture: g(n) \u2265 (1-o(1))n. OPEN with bounds 0.7n < g(n) < n - cn^{2/3}.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Configurations:** Define euclidDist for plane distance and PointConfig for n-point sets.\n\n2. **R-Function:** Define distanceSet and distinctDistCount (the R function) measuring distances from each point.\n\n3. **g(n) Definition:** Define rValueSet, numDistinctRValues, and g as the supremum over configurations.\n\n4. **Known Bounds:** Axiomatize Erd\u0151s-Fishburn (3/8) and Csizmadia (7/10) lower bounds, plus the n - cn^{2/3} upper bound.\n\n5. **The Conjecture:** State erdos653Conjecture as the limit statement g(n)/n \u2192 1.\n\n6. **Special Cases:** Analyze collinear points and regular polygons.",
     "keyInsights": [
       "**R(x) = Local Richness:** Each point sees a different number of distinct distances; R measures this local diversity",
-      "**g(n) vs n:** The gap n - g(n) is Θ(n^{2/3}), not o(n) as conjectured to be true",
+      "**g(n) vs n:** The gap n - g(n) is \u0398(n^{2/3}), not o(n) as conjectured to be true",
       "**7/10 is Best Known:** Csizmadia's bound g(n) > 0.7n is the current record; gap to 1 remains",
       "**Regular Polygons are Bad:** In a regular n-gon, all points have the same R-value, so g = 1",
       "**Connection to Distinct Distances:** Related to the total number of distinct distances in the plane",
@@ -164,10 +164,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #653 asks whether the maximum number of distinct R-values for n points in the plane satisfies g(n) ≥ (1 - o(1))n. The conjecture remains OPEN. Best known bounds are g(n) > 0.7n (Csizmadia) and g(n) < n - cn^{2/3} (Erdős-Fishburn).",
-    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Distinct Distances Problem:** Related to Erdős's famous question about minimum distinct distances\n\n2. **Unit Distance Graphs:** Configurations with many unit distances have restricted R-value diversity\n\n**3. Extremal Geometry:** Finding optimal configurations is a challenging extremal problem\n\n4. **Asymptotic Gaps:** The n^{2/3} gap suggests fundamental geometric constraints\n\n5. **Local vs Global:** Distinguishes local distance structure from global distance counts.",
+    "summary": "Erd\u0151s Problem #653 asks whether the maximum number of distinct R-values for n points in the plane satisfies g(n) \u2265 (1 - o(1))n. The conjecture remains OPEN. Best known bounds are g(n) > 0.7n (Csizmadia) and g(n) < n - cn^{2/3} (Erd\u0151s-Fishburn).",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Distinct Distances Problem:** Related to Erd\u0151s's famous question about minimum distinct distances\n\n2. **Unit Distance Graphs:** Configurations with many unit distances have restricted R-value diversity\n\n**3. Extremal Geometry:** Finding optimal configurations is a challenging extremal problem\n\n4. **Asymptotic Gaps:** The n^{2/3} gap suggests fundamental geometric constraints\n\n5. **Local vs Global:** Distinguishes local distance structure from global distance counts.",
     "openQuestions": [
-      "Is g(n) ≥ (1 - o(1))n true? (The main conjecture)",
+      "Is g(n) \u2265 (1 - o(1))n true? (The main conjecture)",
       "Can the 7/10 lower bound be improved toward 1?",
       "What configurations achieve g(n)?",
       "Is the n^{2/3} upper gap tight?",
@@ -192,5 +192,39 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric, distinct-distances, and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric, distinct-distances, and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-93",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric, distinct-distances, and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-91",
+      "relationship": "related",
+      "description": "Share point-configurations, distinct-distances, and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-100",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and discrete-geometry themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1089",
+    "erdos-604",
+    "erdos-93",
+    "erdos-91",
+    "erdos-100"
+  ]
 }

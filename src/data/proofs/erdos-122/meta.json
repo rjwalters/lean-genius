@@ -1,10 +1,10 @@
 {
   "id": "erdos-122",
-  "title": "Erdős Problem #122: Distribution of n + f(n) in Short Intervals",
+  "title": "Erd\u0151s Problem #122: Distribution of n + f(n) in Short Intervals",
   "slug": "erdos-122",
-  "description": "For which f is it true that n + f(n) concentrates in short intervals? Proved for d(n) and ω(n) by Erdős–Pomerance–Sárközy. Conjectured false for φ(n) and σ(n). OPEN.",
+  "description": "For which f is it true that n + f(n) concentrates in short intervals? Proved for d(n) and \u03c9(n) by Erd\u0151s\u2013Pomerance\u2013S\u00e1rk\u00f6zy. Conjectured false for \u03c6(n) and \u03c3(n). OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/122",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos122Problem.lean",
@@ -33,14 +33,14 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős, Pomerance, and Sárközy introduced the Short Interval Concentration Property (SICP) in their 1997 paper [ErPoSa97], asking which arithmetic functions $f$ cause $n + f(n)$ to cluster in short intervals $(x, x + F(x)]$ far more than expected. The question is deeply connected to the Hardy–Ramanujan theorem (1917), which showed that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erdős–Kac theorem (1940), which proved $\\omega(n)$ follows a Gaussian distribution. The key dichotomy is between **erratic** functions like $d(n)$ and $\\omega(n)$ — which take exceptionally large values on highly composite and smooth numbers, creating clusters — and **smooth** functions like $\\varphi(n) \\sim (6/\\pi^2)n$ and $\\sigma(n) \\sim (\\pi^2/6)n$, whose average-order behavior prevents concentration. Erdős conjectured that smoothness of the average order is the obstruction to SICP. The general characterization of which multiplicative functions have SICP remains a major open problem in analytic number theory.",
+    "historicalContext": "Erd\u0151s, Pomerance, and S\u00e1rk\u00f6zy introduced the Short Interval Concentration Property (SICP) in their 1997 paper [ErPoSa97], asking which arithmetic functions $f$ cause $n + f(n)$ to cluster in short intervals $(x, x + F(x)]$ far more than expected. The question is deeply connected to the Hardy\u2013Ramanujan theorem (1917), which showed that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erd\u0151s\u2013Kac theorem (1940), which proved $\\omega(n)$ follows a Gaussian distribution. The key dichotomy is between **erratic** functions like $d(n)$ and $\\omega(n)$ \u2014 which take exceptionally large values on highly composite and smooth numbers, creating clusters \u2014 and **smooth** functions like $\\varphi(n) \\sim (6/\\pi^2)n$ and $\\sigma(n) \\sim (\\pi^2/6)n$, whose average-order behavior prevents concentration. Erd\u0151s conjectured that smoothness of the average order is the obstruction to SICP. The general characterization of which multiplicative functions have SICP remains a major open problem in analytic number theory.",
     "problemStatement": "For which number-theoretic functions $f$ does $\\#\\{n : n + f(n) \\in (x, x + F(x)]\\} / F(x) \\to \\infty$ for infinitely many $x$, whenever $f(n)/F(n) \\to 0$ for almost all $n$? OPEN (general characterization).",
-    "text": "For which f is it true that n + f(n) concentrates in short intervals? Proved for d(n) and ω(n) by Erdős–Pomerance–Sárközy. Conjectured false for φ(n) and σ(n). OPEN.",
-    "proofStrategy": "We define four classical arithmetic functions — $d(n)$, $\\omega(n)$, $\\varphi(n)$, $\\sigma(n)$ — using Finset filtering and counting. The Short Interval Concentration Property is formalized via a density-based $\\varepsilon$-$\\delta$ definition of '$f(n)/F(n) \\to 0$ a.e.' and an $\\forall C,\\, \\exists^\\infty x$ quantifier structure for concentration. The Erdős–Pomerance–Sárközy theorem ($d$ and $\\omega$ have SICP) is axiomatized, the conjectured failures for $\\varphi$ and $\\sigma$ are stated as definitions, and a proved summary theorem packages the known results.",
+    "text": "For which f is it true that n + f(n) concentrates in short intervals? Proved for d(n) and \u03c9(n) by Erd\u0151s\u2013Pomerance\u2013S\u00e1rk\u00f6zy. Conjectured false for \u03c6(n) and \u03c3(n). OPEN.",
+    "proofStrategy": "We define four classical arithmetic functions \u2014 $d(n)$, $\\omega(n)$, $\\varphi(n)$, $\\sigma(n)$ \u2014 using Finset filtering and counting. The Short Interval Concentration Property is formalized via a density-based $\\varepsilon$-$\\delta$ definition of '$f(n)/F(n) \\to 0$ a.e.' and an $\\forall C,\\, \\exists^\\infty x$ quantifier structure for concentration. The Erd\u0151s\u2013Pomerance\u2013S\u00e1rk\u00f6zy theorem ($d$ and $\\omega$ have SICP) is axiomatized, the conjectured failures for $\\varphi$ and $\\sigma$ are stated as definitions, and a proved summary theorem packages the known results.",
     "keyInsights": [
-      "**Erratic vs. smooth dichotomy**: $d(n)$ and $\\omega(n)$ are highly variable — $d(n)$ can be as large as $2^{(1+o(1))\\log n/\\log\\log n}$ on highly composite numbers — while $\\varphi(n)/n$ and $\\sigma(n)/n$ stay close to their means $(6/\\pi^2$ and $\\pi^2/6)$ for almost all $n$",
+      "**Erratic vs. smooth dichotomy**: $d(n)$ and $\\omega(n)$ are highly variable \u2014 $d(n)$ can be as large as $2^{(1+o(1))\\log n/\\log\\log n}$ on highly composite numbers \u2014 while $\\varphi(n)/n$ and $\\sigma(n)/n$ stay close to their means $(6/\\pi^2$ and $\\pi^2/6)$ for almost all $n$",
       "**SICP as a concentration phenomenon**: The property captures how exceptional values of $f$ on a sparse set of integers can force $n + f(n)$ into short intervals, overwhelming the expected uniform distribution",
-      "**Hardy–Ramanujan connection**: $\\omega(n) \\sim \\log\\log n$ normally, but on smooth numbers $\\omega(n)$ is much larger; these outliers drive the concentration of $n + \\omega(n)$ in short intervals",
+      "**Hardy\u2013Ramanujan connection**: $\\omega(n) \\sim \\log\\log n$ normally, but on smooth numbers $\\omega(n)$ is much larger; these outliers drive the concentration of $n + \\omega(n)$ in short intervals",
       "**Quantifier structure captures 'infinitely often'**: The formalization uses $\\forall x_0,\\, \\exists x \\ge x_0$ instead of filters, providing a constructive characterization of 'infinitely many $x$' via the Archimedean property",
       "**Density-based growth domination**: The condition $f/F \\to 0$ a.e. is formalized as natural density tending to 0, using rational $\\varepsilon$-$\\delta$ parameters to avoid real-valued Lean complications"
     ],
@@ -80,7 +80,7 @@
     },
     {
       "id": "known-results",
-      "title": "Part IV: Erdős–Pomerance–Sárközy Theorem",
+      "title": "Part IV: Erd\u0151s\u2013Pomerance\u2013S\u00e1rk\u00f6zy Theorem",
       "startLine": 100,
       "endLine": 112,
       "summary": "Axiomatizes the two proved results: $\\text{HasSICP}(d)$ and $\\text{HasSICP}(\\omega)$. These follow from the high variability of $d$ and $\\omega$ on highly composite and smooth numbers, which creates the clustering needed for SICP."
@@ -101,14 +101,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #122 asks which arithmetic functions have the Short Interval Concentration Property — i.e., which f cause n + f(n) to cluster in short intervals far beyond uniform expectation. The Erdős–Pomerance–Sárközy theorem (1997) proves SICP for d(n) and ω(n); Erdős conjectured failure for φ(n) and σ(n). The formalization captures the erratic-vs-smooth dichotomy that drives concentration phenomena in additive number theory.",
-    "implications": "The SICP distinguishes arithmetic functions by their distributional tails: functions with large exceptional values on sparse sets (highly composite numbers, smooth numbers) concentrate, while functions with stable average behavior spread uniformly. A general criterion would connect multiplicative structure to additive distribution, with implications for the Erdős–Kac circle of ideas and probabilistic number theory.",
+    "summary": "Erd\u0151s Problem #122 asks which arithmetic functions have the Short Interval Concentration Property \u2014 i.e., which f cause n + f(n) to cluster in short intervals far beyond uniform expectation. The Erd\u0151s\u2013Pomerance\u2013S\u00e1rk\u00f6zy theorem (1997) proves SICP for d(n) and \u03c9(n); Erd\u0151s conjectured failure for \u03c6(n) and \u03c3(n). The formalization captures the erratic-vs-smooth dichotomy that drives concentration phenomena in additive number theory.",
+    "implications": "The SICP distinguishes arithmetic functions by their distributional tails: functions with large exceptional values on sparse sets (highly composite numbers, smooth numbers) concentrate, while functions with stable average behavior spread uniformly. A general criterion would connect multiplicative structure to additive distribution, with implications for the Erd\u0151s\u2013Kac circle of ideas and probabilistic number theory.",
     "openQuestions": [
-      "Does Euler's totient φ(n) truly fail SICP, and can the smooth average order (6/π²)n be used to prove non-concentration?",
-      "Does the sum of divisors σ(n) fail SICP despite occasional large values on multiply-perfect numbers?",
+      "Does Euler's totient \u03c6(n) truly fail SICP, and can the smooth average order (6/\u03c0\u00b2)n be used to prove non-concentration?",
+      "Does the sum of divisors \u03c3(n) fail SICP despite occasional large values on multiply-perfect numbers?",
       "Can a general criterion for SICP be given in terms of the multiplicative structure of f (e.g., bounds on f at prime powers)?",
-      "Does Ω(n) (prime factor count with multiplicity) have SICP, and if so, does the proof differ from the ω(n) case?",
-      "How does SICP relate to the Erdős–Kac theorem and the distribution of additive functions modulo 1?"
+      "Does \u03a9(n) (prime factor count with multiplicity) have SICP, and if so, does the proof differ from the \u03c9(n) case?",
+      "How does SICP relate to the Erd\u0151s\u2013Kac theorem and the distribution of additive functions modulo 1?"
     ]
   },
   "leanFile": {
@@ -129,10 +129,44 @@
     "definitionCount": 10
   },
   "references": [
-    "Erdős–Pomerance–Sárközy (1997): On the distribution of the values of f(n) + g(n)",
-    "Hardy–Ramanujan (1917): The normal number of prime factors of a number n",
-    "Erdős–Kac (1940): The Gaussian law of errors in the theory of additive number-theoretic functions",
+    "Erd\u0151s\u2013Pomerance\u2013S\u00e1rk\u00f6zy (1997): On the distribution of the values of f(n) + g(n)",
+    "Hardy\u2013Ramanujan (1917): The normal number of prime factors of a number n",
+    "Erd\u0151s\u2013Kac (1940): The Gaussian law of errors in the theory of additive number-theoretic functions",
     "Pomerance (1984): On the distribution of round numbers",
     "https://erdosproblems.com/122"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-673",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, distribution, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-826",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, number-theoretic, and divisor-function themes"
+    },
+    {
+      "targetId": "erdos-946",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, number-theoretic, and divisor-function themes"
+    },
+    {
+      "targetId": "erdos-1061",
+      "relationship": "related",
+      "description": "Share arithmetic-functions and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Share arithmetic-functions and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-673",
+    "erdos-826",
+    "erdos-946",
+    "erdos-1061",
+    "erdos-1064"
   ]
 }

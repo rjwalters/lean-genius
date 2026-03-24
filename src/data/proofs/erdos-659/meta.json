@@ -1,8 +1,8 @@
 {
   "id": "erdos-659",
-  "title": "Erdős Problem #659: Point Configurations with Few Distances",
+  "title": "Erd\u0151s Problem #659: Point Configurations with Few Distances",
   "slug": "erdos-659",
-  "description": "Is there a set of n points in R² such that every 4-point subset determines at least 3 distances, yet the total distinct distances is O(n/√log n)? Answer: Yes, via the Moree-Osburn lattice.",
+  "description": "Is there a set of n points in R\u00b2 such that every 4-point subset determines at least 3 distances, yet the total distinct distances is O(n/\u221alog n)? Answer: Yes, via the Moree-Osburn lattice.",
   "meta": {
     "author": "Moree-Osburn (2006), Lund-Sheffer",
     "sourceUrl": "https://erdosproblems.com/659",
@@ -49,16 +49,16 @@
     "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem explores the interplay between local constraints (every 4 points determine many distances) and global behavior (few total distances). Erdős believed such configurations should exist and would yield bounds for related problems about point configurations.\n\nThe solution came from an unexpected direction: algebraic number theory. Moree and Osburn (2006) discovered that points on a 'stretched' integer lattice {(a, b√2) : a,b ∈ ℤ} have the remarkable property of avoiding regular geometric configurations while having few distinct distances. The key insight is that distances in this lattice have the form √(x² + 2y²), and by Landau's theorem, the count of integers representable this way grows as O(N/√log N).\n\nLund and Sheffer independently found this construction, and Grayzel later completed the proof by ruling out the pentagon configuration using computer assistance.",
+    "historicalContext": "This problem explores the interplay between local constraints (every 4 points determine many distances) and global behavior (few total distances). Erd\u0151s believed such configurations should exist and would yield bounds for related problems about point configurations.\n\nThe solution came from an unexpected direction: algebraic number theory. Moree and Osburn (2006) discovered that points on a 'stretched' integer lattice {(a, b\u221a2) : a,b \u2208 \u2124} have the remarkable property of avoiding regular geometric configurations while having few distinct distances. The key insight is that distances in this lattice have the form \u221a(x\u00b2 + 2y\u00b2), and by Landau's theorem, the count of integers representable this way grows as O(N/\u221alog N).\n\nLund and Sheffer independently found this construction, and Grayzel later completed the proof by ruling out the pentagon configuration using computer assistance.",
     "problemStatement": "Is there a set of $n$ points in $\\mathbb{R}^2$ such that every subset of $4$ points determines at least $3$ distances, yet the total number of distinct distances is $\\ll \\frac{n}{\\sqrt{\\log n}}$?\n\n**Answer:** Yes. The truncated lattice $\\{(a, b\\sqrt{2}) : a,b \\in \\mathbb{Z}\\}$ achieves this bound.",
-    "text": "Is there a set of n points in R² such that every 4-point subset determines at least 3 distances, yet the total distinct distances is O(n/√log n)? Answer: Yes, via the Moree-Osburn lattice.",
-    "proofStrategy": "The proof uses the Moree-Osburn lattice construction. The strategy has two parts:\n\n1. **Few total distances**: Distances between lattice points have form √(x² + 2y²). By Landau's theorem on sums of two squares (generalized), the count of such integers ≤ N is O(N/√log N).\n\n2. **4-point property**: There are exactly 6 configurations of 4 points with only 2 distances. Five contain squares or equilateral triangles (impossible in this lattice due to √2 stretching). The sixth is 4 vertices of a regular pentagon, ruled out by explicit calculation.",
+    "text": "Is there a set of n points in R\u00b2 such that every 4-point subset determines at least 3 distances, yet the total distinct distances is O(n/\u221alog n)? Answer: Yes, via the Moree-Osburn lattice.",
+    "proofStrategy": "The proof uses the Moree-Osburn lattice construction. The strategy has two parts:\n\n1. **Few total distances**: Distances between lattice points have form \u221a(x\u00b2 + 2y\u00b2). By Landau's theorem on sums of two squares (generalized), the count of such integers \u2264 N is O(N/\u221alog N).\n\n2. **4-point property**: There are exactly 6 configurations of 4 points with only 2 distances. Five contain squares or equilateral triangles (impossible in this lattice due to \u221a2 stretching). The sixth is 4 vertices of a regular pentagon, ruled out by explicit calculation.",
     "keyInsights": [
-      "**Moree-Osburn lattice**: The set {(a, b√2) : a,b ∈ ℤ} 'stretches' the integer lattice by √2 in one direction, breaking symmetries that would create regular polygons",
-      "**Landau's theorem**: The number of integers ≤ N representable as x² + 2y² is Θ(N/√log N), controlling the distance count",
+      "**Moree-Osburn lattice**: The set {(a, b\u221a2) : a,b \u2208 \u2124} 'stretches' the integer lattice by \u221a2 in one direction, breaking symmetries that would create regular polygons",
+      "**Landau's theorem**: The number of integers \u2264 N representable as x\u00b2 + 2y\u00b2 is \u0398(N/\u221alog N), controlling the distance count",
       "**Configuration classification**: Only 6 ways exist for 4 points to have exactly 2 distances; this lattice avoids all of them",
-      "**Quadratic forms**: Distances are √(x² + 2y²) - a positive definite binary quadratic form whose representation theory is well understood",
-      "**Near-optimality**: The Guth-Katz theorem (2015) shows any n points determine ≥ Ω(n/log n) distinct distances, so this construction achieves the optimal order — the 4-point property comes 'for free' from the lattice structure"
+      "**Quadratic forms**: Distances are \u221a(x\u00b2 + 2y\u00b2) - a positive definite binary quadratic form whose representation theory is well understood",
+      "**Near-optimality**: The Guth-Katz theorem (2015) shows any n points determine \u2265 \u03a9(n/log n) distinct distances, so this construction achieves the optimal order \u2014 the 4-point property comes 'for free' from the lattice structure"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -91,7 +91,7 @@
       "title": "Main Theorem",
       "startLine": 77,
       "endLine": 94,
-      "summary": "Derive the answer to Erdős #659 from the axiom"
+      "summary": "Derive the answer to Erd\u0151s #659 from the axiom"
     },
     {
       "id": "configurations",
@@ -102,10 +102,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #659 is answered affirmatively: large point sets exist with the 4-point property and few distinct distances. The Moree-Osburn lattice construction achieves O(n/√log n) distances while ensuring every 4-point subset determines at least 3 distances.",
-    "implications": "This result connects discrete geometry to algebraic number theory, showing how arithmetic properties of quadratic forms control geometric configurations. It also provides effective bounds for related Erdős problems about squares in point sets.",
+    "summary": "Erd\u0151s Problem #659 is answered affirmatively: large point sets exist with the 4-point property and few distinct distances. The Moree-Osburn lattice construction achieves O(n/\u221alog n) distances while ensuring every 4-point subset determines at least 3 distances.",
+    "implications": "This result connects discrete geometry to algebraic number theory, showing how arithmetic properties of quadratic forms control geometric configurations. It also provides effective bounds for related Erd\u0151s problems about squares in point sets.",
     "openQuestions": [
-      "Can the O(n/√log n) bound be improved?",
+      "Can the O(n/\u221alog n) bound be improved?",
       "Are there other lattice constructions with similar properties?",
       "What is the exact asymptotic constant in the distance count?"
     ]
@@ -126,5 +126,21 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-132",
+      "relationship": "related",
+      "description": "Share distance-problems and combinatorial-geometric themes"
+    },
+    {
+      "targetId": "erdos-662",
+      "relationship": "related",
+      "description": "Share lattices and combinatorial-geometric themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-132",
+    "erdos-662"
+  ]
 }

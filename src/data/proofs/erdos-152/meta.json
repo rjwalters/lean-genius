@@ -1,10 +1,10 @@
 {
   "id": "erdos-152",
-  "title": "Erdős Problem #152: Isolated Elements in Sidon Sumsets",
+  "title": "Erd\u0151s Problem #152: Isolated Elements in Sidon Sumsets",
   "slug": "erdos-152",
-  "description": "For large finite Sidon sets A, are there arbitrarily many isolated elements a ∈ A+A with a±1 ∉ A+A? Conjectured ≫ |A|² such elements. OPEN.",
+  "description": "For large finite Sidon sets A, are there arbitrarily many isolated elements a \u2208 A+A with a\u00b11 \u2209 A+A? Conjectured \u226b |A|\u00b2 such elements. OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/152",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos152Problem.lean",
@@ -24,14 +24,14 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I' in the Journal of Number Theory (pp. 329-347). They initiated a systematic study of the additive structure of Sidon sumsets, asking not just about the size of $A + A$ (which is exactly $\\binom{n+1}{2}$ for a Sidon set of size $n$) but about its fine structure — how the elements are distributed within their range.\n\nA Sidon set (also called a $B_2$ sequence) is a set where all pairwise sums are distinct: $a_1 + b_1 = a_2 + b_2$ implies $\\{a_1, b_1\\} = \\{a_2, b_2\\}$. Classical results show that a Sidon subset of $\\{1, \\ldots, N\\}$ has at most $\\sqrt{N} + O(N^{1/4})$ elements, so the sumset $A + A$ contains $\\sim N/2$ elements in an interval of length $\\sim 2N$ — density roughly $1/4$. This means roughly 3/4 of the interval is 'gaps', and the question is how many sumset elements are completely surrounded by these gaps.\n\nThe problem has a weak form (the isolated count grows without bound) and a strong form ($\\gg |A|^2$ isolated elements, meaning a positive fraction of the sumset is isolated). Neither version has been resolved. The pigeonhole principle gives at least one isolated element for $|A| \\geq 5$, but going from one to unboundedly many requires understanding the global distribution of sums, not just local density.",
+    "historicalContext": "This problem was posed by Erd\u0151s, S\u00e1rk\u00f6zy, and S\u00f3s in their 1994 paper 'On Sum Sets of Sidon Sets, I' in the Journal of Number Theory (pp. 329-347). They initiated a systematic study of the additive structure of Sidon sumsets, asking not just about the size of $A + A$ (which is exactly $\\binom{n+1}{2}$ for a Sidon set of size $n$) but about its fine structure \u2014 how the elements are distributed within their range.\n\nA Sidon set (also called a $B_2$ sequence) is a set where all pairwise sums are distinct: $a_1 + b_1 = a_2 + b_2$ implies $\\{a_1, b_1\\} = \\{a_2, b_2\\}$. Classical results show that a Sidon subset of $\\{1, \\ldots, N\\}$ has at most $\\sqrt{N} + O(N^{1/4})$ elements, so the sumset $A + A$ contains $\\sim N/2$ elements in an interval of length $\\sim 2N$ \u2014 density roughly $1/4$. This means roughly 3/4 of the interval is 'gaps', and the question is how many sumset elements are completely surrounded by these gaps.\n\nThe problem has a weak form (the isolated count grows without bound) and a strong form ($\\gg |A|^2$ isolated elements, meaning a positive fraction of the sumset is isolated). Neither version has been resolved. The pigeonhole principle gives at least one isolated element for $|A| \\geq 5$, but going from one to unboundedly many requires understanding the global distribution of sums, not just local density.",
     "problemStatement": "For any $M \\geq 1$, if $A \\subset \\mathbb{N}$ is a sufficiently large finite Sidon set, do there exist at least $M$ elements $s \\in A + A$ such that $s - 1, s + 1 \\notin A + A$?",
-    "text": "For large finite Sidon sets A, are there arbitrarily many isolated elements a ∈ A+A with a±1 ∉ A+A? Conjectured ≫ |A|² such elements. OPEN.",
+    "text": "For large finite Sidon sets A, are there arbitrarily many isolated elements a \u2208 A+A with a\u00b11 \u2209 A+A? Conjectured \u226b |A|\u00b2 such elements. OPEN.",
     "proofStrategy": "The formalization defines `IsSidonFinset` (distinct pairwise sums via multiset equality), `sumsetFinset` ($A + A$ via pointwise addition), `IsIsolated` (no sumset neighbors), and `isolatedCount`. The weak conjecture `ErdosProblem152` uses a $\\forall M, \\exists N_0$ structure. The strong conjecture `ErdosProblem152Strong` asserts $I(A) \\geq c|A|^2$. Supporting axioms give the exact sumset size ($n(n+1)/2$), the minimum range bound ($\\max A \\geq n^2 - n + 1$), and a pigeonhole existence result. The infinite version `ErdosProblem152Infinite` is also stated.",
     "keyInsights": [
       "For a Sidon set of size $n$, the sumset $A + A$ has exactly $n(n+1)/2$ elements (all unordered-pair sums distinct) in an interval of length $\\sim 2n^2$. The sumset density is $\\sim 1/4$, meaning the sumset is a sparse subset of its range with many gaps. The conjecture asks about the *fine structure* of these gaps.",
-      "The strong conjecture ($\\gg n^2$ isolated elements) says that a positive fraction of the sumset elements are isolated. Since $|A + A| \\sim n^2/2$, this would mean $\\sim cn^2$ out of $\\sim n^2/2$ elements have no neighbors — a constant fraction. This is a statement about the 'lacunarity' of Sidon sumsets.",
-      "The difficulty lies in controlling the *local* structure of the sumset. Pigeonhole arguments show that gaps exist and are numerous ($\\sim 3n^2/2$ total gaps), but converting gaps into isolated elements requires that gaps are not all clustered together — they must be well-distributed throughout the sumset.",
+      "The strong conjecture ($\\gg n^2$ isolated elements) says that a positive fraction of the sumset elements are isolated. Since $|A + A| \\sim n^2/2$, this would mean $\\sim cn^2$ out of $\\sim n^2/2$ elements have no neighbors \u2014 a constant fraction. This is a statement about the 'lacunarity' of Sidon sumsets.",
+      "The difficulty lies in controlling the *local* structure of the sumset. Pigeonhole arguments show that gaps exist and are numerous ($\\sim 3n^2/2$ total gaps), but converting gaps into isolated elements requires that gaps are not all clustered together \u2014 they must be well-distributed throughout the sumset.",
       "The problem connects to deeper questions about the additive energy of Sidon sets and the distribution of gaps in sumsets. Random Sidon-like sets would have isolated elements in proportion to $n^2$, suggesting the conjecture is true, but deterministic Sidon sets could potentially have more structured gap patterns.",
       "The infinite version is related but distinct: for infinite Sidon sets $A \\subset \\mathbb{N}$, the truncations $A \\cap [1,N]$ are finite Sidon sets of growing size ($\\sim \\sqrt{N}$), so the finite conjecture would imply unbounded isolated counts for truncations. However, the infinite version might be provable with weaker methods."
     ],
@@ -46,7 +46,7 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 13,
-      "summary": "Documents the problem from Erdős-Sárközy-Sós (1994), J. Number Theory. States both the weak (unbounded) and strong ($\\gg |A|^2$) forms."
+      "summary": "Documents the problem from Erd\u0151s-S\u00e1rk\u00f6zy-S\u00f3s (1994), J. Number Theory. States both the weak (unbounded) and strong ($\\gg |A|^2$) forms."
     },
     {
       "id": "imports",
@@ -99,8 +99,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #152 in 109 lines of Lean 4, encoding the isolated element counting problem for Sidon sumsets with both weak (unbounded) and strong ($\\gg |A|^2$) forms, the exact sumset size identity, range bounds, pigeonhole existence, and the infinite version. Zero sorries; structural results axiomatized.",
-    "implications": "**Theoretical Significance**: Resolution would reveal the fine structure of Sidon sumsets beyond mere counting.\n\nThe strong form would establish that Sidon sumsets are inherently 'lacunary' — not just sparse on average, but with many isolated points. This connects to the theory of $B_2$ sequences, additive energy bounds, and the broader question of how arithmetic structure (the Sidon property) constrains the distribution of sums.",
+    "summary": "This formalization captures Erd\u0151s Problem #152 in 109 lines of Lean 4, encoding the isolated element counting problem for Sidon sumsets with both weak (unbounded) and strong ($\\gg |A|^2$) forms, the exact sumset size identity, range bounds, pigeonhole existence, and the infinite version. Zero sorries; structural results axiomatized.",
+    "implications": "**Theoretical Significance**: Resolution would reveal the fine structure of Sidon sumsets beyond mere counting.\n\nThe strong form would establish that Sidon sumsets are inherently 'lacunary' \u2014 not just sparse on average, but with many isolated points. This connects to the theory of $B_2$ sequences, additive energy bounds, and the broader question of how arithmetic structure (the Sidon property) constrains the distribution of sums.",
     "openQuestions": [
       "Does $I(A) \\to \\infty$ as $|A| \\to \\infty$ over Sidon sets? This is the weak form, still open.",
       "Is $I(A) \\geq c|A|^2$ for some absolute $c > 0$? This is the strong form. What is the optimal constant $c$?",
@@ -125,5 +125,39 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Share sumsets, sidon-sets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Share sumsets, sidon-sets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-840",
+      "relationship": "related",
+      "description": "Share sumsets, sidon-sets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Share sumsets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Share sumsets and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-14",
+    "erdos-153",
+    "erdos-840",
+    "erdos-109",
+    "erdos-1103"
+  ]
 }

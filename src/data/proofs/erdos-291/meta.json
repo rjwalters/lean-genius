@@ -1,6 +1,6 @@
 {
   "id": "erdos-291",
-  "title": "Erdős Problem #291: Harmonic Number Divisibility",
+  "title": "Erd\u0151s Problem #291: Harmonic Number Divisibility",
   "slug": "erdos-291",
   "description": "Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1 occur infinitely often, where H_n = a_n/L_n? Part 2 trivially YES; Part 1 OPEN.",
   "meta": {
@@ -46,7 +46,7 @@
       "harmonicGCD: gcd(a_n, L_n)",
       "question_part1/part2: Formal problem statements",
       "steinerberger_criterion: Leading digit p-1 implies p divides gcd",
-      "wolstenholme_theorem: H_{p-1} numerator divisible by p²",
+      "wolstenholme_theorem: H_{p-1} numerator divisible by p\u00b2",
       "divisibility_characterization: Complete criterion",
       "wu_yan_conditional: Schanuel implies density 1"
     ],
@@ -56,16 +56,16 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The harmonic numbers $H_n = 1 + 1/2 + \\cdots + 1/n$ have been studied since antiquity, but their divisibility properties remain mysterious. Writing $H_n = a_n/L_n$ where $L_n = \\text{lcm}(1, \\ldots, n)$, Erdős asked whether $\\gcd(a_n, L_n)$ takes both values 1 and $> 1$ infinitely often.\n\nThe key tool is Wolstenholme's theorem (1862): for primes $p \\ge 5$, $p^2$ divides the numerator of $H_{p-1}$. This classical result, combined with a characterization linking $p \\mid \\gcd(a_n, L_n)$ to the leading base-$p$ digit of $n$, makes Part 2 trivial: numbers of the form $(p-1) \\cdot p^k$ always have leading digit $p-1$ in base $p$.\n\nPart 1 is far harder. Shiu (2016) gave a heuristic argument predicting $\\sim x/\\log x$ values of $n \\le x$ with $\\gcd = 1$, based on treating the divisibility conditions for different primes as approximately independent and applying Mertens' theorem. Wu and Yan (2022) proved conditionally — assuming Schanuel's conjecture (which implies $\\mathbb{Q}$-linear independence of $\\{1/\\log p\\}$ for distinct primes $p$) — that the set of $n$ with $\\gcd > 1$ has density 1. But even this does not settle Part 1, as a set of density 0 can still be infinite.\n\nNotably, this formalization actually proves Steinerberger's criterion (rather than axiomatizing it), derives Part 2 from it constructively, and provides extensive computational verification including GCD values for $n \\le 10$.",
+    "historicalContext": "The harmonic numbers $H_n = 1 + 1/2 + \\cdots + 1/n$ have been studied since antiquity, but their divisibility properties remain mysterious. Writing $H_n = a_n/L_n$ where $L_n = \\text{lcm}(1, \\ldots, n)$, Erd\u0151s asked whether $\\gcd(a_n, L_n)$ takes both values 1 and $> 1$ infinitely often.\n\nThe key tool is Wolstenholme's theorem (1862): for primes $p \\ge 5$, $p^2$ divides the numerator of $H_{p-1}$. This classical result, combined with a characterization linking $p \\mid \\gcd(a_n, L_n)$ to the leading base-$p$ digit of $n$, makes Part 2 trivial: numbers of the form $(p-1) \\cdot p^k$ always have leading digit $p-1$ in base $p$.\n\nPart 1 is far harder. Shiu (2016) gave a heuristic argument predicting $\\sim x/\\log x$ values of $n \\le x$ with $\\gcd = 1$, based on treating the divisibility conditions for different primes as approximately independent and applying Mertens' theorem. Wu and Yan (2022) proved conditionally \u2014 assuming Schanuel's conjecture (which implies $\\mathbb{Q}$-linear independence of $\\{1/\\log p\\}$ for distinct primes $p$) \u2014 that the set of $n$ with $\\gcd > 1$ has density 1. But even this does not settle Part 1, as a set of density 0 can still be infinite.\n\nNotably, this formalization actually proves Steinerberger's criterion (rather than axiomatizing it), derives Part 2 from it constructively, and provides extensive computational verification including GCD values for $n \\le 10$.",
     "problemStatement": "Let $L_n = \\text{lcm}\\{1, \\ldots, n\\}$ and define $a_n$ by $H_n = a_n/L_n$. Do both $\\gcd(a_n, L_n) = 1$ and $\\gcd(a_n, L_n) > 1$ occur for infinitely many $n$?",
     "text": "Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1 occur infinitely often, where H_n = a_n/L_n? Part 2 trivially YES; Part 1 OPEN.",
     "proofStrategy": "The formalization defines harmonic numbers as rationals, extracts the numerator $a_n$ when written over $L_n$, and proves the Steinerberger criterion from the divisibility characterization and Wolstenholme's theorem. Part 2 is proved constructively using the infinite family $\\{2 \\cdot 3^k : k \\ge 1\\}$ (with an alternate proof via $\\{4 \\cdot 5^k\\}$). Extensive structural properties of $L_n$ and $H_n$ are proved, along with computed GCD values for $n \\le 10$.",
     "keyInsights": [
       "The divisibility $p \\mid \\gcd(a_n, L_n)$ depends only on the leading digit of $n$ in base $p$, reducing an analytic question about harmonic sums to a combinatorial one about digit representations. This is the key structural insight enabling the characterization.",
-      "Wolstenholme's theorem ($p^2 \\mid \\text{num}(H_{p-1})$) is much stronger than needed for Part 2 — simple $p$-divisibility suffices. The $p^2$ divisibility connects to Wolstenholme primes (primes where $p^3 \\mid \\text{num}(H_{p-1})$), of which only 2 are known: 16843 and 2124679.",
+      "Wolstenholme's theorem ($p^2 \\mid \\text{num}(H_{p-1})$) is much stronger than needed for Part 2 \u2014 simple $p$-divisibility suffices. The $p^2$ divisibility connects to Wolstenholme primes (primes where $p^3 \\mid \\text{num}(H_{p-1})$), of which only 2 are known: 16843 and 2124679.",
       "Part 1 is essentially a problem about correlations between leading digits across different prime bases. The heuristic $\\sim x/\\log x$ arises from Mertens' third theorem: $\\prod_{p \\le n}(1 - 1/p) \\sim 2e^{-\\gamma}/\\log n$, treating the digit conditions as independent.",
       "The connection to Schanuel's conjecture is surprising: proving Part 1 unconditionally may require progress on this deep conjecture in transcendence theory, which asserts that $n$ algebraically independent complex numbers have at least $n$ algebraically independent values among their exponentials.",
-      "The formalization is unusually computational for an Erdős problem: Steinerberger's criterion is proved (not axiomatized), Part 2 is constructively witnessed, and GCD values are computed via `native_decide` for $n \\le 10$, providing a 932-line proof with many verified theorems."
+      "The formalization is unusually computational for an Erd\u0151s problem: Steinerberger's criterion is proved (not axiomatized), Part 2 is constructively witnessed, and GCD values are computed via `native_decide` for $n \\le 10$, providing a 932-line proof with many verified theorems."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -78,7 +78,7 @@
       "title": "Basic Definitions",
       "startLine": 44,
       "endLine": 74,
-      "summary": "Defines L(n) = lcm(1,...,n), H(n) = harmonic number as rational, a(n) = H(n)·L(n) as integer numerator, and harmonicGCD(n) = gcd(a(n), L(n))."
+      "summary": "Defines L(n) = lcm(1,...,n), H(n) = harmonic number as rational, a(n) = H(n)\u00b7L(n) as integer numerator, and harmonicGCD(n) = gcd(a(n), L(n))."
     },
     {
       "id": "problem-statement",
@@ -92,21 +92,21 @@
       "title": "Steinerberger's Criterion and Wolstenholme",
       "startLine": 99,
       "endLine": 192,
-      "summary": "Proves steinerberger_criterion: leading digit p-1 in base p implies p | gcd. Derived from wolstenholme_theorem (p² | num(H_{p-1})) and divisibility_characterization (p | gcd iff p | num(H_k) where k = leading digit). Case p=3 by computation."
+      "summary": "Proves steinerberger_criterion: leading digit p-1 in base p implies p | gcd. Derived from wolstenholme_theorem (p\u00b2 | num(H_{p-1})) and divisibility_characterization (p | gcd iff p | num(H_k) where k = leading digit). Case p=3 by computation."
     },
     {
       "id": "heuristic",
       "title": "Heuristic and Conditional Results",
       "startLine": 193,
       "endLine": 246,
-      "summary": "Shiu's heuristic: ~x/log(x) values n ≤ x with gcd = 1 (density 0 but infinite). Wu-Yan (2022): conditional on Schanuel's conjecture, density of gcd > 1 is 1. Explains why Part 1 requires understanding cross-prime correlations."
+      "summary": "Shiu's heuristic: ~x/log(x) values n \u2264 x with gcd = 1 (density 0 but infinite). Wu-Yan (2022): conditional on Schanuel's conjecture, density of gcd > 1 is 1. Explains why Part 1 requires understanding cross-prime correlations."
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties of L and H",
       "startLine": 247,
       "endLine": 373,
-      "summary": "Proves L(n) > 0, L(n) | n!, k | L(n) for k ≤ n. Computed L values for n ≤ 10. H recurrence, positivity, strict monotonicity. H(n)·L(n) = Σ L(n)/k is a sum of integers."
+      "summary": "Proves L(n) > 0, L(n) | n!, k | L(n) for k \u2264 n. Computed L values for n \u2264 10. H recurrence, positivity, strict monotonicity. H(n)\u00b7L(n) = \u03a3 L(n)/k is a sum of integers."
     },
     {
       "id": "small-examples",
@@ -120,25 +120,25 @@
       "title": "Leading Digit Theory",
       "startLine": 432,
       "endLine": 614,
-      "summary": "Proves leadingDigit_pm1_times_pow: ld((p-1)·p^k, p) = p-1. Generates infinite families {2·3^k} and {4·5^k} with p | gcd. General prime_dvd_gcd_pm1_pow for any prime p ≥ 3."
+      "summary": "Proves leadingDigit_pm1_times_pow: ld((p-1)\u00b7p^k, p) = p-1. Generates infinite families {2\u00b73^k} and {4\u00b75^k} with p | gcd. General prime_dvd_gcd_pm1_pow for any prime p \u2265 3."
     },
     {
       "id": "part2-proof",
       "title": "Part 2 Proved",
       "startLine": 641,
       "endLine": 698,
-      "summary": "Constructively proves part2_trivially_true via {2·3^k} family with injectivity argument. Alternate proof part2_via_five using {4·5^k}. Summary theorems erdos_291_summary and erdos_291."
+      "summary": "Constructively proves part2_trivially_true via {2\u00b73^k} family with injectivity argument. Alternate proof part2_via_five using {4\u00b75^k}. Summary theorems erdos_291_summary and erdos_291."
     },
     {
       "id": "zmod-evidence",
       "title": "ZMod Computations and Evidence for Part 1",
       "startLine": 808,
       "endLine": 932,
-      "summary": "Verifies Σ k⁻¹ ≡ 0 (mod p) for p = 3,5,7,11,13 via decide. Assembles seven_gcd_one_values as concrete evidence for Part 1. Extended examples for n = 7,...,10."
+      "summary": "Verifies \u03a3 k\u207b\u00b9 \u2261 0 (mod p) for p = 3,5,7,11,13 via decide. Assembles seven_gcd_one_values as concrete evidence for Part 1. Extended examples for n = 7,...,10."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #291 is OPEN (Part 1) with Part 2 PROVED. The formalization proves Steinerberger's criterion from Wolstenholme's theorem and the divisibility characterization, then constructively demonstrates Part 2 using infinite families $\\{(p-1) \\cdot p^k\\}$. The 932-line Lean proof includes extensive structural theory for $L_n$ and $H_n$, computed GCD values for $n \\le 10$, and ZMod verification of sum-of-inverses vanishing.",
+    "summary": "Erd\u0151s Problem #291 is OPEN (Part 1) with Part 2 PROVED. The formalization proves Steinerberger's criterion from Wolstenholme's theorem and the divisibility characterization, then constructively demonstrates Part 2 using infinite families $\\{(p-1) \\cdot p^k\\}$. The 932-line Lean proof includes extensive structural theory for $L_n$ and $H_n$, computed GCD values for $n \\le 10$, and ZMod verification of sum-of-inverses vanishing.",
     "implications": "This problem reveals a deep connection between the elementary arithmetic of harmonic numbers and transcendence theory: resolving Part 1 may require understanding the $\\mathbb{Q}$-linear independence of $\\{1/\\log p\\}$, which is a consequence of Schanuel's conjecture. The leading-digit characterization reduces an analytic question to combinatorial digit patterns, but the correlations across different prime bases remain intractable.",
     "openQuestions": [
       "Are there infinitely many $n$ with $\\gcd(a_n, L_n) = 1$? This is Part 1, the main open question. Heuristics predict YES with $\\sim x/\\log x$ such $n$ up to $x$.",
@@ -166,5 +166,39 @@
     "axiomCount": 2,
     "theoremCount": 84,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Share harmonic-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-314",
+      "relationship": "related",
+      "description": "Share harmonic-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1052",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-309",
+    "erdos-314",
+    "divisibility-by-3",
+    "divisibility-truncation-general",
+    "erdos-1052"
+  ]
 }

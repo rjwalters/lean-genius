@@ -1,10 +1,10 @@
 {
   "id": "erdos-368",
-  "title": "Erdős Problem #368: Largest Prime Factor of n(n+1)",
+  "title": "Erd\u0151s Problem #368: Largest Prime Factor of n(n+1)",
   "slug": "erdos-368",
-  "description": "Study of F(n), the largest prime factor of n(n+1). Pólya proved F(n) → ∞; Mahler showed F(n) ≫ log log n; Pasten (2024) improved to F(n) ≫ (log log n)²/(log log log n). Erdős conjectured F(n) ≈ (log n)².",
+  "description": "Study of F(n), the largest prime factor of n(n+1). P\u00f3lya proved F(n) \u2192 \u221e; Mahler showed F(n) \u226b log log n; Pasten (2024) improved to F(n) \u226b (log log n)\u00b2/(log log log n). Erd\u0151s conjectured F(n) \u2248 (log n)\u00b2.",
   "meta": {
-    "author": "Pólya (1918), Mahler (1935), Schinzel (1967), Pasten (2024)",
+    "author": "P\u00f3lya (1918), Mahler (1935), Schinzel (1967), Pasten (2024)",
     "sourceUrl": "https://erdosproblems.com/368",
     "date": "2024",
     "status": "axiomatized",
@@ -45,10 +45,10 @@
       "largestPrimeFactor definition for gpf(n)",
       "F(n) = gpf(n(n+1)) central function",
       "consecutive_coprime: n and n+1 are coprime",
-      "polya_theorem axiom: F(n) → ∞",
-      "mahler_bound axiom: F(n) ≫ log log n",
+      "polya_theorem axiom: F(n) \u2192 \u221e",
+      "mahler_bound axiom: F(n) \u226b log log n",
       "schinzel_upper axiom: upper bound construction",
-      "pasten_bound axiom: F(n) ≫ (log log n)²/(log log log n)",
+      "pasten_bound axiom: F(n) \u226b (log log n)\u00b2/(log log log n)",
       "erdos_lower_conjecture and erdos_upper_conjecture definitions",
       "isSmooth definition for smooth numbers",
       "radical definition for ABC connection",
@@ -64,23 +64,23 @@
       },
       {
         "id": "erdos-1001",
-        "relationship": "Fellow Erdős problem"
+        "relationship": "Fellow Erd\u0151s problem"
       }
     ],
     "lineCount": 342,
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #368: Prime Factors of Consecutive Products**\n\nThis problem investigates the growth rate of the largest prime factor of products of consecutive integers n(n+1).\n\n**Key History:**\n- Pólya (1918): First proved F(n) → ∞ as n → ∞\n- Mahler (1935): Established F(n) ≫ log log n, the first quantitative bound\n- Schinzel (1967): Showed the upper bound F(n) ≤ n^(O(1/log log log n)) infinitely often\n- Erdős (1976): Conjectured F(n) ≈ (log n)² captures the true behavior\n- Pasten (2024): Proved F(n) ≫ (log log n)²/(log log log n), the strongest known lower bound\n\n**Mathematical Setting:**\nThe function F(n) = gpf(n(n+1)) captures how large prime factors must appear in products of consecutive integers. Since gcd(n, n+1) = 1, the prime factors of n(n+1) are the union of prime factors of n and n+1.",
-    "problemStatement": "**Problem Statement (PARTIALLY RESOLVED)**\n\nLet $F(n)$ be the largest prime factor of $n(n+1)$. How large must $F(n)$ be?\n\n**Known Lower Bounds:**\n- $F(n) \\to \\infty$ as $n \\to \\infty$ (Pólya 1918)\n- $F(n) \\gg \\log\\log n$ (Mahler 1935)\n- $F(n) \\gg \\frac{(\\log\\log n)^2}{\\log\\log\\log n}$ (Pasten 2024)\n\n**Known Upper Bounds:**\n- For infinitely many $n$: $F(n) \\leq n^{O(1/\\log\\log\\log n)}$ (Schinzel 1967)\n\n**Erdős's Conjectures:**\n- Lower: $F(n) \\gg (\\log n)^2$ for all $n$\n- Upper: For every $\\varepsilon > 0$, infinitely many $n$ satisfy $F(n) < (\\log n)^{2+\\varepsilon}$",
-    "text": "Study of F(n), the largest prime factor of n(n+1). Pólya proved F(n) → ∞; Mahler showed F(n) ≫ log log n; Pasten (2024) improved to F(n) ≫ (log log n)²/(log log log n). Erdős conjectured F(n) ≈ (log n)².",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - largestPrimeFactor: gpf(n) using Nat.primeFactors.max'\n   - F(n) = gpf(n(n+1))\n   - isSmooth for B-smooth numbers\n\n2. **Key Properties:**\n   - consecutive_coprime: gcd(n, n+1) = 1\n   - F(n) = max(gpf(n), gpf(n+1))\n\n3. **Historical Results as Axioms:**\n   - polya_theorem, mahler_bound, schinzel_upper, pasten_bound\n\n4. **Conjectures:**\n   - erdos_lower_conjecture, erdos_upper_conjecture\n\n5. **Connections:**\n   - ABC conjecture implications\n   - P(n² + 1) variant from Pasten's work",
+    "historicalContext": "**Erd\u0151s Problem #368: Prime Factors of Consecutive Products**\n\nThis problem investigates the growth rate of the largest prime factor of products of consecutive integers n(n+1).\n\n**Key History:**\n- P\u00f3lya (1918): First proved F(n) \u2192 \u221e as n \u2192 \u221e\n- Mahler (1935): Established F(n) \u226b log log n, the first quantitative bound\n- Schinzel (1967): Showed the upper bound F(n) \u2264 n^(O(1/log log log n)) infinitely often\n- Erd\u0151s (1976): Conjectured F(n) \u2248 (log n)\u00b2 captures the true behavior\n- Pasten (2024): Proved F(n) \u226b (log log n)\u00b2/(log log log n), the strongest known lower bound\n\n**Mathematical Setting:**\nThe function F(n) = gpf(n(n+1)) captures how large prime factors must appear in products of consecutive integers. Since gcd(n, n+1) = 1, the prime factors of n(n+1) are the union of prime factors of n and n+1.",
+    "problemStatement": "**Problem Statement (PARTIALLY RESOLVED)**\n\nLet $F(n)$ be the largest prime factor of $n(n+1)$. How large must $F(n)$ be?\n\n**Known Lower Bounds:**\n- $F(n) \\to \\infty$ as $n \\to \\infty$ (P\u00f3lya 1918)\n- $F(n) \\gg \\log\\log n$ (Mahler 1935)\n- $F(n) \\gg \\frac{(\\log\\log n)^2}{\\log\\log\\log n}$ (Pasten 2024)\n\n**Known Upper Bounds:**\n- For infinitely many $n$: $F(n) \\leq n^{O(1/\\log\\log\\log n)}$ (Schinzel 1967)\n\n**Erd\u0151s's Conjectures:**\n- Lower: $F(n) \\gg (\\log n)^2$ for all $n$\n- Upper: For every $\\varepsilon > 0$, infinitely many $n$ satisfy $F(n) < (\\log n)^{2+\\varepsilon}$",
+    "text": "Study of F(n), the largest prime factor of n(n+1). P\u00f3lya proved F(n) \u2192 \u221e; Mahler showed F(n) \u226b log log n; Pasten (2024) improved to F(n) \u226b (log log n)\u00b2/(log log log n). Erd\u0151s conjectured F(n) \u2248 (log n)\u00b2.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - largestPrimeFactor: gpf(n) using Nat.primeFactors.max'\n   - F(n) = gpf(n(n+1))\n   - isSmooth for B-smooth numbers\n\n2. **Key Properties:**\n   - consecutive_coprime: gcd(n, n+1) = 1\n   - F(n) = max(gpf(n), gpf(n+1))\n\n3. **Historical Results as Axioms:**\n   - polya_theorem, mahler_bound, schinzel_upper, pasten_bound\n\n4. **Conjectures:**\n   - erdos_lower_conjecture, erdos_upper_conjecture\n\n5. **Connections:**\n   - ABC conjecture implications\n   - P(n\u00b2 + 1) variant from Pasten's work",
     "keyInsights": [
       "**Coprimality:** Since gcd(n, n+1) = 1, the prime factors of n(n+1) are simply the union of factors of n and n+1",
       "**Smooth Numbers:** Schinzel's upper bound uses the existence of n where n(n+1) is unusually smooth (all prime factors small)",
       "**Iterated Logarithms:** The bounds involve log log n and log log log n, showing very slow growth rates",
       "**ABC Connection:** Strong bounds on F(n) are related to the ABC conjecture; ABC would imply much stronger results",
-      "**n² + 1 Variant:** Pasten's 2024 breakthrough actually concerns P(n² + 1), with techniques applicable to n(n+1)"
+      "**n\u00b2 + 1 Variant:** Pasten's 2024 breakthrough actually concerns P(n\u00b2 + 1), with techniques applicable to n(n+1)"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -104,7 +104,7 @@
     },
     {
       "id": "polya",
-      "title": "Pólya's Theorem",
+      "title": "P\u00f3lya's Theorem",
       "summary": "polya_theorem axiom, F_unbounded theorem",
       "startLine": 96,
       "endLine": 116
@@ -125,7 +125,7 @@
     },
     {
       "id": "erdos-conjectures",
-      "title": "Erdős's Conjectures",
+      "title": "Erd\u0151s's Conjectures",
       "summary": "erdos_lower_conjecture, erdos_upper_conjecture definitions",
       "startLine": 172,
       "endLine": 195
@@ -146,7 +146,7 @@
     },
     {
       "id": "variant",
-      "title": "n² + 1 Variant",
+      "title": "n\u00b2 + 1 Variant",
       "summary": "P_squared_plus_one, pasten_squared_plus_one",
       "startLine": 276,
       "endLine": 295
@@ -167,12 +167,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #368 asks about the growth rate of F(n), the largest prime factor of n(n+1). Pólya (1918) proved F(n) → ∞. Mahler (1935) showed F(n) ≫ log log n. Pasten (2024) improved this to F(n) ≫ (log log n)²/(log log log n). Schinzel showed F(n) can be as small as n^(O(1/log log log n)) infinitely often. Erdős conjectured that F(n) ≈ (log n)² captures the true behavior.",
-    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **ABC Conjecture:** Strong bounds on F(n) are closely related to ABC. If ABC holds, we would have F(n) ≥ (log n)^(1-ε) for any ε > 0.\n\n2. **Smooth Numbers:** The upper bounds involve the distribution of smooth numbers in polynomial sequences.\n\n**3. Diophantine Equations:** The study of n(n+1) = k with k smooth connects to S-unit equations.\n\n4. **OEIS A074399:** The sequence F(1), F(2), F(3), ... = 2, 3, 3, 5, 5, 7, 7, 3, ... is well-studied.\n\n5. **Polynomial Variants:** Similar questions for other polynomials like n² + 1 lead to Pasten's breakthrough results.",
+    "summary": "Erd\u0151s Problem #368 asks about the growth rate of F(n), the largest prime factor of n(n+1). P\u00f3lya (1918) proved F(n) \u2192 \u221e. Mahler (1935) showed F(n) \u226b log log n. Pasten (2024) improved this to F(n) \u226b (log log n)\u00b2/(log log log n). Schinzel showed F(n) can be as small as n^(O(1/log log log n)) infinitely often. Erd\u0151s conjectured that F(n) \u2248 (log n)\u00b2 captures the true behavior.",
+    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **ABC Conjecture:** Strong bounds on F(n) are closely related to ABC. If ABC holds, we would have F(n) \u2265 (log n)^(1-\u03b5) for any \u03b5 > 0.\n\n2. **Smooth Numbers:** The upper bounds involve the distribution of smooth numbers in polynomial sequences.\n\n**3. Diophantine Equations:** The study of n(n+1) = k with k smooth connects to S-unit equations.\n\n4. **OEIS A074399:** The sequence F(1), F(2), F(3), ... = 2, 3, 3, 5, 5, 7, 7, 3, ... is well-studied.\n\n5. **Polynomial Variants:** Similar questions for other polynomials like n\u00b2 + 1 lead to Pasten's breakthrough results.",
     "openQuestions": [
-      "Prove Erdős's lower conjecture: F(n) ≫ (log n)² for all n",
-      "Prove Erdős's upper conjecture: F(n) < (log n)^(2+ε) infinitely often",
-      "Close the gap between Pasten's (log log n)² and the conjectured (log n)²",
+      "Prove Erd\u0151s's lower conjecture: F(n) \u226b (log n)\u00b2 for all n",
+      "Prove Erd\u0151s's upper conjecture: F(n) < (log n)^(2+\u03b5) infinitely often",
+      "Close the gap between Pasten's (log log n)\u00b2 and the conjectured (log n)\u00b2",
       "Determine the exact asymptotic behavior of F(n)",
       "Extend results to other polynomial sequences p(n)p(n+1)"
     ]
@@ -194,5 +194,39 @@
     "axiomCount": 11,
     "theoremCount": 13,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Share prime-factors, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-371",
+      "relationship": "related",
+      "description": "Share prime-factors, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-372",
+      "relationship": "related",
+      "description": "Share prime-factors, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-380",
+      "relationship": "related",
+      "description": "Share prime-factors, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-452",
+      "relationship": "related",
+      "description": "Share prime-factors, analytic-number-theory, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1106",
+    "erdos-371",
+    "erdos-372",
+    "erdos-380",
+    "erdos-452"
+  ]
 }

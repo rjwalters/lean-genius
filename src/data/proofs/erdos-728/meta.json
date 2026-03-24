@@ -167,5 +167,39 @@
     "axiomCount": 5,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-404",
+      "relationship": "related",
+      "description": "Share factorials, divisibility, and p-adic-valuation themes"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Share factorials, divisibility, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-646",
+      "relationship": "related",
+      "description": "Share factorials, p-adic-valuation, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-727",
+      "relationship": "related",
+      "description": "Share factorials, divisibility, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-729",
+      "relationship": "related",
+      "description": "Share factorials, divisibility, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-404",
+    "erdos-400",
+    "erdos-646",
+    "erdos-727",
+    "erdos-729"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-23",
-  "title": "Erdős Problem #23: Triangle-Free Graphs and Bipartiteness",
+  "title": "Erd\u0151s Problem #23: Triangle-Free Graphs and Bipartiteness",
   "slug": "erdos-23",
-  "description": "Can every triangle-free graph on 5n vertices be made bipartite by deleting at most n² edges?",
+  "description": "Can every triangle-free graph on 5n vertices be made bipartite by deleting at most n\u00b2 edges?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/23",
     "date": "1971",
     "status": "axiomatized",
@@ -44,7 +44,7 @@
     "prerequisites": [
       "Simple graph theory (adjacency, vertex coloring, bipartiteness)",
       "Triangle-free and odd-cycle-free graph characterizations",
-      "Extremal graph theory (Turán-type problems, Mantel's theorem)",
+      "Extremal graph theory (Tur\u00e1n-type problems, Mantel's theorem)",
       "Blow-up constructions and product graphs",
       "Cycle graphs and modular arithmetic on Fin n",
       "Flag algebra computations (for understanding best known bounds)"
@@ -53,22 +53,22 @@
     "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1971, asking a fundamental question in extremal graph theory: how far can a triangle-free graph be from bipartite? Triangle-freeness is a local property (no $K_3$), while bipartiteness is global (no odd cycles at all). The blow-up of $C_5$ — replacing each vertex of the 5-cycle with $n$ independent vertices and connecting all vertices between adjacent parts — gives a triangle-free graph on $5n$ vertices requiring exactly $n^2$ edge deletions to become bipartite.\n\nErdős conjectured that $n^2$ always suffices, which would make the $C_5$ blow-up extremal. In 1992, he generalized: for graphs on $(2k+1)n$ vertices with odd girth $\\geq 2k+1$, the blow-up of $C_{2k+1}$ should be extremal with $n^2$ deletions.\n\nThe best known upper bound is $1.064n^2$ by Balogh, Clemen, and Lidický (2021) using flag algebra computations. Earlier results by Krivelevich (1995) and others gave weaker bounds. The problem is falsifiable — a finite counterexample would disprove it — but no such counterexample has been found.",
+    "historicalContext": "Erd\u0151s posed this problem in 1971, asking a fundamental question in extremal graph theory: how far can a triangle-free graph be from bipartite? Triangle-freeness is a local property (no $K_3$), while bipartiteness is global (no odd cycles at all). The blow-up of $C_5$ \u2014 replacing each vertex of the 5-cycle with $n$ independent vertices and connecting all vertices between adjacent parts \u2014 gives a triangle-free graph on $5n$ vertices requiring exactly $n^2$ edge deletions to become bipartite.\n\nErd\u0151s conjectured that $n^2$ always suffices, which would make the $C_5$ blow-up extremal. In 1992, he generalized: for graphs on $(2k+1)n$ vertices with odd girth $\\geq 2k+1$, the blow-up of $C_{2k+1}$ should be extremal with $n^2$ deletions.\n\nThe best known upper bound is $1.064n^2$ by Balogh, Clemen, and Lidick\u00fd (2021) using flag algebra computations. Earlier results by Krivelevich (1995) and others gave weaker bounds. The problem is falsifiable \u2014 a finite counterexample would disprove it \u2014 but no such counterexample has been found.",
     "problemStatement": "Can every triangle-free graph on $5n$ vertices be made bipartite by deleting at most $n^2$ edges? The blow-up of $C_5$ shows this bound would be tight if true.",
-    "text": "Can every triangle-free graph on 5n vertices be made bipartite by deleting at most n² edges?",
-    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds from first principles to the conjecture statement:\n\n1. **Graph infrastructure**: Custom `Graph V` structure with `IsBipartite`, `ContainsTriangle`, `IsTriangleFree`, and `HasCycle` definitions, independent of Mathlib's `SimpleGraph` for flexibility.\n\n2. **Edge deletion**: `bipartiteEdgeDeletion G` is axiomatized as the minimum edge set whose removal makes $G$ bipartite. The property `bipartite_iff_deletion_zero` connects bipartiteness to zero deletion cost.\n\n3. **Extremal construction**: The blow-up of $C_5$ is explicitly constructed on `Fin 5 × Fin n` with adjacency inherited from the 5-cycle. Two theorems are proved: `c5_triangle_free` (by exhaustive case analysis on `Fin 5`) and `c5_blowup_triangle_free` (by projection to $C_5$).\n\n4. **Conjecture and bounds**: `ErdosConjecture23` states $\\forall G$ triangle-free on $5n$ vertices, deletion cost $\\leq n^2$. The Balogh-Clemen-Lidický bound $1.064n^2$ and Mantel's theorem are axiomatized.",
+    "text": "Can every triangle-free graph on 5n vertices be made bipartite by deleting at most n\u00b2 edges?",
+    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds from first principles to the conjecture statement:\n\n1. **Graph infrastructure**: Custom `Graph V` structure with `IsBipartite`, `ContainsTriangle`, `IsTriangleFree`, and `HasCycle` definitions, independent of Mathlib's `SimpleGraph` for flexibility.\n\n2. **Edge deletion**: `bipartiteEdgeDeletion G` is axiomatized as the minimum edge set whose removal makes $G$ bipartite. The property `bipartite_iff_deletion_zero` connects bipartiteness to zero deletion cost.\n\n3. **Extremal construction**: The blow-up of $C_5$ is explicitly constructed on `Fin 5 \u00d7 Fin n` with adjacency inherited from the 5-cycle. Two theorems are proved: `c5_triangle_free` (by exhaustive case analysis on `Fin 5`) and `c5_blowup_triangle_free` (by projection to $C_5$).\n\n4. **Conjecture and bounds**: `ErdosConjecture23` states $\\forall G$ triangle-free on $5n$ vertices, deletion cost $\\leq n^2$. The Balogh-Clemen-Lidick\u00fd bound $1.064n^2$ and Mantel's theorem are axiomatized.",
     "keyInsights": [
       "**Local vs global**: Triangle-freeness (no $K_3$) is a local forbidden subgraph property, while bipartiteness (no odd cycles) is global. The problem measures the 'distance' between these properties via edge deletions, quantifying how much extra structure beyond triangle-freeness is needed for bipartiteness.",
       "**The blow-up construction**: Replacing each vertex of $C_5$ with $n$ independent vertices gives a graph on $5n$ vertices with $2n^2$ edges that is triangle-free (adjacency depends only on the $C_5$ indices) but requires exactly $n^2$ deletions. This is proved in the formalization: `c5_triangle_free` by exhaustive case analysis, `c5_blowup_triangle_free` by projection.",
-      "**The 6.4% gap**: The best known bound is $1.064n^2$ (Balogh-Clemen-Lidický 2021) via flag algebra computations, while the conjecture claims $n^2$. Closing this small but stubborn gap has resisted all known techniques.",
-      "**Flag algebras**: The Balogh-Clemen-Lidický proof uses Razborov's flag algebra method, which reduces extremal graph theory questions to semidefinite programming. This computer-assisted technique provides tight bounds but does not yield structural insights.",
-      "**Generalization to higher girth**: Erdős's 1992 generalization replaces $C_5$ with $C_{2k+1}$: for graphs on $(2k+1)n$ vertices with odd girth $\\geq 2k+1$, the conjectured bound is still $n^2$ deletions. The blow-up of $C_{2k+1}$ is the extremal example.",
-      "**Falsifiability**: Unlike many Erdős problems, this is falsifiable — a single finite graph disproving the bound would settle it. Computer searches have not found counterexamples."
+      "**The 6.4% gap**: The best known bound is $1.064n^2$ (Balogh-Clemen-Lidick\u00fd 2021) via flag algebra computations, while the conjecture claims $n^2$. Closing this small but stubborn gap has resisted all known techniques.",
+      "**Flag algebras**: The Balogh-Clemen-Lidick\u00fd proof uses Razborov's flag algebra method, which reduces extremal graph theory questions to semidefinite programming. This computer-assisted technique provides tight bounds but does not yield structural insights.",
+      "**Generalization to higher girth**: Erd\u0151s's 1992 generalization replaces $C_5$ with $C_{2k+1}$: for graphs on $(2k+1)n$ vertices with odd girth $\\geq 2k+1$, the conjectured bound is still $n^2$ deletions. The blow-up of $C_{2k+1}$ is the extremal example.",
+      "**Falsifiability**: Unlike many Erd\u0151s problems, this is falsifiable \u2014 a single finite graph disproving the bound would settle it. Computer searches have not found counterexamples."
     ],
     "prerequisites": [
       "Simple graph theory (adjacency, vertex coloring, bipartiteness)",
       "Triangle-free and odd-cycle-free graph characterizations",
-      "Extremal graph theory (Turán-type problems, Mantel's theorem)",
+      "Extremal graph theory (Tur\u00e1n-type problems, Mantel's theorem)",
       "Blow-up constructions and product graphs",
       "Cycle graphs and modular arithmetic on Fin n",
       "Flag algebra computations (for understanding best known bounds)"
@@ -78,7 +78,7 @@
     {
       "id": "header",
       "title": "Problem Statement",
-      "summary": "Erdős conjecture on triangle-free graphs and bipartite edge deletion, extremal example",
+      "summary": "Erd\u0151s conjecture on triangle-free graphs and bipartite edge deletion, extremal example",
       "startLine": 1,
       "endLine": 29
     },
@@ -92,13 +92,13 @@
     {
       "id": "edge-deletion",
       "title": "Edge Deletion and Bipartiteness",
-      "summary": "bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero",
+      "summary": "bipartiteEdgeDeletion axiom, achieved property, bipartite \u2194 deletion zero",
       "startLine": 87,
       "endLine": 100
     },
     {
       "id": "c5-construction",
-      "title": "Blow-Up of C₅",
+      "title": "Blow-Up of C\u2085",
       "summary": "C5 graph, C5BlowUp structure, c5BlowUpGraph, triangle-freeness proofs",
       "startLine": 102,
       "endLine": 155
@@ -106,28 +106,28 @@
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "ErdosConjecture23: triangle-free on 5n vertices → bipartite with ≤ n² deletions",
+      "summary": "ErdosConjecture23: triangle-free on 5n vertices \u2192 bipartite with \u2264 n\u00b2 deletions",
       "startLine": 157,
       "endLine": 169
     },
     {
       "id": "best-bounds",
       "title": "Best Known Bounds",
-      "summary": "Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound",
+      "summary": "Balogh-Clemen-Lidick\u00fd 1.064n\u00b2 bound, trivial upper bound",
       "startLine": 171,
       "endLine": 186
     },
     {
       "id": "generalized-conjecture",
       "title": "Generalized Conjecture",
-      "summary": "GeneralizedConjecture for odd girth ≥ 2k+1, blow-up of C_{2k+1}",
+      "summary": "GeneralizedConjecture for odd girth \u2265 2k+1, blow-up of C_{2k+1}",
       "startLine": 188,
       "endLine": 221
     },
     {
       "id": "turan-connections",
-      "title": "Turán-Type Connections",
-      "summary": "Kővári-Sós-Turán theorem, Mantel's theorem, odd cycle cover",
+      "title": "Tur\u00e1n-Type Connections",
+      "summary": "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem, Mantel's theorem, odd cycle cover",
       "startLine": 223,
       "endLine": 250
     },
@@ -140,7 +140,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #23 remains open. The best known bound is 1.064n² (Balogh-Clemen-Lidický 2021), while the conjecture claims n² suffices. The blow-up of C₅ shows n² is necessary, making the conjecture tight if true.",
+    "summary": "Erd\u0151s Problem #23 remains open. The best known bound is 1.064n\u00b2 (Balogh-Clemen-Lidick\u00fd 2021), while the conjecture claims n\u00b2 suffices. The blow-up of C\u2085 shows n\u00b2 is necessary, making the conjecture tight if true.",
     "implications": "The problem quantifies the relationship between triangle-freeness and bipartiteness, with applications to graph partitioning and extremal graph theory.",
     "openQuestions": [
       "Close the gap between $n^2$ (conjectured) and $1.064n^2$ (best known). Even proving $\\leq (1 + \\varepsilon)n^2$ for small $\\varepsilon$ would be progress.",
@@ -152,13 +152,15 @@
   "crossReferences": [
     {
       "relationship": "related",
-      "note": "Both are Erdős problems in extremal combinatorics; Erdős-Szekeres concerns monotone subsequences while #23 concerns edge deletions",
-      "targetId": "erdos-szekeres"
+      "note": "Both are Erd\u0151s problems in extremal combinatorics; Erd\u0151s-Szekeres concerns monotone subsequences while #23 concerns edge deletions",
+      "targetId": "erdos-szekeres",
+      "description": "Related via related"
     },
     {
       "relationship": "foundational",
       "note": "Ramsey theory provides the foundational framework for forbidden subgraph problems; the blow-up of $C_5$ is a Ramsey-type construction",
-      "targetId": "ramseys-theorem"
+      "targetId": "ramseys-theorem",
+      "description": "Related via foundational"
     }
   ],
   "leanFile": {
@@ -183,32 +185,32 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "Some problems in graph theory",
       "year": "1971",
       "venue": "Proceedings of the Second Louisiana Conference on Graph Theory",
-      "note": "Original statement of Problem #23: triangle-free graphs on 5n vertices can be made bipartite by deleting ≤ n² edges"
+      "note": "Original statement of Problem #23: triangle-free graphs on 5n vertices can be made bipartite by deleting \u2264 n\u00b2 edges"
     },
     {
-      "authors": "Balogh, József; Clemen, Frank Christian; Lidický, Bernard",
+      "authors": "Balogh, J\u00f3zsef; Clemen, Frank Christian; Lidick\u00fd, Bernard",
       "title": "Making triangle-free graphs bipartite",
       "year": "2021",
       "venue": "arXiv preprint",
-      "note": "Best known bound: ≤ 1.064n² edge deletions suffice, using flag algebra computations"
+      "note": "Best known bound: \u2264 1.064n\u00b2 edge deletions suffice, using flag algebra computations"
     },
     {
       "authors": "Mantel, Willem",
       "title": "Problem 28",
       "year": "1907",
       "venue": "Wiskundige Opgaven",
-      "note": "Triangle-free graphs on n vertices have ≤ n²/4 edges; the first result in extremal graph theory"
+      "note": "Triangle-free graphs on n vertices have \u2264 n\u00b2/4 edges; the first result in extremal graph theory"
     },
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "Some of my favourite problems in various branches of combinatorics",
       "year": "1992",
       "venue": "Matematiche (Catania) 47, pp. 231-240",
-      "note": "Generalized conjecture for odd girth ≥ 2k+1 on (2k+1)n vertices"
+      "note": "Generalized conjecture for odd girth \u2265 2k+1 on (2k+1)n vertices"
     }
   ]
 }

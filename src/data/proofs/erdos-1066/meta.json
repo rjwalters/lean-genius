@@ -1,10 +1,10 @@
 {
   "id": "erdos-1066",
-  "title": "Erdős Problem #1066: Independence Number of Unit Distance Graphs",
+  "title": "Erd\u0151s Problem #1066: Independence Number of Unit Distance Graphs",
   "slug": "erdos-1066",
-  "description": "Let G be a graph given by n points in ℝ² where any two distinct points are at least distance 1 apart, and we draw an edge between two points if they are distance exactly 1 apart. Let g(n) be maximal such that any such graph always has an independent set on at least g(n) vertices. Estimate g(n), or perhaps lim g(n)/n.",
+  "description": "Let G be a graph given by n points in \u211d\u00b2 where any two distinct points are at least distance 1 apart, and we draw an edge between two points if they are distance exactly 1 apart. Let g(n) be maximal such that any such graph always has an independent set on at least g(n) vertices. Estimate g(n), or perhaps lim g(n)/n.",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1066",
     "date": "",
     "status": "axiomatized",
@@ -58,14 +58,14 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem concerns unit distance graphs in the plane, where n points at minimum pairwise distance 1 are connected by edges if exactly at distance 1. Such graphs are always planar (edges cannot cross without forcing points closer than 1). The key quantity g(n) measures the guaranteed independent set size.\n\nErdős initially conjectured g(n) = n/3, but this was disproved by Chung, Graham, and Pach who showed g(n) ≤ 6n/19 ≈ 0.316n. The baseline lower bound g(n) ≥ n/4 follows from planarity and the Four Colour Theorem (observed by Pollack in 1985). This was improved by Csizmadia (1998) to 9n/35 and then by Swanepoel (2002) to the current best 8n/31.\n\nThe current best upper bound is due to Pach and Tóth (1996): g(n) ≤ 5n/16 = 0.3125n. The gap between 8/31 ≈ 0.258 and 5/16 = 0.3125 remains to be closed. The problem also generalizes to higher dimensions, where g_d(n) ~ n/d is conjectured.",
-    "problemStatement": "Let G be a graph given by n points in ℝ², where any two distinct points are at least distance 1 apart, and we draw an edge between two points if they are distance 1 apart. Let g(n) be maximal such that any such graph always has an independent set on at least g(n) vertices. Estimate g(n), or perhaps lim g(n)/n.\n\n**Current Best Bounds:** (8/31)n ≤ g(n) ≤ (5/16)n\n**Status: OPEN**",
-    "text": "Let G be a graph given by n points in ℝ² where any two distinct points are at least distance 1 apart, and we draw an edge between two points if they are distance exactly 1 apart. Let g(n) be maximal such that any such graph always has an independent set on at least g(n) vertices. Estimate g(n), or perhaps lim g(n)/n.",
-    "proofStrategy": "The formalization defines unit distance point sets using EuclideanSpace ℝ (Fin 2) and axiomatizes g(n) since computing the infimum over all configurations is not feasible in Lean. The key historical bounds are axiomatized (Pollack, Csizmadia, Swanepoel for lower; Chung-Graham-Pach, Pach-Tóth for upper), while the arithmetic comparisons between bound constants are proved using norm_num. The summary theorem combines all verified arithmetic facts.",
+    "historicalContext": "This problem concerns unit distance graphs in the plane, where n points at minimum pairwise distance 1 are connected by edges if exactly at distance 1. Such graphs are always planar (edges cannot cross without forcing points closer than 1). The key quantity g(n) measures the guaranteed independent set size.\n\nErd\u0151s initially conjectured g(n) = n/3, but this was disproved by Chung, Graham, and Pach who showed g(n) \u2264 6n/19 \u2248 0.316n. The baseline lower bound g(n) \u2265 n/4 follows from planarity and the Four Colour Theorem (observed by Pollack in 1985). This was improved by Csizmadia (1998) to 9n/35 and then by Swanepoel (2002) to the current best 8n/31.\n\nThe current best upper bound is due to Pach and T\u00f3th (1996): g(n) \u2264 5n/16 = 0.3125n. The gap between 8/31 \u2248 0.258 and 5/16 = 0.3125 remains to be closed. The problem also generalizes to higher dimensions, where g_d(n) ~ n/d is conjectured.",
+    "problemStatement": "Let G be a graph given by n points in \u211d\u00b2, where any two distinct points are at least distance 1 apart, and we draw an edge between two points if they are distance 1 apart. Let g(n) be maximal such that any such graph always has an independent set on at least g(n) vertices. Estimate g(n), or perhaps lim g(n)/n.\n\n**Current Best Bounds:** (8/31)n \u2264 g(n) \u2264 (5/16)n\n**Status: OPEN**",
+    "text": "Let G be a graph given by n points in \u211d\u00b2 where any two distinct points are at least distance 1 apart, and we draw an edge between two points if they are distance exactly 1 apart. Let g(n) be maximal such that any such graph always has an independent set on at least g(n) vertices. Estimate g(n), or perhaps lim g(n)/n.",
+    "proofStrategy": "The formalization defines unit distance point sets using EuclideanSpace \u211d (Fin 2) and axiomatizes g(n) since computing the infimum over all configurations is not feasible in Lean. The key historical bounds are axiomatized (Pollack, Csizmadia, Swanepoel for lower; Chung-Graham-Pach, Pach-T\u00f3th for upper), while the arithmetic comparisons between bound constants are proved using norm_num. The summary theorem combines all verified arithmetic facts.",
     "keyInsights": [
-      "**Planarity is key**: Unit distance graphs with minimum distance 1 are planar, giving the baseline g(n) ≥ n/4",
-      "**Erdős's n/3 conjecture was wrong**: Constructions show g(n) < n/3",
-      "**Current gap**: 8/31 ≤ lim g(n)/n ≤ 5/16, a gap of 27/496 ≈ 0.054",
+      "**Planarity is key**: Unit distance graphs with minimum distance 1 are planar, giving the baseline g(n) \u2265 n/4",
+      "**Erd\u0151s's n/3 conjecture was wrong**: Constructions show g(n) < n/3",
+      "**Current gap**: 8/31 \u2264 lim g(n)/n \u2264 5/16, a gap of 27/496 \u2248 0.054",
       "**Lower bounds use geometric structure**: Swanepoel's proof exploits specific properties of planar unit distance graphs",
       "**Higher dimensions**: g_d(n) ~ n/d is the conjectured behavior"
     ],
@@ -99,7 +99,7 @@
     {
       "id": "upper-bounds",
       "title": "Part IV: Upper Bounds",
-      "summary": "Chung-Graham-Pach 6n/19, Pach-Tóth 5n/16, comparison theorem",
+      "summary": "Chung-Graham-Pach 6n/19, Pach-T\u00f3th 5n/16, comparison theorem",
       "startLine": 94,
       "endLine": 109
     },
@@ -126,8 +126,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1066 asks for the guaranteed independent set size g(n) in unit distance graphs. The current best bounds are (8/31)n ≤ g(n) ≤ (5/16)n, with a gap of 27/496 ≈ 5.4%. The formalization axiomatizes the historical bounds and proves the arithmetic comparisons, with a summary theorem combining all verified facts.",
-    "implications": "Closing the gap between 8/31 and 5/16 would require either new geometric arguments improving the lower bound beyond Swanepoel's technique, or clever constructions improving the upper bound beyond Pach-Tóth's configuration.",
+    "summary": "Erd\u0151s Problem #1066 asks for the guaranteed independent set size g(n) in unit distance graphs. The current best bounds are (8/31)n \u2264 g(n) \u2264 (5/16)n, with a gap of 27/496 \u2248 5.4%. The formalization axiomatizes the historical bounds and proves the arithmetic comparisons, with a summary theorem combining all verified facts.",
+    "implications": "Closing the gap between 8/31 and 5/16 would require either new geometric arguments improving the lower bound beyond Swanepoel's technique, or clever constructions improving the upper bound beyond Pach-T\u00f3th's configuration.",
     "openQuestions": [
       "What is the exact value of lim g(n)/n?",
       "Can the lower bound 8/31 be improved?",
@@ -137,35 +137,35 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1070",
       "relationship": "sibling problem",
-      "description": "Erdős Problem #1070 asks the same independence-number question for unit distance graphs, with slightly different notation f(n) and the Hadwiger-Nelson connection. The two problems share the same best-known bounds and are often studied together."
+      "description": "Erd\u0151s Problem #1070 asks the same independence-number question for unit distance graphs, with slightly different notation f(n) and the Hadwiger-Nelson connection. The two problems share the same best-known bounds and are often studied together.",
+      "targetId": "erdos-1070"
     },
     {
-      "target": "erdos-1085",
       "relationship": "prerequisite context",
-      "description": "The unit distance problem (#1085) counts maximum unit-distance pairs among n points in ℝ²; the extremal configurations used to establish upper bounds on g(n) arise from point sets that nearly maximize the unit-distance count."
+      "description": "The unit distance problem (#1085) counts maximum unit-distance pairs among n points in \u211d\u00b2; the extremal configurations used to establish upper bounds on g(n) arise from point sets that nearly maximize the unit-distance count.",
+      "targetId": "erdos-1085"
     },
     {
-      "target": "erdos-1084",
       "relationship": "closely related",
-      "description": "Erdős Problem #1084 studies unit distances among points with all pairwise distances ≥ 1 — exactly the minimum-distance-1 assumption of #1066 — and bounds f_d(n) in higher dimensions, paralleling the g_d(n) generalisation asked in #1066."
+      "description": "Erd\u0151s Problem #1084 studies unit distances among points with all pairwise distances \u2265 1 \u2014 exactly the minimum-distance-1 assumption of #1066 \u2014 and bounds f_d(n) in higher dimensions, paralleling the g_d(n) generalisation asked in #1066.",
+      "targetId": "erdos-1084"
     },
     {
-      "target": "four-color-theorem",
       "relationship": "foundational dependency",
-      "description": "Pollack's 1985 lower bound g(n) ≥ n/4 is a direct corollary of the Four Color Theorem: unit distance graphs with minimum pairwise distance 1 are planar, so the 4CT gives a 4-coloring and the largest color class has ≥ n/4 vertices."
+      "description": "Pollack's 1985 lower bound g(n) \u2265 n/4 is a direct corollary of the Four Color Theorem: unit distance graphs with minimum pairwise distance 1 are planar, so the 4CT gives a 4-coloring and the largest color class has \u2265 n/4 vertices.",
+      "targetId": "four-color-theorem"
     },
     {
-      "target": "erdos-1024",
       "relationship": "analogous problem",
-      "description": "Erdős Problem #1024 asks for guaranteed independence numbers in 3-uniform linear hypergraphs; the structural techniques (greedy algorithms, fractional relaxations) used there inform the lower-bound arguments for unit distance independence as well."
+      "description": "Erd\u0151s Problem #1024 asks for guaranteed independence numbers in 3-uniform linear hypergraphs; the structural techniques (greedy algorithms, fractional relaxations) used there inform the lower-bound arguments for unit distance independence as well.",
+      "targetId": "erdos-1024"
     }
   ],
   "relatedProofs": [
     {
       "target": "erdos-1070",
-      "note": "Almost identical problem statement; the two entries together give a complete picture of the Erdős unit-distance independence questions."
+      "note": "Almost identical problem statement; the two entries together give a complete picture of the Erd\u0151s unit-distance independence questions."
     },
     {
       "target": "four-color-theorem",
@@ -184,19 +184,19 @@
       "title": "Independence numbers of planar contact graphs",
       "venue": "Graphs and Combinatorics",
       "year": 2002,
-      "note": "Proves the current best lower bound g(n) ≥ (8/31)n for independence numbers of unit distance graphs in the plane."
+      "note": "Proves the current best lower bound g(n) \u2265 (8/31)n for independence numbers of unit distance graphs in the plane."
     },
     {
       "authors": [
         "J. Pach",
-        "G. Tóth"
+        "G. T\u00f3th"
       ],
       "title": "Graphs drawn with few crossings per edge",
       "venue": "Combinatorica",
       "volume": "17",
-      "pages": "427–439",
+      "pages": "427\u2013439",
       "year": 1997,
-      "note": "Establishes the upper bound g(n) ≤ (5/16)n via a sparse crossing-number argument."
+      "note": "Establishes the upper bound g(n) \u2264 (5/16)n via a sparse crossing-number argument."
     },
     {
       "authors": [
@@ -207,9 +207,9 @@
       "title": "On the independence number of unit distance graphs",
       "venue": "Graphs and Combinatorics",
       "volume": "7",
-      "pages": "11–23",
+      "pages": "11\u201323",
       "year": 1991,
-      "note": "Disproves the Erdős conjecture g(n) ~ n/3 and shows g(n) ≤ (6/19)n."
+      "note": "Disproves the Erd\u0151s conjecture g(n) ~ n/3 and shows g(n) \u2264 (6/19)n."
     },
     {
       "authors": [
@@ -218,20 +218,20 @@
       "title": "On the independence number of minimum distance graphs",
       "venue": "Discrete and Computational Geometry",
       "volume": "20",
-      "pages": "179–187",
+      "pages": "179\u2013187",
       "year": 1998,
-      "note": "Improves Pollack's planar lower bound to g(n) ≥ (9/35)n using structural properties of unit distance graphs."
+      "note": "Improves Pollack's planar lower bound to g(n) \u2265 (9/35)n using structural properties of unit distance graphs."
     },
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "Combinatorial problems in geometry",
       "venue": "Mathematics Chronicle",
       "volume": "12",
-      "pages": "35–54",
+      "pages": "35\u201354",
       "year": 1983,
-      "note": "Original source for several Erdős combinatorial geometry problems including the unit distance independence question."
+      "note": "Original source for several Erd\u0151s combinatorial geometry problems including the unit distance independence question."
     }
   ],
   "leanFile": {

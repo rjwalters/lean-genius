@@ -1,10 +1,10 @@
 {
   "id": "erdos-937",
-  "title": "Erdős Problem #937: Arithmetic Progressions of Coprime Powerful Numbers",
+  "title": "Erd\u0151s Problem #937: Arithmetic Progressions of Coprime Powerful Numbers",
   "slug": "erdos-937",
   "description": "Are there infinitely many four-term arithmetic progressions of pairwise coprime powerful numbers? YES, proved by Bajpai-Bennett-Chan (2024).",
   "meta": {
-    "author": "Bajpai-Bennett-Chan (2024 proof), Erdős (1976 problem)",
+    "author": "Bajpai-Bennett-Chan (2024 proof), Erd\u0151s (1976 problem)",
     "sourceUrl": "https://erdosproblems.com/937",
     "date": "2024",
     "status": "axiomatized",
@@ -48,7 +48,7 @@
       }
     ],
     "originalContributions": [
-      "IsPowerful definition: n is powerful if p|n implies p²|n",
+      "IsPowerful definition: n is powerful if p|n implies p\u00b2|n",
       "IsRPowerful definition: generalized r-powerful numbers",
       "IsFourTermAP, IsThreeTermAP definitions for arithmetic progressions",
       "CoprimeFourTermAP, CoprimeThreeTermAP for coprime APs",
@@ -66,16 +66,16 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #937: Arithmetic Progressions and Powerful Numbers**\n\nThis problem connects two fundamental concepts: arithmetic progressions and powerful (squarefull) numbers. A number n is powerful if every prime factor appears with exponent at least 2.\n\n**Key History:**\n- Fermat (17th century): Proved no four perfect squares form an arithmetic progression\n- Erdős (1976): Asked about coprime powerful numbers in arithmetic progressions\n- Erdős conjectured behavior for r-powerful numbers depends on r\n- Bajpai-Bennett-Chan (2024): Proved infinitely many 4-term coprime powerful APs exist\n\n**Mathematical Setting:**\n- Without coprimality: Arbitrarily long APs of powerful numbers exist (easy construction)\n- With coprimality: The question becomes much harder and more interesting\n- The r = 2 case (ordinary powerful numbers) was settled in 2024\n\nThe problem beautifully illustrates how adding constraints (coprimality) can transform an easy problem into a deep one.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nAre there infinitely many four-term arithmetic progressions of pairwise coprime powerful numbers?\n\n**Answer: YES**\n\nBajpai, Bennett, and Chan (2024) proved:\n1. Infinitely many 4-term APs of coprime powerful numbers exist\n2. Infinitely many 3-term APs of coprime 3-powerful numbers exist\n3. Assuming ABC: Only finitely many 3-term APs of coprime r-powerful numbers for r ≥ 4\n\n**Context:**\n- A number n is powerful if p|n implies p²|n\n- Examples: 1, 4, 8, 9, 25, 27, 32, 36, 49, 64, 72, ...",
+    "historicalContext": "**Erd\u0151s Problem #937: Arithmetic Progressions and Powerful Numbers**\n\nThis problem connects two fundamental concepts: arithmetic progressions and powerful (squarefull) numbers. A number n is powerful if every prime factor appears with exponent at least 2.\n\n**Key History:**\n- Fermat (17th century): Proved no four perfect squares form an arithmetic progression\n- Erd\u0151s (1976): Asked about coprime powerful numbers in arithmetic progressions\n- Erd\u0151s conjectured behavior for r-powerful numbers depends on r\n- Bajpai-Bennett-Chan (2024): Proved infinitely many 4-term coprime powerful APs exist\n\n**Mathematical Setting:**\n- Without coprimality: Arbitrarily long APs of powerful numbers exist (easy construction)\n- With coprimality: The question becomes much harder and more interesting\n- The r = 2 case (ordinary powerful numbers) was settled in 2024\n\nThe problem beautifully illustrates how adding constraints (coprimality) can transform an easy problem into a deep one.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nAre there infinitely many four-term arithmetic progressions of pairwise coprime powerful numbers?\n\n**Answer: YES**\n\nBajpai, Bennett, and Chan (2024) proved:\n1. Infinitely many 4-term APs of coprime powerful numbers exist\n2. Infinitely many 3-term APs of coprime 3-powerful numbers exist\n3. Assuming ABC: Only finitely many 3-term APs of coprime r-powerful numbers for r \u2265 4\n\n**Context:**\n- A number n is powerful if p|n implies p\u00b2|n\n- Examples: 1, 4, 8, 9, 25, 27, 32, 36, 49, 64, 72, ...",
     "text": "Are there infinitely many four-term arithmetic progressions of pairwise coprime powerful numbers? YES, proved by Bajpai-Bennett-Chan (2024).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Powerful Numbers:** Define IsPowerful and IsRPowerful predicates\n\n2. **Arithmetic Progressions:** Define 3-term and 4-term AP predicates\n\n3. **Coprimality:** Define pairwise coprime APs\n\n4. **Main Sets:** Define coprimePowerfulFourTermAPs and coprime3PowerfulThreeTermAPs\n\n5. **Classical Results:** Axiomatize Fermat's theorem on squares\n\n6. **Main Results:** Axiomatize Bajpai-Bennett-Chan theorems\n\n7. **ABC Conditional:** State the conditional result for r ≥ 4\n\nAxioms are needed because the 2024 proof uses sophisticated analytic number theory techniques.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Powerful Numbers:** Define IsPowerful and IsRPowerful predicates\n\n2. **Arithmetic Progressions:** Define 3-term and 4-term AP predicates\n\n3. **Coprimality:** Define pairwise coprime APs\n\n4. **Main Sets:** Define coprimePowerfulFourTermAPs and coprime3PowerfulThreeTermAPs\n\n5. **Classical Results:** Axiomatize Fermat's theorem on squares\n\n6. **Main Results:** Axiomatize Bajpai-Bennett-Chan theorems\n\n7. **ABC Conditional:** State the conditional result for r \u2265 4\n\nAxioms are needed because the 2024 proof uses sophisticated analytic number theory techniques.",
     "keyInsights": [
-      "**Powerful Numbers:** n is powerful iff n = a²b³ for some integers a, b",
+      "**Powerful Numbers:** n is powerful iff n = a\u00b2b\u00b3 for some integers a, b",
       "**Easy Case:** Without coprimality, multiply an AP by a square to extend it",
       "**Fermat's Constraint:** No four squares form an AP, but powerful numbers are richer",
       "**Coprimality Makes It Hard:** The coprimality condition eliminates the easy construction",
-      "**r-Powerful Hierarchy:** Behavior depends on r: infinitely many for r ≤ 3, finitely many for r ≥ 4 (conditional on ABC)",
+      "**r-Powerful Hierarchy:** Behavior depends on r: infinitely many for r \u2264 3, finitely many for r \u2265 4 (conditional on ABC)",
       "**Recent Progress:** The 2024 result is very recent, showing this is an active research area"
     ],
     "prerequisites": [
@@ -156,13 +156,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #937 asked whether infinitely many 4-term arithmetic progressions of pairwise coprime powerful numbers exist. The answer is YES, proved by Bajpai, Bennett, and Chan in 2024. The problem illustrates the dramatic effect of adding coprimality constraints: without coprimality, arbitrarily long APs exist by a simple construction; with coprimality, the problem required sophisticated techniques and remained open for decades.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Powerful Number Structure:** The result reveals rich structure in powerful numbers\n\n2. **ABC Conjecture Connection:** The r ≥ 4 case is controlled by ABC\n\n**3. Contrast with Squares:** Powerful numbers are more flexible than perfect squares\n\n4. **Recent Mathematics:** The 2024 proof shows this is an active research area\n\n5. **Erdős Legacy:** Part of Erdős's program on consecutive integers and prime powers.",
+    "summary": "Erd\u0151s Problem #937 asked whether infinitely many 4-term arithmetic progressions of pairwise coprime powerful numbers exist. The answer is YES, proved by Bajpai, Bennett, and Chan in 2024. The problem illustrates the dramatic effect of adding coprimality constraints: without coprimality, arbitrarily long APs exist by a simple construction; with coprimality, the problem required sophisticated techniques and remained open for decades.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Powerful Number Structure:** The result reveals rich structure in powerful numbers\n\n2. **ABC Conjecture Connection:** The r \u2265 4 case is controlled by ABC\n\n**3. Contrast with Squares:** Powerful numbers are more flexible than perfect squares\n\n4. **Recent Mathematics:** The 2024 proof shows this is an active research area\n\n5. **Erd\u0151s Legacy:** Part of Erd\u0151s's program on consecutive integers and prime powers.",
     "openQuestions": [
       "Explicit constructions of coprime powerful APs",
       "Density estimates for coprime powerful APs",
       "Extension to longer arithmetic progressions",
-      "Unconditional proof for r ≥ 4 case (currently conditional on ABC)",
+      "Unconditional proof for r \u2265 4 case (currently conditional on ABC)",
       "Analogous questions for other classes of numbers"
     ]
   },
@@ -184,5 +184,39 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-936",
+      "relationship": "related",
+      "description": "Share abc-conjecture, powerful-numbers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-938",
+      "relationship": "related",
+      "description": "Share powerful-numbers, arithmetic progression, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Share abc-conjecture and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-373",
+      "relationship": "related",
+      "description": "Share abc-conjecture and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-850",
+      "relationship": "related",
+      "description": "Share abc-conjecture and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-936",
+    "erdos-938",
+    "erdos-368",
+    "erdos-373",
+    "erdos-850"
+  ]
 }

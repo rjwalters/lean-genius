@@ -1,8 +1,8 @@
 {
   "id": "erdos-841",
-  "title": "Erdős Problem #841: Minimal Interval for Square Product",
+  "title": "Erd\u0151s Problem #841: Minimal Interval for Square Product",
   "slug": "erdos-841",
-  "description": "Let t_n be minimal such that {n+1,...,n+t_n} contains a subset whose product with n is a perfect square. Selfridge proved t_n = P(n) when P(n) > √(2n)+1, and t_n ≤ O(√n) otherwise. Bui-Pratt-Zaharescu (2024) showed t_n follows P(n)'s distribution.",
+  "description": "Let t_n be minimal such that {n+1,...,n+t_n} contains a subset whose product with n is a perfect square. Selfridge proved t_n = P(n) when P(n) > \u221a(2n)+1, and t_n \u2264 O(\u221an) otherwise. Bui-Pratt-Zaharescu (2024) showed t_n follows P(n)'s distribution.",
   "meta": {
     "author": "Selfridge; Bui-Pratt-Zaharescu (2024)",
     "sourceUrl": "https://erdosproblems.com/841",
@@ -32,16 +32,16 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Products and Perfect Squares in Short Intervals**\n\nThis problem was posed by Erdős, Graham, and Selfridge. Given n, what is the smallest t such that we can find a subset S of {n+1, ..., n+t} where n·∏S is a perfect square?\n\n**Example**: t_6 = 6 because 6·8·12 = 576 = 24².\n\n**The Key Player**: The largest prime divisor P(n). If p^(2k+1) || n, we need another factor of p to make the exponent even. The trivial bound is t_n ≥ P(n).\n\n**Selfridge's Theorem**: When P(n) > √(2n)+1 (n is 'rough'), we have exactly t_n = P(n). When P(n) ≤ √(2n)+1 (n is 'smooth'), we have t_n ≤ O(√n).\n\n**Recent Progress**: Bui-Pratt-Zaharescu (2024) proved that the distribution of t_n mirrors P(n)'s distribution precisely.",
-    "problemStatement": "**Problem Statement**\n\nLet t_n be minimal such that {n+1,...,n+t_n} contains a subset S whose product with n is a perfect square:\n\nn · ∏_{s∈S} s is a perfect square\n\n(Set t_n = 0 if n is already a perfect square.)\n\n**Estimate t_n.**\n\n**Answer**:\n- t_n ≥ P(n) always (trivial)\n- t_n = P(n) when P(n) > √(2n)+1 (Selfridge)\n- t_n ≤ O(√n) when P(n) ≤ √(2n)+1 (Selfridge)\n- Distribution of t_n follows P(n)'s distribution (Bui-Pratt-Zaharescu 2024)",
-    "text": "Let t_n be minimal such that {n+1,...,n+t_n} contains a subset whose product with n is a perfect square. Selfridge proved t_n = P(n) when P(n) > √(2n)+1, and t_n ≤ O(√n) otherwise. Bui-Pratt-Zaharescu (2024) showed t_n follows P(n)'s distribution.",
-    "proofStrategy": "**Selfridge's Approach**\n\n**Trivial lower bound**: If p^(2k+1) || n, we need at least one multiple of p in the interval to make the p-exponent even. The nearest is at distance ≤ P(n).\n\n**When P(n) > √(2n)+1**: The large prime P(n) appears only once in {n+1,...,n+P(n)}, and this unique multiple suffices. So t_n = P(n) exactly.\n\n**When P(n) ≤ √(2n)+1 (smooth n)**: Multiple strategies exist. With small prime factors, we can find suitable subsets more easily. Careful analysis gives t_n ≤ O(√n).\n\n**Bui-Pratt-Zaharescu (2024)**:\n- For any c ∈ (0,1]: density of {n: t_n ≤ n^c} = density of {n: P(n) ≤ n^c}\n- Universal lower bound: t_n ≥ (log log n)^{6/5}/(log log log n)^{1/5}\n- For most n: t_n ≤ exp(O(√(log n · log log n)))",
+    "historicalContext": "**Products and Perfect Squares in Short Intervals**\n\nThis problem was posed by Erd\u0151s, Graham, and Selfridge. Given n, what is the smallest t such that we can find a subset S of {n+1, ..., n+t} where n\u00b7\u220fS is a perfect square?\n\n**Example**: t_6 = 6 because 6\u00b78\u00b712 = 576 = 24\u00b2.\n\n**The Key Player**: The largest prime divisor P(n). If p^(2k+1) || n, we need another factor of p to make the exponent even. The trivial bound is t_n \u2265 P(n).\n\n**Selfridge's Theorem**: When P(n) > \u221a(2n)+1 (n is 'rough'), we have exactly t_n = P(n). When P(n) \u2264 \u221a(2n)+1 (n is 'smooth'), we have t_n \u2264 O(\u221an).\n\n**Recent Progress**: Bui-Pratt-Zaharescu (2024) proved that the distribution of t_n mirrors P(n)'s distribution precisely.",
+    "problemStatement": "**Problem Statement**\n\nLet t_n be minimal such that {n+1,...,n+t_n} contains a subset S whose product with n is a perfect square:\n\nn \u00b7 \u220f_{s\u2208S} s is a perfect square\n\n(Set t_n = 0 if n is already a perfect square.)\n\n**Estimate t_n.**\n\n**Answer**:\n- t_n \u2265 P(n) always (trivial)\n- t_n = P(n) when P(n) > \u221a(2n)+1 (Selfridge)\n- t_n \u2264 O(\u221an) when P(n) \u2264 \u221a(2n)+1 (Selfridge)\n- Distribution of t_n follows P(n)'s distribution (Bui-Pratt-Zaharescu 2024)",
+    "text": "Let t_n be minimal such that {n+1,...,n+t_n} contains a subset whose product with n is a perfect square. Selfridge proved t_n = P(n) when P(n) > \u221a(2n)+1, and t_n \u2264 O(\u221an) otherwise. Bui-Pratt-Zaharescu (2024) showed t_n follows P(n)'s distribution.",
+    "proofStrategy": "**Selfridge's Approach**\n\n**Trivial lower bound**: If p^(2k+1) || n, we need at least one multiple of p in the interval to make the p-exponent even. The nearest is at distance \u2264 P(n).\n\n**When P(n) > \u221a(2n)+1**: The large prime P(n) appears only once in {n+1,...,n+P(n)}, and this unique multiple suffices. So t_n = P(n) exactly.\n\n**When P(n) \u2264 \u221a(2n)+1 (smooth n)**: Multiple strategies exist. With small prime factors, we can find suitable subsets more easily. Careful analysis gives t_n \u2264 O(\u221an).\n\n**Bui-Pratt-Zaharescu (2024)**:\n- For any c \u2208 (0,1]: density of {n: t_n \u2264 n^c} = density of {n: P(n) \u2264 n^c}\n- Universal lower bound: t_n \u2265 (log log n)^{6/5}/(log log log n)^{1/5}\n- For most n: t_n \u2264 exp(O(\u221a(log n \u00b7 log log n)))",
     "keyInsights": [
       "The behavior of t_n is determined by whether n is 'rough' (large prime factor) or 'smooth'",
-      "t_n = P(n) exactly when P(n) > √(2n)+1",
+      "t_n = P(n) exactly when P(n) > \u221a(2n)+1",
       "For smooth n, t_n is much smaller than P(n) would suggest",
       "The distribution of t_n perfectly mirrors P(n)'s distribution (Bui-Pratt-Zaharescu)",
-      "Example: t_6 = 6 since 6·8·12 = 24²",
+      "Example: t_6 = 6 since 6\u00b78\u00b712 = 24\u00b2",
       "Connection to smooth numbers and factorization theory"
     ],
     "prerequisites": [
@@ -62,21 +62,21 @@
       "title": "The Example t_6 = 6",
       "startLine": 70,
       "endLine": 78,
-      "summary": "Proves 6·8·12 = 24² and axiomatizes t_6 = 6."
+      "summary": "Proves 6\u00b78\u00b712 = 24\u00b2 and axiomatizes t_6 = 6."
     },
     {
       "id": "prime-divisor",
       "title": "The Largest Prime Divisor",
       "startLine": 80,
       "endLine": 91,
-      "summary": "Defines largestPrimeDivisor P(n) and the trivial lower bound t_n ≥ P(n)."
+      "summary": "Defines largestPrimeDivisor P(n) and the trivial lower bound t_n \u2265 P(n)."
     },
     {
       "id": "selfridge",
       "title": "Selfridge's Theorem",
       "startLine": 93,
       "endLine": 107,
-      "summary": "Selfridge's equality t_n = P(n) when P(n) > √(2n)+1, and upper bound t_n ≤ O(√n) otherwise."
+      "summary": "Selfridge's equality t_n = P(n) when P(n) > \u221a(2n)+1, and upper bound t_n \u2264 O(\u221an) otherwise."
     },
     {
       "id": "lower-bounds",
@@ -90,7 +90,7 @@
       "title": "Upper Bounds",
       "startLine": 119,
       "endLine": 129,
-      "summary": "Upper bound exp(O(√(log n · log log n))) for most n."
+      "summary": "Upper bound exp(O(\u221a(log n \u00b7 log log n))) for most n."
     },
     {
       "id": "distribution",
@@ -115,7 +115,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #841 asks to estimate t_n, the minimal interval length for making n times a subset product a perfect square. Selfridge proved t_n = P(n) for rough n and t_n ≤ O(√n) for smooth n. Bui-Pratt-Zaharescu (2024) showed the distribution of t_n mirrors P(n)'s distribution.",
+    "summary": "Erd\u0151s Problem #841 asks to estimate t_n, the minimal interval length for making n times a subset product a perfect square. Selfridge proved t_n = P(n) for rough n and t_n \u2264 O(\u221an) for smooth n. Bui-Pratt-Zaharescu (2024) showed the distribution of t_n mirrors P(n)'s distribution.",
     "implications": "**Theoretical Significance**: **Significance**\n\n1. **Number Theory**: Reveals structure in how products become squares\n\n**2. Smooth vs Rough**: Dichotomy between smooth (small primes) and rough (large primes) numbers\n\n3. **Distribution Theory**: t_n and P(n) have identical distribution functions\n\n4. **Algorithmic**: For smooth n, finding square products is easier.",
     "openQuestions": [
       "Exact determination of t_n for all n (not just asymptotic)",
@@ -144,5 +144,39 @@
     "axiomCount": 11,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-383",
+      "relationship": "related",
+      "description": "Share smooth-numbers, prime-divisors, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-457",
+      "relationship": "related",
+      "description": "Share smooth-numbers, prime-divisors, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1093",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-383",
+    "erdos-457",
+    "erdos-1055",
+    "erdos-1065",
+    "erdos-1093"
+  ]
 }

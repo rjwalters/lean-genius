@@ -1,10 +1,10 @@
 {
   "id": "erdos-1074",
-  "title": "Erdős Problem #1074: EHS Numbers and Pillai Primes",
+  "title": "Erd\u0151s Problem #1074: EHS Numbers and Pillai Primes",
   "slug": "erdos-1074",
-  "description": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erdős-Hardy-Subbarao), but density questions remain OPEN.",
+  "description": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erd\u0151s-Hardy-Subbarao), but density questions remain OPEN.",
   "meta": {
-    "author": "Erdős-Hardy-Subbarao (infinitude), Chowla (23 ∈ P), Pillai (1930 question)",
+    "author": "Erd\u0151s-Hardy-Subbarao (infinitude), Chowla (23 \u2208 P), Pillai (1930 question)",
     "sourceUrl": "https://erdosproblems.com/1074",
     "date": "1978",
     "status": "axiomatized",
@@ -48,13 +48,13 @@
       }
     ],
     "originalContributions": [
-      "EHSNumbers definition: {m ≥ 1 | ∃ prime p ≢ 1 (mod m) with p | m! + 1}",
-      "PillaiPrimes definition: {p prime | ∃ m with p ≢ 1 (mod m) and p | m! + 1}",
+      "EHSNumbers definition: {m \u2265 1 | \u2203 prime p \u2262 1 (mod m) with p | m! + 1}",
+      "PillaiPrimes definition: {p prime | \u2203 m with p \u2262 1 (mod m) and p | m! + 1}",
       "Verified: 23 is a Pillai prime (Chowla's example via 14! + 1)",
       "Verified: 8 is the first EHS number (via prime 61)",
       "Verified: 9 is an EHS number (via prime 71)",
-      "Axiom: EHSNumbers are infinite (Erdős-Hardy-Subbarao)",
-      "Axiom: PillaiPrimes are infinite (Erdős-Hardy-Subbarao)",
+      "Axiom: EHSNumbers are infinite (Erd\u0151s-Hardy-Subbarao)",
+      "Axiom: PillaiPrimes are infinite (Erd\u0151s-Hardy-Subbarao)",
       "Open density conjectures formalized"
     ],
     "axiomCount": 4,
@@ -62,16 +62,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1074**\n\nThis problem concerns special relationships between factorials and prime divisors.\n\n**Key History:**\n- Pillai (1930): First asked whether any primes p exist with p | m! + 1 and p ≢ 1 (mod m)\n- Chowla: Answered Pillai by showing 23 | 14! + 1 and 23 ≢ 1 (mod 14)\n- Erdős, Hardy, Subbarao: Named these sets 'EHS numbers' and 'Pillai primes', proved both infinite\n- Hardy-Subbarao: Computed EHS numbers up to 2^10, conjectured density is 1\n\n**Mathematical Setting:**\n- m! + 1 has prime factors that satisfy Wilson's theorem conditions\n- The condition p ≢ 1 (mod m) excludes the 'trivial' case where p - 1 | m\n- EHS numbers tend to occur in long consecutive runs",
-    "problemStatement": "**Problem Statement (Partially Open)**\n\nLet S = {m ≥ 1 | ∃ prime p ≢ 1 (mod m) with p | m! + 1} (EHS numbers).\nLet P = {p prime | ∃ m with p ≢ 1 (mod m) and p | m! + 1} (Pillai primes).\n\n**Questions:**\n1. Does lim |S ∩ [1,x]| / x exist? If so, what is it?\n2. Does lim |P ∩ [1,x]| / π(x) exist? If so, what is it?\n\n**Known Results:**\n- Both S and P are infinite (Erdős-Hardy-Subbarao)\n- S begins: 8, 9, 13, 14, 15, 16, 17, ... (OEIS A064164)\n- P begins: 23, 29, 59, 61, 67, 71, ... (OEIS A063980)\n\n**Conjectures:**\n- Hardy-Subbarao: Density of S is 1\n- Density of P may be between 0.5 and 1",
-    "text": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erdős-Hardy-Subbarao), but density questions remain OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Set Definitions:** Define EHSNumbers and PillaiPrimes as subsets of ℕ\n\n2. **Verified Examples:**\n   - 23 ∈ PillaiPrimes via 14! + 1 ≡ 0 (mod 23) (Chowla)\n   - 8 ∈ EHSNumbers via 61 | 8! + 1 (first EHS number)\n   - 9 ∈ EHSNumbers via 71 | 9! + 1\n\n3. **Infinitude Results:** State as axioms (deep number theory)\n\n4. **Open Problems:** State density conjectures formally\n\nThe verified examples use native_decide to computationally check divisibility and congruence conditions.",
+    "historicalContext": "**Erd\u0151s Problem #1074**\n\nThis problem concerns special relationships between factorials and prime divisors.\n\n**Key History:**\n- Pillai (1930): First asked whether any primes p exist with p | m! + 1 and p \u2262 1 (mod m)\n- Chowla: Answered Pillai by showing 23 | 14! + 1 and 23 \u2262 1 (mod 14)\n- Erd\u0151s, Hardy, Subbarao: Named these sets 'EHS numbers' and 'Pillai primes', proved both infinite\n- Hardy-Subbarao: Computed EHS numbers up to 2^10, conjectured density is 1\n\n**Mathematical Setting:**\n- m! + 1 has prime factors that satisfy Wilson's theorem conditions\n- The condition p \u2262 1 (mod m) excludes the 'trivial' case where p - 1 | m\n- EHS numbers tend to occur in long consecutive runs",
+    "problemStatement": "**Problem Statement (Partially Open)**\n\nLet S = {m \u2265 1 | \u2203 prime p \u2262 1 (mod m) with p | m! + 1} (EHS numbers).\nLet P = {p prime | \u2203 m with p \u2262 1 (mod m) and p | m! + 1} (Pillai primes).\n\n**Questions:**\n1. Does lim |S \u2229 [1,x]| / x exist? If so, what is it?\n2. Does lim |P \u2229 [1,x]| / \u03c0(x) exist? If so, what is it?\n\n**Known Results:**\n- Both S and P are infinite (Erd\u0151s-Hardy-Subbarao)\n- S begins: 8, 9, 13, 14, 15, 16, 17, ... (OEIS A064164)\n- P begins: 23, 29, 59, 61, 67, 71, ... (OEIS A063980)\n\n**Conjectures:**\n- Hardy-Subbarao: Density of S is 1\n- Density of P may be between 0.5 and 1",
+    "text": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erd\u0151s-Hardy-Subbarao), but density questions remain OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Set Definitions:** Define EHSNumbers and PillaiPrimes as subsets of \u2115\n\n2. **Verified Examples:**\n   - 23 \u2208 PillaiPrimes via 14! + 1 \u2261 0 (mod 23) (Chowla)\n   - 8 \u2208 EHSNumbers via 61 | 8! + 1 (first EHS number)\n   - 9 \u2208 EHSNumbers via 71 | 9! + 1\n\n3. **Infinitude Results:** State as axioms (deep number theory)\n\n4. **Open Problems:** State density conjectures formally\n\nThe verified examples use native_decide to computationally check divisibility and congruence conditions.",
     "keyInsights": [
-      "**Wilson's Theorem Connection:** For prime p, (p-1)! ≡ -1 (mod p), so p | (p-1)! + 1",
-      "**EHS Condition:** Requires p ≢ 1 (mod m), excluding the Wilson case",
+      "**Wilson's Theorem Connection:** For prime p, (p-1)! \u2261 -1 (mod p), so p | (p-1)! + 1",
+      "**EHS Condition:** Requires p \u2262 1 (mod m), excluding the Wilson case",
       "**Consecutive Runs:** EHS numbers often appear in long sequences",
-      "**First EHS:** 8 is first because 1-7 fail the p ≢ 1 (mod m) condition",
-      "**Chowla's Example:** 14! + 1 = 87,178,291,201 has factor 23, and 23 ≢ 1 (mod 14)",
+      "**First EHS:** 8 is first because 1-7 fail the p \u2262 1 (mod m) condition",
+      "**Chowla's Example:** 14! + 1 = 87,178,291,201 has factor 23, and 23 \u2262 1 (mod 14)",
       "**Density Mystery:** Why would EHS numbers have density 1? The condition seems restrictive"
     ],
     "prerequisites": [
@@ -91,7 +91,7 @@
     {
       "id": "chowla-example",
       "title": "Chowla's Example",
-      "summary": "23 is a Pillai prime: 14! + 1 ≡ 0 (mod 23)",
+      "summary": "23 is a Pillai prime: 14! + 1 \u2261 0 (mod 23)",
       "startLine": 48,
       "endLine": 72
     },
@@ -105,7 +105,7 @@
     {
       "id": "infinitude",
       "title": "Infinitude Results",
-      "summary": "Both sets are infinite (Erdős-Hardy-Subbarao)",
+      "summary": "Both sets are infinite (Erd\u0151s-Hardy-Subbarao)",
       "startLine": 98,
       "endLine": 115
     },
@@ -118,8 +118,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1074 asks about the asymptotic densities of EHS numbers and Pillai primes. While both sets are known to be infinite (proved by Erdős, Hardy, and Subbarao), the density questions remain open. Hardy and Subbarao conjectured that EHS numbers have density 1, but this has not been proved.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Wilson's Theorem:** (p-1)! ≡ -1 (mod p) for primes p\n\n2. **Factorial Structure:** m! + 1 can have prime factors not predicted by Wilson\n\n**3. Residue Classes:** The condition p ≢ 1 (mod m) is about prime distribution\n\n4. **Density Theory:** Asymptotic density of arithmetic sets is subtle\n\n5. **OEIS:** A064164 (EHS numbers) and A063980 (Pillai primes).",
+    "summary": "Erd\u0151s Problem #1074 asks about the asymptotic densities of EHS numbers and Pillai primes. While both sets are known to be infinite (proved by Erd\u0151s, Hardy, and Subbarao), the density questions remain open. Hardy and Subbarao conjectured that EHS numbers have density 1, but this has not been proved.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Wilson's Theorem:** (p-1)! \u2261 -1 (mod p) for primes p\n\n2. **Factorial Structure:** m! + 1 can have prime factors not predicted by Wilson\n\n**3. Residue Classes:** The condition p \u2262 1 (mod m) is about prime distribution\n\n4. **Density Theory:** Asymptotic density of arithmetic sets is subtle\n\n5. **OEIS:** A064164 (EHS numbers) and A063980 (Pillai primes).",
     "openQuestions": [
       "Does the natural density of EHS numbers exist?",
       "If so, is it equal to 1 as conjectured?",
@@ -130,28 +130,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1073",
-      "relationship": "Erdős Problem #1073 asks which composites m divide m! + 1, directly paralleling Problem #1074's study of which m have a prime factor p | m! + 1 with p ≢ 1 (mod m). Both problems center on divisibility properties of factorial-plus-one."
+      "relationship": "related",
+      "targetId": "erdos-1073",
+      "description": "Erd\u0151s Problem #1073 asks which composites m divide m! + 1, directly paralleling Problem #1074's study of which m have a prime factor p | m! + 1 with p \u2262 1 (mod m). Both problems center on divisibility properties of factorial-plus-one."
     },
     {
-      "target": "erdos-1072",
-      "relationship": "Erdős Problem #1072 asks for the least n such that n! ≡ -1 (mod p), connecting Wilson's theorem to factorial congruences. Problem #1074's Pillai primes are exactly those primes p for which such an n exists with p ≢ 1 (mod n), making these problems twin investigations of factorial residues."
+      "relationship": "related",
+      "targetId": "erdos-1072",
+      "description": "Erd\u0151s Problem #1072 asks for the least n such that n! \u2261 -1 (mod p), connecting Wilson's theorem to factorial congruences. Problem #1074's Pillai primes are exactly those primes p for which such an n exists with p \u2262 1 (mod n), making these problems twin investigations of factorial residues."
     },
     {
-      "target": "wilsons-theorem",
-      "relationship": "Wilson's theorem ((p-1)! ≡ -1 (mod p)) is the foundational result underpinning EHS numbers and Pillai primes. The EHS condition p ≢ 1 (mod m) explicitly excludes the Wilson case, so understanding Wilson's theorem is prerequisite to understanding Problem #1074."
+      "relationship": "related",
+      "targetId": "wilsons-theorem",
+      "description": "Wilson's theorem ((p-1)! \u2261 -1 (mod p)) is the foundational result underpinning EHS numbers and Pillai primes. The EHS condition p \u2262 1 (mod m) explicitly excludes the Wilson case, so understanding Wilson's theorem is prerequisite to understanding Problem #1074."
     },
     {
-      "target": "prime-number-theorem",
-      "relationship": "The Prime Number Theorem governs the asymptotic density of primes, providing the analytic framework for asking whether Pillai primes have a positive relative density among all primes. Problem #1074's density questions are in the same spirit as PNT-style asymptotic analysis."
+      "relationship": "related",
+      "targetId": "prime-number-theorem",
+      "description": "The Prime Number Theorem governs the asymptotic density of primes, providing the analytic framework for asking whether Pillai primes have a positive relative density among all primes. Problem #1074's density questions are in the same spirit as PNT-style asymptotic analysis."
     },
     {
-      "target": "dirichlets-theorem",
-      "relationship": "Dirichlet's theorem on primes in arithmetic progressions is closely related: the condition p ≢ 1 (mod m) in the Pillai prime definition is a residue-class condition on primes, and understanding which residue classes contain infinitely many primes (Dirichlet) informs the infinitude and density results for Pillai primes."
+      "relationship": "related",
+      "targetId": "dirichlets-theorem",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is closely related: the condition p \u2262 1 (mod m) in the Pillai prime definition is a residue-class condition on primes, and understanding which residue classes contain infinitely many primes (Dirichlet) informs the infinitude and density results for Pillai primes."
     },
     {
-      "target": "bertrands-postulate",
-      "relationship": "Bertrand's Postulate guarantees prime existence in intervals, a prototype for the kind of prime-density and prime-existence arguments used to show EHSNumbers and PillaiPrimes are infinite. Both results belong to the tradition of elementary number theory establishing prime density lower bounds."
+      "relationship": "related",
+      "targetId": "bertrands-postulate",
+      "description": "Bertrand's Postulate guarantees prime existence in intervals, a prototype for the kind of prime-density and prime-existence arguments used to show EHSNumbers and PillaiPrimes are infinite. Both results belong to the tradition of elementary number theory establishing prime density lower bounds."
     }
   ],
   "relatedProofs": [
@@ -165,7 +171,7 @@
     },
     {
       "target": "wilsons-theorem",
-      "note": "Foundation theorem: (p-1)! ≡ -1 (mod p)"
+      "note": "Foundation theorem: (p-1)! \u2261 -1 (mod p)"
     },
     {
       "target": "prime-number-theorem",
@@ -173,7 +179,7 @@
     },
     {
       "target": "dirichlets-theorem",
-      "note": "Primes in residue classes, relevant to p ≢ 1 (mod m) condition"
+      "note": "Primes in residue classes, relevant to p \u2262 1 (mod m) condition"
     },
     {
       "target": "bertrands-postulate",
@@ -187,11 +193,11 @@
       "journal": "Journal of the Indian Mathematical Society",
       "year": 1930,
       "volume": "18",
-      "pages": "14–17",
-      "note": "Originating question: do primes p exist with p | m! + 1 and p ≢ 1 (mod m)?"
+      "pages": "14\u201317",
+      "note": "Originating question: do primes p exist with p | m! + 1 and p \u2262 1 (mod m)?"
     },
     {
-      "author": "Erdős, P., Hardy, G. E., and Subbarao, M. V.",
+      "author": "Erd\u0151s, P., Hardy, G. E., and Subbarao, M. V.",
       "title": "On the Schur-Siegel-Smyth trace problem",
       "journal": "Notices of the American Mathematical Society",
       "year": 1978,
@@ -203,8 +209,8 @@
       "journal": "Proceedings of the Indian Academy of Sciences, Section A",
       "year": 1947,
       "volume": "26",
-      "pages": "179–181",
-      "note": "First explicit example: 23 | 14! + 1 with 23 ≢ 1 (mod 14), answering Pillai's question affirmatively."
+      "pages": "179\u2013181",
+      "note": "First explicit example: 23 | 14! + 1 with 23 \u2262 1 (mod 14), answering Pillai's question affirmatively."
     },
     {
       "author": "Hardy, G. E. and Subbarao, M. V.",
@@ -212,7 +218,7 @@
       "journal": "Canadian Mathematical Bulletin",
       "year": 1983,
       "volume": "26",
-      "pages": "129–135",
+      "pages": "129\u2013135",
       "note": "Computed EHS numbers up to 2^10, introduced the term 'Pillai primes', conjectured natural density of EHS numbers equals 1."
     },
     {
@@ -222,7 +228,7 @@
       "editor": "Buhler, J. P. and Stevenhagen, P.",
       "publisher": "Cambridge University Press",
       "year": 2008,
-      "pages": "267–323",
+      "pages": "267\u2013323",
       "note": "Background on factorial structure, smooth numbers, and asymptotic density questions in analytic number theory."
     }
   ],

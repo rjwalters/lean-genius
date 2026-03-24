@@ -1,10 +1,10 @@
 {
   "id": "erdos-343",
-  "title": "Erdős Problem #343: Subcompleteness of Dense Multisets",
+  "title": "Erd\u0151s Problem #343: Subcompleteness of Dense Multisets",
   "slug": "erdos-343",
-  "description": "If A ⊆ ℕ has positive lower density (|A ∩ {1,...,N}| ≫ N), must P(A) contain an infinite arithmetic progression? SOLVED: YES (Szemerédi-Vu 2006), threshold is sharp (Folkman 1966).",
+  "description": "If A \u2286 \u2115 has positive lower density (|A \u2229 {1,...,N}| \u226b N), must P(A) contain an infinite arithmetic progression? SOLVED: YES (Szemer\u00e9di-Vu 2006), threshold is sharp (Folkman 1966).",
   "meta": {
-    "author": "Szemerédi-Vu (2006), Folkman (1966)",
+    "author": "Szemer\u00e9di-Vu (2006), Folkman (1966)",
     "sourceUrl": "https://erdosproblems.com/343",
     "date": "2006",
     "status": "axiomatized",
@@ -55,15 +55,15 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #343 is a problem of Folkman about subcompleteness of dense multisets. A set A ⊆ ℕ is called subcomplete if its sumset P(A) = {finite subset sums} contains an infinite arithmetic progression.\n\nFolkman (1966) proved that superlinear density (|A ∩ {1,...,N}| ≫ N^{1+ε}) implies subcompleteness. He also showed the opposite direction: for any ε > 0, there exist multisets with density ~N^{1-ε} that are NOT subcomplete. This left open the critical case of linear density.\n\nSzemerédi and Vu (2006) resolved the problem in their influential paper 'Long arithmetic progressions in sumsets: thresholds and bounds', proving that linear density suffices. This completed the characterization: linear density is the sharp threshold.",
-    "problemStatement": "Let $A \\subseteq \\mathbb{N}$ be a multiset with $|A \\cap \\{1,\\ldots,N\\}| \\gg N$ for all $N$.\n\nMust $A$ be subcomplete? That is, must $P(A) = \\{\\sum_{n \\in B} n : B \\subseteq A \\text{ finite}\\}$ contain an infinite arithmetic progression?\n\n**Answer:** YES (Szemerédi-Vu 2006)\n\n**Sharpness:** Folkman (1966) showed this is optimal - for any $\\varepsilon > 0$, there exist multisets with density $\\sim N^{1-\\varepsilon}$ that are NOT subcomplete.",
-    "text": "If A ⊆ ℕ has positive lower density (|A ∩ {1,...,N}| ≫ N), must P(A) contain an infinite arithmetic progression? SOLVED: YES (Szemerédi-Vu 2006), threshold is sharp (Folkman 1966).",
-    "proofStrategy": "The Lean formalization defines the counting function, positive lower density, sumsets, arithmetic progressions, and subcompleteness. Folkman's results are axiomatized: superlinear density implies subcompleteness, and sublinear density can fail to imply subcompleteness. The main theorem of Szemerédi-Vu (2006) is axiomatized: linear density suffices for subcompleteness.",
+    "historicalContext": "Erd\u0151s Problem #343 is a problem of Folkman about subcompleteness of dense multisets. A set A \u2286 \u2115 is called subcomplete if its sumset P(A) = {finite subset sums} contains an infinite arithmetic progression.\n\nFolkman (1966) proved that superlinear density (|A \u2229 {1,...,N}| \u226b N^{1+\u03b5}) implies subcompleteness. He also showed the opposite direction: for any \u03b5 > 0, there exist multisets with density ~N^{1-\u03b5} that are NOT subcomplete. This left open the critical case of linear density.\n\nSzemer\u00e9di and Vu (2006) resolved the problem in their influential paper 'Long arithmetic progressions in sumsets: thresholds and bounds', proving that linear density suffices. This completed the characterization: linear density is the sharp threshold.",
+    "problemStatement": "Let $A \\subseteq \\mathbb{N}$ be a multiset with $|A \\cap \\{1,\\ldots,N\\}| \\gg N$ for all $N$.\n\nMust $A$ be subcomplete? That is, must $P(A) = \\{\\sum_{n \\in B} n : B \\subseteq A \\text{ finite}\\}$ contain an infinite arithmetic progression?\n\n**Answer:** YES (Szemer\u00e9di-Vu 2006)\n\n**Sharpness:** Folkman (1966) showed this is optimal - for any $\\varepsilon > 0$, there exist multisets with density $\\sim N^{1-\\varepsilon}$ that are NOT subcomplete.",
+    "text": "If A \u2286 \u2115 has positive lower density (|A \u2229 {1,...,N}| \u226b N), must P(A) contain an infinite arithmetic progression? SOLVED: YES (Szemer\u00e9di-Vu 2006), threshold is sharp (Folkman 1966).",
+    "proofStrategy": "The Lean formalization defines the counting function, positive lower density, sumsets, arithmetic progressions, and subcompleteness. Folkman's results are axiomatized: superlinear density implies subcompleteness, and sublinear density can fail to imply subcompleteness. The main theorem of Szemer\u00e9di-Vu (2006) is axiomatized: linear density suffices for subcompleteness.",
     "keyInsights": [
       "**Subcompleteness:** A set is subcomplete if its sumset P(A) contains an infinite arithmetic progression",
-      "**Folkman (1966) upper:** Superlinear density N^{1+ε} guarantees subcompleteness",
-      "**Folkman (1966) lower:** For any ε > 0, density N^{1-ε} does NOT guarantee subcompleteness",
-      "**Szemerédi-Vu (2006):** Linear density is sufficient - this closes the gap",
+      "**Folkman (1966) upper:** Superlinear density N^{1+\u03b5} guarantees subcompleteness",
+      "**Folkman (1966) lower:** For any \u03b5 > 0, density N^{1-\u03b5} does NOT guarantee subcompleteness",
+      "**Szemer\u00e9di-Vu (2006):** Linear density is sufficient - this closes the gap",
       "**Sharp threshold:** Linear density is exactly the critical boundary",
       "**Techniques:** The proof uses sumset structure theorems and Freiman-type results"
     ],
@@ -97,7 +97,7 @@
     },
     {
       "id": "szemeredi-vu",
-      "title": "Szemerédi-Vu Theorem (2006)",
+      "title": "Szemer\u00e9di-Vu Theorem (2006)",
       "startLine": 103,
       "endLine": 119,
       "summary": "The main result: linear density suffices for subcompleteness."
@@ -118,10 +118,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #343 was SOLVED by Szemerédi and Vu in 2006. The answer is YES: if A ⊆ ℕ has positive lower density (|A ∩ {1,...,N}| ≫ N), then P(A) contains an infinite arithmetic progression. This threshold is sharp: Folkman showed that sublinear density N^{1-ε} does not suffice.",
-    "implications": "**Theoretical Significance**: This result establishes the critical threshold for subcompleteness at exactly linear density.\n\nIt connects to the broader theme in additive combinatorics of understanding when sumsets have rich arithmetic structure. The techniques developed by Szemerédi-Vu have influenced many subsequent results on arithmetic progressions in sumsets.",
+    "summary": "Erd\u0151s Problem #343 was SOLVED by Szemer\u00e9di and Vu in 2006. The answer is YES: if A \u2286 \u2115 has positive lower density (|A \u2229 {1,...,N}| \u226b N), then P(A) contains an infinite arithmetic progression. This threshold is sharp: Folkman showed that sublinear density N^{1-\u03b5} does not suffice.",
+    "implications": "**Theoretical Significance**: This result establishes the critical threshold for subcompleteness at exactly linear density.\n\nIt connects to the broader theme in additive combinatorics of understanding when sumsets have rich arithmetic structure. The techniques developed by Szemer\u00e9di-Vu have influenced many subsequent results on arithmetic progressions in sumsets.",
     "openQuestions": [
-      "What is the minimum length of AP that P(A) must contain for density-α sets?",
+      "What is the minimum length of AP that P(A) must contain for density-\u03b1 sets?",
       "Can the result be quantified: if density is cN, what is the modulus of the guaranteed AP?",
       "Are there analogues in other groups or rings?"
     ]
@@ -143,5 +143,39 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-245",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-31",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-333",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-245",
+    "erdos-31",
+    "erdos-333",
+    "erdos-335"
+  ]
 }

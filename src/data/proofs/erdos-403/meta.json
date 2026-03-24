@@ -1,10 +1,10 @@
 {
   "id": "erdos-403",
-  "title": "Erdős Problem #403: Powers of 2 as Sums of Distinct Factorials",
+  "title": "Erd\u0151s Problem #403: Powers of 2 as Sums of Distinct Factorials",
   "slug": "erdos-403",
-  "description": "Does 2^m = a₁! + a₂! + ... + aₖ! (with distinct aᵢ) have only finitely many solutions? YES - the largest is 2^7 = 2! + 3! + 5! = 128 (Lin/Frankl 1976).",
+  "description": "Does 2^m = a\u2081! + a\u2082! + ... + a\u2096! (with distinct a\u1d62) have only finitely many solutions? YES - the largest is 2^7 = 2! + 3! + 5! = 128 (Lin/Frankl 1976).",
   "meta": {
-    "author": "Burr, Erdős, Frankl, Lin",
+    "author": "Burr, Erd\u0151s, Frankl, Lin",
     "sourceUrl": "https://erdosproblems.com/403",
     "date": "1976",
     "status": "axiomatized",
@@ -45,9 +45,9 @@
       "sumFactorials: sum of factorials over a finite set",
       "IsPowerOfTwoFactorialSum: 2^m equals factorial sum",
       "IsPrimePowerFactorialSum: p^m equals factorial sum",
-      "lin_theorem_finiteness axiom: m ≤ 7 bound",
+      "lin_theorem_finiteness axiom: m \u2264 7 bound",
       "twoAdicValuation: 2-adic valuation function",
-      "lin_two_adic_bound axiom: 2-adic bound ≤ 254",
+      "lin_two_adic_bound axiom: 2-adic bound \u2264 254",
       "threeExponentSolutions: {0,1,2,3,6} for powers of 3",
       "lin_theorem_powers_of_three axiom: exactly 5 solutions",
       "factorial_dominates_exponential axiom: growth comparison",
@@ -59,10 +59,10 @@
     "lineCount": 356
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #403: Powers of 2 as Factorial Sums**\n\nThis problem asks whether the equation 2^m = a₁! + a₂! + ... + aₖ! (with distinct positive integers aᵢ) has only finitely many solutions.\n\n**Historical Development:**\n- **Burr and Erdős** posed the question\n- **Lin (1976):** Proved finiteness, showing m ≤ 7 is maximal\n- **Frankl:** Independently obtained the same result\n- **Lin's stronger result:** The 2-adic valuation of any such sum is ≤ 254\n\n**The Answer:**\nYES, there are only finitely many solutions. The largest is:\n**2^7 = 2! + 3! + 5! = 2 + 6 + 120 = 128**\n\n**Reference:**\nLin, S., 'On two problems of Erdős concerning sums of distinct factorials.'\nBell Laboratories internal memorandum (1960/1976).\nAlso in Erdős-Graham [ErGr80, p.79].",
+    "historicalContext": "**Erd\u0151s Problem #403: Powers of 2 as Factorial Sums**\n\nThis problem asks whether the equation 2^m = a\u2081! + a\u2082! + ... + a\u2096! (with distinct positive integers a\u1d62) has only finitely many solutions.\n\n**Historical Development:**\n- **Burr and Erd\u0151s** posed the question\n- **Lin (1976):** Proved finiteness, showing m \u2264 7 is maximal\n- **Frankl:** Independently obtained the same result\n- **Lin's stronger result:** The 2-adic valuation of any such sum is \u2264 254\n\n**The Answer:**\nYES, there are only finitely many solutions. The largest is:\n**2^7 = 2! + 3! + 5! = 2 + 6 + 120 = 128**\n\n**Reference:**\nLin, S., 'On two problems of Erd\u0151s concerning sums of distinct factorials.'\nBell Laboratories internal memorandum (1960/1976).\nAlso in Erd\u0151s-Graham [ErGr80, p.79].",
     "problemStatement": "**Problem Statement (Solved)**\n\nDoes the equation\n$$2^m = a_1! + a_2! + \\cdots + a_k!$$\nwith $a_1 < a_2 < \\cdots < a_k$ have only finitely many solutions?\n\n**Answer: YES**\n\n**Maximal Solution:** $2^7 = 2! + 3! + 5! = 128$\n\n**Verified Solutions:**\n- $2^1 = 2 = 2!$\n- $2^2 = 4 = 0! + 1! + 2!$\n- $2^3 = 8 = 0! + 1! + 3!$\n- $2^7 = 128 = 2! + 3! + 5!$ (maximal)\n\n**Related Result:**\nFor $3^m = \\sum a_i!$, there are exactly 5 solutions: $m \\in \\{0, 1, 2, 3, 6\\}$.",
-    "text": "Does 2^m = a₁! + a₂! + ... + aₖ! (with distinct aᵢ) have only finitely many solutions? YES - the largest is 2^7 = 2! + 3! + 5! = 128 (Lin/Frankl 1976).",
-    "proofStrategy": "**Formalization Strategy**\n\nThe Lean formalization proceeds in two layers: computational verification for explicit solutions, and axiomatization for the deep analytical results.\n\n1. **Definitions:** `sumFactorials(S) = Σₐ∈S a!` as a `Finset ℕ → ℕ` function, with predicates `IsPowerOfTwoFactorialSum(m)` and `IsPrimePowerFactorialSum(p, m)` capturing the Diophantine conditions.\n\n2. **Computational layer:** `native_decide` verifies equalities like `sumFactorials {2,3,5} = 2^7` by kernel evaluation — no human proof required for arithmetic facts.\n\n3. **Analytical layer (axiomatized):** Lin's theorem `m ≤ 7` and the 2-adic bound `v₂(Σa!) ≤ 254` are stated as axioms, representing deep results whose complete proofs (2-adic analysis, growth comparison) lie beyond the current formalization.\n\n4. **Structural derivations:** From the axioms, `solution_set_finite` is derived via `Set.Finite.subset (Set.finite_le_nat 7)` — a clean structural argument.\n\n5. **Powers of 3:** The complete classification is verified by providing five explicit witnesses and axiomatizing the 'no more solutions' direction.",
+    "text": "Does 2^m = a\u2081! + a\u2082! + ... + a\u2096! (with distinct a\u1d62) have only finitely many solutions? YES - the largest is 2^7 = 2! + 3! + 5! = 128 (Lin/Frankl 1976).",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean formalization proceeds in two layers: computational verification for explicit solutions, and axiomatization for the deep analytical results.\n\n1. **Definitions:** `sumFactorials(S) = \u03a3\u2090\u2208S a!` as a `Finset \u2115 \u2192 \u2115` function, with predicates `IsPowerOfTwoFactorialSum(m)` and `IsPrimePowerFactorialSum(p, m)` capturing the Diophantine conditions.\n\n2. **Computational layer:** `native_decide` verifies equalities like `sumFactorials {2,3,5} = 2^7` by kernel evaluation \u2014 no human proof required for arithmetic facts.\n\n3. **Analytical layer (axiomatized):** Lin's theorem `m \u2264 7` and the 2-adic bound `v\u2082(\u03a3a!) \u2264 254` are stated as axioms, representing deep results whose complete proofs (2-adic analysis, growth comparison) lie beyond the current formalization.\n\n4. **Structural derivations:** From the axioms, `solution_set_finite` is derived via `Set.Finite.subset (Set.finite_le_nat 7)` \u2014 a clean structural argument.\n\n5. **Powers of 3:** The complete classification is verified by providing five explicit witnesses and axiomatizing the 'no more solutions' direction.",
     "keyInsights": [
       "**Explicit Maximum:** $2^7 = 2! + 3! + 5! = 2 + 6 + 120 = 128$ is the unique largest solution; Lin's bound $m \\leq 7$ shows no larger power of 2 can be a factorial sum",
       "**2-adic Bound is the Key:** Lin's method computes $v_2(\\sum_{a \\in S} a!) \\leq 254$ when $2 \\in S$, using Legendre's formula $v_2(n!) = n - s_2(n)$ and careful residue analysis modulo powers of 2",
@@ -79,7 +79,7 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Defines `sumFactorials(S) = Σₐ∈S a!` as the core function over `Finset ℕ`, along with `isStrictlyIncreasing`, `IsPowerOfTwoFactorialSum(m)` (∃S≠∅: sumFactorials(S) = 2^m), and `IsPrimePowerFactorialSum(p,m)` for the generalized predicate. Using `Finset ℕ` automatically enforces distinctness.",
+      "summary": "Defines `sumFactorials(S) = \u03a3\u2090\u2208S a!` as the core function over `Finset \u2115`, along with `isStrictlyIncreasing`, `IsPowerOfTwoFactorialSum(m)` (\u2203S\u2260\u2205: sumFactorials(S) = 2^m), and `IsPrimePowerFactorialSum(p,m)` for the generalized predicate. Using `Finset \u2115` automatically enforces distinctness.",
       "startLine": 34,
       "endLine": 66
     },
@@ -93,60 +93,60 @@
     {
       "id": "finiteness",
       "title": "Main Finiteness Result",
-      "summary": "Defines `solutionExponents = {1,2,3,4,5,6,7}` as the candidate set. States `lin_theorem_finiteness` (axiom: IsPowerOfTwoFactorialSum(m) → m ≤ 7) and derives `solution_set_finite` by `Set.Finite.subset (Set.finite_le_nat 7)` — the set of solutions is contained in the finite set {n ≤ 7}.",
+      "summary": "Defines `solutionExponents = {1,2,3,4,5,6,7}` as the candidate set. States `lin_theorem_finiteness` (axiom: IsPowerOfTwoFactorialSum(m) \u2192 m \u2264 7) and derives `solution_set_finite` by `Set.Finite.subset (Set.finite_le_nat 7)` \u2014 the set of solutions is contained in the finite set {n \u2264 7}.",
       "startLine": 99,
       "endLine": 128
     },
     {
       "id": "two-adic",
       "title": "2-adic Bounds",
-      "summary": "Defines `twoAdicValuation(n)` via `Nat.factorization 2`. States `lin_two_adic_bound` (axiom: 2 ∈ S → v₂(sumFactorials S) ≤ 254) and derives `power_of_two_bound` (if 2^m = sumFactorials S with 2 ∈ S then m ≤ 254). This is the technical engine behind finiteness, based on mod-2^k analysis of factorial sums.",
+      "summary": "Defines `twoAdicValuation(n)` via `Nat.factorization 2`. States `lin_two_adic_bound` (axiom: 2 \u2208 S \u2192 v\u2082(sumFactorials S) \u2264 254) and derives `power_of_two_bound` (if 2^m = sumFactorials S with 2 \u2208 S then m \u2264 254). This is the technical engine behind finiteness, based on mod-2^k analysis of factorial sums.",
       "startLine": 130,
       "endLine": 160
     },
     {
       "id": "powers-of-three",
       "title": "Powers of 3: Complete Classification",
-      "summary": "Defines `threeExponentSolutions = {0,1,2,3,6}` and verifies each: 3^0=1!, 3^1=1!+2!, 3^2=1!+2!+3!, 3^3=1!+2!+4!, 3^6=1!+2!+3!+6!. States `lin_theorem_powers_of_three` (axiom: 3^m = Σa! ↔ m ∈ {0,1,2,3,6}) — a complete biconditional, not just a bound.",
+      "summary": "Defines `threeExponentSolutions = {0,1,2,3,6}` and verifies each: 3^0=1!, 3^1=1!+2!, 3^2=1!+2!+3!, 3^3=1!+2!+4!, 3^6=1!+2!+3!+6!. States `lin_theorem_powers_of_three` (axiom: 3^m = \u03a3a! \u2194 m \u2208 {0,1,2,3,6}) \u2014 a complete biconditional, not just a bound.",
       "startLine": 162,
       "endLine": 209
     },
     {
       "id": "growth-arguments",
       "title": "Why Finiteness Holds: Growth Analysis",
-      "summary": "Axiomatizes three bounds: `factorial_dominates_exponential` (∀c ∃N ∀a≥N: a! > 2^(a+c)), `few_terms_in_solution` (max(S)≥8 → |S|≤8, since 8!=40320>2^15), and `max_element_bound` (max(S)≤13, since 14! ≈ 87 billion exhausts any power-of-2 range). Together these constrain the search space to finitely many candidates.",
+      "summary": "Axiomatizes three bounds: `factorial_dominates_exponential` (\u2200c \u2203N \u2200a\u2265N: a! > 2^(a+c)), `few_terms_in_solution` (max(S)\u22658 \u2192 |S|\u22648, since 8!=40320>2^15), and `max_element_bound` (max(S)\u226413, since 14! \u2248 87 billion exhausts any power-of-2 range). Together these constrain the search space to finitely many candidates.",
       "startLine": 211,
       "endLine": 244
     },
     {
       "id": "problem-404",
       "title": "Connection to Problem 404: The f(a,p) Function",
-      "summary": "Defines `maxPrimePowerDiv(a,p) = sSup{k | ∃S∋a, p^k | sumFactorials(S)}` as a `noncomputable` function using `sSup`. States `lin_f22_bound` (f(2,2) ≤ 254) and `problem_404_generalizes_403` (IsPowerOfTwoFactorialSum(m) → m ≤ f(2,2)), embedding Problem 403 as the special case a=2, p=2 of Erdős Problem 404.",
+      "summary": "Defines `maxPrimePowerDiv(a,p) = sSup{k | \u2203S\u220ba, p^k | sumFactorials(S)}` as a `noncomputable` function using `sSup`. States `lin_f22_bound` (f(2,2) \u2264 254) and `problem_404_generalizes_403` (IsPowerOfTwoFactorialSum(m) \u2192 m \u2264 f(2,2)), embedding Problem 403 as the special case a=2, p=2 of Erd\u0151s Problem 404.",
       "startLine": 246,
       "endLine": 276
     },
     {
       "id": "computational",
       "title": "Computational Verification: Explicit Witnesses",
-      "summary": "Constructs IsPowerOfTwoFactorialSum witnesses for m=1,2,3,7 using explicit Finset witnesses and `native_decide`. Demonstrates that not all m≤7 need solutions (Lin's bound is an upper bound, not a characterization). The pattern ⟨S, nonempty_proof, sum_proof⟩ illustrates Lean's constructive existentials.",
+      "summary": "Constructs IsPowerOfTwoFactorialSum witnesses for m=1,2,3,7 using explicit Finset witnesses and `native_decide`. Demonstrates that not all m\u22647 need solutions (Lin's bound is an upper bound, not a characterization). The pattern \u27e8S, nonempty_proof, sum_proof\u27e9 illustrates Lean's constructive existentials.",
       "startLine": 278,
       "endLine": 309
     },
     {
       "id": "main-results",
       "title": "Main Results: erdos_403 and Powers of Three",
-      "summary": "The capstone `erdos_403` theorem: IsPowerOfTwoFactorialSum(7) ∧ ∀m, IsPowerOfTwoFactorialSum(m) → m≤7, proved by `⟨check_m7, lin_theorem_finiteness⟩`. Then `related_powers_of_three` verifies all 5 power-of-3 solutions using `fin_cases` on threeExponentSolutions with the `first` tactic dispatcher.",
+      "summary": "The capstone `erdos_403` theorem: IsPowerOfTwoFactorialSum(7) \u2227 \u2200m, IsPowerOfTwoFactorialSum(m) \u2192 m\u22647, proved by `\u27e8check_m7, lin_theorem_finiteness\u27e9`. Then `related_powers_of_three` verifies all 5 power-of-3 solutions using `fin_cases` on threeExponentSolutions with the `first` tactic dispatcher.",
       "startLine": 311,
       "endLine": 356
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #403 is SOLVED. The equation 2^m = Σaᵢ! (distinct aᵢ) has only finitely many solutions, with 2^7 = 2! + 3! + 5! = 128 being maximal. Lin (1976) proved this via 2-adic analysis, showing the 2-adic valuation is bounded by 254. Frankl obtained the result independently. For powers of 3, there are exactly 5 solutions.",
+    "summary": "Erd\u0151s Problem #403 is SOLVED. The equation 2^m = \u03a3a\u1d62! (distinct a\u1d62) has only finitely many solutions, with 2^7 = 2! + 3! + 5! = 128 being maximal. Lin (1976) proved this via 2-adic analysis, showing the 2-adic valuation is bounded by 254. Frankl obtained the result independently. For powers of 3, there are exactly 5 solutions.",
     "implications": "**Number-Theoretic Significance**\n\n1. **Factorial Structure:** Sums of distinct factorials have limited divisibility properties\n\n**2. Growth Rates:** Factorial growth dominates exponential, severely limiting solutions\n\n**3. 2-adic Methods:** The proof relies on analyzing 2-adic valuations\n\n4. **Generalization:** Problem 404 asks about f(a,p) for general primes\n\n5. **Computational Aspect:** Small solutions can be verified explicitly.",
     "openQuestions": [
-      "What are the exact values of f(a,p) for general a and prime p beyond the Lin bounds (Erdős Problem 404)?",
-      "Can Lin's 2-adic bound of 254 be sharpened — is the true maximum of v₂(Σa!) significantly smaller?",
-      "Do analogous finiteness results hold for other exponential bases b^m = Σaᵢ! beyond b=2 and b=3?",
+      "What are the exact values of f(a,p) for general a and prime p beyond the Lin bounds (Erd\u0151s Problem 404)?",
+      "Can Lin's 2-adic bound of 254 be sharpened \u2014 is the true maximum of v\u2082(\u03a3a!) significantly smaller?",
+      "Do analogous finiteness results hold for other exponential bases b^m = \u03a3a\u1d62! beyond b=2 and b=3?",
       "Is there a uniform proof strategy for all prime powers p^m, or does each prime require separate 2-adic-style analysis?"
     ]
   },
@@ -167,5 +167,39 @@
     "axiomCount": 9,
     "theoremCount": 15,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1058",
+      "relationship": "related",
+      "description": "Share factorials, diophantine, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1108",
+      "relationship": "related",
+      "description": "Share factorials, diophantine, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Share factorials and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Share factorials and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Share factorials and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1058",
+    "erdos-1108",
+    "erdos-1056",
+    "erdos-1059",
+    "erdos-1072"
+  ]
 }

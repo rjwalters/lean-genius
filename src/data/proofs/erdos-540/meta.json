@@ -1,10 +1,10 @@
 {
   "id": "erdos-540",
-  "title": "Erdős Problem #540: Zero-Sum Subsets (Erdős-Heilbronn Conjecture)",
+  "title": "Erd\u0151s Problem #540: Zero-Sum Subsets (Erd\u0151s-Heilbronn Conjecture)",
   "slug": "erdos-540",
-  "description": "If A ⊆ ℤ/Nℤ has size ≫ √N, must A contain a non-empty zero-sum subset? YES, proved by Szemerédi (1970). Optimal threshold √(2N) for primes (Balandraud 2012).",
+  "description": "If A \u2286 \u2124/N\u2124 has size \u226b \u221aN, must A contain a non-empty zero-sum subset? YES, proved by Szemer\u00e9di (1970). Optimal threshold \u221a(2N) for primes (Balandraud 2012).",
   "meta": {
-    "author": "Erdős–Heilbronn (1964 conjecture), Szemerédi (1970 proof)",
+    "author": "Erd\u0151s\u2013Heilbronn (1964 conjecture), Szemer\u00e9di (1970 proof)",
     "sourceUrl": "https://erdosproblems.com/540",
     "date": "1970",
     "status": "axiomatized",
@@ -45,11 +45,11 @@
       "IsZeroSumSubset / HasZeroSumSubset: zero-sum subset predicates",
       "ErdosHeilbronnConjecture: parameterized by constant c",
       "OriginalConjecture: existential form of the conjecture",
-      "olson_prime_case axiom: prime case with √(2p) threshold",
+      "olson_prime_case axiom: prime case with \u221a(2p) threshold",
       "szemeredi_general_case axiom: general case resolving the conjecture",
       "erdos_540_solved theorem: proved from szemeredi_general_case",
       "balandraud_prime_optimal axiom: tight bounds for primes",
-      "hamidoune_zemor_bound axiom: (1+o(1))√(2N) for all N",
+      "hamidoune_zemor_bound axiom: (1+o(1))\u221a(2N) for all N",
       "case_N_1 theorem: trivial case proved directly",
       "davenport_for_cyclic axiom: linear Davenport bound for comparison",
       "general_abelian_case axiom: extension to arbitrary abelian groups",
@@ -60,16 +60,16 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The Erdős-Heilbronn conjecture was posed in 1964 and asks whether large subsets of cyclic groups necessarily contain non-empty zero-sum subsets. The precise question is: does there exist a constant c such that any A ⊆ ℤ/Nℤ with |A| > c·√N must contain a non-empty subset summing to 0 mod N? The conjecture sits at the foundation of additive combinatorics, connecting subset sum problems to group structure.\n\nOlson made the first breakthrough in 1968, proving the conjecture for prime N with the constant √2: any subset of ℤ/pℤ of size exceeding √(2p) must contain a zero-sum subset. His proof used polynomial methods. Szemerédi then settled the general case in 1970, proving the conjecture for all N by showing that large subsets in any cyclic group have this property. This resolved Problem #540 completely.\n\nSubsequent work refined the constants. Hamidoune and Zémor (1996) showed that (1+o(1))·√(2N) works asymptotically for arbitrary finite abelian groups. Balandraud (2012) achieved the definitive result for primes: √(2p) is the exact threshold, meaning sets just below this size can avoid zero-sums, but any set at or above it cannot. The optimal constant is thus √2 for primes and asymptotically √2 in general.",
-    "problemStatement": "**Problem (SOLVED)**\n\nIs it true that if $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ has size $\\gg \\sqrt{N}$ then there exists some non-empty $S \\subseteq A$ such that $\\sum_{s \\in S} s \\equiv 0 \\pmod{N}$?\n\n**Answer:** YES\n- **Olson (1968):** Proved for primes, threshold $\\sqrt{2p}$\n- **Szemerédi (1970):** Proved for all $N$\n- **Balandraud (2012):** Exact threshold $\\sqrt{2p}$ for primes\n- **Optimal constant:** $\\sqrt{2}$",
-    "text": "If A ⊆ ℤ/Nℤ has size ≫ √N, must A contain a non-empty zero-sum subset? YES, proved by Szemerédi (1970). Optimal threshold √(2N) for primes (Balandraud 2012).",
-    "proofStrategy": "The formalization defines subset sums in ℤ/Nℤ, the zero-sum property, and the Erdős-Heilbronn threshold as a parameterized Prop. Key results are axiomatized: Olson's prime case, Szemerédi's general solution, Balandraud's tight bounds, and the Hamidoune–Zémor asymptotic. The main theorem erdos_540_solved is proved from Szemerédi's axiom. The trivial case N = 1 is proved directly (all elements are 0 in ℤ/1ℤ). The Davenport constant provides context: sequences need N elements for zero-sums, but subsets only need √N.",
+    "historicalContext": "The Erd\u0151s-Heilbronn conjecture was posed in 1964 and asks whether large subsets of cyclic groups necessarily contain non-empty zero-sum subsets. The precise question is: does there exist a constant c such that any A \u2286 \u2124/N\u2124 with |A| > c\u00b7\u221aN must contain a non-empty subset summing to 0 mod N? The conjecture sits at the foundation of additive combinatorics, connecting subset sum problems to group structure.\n\nOlson made the first breakthrough in 1968, proving the conjecture for prime N with the constant \u221a2: any subset of \u2124/p\u2124 of size exceeding \u221a(2p) must contain a zero-sum subset. His proof used polynomial methods. Szemer\u00e9di then settled the general case in 1970, proving the conjecture for all N by showing that large subsets in any cyclic group have this property. This resolved Problem #540 completely.\n\nSubsequent work refined the constants. Hamidoune and Z\u00e9mor (1996) showed that (1+o(1))\u00b7\u221a(2N) works asymptotically for arbitrary finite abelian groups. Balandraud (2012) achieved the definitive result for primes: \u221a(2p) is the exact threshold, meaning sets just below this size can avoid zero-sums, but any set at or above it cannot. The optimal constant is thus \u221a2 for primes and asymptotically \u221a2 in general.",
+    "problemStatement": "**Problem (SOLVED)**\n\nIs it true that if $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ has size $\\gg \\sqrt{N}$ then there exists some non-empty $S \\subseteq A$ such that $\\sum_{s \\in S} s \\equiv 0 \\pmod{N}$?\n\n**Answer:** YES\n- **Olson (1968):** Proved for primes, threshold $\\sqrt{2p}$\n- **Szemer\u00e9di (1970):** Proved for all $N$\n- **Balandraud (2012):** Exact threshold $\\sqrt{2p}$ for primes\n- **Optimal constant:** $\\sqrt{2}$",
+    "text": "If A \u2286 \u2124/N\u2124 has size \u226b \u221aN, must A contain a non-empty zero-sum subset? YES, proved by Szemer\u00e9di (1970). Optimal threshold \u221a(2N) for primes (Balandraud 2012).",
+    "proofStrategy": "The formalization defines subset sums in \u2124/N\u2124, the zero-sum property, and the Erd\u0151s-Heilbronn threshold as a parameterized Prop. Key results are axiomatized: Olson's prime case, Szemer\u00e9di's general solution, Balandraud's tight bounds, and the Hamidoune\u2013Z\u00e9mor asymptotic. The main theorem erdos_540_solved is proved from Szemer\u00e9di's axiom. The trivial case N = 1 is proved directly (all elements are 0 in \u2124/1\u2124). The Davenport constant provides context: sequences need N elements for zero-sums, but subsets only need \u221aN.",
     "keyInsights": [
-      "**√N vs N Threshold:** The Davenport constant gives a linear bound (sequences of length N), but subsets of size √N already suffice — a dramatic improvement from subset combinatorics.",
-      "**Pigeonhole Foundation:** With k elements there are 2^k − 1 non-empty subsets mapping to N possible sums. When 2^k > N (i.e., k > log N), two subsets collide; their symmetric difference has sum 0. The √N bound requires deeper structural analysis.",
-      "**Optimal Constant √2:** For primes, √(2p) is exact (Balandraud). Sets of size < √(2p) can avoid zero-sums by choosing elements from a sum-free-like configuration.",
-      "**Abelian Generalization:** The result extends beyond cyclic groups to all finite abelian groups G with threshold √|G|.",
-      "**Polynomial Method:** Olson's original proof for primes uses the Chevalley–Warning theorem and polynomial arguments over finite fields."
+      "**\u221aN vs N Threshold:** The Davenport constant gives a linear bound (sequences of length N), but subsets of size \u221aN already suffice \u2014 a dramatic improvement from subset combinatorics.",
+      "**Pigeonhole Foundation:** With k elements there are 2^k \u2212 1 non-empty subsets mapping to N possible sums. When 2^k > N (i.e., k > log N), two subsets collide; their symmetric difference has sum 0. The \u221aN bound requires deeper structural analysis.",
+      "**Optimal Constant \u221a2:** For primes, \u221a(2p) is exact (Balandraud). Sets of size < \u221a(2p) can avoid zero-sums by choosing elements from a sum-free-like configuration.",
+      "**Abelian Generalization:** The result extends beyond cyclic groups to all finite abelian groups G with threshold \u221a|G|.",
+      "**Polynomial Method:** Olson's original proof for primes uses the Chevalley\u2013Warning theorem and polynomial arguments over finite fields."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -87,21 +87,21 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erdős-Heilbronn Conjecture",
+      "title": "The Erd\u0151s-Heilbronn Conjecture",
       "summary": "Threshold property and the original conjecture statement",
       "startLine": 44,
       "endLine": 58
     },
     {
       "id": "olson",
-      "title": "Olson's Theorem (1968) — Prime Case",
-      "summary": "First proof for primes with √(2p) threshold",
+      "title": "Olson's Theorem (1968) \u2014 Prime Case",
+      "summary": "First proof for primes with \u221a(2p) threshold",
       "startLine": 60,
       "endLine": 78
     },
     {
       "id": "szemeredi",
-      "title": "Szemerédi's Theorem (1970) — General Case",
+      "title": "Szemer\u00e9di's Theorem (1970) \u2014 General Case",
       "summary": "Complete resolution of the conjecture",
       "startLine": 80,
       "endLine": 93
@@ -109,14 +109,14 @@
     {
       "id": "balandraud",
       "title": "Balandraud's Optimal Result (2012)",
-      "summary": "Exact threshold √(2p) for primes with tightness",
+      "summary": "Exact threshold \u221a(2p) for primes with tightness",
       "startLine": 95,
       "endLine": 112
     },
     {
       "id": "hamidoune-zemor",
-      "title": "Hamidoune–Zémor (1996)",
-      "summary": "Near-optimal (1+o(1))√(2N) for all N",
+      "title": "Hamidoune\u2013Z\u00e9mor (1996)",
+      "summary": "Near-optimal (1+o(1))\u221a(2N) for all N",
       "startLine": 114,
       "endLine": 128
     },
@@ -143,8 +143,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #540 is SOLVED. The Erdős-Heilbronn conjecture (1964) was proved by Szemerédi (1970): large subsets of ℤ/Nℤ necessarily contain zero-sum subsets. The optimal threshold is √(2N) for primes (Balandraud 2012) and asymptotically (1+o(1))√(2N) for all N (Hamidoune–Zémor 1996). The result extends to arbitrary finite abelian groups.",
-    "implications": "**Theoretical Significance**: This result is foundational in additive combinatorics.\n\nIt shows that large subsets of cyclic groups cannot avoid zero-sum configurations, with precise thresholds now known. The √N threshold (versus the linear Davenport bound) highlights the power of subset combinatorics over sequence combinatorics.",
+    "summary": "Erd\u0151s Problem #540 is SOLVED. The Erd\u0151s-Heilbronn conjecture (1964) was proved by Szemer\u00e9di (1970): large subsets of \u2124/N\u2124 necessarily contain zero-sum subsets. The optimal threshold is \u221a(2N) for primes (Balandraud 2012) and asymptotically (1+o(1))\u221a(2N) for all N (Hamidoune\u2013Z\u00e9mor 1996). The result extends to arbitrary finite abelian groups.",
+    "implications": "**Theoretical Significance**: This result is foundational in additive combinatorics.\n\nIt shows that large subsets of cyclic groups cannot avoid zero-sum configurations, with precise thresholds now known. The \u221aN threshold (versus the linear Davenport bound) highlights the power of subset combinatorics over sequence combinatorics.",
     "openQuestions": [
       "What is the exact threshold for composite N (non-prime)?",
       "Can the proof for general N be made elementary?",
@@ -170,5 +170,39 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Share number-theoretic and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Share number-theoretic and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Share number-theoretic and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Share number-theoretic and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Share number-theoretic and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-11",
+    "erdos-1103",
+    "erdos-1107",
+    "erdos-1109",
+    "erdos-1110"
+  ]
 }

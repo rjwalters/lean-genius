@@ -1,10 +1,10 @@
 {
   "id": "erdos-1000",
-  "title": "Erdős #1000: Generalized Totients and Diophantine Approximation",
+  "title": "Erd\u0151s #1000: Generalized Totients and Diophantine Approximation",
   "slug": "erdos-1000",
-  "description": "For an infinite sequence A = {n₁ < n₂ < ...}, define φ_A(k) as the count of m ≤ n_k such that m/n_k in lowest form has denominator different from all previous n_j. Does lim (1/N) Σ φ_A(k)/n_k = 0 for some A? Answer: YES (Haight), contrary to Erdős' expectation.",
+  "description": "For an infinite sequence A = {n\u2081 < n\u2082 < ...}, define \u03c6_A(k) as the count of m \u2264 n_k such that m/n_k in lowest form has denominator different from all previous n_j. Does lim (1/N) \u03a3 \u03c6_A(k)/n_k = 0 for some A? Answer: YES (Haight), contrary to Erd\u0151s' expectation.",
   "meta": {
-    "author": "J.W.S. Cassels, Paul Erdős, J.A. Haight",
+    "author": "J.W.S. Cassels, Paul Erd\u0151s, J.A. Haight",
     "sourceUrl": "https://erdosproblems.com/1000",
     "date": "1950-1964",
     "status": "formalized",
@@ -26,15 +26,15 @@
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "This problem originates in Cassels' 1950 work on Diophantine approximation, where he introduced the generalized totient φ_A to study the distribution of 'new' reduced denominators in increasing integer sequences. Cassels proved that for some sequences, the liminf of the Cesàro average of φ_A(k)/n_k is zero, and connected this to metric Diophantine approximation via the Khinchin-Groshev theorem. Erdős (1964) made the problem sharper: he proved that for any sequence, the individual ratio φ_A(k)/n_k cannot converge to 0, and established a remarkable dichotomy — if liminf = 0 then limsup = 1 — showing the density ratio must oscillate maximally. Erdős then asked whether the Cesàro average itself could vanish, conjecturing it could not. The lower bound φ_A(k) ≥ φ(n_k) (Euler's totient) and the fact that φ(n)/n averages to 6/π² supported his intuition. Haight's subsequent construction proved Erdős wrong: carefully chosen sequences of highly composite numbers force the average to 0 while the individual terms oscillate between 0 and 1. The problem illustrates the subtle gap between pointwise and averaged behavior of arithmetic functions.",
-    "problemStatement": "Let A = {n₁ < n₂ < ⋯} be an infinite sequence of positive integers. Define φ_A(k) as the count of 1 ≤ m ≤ n_k such that m/n_k in lowest form has denominator ≠ n_j for all j < k. Is there a sequence A such that lim_{N→∞} (1/N) Σ_{k≤N} φ_A(k)/n_k = 0?",
-    "text": "For an infinite sequence A = {n₁ < n₂ < ...}, define φ_A(k) as the count of m ≤ n_k such that m/n_k in lowest form has denominator different from all previous n_j. Does lim (1/N) Σ φ_A(k)/n_k = 0 for some A? Answer: YES (Haight), contrary to Erdős' expectation.",
-    "proofStrategy": "We formalize the increasing sequence structure, the generalized totient φ_A via reduced denominators and GCD, and the Cesàro average. Key results axiomatized include Cassels' liminf = 0 construction, Erdős' no-zero-limit theorem, Erdős' liminf/limsup dichotomy, and Haight's resolution showing vanishing-average sequences exist. Corollaries combine these to characterize the oscillation behavior.",
+    "historicalContext": "This problem originates in Cassels' 1950 work on Diophantine approximation, where he introduced the generalized totient \u03c6_A to study the distribution of 'new' reduced denominators in increasing integer sequences. Cassels proved that for some sequences, the liminf of the Ces\u00e0ro average of \u03c6_A(k)/n_k is zero, and connected this to metric Diophantine approximation via the Khinchin-Groshev theorem. Erd\u0151s (1964) made the problem sharper: he proved that for any sequence, the individual ratio \u03c6_A(k)/n_k cannot converge to 0, and established a remarkable dichotomy \u2014 if liminf = 0 then limsup = 1 \u2014 showing the density ratio must oscillate maximally. Erd\u0151s then asked whether the Ces\u00e0ro average itself could vanish, conjecturing it could not. The lower bound \u03c6_A(k) \u2265 \u03c6(n_k) (Euler's totient) and the fact that \u03c6(n)/n averages to 6/\u03c0\u00b2 supported his intuition. Haight's subsequent construction proved Erd\u0151s wrong: carefully chosen sequences of highly composite numbers force the average to 0 while the individual terms oscillate between 0 and 1. The problem illustrates the subtle gap between pointwise and averaged behavior of arithmetic functions.",
+    "problemStatement": "Let A = {n\u2081 < n\u2082 < \u22ef} be an infinite sequence of positive integers. Define \u03c6_A(k) as the count of 1 \u2264 m \u2264 n_k such that m/n_k in lowest form has denominator \u2260 n_j for all j < k. Is there a sequence A such that lim_{N\u2192\u221e} (1/N) \u03a3_{k\u2264N} \u03c6_A(k)/n_k = 0?",
+    "text": "For an infinite sequence A = {n\u2081 < n\u2082 < ...}, define \u03c6_A(k) as the count of m \u2264 n_k such that m/n_k in lowest form has denominator different from all previous n_j. Does lim (1/N) \u03a3 \u03c6_A(k)/n_k = 0 for some A? Answer: YES (Haight), contrary to Erd\u0151s' expectation.",
+    "proofStrategy": "We formalize the increasing sequence structure, the generalized totient \u03c6_A via reduced denominators and GCD, and the Ces\u00e0ro average. Key results axiomatized include Cassels' liminf = 0 construction, Erd\u0151s' no-zero-limit theorem, Erd\u0151s' liminf/limsup dichotomy, and Haight's resolution showing vanishing-average sequences exist. Corollaries combine these to characterize the oscillation behavior.",
     "keyInsights": [
-      "**Generalized Totient:** φ_A(k) counts 'new' denominators when reducing fractions m/n_k, generalizing Euler's φ. When A = ℕ, φ_A = φ (Euler's totient) and the average converges to 6/π²",
-      "**Erdős' No-Zero-Limit:** The individual ratio φ_A(k)/n_k cannot converge to 0 for any sequence, using the lower bound φ(n)/n ≥ c/log log n from Mertens' theorem",
-      "**Erdős' Dichotomy:** If liminf of the density ratio is 0, then limsup = 1 — maximal oscillation is forced. The proof uses the Euler product structure of φ(n)/n and smooth number properties",
-      "**Haight's Resolution:** Despite these constraints, the Cesàro average CAN vanish. The construction exploits the gap between pointwise divergence and Cesàro convergence by using rapidly growing highly composite numbers",
+      "**Generalized Totient:** \u03c6_A(k) counts 'new' denominators when reducing fractions m/n_k, generalizing Euler's \u03c6. When A = \u2115, \u03c6_A = \u03c6 (Euler's totient) and the average converges to 6/\u03c0\u00b2",
+      "**Erd\u0151s' No-Zero-Limit:** The individual ratio \u03c6_A(k)/n_k cannot converge to 0 for any sequence, using the lower bound \u03c6(n)/n \u2265 c/log log n from Mertens' theorem",
+      "**Erd\u0151s' Dichotomy:** If liminf of the density ratio is 0, then limsup = 1 \u2014 maximal oscillation is forced. The proof uses the Euler product structure of \u03c6(n)/n and smooth number properties",
+      "**Haight's Resolution:** Despite these constraints, the Ces\u00e0ro average CAN vanish. The construction exploits the gap between pointwise divergence and Ces\u00e0ro convergence by using rapidly growing highly composite numbers",
       "**Cassels' Connection:** The problem links to metric Diophantine approximation and the Khinchin-Groshev theorem via the structure of Farey fractions and continued fraction convergents"
     ],
     "prerequisites": [
@@ -54,35 +54,35 @@
     },
     {
       "id": "generalized-totient",
-      "title": "The Generalized Totient φ_A",
-      "summary": "IncreasingSeq, reducedDenom, and φ_A definitions",
+      "title": "The Generalized Totient \u03c6_A",
+      "summary": "IncreasingSeq, reducedDenom, and \u03c6_A definitions",
       "startLine": 34,
       "endLine": 1
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "φ_A(k) ≥ φ(n_k) bound and naturalSeq baseline",
+      "summary": "\u03c6_A(k) \u2265 \u03c6(n_k) bound and naturalSeq baseline",
       "startLine": 69,
       "endLine": 1
     },
     {
       "id": "average-density",
       "title": "Average Density",
-      "summary": "Density ratio ρ_A(k) = φ_A(k)/n_k and Cesàro average C_A(N)",
+      "summary": "Density ratio \u03c1_A(k) = \u03c6_A(k)/n_k and Ces\u00e0ro average C_A(N)",
       "startLine": 101,
       "endLine": 1
     },
     {
       "id": "cassels-result",
       "title": "Cassels' Result (1950)",
-      "summary": "Liminf of Cesàro average can be 0; Diophantine approximation connection",
+      "summary": "Liminf of Ces\u00e0ro average can be 0; Diophantine approximation connection",
       "startLine": 120,
       "endLine": 1
     },
     {
       "id": "erdos-results",
-      "title": "Erdős' Results (1964)",
+      "title": "Erd\u0151s' Results (1964)",
       "summary": "No-zero-limit theorem and liminf/limsup dichotomy",
       "startLine": 139,
       "endLine": 1
@@ -90,7 +90,7 @@
     {
       "id": "main-question",
       "title": "The Main Question",
-      "summary": "VanishingAverage predicate and Erdős' conjecture",
+      "summary": "VanishingAverage predicate and Erd\u0151s' conjecture",
       "startLine": 170,
       "endLine": 1
     },
@@ -117,8 +117,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1000 on generalized totients and Cesàro averages. Cassels introduced φ_A to study Diophantine approximation; Erdős proved individual ratios cannot converge to 0 and established a liminf/limsup dichotomy; Haight then showed the Cesàro average CAN vanish, contradicting Erdős' conjecture. The construction exploits the gap between pointwise divergence and averaged convergence using highly composite numbers.",
-    "implications": "**Theoretical Significance**: The result illustrates a fundamental theme in analytic number theory: averaging can tame oscillation.\n\nWhile φ_A(k)/n_k must oscillate between 0 and 1, the average can still converge to 0 if the 'large' values become sufficiently sparse. This connects to broader questions about the behavior of arithmetic functions under Cesàro summation and the role of highly composite numbers as extremal objects.",
+    "summary": "This formalization captures Erd\u0151s Problem #1000 on generalized totients and Ces\u00e0ro averages. Cassels introduced \u03c6_A to study Diophantine approximation; Erd\u0151s proved individual ratios cannot converge to 0 and established a liminf/limsup dichotomy; Haight then showed the Ces\u00e0ro average CAN vanish, contradicting Erd\u0151s' conjecture. The construction exploits the gap between pointwise divergence and averaged convergence using highly composite numbers.",
+    "implications": "**Theoretical Significance**: The result illustrates a fundamental theme in analytic number theory: averaging can tame oscillation.\n\nWhile \u03c6_A(k)/n_k must oscillate between 0 and 1, the average can still converge to 0 if the 'large' values become sufficiently sparse. This connects to broader questions about the behavior of arithmetic functions under Ces\u00e0ro summation and the role of highly composite numbers as extremal objects.",
     "openQuestions": [
       "Can explicit Haight-type sequences be constructed, or is the existence proof non-constructive?",
       "What is the optimal rate of convergence of C_A(N) to 0?",
@@ -129,24 +129,24 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1001",
       "relationship": "related",
-      "description": "Erdős #1001 (Diophantine approximation density) studies related density questions for approximation sequences, sharing the Cassels-Erdős framework."
+      "description": "Erd\u0151s #1001 (Diophantine approximation density) studies related density questions for approximation sequences, sharing the Cassels-Erd\u0151s framework.",
+      "targetId": "erdos-1001"
     },
     {
-      "id": "erdos-1003",
       "relationship": "related",
-      "description": "Erdős #1003 (consecutive equal totients) studies the Euler totient function φ(n), which provides the lower bound φ_A(k) ≥ φ(n_k) central to this problem."
+      "description": "Erd\u0151s #1003 (consecutive equal totients) studies the Euler totient function \u03c6(n), which provides the lower bound \u03c6_A(k) \u2265 \u03c6(n_k) central to this problem.",
+      "targetId": "erdos-1003"
     },
     {
-      "id": "erdos-1004",
       "relationship": "related",
-      "description": "Erdős #1004 (distinct consecutive totient values) also concerns the distribution of Euler's totient, the baseline function underlying φ_A."
+      "description": "Erd\u0151s #1004 (distinct consecutive totient values) also concerns the distribution of Euler's totient, the baseline function underlying \u03c6_A.",
+      "targetId": "erdos-1004"
     },
     {
-      "id": "erdos-1002",
       "relationship": "related",
-      "description": "Erdős #1002 (weighted fractional sums) studies Diophantine approximation distribution functions, sharing the analytic framework of Cassels' work."
+      "description": "Erd\u0151s #1002 (weighted fractional sums) studies Diophantine approximation distribution functions, sharing the analytic framework of Cassels' work.",
+      "targetId": "erdos-1002"
     }
   ],
   "relatedProofs": [

@@ -1,10 +1,10 @@
 {
   "id": "erdos-314",
-  "title": "Erdős Problem #314: Harmonic Sum Error Term",
+  "title": "Erd\u0151s Problem #314: Harmonic Sum Error Term",
   "slug": "erdos-314",
-  "description": "Let m(n) be minimal with partial harmonic sum ≥ 1, and ε(n) the overshoot. Is lim inf n²ε(n) = 0? SOLVED by Lim-Steinerberger (2024): YES, with infinitely many n achieving ε(n)n² ≪ (log log n / log n)^{1/2}.",
+  "description": "Let m(n) be minimal with partial harmonic sum \u2265 1, and \u03b5(n) the overshoot. Is lim inf n\u00b2\u03b5(n) = 0? SOLVED by Lim-Steinerberger (2024): YES, with infinitely many n achieving \u03b5(n)n\u00b2 \u226a (log log n / log n)^{1/2}.",
   "meta": {
-    "author": "Erdős-Graham (1980)",
+    "author": "Erd\u0151s-Graham (1980)",
     "sourceUrl": "https://erdosproblems.com/314",
     "date": "1980",
     "status": "formalized",
@@ -48,9 +48,9 @@
     ],
     "originalContributions": [
       "Harmonic number and partial harmonic sum definitions",
-      "m(n) as minimal integer with sum ≥ 1",
-      "ε(n) error term definition and bounds",
-      "Erdős conjecture: lim inf n²ε(n) = 0",
+      "m(n) as minimal integer with sum \u2265 1",
+      "\u03b5(n) error term definition and bounds",
+      "Erd\u0151s conjecture: lim inf n\u00b2\u03b5(n) = 0",
       "Lim-Steinerberger theorem (2024) axiomatization",
       "Optimal exponent conjecture (open)",
       "Connection to Euler-Mascheroni constant"
@@ -60,16 +60,16 @@
     "assumptions": "10 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #314: Harmonic Sum Error Term**\n\nThis problem from Erdős-Graham (1980) studies partial harmonic sums. Given n, let m(n) be the minimal integer such that the harmonic sum from n to m reaches at least 1. The error ε(n) is how much the sum overshoots 1.\n\n**Historical Development:**\n- **Erdős-Graham (1980):** Posed the question: is lim inf n²ε(n) = 0?\n- **Lim-Steinerberger (2024):** Proved YES with explicit bounds.\n\n**Key Insight:** Since harmonic sums grow like log(m/n), we have m(n) ≈ e·n. The question asks how precisely the sum can hit 1.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet n ≥ 1 and m(n) be minimal such that ∑_{k=n}^{m} 1/k ≥ 1.\nDefine ε(n) = ∑_{k=n}^{m(n)} 1/k - 1 (the overshoot).\n\n**Question:** Is lim inf n²ε(n) = 0?\n\n**Solution (Lim-Steinerberger 2024):**\nYES! There exist infinitely many n such that:\nε(n)n² ≪ (log log n / log n)^{1/2}\n\n**Optimal Exponent Conjecture (OPEN):**\nlim inf ε(n)n^{2+δ} = ∞ for all δ > 0",
-    "text": "Let m(n) be minimal with partial harmonic sum ≥ 1, and ε(n) the overshoot. Is lim inf n²ε(n) = 0? SOLVED by Lim-Steinerberger (2024): YES, with infinitely many n achieving ε(n)n² ≪ (log log n / log n)^{1/2}.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Harmonic Sums:** Define H_n and partial sums via Finset.sum.\n\n2. **m(n):** Axiomatize as the minimal m with partial sum ≥ 1.\n\n3. **ε(n):** Define as the overshoot: partial sum minus 1.\n\n4. **Bounds:** Prove 0 ≤ ε(n) ≤ 1/n.\n\n5. **Approximation:** m(n)/n → e as n → ∞.\n\n6. **Main Theorem:** Axiomatize Lim-Steinerberger bound.\n\n7. **Optimal Exponent:** State the remaining open conjecture.",
+    "historicalContext": "**Erd\u0151s Problem #314: Harmonic Sum Error Term**\n\nThis problem from Erd\u0151s-Graham (1980) studies partial harmonic sums. Given n, let m(n) be the minimal integer such that the harmonic sum from n to m reaches at least 1. The error \u03b5(n) is how much the sum overshoots 1.\n\n**Historical Development:**\n- **Erd\u0151s-Graham (1980):** Posed the question: is lim inf n\u00b2\u03b5(n) = 0?\n- **Lim-Steinerberger (2024):** Proved YES with explicit bounds.\n\n**Key Insight:** Since harmonic sums grow like log(m/n), we have m(n) \u2248 e\u00b7n. The question asks how precisely the sum can hit 1.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet n \u2265 1 and m(n) be minimal such that \u2211_{k=n}^{m} 1/k \u2265 1.\nDefine \u03b5(n) = \u2211_{k=n}^{m(n)} 1/k - 1 (the overshoot).\n\n**Question:** Is lim inf n\u00b2\u03b5(n) = 0?\n\n**Solution (Lim-Steinerberger 2024):**\nYES! There exist infinitely many n such that:\n\u03b5(n)n\u00b2 \u226a (log log n / log n)^{1/2}\n\n**Optimal Exponent Conjecture (OPEN):**\nlim inf \u03b5(n)n^{2+\u03b4} = \u221e for all \u03b4 > 0",
+    "text": "Let m(n) be minimal with partial harmonic sum \u2265 1, and \u03b5(n) the overshoot. Is lim inf n\u00b2\u03b5(n) = 0? SOLVED by Lim-Steinerberger (2024): YES, with infinitely many n achieving \u03b5(n)n\u00b2 \u226a (log log n / log n)^{1/2}.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Harmonic Sums:** Define H_n and partial sums via Finset.sum.\n\n2. **m(n):** Axiomatize as the minimal m with partial sum \u2265 1.\n\n3. **\u03b5(n):** Define as the overshoot: partial sum minus 1.\n\n4. **Bounds:** Prove 0 \u2264 \u03b5(n) \u2264 1/n.\n\n5. **Approximation:** m(n)/n \u2192 e as n \u2192 \u221e.\n\n6. **Main Theorem:** Axiomatize Lim-Steinerberger bound.\n\n7. **Optimal Exponent:** State the remaining open conjecture.",
     "keyInsights": [
-      "**Harmonic Growth:** H_n ≈ ln(n) + γ where γ is Euler-Mascheroni constant",
-      "**m(n) ≈ e·n:** The ratio m(n)/n approaches e ≈ 2.718",
-      "**ε(n) is Small:** ε(n) ≤ 1/n since we add at most 1/m(n) to reach 1",
-      "**Lim-Steinerberger Bound:** ε(n)n² can be as small as (log log n / log n)^{1/2}",
-      "**Optimal Exponent 2:** Conjectured that n² is the right scaling - n^{2+δ} gives infinity",
+      "**Harmonic Growth:** H_n \u2248 ln(n) + \u03b3 where \u03b3 is Euler-Mascheroni constant",
+      "**m(n) \u2248 e\u00b7n:** The ratio m(n)/n approaches e \u2248 2.718",
+      "**\u03b5(n) is Small:** \u03b5(n) \u2264 1/n since we add at most 1/m(n) to reach 1",
+      "**Lim-Steinerberger Bound:** \u03b5(n)n\u00b2 can be as small as (log log n / log n)^{1/2}",
+      "**Optimal Exponent 2:** Conjectured that n\u00b2 is the right scaling - n^{2+\u03b4} gives infinity",
       "**Diophantine Connection:** Related to approximating 1 by harmonic differences"
     ],
     "prerequisites": [
@@ -88,13 +88,13 @@
     {
       "id": "m-function",
       "title": "The Function m(n)",
-      "summary": "Minimal m with partial sum ≥ 1",
+      "summary": "Minimal m with partial sum \u2265 1",
       "startLine": 52,
       "endLine": 70
     },
     {
       "id": "epsilon",
-      "title": "The Error Term ε(n)",
+      "title": "The Error Term \u03b5(n)",
       "summary": "Definition and basic bounds",
       "startLine": 72,
       "endLine": 90
@@ -102,14 +102,14 @@
     {
       "id": "approximation",
       "title": "Approximation of m(n)",
-      "summary": "m(n)/n → e asymptotically",
+      "summary": "m(n)/n \u2192 e asymptotically",
       "startLine": 92,
       "endLine": 103
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "summary": "Is lim inf n²ε(n) = 0?",
+      "summary": "Is lim inf n\u00b2\u03b5(n) = 0?",
       "startLine": 105,
       "endLine": 113
     },
@@ -136,12 +136,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #314 asks whether lim inf n²ε(n) = 0 where ε(n) is the overshoot when the partial harmonic sum from n first exceeds 1. Lim and Steinerberger (2024) proved this is TRUE with explicit bounds. The optimal exponent conjecture remains open.",
-    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Harmonic Sum Structure:** Understanding when harmonic sums barely exceed thresholds.\n\n**2. Diophantine Approximation:** Connected to approximating 1 by differences of harmonic numbers.\n\n3. **Unit Fractions:** Part of broader study of representing 1 as sums of unit fractions.\n\n4. **Computational Interest:** Finding specific n with small ε(n) is computationally interesting.",
+    "summary": "Erd\u0151s Problem #314 asks whether lim inf n\u00b2\u03b5(n) = 0 where \u03b5(n) is the overshoot when the partial harmonic sum from n first exceeds 1. Lim and Steinerberger (2024) proved this is TRUE with explicit bounds. The optimal exponent conjecture remains open.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Harmonic Sum Structure:** Understanding when harmonic sums barely exceed thresholds.\n\n**2. Diophantine Approximation:** Connected to approximating 1 by differences of harmonic numbers.\n\n3. **Unit Fractions:** Part of broader study of representing 1 as sums of unit fractions.\n\n4. **Computational Interest:** Finding specific n with small \u03b5(n) is computationally interesting.",
     "openQuestions": [
-      "Is the exponent 2 optimal: lim inf ε(n)n^{2+δ} = ∞ for all δ > 0?",
+      "Is the exponent 2 optimal: lim inf \u03b5(n)n^{2+\u03b4} = \u221e for all \u03b4 > 0?",
       "Can the Lim-Steinerberger bound be improved?",
-      "What is the structure of n values achieving small ε(n)?",
+      "What is the structure of n values achieving small \u03b5(n)?",
       "Are there effective bounds for finding such n?"
     ]
   },
@@ -155,5 +155,39 @@
     "axiomCount": 10,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Share harmonic-numbers, unit-fractions, and asymptotic-analysis themes"
+    },
+    {
+      "targetId": "erdos-291",
+      "relationship": "related",
+      "description": "Share harmonic-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Share unit-fractions and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Share unit-fractions and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Share unit-fractions and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-309",
+    "erdos-291",
+    "erdos-148",
+    "erdos-242",
+    "erdos-284"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-421",
-  "title": "Erdős Problem #421: Distinct Products in Dense Sequences",
+  "title": "Erd\u0151s Problem #421: Distinct Products in Dense Sequences",
   "slug": "erdos-421",
-  "description": "Is there a strictly increasing sequence d₁ < d₂ < ... with density 1 such that all interval products ∏_{u ≤ i ≤ v} d_i are distinct?",
+  "description": "Is there a strictly increasing sequence d\u2081 < d\u2082 < ... with density 1 such that all interval products \u220f_{u \u2264 i \u2264 v} d_i are distinct?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/421",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos421Problem.lean",
@@ -47,12 +47,12 @@
     ],
     "originalContributions": [
       "IsStrictlyIncreasing definition: StrictMono d",
-      "StartsAtOne definition: 1 ≤ d 0",
+      "StartsAtOne definition: 1 \u2264 d 0",
       "IsValidSequence definition: increasing from 1",
       "HasDensity definition: natural density via limit",
       "HasDensityOne definition: density 1",
-      "intervalProduct definition: ∏_{u ≤ i ≤ v} d_i",
-      "ValidPairs definition: {(u,v) | u ≤ v}",
+      "intervalProduct definition: \u220f_{u \u2264 i \u2264 v} d_i",
+      "ValidPairs definition: {(u,v) | u \u2264 v}",
       "productMap definition: pairs to products",
       "HasDistinctProducts definition: InjOn productMap",
       "distinct_equiv theorem: equivalence of definitions",
@@ -65,10 +65,10 @@
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem appears in [ErGr80, p.84]. It asks whether the constraint of having distinct interval products is compatible with maximal density.\n\nSelfridge provided a construction achieving density arbitrarily close to 1/e ≈ 0.3679, showing that non-trivial sequences exist. The gap between 1/e and the target density 1 remains a major open question.\n\nRelated to Problem 786, which details Selfridge's construction. The problem has connections to multiplicative number theory and the structure of integer factorizations.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nIs there a sequence 1 ≤ d₁ < d₂ < ... with density 1 such that all products ∏_{u ≤ i ≤ v} dᵢ are distinct?\n\n**Definitions:**\n- Density 1: |{dᵢ ≤ n}| / n → 1 as n → ∞\n- Distinct products: for all (u₁,v₁) ≠ (u₂,v₂), products ∏_{u₁ ≤ i ≤ v₁} dᵢ differ\n\n**Known:**\n- Selfridge achieves density > 1/e - ε for any ε > 0",
-    "text": "Is there a strictly increasing sequence d₁ < d₂ < ... with density 1 such that all interval products ∏_{u ≤ i ≤ v} d_i are distinct?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Sequences:** Define IsStrictlyIncreasing, StartsAtOne, IsValidSequence\n\n2. **Density:** HasDensity via limit of counting function ratio\n\n3. **Products:** intervalProduct as ∏ over Finset.Icc u v\n\n4. **Distinctness:** HasDistinctProducts as InjOn over ValidPairs\n\n5. **Conjecture:** ErdosConjecture421 combines density 1 + distinct products\n\n6. **Known Result:** selfridge_construction achieves 1/e - ε",
+    "historicalContext": "This problem appears in [ErGr80, p.84]. It asks whether the constraint of having distinct interval products is compatible with maximal density.\n\nSelfridge provided a construction achieving density arbitrarily close to 1/e \u2248 0.3679, showing that non-trivial sequences exist. The gap between 1/e and the target density 1 remains a major open question.\n\nRelated to Problem 786, which details Selfridge's construction. The problem has connections to multiplicative number theory and the structure of integer factorizations.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs there a sequence 1 \u2264 d\u2081 < d\u2082 < ... with density 1 such that all products \u220f_{u \u2264 i \u2264 v} d\u1d62 are distinct?\n\n**Definitions:**\n- Density 1: |{d\u1d62 \u2264 n}| / n \u2192 1 as n \u2192 \u221e\n- Distinct products: for all (u\u2081,v\u2081) \u2260 (u\u2082,v\u2082), products \u220f_{u\u2081 \u2264 i \u2264 v\u2081} d\u1d62 differ\n\n**Known:**\n- Selfridge achieves density > 1/e - \u03b5 for any \u03b5 > 0",
+    "text": "Is there a strictly increasing sequence d\u2081 < d\u2082 < ... with density 1 such that all interval products \u220f_{u \u2264 i \u2264 v} d_i are distinct?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sequences:** Define IsStrictlyIncreasing, StartsAtOne, IsValidSequence\n\n2. **Density:** HasDensity via limit of counting function ratio\n\n3. **Products:** intervalProduct as \u220f over Finset.Icc u v\n\n4. **Distinctness:** HasDistinctProducts as InjOn over ValidPairs\n\n5. **Conjecture:** ErdosConjecture421 combines density 1 + distinct products\n\n6. **Known Result:** selfridge_construction achieves 1/e - \u03b5",
     "keyInsights": [
       "**Density vs Distinctness:** Higher density means more values, but products grow faster, risking collisions",
       "**Natural Numbers Fail:** d_i = i gives density 1 but products collide (e.g., 1*2 = 2)",
@@ -155,7 +155,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #421 asks whether a density-1 sequence can have all interval products distinct. Selfridge showed density 1/e - ε is achievable, but reaching density 1 remains open.",
+    "summary": "Erd\u0151s Problem #421 asks whether a density-1 sequence can have all interval products distinct. Selfridge showed density 1/e - \u03b5 is achievable, but reaching density 1 remains open.",
     "implications": "A positive answer would provide an interesting structure in the integers combining multiplicative uniqueness with high density. A negative answer would reveal fundamental constraints on how products can distribute.",
     "openQuestions": [
       "Can density 1 be achieved with distinct products?",
@@ -181,5 +181,39 @@
     "axiomCount": 1,
     "theoremCount": 3,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-359",
+      "relationship": "related",
+      "description": "Share density, sequence, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-424",
+      "relationship": "related",
+      "description": "Share density, sequence, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-795",
+      "relationship": "related",
+      "description": "Share distinct-products and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-451",
+      "relationship": "related",
+      "description": "Share products and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-686",
+      "relationship": "related",
+      "description": "Share products and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-359",
+    "erdos-424",
+    "erdos-795",
+    "erdos-451",
+    "erdos-686"
+  ]
 }

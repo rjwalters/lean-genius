@@ -1,10 +1,10 @@
 {
   "id": "erdos-584",
-  "title": "Erdős Problem #584: Cycle-Connected Subgraphs",
+  "title": "Erd\u0151s Problem #584: Cycle-Connected Subgraphs",
   "slug": "erdos-584",
-  "description": "For a graph G with n vertices and δn² edges, must there exist subgraphs H₁ (with ≫ δ³n² edges, 6-cycle connected) and H₂ (with ≫ δ²n² edges, 8-cycle connected)?",
+  "description": "For a graph G with n vertices and \u03b4n\u00b2 edges, must there exist subgraphs H\u2081 (with \u226b \u03b4\u00b3n\u00b2 edges, 6-cycle connected) and H\u2082 (with \u226b \u03b4\u00b2n\u00b2 edges, 8-cycle connected)?",
   "meta": {
-    "author": "Duke-Erdős-Rödl (1984), Fox-Sudakov (2008)",
+    "author": "Duke-Erd\u0151s-R\u00f6dl (1984), Fox-Sudakov (2008)",
     "sourceUrl": "https://erdosproblems.com/584",
     "date": "1982-2008",
     "status": "axiomatized",
@@ -43,9 +43,9 @@
       "IsCycleConnected, AdjacentEdgesOn4Cycle: cycle connectivity predicates",
       "HasH1Property (6-cycle + 4-cycle adjacent), HasH2Property (8-cycle)",
       "ErdosConjecture584_H1, ErdosConjecture584_H2: formal conjecture statements",
-      "duke_erdos_1982: H₁ for fixed δ, n sufficiently large",
-      "duke_erdos_rodl_1984: H₁ with δ⁵ uniform bound",
-      "fox_sudakov_2008: H₂ for δ > n^{-1/5}",
+      "duke_erdos_1982: H\u2081 for fixed \u03b4, n sufficiently large",
+      "duke_erdos_rodl_1984: H\u2081 with \u03b4\u2075 uniform bound",
+      "fox_sudakov_2008: H\u2082 for \u03b4 > n^{-1/5}",
       "IsSparseRegime, SparseRegimeConjecture: main open challenge",
       "erdos_584_summary: combines duke_erdos_1982 and duke_erdos_rodl_1984"
     ],
@@ -54,16 +54,16 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Richard Duke and Paul Erdős asked in the early 1980s whether dense graphs must contain large subgraphs with strong cycle connectivity properties. Specifically, for a graph G with n vertices and δn² edges, they sought subgraphs where any two edges lie on a short common cycle. This question connects edge density to local cycle structure, a fundamental theme in extremal graph theory.\n\nDuke and Erdős proved the first statement (H₁) in 1982 when n is sufficiently large for fixed δ, but the real challenge lies in the regime where δ depends on n. In 1984, Duke, Erdős, and Rödl proved the H₁ statement uniformly with a weaker exponent: δ⁵n² edges instead of the conjectured δ³n². This remains the best known uniform bound for H₁. Jacob Fox and Benny Sudakov made further progress in 2008, proving the H₂ statement (8-cycle connectivity with δ²n² edges) when δ > n^{-1/5}.\n\nThe full conjecture remains open. The gap between the known δ⁵ exponent and the conjectured δ³ for H₁ is substantial, and extending Fox-Sudakov's H₂ result below the n^{-1/5} threshold is a major challenge. The sparse regime where δ = n^{-c} for c > 0 is where new ideas are needed.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet $G$ be a graph with $n$ vertices and $\\delta n^2$ edges.\n\n**Question:** Must there exist subgraphs $H_1, H_2 \\subseteq G$ such that:\n\n**$H_1$:** Has $\\gg \\delta^3 n^2$ edges and\n- Every two edges are on a cycle of length $\\leq 6$\n- Adjacent edges (sharing a vertex) are on a $4$-cycle\n\n**$H_2$:** Has $\\gg \\delta^2 n^2$ edges and\n- Every two edges are on a cycle of length $\\leq 8$\n\n**Status: OPEN** — Best known: $\\delta^5$ for $H_1$ (Duke-Erdős-Rödl 1984), $\\delta > n^{-1/5}$ for $H_2$ (Fox-Sudakov 2008).",
-    "text": "For a graph G with n vertices and δn² edges, must there exist subgraphs H₁ (with ≫ δ³n² edges, 6-cycle connected) and H₂ (with ≫ δ²n² edges, 8-cycle connected)?",
-    "proofStrategy": "The formalization defines a custom graph structure on n vertices and builds up the cycle connectivity framework from scratch: paths, cycles, common cycles, and k-cycle connectivity. The two main properties H₁ (6-cycle connected with adjacent edges on 4-cycles) and H₂ (8-cycle connected) are defined as predicates. The three known partial results are axiomatized: Duke-Erdős 1982 for fixed δ, Duke-Erdős-Rödl 1984 for the uniform δ⁵ bound, and Fox-Sudakov 2008 for H₂ above the n^{-1/5} threshold. The summary theorem combines the two H₁ results using exact ⟨..., ...⟩.",
+    "historicalContext": "Richard Duke and Paul Erd\u0151s asked in the early 1980s whether dense graphs must contain large subgraphs with strong cycle connectivity properties. Specifically, for a graph G with n vertices and \u03b4n\u00b2 edges, they sought subgraphs where any two edges lie on a short common cycle. This question connects edge density to local cycle structure, a fundamental theme in extremal graph theory.\n\nDuke and Erd\u0151s proved the first statement (H\u2081) in 1982 when n is sufficiently large for fixed \u03b4, but the real challenge lies in the regime where \u03b4 depends on n. In 1984, Duke, Erd\u0151s, and R\u00f6dl proved the H\u2081 statement uniformly with a weaker exponent: \u03b4\u2075n\u00b2 edges instead of the conjectured \u03b4\u00b3n\u00b2. This remains the best known uniform bound for H\u2081. Jacob Fox and Benny Sudakov made further progress in 2008, proving the H\u2082 statement (8-cycle connectivity with \u03b4\u00b2n\u00b2 edges) when \u03b4 > n^{-1/5}.\n\nThe full conjecture remains open. The gap between the known \u03b4\u2075 exponent and the conjectured \u03b4\u00b3 for H\u2081 is substantial, and extending Fox-Sudakov's H\u2082 result below the n^{-1/5} threshold is a major challenge. The sparse regime where \u03b4 = n^{-c} for c > 0 is where new ideas are needed.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $G$ be a graph with $n$ vertices and $\\delta n^2$ edges.\n\n**Question:** Must there exist subgraphs $H_1, H_2 \\subseteq G$ such that:\n\n**$H_1$:** Has $\\gg \\delta^3 n^2$ edges and\n- Every two edges are on a cycle of length $\\leq 6$\n- Adjacent edges (sharing a vertex) are on a $4$-cycle\n\n**$H_2$:** Has $\\gg \\delta^2 n^2$ edges and\n- Every two edges are on a cycle of length $\\leq 8$\n\n**Status: OPEN** \u2014 Best known: $\\delta^5$ for $H_1$ (Duke-Erd\u0151s-R\u00f6dl 1984), $\\delta > n^{-1/5}$ for $H_2$ (Fox-Sudakov 2008).",
+    "text": "For a graph G with n vertices and \u03b4n\u00b2 edges, must there exist subgraphs H\u2081 (with \u226b \u03b4\u00b3n\u00b2 edges, 6-cycle connected) and H\u2082 (with \u226b \u03b4\u00b2n\u00b2 edges, 8-cycle connected)?",
+    "proofStrategy": "The formalization defines a custom graph structure on n vertices and builds up the cycle connectivity framework from scratch: paths, cycles, common cycles, and k-cycle connectivity. The two main properties H\u2081 (6-cycle connected with adjacent edges on 4-cycles) and H\u2082 (8-cycle connected) are defined as predicates. The three known partial results are axiomatized: Duke-Erd\u0151s 1982 for fixed \u03b4, Duke-Erd\u0151s-R\u00f6dl 1984 for the uniform \u03b4\u2075 bound, and Fox-Sudakov 2008 for H\u2082 above the n^{-1/5} threshold. The summary theorem combines the two H\u2081 results using exact \u27e8..., ...\u27e9.",
     "keyInsights": [
-      "**Exponent Gap:** The known δ⁵ bound for H₁ (Duke-Erdős-Rödl 1984) falls short of the conjectured δ³, leaving a significant gap in the exponent",
-      "**Density Threshold:** Fox-Sudakov's H₂ result only applies for δ > n^{-1/5}, leaving the sparse regime completely open",
-      "**Sparse Regime Challenge:** When δ = n^{-c} for c > 0, the density depends on n, making regularity-based approaches much harder",
+      "**Exponent Gap:** The known \u03b4\u2075 bound for H\u2081 (Duke-Erd\u0151s-R\u00f6dl 1984) falls short of the conjectured \u03b4\u00b3, leaving a significant gap in the exponent",
+      "**Density Threshold:** Fox-Sudakov's H\u2082 result only applies for \u03b4 > n^{-1/5}, leaving the sparse regime completely open",
+      "**Sparse Regime Challenge:** When \u03b4 = n^{-c} for c > 0, the density depends on n, making regularity-based approaches much harder",
       "**Cycle Connectivity:** The k-cycle connectivity property requires every pair of edges to lie on a common short cycle, a strong structural requirement",
-      "**Adjacent vs General Edges:** The H₁ property demands the stronger condition that adjacent edges lie on 4-cycles, not just 6-cycles"
+      "**Adjacent vs General Edges:** The H\u2081 property demands the stronger condition that adjacent edges lie on 4-cycles, not just 6-cycles"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -109,7 +109,7 @@
     {
       "id": "main-challenge",
       "title": "The Main Challenge",
-      "summary": "IsSparseRegime, SparseRegimeConjecture for δ = n^{-c}",
+      "summary": "IsSparseRegime, SparseRegimeConjecture for \u03b4 = n^{-c}",
       "startLine": 154,
       "endLine": 170
     },
@@ -123,18 +123,18 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_584_summary theorem combining known H₁ results",
+      "summary": "erdos_584_summary theorem combining known H\u2081 results",
       "startLine": 186,
       "endLine": 205
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #584 asks whether dense graphs must contain large cycle-connected subgraphs. Three partial results are formalized: Duke-Erdős (1982) proved H₁ for fixed density, Duke-Erdős-Rödl (1984) proved H₁ uniformly with a δ⁵ exponent, and Fox-Sudakov (2008) proved H₂ for δ > n^{-1/5}. The summary theorem combines the two H₁ results. The full conjecture with the optimal δ³ exponent for H₁ remains open.",
-    "implications": "**Theoretical Significance**: This problem sits at the intersection of extremal graph theory and structural graph theory.\n\nResolving the exponent gap from δ⁵ to δ³ would likely require new techniques beyond the Szemerédi regularity lemma. The sparse regime where δ = n^{-c} is particularly important for applications to additive combinatorics and theoretical computer science.",
+    "summary": "Erd\u0151s Problem #584 asks whether dense graphs must contain large cycle-connected subgraphs. Three partial results are formalized: Duke-Erd\u0151s (1982) proved H\u2081 for fixed density, Duke-Erd\u0151s-R\u00f6dl (1984) proved H\u2081 uniformly with a \u03b4\u2075 exponent, and Fox-Sudakov (2008) proved H\u2082 for \u03b4 > n^{-1/5}. The summary theorem combines the two H\u2081 results. The full conjecture with the optimal \u03b4\u00b3 exponent for H\u2081 remains open.",
+    "implications": "**Theoretical Significance**: This problem sits at the intersection of extremal graph theory and structural graph theory.\n\nResolving the exponent gap from \u03b4\u2075 to \u03b4\u00b3 would likely require new techniques beyond the Szemer\u00e9di regularity lemma. The sparse regime where \u03b4 = n^{-c} is particularly important for applications to additive combinatorics and theoretical computer science.",
     "openQuestions": [
-      "Can the δ⁵ exponent for H₁ be improved toward the conjectured δ³?",
-      "Can Fox-Sudakov's H₂ result be extended below the n^{-1/5} threshold?",
-      "What is the correct exponent in the sparse regime δ = n^{-c}?",
+      "Can the \u03b4\u2075 exponent for H\u2081 be improved toward the conjectured \u03b4\u00b3?",
+      "Can Fox-Sudakov's H\u2082 result be extended below the n^{-1/5} threshold?",
+      "What is the correct exponent in the sparse regime \u03b4 = n^{-c}?",
       "Are there constructions matching the conjectured lower bounds?"
     ]
   },
@@ -154,5 +154,39 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1079",
+      "relationship": "related",
+      "description": "Share extremal-graphs and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-618",
+      "relationship": "related",
+      "description": "Share extremal-graphs and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-767",
+      "relationship": "related",
+      "description": "Share extremal-graphs and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-79",
+      "relationship": "related",
+      "description": "Share extremal-graphs and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-815",
+      "relationship": "related",
+      "description": "Share extremal-graphs and graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1079",
+    "erdos-618",
+    "erdos-767",
+    "erdos-79",
+    "erdos-815"
+  ]
 }

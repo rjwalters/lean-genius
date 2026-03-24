@@ -160,24 +160,29 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "ramseys-theorem",
-      "relationship": "The original Erdos-Szekeres (1935) proof uses Ramsey-theoretic arguments to establish the existence of f(n), and the upper bound C(2n-4,n-2)+1 follows from Ramsey's theorem"
+      "relationship": "related",
+      "targetId": "ramseys-theorem",
+      "description": "The original Erdos-Szekeres (1935) proof uses Ramsey-theoretic arguments to establish the existence of f(n), and the upper bound C(2n-4,n-2)+1 follows from Ramsey's theorem"
     },
     {
-      "targetProofId": "erdos-984",
-      "relationship": "Both are Ramsey-type problems in combinatorics where existence of structured subconfigurations is guaranteed above a threshold"
+      "relationship": "related",
+      "targetId": "erdos-984",
+      "description": "Both are Ramsey-type problems in combinatorics where existence of structured subconfigurations is guaranteed above a threshold"
     },
     {
-      "targetProofId": "erdos-90",
-      "relationship": "Both are famous open Erdos problems in combinatorial geometry involving extremal properties of planar point sets ($500 prize each)"
+      "relationship": "related",
+      "targetId": "erdos-90",
+      "description": "Both are famous open Erdos problems in combinatorial geometry involving extremal properties of planar point sets ($500 prize each)"
     },
     {
-      "targetProofId": "erdos-106",
-      "relationship": "Neighboring Erdos problem in discrete geometry involving optimization over planar configurations"
+      "relationship": "related",
+      "targetId": "erdos-106",
+      "description": "Neighboring Erdos problem in discrete geometry involving optimization over planar configurations"
     },
     {
-      "targetProofId": "erdos-467",
-      "relationship": "Both are Erdos problems involving extremal combinatorial thresholds and structured subconfigurations"
+      "relationship": "related",
+      "targetId": "erdos-467",
+      "description": "Both are Erdos problems involving extremal combinatorial thresholds and structured subconfigurations"
     }
   ],
   "leanFile": {

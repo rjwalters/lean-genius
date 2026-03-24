@@ -1,10 +1,10 @@
 {
   "id": "erdos-1078",
-  "title": "Erdős Problem #1078: Minimum Degree for K_r in r-Partite Graphs",
+  "title": "Erd\u0151s Problem #1078: Minimum Degree for K_r in r-Partite Graphs",
   "slug": "erdos-1078",
-  "description": "In r-partite graphs with n vertices per part, min degree ≥ (r-3/2-o(1))n implies K_r exists. SOLVED by Haxell (2001). Sharp threshold by Haxell-Szabó (2006).",
+  "description": "In r-partite graphs with n vertices per part, min degree \u2265 (r-3/2-o(1))n implies K_r exists. SOLVED by Haxell (2001). Sharp threshold by Haxell-Szab\u00f3 (2006).",
   "meta": {
-    "author": "BES (1975 conjecture), Haxell (2001 proof), Haxell-Szabó (2006 sharp)",
+    "author": "BES (1975 conjecture), Haxell (2001 proof), Haxell-Szab\u00f3 (2006 sharp)",
     "sourceUrl": "https://erdosproblems.com/1078",
     "date": "2001",
     "status": "axiomatized",
@@ -44,7 +44,7 @@
       "ContainsKr: complete r-clique with one vertex per part",
       "BESConjecture: (r-3/2)n threshold conjecture",
       "haxell_theorem: proof of the conjecture (axiom)",
-      "sharpThreshold: (r-1)n - ⌈sn/(2s-1)⌉ formula",
+      "sharpThreshold: (r-1)n - \u2308sn/(2s-1)\u2309 formula",
       "haxell_szabo_theorem and threshold_sharp: exact threshold",
       "asymptotic_threshold: proved corollary with explicit constant",
       "erdos_1078_summary combining all four main results"
@@ -56,20 +56,20 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Bollobás, Erdős, and Szemerédi conjectured in 1975 that in balanced r-partite graphs, minimum degree at least (r - 3/2 - o(1))n forces a complete r-clique K_r. They also constructed examples showing the constant r - 3/2 is best possible, with extremal graphs avoiding K_r via subtle parity arguments.\n\nHaxell proved the conjecture in 2001 using connections to list coloring theory. Her proof showed that the minimum degree condition forces a rainbow clique through a reduction to vertex list coloring problems, resolving the question after 25 years.\n\nHaxell and Szabó determined the exact sharp threshold in 2006: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋. This precise formula reveals the role of parity in the problem — the floor of r/2 appears because the extremal constructions depend on whether r is even or odd. Asymptotically, ⌈sn/(2s-1)⌉ ≈ n/2, recovering the (r - 3/2)n threshold.",
-    "problemStatement": "Let G be an r-partite graph with n vertices in each part. If G has minimum degree ≥ (r - 3/2 - o(1))n, must G contain K_r? Answer: YES (Haxell 2001). Sharp threshold: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋ (Haxell-Szabó 2006).",
-    "text": "In r-partite graphs with n vertices per part, min degree ≥ (r-3/2-o(1))n implies K_r exists. SOLVED by Haxell (2001). Sharp threshold by Haxell-Szabó (2006).",
-    "proofStrategy": "The formalization defines r-partite graphs as structures with r equal-size parts and edges only between parts. The BES conjecture is stated as a Prop, and Haxell's theorem is axiomatized. The Haxell-Szabó sharp threshold is formalized with both the sufficiency theorem and sharpness (counterexamples exist at the threshold). Special cases for r = 2, 3, 4 are computed. The summary theorem combines all four main results.",
+    "historicalContext": "Bollob\u00e1s, Erd\u0151s, and Szemer\u00e9di conjectured in 1975 that in balanced r-partite graphs, minimum degree at least (r - 3/2 - o(1))n forces a complete r-clique K_r. They also constructed examples showing the constant r - 3/2 is best possible, with extremal graphs avoiding K_r via subtle parity arguments.\n\nHaxell proved the conjecture in 2001 using connections to list coloring theory. Her proof showed that the minimum degree condition forces a rainbow clique through a reduction to vertex list coloring problems, resolving the question after 25 years.\n\nHaxell and Szab\u00f3 determined the exact sharp threshold in 2006: (r-1)n - \u2308sn/(2s-1)\u2309 where s = \u230ar/2\u230b. This precise formula reveals the role of parity in the problem \u2014 the floor of r/2 appears because the extremal constructions depend on whether r is even or odd. Asymptotically, \u2308sn/(2s-1)\u2309 \u2248 n/2, recovering the (r - 3/2)n threshold.",
+    "problemStatement": "Let G be an r-partite graph with n vertices in each part. If G has minimum degree \u2265 (r - 3/2 - o(1))n, must G contain K_r? Answer: YES (Haxell 2001). Sharp threshold: (r-1)n - \u2308sn/(2s-1)\u2309 where s = \u230ar/2\u230b (Haxell-Szab\u00f3 2006).",
+    "text": "In r-partite graphs with n vertices per part, min degree \u2265 (r-3/2-o(1))n implies K_r exists. SOLVED by Haxell (2001). Sharp threshold by Haxell-Szab\u00f3 (2006).",
+    "proofStrategy": "The formalization defines r-partite graphs as structures with r equal-size parts and edges only between parts. The BES conjecture is stated as a Prop, and Haxell's theorem is axiomatized. The Haxell-Szab\u00f3 sharp threshold is formalized with both the sufficiency theorem and sharpness (counterexamples exist at the threshold). Special cases for r = 2, 3, 4 are computed. The summary theorem combines all four main results.",
     "keyInsights": [
       "The threshold (r - 3/2)n involves a half-integer, suggesting parity plays a role",
       "Haxell's proof uses connections to list coloring",
-      "The sharp formula (r-1)n - ⌈sn/(2s-1)⌉ with s = ⌊r/2⌋ captures parity exactly",
-      "Asymptotically ⌈sn/(2s-1)⌉ ≈ n/2, giving the (r - 3/2)n threshold",
+      "The sharp formula (r-1)n - \u2308sn/(2s-1)\u2309 with s = \u230ar/2\u230b captures parity exactly",
+      "Asymptotically \u2308sn/(2s-1)\u2309 \u2248 n/2, giving the (r - 3/2)n threshold",
       "The savings of n/2 per part come from parity-based extremal constructions"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -96,7 +96,7 @@
     },
     {
       "id": "sharp-threshold",
-      "title": "Part IV: Sharp Threshold (Haxell-Szabó 2006)",
+      "title": "Part IV: Sharp Threshold (Haxell-Szab\u00f3 2006)",
       "startLine": 109,
       "endLine": 135,
       "summary": "sharpThreshold formula, haxell_szabo_theorem, threshold_sharp."
@@ -113,7 +113,7 @@
       "title": "Part VI: Comparison with BES Threshold",
       "startLine": 165,
       "endLine": 175,
-      "summary": "asymptotic_agreement: sharp threshold ≈ (r-3/2)n."
+      "summary": "asymptotic_agreement: sharp threshold \u2248 (r-3/2)n."
     },
     {
       "id": "transversals",
@@ -131,8 +131,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1078 is SOLVED. The BES conjecture that min degree (r-3/2-o(1))n forces K_r in r-partite graphs was proved by Haxell (2001). Haxell-Szabó (2006) gave the exact sharp threshold: (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋.",
-    "implications": "**Transversal Theory**: The minimum degree condition for guaranteeing a complete $r$-partite transversal ($K_r$) connects to the broader theory of independent transversals in multipartite graphs. The sharp formula, with its floor and ceiling functions, reveals that parity plays a subtle role in extremal problems — small changes in part sizes can shift the threshold.\n\n**List Coloring Connection**: The result has implications for list coloring: a complete $r$-partite graph with parts of size $n$ is $r$-choosable iff every subgraph has an independent transversal. The minimum degree threshold formalized here provides sufficient conditions for the existence of such transversals, connecting extremal graph theory to chromatic theory.\n\n**Applications**: Minimum degree conditions for subgraph containment are fundamental tools in combinatorics, with applications to network design (ensuring connectivity patterns) and scheduling theory (guaranteeing complete assignments across resource classes).",
+    "summary": "Erd\u0151s Problem #1078 is SOLVED. The BES conjecture that min degree (r-3/2-o(1))n forces K_r in r-partite graphs was proved by Haxell (2001). Haxell-Szab\u00f3 (2006) gave the exact sharp threshold: (r-1)n - \u2308sn/(2s-1)\u2309 where s = \u230ar/2\u230b.",
+    "implications": "**Transversal Theory**: The minimum degree condition for guaranteeing a complete $r$-partite transversal ($K_r$) connects to the broader theory of independent transversals in multipartite graphs. The sharp formula, with its floor and ceiling functions, reveals that parity plays a subtle role in extremal problems \u2014 small changes in part sizes can shift the threshold.\n\n**List Coloring Connection**: The result has implications for list coloring: a complete $r$-partite graph with parts of size $n$ is $r$-choosable iff every subgraph has an independent transversal. The minimum degree threshold formalized here provides sufficient conditions for the existence of such transversals, connecting extremal graph theory to chromatic theory.\n\n**Applications**: Minimum degree conditions for subgraph containment are fundamental tools in combinatorics, with applications to network design (ensuring connectivity patterns) and scheduling theory (guaranteeing complete assignments across resource classes).",
     "openQuestions": [
       "What about non-balanced r-partite graphs (different part sizes)?",
       "How does the threshold change for spanning subgraphs?",
@@ -141,34 +141,40 @@
   },
   "crossReferences": [
     {
-      "target": "ramseys-theorem",
-      "relationship": "Ramsey's theorem guarantees complete subgraphs in dense graphs via pigeonhole arguments; the BES problem studies the sharper question of forcing K_r through a minimum degree condition in structured r-partite graphs.",
-      "significance": "high"
+      "relationship": "related",
+      "significance": "high",
+      "targetId": "ramseys-theorem",
+      "description": "Ramsey's theorem guarantees complete subgraphs in dense graphs via pigeonhole arguments; the BES problem studies the sharper question of forcing K_r through a minimum degree condition in structured r-partite graphs."
     },
     {
-      "target": "erdos-1079",
-      "relationship": "Turán density in neighborhoods (Problem #1079) studies extremal densities for induced substructures in graph neighborhoods, a closely related minimum-degree / density threshold framework.",
-      "significance": "high"
+      "relationship": "related",
+      "significance": "high",
+      "targetId": "erdos-1079",
+      "description": "Tur\u00e1n density in neighborhoods (Problem #1079) studies extremal densities for induced substructures in graph neighborhoods, a closely related minimum-degree / density threshold framework."
     },
     {
-      "target": "erdos-1077",
-      "relationship": "Problem #1077 on balanced subgraphs in dense graphs shares the theme of forcing structured subgraphs via degree conditions, complementing the multipartite setting of Problem #1078.",
-      "significance": "high"
+      "relationship": "related",
+      "significance": "high",
+      "targetId": "erdos-1077",
+      "description": "Problem #1077 on balanced subgraphs in dense graphs shares the theme of forcing structured subgraphs via degree conditions, complementing the multipartite setting of Problem #1078."
     },
     {
-      "target": "erdos-1075",
-      "relationship": "Dense subgraphs in r-uniform hypergraphs (Problem #1075) generalises the bipartite Kővári–Sós–Turán approach to higher uniformity; the r-partite graph setting of Problem #1078 is the graph-level analogue.",
-      "significance": "medium"
+      "relationship": "related",
+      "significance": "medium",
+      "targetId": "erdos-1075",
+      "description": "Dense subgraphs in r-uniform hypergraphs (Problem #1075) generalises the bipartite K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n approach to higher uniformity; the r-partite graph setting of Problem #1078 is the graph-level analogue."
     },
     {
-      "target": "erdos-1017",
-      "relationship": "Clique partition of graphs (Problem #1017) addresses decomposing graphs into complete subgraphs; Problem #1078 forces a single K_r via a minimum degree threshold in the r-partite setting.",
-      "significance": "medium"
+      "relationship": "related",
+      "significance": "medium",
+      "targetId": "erdos-1017",
+      "description": "Clique partition of graphs (Problem #1017) addresses decomposing graphs into complete subgraphs; Problem #1078 forces a single K_r via a minimum degree threshold in the r-partite setting."
     },
     {
-      "target": "erdos-1076",
-      "relationship": "Extremal numbers for 3-uniform hypergraphs (Problem #1076) and the Steiner system constructions used there exhibit the same interplay between density/degree thresholds and the existence of complete sub-structures.",
-      "significance": "medium"
+      "relationship": "related",
+      "significance": "medium",
+      "targetId": "erdos-1076",
+      "description": "Extremal numbers for 3-uniform hypergraphs (Problem #1076) and the Steiner system constructions used there exhibit the same interplay between density/degree thresholds and the existence of complete sub-structures."
     }
   ],
   "relatedProofs": [
@@ -179,17 +185,17 @@
     },
     {
       "slug": "erdos-1079",
-      "title": "Erdős Problem #1079: Turán Density in Neighborhoods",
+      "title": "Erd\u0151s Problem #1079: Tur\u00e1n Density in Neighborhoods",
       "connection": "Shares the extremal-graph-theory framework of minimum degree / density thresholds for forcing dense substructures."
     },
     {
       "slug": "erdos-1077",
-      "title": "Erdős Problem #1077: Balanced Subgraphs in Dense Graphs",
+      "title": "Erd\u0151s Problem #1077: Balanced Subgraphs in Dense Graphs",
       "connection": "Degree-regularity conditions for forcing specific subgraphs; directly parallel to the r-partite minimum-degree threshold studied in Problem #1078."
     },
     {
       "slug": "erdos-1075",
-      "title": "Erdős Problem #1075: Dense Subgraphs in r-Uniform Hypergraphs",
+      "title": "Erd\u0151s Problem #1075: Dense Subgraphs in r-Uniform Hypergraphs",
       "connection": "Hypergraph analogue of density-forcing results; the graph case (r = 2) reduces to problems of the type studied in Problem #1078."
     }
   ],
@@ -202,36 +208,36 @@
       "venue": "Combinatorics, Probability and Computing",
       "year": 2001,
       "volume": "10",
-      "pages": "345–347",
+      "pages": "345\u2013347",
       "doi": "10.1017/S0963548301004758",
-      "note": "Proves the BES conjecture: minimum degree ≥ (r − 3/2 − o(1))n in a balanced r-partite graph forces K_r."
+      "note": "Proves the BES conjecture: minimum degree \u2265 (r \u2212 3/2 \u2212 o(1))n in a balanced r-partite graph forces K_r."
     },
     {
       "authors": [
         "P.E. Haxell",
-        "T. Szabó"
+        "T. Szab\u00f3"
       ],
       "title": "Odd Independent Transversals Are Odd",
       "venue": "Combinatorics, Probability and Computing",
       "year": 2006,
       "volume": "15",
-      "pages": "193–211",
+      "pages": "193\u2013211",
       "doi": "10.1017/S0963548305007156",
-      "note": "Determines the exact sharp threshold (r − 1)n − ⌈sn/(2s−1)⌉ and proves optimality via parity-based extremal constructions."
+      "note": "Determines the exact sharp threshold (r \u2212 1)n \u2212 \u2308sn/(2s\u22121)\u2309 and proves optimality via parity-based extremal constructions."
     },
     {
       "authors": [
-        "B. Bollobás",
-        "P. Erdős",
-        "E. Szemerédi"
+        "B. Bollob\u00e1s",
+        "P. Erd\u0151s",
+        "E. Szemer\u00e9di"
       ],
       "title": "On Complete Subgraphs of r-Chromatic Graphs",
       "venue": "Discrete Mathematics",
       "year": 1975,
       "volume": "13",
-      "pages": "97–107",
+      "pages": "97\u2013107",
       "doi": "10.1016/0012-365X(75)90011-4",
-      "note": "Original 1975 paper by Bollobás–Erdős–Szemerédi conjecturing the (r − 3/2)n threshold and giving the extremal constructions showing sharpness of the constant."
+      "note": "Original 1975 paper by Bollob\u00e1s\u2013Erd\u0151s\u2013Szemer\u00e9di conjecturing the (r \u2212 3/2)n threshold and giving the extremal constructions showing sharpness of the constant."
     },
     {
       "authors": [
@@ -241,19 +247,19 @@
       "venue": "Combinatorics, Probability and Computing",
       "year": 2004,
       "volume": "13",
-      "pages": "857–865",
+      "pages": "857\u2013865",
       "doi": "10.1017/S0963548304006157",
       "note": "Connects the BES conjecture to strong chromatic numbers and independent transversals; the list-coloring reduction central to the 2001 proof is elaborated here."
     },
     {
       "authors": [
-        "R. Häggkvist"
+        "R. H\u00e4ggkvist"
       ],
       "title": "On the Structure of Non-Hamiltonian Graphs I",
       "venue": "Combinatorica",
       "year": 1992,
       "volume": "12",
-      "pages": "27–34",
+      "pages": "27\u201334",
       "doi": "10.1007/BF01191199",
       "note": "Earlier partial results on minimum degree conditions and complete subgraphs in multipartite graphs, providing context for the BES conjecture."
     }

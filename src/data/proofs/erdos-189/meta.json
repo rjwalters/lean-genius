@@ -1,10 +1,10 @@
 {
   "id": "erdos-189",
-  "title": "Erdős Problem #189: Rectangles of Every Area in Colored Planes",
+  "title": "Erd\u0151s Problem #189: Rectangles of Every Area in Colored Planes",
   "slug": "erdos-189",
-  "description": "If the plane is finitely colored, must some color class contain rectangle vertices of every area? Disproved by Kovač (2023) with a 25-coloring.",
+  "description": "If the plane is finitely colored, must some color class contain rectangle vertices of every area? Disproved by Kova\u010d (2023) with a 25-coloring.",
   "meta": {
-    "author": "Kovač (2023)",
+    "author": "Kova\u010d (2023)",
     "sourceUrl": "https://erdosproblems.com/189",
     "date": "2023",
     "status": "axiomatized",
@@ -24,7 +24,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space ℝ² for point geometry",
+        "description": "Euclidean space \u211d\u00b2 for point geometry",
         "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
       },
       {
@@ -35,7 +35,7 @@
     ],
     "originalContributions": [
       "Clean formalization of the rectangle coloring problem",
-      "Statement of Kovač's counterexample as axiom with full derivation",
+      "Statement of Kova\u010d's counterexample as axiom with full derivation",
       "Related results: Graham's triangle theorem, square/parallelogram variants"
     ],
     "axiomCount": 3,
@@ -43,15 +43,15 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Graham in his 1980 paper 'On partitions of Eⁿ'. Graham had shown that for right-angled triangles, the answer is YES: any finite coloring of ℝ² has a color class containing right-angled triangle vertices of every area. He asked whether the same holds for rectangles.\n\nThe problem remained open for over 40 years until Kovač's elegant resolution in 2023. Using a surprisingly simple construction, Kovač provided an explicit 25-coloring of ℝ² such that no single color class contains the vertices of any rectangle with area 1. This definitively answers the question: NO, rectangles do not have this property.\n\nThe analogous question for parallelograms remains open as of 2025.",
-    "problemStatement": "**Question**: If $\\mathbb{R}^2$ is finitely coloured, must there exist some colour class which contains the vertices of a rectangle of every area?\n\n**Answer**: NO (Kovač 2023)\n\nKovač constructed an explicit 25-coloring where no color class contains rectangle vertices of area 1.",
-    "text": "If the plane is finitely colored, must some color class contain rectangle vertices of every area? Disproved by Kovač (2023) with a 25-coloring.",
-    "proofStrategy": "The formalization defines the key concepts (finite coloring, rectangle, area) and states the Erdős problem as a Prop. We then axiomatize Kovač's counterexample: there exists a 25-coloring with no monochromatic rectangle of area 1. From this axiom, we derive that the Erdős statement is false. The actual construction is not formalized since it requires measure-theoretic machinery for Jordan measurable sets.",
+    "historicalContext": "This problem was posed by Graham in his 1980 paper 'On partitions of E\u207f'. Graham had shown that for right-angled triangles, the answer is YES: any finite coloring of \u211d\u00b2 has a color class containing right-angled triangle vertices of every area. He asked whether the same holds for rectangles.\n\nThe problem remained open for over 40 years until Kova\u010d's elegant resolution in 2023. Using a surprisingly simple construction, Kova\u010d provided an explicit 25-coloring of \u211d\u00b2 such that no single color class contains the vertices of any rectangle with area 1. This definitively answers the question: NO, rectangles do not have this property.\n\nThe analogous question for parallelograms remains open as of 2025.",
+    "problemStatement": "**Question**: If $\\mathbb{R}^2$ is finitely coloured, must there exist some colour class which contains the vertices of a rectangle of every area?\n\n**Answer**: NO (Kova\u010d 2023)\n\nKova\u010d constructed an explicit 25-coloring where no color class contains rectangle vertices of area 1.",
+    "text": "If the plane is finitely colored, must some color class contain rectangle vertices of every area? Disproved by Kova\u010d (2023) with a 25-coloring.",
+    "proofStrategy": "The formalization defines the key concepts (finite coloring, rectangle, area) and states the Erd\u0151s problem as a Prop. We then axiomatize Kova\u010d's counterexample: there exists a 25-coloring with no monochromatic rectangle of area 1. From this axiom, we derive that the Erd\u0151s statement is false. The actual construction is not formalized since it requires measure-theoretic machinery for Jordan measurable sets.",
     "keyInsights": [
-      "**Rectangles vs Triangles**: Graham showed triangles have the 'every area' property, but rectangles do not. The extra constraint of perpendicular sides matters — the right angle gives rigidity that allows coloring-based avoidance.",
-      "**25 colors suffice**: Kovač's counterexample uses 25 colors — remarkably few for such a strong negative result. The bound 25 = 5² suggests a product construction involving two independent 5-colorings of two independent directions.",
-      "**Jordan measurable regions**: Each color class in Kovač's construction forms a Jordan measurable set (boundary has Lebesgue measure zero), showing the counterexample is quite 'nice' topologically and not just a pathological measure-theoretic construction.",
-      "**Open parallelogram case**: Whether parallelograms (without the right angle constraint) have the 'every area' property remains unsolved as of 2025 — dropping right angles changes the problem fundamentally since parallelogram areas depend on the determinant, not the product of orthogonal lengths.",
+      "**Rectangles vs Triangles**: Graham showed triangles have the 'every area' property, but rectangles do not. The extra constraint of perpendicular sides matters \u2014 the right angle gives rigidity that allows coloring-based avoidance.",
+      "**25 colors suffice**: Kova\u010d's counterexample uses 25 colors \u2014 remarkably few for such a strong negative result. The bound 25 = 5\u00b2 suggests a product construction involving two independent 5-colorings of two independent directions.",
+      "**Jordan measurable regions**: Each color class in Kova\u010d's construction forms a Jordan measurable set (boundary has Lebesgue measure zero), showing the counterexample is quite 'nice' topologically and not just a pathological measure-theoretic construction.",
+      "**Open parallelogram case**: Whether parallelograms (without the right angle constraint) have the 'every area' property remains unsolved as of 2025 \u2014 dropping right angles changes the problem fundamentally since parallelogram areas depend on the determinant, not the product of orthogonal lengths.",
       "**Ramsey-type dichotomy**: The result illustrates how geometric constraints (right angles vs arbitrary angles) create sharp Ramsey-theoretic boundaries. For convex shapes in general, the presence or absence of 'every area' colorability depends on the symmetry group of the shape, connecting to Euclidean harmonic analysis."
     ],
     "prerequisites": [
@@ -72,7 +72,7 @@
       "title": "Main Result (Disproof)",
       "startLine": 70,
       "endLine": 99,
-      "summary": "Kovač's counterexample and derivation that the statement is false"
+      "summary": "Kova\u010d's counterexample and derivation that the statement is false"
     },
     {
       "id": "related",
@@ -93,11 +93,11 @@
       "title": "Historical Context: 43 Years Open",
       "startLine": 143,
       "endLine": 159,
-      "summary": "The problem was open for 43 years (1980-2023). Graham showed triangles YES and rhombuses NO; rectangles were unknown until Kovač's 2023 counterexample."
+      "summary": "The problem was open for 43 years (1980-2023). Graham showed triangles YES and rhombuses NO; rectangles were unknown until Kova\u010d's 2023 counterexample."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #189 and its resolution: Kovač (2023) disproved the conjecture by constructing a 25-coloring of ℝ² where no color class contains rectangle vertices of area 1. The theorem `erdos_189_is_false` derives this from the axiomatized counterexample.",
+    "summary": "We formalize Erd\u0151s Problem #189 and its resolution: Kova\u010d (2023) disproved the conjecture by constructing a 25-coloring of \u211d\u00b2 where no color class contains rectangle vertices of area 1. The theorem `erdos_189_is_false` derives this from the axiomatized counterexample.",
     "implications": "This result shows a fundamental asymmetry between triangles and rectangles in Ramsey-type coloring problems. The geometric constraint of perpendicularity significantly affects which area-universality properties hold.",
     "openQuestions": [
       "Does the analogous statement hold for parallelograms?",
@@ -118,5 +118,39 @@
     "axiomCount": 3,
     "theoremCount": 1,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-846",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-960",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Share coloring and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-172",
+      "relationship": "related",
+      "description": "Share coloring and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-846",
+    "erdos-960",
+    "erdos-1105",
+    "erdos-172"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-792",
-  "title": "Erdős Problem #792: Sum-Free Subsets",
+  "title": "Erd\u0151s Problem #792: Sum-Free Subsets",
   "slug": "erdos-792",
   "description": "Estimate f(n), the minimum size of the largest sum-free subset guaranteed in any n-element set of integers.",
   "meta": {
-    "author": "Erdős (1965 problem), Bedert (2025 best lower bound)",
+    "author": "Erd\u0151s (1965 problem), Bedert (2025 best lower bound)",
     "sourceUrl": "https://erdosproblems.com/792",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos792Problem.lean",
@@ -66,10 +66,10 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #792: Sum-Free Subsets**\n\nThis fundamental problem in additive combinatorics asks about guaranteed sum-free subsets. A set is sum-free if no element equals the sum of two others.\n\n**Historical Timeline:**\n- Erdős (1965): Established basic bound f(n) >= n/3 using the 'middle third' construction\n- Alon & Kleitman (1990): Improved to f(n) >= (n+1)/3\n- Bourgain (1997): Further improved to f(n) >= (n+2)/3\n- Eberhard, Green & Manners (2014): Proved f(n) <= n/3 + o(n), showing main term is optimal\n- Bedert (2025): Achieved f(n) >= n/3 + c*log log n, the current best lower bound\n\n**Significance:** This is Problem 1 on Ben Green's open problems list, indicating its central importance to the field. The exact second-order term remains unknown.",
+    "historicalContext": "**Erd\u0151s Problem #792: Sum-Free Subsets**\n\nThis fundamental problem in additive combinatorics asks about guaranteed sum-free subsets. A set is sum-free if no element equals the sum of two others.\n\n**Historical Timeline:**\n- Erd\u0151s (1965): Established basic bound f(n) >= n/3 using the 'middle third' construction\n- Alon & Kleitman (1990): Improved to f(n) >= (n+1)/3\n- Bourgain (1997): Further improved to f(n) >= (n+2)/3\n- Eberhard, Green & Manners (2014): Proved f(n) <= n/3 + o(n), showing main term is optimal\n- Bedert (2025): Achieved f(n) >= n/3 + c*log log n, the current best lower bound\n\n**Significance:** This is Problem 1 on Ben Green's open problems list, indicating its central importance to the field. The exact second-order term remains unknown.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $f(n)$ be the maximum value such that every $n$-element subset $A \\subseteq \\mathbb{Z}$ contains a sum-free subset $B \\subseteq A$ with $|B| \\geq f(n)$.\n\n**Estimate $f(n)$.**\n\n**Current Knowledge:**\n- Lower bound: $f(n) \\geq n/3 + c \\cdot \\log\\log n$ (Bedert 2025)\n- Upper bound: $f(n) \\leq n/3 + o(n)$ (Eberhard-Green-Manners 2014)\n- Asymptotic: $\\lim_{n \\to \\infty} f(n)/n = 1/3$\n\n**Main Open Question:** What is the exact growth rate of $f(n) - n/3$?",
     "text": "Estimate f(n), the minimum size of the largest sum-free subset guaranteed in any n-element set of integers.",
-    "proofStrategy": "**Formalization Approach**\n\nSince this is an open problem, we axiomatize f(n) and formalize the known results:\n\n1. **Core Definitions:** SumFree, SumFreeFinset, IsSumFreeSubset, maxSumFreeSize\n\n2. **Axiomatized f(n):** With specification (every set has large sum-free subset) and tightness (extremal sets exist)\n\n3. **Lower Bounds:** Erdős, Alon-Kleitman, Bourgain, Bedert as axioms\n\n4. **Upper Bounds:** Eberhard-Green-Manners and asymptotic limit as axioms\n\n5. **Constructions:** Interval sum-free and middle-third as axioms\n\n6. **Summary Theorems:** Proved from axioms combining the bounds",
+    "proofStrategy": "**Formalization Approach**\n\nSince this is an open problem, we axiomatize f(n) and formalize the known results:\n\n1. **Core Definitions:** SumFree, SumFreeFinset, IsSumFreeSubset, maxSumFreeSize\n\n2. **Axiomatized f(n):** With specification (every set has large sum-free subset) and tightness (extremal sets exist)\n\n3. **Lower Bounds:** Erd\u0151s, Alon-Kleitman, Bourgain, Bedert as axioms\n\n4. **Upper Bounds:** Eberhard-Green-Manners and asymptotic limit as axioms\n\n5. **Constructions:** Interval sum-free and middle-third as axioms\n\n6. **Summary Theorems:** Proved from axioms combining the bounds",
     "keyInsights": [
       "**Sum-Free Definition:** B is sum-free if for all a, b, c in B, we have a + b != c",
       "**Middle Third Construction:** Taking elements in (n/3, 2n/3] avoids sums, achieving f(n) >= n/3",
@@ -115,7 +115,7 @@
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Erdős, Alon-Kleitman, Bourgain, Bedert bounds as axioms",
+      "summary": "Erd\u0151s, Alon-Kleitman, Bourgain, Bedert bounds as axioms",
       "startLine": 66,
       "endLine": 79
     },
@@ -142,7 +142,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #792 asks for the asymptotics of f(n), the minimum guaranteed size of sum-free subsets in any n-element integer set. We know f(n)/n -> 1/3, but the exact second-order term remains open. The current best bounds are n/3 + c*log log n <= f(n) <= n/3 + o(n). The formalization axiomatizes f(n) with specification and tightness, and states all known bounds as axioms with two summary theorems proved from axioms.",
+    "summary": "Erd\u0151s Problem #792 asks for the asymptotics of f(n), the minimum guaranteed size of sum-free subsets in any n-element integer set. We know f(n)/n -> 1/3, but the exact second-order term remains open. The current best bounds are n/3 + c*log log n <= f(n) <= n/3 + o(n). The formalization axiomatizes f(n) with specification and tightness, and states all known bounds as axioms with two summary theorems proved from axioms.",
     "implications": "**Theoretical Significance**: **Significance in Additive Combinatorics**\n\n1. **Fundamental Question:** One of the most natural extremal problems about integer sums\n\n2. **Ben Green's List:** Problem 1 on his open problems list\n\n**3. Technique Development:** Drives advances in probabilistic and Fourier methods\n\n4. **Ramsey Theory:** Connected to Schur numbers and partition regularity\n\n5. **Extremal Configurations:** Understanding which sets minimize sum-free subsets.",
     "openQuestions": [
       "Is f(n) = n/3 + Theta(log log n)?",
@@ -172,5 +172,39 @@
     "axiomCount": 11,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-789",
+      "relationship": "related",
+      "description": "Share sum-free-sets, extremal-combinatorial, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-302",
+      "relationship": "related",
+      "description": "Share sum-free-sets and extremal-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-360",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-789",
+    "erdos-1136",
+    "erdos-302",
+    "erdos-360",
+    "erdos-748"
+  ]
 }

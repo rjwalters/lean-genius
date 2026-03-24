@@ -1,10 +1,10 @@
 {
   "id": "erdos-758",
-  "title": "Erdős Problem #758: Cochromatic Number z(n)",
+  "title": "Erd\u0151s Problem #758: Cochromatic Number z(n)",
   "slug": "erdos-758",
-  "description": "The cochromatic number ζ(G) is the minimum colors needed to color vertices such that each color class induces either a complete or empty graph. Let z(n) = max{ζ(G) : G has n vertices}. Is z(12) = 4? Answer: YES (Bhavik Mehta, computational).",
+  "description": "The cochromatic number \u03b6(G) is the minimum colors needed to color vertices such that each color class induces either a complete or empty graph. Let z(n) = max{\u03b6(G) : G has n vertices}. Is z(12) = 4? Answer: YES (Bhavik Mehta, computational).",
   "meta": {
-    "author": "Erdős-Gimbel (problem), Bhavik Mehta (z(12)=4), Gimbel (asymptotics)",
+    "author": "Erd\u0151s-Gimbel (problem), Bhavik Mehta (z(12)=4), Gimbel (asymptotics)",
     "sourceUrl": "https://erdosproblems.com/758",
     "date": "1986",
     "status": "axiomatized",
@@ -60,23 +60,23 @@
       "z_12 theorem: main result that z(12) = 4",
       "gimbel_asymptotic axiom: z(n) ~ n/log n",
       "ramsey_connection axiom: relationship to Ramsey numbers",
-      "mehta_unique_graph axiom: unique K₄-free graph with χ ≥ 5",
-      "mehta_verification axiom: that graph has ζ = 4"
+      "mehta_unique_graph axiom: unique K\u2084-free graph with \u03c7 \u2265 5",
+      "mehta_verification axiom: that graph has \u03b6 = 4"
     ],
     "axiomCount": 31,
     "lineCount": 128,
     "assumptions": "31 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #758: Cochromatic Number**\n\nThis problem was posed by Erdős and Gimbel and concerns the cochromatic number of graphs.\n\n**Key History:**\n- **Erdős-Gimbel:** Established 4 ≤ z(12) ≤ 5 and 5 ≤ z(15) ≤ 6\n- **Gimbel [Gi86]:** Proved z(n) ~ n/log n asymptotically\n- **Bhavik Mehta:** Computationally verified z(12) = 4 by finding the unique extremal graph\n\n**Mathematical Context:**\nThe cochromatic number generalizes both chromatic number (independent sets only) and clique cover number (cliques only). It connects to Ramsey theory since R(3) = 6 and R(4) = 18 control the growth of z(n).",
-    "problemStatement": "**Problem Statement (Solved)**\n\nThe cochromatic number ζ(G) of a graph G is the minimum number of colors needed to color the vertices such that each color class induces either a complete graph (clique) or an empty graph (independent set).\n\nLet z(n) = max{ζ(G) : G is a graph on n vertices}.\n\n**Question:** Determine z(n) for small values. In particular, is z(12) = 4?\n\n**Answer: YES** - Bhavik Mehta proved computationally that z(12) = 4.\n\n**Known values for n = 1 to 19:**\n{1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6}\n\n**Open:** z(20) = 6 or 7?",
-    "text": "The cochromatic number ζ(G) is the minimum colors needed to color vertices such that each color class induces either a complete or empty graph. Let z(n) = max{ζ(G) : G has n vertices}. Is z(12) = 4? Answer: YES (Bhavik Mehta, computational).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Cochromatic Coloring Structure:**\n   - CochromaticColoring: partition where each class is clique or independent set\n   - cochromaticNumber: minimum colors needed\n\n2. **The z(n) Function:**\n   - Maximum cochromatic number over all n-vertex graphs\n\n3. **Known Exact Values:**\n   - Individual theorems z_1 through z_16_to_19\n   - knownValues function encoding the table\n\n4. **Mehta's Key Result:**\n   - Unique (up to complement) graph on 12 vertices with G, Ḡ both K₄-free and χ ≥ 5\n   - This graph has ζ = 4, proving z(12) = 4\n\n5. **Asymptotic Behavior:**\n   - Gimbel's result: z(n) ~ n/log n",
+    "historicalContext": "**Erd\u0151s Problem #758: Cochromatic Number**\n\nThis problem was posed by Erd\u0151s and Gimbel and concerns the cochromatic number of graphs.\n\n**Key History:**\n- **Erd\u0151s-Gimbel:** Established 4 \u2264 z(12) \u2264 5 and 5 \u2264 z(15) \u2264 6\n- **Gimbel [Gi86]:** Proved z(n) ~ n/log n asymptotically\n- **Bhavik Mehta:** Computationally verified z(12) = 4 by finding the unique extremal graph\n\n**Mathematical Context:**\nThe cochromatic number generalizes both chromatic number (independent sets only) and clique cover number (cliques only). It connects to Ramsey theory since R(3) = 6 and R(4) = 18 control the growth of z(n).",
+    "problemStatement": "**Problem Statement (Solved)**\n\nThe cochromatic number \u03b6(G) of a graph G is the minimum number of colors needed to color the vertices such that each color class induces either a complete graph (clique) or an empty graph (independent set).\n\nLet z(n) = max{\u03b6(G) : G is a graph on n vertices}.\n\n**Question:** Determine z(n) for small values. In particular, is z(12) = 4?\n\n**Answer: YES** - Bhavik Mehta proved computationally that z(12) = 4.\n\n**Known values for n = 1 to 19:**\n{1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6}\n\n**Open:** z(20) = 6 or 7?",
+    "text": "The cochromatic number \u03b6(G) is the minimum colors needed to color vertices such that each color class induces either a complete or empty graph. Let z(n) = max{\u03b6(G) : G has n vertices}. Is z(12) = 4? Answer: YES (Bhavik Mehta, computational).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Cochromatic Coloring Structure:**\n   - CochromaticColoring: partition where each class is clique or independent set\n   - cochromaticNumber: minimum colors needed\n\n2. **The z(n) Function:**\n   - Maximum cochromatic number over all n-vertex graphs\n\n3. **Known Exact Values:**\n   - Individual theorems z_1 through z_16_to_19\n   - knownValues function encoding the table\n\n4. **Mehta's Key Result:**\n   - Unique (up to complement) graph on 12 vertices with G, \u1e20 both K\u2084-free and \u03c7 \u2265 5\n   - This graph has \u03b6 = 4, proving z(12) = 4\n\n5. **Asymptotic Behavior:**\n   - Gimbel's result: z(n) ~ n/log n",
     "keyInsights": [
       "**Cochromatic Flexibility:** Each color class can be a clique OR independent set, making coloring easier than chromatic coloring",
-      "**Ramsey Connection:** R(k,k) bounds how high z(n) can be, since large z requires both G and Ḡ to lack large cliques",
-      "**Unique Extremal Graph:** Only one graph (up to complement) on 12 vertices achieves χ(G) ≥ 5 and χ(Ḡ) ≥ 5 while being K₄-free",
-      "**Computational Proof:** Mehta's proof is computational - exhaustive search verified the unique extremal graph has ζ = 4",
+      "**Ramsey Connection:** R(k,k) bounds how high z(n) can be, since large z requires both G and \u1e20 to lack large cliques",
+      "**Unique Extremal Graph:** Only one graph (up to complement) on 12 vertices achieves \u03c7(G) \u2265 5 and \u03c7(\u1e20) \u2265 5 while being K\u2084-free",
+      "**Computational Proof:** Mehta's proof is computational - exhaustive search verified the unique extremal graph has \u03b6 = 4",
       "**Asymptotic Growth:** z(n) ~ n/log n is slower than linear but unbounded"
     ],
     "prerequisites": [
@@ -122,7 +122,7 @@
     },
     {
       "id": "erdos-gimbel-bounds",
-      "title": "Erdős-Gimbel Bounds",
+      "title": "Erd\u0151s-Gimbel Bounds",
       "summary": "Original bounds for z(12) and z(15)",
       "startLine": 212,
       "endLine": 128
@@ -150,7 +150,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #758 asked to determine z(n), the maximum cochromatic number over n-vertex graphs, for small values. The key question was whether z(12) = 4. Bhavik Mehta answered YES by computationally finding the unique (up to complement) graph on 12 vertices that maximizes cochromatic number. Gimbel established the asymptotic z(n) ~ n/log n.",
+    "summary": "Erd\u0151s Problem #758 asked to determine z(n), the maximum cochromatic number over n-vertex graphs, for small values. The key question was whether z(12) = 4. Bhavik Mehta answered YES by computationally finding the unique (up to complement) graph on 12 vertices that maximizes cochromatic number. Gimbel established the asymptotic z(n) ~ n/log n.",
     "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Ramsey Theory:** z(n) is constrained by Ramsey numbers R(k,k)\n\n**2. Extremal Graph Theory:** Understanding which graphs maximize cochromatic number\n\n3. **Chromatic Theory:** Cochromatic number interpolates between chromatic and clique cover numbers\n\n4. **Computational Methods:** Demonstrates power of exhaustive search for small cases.",
     "openQuestions": [
       "What is z(20)? (Known to be 6 or 7)",
@@ -177,5 +177,39 @@
     "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1111",
+      "relationship": "related",
+      "description": "Share graph-theoretic, coloring, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-760",
+      "relationship": "related",
+      "description": "Share graph-theoretic, cochromatic-number, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-762",
+      "relationship": "related",
+      "description": "Share graph-theoretic, cochromatic-number, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1015",
+      "relationship": "related",
+      "description": "Share graph-theoretic and coloring themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1111",
+    "erdos-760",
+    "erdos-762",
+    "erdos-1011",
+    "erdos-1015"
+  ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "erdos-221",
-  "title": "Erdős Problem #221: Additive Complements with Powers of 2",
+  "title": "Erd\u0151s Problem #221: Additive Complements with Powers of 2",
   "slug": "erdos-221",
-  "description": "Is there a set A ⊆ ℕ with |A ∩ {1,...,N}| ≪ N/log N such that every large integer can be written as 2^k + a for some k ≥ 0 and a ∈ A? SOLVED: YES, by Ruzsa (1972) using an ingenious construction based on powers of 5.",
+  "description": "Is there a set A \u2286 \u2115 with |A \u2229 {1,...,N}| \u226a N/log N such that every large integer can be written as 2^k + a for some k \u2265 0 and a \u2208 A? SOLVED: YES, by Ruzsa (1972) using an ingenious construction based on powers of 5.",
   "meta": {
     "author": "Lorentz (1954), Ruzsa (1972, 2001)",
     "sourceUrl": "https://erdosproblems.com/221",
@@ -47,7 +47,7 @@
       }
     ],
     "originalContributions": [
-      "PowersOfTwo definition: {n | ∃ k, n = 2^k}",
+      "PowersOfTwo definition: {n | \u2203 k, n = 2^k}",
       "IsAdditiveComplementForLarge definition",
       "IsComplementToPowersOfTwo definition",
       "countingFunction, HasDensityNOverLogN, HasLorentzDensity, HasAsymptoticOptimalDensity",
@@ -71,14 +71,14 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #221** asks whether the exponentially sparse set $\\{2^k : k \\geq 0\\}$ admits a thin additive complement. The problem sits at the intersection of additive combinatorics and multiplicative number theory.\n\n**G.G. Lorentz** (1954) gave the first positive answer in his paper 'On a problem of additive number theory' (*Acta Math. Acad. Sci. Hungar.*), constructing a complement $A$ with $|A \\cap \\{1,\\ldots,N\\}| \\ll N \\log\\log N / \\log N$. This was close to optimal but not quite sharp.\n\n**Imre Ruzsa** (1972) achieved the optimal bound in 'On a problem of P. Erdős,' constructing $A$ with $|A \\cap \\{1,\\ldots,N\\}| \\ll N / \\log N$. His ingenious idea was to build $A$ from multiples of powers of 5, exploiting the number-theoretic fact that 2 is a **primitive root modulo $5^n$** for all $n \\geq 1$. This means the powers of 2 cycle through all residues coprime to $5^n$, ensuring every large integer has a representation $2^k + a$.\n\nThe constant $C = 1/(5 \\log 2) \\approx 0.288$ in Ruzsa's construction was later verified by **van Doorn** on erdosproblems.com. In 2001, Ruzsa refined the result in 'Additive completion of lacunary sequences' (*Combinatorica*), constructing an **exact complement** with asymptotically optimal density $|A \\cap \\{1,\\ldots,N\\}| \\sim N / \\log_2 N$.\n\nThe problem connects to the broader study of **additive bases** and **lacunary sequences** in additive number theory. While geometric sequences like $\\{2^k\\}$ are too sparse to be additive bases themselves, they can be complemented with surprisingly thin sets. The density $N/\\log N$ is tight: a lower bound shows no sparser complement exists, matching Ruzsa's upper bound up to constants.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nIs there a set $A \\subseteq \\mathbb{N}$ such that:\n1. $|A \\cap \\{1,\\ldots,N\\}| \\ll N/\\log N$ for all large $N$\n2. Every sufficiently large integer $n$ can be written as $n = 2^k + a$ for some $k \\geq 0$ and $a \\in A$?\n\n**Answer (Ruzsa 1972):** YES.\n\n**Ruzsa's Construction:**\n$$A = \\{5^n \\cdot m : m \\geq 1,\\; 5^n \\geq C \\log m\\} + \\{0, 1\\}$$\nwhere $C = 1/(5 \\log 2)$.\n\n**Optimality (Ruzsa 2001):** The density $N/\\log N$ is tight—there exists an exact complement with $|A \\cap \\{1,\\ldots,N\\}| \\sim N/\\log_2 N$, and no complement can be sparser.",
-    "text": "Is there a set A ⊆ ℕ with |A ∩ {1,...,N}| ≪ N/log N such that every large integer can be written as 2^k + a for some k ≥ 0 and a ∈ A? SOLVED: YES, by Ruzsa (1972) using an ingenious construction based on powers of 5.",
-    "proofStrategy": "The formalization proceeds through four layers across 274 lines:\n\n1. **Definitions** (lines 44–91): Powers of 2, additive complement predicate, counting function, density bounds ($N/\\log N$, Lorentz, and optimal densities), and the main conjecture $\\text{Erdos221Conjecture}$.\n\n2. **Lorentz's result** (lines 93–99): Axiomatized as `lorentz_1954`, giving the first positive answer with the weaker density $O(N \\log\\log N / \\log N)$.\n\n3. **Ruzsa's construction** (lines 101–137): Defines `ruzsaConstant` $= 1/(5 \\log 2)$, `RuzsaCoreSet` $= \\{5^n \\cdot m : 5^n \\geq C \\log m\\}$, and `RuzsaSet` $= \\text{Core} + \\{0,1\\}$. The primitive root property and complement/density results are axiomatized; `ruzsa_1972` is proved from axioms via `⟨ruzsa_is_complement, ruzsa_density⟩`.\n\n4. **Optimality and generalizations** (lines 139–274): Axiomatizes Ruzsa's 2001 exact complement, the density lower bound, multiplicative order of 2 mod $5^n$, coverage of coprime residues, generalization to arbitrary bases, and sumset/basis connections. The final `erdos_221` theorem assembles the complete solution.",
+    "historicalContext": "**Erd\u0151s Problem #221** asks whether the exponentially sparse set $\\{2^k : k \\geq 0\\}$ admits a thin additive complement. The problem sits at the intersection of additive combinatorics and multiplicative number theory.\n\n**G.G. Lorentz** (1954) gave the first positive answer in his paper 'On a problem of additive number theory' (*Acta Math. Acad. Sci. Hungar.*), constructing a complement $A$ with $|A \\cap \\{1,\\ldots,N\\}| \\ll N \\log\\log N / \\log N$. This was close to optimal but not quite sharp.\n\n**Imre Ruzsa** (1972) achieved the optimal bound in 'On a problem of P. Erd\u0151s,' constructing $A$ with $|A \\cap \\{1,\\ldots,N\\}| \\ll N / \\log N$. His ingenious idea was to build $A$ from multiples of powers of 5, exploiting the number-theoretic fact that 2 is a **primitive root modulo $5^n$** for all $n \\geq 1$. This means the powers of 2 cycle through all residues coprime to $5^n$, ensuring every large integer has a representation $2^k + a$.\n\nThe constant $C = 1/(5 \\log 2) \\approx 0.288$ in Ruzsa's construction was later verified by **van Doorn** on erdosproblems.com. In 2001, Ruzsa refined the result in 'Additive completion of lacunary sequences' (*Combinatorica*), constructing an **exact complement** with asymptotically optimal density $|A \\cap \\{1,\\ldots,N\\}| \\sim N / \\log_2 N$.\n\nThe problem connects to the broader study of **additive bases** and **lacunary sequences** in additive number theory. While geometric sequences like $\\{2^k\\}$ are too sparse to be additive bases themselves, they can be complemented with surprisingly thin sets. The density $N/\\log N$ is tight: a lower bound shows no sparser complement exists, matching Ruzsa's upper bound up to constants.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nIs there a set $A \\subseteq \\mathbb{N}$ such that:\n1. $|A \\cap \\{1,\\ldots,N\\}| \\ll N/\\log N$ for all large $N$\n2. Every sufficiently large integer $n$ can be written as $n = 2^k + a$ for some $k \\geq 0$ and $a \\in A$?\n\n**Answer (Ruzsa 1972):** YES.\n\n**Ruzsa's Construction:**\n$$A = \\{5^n \\cdot m : m \\geq 1,\\; 5^n \\geq C \\log m\\} + \\{0, 1\\}$$\nwhere $C = 1/(5 \\log 2)$.\n\n**Optimality (Ruzsa 2001):** The density $N/\\log N$ is tight\u2014there exists an exact complement with $|A \\cap \\{1,\\ldots,N\\}| \\sim N/\\log_2 N$, and no complement can be sparser.",
+    "text": "Is there a set A \u2286 \u2115 with |A \u2229 {1,...,N}| \u226a N/log N such that every large integer can be written as 2^k + a for some k \u2265 0 and a \u2208 A? SOLVED: YES, by Ruzsa (1972) using an ingenious construction based on powers of 5.",
+    "proofStrategy": "The formalization proceeds through four layers across 274 lines:\n\n1. **Definitions** (lines 44\u201391): Powers of 2, additive complement predicate, counting function, density bounds ($N/\\log N$, Lorentz, and optimal densities), and the main conjecture $\\text{Erdos221Conjecture}$.\n\n2. **Lorentz's result** (lines 93\u201399): Axiomatized as `lorentz_1954`, giving the first positive answer with the weaker density $O(N \\log\\log N / \\log N)$.\n\n3. **Ruzsa's construction** (lines 101\u2013137): Defines `ruzsaConstant` $= 1/(5 \\log 2)$, `RuzsaCoreSet` $= \\{5^n \\cdot m : 5^n \\geq C \\log m\\}$, and `RuzsaSet` $= \\text{Core} + \\{0,1\\}$. The primitive root property and complement/density results are axiomatized; `ruzsa_1972` is proved from axioms via `\u27e8ruzsa_is_complement, ruzsa_density\u27e9`.\n\n4. **Optimality and generalizations** (lines 139\u2013274): Axiomatizes Ruzsa's 2001 exact complement, the density lower bound, multiplicative order of 2 mod $5^n$, coverage of coprime residues, generalization to arbitrary bases, and sumset/basis connections. The final `erdos_221` theorem assembles the complete solution.",
     "keyInsights": [
       "**Primitive root miracle**: 2 is a primitive root modulo $5^n$ for all $n \\geq 1$, meaning $\\text{ord}_{5^n}(2) = \\varphi(5^n) = 4 \\cdot 5^{n-1}$. This ensures powers of 2 cover all residues coprime to $5^n$, which is the algebraic engine behind Ruzsa's construction.",
       "**Sparsity from logarithmic sieving**: The constraint $5^n \\geq C \\log m$ in Ruzsa's set limits how many multiples of $5^n$ appear up to $N$: roughly $N/5^n \\leq N/(C \\log m)$, contributing $O(N/\\log N)$ elements total after summing over all $n$.",
-      "**The $\\{0,1\\}$ parity fix**: Ruzsa's core set handles residues coprime to 5, but parity issues remain—adding $\\{0,1\\}$ ensures both even and odd integers are covered without increasing the asymptotic density.",
+      "**The $\\{0,1\\}$ parity fix**: Ruzsa's core set handles residues coprime to 5, but parity issues remain\u2014adding $\\{0,1\\}$ ensures both even and odd integers are covered without increasing the asymptotic density.",
       "**Tight optimality**: The density $N/\\log N$ is sharp from both sides. The upper bound comes from Ruzsa's construction; the lower bound follows because the powers of 2 up to $N$ number only $\\lfloor \\log_2 N \\rfloor + 1$, so $A$ must have $\\Omega(N/\\log N)$ elements to provide enough distinct representations.",
       "**Lacunary complement theory**: The result exemplifies a broader phenomenon: exponentially sparse (lacunary) sequences like $\\{g^k\\}$ always admit complements of density $O(N/\\log N)$, with the construction adapting via primitive roots of $g$ modulo suitable prime powers."
     ],
@@ -124,7 +124,7 @@
     },
     {
       "id": "solved",
-      "title": "Problem #221 — SOLVED",
+      "title": "Problem #221 \u2014 SOLVED",
       "startLine": 132,
       "endLine": 137,
       "summary": "States `erdos_221_answer : Erdos221Conjecture := ruzsa_1972`. The answer is YES."
@@ -174,56 +174,61 @@
   ],
   "crossReferences": [
     {
-      "targetProofId": "primitive-roots",
-      "relationship": "Ruzsa's construction hinges on 2 being a primitive root modulo $5^n$ for all $n \\geq 1$. The primitive roots proof formalizes the existence and counting of primitive roots modulo primes, providing the multiplicative number theory foundation for the coverage argument.",
+      "relationship": "related",
       "sharedConcepts": [
         "primitive roots",
         "multiplicative order",
         "cyclic groups",
         "Euler's totient function"
-      ]
+      ],
+      "targetId": "primitive-roots",
+      "description": "Ruzsa's construction hinges on 2 being a primitive root modulo $5^n$ for all $n \\geq 1$. The primitive roots proof formalizes the existence and counting of primitive roots modulo primes, providing the multiplicative number theory foundation for the coverage argument."
     },
     {
-      "targetProofId": "erdos-222",
-      "relationship": "Both problems study the additive structure of sparse number-theoretic sequences. Erdős #222 concerns gaps between sums of two squares, while #221 concerns additive complements to powers of 2. Both use density arguments and analytic number theory techniques.",
+      "relationship": "related",
       "sharedConcepts": [
         "sparse sequences",
         "density bounds",
         "additive number theory",
         "counting functions"
-      ]
+      ],
+      "targetId": "erdos-222",
+      "description": "Both problems study the additive structure of sparse number-theoretic sequences. Erd\u0151s #222 concerns gaps between sums of two squares, while #221 concerns additive complements to powers of 2. Both use density arguments and analytic number theory techniques."
     },
     {
-      "targetProofId": "szemeredi-theorem",
-      "relationship": "Szemerédi's theorem guarantees arithmetic progressions in dense sets, a foundational result in additive combinatorics. Problem #221 works in the complementary direction: constructing sparse sets with prescribed additive properties rather than finding structure in dense sets.",
+      "relationship": "related",
       "sharedConcepts": [
         "additive combinatorics",
         "density conditions",
         "structured subsets"
-      ]
+      ],
+      "targetId": "szemeredi-theorem",
+      "description": "Szemer\u00e9di's theorem guarantees arithmetic progressions in dense sets, a foundational result in additive combinatorics. Problem #221 works in the complementary direction: constructing sparse sets with prescribed additive properties rather than finding structure in dense sets."
     },
     {
-      "targetProofId": "erdos-10",
-      "relationship": "Erdős #10 asks about representations as $p + 2^k$ (prime plus power of 2), closely paralleling #221's $a + 2^k$ representations. Both study the additive reach of powers of 2 when supplemented by another set.",
+      "relationship": "related",
       "sharedConcepts": [
         "powers of 2",
         "additive representations",
         "lacunary sequences",
         "density bounds"
-      ]
+      ],
+      "targetId": "erdos-10",
+      "description": "Erd\u0151s #10 asks about representations as $p + 2^k$ (prime plus power of 2), closely paralleling #221's $a + 2^k$ representations. Both study the additive reach of powers of 2 when supplemented by another set."
     },
     {
-      "targetProofId": "partition-theorem",
-      "relationship": "Euler's partition theorem studies additive decompositions of integers, the classical foundation for questions about representability. Problem #221 is a modern variant: can every large integer be partitioned into a power of 2 and an element of a sparse set?",
+      "relationship": "related",
       "sharedConcepts": [
         "additive decomposition",
         "integer representations",
         "combinatorial number theory"
-      ]
+      ],
+      "targetId": "partition-theorem",
+      "description": "Euler's partition theorem studies additive decompositions of integers, the classical foundation for questions about representability. Problem #221 is a modern variant: can every large integer be partitioned into a power of 2 and an element of a sparse set?"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #221 is SOLVED. The answer is YES: Ruzsa (1972) constructed a set $A$ with $|A \\cap \\{1,\\ldots,N\\}| = O(N/\\log N)$ such that every sufficiently large integer is $2^k + a$ for some $k \\geq 0$ and $a \\in A$. The construction $A = \\{5^n \\cdot m : 5^n \\geq C \\log m\\} + \\{0,1\\}$ exploits the fact that 2 is a primitive root modulo all powers of 5. Ruzsa (2001) later achieved the asymptotically exact density $N/\\log_2 N$, and a matching lower bound shows this is optimal.",
+    "summary": "Erd\u0151s Problem #221 is SOLVED. The answer is YES: Ruzsa (1972) constructed a set $A$ with $|A \\cap \\{1,\\ldots,N\\}| = O(N/\\log N)$ such that every sufficiently large integer is $2^k + a$ for some $k \\geq 0$ and $a \\in A$. The construction $A = \\{5^n \\cdot m : 5^n \\geq C \\log m\\} + \\{0,1\\}$ exploits the fact that 2 is a primitive root modulo all powers of 5. Ruzsa (2001) later achieved the asymptotically exact density $N/\\log_2 N$, and a matching lower bound shows this is optimal.",
     "implications": "**Theoretical Significance**: The result reveals a deep connection between additive combinatorics and multiplicative number theory: the purely additive question of complementing $\\{2^k\\}$ is resolved by the multiplicative property of 2 being a primitive root modulo $5^n$.\n\nThis exemplifies how number-theoretic structure (primitive roots, residue coverage) can be leveraged for combinatorial constructions. The density $N/\\log N$ is the natural barrier, matching the logarithmic growth of the number of powers of 2 up to $N$.",
     "openQuestions": [
       "What are the exact constants in the density bounds? Ruzsa's $C = 1/(5 \\log 2)$ yields an upper bound, but the sharp constant in the lower bound is unknown.",

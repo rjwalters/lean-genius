@@ -1,6 +1,6 @@
 {
   "id": "erdos-748",
-  "title": "Erdős Problem #748: The Cameron-Erdős Conjecture",
+  "title": "Erd\u0151s Problem #748: The Cameron-Erd\u0151s Conjecture",
   "slug": "erdos-748",
   "description": "Is f(n) = 2^{(1+o(1))n/2} where f(n) counts sum-free subsets? YES, proved by Green (2004) and Sapozhenko (2003).",
   "meta": {
@@ -56,10 +56,10 @@
       "sumFreeSubsets: collection of all sum-free subsets",
       "f(n): counting function for sum-free subsets",
       "upperHalf_sumFree theorem: upper half is always sum-free",
-      "trivial_lower_bound axiom: f(n) ≥ 2^{n/2}",
+      "trivial_lower_bound axiom: f(n) \u2265 2^{n/2}",
       "cameronErdosConjecture definition: formal statement",
-      "green_upper_bound axiom: f(n) ≪ 2^{n/2}",
-      "precise_asymptotic axiom: f(n) ~ c_n · 2^{n/2}",
+      "green_upper_bound axiom: f(n) \u226a 2^{n/2}",
+      "precise_asymptotic axiom: f(n) ~ c_n \u00b7 2^{n/2}",
       "oddNumbers_sumFree theorem: odds form sum-free set",
       "erdos_748_summary: combining all results"
     ],
@@ -68,14 +68,14 @@
     "assumptions": "6 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Peter Cameron and Paul Erdős conjectured that the number $f(n)$ of sum-free subsets of $\\{1, \\ldots, n\\}$ satisfies $f(n) = 2^{(1+o(1))n/2}$, meaning the trivial lower bound from the upper half construction is essentially tight. The lower bound $f(n) \\ge 2^{\\lfloor n/2 \\rfloor}$ is elementary: any subset of $\\{\\lceil n/2 \\rceil, \\ldots, n\\}$ is sum-free since all pairwise sums exceed $n$. The conjecture was resolved independently by Ben Green (2004, Bull. London Math. Soc.) and Alexander Sapozhenko (2003, Dokl. Akad. Nauk). Green's proof introduced a proto-container argument: he showed that sum-free subsets are 'almost contained' in structured templates — either subsets of the upper half or subsets of odd numbers — and bounded the template count. This structural insight anticipated the Balogh-Morris-Samotij / Saxton-Thomason hypergraph container method (2015), one of the most powerful tools in modern combinatorics. More precisely, $f(n) \\sim c_n \\cdot 2^{n/2}$ where $c_n$ depends on the parity of $n$, reflecting the two dominant sum-free families (upper half for even $n$, odd numbers for odd $n$). The problem connects to Schur numbers in Ramsey theory and to the broader program of counting combinatorial structures avoiding prescribed patterns.",
-    "problemStatement": "**Problem Statement (Proved)**\n\nLet f(n) count sum-free subsets of {1,...,n}. Is it true that f(n) = 2^{(1+o(1))n/2}?\n\n**Answer: YES**\n\nGreen and Sapozhenko proved independently:\n1. f(n) ≪ 2^{n/2} (upper bound matches lower)\n2. f(n) ~ c_n · 2^{n/2} where c_n depends on parity of n",
+    "historicalContext": "Peter Cameron and Paul Erd\u0151s conjectured that the number $f(n)$ of sum-free subsets of $\\{1, \\ldots, n\\}$ satisfies $f(n) = 2^{(1+o(1))n/2}$, meaning the trivial lower bound from the upper half construction is essentially tight. The lower bound $f(n) \\ge 2^{\\lfloor n/2 \\rfloor}$ is elementary: any subset of $\\{\\lceil n/2 \\rceil, \\ldots, n\\}$ is sum-free since all pairwise sums exceed $n$. The conjecture was resolved independently by Ben Green (2004, Bull. London Math. Soc.) and Alexander Sapozhenko (2003, Dokl. Akad. Nauk). Green's proof introduced a proto-container argument: he showed that sum-free subsets are 'almost contained' in structured templates \u2014 either subsets of the upper half or subsets of odd numbers \u2014 and bounded the template count. This structural insight anticipated the Balogh-Morris-Samotij / Saxton-Thomason hypergraph container method (2015), one of the most powerful tools in modern combinatorics. More precisely, $f(n) \\sim c_n \\cdot 2^{n/2}$ where $c_n$ depends on the parity of $n$, reflecting the two dominant sum-free families (upper half for even $n$, odd numbers for odd $n$). The problem connects to Schur numbers in Ramsey theory and to the broader program of counting combinatorial structures avoiding prescribed patterns.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet f(n) count sum-free subsets of {1,...,n}. Is it true that f(n) = 2^{(1+o(1))n/2}?\n\n**Answer: YES**\n\nGreen and Sapozhenko proved independently:\n1. f(n) \u226a 2^{n/2} (upper bound matches lower)\n2. f(n) ~ c_n \u00b7 2^{n/2} where c_n depends on parity of n",
     "text": "Is f(n) = 2^{(1+o(1))n/2} where f(n) counts sum-free subsets? YES, proved by Green (2004) and Sapozhenko (2003).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Sum-Free Sets:** Define IsSumFree predicate and counting function f(n).\n\n2. **Lower Bound:** Prove upperHalf_sumFree showing any subset of [n/2+1, n] is sum-free, giving f(n) ≥ 2^{n/2}.\n\n3. **Upper Bound:** Axiomatize Green's theorem f(n) ≤ C · 2^{n/2}.\n\n4. **Examples:** Prove empty set, singletons, and odd numbers are sum-free.\n\n5. **The Conjecture:** Define cameronErdosConjecture formally and show it holds.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sum-Free Sets:** Define IsSumFree predicate and counting function f(n).\n\n2. **Lower Bound:** Prove upperHalf_sumFree showing any subset of [n/2+1, n] is sum-free, giving f(n) \u2265 2^{n/2}.\n\n3. **Upper Bound:** Axiomatize Green's theorem f(n) \u2264 C \u00b7 2^{n/2}.\n\n4. **Examples:** Prove empty set, singletons, and odd numbers are sum-free.\n\n5. **The Conjecture:** Define cameronErdosConjecture formally and show it holds.",
     "keyInsights": [
       "**Trivial Lower Bound:** Any subset of [n/2+1, n] is sum-free because any sum exceeds n",
-      "**Upper Bound is Tight:** Green/Sapozhenko showed f(n) ≤ C · 2^{n/2}",
-      "**Parity Dependence:** The constant c_n in f(n) ~ c_n · 2^{n/2} depends on whether n is even or odd",
+      "**Upper Bound is Tight:** Green/Sapozhenko showed f(n) \u2264 C \u00b7 2^{n/2}",
+      "**Parity Dependence:** The constant c_n in f(n) ~ c_n \u00b7 2^{n/2} depends on whether n is even or odd",
       "**Structure Theorem:** Most sum-free sets are subsets of [n/2, n] or odd numbers",
       "**OEIS A007865:** Small values are f(1)=2, f(2)=3, f(3)=6, f(4)=9, f(5)=16, ..."
     ],
@@ -109,7 +109,7 @@
     },
     {
       "id": "conjecture",
-      "title": "The Cameron-Erdős Conjecture",
+      "title": "The Cameron-Erd\u0151s Conjecture",
       "summary": "Defines `cameronErdosConjecture`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, $(1-\\varepsilon)n/2 \\le \\log_2 f(n) \\le (1+\\varepsilon)n/2$.",
       "startLine": 114,
       "endLine": 128
@@ -151,14 +151,14 @@
     }
   ],
   "conclusion": {
-    "summary": "The Cameron-Erdős conjecture (Erdős Problem #748) is TRUE. The number f(n) of sum-free subsets of {1,...,n} satisfies f(n) = 2^{(1+o(1))n/2}. This was proved independently by Green (2004) and Sapozhenko (2003). More precisely, f(n) ~ c_n · 2^{n/2} where the constant c_n depends on the parity of n.",
+    "summary": "The Cameron-Erd\u0151s conjecture (Erd\u0151s Problem #748) is TRUE. The number f(n) of sum-free subsets of {1,...,n} satisfies f(n) = 2^{(1+o(1))n/2}. This was proved independently by Green (2004) and Sapozhenko (2003). More precisely, f(n) ~ c_n \u00b7 2^{n/2} where the constant c_n depends on the parity of n.",
     "implications": "**Theoretical Significance**: **Combinatorial Implications**\n\n1. **Structure Theorem:** Sum-free sets are essentially subsets of [n/2, n] or odd numbers\n\n2. **Additive Combinatorics:** Foundational result for counting sets avoiding arithmetic patterns\n\n**3. Schur Numbers:** Connection to coloring problems and Ramsey theory\n\n4. **Asymptotic Counting:** Model example of precise asymptotic enumeration\n\n5. **OEIS A007865:** Explicit sequence with known asymptotics.",
     "openQuestions": [
       "What are the exact values of c_even and c_odd?",
       "What is the structure of sum-free sets achieving the maximum size?",
       "Analogous questions for sum-free subsets of other groups?",
       "Connection to Schur numbers and Ramsey theory?",
-      "Higher-order analogues (a = b₁ + ... + b_k)?"
+      "Higher-order analogues (a = b\u2081 + ... + b_k)?"
     ]
   },
   "leanFile": {
@@ -177,5 +177,39 @@
     "axiomCount": 6,
     "theoremCount": 11,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-877",
+      "relationship": "related",
+      "description": "Share sum-free-sets, counting, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-861",
+      "relationship": "related",
+      "description": "Share counting, combinatorial, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Share sum-free-sets and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-360",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-877",
+    "erdos-861",
+    "erdos-1136",
+    "erdos-13",
+    "erdos-360"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-852",
-  "title": "Erdős Problem #852: Maximal Runs of Distinct Consecutive Prime Gaps",
+  "title": "Erd\u0151s Problem #852: Maximal Runs of Distinct Consecutive Prime Gaps",
   "slug": "erdos-852",
-  "description": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) → ∞.",
+  "description": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) \u2192 \u221e.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/852",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos852Problem.lean",
@@ -25,16 +25,16 @@
     "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this question about the fine structure of prime gaps around 1985, building on decades of work on the distribution of primes. The prime gaps $d_n = p_{n+1} - p_n$ encode the local behavior of the prime counting function $\\pi(x)$. Cramér (1936) conjectured $\\max_{p_n \\leq x} d_n \\sim (\\log x)^2$, while Maier (1985) showed that primes exhibit unexpected irregularities in short intervals — the 'Maier phenomenon.' The function $h(x)$ introduced here measures a different aspect: the variability of consecutive gaps. Hardy and Littlewood's prime $k$-tuples conjecture (1923) predicts which gap patterns occur, and Brun's sieve (1919) — originally developed to bound twin primes — provides the key tool showing $h(x) \\to \\infty$. The problem connects to Gallagher's 1976 result that gaps between consecutive primes follow a Poisson distribution on average, and to the Erdős–Rankin construction (1938/1962) of large gaps. The interplay between the lower bound $(\\log x)^c$ and upper bound $o(\\log x)$ would pin down $h(x)$ as growing faster than any power of $\\log\\log x$ but slower than $\\log x$ — a narrow window reflecting the subtle balance between regularity and irregularity in the prime sequence.",
+    "historicalContext": "Erd\u0151s posed this question about the fine structure of prime gaps around 1985, building on decades of work on the distribution of primes. The prime gaps $d_n = p_{n+1} - p_n$ encode the local behavior of the prime counting function $\\pi(x)$. Cram\u00e9r (1936) conjectured $\\max_{p_n \\leq x} d_n \\sim (\\log x)^2$, while Maier (1985) showed that primes exhibit unexpected irregularities in short intervals \u2014 the 'Maier phenomenon.' The function $h(x)$ introduced here measures a different aspect: the variability of consecutive gaps. Hardy and Littlewood's prime $k$-tuples conjecture (1923) predicts which gap patterns occur, and Brun's sieve (1919) \u2014 originally developed to bound twin primes \u2014 provides the key tool showing $h(x) \\to \\infty$. The problem connects to Gallagher's 1976 result that gaps between consecutive primes follow a Poisson distribution on average, and to the Erd\u0151s\u2013Rankin construction (1938/1962) of large gaps. The interplay between the lower bound $(\\log x)^c$ and upper bound $o(\\log x)$ would pin down $h(x)$ as growing faster than any power of $\\log\\log x$ but slower than $\\log x$ \u2014 a narrow window reflecting the subtle balance between regularity and irregularity in the prime sequence.",
     "problemStatement": "Let $d_n = p_{n+1} - p_n$ be the $n$-th prime gap. Define $h(x)$ as the maximal $k$ such that for some $n$ with $p_n < x$, the consecutive gaps $d_n, d_{n+1}, \\ldots, d_{n+k-1}$ are all distinct. Is $h(x) > (\\log x)^c$ for some $c > 0$? Is $h(x) = o(\\log x)$?",
-    "text": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) → ∞.",
+    "text": "Let h(x) be the maximal length of a sequence of consecutive distinct prime gaps among primes below x. Is h(x) > (log x)^c? Is h(x) = o(log x)? Brun's sieve shows h(x) \u2192 \u221e.",
     "proofStrategy": "The formalization axiomatizes the prime sequence $p_n$ with primality and strict monotonicity, then defines prime gaps $d_n = p_{n+1} - p_n$ and proves their positivity. Distinct-gap runs are defined combinatorially and shown to be downward-closed (a prefix of a distinct run is distinct). The function $h(x)$ is axiomatized with witness and optimality axioms. Five theorems are proved in Lean: gap positivity, monotonicity of $p_n$, $p_n \\geq 2$, $d_0 = 1$, $h(x) \\geq 1$ for $x \\geq 3$, $h$ is non-decreasing, and Brun's divergence in filter form. The open conjectures use `Real.log`, real exponentiation, and `Asymptotics.IsLittleO` for rigorous formalization.",
     "keyInsights": [
-      "**Consecutive gap variability**: Unlike problems about gap size ($\\max d_n$), this asks about gap *diversity* — how many consecutive gaps can all be different. This is a combinatorial constraint on the local prime distribution.",
+      "**Consecutive gap variability**: Unlike problems about gap size ($\\max d_n$), this asks about gap *diversity* \u2014 how many consecutive gaps can all be different. This is a combinatorial constraint on the local prime distribution.",
       "**Brun's sieve divergence**: Brun's 1919 sieve, originally developed for twin primes ($\\sum 1/p_{\\text{twin}} < \\infty$), implies $h(x) \\to \\infty$: arbitrarily long distinct-gap runs exist. The Lean proof converts this to `Filter.Tendsto atTop atTop`.",
-      "**Narrow growth window**: If both conjectures hold, $h(x)$ grows faster than $(\\log x)^c$ for some $c > 0$ but slower than $\\log x$. This places $h(x)$ in a narrow band — much faster than $\\log\\log x$ but sub-logarithmic.",
+      "**Narrow growth window**: If both conjectures hold, $h(x)$ grows faster than $(\\log x)^c$ for some $c > 0$ but slower than $\\log x$. This places $h(x)$ in a narrow band \u2014 much faster than $\\log\\log x$ but sub-logarithmic.",
       "**Pigeonhole ceiling**: Since gaps among primes $p \\leq x$ satisfy $d_n \\leq x$, at most $x$ distinct positive values exist, giving the trivial bound $h(x) \\leq x$. The conjectured $o(\\log x)$ is vastly stronger.",
-      "**Connection to Poisson model**: Gallagher (1976) showed normalized prime gaps follow a Poisson distribution on average. If gaps were truly independent Poisson, $h(x)$ would grow like $\\log x / \\log\\log x$ — between the two conjectured bounds."
+      "**Connection to Poisson model**: Gallagher (1976) showed normalized prime gaps follow a Poisson distribution on average. If gaps were truly independent Poisson, $h(x)$ would grow like $\\log x / \\log\\log x$ \u2014 between the two conjectured bounds."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -47,14 +47,14 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Header documenting Erdős Problem #852 on maximal distinct prime gap runs. Imports `Nat.Prime.Basic`, `Finset.Basic`, `Real.log`, `Real.rpow`, `Asymptotics.Defs`, and `Filter.Basic` for the formalization."
+      "summary": "Header documenting Erd\u0151s Problem #852 on maximal distinct prime gap runs. Imports `Nat.Prime.Basic`, `Finset.Basic`, `Real.log`, `Real.rpow`, `Asymptotics.Defs`, and `Filter.Basic` for the formalization."
     },
     {
       "id": "primes",
       "title": "Prime Sequence Axioms",
       "startLine": 26,
       "endLine": 32,
-      "summary": "Axiomatizes `nthPrime : ℕ → ℕ` with four properties: $p_n$ is prime, $n \\mapsto p_n$ is strictly monotone, $p_0 = 2$, and $p_1 = 3$. These encode the fundamental enumeration of primes."
+      "summary": "Axiomatizes `nthPrime : \u2115 \u2192 \u2115` with four properties: $p_n$ is prime, $n \\mapsto p_n$ is strictly monotone, $p_0 = 2$, and $p_1 = 3$. These encode the fundamental enumeration of primes."
     },
     {
       "id": "gaps",
@@ -75,7 +75,7 @@
       "title": "The Function $h(x)$",
       "startLine": 82,
       "endLine": 111,
-      "summary": "Axiomatizes `maxDistinctRun : ℕ → ℕ` with witness (achieving run) and optimality (maximality). Proves $h(x) \\geq 1$ for $x \\geq 3$ using $p_0 = 2 < 3 \\leq x$ and `isDistinctRun_one`, and monotonicity $h(x) \\leq h(y)$ for $x \\leq y$."
+      "summary": "Axiomatizes `maxDistinctRun : \u2115 \u2192 \u2115` with witness (achieving run) and optimality (maximality). Proves $h(x) \\geq 1$ for $x \\geq 3$ using $p_0 = 2 < 3 \\leq x$ and `isDistinctRun_one`, and monotonicity $h(x) \\leq h(y)$ for $x \\leq y$."
     },
     {
       "id": "brun-sieve",
@@ -86,7 +86,7 @@
     },
     {
       "id": "conjectures",
-      "title": "Erdős Conjectures (OPEN)",
+      "title": "Erd\u0151s Conjectures (OPEN)",
       "startLine": 129,
       "endLine": 155,
       "summary": "Axiomatizes both open questions: (1) $\\exists c > 0,\\, \\forall^\\infty x,\\, (\\log x)^c < h(x)$ using `Real.log` and `rpow`; (2) $h = o(\\log)$ using `Asymptotics.IsLittleO`. Derives $\\varepsilon$-bound consequence and combined growth rate statement."
@@ -100,13 +100,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #852 formalizes two open questions about the growth rate of maximal distinct-gap runs among consecutive primes. The Lean file includes genuine proofs of gap positivity, monotonicity, downward-closure, h(x) ≥ 1, h-monotonicity, and Brun's divergence in filter form. Deep results (Brun's sieve, pigeonhole, the conjectures) are axiomatized.",
-    "implications": "**Theoretical Significance**: Resolution would quantify the local variability of prime gaps — a fundamental question at the intersection of sieve theory and probabilistic number theory.\n\nThe conjectured $o(\\log x)$ upper bound would mean prime gaps become repetitive at the $\\log x$ scale, while the $(\\log x)^c$ lower bound would ensure substantial diversity persists. This connects to Maier's phenomenon (unexpected irregularities in prime distribution), the Hardy–Littlewood $k$-tuples conjecture (which gap patterns occur), and Gallagher's Poisson model for normalized gaps.",
+    "summary": "Erd\u0151s Problem #852 formalizes two open questions about the growth rate of maximal distinct-gap runs among consecutive primes. The Lean file includes genuine proofs of gap positivity, monotonicity, downward-closure, h(x) \u2265 1, h-monotonicity, and Brun's divergence in filter form. Deep results (Brun's sieve, pigeonhole, the conjectures) are axiomatized.",
+    "implications": "**Theoretical Significance**: Resolution would quantify the local variability of prime gaps \u2014 a fundamental question at the intersection of sieve theory and probabilistic number theory.\n\nThe conjectured $o(\\log x)$ upper bound would mean prime gaps become repetitive at the $\\log x$ scale, while the $(\\log x)^c$ lower bound would ensure substantial diversity persists. This connects to Maier's phenomenon (unexpected irregularities in prime distribution), the Hardy\u2013Littlewood $k$-tuples conjecture (which gap patterns occur), and Gallagher's Poisson model for normalized gaps.",
     "openQuestions": [
       "Is $h(x) > (\\log x)^c$ for some constant $c > 0$? Even $c = 1/2$ would be significant.",
-      "Is $h(x) = o(\\log x)$? If so, what is the correct order — perhaps $\\log x / \\log\\log x$?",
+      "Is $h(x) = o(\\log x)$? If so, what is the correct order \u2014 perhaps $\\log x / \\log\\log x$?",
       "Does the Poisson model for prime gaps predict the correct growth rate of $h(x)$?",
-      "Can the Maynard–Tao method (bounded gaps) or GPY sieve provide lower bounds on $h(x)$?"
+      "Can the Maynard\u2013Tao method (bounded gaps) or GPY sieve provide lower bounds on $h(x)$?"
     ]
   },
   "relatedProofs": [
@@ -114,7 +114,12 @@
     "erdos-533",
     "erdos-347",
     "erdos-28",
-    "erdos-106"
+    "erdos-106",
+    "bounded-prime-gaps",
+    "erdos-854",
+    "erdos-1101",
+    "erdos-248",
+    "erdos-25"
   ],
   "leanFile": {
     "imports": [
@@ -136,5 +141,32 @@
     "axiomCount": 12,
     "theoremCount": 13,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Share sieve-theory, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-854",
+      "relationship": "related",
+      "description": "Share sieve-theory, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Share sieve-theory and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-248",
+      "relationship": "related",
+      "description": "Share sieve-theory and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-25",
+      "relationship": "related",
+      "description": "Share sieve-theory and number-theoretic themes"
+    }
+  ]
 }

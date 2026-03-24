@@ -1,10 +1,10 @@
 {
   "id": "erdos-1128",
-  "title": "Erdős Problem #1128: Monochromatic Cubes in Cardinal Products",
+  "title": "Erd\u0151s Problem #1128: Monochromatic Cubes in Cardinal Products",
   "slug": "erdos-1128",
-  "description": "Must every 2-coloring of ℵ₁ × ℵ₁ × ℵ₁ contain a countably infinite monochromatic cube? NO — disproved by Prikry-Mills (1978).",
+  "description": "Must every 2-coloring of \u2135\u2081 \u00d7 \u2135\u2081 \u00d7 \u2135\u2081 contain a countably infinite monochromatic cube? NO \u2014 disproved by Prikry-Mills (1978).",
   "meta": {
-    "author": "Prikry-Mills (1978 disproof), Erdős-Hajnal (problem)",
+    "author": "Prikry-Mills (1978 disproof), Erd\u0151s-Hajnal (problem)",
     "sourceUrl": "https://erdosproblems.com/1128",
     "date": "1978",
     "status": "axiomatized",
@@ -36,7 +36,7 @@
       },
       {
         "theorem": "Cardinal.aleph0",
-        "description": "The cardinal ℵ₀ = |ℕ|",
+        "description": "The cardinal \u2135\u2080 = |\u2115|",
         "module": "Mathlib.SetTheory.Cardinal.Basic"
       },
       {
@@ -52,7 +52,7 @@
       "erdos_hajnal_conjecture formalization",
       "prikry_mills_disproof axiom",
       "exists_bad_coloring theorem derived from disproof",
-      "two_dim_negative axiom for ℵ₁² ↛ (ℵ₀)²₂",
+      "two_dim_negative axiom for \u2135\u2081\u00b2 \u219b (\u2135\u2080)\u00b2\u2082",
       "erdos_1128_summary combining disproof and bad coloring existence"
     ],
     "axiomCount": 8,
@@ -60,16 +60,16 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and Hajnal as part of their extensive program in infinite combinatorics and partition calculus. It asks whether the cardinal Ramsey property ℵ₁³ → (ℵ₀)³₂ holds: must every 2-coloring of the product of three sets of cardinality ℵ₁ contain a countably infinite monochromatic sub-cube?\n\nPrikry and Mills disproved the conjecture in 1978 by constructing a 2-coloring of ω₁ × ω₁ × ω₁ such that no countably infinite monochromatic cube exists. Their proof exploits the ordinal structure of ω₁ to encode enough information that any ℵ₀-cube must contain both colors. The result was never formally published but was preserved through Todorčević's systematic study of partition relations [To94] and later by Komjáth in the Erdős-Hajnal Problem List [Ko25b].\n\nThe problem illustrates a striking contrast between finite and infinite Ramsey theory. In the finite case, analogous results hold by classical Ramsey theory. But at the level of uncountable cardinals, the combinatorial landscape changes fundamentally — the gap between ℵ₀ and ℵ₁ allows constructions that defeat all countable sub-structures.",
+    "historicalContext": "This problem was posed by Erd\u0151s and Hajnal as part of their extensive program in infinite combinatorics and partition calculus. It asks whether the cardinal Ramsey property \u2135\u2081\u00b3 \u2192 (\u2135\u2080)\u00b3\u2082 holds: must every 2-coloring of the product of three sets of cardinality \u2135\u2081 contain a countably infinite monochromatic sub-cube?\n\nPrikry and Mills disproved the conjecture in 1978 by constructing a 2-coloring of \u03c9\u2081 \u00d7 \u03c9\u2081 \u00d7 \u03c9\u2081 such that no countably infinite monochromatic cube exists. Their proof exploits the ordinal structure of \u03c9\u2081 to encode enough information that any \u2135\u2080-cube must contain both colors. The result was never formally published but was preserved through Todor\u010devi\u0107's systematic study of partition relations [To94] and later by Komj\u00e1th in the Erd\u0151s-Hajnal Problem List [Ko25b].\n\nThe problem illustrates a striking contrast between finite and infinite Ramsey theory. In the finite case, analogous results hold by classical Ramsey theory. But at the level of uncountable cardinals, the combinatorial landscape changes fundamentally \u2014 the gap between \u2135\u2080 and \u2135\u2081 allows constructions that defeat all countable sub-structures.",
     "problemStatement": "Let $A$, $B$, $C$ be three sets of cardinality $\\aleph_1$. Is it true that in any 2-coloring of $A \\times B \\times C$, there must exist $A_1 \\subset A$, $B_1 \\subset B$, $C_1 \\subset C$, all of cardinality $\\aleph_0$, such that $A_1 \\times B_1 \\times C_1$ is monochromatic?\n\n**Answer:** NO.\n\n**Theorem (Prikry-Mills, 1978):** $\\aleph_1^3 \\not\\to (\\aleph_0)^3_2$. There exists a 2-coloring of $\\aleph_1 \\times \\aleph_1 \\times \\aleph_1$ with no countably infinite monochromatic cube.\n\n**Prize:** $50",
-    "text": "Must every 2-coloring of ℵ₁ × ℵ₁ × ℵ₁ contain a countably infinite monochromatic cube? NO — disproved by Prikry-Mills (1978).",
-    "proofStrategy": "We formalize the partition problem using Mathlib's cardinal arithmetic. The sets A, B, C are axiomatized as types with Cardinal.mk equal to Cardinal.aleph 1. The 2-coloring and monochromatic cube conditions are defined directly.\n\nThe Prikry-Mills disproof is axiomatized as ¬erdos_hajnal_conjecture, since the counterexample construction uses ordinal combinatorics (well-orderings of ω₁, stepping-up lemmas) not yet available in Mathlib. From this axiom we derive the existence of a bad coloring via classical logic (by_contra + push_neg).\n\nWe also axiomatize the 2D analogue ℵ₁² ↛ (ℵ₀)²₂ to show this failure extends across dimensions.",
+    "text": "Must every 2-coloring of \u2135\u2081 \u00d7 \u2135\u2081 \u00d7 \u2135\u2081 contain a countably infinite monochromatic cube? NO \u2014 disproved by Prikry-Mills (1978).",
+    "proofStrategy": "We formalize the partition problem using Mathlib's cardinal arithmetic. The sets A, B, C are axiomatized as types with Cardinal.mk equal to Cardinal.aleph 1. The 2-coloring and monochromatic cube conditions are defined directly.\n\nThe Prikry-Mills disproof is axiomatized as \u00acerdos_hajnal_conjecture, since the counterexample construction uses ordinal combinatorics (well-orderings of \u03c9\u2081, stepping-up lemmas) not yet available in Mathlib. From this axiom we derive the existence of a bad coloring via classical logic (by_contra + push_neg).\n\nWe also axiomatize the 2D analogue \u2135\u2081\u00b2 \u219b (\u2135\u2080)\u00b2\u2082 to show this failure extends across dimensions.",
     "keyInsights": [
-      "**Partition Calculus Notation:** ℵ₁³ → (ℵ₀)³₂ asks whether every 2-coloring of the 3D product has a countably infinite monochromatic cube. The answer is NO.",
-      "**Ordinal Structure:** The counterexample exploits the well-ordering of ω₁ to encode information that breaks all ℵ₀-cubes. Uncountability is essential.",
+      "**Partition Calculus Notation:** \u2135\u2081\u00b3 \u2192 (\u2135\u2080)\u00b3\u2082 asks whether every 2-coloring of the 3D product has a countably infinite monochromatic cube. The answer is NO.",
+      "**Ordinal Structure:** The counterexample exploits the well-ordering of \u03c9\u2081 to encode information that breaks all \u2135\u2080-cubes. Uncountability is essential.",
       "**Finite vs. Infinite:** Classical Ramsey theory guarantees finite monochromatic structures. At uncountable cardinals, these guarantees collapse.",
-      "**Dimensional Failure:** Even the 2D case ℵ₁² ↛ (ℵ₀)²₂ fails — the negative result is not specific to three dimensions.",
-      "**Unpublished Mathematics:** The Prikry-Mills proof was never formally published but survived through the mathematical community's collective knowledge, documented by Todorčević and Komjáth."
+      "**Dimensional Failure:** Even the 2D case \u2135\u2081\u00b2 \u219b (\u2135\u2080)\u00b2\u2082 fails \u2014 the negative result is not specific to three dimensions.",
+      "**Unpublished Mathematics:** The Prikry-Mills proof was never formally published but survived through the mathematical community's collective knowledge, documented by Todor\u010devi\u0107 and Komj\u00e1th."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -81,7 +81,7 @@
     {
       "id": "cardinal-setup",
       "title": "Cardinal Setup",
-      "summary": "Defines ℵ₁ and ℵ₀ using Mathlib's Cardinal.aleph, axiomatizes types A, B, C of cardinality ℵ₁.",
+      "summary": "Defines \u2135\u2081 and \u2135\u2080 using Mathlib's Cardinal.aleph, axiomatizes types A, B, C of cardinality \u2135\u2081.",
       "startLine": 33,
       "endLine": 56
     },
@@ -94,8 +94,8 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erdős-Hajnal Conjecture",
-      "summary": "Formalizes the partition property ℵ₁³ → (ℵ₀)³₂ as erdos_hajnal_conjecture.",
+      "title": "The Erd\u0151s-Hajnal Conjecture",
+      "summary": "Formalizes the partition property \u2135\u2081\u00b3 \u2192 (\u2135\u2080)\u00b3\u2082 as erdos_hajnal_conjecture.",
       "startLine": 83,
       "endLine": 95
     },
@@ -109,14 +109,14 @@
     {
       "id": "two-dim",
       "title": "Two-Dimensional Analogue",
-      "summary": "The 2D negative result ℵ₁² ↛ (ℵ₀)²₂ axiomatized for comparison.",
+      "summary": "The 2D negative result \u2135\u2081\u00b2 \u219b (\u2135\u2080)\u00b2\u2082 axiomatized for comparison.",
       "startLine": 124,
       "endLine": 138
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "summary": "erdos_1128: the Erdős-Hajnal conjecture is false.",
+      "summary": "erdos_1128: the Erd\u0151s-Hajnal conjecture is false.",
       "startLine": 140,
       "endLine": 148
     },
@@ -129,10 +129,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1128 was DISPROVED by Prikry and Mills in 1978. The partition property ℵ₁³ → (ℵ₀)³₂ fails: there exists a 2-coloring of ℵ₁ × ℵ₁ × ℵ₁ with no countably infinite monochromatic cube.",
-    "implications": "**Theoretical Significance**: This negative result demonstrates a fundamental boundary of infinite Ramsey theory.\n\nWhile finite combinatorics guarantees monochromatic structures, the jump to uncountable cardinals allows colorings that defeat all countable sub-cubes. The failure extends to lower dimensions (2D) and motivates the study of which cardinal partition relations do hold — a central theme in set-theoretic combinatorics.",
+    "summary": "Erd\u0151s Problem #1128 was DISPROVED by Prikry and Mills in 1978. The partition property \u2135\u2081\u00b3 \u2192 (\u2135\u2080)\u00b3\u2082 fails: there exists a 2-coloring of \u2135\u2081 \u00d7 \u2135\u2081 \u00d7 \u2135\u2081 with no countably infinite monochromatic cube.",
+    "implications": "**Theoretical Significance**: This negative result demonstrates a fundamental boundary of infinite Ramsey theory.\n\nWhile finite combinatorics guarantees monochromatic structures, the jump to uncountable cardinals allows colorings that defeat all countable sub-cubes. The failure extends to lower dimensions (2D) and motivates the study of which cardinal partition relations do hold \u2014 a central theme in set-theoretic combinatorics.",
     "openQuestions": [
-      "What is the minimum cardinality κ such that κ³ → (ℵ₀)³₂ holds (if any)?",
+      "What is the minimum cardinality \u03ba such that \u03ba\u00b3 \u2192 (\u2135\u2080)\u00b3\u2082 holds (if any)?",
       "Do large cardinal axioms (e.g., measurable cardinals) recover positive partition relations?",
       "What about higher-dimensional analogues (4D, 5D products)?",
       "Can the counterexample be made explicit or canonical?"
@@ -140,84 +140,84 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-1167",
-      "title": "Erdős Problem #1167: Stepping-Down Partition Relations",
-      "relationship": "The stepping-down principle is the mechanism underlying the Prikry-Mills counterexample: partition failures at ℵ₁³ propagate to lower-dimensional products. This problem asks whether such stepping-down holds in general for infinite partition relations.",
-      "relevance": "core"
+      "relationship": "related",
+      "relevance": "core",
+      "description": "The stepping-down principle is the mechanism underlying the Prikry-Mills counterexample: partition failures at \u2135\u2081\u00b3 propagate to lower-dimensional products. This problem asks whether such stepping-down holds in general for infinite partition relations.",
+      "targetId": "erdos-1167"
     },
     {
-      "slug": "erdos-1169",
-      "title": "Erdős Problem #1169: Partition Relations for ω₁²",
-      "relationship": "ω₁² → (ω₁², 3)² is a direct 2D analogue of the 3D question in #1128. The failure of ℵ₁³ → (ℵ₀)³₂ (proved by Prikry-Mills) sits in the same program of determining which partition relations hold at ω₁.",
-      "relevance": "high"
+      "relationship": "related",
+      "relevance": "high",
+      "description": "\u03c9\u2081\u00b2 \u2192 (\u03c9\u2081\u00b2, 3)\u00b2 is a direct 2D analogue of the 3D question in #1128. The failure of \u2135\u2081\u00b3 \u2192 (\u2135\u2080)\u00b3\u2082 (proved by Prikry-Mills) sits in the same program of determining which partition relations hold at \u03c9\u2081.",
+      "targetId": "erdos-1169"
     },
     {
-      "slug": "erdos-1172",
-      "title": "Erdős Problem #1172: Partition Relations under GCH and CH",
-      "relationship": "Both problems operate in the ZFC + (G)CH setting where partition relations at ω₁ are analyzed. The negative result in #1128 holds in ZFC without additional axioms, while #1172 explores how GCH affects positive partition properties at higher cardinals.",
-      "relevance": "high"
+      "relationship": "related",
+      "relevance": "high",
+      "description": "Both problems operate in the ZFC + (G)CH setting where partition relations at \u03c9\u2081 are analyzed. The negative result in #1128 holds in ZFC without additional axioms, while #1172 explores how GCH affects positive partition properties at higher cardinals.",
+      "targetId": "erdos-1172"
     },
     {
-      "slug": "erdos-597",
-      "title": "Erdős Problem #597: Partition Relations for Ordinal Powers",
-      "relationship": "Both concern partition relations on powers of ω₁ (or 2D/3D products). Problem #597 asks about ω₁² → (ω₁ω, G)² for graph targets, while #1128 treats ω₁³ → (ω)³₂ for product sub-cubes — both in the Erdős-Hajnal partition calculus tradition.",
-      "relevance": "high"
+      "relationship": "related",
+      "relevance": "high",
+      "description": "Both concern partition relations on powers of \u03c9\u2081 (or 2D/3D products). Problem #597 asks about \u03c9\u2081\u00b2 \u2192 (\u03c9\u2081\u03c9, G)\u00b2 for graph targets, while #1128 treats \u03c9\u2081\u00b3 \u2192 (\u03c9)\u00b3\u2082 for product sub-cubes \u2014 both in the Erd\u0151s-Hajnal partition calculus tradition.",
+      "targetId": "erdos-597"
     },
     {
-      "slug": "erdos-70",
-      "title": "Erdős Problem #70: Partition Calculus for the Continuum",
-      "relationship": "Asks whether 𝔠 → (β, n)³₂ for countable ordinals β — another instance of the continuum-level partition calculus that Erdős and Hajnal developed. Together with #1128 these probe the boundary between positive and negative partition relations at uncountable cardinals.",
-      "relevance": "medium"
+      "relationship": "related",
+      "relevance": "medium",
+      "description": "Asks whether \ud835\udd20 \u2192 (\u03b2, n)\u00b3\u2082 for countable ordinals \u03b2 \u2014 another instance of the continuum-level partition calculus that Erd\u0151s and Hajnal developed. Together with #1128 these probe the boundary between positive and negative partition relations at uncountable cardinals.",
+      "targetId": "erdos-70"
     },
     {
-      "slug": "erdos-61",
-      "title": "Erdős Problem #61: The Erdős–Hajnal Conjecture",
-      "relationship": "Erdős and Hajnal are the co-authors of both problems. The Erdős-Hajnal conjecture concerns H-free graphs and large homogeneous sets — a finite-graph analogue of the infinite Ramsey question in #1128 about large monochromatic sub-cubes in cardinal products.",
-      "relevance": "medium"
+      "relationship": "related",
+      "relevance": "medium",
+      "description": "Erd\u0151s and Hajnal are the co-authors of both problems. The Erd\u0151s-Hajnal conjecture concerns H-free graphs and large homogeneous sets \u2014 a finite-graph analogue of the infinite Ramsey question in #1128 about large monochromatic sub-cubes in cardinal products.",
+      "targetId": "erdos-61"
     }
   ],
   "relatedProofs": [
     {
       "slug": "ramseys-theorem",
       "title": "Ramsey's Theorem",
-      "connection": "The classical finite Ramsey theorem guarantees monochromatic cliques in any 2-coloring of edges. Problem #1128 tests whether an infinite analogue holds for product colorings at ℵ₁ — the negative answer (Prikry-Mills) shows the infinite case fundamentally differs."
+      "connection": "The classical finite Ramsey theorem guarantees monochromatic cliques in any 2-coloring of edges. Problem #1128 tests whether an infinite analogue holds for product colorings at \u2135\u2081 \u2014 the negative answer (Prikry-Mills) shows the infinite case fundamentally differs."
     },
     {
       "slug": "cantor-diagonalization-oq-02-oq-01",
-      "title": "ω₁ Properties: Aleph Hierarchy, Regularity, and Cofinality",
-      "connection": "The Prikry-Mills construction in #1128 exploits the regularity and well-ordering structure of ω₁. This proof establishes the foundational properties of ω₁ (first uncountable ordinal) used throughout the partition-calculus arguments."
+      "title": "\u03c9\u2081 Properties: Aleph Hierarchy, Regularity, and Cofinality",
+      "connection": "The Prikry-Mills construction in #1128 exploits the regularity and well-ordering structure of \u03c9\u2081. This proof establishes the foundational properties of \u03c9\u2081 (first uncountable ordinal) used throughout the partition-calculus arguments."
     },
     {
       "slug": "erdos-118",
-      "title": "Erdős Problem #118: Partition Ordinals and Higher Cliques",
-      "connection": "Both problems study when ordinal Ramsey properties fail to transfer across dimensions or graph parameters. Problem #118 asks whether α → (α,3)² implies α → (α,n)² — an analogous question about the robustness of partition relations."
+      "title": "Erd\u0151s Problem #118: Partition Ordinals and Higher Cliques",
+      "connection": "Both problems study when ordinal Ramsey properties fail to transfer across dimensions or graph parameters. Problem #118 asks whether \u03b1 \u2192 (\u03b1,3)\u00b2 implies \u03b1 \u2192 (\u03b1,n)\u00b2 \u2014 an analogous question about the robustness of partition relations."
     },
     {
       "slug": "erdos-590",
-      "title": "Erdős #590: Ordinal Ramsey Theory for ω^ω",
-      "connection": "Chang's theorem (ω^ω → (ω^ω, 3)²) is a positive ordinal partition result contrasting with the negative result in #1128. Together they map out which infinite cardinals and ordinals admit Ramsey-type partition properties."
+      "title": "Erd\u0151s #590: Ordinal Ramsey Theory for \u03c9^\u03c9",
+      "connection": "Chang's theorem (\u03c9^\u03c9 \u2192 (\u03c9^\u03c9, 3)\u00b2) is a positive ordinal partition result contrasting with the negative result in #1128. Together they map out which infinite cardinals and ordinals admit Ramsey-type partition properties."
     }
   ],
   "references": [
     {
-      "citation": "Erdős, P. and Hajnal, A. (1958). On the structure of set mappings. Acta Mathematica Academiae Scientiarum Hungaricae, 9(1–2), 111–131.",
-      "relevance": "Erdős and Hajnal's foundational paper on set mappings and partition relations, establishing the program of which the #1128 problem is a part."
+      "citation": "Erd\u0151s, P. and Hajnal, A. (1958). On the structure of set mappings. Acta Mathematica Academiae Scientiarum Hungaricae, 9(1\u20132), 111\u2013131.",
+      "relevance": "Erd\u0151s and Hajnal's foundational paper on set mappings and partition relations, establishing the program of which the #1128 problem is a part."
     },
     {
-      "citation": "Erdős, P. and Hajnal, A. (1962). Some remarks on set theory, IX: Combinatorial problems in measure theory and set theory. Michigan Mathematical Journal, 11(2), 107–127.",
-      "relevance": "Develops the partition calculus notation κ → (λ)^n_r and formulates the class of questions to which #1128 belongs, including product-coloring partition properties."
+      "citation": "Erd\u0151s, P. and Hajnal, A. (1962). Some remarks on set theory, IX: Combinatorial problems in measure theory and set theory. Michigan Mathematical Journal, 11(2), 107\u2013127.",
+      "relevance": "Develops the partition calculus notation \u03ba \u2192 (\u03bb)^n_r and formulates the class of questions to which #1128 belongs, including product-coloring partition properties."
     },
     {
-      "citation": "Todorčević, S. (1987). Partitioning pairs of countable ordinals. Acta Mathematica, 159(3–4), 261–294.",
-      "relevance": "Todorčević's systematic study of partition relations at ω₁ provides the modern framework for the Prikry-Mills result and documents the unpublished disproof referenced in Problem #1128."
+      "citation": "Todor\u010devi\u0107, S. (1987). Partitioning pairs of countable ordinals. Acta Mathematica, 159(3\u20134), 261\u2013294.",
+      "relevance": "Todor\u010devi\u0107's systematic study of partition relations at \u03c9\u2081 provides the modern framework for the Prikry-Mills result and documents the unpublished disproof referenced in Problem #1128."
     },
     {
-      "citation": "Komjáth, P. (2025). The Erdős-Hajnal Problem List. Preprint.",
+      "citation": "Komj\u00e1th, P. (2025). The Erd\u0151s-Hajnal Problem List. Preprint.",
       "relevance": "The primary modern source documenting Problem #1128, the Prikry-Mills disproof (1978), and the surrounding open questions in infinite partition calculus."
     },
     {
       "citation": "Prikry, K. and Mills, G. (1978). Unpublished manuscript on partition relations for uncountable cardinals.",
-      "relevance": "The original (unpublished) counterexample construction showing ℵ₁³ ↛ (ℵ₀)³₂, cited in the Erdős-Hajnal problem list and Todorčević's survey as the resolution of Problem #1128."
+      "relevance": "The original (unpublished) counterexample construction showing \u2135\u2081\u00b3 \u219b (\u2135\u2080)\u00b3\u2082, cited in the Erd\u0151s-Hajnal problem list and Todor\u010devi\u0107's survey as the resolution of Problem #1128."
     }
   ],
   "leanFile": {

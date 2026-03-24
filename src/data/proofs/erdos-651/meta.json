@@ -1,8 +1,8 @@
 {
   "id": "erdos-651",
-  "title": "Erdős Problem #651: Convex Polyhedra from Points in General Position",
+  "title": "Erd\u0151s Problem #651: Convex Polyhedra from Points in General Position",
   "slug": "erdos-651",
-  "description": "Is f_k(n) > (1 + c_k)^n for finding convex polyhedra in ℝ^k? NO, disproved by Pohoata-Zakharov (2022) showing f_3(n) ≤ 2^{o(n)}.",
+  "description": "Is f_k(n) > (1 + c_k)^n for finding convex polyhedra in \u211d^k? NO, disproved by Pohoata-Zakharov (2022) showing f_3(n) \u2264 2^{o(n)}.",
   "meta": {
     "author": "Pohoata, Zakharov (2022 disproof)",
     "sourceUrl": "https://erdosproblems.com/651",
@@ -42,7 +42,7 @@
       }
     ],
     "originalContributions": [
-      "InGeneralPosition definition for point sets in ℝ^k",
+      "InGeneralPosition definition for point sets in \u211d^k",
       "DeterminesConvexPolyhedron predicate for convex position",
       "ContainsConvexPolyhedron for finding subsets",
       "f_k axiom for the Ramsey-type function",
@@ -61,14 +61,14 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #651: Convex Polyhedra in Higher Dimensions**\n\nThis problem generalizes the famous Erdős-Klein-Szekeres \"happy ending problem\" to higher dimensions.\n\n**Key History:**\n- Erdős-Szekeres (1935): Proved f_2(n) exists and gave bounds\n- The \"happy ending problem\": Any 5 points in general position contain a convex quadrilateral\n- Suk (2017): Proved the ES conjecture f_2(n) = 2^{n-2} + 1\n- Pohoata-Zakharov (2022): Disproved the exponential conjecture for k ≥ 3\n\n**Mathematical Setting:**\n- f_k(n) = smallest N such that any N points in general position in ℝ^k contain n in convex position\n- General position: no k+1 points on a (k-1)-dimensional hyperplane\n- The function decreases: f_2(n) > f_3(n) > f_4(n) > ...",
+    "historicalContext": "**Erd\u0151s Problem #651: Convex Polyhedra in Higher Dimensions**\n\nThis problem generalizes the famous Erd\u0151s-Klein-Szekeres \"happy ending problem\" to higher dimensions.\n\n**Key History:**\n- Erd\u0151s-Szekeres (1935): Proved f_2(n) exists and gave bounds\n- The \"happy ending problem\": Any 5 points in general position contain a convex quadrilateral\n- Suk (2017): Proved the ES conjecture f_2(n) = 2^{n-2} + 1\n- Pohoata-Zakharov (2022): Disproved the exponential conjecture for k \u2265 3\n\n**Mathematical Setting:**\n- f_k(n) = smallest N such that any N points in general position in \u211d^k contain n in convex position\n- General position: no k+1 points on a (k-1)-dimensional hyperplane\n- The function decreases: f_2(n) > f_3(n) > f_4(n) > ...",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $f_k(n)$ be the smallest integer such that any $f_k(n)$ points in general position in $\\mathbb{R}^k$ contain $n$ points determining a convex polyhedron.\n\n**Conjecture:** Is $f_k(n) > (1 + c_k)^n$ for some constant $c_k > 0$?\n\n**Answer: NO**\n\nPohoata-Zakharov (2022) proved: $f_3(n) \\leq 2^{o(n)}$.\n\nThis subexponential bound disproves the exponential lower bound conjecture for $k \\geq 3$.",
-    "text": "Is f_k(n) > (1 + c_k)^n for finding convex polyhedra in ℝ^k? NO, disproved by Pohoata-Zakharov (2022) showing f_3(n) ≤ 2^{o(n)}.",
+    "text": "Is f_k(n) > (1 + c_k)^n for finding convex polyhedra in \u211d^k? NO, disproved by Pohoata-Zakharov (2022) showing f_3(n) \u2264 2^{o(n)}.",
     "proofStrategy": "**Formalization Approach**\n\n1. **General Position:** Define when points avoid hyperplane degeneracies.\n\n2. **Convex Polyhedron:** Points form a convex polyhedron if no point is in the convex hull of the others.\n\n3. **The Function f_k:** Axiomatize as a Ramsey-type function.\n\n4. **Disproof:** Use Pohoata-Zakharov's 2^{o(n)} bound to contradict any exponential lower bound.\n\n5. **Why Axioms:** The upper bound construction requires sophisticated geometric and combinatorial techniques.",
     "keyInsights": [
       "**f_k(n) decreases with dimension:** Higher dimensions make finding convex subsets easier",
-      "**k = 2 is exponential:** f_2(n) = 2^{n-2} + 1 (Erdős-Szekeres conjecture, proved by Suk)",
-      "**k ≥ 3 is subexponential:** f_3(n) ≤ 2^{o(n)} breaks the exponential barrier",
+      "**k = 2 is exponential:** f_2(n) = 2^{n-2} + 1 (Erd\u0151s-Szekeres conjecture, proved by Suk)",
+      "**k \u2265 3 is subexponential:** f_3(n) \u2264 2^{o(n)} breaks the exponential barrier",
       "**Dramatic dimension jump:** From exponential (k=2) to subexponential (k=3)",
       "**Ramsey-type problem:** Find order in large enough sets"
     ],
@@ -82,7 +82,7 @@
     {
       "id": "general-position",
       "title": "Points in General Position",
-      "summary": "Definition of general position in ℝ^k",
+      "summary": "Definition of general position in \u211d^k",
       "startLine": 38,
       "endLine": 54
     },
@@ -102,7 +102,7 @@
     },
     {
       "id": "erdos-szekeres",
-      "title": "The Erdős-Klein-Szekeres Case",
+      "title": "The Erd\u0151s-Klein-Szekeres Case",
       "summary": "k = 2 case: f_2(n) = 2^{n-2} + 1",
       "startLine": 114,
       "endLine": 132
@@ -124,7 +124,7 @@
     {
       "id": "disproof",
       "title": "The Disproof",
-      "summary": "Pohoata-Zakharov 2022: f_3(n) ≤ 2^{o(n)}, disproving the conjecture",
+      "summary": "Pohoata-Zakharov 2022: f_3(n) \u2264 2^{o(n)}, disproving the conjecture",
       "startLine": 161,
       "endLine": 201
     },
@@ -137,11 +137,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #651 asked whether f_k(n) > (1 + c_k)^n for some c_k > 0, conjecturing exponential lower bounds for finding convex polyhedra in higher dimensions. The answer is NO. Pohoata and Zakharov (2022) proved f_3(n) ≤ 2^{o(n)}, a subexponential bound that contradicts any exponential lower bound for k ≥ 3.",
-    "implications": "**Theoretical Significance**: **Geometric Ramsey Theory Connections**\n\n1. **Erdős-Szekeres Generalization:** Problem #107 asks about k = 2; this extends to higher dimensions\n\n**2. Dimension Matters:** The jump from exponential (k=2) to subexponential (k≥3) is fundamental\n\n3. **Convex Position:** Higher dimensions provide more \"room\" for points to be in convex position\n\n4. **Ramsey-Type Bounds:** Shows Ramsey functions can have different asymptotics by dimension.",
+    "summary": "Erd\u0151s Problem #651 asked whether f_k(n) > (1 + c_k)^n for some c_k > 0, conjecturing exponential lower bounds for finding convex polyhedra in higher dimensions. The answer is NO. Pohoata and Zakharov (2022) proved f_3(n) \u2264 2^{o(n)}, a subexponential bound that contradicts any exponential lower bound for k \u2265 3.",
+    "implications": "**Theoretical Significance**: **Geometric Ramsey Theory Connections**\n\n1. **Erd\u0151s-Szekeres Generalization:** Problem #107 asks about k = 2; this extends to higher dimensions\n\n**2. Dimension Matters:** The jump from exponential (k=2) to subexponential (k\u22653) is fundamental\n\n3. **Convex Position:** Higher dimensions provide more \"room\" for points to be in convex position\n\n4. **Ramsey-Type Bounds:** Shows Ramsey functions can have different asymptotics by dimension.",
     "openQuestions": [
-      "What are the precise asymptotics of f_k(n) for k ≥ 3?",
-      "Is f_k(n) subexponential for all k ≥ 3?",
+      "What are the precise asymptotics of f_k(n) for k \u2265 3?",
+      "Is f_k(n) subexponential for all k \u2265 3?",
       "What is the optimal construction achieving the Pohoata-Zakharov bound?",
       "Can the bound be improved to polynomial in n?",
       "What happens for other notions of convex position?"
@@ -164,5 +164,39 @@
     "axiomCount": 8,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Share convex-geometry and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-216",
+      "relationship": "related",
+      "description": "Share convex-geometry and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Share geometric and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-173",
+      "relationship": "related",
+      "description": "Share geometric and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-188",
+      "relationship": "related",
+      "description": "Share geometric and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-216",
+    "erdos-1090",
+    "erdos-173",
+    "erdos-188"
+  ]
 }

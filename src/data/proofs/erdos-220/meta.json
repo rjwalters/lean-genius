@@ -1,8 +1,8 @@
 {
   "id": "erdos-220",
-  "title": "Erdős Problem #220: Squared Gaps Between Reduced Residues",
+  "title": "Erd\u0151s Problem #220: Squared Gaps Between Reduced Residues",
   "slug": "erdos-220",
-  "description": "For reduced residues a₁ < ⋯ < a_{φ(n)} mod n, is ∑(a_{k+1}-a_k)² ≪ n²/φ(n)? Montgomery-Vaughan (1986) proved YES, with general bound for any power γ ≥ 1.",
+  "description": "For reduced residues a\u2081 < \u22ef < a_{\u03c6(n)} mod n, is \u2211(a_{k+1}-a_k)\u00b2 \u226a n\u00b2/\u03c6(n)? Montgomery-Vaughan (1986) proved YES, with general bound for any power \u03b3 \u2265 1.",
   "meta": {
     "author": "Montgomery-Vaughan (1986 resolution)",
     "sourceUrl": "https://erdosproblems.com/220",
@@ -28,7 +28,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
-        "description": "Euler's totient function φ(n)",
+        "description": "Euler's totient function \u03c6(n)",
         "module": "Mathlib.Data.Nat.Totient"
       },
       {
@@ -48,12 +48,12 @@
       }
     ],
     "originalContributions": [
-      "reducedResidues n: set {m : 1 ≤ m < n, gcd(m,n) = 1}",
+      "reducedResidues n: set {m : 1 \u2264 m < n, gcd(m,n) = 1}",
       "sortedResidues n: reduced residues in increasing order",
       "gap n k: difference a_{k+1} - a_k",
-      "sumGapPowers n γ: ∑(gap)^γ",
-      "sumSquaredGaps n: γ = 2 case",
-      "boundedSquaredGaps n: n²/φ(n)",
+      "sumGapPowers n \u03b3: \u2211(gap)^\u03b3",
+      "sumSquaredGaps n: \u03b3 = 2 case",
+      "boundedSquaredGaps n: n\u00b2/\u03c6(n)",
       "montgomery_vaughan_squared axiom: main result",
       "montgomery_vaughan_general axiom: generalization",
       "jacobsthal n: maximum gap function"
@@ -63,16 +63,16 @@
     "assumptions": "None."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #220**\n\nThis problem concerns the gaps between consecutive reduced residues modulo n. The reduced residues are integers 1 ≤ m < n with gcd(m,n) = 1, and there are φ(n) of them.\n\n**Background:**\n- Average gap is n/φ(n)\n- Large gaps can occur (related to Jacobsthal's function)\n- Erdős asked if squared gaps sum to O(n²/φ(n))\n\n**History:**\n- Erdős posed the problem; $500 prize\n- The general γ ≥ 1 version was posed in [Er73]\n- Montgomery and Vaughan proved it in 1986 (Ann. of Math.)\n- Discussed in Guy's \"Unsolved Problems in Number Theory\" (B40)\n\n**Context:** The bound n²/φ(n) is what you'd get if all gaps were equal to the average. The theorem says even with gap variance, the squared sum doesn't exceed this by more than a constant factor.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet n ≥ 1 and A = {a₁ < a₂ < ⋯ < a_{φ(n)}} be the reduced residues mod n.\n\n**Conjecture:** ∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)² ≪ n²/φ(n)\n\n**Resolution:** Montgomery-Vaughan (1986) proved YES.\n\n**Generalization:** For any γ ≥ 1,\n∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)^γ ≪ n^γ/φ(n)^{γ-1}",
-    "text": "For reduced residues a₁ < ⋯ < a_{φ(n)} mod n, is ∑(a_{k+1}-a_k)² ≪ n²/φ(n)? Montgomery-Vaughan (1986) proved YES, with general bound for any power γ ≥ 1.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Reduced Residues:** Filter Finset.range n by coprimality\n\n2. **Gap Structure:** Sort residues, compute consecutive differences\n\n3. **Sum of Powers:** Define sumGapPowers for general γ\n\n4. **Main Results:** Montgomery-Vaughan theorems as axioms\n\n5. **Special Cases:** Prime n (all gaps 1), power of 2 (tight bound)\n\n**Why Axioms:** The proof uses deep sieve methods and analysis beyond Mathlib.",
+    "historicalContext": "**Erd\u0151s Problem #220**\n\nThis problem concerns the gaps between consecutive reduced residues modulo n. The reduced residues are integers 1 \u2264 m < n with gcd(m,n) = 1, and there are \u03c6(n) of them.\n\n**Background:**\n- Average gap is n/\u03c6(n)\n- Large gaps can occur (related to Jacobsthal's function)\n- Erd\u0151s asked if squared gaps sum to O(n\u00b2/\u03c6(n))\n\n**History:**\n- Erd\u0151s posed the problem; $500 prize\n- The general \u03b3 \u2265 1 version was posed in [Er73]\n- Montgomery and Vaughan proved it in 1986 (Ann. of Math.)\n- Discussed in Guy's \"Unsolved Problems in Number Theory\" (B40)\n\n**Context:** The bound n\u00b2/\u03c6(n) is what you'd get if all gaps were equal to the average. The theorem says even with gap variance, the squared sum doesn't exceed this by more than a constant factor.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet n \u2265 1 and A = {a\u2081 < a\u2082 < \u22ef < a_{\u03c6(n)}} be the reduced residues mod n.\n\n**Conjecture:** \u2211_{k=1}^{\u03c6(n)-1} (a_{k+1} - a_k)\u00b2 \u226a n\u00b2/\u03c6(n)\n\n**Resolution:** Montgomery-Vaughan (1986) proved YES.\n\n**Generalization:** For any \u03b3 \u2265 1,\n\u2211_{k=1}^{\u03c6(n)-1} (a_{k+1} - a_k)^\u03b3 \u226a n^\u03b3/\u03c6(n)^{\u03b3-1}",
+    "text": "For reduced residues a\u2081 < \u22ef < a_{\u03c6(n)} mod n, is \u2211(a_{k+1}-a_k)\u00b2 \u226a n\u00b2/\u03c6(n)? Montgomery-Vaughan (1986) proved YES, with general bound for any power \u03b3 \u2265 1.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Reduced Residues:** Filter Finset.range n by coprimality\n\n2. **Gap Structure:** Sort residues, compute consecutive differences\n\n3. **Sum of Powers:** Define sumGapPowers for general \u03b3\n\n4. **Main Results:** Montgomery-Vaughan theorems as axioms\n\n5. **Special Cases:** Prime n (all gaps 1), power of 2 (tight bound)\n\n**Why Axioms:** The proof uses deep sieve methods and analysis beyond Mathlib.",
     "keyInsights": [
-      "**Average Gap:** With φ(n) residues in [1,n-1], average gap is n/φ(n).",
-      "**Variance Control:** The theorem says gap variance is controlled - squared sum ≤ C times \"all gaps equal\" case.",
+      "**Average Gap:** With \u03c6(n) residues in [1,n-1], average gap is n/\u03c6(n).",
+      "**Variance Control:** The theorem says gap variance is controlled - squared sum \u2264 C times \"all gaps equal\" case.",
       "**Tight for 2^k:** When n = 2^k, all gaps are 2, and bound is exactly matched.",
       "**Jacobsthal's Function:** Maximum gap g(n) is related to prime gaps after sieving.",
-      "**General Powers:** The γ ≥ 1 generalization shows all power sums are controlled similarly."
+      "**General Powers:** The \u03b3 \u2265 1 generalization shows all power sums are controlled similarly."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -97,13 +97,13 @@
     {
       "id": "sums",
       "title": "Sum of Powers",
-      "summary": "Sum of γ-th powers of gaps",
+      "summary": "Sum of \u03b3-th powers of gaps",
       "startLine": 79,
       "endLine": 1
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture",
+      "title": "The Erd\u0151s Conjecture",
       "summary": "Statement of the squared gaps conjecture",
       "startLine": 91,
       "endLine": 1
@@ -145,10 +145,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #220 was solved by Montgomery and Vaughan in 1986. The sum of squared gaps between reduced residues is O(n²/φ(n)), and more generally ∑(gap)^γ ≪ n^γ/φ(n)^{γ-1} for all γ ≥ 1. This shows the distribution of gaps is well-controlled.",
+    "summary": "Erd\u0151s Problem #220 was solved by Montgomery and Vaughan in 1986. The sum of squared gaps between reduced residues is O(n\u00b2/\u03c6(n)), and more generally \u2211(gap)^\u03b3 \u226a n^\u03b3/\u03c6(n)^{\u03b3-1} for all \u03b3 \u2265 1. This shows the distribution of gaps is well-controlled.",
     "implications": "The result shows that despite the existence of large gaps (related to Jacobsthal's function), they are rare enough that power sums remain bounded. This connects to sieve theory and the distribution of primes.",
     "openQuestions": [
-      "What are the best explicit constants in the O(·) bounds?",
+      "What are the best explicit constants in the O(\u00b7) bounds?",
       "How does the gap distribution depend on the prime factorization of n?",
       "Can the techniques extend to other arithmetic progressions?"
     ]
@@ -161,5 +161,39 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Share gaps and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-145",
+      "relationship": "related",
+      "description": "Share gaps and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-208",
+      "relationship": "related",
+      "description": "Share gaps and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-222",
+      "relationship": "related",
+      "description": "Share gaps and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Share gaps and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1101",
+    "erdos-145",
+    "erdos-208",
+    "erdos-222",
+    "erdos-240"
+  ]
 }

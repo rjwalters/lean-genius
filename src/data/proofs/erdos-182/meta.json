@@ -1,10 +1,10 @@
 {
   "id": "erdos-182",
-  "title": "Erdős Problem #182: Maximum Edges Avoiding k-Regular Subgraphs",
+  "title": "Erd\u0151s Problem #182: Maximum Edges Avoiding k-Regular Subgraphs",
   "slug": "erdos-182",
-  "description": "For k >= 3, what is the maximum number of edges a graph on n vertices can have if it contains no k-regular subgraph? Resolved by Janzer-Sudakov (2023): the answer is Θ(n log log n).",
+  "description": "For k >= 3, what is the maximum number of edges a graph on n vertices can have if it contains no k-regular subgraph? Resolved by Janzer-Sudakov (2023): the answer is \u0398(n log log n).",
   "meta": {
-    "author": "Erdős-Sauer (question), Janzer-Sudakov (2023), Pyber-Rödl-Szemerédi (1995)",
+    "author": "Erd\u0151s-Sauer (question), Janzer-Sudakov (2023), Pyber-R\u00f6dl-Szemer\u00e9di (1995)",
     "sourceUrl": "https://erdosproblems.com/182",
     "date": "1975",
     "status": "axiomatized",
@@ -54,33 +54,33 @@
       "Definition of IsRegular for k-regular graphs using neighbor set cardinality",
       "Definition of HasKRegularSubgraph for subgraph containment",
       "Formalization of Janzer-Sudakov theorem (2023) as axiom",
-      "Formalization of Pyber-Rödl-Szemerédi lower bound (1995)",
+      "Formalization of Pyber-R\u00f6dl-Szemer\u00e9di lower bound (1995)",
       "Definition of extremal function f(n,k)",
-      "Connected regular subgraph variant (Erdős 1975)",
+      "Connected regular subgraph variant (Erd\u0151s 1975)",
       "Probabilistic density results for regular subgraphs"
     ],
     "axiomCount": 14,
     "lineCount": 224,
     "references": [
       {
-        "title": "Resolution of the Erdős-Sauer problem on regular subgraphs",
+        "title": "Resolution of the Erd\u0151s-Sauer problem on regular subgraphs",
         "authors": "O. Janzer, B. Sudakov",
         "year": 2023,
         "venue": "Forum of Mathematics, Sigma",
         "url": "https://doi.org/10.1017/fms.2023.61",
-        "description": "Proves the upper bound: any graph with ≥ C·n·log(log n) edges contains a k-regular subgraph, fully resolving the problem"
+        "description": "Proves the upper bound: any graph with \u2265 C\u00b7n\u00b7log(log n) edges contains a k-regular subgraph, fully resolving the problem"
       },
       {
         "title": "Regular subgraphs of almost regular graphs",
-        "authors": "L. Pyber, V. Rödl, E. Szemerédi",
+        "authors": "L. Pyber, V. R\u00f6dl, E. Szemer\u00e9di",
         "year": 1995,
         "venue": "European Journal of Combinatorics",
         "url": "https://doi.org/10.1006/eujc.1995.0031",
-        "description": "Constructs graphs with Ω(n log log n) edges containing no 3-regular subgraph, establishing the matching lower bound"
+        "description": "Constructs graphs with \u03a9(n log log n) edges containing no 3-regular subgraph, establishing the matching lower bound"
       },
       {
         "title": "Some recent progress on extremal problems in graph theory",
-        "authors": "P. Erdős",
+        "authors": "P. Erd\u0151s",
         "year": 1975,
         "venue": "Proceedings of the Sixth Southeastern Conference on Combinatorics",
         "description": "Original posing of the regular subgraph problem and the connected variant"
@@ -89,21 +89,21 @@
     "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős and Sauer** posed this problem in 1975, asking about the maximum edge density that avoids k-regular subgraphs.\n\n**Timeline**:\n- **1975**: Erdős poses the problem in 'Some recent progress on extremal problems in graph theory'\n- **1995**: **Pyber, Rödl, and Szemerédi** construct graphs with Ω(n log log n) edges and no 3-regular subgraph, establishing the lower bound\n- **2023**: **Janzer and Sudakov** prove the matching upper bound in 'Resolution of the Erdős-Sauer problem on regular subgraphs', completing the solution\n\n**Key insight**: The log log n factor arises from an iterative argument where each step reduces the graph while preserving structure. The iteration depth is O(log log n).",
-    "problemStatement": "**Erdős Problem #182**: Let k >= 3. What is the maximum number of edges that a graph on n vertices can contain if it does not have a k-regular subgraph? Is it << n^{1+o(1)}?\n\n**Answer**: The maximum is **Θ(n log log n)**.\n\n- **Upper bound** (Janzer-Sudakov 2023): Any graph with >= C·n·log(log n) edges contains a k-regular subgraph\n- **Lower bound** (Pyber-Rödl-Szemerédi 1995): There exist graphs with Ω(n log log n) edges and no k-regular subgraph\n\n**Variant**: For connected k-regular subgraphs, Erdős proved F(n,3) << n^{5/3}.",
-    "text": "For k >= 3, what is the maximum number of edges a graph on n vertices can have if it contains no k-regular subgraph? Resolved by Janzer-Sudakov (2023): the answer is Θ(n log log n).",
-    "proofStrategy": "We formalize this problem by:\n\n1. **Graph definitions**: IsRegular (k-regular), HasKRegularSubgraph (subgraph containment)\n\n2. **Main theorems**: Janzer-Sudakov upper bound and Pyber-Rödl-Szemerédi lower bound as axioms\n\n3. **Extremal function**: Definition of f(n,k) as maximum edges without k-regular subgraph\n\n4. **Special cases**: k=2 (forests), k=1 (matchings), connected variants\n\n5. **Probabilistic aspects**: Dense graphs almost surely contain regular subgraphs",
+    "historicalContext": "**Erd\u0151s and Sauer** posed this problem in 1975, asking about the maximum edge density that avoids k-regular subgraphs.\n\n**Timeline**:\n- **1975**: Erd\u0151s poses the problem in 'Some recent progress on extremal problems in graph theory'\n- **1995**: **Pyber, R\u00f6dl, and Szemer\u00e9di** construct graphs with \u03a9(n log log n) edges and no 3-regular subgraph, establishing the lower bound\n- **2023**: **Janzer and Sudakov** prove the matching upper bound in 'Resolution of the Erd\u0151s-Sauer problem on regular subgraphs', completing the solution\n\n**Key insight**: The log log n factor arises from an iterative argument where each step reduces the graph while preserving structure. The iteration depth is O(log log n).",
+    "problemStatement": "**Erd\u0151s Problem #182**: Let k >= 3. What is the maximum number of edges that a graph on n vertices can contain if it does not have a k-regular subgraph? Is it << n^{1+o(1)}?\n\n**Answer**: The maximum is **\u0398(n log log n)**.\n\n- **Upper bound** (Janzer-Sudakov 2023): Any graph with >= C\u00b7n\u00b7log(log n) edges contains a k-regular subgraph\n- **Lower bound** (Pyber-R\u00f6dl-Szemer\u00e9di 1995): There exist graphs with \u03a9(n log log n) edges and no k-regular subgraph\n\n**Variant**: For connected k-regular subgraphs, Erd\u0151s proved F(n,3) << n^{5/3}.",
+    "text": "For k >= 3, what is the maximum number of edges a graph on n vertices can have if it contains no k-regular subgraph? Resolved by Janzer-Sudakov (2023): the answer is \u0398(n log log n).",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Graph definitions**: IsRegular (k-regular), HasKRegularSubgraph (subgraph containment)\n\n2. **Main theorems**: Janzer-Sudakov upper bound and Pyber-R\u00f6dl-Szemer\u00e9di lower bound as axioms\n\n3. **Extremal function**: Definition of f(n,k) as maximum edges without k-regular subgraph\n\n4. **Special cases**: k=2 (forests), k=1 (matchings), connected variants\n\n5. **Probabilistic aspects**: Dense graphs almost surely contain regular subgraphs",
     "keyInsights": [
-      "**Θ(n log log n) bound**: Both upper and lower bounds match, fully resolving the problem.",
+      "**\u0398(n log log n) bound**: Both upper and lower bounds match, fully resolving the problem.",
       "**Iterative argument**: The log log n factor comes from O(log log n) reduction steps, each preserving enough structure.",
       "**k=2 special case**: Graphs without 2-regular subgraphs are exactly forests, with at most n-1 edges.",
       "**Connected variant**: Requiring the k-regular subgraph to be connected gives weaker bound O(n^{5/3}).",
-      "**Dense graphs**: For any epsilon > 0, graphs with >= epsilon·n^2 edges contain k-regular subgraphs."
+      "**Dense graphs**: For any epsilon > 0, graphs with >= epsilon\u00b7n^2 edges contain k-regular subgraphs."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -126,14 +126,14 @@
       "title": "Janzer-Sudakov Theorem (2023)",
       "startLine": 84,
       "endLine": 107,
-      "summary": "Upper bound: graphs with >= C·n·log(log n) edges have k-regular subgraphs."
+      "summary": "Upper bound: graphs with >= C\u00b7n\u00b7log(log n) edges have k-regular subgraphs."
     },
     {
       "id": "pyber-rodl-szemeredi",
-      "title": "Pyber-Rödl-Szemerédi Lower Bound (1995)",
+      "title": "Pyber-R\u00f6dl-Szemer\u00e9di Lower Bound (1995)",
       "startLine": 109,
       "endLine": 131,
-      "summary": "Lower bound construction: Ω(n log log n) edges without 3-regular subgraph."
+      "summary": "Lower bound construction: \u03a9(n log log n) edges without 3-regular subgraph."
     },
     {
       "id": "special-cases",
@@ -147,7 +147,7 @@
       "title": "Connected Variant",
       "startLine": 150,
       "endLine": 172,
-      "summary": "Connected k-regular subgraphs, Erdős's O(n^{5/3}) bound."
+      "summary": "Connected k-regular subgraphs, Erd\u0151s's O(n^{5/3}) bound."
     },
     {
       "id": "density",
@@ -161,11 +161,11 @@
       "title": "Main Resolution",
       "startLine": 193,
       "endLine": 220,
-      "summary": "Combined theorem: extremal function is Θ(n log log n)."
+      "summary": "Combined theorem: extremal function is \u0398(n log log n)."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #182 about maximum edges avoiding k-regular subgraphs. The problem was posed by Erdős and Sauer in 1975 and fully resolved in 2023 by Janzer and Sudakov. The answer is Θ(n log log n): any graph with more than C·n·log(log n) edges must contain a k-regular subgraph, and Pyber-Rödl-Szemerédi showed this bound is tight.",
+    "summary": "We formalize Erd\u0151s Problem #182 about maximum edges avoiding k-regular subgraphs. The problem was posed by Erd\u0151s and Sauer in 1975 and fully resolved in 2023 by Janzer and Sudakov. The answer is \u0398(n log log n): any graph with more than C\u00b7n\u00b7log(log n) edges must contain a k-regular subgraph, and Pyber-R\u00f6dl-Szemer\u00e9di showed this bound is tight.",
     "implications": "**Theoretical Significance**: This resolves a fundamental question in extremal graph theory about the edge-density threshold for regular substructures.\n\nThe log log n factor is unusual and arises from an iterative reduction argument. The result connects to structural graph theory and has applications in understanding graph decomposition.",
     "openQuestions": [
       "Exact constants C(k) in the upper bound for specific k",
@@ -191,19 +191,22 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-180",
-      "title": "Erdős Problem #180: Turán Numbers for Graph Families",
-      "relationship": "Both are extremal graph theory problems about edge-density thresholds — #180 asks about Turán number domination, #182 about the threshold for forced k-regular subgraphs"
+      "title": "Erd\u0151s Problem #180: Tur\u00e1n Numbers for Graph Families",
+      "relationship": "related",
+      "targetId": "erdos-180",
+      "description": "Both are extremal graph theory problems about edge-density thresholds \u2014 #180 asks about Tur\u00e1n number domination, #182 about the threshold for forced k-regular subgraphs"
     },
     {
-      "id": "erdos-181",
-      "title": "Erdős Problem #181: Ramsey Number of the Hypercube",
-      "relationship": "Both are graph-theoretic problems by Erdős concerning structural properties of dense graphs — forced substructures (regular subgraphs vs. hypercubes)"
+      "title": "Erd\u0151s Problem #181: Ramsey Number of the Hypercube",
+      "relationship": "related",
+      "targetId": "erdos-181",
+      "description": "Both are graph-theoretic problems by Erd\u0151s concerning structural properties of dense graphs \u2014 forced substructures (regular subgraphs vs. hypercubes)"
     },
     {
-      "id": "szemeredi-regularity",
-      "title": "Szemerédi Regularity Lemma",
-      "relationship": "The regularity lemma is a standard tool in extremal graph theory; the iterative argument in Janzer-Sudakov's resolution uses regularity-type structural decompositions"
+      "title": "Szemer\u00e9di Regularity Lemma",
+      "relationship": "related",
+      "targetId": "szemeredi-regularity",
+      "description": "The regularity lemma is a standard tool in extremal graph theory; the iterative argument in Janzer-Sudakov's resolution uses regularity-type structural decompositions"
     }
   ]
 }

@@ -2,9 +2,9 @@
   "id": "erdos-741",
   "title": "Splitting Sumsets with Positive Density",
   "slug": "erdos-741",
-  "description": "Can A with A+A of positive density be split A = A₁ ⊔ A₂ with both A₁+A₁ and A₂+A₂ positive density? Is there a basis where no split makes both syndetic?",
+  "description": "Can A with A+A of positive density be split A = A\u2081 \u2294 A\u2082 with both A\u2081+A\u2081 and A\u2082+A\u2082 positive density? Is there a basis where no split makes both syndetic?",
   "meta": {
-    "author": "Burr, Erdős (1994)",
+    "author": "Burr, Erd\u0151s (1994)",
     "sourceUrl": "https://erdosproblems.com/741",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos741Problem.lean",
@@ -70,15 +70,15 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Burr and Erdős's Two-Part Problem on Sumset Splitting**\n\nBurr and Erdős posed this two-part problem in 1994 [Er94b], exploring the partition regularity of sumsets at the intersection of additive combinatorics, density theory, and Ramsey theory.\n\n**Part 1 (Density Splitting):**\nIf A + A has positive upper density (a positive fraction of integers are sums of pairs from A), can we always split A = A₁ ⊔ A₂ such that both A₁ + A₁ and A₂ + A₂ also have positive density? This is a density version of Ramsey-type partition questions: does additive structure survive partitioning?\n\n**Part 2 (Non-Splittable Basis):**\nA basis of order 2 is a set A where A + A contains all sufficiently large integers. Does there exist such a basis where no partition A = A₁ ⊔ A₂ makes both A₁ + A₁ and A₂ + A₂ syndetic (having bounded gaps)? This asks for a basis that is 'indivisible' in a strong sense.\n\n**Erdős's Belief:**\nErdős reportedly believed he could construct such a non-splittable basis but 'could never quite finish the proof,' suggesting the problem lies at the boundary of current techniques.\n\n**The Tension:**\nThe two parts are in formal tension. If Part 2 holds for some basis A, then since A + A is cofinite (hence positive density), Part 1 fails for the syndetic strengthening applied to that specific A. The formalization makes this connection rigorous through the theorem part2_contradicts_part1_for_basis.\n\n**Notable Formalization:**\nThe Lean file achieves 0 sorries with 20+ proved structural theorems including sumset algebra, partition theory, syndetic set properties, basis infiniteness, and the Part 1/Part 2 tension connection — making it one of the most complete formalizations in the gallery despite both conjectures remaining open.",
-    "problemStatement": "Part 1: If A+A has positive density, can A = A₁ ⊔ A₂ with both A₁+A₁, A₂+A₂ positive density? Part 2: Is there a basis of order 2 where no split makes both sumsets syndetic?",
-    "text": "Can A with A+A of positive density be split A = A₁ ⊔ A₂ with both A₁+A₁ and A₂+A₂ positive density? Is there a basis where no split makes both syndetic?",
+    "historicalContext": "**Burr and Erd\u0151s's Two-Part Problem on Sumset Splitting**\n\nBurr and Erd\u0151s posed this two-part problem in 1994 [Er94b], exploring the partition regularity of sumsets at the intersection of additive combinatorics, density theory, and Ramsey theory.\n\n**Part 1 (Density Splitting):**\nIf A + A has positive upper density (a positive fraction of integers are sums of pairs from A), can we always split A = A\u2081 \u2294 A\u2082 such that both A\u2081 + A\u2081 and A\u2082 + A\u2082 also have positive density? This is a density version of Ramsey-type partition questions: does additive structure survive partitioning?\n\n**Part 2 (Non-Splittable Basis):**\nA basis of order 2 is a set A where A + A contains all sufficiently large integers. Does there exist such a basis where no partition A = A\u2081 \u2294 A\u2082 makes both A\u2081 + A\u2081 and A\u2082 + A\u2082 syndetic (having bounded gaps)? This asks for a basis that is 'indivisible' in a strong sense.\n\n**Erd\u0151s's Belief:**\nErd\u0151s reportedly believed he could construct such a non-splittable basis but 'could never quite finish the proof,' suggesting the problem lies at the boundary of current techniques.\n\n**The Tension:**\nThe two parts are in formal tension. If Part 2 holds for some basis A, then since A + A is cofinite (hence positive density), Part 1 fails for the syndetic strengthening applied to that specific A. The formalization makes this connection rigorous through the theorem part2_contradicts_part1_for_basis.\n\n**Notable Formalization:**\nThe Lean file achieves 0 sorries with 20+ proved structural theorems including sumset algebra, partition theory, syndetic set properties, basis infiniteness, and the Part 1/Part 2 tension connection \u2014 making it one of the most complete formalizations in the gallery despite both conjectures remaining open.",
+    "problemStatement": "Part 1: If A+A has positive density, can A = A\u2081 \u2294 A\u2082 with both A\u2081+A\u2081, A\u2082+A\u2082 positive density? Part 2: Is there a basis of order 2 where no split makes both sumsets syndetic?",
+    "text": "Can A with A+A of positive density be split A = A\u2081 \u2294 A\u2082 with both A\u2081+A\u2081 and A\u2082+A\u2082 positive density? Is there a basis where no split makes both syndetic?",
     "proofStrategy": "**Formalization Strategy**\n\nThe formalization builds a complete framework for the problem without attempting to resolve the open conjectures:\n\n1. **Definitions**: upperDensity via Filter.limsup of ncard ratios; sumset as explicit existential; IsBasisOrder2 via Filter.Eventually; IsSyndetic via bounded gap quantification\n\n2. **Conjectures**: Both parts stated as Prop definitions, keeping them as mathematical objects rather than axioms\n\n3. **Sumset Algebra** (10 proved): Commutativity, monotonicity, identity elements, union containment\n\n4. **Partition Theory** (3 proved): Trivial and complement partitions, disjointness membership\n\n5. **Syndetic Theory** (5 proved): N is syndetic, empty is not, nonemptiness, monotonicity, infiniteness\n\n6. **Density Axioms** (5): Standard properties axiomatized rather than proved from limsup\n\n7. **Basis Properties** (2 proved): basis_infinite by contradiction (bounded A implies bounded A+A), basis_has_pos_density_sumset via cofinite density\n\n8. **Connection Theorems** (2 proved): Part 2 implies non-syndetic exists; Part 2 contradicts Part 1 for the specific basis",
     "keyInsights": [
-      "**Density vs syndetic**: Part 1 concerns positive density (a measure-theoretic property), while Part 2 concerns syndeticity (a topological/combinatorial property). Syndetic implies positive density, but not vice versa — this gap is what allows both parts to potentially be true simultaneously",
+      "**Density vs syndetic**: Part 1 concerns positive density (a measure-theoretic property), while Part 2 concerns syndeticity (a topological/combinatorial property). Syndetic implies positive density, but not vice versa \u2014 this gap is what allows both parts to potentially be true simultaneously",
       "**Tension between parts**: If Part 2 holds for some basis A, then Part 1 fails for that specific A when 'positive density' is strengthened to 'syndetic'. The formalization proves this connection rigorously through part2_contradicts_part1_for_basis",
       "**Erdos's incomplete proof**: Erdos believed he could construct a non-splittable basis for Part 2, but the construction was never completed. This suggests the problem is at the boundary of current techniques in additive combinatorics",
-      "**Proved structural theory**: The formalization proves 20+ structural results including sumset commutativity, monotonicity, basis infiniteness, syndetic set properties, and the Part 2 → Part 1 connection — all with 0 sorries",
+      "**Proved structural theory**: The formalization proves 20+ structural results including sumset commutativity, monotonicity, basis infiniteness, syndetic set properties, and the Part 2 \u2192 Part 1 connection \u2014 all with 0 sorries",
       "**Filter-based density**: Upper density is formalized using Mathlib's Filter.limsup, and IsBasisOrder2 uses Filter.Eventually, leveraging Mathlib's topological infrastructure for clean asymptotic statements"
     ],
     "prerequisites": [
@@ -140,7 +140,7 @@
   ],
   "conclusion": {
     "summary": "Erdos Problem 741 formalizes both density-splitting and non-splittable basis conjectures with extensive proved structural theory. 20+ theorems proved, 0 sorries. The tension between Parts 1 and 2 is formally established: if Part 2 holds, then Part 1 fails for the specific constructed basis when 'positive density' is replaced by 'syndetic.'",
-    "implications": "1. **Additive Combinatorics**: Resolution would clarify the relationship between additive structure, density, and partition regularity\n\n**2. Ramsey Theory Connection**: Part 1 is a density-Ramsey question: does sumset density survive partitioning, analogous to Rado's theorem for equation regularity?\n\n3. **Basis Theory**: Part 2 would establish 'indivisible' bases — a new structural concept in additive number theory\n\n4. **Formalization Quality**: The 0-sorry formalization with 20+ proved structural results demonstrates that open problems can be productively formalized by proving everything around the core conjecture.",
+    "implications": "1. **Additive Combinatorics**: Resolution would clarify the relationship between additive structure, density, and partition regularity\n\n**2. Ramsey Theory Connection**: Part 1 is a density-Ramsey question: does sumset density survive partitioning, analogous to Rado's theorem for equation regularity?\n\n3. **Basis Theory**: Part 2 would establish 'indivisible' bases \u2014 a new structural concept in additive number theory\n\n4. **Formalization Quality**: The 0-sorry formalization with 20+ proved structural results demonstrates that open problems can be productively formalized by proving everything around the core conjecture.",
     "openQuestions": [
       "Can positive density of A+A always be preserved under partition? (Part 1)",
       "Does a non-splittable basis of order 2 exist, as Erdos believed? (Part 2)",
@@ -165,5 +165,39 @@
     "axiomCount": 7,
     "theoremCount": 22,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Share sumsets, additive-combinatorial, and density themes"
+    },
+    {
+      "targetId": "erdos-245",
+      "relationship": "related",
+      "description": "Share sumsets, additive-combinatorial, and density themes"
+    },
+    {
+      "targetId": "erdos-31",
+      "relationship": "related",
+      "description": "Share sumsets, additive-combinatorial, and density themes"
+    },
+    {
+      "targetId": "erdos-333",
+      "relationship": "related",
+      "description": "Share sumsets, additive-combinatorial, and density themes"
+    },
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Share sumsets, additive-combinatorial, and density themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-245",
+    "erdos-31",
+    "erdos-333",
+    "erdos-335"
+  ]
 }

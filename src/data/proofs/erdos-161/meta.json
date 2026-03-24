@@ -1,10 +1,10 @@
 {
   "id": "erdos-161",
-  "title": "Erdős Problem #161: Almost Monochromatic Subsets in Hypergraph Colorings",
+  "title": "Erd\u0151s Problem #161: Almost Monochromatic Subsets in Hypergraph Colorings",
   "slug": "erdos-161",
-  "description": "Does F^(t)(n,α) have jumps as α varies from 0 to 1/2? SOLVED for t=3 by Conlon-Fox-Sudakov (2011): exactly one jump at α=0. F^(t)(n,α) measures the largest m ensuring every large subset has balanced colors.",
+  "description": "Does F^(t)(n,\u03b1) have jumps as \u03b1 varies from 0 to 1/2? SOLVED for t=3 by Conlon-Fox-Sudakov (2011): exactly one jump at \u03b1=0. F^(t)(n,\u03b1) measures the largest m ensuring every large subset has balanced colors.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/161",
     "date": "",
     "status": "axiomatized",
@@ -41,8 +41,8 @@
     "originalContributions": [
       "completeHypergraph definition: all t-subsets of [n]",
       "HyperedgeColoring and colorCount definitions",
-      "IsBalanced predicate: (α,m)-balanced coloring",
-      "F axiom: the function F^(t)(n,α)",
+      "IsBalanced predicate: (\u03b1,m)-balanced coloring",
+      "F axiom: the function F^(t)(n,\u03b1)",
       "FZero and HasJumpAt definitions",
       "erdos_hajnal_rado_conjecture axiom",
       "erdos_spencer_lower_bound axiom",
@@ -56,15 +56,15 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #161** is a $500 prize problem about phase transitions in hypergraph coloring. It asks whether the function F^(t)(n,α), which measures how well 2-colorings of t-uniform hypergraphs can be balanced, has discontinuities as α varies from 0 to 1/2.\n\nThe α=0 case reduces to classical Ramsey theory, where F^(t)(n,0) grows like the iterated logarithm log_{t-1}(n). For positive α, the Erdős-Spencer lower bound shows F grows much faster, like (log n)^{1/(t-1)}. Erdős believed there is exactly one jump, at α=0, where the behavior changes dramatically.\n\nConlon, Fox, and Sudakov (2011) resolved the t=3 case by proving F^(3)(n,α) = Θ(√(log n)) for all α > 0, confirming the one-jump structure. For t > 3, the exact behavior remains open, though the same phase transition pattern is expected.",
-    "problemStatement": "**Problem Statement (SOLVED for t = 3)**\n\nLet α ∈ [0, 1/2) and n, t ≥ 1. Define F^(t)(n, α) as the largest m such that we can 2-color the edges of the complete t-uniform hypergraph on n vertices so that for every X ⊆ [n] with |X| ≥ m, there are at least α · C(|X|, t) t-subsets of X of each color.\n\n**Question:** As α varies from 0 to 1/2, does F^(t)(n, α) increase continuously or are there jumps?\n\n**Answer (t = 3):** Exactly one jump at α = 0 (Conlon-Fox-Sudakov 2011)\n\n**Key values:**\n- α = 0: F^(3)(n, 0) = Θ(log log n)\n- α > 0: F^(3)(n, α) = Θ(√(log n))",
-    "text": "Does F^(t)(n,α) have jumps as α varies from 0 to 1/2? SOLVED for t=3 by Conlon-Fox-Sudakov (2011): exactly one jump at α=0. F^(t)(n,α) measures the largest m ensuring every large subset has balanced colors.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Complete t-uniform hypergraph, 2-colorings, balanced coloring property, the function F^(t)(n,α).\n\n2. **α = 0 (Ramsey):** Axiomatize the Erdős-Hajnal-Rado conjecture on iterated logarithm growth.\n\n3. **α > 0 (Bounds):** Axiomatize Erdős-Spencer lower bound and upper bounds.\n\n4. **Jump formalization:** Define HasJumpAt and erdos_one_jump_belief.\n\n5. **Main result:** Axiomatize Conlon-Fox-Sudakov upper bound and F^(3) characterization.\n\n6. **Summary:** Combine results into erdos_161_summary theorem using exact ⟨...⟩.",
+    "historicalContext": "**Erd\u0151s Problem #161** is a $500 prize problem about phase transitions in hypergraph coloring. It asks whether the function F^(t)(n,\u03b1), which measures how well 2-colorings of t-uniform hypergraphs can be balanced, has discontinuities as \u03b1 varies from 0 to 1/2.\n\nThe \u03b1=0 case reduces to classical Ramsey theory, where F^(t)(n,0) grows like the iterated logarithm log_{t-1}(n). For positive \u03b1, the Erd\u0151s-Spencer lower bound shows F grows much faster, like (log n)^{1/(t-1)}. Erd\u0151s believed there is exactly one jump, at \u03b1=0, where the behavior changes dramatically.\n\nConlon, Fox, and Sudakov (2011) resolved the t=3 case by proving F^(3)(n,\u03b1) = \u0398(\u221a(log n)) for all \u03b1 > 0, confirming the one-jump structure. For t > 3, the exact behavior remains open, though the same phase transition pattern is expected.",
+    "problemStatement": "**Problem Statement (SOLVED for t = 3)**\n\nLet \u03b1 \u2208 [0, 1/2) and n, t \u2265 1. Define F^(t)(n, \u03b1) as the largest m such that we can 2-color the edges of the complete t-uniform hypergraph on n vertices so that for every X \u2286 [n] with |X| \u2265 m, there are at least \u03b1 \u00b7 C(|X|, t) t-subsets of X of each color.\n\n**Question:** As \u03b1 varies from 0 to 1/2, does F^(t)(n, \u03b1) increase continuously or are there jumps?\n\n**Answer (t = 3):** Exactly one jump at \u03b1 = 0 (Conlon-Fox-Sudakov 2011)\n\n**Key values:**\n- \u03b1 = 0: F^(3)(n, 0) = \u0398(log log n)\n- \u03b1 > 0: F^(3)(n, \u03b1) = \u0398(\u221a(log n))",
+    "text": "Does F^(t)(n,\u03b1) have jumps as \u03b1 varies from 0 to 1/2? SOLVED for t=3 by Conlon-Fox-Sudakov (2011): exactly one jump at \u03b1=0. F^(t)(n,\u03b1) measures the largest m ensuring every large subset has balanced colors.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Complete t-uniform hypergraph, 2-colorings, balanced coloring property, the function F^(t)(n,\u03b1).\n\n2. **\u03b1 = 0 (Ramsey):** Axiomatize the Erd\u0151s-Hajnal-Rado conjecture on iterated logarithm growth.\n\n3. **\u03b1 > 0 (Bounds):** Axiomatize Erd\u0151s-Spencer lower bound and upper bounds.\n\n4. **Jump formalization:** Define HasJumpAt and erdos_one_jump_belief.\n\n5. **Main result:** Axiomatize Conlon-Fox-Sudakov upper bound and F^(3) characterization.\n\n6. **Summary:** Combine results into erdos_161_summary theorem using exact \u27e8...\u27e9.",
     "keyInsights": [
-      "At α=0, F^(t)(n,0) ≈ log_{t-1}(n) (iterated logarithm—very slow growth)",
-      "At α>0, F^(t)(n,α) ≈ (log n)^{1/(t-1)} (power of log—much faster)",
-      "Conlon-Fox-Sudakov (2011): For t=3, F^(3)(n,α) = Θ(√(log n)) for all α>0",
-      "This confirms Erdős's belief of exactly one jump at α=0 (for t=3)",
+      "At \u03b1=0, F^(t)(n,0) \u2248 log_{t-1}(n) (iterated logarithm\u2014very slow growth)",
+      "At \u03b1>0, F^(t)(n,\u03b1) \u2248 (log n)^{1/(t-1)} (power of log\u2014much faster)",
+      "Conlon-Fox-Sudakov (2011): For t=3, F^(3)(n,\u03b1) = \u0398(\u221a(log n)) for all \u03b1>0",
+      "This confirms Erd\u0151s's belief of exactly one jump at \u03b1=0 (for t=3)",
       "The jump reflects a phase transition between Ramsey-type and balanced-coloring behavior"
     ],
     "prerequisites": [
@@ -83,22 +83,22 @@
     },
     {
       "id": "f-function",
-      "title": "The Function F^(t)(n,α)",
+      "title": "The Function F^(t)(n,\u03b1)",
       "summary": "F axiom and specification",
       "startLine": 60,
       "endLine": 69
     },
     {
       "id": "ramsey-case",
-      "title": "Classical Ramsey Case (α = 0)",
-      "summary": "FZero, Erdős-Hajnal-Rado conjecture, iterated logarithm",
+      "title": "Classical Ramsey Case (\u03b1 = 0)",
+      "summary": "FZero, Erd\u0151s-Hajnal-Rado conjecture, iterated logarithm",
       "startLine": 71,
       "endLine": 86
     },
     {
       "id": "positive-alpha",
-      "title": "Positive α: Bounds",
-      "summary": "Erdős-Spencer lower bound, upper bound near 1/2",
+      "title": "Positive \u03b1: Bounds",
+      "summary": "Erd\u0151s-Spencer lower bound, upper bound near 1/2",
       "startLine": 88,
       "endLine": 100
     },
@@ -132,13 +132,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #161 asked whether F^(t)(n,α) has jumps as α varies from 0 to 1/2. For t=3, Conlon-Fox-Sudakov (2011) proved there is exactly one jump at α=0, confirming Erdős's belief. The function transitions from iterated logarithm growth (Ramsey regime) to power-of-log growth (balanced regime).",
-    "implications": "This result reveals a sharp phase transition in hypergraph coloring problems. The Ramsey case (α=0) and the balanced case (α>0) have fundamentally different behavior, with α=0 being much more restrictive.",
+    "summary": "Erd\u0151s Problem #161 asked whether F^(t)(n,\u03b1) has jumps as \u03b1 varies from 0 to 1/2. For t=3, Conlon-Fox-Sudakov (2011) proved there is exactly one jump at \u03b1=0, confirming Erd\u0151s's belief. The function transitions from iterated logarithm growth (Ramsey regime) to power-of-log growth (balanced regime).",
+    "implications": "This result reveals a sharp phase transition in hypergraph coloring problems. The Ramsey case (\u03b1=0) and the balanced case (\u03b1>0) have fundamentally different behavior, with \u03b1=0 being much more restrictive.",
     "openQuestions": [
-      "Does the one-jump phenomenon hold for all t ≥ 3?",
+      "Does the one-jump phenomenon hold for all t \u2265 3?",
       "Can the Conlon-Fox-Sudakov upper bound be extended to t > 3?",
-      "What is the exact constant in F^(3)(n,α) = Θ(√(log n))?",
-      "Is there a combinatorial interpretation of why the jump occurs exactly at α=0?"
+      "What is the exact constant in F^(3)(n,\u03b1) = \u0398(\u221a(log n))?",
+      "Is there a combinatorial interpretation of why the jump occurs exactly at \u03b1=0?"
     ]
   },
   "leanFile": {
@@ -151,5 +151,39 @@
     "axiomCount": 10,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-564",
+      "relationship": "related",
+      "description": "Share combinatorial, hypergraphs, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share combinatorial and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1022",
+      "relationship": "related",
+      "description": "Share combinatorial and hypergraphs themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share combinatorial and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Share combinatorial and hypergraphs themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-564",
+    "erdos-1014",
+    "erdos-1022",
+    "erdos-1030",
+    "erdos-1075"
+  ]
 }

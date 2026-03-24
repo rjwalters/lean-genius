@@ -1,10 +1,10 @@
 {
   "id": "erdos-1023",
-  "title": "Erdős Problem #1023: Union-Free Families",
+  "title": "Erd\u0151s Problem #1023: Union-Free Families",
   "slug": "erdos-1023",
-  "description": "Let F(n) be the max size of a family of subsets of {1,...,n} where no set is the union of other members. Is F(n) ~ c · 2^n / √n? YES: F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n.",
+  "description": "Let F(n) be the max size of a family of subsets of {1,...,n} where no set is the union of other members. Is F(n) ~ c \u00b7 2^n / \u221an? YES: F(n) = C(n, n/2) ~ \u221a(2/\u03c0) \u00b7 2^n / \u221an.",
   "meta": {
-    "author": "Erdős-Kleitman, Hunter",
+    "author": "Erd\u0151s-Kleitman, Hunter",
     "sourceUrl": "https://erdosproblems.com/1023",
     "date": "1971",
     "status": "axiomatized",
@@ -29,15 +29,15 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1023 asks about union-free families: collections of subsets of {1,...,n} where no member equals the union of other members. This is a fundamental question in extremal set theory, connecting to Sperner's theorem and the study of antichains. Erdős posed the question of whether the maximum size F(n) grows asymptotically as c · 2^n / √n for some constant c > 0.\n\nThe key insight is that antichains (families where no set contains another) are automatically union-free, since a union of two or more distinct sets strictly contains each of them. By Sperner's theorem, the largest antichain in the power set of {1,...,n} is the middle layer consisting of all sets of size ⌊n/2⌋, which has C(n, ⌊n/2⌋) elements. This gives the lower bound F(n) ≥ C(n, ⌊n/2⌋).\n\nErdős and Kleitman proved the matching upper bound F(n) ≤ C(n, ⌊n/2⌋), establishing that F(n) = C(n, ⌊n/2⌋) exactly. By Stirling's approximation, C(n, ⌊n/2⌋) ~ √(2/π) · 2^n / √n, confirming the conjectured asymptotic form with c = √(2/π) ≈ 0.798. Hunter later observed that this result also follows from the solution to Erdős Problem #447 on 2-union-free families, since every union-free family is 2-union-free.",
-    "problemStatement": "**Problem Statement**\n\nLet F(n) be the maximum size of a family of subsets of {1,...,n} such that no set in the family is the union of other members.\n\nIs there a constant c > 0 such that F(n) ~ c · 2^n / √n?\n\n**Status**: SOLVED\n\n**Answer**: YES. F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n.",
-    "text": "Let F(n) be the max size of a family of subsets of {1,...,n} where no set is the union of other members. Is F(n) ~ c · 2^n / √n? YES: F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n.",
-    "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound**: The middle layer (sets of size n/2) is an antichain, hence union-free. Size = C(n, n/2).\n\n2. **Upper Bound (Erdős-Kleitman)**: No union-free family can exceed C(n, n/2).\n\n3. **Asymptotics**: By Stirling, C(n, n/2) ~ √(2/π) · 2^n / √n.\n\n4. **Hunter's Observation**: Problem 447 (2-union-free) has the same answer, and union-free ⊆ 2-union-free.\n\n**Key Insight**: The antichain bound is tight for union-free families.",
+    "historicalContext": "Erd\u0151s Problem #1023 asks about union-free families: collections of subsets of {1,...,n} where no member equals the union of other members. This is a fundamental question in extremal set theory, connecting to Sperner's theorem and the study of antichains. Erd\u0151s posed the question of whether the maximum size F(n) grows asymptotically as c \u00b7 2^n / \u221an for some constant c > 0.\n\nThe key insight is that antichains (families where no set contains another) are automatically union-free, since a union of two or more distinct sets strictly contains each of them. By Sperner's theorem, the largest antichain in the power set of {1,...,n} is the middle layer consisting of all sets of size \u230an/2\u230b, which has C(n, \u230an/2\u230b) elements. This gives the lower bound F(n) \u2265 C(n, \u230an/2\u230b).\n\nErd\u0151s and Kleitman proved the matching upper bound F(n) \u2264 C(n, \u230an/2\u230b), establishing that F(n) = C(n, \u230an/2\u230b) exactly. By Stirling's approximation, C(n, \u230an/2\u230b) ~ \u221a(2/\u03c0) \u00b7 2^n / \u221an, confirming the conjectured asymptotic form with c = \u221a(2/\u03c0) \u2248 0.798. Hunter later observed that this result also follows from the solution to Erd\u0151s Problem #447 on 2-union-free families, since every union-free family is 2-union-free.",
+    "problemStatement": "**Problem Statement**\n\nLet F(n) be the maximum size of a family of subsets of {1,...,n} such that no set in the family is the union of other members.\n\nIs there a constant c > 0 such that F(n) ~ c \u00b7 2^n / \u221an?\n\n**Status**: SOLVED\n\n**Answer**: YES. F(n) = C(n, n/2) ~ \u221a(2/\u03c0) \u00b7 2^n / \u221an.",
+    "text": "Let F(n) be the max size of a family of subsets of {1,...,n} where no set is the union of other members. Is F(n) ~ c \u00b7 2^n / \u221an? YES: F(n) = C(n, n/2) ~ \u221a(2/\u03c0) \u00b7 2^n / \u221an.",
+    "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound**: The middle layer (sets of size n/2) is an antichain, hence union-free. Size = C(n, n/2).\n\n2. **Upper Bound (Erd\u0151s-Kleitman)**: No union-free family can exceed C(n, n/2).\n\n3. **Asymptotics**: By Stirling, C(n, n/2) ~ \u221a(2/\u03c0) \u00b7 2^n / \u221an.\n\n4. **Hunter's Observation**: Problem 447 (2-union-free) has the same answer, and union-free \u2286 2-union-free.\n\n**Key Insight**: The antichain bound is tight for union-free families.",
     "keyInsights": [
       "Union-free: no set is union of other members",
-      "Antichains are union-free (no containment → no union)",
+      "Antichains are union-free (no containment \u2192 no union)",
       "Middle layer C(n, n/2) achieves the maximum",
-      "F(n) ~ √(2/π) · 2^n / √n by Stirling",
+      "F(n) ~ \u221a(2/\u03c0) \u00b7 2^n / \u221an by Stirling",
       "Follows from Problem 447 on 2-union-free families"
     ],
     "prerequisites": [
@@ -83,14 +83,14 @@
     },
     {
       "id": "lower-bound",
-      "title": "Lower Bound: F(n) ≥ C(n, n/2)",
+      "title": "Lower Bound: F(n) \u2265 C(n, n/2)",
       "summary": "unionFreeMax_ge_middle",
       "startLine": 188,
       "endLine": 204
     },
     {
       "id": "upper-bound",
-      "title": "Upper Bound: F(n) ≤ C(n, n/2)",
+      "title": "Upper Bound: F(n) \u2264 C(n, n/2)",
       "summary": "erdos_kleitman_upper axiom, unionFreeMax_eq_middle",
       "startLine": 205,
       "endLine": 221
@@ -118,7 +118,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1023 asked whether the maximum union-free family has size ~ c · 2^n / √n. The answer is YES: F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n. The middle layer achieves this bound, and Erdős-Kleitman proved it's optimal.",
+    "summary": "Erd\u0151s Problem #1023 asked whether the maximum union-free family has size ~ c \u00b7 2^n / \u221an. The answer is YES: F(n) = C(n, n/2) ~ \u221a(2/\u03c0) \u00b7 2^n / \u221an. The middle layer achieves this bound, and Erd\u0151s-Kleitman proved it's optimal.",
     "implications": "1. **Extremal Set Theory**: Tight bound on union-free families\n\n**2. Connection to Antichains**: Sperner's theorem is the key ingredient\n\n3. **Stirling's Approximation**: Converts exact bound to asymptotic form\n\n4. **Problem 447 Link**: Hunter's observation connects related problems.",
     "openQuestions": [
       "What about union-free families with additional constraints?",
@@ -130,28 +130,34 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-447",
-      "relationship": "Hunter observed that Problem #1023 follows directly from Problem #447 (2-union-free families), since every union-free family is 2-union-free and both have the same extremal answer C(n, n/2)."
+      "relationship": "related",
+      "targetId": "erdos-447",
+      "description": "Hunter observed that Problem #1023 follows directly from Problem #447 (2-union-free families), since every union-free family is 2-union-free and both have the same extremal answer C(n, n/2)."
     },
     {
-      "target": "erdos-703",
-      "relationship": "Forbidden intersection families are a dual extremal question: instead of bounding unions, one restricts intersection sizes. Both problems use layered/antichain structure and Katona-style arguments."
+      "relationship": "related",
+      "targetId": "erdos-703",
+      "description": "Forbidden intersection families are a dual extremal question: instead of bounding unions, one restricts intersection sizes. Both problems use layered/antichain structure and Katona-style arguments."
     },
     {
-      "target": "erdos-1022",
-      "relationship": "Problem #1022 studies Property B of sparse set families; both #1022 and #1023 belong to the cluster of extremal set-family problems Erdős posed around the same period."
+      "relationship": "related",
+      "targetId": "erdos-1022",
+      "description": "Problem #1022 studies Property B of sparse set families; both #1022 and #1023 belong to the cluster of extremal set-family problems Erd\u0151s posed around the same period."
     },
     {
-      "target": "erdos-1062",
-      "relationship": "Problem #1062 maximizes sets where no element divides two others — an arithmetic analogue of the antichain condition. Both problems are solved by the middle-layer / maximum-antichain argument."
+      "relationship": "related",
+      "targetId": "erdos-1062",
+      "description": "Problem #1062 maximizes sets where no element divides two others \u2014 an arithmetic analogue of the antichain condition. Both problems are solved by the middle-layer / maximum-antichain argument."
     },
     {
-      "target": "stirling-formula",
-      "relationship": "Stirling's approximation is the analytic tool that converts the exact answer C(n, n/2) into the asymptotic form √(2/π) · 2^n / √n appearing in Problem #1023."
+      "relationship": "related",
+      "targetId": "stirling-formula",
+      "description": "Stirling's approximation is the analytic tool that converts the exact answer C(n, n/2) into the asymptotic form \u221a(2/\u03c0) \u00b7 2^n / \u221an appearing in Problem #1023."
     },
     {
-      "target": "binomial-theorem",
-      "relationship": "The binomial theorem and properties of central binomial coefficients C(n, n/2) are the combinatorial backbone of the exact formula F(n) = C(n, n/2)."
+      "relationship": "related",
+      "targetId": "binomial-theorem",
+      "description": "The binomial theorem and properties of central binomial coefficients C(n, n/2) are the combinatorial backbone of the exact formula F(n) = C(n, n/2)."
     }
   ],
   "relatedProofs": [
@@ -161,7 +167,7 @@
     },
     {
       "id": "stirling-formula",
-      "description": "Stirling's Formula (provides the asymptotic expansion C(n,n/2) ~ √(2/π) · 2^n/√n)"
+      "description": "Stirling's Formula (provides the asymptotic expansion C(n,n/2) ~ \u221a(2/\u03c0) \u00b7 2^n/\u221an)"
     },
     {
       "id": "erdos-703",
@@ -169,7 +175,7 @@
     },
     {
       "id": "erdos-1022",
-      "description": "Property B and Sparse Set Families (neighboring Erdős extremal set-family problem)"
+      "description": "Property B and Sparse Set Families (neighboring Erd\u0151s extremal set-family problem)"
     },
     {
       "id": "binomial-theorem",
@@ -179,56 +185,56 @@
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "D. J. Kleitman"
       ],
       "title": "On combinations of sets",
       "venue": "Nordisk Matematisk Tidskrift",
       "year": 1968,
       "volume": "16",
-      "pages": "20–25",
-      "notes": "Original paper establishing F(n) = C(n, ⌊n/2⌋) by proving the matching upper bound."
+      "pages": "20\u201325",
+      "notes": "Original paper establishing F(n) = C(n, \u230an/2\u230b) by proving the matching upper bound."
     },
     {
       "authors": [
         "E. Sperner"
       ],
-      "title": "Ein Satz über Untermengen einer endlichen Menge",
+      "title": "Ein Satz \u00fcber Untermengen einer endlichen Menge",
       "venue": "Mathematische Zeitschrift",
       "year": 1928,
       "volume": "27",
-      "pages": "544–548",
-      "notes": "The foundational Sperner's theorem: the largest antichain in 2^[n] is the middle layer C(n, ⌊n/2⌋). The lower bound F(n) ≥ C(n, n/2) follows immediately."
+      "pages": "544\u2013548",
+      "notes": "The foundational Sperner's theorem: the largest antichain in 2^[n] is the middle layer C(n, \u230an/2\u230b). The lower bound F(n) \u2265 C(n, n/2) follows immediately."
     },
     {
       "authors": [
-        "B. Bollobás"
+        "B. Bollob\u00e1s"
       ],
       "title": "Combinatorics: Set Systems, Hypergraphs, Families of Vectors and Combinatorial Probability",
       "venue": "Cambridge University Press",
       "year": 1986,
-      "notes": "Standard reference covering Sperner's theorem, union-free families, and the Erdős–Kleitman result in the context of extremal set theory."
+      "notes": "Standard reference covering Sperner's theorem, union-free families, and the Erd\u0151s\u2013Kleitman result in the context of extremal set theory."
     },
     {
       "authors": [
         "P. Frankl"
       ],
       "title": "Extremal set systems",
-      "venue": "Handbook of Combinatorics (eds. R. Graham, M. Grötschel, L. Lovász), Elsevier",
+      "venue": "Handbook of Combinatorics (eds. R. Graham, M. Gr\u00f6tschel, L. Lov\u00e1sz), Elsevier",
       "year": 1995,
-      "pages": "1293–1329",
+      "pages": "1293\u20131329",
       "notes": "Comprehensive survey of extremal set systems including union-free families, antichains, and their connections to compression and shifting methods."
     },
     {
       "authors": [
         "D. J. Kleitman"
       ],
-      "title": "On a combinatorial conjecture of Erdős",
+      "title": "On a combinatorial conjecture of Erd\u0151s",
       "venue": "Journal of Combinatorial Theory",
       "year": 1966,
       "volume": "1",
-      "pages": "209–214",
-      "notes": "Early Kleitman paper on Erdős combinatorial conjectures related to set families and antichain bounds."
+      "pages": "209\u2013214",
+      "notes": "Early Kleitman paper on Erd\u0151s combinatorial conjectures related to set families and antichain bounds."
     }
   ],
   "leanFile": {

@@ -1,8 +1,8 @@
 {
   "id": "erdos-661",
-  "title": "Erdős Problem #661: Bipartite Distinct Distances",
+  "title": "Erd\u0151s Problem #661: Bipartite Distinct Distances",
   "slug": "erdos-661",
-  "description": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² with o(n/√log n) distinct bipartite distances? Is F(2n) = o(f(2n))? In ℝ⁴ all distances can be equal (Lenz). $50 reward. Open.",
+  "description": "Do there exist point sets x\u2081,...,x\u2099 and y\u2081,...,y\u2099 in \u211d\u00b2 with o(n/\u221alog n) distinct bipartite distances? Is F(2n) = o(f(2n))? In \u211d\u2074 all distances can be equal (Lenz). $50 reward. Open.",
   "meta": {
     "erdosNumber": 661,
     "status": "axiomatized",
@@ -47,17 +47,17 @@
     },
     {
       "id": "main-conjecture",
-      "title": "Part IV: The Erdős–Pach Conjecture",
+      "title": "Part IV: The Erd\u0151s\u2013Pach Conjecture",
       "startLine": 46,
       "endLine": 54,
       "summary": "States the main conjecture: $\\forall \\varepsilon > 0, \\exists N_0$ such that $n \\ge N_0 \\Rightarrow F(2n) \\le \\varepsilon \\cdot f(2n)$, formalized as `erdos_661_bipartite_advantage`. This asserts the bipartite structure provides asymptotically fewer distances."
     },
     {
       "id": "guth-katz",
-      "title": "Part V: Guth–Katz Lower Bound",
+      "title": "Part V: Guth\u2013Katz Lower Bound",
       "startLine": 56,
       "endLine": 63,
-      "summary": "Axiomatizes the landmark Guth–Katz (2015) result: $f(2n) \\ge C \\cdot n / \\log n$ for some constant $C > 0$. This essentially resolved Erdős's distinct distances problem (Problem #89) and sets the benchmark for the bipartite variant."
+      "summary": "Axiomatizes the landmark Guth\u2013Katz (2015) result: $f(2n) \\ge C \\cdot n / \\log n$ for some constant $C > 0$. This essentially resolved Erd\u0151s's distinct distances problem (Problem #89) and sets the benchmark for the bipartite variant."
     },
     {
       "id": "lattice-upper",
@@ -68,7 +68,7 @@
     },
     {
       "id": "lenz-construction",
-      "title": "Part VII: Lenz Construction in ℝ⁴",
+      "title": "Part VII: Lenz Construction in \u211d\u2074",
       "startLine": 72,
       "endLine": 77,
       "summary": "Records Lenz's construction in $\\mathbb{R}^4$: place $n$ points on each of two orthogonal unit circles; every bipartite distance equals $\\sqrt{2}$, so $F(2n) = 1$. This dramatic saving is impossible in $\\mathbb{R}^2$."
@@ -78,33 +78,33 @@
       "title": "Part VIII: Observations and Connections",
       "startLine": 78,
       "endLine": 84,
-      "summary": "Notes the connection to Erdős Problem #89 (general distinct distances), states Erdős's \\$50 reward, and links the bipartite variant to broader questions in incidence geometry."
+      "summary": "Notes the connection to Erd\u0151s Problem #89 (general distinct distances), states Erd\u0151s's \\$50 reward, and links the bipartite variant to broader questions in incidence geometry."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Pach posed Problem #661 around 1990, asking whether bipartite point configurations in ℝ² can have asymptotically fewer distinct cross-distances than general configurations. The question is deeply connected to the celebrated Erdős distinct distances problem (Problem #89), essentially resolved by Guth and Katz in 2015 using the polynomial method and algebraic geometry of ruled surfaces. Their proof showed f(2n) ≥ Ω(n/log n), matching the lattice upper bound f(2n) ≤ O(n/√(log n)) up to a √(log n) factor. For the bipartite variant, Lenz demonstrated that in ℝ⁴, placing points on two orthogonal circles yields F(2n) = 1 — a maximal saving. Whether any analogous saving is possible in ℝ² remains completely open, making this one of the outstanding problems in combinatorial geometry. The problem connects to the Szemerédi–Trotter incidence theorem, Elekes–Rónyai type results on expanding polynomials, and the sum-product phenomenon.",
-    "problemStatement": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² such that the number of distinct distances d(xᵢ,yⱼ) is o(n/√(log n))?",
-    "text": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² with o(n/√log n) distinct bipartite distances? Is F(2n) = o(f(2n))? In ℝ⁴ all distances can be equal (Lenz). $50 reward. Open.",
-    "proofStrategy": "We define ℝ² points and squared Euclidean distance, then construct the bipartite distance set via Finset product. The extremal functions F(2n) and f(2n) are axiomatized. The main conjecture, Guth–Katz lower bound, lattice upper bound, and Lenz's ℝ⁴ construction are formalized as axioms. The structure separates definitions (computable) from deep results (axiomatized).",
+    "historicalContext": "Erd\u0151s and Pach posed Problem #661 around 1990, asking whether bipartite point configurations in \u211d\u00b2 can have asymptotically fewer distinct cross-distances than general configurations. The question is deeply connected to the celebrated Erd\u0151s distinct distances problem (Problem #89), essentially resolved by Guth and Katz in 2015 using the polynomial method and algebraic geometry of ruled surfaces. Their proof showed f(2n) \u2265 \u03a9(n/log n), matching the lattice upper bound f(2n) \u2264 O(n/\u221a(log n)) up to a \u221a(log n) factor. For the bipartite variant, Lenz demonstrated that in \u211d\u2074, placing points on two orthogonal circles yields F(2n) = 1 \u2014 a maximal saving. Whether any analogous saving is possible in \u211d\u00b2 remains completely open, making this one of the outstanding problems in combinatorial geometry. The problem connects to the Szemer\u00e9di\u2013Trotter incidence theorem, Elekes\u2013R\u00f3nyai type results on expanding polynomials, and the sum-product phenomenon.",
+    "problemStatement": "Do there exist point sets x\u2081,...,x\u2099 and y\u2081,...,y\u2099 in \u211d\u00b2 such that the number of distinct distances d(x\u1d62,y\u2c7c) is o(n/\u221a(log n))?",
+    "text": "Do there exist point sets x\u2081,...,x\u2099 and y\u2081,...,y\u2099 in \u211d\u00b2 with o(n/\u221alog n) distinct bipartite distances? Is F(2n) = o(f(2n))? In \u211d\u2074 all distances can be equal (Lenz). $50 reward. Open.",
+    "proofStrategy": "We define \u211d\u00b2 points and squared Euclidean distance, then construct the bipartite distance set via Finset product. The extremal functions F(2n) and f(2n) are axiomatized. The main conjecture, Guth\u2013Katz lower bound, lattice upper bound, and Lenz's \u211d\u2074 construction are formalized as axioms. The structure separates definitions (computable) from deep results (axiomatized).",
     "keyInsights": [
-      "**Guth–Katz polynomial method**: Their 2015 proof that $f(2n) \\ge \\Omega(n/\\log n)$ used the Elekes–Sharir framework, reducing distinct distances to counting point-line incidences in 3D, then bounding these via algebraic geometry of ruled surfaces",
-      "**Lenz construction in $\\mathbb{R}^4$**: Two orthogonal unit circles in $\\mathbb{R}^4$ yield $F(2n) = 1$, showing that dimensional constraints are essential — the problem is specifically about $\\mathbb{R}^2$",
-      "**Lattice gap**: The integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$ gives $f(2n) \\le O(n/\\sqrt{\\log n})$ via Landau's theorem on sums of two squares, leaving a $\\sqrt{\\log n}$ gap with the Guth–Katz lower bound",
+      "**Guth\u2013Katz polynomial method**: Their 2015 proof that $f(2n) \\ge \\Omega(n/\\log n)$ used the Elekes\u2013Sharir framework, reducing distinct distances to counting point-line incidences in 3D, then bounding these via algebraic geometry of ruled surfaces",
+      "**Lenz construction in $\\mathbb{R}^4$**: Two orthogonal unit circles in $\\mathbb{R}^4$ yield $F(2n) = 1$, showing that dimensional constraints are essential \u2014 the problem is specifically about $\\mathbb{R}^2$",
+      "**Lattice gap**: The integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$ gives $f(2n) \\le O(n/\\sqrt{\\log n})$ via Landau's theorem on sums of two squares, leaving a $\\sqrt{\\log n}$ gap with the Guth\u2013Katz lower bound",
       "**Bipartite structure**: Restricting to cross-distances eliminates the 'diagonal' pairs $d(x_i,x_j)$, potentially allowing geometric configurations that exploit this constraint for fewer distinct values",
-      "**Connection to incidence geometry**: The problem is equivalent to asking about point-curve incidences where the curves are distance circles, linking it to the Szemerédi–Trotter theorem and sum-product estimates"
+      "**Connection to incidence geometry**: The problem is equivalent to asking about point-curve incidences where the curves are distance circles, linking it to the Szemer\u00e9di\u2013Trotter theorem and sum-product estimates"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #661 asks whether the bipartite structure can reduce the number of distinct distances below the general Guth–Katz threshold in ℝ². The formalization captures the extremal functions F(2n) and f(2n), the Guth–Katz and lattice bounds, and the Lenz construction showing dramatic savings in ℝ⁴. The problem remains fully open in the plane.",
-    "implications": "**Theoretical Significance**: Resolving this would clarify whether bipartite point configurations have fundamentally different distance properties than general configurations.\n\nA positive answer (F(2n) = o(f(2n))) would reveal hidden structure in bipartite geometry; a negative answer would suggest the Guth–Katz bound is universal. Either way, the result would impact incidence geometry, additive combinatorics, and the sum-product phenomenon.",
+    "summary": "Erd\u0151s Problem #661 asks whether the bipartite structure can reduce the number of distinct distances below the general Guth\u2013Katz threshold in \u211d\u00b2. The formalization captures the extremal functions F(2n) and f(2n), the Guth\u2013Katz and lattice bounds, and the Lenz construction showing dramatic savings in \u211d\u2074. The problem remains fully open in the plane.",
+    "implications": "**Theoretical Significance**: Resolving this would clarify whether bipartite point configurations have fundamentally different distance properties than general configurations.\n\nA positive answer (F(2n) = o(f(2n))) would reveal hidden structure in bipartite geometry; a negative answer would suggest the Guth\u2013Katz bound is universal. Either way, the result would impact incidence geometry, additive combinatorics, and the sum-product phenomenon.",
     "openQuestions": [
-      "Is F(2n) = o(f(2n)) in ℝ²? Even a single construction beating the lattice bound would be significant",
+      "Is F(2n) = o(f(2n)) in \u211d\u00b2? Even a single construction beating the lattice bound would be significant",
       "What is the correct order of magnitude of F(2n)? Could it be as low as O(n^c) for some c < 1?",
-      "Does the Lenz phenomenon partially extend to ℝ³ — can F(2n) in ℝ³ be O(1)?",
-      "Can techniques from the polynomial method (used for Guth–Katz) be adapted to the bipartite setting?"
+      "Does the Lenz phenomenon partially extend to \u211d\u00b3 \u2014 can F(2n) in \u211d\u00b3 be O(1)?",
+      "Can techniques from the polynomial method (used for Guth\u2013Katz) be adapted to the bipartite setting?"
     ]
   },
   "leanFile": {
@@ -122,9 +122,43 @@
     "definitionCount": 5
   },
   "references": [
-    "Erdős–Pach (1990): bipartite distinct distances problem",
-    "Guth–Katz (2015): f(2n) ≳ n/log n for general point sets",
-    "Lenz: ℝ⁴ construction with one bipartite distance",
+    "Erd\u0151s\u2013Pach (1990): bipartite distinct distances problem",
+    "Guth\u2013Katz (2015): f(2n) \u2273 n/log n for general point sets",
+    "Lenz: \u211d\u2074 construction with one bipartite distance",
     "https://erdosproblems.com/661"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-100",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distances themes"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-132",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and discrete-geometry themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-100",
+    "erdos-1084",
+    "erdos-1087",
+    "erdos-1089",
+    "erdos-132"
   ]
 }

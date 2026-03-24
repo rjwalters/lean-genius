@@ -1,10 +1,10 @@
 {
   "id": "erdos-1067",
-  "title": "Erdős Problem #1067: Infinitely Connected Subgraphs with Chromatic Number ℵ₁",
+  "title": "Erd\u0151s Problem #1067: Infinitely Connected Subgraphs with Chromatic Number \u2135\u2081",
   "slug": "erdos-1067",
-  "description": "Does every graph with χ = ℵ₁ contain an infinitely connected subgraph with χ = ℵ₁? DISPROVED by Soukup (2015), Bowler-Pitz (2024).",
+  "description": "Does every graph with \u03c7 = \u2135\u2081 contain an infinitely connected subgraph with \u03c7 = \u2135\u2081? DISPROVED by Soukup (2015), Bowler-Pitz (2024).",
   "meta": {
-    "author": "Erdős-Hajnal (1966 question), Komjáth (2013), Soukup (2015), Bowler-Pitz (2024)",
+    "author": "Erd\u0151s-Hajnal (1966 question), Komj\u00e1th (2013), Soukup (2015), Bowler-Pitz (2024)",
     "sourceUrl": "https://erdosproblems.com/1067",
     "date": "2015",
     "status": "axiomatized",
@@ -38,7 +38,7 @@
       },
       {
         "theorem": "Cardinal.aleph",
-        "description": "Aleph cardinals ℵ₀, ℵ₁, ...",
+        "description": "Aleph cardinals \u2135\u2080, \u2135\u2081, ...",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       }
     ],
@@ -63,16 +63,16 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős-Hajnal and Infinite Graph Coloring**\n\nPaul Erdős and András Hajnal posed this question in 1966 as part of their systematic investigation of infinite graph coloring. The study of uncountable chromatic numbers was a major theme in Erdős's work on infinite combinatorics, connecting graph theory to set theory and cardinal arithmetic.\n\n**The question**: A graph is *infinitely connected* if any two vertices are connected by infinitely many pairwise vertex-disjoint paths (equivalently, by Menger's theorem, no finite vertex cut separates any two vertices). Erdős and Hajnal asked: if $\\chi(G) = \\aleph_1$ (the smallest uncountable cardinal), must $G$ contain an infinitely connected subgraph $H$ with $\\chi(H) = \\aleph_1$?\n\n**Komjáth's breakthrough (2013)**: Péter Komjáth showed the answer could be negative — in some models of ZFC (obtained by forcing), counterexamples exist. He also proved that for graphs with exactly $\\aleph_1$ vertices, the answer is *independent* of ZFC.\n\n**Soukup's ZFC counterexample (2015)**: Lajos Soukup settled the question definitively by constructing a counterexample provable in ZFC alone. His construction builds 'ladder' structures from trees, creating graphs where the chromatic bottleneck resides in thin, poorly connected components.\n\n**Bowler-Pitz simplification (2024)**: Nathan Bowler and Steffen Pitz gave a more elementary construction, making the counterexample accessible without specialized set-theoretic machinery.\n\n**Thomassen's edge variant (2017)**: Carsten Thomassen showed the analogous question for edge-connectivity (infinitely many edge-disjoint paths) is also false.",
-    "problemStatement": "**Question:** Does every graph with chromatic number ℵ₁ contain an infinitely connected subgraph with chromatic number ℵ₁?\n\n**Answer: NO** (Counterexamples exist)\n\nSoukup (2015) and Bowler-Pitz (2024) constructed graphs G with:\n- χ(G) = ℵ₁\n- Every infinitely connected subgraph H has χ(H) < ℵ₁",
-    "text": "Does every graph with χ = ℵ₁ contain an infinitely connected subgraph with χ = ℵ₁? DISPROVED by Soukup (2015), Bowler-Pitz (2024).",
-    "proofStrategy": "**Layered Definitions with Axiomatized Deep Results**\n\nThe formalization builds from primitive graph-theoretic concepts to the full Erdős-Hajnal question, axiomatizing the counterexamples.\n\n**Definitions (fully formalized)**: The chromatic number $\\chi(G)$ as a cardinal infimum; `PathInGraph` as a finite list with adjacency; `DisjointPaths`, `PairwiseDisjoint`, `InfinitelyManyDisjointPaths` building up to `InfinitelyConnected`; `IsSubgraph` for subgraph containment; and `ErdosHajnalQuestion` combining everything.\n\n**Axiomatized counterexamples**: Four axioms capture the main results — Komjáth's consistency, Soukup's ZFC construction, Bowler-Pitz's elementary version, and Thomassen's edge variant. A fifth axiom captures Komjáth's independence result for the $\\aleph_1$-vertex restriction.\n\n**Main theorems**: `erdos_1067` and `erdos_1067_elementary` directly apply the Soukup and Bowler-Pitz axioms. The key result `erdos_1067_answer` uses `push_neg` followed by existential decomposition to produce a formal negation — this is genuine tactic reasoning, not just axiom application.",
+    "historicalContext": "**Erd\u0151s-Hajnal and Infinite Graph Coloring**\n\nPaul Erd\u0151s and Andr\u00e1s Hajnal posed this question in 1966 as part of their systematic investigation of infinite graph coloring. The study of uncountable chromatic numbers was a major theme in Erd\u0151s's work on infinite combinatorics, connecting graph theory to set theory and cardinal arithmetic.\n\n**The question**: A graph is *infinitely connected* if any two vertices are connected by infinitely many pairwise vertex-disjoint paths (equivalently, by Menger's theorem, no finite vertex cut separates any two vertices). Erd\u0151s and Hajnal asked: if $\\chi(G) = \\aleph_1$ (the smallest uncountable cardinal), must $G$ contain an infinitely connected subgraph $H$ with $\\chi(H) = \\aleph_1$?\n\n**Komj\u00e1th's breakthrough (2013)**: P\u00e9ter Komj\u00e1th showed the answer could be negative \u2014 in some models of ZFC (obtained by forcing), counterexamples exist. He also proved that for graphs with exactly $\\aleph_1$ vertices, the answer is *independent* of ZFC.\n\n**Soukup's ZFC counterexample (2015)**: Lajos Soukup settled the question definitively by constructing a counterexample provable in ZFC alone. His construction builds 'ladder' structures from trees, creating graphs where the chromatic bottleneck resides in thin, poorly connected components.\n\n**Bowler-Pitz simplification (2024)**: Nathan Bowler and Steffen Pitz gave a more elementary construction, making the counterexample accessible without specialized set-theoretic machinery.\n\n**Thomassen's edge variant (2017)**: Carsten Thomassen showed the analogous question for edge-connectivity (infinitely many edge-disjoint paths) is also false.",
+    "problemStatement": "**Question:** Does every graph with chromatic number \u2135\u2081 contain an infinitely connected subgraph with chromatic number \u2135\u2081?\n\n**Answer: NO** (Counterexamples exist)\n\nSoukup (2015) and Bowler-Pitz (2024) constructed graphs G with:\n- \u03c7(G) = \u2135\u2081\n- Every infinitely connected subgraph H has \u03c7(H) < \u2135\u2081",
+    "text": "Does every graph with \u03c7 = \u2135\u2081 contain an infinitely connected subgraph with \u03c7 = \u2135\u2081? DISPROVED by Soukup (2015), Bowler-Pitz (2024).",
+    "proofStrategy": "**Layered Definitions with Axiomatized Deep Results**\n\nThe formalization builds from primitive graph-theoretic concepts to the full Erd\u0151s-Hajnal question, axiomatizing the counterexamples.\n\n**Definitions (fully formalized)**: The chromatic number $\\chi(G)$ as a cardinal infimum; `PathInGraph` as a finite list with adjacency; `DisjointPaths`, `PairwiseDisjoint`, `InfinitelyManyDisjointPaths` building up to `InfinitelyConnected`; `IsSubgraph` for subgraph containment; and `ErdosHajnalQuestion` combining everything.\n\n**Axiomatized counterexamples**: Four axioms capture the main results \u2014 Komj\u00e1th's consistency, Soukup's ZFC construction, Bowler-Pitz's elementary version, and Thomassen's edge variant. A fifth axiom captures Komj\u00e1th's independence result for the $\\aleph_1$-vertex restriction.\n\n**Main theorems**: `erdos_1067` and `erdos_1067_elementary` directly apply the Soukup and Bowler-Pitz axioms. The key result `erdos_1067_answer` uses `push_neg` followed by existential decomposition to produce a formal negation \u2014 this is genuine tactic reasoning, not just axiom application.",
     "keyInsights": [
       "**Infinite connectivity is extremely strong**: Requiring $\\aleph_0$ pairwise vertex-disjoint paths between every pair of vertices (equivalently, no finite vertex cut) is far more restrictive than finite $k$-connectivity",
-      "**Chromatic number and connectivity are decoupled**: $\\chi(G) = \\aleph_1$ does not force $G$ to contain a well-connected subgraph with the same chromatic number — the 'hard-to-color' part can live in thin, tree-like regions",
+      "**Chromatic number and connectivity are decoupled**: $\\chi(G) = \\aleph_1$ does not force $G$ to contain a well-connected subgraph with the same chromatic number \u2014 the 'hard-to-color' part can live in thin, tree-like regions",
       "**Soukup's ladder-tree construction**: The counterexample builds graphs from ladder structures over trees, creating high chromatic number through global structure while keeping each infinitely connected piece locally countably colorable",
-      "**ZFC independence for restricted variants**: When $|V(G)| = \\aleph_1$, the answer depends on set-theoretic axioms (Komjáth) — one of the most striking examples of independence in combinatorics",
-      "**Robustness of the negative answer**: Thomassen's edge-connectivity variant shows the phenomenon persists even under weaker connectivity notions, and three independent constructions (Komjáth, Soukup, Bowler-Pitz) confirm it is not an artifact of one technique"
+      "**ZFC independence for restricted variants**: When $|V(G)| = \\aleph_1$, the answer depends on set-theoretic axioms (Komj\u00e1th) \u2014 one of the most striking examples of independence in combinatorics",
+      "**Robustness of the negative answer**: Thomassen's edge-connectivity variant shows the phenomenon persists even under weaker connectivity notions, and three independent constructions (Komj\u00e1th, Soukup, Bowler-Pitz) confirm it is not an artifact of one technique"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -112,14 +112,14 @@
     {
       "id": "counterexamples",
       "title": "Main Results - Counterexamples",
-      "summary": "Four axioms: Komjáth (consistency), Soukup (ZFC), Bowler-Pitz (elementary), Thomassen (edge variant) — all negative",
+      "summary": "Four axioms: Komj\u00e1th (consistency), Soukup (ZFC), Bowler-Pitz (elementary), Thomassen (edge variant) \u2014 all negative",
       "startLine": 124,
       "endLine": 165
     },
     {
       "id": "aleph1-vertices",
       "title": "Variant with $\\aleph_1$ Vertices",
-      "summary": "$|V(G)| = \\aleph_1$ restriction makes the question independent of ZFC (Komjáth)",
+      "summary": "$|V(G)| = \\aleph_1$ restriction makes the question independent of ZFC (Komj\u00e1th)",
       "startLine": 167,
       "endLine": 185
     },
@@ -139,10 +139,10 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the complete resolution of Erdős Problem #1067. The Erdős-Hajnal question (1966) — whether every graph with $\\chi = \\aleph_1$ contains an infinitely connected subgraph with $\\chi = \\aleph_1$ — is **false**. Three independent counterexamples are axiomatized (Soukup 2015 in ZFC, Bowler-Pitz 2024 elementary, Thomassen 2017 edge variant). The main theorem `erdos_1067_answer` uses `push_neg` tactic reasoning to formally negate the universal statement. A striking side result: for graphs with exactly $\\aleph_1$ vertices, the answer is independent of ZFC.",
-    "implications": "1. **Decoupling of chromatic number and connectivity**: The disproof shows that the 'hard-to-color core' of a graph need not be well-connected — chromatic complexity can arise from global, distributed structure rather than dense local components.\n\n2. **Set-theoretic independence in combinatorics**: Komjáth's result that the $|V| = \\aleph_1$ variant is independent of ZFC is a rare example where a natural graph-theoretic statement is undecidable in standard set theory, connecting to Shelah's work on graph coloring and forcing.\n\n**3. Menger's theorem in the infinite**: The formalization of infinite connectivity via disjoint paths (equivalent to infinite vertex connectivity by the infinite Menger theorem) demonstrates how classical structural results extend to the uncountable setting with surprising consequences.\n\n4. **Robustness across connectivity notions**: Thomassen's edge-connectivity counterexample shows the negative answer is not an artifact of the vertex-disjoint path definition — even the weaker edge-disjoint notion fails.\n\n5. **Multiple construction techniques**: The existence of three independent proofs (consistency, ZFC, elementary) illustrates different approaches to building combinatorial counterexamples at uncountable scale.",
+    "summary": "This formalization captures the complete resolution of Erd\u0151s Problem #1067. The Erd\u0151s-Hajnal question (1966) \u2014 whether every graph with $\\chi = \\aleph_1$ contains an infinitely connected subgraph with $\\chi = \\aleph_1$ \u2014 is **false**. Three independent counterexamples are axiomatized (Soukup 2015 in ZFC, Bowler-Pitz 2024 elementary, Thomassen 2017 edge variant). The main theorem `erdos_1067_answer` uses `push_neg` tactic reasoning to formally negate the universal statement. A striking side result: for graphs with exactly $\\aleph_1$ vertices, the answer is independent of ZFC.",
+    "implications": "1. **Decoupling of chromatic number and connectivity**: The disproof shows that the 'hard-to-color core' of a graph need not be well-connected \u2014 chromatic complexity can arise from global, distributed structure rather than dense local components.\n\n2. **Set-theoretic independence in combinatorics**: Komj\u00e1th's result that the $|V| = \\aleph_1$ variant is independent of ZFC is a rare example where a natural graph-theoretic statement is undecidable in standard set theory, connecting to Shelah's work on graph coloring and forcing.\n\n**3. Menger's theorem in the infinite**: The formalization of infinite connectivity via disjoint paths (equivalent to infinite vertex connectivity by the infinite Menger theorem) demonstrates how classical structural results extend to the uncountable setting with surprising consequences.\n\n4. **Robustness across connectivity notions**: Thomassen's edge-connectivity counterexample shows the negative answer is not an artifact of the vertex-disjoint path definition \u2014 even the weaker edge-disjoint notion fails.\n\n5. **Multiple construction techniques**: The existence of three independent proofs (consistency, ZFC, elementary) illustrates different approaches to building combinatorial counterexamples at uncountable scale.",
     "openQuestions": [
-      "For which graph classes $\\mathcal{G}$ does the Erdős-Hajnal property hold? Characterize structural conditions forcing infinitely connected subgraphs to inherit high chromatic number.",
+      "For which graph classes $\\mathcal{G}$ does the Erd\u0151s-Hajnal property hold? Characterize structural conditions forcing infinitely connected subgraphs to inherit high chromatic number.",
       "What is the maximum $\\chi(H)$ that can be guaranteed for infinitely connected subgraphs $H$ of a graph $G$ with $\\chi(G) = \\aleph_1$? Is there any non-trivial lower bound?",
       "Does the analogous question for $\\chi = \\aleph_2$ or higher alephs have the same answer? Does the independence phenomenon persist?",
       "Can the Soukup/Bowler-Pitz constructions be formalized in Lean without axiomatization, i.e., can the combinatorial construction itself be verified?"
@@ -150,52 +150,52 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-62",
-      "relation": "companion",
-      "description": "Erdős Problem #62 asks whether two graphs with χ = ℵ₁ must share a common subgraph with χ = 4, also concerning structural properties of uncountable chromatic graphs"
+      "description": "Erd\u0151s Problem #62 asks whether two graphs with \u03c7 = \u2135\u2081 must share a common subgraph with \u03c7 = 4, also concerning structural properties of uncountable chromatic graphs",
+      "targetId": "erdos-62",
+      "relationship": "companion"
     },
     {
-      "target": "erdos-57",
-      "relation": "related",
-      "description": "Erdős Problem #57 studies odd cycle lengths in graphs with infinite chromatic number, connecting chromatic structure to cycle properties in infinite graphs"
+      "description": "Erd\u0151s Problem #57 studies odd cycle lengths in graphs with infinite chromatic number, connecting chromatic structure to cycle properties in infinite graphs",
+      "targetId": "erdos-57",
+      "relationship": "related"
     },
     {
-      "target": "erdos-63",
-      "relation": "related",
-      "description": "Erdős Problem #63 (solved by Liu-Montgomery 2020) characterizes which cycle lengths must appear in graphs with infinite chromatic number, a parallel structural question"
+      "description": "Erd\u0151s Problem #63 (solved by Liu-Montgomery 2020) characterizes which cycle lengths must appear in graphs with infinite chromatic number, a parallel structural question",
+      "targetId": "erdos-63",
+      "relationship": "related"
     },
     {
-      "target": "erdos-1068",
-      "relation": "companion",
-      "description": "Erdős Problem #1068 asks the countable variant: does every graph with χ = ℵ₁ contain a countable infinitely vertex-connected subgraph? Related open question from the same 2015 paper"
+      "description": "Erd\u0151s Problem #1068 asks the countable variant: does every graph with \u03c7 = \u2135\u2081 contain a countable infinitely vertex-connected subgraph? Related open question from the same 2015 paper",
+      "targetId": "erdos-1068",
+      "relationship": "companion"
     },
     {
-      "target": "erdos-58",
-      "relation": "related",
-      "description": "Erdős Problem #58 (Gyárfás 1992) bounds chromatic number by distinct odd cycle lengths, showing the deep interplay between χ and local graph structure"
+      "description": "Erd\u0151s Problem #58 (Gy\u00e1rf\u00e1s 1992) bounds chromatic number by distinct odd cycle lengths, showing the deep interplay between \u03c7 and local graph structure",
+      "targetId": "erdos-58",
+      "relationship": "related"
     },
     {
-      "target": "ramseys-theorem",
-      "relation": "background",
-      "description": "Ramsey's Theorem provides the finite combinatorial foundation for Ramsey-type questions about cliques and colorings that motivate infinite chromatic number theory"
+      "description": "Ramsey's Theorem provides the finite combinatorial foundation for Ramsey-type questions about cliques and colorings that motivate infinite chromatic number theory",
+      "targetId": "ramseys-theorem",
+      "relationship": "background"
     }
   ],
   "relatedProofs": [
     {
       "target": "erdos-62",
-      "description": "Common subgraph structure for graphs with χ = ℵ₁ — also open, also concerns what uncountably chromatic graphs must share"
+      "description": "Common subgraph structure for graphs with \u03c7 = \u2135\u2081 \u2014 also open, also concerns what uncountably chromatic graphs must share"
     },
     {
       "target": "erdos-57",
-      "description": "Odd cycles in graphs with infinite chromatic number — structural consequences of high chromatic number in the countably infinite case"
+      "description": "Odd cycles in graphs with infinite chromatic number \u2014 structural consequences of high chromatic number in the countably infinite case"
     },
     {
       "target": "erdos-1068",
-      "description": "The countable connectivity variant of this problem — open question from the same Soukup 2015 paper"
+      "description": "The countable connectivity variant of this problem \u2014 open question from the same Soukup 2015 paper"
     },
     {
       "target": "cantors-theorem",
-      "description": "Cantor's theorem on cardinal hierarchies provides the set-theoretic framework for ℵ₀ vs ℵ₁ distinctions used throughout this proof"
+      "description": "Cantor's theorem on cardinal hierarchies provides the set-theoretic framework for \u2135\u2080 vs \u2135\u2081 distinctions used throughout this proof"
     }
   ],
   "references": [
@@ -206,26 +206,26 @@
       "title": "Infinite graphs with no odd cycles of a given length",
       "venue": "European Journal of Combinatorics",
       "year": 2015,
-      "note": "Constructs the ZFC counterexample to the Erdős-Hajnal question, building ladder-tree graphs with χ = ℵ₁ but no infinitely connected subgraph of uncountable chromatic number"
+      "note": "Constructs the ZFC counterexample to the Erd\u0151s-Hajnal question, building ladder-tree graphs with \u03c7 = \u2135\u2081 but no infinitely connected subgraph of uncountable chromatic number"
     },
     {
       "authors": [
         "Nathan Bowler",
         "Steffen Pitz"
       ],
-      "title": "A simpler proof of the Erdős-Hajnal conjecture for forests",
+      "title": "A simpler proof of the Erd\u0151s-Hajnal conjecture for forests",
       "venue": "arXiv",
       "year": 2024,
-      "note": "Provides a more elementary construction of the counterexample to Erdős Problem #1067, accessible without specialized set-theoretic forcing machinery"
+      "note": "Provides a more elementary construction of the counterexample to Erd\u0151s Problem #1067, accessible without specialized set-theoretic forcing machinery"
     },
     {
       "authors": [
-        "Péter Komjáth"
+        "P\u00e9ter Komj\u00e1th"
       ],
       "title": "A note on uncountably chromatic graphs",
       "venue": "Combinatorica",
       "year": 2013,
-      "note": "Proves the consistency of a counterexample (via forcing) and establishes that for graphs with exactly ℵ₁ vertices, the Erdős-Hajnal question is independent of ZFC"
+      "note": "Proves the consistency of a counterexample (via forcing) and establishes that for graphs with exactly \u2135\u2081 vertices, the Erd\u0151s-Hajnal question is independent of ZFC"
     },
     {
       "authors": [
@@ -238,13 +238,13 @@
     },
     {
       "authors": [
-        "Paul Erdős",
-        "András Hajnal"
+        "Paul Erd\u0151s",
+        "Andr\u00e1s Hajnal"
       ],
       "title": "On chromatic number of graphs and set-systems",
       "venue": "Acta Mathematica Hungarica",
       "year": 1966,
-      "note": "Original paper by Erdős and Hajnal posing the question and initiating the systematic study of uncountable chromatic numbers in relation to structural graph properties"
+      "note": "Original paper by Erd\u0151s and Hajnal posing the question and initiating the systematic study of uncountable chromatic numbers in relation to structural graph properties"
     }
   ],
   "leanFile": {

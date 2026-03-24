@@ -1,8 +1,8 @@
 {
   "id": "erdos-1149",
-  "title": "Erdős Problem #1149: Coprimality of n and ⌊n^α⌋",
+  "title": "Erd\u0151s Problem #1149: Coprimality of n and \u230an^\u03b1\u230b",
   "slug": "erdos-1149",
-  "description": "The density of integers n where gcd(n, ⌊n^α⌋) = 1 is 6/π² for non-integer α > 0. This shows n and ⌊n^α⌋ behave as 'independent random integers' for coprimality.",
+  "description": "The density of integers n where gcd(n, \u230an^\u03b1\u230b) = 1 is 6/\u03c0\u00b2 for non-integer \u03b1 > 0. This shows n and \u230an^\u03b1\u230b behave as 'independent random integers' for coprimality.",
   "meta": {
     "author": "researcher-5",
     "sourceUrl": "https://erdosproblems.com/1149",
@@ -30,11 +30,11 @@
     "originalContributions": [
       "Definition IsFloorPowerCoprime, coprimeFloorPowerSet, countCoprime, HasNaturalDensity",
       "Proved density_equals_inv_zeta2 (algebraic identity)",
-      "Proved density_pos (6/π² > 0)",
-      "Proved density_lt_one (6/π² < 1, using π > 3)",
+      "Proved density_pos (6/\u03c0\u00b2 > 0)",
+      "Proved density_lt_one (6/\u03c0\u00b2 < 1, using \u03c0 > 3)",
       "Proved integer_alpha_trivial (integer exponents give density 0)",
       "Axiom bergelson_richter (main theorem)",
-      "Axiom random_coprime_density (classical 6/π² coprime probability)"
+      "Axiom random_coprime_density (classical 6/\u03c0\u00b2 coprime probability)"
     ],
     "mathlibDependencies": [
       {
@@ -44,7 +44,7 @@
       },
       {
         "theorem": "Nat.floor",
-        "description": "Floor function ⌊x⌋ for real numbers",
+        "description": "Floor function \u230ax\u230b for real numbers",
         "module": "Mathlib.Algebra.Order.Floor"
       },
       {
@@ -54,12 +54,12 @@
       },
       {
         "theorem": "Real.pi_pos",
-        "description": "Positivity of π, used for density_pos",
+        "description": "Positivity of \u03c0, used for density_pos",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       },
       {
         "theorem": "Real.pi_gt_three",
-        "description": "π > 3, used to prove 6/π² < 1",
+        "description": "\u03c0 > 3, used to prove 6/\u03c0\u00b2 < 1",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
       },
       {
@@ -85,17 +85,17 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "summary": "Formalizes Erdős Problem #1149, solved by Bergelson and Richter (2017): for non-integer α > 0, the natural density of integers n with gcd(n, ⌊n^α⌋) = 1 is exactly 6/π². The main theorem is axiomatized (deep ergodic theory), with supporting results proved: density bounds 0 < 6/π² < 1, integer exponent exclusion, and the connection to classical coprime probability. 168 lines, 0 sorries, 2 axioms.",
-    "keyIdea": "The value 6/π² = 1/ζ(2) is the probability that two 'random' integers are coprime. The Bergelson-Richter theorem shows that n and ⌊n^α⌋ achieve exactly this coprime density despite being deterministically related — the floor-power function acts as a 'pseudorandom' generator for coprimality. The integer case is degenerate (gcd(n, n^k) = n), making the non-integer hypothesis essential.",
-    "historicalContext": "Erdős asked whether $n$ and $\\lfloor n^\\alpha \\rfloor$ (for irrational $\\alpha > 1$) are coprime with natural density $6/\\pi^2 = 1/\\zeta(2) \\approx 0.6079$. This value is the classical probability that two uniformly random integers are coprime, first computed by Cesàro (1881) and Sylvester using Euler's product formula $\\prod_p (1 - 1/p^2) = 6/\\pi^2$.\n\nThe difficulty lies in the deterministic structure of the sequence $\\lfloor n^\\alpha \\rfloor$: unlike random integers, it has specific arithmetic properties that could bias coprimality. Vitaly Bergelson and Florian K. Richter (2017) proved Erdős's conjecture affirmatively, showing that the coprimality density is indeed $6/\\pi^2$ for any irrational $\\alpha > 1$. Their proof uses the theory of multiplicative functions along polynomial sequences and results from ergodic theory, establishing that the 'randomness' expectation holds for this structured sequence.",
-    "problemStatement": "**Erdős Problem #1149** (SOLVED): Let $\\alpha > 0$ be a non-integer. Then\n$$\\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : \\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1\\}|}{N} = \\frac{6}{\\pi^2}.$$",
-    "text": "The density of integers n where gcd(n, ⌊n^α⌋) = 1 is 6/π² for non-integer α > 0. This shows n and ⌊n^α⌋ behave as 'independent random integers' for coprimality.",
-    "proofStrategy": "The formalization has five layers:\n\n1. **Definitions**: IsFloorPowerCoprime α n via Nat.Coprime, coprimeFloorPowerSet as the set of positive coprime n, countCoprime as the finite counting function via Set.ncard, and HasNaturalDensity via Filter.Tendsto\n2. **Main Theorem (axiom)**: bergelson_richter axiomatizes the Bergelson-Richter result; erdos_1149_solved wraps it\n3. **Algebraic Identity**: density_equals_inv_zeta2 proves 6/π² = 1/(π²/6) by ring, connecting to ζ(2)\n4. **Density Bounds**: density_pos from π² > 0; density_lt_one from π > 3 ⟹ π² > 9 > 6 via nlinarith\n5. **Integer Exclusion**: integer_alpha_trivial shows gcd(n, n^k) ≠ 1 for n > 1 via dvd_pow_self and Nat.dvd_gcd\n6. **Classical Context**: random_coprime_density (axiom) states the classical coprime pair density is 6/π²",
+    "summary": "Formalizes Erd\u0151s Problem #1149, solved by Bergelson and Richter (2017): for non-integer \u03b1 > 0, the natural density of integers n with gcd(n, \u230an^\u03b1\u230b) = 1 is exactly 6/\u03c0\u00b2. The main theorem is axiomatized (deep ergodic theory), with supporting results proved: density bounds 0 < 6/\u03c0\u00b2 < 1, integer exponent exclusion, and the connection to classical coprime probability. 168 lines, 0 sorries, 2 axioms.",
+    "keyIdea": "The value 6/\u03c0\u00b2 = 1/\u03b6(2) is the probability that two 'random' integers are coprime. The Bergelson-Richter theorem shows that n and \u230an^\u03b1\u230b achieve exactly this coprime density despite being deterministically related \u2014 the floor-power function acts as a 'pseudorandom' generator for coprimality. The integer case is degenerate (gcd(n, n^k) = n), making the non-integer hypothesis essential.",
+    "historicalContext": "Erd\u0151s asked whether $n$ and $\\lfloor n^\\alpha \\rfloor$ (for irrational $\\alpha > 1$) are coprime with natural density $6/\\pi^2 = 1/\\zeta(2) \\approx 0.6079$. This value is the classical probability that two uniformly random integers are coprime, first computed by Ces\u00e0ro (1881) and Sylvester using Euler's product formula $\\prod_p (1 - 1/p^2) = 6/\\pi^2$.\n\nThe difficulty lies in the deterministic structure of the sequence $\\lfloor n^\\alpha \\rfloor$: unlike random integers, it has specific arithmetic properties that could bias coprimality. Vitaly Bergelson and Florian K. Richter (2017) proved Erd\u0151s's conjecture affirmatively, showing that the coprimality density is indeed $6/\\pi^2$ for any irrational $\\alpha > 1$. Their proof uses the theory of multiplicative functions along polynomial sequences and results from ergodic theory, establishing that the 'randomness' expectation holds for this structured sequence.",
+    "problemStatement": "**Erd\u0151s Problem #1149** (SOLVED): Let $\\alpha > 0$ be a non-integer. Then\n$$\\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : \\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1\\}|}{N} = \\frac{6}{\\pi^2}.$$",
+    "text": "The density of integers n where gcd(n, \u230an^\u03b1\u230b) = 1 is 6/\u03c0\u00b2 for non-integer \u03b1 > 0. This shows n and \u230an^\u03b1\u230b behave as 'independent random integers' for coprimality.",
+    "proofStrategy": "The formalization has five layers:\n\n1. **Definitions**: IsFloorPowerCoprime \u03b1 n via Nat.Coprime, coprimeFloorPowerSet as the set of positive coprime n, countCoprime as the finite counting function via Set.ncard, and HasNaturalDensity via Filter.Tendsto\n2. **Main Theorem (axiom)**: bergelson_richter axiomatizes the Bergelson-Richter result; erdos_1149_solved wraps it\n3. **Algebraic Identity**: density_equals_inv_zeta2 proves 6/\u03c0\u00b2 = 1/(\u03c0\u00b2/6) by ring, connecting to \u03b6(2)\n4. **Density Bounds**: density_pos from \u03c0\u00b2 > 0; density_lt_one from \u03c0 > 3 \u27f9 \u03c0\u00b2 > 9 > 6 via nlinarith\n5. **Integer Exclusion**: integer_alpha_trivial shows gcd(n, n^k) \u2260 1 for n > 1 via dvd_pow_self and Nat.dvd_gcd\n6. **Classical Context**: random_coprime_density (axiom) states the classical coprime pair density is 6/\u03c0\u00b2",
     "keyInsights": [
-      "The independence phenomenon: n and ⌊n^α⌋ achieve exactly the coprime density 6/π² of random integers, despite being deterministically related — the non-integer exponent destroys arithmetic correlations",
-      "6/π² = 1/ζ(2) = ∏_p(1-1/p²): the Euler product connects coprimality to the Riemann zeta function at s=2",
-      "Integer α is degenerate: ⌊n^k⌋ = n^k, so gcd(n, n^k) = n, and only n=1 is coprime — the non-integer hypothesis is necessary, not just convenient",
-      "The proof uses π > 3 (available in Mathlib) to show 6/π² < 1, though the weaker π > √6 ≈ 2.449 would suffice",
+      "The independence phenomenon: n and \u230an^\u03b1\u230b achieve exactly the coprime density 6/\u03c0\u00b2 of random integers, despite being deterministically related \u2014 the non-integer exponent destroys arithmetic correlations",
+      "6/\u03c0\u00b2 = 1/\u03b6(2) = \u220f_p(1-1/p\u00b2): the Euler product connects coprimality to the Riemann zeta function at s=2",
+      "Integer \u03b1 is degenerate: \u230an^k\u230b = n^k, so gcd(n, n^k) = n, and only n=1 is coprime \u2014 the non-integer hypothesis is necessary, not just convenient",
+      "The proof uses \u03c0 > 3 (available in Mathlib) to show 6/\u03c0\u00b2 < 1, though the weaker \u03c0 > \u221a6 \u2248 2.449 would suffice",
       "The axiomatization is well-motivated: Bergelson-Richter's proof requires ergodic theory and multiplicative function theory far beyond current Mathlib"
     ],
     "prerequisites": [
@@ -112,51 +112,51 @@
       "title": "Core Definitions",
       "startLine": 28,
       "endLine": 48,
-      "summary": "Defines IsFloorPowerCoprime α n (coprimality predicate), coprimeFloorPowerSet α (the set of coprime positive n), countCoprime α N (counting function via Set.ncard), and HasNaturalDensity S d (asymptotic density via Filter.Tendsto)."
+      "summary": "Defines IsFloorPowerCoprime \u03b1 n (coprimality predicate), coprimeFloorPowerSet \u03b1 (the set of coprime positive n), countCoprime \u03b1 N (counting function via Set.ncard), and HasNaturalDensity S d (asymptotic density via Filter.Tendsto)."
     },
     {
       "id": "main-theorem",
       "title": "Bergelson-Richter Theorem",
       "startLine": 50,
       "endLine": 81,
-      "summary": "Axiomatizes the main result: for non-integer α > 0, the density of coprime floor-powers is 6/π². Proves density_equals_inv_zeta2 (6/π² = 1/(π²/6)) and wraps as erdos_1149_solved."
+      "summary": "Axiomatizes the main result: for non-integer \u03b1 > 0, the density of coprime floor-powers is 6/\u03c0\u00b2. Proves density_equals_inv_zeta2 (6/\u03c0\u00b2 = 1/(\u03c0\u00b2/6)) and wraps as erdos_1149_solved."
     },
     {
       "id": "density-bounds",
-      "title": "Density Bounds: 0 < 6/π² < 1",
+      "title": "Density Bounds: 0 < 6/\u03c0\u00b2 < 1",
       "startLine": 83,
       "endLine": 97,
-      "summary": "Proves density_pos (from π² > 0) and density_lt_one (from π > 3 ⟹ π² > 9 > 6 via nlinarith)."
+      "summary": "Proves density_pos (from \u03c0\u00b2 > 0) and density_lt_one (from \u03c0 > 3 \u27f9 \u03c0\u00b2 > 9 > 6 via nlinarith)."
     },
     {
       "id": "integer-case",
       "title": "Integer Exponent Exclusion",
       "startLine": 99,
       "endLine": 110,
-      "summary": "Proves integer_alpha_trivial: for positive integer k and n > 1, gcd(n, n^k) ≠ 1, since n | n^k by dvd_pow_self. Justifies the non-integer hypothesis."
+      "summary": "Proves integer_alpha_trivial: for positive integer k and n > 1, gcd(n, n^k) \u2260 1, since n | n^k by dvd_pow_self. Justifies the non-integer hypothesis."
     },
     {
       "id": "coprime-probability",
       "title": "Classical Coprime Probability",
       "startLine": 112,
       "endLine": 131,
-      "summary": "Axiomatizes random_coprime_density: the density of coprime pairs in {1,...,N}² is 6/π² = 1/ζ(2). Contextualizes the Bergelson-Richter result as achieving exactly the 'random' coprime density."
+      "summary": "Axiomatizes random_coprime_density: the density of coprime pairs in {1,...,N}\u00b2 is 6/\u03c0\u00b2 = 1/\u03b6(2). Contextualizes the Bergelson-Richter result as achieving exactly the 'random' coprime density."
     },
     {
       "id": "verification",
       "title": "Computational Verification and Summary",
       "startLine": 133,
       "endLine": 168,
-      "summary": "Computational check for α = 1/2: 6/10 integers in {1,...,10} satisfy gcd(n, ⌊√n⌋) = 1 (ratio 0.6, close to 6/π² ≈ 0.608). Extended summary combining all results."
+      "summary": "Computational check for \u03b1 = 1/2: 6/10 integers in {1,...,10} satisfy gcd(n, \u230a\u221an\u230b) = 1 (ratio 0.6, close to 6/\u03c0\u00b2 \u2248 0.608). Extended summary combining all results."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős #1149, proved by Bergelson-Richter (2017). The density of integers n coprime to ⌊n^α⌋ is 6/π² for non-integer α > 0. All theorems compile with 0 sorries. The 2 axioms capture deep results: the Bergelson-Richter theorem (ergodic theory) and classical coprime density (Euler product).",
-    "implications": "The result reveals that the deterministic function n ↦ ⌊n^α⌋ exhibits 'pseudorandom' behavior in the coprimality sense, connecting deterministic number theory to probabilistic heuristics\nThe proof technique (multiplicative functions along polynomial sequences) has applications beyond coprimality — it extends to other arithmetic functions evaluated at ⌊n^α⌋\nThe connection to ζ(2) = π²/6 places this result in the broader context of the Riemann zeta function and its role in counting problems\nThe integer exclusion argument shows that the non-integer hypothesis is not just technical but reflects a genuine phase transition in arithmetic behavior",
+    "summary": "This formalization captures Erd\u0151s #1149, proved by Bergelson-Richter (2017). The density of integers n coprime to \u230an^\u03b1\u230b is 6/\u03c0\u00b2 for non-integer \u03b1 > 0. All theorems compile with 0 sorries. The 2 axioms capture deep results: the Bergelson-Richter theorem (ergodic theory) and classical coprime density (Euler product).",
+    "implications": "The result reveals that the deterministic function n \u21a6 \u230an^\u03b1\u230b exhibits 'pseudorandom' behavior in the coprimality sense, connecting deterministic number theory to probabilistic heuristics\nThe proof technique (multiplicative functions along polynomial sequences) has applications beyond coprimality \u2014 it extends to other arithmetic functions evaluated at \u230an^\u03b1\u230b\nThe connection to \u03b6(2) = \u03c0\u00b2/6 places this result in the broader context of the Riemann zeta function and its role in counting problems\nThe integer exclusion argument shows that the non-integer hypothesis is not just technical but reflects a genuine phase transition in arithmetic behavior",
     "openQuestions": [
-      "What is the density for more general functions f(n) replacing ⌊n^α⌋?",
+      "What is the density for more general functions f(n) replacing \u230an^\u03b1\u230b?",
       "Can the convergence rate be quantified (error term)?",
-      "Does the result extend to gcd(n, ⌊n^α⌋) = d for d > 1?"
+      "Does the result extend to gcd(n, \u230an^\u03b1\u230b) = d for d > 1?"
     ],
     "crossReferences": [
       {
@@ -186,11 +186,11 @@
       "authors": "Vitaly Bergelson, Florian K. Richter",
       "title": "Multiplicative richness of additively large sets in Zd",
       "year": "2017",
-      "venue": "Journal d'Analyse Mathématique",
+      "venue": "Journal d'Analyse Math\u00e9matique",
       "note": "Proved the main result using multiplicative functions along polynomial sequences"
     },
     {
-      "authors": "Paul Erdős",
+      "authors": "Paul Erd\u0151s",
       "title": "Some problems on number theory",
       "year": "1969",
       "venue": "Analytic and elementary number theory (Marseille, 1983), Publ. Math. Orsay",
@@ -201,7 +201,41 @@
       "title": "Introductio in analysin infinitorum",
       "year": "1748",
       "venue": "Lausanne",
-      "note": "Euler product formula ζ(2) = π²/6 and the coprime probability 6/π² = ∏_p(1-1/p²)"
+      "note": "Euler product formula \u03b6(2) = \u03c0\u00b2/6 and the coprime probability 6/\u03c0\u00b2 = \u220f_p(1-1/p\u00b2)"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1100",
+      "relationship": "related",
+      "description": "Share coprimality and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Share coprimality and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-460",
+      "relationship": "related",
+      "description": "Share coprimality and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-770",
+      "relationship": "related",
+      "description": "Share coprimality and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-824",
+      "relationship": "related",
+      "description": "Share coprimality and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1100",
+    "erdos-432",
+    "erdos-460",
+    "erdos-770",
+    "erdos-824"
   ]
 }

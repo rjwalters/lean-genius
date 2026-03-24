@@ -1,10 +1,10 @@
 {
   "id": "erdos-345",
-  "title": "Erdős Problem #345: Completeness Thresholds for Power Sequences",
+  "title": "Erd\u0151s Problem #345: Completeness Thresholds for Power Sequences",
   "slug": "erdos-345",
-  "description": "Let T(n^k) be the completeness threshold for the k-th power sequence. Are there infinitely many k with T(n^k) > T(n^{k+1})? Known: T(n)=1, T(n²)=128, T(n³)=12758.",
+  "description": "Let T(n^k) be the completeness threshold for the k-th power sequence. Are there infinitely many k with T(n^k) > T(n^{k+1})? Known: T(n)=1, T(n\u00b2)=128, T(n\u00b3)=12758.",
   "meta": {
-    "author": "Erdős–Graham (1980, open)",
+    "author": "Erd\u0151s\u2013Graham (1980, open)",
     "sourceUrl": "https://erdosproblems.com/345",
     "date": "1980",
     "status": "axiomatized",
@@ -46,7 +46,7 @@
       "subsetSums and IsComplete definitions",
       "threshold axiomatization (correctness + minimality)",
       "powerSeq definition",
-      "Known threshold values: T(n²)=128, T(n³)=12758, T(n⁴)=5134240, T(n⁵)=67898771",
+      "Known threshold values: T(n\u00b2)=128, T(n\u00b3)=12758, T(n\u2074)=5134240, T(n\u2075)=67898771",
       "powerSeq_complete axiom (from Waring)",
       "ErdosProblem345 conjecture statement",
       "threshold_mono_small axiom"
@@ -56,16 +56,16 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The notion of **complete sequences** — sets whose subset sums eventually cover all integers — was systematically studied by Erdős and Graham in their 1980 monograph. The **completeness threshold** $T(A)$ measures the onset of full representability. For the sequence of positive integers, $T(\\{n\\}) = 1$ trivially (binary representation). For squares, Sprague (1948) showed completeness, and the exact value $T(n^2) = 128$ was computed by Wright (1960s). Hilbert's resolution of **Waring's problem** (1909) guarantees that $k$-th power sequences are complete for all $k$, but the threshold $T(n^k)$ measures representability by **distinct** $k$-th powers, a finer and harder question. The exact values $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$ were determined by exhaustive computation. Despite the rapid growth, Erdős and Graham conjectured that the sequence $T(n^k)$ is **not eventually monotone** — that threshold reversals $T(n^k) > T(n^{k+1})$ occur infinitely often, perhaps at $k = 2^t$ for large $t$.",
+    "historicalContext": "The notion of **complete sequences** \u2014 sets whose subset sums eventually cover all integers \u2014 was systematically studied by Erd\u0151s and Graham in their 1980 monograph. The **completeness threshold** $T(A)$ measures the onset of full representability. For the sequence of positive integers, $T(\\{n\\}) = 1$ trivially (binary representation). For squares, Sprague (1948) showed completeness, and the exact value $T(n^2) = 128$ was computed by Wright (1960s). Hilbert's resolution of **Waring's problem** (1909) guarantees that $k$-th power sequences are complete for all $k$, but the threshold $T(n^k)$ measures representability by **distinct** $k$-th powers, a finer and harder question. The exact values $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$ were determined by exhaustive computation. Despite the rapid growth, Erd\u0151s and Graham conjectured that the sequence $T(n^k)$ is **not eventually monotone** \u2014 that threshold reversals $T(n^k) > T(n^{k+1})$ occur infinitely often, perhaps at $k = 2^t$ for large $t$.",
     "problemStatement": "Are there infinitely many k such that T(n^k) > T(n^{k+1})?",
-    "text": "Let T(n^k) be the completeness threshold for the k-th power sequence. Are there infinitely many k with T(n^k) > T(n^{k+1})? Known: T(n)=1, T(n²)=128, T(n³)=12758.",
+    "text": "Let T(n^k) be the completeness threshold for the k-th power sequence. Are there infinitely many k with T(n^k) > T(n^{k+1})? Known: T(n)=1, T(n\u00b2)=128, T(n\u00b3)=12758.",
     "proofStrategy": "The formalization defines subset sums, completeness, and the threshold T(A) axiomatically. Power sequences are defined and their completeness follows from Waring's problem. Known threshold values are axiomatised.",
     "keyInsights": [
-      "**Known thresholds**: $T(n)=1$, $T(n^2)=128$, $T(n^3)=12758$, $T(n^4)=5134240$, $T(n^5)=67898771$ — growth ratios oscillate wildly ($128, 99.7, 403.3, 13.2$)",
+      "**Known thresholds**: $T(n)=1$, $T(n^2)=128$, $T(n^3)=12758$, $T(n^4)=5134240$, $T(n^5)=67898771$ \u2014 growth ratios oscillate wildly ($128, 99.7, 403.3, 13.2$)",
       "**Threshold axiomatization** via correctness ($\\forall n \\ge T(A): n \\in P(A)$) and minimality ($T(A) > 0 \\implies \\exists n < T(A): n \\notin P(A)$) uniquely characterizes $T(A)$",
       "**Waring completeness**: every $k$-th power sequence is complete (all sufficiently large integers are sums of distinct $k$-th powers), making $T(n^k)$ well-defined for all $k$",
-      "**Counterintuitive conjecture**: sparser sequences ($k+1$ powers) could have smaller thresholds — Erdős–Graham suggest $k = 2^t$ as candidates where extreme sparsity creates favorable additive structure",
-      "**Strict monotonicity** $T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$ in the computable range — any reversal must occur for $k \\ge 5$ where thresholds are computationally infeasible"
+      "**Counterintuitive conjecture**: sparser sequences ($k+1$ powers) could have smaller thresholds \u2014 Erd\u0151s\u2013Graham suggest $k = 2^t$ as candidates where extreme sparsity creates favorable additive structure",
+      "**Strict monotonicity** $T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$ in the computable range \u2014 any reversal must occur for $k \\ge 5$ where thresholds are computationally infeasible"
     ],
     "prerequisites": [
       "Complete sequences and subset sum theory",
@@ -125,22 +125,24 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 345 on completeness thresholds for power sequences, with exact values for k ≤ 5 and the open question of threshold decrease.",
+    "summary": "The formalization captures Erd\u0151s Problem 345 on completeness thresholds for power sequences, with exact values for k \u2264 5 and the open question of threshold decrease.",
     "implications": "Understanding when T(n^k) decreases would reveal deep structure in the additive properties of power sequences and connections to Waring's problem.",
     "openQuestions": [
       "Are there infinitely many k with T(n^k) > T(n^{k+1})?",
       "Does T(n^{2^t}) eventually decrease?",
-      "What is the growth rate of T(n^k) as k → ∞?"
+      "What is the growth rate of T(n^k) as k \u2192 \u221e?"
     ]
   },
   "crossReferences": [
     {
-      "relationship": "Both study counting functions for sums of k-th powers; Problem 323 asks about f_{k,m}(x) while Problem 345 asks about completeness thresholds T(n^k)",
-      "targetId": "erdos-323"
+      "relationship": "related",
+      "targetId": "erdos-323",
+      "description": "Both study counting functions for sums of k-th powers; Problem 323 asks about f_{k,m}(x) while Problem 345 asks about completeness thresholds T(n^k)"
     },
     {
-      "relationship": "Problem 344 studies subcomplete sequences — Problem 345 extends to completeness thresholds for power sequences, a related structural question",
-      "targetId": "erdos-344"
+      "relationship": "related",
+      "targetId": "erdos-344",
+      "description": "Problem 344 studies subcomplete sequences \u2014 Problem 345 extends to completeness thresholds for power sequences, a related structural question"
     }
   ],
   "leanFile": {
@@ -163,20 +165,20 @@
   ],
   "references": [
     {
-      "cite": "Erdős–Graham 1980",
+      "cite": "Erd\u0151s\u2013Graham 1980",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": 1980,
       "relevance": "Original source of the conjecture about threshold reversals for power sequences"
     },
     {
       "cite": "Hilbert 1909",
-      "title": "Beweis für die Darstellbarkeit der ganzen Zahlen durch eine feste Anzahl n-ter Potenzen",
+      "title": "Beweis f\u00fcr die Darstellbarkeit der ganzen Zahlen durch eine feste Anzahl n-ter Potenzen",
       "year": 1909,
       "relevance": "Waring's problem resolution: every integer is a sum of k-th powers, implying completeness"
     },
     {
       "cite": "Sprague 1948",
-      "title": "Über Zerlegungen in ungleiche Quadratzahlen",
+      "title": "\u00dcber Zerlegungen in ungleiche Quadratzahlen",
       "year": 1948,
       "relevance": "Proved completeness of distinct squares: every sufficiently large integer is a sum of distinct squares"
     }

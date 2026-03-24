@@ -1,8 +1,8 @@
 {
   "id": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
-  "title": "Ideal-theoretic CRT: R/∏Iᵢ ≅ ∏ R/Iᵢ",
+  "title": "Ideal-theoretic CRT: R/\u220fI\u1d62 \u2245 \u220f R/I\u1d62",
   "slug": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
-  "description": "The Chinese Remainder Theorem generalized from ℤ/nℤ to arbitrary commutative rings: for pairwise coprime ideals I₁, ..., Iₖ in a commutative ring R, the quotient R/(⨅ Iᵢ) is isomorphic to the product ∏ R/Iᵢ as rings. This formalization wraps Mathlib's quotientInfRingEquivPiQuotient with explicit coprimality characterizations, proves that coprime ideals have I ∩ J = I · J, and establishes coprimality inheritance (coprime to both J and K implies coprime to J ∩ K).",
+  "description": "The Chinese Remainder Theorem generalized from \u2124/n\u2124 to arbitrary commutative rings: for pairwise coprime ideals I\u2081, ..., I\u2096 in a commutative ring R, the quotient R/(\u2a05 I\u1d62) is isomorphic to the product \u220f R/I\u1d62 as rings. This formalization wraps Mathlib's quotientInfRingEquivPiQuotient with explicit coprimality characterizations, proves that coprime ideals have I \u2229 J = I \u00b7 J, and establishes coprimality inheritance (coprime to both J and K implies coprime to J \u2229 K).",
   "meta": {
     "author": "Gauss; Noether; formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem#Ideals",
@@ -21,30 +21,30 @@
     "mathlibDependencies": [
       {
         "theorem": "Ideal.quotientInfRingEquivPiQuotient",
-        "description": "R/(⨅ Iᵢ) ≃+* ∏ R/Iᵢ for pairwise coprime ideals — the k-fold ideal CRT",
+        "description": "R/(\u2a05 I\u1d62) \u2243+* \u220f R/I\u1d62 for pairwise coprime ideals \u2014 the k-fold ideal CRT",
         "module": "Mathlib.RingTheory.Ideal.Quotient.Operations"
       },
       {
         "theorem": "Ideal.quotientInfEquivQuotientProd",
-        "description": "R/(I ∩ J) ≃+* R/I × R/J for coprime ideals — the 2-fold case",
+        "description": "R/(I \u2229 J) \u2243+* R/I \u00d7 R/J for coprime ideals \u2014 the 2-fold case",
         "module": "Mathlib.RingTheory.Ideal.Quotient.Operations"
       },
       {
         "theorem": "Ideal.isCoprime_iff_sup_eq",
-        "description": "IsCoprime I J ↔ I ⊔ J = ⊤ — coprimality as sum equals whole ring",
+        "description": "IsCoprime I J \u2194 I \u2294 J = \u22a4 \u2014 coprimality as sum equals whole ring",
         "module": "Mathlib.RingTheory.Coprime.Ideal"
       },
       {
         "theorem": "IsCoprime.mul_right",
-        "description": "Coprime to both J and K implies coprime to J·K",
+        "description": "Coprime to both J and K implies coprime to J\u00b7K",
         "module": "Mathlib.RingTheory.Coprime.Basic"
       }
     ],
     "originalContributions": [
-      "inf_eq_mul_of_coprime: I ∩ J = I·J for coprime ideals, proved from elements",
-      "crt_product: R/(I·J) ≅ R/I × R/J combining intersection = product with 2-fold CRT",
-      "crt_unique: uniqueness of CRT solutions modulo I ∩ J",
-      "isCoprime_of_coprime_inf: coprimality inheritance I⊥J ∧ I⊥K ⟹ I⊥(J∩K)"
+      "inf_eq_mul_of_coprime: I \u2229 J = I\u00b7J for coprime ideals, proved from elements",
+      "crt_product: R/(I\u00b7J) \u2245 R/I \u00d7 R/J combining intersection = product with 2-fold CRT",
+      "crt_unique: uniqueness of CRT solutions modulo I \u2229 J",
+      "isCoprime_of_coprime_inf: coprimality inheritance I\u22a5J \u2227 I\u22a5K \u27f9 I\u22a5(J\u2229K)"
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
@@ -52,16 +52,16 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Chinese Remainder Theorem was first generalized from integers to arbitrary rings by Emmy Noether's school in the early 20th century. In modern commutative algebra, the CRT is stated for ideals: if I and J are coprime (meaning I + J = R), then R/(I ∩ J) ≅ R/I × R/J. This is Proposition 1.10 in Atiyah-Macdonald. The k-fold version states R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals. The key structural insight is that coprime ideals satisfy I ∩ J = I · J, connecting the intersection (lattice operation) with the product (ring operation).",
-    "problemStatement": "**Theorem (crt_general)**: For a finite family of pairwise coprime ideals {Iᵢ} in a commutative ring R,\n  R ⧸ (⨅ i, I i) ≃+* ∀ i, R ⧸ I i\n\n**Key structural result (inf_eq_mul_of_coprime)**: For coprime ideals I + J = R,\n  I ∩ J = I · J",
-    "text": "The Chinese Remainder Theorem generalized from ℤ/nℤ to arbitrary commutative rings: for pairwise coprime ideals I₁, ..., Iₖ in a commutative ring R, the quotient R/(⨅ Iᵢ) is isomorphic to the product ∏ R/Iᵢ as rings. This formalization wraps Mathlib's quotientInfRingEquivPiQuotient with explicit coprimality characterizations, proves that coprime ideals have I ∩ J = I · J, and establishes coprimality inheritance (coprime to both J and K implies coprime to J ∩ K).",
-    "proofStrategy": "The formalization leverages Mathlib's existing infrastructure:\n\n1. **Coprimality**: Uses Ideal.isCoprime_iff_sup_eq to characterize coprimality as I ⊔ J = ⊤\n2. **2-fold CRT**: Wraps Ideal.quotientInfEquivQuotientProd for R/(I∩J) ≅ R/I × R/J\n3. **k-fold CRT**: Wraps Ideal.quotientInfRingEquivPiQuotient for the general case\n4. **I∩J = I·J**: Proved from elements using Bézout-style decomposition 1 = a + b\n5. **Product CRT**: Combines I∩J = I·J with 2-fold CRT for R/(I·J) ≅ R/I × R/J\n6. **Coprimality inheritance**: IsCoprime I J ∧ IsCoprime I K ⟹ IsCoprime I (J∩K) via mul_right and mul_le_inf",
+    "historicalContext": "The Chinese Remainder Theorem was first generalized from integers to arbitrary rings by Emmy Noether's school in the early 20th century. In modern commutative algebra, the CRT is stated for ideals: if I and J are coprime (meaning I + J = R), then R/(I \u2229 J) \u2245 R/I \u00d7 R/J. This is Proposition 1.10 in Atiyah-Macdonald. The k-fold version states R/(\u2a05 I\u1d62) \u2245 \u220f R/I\u1d62 for pairwise coprime ideals. The key structural insight is that coprime ideals satisfy I \u2229 J = I \u00b7 J, connecting the intersection (lattice operation) with the product (ring operation).",
+    "problemStatement": "**Theorem (crt_general)**: For a finite family of pairwise coprime ideals {I\u1d62} in a commutative ring R,\n  R \u29f8 (\u2a05 i, I i) \u2243+* \u2200 i, R \u29f8 I i\n\n**Key structural result (inf_eq_mul_of_coprime)**: For coprime ideals I + J = R,\n  I \u2229 J = I \u00b7 J",
+    "text": "The Chinese Remainder Theorem generalized from \u2124/n\u2124 to arbitrary commutative rings: for pairwise coprime ideals I\u2081, ..., I\u2096 in a commutative ring R, the quotient R/(\u2a05 I\u1d62) is isomorphic to the product \u220f R/I\u1d62 as rings. This formalization wraps Mathlib's quotientInfRingEquivPiQuotient with explicit coprimality characterizations, proves that coprime ideals have I \u2229 J = I \u00b7 J, and establishes coprimality inheritance (coprime to both J and K implies coprime to J \u2229 K).",
+    "proofStrategy": "The formalization leverages Mathlib's existing infrastructure:\n\n1. **Coprimality**: Uses Ideal.isCoprime_iff_sup_eq to characterize coprimality as I \u2294 J = \u22a4\n2. **2-fold CRT**: Wraps Ideal.quotientInfEquivQuotientProd for R/(I\u2229J) \u2245 R/I \u00d7 R/J\n3. **k-fold CRT**: Wraps Ideal.quotientInfRingEquivPiQuotient for the general case\n4. **I\u2229J = I\u00b7J**: Proved from elements using B\u00e9zout-style decomposition 1 = a + b\n5. **Product CRT**: Combines I\u2229J = I\u00b7J with 2-fold CRT for R/(I\u00b7J) \u2245 R/I \u00d7 R/J\n6. **Coprimality inheritance**: IsCoprime I J \u2227 IsCoprime I K \u27f9 IsCoprime I (J\u2229K) via mul_right and mul_le_inf",
     "keyInsights": [
       "The ideal-theoretic CRT is an immediate consequence of Mathlib's quotientInfRingEquivPiQuotient",
-      "The original contribution is in connecting coprimality conditions, proving I∩J = I·J, and establishing inheritance",
-      "The element-level proof of I∩J = I·J uses x = x·1 = x·(a+b) = x·a + x·b decomposition",
-      "Coprimality inheritance uses IsCoprime.mul_right plus J·K ≤ J∩K (Ideal.mul_le_inf)",
-      "The formalization's value lies not in the CRT itself (one Mathlib call) but in making coprimality explicit, connecting ∩ with ·, and proving closure properties needed for applications"
+      "The original contribution is in connecting coprimality conditions, proving I\u2229J = I\u00b7J, and establishing inheritance",
+      "The element-level proof of I\u2229J = I\u00b7J uses x = x\u00b71 = x\u00b7(a+b) = x\u00b7a + x\u00b7b decomposition",
+      "Coprimality inheritance uses IsCoprime.mul_right plus J\u00b7K \u2264 J\u2229K (Ideal.mul_le_inf)",
+      "The formalization's value lies not in the CRT itself (one Mathlib call) but in making coprimality explicit, connecting \u2229 with \u00b7, and proving closure properties needed for applications"
     ],
     "prerequisites": [
       "Abstract algebra"
@@ -73,68 +73,62 @@
       "title": "Coprimality of Ideals",
       "startLine": 27,
       "endLine": 49,
-      "summary": "Characterization of ideal coprimality as I ⊔ J = ⊤, and the key structural theorem inf_eq_mul_of_coprime: for coprime ideals, the intersection equals the product."
+      "summary": "Characterization of ideal coprimality as I \u2294 J = \u22a4, and the key structural theorem inf_eq_mul_of_coprime: for coprime ideals, the intersection equals the product."
     },
     {
       "id": "two-fold-crt",
       "title": "Two-Fold CRT",
       "startLine": 51,
       "endLine": 69,
-      "summary": "The 2-fold ideal CRT: R/(I∩J) ≅ R/I × R/J for coprime ideals, wrapping Mathlib's quotientInfEquivQuotientProd with surjectivity and injectivity."
+      "summary": "The 2-fold ideal CRT: R/(I\u2229J) \u2245 R/I \u00d7 R/J for coprime ideals, wrapping Mathlib's quotientInfEquivQuotientProd with surjectivity and injectivity."
     },
     {
       "id": "k-fold-crt",
       "title": "General k-Fold CRT",
       "startLine": 62,
       "endLine": 87,
-      "summary": "The k-fold ideal CRT: R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ for pairwise coprime ideals, wrapping Mathlib's quotientInfRingEquivPiQuotient."
+      "summary": "The k-fold ideal CRT: R/(\u2a05 I\u1d62) \u2245 \u220f R/I\u1d62 for pairwise coprime ideals, wrapping Mathlib's quotientInfRingEquivPiQuotient."
     },
     {
       "id": "product-crt",
       "title": "CRT for Products",
       "startLine": 89,
       "endLine": 98,
-      "summary": "R/(I·J) ≅ R/I × R/J for coprime ideals, using I∩J = I·J to reduce to the intersection case."
+      "summary": "R/(I\u00b7J) \u2245 R/I \u00d7 R/J for coprime ideals, using I\u2229J = I\u00b7J to reduce to the intersection case."
     },
     {
       "id": "corollaries",
       "title": "Key Corollaries",
       "startLine": 100,
       "endLine": 130,
-      "summary": "Uniqueness of CRT solutions modulo I∩J, coprimality symmetry, and coprimality inheritance: coprime to both J and K implies coprime to J∩K."
+      "summary": "Uniqueness of CRT solutions modulo I\u2229J, coprimality symmetry, and coprimality inheritance: coprime to both J and K implies coprime to J\u2229K."
     }
   ],
   "crossReferences": [
     {
       "targetId": "bezout-identity-oq-03-oq-01-oq-01",
       "relationship": "extends",
-      "description": "Direct parent: the k-fold CRT for ℤ/nℤ (concrete case). This entry generalizes from integers to arbitrary commutative rings."
+      "description": "Direct parent: the k-fold CRT for \u2124/n\u2124 (concrete case). This entry generalizes from integers to arbitrary commutative rings."
     },
     {
       "targetId": "bezout-identity-oq-03-oq-01",
       "relationship": "extends",
-      "description": "Grandparent: the 2-fold CRT ring isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ. This entry provides the abstract algebra framework."
-    },
-    {
-      "targetId": "chinese-remainder-non-coprime-oq-02",
-      "relationship": "related",
-      "description": "The non-coprime CRT for Euclidean domains with the ideal bridge IsCoprime ↔ Ideal.span coprime."
+      "description": "Grandparent: the 2-fold CRT ring isomorphism \u2124/mn\u2124 \u2245 \u2124/m\u2124 \u00d7 \u2124/n\u2124. This entry provides the abstract algebra framework."
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the ideal-theoretic CRT with 12 theorems, 0 axioms, 0 sorries. The k-fold CRT R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ is the abstract algebra crown of the Bézout identity chain, generalizing from ℤ/nℤ to arbitrary commutative rings.",
-    "implications": "**For algebra**: The ideal-theoretic CRT provides the foundation for localization, completion, and sheaf theory on Spec R.\n\n**For number theory**: Specializes to ℤ/nℤ for the classical CRT, and to number fields for applications in algebraic number theory.\n\n**For the gallery**: Answers the open question from the parent file about generalizing to ideals.",
+    "summary": "This formalization proves the ideal-theoretic CRT with 12 theorems, 0 axioms, 0 sorries. The k-fold CRT R/(\u2a05 I\u1d62) \u2245 \u220f R/I\u1d62 is the abstract algebra crown of the B\u00e9zout identity chain, generalizing from \u2124/n\u2124 to arbitrary commutative rings.",
+    "implications": "**For algebra**: The ideal-theoretic CRT provides the foundation for localization, completion, and sheaf theory on Spec R.\n\n**For number theory**: Specializes to \u2124/n\u2124 for the classical CRT, and to number fields for applications in algebraic number theory.\n\n**For the gallery**: Answers the open question from the parent file about generalizing to ideals.",
     "openQuestions": [
-      "Prove I ∩ J = I · J using Mathlib's lattice theory (without element-level decomposition)",
-      "Connect to Spec R: the CRT reflects the disconnection of Spec(R/I) ⊔ Spec(R/J) when I + J = R"
+      "Prove I \u2229 J = I \u00b7 J using Mathlib's lattice theory (without element-level decomposition)",
+      "Connect to Spec R: the CRT reflects the disconnection of Spec(R/I) \u2294 Spec(R/J) when I + J = R"
     ]
   },
   "relatedProofs": [
     "bezout-identity",
     "bezout-identity-oq-03",
     "bezout-identity-oq-03-oq-01",
-    "bezout-identity-oq-03-oq-01-oq-01",
-    "chinese-remainder-non-coprime-oq-02"
+    "bezout-identity-oq-03-oq-01-oq-01"
   ],
   "leanFile": {
     "imports": [
@@ -162,7 +156,7 @@
       "title": "Algebra",
       "year": "2002",
       "venue": "Springer Graduate Texts in Mathematics",
-      "note": "Chapter II §2: CRT for ideals in commutative rings"
+      "note": "Chapter II \u00a72: CRT for ideals in commutative rings"
     }
   ]
 }

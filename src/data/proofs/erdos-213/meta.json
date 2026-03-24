@@ -1,10 +1,10 @@
 {
   "id": "erdos-213",
-  "title": "Erdős Problem #213: Integer Distance Sets in General Position",
+  "title": "Erd\u0151s Problem #213: Integer Distance Sets in General Position",
   "slug": "erdos-213",
-  "description": "For n ≥ 4, are there n points in ℝ², no three on a line and no four on a circle, with all pairwise distances integers?",
+  "description": "For n \u2265 4, are there n points in \u211d\u00b2, no three on a line and no four on a circle, with all pairwise distances integers?",
   "meta": {
-    "author": "Kreisel-Kurz (2008, best construction n=7); Anning-Erdős (1945, finiteness)",
+    "author": "Kreisel-Kurz (2008, best construction n=7); Anning-Erd\u0151s (1945, finiteness)",
     "sourceUrl": "https://erdosproblems.com/213",
     "date": "",
     "status": "axiomatized",
@@ -43,7 +43,7 @@
     "originalContributions": [
       "Clean formalization of integer distance sets in general position",
       "Definition of collinearity and concyclicity conditions",
-      "Axiomatization of Anning-Erdős finiteness theorem",
+      "Axiomatization of Anning-Erd\u0151s finiteness theorem",
       "Axiomatization of Harborth (n=5) and Kreisel-Kurz (n=7) constructions",
       "Proved n=4,5,6,7 exist as theorems from base axioms",
       "Axiomatization of Greenfeld-Iliopoulou-Peluse sparsity bound"
@@ -53,15 +53,15 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem asks about integer distance sets in 'general position' - meaning no three points collinear and no four points concyclic. This rules out trivial infinite examples like points on a line or circle.\n\nAnning and Erdős (1945) proved that any set in the plane with no three collinear and all pairwise distances integers must be finite. This fundamental result shows such sets cannot be arbitrarily large.\n\nHarborth showed that n=5 is achievable. Kreisel and Kurz (2008) constructed a 7-point example, which remains the best known. Whether n=8 or larger is possible is open.\n\nRecent work by Greenfeld, Iliopoulou, and Peluse (2024) proved that such sets in [-N,N]² have size O((log N)^C), showing they must be extremely sparse.",
-    "problemStatement": "**Question**: For all $n \\geq 4$, do there exist $n$ points in $\\mathbb{R}^2$, no three collinear and no four concyclic, such that all pairwise distances are integers?\n\n**Status**: OPEN\n\n**Known constructions**:\n- $n = 5$: Harborth\n- $n = 7$: Kreisel-Kurz (2008) - best known\n\n**Key constraint**: Anning-Erdős (1945) proved such sets must be finite.",
-    "text": "For n ≥ 4, are there n points in ℝ², no three on a line and no four on a circle, with all pairwise distances integers?",
+    "historicalContext": "This problem asks about integer distance sets in 'general position' - meaning no three points collinear and no four points concyclic. This rules out trivial infinite examples like points on a line or circle.\n\nAnning and Erd\u0151s (1945) proved that any set in the plane with no three collinear and all pairwise distances integers must be finite. This fundamental result shows such sets cannot be arbitrarily large.\n\nHarborth showed that n=5 is achievable. Kreisel and Kurz (2008) constructed a 7-point example, which remains the best known. Whether n=8 or larger is possible is open.\n\nRecent work by Greenfeld, Iliopoulou, and Peluse (2024) proved that such sets in [-N,N]\u00b2 have size O((log N)^C), showing they must be extremely sparse.",
+    "problemStatement": "**Question**: For all $n \\geq 4$, do there exist $n$ points in $\\mathbb{R}^2$, no three collinear and no four concyclic, such that all pairwise distances are integers?\n\n**Status**: OPEN\n\n**Known constructions**:\n- $n = 5$: Harborth\n- $n = 7$: Kreisel-Kurz (2008) - best known\n\n**Key constraint**: Anning-Erd\u0151s (1945) proved such sets must be finite.",
+    "text": "For n \u2265 4, are there n points in \u211d\u00b2, no three on a line and no four on a circle, with all pairwise distances integers?",
     "proofStrategy": "We formalize the problem and known results:\n\n1. **Definitions**: Point, collinearity, concyclicity, integer distances\n2. **IsIntegerDistanceSetGP**: Combined predicate for all conditions\n3. **anning_erdos_finite**: Axiom for finiteness\n4. **harborth_five, kreisel_kurz_seven**: Construction axioms\n5. **exists_four, exists_five, exists_six, exists_seven**: Theorems from axioms\n6. **gip_sparsity_bound**: Upper bound axiom\n\nThe theorems for n=4,5,6 follow by taking subsets of the n=7 construction.",
     "keyInsights": [
       "**General position**: No three collinear AND no four concyclic - rules out infinite examples.",
-      "**Anning-Erdős**: Even without the concyclic condition, integer distance sets with no three collinear are finite.",
+      "**Anning-Erd\u0151s**: Even without the concyclic condition, integer distance sets with no three collinear are finite.",
       "**Best known**: n=7 by Kreisel-Kurz (2008). Whether n=8 works is unknown.",
-      "**Sparsity**: In [-N,N]², such sets have size at most O((log N)^C) - very sparse!",
+      "**Sparsity**: In [-N,N]\u00b2, such sets have size at most O((log N)^C) - very sparse!",
       "**Subset trick**: n=4,5,6 follow from n=7 since subsets inherit the properties."
     ],
     "prerequisites": [
@@ -83,7 +83,7 @@
       "title": "Main Results",
       "startLine": 67,
       "endLine": 92,
-      "summary": "Anning-Erdős finiteness and the main open question."
+      "summary": "Anning-Erd\u0151s finiteness and the main open question."
     },
     {
       "id": "constructions",
@@ -108,7 +108,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #213 on integer distance sets in general position. The Lean proof establishes all definitions, axiomatizes key results (Anning-Erdős finiteness, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity), and proves existence for n=4,5,6,7 from the axioms.",
+    "summary": "We formalize Erd\u0151s Problem #213 on integer distance sets in general position. The Lean proof establishes all definitions, axiomatizes key results (Anning-Erd\u0151s finiteness, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity), and proves existence for n=4,5,6,7 from the axioms.",
     "implications": "The gap between the best construction (n=7) and the lack of proof that larger sets don't exist represents a fundamental open question in combinatorial geometry. The sparsity bounds suggest such sets must be rare, but don't preclude larger examples.",
     "openQuestions": [
       "Does an 8-point integer distance set in general position exist?",
@@ -135,5 +135,39 @@
     "axiomCount": 7,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1082",
+      "relationship": "related",
+      "description": "Share geometric and general-position themes"
+    },
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "erdos-1082",
+    "erdos-1086",
+    "erdos-1090",
+    "erdos-1166"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-1169",
-  "title": "Erdős Problem #1169: Partition Relations for ω₁²",
+  "title": "Erd\u0151s Problem #1169: Partition Relations for \u03c9\u2081\u00b2",
   "slug": "erdos-1169",
-  "description": "Does ω₁² → (ω₁², 3)² hold (in ZFC)?",
+  "description": "Does \u03c9\u2081\u00b2 \u2192 (\u03c9\u2081\u00b2, 3)\u00b2 hold (in ZFC)?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1169",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1169Problem.lean",
@@ -66,9 +66,9 @@
     "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1169 belongs to the partition calculus, a branch of combinatorial set theory developed by Erdős and Hajnal starting in the 1950s. The partition calculus extends Ramsey's theorem (1930) — which concerns finite colorings of finite sets — to the transfinite setting, asking when colorings of pairs from infinite well-ordered sets must contain large homogeneous subsets.\n\nThe specific question $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ asks: must every 2-coloring of pairs from a set of order type $\\omega_1^2$ (where $\\omega_1$ is the first uncountable ordinal) contain either a monochromatic subset of the same order type $\\omega_1^2$ or a monochromatic triangle? This is a natural question in the hierarchy of ordinal partition relations, sitting between the well-understood countable case and the general uncountable theory.\n\nThe key partial result is due to András Hajnal, who proved the partition relation holds under the Continuum Hypothesis (CH). Hajnal's proof uses the diamond principle $\\Diamond$ (a combinatorial consequence of CH established by Jensen) to construct the required homogeneous sets. Remarkably, Hajnal proves the stronger result $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for ALL finite $k$, not just $k = 3$. Since CH is consistent with ZFC (Gödel 1940), this shows the negative relation cannot be proved from ZFC alone. However, it remains open whether the positive relation is provable from ZFC without assuming CH.\n\nThe problem connects to several other Erdős problems: #592 asks the countable analogue (for which countable $\\beta$ does $\\omega^\\beta \\to (\\omega^\\beta, 3)^2$ hold?), and #118 asks whether $\\alpha \\to (\\alpha, 3)^2$ implies $\\alpha \\to (\\alpha, n)^2$ for all $n$ (disproved by Schipperus and Darby in 1999, though Hajnal's result shows this implication holds for $\\omega_1^2$ under CH). The problem is referenced as [Va99, 7.85].",
+    "historicalContext": "Erd\u0151s Problem #1169 belongs to the partition calculus, a branch of combinatorial set theory developed by Erd\u0151s and Hajnal starting in the 1950s. The partition calculus extends Ramsey's theorem (1930) \u2014 which concerns finite colorings of finite sets \u2014 to the transfinite setting, asking when colorings of pairs from infinite well-ordered sets must contain large homogeneous subsets.\n\nThe specific question $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ asks: must every 2-coloring of pairs from a set of order type $\\omega_1^2$ (where $\\omega_1$ is the first uncountable ordinal) contain either a monochromatic subset of the same order type $\\omega_1^2$ or a monochromatic triangle? This is a natural question in the hierarchy of ordinal partition relations, sitting between the well-understood countable case and the general uncountable theory.\n\nThe key partial result is due to Andr\u00e1s Hajnal, who proved the partition relation holds under the Continuum Hypothesis (CH). Hajnal's proof uses the diamond principle $\\Diamond$ (a combinatorial consequence of CH established by Jensen) to construct the required homogeneous sets. Remarkably, Hajnal proves the stronger result $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for ALL finite $k$, not just $k = 3$. Since CH is consistent with ZFC (G\u00f6del 1940), this shows the negative relation cannot be proved from ZFC alone. However, it remains open whether the positive relation is provable from ZFC without assuming CH.\n\nThe problem connects to several other Erd\u0151s problems: #592 asks the countable analogue (for which countable $\\beta$ does $\\omega^\\beta \\to (\\omega^\\beta, 3)^2$ hold?), and #118 asks whether $\\alpha \\to (\\alpha, 3)^2$ implies $\\alpha \\to (\\alpha, n)^2$ for all $n$ (disproved by Schipperus and Darby in 1999, though Hajnal's result shows this implication holds for $\\omega_1^2$ under CH). The problem is referenced as [Va99, 7.85].",
     "problemStatement": "Does $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ hold in ZFC? That is, for every 2-coloring $f: [\\omega_1^2]^2 \\to \\{0, 1\\}$, must there exist either a subset $H \\subseteq \\omega_1^2$ of order type $\\omega_1^2$ with $f''[H]^2 = \\{0\\}$, or a set $K \\subseteq \\omega_1^2$ with $|K| = 3$ and $f''[K]^2 = \\{1\\}$?",
-    "text": "Does ω₁² → (ω₁², 3)² hold (in ZFC)?",
+    "text": "Does \u03c9\u2081\u00b2 \u2192 (\u03c9\u2081\u00b2, 3)\u00b2 hold (in ZFC)?",
     "proofStrategy": "The formalization axiomatizes the ordinal partition relation $\\alpha \\to (\\beta, k)^2$ and builds the problem statement from the key ordinals $\\omega_1 = \\mathrm{ord}(\\aleph_1)$ and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$. The core result is Hajnal's CH-conditional theorem, axiomatized as `hajnal_ch_implies_partition`, from which `erdos_1169_under_ch` derives the specific $k = 3$ case via `norm_num`. Monotonicity properties are axiomatized to derive consequences (e.g., the relation for pairs follows from triangles). The metamathematical status is captured via `erdos_1169_not_disprovable` (consistency with ZFC) and `erdos_1169_open_in_zfc` (excluded middle, encoding that the ZFC status is unresolved).",
     "keyInsights": [
       "The problem is **solved under CH but open in ZFC**: Hajnal proved $\\omega_1^2 \\to (\\omega_1^2, k)^2$ for all finite $k$ assuming CH, using the diamond principle $\\Diamond$. This gives consistency but not provability from ZFC alone.",
@@ -158,12 +158,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full structure of Erdős Problem #1169, an open problem in ordinal partition calculus asking whether $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ holds in ZFC. The formalization includes the problem statement, Hajnal's CH-conditional proof, the metamathematical independence status, monotonicity consequences, and connections to related Erdős problems (#592, #118).",
+    "summary": "This formalization captures the full structure of Erd\u0151s Problem #1169, an open problem in ordinal partition calculus asking whether $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ holds in ZFC. The formalization includes the problem statement, Hajnal's CH-conditional proof, the metamathematical independence status, monotonicity consequences, and connections to related Erd\u0151s problems (#592, #118).",
     "implications": "The formalization demonstrates how open problems at the boundary of set-theoretic independence can be precisely captured in Lean 4. The axiomatization cleanly separates what is known (Hajnal's CH result, consistency) from what is open (the ZFC status), and the proof of `erdos_1169_under_ch` from `hajnal_ch_implies_partition` shows how conditional results can be formally derived.",
     "openQuestions": [
       "Is $\\omega_1^2 \\to (\\omega_1^2, 3)^2$ provable from ZFC alone, or is it independent?",
       "Does the negation $\\omega_1^2 \\not\\to (\\omega_1^2, 3)^2$ hold in some model of ZFC + $\\neg$CH?",
-      "Can Hajnal's proof be carried out without the full strength of CH — does Martin's Axiom or PFA suffice?",
+      "Can Hajnal's proof be carried out without the full strength of CH \u2014 does Martin's Axiom or PFA suffice?",
       "Can the ordinal partition relation be fully formalized in Lean 4 using Mathlib's ordinal and coloring theory, replacing the axiomatization?"
     ]
   },
@@ -183,5 +183,39 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1174",
+      "relationship": "related",
+      "description": "Share combinatorial, set-theoretic, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1176",
+      "relationship": "related",
+      "description": "Share combinatorial, set-theoretic, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1174",
+    "erdos-1176",
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1105"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-977",
-  "title": "Erdős #977: Greatest Prime Factor of 2^n - 1",
+  "title": "Erd\u0151s #977: Greatest Prime Factor of 2^n - 1",
   "slug": "erdos-977",
-  "description": "Does P(2^n - 1)/n → ∞? Solved by Stewart (2013): P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12.",
+  "description": "Does P(2^n - 1)/n \u2192 \u221e? Solved by Stewart (2013): P(2^n - 1) \u2265 n^{1 + 1/(104 log log n)}. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12.",
   "meta": {
-    "author": "Paul Erdős, Andrzej Schinzel, Cameron Stewart",
+    "author": "Paul Erd\u0151s, Andrzej Schinzel, Cameron Stewart",
     "sourceUrl": "https://erdosproblems.com/977",
     "date": "1965-2013",
     "status": "formalized",
@@ -25,15 +25,15 @@
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem around 1965, asking whether the greatest prime factor of $2^n - 1$ grows faster than linearly. The first major progress came from Andrzej Schinzel in 1962, who proved $P(2^n - 1) > 2n$ for all $n > 12$ using algebraic factorization properties of cyclotomic polynomials. Cameron Stewart made further conditional progress in 1974, and finally settled the problem unconditionally in 2013 with the quantitative bound $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$. Stewart's proof combines deep techniques from transcendental number theory (Baker's theory of linear forms in logarithms) with the arithmetic of cyclotomic fields.\n\nThe problem sits in a rich tradition connecting prime factorization to exponential sequences. Zsygmondy's theorem (1892) guarantees that $2^n - 1$ has a *primitive* prime factor for $n > 6$ — a prime not dividing $2^k - 1$ for any $k < n$. Such primes satisfy $p \\equiv 1 \\pmod{n}$, immediately giving $P(2^n - 1) \\ge n + 1$, but this falls short of the $n^{1+\\varepsilon}$ growth Erdős sought. The connection to Mersenne primes ($2^p - 1$ when prime) adds number-theoretic interest: for the 51 known Mersenne primes, $P(M_p) = M_p = 2^p - 1 \\gg 2^p$, far exceeding any polynomial bound. A related open problem asks whether $P(n! + 1)/n \\to \\infty$, where Lai (2021) proved the partial result $\\limsup P(n!+1)/n \\ge 1 + 9\\log 2 \\approx 7.238$.",
+    "historicalContext": "Erd\u0151s posed this problem around 1965, asking whether the greatest prime factor of $2^n - 1$ grows faster than linearly. The first major progress came from Andrzej Schinzel in 1962, who proved $P(2^n - 1) > 2n$ for all $n > 12$ using algebraic factorization properties of cyclotomic polynomials. Cameron Stewart made further conditional progress in 1974, and finally settled the problem unconditionally in 2013 with the quantitative bound $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$. Stewart's proof combines deep techniques from transcendental number theory (Baker's theory of linear forms in logarithms) with the arithmetic of cyclotomic fields.\n\nThe problem sits in a rich tradition connecting prime factorization to exponential sequences. Zsygmondy's theorem (1892) guarantees that $2^n - 1$ has a *primitive* prime factor for $n > 6$ \u2014 a prime not dividing $2^k - 1$ for any $k < n$. Such primes satisfy $p \\equiv 1 \\pmod{n}$, immediately giving $P(2^n - 1) \\ge n + 1$, but this falls short of the $n^{1+\\varepsilon}$ growth Erd\u0151s sought. The connection to Mersenne primes ($2^p - 1$ when prime) adds number-theoretic interest: for the 51 known Mersenne primes, $P(M_p) = M_p = 2^p - 1 \\gg 2^p$, far exceeding any polynomial bound. A related open problem asks whether $P(n! + 1)/n \\to \\infty$, where Lai (2021) proved the partial result $\\limsup P(n!+1)/n \\ge 1 + 9\\log 2 \\approx 7.238$.",
     "problemStatement": "If $P(m)$ denotes the greatest prime divisor of $m$, is it true that $P(2^n - 1)/n \\to \\infty$ as $n \\to \\infty$?",
-    "text": "Does P(2^n - 1)/n → ∞? Solved by Stewart (2013): P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12.",
+    "text": "Does P(2^n - 1)/n \u2192 \u221e? Solved by Stewart (2013): P(2^n - 1) \u2265 n^{1 + 1/(104 log log n)}. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12.",
     "proofStrategy": "The formalization defines the greatest prime factor function $P(n)$, Mersenne numbers $M_n = 2^n - 1$, and states the central question. It axiomatizes Stewart's 2013 theorem (the full answer), Schinzel's 1962 bound, Stewart's quantitative growth rate, specific small cases, the Mersenne prime connection, the related $P(n!+1)$ open problem, Zsygmondy's theorem on primitive prime factors, and the multiplicative order connection $\\text{ord}_p(2) \\mid n$.",
     "keyInsights": [
       "**Stewart's resolution (2013)**: $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$, proving $P(2^n-1)/n \\to \\infty$. The proof uses Baker's theory of linear forms in logarithms applied to the factorization of $2^n - 1$ via cyclotomic polynomials $\\Phi_d(2)$ for $d \\mid n$",
       "**Schinzel's linear bound (1962)**: $P(2^n - 1) > 2n$ for $n > 12$, using the fact that primitive prime factors of $\\Phi_n(2)$ satisfy $p \\equiv 1 \\pmod{n}$ and bounding the remaining factors algebraically",
-      "**Zsygmondy's primitive divisors**: For $n > 6$, $2^n - 1$ has a prime factor $p \\nmid 2^k - 1$ for all $k < n$; such $p$ has $\\text{ord}_p(2) = n$, so $p \\equiv 1 \\pmod{n}$, giving $P(2^n-1) \\ge n+1$ — the starting point for all stronger bounds",
-      "**Mersenne prime extremes**: When $M_n = 2^n - 1$ is prime, $P(M_n) = 2^n - 1 \\gg 2^n$, exponentially exceeding any polynomial bound — these are the extreme cases where the greatest prime factor is as large as possible",
+      "**Zsygmondy's primitive divisors**: For $n > 6$, $2^n - 1$ has a prime factor $p \\nmid 2^k - 1$ for all $k < n$; such $p$ has $\\text{ord}_p(2) = n$, so $p \\equiv 1 \\pmod{n}$, giving $P(2^n-1) \\ge n+1$ \u2014 the starting point for all stronger bounds",
+      "**Mersenne prime extremes**: When $M_n = 2^n - 1$ is prime, $P(M_n) = 2^n - 1 \\gg 2^n$, exponentially exceeding any polynomial bound \u2014 these are the extreme cases where the greatest prime factor is as large as possible",
       "**Open analogue $P(n!+1)$**: The question $P(n!+1)/(n\\log n) \\to \\infty$ remains open despite Lai's 2021 partial result; the factorial structure resists the cyclotomic decomposition that enables Stewart's approach for $2^n - 1$"
     ],
     "prerequisites": [
@@ -114,7 +114,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the complete story of Erdős Problem #977: from the basic definitions of the greatest prime factor function and Mersenne numbers, through Schinzel's linear bound (1962) and Stewart's definitive resolution (2013), to the related open problem on $P(n!+1)$ and the foundational roles of Zsygmondy's theorem and multiplicative orders.",
+    "summary": "This formalization captures the complete story of Erd\u0151s Problem #977: from the basic definitions of the greatest prime factor function and Mersenne numbers, through Schinzel's linear bound (1962) and Stewart's definitive resolution (2013), to the related open problem on $P(n!+1)$ and the foundational roles of Zsygmondy's theorem and multiplicative orders.",
     "implications": "Stewart's resolution advances the understanding of how prime factors distribute in exponential sequences. The techniques (Baker's method, cyclotomic decomposition) extend to other sequences $a^n - b^n$, and the problem connects to the Mersenne prime search, algebraic number theory, and the distribution of smooth numbers.",
     "openQuestions": [
       "Does $P(n! + 1)/(n \\log n) \\to \\infty$? This analogue of the solved problem resists current techniques because $n!+1$ lacks the cyclotomic factorization of $2^n - 1$.",
@@ -126,7 +126,12 @@
   "relatedProofs": [
     "erdos-976",
     "erdos-728-factorial-divisibility",
-    "erdos-970"
+    "erdos-970",
+    "erdos-1095",
+    "erdos-1106",
+    "erdos-126",
+    "erdos-205",
+    "erdos-240"
   ],
   "leanFile": {
     "imports": [],
@@ -136,5 +141,32 @@
     "axiomCount": 0,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Share prime-factors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Share prime-factors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-126",
+      "relationship": "related",
+      "description": "Share prime-factors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-205",
+      "relationship": "related",
+      "description": "Share prime-factors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Share prime-factors and number-theoretic themes"
+    }
+  ]
 }

@@ -62,14 +62,14 @@
     "lineCount": 322
   },
   "overview": {
-    "historicalContext": "Erdős posed Problem #867 in 1992 [Er92c, p.43] as a finitary companion to Problem #839, asking whether a set $A = \\{a_1 < \\cdots < a_t\\} \\subseteq \\{1, \\ldots, N\\}$ with no consecutive subsequence sum $a_i + a_{i+1} + \\cdots + a_j$ lying in $A$ must satisfy $|A| \\leq N/2 + O(1)$. The upper half construction $A = (N/2, N]$ achieves density $1/2$ and is sum-free since any pair sum exceeds $N$, so the conjecture would be tight if true. Adenwalla gave the first non-trivial upper bound $|A| \\leq (2/3 + o(1))N$ using a dyadic interval argument: in each interval $[x, 2x]$, consecutive pair sums land in $(2x, 4x]$ and are forbidden, limiting density to $2/3$. Freud (1993) disproved the conjecture by explicitly constructing consecutive sum-free sets with density $19/36 \\approx 0.5278 > 1/2$, published in the James Cook Mathematical Notes. Coppersmith and Phillips (1996) in SIAM J. Discrete Math. sharpened both sides: their improved construction achieved density $13/24 \\approx 0.5417$ and their refined analysis of the dyadic argument lowered the upper bound to $2/3 - 1/512 \\approx 0.6647$. The exact maximum density remains unknown, and the gap between $13/24$ and $2/3 - 1/512$ is one of the open problems in additive combinatorics related to the Erdős legacy.",
+    "historicalContext": "Erd\u0151s posed Problem #867 in 1992 [Er92c, p.43] as a finitary companion to Problem #839, asking whether a set $A = \\{a_1 < \\cdots < a_t\\} \\subseteq \\{1, \\ldots, N\\}$ with no consecutive subsequence sum $a_i + a_{i+1} + \\cdots + a_j$ lying in $A$ must satisfy $|A| \\leq N/2 + O(1)$. The upper half construction $A = (N/2, N]$ achieves density $1/2$ and is sum-free since any pair sum exceeds $N$, so the conjecture would be tight if true. Adenwalla gave the first non-trivial upper bound $|A| \\leq (2/3 + o(1))N$ using a dyadic interval argument: in each interval $[x, 2x]$, consecutive pair sums land in $(2x, 4x]$ and are forbidden, limiting density to $2/3$. Freud (1993) disproved the conjecture by explicitly constructing consecutive sum-free sets with density $19/36 \\approx 0.5278 > 1/2$, published in the James Cook Mathematical Notes. Coppersmith and Phillips (1996) in SIAM J. Discrete Math. sharpened both sides: their improved construction achieved density $13/24 \\approx 0.5417$ and their refined analysis of the dyadic argument lowered the upper bound to $2/3 - 1/512 \\approx 0.6647$. The exact maximum density remains unknown, and the gap between $13/24$ and $2/3 - 1/512$ is one of the open problems in additive combinatorics related to the Erd\u0151s legacy.",
     "problemStatement": "Let $A = \\{a_1 < \\cdots < a_t\\} \\subseteq \\{1, \\ldots, N\\}$ be a set with no solutions to $a_i + a_{i+1} + \\cdots + a_j \\in A$ (where $j > i$, so only genuine sums of two or more consecutive elements are forbidden). Is it true that $|A| \\leq \\frac{N}{2} + O(1)$? The answer is **NO**: the maximum density satisfies $\\frac{13}{24} \\leq \\sup \\frac{|A|}{N} \\leq \\frac{2}{3} - \\frac{1}{512}$.",
     "text": "Is it true that a set A with no consecutive subsequence sums in A has size at most N/2 + O(1)? NO - disproved by Freud (1993) and Coppersmith-Phillips (1996).",
     "proofStrategy": "The formalization defines `consecutiveSums` via list operations and `isConsecutiveSumFree` as the property that no sum of $\\geq 2$ consecutive elements lies in $A$. The `upperHalf` construction $A = (N/2, N]$ is defined using `Finset.Ioc` and its cardinality $N - \\lfloor N/2 \\rfloor$ is proved. Adenwalla's dyadic bound, Freud's construction, and Coppersmith-Phillips bounds are axiomatized. The key proved results are `nineteen_thirty_sixth_gt_half : (19 : \\mathbb{Q}) / 36 > 1/2` via `norm_num`, `best_bounds_fractions : 13/24 < 2/3 - 1/512`, and the main `erdos_867` theorem packaging both bounds. Three concrete examples verify the definitions computationally.",
     "keyInsights": [
-      "**Upper half trick**: Taking $A = (N/2, N] \\cap \\mathbb{N}$ gives $|A| \\approx N/2$ and is consecutive sum-free since any $a + b > N$ for $a, b > N/2$. This shows density $1/2$ is achievable and Erdős's bound would be essentially tight if true.",
+      "**Upper half trick**: Taking $A = (N/2, N] \\cap \\mathbb{N}$ gives $|A| \\approx N/2$ and is consecutive sum-free since any $a + b > N$ for $a, b > N/2$. This shows density $1/2$ is achievable and Erd\u0151s's bound would be essentially tight if true.",
       "**Dyadic decomposition**: Adenwalla partitions $\\{1, \\ldots, N\\}$ into intervals $[2^k, 2^{k+1})$. If $t$ elements lie in $[x, 2x]$, their $t-1$ consecutive pair sums land in $(2x, 4x]$ and are forbidden, giving $|A \\cap [x, 4x]| \\leq 2x + 1$ and density $\\leq 2/3$.",
-      "**The critical fraction $19/36$**: Freud's explicit construction achieves density $19/36 = 0.5278\\ldots > 1/2$, disproving Erdős's conjecture. The Lean proof `nineteen_thirty_sixth_gt_half` verifies this inequality via `norm_num`.",
+      "**The critical fraction $19/36$**: Freud's explicit construction achieves density $19/36 = 0.5278\\ldots > 1/2$, disproving Erd\u0151s's conjecture. The Lean proof `nineteen_thirty_sixth_gt_half` verifies this inequality via `norm_num`.",
       "**Coppersmith-Phillips refinement**: The gap between $13/24 \\approx 0.5417$ (lower) and $2/3 - 1/512 \\approx 0.6647$ (upper) remains open. Determining the exact maximum density is a fundamental question in additive combinatorics.",
       "**Finitary vs. infinite**: Problem #867 is the finite version of Problem #839, which asks about asymptotic density of infinite consecutive sum-free sets. The $2/3$ upper bound carries over to the infinite setting."
     ],
@@ -84,7 +84,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Header documenting Erdős Problem #867 with references to Erdős [Er92c], Freud (1993), and Coppersmith-Phillips (1996). Imports `Finset.Basic`, `Finset.Card`, `Finset.Interval`, `Nat.Interval`, `BigOperators`, `Interval.Finset.Nat`, and `Data.Real.Basic`. Opens `Finset` and `BigOperators` namespaces."
+      "summary": "Header documenting Erd\u0151s Problem #867 with references to Erd\u0151s [Er92c], Freud (1993), and Coppersmith-Phillips (1996). Imports `Finset.Basic`, `Finset.Card`, `Finset.Interval`, `Nat.Interval`, `BigOperators`, `Interval.Finset.Nat`, and `Data.Real.Basic`. Opens `Finset` and `BigOperators` namespaces."
     },
     {
       "id": "basic-definitions",
@@ -112,7 +112,7 @@
       "title": "Freud's Lower Bound (Disproof)",
       "startLine": 145,
       "endLine": 173,
-      "summary": "Axiomatizes Freud's 1993 construction: $\\exists f,\\, \\forall N \\geq 36$, $f(N)$ is consecutive sum-free with $|f(N)| \\cdot 36 \\geq 19N - 36$, achieving density $\\geq 19/36$. Proves `nineteen_thirty_sixth_gt_half : (19 : \\mathbb{Q})/36 > 1/2$ via `norm_num`, formally disproving Erdős's conjecture."
+      "summary": "Axiomatizes Freud's 1993 construction: $\\exists f,\\, \\forall N \\geq 36$, $f(N)$ is consecutive sum-free with $|f(N)| \\cdot 36 \\geq 19N - 36$, achieving density $\\geq 19/36$. Proves `nineteen_thirty_sixth_gt_half : (19 : \\mathbb{Q})/36 > 1/2$ via `norm_num`, formally disproving Erd\u0151s's conjecture."
     },
     {
       "id": "coppersmith-phillips",
@@ -140,11 +140,11 @@
       "title": "Main Results",
       "startLine": 269,
       "endLine": 322,
-      "summary": "Axiomatizes `erdos_867_conjecture_false`: Erdős's $N/2$ bound is false. Proves `erdos_867`: $\\exists\\, lb = 13/24,\\, ub = 2/3 - 1/512$ with $lb > 1/2$ and $lb < ub$ via `norm_num` and `ring`. Proves `erdos_867_answer`: $\\exists\\, c > 1/2$ with witnesses from `coppersmith_phillips_lower`."
+      "summary": "Axiomatizes `erdos_867_conjecture_false`: Erd\u0151s's $N/2$ bound is false. Proves `erdos_867`: $\\exists\\, lb = 13/24,\\, ub = 2/3 - 1/512$ with $lb > 1/2$ and $lb < ub$ via `norm_num` and `ring`. Proves `erdos_867_answer`: $\\exists\\, c > 1/2$ with witnesses from `coppersmith_phillips_lower`."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #867 asked whether consecutive sum-free subsets of $\\{1, \\ldots, N\\}$ have size at most $N/2 + O(1)$. The answer is NO. The Lean formalization includes genuine proofs of `upperHalf_card` (cardinality via `Finset.card_Ioc`), `nineteen_thirty_sixth_gt_half` ($19/36 > 1/2$ via `norm_num`), `best_bounds_fractions` ($13/24 < 2/3 - 1/512$), the main `erdos_867` theorem packaging the bounds, `erdos_867_answer` witnessing $c = 13/24 > 1/2$, and three computational examples. Deep results (Freud's construction, Coppersmith-Phillips bounds, Adenwalla's dyadic argument) are axiomatized.",
+    "summary": "Erd\u0151s Problem #867 asked whether consecutive sum-free subsets of $\\{1, \\ldots, N\\}$ have size at most $N/2 + O(1)$. The answer is NO. The Lean formalization includes genuine proofs of `upperHalf_card` (cardinality via `Finset.card_Ioc`), `nineteen_thirty_sixth_gt_half` ($19/36 > 1/2$ via `norm_num`), `best_bounds_fractions` ($13/24 < 2/3 - 1/512$), the main `erdos_867` theorem packaging the bounds, `erdos_867_answer` witnessing $c = 13/24 > 1/2$, and three computational examples. Deep results (Freud's construction, Coppersmith-Phillips bounds, Adenwalla's dyadic argument) are axiomatized.",
     "implications": "**Theoretical Significance**: Resolution of the exact maximum density would advance the theory of additive combinatorics and sum-free sets.\n\nAdenwalla's dyadic technique connects to harmonic analysis methods, while Freud's and Coppersmith-Phillips' explicit constructions demonstrate that probabilistic methods alone do not suffice for tight bounds. The finitary-infinite correspondence with Problem #839 links density questions in $\\{1, \\ldots, N\\}$ to asymptotic density theory for infinite subsets of $\\mathbb{N}$.",
     "openQuestions": [
       "What is the exact maximum density of consecutive sum-free sets in $\\{1, \\ldots, N\\}$?",
@@ -158,7 +158,12 @@
     "erdos-533",
     "erdos-347",
     "erdos-28",
-    "erdos-106"
+    "erdos-106",
+    "erdos-1136",
+    "erdos-360",
+    "erdos-748",
+    "erdos-788",
+    "erdos-789"
   ],
   "leanFile": {
     "imports": [
@@ -179,5 +184,32 @@
     "axiomCount": 9,
     "theoremCount": 5,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-360",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-788",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-789",
+      "relationship": "related",
+      "description": "Share sum-free-sets and additive-combinatorial themes"
+    }
+  ]
 }

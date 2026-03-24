@@ -1,10 +1,10 @@
 {
   "id": "erdos-642",
-  "title": "Erdős Problem #642: Cycles with More Vertices than Diagonals",
+  "title": "Erd\u0151s Problem #642: Cycles with More Vertices than Diagonals",
   "slug": "erdos-642",
-  "description": "Let f(n) be the maximal edges in a graph where every cycle has more vertices than diagonals. Is f(n) ≪ n? OPEN: Ω(n^(3/2)) ≤ f(n) ≤ O(n(log n)^8).",
+  "description": "Let f(n) be the maximal edges in a graph where every cycle has more vertices than diagonals. Is f(n) \u226a n? OPEN: \u03a9(n^(3/2)) \u2264 f(n) \u2264 O(n(log n)^8).",
   "meta": {
-    "author": "Hamburger-Szegedy (problem), Chen-Erdős-Staton (1996), Draganić-Methuku-Munhá Correia-Sudakov (2024)",
+    "author": "Hamburger-Szegedy (problem), Chen-Erd\u0151s-Staton (1996), Dragani\u0107-Methuku-Munh\u00e1 Correia-Sudakov (2024)",
     "sourceUrl": "https://erdosproblems.com/642",
     "date": "ongoing",
     "status": "formalized",
@@ -49,11 +49,11 @@
       "Formal definition of cycles as structures with ordered vertex lists, adjacency closure, and no-repeat conditions",
       "Definition of diagonals via CycleAdjacent modular arithmetic and IsDiagonal predicate on Sym2 edges",
       "Statement of the extremal function f(n) via sSup over graphs satisfying the cycle-diagonal condition",
-      "Axiomatization of Chen-Erdős-Staton O(n^(3/2)) bound (1996)",
+      "Axiomatization of Chen-Erd\u0151s-Staton O(n^(3/2)) bound (1996)",
       "Axiomatization of DMMS O(n(log n)^8) bound (2024) with expander-based techniques",
-      "Formal statement of the Hamburger-Szegedy conjecture f(n) = o(n) as an ε-δ definition",
-      "Complete critical length analysis: short_cycles_ok (k ≤ 4), pentagon_all_diags_violates (k = 5), critical_length (k ≥ 5) — all proved without sorry",
-      "Connection to girth-5 graphs and the Turán C₄-free problem for the lower bound",
+      "Formal statement of the Hamburger-Szegedy conjecture f(n) = o(n) as an \u03b5-\u03b4 definition",
+      "Complete critical length analysis: short_cycles_ok (k \u2264 4), pentagon_all_diags_violates (k = 5), critical_length (k \u2265 5) \u2014 all proved without sorry",
+      "Connection to girth-5 graphs and the Tur\u00e1n C\u2084-free problem for the lower bound",
       "Formalization of expander and sublinear expander definitions with spectral gap"
     ],
     "relatedProblems": [
@@ -64,17 +64,17 @@
     "assumptions": "4 axiom(s) and 7 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Cycles with More Vertices than Diagonals: An Open Extremal Problem**\n\nA 'diagonal' (or 'chord') of a cycle $C$ in a graph $G$ is an edge of $G$ connecting two non-adjacent vertices of $C$. The condition '$|V(C)| > |\\text{diag}(C)|$' says every cycle has strictly more vertices than chords — a natural sparsity condition on how densely cycles can be chorded.\n\n**Origins**: This problem was posed by Hamburger and Szegedy and appears in Erdős's problem collections. It asks for the maximum number of edges $f(n)$ in an $n$-vertex graph satisfying this condition.\n\n**The Critical Threshold at $k = 5$**: Short cycles ($k \\le 4$) always satisfy the condition: a triangle has 0 possible diagonals, and a $C_4$ has at most 2 (both satisfying $k > \\text{diag}$). But a pentagon $C_5$ has 5 possible diagonals, and $5 \\not> 5$, so a $C_5$ with all diagonals (which is $K_5$) violates the condition. This critical transition at $k = 5$ explains why girth-5 graphs are the natural construction for the lower bound.\n\n**Progress on the Upper Bound**:\n- **Chen-Erdős-Staton (1996)**: Proved $f(n) = O(n^{3/2})$. Their argument uses neighborhood counting: in a dense graph, vertices have large neighborhoods, and the overlap of neighborhoods creates cycles with many chords. This was the state of the art for nearly 30 years.\n- **Draganić-Methuku-Munhá Correia-Sudakov (2024)**: Dramatically improved to $f(n) = O(n(\\log n)^8)$ using sublinear expander techniques. The key insight: any graph with $\\gg n(\\log n)^8$ edges contains a sublinear expander subgraph, and random walks in such expanders efficiently find cycles with many chords.\n\n**The Lower Bound**: Girth-5 graphs (no $C_3$ or $C_4$) trivially satisfy the condition (their cycles have very few diagonals). By the Kővári-Sós-Turán theorem and algebraic constructions (incidence graphs of projective planes, Reiman 1958), such graphs can have $\\Theta(n^{3/2})$ edges. This gives $f(n) = \\Omega(n^{3/2})$.\n\n**The Open Question**: Is $f(n) = o(n)$? Even $f(n) = O(n)$ is unknown. The current bounds $\\Omega(n^{3/2}) \\le f(n) \\le O(n(\\log n)^8)$ leave a gap of $(\\log n)^8/\\sqrt{n}$ in multiplicative terms, which tends to 0 — but this does not resolve the conjecture.",
-    "problemStatement": "**Problem Statement**\n\nLet $f(n)$ be the maximal number of edges in a graph on $n$ vertices such that every cycle $C$ satisfies $|V(C)| > |\\text{diagonals of } C|$. Is it true that $f(n) = o(n)$?\n\n**Status**: OPEN\n\n**Known Bounds**:\n- Lower: $f(n) = \\Omega(n^{3/2})$ from girth-5 graph constructions (incidence graphs of projective planes)\n- Upper: $f(n) = O(n(\\log n)^8)$ from Draganić-Methuku-Munhá Correia-Sudakov (2024)\n\nEven the weaker conjecture $f(n) = O(n)$ remains open.",
-    "text": "Let f(n) be the maximal edges in a graph where every cycle has more vertices than diagonals. Is f(n) ≪ n? OPEN: Ω(n^(3/2)) ≤ f(n) ≤ O(n(log n)^8).",
-    "proofStrategy": "**The Formalization Strategy**\n\nThe Lean formalization captures the full state of knowledge on this open problem:\n\n1. **Cycle Infrastructure** (Parts I–II): Defines `Cycle G` as a structure with ordered vertex list, adjacency closure via modular arithmetic, and Nodup condition. `CycleAdjacent` uses mod arithmetic to identify cycle edges vs diagonals. `IsDiagonal` and `diagonalCount` use `edgeFinset.filter`\n2. **Central Condition** (Part III): `SatisfiesCycleDiagonalCondition G` requires `C.len > diagonalCount C` for all cycles. The extremal function `f(n)` is defined via `sSup` over satisfying graphs\n3. **Trivial Bounds** (Part IV): Trees give $f(n) \\ge n - 1$ (vacuous condition). Complete graphs give $f(n) \\le \\binom{n}{2}$. Maximum diagonal formula $k(k-3)/2$ established\n4. **CES Bound** (Part V): Axiomatizes `chen_erdos_staton`: $f(n) \\le 2n^{3/2}$ for $n \\ge 10$\n5. **DMMS Bound** (Part VI): Axiomatizes `dmms_2024`: $f(n) \\le n(\\log n)^8$. Proves `dmms_improves_ces` for large $n$\n6. **Open Conjectures** (Part VII): States `HamburgerSzegedyConjecture` ($f(n) = o(n)$) and `LinearBoundConjecture` ($f(n) = O(n)$)\n7. **Girth-5 Connection** (Part VIII): Links to the Turán $C_4$-free problem for the $\\Omega(n^{3/2})$ lower bound via `girth_5_satisfies` and `turan_C4_free`\n8. **Expander Techniques** (Part IX): Defines `IsExpander` and `IsSublinearExpander`, axiomatizes the key `expander_cycle_lemma` dichotomy\n9. **Critical Length Analysis** (Part X): Proves `short_cycles_ok` ($k \\le 4$), `pentagon_all_diags_violates` ($k = 5$), and `critical_length` ($k \\ge 5$) — all without sorry\n10. **Main Results** (Part XI): `erdos_642_bounds` combines both bounds; problem remains OPEN",
+    "historicalContext": "**Cycles with More Vertices than Diagonals: An Open Extremal Problem**\n\nA 'diagonal' (or 'chord') of a cycle $C$ in a graph $G$ is an edge of $G$ connecting two non-adjacent vertices of $C$. The condition '$|V(C)| > |\\text{diag}(C)|$' says every cycle has strictly more vertices than chords \u2014 a natural sparsity condition on how densely cycles can be chorded.\n\n**Origins**: This problem was posed by Hamburger and Szegedy and appears in Erd\u0151s's problem collections. It asks for the maximum number of edges $f(n)$ in an $n$-vertex graph satisfying this condition.\n\n**The Critical Threshold at $k = 5$**: Short cycles ($k \\le 4$) always satisfy the condition: a triangle has 0 possible diagonals, and a $C_4$ has at most 2 (both satisfying $k > \\text{diag}$). But a pentagon $C_5$ has 5 possible diagonals, and $5 \\not> 5$, so a $C_5$ with all diagonals (which is $K_5$) violates the condition. This critical transition at $k = 5$ explains why girth-5 graphs are the natural construction for the lower bound.\n\n**Progress on the Upper Bound**:\n- **Chen-Erd\u0151s-Staton (1996)**: Proved $f(n) = O(n^{3/2})$. Their argument uses neighborhood counting: in a dense graph, vertices have large neighborhoods, and the overlap of neighborhoods creates cycles with many chords. This was the state of the art for nearly 30 years.\n- **Dragani\u0107-Methuku-Munh\u00e1 Correia-Sudakov (2024)**: Dramatically improved to $f(n) = O(n(\\log n)^8)$ using sublinear expander techniques. The key insight: any graph with $\\gg n(\\log n)^8$ edges contains a sublinear expander subgraph, and random walks in such expanders efficiently find cycles with many chords.\n\n**The Lower Bound**: Girth-5 graphs (no $C_3$ or $C_4$) trivially satisfy the condition (their cycles have very few diagonals). By the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem and algebraic constructions (incidence graphs of projective planes, Reiman 1958), such graphs can have $\\Theta(n^{3/2})$ edges. This gives $f(n) = \\Omega(n^{3/2})$.\n\n**The Open Question**: Is $f(n) = o(n)$? Even $f(n) = O(n)$ is unknown. The current bounds $\\Omega(n^{3/2}) \\le f(n) \\le O(n(\\log n)^8)$ leave a gap of $(\\log n)^8/\\sqrt{n}$ in multiplicative terms, which tends to 0 \u2014 but this does not resolve the conjecture.",
+    "problemStatement": "**Problem Statement**\n\nLet $f(n)$ be the maximal number of edges in a graph on $n$ vertices such that every cycle $C$ satisfies $|V(C)| > |\\text{diagonals of } C|$. Is it true that $f(n) = o(n)$?\n\n**Status**: OPEN\n\n**Known Bounds**:\n- Lower: $f(n) = \\Omega(n^{3/2})$ from girth-5 graph constructions (incidence graphs of projective planes)\n- Upper: $f(n) = O(n(\\log n)^8)$ from Dragani\u0107-Methuku-Munh\u00e1 Correia-Sudakov (2024)\n\nEven the weaker conjecture $f(n) = O(n)$ remains open.",
+    "text": "Let f(n) be the maximal edges in a graph where every cycle has more vertices than diagonals. Is f(n) \u226a n? OPEN: \u03a9(n^(3/2)) \u2264 f(n) \u2264 O(n(log n)^8).",
+    "proofStrategy": "**The Formalization Strategy**\n\nThe Lean formalization captures the full state of knowledge on this open problem:\n\n1. **Cycle Infrastructure** (Parts I\u2013II): Defines `Cycle G` as a structure with ordered vertex list, adjacency closure via modular arithmetic, and Nodup condition. `CycleAdjacent` uses mod arithmetic to identify cycle edges vs diagonals. `IsDiagonal` and `diagonalCount` use `edgeFinset.filter`\n2. **Central Condition** (Part III): `SatisfiesCycleDiagonalCondition G` requires `C.len > diagonalCount C` for all cycles. The extremal function `f(n)` is defined via `sSup` over satisfying graphs\n3. **Trivial Bounds** (Part IV): Trees give $f(n) \\ge n - 1$ (vacuous condition). Complete graphs give $f(n) \\le \\binom{n}{2}$. Maximum diagonal formula $k(k-3)/2$ established\n4. **CES Bound** (Part V): Axiomatizes `chen_erdos_staton`: $f(n) \\le 2n^{3/2}$ for $n \\ge 10$\n5. **DMMS Bound** (Part VI): Axiomatizes `dmms_2024`: $f(n) \\le n(\\log n)^8$. Proves `dmms_improves_ces` for large $n$\n6. **Open Conjectures** (Part VII): States `HamburgerSzegedyConjecture` ($f(n) = o(n)$) and `LinearBoundConjecture` ($f(n) = O(n)$)\n7. **Girth-5 Connection** (Part VIII): Links to the Tur\u00e1n $C_4$-free problem for the $\\Omega(n^{3/2})$ lower bound via `girth_5_satisfies` and `turan_C4_free`\n8. **Expander Techniques** (Part IX): Defines `IsExpander` and `IsSublinearExpander`, axiomatizes the key `expander_cycle_lemma` dichotomy\n9. **Critical Length Analysis** (Part X): Proves `short_cycles_ok` ($k \\le 4$), `pentagon_all_diags_violates` ($k = 5$), and `critical_length` ($k \\ge 5$) \u2014 all without sorry\n10. **Main Results** (Part XI): `erdos_642_bounds` combines both bounds; problem remains OPEN",
     "keyInsights": [
       "The critical transition occurs at cycle length $k = 5$: for $k \\le 4$, the condition $k > k(k-3)/2$ always holds (even with all diagonals present), but for $k = 5$, the pentagon with all diagonals gives $5 \\not> 5$. This explains why girth-5 is the natural threshold",
       "Girth-5 graphs trivially satisfy the condition and can have $\\Theta(n^{3/2})$ edges (from incidence graphs of projective planes), giving the lower bound $f(n) = \\Omega(n^{3/2})$. This lower bound is SUPERLINEAR, so the conjecture $f(n) = o(n)$ cannot be true unless it equals this lower bound",
       "The DMMS breakthrough uses sublinear expander extraction: any dense graph contains an expander-like subgraph, and random walks in expanders efficiently find cycles with many chords. The polylogarithmic overhead $(\\log n)^8$ comes from iterating this extraction",
       "The gap between bounds is $(\\log n)^8/\\sqrt{n} \\to 0$, so in multiplicative terms the uncertainty vanishes. But the conjecture $f(n) = o(n)$ is about the ABSOLUTE growth rate, which remains wide open",
-      "Three theorems are proved without sorry: `short_cycles_ok` (interval_cases + norm_num), `pentagon_all_diags_violates` (norm_num), and `critical_length` (omega) — all in the critical length analysis",
-      "The problem connects extremal graph theory (Turán numbers, $C_4$-free graphs) with spectral graph theory (expanders, random walks) — a rare synthesis of algebraic and probabilistic combinatorics"
+      "Three theorems are proved without sorry: `short_cycles_ok` (interval_cases + norm_num), `pentagon_all_diags_violates` (norm_num), and `critical_length` (omega) \u2014 all in the critical length analysis",
+      "The problem connects extremal graph theory (Tur\u00e1n numbers, $C_4$-free graphs) with spectral graph theory (expanders, random walks) \u2014 a rare synthesis of algebraic and probabilistic combinatorics"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -85,7 +85,7 @@
     {
       "id": "cycles",
       "title": "Graphs and Cycles",
-      "summary": "Abbreviates Graph V = SimpleGraph V, then defines Cycle G as a structure with List V vertices, length ≥ 3, modular adjacency closure (consecutive vertices and wraparound), and Nodup (simple cycle). Cycle.len extracts the vertex count. The list-based representation allows direct index arithmetic for adjacency checking.",
+      "summary": "Abbreviates Graph V = SimpleGraph V, then defines Cycle G as a structure with List V vertices, length \u2265 3, modular adjacency closure (consecutive vertices and wraparound), and Nodup (simple cycle). Cycle.len extracts the vertex count. The list-based representation allows direct index arithmetic for adjacency checking.",
       "startLine": 30,
       "endLine": 48
     },
@@ -99,75 +99,75 @@
     {
       "id": "condition",
       "title": "The Cycle-Diagonal Condition",
-      "summary": "SatisfiesCycleDiagonalCondition G requires C.len > diagonalCount C for ALL cycles C in G — a universal quantifier over an infinite family. The extremal function f(n) = sSup over n-vertex graphs satisfying this condition, making it a Turán-type problem with a global structural constraint rather than a forbidden subgraph.",
+      "summary": "SatisfiesCycleDiagonalCondition G requires C.len > diagonalCount C for ALL cycles C in G \u2014 a universal quantifier over an infinite family. The extremal function f(n) = sSup over n-vertex graphs satisfying this condition, making it a Tur\u00e1n-type problem with a global structural constraint rather than a forbidden subgraph.",
       "startLine": 73,
       "endLine": 87
     },
     {
       "id": "trivial",
       "title": "Trivial Bounds",
-      "summary": "Three basic observations: f_ge_tree (f(n) ≥ n-1 from acyclic graphs), f_le_complete (f(n) ≤ n(n-1)/2 from complete graph), and max_diagonals_in_cycle (a k-cycle has at most k(k-3)/2 diagonals = C(k,2) - k). All carry sorry — they bound f(n) between n-1 and n²/2.",
+      "summary": "Three basic observations: f_ge_tree (f(n) \u2265 n-1 from acyclic graphs), f_le_complete (f(n) \u2264 n(n-1)/2 from complete graph), and max_diagonals_in_cycle (a k-cycle has at most k(k-3)/2 diagonals = C(k,2) - k). All carry sorry \u2014 they bound f(n) between n-1 and n\u00b2/2.",
       "startLine": 89,
       "endLine": 106
     },
     {
       "id": "ces",
-      "title": "Chen-Erdős-Staton Bound",
-      "summary": "Axiomatizes chen_erdos_staton: f(n) ≤ 2⌊n^(3/2)⌋ for n ≥ 10. This 1996 result was the first non-trivial upper bound and the best known for nearly 30 years. The proof uses neighborhood overlap in dense graphs to find heavily-chorded cycles. Also defines ces_exponent = 3/2.",
+      "title": "Chen-Erd\u0151s-Staton Bound",
+      "summary": "Axiomatizes chen_erdos_staton: f(n) \u2264 2\u230an^(3/2)\u230b for n \u2265 10. This 1996 result was the first non-trivial upper bound and the best known for nearly 30 years. The proof uses neighborhood overlap in dense graphs to find heavily-chorded cycles. Also defines ces_exponent = 3/2.",
       "startLine": 108,
       "endLine": 119
     },
     {
       "id": "dmms",
       "title": "DMMS Bound (2024)",
-      "summary": "Axiomatizes dmms_2024: f(n) ≤ ⌈n(log n)^8⌉ for n ≥ 10, the state-of-the-art from Draganić-Methuku-Munhá Correia-Sudakov. This dramatic improvement from O(n^(3/2)) to O(n(log n)^8) uses sublinear expander techniques. dmms_improves_ces (sorry) verifies the improvement for n ≥ 1000.",
+      "summary": "Axiomatizes dmms_2024: f(n) \u2264 \u2308n(log n)^8\u2309 for n \u2265 10, the state-of-the-art from Dragani\u0107-Methuku-Munh\u00e1 Correia-Sudakov. This dramatic improvement from O(n^(3/2)) to O(n(log n)^8) uses sublinear expander techniques. dmms_improves_ces (sorry) verifies the improvement for n \u2265 1000.",
       "startLine": 121,
       "endLine": 134
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
-      "summary": "States two open conjectures: HamburgerSzegedyConjecture (f(n) = o(n), formalized as ∀ε>0, ∃N, ∀n≥N, f(n) < εn) and the weaker LinearBoundConjecture (f(n) = O(n)). Both remain OPEN — the DMMS bound O(n(log n)^8) is still superlinear. conjecture_stronger_than_dmms (sorry) notes the logical relationship.",
+      "summary": "States two open conjectures: HamburgerSzegedyConjecture (f(n) = o(n), formalized as \u2200\u03b5>0, \u2203N, \u2200n\u2265N, f(n) < \u03b5n) and the weaker LinearBoundConjecture (f(n) = O(n)). Both remain OPEN \u2014 the DMMS bound O(n(log n)^8) is still superlinear. conjecture_stronger_than_dmms (sorry) notes the logical relationship.",
       "startLine": 136,
       "endLine": 154
     },
     {
       "id": "girth",
       "title": "Related Extremal Problems",
-      "summary": "Connects to girth-5 graphs: HasGirth G 5 requires all cycles have length ≥ 5. girth_5_satisfies (sorry) shows these satisfy the condition. turan_C4_free (axiom) gives girth-5 graphs with Ω(n^(3/2)) edges from projective plane incidence graphs. f_lower_bound chains these to get f(n) ≥ Ω(n^(3/2)). This is the Kővári-Sós-Turán / Reiman construction.",
+      "summary": "Connects to girth-5 graphs: HasGirth G 5 requires all cycles have length \u2265 5. girth_5_satisfies (sorry) shows these satisfy the condition. turan_C4_free (axiom) gives girth-5 graphs with \u03a9(n^(3/2)) edges from projective plane incidence graphs. f_lower_bound chains these to get f(n) \u2265 \u03a9(n^(3/2)). This is the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n / Reiman construction.",
       "startLine": 156,
       "endLine": 180
     },
     {
       "id": "expanders",
       "title": "Expander Techniques",
-      "summary": "Formalizes the DMMS proof machinery: IsExpander G d λ (d-regular with spectral gap λ < d), IsSublinearExpander (degree d = n^ε for ε < 1), and the key expander_cycle_lemma dichotomy: good expanders either violate the condition or are sparse (|E| < dn/2). This is the technical heart of the 2024 breakthrough.",
+      "summary": "Formalizes the DMMS proof machinery: IsExpander G d \u03bb (d-regular with spectral gap \u03bb < d), IsSublinearExpander (degree d = n^\u03b5 for \u03b5 < 1), and the key expander_cycle_lemma dichotomy: good expanders either violate the condition or are sparse (|E| < dn/2). This is the technical heart of the 2024 breakthrough.",
       "startLine": 182,
       "endLine": 205
     },
     {
       "id": "short-long",
       "title": "Short vs Long Cycles",
-      "summary": "Complete critical length analysis — all proved without sorry: short_cycles_ok (k ≤ 4 ⟹ k > k(k-3)/2, by interval_cases + norm_num), pentagon_all_diags_violates (¬(5 > 5), by norm_num), and critical_length (k ≥ 5 ⟹ k ≤ k(k-3)/2, by omega). Together these show the exact transition at k = 5 between safe and potentially-violating cycle lengths.",
+      "summary": "Complete critical length analysis \u2014 all proved without sorry: short_cycles_ok (k \u2264 4 \u27f9 k > k(k-3)/2, by interval_cases + norm_num), pentagon_all_diags_violates (\u00ac(5 > 5), by norm_num), and critical_length (k \u2265 5 \u27f9 k \u2264 k(k-3)/2, by omega). Together these show the exact transition at k = 5 between safe and potentially-violating cycle lengths.",
       "startLine": 207,
       "endLine": 225
     },
     {
       "id": "main-result",
       "title": "Main Results",
-      "summary": "erdos_642_bounds combines both bounds: ⌊n^(3/2)/4⌋ ≤ f(n) ≤ ⌈n(log n)^8⌉ for n ≥ 10, using constructor with f_lower_bound and dmms_2024. Utility definitions record the OPEN status. bounds_gap proves the ratio is (log n)^8/√n via ring_nf. Three #check commands verify the key theorems typecheck.",
+      "summary": "erdos_642_bounds combines both bounds: \u230an^(3/2)/4\u230b \u2264 f(n) \u2264 \u2308n(log n)^8\u2309 for n \u2265 10, using constructor with f_lower_bound and dmms_2024. Utility definitions record the OPEN status. bounds_gap proves the ratio is (log n)^8/\u221an via ring_nf. Three #check commands verify the key theorems typecheck.",
       "startLine": 227,
       "endLine": 271
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #642 asks whether $f(n) = o(n)$, where $f(n)$ is the maximum edges in an $n$-vertex graph where every cycle has more vertices than diagonals. OPEN: The best known bounds are $\\Omega(n^{3/2}) \\le f(n) \\le O(n(\\log n)^8)$, with the lower bound from girth-5 constructions (projective plane incidence graphs) and the upper bound from Draganić-Methuku-Munhá Correia-Sudakov (2024) using sublinear expander techniques. Even $f(n) = O(n)$ remains unresolved.",
-    "implications": "1. **Extremal Graph Theory Frontier**: This is one of the more tantalizing open problems in extremal combinatorics. The gap between upper and lower bounds is substantial — $n^{3/2}$ vs $n(\\log n)^8$ — and the true answer likely requires fundamentally new ideas\n\n2. **Expander Revolution**: The DMMS improvement from $O(n^{3/2})$ to $O(n(\\log n)^8)$ demonstrates the power of sublinear expander techniques in extremal combinatorics.\n\nThe same approach has yielded breakthroughs on several related problems (Bradač-Methuku-Sudakov on cycles with all diagonals)\n\n3. **Turán-Type Connections**: The lower bound comes from the classical $C_4$-free extremal number $\\text{ex}(n, C_4) = \\Theta(n^{3/2})$, connecting this problem to the Zarankiewicz problem and finite geometry (projective planes). The Kővári-Sós-Turán theorem provides both the construction and the matching upper bound\n\n4. **Critical Length Phenomenon**: The sharp transition at $k = 5$ — where the condition flips from always satisfied to potentially violated — is cleanly formalized with three proved theorems, demonstrating that formal verification can capture phase transitions in combinatorial conditions\n\n5. **Spectral-Combinatorial Synthesis**: The problem bridges algebraic combinatorics (spectral graph theory, expanders) and classical extremal theory (Turán numbers, girth), exemplifying the modern trend of using spectral methods to solve purely combinatorial questions.",
+    "summary": "Erd\u0151s Problem #642 asks whether $f(n) = o(n)$, where $f(n)$ is the maximum edges in an $n$-vertex graph where every cycle has more vertices than diagonals. OPEN: The best known bounds are $\\Omega(n^{3/2}) \\le f(n) \\le O(n(\\log n)^8)$, with the lower bound from girth-5 constructions (projective plane incidence graphs) and the upper bound from Dragani\u0107-Methuku-Munh\u00e1 Correia-Sudakov (2024) using sublinear expander techniques. Even $f(n) = O(n)$ remains unresolved.",
+    "implications": "1. **Extremal Graph Theory Frontier**: This is one of the more tantalizing open problems in extremal combinatorics. The gap between upper and lower bounds is substantial \u2014 $n^{3/2}$ vs $n(\\log n)^8$ \u2014 and the true answer likely requires fundamentally new ideas\n\n2. **Expander Revolution**: The DMMS improvement from $O(n^{3/2})$ to $O(n(\\log n)^8)$ demonstrates the power of sublinear expander techniques in extremal combinatorics.\n\nThe same approach has yielded breakthroughs on several related problems (Brada\u010d-Methuku-Sudakov on cycles with all diagonals)\n\n3. **Tur\u00e1n-Type Connections**: The lower bound comes from the classical $C_4$-free extremal number $\\text{ex}(n, C_4) = \\Theta(n^{3/2})$, connecting this problem to the Zarankiewicz problem and finite geometry (projective planes). The K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem provides both the construction and the matching upper bound\n\n4. **Critical Length Phenomenon**: The sharp transition at $k = 5$ \u2014 where the condition flips from always satisfied to potentially violated \u2014 is cleanly formalized with three proved theorems, demonstrating that formal verification can capture phase transitions in combinatorial conditions\n\n5. **Spectral-Combinatorial Synthesis**: The problem bridges algebraic combinatorics (spectral graph theory, expanders) and classical extremal theory (Tur\u00e1n numbers, girth), exemplifying the modern trend of using spectral methods to solve purely combinatorial questions.",
     "openQuestions": [
-      "Is f(n) = o(n)? (The Hamburger-Szegedy conjecture — the main open question)",
+      "Is f(n) = o(n)? (The Hamburger-Szegedy conjecture \u2014 the main open question)",
       "Is f(n) = O(n)? (The weaker linear bound conjecture, also open)",
       "Can the DMMS exponent be reduced: is f(n) = O(n(log n)^c) for some c < 8?",
-      "Is f(n) = Θ(n^(3/2))? If so, the Hamburger-Szegedy conjecture would be false",
+      "Is f(n) = \u0398(n^(3/2))? If so, the Hamburger-Szegedy conjecture would be false",
       "What is the structure of extremal graphs achieving f(n)? Are they always close to girth-5 constructions?"
     ]
   },
@@ -189,33 +189,67 @@
   "references": [
     {
       "key": "CES96",
-      "citation": "Chen, G., Erdős, P., and Staton, W. (1996). Proof of a conjecture on the number of edges in a graph with a given cycle-diagonal property. Combinatorica (attributed).",
+      "citation": "Chen, G., Erd\u0151s, P., and Staton, W. (1996). Proof of a conjecture on the number of edges in a graph with a given cycle-diagonal property. Combinatorica (attributed).",
       "type": "paper"
     },
     {
       "key": "DMMS24",
-      "citation": "Draganić, N., Methuku, A., Munhá Correia, D., and Sudakov, B. (2024). Cycles with many chords. Random Structures & Algorithms 65: 3–16.",
+      "citation": "Dragani\u0107, N., Methuku, A., Munh\u00e1 Correia, D., and Sudakov, B. (2024). Cycles with many chords. Random Structures & Algorithms 65: 3\u201316.",
       "type": "paper"
     },
     {
       "key": "Er97d",
-      "citation": "Erdős, P. (1997). Problem collection mentioning this problem.",
+      "citation": "Erd\u0151s, P. (1997). Problem collection mentioning this problem.",
       "type": "paper"
     },
     {
       "key": "BMMS24",
-      "citation": "Bradač, D., Methuku, A., and Sudakov, B. (2024). The extremal number of cycles with all diagonals. IMRN 12: 9728–9742.",
+      "citation": "Brada\u010d, D., Methuku, A., and Sudakov, B. (2024). The extremal number of cycles with all diagonals. IMRN 12: 9728\u20139742.",
       "type": "paper"
     },
     {
       "key": "KST1954",
-      "citation": "Kővári, T., Sós, V. T., and Turán, P. (1954). On a problem of K. Zarankiewicz. Colloquium Mathematicae, 3(1), 50–57.",
+      "citation": "K\u0151v\u00e1ri, T., S\u00f3s, V. T., and Tur\u00e1n, P. (1954). On a problem of K. Zarankiewicz. Colloquium Mathematicae, 3(1), 50\u201357.",
       "type": "paper"
     },
     {
       "key": "Reiman1958",
-      "citation": "Reiman, I. (1958). Über ein Problem von K. Zarankiewicz. Acta Mathematica Academiae Scientiarum Hungaricae, 9(3–4), 269–273.",
+      "citation": "Reiman, I. (1958). \u00dcber ein Problem von K. Zarankiewicz. Acta Mathematica Academiae Scientiarum Hungaricae, 9(3\u20134), 269\u2013273.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-608",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and cycles themes"
+    },
+    {
+      "targetId": "erdos-622",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and cycles themes"
+    },
+    {
+      "targetId": "erdos-65",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and cycles themes"
+    },
+    {
+      "targetId": "erdos-72",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and cycles themes"
+    },
+    {
+      "targetId": "erdos-752",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and cycles themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-608",
+    "erdos-622",
+    "erdos-65",
+    "erdos-72",
+    "erdos-752"
   ]
 }

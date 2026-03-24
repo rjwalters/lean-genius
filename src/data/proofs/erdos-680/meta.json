@@ -1,10 +1,10 @@
 {
   "id": "erdos-680",
-  "title": "Least Prime Factor Exceeding k² + 1",
+  "title": "Least Prime Factor Exceeding k\u00b2 + 1",
   "slug": "erdos-680",
-  "description": "Is it true that for all sufficiently large n, there exists k ≥ 1 with p(n+k) > k² + 1, where p(m) is the least prime factor of m?",
+  "description": "Is it true that for all sufficiently large n, there exists k \u2265 1 with p(n+k) > k\u00b2 + 1, where p(m) is the least prime factor of m?",
   "meta": {
-    "author": "Erdős (1979)",
+    "author": "Erd\u0151s (1979)",
     "sourceUrl": "https://erdosproblems.com/680",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos680Problem.lean",
@@ -30,7 +30,7 @@
       },
       {
         "theorem": "Nat.minFac_le_of_dvd",
-        "description": "minFac is at most any divisor ≥ 2",
+        "description": "minFac is at most any divisor \u2265 2",
         "module": "Mathlib.Data.Nat.Prime.Basic"
       },
       {
@@ -50,11 +50,11 @@
       }
     ],
     "originalContributions": [
-      "ErdosProblem680: main conjecture minFac(n+k) > k²+1",
+      "ErdosProblem680: main conjecture minFac(n+k) > k\u00b2+1",
       "HasLargeLPF: predicate for individual n",
-      "ErdosProblem680Variant: exponential variant with e^{(1+ε)√k}",
+      "ErdosProblem680Variant: exponential variant with e^{(1+\u03b5)\u221ak}",
       "CramerConjecture: prime gap conjecture formalization",
-      "GranvilleRefinement: refined gap conjecture with 2e^{-γ}",
+      "GranvilleRefinement: refined gap conjecture with 2e^{-\u03b3}",
       "lpf_k1_means_odd: proved k=1 case characterization",
       "prime_offset_gives_large_lpf: proved prime offsets satisfy bound",
       "hasLargeLPF_of_succ_prime: proved successor-prime case",
@@ -66,11 +66,11 @@
     "relatedProblems": [
       {
         "id": "erdos-4",
-        "relationship": "Erdős #4 asks about large prime gaps — directly relevant since #680 reduces to prime gap bounds. The Maynard-Tao theorem (2016) on large gaps provides partial context for understanding when $p(n+k)$ can be large."
+        "relationship": "Erd\u0151s #4 asks about large prime gaps \u2014 directly relevant since #680 reduces to prime gap bounds. The Maynard-Tao theorem (2016) on large gaps provides partial context for understanding when $p(n+k)$ can be large."
       },
       {
         "id": "prime-number-theorem",
-        "relationship": "The PNT $\\pi(x) \\sim x/\\ln x$ underlies both Cramér's conjecture and the expected density of primes near $n$. The prime gap reduction in #680 implicitly uses the PNT to estimate how far one must search for a prime."
+        "relationship": "The PNT $\\pi(x) \\sim x/\\ln x$ underlies both Cram\u00e9r's conjecture and the expected density of primes near $n$. The prime gap reduction in #680 implicitly uses the PNT to estimate how far one must search for a prime."
       },
       {
         "id": "bertrands-postulate",
@@ -82,11 +82,11 @@
       },
       {
         "id": "erdos-648",
-        "relationship": "Erdős #648 studies the greatest prime factor $P(n)$ while #680 studies the least prime factor $p(n)$. They are dual perspectives on the same arithmetic function: the prime factorization structure of integers near $n$."
+        "relationship": "Erd\u0151s #648 studies the greatest prime factor $P(n)$ while #680 studies the least prime factor $p(n)$. They are dual perspectives on the same arithmetic function: the prime factorization structure of integers near $n$."
       },
       {
         "id": "erdos-1055",
-        "relationship": "Erdős #1055 classifies primes by smoothness of $p+1$, connecting to the least prime factor of $p + 1$. Both problems relate to the distribution of prime factors of integers in structured positions."
+        "relationship": "Erd\u0151s #1055 classifies primes by smoothness of $p+1$, connecting to the least prime factor of $p + 1$. Both problems relate to the distribution of prime factors of integers in structured positions."
       }
     ],
     "axiomCount": 2,
@@ -94,14 +94,14 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed Problem #680 in 1979, asking about the least prime factors of integers near a given $n$. The least prime factor $p(m) = \\min\\{q \\text{ prime} : q \\mid m\\}$ is a fundamental arithmetic function: for primes, $p(m) = m$ itself, while for composites, $p(m) \\le \\sqrt{m}$ by the basic divisibility bound.\n\nThe problem connects deeply to prime gap conjectures. If $n + k$ is prime for some small $k$, then $p(n + k) = n + k \\gg k^2 + 1$ for large $n$, trivially satisfying the bound. So Erdős's question effectively asks: is there always a prime (or near-prime with large least factor) within distance $O(\\sqrt{n})$ of every large $n$?\n\nHarald Cramér (1936) conjectured that consecutive prime gaps satisfy $p_{n+1} - p_n = O((\\log p_n)^2)$, based on a probabilistic model of the primes. This would easily resolve #680, since $(\\log n)^2 \\ll \\sqrt{n}$. Andrew Granville (1995) refined Cramér's conjecture by analyzing the effect of small prime divisors on gap distributions, predicting the constant $2e^{-\\gamma} \\approx 1.1229$ (where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant) rather than Cramér's implicit constant of 1.\n\nUnconditionally, the best result on prime gaps is Baker-Harman-Pintz (2001): the interval $[x, x + x^{0.525}]$ always contains a prime. This gives $k = O(n^{0.525})$, but the threshold $k^2 + 1 \\approx n^{1.05}$ exceeds $n + k \\approx n$, so this unconditional bound does not resolve #680. Progress would require either gap bounds of order $O(n^{1/2-\\varepsilon})$ or direct results on least prime factors of shifted integers.",
+    "historicalContext": "Erd\u0151s posed Problem #680 in 1979, asking about the least prime factors of integers near a given $n$. The least prime factor $p(m) = \\min\\{q \\text{ prime} : q \\mid m\\}$ is a fundamental arithmetic function: for primes, $p(m) = m$ itself, while for composites, $p(m) \\le \\sqrt{m}$ by the basic divisibility bound.\n\nThe problem connects deeply to prime gap conjectures. If $n + k$ is prime for some small $k$, then $p(n + k) = n + k \\gg k^2 + 1$ for large $n$, trivially satisfying the bound. So Erd\u0151s's question effectively asks: is there always a prime (or near-prime with large least factor) within distance $O(\\sqrt{n})$ of every large $n$?\n\nHarald Cram\u00e9r (1936) conjectured that consecutive prime gaps satisfy $p_{n+1} - p_n = O((\\log p_n)^2)$, based on a probabilistic model of the primes. This would easily resolve #680, since $(\\log n)^2 \\ll \\sqrt{n}$. Andrew Granville (1995) refined Cram\u00e9r's conjecture by analyzing the effect of small prime divisors on gap distributions, predicting the constant $2e^{-\\gamma} \\approx 1.1229$ (where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant) rather than Cram\u00e9r's implicit constant of 1.\n\nUnconditionally, the best result on prime gaps is Baker-Harman-Pintz (2001): the interval $[x, x + x^{0.525}]$ always contains a prime. This gives $k = O(n^{0.525})$, but the threshold $k^2 + 1 \\approx n^{1.05}$ exceeds $n + k \\approx n$, so this unconditional bound does not resolve #680. Progress would require either gap bounds of order $O(n^{1/2-\\varepsilon})$ or direct results on least prime factors of shifted integers.",
     "problemStatement": "For all sufficiently large $n$, does there exist $k \\ge 1$ such that $p(n+k) > k^2 + 1$, where $p(m)$ is the least prime factor of $m$?\n\nThe stronger variant: for every $\\varepsilon > 0$, the bound $e^{(1+\\varepsilon)\\sqrt{k}} + C_\\varepsilon$ eventually fails as a replacement for $k^2 + 1$.\n\n**Status**: OPEN",
-    "text": "Is it true that for all sufficiently large n, there exists k ≥ 1 with p(n+k) > k² + 1, where p(m) is the least prime factor of m?",
+    "text": "Is it true that for all sufficiently large n, there exists k \u2265 1 with p(n+k) > k\u00b2 + 1, where p(m) is the least prime factor of m?",
     "proofStrategy": "The formalization proceeds in seven sections:\n\n1. **Main conjecture**: Define `ErdosProblem680` and `HasLargeLPF` using `Nat.minFac`\n2. **Exponential variant**: Define `ErdosProblem680Variant` and the combined statement\n3. **Prime gap connections**: Formalize `CramerConjecture` and axiomatize `cramer_implies_large_lpf`\n4. **Basic properties**: Prove the $k = 1$ case (`lpf_k1_means_odd`) and the prime offset reduction (`prime_offset_gives_large_lpf`)\n5. **Granville's refinement**: Define `granvilleConstant`, `GranvilleRefinement`, and prove `problem680_from_prime_distribution`\n6. **Structural lemmas**: Prove `hasLargeLPF_of_succ_prime`, `hasLargeLPF_from_nearby_prime`, `minFac_gt_of_no_small_divisor`, and `hasLargeLPF_monotone_offset`\n7. **Computational verification**: Verify `HasLargeLPF` for $n = 2, 4, 6, \\ldots, 100$ using `native_decide`\n\nNotably, the formalization has **0 sorries** and **10 proved theorems**, with only 2 axioms for results beyond current proof techniques.",
     "keyInsights": [
-      "**Prime gap reduction**: The key insight is that when $n + k$ is prime, $p(n+k) = n + k \\gg k^2 + 1$ for large $n$. So Problem #680 reduces to finding a prime within $O(\\sqrt{n})$ of $n$, connecting it directly to Cramér's conjecture on prime gaps.",
+      "**Prime gap reduction**: The key insight is that when $n + k$ is prime, $p(n+k) = n + k \\gg k^2 + 1$ for large $n$. So Problem #680 reduces to finding a prime within $O(\\sqrt{n})$ of $n$, connecting it directly to Cram\u00e9r's conjecture on prime gaps.",
       "**Quadratic threshold is critical**: The threshold $k^2 + 1$ sits precisely at the boundary where the problem is interesting. Below $k^2$, the conjecture would be trivial from Bertrand's postulate. Above $e^{\\sqrt{k}}$, it would be false. The quadratic threshold captures the exact tension between prime density and offset distance.",
-      "**Granville's constant $2e^{-\\gamma}$**: Cramér's original model treats primes as independent random events with density $1/\\log n$. Granville showed this underestimates gaps near multiples of small primes, leading to the corrected constant $2e^{-\\gamma} \\approx 1.1229$. This nuance is formalized in the `GranvilleRefinement` definition.",
+      "**Granville's constant $2e^{-\\gamma}$**: Cram\u00e9r's original model treats primes as independent random events with density $1/\\log n$. Granville showed this underestimates gaps near multiples of small primes, leading to the corrected constant $2e^{-\\gamma} \\approx 1.1229$. This nuance is formalized in the `GranvilleRefinement` definition.",
       "**Monotonicity of the LPF bound**: The proved lemma `hasLargeLPF_monotone_offset` shows that if $p(n+k) > k^2 + 1$, then the same value $n + k$ also satisfies $p(n'+k') > k'^2 + 1$ for any $(n', k')$ with $n' + k' = n + k$ and $k' \\le k$. This transfers the property to neighboring integers.",
       "**Computational evidence is 'easy'**: All verified cases ($n \\le 100$) use $k = 1$, exploiting that $n + 1$ is odd for even $n$. The conjecture becomes truly challenging only in the asymptotic regime where $k > 1$ witnesses are needed."
     ],
@@ -136,10 +136,10 @@
     },
     {
       "id": "cramer",
-      "title": "Cramér's Conjecture Connection",
+      "title": "Cram\u00e9r's Conjecture Connection",
       "startLine": 56,
       "endLine": 70,
-      "summary": "Formalizes `CramerConjecture` ($p_{n+1} - p_n \\le C(\\log p_n)^2$) using `Nat.find` for the next prime. Axiomatizes `cramer_implies_large_lpf`: Cramér's conjecture implies a stronger version of #680."
+      "summary": "Formalizes `CramerConjecture` ($p_{n+1} - p_n \\le C(\\log p_n)^2$) using `Nat.find` for the next prime. Axiomatizes `cramer_implies_large_lpf`: Cram\u00e9r's conjecture implies a stronger version of #680."
     },
     {
       "id": "basic-properties",
@@ -171,13 +171,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #680 asks whether every large integer $n$ has some nearby offset $k$ where the least prime factor $p(n+k)$ exceeds $k^2 + 1$. The formalization includes 10 proved theorems, 0 sorries, and establishes the reduction to prime gap conjectures. The key insight is that finding a prime near $n$ suffices, connecting the problem to Cramér's and Granville's conjectures. Both the quadratic conjecture and the exponential variant are formalized, pinning down the critical growth rate.",
-    "implications": "1. **Prime gap interface**: Resolution would establish a new connection between the distribution of least prime factors and the distribution of primes, two apparently separate topics in analytic number theory.\n\n2. **Smooth number structure**: Understanding when $p(n+k)$ is large requires understanding when $n + k$ avoids small prime factors — precisely the complement of smooth numbers.\n\nA positive resolution would constrain how dense smooth numbers can be near arbitrary integers.\n\n3. **Conditional results**: The formalized reduction `cramer_implies_large_lpf` shows that progress on prime gaps automatically implies progress on #680. The Cramér conjecture is one of the most important open problems in prime number theory.\n\n4. **Threshold phenomena**: The quadratic-vs-exponential dichotomy reveals a phase transition in the structure of least prime factors near integers, with the threshold somewhere between $k^2$ and $e^{\\sqrt{k}}$.",
+    "summary": "Erd\u0151s Problem #680 asks whether every large integer $n$ has some nearby offset $k$ where the least prime factor $p(n+k)$ exceeds $k^2 + 1$. The formalization includes 10 proved theorems, 0 sorries, and establishes the reduction to prime gap conjectures. The key insight is that finding a prime near $n$ suffices, connecting the problem to Cram\u00e9r's and Granville's conjectures. Both the quadratic conjecture and the exponential variant are formalized, pinning down the critical growth rate.",
+    "implications": "1. **Prime gap interface**: Resolution would establish a new connection between the distribution of least prime factors and the distribution of primes, two apparently separate topics in analytic number theory.\n\n2. **Smooth number structure**: Understanding when $p(n+k)$ is large requires understanding when $n + k$ avoids small prime factors \u2014 precisely the complement of smooth numbers.\n\nA positive resolution would constrain how dense smooth numbers can be near arbitrary integers.\n\n3. **Conditional results**: The formalized reduction `cramer_implies_large_lpf` shows that progress on prime gaps automatically implies progress on #680. The Cram\u00e9r conjecture is one of the most important open problems in prime number theory.\n\n4. **Threshold phenomena**: The quadratic-vs-exponential dichotomy reveals a phase transition in the structure of least prime factors near integers, with the threshold somewhere between $k^2$ and $e^{\\sqrt{k}}$.",
     "openQuestions": [
       "Can unconditional progress be made using Baker-Harman-Pintz gap bounds ($p_{n+1} - p_n \\ll p_n^{0.525}$), perhaps with a weaker threshold than $k^2 + 1$?",
       "Is the quadratic bound $k^2 + 1$ tight, or can it be strengthened to $k^\\alpha + 1$ for some $\\alpha > 2$?",
       "What is the correct exponent in the exponential variant: is $(1 + \\varepsilon)\\sqrt{k}$ the critical growth rate, or could $e^{c\\sqrt{k}}$ work for some specific $c > 1$?",
-      "How does this problem relate to the Erdős-Straus conjecture (#681) and the related Problem #682, which ask similar questions with different thresholds?"
+      "How does this problem relate to the Erd\u0151s-Straus conjecture (#681) and the related Problem #682, which ask similar questions with different thresholds?"
     ]
   },
   "leanFile": {
@@ -199,17 +199,17 @@
   "references": [
     {
       "key": "Er79d",
-      "citation": "Erdős, P. (1979). Some unconventional problems in number theory. Math. Mag. 52, 67-70.",
+      "citation": "Erd\u0151s, P. (1979). Some unconventional problems in number theory. Math. Mag. 52, 67-70.",
       "type": "paper"
     },
     {
       "key": "Cr36",
-      "citation": "Cramér, H. (1936). On the order of magnitude of the difference between consecutive prime numbers. Acta Arith. 2, 23-46.",
+      "citation": "Cram\u00e9r, H. (1936). On the order of magnitude of the difference between consecutive prime numbers. Acta Arith. 2, 23-46.",
       "type": "paper"
     },
     {
       "key": "Gr95",
-      "citation": "Granville, A. (1995). Harald Cramér and the distribution of prime numbers. Scand. Actuar. J. 1, 12-28.",
+      "citation": "Granville, A. (1995). Harald Cram\u00e9r and the distribution of prime numbers. Scand. Actuar. J. 1, 12-28.",
       "type": "paper"
     },
     {
@@ -217,5 +217,39 @@
       "citation": "Maynard, J. (2015). Large gaps between primes. Ann. of Math. 183, 915-933.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-238",
+      "relationship": "related",
+      "description": "Share prime-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-382",
+      "relationship": "related",
+      "description": "Share prime-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-950",
+      "relationship": "related",
+      "description": "Share prime-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-968",
+      "relationship": "related",
+      "description": "Share prime-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-462",
+      "relationship": "related",
+      "description": "Share least-prime-factor and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-238",
+    "erdos-382",
+    "erdos-950",
+    "erdos-968",
+    "erdos-462"
   ]
 }

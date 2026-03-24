@@ -1,10 +1,10 @@
 {
   "id": "erdos-696",
-  "title": "Erdős Problem #696: Chains of Prime Divisors with Congruence Conditions",
+  "title": "Erd\u0151s Problem #696: Chains of Prime Divisors with Congruence Conditions",
   "slug": "erdos-696",
-  "description": "Let h(n) = max length of prime chain p₁ < ... < pₗ dividing n with pᵢ₊₁ ≡ 1 (mod pᵢ). Let H(n) use divisors. Estimate these functions. PARTIALLY SOLVED: h(n) → ∞ almost always (van Doorn). Ratio question open.",
+  "description": "Let h(n) = max length of prime chain p\u2081 < ... < p\u2097 dividing n with p\u1d62\u208a\u2081 \u2261 1 (mod p\u1d62). Let H(n) use divisors. Estimate these functions. PARTIALLY SOLVED: h(n) \u2192 \u221e almost always (van Doorn). Ratio question open.",
   "meta": {
-    "author": "Erdős (1979), van Doorn (proof)",
+    "author": "Erd\u0151s (1979), van Doorn (proof)",
     "sourceUrl": "https://erdosproblems.com/696",
     "date": "1979",
     "status": "formalized",
@@ -41,14 +41,14 @@
       }
     ],
     "originalContributions": [
-      "IsPrimeChain definition: chains p₁ < ... < pₗ with pᵢ₊₁ ≡ 1 (mod pᵢ)",
+      "IsPrimeChain definition: chains p\u2081 < ... < p\u2097 with p\u1d62\u208a\u2081 \u2261 1 (mod p\u1d62)",
       "IsDivisorChain definition: same for divisors",
       "h and H definitions as suprema of chain lengths",
       "logStar definition: iterated logarithm",
       "ErdosNormalOrderConjecture: h(n) ~ log*(n)",
-      "ErdosRatioConjecture: H(n)/h(n) → ∞",
+      "ErdosRatioConjecture: H(n)/h(n) \u2192 \u221e",
       "SophieGermainPrime and Cunningham chain connections",
-      "van_doorn_proof axiom: h(n) → ∞ for almost all n",
+      "van_doorn_proof axiom: h(n) \u2192 \u221e for almost all n",
       "h_le_omega theorem: trivial upper bound"
     ],
     "axiomCount": 19,
@@ -56,12 +56,12 @@
     "assumptions": "19 axiom(s) and 9 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #696**\n\nThis problem explores chains of prime divisors with congruence conditions, connecting to the multiplicative group structure of finite fields.\n\n**Key History:**\n- Erdős (1979): Posed the problem in [Er79e, p.81]\n- Erdős noted it's 'easy to see' that h(n) → ∞ for almost all n\n- van Doorn: Provided formal proof in the comments\n- The normal order log*(n) conjecture remains open\n\n**Mathematical Setting:**\nThe condition pᵢ₊₁ ≡ 1 (mod pᵢ) means pᵢ divides pᵢ₊₁ - 1, so (ℤ/pᵢ₊₁ℤ)* has a subgroup of order pᵢ. This reflects the multiplicative structure of primes.",
+    "historicalContext": "**Erd\u0151s Problem #696**\n\nThis problem explores chains of prime divisors with congruence conditions, connecting to the multiplicative group structure of finite fields.\n\n**Key History:**\n- Erd\u0151s (1979): Posed the problem in [Er79e, p.81]\n- Erd\u0151s noted it's 'easy to see' that h(n) \u2192 \u221e for almost all n\n- van Doorn: Provided formal proof in the comments\n- The normal order log*(n) conjecture remains open\n\n**Mathematical Setting:**\nThe condition p\u1d62\u208a\u2081 \u2261 1 (mod p\u1d62) means p\u1d62 divides p\u1d62\u208a\u2081 - 1, so (\u2124/p\u1d62\u208a\u2081\u2124)* has a subgroup of order p\u1d62. This reflects the multiplicative structure of primes.",
     "problemStatement": "**Problem Statement**\n\nLet $h(n)$ be the largest $\\ell$ such that there is a sequence of primes $p_1 < \\cdots < p_\\ell$ all dividing $n$ with $p_{i+1} \\equiv 1 \\pmod{p_i}$.\n\nLet $H(n)$ be the largest $u$ such that there is a sequence of integers $d_1 < \\cdots < d_u$ all dividing $n$ with $d_{i+1} \\equiv 1 \\pmod{d_i}$.\n\n**Questions:**\n1. Estimate $h(n)$ and $H(n)$\n2. Is it true that $H(n)/h(n) \\to \\infty$ for almost all $n$?\n\n**Status: PARTIALLY SOLVED**\n- $h(n) \\to \\infty$ for almost all $n$: PROVED (van Doorn)\n- Normal order $h(n) \\approx \\log^*(n)$: CONJECTURED\n- $H(n)/h(n) \\to \\infty$: OPEN",
-    "text": "Let h(n) = max length of prime chain p₁ < ... < pₗ dividing n with pᵢ₊₁ ≡ 1 (mod pᵢ). Let H(n) use divisors. Estimate these functions. PARTIALLY SOLVED: h(n) → ∞ almost always (van Doorn). Ratio question open.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Chain Definitions:** Define IsPrimeChain and IsDivisorChain with the congruence conditions\n\n2. **Functions h and H:** As suprema of chain lengths\n\n3. **Iterated Logarithm:** Define log*(n) to state the normal order conjecture\n\n4. **van Doorn's Result:** h(n) → ∞ for almost all n, using Dirichlet's theorem\n\n5. **Examples:** Sophie Germain primes and Cunningham chains\n\n6. **Bounds:** h(n) ≤ ω(n) and H(n) ≤ log₂(n)",
+    "text": "Let h(n) = max length of prime chain p\u2081 < ... < p\u2097 dividing n with p\u1d62\u208a\u2081 \u2261 1 (mod p\u1d62). Let H(n) use divisors. Estimate these functions. PARTIALLY SOLVED: h(n) \u2192 \u221e almost always (van Doorn). Ratio question open.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Chain Definitions:** Define IsPrimeChain and IsDivisorChain with the congruence conditions\n\n2. **Functions h and H:** As suprema of chain lengths\n\n3. **Iterated Logarithm:** Define log*(n) to state the normal order conjecture\n\n4. **van Doorn's Result:** h(n) \u2192 \u221e for almost all n, using Dirichlet's theorem\n\n5. **Examples:** Sophie Germain primes and Cunningham chains\n\n6. **Bounds:** h(n) \u2264 \u03c9(n) and H(n) \u2264 log\u2082(n)",
     "keyInsights": [
-      "**Multiplicative Groups:** pᵢ₊₁ ≡ 1 (mod pᵢ) means pᵢ | #(ℤ/pᵢ₊₁ℤ)*, connecting to group theory",
+      "**Multiplicative Groups:** p\u1d62\u208a\u2081 \u2261 1 (mod p\u1d62) means p\u1d62 | #(\u2124/p\u1d62\u208a\u2081\u2124)*, connecting to group theory",
       "**Iterated Logarithm:** log*(n) grows extremely slowly - log*(2^65536) = 5",
       "**Sophie Germain:** If p, 2p+1 both prime, then [p, 2p+1] is a chain",
       "**Composites Help:** H(n) uses divisors, giving more flexibility than h(n)",
@@ -83,7 +83,7 @@
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "h(n) ≤ H(n), base cases h(1) and h(p)",
+      "summary": "h(n) \u2264 H(n), base cases h(1) and h(p)",
       "startLine": 87,
       "endLine": 114
     },
@@ -96,8 +96,8 @@
     },
     {
       "id": "conjectures",
-      "title": "Erdős's Conjectures",
-      "summary": "h(n) → ∞, normal order, ratio H/h conjectures",
+      "title": "Erd\u0151s's Conjectures",
+      "summary": "h(n) \u2192 \u221e, normal order, ratio H/h conjectures",
       "startLine": 140,
       "endLine": 165
     },
@@ -125,14 +125,14 @@
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "h(n) ≤ ω(n) and H(n) ≤ log₂(n)",
+      "summary": "h(n) \u2264 \u03c9(n) and H(n) \u2264 log\u2082(n)",
       "startLine": 251,
       "endLine": 273
     },
     {
       "id": "van-doorn",
       "title": "The van Doorn Result",
-      "summary": "Proof that h(n) → ∞ for almost all n",
+      "summary": "Proof that h(n) \u2192 \u221e for almost all n",
       "startLine": 275,
       "endLine": 296
     },
@@ -145,12 +145,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #696 asks about chains of prime divisors with congruence conditions. The function h(n) (prime chains) is proved to tend to infinity for almost all n (van Doorn), and Erdős conjectured its normal order is log*(n). The ratio question H(n)/h(n) → ∞ remains open.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Multiplicative Structure:** The congruence p | q-1 connects to subgroups of (ℤ/qℤ)*\n\n2. **Sophie Germain Primes:** Special cases where 2p+1 is also prime\n\n**3. Iterated Logarithm:** The slowest-growing unbounded function in analysis\n\n4. **Dirichlet's Theorem:** Key tool for proving density results\n\n5. **Related Problem #695:** Part of a family of divisor chain problems.",
+    "summary": "Erd\u0151s Problem #696 asks about chains of prime divisors with congruence conditions. The function h(n) (prime chains) is proved to tend to infinity for almost all n (van Doorn), and Erd\u0151s conjectured its normal order is log*(n). The ratio question H(n)/h(n) \u2192 \u221e remains open.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Multiplicative Structure:** The congruence p | q-1 connects to subgroups of (\u2124/q\u2124)*\n\n2. **Sophie Germain Primes:** Special cases where 2p+1 is also prime\n\n**3. Iterated Logarithm:** The slowest-growing unbounded function in analysis\n\n4. **Dirichlet's Theorem:** Key tool for proving density results\n\n5. **Related Problem #695:** Part of a family of divisor chain problems.",
     "openQuestions": [
       "Prove the normal order of h(n) is log*(n)",
-      "Prove or disprove H(n)/h(n) → ∞ for almost all n",
-      "Find explicit constructions achieving h(n) ≈ log*(n)",
+      "Prove or disprove H(n)/h(n) \u2192 \u221e for almost all n",
+      "Find explicit constructions achieving h(n) \u2248 log*(n)",
       "Characterize n with h(n) exceptionally large or small",
       "Connection to other divisibility chain problems"
     ]
@@ -174,5 +174,39 @@
     "axiomCount": 19,
     "theoremCount": 3,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-306",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-318",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-420",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-436",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-711",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-306",
+    "erdos-318",
+    "erdos-420",
+    "erdos-436",
+    "erdos-711"
+  ]
 }

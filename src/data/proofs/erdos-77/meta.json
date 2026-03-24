@@ -144,5 +144,39 @@
     "axiomCount": 16,
     "theoremCount": 4,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Share probabilistic-method, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Share probabilistic-method, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Share probabilistic-method, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-78",
+      "relationship": "related",
+      "description": "Share probabilistic-method, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-800",
+      "relationship": "related",
+      "description": "Share probabilistic-method, graph-theoretic, and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1029",
+    "erdos-165",
+    "erdos-166",
+    "erdos-78",
+    "erdos-800"
+  ]
 }

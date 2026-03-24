@@ -1,10 +1,10 @@
 {
   "id": "erdos-477",
-  "title": "Erdős Problem #477: Polynomial Complements of Integer Sets",
+  "title": "Erd\u0151s Problem #477: Polynomial Complements of Integer Sets",
   "slug": "erdos-477",
-  "description": "Is there a polynomial f: ℤ → ℤ of degree ≥ 2 and a set A ⊆ ℤ such that every integer has a unique representation a + f(n)? Sekanina (1959) showed no for f(x) = x². Erdős–Graham conjecture: no for all such f. Open.",
+  "description": "Is there a polynomial f: \u2124 \u2192 \u2124 of degree \u2265 2 and a set A \u2286 \u2124 such that every integer has a unique representation a + f(n)? Sekanina (1959) showed no for f(x) = x\u00b2. Erd\u0151s\u2013Graham conjecture: no for all such f. Open.",
   "meta": {
-    "author": "Erdős, Graham",
+    "author": "Erd\u0151s, Graham",
     "sourceUrl": "https://erdosproblems.com/477",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos477Problem.lean",
@@ -25,10 +25,10 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*, asking whether any polynomial of degree $\\geq 2$ can 'perfectly tile' the integers by translation. The question asks: given $f : \\mathbb{Z} \\to \\mathbb{Z}$ of degree $\\geq 2$, does there exist $A \\subseteq \\mathbb{Z}$ such that $\\mathbb{Z} = A \\oplus f(\\mathbb{Z})$? Sekanina (1959) had already shown this is impossible for $f(x) = x^2$ by analyzing the gap structure between consecutive squares. The problem connects to several deep areas: factorization of abelian groups (Hajós's theorem), the Coven-Meyerowitz conjecture on tiling $\\mathbb{Z}$ by finite sets, and additive combinatorics more broadly. The key difficulty is that polynomial images are sparse ($|f(\\mathbb{Z}) \\cap [-N,N]| = O(N^{1/d})$ for degree $d$), so any complement $A$ must have density approaching 1, yet must avoid double-covering any integer. The formalization is notable for containing many proved theorems (not just axioms), establishing structural properties of perfect complements.",
+    "historicalContext": "Erd\u0151s and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*, asking whether any polynomial of degree $\\geq 2$ can 'perfectly tile' the integers by translation. The question asks: given $f : \\mathbb{Z} \\to \\mathbb{Z}$ of degree $\\geq 2$, does there exist $A \\subseteq \\mathbb{Z}$ such that $\\mathbb{Z} = A \\oplus f(\\mathbb{Z})$? Sekanina (1959) had already shown this is impossible for $f(x) = x^2$ by analyzing the gap structure between consecutive squares. The problem connects to several deep areas: factorization of abelian groups (Haj\u00f3s's theorem), the Coven-Meyerowitz conjecture on tiling $\\mathbb{Z}$ by finite sets, and additive combinatorics more broadly. The key difficulty is that polynomial images are sparse ($|f(\\mathbb{Z}) \\cap [-N,N]| = O(N^{1/d})$ for degree $d$), so any complement $A$ must have density approaching 1, yet must avoid double-covering any integer. The formalization is notable for containing many proved theorems (not just axioms), establishing structural properties of perfect complements.",
     "problemStatement": "Is there a polynomial $f : \\mathbb{Z} \\to \\mathbb{Z}$ of degree $\\geq 2$ and a set $A \\subseteq \\mathbb{Z}$ such that $\\mathbb{Z} = A \\oplus f(\\mathbb{Z})$, i.e., every integer has a unique representation $z = a + f(n)$ with $a \\in A$, $n \\in \\mathbb{Z}$?",
-    "text": "Is there a polynomial f: ℤ → ℤ of degree ≥ 2 and a set A ⊆ ℤ such that every integer has a unique representation a + f(n)? Sekanina (1959) showed no for f(x) = x². Erdős–Graham conjecture: no for all such f. Open.",
-    "proofStrategy": "The formalization builds a theory of perfect complements from scratch, proving structural properties (non-emptiness, commutativity, shift invariance, difference set constraints, finiteness obstructions), then specializing to the squares case with gap analysis. The main conjectures are axiomatized: no degree $\\geq 2$ polynomial, no monomial $x^k$ ($k \\geq 2$), and the combined Erdős-Graham conjecture. The linear case $f(x) = x$ is proved trivial, motivating the degree $\\geq 2$ restriction.",
+    "text": "Is there a polynomial f: \u2124 \u2192 \u2124 of degree \u2265 2 and a set A \u2286 \u2124 such that every integer has a unique representation a + f(n)? Sekanina (1959) showed no for f(x) = x\u00b2. Erd\u0151s\u2013Graham conjecture: no for all such f. Open.",
+    "proofStrategy": "The formalization builds a theory of perfect complements from scratch, proving structural properties (non-emptiness, commutativity, shift invariance, difference set constraints, finiteness obstructions), then specializing to the squares case with gap analysis. The main conjectures are axiomatized: no degree $\\geq 2$ polynomial, no monomial $x^k$ ($k \\geq 2$), and the combined Erd\u0151s-Graham conjecture. The linear case $f(x) = x$ is proved trivial, motivating the degree $\\geq 2$ restriction.",
     "keyInsights": [
       "The difference set constraint $(A - A) \\cap (B - B) = \\{0\\}$ is the key algebraic obstruction: it forces $A$ and $f(\\mathbb{Z})$ to have 'incompatible' additive structure",
       "Sekanina's argument for squares uses the growing gap $(n+1)^2 - n^2 = 2n+1$ between consecutive squares: $A$ must fill these widening gaps while maintaining unique representation",
@@ -95,14 +95,14 @@
       "title": "Main Conjectures (Open)",
       "startLine": 242,
       "endLine": 273,
-      "summary": "Axioms: Erdős-Graham conjecture (no degree $\\geq 2$ polynomial tiles $\\mathbb{Z}$), monomial conjecture, and main statement."
+      "summary": "Axioms: Erd\u0151s-Graham conjecture (no degree $\\geq 2$ polynomial tiles $\\mathbb{Z}$), monomial conjecture, and main statement."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 477 with a rich development of perfect complement theory: 12 proved theorems establishing structural properties (difference sets, symmetries, finiteness, gap analysis) alongside 3 axiomatized conjectures. This is one of the most substantially proved entries in the gallery.",
-    "implications": "**Theoretical Significance**: Resolution of this conjecture would deepen our understanding of which subsets of $\\mathbb{Z}$ can tile by translation.\n\nIt connects to the Coven-Meyerowitz conjecture (which characterizes finite sets tiling $\\mathbb{Z}$), Hajós's theorem on factorizations of abelian groups, and the broader theory of sumsets in additive combinatorics. A positive answer (some polynomial tiles) would be remarkable; the expected negative answer would confirm a fundamental rigidity of polynomial images.",
+    "summary": "The formalization captures Erd\u0151s Problem 477 with a rich development of perfect complement theory: 12 proved theorems establishing structural properties (difference sets, symmetries, finiteness, gap analysis) alongside 3 axiomatized conjectures. This is one of the most substantially proved entries in the gallery.",
+    "implications": "**Theoretical Significance**: Resolution of this conjecture would deepen our understanding of which subsets of $\\mathbb{Z}$ can tile by translation.\n\nIt connects to the Coven-Meyerowitz conjecture (which characterizes finite sets tiling $\\mathbb{Z}$), Haj\u00f3s's theorem on factorizations of abelian groups, and the broader theory of sumsets in additive combinatorics. A positive answer (some polynomial tiles) would be remarkable; the expected negative answer would confirm a fundamental rigidity of polynomial images.",
     "openQuestions": [
-      "Does the Erdős-Graham conjecture hold: is it true that no polynomial $f$ of degree $\\geq 2$ admits $A$ with $A \\oplus f(\\mathbb{Z}) = \\mathbb{Z}$?",
+      "Does the Erd\u0151s-Graham conjecture hold: is it true that no polynomial $f$ of degree $\\geq 2$ admits $A$ with $A \\oplus f(\\mathbb{Z}) = \\mathbb{Z}$?",
       "Can the difference set constraint $(A-A) \\cap (f(\\mathbb{Z})-f(\\mathbb{Z})) = \\{0\\}$ be leveraged for a general proof?",
       "What about non-integer-coefficient polynomials that map $\\mathbb{Z} \\to \\mathbb{Z}$ (like binomial coefficients $\\binom{n}{k}$)?",
       "Is there a connection to the spectral approach used in the Coven-Meyerowitz conjecture for finite tilings?"
@@ -121,5 +121,33 @@
     "axiomCount": 3,
     "theoremCount": 22,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Share additive combinatorics and number theory themes"
+    },
+    {
+      "targetId": "erdos-53",
+      "relationship": "related",
+      "description": "Share additive combinatorics and number theory themes"
+    },
+    {
+      "targetId": "erdos-530",
+      "relationship": "related",
+      "description": "Share additive combinatorics and number theory themes"
+    },
+    {
+      "targetId": "erdos-963",
+      "relationship": "related",
+      "description": "Share additive combinatorics and number theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-10",
+    "erdos-53",
+    "erdos-530",
+    "erdos-963"
+  ]
 }

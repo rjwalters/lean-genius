@@ -1,6 +1,6 @@
 {
   "id": "erdos-587",
-  "title": "Erdős Problem #587: Square-Sum-Free Subsets",
+  "title": "Erd\u0151s Problem #587: Square-Sum-Free Subsets",
   "slug": "erdos-587",
   "description": "Determining the maximum size of a subset A of {1,...,N} such that no non-empty subset has a sum equal to a perfect square.",
   "meta": {
@@ -49,16 +49,16 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Paul Erdős, who famously asked a young Terence Tao about it in 1985 during a mathematics conference. Erdős was interested in understanding the structure of sets where subset sums avoid being perfect squares.\n\nErdős himself showed that sets of size N^{1/3} are achievable by a clever construction: taking approximately N^{1/3} multiples of a prime p near N^{2/3}. The key insight is that sums of distinct multiples of p are divisible by p but not by p², hence cannot be perfect squares.\n\nThe problem was essentially solved by Hoi H. Nguyen and Van H. Vu in their 2010 paper \"Squares in sumsets\" published in the Szemerédi 70th birthday volume \"An irregular mind\". They proved the matching upper bound of O(N^{1/3}·(log N)^{O(1)}), confirming that Erdős's simple construction is essentially optimal.",
+    "historicalContext": "This problem was posed by Paul Erd\u0151s, who famously asked a young Terence Tao about it in 1985 during a mathematics conference. Erd\u0151s was interested in understanding the structure of sets where subset sums avoid being perfect squares.\n\nErd\u0151s himself showed that sets of size N^{1/3} are achievable by a clever construction: taking approximately N^{1/3} multiples of a prime p near N^{2/3}. The key insight is that sums of distinct multiples of p are divisible by p but not by p\u00b2, hence cannot be perfect squares.\n\nThe problem was essentially solved by Hoi H. Nguyen and Van H. Vu in their 2010 paper \"Squares in sumsets\" published in the Szemer\u00e9di 70th birthday volume \"An irregular mind\". They proved the matching upper bound of O(N^{1/3}\u00b7(log N)^{O(1)}), confirming that Erd\u0151s's simple construction is essentially optimal.",
     "problemStatement": "What is the maximum size of a subset $A \\subseteq \\{1, \\ldots, N\\}$ such that for all non-empty $S \\subseteq A$, the sum $\\sum_{n \\in S} n$ is not a perfect square?\n\n**Answer**: $|A| = \\Theta(N^{1/3} \\cdot (\\log N)^{O(1)})$",
     "text": "Determining the maximum size of a subset A of {1,...,N} such that no non-empty subset has a sum equal to a perfect square.",
-    "proofStrategy": "We formalize the definition of square-sum-free subsets and state the asymptotic bounds as axioms. The lower bound (Erdős's construction) and upper bound (Nguyen-Vu theorem) are stated as axioms because their proofs require sophisticated results from additive combinatorics not yet available in Mathlib.\n\nWe then derive the combined tight asymptotic bound as a theorem from these axioms using Filter.Eventually. We also prove structural theorems about square-sum-free sets (empty set, singletons) and verify concrete examples.",
+    "proofStrategy": "We formalize the definition of square-sum-free subsets and state the asymptotic bounds as axioms. The lower bound (Erd\u0151s's construction) and upper bound (Nguyen-Vu theorem) are stated as axioms because their proofs require sophisticated results from additive combinatorics not yet available in Mathlib.\n\nWe then derive the combined tight asymptotic bound as a theorem from these axioms using Filter.Eventually. We also prove structural theorems about square-sum-free sets (empty set, singletons) and verify concrete examples.",
     "keyInsights": [
       "**Square-sum-free property**: A set A is square-sum-free if no non-empty subset has a sum equal to a perfect square. This is stronger than just requiring individual elements to be non-squares.",
-      "**Erdős's prime construction**: Taking multiples of a large prime p avoids square sums because subset sums are divisible by p but not p². This elegant construction achieves the optimal order of magnitude.",
+      "**Erd\u0151s's prime construction**: Taking multiples of a large prime p avoids square sums because subset sums are divisible by p but not p\u00b2. This elegant construction achieves the optimal order of magnitude.",
       "**Additive combinatorics**: The Nguyen-Vu upper bound uses deep tools from additive combinatorics, including results about the distribution of squares in sumsets.",
       "**Polylogarithmic gap**: There remains a polylogarithmic gap between the lower and upper bounds, suggesting the exact constant is not yet known.",
-      "**Connection to Tao**: Erdős posed this problem to 10-year-old Terry Tao in 1985, demonstrating Erdős's famous mentorship of young mathematicians."
+      "**Connection to Tao**: Erd\u0151s posed this problem to 10-year-old Terry Tao in 1985, demonstrating Erd\u0151s's famous mentorship of young mathematicians."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -83,17 +83,17 @@
     },
     {
       "id": "lower-bound",
-      "title": "Erdős Lower Bound Construction",
+      "title": "Erd\u0151s Lower Bound Construction",
       "startLine": 47,
       "endLine": 64,
-      "summary": "Erdős's constructive lower bound Ω(N^{1/3}): take multiples of a prime p ≈ N^{2/3}. Sums of distinct multiples of p are multiples of p but not p², hence non-squares."
+      "summary": "Erd\u0151s's constructive lower bound \u03a9(N^{1/3}): take multiples of a prime p \u2248 N^{2/3}. Sums of distinct multiples of p are multiples of p but not p\u00b2, hence non-squares."
     },
     {
       "id": "upper-bound-combined",
       "title": "Nguyen-Vu Upper Bound and Tight Bound",
       "startLine": 66,
       "endLine": 97,
-      "summary": "Nguyen-Vu (2010) proved MaxNotSqSum(N) = O(N^{1/3} · (log N)^{O(1)}) using additive combinatorics. Combined with Erdős's lower bound: MaxNotSqSum(N) = Θ(N^{1/3}) up to logarithmic factors."
+      "summary": "Nguyen-Vu (2010) proved MaxNotSqSum(N) = O(N^{1/3} \u00b7 (log N)^{O(1)}) using additive combinatorics. Combined with Erd\u0151s's lower bound: MaxNotSqSum(N) = \u0398(N^{1/3}) up to logarithmic factors."
     },
     {
       "id": "examples",
@@ -104,11 +104,11 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the asymptotic solution to Erdős Problem #587, showing that the maximum size of a square-sum-free subset of {1,...,N} is Θ(N^{1/3}·(log N)^{O(1)}). The formalization uses axioms for the main bounds since their proofs require additive combinatorics beyond current Mathlib capabilities.",
-    "implications": "The result demonstrates that Erdős's simple prime-multiple construction is essentially optimal. It also shows deep connections between number theory (squares) and additive combinatorics (sumsets).",
+    "summary": "This formalization captures the asymptotic solution to Erd\u0151s Problem #587, showing that the maximum size of a square-sum-free subset of {1,...,N} is \u0398(N^{1/3}\u00b7(log N)^{O(1)}). The formalization uses axioms for the main bounds since their proofs require additive combinatorics beyond current Mathlib capabilities.",
+    "implications": "The result demonstrates that Erd\u0151s's simple prime-multiple construction is essentially optimal. It also shows deep connections between number theory (squares) and additive combinatorics (sumsets).",
     "openQuestions": [
       "What is the exact polylogarithmic factor in the upper bound?",
-      "Can the gap between Ω(N^{1/3}) and O(N^{1/3}·(log N)^{O(1)}) be closed?",
+      "Can the gap between \u03a9(N^{1/3}) and O(N^{1/3}\u00b7(log N)^{O(1)}) be closed?",
       "What about higher powers instead of squares?"
     ]
   },
@@ -127,5 +127,39 @@
     "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-438",
+      "relationship": "related",
+      "description": "Share squares, sumsets, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-33",
+      "relationship": "related",
+      "description": "Share squares, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-773",
+      "relationship": "related",
+      "description": "Share squares, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-782",
+      "relationship": "related",
+      "description": "Share squares, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Share sumsets, number-theoretic, and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-438",
+    "erdos-33",
+    "erdos-773",
+    "erdos-782",
+    "erdos-1103"
+  ]
 }

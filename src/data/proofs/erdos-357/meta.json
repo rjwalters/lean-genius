@@ -1,10 +1,10 @@
 {
   "id": "erdos-357",
-  "title": "Erdős #357: Distinct Consecutive Sums",
+  "title": "Erd\u0151s #357: Distinct Consecutive Sums",
   "slug": "erdos-357",
-  "description": "Let f(n) = max k for 1 ≤ a₁ < ... < aₖ ≤ n with all consecutive sums distinct. Is f(n) = o(n)? Known: f(n) ≥ (2+o(1))√n.",
+  "description": "Let f(n) = max k for 1 \u2264 a\u2081 < ... < a\u2096 \u2264 n with all consecutive sums distinct. Is f(n) = o(n)? Known: f(n) \u2265 (2+o(1))\u221an.",
   "meta": {
-    "author": "Erdős, Harzheim, Hegyvári, Weisenberg",
+    "author": "Erd\u0151s, Harzheim, Hegyv\u00e1ri, Weisenberg",
     "sourceUrl": "https://erdosproblems.com/357",
     "date": "1977-1986",
     "status": "formalized",
@@ -42,25 +42,25 @@
     "originalContributions": [
       "Formalization of distinct consecutive sums property",
       "Three variants: f(n), g(n), h(n) with different monotonicity",
-      "Weisenberg's √n lower bound as axiom",
-      "Hegyvári's linear bounds for g(n) as axiom",
-      "Connection to B₂ sequences and Sidon sets"
+      "Weisenberg's \u221an lower bound as axiom",
+      "Hegyv\u00e1ri's linear bounds for g(n) as axiom",
+      "Connection to B\u2082 sequences and Sidon sets"
     ],
     "axiomCount": 4,
     "assumptions": "4 axiom declarations: weisenberg_lower_bound (f(n) >= 2sqrt(n) via B2), hegyvari_1986 (non-monotone variant bounds), infinite_set_lower_density_zero (infinite sets sparse), B2_max_size (Sidon set maximum size)",
     "lineCount": 303
   },
   "overview": {
-    "historicalContext": "Erdős Problem #357 was posed by Erdős and Harzheim in the combinatorial number theory tradition of Erdős's 1977 paper 'Problems and results on combinatorial number theory III.' Given integers $1 \\leq a_1 < a_2 < \\cdots < a_k \\leq n$, we require all 'consecutive sums' $\\sum_{i=u}^{v} a_i$ (sums over contiguous index ranges) to be distinct.\n\nFor a sequence of length $k$, there are $\\binom{k+1}{2} = k(k+1)/2$ such sums. The function $f(n)$ measures the maximum $k$.\n\nWeisenberg connected this to **Sidon sets** (B₂ sequences), introduced by Simon Sidon in the 1930s and studied by Erdős and Turán (1941). Any B₂ set — where all pairwise sums $a_i + a_j$ are distinct — automatically has distinct consecutive sums. Since the largest B₂ set in $[1,n]$ has size $(1+o(1))\\sqrt{n}$, this gives $f(n) \\geq (2+o(1))\\sqrt{n}$.\n\nHegyvári (1986) studied the non-monotone variant $g(n)$ in 'On consecutive sums in sequences,' proving $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$. The dramatic difference between $g(n) = \\Theta(n)$ and the conjectured $f(n) = o(n)$ shows that monotonicity is the crucial constraint.\n\nErdős also asked about infinite sets with this property, conjecturing they have density 0 and that $\\sum 1/a_k$ converges. The lower density 0 result is known.",
-    "problemStatement": "Let 1 ≤ a₁ < a₂ < ... < aₖ ≤ n be integers such that all sums Σᵢ₌ᵤᵛ aᵢ (for 1 ≤ u ≤ v ≤ k) are distinct. Define f(n) = max such k.\n\n**Main Question**: Is f(n) = o(n)?\n\n**Status**: OPEN\n\n**Known**:\n- f(n) ≥ (2 + o(1))√n (Weisenberg)\n- For non-monotone g(n): (1/3)n ≤ g(n) ≤ (2/3)n (Hegyvári 1986)",
-    "text": "Let f(n) = max k for 1 ≤ a₁ < ... < aₖ ≤ n with all consecutive sums distinct. Is f(n) = o(n)? Known: f(n) ≥ (2+o(1))√n.",
-    "proofStrategy": "We formalize three variants of the problem:\n\n1. **f(n)**: strictly increasing sequences\n2. **g(n)**: arbitrary sequences (no monotonicity)\n3. **h(n)**: weakly increasing sequences (allowing ties)\n\nThe key insight is that k(k+1)/2 consecutive sums must all be distinct, limiting k. For strictly increasing sequences, Weisenberg's lower bound comes from B₂ sequences. For non-monotone sequences, Hegyvári's analysis shows linear growth.\n\nWe axiomatize the main results and explore connections to Sidon sets and subset sum problems.",
+    "historicalContext": "Erd\u0151s Problem #357 was posed by Erd\u0151s and Harzheim in the combinatorial number theory tradition of Erd\u0151s's 1977 paper 'Problems and results on combinatorial number theory III.' Given integers $1 \\leq a_1 < a_2 < \\cdots < a_k \\leq n$, we require all 'consecutive sums' $\\sum_{i=u}^{v} a_i$ (sums over contiguous index ranges) to be distinct.\n\nFor a sequence of length $k$, there are $\\binom{k+1}{2} = k(k+1)/2$ such sums. The function $f(n)$ measures the maximum $k$.\n\nWeisenberg connected this to **Sidon sets** (B\u2082 sequences), introduced by Simon Sidon in the 1930s and studied by Erd\u0151s and Tur\u00e1n (1941). Any B\u2082 set \u2014 where all pairwise sums $a_i + a_j$ are distinct \u2014 automatically has distinct consecutive sums. Since the largest B\u2082 set in $[1,n]$ has size $(1+o(1))\\sqrt{n}$, this gives $f(n) \\geq (2+o(1))\\sqrt{n}$.\n\nHegyv\u00e1ri (1986) studied the non-monotone variant $g(n)$ in 'On consecutive sums in sequences,' proving $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$. The dramatic difference between $g(n) = \\Theta(n)$ and the conjectured $f(n) = o(n)$ shows that monotonicity is the crucial constraint.\n\nErd\u0151s also asked about infinite sets with this property, conjecturing they have density 0 and that $\\sum 1/a_k$ converges. The lower density 0 result is known.",
+    "problemStatement": "Let 1 \u2264 a\u2081 < a\u2082 < ... < a\u2096 \u2264 n be integers such that all sums \u03a3\u1d62\u208c\u1d64\u1d5b a\u1d62 (for 1 \u2264 u \u2264 v \u2264 k) are distinct. Define f(n) = max such k.\n\n**Main Question**: Is f(n) = o(n)?\n\n**Status**: OPEN\n\n**Known**:\n- f(n) \u2265 (2 + o(1))\u221an (Weisenberg)\n- For non-monotone g(n): (1/3)n \u2264 g(n) \u2264 (2/3)n (Hegyv\u00e1ri 1986)",
+    "text": "Let f(n) = max k for 1 \u2264 a\u2081 < ... < a\u2096 \u2264 n with all consecutive sums distinct. Is f(n) = o(n)? Known: f(n) \u2265 (2+o(1))\u221an.",
+    "proofStrategy": "We formalize three variants of the problem:\n\n1. **f(n)**: strictly increasing sequences\n2. **g(n)**: arbitrary sequences (no monotonicity)\n3. **h(n)**: weakly increasing sequences (allowing ties)\n\nThe key insight is that k(k+1)/2 consecutive sums must all be distinct, limiting k. For strictly increasing sequences, Weisenberg's lower bound comes from B\u2082 sequences. For non-monotone sequences, Hegyv\u00e1ri's analysis shows linear growth.\n\nWe axiomatize the main results and explore connections to Sidon sets and subset sum problems.",
     "keyInsights": [
       "**Triangular constraint**: A sequence of $k$ elements has $k(k+1)/2$ contiguous intervals, each producing a sum that must be distinct. This quadratic growth in constraints is what limits $k$.",
-      "**B₂ connection**: Sidon sets (all pairwise sums $a_i + a_j$ distinct) automatically satisfy the consecutive sums property, giving $f(n) \\geq (2+o(1))\\sqrt{n}$ via the Erdős-Turán bound on B₂ set size.",
-      "**Monotonicity phase transition**: Without monotonicity, $g(n) = \\Theta(n)$ (Hegyvári). With strict monotonicity, $f(n)$ is conjectured $o(n)$. This dramatic gap shows monotonicity is the fundamental constraint, not the distinctness condition itself.",
+      "**B\u2082 connection**: Sidon sets (all pairwise sums $a_i + a_j$ distinct) automatically satisfy the consecutive sums property, giving $f(n) \\geq (2+o(1))\\sqrt{n}$ via the Erd\u0151s-Tur\u00e1n bound on B\u2082 set size.",
+      "**Monotonicity phase transition**: Without monotonicity, $g(n) = \\Theta(n)$ (Hegyv\u00e1ri). With strict monotonicity, $f(n)$ is conjectured $o(n)$. This dramatic gap shows monotonicity is the fundamental constraint, not the distinctness condition itself.",
       "**Density conjectures for infinite sets**: Lower density 0 is proved, but full density 0 and convergence of $\\sum 1/a_k$ remain open. The counting bound $a_k \\gg k\\log k$ for infinitely many $k$ establishes sparsity.",
-      "**Distinctness hierarchy**: Distinct subset sums $\\subset$ distinct consecutive sums $\\subset$ B₂ sequences, forming a chain of decreasingly restrictive conditions on integer sequences."
+      "**Distinctness hierarchy**: Distinct subset sums $\\subset$ distinct consecutive sums $\\subset$ B\u2082 sequences, forming a chain of decreasingly restrictive conditions on integer sequences."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -95,7 +95,7 @@
       "title": "Weisenberg's Lower Bound",
       "startLine": 111,
       "endLine": 130,
-      "summary": "Axiomatizes Weisenberg's bound: $f(n) \\geq (2+o(1))\\sqrt{n}$ via B₂ sequences. Derives corollary `f_grows_at_least_sqrt`: $\\exists C > 0, f(n) \\geq C\\sqrt{n}$ eventually. The proof partially uses `weisenberg_lower_bound` but has a sorry in the little-o extraction."
+      "summary": "Axiomatizes Weisenberg's bound: $f(n) \\geq (2+o(1))\\sqrt{n}$ via B\u2082 sequences. Derives corollary `f_grows_at_least_sqrt`: $\\exists C > 0, f(n) \\geq C\\sqrt{n}$ eventually. The proof partially uses `weisenberg_lower_bound` but has a sorry in the little-o extraction."
     },
     {
       "id": "conjecture",
@@ -109,7 +109,7 @@
       "title": "Non-Monotone Variant g(n)",
       "startLine": 151,
       "endLine": 172,
-      "summary": "Defines $g(n)$ without monotonicity requirement. Proves $g(n) \\geq f(n)$ (sorry). Axiomatizes Hegyvári (1986): $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$, showing $g(n) = \\Theta(n)$ — dramatically different from the conjectured $f(n) = o(n)$."
+      "summary": "Defines $g(n)$ without monotonicity requirement. Proves $g(n) \\geq f(n)$ (sorry). Axiomatizes Hegyv\u00e1ri (1986): $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$, showing $g(n) = \\Theta(n)$ \u2014 dramatically different from the conjectured $f(n) = o(n)$."
     },
     {
       "id": "variant-h",
@@ -134,10 +134,10 @@
     },
     {
       "id": "b2-connection",
-      "title": "B₂ Sequences",
+      "title": "B\u2082 Sequences",
       "startLine": 232,
       "endLine": 249,
-      "summary": "Defines `IsB2Sequence` (all pairwise sums $a_i + a_j$ distinct). States `B2_implies_distinct_consecutive` (sorry): B₂ $\\Rightarrow$ distinct consecutive sums. Axiomatizes B₂ max size $(1+o(1))\\sqrt{n}$ (Erdős-Turán 1941), the key ingredient for Weisenberg's bound."
+      "summary": "Defines `IsB2Sequence` (all pairwise sums $a_i + a_j$ distinct). States `B2_implies_distinct_consecutive` (sorry): B\u2082 $\\Rightarrow$ distinct consecutive sums. Axiomatizes B\u2082 max size $(1+o(1))\\sqrt{n}$ (Erd\u0151s-Tur\u00e1n 1941), the key ingredient for Weisenberg's bound."
     },
     {
       "id": "related",
@@ -149,70 +149,75 @@
   ],
   "crossReferences": [
     {
-      "targetProofId": "erdos-867",
-      "relationship": "Problem #867 on subsequences with distinct sums; both study extremal sequence properties",
+      "relationship": "related",
       "sharedConcepts": [
         "distinct sums",
         "extremal sequences",
         "combinatorial number theory"
-      ]
+      ],
+      "targetId": "erdos-867",
+      "description": "Problem #867 on subsequences with distinct sums; both study extremal sequence properties"
     },
     {
-      "targetProofId": "erdos-321",
-      "relationship": "Both involve extremal problems on integer sequences with distinctness constraints",
+      "relationship": "related",
       "sharedConcepts": [
         "additive combinatorics",
         "integer sequences"
-      ]
+      ],
+      "targetId": "erdos-321",
+      "description": "Both involve extremal problems on integer sequences with distinctness constraints"
     },
     {
-      "targetProofId": "erdos-332",
-      "relationship": "Related sequence extremal problems from Erdős-Graham",
+      "relationship": "related",
       "sharedConcepts": [
         "combinatorics",
-        "Erdős-Graham problems"
-      ]
+        "Erd\u0151s-Graham problems"
+      ],
+      "targetId": "erdos-332",
+      "description": "Related sequence extremal problems from Erd\u0151s-Graham"
     },
     {
-      "targetProofId": "erdos-324",
-      "relationship": "Problem #324 asks about distinct pair sums of polynomial values; both involve distinctness of sums",
+      "relationship": "related",
       "sharedConcepts": [
         "distinct sums",
         "Sidon-type properties",
         "open problems"
-      ]
+      ],
+      "targetId": "erdos-324",
+      "description": "Problem #324 asks about distinct pair sums of polynomial values; both involve distinctness of sums"
     },
     {
-      "targetProofId": "cauchy-schwarz",
-      "relationship": "Cauchy-Schwarz bounds additive energy, connected to B₂ sequence theory underlying Weisenberg's bound",
+      "relationship": "related",
       "sharedConcepts": [
         "inequalities",
         "additive energy"
-      ]
+      ],
+      "targetId": "cauchy-schwarz",
+      "description": "Cauchy-Schwarz bounds additive energy, connected to B\u2082 sequence theory underlying Weisenberg's bound"
     }
   ],
   "references": [
     {
-      "citation": "P. Erdős, 'Problems and results on combinatorial number theory III,' in Number Theory Day (New York 1976), Lecture Notes in Mathematics 626, Springer, 1977, pp. 43-72",
+      "citation": "P. Erd\u0151s, 'Problems and results on combinatorial number theory III,' in Number Theory Day (New York 1976), Lecture Notes in Mathematics 626, Springer, 1977, pp. 43-72",
       "relevance": "Original source of Problem #357"
     },
     {
-      "citation": "N. Hegyvári, 'On consecutive sums in sequences,' Acta Mathematica Hungarica 48 (1986), 193-200",
-      "relevance": "Proved (1/3+o(1))n ≤ g(n) ≤ (2/3+o(1))n for the non-monotone variant"
+      "citation": "N. Hegyv\u00e1ri, 'On consecutive sums in sequences,' Acta Mathematica Hungarica 48 (1986), 193-200",
+      "relevance": "Proved (1/3+o(1))n \u2264 g(n) \u2264 (2/3+o(1))n for the non-monotone variant"
     },
     {
-      "citation": "P. Erdős and P. Turán, 'On a problem of Sidon in additive number theory, and on some related problems,' Journal of the London Mathematical Society 16 (1941), 212-215",
-      "relevance": "Proved maximum B₂ set in [1,n] has size (1+o(1))√n, underlying Weisenberg's bound"
+      "citation": "P. Erd\u0151s and P. Tur\u00e1n, 'On a problem of Sidon in additive number theory, and on some related problems,' Journal of the London Mathematical Society 16 (1941), 212-215",
+      "relevance": "Proved maximum B\u2082 set in [1,n] has size (1+o(1))\u221an, underlying Weisenberg's bound"
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #357 on distinct consecutive sums across 304 lines and 12 sections. The main question — whether f(n) = o(n) — remains open. Known bounds: f(n) ≥ (2+o(1))√n (Weisenberg, via B₂ sequences). The non-monotone variant g(n) = Θ(n) (Hegyvári 1986). Three variants (f, g, h) with increasing generality are formalized, along with infinite-set density conjectures and connections to B₂/Sidon sets and subset sum problems.",
-    "implications": "**Theoretical Significance**: The problem connects to Sidon sets (additive combinatorics), sequence density (analytic number theory), and subset sums (combinatorics).\n\nThe gap between √n and n bounds is the heart of the open question. Resolution would clarify the role of monotonicity in additive combinatorial extremal problems.",
+    "summary": "This formalization captures Erd\u0151s Problem #357 on distinct consecutive sums across 304 lines and 12 sections. The main question \u2014 whether f(n) = o(n) \u2014 remains open. Known bounds: f(n) \u2265 (2+o(1))\u221an (Weisenberg, via B\u2082 sequences). The non-monotone variant g(n) = \u0398(n) (Hegyv\u00e1ri 1986). Three variants (f, g, h) with increasing generality are formalized, along with infinite-set density conjectures and connections to B\u2082/Sidon sets and subset sum problems.",
+    "implications": "**Theoretical Significance**: The problem connects to Sidon sets (additive combinatorics), sequence density (analytic number theory), and subset sums (combinatorics).\n\nThe gap between \u221an and n bounds is the heart of the open question. Resolution would clarify the role of monotonicity in additive combinatorial extremal problems.",
     "openQuestions": [
       "Can f_le_n, f_ge_one, f_ge_two be proved from the definitions (converting sorries to proofs)?",
       "Can B2_implies_distinct_consecutive be proved via the partial-sums argument?",
       "Can the {1,2} and {1,2,4} examples be verified by case analysis (converting sorries)?",
-      "Can conjecture_equiv (isLittleO ↔ Tendsto) be proved using Mathlib's asymptotic API?",
+      "Can conjecture_equiv (isLittleO \u2194 Tendsto) be proved using Mathlib's asymptotic API?",
       "Can g_ge_f and h_ge_f be proved from the definitions (relaxation arguments)?"
     ]
   },

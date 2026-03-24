@@ -1,10 +1,10 @@
 {
   "id": "erdos-1020",
-  "title": "Erdős Problem #1020: The Erdős Matching Conjecture",
+  "title": "Erd\u0151s Problem #1020: The Erd\u0151s Matching Conjecture",
   "slug": "erdos-1020",
-  "description": "Let f(n;r,k) be max edges in r-uniform hypergraph with no k independent edges. Conjecture: f(n;r,k) = max(C(rk-1,r), C(n,r)-C(n-k+1,r)). Solved for r=2,3. Upper bound: (k-1)C(n-1,r-1). OPEN for r≥4.",
+  "description": "Let f(n;r,k) be max edges in r-uniform hypergraph with no k independent edges. Conjecture: f(n;r,k) = max(C(rk-1,r), C(n,r)-C(n-k+1,r)). Solved for r=2,3. Upper bound: (k-1)C(n-1,r-1). OPEN for r\u22654.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1020",
     "date": "1965",
     "status": "formalized",
@@ -27,17 +27,17 @@
     "assumptions": "11 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this conjecture around 1965, asking for the maximum number of edges in an r-uniform hypergraph on n vertices with no k pairwise disjoint edges. For ordinary graphs (r=2), the answer was already known: the Erdős-Gallai theorem (1959) gives the exact value as max(C(2k-1,2), n(k-1) - C(k,2)). For r≥3, Erdős conjectured that the extremum is always achieved by one of two natural constructions: either taking all r-subsets of a (rk-1)-element set (too few vertices for k disjoint r-edges), or taking all r-subsets meeting a fixed (k-1)-element set (a 'sunflower' obstruction). The problem attracted decades of work. Kleitman (1968) proved an early upper bound. Bollobás, Daykin, and Erdős made further partial progress. Frankl (1987) proved the influential upper bound f(n;r,k) ≤ (k-1)·C(n-1,r-1) using the shifting technique. A major breakthrough came when Łuczak and Mieczkowska (2014) confirmed the conjecture for r=3 (3-uniform hypergraphs) using a sophisticated container method argument. Huang, Loh, and Sudakov (2012) proved the conjecture for sufficiently large n (n ≥ 3kr²) using dependent random choice. Frankl (2013, 2017) obtained further improvements. Despite this progress, the general conjecture remains open for r≥4 and is considered one of the most important problems in extremal set theory.",
-    "problemStatement": "Let f(n; r, k) be the maximum number of edges in an r-uniform hypergraph on n vertices containing no k pairwise disjoint edges. Conjecture: f(n; r, k) = max(C(rk-1, r), C(n, r) - C(n-k+1, r)) for all r ≥ 3.",
-    "text": "Let f(n;r,k) be max edges in r-uniform hypergraph with no k independent edges. Conjecture: f(n;r,k) = max(C(rk-1,r), C(n,r)-C(n-k+1,r)). Solved for r=2,3. Upper bound: (k-1)C(n-1,r-1). OPEN for r≥4.",
+    "historicalContext": "Erd\u0151s posed this conjecture around 1965, asking for the maximum number of edges in an r-uniform hypergraph on n vertices with no k pairwise disjoint edges. For ordinary graphs (r=2), the answer was already known: the Erd\u0151s-Gallai theorem (1959) gives the exact value as max(C(2k-1,2), n(k-1) - C(k,2)). For r\u22653, Erd\u0151s conjectured that the extremum is always achieved by one of two natural constructions: either taking all r-subsets of a (rk-1)-element set (too few vertices for k disjoint r-edges), or taking all r-subsets meeting a fixed (k-1)-element set (a 'sunflower' obstruction). The problem attracted decades of work. Kleitman (1968) proved an early upper bound. Bollob\u00e1s, Daykin, and Erd\u0151s made further partial progress. Frankl (1987) proved the influential upper bound f(n;r,k) \u2264 (k-1)\u00b7C(n-1,r-1) using the shifting technique. A major breakthrough came when \u0141uczak and Mieczkowska (2014) confirmed the conjecture for r=3 (3-uniform hypergraphs) using a sophisticated container method argument. Huang, Loh, and Sudakov (2012) proved the conjecture for sufficiently large n (n \u2265 3kr\u00b2) using dependent random choice. Frankl (2013, 2017) obtained further improvements. Despite this progress, the general conjecture remains open for r\u22654 and is considered one of the most important problems in extremal set theory.",
+    "problemStatement": "Let f(n; r, k) be the maximum number of edges in an r-uniform hypergraph on n vertices containing no k pairwise disjoint edges. Conjecture: f(n; r, k) = max(C(rk-1, r), C(n, r) - C(n-k+1, r)) for all r \u2265 3.",
+    "text": "Let f(n;r,k) be max edges in r-uniform hypergraph with no k independent edges. Conjecture: f(n;r,k) = max(C(rk-1,r), C(n,r)-C(n-k+1,r)). Solved for r=2,3. Upper bound: (k-1)C(n-1,r-1). OPEN for r\u22654.",
     "proofStrategy": "The Lean formalization defines r-uniform hypergraphs with a matching predicate. The function f(n;r,k) is the supremum over hypergraphs avoiding k-matchings. Two constructions provide the conjectured lower bound. Frankl's upper bound (k-1)C(n-1,r-1) is stated as an axiom. Solved cases (r=2,3) and partial results (small n, large n regimes) are captured.",
     "keyInsights": [
       "**Two Extremal Constructions:** Construction 1 takes all C(rk-1,r) edges on rk-1 vertices (too few for k disjoint r-edges); Construction 2 takes all edges meeting a fixed (k-1)-set, giving C(n,r)-C(n-k+1,r) edges",
-      "**Phase Transition:** For small n the first construction wins; for large n the second dominates. The crossover point n₀(r,k) is where both constructions give the same count",
-      "**Frankl's Shifting Bound:** The upper bound f(n;r,k) ≤ (k-1)·C(n-1,r-1) uses Frankl's shifting technique and holds for all parameters, providing the best known general bound",
-      "**Graph Case Solved:** For r=2, the Erdős-Gallai theorem (1959) completely determines the extremal function, matching the conjectured formula",
-      "**3-Uniform Breakthrough:** Łuczak-Mieczkowska (2014) confirmed the conjecture for r=3 using hypergraph container methods, a major technical achievement",
-      "**Large n Regime:** Huang-Loh-Sudakov (2012) proved the conjecture for n ≥ 3kr² using dependent random choice and a clever counting argument",
+      "**Phase Transition:** For small n the first construction wins; for large n the second dominates. The crossover point n\u2080(r,k) is where both constructions give the same count",
+      "**Frankl's Shifting Bound:** The upper bound f(n;r,k) \u2264 (k-1)\u00b7C(n-1,r-1) uses Frankl's shifting technique and holds for all parameters, providing the best known general bound",
+      "**Graph Case Solved:** For r=2, the Erd\u0151s-Gallai theorem (1959) completely determines the extremal function, matching the conjectured formula",
+      "**3-Uniform Breakthrough:** \u0141uczak-Mieczkowska (2014) confirmed the conjecture for r=3 using hypergraph container methods, a major technical achievement",
+      "**Large n Regime:** Huang-Loh-Sudakov (2012) proved the conjecture for n \u2265 3kr\u00b2 using dependent random choice and a clever counting argument",
       "**Monotonicity Properties:** f(n;r,k) is non-decreasing in both n (more vertices allow more edges) and k (weaker matching avoidance condition)"
     ],
     "prerequisites": [
@@ -51,7 +51,7 @@
     {
       "id": "imports",
       "title": "Imports and Problem Overview",
-      "summary": "Module documentation describing the Erdős Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure",
+      "summary": "Module documentation describing the Erd\u0151s Matching Conjecture, imports for Finset, Nat.Choose, and combinatorial infrastructure",
       "startLine": 1,
       "endLine": 39
     },
@@ -79,28 +79,28 @@
     {
       "id": "r2",
       "title": "The Case r = 2 (Graphs)",
-      "summary": "Erdős-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))",
+      "summary": "Erd\u0151s-Gallai theorem completely solving the graph case: f(n;2,k) = max(C(2k-1,2), n(k-1)-C(k,2))",
       "startLine": 101,
       "endLine": 115
     },
     {
       "id": "r3",
       "title": "The Case r = 3",
-      "summary": "Łuczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods",
+      "summary": "\u0141uczak-Mieczkowska (2014) confirmation for 3-uniform hypergraphs using container methods",
       "startLine": 117,
       "endLine": 126
     },
     {
       "id": "partial",
       "title": "Partial Results",
-      "summary": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n ≥ 3kr²)",
+      "summary": "Progressive improvements: Kleitman (1968), Frankl special cases, Huang-Loh-Sudakov large n regime (n \u2265 3kr\u00b2)",
       "startLine": 128,
       "endLine": 148
     },
     {
       "id": "upper",
       "title": "Upper Bounds",
-      "summary": "Frankl's (k-1)·C(n-1,r-1) bound via the shifting technique, the best known general upper bound",
+      "summary": "Frankl's (k-1)\u00b7C(n-1,r-1) bound via the shifting technique, the best known general upper bound",
       "startLine": 150,
       "endLine": 164
     },
@@ -128,37 +128,37 @@
     {
       "id": "open",
       "title": "The Open Problem",
-      "summary": "Statement that the conjecture remains open for r ≥ 4, with summary of known partial results and current state",
+      "summary": "Statement that the conjecture remains open for r \u2265 4, with summary of known partial results and current state",
       "startLine": 219,
       "endLine": 231
     }
   ],
   "conclusion": {
-    "summary": "The Erdős Matching Conjecture predicts the exact maximum edges in an r-uniform hypergraph avoiding k disjoint edges. The formula max(C(rk-1,r), C(n,r)-C(n-k+1,r)) is proven for r=2,3 and verified in various regimes for larger r. Frankl's upper bound (k-1)C(n-1,r-1) is always true. The conjecture remains open for r ≥ 4 despite substantial partial progress.",
-    "implications": "**Theoretical Significance**: This conjecture sits at the heart of extremal set theory, connecting to Turán-type problems for hypergraphs, the Erdős-Ko-Rado theorem on intersecting families, and the sunflower conjecture.\n\nA resolution would advance our understanding of when dense hypergraphs must contain large matchings. The techniques developed around this problem — shifting, container methods, dependent random choice — have found broad applications in combinatorics, coding theory, and combinatorial design theory.",
+    "summary": "The Erd\u0151s Matching Conjecture predicts the exact maximum edges in an r-uniform hypergraph avoiding k disjoint edges. The formula max(C(rk-1,r), C(n,r)-C(n-k+1,r)) is proven for r=2,3 and verified in various regimes for larger r. Frankl's upper bound (k-1)C(n-1,r-1) is always true. The conjecture remains open for r \u2265 4 despite substantial partial progress.",
+    "implications": "**Theoretical Significance**: This conjecture sits at the heart of extremal set theory, connecting to Tur\u00e1n-type problems for hypergraphs, the Erd\u0151s-Ko-Rado theorem on intersecting families, and the sunflower conjecture.\n\nA resolution would advance our understanding of when dense hypergraphs must contain large matchings. The techniques developed around this problem \u2014 shifting, container methods, dependent random choice \u2014 have found broad applications in combinatorics, coding theory, and combinatorial design theory.",
     "openQuestions": [
       "Is the conjecture true for r = 4? This is the smallest open case and likely requires new ideas beyond existing methods.",
       "Can the gap between the small n and large n regimes be closed for general r?",
       "Is there a unified proof approach for all uniformities r, perhaps via algebraic or topological methods?",
-      "What is the exact structure of extremal hypergraphs — are they always one of the two canonical constructions?",
-      "Can the container method approach of Łuczak-Mieczkowska be extended beyond r = 3?"
+      "What is the exact structure of extremal hypergraphs \u2014 are they always one of the two canonical constructions?",
+      "Can the container method approach of \u0141uczak-Mieczkowska be extended beyond r = 3?"
     ]
   },
   "crossReferences": [
     {
-      "id": "erdos-1021",
       "relationship": "related",
-      "description": "Erdős #1021 (extremal numbers for bipartite pair graphs G_k) studies related Turán-type extremal questions about forbidden subgraph densities."
+      "description": "Erd\u0151s #1021 (extremal numbers for bipartite pair graphs G_k) studies related Tur\u00e1n-type extremal questions about forbidden subgraph densities.",
+      "targetId": "erdos-1021"
     },
     {
-      "id": "erdos-1008",
       "relationship": "related",
-      "description": "Erdős #1008 (C₄-free subgraphs with m^{2/3} edges) uses related extremal techniques including dependent random choice."
+      "description": "Erd\u0151s #1008 (C\u2084-free subgraphs with m^{2/3} edges) uses related extremal techniques including dependent random choice.",
+      "targetId": "erdos-1008"
     },
     {
-      "id": "erdos-530",
       "relationship": "related",
-      "description": "Erdős #530 (maximum Sidon subsets) studies analogous extremal problems in additive combinatorics, where the probabilistic deletion method parallels the matching conjecture approach."
+      "description": "Erd\u0151s #530 (maximum Sidon subsets) studies analogous extremal problems in additive combinatorics, where the probabilistic deletion method parallels the matching conjecture approach.",
+      "targetId": "erdos-530"
     }
   ],
   "relatedProofs": [

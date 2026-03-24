@@ -185,5 +185,39 @@
     "axiomCount": 9,
     "theoremCount": 6,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-94",
+      "relationship": "related",
+      "description": "Share geometric, convex, and distances themes"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Share geometric, distances, and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Share geometric, distances, and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-103",
+      "relationship": "related",
+      "description": "Share geometric and distances themes"
+    },
+    {
+      "targetId": "erdos-1127",
+      "relationship": "related",
+      "description": "Share geometric and distances themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-94",
+    "erdos-605",
+    "erdos-654",
+    "erdos-103",
+    "erdos-1127"
+  ]
 }

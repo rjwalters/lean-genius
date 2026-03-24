@@ -1,10 +1,10 @@
 {
   "id": "erdos-127",
-  "title": "Erdős Problem #127: Large Bipartite Subgraphs Beyond Edwards' Bound",
+  "title": "Erd\u0151s Problem #127: Large Bipartite Subgraphs Beyond Edwards' Bound",
   "slug": "erdos-127",
-  "description": "Let f(m) be the excess beyond Edwards' bound for bipartite subgraphs of m-edge graphs. Is there a sequence mᵢ with f(mᵢ) → ∞? SOLVED: YES (Alon 1996).",
+  "description": "Let f(m) be the excess beyond Edwards' bound for bipartite subgraphs of m-edge graphs. Is there a sequence m\u1d62 with f(m\u1d62) \u2192 \u221e? SOLVED: YES (Alon 1996).",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/127",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos127Problem.lean",
@@ -24,21 +24,21 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Edwards (1973) proved a foundational result in extremal graph theory: every graph with $m$ edges contains a bipartite subgraph with at least $m/2 + (\\sqrt{8m+1} - 1)/8$ edges. His proof uses a simple but elegant greedy algorithm — assign each vertex to the side that maximizes the cut. The bound beats the trivial $m/2$ (from random partition) by $\\Theta(\\sqrt{m})$, and is tight for complete graphs $K_n$.\n\nErdős, Kohayakawa, and Gyárfás then asked a subtle question: is the Edwards bound tight for *all* values of $m$, or only at the triangular numbers $\\binom{n}{2}$? Formally, if $f(m)$ denotes the excess above Edwards' bound, is $f$ bounded or can it grow without limit?\n\nAlon (1996) resolved this by proving $f(n^2/2) \\ge c\\sqrt{n}$, showing that midway between consecutive triangular numbers, Edwards' bound can be substantially improved. He also proved $f(m) \\le C \\cdot m^{1/4}$, establishing that the excess grows at most like $m^{1/4}$. At $m = n^2/2$, both bounds give $\\Theta(\\sqrt{n})$, so the result is essentially sharp.",
+    "historicalContext": "Edwards (1973) proved a foundational result in extremal graph theory: every graph with $m$ edges contains a bipartite subgraph with at least $m/2 + (\\sqrt{8m+1} - 1)/8$ edges. His proof uses a simple but elegant greedy algorithm \u2014 assign each vertex to the side that maximizes the cut. The bound beats the trivial $m/2$ (from random partition) by $\\Theta(\\sqrt{m})$, and is tight for complete graphs $K_n$.\n\nErd\u0151s, Kohayakawa, and Gy\u00e1rf\u00e1s then asked a subtle question: is the Edwards bound tight for *all* values of $m$, or only at the triangular numbers $\\binom{n}{2}$? Formally, if $f(m)$ denotes the excess above Edwards' bound, is $f$ bounded or can it grow without limit?\n\nAlon (1996) resolved this by proving $f(n^2/2) \\ge c\\sqrt{n}$, showing that midway between consecutive triangular numbers, Edwards' bound can be substantially improved. He also proved $f(m) \\le C \\cdot m^{1/4}$, establishing that the excess grows at most like $m^{1/4}$. At $m = n^2/2$, both bounds give $\\Theta(\\sqrt{n})$, so the result is essentially sharp.",
     "problemStatement": "Let $f(m)$ be the maximum value such that every graph with $m$ edges contains a bipartite subgraph with at least $m/2 + (\\sqrt{8m+1} - 1)/8 + f(m)$ edges. Is there an infinite sequence $m_i$ with $f(m_i) \\to \\infty$?",
-    "text": "Let f(m) be the excess beyond Edwards' bound for bipartite subgraphs of m-edge graphs. Is there a sequence mᵢ with f(mᵢ) → ∞? SOLVED: YES (Alon 1996).",
+    "text": "Let f(m) be the excess beyond Edwards' bound for bipartite subgraphs of m-edge graphs. Is there a sequence m\u1d62 with f(m\u1d62) \u2192 \u221e? SOLVED: YES (Alon 1996).",
     "proofStrategy": "The formalization axiomatizes `maxBipartiteEdges` and `excessF`, defines `edwardsBound` as the explicit formula $m/2 + (\\sqrt{8m+1}-1)/8$, and states the conjecture `ErdosProblem127` using `StrictMono` and `Filter.Tendsto`. Alon's lower bound $f(n^2/2) \\ge c\\sqrt{n}$, his upper bound $f(m) \\le C \\cdot m^{1/4}$, and the complete graph tightness $f(\\binom{n}{2}) = 0$ are all axiomatized. Structural properties (bounded variation, proximity to complete graph numbers) are included.",
     "keyInsights": [
       "Edwards' bound $m/2 + \\Theta(\\sqrt{m})$ is tight at triangular numbers $\\binom{n}{2}$ (complete graphs), where the maximum cut of $K_n$ is exactly $\\lfloor n^2/4 \\rfloor$",
       "Alon's $f(n^2/2) \\ge c\\sqrt{n}$ shows that midway between triangular numbers, graphs admit significantly larger cuts than Edwards predicts",
       "The upper bound $f(m) = O(m^{1/4})$ and lower bound $f(n^2/2) = \\Omega(\\sqrt{n})$ match at $m = n^2/2$, giving $f = \\Theta(\\sqrt{n})$ there",
       "The excess function $f$ oscillates: it equals 0 at triangular numbers and grows to $\\Theta(\\sqrt{n})$ between them, constrained by 1-Lipschitz behavior (adding one edge changes the cut by at most 1)",
-      "Alon's proof uses the probabilistic method and connections to semidefinite programming — the same tools that later led to the Goemans–Williamson MAX-CUT algorithm"
+      "Alon's proof uses the probabilistic method and connections to semidefinite programming \u2014 the same tools that later led to the Goemans\u2013Williamson MAX-CUT algorithm"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -93,7 +93,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 127 is SOLVED: the excess $f(m)$ beyond Edwards' bipartite subgraph bound diverges along the sequence $m = n^2/2$, where $f \\ge c\\sqrt{n}$ (Alon 1996). The upper bound $f(m) = O(m^{1/4})$ shows the excess grows slowly. The formalization captures both bounds, the complete graph tightness, and structural properties of $f$.",
+    "summary": "Erd\u0151s Problem 127 is SOLVED: the excess $f(m)$ beyond Edwards' bipartite subgraph bound diverges along the sequence $m = n^2/2$, where $f \\ge c\\sqrt{n}$ (Alon 1996). The upper bound $f(m) = O(m^{1/4})$ shows the excess grows slowly. The formalization captures both bounds, the complete graph tightness, and structural properties of $f$.",
     "implications": "**Theoretical Significance**: The result reveals that Edwards' bound, while tight for complete graphs, is systematically suboptimal for other graph densities.\n\nThis connects to the broader MAX-CUT problem in computer science: Alon's probabilistic methods prefigured the semidefinite programming approach of Goemans and Williamson (1995), which achieves a 0.878-approximation for MAX-CUT. Understanding the excess function helps quantify the gap between extremal bounds and algorithmic guarantees.",
     "openQuestions": [
       "What is the optimal constant $C$ in $f(m) \\le C \\cdot m^{1/4}$?",
@@ -118,5 +118,39 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Share graph-theoretic, bipartite-graphs, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-147",
+      "relationship": "related",
+      "description": "Share graph-theoretic, bipartite-graphs, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Share graph-theoretic and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Share graph-theoretic and bipartite-graphs themes"
+    },
+    {
+      "targetId": "erdos-1033",
+      "relationship": "related",
+      "description": "Share graph-theoretic and extremal graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1080",
+    "erdos-147",
+    "erdos-1011",
+    "erdos-1021",
+    "erdos-1033"
+  ]
 }

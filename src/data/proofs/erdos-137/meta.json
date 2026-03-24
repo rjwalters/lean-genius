@@ -1,10 +1,10 @@
 {
   "id": "erdos-137",
-  "title": "Erdős Problem #137: Powerful Products of Consecutive Integers",
+  "title": "Erd\u0151s Problem #137: Powerful Products of Consecutive Integers",
   "slug": "erdos-137",
-  "description": "For k ≥ 3, can the product of k consecutive integers ever be powerful? Conjectured: NO.",
+  "description": "For k \u2265 3, can the product of k consecutive integers ever be powerful? Conjectured: NO.",
   "meta": {
-    "author": "Erdős and Selfridge (conjecture); Erdős-Selfridge (1975, perfect power case)",
+    "author": "Erd\u0151s and Selfridge (conjecture); Erd\u0151s-Selfridge (1975, perfect power case)",
     "sourceUrl": "https://erdosproblems.com/137",
     "date": "1975",
     "status": "axiomatized",
@@ -44,24 +44,24 @@
       "Definition of powerful numbers with verified properties",
       "Proof that 1 is powerful and perfect squares are powerful",
       "Proof that squarefree numbers > 1 are not powerful",
-      "Axiomatization of the Erdős-Selfridge theorem (perfect powers)",
+      "Axiomatization of the Erd\u0151s-Selfridge theorem (perfect powers)",
       "Axiomatization of the main conjecture (powerful products)",
-      "Verified counterexample: 72 = 8 × 9 is powerful for k=2"
+      "Verified counterexample: 72 = 8 \u00d7 9 is powerful for k=2"
     ],
     "axiomCount": 2,
     "lineCount": 225,
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #137 concerns the arithmetic structure of products of consecutive integers. A number n is **powerful** if every prime p dividing n also satisfies p² | n. Equivalently, n = a²b³ for some positive integers.\n\nThe related **Erdős-Selfridge Theorem** (1975) proves that the product of k ≥ 2 consecutive positive integers is never a perfect power (like m² or m³). This is a landmark result in number theory.\n\nThe powerful version is strictly weaker: perfect powers are powerful, but not vice versa. The conjecture that products of k ≥ 3 consecutive integers are never powerful remains OPEN. For k = 2, counterexamples exist: n(n+1) can be powerful for infinitely many n (e.g., 8 × 9 = 72 = 2³ × 3²).",
-    "problemStatement": "Let $k \\geq 3$. Can the product of $k$ consecutive positive integers $(n+1)(n+2)\\cdots(n+k)$ ever be **powerful**?\n\nA number is powerful if every prime in its factorization appears with exponent $\\geq 2$.\n\n**Conjecture**: NO — for $k \\geq 3$, the product is never powerful.\n\n**Known result**: Erdős-Selfridge (1975) proved the product is never a perfect power for $k \\geq 2$.\n\n**Counterexample for k=2**: $8 \\times 9 = 72 = 2^3 \\times 3^2$ is powerful.",
-    "text": "For k ≥ 3, can the product of k consecutive integers ever be powerful? Conjectured: NO.",
-    "proofStrategy": "We formalize the problem by:\n\n1. **Defining powerful numbers**: `Powerful n` means n ≠ 0 and every prime p | n satisfies p² | n.\n\n2. **Basic properties**: Prove 1 is powerful (vacuously), perfect squares are powerful, and squarefree numbers > 1 are NOT powerful.\n\n3. **Erdős-Selfridge theorem**: Axiomatize that products of k ≥ 2 consecutive integers are never perfect powers.\n\n4. **Main conjecture**: Axiomatize the open conjecture for k ≥ 3 and powerful products.\n\n5. **Counterexample**: Prove 72 = 8 × 9 is powerful, showing k = 2 case fails.",
+    "historicalContext": "Erd\u0151s Problem #137 concerns the arithmetic structure of products of consecutive integers. A number n is **powerful** if every prime p dividing n also satisfies p\u00b2 | n. Equivalently, n = a\u00b2b\u00b3 for some positive integers.\n\nThe related **Erd\u0151s-Selfridge Theorem** (1975) proves that the product of k \u2265 2 consecutive positive integers is never a perfect power (like m\u00b2 or m\u00b3). This is a landmark result in number theory.\n\nThe powerful version is strictly weaker: perfect powers are powerful, but not vice versa. The conjecture that products of k \u2265 3 consecutive integers are never powerful remains OPEN. For k = 2, counterexamples exist: n(n+1) can be powerful for infinitely many n (e.g., 8 \u00d7 9 = 72 = 2\u00b3 \u00d7 3\u00b2).",
+    "problemStatement": "Let $k \\geq 3$. Can the product of $k$ consecutive positive integers $(n+1)(n+2)\\cdots(n+k)$ ever be **powerful**?\n\nA number is powerful if every prime in its factorization appears with exponent $\\geq 2$.\n\n**Conjecture**: NO \u2014 for $k \\geq 3$, the product is never powerful.\n\n**Known result**: Erd\u0151s-Selfridge (1975) proved the product is never a perfect power for $k \\geq 2$.\n\n**Counterexample for k=2**: $8 \\times 9 = 72 = 2^3 \\times 3^2$ is powerful.",
+    "text": "For k \u2265 3, can the product of k consecutive integers ever be powerful? Conjectured: NO.",
+    "proofStrategy": "We formalize the problem by:\n\n1. **Defining powerful numbers**: `Powerful n` means n \u2260 0 and every prime p | n satisfies p\u00b2 | n.\n\n2. **Basic properties**: Prove 1 is powerful (vacuously), perfect squares are powerful, and squarefree numbers > 1 are NOT powerful.\n\n3. **Erd\u0151s-Selfridge theorem**: Axiomatize that products of k \u2265 2 consecutive integers are never perfect powers.\n\n4. **Main conjecture**: Axiomatize the open conjecture for k \u2265 3 and powerful products.\n\n5. **Counterexample**: Prove 72 = 8 \u00d7 9 is powerful, showing k = 2 case fails.",
     "keyInsights": [
-      "**Powerful numbers**: Characterized by having no 'singleton' primes in factorization. Numbers like 72 = 2³ × 3² are powerful because both 2² and 3² divide it.",
+      "**Powerful numbers**: Characterized by having no 'singleton' primes in factorization. Numbers like 72 = 2\u00b3 \u00d7 3\u00b2 are powerful because both 2\u00b2 and 3\u00b2 divide it.",
       "**Consecutive coprimality**: Adjacent integers gcd(n, n+1) = 1, so factors spread across consecutive integers don't combine.",
-      "**Erdős-Selfridge gap**: Perfect powers form a strict subclass of powerful numbers. The powerful conjecture is weaker but still open.",
-      "**k=2 counterexamples**: Infinitely many n exist with n(n+1) powerful (related to Erdős Problem #364).",
+      "**Erd\u0151s-Selfridge gap**: Perfect powers form a strict subclass of powerful numbers. The powerful conjecture is weaker but still open.",
+      "**k=2 counterexamples**: Infinitely many n exist with n(n+1) powerful (related to Erd\u0151s Problem #364).",
       "**The barrier at k=3**: While 2 consecutive integers can combine to be powerful, 3 or more cannot (conjectured)."
     ],
     "prerequisites": [
@@ -86,7 +86,7 @@
     },
     {
       "id": "erdos-selfridge",
-      "title": "The Erdős-Selfridge Theorem",
+      "title": "The Erd\u0151s-Selfridge Theorem",
       "startLine": 116,
       "endLine": 142,
       "summary": "Axiomatize the 1975 theorem: products of consecutive integers are never perfect powers. Derive corollaries for squares and cubes."
@@ -96,21 +96,21 @@
       "title": "The Main Conjecture",
       "startLine": 144,
       "endLine": 170,
-      "summary": "State and axiomatize the open conjecture: for k ≥ 3, products are never powerful."
+      "summary": "State and axiomatize the open conjecture: for k \u2265 3, products are never powerful."
     },
     {
       "id": "counterexample",
       "title": "Counterexample for k = 2",
       "startLine": 172,
       "endLine": 212,
-      "summary": "Prove 72 = 8 × 9 is powerful, showing the k = 2 case fails. Verify 8 × 9 = consecutiveProduct 7 2."
+      "summary": "Prove 72 = 8 \u00d7 9 is powerful, showing the k = 2 case fails. Verify 8 \u00d7 9 = consecutiveProduct 7 2."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #137 on whether products of k ≥ 3 consecutive integers can be powerful. The conjecture says NO, but this remains OPEN. We prove foundational facts about powerful numbers, axiomatize the Erdős-Selfridge theorem (perfect powers), and demonstrate the k=2 counterexample 72 = 8 × 9.",
-    "implications": "**Theoretical Significance**: The problem illuminates the arithmetic structure of consecutive products.\n\nWhile the Erdős-Selfridge theorem resolves the perfect power question, the powerful version is more subtle. Understanding why k ≥ 3 might prevent powerful products requires deep analysis of how prime factors distribute across consecutive integers.",
+    "summary": "We formalize Erd\u0151s Problem #137 on whether products of k \u2265 3 consecutive integers can be powerful. The conjecture says NO, but this remains OPEN. We prove foundational facts about powerful numbers, axiomatize the Erd\u0151s-Selfridge theorem (perfect powers), and demonstrate the k=2 counterexample 72 = 8 \u00d7 9.",
+    "implications": "**Theoretical Significance**: The problem illuminates the arithmetic structure of consecutive products.\n\nWhile the Erd\u0151s-Selfridge theorem resolves the perfect power question, the powerful version is more subtle. Understanding why k \u2265 3 might prevent powerful products requires deep analysis of how prime factors distribute across consecutive integers.",
     "openQuestions": [
-      "Prove the main conjecture: products of k ≥ 3 consecutive integers are never powerful.",
+      "Prove the main conjecture: products of k \u2265 3 consecutive integers are never powerful.",
       "Characterize all n where n(n+1) is powerful (related to Problem #364).",
       "Find effective bounds: how large must primes be in the factorization of consecutive products?"
     ]
@@ -129,5 +129,39 @@
     "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-365",
+      "relationship": "related",
+      "description": "Share powerful-numbers, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-366",
+      "relationship": "related",
+      "description": "Share powerful-numbers, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Share powerful-numbers, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-939",
+      "relationship": "related",
+      "description": "Share powerful-numbers, prime-factorization, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-913",
+      "relationship": "related",
+      "description": "Share prime-factorization, consecutive-integers, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-365",
+    "erdos-366",
+    "erdos-367",
+    "erdos-939",
+    "erdos-913"
+  ]
 }

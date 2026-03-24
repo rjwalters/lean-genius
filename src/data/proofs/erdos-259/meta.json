@@ -1,8 +1,8 @@
 {
   "id": "erdos-259",
-  "title": "Erdős Problem #259: Irrationality of Squarefree Sums",
+  "title": "Erd\u0151s Problem #259: Irrationality of Squarefree Sums",
   "slug": "erdos-259",
-  "description": "Is ∑_n μ(n)² · n/2^n irrational? Yes — proved by Chen and Ruzsa (1999). They showed any infinite subseries over squarefree numbers is irrational.",
+  "description": "Is \u2211_n \u03bc(n)\u00b2 \u00b7 n/2^n irrational? Yes \u2014 proved by Chen and Ruzsa (1999). They showed any infinite subseries over squarefree numbers is irrational.",
   "meta": {
     "author": "Chen & Ruzsa (1999)",
     "sourceUrl": "https://erdosproblems.com/259",
@@ -26,7 +26,7 @@
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.moebius",
-        "description": "The Möbius function μ(n)",
+        "description": "The M\u00f6bius function \u03bc(n)",
         "module": "Mathlib.NumberTheory.ArithmeticFunction"
       },
       {
@@ -41,9 +41,9 @@
       }
     ],
     "originalContributions": [
-      "Formal statement of Erdős Problem #259 in Lean 4",
+      "Formal statement of Erd\u0151s Problem #259 in Lean 4",
       "Definition of squarefree numbers",
-      "Connection between μ(n)² and squarefree indicator",
+      "Connection between \u03bc(n)\u00b2 and squarefree indicator",
       "Verified examples of squarefree and non-squarefree numbers"
     ],
     "axiomCount": 4,
@@ -51,16 +51,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem connects two fundamental concepts: the Möbius function μ(n), central to analytic number theory and the inclusion-exclusion principle, and irrationality of infinite series.\n\nThe Möbius function satisfies μ(n)² = 1 exactly when n is squarefree (has no repeated prime factors). Thus the sum ∑ μ(n)² · n/2ⁿ is really a sum over squarefree numbers.\n\nErdős posed this problem in 1988 and made the bolder conjecture that ANY infinite subseries over squarefree numbers should be irrational. Chen and Ruzsa proved both the original problem and this stronger conjecture in 1999.",
-    "problemStatement": "Is the sum\n$$\\sum_{n=1}^{\\infty} \\mu(n)^2 \\cdot \\frac{n}{2^n}$$\nirrational, where $\\mu$ is the Möbius function?\n\n**Answer**: YES — proved by Chen and Ruzsa (1999).\n\nThey also proved the stronger result that $\\sum_{n \\in A} n/2^n$ is irrational for any infinite set $A$ of squarefree numbers.",
-    "text": "Is ∑_n μ(n)² · n/2^n irrational? Yes — proved by Chen and Ruzsa (1999). They showed any infinite subseries over squarefree numbers is irrational.",
-    "proofStrategy": "We formalize:\n\n1. **Squarefree definition**: n is squarefree if no prime p satisfies p² | n\n\n2. **Möbius connection**: μ(n)² = 1 iff n is squarefree, so the sum filters to squarefree n only\n\n3. **The series**: Define ∑ μ(n)² · n/2ⁿ using Mathlib's tsum\n\n4. **Chen-Ruzsa theorem**: State as axiom that this series is irrational\n\nThe proof uses transcendence theory techniques beyond current Mathlib formalization.",
+    "historicalContext": "This problem connects two fundamental concepts: the M\u00f6bius function \u03bc(n), central to analytic number theory and the inclusion-exclusion principle, and irrationality of infinite series.\n\nThe M\u00f6bius function satisfies \u03bc(n)\u00b2 = 1 exactly when n is squarefree (has no repeated prime factors). Thus the sum \u2211 \u03bc(n)\u00b2 \u00b7 n/2\u207f is really a sum over squarefree numbers.\n\nErd\u0151s posed this problem in 1988 and made the bolder conjecture that ANY infinite subseries over squarefree numbers should be irrational. Chen and Ruzsa proved both the original problem and this stronger conjecture in 1999.",
+    "problemStatement": "Is the sum\n$$\\sum_{n=1}^{\\infty} \\mu(n)^2 \\cdot \\frac{n}{2^n}$$\nirrational, where $\\mu$ is the M\u00f6bius function?\n\n**Answer**: YES \u2014 proved by Chen and Ruzsa (1999).\n\nThey also proved the stronger result that $\\sum_{n \\in A} n/2^n$ is irrational for any infinite set $A$ of squarefree numbers.",
+    "text": "Is \u2211_n \u03bc(n)\u00b2 \u00b7 n/2^n irrational? Yes \u2014 proved by Chen and Ruzsa (1999). They showed any infinite subseries over squarefree numbers is irrational.",
+    "proofStrategy": "We formalize:\n\n1. **Squarefree definition**: n is squarefree if no prime p satisfies p\u00b2 | n\n\n2. **M\u00f6bius connection**: \u03bc(n)\u00b2 = 1 iff n is squarefree, so the sum filters to squarefree n only\n\n3. **The series**: Define \u2211 \u03bc(n)\u00b2 \u00b7 n/2\u207f using Mathlib's tsum\n\n4. **Chen-Ruzsa theorem**: State as axiom that this series is irrational\n\nThe proof uses transcendence theory techniques beyond current Mathlib formalization.",
     "keyInsights": [
-      "**Möbius function**: μ(n) encodes the prime factorization structure. μ(n) = 0 when n has a squared prime factor, so μ(n)² is the indicator for squarefree numbers.",
-      "**Squarefree numbers**: Numbers like 1, 2, 3, 5, 6, 7, 10, 11... that have no repeated prime factors. About 6/π² ≈ 61% of positive integers are squarefree.",
-      "**The sum structure**: ∑ μ(n)² · n/2ⁿ = ∑_{squarefree n} n/2ⁿ. The 2ⁿ in the denominator ensures rapid convergence.",
-      "**Chen-Ruzsa's insight**: The irrationality doesn't depend on using ALL squarefree numbers — any infinite subset works. This is a strong structural result about how squarefree numbers interact with binary representations.",
-      "**Connection to other problems**: This is related to Erdős #257 about Lambert series and divisor sums, showing a common theme in his irrationality questions."
+      "**M\u00f6bius function**: \u03bc(n) encodes the prime factorization structure. \u03bc(n) = 0 when n has a squared prime factor, so \u03bc(n)\u00b2 is the indicator for squarefree numbers.",
+      "**Squarefree numbers**: Numbers like 1, 2, 3, 5, 6, 7, 10, 11... that have no repeated prime factors. About 6/\u03c0\u00b2 \u2248 61% of positive integers are squarefree.",
+      "**The sum structure**: \u2211 \u03bc(n)\u00b2 \u00b7 n/2\u207f = \u2211_{squarefree n} n/2\u207f. The 2\u207f in the denominator ensures rapid convergence.",
+      "**Chen-Ruzsa's insight**: The irrationality doesn't depend on using ALL squarefree numbers \u2014 any infinite subset works. This is a strong structural result about how squarefree numbers interact with binary representations.",
+      "**Connection to other problems**: This is related to Erd\u0151s #257 about Lambert series and divisor sums, showing a common theme in his irrationality questions."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -73,14 +73,14 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 28,
-      "summary": "Module documentation explaining the problem and Mathlib imports for the Möbius function, irrationality, and infinite sums."
+      "summary": "Module documentation explaining the problem and Mathlib imports for the M\u00f6bius function, irrationality, and infinite sums."
     },
     {
       "id": "moebius",
-      "title": "The Möbius Function",
+      "title": "The M\u00f6bius Function",
       "startLine": 30,
       "endLine": 45,
-      "summary": "Definition of squarefree numbers and the connection to μ(n)²."
+      "summary": "Definition of squarefree numbers and the connection to \u03bc(n)\u00b2."
     },
     {
       "id": "series",
@@ -94,7 +94,7 @@
       "title": "Main Result",
       "startLine": 63,
       "endLine": 81,
-      "summary": "Chen-Ruzsa theorem (axiom) and the main Erdős #259 result."
+      "summary": "Chen-Ruzsa theorem (axiom) and the main Erd\u0151s #259 result."
     },
     {
       "id": "examples",
@@ -105,10 +105,10 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #259, which asks whether ∑ μ(n)² · n/2ⁿ is irrational. Chen and Ruzsa proved this in 1999, along with the stronger result that any infinite subseries over squarefree numbers is irrational. We state their theorem as an axiom and provide the key definitions and examples.",
+    "summary": "We formalize Erd\u0151s Problem #259, which asks whether \u2211 \u03bc(n)\u00b2 \u00b7 n/2\u207f is irrational. Chen and Ruzsa proved this in 1999, along with the stronger result that any infinite subseries over squarefree numbers is irrational. We state their theorem as an axiom and provide the key definitions and examples.",
     "implications": "This result shows that squarefree numbers have a special arithmetic structure that prevents their weighted sums from collapsing to rational values. The Chen-Ruzsa proof technique has applications to other irrationality questions involving multiplicative number-theoretic functions.",
     "openQuestions": [
-      "What about ∑ μ(n)² · n/3ⁿ or other bases?",
+      "What about \u2211 \u03bc(n)\u00b2 \u00b7 n/3\u207f or other bases?",
       "Is there a simpler proof that doesn't require transcendence theory?",
       "What is the irrationality measure of this sum?"
     ]
@@ -128,5 +128,39 @@
     "axiomCount": 4,
     "theoremCount": 14,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Share squarefree and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Share squarefree and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Share squarefree and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Share squarefree and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-145",
+      "relationship": "related",
+      "description": "Share squarefree and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-11",
+    "erdos-1102",
+    "erdos-1103",
+    "erdos-1109",
+    "erdos-145"
+  ]
 }

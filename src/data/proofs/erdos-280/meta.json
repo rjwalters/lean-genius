@@ -1,10 +1,10 @@
 {
   "id": "erdos-280",
-  "title": "Erdős Problem #280: Covering Congruences and Sieve Methods",
+  "title": "Erd\u0151s Problem #280: Covering Congruences and Sieve Methods",
   "slug": "erdos-280",
-  "description": "For sequences n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k, Erdős conjectured the count of integers avoiding specified congruence classes is Ω(k). Disproved by Cambie's trivial counterexample: nₖ = 2^k gives count = 1.",
+  "description": "For sequences n\u2081 < n\u2082 < \u22ef with n\u2096 > (1+\u03b5)k log k, Erd\u0151s conjectured the count of integers avoiding specified congruence classes is \u03a9(k). Disproved by Cambie's trivial counterexample: n\u2096 = 2^k gives count = 1.",
   "meta": {
-    "author": "Erdős-Graham (1980), Cambie (counterexample)",
+    "author": "Erd\u0151s-Graham (1980), Cambie (counterexample)",
     "sourceUrl": "https://erdosproblems.com/280",
     "date": "1980",
     "status": "axiomatized",
@@ -61,15 +61,15 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #280 appears in Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' Given a sequence n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k and associated residues aₖ mod nₖ, Erdős conjectured that the count of integers m < nₖ avoiding all specified congruence classes should be Ω(k). They wrote that this 'may have to await improvements in current sieve methods.'\n\nThe bound nₖ > (1+ε)k log k is optimal because the k-th prime pₖ ~ k log k by the Prime Number Theorem. Using primes as moduli would create a much more constrained problem where covering is harder. The factor (1+ε) ensures the moduli grow slightly faster than the primes, allowing the problem to be meaningful.\n\nStijn Cambie found a trivial counterexample that made sieve theory unnecessary. Taking nₖ = 2^k (which grows exponentially, far exceeding the required bound) and aₖ = 2^(k-1) + 1, every integer m > 1 in [0, 2^k) is covered by some congruence class. Only m = 1 survives, giving count = 1 instead of Ω(k). The key insight is that powers of 2 as moduli create efficient coverings via binary representation.",
+    "historicalContext": "Erd\u0151s Problem #280 appears in Erd\u0151s and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' Given a sequence n\u2081 < n\u2082 < \u22ef with n\u2096 > (1+\u03b5)k log k and associated residues a\u2096 mod n\u2096, Erd\u0151s conjectured that the count of integers m < n\u2096 avoiding all specified congruence classes should be \u03a9(k). They wrote that this 'may have to await improvements in current sieve methods.'\n\nThe bound n\u2096 > (1+\u03b5)k log k is optimal because the k-th prime p\u2096 ~ k log k by the Prime Number Theorem. Using primes as moduli would create a much more constrained problem where covering is harder. The factor (1+\u03b5) ensures the moduli grow slightly faster than the primes, allowing the problem to be meaningful.\n\nStijn Cambie found a trivial counterexample that made sieve theory unnecessary. Taking n\u2096 = 2^k (which grows exponentially, far exceeding the required bound) and a\u2096 = 2^(k-1) + 1, every integer m > 1 in [0, 2^k) is covered by some congruence class. Only m = 1 survives, giving count = 1 instead of \u03a9(k). The key insight is that powers of 2 as moduli create efficient coverings via binary representation.",
     "problemStatement": "**Problem Statement (DISPROVED)**\n\nLet $n_1 < n_2 < \\cdots$ be an infinite sequence with $n_k > (1+\\varepsilon)k\\log k$ for some $\\varepsilon > 0$, and let $a_k$ be residues with $0 \\leq a_k < n_k$.\n\n**Original Conjecture:** $\\#\\{m < n_k : m \\not\\equiv a_i \\pmod{n_i} \\text{ for } 1 \\leq i \\leq k\\} \\neq o(k)$\n\n**Cambie's Counterexample:** $n_k = 2^k$, $a_k = 2^{k-1}+1$. Count = 1 for all $k$.",
-    "text": "For sequences n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k, Erdős conjectured the count of integers avoiding specified congruence classes is Ω(k). Disproved by Cambie's trivial counterexample: nₖ = 2^k gives count = 1.",
+    "text": "For sequences n\u2081 < n\u2082 < \u22ef with n\u2096 > (1+\u03b5)k log k, Erd\u0151s conjectured the count of integers avoiding specified congruence classes is \u03a9(k). Disproved by Cambie's trivial counterexample: n\u2096 = 2^k gives count = 1.",
     "proofStrategy": "**Formalization Approach**\n\nThe formalization defines avoidance and counting using direct modular arithmetic (avoiding the need to construct CongruenceClass structures inline). Cambie's sequences are defined explicitly, with cambie_increasing proved constructively using Nat.pow_lt_pow_right. The growth bound, covering property, exact count, and conjecture refutation are axiomatized. The summary theorem combines the disproof with the monotonicity proof.",
     "keyInsights": [
       "**Trivial Counterexample:** Powers of 2 as moduli cover almost all integers via binary representation",
       "**Only m = 1 Survives:** Cambie's construction leaves exactly one uncovered integer",
-      "**Sieve Methods Unnecessary:** The problem allowed too much freedom in choosing (nₖ, aₖ)",
-      "**Optimal Bound:** The (1+ε)k log k threshold matches prime growth (PNT)",
+      "**Sieve Methods Unnecessary:** The problem allowed too much freedom in choosing (n\u2096, a\u2096)",
+      "**Optimal Bound:** The (1+\u03b5)k log k threshold matches prime growth (PNT)",
       "**Open Variants:** Coprime or prime moduli may restore interesting behavior"
     ],
     "prerequisites": [
@@ -122,12 +122,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #280 is disproved by Cambie's trivial counterexample. Taking nₖ = 2^k and aₖ = 2^(k-1)+1, only m = 1 avoids all congruence classes, giving count = 1 instead of the conjectured Ω(k).",
-    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Elementary Resolution:** Erdős expected sieve methods would be needed, but a trivial counterexample sufficed\n\n**2. Problem Design Lesson:** The conjecture allowed too much freedom in choosing moduli and residues\n\n3. **Binary Covering:** Powers of 2 create efficient covering systems via binary representation\n\n4. **Open Variants:** Adding constraints (coprime moduli, prime moduli) may yield difficult open problems.",
+    "summary": "Erd\u0151s Problem #280 is disproved by Cambie's trivial counterexample. Taking n\u2096 = 2^k and a\u2096 = 2^(k-1)+1, only m = 1 avoids all congruence classes, giving count = 1 instead of the conjectured \u03a9(k).",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Elementary Resolution:** Erd\u0151s expected sieve methods would be needed, but a trivial counterexample sufficed\n\n**2. Problem Design Lesson:** The conjecture allowed too much freedom in choosing moduli and residues\n\n3. **Binary Covering:** Powers of 2 create efficient covering systems via binary representation\n\n4. **Open Variants:** Adding constraints (coprime moduli, prime moduli) may yield difficult open problems.",
     "openQuestions": [
-      "Does the conjecture hold if the moduli nₖ must be pairwise coprime?",
+      "Does the conjecture hold if the moduli n\u2096 must be pairwise coprime?",
       "What if the moduli must be prime numbers?",
-      "Are there natural conditions on (nₖ, aₖ) that restore the Ω(k) lower bound?",
+      "Are there natural conditions on (n\u2096, a\u2096) that restore the \u03a9(k) lower bound?",
       "What is the exact answer when moduli are restricted to primes?"
     ]
   },
@@ -149,5 +149,39 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-275",
+      "relationship": "related",
+      "description": "Share covering-systems, congruences, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-277",
+      "relationship": "related",
+      "description": "Share covering-systems, congruences, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-278",
+      "relationship": "related",
+      "description": "Share covering-systems, congruences, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-947",
+      "relationship": "related",
+      "description": "Share covering-systems, congruences, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Share sieve-methods and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-275",
+    "erdos-277",
+    "erdos-278",
+    "erdos-947",
+    "erdos-369"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-516",
-  "title": "Erdős Problem #516: Gap Series and the Minimum Modulus Problem",
+  "title": "Erd\u0151s Problem #516: Gap Series and the Minimum Modulus Problem",
   "slug": "erdos-516",
-  "description": "For entire functions with Fabry gaps (nₖ/k → ∞), is lim sup (log m(r))/(log M(r)) = 1? YES - proved by Fuchs (1963).",
+  "description": "For entire functions with Fabry gaps (n\u2096/k \u2192 \u221e), is lim sup (log m(r))/(log M(r)) = 1? YES - proved by Fuchs (1963).",
   "meta": {
-    "author": "Fuchs (1963), Kovári (1965)",
+    "author": "Fuchs (1963), Kov\u00e1ri (1965)",
     "sourceUrl": "https://erdosproblems.com/516",
     "date": "1963",
     "status": "formalized",
@@ -47,30 +47,30 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of Fabry gaps: nₖ/k → ∞",
-      "Formal definition of Fejér gaps: Σ 1/nₖ < ∞",
+      "Formal definition of Fabry gaps: n\u2096/k \u2192 \u221e",
+      "Formal definition of Fej\u00e9r gaps: \u03a3 1/n\u2096 < \u221e",
       "Definition of entire functions of finite order",
       "Maximum and minimum modulus functions M(r) and m(r)",
       "Statement of Fuchs's theorem (1963) solving the main problem",
       "Statement of Wiman's theorem (1914) under stronger gaps",
-      "Statement of Erdős-Macintyre theorem (1954)",
-      "Statement of Kovári's extension (1965) for infinite order",
-      "Formalization of the remaining open conjecture (Fejér gaps)"
+      "Statement of Erd\u0151s-Macintyre theorem (1954)",
+      "Statement of Kov\u00e1ri's extension (1965) for infinite order",
+      "Formalization of the remaining open conjecture (Fej\u00e9r gaps)"
     ],
     "axiomCount": 5,
     "lineCount": 223,
     "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was originally posed by Pólya in 1929. It asks about the relationship between the maximum and minimum modulus of entire functions with gap power series.\n\nA gap series f(z) = Σ aₖzⁿᵏ has many zero coefficients. The sequence (nₖ) records positions of nonzero terms. The Fabry gap condition nₖ/k → ∞ means gaps grow superlinearly.\n\nWiman (1914) proved a strong result under (nₖ₊₁ - nₖ)² > nₖ. Erdős and Macintyre (1954) weakened this to Σ 1/(nₖ₊₁ - nₖ) < ∞. Finally, Fuchs (1963) gave the complete solution for Fabry gaps.\n\nKovári (1965) extended the result to entire functions of infinite order under nₖ > k(log k)^{2+c}. The question of whether Fejér gaps (Σ 1/nₖ < ∞) suffice for arbitrary entire functions remains open.",
-    "problemStatement": "Let $f(z) = \\sum_{k \\geq 1} a_k z^{n_k}$ be an entire function of finite order such that $n_k/k \\to \\infty$ (Fabry gaps).\n\nLet $M(r) = \\max_{|z|=r} |f(z)|$ and $m(r) = \\min_{|z|=r} |f(z)|$.\n\nIs it true that $\\limsup \\frac{\\log m(r)}{\\log M(r)} = 1$?\n\n**Answer**: YES (Fuchs 1963)\n\nMore precisely, for any ε > 0, log m(r) > (1-ε) log M(r) holds outside a set of logarithmic density 0.\n\n**Status**: SOLVED for finite order + Fabry gaps. OPEN for Fejér gaps.",
-    "text": "For entire functions with Fabry gaps (nₖ/k → ∞), is lim sup (log m(r))/(log M(r)) = 1? YES - proved by Fuchs (1963).",
-    "proofStrategy": "We formalize the problem through several key definitions:\n\n1. **Gap conditions**: Define Fabry gaps (nₖ/k → ∞) and Fejér gaps (Σ 1/nₖ < ∞), and prove Fabry implies Fejér.\n\n2. **Entire functions of finite order**: Functions f with |f(z)| ≤ c·exp(|z|^a) for some constants c, a.\n\n3. **Modulus functions**: M(r) = max_{|z|=r} |f(z)| and m(r) = min_{|z|=r} |f(z)|.\n\n4. **Main theorems**: State Fuchs's theorem as an axiom (requires Nevanlinna theory beyond current Mathlib).\n\n5. **Historical results**: Include Wiman, Erdős-Macintyre, and Kovári theorems.\n\n6. **Open conjecture**: Formalize the remaining question about Fejér gaps.",
+    "historicalContext": "This problem was originally posed by P\u00f3lya in 1929. It asks about the relationship between the maximum and minimum modulus of entire functions with gap power series.\n\nA gap series f(z) = \u03a3 a\u2096z\u207f\u1d4f has many zero coefficients. The sequence (n\u2096) records positions of nonzero terms. The Fabry gap condition n\u2096/k \u2192 \u221e means gaps grow superlinearly.\n\nWiman (1914) proved a strong result under (n\u2096\u208a\u2081 - n\u2096)\u00b2 > n\u2096. Erd\u0151s and Macintyre (1954) weakened this to \u03a3 1/(n\u2096\u208a\u2081 - n\u2096) < \u221e. Finally, Fuchs (1963) gave the complete solution for Fabry gaps.\n\nKov\u00e1ri (1965) extended the result to entire functions of infinite order under n\u2096 > k(log k)^{2+c}. The question of whether Fej\u00e9r gaps (\u03a3 1/n\u2096 < \u221e) suffice for arbitrary entire functions remains open.",
+    "problemStatement": "Let $f(z) = \\sum_{k \\geq 1} a_k z^{n_k}$ be an entire function of finite order such that $n_k/k \\to \\infty$ (Fabry gaps).\n\nLet $M(r) = \\max_{|z|=r} |f(z)|$ and $m(r) = \\min_{|z|=r} |f(z)|$.\n\nIs it true that $\\limsup \\frac{\\log m(r)}{\\log M(r)} = 1$?\n\n**Answer**: YES (Fuchs 1963)\n\nMore precisely, for any \u03b5 > 0, log m(r) > (1-\u03b5) log M(r) holds outside a set of logarithmic density 0.\n\n**Status**: SOLVED for finite order + Fabry gaps. OPEN for Fej\u00e9r gaps.",
+    "text": "For entire functions with Fabry gaps (n\u2096/k \u2192 \u221e), is lim sup (log m(r))/(log M(r)) = 1? YES - proved by Fuchs (1963).",
+    "proofStrategy": "We formalize the problem through several key definitions:\n\n1. **Gap conditions**: Define Fabry gaps (n\u2096/k \u2192 \u221e) and Fej\u00e9r gaps (\u03a3 1/n\u2096 < \u221e), and prove Fabry implies Fej\u00e9r.\n\n2. **Entire functions of finite order**: Functions f with |f(z)| \u2264 c\u00b7exp(|z|^a) for some constants c, a.\n\n3. **Modulus functions**: M(r) = max_{|z|=r} |f(z)| and m(r) = min_{|z|=r} |f(z)|.\n\n4. **Main theorems**: State Fuchs's theorem as an axiom (requires Nevanlinna theory beyond current Mathlib).\n\n5. **Historical results**: Include Wiman, Erd\u0151s-Macintyre, and Kov\u00e1ri theorems.\n\n6. **Open conjecture**: Formalize the remaining question about Fej\u00e9r gaps.",
     "keyInsights": [
-      "**Fabry gaps**: The condition nₖ/k → ∞ means nonzero terms become increasingly sparse. This forces the function to behave 'lacunary' - large gaps between terms.",
+      "**Fabry gaps**: The condition n\u2096/k \u2192 \u221e means nonzero terms become increasingly sparse. This forces the function to behave 'lacunary' - large gaps between terms.",
       "**Maximum vs Minimum modulus**: For most entire functions, m(r) can be much smaller than M(r). Gap series are special: the ratio of logarithms approaches 1.",
-      "**Why logarithms?**: Wiman's original result had m(r)/M(r) → 1 under strong gaps. For weaker gaps, we only get (log m)/(log M) → 1.",
-      "**Fejér gaps**: The weaker condition Σ 1/nₖ < ∞ is conjectured to suffice. Macintyre showed this would be optimal - counterexamples exist when Σ 1/nₖ = ∞.",
+      "**Why logarithms?**: Wiman's original result had m(r)/M(r) \u2192 1 under strong gaps. For weaker gaps, we only get (log m)/(log M) \u2192 1.",
+      "**Fej\u00e9r gaps**: The weaker condition \u03a3 1/n\u2096 < \u221e is conjectured to suffice. Macintyre showed this would be optimal - counterexamples exist when \u03a3 1/n\u2096 = \u221e.",
       "**Nevanlinna theory**: Fuchs's proof uses deep results from value distribution theory, which is not yet formalized in Mathlib."
     ],
     "prerequisites": [
@@ -84,7 +84,7 @@
       "title": "Gap Series Definitions",
       "startLine": 35,
       "endLine": 58,
-      "summary": "Fabry gaps (nₖ/k → ∞), Fejér gaps (Σ 1/nₖ < ∞), and their relationship."
+      "summary": "Fabry gaps (n\u2096/k \u2192 \u221e), Fej\u00e9r gaps (\u03a3 1/n\u2096 < \u221e), and their relationship."
     },
     {
       "id": "finite-order",
@@ -105,45 +105,45 @@
       "title": "Fuchs's Theorem",
       "startLine": 94,
       "endLine": 117,
-      "summary": "The main result solving Erdős #516 for Fabry gaps + finite order."
+      "summary": "The main result solving Erd\u0151s #516 for Fabry gaps + finite order."
     },
     {
       "id": "historical",
       "title": "Historical Results",
       "startLine": 119,
       "endLine": 148,
-      "summary": "Wiman (1914) and Erdős-Macintyre (1954) under stronger conditions."
+      "summary": "Wiman (1914) and Erd\u0151s-Macintyre (1954) under stronger conditions."
     },
     {
       "id": "kovari",
-      "title": "Kovári's Extension",
+      "title": "Kov\u00e1ri's Extension",
       "startLine": 149,
       "endLine": 168,
-      "summary": "Extension to infinite order under nₖ > k(log k)^{2+c}."
+      "summary": "Extension to infinite order under n\u2096 > k(log k)^{2+c}."
     },
     {
       "id": "open",
       "title": "The Open Conjecture",
       "startLine": 169,
       "endLine": 206,
-      "summary": "Fejér gap conjecture and Macintyre's counterexample."
+      "summary": "Fej\u00e9r gap conjecture and Macintyre's counterexample."
     },
     {
       "id": "summary",
       "title": "Main Result",
       "startLine": 207,
       "endLine": 222,
-      "summary": "Final theorem stating Erdős #516 is solved."
+      "summary": "Final theorem stating Erd\u0151s #516 is solved."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #516 on gap series and minimum modulus. The main question (for finite order + Fabry gaps) was solved affirmatively by Fuchs in 1963. We include historical precedents (Wiman, Erdős-Macintyre) and extensions (Kovári), plus the remaining open conjecture about Fejér gaps.",
+    "summary": "We formalize Erd\u0151s Problem #516 on gap series and minimum modulus. The main question (for finite order + Fabry gaps) was solved affirmatively by Fuchs in 1963. We include historical precedents (Wiman, Erd\u0151s-Macintyre) and extensions (Kov\u00e1ri), plus the remaining open conjecture about Fej\u00e9r gaps.",
     "implications": "This problem connects lacunary power series to value distribution theory. The gap conditions ensure entire functions cannot have their minimum modulus too small relative to the maximum - a remarkable structural constraint on analytic functions with sparse power series.",
     "openQuestions": [
-      "Does Σ 1/nₖ < ∞ suffice for the lim sup = 1 result? (Fejér gap conjecture)",
+      "Does \u03a3 1/n\u2096 < \u221e suffice for the lim sup = 1 result? (Fej\u00e9r gap conjecture)",
       "What is the optimal gap condition for entire functions of infinite order?",
       "Can Fuchs's result be extended to meromorphic functions?",
-      "What is the measure-theoretic structure of the exceptional set where log m(r) < (1-ε) log M(r)?"
+      "What is the measure-theoretic structure of the exceptional set where log m(r) < (1-\u03b5) log M(r)?"
     ]
   },
   "leanFile": {
@@ -168,5 +168,39 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1115",
+      "relationship": "related",
+      "description": "Share entire-functions and complex-analysis themes"
+    },
+    {
+      "targetId": "erdos-1116",
+      "relationship": "related",
+      "description": "Share entire-functions and complex-analysis themes"
+    },
+    {
+      "targetId": "erdos-1117",
+      "relationship": "related",
+      "description": "Share entire-functions and complex-analysis themes"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Share entire-functions and complex-analysis themes"
+    },
+    {
+      "targetId": "erdos-226",
+      "relationship": "related",
+      "description": "Share entire-functions and complex-analysis themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1115",
+    "erdos-1116",
+    "erdos-1117",
+    "erdos-1118",
+    "erdos-226"
+  ]
 }

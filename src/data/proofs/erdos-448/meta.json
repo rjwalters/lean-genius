@@ -1,10 +1,10 @@
 {
   "id": "erdos-448",
-  "title": "Erdős Problem #448: Divisors in Dyadic Intervals",
+  "title": "Erd\u0151s Problem #448: Divisors in Dyadic Intervals",
   "slug": "erdos-448",
-  "description": "Is τ⁺(n) < ε·τ(n) for almost all n? NO (DISPROVED) - Erdős-Tenenbaum showed exceptions have positive density.",
+  "description": "Is \u03c4\u207a(n) < \u03b5\u00b7\u03c4(n) for almost all n? NO (DISPROVED) - Erd\u0151s-Tenenbaum showed exceptions have positive density.",
   "meta": {
-    "author": "Erdős-Tenenbaum (1981 disproof), Ford (2008 asymptotic)",
+    "author": "Erd\u0151s-Tenenbaum (1981 disproof), Ford (2008 asymptotic)",
     "sourceUrl": "https://erdosproblems.com/448",
     "date": "1981",
     "status": "formalized",
@@ -53,8 +53,8 @@
       "erdos_tenenbaum_disproof axiom: counterexample density result",
       "hall_tenenbaum_upper_density axiom: refined density bounds",
       "tauPlus_ratio_has_distribution axiom: existence of distribution function",
-      "fordAlpha constant: α ≈ 0.08607",
-      "ford_asymptotic axiom: sum formula for τ⁺",
+      "fordAlpha constant: \u03b1 \u2248 0.08607",
+      "ford_asymptotic axiom: sum formula for \u03c4\u207a",
       "Concrete examples for n = 6, 12, 210",
       "erdos_448 theorem: the conjecture is false"
     ],
@@ -63,16 +63,16 @@
     "assumptions": "12 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #448: Divisors in Dyadic Intervals**\n\nThis problem asks about the distribution of divisors across dyadic intervals [2^k, 2^(k+1)). The key question is whether divisors of most integers cluster into relatively few such intervals.\n\n**Historical Development:**\n- **Erdős (original problem)**: Asked if τ⁺(n) < ε·τ(n) for almost all n\n- **Erdős-Tenenbaum (1981)**: DISPROVED the conjecture, showing exceptions have positive upper density ≍ ε^(1-o(1))\n- **Hall-Tenenbaum (1988)**: Refined to upper density ≪ ε·log(2/ε) and proved τ⁺(n)/τ(n) has a distribution function\n- **Ford (2008)**: Found the precise asymptotic for Στ⁺(n)\n\n**Key Insight:**\nThe conjecture failed because divisors don't concentrate as much as expected. For many integers, divisors spread fairly evenly across dyadic intervals, keeping τ⁺(n) comparable to τ(n).",
-    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $\\tau(n)$ count the divisors of $n$ and $\\tau^+(n)$ count the number of $k$ such that $n$ has a divisor in $[2^k, 2^{k+1})$. Is it true that, for all $\\epsilon > 0$,\n$$\\tau^+(n) < \\epsilon \\cdot \\tau(n)$$\nfor almost all $n$?\n\n**Answer: NO (DISPROVED)**\n\nErdős and Tenenbaum (1981) showed this is FALSE:\n- The upper density of counterexamples is $\\asymp \\epsilon^{1-o(1)}$\n- Hall-Tenenbaum (1988) refined this to $\\ll \\epsilon \\log(2/\\epsilon)$\n\n**Ford's Asymptotic (2008):**\n$$\\sum_{n \\leq x} \\tau^+(n) \\asymp x \\frac{(\\log x)^{1-\\alpha}}{(\\log\\log x)^{3/2}}$$\nwhere $\\alpha = 1 - \\frac{1 + \\log\\log 2}{\\log 2} \\approx 0.08607$.",
-    "text": "Is τ⁺(n) < ε·τ(n) for almost all n? NO (DISPROVED) - Erdős-Tenenbaum showed exceptions have positive density.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define τ(n) as divisor count, dyadic interval membership, and τ⁺(n) as count of occupied intervals\n\n2. **Basic Properties:** Prove τ⁺(n) ≤ τ(n) and τ⁺(n) ≤ log₂(n) + 1\n\n3. **The Conjecture:** State the original (false) conjecture about density-1 concentration\n\n4. **Disproof:** Axiomatize Erdős-Tenenbaum's result that exceptions have positive density\n\n5. **Refinements:** Include Hall-Tenenbaum bounds and distribution function existence\n\n6. **Ford's Result:** State the asymptotic for the sum of τ⁺, including the Ford constant α\n\n7. **Examples:** Concrete calculations for small values showing the spread",
+    "historicalContext": "**Erd\u0151s Problem #448: Divisors in Dyadic Intervals**\n\nThis problem asks about the distribution of divisors across dyadic intervals [2^k, 2^(k+1)). The key question is whether divisors of most integers cluster into relatively few such intervals.\n\n**Historical Development:**\n- **Erd\u0151s (original problem)**: Asked if \u03c4\u207a(n) < \u03b5\u00b7\u03c4(n) for almost all n\n- **Erd\u0151s-Tenenbaum (1981)**: DISPROVED the conjecture, showing exceptions have positive upper density \u224d \u03b5^(1-o(1))\n- **Hall-Tenenbaum (1988)**: Refined to upper density \u226a \u03b5\u00b7log(2/\u03b5) and proved \u03c4\u207a(n)/\u03c4(n) has a distribution function\n- **Ford (2008)**: Found the precise asymptotic for \u03a3\u03c4\u207a(n)\n\n**Key Insight:**\nThe conjecture failed because divisors don't concentrate as much as expected. For many integers, divisors spread fairly evenly across dyadic intervals, keeping \u03c4\u207a(n) comparable to \u03c4(n).",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $\\tau(n)$ count the divisors of $n$ and $\\tau^+(n)$ count the number of $k$ such that $n$ has a divisor in $[2^k, 2^{k+1})$. Is it true that, for all $\\epsilon > 0$,\n$$\\tau^+(n) < \\epsilon \\cdot \\tau(n)$$\nfor almost all $n$?\n\n**Answer: NO (DISPROVED)**\n\nErd\u0151s and Tenenbaum (1981) showed this is FALSE:\n- The upper density of counterexamples is $\\asymp \\epsilon^{1-o(1)}$\n- Hall-Tenenbaum (1988) refined this to $\\ll \\epsilon \\log(2/\\epsilon)$\n\n**Ford's Asymptotic (2008):**\n$$\\sum_{n \\leq x} \\tau^+(n) \\asymp x \\frac{(\\log x)^{1-\\alpha}}{(\\log\\log x)^{3/2}}$$\nwhere $\\alpha = 1 - \\frac{1 + \\log\\log 2}{\\log 2} \\approx 0.08607$.",
+    "text": "Is \u03c4\u207a(n) < \u03b5\u00b7\u03c4(n) for almost all n? NO (DISPROVED) - Erd\u0151s-Tenenbaum showed exceptions have positive density.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define \u03c4(n) as divisor count, dyadic interval membership, and \u03c4\u207a(n) as count of occupied intervals\n\n2. **Basic Properties:** Prove \u03c4\u207a(n) \u2264 \u03c4(n) and \u03c4\u207a(n) \u2264 log\u2082(n) + 1\n\n3. **The Conjecture:** State the original (false) conjecture about density-1 concentration\n\n4. **Disproof:** Axiomatize Erd\u0151s-Tenenbaum's result that exceptions have positive density\n\n5. **Refinements:** Include Hall-Tenenbaum bounds and distribution function existence\n\n6. **Ford's Result:** State the asymptotic for the sum of \u03c4\u207a, including the Ford constant \u03b1\n\n7. **Examples:** Concrete calculations for small values showing the spread",
     "keyInsights": [
-      "**τ⁺(n)**: Counts dyadic intervals [2^k, 2^(k+1)) containing at least one divisor of n",
-      "**Concentration Question**: Does τ⁺(n)/τ(n) → 0 for almost all n? Answer: NO",
-      "**Counterexample Density**: Upper density of {n : τ⁺(n) ≥ ε·τ(n)} is ≍ ε^(1-o(1))",
-      "**Distribution Function**: τ⁺(n)/τ(n) has a well-defined limiting distribution",
-      "**Ford Constant**: α ≈ 0.08607 governs the growth of Στ⁺(n)",
+      "**\u03c4\u207a(n)**: Counts dyadic intervals [2^k, 2^(k+1)) containing at least one divisor of n",
+      "**Concentration Question**: Does \u03c4\u207a(n)/\u03c4(n) \u2192 0 for almost all n? Answer: NO",
+      "**Counterexample Density**: Upper density of {n : \u03c4\u207a(n) \u2265 \u03b5\u00b7\u03c4(n)} is \u224d \u03b5^(1-o(1))",
+      "**Distribution Function**: \u03c4\u207a(n)/\u03c4(n) has a well-defined limiting distribution",
+      "**Ford Constant**: \u03b1 \u2248 0.08607 governs the growth of \u03a3\u03c4\u207a(n)",
       "**Related Problems**: Connected to #446 (maximum ratio) and #449 (short intervals)"
     ],
     "prerequisites": [
@@ -84,21 +84,21 @@
     {
       "id": "divisor-functions",
       "title": "The Divisor Functions",
-      "summary": "Definitions of τ(n), dyadic intervals, and τ⁺(n)",
+      "summary": "Definitions of \u03c4(n), dyadic intervals, and \u03c4\u207a(n)",
       "startLine": 43,
       "endLine": 82
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "τ(1)=1, τ(p)=2, τ⁺(n)≤τ(n), τ⁺(n)≤log₂(n)+1",
+      "summary": "\u03c4(1)=1, \u03c4(p)=2, \u03c4\u207a(n)\u2264\u03c4(n), \u03c4\u207a(n)\u2264log\u2082(n)+1",
       "startLine": 84,
       "endLine": 117
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture (Disproved)",
-      "summary": "Original conjecture and Erdős-Tenenbaum disproof",
+      "title": "The Erd\u0151s Conjecture (Disproved)",
+      "summary": "Original conjecture and Erd\u0151s-Tenenbaum disproof",
       "startLine": 119,
       "endLine": 157
     },
@@ -139,14 +139,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #448 asked whether τ⁺(n) < ε·τ(n) for almost all n, where τ⁺(n) counts dyadic intervals containing a divisor. This was DISPROVED by Erdős-Tenenbaum (1981), who showed exceptions have positive density ≍ ε^(1-o(1)). Hall-Tenenbaum (1988) refined this and proved τ⁺(n)/τ(n) has a distribution function. Ford (2008) found the asymptotic for Στ⁺(n) with constant α ≈ 0.08607.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Divisor Distribution**: Divisors don't concentrate into few dyadic intervals as much as expected\n\n2. **Density Results**: The disproof gave precise bounds on how often concentration fails\n\n**3. Distribution Functions**: The ratio τ⁺(n)/τ(n) has statistical regularity\n\n4. **Asymptotic Growth**: The Ford constant α captures the growth rate of total dyadic spread\n\n5. **Method**: Uses sophisticated analytic number theory techniques.",
+    "summary": "Erd\u0151s Problem #448 asked whether \u03c4\u207a(n) < \u03b5\u00b7\u03c4(n) for almost all n, where \u03c4\u207a(n) counts dyadic intervals containing a divisor. This was DISPROVED by Erd\u0151s-Tenenbaum (1981), who showed exceptions have positive density \u224d \u03b5^(1-o(1)). Hall-Tenenbaum (1988) refined this and proved \u03c4\u207a(n)/\u03c4(n) has a distribution function. Ford (2008) found the asymptotic for \u03a3\u03c4\u207a(n) with constant \u03b1 \u2248 0.08607.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Divisor Distribution**: Divisors don't concentrate into few dyadic intervals as much as expected\n\n2. **Density Results**: The disproof gave precise bounds on how often concentration fails\n\n**3. Distribution Functions**: The ratio \u03c4\u207a(n)/\u03c4(n) has statistical regularity\n\n4. **Asymptotic Growth**: The Ford constant \u03b1 captures the growth rate of total dyadic spread\n\n5. **Method**: Uses sophisticated analytic number theory techniques.",
     "openQuestions": [
-      "Exact determination of the distribution function for τ⁺(n)/τ(n)",
+      "Exact determination of the distribution function for \u03c4\u207a(n)/\u03c4(n)",
       "Finer bounds on the density of counterexamples",
       "Generalizations to other interval families beyond dyadic",
       "Connections to the anatomy of integers",
-      "Computational aspects of τ⁺(n) for large n"
+      "Computational aspects of \u03c4\u207a(n) for large n"
     ]
   },
   "leanFile": {
@@ -166,5 +166,39 @@
     "axiomCount": 12,
     "theoremCount": 9,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-975",
+      "relationship": "related",
+      "description": "Share divisor-function, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Share divisor-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Share divisor-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-122",
+      "relationship": "related",
+      "description": "Share divisor-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-257",
+      "relationship": "related",
+      "description": "Share divisor-function and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-975",
+    "erdos-1049",
+    "erdos-1053",
+    "erdos-122",
+    "erdos-257"
+  ]
 }

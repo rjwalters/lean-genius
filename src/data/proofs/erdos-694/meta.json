@@ -1,10 +1,10 @@
 {
   "id": "erdos-694",
-  "title": "Erdős Problem #694: Preimages of Euler's Totient Function",
+  "title": "Erd\u0151s Problem #694: Preimages of Euler's Totient Function",
   "slug": "erdos-694",
-  "description": "Investigate max f_max(n)/f_min(n) where f_max(n) and f_min(n) are the largest and smallest m with φ(m) = n. Related to Carmichael's conjecture: does φ(m) = n ever have exactly one solution?",
+  "description": "Investigate max f_max(n)/f_min(n) where f_max(n) and f_min(n) are the largest and smallest m with \u03c6(m) = n. Related to Carmichael's conjecture: does \u03c6(m) = n ever have exactly one solution?",
   "meta": {
-    "author": "Erdős (conditional result), Ford (1999 bounds)",
+    "author": "Erd\u0151s (conditional result), Ford (1999 bounds)",
     "sourceUrl": "https://erdosproblems.com/694",
     "date": "1907-1999",
     "status": "axiomatized",
@@ -26,7 +26,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
-        "description": "Euler's totient function φ(n)",
+        "description": "Euler's totient function \u03c6(n)",
         "module": "Mathlib.Data.Nat.Totient"
       },
       {
@@ -39,7 +39,7 @@
       "Clean Lean 4 formalization of totient preimages",
       "Definitions of f_max and f_min functions",
       "Formalization of Carmichael's Totient Conjecture",
-      "Axiomatization of Erdős's conditional infinitude result",
+      "Axiomatization of Erd\u0151s's conditional infinitude result",
       "Proved theorems: one_not_carmichael, two_not_carmichael",
       "Concrete examples of totient computations"
     ],
@@ -48,16 +48,16 @@
     "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Euler's totient function φ(n) counts integers up to n that are coprime to n. A fundamental question is: which values does φ take, and how many times?\n\nCarmichael (1907) conjectured that the equation φ(m) = n never has exactly one solution - every totient value has at least two preimages. This remains one of the oldest open problems in number theory.\n\nErdős proved a remarkable conditional result: if Carmichael's conjecture is false (some n has a unique preimage), then infinitely many such n must exist. This uses the multiplicative structure of φ.\n\nFord (1999) showed that any counterexample to Carmichael's conjecture must exceed 10^(10^10), making computational verification impossible.",
-    "problemStatement": "**Erdős Problem #694**: Let $f_{\\max}(n)$ be the largest $m$ such that $\\phi(m) = n$, and $f_{\\min}(n)$ be the smallest such $m$. Investigate\n$$\\max_{n \\leq x} \\frac{f_{\\max}(n)}{f_{\\min}(n)}.$$\n\n**Status**: OPEN\n\n**Related Questions**:\n1. **(Carmichael's Conjecture - OPEN)**: Is there an $n$ for which $\\phi(m) = n$ has exactly one solution? (i.e., $f_{\\max}(n)/f_{\\min}(n) = 1$)\n\n2. **(Erdős - SOLVED)**: If such an $n$ exists, then infinitely many such $n$ must exist.\n\n3. **(Ford 1999)**: Any Carmichael counterexample must exceed $10^{10^{10}}$.",
-    "text": "Investigate max f_max(n)/f_min(n) where f_max(n) and f_min(n) are the largest and smallest m with φ(m) = n. Related to Carmichael's conjecture: does φ(m) = n ever have exactly one solution?",
-    "proofStrategy": "We formalize this problem and its related conjectures:\n\n1. **Define totient preimages**: totientPreimage(n) = {m : φ(m) = n}\n\n2. **Axiomatize f_max and f_min**: These give the largest and smallest elements of the preimage\n\n3. **Define Carmichael totients**: Values n where |φ⁻¹(n)| = 1\n\n4. **State Erdős's conditional theorem**: If one exists, infinitely many do\n\n5. **Prove non-Carmichael examples**: We prove 1 and 2 are not Carmichael totients by showing they have multiple preimages",
+    "historicalContext": "Euler's totient function \u03c6(n) counts integers up to n that are coprime to n. A fundamental question is: which values does \u03c6 take, and how many times?\n\nCarmichael (1907) conjectured that the equation \u03c6(m) = n never has exactly one solution - every totient value has at least two preimages. This remains one of the oldest open problems in number theory.\n\nErd\u0151s proved a remarkable conditional result: if Carmichael's conjecture is false (some n has a unique preimage), then infinitely many such n must exist. This uses the multiplicative structure of \u03c6.\n\nFord (1999) showed that any counterexample to Carmichael's conjecture must exceed 10^(10^10), making computational verification impossible.",
+    "problemStatement": "**Erd\u0151s Problem #694**: Let $f_{\\max}(n)$ be the largest $m$ such that $\\phi(m) = n$, and $f_{\\min}(n)$ be the smallest such $m$. Investigate\n$$\\max_{n \\leq x} \\frac{f_{\\max}(n)}{f_{\\min}(n)}.$$\n\n**Status**: OPEN\n\n**Related Questions**:\n1. **(Carmichael's Conjecture - OPEN)**: Is there an $n$ for which $\\phi(m) = n$ has exactly one solution? (i.e., $f_{\\max}(n)/f_{\\min}(n) = 1$)\n\n2. **(Erd\u0151s - SOLVED)**: If such an $n$ exists, then infinitely many such $n$ must exist.\n\n3. **(Ford 1999)**: Any Carmichael counterexample must exceed $10^{10^{10}}$.",
+    "text": "Investigate max f_max(n)/f_min(n) where f_max(n) and f_min(n) are the largest and smallest m with \u03c6(m) = n. Related to Carmichael's conjecture: does \u03c6(m) = n ever have exactly one solution?",
+    "proofStrategy": "We formalize this problem and its related conjectures:\n\n1. **Define totient preimages**: totientPreimage(n) = {m : \u03c6(m) = n}\n\n2. **Axiomatize f_max and f_min**: These give the largest and smallest elements of the preimage\n\n3. **Define Carmichael totients**: Values n where |\u03c6\u207b\u00b9(n)| = 1\n\n4. **State Erd\u0151s's conditional theorem**: If one exists, infinitely many do\n\n5. **Prove non-Carmichael examples**: We prove 1 and 2 are not Carmichael totients by showing they have multiple preimages",
     "keyInsights": [
-      "**Totient preimages are finite**: For any n, the set {m : φ(m) = n} is finite because φ(m) grows roughly like m/log(log(m)).",
-      "**Carmichael's conjecture**: The oldest open question about φ - does every totient value have at least two preimages? Ford's bound makes direct search hopeless.",
-      "**Erdős's conditional infinitude**: If Carmichael is wrong even once, it's wrong infinitely often. This uses the fact that if φ(m) = n is unique, then certain multiples of m lead to more unique preimages.",
+      "**Totient preimages are finite**: For any n, the set {m : \u03c6(m) = n} is finite because \u03c6(m) grows roughly like m/log(log(m)).",
+      "**Carmichael's conjecture**: The oldest open question about \u03c6 - does every totient value have at least two preimages? Ford's bound makes direct search hopeless.",
+      "**Erd\u0151s's conditional infinitude**: If Carmichael is wrong even once, it's wrong infinitely often. This uses the fact that if \u03c6(m) = n is unique, then certain multiples of m lead to more unique preimages.",
       "**The ratio question**: How spread out can the preimage be? The ratio f_max(n)/f_min(n) measures this spread.",
-      "**Small examples**: φ(1) = φ(2) = 1 and φ(3) = φ(4) = φ(6) = 2, so 1 and 2 have multiple preimages."
+      "**Small examples**: \u03c6(1) = \u03c6(2) = 1 and \u03c6(3) = \u03c6(4) = \u03c6(6) = 2, so 1 and 2 have multiple preimages."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -102,7 +102,7 @@
     },
     {
       "id": "erdos-conditional",
-      "title": "Erdős's Conditional Result",
+      "title": "Erd\u0151s's Conditional Result",
       "startLine": 112,
       "endLine": 128,
       "summary": "If one Carmichael totient exists, infinitely many do."
@@ -119,7 +119,7 @@
       "title": "Totient Examples",
       "startLine": 148,
       "endLine": 163,
-      "summary": "Concrete computations of φ for small values."
+      "summary": "Concrete computations of \u03c6 for small values."
     },
     {
       "id": "verification",
@@ -137,8 +137,8 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #694 on the spread of totient preimages. The problem asks about max f_max(n)/f_min(n) and connects to Carmichael's 1907 conjecture that every totient value has multiple preimages. We prove that small totient values (1 and 2) are not Carmichael totients, and axiomatize Erdős's result that if any Carmichael totient exists, infinitely many must.",
-    "implications": "**Theoretical Significance**: This problem connects several areas:\n\n1. **Multiplicative number theory**: The structure of Euler's totient function\n**2. Computational number theory**: Ford's bounds show direct search is impossible\n3. **Algebraic number theory**: The behavior of φ under multiplication\n4. **Combinatorial number theory**: Counting preimages of arithmetic functions.",
+    "summary": "We formalize Erd\u0151s Problem #694 on the spread of totient preimages. The problem asks about max f_max(n)/f_min(n) and connects to Carmichael's 1907 conjecture that every totient value has multiple preimages. We prove that small totient values (1 and 2) are not Carmichael totients, and axiomatize Erd\u0151s's result that if any Carmichael totient exists, infinitely many must.",
+    "implications": "**Theoretical Significance**: This problem connects several areas:\n\n1. **Multiplicative number theory**: The structure of Euler's totient function\n**2. Computational number theory**: Ford's bounds show direct search is impossible\n3. **Algebraic number theory**: The behavior of \u03c6 under multiplication\n4. **Combinatorial number theory**: Counting preimages of arithmetic functions.",
     "openQuestions": [
       "Is Carmichael's conjecture true? (No n with unique preimage)",
       "How does max f_max(n)/f_min(n) grow with x?",
@@ -160,5 +160,39 @@
     "axiomCount": 12,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Share totient-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1003",
+      "relationship": "related",
+      "description": "Share totient-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Share totient-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-415",
+      "relationship": "related",
+      "description": "Share totient-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-416",
+      "relationship": "related",
+      "description": "Share totient-function and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1000",
+    "erdos-1003",
+    "erdos-1064",
+    "erdos-415",
+    "erdos-416"
+  ]
 }

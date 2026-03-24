@@ -1,10 +1,10 @@
 {
   "id": "erdos-356",
-  "title": "Erdős Problem #356: Consecutive Sums in Strictly Increasing Sequences",
+  "title": "Erd\u0151s Problem #356: Consecutive Sums in Strictly Increasing Sequences",
   "slug": "erdos-356",
-  "description": "Is there c > 0 such that strictly increasing sequences a₁ < ... < aₖ ≤ n can achieve cn² distinct consecutive sums? YES, proved by Beker (2023).",
+  "description": "Is there c > 0 such that strictly increasing sequences a\u2081 < ... < a\u2096 \u2264 n can achieve cn\u00b2 distinct consecutive sums? YES, proved by Beker (2023).",
   "meta": {
-    "author": "Erdős-Graham (problem), Beker (2023 proof), Konieczny (2015 permutation variant)",
+    "author": "Erd\u0151s-Graham (problem), Beker (2023 proof), Konieczny (2015 permutation variant)",
     "sourceUrl": "https://erdosproblems.com/356",
     "date": "2023",
     "status": "axiomatized",
@@ -54,11 +54,11 @@
       "trivial_fails axiom: {1,...,n} achieves only O(n) distinct sums",
       "trivial_collision_structure: arithmetic structure causes sub-quadratic growth",
       "isValidSequence: strictly increasing and bounded by n",
-      "erdosGrahamConjecture: formal statement of the cn² conjecture",
+      "erdosGrahamConjecture: formal statement of the cn\u00b2 conjecture",
       "beker_theorem axiom: the conjecture is true (Beker 2023)",
       "permutationConjecture and konieczny_theorem axiom (Konieczny 2015)",
       "erdos357Question: related consecutive-integers variant",
-      "upper_bound and lower_bound_exists axioms: Θ(n²) growth",
+      "upper_bound and lower_bound_exists axioms: \u0398(n\u00b2) growth",
       "erdos_356_solved: combined main result theorem"
     ],
     "axiomCount": 8,
@@ -66,16 +66,16 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #356 originates from the Erdős-Graham collaboration on combinatorial number theory [ErGr80]. The question asks whether carefully chosen strictly increasing sequences can achieve quadratically many distinct consecutive subsums — far more than the trivial sequence {1, 2, ..., n}, which achieves only O(n) distinct values due to arithmetic structure causing sum collisions.\n\nThe problem connects to broader themes in additive combinatorics: how does the structure of a set affect the richness of its sumset? The trivial sequence fails because arithmetic progressions produce highly regular sums with many coincidences. Breaking this regularity is the key to achieving quadratic growth.\n\nKonieczny (2015) first showed that permutations of {1,...,n} can achieve cn² distinct consecutive sums, solving a related variant. Beker (2023) then settled the original problem, proving that strictly increasing sequences bounded by n can also achieve cn² distinct sums. This resolved the problem in the affirmative.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nIs there some constant $c > 0$ such that for all sufficiently large $n$, there exist integers $a_1 < a_2 < \\cdots < a_k \\leq n$ with at least $cn^2$ distinct integers of the form $\\sum_{u \\leq i \\leq v} a_i$ (consecutive subsums)?\n\n**Answer: YES** — proved by Adrian Beker (2023).\n\nThe trivial sequence $\\{1, 2, \\ldots, n\\}$ fails (only $O(n)$ distinct sums). Konieczny (2015) proved the permutation variant. Beker (2023) proved the original strictly increasing version.",
-    "text": "Is there c > 0 such that strictly increasing sequences a₁ < ... < aₖ ≤ n can achieve cn² distinct consecutive sums? YES, proved by Beker (2023).",
-    "proofStrategy": "The formalization defines consecutive subsums and the counting function distinctConsecutiveSums. The trivial sequence {1,...,n} is shown to fail via axiom. The main concepts — strictly increasing sequences, valid sequences, and the Erdős-Graham conjecture — are formalized as Lean definitions. Beker's theorem and Konieczny's theorem are axiomatized since their proofs require deep combinatorial constructions beyond Mathlib. Upper and lower bounds establish that the growth rate is Θ(n²). A summary theorem combines both results.",
+    "historicalContext": "Erd\u0151s Problem #356 originates from the Erd\u0151s-Graham collaboration on combinatorial number theory [ErGr80]. The question asks whether carefully chosen strictly increasing sequences can achieve quadratically many distinct consecutive subsums \u2014 far more than the trivial sequence {1, 2, ..., n}, which achieves only O(n) distinct values due to arithmetic structure causing sum collisions.\n\nThe problem connects to broader themes in additive combinatorics: how does the structure of a set affect the richness of its sumset? The trivial sequence fails because arithmetic progressions produce highly regular sums with many coincidences. Breaking this regularity is the key to achieving quadratic growth.\n\nKonieczny (2015) first showed that permutations of {1,...,n} can achieve cn\u00b2 distinct consecutive sums, solving a related variant. Beker (2023) then settled the original problem, proving that strictly increasing sequences bounded by n can also achieve cn\u00b2 distinct sums. This resolved the problem in the affirmative.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nIs there some constant $c > 0$ such that for all sufficiently large $n$, there exist integers $a_1 < a_2 < \\cdots < a_k \\leq n$ with at least $cn^2$ distinct integers of the form $\\sum_{u \\leq i \\leq v} a_i$ (consecutive subsums)?\n\n**Answer: YES** \u2014 proved by Adrian Beker (2023).\n\nThe trivial sequence $\\{1, 2, \\ldots, n\\}$ fails (only $O(n)$ distinct sums). Konieczny (2015) proved the permutation variant. Beker (2023) proved the original strictly increasing version.",
+    "text": "Is there c > 0 such that strictly increasing sequences a\u2081 < ... < a\u2096 \u2264 n can achieve cn\u00b2 distinct consecutive sums? YES, proved by Beker (2023).",
+    "proofStrategy": "The formalization defines consecutive subsums and the counting function distinctConsecutiveSums. The trivial sequence {1,...,n} is shown to fail via axiom. The main concepts \u2014 strictly increasing sequences, valid sequences, and the Erd\u0151s-Graham conjecture \u2014 are formalized as Lean definitions. Beker's theorem and Konieczny's theorem are axiomatized since their proofs require deep combinatorial constructions beyond Mathlib. Upper and lower bounds establish that the growth rate is \u0398(n\u00b2). A summary theorem combines both results.",
     "keyInsights": [
-      "**Trivial Failure**: The sequence {1,...,n} achieves only O(n) distinct consecutive sums due to arithmetic regularity — sums (v-u+1)(v+u)/2 collide frequently",
-      "**Spacing Principle**: To achieve cn² distinct sums, elements must be spaced to break arithmetic regularity and minimize sum collisions",
-      "**Permutation Variant**: Konieczny (2015) showed permutations of {1,...,n} can achieve cn² distinct sums, settling the related Problem #34",
+      "**Trivial Failure**: The sequence {1,...,n} achieves only O(n) distinct consecutive sums due to arithmetic regularity \u2014 sums (v-u+1)(v+u)/2 collide frequently",
+      "**Spacing Principle**: To achieve cn\u00b2 distinct sums, elements must be spaced to break arithmetic regularity and minimize sum collisions",
+      "**Permutation Variant**: Konieczny (2015) showed permutations of {1,...,n} can achieve cn\u00b2 distinct sums, settling the related Problem #34",
       "**Beker's Resolution**: Beker (2023) proved the original conjecture using number-theoretic construction techniques",
-      "**Tight Growth Rate**: The growth is Θ(n²) — at most k(k+1)/2 ≈ n²/2 sums are possible, and cn² is achievable"
+      "**Tight Growth Rate**: The growth is \u0398(n\u00b2) \u2014 at most k(k+1)/2 \u2248 n\u00b2/2 sums are possible, and cn\u00b2 is achievable"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -138,7 +138,7 @@
       "title": "Part VIII: Upper and Lower Bounds",
       "startLine": 211,
       "endLine": 231,
-      "summary": "upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn² achievable)."
+      "summary": "upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn\u00b2 achievable)."
     },
     {
       "id": "summary",
@@ -149,7 +149,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #356 is SOLVED. The answer is YES: there exist strictly increasing sequences bounded by n achieving Ω(n²) distinct consecutive sums. Beker (2023) proved the original conjecture; Konieczny (2015) proved the permutation variant. The growth rate is Θ(n²).",
+    "summary": "Erd\u0151s Problem #356 is SOLVED. The answer is YES: there exist strictly increasing sequences bounded by n achieving \u03a9(n\u00b2) distinct consecutive sums. Beker (2023) proved the original conjecture; Konieczny (2015) proved the permutation variant. The growth rate is \u0398(n\u00b2).",
     "implications": "This result demonstrates that the trivial sequence {1,...,n} is far from optimal for producing distinct consecutive sums. Careful construction can break arithmetic regularity and achieve quadratic growth, connecting to fundamental questions in additive combinatorics about the structure-richness tradeoff in sumsets.",
     "openQuestions": [
       "What is the optimal constant c in Beker's result?",
@@ -176,5 +176,39 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1026",
+      "relationship": "related",
+      "description": "Share combinatorial and sequence themes"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Share combinatorial and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1112",
+      "relationship": "related",
+      "description": "Share combinatorial and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Share combinatorial and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Share combinatorial and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1026",
+    "erdos-109",
+    "erdos-1112",
+    "erdos-1179",
+    "erdos-153"
+  ]
 }

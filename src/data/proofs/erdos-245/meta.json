@@ -35,7 +35,7 @@
       "**Sumset growth**: For sparse sets, A+A = {a+b : a,b in A} tends to grow faster than A because there's 'room to spread'",
       "**The bound 3 is optimal**: Powers of 2 achieve the minimal growth ratio of 3 asymptotically",
       "**Connection to Freiman's structure theory**: This result is part of Freiman's broader program understanding sets with small doubling",
-      "**Mann's 1960 bound of 2**: The easier bound follows from basic counting — each element of $A$ contributes at least itself and itself+min(A) to $A+A$, giving doubling, while Freiman's strengthening to 3 requires deeper structural analysis"
+      "**Mann's 1960 bound of 2**: The easier bound follows from basic counting \u2014 each element of $A$ contributes at least itself and itself+min(A) to $A+A$, giving doubling, while Freiman's strengthening to 3 requires deeper structural analysis"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -118,5 +118,39 @@
     "axiomCount": 3,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-31",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-333",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-335",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-343",
+      "relationship": "related",
+      "description": "Share density, sumsets, and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-31",
+    "erdos-333",
+    "erdos-335",
+    "erdos-343"
+  ]
 }

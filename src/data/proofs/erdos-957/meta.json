@@ -171,5 +171,39 @@
     "axiomCount": 6,
     "theoremCount": 6,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and distances themes"
+    },
+    {
+      "targetId": "erdos-466",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Share distances and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Share distances and discrete-geometry themes"
+    },
+    {
+      "targetId": "erdos-661",
+      "relationship": "related",
+      "description": "Share distances and discrete-geometry themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1087",
+    "erdos-466",
+    "erdos-605",
+    "erdos-654",
+    "erdos-661"
+  ]
 }

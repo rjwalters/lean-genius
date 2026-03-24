@@ -1,8 +1,8 @@
 {
   "id": "erdos-801",
-  "title": "Erdős Problem #801: Dense Subgraphs in Graphs with Bounded Independence",
+  "title": "Erd\u0151s Problem #801: Dense Subgraphs in Graphs with Bounded Independence",
   "slug": "erdos-801",
-  "description": "If G is a graph on n vertices with no independent set larger than √n, then there exists a set of ≤ √n vertices containing ≫ √n log n edges. Proved by Alon (1996) using probabilistic methods.",
+  "description": "If G is a graph on n vertices with no independent set larger than \u221an, then there exists a set of \u2264 \u221an vertices containing \u226b \u221an log n edges. Proved by Alon (1996) using probabilistic methods.",
   "meta": {
     "author": "Alon",
     "sourceUrl": "https://erdosproblems.com/801",
@@ -53,11 +53,11 @@
     "relatedProofs": [
       {
         "id": "erdos-181",
-        "relationship": "Ramsey number of the hypercube — graph-theoretic Ramsey theory using `SimpleGraph`"
+        "relationship": "Ramsey number of the hypercube \u2014 graph-theoretic Ramsey theory using `SimpleGraph`"
       },
       {
         "id": "ramseys-theorem",
-        "relationship": "Classical Ramsey theorem — the independence/clique duality underlying Alon's proof"
+        "relationship": "Classical Ramsey theorem \u2014 the independence/clique duality underlying Alon's proof"
       }
     ],
     "axiomCount": 3,
@@ -72,14 +72,14 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem circa 1979, asking whether graphs with bounded independence number must contain locally dense subsets — a fundamental local-global question in extremal graph theory. The problem is motivated by Ramsey theory: if $\\alpha(G) \\leq \\sqrt{n}$, then by Ramsey-type reasoning, the graph must be 'dense' in some sense, but can this density be localized to a small subset? Noga Alon resolved it affirmatively in 1996 using the probabilistic method — specifically, random sampling of $\\sqrt{n}$-vertex subsets. The expected number of induced edges in a random $\\sqrt{n}$-subset is $\\Omega(\\sqrt{n} \\log n)$ when $\\alpha(G) \\leq \\sqrt{n}$ implies $e(G) = \\Omega(n \\log n)$, so some $\\sqrt{n}$-subset achieves this bound. The $\\log n$ factor is tight: Paley graphs (constructed from quadratic residues modulo primes) show no $\\sqrt{n}$-subset can induce more than $O(\\sqrt{n} \\log n)$ edges. This connects to deep questions about pseudo-random graphs and Ramsey multiplicity.",
-    "problemStatement": "If G is a graph on n vertices containing no independent set on more than √n vertices, then there is a set of at most √n vertices containing at least c · √n · log n edges for some constant c > 0.",
-    "text": "If G is a graph on n vertices with no independent set larger than √n, then there exists a set of ≤ √n vertices containing ≫ √n log n edges. Proved by Alon (1996) using probabilistic methods.",
+    "historicalContext": "Erd\u0151s posed this problem circa 1979, asking whether graphs with bounded independence number must contain locally dense subsets \u2014 a fundamental local-global question in extremal graph theory. The problem is motivated by Ramsey theory: if $\\alpha(G) \\leq \\sqrt{n}$, then by Ramsey-type reasoning, the graph must be 'dense' in some sense, but can this density be localized to a small subset? Noga Alon resolved it affirmatively in 1996 using the probabilistic method \u2014 specifically, random sampling of $\\sqrt{n}$-vertex subsets. The expected number of induced edges in a random $\\sqrt{n}$-subset is $\\Omega(\\sqrt{n} \\log n)$ when $\\alpha(G) \\leq \\sqrt{n}$ implies $e(G) = \\Omega(n \\log n)$, so some $\\sqrt{n}$-subset achieves this bound. The $\\log n$ factor is tight: Paley graphs (constructed from quadratic residues modulo primes) show no $\\sqrt{n}$-subset can induce more than $O(\\sqrt{n} \\log n)$ edges. This connects to deep questions about pseudo-random graphs and Ramsey multiplicity.",
+    "problemStatement": "If G is a graph on n vertices containing no independent set on more than \u221an vertices, then there is a set of at most \u221an vertices containing at least c \u00b7 \u221an \u00b7 log n edges for some constant c > 0.",
+    "text": "If G is a graph on n vertices with no independent set larger than \u221an, then there exists a set of \u2264 \u221an vertices containing \u226b \u221an log n edges. Proved by Alon (1996) using probabilistic methods.",
     "proofStrategy": "The formalization wraps `SimpleGraph (Fin n)` as `FiniteGraph n`, defines $\\alpha(G)$ via `sSup` over independent sets (`IsIndependent`), and counts induced edges via `Finset.filter` on ordered pairs. `Erdos801Statement` quantifies: $\\exists c > 0,\\; \\forall n \\geq 2,\\; \\forall G$ with $\\alpha(G) \\leq \\sqrt{n}$, $\\exists S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$. Alon's theorem, log-factor necessity, and vertex-size optimality are axiomatized. The summary theorem pairs existence with tightness. 0 sorries.",
     "keyInsights": [
       "**Local-global principle**: $\\alpha(G) \\leq \\sqrt{n}$ (global) forces $\\exists S$ with $|S| \\leq \\sqrt{n}$ and $e(S) \\geq c\\sqrt{n}\\log n$ (local density)",
       "**Probabilistic method**: Alon's proof samples random $\\sqrt{n}$-subsets; since $\\alpha(G) \\leq \\sqrt{n}$ implies $e(G) = \\Omega(n\\log n)$, the expected induced edges are $\\Omega(\\sqrt{n}\\log n)$",
-      "**Log factor is tight**: Paley graph constructions show $\\sqrt{n}\\log n$ cannot be improved to $\\sqrt{n}(\\log n)^{1+\\varepsilon}$ — the bound is sharp up to constants",
+      "**Log factor is tight**: Paley graph constructions show $\\sqrt{n}\\log n$ cannot be improved to $\\sqrt{n}(\\log n)^{1+\\varepsilon}$ \u2014 the bound is sharp up to constants",
       "**Vertex budget is optimal**: Reducing the subset size to $\\varepsilon\\sqrt{n}$ drops the achievable edge count below $\\sqrt{n}$, not just below $\\sqrt{n}\\log n$",
       "**Ramsey connection**: $\\alpha(G) \\leq \\sqrt{n}$ is equivalent to $R(3, \\sqrt{n}) \\leq n$ type constraints, linking to classical Ramsey theory"
     ],
@@ -129,12 +129,12 @@
       "title": "Summary Theorem",
       "startLine": 105,
       "endLine": 123,
-      "summary": "Theorem `erdos_801_summary`: conjunction of `alon_1996` (existence) and `log_factor_necessary` (tightness), proved as `⟨alon_1996, log_factor_necessary⟩`.",
+      "summary": "Theorem `erdos_801_summary`: conjunction of `alon_1996` (existence) and `log_factor_necessary` (tightness), proved as `\u27e8alon_1996, log_factor_necessary\u27e9`.",
       "mathContext": "The summary pairs existence ($\\sqrt{n}\\log n$ edges achievable) with tightness ($\\sqrt{n}\\log n$ cannot be improved). Proved as a conjunction of the two axioms."
     }
   ],
   "conclusion": {
-    "summary": "Alon (1996) proved that graphs with independence number at most √n must contain a small dense subgraph. Specifically, there exists a set of ≤ √n vertices inducing ≫ √n log n edges. The bound is tight up to constants.",
+    "summary": "Alon (1996) proved that graphs with independence number at most \u221an must contain a small dense subgraph. Specifically, there exists a set of \u2264 \u221an vertices inducing \u226b \u221an log n edges. The bound is tight up to constants.",
     "implications": "The result demonstrates a local-global principle: global sparsity constraints (bounded independence) imply local density. Applications include community detection algorithms, dense subgraph discovery, and Ramsey-type structural theorems.",
     "openQuestions": [
       "What is the optimal constant $c$ such that $\\max_{|S| \\leq \\sqrt{n}} e(S) \\geq c\\sqrt{n}\\log n$ for all $G$ with $\\alpha(G) \\leq \\sqrt{n}$?",
@@ -149,24 +149,26 @@
       "title": "Independence numbers of locally sparse graphs and a Ramsey type problem",
       "year": "1996",
       "venue": "Random Structures & Algorithms",
-      "note": "Proved the existence of dense √n-vertex subsets in graphs with α(G) ≤ √n"
+      "note": "Proved the existence of dense \u221an-vertex subsets in graphs with \u03b1(G) \u2264 \u221an"
     },
     {
-      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald L.",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "venue": "Monographies de L'Enseignement Math\u00e9matique 28",
       "note": "[ErGr80] original formulation"
     }
   ],
   "crossReferences": [
     {
-      "target": "ramseys-theorem",
-      "context": "The independence/clique duality underlying Alon's proof — α(G) ≤ √n is a Ramsey-type constraint"
+      "context": "The independence/clique duality underlying Alon's proof \u2014 \u03b1(G) \u2264 \u221an is a Ramsey-type constraint",
+      "targetId": "ramseys-theorem",
+      "description": "Related entry"
     },
     {
-      "target": "erdos-806",
-      "context": "Both are Erdős problems about structural graph-theoretic properties"
+      "context": "Both are Erd\u0151s problems about structural graph-theoretic properties",
+      "targetId": "erdos-806",
+      "description": "Related entry"
     }
   ],
   "leanFile": {

@@ -1,10 +1,10 @@
 {
   "id": "erdos-605",
-  "title": "Erdős Problem #605: Repeated Distances on a Sphere",
+  "title": "Erd\u0151s Problem #605: Repeated Distances on a Sphere",
   "slug": "erdos-605",
-  "description": "Is there f(n) → ∞ such that n points on a sphere can have at least f(n)·n pairs at the same distance? YES — Swanepoel-Valtr proved u_D(n) ≫ n·√(log n) for D > 1, and for D = √2 we have u(n) ≍ n^{4/3}.",
+  "description": "Is there f(n) \u2192 \u221e such that n points on a sphere can have at least f(n)\u00b7n pairs at the same distance? YES \u2014 Swanepoel-Valtr proved u_D(n) \u226b n\u00b7\u221a(log n) for D > 1, and for D = \u221a2 we have u(n) \u224d n^{4/3}.",
   "meta": {
-    "author": "Erdős-Hickerson-Pach (1989), Swanepoel-Valtr (2004)",
+    "author": "Erd\u0151s-Hickerson-Pach (1989), Swanepoel-Valtr (2004)",
     "sourceUrl": "https://erdosproblems.com/605",
     "date": "2004",
     "status": "axiomatized",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space ℝ^n as a metric and inner product space",
+        "description": "Euclidean space \u211d^n as a metric and inner product space",
         "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
       },
       {
@@ -55,7 +55,7 @@
       "SphereConfig structure: points on a sphere with distinctness",
       "distancePairs definition: counting ordered pairs at a given distance",
       "u function: formal definition of max repeated-distance pairs u_D(n)",
-      "superlinearGrowth: formal statement of the Erdős problem",
+      "superlinearGrowth: formal statement of the Erd\u0151s problem",
       "iterLog: iterated logarithm definition",
       "IsOmega/IsBigO/AsympEquiv: asymptotic notation definitions"
     ],
@@ -64,16 +64,16 @@
     "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**The Unit Distance Problem on Spheres**\n\nErdős Problem #605 extends the classical unit distance problem from the plane to spherical surfaces. The unit distance problem asks: among n points in ℝ², how many pairs can be at the same distance? For the plane, the answer grows slightly superlinearly. Erdős asked whether the spherical version also admits superlinear growth.\n\n**Key Historical Developments:**\n\n- **1989**: Erdős, Hickerson, and Pach proved the first superlinear bound u_D(n) ≫ n·log*(n) for spheres of radius D > 1, where log* is the iterated logarithm. This resolved the problem affirmatively, though the growth rate log*(n) is incredibly slow.\n- **2004**: Swanepoel and Valtr significantly improved the lower bound to u_D(n) ≫ n·√(log n), using algebraic constructions on the sphere.\n- **Special case D = √2**: The sphere of radius √2 is uniquely suited for these constructions because it can inscribe a cube. For this radius, the tight bound u(n) ≍ n^{4/3} is achieved, matching the general upper bound from incidence geometry.",
-    "problemStatement": "**Problem Statement**\n\nIs there a function f(n) → ∞ as n → ∞ such that n distinct points can be placed on the surface of a 2-sphere with at least f(n)·n pairs of points at the same distance?\n\n**The Function u_D(n)**: Let u_D(n) denote the maximum number of pairs at a single distance among n points on a sphere of radius D.\n\n**Answer**: YES. For any D > 1, we have u_D(n) ≥ c·n·√(log n) for some constant c > 0 (Swanepoel-Valtr 2004). Since √(log n) → ∞, we can take f(n) = √(log n).",
-    "text": "Is there f(n) → ∞ such that n points on a sphere can have at least f(n)·n pairs at the same distance? YES — Swanepoel-Valtr proved u_D(n) ≫ n·√(log n) for D > 1, and for D = √2 we have u(n) ≍ n^{4/3}.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds up from first principles:\n\n1. **Sphere and configurations**: We define spheres in ℝ³ using EuclideanSpace and structures for point configurations with distinctness.\n\n2. **Distance counting**: We formalize counting pairs at a given distance, then define the maximum repeated-distance function u_D(n) as a supremum.\n\n3. **Iterated logarithm**: We define log*(n) recursively and state its divergence to infinity.\n\n4. **Axiomatized bounds**: The Erdős-Hickerson-Pach bound (1989), Swanepoel-Valtr bound (2004), and the √2 sphere tight bound are stated as axioms since their proofs require deep geometric and algebraic arguments beyond Mathlib.\n\n5. **Main theorem**: The superlinear growth theorem follows from the Swanepoel-Valtr bound and the divergence of √(log n).",
+    "historicalContext": "**The Unit Distance Problem on Spheres**\n\nErd\u0151s Problem #605 extends the classical unit distance problem from the plane to spherical surfaces. The unit distance problem asks: among n points in \u211d\u00b2, how many pairs can be at the same distance? For the plane, the answer grows slightly superlinearly. Erd\u0151s asked whether the spherical version also admits superlinear growth.\n\n**Key Historical Developments:**\n\n- **1989**: Erd\u0151s, Hickerson, and Pach proved the first superlinear bound u_D(n) \u226b n\u00b7log*(n) for spheres of radius D > 1, where log* is the iterated logarithm. This resolved the problem affirmatively, though the growth rate log*(n) is incredibly slow.\n- **2004**: Swanepoel and Valtr significantly improved the lower bound to u_D(n) \u226b n\u00b7\u221a(log n), using algebraic constructions on the sphere.\n- **Special case D = \u221a2**: The sphere of radius \u221a2 is uniquely suited for these constructions because it can inscribe a cube. For this radius, the tight bound u(n) \u224d n^{4/3} is achieved, matching the general upper bound from incidence geometry.",
+    "problemStatement": "**Problem Statement**\n\nIs there a function f(n) \u2192 \u221e as n \u2192 \u221e such that n distinct points can be placed on the surface of a 2-sphere with at least f(n)\u00b7n pairs of points at the same distance?\n\n**The Function u_D(n)**: Let u_D(n) denote the maximum number of pairs at a single distance among n points on a sphere of radius D.\n\n**Answer**: YES. For any D > 1, we have u_D(n) \u2265 c\u00b7n\u00b7\u221a(log n) for some constant c > 0 (Swanepoel-Valtr 2004). Since \u221a(log n) \u2192 \u221e, we can take f(n) = \u221a(log n).",
+    "text": "Is there f(n) \u2192 \u221e such that n points on a sphere can have at least f(n)\u00b7n pairs at the same distance? YES \u2014 Swanepoel-Valtr proved u_D(n) \u226b n\u00b7\u221a(log n) for D > 1, and for D = \u221a2 we have u(n) \u224d n^{4/3}.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds up from first principles:\n\n1. **Sphere and configurations**: We define spheres in \u211d\u00b3 using EuclideanSpace and structures for point configurations with distinctness.\n\n2. **Distance counting**: We formalize counting pairs at a given distance, then define the maximum repeated-distance function u_D(n) as a supremum.\n\n3. **Iterated logarithm**: We define log*(n) recursively and state its divergence to infinity.\n\n4. **Axiomatized bounds**: The Erd\u0151s-Hickerson-Pach bound (1989), Swanepoel-Valtr bound (2004), and the \u221a2 sphere tight bound are stated as axioms since their proofs require deep geometric and algebraic arguments beyond Mathlib.\n\n5. **Main theorem**: The superlinear growth theorem follows from the Swanepoel-Valtr bound and the divergence of \u221a(log n).",
     "keyInsights": [
       "**Superlinear growth**: The key question is whether repeated distances grow faster than O(n). The answer is yes, but the exact growth rate for general spheres remains open.",
-      "**Iterated logarithm vs square root of log**: The EHP bound uses log*(n), which grows extraordinarily slowly (log*(10^{10^{10}}) ≈ 4). Swanepoel-Valtr's √(log n) is much larger for practical n.",
-      "**The √2 sphere is special**: A sphere of radius √2 can inscribe a cube, enabling algebraic constructions that achieve the tight bound n^{4/3}. No other radius is known to achieve this.",
-      "**Upper bound from incidence geometry**: The bound u_D(n) ≪ n^{4/3} for all D follows from Szemerédi-Trotter type incidence bounds for points and circles in ℝ³.",
-      "**Open gap**: For general D > 1, the gap between the lower bound n·√(log n) and the upper bound n^{4/3} remains one of the major open problems in discrete geometry."
+      "**Iterated logarithm vs square root of log**: The EHP bound uses log*(n), which grows extraordinarily slowly (log*(10^{10^{10}}) \u2248 4). Swanepoel-Valtr's \u221a(log n) is much larger for practical n.",
+      "**The \u221a2 sphere is special**: A sphere of radius \u221a2 can inscribe a cube, enabling algebraic constructions that achieve the tight bound n^{4/3}. No other radius is known to achieve this.",
+      "**Upper bound from incidence geometry**: The bound u_D(n) \u226a n^{4/3} for all D follows from Szemer\u00e9di-Trotter type incidence bounds for points and circles in \u211d\u00b3.",
+      "**Open gap**: For general D > 1, the gap between the lower bound n\u00b7\u221a(log n) and the upper bound n^{4/3} remains one of the major open problems in discrete geometry."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -93,7 +93,7 @@
       "title": "Sphere and Point Configurations",
       "startLine": 40,
       "endLine": 65,
-      "summary": "Definitions of Point3, Sphere, and SphereConfig structure in ℝ³"
+      "summary": "Definitions of Point3, Sphere, and SphereConfig structure in \u211d\u00b3"
     },
     {
       "id": "distance-pairs",
@@ -128,14 +128,14 @@
       "title": "Known Bounds",
       "startLine": 134,
       "endLine": 187,
-      "summary": "EHP bound, Swanepoel-Valtr bound, upper bound, and √2 sphere tight bound"
+      "summary": "EHP bound, Swanepoel-Valtr bound, upper bound, and \u221a2 sphere tight bound"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 188,
       "endLine": 221,
-      "summary": "Erdős #605 solved: superlinear growth and witness function"
+      "summary": "Erd\u0151s #605 solved: superlinear growth and witness function"
     },
     {
       "id": "unit-distance",
@@ -156,7 +156,7 @@
       "title": "Asymptotic Notation",
       "startLine": 256,
       "endLine": 281,
-      "summary": "Formal definitions of Ω, O, and asymptotic equivalence"
+      "summary": "Formal definitions of \u03a9, O, and asymptotic equivalence"
     },
     {
       "id": "open-questions",
@@ -167,11 +167,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #605 asked whether repeated distances on spheres can grow superlinearly. The answer is yes: Swanepoel-Valtr proved u_D(n) ≫ n·√(log n) for any sphere of radius D > 1. The formalization defines the sphere configuration framework, the function u_D(n), and states the key bounds as axioms.",
-    "implications": "1. **Discrete Geometry**: Establishes that spherical surfaces admit fundamentally more repeated distances than linear configurations, extending the unit distance problem to curved surfaces.\n\n**2. The √2 Sphere**: The tight bound n^{4/3} for the √2 sphere reveals deep connections between algebraic geometry (inscribed polyhedra) and distance counting.\n\n3. **Incidence Geometry**: The upper bound n^{4/3} connects to the Szemerédi-Trotter framework, showing the same exponent governs both planar and spherical incidence problems.\n\n4. **Open Gap**: The gap between √(log n) and n^{1/3} in the growth factor remains one of the most intriguing problems in combinatorial geometry.",
+    "summary": "Erd\u0151s Problem #605 asked whether repeated distances on spheres can grow superlinearly. The answer is yes: Swanepoel-Valtr proved u_D(n) \u226b n\u00b7\u221a(log n) for any sphere of radius D > 1. The formalization defines the sphere configuration framework, the function u_D(n), and states the key bounds as axioms.",
+    "implications": "1. **Discrete Geometry**: Establishes that spherical surfaces admit fundamentally more repeated distances than linear configurations, extending the unit distance problem to curved surfaces.\n\n**2. The \u221a2 Sphere**: The tight bound n^{4/3} for the \u221a2 sphere reveals deep connections between algebraic geometry (inscribed polyhedra) and distance counting.\n\n3. **Incidence Geometry**: The upper bound n^{4/3} connects to the Szemer\u00e9di-Trotter framework, showing the same exponent governs both planar and spherical incidence problems.\n\n4. **Open Gap**: The gap between \u221a(log n) and n^{1/3} in the growth factor remains one of the most intriguing problems in combinatorial geometry.",
     "openQuestions": [
-      "Is √(log n) the optimal growth rate for general D > 1, or can it be improved?",
-      "Can the n^{4/3} bound be achieved for all radii D > 1, not just D = √2?",
+      "Is \u221a(log n) the optimal growth rate for general D > 1, or can it be improved?",
+      "Can the n^{4/3} bound be achieved for all radii D > 1, not just D = \u221a2?",
       "What happens for the unit sphere (D = 1)? Is the behavior qualitatively different?",
       "What is the exact threshold radius where the behavior transitions?",
       "Are there better constructions than polyhedra-based ones for general spheres?"
@@ -196,5 +196,39 @@
     "axiomCount": 14,
     "theoremCount": 1,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Share discrete-geometry, distances, and geometric themes"
+    },
+    {
+      "targetId": "erdos-94",
+      "relationship": "related",
+      "description": "Share discrete-geometry, distances, and geometric themes"
+    },
+    {
+      "targetId": "erdos-982",
+      "relationship": "related",
+      "description": "Share discrete-geometry, distances, and geometric themes"
+    },
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Share discrete-geometry and incidence-geometry themes"
+    },
+    {
+      "targetId": "erdos-210",
+      "relationship": "related",
+      "description": "Share discrete-geometry and incidence-geometry themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-654",
+    "erdos-94",
+    "erdos-982",
+    "erdos-105",
+    "erdos-210"
+  ]
 }

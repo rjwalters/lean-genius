@@ -1,10 +1,10 @@
 {
   "id": "erdos-106",
-  "title": "Erdős Problem #106: Square Packing in the Unit Square",
+  "title": "Erd\u0151s Problem #106: Square Packing in the Unit Square",
   "slug": "erdos-106",
-  "description": "Pack n squares in the unit square with disjoint interiors. Let f(n) = max sum of side lengths. Is f(k²+1) = k? Known: f(k²) = k, f(2) = 1, f(5) = 2. Axis-parallel case solved (2024). OPEN.",
+  "description": "Pack n squares in the unit square with disjoint interiors. Let f(n) = max sum of side lengths. Is f(k\u00b2+1) = k? Known: f(k\u00b2) = k, f(2) = 1, f(5) = 2. Axis-parallel case solved (2024). OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/106",
     "date": "1930s",
     "status": "formalized",
@@ -27,16 +27,16 @@
     "lineCount": 233
   },
   "overview": {
-    "historicalContext": "**Square Packing: From Hungarian High School to Modern Breakthrough**\n\nThis problem has one of the longest histories in Erdős's repertoire, dating back to the 1930s when a young Paul Erdős proved $f(2) = 1$ in a paper written for **Középiskolai Matematikai és Fizikai Lapok**, the Hungarian journal for high school students. The result — that two non-overlapping squares in the unit square cannot have side-length sum exceeding $1$ — became a foundational result in discrete packing theory.\n\n**Key milestones**:\n- **1930s**: Erdős proved $f(2) = 1$ and observed that $f(k^2) = k$ follows from Cauchy-Schwarz: $(\\sum s_i)^2 \\leq n \\sum s_i^2 \\leq n$\n- **~1960s**: D. J. Newman proved $f(5) = 2$ (personal communication to Erdős), confirming the first non-trivial case of the conjecture\n- **1984**: Gábor Halász gave constructive lower bounds $f(k^2 + 2c + 1) \\geq k + c/k$, showing how grid modifications can increase the sum beyond $k$\n- **1994**: Erdős restated the problem in 'Some old and new problems in combinatorial geometry'\n- **1995**: Erdős and Alexander Soifer published 'Squares packing', formulating the stronger conjecture $f(k^2 + 2c + 1) = k + c/k$ for $|c| < k$\n- **Praton**: Iwan Praton proved that the main conjecture $f(k^2+1) = k$ is equivalent to the full Erdős-Soifer conjecture\n- **2024**: Baek, Koizumi, and Ueoro solved the **axis-parallel case** completely, proving $g(k^2+1) = k$ when all squares must have sides parallel to the unit square\n\nThe problem exemplifies Erdős's gift for posing questions that are simple to state yet resist all attacks. The 2024 axis-parallel breakthrough shows the conjecture is true 'most of the way' — the remaining open question is whether rotated squares can beat axis-parallel packings.",
-    "problemStatement": "**Problem Statement**\n\nDraw $n$ squares inside the unit square $[0,1]^2$ with no common interior point. Let $f(n)$ be the maximum possible sum of the side-lengths.\n\nIs $f(k^2+1) = k$ for all $k \\geq 1$?\n\nEquivalently: does one extra square beyond a perfect $k \\times k$ grid never increase the total side-length sum?\n\n**Status**: OPEN (general case)\n\n**Known results**:\n- $f(k^2) = k$ for all $k$ (Cauchy-Schwarz + grid construction)\n- $f(2) = 1$ (Erdős, 1930s)\n- $f(5) = 2$ (Newman)\n- $f(k^2 + 2c + 1) \\geq k + c/k$ (Halász, 1984)\n- $g(k^2+1) = k$ for axis-parallel squares (Baek-Koizumi-Ueoro, 2024)",
-    "text": "Pack n squares in the unit square with disjoint interiors. Let f(n) = max sum of side lengths. Is f(k²+1) = k? Known: f(k²) = k, f(2) = 1, f(5) = 2. Axis-parallel case solved (2024). OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures the full structure of the problem:\n\n1. **Geometric primitives**: Axis-parallel `Square` defined by center and side length, with `interior` (open) and `closure` (closed) predicates\n\n2. **Packing structure**: A `Packing n` bundles $n$ squares with containment in $[0,1]^2$ and pairwise disjoint interiors, indexed by `Fin n`\n\n3. **Objective and bounds**: $f(n) = \\sup\\{\\sum s_i\\}$ over valid packings, with the Cauchy-Schwarz upper bound $f(n) \\leq \\sqrt{n}$ and monotonicity\n\n4. **Known values**: $f(1) = 1$, $f(2) = 1$, $f(4) = 2$, $f(5) = 2$, $f(9) = 3$ axiomatized\n\n5. **Structural results**: $f(k^2) = k$, the Halász bounds, the Erdős-Soifer conjecture, and Praton's equivalence\n\n6. **Plateau analysis**: The `plateauSet` captures where $f(n+1) = f(n)$, reformulating the conjecture as 'all perfect squares are plateaus'\n\n7. **BKU theorem**: The 2024 axis-parallel resolution $g(k^2+1) = k$",
+    "historicalContext": "**Square Packing: From Hungarian High School to Modern Breakthrough**\n\nThis problem has one of the longest histories in Erd\u0151s's repertoire, dating back to the 1930s when a young Paul Erd\u0151s proved $f(2) = 1$ in a paper written for **K\u00f6z\u00e9piskolai Matematikai \u00e9s Fizikai Lapok**, the Hungarian journal for high school students. The result \u2014 that two non-overlapping squares in the unit square cannot have side-length sum exceeding $1$ \u2014 became a foundational result in discrete packing theory.\n\n**Key milestones**:\n- **1930s**: Erd\u0151s proved $f(2) = 1$ and observed that $f(k^2) = k$ follows from Cauchy-Schwarz: $(\\sum s_i)^2 \\leq n \\sum s_i^2 \\leq n$\n- **~1960s**: D. J. Newman proved $f(5) = 2$ (personal communication to Erd\u0151s), confirming the first non-trivial case of the conjecture\n- **1984**: G\u00e1bor Hal\u00e1sz gave constructive lower bounds $f(k^2 + 2c + 1) \\geq k + c/k$, showing how grid modifications can increase the sum beyond $k$\n- **1994**: Erd\u0151s restated the problem in 'Some old and new problems in combinatorial geometry'\n- **1995**: Erd\u0151s and Alexander Soifer published 'Squares packing', formulating the stronger conjecture $f(k^2 + 2c + 1) = k + c/k$ for $|c| < k$\n- **Praton**: Iwan Praton proved that the main conjecture $f(k^2+1) = k$ is equivalent to the full Erd\u0151s-Soifer conjecture\n- **2024**: Baek, Koizumi, and Ueoro solved the **axis-parallel case** completely, proving $g(k^2+1) = k$ when all squares must have sides parallel to the unit square\n\nThe problem exemplifies Erd\u0151s's gift for posing questions that are simple to state yet resist all attacks. The 2024 axis-parallel breakthrough shows the conjecture is true 'most of the way' \u2014 the remaining open question is whether rotated squares can beat axis-parallel packings.",
+    "problemStatement": "**Problem Statement**\n\nDraw $n$ squares inside the unit square $[0,1]^2$ with no common interior point. Let $f(n)$ be the maximum possible sum of the side-lengths.\n\nIs $f(k^2+1) = k$ for all $k \\geq 1$?\n\nEquivalently: does one extra square beyond a perfect $k \\times k$ grid never increase the total side-length sum?\n\n**Status**: OPEN (general case)\n\n**Known results**:\n- $f(k^2) = k$ for all $k$ (Cauchy-Schwarz + grid construction)\n- $f(2) = 1$ (Erd\u0151s, 1930s)\n- $f(5) = 2$ (Newman)\n- $f(k^2 + 2c + 1) \\geq k + c/k$ (Hal\u00e1sz, 1984)\n- $g(k^2+1) = k$ for axis-parallel squares (Baek-Koizumi-Ueoro, 2024)",
+    "text": "Pack n squares in the unit square with disjoint interiors. Let f(n) = max sum of side lengths. Is f(k\u00b2+1) = k? Known: f(k\u00b2) = k, f(2) = 1, f(5) = 2. Axis-parallel case solved (2024). OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization captures the full structure of the problem:\n\n1. **Geometric primitives**: Axis-parallel `Square` defined by center and side length, with `interior` (open) and `closure` (closed) predicates\n\n2. **Packing structure**: A `Packing n` bundles $n$ squares with containment in $[0,1]^2$ and pairwise disjoint interiors, indexed by `Fin n`\n\n3. **Objective and bounds**: $f(n) = \\sup\\{\\sum s_i\\}$ over valid packings, with the Cauchy-Schwarz upper bound $f(n) \\leq \\sqrt{n}$ and monotonicity\n\n4. **Known values**: $f(1) = 1$, $f(2) = 1$, $f(4) = 2$, $f(5) = 2$, $f(9) = 3$ axiomatized\n\n5. **Structural results**: $f(k^2) = k$, the Hal\u00e1sz bounds, the Erd\u0151s-Soifer conjecture, and Praton's equivalence\n\n6. **Plateau analysis**: The `plateauSet` captures where $f(n+1) = f(n)$, reformulating the conjecture as 'all perfect squares are plateaus'\n\n7. **BKU theorem**: The 2024 axis-parallel resolution $g(k^2+1) = k$",
     "keyInsights": [
       "**Cauchy-Schwarz is the key bound**: $(\\sum s_i)^2 \\leq n \\sum s_i^2 \\leq n$ gives $f(n) \\leq \\sqrt{n}$, tight at $n = k^2$ via the $k \\times k$ grid. The question is how far below $\\sqrt{n}$ the function $f$ falls between perfect squares",
-      "**Plateau phenomenon**: $f(k^2) = f(k^2+1) = k$ means perfect squares are 'stable' — the function resists increasing. This connects to the general theory of when adding resources to an optimization problem doesn't help",
-      "**Halász construction**: By splitting $c$ grid squares into pairs, one gains exactly $c/k$ in total side length, giving $f(k^2+2c+1) \\geq k + c/k$. The conjecture says this simple construction is optimal",
-      "**Praton's stunning equivalence**: The simplest open case $f(10) = 3$ would imply the entire Erdős-Soifer formula $f(k^2+2c+1) = k + c/k$ for all $k$ and $|c| < k$. This deep structural result reduces an infinite family of questions to a single case",
-      "**Axis-parallel vs rotated**: BKU (2024) solved the restricted problem where all squares must be axis-aligned. The general case remains open because rotated squares could potentially create more efficient packings — though no example is known where rotation helps"
+      "**Plateau phenomenon**: $f(k^2) = f(k^2+1) = k$ means perfect squares are 'stable' \u2014 the function resists increasing. This connects to the general theory of when adding resources to an optimization problem doesn't help",
+      "**Hal\u00e1sz construction**: By splitting $c$ grid squares into pairs, one gains exactly $c/k$ in total side length, giving $f(k^2+2c+1) \\geq k + c/k$. The conjecture says this simple construction is optimal",
+      "**Praton's stunning equivalence**: The simplest open case $f(10) = 3$ would imply the entire Erd\u0151s-Soifer formula $f(k^2+2c+1) = k + c/k$ for all $k$ and $|c| < k$. This deep structural result reduces an infinite family of questions to a single case",
+      "**Axis-parallel vs rotated**: BKU (2024) solved the restricted problem where all squares must be axis-aligned. The general case remains open because rotated squares could potentially create more efficient packings \u2014 though no example is known where rotation helps"
     ],
     "prerequisites": [
       "Discrete geometry: square packing, containment constraints",
@@ -81,7 +81,7 @@
     {
       "id": "known",
       "title": "Known Exact Values",
-      "summary": "Axiomatizes the computed values: $f(1) = 1$, $f(2) = 1$ (Erdős), $f(4) = 2$, $f(5) = 2$ (Newman), $f(9) = 3$. These are the foundation for the conjecture.",
+      "summary": "Axiomatizes the computed values: $f(1) = 1$, $f(2) = 1$ (Erd\u0151s), $f(4) = 2$, $f(5) = 2$ (Newman), $f(9) = 3$. These are the foundation for the conjecture.",
       "startLine": 107,
       "endLine": 124,
       "mathContext": "$f(1) = 1$, $f(2) = 1$, $f(4) = 2$, $f(5) = 2$, $f(9) = 3$. Pattern: $f(k^2) = k$ and $f(k^2+1) = k$."
@@ -104,19 +104,19 @@
     },
     {
       "id": "halasz",
-      "title": "Halász Lower Bounds (1984)",
-      "summary": "Axiomatizes Halász's constructive bounds: $f(k^2+2c+1) \\geq k + c/k$ (odd) and $f(k^2+2c) \\geq k + c/(k+1)$ (even), describing how grid modifications increase the sum.",
+      "title": "Hal\u00e1sz Lower Bounds (1984)",
+      "summary": "Axiomatizes Hal\u00e1sz's constructive bounds: $f(k^2+2c+1) \\geq k + c/k$ (odd) and $f(k^2+2c) \\geq k + c/(k+1)$ (even), describing how grid modifications increase the sum.",
       "startLine": 161,
       "endLine": 173,
-      "mathContext": "Halász: $f(k^2+2c+1) \\geq k + c/k$ for $0 \\leq c < k$. Split $c$ grid squares into pairs to gain $c/k$."
+      "mathContext": "Hal\u00e1sz: $f(k^2+2c+1) \\geq k + c/k$ for $0 \\leq c < k$. Split $c$ grid squares into pairs to gain $c/k$."
     },
     {
       "id": "soifer",
-      "title": "The Erdős-Soifer Conjecture (1995)",
+      "title": "The Erd\u0151s-Soifer Conjecture (1995)",
       "summary": "Defines the stronger conjecture $f(k^2+2c+1) = k + c/k$ for $|c| < k$, and axiomatizes Praton's equivalence showing it follows from the main conjecture.",
       "startLine": 175,
       "endLine": 188,
-      "mathContext": "Erdős-Soifer: $f(k^2+2c+1) = k + c/k$ for $|c| < k$. Praton: equivalent to $f(k^2+1) = k$."
+      "mathContext": "Erd\u0151s-Soifer: $f(k^2+2c+1) = k + c/k$ for $|c| < k$. Praton: equivalent to $f(k^2+1) = k$."
     },
     {
       "id": "axis",
@@ -136,57 +136,63 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #106 formalizes one of the most elegant unsolved problems in discrete geometry: whether the maximum side-length sum $f(n)$ of $n$ non-overlapping squares in $[0,1]^2$ satisfies $f(k^2+1) = k$. The Lean formalization captures the full structure — from the Cauchy-Schwarz tight bound at perfect squares through the Halász constructions, Erdős-Soifer conjecture, Praton's equivalence, and the 2024 BKU axis-parallel breakthrough. The file has only 1 sorry (the grid construction existence), with 3 fully proved theorems including the key conjecture-equivalence results.",
-    "implications": "**Theoretical Significance**\n\n1. **Discrete Geometry**: The problem is a prototype for understanding when adding extra pieces to an optimal configuration doesn't help — a 'rigidity' phenomenon in packing theory\n\n2. **Rotated vs Axis-Parallel Packing**: With BKU (2024) solving the axis-parallel case, the core remaining question is whether rotation can beat alignment.\n\nThis connects to the broader theory of packing efficiency under geometric constraints\n\n**3. Praton's Reduction**: The equivalence between the single case $f(k^2+1) = k$ and the full Erdős-Soifer formula reveals deep structural rigidity in the packing function — a single data point determines an entire family\n\n4. **Optimization Plateaus**: The plateau phenomenon ($f(n+1) = f(n)$ at perfect squares) connects to general questions about when adding resources to a constrained optimization problem fails to improve the objective\n\n5. **Combinatorial Extremal Theory**: The interplay between Cauchy-Schwarz (global bound) and constructive packings (local optimality) exemplifies the tension between analysis and combinatorics in extremal problems.",
+    "summary": "Erd\u0151s Problem #106 formalizes one of the most elegant unsolved problems in discrete geometry: whether the maximum side-length sum $f(n)$ of $n$ non-overlapping squares in $[0,1]^2$ satisfies $f(k^2+1) = k$. The Lean formalization captures the full structure \u2014 from the Cauchy-Schwarz tight bound at perfect squares through the Hal\u00e1sz constructions, Erd\u0151s-Soifer conjecture, Praton's equivalence, and the 2024 BKU axis-parallel breakthrough. The file has only 1 sorry (the grid construction existence), with 3 fully proved theorems including the key conjecture-equivalence results.",
+    "implications": "**Theoretical Significance**\n\n1. **Discrete Geometry**: The problem is a prototype for understanding when adding extra pieces to an optimal configuration doesn't help \u2014 a 'rigidity' phenomenon in packing theory\n\n2. **Rotated vs Axis-Parallel Packing**: With BKU (2024) solving the axis-parallel case, the core remaining question is whether rotation can beat alignment.\n\nThis connects to the broader theory of packing efficiency under geometric constraints\n\n**3. Praton's Reduction**: The equivalence between the single case $f(k^2+1) = k$ and the full Erd\u0151s-Soifer formula reveals deep structural rigidity in the packing function \u2014 a single data point determines an entire family\n\n4. **Optimization Plateaus**: The plateau phenomenon ($f(n+1) = f(n)$ at perfect squares) connects to general questions about when adding resources to a constrained optimization problem fails to improve the objective\n\n5. **Combinatorial Extremal Theory**: The interplay between Cauchy-Schwarz (global bound) and constructive packings (local optimality) exemplifies the tension between analysis and combinatorics in extremal problems.",
     "openQuestions": [
-      "Is $f(k^2+1) = k$ for all $k \\geq 1$? (The main conjecture — open for $k \\geq 3$, i.e., $f(10) = 3$ is the first unresolved case)",
+      "Is $f(k^2+1) = k$ for all $k \\geq 1$? (The main conjecture \u2014 open for $k \\geq 3$, i.e., $f(10) = 3$ is the first unresolved case)",
       "Can rotated squares beat axis-parallel packings? (I.e., is $f(n) > g(n)$ for some $n$? No example is known)",
-      "Does the Erdős-Soifer formula $f(k^2+2c+1) = k + c/k$ hold for all $|c| < k$? (Equivalent to the main conjecture by Praton)",
+      "Does the Erd\u0151s-Soifer formula $f(k^2+2c+1) = k + c/k$ hold for all $|c| < k$? (Equivalent to the main conjecture by Praton)",
       "What is the complete staircase structure of $f$? (I.e., characterize $\\text{plateauSet}$ fully)",
       "Is there a continuous analogue: what is $\\sup \\int_F s\\, d\\mu$ over packings of infinitely many squares?"
     ]
   },
   "crossReferences": [
     {
-      "target": "erdos-99",
-      "relationship": "Erdős Problem #99 asks whether minimal-diameter point sets with unit minimum distance must contain equilateral triangles — another packing optimality problem where Cauchy-Schwarz type arguments yield tight bounds on configurations."
+      "relationship": "related",
+      "targetId": "erdos-99",
+      "description": "Erd\u0151s Problem #99 asks whether minimal-diameter point sets with unit minimum distance must contain equilateral triangles \u2014 another packing optimality problem where Cauchy-Schwarz type arguments yield tight bounds on configurations."
     },
     {
-      "target": "erdos-103",
-      "relationship": "Erdős Problem #103 counts incongruent optimal point configurations minimizing diameter, paralleling the question of how many combinatorially distinct optimal packings achieve f(k²) = k."
+      "relationship": "related",
+      "targetId": "erdos-103",
+      "description": "Erd\u0151s Problem #103 counts incongruent optimal point configurations minimizing diameter, paralleling the question of how many combinatorially distinct optimal packings achieve f(k\u00b2) = k."
     },
     {
-      "target": "cauchy-schwarz",
-      "relationship": "The Cauchy-Schwarz inequality is the central analytic tool: (Σsᵢ)² ≤ n·Σsᵢ² ≤ n gives f(n) ≤ √n, tight at perfect squares. The entire conjecture concerns when this bound can be matched just beyond a perfect square."
+      "relationship": "related",
+      "targetId": "cauchy-schwarz",
+      "description": "The Cauchy-Schwarz inequality is the central analytic tool: (\u03a3s\u1d62)\u00b2 \u2264 n\u00b7\u03a3s\u1d62\u00b2 \u2264 n gives f(n) \u2264 \u221an, tight at perfect squares. The entire conjecture concerns when this bound can be matched just beyond a perfect square."
     },
     {
-      "target": "isoperimetric-theorem",
-      "relationship": "The isoperimetric theorem is the prototype extremal geometry result: asking which shape maximizes area for fixed perimeter. The square packing problem similarly asks which packing maximizes total side length under a containment constraint, exhibiting the same rigidity-at-extrema phenomenon."
+      "relationship": "related",
+      "targetId": "isoperimetric-theorem",
+      "description": "The isoperimetric theorem is the prototype extremal geometry result: asking which shape maximizes area for fixed perimeter. The square packing problem similarly asks which packing maximizes total side length under a containment constraint, exhibiting the same rigidity-at-extrema phenomenon."
     },
     {
-      "target": "erdos-107",
-      "relationship": "The Happy Ending Problem (Erdős–Szekeres) is a foundational Erdős combinatorial geometry problem where exact thresholds are conjectured for finite configurations. Like Problem #106, it features a well-known lower bound construction (convex position) and a long-open matching upper bound."
+      "relationship": "related",
+      "targetId": "erdos-107",
+      "description": "The Happy Ending Problem (Erd\u0151s\u2013Szekeres) is a foundational Erd\u0151s combinatorial geometry problem where exact thresholds are conjectured for finite configurations. Like Problem #106, it features a well-known lower bound construction (convex position) and a long-open matching upper bound."
     },
     {
-      "target": "borsuk-ulam",
-      "relationship": "The Borsuk-Ulam theorem is a cornerstone of combinatorial topology applied to geometry. The axis-parallel BKU (2024) resolution of Problem #106 used topological and measure-theoretic techniques, placing the problem in the broader tradition of applying analytic tools to packing questions."
+      "relationship": "related",
+      "targetId": "borsuk-ulam",
+      "description": "The Borsuk-Ulam theorem is a cornerstone of combinatorial topology applied to geometry. The axis-parallel BKU (2024) resolution of Problem #106 used topological and measure-theoretic techniques, placing the problem in the broader tradition of applying analytic tools to packing questions."
     }
   ],
   "relatedProofs": [
     {
       "slug": "erdos-99",
-      "title": "Erdős Problem #99: Equilateral Triangles in Minimal Diameter Sets",
+      "title": "Erd\u0151s Problem #99: Equilateral Triangles in Minimal Diameter Sets",
       "relevance": "Discrete geometry packing with extremal configuration questions"
     },
     {
       "slug": "erdos-103",
-      "title": "Erdős Problem #103: Incongruent Optimal Point Configurations",
+      "title": "Erd\u0151s Problem #103: Incongruent Optimal Point Configurations",
       "relevance": "Counting and classifying optimal geometric packings"
     },
     {
       "slug": "cauchy-schwarz",
       "title": "Cauchy-Schwarz Inequality",
-      "relevance": "Core inequality providing the f(n) ≤ √n upper bound"
+      "relevance": "Core inequality providing the f(n) \u2264 \u221an upper bound"
     },
     {
       "slug": "isoperimetric-theorem",
@@ -195,8 +201,8 @@
     },
     {
       "slug": "erdos-107",
-      "title": "Erdős Problem #107: The Happy Ending Problem",
-      "relevance": "Paradigmatic Erdős combinatorial geometry open problem with exact threshold conjectures"
+      "title": "Erd\u0151s Problem #107: The Happy Ending Problem",
+      "relevance": "Paradigmatic Erd\u0151s combinatorial geometry open problem with exact threshold conjectures"
     },
     {
       "slug": "borsuk-ulam",
@@ -207,26 +213,26 @@
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "A. Soifer"
       ],
       "title": "Squares Packing",
       "venue": "Geombinatorics",
       "year": 1995,
       "volume": "4",
-      "pages": "75–82",
-      "note": "Formulates the Erdős-Soifer conjecture f(k²+2c+1) = k + c/k and states the equivalence with f(k²+1) = k."
+      "pages": "75\u201382",
+      "note": "Formulates the Erd\u0151s-Soifer conjecture f(k\u00b2+2c+1) = k + c/k and states the equivalence with f(k\u00b2+1) = k."
     },
     {
       "authors": [
-        "G. Halász"
+        "G. Hal\u00e1sz"
       ],
       "title": "Packing squares into a square",
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
       "year": 1984,
       "volume": "20",
-      "pages": "249–264",
-      "note": "Proves the constructive lower bounds f(k²+2c+1) ≥ k + c/k by splitting grid squares into pairs."
+      "pages": "249\u2013264",
+      "note": "Proves the constructive lower bounds f(k\u00b2+2c+1) \u2265 k + c/k by splitting grid squares into pairs."
     },
     {
       "authors": [
@@ -236,8 +242,8 @@
       "venue": "Geombinatorics",
       "year": 2003,
       "volume": "13",
-      "pages": "30–42",
-      "note": "Proves the stunning equivalence: f(k²+1) = k for all k if and only if the full Erdős-Soifer formula holds, reducing the conjecture to the single case f(10) = 3."
+      "pages": "30\u201342",
+      "note": "Proves the stunning equivalence: f(k\u00b2+1) = k for all k if and only if the full Erd\u0151s-Soifer formula holds, reducing the conjecture to the single case f(10) = 3."
     },
     {
       "authors": [
@@ -249,18 +255,18 @@
       "venue": "arXiv preprint",
       "year": 2024,
       "arxiv": "2411.06770",
-      "note": "Proves g(k²+1) = k for axis-parallel squares (BKU theorem), completely resolving the axis-parallel restriction of Erdős's conjecture."
+      "note": "Proves g(k\u00b2+1) = k for axis-parallel squares (BKU theorem), completely resolving the axis-parallel restriction of Erd\u0151s's conjecture."
     },
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "Some old and new problems in combinatorial geometry",
       "venue": "Annals of Discrete Mathematics",
       "year": 1986,
       "volume": "28",
-      "pages": "129–136",
-      "note": "Erdős restates the square packing conjecture alongside other open combinatorial geometry problems and discusses partial progress."
+      "pages": "129\u2013136",
+      "note": "Erd\u0151s restates the square packing conjecture alongside other open combinatorial geometry problems and discusses partial progress."
     }
   ],
   "leanFile": {

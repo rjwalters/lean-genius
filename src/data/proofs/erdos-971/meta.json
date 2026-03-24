@@ -1,10 +1,10 @@
 {
   "id": "erdos-971",
-  "title": "Erdős Problem #971: Distribution of Least Primes in Arithmetic Progressions",
+  "title": "Erd\u0151s Problem #971: Distribution of Least Primes in Arithmetic Progressions",
   "slug": "erdos-971",
-  "description": "For p(a,d) the least prime congruent to a mod d, does there exist c > 0 such that p(a,d) > (1+c)φ(d)log d for many residue classes a, for all large d?",
+  "description": "For p(a,d) the least prime congruent to a mod d, does there exist c > 0 such that p(a,d) > (1+c)\u03c6(d)log d for many residue classes a, for all large d?",
   "meta": {
-    "author": "Paul Erdős (1949 partial results)",
+    "author": "Paul Erd\u0151s (1949 partial results)",
     "sourceUrl": "https://erdosproblems.com/971",
     "date": "1949",
     "status": "axiomatized",
@@ -31,7 +31,7 @@
       },
       {
         "theorem": "Nat.totient",
-        "description": "Euler's totient function φ(n)",
+        "description": "Euler's totient function \u03c6(n)",
         "module": "Mathlib.Data.Nat.Totient"
       },
       {
@@ -48,7 +48,7 @@
     "originalContributions": [
       "Defines leastCongruentPrime as the infimum of primes in an arithmetic progression",
       "States the open problem precisely using Mathlib filters for asymptotic behavior",
-      "Formalizes both of Erdős's 1949 partial results as axioms with documentation",
+      "Formalizes both of Erd\u0151s's 1949 partial results as axioms with documentation",
       "Provides educational context connecting to Linnik's and Dirichlet's theorems",
       "Includes verified computational examples for small moduli"
     ],
@@ -57,15 +57,15 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Paul Erdős and concerns the distribution of the smallest primes in arithmetic progressions. Let p(a,d) denote the least prime congruent to a modulo d. The question asks whether there is a systematic bias causing many residue classes to have their least primes significantly larger than the expected average.\n\nErdős made significant progress on this problem in his 1949 paper 'On some applications of Brun's method' (Acta Univ. Szeged). Using Brun's sieve, he proved two partial results: first, that the desired phenomenon occurs for infinitely many moduli d (though not necessarily all large d); second, that in the opposite direction, for any ε > 0, many residue classes have least primes less than ε·φ(d)·log d.\n\nThis problem sits at the intersection of sieve theory and the study of primes in arithmetic progressions, extending questions raised by Dirichlet's theorem and refined by Linnik's theorem on the least prime in an arithmetic progression.",
-    "problemStatement": "Let $p(a,d)$ denote the least prime congruent to $a \\pmod{d}$. Does there exist a constant $c > 0$ such that, for all sufficiently large $d$,\n$$p(a,d) > (1+c)\\varphi(d)\\log d$$\nfor $\\gg \\varphi(d)$ many values of $a$ coprime to $d$?\n\n**Status**: OPEN. The main question remains unresolved. Erdős (1949) proved the statement holds for infinitely many $d$, and also proved the complementary bound $p(a,d) < \\varepsilon \\varphi(d) \\log d$ for many $a$.",
-    "text": "For p(a,d) the least prime congruent to a mod d, does there exist c > 0 such that p(a,d) > (1+c)φ(d)log d for many residue classes a, for all large d?",
-    "proofStrategy": "We formalize the problem statement and Erdős's partial results using Mathlib's filter framework for asymptotic statements. The key definition is leastCongruentPrime, which uses the infimum of primes satisfying the congruence condition.\n\nSince the partial results depend on Brun's sieve methods (not yet in Mathlib), we state them as axioms with careful documentation of the mathematical references. The main open question is stated as a definition rather than an axiom, since its truth value is unknown.\n\nWe also provide verified computational examples showing that least primes can be explicitly computed for small moduli, demonstrating that our definition captures the intended mathematical concept.",
+    "historicalContext": "This problem was posed by Paul Erd\u0151s and concerns the distribution of the smallest primes in arithmetic progressions. Let p(a,d) denote the least prime congruent to a modulo d. The question asks whether there is a systematic bias causing many residue classes to have their least primes significantly larger than the expected average.\n\nErd\u0151s made significant progress on this problem in his 1949 paper 'On some applications of Brun's method' (Acta Univ. Szeged). Using Brun's sieve, he proved two partial results: first, that the desired phenomenon occurs for infinitely many moduli d (though not necessarily all large d); second, that in the opposite direction, for any \u03b5 > 0, many residue classes have least primes less than \u03b5\u00b7\u03c6(d)\u00b7log d.\n\nThis problem sits at the intersection of sieve theory and the study of primes in arithmetic progressions, extending questions raised by Dirichlet's theorem and refined by Linnik's theorem on the least prime in an arithmetic progression.",
+    "problemStatement": "Let $p(a,d)$ denote the least prime congruent to $a \\pmod{d}$. Does there exist a constant $c > 0$ such that, for all sufficiently large $d$,\n$$p(a,d) > (1+c)\\varphi(d)\\log d$$\nfor $\\gg \\varphi(d)$ many values of $a$ coprime to $d$?\n\n**Status**: OPEN. The main question remains unresolved. Erd\u0151s (1949) proved the statement holds for infinitely many $d$, and also proved the complementary bound $p(a,d) < \\varepsilon \\varphi(d) \\log d$ for many $a$.",
+    "text": "For p(a,d) the least prime congruent to a mod d, does there exist c > 0 such that p(a,d) > (1+c)\u03c6(d)log d for many residue classes a, for all large d?",
+    "proofStrategy": "We formalize the problem statement and Erd\u0151s's partial results using Mathlib's filter framework for asymptotic statements. The key definition is leastCongruentPrime, which uses the infimum of primes satisfying the congruence condition.\n\nSince the partial results depend on Brun's sieve methods (not yet in Mathlib), we state them as axioms with careful documentation of the mathematical references. The main open question is stated as a definition rather than an axiom, since its truth value is unknown.\n\nWe also provide verified computational examples showing that least primes can be explicitly computed for small moduli, demonstrating that our definition captures the intended mathematical concept.",
     "keyInsights": [
       "**Arithmetic progressions and primes**: Dirichlet's theorem guarantees infinitely many primes in each arithmetic progression a (mod d) when gcd(a,d) = 1, but finding the *least* such prime is much harder.",
-      "**Linnik's theorem**: Provides an upper bound p(a,d) ≤ c·d^L for some 'Linnik constant' L, currently known to satisfy L ≤ 5. This problem asks about the complementary lower bound behavior.",
-      "**Expected size**: On average over residue classes, one expects p(a,d) ≈ φ(d)·log d by the prime number theorem for arithmetic progressions.",
-      "**Brun's sieve**: The key tool in Erdős's 1949 partial results, allowing counting arguments for primes satisfying multiple congruence conditions.",
+      "**Linnik's theorem**: Provides an upper bound p(a,d) \u2264 c\u00b7d^L for some 'Linnik constant' L, currently known to satisfy L \u2264 5. This problem asks about the complementary lower bound behavior.",
+      "**Expected size**: On average over residue classes, one expects p(a,d) \u2248 \u03c6(d)\u00b7log d by the prime number theorem for arithmetic progressions.",
+      "**Brun's sieve**: The key tool in Erd\u0151s's 1949 partial results, allowing counting arguments for primes satisfying multiple congruence conditions.",
       "**Open vs. solved variants**: The full statement (for ALL large d) remains open, but the statement for INFINITELY MANY d is proved."
     ],
     "prerequisites": [
@@ -79,7 +79,7 @@
       "title": "Problem Description",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Header documentation stating the problem, its open status, and Erdős's partial results from 1949."
+      "summary": "Header documentation stating the problem, its open status, and Erd\u0151s's partial results from 1949."
     },
     {
       "id": "definitions",
@@ -97,10 +97,10 @@
     },
     {
       "id": "partial-results",
-      "title": "Erdős's Partial Results (1949)",
+      "title": "Erd\u0151s's Partial Results (1949)",
       "startLine": 66,
       "endLine": 109,
-      "summary": "Formalizes both of Erdős's 1949 partial results: the statement for infinitely many d, and the complementary small prime bound."
+      "summary": "Formalizes both of Erd\u0151s's 1949 partial results: the statement for infinitely many d, and the complementary small prime bound."
     },
     {
       "id": "context",
@@ -118,7 +118,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalized Erdős Problem #971, which asks about the distribution of least primes in arithmetic progressions. The main question—whether many residue classes systematically have large least primes for ALL large moduli—remains open. We captured Erdős's 1949 partial results as axioms: the phenomenon occurs for infinitely many d, and a complementary small-prime bound holds universally.",
+    "summary": "We formalized Erd\u0151s Problem #971, which asks about the distribution of least primes in arithmetic progressions. The main question\u2014whether many residue classes systematically have large least primes for ALL large moduli\u2014remains open. We captured Erd\u0151s's 1949 partial results as axioms: the phenomenon occurs for infinitely many d, and a complementary small-prime bound holds universally.",
     "implications": "**Theoretical Significance**: This problem connects fundamental questions about prime distribution.\n\nProgress would likely require advances in sieve theory or new techniques for understanding the uniformity of prime distribution across arithmetic progressions. The contrast between the 'infinitely many d' and 'all large d' versions highlights how much harder uniform asymptotic statements can be in analytic number theory.",
     "openQuestions": [
       "Can the 'infinitely many d' result be strengthened to 'all large d'?",
@@ -142,5 +142,39 @@
     "axiomCount": 2,
     "theoremCount": 2,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Share analytic-number-theory, prime number, and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Share analytic-number-theory, prime number, and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Share sieve-methods, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-462",
+      "relationship": "related",
+      "description": "Share sieve-methods, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Share sieve-methods, analytic-number-theory, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "dirichlets-theorem",
+    "erdos-200",
+    "erdos-4",
+    "erdos-462",
+    "erdos-976"
+  ]
 }

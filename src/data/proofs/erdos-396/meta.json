@@ -1,10 +1,10 @@
 {
   "id": "erdos-396",
-  "title": "Erdős Problem #396: Descending Factorials Dividing Central Binomials",
+  "title": "Erd\u0151s Problem #396: Descending Factorials Dividing Central Binomials",
   "slug": "erdos-396",
-  "description": "For every k, does there exist n such that n(n−1)⋯(n−k) divides C(2n,n)? Pomerance proved individual factors divide for infinitely many n. The full product conjecture remains open.",
+  "description": "For every k, does there exist n such that n(n\u22121)\u22ef(n\u2212k) divides C(2n,n)? Pomerance proved individual factors divide for infinitely many n. The full product conjecture remains open.",
   "meta": {
-    "author": "Erdős, Graham",
+    "author": "Erd\u0151s, Graham",
     "sourceUrl": "https://erdosproblems.com/396",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos396Problem.lean",
@@ -25,16 +25,16 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed Problem #396 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory,' asking about the divisibility of central binomial coefficients $\\binom{2n}{n}$ by descending factorial products. The question is motivated by the classical fact that $n+1$ always divides $\\binom{2n}{n}$ (giving the Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$), but $n$ itself rarely divides $\\binom{2n}{n}$. The problem asks how far 'downward' from $n$ one can push simultaneous divisibility.\n\nCarl Pomerance made the most significant progress in 2014. He showed that for any fixed $k$, each individual factor $(n-k)$ divides $\\binom{2n}{n}$ for infinitely many $n$, but the set of such $n$ has upper density less than $1/3$. In contrast, the ascending product $(n+1)(n+2)\\cdots(n+k)$ divides $\\binom{2n}{n}$ with asymptotic density 1 — a striking asymmetry between descending and ascending factorials. The key difficulty lies in the $p$-adic structure: by Kummer's theorem, $\\nu_p(\\binom{2n}{n})$ equals the number of carries when adding $n$ to $n$ in base $p$, and simultaneous divisibility by $n(n-1)\\cdots(n-k)$ places correlated constraints across multiple primes.\n\nThe OEIS sequence A375077 catalogues the smallest witness $n$ for each $k$. The problem remains open: even the existence of a single $n$ for each $k$ is unproved, let alone the natural strengthening that infinitely many witnesses exist.",
+    "historicalContext": "Erd\u0151s and Graham posed Problem #396 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory,' asking about the divisibility of central binomial coefficients $\\binom{2n}{n}$ by descending factorial products. The question is motivated by the classical fact that $n+1$ always divides $\\binom{2n}{n}$ (giving the Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$), but $n$ itself rarely divides $\\binom{2n}{n}$. The problem asks how far 'downward' from $n$ one can push simultaneous divisibility.\n\nCarl Pomerance made the most significant progress in 2014. He showed that for any fixed $k$, each individual factor $(n-k)$ divides $\\binom{2n}{n}$ for infinitely many $n$, but the set of such $n$ has upper density less than $1/3$. In contrast, the ascending product $(n+1)(n+2)\\cdots(n+k)$ divides $\\binom{2n}{n}$ with asymptotic density 1 \u2014 a striking asymmetry between descending and ascending factorials. The key difficulty lies in the $p$-adic structure: by Kummer's theorem, $\\nu_p(\\binom{2n}{n})$ equals the number of carries when adding $n$ to $n$ in base $p$, and simultaneous divisibility by $n(n-1)\\cdots(n-k)$ places correlated constraints across multiple primes.\n\nThe OEIS sequence A375077 catalogues the smallest witness $n$ for each $k$. The problem remains open: even the existence of a single $n$ for each $k$ is unproved, let alone the natural strengthening that infinitely many witnesses exist.",
     "problemStatement": "For every positive integer $k$, does there exist $n$ such that $n(n-1)(n-2)\\cdots(n-k) \\mid \\binom{2n}{n}$? Equivalently, does $n^{\\underline{k+1}} \\mid \\binom{2n}{n}$ for some $n$?",
-    "text": "For every k, does there exist n such that n(n−1)⋯(n−k) divides C(2n,n)? Pomerance proved individual factors divide for infinitely many n. The full product conjecture remains open.",
+    "text": "For every k, does there exist n such that n(n\u22121)\u22ef(n\u2212k) divides C(2n,n)? Pomerance proved individual factors divide for infinitely many n. The full product conjecture remains open.",
     "proofStrategy": "The formalization uses Mathlib's `Nat.descFactorial` and `Nat.centralBinom` to express the problem cleanly. The Catalan divisibility $(n+1) \\mid \\binom{2n}{n}$ is axiomatized as the base case. Pomerance's results are captured as three axioms: single-factor divisibility (infinitely many $n$), the $1/3$ density bound, and the density-1 result for ascending factorials. The main conjecture and its infinitely-many strengthening are stated as axioms. A smallest-witness function is axiomatized with a validity property for computational verification.",
     "keyInsights": [
       "**Ascending vs descending asymmetry**: The ascending product $(n+1)\\cdots(n+k)$ divides $\\binom{2n}{n}$ with density 1, but the descending product $n(n-1)\\cdots(n-k)$ divides only rarely. This reflects the different interactions with the denominator $(n!)^2$ in the formula $\\binom{2n}{n} = (2n)!/(n!)^2$.",
       "**Kummer's theorem is the key tool**: The $p$-adic valuation $\\nu_p(\\binom{2n}{n})$ equals the number of carries when adding $n+n$ in base $p$. Simultaneous divisibility by $n, n-1, \\ldots, n-k$ constrains the base-$p$ digits of $n$ for each prime $p \\leq n$, creating a complex system of correlated conditions.",
       "Pomerance's density bound of $1/3$ shows that **even single-factor divisibility is rare**: the set $\\{n : (n-k) \\mid \\binom{2n}{n}\\}$ has upper density $< 1/3$, far from the density-1 behavior of the ascending case.",
       "The **Catalan number connection** provides the starting point: $C_n = \\binom{2n}{n}/(n+1)$ is always an integer, but the sequence $\\binom{2n}{n}/[n(n-1)\\cdots(n-k)]$ need not be, making the divisibility condition genuinely non-trivial.",
-      "The problem sits in the tradition of **Erdős divisibility questions** about binomial coefficients, connecting to the Erdős–Kac theorem, Granville's work on binomial coefficients modulo primes, and the general study of the prime factorization of $\\binom{2n}{n}$."
+      "The problem sits in the tradition of **Erd\u0151s divisibility questions** about binomial coefficients, connecting to the Erd\u0151s\u2013Kac theorem, Granville's work on binomial coefficients modulo primes, and the general study of the prime factorization of $\\binom{2n}{n}$."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -72,7 +72,7 @@
     },
     {
       "id": "main-conjecture",
-      "title": "The Erdős–Graham Conjecture",
+      "title": "The Erd\u0151s\u2013Graham Conjecture",
       "startLine": 63,
       "endLine": 68,
       "summary": "States the main open conjecture: $\\forall k, \\exists n: n^{\\underline{k+1}} \\mid \\binom{2n}{n}$."
@@ -93,7 +93,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #396 on descending factorial divisibility of central binomial coefficients. It includes the Catalan base case, Pomerance's 2014 partial results (single-factor, density bounds, ascending contrast), the open conjecture, computational evidence via OEIS, and the infinitely-many strengthening.",
+    "summary": "This formalization captures Erd\u0151s Problem #396 on descending factorial divisibility of central binomial coefficients. It includes the Catalan base case, Pomerance's 2014 partial results (single-factor, density bounds, ascending contrast), the open conjecture, computational evidence via OEIS, and the infinitely-many strengthening.",
     "implications": "Resolution would deepen understanding of the $p$-adic structure of central binomial coefficients and the interplay between Kummer's theorem carries and factorial divisibility. The ascending-vs-descending asymmetry highlights fundamental differences in how the numerator and denominator of $\\binom{2n}{n}$ interact with shifted factorial products.",
     "openQuestions": [
       "For every $k$, does $n^{\\underline{k+1}} \\mid \\binom{2n}{n}$ hold for some $n$?",
@@ -117,5 +117,39 @@
     "axiomCount": 9,
     "theoremCount": 0,
     "definitionCount": 0
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Share divisibility, binomial-coefficients, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Share divisibility, binomial-coefficients, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-731",
+      "relationship": "related",
+      "description": "Share divisibility, binomial-coefficients, and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1063",
+    "erdos-387",
+    "erdos-731",
+    "divisibility-by-3",
+    "divisibility-truncation-general"
+  ]
 }

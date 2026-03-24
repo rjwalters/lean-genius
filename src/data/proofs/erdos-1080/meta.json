@@ -1,10 +1,10 @@
 {
   "id": "erdos-1080",
-  "title": "Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs",
+  "title": "Erd\u0151s Problem #1080: Six-Cycles in Sparse Bipartite Graphs",
   "slug": "erdos-1080",
-  "description": "Is there a constant c > 0 such that bipartite graphs with n vertices (one part of size ⌊n^(2/3)⌋) and cn edges must contain a C_6? NO, disproved by De Caen-Székely (1992).",
+  "description": "Is there a constant c > 0 such that bipartite graphs with n vertices (one part of size \u230an^(2/3)\u230b) and cn edges must contain a C_6? NO, disproved by De Caen-Sz\u00e9kely (1992).",
   "meta": {
-    "author": "De Caen-Székely (1992 disproof), Lazebnik-Ustimenko-Woldar (1994 improved bounds)",
+    "author": "De Caen-Sz\u00e9kely (1992 disproof), Lazebnik-Ustimenko-Woldar (1994 improved bounds)",
     "sourceUrl": "https://erdosproblems.com/1080",
     "date": "1992",
     "status": "formalized",
@@ -54,8 +54,8 @@
       "C4Free, C6Free, C4C6Free definitions: cycle-free predicates",
       "maxC4C6FreeEdges: extremal function f(n,m)",
       "deCaen_szekely_upper_bound: O(n^(10/9)) upper bound",
-      "deCaen_szekely_lower_bound: Ω(n^(58/57)) lower bound",
-      "lazebnik_ustimenko_woldar_bound: Ω(n^(16/15)) improved bound",
+      "deCaen_szekely_lower_bound: \u03a9(n^(58/57)) lower bound",
+      "lazebnik_ustimenko_woldar_bound: \u03a9(n^(16/15)) improved bound",
       "erdos_conjecture_false: main disproof theorem",
       "erdos_c8_observation: C_8 existence guarantee",
       "kovari_sos_turan: classical extremal result",
@@ -66,17 +66,17 @@
     "assumptions": "7 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1080**\n\nThis problem explores the threshold for forcing six-cycles in bipartite graphs with an imbalanced partition.\n\n**Key History:**\n- Erdős [Er75]: Posed the problem; noted that C_8 is forced\n- De Caen & Székely [DeSz92]: Disproved the conjecture, established bounds on f(n,m)\n- Faudree & Simonovits: Independently proved the general upper bound\n- Lazebnik, Ustimenko & Woldar [LUW94]: Improved the lower bound using algebraic constructions\n\n**Mathematical Setting:**\nThe problem concerns bipartite graphs G = (X ∪ Y, E) where |X| = ⌊n^(2/3)⌋ and the total vertex count is n. The question asks whether O(n) edges suffice to guarantee a 6-cycle.",
-    "problemStatement": "**Problem Statement (Disproved)**\n\nLet G be a bipartite graph on n vertices where one part has ⌊n^(2/3)⌋ vertices. Does there exist a constant c > 0 such that if G has at least cn edges, then G must contain a C_6 (6-cycle)?\n\n**Answer: NO**\n\nDe Caen and Székely (1992) showed no such constant exists. The extremal function f(n, ⌊n^(2/3)⌋) for C_4,C_6-free bipartite graphs satisfies:\n- Upper bound: O(n^(10/9))\n- Lower bound: Ω(n^(16/15)) (improved by Lazebnik-Ustimenko-Woldar)\n\nSince f grows superlinearly, no constant c works.",
-    "text": "Is there a constant c > 0 such that bipartite graphs with n vertices (one part of size ⌊n^(2/3)⌋) and cn edges must contain a C_6? NO, disproved by De Caen-Székely (1992).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structures:** Define bipartitions, bipartite graphs, and cycle predicates using Mathlib's SimpleGraph.\n\n2. **Extremal Function:** Define f(n,m) as the maximum edge count in C_4,C_6-free bipartite graphs.\n\n3. **Key Bounds:** Axiomatize De Caen-Székely and Lazebnik-Ustimenko-Woldar bounds.\n\n4. **Disproof:** Show that superlinear growth of f contradicts existence of constant c.\n\n5. **Contrast:** Note that C_8 IS forced by cn edges (Erdős's observation).\n\n6. **Related Results:** Include Kővári-Sós-Turán theorem connection.",
+    "historicalContext": "**Erd\u0151s Problem #1080**\n\nThis problem explores the threshold for forcing six-cycles in bipartite graphs with an imbalanced partition.\n\n**Key History:**\n- Erd\u0151s [Er75]: Posed the problem; noted that C_8 is forced\n- De Caen & Sz\u00e9kely [DeSz92]: Disproved the conjecture, established bounds on f(n,m)\n- Faudree & Simonovits: Independently proved the general upper bound\n- Lazebnik, Ustimenko & Woldar [LUW94]: Improved the lower bound using algebraic constructions\n\n**Mathematical Setting:**\nThe problem concerns bipartite graphs G = (X \u222a Y, E) where |X| = \u230an^(2/3)\u230b and the total vertex count is n. The question asks whether O(n) edges suffice to guarantee a 6-cycle.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet G be a bipartite graph on n vertices where one part has \u230an^(2/3)\u230b vertices. Does there exist a constant c > 0 such that if G has at least cn edges, then G must contain a C_6 (6-cycle)?\n\n**Answer: NO**\n\nDe Caen and Sz\u00e9kely (1992) showed no such constant exists. The extremal function f(n, \u230an^(2/3)\u230b) for C_4,C_6-free bipartite graphs satisfies:\n- Upper bound: O(n^(10/9))\n- Lower bound: \u03a9(n^(16/15)) (improved by Lazebnik-Ustimenko-Woldar)\n\nSince f grows superlinearly, no constant c works.",
+    "text": "Is there a constant c > 0 such that bipartite graphs with n vertices (one part of size \u230an^(2/3)\u230b) and cn edges must contain a C_6? NO, disproved by De Caen-Sz\u00e9kely (1992).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structures:** Define bipartitions, bipartite graphs, and cycle predicates using Mathlib's SimpleGraph.\n\n2. **Extremal Function:** Define f(n,m) as the maximum edge count in C_4,C_6-free bipartite graphs.\n\n3. **Key Bounds:** Axiomatize De Caen-Sz\u00e9kely and Lazebnik-Ustimenko-Woldar bounds.\n\n4. **Disproof:** Show that superlinear growth of f contradicts existence of constant c.\n\n5. **Contrast:** Note that C_8 IS forced by cn edges (Erd\u0151s's observation).\n\n6. **Related Results:** Include K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem connection.",
     "keyInsights": [
-      "**Superlinear Growth:** f(n, ⌊n^(2/3)⌋) = Θ(n^α) for α ∈ (16/15, 10/9), so no linear bound exists",
+      "**Superlinear Growth:** f(n, \u230an^(2/3)\u230b) = \u0398(n^\u03b1) for \u03b1 \u2208 (16/15, 10/9), so no linear bound exists",
       "**C_6 vs C_8 Dichotomy:** C_6 cannot be forced with O(n) edges, but C_8 can",
       "**Algebraic Constructions:** Lower bounds use incidence graphs of projective planes",
-      "**Partition Imbalance:** The ⌊n^(2/3)⌋ constraint creates specific extremal behavior",
+      "**Partition Imbalance:** The \u230an^(2/3)\u230b constraint creates specific extremal behavior",
       "**Connection to K_{2,2}:** C_4-free graphs avoid K_{2,2} subgraphs",
-      "**Kővári-Sós-Turán:** Classical theorem bounds bipartite Turán numbers"
+      "**K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n:** Classical theorem bounds bipartite Tur\u00e1n numbers"
     ],
     "prerequisites": [
       "Extremal graph theory: Turan-type problems and forbidden subgraph thresholds",
@@ -109,7 +109,7 @@
     },
     {
       "id": "decaen-szekely",
-      "title": "De Caen-Székely Bounds (1992)",
+      "title": "De Caen-Sz\u00e9kely Bounds (1992)",
       "summary": "Upper and lower bounds, Faudree-Simonovits general bound",
       "startLine": 139,
       "endLine": 173
@@ -117,13 +117,13 @@
     {
       "id": "lazebnik-improvement",
       "title": "Lazebnik-Ustimenko-Woldar Improvement (1994)",
-      "summary": "Improved lower bound Ω(n^(16/15))",
+      "summary": "Improved lower bound \u03a9(n^(16/15))",
       "startLine": 175,
       "endLine": 187
     },
     {
       "id": "disproof",
-      "title": "Disproof of Erdős's Conjecture",
+      "title": "Disproof of Erd\u0151s's Conjecture",
       "summary": "erdos_conjecture_false and erdos_1080 main theorems",
       "startLine": 189,
       "endLine": 233
@@ -131,14 +131,14 @@
     {
       "id": "c8-observation",
       "title": "The C_8 Observation",
-      "summary": "Erdős's observation that C_8 is guaranteed",
+      "summary": "Erd\u0151s's observation that C_8 is guaranteed",
       "startLine": 235,
       "endLine": 250
     },
     {
       "id": "related-results",
       "title": "Related Extremal Results",
-      "summary": "Kővári-Sós-Turán theorem, C_4-free characterization",
+      "summary": "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem, C_4-free characterization",
       "startLine": 252,
       "endLine": 281
     },
@@ -151,10 +151,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1080 asked whether O(n) edges guarantee a C_6 in bipartite graphs with ⌊n^(2/3)⌋ vertices in one part. The answer is NO, as shown by De Caen and Székely in 1992. The extremal function f(n, ⌊n^(2/3)⌋) grows superlinearly: between Ω(n^(16/15)) and O(n^(10/9)). However, Erdős observed that C_8 IS guaranteed by O(n) edges.",
-    "implications": "**Theoretical Significance**: **Extremal Graph Theory Connections**\n\n1. **Cycle Forcing Thresholds:** Different cycle lengths have different edge thresholds\n\n2. **Algebraic Constructions:** Incidence graphs of projective planes give optimal C_4,C_6-free graphs\n\n**3. Turán-Type Problems:** Generalizes classical forbidden subgraph questions\n\n4. **Partition Constraints:** Imbalanced bipartitions create distinct extremal behavior\n\n5. **Asymptotic Gaps:** The gap between upper and lower bounds (10/9 vs 16/15) remains open.",
+    "summary": "Erd\u0151s Problem #1080 asked whether O(n) edges guarantee a C_6 in bipartite graphs with \u230an^(2/3)\u230b vertices in one part. The answer is NO, as shown by De Caen and Sz\u00e9kely in 1992. The extremal function f(n, \u230an^(2/3)\u230b) grows superlinearly: between \u03a9(n^(16/15)) and O(n^(10/9)). However, Erd\u0151s observed that C_8 IS guaranteed by O(n) edges.",
+    "implications": "**Theoretical Significance**: **Extremal Graph Theory Connections**\n\n1. **Cycle Forcing Thresholds:** Different cycle lengths have different edge thresholds\n\n2. **Algebraic Constructions:** Incidence graphs of projective planes give optimal C_4,C_6-free graphs\n\n**3. Tur\u00e1n-Type Problems:** Generalizes classical forbidden subgraph questions\n\n4. **Partition Constraints:** Imbalanced bipartitions create distinct extremal behavior\n\n5. **Asymptotic Gaps:** The gap between upper and lower bounds (10/9 vs 16/15) remains open.",
     "openQuestions": [
-      "Determine the exact exponent for f(n, ⌊n^(2/3)⌋)",
+      "Determine the exact exponent for f(n, \u230an^(2/3)\u230b)",
       "Characterize optimal C_4,C_6-free bipartite graphs",
       "Extend to other cycle lengths (C_8, C_10, ...)",
       "Understand the algebraic structure of extremal graphs",
@@ -163,35 +163,35 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-1008",
-      "title": "Erdős Problem #1008: C₄-Free Subgraphs",
-      "relationship": "Shares the C_4-free constraint: Problem #1080 studies C_4,C_6-free bipartite graphs while Problem #1008 asks about maximum C_4-free subgraphs. Both probe the extremal density achievable by forbidding short even cycles."
+      "relationship": "related",
+      "description": "Shares the C_4-free constraint: Problem #1080 studies C_4,C_6-free bipartite graphs while Problem #1008 asks about maximum C_4-free subgraphs. Both probe the extremal density achievable by forbidding short even cycles.",
+      "targetId": "erdos-1008"
     },
     {
-      "slug": "erdos-1021",
-      "title": "Erdős Problem #1021: Extremal Numbers for Bipartite Pair Graphs",
-      "relationship": "Both problems involve bipartite extremal numbers ex(n; H) for specific forbidden bipartite subgraphs. Problem #1021 studies the ex(n, G_k) threshold near n^{3/2}, paralleling the superlinear growth of f(n, ⌊n^{2/3}⌋) in Problem #1080."
+      "relationship": "related",
+      "description": "Both problems involve bipartite extremal numbers ex(n; H) for specific forbidden bipartite subgraphs. Problem #1021 studies the ex(n, G_k) threshold near n^{3/2}, paralleling the superlinear growth of f(n, \u230an^{2/3}\u230b) in Problem #1080.",
+      "targetId": "erdos-1021"
     },
     {
-      "slug": "erdos-113",
-      "title": "Erdős Problem #113: Extremal Numbers and Degeneracy of Bipartite Graphs",
-      "relationship": "Directly in the same research area: forbidden bipartite subgraph extremal theory. The Janzer (2023) disproof of the Erdős–Simonovits Conjecture uses constructions akin to the algebraic incidence graph methods in Problem #1080."
+      "relationship": "related",
+      "description": "Directly in the same research area: forbidden bipartite subgraph extremal theory. The Janzer (2023) disproof of the Erd\u0151s\u2013Simonovits Conjecture uses constructions akin to the algebraic incidence graph methods in Problem #1080.",
+      "targetId": "erdos-113"
     },
     {
-      "slug": "erdos-1079",
-      "title": "Erdős Problem #1079: Turán Density in Neighborhoods",
-      "relationship": "Adjacent Turán-type problem: both concern whether local or global edge density forces a specific substructure (a cycle or a complete subgraph). The Bollobás–Thomason framework applies to the same extremal graph toolkit."
+      "relationship": "related",
+      "description": "Adjacent Tur\u00e1n-type problem: both concern whether local or global edge density forces a specific substructure (a cycle or a complete subgraph). The Bollob\u00e1s\u2013Thomason framework applies to the same extremal graph toolkit.",
+      "targetId": "erdos-1079"
     },
     {
-      "slug": "erdos-65",
-      "title": "Erdős Problem #65: Cycle Lengths in Dense Graphs",
-      "relationship": "Complementary cycle-forcing problem: Problem #65 asks which cycle lengths are guaranteed in graphs with kn edges; Problem #1080 pinpoints the transition from C_6 (not forced linearly) to C_8 (forced) in bipartite graphs with ⌊n^{2/3}⌋ vertices in one part."
+      "relationship": "related",
+      "description": "Complementary cycle-forcing problem: Problem #65 asks which cycle lengths are guaranteed in graphs with kn edges; Problem #1080 pinpoints the transition from C_6 (not forced linearly) to C_8 (forced) in bipartite graphs with \u230an^{2/3}\u230b vertices in one part.",
+      "targetId": "erdos-65"
     }
   ],
   "relatedProofs": [
     {
       "slug": "erdos-1008",
-      "description": "C_4-free subgraph density problem; shares the Conlon–Fox–Sudakov extremal framework"
+      "description": "C_4-free subgraph density problem; shares the Conlon\u2013Fox\u2013Sudakov extremal framework"
     },
     {
       "slug": "erdos-1021",
@@ -199,11 +199,11 @@
     },
     {
       "slug": "erdos-113",
-      "description": "Bipartite degeneracy conjecture (Erdős–Simonovits); algebraic construction techniques overlap"
+      "description": "Bipartite degeneracy conjecture (Erd\u0151s\u2013Simonovits); algebraic construction techniques overlap"
     },
     {
       "slug": "erdos-1079",
-      "description": "Turán density in vertex neighborhoods; adjacent extremal graph theory"
+      "description": "Tur\u00e1n density in vertex neighborhoods; adjacent extremal graph theory"
     },
     {
       "slug": "erdos-65",
@@ -212,12 +212,12 @@
   ],
   "references": [
     {
-      "authors": "De Caen, D. and Székely, L. A.",
+      "authors": "De Caen, D. and Sz\u00e9kely, L. A.",
       "title": "The maximum size of 4- and 6-cycle-free bipartite graphs on n vertices",
-      "venue": "Sets, Graphs and Numbers (Budapest, 1991), Colloq. Math. Soc. János Bolyai, Vol. 60, North-Holland",
+      "venue": "Sets, Graphs and Numbers (Budapest, 1991), Colloq. Math. Soc. J\u00e1nos Bolyai, Vol. 60, North-Holland",
       "year": 1992,
-      "pages": "135–142",
-      "note": "Primary source: disproves Erdős's conjecture and establishes the O(n^{10/9}) upper and Ω(n^{58/57}) lower bounds for f(n, ⌊n^{2/3}⌋)."
+      "pages": "135\u2013142",
+      "note": "Primary source: disproves Erd\u0151s's conjecture and establishes the O(n^{10/9}) upper and \u03a9(n^{58/57}) lower bounds for f(n, \u230an^{2/3}\u230b)."
     },
     {
       "authors": "Lazebnik, F., Ustimenko, V. A., and Woldar, A. J.",
@@ -226,17 +226,17 @@
       "year": 1995,
       "volume": 32,
       "number": 1,
-      "pages": "73–79",
+      "pages": "73\u201379",
       "doi": "10.1090/S0273-0979-1995-00569-0",
-      "note": "Improves the lower bound to Ω(n^{16/15}) using algebraic constructions from finite geometry (incidence graphs of projective planes); cited as Lazebnik–Ustimenko–Woldar (1994/1995) in the formalization."
+      "note": "Improves the lower bound to \u03a9(n^{16/15}) using algebraic constructions from finite geometry (incidence graphs of projective planes); cited as Lazebnik\u2013Ustimenko\u2013Woldar (1994/1995) in the formalization."
     },
     {
-      "authors": "Kővári, T., Sós, V. T., and Turán, P.",
+      "authors": "K\u0151v\u00e1ri, T., S\u00f3s, V. T., and Tur\u00e1n, P.",
       "title": "On a problem of K. Zarankiewicz",
       "venue": "Colloquium Mathematicum",
       "year": 1954,
       "volume": 3,
-      "pages": "50–57",
+      "pages": "50\u201357",
       "note": "Classical theorem bounding the number of edges in K_{s,t}-free bipartite graphs; the formalization includes a kovari_sos_turan theorem as a related extremal result."
     },
     {
@@ -246,9 +246,9 @@
       "year": 1983,
       "volume": 3,
       "number": "1",
-      "pages": "83–93",
+      "pages": "83\u201393",
       "doi": "10.1007/BF02579343",
-      "note": "Proved the general O(n^{10/9}) upper bound for C_4,C_6-free bipartite graphs independently of De Caen–Székely; cited in the formalization as the Faudree–Simonovits general bound."
+      "note": "Proved the general O(n^{10/9}) upper bound for C_4,C_6-free bipartite graphs independently of De Caen\u2013Sz\u00e9kely; cited in the formalization as the Faudree\u2013Simonovits general bound."
     },
     {
       "authors": "Bondy, J. A. and Simonovits, M.",
@@ -257,9 +257,9 @@
       "year": 1974,
       "volume": 16,
       "number": 2,
-      "pages": "97–105",
+      "pages": "97\u2013105",
       "doi": "10.1016/0095-8956(74)90052-5",
-      "note": "Foundational result showing that graphs with Ω(n^{1+1/k}) edges contain a C_{2k}; provides the theoretical context for why C_8 is forced by cn edges while C_6 is not in the imbalanced bipartite setting."
+      "note": "Foundational result showing that graphs with \u03a9(n^{1+1/k}) edges contain a C_{2k}; provides the theoretical context for why C_8 is forced by cn edges while C_6 is not in the imbalanced bipartite setting."
     }
   ],
   "leanFile": {

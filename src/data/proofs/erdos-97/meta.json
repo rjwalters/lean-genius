@@ -1,10 +1,10 @@
 {
   "id": "erdos-97",
-  "title": "Erdős Problem #97: Equidistant Vertices in Convex Polygons",
+  "title": "Erd\u0151s Problem #97: Equidistant Vertices in Convex Polygons",
   "slug": "erdos-97",
   "description": "Does every convex polygon have a vertex with no other 4 vertices equidistant from it?",
   "meta": {
-    "author": "Erdős (1946); Danzer counterexample (1987); Fishburn-Reeds (1992)",
+    "author": "Erd\u0151s (1946); Danzer counterexample (1987); Fishburn-Reeds (1992)",
     "sourceUrl": "https://erdosproblems.com/97",
     "date": "1946",
     "status": "formalized",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space ℝ^n with norm",
+        "description": "Euclidean space \u211d^n with norm",
         "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
       },
       {
@@ -56,8 +56,8 @@
     "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős originally conjectured (1946) that every convex polygon has a vertex with no other 3 vertices equidistant from it. Danzer disproved this with a 9-point counterexample where every vertex has exactly 3 vertices equidistant from it.\n\nThe problem was then raised for k = 4: does every convex polygon have a vertex with no other 4 vertices equidistant? This remains open.\n\nFishburn and Reeds (1992) found an even stronger example: a convex 20-gon where every vertex has 3 vertices at UNIT distance (not just equidistant at varying radii). They also proved 20 is minimal for this property.",
-    "problemStatement": "**Erdős Problem #97 (OPEN for k = 4)**\n\nDoes every convex polygon have a vertex with no other 4 vertices equidistant from it?\n\n**Solved Variants**:\n- k = 3: NO (Danzer's 9-point counterexample)\n- k = 3 unit distance: NO (Fishburn-Reeds 20-point example)\n\n**Open Questions**:\n- The k = 4 case\n- Does any k work?\n\n**Prize**: $100",
+    "historicalContext": "Erd\u0151s originally conjectured (1946) that every convex polygon has a vertex with no other 3 vertices equidistant from it. Danzer disproved this with a 9-point counterexample where every vertex has exactly 3 vertices equidistant from it.\n\nThe problem was then raised for k = 4: does every convex polygon have a vertex with no other 4 vertices equidistant? This remains open.\n\nFishburn and Reeds (1992) found an even stronger example: a convex 20-gon where every vertex has 3 vertices at UNIT distance (not just equidistant at varying radii). They also proved 20 is minimal for this property.",
+    "problemStatement": "**Erd\u0151s Problem #97 (OPEN for k = 4)**\n\nDoes every convex polygon have a vertex with no other 4 vertices equidistant from it?\n\n**Solved Variants**:\n- k = 3: NO (Danzer's 9-point counterexample)\n- k = 3 unit distance: NO (Fishburn-Reeds 20-point example)\n\n**Open Questions**:\n- The k = 4 case\n- Does any k work?\n\n**Prize**: $100",
     "text": "Does every convex polygon have a vertex with no other 4 vertices equidistant from it?",
     "proofStrategy": "We formalize the key concepts and counterexamples:\n\n1. **hasKEquidistantAt**: k points at same distance from a vertex\n\n2. **hasKEquidistantProperty**: k-equidistant from every vertex\n\n3. **isConvexPosition**: vertices of a convex polygon\n\n4. **Erdos97Question**: the open k = 4 question\n\n5. **danzerCounterexample** (axiom): 9-point convex with 3-equidistant\n\n6. **fishburnReedsExample** (axiom): 20-point with 3 unit-distance",
     "keyInsights": [
@@ -123,7 +123,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #97 about equidistant vertices in convex polygons. The original k = 3 conjecture was disproved by Danzer (1987), but the k = 4 case remains open. The problem connects to unit distance bounds and convex geometry.",
+    "summary": "We formalize Erd\u0151s Problem #97 about equidistant vertices in convex polygons. The original k = 3 conjecture was disproved by Danzer (1987), but the k = 4 case remains open. The problem connects to unit distance bounds and convex geometry.",
     "implications": "This problem shows that convex polygon geometry is surprisingly rich. Understanding equidistance bounds would have implications for the unit distance problem in convex sets.",
     "openQuestions": [
       "Does every convex polygon have a vertex with no 4 equidistant vertices?",
@@ -145,5 +145,15 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-92",
+      "relationship": "related",
+      "description": "Share equidistant and conjecture themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-92"
+  ]
 }

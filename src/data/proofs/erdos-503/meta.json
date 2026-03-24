@@ -1,10 +1,10 @@
 {
   "id": "erdos-503",
-  "title": "Erdős Problem #503: Maximum Isosceles Sets in Rⁿ",
+  "title": "Erd\u0151s Problem #503: Maximum Isosceles Sets in R\u207f",
   "slug": "erdos-503",
-  "description": "What is the maximum size of A ⊆ ℝⁿ with every triple isosceles? f(2)=6 (Kelly), f(3)=8 (Croft). General: C(n+1,2)+1 ≤ f(n) ≤ C(n+2,2) (Blokhuis/Alweiss). OPEN for n ≥ 4.",
+  "description": "What is the maximum size of A \u2286 \u211d\u207f with every triple isosceles? f(2)=6 (Kelly), f(3)=8 (Croft). General: C(n+1,2)+1 \u2264 f(n) \u2264 C(n+2,2) (Blokhuis/Alweiss). OPEN for n \u2265 4.",
   "meta": {
-    "author": "Erdős–Kelly (1947, n=2); Croft (1962, n=3); Blokhuis (1984, upper bound); Alweiss (lower bound); Weisenberg (improvement)",
+    "author": "Erd\u0151s\u2013Kelly (1947, n=2); Croft (1962, n=3); Blokhuis (1984, upper bound); Alweiss (lower bound); Weisenberg (improvement)",
     "sourceUrl": "https://erdosproblems.com/503",
     "date": "1947",
     "status": "axiomatized",
@@ -45,9 +45,9 @@
       "maxIsoscelesSize: extremal function f(n) for dimension n (axiomatized)",
       "kelly_R2: f(2) = 6 (axiomatized)",
       "croft_R3: f(3) = 8 (axiomatized)",
-      "blokhuis_upper_bound: f(n) ≤ C(n+2,2) (axiomatized)",
-      "alweiss_lower_bound: f(n) ≥ C(n+1,2) for n ≥ 2 (axiomatized)",
-      "weisenberg_improvement: f(n) ≥ C(n+1,2)+1 for n ≥ 2 (axiomatized)",
+      "blokhuis_upper_bound: f(n) \u2264 C(n+2,2) (axiomatized)",
+      "alweiss_lower_bound: f(n) \u2265 C(n+1,2) for n \u2265 2 (axiomatized)",
+      "weisenberg_improvement: f(n) \u2265 C(n+1,2)+1 for n \u2265 2 (axiomatized)",
       "erdos_503_bounds: combined sandwich theorem (proved)",
       "erdos_503_summary: exact values f(2)=6, f(3)=8 (proved)"
     ],
@@ -57,15 +57,15 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Kelly posed Problem #503 in their 1947 paper on distances in point sets, asking for the maximum size of a subset of $\\mathbb{R}^n$ in which every triple of points forms an isosceles triangle. Kelly proved $f(2) = 6$, with the regular hexagon providing the extremal configuration in the plane—its high symmetry group ($D_6$) ensures every triple of vertices has at least two equal distances. H. T. Croft solved the three-dimensional case in 1962, showing $f(3) = 8$ using careful geometric constructions. In 1984, Aart Blokhuis established the general upper bound $f(n) \\leq \\binom{n+2}{2}$ using a linear algebra argument involving the dimension of the space of squared-distance polynomials. On the lower bound side, Ryan Alweiss constructed isosceles sets of size $\\binom{n+1}{2}$ using sums of standard basis vectors $e_i + e_j$ in $\\mathbb{R}^{n+1}$ (projected to $\\mathbb{R}^n$), and Weisenberg improved this by 1 to $\\binom{n+1}{2} + 1$. The gap between the bounds is $n$, growing linearly, and the exact value of $f(n)$ for any $n \\geq 4$ remains open. The problem connects to the broader Erdős distance theory, including questions about repeated distances and equidistant sets.",
+    "historicalContext": "Erd\u0151s and Kelly posed Problem #503 in their 1947 paper on distances in point sets, asking for the maximum size of a subset of $\\mathbb{R}^n$ in which every triple of points forms an isosceles triangle. Kelly proved $f(2) = 6$, with the regular hexagon providing the extremal configuration in the plane\u2014its high symmetry group ($D_6$) ensures every triple of vertices has at least two equal distances. H. T. Croft solved the three-dimensional case in 1962, showing $f(3) = 8$ using careful geometric constructions. In 1984, Aart Blokhuis established the general upper bound $f(n) \\leq \\binom{n+2}{2}$ using a linear algebra argument involving the dimension of the space of squared-distance polynomials. On the lower bound side, Ryan Alweiss constructed isosceles sets of size $\\binom{n+1}{2}$ using sums of standard basis vectors $e_i + e_j$ in $\\mathbb{R}^{n+1}$ (projected to $\\mathbb{R}^n$), and Weisenberg improved this by 1 to $\\binom{n+1}{2} + 1$. The gap between the bounds is $n$, growing linearly, and the exact value of $f(n)$ for any $n \\geq 4$ remains open. The problem connects to the broader Erd\u0151s distance theory, including questions about repeated distances and equidistant sets.",
     "problemStatement": "**Problem Statement (OPEN for $n \\geq 4$)**\n\nWhat is the maximum size $f(n)$ of a subset $A \\subseteq \\mathbb{R}^n$ such that every three points from $A$ form an isosceles triangle?\n\n**Known values:** $f(2) = 6$ (Kelly), $f(3) = 8$ (Croft).\n\n**General bounds:** $\\binom{n+1}{2} + 1 \\leq f(n) \\leq \\binom{n+2}{2}$.",
-    "text": "What is the maximum size of A ⊆ ℝⁿ with every triple isosceles? f(2)=6 (Kelly), f(3)=8 (Croft). General: C(n+1,2)+1 ≤ f(n) ≤ C(n+2,2) (Blokhuis/Alweiss). OPEN for n ≥ 4.",
+    "text": "What is the maximum size of A \u2286 \u211d\u207f with every triple isosceles? f(2)=6 (Kelly), f(3)=8 (Croft). General: C(n+1,2)+1 \u2264 f(n) \u2264 C(n+2,2) (Blokhuis/Alweiss). OPEN for n \u2265 4.",
     "proofStrategy": "The formalization defines isosceles sets via an abstract $\\texttt{Dist}$ typeclass, introduces the extremal function $f(n)$ as an axiom, and axiomatizes the exact values ($n = 2, 3$) and general bounds (Blokhuis upper, Alweiss/Weisenberg lower). The combined bounds theorem and consistency checks for $n = 2, 3$ are proved using $\\texttt{norm\\_num}$.",
     "keyInsights": [
-      "**Regular hexagon optimality:** The 6-point regular hexagon is the unique extremal isosceles set in $\\mathbb{R}^2$—its $D_6$ symmetry group ensures every triple is isosceles",
+      "**Regular hexagon optimality:** The 6-point regular hexagon is the unique extremal isosceles set in $\\mathbb{R}^2$\u2014its $D_6$ symmetry group ensures every triple is isosceles",
       "**Linear algebra upper bound:** Blokhuis's $\\binom{n+2}{2}$ bound comes from embedding distance constraints in a polynomial space of dimension $\\binom{n+2}{2}$, where isosceles conditions force linear dependencies",
       "**Coordinate vector construction:** Alweiss's $\\{e_i + e_j\\}$ construction achieves $\\binom{n+1}{2}$ points, with the isosceles property following from the symmetric distance structure: $\\|e_i + e_j - e_k - e_l\\|^2 \\in \\{2, 4\\}$ for distinct indices",
-      "**Linear gap:** The gap $\\binom{n+2}{2} - \\binom{n+1}{2} - 1 = n$ between bounds grows linearly—for large $n$, the relative gap shrinks as $O(1/n)$, suggesting the bounds are close to tight",
+      "**Linear gap:** The gap $\\binom{n+2}{2} - \\binom{n+1}{2} - 1 = n$ between bounds grows linearly\u2014for large $n$, the relative gap shrinks as $O(1/n)$, suggesting the bounds are close to tight",
       "**Neither bound tight for $n = 3$:** Since $f(3) = 8$ while the bounds give $[7, 10]$, neither Blokhuis nor Weisenberg is tight, suggesting the true answer may require dimension-specific constructions"
     ],
     "prerequisites": [
@@ -92,7 +92,7 @@
       "title": "Exact Results: $f(2) = 6$, $f(3) = 8$",
       "startLine": 50,
       "endLine": 63,
-      "summary": "Axiomatizes Kelly's $f(2) = 6$ [1947] and Croft's $f(3) = 8$ [1962]—the only known exact values of the isosceles extremal function."
+      "summary": "Axiomatizes Kelly's $f(2) = 6$ [1947] and Croft's $f(3) = 8$ [1962]\u2014the only known exact values of the isosceles extremal function."
     },
     {
       "id": "upper-bound",
@@ -124,14 +124,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #503 asks for the maximum isosceles set size in ℝⁿ. The formalization axiomatizes exact values f(2) = 6 (Kelly) and f(3) = 8 (Croft), the Blokhuis upper bound C(n+2,2), and the Alweiss/Weisenberg lower bound C(n+1,2)+1. The combined bounds theorem and norm_num consistency checks are proved. The exact value for n ≥ 4 remains open.",
-    "implications": "Closing the gap between C(n+1,2)+1 and C(n+2,2) would advance the Erdős distance theory and may require new algebraic or geometric techniques beyond linear algebra dimension counting.",
+    "summary": "Erd\u0151s Problem #503 asks for the maximum isosceles set size in \u211d\u207f. The formalization axiomatizes exact values f(2) = 6 (Kelly) and f(3) = 8 (Croft), the Blokhuis upper bound C(n+2,2), and the Alweiss/Weisenberg lower bound C(n+1,2)+1. The combined bounds theorem and norm_num consistency checks are proved. The exact value for n \u2265 4 remains open.",
+    "implications": "Closing the gap between C(n+1,2)+1 and C(n+2,2) would advance the Erd\u0151s distance theory and may require new algebraic or geometric techniques beyond linear algebra dimension counting.",
     "openQuestions": [
-      "What is f(4)? The bounds give 11 ≤ f(4) ≤ 15—can the exact value be determined?",
+      "What is f(4)? The bounds give 11 \u2264 f(4) \u2264 15\u2014can the exact value be determined?",
       "Is the Blokhuis upper bound C(n+2,2) asymptotically tight, or is f(n) closer to C(n+1,2)?",
       "Can the Weisenberg lower bound be improved by more than 1 over Alweiss's construction?",
-      "What do extremal isosceles configurations look like in dimension n ≥ 4?",
-      "What is the maximum isosceles set size in other metric spaces (e.g., ℓ¹, Hamming)?"
+      "What do extremal isosceles configurations look like in dimension n \u2265 4?",
+      "What is the maximum isosceles set size in other metric spaces (e.g., \u2113\u00b9, Hamming)?"
     ]
   },
   "leanFile": {
@@ -147,5 +147,39 @@
     "axiomCount": 6,
     "theoremCount": 2,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distances themes"
+    },
+    {
+      "targetId": "erdos-657",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distances themes"
+    },
+    {
+      "targetId": "erdos-661",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distances themes"
+    },
+    {
+      "targetId": "erdos-662",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distances themes"
+    },
+    {
+      "targetId": "erdos-668",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distances themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1087",
+    "erdos-657",
+    "erdos-661",
+    "erdos-662",
+    "erdos-668"
+  ]
 }

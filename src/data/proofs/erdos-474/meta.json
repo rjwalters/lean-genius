@@ -1,10 +1,10 @@
 {
   "id": "erdos-474",
-  "title": "Erdős Problem #474: Coloring ℝ² for Uncountable Sets",
+  "title": "Erd\u0151s Problem #474: Coloring \u211d\u00b2 for Uncountable Sets",
   "slug": "erdos-474",
-  "description": "Under what set-theoretic assumptions can ℝ² be 3-colored such that every uncountable A has A² containing pairs of all colors? PARTIALLY RESOLVED: works under CH (Erdős), fails with large c (Shelah), open for c = ℵ₂.",
+  "description": "Under what set-theoretic assumptions can \u211d\u00b2 be 3-colored such that every uncountable A has A\u00b2 containing pairs of all colors? PARTIALLY RESOLVED: works under CH (Erd\u0151s), fails with large c (Shelah), open for c = \u2135\u2082.",
   "meta": {
-    "author": "Sierpinski-Kurepa (2-color), Erdős (CH case), Shelah (consistency)",
+    "author": "Sierpinski-Kurepa (2-color), Erd\u0151s (CH case), Shelah (consistency)",
     "sourceUrl": "https://erdosproblems.com/474",
     "date": "1954",
     "status": "axiomatized",
@@ -29,7 +29,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.aleph",
-        "description": "Aleph cardinals ℵ_α for ordinal α",
+        "description": "Aleph cardinals \u2135_\u03b1 for ordinal \u03b1",
         "module": "Mathlib.SetTheory.Cardinal.Basic"
       },
       {
@@ -54,18 +54,18 @@
       "IsUncountable predicate via cardinal comparison",
       "ContainsAllColorPairs: pairs contain all colors",
       "ErdosColoringProperty: main property under investigation",
-      "PartitionProperty: 2^ℵ₀ → (ℵ₁)³₂ formalization",
+      "PartitionProperty: 2^\u2135\u2080 \u2192 (\u2135\u2081)\u00b3\u2082 formalization",
       "sierpinski_kurepa axiom: 2-color case always works",
       "two_color_partition axiom: partition notation for 2 colors",
-      "ContinuumHypothesis definition: c = ℵ₁",
+      "ContinuumHypothesis definition: c = \u2135\u2081",
       "erdos_under_ch axiom: CH implies property",
       "shelah_consistency axiom: independence of failure",
       "shelah_large_c axiom: model has large continuum",
-      "OpenQuestion definition: c = ℵ₂ case",
-      "erdos_prize_question: minimal κ for failure",
+      "OpenQuestion definition: c = \u2135\u2082 case",
+      "erdos_prize_question: minimal \u03ba for failure",
       "NegativePartition definition: failure of partition relation",
-      "higher_colors_harder axiom: k ≥ 4 at least as hard",
-      "erdos_rado_two_color axiom: Erdős-Rado for 2 colors",
+      "higher_colors_harder axiom: k \u2265 4 at least as hard",
+      "erdos_rado_two_color axiom: Erd\u0151s-Rado for 2 colors",
       "ch_argument axiom: transfinite induction under CH",
       "large_c_failure axiom: forcing counterexamples",
       "erdos_474_summary theorem: CH + 2-color results",
@@ -76,16 +76,16 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #474: Coloring ℝ² for Uncountable Sets**\n\nA foundational problem in infinite Ramsey theory posed by Erdős in 1954, asking when the continuum can be 3-colored so that every uncountable set's pairs realize all colors. Erdős offered a $100 prize for resolving the problem without the Continuum Hypothesis.\n\n**Key History:**\n- 1954: Erdős posed the problem and offered $100\n- Sierpinski and Kurepa independently proved the 2-color case always works\n- Erdős proved the 3-color case holds under CH (c = ℵ₁)\n- Shelah showed a negative answer is consistent with ZFC, though his model requires a very large continuum (much larger than ℵ₂)\n\n**Mathematical Setting:**\nIn partition calculus notation, the question is: When does 2^ℵ₀ → (ℵ₁)³₂ hold? This sits at the intersection of cardinal arithmetic and Ramsey theory, where independence phenomena from ZFC arise naturally. The key open question is whether failure is consistent with c = ℵ₂.",
-    "problemStatement": "**Problem Statement (Partially Resolved)**\n\nUnder what set-theoretic assumptions is it true that $\\mathbb{R}^2$ can be 3-colored such that, for every uncountable $A \\subseteq \\mathbb{R}^2$, the set $A^2$ contains a pair of each color?\n\n**Known Results:**\n- 2 colors: ALWAYS works (Sierpinski-Kurepa)\n- 3 colors + CH: WORKS (Erdős)\n- 3 colors + large c: FAILS (Shelah consistency)\n- 3 colors + c = ℵ₂: OPEN\n\n**Prize:** $100 for deciding without CH",
-    "text": "Under what set-theoretic assumptions can ℝ² be 3-colored such that every uncountable A has A² containing pairs of all colors? PARTIALLY RESOLVED: works under CH (Erdős), fails with large c (Shelah), open for c = ℵ₂.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Cardinal Setup:** Define continuum c, ℵ₁, ℵ₂ using Mathlib's Cardinal type.\n\n2. **Coloring:** ThreeColoring as functions to Fin 3.\n\n3. **Uncountable Sets:** IsUncountable predicate using cardinal comparison.\n\n4. **Main Property:** ContainsAllColorPairs captures when A² has all colors.\n\n5. **Partition Notation:** PartitionProperty formalizes 2^ℵ₀ → (ℵ₁)³₂.\n\n6. **Key Results:** Axiomatize Sierpinski-Kurepa (2-color), Erdős under CH, Shelah consistency.\n\n7. **Open Question:** State that c = ℵ₂ case remains unresolved.\n\n8. **Summary Theorems:** Combine axioms to state known results and open problems.",
+    "historicalContext": "**Erd\u0151s Problem #474: Coloring \u211d\u00b2 for Uncountable Sets**\n\nA foundational problem in infinite Ramsey theory posed by Erd\u0151s in 1954, asking when the continuum can be 3-colored so that every uncountable set's pairs realize all colors. Erd\u0151s offered a $100 prize for resolving the problem without the Continuum Hypothesis.\n\n**Key History:**\n- 1954: Erd\u0151s posed the problem and offered $100\n- Sierpinski and Kurepa independently proved the 2-color case always works\n- Erd\u0151s proved the 3-color case holds under CH (c = \u2135\u2081)\n- Shelah showed a negative answer is consistent with ZFC, though his model requires a very large continuum (much larger than \u2135\u2082)\n\n**Mathematical Setting:**\nIn partition calculus notation, the question is: When does 2^\u2135\u2080 \u2192 (\u2135\u2081)\u00b3\u2082 hold? This sits at the intersection of cardinal arithmetic and Ramsey theory, where independence phenomena from ZFC arise naturally. The key open question is whether failure is consistent with c = \u2135\u2082.",
+    "problemStatement": "**Problem Statement (Partially Resolved)**\n\nUnder what set-theoretic assumptions is it true that $\\mathbb{R}^2$ can be 3-colored such that, for every uncountable $A \\subseteq \\mathbb{R}^2$, the set $A^2$ contains a pair of each color?\n\n**Known Results:**\n- 2 colors: ALWAYS works (Sierpinski-Kurepa)\n- 3 colors + CH: WORKS (Erd\u0151s)\n- 3 colors + large c: FAILS (Shelah consistency)\n- 3 colors + c = \u2135\u2082: OPEN\n\n**Prize:** $100 for deciding without CH",
+    "text": "Under what set-theoretic assumptions can \u211d\u00b2 be 3-colored such that every uncountable A has A\u00b2 containing pairs of all colors? PARTIALLY RESOLVED: works under CH (Erd\u0151s), fails with large c (Shelah), open for c = \u2135\u2082.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Cardinal Setup:** Define continuum c, \u2135\u2081, \u2135\u2082 using Mathlib's Cardinal type.\n\n2. **Coloring:** ThreeColoring as functions to Fin 3.\n\n3. **Uncountable Sets:** IsUncountable predicate using cardinal comparison.\n\n4. **Main Property:** ContainsAllColorPairs captures when A\u00b2 has all colors.\n\n5. **Partition Notation:** PartitionProperty formalizes 2^\u2135\u2080 \u2192 (\u2135\u2081)\u00b3\u2082.\n\n6. **Key Results:** Axiomatize Sierpinski-Kurepa (2-color), Erd\u0151s under CH, Shelah consistency.\n\n7. **Open Question:** State that c = \u2135\u2082 case remains unresolved.\n\n8. **Summary Theorems:** Combine axioms to state known results and open problems.",
     "keyInsights": [
       "**Two vs Three Colors:** 2-color case always works; 3-color case is sensitive to set theory",
-      "**CH Suffices:** Under Continuum Hypothesis (c = ℵ₁), the property holds",
+      "**CH Suffices:** Under Continuum Hypothesis (c = \u2135\u2081), the property holds",
       "**Independence Phenomenon:** The answer depends on set-theoretic axioms beyond ZFC",
       "**Shelah's Model:** Consistency of failure requires very large continuum",
-      "**Open Gap:** Whether c = ℵ₂ suffices for failure remains unknown"
+      "**Open Gap:** Whether c = \u2135\u2082 suffices for failure remains unknown"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -124,7 +124,7 @@
     },
     {
       "id": "under-ch",
-      "title": "Under CH (Erdős's Result)",
+      "title": "Under CH (Erd\u0151s's Result)",
       "summary": "ContinuumHypothesis definition, erdos_under_ch axiom",
       "startLine": 125,
       "endLine": 141
@@ -166,14 +166,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #474 asks about 3-coloring ℝ² so every uncountable set's pairs contain all colors. The 2-color case always works (Sierpinski-Kurepa). Under CH, the 3-color case works (Erdős). Shelah showed a negative answer is consistent with ZFC using large c. The case c = ℵ₂ remains open, with a $100 prize.",
+    "summary": "Erd\u0151s Problem #474 asks about 3-coloring \u211d\u00b2 so every uncountable set's pairs contain all colors. The 2-color case always works (Sierpinski-Kurepa). Under CH, the 3-color case works (Erd\u0151s). Shelah showed a negative answer is consistent with ZFC using large c. The case c = \u2135\u2082 remains open, with a $100 prize.",
     "implications": "**Theoretical Significance**: **Set Theory and Combinatorics**\n\n1. **Independence Phenomena:** The problem exhibits independence from ZFC\n\n**2. Partition Calculus:** Part of the study of cardinal Ramsey theory\n\n3. **Continuum Hypothesis:** Shows CH has consequences in Ramsey theory\n\n4. **Forcing:** Shelah's proof uses forcing methods to construct models.",
     "openQuestions": [
-      "Is a negative answer consistent with c = ℵ₂?",
+      "Is a negative answer consistent with c = \u2135\u2082?",
       "What is the minimal c for which failure is consistent?",
       "What about 4 or more colors?",
       "Are there related independence results for other partition relations?",
-      "Can the $100 prize be claimed with a c = ℵ₂ result?"
+      "Can the $100 prize be claimed with a c = \u2135\u2082 result?"
     ]
   },
   "leanFile": {
@@ -192,5 +192,39 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1128",
+      "relationship": "related",
+      "description": "Share set-theoretic, Ramsey-theoretic, and partition-calculus themes"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Share set-theoretic, Ramsey-theoretic, and partition-calculus themes"
+    },
+    {
+      "targetId": "erdos-597",
+      "relationship": "related",
+      "description": "Share set-theoretic, Ramsey-theoretic, and partition-calculus themes"
+    },
+    {
+      "targetId": "erdos-70",
+      "relationship": "related",
+      "description": "Share set-theoretic, Ramsey-theoretic, and partition-calculus themes"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "Share set-theoretic and independence themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1128",
+    "erdos-1167",
+    "erdos-597",
+    "erdos-70",
+    "continuum-hypothesis"
+  ]
 }

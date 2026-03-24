@@ -1,8 +1,8 @@
 {
   "id": "erdos-821",
-  "title": "Erdős Problem #821: Large Values of the Euler Phi Preimage Function",
+  "title": "Erd\u0151s Problem #821: Large Values of the Euler Phi Preimage Function",
   "slug": "erdos-821",
-  "description": "Let g(n) count m with φ(m)=n. For every ε>0, are there infinitely many n with g(n) > n^{1-ε}? OPEN: Best known is g(n) > n^{0.71568} (Lichtman 2022).",
+  "description": "Let g(n) count m with \u03c6(m)=n. For every \u03b5>0, are there infinitely many n with g(n) > n^{1-\u03b5}? OPEN: Best known is g(n) > n^{0.71568} (Lichtman 2022).",
   "meta": {
     "author": "Lichtman (2022, best bound)",
     "sourceUrl": "https://erdosproblems.com/821",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
-        "description": "Euler's totient function φ(n)",
+        "description": "Euler's totient function \u03c6(n)",
         "module": "Mathlib.NumberTheory.EulerPhi.Basic"
       },
       {
@@ -43,10 +43,10 @@
     ],
     "originalContributions": [
       "phi, preimageCount: Euler totient and preimage count",
-      "pillai_theorem: lim sup g(n) = ∞",
+      "pillai_theorem: lim sup g(n) = \u221e",
       "erdos_1935: g(n) > n^c for some c > 0",
       "lichtmanExponent, lichtman_theorem: best known bound 0.71568",
-      "ErdosConjecture821: formal statement g(n) > n^{1-ε}",
+      "ErdosConjecture821: formal statement g(n) > n^{1-\u03b5}",
       "IsEpsilonSmooth, SmoothPrimesCondition: smooth primes connection",
       "smooth_implies_conjecture: reduction to smooth primes",
       "preimageCount_upper_bound, average_preimageCount: bounds",
@@ -57,12 +57,12 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #821 asks about the preimage counting function g(n) = |{m : φ(m) = n}| for Euler's totient. The question is whether for every ε > 0, there are infinitely many n with g(n) > n^{1-ε}. This would mean the preimage count can be almost as large as n itself, infinitely often.\n\nPillai first showed g(n) is unbounded. Erdős (1935) strengthened this to g(n) > n^c for some c > 0 infinitely often, establishing power-law growth. Baker and Harman (1998) improved the constant, and Lichtman (2022) achieved the current best: g(n) > n^{0.71568} infinitely often. The gap between the exponent 0.71568 and the target of 1 remains significant.\n\nThe conjecture has a beautiful connection to smooth numbers: it would follow if for every ε > 0, there are sufficiently many primes p < x with all prime factors of p-1 less than p^ε. This reduction shows that the problem is intimately connected to the distribution of primes with smooth shifted values, a central topic in analytic number theory.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet g(n) = |{m : φ(m) = n}| count preimages of n under Euler's totient.\n\n**Question:** For every ε > 0, are there infinitely many n with g(n) > n^{1-ε}?\n\n**Status: OPEN**\n\n- Known: g(n) > n^{0.71568} infinitely often (Lichtman 2022)\n- Conjectured: g(n) > n^{1-ε} for all ε > 0\n- Gap: exponent 0.71568 vs target 1",
-    "text": "Let g(n) count m with φ(m)=n. For every ε>0, are there infinitely many n with g(n) > n^{1-ε}? OPEN: Best known is g(n) > n^{0.71568} (Lichtman 2022).",
+    "historicalContext": "Erd\u0151s Problem #821 asks about the preimage counting function g(n) = |{m : \u03c6(m) = n}| for Euler's totient. The question is whether for every \u03b5 > 0, there are infinitely many n with g(n) > n^{1-\u03b5}. This would mean the preimage count can be almost as large as n itself, infinitely often.\n\nPillai first showed g(n) is unbounded. Erd\u0151s (1935) strengthened this to g(n) > n^c for some c > 0 infinitely often, establishing power-law growth. Baker and Harman (1998) improved the constant, and Lichtman (2022) achieved the current best: g(n) > n^{0.71568} infinitely often. The gap between the exponent 0.71568 and the target of 1 remains significant.\n\nThe conjecture has a beautiful connection to smooth numbers: it would follow if for every \u03b5 > 0, there are sufficiently many primes p < x with all prime factors of p-1 less than p^\u03b5. This reduction shows that the problem is intimately connected to the distribution of primes with smooth shifted values, a central topic in analytic number theory.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet g(n) = |{m : \u03c6(m) = n}| count preimages of n under Euler's totient.\n\n**Question:** For every \u03b5 > 0, are there infinitely many n with g(n) > n^{1-\u03b5}?\n\n**Status: OPEN**\n\n- Known: g(n) > n^{0.71568} infinitely often (Lichtman 2022)\n- Conjectured: g(n) > n^{1-\u03b5} for all \u03b5 > 0\n- Gap: exponent 0.71568 vs target 1",
+    "text": "Let g(n) count m with \u03c6(m)=n. For every \u03b5>0, are there infinitely many n with g(n) > n^{1-\u03b5}? OPEN: Best known is g(n) > n^{0.71568} (Lichtman 2022).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:** phi (Euler totient), preimageCount (g(n))\n\n2. **Known Results:** pillai_theorem, erdos_1935, lichtman_theorem\n\n3. **Main Conjecture:** ErdosConjecture821 formal statement\n\n4. **Smooth Primes:** IsEpsilonSmooth, SmoothPrimesCondition\n\n5. **Reduction:** smooth_implies_conjecture showing the connection\n\n6. **Bounds:** Upper and average bounds on g(n)\n\n7. **Partial Results:** erdos_821_partial, erdos_821_best_known",
     "keyInsights": [
-      "**Preimage Function:** g(n) = |{m : φ(m) = n}| counts totient preimages",
+      "**Preimage Function:** g(n) = |{m : \u03c6(m) = n}| counts totient preimages",
       "**Best Bound:** Lichtman (2022): g(n) > n^{0.71568} infinitely often",
       "**Smooth Primes:** Conjecture follows from density of primes with smooth p-1",
       "**Gap to Close:** From 0.71568 to arbitrarily close to 1",
@@ -125,12 +125,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #821 asks whether g(n) > n^{1-ε} for infinitely many n, where g(n) counts preimages of n under Euler's totient. The problem is OPEN. Lichtman (2022) proved the best known bound g(n) > n^{0.71568} infinitely often. The conjecture would follow from sufficient density of primes with smooth p-1.",
-    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Euler's Totient:** Deep properties of φ preimages\n\n**2. Smooth Numbers:** Primes p with smooth p-1 are key\n\n3. **Carmichael's Conjecture:** Related: no unique preimages of φ\n\n4. **Problem #416:** Connected shifted primes questions.",
+    "summary": "Erd\u0151s Problem #821 asks whether g(n) > n^{1-\u03b5} for infinitely many n, where g(n) counts preimages of n under Euler's totient. The problem is OPEN. Lichtman (2022) proved the best known bound g(n) > n^{0.71568} infinitely often. The conjecture would follow from sufficient density of primes with smooth p-1.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Euler's Totient:** Deep properties of \u03c6 preimages\n\n**2. Smooth Numbers:** Primes p with smooth p-1 are key\n\n3. **Carmichael's Conjecture:** Related: no unique preimages of \u03c6\n\n4. **Problem #416:** Connected shifted primes questions.",
     "openQuestions": [
       "Can the exponent 0.71568 be improved toward 1?",
       "Is there a barrier at some specific exponent?",
-      "What is the exact density of primes with ε-smooth p-1?",
+      "What is the exact density of primes with \u03b5-smooth p-1?",
       "Can the connection to smooth primes be made unconditional?"
     ]
   },
@@ -151,5 +151,39 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1093",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1055",
+    "erdos-1065",
+    "erdos-1093",
+    "erdos-1095",
+    "erdos-240"
+  ]
 }

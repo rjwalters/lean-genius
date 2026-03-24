@@ -1,10 +1,10 @@
 {
   "id": "erdos-805",
-  "title": "Erdős Problem #805: Large Cliques and Independent Sets in All Subgraphs",
+  "title": "Erd\u0151s Problem #805: Large Cliques and Independent Sets in All Subgraphs",
   "slug": "erdos-805",
-  "description": "For which g(n) does there exist an n-vertex graph where every g(n)-subgraph has both a (log n)-clique and (log n)-independent set? PARTIALLY SOLVED: Bounds by Alon-Sudakov (2007) and Alon-Bucić-Sudakov (2021).",
+  "description": "For which g(n) does there exist an n-vertex graph where every g(n)-subgraph has both a (log n)-clique and (log n)-independent set? PARTIALLY SOLVED: Bounds by Alon-Sudakov (2007) and Alon-Buci\u0107-Sudakov (2021).",
   "meta": {
-    "author": "Alon-Sudakov (2007), Alon-Bucić-Sudakov (2021)",
+    "author": "Alon-Sudakov (2007), Alon-Buci\u0107-Sudakov (2021)",
     "sourceUrl": "https://erdosproblems.com/805",
     "date": "2021",
     "status": "axiomatized",
@@ -39,9 +39,9 @@
       "IsIndependentSet definition: pairwise non-adjacent vertex set",
       "HasEverywhereRamsey definition: every g-subgraph has k-clique and k-independent set",
       "ExistsEverywhereRamseyGraph definition: existence of graph with everywhere-Ramsey property",
-      "alon_sudakov_2007 axiom: negative result for g(n) = c(log n)³/(log log n)",
-      "alon_bucic_sudakov_2021 axiom: positive result for g(n) ≤ 2^{2^{√(log log n)}}",
-      "ErdosHajnalConjecture805 definition: conjecture that (log n)³ is too small",
+      "alon_sudakov_2007 axiom: negative result for g(n) = c(log n)\u00b3/(log log n)",
+      "alon_bucic_sudakov_2021 axiom: positive result for g(n) \u2264 2^{2^{\u221a(log log n)}}",
+      "ErdosHajnalConjecture805 definition: conjecture that (log n)\u00b3 is too small",
       "erdos_805 summary theorem combining both bounds"
     ],
     "dateAdded": "2026-01-18",
@@ -50,16 +50,16 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #805 asks about the 'everywhere Ramsey' property of graphs: for which threshold functions g(n) does there exist an n-vertex graph where every induced subgraph on g(n) vertices contains both a clique of size at least log n and an independent set of size at least log n? This question sits at the intersection of Ramsey theory and extremal graph theory, probing how local Ramsey properties constrain global graph structure.\n\nErdős and Hajnal conjectured that g(n) = (log n)³ is too small — no such graph should exist at this threshold. Alon and Sudakov (2007) proved this up to a logarithmic factor: no such graph exists when g(n) = c(log n)³/(log log n). This provides a strong upper bound on the threshold function.\n\nAlon, Bucić, and Sudakov (2021) established the positive direction, showing that such graphs do exist when g(n) ≤ 2^{2^{(log log n)^{1/2+o(1)}}}. Their construction uses probabilistic methods and careful analysis of Ramsey numbers. The enormous gap between the upper bound (near (log n)³) and the lower bound (near 2^{2^{√(log log n)}}) shows that determining the exact threshold requires fundamentally new techniques.",
-    "problemStatement": "For which functions g(n) with n > g(n) ≥ (log n)² is there a graph on n vertices in which every induced subgraph on g(n) vertices contains both a clique of size ≥ log n and an independent set of size ≥ log n?\n\nIn particular, is there such a graph for g(n) = (log n)³?\n\n**Status:** PARTIALLY SOLVED — bounds established but exact threshold unknown.",
-    "text": "For which g(n) does there exist an n-vertex graph where every g(n)-subgraph has both a (log n)-clique and (log n)-independent set? PARTIALLY SOLVED: Bounds by Alon-Sudakov (2007) and Alon-Bucić-Sudakov (2021).",
-    "proofStrategy": "The Lean formalization defines cliques, independent sets, and the everywhere-Ramsey property. The two main results (Alon-Sudakov negative, Alon-Bucić-Sudakov positive) are axiomatized. The Erdős-Hajnal conjecture for (log n)³ is stated as a definition. The summary theorem packages both bounds via exact.",
+    "historicalContext": "Erd\u0151s Problem #805 asks about the 'everywhere Ramsey' property of graphs: for which threshold functions g(n) does there exist an n-vertex graph where every induced subgraph on g(n) vertices contains both a clique of size at least log n and an independent set of size at least log n? This question sits at the intersection of Ramsey theory and extremal graph theory, probing how local Ramsey properties constrain global graph structure.\n\nErd\u0151s and Hajnal conjectured that g(n) = (log n)\u00b3 is too small \u2014 no such graph should exist at this threshold. Alon and Sudakov (2007) proved this up to a logarithmic factor: no such graph exists when g(n) = c(log n)\u00b3/(log log n). This provides a strong upper bound on the threshold function.\n\nAlon, Buci\u0107, and Sudakov (2021) established the positive direction, showing that such graphs do exist when g(n) \u2264 2^{2^{(log log n)^{1/2+o(1)}}}. Their construction uses probabilistic methods and careful analysis of Ramsey numbers. The enormous gap between the upper bound (near (log n)\u00b3) and the lower bound (near 2^{2^{\u221a(log log n)}}) shows that determining the exact threshold requires fundamentally new techniques.",
+    "problemStatement": "For which functions g(n) with n > g(n) \u2265 (log n)\u00b2 is there a graph on n vertices in which every induced subgraph on g(n) vertices contains both a clique of size \u2265 log n and an independent set of size \u2265 log n?\n\nIn particular, is there such a graph for g(n) = (log n)\u00b3?\n\n**Status:** PARTIALLY SOLVED \u2014 bounds established but exact threshold unknown.",
+    "text": "For which g(n) does there exist an n-vertex graph where every g(n)-subgraph has both a (log n)-clique and (log n)-independent set? PARTIALLY SOLVED: Bounds by Alon-Sudakov (2007) and Alon-Buci\u0107-Sudakov (2021).",
+    "proofStrategy": "The Lean formalization defines cliques, independent sets, and the everywhere-Ramsey property. The two main results (Alon-Sudakov negative, Alon-Buci\u0107-Sudakov positive) are axiomatized. The Erd\u0151s-Hajnal conjecture for (log n)\u00b3 is stated as a definition. The summary theorem packages both bounds via exact.",
     "keyInsights": [
       "Every induced g(n)-subgraph must contain both a large clique AND a large independent set",
-      "Alon-Sudakov (2007): no graph for g(n) = c(log n)³/(log log n) — upper bound on threshold",
-      "Alon-Bucić-Sudakov (2021): graph exists for g(n) ≤ 2^{2^{√(log log n)}} — lower bound",
+      "Alon-Sudakov (2007): no graph for g(n) = c(log n)\u00b3/(log log n) \u2014 upper bound on threshold",
+      "Alon-Buci\u0107-Sudakov (2021): graph exists for g(n) \u2264 2^{2^{\u221a(log log n)}} \u2014 lower bound",
       "The gap between bounds is enormous, indicating fundamentally different growth regimes",
-      "Whether g(n) = (log n)³ works remains the central open question"
+      "Whether g(n) = (log n)\u00b3 works remains the central open question"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -87,21 +87,21 @@
       "title": "Alon-Sudakov Negative Result (2007)",
       "startLine": 62,
       "endLine": 68,
-      "summary": "No such graph for g(n) = c(log n)³/(log log n)"
+      "summary": "No such graph for g(n) = c(log n)\u00b3/(log log n)"
     },
     {
       "id": "alon-bucic-sudakov",
-      "title": "Alon-Bucić-Sudakov Positive Result (2021)",
+      "title": "Alon-Buci\u0107-Sudakov Positive Result (2021)",
       "startLine": 70,
       "endLine": 77,
-      "summary": "Graph exists for g(n) ≤ 2^{2^{√(log log n)}}"
+      "summary": "Graph exists for g(n) \u2264 2^{2^{\u221a(log log n)}}"
     },
     {
       "id": "conjecture",
       "title": "The Conjectured Threshold",
       "startLine": 79,
       "endLine": 84,
-      "summary": "Erdős-Hajnal conjecture that (log n)³ is too small"
+      "summary": "Erd\u0151s-Hajnal conjecture that (log n)\u00b3 is too small"
     },
     {
       "id": "summary",
@@ -112,12 +112,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #805 has been PARTIALLY SOLVED. Alon-Sudakov (2007) proved no such graph exists for g(n) = c(log n)³/(log log n), and Alon-Bucić-Sudakov (2021) constructed graphs for g(n) ≤ 2^{2^{√(log log n)}}. The exact threshold and whether g(n) = (log n)³ works remain open.",
+    "summary": "Erd\u0151s Problem #805 has been PARTIALLY SOLVED. Alon-Sudakov (2007) proved no such graph exists for g(n) = c(log n)\u00b3/(log log n), and Alon-Buci\u0107-Sudakov (2021) constructed graphs for g(n) \u2264 2^{2^{\u221a(log log n)}}. The exact threshold and whether g(n) = (log n)\u00b3 works remain open.",
     "implications": "This problem reveals the delicate balance between local and global Ramsey properties in graphs. The gap between the bounds shows that determining the exact threshold requires new techniques.",
     "openQuestions": [
-      "Does there exist such a graph for g(n) = (log n)³ exactly?",
+      "Does there exist such a graph for g(n) = (log n)\u00b3 exactly?",
       "What is the precise threshold function?",
-      "Can the Alon-Bucić-Sudakov construction be improved?"
+      "Can the Alon-Buci\u0107-Sudakov construction be improved?"
     ]
   },
   "leanFile": {
@@ -134,5 +134,39 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-922",
+      "relationship": "related",
+      "description": "Share independent-set and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1031",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-922",
+    "erdos-1014",
+    "erdos-1029",
+    "erdos-1030",
+    "erdos-1031"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-858",
-  "title": "Erdős Problem #858: Avoiding Multiplicative Relations with Large Prime Factors",
+  "title": "Erd\u0151s Problem #858: Avoiding Multiplicative Relations with Large Prime Factors",
   "slug": "erdos-858",
-  "description": "For A ⊆ {1,...,N} with no at=b where a,b ∈ A and smallest prime factor of t > a, estimate max (1/log N) Σ_{n∈A} 1/n. SOLVED: The maximum is o(1) as N → ∞, proved by Alexander (1966) and Erdős-Sárközi-Szemerédi (1968).",
+  "description": "For A \u2286 {1,...,N} with no at=b where a,b \u2208 A and smallest prime factor of t > a, estimate max (1/log N) \u03a3_{n\u2208A} 1/n. SOLVED: The maximum is o(1) as N \u2192 \u221e, proved by Alexander (1966) and Erd\u0151s-S\u00e1rk\u00f6zi-Szemer\u00e9di (1968).",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/858",
     "date": "1966",
     "status": "formalized",
@@ -26,16 +26,16 @@
     "assumptions": "6 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #858 concerns sets $A \\subseteq \\{1,\\ldots,N\\}$ where no element $at = b$ holds with $a,b \\in A$ and $\\text{spf}(t) > a$ (spf = smallest prime factor). This is a weakening of the **primitive set condition** (no element divides another). The **weighted reciprocal sum** $(1/\\log N) \\sum_{n \\in A} 1/n$ is the quantity of interest. **Alexander** (1966, *Acta Arithmetica*) first proved this sum is $o(1)$; **Erdős–Sárközi–Szemerédi** (1968, *J. London Math. Soc.*) gave an independent proof by different methods. For the stronger primitive condition, **Behrend** (1935) showed the quantitative bound $O(1/\\sqrt{\\log\\log N})$. The problem is fully resolved: the maximum is $o(1)$, with no known sharp quantitative bound for the weaker condition.",
-    "problemStatement": "Let A ⊆ {1, ..., N} be such that there is no solution to at = b with a, b ∈ A and the smallest prime factor of t is > a. Estimate the maximum of (1/log N) · Σ_{n ∈ A} 1/n.",
-    "text": "For A ⊆ {1,...,N} with no at=b where a,b ∈ A and smallest prime factor of t > a, estimate max (1/log N) Σ_{n∈A} 1/n. SOLVED: The maximum is o(1) as N → ∞, proved by Alexander (1966) and Erdős-Sárközi-Szemerédi (1968).",
-    "proofStrategy": "The formalization defines the multiplicative condition (no at=b with spf(t) > a), primitive sets, and the weighted reciprocal sum. Alexander's and Erdős-Sárközi-Szemerédi's results are stated as axioms showing the maximum is o(1). Behrend's bound for primitive sets is included for comparison.",
+    "historicalContext": "Erd\u0151s Problem #858 concerns sets $A \\subseteq \\{1,\\ldots,N\\}$ where no element $at = b$ holds with $a,b \\in A$ and $\\text{spf}(t) > a$ (spf = smallest prime factor). This is a weakening of the **primitive set condition** (no element divides another). The **weighted reciprocal sum** $(1/\\log N) \\sum_{n \\in A} 1/n$ is the quantity of interest. **Alexander** (1966, *Acta Arithmetica*) first proved this sum is $o(1)$; **Erd\u0151s\u2013S\u00e1rk\u00f6zi\u2013Szemer\u00e9di** (1968, *J. London Math. Soc.*) gave an independent proof by different methods. For the stronger primitive condition, **Behrend** (1935) showed the quantitative bound $O(1/\\sqrt{\\log\\log N})$. The problem is fully resolved: the maximum is $o(1)$, with no known sharp quantitative bound for the weaker condition.",
+    "problemStatement": "Let A \u2286 {1, ..., N} be such that there is no solution to at = b with a, b \u2208 A and the smallest prime factor of t is > a. Estimate the maximum of (1/log N) \u00b7 \u03a3_{n \u2208 A} 1/n.",
+    "text": "For A \u2286 {1,...,N} with no at=b where a,b \u2208 A and smallest prime factor of t > a, estimate max (1/log N) \u03a3_{n\u2208A} 1/n. SOLVED: The maximum is o(1) as N \u2192 \u221e, proved by Alexander (1966) and Erd\u0151s-S\u00e1rk\u00f6zi-Szemer\u00e9di (1968).",
+    "proofStrategy": "The formalization defines the multiplicative condition (no at=b with spf(t) > a), primitive sets, and the weighted reciprocal sum. Alexander's and Erd\u0151s-S\u00e1rk\u00f6zi-Szemer\u00e9di's results are stated as axioms showing the maximum is o(1). Behrend's bound for primitive sets is included for comparison.",
     "keyInsights": [
-      "The condition spf(t) > a is weaker than primitivity (a ∤ b)",
+      "The condition spf(t) > a is weaker than primitivity (a \u2224 b)",
       "Primitive sets satisfy this condition automatically",
-      "The weighted sum (1/log N) Σ 1/n = o(1) for sets satisfying the condition",
-      "For primitive sets, Behrend showed the stronger bound O(1/√(log log N))",
-      "Example: integers in [√N, N] divisible by primes > √N satisfy the condition"
+      "The weighted sum (1/log N) \u03a3 1/n = o(1) for sets satisfying the condition",
+      "For primitive sets, Behrend showed the stronger bound O(1/\u221a(log log N))",
+      "Example: integers in [\u221aN, N] divisible by primes > \u221aN satisfy the condition"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -70,22 +70,22 @@
       "title": "Weighted Reciprocal Sum",
       "startLine": 131,
       "endLine": 187,
-      "summary": "Definition of (1/log N) Σ 1/n and basic bounds"
+      "summary": "Definition of (1/log N) \u03a3 1/n and basic bounds"
     },
     {
       "id": "solution",
       "title": "Solution: o(1) Bound",
       "startLine": 189,
       "endLine": 298,
-      "summary": "Alexander (1966) and Erdős-Sárközi-Szemerédi (1968) results"
+      "summary": "Alexander (1966) and Erd\u0151s-S\u00e1rk\u00f6zi-Szemer\u00e9di (1968) results"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #858 is SOLVED. For A ⊆ {1,...,N} satisfying the multiplicative condition (no at=b with spf(t) > a), the maximum of (1/log N) Σ_{n∈A} 1/n is o(1). This was proved independently by Alexander (1966) and Erdős-Sárközi-Szemerédi (1968).",
+    "summary": "Erd\u0151s Problem #858 is SOLVED. For A \u2286 {1,...,N} satisfying the multiplicative condition (no at=b with spf(t) > a), the maximum of (1/log N) \u03a3_{n\u2208A} 1/n is o(1). This was proved independently by Alexander (1966) and Erd\u0151s-S\u00e1rk\u00f6zi-Szemer\u00e9di (1968).",
     "implications": "The result shows that sets avoiding multiplicative relations with large prime factors are sparse in a specific sense. This relates to the study of primitive sets and multiplicative number theory.",
     "openQuestions": [
       "What is the precise rate of decay of the maximum?",
-      "Can the gap between this o(1) bound and Behrend's O(1/√(log log N)) be characterized?",
+      "Can the gap between this o(1) bound and Behrend's O(1/\u221a(log log N)) be characterized?",
       "What is the structure of extremal sets achieving near-maximum sums?"
     ]
   },
@@ -109,5 +109,39 @@
     "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Share primitive-sets, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-786",
+      "relationship": "related",
+      "description": "Share density, multiplicative-structure, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-164",
+      "relationship": "related",
+      "description": "Share primitive-sets and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Share primitive-sets and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-892",
+      "relationship": "related",
+      "description": "Share primitive-sets and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-143",
+    "erdos-786",
+    "erdos-164",
+    "erdos-793",
+    "erdos-892"
+  ]
 }

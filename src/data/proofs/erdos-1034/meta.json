@@ -1,10 +1,10 @@
 {
   "id": "erdos-1034",
-  "title": "Erdős Problem #1034: Triangle Neighbors in Dense Graphs",
+  "title": "Erd\u0151s Problem #1034: Triangle Neighbors in Dense Graphs",
   "slug": "erdos-1034",
-  "description": "Let G have n vertices and > n²/4 edges. Must there exist a triangle T with > (1/2 - o(1))n vertices each adjacent to ≥ 2 of T's vertices? NO (Ma-Tang). Bounds: (1/6)n ≤ h(n) ≤ (2 - √(5/2))n ≈ 0.419n.",
+  "description": "Let G have n vertices and > n\u00b2/4 edges. Must there exist a triangle T with > (1/2 - o(1))n vertices each adjacent to \u2265 2 of T's vertices? NO (Ma-Tang). Bounds: (1/6)n \u2264 h(n) \u2264 (2 - \u221a(5/2))n \u2248 0.419n.",
   "meta": {
-    "author": "Erdős-Faudree (conjecture), Ma-Tang (disproof)",
+    "author": "Erd\u0151s-Faudree (conjecture), Ma-Tang (disproof)",
     "sourceUrl": "https://erdosproblems.com/1034",
     "date": "2020",
     "status": "formalized",
@@ -30,20 +30,20 @@
     "assumptions": "3 axiom(s) and 12 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Turán's Theorem and Triangle Structure**\n\nPál Turán's seminal 1941 theorem established that the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$, achieved uniquely by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. This launched extremal graph theory. A natural follow-up: when a graph *exceeds* the Turán threshold, what structural properties must its triangles have?\n\n**The Erdős-Faudree Conjecture**: Paul Erdős and Ralph Faudree conjectured that every graph with $> n^2/4$ edges contains a triangle $T$ with $> (1/2 - o(1))n$ 'good neighbors' — vertices adjacent to at least two of $T$'s three vertices. Erdős himself was skeptical, writing 'perhaps this conjecture is a bit too optimistic.'\n\n**Ma-Tang Disproof (2020)**: Jie Ma and Zixiang Tang disproved the conjecture by constructing explicit graph families where every triangle has at most $(2 - \\sqrt{5/2} + o(1))n \\approx 0.419n$ good neighbors. The **book lemma** (a classical result in graph theory) provides the lower bound $h(n) \\ge n/6$: every dense graph has a 'book' — a triangle with $\\ge n/6$ common neighbors of all three vertices. The exact value of $h(n)$ between $n/6$ and $(2 - \\sqrt{5/2})n$ remains open.",
-    "problemStatement": "**Problem Statement**\n\nLet G be a graph on n vertices with > n²/4 edges. Must there exist a triangle T and t > (1/2 - o(1))n vertices, each adjacent to at least two vertices of T?\n\n**Status**: DISPROVED (Ma-Tang)\n\n**Answer**: NO - max t ≤ (2 - √(5/2))n ≈ 0.419n",
-    "text": "Let G have n vertices and > n²/4 edges. Must there exist a triangle T with > (1/2 - o(1))n vertices each adjacent to ≥ 2 of T's vertices? NO (Ma-Tang). Bounds: (1/6)n ≤ h(n) ≤ (2 - √(5/2))n ≈ 0.419n.",
-    "proofStrategy": "**Two-Sided Bound via Counterexample and Book Lemma**\n\nThe formalization establishes both an upper and lower bound on the extremal function $h(n)$.\n\n**Upper Bound (Ma-Tang Construction)**: The counterexample family is axiomatized via `maTang_counterexample`. Ma and Tang construct graphs $G_n$ on $n$ vertices with $|E(G_n)| > n^2/4$ where every triangle $T$ satisfies $|N_2(T)| \\leq (2 - \\sqrt{5/2} + o(1))n$. The constant $2 - \\sqrt{5/2} \\approx 0.4189$ arises from optimizing parameters of a blow-up construction. Aristotle verified the numerical bounds $0.418 < 2 - \\sqrt{5/2} < 0.42$.\n\n**Lower Bound (Book Lemma)**: The `book_lemma` (axiomatized) guarantees that every above-Turán graph contains a triangle with $\\geq n/6$ common neighbors of all three vertices. Since common neighbors have adjacency count 3, they are good neighbors, yielding $h(n) \\geq n/6$.\n\n**Disproof**: The conjecture negation `erdos_faudree_false` (proved by Aristotle via the `negate_state` tactic) follows because $2 - \\sqrt{5/2} < 1/2$.\n\n**$K_4$-free variant**: Without $K_4$, the upper bound rises to $(2\\sqrt{3} - 3)n \\approx 0.464n$, showing the clique structure matters.",
+    "historicalContext": "**Tur\u00e1n's Theorem and Triangle Structure**\n\nP\u00e1l Tur\u00e1n's seminal 1941 theorem established that the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$, achieved uniquely by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. This launched extremal graph theory. A natural follow-up: when a graph *exceeds* the Tur\u00e1n threshold, what structural properties must its triangles have?\n\n**The Erd\u0151s-Faudree Conjecture**: Paul Erd\u0151s and Ralph Faudree conjectured that every graph with $> n^2/4$ edges contains a triangle $T$ with $> (1/2 - o(1))n$ 'good neighbors' \u2014 vertices adjacent to at least two of $T$'s three vertices. Erd\u0151s himself was skeptical, writing 'perhaps this conjecture is a bit too optimistic.'\n\n**Ma-Tang Disproof (2020)**: Jie Ma and Zixiang Tang disproved the conjecture by constructing explicit graph families where every triangle has at most $(2 - \\sqrt{5/2} + o(1))n \\approx 0.419n$ good neighbors. The **book lemma** (a classical result in graph theory) provides the lower bound $h(n) \\ge n/6$: every dense graph has a 'book' \u2014 a triangle with $\\ge n/6$ common neighbors of all three vertices. The exact value of $h(n)$ between $n/6$ and $(2 - \\sqrt{5/2})n$ remains open.",
+    "problemStatement": "**Problem Statement**\n\nLet G be a graph on n vertices with > n\u00b2/4 edges. Must there exist a triangle T and t > (1/2 - o(1))n vertices, each adjacent to at least two vertices of T?\n\n**Status**: DISPROVED (Ma-Tang)\n\n**Answer**: NO - max t \u2264 (2 - \u221a(5/2))n \u2248 0.419n",
+    "text": "Let G have n vertices and > n\u00b2/4 edges. Must there exist a triangle T with > (1/2 - o(1))n vertices each adjacent to \u2265 2 of T's vertices? NO (Ma-Tang). Bounds: (1/6)n \u2264 h(n) \u2264 (2 - \u221a(5/2))n \u2248 0.419n.",
+    "proofStrategy": "**Two-Sided Bound via Counterexample and Book Lemma**\n\nThe formalization establishes both an upper and lower bound on the extremal function $h(n)$.\n\n**Upper Bound (Ma-Tang Construction)**: The counterexample family is axiomatized via `maTang_counterexample`. Ma and Tang construct graphs $G_n$ on $n$ vertices with $|E(G_n)| > n^2/4$ where every triangle $T$ satisfies $|N_2(T)| \\leq (2 - \\sqrt{5/2} + o(1))n$. The constant $2 - \\sqrt{5/2} \\approx 0.4189$ arises from optimizing parameters of a blow-up construction. Aristotle verified the numerical bounds $0.418 < 2 - \\sqrt{5/2} < 0.42$.\n\n**Lower Bound (Book Lemma)**: The `book_lemma` (axiomatized) guarantees that every above-Tur\u00e1n graph contains a triangle with $\\geq n/6$ common neighbors of all three vertices. Since common neighbors have adjacency count 3, they are good neighbors, yielding $h(n) \\geq n/6$.\n\n**Disproof**: The conjecture negation `erdos_faudree_false` (proved by Aristotle via the `negate_state` tactic) follows because $2 - \\sqrt{5/2} < 1/2$.\n\n**$K_4$-free variant**: Without $K_4$, the upper bound rises to $(2\\sqrt{3} - 3)n \\approx 0.464n$, showing the clique structure matters.",
     "keyInsights": [
       "**Good neighbor**: vertex $y \\notin T$ with $|\\{v \\in T : y \\sim v\\}| \\ge 2$, measuring how strongly $y$ interacts with triangle $T$",
-      "**Erdős-Faudree conjecture DISPROVED**: the conjectured bound $h(n) > (1/2 - o(1))n$ is false, as Erdős himself suspected",
+      "**Erd\u0151s-Faudree conjecture DISPROVED**: the conjectured bound $h(n) > (1/2 - o(1))n$ is false, as Erd\u0151s himself suspected",
       "**Ma-Tang upper bound**: $h(n) \\le (2 - \\sqrt{5/2})n \\approx 0.419n$ from explicit counterexample construction (2020)",
       "**Book lemma lower bound**: $h(n) \\ge n/6$ because every dense graph has a triangle with $\\ge n/6$ vertices adjacent to all three vertices",
-      "**$K_4$-free variant**: the bound improves to $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ — counterintuitively, forbidding $K_4$ allows *more* good neighbors"
+      "**$K_4$-free variant**: the bound improves to $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ \u2014 counterintuitively, forbidding $K_4$ allows *more* good neighbors"
     ],
     "prerequisites": [
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)",
+      "Extremal graph theory (Tur\u00e1n-type problems)",
       "Combinatorics and number theory"
     ]
   },
@@ -51,7 +51,7 @@
     {
       "id": "graph-setup",
       "title": "Graph Setup",
-      "summary": "$|E(G)|$, $\\lfloor n^2/4 \\rfloor$ Turán threshold, and `isAboveTuran` predicate",
+      "summary": "$|E(G)|$, $\\lfloor n^2/4 \\rfloor$ Tur\u00e1n threshold, and `isAboveTuran` predicate",
       "startLine": 27,
       "endLine": 44
     },
@@ -72,7 +72,7 @@
     {
       "id": "h-function",
       "title": "The Function h(n)",
-      "summary": "$h(n) = \\max\\{k : \\forall G \\text{ above Turán}, \\exists T, |\\text{goodNeighbors}| \\ge k\\}$",
+      "summary": "$h(n) = \\max\\{k : \\forall G \\text{ above Tur\u00e1n}, \\exists T, |\\text{goodNeighbors}| \\ge k\\}$",
       "startLine": 102,
       "endLine": 122
     },
@@ -106,7 +106,7 @@
     },
     {
       "id": "k4-free",
-      "title": "K₄-free Variant",
+      "title": "K\u2084-free Variant",
       "summary": "$K_4$-free bound: $(2\\sqrt{3} - 3)n \\approx 0.464n > 0.419n$ (counterintuitively larger)",
       "startLine": 219,
       "endLine": 247
@@ -141,8 +141,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the complete resolution of Erdős Problem #1034. The Erdős-Faudree conjecture — that every graph with $> n^2/4$ edges contains a triangle with $> (1/2 - o(1))n$ good neighbors — is **false**. Ma and Tang (2020) constructed counterexample families achieving at most $(2 - \\sqrt{5/2})n \\approx 0.419n$ good neighbors per triangle. The book lemma provides a matching lower bound of $h(n) \\geq n/6$. Four theorems were proved by Aristotle (Harmonic): numerical verifications of the Ma-Tang and $K_4$-free constants, the gap bound, and the conjecture negation.",
-    "implications": "1. **Limits of Turán-type conjectures**: The disproof shows that dense graph structure is more subtle than initially conjectured — exceeding the Turán threshold forces triangles but cannot force triangle neighborhoods to cover half the graph.\n\n2. **Book lemma as a universal tool**: The lower bound $h(n) \\geq n/6$ via the book lemma demonstrates that common-neighbor counting (a.k.a.\n\ncodegree arguments) gives non-trivial structural information for any triangle in a dense graph.\n\n3. **$K_4$-free phenomena**: The higher bound $(2\\sqrt{3} - 3)n \\approx 0.464n$ in $K_4$-free graphs reveals that forbidding higher cliques paradoxically *increases* the good neighbor guarantee — the Turán graph $T(n,3)$ distributes edges more uniformly.\n\n4. **Connection to Erdős Problem #905**: The formalized implication $h(n) \\geq 1 \\implies$ Problem #905 places this result in the network of Erdős problems on triangle structure in dense graphs.\n\n5. **Formalization approach**: The axiomatization of the Ma-Tang construction and book lemma separates the combinatorial existence claims from the quantitative verification, allowing Aristotle to handle the numerical components automatically.",
+    "summary": "This formalization captures the complete resolution of Erd\u0151s Problem #1034. The Erd\u0151s-Faudree conjecture \u2014 that every graph with $> n^2/4$ edges contains a triangle with $> (1/2 - o(1))n$ good neighbors \u2014 is **false**. Ma and Tang (2020) constructed counterexample families achieving at most $(2 - \\sqrt{5/2})n \\approx 0.419n$ good neighbors per triangle. The book lemma provides a matching lower bound of $h(n) \\geq n/6$. Four theorems were proved by Aristotle (Harmonic): numerical verifications of the Ma-Tang and $K_4$-free constants, the gap bound, and the conjecture negation.",
+    "implications": "1. **Limits of Tur\u00e1n-type conjectures**: The disproof shows that dense graph structure is more subtle than initially conjectured \u2014 exceeding the Tur\u00e1n threshold forces triangles but cannot force triangle neighborhoods to cover half the graph.\n\n2. **Book lemma as a universal tool**: The lower bound $h(n) \\geq n/6$ via the book lemma demonstrates that common-neighbor counting (a.k.a.\n\ncodegree arguments) gives non-trivial structural information for any triangle in a dense graph.\n\n3. **$K_4$-free phenomena**: The higher bound $(2\\sqrt{3} - 3)n \\approx 0.464n$ in $K_4$-free graphs reveals that forbidding higher cliques paradoxically *increases* the good neighbor guarantee \u2014 the Tur\u00e1n graph $T(n,3)$ distributes edges more uniformly.\n\n4. **Connection to Erd\u0151s Problem #905**: The formalized implication $h(n) \\geq 1 \\implies$ Problem #905 places this result in the network of Erd\u0151s problems on triangle structure in dense graphs.\n\n5. **Formalization approach**: The axiomatization of the Ma-Tang construction and book lemma separates the combinatorial existence claims from the quantitative verification, allowing Aristotle to handle the numerical components automatically.",
     "openQuestions": [
       "What is the exact asymptotic constant $c = \\lim_{n \\to \\infty} h(n)/n$? It lies in $[1/6, 2 - \\sqrt{5/2}] \\approx [0.167, 0.419]$.",
       "Can the lower bound be improved beyond $n/6$ using techniques beyond the book lemma (e.g., flag algebras or regularity lemma)?",
@@ -153,38 +153,44 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-905",
-      "relationship": "The book lemma underlying the $h(n) \\ge n/6$ lower bound in #1034 is equivalent to the edge-triangle multiplicity result of #905: every above-Turán graph has an edge in $\\ge n/6$ triangles, which directly yields the common-neighbor lower bound."
+      "relationship": "related",
+      "targetId": "erdos-905",
+      "description": "The book lemma underlying the $h(n) \\ge n/6$ lower bound in #1034 is equivalent to the edge-triangle multiplicity result of #905: every above-Tur\u00e1n graph has an edge in $\\ge n/6$ triangles, which directly yields the common-neighbor lower bound."
     },
     {
-      "target": "erdos-1033",
-      "relationship": "Companion problem: #1033 asks for the maximum triangle degree sum in above-Turán graphs; #1034 asks for the maximum good-neighbor count. Both set up analogous extremal functions $h(n)$ with the same Turán threshold $n^2/4$ and similar gap phenomena between lower (book lemma) and upper (Ma-Tang-style constructions) bounds."
+      "relationship": "related",
+      "targetId": "erdos-1033",
+      "description": "Companion problem: #1033 asks for the maximum triangle degree sum in above-Tur\u00e1n graphs; #1034 asks for the maximum good-neighbor count. Both set up analogous extremal functions $h(n)$ with the same Tur\u00e1n threshold $n^2/4$ and similar gap phenomena between lower (book lemma) and upper (Ma-Tang-style constructions) bounds."
     },
     {
-      "target": "erdos-1010",
-      "relationship": "Triangle supersaturation (#1010) quantifies how many triangles appear once the Turán threshold is exceeded. Problem #1034 studies the neighborhood structure of those forced triangles; together they describe both the abundance and the reach of triangles in dense graphs."
+      "relationship": "related",
+      "targetId": "erdos-1010",
+      "description": "Triangle supersaturation (#1010) quantifies how many triangles appear once the Tur\u00e1n threshold is exceeded. Problem #1034 studies the neighborhood structure of those forced triangles; together they describe both the abundance and the reach of triangles in dense graphs."
     },
     {
-      "target": "erdos-904",
-      "relationship": "Bollobás-Erdős problem #904 proves that above-Turán graphs contain a triangle with degree sum $\\ge (3/2)n$. High degree sum is a prerequisite for having many good neighbors, making #904 a structural precursor to the bounds studied in #1034."
+      "relationship": "related",
+      "targetId": "erdos-904",
+      "description": "Bollob\u00e1s-Erd\u0151s problem #904 proves that above-Tur\u00e1n graphs contain a triangle with degree sum $\\ge (3/2)n$. High degree sum is a prerequisite for having many good neighbors, making #904 a structural precursor to the bounds studied in #1034."
     },
     {
-      "target": "erdos-80",
-      "relationship": "The book lemma used for the $h(n) \\ge n/6$ lower bound in #1034 is closely related to the book-size questions in #80. Both study how large the common neighborhood of a triangle edge must be in a dense graph, differing only in the density regime (all above-Turán vs. triangle-saturated)."
+      "relationship": "related",
+      "targetId": "erdos-80",
+      "description": "The book lemma used for the $h(n) \\ge n/6$ lower bound in #1034 is closely related to the book-size questions in #80. Both study how large the common neighborhood of a triangle edge must be in a dense graph, differing only in the density regime (all above-Tur\u00e1n vs. triangle-saturated)."
     },
     {
-      "target": "erdos-1009",
-      "relationship": "Edge-disjoint triangle packing (#1009) and triangle neighborhood structure (#1034) both operate at the same $\\lfloor n^2/4 \\rfloor + k$ edge density. The Györi packing result and the Ma-Tang neighborhood bound together constrain the combinatorial geometry of triangles just above the Turán threshold."
+      "relationship": "related",
+      "targetId": "erdos-1009",
+      "description": "Edge-disjoint triangle packing (#1009) and triangle neighborhood structure (#1034) both operate at the same $\\lfloor n^2/4 \\rfloor + k$ edge density. The Gy\u00f6ri packing result and the Ma-Tang neighborhood bound together constrain the combinatorial geometry of triangles just above the Tur\u00e1n threshold."
     }
   ],
   "relatedProofs": [
     {
       "target": "ramseys-theorem",
-      "relationship": "Ramsey's theorem provides the foundational framework for clique and triangle existence in dense graphs. The Turán threshold $n^2/4$ is the extremal boundary above which Ramsey-type arguments guarantee triangle structure, directly motivating the setting of #1034."
+      "relationship": "Ramsey's theorem provides the foundational framework for clique and triangle existence in dense graphs. The Tur\u00e1n threshold $n^2/4$ is the extremal boundary above which Ramsey-type arguments guarantee triangle structure, directly motivating the setting of #1034."
     },
     {
       "target": "erdos-1011",
-      "relationship": "Triangles in graphs with high chromatic number (#1011) connects the Turán threshold to chromatic structure. The triangle-forcing threshold $f_r(n)$ studied there coincides with the $n^2/4$ boundary in #1034, linking neighborhood density to colorability."
+      "relationship": "Triangles in graphs with high chromatic number (#1011) connects the Tur\u00e1n threshold to chromatic structure. The triangle-forcing threshold $f_r(n)$ studied there coincides with the $n^2/4$ boundary in #1034, linking neighborhood density to colorability."
     }
   ],
   "references": [
@@ -196,26 +202,26 @@
       "title": "On the structure of graphs with given odd girth and large minimum degree",
       "venue": "Journal of Graph Theory",
       "year": 2020,
-      "note": "Disproves the Erdős-Faudree conjecture by constructing graphs with $> n^2/4$ edges where every triangle has at most $(2 - \\sqrt{5/2} + o(1))n$ good neighbors; establishes the upper bound $h(n) \\le (2 - \\sqrt{5/2})n$."
+      "note": "Disproves the Erd\u0151s-Faudree conjecture by constructing graphs with $> n^2/4$ edges where every triangle has at most $(2 - \\sqrt{5/2} + o(1))n$ good neighbors; establishes the upper bound $h(n) \\le (2 - \\sqrt{5/2})n$."
     },
     {
       "authors": [
-        "Paul Erdős",
+        "Paul Erd\u0151s",
         "Ralph Faudree"
       ],
       "title": "Problems and results in graph theory",
       "venue": "The Theory and Applications of Graphs (Kalamazoo, MI, 1980), Wiley",
       "year": 1981,
-      "note": "Source of the Erdős-Faudree conjecture that every above-Turán graph contains a triangle with $> (1/2 - o(1))n$ good neighbors; Erdős himself noted the conjecture 'may be a bit too optimistic'."
+      "note": "Source of the Erd\u0151s-Faudree conjecture that every above-Tur\u00e1n graph contains a triangle with $> (1/2 - o(1))n$ good neighbors; Erd\u0151s himself noted the conjecture 'may be a bit too optimistic'."
     },
     {
       "authors": [
-        "Pál Turán"
+        "P\u00e1l Tur\u00e1n"
       ],
       "title": "On an extremal problem in graph theory",
-      "venue": "Matematikai és Fizikai Lapok",
+      "venue": "Matematikai \u00e9s Fizikai Lapok",
       "year": 1941,
-      "note": "Establishes Turán's theorem: the maximum triangle-free graph on $n$ vertices has $\\lfloor n^2/4 \\rfloor$ edges (the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$), fixing the threshold above which #1034 operates."
+      "note": "Establishes Tur\u00e1n's theorem: the maximum triangle-free graph on $n$ vertices has $\\lfloor n^2/4 \\rfloor$ edges (the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$), fixing the threshold above which #1034 operates."
     },
     {
       "authors": [
@@ -230,8 +236,8 @@
     },
     {
       "authors": [
-        "Paul Erdős",
-        "Miklós Simonovits"
+        "Paul Erd\u0151s",
+        "Mikl\u00f3s Simonovits"
       ],
       "title": "Supersaturated graphs and hypergraphs",
       "venue": "Combinatorica",

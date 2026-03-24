@@ -2,9 +2,9 @@
   "id": "erdos-1071",
   "title": "Maximal Packings of Unit Segments in the Unit Square",
   "slug": "erdos-1071",
-  "description": "Can finitely many non-intersecting unit segments in [0,1]² be maximal? Yes (Danzer). Can a countably infinite maximal packing exist in some region? Open.",
+  "description": "Can finitely many non-intersecting unit segments in [0,1]\u00b2 be maximal? Yes (Danzer). Can a countably infinite maximal packing exist in some region? Open.",
   "meta": {
-    "author": "Erdős, Tóth",
+    "author": "Erd\u0151s, T\u00f3th",
     "sourceUrl": "https://erdosproblems.com/1071",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1071Problem.lean",
@@ -46,7 +46,7 @@
     ],
     "originalContributions": [
       "UnitSegment: structure with rational endpoints and unit_length",
-      "InUnitSquare: point in [0,1]² predicate",
+      "InUnitSquare: point in [0,1]\u00b2 predicate",
       "SegmentInSquare: both endpoints in unit square",
       "AreDisjoint: axiomatized interior-disjointness with symmetry",
       "IsPacking: all in square + pairwise disjoint",
@@ -62,7 +62,7 @@
     "relatedProblems": [
       {
         "id": "erdos-1072",
-        "relationship": "Neighboring Erdős problem on geometric packing and covering in the plane"
+        "relationship": "Neighboring Erd\u0151s problem on geometric packing and covering in the plane"
       }
     ],
     "axiomCount": 6,
@@ -70,12 +70,12 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Maximal Segment Packings: Danzer's Construction and Beyond**\n\nThis problem originates from the collaboration of Paul Erdős and Géza Tóth on extremal problems in combinatorial geometry. A **packing** of unit segments in a region is a collection of non-intersecting (interior-disjoint) unit line segments; it is **maximal** if no additional unit segment can be placed without intersecting an existing one — every possible placement is blocked.\n\n**Part (a) — Solved by Danzer**: Erdős asked whether a *finite* maximal packing exists in the unit square $[0,1]^2$. This is non-trivial because a unit segment can be oriented in any direction $\\theta \\in [0, \\pi)$ and positioned at any point, creating an uncountable family of potential placements that must all be blocked by finitely many segments. Ludwig Danzer (1921–2011), a German mathematician known for his work on discrete and convex geometry (including the Danzer set problem), constructed an explicit finite configuration achieving this. Erdős paid him \\$10 for the solution. Danzer's construction carefully places segments at multiple orientations to ensure that every possible unit segment in the square intersects at least one existing segment.\n\n**Part (b) — Open**: Does there exist *any* region $R \\subseteq \\mathbb{R}^2$ with a countably infinite maximal packing of disjoint unit segments? A key observation is that the unit square $[0,1]^2$ can contain at most finitely many disjoint unit segments (by a compactness argument: each segment has a positive-area 'exclusion zone', and $[0,1]^2$ has finite area). So the question necessarily requires working in a larger, potentially unbounded region. The difficulty is that in an unbounded region, one must block all possible orientations and positions with countably many segments — a much harder blocking condition than in the bounded case.\n\n**Endpoint variant**: A natural relaxation allows segments to touch at their endpoints (but not cross). Whether a finite maximal configuration exists under this weaker disjointness condition is also open.\n\nThe problem connects to several threads in combinatorial geometry: maximal independent sets in geometric intersection graphs, the theory of blocking sets, and the study of packing density and saturation.",
+    "historicalContext": "**Maximal Segment Packings: Danzer's Construction and Beyond**\n\nThis problem originates from the collaboration of Paul Erd\u0151s and G\u00e9za T\u00f3th on extremal problems in combinatorial geometry. A **packing** of unit segments in a region is a collection of non-intersecting (interior-disjoint) unit line segments; it is **maximal** if no additional unit segment can be placed without intersecting an existing one \u2014 every possible placement is blocked.\n\n**Part (a) \u2014 Solved by Danzer**: Erd\u0151s asked whether a *finite* maximal packing exists in the unit square $[0,1]^2$. This is non-trivial because a unit segment can be oriented in any direction $\\theta \\in [0, \\pi)$ and positioned at any point, creating an uncountable family of potential placements that must all be blocked by finitely many segments. Ludwig Danzer (1921\u20132011), a German mathematician known for his work on discrete and convex geometry (including the Danzer set problem), constructed an explicit finite configuration achieving this. Erd\u0151s paid him \\$10 for the solution. Danzer's construction carefully places segments at multiple orientations to ensure that every possible unit segment in the square intersects at least one existing segment.\n\n**Part (b) \u2014 Open**: Does there exist *any* region $R \\subseteq \\mathbb{R}^2$ with a countably infinite maximal packing of disjoint unit segments? A key observation is that the unit square $[0,1]^2$ can contain at most finitely many disjoint unit segments (by a compactness argument: each segment has a positive-area 'exclusion zone', and $[0,1]^2$ has finite area). So the question necessarily requires working in a larger, potentially unbounded region. The difficulty is that in an unbounded region, one must block all possible orientations and positions with countably many segments \u2014 a much harder blocking condition than in the bounded case.\n\n**Endpoint variant**: A natural relaxation allows segments to touch at their endpoints (but not cross). Whether a finite maximal configuration exists under this weaker disjointness condition is also open.\n\nThe problem connects to several threads in combinatorial geometry: maximal independent sets in geometric intersection graphs, the theory of blocking sets, and the study of packing density and saturation.",
     "problemStatement": "Two questions: (a) Is there a finite maximal set of pairwise non-intersecting unit segments in $[0,1]^2$? (**Solved**: yes, by Danzer, \\$10 prize) (b) Is there a region $R$ with a countably infinite maximal set of disjoint unit segments? (**Open**)",
-    "text": "Can finitely many non-intersecting unit segments in [0,1]² be maximal? Yes (Danzer). Can a countably infinite maximal packing exist in some region? Open.",
-    "proofStrategy": "**Formalization via Combinatorial Abstraction**\n\nThe formalization models the problem using rational-coordinate endpoints ($\\mathbb{Q} \\times \\mathbb{Q}$) rather than $\\mathbb{R}^2$, focusing on the combinatorial structure of packings. Key design decisions:\n\n1. **UnitSegment**: A structure with two $\\mathbb{Q}^2$ endpoints and an abstracted `unit_length : True` field (the metric constraint is not computationally verified).\n\n2. **Disjointness**: `AreDisjoint` is axiomatized rather than defined, since computing segment intersections in $\\mathbb{Q}^2$ is nontrivial. Symmetry (`disjoint_symm`) is provided as a companion axiom.\n\n3. **Packing hierarchy**: `IsPacking` $\\to$ `IsMaximalPacking` $\\to$ `IsFinitePacking` / `IsCountablyInfinitePacking`, building up from basic containment and disjointness to the blocking condition and cardinality constraints.\n\n4. **Danzer's result**: Axiomatized as an existential — $\\exists S$ that is both a finite packing and a maximal packing.\n\n5. **Region generalization**: For part (b), `Region` is defined as `Set (ℚ × ℚ)`, with `IsRegionPacking` and `IsMaximalRegionPacking` generalizing the unit-square definitions.\n\n6. **Endpoint variant**: A separate `EndpointDisjoint` axiom and the variant problem statement.",
+    "text": "Can finitely many non-intersecting unit segments in [0,1]\u00b2 be maximal? Yes (Danzer). Can a countably infinite maximal packing exist in some region? Open.",
+    "proofStrategy": "**Formalization via Combinatorial Abstraction**\n\nThe formalization models the problem using rational-coordinate endpoints ($\\mathbb{Q} \\times \\mathbb{Q}$) rather than $\\mathbb{R}^2$, focusing on the combinatorial structure of packings. Key design decisions:\n\n1. **UnitSegment**: A structure with two $\\mathbb{Q}^2$ endpoints and an abstracted `unit_length : True` field (the metric constraint is not computationally verified).\n\n2. **Disjointness**: `AreDisjoint` is axiomatized rather than defined, since computing segment intersections in $\\mathbb{Q}^2$ is nontrivial. Symmetry (`disjoint_symm`) is provided as a companion axiom.\n\n3. **Packing hierarchy**: `IsPacking` $\\to$ `IsMaximalPacking` $\\to$ `IsFinitePacking` / `IsCountablyInfinitePacking`, building up from basic containment and disjointness to the blocking condition and cardinality constraints.\n\n4. **Danzer's result**: Axiomatized as an existential \u2014 $\\exists S$ that is both a finite packing and a maximal packing.\n\n5. **Region generalization**: For part (b), `Region` is defined as `Set (\u211a \u00d7 \u211a)`, with `IsRegionPacking` and `IsMaximalRegionPacking` generalizing the unit-square definitions.\n\n6. **Endpoint variant**: A separate `EndpointDisjoint` axiom and the variant problem statement.",
     "keyInsights": [
-      "**Maximality as a blocking condition**: A packing is maximal when every possible new unit segment intersects some existing one — a geometric analogue of a **maximal independent set** in the intersection graph of all possible unit segments. The 'graph' has uncountably many vertices, making the finite blocking condition remarkable.",
+      "**Maximality as a blocking condition**: A packing is maximal when every possible new unit segment intersects some existing one \u2014 a geometric analogue of a **maximal independent set** in the intersection graph of all possible unit segments. The 'graph' has uncountably many vertices, making the finite blocking condition remarkable.",
       "**Danzer's construction requires multi-angle blocking**: A finite set of parallel segments cannot be maximal (perpendicular segments would avoid all of them). Danzer's construction must use segments at sufficiently many orientations to block every angle $\\theta \\in [0, \\pi)$, while keeping the segments non-intersecting. This is a delicate balancing act between diversity of orientations and mutual avoidance.",
       "**Compactness forces finiteness in $[0,1]^2$**: Any packing of unit segments in $[0,1]^2$ is finite because each segment has a positive-radius exclusion zone (any nearby segment of any orientation must intersect it). By compactness of $[0,1]^2$, only finitely many such exclusion zones fit. This is why part (b) requires an unbounded region.",
       "**Abstraction via rational coordinates**: Using $\\mathbb{Q} \\times \\mathbb{Q}$ instead of $\\mathbb{R}^2$ and axiomatizing the unit-length constraint is a pragmatic choice that avoids the computational complexity of real arithmetic while preserving the logical structure of the packing problem.",
@@ -90,7 +90,7 @@
     {
       "id": "imports",
       "title": "Imports and Setup",
-      "summary": "Imports Mathlib modules for $\\mathbb{N}$, `Set`, `Finset`, $\\mathbb{Q}$, and tactics. No EuclideanSpace import — the formalization uses $\\mathbb{Q} \\times \\mathbb{Q}$ as a coordinate abstraction.",
+      "summary": "Imports Mathlib modules for $\\mathbb{N}$, `Set`, `Finset`, $\\mathbb{Q}$, and tactics. No EuclideanSpace import \u2014 the formalization uses $\\mathbb{Q} \\times \\mathbb{Q}$ as a coordinate abstraction.",
       "startLine": 18,
       "endLine": 22
     },
@@ -110,8 +110,8 @@
     },
     {
       "id": "danzer",
-      "title": "Danzer's Result (Part a — SOLVED)",
-      "summary": "Axiomatizes `danzer_finite_maximal`: $\\exists S$ finite and maximal in $[0,1]^2$. Ludwig Danzer's construction earned \\$10 from Erdős.",
+      "title": "Danzer's Result (Part a \u2014 SOLVED)",
+      "summary": "Axiomatizes `danzer_finite_maximal`: $\\exists S$ finite and maximal in $[0,1]^2$. Ludwig Danzer's construction earned \\$10 from Erd\u0151s.",
       "startLine": 68,
       "endLine": 73
     },
@@ -131,93 +131,98 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 1071 explores maximal packings of unit segments — configurations where no additional segment can be placed without intersection. Part (a) was resolved by Ludwig Danzer, who constructed a finite maximal packing in $[0,1]^2$ (earning \\$10 from Erdős). Part (b) remains open: whether any region admits a countably infinite maximal packing. The formalization captures the full problem structure using rational-coordinate abstractions, axiomatized disjointness, and a clean hierarchy from basic packings through maximality to the open problems. 0 sorries.",
-    "implications": "1. **Geometric maximal independent sets**: The problem connects packing theory to graph theory — a maximal packing is a maximal independent set in the (uncountable) intersection graph of unit segments. Understanding when finite vs. infinite maximal independent sets exist in geometric intersection graphs is a fundamental question.\n\n**2. Blocking and covering duality**: A maximal packing simultaneously serves as a 'blocking set' for all possible unit-segment placements. This duality between packing (non-overlapping) and blocking (covering all placements) is a recurring theme in combinatorial geometry.\n\n3. **Compactness and cardinality**: The proof that $[0,1]^2$ forces finite packings illustrates how compactness constrains combinatorial structure. The open question about infinite packings in unbounded regions probes the limits of this compactness phenomenon.\n\n4. **Orientation diversity**: Danzer's construction highlights the importance of angular diversity in blocking — a theme that also appears in problems about piercing sets, transversals, and geometric set cover.",
+    "summary": "Erd\u0151s Problem 1071 explores maximal packings of unit segments \u2014 configurations where no additional segment can be placed without intersection. Part (a) was resolved by Ludwig Danzer, who constructed a finite maximal packing in $[0,1]^2$ (earning \\$10 from Erd\u0151s). Part (b) remains open: whether any region admits a countably infinite maximal packing. The formalization captures the full problem structure using rational-coordinate abstractions, axiomatized disjointness, and a clean hierarchy from basic packings through maximality to the open problems. 0 sorries.",
+    "implications": "1. **Geometric maximal independent sets**: The problem connects packing theory to graph theory \u2014 a maximal packing is a maximal independent set in the (uncountable) intersection graph of unit segments. Understanding when finite vs. infinite maximal independent sets exist in geometric intersection graphs is a fundamental question.\n\n**2. Blocking and covering duality**: A maximal packing simultaneously serves as a 'blocking set' for all possible unit-segment placements. This duality between packing (non-overlapping) and blocking (covering all placements) is a recurring theme in combinatorial geometry.\n\n3. **Compactness and cardinality**: The proof that $[0,1]^2$ forces finite packings illustrates how compactness constrains combinatorial structure. The open question about infinite packings in unbounded regions probes the limits of this compactness phenomenon.\n\n4. **Orientation diversity**: Danzer's construction highlights the importance of angular diversity in blocking \u2014 a theme that also appears in problems about piercing sets, transversals, and geometric set cover.",
     "openQuestions": [
-      "Is there a region $R \\subseteq \\mathbb{R}^2$ with a countably infinite maximal packing of unit segments? (Part b — the main open question)",
+      "Is there a region $R \\subseteq \\mathbb{R}^2$ with a countably infinite maximal packing of unit segments? (Part b \u2014 the main open question)",
       "Can a finite maximal packing exist under the endpoint-intersection relaxation (segments may touch at endpoints)?",
       "What is the minimum cardinality of a finite maximal packing of unit segments in $[0,1]^2$? (How many segments does Danzer's construction use?)",
       "Does the problem change character for segments of length $\\ell \\neq 1$? Is there a critical length $\\ell^*$ where the answer to part (a) or (b) changes?",
-      "Does Danzer's construction generalize to higher dimensions — e.g., maximal packings of unit segments in $[0,1]^3$?",
+      "Does Danzer's construction generalize to higher dimensions \u2014 e.g., maximal packings of unit segments in $[0,1]^3$?",
       "What is the computational complexity of determining whether a given finite set of segments forms a maximal packing?"
     ]
   },
   "crossReferences": [
     {
-      "id": "erdos-1070",
       "title": "Independence Number of Unit Distance Graphs",
-      "relationship": "Both problems study extremal properties of geometric graphs built from unit distances. Erdős #1070 asks for the minimum independence number f(n) of n-point unit distance graphs in ℝ², while #1071 studies maximal packings (maximal independent sets) in the intersection graph of all possible unit segments.",
+      "relationship": "related",
       "sharedConcepts": [
         "unit-distance-graphs",
         "independence-number",
         "combinatorial-geometry"
-      ]
+      ],
+      "targetId": "erdos-1070",
+      "description": "Both problems study extremal properties of geometric graphs built from unit distances. Erd\u0151s #1070 asks for the minimum independence number f(n) of n-point unit distance graphs in \u211d\u00b2, while #1071 studies maximal packings (maximal independent sets) in the intersection graph of all possible unit segments."
     },
     {
-      "id": "erdos-1066",
       "title": "Independence Number of Unit Distance Graphs (Planar)",
-      "relationship": "Closely related problem on independence numbers in planar unit distance graphs. A maximal packing of unit segments is a maximal independent set in the intersection graph of unit segments; Erdős #1066 studies independence numbers in the planar unit-distance setting, sharing the geometric graph-theoretic framework.",
+      "relationship": "related",
       "sharedConcepts": [
         "combinatorial-geometry",
         "unit-distance-graphs",
         "independence-number",
         "planar-graphs"
-      ]
+      ],
+      "targetId": "erdos-1066",
+      "description": "Closely related problem on independence numbers in planar unit distance graphs. A maximal packing of unit segments is a maximal independent set in the intersection graph of unit segments; Erd\u0151s #1066 studies independence numbers in the planar unit-distance setting, sharing the geometric graph-theoretic framework."
     },
     {
-      "id": "erdos-1069",
-      "title": "Szemerédi-Trotter Theorem on k-Rich Lines",
-      "relationship": "Both problems fall within incidence geometry. The Szemerédi-Trotter theorem (#1069) bounds incidences between points and lines in ℝ², a fundamental result in the same combinatorial geometry setting where segment packing questions arise. Density and counting arguments used in Szemerédi-Trotter inform packing bounds.",
+      "title": "Szemer\u00e9di-Trotter Theorem on k-Rich Lines",
+      "relationship": "related",
       "sharedConcepts": [
         "incidence-geometry",
         "combinatorial-geometry",
         "lines-and-segments",
         "point-line-incidences"
-      ]
+      ],
+      "targetId": "erdos-1069",
+      "description": "Both problems fall within incidence geometry. The Szemer\u00e9di-Trotter theorem (#1069) bounds incidences between points and lines in \u211d\u00b2, a fundamental result in the same combinatorial geometry setting where segment packing questions arise. Density and counting arguments used in Szemer\u00e9di-Trotter inform packing bounds."
     },
     {
-      "id": "erdos-97",
       "title": "Equidistant Vertices in Convex Polygons",
-      "relationship": "Erdős #97 investigates unit-distance constraints among vertices of convex polygons, sharing the unit-distance geometric framework with #1071. Both problems concern how many geometric objects at unit scale can coexist subject to disjointness or equidistance constraints in the plane.",
+      "relationship": "related",
       "sharedConcepts": [
         "convex-polygon",
         "unit-distance",
         "geometry",
         "combinatorial-geometry"
-      ]
+      ],
+      "targetId": "erdos-97",
+      "description": "Erd\u0151s #97 investigates unit-distance constraints among vertices of convex polygons, sharing the unit-distance geometric framework with #1071. Both problems concern how many geometric objects at unit scale can coexist subject to disjointness or equidistance constraints in the plane."
     },
     {
-      "id": "borsuk-ulam",
       "title": "Borsuk-Ulam Theorem",
-      "relationship": "The Borsuk-Ulam theorem provides topological tools (compactness, antipodal arguments) applicable to blocking and covering problems in geometry. Compactness arguments are central to proving that any packing of unit segments in [0,1]² must be finite — the same topological reasoning that underpins Borsuk-type results.",
+      "relationship": "related",
       "sharedConcepts": [
         "compactness",
         "geometric-topology",
         "blocking-sets",
         "covering"
-      ]
+      ],
+      "targetId": "borsuk-ulam",
+      "description": "The Borsuk-Ulam theorem provides topological tools (compactness, antipodal arguments) applicable to blocking and covering problems in geometry. Compactness arguments are central to proving that any packing of unit segments in [0,1]\u00b2 must be finite \u2014 the same topological reasoning that underpins Borsuk-type results."
     }
   ],
   "relatedProofs": [
     {
       "id": "erdos-1070",
-      "description": "Unit distance graphs and independence numbers — the geometric graph-theory setting directly surrounding #1071's packing-as-independent-set framing."
+      "description": "Unit distance graphs and independence numbers \u2014 the geometric graph-theory setting directly surrounding #1071's packing-as-independent-set framing."
     },
     {
       "id": "erdos-1066",
-      "description": "Independence number of planar unit distance graphs — shares the combinatorial geometry and independence-number perspective of the segment packing problem."
+      "description": "Independence number of planar unit distance graphs \u2014 shares the combinatorial geometry and independence-number perspective of the segment packing problem."
     },
     {
       "id": "erdos-1069",
-      "description": "Szemerédi-Trotter incidence theorem — fundamental result in combinatorial geometry bounding point-line incidences, informing the density arguments relevant to segment packings."
+      "description": "Szemer\u00e9di-Trotter incidence theorem \u2014 fundamental result in combinatorial geometry bounding point-line incidences, informing the density arguments relevant to segment packings."
     },
     {
       "id": "erdos-97",
-      "description": "Unit-distance equidistance in convex polygons — another Erdős problem in the unit-distance planar geometry family."
+      "description": "Unit-distance equidistance in convex polygons \u2014 another Erd\u0151s problem in the unit-distance planar geometry family."
     },
     {
       "id": "borsuk-ulam",
-      "description": "Borsuk-Ulam theorem — supplies the topological compactness machinery used to argue that any packing of unit segments in a bounded region must be finite."
+      "description": "Borsuk-Ulam theorem \u2014 supplies the topological compactness machinery used to argue that any packing of unit segments in a bounded region must be finite."
     }
   ],
   "references": [
@@ -225,21 +230,21 @@
       "authors": [
         "L. Danzer"
       ],
-      "title": "Über ein Problem aus der kombinatorischen Geometrie",
+      "title": "\u00dcber ein Problem aus der kombinatorischen Geometrie",
       "venue": "Archiv der Mathematik",
       "year": 1956,
-      "note": "Danzer's original construction of a finite maximal set of pairwise non-intersecting unit segments in [0,1]², resolving part (a) of Erdős Problem #1071 and earning the \\$10 prize.",
+      "note": "Danzer's original construction of a finite maximal set of pairwise non-intersecting unit segments in [0,1]\u00b2, resolving part (a) of Erd\u0151s Problem #1071 and earning the \\$10 prize.",
       "type": "journal"
     },
     {
       "authors": [
-        "P. Erdős",
-        "G. Tóth"
+        "P. Erd\u0151s",
+        "G. T\u00f3th"
       ],
       "title": "Packing and Covering Problems",
       "venue": "Combinatorial Geometry and Graph Theory (Proceedings, Sendai)",
       "year": 1980,
-      "note": "Survey by Erdős and Tóth on extremal packing and covering problems in the plane, including the maximal segment packing problem formalized here.",
+      "note": "Survey by Erd\u0151s and T\u00f3th on extremal packing and covering problems in the plane, including the maximal segment packing problem formalized here.",
       "type": "proceedings"
     },
     {
@@ -250,12 +255,12 @@
       "title": "Combinatorial Geometry",
       "venue": "Wiley-Interscience",
       "year": 1995,
-      "note": "Comprehensive reference on combinatorial geometry covering packing problems, intersection graphs of geometric objects, and the blocking/covering duality central to Erdős Problem #1071.",
+      "note": "Comprehensive reference on combinatorial geometry covering packing problems, intersection graphs of geometric objects, and the blocking/covering duality central to Erd\u0151s Problem #1071.",
       "type": "book"
     },
     {
       "authors": [
-        "L. Fejes Tóth"
+        "L. Fejes T\u00f3th"
       ],
       "title": "Lagerungen in der Ebene, auf der Kugel und im Raum",
       "venue": "Springer-Verlag, Berlin",
@@ -265,16 +270,16 @@
     },
     {
       "authors": [
-        "E. Szemerédi",
+        "E. Szemer\u00e9di",
         "W.T. Trotter Jr."
       ],
       "title": "Extremal Problems in Discrete Geometry",
       "venue": "Combinatorica",
       "volume": "3",
-      "number": "3–4",
-      "pages": "381–392",
+      "number": "3\u20134",
+      "pages": "381\u2013392",
       "year": 1983,
-      "note": "Proves the Szemerédi-Trotter theorem bounding point-line incidences, a cornerstone result in combinatorial geometry that provides the analytic tools underlying density and blocking arguments for segment packings.",
+      "note": "Proves the Szemer\u00e9di-Trotter theorem bounding point-line incidences, a cornerstone result in combinatorial geometry that provides the analytic tools underlying density and blocking arguments for segment packings.",
       "type": "journal"
     }
   ],

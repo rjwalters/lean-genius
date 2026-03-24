@@ -153,5 +153,39 @@
     "axiomCount": 6,
     "theoremCount": 10,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Share totient and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-220",
+      "relationship": "related",
+      "description": "Share totient and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-249",
+      "relationship": "related",
+      "description": "Share totient and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-408",
+      "relationship": "related",
+      "description": "Share totient and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-411",
+      "relationship": "related",
+      "description": "Share totient and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1004",
+    "erdos-220",
+    "erdos-249",
+    "erdos-408",
+    "erdos-411"
+  ]
 }

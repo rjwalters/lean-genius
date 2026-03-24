@@ -1,10 +1,10 @@
 {
   "id": "erdos-380",
-  "title": "Erdős Problem #380: Bad Intervals and Greatest Prime Factors",
+  "title": "Erd\u0151s Problem #380: Bad Intervals and Greatest Prime Factors",
   "slug": "erdos-380",
-  "description": "An interval [u,v] is bad if the greatest prime factor of ∏m occurs with exponent > 1. Is B(x) ~ #{n ≤ x : P(n)² | n}? Erdős–Graham proved B(x) > x^{1-o(1)}.",
+  "description": "An interval [u,v] is bad if the greatest prime factor of \u220fm occurs with exponent > 1. Is B(x) ~ #{n \u2264 x : P(n)\u00b2 | n}? Erd\u0151s\u2013Graham proved B(x) > x^{1-o(1)}.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/380",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos380Problem.lean",
@@ -45,7 +45,7 @@
       "badCount B(x) and gpfSquareCount counting functions",
       "ErdosProblem380 conjecture as ratio convergence",
       "erdos_graham_lower axiom: B(x) > x^{1-o(1)}",
-      "gpfSquare_asymptotic axiom: x/exp(c√(log x · log log x)) growth",
+      "gpfSquare_asymptotic axiom: x/exp(c\u221a(log x \u00b7 log log x)) growth",
       "bad_interval_no_prime axiom: short bad intervals are prime-free"
     ],
     "axiomCount": 7,
@@ -53,14 +53,14 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Bad Intervals and the Distribution of Greatest Prime Factors**\n\nThis problem was introduced by Erdős and Graham in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p. 73).  It concerns the interplay between the multiplicative structure of consecutive integers and the distribution of large prime factors.\n\n**The Greatest Prime Factor**\n\nThe function $P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ is one of the most studied objects in multiplicative number theory.  Its distribution was first analyzed by Dickman (1930), who showed that the probability $\\Pr[P(n) \\leq n^{1/u}]$ converges to the Dickman function $\\rho(u)$, satisfying $u\\rho'(u) = -\\rho(u-1)$ for $u > 1$ with $\\rho(u) = 1$ for $0 \\leq u \\leq 1$.  Numbers with $P(n) \\leq n^{1/u}$ are called $n^{1/u}$-*smooth*; their study is central to factoring algorithms and cryptography.\n\n**Bad Intervals**\n\nAn interval $[u, v]$ is 'bad' if the greatest prime factor of the product $\\prod_{m=u}^{v} m$ appears with exponent $\\geq 2$ in that product.  By Legendre's formula, the exponent of a prime $p$ in $\\prod_{m=u}^{v} m = v!/(u-1)!$ is $\\sum_{k \\geq 1} (\\lfloor v/p^k \\rfloor - \\lfloor (u-1)/p^k \\rfloor)$.  For the *greatest* prime $P$ of the product (which is the largest prime $\\leq v$), the bad condition requires this exponent to be $\\geq 2$.\n\n**The Erdős-Graham Lower Bound**\n\nErdős and Graham proved $B(x) > x^{1-o(1)}$, where $B(x)$ counts integers $n \\leq x$ lying in some bad interval.  The argument exploits the observation that if $P(n)^2 \\mid n$, then the singleton interval $[n, n]$ is bad (since $P(n)$ is the greatest prime factor of the one-element product $n$, and $P(n)^2 \\mid n$).  Estimates from smooth number theory show that $\\#\\{n \\leq x : P(n)^2 \\mid n\\}$ grows as $x/\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})$, which is $> x^{1-\\varepsilon}$ for any $\\varepsilon > 0$.\n\n**The Conjecture**\n\nThe conjecture asserts that $B(x) \\sim \\#\\{n \\leq x : P(n)^2 \\mid n\\}$ — the two counting functions are asymptotically equal.  This would mean that the 'extra' integers swept into bad intervals (those with $P(n)^2 \\nmid n$ that nonetheless lie in a bad interval created by neighbors) are asymptotically negligible.  Proving this requires understanding how bad intervals extend beyond their 'core' elements.\n\n**Connection to Prime Gaps**\n\nThe result that short bad intervals (with $v < 2u$) must be prime-free connects the problem to the distribution of prime gaps.  By Bertrand's postulate, every interval $[u, 2u]$ contains a prime, so short bad intervals are confined to gaps between consecutive primes.  This structural constraint suggests that bad intervals are 'anchored' by the multiplicative structure of their constituent integers rather than by the ambient prime distribution.",
-    "problemStatement": "**Conjecture (Erdős-Graham, 1980):**\n$$B(x) \\sim \\#\\{n \\leq x : P(n)^2 \\mid n\\}$$\nwhere $B(x)$ counts integers $n \\leq x$ contained in at least one bad interval, and $P(n)$ is the greatest prime factor of $n$.\n\n**Known:** $B(x) > x^{1-o(1)}$ (Erdős-Graham 1980).\n\n**Status:** OPEN.",
-    "text": "An interval [u,v] is bad if the greatest prime factor of ∏m occurs with exponent > 1. Is B(x) ~ #{n ≤ x : P(n)² | n}? Erdős–Graham proved B(x) > x^{1-o(1)}.",
-    "proofStrategy": "**Formalization Strategy**\n\nThe formalization takes an axiom-first approach, building up from the greatest prime factor to the main conjecture:\n\n1. **Greatest Prime Factor (lines 24–37):** Axiomatize `greatestPrimeFactor` with three properties: primality (for $n \\geq 2$), divisibility ($P(n) \\mid n$), and maximality ($p \\mid n \\implies p \\leq P(n)$).  This avoids constructing $P(n)$ from `Nat.factors`, which would require additional infrastructure.\n\n2. **Bad Intervals (lines 41–51):** Define `IsBadInterval u v` using `Finset.Icc u v` and `Finset.prod id` for the interval product.  The bad condition checks $P^2 \\mid \\Pi$ where $P = P(\\Pi)$.  `InBadInterval n` existentially quantifies over containing intervals.\n\n3. **Counting Functions (lines 55–62):** Define `badCount` and `gpfSquareCount` as `Finset.filter ... .card`, both `noncomputable` due to the decidability requirements of the predicates.\n\n4. **Conjecture (lines 66–72):** State the asymptotic equivalence as ratio convergence in $\\mathbb{Q}$: $|B(x)/G(x) - 1| < \\varepsilon$ for large $x$, with the positivity condition $G(x) > 0$.\n\n5. **Known Results (lines 76–97):** Axiomatize the Erdős-Graham lower bound ($x^{1-\\varepsilon}$ form), the GPF-square asymptotic, and the prime exclusion from short bad intervals.",
+    "historicalContext": "**Bad Intervals and the Distribution of Greatest Prime Factors**\n\nThis problem was introduced by Erd\u0151s and Graham in their influential 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (p. 73).  It concerns the interplay between the multiplicative structure of consecutive integers and the distribution of large prime factors.\n\n**The Greatest Prime Factor**\n\nThe function $P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ is one of the most studied objects in multiplicative number theory.  Its distribution was first analyzed by Dickman (1930), who showed that the probability $\\Pr[P(n) \\leq n^{1/u}]$ converges to the Dickman function $\\rho(u)$, satisfying $u\\rho'(u) = -\\rho(u-1)$ for $u > 1$ with $\\rho(u) = 1$ for $0 \\leq u \\leq 1$.  Numbers with $P(n) \\leq n^{1/u}$ are called $n^{1/u}$-*smooth*; their study is central to factoring algorithms and cryptography.\n\n**Bad Intervals**\n\nAn interval $[u, v]$ is 'bad' if the greatest prime factor of the product $\\prod_{m=u}^{v} m$ appears with exponent $\\geq 2$ in that product.  By Legendre's formula, the exponent of a prime $p$ in $\\prod_{m=u}^{v} m = v!/(u-1)!$ is $\\sum_{k \\geq 1} (\\lfloor v/p^k \\rfloor - \\lfloor (u-1)/p^k \\rfloor)$.  For the *greatest* prime $P$ of the product (which is the largest prime $\\leq v$), the bad condition requires this exponent to be $\\geq 2$.\n\n**The Erd\u0151s-Graham Lower Bound**\n\nErd\u0151s and Graham proved $B(x) > x^{1-o(1)}$, where $B(x)$ counts integers $n \\leq x$ lying in some bad interval.  The argument exploits the observation that if $P(n)^2 \\mid n$, then the singleton interval $[n, n]$ is bad (since $P(n)$ is the greatest prime factor of the one-element product $n$, and $P(n)^2 \\mid n$).  Estimates from smooth number theory show that $\\#\\{n \\leq x : P(n)^2 \\mid n\\}$ grows as $x/\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})$, which is $> x^{1-\\varepsilon}$ for any $\\varepsilon > 0$.\n\n**The Conjecture**\n\nThe conjecture asserts that $B(x) \\sim \\#\\{n \\leq x : P(n)^2 \\mid n\\}$ \u2014 the two counting functions are asymptotically equal.  This would mean that the 'extra' integers swept into bad intervals (those with $P(n)^2 \\nmid n$ that nonetheless lie in a bad interval created by neighbors) are asymptotically negligible.  Proving this requires understanding how bad intervals extend beyond their 'core' elements.\n\n**Connection to Prime Gaps**\n\nThe result that short bad intervals (with $v < 2u$) must be prime-free connects the problem to the distribution of prime gaps.  By Bertrand's postulate, every interval $[u, 2u]$ contains a prime, so short bad intervals are confined to gaps between consecutive primes.  This structural constraint suggests that bad intervals are 'anchored' by the multiplicative structure of their constituent integers rather than by the ambient prime distribution.",
+    "problemStatement": "**Conjecture (Erd\u0151s-Graham, 1980):**\n$$B(x) \\sim \\#\\{n \\leq x : P(n)^2 \\mid n\\}$$\nwhere $B(x)$ counts integers $n \\leq x$ contained in at least one bad interval, and $P(n)$ is the greatest prime factor of $n$.\n\n**Known:** $B(x) > x^{1-o(1)}$ (Erd\u0151s-Graham 1980).\n\n**Status:** OPEN.",
+    "text": "An interval [u,v] is bad if the greatest prime factor of \u220fm occurs with exponent > 1. Is B(x) ~ #{n \u2264 x : P(n)\u00b2 | n}? Erd\u0151s\u2013Graham proved B(x) > x^{1-o(1)}.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe formalization takes an axiom-first approach, building up from the greatest prime factor to the main conjecture:\n\n1. **Greatest Prime Factor (lines 24\u201337):** Axiomatize `greatestPrimeFactor` with three properties: primality (for $n \\geq 2$), divisibility ($P(n) \\mid n$), and maximality ($p \\mid n \\implies p \\leq P(n)$).  This avoids constructing $P(n)$ from `Nat.factors`, which would require additional infrastructure.\n\n2. **Bad Intervals (lines 41\u201351):** Define `IsBadInterval u v` using `Finset.Icc u v` and `Finset.prod id` for the interval product.  The bad condition checks $P^2 \\mid \\Pi$ where $P = P(\\Pi)$.  `InBadInterval n` existentially quantifies over containing intervals.\n\n3. **Counting Functions (lines 55\u201362):** Define `badCount` and `gpfSquareCount` as `Finset.filter ... .card`, both `noncomputable` due to the decidability requirements of the predicates.\n\n4. **Conjecture (lines 66\u201372):** State the asymptotic equivalence as ratio convergence in $\\mathbb{Q}$: $|B(x)/G(x) - 1| < \\varepsilon$ for large $x$, with the positivity condition $G(x) > 0$.\n\n5. **Known Results (lines 76\u201397):** Axiomatize the Erd\u0151s-Graham lower bound ($x^{1-\\varepsilon}$ form), the GPF-square asymptotic, and the prime exclusion from short bad intervals.",
     "keyInsights": [
       "**Local vs Non-Local Equivalence:** The conjecture equates a non-local property (membership in a bad interval, depending on neighbors) with a purely local property ($P(n)^2 \\mid n$, depending only on $n$'s factorization).  This structural equivalence would be surprising and deep.",
-      "**Bad Intervals as GPF-Square 'Halos':** If the conjecture holds, bad intervals are essentially 'halos' around integers with $P(n)^2 \\mid n$ — these core elements create bad intervals that sweep up at most $o(G(x))$ additional integers.  The halo is small because the interval must be wide enough to capture two multiples of the largest prime.",
-      "**Dickman Function Connection:** The count $\\#\\{n \\leq x : P(n)^2 \\mid n\\}$ grows as $x/\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})$, which is in the 'sub-power' regime — faster than any $x/(\\log x)^k$ but slower than $x^{1-\\delta}$.  This growth rate is characteristic of the Dickman-de Bruijn theory of smooth numbers.",
+      "**Bad Intervals as GPF-Square 'Halos':** If the conjecture holds, bad intervals are essentially 'halos' around integers with $P(n)^2 \\mid n$ \u2014 these core elements create bad intervals that sweep up at most $o(G(x))$ additional integers.  The halo is small because the interval must be wide enough to capture two multiples of the largest prime.",
+      "**Dickman Function Connection:** The count $\\#\\{n \\leq x : P(n)^2 \\mid n\\}$ grows as $x/\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})$, which is in the 'sub-power' regime \u2014 faster than any $x/(\\log x)^k$ but slower than $x^{1-\\delta}$.  This growth rate is characteristic of the Dickman-de Bruijn theory of smooth numbers.",
       "**Prime-Free Short Bad Intervals:** If $[u, v]$ is bad and $v < 2u$, the interval contains no primes.  This is because a prime $p \\in [u, v]$ with $v < 2p$ would be the greatest prime factor but appear only once in the product.  By Bertrand's postulate, this constrains short bad intervals to prime gaps.",
       "**Singleton Bad Intervals:** If $P(n)^2 \\mid n$, then $[n, n]$ is trivially bad: the greatest prime factor of the one-element product $n$ is $P(n)$, and $P(n)^2 \\mid n$ by hypothesis.  This immediately gives $G(x) \\leq B(x)$, so the conjecture reduces to proving $B(x) \\leq (1 + o(1)) G(x)$.",
       "**Formalization Choice: Axioms over Construction:** The greatest prime factor is axiomatized rather than defined because constructing it from `Nat.factors` in Mathlib would require showing the list is non-empty (for $n \\geq 2$), extracting the maximum, and proving the three characterizing properties.  The axiom approach is cleaner and focuses attention on the mathematical content."
@@ -76,7 +76,7 @@
       "title": "Greatest Prime Factor",
       "startLine": 22,
       "endLine": 38,
-      "summary": "Axiomatizes `greatestPrimeFactor : ℕ → ℕ` with three properties: `gpf_prime` (primality for $n \\geq 2$), `gpf_dvd` (divisibility $P(n) \\mid n$), and `gpf_largest` (maximality: $p$ prime, $p \\mid n \\implies p \\leq P(n)$).  Returns 0 for $n \\leq 1$.",
+      "summary": "Axiomatizes `greatestPrimeFactor : \u2115 \u2192 \u2115` with three properties: `gpf_prime` (primality for $n \\geq 2$), `gpf_dvd` (divisibility $P(n) \\mid n$), and `gpf_largest` (maximality: $p$ prime, $p \\mid n \\implies p \\leq P(n)$).  Returns 0 for $n \\leq 1$.",
       "mathContext": "$P(n) = \\max\\{p \\text{ prime} : p \\mid n\\}$ for $n \\ge 2$, $P(1) = 0$. Axiomatized via primality ($P(n)$ is prime for $n \\ge 2$), divisibility ($P(n) \\mid n$), and maximality ($p \\mid n \\implies p \\le P(n)$)."
     },
     {
@@ -109,7 +109,7 @@
       "startLine": 74,
       "endLine": 88,
       "summary": "Axiomatizes `erdos_graham_lower` ($B(x) \\geq x^{1-\\varepsilon}$ for large $x$) and `gpfSquare_asymptotic` (GPF-square count exceeds $x^{1-\\varepsilon}$, consistent with the precise $x/\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})$ asymptotic).",
-      "mathContext": "$B(x) > x^{1-o(1)}$ (Erdős-Graham 1980). $\\text{gpfSquareCount}(x) \\sim \\frac{x}{\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})}$ for some $c > 0$."
+      "mathContext": "$B(x) > x^{1-o(1)}$ (Erd\u0151s-Graham 1980). $\\text{gpfSquareCount}(x) \\sim \\frac{x}{\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})}$ for some $c > 0$."
     },
     {
       "id": "bad-primes",
@@ -121,14 +121,14 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem #380 on bad intervals — intervals where the greatest prime factor of the consecutive product appears with multiplicity ≥ 2.  The conjecture B(x) ~ #{n ≤ x : P(n)² | n} would equate a non-local interval property with a local divisibility condition.  The Erdős-Graham lower bound B(x) > x^{1-o(1)} shows the set is substantial, and the prime exclusion property constrains the structure of short bad intervals.  All results are axiomatized with 0 sorries on proved theorems.",
+    "summary": "The formalization captures Erd\u0151s Problem #380 on bad intervals \u2014 intervals where the greatest prime factor of the consecutive product appears with multiplicity \u2265 2.  The conjecture B(x) ~ #{n \u2264 x : P(n)\u00b2 | n} would equate a non-local interval property with a local divisibility condition.  The Erd\u0151s-Graham lower bound B(x) > x^{1-o(1)} shows the set is substantial, and the prime exclusion property constrains the structure of short bad intervals.  All results are axiomatized with 0 sorries on proved theorems.",
     "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Local-Global Principle:** An affirmative answer would establish that membership in a bad interval is essentially determined by local multiplicative structure ($P(n)^2 \\mid n$) rather than by the ambient interval.  This would be a local-global principle for consecutive integer products.\n\n2. **Smooth Number Theory:** The asymptotic $G(x) \\sim x/\\exp(c\\sqrt{\\log x \\cdot \\log\\log x})$ places this problem in the Dickman-de Bruijn theory of smooth numbers.  Progress would likely require advances in understanding the joint distribution of $P(n)$ across consecutive integers.\n\n**3. Prime Gap Connections:** The prime exclusion property for short bad intervals links the problem to the distribution of prime gaps.  Understanding which prime-free intervals are bad could illuminate the structure of prime gaps themselves.\n\n4. **Powerful Numbers:** Numbers with $P(n)^2 \\mid n$ are related to (but more general than) powerful numbers ($p^2 \\mid n$ for all $p \\mid n$).  The problem asks whether this GPF-squared condition characterizes bad interval membership.\n\n5. **Sieve Methods:** Proving the conjecture likely requires sieve methods to control the 'halo' of extra integers swept into bad intervals, combined with results on the distribution of smooth numbers in short intervals.",
     "openQuestions": [
-      "Is B(x) ~ #{n ≤ x : P(n)² | n}? (The main conjecture)",
-      "What is the precise asymptotic constant c in x/exp(c√(log x · log log x))?",
+      "Is B(x) ~ #{n \u2264 x : P(n)\u00b2 | n}? (The main conjecture)",
+      "What is the precise asymptotic constant c in x/exp(c\u221a(log x \u00b7 log log x))?",
       "How large can a bad interval be? What is the maximum v - u for bad intervals with u ~ x?",
-      "Can the Erdős-Graham lower bound B(x) > x^{1-o(1)} be sharpened to B(x) ~ G(x)?",
-      "What fraction of integers in bad intervals have P(n)² ∤ n (i.e., are 'swept up' by neighbors)?"
+      "Can the Erd\u0151s-Graham lower bound B(x) > x^{1-o(1)} be sharpened to B(x) ~ G(x)?",
+      "What fraction of integers in bad intervals have P(n)\u00b2 \u2224 n (i.e., are 'swept up' by neighbors)?"
     ]
   },
   "leanFile": {
@@ -145,5 +145,39 @@
     "axiomCount": 7,
     "theoremCount": 0,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-452",
+      "relationship": "related",
+      "description": "Share prime-factors, intervals, and analytic-number-theory themes"
+    },
+    {
+      "targetId": "erdos-1106",
+      "relationship": "related",
+      "description": "Share prime-factors, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-368",
+      "relationship": "related",
+      "description": "Share prime-factors, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-371",
+      "relationship": "related",
+      "description": "Share prime-factors, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-372",
+      "relationship": "related",
+      "description": "Share prime-factors, analytic-number-theory, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-452",
+    "erdos-1106",
+    "erdos-368",
+    "erdos-371",
+    "erdos-372"
+  ]
 }

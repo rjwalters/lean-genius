@@ -181,5 +181,39 @@
     "axiomCount": 9,
     "theoremCount": 3,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-578",
+      "relationship": "related",
+      "description": "Share probabilistic-combinatorics, graph-theoretic, and random-graphs themes"
+    },
+    {
+      "targetId": "erdos-799",
+      "relationship": "related",
+      "description": "Share probabilistic-combinatorics, graph-theoretic, and random-graphs themes"
+    },
+    {
+      "targetId": "erdos-745",
+      "relationship": "related",
+      "description": "Share probabilistic-combinatorics and random-graphs themes"
+    },
+    {
+      "targetId": "erdos-747",
+      "relationship": "related",
+      "description": "Share probabilistic-combinatorics and random-graphs themes"
+    },
+    {
+      "targetId": "erdos-625",
+      "relationship": "related",
+      "description": "Share graph-theoretic and random-graphs themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-578",
+    "erdos-799",
+    "erdos-745",
+    "erdos-747",
+    "erdos-625"
+  ]
 }

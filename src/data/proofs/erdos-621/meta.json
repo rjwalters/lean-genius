@@ -1,10 +1,10 @@
 {
   "id": "erdos-621",
-  "title": "Erdős #621: Triangle Edge Covers",
+  "title": "Erd\u0151s #621: Triangle Edge Covers",
   "slug": "erdos-621",
-  "description": "For graph G on n vertices, is α₁(G) + τ₁(G) ≤ n²/4? Solved by Norin-Sun (2016) with the stronger result α₁(G) + τ_B(G) ≤ n²/4.",
+  "description": "For graph G on n vertices, is \u03b1\u2081(G) + \u03c4\u2081(G) \u2264 n\u00b2/4? Solved by Norin-Sun (2016) with the stronger result \u03b1\u2081(G) + \u03c4_B(G) \u2264 n\u00b2/4.",
   "meta": {
-    "author": "Paul Erdős, Tibor Gallai, Zsolt Tuza, Sergey Norin, Hehui Wu",
+    "author": "Paul Erd\u0151s, Tibor Gallai, Zsolt Tuza, Sergey Norin, Hehui Wu",
     "sourceUrl": "https://erdosproblems.com/621",
     "date": "1996-2016",
     "status": "axiomatized",
@@ -26,16 +26,16 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős, Gallai, and Tuza posed this conjecture in their influential 1996 paper 'Covering and independence in triangle structures,' published in Discrete Mathematics. They noted the problem 'is probably quite difficult,' placing it alongside a suite of conjectures on triangle packings and covers that extended Gallai's earlier work on transversals in hypergraphs. The parameters $\\alpha_1(G)$ and $\\tau_1(G)$ generalize the classical matching number and vertex cover number from edges to triangles, mirroring the Gallai identity $\\alpha(G) + \\tau(G) = n$ at the edge level. Haxell (1999) made partial progress, establishing asymptotic bounds. The full conjecture was resolved by Sergey Norin and Hehui Wu (later published as Norin-Sun, 2016), who proved the stronger result $\\alpha_1(G) + \\tau_B(G) \\le n^2/4$, where $\\tau_B$ denotes the bipartite edge deletion number. Their proof leveraged the Kruskal-Katona theorem and structural analysis of near-extremal graphs. The bound $n^2/4$ is the same as in Mantel's theorem (1907) and Turán's theorem (1941), revealing a deep unity in extremal graph theory where triangle-related invariants are governed by the same quadratic threshold.",
+    "historicalContext": "Erd\u0151s, Gallai, and Tuza posed this conjecture in their influential 1996 paper 'Covering and independence in triangle structures,' published in Discrete Mathematics. They noted the problem 'is probably quite difficult,' placing it alongside a suite of conjectures on triangle packings and covers that extended Gallai's earlier work on transversals in hypergraphs. The parameters $\\alpha_1(G)$ and $\\tau_1(G)$ generalize the classical matching number and vertex cover number from edges to triangles, mirroring the Gallai identity $\\alpha(G) + \\tau(G) = n$ at the edge level. Haxell (1999) made partial progress, establishing asymptotic bounds. The full conjecture was resolved by Sergey Norin and Hehui Wu (later published as Norin-Sun, 2016), who proved the stronger result $\\alpha_1(G) + \\tau_B(G) \\le n^2/4$, where $\\tau_B$ denotes the bipartite edge deletion number. Their proof leveraged the Kruskal-Katona theorem and structural analysis of near-extremal graphs. The bound $n^2/4$ is the same as in Mantel's theorem (1907) and Tur\u00e1n's theorem (1941), revealing a deep unity in extremal graph theory where triangle-related invariants are governed by the same quadratic threshold.",
     "problemStatement": "Let $G$ be a graph on $n$ vertices. Define $\\alpha_1(G)$ as the maximum number of edges containing at most one edge from each triangle, and $\\tau_1(G)$ as the minimum number of edges that hit every triangle. Is $\\alpha_1(G) + \\tau_1(G) \\le n^2/4$?",
-    "text": "For graph G on n vertices, is α₁(G) + τ₁(G) ≤ n²/4? Solved by Norin-Sun (2016) with the stronger result α₁(G) + τ_B(G) ≤ n²/4.",
-    "proofStrategy": "The formalization proceeds in eleven parts. Parts I-III establish the core combinatorial definitions: triangles, triangle edge covers ($\\tau_1$), and triangle-sparse sets ($\\alpha_1$), formalized over Mathlib's `SimpleGraph` and `Sym2` types. Part IV axiomatizes the bipartite edge deletion number $\\tau_B$ (whose full definition requires `deleteEdges` infrastructure beyond current Mathlib). Part V proves bipartite graphs are triangle-free via a 2-coloring pigeonhole argument. Part VI states the EGT conjecture and Norin-Sun's stronger result, then derives the conjecture from the stronger result using $\\tau_1 \\le \\tau_B$. Parts VII-VIII analyze the triangle-free special case, showing it reduces to Mantel's theorem. Parts IX-XI establish bounds, the $\\alpha_1 + \\tau_1 = |E|$ identity for triangle-free graphs, equality cases, and the connection to Erdős Problem #23.",
+    "text": "For graph G on n vertices, is \u03b1\u2081(G) + \u03c4\u2081(G) \u2264 n\u00b2/4? Solved by Norin-Sun (2016) with the stronger result \u03b1\u2081(G) + \u03c4_B(G) \u2264 n\u00b2/4.",
+    "proofStrategy": "The formalization proceeds in eleven parts. Parts I-III establish the core combinatorial definitions: triangles, triangle edge covers ($\\tau_1$), and triangle-sparse sets ($\\alpha_1$), formalized over Mathlib's `SimpleGraph` and `Sym2` types. Part IV axiomatizes the bipartite edge deletion number $\\tau_B$ (whose full definition requires `deleteEdges` infrastructure beyond current Mathlib). Part V proves bipartite graphs are triangle-free via a 2-coloring pigeonhole argument. Part VI states the EGT conjecture and Norin-Sun's stronger result, then derives the conjecture from the stronger result using $\\tau_1 \\le \\tau_B$. Parts VII-VIII analyze the triangle-free special case, showing it reduces to Mantel's theorem. Parts IX-XI establish bounds, the $\\alpha_1 + \\tau_1 = |E|$ identity for triangle-free graphs, equality cases, and the connection to Erd\u0151s Problem #23.",
     "keyInsights": [
       "**Norin-Sun strengthening**: The key innovation is replacing $\\tau_1$ with $\\tau_B$ (bipartite edge deletion number), yielding $\\alpha_1(G) + \\tau_B(G) \\le n^2/4$. Since every bipartite-making deletion set is a triangle cover ($\\tau_1 \\le \\tau_B$), the original conjecture follows immediately via `linarith`.",
-      "**Quadratic threshold universality**: The bound $n^2/4$ governs multiple extremal invariants—Mantel's edge bound for triangle-free graphs, Turán's theorem for $K_{r+1}$-free graphs with $r=2$, and now the triangle cover/sparse sum. This suggests a deeper structural principle tied to balanced bipartitions.",
+      "**Quadratic threshold universality**: The bound $n^2/4$ governs multiple extremal invariants\u2014Mantel's edge bound for triangle-free graphs, Tur\u00e1n's theorem for $K_{r+1}$-free graphs with $r=2$, and now the triangle cover/sparse sum. This suggests a deeper structural principle tied to balanced bipartitions.",
       "**Three extremal families**: Equality is achieved by complete graphs $K_n$, balanced complete bipartite graphs $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$, and the Friendship-type graph $K_{m,m}$ plus a universal vertex. The complete bipartite case is triangle-free (where $\\tau_1 = 0$ and $\\alpha_1 = |E|$), while $K_n$ is maximally triangulated.",
       "**Triangle-free reduction**: For triangle-free graphs, $\\tau_1 = 0$ (no triangles to cover) and $\\alpha_1 = |E|$ (every edge set is vacuously sparse), so the conjecture reduces exactly to Mantel's 1907 theorem: $|E(G)| \\le n^2/4$.",
-      "**Problem #23 connection**: The related conjecture $\\tau_B(G) \\le n^2/25$ (Erdős Problem #23) would give a much tighter bound on the bipartite removal number alone. If true, it implies $\\tau_1(G) \\le n^2/25$, substantially strengthening the covering side of the inequality."
+      "**Problem #23 connection**: The related conjecture $\\tau_B(G) \\le n^2/25$ (Erd\u0151s Problem #23) would give a much tighter bound on the bipartite removal number alone. If true, it implies $\\tau_1(G) \\le n^2/25$, substantially strengthening the covering side of the inequality."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -129,13 +129,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full arc of Erdős Problem #621 on triangle edge covers. The file defines the key invariants $\\alpha_1(G)$ and $\\tau_1(G)$ over Mathlib's `SimpleGraph` and `Sym2` types, axiomatizes the Norin-Sun (2016) result $\\alpha_1(G) + \\tau_B(G) \\le n^2/4$, and derives the original EGT conjecture $\\alpha_1(G) + \\tau_1(G) \\le n^2/4$ via the inequality $\\tau_1 \\le \\tau_B$. The triangle-free special case is fully proved, reducing to Mantel's theorem. Ten theorems are proved from definitions; six axioms capture deep results beyond current Mathlib.",
-    "implications": "**Theoretical Significance**: The resolution of this conjecture reveals the centrality of bipartite structure in triangle extremal problems.\n\nThe Norin-Sun proof strategy—replacing a triangle-specific invariant ($\\tau_1$) with a bipartite-structural one ($\\tau_B$)—is a powerful paradigm: many covering and packing problems become tractable when reformulated in terms of odd cycle transversals. The persistent appearance of the $n^2/4$ threshold across Mantel, Turán, and Erdős-Gallai-Tuza suggests that balanced bipartitions are the fundamental bottleneck for triangle-related extremal problems.",
+    "summary": "This formalization captures the full arc of Erd\u0151s Problem #621 on triangle edge covers. The file defines the key invariants $\\alpha_1(G)$ and $\\tau_1(G)$ over Mathlib's `SimpleGraph` and `Sym2` types, axiomatizes the Norin-Sun (2016) result $\\alpha_1(G) + \\tau_B(G) \\le n^2/4$, and derives the original EGT conjecture $\\alpha_1(G) + \\tau_1(G) \\le n^2/4$ via the inequality $\\tau_1 \\le \\tau_B$. The triangle-free special case is fully proved, reducing to Mantel's theorem. Ten theorems are proved from definitions; six axioms capture deep results beyond current Mathlib.",
+    "implications": "**Theoretical Significance**: The resolution of this conjecture reveals the centrality of bipartite structure in triangle extremal problems.\n\nThe Norin-Sun proof strategy\u2014replacing a triangle-specific invariant ($\\tau_1$) with a bipartite-structural one ($\\tau_B$)\u2014is a powerful paradigm: many covering and packing problems become tractable when reformulated in terms of odd cycle transversals. The persistent appearance of the $n^2/4$ threshold across Mantel, Tur\u00e1n, and Erd\u0151s-Gallai-Tuza suggests that balanced bipartitions are the fundamental bottleneck for triangle-related extremal problems.",
     "openQuestions": [
       "Can the characterization of equality cases be extended? Are $K_n$, $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$, and $K_{m,m}$ + universal vertex the *only* extremal graphs, or are there sporadic examples?",
-      "Does Erdős Problem #23 hold: is $\\tau_B(G) \\le n^2/25$ for all $n$-vertex graphs? This would be a significant strengthening of the covering side of the inequality.",
+      "Does Erd\u0151s Problem #23 hold: is $\\tau_B(G) \\le n^2/25$ for all $n$-vertex graphs? This would be a significant strengthening of the covering side of the inequality.",
       "What is the computational complexity of $\\alpha_1$ and $\\tau_1$? The analogous vertex problems (independent set, vertex cover) are NP-hard; does the triangle structure make these easier or harder?",
-      "Can the Norin-Sun approach be generalized to $K_r$-covers for $r \\ge 4$, yielding analogues of the EGT conjecture for larger cliques with Turán-type bounds?"
+      "Can the Norin-Sun approach be generalized to $K_r$-covers for $r \\ge 4$, yielding analogues of the EGT conjecture for larger cliques with Tur\u00e1n-type bounds?"
     ]
   },
   "leanFile": {
@@ -155,5 +155,39 @@
     "axiomCount": 6,
     "theoremCount": 15,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-80",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and triangles themes"
+    },
+    {
+      "targetId": "erdos-813",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and triangles themes"
+    },
+    {
+      "targetId": "erdos-1012",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1017",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1018",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-80",
+    "erdos-813",
+    "erdos-1012",
+    "erdos-1017",
+    "erdos-1018"
+  ]
 }

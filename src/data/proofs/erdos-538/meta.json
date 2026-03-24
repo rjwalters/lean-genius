@@ -1,10 +1,10 @@
 {
   "id": "erdos-538",
-  "title": "Erdős Problem #538: Reciprocal Sums with Bounded Prime Representations",
+  "title": "Erd\u0151s Problem #538: Reciprocal Sums with Bounded Prime Representations",
   "slug": "erdos-538",
-  "description": "For A ⊆ {1,...,N} with at most r representations m = p·a (p prime, a ∈ A), find the best upper bound for Σ 1/n. Erdős showed ≪ r·log N/log log N. OPEN.",
+  "description": "For A \u2286 {1,...,N} with at most r representations m = p\u00b7a (p prime, a \u2208 A), find the best upper bound for \u03a3 1/n. Erd\u0151s showed \u226a r\u00b7log N/log log N. OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/538",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos538Problem.lean",
@@ -22,19 +22,19 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 398,
-    "assumptions": "Mertens' second theorem: Σ_{p≤N} 1/p ≥ c·log(log N) for some c > 0 and N ≥ 3"
+    "assumptions": "Mertens' second theorem: \u03a3_{p\u2264N} 1/p \u2265 c\u00b7log(log N) for some c > 0 and N \u2265 3"
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1973, studying the interplay between multiplicative constraints and additive density. Given a set $A \\subseteq \\{1, \\ldots, N\\}$ where each integer $m$ has at most $r$ representations as $m = p \\cdot a$ with $p$ prime and $a \\in A$, how large can the reciprocal sum $\\sum_{n \\in A} 1/n$ be? Erdős proved the bound $O(r \\cdot \\log N / \\log\\log N)$ using a double counting argument combined with Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). The idea is elegant: multiplying the reciprocal sum by the prime reciprocal sum produces terms $1/(pa)$ that are controlled by the representation constraint. The harmonic sum $\\sum_{m \\leq N} 1/m \\sim \\log N$ then closes the argument. Whether this bound is optimal remains open. The problem is related to Problems 536 and 537 on multiplicative representations, and connects to the broader study of multiplicative energy in additive combinatorics. The case $r = 1$ (each integer has at most one prime factorization involving an element of $A$) forces $A$ to be 'multiplicatively thin', strengthening the bound to $O(\\log N / \\log\\log N)$.",
+    "historicalContext": "Erd\u0151s posed this problem in 1973, studying the interplay between multiplicative constraints and additive density. Given a set $A \\subseteq \\{1, \\ldots, N\\}$ where each integer $m$ has at most $r$ representations as $m = p \\cdot a$ with $p$ prime and $a \\in A$, how large can the reciprocal sum $\\sum_{n \\in A} 1/n$ be? Erd\u0151s proved the bound $O(r \\cdot \\log N / \\log\\log N)$ using a double counting argument combined with Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). The idea is elegant: multiplying the reciprocal sum by the prime reciprocal sum produces terms $1/(pa)$ that are controlled by the representation constraint. The harmonic sum $\\sum_{m \\leq N} 1/m \\sim \\log N$ then closes the argument. Whether this bound is optimal remains open. The problem is related to Problems 536 and 537 on multiplicative representations, and connects to the broader study of multiplicative energy in additive combinatorics. The case $r = 1$ (each integer has at most one prime factorization involving an element of $A$) forces $A$ to be 'multiplicatively thin', strengthening the bound to $O(\\log N / \\log\\log N)$.",
     "problemStatement": "Let $r \\geq 2$ and $A \\subseteq \\{1, \\ldots, N\\}$ such that for any $m$, at most $r$ solutions exist to $m = p \\cdot a$ with $p$ prime and $a \\in A$. Give the best possible upper bound for $\\sum_{n \\in A} 1/n$.",
-    "text": "For A ⊆ {1,...,N} with at most r representations m = p·a (p prime, a ∈ A), find the best upper bound for Σ 1/n. Erdős showed ≪ r·log N/log log N. OPEN.",
-    "proofStrategy": "The formalization defines reprCount (counting representations $m = pa$) and HasBoundedRepr (the $r$-bounded constraint), then defines the reciprocal sum and proves basic properties (monotonicity, non-negativity). The main problem is stated as finding the optimal bound function. Erdős's bound $O(r \\cdot \\log N / \\log\\log N)$ is stated as a theorem with sorry (requires Mertens' theorem). The double counting framework and multiplicative energy connection are formalized. Several base cases (empty set, singletons, $r = 1$) are fully proved.",
+    "text": "For A \u2286 {1,...,N} with at most r representations m = p\u00b7a (p prime, a \u2208 A), find the best upper bound for \u03a3 1/n. Erd\u0151s showed \u226a r\u00b7log N/log log N. OPEN.",
+    "proofStrategy": "The formalization defines reprCount (counting representations $m = pa$) and HasBoundedRepr (the $r$-bounded constraint), then defines the reciprocal sum and proves basic properties (monotonicity, non-negativity). The main problem is stated as finding the optimal bound function. Erd\u0151s's bound $O(r \\cdot \\log N / \\log\\log N)$ is stated as a theorem with sorry (requires Mertens' theorem). The double counting framework and multiplicative energy connection are formalized. Several base cases (empty set, singletons, $r = 1$) are fully proved.",
     "keyInsights": [
-      "Erdős's double counting: $(\\sum_{a \\in A} 1/a) \\cdot (\\sum_{p \\leq N} 1/p) \\leq r \\cdot \\sum_{m \\leq N} 1/m$, giving the bound via Mertens' theorem",
+      "Erd\u0151s's double counting: $(\\sum_{a \\in A} 1/a) \\cdot (\\sum_{p \\leq N} 1/p) \\leq r \\cdot \\sum_{m \\leq N} 1/m$, giving the bound via Mertens' theorem",
       "The representation constraint $\\text{reprCount}(A, m) \\leq r$ bounds the 'multiplicative overlap' between $A$ and the primes",
       "For $r = 1$, the bound strengthens to $O(\\log N / \\log\\log N)$ as $A$ must be multiplicatively thin",
       "The multiplicative energy bound $r^2|A|$ is FALSE (counterexample: $A$ = first 5 primes, $r=2$, gives 25 pairs > 20); the trivial bound $|A|^2$ is proved instead",
-      "Erdős's upper bound is now proved from Mertens' second theorem (axiom) and a double counting inequality (sorry). The proof chains: reciprocalSum·(c·log log N) ≤ reciprocalSum·primeReciprocalSum ≤ r·(1+2·log N) ≤ 3r·log N, then divides by c·log log N"
+      "Erd\u0151s's upper bound is now proved from Mertens' second theorem (axiom) and a double counting inequality (sorry). The proof chains: reciprocalSum\u00b7(c\u00b7log log N) \u2264 reciprocalSum\u00b7primeReciprocalSum \u2264 r\u00b7(1+2\u00b7log N) \u2264 3r\u00b7log N, then divides by c\u00b7log log N"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -46,7 +46,7 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Module documentation describing Problem 538 and Erdős's bound, with Mathlib imports for primality, finite sets, real numbers, and tactics."
+      "summary": "Module documentation describing Problem 538 and Erd\u0151s's bound, with Mathlib imports for primality, finite sets, real numbers, and tactics."
     },
     {
       "id": "representation-count",
@@ -60,14 +60,14 @@
       "title": "Basic Properties of reprCount",
       "startLine": 43,
       "endLine": 79,
-      "summary": "Proved: reprCount of empty set is 0, reprCount ≤ |A|, HasBoundedRepr is monotone in r and hereditary under subsets."
+      "summary": "Proved: reprCount of empty set is 0, reprCount \u2264 |A|, HasBoundedRepr is monotone in r and hereditary under subsets."
     },
     {
       "id": "reciprocal-sum",
       "title": "Reciprocal Sum",
       "startLine": 81,
       "endLine": 115,
-      "summary": "Defines reciprocalSum (Σ 1/n) and proves: empty sum = 0, non-negativity, monotonicity under subsets, insertion identity."
+      "summary": "Defines reciprocalSum (\u03a3 1/n) and proves: empty sum = 0, non-negativity, monotonicity under subsets, insertion identity."
     },
     {
       "id": "problem-statement",
@@ -78,43 +78,43 @@
     },
     {
       "id": "erdos-bound",
-      "title": "Erdős Upper Bound",
+      "title": "Erd\u0151s Upper Bound",
       "startLine": 137,
       "endLine": 156,
-      "summary": "Theorem (sorry): Σ 1/n ≤ C·r·log N / log log N via double counting with Mertens' theorem."
+      "summary": "Theorem (sorry): \u03a3 1/n \u2264 C\u00b7r\u00b7log N / log log N via double counting with Mertens' theorem."
     },
     {
       "id": "trivial-bound",
       "title": "Harmonic Upper Bound",
       "startLine": 158,
       "endLine": 167,
-      "summary": "Theorem (PROVED): Σ 1/n ≤ 1 + log N (harmonic sum bound) by induction using log(x) ≤ x - 1."
+      "summary": "Theorem (PROVED): \u03a3 1/n \u2264 1 + log N (harmonic sum bound) by induction using log(x) \u2264 x - 1."
     },
     {
       "id": "double-counting",
       "title": "Double Counting Framework",
       "startLine": 169,
       "endLine": 192,
-      "summary": "Proved: primes_for_element_bound (|{p : pa ≤ N}| ≤ N/a) and sum_reprCount_bound (Σ reprCount ≤ |A|·N) via double counting."
+      "summary": "Proved: primes_for_element_bound (|{p : pa \u2264 N}| \u2264 N/a) and sum_reprCount_bound (\u03a3 reprCount \u2264 |A|\u00b7N) via double counting."
     },
     {
       "id": "multiplicative-energy",
       "title": "Multiplicative Energy Bound",
       "startLine": 194,
       "endLine": 207,
-      "summary": "Proved: multiplicative energy trivial bound |A|² (the tighter r²|A| bound is false — counterexample documented)."
+      "summary": "Proved: multiplicative energy trivial bound |A|\u00b2 (the tighter r\u00b2|A| bound is false \u2014 counterexample documented)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 209,
       "endLine": 228,
-      "summary": "Proved: r = 1 cardinality bound (|A| ≤ N for positive elements) and singleton 1-bounded representations."
+      "summary": "Proved: r = 1 cardinality bound (|A| \u2264 N for positive elements) and singleton 1-bounded representations."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 538 with Erdős's upper bound O(r·log N / log log N) proved from Mertens' second theorem (axiom) and a double counting inequality. 21 theorems/lemmas including exp(1)<3 bound, log bounds, and the main calc chain. 1 axiom (Mertens), 1 sorry (double counting combinatorial regrouping).",
-    "implications": "**Theoretical Significance**: The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density.\n\nThe double counting technique via Mertens' theorem exemplifies how prime distribution results (analytic number theory) yield combinatorial bounds (additive combinatorics). The multiplicative energy perspective connects to modern tools like the Balog-Szemerédi-Gowers theorem.",
+    "summary": "The formalization captures Erd\u0151s Problem 538 with Erd\u0151s's upper bound O(r\u00b7log N / log log N) proved from Mertens' second theorem (axiom) and a double counting inequality. 21 theorems/lemmas including exp(1)<3 bound, log bounds, and the main calc chain. 1 axiom (Mertens), 1 sorry (double counting combinatorial regrouping).",
+    "implications": "**Theoretical Significance**: The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density.\n\nThe double counting technique via Mertens' theorem exemplifies how prime distribution results (analytic number theory) yield combinatorial bounds (additive combinatorics). The multiplicative energy perspective connects to modern tools like the Balog-Szemer\u00e9di-Gowers theorem.",
     "openQuestions": [
       "Is $r \\cdot \\log N / \\log\\log N$ the optimal bound, or can it be improved?",
       "Can the bound be improved for specific values of $r$ (e.g., $r = 2$)?",
@@ -139,5 +139,21 @@
     "axiomCount": 1,
     "theoremCount": 21,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-690",
+      "relationship": "related",
+      "description": "Share prime factors and number theory themes"
+    },
+    {
+      "targetId": "erdos-121",
+      "relationship": "related",
+      "description": "Share multiplicative number theory and number theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-690",
+    "erdos-121"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-151",
-  "title": "Erdős Problem #151: Clique Transversal and Triangle-Free Independence",
+  "title": "Erd\u0151s Problem #151: Clique Transversal and Triangle-Free Independence",
   "slug": "erdos-151",
-  "description": "Is τ(G) ≤ n − H(n) for every n-vertex graph G, where τ is the clique transversal number and H(n) is the triangle-free independence number?",
+  "description": "Is \u03c4(G) \u2264 n \u2212 H(n) for every n-vertex graph G, where \u03c4 is the clique transversal number and H(n) is the triangle-free independence number?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/151",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos151Problem.lean",
@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/151",
     "erdosProblemStatus": "open",
     "axiomCount": 18,
-    "assumptions": "18 axioms encoding graph-theoretic predicates (IsClique, IsMaximalClique, IsIndependent, IsTriangleFree, IsK4Free) and their properties, plus specifications for τ(G) and H(n). These axiomatize standard graph theory since the formalization uses abstract types rather than Mathlib's SimpleGraph.",
+    "assumptions": "18 axioms encoding graph-theoretic predicates (IsClique, IsMaximalClique, IsIndependent, IsTriangleFree, IsK4Free) and their properties, plus specifications for \u03c4(G) and H(n). These axiomatize standard graph theory since the formalization uses abstract types rather than Mathlib's SimpleGraph.",
     "prerequisites": [
       "Graph theory basics (cliques, independent sets)",
       "Ramsey theory (R(3,t) bounds)",
@@ -30,29 +30,29 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.sqrt",
-        "description": "Integer square root for the √n bound",
+        "description": "Integer square root for the \u221an bound",
         "module": "Mathlib.Data.Nat.Sqrt"
       }
     ],
     "originalContributions": [
-      "Formal axiomatization of clique transversal number τ(G)",
+      "Formal axiomatization of clique transversal number \u03c4(G)",
       "Triangle-free independence function H(n) with Ramsey lower bound",
       "Proof that complement of independent set is a clique transversal",
-      "Formal statement of the Erdős-Gallai conjecture with K₄-free variant"
+      "Formal statement of the Erd\u0151s-Gallai conjecture with K\u2084-free variant"
     ],
     "dateAdded": "2026-02-15",
     "relatedProblems": [
       {
         "id": "ramseys-theorem",
-        "relationship": "Ramsey theory provides the lower bound H(n) ≥ √n via R(3,t) estimates; the Ramsey number R(3,t) = Θ(t²/log t) determines the exact growth of H(n)"
+        "relationship": "Ramsey theory provides the lower bound H(n) \u2265 \u221an via R(3,t) estimates; the Ramsey number R(3,t) = \u0398(t\u00b2/log t) determines the exact growth of H(n)"
       },
       {
         "id": "erdos-150",
-        "relationship": "Adjacent Erdős problem on graph Ramsey theory and extremal graph structure"
+        "relationship": "Adjacent Erd\u0151s problem on graph Ramsey theory and extremal graph structure"
       },
       {
         "id": "erdos-152",
-        "relationship": "Adjacent Erdős problem in combinatorial graph theory"
+        "relationship": "Adjacent Erd\u0151s problem in combinatorial graph theory"
       },
       {
         "id": "four-color-theorem",
@@ -62,16 +62,16 @@
     "lineCount": 194
   },
   "overview": {
-    "historicalContext": "Paul Erdős and Tibor Gallai proposed this conjecture connecting two fundamental graph-theoretic quantities: the clique transversal number $\\tau(G)$ and the triangle-free independence function $H(n)$. The function $H(n)$, defined as the largest $k$ such that every triangle-free graph on $n$ vertices has an independent set of size $\\ge k$, is intimately tied to the Ramsey number $R(3,t)$. Kim (1995) proved $R(3,t) = \\Theta(t^2/\\log t)$, implying $H(n) = \\Theta(\\sqrt{n \\log n})$. The easy bound $\\tau(G) \\le n - \\sqrt{n}$ follows from the Ramsey-theoretic lower bound on independence numbers: every graph on $n$ vertices has $\\alpha(G) \\ge \\sqrt{n}$ (since $R(\\omega+1, t) \\ge t$ for some $t \\sim \\sqrt{n}$), and the complement of any independent set is a clique transversal. Erdős famously described this conjecture as 'perhaps completely wrongheaded,' expressing genuine uncertainty about its truth — unusual for Erdős, who typically had strong intuitions. Even the restricted case for $K_4$-free graphs remains open, suggesting the problem is fundamentally hard.",
-    "problemStatement": "Is τ(G) ≤ n − H(n) for every graph G on n vertices?",
+    "historicalContext": "Paul Erd\u0151s and Tibor Gallai proposed this conjecture connecting two fundamental graph-theoretic quantities: the clique transversal number $\\tau(G)$ and the triangle-free independence function $H(n)$. The function $H(n)$, defined as the largest $k$ such that every triangle-free graph on $n$ vertices has an independent set of size $\\ge k$, is intimately tied to the Ramsey number $R(3,t)$. Kim (1995) proved $R(3,t) = \\Theta(t^2/\\log t)$, implying $H(n) = \\Theta(\\sqrt{n \\log n})$. The easy bound $\\tau(G) \\le n - \\sqrt{n}$ follows from the Ramsey-theoretic lower bound on independence numbers: every graph on $n$ vertices has $\\alpha(G) \\ge \\sqrt{n}$ (since $R(\\omega+1, t) \\ge t$ for some $t \\sim \\sqrt{n}$), and the complement of any independent set is a clique transversal. Erd\u0151s famously described this conjecture as 'perhaps completely wrongheaded,' expressing genuine uncertainty about its truth \u2014 unusual for Erd\u0151s, who typically had strong intuitions. Even the restricted case for $K_4$-free graphs remains open, suggesting the problem is fundamentally hard.",
+    "problemStatement": "Is \u03c4(G) \u2264 n \u2212 H(n) for every graph G on n vertices?",
     "text": "Is \u03c4(G) \u2264 n \u2212 H(n) for every n-vertex graph G, where \u03c4 is the clique transversal number and H(n) is the triangle-free independence number?",
-    "proofStrategy": "The formalization axiomatises cliques, maximal cliques, independence, and triangle-freeness. Defines clique transversals and axiomatises τ(G) and H(n) with their specifications. The easy bound and the main conjecture are stated.",
+    "proofStrategy": "The formalization axiomatises cliques, maximal cliques, independence, and triangle-freeness. Defines clique transversals and axiomatises \u03c4(G) and H(n) with their specifications. The easy bound and the main conjecture are stated.",
     "keyInsights": [
-      "τ(G) is the minimum vertex set hitting every maximal clique of size ≥ 2",
-      "H(n) ~ √n by Ramsey theory (R(3,k) gives triangle-free independent sets)",
-      "The easy bound τ ≤ n − √n falls short of the conjecture",
-      "Even the K₄-free case remains open",
-      "The conjecture's difficulty stems from τ(G) depending on global clique structure while H(n) depends on local triangle-freeness — bridging these requires understanding how clique transversals interact with Ramsey-theoretic bounds"
+      "\u03c4(G) is the minimum vertex set hitting every maximal clique of size \u2265 2",
+      "H(n) ~ \u221an by Ramsey theory (R(3,k) gives triangle-free independent sets)",
+      "The easy bound \u03c4 \u2264 n \u2212 \u221an falls short of the conjecture",
+      "Even the K\u2084-free case remains open",
+      "The conjecture's difficulty stems from \u03c4(G) depending on global clique structure while H(n) depends on local triangle-freeness \u2014 bridging these requires understanding how clique transversals interact with Ramsey-theoretic bounds"
     ],
     "prerequisites": [
       "Graph theory basics (cliques, independent sets)",
@@ -85,7 +85,7 @@
       "title": "Module Header and Problem Context",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Documents Erdős Problem #151: the Erdős-Gallai conjecture τ(G) ≤ n − H(n) connecting clique transversal numbers to triangle-free independence. Notes Erdős's own uncertainty about the conjecture and the connection to Ramsey numbers R(3,t). Imports Mathlib."
+      "summary": "Documents Erd\u0151s Problem #151: the Erd\u0151s-Gallai conjecture \u03c4(G) \u2264 n \u2212 H(n) connecting clique transversal numbers to triangle-free independence. Notes Erd\u0151s's own uncertainty about the conjecture and the connection to Ramsey numbers R(3,t). Imports Mathlib."
     },
     {
       "id": "graph-properties",
@@ -99,30 +99,30 @@
       "title": "Clique Transversal Number",
       "startLine": 42,
       "endLine": 53,
-      "summary": "Definition of clique transversal and axiomatisation of τ(G)."
+      "summary": "Definition of clique transversal and axiomatisation of \u03c4(G)."
     },
     {
       "id": "triangle-free-indep",
       "title": "Triangle-Free Independence Number H(n)",
       "startLine": 55,
       "endLine": 72,
-      "summary": "H(n) with its specification and the √n lower bound."
+      "summary": "H(n) with its specification and the \u221an lower bound."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 78,
       "endLine": 88,
-      "summary": "Erdős–Gallai: τ(G) ≤ n − H(n) for all n-vertex graphs."
+      "summary": "Erd\u0151s\u2013Gallai: \u03c4(G) \u2264 n \u2212 H(n) for all n-vertex graphs."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures the Erdős–Gallai conjecture (Problem 151) relating clique transversal numbers to triangle-free independence numbers.",
-    "implications": "A proof would connect two fundamental graph invariants: the clique transversal number and the Ramsey-theoretic function H(n), giving a universal upper bound on τ.",
+    "summary": "The formalization captures the Erd\u0151s\u2013Gallai conjecture (Problem 151) relating clique transversal numbers to triangle-free independence numbers.",
+    "implications": "A proof would connect two fundamental graph invariants: the clique transversal number and the Ramsey-theoretic function H(n), giving a universal upper bound on \u03c4.",
     "openQuestions": [
-      "Is τ(G) ≤ n − H(n) for all graphs?",
-      "Does the conjecture hold for K₄-free graphs?",
-      "Is the conjecture 'completely wrongheaded' as Erdős suggested?"
+      "Is \u03c4(G) \u2264 n \u2212 H(n) for all graphs?",
+      "Does the conjecture hold for K\u2084-free graphs?",
+      "Is the conjecture 'completely wrongheaded' as Erd\u0151s suggested?"
     ]
   },
   "leanFile": {
@@ -138,5 +138,39 @@
     "axiomCount": 18,
     "theoremCount": 6,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1013",
+      "relationship": "related",
+      "description": "Share graph theory and Ramsey theory themes"
+    },
+    {
+      "targetId": "erdos-1177",
+      "relationship": "related",
+      "description": "Share graph theory and Ramsey theory themes"
+    },
+    {
+      "targetId": "erdos-544",
+      "relationship": "related",
+      "description": "Share graph theory and Ramsey theory themes"
+    },
+    {
+      "targetId": "erdos-545",
+      "relationship": "related",
+      "description": "Share graph theory and Ramsey theory themes"
+    },
+    {
+      "targetId": "erdos-555",
+      "relationship": "related",
+      "description": "Share graph theory and Ramsey theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1013",
+    "erdos-1177",
+    "erdos-544",
+    "erdos-545",
+    "erdos-555"
+  ]
 }

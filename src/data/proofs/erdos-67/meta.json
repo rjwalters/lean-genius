@@ -1,8 +1,8 @@
 {
   "id": "erdos-67",
-  "title": "Erdős Problem #67: The Erdős Discrepancy Problem",
+  "title": "Erd\u0151s Problem #67: The Erd\u0151s Discrepancy Problem",
   "slug": "erdos-67",
-  "description": "For any ±1 sequence f: ℕ → {-1,+1}, must the partial sums along some arithmetic progression be unbounded? (Solved: YES, by Tao 2015)",
+  "description": "For any \u00b11 sequence f: \u2115 \u2192 {-1,+1}, must the partial sums along some arithmetic progression be unbounded? (Solved: YES, by Tao 2015)",
   "meta": {
     "author": "Terence Tao (2015)",
     "sourceUrl": "https://erdosproblems.com/67",
@@ -50,7 +50,7 @@
       "Formal definition of discrepancy along arithmetic progressions",
       "Statement of Tao's theorem as an axiom",
       "Complex variant for unit circle values",
-      "Erdős's stronger logarithmic conjecture (open)",
+      "Erd\u0151s's stronger logarithmic conjecture (open)",
       "Multiplicative function case"
     ],
     "axiomCount": 3,
@@ -58,16 +58,16 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The Erdős Discrepancy Problem, posed in the 1930s, asks whether every ±1 sequence must have unbounded partial sums along some arithmetic progression. For over 80 years, this remained one of the most famous open problems in combinatorics.\n\nIn 2010, the Polymath5 project—a massive collaborative effort—attempted to solve it but fell short. In September 2015, Terence Tao announced a complete solution, earning the $500 prize. His proof uses deep connections to multiplicative number theory, particularly a variant of the Elliott conjecture.\n\nTao's breakthrough came from realizing that the problem reduces to studying completely multiplicative functions, where techniques from analytic number theory become available.",
-    "problemStatement": "**The Erdős Discrepancy Problem** (Solved by Tao 2015)\n\nFor any function $f: \\mathbb{N} \\to \\{-1, +1\\}$ and any $C > 0$, do there exist $d, m \\geq 1$ such that\n$$\\left|\\sum_{k=1}^{m} f(kd)\\right| > C?$$\n\n**Answer**: YES. No ±1 sequence has bounded discrepancy.\n\n**Prize**: $500 (collected by Tao)",
-    "text": "For any ±1 sequence f: ℕ → {-1,+1}, must the partial sums along some arithmetic progression be unbounded? (Solved: YES, by Tao 2015)",
-    "proofStrategy": "We formalize the theorem and its variants:\n\n1. **discrepancy**: The absolute value of the sum along {d, 2d, ..., md}\n\n2. **erdosDiscrepancy** (axiom): Tao's main theorem—no bounded discrepancy\n\n3. **noBoundedDiscrepancy**: Derived theorem showing the negation\n\n4. **Complex variant**: Tao also proved this for f: ℕ → S¹\n\n5. **Stronger conjecture** (open): Discrepancy should grow ≥ c·log(x)\n\n6. **Multiplicative case**: The easier special case",
+    "historicalContext": "The Erd\u0151s Discrepancy Problem, posed in the 1930s, asks whether every \u00b11 sequence must have unbounded partial sums along some arithmetic progression. For over 80 years, this remained one of the most famous open problems in combinatorics.\n\nIn 2010, the Polymath5 project\u2014a massive collaborative effort\u2014attempted to solve it but fell short. In September 2015, Terence Tao announced a complete solution, earning the $500 prize. His proof uses deep connections to multiplicative number theory, particularly a variant of the Elliott conjecture.\n\nTao's breakthrough came from realizing that the problem reduces to studying completely multiplicative functions, where techniques from analytic number theory become available.",
+    "problemStatement": "**The Erd\u0151s Discrepancy Problem** (Solved by Tao 2015)\n\nFor any function $f: \\mathbb{N} \\to \\{-1, +1\\}$ and any $C > 0$, do there exist $d, m \\geq 1$ such that\n$$\\left|\\sum_{k=1}^{m} f(kd)\\right| > C?$$\n\n**Answer**: YES. No \u00b11 sequence has bounded discrepancy.\n\n**Prize**: $500 (collected by Tao)",
+    "text": "For any \u00b11 sequence f: \u2115 \u2192 {-1,+1}, must the partial sums along some arithmetic progression be unbounded? (Solved: YES, by Tao 2015)",
+    "proofStrategy": "We formalize the theorem and its variants:\n\n1. **discrepancy**: The absolute value of the sum along {d, 2d, ..., md}\n\n2. **erdosDiscrepancy** (axiom): Tao's main theorem\u2014no bounded discrepancy\n\n3. **noBoundedDiscrepancy**: Derived theorem showing the negation\n\n4. **Complex variant**: Tao also proved this for f: \u2115 \u2192 S\u00b9\n\n5. **Stronger conjecture** (open): Discrepancy should grow \u2265 c\u00b7log(x)\n\n6. **Multiplicative case**: The easier special case",
     "keyInsights": [
-      "**Discrepancy**: Measures imbalance of ±1s along arithmetic progressions. Can you balance them to keep all sums bounded?",
-      "**The answer is NO**: No matter how cleverly you assign ±1s, some progression will have arbitrarily large imbalance.",
+      "**Discrepancy**: Measures imbalance of \u00b11s along arithmetic progressions. Can you balance them to keep all sums bounded?",
+      "**The answer is NO**: No matter how cleverly you assign \u00b11s, some progression will have arbitrarily large imbalance.",
       "**Tao's key insight**: The problem reduces to multiplicative functions, where analytic number theory applies.",
       "**The Elliott connection**: Tao proved a variant of the Elliott conjecture to handle multiplicative functions.",
-      "**Complex generalization**: The result holds even for f taking values anywhere on the unit circle, not just ±1."
+      "**Complex generalization**: The result holds even for f taking values anywhere on the unit circle, not just \u00b11."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -87,14 +87,14 @@
       "title": "Background on Discrepancy",
       "startLine": 28,
       "endLine": 41,
-      "summary": "Explanation of what discrepancy measures and Erdős's question."
+      "summary": "Explanation of what discrepancy measures and Erd\u0151s's question."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 43,
       "endLine": 65,
-      "summary": "Discrepancy function, bounded discrepancy, and ±1 sequences."
+      "summary": "Discrepancy function, bounded discrepancy, and \u00b11 sequences."
     },
     {
       "id": "main-theorem",
@@ -115,7 +115,7 @@
       "title": "Stronger Conjecture (Open)",
       "startLine": 129,
       "endLine": 151,
-      "summary": "Erdős's conjecture about logarithmic growth."
+      "summary": "Erd\u0151s's conjecture about logarithmic growth."
     },
     {
       "id": "multiplicative",
@@ -126,10 +126,10 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize the Erdős Discrepancy Problem, one of the most famous problems in combinatorics, solved by Terence Tao in 2015. The theorem states that no ±1 sequence can have bounded discrepancy—some arithmetic progression will always have arbitrarily large partial sums. Tao's proof uses deep connections to multiplicative number theory.",
-    "implications": "Tao's solution introduced new connections between combinatorics and analytic number theory. The techniques developed—particularly the use of the Elliott conjecture—have applications to other problems about multiplicative functions and arithmetic sequences.",
+    "summary": "We formalize the Erd\u0151s Discrepancy Problem, one of the most famous problems in combinatorics, solved by Terence Tao in 2015. The theorem states that no \u00b11 sequence can have bounded discrepancy\u2014some arithmetic progression will always have arbitrarily large partial sums. Tao's proof uses deep connections to multiplicative number theory.",
+    "implications": "Tao's solution introduced new connections between combinatorics and analytic number theory. The techniques developed\u2014particularly the use of the Elliott conjecture\u2014have applications to other problems about multiplicative functions and arithmetic sequences.",
     "openQuestions": [
-      "Does the discrepancy grow at least logarithmically? (Erdős's stronger conjecture)",
+      "Does the discrepancy grow at least logarithmically? (Erd\u0151s's stronger conjecture)",
       "What is the optimal growth rate of the discrepancy?",
       "Can Tao's methods be simplified or made more elementary?",
       "Are there effective bounds on d and m for given C?"
@@ -137,35 +137,40 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1028",
-      "title": "Erdős Problem #1028: Discrepancy of Sign Functions",
-      "relationship": "Direct sibling in discrepancy theory. Where Erdős #67 asks about ±1 sequences on arithmetic progressions, #1028 studies H(n) = the min-max discrepancy of ±1 functions on pairs, establishing H(n) = Θ(n^(3/2)). Both problems probe how evenly ±1 assignments can be balanced over structured combinatorial objects."
+      "title": "Erd\u0151s Problem #1028: Discrepancy of Sign Functions",
+      "relationship": "related",
+      "targetId": "erdos-1028",
+      "description": "Direct sibling in discrepancy theory. Where Erd\u0151s #67 asks about \u00b11 sequences on arithmetic progressions, #1028 studies H(n) = the min-max discrepancy of \u00b11 functions on pairs, establishing H(n) = \u0398(n^(3/2)). Both problems probe how evenly \u00b11 assignments can be balanced over structured combinatorial objects."
     },
     {
-      "id": "ramseys-theorem",
       "title": "Ramsey's Theorem",
-      "relationship": "Foundational companion in combinatorics. Ramsey theory guarantees unavoidable monochromatic structure in colorings; the discrepancy problem guarantees unavoidable imbalance in ±1 sequences. Tao's proof borrows Ramsey-type density arguments when reducing to multiplicative functions."
+      "relationship": "related",
+      "targetId": "ramseys-theorem",
+      "description": "Foundational companion in combinatorics. Ramsey theory guarantees unavoidable monochromatic structure in colorings; the discrepancy problem guarantees unavoidable imbalance in \u00b11 sequences. Tao's proof borrows Ramsey-type density arguments when reducing to multiplicative functions."
     },
     {
-      "id": "szemeredi-regularity",
-      "title": "Szemerédi Regularity Lemma",
-      "relationship": "Deep structural connection via arithmetic progressions. Szemerédi's regularity machinery underlies results about dense subsets of integers containing arithmetic progressions, and Tao's proof of the discrepancy problem uses related harmonic-analysis and ergodic-theory techniques that grew from this tradition."
+      "title": "Szemer\u00e9di Regularity Lemma",
+      "relationship": "related",
+      "targetId": "szemeredi-regularity",
+      "description": "Deep structural connection via arithmetic progressions. Szemer\u00e9di's regularity machinery underlies results about dense subsets of integers containing arithmetic progressions, and Tao's proof of the discrepancy problem uses related harmonic-analysis and ergodic-theory techniques that grew from this tradition."
     },
     {
-      "id": "erdos-1",
-      "title": "Erdős Problem #1: Distinct Subset Sums",
-      "relationship": "Related extremal combinatorics. Both problems concern the extremal behavior of integer-valued sequences under summation constraints. Techniques for bounding subset sums inform the discrepancy framework, and both problems illustrate Erdős's style of seeking sharp quantitative thresholds."
+      "title": "Erd\u0151s Problem #1: Distinct Subset Sums",
+      "relationship": "related",
+      "targetId": "erdos-1",
+      "description": "Related extremal combinatorics. Both problems concern the extremal behavior of integer-valued sequences under summation constraints. Techniques for bounding subset sums inform the discrepancy framework, and both problems illustrate Erd\u0151s's style of seeking sharp quantitative thresholds."
     },
     {
-      "id": "erdos-72",
-      "title": "Erdős Problem #72: Unavoidable Cycle Lengths",
-      "relationship": "Thematic parallel in unavoidability results. Erdős #72 proves that certain combinatorial patterns cannot be avoided; the discrepancy theorem proves that imbalance cannot be suppressed. Both exemplify the principle that sufficiently dense or long structures must contain unavoidable substructure."
+      "title": "Erd\u0151s Problem #72: Unavoidable Cycle Lengths",
+      "relationship": "related",
+      "targetId": "erdos-72",
+      "description": "Thematic parallel in unavoidability results. Erd\u0151s #72 proves that certain combinatorial patterns cannot be avoided; the discrepancy theorem proves that imbalance cannot be suppressed. Both exemplify the principle that sufficiently dense or long structures must contain unavoidable substructure."
     }
   ],
   "relatedProofs": [
     {
       "id": "erdos-1028",
-      "description": "Sibling discrepancy problem: min-max discrepancy of ±1 functions on pairs, H(n) = Θ(n^(3/2))"
+      "description": "Sibling discrepancy problem: min-max discrepancy of \u00b11 functions on pairs, H(n) = \u0398(n^(3/2))"
     },
     {
       "id": "ramseys-theorem",
@@ -185,26 +190,26 @@
       "authors": [
         "Terence Tao"
       ],
-      "title": "The Erdős discrepancy problem",
+      "title": "The Erd\u0151s discrepancy problem",
       "venue": "Discrete Analysis",
       "year": 2016,
       "volume": "1",
-      "pages": "1–29",
+      "pages": "1\u201329",
       "doi": "10.19086/da.609",
       "url": "https://discreteanalysisjournal.com/article/609",
-      "notes": "The definitive paper proving the Erdős Discrepancy Conjecture using the Elliott conjecture on multiplicative functions."
+      "notes": "The definitive paper proving the Erd\u0151s Discrepancy Conjecture using the Elliott conjecture on multiplicative functions."
     },
     {
       "authors": [
         "Terence Tao",
-        "Joni Teräväinen"
+        "Joni Ter\u00e4v\u00e4inen"
       ],
       "title": "The structure of logarithmically averaged correlations of multiplicative functions, with applications to the Chowla and Elliott conjectures",
       "venue": "Duke Mathematical Journal",
       "year": 2019,
       "volume": "168",
       "number": "11",
-      "pages": "1977–2055",
+      "pages": "1977\u20132055",
       "doi": "10.1215/00127094-2019-0002",
       "notes": "Establishes the logarithmic Elliott conjecture used as a key step in Tao's discrepancy proof."
     },
@@ -213,7 +218,7 @@
         "Alexey Lisitsa",
         "Boris Konev"
       ],
-      "title": "A SAT attack on the Erdős discrepancy conjecture",
+      "title": "A SAT attack on the Erd\u0151s discrepancy conjecture",
       "venue": "arXiv preprint",
       "year": 2014,
       "url": "https://arxiv.org/abs/1402.2184",
@@ -221,21 +226,21 @@
     },
     {
       "authors": [
-        "Paul Erdős"
+        "Paul Erd\u0151s"
       ],
       "title": "Some unsolved problems",
       "venue": "Michigan Mathematical Journal",
       "year": 1957,
       "volume": "4",
-      "pages": "291–300",
+      "pages": "291\u2013300",
       "doi": "10.1307/mmj/1028997963",
-      "notes": "One of the original sources containing Erdős's formulation of the discrepancy problem and related open questions."
+      "notes": "One of the original sources containing Erd\u0151s's formulation of the discrepancy problem and related open questions."
     },
     {
       "authors": [
         "Polymath5 Project"
       ],
-      "title": "The Erdős discrepancy problem",
+      "title": "The Erd\u0151s discrepancy problem",
       "venue": "Polymath Project Wiki / arXiv:1509.05363",
       "year": 2010,
       "url": "https://arxiv.org/abs/1509.05363",

@@ -1,8 +1,8 @@
 {
   "id": "erdos-1143",
-  "title": "Erdős Problem #1143: Covering Intervals with Multiples of Primes",
+  "title": "Erd\u0151s Problem #1143: Covering Intervals with Multiples of Primes",
   "slug": "erdos-1143",
-  "description": "Estimate F_k(p₁,...,pᵤ), the minimum number of integers in any interval of k consecutive integers divisible by at least one of the primes p₁,...,pᵤ.",
+  "description": "Estimate F_k(p\u2081,...,p\u1d64), the minimum number of integers in any interval of k consecutive integers divisible by at least one of the primes p\u2081,...,p\u1d64.",
   "meta": {
     "author": "researcher-5",
     "sourceUrl": "https://erdosproblems.com/1143",
@@ -28,10 +28,10 @@
     "originalContributions": [
       "Definition coveredInInterval, coveringFunction, expectedDensity",
       "Axiom covering_asymptotic (density approximation for large k)",
-      "Axiom erdos_selfridge_exact (exact bound for 2 < α < 3)",
-      "Axiom alpha_gt_3_open (bounds for α > 3)",
+      "Axiom erdos_selfridge_exact (exact bound for 2 < \u03b1 < 3)",
+      "Axiom alpha_gt_3_open (bounds for \u03b1 > 3)",
       "Theorems density_two_three, density_two_three_five (concrete examples)",
-      "Connection to Jacobsthal's function (Erdős #970)"
+      "Connection to Jacobsthal's function (Erd\u0151s #970)"
     ],
     "mathlibDependencies": [
       {
@@ -50,22 +50,22 @@
         "module": "Mathlib.Data.Nat.Prime.Basic"
       }
     ],
-    "historicalContext": "Erdős asked about F_k(p₁,...,pᵤ), the minimum number of integers divisible by at least one given prime in any interval of k consecutive integers. Erdős and Selfridge reportedly found the exact formula for 2 < α < 3 (where k = αpᵤ), but the paper has not been located. For α > 3, very little is known.",
+    "historicalContext": "Erd\u0151s asked about F_k(p\u2081,...,p\u1d64), the minimum number of integers divisible by at least one given prime in any interval of k consecutive integers. Erd\u0151s and Selfridge reportedly found the exact formula for 2 < \u03b1 < 3 (where k = \u03b1p\u1d64), but the paper has not been located. For \u03b1 > 3, very little is known.",
     "axiomCount": 3,
     "lineCount": 168,
     "assumptions": "3 axiom(s) and 7 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1143 belongs to the rich tradition of **sieve-theoretic covering problems** dating back to Eratosthenes. The question of how many integers in a short interval are divisible by given primes connects to the **Selberg sieve**, the **large sieve**, and the distribution of prime gaps. Erdős formulated this problem as a quantitative version of the Chinese Remainder Theorem: while CRT tells us the *average* density of covered integers is $1 - \\prod(1 - 1/p_i)$, the problem asks about the *worst-case* covering over all starting positions. The parameter $\\alpha = k/p_u$ measures how many complete periods of the largest prime fit in the interval. Erdős and Selfridge reportedly solved the $2 < \\alpha < 3$ case exactly, but their paper has never been located — one of the tantalizing 'lost results' in combinatorial number theory. The dual problem (Erdős #970, Jacobsthal's function) asks about coprime elements instead; Iwaniec (1978) proved the best known bounds $h(k) = O(k^{0.735})$.",
-    "problemStatement": "**Erdős Problem #1143** (OPEN): Let $p_1 < \\cdots < p_u$ be primes and $k \\geq 1$. Estimate $F_k(p_1, \\ldots, p_u)$, the minimum number of multiples of at least one $p_i$ in any interval of $k$ consecutive integers.",
-    "text": "Estimate F_k(p₁,...,pᵤ), the minimum number of integers in any interval of k consecutive integers divisible by at least one of the primes p₁,...,pᵤ.",
-    "proofStrategy": "The formalization builds from definitions to known results in five stages: (1) Define the covering set, covering function $F_k$, and expected density via inclusion-exclusion. (2) Establish basic bounds: trivially $F_k \\leq k$, and for a single prime $p$, $\\lfloor k/p \\rfloor \\leq F_k(\\{p\\}) \\leq \\lfloor k/p \\rfloor + 1$. (3) Prove the density is in $(0,1)$ using properties of primes $\\geq 2$. (4) Axiomatize the three key results: asymptotic density approximation ($|F_k - k \\cdot d| \\leq C$), the Erdős-Selfridge exact formula ($2 < \\alpha < 3$), and the open $\\alpha > 3$ bounds. (5) Compute concrete examples: $d(\\{2,3\\}) = 2/3$, $d(\\{2,3,5\\}) = 11/15$.",
+    "historicalContext": "Erd\u0151s Problem #1143 belongs to the rich tradition of **sieve-theoretic covering problems** dating back to Eratosthenes. The question of how many integers in a short interval are divisible by given primes connects to the **Selberg sieve**, the **large sieve**, and the distribution of prime gaps. Erd\u0151s formulated this problem as a quantitative version of the Chinese Remainder Theorem: while CRT tells us the *average* density of covered integers is $1 - \\prod(1 - 1/p_i)$, the problem asks about the *worst-case* covering over all starting positions. The parameter $\\alpha = k/p_u$ measures how many complete periods of the largest prime fit in the interval. Erd\u0151s and Selfridge reportedly solved the $2 < \\alpha < 3$ case exactly, but their paper has never been located \u2014 one of the tantalizing 'lost results' in combinatorial number theory. The dual problem (Erd\u0151s #970, Jacobsthal's function) asks about coprime elements instead; Iwaniec (1978) proved the best known bounds $h(k) = O(k^{0.735})$.",
+    "problemStatement": "**Erd\u0151s Problem #1143** (OPEN): Let $p_1 < \\cdots < p_u$ be primes and $k \\geq 1$. Estimate $F_k(p_1, \\ldots, p_u)$, the minimum number of multiples of at least one $p_i$ in any interval of $k$ consecutive integers.",
+    "text": "Estimate F_k(p\u2081,...,p\u1d64), the minimum number of integers in any interval of k consecutive integers divisible by at least one of the primes p\u2081,...,p\u1d64.",
+    "proofStrategy": "The formalization builds from definitions to known results in five stages: (1) Define the covering set, covering function $F_k$, and expected density via inclusion-exclusion. (2) Establish basic bounds: trivially $F_k \\leq k$, and for a single prime $p$, $\\lfloor k/p \\rfloor \\leq F_k(\\{p\\}) \\leq \\lfloor k/p \\rfloor + 1$. (3) Prove the density is in $(0,1)$ using properties of primes $\\geq 2$. (4) Axiomatize the three key results: asymptotic density approximation ($|F_k - k \\cdot d| \\leq C$), the Erd\u0151s-Selfridge exact formula ($2 < \\alpha < 3$), and the open $\\alpha > 3$ bounds. (5) Compute concrete examples: $d(\\{2,3\\}) = 2/3$, $d(\\{2,3,5\\}) = 11/15$.",
     "keyInsights": [
       "**Density approximation**: $F_k \\approx k \\cdot (1 - \\prod(1 - 1/p_i))$ for large $k$, by the Chinese Remainder Theorem. The error is bounded by a constant $C$ depending only on the prime set, not on $k$.",
-      "**$\\alpha = k/p_u$ regimes**: The problem splits into qualitatively different ranges: $\\alpha < 2$ (interval shorter than two periods of $p_u$), $2 < \\alpha < 3$ (Erdős-Selfridge exact solution), and $\\alpha > 3$ (wide open). Different techniques apply in each regime.",
-      "**Lost Erdős-Selfridge paper**: The exact formula for $2 < \\alpha < 3$ is referenced in the problem list but the underlying paper has never been found — axiomatized here as a placeholder for a known but unavailable result.",
-      "**Jacobsthal duality**: Erdős #970 asks for the *minimum* interval containing a coprime element; #1143 asks for the *count* of covered elements. They are complement perspectives: uncovered $= k -$ covered. Progress on either informs the other.",
-      "**Inclusion-exclusion product form**: The density $1 - \\prod(1 - 1/p_i)$ arises from Möbius inversion on the prime factorization. For $\\{2,3\\}$: $1 - (1/2)(2/3) = 2/3$; for $\\{2,3,5\\}$: $1 - (1/2)(2/3)(4/5) = 11/15$."
+      "**$\\alpha = k/p_u$ regimes**: The problem splits into qualitatively different ranges: $\\alpha < 2$ (interval shorter than two periods of $p_u$), $2 < \\alpha < 3$ (Erd\u0151s-Selfridge exact solution), and $\\alpha > 3$ (wide open). Different techniques apply in each regime.",
+      "**Lost Erd\u0151s-Selfridge paper**: The exact formula for $2 < \\alpha < 3$ is referenced in the problem list but the underlying paper has never been found \u2014 axiomatized here as a placeholder for a known but unavailable result.",
+      "**Jacobsthal duality**: Erd\u0151s #970 asks for the *minimum* interval containing a coprime element; #1143 asks for the *count* of covered elements. They are complement perspectives: uncovered $= k -$ covered. Progress on either informs the other.",
+      "**Inclusion-exclusion product form**: The density $1 - \\prod(1 - 1/p_i)$ arises from M\u00f6bius inversion on the prime factorization. For $\\{2,3\\}$: $1 - (1/2)(2/3) = 2/3$; for $\\{2,3,5\\}$: $1 - (1/2)(2/3)(4/5) = 11/15$."
     ],
     "prerequisites": [
       "Finset sums and products (big operators)",
@@ -101,7 +101,7 @@
       "title": "The $\\alpha > 2$ Regime",
       "startLine": 96,
       "endLine": 117,
-      "summary": "Two axioms for the parameter $\\alpha = k/p_u$: (1) **Erdős-Selfridge** ($2 < \\alpha < 3$): an exact value of $F_k$ exists (paper not located). (2) **$\\alpha > 3$**: $F_k$ is bounded between $k(d - 1)$ and $kd + u$ (essentially the density approximation plus the number of primes)."
+      "summary": "Two axioms for the parameter $\\alpha = k/p_u$: (1) **Erd\u0151s-Selfridge** ($2 < \\alpha < 3$): an exact value of $F_k$ exists (paper not located). (2) **$\\alpha > 3$**: $F_k$ is bounded between $k(d - 1)$ and $kd + u$ (essentially the density approximation plus the number of primes)."
     },
     {
       "id": "examples",
@@ -115,37 +115,40 @@
       "title": "Connection to Jacobsthal's Function",
       "startLine": 136,
       "endLine": 151,
-      "summary": "Links to Erdős #970: Jacobsthal's function $h(k)$ asks for the minimal interval guaranteeing a coprime element. The relationship: uncovered $= k - F_k$, so the two problems are complementary. If $h(u)$ is the Jacobsthal value, then $F_{h(u)-1} = h(u) - 1$ (all integers covered)."
+      "summary": "Links to Erd\u0151s #970: Jacobsthal's function $h(k)$ asks for the minimal interval guaranteeing a coprime element. The relationship: uncovered $= k - F_k$, so the two problems are complementary. If $h(u)$ is the Jacobsthal value, then $F_{h(u)-1} = h(u) - 1$ (all integers covered)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős #1143, an open problem about covering intervals with multiples of primes. The covering function, expected density, and known results are formalized. 7 sorries (routine density/bound calculations), 3 axioms (asymptotic, Erdős-Selfridge, α > 3).",
-    "implications": "**Theoretical Significance**: Understanding $F_k$ connects to several important areas: **sieve theory** (the covering function is closely related to sieve weights), **Jacobsthal's function** (the dual coprimality question), and the **distribution of smooth numbers** in short intervals.\n\nSharp estimates for $F_k$ in the $\\alpha > 3$ regime would have consequences for prime gap bounds and the structure of residue classes modulo products of small primes. The lost Erdős-Selfridge result, if reconstructed, could provide a template for the general case.",
+    "summary": "This formalization captures Erd\u0151s #1143, an open problem about covering intervals with multiples of primes. The covering function, expected density, and known results are formalized. 7 sorries (routine density/bound calculations), 3 axioms (asymptotic, Erd\u0151s-Selfridge, \u03b1 > 3).",
+    "implications": "**Theoretical Significance**: Understanding $F_k$ connects to several important areas: **sieve theory** (the covering function is closely related to sieve weights), **Jacobsthal's function** (the dual coprimality question), and the **distribution of smooth numbers** in short intervals.\n\nSharp estimates for $F_k$ in the $\\alpha > 3$ regime would have consequences for prime gap bounds and the structure of residue classes modulo products of small primes. The lost Erd\u0151s-Selfridge result, if reconstructed, could provide a template for the general case.",
     "openQuestions": [
       "What is the exact formula for $F_k$ when $k = \\alpha p_u$ with $\\alpha > 3$? Can the density approximation error be made uniform in the prime set?",
-      "Can the lost Erdős-Selfridge paper for $2 < \\alpha < 3$ be reconstructed from the problem description, or does an independent proof exist?",
+      "Can the lost Erd\u0151s-Selfridge paper for $2 < \\alpha < 3$ be reconstructed from the problem description, or does an independent proof exist?",
       "What are the sharp error terms in $|F_k - k \\cdot d| \\leq C(p_1, \\ldots, p_u)$? Is $C$ bounded by a function of $u$ alone, independent of the specific primes?",
       "Can the Jacobsthal duality be made precise enough to transfer results from #970 to #1143 and vice versa?"
     ],
     "crossReferences": [
       {
         "proofId": "erdos-970",
-        "relationship": "Jacobsthal's function — the 'dual' question about coprime elements in intervals."
+        "relationship": "Jacobsthal's function \u2014 the 'dual' question about coprime elements in intervals."
       }
     ]
   },
   "crossReferences": [
     {
-      "relationship": "Jacobsthal's function -- the dual question about coprime elements in intervals; uncovered = k - covered connects the two problems",
-      "targetId": "erdos-970"
+      "relationship": "related",
+      "targetId": "erdos-970",
+      "description": "Jacobsthal's function -- the dual question about coprime elements in intervals; uncovered = k - covered connects the two problems"
     },
     {
-      "relationship": "The infinitude of primes ensures the covering problem is well-defined for arbitrarily large prime sets",
-      "targetId": "infinitude-primes"
+      "relationship": "related",
+      "targetId": "infinitude-primes",
+      "description": "The infinitude of primes ensures the covering problem is well-defined for arbitrarily large prime sets"
     },
     {
-      "relationship": "The Chinese Remainder Theorem underpins the asymptotic density formula 1 - prod(1 - 1/p_i) for covered integers",
-      "targetId": "chinese-remainder-non-coprime"
+      "relationship": "related",
+      "targetId": "chinese-remainder-non-coprime",
+      "description": "The Chinese Remainder Theorem underpins the asymptotic density formula 1 - prod(1 - 1/p_i) for covered integers"
     }
   ],
   "leanFile": {
@@ -164,25 +167,25 @@
   },
   "references": [
     {
-      "authors": "Paul Erdős",
+      "authors": "Paul Erd\u0151s",
       "title": "Problem 1143",
       "year": "1999",
-      "venue": "Erdős Problems collection (Va99, Problem 1.8)",
+      "venue": "Erd\u0151s Problems collection (Va99, Problem 1.8)",
       "note": "Original problem statement on covering intervals"
     },
     {
-      "authors": "Paul Erdős, John Selfridge",
-      "title": "Exact bound for covering in the 2 < α < 3 regime",
+      "authors": "Paul Erd\u0151s, John Selfridge",
+      "title": "Exact bound for covering in the 2 < \u03b1 < 3 regime",
       "year": "unpublished",
       "venue": "Unpublished (paper not located)",
-      "note": "Reportedly found exact formula for F_k when k = αp_u with 2 < α < 3"
+      "note": "Reportedly found exact formula for F_k when k = \u03b1p_u with 2 < \u03b1 < 3"
     },
     {
       "authors": "Ernst Jacobsthal",
-      "title": "Über Sequenzen ganzer Zahlen",
+      "title": "\u00dcber Sequenzen ganzer Zahlen",
       "year": "1960",
       "venue": "Norske Vid. Selsk. Forh.",
-      "note": "Jacobsthal's function h(k) — the dual question about coprime elements in intervals"
+      "note": "Jacobsthal's function h(k) \u2014 the dual question about coprime elements in intervals"
     },
     {
       "authors": "H. Iwaniec",

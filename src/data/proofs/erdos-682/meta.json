@@ -1,10 +1,10 @@
 {
   "id": "erdos-682",
-  "title": "Erdős Problem #682: Rough Numbers Between Consecutive Primes",
+  "title": "Erd\u0151s Problem #682: Rough Numbers Between Consecutive Primes",
   "slug": "erdos-682",
-  "description": "Is it true that for almost all n there exists m ∈ (p_n, p_{n+1}) with p(m) ≥ g_n? YES - Gafni-Tao (2025) proved E(X) ≪ X/(log X)².",
+  "description": "Is it true that for almost all n there exists m \u2208 (p_n, p_{n+1}) with p(m) \u2265 g_n? YES - Gafni-Tao (2025) proved E(X) \u226a X/(log X)\u00b2.",
   "meta": {
-    "author": "Erdős (problem), Gafni-Tao (solution, 2025)",
+    "author": "Erd\u0151s (problem), Gafni-Tao (solution, 2025)",
     "sourceUrl": "https://erdosproblems.com/682",
     "date": "2025",
     "status": "formalized",
@@ -38,7 +38,7 @@
       },
       {
         "theorem": "Primorial",
-        "description": "Product of primes ≤ n",
+        "description": "Product of primes \u2264 n",
         "module": "Mathlib.NumberTheory.Primorial"
       },
       {
@@ -50,7 +50,7 @@
     "originalContributions": [
       "nthPrime axiom: n-th prime function",
       "leastPrimeFactor definition: smallest prime dividing m",
-      "isKRough definition: m is k-rough if p(m) ≥ k",
+      "isKRough definition: m is k-rough if p(m) \u2265 k",
       "primeGap, gapInterval definitions",
       "hasRoughNumberInGap definition: main property",
       "isExceptional definition: negation of main property",
@@ -59,7 +59,7 @@
       "holdsForAlmostAll definition: density 0 exceptions",
       "erdos682Question: formal problem statement",
       "exceptionalCount definition: E(X)",
-      "gafni_tao_upper_bound axiom: E(X) ≪ X/(log X)²",
+      "gafni_tao_upper_bound axiom: E(X) \u226a X/(log X)\u00b2",
       "gafni_tao_main_theorem axiom: almost all n satisfy property",
       "erdos682_answer theorem: YES answer",
       "leastPrimeFactor_prime, leastPrimeFactor_dvd: proved theorems",
@@ -72,22 +72,22 @@
     "assumptions": "12 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The distribution of prime gaps $g_n = p_{n+1} - p_n$ is a central topic in analytic number theory. By the Prime Number Theorem, the average gap near $p_n$ is $\\sim \\log p_n$, but individual gaps vary widely. Erdős studied the **composite numbers** within prime gaps, asking about their factorization structure.\n\nProblem #682 asks: for almost all $n$, does the gap $(p_n, p_{n+1})$ contain an integer $m$ whose smallest prime factor $p(m) \\geq g_n$? Such $m$ are called $g_n$-rough. Erdős initially believed this should hold for ALL large $n$, but discovered a conditional counterexample via **Dickson's conjecture** (1904): the primorial $13\\# = 30030$ ensures every integer in $[2184, 2200]$ is divisible by a prime $\\leq 13$, so if $2183 + 30030d$ and $2201 + 30030d$ are consecutive primes (gap 18), no 18-rough number exists in the gap.\n\nAlon Gafni and Terence Tao (2025, arXiv:2508.06463) resolved the problem affirmatively: the exceptional set $E(X) = |\\{n \\leq X : n \\text{ exceptional}\\}|$ satisfies $E(X) \\ll X/(\\log X)^2$, so exceptions have density 0. Conditionally on the prime tuples conjecture, $E(X) \\sim c \\cdot X/(\\log X)^2$ for an explicit constant $c > 0$. Their proof uses sieve methods and estimates for smooth numbers (numbers with all small prime factors), extending de Bruijn's (1966) foundational work on the distribution of smooth numbers.",
+    "historicalContext": "The distribution of prime gaps $g_n = p_{n+1} - p_n$ is a central topic in analytic number theory. By the Prime Number Theorem, the average gap near $p_n$ is $\\sim \\log p_n$, but individual gaps vary widely. Erd\u0151s studied the **composite numbers** within prime gaps, asking about their factorization structure.\n\nProblem #682 asks: for almost all $n$, does the gap $(p_n, p_{n+1})$ contain an integer $m$ whose smallest prime factor $p(m) \\geq g_n$? Such $m$ are called $g_n$-rough. Erd\u0151s initially believed this should hold for ALL large $n$, but discovered a conditional counterexample via **Dickson's conjecture** (1904): the primorial $13\\# = 30030$ ensures every integer in $[2184, 2200]$ is divisible by a prime $\\leq 13$, so if $2183 + 30030d$ and $2201 + 30030d$ are consecutive primes (gap 18), no 18-rough number exists in the gap.\n\nAlon Gafni and Terence Tao (2025, arXiv:2508.06463) resolved the problem affirmatively: the exceptional set $E(X) = |\\{n \\leq X : n \\text{ exceptional}\\}|$ satisfies $E(X) \\ll X/(\\log X)^2$, so exceptions have density 0. Conditionally on the prime tuples conjecture, $E(X) \\sim c \\cdot X/(\\log X)^2$ for an explicit constant $c > 0$. Their proof uses sieve methods and estimates for smooth numbers (numbers with all small prime factors), extending de Bruijn's (1966) foundational work on the distribution of smooth numbers.",
     "problemStatement": "Is it true that for almost all $n$ there exists $m \\in (p_n, p_{n+1})$ such that $p(m) \\geq p_{n+1} - p_n$, where $p(m)$ denotes the least prime factor of $m$?\n\n**Answer: YES** (Gafni-Tao 2025). The exceptional set has density 0: $E(X) \\ll X/(\\log X)^2$.\n\nConditionally (prime tuples conjecture): $E(X) \\sim c \\cdot X/(\\log X)^2$ for explicit $c > 0$.",
-    "text": "Is it true that for almost all n there exists m ∈ (p_n, p_{n+1}) with p(m) ≥ g_n? YES - Gafni-Tao (2025) proved E(X) ≪ X/(log X)².",
-    "proofStrategy": "The formalization defines $k$-rough numbers ($p(m) \\geq k$) via `Nat.minFac`, prime gaps via `nthPrime`, and the main property `hasRoughNumberInGap`. Erdős's conditional counterexample is formalized using the primorial $13\\# = 30030$ and Dickson's conjecture. The Gafni-Tao theorem is axiomatized: $E(X) \\leq C \\cdot X/(\\log X)^2$, from which `holdsForAlmostAll hasRoughNumberInGap` follows. Several theorems have complete Lean proofs: `leastPrimeFactor_prime`, `leastPrimeFactor_dvd`, `one_rough_all`, and `erdos682_answer`.",
+    "text": "Is it true that for almost all n there exists m \u2208 (p_n, p_{n+1}) with p(m) \u2265 g_n? YES - Gafni-Tao (2025) proved E(X) \u226a X/(log X)\u00b2.",
+    "proofStrategy": "The formalization defines $k$-rough numbers ($p(m) \\geq k$) via `Nat.minFac`, prime gaps via `nthPrime`, and the main property `hasRoughNumberInGap`. Erd\u0151s's conditional counterexample is formalized using the primorial $13\\# = 30030$ and Dickson's conjecture. The Gafni-Tao theorem is axiomatized: $E(X) \\leq C \\cdot X/(\\log X)^2$, from which `holdsForAlmostAll hasRoughNumberInGap` follows. Several theorems have complete Lean proofs: `leastPrimeFactor_prime`, `leastPrimeFactor_dvd`, `one_rough_all`, and `erdos682_answer`.",
     "keyInsights": [
       "**Rough vs smooth duality**: $m$ is $k$-rough iff $p(m) \\geq k$; $m$ is $k$-smooth iff all prime factors $\\leq k$. De Bruijn's $\\Psi(x,y)$ counts $y$-smooth numbers $\\leq x$; rough numbers are the complement",
       "**Primorial obstruction**: $p\\# = \\prod_{q \\leq p} q$ ensures every integer in $[1, p\\#]$ shares a prime factor with $p\\#$, creating gaps where all composites have small factors. For $13\\# = 30030$, no integer in a length-18 subinterval can be 18-rough",
       "**Dickson's conjecture**: Predicts when linear forms $a_i + b_i d$ are simultaneously prime. The special case gives infinitely many exceptional gaps (conditional on unproved prime-producing conjectures)",
       "**Gafni-Tao bound**: $E(X) \\ll X/(\\log X)^2$ uses sieve estimates to show that the primorial-based obstructions are the dominant source of exceptions, and they are rare enough for density 0",
       "**Conditional asymptotic**: Under the prime tuples conjecture, $E(X) \\sim c \\cdot X/(\\log X)^2$, showing the upper bound is tight up to constants",
-      "**Average gap vs roughness**: By PNT, $g_n \\sim \\log p_n$, so the roughness threshold grows logarithmically—most composites have a small prime factor, making the existence of rough numbers in gaps non-obvious"
+      "**Average gap vs roughness**: By PNT, $g_n \\sim \\log p_n$, so the roughness threshold grows logarithmically\u2014most composites have a small prime factor, making the existence of rough numbers in gaps non-obvious"
     ],
     "crossReferences": [
       {
         "proofId": "erdos-680",
-        "relationship": "Related problem: maximum gap among p_n ≤ X without rough numbers"
+        "relationship": "Related problem: maximum gap among p_n \u2264 X without rough numbers"
       },
       {
         "proofId": "erdos-681",
@@ -105,7 +105,7 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 32,
-      "summary": "Header: rough numbers in prime gaps, Erdős's counterexample via $13\\# = 30030$, Gafni-Tao (2025) resolution, arXiv:2508.06463"
+      "summary": "Header: rough numbers in prime gaps, Erd\u0151s's counterexample via $13\\# = 30030$, Gafni-Tao (2025) resolution, arXiv:2508.06463"
     },
     {
       "id": "basic-definitions",
@@ -137,7 +137,7 @@
     },
     {
       "id": "counterexample",
-      "title": "Erdős's Counterexample Construction",
+      "title": "Erd\u0151s's Counterexample Construction",
       "startLine": 155,
       "endLine": 197,
       "summary": "`primorial`, `dickson_special_case` (primes at $2183+30030d$, $2201+30030d$), `erdos_counterexample_condition`, infinitely many exceptions conditional on Dickson"
@@ -179,12 +179,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #682 is SOLVED with answer YES. For almost all n, the gap (p_n, p_{n+1}) contains an integer m with smallest prime factor p(m) ≥ g_n. Gafni and Tao (2025) proved E(X) ≪ X/(log X)², and conditionally E(X) ~ c·X/(log X)². Erdős's conditional counterexample via Dickson's conjecture shows infinitely many exceptions exist, but they have density 0.",
+    "summary": "Erd\u0151s Problem #682 is SOLVED with answer YES. For almost all n, the gap (p_n, p_{n+1}) contains an integer m with smallest prime factor p(m) \u2265 g_n. Gafni and Tao (2025) proved E(X) \u226a X/(log X)\u00b2, and conditionally E(X) ~ c\u00b7X/(log X)\u00b2. Erd\u0151s's conditional counterexample via Dickson's conjecture shows infinitely many exceptions exist, but they have density 0.",
     "implications": "**Theoretical Significance**: The result reveals the interplay between prime gap structure and the factorization of composites within gaps.\n\nThe Gafni-Tao proof extends sieve-theoretic methods to a new domain, connecting smooth/rough number distribution to prime gap problems. The conditional asymptotic shows the primorial-based obstructions are the dominant source of exceptions.",
     "openQuestions": [
-      "Determine the exact constant c in the conditional asymptotic E(X) ~ c·X/(log X)²",
-      "Can the unconditional bound E(X) ≪ X/(log X)² be improved to E(X) ≪ X/(log X)^α for some α > 2?",
-      "What is the distribution of exceptional n—do they cluster near primorial multiples?",
+      "Determine the exact constant c in the conditional asymptotic E(X) ~ c\u00b7X/(log X)\u00b2",
+      "Can the unconditional bound E(X) \u226a X/(log X)\u00b2 be improved to E(X) \u226a X/(log X)^\u03b1 for some \u03b1 > 2?",
+      "What is the distribution of exceptional n\u2014do they cluster near primorial multiples?",
       "Does the analogous result hold for k-tuples of consecutive primes (gaps between p_n and p_{n+k})?",
       "Can Maynard-Tao methods for small prime gaps provide constructive rough numbers in specific gap families?"
     ]
@@ -205,5 +205,39 @@
     "axiomCount": 12,
     "theoremCount": 8,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Share analytic-number-theory, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Share analytic-number-theory, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Share analytic-number-theory, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-454",
+      "relationship": "related",
+      "description": "Share analytic-number-theory, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-5",
+      "relationship": "related",
+      "description": "Share analytic-number-theory, prime-gaps, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "erdos-15",
+    "erdos-4",
+    "erdos-454",
+    "erdos-5"
+  ]
 }

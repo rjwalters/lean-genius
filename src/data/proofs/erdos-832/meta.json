@@ -1,10 +1,10 @@
 {
   "id": "erdos-832",
-  "title": "Erdős Problem #832: Minimum Edges in Hypergraphs with Given Chromatic Number",
+  "title": "Erd\u0151s Problem #832: Minimum Edges in Hypergraphs with Given Chromatic Number",
   "slug": "erdos-832",
-  "description": "For r-uniform hypergraphs with chromatic number k, must there be ≥ C((r-1)(k-1)+1, r) edges? NO for r ≥ 4 (Alon 1985). Asymptotic: m(r,k) ~ c_r · k^r.",
+  "description": "For r-uniform hypergraphs with chromatic number k, must there be \u2265 C((r-1)(k-1)+1, r) edges? NO for r \u2265 4 (Alon 1985). Asymptotic: m(r,k) ~ c_r \u00b7 k^r.",
   "meta": {
-    "author": "Erdős, Alon (1985), Akolzin-Shabanov (2016), Cherkashin-Petrov (2020)",
+    "author": "Erd\u0151s, Alon (1985), Akolzin-Shabanov (2016), Cherkashin-Petrov (2020)",
     "sourceUrl": "https://erdosproblems.com/832",
     "date": "1985",
     "status": "axiomatized",
@@ -40,7 +40,7 @@
       "hasChromaticNumberAtLeast predicate",
       "erdosConjecture formal statement",
       "steiner_counterexample axiom (Fano plane)",
-      "alon_disproof axiom for r ≥ 4",
+      "alon_disproof axiom for r \u2265 4",
       "m(r,k) axiom for minimum edges",
       "akolzin_shabanov_bounds axiom",
       "cherkashin_petrov_limit axiom",
@@ -52,16 +52,16 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős conjectured that for r ≥ 3 and k sufficiently large, every r-uniform hypergraph with chromatic number k must have at least C((r-1)(k-1)+1, r) edges, with equality only for the complete hypergraph. For graphs (r = 2), this reduces to the classical result that chromatic number k implies at least C(k, 2) edges, achieved by the complete graph K_k.\n\nAlon disproved the conjecture for r ≥ 4 in 1985, using connections to Turán numbers to construct r-uniform hypergraphs with high chromatic number but only (7/8)^r times the conjectured number of edges. For r = 3, the Fano plane (a Steiner triple system on 7 vertices with 7 edges and chromatic number 3) provides a small counterexample, since the conjecture predicts C(5,3) = 10 edges. Whether the conjecture holds for r = 3 with large k remains open.\n\nSubsequent work established the asymptotic behavior of m(r, k), the minimum number of edges in an r-uniform hypergraph with chromatic number exceeding k. Akolzin and Shabanov (2016) proved (r/log r) · k^r ≪ m(r,k) ≪ (r³ log r) · k^r, and Cherkashin and Petrov (2020) showed that m(r,k)/k^r converges to a constant c_r for each fixed r.",
-    "problemStatement": "Let r ≥ 3 and k sufficiently large. Must every r-uniform hypergraph with chromatic number k have at least C((r-1)(k-1)+1, r) edges?\n\n**Answer: NO** for r ≥ 4 (Alon 1985). The r = 3 case remains partially open.",
-    "text": "For r-uniform hypergraphs with chromatic number k, must there be ≥ C((r-1)(k-1)+1, r) edges? NO for r ≥ 4 (Alon 1985). Asymptotic: m(r,k) ~ c_r · k^r.",
+    "historicalContext": "Erd\u0151s conjectured that for r \u2265 3 and k sufficiently large, every r-uniform hypergraph with chromatic number k must have at least C((r-1)(k-1)+1, r) edges, with equality only for the complete hypergraph. For graphs (r = 2), this reduces to the classical result that chromatic number k implies at least C(k, 2) edges, achieved by the complete graph K_k.\n\nAlon disproved the conjecture for r \u2265 4 in 1985, using connections to Tur\u00e1n numbers to construct r-uniform hypergraphs with high chromatic number but only (7/8)^r times the conjectured number of edges. For r = 3, the Fano plane (a Steiner triple system on 7 vertices with 7 edges and chromatic number 3) provides a small counterexample, since the conjecture predicts C(5,3) = 10 edges. Whether the conjecture holds for r = 3 with large k remains open.\n\nSubsequent work established the asymptotic behavior of m(r, k), the minimum number of edges in an r-uniform hypergraph with chromatic number exceeding k. Akolzin and Shabanov (2016) proved (r/log r) \u00b7 k^r \u226a m(r,k) \u226a (r\u00b3 log r) \u00b7 k^r, and Cherkashin and Petrov (2020) showed that m(r,k)/k^r converges to a constant c_r for each fixed r.",
+    "problemStatement": "Let r \u2265 3 and k sufficiently large. Must every r-uniform hypergraph with chromatic number k have at least C((r-1)(k-1)+1, r) edges?\n\n**Answer: NO** for r \u2265 4 (Alon 1985). The r = 3 case remains partially open.",
+    "text": "For r-uniform hypergraphs with chromatic number k, must there be \u2265 C((r-1)(k-1)+1, r) edges? NO for r \u2265 4 (Alon 1985). Asymptotic: m(r,k) ~ c_r \u00b7 k^r.",
     "proofStrategy": "The Lean formalization defines r-uniform hypergraphs, proper colourings, and chromatic number predicates. Alon's disproof and the Steiner counterexample are axiomatized. The function m(r,k) is axiomatized with bounds from Akolzin-Shabanov and the limit theorem of Cherkashin-Petrov. The summary theorem packages the disproof and asymptotics via exact.",
     "keyInsights": [
-      "Fano plane: 7 edges with χ = 3, vs C(5,3) = 10 predicted — counterexample for r = 3, k = 3",
+      "Fano plane: 7 edges with \u03c7 = 3, vs C(5,3) = 10 predicted \u2014 counterexample for r = 3, k = 3",
       "Alon's (7/8)^r factor: exponential improvement over the complete hypergraph for large r",
-      "m(r,k)/k^r → c_r exists (Cherkashin-Petrov 2020) — precise asymptotic behavior",
+      "m(r,k)/k^r \u2192 c_r exists (Cherkashin-Petrov 2020) \u2014 precise asymptotic behavior",
       "The r = 3 case with large k remains an open problem",
-      "Bounds: (r/log r) · k^r ≪ m(r,k) ≪ (r³ log r) · k^r (Akolzin-Shabanov 2016)"
+      "Bounds: (r/log r) \u00b7 k^r \u226a m(r,k) \u226a (r\u00b3 log r) \u00b7 k^r (Akolzin-Shabanov 2016)"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -84,17 +84,17 @@
     },
     {
       "id": "erdos-conjecture",
-      "title": "Erdős's Conjecture",
+      "title": "Erd\u0151s's Conjecture",
       "startLine": 64,
       "endLine": 72,
-      "summary": "Conjectured bound C((r-1)(k-1)+1, r) — disproved for r ≥ 4"
+      "summary": "Conjectured bound C((r-1)(k-1)+1, r) \u2014 disproved for r \u2265 4"
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
       "startLine": 74,
       "endLine": 94,
-      "summary": "Steiner triple (Fano plane) and Alon's disproof for r ≥ 4"
+      "summary": "Steiner triple (Fano plane) and Alon's disproof for r \u2265 4"
     },
     {
       "id": "function-m",
@@ -119,8 +119,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #832 conjectured that r-uniform hypergraphs with chromatic number k need ≥ C((r-1)(k-1)+1, r) edges. Alon (1985) disproved this for r ≥ 4. Asymptotically, m(r,k) ~ c_r · k^r with tight bounds by Akolzin-Shabanov and convergence by Cherkashin-Petrov.",
-    "implications": "The result shows that the complete hypergraph is not extremal for minimum edges with given chromatic number when r ≥ 4, in contrast to the graph (r=2) case.",
+    "summary": "Erd\u0151s Problem #832 conjectured that r-uniform hypergraphs with chromatic number k need \u2265 C((r-1)(k-1)+1, r) edges. Alon (1985) disproved this for r \u2265 4. Asymptotically, m(r,k) ~ c_r \u00b7 k^r with tight bounds by Akolzin-Shabanov and convergence by Cherkashin-Petrov.",
+    "implications": "The result shows that the complete hypergraph is not extremal for minimum edges with given chromatic number when r \u2265 4, in contrast to the graph (r=2) case.",
     "openQuestions": [
       "Is the conjecture true for r=3 with k sufficiently large?",
       "What is the exact value of c_r = lim m(r,k)/k^r?",
@@ -140,5 +140,39 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-833",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, hypergraphs, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1076",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and hypergraphs themes"
+    },
+    {
+      "targetId": "erdos-500",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and hypergraphs themes"
+    },
+    {
+      "targetId": "erdos-616",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and hypergraphs themes"
+    },
+    {
+      "targetId": "erdos-643",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and hypergraphs themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-833",
+    "erdos-1076",
+    "erdos-500",
+    "erdos-616",
+    "erdos-643"
+  ]
 }

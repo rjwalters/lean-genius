@@ -1,8 +1,8 @@
 {
   "id": "erdos-704",
-  "title": "Erdős Problem #704: Chromatic Number of Unit Distance Graphs",
+  "title": "Erd\u0151s Problem #704: Chromatic Number of Unit Distance Graphs",
   "slug": "erdos-704",
-  "description": "Estimate χ(Gₙ), the chromatic number of the unit distance graph in ℝⁿ. Exponential growth established: 1.2ⁿ ≤ χ(Gₙ) ≤ 3ⁿ. Exact base open.",
+  "description": "Estimate \u03c7(G\u2099), the chromatic number of the unit distance graph in \u211d\u207f. Exponential growth established: 1.2\u207f \u2264 \u03c7(G\u2099) \u2264 3\u207f. Exact base open.",
   "meta": {
     "author": "Frankl-Wilson (1981 lower bound), Larman-Rogers (1972 upper bound)",
     "sourceUrl": "https://erdosproblems.com/704",
@@ -44,13 +44,13 @@
     "originalContributions": [
       "UnitDistanceGraph definition: graph with unit distance edges",
       "chi function: chromatic number of unit distance graph",
-      "frankl_wilson_1981 axiom: lower bound 1.2ⁿ",
-      "larman_rogers_1972 axiom: upper bound 3ⁿ",
-      "de_grey_2018 axiom: χ(G₂) ≥ 5",
-      "hadwiger_nelson_bounds theorem: 5 ≤ χ(G₂) ≤ 7",
-      "chromaticLimit definition: lim χ(Gₙ)^{1/n}",
-      "exponential_growth axiom: ∃ c > 1 with χ(Gₙ) ≥ cⁿ",
-      "base_bounds axiom: 1.2 ≤ chromaticLimit ≤ 3",
+      "frankl_wilson_1981 axiom: lower bound 1.2\u207f",
+      "larman_rogers_1972 axiom: upper bound 3\u207f",
+      "de_grey_2018 axiom: \u03c7(G\u2082) \u2265 5",
+      "hadwiger_nelson_bounds theorem: 5 \u2264 \u03c7(G\u2082) \u2264 7",
+      "chromaticLimit definition: lim \u03c7(G\u2099)^{1/n}",
+      "exponential_growth axiom: \u2203 c > 1 with \u03c7(G\u2099) \u2265 c\u207f",
+      "base_bounds axiom: 1.2 \u2264 chromaticLimit \u2264 3",
       "erdos_704_solved theorem: main result combining both bounds"
     ],
     "axiomCount": 7,
@@ -58,14 +58,14 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #704: Chromatic Number of Unit Distance Graphs**\n\nThis problem generalizes the famous Hadwiger-Nelson problem to higher dimensions.\n\n**Key History:**\n- Hadwiger (1945) and Nelson (1950): Posed the n=2 case\n- Larman-Rogers (1972): Proved upper bound χ(Gₙ) ≤ (3+o(1))ⁿ\n- Frankl-Wilson (1981): Proved lower bound χ(Gₙ) ≥ (1+o(1))·1.2ⁿ\n- de Grey (2018): Improved n=2 lower bound to 5 using 1581-vertex graph\n- Prosanov (2020): Alternative proof of Larman-Rogers bound\n\n**Mathematical Setting:**\nThe unit distance graph Gₙ has all points in ℝⁿ as vertices, with edges between points at distance exactly 1. The chromatic number χ(Gₙ) is the minimum colors needed to color all points so no two adjacent points share a color.",
-    "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet Gₙ be the unit distance graph in ℝⁿ. Estimate the chromatic number χ(Gₙ).\n\nDoes it grow exponentially in n? Does $\\lim_{n \\to \\infty} \\chi(G_n)^{1/n}$ exist?\n\n**Known Bounds:**\n$$(1+o(1)) \\cdot 1.2^n \\leq \\chi(G_n) \\leq (3+o(1))^n$$\n\n**Open:** What is the exact exponential base? Does the limit exist?\n\n**Conjecture:** χ(Gₙ) ≈ (2^{3/2})ⁿ ≈ 2.828ⁿ",
-    "text": "Estimate χ(Gₙ), the chromatic number of the unit distance graph in ℝⁿ. Exponential growth established: 1.2ⁿ ≤ χ(Gₙ) ≤ 3ⁿ. Exact base open.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - UnitDistanceGraph: SimpleGraph structure on EuclideanSpace\n   - chi: chromatic number function\n   - chromaticLimit: lim χ(Gₙ)^{1/n}\n\n2. **Lower Bound (Frankl-Wilson):**\n   - Use intersection theorems on set systems\n   - Analyze ±1 vectors with restricted inner products\n   - Get χ(Gₙ) ≥ 1.2ⁿ\n\n3. **Upper Bound (Larman-Rogers):**\n   - Tile ℝⁿ with Voronoi cells of lattice Aₙ\n   - Each cell has diameter < 1\n   - Get χ(Gₙ) ≤ 3ⁿ\n\n4. **n=2 Case (Hadwiger-Nelson):**\n   - de Grey's 1581-vertex graph: χ(G₂) ≥ 5\n   - Hexagonal tiling: χ(G₂) ≤ 7",
+    "historicalContext": "**Erd\u0151s Problem #704: Chromatic Number of Unit Distance Graphs**\n\nThis problem generalizes the famous Hadwiger-Nelson problem to higher dimensions.\n\n**Key History:**\n- Hadwiger (1945) and Nelson (1950): Posed the n=2 case\n- Larman-Rogers (1972): Proved upper bound \u03c7(G\u2099) \u2264 (3+o(1))\u207f\n- Frankl-Wilson (1981): Proved lower bound \u03c7(G\u2099) \u2265 (1+o(1))\u00b71.2\u207f\n- de Grey (2018): Improved n=2 lower bound to 5 using 1581-vertex graph\n- Prosanov (2020): Alternative proof of Larman-Rogers bound\n\n**Mathematical Setting:**\nThe unit distance graph G\u2099 has all points in \u211d\u207f as vertices, with edges between points at distance exactly 1. The chromatic number \u03c7(G\u2099) is the minimum colors needed to color all points so no two adjacent points share a color.",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet G\u2099 be the unit distance graph in \u211d\u207f. Estimate the chromatic number \u03c7(G\u2099).\n\nDoes it grow exponentially in n? Does $\\lim_{n \\to \\infty} \\chi(G_n)^{1/n}$ exist?\n\n**Known Bounds:**\n$$(1+o(1)) \\cdot 1.2^n \\leq \\chi(G_n) \\leq (3+o(1))^n$$\n\n**Open:** What is the exact exponential base? Does the limit exist?\n\n**Conjecture:** \u03c7(G\u2099) \u2248 (2^{3/2})\u207f \u2248 2.828\u207f",
+    "text": "Estimate \u03c7(G\u2099), the chromatic number of the unit distance graph in \u211d\u207f. Exponential growth established: 1.2\u207f \u2264 \u03c7(G\u2099) \u2264 3\u207f. Exact base open.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - UnitDistanceGraph: SimpleGraph structure on EuclideanSpace\n   - chi: chromatic number function\n   - chromaticLimit: lim \u03c7(G\u2099)^{1/n}\n\n2. **Lower Bound (Frankl-Wilson):**\n   - Use intersection theorems on set systems\n   - Analyze \u00b11 vectors with restricted inner products\n   - Get \u03c7(G\u2099) \u2265 1.2\u207f\n\n3. **Upper Bound (Larman-Rogers):**\n   - Tile \u211d\u207f with Voronoi cells of lattice A\u2099\n   - Each cell has diameter < 1\n   - Get \u03c7(G\u2099) \u2264 3\u207f\n\n4. **n=2 Case (Hadwiger-Nelson):**\n   - de Grey's 1581-vertex graph: \u03c7(G\u2082) \u2265 5\n   - Hexagonal tiling: \u03c7(G\u2082) \u2264 7",
     "keyInsights": [
-      "**Exponential Growth:** χ(Gₙ) grows exponentially, unlike polynomial chromatic numbers of many graphs",
+      "**Exponential Growth:** \u03c7(G\u2099) grows exponentially, unlike polynomial chromatic numbers of many graphs",
       "**Base Gap:** The gap between 1.2 and 3 is substantial - the true base is unknown",
-      "**Hadwiger-Nelson:** The n=2 case is 5 ≤ χ(G₂) ≤ 7, still open after 70+ years!",
+      "**Hadwiger-Nelson:** The n=2 case is 5 \u2264 \u03c7(G\u2082) \u2264 7, still open after 70+ years!",
       "**Intersection Theorems:** Frankl-Wilson uses algebraic combinatorics to get lower bounds",
       "**Lattice Tilings:** Upper bounds come from clever tilings of Euclidean space"
     ],
@@ -91,14 +91,14 @@
     {
       "id": "unit-distance-graph",
       "title": "Unit Distance Graph Definition",
-      "summary": "Definition of Gₙ and its chromatic number χ(Gₙ)",
+      "summary": "Definition of G\u2099 and its chromatic number \u03c7(G\u2099)",
       "startLine": 24,
       "endLine": 51
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Frankl-Wilson 1981 lower bound 1.2ⁿ",
+      "summary": "Frankl-Wilson 1981 lower bound 1.2\u207f",
       "startLine": 53,
       "endLine": 66
     },
@@ -139,13 +139,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #704 asks to estimate χ(Gₙ), the chromatic number of the unit distance graph in ℝⁿ. Exponential growth is established: (1+o(1))·1.2ⁿ ≤ χ(Gₙ) ≤ (3+o(1))ⁿ. The exact base and whether the limit exists remain open.",
+    "summary": "Erd\u0151s Problem #704 asks to estimate \u03c7(G\u2099), the chromatic number of the unit distance graph in \u211d\u207f. Exponential growth is established: (1+o(1))\u00b71.2\u207f \u2264 \u03c7(G\u2099) \u2264 (3+o(1))\u207f. The exact base and whether the limit exists remain open.",
     "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Combinatorial Geometry:** Fundamental question about structure of Euclidean space\n\n2. **Graph Coloring:** Infinite graphs with rich symmetry groups\n\n**3. Intersection Theorems:** Frankl-Wilson theorem has many applications\n\n4. **Coding Theory:** Related to sphere packing and error-correcting codes\n\n5. **Measure Theory:** Connected to measurable chromatic numbers.",
     "openQuestions": [
-      "Does lim_{n→∞} χ(Gₙ)^{1/n} exist?",
+      "Does lim_{n\u2192\u221e} \u03c7(G\u2099)^{1/n} exist?",
       "What is the exact exponential base? (Between 1.2 and 3)",
-      "Is the conjectured base 2^{3/2} ≈ 2.828 correct?",
-      "What is χ(G₂) exactly? (5, 6, or 7)",
+      "Is the conjectured base 2^{3/2} \u2248 2.828 correct?",
+      "What is \u03c7(G\u2082) exactly? (5, 6, or 7)",
       "What is the measurable chromatic number?"
     ]
   },
@@ -164,5 +164,39 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-171",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric, hadwiger-nelson, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-508",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric, graph-coloring, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-705",
+      "relationship": "related",
+      "description": "Share unit-distance-graph and chromatic themes"
+    },
+    {
+      "targetId": "erdos-130",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and chromatic themes"
+    },
+    {
+      "targetId": "erdos-706",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and chromatic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-171",
+    "erdos-508",
+    "erdos-705",
+    "erdos-130",
+    "erdos-706"
+  ]
 }

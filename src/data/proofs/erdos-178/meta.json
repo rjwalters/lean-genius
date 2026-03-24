@@ -1,8 +1,8 @@
 {
   "id": "erdos-178",
-  "title": "Erdős Problem #178: Balancing Infinite Collections of Integer Sequences",
+  "title": "Erd\u0151s Problem #178: Balancing Infinite Collections of Integer Sequences",
   "slug": "erdos-178",
-  "description": "Does there exist f : ℕ → {-1,1} such that the discrepancy over any d sequences is bounded independently of m? SOLVED (Beck 1981): YES, with bound O(d^(4+ε)) (Beck 2017).",
+  "description": "Does there exist f : \u2115 \u2192 {-1,1} such that the discrepancy over any d sequences is bounded independently of m? SOLVED (Beck 1981): YES, with bound O(d^(4+\u03b5)) (Beck 2017).",
   "meta": {
     "author": "Beck (1981, 2017)",
     "sourceUrl": "https://erdosproblems.com/178",
@@ -47,7 +47,7 @@
       }
     ],
     "originalContributions": [
-      "SigningFunction definition: function ℕ → ℤ",
+      "SigningFunction definition: function \u2115 \u2192 \u2124",
       "IsValidSigning definition: values restricted to {-1, 1}",
       "InfiniteIntSeq definition: infinite sequence of integers",
       "IsStrictlyIncreasing definition: strictly increasing sequences",
@@ -59,7 +59,7 @@
       "ExistsBoundedSigning definition: existence of bounded signing for all d",
       "beck_1981 axiom: bounded signing exists for any family",
       "beck_uniform_bound axiom: bound depends only on d, not family",
-      "beck_2017 axiom: quantitative bound O(d^(4+ε))",
+      "beck_2017 axiom: quantitative bound O(d^(4+\u03b5))",
       "erdos_178 theorem: complete resolution combining Beck's results",
       "erdos_178_answer theorem: affirmative answer via Beck 1981"
     ],
@@ -72,14 +72,14 @@
         "year": 1981,
         "venue": "Combinatorica",
         "url": "https://doi.org/10.1007/BF02579452",
-        "description": "Proves the existence of bounded signings for arbitrary infinite sequence families, solving Erdős #178"
+        "description": "Proves the existence of bounded signings for arbitrary infinite sequence families, solving Erd\u0151s #178"
       },
       {
         "title": "Balanced coloring of infinite sequences with bounded discrepancy",
         "authors": "J. Beck",
         "year": 2017,
         "venue": "Beck's book on discrepancy theory",
-        "description": "Quantifies the bound as O(d^{4+ε}) for any ε > 0, improving the 1981 existential result"
+        "description": "Quantifies the bound as O(d^{4+\u03b5}) for any \u03b5 > 0, improving the 1981 existential result"
       },
       {
         "title": "Six standard deviations suffice",
@@ -93,15 +93,15 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Discrepancy Theory and Sequence Balancing**\n\nErdős Problem #178 is a fundamental question in combinatorial discrepancy theory: can we assign ±1 values to integers in a way that balances arbitrary infinite families of sequences?\n\n**Historical Development:**\n- **Erdős:** Posed the problem, remarking 'it seems certain that the answer is affirmative'\n- **Beck (1981):** Proved the existence of such a signing (the answer is YES)\n- **Beck (2017):** Quantified the bound as O(d^(4+ε)) for any ε > 0\n\nThe problem connects to fundamental questions about how well structured sets can be balanced.",
+    "historicalContext": "**Discrepancy Theory and Sequence Balancing**\n\nErd\u0151s Problem #178 is a fundamental question in combinatorial discrepancy theory: can we assign \u00b11 values to integers in a way that balances arbitrary infinite families of sequences?\n\n**Historical Development:**\n- **Erd\u0151s:** Posed the problem, remarking 'it seems certain that the answer is affirmative'\n- **Beck (1981):** Proved the existence of such a signing (the answer is YES)\n- **Beck (2017):** Quantified the bound as O(d^(4+\u03b5)) for any \u03b5 > 0\n\nThe problem connects to fundamental questions about how well structured sets can be balanced.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $A_1, A_2, \\ldots$ be an infinite collection of infinite sets of integers, say $A_i = \\{a_{i1} < a_{i2} < \\cdots\\}$.\n\nDoes there exist $f : \\mathbb{N} \\to \\{-1, 1\\}$ such that\n$$\\max_{m, 1 \\leq i \\leq d} \\left|\\sum_{1 \\leq j \\leq m} f(a_{ij})\\right| \\ll_d 1$$\nfor all $d \\geq 1$?\n\n**Answer:** YES (Beck, 1981)\n\n**Quantitative Bound:** The bound can be made $\\ll d^{4+\\varepsilon}$ for any $\\varepsilon > 0$ (Beck, 2017).",
-    "text": "Does there exist f : ℕ → {-1,1} such that the discrepancy over any d sequences is bounded independently of m? SOLVED (Beck 1981): YES, with bound O(d^(4+ε)) (Beck 2017).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Signing Functions:** Define SigningFunction as ℕ → ℤ, with IsValidSigning ensuring values in {-1, 1}\n\n2. **Sequence Families:** Define InfiniteIntSeq and SeqFamily for collections of sequences\n\n3. **Discrepancy Measures:** Define partialSum, seqDiscrepancy, and maxDiscrepancy\n\n4. **Main Property:** Define HasBoundedDiscrepancy and ExistsBoundedSigning\n\n5. **Beck's Theorems:** Axiomatize Beck 1981 (existence), Beck uniform bound, and Beck 2017 (quantitative bound d^(4+ε))",
+    "text": "Does there exist f : \u2115 \u2192 {-1,1} such that the discrepancy over any d sequences is bounded independently of m? SOLVED (Beck 1981): YES, with bound O(d^(4+\u03b5)) (Beck 2017).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Signing Functions:** Define SigningFunction as \u2115 \u2192 \u2124, with IsValidSigning ensuring values in {-1, 1}\n\n2. **Sequence Families:** Define InfiniteIntSeq and SeqFamily for collections of sequences\n\n3. **Discrepancy Measures:** Define partialSum, seqDiscrepancy, and maxDiscrepancy\n\n4. **Main Property:** Define HasBoundedDiscrepancy and ExistsBoundedSigning\n\n5. **Beck's Theorems:** Axiomatize Beck 1981 (existence), Beck uniform bound, and Beck 2017 (quantitative bound d^(4+\u03b5))",
     "keyInsights": [
       "**Uniform Bounds:** The key is that the bound depends only on d (number of sequences considered), not on m (prefix length) or the specific family",
-      "**Probabilistic Method Limitation:** Random signings give O(√m) discrepancy, but we need O_d(1) independent of m",
+      "**Probabilistic Method Limitation:** Random signings give O(\u221am) discrepancy, but we need O_d(1) independent of m",
       "**Beck's Contribution:** The proof uses sophisticated combinatorial techniques beyond simple probabilistic arguments",
-      "**Quantitative Progress:** From existential bound (1981) to explicit d^(4+ε) (2017) took 36 years",
+      "**Quantitative Progress:** From existential bound (1981) to explicit d^(4+\u03b5) (2017) took 36 years",
       "**Uniform Bound:** The bound C depends only on d, not on the specific family of sequences"
     ],
     "prerequisites": [
@@ -143,7 +143,7 @@
       "title": "Beck's Improvement (2017)",
       "startLine": 103,
       "endLine": 114,
-      "summary": "Quantitative bound d^(4+ε)."
+      "summary": "Quantitative bound d^(4+\u03b5)."
     },
     {
       "id": "related-results",
@@ -175,8 +175,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #178 asked whether any infinite family of integer sequences can be balanced by a signing function with discrepancy bounded independently of the prefix length. Beck (1981) proved the answer is YES, and Beck (2017) showed the bound can be made O(d^(4+ε)) for any ε > 0.",
-    "implications": "**Theoretical Significance**: **Implications for Discrepancy Theory**\n\n1. **Infinite vs Finite:** Extends Spencer's finite results to infinite families\n\n**2. Uniform Balancing:** Shows uniform balancing is achievable even for arbitrary families\n\n3. **Polynomial Bounds:** The d^(4+ε) bound shows polynomial growth in the number of sequences\n\n4. **Proof Techniques:** Demonstrates power of sophisticated combinatorial methods beyond probabilistic approach.",
+    "summary": "Erd\u0151s Problem #178 asked whether any infinite family of integer sequences can be balanced by a signing function with discrepancy bounded independently of the prefix length. Beck (1981) proved the answer is YES, and Beck (2017) showed the bound can be made O(d^(4+\u03b5)) for any \u03b5 > 0.",
+    "implications": "**Theoretical Significance**: **Implications for Discrepancy Theory**\n\n1. **Infinite vs Finite:** Extends Spencer's finite results to infinite families\n\n**2. Uniform Balancing:** Shows uniform balancing is achievable even for arbitrary families\n\n3. **Polynomial Bounds:** The d^(4+\u03b5) bound shows polynomial growth in the number of sequences\n\n4. **Proof Techniques:** Demonstrates power of sophisticated combinatorial methods beyond probabilistic approach.",
     "openQuestions": [
       "Can the exponent 4 be improved? Is it optimal?",
       "What are explicit constructions achieving the bound?",
@@ -205,19 +205,22 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-176",
-      "title": "Erdős Problem #176: Discrepancy of Arithmetic Progressions",
-      "relationship": "Both are combinatorial discrepancy problems: #176 measures ±1 discrepancy on APs, while #178 asks whether infinite sequence families can be uniformly balanced"
+      "title": "Erd\u0151s Problem #176: Discrepancy of Arithmetic Progressions",
+      "relationship": "related",
+      "targetId": "erdos-176",
+      "description": "Both are combinatorial discrepancy problems: #176 measures \u00b11 discrepancy on APs, while #178 asks whether infinite sequence families can be uniformly balanced"
     },
     {
-      "id": "erdos-177",
-      "title": "Erdős Problem #177: Discrepancy of Arithmetic Progressions",
-      "relationship": "Part of the same family of Erdős discrepancy problems; all three (#176, #177, #178) study the limits of balanced colorings for structured set systems"
+      "title": "Erd\u0151s Problem #177: Discrepancy of Arithmetic Progressions",
+      "relationship": "related",
+      "targetId": "erdos-177",
+      "description": "Part of the same family of Erd\u0151s discrepancy problems; all three (#176, #177, #178) study the limits of balanced colorings for structured set systems"
     },
     {
-      "id": "erdos-162",
-      "title": "Erdős Problem #162: Discrepancy in 2-Coloured Complete Graphs",
-      "relationship": "Both concern discrepancy in combinatorial structures — #162 studies graph colorings while #178 studies sequence balancing"
+      "title": "Erd\u0151s Problem #162: Discrepancy in 2-Coloured Complete Graphs",
+      "relationship": "related",
+      "targetId": "erdos-162",
+      "description": "Both concern discrepancy in combinatorial structures \u2014 #162 studies graph colorings while #178 studies sequence balancing"
     }
   ]
 }

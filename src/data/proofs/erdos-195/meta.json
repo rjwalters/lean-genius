@@ -1,10 +1,10 @@
 {
   "id": "erdos-195",
-  "title": "Erdős Problem #195: Monotone Arithmetic Progressions in Permutations",
+  "title": "Erd\u0151s Problem #195: Monotone Arithmetic Progressions in Permutations",
   "slug": "erdos-195",
-  "description": "What is the largest k such that every permutation of ℤ must contain a monotone k-term arithmetic progression? Known: 3 ≤ k ≤ 4. The exact value is OPEN.",
+  "description": "What is the largest k such that every permutation of \u2124 must contain a monotone k-term arithmetic progression? Known: 3 \u2264 k \u2264 4. The exact value is OPEN.",
   "meta": {
-    "author": "Erdős-Graham [ErGr79, ErGr80]",
+    "author": "Erd\u0151s-Graham [ErGr79, ErGr80]",
     "sourceUrl": "https://erdosproblems.com/195",
     "date": "1979",
     "status": "formalized",
@@ -36,13 +36,13 @@
       }
     ],
     "originalContributions": [
-      "IsPermutation: bijection ℤ → ℤ",
+      "IsPermutation: bijection \u2124 \u2192 \u2124",
       "IsAP: arithmetic progression with nonzero common difference",
       "IsMonotoneAP: AP that appears in increasing position order",
       "HasMAP, AvoidsMAP: k-term MAP existence/avoidance",
       "LargestUnavoidableMAP: characterization of the answer",
-      "geneson_2019 axiom: ∃ permutation avoiding 6-MAPs (k ≤ 5)",
-      "adenwalla_2022 axiom: ∃ permutation avoiding 5-MAPs (k ≤ 4)",
+      "geneson_2019 axiom: \u2203 permutation avoiding 6-MAPs (k \u2264 5)",
+      "adenwalla_2022 axiom: \u2203 permutation avoiding 5-MAPs (k \u2264 4)",
       "trivial_lower_bound axiom: every permutation has 3-MAPs",
       "OpenQuestion: is k = 3 or k = 4?",
       "identityPerm, negationPerm concrete examples with proved bijectivity",
@@ -53,15 +53,15 @@
     "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #195: Monotone Arithmetic Progressions in Permutations**\n\nPosed by Erdős and Graham around 1979-1980, this problem asks about unavoidable patterns in permutations of the integers. A monotone arithmetic progression (MAP) is a sequence a, a+d, a+2d, ..., a+(k-1)d that appears in increasing order of position in the permutation.\n\n**Progress:** The problem saw no significant progress for decades until Geneson (2019) proved k ≤ 5 by constructing a permutation of ℤ that avoids 6-term MAPs. Adenwalla (2022) improved this to k ≤ 4. The lower bound k ≥ 3 (every permutation has a 3-term MAP) is believed true but non-trivial.\n\n**Current State:** The exact value of k satisfies 3 ≤ k ≤ 4. Determining whether k = 3 or k = 4 remains the central open question. This connects to Ramsey-type phenomena: which patterns are unavoidable in combinatorial structures?",
+    "historicalContext": "**Erd\u0151s Problem #195: Monotone Arithmetic Progressions in Permutations**\n\nPosed by Erd\u0151s and Graham around 1979-1980, this problem asks about unavoidable patterns in permutations of the integers. A monotone arithmetic progression (MAP) is a sequence a, a+d, a+2d, ..., a+(k-1)d that appears in increasing order of position in the permutation.\n\n**Progress:** The problem saw no significant progress for decades until Geneson (2019) proved k \u2264 5 by constructing a permutation of \u2124 that avoids 6-term MAPs. Adenwalla (2022) improved this to k \u2264 4. The lower bound k \u2265 3 (every permutation has a 3-term MAP) is believed true but non-trivial.\n\n**Current State:** The exact value of k satisfies 3 \u2264 k \u2264 4. Determining whether k = 3 or k = 4 remains the central open question. This connects to Ramsey-type phenomena: which patterns are unavoidable in combinatorial structures?",
     "problemStatement": "**Problem Statement (OPEN)**\n\nWhat is the largest $k$ such that in any permutation of $\\mathbb{Z}$ there must exist a monotone $k$-term arithmetic progression $x_1 < x_2 < \\cdots < x_k$?\n\n**Known:** $3 \\leq k \\leq 4$\n- Upper bound: Adenwalla (2022) constructed a permutation avoiding 5-term MAPs\n- Lower bound: Every permutation is believed to have 3-term MAPs",
-    "text": "What is the largest k such that every permutation of ℤ must contain a monotone k-term arithmetic progression? Known: 3 ≤ k ≤ 4. The exact value is OPEN.",
+    "text": "What is the largest k such that every permutation of \u2124 must contain a monotone k-term arithmetic progression? Known: 3 \u2264 k \u2264 4. The exact value is OPEN.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Clean Definitions:** IsPermutation via Function.Bijective, IsAP with nonzero common difference, IsMonotoneAP combining AP structure with position ordering.\n\n2. **Upper Bounds as Axioms:** Geneson and Adenwalla results are axiomatized since they involve complex explicit constructions.\n\n3. **Lower Bound as Axiom:** The 3-MAP lower bound is axiomatized since the proof requires careful combinatorial arguments on infinite permutations.\n\n4. **Concrete Examples:** Identity and negation permutations with proved bijectivity, showing the definitions are instantiatable.\n\n5. **Summary Theorem:** erdos_195_summary combines both bounds into a single proved statement.",
     "keyInsights": [
       "**Dual Requirement:** A MAP must be both an arithmetic progression (values evenly spaced) AND monotone in the permutation (positions increasing)",
-      "**Upper Bound via Construction:** k ≤ 4 comes from Adenwalla's explicit permutation that breaks all 5-term MAPs by clever interlacing of positive and negative integers",
-      "**Lower Bound Difficulty:** Showing every permutation has 3-MAPs requires arguing about infinite structures — the pigeonhole principle applies but needs care",
-      "**The Gap:** Knowing 3 ≤ k ≤ 4 but not which, reflects a fundamental difficulty in distinguishing avoidability at this threshold",
+      "**Upper Bound via Construction:** k \u2264 4 comes from Adenwalla's explicit permutation that breaks all 5-term MAPs by clever interlacing of positive and negative integers",
+      "**Lower Bound Difficulty:** Showing every permutation has 3-MAPs requires arguing about infinite structures \u2014 the pigeonhole principle applies but needs care",
+      "**The Gap:** Knowing 3 \u2264 k \u2264 4 but not which, reflects a fundamental difficulty in distinguishing avoidability at this threshold",
       "**Connection to Ramsey Theory:** Like Ramsey numbers, the question asks which patterns are unavoidable in large combinatorial structures"
     ],
     "prerequisites": [
@@ -87,7 +87,7 @@
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "Geneson (k ≤ 5) and Adenwalla (k ≤ 4) results",
+      "summary": "Geneson (k \u2264 5) and Adenwalla (k \u2264 4) results",
       "startLine": 66,
       "endLine": 76
     },
@@ -128,13 +128,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #195 asks for the largest k such that every permutation of ℤ has a k-term monotone arithmetic progression. The answer satisfies 3 ≤ k ≤ 4 but the exact value remains OPEN.",
-    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Ramsey Theory:** Which patterns are unavoidable in infinite combinatorial structures?\n\n**2. Permutation Patterns:** Part of the broader study of forbidden patterns in permutations\n\n3. **Additive Combinatorics:** Arithmetic progressions in structured sets are central to Szemerédi's theorem and related results\n\n4. **Related Problems:** Erdős #194 asks the finite version for permutations of {1,...,n}.",
+    "summary": "Erd\u0151s Problem #195 asks for the largest k such that every permutation of \u2124 has a k-term monotone arithmetic progression. The answer satisfies 3 \u2264 k \u2264 4 but the exact value remains OPEN.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Ramsey Theory:** Which patterns are unavoidable in infinite combinatorial structures?\n\n**2. Permutation Patterns:** Part of the broader study of forbidden patterns in permutations\n\n3. **Additive Combinatorics:** Arithmetic progressions in structured sets are central to Szemer\u00e9di's theorem and related results\n\n4. **Related Problems:** Erd\u0151s #194 asks the finite version for permutations of {1,...,n}.",
     "openQuestions": [
       "Is k = 3 or k = 4?",
-      "Does every permutation of ℤ have a 4-term MAP?",
+      "Does every permutation of \u2124 have a 4-term MAP?",
       "Can Adenwalla's construction be improved to avoid 4-term MAPs?",
-      "What is the answer for other groups (e.g., ℤ²)?"
+      "What is the answer for other groups (e.g., \u2124\u00b2)?"
     ]
   },
   "leanFile": {
@@ -149,5 +149,39 @@
     "axiomCount": 3,
     "theoremCount": 4,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Share arithmetic progression and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Share arithmetic progression and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-179",
+      "relationship": "related",
+      "description": "Share arithmetic progression and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-187",
+      "relationship": "related",
+      "description": "Share arithmetic progression and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-188",
+      "relationship": "related",
+      "description": "Share arithmetic progression and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-138",
+    "erdos-176",
+    "erdos-179",
+    "erdos-187",
+    "erdos-188"
+  ]
 }

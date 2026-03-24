@@ -1,10 +1,10 @@
 {
   "id": "erdos-141",
-  "title": "Erdős Problem #141: Consecutive Primes in Arithmetic Progression",
+  "title": "Erd\u0151s Problem #141: Consecutive Primes in Arithmetic Progression",
   "slug": "erdos-141",
   "description": "Are there k consecutive primes in arithmetic progression for every k >= 3?",
   "meta": {
-    "author": "Erdős (1975)",
+    "author": "Erd\u0151s (1975)",
     "sourceUrl": "https://erdosproblems.com/141",
     "date": "1975",
     "status": "axiomatized",
@@ -43,7 +43,7 @@
     "originalContributions": [
       "Formal definition of consecutive primes in arithmetic progression",
       "Verified example: (3, 5, 7) forms an AP with common difference 2",
-      "Distinction between Green-Tao (any primes in AP) vs. Erdős #141 (consecutive primes)",
+      "Distinction between Green-Tao (any primes in AP) vs. Erd\u0151s #141 (consecutive primes)",
       "Formalization of related open questions (infinitely many APs, k=11 case)"
     ],
     "axiomCount": 3,
@@ -51,12 +51,12 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #141 was posed in 1975 and asks whether, for every k >= 3, there exist k consecutive primes that form an arithmetic progression. Erdős famously called this conjecture 'completely hopeless at present.'\n\nThe distinction from the celebrated Green-Tao theorem (2008) is crucial: Green-Tao proves that the primes contain arbitrarily long arithmetic progressions, but these primes need not be consecutive. For example, (7, 13, 19) form an AP with common difference 6, but they are not consecutive primes since 11 lies between 7 and 13.\n\nComputational verification has confirmed the existence of such progressions for k <= 10, but the case k = 11 remains open, as does the general question for all k.",
+    "historicalContext": "Erd\u0151s Problem #141 was posed in 1975 and asks whether, for every k >= 3, there exist k consecutive primes that form an arithmetic progression. Erd\u0151s famously called this conjecture 'completely hopeless at present.'\n\nThe distinction from the celebrated Green-Tao theorem (2008) is crucial: Green-Tao proves that the primes contain arbitrarily long arithmetic progressions, but these primes need not be consecutive. For example, (7, 13, 19) form an AP with common difference 6, but they are not consecutive primes since 11 lies between 7 and 13.\n\nComputational verification has confirmed the existence of such progressions for k <= 10, but the case k = 11 remains open, as does the general question for all k.",
     "problemStatement": "Let $k \\geq 3$. Are there $k$ consecutive primes in arithmetic progression?\n\n**Examples:**\n- $k=3$: $(3, 5, 7)$ with common difference 2\n- $k=4$: $(251, 257, 263, 269)$ with common difference 6\n- $k \\leq 10$: Verified computationally\n- $k \\geq 11$: **OPEN**\n\n**Status**: OPEN - No general proof or disproof is known.",
     "text": "Are there k consecutive primes in arithmetic progression for every k >= 3?",
     "proofStrategy": "We formalize the problem by:\n\n1. Defining the n-th prime using Mathlib's `Nat.nth` function\n2. Defining what it means for a sequence of k consecutive primes to form an arithmetic progression\n3. Proving concrete examples (e.g., (3,5,7) is an AP)\n4. Stating the main conjecture and related open questions as axioms\n5. Contrasting with Green-Tao to clarify what this problem actually asks\n\nSince the problem is OPEN, the main conjecture is stated as an axiom. We verify small cases and provide the logical structure for future proofs.",
     "keyInsights": [
-      "**Consecutive vs. any primes**: Green-Tao gives arbitrarily long APs of primes, but Erdős #141 requires them to be consecutive primes with no primes between them.",
+      "**Consecutive vs. any primes**: Green-Tao gives arbitrarily long APs of primes, but Erd\u0151s #141 requires them to be consecutive primes with no primes between them.",
       "**The (3, 5, 7) example**: The simplest case k=3 is satisfied by the twin primes 3, 5, 7 which form an AP with d=2.",
       "**Computational limits**: Verified for k <= 10, but k=11 is open. Finding larger examples requires searching among enormous primes.",
       "**Infinity question**: Even for k=3, it's unknown whether infinitely many such progressions exist.",
@@ -95,7 +95,7 @@
       "title": "Main Conjecture",
       "startLine": 100,
       "endLine": 127,
-      "summary": "The formal statement of Erdős #141 and the computational verification for k <= 10."
+      "summary": "The formal statement of Erd\u0151s #141 and the computational verification for k <= 10."
     },
     {
       "id": "related",
@@ -109,11 +109,11 @@
       "title": "Green-Tao Contrast",
       "startLine": 147,
       "endLine": 171,
-      "summary": "Statement of Green-Tao theorem and proof that it doesn't solve Erdős #141."
+      "summary": "Statement of Green-Tao theorem and proof that it doesn't solve Erd\u0151s #141."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #141, which asks whether k consecutive primes in arithmetic progression exist for every k >= 3. The problem remains OPEN despite the Green-Tao theorem proving arbitrarily long APs of (not necessarily consecutive) primes exist.",
+    "summary": "We formalize Erd\u0151s Problem #141, which asks whether k consecutive primes in arithmetic progression exist for every k >= 3. The problem remains OPEN despite the Green-Tao theorem proving arbitrarily long APs of (not necessarily consecutive) primes exist.",
     "implications": "This problem highlights the gap between density arguments (Green-Tao) and structural constraints (consecutivity). Solving it would likely require new techniques for understanding the fine structure of prime gaps.",
     "openQuestions": [
       "Do 11 consecutive primes in arithmetic progression exist?",
@@ -136,5 +136,39 @@
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Share prime number, arithmetic progression, and number-theoretic themes"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Share prime number, arithmetic progression, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-236",
+      "relationship": "related",
+      "description": "Share prime number, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Share prime number, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-244",
+      "relationship": "related",
+      "description": "Share prime number, number-theoretic, and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-200",
+    "dirichlets-theorem",
+    "erdos-236",
+    "erdos-237",
+    "erdos-244"
+  ]
 }

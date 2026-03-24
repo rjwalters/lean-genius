@@ -1,10 +1,10 @@
 {
   "id": "erdos-292",
-  "title": "Erdős Problem #292: Egyptian Fractions Summing to 1",
+  "title": "Erd\u0151s Problem #292: Egyptian Fractions Summing to 1",
   "slug": "erdos-292",
-  "description": "Let A be the set of n such that there exist 1 ≤ m₁ < ... < mₖ = n with Σ(1/mᵢ) = 1. Does A have density 1? YES (Martin 2000).",
+  "description": "Let A be the set of n such that there exist 1 \u2264 m\u2081 < ... < m\u2096 = n with \u03a3(1/m\u1d62) = 1. Does A have density 1? YES (Martin 2000).",
   "meta": {
-    "author": "Paul Erdős, Straus",
+    "author": "Paul Erd\u0151s, Straus",
     "sourceUrl": "https://erdosproblems.com/292",
     "date": "2000",
     "status": "axiomatized",
@@ -46,13 +46,13 @@
       "inSetA definition: alternative ordered sequence definition",
       "straus_multiplication_closure axiom: A is closed under multiplication",
       "prime_powers_not_in_A axiom: prime powers are excluded from A",
-      "two_not_in_A theorem: 2 ∉ A (from prime power exclusion)",
-      "four_not_in_A theorem: 4 ∉ A (from prime power exclusion)",
+      "two_not_in_A theorem: 2 \u2209 A (from prime power exclusion)",
+      "four_not_in_A theorem: 4 \u2209 A (from prime power exclusion)",
       "primes_not_in_A theorem: all primes are excluded",
-      "doubling_in_A axiom: if n ∈ A then 2n ∈ A",
-      "setB definition: complement B = ℕ \\ A",
+      "doubling_in_A axiom: if n \u2208 A then 2n \u2208 A",
+      "setB definition: complement B = \u2115 \\ A",
       "B_characterization axiom: B consists of small multiples of prime powers",
-      "martin_B_density axiom: |B ∩ [1,x]|/x ~ (log log x)/(log x)",
+      "martin_B_density axiom: |B \u2229 [1,x]|/x ~ (log log x)/(log x)",
       "hasNaturalDensity definition: natural density of a set",
       "martin_main_theorem axiom: A has density 1",
       "B_has_density_zero axiom: B has density 0",
@@ -65,17 +65,17 @@
     "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #292** concerns Egyptian fractions - sums of distinct unit fractions.\n\n**Historical Development:**\n- **Straus:** Observed that A is closed under multiplication\n- **Early observation:** A does not contain any prime power\n- **van Doorn:** If n ∈ A (n > 1) then 2n ∈ A\n- **Martin (2000):** Proved A has density 1 and characterized the complement B\n\n**Key Insight:** The complement B consists essentially of small multiples of prime powers, and |B ∩ [1,x]|/x ~ (log log x)/(log x), which tends to 0.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $A$ be the set of $n \\in \\mathbb{N}$ such that there exist $1 \\leq m_1 < \\cdots < m_k = n$ with $\\sum \\frac{1}{m_i} = 1$.\n\nIn other words: which integers can appear as the largest denominator in an Egyptian fraction representation of 1?\n\n**Question:** Does A have density 1?\n\n**Answer:** YES (Martin 2000)\n\n**Known Properties:**\n- A is closed under multiplication (Straus)\n- Prime powers are not in A\n- If n ∈ A (n > 1) then 2n ∈ A\n- Complement B has density ~ (log log x)/(log x)",
-    "text": "Let A be the set of n such that there exist 1 ≤ m₁ < ... < mₖ = n with Σ(1/mᵢ) = 1. Does A have density 1? YES (Martin 2000).",
+    "historicalContext": "**Erd\u0151s Problem #292** concerns Egyptian fractions - sums of distinct unit fractions.\n\n**Historical Development:**\n- **Straus:** Observed that A is closed under multiplication\n- **Early observation:** A does not contain any prime power\n- **van Doorn:** If n \u2208 A (n > 1) then 2n \u2208 A\n- **Martin (2000):** Proved A has density 1 and characterized the complement B\n\n**Key Insight:** The complement B consists essentially of small multiples of prime powers, and |B \u2229 [1,x]|/x ~ (log log x)/(log x), which tends to 0.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $A$ be the set of $n \\in \\mathbb{N}$ such that there exist $1 \\leq m_1 < \\cdots < m_k = n$ with $\\sum \\frac{1}{m_i} = 1$.\n\nIn other words: which integers can appear as the largest denominator in an Egyptian fraction representation of 1?\n\n**Question:** Does A have density 1?\n\n**Answer:** YES (Martin 2000)\n\n**Known Properties:**\n- A is closed under multiplication (Straus)\n- Prime powers are not in A\n- If n \u2208 A (n > 1) then 2n \u2208 A\n- Complement B has density ~ (log log x)/(log x)",
+    "text": "Let A be the set of n such that there exist 1 \u2264 m\u2081 < ... < m\u2096 = n with \u03a3(1/m\u1d62) = 1. Does A have density 1? YES (Martin 2000).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Egyptian Fractions:** Define Egyptian fraction representations and the set A.\n\n2. **Structural Properties:** Axiomatize Straus's multiplication closure and prime power exclusion.\n\n3. **Natural Density:** Define natural density using Filter.Tendsto.\n\n4. **Martin's Theorem:** Axiomatize that A has density 1 and B has density ~ (log log x)/(log x).\n\n5. **Examples:** Include small examples of elements in A and B.",
     "keyInsights": [
-      "**Closure Under Multiplication:** If n, m ∈ A then nm ∈ A. This gives many elements from few.",
+      "**Closure Under Multiplication:** If n, m \u2208 A then nm \u2208 A. This gives many elements from few.",
       "**Prime Power Exclusion:** No prime power p^k can be in A - a strong structural constraint.",
-      "**Doubling Property:** If n ∈ A (n > 1) then 2n ∈ A, since 1/2 + Σ 1/(2mᵢ) = 1.",
+      "**Doubling Property:** If n \u2208 A (n > 1) then 2n \u2208 A, since 1/2 + \u03a3 1/(2m\u1d62) = 1.",
       "**Smallest Element:** 6 is the smallest element of A greater than 1 (1/2 + 1/3 + 1/6 = 1).",
       "**Complement Structure:** B consists of small multiples of prime powers.",
-      "**Density Decay:** |B ∩ [1,x]|/x ~ (log log x)/(log x) → 0 as x → ∞."
+      "**Density Decay:** |B \u2229 [1,x]|/x ~ (log log x)/(log x) \u2192 0 as x \u2192 \u221e."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -115,14 +115,14 @@
     {
       "id": "doubling",
       "title": "Doubling Property",
-      "summary": "If n ∈ A then 2n ∈ A",
+      "summary": "If n \u2208 A then 2n \u2208 A",
       "startLine": 112,
       "endLine": 118
     },
     {
       "id": "complement",
       "title": "The Complement Set B",
-      "summary": "Structure and density of B = ℕ \\ A",
+      "summary": "Structure and density of B = \u2115 \\ A",
       "startLine": 120,
       "endLine": 139
     },
@@ -143,7 +143,7 @@
     {
       "id": "connections",
       "title": "Connections to Other Problems",
-      "summary": "Erdős-Straus conjecture and general Egyptian fractions",
+      "summary": "Erd\u0151s-Straus conjecture and general Egyptian fractions",
       "startLine": 173,
       "endLine": 186
     },
@@ -156,12 +156,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #292 asks whether the set A of integers that can be the largest denominator in an Egyptian fraction summing to 1 has density 1. Martin (2000) proved YES: A has density 1. The complement B consists of small multiples of prime powers, with |B ∩ [1,x]|/x ~ (log log x)/(log x).",
+    "summary": "Erd\u0151s Problem #292 asks whether the set A of integers that can be the largest denominator in an Egyptian fraction summing to 1 has density 1. Martin (2000) proved YES: A has density 1. The complement B consists of small multiples of prime powers, with |B \u2229 [1,x]|/x ~ (log log x)/(log x).",
     "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Egyptian Fractions:** Almost all integers can be the largest denominator in a unit fraction representation of 1.\n\n**2. Multiplicative Structure:** Straus's closure under multiplication is key to understanding A.\n\n3. **Prime Power Obstruction:** The exclusion of prime powers provides a complete characterization of what's not in A.\n\n4. **Density Results:** Martin's precise asymptotics for B are a model of density analysis.",
     "openQuestions": [
       "Can we efficiently compute Egyptian fraction decompositions with given max denominator?",
-      "What is the structure of minimal-length representations for n ∈ A?",
-      "Connections to the Erdős-Straus conjecture (4/n = 1/a + 1/b + 1/c)?",
+      "What is the structure of minimal-length representations for n \u2208 A?",
+      "Connections to the Erd\u0151s-Straus conjecture (4/n = 1/a + 1/b + 1/c)?",
       "Analogous problems for sums to other rationals?"
     ]
   },
@@ -179,5 +179,39 @@
     "axiomCount": 13,
     "theoremCount": 5,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-298",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, density, and unit-fractions themes"
+    },
+    {
+      "targetId": "erdos-299",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, density, and unit-fractions themes"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, density, and unit-fractions themes"
+    },
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-298",
+    "erdos-299",
+    "erdos-310",
+    "erdos-148",
+    "erdos-242"
+  ]
 }

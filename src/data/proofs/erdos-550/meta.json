@@ -1,10 +1,10 @@
 {
   "id": "erdos-550",
-  "title": "Erdős #550: Ramsey Numbers for Trees and Multipartite Graphs",
+  "title": "Erd\u0151s #550: Ramsey Numbers for Trees and Multipartite Graphs",
   "slug": "erdos-550",
-  "description": "For T a tree on n vertices and G = K_{m₁,...,mₖ}, prove R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁. Chvátal (1977): R(T,Kₘ) = (m-1)(n-1)+1 is the foundational result.",
+  "description": "For T a tree on n vertices and G = K_{m\u2081,...,m\u2096}, prove R(T,G) \u2264 (\u03c7(G)-1)(R(T,K_{m\u2081,m\u2082})-1)+m\u2081. Chv\u00e1tal (1977): R(T,K\u2098) = (m-1)(n-1)+1 is the foundational result.",
   "meta": {
-    "author": "Paul Erdős, Václav Chvátal",
+    "author": "Paul Erd\u0151s, V\u00e1clav Chv\u00e1tal",
     "sourceUrl": "https://erdosproblems.com/550",
     "date": "1985",
     "status": "axiomatized",
@@ -43,7 +43,7 @@
       "ramsey_exists axiom (Ramsey's theorem)",
       "chvatal axiom (1977 exact result)",
       "chvatal_upper and chvatal_lower corollaries",
-      "Chvátal formula computational examples (proved)",
+      "Chv\u00e1tal formula computational examples (proved)",
       "ConjecturedBound definition",
       "ErdosConjecture formalization",
       "bipartite_case, path_complete axioms",
@@ -61,16 +61,16 @@
     "assumptions": "19 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Chvátal's Breakthrough (1977)**\\n\\nVáclav Chvátal proved one of the most elegant exact results in Ramsey theory: R(T, Kₘ) = (m-1)(n-1) + 1 for ANY tree T on n vertices. Unlike most Ramsey numbers which have only asymptotic bounds, this gives an exact closed formula. The proof uses a beautiful induction on tree structure.\\n\\n**Erdős's Generalization**\\n\\nErdős asked (Problem #550, circa 1985): can Chvátal's result extend to complete multipartite graphs? If G = K_{m₁,...,mₖ}, he conjectured R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1) + m₁. This bound is recursive—it uses the bipartite Ramsey number as a building block.\\n\\n**The Problem's Status**\\n\\nDespite partial progress on special cases (bounded-degree trees, paths, stars), the general conjecture remains OPEN. The difficulty lies in handling arbitrary multipartite structures beyond the bipartite case.\\n\\n**Related Results**\\n\\nBurr's conjecture (now proved) established linear bounds R(T, K₃) ≤ C·n for bounded-degree trees. The Gerencsér-Gyárfás theorem gives exact path-vs-path Ramsey numbers. These special cases inform but don't resolve the general problem.",
-    "problemStatement": "Let m₁ ≤ ⋯ ≤ mₖ and n be sufficiently large. If T is a tree on n vertices and G is the complete multipartite graph K_{m₁,...,mₖ}, prove that R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁.",
-    "text": "For T a tree on n vertices and G = K_{m₁,...,mₖ}, prove R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁. Chvátal (1977): R(T,Kₘ) = (m-1)(n-1)+1 is the foundational result.",
-    "proofStrategy": "We formalize trees, complete multipartite graphs, Ramsey numbers, Chvátal's theorem, the main conjecture, special cases (paths, stars, bounded degree), probabilistic lower bounds, extremal constructions, and asymptotic behavior.",
+    "historicalContext": "**Chv\u00e1tal's Breakthrough (1977)**\\n\\nV\u00e1clav Chv\u00e1tal proved one of the most elegant exact results in Ramsey theory: R(T, K\u2098) = (m-1)(n-1) + 1 for ANY tree T on n vertices. Unlike most Ramsey numbers which have only asymptotic bounds, this gives an exact closed formula. The proof uses a beautiful induction on tree structure.\\n\\n**Erd\u0151s's Generalization**\\n\\nErd\u0151s asked (Problem #550, circa 1985): can Chv\u00e1tal's result extend to complete multipartite graphs? If G = K_{m\u2081,...,m\u2096}, he conjectured R(T,G) \u2264 (\u03c7(G)-1)(R(T,K_{m\u2081,m\u2082})-1) + m\u2081. This bound is recursive\u2014it uses the bipartite Ramsey number as a building block.\\n\\n**The Problem's Status**\\n\\nDespite partial progress on special cases (bounded-degree trees, paths, stars), the general conjecture remains OPEN. The difficulty lies in handling arbitrary multipartite structures beyond the bipartite case.\\n\\n**Related Results**\\n\\nBurr's conjecture (now proved) established linear bounds R(T, K\u2083) \u2264 C\u00b7n for bounded-degree trees. The Gerencs\u00e9r-Gy\u00e1rf\u00e1s theorem gives exact path-vs-path Ramsey numbers. These special cases inform but don't resolve the general problem.",
+    "problemStatement": "Let m\u2081 \u2264 \u22ef \u2264 m\u2096 and n be sufficiently large. If T is a tree on n vertices and G is the complete multipartite graph K_{m\u2081,...,m\u2096}, prove that R(T,G) \u2264 (\u03c7(G)-1)(R(T,K_{m\u2081,m\u2082})-1)+m\u2081.",
+    "text": "For T a tree on n vertices and G = K_{m\u2081,...,m\u2096}, prove R(T,G) \u2264 (\u03c7(G)-1)(R(T,K_{m\u2081,m\u2082})-1)+m\u2081. Chv\u00e1tal (1977): R(T,K\u2098) = (m-1)(n-1)+1 is the foundational result.",
+    "proofStrategy": "We formalize trees, complete multipartite graphs, Ramsey numbers, Chv\u00e1tal's theorem, the main conjecture, special cases (paths, stars, bounded degree), probabilistic lower bounds, extremal constructions, and asymptotic behavior.",
     "keyInsights": [
-      "Chvátal (1977): R(T, Kₘ) = (m-1)(n-1) + 1 exactly",
-      "χ(K_{m₁,...,mₖ}) = k (number of parts)",
-      "The bound reduces to Chvátal when G = Kₘ",
+      "Chv\u00e1tal (1977): R(T, K\u2098) = (m-1)(n-1) + 1 exactly",
+      "\u03c7(K_{m\u2081,...,m\u2096}) = k (number of parts)",
+      "The bound reduces to Chv\u00e1tal when G = K\u2098",
       "Burr's conjecture for bounded-degree trees is proved",
-      "For fixed m, R(T_n, Kₘ) ~ (m-1)n asymptotically"
+      "For fixed m, R(T_n, K\u2098) ~ (m-1)n asymptotically"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -89,7 +89,7 @@
     {
       "id": "multipartite",
       "title": "Complete Multipartite Graphs",
-      "summary": "K_{m₁,...,mₖ} structure and chromatic number",
+      "summary": "K_{m\u2081,...,m\u2096} structure and chromatic number",
       "startLine": 45,
       "endLine": 73
     },
@@ -102,8 +102,8 @@
     },
     {
       "id": "chvatal",
-      "title": "Chvátal's Theorem",
-      "summary": "R(T, Kₘ) = (m-1)(n-1) + 1",
+      "title": "Chv\u00e1tal's Theorem",
+      "summary": "R(T, K\u2098) = (m-1)(n-1) + 1",
       "startLine": 103,
       "endLine": 129
     },
@@ -124,7 +124,7 @@
     {
       "id": "paths",
       "title": "Path Graphs",
-      "summary": "P_n and Gerencsér-Gyárfás",
+      "summary": "P_n and Gerencs\u00e9r-Gy\u00e1rf\u00e1s",
       "startLine": 177,
       "endLine": 196
     },
@@ -137,7 +137,7 @@
     },
     {
       "id": "turan",
-      "title": "Turán Connections",
+      "title": "Tur\u00e1n Connections",
       "summary": "Extremal graph theory connections",
       "startLine": 220,
       "endLine": 230
@@ -159,19 +159,19 @@
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
-      "summary": "R(T_n, Kₘ) ~ (m-1)n",
+      "summary": "R(T_n, K\u2098) ~ (m-1)n",
       "startLine": 261,
       "endLine": 276
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #550 on Ramsey numbers for trees and complete multipartite graphs. The conjecture extends Chvátal's exact result R(T,Kₘ) = (m-1)(n-1)+1 to multipartite graphs using a recursive bound involving the chromatic number.",
-    "implications": "**Theoretical Significance**: The problem connects tree embedding with Ramsey theory.\n\nChvátal's theorem provides the complete answer for complete graphs, but the extension to multipartite graphs remains open. Special cases like bounded-degree trees (Burr's conjecture) have been resolved.",
+    "summary": "This formalization captures Erd\u0151s Problem #550 on Ramsey numbers for trees and complete multipartite graphs. The conjecture extends Chv\u00e1tal's exact result R(T,K\u2098) = (m-1)(n-1)+1 to multipartite graphs using a recursive bound involving the chromatic number.",
+    "implications": "**Theoretical Significance**: The problem connects tree embedding with Ramsey theory.\n\nChv\u00e1tal's theorem provides the complete answer for complete graphs, but the extension to multipartite graphs remains open. Special cases like bounded-degree trees (Burr's conjecture) have been resolved.",
     "openQuestions": [
       "Does the conjectured bound hold for all sufficiently large n?",
       "What is the exact value of R(T, K_{m,m}) for general trees?",
       "Can the bound be improved for specific tree families?",
-      "What is the relationship to Turán extremal graphs?"
+      "What is the relationship to Tur\u00e1n extremal graphs?"
     ]
   },
   "leanFile": {
@@ -191,5 +191,39 @@
     "axiomCount": 19,
     "theoremCount": 1,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Share trees, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-549",
+      "relationship": "related",
+      "description": "Share trees, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-557",
+      "relationship": "related",
+      "description": "Share trees, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-548",
+      "relationship": "related",
+      "description": "Share trees and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-580",
+      "relationship": "related",
+      "description": "Share trees and graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-547",
+    "erdos-549",
+    "erdos-557",
+    "erdos-548",
+    "erdos-580"
+  ]
 }

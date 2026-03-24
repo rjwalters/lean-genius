@@ -1,6 +1,6 @@
 {
   "id": "erdos-114",
-  "title": "Erdős Problem #114: Lemniscate Length Maximization",
+  "title": "Erd\u0151s Problem #114: Lemniscate Length Maximization",
   "slug": "erdos-114",
   "description": "For monic degree-n polynomials p(z), is the arc length of {|p(z)|=1} maximized by z^n-1? Tao (2025) proved this for large n. Solved for n=2 (Eremenko-Hayman 1999). $250 bounty. Status: OPEN (all n).",
   "meta": {
@@ -38,7 +38,7 @@
       }
     ],
     "originalContributions": [
-      "MonicPoly: structure for monic polynomials via coefficient functions Fin n → ℂ",
+      "MonicPoly: structure for monic polynomials via coefficient functions Fin n \u2192 \u2102",
       "lemniscateLength: axiomatized arc length of {z : |p(z)| = 1}",
       "maxLemniscateLength f(n): supremum over all monic degree-n polynomials",
       "extremalPoly: the conjectured optimizer z^n - 1",
@@ -59,7 +59,7 @@
     "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős, Herzog, and Piranian posed this problem in 1958, asking which monic polynomial of degree $n$ produces the longest lemniscate $\\{z : |p(z)| = 1\\}$. The conjectured answer $p(z) = z^n - 1$ has $n$-fold dihedral symmetry and lemniscate length $\\sim 2n$. Dolzhenko (1961) gave the first bound $f(n) \\leq 4\\pi n$ using argument-variation techniques. Danchenko (2007) halved this to $2\\pi n$ via potential theory. The breakthrough came from Fryntov and Nazarov (2009), who proved both local optimality of $z^n - 1$ (negative-definite Hessian of the length functional) and the near-optimal bound $f(n) \\leq 2n + O(n^{7/8})$, showing $f(n)/n \\to 2$. Eremenko and Hayman (1999) resolved the case $n = 2$ using conformal mapping techniques specific to the Bernoulli lemniscate. Terence Tao (2025) achieved the major breakthrough, proving $z^n - 1$ is the unique global maximum for all sufficiently large $n$, reducing the full conjecture to finitely many small cases. The problem carries a $\\$250$ Erdős bounty and remains open for all $n$.",
+    "historicalContext": "Erd\u0151s, Herzog, and Piranian posed this problem in 1958, asking which monic polynomial of degree $n$ produces the longest lemniscate $\\{z : |p(z)| = 1\\}$. The conjectured answer $p(z) = z^n - 1$ has $n$-fold dihedral symmetry and lemniscate length $\\sim 2n$. Dolzhenko (1961) gave the first bound $f(n) \\leq 4\\pi n$ using argument-variation techniques. Danchenko (2007) halved this to $2\\pi n$ via potential theory. The breakthrough came from Fryntov and Nazarov (2009), who proved both local optimality of $z^n - 1$ (negative-definite Hessian of the length functional) and the near-optimal bound $f(n) \\leq 2n + O(n^{7/8})$, showing $f(n)/n \\to 2$. Eremenko and Hayman (1999) resolved the case $n = 2$ using conformal mapping techniques specific to the Bernoulli lemniscate. Terence Tao (2025) achieved the major breakthrough, proving $z^n - 1$ is the unique global maximum for all sufficiently large $n$, reducing the full conjecture to finitely many small cases. The problem carries a $\\$250$ Erd\u0151s bounty and remains open for all $n$.",
     "problemStatement": "Let $f(n) = \\sup\\{L(p) : p \\text{ monic, } \\deg p = n\\}$ where $L(p)$ is the arc length of $\\{z \\in \\mathbb{C} : |p(z)| = 1\\}$. Is $f(n) = L(z^n - 1)$ for all $n \\geq 1$?",
     "text": "For monic degree-n polynomials p(z), is the arc length of {|p(z)|=1} maximized by z^n-1? Tao (2025) proved this for large n. Solved for n=2 (Eremenko-Hayman 1999). $250 bounty. Status: OPEN (all n).",
     "proofStrategy": "The formalization axiomatizes both the geometric objects and the analytic results. Monic polynomials are modeled as coefficient functions $\\text{Fin}(n) \\to \\mathbb{C}$, and the lemniscate length is axiomatized since its computation requires complex line integrals unavailable in Mathlib. The core structure traces 50 years of improving upper bounds: Dolzhenko's $4\\pi n$ (1961) $\\to$ Danchenko's $2\\pi n$ (2007) $\\to$ Fryntov-Nazarov's $2n + O(n^{7/8})$ (2009). The lower bound $f(n) \\geq L(z^n - 1)$ is immediate. Local optimality and Tao's large-$n$ global optimality are axiomatized, as are the geometric properties (dihedral symmetry, exact Gamma-function length formula). The conjecture for all $n$ is stated as a formal proposition.",
@@ -114,7 +114,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #114 asks whether $z^n - 1$ maximizes lemniscate length among all monic degree-$n$ polynomials. The formalization traces the 50-year progression of upper bounds from $4\\pi n$ to $2n + O(n^{7/8})$ and axiomatizes the two major partial resolutions: Eremenko-Hayman for $n = 2$ (1999) and Tao for all sufficiently large $n$ (2025). The full conjecture for all $n \\geq 1$ remains open with a $\\$250$ Erdős bounty.",
+    "summary": "Erd\u0151s Problem #114 asks whether $z^n - 1$ maximizes lemniscate length among all monic degree-$n$ polynomials. The formalization traces the 50-year progression of upper bounds from $4\\pi n$ to $2n + O(n^{7/8})$ and axiomatizes the two major partial resolutions: Eremenko-Hayman for $n = 2$ (1999) and Tao for all sufficiently large $n$ (2025). The full conjecture for all $n \\geq 1$ remains open with a $\\$250$ Erd\u0151s bounty.",
     "implications": "A full resolution would establish a sharp isoperimetric-type inequality for polynomial lemniscates, completing the analogy with classical isoperimetric problems where symmetric extremizers are optimal. The result has applications to potential theory (capacity of lemniscatic domains), approximation theory (polynomial level curves), and conformal mapping (extremal lengths).",
     "openQuestions": [
       "Can Tao's large-$n$ threshold $N_0$ be made explicit? If $N_0$ is small enough, computational verification could close the problem entirely.",
@@ -125,28 +125,34 @@
   },
   "crossReferences": [
     {
-      "relationship": "Direct companion problem: erdos-115 asks for bounds on |p'(z)| on connected lemniscates (Eremenko-Lempert, Chebyshev extremals), while erdos-114 asks which monic polynomial maximizes the lemniscate arc length; both are solved for special cases and share the Eremenko authorship",
-      "targetId": "erdos-115"
+      "relationship": "related",
+      "targetId": "erdos-115",
+      "description": "Direct companion problem: erdos-115 asks for bounds on |p'(z)| on connected lemniscates (Eremenko-Lempert, Chebyshev extremals), while erdos-114 asks which monic polynomial maximizes the lemniscate arc length; both are solved for special cases and share the Eremenko authorship"
     },
     {
-      "relationship": "Closely parallel extremal question: erdos-1044 asks for the infimum of the maximum boundary length of connected components of {|f(z)| < 1}, the complementary minimization problem to erdos-114's maximization of total arc length of {|p(z)| = 1}",
-      "targetId": "erdos-1044"
+      "relationship": "related",
+      "targetId": "erdos-1044",
+      "description": "Closely parallel extremal question: erdos-1044 asks for the infimum of the maximum boundary length of connected components of {|f(z)| < 1}, the complementary minimization problem to erdos-114's maximization of total arc length of {|p(z)| = 1}"
     },
     {
-      "relationship": "erdos-1042 studies the number of connected components of polynomial lemniscates {|f(z)| < 1} as a function of transfinite diameter; understanding lemniscate topology (connected vs. disconnected) is prerequisite to the length maximization in erdos-114",
-      "targetId": "erdos-1042"
+      "relationship": "related",
+      "targetId": "erdos-1042",
+      "description": "erdos-1042 studies the number of connected components of polynomial lemniscates {|f(z)| < 1} as a function of transfinite diameter; understanding lemniscate topology (connected vs. disconnected) is prerequisite to the length maximization in erdos-114"
     },
     {
-      "relationship": "erdos-1046 (Pommerenke 1959) proves that connected lemniscates {|f(z)| < 1} are contained in a disc of radius 2; this containment result constrains the geometry of the extremal lemniscate in erdos-114 and uses the same potential-theoretic techniques",
-      "targetId": "erdos-1046"
+      "relationship": "related",
+      "targetId": "erdos-1046",
+      "description": "erdos-1046 (Pommerenke 1959) proves that connected lemniscates {|f(z)| < 1} are contained in a disc of radius 2; this containment result constrains the geometry of the extremal lemniscate in erdos-114 and uses the same potential-theoretic techniques"
     },
     {
-      "relationship": "erdos-509 asks whether {|f(z)| ≤ 1} can be covered by discs with total radius ≤ 2 (Cartan: 2e; Pommerenke: 2); the disc-covering and arc-length problems are dual perspectives on lemniscate size, both central to the Erdős-Herzog-Piranian program",
-      "targetId": "erdos-509"
+      "relationship": "related",
+      "targetId": "erdos-509",
+      "description": "erdos-509 asks whether {|f(z)| \u2264 1} can be covered by discs with total radius \u2264 2 (Cartan: 2e; Pommerenke: 2); the disc-covering and arc-length problems are dual perspectives on lemniscate size, both central to the Erd\u0151s-Herzog-Piranian program"
     },
     {
-      "relationship": "erdos-114 is an isoperimetric-type problem for polynomial lemniscates: among all monic degree-n polynomials, find the one whose level set has maximum arc length. The classical isoperimetric theorem (circle maximizes area for fixed perimeter) provides the philosophical template and suggests symmetric (z^n-1) extremizers",
-      "targetId": "isoperimetric-theorem"
+      "relationship": "related",
+      "targetId": "isoperimetric-theorem",
+      "description": "erdos-114 is an isoperimetric-type problem for polynomial lemniscates: among all monic degree-n polynomials, find the one whose level set has maximum arc length. The classical isoperimetric theorem (circle maximizes area for fixed perimeter) provides the philosophical template and suggests symmetric (z^n-1) extremizers"
     }
   ],
   "relatedProofs": [
@@ -156,11 +162,11 @@
     },
     {
       "proofId": "erdos-1047",
-      "note": "erdos-1047 asks whether connected components of {|f(z)| ≤ c} are convex for small c; convexity of the extremal lemniscate {|z^n-1| = 1} is relevant to understanding why z^n-1 is optimal in erdos-114"
+      "note": "erdos-1047 asks whether connected components of {|f(z)| \u2264 c} are convex for small c; convexity of the extremal lemniscate {|z^n-1| = 1} is relevant to understanding why z^n-1 is optimal in erdos-114"
     },
     {
       "proofId": "erdos-990",
-      "note": "erdos-990 concerns the Erdős-Turán inequality on root distribution of polynomials; equidistribution of roots of z^n-1 (the n-th roots of unity) underlies the dihedral symmetry argument supporting optimality in erdos-114"
+      "note": "erdos-990 concerns the Erd\u0151s-Tur\u00e1n inequality on root distribution of polynomials; equidistribution of roots of z^n-1 (the n-th roots of unity) underlies the dihedral symmetry argument supporting optimality in erdos-114"
     },
     "erdos-115",
     "erdos-1044",
@@ -172,15 +178,15 @@
   "references": [
     {
       "authors": [
-        "Erdős, P.",
+        "Erd\u0151s, P.",
         "Herzog, M.",
         "Piranian, G."
       ],
       "title": "Metric properties of polynomials",
-      "journal": "Journal d'Analyse Mathématique",
+      "journal": "Journal d'Analyse Math\u00e9matique",
       "volume": "6",
       "year": 1958,
-      "pages": "125–148",
+      "pages": "125\u2013148",
       "doi": "10.1007/BF02790232",
       "note": "Original paper posing the lemniscate length maximization problem and conjecturing z^n-1 as extremal"
     },
@@ -193,7 +199,7 @@
       "journal": "Michigan Mathematical Journal",
       "volume": "46",
       "year": 1999,
-      "pages": "409–415",
+      "pages": "409\u2013415",
       "doi": "10.1307/mmj/1030132418",
       "note": "Resolves the n=2 case (Bernoulli lemniscate) and proves arc length bounds using conformal mapping; key partial result axiomatized in the Lean file"
     },
@@ -202,13 +208,13 @@
         "Fryntov, A.",
         "Nazarov, F."
       ],
-      "title": "New estimates for the length of the Erdős-Herzog-Piranian lemniscate",
+      "title": "New estimates for the length of the Erd\u0151s-Herzog-Piranian lemniscate",
       "journal": "Linear and Complex Analysis: Dedicated to V. P. Havin",
       "series": "American Mathematical Society Translations",
       "volume": "226",
       "year": 2009,
-      "pages": "49–60",
-      "note": "Proves local optimality of z^n-1 (negative-definite Hessian) and the sharp near-optimal bound f(n) ≤ 2n + C·n^{7/8}, establishing f(n)/n → 2"
+      "pages": "49\u201360",
+      "note": "Proves local optimality of z^n-1 (negative-definite Hessian) and the sharp near-optimal bound f(n) \u2264 2n + C\u00b7n^{7/8}, establishing f(n)/n \u2192 2"
     },
     {
       "authors": [
@@ -218,9 +224,9 @@
       "journal": "Mathematical Notes",
       "volume": "82",
       "year": 2007,
-      "pages": "475–480",
+      "pages": "475\u2013480",
       "doi": "10.1134/S0001434607090222",
-      "note": "Improves Dolzhenko's bound from 4πn to 2πn using potential-theoretic methods"
+      "note": "Improves Dolzhenko's bound from 4\u03c0n to 2\u03c0n using potential-theoretic methods"
     },
     {
       "authors": [
@@ -228,13 +234,13 @@
       ],
       "title": "On the length of lemniscates of monic polynomials",
       "year": 2025,
-      "note": "Proves global optimality of z^n-1 for all sufficiently large n, reducing the full Erdős conjecture to finitely many cases; preprint available on arXiv"
+      "note": "Proves global optimality of z^n-1 for all sufficiently large n, reducing the full Erd\u0151s conjecture to finitely many cases; preprint available on arXiv"
     },
-    "Erdős-Herzog-Piranian (1958)",
-    "Dolzhenko (1961): f(n) ≤ 4πn",
+    "Erd\u0151s-Herzog-Piranian (1958)",
+    "Dolzhenko (1961): f(n) \u2264 4\u03c0n",
     "Eremenko-Hayman (1999): n=2 solved",
-    "Danchenko (2007): f(n) ≤ 2πn",
-    "Fryntov-Nazarov (2009): local optimality, f(n) ≤ 2n + O(n^{7/8})",
+    "Danchenko (2007): f(n) \u2264 2\u03c0n",
+    "Fryntov-Nazarov (2009): local optimality, f(n) \u2264 2n + O(n^{7/8})",
     "Tao (2025): global optimality for sufficiently large n",
     "https://erdosproblems.com/114"
   ],

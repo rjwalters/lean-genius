@@ -1,10 +1,10 @@
 {
   "id": "erdos-264",
-  "title": "Erdős Problem #264: Irrationality Sequences",
+  "title": "Erd\u0151s Problem #264: Irrationality Sequences",
   "slug": "erdos-264",
-  "description": "A sequence aₙ is an 'irrationality sequence' if ∑1/(aₙ+bₙ) is irrational for all bounded bₙ. Is 2ⁿ or n! such a sequence? Kovač-Tao (2024) showed 2ⁿ is not; n! remains open.",
+  "description": "A sequence a\u2099 is an 'irrationality sequence' if \u22111/(a\u2099+b\u2099) is irrational for all bounded b\u2099. Is 2\u207f or n! such a sequence? Kova\u010d-Tao (2024) showed 2\u207f is not; n! remains open.",
   "meta": {
-    "author": "Kovač & Tao (2024)",
+    "author": "Kova\u010d & Tao (2024)",
     "sourceUrl": "https://erdosproblems.com/264",
     "date": "2024",
     "status": "axiomatized",
@@ -47,25 +47,25 @@
     ],
     "originalContributions": [
       "Formal definition of irrationality sequences in Lean 4",
-      "Statement of Kovač-Tao negative criterion",
-      "Statement of Kovač-Tao positive criterion",
-      "Growth rate analysis for 2ⁿ, 2^(2ⁿ), and n!"
+      "Statement of Kova\u010d-Tao negative criterion",
+      "Statement of Kova\u010d-Tao positive criterion",
+      "Growth rate analysis for 2\u207f, 2^(2\u207f), and n!"
     ],
     "axiomCount": 4,
     "lineCount": 152,
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem explores the concept of 'irrationality sequences' — sequences so robust that perturbing them by any bounded amount still yields irrational sums. Erdős and Graham introduced this concept in 1980.\n\nErdős asked specifically about 2ⁿ and n!, and initially speculated that polynomial-growth sequences might work. He later retracted this, noting irrationality sequences must grow at least exponentially.\n\nIn 2024, Vjekoslav Kovač and Terence Tao made breakthrough progress, proving 2ⁿ is NOT an irrationality sequence and establishing precise criteria for when sequences can or cannot be irrationality sequences. Their paper unified many related Erdős problems about irrationality.",
-    "problemStatement": "**Definition**: A sequence $a_n$ is an **irrationality sequence** if for every bounded integer sequence $b_n$ (with $a_n + b_n \\neq 0$ and $b_n \\neq 0$), the sum\n$$\\sum_{n=1}^{\\infty} \\frac{1}{a_n + b_n}$$\nis irrational.\n\n**Questions**:\n1. Is $a_n = 2^n$ an irrationality sequence? **NO** (Kovač-Tao 2024)\n2. Is $a_n = n!$ an irrationality sequence? **OPEN**\n\n**Known Example**: $a_n = 2^{2^n}$ IS an irrationality sequence.",
-    "text": "A sequence aₙ is an 'irrationality sequence' if ∑1/(aₙ+bₙ) is irrational for all bounded bₙ. Is 2ⁿ or n! such a sequence? Kovač-Tao (2024) showed 2ⁿ is not; n! remains open.",
-    "proofStrategy": "We formalize:\n\n1. **The definition**: IsIrrationalitySequence captures the universal quantification over bounded perturbations\n\n2. **Kovač-Tao negative criterion**: If aₙ is strictly increasing with convergent ∑1/aₙ and positive liminf condition, then NOT an irrationality sequence. This shows 2ⁿ fails.\n\n3. **Kovač-Tao positive criterion**: For any F with F(n+1)/F(n) → ∞, irrationality sequences exist at that growth rate.\n\n4. **Known example**: 2^(2ⁿ) is an irrationality sequence.\n\nThe criteria are stated as axioms since their proofs require sophisticated analysis.",
+    "historicalContext": "This problem explores the concept of 'irrationality sequences' \u2014 sequences so robust that perturbing them by any bounded amount still yields irrational sums. Erd\u0151s and Graham introduced this concept in 1980.\n\nErd\u0151s asked specifically about 2\u207f and n!, and initially speculated that polynomial-growth sequences might work. He later retracted this, noting irrationality sequences must grow at least exponentially.\n\nIn 2024, Vjekoslav Kova\u010d and Terence Tao made breakthrough progress, proving 2\u207f is NOT an irrationality sequence and establishing precise criteria for when sequences can or cannot be irrationality sequences. Their paper unified many related Erd\u0151s problems about irrationality.",
+    "problemStatement": "**Definition**: A sequence $a_n$ is an **irrationality sequence** if for every bounded integer sequence $b_n$ (with $a_n + b_n \\neq 0$ and $b_n \\neq 0$), the sum\n$$\\sum_{n=1}^{\\infty} \\frac{1}{a_n + b_n}$$\nis irrational.\n\n**Questions**:\n1. Is $a_n = 2^n$ an irrationality sequence? **NO** (Kova\u010d-Tao 2024)\n2. Is $a_n = n!$ an irrationality sequence? **OPEN**\n\n**Known Example**: $a_n = 2^{2^n}$ IS an irrationality sequence.",
+    "text": "A sequence a\u2099 is an 'irrationality sequence' if \u22111/(a\u2099+b\u2099) is irrational for all bounded b\u2099. Is 2\u207f or n! such a sequence? Kova\u010d-Tao (2024) showed 2\u207f is not; n! remains open.",
+    "proofStrategy": "We formalize:\n\n1. **The definition**: IsIrrationalitySequence captures the universal quantification over bounded perturbations\n\n2. **Kova\u010d-Tao negative criterion**: If a\u2099 is strictly increasing with convergent \u22111/a\u2099 and positive liminf condition, then NOT an irrationality sequence. This shows 2\u207f fails.\n\n3. **Kova\u010d-Tao positive criterion**: For any F with F(n+1)/F(n) \u2192 \u221e, irrationality sequences exist at that growth rate.\n\n4. **Known example**: 2^(2\u207f) is an irrationality sequence.\n\nThe criteria are stated as axioms since their proofs require sophisticated analysis.",
     "keyInsights": [
       "**Robustness condition**: An irrationality sequence must stay irrational under ALL bounded perturbations. This is much stronger than just being irrational for the original sequence.",
-      "**Growth rate boundary**: The Kovač-Tao criteria show the boundary is superexponential. Bounded ratio (like 2ⁿ) ⟹ fails. Ratio → ∞ (like 2^(2ⁿ)) ⟹ can succeed.",
-      "**Why 2ⁿ fails**: There exists a bounded bₙ making ∑ 1/(2ⁿ + bₙ) rational. The construction uses the negative criterion's liminf condition.",
+      "**Growth rate boundary**: The Kova\u010d-Tao criteria show the boundary is superexponential. Bounded ratio (like 2\u207f) \u27f9 fails. Ratio \u2192 \u221e (like 2^(2\u207f)) \u27f9 can succeed.",
+      "**Why 2\u207f fails**: There exists a bounded b\u2099 making \u2211 1/(2\u207f + b\u2099) rational. The construction uses the negative criterion's liminf condition.",
       "**Why n! is borderline**: The ratio (n+1)!/n! = n+1 grows, but not fast enough to apply the positive criterion. It also doesn't satisfy the negative criterion's conditions cleanly.",
-      "**Connection to Ahmes series**: Kovač-Tao's paper addresses multiple Erdős problems about 'Ahmes series' (Egyptian fractions), showing deep connections between irrationality questions."
+      "**Connection to Ahmes series**: Kova\u010d-Tao's paper addresses multiple Erd\u0151s problems about 'Ahmes series' (Egyptian fractions), showing deep connections between irrationality questions."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -92,18 +92,18 @@
       "title": "Main Results",
       "startLine": 48,
       "endLine": 75,
-      "summary": "The answers to Erdős's questions: 2ⁿ is NOT (Kovač-Tao), n! is OPEN."
+      "summary": "The answers to Erd\u0151s's questions: 2\u207f is NOT (Kova\u010d-Tao), n! is OPEN."
     },
     {
       "id": "positive-example",
       "title": "Known Positive Example",
       "startLine": 77,
       "endLine": 87,
-      "summary": "The sequence 2^(2ⁿ) is an irrationality sequence."
+      "summary": "The sequence 2^(2\u207f) is an irrationality sequence."
     },
     {
       "id": "criteria",
-      "title": "Kovač-Tao Criteria",
+      "title": "Kova\u010d-Tao Criteria",
       "startLine": 89,
       "endLine": 118,
       "summary": "The negative and positive criteria for when sequences are/aren't irrationality sequences."
@@ -113,12 +113,12 @@
       "title": "Growth Rate Examples",
       "startLine": 133,
       "endLine": 152,
-      "summary": "Computations showing growth rates of 2ⁿ, 2^(2ⁿ), and n!."
+      "summary": "Computations showing growth rates of 2\u207f, 2^(2\u207f), and n!."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #264 about irrationality sequences — sequences where perturbing by any bounded amount preserves irrationality of the sum. Kovač and Tao (2024) showed 2ⁿ is NOT such a sequence, while n! remains open. They established precise criteria: sequences with bounded ratio fail, while those with ratio → ∞ can succeed.",
-    "implications": "The Kovač-Tao criteria unify multiple Erdős problems about irrationality. The negative criterion provides a powerful tool for showing sequences are NOT irrationality sequences, while the positive criterion shows they exist at all superexponential growth rates.",
+    "summary": "We formalize Erd\u0151s Problem #264 about irrationality sequences \u2014 sequences where perturbing by any bounded amount preserves irrationality of the sum. Kova\u010d and Tao (2024) showed 2\u207f is NOT such a sequence, while n! remains open. They established precise criteria: sequences with bounded ratio fail, while those with ratio \u2192 \u221e can succeed.",
+    "implications": "The Kova\u010d-Tao criteria unify multiple Erd\u0151s problems about irrationality. The negative criterion provides a powerful tool for showing sequences are NOT irrationality sequences, while the positive criterion shows they exist at all superexponential growth rates.",
     "openQuestions": [
       "Is n! an irrationality sequence?",
       "What is the exact boundary between irrationality and non-irrationality sequences?",
@@ -142,5 +142,39 @@
     "axiomCount": 4,
     "theoremCount": 1,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-260",
+      "relationship": "related",
+      "description": "Share irrationality, sequence, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-263",
+      "relationship": "related",
+      "description": "Share irrationality, sequence, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-265",
+      "relationship": "related",
+      "description": "Share irrationality, sequence, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Share irrationality and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Share irrationality and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-260",
+    "erdos-263",
+    "erdos-265",
+    "erdos-1049",
+    "erdos-1050"
+  ]
 }

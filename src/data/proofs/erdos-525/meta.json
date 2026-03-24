@@ -1,8 +1,8 @@
 {
   "id": "erdos-525",
-  "title": "Erdős Problem #525: Littlewood Polynomials and Minimum Modulus",
+  "title": "Erd\u0151s Problem #525: Littlewood Polynomials and Minimum Modulus",
   "slug": "erdos-525",
-  "description": "For Littlewood polynomials (±1 coefficients), what is m(f) = min|f(z)| on |z|=1? SOLVED: m(f) = o(1) almost surely (Kashin 1987), m(f) ≈ n^{-1/2} (Konyagin 1994), exact distribution identified (Cook-Nguyen 2021).",
+  "description": "For Littlewood polynomials (\u00b11 coefficients), what is m(f) = min|f(z)| on |z|=1? SOLVED: m(f) = o(1) almost surely (Kashin 1987), m(f) \u2248 n^{-1/2} (Konyagin 1994), exact distribution identified (Cook-Nguyen 2021).",
   "meta": {
     "author": "Littlewood (conjecture 1966), Kashin (1987), Konyagin (1994), Cook-Nguyen (2021)",
     "sourceUrl": "https://erdosproblems.com/525",
@@ -49,7 +49,7 @@
       }
     ],
     "originalContributions": [
-      "IsLittlewoodPolynomial definition (±1 coefficients)",
+      "IsLittlewoodPolynomial definition (\u00b11 coefficients)",
       "LittlewoodPolynomials set definition",
       "littlewood_count axiom (2^(n+1) polynomials)",
       "UnitCircle definition",
@@ -63,7 +63,7 @@
       "konyagin_exponent_tight axiom",
       "konyagin_schlag_lower_tail axiom",
       "cook_nguyen_lambda constant",
-      "cook_nguyen_distribution axiom (e^{-ελ} limit)",
+      "cook_nguyen_distribution axiom (e^{-\u03b5\u03bb} limit)",
       "IsRudinShapiro definition",
       "rudin_shapiro_bound axiom",
       "AllOnesPolynomial definition",
@@ -76,14 +76,14 @@
     "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #525: Littlewood Polynomials**\n\nLittlewood polynomials have coefficients ±1. The minimum modulus m(f) = min_{|z|=1} |f(z)| measures how close the polynomial gets to 0 on the unit circle.\n\n**Historical Timeline:**\n- 1966: Littlewood conjectured m(f) = o(1) almost surely\n- 1987: Kashin proved Littlewood's conjecture\n- 1994: Konyagin showed m(f) ≤ n^{-1/2+o(1)}\n- 1999: Konyagin-Schlag proved lower tail bounds, showing -1/2 is tight\n- 2021: Cook-Nguyen identified the exact limiting distribution\n\n**Key Concept:** Random Littlewood polynomials (Kac polynomials with Rademacher coefficients) have a universal limiting distribution for their minimum modulus.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nFor degree n polynomials f(z) = Σ±zᵏ with ±1 coefficients:\n\n**Question 1:** Do almost all have |f(z)| < 1 for some |z| = 1?\n\n**Question 2:** What is the behavior of m(f) = min_{|z|=1} |f(z)|?\n\n**Complete Answers:**\n1. YES - all except o(2^n) have m(f) < 1\n2. m(f) = o(1) almost surely (Kashin 1987)\n   m(f) ≤ n^{-1/2+o(1)} almost surely (Konyagin 1994)\n   lim P(m(f) > εn^{-1/2}) = e^{-ελ} for explicit λ (Cook-Nguyen 2021)\n\n**Universality:** The limiting distribution is the same for any ±1 coefficient distribution.",
-    "text": "For Littlewood polynomials (±1 coefficients), what is m(f) = min|f(z)| on |z|=1? SOLVED: m(f) = o(1) almost surely (Kashin 1987), m(f) ≈ n^{-1/2} (Konyagin 1994), exact distribution identified (Cook-Nguyen 2021).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Littlewood Polynomials:** Define IsLittlewoodPolynomial, LittlewoodPolynomials(n)\n\n2. **Minimum Modulus:** Define minModulus as infimum over unit circle\n\n3. **Littlewood's Conjecture:** Formalize and axiomatize Kashin's proof\n\n4. **Konyagin's Bound:** Axiomatize n^{-1/2+o(1)} bound\n\n5. **Konyagin-Schlag:** Axiomatize tightness of exponent\n\n6. **Cook-Nguyen:** Axiomatize the exact limiting distribution e^{-ελ}\n\n7. **Related Results:** Rudin-Shapiro polynomials, Mahler measure",
+    "historicalContext": "**Erd\u0151s Problem #525: Littlewood Polynomials**\n\nLittlewood polynomials have coefficients \u00b11. The minimum modulus m(f) = min_{|z|=1} |f(z)| measures how close the polynomial gets to 0 on the unit circle.\n\n**Historical Timeline:**\n- 1966: Littlewood conjectured m(f) = o(1) almost surely\n- 1987: Kashin proved Littlewood's conjecture\n- 1994: Konyagin showed m(f) \u2264 n^{-1/2+o(1)}\n- 1999: Konyagin-Schlag proved lower tail bounds, showing -1/2 is tight\n- 2021: Cook-Nguyen identified the exact limiting distribution\n\n**Key Concept:** Random Littlewood polynomials (Kac polynomials with Rademacher coefficients) have a universal limiting distribution for their minimum modulus.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nFor degree n polynomials f(z) = \u03a3\u00b1z\u1d4f with \u00b11 coefficients:\n\n**Question 1:** Do almost all have |f(z)| < 1 for some |z| = 1?\n\n**Question 2:** What is the behavior of m(f) = min_{|z|=1} |f(z)|?\n\n**Complete Answers:**\n1. YES - all except o(2^n) have m(f) < 1\n2. m(f) = o(1) almost surely (Kashin 1987)\n   m(f) \u2264 n^{-1/2+o(1)} almost surely (Konyagin 1994)\n   lim P(m(f) > \u03b5n^{-1/2}) = e^{-\u03b5\u03bb} for explicit \u03bb (Cook-Nguyen 2021)\n\n**Universality:** The limiting distribution is the same for any \u00b11 coefficient distribution.",
+    "text": "For Littlewood polynomials (\u00b11 coefficients), what is m(f) = min|f(z)| on |z|=1? SOLVED: m(f) = o(1) almost surely (Kashin 1987), m(f) \u2248 n^{-1/2} (Konyagin 1994), exact distribution identified (Cook-Nguyen 2021).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Littlewood Polynomials:** Define IsLittlewoodPolynomial, LittlewoodPolynomials(n)\n\n2. **Minimum Modulus:** Define minModulus as infimum over unit circle\n\n3. **Littlewood's Conjecture:** Formalize and axiomatize Kashin's proof\n\n4. **Konyagin's Bound:** Axiomatize n^{-1/2+o(1)} bound\n\n5. **Konyagin-Schlag:** Axiomatize tightness of exponent\n\n6. **Cook-Nguyen:** Axiomatize the exact limiting distribution e^{-\u03b5\u03bb}\n\n7. **Related Results:** Rudin-Shapiro polynomials, Mahler measure",
     "keyInsights": [
-      "**Littlewood's Conjecture:** m(f) → 0 in probability - confirmed by Kashin (1987)",
-      "**Konyagin's Exponent:** m(f) ≈ n^{-1/2} is the correct order of magnitude",
-      "**Universality:** The Cook-Nguyen distribution is universal for ±1 coefficients",
+      "**Littlewood's Conjecture:** m(f) \u2192 0 in probability - confirmed by Kashin (1987)",
+      "**Konyagin's Exponent:** m(f) \u2248 n^{-1/2} is the correct order of magnitude",
+      "**Universality:** The Cook-Nguyen distribution is universal for \u00b11 coefficients",
       "**Rudin-Shapiro:** Special Littlewood polynomials with good bounds",
       "**Mahler Measure Connection:** Links to Lehmer's problem on polynomial heights"
     ],
@@ -159,8 +159,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #525 on Littlewood polynomials is completely resolved. The minimum modulus m(f) satisfies: (1) m(f) < 1 for almost all polynomials, (2) m(f) = o(1) almost surely (Kashin 1987), (3) m(f) ≈ n^{-1/2} with explicit limiting distribution e^{-ελ} (Cook-Nguyen 2021). This represents a remarkable universality result in random polynomial theory.",
-    "implications": "**Theoretical Significance**: **Random Polynomial Theory Connections**\n\n1. **Kac Polynomials:** Part of the study of random polynomials with i.i.d. coefficients\n\n**2. Universality:** The limiting distribution is the same for all ±1 distributions\n\n3. **Random Matrix Theory:** Connections to eigenvalue statistics\n\n4. **Mahler Measure:** Links to Lehmer's problem and polynomial heights\n\n5. **Signal Processing:** Applications in filter design and communication.",
+    "summary": "Erd\u0151s Problem #525 on Littlewood polynomials is completely resolved. The minimum modulus m(f) satisfies: (1) m(f) < 1 for almost all polynomials, (2) m(f) = o(1) almost surely (Kashin 1987), (3) m(f) \u2248 n^{-1/2} with explicit limiting distribution e^{-\u03b5\u03bb} (Cook-Nguyen 2021). This represents a remarkable universality result in random polynomial theory.",
+    "implications": "**Theoretical Significance**: **Random Polynomial Theory Connections**\n\n1. **Kac Polynomials:** Part of the study of random polynomials with i.i.d. coefficients\n\n**2. Universality:** The limiting distribution is the same for all \u00b11 distributions\n\n3. **Random Matrix Theory:** Connections to eigenvalue statistics\n\n4. **Mahler Measure:** Links to Lehmer's problem and polynomial heights\n\n5. **Signal Processing:** Applications in filter design and communication.",
     "openQuestions": [
       "Extensions to other coefficient distributions?",
       "Higher-dimensional generalizations?",
@@ -187,5 +187,39 @@
     "axiomCount": 12,
     "theoremCount": 3,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Share littlewood, polynomial, and probabilistic themes"
+    },
+    {
+      "targetId": "erdos-228",
+      "relationship": "related",
+      "description": "Share littlewood, complex-analysis, and polynomial themes"
+    },
+    {
+      "targetId": "erdos-522",
+      "relationship": "related",
+      "description": "Share complex-analysis, probabilistic, and random-polynomials themes"
+    },
+    {
+      "targetId": "erdos-1039",
+      "relationship": "related",
+      "description": "Share complex-analysis and polynomial themes"
+    },
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Share complex-analysis and polynomial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-523",
+    "erdos-228",
+    "erdos-522",
+    "erdos-1039",
+    "erdos-1040"
+  ]
 }

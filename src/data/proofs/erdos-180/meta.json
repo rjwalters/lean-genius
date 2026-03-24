@@ -1,10 +1,10 @@
 {
   "id": "erdos-180",
-  "title": "Erdős Problem #180: Turán Numbers for Graph Families",
+  "title": "Erd\u0151s Problem #180: Tur\u00e1n Numbers for Graph Families",
   "slug": "erdos-180",
-  "description": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erdős-Stone. Folklore counterexample for infinite families. OPEN.",
+  "description": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erd\u0151s-Stone. Folklore counterexample for infinite families. OPEN.",
   "meta": {
-    "author": "Erdős-Simonovits [ErSi82]",
+    "author": "Erd\u0151s-Simonovits [ErSi82]",
     "sourceUrl": "https://erdosproblems.com/180",
     "date": "1982",
     "status": "axiomatized",
@@ -37,19 +37,19 @@
     ],
     "originalContributions": [
       "turanNumber: sSup of edge counts in H-free graphs",
-      "ExSingle, ExFamily: type aliases for extremal functions ℕ → ℕ",
+      "ExSingle, ExFamily: type aliases for extremal functions \u2115 \u2192 \u2115",
       "HasDomination: some member has ex(n;G) = O(ex(n;F))",
       "ErdosConjecture180: every finite family has domination",
       "erdos_stone_domination axiom: non-bipartite families have domination",
       "BipartiteCase: existence of family without domination",
       "folklore_counterexample_infinite axiom: infinite family counterexample",
-      "family_le_members axiom: ex(n;F) ≤ min ex(n;G)",
-      "erdos_180_summary: proved conjunction of Erdős-Stone and counterexample"
+      "family_le_members axiom: ex(n;F) \u2264 min ex(n;G)",
+      "erdos_180_summary: proved conjunction of Erd\u0151s-Stone and counterexample"
     ],
     "axiomCount": 3,
     "prerequisites": [
-      "Extremal graph theory fundamentals (Turán's theorem)",
-      "Erdős-Stone theorem and chromatic number",
+      "Extremal graph theory fundamentals (Tur\u00e1n's theorem)",
+      "Erd\u0151s-Stone theorem and chromatic number",
       "Big-O asymptotic notation",
       "Bipartite graphs and Zarankiewicz problem",
       "Finset and sSup in Lean 4 / Mathlib"
@@ -58,46 +58,46 @@
     "references": [
       {
         "title": "Supersaturated graphs and hypergraphs",
-        "authors": "P. Erdős, M. Simonovits",
+        "authors": "P. Erd\u0151s, M. Simonovits",
         "year": 1983,
         "venue": "Combinatorica",
         "url": "https://doi.org/10.1007/BF02579292",
-        "description": "Survey where Erdős and Simonovits pose the Turán domination problem for finite graph families"
+        "description": "Survey where Erd\u0151s and Simonovits pose the Tur\u00e1n domination problem for finite graph families"
       },
       {
         "title": "On the structure of linear graphs",
-        "authors": "P. Erdős, A. H. Stone",
+        "authors": "P. Erd\u0151s, A. H. Stone",
         "year": 1946,
         "venue": "Bulletin of the American Mathematical Society",
         "url": "https://doi.org/10.1090/S0002-9904-1946-08715-7",
-        "description": "The Erdős-Stone theorem determining ex(n;H) for non-bipartite H, resolving the non-bipartite case of #180"
+        "description": "The Erd\u0151s-Stone theorem determining ex(n;H) for non-bipartite H, resolving the non-bipartite case of #180"
       },
       {
         "title": "On a problem of K. Zarankiewicz",
-        "authors": "T. Kővári, V. T. Sós, P. Turán",
+        "authors": "T. K\u0151v\u00e1ri, V. T. S\u00f3s, P. Tur\u00e1n",
         "year": 1954,
         "venue": "Colloquium Mathematicae",
         "url": "https://doi.org/10.4064/cm-3-1-50-57",
-        "description": "The Kővári-Sós-Turán theorem giving ex(n; K_{s,t}) = O(n^{2-1/s}), the key tool for bipartite Turán numbers"
+        "description": "The K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem giving ex(n; K_{s,t}) = O(n^{2-1/s}), the key tool for bipartite Tur\u00e1n numbers"
       }
     ],
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Miklós Simonovits posed this problem in their 1982 survey [ErSi82] on extremal graph theory. The question is motivated by the Erdős-Stone theorem (1946), which determines $\\mathrm{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))\\binom{n}{2}$ for non-bipartite $H$, making the domination question trivial when all forbidden graphs have $\\chi \\geq 3$. The difficulty lies entirely in the bipartite case, where the Zarankiewicz problem (Kővári-Sós-Turán 1954) gives $\\mathrm{ex}(n; K_{s,t}) = O(n^{2-1/s})$ but precise asymptotics are often unknown. The problem connects to Simonovits's broader program of understanding when extremal functions for families are 'simple' — determined by a single member rather than requiring the full family structure.",
+    "historicalContext": "Erd\u0151s and Mikl\u00f3s Simonovits posed this problem in their 1982 survey [ErSi82] on extremal graph theory. The question is motivated by the Erd\u0151s-Stone theorem (1946), which determines $\\mathrm{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))\\binom{n}{2}$ for non-bipartite $H$, making the domination question trivial when all forbidden graphs have $\\chi \\geq 3$. The difficulty lies entirely in the bipartite case, where the Zarankiewicz problem (K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n 1954) gives $\\mathrm{ex}(n; K_{s,t}) = O(n^{2-1/s})$ but precise asymptotics are often unknown. The problem connects to Simonovits's broader program of understanding when extremal functions for families are 'simple' \u2014 determined by a single member rather than requiring the full family structure.",
     "problemStatement": "For a finite family $\\mathcal{F}$ of graphs, let $\\mathrm{ex}(n; \\mathcal{F})$ be the maximum edges in an $n$-vertex $\\mathcal{F}$-free graph. Does there always exist $G \\in \\mathcal{F}$ such that $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F}))$? **OPEN.**",
-    "text": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erdős-Stone. Folklore counterexample for infinite families. OPEN.",
-    "proofStrategy": "The formalization abstracts the problem to functions $\\mathbb{N} \\to \\mathbb{N}$ (`ExFamily`, `ExSingle`) rather than encoding concrete graph structures. `HasDomination` captures the Big-$O$ relationship via an explicit constant $C > 0$. The non-bipartite case is axiomatized via Erdős-Stone, and the folklore counterexample for infinite families uses `List` (unbounded) rather than `Finset` (finite) to demonstrate that finiteness is essential. The summary theorem `erdos_180_summary` proves both results as a conjunction in a single line.",
+    "text": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erd\u0151s-Stone. Folklore counterexample for infinite families. OPEN.",
+    "proofStrategy": "The formalization abstracts the problem to functions $\\mathbb{N} \\to \\mathbb{N}$ (`ExFamily`, `ExSingle`) rather than encoding concrete graph structures. `HasDomination` captures the Big-$O$ relationship via an explicit constant $C > 0$. The non-bipartite case is axiomatized via Erd\u0151s-Stone, and the folklore counterexample for infinite families uses `List` (unbounded) rather than `Finset` (finite) to demonstrate that finiteness is essential. The summary theorem `erdos_180_summary` proves both results as a conjunction in a single line.",
     "keyInsights": [
       "The domination property asks if a single forbidden graph controls the family's extremal function",
-      "Non-bipartite case resolved by Erdős-Stone: chromatic number determines asymptotics up to o(n²)",
+      "Non-bipartite case resolved by Erd\u0151s-Stone: chromatic number determines asymptotics up to o(n\u00b2)",
       "The bipartite case is nontrivial due to unknown Zarankiewicz-type bounds",
       "Folklore counterexample for infinite families: star + matching",
       "Finiteness of the family F is essential to the conjecture"
     ],
     "prerequisites": [
-      "Extremal graph theory fundamentals (Turán's theorem)",
-      "Erdős-Stone theorem and chromatic number",
+      "Extremal graph theory fundamentals (Tur\u00e1n's theorem)",
+      "Erd\u0151s-Stone theorem and chromatic number",
       "Big-O asymptotic notation",
       "Bipartite graphs and Zarankiewicz problem",
       "Finset and sSup in Lean 4 / Mathlib"
@@ -106,7 +106,7 @@
   "sections": [
     {
       "id": "turan-numbers",
-      "title": "Turán Numbers",
+      "title": "Tur\u00e1n Numbers",
       "startLine": 30,
       "endLine": 43,
       "summary": "turanNumber via sSup, ExSingle, ExFamily type aliases"
@@ -127,7 +127,7 @@
     },
     {
       "id": "erdos-stone",
-      "title": "Non-Bipartite Case (Erdős-Stone)",
+      "title": "Non-Bipartite Case (Erd\u0151s-Stone)",
       "startLine": 64,
       "endLine": 74,
       "summary": "Domination holds for non-bipartite families"
@@ -144,19 +144,19 @@
       "title": "Properties",
       "startLine": 94,
       "endLine": 100,
-      "summary": "family_le_members: ex(n;F) ≤ min ex(n;G)"
+      "summary": "family_le_members: ex(n;F) \u2264 min ex(n;G)"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 102,
       "endLine": 116,
-      "summary": "Proved conjunction of Erdős-Stone domination and counterexample"
+      "summary": "Proved conjunction of Erd\u0151s-Stone domination and counterexample"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #180 asks whether a single forbidden graph always dominates the Turán number of a finite graph family. Resolved for non-bipartite families via Erdős-Stone, but open in general. The folklore counterexample shows finiteness is essential.",
-    "implications": "**Theoretical Significance**: A positive resolution would show that the extremal function of any finite forbidden family is always asymptotically determined by a single 'bottleneck' member.\n\nThis would simplify the study of extremal functions and connect to the broader Simonovits program. A negative resolution (a finite counterexample) would reveal unexpected complexity in how bipartite Turán numbers interact, with implications for the Zarankiewicz problem and algebraic constructions of extremal graphs.",
+    "summary": "Erd\u0151s Problem #180 asks whether a single forbidden graph always dominates the Tur\u00e1n number of a finite graph family. Resolved for non-bipartite families via Erd\u0151s-Stone, but open in general. The folklore counterexample shows finiteness is essential.",
+    "implications": "**Theoretical Significance**: A positive resolution would show that the extremal function of any finite forbidden family is always asymptotically determined by a single 'bottleneck' member.\n\nThis would simplify the study of extremal functions and connect to the broader Simonovits program. A negative resolution (a finite counterexample) would reveal unexpected complexity in how bipartite Tur\u00e1n numbers interact, with implications for the Zarankiewicz problem and algebraic constructions of extremal graphs.",
     "openQuestions": [
       "Does domination hold for all finite families, especially those containing bipartite graphs with different Zarankiewicz exponents?",
       "For finite families $\\{K_{2,3}, K_{3,3}\\}$, does $\\mathrm{ex}(n; K_{2,3}) = O(\\mathrm{ex}(n; \\{K_{2,3}, K_{3,3}\\}))$?",
@@ -181,19 +181,22 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-182",
-      "title": "Erdős Problem #182: Maximum Edges Avoiding k-Regular Subgraphs",
-      "relationship": "Both are extremal graph theory problems asking for edge-density thresholds that force specific substructures — forbidden graph families (#180) vs. regular subgraphs (#182)"
+      "title": "Erd\u0151s Problem #182: Maximum Edges Avoiding k-Regular Subgraphs",
+      "relationship": "related",
+      "targetId": "erdos-182",
+      "description": "Both are extremal graph theory problems asking for edge-density thresholds that force specific substructures \u2014 forbidden graph families (#180) vs. regular subgraphs (#182)"
     },
     {
-      "id": "szemeredi-regularity",
-      "title": "Szemerédi Regularity Lemma",
-      "relationship": "The regularity lemma is a key tool in extremal graph theory; the Erdős-Stone theorem (central to #180) is proved via regularity arguments"
+      "title": "Szemer\u00e9di Regularity Lemma",
+      "relationship": "related",
+      "targetId": "szemeredi-regularity",
+      "description": "The regularity lemma is a key tool in extremal graph theory; the Erd\u0151s-Stone theorem (central to #180) is proved via regularity arguments"
     },
     {
-      "id": "erdos-167",
-      "title": "Erdős Problem #167: Tuza's Conjecture",
-      "relationship": "Both concern extremal properties of graph families — Tuza's conjecture relates triangle covering to packing, while #180 asks about Turán number domination"
+      "title": "Erd\u0151s Problem #167: Tuza's Conjecture",
+      "relationship": "related",
+      "targetId": "erdos-167",
+      "description": "Both concern extremal properties of graph families \u2014 Tuza's conjecture relates triangle covering to packing, while #180 asks about Tur\u00e1n number domination"
     }
   ]
 }

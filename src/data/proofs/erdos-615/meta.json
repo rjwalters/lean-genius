@@ -173,5 +173,39 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, turan-theory, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1019",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, turan-theory, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-183",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-559",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-22",
+    "erdos-1019",
+    "erdos-183",
+    "erdos-547",
+    "erdos-559"
+  ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "erdos-747",
-  "title": "Erdős Problem #747: Shamir's Problem (Perfect Matchings in Random Hypergraphs)",
+  "title": "Erd\u0151s Problem #747: Shamir's Problem (Perfect Matchings in Random Hypergraphs)",
   "slug": "erdos-747",
-  "description": "How large should ℓ(n) be such that a random 3-uniform hypergraph on 3n vertices with ℓ(n) edges a.s. has n vertex-disjoint edges? SOLVED: ℓ(n) ~ n log n (Johansson-Kahn-Vu 2008, Kahn 2023).",
+  "description": "How large should \u2113(n) be such that a random 3-uniform hypergraph on 3n vertices with \u2113(n) edges a.s. has n vertex-disjoint edges? SOLVED: \u2113(n) ~ n log n (Johansson-Kahn-Vu 2008, Kahn 2023).",
   "meta": {
     "author": "Kahn (2023 precise), Johansson-Kahn-Vu (2008), Shamir (1979 problem)",
     "sourceUrl": "https://erdosproblems.com/747",
@@ -61,8 +61,8 @@
       "IsThreshold definition: threshold functions",
       "ShamirProperty definition: the property in question",
       "ShamirQuestion definition: existence of threshold",
-      "shamirThreshold definition: ℓ(n) = n log n",
-      "johansson_kahn_vu axiom: threshold ≍ n log n",
+      "shamirThreshold definition: \u2113(n) = n log n",
+      "johansson_kahn_vu axiom: threshold \u224d n log n",
       "kahn_precise_threshold axiom: threshold ~ n log n",
       "kahn_general_r axiom: same threshold for all r",
       "erdos_747 theorem: main result"
@@ -72,15 +72,15 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #747 (Shamir's Problem)**\n\nA famous problem in probabilistic combinatorics.\n\n**Key History:**\n- 1979: Shamir asked Erdős about perfect matchings in random 3-uniform hypergraphs\n- Erdős's response: 'Here we have no idea of the answer' (unlike most random hypergraph problems)\n- 2008: Johansson, Kahn, and Vu proved the threshold is ≍ n log n\n- 2023: Kahn determined the precise asymptotic ~ n log n, also for general r-uniform hypergraphs\n\n**Mathematical Significance:**\n- One of the most important results in random hypergraph theory\n- The answer (same threshold for all r) was unexpected",
-    "problemStatement": "**Problem Statement (Solved)**\n\nHow large should ℓ(n) be such that, almost surely, a random 3-uniform hypergraph on 3n vertices with ℓ(n) edges contains n vertex-disjoint edges (a perfect matching)?\n\n**Answer: ℓ(n) ~ n log n**\n\n- Below n log n: isolated vertices exist, no perfect matching\n- Above n log n: perfect matching exists\n\nRemarkably, the same threshold works for all r-uniform hypergraphs (r ≥ 2).",
-    "text": "How large should ℓ(n) be such that a random 3-uniform hypergraph on 3n vertices with ℓ(n) edges a.s. has n vertex-disjoint edges? SOLVED: ℓ(n) ~ n log n (Johansson-Kahn-Vu 2008, Kahn 2023).",
+    "historicalContext": "**Erd\u0151s Problem #747 (Shamir's Problem)**\n\nA famous problem in probabilistic combinatorics.\n\n**Key History:**\n- 1979: Shamir asked Erd\u0151s about perfect matchings in random 3-uniform hypergraphs\n- Erd\u0151s's response: 'Here we have no idea of the answer' (unlike most random hypergraph problems)\n- 2008: Johansson, Kahn, and Vu proved the threshold is \u224d n log n\n- 2023: Kahn determined the precise asymptotic ~ n log n, also for general r-uniform hypergraphs\n\n**Mathematical Significance:**\n- One of the most important results in random hypergraph theory\n- The answer (same threshold for all r) was unexpected",
+    "problemStatement": "**Problem Statement (Solved)**\n\nHow large should \u2113(n) be such that, almost surely, a random 3-uniform hypergraph on 3n vertices with \u2113(n) edges contains n vertex-disjoint edges (a perfect matching)?\n\n**Answer: \u2113(n) ~ n log n**\n\n- Below n log n: isolated vertices exist, no perfect matching\n- Above n log n: perfect matching exists\n\nRemarkably, the same threshold works for all r-uniform hypergraphs (r \u2265 2).",
+    "text": "How large should \u2113(n) be such that a random 3-uniform hypergraph on 3n vertices with \u2113(n) edges a.s. has n vertex-disjoint edges? SOLVED: \u2113(n) ~ n log n (Johansson-Kahn-Vu 2008, Kahn 2023).",
     "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Basics:** Define Hypergraph structure with r-uniformity constraint\n\n2. **Matchings:** Define IsMatching (disjoint edges), IsPerfectMatching, HasDisjointEdges\n\n3. **Random Model:** Define AlmostSurely for asymptotic probability\n\n4. **Threshold:** Define IsThreshold for sharp thresholds\n\n5. **Main Results:** Axiomatize Johansson-Kahn-Vu (2008) and Kahn (2023)\n\n6. **General Case:** Kahn's result for all r-uniform hypergraphs",
     "keyInsights": [
       "**Sharp Threshold:** The threshold is sharp - below it fails, above it succeeds",
       "**Isolated Vertices:** The obstruction below threshold is isolated vertices (degree 0)",
-      "**Universal Threshold:** Same n log n threshold for all uniformities r ≥ 2",
-      "**Erdős's Intuition:** Even Erdős couldn't guess this answer - unusual for random structures",
+      "**Universal Threshold:** Same n log n threshold for all uniformities r \u2265 2",
+      "**Erd\u0151s's Intuition:** Even Erd\u0151s couldn't guess this answer - unusual for random structures",
       "**Probabilistic Methods:** Proof uses nibble method, second moment, regularity"
     ],
     "prerequisites": [
@@ -164,7 +164,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #747 (Shamir's Problem) asked for the threshold ℓ(n) such that a random 3-uniform hypergraph on 3n vertices with ℓ(n) edges almost surely has a perfect matching (n disjoint edges). The answer is ℓ(n) ~ n log n. Johansson-Kahn-Vu (2008) proved the threshold is ≍ n log n, and Kahn (2023) determined the precise asymptotic. Remarkably, the same threshold holds for all r-uniform hypergraphs.",
+    "summary": "Erd\u0151s Problem #747 (Shamir's Problem) asked for the threshold \u2113(n) such that a random 3-uniform hypergraph on 3n vertices with \u2113(n) edges almost surely has a perfect matching (n disjoint edges). The answer is \u2113(n) ~ n log n. Johansson-Kahn-Vu (2008) proved the threshold is \u224d n log n, and Kahn (2023) determined the precise asymptotic. Remarkably, the same threshold holds for all r-uniform hypergraphs.",
     "implications": "**Theoretical Significance**: **Random Hypergraph Theory**\n\n1. **Perfect Matching Theory:** Complete understanding of when matchings exist\n\n2. **Threshold Phenomena:** Example of sharp threshold in random structures\n\n**3. Uniformity Independence:** Surprising that r doesn't affect the threshold\n\n4. **Probabilistic Methods:** Advanced techniques (nibble, regularity) needed\n\n5. **Factor Problems:** Connects to general subgraph containment problems.",
     "openQuestions": [
       "What about higher-order matching constraints?",
@@ -189,5 +189,33 @@
     "axiomCount": 8,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-578",
+      "relationship": "related",
+      "description": "Share probabilistic-combinatorics and random-graphs themes"
+    },
+    {
+      "targetId": "erdos-745",
+      "relationship": "related",
+      "description": "Share probabilistic-combinatorics and random-graphs themes"
+    },
+    {
+      "targetId": "erdos-799",
+      "relationship": "related",
+      "description": "Share probabilistic-combinatorics and random-graphs themes"
+    },
+    {
+      "targetId": "erdos-807",
+      "relationship": "related",
+      "description": "Share probabilistic-combinatorics and random-graphs themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-578",
+    "erdos-745",
+    "erdos-799",
+    "erdos-807"
+  ]
 }

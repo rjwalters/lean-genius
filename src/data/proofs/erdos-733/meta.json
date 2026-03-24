@@ -65,7 +65,7 @@
     "theoremCount": 3,
     "prerequisites": [
       "Combinatorial geometry: point-line incidences",
-      "Szemerédi-Trotter incidence theorem",
+      "Szemer\u00e9di-Trotter incidence theorem",
       "Counting arguments and exponential bounds",
       "Grid constructions in discrete geometry"
     ],
@@ -87,7 +87,7 @@
     ],
     "prerequisites": [
       "Combinatorial geometry: point-line incidences",
-      "Szemerédi-Trotter incidence theorem",
+      "Szemer\u00e9di-Trotter incidence theorem",
       "Counting arguments and exponential bounds",
       "Grid constructions in discrete geometry"
     ]
@@ -104,7 +104,7 @@
     {
       "id": "point-configurations",
       "title": "Point Configurations",
-      "summary": "PointSet (Finset (ℝ × ℝ)), lineThrough, pointsOnLine, richLines.",
+      "summary": "PointSet (Finset (\u211d \u00d7 \u211d)), lineThrough, pointsOnLine, richLines.",
       "startLine": 39,
       "endLine": 72,
       "mathContext": "A PointSet is a finite subset of $\\mathbb{R}^2$. A $k$-rich line has $\\geq k$ points from the set. The incidence structure between points and lines is the fundamental object."
@@ -119,7 +119,7 @@
     },
     {
       "id": "szemeredi-trotter",
-      "title": "The Szemerédi-Trotter Theorem",
+      "title": "The Szemer\u00e9di-Trotter Theorem",
       "summary": "Axiomatized incidence bound and k-rich lines corollary.",
       "startLine": 107,
       "endLine": 132,
@@ -128,7 +128,7 @@
     {
       "id": "lower-bound",
       "title": "Lower Bound",
-      "summary": "f(n) ≥ exp(c√n) via grid construction.",
+      "summary": "f(n) \u2265 exp(c\u221an) via grid construction.",
       "startLine": 134,
       "endLine": 161,
       "mathContext": "A $\\sqrt{n} \\times \\sqrt{n}$ integer grid has $\\Theta(n)$ lines. Choosing subsets gives $2^{\\Theta(\\sqrt{n})} = \\exp(\\Theta(\\sqrt{n}))$ distinct sequences."
@@ -136,10 +136,10 @@
     {
       "id": "upper-bound",
       "title": "Upper Bound",
-      "summary": "f(n) ≤ exp(C√n) via Szemerédi-Trotter.",
+      "summary": "f(n) \u2264 exp(C\u221an) via Szemer\u00e9di-Trotter.",
       "startLine": 163,
       "endLine": 190,
-      "mathContext": "Szemerédi-Trotter limits the number of $k$-rich lines, which bounds the possible sequence patterns to $\\exp(O(\\sqrt{n}))$."
+      "mathContext": "Szemer\u00e9di-Trotter limits the number of $k$-rich lines, which bounds the possible sequence patterns to $\\exp(O(\\sqrt{n}))$."
     },
     {
       "id": "main-result",
@@ -152,10 +152,10 @@
     {
       "id": "limit-question",
       "title": "The Limit Question",
-      "summary": "limitConstant: does lim log(f(n))/√n exist? What is its value?",
+      "summary": "limitConstant: does lim log(f(n))/\u221an exist? What is its value?",
       "startLine": 229,
       "endLine": 253,
-      "mathContext": "$\\lim_{n \\to \\infty} \\frac{\\log f(n)}{\\sqrt{n}} \\in [c, C]$ if the limit exists. An interesting follow-up posed by Erdős."
+      "mathContext": "$\\lim_{n \\to \\infty} \\frac{\\log f(n)}{\\sqrt{n}} \\in [c, C]$ if the limit exists. An interesting follow-up posed by Erd\u0151s."
     },
     {
       "id": "summary",
@@ -163,7 +163,7 @@
       "summary": "Complete solution summary and erdos_733_answer theorem.",
       "startLine": 255,
       "endLine": 291,
-      "mathContext": "Erdős #733 fully resolved: $f(n) = \\exp(\\Theta(\\sqrt{n}))$ by Szemerédi-Trotter (1983)."
+      "mathContext": "Erd\u0151s #733 fully resolved: $f(n) = \\exp(\\Theta(\\sqrt{n}))$ by Szemer\u00e9di-Trotter (1983)."
     }
   ],
   "conclusion": {
@@ -193,5 +193,39 @@
     "axiomCount": 5,
     "theoremCount": 6,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-193",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "erdos-1086",
+    "erdos-1090",
+    "erdos-1166",
+    "erdos-193"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-1029",
-  "title": "Erdős Problem #1029: Ramsey Number Growth Rate",
+  "title": "Erd\u0151s Problem #1029: Ramsey Number Growth Rate",
   "slug": "erdos-1029",
-  "description": "If R(k) is the diagonal Ramsey number, prove R(k)/(k·2^{k/2}) → ∞. Known bounds: (√2/e)·k·2^{k/2} ≤ R(k) ≤ C(2k-2,k-1). OPEN ($100 proof, $1000 disproof).",
+  "description": "If R(k) is the diagonal Ramsey number, prove R(k)/(k\u00b72^{k/2}) \u2192 \u221e. Known bounds: (\u221a2/e)\u00b7k\u00b72^{k/2} \u2264 R(k) \u2264 C(2k-2,k-1). OPEN ($100 proof, $1000 disproof).",
   "meta": {
-    "author": "Erdős (1993)",
+    "author": "Erd\u0151s (1993)",
     "sourceUrl": "https://erdosproblems.com/1029",
     "date": "1993",
     "status": "axiomatized",
@@ -27,17 +27,17 @@
     "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Ramsey theory, initiated by Ramsey (1930) and developed by Erdős and Szekeres (1935), studies the emergence of order in large structures. The diagonal Ramsey number R(k) is the minimum n such that every 2-coloring of the edges of K_n contains a monochromatic K_k. The Erdős-Szekeres theorem gives the upper bound R(k) ≤ C(2k-2, k-1) ≈ 4^k/√(πk), proved by a simple induction on the recurrence R(s,t) ≤ R(s-1,t) + R(s,t-1).\n\nThe lower bound R(k) ≥ c·k·2^{k/2} was one of the first applications of the probabilistic method, which Erdős pioneered. A random 2-coloring of K_n has expected number of monochromatic k-cliques roughly C(n,k)·2^{1-C(k,2)}, which is less than 1 when n ≈ k·2^{k/2}. Spencer (1975) refined this using the Lovász Local Lemma to improve the constant to √2/e ≈ 0.52.\n\nProblem #1029, posed by Erdős in 1993, asks whether R(k)/(k·2^{k/2}) → ∞, i.e., whether the probabilistic lower bound is far from tight. The enormous gap between the lower bound base √2 and upper bound base 4 suggests the answer is yes, but no proof exists. Erdős offered $100 for a proof and $1000 for a disproof, reflecting his belief that the conjecture is true but that a disproof would be more surprising and valuable.",
-    "problemStatement": "If R(k) is the diagonal Ramsey number (minimal n such that every 2-coloring of K_n contains a monochromatic K_k), prove that R(k)/(k·2^{k/2}) → ∞ as k → ∞.",
-    "text": "If R(k) is the diagonal Ramsey number, prove R(k)/(k·2^{k/2}) → ∞. Known bounds: (√2/e)·k·2^{k/2} ≤ R(k) ≤ C(2k-2,k-1). OPEN ($100 proof, $1000 disproof).",
-    "proofStrategy": "The probabilistic method gives R(k) ≥ c·k·2^{k/2} for c ≈ √2/e. The conjecture asserts this is far from tight—R(k) grows faster than any constant times k·2^{k/2}. Proving this would require showing the probabilistic lower bound misses significant structure in Ramsey graphs.",
+    "historicalContext": "Ramsey theory, initiated by Ramsey (1930) and developed by Erd\u0151s and Szekeres (1935), studies the emergence of order in large structures. The diagonal Ramsey number R(k) is the minimum n such that every 2-coloring of the edges of K_n contains a monochromatic K_k. The Erd\u0151s-Szekeres theorem gives the upper bound R(k) \u2264 C(2k-2, k-1) \u2248 4^k/\u221a(\u03c0k), proved by a simple induction on the recurrence R(s,t) \u2264 R(s-1,t) + R(s,t-1).\n\nThe lower bound R(k) \u2265 c\u00b7k\u00b72^{k/2} was one of the first applications of the probabilistic method, which Erd\u0151s pioneered. A random 2-coloring of K_n has expected number of monochromatic k-cliques roughly C(n,k)\u00b72^{1-C(k,2)}, which is less than 1 when n \u2248 k\u00b72^{k/2}. Spencer (1975) refined this using the Lov\u00e1sz Local Lemma to improve the constant to \u221a2/e \u2248 0.52.\n\nProblem #1029, posed by Erd\u0151s in 1993, asks whether R(k)/(k\u00b72^{k/2}) \u2192 \u221e, i.e., whether the probabilistic lower bound is far from tight. The enormous gap between the lower bound base \u221a2 and upper bound base 4 suggests the answer is yes, but no proof exists. Erd\u0151s offered $100 for a proof and $1000 for a disproof, reflecting his belief that the conjecture is true but that a disproof would be more surprising and valuable.",
+    "problemStatement": "If R(k) is the diagonal Ramsey number (minimal n such that every 2-coloring of K_n contains a monochromatic K_k), prove that R(k)/(k\u00b72^{k/2}) \u2192 \u221e as k \u2192 \u221e.",
+    "text": "If R(k) is the diagonal Ramsey number, prove R(k)/(k\u00b72^{k/2}) \u2192 \u221e. Known bounds: (\u221a2/e)\u00b7k\u00b72^{k/2} \u2264 R(k) \u2264 C(2k-2,k-1). OPEN ($100 proof, $1000 disproof).",
+    "proofStrategy": "The probabilistic method gives R(k) \u2265 c\u00b7k\u00b72^{k/2} for c \u2248 \u221a2/e. The conjecture asserts this is far from tight\u2014R(k) grows faster than any constant times k\u00b72^{k/2}. Proving this would require showing the probabilistic lower bound misses significant structure in Ramsey graphs.",
     "keyInsights": [
-      "Erdős-Szekeres (1935): k·2^{k/2} ≪ R(k) ≤ C(2k-2,k-1)",
-      "Probabilistic method: R(k) ≥ (1+o(1))·(1/√2e)·k·2^{k/2}",
-      "Spencer (1975): improved constant to √2/e",
-      "Upper bound ≈ 4^k/√k grows much faster than lower bound",
-      "Huge gap: √2 ≈ 1.4 vs 4 in the base of exponential",
-      "Erdős was confident the conjecture is true but offered $1000 for disproof"
+      "Erd\u0151s-Szekeres (1935): k\u00b72^{k/2} \u226a R(k) \u2264 C(2k-2,k-1)",
+      "Probabilistic method: R(k) \u2265 (1+o(1))\u00b7(1/\u221a2e)\u00b7k\u00b72^{k/2}",
+      "Spencer (1975): improved constant to \u221a2/e",
+      "Upper bound \u2248 4^k/\u221ak grows much faster than lower bound",
+      "Huge gap: \u221a2 \u2248 1.4 vs 4 in the base of exponential",
+      "Erd\u0151s was confident the conjecture is true but offered $1000 for disproof"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -56,7 +56,7 @@
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "summary": "Erdős-Szekeres upper/lower bounds, Spencer's improvement",
+      "summary": "Erd\u0151s-Szekeres upper/lower bounds, Spencer's improvement",
       "startLine": 70,
       "endLine": 92
     },
@@ -90,46 +90,51 @@
     }
   ],
   "conclusion": {
-    "summary": "The conjecture R(k)/(k·2^{k/2}) → ∞ asks whether diagonal Ramsey numbers grow significantly faster than the probabilistic lower bound. Despite decades of work, neither proof nor disproof exists. The gap between lower bound ~2^{k/2} and upper bound ~4^k remains one of the most important open problems in combinatorics.",
+    "summary": "The conjecture R(k)/(k\u00b72^{k/2}) \u2192 \u221e asks whether diagonal Ramsey numbers grow significantly faster than the probabilistic lower bound. Despite decades of work, neither proof nor disproof exists. The gap between lower bound ~2^{k/2} and upper bound ~4^k remains one of the most important open problems in combinatorics.",
     "implications": "Resolving this would reveal whether random constructions capture the true behavior of Ramsey graphs, or whether there's hidden structure forcing faster growth. It connects to fundamental questions about the power of the probabilistic method.",
     "openQuestions": [
-      "Does R(k)/(k·2^{k/2}) → ∞?",
-      "Can the upper bound 4^k be improved to (4-ε)^k for some ε > 0?",
+      "Does R(k)/(k\u00b72^{k/2}) \u2192 \u221e?",
+      "Can the upper bound 4^k be improved to (4-\u03b5)^k for some \u03b5 > 0?",
       "What is the true growth rate of R(k)?",
       "Is lim R(k)^{1/k} = 4 or strictly less?"
     ]
   },
   "crossReferences": [
     {
-      "slug": "ramseys-theorem",
-      "relation": "foundation",
-      "note": "Ramsey's theorem establishes that R(k) is finite for all k, providing the fundamental existence result that this problem refines into a quantitative growth-rate question."
+      "note": "Ramsey's theorem establishes that R(k) is finite for all k, providing the fundamental existence result that this problem refines into a quantitative growth-rate question.",
+      "description": "Related entry",
+      "targetId": "ramseys-theorem",
+      "relationship": "foundation"
     },
     {
-      "slug": "erdos-1015",
-      "relation": "closely-related",
-      "note": "Erdős Problem #1015 concerns partitioning 2-colored complete graphs using monochromatic cliques and directly involves the off-diagonal Ramsey number R(t, t-1), sharing the same extremal graph-theoretic setting."
+      "note": "Erd\u0151s Problem #1015 concerns partitioning 2-colored complete graphs using monochromatic cliques and directly involves the off-diagonal Ramsey number R(t, t-1), sharing the same extremal graph-theoretic setting.",
+      "description": "Related entry",
+      "targetId": "erdos-1015",
+      "relationship": "closely-related"
     },
     {
-      "slug": "erdos-1",
-      "relation": "thematic",
-      "note": "Erdős Problem #1 (distinct subset sums) is another of Erdős's oldest open problems carrying a prize, illustrating his broader program of quantitative combinatorics where probabilistic lower bounds are expected to be far from tight."
+      "note": "Erd\u0151s Problem #1 (distinct subset sums) is another of Erd\u0151s's oldest open problems carrying a prize, illustrating his broader program of quantitative combinatorics where probabilistic lower bounds are expected to be far from tight.",
+      "description": "Related entry",
+      "targetId": "erdos-1",
+      "relationship": "thematic"
     },
     {
-      "slug": "erdos-500",
-      "relation": "thematic",
-      "note": "Turán density for hypergraphs is a parallel open problem in extremal combinatorics where the gap between probabilistic and algebraic bounds is also enormous and unresolved."
+      "note": "Tur\u00e1n density for hypergraphs is a parallel open problem in extremal combinatorics where the gap between probabilistic and algebraic bounds is also enormous and unresolved.",
+      "description": "Related entry",
+      "targetId": "erdos-500",
+      "relationship": "thematic"
     },
     {
-      "slug": "szemeredi-regularity",
-      "relation": "technique",
-      "note": "The Szemerédi Regularity Lemma is a key structural tool in extremal graph theory; progress on Ramsey upper bounds often passes through regularity-type arguments and graph decompositions."
+      "note": "The Szemer\u00e9di Regularity Lemma is a key structural tool in extremal graph theory; progress on Ramsey upper bounds often passes through regularity-type arguments and graph decompositions.",
+      "description": "Related entry",
+      "targetId": "szemeredi-regularity",
+      "relationship": "technique"
     }
   ],
   "relatedProofs": [
     {
       "slug": "ramseys-theorem",
-      "relationship": "Ramsey's theorem proves R(k) exists; Problem #1029 asks precisely how fast R(k) grows relative to the probabilistic lower bound k·2^{k/2}."
+      "relationship": "Ramsey's theorem proves R(k) exists; Problem #1029 asks precisely how fast R(k) grows relative to the probabilistic lower bound k\u00b72^{k/2}."
     },
     {
       "slug": "erdos-1015",
@@ -143,25 +148,25 @@
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "G. Szekeres"
       ],
       "title": "A combinatorial problem in geometry",
       "venue": "Compositio Mathematica",
       "year": 1935,
       "volume": "2",
-      "pages": "463–470",
-      "note": "Establishes the upper bound R(k) ≤ C(2k-2, k-1) and the lower bound R(k) ≥ 2^{k/2} by induction and construction."
+      "pages": "463\u2013470",
+      "note": "Establishes the upper bound R(k) \u2264 C(2k-2, k-1) and the lower bound R(k) \u2265 2^{k/2} by induction and construction."
     },
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "Some remarks on the theory of graphs",
       "venue": "Bulletin of the American Mathematical Society",
       "year": 1947,
       "volume": "53",
-      "pages": "292–294",
+      "pages": "292\u2013294",
       "doi": "10.1090/S0002-9904-1947-08785-0",
       "note": "First probabilistic proof of the lower bound R(k) > 2^{k/2}; foundational paper for the probabilistic method in combinatorics."
     },
@@ -169,13 +174,13 @@
       "authors": [
         "J. Spencer"
       ],
-      "title": "Ramsey's theorem — a new lower bound",
+      "title": "Ramsey's theorem \u2014 a new lower bound",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 1975,
       "volume": "18",
-      "pages": "108–115",
+      "pages": "108\u2013115",
       "doi": "10.1016/0097-3165(75)90071-0",
-      "note": "Applies the Lovász Local Lemma to sharpen the constant in the lower bound to √2/e, giving R(k) ≥ (√2/e) k 2^{k/2}."
+      "note": "Applies the Lov\u00e1sz Local Lemma to sharpen the constant in the lower bound to \u221a2/e, giving R(k) \u2265 (\u221a2/e) k 2^{k/2}."
     },
     {
       "authors": [
@@ -186,20 +191,20 @@
       "year": 2009,
       "volume": "170",
       "issue": "2",
-      "pages": "941–960",
+      "pages": "941\u2013960",
       "doi": "10.4007/annals.2009.170.941",
       "note": "Gives the best known improvement to the upper bound via a probabilistic deletion argument, reducing the constant factor but not the exponential base 4^k."
     },
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "Problems and results on graphs and hypergraphs: similarities and differences",
-      "venue": "Mathematics of Ramsey Theory (Algorithms and Combinatorics 5, eds. J. Nešetřil and V. Rödl)",
+      "venue": "Mathematics of Ramsey Theory (Algorithms and Combinatorics 5, eds. J. Ne\u0161et\u0159il and V. R\u00f6dl)",
       "year": 1990,
-      "pages": "12–28",
+      "pages": "12\u201328",
       "publisher": "Springer, Berlin",
-      "note": "Erdős surveys open problems on Ramsey numbers including Problem #1029 and discusses the $100/$1000 prize for resolving the growth rate question."
+      "note": "Erd\u0151s surveys open problems on Ramsey numbers including Problem #1029 and discusses the $100/$1000 prize for resolving the growth rate question."
     }
   ],
   "leanFile": {

@@ -1,10 +1,10 @@
 {
   "id": "erdos-133",
-  "title": "Erdős Problem #133: Maximum Degree in Triangle-Free Diameter-2 Graphs",
+  "title": "Erd\u0151s Problem #133: Maximum Degree in Triangle-Free Diameter-2 Graphs",
   "slug": "erdos-133",
-  "description": "Let f(n) be minimal such that every triangle-free graph G with n vertices and diameter 2 contains a vertex with degree ≥ f(n). Does f(n)/√n → ∞? Answer: NO, f(n) = Θ(√n).",
+  "description": "Let f(n) be minimal such that every triangle-free graph G with n vertices and diameter 2 contains a vertex with degree \u2265 f(n). Does f(n)/\u221an \u2192 \u221e? Answer: NO, f(n) = \u0398(\u221an).",
   "meta": {
-    "author": "Erdős-Pach",
+    "author": "Erd\u0151s-Pach",
     "sourceUrl": "https://erdosproblems.com/133",
     "date": "",
     "status": "axiomatized",
@@ -43,20 +43,20 @@
     ],
     "originalContributions": [
       "TriangleFree definition: no three mutually adjacent vertices",
-      "HasDiameter2 definition: connected graph with all pairs at distance ≤ 2",
+      "HasDiameter2 definition: connected graph with all pairs at distance \u2264 2",
       "maxDegree definition: maximum degree over all vertices",
-      "f(n) definition: minimum k such that all such graphs have max degree ≥ k",
-      "moore_bound axiom: diameter-2 graphs have at most d² + 1 vertices",
-      "lower_bound_sqrt axiom: f(n) ≥ √(n-1)",
-      "lower_bound_asymptotic axiom: f(n) ≥ (1-o(1))√n",
-      "simonovits_upper_bound axiom: f(n) ≤ n^0.7182",
-      "alon_upper_bound axiom: f(n) ≤ C√(n log n)",
-      "hanson_seyffarth_1984 axiom: f(n) ≤ (√2+o(1))√n",
-      "furedi_seress_1994 axiom: f(n) ≤ (2/√3+o(1))√n",
-      "OriginalQuestion definition: Does f(n)/√n → ∞?",
+      "f(n) definition: minimum k such that all such graphs have max degree \u2265 k",
+      "moore_bound axiom: diameter-2 graphs have at most d\u00b2 + 1 vertices",
+      "lower_bound_sqrt axiom: f(n) \u2265 \u221a(n-1)",
+      "lower_bound_asymptotic axiom: f(n) \u2265 (1-o(1))\u221an",
+      "simonovits_upper_bound axiom: f(n) \u2264 n^0.7182",
+      "alon_upper_bound axiom: f(n) \u2264 C\u221a(n log n)",
+      "hanson_seyffarth_1984 axiom: f(n) \u2264 (\u221a2+o(1))\u221an",
+      "furedi_seress_1994 axiom: f(n) \u2264 (2/\u221a3+o(1))\u221an",
+      "OriginalQuestion definition: Does f(n)/\u221an \u2192 \u221e?",
       "original_question_false axiom: The answer is NO",
-      "ratio_bounded axiom: f(n)/√n is bounded",
-      "AlonConjecture definition: f(n)/√n → 1",
+      "ratio_bounded axiom: f(n)/\u221an is bounded",
+      "AlonConjecture definition: f(n)/\u221an \u2192 1",
       "polarity_graph_construction axiom: explicit constructions",
       "bipartite_triangle_free axiom: bipartite implies triangle-free",
       "erdos_133 theorem: complete resolution combining bounds"
@@ -66,18 +66,18 @@
     "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #133** was posed by Erdős and Pach concerning the structure of triangle-free graphs with diameter 2.\n\n**Historical Development:**\n- **Erdős-Pach (original):** Posed the question of whether f(n)/√n → ∞, where f(n) is the minimum guaranteed maximum degree in triangle-free diameter-2 graphs on n vertices.\n- **1984 (Hanson-Seyffarth):** Proved f(n) ≤ (√2 + o(1))√n using Cayley graphs on ℤ/nℤ with complete sum-free generating sets, giving the first O(√n) upper bound.\n- **1994 (Füredi-Seress):** Improved to f(n) ≤ (2/√3 + o(1))√n ≈ 1.1547√n, the current best known upper bound.\n- **Alon:** Gave a simple proof that f(n) ≪ √(n log n) using triangle-free graphs with small independence number.\n- **Simonovits:** Earlier construction using Kneser-like graphs gave f(n) ≤ n^0.7182.\n\nThe problem was **DISPROVED**: f(n)/√n does NOT tend to infinity. Instead, f(n) = Θ(√n), and Alon conjectures f(n) ~ √n exactly.",
-    "problemStatement": "**Problem Statement (SOLVED/DISPROVED)**\n\nLet $f(n)$ be minimal such that every triangle-free graph $G$ with $n$ vertices and diameter $2$ contains a vertex with degree $\\geq f(n)$.\n\n**Original Question:** What is the order of growth of $f(n)$? Does $f(n)/\\sqrt{n} \\to \\infty$?\n\n**Answer:** NO. The ratio $f(n)/\\sqrt{n}$ is bounded.\n\n**Known Bounds:**\n- **Lower:** $f(n) \\geq (1-o(1))\\sqrt{n}$ (from Moore bound: max-degree-$d$ diameter-2 graph has $\\leq d^2+1$ vertices)\n- **Upper:** $f(n) \\leq (2/\\sqrt{3}+o(1))\\sqrt{n} \\approx 1.1547\\sqrt{n}$ (Füredi-Seress 1994)\n\n**Open:** What is the exact asymptotic of $f(n)$? Alon conjectures $f(n) \\sim \\sqrt{n}$.",
-    "text": "Let f(n) be minimal such that every triangle-free graph G with n vertices and diameter 2 contains a vertex with degree ≥ f(n). Does f(n)/√n → ∞? Answer: NO, f(n) = Θ(√n).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define triangle-free property and diameter-2 condition using Mathlib's SimpleGraph.\n\n2. **f(n) Function:** Define as the minimum guaranteed maximum degree over all valid graphs.\n\n3. **Moore Bound:** Axiomatize that diameter-2 graphs with max degree d have at most d² + 1 vertices, giving the lower bound.\n\n4. **Upper Bound Constructions:** Axiomatize the various constructions (Simonovits, Alon, Hanson-Seyffarth, Füredi-Seress) as they require deep combinatorial arguments.\n\n5. **Main Result:** Prove the summary theorem by combining the disproof (from bounded ratio), the lower bound, and the best upper bound into a single statement.",
+    "historicalContext": "**Erd\u0151s Problem #133** was posed by Erd\u0151s and Pach concerning the structure of triangle-free graphs with diameter 2.\n\n**Historical Development:**\n- **Erd\u0151s-Pach (original):** Posed the question of whether f(n)/\u221an \u2192 \u221e, where f(n) is the minimum guaranteed maximum degree in triangle-free diameter-2 graphs on n vertices.\n- **1984 (Hanson-Seyffarth):** Proved f(n) \u2264 (\u221a2 + o(1))\u221an using Cayley graphs on \u2124/n\u2124 with complete sum-free generating sets, giving the first O(\u221an) upper bound.\n- **1994 (F\u00fcredi-Seress):** Improved to f(n) \u2264 (2/\u221a3 + o(1))\u221an \u2248 1.1547\u221an, the current best known upper bound.\n- **Alon:** Gave a simple proof that f(n) \u226a \u221a(n log n) using triangle-free graphs with small independence number.\n- **Simonovits:** Earlier construction using Kneser-like graphs gave f(n) \u2264 n^0.7182.\n\nThe problem was **DISPROVED**: f(n)/\u221an does NOT tend to infinity. Instead, f(n) = \u0398(\u221an), and Alon conjectures f(n) ~ \u221an exactly.",
+    "problemStatement": "**Problem Statement (SOLVED/DISPROVED)**\n\nLet $f(n)$ be minimal such that every triangle-free graph $G$ with $n$ vertices and diameter $2$ contains a vertex with degree $\\geq f(n)$.\n\n**Original Question:** What is the order of growth of $f(n)$? Does $f(n)/\\sqrt{n} \\to \\infty$?\n\n**Answer:** NO. The ratio $f(n)/\\sqrt{n}$ is bounded.\n\n**Known Bounds:**\n- **Lower:** $f(n) \\geq (1-o(1))\\sqrt{n}$ (from Moore bound: max-degree-$d$ diameter-2 graph has $\\leq d^2+1$ vertices)\n- **Upper:** $f(n) \\leq (2/\\sqrt{3}+o(1))\\sqrt{n} \\approx 1.1547\\sqrt{n}$ (F\u00fcredi-Seress 1994)\n\n**Open:** What is the exact asymptotic of $f(n)$? Alon conjectures $f(n) \\sim \\sqrt{n}$.",
+    "text": "Let f(n) be minimal such that every triangle-free graph G with n vertices and diameter 2 contains a vertex with degree \u2265 f(n). Does f(n)/\u221an \u2192 \u221e? Answer: NO, f(n) = \u0398(\u221an).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define triangle-free property and diameter-2 condition using Mathlib's SimpleGraph.\n\n2. **f(n) Function:** Define as the minimum guaranteed maximum degree over all valid graphs.\n\n3. **Moore Bound:** Axiomatize that diameter-2 graphs with max degree d have at most d\u00b2 + 1 vertices, giving the lower bound.\n\n4. **Upper Bound Constructions:** Axiomatize the various constructions (Simonovits, Alon, Hanson-Seyffarth, F\u00fcredi-Seress) as they require deep combinatorial arguments.\n\n5. **Main Result:** Prove the summary theorem by combining the disproof (from bounded ratio), the lower bound, and the best upper bound into a single statement.",
     "keyInsights": [
-      "**Moore Bound:** A graph with diameter 2 and max degree d has at most d² + 1 vertices (the 1-neighborhood plus the origin), giving f(n) ≥ √(n-1).",
+      "**Moore Bound:** A graph with diameter 2 and max degree d has at most d\u00b2 + 1 vertices (the 1-neighborhood plus the origin), giving f(n) \u2265 \u221a(n-1).",
       "**Triangle-Free Constraint:** Prevents the neighborhood from having any edges, so neighborhoods are independent sets. This limits local density.",
       "**Diameter 2 Requirement:** Forces global connectivity - any two non-adjacent vertices must share a common neighbor, requiring large neighborhoods.",
-      "**Structural Tension:** Triangle-free limits local structure while diameter 2 demands global density. This forces high-degree vertices to exist, but only at the √n scale.",
-      "**Polarity Graph Construction:** For primes q ≡ 1 (mod 4), polarity graphs on q² vertices are triangle-free, diameter 2, with max degree q+1 ≈ √n, showing the lower bound is nearly tight.",
-      "**Upper Bound Progression:** Simonovits (n^0.72) → Alon (√(n log n)) → Hanson-Seyffarth (√2·√n) → Füredi-Seress (2/√3·√n), approaching the conjectured √n.",
-      "**Alon's Conjecture:** The true asymptotic is likely f(n) ~ √n with constant 1, meaning the Moore lower bound is asymptotically tight."
+      "**Structural Tension:** Triangle-free limits local structure while diameter 2 demands global density. This forces high-degree vertices to exist, but only at the \u221an scale.",
+      "**Polarity Graph Construction:** For primes q \u2261 1 (mod 4), polarity graphs on q\u00b2 vertices are triangle-free, diameter 2, with max degree q+1 \u2248 \u221an, showing the lower bound is nearly tight.",
+      "**Upper Bound Progression:** Simonovits (n^0.72) \u2192 Alon (\u221a(n log n)) \u2192 Hanson-Seyffarth (\u221a2\u00b7\u221an) \u2192 F\u00fcredi-Seress (2/\u221a3\u00b7\u221an), approaching the conjectured \u221an.",
+      "**Alon's Conjecture:** The true asymptotic is likely f(n) ~ \u221an with constant 1, meaning the Moore lower bound is asymptotically tight."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -102,28 +102,28 @@
     {
       "id": "moore-bound",
       "title": "The Moore Bound (Lower Bound)",
-      "summary": "Lower bound f(n) ≥ (1-o(1))√n from vertex counting",
+      "summary": "Lower bound f(n) \u2265 (1-o(1))\u221an from vertex counting",
       "startLine": 66,
       "endLine": 80
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bound Constructions",
-      "summary": "Simonovits, Alon, Hanson-Seyffarth, and Füredi-Seress upper bounds",
+      "summary": "Simonovits, Alon, Hanson-Seyffarth, and F\u00fcredi-Seress upper bounds",
       "startLine": 82,
       "endLine": 109
     },
     {
       "id": "main-question",
       "title": "The Main Question (DISPROVED)",
-      "summary": "Original question disproved: f(n)/√n does NOT → ∞",
+      "summary": "Original question disproved: f(n)/\u221an does NOT \u2192 \u221e",
       "startLine": 111,
       "endLine": 123
     },
     {
       "id": "alon-conjecture",
       "title": "Alon's Conjecture",
-      "summary": "Conjecture that f(n) ~ √n exactly",
+      "summary": "Conjecture that f(n) ~ \u221an exactly",
       "startLine": 125,
       "endLine": 129
     },
@@ -143,13 +143,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #133 asked whether f(n)/√n → ∞, where f(n) is the minimum guaranteed maximum degree in triangle-free diameter-2 graphs on n vertices. The answer is NO: f(n) = Θ(√n). The lower bound (1-o(1))√n comes from the Moore bound, while the best upper bound (2/√3+o(1))√n is due to Füredi-Seress (1994). The summary theorem erdos_133 combines the disproof with both bounds into a single formal statement. Alon conjectures f(n) ~ √n.",
-    "implications": "**Theoretical Significance**: **Implications for Graph Theory**\n\n1. **Extremal Graph Theory:** The tight Θ(√n) bounds reveal the precise scale forced by the interplay of triangle-free and diameter-2 constraints.\n\n**2. Moore Bound Tightness:** The polarity graph constructions show the Moore bound is asymptotically tight for this class, within a factor of 2/√3.\n\n3. **Sum-Free Sets:** Hanson-Seyffarth's construction connects to complete sum-free sets in cyclic groups, bridging additive combinatorics and graph theory.\n\n4. **Polarity Graphs:** Geometric constructions from finite projective planes provide the best explicit examples.",
+    "summary": "Erd\u0151s Problem #133 asked whether f(n)/\u221an \u2192 \u221e, where f(n) is the minimum guaranteed maximum degree in triangle-free diameter-2 graphs on n vertices. The answer is NO: f(n) = \u0398(\u221an). The lower bound (1-o(1))\u221an comes from the Moore bound, while the best upper bound (2/\u221a3+o(1))\u221an is due to F\u00fcredi-Seress (1994). The summary theorem erdos_133 combines the disproof with both bounds into a single formal statement. Alon conjectures f(n) ~ \u221an.",
+    "implications": "**Theoretical Significance**: **Implications for Graph Theory**\n\n1. **Extremal Graph Theory:** The tight \u0398(\u221an) bounds reveal the precise scale forced by the interplay of triangle-free and diameter-2 constraints.\n\n**2. Moore Bound Tightness:** The polarity graph constructions show the Moore bound is asymptotically tight for this class, within a factor of 2/\u221a3.\n\n3. **Sum-Free Sets:** Hanson-Seyffarth's construction connects to complete sum-free sets in cyclic groups, bridging additive combinatorics and graph theory.\n\n4. **Polarity Graphs:** Geometric constructions from finite projective planes provide the best explicit examples.",
     "openQuestions": [
-      "What is the exact value of lim f(n)/√n? Is it 1 as Alon conjectures?",
-      "Can the gap between the lower bound constant 1 and the upper bound constant 2/√3 ≈ 1.155 be closed?",
-      "Are there better constructions than Füredi-Seress?",
-      "What happens for diameter k ≥ 3?",
+      "What is the exact value of lim f(n)/\u221an? Is it 1 as Alon conjectures?",
+      "Can the gap between the lower bound constant 1 and the upper bound constant 2/\u221a3 \u2248 1.155 be closed?",
+      "Are there better constructions than F\u00fcredi-Seress?",
+      "What happens for diameter k \u2265 3?",
       "Can the polarity graph approach be improved with more sophisticated finite geometry?"
     ]
   },
@@ -169,5 +169,39 @@
     "axiomCount": 13,
     "theoremCount": 1,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and triangle-free themes"
+    },
+    {
+      "targetId": "erdos-23",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and triangle-free themes"
+    },
+    {
+      "targetId": "erdos-581",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and triangle-free themes"
+    },
+    {
+      "targetId": "erdos-752",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and degree-bounds themes"
+    },
+    {
+      "targetId": "erdos-612",
+      "relationship": "related",
+      "description": "Share graph-theoretic, degree-bounds, and diameter themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-134",
+    "erdos-23",
+    "erdos-581",
+    "erdos-752",
+    "erdos-612"
+  ]
 }

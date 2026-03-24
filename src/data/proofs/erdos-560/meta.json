@@ -170,5 +170,39 @@
     "axiomCount": 16,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-558",
+      "relationship": "related",
+      "description": "Share graph-theoretic, bipartite-graphs, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1021",
+      "relationship": "related",
+      "description": "Share graph-theoretic and bipartite-graphs themes"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-558",
+    "erdos-1014",
+    "erdos-1021",
+    "erdos-1029",
+    "erdos-1030"
+  ]
 }

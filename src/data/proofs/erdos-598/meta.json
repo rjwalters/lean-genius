@@ -1,10 +1,10 @@
 {
   "id": "erdos-598",
-  "title": "Erdős Problem #598: Coloring Countable Subsets",
+  "title": "Erd\u0151s Problem #598: Coloring Countable Subsets",
   "slug": "erdos-598",
-  "description": "Can one color countable subsets of an infinite set m with κ = (2^ℵ₀)⁺ colors so that every κ-sized subset contains all colors? OPEN.",
+  "description": "Can one color countable subsets of an infinite set m with \u03ba = (2^\u2135\u2080)\u207a colors so that every \u03ba-sized subset contains all colors? OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/598",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos598Problem.lean",
@@ -24,17 +24,17 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1987 in his paper on combinatorial problems in set theory. The question lies at the intersection of partition calculus, cardinal arithmetic, and the combinatorics of countable subsets. The classical Erdős–Rado partition relation ℵ₁ → (ℵ₁)²_{ℵ₀} (1956) established foundational results about coloring pairs, but coloring countable subsets introduces an entirely different combinatorial landscape. The successor of the continuum κ = (2^ℵ₀)⁺ appears as the natural threshold because it is the smallest cardinal exceeding the number of reals, and questions about partition properties at this level are known to be sensitive to set-theoretic axioms. Under CH, κ = ℵ₂ and the problem connects to classical partition properties of ℵ₂ studied by Todorcevic, Shelah, and others. The problem asks whether κ colors suffice for a 'chromatic completeness' property: every κ-sized subset must realize all colors among its countable subsets. This is a strong Ramsey-type requirement that goes beyond standard partition relations by quantifying over all large subsets simultaneously.",
+    "historicalContext": "Erd\u0151s posed this problem in 1987 in his paper on combinatorial problems in set theory. The question lies at the intersection of partition calculus, cardinal arithmetic, and the combinatorics of countable subsets. The classical Erd\u0151s\u2013Rado partition relation \u2135\u2081 \u2192 (\u2135\u2081)\u00b2_{\u2135\u2080} (1956) established foundational results about coloring pairs, but coloring countable subsets introduces an entirely different combinatorial landscape. The successor of the continuum \u03ba = (2^\u2135\u2080)\u207a appears as the natural threshold because it is the smallest cardinal exceeding the number of reals, and questions about partition properties at this level are known to be sensitive to set-theoretic axioms. Under CH, \u03ba = \u2135\u2082 and the problem connects to classical partition properties of \u2135\u2082 studied by Todorcevic, Shelah, and others. The problem asks whether \u03ba colors suffice for a 'chromatic completeness' property: every \u03ba-sized subset must realize all colors among its countable subsets. This is a strong Ramsey-type requirement that goes beyond standard partition relations by quantifying over all large subsets simultaneously.",
     "problemStatement": "Let $m$ be an infinite cardinal and $\\kappa = (2^{\\aleph_0})^+$. Can one color the countable subsets of $m$ with $\\kappa$ colors so that every $X \\subseteq m$ with $|X| = \\kappa$ contains subsets of every color?",
-    "text": "Can one color countable subsets of an infinite set m with κ = (2^ℵ₀)⁺ colors so that every κ-sized subset contains all colors? OPEN.",
-    "proofStrategy": "The formalization defines κ = (2^ℵ₀)⁺ using Lean's Cardinal and Order.succ, CountableSubset as countable subsets of a type, and ChromaticCompleteness as the requirement that every κ-sized subset realizes all colors. ErdosProblem598 states the universal version for all ground sets of size ≥ κ. Special cases include the minimal case m = κ and the CH scenario. Monotonicity in the ground set size is axiomatized.",
+    "text": "Can one color countable subsets of an infinite set m with \u03ba = (2^\u2135\u2080)\u207a colors so that every \u03ba-sized subset contains all colors? OPEN.",
+    "proofStrategy": "The formalization defines \u03ba = (2^\u2135\u2080)\u207a using Lean's Cardinal and Order.succ, CountableSubset as countable subsets of a type, and ChromaticCompleteness as the requirement that every \u03ba-sized subset realizes all colors. ErdosProblem598 states the universal version for all ground sets of size \u2265 \u03ba. Special cases include the minimal case m = \u03ba and the CH scenario. Monotonicity in the ground set size is axiomatized.",
     "keyInsights": [
       "The cardinal $\\kappa = (2^{\\aleph_0})^+$ serves a dual role: both the number of colors and the minimum subset size that must realize all colors, creating a delicate balance",
-      "Chromatic completeness is a strong Ramsey-type property: every κ-sized subset must contain countable subsets of every single color, with no exceptions",
+      "Chromatic completeness is a strong Ramsey-type property: every \u03ba-sized subset must contain countable subsets of every single color, with no exceptions",
       "Under CH, $\\kappa = \\aleph_2$ and the problem connects to Todorcevic's and Shelah's work on partition properties of $\\aleph_2$",
       "The problem is monotone in $m$: solving the minimal case $m = \\kappa$ settles all larger cases, making this the critical instance",
-      "The answer may depend on set-theoretic axioms beyond ZFC — partition properties at successor cardinals are notoriously sensitive to forcing",
-      "The problem generalizes the Erdős–Rado partition calculus from coloring finite tuples to coloring countable sets, a qualitative leap in combinatorial complexity"
+      "The answer may depend on set-theoretic axioms beyond ZFC \u2014 partition properties at successor cardinals are notoriously sensitive to forcing",
+      "The problem generalizes the Erd\u0151s\u2013Rado partition calculus from coloring finite tuples to coloring countable sets, a qualitative leap in combinatorial complexity"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -48,42 +48,42 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Docstring with the problem statement, open status, and reference to Erdős (1987). Imports Mathlib's cardinal, continuum, ordinal, and successor modules."
+      "summary": "Docstring with the problem statement, open status, and reference to Erd\u0151s (1987). Imports Mathlib's cardinal, continuum, ordinal, and successor modules."
     },
     {
       "id": "cardinal-setup",
       "title": "Cardinal Setup",
       "startLine": 22,
       "endLine": 30,
-      "summary": "Defines κ = (2^ℵ₀)⁺ as Order.succ (2 ^ ℵ₀) and axiomatizes κ > ℵ₀."
+      "summary": "Defines \u03ba = (2^\u2135\u2080)\u207a as Order.succ (2 ^ \u2135\u2080) and axiomatizes \u03ba > \u2135\u2080."
     },
     {
       "id": "countable-subsets",
       "title": "Countable Subsets",
       "startLine": 32,
       "endLine": 37,
-      "summary": "Defines CountableSubset α as the subtype of countable subsets of α."
+      "summary": "Defines CountableSubset \u03b1 as the subtype of countable subsets of \u03b1."
     },
     {
       "id": "coloring-property",
       "title": "The Coloring Property",
       "startLine": 39,
       "endLine": 53,
-      "summary": "Defines IsKappaColoring (any function is a valid coloring) and ChromaticCompleteness (every κ-sized subset X contains countable subsets of every color)."
+      "summary": "Defines IsKappaColoring (any function is a valid coloring) and ChromaticCompleteness (every \u03ba-sized subset X contains countable subsets of every color)."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 55,
       "endLine": 66,
-      "summary": "States ErdosProblem598: for every infinite α with |α| ≥ κ, a chromatically complete κ-coloring exists."
+      "summary": "States ErdosProblem598: for every infinite \u03b1 with |\u03b1| \u2265 \u03ba, a chromatically complete \u03ba-coloring exists."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 68,
       "endLine": 82,
-      "summary": "The minimal case m = κ and the CH scenario where κ = ℵ₂, giving the problem its most concrete form."
+      "summary": "The minimal case m = \u03ba and the CH scenario where \u03ba = \u2135\u2082, giving the problem its most concrete form."
     },
     {
       "id": "monotonicity",
@@ -94,13 +94,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #598 on whether countable subsets of infinite sets can be colored with (2^ℵ₀)⁺ colors achieving chromatic completeness. The formalization captures the cardinal setup, the key definitions, and structural properties including monotonicity and the CH specialization.",
+    "summary": "Formalizes Erd\u0151s Problem #598 on whether countable subsets of infinite sets can be colored with (2^\u2135\u2080)\u207a colors achieving chromatic completeness. The formalization captures the cardinal setup, the key definitions, and structural properties including monotonicity and the CH specialization.",
     "implications": "Resolution would advance the understanding of partition relations for countable subsets at the successor of the continuum. A positive answer would establish a new partition-calculus result, while a negative answer (or independence from ZFC) would reveal limitations of combinatorial methods at this cardinal level and connect to Shelah's pcf theory.",
     "openQuestions": [
-      "Does the chromatically complete coloring exist for the minimal case m = κ?",
+      "Does the chromatically complete coloring exist for the minimal case m = \u03ba?",
       "Is the answer independent of ZFC, like many partition properties at successor cardinals?",
-      "Does the answer change under CH versus ¬CH, or is it absolute?",
-      "What is the relationship to the Erdős–Rado partition relation and Shelah's pcf theory?"
+      "Does the answer change under CH versus \u00acCH, or is it absolute?",
+      "What is the relationship to the Erd\u0151s\u2013Rado partition relation and Shelah's pcf theory?"
     ]
   },
   "leanFile": {
@@ -119,5 +119,39 @@
     "axiomCount": 3,
     "theoremCount": 0,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Share set-theoretic, cardinal-arithmetic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1128",
+      "relationship": "related",
+      "description": "Share set-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Share set-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1171",
+      "relationship": "related",
+      "description": "Share set-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1172",
+      "relationship": "related",
+      "description": "Share set-theoretic and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1167",
+    "erdos-1128",
+    "erdos-1169",
+    "erdos-1171",
+    "erdos-1172"
+  ]
 }

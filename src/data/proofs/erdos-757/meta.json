@@ -1,10 +1,10 @@
 {
   "id": "erdos-757",
-  "title": "Erdős Problem #757: Sidon Sets in Almost-Sidon Families",
+  "title": "Erd\u0151s Problem #757: Sidon Sets in Almost-Sidon Families",
   "slug": "erdos-757",
-  "description": "Let A ⊂ ℝ be a set of size n such that every 4-element subset B has |B - B| ≥ 11. Find the best constant c > 0 such that A must contain a Sidon set of size ≥ cn. Known: 1/2 < c < 3/5.",
+  "description": "Let A \u2282 \u211d be a set of size n such that every 4-element subset B has |B - B| \u2265 11. Find the best constant c > 0 such that A must contain a Sidon set of size \u2265 cn. Known: 1/2 < c < 3/5.",
   "meta": {
-    "author": "Erdős-Sós (lower bound); Gyárfás-Lehel (1995, bounds)",
+    "author": "Erd\u0151s-S\u00f3s (lower bound); Gy\u00e1rf\u00e1s-Lehel (1995, bounds)",
     "sourceUrl": "https://erdosproblems.com/757",
     "date": "1995",
     "status": "formalized",
@@ -42,24 +42,24 @@
     ],
     "originalContributions": [
       "Formal definition of Sidon sets via sum characterization",
-      "Definition of the almost-Sidon property (|B - B| ≥ 11 for 4-element subsets)",
+      "Definition of the almost-Sidon property (|B - B| \u2265 11 for 4-element subsets)",
       "Definition of admissible constants",
-      "Axiomatization of Gyárfás-Lehel bounds (1/2 < c < 3/5)",
+      "Axiomatization of Gy\u00e1rf\u00e1s-Lehel bounds (1/2 < c < 3/5)",
       "Properties of Sidon sets and difference sets",
-      "Connection to B₂ sequences and extremal combinatorics"
+      "Connection to B\u2082 sequences and extremal combinatorics"
     ],
     "axiomCount": 11,
     "lineCount": 226,
     "assumptions": "11 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "A **Sidon set** (or B₂ sequence) is a set where all pairwise sums are distinct. Equivalently, all non-zero differences are distinct. For a 4-element Sidon set, the difference set B - B has exactly 13 elements (including 0).\n\nErdős asked: if every 4-element subset of A has 'almost' this property (|B - B| ≥ 11, missing at most one pair of differences), must A contain a large Sidon subset?\n\nErdős and Sós first proved c ≥ 1/2. Gyárfás and Lehel (1995) improved this to strict bounds:\n- **Lower bound**: c > 1/2 (greedy construction)\n- **Upper bound**: c < 3/5 (Fibonacci numbers as counterexample)\n\nThe exact value of c remains OPEN.",
-    "problemStatement": "Let $A \\subset \\mathbb{R}$ be a set of size $n$ such that every subset $B \\subseteq A$ with $|B| = 4$ has $|B - B| \\geq 11$.\n\n**Question**: What is the best constant $c > 0$ such that $A$ must always contain a Sidon set of size $\\geq cn$?\n\n**Known bounds** (Gyárfás-Lehel 1995):\n$$\\frac{1}{2} < c < \\frac{3}{5}$$\n\n**Interpretation**: For any 4 elements in $A$, at most one difference 'collides' with another. The question asks how large a 'fully Sidon' subset can be guaranteed.",
-    "text": "Let A ⊂ ℝ be a set of size n such that every 4-element subset B has |B - B| ≥ 11. Find the best constant c > 0 such that A must contain a Sidon set of size ≥ cn. Known: 1/2 < c < 3/5.",
-    "proofStrategy": "We formalize this problem by:\n\n1. **Sidon sets**: A set where a + b = c + d implies {a,b} = {c,d}\n\n2. **Almost-Sidon property**: Every 4-element subset has |B - B| ≥ 11\n\n3. **Admissible constants**: Values c such that almost-Sidon sets contain Sidon subsets of size ≥ cn\n\n4. **Main conjecture**: Find sSup{c : IsAdmissible c}\n\n5. **Known bounds**: Axiomatize Gyárfás-Lehel results\n\n6. **Properties**: Sidon subsets, difference set structure, connection to extremal problems",
+    "historicalContext": "A **Sidon set** (or B\u2082 sequence) is a set where all pairwise sums are distinct. Equivalently, all non-zero differences are distinct. For a 4-element Sidon set, the difference set B - B has exactly 13 elements (including 0).\n\nErd\u0151s asked: if every 4-element subset of A has 'almost' this property (|B - B| \u2265 11, missing at most one pair of differences), must A contain a large Sidon subset?\n\nErd\u0151s and S\u00f3s first proved c \u2265 1/2. Gy\u00e1rf\u00e1s and Lehel (1995) improved this to strict bounds:\n- **Lower bound**: c > 1/2 (greedy construction)\n- **Upper bound**: c < 3/5 (Fibonacci numbers as counterexample)\n\nThe exact value of c remains OPEN.",
+    "problemStatement": "Let $A \\subset \\mathbb{R}$ be a set of size $n$ such that every subset $B \\subseteq A$ with $|B| = 4$ has $|B - B| \\geq 11$.\n\n**Question**: What is the best constant $c > 0$ such that $A$ must always contain a Sidon set of size $\\geq cn$?\n\n**Known bounds** (Gy\u00e1rf\u00e1s-Lehel 1995):\n$$\\frac{1}{2} < c < \\frac{3}{5}$$\n\n**Interpretation**: For any 4 elements in $A$, at most one difference 'collides' with another. The question asks how large a 'fully Sidon' subset can be guaranteed.",
+    "text": "Let A \u2282 \u211d be a set of size n such that every 4-element subset B has |B - B| \u2265 11. Find the best constant c > 0 such that A must contain a Sidon set of size \u2265 cn. Known: 1/2 < c < 3/5.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Sidon sets**: A set where a + b = c + d implies {a,b} = {c,d}\n\n2. **Almost-Sidon property**: Every 4-element subset has |B - B| \u2265 11\n\n3. **Admissible constants**: Values c such that almost-Sidon sets contain Sidon subsets of size \u2265 cn\n\n4. **Main conjecture**: Find sSup{c : IsAdmissible c}\n\n5. **Known bounds**: Axiomatize Gy\u00e1rf\u00e1s-Lehel results\n\n6. **Properties**: Sidon subsets, difference set structure, connection to extremal problems",
     "keyInsights": [
-      "**Why |B - B| = 13 for Sidon 4-sets**: A 4-element set has 6 pairs, giving 12 non-zero differences (±), plus 0.",
-      "**Why 11 is special**: Requiring |B - B| ≥ 11 means at most one collision among 4 elements—a minimal relaxation of Sidon.",
+      "**Why |B - B| = 13 for Sidon 4-sets**: A 4-element set has 6 pairs, giving 12 non-zero differences (\u00b1), plus 0.",
+      "**Why 11 is special**: Requiring |B - B| \u2265 11 means at most one collision among 4 elements\u2014a minimal relaxation of Sidon.",
       "**Fibonacci counterexample**: The first n Fibonacci numbers form an almost-Sidon set with largest Sidon subset of size just under 3n/5.",
       "**Greedy lower bound**: A greedy algorithm constructs Sidon subsets of size > n/2, proving c > 1/2.",
       "**Open gap**: The exact value of c in (1/2, 3/5) remains unknown despite 30+ years of study."
@@ -94,7 +94,7 @@
     },
     {
       "id": "bounds",
-      "title": "Gyárfás-Lehel Bounds (1995)",
+      "title": "Gy\u00e1rf\u00e1s-Lehel Bounds (1995)",
       "startLine": 79,
       "endLine": 96,
       "summary": "Lower bound (c > 1/2) and upper bound (c < 3/5) from the 1995 paper."
@@ -115,7 +115,7 @@
     },
     {
       "id": "condition",
-      "title": "The Condition |B - B| ≥ 11",
+      "title": "The Condition |B - B| \u2265 11",
       "startLine": 150,
       "endLine": 169,
       "summary": "Bounds on difference set sizes for 4-element sets and relation to Sidon property."
@@ -132,17 +132,17 @@
       "title": "Extremal Combinatorics Connection",
       "startLine": 208,
       "endLine": 224,
-      "summary": "Connection to B₂ sequences and the general Sidon set constant problem."
+      "summary": "Connection to B\u2082 sequences and the general Sidon set constant problem."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #757 about the largest Sidon subset guaranteed in almost-Sidon sets. The problem asks for the supremum of constants c such that any set with |B - B| ≥ 11 for all 4-element subsets B contains a Sidon subset of size ≥ cn. Gyárfás-Lehel (1995) proved 1/2 < c < 3/5, but the exact value remains OPEN.",
+    "summary": "We formalize Erd\u0151s Problem #757 about the largest Sidon subset guaranteed in almost-Sidon sets. The problem asks for the supremum of constants c such that any set with |B - B| \u2265 11 for all 4-element subsets B contains a Sidon subset of size \u2265 cn. Gy\u00e1rf\u00e1s-Lehel (1995) proved 1/2 < c < 3/5, but the exact value remains OPEN.",
     "implications": "This problem connects to the structure of sets with few arithmetic configurations. Understanding such sets has applications to coding theory (error-correcting codes), Fourier analysis (controlling Fourier coefficients), and the theory of sumsets in additive combinatorics.",
     "openQuestions": [
       "What is the exact value of c = sSup{c : IsAdmissible c}?",
       "Is c rational, algebraic, or transcendental?",
       "Are there better constructions than Fibonacci numbers for the upper bound?",
-      "What happens for analogous conditions on k-element subsets for k ≠ 4?"
+      "What happens for analogous conditions on k-element subsets for k \u2260 4?"
     ]
   },
   "leanFile": {
@@ -160,5 +160,39 @@
     "axiomCount": 11,
     "theoremCount": 8,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Share combinatorial, sidon-sets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "Share combinatorial, sidon-sets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-772",
+      "relationship": "related",
+      "description": "Share combinatorial, sidon-sets, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-862",
+      "relationship": "related",
+      "description": "Share combinatorial, extremal-combinatorial, and sidon-sets themes"
+    },
+    {
+      "targetId": "erdos-155",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, sidon-sets, and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-153",
+    "erdos-340-greedy-sidon",
+    "erdos-772",
+    "erdos-862",
+    "erdos-155"
+  ]
 }

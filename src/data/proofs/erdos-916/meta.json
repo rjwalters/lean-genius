@@ -1,10 +1,10 @@
 {
   "id": "erdos-916",
-  "title": "Erdős Problem #916: Graphs with Cycles and Triply Adjacent Vertices",
+  "title": "Erd\u0151s Problem #916: Graphs with Cycles and Triply Adjacent Vertices",
   "slug": "erdos-916",
   "description": "Does every graph with n vertices and 2n-2 edges contain a cycle and another vertex adjacent to three vertices on the cycle? YES, proved by Thomassen (1974).",
   "meta": {
-    "author": "Thomassen (1974 proof), Erdős (1967 problem)",
+    "author": "Thomassen (1974 proof), Erd\u0151s (1967 problem)",
     "sourceUrl": "https://erdosproblems.com/916",
     "date": "1974",
     "status": "axiomatized",
@@ -43,9 +43,9 @@
     ],
     "originalContributions": [
       "hasVerticesAndEdges: predicate for graphs with specific vertex/edge counts",
-      "isK4Subdivision: definition of K₄ subdivision in a graph",
+      "isK4Subdivision: definition of K\u2084 subdivision in a graph",
       "hasCycle: existence of a cycle in a graph",
-      "hasVertexTriplyAdjacentToCycle: key structure from Erdős's question",
+      "hasVertexTriplyAdjacentToCycle: key structure from Erd\u0151s's question",
       "dirac_k4_subdivision axiom: Dirac's 1960 theorem",
       "thomassen_cycle_structure axiom: main result solving the problem",
       "erdos_916 theorem: the main answer to the problem",
@@ -58,17 +58,17 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #916**\n\nThis problem from Erdős [Er67b] asks about the structure of graphs with a specific edge density. The question builds on earlier work by Gabriel Andrew Dirac.\n\n**Key History:**\n- Dirac (1960): Proved that every graph with n vertices and 2n-2 edges contains a subgraph homeomorphic to K₄ (the complete graph on 4 vertices)\n- Erdős (1967): Asked whether a stronger result holds - must such graphs contain a cycle with a vertex having 3 adjacencies to it?\n- Thomassen (1974): Proved the affirmative answer in \"A minimal condition implying a special K₄-subdivision in a graph\"\n\n**Mathematical Setting:**\nThe problem sits at the intersection of extremal graph theory and structural graph theory. The edge count 2n-2 represents a natural threshold - it's roughly twice the number needed for connectivity (n-1 for a tree), and this density forces rich structural properties.",
-    "problemStatement": "**Problem Statement (Proved)**\n\nDoes every graph with $n$ vertices and $2n-2$ edges contain a cycle and another vertex adjacent to three vertices on the cycle?\n\n**Answer: YES**\n\nThomassen (1974) proved that such graphs always contain:\n1. A cycle $C$ (sequence of vertices $v_1, v_2, \\ldots, v_k, v_1$ with all consecutive pairs adjacent)\n2. A vertex $w$ not on $C$ that is adjacent to at least 3 distinct vertices on $C$\n\nThis is stronger than Dirac's K₄ subdivision result because it specifies the precise geometric relationship between the cycle and external vertex.",
+    "historicalContext": "**Erd\u0151s Problem #916**\n\nThis problem from Erd\u0151s [Er67b] asks about the structure of graphs with a specific edge density. The question builds on earlier work by Gabriel Andrew Dirac.\n\n**Key History:**\n- Dirac (1960): Proved that every graph with n vertices and 2n-2 edges contains a subgraph homeomorphic to K\u2084 (the complete graph on 4 vertices)\n- Erd\u0151s (1967): Asked whether a stronger result holds - must such graphs contain a cycle with a vertex having 3 adjacencies to it?\n- Thomassen (1974): Proved the affirmative answer in \"A minimal condition implying a special K\u2084-subdivision in a graph\"\n\n**Mathematical Setting:**\nThe problem sits at the intersection of extremal graph theory and structural graph theory. The edge count 2n-2 represents a natural threshold - it's roughly twice the number needed for connectivity (n-1 for a tree), and this density forces rich structural properties.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nDoes every graph with $n$ vertices and $2n-2$ edges contain a cycle and another vertex adjacent to three vertices on the cycle?\n\n**Answer: YES**\n\nThomassen (1974) proved that such graphs always contain:\n1. A cycle $C$ (sequence of vertices $v_1, v_2, \\ldots, v_k, v_1$ with all consecutive pairs adjacent)\n2. A vertex $w$ not on $C$ that is adjacent to at least 3 distinct vertices on $C$\n\nThis is stronger than Dirac's K\u2084 subdivision result because it specifies the precise geometric relationship between the cycle and external vertex.",
     "text": "Does every graph with n vertices and 2n-2 edges contain a cycle and another vertex adjacent to three vertices on the cycle? YES, proved by Thomassen (1974).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Use Mathlib's SimpleGraph for undirected graphs\n\n2. **Key Structures:**\n   - `hasVerticesAndEdges`: predicate for graphs with n vertices and m edges\n   - `isK4Subdivision`: existence of K₄ subdivision (4 branch vertices with paths)\n   - `hasVertexTriplyAdjacentToCycle`: the structure from Erdős's question\n\n3. **Main Axioms:**\n   - `dirac_k4_subdivision`: Dirac's 1960 theorem\n   - `thomassen_cycle_structure`: Thomassen's 1974 result\n\n4. **Relationships:** Show that Thomassen's result implies Dirac's result\n\n5. **Concrete Cases:** Verify edge threshold values for small n",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Use Mathlib's SimpleGraph for undirected graphs\n\n2. **Key Structures:**\n   - `hasVerticesAndEdges`: predicate for graphs with n vertices and m edges\n   - `isK4Subdivision`: existence of K\u2084 subdivision (4 branch vertices with paths)\n   - `hasVertexTriplyAdjacentToCycle`: the structure from Erd\u0151s's question\n\n3. **Main Axioms:**\n   - `dirac_k4_subdivision`: Dirac's 1960 theorem\n   - `thomassen_cycle_structure`: Thomassen's 1974 result\n\n4. **Relationships:** Show that Thomassen's result implies Dirac's result\n\n5. **Concrete Cases:** Verify edge threshold values for small n",
     "keyInsights": [
-      "**Edge Threshold:** 2n-2 edges with n vertices gives average degree ≈ 4, forcing rich structure",
-      "**Dirac's Foundation:** K₄ subdivisions guaranteed at this density (1960)",
+      "**Edge Threshold:** 2n-2 edges with n vertices gives average degree \u2248 4, forcing rich structure",
+      "**Dirac's Foundation:** K\u2084 subdivisions guaranteed at this density (1960)",
       "**Thomassen's Strengthening:** Specific cycle+vertex structure always exists (1974)",
-      "**Structural Hierarchy:** Cycle with triply-adjacent vertex ⟹ K₄ subdivision",
+      "**Structural Hierarchy:** Cycle with triply-adjacent vertex \u27f9 K\u2084 subdivision",
       "**Extremal Significance:** This edge count is the threshold for these properties",
-      "**Small Cases:** n=4 gives K₄ itself (6 edges), which trivially satisfies the property"
+      "**Small Cases:** n=4 gives K\u2084 itself (6 edges), which trivially satisfies the property"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -85,7 +85,7 @@
     },
     {
       "id": "k4-subdivisions",
-      "title": "K₄ Subdivisions",
+      "title": "K\u2084 Subdivisions",
       "summary": "isK4Subdivision definition, Dirac's theorem",
       "startLine": 48,
       "endLine": 78
@@ -141,8 +141,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #916 asked whether every graph with n vertices and 2n-2 edges contains a cycle and another vertex adjacent to three vertices on that cycle. The answer is YES, as proved by Carsten Thomassen in 1974. This result strengthens Dirac's 1960 theorem about K₄ subdivisions and reveals deep structural properties forced by moderate edge density in graphs.",
-    "implications": "**Theoretical Significance**: **Graph-Theoretic Connections**\n\n1. **Extremal Graph Theory:** The 2n-2 edge threshold is critical for forcing rich structure\n\n2. **K₄ Subdivisions:** Thomassen's result provides an alternative proof that K₄ subdivisions exist\n\n**3. Structural Hierarchy:** Establishes relationships between different subgraph structures\n\n4. **Average Degree:** Graphs with average degree approaching 4 have constrained structure\n\n5. **Planar Graph Theory:** Related to the 3n-6 edge bound for planarity.",
+    "summary": "Erd\u0151s Problem #916 asked whether every graph with n vertices and 2n-2 edges contains a cycle and another vertex adjacent to three vertices on that cycle. The answer is YES, as proved by Carsten Thomassen in 1974. This result strengthens Dirac's 1960 theorem about K\u2084 subdivisions and reveals deep structural properties forced by moderate edge density in graphs.",
+    "implications": "**Theoretical Significance**: **Graph-Theoretic Connections**\n\n1. **Extremal Graph Theory:** The 2n-2 edge threshold is critical for forcing rich structure\n\n2. **K\u2084 Subdivisions:** Thomassen's result provides an alternative proof that K\u2084 subdivisions exist\n\n**3. Structural Hierarchy:** Establishes relationships between different subgraph structures\n\n4. **Average Degree:** Graphs with average degree approaching 4 have constrained structure\n\n5. **Planar Graph Theory:** Related to the 3n-6 edge bound for planarity.",
     "openQuestions": [
       "What other structures are forced by the 2n-2 edge count?",
       "Can the result be strengthened to require more adjacencies?",
@@ -165,5 +165,39 @@
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-767",
+      "relationship": "related",
+      "description": "Share cycles, graph-theoretic, and extremal-graphs themes"
+    },
+    {
+      "targetId": "erdos-815",
+      "relationship": "related",
+      "description": "Share cycles, graph-theoretic, and extremal-graphs themes"
+    },
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Share cycles and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Share cycles and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-184",
+      "relationship": "related",
+      "description": "Share cycles and graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-767",
+    "erdos-815",
+    "erdos-1008",
+    "erdos-1080",
+    "erdos-184"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-607",
-  "title": "Erdős Problem #607: Incidence Signatures of Point Configurations",
+  "title": "Erd\u0151s Problem #607: Incidence Signatures of Point Configurations",
   "slug": "erdos-607",
-  "description": "For n points in ℝ², let A be the multiset of incidence counts (points per line). F(n) counts distinct achievable sets A. Szemerédi-Trotter proved F(n) ≤ exp(O(√n)), which is optimal.",
+  "description": "For n points in \u211d\u00b2, let A be the multiset of incidence counts (points per line). F(n) counts distinct achievable sets A. Szemer\u00e9di-Trotter proved F(n) \u2264 exp(O(\u221an)), which is optimal.",
   "meta": {
-    "author": "Szemerédi-Trotter (1983)",
+    "author": "Szemer\u00e9di-Trotter (1983)",
     "sourceUrl": "https://erdosproblems.com/607",
     "date": "1983",
     "status": "formalized",
@@ -26,7 +26,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Points in ℝ²",
+        "description": "Points in \u211d\u00b2",
         "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
       },
       {
@@ -41,7 +41,7 @@
       },
       {
         "theorem": "Real.sqrt",
-        "description": "Square root for √n growth",
+        "description": "Square root for \u221an growth",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       },
       {
@@ -51,12 +51,12 @@
       }
     ],
     "originalContributions": [
-      "Point, PointConfig: point configurations in ℝ²",
+      "Point, PointConfig: point configurations in \u211d\u00b2",
       "Line, Line.contains: line structure with parametric containment",
       "lineThroughPair, determinedLines: lines determined by pairs",
       "incidenceCount, incidenceSignature, incidenceSet: counting incidences",
       "F, F_set: counting distinct achievable signatures",
-      "ErdosConjecture607: F(n) ≤ exp(C√n)",
+      "ErdosConjecture607: F(n) \u2264 exp(C\u221an)",
       "szemeredi_trotter_607: the conjecture is true",
       "incidence_at_least_two, incidence_at_most_n: basic constraints",
       "LowerBoundConjecture, lower_bound_construction: matching lower bound",
@@ -70,15 +70,15 @@
     "assumptions": "1 axiom(s) and 20 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The Szemerédi-Trotter theorem (1983) is one of the most influential results in combinatorial geometry. Endre Szemerédi and William T. Trotter proved that the number of incidences between $n$ points and $m$ lines in $\\mathbb{R}^2$ is at most $O((nm)^{2/3} + n + m)$, resolving a conjecture of Erdős. This bound is tight, achieved by grid configurations.\n\nProblem #607 applies the Szemerédi-Trotter machinery to a counting problem: given $n$ points $P \\subset \\mathbb{R}^2$, the 'incidence signature' $A = \\{|\\ell \\cap P| : \\ell \\text{ determined by } P\\}$ records how many points lie on each line. Let $F(n)$ count the number of distinct achievable signatures. Erdős asked whether $F(n) \\leq \\exp(O(\\sqrt{n}))$ and noted this would be optimal. Szemerédi and Trotter confirmed the upper bound using their incidence theorem.\n\nThe $\\sqrt{n}$ growth connects to the Hardy-Ramanujan partition asymptotic $p(n) \\sim \\frac{1}{4n\\sqrt{3}} \\exp(\\pi\\sqrt{2n/3})$: signatures correspond to constrained integer partitions of $\\binom{n}{2}$ into parts $\\binom{k_i}{2}$, and the partition count grows as $\\exp(\\Theta(\\sqrt{n}))$. This problem carried a \\$250 prize.",
-    "problemStatement": "For a set of $n$ points $P \\subset \\mathbb{R}^2$, let $\\ell_1, \\ldots, \\ell_m$ be the lines determined by pairs of points. Define the **incidence signature**:\n$$A = \\{|\\ell_1 \\cap P|, \\ldots, |\\ell_m \\cap P|\\}$$\n\nLet $F(n)$ = number of distinct sets $A$ achievable by $n$-point configurations.\n\n**Question**: Is $F(n) \\leq \\exp(O(\\sqrt{n}))$?\n\n**Answer**: YES (Szemerédi-Trotter). Moreover, $F(n) = \\exp(\\Theta(\\sqrt{n}))$—the bound is optimal.",
-    "text": "For n points in ℝ², let A be the multiset of incidence counts (points per line). F(n) counts distinct achievable sets A. Szemerédi-Trotter proved F(n) ≤ exp(O(√n)), which is optimal.",
-    "proofStrategy": "The formalization defines point configurations as injective maps $\\text{Fin}\\, n \\to \\mathbb{R}^2$, lines via the parametric form $p_1 + t(p_2 - p_1)$, and incidence signatures as multisets of point counts per line. The key structural results are: (1) each line contains $2 \\leq |\\ell \\cap P| \\leq n$ points, (2) the number of lines is at most $\\binom{n}{2}$, (3) $\\sum \\binom{k_i}{2} = \\binom{n}{2}$ constrains signatures to integer partitions, (4) the Szemerédi-Trotter incidence bound limits achievable signatures to $\\exp(O(\\sqrt{n}))$. Special configurations (collinear, general position, grid) illustrate extreme cases.",
+    "historicalContext": "The Szemer\u00e9di-Trotter theorem (1983) is one of the most influential results in combinatorial geometry. Endre Szemer\u00e9di and William T. Trotter proved that the number of incidences between $n$ points and $m$ lines in $\\mathbb{R}^2$ is at most $O((nm)^{2/3} + n + m)$, resolving a conjecture of Erd\u0151s. This bound is tight, achieved by grid configurations.\n\nProblem #607 applies the Szemer\u00e9di-Trotter machinery to a counting problem: given $n$ points $P \\subset \\mathbb{R}^2$, the 'incidence signature' $A = \\{|\\ell \\cap P| : \\ell \\text{ determined by } P\\}$ records how many points lie on each line. Let $F(n)$ count the number of distinct achievable signatures. Erd\u0151s asked whether $F(n) \\leq \\exp(O(\\sqrt{n}))$ and noted this would be optimal. Szemer\u00e9di and Trotter confirmed the upper bound using their incidence theorem.\n\nThe $\\sqrt{n}$ growth connects to the Hardy-Ramanujan partition asymptotic $p(n) \\sim \\frac{1}{4n\\sqrt{3}} \\exp(\\pi\\sqrt{2n/3})$: signatures correspond to constrained integer partitions of $\\binom{n}{2}$ into parts $\\binom{k_i}{2}$, and the partition count grows as $\\exp(\\Theta(\\sqrt{n}))$. This problem carried a \\$250 prize.",
+    "problemStatement": "For a set of $n$ points $P \\subset \\mathbb{R}^2$, let $\\ell_1, \\ldots, \\ell_m$ be the lines determined by pairs of points. Define the **incidence signature**:\n$$A = \\{|\\ell_1 \\cap P|, \\ldots, |\\ell_m \\cap P|\\}$$\n\nLet $F(n)$ = number of distinct sets $A$ achievable by $n$-point configurations.\n\n**Question**: Is $F(n) \\leq \\exp(O(\\sqrt{n}))$?\n\n**Answer**: YES (Szemer\u00e9di-Trotter). Moreover, $F(n) = \\exp(\\Theta(\\sqrt{n}))$\u2014the bound is optimal.",
+    "text": "For n points in \u211d\u00b2, let A be the multiset of incidence counts (points per line). F(n) counts distinct achievable sets A. Szemer\u00e9di-Trotter proved F(n) \u2264 exp(O(\u221an)), which is optimal.",
+    "proofStrategy": "The formalization defines point configurations as injective maps $\\text{Fin}\\, n \\to \\mathbb{R}^2$, lines via the parametric form $p_1 + t(p_2 - p_1)$, and incidence signatures as multisets of point counts per line. The key structural results are: (1) each line contains $2 \\leq |\\ell \\cap P| \\leq n$ points, (2) the number of lines is at most $\\binom{n}{2}$, (3) $\\sum \\binom{k_i}{2} = \\binom{n}{2}$ constrains signatures to integer partitions, (4) the Szemer\u00e9di-Trotter incidence bound limits achievable signatures to $\\exp(O(\\sqrt{n}))$. Special configurations (collinear, general position, grid) illustrate extreme cases.",
     "keyInsights": [
       "**Incidence signature**: $A = \\{|\\ell \\cap P| : \\ell \\text{ determined by } P\\}$ encodes the collinearity structure; distinct point sets can yield the same signature",
       "**Partition constraint**: Since each pair of points determines one line, $\\sum_i \\binom{k_i}{2} = \\binom{n}{2}$, reducing signatures to constrained integer partitions of $\\binom{n}{2}$",
       "**Hardy-Ramanujan connection**: The number of such partitions grows as $\\exp(\\Theta(\\sqrt{n}))$, explaining the $\\sqrt{n}$ exponent via the partition function asymptotics $p(n) \\sim \\frac{1}{4n\\sqrt{3}}e^{\\pi\\sqrt{2n/3}}$",
-      "**Szemerédi-Trotter bound**: The incidence inequality $I(P,L) \\leq O((nm)^{2/3} + n + m)$ constrains which partitions are geometrically realizable, giving the upper bound",
+      "**Szemer\u00e9di-Trotter bound**: The incidence inequality $I(P,L) \\leq O((nm)^{2/3} + n + m)$ constrains which partitions are geometrically realizable, giving the upper bound",
       "**Extremal configurations**: Collinear ($A = \\{n\\}$, one line), general position ($A = \\{2\\}$, $\\binom{n}{2}$ lines), and grid ($A$ contains both 2 and $\\sqrt{n}$) represent the boundary cases",
       "**Lower bound construction**: Explicit configurations achieving $\\exp(c\\sqrt{n})$ distinct signatures show the bound is tight"
     ],
@@ -98,7 +98,7 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Header: incidence signatures, $F(n)$ counting function, Szemerédi-Trotter solution, $\\$250$ prize"
+      "summary": "Header: incidence signatures, $F(n)$ counting function, Szemer\u00e9di-Trotter solution, $\\$250$ prize"
     },
     {
       "id": "point-configurations",
@@ -112,7 +112,7 @@
       "title": "Incidence Counts and Signatures",
       "startLine": 63,
       "endLine": 76,
-      "summary": "`incidenceCount` (points on a line), `incidenceSignature` (`Multiset ℕ`), `incidenceSet` (`Finset ℕ` ignoring multiplicities)"
+      "summary": "`incidenceCount` (points on a line), `incidenceSignature` (`Multiset \u2115`), `incidenceSet` (`Finset \u2115` ignoring multiplicities)"
     },
     {
       "id": "f-function",
@@ -151,7 +151,7 @@
     },
     {
       "id": "sz-trotter",
-      "title": "Szemerédi-Trotter Incidence Theorem",
+      "title": "Szemer\u00e9di-Trotter Incidence Theorem",
       "startLine": 151,
       "endLine": 164,
       "summary": "`szemeredi_trotter_incidence`: $I \\leq O((nm)^{2/3} + n + m)$; `incidence_bound_constrains_signature`"
@@ -172,12 +172,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #607 is SOLVED: F(n) = exp(Θ(√n)). The upper bound F(n) ≤ exp(C√n) was proved by Szemerédi and Trotter using their incidence theorem. The lower bound exp(c√n) follows from explicit constructions. The √n exponent arises from the Hardy-Ramanujan partition function, since incidence signatures correspond to constrained partitions of C(n,2).",
-    "implications": "The result connects three areas: (1) incidence geometry via the Szemerédi-Trotter theorem, (2) partition theory via the Hardy-Ramanujan asymptotic, and (3) combinatorial enumeration of geometric configurations. The tight characterization shows that geometric constraints are precisely captured by partition-theoretic bounds.",
+    "summary": "Erd\u0151s Problem #607 is SOLVED: F(n) = exp(\u0398(\u221an)). The upper bound F(n) \u2264 exp(C\u221an) was proved by Szemer\u00e9di and Trotter using their incidence theorem. The lower bound exp(c\u221an) follows from explicit constructions. The \u221an exponent arises from the Hardy-Ramanujan partition function, since incidence signatures correspond to constrained partitions of C(n,2).",
+    "implications": "The result connects three areas: (1) incidence geometry via the Szemer\u00e9di-Trotter theorem, (2) partition theory via the Hardy-Ramanujan asymptotic, and (3) combinatorial enumeration of geometric configurations. The tight characterization shows that geometric constraints are precisely captured by partition-theoretic bounds.",
     "openQuestions": [
-      "What are the exact constants c, C in exp(c√n) ≤ F(n) ≤ exp(C√n)?",
-      "For small n (e.g., n ≤ 20), which specific signatures are achievable?",
-      "How does F(n) behave for point-hyperplane incidences in ℝ³ and higher dimensions?",
+      "What are the exact constants c, C in exp(c\u221an) \u2264 F(n) \u2264 exp(C\u221an)?",
+      "For small n (e.g., n \u2264 20), which specific signatures are achievable?",
+      "How does F(n) behave for point-hyperplane incidences in \u211d\u00b3 and higher dimensions?",
       "What is the relationship between F(n) and the number of distinct line COUNTS (Problem #606)?",
       "Can the partition-theoretic lower bound be strengthened using algebraic geometry (e.g., point-line configurations from algebraic curves)?"
     ]
@@ -196,5 +196,39 @@
     "axiomCount": 1,
     "theoremCount": 13,
     "definitionCount": 13
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and incidence-geometry themes"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and incidence-geometry themes"
+    },
+    {
+      "targetId": "erdos-1069",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and incidence-geometry themes"
+    },
+    {
+      "targetId": "erdos-1085",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and incidence-geometry themes"
+    },
+    {
+      "targetId": "erdos-606",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and incidence-geometry themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-101",
+    "erdos-102",
+    "erdos-1069",
+    "erdos-1085",
+    "erdos-606"
+  ]
 }

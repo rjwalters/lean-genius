@@ -2,9 +2,9 @@
   "id": "erdos-184",
   "title": "Graph Decomposition into Cycles and Edges",
   "slug": "erdos-184",
-  "description": "The Erdős-Gallai Conjecture: Any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. OPEN. Best known: O(n log* n) by Bucić-Montgomery (2022). Lower bound: (1+c)n from K_{3,n-3}.",
+  "description": "The Erd\u0151s-Gallai Conjecture: Any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. OPEN. Best known: O(n log* n) by Buci\u0107-Montgomery (2022). Lower bound: (1+c)n from K_{3,n-3}.",
   "meta": {
-    "author": "Erdős-Gallai (conjecture), Bucić-Montgomery (2022), Conlon-Fox-Sudakov (2014)",
+    "author": "Erd\u0151s-Gallai (conjecture), Buci\u0107-Montgomery (2022), Conlon-Fox-Sudakov (2014)",
     "sourceUrl": "https://erdosproblems.com/184",
     "date": "2022",
     "status": "axiomatized",
@@ -49,8 +49,8 @@
     "originalContributions": [
       "Lean formalization of cycle and edge decomposition",
       "Definition of decomposition number",
-      "Statement of Erdős-Gallai conjecture",
-      "Axiomatization of Bucić-Montgomery O(n log* n) bound",
+      "Statement of Erd\u0151s-Gallai conjecture",
+      "Axiomatization of Buci\u0107-Montgomery O(n log* n) bound",
       "Formalization of iterated logarithm log*",
       "Dense graph result (Conlon-Fox-Sudakov)",
       "Lower bound from bipartite graph K_{3,n-3}"
@@ -58,11 +58,11 @@
     "relatedProofs": [
       {
         "id": "erdos-583",
-        "relationship": "Related Erdős problem on decomposition into paths"
+        "relationship": "Related Erd\u0151s problem on decomposition into paths"
       },
       {
         "id": "erdos-1017",
-        "relationship": "Related Erdős problem on complete graph decomposition"
+        "relationship": "Related Erd\u0151s problem on complete graph decomposition"
       }
     ],
     "axiomCount": 7,
@@ -75,7 +75,7 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 31,
-      "summary": "Docstring stating Erdős Problem #184: the Erdős–Gallai conjecture on $O(n)$ cycle/edge decomposition, with references to Erdős (1971), Bucić–Montgomery (2022), and Conlon–Fox–Sudakov (2014)."
+      "summary": "Docstring stating Erd\u0151s Problem #184: the Erd\u0151s\u2013Gallai conjecture on $O(n)$ cycle/edge decomposition, with references to Erd\u0151s (1971), Buci\u0107\u2013Montgomery (2022), and Conlon\u2013Fox\u2013Sudakov (2014)."
     },
     {
       "id": "imports",
@@ -100,7 +100,7 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erdős–Gallai Conjecture",
+      "title": "The Erd\u0151s\u2013Gallai Conjecture",
       "startLine": 121,
       "endLine": 131,
       "summary": "States the conjecture as a `Prop`: $\\exists C > 0$ such that $\\text{dec}(G) \\leq C \\cdot n$ for all $G$ on $n$ vertices."
@@ -110,21 +110,21 @@
       "title": "Known Upper and Lower Bounds",
       "startLine": 133,
       "endLine": 172,
-      "summary": "Axiomatizes three bounds: Erdős–Gallai's $O(n \\log n)$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Bucić–Montgomery's $O(n \\log^* n)$, and defines the iterated logarithm `logStar`."
+      "summary": "Axiomatizes three bounds: Erd\u0151s\u2013Gallai's $O(n \\log n)$, the $(1+c)n$ lower bound from $K_{3,n-3}$, Buci\u0107\u2013Montgomery's $O(n \\log^* n)$, and defines the iterated logarithm `logStar`."
     },
     {
       "id": "dense-graphs",
       "title": "Dense Graph Result",
       "startLine": 174,
       "endLine": 192,
-      "summary": "Defines `minDegree G` and axiomatizes Conlon–Fox–Sudakov (2014): when $\\delta(G) \\geq \\varepsilon n$, $O(n)$ pieces suffice. The dense case is **fully resolved**."
+      "summary": "Defines `minDegree G` and axiomatizes Conlon\u2013Fox\u2013Sudakov (2014): when $\\delta(G) \\geq \\varepsilon n$, $O(n)$ pieces suffice. The dense case is **fully resolved**."
     },
     {
       "id": "non-disjoint",
       "title": "Non-Disjoint Covering",
       "startLine": 194,
       "endLine": 216,
-      "summary": "Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erdős's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty."
+      "summary": "Defines `IsValidCovering` (drops disjointness) and `coverNumber`. Axiomatizes Erd\u0151s's result: $\\text{cov}(G) \\leq n - 1$, showing the disjointness constraint is the source of difficulty."
     },
     {
       "id": "summary",
@@ -135,15 +135,15 @@
     }
   ],
   "overview": {
-    "historicalContext": "**The Erdős-Gallai Conjecture**\n\nErdős and Gallai conjectured in 1966 that any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. This is a fundamental question in graph decomposition theory: how efficiently can a graph's edge set be partitioned into simple structural pieces? They proved the first upper bound of O(n log n), establishing the order of magnitude up to a logarithmic factor.\n\n**Progress Toward the Conjecture**\n\nConlon, Fox, and Sudakov (2014) proved that O(n) pieces suffice for dense graphs — those with minimum degree at least εn for any fixed ε > 0. This resolved the conjecture for the dense case using Szemerédi's regularity lemma. Bucić and Montgomery (2022) achieved the current best general bound of O(n log* n), where log* is the iterated logarithm — a function that grows so slowly that log*(10^{10^{10}}) ≈ 5. Their proof introduced an iterative peeling technique that extracts dense subgraphs and decomposes them layer by layer.\n\n**The Remaining Gap**\n\nThe gap between the lower bound of (1+c)n (from K_{3,n-3}) and the upper bound of O(n log* n) is remarkably small in practical terms, since log* n ≤ 5 for all feasible n. Yet closing this gap and proving O(n) in full generality has resisted all attempts. The iterated logarithm barrier appears to be a fundamental obstacle in current peeling-based approaches.",
+    "historicalContext": "**The Erd\u0151s-Gallai Conjecture**\n\nErd\u0151s and Gallai conjectured in 1966 that any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. This is a fundamental question in graph decomposition theory: how efficiently can a graph's edge set be partitioned into simple structural pieces? They proved the first upper bound of O(n log n), establishing the order of magnitude up to a logarithmic factor.\n\n**Progress Toward the Conjecture**\n\nConlon, Fox, and Sudakov (2014) proved that O(n) pieces suffice for dense graphs \u2014 those with minimum degree at least \u03b5n for any fixed \u03b5 > 0. This resolved the conjecture for the dense case using Szemer\u00e9di's regularity lemma. Buci\u0107 and Montgomery (2022) achieved the current best general bound of O(n log* n), where log* is the iterated logarithm \u2014 a function that grows so slowly that log*(10^{10^{10}}) \u2248 5. Their proof introduced an iterative peeling technique that extracts dense subgraphs and decomposes them layer by layer.\n\n**The Remaining Gap**\n\nThe gap between the lower bound of (1+c)n (from K_{3,n-3}) and the upper bound of O(n log* n) is remarkably small in practical terms, since log* n \u2264 5 for all feasible n. Yet closing this gap and proving O(n) in full generality has resisted all attempts. The iterated logarithm barrier appears to be a fundamental obstacle in current peeling-based approaches.",
     "problemStatement": "Any graph on $n$ vertices can be decomposed into $O(n)$ many edge-disjoint cycles and edges.",
-    "text": "The Erdős-Gallai Conjecture: Any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. OPEN. Best known: O(n log* n) by Bucić-Montgomery (2022). Lower bound: (1+c)n from K_{3,n-3}.",
-    "proofStrategy": "The formalization defines cycles, edges, and valid decompositions using Mathlib's `SimpleGraph` infrastructure. Key bounds are axiomatized: the original $O(n \\log n)$, Bucić–Montgomery's $O(n \\log^* n)$, the $(1+c)n$ lower bound, the dense graph result, and the non-disjoint covering bound. The summary theorem combines the three main bounds into a single conjunction.",
+    "text": "The Erd\u0151s-Gallai Conjecture: Any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. OPEN. Best known: O(n log* n) by Buci\u0107-Montgomery (2022). Lower bound: (1+c)n from K_{3,n-3}.",
+    "proofStrategy": "The formalization defines cycles, edges, and valid decompositions using Mathlib's `SimpleGraph` infrastructure. Key bounds are axiomatized: the original $O(n \\log n)$, Buci\u0107\u2013Montgomery's $O(n \\log^* n)$, the $(1+c)n$ lower bound, the dense graph result, and the non-disjoint covering bound. The summary theorem combines the three main bounds into a single conjunction.",
     "keyInsights": [
       "**Iterated logarithm barrier**: The gap between $O(n)$ and $O(n \\log^* n)$ is tiny in practice ($\\log^* n \\leq 5$ for all feasible $n$) but closing it requires fundamentally new techniques beyond iterative peeling",
-      "**Dense vs. sparse dichotomy**: The conjecture is fully resolved for dense graphs ($\\delta(G) \\geq \\varepsilon n$) by Conlon–Fox–Sudakov via Szemerédi regularity; only sparse graphs remain open",
+      "**Dense vs. sparse dichotomy**: The conjecture is fully resolved for dense graphs ($\\delta(G) \\geq \\varepsilon n$) by Conlon\u2013Fox\u2013Sudakov via Szemer\u00e9di regularity; only sparse graphs remain open",
       "**Lower bound from bipartite structure**: $K_{3,n-3}$ shows the optimal constant $C$ must exceed 1, because cycles in bipartite graphs have even length $\\geq 4$, leaving surplus edges",
-      "**Covering vs. partition gap**: Without edge-disjointness, $n-1$ pieces suffice (via spanning tree + fundamental cycles), versus $\\Theta(n \\log^* n)$ with disjointness — the constraint creates the difficulty",
+      "**Covering vs. partition gap**: Without edge-disjointness, $n-1$ pieces suffice (via spanning tree + fundamental cycles), versus $\\Theta(n \\log^* n)$ with disjointness \u2014 the constraint creates the difficulty",
       "**Constructive definitions**: The Lean formalization defines `Cycle`, `SingleEdge`, `DecompPiece`, and `IsValidDecomposition` constructively, with only the optimization (`decompNumber`) and deep bounds axiomatized"
     ],
     "prerequisites": [
@@ -152,13 +152,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #184 remains OPEN. The Erdős–Gallai conjecture that O(n) cycles and edges suffice for any graph is unresolved. The current best bound O(n log* n) by Bucić–Montgomery (2022) is tantalizingly close — since log* n ≤ 5 for all feasible n, the bound is essentially 5n in practice. The formalization captures all major results with constructive definitions and axiomatized bounds.",
-    "implications": "**Theoretical Significance**: Resolution would advance our understanding of graph structure at a fundamental level.\n\nThe problem connects to cycle packing (Erdős–Pósa theorem), edge coloring (Vizing's theorem), and matroid decomposition. The iterative peeling technique of Bucić–Montgomery may find applications in other decomposition problems.",
+    "summary": "Erd\u0151s Problem #184 remains OPEN. The Erd\u0151s\u2013Gallai conjecture that O(n) cycles and edges suffice for any graph is unresolved. The current best bound O(n log* n) by Buci\u0107\u2013Montgomery (2022) is tantalizingly close \u2014 since log* n \u2264 5 for all feasible n, the bound is essentially 5n in practice. The formalization captures all major results with constructive definitions and axiomatized bounds.",
+    "implications": "**Theoretical Significance**: Resolution would advance our understanding of graph structure at a fundamental level.\n\nThe problem connects to cycle packing (Erd\u0151s\u2013P\u00f3sa theorem), edge coloring (Vizing's theorem), and matroid decomposition. The iterative peeling technique of Buci\u0107\u2013Montgomery may find applications in other decomposition problems.",
     "openQuestions": [
-      "Can the Bucić–Montgomery $O(n \\log^* n)$ bound be improved to $O(n)$, or is there a superlinear lower bound hiding in sparse graphs?",
+      "Can the Buci\u0107\u2013Montgomery $O(n \\log^* n)$ bound be improved to $O(n)$, or is there a superlinear lower bound hiding in sparse graphs?",
       "What is the exact optimal constant $C$ in the lower bound $(1+c)n$? Is $K_{3,n-3}$ the worst case?",
       "Does the conjecture hold for planar graphs or other restricted graph families where stronger structural results are available?",
-      "Can the Conlon–Fox–Sudakov regularity approach be extended to handle graphs with sublinear minimum degree?"
+      "Can the Conlon\u2013Fox\u2013Sudakov regularity approach be extended to handle graphs with sublinear minimum degree?"
     ]
   },
   "leanFile": {
@@ -179,10 +179,44 @@
     "definitionCount": 7
   },
   "references": [
-    "Erdős–Gallai (1966): original conjecture and O(n log n) bound",
-    "Conlon–Fox–Sudakov (2014): O(n) for dense graphs, Annals of Math. 180(3), 1121–1174",
-    "Bucić–Montgomery (2022): O(n log* n) bound, arXiv:2209.01051",
-    "Erdős (1971): 'Some unsolved problems in graph theory'",
+    "Erd\u0151s\u2013Gallai (1966): original conjecture and O(n log n) bound",
+    "Conlon\u2013Fox\u2013Sudakov (2014): O(n) for dense graphs, Annals of Math. 180(3), 1121\u20131174",
+    "Buci\u0107\u2013Montgomery (2022): O(n log* n) bound, arXiv:2209.01051",
+    "Erd\u0151s (1971): 'Some unsolved problems in graph theory'",
     "https://erdosproblems.com/184"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1008",
+      "relationship": "related",
+      "description": "Share cycles and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Share cycles and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-551",
+      "relationship": "related",
+      "description": "Share cycles and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Share cycles and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-570",
+      "relationship": "related",
+      "description": "Share cycles and graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1008",
+    "erdos-1080",
+    "erdos-551",
+    "erdos-57",
+    "erdos-570"
   ]
 }

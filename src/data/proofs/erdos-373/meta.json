@@ -61,7 +61,7 @@
       "**ABC connection**: Luca's 2007 result uses the ABC conjecture to control the size of solutions, giving conditional finiteness.",
       "**Computational evidence**: No two-factor solutions except 10! = 6!7! exist for n <= 10^3000, strong evidence for Suranyi's conjecture.",
       "**Prime factor bounds**: Erdos showed the problem reduces to P(n(n-1)) > 4 log n, connecting to open problems in analytic number theory.",
-      "**Unique factorization paradox**: Despite ℕ having unique factorization, factorials grow so rapidly that the equation n! = a₁!·a₂!···aₖ! becomes extremely overdetermined — the existence of even one non-trivial solution (10! = 6!·7!) is itself remarkable"
+      "**Unique factorization paradox**: Despite \u2115 having unique factorization, factorials grow so rapidly that the equation n! = a\u2081!\u00b7a\u2082!\u00b7\u00b7\u00b7a\u2096! becomes extremely overdetermined \u2014 the existence of even one non-trivial solution (10! = 6!\u00b77!) is itself remarkable"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -157,5 +157,39 @@
     "axiomCount": 13,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-388",
+      "relationship": "related",
+      "description": "Share factorials, diophantine-equations, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-393",
+      "relationship": "related",
+      "description": "Share factorials, diophantine-equations, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-399",
+      "relationship": "related",
+      "description": "Share factorials, diophantine-equations, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-405",
+      "relationship": "related",
+      "description": "Share factorials, diophantine-equations, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Share factorials and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-388",
+    "erdos-393",
+    "erdos-399",
+    "erdos-405",
+    "erdos-1056"
+  ]
 }

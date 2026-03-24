@@ -1,8 +1,8 @@
 {
   "id": "erdos-566",
-  "title": "Erdős Problem #566: Ramsey Size Linearity for Sparse Graphs",
+  "title": "Erd\u0151s Problem #566: Ramsey Size Linearity for Sparse Graphs",
   "slug": "erdos-566",
-  "description": "If every k-vertex subgraph of G has at most 2k−3 edges, is G Ramsey size linear? True for ≤ n+1 edges (EFRS 1993), false for 2n−2 edges. Implies Problem #567. Open.",
+  "description": "If every k-vertex subgraph of G has at most 2k\u22123 edges, is G Ramsey size linear? True for \u2264 n+1 edges (EFRS 1993), false for 2n\u22122 edges. Implies Problem #567. Open.",
   "meta": {
     "erdosNumber": 566,
     "status": "axiomatized",
@@ -31,7 +31,7 @@
       "title": "Problem Statement and Context",
       "startLine": 1,
       "endLine": 16,
-      "summary": "Module docstring stating Erdős Problem #566: is every $(2k-3)$-sparse graph Ramsey size linear? Lists known positive and negative results and notes the problem is OPEN."
+      "summary": "Module docstring stating Erd\u0151s Problem #566: is every $(2k-3)$-sparse graph Ramsey size linear? Lists known positive and negative results and notes the problem is OPEN."
     },
     {
       "id": "imports",
@@ -91,15 +91,15 @@
     }
   ],
   "overview": {
-    "historicalContext": "The notion of size Ramsey numbers was introduced by Erdős, Faudree, Rousseau, and Schelp in 1978 as a refinement of classical Ramsey theory: rather than asking for the minimum number of vertices, $\\hat{r}(G,H)$ measures the minimum number of edges in a host graph guaranteeing monochromatic copies. In 1983, József Beck made a breakthrough by proving $\\hat{r}(P_n) = O(n)$ for paths, resolving an Erdős conjecture and earning the Fulkerson Prize. This opened the question of which graphs are 'Ramsey size linear.' In their landmark 1993 paper, Erdős, Faudree, Rousseau, and Schelp proved that graphs with at most $n+1$ edges are Ramsey size linear and conjectured that the $(2k-3)$-sparsity condition characterizes this property. They also showed that graphs with $2n-2$ edges can fail, establishing the threshold's tightness. Recent progress by Bradač, Gishboliner, and Sudakov (2024) proved that $K_4$-subdivisions with at least 6 vertices are Ramsey size linear, advancing specific cases while the general conjecture remains open.",
+    "historicalContext": "The notion of size Ramsey numbers was introduced by Erd\u0151s, Faudree, Rousseau, and Schelp in 1978 as a refinement of classical Ramsey theory: rather than asking for the minimum number of vertices, $\\hat{r}(G,H)$ measures the minimum number of edges in a host graph guaranteeing monochromatic copies. In 1983, J\u00f3zsef Beck made a breakthrough by proving $\\hat{r}(P_n) = O(n)$ for paths, resolving an Erd\u0151s conjecture and earning the Fulkerson Prize. This opened the question of which graphs are 'Ramsey size linear.' In their landmark 1993 paper, Erd\u0151s, Faudree, Rousseau, and Schelp proved that graphs with at most $n+1$ edges are Ramsey size linear and conjectured that the $(2k-3)$-sparsity condition characterizes this property. They also showed that graphs with $2n-2$ edges can fail, establishing the threshold's tightness. Recent progress by Brada\u010d, Gishboliner, and Sudakov (2024) proved that $K_4$-subdivisions with at least 6 vertices are Ramsey size linear, advancing specific cases while the general conjecture remains open.",
     "problemStatement": "Let $G$ be a graph such that every subgraph on $k \\ge 2$ vertices has at most $2k - 3$ edges. Is $G$ **Ramsey size linear**? That is, does there exist a constant $c = c(G) > 0$ such that $\\hat{r}(G, H) \\le c \\cdot |E(H)|$ for every graph $H$ with no isolated vertices?",
-    "text": "If every k-vertex subgraph of G has at most 2k−3 edges, is G Ramsey size linear? True for ≤ n+1 edges (EFRS 1993), false for 2n−2 edges. Implies Problem #567. Open.",
+    "text": "If every k-vertex subgraph of G has at most 2k\u22123 edges, is G Ramsey size linear? True for \u2264 n+1 edges (EFRS 1993), false for 2n\u22122 edges. Implies Problem #567. Open.",
     "proofStrategy": "The formalization defines graphs as symmetric irreflexive adjacency predicates on finite types, then introduces the $(2k-3)$-sparsity condition, the no-isolated-vertices condition, and the size Ramsey number $\\hat{r}(G,H)$. The main conjecture is stated as an axiom (reflecting its open status), alongside three key known results: the EFRS theorem for $\\le n+1$ edges, the counterexample at $2n-2$ edges, and trees being Ramsey size linear. Together these delineate the boundary of current knowledge.",
     "keyInsights": [
       "**Size vs. classical Ramsey**: $\\hat{r}(G,H)$ refines $R(G,H)$ by measuring edge complexity rather than vertex count, capturing finer structural properties of Ramsey phenomena",
       "**Sparsity threshold is tight**: The gap between $n+1$ edges (confirmed linear) and $2n-2$ edges (counterexample exists) brackets the conjectured $(2k-3)$ threshold, which would be a clean density-based characterization",
       "**Beck's Fulkerson Prize result**: Beck's 1983 proof that $\\hat{r}(P_n) = O(n)$ was the first major size Ramsey linearity result and remains foundational; it showed that even the simplest sparse graphs (paths) required new techniques",
-      "**Unicyclic bridge**: Graphs with $\\le n+1$ edges have cyclomatic number $\\le 1$ (trees plus at most one cycle), and the EFRS proof exploits this structure — the gap to $(2k-3)$-sparse graphs requires handling multiple cycles",
+      "**Unicyclic bridge**: Graphs with $\\le n+1$ edges have cyclomatic number $\\le 1$ (trees plus at most one cycle), and the EFRS proof exploits this structure \u2014 the gap to $(2k-3)$-sparse graphs requires handling multiple cycles",
       "**Implication hierarchy**: Problem #566 implies Problem #567, which asks about specific $(2k-3)$-sparse graphs ($Q_3$, $K_{3,3}$, $H_5$), illustrating how a general density criterion would resolve concrete cases"
     ],
     "prerequisites": [
@@ -109,20 +109,54 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures the landscape of Erdős Problem #566: the conjecture that $(2k-3)$-sparsity characterizes Ramsey size linearity. The Lean file axiomatizes the core definitions (graph, sparsity, size Ramsey number), states the open conjecture, and records the three pillars of current knowledge — the EFRS positive result for unicyclic-or-simpler graphs, the tightness counterexample at $2n-2$ edges, and the classical result that trees are Ramsey size linear.",
+    "summary": "This formalization captures the landscape of Erd\u0151s Problem #566: the conjecture that $(2k-3)$-sparsity characterizes Ramsey size linearity. The Lean file axiomatizes the core definitions (graph, sparsity, size Ramsey number), states the open conjecture, and records the three pillars of current knowledge \u2014 the EFRS positive result for unicyclic-or-simpler graphs, the tightness counterexample at $2n-2$ edges, and the classical result that trees are Ramsey size linear.",
     "implications": "A positive resolution would provide a **complete combinatorial characterization** of Ramsey size linearity in terms of subgraph density: a graph is Ramsey size linear if and only if it is $(2k-3)$-sparse. This would unify decades of case-by-case results (paths, trees, bounded-degree graphs, specific graph families) under a single density condition, and would immediately resolve Problem #567 and likely other open size Ramsey questions.",
     "openQuestions": [
       "Can the EFRS bound of $n+1$ edges be extended to $\\alpha n$ for some $\\alpha > 1$, narrowing the gap to $2n-3$?",
-      "Is there a probabilistic or regularity-lemma-based approach to the full $(2k-3)$ conjecture, analogous to how Rödl's nibble method applies in classical Ramsey theory?",
+      "Is there a probabilistic or regularity-lemma-based approach to the full $(2k-3)$ conjecture, analogous to how R\u00f6dl's nibble method applies in classical Ramsey theory?",
       "For specific $(2k-3)$-sparse graphs like $Q_3$ and $K_{3,3}$ (Problem #567), can the size Ramsey linearity be proved directly without resolving the full conjecture?",
-      "What is the correct growth rate of $\\hat{r}(G,H)$ for graphs $G$ just above the $(2k-3)$ threshold — is the transition from linear to superlinear sharp or gradual?"
+      "What is the correct growth rate of $\\hat{r}(G,H)$ for graphs $G$ just above the $(2k-3)$ threshold \u2014 is the transition from linear to superlinear sharp or gradual?"
     ]
   },
   "references": [
-    "Erdős, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs [EFRS93]",
-    "Erdős, Faudree, Rousseau & Schelp (1978): Size Ramsey numbers involving matchings",
+    "Erd\u0151s, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs [EFRS93]",
+    "Erd\u0151s, Faudree, Rousseau & Schelp (1978): Size Ramsey numbers involving matchings",
     "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
-    "Bradač, Gishboliner & Sudakov (2024): Size Ramsey numbers of K₄-subdivisions",
+    "Brada\u010d, Gishboliner & Sudakov (2024): Size Ramsey numbers of K\u2084-subdivisions",
     "https://erdosproblems.com/566"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-567",
+      "relationship": "related",
+      "description": "Share size-ramsey, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-613",
+      "relationship": "related",
+      "description": "Share size-ramsey, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-720",
+      "relationship": "related",
+      "description": "Share size-ramsey, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-567",
+    "erdos-613",
+    "erdos-720",
+    "erdos-1014",
+    "erdos-1029"
   ]
 }

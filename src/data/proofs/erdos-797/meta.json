@@ -1,10 +1,10 @@
 {
   "id": "erdos-797",
-  "title": "Erdős Problem #797: Acyclic Chromatic Number",
+  "title": "Erd\u0151s Problem #797: Acyclic Chromatic Number",
   "slug": "erdos-797",
-  "description": "Let f(d) be the maximal acyclic chromatic number of any graph with maximum degree d. Estimate f(d). In particular, is f(d) = o(d²)? Resolved: f(d) = Θ(d^{4/3}) by Alon-McDiarmid-Reed (1991).",
+  "description": "Let f(d) be the maximal acyclic chromatic number of any graph with maximum degree d. Estimate f(d). In particular, is f(d) = o(d\u00b2)? Resolved: f(d) = \u0398(d^{4/3}) by Alon-McDiarmid-Reed (1991).",
   "meta": {
-    "author": "Alon-McDiarmid-Reed (1991 solution), Erdős (problem)",
+    "author": "Alon-McDiarmid-Reed (1991 solution), Erd\u0151s (problem)",
     "sourceUrl": "https://erdosproblems.com/797",
     "date": "1991",
     "status": "axiomatized",
@@ -53,10 +53,10 @@
       "maxDegree via Finset.sup over vertex degrees",
       "acyclicChromaticNumber via sInf",
       "f(d) axiomatized with f_realized existence guarantee",
-      "Greedy, Erdős, AMR, and precise lower bound axioms",
-      "asymptotic_theta combining upper and lower into Θ(d^{4/3})",
+      "Greedy, Erd\u0151s, AMR, and precise lower bound axioms",
+      "asymptotic_theta combining upper and lower into \u0398(d^{4/3})",
       "is_B2_sequence connecting to Sidon sets",
-      "erdos_797_subquadratic: f(d) = o(d²) answering the original question",
+      "erdos_797_subquadratic: f(d) = o(d\u00b2) answering the original question",
       "erdos_797_summary proved theorem combining AMR upper and precise lower"
     ],
     "axiomCount": 8,
@@ -64,15 +64,15 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős asked for estimates of f(d), the maximum acyclic chromatic number over all graphs with maximum degree d. An acyclic coloring is a proper vertex coloring in which no cycle is bichromatic (uses only two colors). A greedy argument gives f(d) ≤ d² + 1, and Erdős asked whether f(d) = o(d²).\n\nErdős himself showed the lower bound f(d) ≥ d^{4/3 - o(1)} using probabilistic constructions related to B₂ sequences (Sidon sets). The problem was resolved by Alon, McDiarmid, and Reed in 1991, who proved the matching upper bound f(d) ≤ O(d^{4/3}) using the Lovász Local Lemma, confirming that f(d) = o(d²) and establishing f(d) = Θ(d^{4/3}).\n\nThe precise asymptotics remain slightly open: the best bounds are c·d^{4/3}/(log d)^{1/3} ≤ f(d) ≤ C·d^{4/3}, leaving a (log d)^{1/3} gap. The connection to B₂ sequences (Sidon sets) is central to the lower bound construction — dense Sidon sets in ℤ_p yield graphs requiring many colors for acyclic coloring.",
+    "historicalContext": "Erd\u0151s asked for estimates of f(d), the maximum acyclic chromatic number over all graphs with maximum degree d. An acyclic coloring is a proper vertex coloring in which no cycle is bichromatic (uses only two colors). A greedy argument gives f(d) \u2264 d\u00b2 + 1, and Erd\u0151s asked whether f(d) = o(d\u00b2).\n\nErd\u0151s himself showed the lower bound f(d) \u2265 d^{4/3 - o(1)} using probabilistic constructions related to B\u2082 sequences (Sidon sets). The problem was resolved by Alon, McDiarmid, and Reed in 1991, who proved the matching upper bound f(d) \u2264 O(d^{4/3}) using the Lov\u00e1sz Local Lemma, confirming that f(d) = o(d\u00b2) and establishing f(d) = \u0398(d^{4/3}).\n\nThe precise asymptotics remain slightly open: the best bounds are c\u00b7d^{4/3}/(log d)^{1/3} \u2264 f(d) \u2264 C\u00b7d^{4/3}, leaving a (log d)^{1/3} gap. The connection to B\u2082 sequences (Sidon sets) is central to the lower bound construction \u2014 dense Sidon sets in \u2124_p yield graphs requiring many colors for acyclic coloring.",
     "problemStatement": "Let $f(d)$ be the maximal acyclic chromatic number of any graph with maximum degree $d$. An acyclic coloring is a proper coloring where no cycle uses only two colors.\n\nEstimate $f(d)$. In particular, is it true that $f(d) = o(d^2)$?\n\n**Answer:** YES. $f(d) = \\Theta(d^{4/3})$.\n- Upper: $f(d) \\leq O(d^{4/3})$ [Alon-McDiarmid-Reed 1991]\n- Lower: $f(d) \\geq \\Omega(d^{4/3} / (\\log d)^{1/3})$",
-    "text": "Let f(d) be the maximal acyclic chromatic number of any graph with maximum degree d. Estimate f(d). In particular, is f(d) = o(d²)? Resolved: f(d) = Θ(d^{4/3}) by Alon-McDiarmid-Reed (1991).",
-    "proofStrategy": "The formalization defines acyclic coloring via IsProperColoring and HasBichromaticCycle predicates, then axiomatizes f(d) as the extremal function. Four bounds are axiomatized: the greedy upper bound d² + 1, Erdős's lower bound d^{4/3 - ε}, the AMR upper bound O(d^{4/3}), and the precise lower bound Ω(d^{4/3}/(log d)^{1/3}). The subquadratic property f(d) = o(d²) is axiomatized as an explicit ε-δ statement. The summary theorem proves the conjunction of the AMR upper bound and the precise lower bound.",
+    "text": "Let f(d) be the maximal acyclic chromatic number of any graph with maximum degree d. Estimate f(d). In particular, is f(d) = o(d\u00b2)? Resolved: f(d) = \u0398(d^{4/3}) by Alon-McDiarmid-Reed (1991).",
+    "proofStrategy": "The formalization defines acyclic coloring via IsProperColoring and HasBichromaticCycle predicates, then axiomatizes f(d) as the extremal function. Four bounds are axiomatized: the greedy upper bound d\u00b2 + 1, Erd\u0151s's lower bound d^{4/3 - \u03b5}, the AMR upper bound O(d^{4/3}), and the precise lower bound \u03a9(d^{4/3}/(log d)^{1/3}). The subquadratic property f(d) = o(d\u00b2) is axiomatized as an explicit \u03b5-\u03b4 statement. The summary theorem proves the conjunction of the AMR upper bound and the precise lower bound.",
     "keyInsights": [
-      "**Greedy Bound:** f(d) ≤ d² + 1 is far from optimal — the true answer is d^{4/3}",
-      "**Probabilistic Lower Bound:** Erdős's d^{4/3 - o(1)} lower bound using Sidon sets suggested the true order of magnitude",
-      "**Lovász Local Lemma:** AMR's upper bound proof uses LLL to show random colorings can be repaired to avoid bichromatic cycles",
-      "**B₂ (Sidon) Sequences:** Dense Sidon sets in ℤ_p provide the key lower bound constructions",
+      "**Greedy Bound:** f(d) \u2264 d\u00b2 + 1 is far from optimal \u2014 the true answer is d^{4/3}",
+      "**Probabilistic Lower Bound:** Erd\u0151s's d^{4/3 - o(1)} lower bound using Sidon sets suggested the true order of magnitude",
+      "**Lov\u00e1sz Local Lemma:** AMR's upper bound proof uses LLL to show random colorings can be repaired to avoid bichromatic cycles",
+      "**B\u2082 (Sidon) Sequences:** Dense Sidon sets in \u2124_p provide the key lower bound constructions",
       "**Logarithmic Gap:** A (log d)^{1/3} gap between upper and lower bounds remains open"
     ],
     "prerequisites": [
@@ -100,28 +100,28 @@
       "title": "Known Bounds",
       "startLine": 88,
       "endLine": 118,
-      "summary": "Greedy, Erdős, AMR upper, and precise lower bounds"
+      "summary": "Greedy, Erd\u0151s, AMR upper, and precise lower bounds"
     },
     {
       "id": "theta-bound",
       "title": "The Theta Bound",
       "startLine": 120,
       "endLine": 129,
-      "summary": "asymptotic_theta combining bounds into Θ(d^{4/3})"
+      "summary": "asymptotic_theta combining bounds into \u0398(d^{4/3})"
     },
     {
       "id": "b2-connection",
-      "title": "Connection to B₂ Sequences",
+      "title": "Connection to B\u2082 Sequences",
       "startLine": 131,
       "endLine": 142,
       "summary": "is_B2_sequence linking to Sidon sets"
     },
     {
       "id": "subquadratic",
-      "title": "The Original Question: f(d) = o(d²)",
+      "title": "The Original Question: f(d) = o(d\u00b2)",
       "startLine": 144,
       "endLine": 150,
-      "summary": "erdos_797_subquadratic answering Erdős's question"
+      "summary": "erdos_797_subquadratic answering Erd\u0151s's question"
     },
     {
       "id": "summary",
@@ -132,8 +132,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #797 asks for estimates of f(d), the maximum acyclic chromatic number over graphs with maximum degree d. The answer is f(d) = Θ(d^{4/3}), confirmed by Alon-McDiarmid-Reed (1991) who proved the upper bound O(d^{4/3}) using the Lovász Local Lemma. The lower bound Ω(d^{4/3}/(log d)^{1/3}) comes from Sidon set constructions.",
-    "implications": "The resolution connects graph coloring theory to additive combinatorics (B₂ sequences) and probabilistic methods (Lovász Local Lemma). The techniques developed for this problem have been influential in chromatic graph theory and extremal combinatorics.",
+    "summary": "Erd\u0151s Problem #797 asks for estimates of f(d), the maximum acyclic chromatic number over graphs with maximum degree d. The answer is f(d) = \u0398(d^{4/3}), confirmed by Alon-McDiarmid-Reed (1991) who proved the upper bound O(d^{4/3}) using the Lov\u00e1sz Local Lemma. The lower bound \u03a9(d^{4/3}/(log d)^{1/3}) comes from Sidon set constructions.",
+    "implications": "The resolution connects graph coloring theory to additive combinatorics (B\u2082 sequences) and probabilistic methods (Lov\u00e1sz Local Lemma). The techniques developed for this problem have been influential in chromatic graph theory and extremal combinatorics.",
     "openQuestions": [
       "Close the (log d)^{1/3} gap between upper and lower bounds",
       "Determine the exact constant in the leading term of f(d)",
@@ -159,5 +159,39 @@
     "axiomCount": 8,
     "theoremCount": 1,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-626",
+      "relationship": "related",
+      "description": "Share probabilistic-method, graph-theoretic, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-753",
+      "relationship": "related",
+      "description": "Share probabilistic-method, graph-theoretic, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-833",
+      "relationship": "related",
+      "description": "Share probabilistic-method, graph-theoretic, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-87",
+      "relationship": "related",
+      "description": "Share probabilistic-method, graph-theoretic, and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1006",
+      "relationship": "related",
+      "description": "Share probabilistic-method and graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-626",
+    "erdos-753",
+    "erdos-833",
+    "erdos-87",
+    "erdos-1006"
+  ]
 }

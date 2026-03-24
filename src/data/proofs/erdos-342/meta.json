@@ -1,10 +1,10 @@
 {
   "id": "erdos-342",
-  "title": "Erdős Problem #342: The Ulam Sequence U(1,2)",
+  "title": "Erd\u0151s Problem #342: The Ulam Sequence U(1,2)",
   "slug": "erdos-342",
-  "description": "In the Ulam sequence a₁=1, a₂=2, where a_{n+1} is the least integer > aₙ uniquely representable as aᵢ+aⱼ (i<j), do infinitely many twin pairs (a, a+2) occur? OPEN.",
+  "description": "In the Ulam sequence a\u2081=1, a\u2082=2, where a_{n+1} is the least integer > a\u2099 uniquely representable as a\u1d62+a\u2c7c (i<j), do infinitely many twin pairs (a, a+2) occur? OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/342",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos342Problem.lean",
@@ -24,7 +24,7 @@
     "axiomCount": 15,
     "prerequisites": [
       "Ulam sequences and unique-sum representations",
-      "Additive combinatorics (B₂ sequences)",
+      "Additive combinatorics (B\u2082 sequences)",
       "Natural density and asymptotic analysis",
       "Lean 4 Set.Infinite and Filter.Tendsto"
     ],
@@ -32,20 +32,20 @@
     "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Stanisław Ulam introduced this sequence in 1964 as part of his broad program of studying simple recursive constructions with complex emergent behavior. The Ulam sequence U(1,2) begins 1, 2, 3, 4, 6, 8, 11, 13, 16, 18, 26, 28, ... (OEIS A002858), where each term is the smallest integer expressible as a sum of two distinct earlier terms in exactly one way. The number 5 is excluded because 5 = 1+4 = 2+3 has two representations.\n\nErdős asked whether the Ulam sequence has positive density — i.e., whether the proportion of integers in the sequence stays bounded away from zero. Empirical computation suggests the density converges to approximately 0.0739, but proving this rigorously is remarkably difficult. The sequence exhibits quasi-periodic behavior that resists standard analytic methods.\n\nSteinerberger (2015) discovered a stunning hidden regularity: the Fourier transform of the characteristic function of U(1,2) has a single dominant frequency at 2π/λ where λ ≈ 2.5714. This suggests the sequence has deep quasi-crystalline structure, connecting to aperiodic tilings and mathematical physics. Despite this empirical understanding, proving positive density remains open.",
-    "problemStatement": "Define a sequence where a₁ = 1, a₂ = 2, and for n ≥ 2, a_{n+1} is the least integer greater than aₙ that can be expressed uniquely as aᵢ + aⱼ with i < j ≤ n. Do infinitely many twin pairs (a, a+2) occur in this sequence? OPEN.",
-    "text": "In the Ulam sequence a₁=1, a₂=2, where a_{n+1} is the least integer > aₙ uniquely representable as aᵢ+aⱼ (i<j), do infinitely many twin pairs (a, a+2) occur? OPEN.",
+    "historicalContext": "Stanis\u0142aw Ulam introduced this sequence in 1964 as part of his broad program of studying simple recursive constructions with complex emergent behavior. The Ulam sequence U(1,2) begins 1, 2, 3, 4, 6, 8, 11, 13, 16, 18, 26, 28, ... (OEIS A002858), where each term is the smallest integer expressible as a sum of two distinct earlier terms in exactly one way. The number 5 is excluded because 5 = 1+4 = 2+3 has two representations.\n\nErd\u0151s asked whether the Ulam sequence has positive density \u2014 i.e., whether the proportion of integers in the sequence stays bounded away from zero. Empirical computation suggests the density converges to approximately 0.0739, but proving this rigorously is remarkably difficult. The sequence exhibits quasi-periodic behavior that resists standard analytic methods.\n\nSteinerberger (2015) discovered a stunning hidden regularity: the Fourier transform of the characteristic function of U(1,2) has a single dominant frequency at 2\u03c0/\u03bb where \u03bb \u2248 2.5714. This suggests the sequence has deep quasi-crystalline structure, connecting to aperiodic tilings and mathematical physics. Despite this empirical understanding, proving positive density remains open.",
+    "problemStatement": "Define a sequence where a\u2081 = 1, a\u2082 = 2, and for n \u2265 2, a_{n+1} is the least integer greater than a\u2099 that can be expressed uniquely as a\u1d62 + a\u2c7c with i < j \u2264 n. Do infinitely many twin pairs (a, a+2) occur in this sequence? OPEN.",
+    "text": "In the Ulam sequence a\u2081=1, a\u2082=2, where a_{n+1} is the least integer > a\u2099 uniquely representable as a\u1d62+a\u2c7c (i<j), do infinitely many twin pairs (a, a+2) occur? OPEN.",
     "proofStrategy": "The formalization defines the Ulam sequence (noncomputable, with initial values axiomatized), the unique representation property, twin pairs, and the conjecture as Set.Infinite of twin indices. Growth rate and density questions are also formalized. The equivalence theorem erdos_342_statement is proved by simp.",
     "keyInsights": [
       "Each term is the smallest integer with exactly one representation as a sum of two distinct earlier terms",
       "5 is excluded because 5 = 1+4 = 2+3 has two representations",
-      "The growth rate is approximately a(n) ≈ 13.5n (empirical, Steinerberger 2015)",
+      "The growth rate is approximately a(n) \u2248 13.5n (empirical, Steinerberger 2015)",
       "Twin pairs like (26,28) and (478,480) appear but their infinitude is unknown",
       "The density of the Ulam sequence is also an open question"
     ],
     "prerequisites": [
       "Ulam sequences and unique-sum representations",
-      "Additive combinatorics (B₂ sequences)",
+      "Additive combinatorics (B\u2082 sequences)",
       "Natural density and asymptotic analysis",
       "Lean 4 Set.Infinite and Filter.Tendsto"
     ]
@@ -56,7 +56,7 @@
       "title": "Part I: The Ulam Sequence Definition",
       "startLine": 33,
       "endLine": 45,
-      "summary": "Defines ulamSeq as ℕ → ℕ with initial values a(0)=1, a(1)=2. Axiom: strict monotonicity."
+      "summary": "Defines ulamSeq as \u2115 \u2192 \u2115 with initial values a(0)=1, a(1)=2. Axiom: strict monotonicity."
     },
     {
       "id": "representation",
@@ -81,7 +81,7 @@
     },
     {
       "id": "conjecture",
-      "title": "Part V: The Erdős Conjecture",
+      "title": "Part V: The Erd\u0151s Conjecture",
       "startLine": 97,
       "endLine": 107,
       "summary": "Defines ErdosConjecture342: Set.Infinite twinIndices. Axiom erdos_342."
@@ -98,7 +98,7 @@
       "title": "Part VII: Growth Rate",
       "startLine": 124,
       "endLine": 134,
-      "summary": "Axioms: ulamSeq_growth (linear growth with constant C) and ulamSeq_growth_constant (C ≈ 13.5)."
+      "summary": "Axioms: ulamSeq_growth (linear growth with constant C) and ulamSeq_growth_constant (C \u2248 13.5)."
     },
     {
       "id": "additive-structure",
@@ -116,12 +116,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #342 asks whether the Ulam sequence U(1,2) contains infinitely many twin pairs (a, a+2). The sequence is defined by unique-sum representations and grows roughly linearly. The problem remains open, as does the question of density.",
-    "implications": "Resolution would illuminate the additive structure of Ulam sequences, connecting to additive combinatorics and the theory of B₂ sequences.",
+    "summary": "Erd\u0151s Problem #342 asks whether the Ulam sequence U(1,2) contains infinitely many twin pairs (a, a+2). The sequence is defined by unique-sum representations and grows roughly linearly. The problem remains open, as does the question of density.",
+    "implications": "Resolution would illuminate the additive structure of Ulam sequences, connecting to additive combinatorics and the theory of B\u2082 sequences.",
     "openQuestions": [
       "Do infinitely many twin pairs (a, a+2) occur?",
       "Does the Ulam sequence have asymptotic density zero?",
-      "What is the exact growth constant (empirically ≈ 13.5)?",
+      "What is the exact growth constant (empirically \u2248 13.5)?",
       "How do generalized Ulam sequences U(a,b) behave?"
     ]
   },
@@ -142,5 +142,39 @@
     "axiomCount": 15,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-423",
+      "relationship": "related",
+      "description": "Share number-theoretic, sequence, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-839",
+      "relationship": "related",
+      "description": "Share number-theoretic, sequence, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Share number-theoretic and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Share number-theoretic and sequence themes"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Share number-theoretic and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-423",
+    "erdos-839",
+    "erdos-11",
+    "erdos-1101",
+    "erdos-1103"
+  ]
 }

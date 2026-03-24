@@ -120,39 +120,45 @@
       "What is the exact asymptotic constant $c$ in $h_3(k) \\sim c \\cdot k^2 \\log k$? Is $c = 1/2$ (matching the Ramsey lower bound)?",
       "Is $h_3(k+1)/h_3(k) \\to 1$? Can this be proved without determining the full asymptotic?",
       "What about the $K_r$-free generalization $h_r(k)$? (Related: Erdos Problem #920)",
-      "What is the structure of extremal triangle-free $k$-chromatic graphs for large $k$ — are they random-like or algebraically structured?"
+      "What is the structure of extremal triangle-free $k$-chromatic graphs for large $k$ \u2014 are they random-like or algebraically structured?"
     ]
   },
   "crossReferences": [
     {
-      "target": "erdos-1104",
       "relationship": "dual problem",
-      "note": "Erdős Problem #1104 asks for the maximum chromatic number $f(n)$ of a triangle-free graph on $n$ vertices — the inverse of $h_3(k)$. The two functions satisfy $h_3(f(n)) \\leq n < h_3(f(n)+1)$, so progress on one directly constrains the other. The known bound $f(n) = \\Theta(\\sqrt{n/\\log n})$ is equivalent to $h_3(k) = \\Theta(k^2 \\log k)$."
+      "note": "Erd\u0151s Problem #1104 asks for the maximum chromatic number $f(n)$ of a triangle-free graph on $n$ vertices \u2014 the inverse of $h_3(k)$. The two functions satisfy $h_3(f(n)) \\leq n < h_3(f(n)+1)$, so progress on one directly constrains the other. The known bound $f(n) = \\Theta(\\sqrt{n/\\log n})$ is equivalent to $h_3(k) = \\Theta(k^2 \\log k)$.",
+      "targetId": "erdos-1104",
+      "description": "Related via dual problem"
     },
     {
-      "target": "erdos-920",
       "relationship": "generalization",
-      "note": "Erdős Problem #920 concerns $h_r(k)$, the smallest $n$ such that a $K_r$-free graph on $n$ vertices can have chromatic number $k$. Problem #1013 is the $r = 3$ special case. The general problem requires understanding Ramsey numbers $R(r,k)$, making it considerably harder for $r \\geq 4$."
+      "note": "Erd\u0151s Problem #920 concerns $h_r(k)$, the smallest $n$ such that a $K_r$-free graph on $n$ vertices can have chromatic number $k$. Problem #1013 is the $r = 3$ special case. The general problem requires understanding Ramsey numbers $R(r,k)$, making it considerably harder for $r \\geq 4$.",
+      "targetId": "erdos-920",
+      "description": "Related via generalization"
     },
     {
-      "target": "erdos-1014",
       "relationship": "structural analogy",
-      "note": "Erdős Problem #1014 asks whether $R(k, l+1)/R(k, l) \\to 1$ as $l \\to \\infty$ for fixed $k$. The ratio convergence question here — whether $h_3(k+1)/h_3(k) \\to 1$ — is structurally identical and similarly open for $k = 3$. Both ask whether the relevant combinatorial threshold grows smoothly."
+      "note": "Erd\u0151s Problem #1014 asks whether $R(k, l+1)/R(k, l) \\to 1$ as $l \\to \\infty$ for fixed $k$. The ratio convergence question here \u2014 whether $h_3(k+1)/h_3(k) \\to 1$ \u2014 is structurally identical and similarly open for $k = 3$. Both ask whether the relevant combinatorial threshold grows smoothly.",
+      "targetId": "erdos-1014",
+      "description": "Related via structural analogy"
     },
     {
-      "target": "ramseys-theorem",
       "relationship": "key tool",
-      "note": "Shearer's 1983 bound $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ on Ramsey numbers is what yields the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$: any triangle-free graph must have an independent set of size $\\sim k$, so $n \\geq R(3,k)$. Understanding Problem #1013 requires tight Ramsey bounds."
+      "note": "Shearer's 1983 bound $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ on Ramsey numbers is what yields the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$: any triangle-free graph must have an independent set of size $\\sim k$, so $n \\geq R(3,k)$. Understanding Problem #1013 requires tight Ramsey bounds.",
+      "targetId": "ramseys-theorem",
+      "description": "Related via key tool"
     },
     {
-      "target": "prob-method-expectation",
       "relationship": "proof technique",
-      "note": "The first-moment probabilistic method underlies the Graver–Yackel lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ (1968): a random graph on $n$ vertices with edge probability $p$ can be shown to have high chromatic number while containing few triangles, which are then deleted without destroying the chromatic number."
+      "note": "The first-moment probabilistic method underlies the Graver\u2013Yackel lower bound $h_3(k) \\gg k^2 \\log k / \\log \\log k$ (1968): a random graph on $n$ vertices with edge probability $p$ can be shown to have high chromatic number while containing few triangles, which are then deleted without destroying the chromatic number.",
+      "targetId": "prob-method-expectation",
+      "description": "Related via proof technique"
     },
     {
-      "target": "prob-method-alteration",
       "relationship": "proof technique",
-      "note": "The alteration method (random construction followed by deterministic deletion of obstructions) is the standard tool for proving upper and lower bounds on $h_3(k)$. Constructing triangle-free graphs with high chromatic number proceeds by taking a random graph and removing edges in triangles while tracking the chromatic number."
+      "note": "The alteration method (random construction followed by deterministic deletion of obstructions) is the standard tool for proving upper and lower bounds on $h_3(k)$. Constructing triangle-free graphs with high chromatic number proceeds by taking a random graph and removing edges in triangles while tracking the chromatic number.",
+      "targetId": "prob-method-alteration",
+      "description": "Related via proof technique"
     }
   ],
   "relatedProofs": [
@@ -169,7 +175,7 @@
     {
       "target": "prob-method-lovasz-local",
       "relationship": "related technique",
-      "note": "The Lovász Local Lemma provides an alternative to the first-moment method for constructing triangle-free graphs with controlled chromatic number. It is used in sharper versions of the probabilistic lower bounds for $h_3(k)$."
+      "note": "The Lov\u00e1sz Local Lemma provides an alternative to the first-moment method for constructing triangle-free graphs with controlled chromatic number. It is used in sharper versions of the probabilistic lower bounds for $h_3(k)$."
     }
   ],
   "references": [
@@ -181,7 +187,7 @@
       "venue": "Colloquium Mathematicum",
       "year": 1955,
       "volume": "3",
-      "pages": "161–162",
+      "pages": "161\u2013162",
       "note": "The foundational paper proving that triangle-free graphs of arbitrarily high chromatic number exist via the Mycielski inductive construction. Proves $h_3(k) < \\infty$ for all $k$."
     },
     {
@@ -193,7 +199,7 @@
       "year": 1983,
       "volume": "46",
       "issue": "1",
-      "pages": "83–87",
+      "pages": "83\u201387",
       "doi": "10.1016/0012-365X(83)90273-X",
       "note": "Proves $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$ via an entropy argument, establishing the lower bound $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$."
     },
@@ -207,7 +213,7 @@
       "year": 1968,
       "volume": "4",
       "issue": "2",
-      "pages": "125–175",
+      "pages": "125\u2013175",
       "doi": "10.1016/S0021-9800(68)80035-1",
       "note": "First quantitative lower bound on $h_3(k)$: proves $h_3(k) \\gg k^2 \\log k / \\log \\log k$ using probabilistic deletion, the predecessor to the sharper Ramsey-theoretic bound."
     },
@@ -224,14 +230,14 @@
     },
     {
       "authors": [
-        "Zdeněk Dvořák",
+        "Zden\u011bk Dvo\u0159\u00e1k",
         "Luke Postle"
       ],
       "title": "Correspondence coloring and its application to list-coloring planar graphs without cycles of lengths 4 to 8",
       "venue": "Journal of Combinatorial Theory, Series B",
       "year": 2018,
       "volume": "129",
-      "pages": "38–54",
+      "pages": "38\u201354",
       "doi": "10.1016/j.jctb.2017.09.001",
       "note": "Introduces correspondence (DP) coloring, a strengthening of list coloring that has become a key tool in studying chromatic thresholds for graph families defined by forbidden subgraphs, including triangle-free graphs."
     }

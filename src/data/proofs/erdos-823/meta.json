@@ -1,10 +1,10 @@
 {
   "id": "erdos-823",
-  "title": "Erdős Problem #823: Equal Sum of Divisors with Arbitrary Ratio",
+  "title": "Erd\u0151s Problem #823: Equal Sum of Divisors with Arbitrary Ratio",
   "slug": "erdos-823",
-  "description": "Given α ≥ 1, does there exist a sequence of integers n_k, m_k such that σ(n_k) = σ(m_k) and n_k/m_k → α? Solved affirmatively by Pollack (2015).",
+  "description": "Given \u03b1 \u2265 1, does there exist a sequence of integers n_k, m_k such that \u03c3(n_k) = \u03c3(m_k) and n_k/m_k \u2192 \u03b1? Solved affirmatively by Pollack (2015).",
   "meta": {
-    "author": "Erdős, P.",
+    "author": "Erd\u0151s, P.",
     "sourceUrl": "https://erdosproblems.com/823",
     "date": "1974",
     "status": "axiomatized",
@@ -31,12 +31,12 @@
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.sigma",
-        "description": "The sum of divisors function σ_k(n)",
+        "description": "The sum of divisors function \u03c3_k(n)",
         "module": "Mathlib.NumberTheory.ArithmeticFunction"
       },
       {
         "theorem": "ArithmeticFunction.totient",
-        "description": "Euler's totient function φ(n)",
+        "description": "Euler's totient function \u03c6(n)",
         "module": "Mathlib.NumberTheory.ArithmeticFunction"
       },
       {
@@ -62,44 +62,44 @@
     ],
     "originalContributions": [
       "sigma function via ArithmeticFunction.sigma 1",
-      "sigma_multiplicative axiom: σ(mn) = σ(m)σ(n) for coprime m, n",
+      "sigma_multiplicative axiom: \u03c3(mn) = \u03c3(m)\u03c3(n) for coprime m, n",
       "IsSigmaPair and SigmaSequenceConvergingTo definitions",
       "pollack_2015 axiom and erdos_823_solved theorem (proved)",
-      "σ-pair examples: (14,15), (206,210), (957,958)",
+      "\u03c3-pair examples: (14,15), (206,210), (957,958)",
       "Euler totient analogy with erdos_phi_easy axiom",
       "sigmaFiber definition with arbitrarily large fibers axiom",
-      "Density results: positive density of σ-values and multi-preimage values",
-      "Perfect number examples: σ(6)=12, σ(28)=56",
+      "Density results: positive density of \u03c3-values and multi-preimage values",
+      "Perfect number examples: \u03c3(6)=12, \u03c3(28)=56",
       "erdos_823_statement: complete resolution (proved)"
     ],
     "crossReferences": [
       {
         "proofId": "erdos-824",
-        "relationship": "Coprime pairs with equal σ: counts h(x) of coprime (a,b) with σ(a) = σ(b), proved h(x)/x → ∞ (Pollack-Pomerance 2016)"
+        "relationship": "Coprime pairs with equal \u03c3: counts h(x) of coprime (a,b) with \u03c3(a) = \u03c3(b), proved h(x)/x \u2192 \u221e (Pollack-Pomerance 2016)"
       },
       {
         "proofId": "erdos-48",
-        "relationship": "Pairs with φ(n) = σ(m): infinitely many exist (Ford-Luca-Pomerance 2010) — connects the two functions"
+        "relationship": "Pairs with \u03c6(n) = \u03c3(m): infinitely many exist (Ford-Luca-Pomerance 2010) \u2014 connects the two functions"
       },
       {
         "proofId": "erdos-830",
-        "relationship": "Amicable pairs (σ(n)-n = m, σ(m)-m = n): a related problem on the structure of σ"
+        "relationship": "Amicable pairs (\u03c3(n)-n = m, \u03c3(m)-m = n): a related problem on the structure of \u03c3"
       },
       {
         "proofId": "perfect-numbers",
-        "relationship": "Euclid-Euler theorem on perfect numbers (σ(n) = 2n); σ-fiber structure"
+        "relationship": "Euclid-Euler theorem on perfect numbers (\u03c3(n) = 2n); \u03c3-fiber structure"
       },
       {
         "proofId": "euler-totient",
-        "relationship": "Euler's totient function formalization; the 'easy' φ-analogue mentioned by Erdős"
+        "relationship": "Euler's totient function formalization; the 'easy' \u03c6-analogue mentioned by Erd\u0151s"
       },
       {
         "proofId": "fundamental-arithmetic",
-        "relationship": "Fundamental Theorem of Arithmetic — prime factorization underlying σ's multiplicativity"
+        "relationship": "Fundamental Theorem of Arithmetic \u2014 prime factorization underlying \u03c3's multiplicativity"
       },
       {
         "proofId": "erdos-826",
-        "relationship": "Divisor function growth along shifts — another problem on arithmetic function behavior"
+        "relationship": "Divisor function growth along shifts \u2014 another problem on arithmetic function behavior"
       }
     ],
     "relatedProblems": [
@@ -116,16 +116,16 @@
     "assumptions": "21 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**The Sum of Divisors Function and Ratio Flexibility**\n\nThe sum of divisors function $\\sigma(n) = \\sum_{d \\mid n} d$ is one of the most studied objects in number theory, with roots going back to Euclid's characterization of perfect numbers ($\\sigma(n) = 2n$). Its multiplicativity — $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$ — makes it tractable yet rich in structure.\n\n**Problem #823 (Erdős, 1974)**: Given $\\alpha \\geq 1$, do there exist sequences $n_k, m_k$ with $\\sigma(n_k) = \\sigma(m_k)$ and $n_k/m_k \\to \\alpha$? Erdős posed this in his 1974 paper *Remarks on some problems in number theory*, noting that the analogous result for Euler's totient $\\varphi$ is 'easy to prove.' The $\\varphi$ case is easy because $\\varphi(n) = \\varphi(2n)$ for odd $n$, giving trivial $\\varphi$-pairs at ratio $2$, and multiplicativity handles arbitrary ratios. For $\\sigma$, no such simple identity exists.\n\n**σ-Pairs and Their Abundance**: Numbers $n \\neq m$ with $\\sigma(n) = \\sigma(m)$ (called $\\sigma$-pairs) are surprisingly common. Examples include $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, and $\\sigma(957) = \\sigma(958)$. The pair $(14, 15)$ works because $14 = 2 \\cdot 7$ gives $\\sigma = (1+2)(1+7) = 24$ while $15 = 3 \\cdot 5$ gives $\\sigma = (1+3)(1+5) = 24$ — a coincidence enabled by multiplicativity. Erdős and Pomerance showed that the number of $n \\leq x$ with $\\sigma(n) = \\sigma(n+1)$ grows as $x/(\\log x)^c$.\n\n**Pollack's Resolution (2015)**: Paul Pollack proved the affirmative answer in his paper *Remarks on fibers of the sum-of-divisors function* (Mathematika 61(3), 2015, pp. 616–636). His proof exploits three key facts: (1) the set of $\\sigma$-values with multiple preimages has positive lower density, (2) multiplicativity allows scaling of $\\sigma$-pairs to approximate any ratio, and (3) a careful density argument closes the approximation gap. The construction is non-explicit — it proves existence of appropriate sequences without giving a formula.\n\n**The Fiber Perspective**: Pollack's approach centers on the *fibers* $\\sigma^{-1}(m) = \\{n : \\sigma(n) = m\\}$. Key structural results include: fibers can be arbitrarily large, every sufficiently large even number is a $\\sigma$-value, and the set of $m$ with $|\\sigma^{-1}(m)| \\geq 2$ has positive density. These facts, combined with multiplicativity, give enough raw material to construct converging sequences at any prescribed ratio.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $\\alpha \\geq 1$. Does there exist a sequence of integers $n_k, m_k$ such that $\\sigma(n_k) = \\sigma(m_k)$ for all $k \\geq 1$ and $n_k/m_k \\to \\alpha$?\n\n**Answer: YES** (Pollack, 2015)\n\nThe result also holds for all $\\alpha > 0$ by symmetry ($\\alpha < 1$ case: swap $n$ and $m$).\n\nErdős noted that the analogous result for $\\varphi(n)$ is 'easy to prove.'",
-    "text": "Given α ≥ 1, does there exist a sequence of integers n_k, m_k such that σ(n_k) = σ(m_k) and n_k/m_k → α? Solved affirmatively by Pollack (2015).",
-    "proofStrategy": "**Formalization Strategy**\n\n1. **σ from Mathlib**: Defines $\\sigma(n) = \\texttt{ArithmeticFunction.sigma 1 n}$, leveraging Mathlib's arithmetic function infrastructure. Axiomatizes key properties: values at $1$, primes, prime powers, and multiplicativity.\n\n2. **Problem Formalization**: Defines `IsSigmaPair` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α` using Lean's filter-based `Tendsto` for convergence.\n\n3. **Pollack's Theorem**: Axiomatized as `pollack_2015`. The main result `erdos_823_solved` is **proved** as a direct corollary.\n\n4. **Concrete Examples**: Three $\\sigma$-pairs are axiomatized: $(14, 15)$, $(206, 210)$, $(957, 958)$. Ratios verified by `native_decide`.\n\n5. **Totient Analogy**: Defines $\\varphi$ via `ArithmeticFunction.totient` and axiomatizes the 'easy' $\\varphi$ result. Examples: $\\varphi(1) = \\varphi(2)$, $\\varphi(3) = \\varphi(4) = \\varphi(6)$.\n\n6. **Fiber Structure**: Defines `sigmaFiber` and axiomatizes unbounded fibers, positive density of $\\sigma$-values, and positive density of multi-preimage values.\n\n7. **Summary**: `erdos_823_statement` is **proved** as a conjunction of the $\\sigma$ and $\\varphi$ results.",
+    "historicalContext": "**The Sum of Divisors Function and Ratio Flexibility**\n\nThe sum of divisors function $\\sigma(n) = \\sum_{d \\mid n} d$ is one of the most studied objects in number theory, with roots going back to Euclid's characterization of perfect numbers ($\\sigma(n) = 2n$). Its multiplicativity \u2014 $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$ \u2014 makes it tractable yet rich in structure.\n\n**Problem #823 (Erd\u0151s, 1974)**: Given $\\alpha \\geq 1$, do there exist sequences $n_k, m_k$ with $\\sigma(n_k) = \\sigma(m_k)$ and $n_k/m_k \\to \\alpha$? Erd\u0151s posed this in his 1974 paper *Remarks on some problems in number theory*, noting that the analogous result for Euler's totient $\\varphi$ is 'easy to prove.' The $\\varphi$ case is easy because $\\varphi(n) = \\varphi(2n)$ for odd $n$, giving trivial $\\varphi$-pairs at ratio $2$, and multiplicativity handles arbitrary ratios. For $\\sigma$, no such simple identity exists.\n\n**\u03c3-Pairs and Their Abundance**: Numbers $n \\neq m$ with $\\sigma(n) = \\sigma(m)$ (called $\\sigma$-pairs) are surprisingly common. Examples include $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, and $\\sigma(957) = \\sigma(958)$. The pair $(14, 15)$ works because $14 = 2 \\cdot 7$ gives $\\sigma = (1+2)(1+7) = 24$ while $15 = 3 \\cdot 5$ gives $\\sigma = (1+3)(1+5) = 24$ \u2014 a coincidence enabled by multiplicativity. Erd\u0151s and Pomerance showed that the number of $n \\leq x$ with $\\sigma(n) = \\sigma(n+1)$ grows as $x/(\\log x)^c$.\n\n**Pollack's Resolution (2015)**: Paul Pollack proved the affirmative answer in his paper *Remarks on fibers of the sum-of-divisors function* (Mathematika 61(3), 2015, pp. 616\u2013636). His proof exploits three key facts: (1) the set of $\\sigma$-values with multiple preimages has positive lower density, (2) multiplicativity allows scaling of $\\sigma$-pairs to approximate any ratio, and (3) a careful density argument closes the approximation gap. The construction is non-explicit \u2014 it proves existence of appropriate sequences without giving a formula.\n\n**The Fiber Perspective**: Pollack's approach centers on the *fibers* $\\sigma^{-1}(m) = \\{n : \\sigma(n) = m\\}$. Key structural results include: fibers can be arbitrarily large, every sufficiently large even number is a $\\sigma$-value, and the set of $m$ with $|\\sigma^{-1}(m)| \\geq 2$ has positive density. These facts, combined with multiplicativity, give enough raw material to construct converging sequences at any prescribed ratio.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $\\alpha \\geq 1$. Does there exist a sequence of integers $n_k, m_k$ such that $\\sigma(n_k) = \\sigma(m_k)$ for all $k \\geq 1$ and $n_k/m_k \\to \\alpha$?\n\n**Answer: YES** (Pollack, 2015)\n\nThe result also holds for all $\\alpha > 0$ by symmetry ($\\alpha < 1$ case: swap $n$ and $m$).\n\nErd\u0151s noted that the analogous result for $\\varphi(n)$ is 'easy to prove.'",
+    "text": "Given \u03b1 \u2265 1, does there exist a sequence of integers n_k, m_k such that \u03c3(n_k) = \u03c3(m_k) and n_k/m_k \u2192 \u03b1? Solved affirmatively by Pollack (2015).",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **\u03c3 from Mathlib**: Defines $\\sigma(n) = \\texttt{ArithmeticFunction.sigma 1 n}$, leveraging Mathlib's arithmetic function infrastructure. Axiomatizes key properties: values at $1$, primes, prime powers, and multiplicativity.\n\n2. **Problem Formalization**: Defines `IsSigmaPair` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo \u03b1` using Lean's filter-based `Tendsto` for convergence.\n\n3. **Pollack's Theorem**: Axiomatized as `pollack_2015`. The main result `erdos_823_solved` is **proved** as a direct corollary.\n\n4. **Concrete Examples**: Three $\\sigma$-pairs are axiomatized: $(14, 15)$, $(206, 210)$, $(957, 958)$. Ratios verified by `native_decide`.\n\n5. **Totient Analogy**: Defines $\\varphi$ via `ArithmeticFunction.totient` and axiomatizes the 'easy' $\\varphi$ result. Examples: $\\varphi(1) = \\varphi(2)$, $\\varphi(3) = \\varphi(4) = \\varphi(6)$.\n\n6. **Fiber Structure**: Defines `sigmaFiber` and axiomatizes unbounded fibers, positive density of $\\sigma$-values, and positive density of multi-preimage values.\n\n7. **Summary**: `erdos_823_statement` is **proved** as a conjunction of the $\\sigma$ and $\\varphi$ results.",
     "keyInsights": [
-      "**Multiplicativity is the engine**: $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for coprime $m, n$ allows building $\\sigma$-pairs with controlled ratios. Given a pair $(a, b)$ with $\\sigma(a) = \\sigma(b)$, multiplying by coprime factors $c$ gives $(ac, bc)$ with $\\sigma(ac) = \\sigma(a)\\sigma(c) = \\sigma(b)\\sigma(c) = \\sigma(bc)$ — the same $\\sigma$-value at ratio $a/b$. Different coprime multipliers generate different ratios",
-      "**φ is easy, σ is hard**: For $\\varphi$, the identity $\\varphi(2n) = \\varphi(n)$ for odd $n$ gives trivial pairs $(n, 2n)$ at ratio $1/2$. No analogous identity exists for $\\sigma$: $\\sigma(2n) = 3\\sigma(n)$ only when $\\gcd(2, n) = 1$, and this changes the $\\sigma$-value rather than preserving it. Pollack's proof must work harder to find $\\sigma$-preserving modifications",
-      "**Fiber density is the key input**: The positive density of $\\{m : |\\sigma^{-1}(m)| \\geq 2\\}$ is what makes the construction possible. This density result (Erdős 1959, refined by Pomerance and others) ensures that $\\sigma$-pairs are abundant enough to approximate any real number via ratios",
-      "**The $14, 15$ coincidence reveals structure**: $\\sigma(14) = (1+2)(1+7) = 24 = (1+3)(1+5) = \\sigma(15)$. This works because the products $(1+p_1)(1+p_2)$ can equal each other for different prime pairs — a consequence of the rich factorization structure of integers near $\\sigma$-values",
-      "**Non-constructive vs explicit**: Pollack's proof is existential — it shows sequences exist without giving a formula. For specific $\\alpha$ (e.g., $\\alpha = \\sqrt{2}$), explicitly constructing such sequences remains an interesting computational challenge"
+      "**Multiplicativity is the engine**: $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for coprime $m, n$ allows building $\\sigma$-pairs with controlled ratios. Given a pair $(a, b)$ with $\\sigma(a) = \\sigma(b)$, multiplying by coprime factors $c$ gives $(ac, bc)$ with $\\sigma(ac) = \\sigma(a)\\sigma(c) = \\sigma(b)\\sigma(c) = \\sigma(bc)$ \u2014 the same $\\sigma$-value at ratio $a/b$. Different coprime multipliers generate different ratios",
+      "**\u03c6 is easy, \u03c3 is hard**: For $\\varphi$, the identity $\\varphi(2n) = \\varphi(n)$ for odd $n$ gives trivial pairs $(n, 2n)$ at ratio $1/2$. No analogous identity exists for $\\sigma$: $\\sigma(2n) = 3\\sigma(n)$ only when $\\gcd(2, n) = 1$, and this changes the $\\sigma$-value rather than preserving it. Pollack's proof must work harder to find $\\sigma$-preserving modifications",
+      "**Fiber density is the key input**: The positive density of $\\{m : |\\sigma^{-1}(m)| \\geq 2\\}$ is what makes the construction possible. This density result (Erd\u0151s 1959, refined by Pomerance and others) ensures that $\\sigma$-pairs are abundant enough to approximate any real number via ratios",
+      "**The $14, 15$ coincidence reveals structure**: $\\sigma(14) = (1+2)(1+7) = 24 = (1+3)(1+5) = \\sigma(15)$. This works because the products $(1+p_1)(1+p_2)$ can equal each other for different prime pairs \u2014 a consequence of the rich factorization structure of integers near $\\sigma$-values",
+      "**Non-constructive vs explicit**: Pollack's proof is existential \u2014 it shows sequences exist without giving a formula. For specific $\\alpha$ (e.g., $\\alpha = \\sqrt{2}$), explicitly constructing such sequences remains an interesting computational challenge"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -153,7 +153,7 @@
       "title": "The Main Problem",
       "startLine": 71,
       "endLine": 80,
-      "summary": "Defines `IsSigmaPair n m` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α` ($\\exists (n_k), (m_k),\\; \\sigma(n_k) = \\sigma(m_k) \\wedge n_k/m_k \\to \\alpha$)."
+      "summary": "Defines `IsSigmaPair n m` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo \u03b1` ($\\exists (n_k), (m_k),\\; \\sigma(n_k) = \\sigma(m_k) \\wedge n_k/m_k \\to \\alpha$)."
     },
     {
       "id": "pollack-theorem",
@@ -164,7 +164,7 @@
     },
     {
       "id": "sigma-pairs",
-      "title": "Examples of σ-Pairs",
+      "title": "Examples of \u03c3-Pairs",
       "startLine": 107,
       "endLine": 129,
       "summary": "Axiomatizes $\\sigma(14) = \\sigma(15) = 24$, $\\sigma(206) = \\sigma(210) = 432$, $\\sigma(957) = \\sigma(958)$. Ratio checks via `native_decide`."
@@ -178,7 +178,7 @@
     },
     {
       "id": "fiber-properties",
-      "title": "σ-Fiber Structure",
+      "title": "\u03c3-Fiber Structure",
       "startLine": 164,
       "endLine": 176,
       "summary": "Defines `sigmaFiber m` ($\\sigma^{-1}(m)$). Axiomatizes: $14, 15 \\in \\sigma^{-1}(24)$, fibers can be arbitrarily large, every large even number is a $\\sigma$-value."
@@ -199,26 +199,26 @@
     },
     {
       "id": "key-insight",
-      "title": "Abundance of σ-Pairs",
+      "title": "Abundance of \u03c3-Pairs",
       "startLine": 224,
       "endLine": 228,
-      "summary": "Axiomatizes infinitely many $\\sigma$-pairs $(n, m)$ with $n \\neq m$ — the fundamental enabling fact for Pollack's construction."
+      "summary": "Axiomatizes infinitely many $\\sigma$-pairs $(n, m)$ with $n \\neq m$ \u2014 the fundamental enabling fact for Pollack's construction."
     },
     {
       "id": "summary",
       "title": "Complete Statement (Proved)",
       "startLine": 259,
       "endLine": 268,
-      "summary": "`erdos_823_statement`: **proved** conjunction of the $\\sigma$ result (Pollack) and $\\varphi$ result (Erdős)."
+      "summary": "`erdos_823_statement`: **proved** conjunction of the $\\sigma$ result (Pollack) and $\\varphi$ result (Erd\u0151s)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization resolves Erdős Problem #823 by axiomatizing Pollack's 2015 theorem and proving the main result as a direct corollary. The file builds the sum-of-divisors function from Mathlib's `ArithmeticFunction.sigma`, defines $\\sigma$-pairs and converging sequences, presents concrete examples ($\\sigma(14) = \\sigma(15) = 24$), formalizes the Euler totient analogy, and develops the fiber structure ($\\sigma^{-1}(m)$ with density results). Two verified proofs package the complete resolution.",
-    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Value Distribution of Multiplicative Functions**: Problem #823 reveals that the image of $\\sigma$ is rich enough to support ratio-approximating sequences — a deep structural property not shared by all multiplicative functions. This connects to the broader study of value distribution initiated by Erdős in the 1930s.\n\n2. **σ vs φ Asymmetry**: The difficulty gap between the $\\sigma$ and $\\varphi$ cases highlights a fundamental asymmetry: $\\varphi(2n) = \\varphi(n)$ for odd $n$ gives $\\varphi$ trivial ratio-$2$ pairs, while $\\sigma$ lacks such identities. This asymmetry recurs throughout multiplicative number theory.\n\n**3. Fiber Structure**: Pollack's approach via $\\sigma$-fibers connects to the broader study of preimage sizes of arithmetic functions. The positive density of multi-preimage values is a quantitative refinement of the classical observation that $\\sigma$ is 'far from injective.'\n\n4. **Connection to Perfect and Amicable Numbers**: The $\\sigma$-fiber at $2n$ contains all perfect numbers. More generally, the rich fiber structure of $\\sigma$ underlies the theory of amicable numbers ($\\sigma(a) - a = b$, $\\sigma(b) - b = a$) and aliquot sequences.\n\n5. **Formal Verification**: The file demonstrates how classical number-theoretic results can be formalized using Mathlib's arithmetic function infrastructure, with `Tendsto` providing a clean formalization of asymptotic ratio convergence.",
+    "summary": "This formalization resolves Erd\u0151s Problem #823 by axiomatizing Pollack's 2015 theorem and proving the main result as a direct corollary. The file builds the sum-of-divisors function from Mathlib's `ArithmeticFunction.sigma`, defines $\\sigma$-pairs and converging sequences, presents concrete examples ($\\sigma(14) = \\sigma(15) = 24$), formalizes the Euler totient analogy, and develops the fiber structure ($\\sigma^{-1}(m)$ with density results). Two verified proofs package the complete resolution.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Value Distribution of Multiplicative Functions**: Problem #823 reveals that the image of $\\sigma$ is rich enough to support ratio-approximating sequences \u2014 a deep structural property not shared by all multiplicative functions. This connects to the broader study of value distribution initiated by Erd\u0151s in the 1930s.\n\n2. **\u03c3 vs \u03c6 Asymmetry**: The difficulty gap between the $\\sigma$ and $\\varphi$ cases highlights a fundamental asymmetry: $\\varphi(2n) = \\varphi(n)$ for odd $n$ gives $\\varphi$ trivial ratio-$2$ pairs, while $\\sigma$ lacks such identities. This asymmetry recurs throughout multiplicative number theory.\n\n**3. Fiber Structure**: Pollack's approach via $\\sigma$-fibers connects to the broader study of preimage sizes of arithmetic functions. The positive density of multi-preimage values is a quantitative refinement of the classical observation that $\\sigma$ is 'far from injective.'\n\n4. **Connection to Perfect and Amicable Numbers**: The $\\sigma$-fiber at $2n$ contains all perfect numbers. More generally, the rich fiber structure of $\\sigma$ underlies the theory of amicable numbers ($\\sigma(a) - a = b$, $\\sigma(b) - b = a$) and aliquot sequences.\n\n5. **Formal Verification**: The file demonstrates how classical number-theoretic results can be formalized using Mathlib's arithmetic function infrastructure, with `Tendsto` providing a clean formalization of asymptotic ratio convergence.",
     "openQuestions": [
       "How fast can $n_k/m_k$ converge to $\\alpha$? Is there a rate like $|n_k/m_k - \\alpha| = O(1/k)$ or better?",
       "Can the sequences be made explicit for specific $\\alpha$ (e.g., $\\alpha = \\sqrt{2}$ or $\\alpha = \\pi$)?",
-      "Does the analogous result hold for other multiplicative functions $f$ — what properties of $f$ are needed?",
+      "Does the analogous result hold for other multiplicative functions $f$ \u2014 what properties of $f$ are needed?",
       "What is the precise density of the set $\\{m : |\\sigma^{-1}(m)| \\geq 2\\}$? Is it $c + o(1)$ for an explicit $c$?",
       "Can the Lean formalization be extended to prove some of the axiomatized results (e.g., $\\sigma(14) = 24$ directly from the Mathlib definition)?"
     ]
@@ -241,5 +241,39 @@
     "axiomCount": 21,
     "theoremCount": 2,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1061",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, sum-of-divisors, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-410",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, sum-of-divisors, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-48",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, sum-of-divisors, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Share arithmetic-functions and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-122",
+      "relationship": "related",
+      "description": "Share arithmetic-functions and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1061",
+    "erdos-410",
+    "erdos-48",
+    "erdos-1064",
+    "erdos-122"
+  ]
 }

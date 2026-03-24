@@ -1,6 +1,6 @@
 {
   "id": "erdos-397",
-  "title": "Erdős Problem #397: Products of Central Binomial Coefficients",
+  "title": "Erd\u0151s Problem #397: Products of Central Binomial Coefficients",
   "slug": "erdos-397",
   "description": "Are there only finitely many solutions to products of central binomial coefficients being equal? Disproved by Somani (2026).",
   "meta": {
@@ -40,7 +40,7 @@
       }
     ],
     "originalContributions": [
-      "Formal statement of Erdős Problem #397 in Lean 4",
+      "Formal statement of Erd\u0151s Problem #397 in Lean 4",
       "Definition of central binomial solution pairs",
       "Somani's parametric family formalized as axioms",
       "Verified computations of small central binomial values"
@@ -50,16 +50,16 @@
     "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #397 concerns the central binomial coefficients C(2n, n) = (2n)!/(n!)², which appear throughout combinatorics, probability, and analysis. Erdős asked whether there are only finitely many 'coincidences' where products of distinct central binomial coefficients can be equal.\n\nThe problem remained open for decades until January 2026, when Neel Somani, using ChatGPT as an assistant, discovered an infinite family of solutions. For any a ≥ 2, setting c = 8a² + 8a + 1 yields the identity:\nC(a)·C(2a+2)·C(c) = C(a+1)·C(2a)·C(c+1)\n\nThis remarkable discovery shows that Erdős's intuition about finiteness was wrong—there are infinitely many such 'coincidences' in a beautifully parametrized family.",
-    "problemStatement": "**Conjecture (Erdős)**: Are there only finitely many solutions to\n$$\\prod_i \\binom{2m_i}{m_i} = \\prod_j \\binom{2n_j}{n_j}$$\nwith the $m_i, n_j$ all distinct?\n\n**Answer**: NO — disproved by Somani (2026). There are infinitely many solutions.",
+    "historicalContext": "Erd\u0151s Problem #397 concerns the central binomial coefficients C(2n, n) = (2n)!/(n!)\u00b2, which appear throughout combinatorics, probability, and analysis. Erd\u0151s asked whether there are only finitely many 'coincidences' where products of distinct central binomial coefficients can be equal.\n\nThe problem remained open for decades until January 2026, when Neel Somani, using ChatGPT as an assistant, discovered an infinite family of solutions. For any a \u2265 2, setting c = 8a\u00b2 + 8a + 1 yields the identity:\nC(a)\u00b7C(2a+2)\u00b7C(c) = C(a+1)\u00b7C(2a)\u00b7C(c+1)\n\nThis remarkable discovery shows that Erd\u0151s's intuition about finiteness was wrong\u2014there are infinitely many such 'coincidences' in a beautifully parametrized family.",
+    "problemStatement": "**Conjecture (Erd\u0151s)**: Are there only finitely many solutions to\n$$\\prod_i \\binom{2m_i}{m_i} = \\prod_j \\binom{2n_j}{n_j}$$\nwith the $m_i, n_j$ all distinct?\n\n**Answer**: NO \u2014 disproved by Somani (2026). There are infinitely many solutions.",
     "text": "Are there only finitely many solutions to products of central binomial coefficients being equal? Disproved by Somani (2026).",
-    "proofStrategy": "We formalize the disproof by:\n\n1. **Define the solution set**: Pairs (M, N) of disjoint finite sets where the products of central binomials match\n2. **State the main result**: The solution set is infinite (as an axiom)\n3. **Somani's family**: For a ≥ 2, define c = 8a² + 8a + 1, giving solutions ({a, 2a+2, c}, {a+1, 2a, c+1})\n4. **Verify basic values**: Compute C(0)=1, C(1)=2, C(2)=6, C(3)=20 and c(2)=49\n\nThe identity verification requires careful algebraic manipulation of factorials, which we state as an axiom.",
+    "proofStrategy": "We formalize the disproof by:\n\n1. **Define the solution set**: Pairs (M, N) of disjoint finite sets where the products of central binomials match\n2. **State the main result**: The solution set is infinite (as an axiom)\n3. **Somani's family**: For a \u2265 2, define c = 8a\u00b2 + 8a + 1, giving solutions ({a, 2a+2, c}, {a+1, 2a, c+1})\n4. **Verify basic values**: Compute C(0)=1, C(1)=2, C(2)=6, C(3)=20 and c(2)=49\n\nThe identity verification requires careful algebraic manipulation of factorials, which we state as an axiom.",
     "keyInsights": [
-      "**Central binomial coefficients**: C(2n, n) counts lattice paths from (0,0) to (n,n), or ways to balance n left and n right parentheses. They grow like 4ⁿ/√(πn).",
-      "**The product structure**: Factoring C(2n, n) = (2n)!/(n!)² reveals multiplicative structure. Two products can match if their prime factorizations align.",
-      "**Somani's parametrization**: The key insight is c = 8a² + 8a + 1, which creates a delicate balance making the identity work for all a ≥ 2.",
-      "**AI-assisted mathematics**: This is a notable example of human-AI collaboration in mathematics research—Somani used ChatGPT to help find the parametric family.",
-      "**Infinitude from parameters**: Since a can be any integer ≥ 2, we get infinitely many distinct solutions, completely disproving the conjecture."
+      "**Central binomial coefficients**: C(2n, n) counts lattice paths from (0,0) to (n,n), or ways to balance n left and n right parentheses. They grow like 4\u207f/\u221a(\u03c0n).",
+      "**The product structure**: Factoring C(2n, n) = (2n)!/(n!)\u00b2 reveals multiplicative structure. Two products can match if their prime factorizations align.",
+      "**Somani's parametrization**: The key insight is c = 8a\u00b2 + 8a + 1, which creates a delicate balance making the identity work for all a \u2265 2.",
+      "**AI-assisted mathematics**: This is a notable example of human-AI collaboration in mathematics research\u2014Somani used ChatGPT to help find the parametric family.",
+      "**Infinitude from parameters**: Since a can be any integer \u2265 2, we get infinitely many distinct solutions, completely disproving the conjecture."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -105,7 +105,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #397, which asked whether products of central binomial coefficients can match in only finitely many ways. Somani (2026) disproved this by finding an infinite parametric family of solutions. We state the main result as an axiom and formalize the structure of Somani's solution family.",
+    "summary": "We formalize Erd\u0151s Problem #397, which asked whether products of central binomial coefficients can match in only finitely many ways. Somani (2026) disproved this by finding an infinite parametric family of solutions. We state the main result as an axiom and formalize the structure of Somani's solution family.",
     "implications": "This result shows that central binomial coefficients have more 'coincidental' multiplicative relationships than expected. The AI-assisted discovery method is also noteworthy for mathematical research.",
     "openQuestions": [
       "Are there other infinite families of solutions beyond Somani's and SharkyKesa's?",
@@ -126,5 +126,39 @@
     "axiomCount": 3,
     "theoremCount": 8,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Share combinatorial, binomial-coefficients, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-699",
+      "relationship": "related",
+      "description": "Share combinatorial, binomial-coefficients, and number-theoretic themes"
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "related",
+      "description": "Share combinatorial, binomial-coefficients, and number-theoretic themes"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "related",
+      "description": "Share combinatorial and binomial-coefficients themes"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-387",
+    "erdos-699",
+    "kummer-theorem",
+    "combinations-formula",
+    "erdos-1005"
+  ]
 }

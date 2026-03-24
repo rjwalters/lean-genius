@@ -1,6 +1,6 @@
 {
   "id": "erdos-897",
-  "title": "Erdős Problem #897: Additive Functions and Consecutive Differences",
+  "title": "Erd\u0151s Problem #897: Additive Functions and Consecutive Differences",
   "slug": "erdos-897",
   "description": "For an additive function f with unbounded growth on prime powers, must consecutive differences f(n+1) - f(n) also be unbounded when normalized by log(n)?",
   "meta": {
@@ -58,16 +58,16 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem explores the behavior of additive arithmetic functions—functions satisfying f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. Classic examples include ω(n) (distinct prime factors), Ω(n) (total prime factors with multiplicity), and log(n).\n\nErdős asked: if an additive function f grows unboundedly fast on prime powers (specifically, if limsup f(p^k)/log(p^k) = ∞), does this force the consecutive differences f(n+1) - f(n) to also be unbounded when normalized by log(n)?\n\nThe converse direction was settled by Wirsing in 1970, who proved that if consecutive differences are BOUNDED (|f(n+1) - f(n)| ≤ C), then f must behave like c·log(n) + O(1). This characterizes the logarithm as essentially the unique additive function with bounded consecutive differences.",
+    "historicalContext": "This problem explores the behavior of additive arithmetic functions\u2014functions satisfying f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. Classic examples include \u03c9(n) (distinct prime factors), \u03a9(n) (total prime factors with multiplicity), and log(n).\n\nErd\u0151s asked: if an additive function f grows unboundedly fast on prime powers (specifically, if limsup f(p^k)/log(p^k) = \u221e), does this force the consecutive differences f(n+1) - f(n) to also be unbounded when normalized by log(n)?\n\nThe converse direction was settled by Wirsing in 1970, who proved that if consecutive differences are BOUNDED (|f(n+1) - f(n)| \u2264 C), then f must behave like c\u00b7log(n) + O(1). This characterizes the logarithm as essentially the unique additive function with bounded consecutive differences.",
     "problemStatement": "Let $f(n)$ be an additive function (so that $f(ab) = f(a) + f(b)$ when $(a,b) = 1$) such that\n$$\\limsup_{p,k} \\frac{f(p^k)}{\\log(p^k)} = \\infty$$\n\n**Part I**: Is it true that $\\displaystyle\\limsup_n \\frac{f(n+1) - f(n)}{\\log n} = \\infty$?\n\n**Part II**: Is it true that $\\displaystyle\\limsup_n \\frac{f(n+1)}{f(n)} = \\infty$?\n\n**Status**: Both parts remain **OPEN**.\n\n**Known** (Wirsing 1970): If $|f(n+1) - f(n)| \\leq C$, then $f(n) = c\\log n + O(1)$.",
     "text": "For an additive function f with unbounded growth on prime powers, must consecutive differences f(n+1) - f(n) also be unbounded when normalized by log(n)?",
-    "proofStrategy": "We formalize this problem by:\n\n1. **Defining additive functions**: IsAdditive f means f(ab) = f(a) + f(b) when gcd(a,b) = 1\n\n2. **Defining unbounded growth**: UnboundedOnPrimePowers captures the limsup condition on prime powers\n\n3. **Stating both conjectures as axioms**: Parts I and II about consecutive differences\n\n4. **Stating Wirsing's theorem**: The solved converse direction\n\n5. **Defining restricted variants**: StronglyAdditive (f(p^k) = f(p)) and CompletelyAdditive (f(p^k) = k·f(p))\n\n6. **Providing examples**: omega, bigOmega, and log as concrete additive functions",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Defining additive functions**: IsAdditive f means f(ab) = f(a) + f(b) when gcd(a,b) = 1\n\n2. **Defining unbounded growth**: UnboundedOnPrimePowers captures the limsup condition on prime powers\n\n3. **Stating both conjectures as axioms**: Parts I and II about consecutive differences\n\n4. **Stating Wirsing's theorem**: The solved converse direction\n\n5. **Defining restricted variants**: StronglyAdditive (f(p^k) = f(p)) and CompletelyAdditive (f(p^k) = k\u00b7f(p))\n\n6. **Providing examples**: omega, bigOmega, and log as concrete additive functions",
     "keyInsights": [
       "**Additive vs multiplicative**: Additive functions add on coprime products; multiplicative functions multiply. The logarithm is additive: log(ab) = log(a) + log(b).",
       "**Why prime powers matter**: For additive f, the value f(n) is determined by f on prime powers. If f grows fast on prime powers, it should affect consecutive values.",
       "**Wirsing's characterization**: The logarithm is essentially unique among additive functions with bounded consecutive differences. This is a beautiful rigidity result.",
-      "**Strongly vs completely additive**: ω(n) counts distinct primes (strongly additive: ω(p^k) = 1), while Ω(n) counts with multiplicity (completely additive: Ω(p^k) = k).",
-      "**Open status**: Despite progress on the converse, Erdős's original questions about the forward direction remain unresolved."
+      "**Strongly vs completely additive**: \u03c9(n) counts distinct primes (strongly additive: \u03c9(p^k) = 1), while \u03a9(n) counts with multiplicity (completely additive: \u03a9(p^k) = k).",
+      "**Open status**: Despite progress on the converse, Erd\u0151s's original questions about the forward direction remain unresolved."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -101,7 +101,7 @@
       "title": "Wirsing's Theorem (SOLVED)",
       "startLine": 75,
       "endLine": 91,
-      "summary": "The converse: bounded differences imply f(n) = c·log(n) + O(1)."
+      "summary": "The converse: bounded differences imply f(n) = c\u00b7log(n) + O(1)."
     },
     {
       "id": "restricted",
@@ -126,11 +126,11 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #897 about additive arithmetic functions and their consecutive differences. The problem asks whether unbounded growth on prime powers implies unbounded consecutive differences. Both parts remain OPEN, though Wirsing proved the converse in 1970: bounded differences characterize the logarithm.",
+    "summary": "We formalize Erd\u0151s Problem #897 about additive arithmetic functions and their consecutive differences. The problem asks whether unbounded growth on prime powers implies unbounded consecutive differences. Both parts remain OPEN, though Wirsing proved the converse in 1970: bounded differences characterize the logarithm.",
     "implications": "This problem connects the local behavior of additive functions (on prime powers) with their global behavior (on consecutive integers). Understanding this connection would reveal deep structure in the distribution of prime factors across consecutive numbers.",
     "openQuestions": [
-      "Part I: Does limsup f(p^k)/log(p^k) = ∞ imply limsup (f(n+1)-f(n))/log(n) = ∞?",
-      "Part II: Does limsup f(p^k)/log(p^k) = ∞ imply limsup f(n+1)/f(n) = ∞?",
+      "Part I: Does limsup f(p^k)/log(p^k) = \u221e imply limsup (f(n+1)-f(n))/log(n) = \u221e?",
+      "Part II: Does limsup f(p^k)/log(p^k) = \u221e imply limsup f(n+1)/f(n) = \u221e?",
       "Do the restricted variants (strongly or completely additive) have different answers?",
       "What is the relationship between the two parts?"
     ]
@@ -148,5 +148,39 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-673",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1122",
+      "relationship": "related",
+      "description": "Share additive-functions, analytic-number-theory, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1061",
+      "relationship": "related",
+      "description": "Share arithmetic-functions and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Share arithmetic-functions and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-122",
+      "relationship": "related",
+      "description": "Share arithmetic-functions and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-673",
+    "erdos-1122",
+    "erdos-1061",
+    "erdos-1064",
+    "erdos-122"
+  ]
 }

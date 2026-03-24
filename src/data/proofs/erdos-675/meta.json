@@ -1,10 +1,10 @@
 {
   "id": "erdos-675",
-  "title": "Erdős Problem #675: Translation Property for Number-Theoretic Sets",
+  "title": "Erd\u0151s Problem #675: Translation Property for Number-Theoretic Sets",
   "slug": "erdos-675",
   "description": "Does the set of sums of two squares have the translation property? For squarefree numbers, how fast does the minimal translation grow? Brun's sieve establishes the property for squarefree numbers.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/675",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos675Problem.lean",
@@ -25,16 +25,16 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős introduced the translation property in the 1970s as a measure of 'quasi-periodicity' for number-theoretic sets. A set A ⊆ ℕ has this property if every finite initial pattern of A reappears at some translate—weaker than periodicity but capturing a form of self-similarity. The key tool is Brun's sieve (1920), which establishes the property for B-free sets (integers avoiding divisibility by elements of B) when B is pairwise coprime with convergent reciprocal sum. This immediately gives the translation property for squarefree numbers (B = {p² : p prime}, where Σ 1/p² < ∞). Problem 675 asks three deeper questions: (1) Do sums of two squares have the property? This is non-trivial because sums of two squares have density C/√(log x) by the Landau-Ramanujan theorem and are defined by an exponent-parity condition (primes p ≡ 3 mod 4 must divide to even power), not a non-divisibility condition, so Brun's sieve does not directly apply. (2) For balanced partitions P ∪ Q of primes, can P-smooth numbers have the property? This connects to multiplicative number theory and Dickman's function. (3) For squarefree numbers, must the minimal translation t_n grow at least as exp(n^c)? The CRT gives an upper bound t_n ≤ e^{O(n)}, and the question is whether a matching lower bound holds, quantifying the local non-periodicity of the squarefree pattern.",
+    "historicalContext": "Erd\u0151s introduced the translation property in the 1970s as a measure of 'quasi-periodicity' for number-theoretic sets. A set A \u2286 \u2115 has this property if every finite initial pattern of A reappears at some translate\u2014weaker than periodicity but capturing a form of self-similarity. The key tool is Brun's sieve (1920), which establishes the property for B-free sets (integers avoiding divisibility by elements of B) when B is pairwise coprime with convergent reciprocal sum. This immediately gives the translation property for squarefree numbers (B = {p\u00b2 : p prime}, where \u03a3 1/p\u00b2 < \u221e). Problem 675 asks three deeper questions: (1) Do sums of two squares have the property? This is non-trivial because sums of two squares have density C/\u221a(log x) by the Landau-Ramanujan theorem and are defined by an exponent-parity condition (primes p \u2261 3 mod 4 must divide to even power), not a non-divisibility condition, so Brun's sieve does not directly apply. (2) For balanced partitions P \u222a Q of primes, can P-smooth numbers have the property? This connects to multiplicative number theory and Dickman's function. (3) For squarefree numbers, must the minimal translation t_n grow at least as exp(n^c)? The CRT gives an upper bound t_n \u2264 e^{O(n)}, and the question is whether a matching lower bound holds, quantifying the local non-periodicity of the squarefree pattern.",
     "problemStatement": "Three questions: (1) Does the set of sums of two squares have the translation property? (2) For balanced partitions of primes, can integers with prime factors from one part have this property? (3) For squarefree numbers, does the minimal translation t_n grow at least exponentially, i.e., t_n > exp(n^c)?",
     "text": "Does the set of sums of two squares have the translation property? For squarefree numbers, how fast does the minimal translation grow? Brun's sieve establishes the property for squarefree numbers.",
-    "proofStrategy": "The formalization defines HasTranslationProperty as ∀ n, ∃ t ≥ 1, ∀ a ∈ [1,n], (a ∈ A ↔ a+t ∈ A), and minTranslation via Nat.find. Number-theoretic sets (sumOfTwoSquares, squarefreeSet, bFreeSet) are defined as Set ℕ predicates. The sieve conditions (IsPairwiseCoprime, HasSmallReciprocalSum) and the CRT-based result (brun_sieve_translation) are axiomatized. The three parts of Problem 675 are stated as separate axioms. The HasSmallReciprocalSum condition uses a True placeholder for the asymptotic bound, a pragmatic simplification.",
+    "proofStrategy": "The formalization defines HasTranslationProperty as \u2200 n, \u2203 t \u2265 1, \u2200 a \u2208 [1,n], (a \u2208 A \u2194 a+t \u2208 A), and minTranslation via Nat.find. Number-theoretic sets (sumOfTwoSquares, squarefreeSet, bFreeSet) are defined as Set \u2115 predicates. The sieve conditions (IsPairwiseCoprime, HasSmallReciprocalSum) and the CRT-based result (brun_sieve_translation) are axiomatized. The three parts of Problem 675 are stated as separate axioms. The HasSmallReciprocalSum condition uses a True placeholder for the asymptotic bound, a pragmatic simplification.",
     "keyInsights": [
-      "**CRT-based translation**: For B-free sets with pairwise coprime B, the Chinese Remainder Theorem constructs translations t_n ≤ lcm(b₁,...,b_k) by choosing k moduli with product > n",
-      "**Sums of two squares are not B-free**: The characterization via even exponents of primes p ≡ 3 mod 4 is fundamentally different from non-divisibility, so Brun's sieve approach fails",
-      "**Landau-Ramanujan density decay**: Sums of two squares have density C/√(log x), making the pattern increasingly sparse—yet the conjecture predicts it still repeats at some translate",
-      "**Balanced partition existential**: Part 2 asks whether some (not all) balanced prime partition yields P-smooth numbers with the property—an existential question that may be easier than Part 1",
-      "**Growth rate dichotomy**: The CRT gives t_n ≤ e^{O(n)} for squarefree numbers; if t_n > exp(n^c) for some c > 0, it means the minimal translation is essentially as large as the CRT bound allows"
+      "**CRT-based translation**: For B-free sets with pairwise coprime B, the Chinese Remainder Theorem constructs translations t_n \u2264 lcm(b\u2081,...,b_k) by choosing k moduli with product > n",
+      "**Sums of two squares are not B-free**: The characterization via even exponents of primes p \u2261 3 mod 4 is fundamentally different from non-divisibility, so Brun's sieve approach fails",
+      "**Landau-Ramanujan density decay**: Sums of two squares have density C/\u221a(log x), making the pattern increasingly sparse\u2014yet the conjecture predicts it still repeats at some translate",
+      "**Balanced partition existential**: Part 2 asks whether some (not all) balanced prime partition yields P-smooth numbers with the property\u2014an existential question that may be easier than Part 1",
+      "**Growth rate dichotomy**: The CRT gives t_n \u2264 e^{O(n)} for squarefree numbers; if t_n > exp(n^c) for some c > 0, it means the minimal translation is essentially as large as the CRT bound allows"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -62,7 +62,7 @@
       "title": "Number-Theoretic Sets",
       "startLine": 38,
       "endLine": 50,
-      "summary": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set ℕ predicates."
+      "summary": "Defines sumOfTwoSquares, squarefreeSet, and bFreeSet as Set \u2115 predicates."
     },
     {
       "id": "sieve-conditions",
@@ -101,14 +101,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 675 investigates the translation property—a form of quasi-periodicity—for three classes of number-theoretic sets. Brun's sieve and the Chinese Remainder Theorem establish the property for B-free sets (including squarefree numbers), but the questions for sums of two squares, balanced prime partitions, and the growth rate of minimal translations remain open. The three parts probe different aspects: Part 1 tests whether multiplicative conditions beyond non-divisibility force translation; Part 2 asks an existential question about prime partitions; Part 3 quantifies the non-periodicity of the squarefree pattern.",
+    "summary": "Erd\u0151s Problem 675 investigates the translation property\u2014a form of quasi-periodicity\u2014for three classes of number-theoretic sets. Brun's sieve and the Chinese Remainder Theorem establish the property for B-free sets (including squarefree numbers), but the questions for sums of two squares, balanced prime partitions, and the growth rate of minimal translations remain open. The three parts probe different aspects: Part 1 tests whether multiplicative conditions beyond non-divisibility force translation; Part 2 asks an existential question about prime partitions; Part 3 quantifies the non-periodicity of the squarefree pattern.",
     "implications": "**Theoretical Significance**: A positive answer to Part 1 would reveal hidden quasi-periodic structure in sums of two squares despite their decaying density, connecting to Dirichlet characters and automorphic forms.\n\nPart 2 would establish new connections between prime partition theory and multiplicative number theory. Part 3 would quantify the local complexity of the squarefree pattern, with implications for sieve theory and the distribution of squarefree numbers in short intervals.",
     "openQuestions": [
       "Do sums of two squares have the translation property?",
-      "Can the Fermat characterization (even exponents of p ≡ 3 mod 4) be exploited for a CRT-like argument?",
+      "Can the Fermat characterization (even exponents of p \u2261 3 mod 4) be exploited for a CRT-like argument?",
       "Which balanced prime partitions yield P-smooth sets with the translation property?",
       "What is the exact growth rate of the minimal translation for squarefree numbers?",
-      "Does the translation property hold for k-free numbers (B = {p^k}) for all k ≥ 2?"
+      "Does the translation property hold for k-free numbers (B = {p^k}) for all k \u2265 2?"
     ]
   },
   "leanFile": {
@@ -124,5 +124,39 @@
     "axiomCount": 5,
     "theoremCount": 0,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1161",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-124-complete-sequences",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1005",
+    "erdos-1138",
+    "erdos-1161",
+    "erdos-124-complete-sequences",
+    "erdos-13"
+  ]
 }

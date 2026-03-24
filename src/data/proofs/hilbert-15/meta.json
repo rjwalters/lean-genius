@@ -23,7 +23,7 @@
       },
       {
         "theorem": "Submodule",
-        "description": "Submodule lattice operations (⊓, ⊔, ⊥) for intersection and span of subspaces",
+        "description": "Submodule lattice operations (\u2293, \u2294, \u22a5) for intersection and span of subspaces",
         "module": "Mathlib.LinearAlgebra.Span"
       },
       {
@@ -34,11 +34,11 @@
     ],
     "originalContributions": [
       "Grassmannian Gr(k,n) defined via finrank of Submodule subtypes",
-      "Lines in P³ formalized as Gr(2,4) with two equivalent intersection predicates",
+      "Lines in P\u00b3 formalized as Gr(2,4) with two equivalent intersection predicates",
       "Four Lines Theorem stated with explicit general position conditions",
       "Partition and SchubertClass structures for abstract Schubert calculus",
       "Schubert basis theorem and Littlewood-Richardson rule axiomatized",
-      "σ₁⁴ = 2σ₂₂ computation verified via LR coefficients"
+      "\u03c3\u2081\u2074 = 2\u03c3\u2082\u2082 computation verified via LR coefficients"
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 15,
@@ -48,17 +48,17 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Hermann Schubert (1879) developed powerful but non-rigorous techniques for counting geometric configurations: how many lines meet 4 given lines in 3-space (answer: 2), how many conics are tangent to 5 given conics (answer: 3264), how many lines lie on a cubic surface (answer: 27). His methods, based on the 'principle of conservation of number,' produced correct answers but lacked rigorous justification.\n\nHilbert included the rigorous foundation of Schubert's calculus as Problem 15 in his famous 1900 list. The resolution required the development of entirely new mathematical machinery over the course of the 20th century.\n\nVan der Waerden and Weil (1930s) connected Schubert's calculations to the cohomology ring of Grassmannians, transforming enumerative geometry into algebraic topology. Ehresmann (1934), Chevalley (1958), and Bernstein-Gel'fand-Gel'fand (1973) proved that Schubert classes — cohomology classes of Schubert varieties defined by incidence with a fixed flag — form a free Z-basis for H*(Gr(k,n)). This reduced enumerative counting to computing products in this ring.\n\nThe final piece was the Littlewood-Richardson rule, conjectured in 1934 and first proved by Schützenberger in 1977, which gives a purely combinatorial formula for the structure constants of the Schubert basis using Young tableaux. Fulton's 1984 treatise provided complete intersection-theoretic foundations. Today, active extensions include quantum Schubert calculus (via Gromov-Witten theory), K-theoretic Schubert calculus (via Grothendieck polynomials), and equivariant methods.",
+    "historicalContext": "Hermann Schubert (1879) developed powerful but non-rigorous techniques for counting geometric configurations: how many lines meet 4 given lines in 3-space (answer: 2), how many conics are tangent to 5 given conics (answer: 3264), how many lines lie on a cubic surface (answer: 27). His methods, based on the 'principle of conservation of number,' produced correct answers but lacked rigorous justification.\n\nHilbert included the rigorous foundation of Schubert's calculus as Problem 15 in his famous 1900 list. The resolution required the development of entirely new mathematical machinery over the course of the 20th century.\n\nVan der Waerden and Weil (1930s) connected Schubert's calculations to the cohomology ring of Grassmannians, transforming enumerative geometry into algebraic topology. Ehresmann (1934), Chevalley (1958), and Bernstein-Gel'fand-Gel'fand (1973) proved that Schubert classes \u2014 cohomology classes of Schubert varieties defined by incidence with a fixed flag \u2014 form a free Z-basis for H*(Gr(k,n)). This reduced enumerative counting to computing products in this ring.\n\nThe final piece was the Littlewood-Richardson rule, conjectured in 1934 and first proved by Sch\u00fctzenberger in 1977, which gives a purely combinatorial formula for the structure constants of the Schubert basis using Young tableaux. Fulton's 1984 treatise provided complete intersection-theoretic foundations. Today, active extensions include quantum Schubert calculus (via Gromov-Witten theory), K-theoretic Schubert calculus (via Grothendieck polynomials), and equivariant methods.",
     "problemStatement": "**Problem:** Rigorously justify Schubert's counting methods.\n\n**Classic Results:**\n- 2 lines meet 4 given lines in 3D\n- 3264 conics tangent to 5 conics\n- 27 lines on a cubic surface",
     "text": "Rigorous foundation of Schubert's enumerative calculus for counting geometric configurations in Grassmannians.",
-    "proofStrategy": "The formalization proceeds in eight parts. Part I defines the Grassmannian Gr(k,n) as a subtype of Submodule K (Fin n → K) with finrank k, using linear algebra rather than algebraic geometry. Part II specializes to lines in P³ as Gr(2,4) and defines two equivalent intersection predicates. Part III states the Four Lines Theorem with explicit general position conditions and both existential and cardinality formulations. Part IV records classical Schubert numbers as ℕ constants. Part V defines partitions and Schubert classes abstractly, axiomatizing the basis theorem. Part VI axiomatizes the Littlewood-Richardson rule and Pieri's special case. Part VII verifies the four lines formula σ₁⁴ = 2σ₂₂ via LR coefficients. Part VIII summarizes the problem status.",
+    "proofStrategy": "The formalization proceeds in eight parts. Part I defines the Grassmannian Gr(k,n) as a subtype of Submodule K (Fin n \u2192 K) with finrank k, using linear algebra rather than algebraic geometry. Part II specializes to lines in P\u00b3 as Gr(2,4) and defines two equivalent intersection predicates. Part III states the Four Lines Theorem with explicit general position conditions and both existential and cardinality formulations. Part IV records classical Schubert numbers as \u2115 constants. Part V defines partitions and Schubert classes abstractly, axiomatizing the basis theorem. Part VI axiomatizes the Littlewood-Richardson rule and Pieri's special case. Part VII verifies the four lines formula \u03c3\u2081\u2074 = 2\u03c3\u2082\u2082 via LR coefficients. Part VIII summarizes the problem status.",
     "keyInsights": [
       "The Grassmannian Gr(k,n) can be defined purely via linear algebra (finrank of submodules), deferring the full algebraic-geometric structure",
-      "The Four Lines Theorem exemplifies how a concrete geometric question — counting transversal lines — reduces to a cohomological computation σ₁⁴ = 2σ₂₂",
-      "Schubert classes form a free Z-basis for H*(Gr(k,n)) indexed by partitions fitting in a k × (n-k) box, connecting geometry to combinatorics",
+      "The Four Lines Theorem exemplifies how a concrete geometric question \u2014 counting transversal lines \u2014 reduces to a cohomological computation \u03c3\u2081\u2074 = 2\u03c3\u2082\u2082",
+      "Schubert classes form a free Z-basis for H*(Gr(k,n)) indexed by partitions fitting in a k \u00d7 (n-k) box, connecting geometry to combinatorics",
       "The Littlewood-Richardson rule reduces intersection products to a purely combinatorial computation on Young tableaux",
-      "The step-by-step computation σ₁² = σ₂ + σ₁₁, σ₁³ = 2σ₂₁, σ₁⁴ = 2σ₂₂ reveals how Pieri's rule iteratively builds up the answer",
-      "Steiner's erroneous count of 7776 conics (corrected to 3264) illustrates precisely the rigor Hilbert demanded — naive counting overcounts degenerate configurations"
+      "The step-by-step computation \u03c3\u2081\u00b2 = \u03c3\u2082 + \u03c3\u2081\u2081, \u03c3\u2081\u00b3 = 2\u03c3\u2082\u2081, \u03c3\u2081\u2074 = 2\u03c3\u2082\u2082 reveals how Pieri's rule iteratively builds up the answer",
+      "Steiner's erroneous count of 7776 conics (corrected to 3264) illustrates precisely the rigor Hilbert demanded \u2014 naive counting overcounts degenerate configurations"
     ],
     "prerequisites": [
       "Algebraic geometry (Grassmannians, intersection theory, cohomology)",
@@ -80,15 +80,15 @@
       "title": "Part I: The Grassmannian",
       "startLine": 73,
       "endLine": 105,
-      "summary": "Defines Grassmannian k n K as the subtype {V : Submodule K (Fin n → K) // finrank K V = k}, with CoeSort instance and grassmannian_rank theorem.",
+      "summary": "Defines Grassmannian k n K as the subtype {V : Submodule K (Fin n \u2192 K) // finrank K V = k}, with CoeSort instance and grassmannian_rank theorem.",
       "mathContext": "$\\text{Gr}(k, n) = \\{V \\leq K^n : \\dim V = k\\}$. Dimension: $\\dim \\text{Gr}(k,n) = k(n-k)$."
     },
     {
       "id": "lines-in-p3",
-      "title": "Part II: Lines in P³",
+      "title": "Part II: Lines in P\u00b3",
       "startLine": 106,
       "endLine": 142,
-      "summary": "Defines LineInP3 as Gr(2,4), SubspacesMeet (V ⊓ W ≠ ⊥), LinesMeet, LinesMeet' (finrank of span < 4), and axiomatizes their equivalence."
+      "summary": "Defines LineInP3 as Gr(2,4), SubspacesMeet (V \u2293 W \u2260 \u22a5), LinesMeet, LinesMeet' (finrank of span < 4), and axiomatizes their equivalence."
     },
     {
       "id": "four-lines",
@@ -103,7 +103,7 @@
       "title": "Part IV: Classical Schubert Numbers",
       "startLine": 219,
       "endLine": 250,
-      "summary": "Records schubertNumber_FourLines = 2, schubertNumber_CubicSurface = 27, schubertNumber_FiveConics = 3264, schubertNumber_FivePoints = 1 as ℕ constants.",
+      "summary": "Records schubertNumber_FourLines = 2, schubertNumber_CubicSurface = 27, schubertNumber_FiveConics = 3264, schubertNumber_FivePoints = 1 as \u2115 constants.",
       "mathContext": "Classical enumerative results: 2 lines meet 4 general lines, 27 lines on a cubic surface, 3264 conics tangent to 5 conics (Steiner's corrected count)."
     },
     {
@@ -111,7 +111,7 @@
       "title": "Part V: Schubert Varieties and Classes",
       "startLine": 251,
       "endLine": 302,
-      "summary": "Defines Partition (weakly decreasing list), fitsIn (k × (n-k) box), SchubertClass, and axiomatizes the Schubert basis theorem (bijection with fitting partitions, distinctness)."
+      "summary": "Defines Partition (weakly decreasing list), fitsIn (k \u00d7 (n-k) box), SchubertClass, and axiomatizes the Schubert basis theorem (bijection with fitting partitions, distinctness)."
     },
     {
       "id": "lr-rule",
@@ -136,7 +136,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Hilbert's 15th Problem was resolved by developing rigorous intersection theory on Grassmannians, with Schubert classes providing a Z-basis for cohomology and the Littlewood-Richardson rule giving combinatorial formulas for structure constants. The formalization captures this structure using linear algebra for the Grassmannian, axiomatizes the algebraic-geometric results, and verifies the classical four lines formula σ₁⁴ = 2σ₂₂.",
+    "summary": "Hilbert's 15th Problem was resolved by developing rigorous intersection theory on Grassmannians, with Schubert classes providing a Z-basis for cohomology and the Littlewood-Richardson rule giving combinatorial formulas for structure constants. The formalization captures this structure using linear algebra for the Grassmannian, axiomatizes the algebraic-geometric results, and verifies the classical four lines formula \u03c3\u2081\u2074 = 2\u03c3\u2082\u2082.",
     "implications": "**Theoretical Significance**: Schubert calculus is foundational to modern enumerative geometry, providing the computational engine for counting geometric configurations.\n\nIts extensions to quantum cohomology (counting rational curves via Gromov-Witten theory), K-theory (Grothendieck polynomials), and equivariant settings continue to drive research at the intersection of algebraic geometry, combinatorics, and representation theory. Practical applications include string theory (mirror symmetry via Gromov-Witten invariants) and combinatorial algorithms (jeu de taquin, crystal graphs).",
     "openQuestions": [
       "Can the full Schubert calculus be formalized in Lean/Mathlib, including Chow rings and intersection theory on smooth varieties?",
@@ -147,16 +147,19 @@
   },
   "crossReferences": [
     {
-      "relationship": "Adjacent Hilbert problem — both involve the topology and geometry of real algebraic varieties",
-      "targetId": "hilbert-16"
+      "relationship": "related",
+      "targetId": "hilbert-16",
+      "description": "Adjacent Hilbert problem \u2014 both involve the topology and geometry of real algebraic varieties"
     },
     {
-      "relationship": "Fellow Hilbert problem in algebraic geometry — Problem 17 concerns real polynomials while Problem 15 concerns complex intersection theory",
-      "targetId": "hilbert-17"
+      "relationship": "related",
+      "targetId": "hilbert-17",
+      "description": "Fellow Hilbert problem in algebraic geometry \u2014 Problem 17 concerns real polynomials while Problem 15 concerns complex intersection theory"
     },
     {
-      "relationship": "Bézout's theorem, which underpins the four lines proof, relies on algebraic closure (FTA) to ensure intersection points exist",
-      "targetId": "fundamental-theorem-algebra"
+      "relationship": "related",
+      "targetId": "fundamental-theorem-algebra",
+      "description": "B\u00e9zout's theorem, which underpins the four lines proof, relies on algebraic closure (FTA) to ensure intersection points exist"
     }
   ],
   "leanFile": {
@@ -195,14 +198,14 @@
       "authors": "Hilbert, David",
       "title": "Mathematische Probleme",
       "year": "1900",
-      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu G\u00f6ttingen, 253\u2013297",
       "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
     },
     {
       "authors": "Kleiman, Steven L.",
       "title": "Problem 15: Rigorous foundation of Schubert's enumerative calculus",
       "year": "1976",
-      "venue": "Proceedings of Symposia in Pure Mathematics 28, 445–482",
+      "venue": "Proceedings of Symposia in Pure Mathematics 28, 445\u2013482",
       "note": "Survey of progress on Schubert calculus and intersection theory related to Hilbert's 15th problem"
     }
   ]

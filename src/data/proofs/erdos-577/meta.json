@@ -1,10 +1,10 @@
 {
   "id": "erdos-577",
-  "title": "Erdős Problem #577: Vertex-Disjoint 4-Cycles in Dense Graphs",
+  "title": "Erd\u0151s Problem #577: Vertex-Disjoint 4-Cycles in Dense Graphs",
   "slug": "erdos-577",
-  "description": "If G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles? SOLVED by Wang (2010): YES, the Erdős-Faudree conjecture is true.",
+  "description": "If G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles? SOLVED by Wang (2010): YES, the Erd\u0151s-Faudree conjecture is true.",
   "meta": {
-    "author": "Erdős, Faudree, Wang",
+    "author": "Erd\u0151s, Faudree, Wang",
     "sourceUrl": "https://erdosproblems.com/577",
     "date": "2010",
     "status": "axiomatized",
@@ -48,21 +48,21 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Faudree conjectured in 1985 that graphs with 4k vertices and minimum degree at least 2k contain k vertex-disjoint 4-cycles (quadrilaterals). This conjecture belongs to a rich family of 'cycle partition' problems in extremal graph theory, with roots in Dirac's theorem (1952) that δ(G) ≥ n/2 implies Hamiltonicity. The Corrádi-Hajnal theorem (1963) established the triangle case: 3k vertices with δ(G) ≥ 2k contain k vertex-disjoint triangles. El-Zahar (1984) proposed the general conjecture for mixed cycle lengths. The Erdős-Faudree conjecture is notable because the degree threshold 2k = n/2 exactly matches the Dirac threshold — unlike the Corrádi-Hajnal case where 2k on 3k vertices gives δ ≥ 2n/3 (above Dirac). After 25 years open, Hong Wang completely resolved the conjecture in a 45-page proof published in Graphs and Combinatorics (2010). Wang's approach analyzes minimal counterexamples, studying the neighborhood structure of high-degree vertices and using greedy cycle extraction with careful bookkeeping to derive contradictions. The degree bound 2k is sharp: there exist counterexample graphs with δ = 2k - 1.",
+    "historicalContext": "Erd\u0151s and Faudree conjectured in 1985 that graphs with 4k vertices and minimum degree at least 2k contain k vertex-disjoint 4-cycles (quadrilaterals). This conjecture belongs to a rich family of 'cycle partition' problems in extremal graph theory, with roots in Dirac's theorem (1952) that \u03b4(G) \u2265 n/2 implies Hamiltonicity. The Corr\u00e1di-Hajnal theorem (1963) established the triangle case: 3k vertices with \u03b4(G) \u2265 2k contain k vertex-disjoint triangles. El-Zahar (1984) proposed the general conjecture for mixed cycle lengths. The Erd\u0151s-Faudree conjecture is notable because the degree threshold 2k = n/2 exactly matches the Dirac threshold \u2014 unlike the Corr\u00e1di-Hajnal case where 2k on 3k vertices gives \u03b4 \u2265 2n/3 (above Dirac). After 25 years open, Hong Wang completely resolved the conjecture in a 45-page proof published in Graphs and Combinatorics (2010). Wang's approach analyzes minimal counterexamples, studying the neighborhood structure of high-degree vertices and using greedy cycle extraction with careful bookkeeping to derive contradictions. The degree bound 2k is sharp: there exist counterexample graphs with \u03b4 = 2k - 1.",
     "problemStatement": "If G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles?",
-    "text": "If G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles? SOLVED by Wang (2010): YES, the Erdős-Faudree conjecture is true.",
-    "proofStrategy": "The formalization defines FourCycle as a Lean structure with 4 distinct vertices and 4 edges forming a cycle, then builds vertex sets, disjointness predicates, and pairwise disjointness. The Erdős-Faudree conjecture is stated as a Prop universally quantifying over all finite simple graphs. Wang's theorem is axiomatized, and two consequences are derived: the base case k=1 (from Wang's theorem with norm_num) and the final resolution erdos_577. Sharpness is axiomatized separately. Related results (Dirac, El-Zahar, Corrádi-Hajnal) are documented as comments.",
+    "text": "If G is a graph with 4k vertices and minimum degree at least 2k, must G contain k vertex-disjoint 4-cycles? SOLVED by Wang (2010): YES, the Erd\u0151s-Faudree conjecture is true.",
+    "proofStrategy": "The formalization defines FourCycle as a Lean structure with 4 distinct vertices and 4 edges forming a cycle, then builds vertex sets, disjointness predicates, and pairwise disjointness. The Erd\u0151s-Faudree conjecture is stated as a Prop universally quantifying over all finite simple graphs. Wang's theorem is axiomatized, and two consequences are derived: the base case k=1 (from Wang's theorem with norm_num) and the final resolution erdos_577. Sharpness is axiomatized separately. Related results (Dirac, El-Zahar, Corr\u00e1di-Hajnal) are documented as comments.",
     "keyInsights": [
       "**Dirac threshold is exact**: The condition $\\delta(G) \\geq 2k = n/2$ on $4k$ vertices is exactly the Dirac Hamiltonicity threshold, and it suffices for the much stronger $C_4$-partition property",
-      "**Degree bound is sharp**: Cannot weaken to $\\delta(G) \\geq 2k - 1$ — counterexamples exist for every $k$",
-      "**Cycle partition hierarchy**: Corrádi-Hajnal (1963, triangles) → Erdős-Faudree (1985/2010, quadrilaterals) → El-Zahar (1984, general, still open)",
+      "**Degree bound is sharp**: Cannot weaken to $\\delta(G) \\geq 2k - 1$ \u2014 counterexamples exist for every $k$",
+      "**Cycle partition hierarchy**: Corr\u00e1di-Hajnal (1963, triangles) \u2192 Erd\u0151s-Faudree (1985/2010, quadrilaterals) \u2192 El-Zahar (1984, general, still open)",
       "**25-year proof gap**: The conjecture required 25 years and a 45-page proof by Wang, reflecting the difficulty of upgrading Hamiltonicity to cycle partitions",
-      "**Structural method**: Wang's proof uses minimal counterexample analysis and neighborhood structure — no algebraic or probabilistic techniques"
+      "**Structural method**: Wang's proof uses minimal counterexample analysis and neighborhood structure \u2014 no algebraic or probabilistic techniques"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -89,7 +89,7 @@
     },
     {
       "id": "conjecture",
-      "title": "Erdős-Faudree Conjecture",
+      "title": "Erd\u0151s-Faudree Conjecture",
       "summary": "Formal statement: $\\forall k > 0$, if $|V| = 4k$ and $\\delta(G) \\geq 2k$, then $\\exists$ $k$ pairwise vertex-disjoint $C_4$'s",
       "startLine": 75,
       "endLine": 92
@@ -111,7 +111,7 @@
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "Connections to Dirac's theorem ($\\delta \\geq n/2 \\Rightarrow$ Hamiltonian), El-Zahar's conjecture (general cycle lengths), and Corrádi-Hajnal ($C_3$ partition)",
+      "summary": "Connections to Dirac's theorem ($\\delta \\geq n/2 \\Rightarrow$ Hamiltonian), El-Zahar's conjecture (general cycle lengths), and Corr\u00e1di-Hajnal ($C_3$ partition)",
       "startLine": 141,
       "endLine": 163
     },
@@ -136,24 +136,29 @@
     "erdos-572",
     "erdos-599",
     "erdos-546",
-    "erdos-579"
+    "erdos-579",
+    "erdos-64",
+    "erdos-1080",
+    "erdos-574",
+    "erdos-666",
+    "erdos-751"
   ],
   "references": [
-    "Wang, H. (2010). 'Proof of the Erdős-Faudree conjecture on quadrilaterals.' Graphs and Combinatorics, 26(6), 833–877.",
-    "Erdős, P. and Faudree, R.J. (1985). 'On a class of degenerate extremal graph problems.' Combinatorica, 5(2), 99–108.",
-    "Corrádi, K. and Hajnal, A. (1963). 'On the maximal number of independent circuits in a graph.' Acta Math. Acad. Sci. Hungar., 14, 423–439.",
-    "El-Zahar, M.H. (1984). 'On circuits in graphs.' Discrete Math., 50, 227–230.",
-    "Dirac, G.A. (1952). 'Some theorems on abstract graphs.' Proc. London Math. Soc., 3(2), 69–81.",
+    "Wang, H. (2010). 'Proof of the Erd\u0151s-Faudree conjecture on quadrilaterals.' Graphs and Combinatorics, 26(6), 833\u2013877.",
+    "Erd\u0151s, P. and Faudree, R.J. (1985). 'On a class of degenerate extremal graph problems.' Combinatorica, 5(2), 99\u2013108.",
+    "Corr\u00e1di, K. and Hajnal, A. (1963). 'On the maximal number of independent circuits in a graph.' Acta Math. Acad. Sci. Hungar., 14, 423\u2013439.",
+    "El-Zahar, M.H. (1984). 'On circuits in graphs.' Discrete Math., 50, 227\u2013230.",
+    "Dirac, G.A. (1952). 'Some theorems on abstract graphs.' Proc. London Math. Soc., 3(2), 69\u201381.",
     "https://erdosproblems.com/577"
   ],
   "conclusion": {
-    "summary": "Erdős Problem #577 (the Erdős-Faudree conjecture) was SOLVED by Hong Wang in 2010 after 25 years open. The result establishes that graphs with 4k vertices and minimum degree at least 2k contain k vertex-disjoint 4-cycles. The Lean formalization defines the FourCycle structure, disjointness predicates, and the conjecture as a universally quantified Prop, with Wang's theorem axiomatized and the final resolution derived. The degree bound 2k is proved sharp.",
-    "implications": "**Theoretical Significance**: Wang's theorem confirms the C₄ case of the cycle partition program, validating a special case of El-Zahar's general conjecture.\n\nThe result shows that the Dirac threshold δ ≥ n/2 — originally sufficient only for Hamiltonicity — actually guarantees the much stronger partition-into-quadrilaterals property. The structural proof technique (minimal counterexample with neighborhood analysis) has influenced subsequent work on cycle decomposition problems.",
+    "summary": "Erd\u0151s Problem #577 (the Erd\u0151s-Faudree conjecture) was SOLVED by Hong Wang in 2010 after 25 years open. The result establishes that graphs with 4k vertices and minimum degree at least 2k contain k vertex-disjoint 4-cycles. The Lean formalization defines the FourCycle structure, disjointness predicates, and the conjecture as a universally quantified Prop, with Wang's theorem axiomatized and the final resolution derived. The degree bound 2k is proved sharp.",
+    "implications": "**Theoretical Significance**: Wang's theorem confirms the C\u2084 case of the cycle partition program, validating a special case of El-Zahar's general conjecture.\n\nThe result shows that the Dirac threshold \u03b4 \u2265 n/2 \u2014 originally sufficient only for Hamiltonicity \u2014 actually guarantees the much stronger partition-into-quadrilaterals property. The structural proof technique (minimal counterexample with neighborhood analysis) has influenced subsequent work on cycle decomposition problems.",
     "openQuestions": [
-      "Does El-Zahar's conjecture hold in full generality for all cycle length sequences (n₁, ..., nₖ)?",
+      "Does El-Zahar's conjecture hold in full generality for all cycle length sequences (n\u2081, ..., n\u2096)?",
       "Can Wang's proof be simplified or shortened from its current 45 pages?",
       "Is there a polynomial-time algorithm to explicitly find the k vertex-disjoint 4-cycles?",
-      "What is the minimum degree threshold for vertex-disjoint C₅ partitions on 5k vertices?"
+      "What is the minimum degree threshold for vertex-disjoint C\u2085 partitions on 5k vertices?"
     ]
   },
   "leanFile": {
@@ -171,5 +176,32 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-64",
+      "relationship": "related",
+      "description": "Share cycles, minimum-degree, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Share cycles, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-574",
+      "relationship": "related",
+      "description": "Share cycles, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-666",
+      "relationship": "related",
+      "description": "Share cycles, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-751",
+      "relationship": "related",
+      "description": "Share cycles, minimum-degree, and graph-theoretic themes"
+    }
+  ]
 }

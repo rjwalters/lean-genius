@@ -1,10 +1,10 @@
 {
   "id": "erdos-170",
-  "title": "Erdős Problem #170: Sparse Rulers (Perfect Difference Bases)",
+  "title": "Erd\u0151s Problem #170: Sparse Rulers (Perfect Difference Bases)",
   "slug": "erdos-170",
-  "description": "Let F(N) be the minimum size of A ⊆ {0,...,N} such that every k ∈ {1,...,N} is a difference of elements in A. Find lim F(N)/√N.",
+  "description": "Let F(N) be the minimum size of A \u2286 {0,...,N} such that every k \u2208 {1,...,N} is a difference of elements in A. Find lim F(N)/\u221aN.",
   "meta": {
-    "author": "Erdős-Gál (1948, limit exists); Leech (1956, lower); Wichmann (1963, upper)",
+    "author": "Erd\u0151s-G\u00e1l (1948, limit exists); Leech (1956, lower); Wichmann (1963, upper)",
     "sourceUrl": "https://erdosproblems.com/170",
     "date": "",
     "status": "axiomatized",
@@ -47,24 +47,24 @@
     ],
     "originalContributions": [
       "Definition of N-perfect rulers (difference bases)",
-      "Definition of restricted perfect rulers (A ⊆ {0,...,N})",
+      "Definition of restricted perfect rulers (A \u2286 {0,...,N})",
       "Proved trivial_is_perfect (full ruler works)",
-      "Proved F_upper_trivial (F(N) ≤ N+1)",
-      "Axiomatized F_lower_two (F(N) ≥ 2 for N ≥ 1)",
-      "Axiomatized Erdős-Gál limit existence theorem",
-      "Axiomatized Leech lower bound (≥1.56) and Wichmann upper bound (≤√3)",
+      "Proved F_upper_trivial (F(N) \u2264 N+1)",
+      "Axiomatized F_lower_two (F(N) \u2265 2 for N \u2265 1)",
+      "Axiomatized Erd\u0151s-G\u00e1l limit existence theorem",
+      "Axiomatized Leech lower bound (\u22651.56) and Wichmann upper bound (\u2264\u221a3)",
       "Example sparse rulers for N=3 and N=30"
     ],
     "axiomCount": 9,
     "lineCount": 161,
     "references": [
       {
-        "title": "On a Problem of B. Rédei",
-        "authors": "P. Erdős, I. S. Gál",
+        "title": "On a Problem of B. R\u00e9dei",
+        "authors": "P. Erd\u0151s, I. S. G\u00e1l",
         "year": 1948,
         "venue": "Indagationes Mathematicae",
         "url": "https://doi.org/10.1016/S1385-7258(48)80010-1",
-        "description": "Proves the existence of the limit lim F(N)/√N for perfect difference bases"
+        "description": "Proves the existence of the limit lim F(N)/\u221aN for perfect difference bases"
       },
       {
         "title": "On the construction of difference triangles",
@@ -72,7 +72,7 @@
         "year": 1963,
         "venue": "Journal of the London Mathematical Society",
         "url": "https://doi.org/10.1112/jlms/s1-38.1.465",
-        "description": "Constructs sparse rulers achieving density √3, establishing the best known upper bound"
+        "description": "Constructs sparse rulers achieving density \u221a3, establishing the best known upper bound"
       },
       {
         "title": "On difference bases",
@@ -80,22 +80,22 @@
         "year": 1956,
         "venue": "Journal of the London Mathematical Society",
         "url": "https://doi.org/10.1112/jlms/s1-31.2.160",
-        "description": "Refines Rédei-Rényi arguments to establish the lower bound ≈1.56 for lim F(N)/√N"
+        "description": "Refines R\u00e9dei-R\u00e9nyi arguments to establish the lower bound \u22481.56 for lim F(N)/\u221aN"
       }
     ],
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The Sparse Ruler problem asks: how few marks are needed on a ruler of length N to measure every integer distance from 1 to N?\n\nRédei first asked whether the limit lim F(N)/√N exists. Erdős and Gál (1948) proved it does exist. The challenge is determining the exact value.\n\nLeech (1956) refined Rédei-Rényi arguments to get the lower bound ≈ 1.56. Wichmann (1963) constructed sparse rulers achieving density √3 ≈ 1.732.\n\nThe exact value remains unknown, though computational evidence suggests √3 may be optimal.",
+    "historicalContext": "The Sparse Ruler problem asks: how few marks are needed on a ruler of length N to measure every integer distance from 1 to N?\n\nR\u00e9dei first asked whether the limit lim F(N)/\u221aN exists. Erd\u0151s and G\u00e1l (1948) proved it does exist. The challenge is determining the exact value.\n\nLeech (1956) refined R\u00e9dei-R\u00e9nyi arguments to get the lower bound \u2248 1.56. Wichmann (1963) constructed sparse rulers achieving density \u221a3 \u2248 1.732.\n\nThe exact value remains unknown, though computational evidence suggests \u221a3 may be optimal.",
     "problemStatement": "**Question**: Let $F(N)$ be the minimum size of $A \\subseteq \\{0, \\ldots, N\\}$ such that every $k \\in \\{1, \\ldots, N\\}$ can be expressed as $a_1 - a_0$ for some $a_0, a_1 \\in A$. Find $\\lim_{N \\to \\infty} F(N)/\\sqrt{N}$.\n\n**Status**: OPEN (exact value unknown)\n\n**Known bounds**:\n- Lower: $L \\geq 1.56$ (Leech 1956)\n- Upper: $L \\leq \\sqrt{3} \\approx 1.732$ (Wichmann 1963)\n\n**Example**: {0, 1, 3} measures 1,2,3 with only 3 marks instead of 4.",
-    "text": "Let F(N) be the minimum size of A ⊆ {0,...,N} such that every k ∈ {1,...,N} is a difference of elements in A. Find lim F(N)/√N.",
-    "proofStrategy": "We formalize the problem and known results:\n\n1. **IsPerfectRuler**: A measures all differences 1,...,N\n2. **IsRestrictedPerfectRuler**: A ⊆ {0,...,N} and perfect\n3. **F(N)**: Minimum cardinality of restricted perfect ruler\n4. **trivial_is_perfect**: The full ruler {0,...,N} works\n5. **F_upper_trivial**: F(N) ≤ N+1\n6. **erdos_gal_limit_exists**: The limit exists\n7. **limit_in_interval**: 1.56 ≤ L ≤ √3",
+    "text": "Let F(N) be the minimum size of A \u2286 {0,...,N} such that every k \u2208 {1,...,N} is a difference of elements in A. Find lim F(N)/\u221aN.",
+    "proofStrategy": "We formalize the problem and known results:\n\n1. **IsPerfectRuler**: A measures all differences 1,...,N\n2. **IsRestrictedPerfectRuler**: A \u2286 {0,...,N} and perfect\n3. **F(N)**: Minimum cardinality of restricted perfect ruler\n4. **trivial_is_perfect**: The full ruler {0,...,N} works\n5. **F_upper_trivial**: F(N) \u2264 N+1\n6. **erdos_gal_limit_exists**: The limit exists\n7. **limit_in_interval**: 1.56 \u2264 L \u2264 \u221a3",
     "keyInsights": [
-      "**Perfect ruler**: A set A where every k ∈ {1,...,N} equals a₁ - a₀ for some a₀, a₁ ∈ A.",
-      "**Counting argument**: A of size m has at most m(m-1)/2 non-zero differences, so m ≥ √(2N).",
-      "**Wichmann rulers**: Constructed using triangular numbers, achieve density √3.",
-      "**Computational evidence**: Suggests √3 is the true limit (Pegg 2020).",
-      "**Unrestricted version**: Without A ⊆ {0,...,N}, even smaller rulers may exist."
+      "**Perfect ruler**: A set A where every k \u2208 {1,...,N} equals a\u2081 - a\u2080 for some a\u2080, a\u2081 \u2208 A.",
+      "**Counting argument**: A of size m has at most m(m-1)/2 non-zero differences, so m \u2265 \u221a(2N).",
+      "**Wichmann rulers**: Constructed using triangular numbers, achieve density \u221a3.",
+      "**Computational evidence**: Suggests \u221a3 is the true limit (Pegg 2020).",
+      "**Unrestricted version**: Without A \u2286 {0,...,N}, even smaller rulers may exist."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -130,7 +130,7 @@
       "title": "The Limit Theorem",
       "startLine": 88,
       "endLine": 123,
-      "summary": "Erdős-Gál limit existence and Leech/Wichmann bounds."
+      "summary": "Erd\u0151s-G\u00e1l limit existence and Leech/Wichmann bounds."
     },
     {
       "id": "constructions",
@@ -141,11 +141,11 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #170 on sparse rulers. The Lean proof establishes the core definitions, proves basic properties, and axiomatizes the known bounds [1.56, √3] for the limit lim F(N)/√N.",
-    "implications": "Sparse rulers have applications in measurement, radar systems, and coding theory. The gap between 1.56 and √3 represents a fundamental question about optimal ruler designs.",
+    "summary": "We formalize Erd\u0151s Problem #170 on sparse rulers. The Lean proof establishes the core definitions, proves basic properties, and axiomatizes the known bounds [1.56, \u221a3] for the limit lim F(N)/\u221aN.",
+    "implications": "Sparse rulers have applications in measurement, radar systems, and coding theory. The gap between 1.56 and \u221a3 represents a fundamental question about optimal ruler designs.",
     "openQuestions": [
-      "What is the exact value of lim F(N)/√N?",
-      "Is √3 the true limit (as computational evidence suggests)?",
+      "What is the exact value of lim F(N)/\u221aN?",
+      "Is \u221a3 the true limit (as computational evidence suggests)?",
       "What is the best unrestricted ruler asymptotically?",
       "Can Wichmann's construction be improved?"
     ]
@@ -168,19 +168,22 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-340-greedy-sidon",
-      "title": "Greedy Sidon Sequence Infrastructure (Erdős Problem #340)",
-      "relationship": "Both study difference-based combinatorial structures: Sidon sets require all pairwise differences to be distinct, while perfect rulers require all differences 1..N to be realized"
+      "title": "Greedy Sidon Sequence Infrastructure (Erd\u0151s Problem #340)",
+      "relationship": "related",
+      "targetId": "erdos-340-greedy-sidon",
+      "description": "Both study difference-based combinatorial structures: Sidon sets require all pairwise differences to be distinct, while perfect rulers require all differences 1..N to be realized"
     },
     {
-      "id": "erdos-169",
-      "title": "Erdős Problem #169: Harmonic Sum of AP-Free Sets",
-      "relationship": "Both concern extremal problems on sets of integers with constraints on their additive structure — AP-free sets vs. difference bases"
+      "title": "Erd\u0151s Problem #169: Harmonic Sum of AP-Free Sets",
+      "relationship": "related",
+      "targetId": "erdos-169",
+      "description": "Both concern extremal problems on sets of integers with constraints on their additive structure \u2014 AP-free sets vs. difference bases"
     },
     {
-      "id": "erdos-176",
-      "title": "Erdős Problem #176: Discrepancy of Arithmetic Progressions",
-      "relationship": "Both involve arithmetic structure and optimal covering/balancing of integer ranges; difference bases cover all residues while discrepancy bounds measure uniformity"
+      "title": "Erd\u0151s Problem #176: Discrepancy of Arithmetic Progressions",
+      "relationship": "related",
+      "targetId": "erdos-176",
+      "description": "Both involve arithmetic structure and optimal covering/balancing of integer ranges; difference bases cover all residues while discrepancy bounds measure uniformity"
     }
   ]
 }

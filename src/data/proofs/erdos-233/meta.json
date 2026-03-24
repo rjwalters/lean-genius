@@ -1,10 +1,10 @@
 {
   "id": "erdos-233",
-  "title": "Erdős Problem #233: Sum of Squares of Prime Gaps",
+  "title": "Erd\u0151s Problem #233: Sum of Squares of Prime Gaps",
   "slug": "erdos-233",
-  "description": "Prove that the sum of squares of prime gaps satisfies Σ dₙ² ≪ N(log N)², where dₙ = pₙ₊₁ - pₙ is the n-th prime gap.",
+  "description": "Prove that the sum of squares of prime gaps satisfies \u03a3 d\u2099\u00b2 \u226a N(log N)\u00b2, where d\u2099 = p\u2099\u208a\u2081 - p\u2099 is the n-th prime gap.",
   "meta": {
-    "author": "Heath-Brown (Conjecture), Cramér (1936), Selberg (1943)",
+    "author": "Heath-Brown (Conjecture), Cram\u00e9r (1936), Selberg (1943)",
     "sourceUrl": "https://erdosproblems.com/233",
     "date": "2026-01-15",
     "status": "axiomatized",
@@ -42,23 +42,23 @@
     "originalContributions": [
       "Complete formalization of the conjecture and known partial results",
       "Clear exposition of the relationship between prime gaps and the Riemann Hypothesis",
-      "Connection to Cramér's conjecture on individual prime gaps"
+      "Connection to Cram\u00e9r's conjecture on individual prime gaps"
     ],
     "axiomCount": 6,
     "lineCount": 160,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem concerns the distribution of prime gaps dₙ = pₙ₊₁ - pₙ. The prime number theorem tells us that the average gap near x is approximately log x, but individual gaps can be much larger or smaller.\n\nThe conjecture that Σ dₙ² ≪ N(log N)² is sometimes attributed to Heath-Brown. It says that, on average, prime gaps are 'typically' of size log p - the squares don't accumulate faster than expected.\n\nCramér (1936) proved that, assuming the Riemann Hypothesis, Σ dₙ² = O(N(log N)⁴). Selberg (1943) improved this to Σ dₙ²/n = O((log N)⁴). The prime number theorem immediately gives the matching lower bound N(log N)², so the gap between lower and upper bounds is (log N)².\n\nThis problem is intimately connected to Cramér's famous conjecture that dₙ = O((log pₙ)²), which remains one of the most important open problems about prime gaps.",
-    "problemStatement": "Let $d_n = p_{n+1} - p_n$ denote the $n$-th prime gap. Prove that\n$$\\sum_{n \\leq N} d_n^2 \\ll N(\\log N)^2.$$\n\n**Status:** OPEN\n\n**Known bounds:**\n- Lower bound: $\\sum d_n^2 \\gg N(\\log N)^2$ (unconditional, from PNT)\n- Upper bound: $\\sum d_n^2 \\ll N(\\log N)^4$ (conditional on RH, Cramér 1936)",
-    "text": "Prove that the sum of squares of prime gaps satisfies Σ dₙ² ≪ N(log N)², where dₙ = pₙ₊₁ - pₙ is the n-th prime gap.",
-    "proofStrategy": "We formalize the conjecture and all known partial results:\n\n1. **Definitions**: The n-th prime via Nat.nth, prime gap function, and sum of squares\n2. **Lower bound**: Axiomatized from the prime number theorem\n3. **Cramér's upper bound**: Axiomatized conditional result assuming RH\n4. **Selberg's improvement**: The weighted sum variant\n5. **Cramér's conjecture**: Defined and shown to imply the main conjecture\n\nThe main conjecture itself is stated but cannot be proved - it remains an open problem.",
+    "historicalContext": "This problem concerns the distribution of prime gaps d\u2099 = p\u2099\u208a\u2081 - p\u2099. The prime number theorem tells us that the average gap near x is approximately log x, but individual gaps can be much larger or smaller.\n\nThe conjecture that \u03a3 d\u2099\u00b2 \u226a N(log N)\u00b2 is sometimes attributed to Heath-Brown. It says that, on average, prime gaps are 'typically' of size log p - the squares don't accumulate faster than expected.\n\nCram\u00e9r (1936) proved that, assuming the Riemann Hypothesis, \u03a3 d\u2099\u00b2 = O(N(log N)\u2074). Selberg (1943) improved this to \u03a3 d\u2099\u00b2/n = O((log N)\u2074). The prime number theorem immediately gives the matching lower bound N(log N)\u00b2, so the gap between lower and upper bounds is (log N)\u00b2.\n\nThis problem is intimately connected to Cram\u00e9r's famous conjecture that d\u2099 = O((log p\u2099)\u00b2), which remains one of the most important open problems about prime gaps.",
+    "problemStatement": "Let $d_n = p_{n+1} - p_n$ denote the $n$-th prime gap. Prove that\n$$\\sum_{n \\leq N} d_n^2 \\ll N(\\log N)^2.$$\n\n**Status:** OPEN\n\n**Known bounds:**\n- Lower bound: $\\sum d_n^2 \\gg N(\\log N)^2$ (unconditional, from PNT)\n- Upper bound: $\\sum d_n^2 \\ll N(\\log N)^4$ (conditional on RH, Cram\u00e9r 1936)",
+    "text": "Prove that the sum of squares of prime gaps satisfies \u03a3 d\u2099\u00b2 \u226a N(log N)\u00b2, where d\u2099 = p\u2099\u208a\u2081 - p\u2099 is the n-th prime gap.",
+    "proofStrategy": "We formalize the conjecture and all known partial results:\n\n1. **Definitions**: The n-th prime via Nat.nth, prime gap function, and sum of squares\n2. **Lower bound**: Axiomatized from the prime number theorem\n3. **Cram\u00e9r's upper bound**: Axiomatized conditional result assuming RH\n4. **Selberg's improvement**: The weighted sum variant\n5. **Cram\u00e9r's conjecture**: Defined and shown to imply the main conjecture\n\nThe main conjecture itself is stated but cannot be proved - it remains an open problem.",
     "keyInsights": [
       "**Prime Gap Statistics**: The conjecture is about the 'second moment' of prime gaps - how their squares accumulate",
-      "**PNT Connection**: The lower bound follows because the average gap is log p, so squares average to (log p)²",
+      "**PNT Connection**: The lower bound follows because the average gap is log p, so squares average to (log p)\u00b2",
       "**RH Dependence**: The best known upper bound requires the Riemann Hypothesis",
-      "**Gap Factor**: There's a (log N)² gap between lower and conditional upper bounds",
-      "**Cramér's Conjecture**: If individual gaps are O((log p)²), the sum would be N(log N)²"
+      "**Gap Factor**: There's a (log N)\u00b2 gap between lower and conditional upper bounds",
+      "**Cram\u00e9r's Conjecture**: If individual gaps are O((log p)\u00b2), the sum would be N(log N)\u00b2"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -84,14 +84,14 @@
       "title": "The Main Conjecture",
       "startLine": 47,
       "endLine": 61,
-      "summary": "State Erdős Problem #233 (Heath-Brown's conjecture)"
+      "summary": "State Erd\u0151s Problem #233 (Heath-Brown's conjecture)"
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 63,
       "endLine": 102,
-      "summary": "Lower bound from PNT, conditional upper bounds from Cramér and Selberg"
+      "summary": "Lower bound from PNT, conditional upper bounds from Cram\u00e9r and Selberg"
     },
     {
       "id": "current-status",
@@ -102,10 +102,10 @@
     },
     {
       "id": "cramer-connection",
-      "title": "Connection to Cramér's Conjecture",
+      "title": "Connection to Cram\u00e9r's Conjecture",
       "startLine": 118,
       "endLine": 133,
-      "summary": "Define Cramér's conjecture and show it implies the sum bound"
+      "summary": "Define Cram\u00e9r's conjecture and show it implies the sum bound"
     },
     {
       "id": "examples",
@@ -123,12 +123,12 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #233 on the sum of squares of prime gaps. The conjecture Σ dₙ² ≪ N(log N)² remains open, but we capture all known partial results: the matching lower bound from PNT, Cramér's conditional O(N(log N)⁴) upper bound, and Selberg's improvement. We also connect the problem to Cramér's conjecture on individual prime gaps.",
+    "summary": "We formalize Erd\u0151s Problem #233 on the sum of squares of prime gaps. The conjecture \u03a3 d\u2099\u00b2 \u226a N(log N)\u00b2 remains open, but we capture all known partial results: the matching lower bound from PNT, Cram\u00e9r's conditional O(N(log N)\u2074) upper bound, and Selberg's improvement. We also connect the problem to Cram\u00e9r's conjecture on individual prime gaps.",
     "implications": "**Theoretical Significance**: This problem lies at the heart of understanding prime distribution.\n\nA proof would strengthen our knowledge of how 'regular' the primes are. The connection to RH shows how fundamental questions about primes relate to the zeta function.",
     "openQuestions": [
-      "Can the upper bound O(N(log N)⁴) be improved unconditionally?",
-      "Does Cramér's conjecture hold: is dₙ = O((log pₙ)²)?",
-      "What is the true asymptotic growth rate of Σ dₙ²?"
+      "Can the upper bound O(N(log N)\u2074) be improved unconditionally?",
+      "Does Cram\u00e9r's conjecture hold: is d\u2099 = O((log p\u2099)\u00b2)?",
+      "What is the true asymptotic growth rate of \u03a3 d\u2099\u00b2?"
     ]
   },
   "leanFile": {
@@ -146,5 +146,39 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-969",
+      "relationship": "related",
+      "description": "Share riemann-hypothesis and analytic-number-theory themes"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Share prime-gaps and analytic-number-theory themes"
+    },
+    {
+      "targetId": "erdos-15",
+      "relationship": "related",
+      "description": "Share prime-gaps and analytic-number-theory themes"
+    },
+    {
+      "targetId": "erdos-4",
+      "relationship": "related",
+      "description": "Share prime-gaps and analytic-number-theory themes"
+    },
+    {
+      "targetId": "erdos-454",
+      "relationship": "related",
+      "description": "Share prime-gaps and analytic-number-theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-969",
+    "bounded-prime-gaps",
+    "erdos-15",
+    "erdos-4",
+    "erdos-454"
+  ]
 }

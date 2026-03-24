@@ -2,9 +2,9 @@
   "id": "erdos-677",
   "title": "Distinct LCM of Consecutive Integers",
   "slug": "erdos-677",
-  "description": "Is M(n,k) = lcm(n+1,...,n+k) always distinct for m ≥ n+k? The Thue–Siegel theorem gives finiteness for fixed k. Only two cross-parameter examples are known.",
+  "description": "Is M(n,k) = lcm(n+1,...,n+k) always distinct for m \u2265 n+k? The Thue\u2013Siegel theorem gives finiteness for fixed k. Only two cross-parameter examples are known.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/677",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos677Problem.lean",
@@ -25,15 +25,15 @@
     "lineCount": 97
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem about the distinctness of lcm of consecutive integer blocks. The Thue-Siegel theorem implies finiteness for fixed k. Erdős knew only two cross-parameter examples: lcm(5,6,7) = lcm(14,15) = 210 and lcm(4,5,6,7) = lcm(20,21) = 420. A stronger conjecture asserts that consecutive products can rarely share the same prime factor set. The LCM of k consecutive integers equals k! times a binomial coefficient, and the prime factorization structure is deeply connected to Sylvester-Schur theory; the analogous problem for products (rather than LCMs) of consecutive integers relates to Catalan-type Diophantine equations and was studied by Stormer and others in the early 20th century.",
-    "problemStatement": "Let M(n,k) = lcm(n+1,...,n+k). Is M(m,k) ≠ M(n,k) for all m ≥ n+k?",
+    "historicalContext": "Erd\u0151s posed this problem about the distinctness of lcm of consecutive integer blocks. The Thue-Siegel theorem implies finiteness for fixed k. Erd\u0151s knew only two cross-parameter examples: lcm(5,6,7) = lcm(14,15) = 210 and lcm(4,5,6,7) = lcm(20,21) = 420. A stronger conjecture asserts that consecutive products can rarely share the same prime factor set. The LCM of k consecutive integers equals k! times a binomial coefficient, and the prime factorization structure is deeply connected to Sylvester-Schur theory; the analogous problem for products (rather than LCMs) of consecutive integers relates to Catalan-type Diophantine equations and was studied by Stormer and others in the early 20th century.",
+    "problemStatement": "Let M(n,k) = lcm(n+1,...,n+k). Is M(m,k) \u2260 M(n,k) for all m \u2265 n+k?",
     "text": "Is M(n,k) = lcm(n+1,...,n+k) always distinct for m \u2265 n+k? The Thue\u2013Siegel theorem gives finiteness for fixed k. Only two cross-parameter examples are known.",
-    "proofStrategy": "We define lcmInterval using Finset.fold with Nat.lcm, consecutiveProduct using Finset.prod, and samePrimeFactors via Nat.primeFactors. The main conjecture and its stronger variant are stated as Prop. Thue–Siegel finiteness is an axiom.",
+    "proofStrategy": "We define lcmInterval using Finset.fold with Nat.lcm, consecutiveProduct using Finset.prod, and samePrimeFactors via Nat.primeFactors. The main conjecture and its stronger variant are stated as Prop. Thue\u2013Siegel finiteness is an axiom.",
     "keyInsights": [
-      "The Thue–Siegel theorem gives finiteness for fixed k but not the full conjecture",
+      "The Thue\u2013Siegel theorem gives finiteness for fixed k but not the full conjecture",
       "Only two known cross-parameter examples exist (both involving k=2 on one side)",
       "The stronger prime-factor conjecture would imply the LCM conjecture",
-      "Related to Erdős Problems 678, 686, and 850 on consecutive products",
+      "Related to Erd\u0151s Problems 678, 686, and 850 on consecutive products",
       "The conjecture's difficulty grows with k: for k=2, LCM equality reduces to Catalan's conjecture (proved by Mihailescu 2002), but general k remains wide open"
     ],
     "prerequisites": [
@@ -55,7 +55,7 @@
       "title": "Main Conjecture",
       "startLine": 37,
       "endLine": 41,
-      "summary": "ErdosProblem677: M(m,k) ≠ M(n,k) for all m ≥ n+k.",
+      "summary": "ErdosProblem677: M(m,k) \u2260 M(n,k) for all m \u2265 n+k.",
       "mathContext": "$\\forall m, n, k > 0: m \\ge n + k \\implies M(m, k) \\neq M(n, k)$. The LCM function is injective on well-separated intervals of the same length."
     },
     {
@@ -68,10 +68,10 @@
     },
     {
       "id": "strong",
-      "title": "Stronger Conjecture and Thue–Siegel",
+      "title": "Stronger Conjecture and Thue\u2013Siegel",
       "startLine": 50,
       "endLine": 72,
-      "summary": "Stronger prime-factor conjecture and Thue–Siegel finiteness theorem.",
+      "summary": "Stronger prime-factor conjecture and Thue\u2013Siegel finiteness theorem.",
       "mathContext": "$\\forall k > 2: |\\{(m,n) : m \\ge n + k,\\, \\text{rad}(\\prod_{i=1}^k (n+i)) = \\text{rad}(\\prod_{i=1}^k (m+i))\\}| < \\infty$. Stronger than the LCM conjecture; same prime factors implies same LCM but not conversely. Thue-Siegel: for fixed $k$, only finitely many pairs with $M(m,k) = M(n,k)$."
     },
     {
@@ -84,10 +84,10 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, and Thue–Siegel finiteness. 0 sorries.",
+    "summary": "The formalization captures Erd\u0151s Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, and Thue\u2013Siegel finiteness. 0 sorries.",
     "implications": "Resolution would advance understanding of multiplicative structure of consecutive integers and connect to Diophantine equations.",
     "openQuestions": [
-      "Is M(m,k) ≠ M(n,k) for all m ≥ n+k?",
+      "Is M(m,k) \u2260 M(n,k) for all m \u2265 n+k?",
       "Are the two known cross-parameter examples the only ones?",
       "Does the stronger prime-factor conjecture hold?"
     ]
@@ -107,5 +107,39 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Share prime-factors, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-889",
+      "relationship": "related",
+      "description": "Share prime-factors, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-890",
+      "relationship": "related",
+      "description": "Share prime-factors, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-440",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-369",
+    "erdos-889",
+    "erdos-890",
+    "erdos-269",
+    "erdos-440"
+  ]
 }

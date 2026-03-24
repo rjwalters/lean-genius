@@ -1,10 +1,10 @@
 {
   "id": "erdos-945",
-  "title": "Erdős Problem #945: Consecutive Integers with Distinct Divisor Counts",
+  "title": "Erd\u0151s Problem #945: Consecutive Integers with Distinct Divisor Counts",
   "slug": "erdos-945",
   "description": "How long can a run of consecutive integers be where all have distinct numbers of divisors? Is the maximum length bounded by a polynomial in log x?",
   "meta": {
-    "author": "Open Problem (Bounds by Erdős-Mirsky 1952, Beker)",
+    "author": "Open Problem (Bounds by Erd\u0151s-Mirsky 1952, Beker)",
     "sourceUrl": "https://erdosproblems.com/945",
     "date": "",
     "status": "axiomatized",
@@ -30,7 +30,7 @@
       },
       {
         "theorem": "Filter.atTop",
-        "description": "The filter of neighborhoods of +∞",
+        "description": "The filter of neighborhoods of +\u221e",
         "module": "Mathlib.Order.Filter.AtTopBot"
       },
       {
@@ -40,27 +40,27 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of τ(n) using Mathlib's divisors.card",
-      "Verified examples: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6",
+      "Formal definition of \u03c4(n) using Mathlib's divisors.card",
+      "Verified examples: \u03c4(1)=1, \u03c4(2)=2, \u03c4(6)=4, \u03c4(12)=6",
       "Formal definition of F(x) as supremum over valid sequences",
-      "Statements of Erdős-Mirsky bounds and Beker's improvement",
-      "Conditional result under Cramér's conjecture"
+      "Statements of Erd\u0151s-Mirsky bounds and Beker's improvement",
+      "Conditional result under Cram\u00e9r's conjecture"
     ],
     "axiomCount": 6,
     "lineCount": 170,
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem, posed by Erdős and Mirsky in their 1952 paper on the distribution of the divisor function, asks a natural question: how long can consecutive integers maintain distinct divisor counts?\n\nThe divisor function τ(n) counts divisors of n. While τ varies considerably—primes have τ = 2, highly composite numbers have large τ—the question is whether collisions (τ(a) = τ(b) for distinct a, b) must occur within short intervals.\n\nErdős and Mirsky established both lower and upper bounds in 1952, but the gap between them has resisted closure for over 70 years. Beker later improved the upper bound, and connections to Cramér's conjecture on prime gaps have been observed.",
-    "problemStatement": "Let $F(x)$ be the maximal $k$ such that there exist consecutive integers $n+1, \\ldots, n+k \\leq x$ with $\\tau(n+1), \\ldots, \\tau(n+k)$ all distinct, where $\\tau(m)$ counts divisors.\n\n**Conjecture** (OPEN): $F(x) \\leq (\\log x)^{O(1)}$\n\nEquivalently: there exists $C > 0$ such that every interval $[x, x + (\\log x)^C]$ contains two integers with the same number of divisors.\n\n**Known Bounds**:\n- Lower (Erdős-Mirsky 1952): $F(x) \\gg (\\log x)^{1/2} / \\log\\log x$\n- Upper (Erdős-Mirsky 1952): $F(x) \\ll \\exp(O((\\log x)^{1/2} / \\log\\log x))$\n- Upper (Beker): $F(x) \\ll \\exp(O((\\log x)^{1/3+o(1)}))$\n- Conditional (Cramér): $F(x) \\ll (\\log x)^2$",
+    "historicalContext": "This problem, posed by Erd\u0151s and Mirsky in their 1952 paper on the distribution of the divisor function, asks a natural question: how long can consecutive integers maintain distinct divisor counts?\n\nThe divisor function \u03c4(n) counts divisors of n. While \u03c4 varies considerably\u2014primes have \u03c4 = 2, highly composite numbers have large \u03c4\u2014the question is whether collisions (\u03c4(a) = \u03c4(b) for distinct a, b) must occur within short intervals.\n\nErd\u0151s and Mirsky established both lower and upper bounds in 1952, but the gap between them has resisted closure for over 70 years. Beker later improved the upper bound, and connections to Cram\u00e9r's conjecture on prime gaps have been observed.",
+    "problemStatement": "Let $F(x)$ be the maximal $k$ such that there exist consecutive integers $n+1, \\ldots, n+k \\leq x$ with $\\tau(n+1), \\ldots, \\tau(n+k)$ all distinct, where $\\tau(m)$ counts divisors.\n\n**Conjecture** (OPEN): $F(x) \\leq (\\log x)^{O(1)}$\n\nEquivalently: there exists $C > 0$ such that every interval $[x, x + (\\log x)^C]$ contains two integers with the same number of divisors.\n\n**Known Bounds**:\n- Lower (Erd\u0151s-Mirsky 1952): $F(x) \\gg (\\log x)^{1/2} / \\log\\log x$\n- Upper (Erd\u0151s-Mirsky 1952): $F(x) \\ll \\exp(O((\\log x)^{1/2} / \\log\\log x))$\n- Upper (Beker): $F(x) \\ll \\exp(O((\\log x)^{1/3+o(1)}))$\n- Conditional (Cram\u00e9r): $F(x) \\ll (\\log x)^2$",
     "text": "How long can a run of consecutive integers be where all have distinct numbers of divisors? Is the maximum length bounded by a polynomial in log x?",
-    "proofStrategy": "Since the main conjecture is open, we cannot prove it. Our formalization:\n\n1. **Defines τ(n)** using Mathlib's `Nat.divisors.card`\n2. **Verifies concrete τ values** via `native_decide`\n3. **Defines F(x)** as a supremum over valid sequences\n4. **States the conjecture** and its equivalent collision formulation\n5. **Records known bounds** from Erdős-Mirsky (1952) and Beker\n6. **States the conditional result** under Cramér's conjecture",
+    "proofStrategy": "Since the main conjecture is open, we cannot prove it. Our formalization:\n\n1. **Defines \u03c4(n)** using Mathlib's `Nat.divisors.card`\n2. **Verifies concrete \u03c4 values** via `native_decide`\n3. **Defines F(x)** as a supremum over valid sequences\n4. **States the conjecture** and its equivalent collision formulation\n5. **Records known bounds** from Erd\u0151s-Mirsky (1952) and Beker\n6. **States the conditional result** under Cram\u00e9r's conjecture",
     "keyInsights": [
-      "**Divisor Collisions**: τ(n) takes relatively few values compared to n, so collisions are inevitable. The question is *how quickly* they must occur.",
-      "**Exponential Gap**: The Erdős-Mirsky bounds have an exponential gap—lower bound is polynomial in log, upper is exponential in √log. Closing this is the main challenge.",
-      "**Prime Gap Connection**: Cramér's conjecture (prime gaps ≤ (log p)²) would imply F(x) ≤ (log x)², nearly resolving the problem.",
+      "**Divisor Collisions**: \u03c4(n) takes relatively few values compared to n, so collisions are inevitable. The question is *how quickly* they must occur.",
+      "**Exponential Gap**: The Erd\u0151s-Mirsky bounds have an exponential gap\u2014lower bound is polynomial in log, upper is exponential in \u221alog. Closing this is the main challenge.",
+      "**Prime Gap Connection**: Cram\u00e9r's conjecture (prime gaps \u2264 (log p)\u00b2) would imply F(x) \u2264 (log x)\u00b2, nearly resolving the problem.",
       "**Problem B18**: This appears as problem B18 in Guy's 'Unsolved Problems in Number Theory', highlighting its importance.",
-      "**Highly composite witnesses**: The first counterexample to long runs must involve highly composite numbers (n with many divisors), since these create more opportunities for τ(n) = τ(n+1) coincidences — connecting the problem to Ramanujan's theory of highly composite numbers."
+      "**Highly composite witnesses**: The first counterexample to long runs must involve highly composite numbers (n with many divisors), since these create more opportunities for \u03c4(n) = \u03c4(n+1) coincidences \u2014 connecting the problem to Ramanujan's theory of highly composite numbers."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -73,32 +73,32 @@
       "title": "The Divisor Counting Function",
       "startLine": 31,
       "endLine": 62,
-      "summary": "Defines τ(n) and verifies concrete examples"
+      "summary": "Defines \u03c4(n) and verifies concrete examples"
     },
     {
       "id": "function-f",
       "title": "The Function F(x)",
       "startLine": 64,
       "endLine": 74,
-      "summary": "Defines F(x) as the maximal distinct-τ run length"
+      "summary": "Defines F(x) as the maximal distinct-\u03c4 run length"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 76,
       "endLine": 94,
-      "summary": "States the open conjecture F(x) ≤ (log x)^{O(1)}"
+      "summary": "States the open conjecture F(x) \u2264 (log x)^{O(1)}"
     },
     {
       "id": "equivalent",
       "title": "Equivalent Formulation",
       "startLine": 96,
       "endLine": 112,
-      "summary": "Restates conjecture in terms of τ collisions"
+      "summary": "Restates conjecture in terms of \u03c4 collisions"
     },
     {
       "id": "known-bounds",
-      "title": "Erdős-Mirsky Bounds (1952)",
+      "title": "Erd\u0151s-Mirsky Bounds (1952)",
       "startLine": 114,
       "endLine": 138,
       "summary": "The original lower and upper bounds"
@@ -112,20 +112,20 @@
     },
     {
       "id": "cramer",
-      "title": "Conditional on Cramér",
+      "title": "Conditional on Cram\u00e9r",
       "startLine": 155,
       "endLine": 168,
-      "summary": "Result under Cramér's conjecture"
+      "summary": "Result under Cram\u00e9r's conjecture"
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #945, asking whether the maximal length of consecutive integers with distinct divisor counts is bounded by a polynomial in log x. We define the key concepts, state the open conjecture and its equivalent forms, and record the known bounds from 70+ years of research.",
-    "implications": "Resolving this would reveal deep structure in how the divisor function distributes its values. The connection to Cramér's conjecture links it to prime distribution theory.",
+    "summary": "This formalization captures Erd\u0151s Problem #945, asking whether the maximal length of consecutive integers with distinct divisor counts is bounded by a polynomial in log x. We define the key concepts, state the open conjecture and its equivalent forms, and record the known bounds from 70+ years of research.",
+    "implications": "Resolving this would reveal deep structure in how the divisor function distributes its values. The connection to Cram\u00e9r's conjecture links it to prime distribution theory.",
     "openQuestions": [
-      "Is F(x) ≤ (log x)^C for some constant C?",
+      "Is F(x) \u2264 (log x)^C for some constant C?",
       "Can the gap between lower and upper bounds be narrowed?",
       "What is the relationship to the distribution of highly composite numbers?",
-      "Does every interval [x, x + (log x)²] contain a τ collision?"
+      "Does every interval [x, x + (log x)\u00b2] contain a \u03c4 collision?"
     ]
   },
   "leanFile": {
@@ -142,5 +142,39 @@
     "axiomCount": 6,
     "theoremCount": 4,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1099",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1100",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-204",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-1099",
+    "erdos-1100",
+    "erdos-144",
+    "erdos-204"
+  ]
 }

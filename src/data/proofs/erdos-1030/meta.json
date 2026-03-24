@@ -1,10 +1,10 @@
 {
   "id": "erdos-1030",
-  "title": "Erdős Problem #1030: Ramsey Number Growth Rate",
+  "title": "Erd\u0151s Problem #1030: Ramsey Number Growth Rate",
   "slug": "erdos-1030",
-  "description": "Prove the existence of c > 0 such that lim_{k→∞} R(k+1,k)/R(k,k) > 1+c. Solved by Burr-Erdős-Faudree-Schelp (1989) who proved R(k+1,k) - R(k,k) ≥ 2k-5.",
+  "description": "Prove the existence of c > 0 such that lim_{k\u2192\u221e} R(k+1,k)/R(k,k) > 1+c. Solved by Burr-Erd\u0151s-Faudree-Schelp (1989) who proved R(k+1,k) - R(k,k) \u2265 2k-5.",
   "meta": {
-    "author": "Erdős-Sós (problem), Burr-Erdős-Faudree-Schelp (1989 solution)",
+    "author": "Erd\u0151s-S\u00f3s (problem), Burr-Erd\u0151s-Faudree-Schelp (1989 solution)",
     "sourceUrl": "https://erdosproblems.com/1030",
     "date": "1989",
     "status": "formalized",
@@ -40,11 +40,11 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of Ramsey numbers R(k, ℓ)",
+      "Formal definition of Ramsey numbers R(k, \u2113)",
       "Statement of Ramsey property and edge colorings",
-      "Axiomatization of Burr-Erdős-Faudree-Schelp bound",
+      "Axiomatization of Burr-Erd\u0151s-Faudree-Schelp bound",
       "Formalization of the growth ratio question",
-      "Connection to related Erdős problems #544 and #1014"
+      "Connection to related Erd\u0151s problems #544 and #1014"
     ],
     "relatedProblems": [
       "erdos-544",
@@ -55,13 +55,13 @@
     "assumptions": "16 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Ramsey Theory and Growth Rates**\n\nFrank Ramsey proved his foundational theorem in 1930: for any $k, \\ell \\ge 2$, there exists $n$ such that every 2-coloring of $K_n$ contains a red $k$-clique or blue $\\ell$-clique. The minimum such $n$ is the Ramsey number $R(k, \\ell)$. Erdős and Szekeres (1935) established the recursive bound $R(k, \\ell) \\le R(k-1, \\ell) + R(k, \\ell-1)$, yielding $R(k, k) \\le \\binom{2k-2}{k-1} \\sim 4^k/\\sqrt{\\pi k}$. In his celebrated 1947 paper, Erdős used the **probabilistic method** — the first major application of this technique — to prove $R(k, k) \\ge 2^{k/2}$, establishing the exponential growth of diagonal Ramsey numbers.\n\n**The Off-Diagonal Question**: Erdős and Sós asked whether the ratio $R(k+1, k)/R(k, k)$ stays bounded away from 1. The trivial bound $R(k+1, k) - R(k, k) \\ge k - 2$ was known, but they couldn't even prove $R(k+1, k) - R(k, k) > k^c$ for any $c > 1$.\n\n**Resolution**: Burr, Erdős, Faudree, and Schelp (1989) proved $R(k+1, k) - R(k, k) \\ge 2k - 5$ in their paper 'On the difference between consecutive Ramsey numbers' (Utilitas Math.), asymptotically doubling the trivial bound and resolving the conjecture. The key technique involved careful analysis of critical colorings — 2-colorings of $K_{R(k,k)-1}$ avoiding both a red $(k+1)$-clique and a blue $k$-clique.",
-    "problemStatement": "**Problem Statement**\n\nIf R(k, ℓ) is the Ramsey number, prove the existence of some c > 0 such that:\n\nlim_{k→∞} R(k+1, k) / R(k, k) > 1 + c\n\n**Answer**: YES (SOLVED)\n\nThe Burr-Erdős-Faudree-Schelp bound R(k+1, k) - R(k, k) ≥ 2k - 5, combined with known bounds on R(k, k), establishes the existence of such a constant c.",
-    "text": "Prove the existence of c > 0 such that lim_{k→∞} R(k+1,k)/R(k,k) > 1+c. Solved by Burr-Erdős-Faudree-Schelp (1989) who proved R(k+1,k) - R(k,k) ≥ 2k-5.",
-    "proofStrategy": "**The Formalization**\n\n1. Defines edge colorings and monochromatic cliques\n2. Defines the Ramsey property and Ramsey numbers R(k, ℓ)\n3. States basic properties: symmetry, recursive bounds, binomial bounds\n4. Defines diagonal R(k, k) and off-diagonal R(k+1, k)\n5. States the trivial difference bound ≥ k - 2\n6. Axiomatizes the BEFS bound ≥ 2k - 5\n7. Defines the growth ratio and its limit\n8. Proves the conjecture follows from BEFS\n9. Notes connections to problems #544 and #1014",
+    "historicalContext": "**Ramsey Theory and Growth Rates**\n\nFrank Ramsey proved his foundational theorem in 1930: for any $k, \\ell \\ge 2$, there exists $n$ such that every 2-coloring of $K_n$ contains a red $k$-clique or blue $\\ell$-clique. The minimum such $n$ is the Ramsey number $R(k, \\ell)$. Erd\u0151s and Szekeres (1935) established the recursive bound $R(k, \\ell) \\le R(k-1, \\ell) + R(k, \\ell-1)$, yielding $R(k, k) \\le \\binom{2k-2}{k-1} \\sim 4^k/\\sqrt{\\pi k}$. In his celebrated 1947 paper, Erd\u0151s used the **probabilistic method** \u2014 the first major application of this technique \u2014 to prove $R(k, k) \\ge 2^{k/2}$, establishing the exponential growth of diagonal Ramsey numbers.\n\n**The Off-Diagonal Question**: Erd\u0151s and S\u00f3s asked whether the ratio $R(k+1, k)/R(k, k)$ stays bounded away from 1. The trivial bound $R(k+1, k) - R(k, k) \\ge k - 2$ was known, but they couldn't even prove $R(k+1, k) - R(k, k) > k^c$ for any $c > 1$.\n\n**Resolution**: Burr, Erd\u0151s, Faudree, and Schelp (1989) proved $R(k+1, k) - R(k, k) \\ge 2k - 5$ in their paper 'On the difference between consecutive Ramsey numbers' (Utilitas Math.), asymptotically doubling the trivial bound and resolving the conjecture. The key technique involved careful analysis of critical colorings \u2014 2-colorings of $K_{R(k,k)-1}$ avoiding both a red $(k+1)$-clique and a blue $k$-clique.",
+    "problemStatement": "**Problem Statement**\n\nIf R(k, \u2113) is the Ramsey number, prove the existence of some c > 0 such that:\n\nlim_{k\u2192\u221e} R(k+1, k) / R(k, k) > 1 + c\n\n**Answer**: YES (SOLVED)\n\nThe Burr-Erd\u0151s-Faudree-Schelp bound R(k+1, k) - R(k, k) \u2265 2k - 5, combined with known bounds on R(k, k), establishes the existence of such a constant c.",
+    "text": "Prove the existence of c > 0 such that lim_{k\u2192\u221e} R(k+1,k)/R(k,k) > 1+c. Solved by Burr-Erd\u0151s-Faudree-Schelp (1989) who proved R(k+1,k) - R(k,k) \u2265 2k-5.",
+    "proofStrategy": "**The Formalization**\n\n1. Defines edge colorings and monochromatic cliques\n2. Defines the Ramsey property and Ramsey numbers R(k, \u2113)\n3. States basic properties: symmetry, recursive bounds, binomial bounds\n4. Defines diagonal R(k, k) and off-diagonal R(k+1, k)\n5. States the trivial difference bound \u2265 k - 2\n6. Axiomatizes the BEFS bound \u2265 2k - 5\n7. Defines the growth ratio and its limit\n8. Proves the conjecture follows from BEFS\n9. Notes connections to problems #544 and #1014",
     "keyInsights": [
-      "**Exponential bounds**: $2^{k/2} \\le R(k,k) \\le 4^k$ — the gap between Erdős's 1947 probabilistic lower bound and the Erdős-Szekeres 1935 upper bound remains the central open problem in Ramsey theory",
-      "**Linear difference growth**: The BEFS bound $R(k+1,k) - R(k,k) \\ge 2k - 5$ doubles the trivial bound $k - 2$ asymptotically, resolving the Erdős-Sós conjecture",
+      "**Exponential bounds**: $2^{k/2} \\le R(k,k) \\le 4^k$ \u2014 the gap between Erd\u0151s's 1947 probabilistic lower bound and the Erd\u0151s-Szekeres 1935 upper bound remains the central open problem in Ramsey theory",
+      "**Linear difference growth**: The BEFS bound $R(k+1,k) - R(k,k) \\ge 2k - 5$ doubles the trivial bound $k - 2$ asymptotically, resolving the Erd\u0151s-S\u00f3s conjecture",
       "**Ratio decomposition**: $R(k+1,k)/R(k,k) = 1 + \\text{diff}/R(k,k)$, so linear difference growth combined with exponential $R(k,k)$ bounds determines the limit behavior",
       "**Critical colorings**: The BEFS proof analyzes 2-colorings of $K_{R(k,k)-1}$ to extract structural constraints on the off-diagonal increment",
       "**Problem connections**: Generalizes to Problem #1014 (arbitrary offset $j$) and relates to Problem #544 on $R(3,k) \\sim k^2/\\log k$ growth"
@@ -83,7 +83,7 @@
     },
     {
       "id": "ramsey-definition",
-      "title": "The Ramsey Number R(k, ℓ)",
+      "title": "The Ramsey Number R(k, \u2113)",
       "summary": "$R(k, \\ell) = \\min\\{n : \\text{RamseyProperty}(n, k, \\ell)\\}$ via `Nat.find`",
       "startLine": 56,
       "endLine": 78
@@ -111,7 +111,7 @@
     },
     {
       "id": "befs",
-      "title": "Burr-Erdős-Faudree-Schelp Theorem",
+      "title": "Burr-Erd\u0151s-Faudree-Schelp Theorem",
       "summary": "BEFS theorem: $R(k+1,k) - R(k,k) \\ge 2k - 5$, doubling the trivial bound",
       "startLine": 154,
       "endLine": 171
@@ -125,8 +125,8 @@
     },
     {
       "id": "conjecture",
-      "title": "Erdős's Conjecture",
-      "summary": "$\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ — conjecture statement and BEFS-based resolution",
+      "title": "Erd\u0151s's Conjecture",
+      "summary": "$\\exists\\, c > 0,\\; \\liminf R(k+1,k)/R(k,k) > 1+c$ \u2014 conjecture statement and BEFS-based resolution",
       "startLine": 195,
       "endLine": 234
     },
@@ -147,14 +147,14 @@
     {
       "id": "main-result",
       "title": "Main Result",
-      "summary": "$\\texttt{erdos\\_1030} : \\texttt{ErdosSosConjecture}$ — problem SOLVED via BEFS axiomatization",
+      "summary": "$\\texttt{erdos\\_1030} : \\texttt{ErdosSosConjecture}$ \u2014 problem SOLVED via BEFS axiomatization",
       "startLine": 267,
       "endLine": 293
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1030 asks whether lim R(k+1,k)/R(k,k) > 1+c for some c > 0. SOLVED by Burr-Erdős-Faudree-Schelp (1989) who proved R(k+1,k) - R(k,k) ≥ 2k-5. This linear growth of the difference, combined with known bounds on diagonal Ramsey numbers, establishes the result.",
-    "implications": "1. **Ramsey Theory Growth**: Establishes that off-diagonal Ramsey numbers grow strictly faster than diagonal ones\n\n**2. Bounds Improvement**: The BEFS bound doubled the trivial bound asymptotically\n\n3. **Probabilistic Method Connection**: Relates to Erdős's 1947 probabilistic lower bound\n\n4. **Off-Diagonal Structure**: Part of understanding how R(k+j, k) grows for fixed j.",
+    "summary": "Erd\u0151s Problem #1030 asks whether lim R(k+1,k)/R(k,k) > 1+c for some c > 0. SOLVED by Burr-Erd\u0151s-Faudree-Schelp (1989) who proved R(k+1,k) - R(k,k) \u2265 2k-5. This linear growth of the difference, combined with known bounds on diagonal Ramsey numbers, establishes the result.",
+    "implications": "1. **Ramsey Theory Growth**: Establishes that off-diagonal Ramsey numbers grow strictly faster than diagonal ones\n\n**2. Bounds Improvement**: The BEFS bound doubled the trivial bound asymptotically\n\n3. **Probabilistic Method Connection**: Relates to Erd\u0151s's 1947 probabilistic lower bound\n\n4. **Off-Diagonal Structure**: Part of understanding how R(k+j, k) grows for fixed j.",
     "openQuestions": [
       "What is the exact value of the limit ratio?",
       "Can the 2k-5 bound be improved further?",
@@ -164,36 +164,36 @@
   },
   "crossReferences": [
     {
-      "target": "ramseys-theorem",
       "relationship": "foundation",
-      "description": "Ramsey's Theorem establishes that R(k,ℓ) is finite for all k,ℓ ≥ 2 — the foundational existence result that makes the growth rate question meaningful."
+      "description": "Ramsey's Theorem establishes that R(k,\u2113) is finite for all k,\u2113 \u2265 2 \u2014 the foundational existence result that makes the growth rate question meaningful.",
+      "targetId": "ramseys-theorem"
     },
     {
-      "target": "erdos-544",
       "relationship": "direct-generalization",
-      "description": "Erdős Problem #544 asks about consecutive Ramsey number differences R(k+1,k) - R(k,k); #1030 asks whether this difference grows fast enough to push the ratio R(k+1,k)/R(k,k) above 1+c."
+      "description": "Erd\u0151s Problem #544 asks about consecutive Ramsey number differences R(k+1,k) - R(k,k); #1030 asks whether this difference grows fast enough to push the ratio R(k+1,k)/R(k,k) above 1+c.",
+      "targetId": "erdos-544"
     },
     {
-      "target": "erdos-1014",
       "relationship": "generalization",
-      "description": "Erdős Problem #1014 asks the same ratio question for R(k+j,k)/R(k,k) with arbitrary fixed j ≥ 1; #1030 is the j=1 special case."
+      "description": "Erd\u0151s Problem #1014 asks the same ratio question for R(k+j,k)/R(k,k) with arbitrary fixed j \u2265 1; #1030 is the j=1 special case.",
+      "targetId": "erdos-1014"
     },
     {
-      "target": "erdos-1029",
       "relationship": "related-bound",
-      "description": "Erdős Problem #1029 concerns the diagonal growth rate R(k)/(k·2^{k/2}) → ∞; sharp bounds on R(k,k) are needed to convert the BEFS linear difference bound into the ratio bound of #1030."
+      "description": "Erd\u0151s Problem #1029 concerns the diagonal growth rate R(k)/(k\u00b72^{k/2}) \u2192 \u221e; sharp bounds on R(k,k) are needed to convert the BEFS linear difference bound into the ratio bound of #1030.",
+      "targetId": "erdos-1029"
     },
     {
-      "target": "erdos-1031",
       "relationship": "adjacent-problem",
-      "description": "Erdős Problem #1031 studies induced regular subgraphs in graphs with no large homogeneous sets — part of the broader Ramsey-theoretic program on graph structure."
+      "description": "Erd\u0151s Problem #1031 studies induced regular subgraphs in graphs with no large homogeneous sets \u2014 part of the broader Ramsey-theoretic program on graph structure.",
+      "targetId": "erdos-1031"
     }
   ],
   "relatedProofs": [
     {
       "target": "ramseys-theorem",
       "relation": "uses-result",
-      "note": "The Ramsey property definition and the fact that R(k,ℓ) is well-defined are inherited from the classical Ramsey theorem."
+      "note": "The Ramsey property definition and the fact that R(k,\u2113) is well-defined are inherited from the classical Ramsey theorem."
     },
     {
       "target": "erdos-544",
@@ -208,27 +208,27 @@
     {
       "target": "erdos-1029",
       "relation": "complementary-bound",
-      "note": "Diagonal bounds from #1029 (lower bound ~k·2^{k/2}) feed into the ratio decomposition R(k+1,k)/R(k,k) = 1 + diff/R(k,k) used in #1030."
+      "note": "Diagonal bounds from #1029 (lower bound ~k\u00b72^{k/2}) feed into the ratio decomposition R(k+1,k)/R(k,k) = 1 + diff/R(k,k) used in #1030."
     }
   ],
   "references": [
     {
       "key": "BEFS1989",
-      "citation": "Burr, S.A., Erdős, P., Faudree, R.J., and Schelp, R.H. (1989). On the difference between consecutive Ramsey numbers. Utilitas Math., 35, 115–118.",
+      "citation": "Burr, S.A., Erd\u0151s, P., Faudree, R.J., and Schelp, R.H. (1989). On the difference between consecutive Ramsey numbers. Utilitas Math., 35, 115\u2013118.",
       "type": "paper",
-      "relevance": "Primary source: proves R(k+1,k) - R(k,k) ≥ 2k - 5, directly resolving Erdős Problem #1030."
+      "relevance": "Primary source: proves R(k+1,k) - R(k,k) \u2265 2k - 5, directly resolving Erd\u0151s Problem #1030."
     },
     {
       "key": "ErdosSzekeres1935",
-      "citation": "Erdős, P. and Szekeres, G. (1935). A combinatorial problem in geometry. Compositio Mathematica, 2, 463–470.",
+      "citation": "Erd\u0151s, P. and Szekeres, G. (1935). A combinatorial problem in geometry. Compositio Mathematica, 2, 463\u2013470.",
       "type": "paper",
-      "relevance": "Establishes the recursive bound R(k,ℓ) ≤ R(k-1,ℓ) + R(k,ℓ-1) and the binomial upper bound, giving the denominator control needed in the ratio analysis."
+      "relevance": "Establishes the recursive bound R(k,\u2113) \u2264 R(k-1,\u2113) + R(k,\u2113-1) and the binomial upper bound, giving the denominator control needed in the ratio analysis."
     },
     {
       "key": "Erdos1947",
-      "citation": "Erdős, P. (1947). Some remarks on the theory of graphs. Bulletin of the American Mathematical Society, 53, 292–294.",
+      "citation": "Erd\u0151s, P. (1947). Some remarks on the theory of graphs. Bulletin of the American Mathematical Society, 53, 292\u2013294.",
       "type": "paper",
-      "relevance": "First use of the probabilistic method; proves R(k,k) ≥ 2^{k/2}, establishing the exponential lower bound on diagonal Ramsey numbers central to the ratio argument."
+      "relevance": "First use of the probabilistic method; proves R(k,k) \u2265 2^{k/2}, establishing the exponential lower bound on diagonal Ramsey numbers central to the ratio argument."
     },
     {
       "key": "GrahamRothschildSpencer1990",
@@ -238,9 +238,9 @@
     },
     {
       "key": "Conlon2009",
-      "citation": "Conlon, D. (2009). A new upper bound for diagonal Ramsey numbers. Annals of Mathematics, 170(2), 941–960.",
+      "citation": "Conlon, D. (2009). A new upper bound for diagonal Ramsey numbers. Annals of Mathematics, 170(2), 941\u2013960.",
       "type": "paper",
-      "relevance": "Improves the upper bound on R(k,k) beyond the classical Erdős–Szekeres bound; sharper bounds on R(k,k) tighten the ratio analysis of #1030."
+      "relevance": "Improves the upper bound on R(k,k) beyond the classical Erd\u0151s\u2013Szekeres bound; sharper bounds on R(k,k) tighten the ratio analysis of #1030."
     }
   ],
   "leanFile": {

@@ -1,10 +1,10 @@
 {
   "id": "erdos-892",
-  "title": "Erdős Problem #892: Primitive Sequence Domination",
+  "title": "Erd\u0151s Problem #892: Primitive Sequence Domination",
   "slug": "erdos-892",
-  "description": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with aₙ ≪ bₙ. Known: Σ 1/(bₙ log bₙ) < ∞ is necessary. OPEN.",
+  "description": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with a\u2099 \u226a b\u2099. Known: \u03a3 1/(b\u2099 log b\u2099) < \u221e is necessary. OPEN.",
   "meta": {
-    "author": "Erdős, Sárközy, Szemerédi",
+    "author": "Erd\u0151s, S\u00e1rk\u00f6zy, Szemer\u00e9di",
     "sourceUrl": "https://erdosproblems.com/892",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos892Problem.lean",
@@ -44,12 +44,12 @@
     ],
     "originalContributions": [
       "Defined IsPrimitive as pairwise non-divisibility of sequence elements",
-      "Defined IsStrictlyIncreasing and IsDominatedBy (a ≪ b) with explicit constant",
+      "Defined IsStrictlyIncreasing and IsDominatedBy (a \u226a b) with explicit constant",
       "Formalized ErdosProblem892 as existence of primitive dominator for given b",
-      "Axiomatized Erdős (1935) reciprocal-log convergence as necessary condition",
-      "Axiomatized Erdős-Sárközy-Szemerédi (1967) partial reciprocal sum growth bound",
+      "Axiomatized Erd\u0151s (1935) reciprocal-log convergence as necessary condition",
+      "Axiomatized Erd\u0151s-S\u00e1rk\u00f6zy-Szemer\u00e9di (1967) partial reciprocal sum growth bound",
       "Defined IsGCDFree and formalized the GCD-free variant of the problem",
-      "Axiomatized primitive counting bound |A ∩ [N]| ≤ C·N/√(log N)"
+      "Axiomatized primitive counting bound |A \u2229 [N]| \u2264 C\u00b7N/\u221a(log N)"
     ],
     "axiomCount": 4,
     "lineCount": 121,
@@ -82,7 +82,7 @@
       "title": "Necessary Conditions",
       "startLine": 59,
       "endLine": 83,
-      "summary": "Axiomatizes two necessary conditions: (1) Erdős (1935): $\\sum 1/(b_n \\log b_n) < \\infty$; (2) Erdős-Sárközy-Szemerédi (1967): $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log \\log x})$. Both follow from the convergence of $\\sum 1/(a_n \\log a_n)$ for primitive $a$."
+      "summary": "Axiomatizes two necessary conditions: (1) Erd\u0151s (1935): $\\sum 1/(b_n \\log b_n) < \\infty$; (2) Erd\u0151s-S\u00e1rk\u00f6zy-Szemer\u00e9di (1967): $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log \\log x})$. Both follow from the convergence of $\\sum 1/(a_n \\log a_n)$ for primitive $a$."
     },
     {
       "id": "gcd-condition",
@@ -96,17 +96,17 @@
       "title": "Primitive Set Properties",
       "startLine": 102,
       "endLine": 121,
-      "summary": "Axiomatizes the counting bound $|\\{a_k \\leq N\\}| \\leq C \\cdot N / \\sqrt{\\log N}$ for primitive sequences, and Erdős (1935) convergence: $\\sum 1/(a_n \\log a_n)$ converges for any primitive $a$ with $a_n \\geq 2$."
+      "summary": "Axiomatizes the counting bound $|\\{a_k \\leq N\\}| \\leq C \\cdot N / \\sqrt{\\log N}$ for primitive sequences, and Erd\u0151s (1935) convergence: $\\sum 1/(a_n \\log a_n)$ converges for any primitive $a$ with $a_n \\geq 2$."
     }
   ],
   "overview": {
-    "historicalContext": "Primitive sets (antichains in the divisibility poset) have been central to combinatorial number theory since Behrend (1935) and Erdős (1935). Erdős proved in 1935 that for any primitive sequence $a_1 < a_2 < \\cdots$ with $a_n \\geq 2$, the series $\\sum 1/(a_n \\log a_n)$ converges — a remarkable density constraint showing primitive sequences are 'thin.' Problem 892, posed by Erdős, Sárközy, and Szemerédi in 1968, asks: given a target growth rate $b$, when can we find a primitive sequence growing at rate $\\ll b$? The convergence result gives a necessary condition: $\\sum 1/(b_n \\log b_n) < \\infty$. Erdős, Sárközy, and Szemerédi (1967) strengthened this to a partial sum growth condition: $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log\\log x})$. A sufficient condition remains elusive. The GCD-free variant asks whether the condition $\\gcd(b_i, b_j) \\neq b_k$ (which prevents divisibility obstructions) suffices.",
+    "historicalContext": "Primitive sets (antichains in the divisibility poset) have been central to combinatorial number theory since Behrend (1935) and Erd\u0151s (1935). Erd\u0151s proved in 1935 that for any primitive sequence $a_1 < a_2 < \\cdots$ with $a_n \\geq 2$, the series $\\sum 1/(a_n \\log a_n)$ converges \u2014 a remarkable density constraint showing primitive sequences are 'thin.' Problem 892, posed by Erd\u0151s, S\u00e1rk\u00f6zy, and Szemer\u00e9di in 1968, asks: given a target growth rate $b$, when can we find a primitive sequence growing at rate $\\ll b$? The convergence result gives a necessary condition: $\\sum 1/(b_n \\log b_n) < \\infty$. Erd\u0151s, S\u00e1rk\u00f6zy, and Szemer\u00e9di (1967) strengthened this to a partial sum growth condition: $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log\\log x})$. A sufficient condition remains elusive. The GCD-free variant asks whether the condition $\\gcd(b_i, b_j) \\neq b_k$ (which prevents divisibility obstructions) suffices.",
     "problemStatement": "Given $b_1 < b_2 < \\cdots$, find necessary and sufficient conditions for the existence of a primitive sequence $a_1 < a_2 < \\cdots$ (no $a_i \\mid a_j$) with $a_n \\ll b_n$.",
-    "text": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with aₙ ≪ bₙ. Known: Σ 1/(bₙ log bₙ) < ∞ is necessary. OPEN.",
+    "text": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with a\u2099 \u226a b\u2099. Known: \u03a3 1/(b\u2099 log b\u2099) < \u221e is necessary. OPEN.",
     "proofStrategy": "The formalization models sequences as functions $\\mathbb{N} \\to \\mathbb{N}$, defines primitivity via pairwise non-divisibility, domination via an explicit constant, and the problem as an existential quantification. Necessary conditions are axiomatized with explicit partial sum bounds using `Finset.range` and `Real.log`. The GCD-free variant introduces an alternative sufficient condition. No theorems are proved; all deep results are axioms.",
     "keyInsights": [
-      "Primitive sequences are antichains in the divisibility partial order: $a_i \\nmid a_j$ for $i \\neq j$. They are sparse — the primes form the densest primitive sequence",
-      "Erdős (1935) convergence: $\\sum 1/(a_n \\log a_n) < \\infty$ for any primitive $a$ with $a_n \\geq 2$. This is an analog of the prime harmonic series divergence, showing primitive sets are even thinner than primes in the $1/(n \\log n)$ metric",
+      "Primitive sequences are antichains in the divisibility partial order: $a_i \\nmid a_j$ for $i \\neq j$. They are sparse \u2014 the primes form the densest primitive sequence",
+      "Erd\u0151s (1935) convergence: $\\sum 1/(a_n \\log a_n) < \\infty$ for any primitive $a$ with $a_n \\geq 2$. This is an analog of the prime harmonic series divergence, showing primitive sets are even thinner than primes in the $1/(n \\log n)$ metric",
       "The necessary condition $\\sum 1/(b_n \\log b_n) < \\infty$ follows by domination: if $a_n \\leq C b_n$ and $\\sum 1/(a_n \\log a_n)$ converges, then so does $\\sum 1/(b_n \\log b_n)$",
       "The ESS (1967) condition is strictly stronger: it controls the partial reciprocal sums $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log\\log x})$, capturing not just convergence but the rate",
       "The GCD-free condition prevents 'divisibility obstructions' where $\\gcd(b_i, b_j)$ forces elements into the same divisibility chain, making primitivity impossible locally"
@@ -117,38 +117,18 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem 892 is formalized with definitions of primitive sequences, domination, and the GCD-free condition, along with axiomatized necessary conditions from Erdős (1935) and Erdős-Sárközy-Szemerédi (1967). The counting bound for primitive sets is also axiomatized. The file has 0 sorries and 4 axioms, with no proved theorems.",
+    "summary": "Erd\u0151s Problem 892 is formalized with definitions of primitive sequences, domination, and the GCD-free condition, along with axiomatized necessary conditions from Erd\u0151s (1935) and Erd\u0151s-S\u00e1rk\u00f6zy-Szemer\u00e9di (1967). The counting bound for primitive sets is also axiomatized. The file has 0 sorries and 4 axioms, with no proved theorems.",
     "implications": "A full characterization would provide a fundamental understanding of how the 'thinness' of primitive sequences constrains their growth rates. This connects to Behrend's theorem, the distribution of primes (the densest primitive sequence), and the structure of the divisibility lattice on natural numbers.",
     "openQuestions": [
       "What are necessary and sufficient conditions for a sequence b to admit a primitive dominator?",
       "Does the GCD-free condition suffice for primitive domination?",
-      "Can the Erdős-Sárközy-Szemerédi necessary condition be strengthened to a sufficient condition with a correction term?",
+      "Can the Erd\u0151s-S\u00e1rk\u00f6zy-Szemer\u00e9di necessary condition be strengthened to a sufficient condition with a correction term?",
       "Is there a constructive algorithm to find the primitive dominator when it exists?",
-      "What is the connection to the Erdős conjecture on the maximum of Σ 1/(aₙ log aₙ) over primitive sets?"
+      "What is the connection to the Erd\u0151s conjecture on the maximum of \u03a3 1/(a\u2099 log a\u2099) over primitive sets?"
     ]
   },
-  "crossReferences": [
-    {
-      "targetId": "erdos-1935-primitive",
-      "relationship": "foundational",
-      "description": "Erdős (1935) proved Σ 1/(aₙ log aₙ) converges for primitive a, the foundational result for this problem's necessary conditions"
-    },
-    {
-      "targetId": "behrend-theorem",
-      "relationship": "related",
-      "description": "Behrend's results on primitive sets provide density bounds that constrain the domination problem"
-    },
-    {
-      "targetId": "prime-harmonic-series",
-      "relationship": "related",
-      "description": "The primes form the densest primitive set; the divergence of Σ 1/(p log p) = Σ 1/p · 1/log p shows primes barely fail the necessary condition"
-    }
-  ],
-  "relatedProofs": [
-    "erdos-1935-primitive",
-    "behrend-theorem",
-    "prime-harmonic-series"
-  ],
+  "crossReferences": [],
+  "relatedProofs": [],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",

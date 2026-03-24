@@ -59,11 +59,11 @@
     ],
     "axiomCount": 5,
     "prerequisites": [
-      "Metric spaces and distance functions in ℝ²",
+      "Metric spaces and distance functions in \u211d\u00b2",
       "Graph coloring and chromatic number basics",
       "Arithmetic progressions and van der Waerden's theorem",
       "Unit distance graphs in Euclidean geometry",
-      "Complex plane as a model of ℝ²",
+      "Complex plane as a model of \u211d\u00b2",
       "Independent sets in graphs",
       "Ramsey theory fundamentals"
     ],
@@ -71,24 +71,24 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem belongs to the field of Euclidean Ramsey theory, initiated by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The six authors systematically studied which geometric configurations are unavoidable under finite colorings of $\\mathbb{R}^d$, extending classical Ramsey theory from graphs and integers to continuous geometric settings.\n\nThe original formulation of Problem #188 asked whether there exists a 2-coloring of $\\mathbb{R}^2$ with no red unit distance and no blue arithmetic progression of any length. Noga Alon observed that this version has no solution: van der Waerden's theorem forces arbitrarily long monochromatic APs in any finite coloring of $\\mathbb{Z}$, and one can embed $\\mathbb{Z}$ into any blue set via unit-step translations.\n\nThe corrected formulation restricts to APs with consecutive terms at unit distance. The lower bound $k \\geq 5$ was established in the original EGMRSS paper using explicit small configurations that force 5-term blue APs. Tsaturian (2017) improved this to $k \\geq 6$ by constructing a more intricate unit-distance configuration that forces 6-term blue APs regardless of the coloring. Erdős and Graham (1980) claimed $k \\leq 10{,}000{,}000$ via a stripe-based construction, though the full details were never published. The enormous gap between 6 and $10^7$ remains one of the most striking open problems in Euclidean Ramsey theory.",
+    "historicalContext": "This problem belongs to the field of Euclidean Ramsey theory, initiated by Erd\u0151s, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The six authors systematically studied which geometric configurations are unavoidable under finite colorings of $\\mathbb{R}^d$, extending classical Ramsey theory from graphs and integers to continuous geometric settings.\n\nThe original formulation of Problem #188 asked whether there exists a 2-coloring of $\\mathbb{R}^2$ with no red unit distance and no blue arithmetic progression of any length. Noga Alon observed that this version has no solution: van der Waerden's theorem forces arbitrarily long monochromatic APs in any finite coloring of $\\mathbb{Z}$, and one can embed $\\mathbb{Z}$ into any blue set via unit-step translations.\n\nThe corrected formulation restricts to APs with consecutive terms at unit distance. The lower bound $k \\geq 5$ was established in the original EGMRSS paper using explicit small configurations that force 5-term blue APs. Tsaturian (2017) improved this to $k \\geq 6$ by constructing a more intricate unit-distance configuration that forces 6-term blue APs regardless of the coloring. Erd\u0151s and Graham (1980) claimed $k \\leq 10{,}000{,}000$ via a stripe-based construction, though the full details were never published. The enormous gap between 6 and $10^7$ remains one of the most striking open problems in Euclidean Ramsey theory.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nFind the smallest constant k such that the plane R^2 can be 2-colored (red/blue) where:\n1. No two red points are at unit distance apart\n2. No k-term arithmetic progression of blue points has distance 1 between consecutive terms\n\n**Known Bounds:**\n- Lower: k >= 6 (Tsaturian 2017)\n- Upper: k <= 10,000,000 (Erdos-Graham)",
     "text": "Find the smallest k such that R^2 can be red/blue colored with no red unit distances and no k-term blue AP with distance 1.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization models $\\mathbb{R}^2$ as $\\mathbb{C}$ (the complex numbers), leveraging Mathlib's `Complex.abs` for distance computations and `dist` from the metric space API.\n\n1. **Coloring model:** `PlaneColoring := ℂ → Bool` encodes the red/blue partition, where `false` = red and `true` = blue. This is computationally clean and avoids dependent types.\n\n2. **Constraint definitions:** `RedUnitDistanceFree` universally quantifies over distinct red pairs, requiring $\\text{dist}(z_1, z_2) \\neq 1$. `BlueContainsUnitAP` existentially quantifies over starting points $a$ and unit directions $d$ with $|d| = 1$.\n\n3. **Achievable set:** $s = \\{k \\mid \\exists c,\\, \\text{IsValidColoring}(c, k)\\}$ captures the parameter space. The problem reduces to finding $\\inf s$.\n\n4. **Axiomatized bounds:** The lower bound ($k \\geq 6$, Tsaturian) and upper bound ($k \\leq 10^7$, Erdős-Graham) are axiomatized since their proofs require deep combinatorial and geometric arguments beyond current Mathlib.\n\n5. **Graph-theoretic bridge:** The `UnitDistanceGraph` definition connects the coloring problem to graph independence, with the proved theorem `red_is_independent` showing the red set is independent in the unit distance graph of $\\mathbb{R}^2$.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization models $\\mathbb{R}^2$ as $\\mathbb{C}$ (the complex numbers), leveraging Mathlib's `Complex.abs` for distance computations and `dist` from the metric space API.\n\n1. **Coloring model:** `PlaneColoring := \u2102 \u2192 Bool` encodes the red/blue partition, where `false` = red and `true` = blue. This is computationally clean and avoids dependent types.\n\n2. **Constraint definitions:** `RedUnitDistanceFree` universally quantifies over distinct red pairs, requiring $\\text{dist}(z_1, z_2) \\neq 1$. `BlueContainsUnitAP` existentially quantifies over starting points $a$ and unit directions $d$ with $|d| = 1$.\n\n3. **Achievable set:** $s = \\{k \\mid \\exists c,\\, \\text{IsValidColoring}(c, k)\\}$ captures the parameter space. The problem reduces to finding $\\inf s$.\n\n4. **Axiomatized bounds:** The lower bound ($k \\geq 6$, Tsaturian) and upper bound ($k \\leq 10^7$, Erd\u0151s-Graham) are axiomatized since their proofs require deep combinatorial and geometric arguments beyond current Mathlib.\n\n5. **Graph-theoretic bridge:** The `UnitDistanceGraph` definition connects the coloring problem to graph independence, with the proved theorem `red_is_independent` showing the red set is independent in the unit distance graph of $\\mathbb{R}^2$.",
     "keyInsights": [
       "**Alon's key observation:** The original problem (forbid blue APs of arbitrary step) has no solution. Van der Waerden's theorem guarantees arbitrarily long monochromatic APs in any finite coloring of $\\mathbb{Z}$, and any independent set in the unit distance graph contains a copy of $\\mathbb{Z}$ via unit translations. The unit-step restriction is therefore essential for the problem to be well-posed.",
-      "**Unit distance geometry:** Requiring AP steps of length exactly 1 transforms the problem from a purely combinatorial one (where van der Waerden kills it) into a genuinely geometric one. The direction $d$ with $|d| = 1$ can vary, so blue APs can point in any direction — this gives the coloring more room to maneuver than in the integer setting.",
+      "**Unit distance geometry:** Requiring AP steps of length exactly 1 transforms the problem from a purely combinatorial one (where van der Waerden kills it) into a genuinely geometric one. The direction $d$ with $|d| = 1$ can vary, so blue APs can point in any direction \u2014 this gives the coloring more room to maneuver than in the integer setting.",
       "**Red as an independent set:** The constraint `RedUnitDistanceFree` means the red set is independent in the unit distance graph $G(\\mathbb{R}^2)$. This connects to the Hadwiger-Nelson problem: $\\chi(G(\\mathbb{R}^2)) \\in [5, 7]$ (de Grey 2018 proved $\\geq 5$). Since at most $1 - 1/\\chi$ of the plane can be red, the blue set must be dense.",
       "**Tsaturian's improvement:** The lower bound improvement from $k \\geq 5$ to $k \\geq 6$ required constructing an explicit unit-distance configuration in $\\mathbb{R}^2$ that forces any red-independent coloring to contain a 6-term blue AP. Such configurations must be carefully designed since the plane has uncountable many directions.",
-      "**The gap problem:** The six-order-of-magnitude gap between $k \\geq 6$ and $k \\leq 10^7$ is one of the widest in combinatorial geometry. Even determining whether $k$ is closer to 6 or to $10^7$ would be a major breakthrough. The Erdős-Graham upper bound construction uses stripe-based colorings whose analysis is technically demanding.",
+      "**The gap problem:** The six-order-of-magnitude gap between $k \\geq 6$ and $k \\leq 10^7$ is one of the widest in combinatorial geometry. Even determining whether $k$ is closer to 6 or to $10^7$ would be a major breakthrough. The Erd\u0151s-Graham upper bound construction uses stripe-based colorings whose analysis is technically demanding.",
       "**Formalization as axioms:** The 5 axioms (`lower_bound_5`, `lower_bound_6`, `upper_bound_exists`, `vanDerWaerden`, `alon_observation`) reflect mathematically deep results. The proved theorems (`achievable_nonempty`, `red_is_independent`, `erdos_188_bounds`, `erdos_188_statement`) demonstrate meaningful deductions from these axioms."
     ],
     "prerequisites": [
-      "Metric spaces and distance functions in ℝ²",
+      "Metric spaces and distance functions in \u211d\u00b2",
       "Graph coloring and chromatic number basics",
       "Arithmetic progressions and van der Waerden's theorem",
       "Unit distance graphs in Euclidean geometry",
-      "Complex plane as a model of ℝ²",
+      "Complex plane as a model of \u211d\u00b2",
       "Independent sets in graphs",
       "Ramsey theory fundamentals"
     ]
@@ -97,14 +97,14 @@
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "Defines `PlaneColoring := ℂ → Bool` (red/blue partition), `redPoints`/`bluePoints` as color classes, `RedUnitDistanceFree` (no red unit distance), `BlueContainsUnitAP` (k-term AP with unit step in blue), and `IsValidColoring` combining both constraints.",
+      "summary": "Defines `PlaneColoring := \u2102 \u2192 Bool` (red/blue partition), `redPoints`/`bluePoints` as color classes, `RedUnitDistanceFree` (no red unit distance), `BlueContainsUnitAP` (k-term AP with unit step in blue), and `IsValidColoring` combining both constraints.",
       "startLine": 28,
       "endLine": 64
     },
     {
       "id": "achievable",
       "title": "The Achievable Set s",
-      "summary": "Defines `achievableSet := {k | ∃ valid coloring for k}`, the main problem `ErdosProblem188` as finding `IsLeast achievableSet k`, and the noncomputable `minAchievable := sInf achievableSet`.",
+      "summary": "Defines `achievableSet := {k | \u2203 valid coloring for k}`, the main problem `ErdosProblem188` as finding `IsLeast achievableSet k`, and the noncomputable `minAchievable := sInf achievableSet`.",
       "startLine": 66,
       "endLine": 80
     },
@@ -118,7 +118,7 @@
     {
       "id": "unitgraph",
       "title": "Unit Distance Graph",
-      "summary": "Constructs `UnitDistanceGraph : SimpleGraph ℂ` with adjacency $z_1 \\neq z_2 \\land \\text{dist}(z_1, z_2) = 1$, proving symmetry and irreflexivity. Then proves `red_is_independent`: red points form an independent set in this graph.",
+      "summary": "Constructs `UnitDistanceGraph : SimpleGraph \u2102` with adjacency $z_1 \\neq z_2 \\land \\text{dist}(z_1, z_2) = 1$, proving symmetry and irreflexivity. Then proves `red_is_independent`: red points form an independent set in this graph.",
       "startLine": 107,
       "endLine": 128
     },
@@ -165,18 +165,21 @@
   "crossReferences": [
     {
       "relationship": "related",
-      "note": "Both are Erdős problems in extremal/geometric combinatorics involving structural constraints on point configurations",
-      "targetId": "erdos-180"
+      "note": "Both are Erd\u0151s problems in extremal/geometric combinatorics involving structural constraints on point configurations",
+      "targetId": "erdos-180",
+      "description": "Related via related"
     },
     {
       "relationship": "related",
-      "note": "Another Erdős problem from the same era involving combinatorial geometry and coloring constraints in Euclidean space",
-      "targetId": "erdos-185"
+      "note": "Another Erd\u0151s problem from the same era involving combinatorial geometry and coloring constraints in Euclidean space",
+      "targetId": "erdos-185",
+      "description": "Related via related"
     },
     {
       "relationship": "foundational",
       "note": "Ramsey's theorem is the combinatorial foundation underlying Euclidean Ramsey theory; van der Waerden's theorem (axiomatized here) is its arithmetic analogue",
-      "targetId": "ramseys-theorem"
+      "targetId": "ramseys-theorem",
+      "description": "Related via foundational"
     }
   ],
   "leanFile": {
@@ -203,32 +206,32 @@
   ],
   "references": [
     {
-      "authors": "Erdős, Paul; Graham, Ronald; Montgomery, Peter; Rothschild, Bruce; Spencer, Joel; Straus, Ernst",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald; Montgomery, Peter; Rothschild, Bruce; Spencer, Joel; Straus, Ernst",
       "title": "Euclidean Ramsey theorems I",
       "year": "1973",
       "venue": "Journal of Combinatorial Theory, Series A",
-      "note": "Foundational paper establishing Euclidean Ramsey theory; proved the original lower bound k ≥ 5 for Problem #188"
+      "note": "Foundational paper establishing Euclidean Ramsey theory; proved the original lower bound k \u2265 5 for Problem #188"
     },
     {
-      "authors": "Erdős, Paul; Graham, Ronald",
+      "authors": "Erd\u0151s, Paul; Graham, Ronald",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "L'Enseignement Mathématique, Monograph No. 28",
-      "note": "States the upper bound k ≤ 10,000,000 via an explicit (but intricate) stripe-based construction"
+      "venue": "L'Enseignement Math\u00e9matique, Monograph No. 28",
+      "note": "States the upper bound k \u2264 10,000,000 via an explicit (but intricate) stripe-based construction"
     },
     {
       "authors": "Tsaturian, Sergei",
-      "title": "A new bound for the Erdős-Graham problem on unit distance colorings",
+      "title": "A new bound for the Erd\u0151s-Graham problem on unit distance colorings",
       "year": "2017",
       "venue": "arXiv preprint",
-      "note": "Improved the lower bound from k ≥ 5 to k ≥ 6 using refined geometric arguments about unit distance configurations"
+      "note": "Improved the lower bound from k \u2265 5 to k \u2265 6 using refined geometric arguments about unit distance configurations"
     },
     {
       "authors": "de Grey, Aubrey D. N. J.",
       "title": "The chromatic number of the plane is at least 5",
       "year": "2018",
       "venue": "Geombinatorics",
-      "note": "Proved χ(ℝ²) ≥ 5 for the Hadwiger-Nelson problem, closely related to the unit distance graph structure used here"
+      "note": "Proved \u03c7(\u211d\u00b2) \u2265 5 for the Hadwiger-Nelson problem, closely related to the unit distance graph structure used here"
     }
   ]
 }

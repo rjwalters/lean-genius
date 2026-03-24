@@ -1,10 +1,10 @@
 {
   "id": "erdos-1038",
-  "title": "Erdős Problem #1038: Sublevel Sets of Monic Polynomials",
+  "title": "Erd\u0151s Problem #1038: Sublevel Sets of Monic Polynomials",
   "slug": "erdos-1038",
-  "description": "Determine the infimum and supremum of the measure of {x : |f(x)| < 1} for monic polynomials with roots in [-1,1]. Supremum = 2√2 (Tao, 2025); infimum bounds: 1.519 ≤ inf ≤ 1.835.",
+  "description": "Determine the infimum and supremum of the measure of {x : |f(x)| < 1} for monic polynomials with roots in [-1,1]. Supremum = 2\u221a2 (Tao, 2025); infimum bounds: 1.519 \u2264 inf \u2264 1.835.",
   "meta": {
-    "author": "Terence Tao (2025), Erdős-Herzog-Piranian (1958)",
+    "author": "Terence Tao (2025), Erd\u0151s-Herzog-Piranian (1958)",
     "sourceUrl": "https://erdosproblems.com/1038",
     "date": "2025-12-01",
     "status": "axiomatized",
@@ -25,7 +25,7 @@
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.volume",
-        "description": "Lebesgue measure on ℝ",
+        "description": "Lebesgue measure on \u211d",
         "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
       },
       {
@@ -35,7 +35,7 @@
       },
       {
         "theorem": "ENNReal.ofReal",
-        "description": "Coercion from ℝ to ℝ≥0∞",
+        "description": "Coercion from \u211d to \u211d\u22650\u221e",
         "module": "Mathlib.Topology.Instances.ENNReal"
       }
     ],
@@ -49,10 +49,10 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős, Herzog, and Piranian in their 1958 paper 'Metric properties of polynomials.' They studied the sublevel set {x ∈ ℝ : |f(x)| < 1} for monic polynomials with real roots restricted to [-1, 1].\n\nThe 1958 paper proved the upper bound sup ≤ 2√2 when roots are in {-1, 1}, and conjectured this is optimal for roots in [-1, 1]. They also showed the infimum is less than 2 using polynomials like (x+1)(x-1)³.\n\nTerence Tao resolved the supremum question in December 2025, confirming that sup = 2√2 for the full class of polynomials with roots in [-1, 1]. The exact infimum remains an open problem, with current best bounds 2^(4/3) - 1 ≈ 1.519 ≤ inf ≤ 1.835.",
+    "historicalContext": "This problem was posed by Erd\u0151s, Herzog, and Piranian in their 1958 paper 'Metric properties of polynomials.' They studied the sublevel set {x \u2208 \u211d : |f(x)| < 1} for monic polynomials with real roots restricted to [-1, 1].\n\nThe 1958 paper proved the upper bound sup \u2264 2\u221a2 when roots are in {-1, 1}, and conjectured this is optimal for roots in [-1, 1]. They also showed the infimum is less than 2 using polynomials like (x+1)(x-1)\u00b3.\n\nTerence Tao resolved the supremum question in December 2025, confirming that sup = 2\u221a2 for the full class of polynomials with roots in [-1, 1]. The exact infimum remains an open problem, with current best bounds 2^(4/3) - 1 \u2248 1.519 \u2264 inf \u2264 1.835.",
     "problemStatement": "Let $f \\in \\mathbb{R}[x]$ be a non-constant monic polynomial with all roots real and in $[-1,1]$. Determine:\n\n$$\\sup_f |\\{x \\in \\mathbb{R} : |f(x)| < 1\\}| = 2\\sqrt{2}$$\n\n$$1.519 \\approx 2^{4/3} - 1 \\leq \\inf_f |\\{x \\in \\mathbb{R} : |f(x)| < 1\\}| \\leq 1.835$$\n\nThe supremum was proved by Tao (2025). The exact infimum remains open.",
-    "text": "Determine the infimum and supremum of the measure of {x : |f(x)| < 1} for monic polynomials with roots in [-1,1]. Supremum = 2√2 (Tao, 2025); infimum bounds: 1.519 ≤ inf ≤ 1.835.",
-    "proofStrategy": "We formalize the main results as axioms since the proofs require potential theory beyond current Mathlib:\n\n1. **Supremum axiom**: The supremum equals 2√2, achieved by polynomials approaching (x-1)(x+1) = x² - 1\n\n2. **Infimum bounds**: Lower bound via potential theory, upper bound witnessed by explicit constructions\n\n3. **Type handling**: Volume returns ℝ≥0∞ (extended non-negative reals), requiring ENNReal.ofReal for comparisons with real constants",
+    "text": "Determine the infimum and supremum of the measure of {x : |f(x)| < 1} for monic polynomials with roots in [-1,1]. Supremum = 2\u221a2 (Tao, 2025); infimum bounds: 1.519 \u2264 inf \u2264 1.835.",
+    "proofStrategy": "We formalize the main results as axioms since the proofs require potential theory beyond current Mathlib:\n\n1. **Supremum axiom**: The supremum equals 2\u221a2, achieved by polynomials approaching (x-1)(x+1) = x\u00b2 - 1\n\n2. **Infimum bounds**: Lower bound via potential theory, upper bound witnessed by explicit constructions\n\n3. **Type handling**: Volume returns \u211d\u22650\u221e (extended non-negative reals), requiring ENNReal.ofReal for comparisons with real constants",
     "keyInsights": [
       "**Sublevel sets**: For a polynomial f, the sublevel set {x : |f(x)| < 1} measures where the polynomial stays small",
       "**Monic constraint**: Requiring f to be monic (leading coefficient 1) normalizes the problem",
@@ -84,7 +84,7 @@
       "title": "Supremum Result",
       "startLine": 47,
       "endLine": 63,
-      "summary": "The supremum equals 2√2, proved by Tao in December 2025"
+      "summary": "The supremum equals 2\u221a2, proved by Tao in December 2025"
     },
     {
       "id": "infimum",
@@ -98,7 +98,7 @@
       "title": "Concrete Examples",
       "startLine": 88,
       "endLine": 107,
-      "summary": "Specific polynomials witnessing the bounds: (x+1)(x-1)^m for infimum, x²-1 for supremum"
+      "summary": "Specific polynomials witnessing the bounds: (x+1)(x-1)^m for infimum, x\u00b2-1 for supremum"
     },
     {
       "id": "numerical",
@@ -109,7 +109,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #1038 on sublevel set measures of monic polynomials. The supremum 2√2 was recently proved by Tao (2025), while the exact infimum remains open with bounds 1.519 ≤ inf ≤ 1.835.",
+    "summary": "We formalize Erd\u0151s Problem #1038 on sublevel set measures of monic polynomials. The supremum 2\u221a2 was recently proved by Tao (2025), while the exact infimum remains open with bounds 1.519 \u2264 inf \u2264 1.835.",
     "implications": "This problem connects polynomial analysis to potential theory and has implications for understanding how polynomials with constrained roots behave. The techniques used by Tao involve logarithmic potentials and equilibrium measures.",
     "openQuestions": [
       "What is the exact value of the infimum?",
@@ -119,72 +119,72 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1039",
       "relationship": "sibling",
-      "description": "Closely related: asks for the largest disc contained in the sublevel set {z: |f(z)| < 1} for polynomials with roots in the unit disc. Together problems #1038 and #1039 form a pair studying metric properties of polynomial sublevel sets."
+      "description": "Closely related: asks for the largest disc contained in the sublevel set {z: |f(z)| < 1} for polynomials with roots in the unit disc. Together problems #1038 and #1039 form a pair studying metric properties of polynomial sublevel sets.",
+      "targetId": "erdos-1039"
     },
     {
-      "target": "erdos-1040",
       "relationship": "sibling",
-      "description": "Direct generalization: extends the sublevel set measure question to arbitrary closed infinite sets F ⊆ ℂ via transfinite diameter. Problem #1038 is the special case F = [-1,1]."
+      "description": "Direct generalization: extends the sublevel set measure question to arbitrary closed infinite sets F \u2286 \u2102 via transfinite diameter. Problem #1038 is the special case F = [-1,1].",
+      "targetId": "erdos-1040"
     },
     {
-      "target": "erdos-1041",
       "relationship": "sibling",
-      "description": "Studies path connectivity within polynomial sublevel sets {z : |f(z)| < 1}, a topological companion to the measure-theoretic questions of #1038."
+      "description": "Studies path connectivity within polynomial sublevel sets {z : |f(z)| < 1}, a topological companion to the measure-theoretic questions of #1038.",
+      "targetId": "erdos-1041"
     },
     {
-      "target": "erdos-1043",
       "relationship": "sibling",
-      "description": "Asks about linear projections of the sublevel set {z : |f(z)| ≤ 1}, complementing #1038's study of the total Lebesgue measure of the real sublevel set."
+      "description": "Asks about linear projections of the sublevel set {z : |f(z)| \u2264 1}, complementing #1038's study of the total Lebesgue measure of the real sublevel set.",
+      "targetId": "erdos-1043"
     },
     {
-      "target": "erdos-1046",
       "relationship": "sibling",
-      "description": "Studies disc containment for connected lemniscates {z: |f(z)| < 1}, providing geometric context for the measure bounds proved in #1038."
+      "description": "Studies disc containment for connected lemniscates {z: |f(z)| < 1}, providing geometric context for the measure bounds proved in #1038.",
+      "targetId": "erdos-1046"
     },
     {
-      "target": "lebesgue-measure",
       "relationship": "uses",
-      "description": "The formalization relies on Lebesgue measure on ℝ to define the measure of the sublevel set {x : |f(x)| < 1}."
+      "description": "The formalization relies on Lebesgue measure on \u211d to define the measure of the sublevel set {x : |f(x)| < 1}.",
+      "targetId": "lebesgue-measure"
     }
   ],
   "relatedProofs": [
     {
       "slug": "erdos-1039",
-      "title": "Erdős Problem #1039: Polynomial Lemniscate Disc Radius",
+      "title": "Erd\u0151s Problem #1039: Polynomial Lemniscate Disc Radius",
       "relationship": "The lemniscate disc radius problem is the complex-plane analogue: it asks for the largest disc fitting inside {z: |f(z)| < 1}, while #1038 asks for the total real measure."
     },
     {
       "slug": "erdos-1040",
-      "title": "Erdős Problem #1040: Transfinite Diameter and Sublevel Set Measure",
-      "relationship": "Directly generalizes #1038 to arbitrary root sets F using transfinite (logarithmic) capacity; the connection shows #1038's 2√2 supremum is linked to the transfinite diameter of [-1,1]."
+      "title": "Erd\u0151s Problem #1040: Transfinite Diameter and Sublevel Set Measure",
+      "relationship": "Directly generalizes #1038 to arbitrary root sets F using transfinite (logarithmic) capacity; the connection shows #1038's 2\u221a2 supremum is linked to the transfinite diameter of [-1,1]."
     },
     {
       "slug": "erdos-1042",
-      "title": "Erdős Problem #1042: Connected Components of Polynomial Lemniscates",
+      "title": "Erd\u0151s Problem #1042: Connected Components of Polynomial Lemniscates",
       "relationship": "Studies topological structure of {z: |f(z)| < 1}; understanding connected components informs how the real restriction {x : |f(x)| < 1} in #1038 is assembled."
     },
     {
       "slug": "erdos-1044",
-      "title": "Erdős Problem #1044: Boundary Length of Polynomial Level Sets",
+      "title": "Erd\u0151s Problem #1044: Boundary Length of Polynomial Level Sets",
       "relationship": "Complements #1038 by studying perimeter rather than area of polynomial sublevel sets, using related potential-theoretic techniques."
     }
   ],
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "G. Herzog",
         "G. Piranian"
       ],
       "title": "Metric properties of polynomials",
-      "venue": "Journal d'Analyse Mathématique",
+      "venue": "Journal d'Analyse Math\u00e9matique",
       "year": 1958,
       "volume": "6",
-      "pages": "125–148",
+      "pages": "125\u2013148",
       "doi": "10.1007/BF02790232",
-      "note": "Original paper posing the problem; proved sup ≤ 2√2 for roots in {-1,1} and upper-bounded the infimum."
+      "note": "Original paper posing the problem; proved sup \u2264 2\u221a2 for roots in {-1,1} and upper-bounded the infimum."
     },
     {
       "authors": [
@@ -194,7 +194,7 @@
       "venue": "arXiv preprint",
       "year": 2025,
       "arxiv": "2501.00000",
-      "note": "Resolved the supremum: proved sup = 2√2 for monic polynomials with all roots in [-1,1], as announced December 2025."
+      "note": "Resolved the supremum: proved sup = 2\u221a2 for monic polynomials with all roots in [-1,1], as announced December 2025."
     },
     {
       "authors": [
@@ -204,7 +204,7 @@
       "venue": "Michigan Mathematical Journal",
       "year": 1959,
       "volume": "6",
-      "pages": "373–396",
+      "pages": "373\u2013396",
       "doi": "10.1307/mmj/1028998237",
       "note": "Classical work on lemniscate geometry and polynomial sublevel sets; provides bounds relevant to the infimum question."
     },

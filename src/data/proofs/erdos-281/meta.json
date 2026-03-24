@@ -1,10 +1,10 @@
 {
   "id": "erdos-281",
-  "title": "Erdős Problem #281: Covering Congruences and Density",
+  "title": "Erd\u0151s Problem #281: Covering Congruences and Density",
   "slug": "erdos-281",
-  "description": "If a sequence of moduli has full covering (every congruence class choice leaves density-0 uncovered), must finitely many classes already achieve density < ε for every ε > 0?",
+  "description": "If a sequence of moduli has full covering (every congruence class choice leaves density-0 uncovered), must finitely many classes already achieve density < \u03b5 for every \u03b5 > 0?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/281",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos281Problem.lean",
@@ -25,20 +25,20 @@
     "mathlibDependencies": [
       {
         "theorem": "Finset.card_filter_le",
-        "description": "Card of filtered subset ≤ card of original, used for uncoveredCount upper bound",
+        "description": "Card of filtered subset \u2264 card of original, used for uncoveredCount upper bound",
         "module": "Mathlib.Data.Finset.Card"
       },
       {
         "theorem": "div_le_one",
-        "description": "Division bound for density ≤ 1 proof",
+        "description": "Division bound for density \u2264 1 proof",
         "module": "Mathlib.Algebra.Order.Field.Basic"
       }
     ],
     "originalContributions": [
       "Formalization of covering systems via CongruenceChoice and IsCoveredByFirst",
       "12 infrastructure lemmas proved constructively (monotonicity, antitonicity, bounds)",
-      "Easy direction (uniform → full) proved via uncoveredDensity_antitone",
-      "Axiomatization of Davenport–Erdős and Rogers theorems for the hard direction",
+      "Easy direction (uniform \u2192 full) proved via uncoveredDensity_antitone",
+      "Axiomatization of Davenport\u2013Erd\u0151s and Rogers theorems for the hard direction",
       "Biconditional equivalence combining both directions"
     ],
     "axiomCount": 3,
@@ -46,14 +46,14 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Covering systems were introduced by Erdős in the 1950s. A covering system of congruences is a finite set of residue classes whose union is all integers; Erdős conjectured (and it was proved by Hough in 2015) that no covering system exists with all moduli distinct and greater than any given bound. Problem 281 is a density-theoretic variant: Erdős asked in 1980 whether the full-covering condition (every choice of congruence classes leaves density-0 uncovered) automatically gives *uniform* finite approximation. The affirmative resolution uses the Davenport–Erdős theorem (1951) — that upper and lower density coincide for divisibility-defined sets — and Rogers' maximization theorem from Halberstam–Roth's 'Sequences' (1966).",
-    "problemStatement": "Let n₁ < n₂ < ⋯ be such that for any choice of classes aᵢ (mod nᵢ), the uncovered integers have density 0. Must there exist, for every ε > 0, a finite k achieving density < ε uniformly over all choices?",
-    "text": "If a sequence of moduli has full covering (every congruence class choice leaves density-0 uncovered), must finitely many classes already achieve density < ε for every ε > 0?",
+    "historicalContext": "Covering systems were introduced by Erd\u0151s in the 1950s. A covering system of congruences is a finite set of residue classes whose union is all integers; Erd\u0151s conjectured (and it was proved by Hough in 2015) that no covering system exists with all moduli distinct and greater than any given bound. Problem 281 is a density-theoretic variant: Erd\u0151s asked in 1980 whether the full-covering condition (every choice of congruence classes leaves density-0 uncovered) automatically gives *uniform* finite approximation. The affirmative resolution uses the Davenport\u2013Erd\u0151s theorem (1951) \u2014 that upper and lower density coincide for divisibility-defined sets \u2014 and Rogers' maximization theorem from Halberstam\u2013Roth's 'Sequences' (1966).",
+    "problemStatement": "Let n\u2081 < n\u2082 < \u22ef be such that for any choice of classes a\u1d62 (mod n\u1d62), the uncovered integers have density 0. Must there exist, for every \u03b5 > 0, a finite k achieving density < \u03b5 uniformly over all choices?",
+    "text": "If a sequence of moduli has full covering (every congruence class choice leaves density-0 uncovered), must finitely many classes already achieve density < \u03b5 for every \u03b5 > 0?",
     "proofStrategy": "The formalization defines congruence class assignments, coverage, and uncovered density. It axiomatises the divergence of reciprocals, the coprime special case, and the main theorem that full covering implies uniform finite approximation.",
     "keyInsights": [
-      "Full covering implies Σ 1/nᵢ = ∞",
+      "Full covering implies \u03a3 1/n\u1d62 = \u221e",
       "For pairwise coprime moduli, divergent reciprocals suffice",
-      "The Davenport–Erdős theorem upgrades upper density 0 to a uniform finite bound",
+      "The Davenport\u2013Erd\u0151s theorem upgrades upper density 0 to a uniform finite bound",
       "Rogers' theorem provides the maximization step",
       "12 infrastructure lemmas are proved constructively, forming a verified foundation independent of the axiomatized main theorem"
     ],
@@ -92,7 +92,7 @@
       "title": "Easy Direction (Proved)",
       "startLine": 154,
       "endLine": 213,
-      "summary": "Proves `uniform_implies_full` constructively and structural lemmas on moduli growth bounds. The easy direction: uniform → full via quantifier swap and density antitonicity.",
+      "summary": "Proves `uniform_implies_full` constructively and structural lemmas on moduli growth bounds. The easy direction: uniform \u2192 full via quantifier swap and density antitonicity.",
       "mathContext": "$\\forall\\varepsilon,\\; \\exists k,\\; \\forall\\text{choice}: \\text{density} < \\varepsilon \\implies \\forall\\text{choice},\\; \\forall\\varepsilon: \\text{density} \\to 0$"
     },
     {
@@ -108,15 +108,15 @@
       "title": "Main Theorem and Equivalence",
       "startLine": 232,
       "endLine": 262,
-      "summary": "Erdős Problem 281 statement and axiomatized proof. The biconditional `full_covering_iff_uniform` combines hard (axiom) and easy (proved) directions.",
+      "summary": "Erd\u0151s Problem 281 statement and axiomatized proof. The biconditional `full_covering_iff_uniform` combines hard (axiom) and easy (proved) directions.",
       "mathContext": "$\\text{HasFullCovering} \\iff \\text{HasUniformFiniteCoverage}$ for valid strictly increasing moduli"
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 281, proved affirmatively: the full-covering condition implies uniform finite approximability via the Davenport–Erdős and Rogers theorems.",
+    "summary": "The formalization captures Erd\u0151s Problem 281, proved affirmatively: the full-covering condition implies uniform finite approximability via the Davenport\u2013Erd\u0151s and Rogers theorems.",
     "implications": "This result shows that infinite covering systems exhibit a compactness property: the global density-0 condition is automatically witnessed by finitely many classes, uniformly over all congruence choices.",
     "openQuestions": [
-      "What is the optimal rate of convergence of k(ε)?",
+      "What is the optimal rate of convergence of k(\u03b5)?",
       "Can the result be extended to non-congruence coverage systems?",
       "What is the quantitative dependence on the growth rate of moduli?"
     ]
@@ -140,14 +140,14 @@
   },
   "references": [
     {
-      "authors": "Paul Erdős",
+      "authors": "Paul Erd\u0151s",
       "title": "Problems and results on combinatorial number theory III",
       "year": "1980",
       "venue": "Number Theory Day",
       "note": "Original problem statement"
     },
     {
-      "authors": "Harold Davenport, Paul Erdős",
+      "authors": "Harold Davenport, Paul Erd\u0151s",
       "title": "On sequences of positive integers",
       "year": "1951",
       "venue": "Acta Arithmetica",
@@ -160,5 +160,39 @@
       "venue": "Oxford University Press",
       "note": "Contains Rogers' theorem used in the uniformization step"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-688",
+      "relationship": "related",
+      "description": "Share covering systems, number theory, and congruences themes"
+    },
+    {
+      "targetId": "erdos-687",
+      "relationship": "related",
+      "description": "Share covering systems and number theory themes"
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Share density and number theory themes"
+    },
+    {
+      "targetId": "erdos-278",
+      "relationship": "related",
+      "description": "Share density and congruences themes"
+    },
+    {
+      "targetId": "erdos-488",
+      "relationship": "related",
+      "description": "Share density and number theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-688",
+    "erdos-687",
+    "erdos-10",
+    "erdos-278",
+    "erdos-488"
   ]
 }

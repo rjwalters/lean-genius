@@ -1,10 +1,10 @@
 {
   "id": "erdos-136",
-  "title": "Erdős Problem #136: The Erdős-Gyárfás Function f(n,4,5)",
+  "title": "Erd\u0151s Problem #136: The Erd\u0151s-Gy\u00e1rf\u00e1s Function f(n,4,5)",
   "slug": "erdos-136",
-  "description": "Minimum colors to edge-color Kₙ so every K₄ has ≥5 colors among its 6 edges. Answer: f(n) ~ (5/6)n. Erdős-Gyárfás bounds: (5/6)(n-1) < f(n) < n. Resolved by Bennett et al. (2022).",
+  "description": "Minimum colors to edge-color K\u2099 so every K\u2084 has \u22655 colors among its 6 edges. Answer: f(n) ~ (5/6)n. Erd\u0151s-Gy\u00e1rf\u00e1s bounds: (5/6)(n-1) < f(n) < n. Resolved by Bennett et al. (2022).",
   "meta": {
-    "author": "Erdős-Gyárfás (original), Bennett-Cushman-Dudek-Pralat (2022), Joos-Mubayi (2022)",
+    "author": "Erd\u0151s-Gy\u00e1rf\u00e1s (original), Bennett-Cushman-Dudek-Pralat (2022), Joos-Mubayi (2022)",
     "sourceUrl": "https://erdosproblems.com/136",
     "date": "2022",
     "status": "axiomatized",
@@ -49,9 +49,9 @@
       "EdgeColoring, isValidColoring, colorsInK4 definitions",
       "hasAtLeast5ColorsInEveryK4 constraint predicate",
       "f(n) via Nat.find with f_exists axiom",
-      "Erdős-Gyárfás bounds axioms",
-      "bcdp_asymptotic: f(n)/n → 5/6",
-      "AsymptoticResult ε-δ formulation",
+      "Erd\u0151s-Gy\u00e1rf\u00e1s bounds axioms",
+      "bcdp_asymptotic: f(n)/n \u2192 5/6",
+      "AsymptoticResult \u03b5-\u03b4 formulation",
       "why_five_sixths and k4_edges proved theorems",
       "erdos_136 summary combining asymptotic and bounds"
     ],
@@ -61,16 +61,16 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Gyárfás introduced the function f(n,p,q), defined as the minimum number of colors needed to edge-color the complete graph Kₙ so that every Kₚ subgraph contains at least q distinct colors. For the specific case f(n,4,5), they proved the bounds (5/6)(n-1) < f(n) < n and computed f(9) = 8.\n\nThe problem remained open for 25 years until Bennett, Cushman, Dudek, and Pralat (2022) proved that f(n) ~ (5/6)n, confirming Erdős's intuition that the lower bound is asymptotically tight. Joos and Mubayi independently found a shorter proof using connections to hypergraph matching theory.\n\nThe constant 5/6 arises naturally from the structure of K₄: it has C(4,2) = 6 edges, and requiring at least 5 colors means at most one repeated color is allowed. The fraction 5/6 = 1 - 1/6 reflects this single 'defect' tolerance per K₄ subgraph.",
-    "problemStatement": "Let f(n) be the smallest number of colors needed to color edges of Kₙ such that every K₄ contains at least 5 different colors. Determine f(n).",
-    "text": "Minimum colors to edge-color Kₙ so every K₄ has ≥5 colors among its 6 edges. Answer: f(n) ~ (5/6)n. Erdős-Gyárfás bounds: (5/6)(n-1) < f(n) < n. Resolved by Bennett et al. (2022).",
-    "proofStrategy": "The formalization defines edge colorings, the K₄ constraint, and f(n) as the minimum via Nat.find. Erdős-Gyárfás bounds are axiomatized, along with the 2022 asymptotic resolution f(n)/n → 5/6. The summary theorem proves the conjunction of the asymptotic limit and both original bounds.",
+    "historicalContext": "Erd\u0151s and Gy\u00e1rf\u00e1s introduced the function f(n,p,q), defined as the minimum number of colors needed to edge-color the complete graph K\u2099 so that every K\u209a subgraph contains at least q distinct colors. For the specific case f(n,4,5), they proved the bounds (5/6)(n-1) < f(n) < n and computed f(9) = 8.\n\nThe problem remained open for 25 years until Bennett, Cushman, Dudek, and Pralat (2022) proved that f(n) ~ (5/6)n, confirming Erd\u0151s's intuition that the lower bound is asymptotically tight. Joos and Mubayi independently found a shorter proof using connections to hypergraph matching theory.\n\nThe constant 5/6 arises naturally from the structure of K\u2084: it has C(4,2) = 6 edges, and requiring at least 5 colors means at most one repeated color is allowed. The fraction 5/6 = 1 - 1/6 reflects this single 'defect' tolerance per K\u2084 subgraph.",
+    "problemStatement": "Let f(n) be the smallest number of colors needed to color edges of K\u2099 such that every K\u2084 contains at least 5 different colors. Determine f(n).",
+    "text": "Minimum colors to edge-color K\u2099 so every K\u2084 has \u22655 colors among its 6 edges. Answer: f(n) ~ (5/6)n. Erd\u0151s-Gy\u00e1rf\u00e1s bounds: (5/6)(n-1) < f(n) < n. Resolved by Bennett et al. (2022).",
+    "proofStrategy": "The formalization defines edge colorings, the K\u2084 constraint, and f(n) as the minimum via Nat.find. Erd\u0151s-Gy\u00e1rf\u00e1s bounds are axiomatized, along with the 2022 asymptotic resolution f(n)/n \u2192 5/6. The summary theorem proves the conjunction of the asymptotic limit and both original bounds.",
     "keyInsights": [
-      "K₄ has C(4,2) = 6 edges, requiring ≥5 colors means at most 1 repeated color",
+      "K\u2084 has C(4,2) = 6 edges, requiring \u22655 colors means at most 1 repeated color",
       "The fraction 5/6 naturally arises as 1 - 1/6 (one 'defect' allowed)",
-      "Erdős-Gyárfás bounds: (5/6)(n-1) < f(n) < n",
-      "Bennett et al. and Joos-Mubayi proved f(n) ~ (5/6)n — the lower bound is tight",
-      "The ε-δ formalization of f(n)/n → 5/6 makes the asymptotic result precise: for any ε > 0, eventually |f(n)/n - 5/6| < ε — bridging informal 'asymptotically' language to a machine-checkable statement"
+      "Erd\u0151s-Gy\u00e1rf\u00e1s bounds: (5/6)(n-1) < f(n) < n",
+      "Bennett et al. and Joos-Mubayi proved f(n) ~ (5/6)n \u2014 the lower bound is tight",
+      "The \u03b5-\u03b4 formalization of f(n)/n \u2192 5/6 makes the asymptotic result precise: for any \u03b5 > 0, eventually |f(n)/n - 5/6| < \u03b5 \u2014 bridging informal 'asymptotically' language to a machine-checkable statement"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -87,7 +87,7 @@
     },
     {
       "id": "erdos-gyarfas-function",
-      "title": "The Erdős-Gyárfás Function",
+      "title": "The Erd\u0151s-Gy\u00e1rf\u00e1s Function",
       "startLine": 86,
       "endLine": 95,
       "summary": "f_exists axiom and f(n) definition via Nat.find"
@@ -97,7 +97,7 @@
       "title": "Original Bounds",
       "startLine": 97,
       "endLine": 119,
-      "summary": "Erdős-Gyárfás bounds and f(9) = 8"
+      "summary": "Erd\u0151s-Gy\u00e1rf\u00e1s bounds and f(9) = 8"
     },
     {
       "id": "asymptotic-solution",
@@ -129,7 +129,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #136 is SOLVED. The Erdős-Gyárfás function f(n,4,5) satisfies f(n) ~ (5/6)n, confirming Erdős's intuition that the lower bound is tight. The constant 5/6 reflects that K₄ has 6 edges and we require 5 colors.",
+    "summary": "Erd\u0151s Problem #136 is SOLVED. The Erd\u0151s-Gy\u00e1rf\u00e1s function f(n,4,5) satisfies f(n) ~ (5/6)n, confirming Erd\u0151s's intuition that the lower bound is tight. The constant 5/6 reflects that K\u2084 has 6 edges and we require 5 colors.",
     "implications": "This result settles a fundamental question in Ramsey-type graph coloring. The techniques developed connect graph coloring to hypergraph matchings.",
     "openQuestions": [
       "What is the exact second-order term in f(n) = (5/6)n + o(n)?",
@@ -152,5 +152,39 @@
     "axiomCount": 8,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-191",
+      "relationship": "related",
+      "description": "Share graph-coloring and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-553",
+      "relationship": "related",
+      "description": "Share graph-coloring and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-556",
+      "relationship": "related",
+      "description": "Share graph-coloring and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-609",
+      "relationship": "related",
+      "description": "Share graph-coloring and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-778",
+      "relationship": "related",
+      "description": "Share graph-coloring and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-191",
+    "erdos-553",
+    "erdos-556",
+    "erdos-609",
+    "erdos-778"
+  ]
 }

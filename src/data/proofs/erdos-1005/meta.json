@@ -1,8 +1,8 @@
 {
   "id": "erdos-1005",
-  "title": "Erdős Problem #1005: Farey Fractions and Similar Ordering",
+  "title": "Erd\u0151s Problem #1005: Farey Fractions and Similar Ordering",
   "slug": "erdos-1005",
-  "description": "Let f(n) be the longest run of consecutive similarly ordered Farey fractions of order n. Estimate f(n) - is there c > 0 with f(n) = (c + o(1))n? Known: (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1).",
+  "description": "Let f(n) be the longest run of consecutive similarly ordered Farey fractions of order n. Estimate f(n) - is there c > 0 with f(n) = (c + o(1))n? Known: (1/12 - o(1))n \u2264 f(n) \u2264 n/4 + O(1).",
   "meta": {
     "author": "van Doorn (2025)",
     "sourceUrl": "https://erdosproblems.com/1005",
@@ -27,15 +27,15 @@
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "The Farey sequence $F_n$ — the set of reduced fractions $a/b$ with $0 \\leq a \\leq b \\leq n$ arranged in increasing order — has been studied since the early 19th century (independently by Haros in 1802 and Farey in 1816). Cauchy gave the first proof that adjacent Farey fractions $a/b, c/d$ satisfy $|ad - bc| = 1$, a property connecting them to the modular group $SL_2(\\mathbb{Z})$ and continued fractions. In 1942, Mayer observed that consecutive Farey fractions tend to be 'similarly ordered' — meaning their numerators and denominators move in the same direction, i.e., $(a_k - a_l)(b_k - b_l) \\geq 0$ — and proved that the longest such run $f(n) \\to \\infty$. Erdős (1943) strengthened this to $f(n) \\gg n$, establishing linear growth. For over 80 years, no explicit constants were known. van Doorn (2025) finally established $(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$, with the upper bound using the determinant property of adjacent Farey fractions and the lower bound via explicit constructions. van Doorn conjectures $f(n)/n \\to 1/4$, but the factor-of-3 gap between the bounds remains a significant challenge. The problem connects to Stern-Brocot trees, lattice point geometry, and longest chain problems in partial orders.",
+    "historicalContext": "The Farey sequence $F_n$ \u2014 the set of reduced fractions $a/b$ with $0 \\leq a \\leq b \\leq n$ arranged in increasing order \u2014 has been studied since the early 19th century (independently by Haros in 1802 and Farey in 1816). Cauchy gave the first proof that adjacent Farey fractions $a/b, c/d$ satisfy $|ad - bc| = 1$, a property connecting them to the modular group $SL_2(\\mathbb{Z})$ and continued fractions. In 1942, Mayer observed that consecutive Farey fractions tend to be 'similarly ordered' \u2014 meaning their numerators and denominators move in the same direction, i.e., $(a_k - a_l)(b_k - b_l) \\geq 0$ \u2014 and proved that the longest such run $f(n) \\to \\infty$. Erd\u0151s (1943) strengthened this to $f(n) \\gg n$, establishing linear growth. For over 80 years, no explicit constants were known. van Doorn (2025) finally established $(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$, with the upper bound using the determinant property of adjacent Farey fractions and the lower bound via explicit constructions. van Doorn conjectures $f(n)/n \\to 1/4$, but the factor-of-3 gap between the bounds remains a significant challenge. The problem connects to Stern-Brocot trees, lattice point geometry, and longest chain problems in partial orders.",
     "problemStatement": "**Problem Statement**\n\nLet $a_1/b_1, a_2/b_2, \\ldots$ be the Farey fractions of order $n \\geq 4$ in increasing order.\n\nTwo fractions $a_k/b_k$ and $a_l/b_l$ are **similarly ordered** if:\n$$(a_k - a_l)(b_k - b_l) \\geq 0$$\n\nLet $f(n)$ = largest $k$ such that some run of $k$ consecutive Farey fractions are pairwise similarly ordered.\n\n**Question**: Estimate $f(n)$. Is there a constant $c > 0$ such that:\n$$f(n) = (c + o(1))n$$\n\n**Status**: OPEN\n\n**Best Known**: $(1/12 - o(1))n \\leq f(n) \\leq n/4 + O(1)$ (van Doorn 2025)",
-    "text": "Let f(n) be the longest run of consecutive similarly ordered Farey fractions of order n. Estimate f(n) - is there c > 0 with f(n) = (c + o(1))n? Known: (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1).",
-    "proofStrategy": "The formalization models Farey fractions as a structure with `num`, `denom`, coprimality, and ordering constraints. The similarly ordered relation is defined as a disjunction of coordinate-wise inequalities on $\\mathbb{Z}$, and proved symmetric and reflexive (but notably *not* transitive, which is the source of the problem's difficulty). The key definitions are `isSimOrdered` (a pairwise property over a consecutive run) and `mayerErdosF` (the supremum of run lengths). Historical results are axiomatized: Mayer (1942, $f(n) \\to \\infty$), Erdős (1943, $f(n) \\geq cn$), and van Doorn (2025, explicit bounds). The open conjecture `hasAsymptoticConstant` and the specific conjecture $c = 1/4$ are stated as `def`s producing `Prop`. The geometric interpretation theorem `similarlyOrdered_iff_monotone` characterizes the relation as comparability in the product order on $\\mathbb{Z}^2$. Two verified computations quantify the 3:1 gap between bounds.",
+    "text": "Let f(n) be the longest run of consecutive similarly ordered Farey fractions of order n. Estimate f(n) - is there c > 0 with f(n) = (c + o(1))n? Known: (1/12 - o(1))n \u2264 f(n) \u2264 n/4 + O(1).",
+    "proofStrategy": "The formalization models Farey fractions as a structure with `num`, `denom`, coprimality, and ordering constraints. The similarly ordered relation is defined as a disjunction of coordinate-wise inequalities on $\\mathbb{Z}$, and proved symmetric and reflexive (but notably *not* transitive, which is the source of the problem's difficulty). The key definitions are `isSimOrdered` (a pairwise property over a consecutive run) and `mayerErdosF` (the supremum of run lengths). Historical results are axiomatized: Mayer (1942, $f(n) \\to \\infty$), Erd\u0151s (1943, $f(n) \\geq cn$), and van Doorn (2025, explicit bounds). The open conjecture `hasAsymptoticConstant` and the specific conjecture $c = 1/4$ are stated as `def`s producing `Prop`. The geometric interpretation theorem `similarlyOrdered_iff_monotone` characterizes the relation as comparability in the product order on $\\mathbb{Z}^2$. Two verified computations quantify the 3:1 gap between bounds.",
     "keyInsights": [
-      "**Non-transitivity is the key difficulty**: The similarly ordered relation is symmetric and reflexive but *not* transitive — $(a_k - a_l)(b_k - b_l) \\geq 0$ for pairs $(k,l)$ and $(l,m)$ does not imply it for $(k,m)$. This forces the pairwise condition and makes long runs structurally constrained",
-      "**Product order characterization**: Similarly ordered fractions correspond to comparable pairs in the product order on $\\mathbb{Z}^2$: $(a,b) \\leq_{\\text{prod}} (c,d) \\vee (a,b) \\geq_{\\text{prod}} (c,d)$. A pairwise similarly ordered run is thus a chain in this partial order, connecting to Dilworth's theorem and the Erdős–Szekeres theorem on monotone subsequences",
+      "**Non-transitivity is the key difficulty**: The similarly ordered relation is symmetric and reflexive but *not* transitive \u2014 $(a_k - a_l)(b_k - b_l) \\geq 0$ for pairs $(k,l)$ and $(l,m)$ does not imply it for $(k,m)$. This forces the pairwise condition and makes long runs structurally constrained",
+      "**Product order characterization**: Similarly ordered fractions correspond to comparable pairs in the product order on $\\mathbb{Z}^2$: $(a,b) \\leq_{\\text{prod}} (c,d) \\vee (a,b) \\geq_{\\text{prod}} (c,d)$. A pairwise similarly ordered run is thus a chain in this partial order, connecting to Dilworth's theorem and the Erd\u0151s\u2013Szekeres theorem on monotone subsequences",
       "**Determinant obstruction**: Adjacent Farey fractions satisfy $|ad - bc| = 1$, a $GL_2(\\mathbb{Z})$ condition that severely constrains the geometry of consecutive fractions. van Doorn's $n/4$ upper bound exploits this rigidity: the determinant condition forces eventual violations of the pairwise comparability condition",
-      "**Euler totient connection**: The Farey sequence $F_n$ has $|F_n| \\sim 3n^2/\\pi^2$ elements via $\\sum_{k=1}^{n} \\varphi(k)$, so $f(n) \\sim cn$ means similarly ordered runs comprise $\\sim c\\pi^2/(3n)$ fraction of all elements — a vanishing but linearly-scaling proportion",
+      "**Euler totient connection**: The Farey sequence $F_n$ has $|F_n| \\sim 3n^2/\\pi^2$ elements via $\\sum_{k=1}^{n} \\varphi(k)$, so $f(n) \\sim cn$ means similarly ordered runs comprise $\\sim c\\pi^2/(3n)$ fraction of all elements \u2014 a vanishing but linearly-scaling proportion",
       "**Mediant insertion mechanism**: $F_{n+1}$ is obtained from $F_n$ by inserting mediants $(a+c)/(b+d)$ between adjacent fractions $a/b, c/d$ when $b+d = n+1$. Understanding how mediant insertion affects similarly ordered runs is central to closing the gap between $1/12$ and $1/4$"
     ],
     "prerequisites": [
@@ -50,7 +50,7 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 1,
-      "summary": "File documentation for Erdős Problem 1005 (OPEN) with van Doorn's bounds, followed by Mathlib imports for `Rat.Defs`, `Finset`, `NumberTheory.Divisors`, `Real.Basic`, and tactics. Opens `Finset` and enters the `Erdos1005` namespace."
+      "summary": "File documentation for Erd\u0151s Problem 1005 (OPEN) with van Doorn's bounds, followed by Mathlib imports for `Rat.Defs`, `Finset`, `NumberTheory.Divisors`, `Real.Basic`, and tactics. Opens `Finset` and enters the `Erdos1005` namespace."
     },
     {
       "id": "farey-fractions",
@@ -78,14 +78,14 @@
       "title": "The Function $f(n)$",
       "startLine": 98,
       "endLine": 1,
-      "summary": "Defines `mayerErdosF` as the supremum of $\\{k : \\exists i,\\ \\text{isSimOrdered}(n, i, k)\\}$ — the longest run of consecutive pairwise similarly ordered Farey fractions in $F_n$."
+      "summary": "Defines `mayerErdosF` as the supremum of $\\{k : \\exists i,\\ \\text{isSimOrdered}(n, i, k)\\}$ \u2014 the longest run of consecutive pairwise similarly ordered Farey fractions in $F_n$."
     },
     {
       "id": "historical",
-      "title": "Historical Results: Mayer (1942) and Erdős (1943)",
+      "title": "Historical Results: Mayer (1942) and Erd\u0151s (1943)",
       "startLine": 109,
       "endLine": 1,
-      "summary": "Axiomatizes Mayer's theorem ($f(n) \\to \\infty$ via `Filter.Tendsto`) and Erdős's 1943 linear lower bound ($\\exists c > 0,\\ f(n) \\geq cn$)."
+      "summary": "Axiomatizes Mayer's theorem ($f(n) \\to \\infty$ via `Filter.Tendsto`) and Erd\u0151s's 1943 linear lower bound ($\\exists c > 0,\\ f(n) \\geq cn$)."
     },
     {
       "id": "van-doorn",
@@ -106,7 +106,7 @@
       "title": "Mediant and Farey Adjacent Property",
       "startLine": 162,
       "endLine": 1,
-      "summary": "Defines `mediant` of two Farey fractions as $(a+c)/(b+d)$ and axiomatizes the $|ad - bc| = 1$ determinant property for adjacent fractions — the key structural constraint underlying van Doorn's upper bound."
+      "summary": "Defines `mediant` of two Farey fractions as $(a+c)/(b+d)$ and axiomatizes the $|ad - bc| = 1$ determinant property for adjacent fractions \u2014 the key structural constraint underlying van Doorn's upper bound."
     },
     {
       "id": "geometric",
@@ -124,40 +124,46 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full state of Erdős Problem 1005: the Farey fraction framework, the similarly ordered relation (proved symmetric and reflexive, crucially non-transitive), the Mayer–Erdős function $f(n)$, historical results from Mayer (1942) through van Doorn (2025), the open conjecture on the asymptotic constant, the geometric interpretation via product order on $\\mathbb{Z}^2$, and the mediant/determinant structure underlying the bounds. The 3:1 gap between the lower bound $1/12$ and upper bound $1/4$ remains the key open challenge.",
+    "summary": "This formalization captures the full state of Erd\u0151s Problem 1005: the Farey fraction framework, the similarly ordered relation (proved symmetric and reflexive, crucially non-transitive), the Mayer\u2013Erd\u0151s function $f(n)$, historical results from Mayer (1942) through van Doorn (2025), the open conjecture on the asymptotic constant, the geometric interpretation via product order on $\\mathbb{Z}^2$, and the mediant/determinant structure underlying the bounds. The 3:1 gap between the lower bound $1/12$ and upper bound $1/4$ remains the key open challenge.",
     "implications": "**Theoretical Significance**: Resolution would reveal deep structure in how Farey fractions are organized beyond their classical ordering.\n\nThe product order characterization connects to Dilworth's theorem and Ramsey theory, while the $GL_2(\\mathbb{Z})$ determinant property ties to the modular group and hyperbolic geometry. Understanding the asymptotic constant $c$ would also illuminate the balance between local order (the mediant insertion mechanism that builds $F_{n+1}$ from $F_n$) and global disorder (the non-transitivity that eventually breaks long runs).",
     "openQuestions": [
       "Is $c = 1/4$ the correct asymptotic constant, as van Doorn conjectures? This would require improving the lower bound by a factor of 3, likely through more sophisticated explicit constructions of similarly ordered runs.",
       "Can the lower bound $1/12$ be improved using the mediant insertion structure of Farey sequences? The current construction does not fully exploit how $F_{n+1}$ is built from $F_n$.",
       "What is the structure of maximal similarly ordered runs? Are they concentrated near specific parts of the Farey sequence (e.g., near $0$, $1/2$, or $1$), or are they distributed throughout?",
       "Does the answer change if one considers *consecutive* similarly ordered (adjacent pairs only) rather than *pairwise* similarly ordered runs? The non-transitivity gap could make these differ significantly.",
-      "Is there a connection to the theory of longest increasing subsequences and the Tracy–Widom distribution, given the lattice point characterization of similarly ordered fractions?"
+      "Is there a connection to the theory of longest increasing subsequences and the Tracy\u2013Widom distribution, given the lattice point characterization of similarly ordered fractions?"
     ]
   },
   "crossReferences": [
     {
-      "target": "euler-totient",
-      "relationship": "The Farey sequence $F_n$ has cardinality $1 + \\sum_{k=1}^{n} \\varphi(k) \\sim 3n^2/\\pi^2$, so Euler's totient function directly governs the density of Farey fractions and the proportion that any similarly ordered run can occupy."
+      "relationship": "related",
+      "targetId": "euler-totient",
+      "description": "The Farey sequence $F_n$ has cardinality $1 + \\sum_{k=1}^{n} \\varphi(k) \\sim 3n^2/\\pi^2$, so Euler's totient function directly governs the density of Farey fractions and the proportion that any similarly ordered run can occupy."
     },
     {
-      "target": "erdos-1003",
-      "relationship": "Erdős Problem 1003 concerns Farey fractions and their distribution, making it a close companion to Problem 1005 within Erdős's broader program on the structure and spacing of rational approximations."
+      "relationship": "related",
+      "targetId": "erdos-1003",
+      "description": "Erd\u0151s Problem 1003 concerns Farey fractions and their distribution, making it a close companion to Problem 1005 within Erd\u0151s's broader program on the structure and spacing of rational approximations."
     },
     {
-      "target": "erdos-1004",
-      "relationship": "Erdős Problem 1004 addresses consecutive Farey fraction differences, directly adjacent in Erdős's sequence to Problem 1005 and sharing the combinatorial analysis of runs within the Farey sequence."
+      "relationship": "related",
+      "targetId": "erdos-1004",
+      "description": "Erd\u0151s Problem 1004 addresses consecutive Farey fraction differences, directly adjacent in Erd\u0151s's sequence to Problem 1005 and sharing the combinatorial analysis of runs within the Farey sequence."
     },
     {
-      "target": "fundamental-arithmetic",
-      "relationship": "Coprimality of numerator and denominator is the defining constraint of a Farey fraction; the fundamental theorem of arithmetic underpins the unique reduced-fraction representation on which the Farey sequence is built."
+      "relationship": "related",
+      "targetId": "fundamental-arithmetic",
+      "description": "Coprimality of numerator and denominator is the defining constraint of a Farey fraction; the fundamental theorem of arithmetic underpins the unique reduced-fraction representation on which the Farey sequence is built."
     },
     {
-      "target": "infinitude-primes",
-      "relationship": "The $3n^2/\\pi^2$ asymptotic for $|F_n|$ depends on the distribution of $\\varphi(k)$, which in turn relies on the infinitude and distribution of primes — a foundational number-theoretic fact connecting Farey density to prime structure."
+      "relationship": "related",
+      "targetId": "infinitude-primes",
+      "description": "The $3n^2/\\pi^2$ asymptotic for $|F_n|$ depends on the distribution of $\\varphi(k)$, which in turn relies on the infinitude and distribution of primes \u2014 a foundational number-theoretic fact connecting Farey density to prime structure."
     },
     {
-      "target": "erdos-1",
-      "relationship": "Erdős Problem 1 is emblematic of Erdős's combinatorial number theory and uses probabilistic/extremal arguments that are methodologically analogous to the linear-growth result $f(n) \\gg n$ Erdős proved in 1943 for Farey runs."
+      "relationship": "related",
+      "targetId": "erdos-1",
+      "description": "Erd\u0151s Problem 1 is emblematic of Erd\u0151s's combinatorial number theory and uses probabilistic/extremal arguments that are methodologically analogous to the linear-growth result $f(n) \\gg n$ Erd\u0151s proved in 1943 for Farey runs."
     }
   ],
   "relatedProofs": [
@@ -167,7 +173,7 @@
     },
     {
       "target": "erdos-1003",
-      "description": "Companion Erdős problem on Farey fractions; shares the Farey sequence framework and van Doorn's 2025 bounds paper as a primary source."
+      "description": "Companion Erd\u0151s problem on Farey fractions; shares the Farey sequence framework and van Doorn's 2025 bounds paper as a primary source."
     },
     {
       "target": "fundamental-arithmetic",
@@ -175,7 +181,7 @@
     },
     {
       "target": "erdos-1049",
-      "description": "Another problem in Erdős's sequence touching on asymptotic combinatorics; shares the challenge of establishing tight constant factors in $\\Theta(n)$ estimates."
+      "description": "Another problem in Erd\u0151s's sequence touching on asymptotic combinatorics; shares the challenge of establishing tight constant factors in $\\Theta(n)$ estimates."
     }
   ],
   "references": [
@@ -190,13 +196,13 @@
     },
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "A note on Farey series",
       "year": 1943,
       "venue": "Quarterly Journal of Mathematics",
       "volume": "14",
-      "pages": "82–85",
+      "pages": "82\u201385",
       "notes": "Proves the first linear lower bound $f(n) \\geq cn$ for some constant $c > 0$, establishing that the longest similarly ordered run grows linearly in $n$."
     },
     {
@@ -208,7 +214,7 @@
       "year": 1979,
       "venue": "Oxford University Press",
       "edition": "5th",
-      "notes": "Chapter 3 covers Farey sequences, the mediant property, and the determinant condition $|ad - bc| = 1$ for adjacent Farey fractions — the structural constraint underlying van Doorn's upper bound."
+      "notes": "Chapter 3 covers Farey sequences, the mediant property, and the determinant condition $|ad - bc| = 1$ for adjacent Farey fractions \u2014 the structural constraint underlying van Doorn's upper bound."
     },
     {
       "authors": [
@@ -219,7 +225,7 @@
       "year": 1988,
       "venue": "Journal of the London Mathematical Society",
       "volume": "38",
-      "pages": "1–22",
+      "pages": "1\u201322",
       "notes": "Asymptotic analysis of $\\sum_{k \\leq n} \\varphi(k) \\sim 3n^2/\\pi^2$ used to determine the density of Farey fractions and interpret $f(n)/n$ as a proportion of $F_n$."
     },
     {

@@ -1,10 +1,10 @@
 {
   "id": "erdos-311",
-  "title": "Erdős Problem #311: Minimal Deviation of Unit Fraction Sums from 1",
+  "title": "Erd\u0151s Problem #311: Minimal Deviation of Unit Fraction Sums from 1",
   "slug": "erdos-311",
-  "description": "Is δ(N) = e^{-(c+o(1))N} for c ∈ (0,1), where δ(N) is the minimal nonzero |1 - Σ 1/n| over A ⊆ {1,...,N}? Lower: e^{-(1+o(1))N}. Upper: exp(-cN/(log N log log N)³) (Tang). Open.",
+  "description": "Is \u03b4(N) = e^{-(c+o(1))N} for c \u2208 (0,1), where \u03b4(N) is the minimal nonzero |1 - \u03a3 1/n| over A \u2286 {1,...,N}? Lower: e^{-(1+o(1))N}. Upper: exp(-cN/(log N log log N)\u00b3) (Tang). Open.",
   "meta": {
-    "author": "Erdős–Graham (1980, open)",
+    "author": "Erd\u0151s\u2013Graham (1980, open)",
     "sourceUrl": "https://erdosproblems.com/311",
     "date": "1980",
     "status": "axiomatized",
@@ -46,7 +46,7 @@
       "delta and delta_pos axioms",
       "delta_lower_bound axiom (lcm/PNT lower bound)",
       "tang_upper_bound axiom (subexponential upper bound)",
-      "erdos_311_conjecture axiom (ε-N₀ form)"
+      "erdos_311_conjecture axiom (\u03b5-N\u2080 form)"
     ],
     "axiomCount": 5,
     "lineCount": 61,
@@ -58,7 +58,7 @@
       "title": "Module Header and Problem Statement",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Documents Erdős Problem #311 on the maximum number of unit fractions needed when denominators are bounded by b. Known: Ω(log b) ≤ f(b) ≤ O(b^{1/3+ε}). Connected to the Erdős-Straus conjecture on 4/n representations. Imports Mathlib."
+      "summary": "Documents Erd\u0151s Problem #311 on the maximum number of unit fractions needed when denominators are bounded by b. Known: \u03a9(log b) \u2264 f(b) \u2264 O(b^{1/3+\u03b5}). Connected to the Erd\u0151s-Straus conjecture on 4/n representations. Imports Mathlib."
     },
     {
       "id": "definitions",
@@ -81,8 +81,8 @@
       "title": "Upper Bound",
       "startLine": 44,
       "endLine": 50,
-      "summary": "Tang's upper bound: $\\delta(N) \\le \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ — subexponential, far from the conjectured $e^{-cN}$.",
-      "mathContext": "$\\delta(N) \\le \\exp\\bigl(-\\frac{cN}{(\\log N \\cdot \\log\\log N)^3}\\bigr)$ for some $c > 0$ (Tang). This is subexponential — between the conjectured $e^{-cN}$ and polynomial decay."
+      "summary": "Tang's upper bound: $\\delta(N) \\le \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ \u2014 subexponential, far from the conjectured $e^{-cN}$.",
+      "mathContext": "$\\delta(N) \\le \\exp\\bigl(-\\frac{cN}{(\\log N \\cdot \\log\\log N)^3}\\bigr)$ for some $c > 0$ (Tang). This is subexponential \u2014 between the conjectured $e^{-cN}$ and polynomial decay."
     },
     {
       "id": "conjecture",
@@ -94,14 +94,14 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question connects to the ancient Egyptian tradition of representing fractions as sums of distinct unit fractions (e.g., 2/3 = 1/2 + 1/6). The function δ(N) quantifies how closely 1 can be approximated without being reached exactly. The trivial lower bound δ(N) ≥ 1/lcm(1,...,N) uses the Prime Number Theorem via the Chebyshev function ψ(N) ~ N. Tang obtained the best known upper bound using smooth number constructions, but the gap to the conjectured exponential rate remains enormous — roughly (log N)³ orders of magnitude in the exponent. Kovac proved an important equivalence: the deviation problem is equivalent to asking which integers N admit an exact representation 1 = Σ 1/nᵢ with all nᵢ ≤ N. This open problem remains one of the central questions in the theory of Egyptian fractions.",
-    "problemStatement": "Is δ(N) = e^{-(c+o(1))N} for some constant c ∈ (0,1)? That is, does the minimal nonzero deviation from 1 by unit fraction sums decay exponentially at a rate strictly between 0 and 1?",
-    "text": "Is δ(N) = e^{-(c+o(1))N} for c ∈ (0,1), where δ(N) is the minimal nonzero |1 - Σ 1/n| over A ⊆ {1,...,N}? Lower: e^{-(1+o(1))N}. Upper: exp(-cN/(log N log log N)³) (Tang). Open.",
-    "proofStrategy": "We axiomatize δ(N) and state its positivity, the lower bound from lcm, Tang's upper bound, and the full conjecture in ε-N₀ form.",
+    "historicalContext": "Erd\u0151s and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question connects to the ancient Egyptian tradition of representing fractions as sums of distinct unit fractions (e.g., 2/3 = 1/2 + 1/6). The function \u03b4(N) quantifies how closely 1 can be approximated without being reached exactly. The trivial lower bound \u03b4(N) \u2265 1/lcm(1,...,N) uses the Prime Number Theorem via the Chebyshev function \u03c8(N) ~ N. Tang obtained the best known upper bound using smooth number constructions, but the gap to the conjectured exponential rate remains enormous \u2014 roughly (log N)\u00b3 orders of magnitude in the exponent. Kovac proved an important equivalence: the deviation problem is equivalent to asking which integers N admit an exact representation 1 = \u03a3 1/n\u1d62 with all n\u1d62 \u2264 N. This open problem remains one of the central questions in the theory of Egyptian fractions.",
+    "problemStatement": "Is \u03b4(N) = e^{-(c+o(1))N} for some constant c \u2208 (0,1)? That is, does the minimal nonzero deviation from 1 by unit fraction sums decay exponentially at a rate strictly between 0 and 1?",
+    "text": "Is \u03b4(N) = e^{-(c+o(1))N} for c \u2208 (0,1), where \u03b4(N) is the minimal nonzero |1 - \u03a3 1/n| over A \u2286 {1,...,N}? Lower: e^{-(1+o(1))N}. Upper: exp(-cN/(log N log log N)\u00b3) (Tang). Open.",
+    "proofStrategy": "We axiomatize \u03b4(N) and state its positivity, the lower bound from lcm, Tang's upper bound, and the full conjecture in \u03b5-N\u2080 form.",
     "keyInsights": [
-      "The trivial lower bound δ(N) ≥ 1/lcm(1,...,N) = e^{-(1+o(1))N} comes from clearing denominators",
-      "Tang's upper bound exp(-cN/(log N log log N)³) is subexponential but far from e^{-cN}",
-      "The conjectured rate c ∈ (0,1) would place δ(N) strictly between the lcm lower bound and any polynomial decay",
+      "The trivial lower bound \u03b4(N) \u2265 1/lcm(1,...,N) = e^{-(1+o(1))N} comes from clearing denominators",
+      "Tang's upper bound exp(-cN/(log N log log N)\u00b3) is subexponential but far from e^{-cN}",
+      "The conjectured rate c \u2208 (0,1) would place \u03b4(N) strictly between the lcm lower bound and any polynomial decay",
       "Kovac showed the variant asking about subsets summing exactly to 1 is equivalent",
       "The problem connects Egyptian fractions to the prime number theorem via lcm(1,...,N) estimates"
     ],
@@ -113,25 +113,25 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #311 asks whether the minimal nonzero deviation of unit fraction sums from 1 decays as e^{-cN} for some c ∈ (0,1). The trivial lcm lower bound gives rate 1, and Tang's upper bound is subexponential, leaving a large gap.",
-    "implications": "Resolution would reveal the fine structure of unit fraction approximation to 1, connecting to the Erdős–Graham conjecture, Egyptian fractions, and the distribution of smooth numbers.",
+    "summary": "Erd\u0151s Problem #311 asks whether the minimal nonzero deviation of unit fraction sums from 1 decays as e^{-cN} for some c \u2208 (0,1). The trivial lcm lower bound gives rate 1, and Tang's upper bound is subexponential, leaving a large gap.",
+    "implications": "Resolution would reveal the fine structure of unit fraction approximation to 1, connecting to the Erd\u0151s\u2013Graham conjecture, Egyptian fractions, and the distribution of smooth numbers.",
     "openQuestions": [
-      "Is δ(N) = e^{-(c+o(1))N} for some c ∈ (0,1)?",
+      "Is \u03b4(N) = e^{-(c+o(1))N} for some c \u2208 (0,1)?",
       "What is the exact value of c if it exists?",
       "Can Tang's upper bound be improved to a true exponential exp(-cN)?",
-      "Does the extremal subset A achieving δ(N) have any structural properties?"
+      "Does the extremal subset A achieving \u03b4(N) have any structural properties?"
     ]
   },
   "crossReferences": [
     {
-      "targetProofId": "erdos-316",
       "relationship": "related-problem",
-      "description": "Both involve unit fraction sums: #311 asks about approximating 1, while #316 asks about partitioning sets with reciprocal sum < 2"
+      "description": "Both involve unit fraction sums: #311 asks about approximating 1, while #316 asks about partitioning sets with reciprocal sum < 2",
+      "targetId": "erdos-316"
     },
     {
-      "targetProofId": "prime-number-theorem",
       "relationship": "uses-result",
-      "description": "The lower bound δ(N) ≥ 1/lcm(1,...,N) uses lcm(1,...,N) = e^{ψ(N)} where ψ(N) ~ N by PNT"
+      "description": "The lower bound \u03b4(N) \u2265 1/lcm(1,...,N) uses lcm(1,...,N) = e^{\u03c8(N)} where \u03c8(N) ~ N by PNT",
+      "targetId": "prime-number-theorem"
     }
   ],
   "leanFile": {
@@ -154,15 +154,15 @@
   ],
   "references": [
     {
-      "cite": "Erdős–Graham 1980",
+      "cite": "Erd\u0151s\u2013Graham 1980",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": 1980,
-      "relevance": "Original source of the conjecture about exponential decay rate of δ(N)"
+      "relevance": "Original source of the conjecture about exponential decay rate of \u03b4(N)"
     },
     {
       "cite": "Tang",
-      "title": "Upper bound on δ(N)",
-      "relevance": "Best known upper bound: exp(-cN/(log N · log log N)³)"
+      "title": "Upper bound on \u03b4(N)",
+      "relevance": "Best known upper bound: exp(-cN/(log N \u00b7 log log N)\u00b3)"
     },
     {
       "cite": "Kovac",

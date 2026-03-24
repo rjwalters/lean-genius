@@ -1,10 +1,10 @@
 {
   "id": "erdos-793",
-  "title": "Erdős Problem #793: Primitive Sets Avoiding Product Divisibility",
+  "title": "Erd\u0151s Problem #793: Primitive Sets Avoiding Product Divisibility",
   "slug": "erdos-793",
-  "description": "Let F(n) = max size of A ⊆ {1,...,n} where a ∤ bc for distinct a,b,c ∈ A. Is F(n) = π(n) + (C+o(1))·n^{2/3}·(log n)^{-2} for some constant C? Known: bounds with different constants c₁, c₂. OPEN.",
+  "description": "Let F(n) = max size of A \u2286 {1,...,n} where a \u2224 bc for distinct a,b,c \u2208 A. Is F(n) = \u03c0(n) + (C+o(1))\u00b7n^{2/3}\u00b7(log n)^{-2} for some constant C? Known: bounds with different constants c\u2081, c\u2082. OPEN.",
   "meta": {
-    "author": "Erdős (1938)",
+    "author": "Erd\u0151s (1938)",
     "sourceUrl": "https://erdosproblems.com/793",
     "date": "1938",
     "status": "formalized",
@@ -27,16 +27,16 @@
     "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem originates from Erdős's 1938 paper 'On sequences of integers no one of which divides the product of two others', one of his earliest contributions to multiplicative number theory and extremal combinatorics. The concept of primitive sets — where no element divides another — goes back to Besicovitch (1934) and Behrend (1935), who studied their density properties. Erdős strengthened the condition: instead of just pairwise non-divisibility, he required that no element $a$ divides the product $bc$ of any two other distinct elements. In his 1969 paper 'Some applications of graph theory to number theory', Erdős introduced an elegant bipartite graph construction to prove the upper bound, pioneering the use of extremal graph theory in number-theoretic problems. The graph has small integers and large primes as vertices, with edges encoding products in the set; the divisibility condition forces this graph to be $P_3$-free (no path of length 3), hence a forest. This technique — reducing a number theory problem to a forbidden subgraph problem — became a template for many later results in combinatorial number theory, including work by Pomerance and Alon on primitive sets and their generalizations. The exact constant $C$ in the secondary term remains open, connecting to deep questions about the distribution of smooth numbers and the multiplicative structure of integers.",
+    "historicalContext": "This problem originates from Erd\u0151s's 1938 paper 'On sequences of integers no one of which divides the product of two others', one of his earliest contributions to multiplicative number theory and extremal combinatorics. The concept of primitive sets \u2014 where no element divides another \u2014 goes back to Besicovitch (1934) and Behrend (1935), who studied their density properties. Erd\u0151s strengthened the condition: instead of just pairwise non-divisibility, he required that no element $a$ divides the product $bc$ of any two other distinct elements. In his 1969 paper 'Some applications of graph theory to number theory', Erd\u0151s introduced an elegant bipartite graph construction to prove the upper bound, pioneering the use of extremal graph theory in number-theoretic problems. The graph has small integers and large primes as vertices, with edges encoding products in the set; the divisibility condition forces this graph to be $P_3$-free (no path of length 3), hence a forest. This technique \u2014 reducing a number theory problem to a forbidden subgraph problem \u2014 became a template for many later results in combinatorial number theory, including work by Pomerance and Alon on primitive sets and their generalizations. The exact constant $C$ in the secondary term remains open, connecting to deep questions about the distribution of smooth numbers and the multiplicative structure of integers.",
     "problemStatement": "Let $F(n)$ be the maximum cardinality of $A \\subseteq \\{1,\\ldots,n\\}$ such that $a \\nmid bc$ for all distinct $a, b, c \\in A$. Does there exist a constant $C$ such that $F(n) = \\pi(n) + (C + o(1)) \\cdot n^{2/3} \\cdot (\\log n)^{-2}$?",
-    "text": "Let F(n) = max size of A ⊆ {1,...,n} where a ∤ bc for distinct a,b,c ∈ A. Is F(n) = π(n) + (C+o(1))·n^{2/3}·(log n)^{-2} for some constant C? Known: bounds with different constants c₁, c₂. OPEN.",
-    "proofStrategy": "The formalization captures: (1) The divisibility condition `satisfiesCondition` requiring $a \\nmid bc$ for distinct triples. (2) The extremal function $F(n)$ as a supremum over valid sets. (3) The prime counting function $\\pi(n)$ as the dominant term. (4) A proof sketch that primes $p > n^{2/3}$ automatically satisfy the condition. (5) Erdős's bounds $\\pi(n) + c_1 n^{2/3}(\\log n)^{-2} \\leq F(n) \\leq \\pi(n) + c_2 n^{2/3}(\\log n)^{-2}$. (6) The conjecture formalized via `Filter.Tendsto` for the normalized secondary term. (7) The bipartite graph construction (`ErdosGraph`) with the $P_3$-free property. (8) Generalization to $r$-products with exponent $2/(r+1)$.",
+    "text": "Let F(n) = max size of A \u2286 {1,...,n} where a \u2224 bc for distinct a,b,c \u2208 A. Is F(n) = \u03c0(n) + (C+o(1))\u00b7n^{2/3}\u00b7(log n)^{-2} for some constant C? Known: bounds with different constants c\u2081, c\u2082. OPEN.",
+    "proofStrategy": "The formalization captures: (1) The divisibility condition `satisfiesCondition` requiring $a \\nmid bc$ for distinct triples. (2) The extremal function $F(n)$ as a supremum over valid sets. (3) The prime counting function $\\pi(n)$ as the dominant term. (4) A proof sketch that primes $p > n^{2/3}$ automatically satisfy the condition. (5) Erd\u0151s's bounds $\\pi(n) + c_1 n^{2/3}(\\log n)^{-2} \\leq F(n) \\leq \\pi(n) + c_2 n^{2/3}(\\log n)^{-2}$. (6) The conjecture formalized via `Filter.Tendsto` for the normalized secondary term. (7) The bipartite graph construction (`ErdosGraph`) with the $P_3$-free property. (8) Generalization to $r$-products with exponent $2/(r+1)$.",
     "keyInsights": [
       "**Large primes are free**: All primes $p > n^{2/3}$ satisfy the condition automatically. If $p \\mid bc$ with $b, c \\leq n$, then $p \\mid b$ or $p \\mid c$ (primality), but $b, c < p^{3/2}$ and $b, c \\neq p$ force $bc < p \\cdot n < p^2$, contradicting $p^2 \\mid bc$.",
-      "**Graph theory meets number theory**: Erdős's 1969 bipartite graph — small integers $[1, n^{2/3}]$ on one side, large primes on the other, edges encoding products in $A$ — reduces the upper bound to a graph-theoretic statement: $P_3$-free graphs are forests with $|E| < |V|$.",
+      "**Graph theory meets number theory**: Erd\u0151s's 1969 bipartite graph \u2014 small integers $[1, n^{2/3}]$ on one side, large primes on the other, edges encoding products in $A$ \u2014 reduces the upper bound to a graph-theoretic statement: $P_3$-free graphs are forests with $|E| < |V|$.",
       "**The secondary term mystery**: $F(n) - \\pi(n) = \\Theta(n^{2/3}(\\log n)^{-2})$, but the exact constant is unknown. The gap between $c_1$ and $c_2$ reflects our limited understanding of how composites and small primes interact under the product divisibility condition.",
       "**Generalization to $r$-products**: For the condition $a \\nmid b_1 \\cdots b_r$, the exponent $2/3$ generalizes to $2/(r+1)$. This is because the critical threshold shifts from $n^{2/3}$ (where a prime can divide a 2-product) to $n^{2/(r+1)}$ (where it can divide an $r$-product).",
-      "**Connection to smooth numbers**: The 'extra' elements beyond primes are numbers with specific factorization patterns — related to the count of $n^{2/3}$-smooth numbers in $[1, n]$. The $(\\log n)^{-2}$ factor reflects the density of such numbers."
+      "**Connection to smooth numbers**: The 'extra' elements beyond primes are numbers with specific factorization patterns \u2014 related to the count of $n^{2/3}$-smooth numbers in $[1, n]$. The $(\\log n)^{-2}$ factor reflects the density of such numbers."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -49,7 +49,7 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 45,
-      "summary": "Header documenting Erdős Problem #793: the product-divisibility condition on subsets of $\\{1,\\ldots,n\\}$, citing Erdős (1938) and the 1969 graph-theoretic proof. Imports Mathlib."
+      "summary": "Header documenting Erd\u0151s Problem #793: the product-divisibility condition on subsets of $\\{1,\\ldots,n\\}$, citing Erd\u0151s (1938) and the 1969 graph-theoretic proof. Imports Mathlib."
     },
     {
       "id": "condition",
@@ -74,7 +74,7 @@
     },
     {
       "id": "bounds",
-      "title": "Erdős's Known Bounds",
+      "title": "Erd\u0151s's Known Bounds",
       "startLine": 98,
       "endLine": 116,
       "summary": "Axiomatizes $\\pi(n) + c_1 n^{2/3}(\\log n)^{-2} \\leq F(n) \\leq \\pi(n) + c_2 n^{2/3}(\\log n)^{-2}$ for constants $0 < c_1 < c_2$, plus the simpler bound $F(n) \\leq \\pi(n) + n^{2/3}$."
@@ -88,7 +88,7 @@
     },
     {
       "id": "graph",
-      "title": "Erdős's Graph-Theoretic Construction",
+      "title": "Erd\u0151s's Graph-Theoretic Construction",
       "startLine": 142,
       "endLine": 165,
       "summary": "Defines `ErdosGraph` as a bipartite graph: small integers $[1, n^{2/3}]$ and large primes $(n^{2/3}, n]$ as vertices, edges $u \\sim v$ when $uv \\in A$. The $P_3$-free property implies the graph is a forest with $|E| < |V|$."
@@ -102,10 +102,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős established that $F(n) = \\pi(n) + \\Theta(n^{2/3}(\\log n)^{-2})$, but the existence and value of the exact constant $C$ in the secondary term remain open. The formalization captures both the combinatorial condition and the elegant graph-theoretic proof technique, along with the generalization to $r$-products where the exponent becomes $2/(r+1)$.",
-    "implications": "**Theoretical Significance**: This problem sits at a crossroads of number theory and extremal combinatorics. The graph-theoretic proof technique — reducing divisibility constraints to forbidden subgraph problems — has become a fundamental tool in combinatorial number theory.\n\nThe connection to smooth number counts (integers with all prime factors below a bound) links to the Dickman function $\\rho(u)$ and to sieve methods. Understanding the constant $C$ would require precise knowledge of how the multiplicative structure of integers near $n$ constrains the sets satisfying the product-divisibility condition.",
+    "summary": "Erd\u0151s established that $F(n) = \\pi(n) + \\Theta(n^{2/3}(\\log n)^{-2})$, but the existence and value of the exact constant $C$ in the secondary term remain open. The formalization captures both the combinatorial condition and the elegant graph-theoretic proof technique, along with the generalization to $r$-products where the exponent becomes $2/(r+1)$.",
+    "implications": "**Theoretical Significance**: This problem sits at a crossroads of number theory and extremal combinatorics. The graph-theoretic proof technique \u2014 reducing divisibility constraints to forbidden subgraph problems \u2014 has become a fundamental tool in combinatorial number theory.\n\nThe connection to smooth number counts (integers with all prime factors below a bound) links to the Dickman function $\\rho(u)$ and to sieve methods. Understanding the constant $C$ would require precise knowledge of how the multiplicative structure of integers near $n$ constrains the sets satisfying the product-divisibility condition.",
     "openQuestions": [
-      "Does the limit $C = \\lim_{n \\to \\infty} (F(n) - \\pi(n)) / (n^{2/3}(\\log n)^{-2})$ exist? This is the core of Erdős Problem #793.",
+      "Does the limit $C = \\lim_{n \\to \\infty} (F(n) - \\pi(n)) / (n^{2/3}(\\log n)^{-2})$ exist? This is the core of Erd\u0151s Problem #793.",
       "If $C$ exists, what is its value? Even determining whether $C > 1$ or $C < 1$ would be significant.",
       "For the generalized $r$-product problem, does $F_r(n) - \\pi(n) \\sim C_r \\cdot n^{2/(r+1)} \\cdot (\\log n)^{-2}$ for some constant $C_r$?",
       "Can the bipartite graph construction be refined to give tighter bounds on the constants $c_1$ and $c_2$?"
@@ -117,7 +117,12 @@
     "erdos-182",
     "erdos-600",
     "erdos-1009",
-    "erdos-1010"
+    "erdos-1010",
+    "erdos-892",
+    "erdos-164",
+    "divisibility-by-3",
+    "divisibility-truncation-general",
+    "erdos-1052"
   ],
   "leanFile": {
     "imports": [
@@ -132,5 +137,32 @@
     "axiomCount": 5,
     "theoremCount": 1,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-892",
+      "relationship": "related",
+      "description": "Share divisibility, number-theoretic, and primitive-sets themes"
+    },
+    {
+      "targetId": "erdos-164",
+      "relationship": "related",
+      "description": "Share number-theoretic, primitive-sets, and prime number themes"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1052",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    }
+  ]
 }

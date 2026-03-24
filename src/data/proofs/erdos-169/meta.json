@@ -1,8 +1,8 @@
 {
   "id": "erdos-169",
-  "title": "Erdős Problem #169: Harmonic Sum of AP-Free Sets",
+  "title": "Erd\u0151s Problem #169: Harmonic Sum of AP-Free Sets",
   "slug": "erdos-169",
-  "description": "For k ≥ 3, estimate f(k), the supremum of ∑ 1/n over sets lacking k-term arithmetic progressions. Is lim f(k)/log W(k) = ∞?",
+  "description": "For k \u2265 3, estimate f(k), the supremum of \u2211 1/n over sets lacking k-term arithmetic progressions. Is lim f(k)/log W(k) = \u221e?",
   "meta": {
     "author": "Open Problem",
     "sourceUrl": "https://erdosproblems.com/169",
@@ -49,10 +49,10 @@
     "assumptions": "15 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #169 connects two fundamental areas of combinatorics: the study of arithmetic-progression-free sets and the analysis of harmonic sums. The problem asks: how large can the sum of reciprocals be for a set of integers that avoids k-term arithmetic progressions?\n\nThe study of AP-free sets began with van der Waerden's theorem (1927), which guarantees that any finite coloring of integers contains arbitrarily long monochromatic APs. This led to the definition of van der Waerden numbers W(k), which grow extremely fast. Erdős's problem asks whether the harmonic sum function f(k) can grow faster than log W(k).\n\nBerlekamp (1968) gave the first lower bound f(k) ≥ (log 2 / 2)k using digit-based constructions. Gerver (1977) improved this to f(k) ≥ (1-o(1))k log k, showing superlinear growth. Recent work by Walker (2025) connected optimal AP-free sets to Kempner sets—integers defined by digit restrictions.",
+    "historicalContext": "Erd\u0151s Problem #169 connects two fundamental areas of combinatorics: the study of arithmetic-progression-free sets and the analysis of harmonic sums. The problem asks: how large can the sum of reciprocals be for a set of integers that avoids k-term arithmetic progressions?\n\nThe study of AP-free sets began with van der Waerden's theorem (1927), which guarantees that any finite coloring of integers contains arbitrarily long monochromatic APs. This led to the definition of van der Waerden numbers W(k), which grow extremely fast. Erd\u0151s's problem asks whether the harmonic sum function f(k) can grow faster than log W(k).\n\nBerlekamp (1968) gave the first lower bound f(k) \u2265 (log 2 / 2)k using digit-based constructions. Gerver (1977) improved this to f(k) \u2265 (1-o(1))k log k, showing superlinear growth. Recent work by Walker (2025) connected optimal AP-free sets to Kempner sets\u2014integers defined by digit restrictions.",
     "problemStatement": "Let $k \\geq 3$. Define $f(k) = \\sup \\left\\{ \\sum_{n \\in A} \\frac{1}{n} : A \\text{ lacks } k\\text{-term APs} \\right\\}$.\n\n**Questions:**\n1. Estimate $f(k)$.\n2. Is $\\lim_{k \\to \\infty} \\frac{f(k)}{\\log W(k)} = \\infty$, where $W(k)$ is the van der Waerden number?\n\n**Status:** OPEN\n\n**Known bounds:**\n- Berlekamp (1968): $f(k) \\geq \\frac{\\log 2}{2} \\cdot k$\n- Gerver (1977): $f(k) \\geq (1-o(1)) k \\log k$\n- Trivially: $\\frac{f(k)}{\\log W(k)} \\geq \\frac{1}{2}$\n- Computational: $f(3) \\geq 3.00849$, $f(4) \\geq 4.43975$",
-    "text": "For k ≥ 3, estimate f(k), the supremum of ∑ 1/n over sets lacking k-term arithmetic progressions. Is lim f(k)/log W(k) = ∞?",
-    "proofStrategy": "The Lean formalization defines arithmetic progressions, AP-free sets, and the function f(k) as a supremum of harmonic sums. Key results are axiomatized including Berlekamp's and Gerver's lower bounds, the trivial ratio bound, and Walker's recent characterization using Kempner sets. The problem remains open—the main question of whether f(k)/log W(k) → ∞ is unresolved.",
+    "text": "For k \u2265 3, estimate f(k), the supremum of \u2211 1/n over sets lacking k-term arithmetic progressions. Is lim f(k)/log W(k) = \u221e?",
+    "proofStrategy": "The Lean formalization defines arithmetic progressions, AP-free sets, and the function f(k) as a supremum of harmonic sums. Key results are axiomatized including Berlekamp's and Gerver's lower bounds, the trivial ratio bound, and Walker's recent characterization using Kempner sets. The problem remains open\u2014the main question of whether f(k)/log W(k) \u2192 \u221e is unresolved.",
     "keyInsights": [
       "**Harmonic sum function:** f(k) measures the maximum 'weight' of integers avoiding k-term APs, where weight is the reciprocal sum",
       "**Van der Waerden connection:** The ratio f(k)/log W(k) compares harmonic growth to the extremely fast-growing W(k)",
@@ -92,21 +92,21 @@
       "title": "Berlekamp's Lower Bound",
       "startLine": 101,
       "endLine": 122,
-      "summary": "f(k) ≥ (log 2 / 2) · k from 1968"
+      "summary": "f(k) \u2265 (log 2 / 2) \u00b7 k from 1968"
     },
     {
       "id": "gerver",
       "title": "Gerver's Improvement",
       "startLine": 124,
       "endLine": 144,
-      "summary": "f(k) ≥ (1-o(1)) k log k from 1977"
+      "summary": "f(k) \u2265 (1-o(1)) k log k from 1977"
     },
     {
       "id": "ratio-question",
       "title": "The Ratio Question",
       "startLine": 146,
       "endLine": 164,
-      "summary": "Whether f(k)/log W(k) → ∞ remains open"
+      "summary": "Whether f(k)/log W(k) \u2192 \u221e remains open"
     },
     {
       "id": "computational-records",
@@ -131,10 +131,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #169 remains open. We know f(k) ≥ (1-o(1))k log k (Gerver) and f(k)/log W(k) ≥ 1/2, but whether this ratio tends to infinity is unknown.",
-    "implications": "Resolving this problem would reveal deep connections between additive combinatorics and harmonic analysis, potentially impacting our understanding of Szemerédi-type theorems.",
+    "summary": "Erd\u0151s Problem #169 remains open. We know f(k) \u2265 (1-o(1))k log k (Gerver) and f(k)/log W(k) \u2265 1/2, but whether this ratio tends to infinity is unknown.",
+    "implications": "Resolving this problem would reveal deep connections between additive combinatorics and harmonic analysis, potentially impacting our understanding of Szemer\u00e9di-type theorems.",
     "openQuestions": [
-      "Is lim f(k)/log W(k) = ∞?",
+      "Is lim f(k)/log W(k) = \u221e?",
       "Can the constant 1/2 in the ratio bound be improved?",
       "What is the exact growth rate of f(k)?",
       "Is there a closed-form expression or better asymptotic for f(k)?"
@@ -157,5 +157,39 @@
     "axiomCount": 15,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Share van-der-waerden, arithmetic progression, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-187",
+      "relationship": "related",
+      "description": "Share van-der-waerden, arithmetic progression, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Share van-der-waerden, arithmetic progression, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-984",
+      "relationship": "related",
+      "description": "Share van-der-waerden, arithmetic progression, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Share van-der-waerden and arithmetic progression themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-160",
+    "erdos-187",
+    "erdos-721",
+    "erdos-984",
+    "erdos-138"
+  ]
 }

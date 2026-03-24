@@ -56,15 +56,15 @@
     "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Ramsey's theorem was proved by Frank Plumpton Ramsey in 1930, just before his untimely death at age 26. The theorem appeared in his paper 'On a Problem of Formal Logic' where he was investigating decision procedures for first-order logic.\n\nThe result spawned an entire branch of combinatorics now called Ramsey theory, which studies the emergence of order in sufficiently large structures. The guiding principle is that complete disorder is impossible—given enough elements, some regular pattern must appear.\n\nThe most famous special case is the 'party problem': at any party of 6 people, either 3 mutually know each other or 3 are mutual strangers. This corresponds to R(3,3) = 6.",
+    "historicalContext": "Ramsey's theorem was proved by Frank Plumpton Ramsey in 1930, just before his untimely death at age 26. The theorem appeared in his paper 'On a Problem of Formal Logic' where he was investigating decision procedures for first-order logic.\n\nThe result spawned an entire branch of combinatorics now called Ramsey theory, which studies the emergence of order in sufficiently large structures. The guiding principle is that complete disorder is impossible\u2014given enough elements, some regular pattern must appear.\n\nThe most famous special case is the 'party problem': at any party of 6 people, either 3 mutually know each other or 3 are mutual strangers. This corresponds to R(3,3) = 6.",
     "problemStatement": "Theorem (Ramsey, 1930): For any positive integers r and s, there exists a positive integer R(r,s) such that any 2-coloring of the edges of the complete graph K_{R(r,s)} contains either:\n- A red clique of size r (r vertices all pairwise connected by red edges), or\n- A blue clique of size s (s vertices all pairwise connected by blue edges)\n\nThe smallest such R(r,s) is called the Ramsey number.",
     "text": "Frank Ramsey's foundational theorem in combinatorics: for any 2-coloring of the complete graph K_n with sufficiently large n, there exists a monochromatic clique.",
-    "proofStrategy": "The proof uses strong induction on r + s with the key recurrence:\n\nR(r,s) ≤ R(r-1,s) + R(r,s-1)\n\n1. Base cases: R(1,s) = R(r,1) = 1 (any single vertex forms a trivial clique)\n\n2. Inductive step for R(r,s):\n   - Assume we have R(r-1,s) and R(r,s-1) from the induction hypothesis\n   - Set n = R(r-1,s) + R(r,s-1)\n   - Pick any vertex v in K_n\n   - Partition remaining n-1 vertices by edge color to v:\n     * N_red = vertices connected to v by red edges\n     * N_blue = vertices connected to v by blue edges\n   - By pigeonhole: |N_red| ≥ R(r-1,s) or |N_blue| ≥ R(r,s-1)\n   - Case 1: If |N_red| ≥ R(r-1,s), find a red (r-1)-clique or blue s-clique in N_red\n     * Red (r-1)-clique extends with v to red r-clique\n     * Blue s-clique is already our answer\n   - Case 2: Symmetric argument with blue neighborhood\n\n3. The bound R(r,s) ≤ C(r+s-2, r-1) follows from Pascal's identity",
+    "proofStrategy": "The proof uses strong induction on r + s with the key recurrence:\n\nR(r,s) \u2264 R(r-1,s) + R(r,s-1)\n\n1. Base cases: R(1,s) = R(r,1) = 1 (any single vertex forms a trivial clique)\n\n2. Inductive step for R(r,s):\n   - Assume we have R(r-1,s) and R(r,s-1) from the induction hypothesis\n   - Set n = R(r-1,s) + R(r,s-1)\n   - Pick any vertex v in K_n\n   - Partition remaining n-1 vertices by edge color to v:\n     * N_red = vertices connected to v by red edges\n     * N_blue = vertices connected to v by blue edges\n   - By pigeonhole: |N_red| \u2265 R(r-1,s) or |N_blue| \u2265 R(r,s-1)\n   - Case 1: If |N_red| \u2265 R(r-1,s), find a red (r-1)-clique or blue s-clique in N_red\n     * Red (r-1)-clique extends with v to red r-clique\n     * Blue s-clique is already our answer\n   - Case 2: Symmetric argument with blue neighborhood\n\n3. The bound R(r,s) \u2264 C(r+s-2, r-1) follows from Pascal's identity",
     "keyInsights": [
       "The pigeonhole principle: n-1 vertices partitioned into two sets means at least one is large enough",
       "Neighborhood partition: v's neighbors are either red-connected or blue-connected to v",
       "Clique extension: adding v to a clique in its monochromatic neighborhood preserves the clique property",
-      "The recurrence R(r,s) ≤ R(r-1,s) + R(r,s-1) mirrors Pascal's identity for binomial coefficients",
+      "The recurrence R(r,s) \u2264 R(r-1,s) + R(r,s-1) mirrors Pascal's identity for binomial coefficients",
       "The pentagon coloring of K_5 gives a constructive lower bound R(3,3) > 5: both the cycle C_5 (red) and its complement (blue) are triangle-free, so no monochromatic K_3 exists"
     ],
     "prerequisites": [
@@ -129,7 +129,7 @@
       "title": "Injective Functions from Finsets",
       "startLine": 267,
       "endLine": 289,
-      "summary": "Helper lemma `exists_embedding_of_card_ge`: if a Finset has $\\geq n$ elements, there exists an injection `Fin n ↪ β` into the Finset. Used to select elements from large neighborhoods in the inductive step.",
+      "summary": "Helper lemma `exists_embedding_of_card_ge`: if a Finset has $\\geq n$ elements, there exists an injection `Fin n \u21aa \u03b2` into the Finset. Used to select elements from large neighborhoods in the inductive step.",
       "mathContext": "If $|s| \\geq n$, then $\\exists f: \\text{Fin}\\,n \\hookrightarrow s$. Constructs embedding via `Fintype.equivFinOfCardEq` on a subset of exact cardinality $n$."
     },
     {
@@ -161,30 +161,24 @@
     {
       "targetId": "prob-method-alteration",
       "relationship": "related",
-      "description": "The probabilistic lower bound on Ramsey numbers R(k,k) ≥ 2^{k/2} uses an alteration/expectation argument on random 2-colorings"
-    },
-    {
-      "targetId": "pigeonhole-principle",
-      "relationship": "depends-on",
-      "description": "The neighborhood partition step relies on pigeonhole: n-1 vertices split into two sets, so one has at least ⌈(n-1)/2⌉ elements"
+      "description": "The probabilistic lower bound on Ramsey numbers R(k,k) \u2265 2^{k/2} uses an alteration/expectation argument on random 2-colorings"
     },
     {
       "targetId": "kummer-theorem",
       "relationship": "related",
-      "description": "Binomial coefficient structure determines the Ramsey bound R(r,s) ≤ C(r+s-2, r-1)"
+      "description": "Binomial coefficient structure determines the Ramsey bound R(r,s) \u2264 C(r+s-2, r-1)"
     }
   ],
   "relatedProofs": [
     "prob-method-alteration",
-    "pigeonhole-principle",
     "kummer-theorem"
   ],
   "conclusion": {
     "summary": "This Lean formalization provides a complete, constructive proof of Ramsey's theorem for 2-colorings. The proof carefully builds up from base cases through neighborhood partitions to the main inductive argument.\n\nThe key insight is that the pigeonhole principle forces one of the two neighborhoods to be large enough to apply the induction hypothesis. Clique extension then allows us to grow cliques by adding the central vertex.\n\nAll proofs are complete with no sorries, and the formalization is self-contained within the Ramsey namespace.",
-    "implications": "**Theoretical Significance**: Ramsey's theorem has profound implications:\n\n1. Ramsey Theory — The theorem launched an entire field studying unavoidable patterns in large structures. Extensions include Hales-Jewett theorem, van der Waerden's theorem, and the Paris-Harrington theorem.\n\n2. Computational Complexity — Computing exact Ramsey numbers is notoriously difficult.\n\nWe know R(3,3)=6 and R(4,4)=18, but R(5,5) is only known to be between 43 and 48.\n\n3. Philosophical Implications — Ramsey theory shows that complete disorder is impossible. Given enough structure, patterns emerge regardless of how we try to avoid them.\n\n4. Applications — Ramsey theory has applications in algorithm design, communication complexity, and theoretical computer science.",
+    "implications": "**Theoretical Significance**: Ramsey's theorem has profound implications:\n\n1. Ramsey Theory \u2014 The theorem launched an entire field studying unavoidable patterns in large structures. Extensions include Hales-Jewett theorem, van der Waerden's theorem, and the Paris-Harrington theorem.\n\n2. Computational Complexity \u2014 Computing exact Ramsey numbers is notoriously difficult.\n\nWe know R(3,3)=6 and R(4,4)=18, but R(5,5) is only known to be between 43 and 48.\n\n3. Philosophical Implications \u2014 Ramsey theory shows that complete disorder is impossible. Given enough structure, patterns emerge regardless of how we try to avoid them.\n\n4. Applications \u2014 Ramsey theory has applications in algorithm design, communication complexity, and theoretical computer science.",
     "openQuestions": [
       "What is the exact value of R(5,5)? Currently only known to be in [43,48]",
-      "Can we improve the upper bound R(r,s) ≤ C(r+s-2, r-1)?",
+      "Can we improve the upper bound R(r,s) \u2264 C(r+s-2, r-1)?",
       "What are the asymptotic bounds for R(k,k) as k grows?",
       "How does Ramsey theory extend to hypergraphs and higher dimensions?"
     ]
@@ -213,8 +207,8 @@
       "authors": "Ramsey, Frank P.",
       "title": "On a Problem of Formal Logic",
       "year": "1930",
-      "venue": "Proceedings of the London Mathematical Society s2-30(1), 264–286",
-      "note": "Introduced the infinite and finite Ramsey theorems — complete disorder is impossible, structure must emerge"
+      "venue": "Proceedings of the London Mathematical Society s2-30(1), 264\u2013286",
+      "note": "Introduced the infinite and finite Ramsey theorems \u2014 complete disorder is impossible, structure must emerge"
     },
     {
       "authors": "Graham, Ronald L.; Rothschild, Bruce L.; Spencer, Joel H.",

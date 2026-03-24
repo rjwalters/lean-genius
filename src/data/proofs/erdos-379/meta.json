@@ -152,5 +152,39 @@
     "axiomCount": 10,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-175",
+      "relationship": "related",
+      "description": "Share prime-powers, binomial-coefficients, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-678",
+      "relationship": "related",
+      "description": "Share prime-powers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-979",
+      "relationship": "related",
+      "description": "Share prime-powers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Share binomial-coefficients and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1093",
+      "relationship": "related",
+      "description": "Share binomial-coefficients and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-175",
+    "erdos-678",
+    "erdos-979",
+    "erdos-1063",
+    "erdos-1093"
+  ]
 }

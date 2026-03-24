@@ -1,8 +1,8 @@
 {
   "id": "erdos-1084",
-  "title": "Erdős Problem #1084: Unit Distances Among Separated Points",
+  "title": "Erd\u0151s Problem #1084: Unit Distances Among Separated Points",
   "slug": "erdos-1084",
-  "description": "Let f_d(n) be the maximum number of unit-distance pairs among n points in ℝ^d with all pairwise distances ≥ 1. For d=2, Harborth gave the exact formula. For d=3, Erdős conjectured f_3(n) = 6n - Θ(n^{2/3}). Status: OPEN (d ≥ 3).",
+  "description": "Let f_d(n) be the maximum number of unit-distance pairs among n points in \u211d^d with all pairwise distances \u2265 1. For d=2, Harborth gave the exact formula. For d=3, Erd\u0151s conjectured f_3(n) = 6n - \u0398(n^{2/3}). Status: OPEN (d \u2265 3).",
   "meta": {
     "erdosNumber": 1084,
     "status": "axiomatized",
@@ -45,7 +45,7 @@
       "title": "1D Configuration and Helpers",
       "startLine": 62,
       "endLine": 72,
-      "summary": "Specialized `SeparatedConfig1D` using $\\mathbb{R}$ directly with $|x - y| \\ge 1$, avoiding the overhead of `EuclideanSpace ℝ (Fin 1)`. Enables direct absolute value case analysis.",
+      "summary": "Specialized `SeparatedConfig1D` using $\\mathbb{R}$ directly with $|x - y| \\ge 1$, avoiding the overhead of `EuclideanSpace \u211d (Fin 1)`. Enables direct absolute value case analysis.",
       "mathContext": "1D specialization: $|x_i - x_j| \\geq 1$ for $i \\neq j$, using $\\mathbb{R}$ directly."
     },
     {
@@ -77,7 +77,7 @@
       "title": "Two-Dimensional Case",
       "startLine": 151,
       "endLine": 166,
-      "summary": "Erdős's bound $f_2(n) < 3n - c\\sqrt{n}$, Harborth's exact formula $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (1974), triangular lattice optimality, and the trivial bound $f_2(n) < 3n$ from kissing number $\\tau(2) = 6$.",
+      "summary": "Erd\u0151s's bound $f_2(n) < 3n - c\\sqrt{n}$, Harborth's exact formula $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (1974), triangular lattice optimality, and the trivial bound $f_2(n) < 3n$ from kissing number $\\tau(2) = 6$.",
       "mathContext": "$f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ (Harborth 1974). Trivial: $f_2(n) \\leq \\tau(2) \\cdot n/2 = 3n$."
     },
     {
@@ -85,7 +85,7 @@
       "title": "Three-Dimensional Case",
       "startLine": 171,
       "endLine": 185,
-      "summary": "Leading coefficient $f_3(n)/n \\to 6$ from $\\tau(3) = 12$, Bezdek–Reid upper bound $f_3(n) < 6n - 0.926 n^{2/3}$ (2013), and Erdős's conjecture $f_3(n) = 6n - \\Theta(n^{2/3})$ — the central open question.",
+      "summary": "Leading coefficient $f_3(n)/n \\to 6$ from $\\tau(3) = 12$, Bezdek\u2013Reid upper bound $f_3(n) < 6n - 0.926 n^{2/3}$ (2013), and Erd\u0151s's conjecture $f_3(n) = 6n - \\Theta(n^{2/3})$ \u2014 the central open question.",
       "mathContext": "Conjecture: $f_3(n) = 6n - \\Theta(n^{2/3})$. Known: $f_3(n) < 6n - 0.926n^{2/3}$ (Bezdek-Reid 2013)."
     },
     {
@@ -93,21 +93,21 @@
       "title": "General Dimension Bounds",
       "startLine": 190,
       "endLine": 198,
-      "summary": "Lower bound $f_d(n) \\ge (d - o(1))n$ from $\\mathbb{Z}^d$ lattice, upper bound $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky–Levenshtein (1978). Exponential gap in $d$ remains open.",
+      "summary": "Lower bound $f_d(n) \\ge (d - o(1))n$ from $\\mathbb{Z}^d$ lattice, upper bound $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky\u2013Levenshtein (1978). Exponential gap in $d$ remains open.",
       "mathContext": "$dn \\lesssim f_d(n) \\leq \\tau(d) \\cdot n/2 \\leq 2^{0.401d} \\cdot n$. Exponential gap in $d$."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős introduced this problem in 1946, asking how many 'contacts' (unit-distance pairs) can occur among n non-overlapping unit spheres in ℝ^d. The problem connects sphere packing theory, the classical Newton–Gregory kissing number dispute (1694), and extremal graph theory. For d = 2, the kissing number τ(2) = 6 gives f₂(n) ≤ 3n; Harborth (1974) found the exact formula f₂(n) = ⌊3n - √(12n-3)⌋ using the triangular lattice A₂, one of the most elegant results in combinatorial geometry. For d = 3, Newton proved τ(3) = 12 (confirmed by Schütte–van der Waerden 1953), giving f₃(n) ~ 6n. Bezdek and Reid (2013) proved the n^{2/3} correction: f₃(n) < 6n - 0.926·n^{2/3}, establishing the surface-to-volume isoperimetric deficit for finite sphere packings. The matching lower bound remains open and is related to the Kepler conjecture (Hales 2005). In high dimensions, the Kabatyansky–Levenshtein bound (1978) gives τ(d) ≤ 2^{0.401d}, but the true behavior of f_d(n) for large d remains mysterious.",
-    "problemStatement": "Estimate f_d(n), the maximum number of unit-distance pairs among n points in ℝ^d with pairwise distances ≥ 1.",
-    "text": "Let f_d(n) be the maximum number of unit-distance pairs among n points in ℝ^d with all pairwise distances ≥ 1. For d=2, Harborth gave the exact formula. For d=3, Erdős conjectured f_3(n) = 6n - Θ(n^{2/3}). Status: OPEN (d ≥ 3).",
-    "proofStrategy": "The Lean formalization defines separated configurations and unit-distance pair counting in arbitrary dimension d. For d = 1, two key lemmas are fully machine-verified: the triangle lemma (unit neighbors must be on opposite sides) and the degree bound (at most 2 unit neighbors). These establish f₁(n) = n - 1. The d = 2 and d = 3 results are formalized as axioms capturing Harborth's formula, the Bezdek-Reid bound, and Erdős's conjecture. General dimension bounds use kissing number estimates.",
+    "historicalContext": "Erd\u0151s introduced this problem in 1946, asking how many 'contacts' (unit-distance pairs) can occur among n non-overlapping unit spheres in \u211d^d. The problem connects sphere packing theory, the classical Newton\u2013Gregory kissing number dispute (1694), and extremal graph theory. For d = 2, the kissing number \u03c4(2) = 6 gives f\u2082(n) \u2264 3n; Harborth (1974) found the exact formula f\u2082(n) = \u230a3n - \u221a(12n-3)\u230b using the triangular lattice A\u2082, one of the most elegant results in combinatorial geometry. For d = 3, Newton proved \u03c4(3) = 12 (confirmed by Sch\u00fctte\u2013van der Waerden 1953), giving f\u2083(n) ~ 6n. Bezdek and Reid (2013) proved the n^{2/3} correction: f\u2083(n) < 6n - 0.926\u00b7n^{2/3}, establishing the surface-to-volume isoperimetric deficit for finite sphere packings. The matching lower bound remains open and is related to the Kepler conjecture (Hales 2005). In high dimensions, the Kabatyansky\u2013Levenshtein bound (1978) gives \u03c4(d) \u2264 2^{0.401d}, but the true behavior of f_d(n) for large d remains mysterious.",
+    "problemStatement": "Estimate f_d(n), the maximum number of unit-distance pairs among n points in \u211d^d with pairwise distances \u2265 1.",
+    "text": "Let f_d(n) be the maximum number of unit-distance pairs among n points in \u211d^d with all pairwise distances \u2265 1. For d=2, Harborth gave the exact formula. For d=3, Erd\u0151s conjectured f_3(n) = 6n - \u0398(n^{2/3}). Status: OPEN (d \u2265 3).",
+    "proofStrategy": "The Lean formalization defines separated configurations and unit-distance pair counting in arbitrary dimension d. For d = 1, two key lemmas are fully machine-verified: the triangle lemma (unit neighbors must be on opposite sides) and the degree bound (at most 2 unit neighbors). These establish f\u2081(n) = n - 1. The d = 2 and d = 3 results are formalized as axioms capturing Harborth's formula, the Bezdek-Reid bound, and Erd\u0151s's conjecture. General dimension bounds use kissing number estimates.",
     "keyInsights": [
       "**Kissing number controls the leading coefficient**: $f_d(n) \\le \\tau(d) \\cdot n / 2$ by double-counting. Known values $\\tau(1) = 2$, $\\tau(2) = 6$, $\\tau(3) = 12$ give leading terms $n$, $3n$, $6n$",
-      "**Harborth's formula** $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ encodes the boundary deficit of the hexagonal lattice — one of the few exact extremal results in combinatorial geometry",
+      "**Harborth's formula** $f_2(n) = \\lfloor 3n - \\sqrt{12n-3} \\rfloor$ encodes the boundary deficit of the hexagonal lattice \u2014 one of the few exact extremal results in combinatorial geometry",
       "**Isoperimetric exponent** $n^{2/3}$ in $d = 3$ reflects the surface-to-volume ratio: a ball of volume $n$ has surface area $\\Theta(n^{2/3})$, and surface spheres lose contacts",
       "**Two machine-verified theorems** establish the 1D degree bound: the triangle lemma and the 3-neighbor impossibility, both proved by exhaustive case analysis in Lean 4",
-      "**Exponential gap** in general $d$: between $f_d(n) \\ge dn$ from $\\mathbb{Z}^d$ and $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky–Levenshtein — closing this is a major open problem"
+      "**Exponential gap** in general $d$: between $f_d(n) \\ge dn$ from $\\mathbb{Z}^d$ and $f_d(n) \\le 2^{O(d)} n$ from Kabatyansky\u2013Levenshtein \u2014 closing this is a major open problem"
     ],
     "prerequisites": [
       "Euclidean geometry: distance in $\\mathbb{R}^d$, inner product spaces",
@@ -117,72 +117,77 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #1084 asks for the maximum number of unit-distance pairs among separated points. The problem is fully solved for d = 1 (f₁(n) = n - 1, with key lemmas machine-verified) and d = 2 (Harborth's elegant formula using the triangular lattice). For d = 3, the leading coefficient 6 is established via the kissing number τ(3) = 12, and Bezdek–Reid proved the n^{2/3} correction in the upper bound, but the matching lower bound — Erdős's conjecture f₃(n) = 6n - Θ(n^{2/3}) — remains open.",
-    "implications": "**Theoretical Significance**: Understanding f_d(n) precisely would reveal the fine structure of finite sphere packings, connect to the Kepler conjecture and sphere packing rigidity, and illuminate the transition between lattice and non-lattice optimal packings.\n\nThe exponential gap between upper and lower bounds in high dimensions is intimately connected to the long-standing open problem of determining the kissing number τ(d) for large d.",
+    "summary": "Erd\u0151s Problem #1084 asks for the maximum number of unit-distance pairs among separated points. The problem is fully solved for d = 1 (f\u2081(n) = n - 1, with key lemmas machine-verified) and d = 2 (Harborth's elegant formula using the triangular lattice). For d = 3, the leading coefficient 6 is established via the kissing number \u03c4(3) = 12, and Bezdek\u2013Reid proved the n^{2/3} correction in the upper bound, but the matching lower bound \u2014 Erd\u0151s's conjecture f\u2083(n) = 6n - \u0398(n^{2/3}) \u2014 remains open.",
+    "implications": "**Theoretical Significance**: Understanding f_d(n) precisely would reveal the fine structure of finite sphere packings, connect to the Kepler conjecture and sphere packing rigidity, and illuminate the transition between lattice and non-lattice optimal packings.\n\nThe exponential gap between upper and lower bounds in high dimensions is intimately connected to the long-standing open problem of determining the kissing number \u03c4(d) for large d.",
     "openQuestions": [
-      "Is f₃(n) = 6n - Θ(n^{2/3})? Specifically, does the lower bound f₃(n) ≥ 6n - c₁·n^{2/3} hold?",
-      "What are the exact constants c₁, c₂ in the 3D correction term?",
-      "Is there an exact formula for f₃(n) analogous to Harborth's 2D result?",
-      "Can the exponential gap between f_d(n) ≥ dn and f_d(n) ≤ 2^{O(d)}·n be closed for large d?",
-      "Does the optimal configuration for f₃(n) converge to FCC/HCP packing as n → ∞?"
+      "Is f\u2083(n) = 6n - \u0398(n^{2/3})? Specifically, does the lower bound f\u2083(n) \u2265 6n - c\u2081\u00b7n^{2/3} hold?",
+      "What are the exact constants c\u2081, c\u2082 in the 3D correction term?",
+      "Is there an exact formula for f\u2083(n) analogous to Harborth's 2D result?",
+      "Can the exponential gap between f_d(n) \u2265 dn and f_d(n) \u2264 2^{O(d)}\u00b7n be closed for large d?",
+      "Does the optimal configuration for f\u2083(n) converge to FCC/HCP packing as n \u2192 \u221e?"
     ]
   },
   "crossReferences": [
     {
-      "slug": "kepler-conjecture",
-      "relationship": "The Kepler conjecture (FCC sphere packing optimality) directly governs the large-n behavior of f₃(n): the conjectured lower bound f₃(n) ≥ 6n - Θ(n^{2/3}) would follow from understanding how finite FCC/HCP clusters approach the infinite-volume limit, making the Kepler structure the conjectured optimal configuration."
+      "relationship": "related",
+      "description": "The Kepler conjecture (FCC sphere packing optimality) directly governs the large-n behavior of f\u2083(n): the conjectured lower bound f\u2083(n) \u2265 6n - \u0398(n^{2/3}) would follow from understanding how finite FCC/HCP clusters approach the infinite-volume limit, making the Kepler structure the conjectured optimal configuration.",
+      "targetId": "kepler-conjecture"
     },
     {
-      "slug": "erdos-1085",
-      "relationship": "Erdős Problem #1085 studies the unit distance problem without the separation constraint (f_d(n) for arbitrary point sets). Problem #1084 imposes the additional ≥1 separation condition, which converts a graph-theoretic extremal problem into a sphere-packing one. The two problems share notation but differ sharply in difficulty and techniques."
+      "relationship": "related",
+      "description": "Erd\u0151s Problem #1085 studies the unit distance problem without the separation constraint (f_d(n) for arbitrary point sets). Problem #1084 imposes the additional \u22651 separation condition, which converts a graph-theoretic extremal problem into a sphere-packing one. The two problems share notation but differ sharply in difficulty and techniques.",
+      "targetId": "erdos-1085"
     },
     {
-      "slug": "erdos-1083",
-      "relationship": "Erdős Problem #1083 asks for the minimum number of distinct distances among n points in ℝ^d (f_d(n) = n^{2/d - o(1)}). Both problems use the same dimension-indexed function f_d(n) and the same Euclidean setup, and both exhibit an isoperimetric correction term of order n^{(d-1)/d} in the sub-leading behavior."
+      "relationship": "related",
+      "description": "Erd\u0151s Problem #1083 asks for the minimum number of distinct distances among n points in \u211d^d (f_d(n) = n^{2/d - o(1)}). Both problems use the same dimension-indexed function f_d(n) and the same Euclidean setup, and both exhibit an isoperimetric correction term of order n^{(d-1)/d} in the sub-leading behavior.",
+      "targetId": "erdos-1083"
     },
     {
-      "slug": "erdos-1086",
-      "relationship": "Erdős Problem #1086 on triangles of equal area is a neighboring extremal combinatorial geometry problem sharing the same era (1971), the same authors (Erdős–Purdy), and the same incidence-geometry toolkit (Szemerédi–Trotter, algebraic methods). The techniques for bounding repeated distances and repeated areas overlap substantially."
+      "relationship": "related",
+      "description": "Erd\u0151s Problem #1086 on triangles of equal area is a neighboring extremal combinatorial geometry problem sharing the same era (1971), the same authors (Erd\u0151s\u2013Purdy), and the same incidence-geometry toolkit (Szemer\u00e9di\u2013Trotter, algebraic methods). The techniques for bounding repeated distances and repeated areas overlap substantially.",
+      "targetId": "erdos-1086"
     },
     {
-      "slug": "erdos-97",
-      "relationship": "Erdős Problem #97 on equidistant vertices in convex polygons is another discrete-geometry problem about distance multiplicity in point configurations. The kissing-number constraint τ(2) = 6 that drives f₂(n) ≤ 3n also bounds the number of vertices equidistant from a given point in convex position, linking the two problems via the hexagonal lattice geometry."
+      "relationship": "related",
+      "description": "Erd\u0151s Problem #97 on equidistant vertices in convex polygons is another discrete-geometry problem about distance multiplicity in point configurations. The kissing-number constraint \u03c4(2) = 6 that drives f\u2082(n) \u2264 3n also bounds the number of vertices equidistant from a given point in convex position, linking the two problems via the hexagonal lattice geometry.",
+      "targetId": "erdos-97"
     }
   ],
   "relatedProofs": [
     {
       "slug": "kepler-conjecture",
-      "note": "The FCC packing (Hales 1998, Flyspeck 2014) is the conjectured optimal configuration achieving f₃(n) ~ 6n - Θ(n^{2/3}). This gallery entry formalizes the infinite-volume sphere packing density; #1084 concerns the finite-n contact count for the same geometry."
+      "note": "The FCC packing (Hales 1998, Flyspeck 2014) is the conjectured optimal configuration achieving f\u2083(n) ~ 6n - \u0398(n^{2/3}). This gallery entry formalizes the infinite-volume sphere packing density; #1084 concerns the finite-n contact count for the same geometry."
     },
     {
       "slug": "erdos-1085",
-      "note": "The unseparated unit distance problem. Removing the pairwise-distance ≥ 1 constraint transforms sphere-packing combinatorics into incidence geometry; the two Lean formalizations use the same SeparatedConfig / EuclideanSpace setup but diverge in the bound type (linear vs. superlinear in n)."
+      "note": "The unseparated unit distance problem. Removing the pairwise-distance \u2265 1 constraint transforms sphere-packing combinatorics into incidence geometry; the two Lean formalizations use the same SeparatedConfig / EuclideanSpace setup but diverge in the bound type (linear vs. superlinear in n)."
     },
     {
       "slug": "erdos-1083",
-      "note": "Distinct distances in ℝ^d. The Lean formalization shares the EuclideanSpace ℝ (Fin d) type infrastructure and uses the same dimension-indexed counting framework, making it a natural companion for understanding the full geometry of distance distributions in high-dimensional point sets."
+      "note": "Distinct distances in \u211d^d. The Lean formalization shares the EuclideanSpace \u211d (Fin d) type infrastructure and uses the same dimension-indexed counting framework, making it a natural companion for understanding the full geometry of distance distributions in high-dimensional point sets."
     }
   ],
   "references": [
     {
-      "citation": "Harborth, H. (1974). Lösung zu Problem 664A. Elemente der Mathematik, 29, 14–15.",
-      "note": "Proves the exact formula f₂(n) = ⌊3n - √(12n-3)⌋ for separated points in ℝ², showing the triangular lattice A₂ is optimal."
+      "citation": "Harborth, H. (1974). L\u00f6sung zu Problem 664A. Elemente der Mathematik, 29, 14\u201315.",
+      "note": "Proves the exact formula f\u2082(n) = \u230a3n - \u221a(12n-3)\u230b for separated points in \u211d\u00b2, showing the triangular lattice A\u2082 is optimal."
     },
     {
-      "citation": "Bezdek, K. and Reid, S. (2013). Contact graphs of unit sphere packings revisited. Journal of Geometry, 104(1), 57–83.",
-      "note": "Establishes the upper bound f₃(n) < 6n - 0.926·n^{2/3} using the isoperimetric method for finite sphere packings in ℝ³."
+      "citation": "Bezdek, K. and Reid, S. (2013). Contact graphs of unit sphere packings revisited. Journal of Geometry, 104(1), 57\u201383.",
+      "note": "Establishes the upper bound f\u2083(n) < 6n - 0.926\u00b7n^{2/3} using the isoperimetric method for finite sphere packings in \u211d\u00b3."
     },
     {
-      "citation": "Kabatyansky, G. A. and Levenshtein, V. I. (1978). Bounds for packings on the sphere and in space. Problemy Peredachi Informatsii, 14(1), 3–25.",
-      "note": "Provides the exponential upper bound τ(d) ≤ 2^{0.401d} on kissing numbers in d dimensions, giving the upper bound f_d(n) ≤ 2^{O(d)}·n."
+      "citation": "Kabatyansky, G. A. and Levenshtein, V. I. (1978). Bounds for packings on the sphere and in space. Problemy Peredachi Informatsii, 14(1), 3\u201325.",
+      "note": "Provides the exponential upper bound \u03c4(d) \u2264 2^{0.401d} on kissing numbers in d dimensions, giving the upper bound f_d(n) \u2264 2^{O(d)}\u00b7n."
     },
     {
-      "citation": "Erdős, P. (1946). On sets of distances of n points. American Mathematical Monthly, 53(5), 248–250.",
+      "citation": "Erd\u0151s, P. (1946). On sets of distances of n points. American Mathematical Monthly, 53(5), 248\u2013250.",
       "note": "Foundational paper introducing the problem of unit distances among n points, the precursor to the separated-points variant formalized here."
     },
     {
-      "citation": "Schütte, K. and van der Waerden, B. L. (1953). Das Problem der dreizehn Kugeln. Mathematische Annalen, 125, 325–334.",
-      "note": "Resolves the Newton–Gregory kissing number dispute by proving τ(3) = 12, establishing the leading coefficient 6 in f₃(n) ~ 6n."
+      "citation": "Sch\u00fctte, K. and van der Waerden, B. L. (1953). Das Problem der dreizehn Kugeln. Mathematische Annalen, 125, 325\u2013334.",
+      "note": "Resolves the Newton\u2013Gregory kissing number dispute by proving \u03c4(3) = 12, establishing the leading coefficient 6 in f\u2083(n) ~ 6n."
     }
   ],
   "leanFile": {

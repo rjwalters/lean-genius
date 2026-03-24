@@ -1,6 +1,6 @@
 {
   "id": "erdos-761",
-  "title": "Erdős Problem #761: Dichromatic Number and Chromatic Number",
+  "title": "Erd\u0151s Problem #761: Dichromatic Number and Chromatic Number",
   "slug": "erdos-761",
   "description": "Must a graph with large chromatic number have large dichromatic number? Must a graph with large cochromatic number contain a subgraph with large dichromatic number? The dichromatic number is the minimum k such that every orientation admits an acyclic k-coloring. Status: OPEN.",
   "meta": {
@@ -23,7 +23,7 @@
     "relatedProofs": [
       {
         "id": "erdos-760",
-        "relationship": "Problem #760 provides the bound ζ(G) ≤ χ(G) used to show that Question 2 of #761 implies Question 1"
+        "relationship": "Problem #760 provides the bound \u03b6(G) \u2264 \u03c7(G) used to show that Question 2 of #761 implies Question 1"
       },
       {
         "id": "erdos-735",
@@ -78,7 +78,7 @@
       "title": "Main Conjectures (OPEN)",
       "startLine": 96,
       "endLine": 119,
-      "summary": "States the two open questions: **Question 1** (Erdős-Neumann-Lara): $\\forall k,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\Rightarrow \\delta(G) \\ge k$. **Question 2** (Erdős-Gimbel): $\\forall k,\\, \\exists g(k)$ such that $\\zeta(G) \\ge g(k) \\Rightarrow \\exists H \\subseteq G$ with $\\delta(H) \\ge k$."
+      "summary": "States the two open questions: **Question 1** (Erd\u0151s-Neumann-Lara): $\\forall k,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\Rightarrow \\delta(G) \\ge k$. **Question 2** (Erd\u0151s-Gimbel): $\\forall k,\\, \\exists g(k)$ such that $\\zeta(G) \\ge g(k) \\Rightarrow \\exists H \\subseteq G$ with $\\delta(H) \\ge k$."
     },
     {
       "id": "sec-761-known-cases",
@@ -89,10 +89,10 @@
     }
   ],
   "overview": {
-    "historicalContext": "Victor Neumann-Lara introduced the dichromatic number in his 1982 paper 'The dichromatic number of a digraph', defining δ(G) as the minimum k such that every orientation of G admits an acyclic k-coloring. Erdős and Neumann-Lara then posed the fundamental question: must large chromatic number force large dichromatic number? In 1993, Erdős and Gimbel strengthened this by introducing the cochromatic number ζ(G) — the minimum partition into cliques and independent sets — and asking whether large ζ(G) forces a subgraph with large δ. The problems connect orientation theory with classical coloring: while δ(G) ≤ χ(G) is immediate (proper colorings are acyclic), the reverse direction remains mysterious. Neumann-Lara showed δ(K_n) = ⌊n/2⌋ + 1, far below χ(K_n) = n, demonstrating that dichromatic number can be much smaller. Mohar (2016) proved δ(G) ≤ χ_f(G) (fractional chromatic number), providing a tighter upper bound. The question has deep connections to Ramsey theory and the Burr-Erdős conjecture on oriented graphs.",
+    "historicalContext": "Victor Neumann-Lara introduced the dichromatic number in his 1982 paper 'The dichromatic number of a digraph', defining \u03b4(G) as the minimum k such that every orientation of G admits an acyclic k-coloring. Erd\u0151s and Neumann-Lara then posed the fundamental question: must large chromatic number force large dichromatic number? In 1993, Erd\u0151s and Gimbel strengthened this by introducing the cochromatic number \u03b6(G) \u2014 the minimum partition into cliques and independent sets \u2014 and asking whether large \u03b6(G) forces a subgraph with large \u03b4. The problems connect orientation theory with classical coloring: while \u03b4(G) \u2264 \u03c7(G) is immediate (proper colorings are acyclic), the reverse direction remains mysterious. Neumann-Lara showed \u03b4(K_n) = \u230an/2\u230b + 1, far below \u03c7(K_n) = n, demonstrating that dichromatic number can be much smaller. Mohar (2016) proved \u03b4(G) \u2264 \u03c7_f(G) (fractional chromatic number), providing a tighter upper bound. The question has deep connections to Ramsey theory and the Burr-Erd\u0151s conjecture on oriented graphs.",
     "problemStatement": "Must a graph with large chromatic number have large dichromatic number? Must large cochromatic number force a subgraph with large dichromatic number?",
     "text": "Must a graph with large chromatic number have large dichromatic number? Must a graph with large cochromatic number contain a subgraph with large dichromatic number? The dichromatic number is the minimum k such that every orientation admits an acyclic k-coloring. Status: OPEN.",
-    "proofStrategy": "The formalization defines orientations, acyclic colorings, and the dichromatic/cochromatic numbers using SimpleGraph from Mathlib. Both open questions are stated as axioms. The key structural result — that Question 2 implies Question 1 via ζ(G) ≤ χ(G) — is axiomatized. Known cases for complete graphs, odd cycles, and subgraph monotonicity are included.",
+    "proofStrategy": "The formalization defines orientations, acyclic colorings, and the dichromatic/cochromatic numbers using SimpleGraph from Mathlib. Both open questions are stated as axioms. The key structural result \u2014 that Question 2 implies Question 1 via \u03b6(G) \u2264 \u03c7(G) \u2014 is axiomatized. Known cases for complete graphs, odd cycles, and subgraph monotonicity are included.",
     "keyInsights": [
       "The **dichromatic number** $\\delta(G)$ measures worst-case acyclic coloring across all orientations: $\\delta(G) = \\min\\{k : \\forall O,\\, \\exists$ acyclic $k$-coloring of $O\\}$",
       "The inequality $\\delta(G) \\le \\chi(G)$ is immediate since proper colorings are acyclic, but the **reverse** (large $\\chi \\Rightarrow$ large $\\delta$) is open",
@@ -106,13 +106,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #761 remains OPEN. Both questions about the relationship between dichromatic number and chromatic/cochromatic number are unresolved. The formalization captures the key definitions, the implication hierarchy (Q2 ⟹ Q1), known cases for complete graphs and odd cycles, and structural results including subgraph monotonicity.",
+    "summary": "Erd\u0151s Problem #761 remains OPEN. Both questions about the relationship between dichromatic number and chromatic/cochromatic number are unresolved. The formalization captures the key definitions, the implication hierarchy (Q2 \u27f9 Q1), known cases for complete graphs and odd cycles, and structural results including subgraph monotonicity.",
     "implications": "Resolving these questions would clarify the fundamental relationship between undirected coloring complexity and directed acyclicity constraints, connecting structural graph theory with orientation problems and Ramsey theory.",
     "openQuestions": [
-      "Is there a function f such that χ(G) ≥ f(k) implies δ(G) ≥ k? (Erdős-Neumann-Lara conjecture)",
+      "Is there a function f such that \u03c7(G) \u2265 f(k) implies \u03b4(G) \u2265 k? (Erd\u0151s-Neumann-Lara conjecture)",
       "Can triangle-free graphs with arbitrarily large chromatic number have bounded dichromatic number?",
       "What is the exact dichromatic number of Kneser graphs K(n,k)?",
-      "Does the Burr-Erdős conjecture for oriented Ramsey numbers follow from a positive answer to Question 1?"
+      "Does the Burr-Erd\u0151s conjecture for oriented Ramsey numbers follow from a positive answer to Question 1?"
     ]
   },
   "leanFile": {
@@ -139,7 +139,7 @@
     },
     {
       "key": "ErGi93",
-      "citation": "Erdős, P. and Gimbel, J., Some problems and results in cochromatic theory, Congressus Numerantium 93 (1993), 227-238.",
+      "citation": "Erd\u0151s, P. and Gimbel, J., Some problems and results in cochromatic theory, Congressus Numerantium 93 (1993), 227-238.",
       "type": "paper"
     },
     {
@@ -149,8 +149,42 @@
     },
     {
       "key": "erdos761",
-      "citation": "Erdős Problems, Problem #761, https://erdosproblems.com/761",
+      "citation": "Erd\u0151s Problems, Problem #761, https://erdosproblems.com/761",
       "type": "website"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1067",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    },
+    {
+      "targetId": "erdos-1068",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    },
+    {
+      "targetId": "erdos-108",
+      "relationship": "related",
+      "description": "Share graph-theoretic and chromatic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1011",
+    "erdos-1032",
+    "erdos-1067",
+    "erdos-1068",
+    "erdos-108"
   ]
 }

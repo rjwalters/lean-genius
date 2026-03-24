@@ -1,10 +1,10 @@
 {
   "id": "erdos-1024",
-  "title": "Erdős Problem #1024: Independent Sets in Linear Hypergraphs",
+  "title": "Erd\u0151s Problem #1024: Independent Sets in Linear Hypergraphs",
   "slug": "erdos-1024",
-  "description": "Let f(n) be the minimum independence number guaranteed in every 3-uniform linear hypergraph on n vertices. Phelps-Rödl (1986) proved f(n) ≍ (n log n)^(1/2), refining Erdős's bounds n^(1/2) ≪ f(n) ≪ n^(2/3).",
+  "description": "Let f(n) be the minimum independence number guaranteed in every 3-uniform linear hypergraph on n vertices. Phelps-R\u00f6dl (1986) proved f(n) \u224d (n log n)^(1/2), refining Erd\u0151s's bounds n^(1/2) \u226a f(n) \u226a n^(2/3).",
   "meta": {
-    "author": "Phelps-Rödl (1986)",
+    "author": "Phelps-R\u00f6dl (1986)",
     "sourceUrl": "https://erdosproblems.com/1024",
     "date": "1986",
     "status": "axiomatized",
@@ -27,16 +27,16 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "A 3-uniform hypergraph is linear if any two distinct edges share at most one vertex; equivalently, it is a partial Steiner triple system. Erdős asked about the minimum size of an independent set (containing no complete edge) guaranteed in such hypergraphs. Specifically, if f(n) denotes the minimum over all 3-uniform linear hypergraphs on n vertices of the independence number, what is the growth rate of f(n)?\n\nErdős established the initial bounds n^{1/2} ≪ f(n) ≪ n^{2/3}. The lower bound comes from the probabilistic method: include each vertex independently with probability p, then the expected number of vertices minus destroyed edges is pn - mp³, which upon optimization gives the bound. The upper bound uses explicit constructions of dense linear hypergraphs with small independent sets.\n\nPhelps and Rödl (1986) closed the gap by proving f(n) ≍ (n log n)^{1/2}. The logarithmic factor, invisible to the polynomial bounds, arises from a careful analysis of the edge density constraints imposed by linearity. Their result shows that the independence number grows strictly faster than n^{1/2} but slower than any n^{1/2+ε}, with the precise correction being √(log n).",
-    "problemStatement": "**Problem Statement**\n\nLet f(n) be such that every 3-uniform linear hypergraph on n vertices contains an independent set of size f(n). Estimate f(n).\n\n**Status**: SOLVED (Phelps-Rödl 1986)\n\n**Answer**: f(n) ≍ (n log n)^(1/2)\n\n**Note**: Erdős's original bounds were n^(1/2) ≪ f(n) ≪ n^(2/3).",
-    "text": "Let f(n) be the minimum independence number guaranteed in every 3-uniform linear hypergraph on n vertices. Phelps-Rödl (1986) proved f(n) ≍ (n log n)^(1/2), refining Erdős's bounds n^(1/2) ≪ f(n) ≪ n^(2/3).",
-    "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound (Probabilistic)**: Include each vertex with probability p. Expected independent set size is pn - mp³ (where m = number of edges). Optimize p.\n\n2. **Upper Bound (Construction)**: Build linear hypergraphs with small independence numbers using algebraic or probabilistic constructions.\n\n3. **Key Insight**: The number of edges m in a 3-uniform linear hypergraph is at most n²/6 (Steiner bound). This gives (n log n)^(1/2).\n\n4. **The Log Factor**: Arises from careful analysis of edge distribution.",
+    "historicalContext": "A 3-uniform hypergraph is linear if any two distinct edges share at most one vertex; equivalently, it is a partial Steiner triple system. Erd\u0151s asked about the minimum size of an independent set (containing no complete edge) guaranteed in such hypergraphs. Specifically, if f(n) denotes the minimum over all 3-uniform linear hypergraphs on n vertices of the independence number, what is the growth rate of f(n)?\n\nErd\u0151s established the initial bounds n^{1/2} \u226a f(n) \u226a n^{2/3}. The lower bound comes from the probabilistic method: include each vertex independently with probability p, then the expected number of vertices minus destroyed edges is pn - mp\u00b3, which upon optimization gives the bound. The upper bound uses explicit constructions of dense linear hypergraphs with small independent sets.\n\nPhelps and R\u00f6dl (1986) closed the gap by proving f(n) \u224d (n log n)^{1/2}. The logarithmic factor, invisible to the polynomial bounds, arises from a careful analysis of the edge density constraints imposed by linearity. Their result shows that the independence number grows strictly faster than n^{1/2} but slower than any n^{1/2+\u03b5}, with the precise correction being \u221a(log n).",
+    "problemStatement": "**Problem Statement**\n\nLet f(n) be such that every 3-uniform linear hypergraph on n vertices contains an independent set of size f(n). Estimate f(n).\n\n**Status**: SOLVED (Phelps-R\u00f6dl 1986)\n\n**Answer**: f(n) \u224d (n log n)^(1/2)\n\n**Note**: Erd\u0151s's original bounds were n^(1/2) \u226a f(n) \u226a n^(2/3).",
+    "text": "Let f(n) be the minimum independence number guaranteed in every 3-uniform linear hypergraph on n vertices. Phelps-R\u00f6dl (1986) proved f(n) \u224d (n log n)^(1/2), refining Erd\u0151s's bounds n^(1/2) \u226a f(n) \u226a n^(2/3).",
+    "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound (Probabilistic)**: Include each vertex with probability p. Expected independent set size is pn - mp\u00b3 (where m = number of edges). Optimize p.\n\n2. **Upper Bound (Construction)**: Build linear hypergraphs with small independence numbers using algebraic or probabilistic constructions.\n\n3. **Key Insight**: The number of edges m in a 3-uniform linear hypergraph is at most n\u00b2/6 (Steiner bound). This gives (n log n)^(1/2).\n\n4. **The Log Factor**: Arises from careful analysis of edge distribution.",
     "keyInsights": [
-      "Linear hypergraph: |A ∩ B| ≤ 1 for all edges A, B",
+      "Linear hypergraph: |A \u2229 B| \u2264 1 for all edges A, B",
       "3-uniform linear = partial Steiner triple system",
-      "Erdős: n^(1/2) ≪ f(n) ≪ n^(2/3)",
-      "Phelps-Rödl: f(n) ≍ (n log n)^(1/2)",
-      "The log factor precisely closes Erdős's gap"
+      "Erd\u0151s: n^(1/2) \u226a f(n) \u226a n^(2/3)",
+      "Phelps-R\u00f6dl: f(n) \u224d (n log n)^(1/2)",
+      "The log factor precisely closes Erd\u0151s's gap"
     ],
     "prerequisites": [
       "Graph theory (vertices, edges, colorings)",
@@ -74,14 +74,14 @@
     },
     {
       "id": "erdos-bounds",
-      "title": "Erdős's Bounds",
+      "title": "Erd\u0151s's Bounds",
       "summary": "erdos_lower_bound, erdos_upper_bound axioms, erdos_bounds theorem",
       "startLine": 97,
       "endLine": 121
     },
     {
       "id": "phelps-rodl",
-      "title": "Phelps-Rödl Theorem (1986)",
+      "title": "Phelps-R\u00f6dl Theorem (1986)",
       "summary": "asymptoticBound, phelps_rodl_lower/upper axioms, phelps_rodl theorem",
       "startLine": 122,
       "endLine": 150
@@ -116,7 +116,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1024 asked to estimate the minimum independence number f(n) of 3-uniform linear hypergraphs. Phelps and Rödl (1986) determined f(n) ≍ (n log n)^(1/2), precisely closing the gap in Erdős's bounds n^(1/2) ≪ f(n) ≪ n^(2/3).",
+    "summary": "Erd\u0151s Problem #1024 asked to estimate the minimum independence number f(n) of 3-uniform linear hypergraphs. Phelps and R\u00f6dl (1986) determined f(n) \u224d (n log n)^(1/2), precisely closing the gap in Erd\u0151s's bounds n^(1/2) \u226a f(n) \u226a n^(2/3).",
     "implications": "1. **Hypergraph Independence**: Fundamental result on guaranteed independent sets\n\n**2. Steiner Systems**: Applies to partial Steiner triple systems\n\n3. **Probabilistic Method**: Lower bound via random selection\n\n4. **Log Factor**: Precise asymptotic between polynomial bounds.",
     "openQuestions": [
       "What are the exact constants in the asymptotic?",
@@ -128,34 +128,40 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-1020",
-      "relationship": "The Erdős Matching Conjecture (Problem #1020) concerns independence in r-uniform hypergraphs via matchings; both problems study extremal independence structure in uniform hypergraphs and use the same toolbox of probabilistic and algebraic methods."
+      "relationship": "related",
+      "targetId": "erdos-1020",
+      "description": "The Erd\u0151s Matching Conjecture (Problem #1020) concerns independence in r-uniform hypergraphs via matchings; both problems study extremal independence structure in uniform hypergraphs and use the same toolbox of probabilistic and algebraic methods."
     },
     {
-      "target": "erdos-1022",
-      "relationship": "Problem #1022 on Property B for sparse set families is closely related: Property B asks for 2-colorings of hyperedges with no monochromatic edge, which is dual to the independent-set problem in hypergraphs. Both use linear or sparse hypergraph assumptions."
+      "relationship": "related",
+      "targetId": "erdos-1022",
+      "description": "Problem #1022 on Property B for sparse set families is closely related: Property B asks for 2-colorings of hyperedges with no monochromatic edge, which is dual to the independent-set problem in hypergraphs. Both use linear or sparse hypergraph assumptions."
     },
     {
-      "target": "erdos-1025",
-      "relationship": "Problem #1025 on independent sets in pair functions shares the theme of guaranteeing large independent sets in combinatorial structures; the Erdős–Hajnal framework and probabilistic lower-bound argument appear in both."
+      "relationship": "related",
+      "targetId": "erdos-1025",
+      "description": "Problem #1025 on independent sets in pair functions shares the theme of guaranteeing large independent sets in combinatorial structures; the Erd\u0151s\u2013Hajnal framework and probabilistic lower-bound argument appear in both."
     },
     {
-      "target": "erdos-1013",
-      "relationship": "The triangle-free chromatic threshold (Problem #1013) relies on the probabilistic method to build sparse graphs with high chromatic number; the logarithmic corrections and density arguments parallel those in the Phelps–Rödl proof."
+      "relationship": "related",
+      "targetId": "erdos-1013",
+      "description": "The triangle-free chromatic threshold (Problem #1013) relies on the probabilistic method to build sparse graphs with high chromatic number; the logarithmic corrections and density arguments parallel those in the Phelps\u2013R\u00f6dl proof."
     },
     {
-      "target": "erdos-1029",
-      "relationship": "Problem #1029 on Ramsey number growth is a canonical application of the probabilistic method (Erdős 1947); the first-moment argument giving independence-number lower bounds in Problem #1024 is a direct descendant of the same technique."
+      "relationship": "related",
+      "targetId": "erdos-1029",
+      "description": "Problem #1029 on Ramsey number growth is a canonical application of the probabilistic method (Erd\u0151s 1947); the first-moment argument giving independence-number lower bounds in Problem #1024 is a direct descendant of the same technique."
     },
     {
-      "target": "erdos-1030",
-      "relationship": "Problem #1030 on off-diagonal Ramsey numbers also exploits probabilistic constructions and asymptotic gap-closing arguments, making it methodologically parallel to the Phelps–Rödl resolution of Problem #1024."
+      "relationship": "related",
+      "targetId": "erdos-1030",
+      "description": "Problem #1030 on off-diagonal Ramsey numbers also exploits probabilistic constructions and asymptotic gap-closing arguments, making it methodologically parallel to the Phelps\u2013R\u00f6dl resolution of Problem #1024."
     }
   ],
   "relatedProofs": [
     {
       "target": "erdos-1020",
-      "description": "Erdős Matching Conjecture: extremal independence/matching in r-uniform hypergraphs"
+      "description": "Erd\u0151s Matching Conjecture: extremal independence/matching in r-uniform hypergraphs"
     },
     {
       "target": "erdos-1022",
@@ -174,33 +180,33 @@
     {
       "authors": [
         "Kevin T. Phelps",
-        "Vojtěch Rödl"
+        "Vojt\u011bch R\u00f6dl"
       ],
       "title": "On the algorithmic complexity of coloring simple hypergraphs and Steiner triple systems",
       "venue": "Combinatorica",
       "year": 1986,
       "volume": "6",
       "number": "1",
-      "pages": "61–78",
+      "pages": "61\u201378",
       "doi": "10.1007/BF02579409",
-      "note": "Primary reference: proves f(n) ≍ (n log n)^{1/2} for 3-uniform linear hypergraphs."
+      "note": "Primary reference: proves f(n) \u224d (n log n)^{1/2} for 3-uniform linear hypergraphs."
     },
     {
       "authors": [
-        "Paul Erdős"
+        "Paul Erd\u0151s"
       ],
       "title": "On the combinatorial problems which I would most like to see solved",
       "venue": "Combinatorica",
       "year": 1981,
       "volume": "1",
       "number": "1",
-      "pages": "25–42",
+      "pages": "25\u201342",
       "doi": "10.1007/BF02579174",
-      "note": "Erdős's original problem statement and initial bounds n^{1/2} ≪ f(n) ≪ n^{2/3}."
+      "note": "Erd\u0151s's original problem statement and initial bounds n^{1/2} \u226a f(n) \u226a n^{2/3}."
     },
     {
       "authors": [
-        "Paul Erdős",
+        "Paul Erd\u0151s",
         "Joel Spencer"
       ],
       "title": "Probabilistic Methods in Combinatorics",
@@ -217,7 +223,7 @@
       "venue": "Wiley-Interscience",
       "year": 2016,
       "edition": "4th",
-      "note": "Standard reference for the probabilistic method including the Lovász Local Lemma and independence number bounds in hypergraphs."
+      "note": "Standard reference for the probabilistic method including the Lov\u00e1sz Local Lemma and independence number bounds in hypergraphs."
     },
     {
       "authors": [
@@ -228,7 +234,7 @@
       "year": 2011,
       "edition": "2nd",
       "doi": "10.1007/978-3-642-17364-6",
-      "note": "Chapter on hypergraph independence numbers and Steiner systems; covers the density arguments underlying the Phelps–Rödl bound."
+      "note": "Chapter on hypergraph independence numbers and Steiner systems; covers the density arguments underlying the Phelps\u2013R\u00f6dl bound."
     }
   ],
   "leanFile": {

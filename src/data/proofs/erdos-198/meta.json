@@ -1,8 +1,8 @@
 {
   "id": "erdos-198",
-  "title": "Erdős Problem #198: Sidon Sets and Arithmetic Progressions",
+  "title": "Erd\u0151s Problem #198: Sidon Sets and Arithmetic Progressions",
   "slug": "erdos-198",
-  "description": "If A ⊆ ℕ is a Sidon set, must the complement of A contain an infinite arithmetic progression? Answer: NO.",
+  "description": "If A \u2286 \u2115 is a Sidon set, must the complement of A contain an infinite arithmetic progression? Answer: NO.",
   "meta": {
     "author": "Baumgartner (1975); AlphaProof (explicit construction)",
     "sourceUrl": "https://erdosproblems.com/198",
@@ -51,16 +51,16 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem explores the relationship between Sidon sets (sets with all pairwise sums distinct) and arithmetic progressions. Erdős asked whether every Sidon set must be 'sparse enough' that its complement contains an infinite AP.\n\nBaumgartner (1975) showed the answer is NO by constructing a Sidon set that intersects every infinite AP. His method was implicit - enumerate all APs and greedily select elements to form a lacunary (hence Sidon) sequence.\n\nMore recently, AlphaProof found an explicit construction: A = {n! + n : n ≥ 0}. This set is Sidon and intersects every AP, providing a concrete counterexample.",
+    "historicalContext": "This problem explores the relationship between Sidon sets (sets with all pairwise sums distinct) and arithmetic progressions. Erd\u0151s asked whether every Sidon set must be 'sparse enough' that its complement contains an infinite AP.\n\nBaumgartner (1975) showed the answer is NO by constructing a Sidon set that intersects every infinite AP. His method was implicit - enumerate all APs and greedily select elements to form a lacunary (hence Sidon) sequence.\n\nMore recently, AlphaProof found an explicit construction: A = {n! + n : n \u2265 0}. This set is Sidon and intersects every AP, providing a concrete counterexample.",
     "problemStatement": "**Question**: If $A \\subset \\mathbb{N}$ is a Sidon set, must the complement $A^c$ contain an infinite arithmetic progression?\n\n**Answer**: NO\n\nThere exist Sidon sets that intersect every infinite AP, leaving no room for an infinite AP in the complement.\n\n**Constructions**:\n1. Baumgartner (1975): Lacunary construction via enumeration\n2. AlphaProof: $A = \\{n! + n : n \\geq 0\\}$",
-    "text": "If A ⊆ ℕ is a Sidon set, must the complement of A contain an infinite arithmetic progression? Answer: NO.",
+    "text": "If A \u2286 \u2115 is a Sidon set, must the complement of A contain an infinite arithmetic progression? Answer: NO.",
     "proofStrategy": "We formalize the disproof by axiomatizing two constructions:\n\n1. **Factorial construction** ({n! + n}): Axiomatize that it's Sidon and intersects all APs\n2. **Lacunary construction**: Axiomatize Baumgartner's enumeration method\n\nThe key insight for the factorial set: for any AP with first term a and difference d, the element (a+d+1)! + (a+d) is in the set and lies in the AP (since d divides (a+d+1)!).\n\nWe also prove verified examples showing the first few elements: 0! + 0 = 1, 1! + 1 = 2, 2! + 2 = 4, etc.",
     "keyInsights": [
-      "**Sidon sets**: Sets where all pairwise sums a + b (a ≤ b) are distinct. Also called B₂ sequences.",
-      "**Lacunary sets**: Sets where consecutive elements satisfy aₙ₊₁ > 2aₙ. These are automatically Sidon.",
+      "**Sidon sets**: Sets where all pairwise sums a + b (a \u2264 b) are distinct. Also called B\u2082 sequences.",
+      "**Lacunary sets**: Sets where consecutive elements satisfy a\u2099\u208a\u2081 > 2a\u2099. These are automatically Sidon.",
       "**The counterexample**: There exist Sidon sets dense enough to hit every infinite AP.",
       "**AlphaProof's construction**: A = {n! + n} works because factorials are divisible by all smaller numbers.",
-      "**Why it works**: For AP with difference d, element (a+d+1)! + (a+d) ≡ a (mod d) since d | (a+d+1)!."
+      "**Why it works**: For AP with difference d, element (a+d+1)! + (a+d) \u2261 a (mod d) since d | (a+d+1)!."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -80,7 +80,7 @@
       "title": "The Main Result",
       "startLine": 57,
       "endLine": 72,
-      "summary": "State Erdős's question and axiomatize that the answer is NO."
+      "summary": "State Erd\u0151s's question and axiomatize that the answer is NO."
     },
     {
       "id": "factorial",
@@ -105,7 +105,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #198, which asks whether every Sidon set's complement must contain an infinite AP. The answer is NO - there exist Sidon sets that intersect every infinite AP. We axiomatize both Baumgartner's lacunary construction and AlphaProof's explicit factorial construction.",
+    "summary": "We formalize Erd\u0151s Problem #198, which asks whether every Sidon set's complement must contain an infinite AP. The answer is NO - there exist Sidon sets that intersect every infinite AP. We axiomatize both Baumgartner's lacunary construction and AlphaProof's explicit factorial construction.",
     "implications": "**Theoretical Significance**: This result shows that Sidon sets can be surprisingly dense in terms of AP coverage.\n\nWhile Sidon sets are 'thin' in terms of sumset structure, they need not be thin enough to miss entire infinite APs. This reveals interesting tension between additive structure and AP structure.",
     "openQuestions": [
       "What is the minimum density a Sidon set can have while still intersecting all infinite APs?",
@@ -128,5 +128,39 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-141",
+      "relationship": "related",
+      "description": "Share arithmetic progression and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-142",
+      "relationship": "related",
+      "description": "Share arithmetic progression and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Share arithmetic progression and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-169",
+      "relationship": "related",
+      "description": "Share arithmetic progression and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-179",
+      "relationship": "related",
+      "description": "Share arithmetic progression and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-141",
+    "erdos-142",
+    "erdos-160",
+    "erdos-169",
+    "erdos-179"
+  ]
 }

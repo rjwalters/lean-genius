@@ -2,9 +2,9 @@
   "id": "erdos-327",
   "title": "Sum-Divides-Product Avoidance",
   "slug": "erdos-327",
-  "description": "How large can A ⊆ {1,...,N} be if a+b ∤ ab for all distinct a,b ∈ A? Equivalently, no pair has 1/a+1/b a unit fraction. Odd numbers give N/2; van Doorn shows 25/28·N is a threshold.",
+  "description": "How large can A \u2286 {1,...,N} be if a+b \u2224 ab for all distinct a,b \u2208 A? Equivalently, no pair has 1/a+1/b a unit fraction. Odd numbers give N/2; van Doorn shows 25/28\u00b7N is a threshold.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/327",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos327Problem.lean",
@@ -41,7 +41,7 @@
     "originalContributions": [
       "SumNotDvdProd and SumNotDvdTwoProd avoidance conditions",
       "maxAvoidSize extremal function via powerset supremum",
-      "ErdosProblem327 conjecture: maxAvoidSize(N) ≤ (1/2+ε)N",
+      "ErdosProblem327 conjecture: maxAvoidSize(N) \u2264 (1/2+\u03b5)N",
       "ErdosProblem327_variant: o(N) under factor-of-2 strengthening",
       "vanDoorn_bound axiom: density 25/28 threshold",
       "sumDvdProd_iff_unitFraction axiom: divisibility-fraction equivalence",
@@ -53,17 +53,17 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Sum-Divides-Product and Egyptian Fraction Avoidance**\n\nErdős Problem 327 belongs to the family of *Egyptian fraction avoidance* problems that Erdős studied extensively from the 1970s onward.  The condition $a + b \\mid ab$ is algebraically equivalent to $1/a + 1/b = 1/c$ for some positive integer $c$ — that is, the pair $(a, b)$ produces a unit fraction sum.  The problem asks for the maximum size of a subset of $\\{1, \\ldots, N\\}$ in which no pair produces such a sum.\n\n**The Odd Numbers Construction**\n\nThe starting observation is elementary but powerful: the set of odd numbers in $\\{1, \\ldots, N\\}$ has size $\\lceil N/2 \\rceil$ and satisfies the avoidance condition.  The proof is a one-line parity argument: for odd $a, b$, the sum $a + b$ is even while the product $ab$ is odd, so the even number $a + b$ cannot divide the odd number $ab$.  This gives a lower bound $\\text{maxAvoidSize}(N) \\geq \\lceil N/2 \\rceil$.\n\n**Van Doorn's Upper Bound**\n\nThe only published non-trivial upper bound is van Doorn's result: any subset of $\\{1, \\ldots, N\\}$ with more than $(25/28)N$ elements must contain a pair with $a + b \\mid ab$.  The proof uses a block covering argument — in any interval of 28 consecutive integers, certain triples of elements are forced to participate in a forbidden pair.  The constant $25/28 \\approx 0.893$ is far from the conjectured threshold of $1/2$, and improving it is a major open challenge.\n\n**Connection to Problem 301**\n\nErdős Problem 301 studies the complementary question: sets avoiding $1/a + 1/b = 1/c$ for distinct $a, b, c$.  The same van Doorn constant $25/28$ appears there, reflecting a deep structural connection.  Both problems are instances of the general question: which algebraic relations among unit fractions can be avoided by large sets?\n\n**The Factor-of-2 Variant**\n\nA dramatic strengthening replaces $ab$ with $2ab$: sets where $(a+b) \\nmid 2ab$ for all distinct pairs are conjectured to have size $o(N)$, i.e., vanishing density.  The extra factor of 2 destroys the parity construction (since $2ab$ is always even, the parity argument fails), and no positive-density construction under this stronger condition is known.\n\n**The GCD Characterization**\n\nThe formalization includes a structural result: writing $a = da', b = db'$ with $d = \\gcd(a,b)$ and $\\gcd(a', b') = 1$, the condition $(a+b) \\mid ab$ reduces to $(a'+b') \\mid d$.  This explains why coprime pairs ($d = 1$, so $a'+b' \\mid 1$ is impossible) and odd pairs ($d$ odd, $a'+b'$ even, so even $\\nmid$ odd) avoid the condition — they are special cases of a single algebraic criterion.",
-    "problemStatement": "**Conjecture (Erdős):** Let $A \\subseteq \\{1, \\ldots, N\\}$ satisfy $a + b \\nmid ab$ for all distinct $a, b \\in A$.  Then $|A| \\leq (\\frac{1}{2} + o(1)) \\cdot N$.\n\n**Equivalently:** No set $A$ with $|A| > (\\frac{1}{2} + \\varepsilon)N$ can avoid all pairs whose reciprocals sum to a unit fraction.\n\n**Variant:** Under the stronger condition $a + b \\nmid 2ab$, is $|A| = o(N)$?\n\n**Status:** OPEN.  Best known bound: $|A| < \\frac{25}{28}N$ (van Doorn).",
-    "text": "How large can A ⊆ {1,...,N} be if a+b ∤ ab for all distinct a,b ∈ A? Equivalently, no pair has 1/a+1/b a unit fraction. Odd numbers give N/2; van Doorn shows 25/28·N is a threshold.",
-    "proofStrategy": "**Formalization Strategy**\n\nThe formalization takes a definition-first approach, establishing the avoidance conditions and extremal function before stating conjectures and known results:\n\n1. **Avoidance Conditions (lines 29–35):** Define `SumNotDvdProd` and `SumNotDvdTwoProd` as pairwise conditions on `Finset ℕ`, using Lean 4's universal quantification over pairs.\n\n2. **Extremal Function (line 38):** Define `maxAvoidSize N` as the supremum of `Finset.card` over `(Icc 1 N).powerset.filter SumNotDvdProd` — noncomputable but mathematically precise.\n\n3. **Conjectures (lines 43–64):** Formalize both conjectures in $\\varepsilon$-$N_0$ form using real-valued inequalities, with the variant using $\\varepsilon N$ instead of $(1/2 + \\varepsilon)N$.\n\n4. **Known Results (lines 51–70):** Axiomatize van Doorn's bound and the unit fraction equivalence — both require substantial number-theoretic infrastructure to prove formally.\n\n5. **Proved Properties (lines 74–131):** Fully prove the base cases (empty, singleton), hereditarity, the odd-numbers construction (via `Nat.mul_mod` and `omega`), and the coprime characterization (via Euclid's lemma from `Nat.Coprime`).\n\n6. **GCD Characterization (lines 133–168):** Fully prove the GCD reduction $(a'+b') \\mid d$ via coprimality: factor out $d = \\gcd(a,b)$, cancel $d$ from both sides using `mul_dvd_mul_iff_left`, then apply coprimality of $(a'+b')$ and $a'b'$ (from $\\gcd(a',b')=1$) via `Nat.Coprime.dvd_of_dvd_mul_right`.",
+    "historicalContext": "**Sum-Divides-Product and Egyptian Fraction Avoidance**\n\nErd\u0151s Problem 327 belongs to the family of *Egyptian fraction avoidance* problems that Erd\u0151s studied extensively from the 1970s onward.  The condition $a + b \\mid ab$ is algebraically equivalent to $1/a + 1/b = 1/c$ for some positive integer $c$ \u2014 that is, the pair $(a, b)$ produces a unit fraction sum.  The problem asks for the maximum size of a subset of $\\{1, \\ldots, N\\}$ in which no pair produces such a sum.\n\n**The Odd Numbers Construction**\n\nThe starting observation is elementary but powerful: the set of odd numbers in $\\{1, \\ldots, N\\}$ has size $\\lceil N/2 \\rceil$ and satisfies the avoidance condition.  The proof is a one-line parity argument: for odd $a, b$, the sum $a + b$ is even while the product $ab$ is odd, so the even number $a + b$ cannot divide the odd number $ab$.  This gives a lower bound $\\text{maxAvoidSize}(N) \\geq \\lceil N/2 \\rceil$.\n\n**Van Doorn's Upper Bound**\n\nThe only published non-trivial upper bound is van Doorn's result: any subset of $\\{1, \\ldots, N\\}$ with more than $(25/28)N$ elements must contain a pair with $a + b \\mid ab$.  The proof uses a block covering argument \u2014 in any interval of 28 consecutive integers, certain triples of elements are forced to participate in a forbidden pair.  The constant $25/28 \\approx 0.893$ is far from the conjectured threshold of $1/2$, and improving it is a major open challenge.\n\n**Connection to Problem 301**\n\nErd\u0151s Problem 301 studies the complementary question: sets avoiding $1/a + 1/b = 1/c$ for distinct $a, b, c$.  The same van Doorn constant $25/28$ appears there, reflecting a deep structural connection.  Both problems are instances of the general question: which algebraic relations among unit fractions can be avoided by large sets?\n\n**The Factor-of-2 Variant**\n\nA dramatic strengthening replaces $ab$ with $2ab$: sets where $(a+b) \\nmid 2ab$ for all distinct pairs are conjectured to have size $o(N)$, i.e., vanishing density.  The extra factor of 2 destroys the parity construction (since $2ab$ is always even, the parity argument fails), and no positive-density construction under this stronger condition is known.\n\n**The GCD Characterization**\n\nThe formalization includes a structural result: writing $a = da', b = db'$ with $d = \\gcd(a,b)$ and $\\gcd(a', b') = 1$, the condition $(a+b) \\mid ab$ reduces to $(a'+b') \\mid d$.  This explains why coprime pairs ($d = 1$, so $a'+b' \\mid 1$ is impossible) and odd pairs ($d$ odd, $a'+b'$ even, so even $\\nmid$ odd) avoid the condition \u2014 they are special cases of a single algebraic criterion.",
+    "problemStatement": "**Conjecture (Erd\u0151s):** Let $A \\subseteq \\{1, \\ldots, N\\}$ satisfy $a + b \\nmid ab$ for all distinct $a, b \\in A$.  Then $|A| \\leq (\\frac{1}{2} + o(1)) \\cdot N$.\n\n**Equivalently:** No set $A$ with $|A| > (\\frac{1}{2} + \\varepsilon)N$ can avoid all pairs whose reciprocals sum to a unit fraction.\n\n**Variant:** Under the stronger condition $a + b \\nmid 2ab$, is $|A| = o(N)$?\n\n**Status:** OPEN.  Best known bound: $|A| < \\frac{25}{28}N$ (van Doorn).",
+    "text": "How large can A \u2286 {1,...,N} be if a+b \u2224 ab for all distinct a,b \u2208 A? Equivalently, no pair has 1/a+1/b a unit fraction. Odd numbers give N/2; van Doorn shows 25/28\u00b7N is a threshold.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe formalization takes a definition-first approach, establishing the avoidance conditions and extremal function before stating conjectures and known results:\n\n1. **Avoidance Conditions (lines 29\u201335):** Define `SumNotDvdProd` and `SumNotDvdTwoProd` as pairwise conditions on `Finset \u2115`, using Lean 4's universal quantification over pairs.\n\n2. **Extremal Function (line 38):** Define `maxAvoidSize N` as the supremum of `Finset.card` over `(Icc 1 N).powerset.filter SumNotDvdProd` \u2014 noncomputable but mathematically precise.\n\n3. **Conjectures (lines 43\u201364):** Formalize both conjectures in $\\varepsilon$-$N_0$ form using real-valued inequalities, with the variant using $\\varepsilon N$ instead of $(1/2 + \\varepsilon)N$.\n\n4. **Known Results (lines 51\u201370):** Axiomatize van Doorn's bound and the unit fraction equivalence \u2014 both require substantial number-theoretic infrastructure to prove formally.\n\n5. **Proved Properties (lines 74\u2013131):** Fully prove the base cases (empty, singleton), hereditarity, the odd-numbers construction (via `Nat.mul_mod` and `omega`), and the coprime characterization (via Euclid's lemma from `Nat.Coprime`).\n\n6. **GCD Characterization (lines 133\u2013168):** Fully prove the GCD reduction $(a'+b') \\mid d$ via coprimality: factor out $d = \\gcd(a,b)$, cancel $d$ from both sides using `mul_dvd_mul_iff_left`, then apply coprimality of $(a'+b')$ and $a'b'$ (from $\\gcd(a',b')=1$) via `Nat.Coprime.dvd_of_dvd_mul_right`.",
     "keyInsights": [
       "**Unit Fraction Reformulation:** The divisibility condition $a + b \\mid ab$ is *equivalent* to $1/a + 1/b$ being a unit fraction $1/c$ where $c = ab/(a+b)$.  This algebraic reformulation connects a purely divisibility-theoretic question to Egyptian fraction theory, placing it alongside Problems 301 and 302.",
       "**Parity as Modular Obstruction:** The odd-numbers construction works because mod 2, odd $\\times$ odd $\\equiv$ 1 (odd) while odd + odd $\\equiv$ 0 (even), and even numbers cannot divide odd numbers.  This is the simplest instance of a modular arithmetic obstruction.  Whether higher moduli can improve the bound is open.",
       "**GCD Reduction:** The characterization $(a+b) \\mid ab \\iff (a'+b') \\mid d$ (where $d = \\gcd(a,b)$, $a = da', b = db'$) unifies all known constructions: coprime pairs have $d = 1$ so $(a'+b') \\mid 1$ fails; odd pairs have $a'+b'$ even and $d$ odd; the general avoidance criterion is $(a'+b') > d$.",
-      "**The 25/28 Gap:** Van Doorn's bound $|A| < (25/28)N$ is the only non-trivial upper bound, but the conjectured threshold is $N/2$.  The gap $[1/2, 25/28]$ is enormous — roughly $40\\%$ of the interval $[0, 1]$ — and no improvement has been published since van Doorn's result.",
+      "**The 25/28 Gap:** Van Doorn's bound $|A| < (25/28)N$ is the only non-trivial upper bound, but the conjectured threshold is $N/2$.  The gap $[1/2, 25/28]$ is enormous \u2014 roughly $40\\%$ of the interval $[0, 1]$ \u2014 and no improvement has been published since van Doorn's result.",
       "**Factor-of-2 Phase Transition:** Replacing $ab$ with $2ab$ in the avoidance condition is conjectured to cause a dramatic phase transition: from density $1/2$ to density $0$.  This suggests that the parity structure of $ab$ is precisely what enables large avoidance sets, and removing it collapses the extremal function.",
-      "**Hereditary Structure:** SumNotDvdProd is downward-closed (hereditary), so the family of avoiding sets forms an abstract simplicial complex.  The extremal problem asks for the maximum face dimension of this complex within $\\{1, \\ldots, N\\}$ — a well-studied setup in combinatorial optimization and Kruskal-Katona theory."
+      "**Hereditary Structure:** SumNotDvdProd is downward-closed (hereditary), so the family of avoiding sets forms an abstract simplicial complex.  The extremal problem asks for the maximum face dimension of this complex within $\\{1, \\ldots, N\\}$ \u2014 a well-studied setup in combinatorial optimization and Kruskal-Katona theory."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -121,14 +121,14 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures the complete landscape of Erdős Problem 327: the SumNotDvdProd and SumNotDvdTwoProd avoidance conditions, the extremal function maxAvoidSize, both conjectures ($N/2$ and $o(N)$), van Doorn's density bound ($25/28$), the unit fraction equivalence, and structural results including the odd-numbers construction, coprime characterization, and the fully proved GCD reduction.  All 7 theorems are fully proved with 0 sorries.  The 2 axioms encode known results (van Doorn's bound, unit fraction equivalence) as mathematical assumptions.",
-    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Egyptian Fraction Theory:** Resolution would clarify the extremal theory of unit-fraction avoidance sets.  The common constant $25/28$ with Problem 301 suggests a unified framework.\n\n2. **Density Phase Transition:** The conjectured jump from density $1/2$ (under $a+b \\nmid ab$) to density $0$ (under $a+b \\nmid 2ab$) would establish a remarkable phase transition controlled by a single factor of 2.\n\n3. **Modular Arithmetic Limits:** The parity argument shows residue classes mod 2 suffice for density $1/2$.\n\nWhether residue classes mod higher moduli can do better is a key question — the conjecture says no.\n\n4. **GCD Structure:** The characterization $(a'+b') \\mid d$ suggests that pairs with large GCD are the 'dangerous' ones.  Understanding the distribution of GCDs in dense sets could lead to progress.\n\n5. **Computational Approaches:** For small $N$, exhaustive search can compute $\\text{maxAvoidSize}(N)$ exactly.  Computer experiments might reveal patterns or suggest constructions beating the odd numbers.",
+    "summary": "The formalization captures the complete landscape of Erd\u0151s Problem 327: the SumNotDvdProd and SumNotDvdTwoProd avoidance conditions, the extremal function maxAvoidSize, both conjectures ($N/2$ and $o(N)$), van Doorn's density bound ($25/28$), the unit fraction equivalence, and structural results including the odd-numbers construction, coprime characterization, and the fully proved GCD reduction.  All 7 theorems are fully proved with 0 sorries.  The 2 axioms encode known results (van Doorn's bound, unit fraction equivalence) as mathematical assumptions.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Egyptian Fraction Theory:** Resolution would clarify the extremal theory of unit-fraction avoidance sets.  The common constant $25/28$ with Problem 301 suggests a unified framework.\n\n2. **Density Phase Transition:** The conjectured jump from density $1/2$ (under $a+b \\nmid ab$) to density $0$ (under $a+b \\nmid 2ab$) would establish a remarkable phase transition controlled by a single factor of 2.\n\n3. **Modular Arithmetic Limits:** The parity argument shows residue classes mod 2 suffice for density $1/2$.\n\nWhether residue classes mod higher moduli can do better is a key question \u2014 the conjecture says no.\n\n4. **GCD Structure:** The characterization $(a'+b') \\mid d$ suggests that pairs with large GCD are the 'dangerous' ones.  Understanding the distribution of GCDs in dense sets could lead to progress.\n\n5. **Computational Approaches:** For small $N$, exhaustive search can compute $\\text{maxAvoidSize}(N)$ exactly.  Computer experiments might reveal patterns or suggest constructions beating the odd numbers.",
     "openQuestions": [
-      "Can any SumNotDvdProd subset of {1,...,N} have more than (1/2+ε)N elements?",
+      "Can any SumNotDvdProd subset of {1,...,N} have more than (1/2+\u03b5)N elements?",
       "Can the 25/28 upper bound be improved toward 1/2?",
       "Does the factor-of-2 variant (SumNotDvdTwoProd) force o(N) size?",
       "Are there constructions using higher moduli that beat the odd-numbers bound?",
-      "What is the exact value of maxAvoidSize(N) for small N (e.g., N ≤ 100)?"
+      "What is the exact value of maxAvoidSize(N) for small N (e.g., N \u2264 100)?"
     ]
   },
   "leanFile": {
@@ -149,5 +149,39 @@
     "axiomCount": 2,
     "theoremCount": 7,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1062",
+      "relationship": "related",
+      "description": "Share divisibility, extremal-combinatorial, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-301",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-302",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "related",
+      "description": "Share divisibility and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1062",
+    "erdos-301",
+    "erdos-302",
+    "divisibility-by-3",
+    "divisibility-truncation-general"
+  ]
 }

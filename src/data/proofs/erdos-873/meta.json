@@ -1,10 +1,10 @@
 {
   "id": "erdos-873",
-  "title": "Erdős Problem #873: LCM of Consecutive Sequence Terms",
+  "title": "Erd\u0151s Problem #873: LCM of Consecutive Sequence Terms",
   "slug": "erdos-873",
-  "description": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erdős and Szemerédi on multiplicative structure of sequences.",
+  "description": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erd\u0151s and Szemer\u00e9di on multiplicative structure of sequences.",
   "meta": {
-    "author": "Erdős-Szemerédi Conjecture (1992)",
+    "author": "Erd\u0151s-Szemer\u00e9di Conjecture (1992)",
     "sourceUrl": "https://erdosproblems.com/873",
     "date": "1992",
     "status": "formalized",
@@ -42,14 +42,14 @@
     "originalContributions": [
       "Definition of consecutive LCM counting function F(A,X,k)",
       "Formal statement of the open conjecture",
-      "Axioms for Erdős-Szemerédi bounds on F(A,X,3)",
+      "Axioms for Erd\u0151s-Szemer\u00e9di bounds on F(A,X,3)",
       "Verified examples for natural and exponential sequences"
     ],
     "axiomCount": 2,
     "lineCount": 155,
     "assumptions": [
-      "erdos_szemeredi_upper: F(A,X,3) ≪ X^{1/3} log X for all strictly increasing A — Erdős-Szemerédi (1992)",
-      "erdos_szemeredi_lower: There exists A with F(A,X,3) ≫ X^{1/3} log X infinitely often — Erdős-Szemerédi (1992)"
+      "erdos_szemeredi_upper: F(A,X,3) \u226a X^{1/3} log X for all strictly increasing A \u2014 Erd\u0151s-Szemer\u00e9di (1992)",
+      "erdos_szemeredi_lower: There exists A with F(A,X,3) \u226b X^{1/3} log X infinitely often \u2014 Erd\u0151s-Szemer\u00e9di (1992)"
     ],
     "crossReferences": [
       {
@@ -70,15 +70,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and Szemerédi in their work on multiplicative properties of sequences. It asks about the fundamental question: how many consecutive terms of a sequence can have 'small' LCM?\n\nThe LCM of consecutive terms measures their multiplicative dependence. If terms share many prime factors, their LCM is relatively small. The question is whether, for any sequence, we can always find a window size k such that few k-tuples have LCM below any threshold X^ε.\n\nErdős and Szemerédi proved tight bounds for k=3: F(A,X,3) grows like X^(1/3) log X in the worst case. The general conjecture asks whether the exponent can be made arbitrarily small by increasing k.",
-    "problemStatement": "**Conjecture (Erdős-Szemerédi)**: Let $A = \\{a_1 < a_2 < \\cdots\\} \\subseteq \\mathbb{N}$ and let $F(A,X,k)$ count positions $i$ where $[a_i, a_{i+1}, \\ldots, a_{i+k-1}] < X$ (LCM of $k$ consecutive terms).\n\nFor every $\\varepsilon > 0$, does there exist $k$ such that $F(A,X,k) < X^\\varepsilon$?\n\n**Status**: OPEN\n\n**Known**: For $k=3$, we have $F(A,X,3) \\ll X^{1/3} \\log X$ for all $A$, and this is tight.",
+    "historicalContext": "This problem was posed by Erd\u0151s and Szemer\u00e9di in their work on multiplicative properties of sequences. It asks about the fundamental question: how many consecutive terms of a sequence can have 'small' LCM?\n\nThe LCM of consecutive terms measures their multiplicative dependence. If terms share many prime factors, their LCM is relatively small. The question is whether, for any sequence, we can always find a window size k such that few k-tuples have LCM below any threshold X^\u03b5.\n\nErd\u0151s and Szemer\u00e9di proved tight bounds for k=3: F(A,X,3) grows like X^(1/3) log X in the worst case. The general conjecture asks whether the exponent can be made arbitrarily small by increasing k.",
+    "problemStatement": "**Conjecture (Erd\u0151s-Szemer\u00e9di)**: Let $A = \\{a_1 < a_2 < \\cdots\\} \\subseteq \\mathbb{N}$ and let $F(A,X,k)$ count positions $i$ where $[a_i, a_{i+1}, \\ldots, a_{i+k-1}] < X$ (LCM of $k$ consecutive terms).\n\nFor every $\\varepsilon > 0$, does there exist $k$ such that $F(A,X,k) < X^\\varepsilon$?\n\n**Status**: OPEN\n\n**Known**: For $k=3$, we have $F(A,X,3) \\ll X^{1/3} \\log X$ for all $A$, and this is tight.",
     "text": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erd\u0151s and Szemer\u00e9di on multiplicative structure of sequences.",
-    "proofStrategy": "We formalize the conjecture and known results:\n\n1. **Counting Function**: Define consecutiveLcm(a,i,k) as the LCM of k terms starting at position i, and F(a,X,k) as the count of positions where this LCM is less than X.\n\n2. **Monotonicity**: Prove that F decreases as k increases (more terms means larger LCM, so fewer qualify).\n\n3. **Conjecture Statement**: State the open problem asking whether F can always be made subpolynomial in X.\n\n4. **Known Bounds**: State the Erdős-Szemerédi theorem for k=3 as axioms.\n\n5. **Examples**: Verify behavior for specific sequences (naturals, powers of 2).",
+    "proofStrategy": "We formalize the conjecture and known results:\n\n1. **Counting Function**: Define consecutiveLcm(a,i,k) as the LCM of k terms starting at position i, and F(a,X,k) as the count of positions where this LCM is less than X.\n\n2. **Monotonicity**: Prove that F decreases as k increases (more terms means larger LCM, so fewer qualify).\n\n3. **Conjecture Statement**: State the open problem asking whether F can always be made subpolynomial in X.\n\n4. **Known Bounds**: State the Erd\u0151s-Szemer\u00e9di theorem for k=3 as axioms.\n\n5. **Examples**: Verify behavior for specific sequences (naturals, powers of 2).",
     "keyInsights": [
       "**Multiplicative dependence**: The LCM measures how much consecutive terms share prime factors. Small LCM means high dependence.",
       "**Window size tradeoff**: Larger k means the LCM includes more terms, so it grows faster and F(A,X,k) shrinks.",
       "**The k=3 bound**: X^(1/3) log X is the critical exponent for 3 consecutive terms. The conjecture asks if any exponent is achievable for large enough k.",
-      "**Open question**: Despite decades of study, we don't know if subpolynomial growth F(A,X,k) < X^ε is always achievable.",
+      "**Open question**: Despite decades of study, we don't know if subpolynomial growth F(A,X,k) < X^\u03b5 is always achievable.",
       "**Connection to smooth numbers**: Tuples with small LCM correspond to tuples whose terms share many prime factors. Counting these relates to the distribution of smooth numbers (numbers with only small prime factors) in arithmetic sequences."
     ],
     "prerequisites": [
@@ -94,7 +94,7 @@
       "title": "Problem Statement",
       "startLine": 1,
       "endLine": 23,
-      "summary": "Module docstring stating the Erdős-Szemerédi conjecture: can the count of $k$-tuples with small LCM always be made subpolynomial by choosing $k$ large enough?",
+      "summary": "Module docstring stating the Erd\u0151s-Szemer\u00e9di conjecture: can the count of $k$-tuples with small LCM always be made subpolynomial by choosing $k$ large enough?",
       "mathContext": "$F(A,X,k) = |\\{i : [a_i, a_{i+1}, \\ldots, a_{i+k-1}] < X\\}|$. Conjecture: $\\forall \\varepsilon > 0,\\, \\exists k$ s.t. $F(A,X,k) < X^\\varepsilon$. **Status: OPEN.**"
     },
     {
@@ -126,7 +126,7 @@
       "title": "Known Results",
       "startLine": 96,
       "endLine": 116,
-      "summary": "Axiomatizes Erdős-Szemerédi bounds for $k=3$: upper bound $F(A,X,3) \\ll X^{1/3} \\log X$ and matching lower bound showing tightness.",
+      "summary": "Axiomatizes Erd\u0151s-Szemer\u00e9di bounds for $k=3$: upper bound $F(A,X,3) \\ll X^{1/3} \\log X$ and matching lower bound showing tightness.",
       "mathContext": "$F(A,X,3) \\ll X^{1/3} \\log X$ for all $A$, and $\\exists A$ with $F(A,X,3) \\gg X^{1/3} \\log X$ infinitely often. The exponent $1/3$ is optimal for $k = 3$."
     },
     {
@@ -139,10 +139,10 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize the Erdős-Szemerédi conjecture on LCM counting in sequences. The main question - whether F(A,X,k) can always be made subpolynomial by choosing k large enough - remains open. We state the known optimal bounds for k=3 and provide verified examples.",
+    "summary": "We formalize the Erd\u0151s-Szemer\u00e9di conjecture on LCM counting in sequences. The main question - whether F(A,X,k) can always be made subpolynomial by choosing k large enough - remains open. We state the known optimal bounds for k=3 and provide verified examples.",
     "implications": "This problem connects to fundamental questions about multiplicative structure in sequences. A positive answer would show that all sequences have limited multiplicative dependence when viewed through large enough windows.",
     "openQuestions": [
-      "Can F(A,X,k) < X^ε be achieved for all sequences and all ε > 0?",
+      "Can F(A,X,k) < X^\u03b5 be achieved for all sequences and all \u03b5 > 0?",
       "What is the optimal exponent for k=4, k=5, etc.?",
       "Are there sequences that are 'maximally multiplicatively dependent' in some sense?"
     ]
@@ -162,11 +162,45 @@
   },
   "references": [
     {
-      "authors": "Erdős, Paul; Szemerédi, Endre",
-      "title": "On a problem of Erdős and Szemerédi",
+      "authors": "Erd\u0151s, Paul; Szemer\u00e9di, Endre",
+      "title": "On a problem of Erd\u0151s and Szemer\u00e9di",
       "year": "1992",
       "venue": "Acta Arithmetica",
-      "note": "Proved tight bounds F(A,X,3) ≍ X^{1/3} log X and posed the conjecture for general k"
+      "note": "Proved tight bounds F(A,X,3) \u224d X^{1/3} log X and posed the conjecture for general k"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-440",
+      "relationship": "related",
+      "description": "Share lcm, multiplicative-structure, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-269",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-441",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-442",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-458",
+      "relationship": "related",
+      "description": "Share lcm and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-440",
+    "erdos-269",
+    "erdos-441",
+    "erdos-442",
+    "erdos-458"
   ]
 }

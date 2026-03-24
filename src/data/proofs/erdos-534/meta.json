@@ -1,8 +1,8 @@
 {
   "id": "erdos-534",
-  "title": "Erdős Problem #534: Maximum GCD-Intersecting Sets",
+  "title": "Erd\u0151s Problem #534: Maximum GCD-Intersecting Sets",
   "slug": "erdos-534",
-  "description": "What is the largest subset A ⊆ {1,...,N} containing N such that gcd(a,b) > 1 for all distinct a,b ∈ A? Solved by Ahlswede-Khachatrian (1996) who proved the optimal sets use multiples of {2q₁,...,2qⱼ, q₁⋯qⱼ}.",
+  "description": "What is the largest subset A \u2286 {1,...,N} containing N such that gcd(a,b) > 1 for all distinct a,b \u2208 A? Solved by Ahlswede-Khachatrian (1996) who proved the optimal sets use multiples of {2q\u2081,...,2q\u2c7c, q\u2081\u22efq\u2c7c}.",
   "meta": {
     "author": "Ahlswede-Khachatrian (1996)",
     "sourceUrl": "https://erdosproblems.com/534",
@@ -64,8 +64,8 @@
       },
       {
         "id": "erdos-701",
-        "title": "Chvátal's Conjecture on Intersecting Families",
-        "relationship": "Generalization of Erdős-Ko-Rado to hereditary families; #534 is the arithmetic analog using gcd intersection"
+        "title": "Chv\u00e1tal's Conjecture on Intersecting Families",
+        "relationship": "Generalization of Erd\u0151s-Ko-Rado to hereditary families; #534 is the arithmetic analog using gcd intersection"
       },
       {
         "id": "erdos-702",
@@ -75,7 +75,7 @@
       {
         "id": "erdos-703",
         "title": "Forbidden r-Intersection Families",
-        "relationship": "Studies maximum family size avoiding r-intersections (Frankl-Rödl 1987); analog of #534 in set-theoretic framework"
+        "relationship": "Studies maximum family size avoiding r-intersections (Frankl-R\u00f6dl 1987); analog of #534 in set-theoretic framework"
       }
     ],
     "originalContributions": [
@@ -84,7 +84,7 @@
       "evenMultiplesSharing construction with intersecting axiom",
       "OriginalConjecture statement and original_conjecture_false axiom",
       "counterexample_exists axiom",
-      "optimalFamily definition with 2qᵢ and product terms",
+      "optimalFamily definition with 2q\u1d62 and product terms",
       "ahlswede_khachatrian_theorem axiom: correct characterization",
       "prime_power_case and two_times_prime_case special cases",
       "erdos_534_summary combining all main results"
@@ -94,15 +94,15 @@
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory': for a given N, find the largest subset A ⊆ {1,...,N} containing N where every pair of distinct elements shares a common factor greater than 1. The problem is an arithmetic analog of the classical Erdős-Ko-Rado theorem (1961), which characterizes maximum intersecting families of k-element subsets of an n-set. Here, 'intersecting' is replaced by the arithmetic condition gcd(a,b) > 1.\n\nErdős and Graham conjectured that the maximum is attained either by the multiples of the smallest prime factor p of N (giving ⌊N/p⌋ elements) or by the even numbers sharing a factor with N. This conjecture was natural: for prime powers N = p^k, multiples of p clearly give p^(k-1), and for even N with many small prime factors, the even-multiples construction performs well.\n\nHowever, Ahlswede and Khachatrian found a counterexample in 1992, showing that for certain N with multiple small prime factors, a more sophisticated construction beats both candidates. They then proved the complete characterization in 1996: the optimal family uses divisibility by elements from the set {2q₁,...,2qⱼ, q₁⋯qⱼ} where q₁ < ⋯ < qⱼ are the first j prime factors of N, and j is chosen optimally. This parallels their celebrated 'Complete Intersection Theorem' for Erdős-Ko-Rado problems, which similarly revealed that naive conjectures about extremal intersecting families can fail.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nWhat is the largest $A \\subseteq \\{1, \\ldots, N\\}$ containing $N$ such that $\\gcd(a, b) > 1$ for all distinct $a, b \\in A$?\n\n**Answer:** For $N = q_1^{k_1} \\cdots q_r^{k_r}$ (distinct primes $q_1 < \\cdots < q_r$), the maximum is achieved by integers that are multiples of at least one of $\\{2q_1, \\ldots, 2q_j, q_1 \\cdots q_j\\}$ for some optimal $1 \\leq j \\leq r$.\n\n**Note:** The original Erdős-Graham conjecture was wrong!",
-    "text": "What is the largest subset A ⊆ {1,...,N} containing N such that gcd(a,b) > 1 for all distinct a,b ∈ A? Solved by Ahlswede-Khachatrian (1996) who proved the optimal sets use multiples of {2q₁,...,2qⱼ, q₁⋯qⱼ}.",
-    "proofStrategy": "The formalization proceeds in five stages:\n\n1. **Definitions**: interval, IsGCDIntersecting, ContainsN, maxGCDIntersecting — the basic framework for stating the extremal problem.\n\n2. **Simple constructions**: multiplesOfSmallestPrime and evenMultiplesSharing, with axioms for their GCD-intersecting property and sizes — the two candidates from the original conjecture.\n\n3. **Disproved conjecture**: OriginalConjecture is stated and axiomatized as false, with counterexample_exists witnessing a specific N where the optimal family exceeds both simple candidates.\n\n4. **Correct characterization**: optimalFamily encodes the Ahlswede-Khachatrian construction, and ahlswede_khachatrian_theorem axiomatizes that this achieves the maximum for all N > 1.\n\n5. **Special cases and summary**: prime_power_case and two_times_prime_case cover the degenerate cases, and erdos_534_summary packages everything into a single proved theorem.",
+    "historicalContext": "Erd\u0151s and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory': for a given N, find the largest subset A \u2286 {1,...,N} containing N where every pair of distinct elements shares a common factor greater than 1. The problem is an arithmetic analog of the classical Erd\u0151s-Ko-Rado theorem (1961), which characterizes maximum intersecting families of k-element subsets of an n-set. Here, 'intersecting' is replaced by the arithmetic condition gcd(a,b) > 1.\n\nErd\u0151s and Graham conjectured that the maximum is attained either by the multiples of the smallest prime factor p of N (giving \u230aN/p\u230b elements) or by the even numbers sharing a factor with N. This conjecture was natural: for prime powers N = p^k, multiples of p clearly give p^(k-1), and for even N with many small prime factors, the even-multiples construction performs well.\n\nHowever, Ahlswede and Khachatrian found a counterexample in 1992, showing that for certain N with multiple small prime factors, a more sophisticated construction beats both candidates. They then proved the complete characterization in 1996: the optimal family uses divisibility by elements from the set {2q\u2081,...,2q\u2c7c, q\u2081\u22efq\u2c7c} where q\u2081 < \u22ef < q\u2c7c are the first j prime factors of N, and j is chosen optimally. This parallels their celebrated 'Complete Intersection Theorem' for Erd\u0151s-Ko-Rado problems, which similarly revealed that naive conjectures about extremal intersecting families can fail.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nWhat is the largest $A \\subseteq \\{1, \\ldots, N\\}$ containing $N$ such that $\\gcd(a, b) > 1$ for all distinct $a, b \\in A$?\n\n**Answer:** For $N = q_1^{k_1} \\cdots q_r^{k_r}$ (distinct primes $q_1 < \\cdots < q_r$), the maximum is achieved by integers that are multiples of at least one of $\\{2q_1, \\ldots, 2q_j, q_1 \\cdots q_j\\}$ for some optimal $1 \\leq j \\leq r$.\n\n**Note:** The original Erd\u0151s-Graham conjecture was wrong!",
+    "text": "What is the largest subset A \u2286 {1,...,N} containing N such that gcd(a,b) > 1 for all distinct a,b \u2208 A? Solved by Ahlswede-Khachatrian (1996) who proved the optimal sets use multiples of {2q\u2081,...,2q\u2c7c, q\u2081\u22efq\u2c7c}.",
+    "proofStrategy": "The formalization proceeds in five stages:\n\n1. **Definitions**: interval, IsGCDIntersecting, ContainsN, maxGCDIntersecting \u2014 the basic framework for stating the extremal problem.\n\n2. **Simple constructions**: multiplesOfSmallestPrime and evenMultiplesSharing, with axioms for their GCD-intersecting property and sizes \u2014 the two candidates from the original conjecture.\n\n3. **Disproved conjecture**: OriginalConjecture is stated and axiomatized as false, with counterexample_exists witnessing a specific N where the optimal family exceeds both simple candidates.\n\n4. **Correct characterization**: optimalFamily encodes the Ahlswede-Khachatrian construction, and ahlswede_khachatrian_theorem axiomatizes that this achieves the maximum for all N > 1.\n\n5. **Special cases and summary**: prime_power_case and two_times_prime_case cover the degenerate cases, and erdos_534_summary packages everything into a single proved theorem.",
     "keyInsights": [
-      "**Original conjecture disproved**: The max is NOT simply N/p or even multiples sharing factor — Ahlswede-Khachatrian (1992) found counterexamples for N with multiple small prime factors",
-      "**Optimal construction uses mixed divisibility**: The family {2q₁,...,2qⱼ, q₁⋯qⱼ} combines 'double-prime' divisors with a product divisor, a non-obvious structure",
-      "**Trade-off in optimal j**: Larger j gives more 2qᵢ terms (each capturing many even multiples of qᵢ) but makes q₁⋯qⱼ larger (fewer multiples); the balance depends on N's arithmetic structure",
-      "**EKR connection**: This is an arithmetic Erdős-Ko-Rado problem — the shift from set intersection to gcd intersection preserves the extremal flavor but changes the answer",
+      "**Original conjecture disproved**: The max is NOT simply N/p or even multiples sharing factor \u2014 Ahlswede-Khachatrian (1992) found counterexamples for N with multiple small prime factors",
+      "**Optimal construction uses mixed divisibility**: The family {2q\u2081,...,2q\u2c7c, q\u2081\u22efq\u2c7c} combines 'double-prime' divisors with a product divisor, a non-obvious structure",
+      "**Trade-off in optimal j**: Larger j gives more 2q\u1d62 terms (each capturing many even multiples of q\u1d62) but makes q\u2081\u22efq\u2c7c larger (fewer multiples); the balance depends on N's arithmetic structure",
+      "**EKR connection**: This is an arithmetic Erd\u0151s-Ko-Rado problem \u2014 the shift from set intersection to gcd intersection preserves the extremal flavor but changes the answer",
       "**Prime powers are degenerate**: For N = p^k with only one prime factor, the answer p^(k-1) is trivial; the interesting structure emerges with multiple prime factors"
     ],
     "prerequisites": [
@@ -114,7 +114,7 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Defines interval N = {1,...,N}, IsGCDIntersecting (pairwise gcd > 1), ContainsN (N ∈ A), and maxGCDIntersecting (supremum of valid set sizes).",
+      "summary": "Defines interval N = {1,...,N}, IsGCDIntersecting (pairwise gcd > 1), ContainsN (N \u2208 A), and maxGCDIntersecting (supremum of valid set sizes).",
       "startLine": 35,
       "endLine": 50
     },
@@ -128,14 +128,14 @@
     {
       "id": "original-conjecture",
       "title": "Original Conjecture (WRONG)",
-      "summary": "States the Erdős-Graham conjecture (max = max(N/p, |evenMultiplesSharing|)), axiomatizes it as false, and provides counterexample_exists.",
+      "summary": "States the Erd\u0151s-Graham conjecture (max = max(N/p, |evenMultiplesSharing|)), axiomatizes it as false, and provides counterexample_exists.",
       "startLine": 75,
       "endLine": 89
     },
     {
       "id": "correct-characterization",
       "title": "Correct Characterization (Ahlswede-Khachatrian 1996)",
-      "summary": "Defines optimalFamily using {2q₁,...,2qⱼ, q₁⋯qⱼ} construction and axiomatizes ahlswede_khachatrian_theorem: the maximum equals the optimal family size.",
+      "summary": "Defines optimalFamily using {2q\u2081,...,2q\u2c7c, q\u2081\u22efq\u2c7c} construction and axiomatizes ahlswede_khachatrian_theorem: the maximum equals the optimal family size.",
       "startLine": 91,
       "endLine": 108
     },
@@ -155,11 +155,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #534 is SOLVED. The original Erdős-Graham conjecture was wrong — Ahlswede and Khachatrian found a counterexample in 1992 and proved the correct characterization in 1996. For N = q₁^k₁⋯qᵣ^kᵣ, the maximum GCD-intersecting set containing N uses multiples of elements from {2q₁,...,2qⱼ, q₁⋯qⱼ} for the optimal j. The formalization captures all three stages: the disproved conjecture, the counterexample, and the correct theorem.",
+    "summary": "Erd\u0151s Problem #534 is SOLVED. The original Erd\u0151s-Graham conjecture was wrong \u2014 Ahlswede and Khachatrian found a counterexample in 1992 and proved the correct characterization in 1996. For N = q\u2081^k\u2081\u22efq\u1d63^k\u1d63, the maximum GCD-intersecting set containing N uses multiples of elements from {2q\u2081,...,2q\u2c7c, q\u2081\u22efq\u2c7c} for the optimal j. The formalization captures all three stages: the disproved conjecture, the counterexample, and the correct theorem.",
     "implications": "**Theoretical Significance**: This problem sits at the intersection of extremal combinatorics and number theory. The Ahlswede-Khachatrian solution exemplifies a pattern seen in several EKR-type problems: natural first conjectures about extremal sets can fail, and the true optimizers have richer algebraic structure.\n\nThe same authors later proved the Complete Intersection Theorem for classical EKR, which similarly revealed that naive conjectures about maximum t-intersecting families were wrong. The connection to OEIS sequences A387543, A387698 provides computational access to the extremal values.",
     "openQuestions": [
       "Efficient algorithms to compute the optimal j for a given N",
-      "Weighted generalizations: maximize ∑f(a) over GCD-intersecting sets for various weight functions f",
+      "Weighted generalizations: maximize \u2211f(a) over GCD-intersecting sets for various weight functions f",
       "Higher-dimensional analogs: GCD-intersecting subsets of lattice points",
       "Connections to coding theory: GCD-intersecting codes over integer alphabets"
     ]
@@ -190,21 +190,55 @@
       "venue": "European Journal of Combinatorics"
     },
     {
-      "title": "Counterexample to the Erdős-Graham conjecture on GCD-intersecting sets",
+      "title": "Counterexample to the Erd\u0151s-Graham conjecture on GCD-intersecting sets",
       "author": "Rudolf Ahlswede, Levon H. Khachatrian",
       "year": 1992,
       "venue": "Journal of Combinatorial Theory, Series A"
     },
     {
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
-      "author": "Paul Erdős, Ronald L. Graham",
+      "author": "Paul Erd\u0151s, Ronald L. Graham",
       "year": 1980,
-      "venue": "Monographies de L'Enseignement Mathématique"
+      "venue": "Monographies de L'Enseignement Math\u00e9matique"
     },
     {
-      "title": "Erdős Problems",
+      "title": "Erd\u0151s Problems",
       "author": "Thomas Bloom",
       "url": "https://erdosproblems.com/534"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-535",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, gcd, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-844",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, number-theoretic, and intersecting-families themes"
+    },
+    {
+      "targetId": "erdos-1062",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-168",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-301",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-535",
+    "erdos-844",
+    "erdos-1062",
+    "erdos-168",
+    "erdos-301"
   ]
 }

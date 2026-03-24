@@ -2,7 +2,7 @@
   "id": "erdos-603",
   "title": "Erdos Problem #603: Set Family Colorings with Intersection Restrictions",
   "slug": "erdos-603",
-  "description": "Find the smallest cardinal C such that any family of countably infinite sets with |A_i ∩ A_j| != 2 can be colored with C colors so no set is monochromatic.",
+  "description": "Find the smallest cardinal C such that any family of countably infinite sets with |A_i \u2229 A_j| != 2 can be colored with C colors so no set is monochromatic.",
   "meta": {
     "author": "Erdos/Komjath",
     "sourceUrl": "https://erdosproblems.com/603",
@@ -41,7 +41,7 @@
     ],
     "originalContributions": [
       "IsCountablyInfiniteFamily definition: family of countably infinite sets",
-      "IntersectionNot2 definition: |A_i ∩ A_j| != 2 constraint",
+      "IntersectionNot2 definition: |A_i \u2229 A_j| != 2 constraint",
       "IsValidFamily definition: combined constraints",
       "IsMonochromatic definition: all elements same color",
       "IsValidColoring definition: no monochromatic sets",
@@ -68,16 +68,16 @@
     "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #603 originates from Péter Komjáth and was recorded in [Er87], Erdős's 1987 problem compilation. Komjáth, a leading Hungarian combinatorialist working in set-theoretic combinatorics, proposed this as a natural extension of his own theorem: for families of countably infinite sets with pairwise intersection size $\\neq 1$, exactly $\\aleph_0$ colors suffice to avoid monochromatic sets. The $\\neq 2$ variant remains open and is surprisingly resistant to the same techniques.\n\nThe problem sits at the intersection of infinite combinatorics and hypergraph coloring theory. In finite combinatorics, the chromatic number of hypergraphs with restricted edge intersections is well-studied — the Erdős–Ko–Rado theorem (1961) and the Sunflower Lemma (Erdős and Rado, 1960) are foundational results in this area. The infinite setting introduces cardinal arithmetic complications: the answer could be any finite number, $\\aleph_0$, or conceivably larger. The contrast between the $\\neq 1$ case (solved, $C = \\aleph_0$) and the $\\neq 2$ case (open) illustrates how sensitive these problems are to the exact intersection constraint.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet (A_i) be a family of countably infinite sets such that |A_i ∩ A_j| != 2 for all i != j.\n\nFind the smallest cardinal C such that the union of all A_i can always be colored with at most C colors so that no A_i is monochromatic.\n\n**Related Result:**\nFor |A_i ∩ A_j| != 1, Komjath showed aleph_0 colors suffice.",
-    "text": "Find the smallest cardinal C such that any family of countably infinite sets with |A_i ∩ A_j| != 2 can be colored with C colors so no set is monochromatic.",
+    "historicalContext": "Erd\u0151s Problem #603 originates from P\u00e9ter Komj\u00e1th and was recorded in [Er87], Erd\u0151s's 1987 problem compilation. Komj\u00e1th, a leading Hungarian combinatorialist working in set-theoretic combinatorics, proposed this as a natural extension of his own theorem: for families of countably infinite sets with pairwise intersection size $\\neq 1$, exactly $\\aleph_0$ colors suffice to avoid monochromatic sets. The $\\neq 2$ variant remains open and is surprisingly resistant to the same techniques.\n\nThe problem sits at the intersection of infinite combinatorics and hypergraph coloring theory. In finite combinatorics, the chromatic number of hypergraphs with restricted edge intersections is well-studied \u2014 the Erd\u0151s\u2013Ko\u2013Rado theorem (1961) and the Sunflower Lemma (Erd\u0151s and Rado, 1960) are foundational results in this area. The infinite setting introduces cardinal arithmetic complications: the answer could be any finite number, $\\aleph_0$, or conceivably larger. The contrast between the $\\neq 1$ case (solved, $C = \\aleph_0$) and the $\\neq 2$ case (open) illustrates how sensitive these problems are to the exact intersection constraint.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet (A_i) be a family of countably infinite sets such that |A_i \u2229 A_j| != 2 for all i != j.\n\nFind the smallest cardinal C such that the union of all A_i can always be colored with at most C colors so that no A_i is monochromatic.\n\n**Related Result:**\nFor |A_i \u2229 A_j| != 1, Komjath showed aleph_0 colors suffice.",
+    "text": "Find the smallest cardinal C such that any family of countably infinite sets with |A_i \u2229 A_j| != 2 can be colored with C colors so no set is monochromatic.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Families:** Define IsCountablyInfiniteFamily and intersection constraints\n\n2. **Colorings:** Define IsMonochromatic and IsValidColoring\n\n3. **Chromatic Number:** SufficientColors and chromaticNumber definitions\n\n4. **Komjath's Result:** Axiomatize the != 1 case\n\n5. **Bounds:** Lower bound 2, upper bound aleph_0\n\n6. **Hypergraph View:** Alternative formulation via hypergraphs",
     "keyInsights": [
-      "**Intersection sensitivity:** The jump from $|A_i \\cap A_j| \\neq 1$ (solved, $C = \\aleph_0$) to $\\neq 2$ (open) shows that the exact forbidden intersection size profoundly affects the chromatic structure — a phenomenon with no finite analogue",
+      "**Intersection sensitivity:** The jump from $|A_i \\cap A_j| \\neq 1$ (solved, $C = \\aleph_0$) to $\\neq 2$ (open) shows that the exact forbidden intersection size profoundly affects the chromatic structure \u2014 a phenomenon with no finite analogue",
       "**Division-free formulation:** The condition $|A_i \\cap A_j| \\neq 2$ uses `Set.ncard` (natural number cardinality), avoiding the need for finiteness hypotheses on intersections, since `ncard` returns 0 for infinite sets",
-      "**Lower bound technique:** The lower bound proof argues that with $< 2$ colors (i.e., 0 or 1), any infinite set $A_i$ is automatically monochromatic — a pigeonhole argument on cardinal arithmetic",
-      "**Hypergraph reformulation:** Recasting as weak chromatic number of a hypergraph (vertices = $\\bigcup A_i$, hyperedges = $\\{A_i\\}$) connects to the rich theory of Property B (2-colorability of hypergraphs), studied by Erdős and Hajnal",
-      "**Cardinal dichotomy:** The key open question reduces to a dichotomy: either some finite $n$ suffices for all valid families (`CanDoBetterThanAleph0`), or no finite number works (`Aleph0Necessary`) — there is no middle ground"
+      "**Lower bound technique:** The lower bound proof argues that with $< 2$ colors (i.e., 0 or 1), any infinite set $A_i$ is automatically monochromatic \u2014 a pigeonhole argument on cardinal arithmetic",
+      "**Hypergraph reformulation:** Recasting as weak chromatic number of a hypergraph (vertices = $\\bigcup A_i$, hyperedges = $\\{A_i\\}$) connects to the rich theory of Property B (2-colorability of hypergraphs), studied by Erd\u0151s and Hajnal",
+      "**Cardinal dichotomy:** The key open question reduces to a dichotomy: either some finite $n$ suffices for all valid families (`CanDoBetterThanAleph0`), or no finite number works (`Aleph0Necessary`) \u2014 there is no middle ground"
     ],
     "prerequisites": [
       "Basic set theory (countable and infinite sets)",
@@ -109,7 +109,7 @@
       "summary": "IntersectionNot1, komjath_not1",
       "startLine": 80,
       "endLine": 96,
-      "mathContext": "Komjáth's theorem: if $|A_i \\cap A_j| \\neq 1$ for all $i \\neq j$, then $\\aleph_0$ colors suffice. Axiomatized here as `komjath_not1` since the proof requires deep set-theoretic arguments."
+      "mathContext": "Komj\u00e1th's theorem: if $|A_i \\cap A_j| \\neq 1$ for all $i \\neq j$, then $\\aleph_0$ colors suffice. Axiomatized here as `komjath_not1` since the proof requires deep set-theoretic arguments."
     },
     {
       "id": "bounds",
@@ -133,7 +133,7 @@
       "summary": "disjoint_2_colors, SatisfiesBoth, both_constraints",
       "startLine": 148,
       "endLine": 169,
-      "mathContext": "Disjoint families ($A_i \\cap A_j = \\emptyset$ for $i \\neq j$) need only 2 colors. Families satisfying both $\\neq 1$ and $\\neq 2$ constraints fall under Komjáth's theorem, giving $\\aleph_0$ as an upper bound."
+      "mathContext": "Disjoint families ($A_i \\cap A_j = \\emptyset$ for $i \\neq j$) need only 2 colors. Families satisfying both $\\neq 1$ and $\\neq 2$ constraints fall under Komj\u00e1th's theorem, giving $\\aleph_0$ as an upper bound."
     },
     {
       "id": "status",
@@ -151,7 +151,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdos Problem #603 asks for the smallest cardinal C such that any family of countably infinite sets with |A_i ∩ A_j| != 2 can be properly colored. Known bounds: 2 <= C <= aleph_0. The problem remains OPEN.",
+    "summary": "Erdos Problem #603 asks for the smallest cardinal C such that any family of countably infinite sets with |A_i \u2229 A_j| != 2 can be properly colored. Known bounds: 2 <= C <= aleph_0. The problem remains OPEN.",
     "implications": "Determining C would advance understanding of hypergraph coloring and set-theoretic combinatorics. The contrast with Komjath's result (for != 1) suggests the exact intersection size matters significantly.",
     "openQuestions": [
       "Can finite colors suffice for the != 2 constraint?",
@@ -163,30 +163,31 @@
   },
   "references": [
     {
-      "authors": "Komjáth, Péter",
+      "authors": "Komj\u00e1th, P\u00e9ter",
       "title": "Set systems with restricted intersections",
       "year": "2003",
       "venue": "Combinatorica",
-      "note": "Solved the |A_i ∩ A_j| ≠ 1 case; provides contrast with the ≠ 2 version"
+      "note": "Solved the |A_i \u2229 A_j| \u2260 1 case; provides contrast with the \u2260 2 version"
     },
     {
-      "authors": "Erdős, Paul",
+      "authors": "Erd\u0151s, Paul",
       "title": "Some problems and results in combinatorial number theory",
       "year": "1987",
-      "note": "[Er87] — The problem compilation where #603 was recorded"
+      "note": "[Er87] \u2014 The problem compilation where #603 was recorded"
     },
     {
-      "authors": "Erdős, Paul; Rado, Richard",
+      "authors": "Erd\u0151s, Paul; Rado, Richard",
       "title": "Intersection theorems for systems of sets",
       "year": "1960",
       "venue": "Journal of the London Mathematical Society",
-      "note": "Sunflower Lemma — foundational result on set families with controlled intersections"
+      "note": "Sunflower Lemma \u2014 foundational result on set families with controlled intersections"
     }
   ],
   "crossReferences": [
     {
-      "target": "ramseys-theorem",
-      "context": "Both concern coloring/partition problems: Ramsey theory partitions edges, #603 partitions hypergraph vertices (set families) avoiding intersection conditions"
+      "context": "Both concern coloring/partition problems: Ramsey theory partitions edges, #603 partitions hypergraph vertices (set families) avoiding intersection conditions",
+      "targetId": "ramseys-theorem",
+      "description": "Related entry"
     }
   ],
   "relatedProofs": [

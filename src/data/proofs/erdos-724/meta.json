@@ -1,10 +1,10 @@
 {
   "id": "erdos-724",
-  "title": "Erdős Problem #724: Mutually Orthogonal Latin Squares",
+  "title": "Erd\u0151s Problem #724: Mutually Orthogonal Latin Squares",
   "slug": "erdos-724",
-  "description": "Is f(n) ≫ n^(1/2) where f(n) is the maximum number of mutually orthogonal Latin squares of order n?",
+  "description": "Is f(n) \u226b n^(1/2) where f(n) is the maximum number of mutually orthogonal Latin squares of order n?",
   "meta": {
-    "author": "Erdős (conjecture), Beth (1983, best bound)",
+    "author": "Erd\u0151s (conjecture), Beth (1983, best bound)",
     "sourceUrl": "https://erdosproblems.com/724",
     "date": "",
     "status": "axiomatized",
@@ -40,7 +40,7 @@
         "module": "Mathlib.Data.Fin.Basic"
       },
       {
-        "theorem": "ℕ∞",
+        "theorem": "\u2115\u221e",
         "description": "Extended natural numbers with infinity",
         "module": "Mathlib.Order.BoundedOrder.Basic"
       }
@@ -50,13 +50,13 @@
       "AreOrthogonal definition: bijection of superimposed pairs",
       "MutuallyOrthogonal definition: pairwise orthogonality",
       "maxMOLS function f(n): supremum over finite MOLS sets",
-      "mols_upper_bound axiom: f(n) ≤ n - 1",
+      "mols_upper_bound axiom: f(n) \u2264 n - 1",
       "mols_prime_power axiom: f(p^k) = p^k - 1",
-      "bose_parker_shrikhande axiom: f(n) ≥ 2 for n ≥ 7",
-      "chowla_erdos_straus axiom: f(n) ≫ n^(1/91)",
-      "wilson_1974 axiom: f(n) ≫ n^(1/17)",
-      "beth_1983 axiom: f(n) ≫ n^(1/14.8)",
-      "erdos_724_conjecture definition: f(n) ≫ n^(1/2)",
+      "bose_parker_shrikhande axiom: f(n) \u2265 2 for n \u2265 7",
+      "chowla_erdos_straus axiom: f(n) \u226b n^(1/91)",
+      "wilson_1974 axiom: f(n) \u226b n^(1/17)",
+      "beth_1983 axiom: f(n) \u226b n^(1/14.8)",
+      "erdos_724_conjecture definition: f(n) \u226b n^(1/2)",
       "Concrete MOLS examples for order 3",
       "erdos_724_status theorem: summary of known bounds"
     ],
@@ -65,18 +65,18 @@
     "assumptions": "17 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #724: Mutually Orthogonal Latin Squares**\n\nThis problem concerns the growth rate of f(n), the maximum number of mutually orthogonal Latin squares (MOLS) of order n. Latin squares have been studied since Euler's time, and MOLS have deep connections to finite geometry, coding theory, and experimental design.\n\n**Historical Milestones:**\n- **Euler (1782)**: Conjectured f(n) = 1 for n ≡ 2 (mod 4), meaning no two orthogonal Latin squares exist for these orders\n- **Bose, Parker, Shrikhande (1960)**: Disproved Euler's conjecture by showing f(n) ≥ 2 for all n ≥ 7\n- **Chowla, Erdős, Straus (1960)**: Proved f(n) ≫ n^(1/91), establishing the first polynomial lower bound\n- **Wilson (1974)**: Improved to f(n) ≫ n^(1/17)\n- **Beth (1983)**: Current best bound f(n) ≫ n^(1/14.8)\n\n**Mathematical Significance:**\nMOLS are equivalent to several important structures: affine planes, projective planes, transversal designs, and certain error-correcting codes. The maximum f(n) = n - 1 is achieved exactly when n is a prime power, corresponding to the existence of a projective plane of order n.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet $f(n)$ denote the maximum number of mutually orthogonal Latin squares of order $n$. Is it true that\n$$f(n) \\gg n^{1/2}?$$\n\nIn other words, does there exist a constant $C > 0$ such that $f(n) \\geq C \\cdot n^{1/2}$ for all sufficiently large $n$?\n\n**Status: OPEN**\n\n**Known Bounds:**\n- Upper bound: $f(n) \\leq n - 1$ (classical, tight for prime powers)\n- Lower bound: $f(n) \\gg n^{1/14.8}$ (Beth, 1983)\n\nThe gap between the conjectured exponent 1/2 ≈ 0.5 and the best known 1/14.8 ≈ 0.068 is substantial.",
-    "text": "Is f(n) ≫ n^(1/2) where f(n) is the maximum number of mutually orthogonal Latin squares of order n?",
-    "proofStrategy": "**Formalization Approach**\n\nSince this is an open problem, we formalize:\n\n1. **Definitions:** Latin squares via row/column bijections, orthogonality via pair bijection, and the MOLS function f(n) as a supremum\n\n2. **Known Results:** Axiomatize the upper bound (f(n) ≤ n-1), prime power equality (f(p^k) = p^k-1), and the Bose-Parker-Shrikhande theorem (f(n) ≥ 2 for n ≥ 7)\n\n3. **Progress:** Axiomatize the sequence of lower bound improvements by Chowla-Erdős-Straus, Wilson, and Beth\n\n4. **Conjecture:** State Erdős's conjecture as a Prop definition\n\n5. **Examples:** Provide concrete MOLS constructions for small orders\n\n6. **Connections:** Include the relationship to projective planes",
+    "historicalContext": "**Erd\u0151s Problem #724: Mutually Orthogonal Latin Squares**\n\nThis problem concerns the growth rate of f(n), the maximum number of mutually orthogonal Latin squares (MOLS) of order n. Latin squares have been studied since Euler's time, and MOLS have deep connections to finite geometry, coding theory, and experimental design.\n\n**Historical Milestones:**\n- **Euler (1782)**: Conjectured f(n) = 1 for n \u2261 2 (mod 4), meaning no two orthogonal Latin squares exist for these orders\n- **Bose, Parker, Shrikhande (1960)**: Disproved Euler's conjecture by showing f(n) \u2265 2 for all n \u2265 7\n- **Chowla, Erd\u0151s, Straus (1960)**: Proved f(n) \u226b n^(1/91), establishing the first polynomial lower bound\n- **Wilson (1974)**: Improved to f(n) \u226b n^(1/17)\n- **Beth (1983)**: Current best bound f(n) \u226b n^(1/14.8)\n\n**Mathematical Significance:**\nMOLS are equivalent to several important structures: affine planes, projective planes, transversal designs, and certain error-correcting codes. The maximum f(n) = n - 1 is achieved exactly when n is a prime power, corresponding to the existence of a projective plane of order n.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $f(n)$ denote the maximum number of mutually orthogonal Latin squares of order $n$. Is it true that\n$$f(n) \\gg n^{1/2}?$$\n\nIn other words, does there exist a constant $C > 0$ such that $f(n) \\geq C \\cdot n^{1/2}$ for all sufficiently large $n$?\n\n**Status: OPEN**\n\n**Known Bounds:**\n- Upper bound: $f(n) \\leq n - 1$ (classical, tight for prime powers)\n- Lower bound: $f(n) \\gg n^{1/14.8}$ (Beth, 1983)\n\nThe gap between the conjectured exponent 1/2 \u2248 0.5 and the best known 1/14.8 \u2248 0.068 is substantial.",
+    "text": "Is f(n) \u226b n^(1/2) where f(n) is the maximum number of mutually orthogonal Latin squares of order n?",
+    "proofStrategy": "**Formalization Approach**\n\nSince this is an open problem, we formalize:\n\n1. **Definitions:** Latin squares via row/column bijections, orthogonality via pair bijection, and the MOLS function f(n) as a supremum\n\n2. **Known Results:** Axiomatize the upper bound (f(n) \u2264 n-1), prime power equality (f(p^k) = p^k-1), and the Bose-Parker-Shrikhande theorem (f(n) \u2265 2 for n \u2265 7)\n\n3. **Progress:** Axiomatize the sequence of lower bound improvements by Chowla-Erd\u0151s-Straus, Wilson, and Beth\n\n4. **Conjecture:** State Erd\u0151s's conjecture as a Prop definition\n\n5. **Examples:** Provide concrete MOLS constructions for small orders\n\n6. **Connections:** Include the relationship to projective planes",
     "keyInsights": [
-      "**Latin Square**: An n×n array with n symbols, each appearing exactly once in each row and column",
-      "**Orthogonal Pair**: Two Latin squares L, M are orthogonal if superimposing them gives all n² distinct pairs",
+      "**Latin Square**: An n\u00d7n array with n symbols, each appearing exactly once in each row and column",
+      "**Orthogonal Pair**: Two Latin squares L, M are orthogonal if superimposing them gives all n\u00b2 distinct pairs",
       "**MOLS Function f(n)**: Maximum size of a set of pairwise orthogonal Latin squares of order n",
-      "**Upper Bound f(n) ≤ n-1**: Classical result; achieved iff a projective plane of order n exists",
-      "**Euler's Conjecture**: f(n) = 1 for n ≡ 2 (mod 4) — famously disproved in 1960",
+      "**Upper Bound f(n) \u2264 n-1**: Classical result; achieved iff a projective plane of order n exists",
+      "**Euler's Conjecture**: f(n) = 1 for n \u2261 2 (mod 4) \u2014 famously disproved in 1960",
       "**Prime Power Case**: f(p^k) = p^k - 1 via finite field constructions",
-      "**Exponent Gap**: Best known ≈ 0.068, conjectured ≈ 0.5 — a 7× difference"
+      "**Exponent Gap**: Best known \u2248 0.068, conjectured \u2248 0.5 \u2014 a 7\u00d7 difference"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -108,21 +108,21 @@
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "Upper bound f(n) ≤ n-1, prime power theorem, Bose-Parker-Shrikhande",
+      "summary": "Upper bound f(n) \u2264 n-1, prime power theorem, Bose-Parker-Shrikhande",
       "startLine": 112,
       "endLine": 152
     },
     {
       "id": "lower-bound-progress",
       "title": "Lower Bound Progress",
-      "summary": "Chowla-Erdős-Straus, Wilson, and Beth's improvements",
+      "summary": "Chowla-Erd\u0151s-Straus, Wilson, and Beth's improvements",
       "startLine": 154,
       "endLine": 184
     },
     {
       "id": "conjecture",
-      "title": "Erdős Conjecture",
-      "summary": "Statement of the conjecture f(n) ≫ n^(1/2)",
+      "title": "Erd\u0151s Conjecture",
+      "summary": "Statement of the conjecture f(n) \u226b n^(1/2)",
       "startLine": 186,
       "endLine": 205
     },
@@ -156,10 +156,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #724 asks whether f(n) ≫ n^(1/2), where f(n) is the maximum number of mutually orthogonal Latin squares of order n. The problem remains OPEN. The best known lower bound is f(n) ≫ n^(1/14.8) by Beth (1983), while the upper bound f(n) ≤ n - 1 is achieved for all prime powers. The gap between the current best exponent (~0.068) and the conjectured exponent (0.5) is substantial.",
+    "summary": "Erd\u0151s Problem #724 asks whether f(n) \u226b n^(1/2), where f(n) is the maximum number of mutually orthogonal Latin squares of order n. The problem remains OPEN. The best known lower bound is f(n) \u226b n^(1/14.8) by Beth (1983), while the upper bound f(n) \u2264 n - 1 is achieved for all prime powers. The gap between the current best exponent (~0.068) and the conjectured exponent (0.5) is substantial.",
     "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Projective Planes**: f(n) = n-1 iff a projective plane of order n exists\n\n2. **Coding Theory**: MOLS relate to error-correcting codes and Latin hypercubes\n\n**3. Experimental Design**: MOLS are fundamental for constructing orthogonal arrays\n\n4. **Finite Geometry**: The problem connects to deep questions about non-prime-power orders\n\n5. **Computational Results**: f(10) < 9 was proved by exhaustive computer search (Lam-Thiel-Swiercz).",
     "openQuestions": [
-      "Is f(n) ≫ n^(1/2)? (The main conjecture)",
+      "Is f(n) \u226b n^(1/2)? (The main conjecture)",
       "Can the exponent 1/14.8 be improved?",
       "Does a projective plane of order 12 exist? (f(12) = 11?)",
       "What is the exact value of f(10)?",
@@ -182,5 +182,39 @@
     "axiomCount": 17,
     "theoremCount": 3,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1159",
+      "relationship": "related",
+      "description": "Share projective-planes and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-21",
+      "relationship": "related",
+      "description": "Share projective-planes and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-664",
+      "relationship": "related",
+      "description": "Share projective-planes and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-665",
+      "relationship": "related",
+      "description": "Share projective-planes and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-723",
+      "relationship": "related",
+      "description": "Share projective-planes and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1159",
+    "erdos-21",
+    "erdos-664",
+    "erdos-665",
+    "erdos-723"
+  ]
 }

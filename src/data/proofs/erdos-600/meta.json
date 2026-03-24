@@ -1,10 +1,10 @@
 {
   "id": "erdos-600",
-  "title": "Erdős Problem #600: Edge-Triangle Containment Thresholds",
+  "title": "Erd\u0151s Problem #600: Edge-Triangle Containment Thresholds",
   "slug": "erdos-600",
-  "description": "Let e(n,r) be the minimal number of edges such that every triangle-covered graph on n vertices with ≥ e(n,r) edges has some edge in ≥ r triangles. Does e(n,r+1) - e(n,r) → ∞? Does e(n,r+1)/e(n,r) → 1?",
+  "description": "Let e(n,r) be the minimal number of edges such that every triangle-covered graph on n vertices with \u2265 e(n,r) edges has some edge in \u2265 r triangles. Does e(n,r+1) - e(n,r) \u2192 \u221e? Does e(n,r+1)/e(n,r) \u2192 1?",
   "meta": {
-    "author": "Erdős (1987), Ruzsa-Szemerédi (1978)",
+    "author": "Erd\u0151s (1987), Ruzsa-Szemer\u00e9di (1978)",
     "sourceUrl": "https://erdosproblems.com/600",
     "date": "1987",
     "status": "axiomatized",
@@ -55,7 +55,7 @@
       "edgeCount, IsTriangle, triangleCount definitions",
       "IsTriangleCovered, AllEdgesTriangleCovered, HasEdgeInRTriangles predicates",
       "e(n,r) threshold function via sInf",
-      "ruzsa_szemeredi axiom: e(n,r) = o(n²)",
+      "ruzsa_szemeredi axiom: e(n,r) = o(n\u00b2)",
       "Question1 and Question2 formal statements",
       "e_monotone_r and e_monotone_n monotonicity axioms",
       "questions_together proved theorem",
@@ -67,22 +67,22 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1987, building on the influential work of Ruzsa and Szemerédi from 1978 on triple systems. Their seminal paper proved that in any graph on n vertices where every edge is in at least one triangle, if the graph has o(n²) edges then one cannot guarantee that some edge is in many triangles — equivalently, e(n,r) = o(n²) for fixed r. This result is intimately connected to the triangle removal lemma, one of the cornerstones of extremal graph theory.\n\nThe problem asks two specific questions about the fine structure of the function e(n,r). Question 1 asks whether the absolute gap e(n,r+1) - e(n,r) grows without bound as n → ∞, meaning that requiring one additional triangle per edge always costs significantly more edges for large graphs. Question 2 asks whether the ratio e(n,r+1)/e(n,r) → 1, meaning that while the absolute cost may grow, the relative cost becomes negligible. If both are true, the thresholds grow at the same asymptotic rate but with unbounded absolute separation.\n\nThe known bounds place e(n,r) at roughly n²/log n from above and n^{2-o(1)} from below, leaving a significant gap even for the basic asymptotics. Both questions remain completely open. The problem connects to Turán-type extremal theory, the Szemerédi regularity lemma, and the broader study of how graph density forces local substructure.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet $e(n,r)$ be the minimal number of edges such that every graph on $n$ vertices with $\\geq e(n,r)$ edges, where each edge is in at least one triangle, must have some edge contained in $\\geq r$ triangles.\n\n**Questions:**\n1. Does $e(n, r+1) - e(n, r) \\to \\infty$ as $n \\to \\infty$?\n2. Does $e(n, r+1) / e(n, r) \\to 1$ as $n \\to \\infty$?\n\n**Status: OPEN** — Known: $e(n,r) = o(n^2)$ for fixed $r$ (Ruzsa-Szemerédi 1978).",
-    "text": "Let e(n,r) be the minimal number of edges such that every triangle-covered graph on n vertices with ≥ e(n,r) edges has some edge in ≥ r triangles. Does e(n,r+1) - e(n,r) → ∞? Does e(n,r+1)/e(n,r) → 1?",
-    "proofStrategy": "The formalization defines a custom Graph structure on Fin n and builds the edge-triangle counting framework: triangles, triangle counts per edge, and the predicates for triangle-covered graphs and high-multiplicity edges. The threshold function e(n,r) is defined via sInf. The Ruzsa-Szemerédi result is axiomatized as the main known result, and both open questions are formalized as precise limit statements using Lean's Filter.atTop. Monotonicity properties are axiomatized. The summary theorem combines subquadratic growth with both monotonicity results.",
+    "historicalContext": "Erd\u0151s posed this problem in 1987, building on the influential work of Ruzsa and Szemer\u00e9di from 1978 on triple systems. Their seminal paper proved that in any graph on n vertices where every edge is in at least one triangle, if the graph has o(n\u00b2) edges then one cannot guarantee that some edge is in many triangles \u2014 equivalently, e(n,r) = o(n\u00b2) for fixed r. This result is intimately connected to the triangle removal lemma, one of the cornerstones of extremal graph theory.\n\nThe problem asks two specific questions about the fine structure of the function e(n,r). Question 1 asks whether the absolute gap e(n,r+1) - e(n,r) grows without bound as n \u2192 \u221e, meaning that requiring one additional triangle per edge always costs significantly more edges for large graphs. Question 2 asks whether the ratio e(n,r+1)/e(n,r) \u2192 1, meaning that while the absolute cost may grow, the relative cost becomes negligible. If both are true, the thresholds grow at the same asymptotic rate but with unbounded absolute separation.\n\nThe known bounds place e(n,r) at roughly n\u00b2/log n from above and n^{2-o(1)} from below, leaving a significant gap even for the basic asymptotics. Both questions remain completely open. The problem connects to Tur\u00e1n-type extremal theory, the Szemer\u00e9di regularity lemma, and the broader study of how graph density forces local substructure.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $e(n,r)$ be the minimal number of edges such that every graph on $n$ vertices with $\\geq e(n,r)$ edges, where each edge is in at least one triangle, must have some edge contained in $\\geq r$ triangles.\n\n**Questions:**\n1. Does $e(n, r+1) - e(n, r) \\to \\infty$ as $n \\to \\infty$?\n2. Does $e(n, r+1) / e(n, r) \\to 1$ as $n \\to \\infty$?\n\n**Status: OPEN** \u2014 Known: $e(n,r) = o(n^2)$ for fixed $r$ (Ruzsa-Szemer\u00e9di 1978).",
+    "text": "Let e(n,r) be the minimal number of edges such that every triangle-covered graph on n vertices with \u2265 e(n,r) edges has some edge in \u2265 r triangles. Does e(n,r+1) - e(n,r) \u2192 \u221e? Does e(n,r+1)/e(n,r) \u2192 1?",
+    "proofStrategy": "The formalization defines a custom Graph structure on Fin n and builds the edge-triangle counting framework: triangles, triangle counts per edge, and the predicates for triangle-covered graphs and high-multiplicity edges. The threshold function e(n,r) is defined via sInf. The Ruzsa-Szemer\u00e9di result is axiomatized as the main known result, and both open questions are formalized as precise limit statements using Lean's Filter.atTop. Monotonicity properties are axiomatized. The summary theorem combines subquadratic growth with both monotonicity results.",
     "keyInsights": [
       "**e(n,r) measures edge-triangle containment thresholds:** the minimum edges in a triangle-covered graph forcing some edge to be in many triangles",
-      "**Ruzsa-Szemerédi (1978):** e(n,r) = o(n²) for fixed r, proved via the triangle removal lemma",
-      "**Question 1 (OPEN):** Does e(n,r+1) - e(n,r) → ∞? Asks if the absolute gap grows without bound",
-      "**Question 2 (OPEN):** Does e(n,r+1)/e(n,r) → 1? Asks if consecutive thresholds are asymptotically equivalent",
-      "**Known bounds:** n²/log n from above and n^{2-o(1)} from below, leaving a significant gap",
-      "**questions_together (proved):** If both questions hold, differences → ∞ but relative differences → 0"
+      "**Ruzsa-Szemer\u00e9di (1978):** e(n,r) = o(n\u00b2) for fixed r, proved via the triangle removal lemma",
+      "**Question 1 (OPEN):** Does e(n,r+1) - e(n,r) \u2192 \u221e? Asks if the absolute gap grows without bound",
+      "**Question 2 (OPEN):** Does e(n,r+1)/e(n,r) \u2192 1? Asks if consecutive thresholds are asymptotically equivalent",
+      "**Known bounds:** n\u00b2/log n from above and n^{2-o(1)} from below, leaving a significant gap",
+      "**questions_together (proved):** If both questions hold, differences \u2192 \u221e but relative differences \u2192 0"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Combinatorics (counting, extremal problems)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -109,8 +109,8 @@
     },
     {
       "id": "ruzsa-szemeredi",
-      "title": "Ruzsa-Szemerédi Result",
-      "summary": "ruzsa_szemeredi: e(n,r) = o(n²) for fixed r",
+      "title": "Ruzsa-Szemer\u00e9di Result",
+      "summary": "ruzsa_szemeredi: e(n,r) = o(n\u00b2) for fixed r",
       "startLine": 92,
       "endLine": 99
     },
@@ -144,11 +144,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #600 is OPEN. It asks two questions about the edge-triangle containment threshold e(n,r): whether consecutive differences grow unboundedly (Q1) and whether consecutive ratios approach 1 (Q2). The Ruzsa-Szemerédi result establishes subquadratic growth, and monotonicity is axiomatized. The summary theorem combines these known results.",
-    "implications": "Resolution would reveal the fine structure of extremal graph theory thresholds, connecting to the triangle removal lemma and Turán-type problems. Understanding how the threshold changes with r is fundamental to the study of triangle distribution in dense graphs.",
+    "summary": "Erd\u0151s Problem #600 is OPEN. It asks two questions about the edge-triangle containment threshold e(n,r): whether consecutive differences grow unboundedly (Q1) and whether consecutive ratios approach 1 (Q2). The Ruzsa-Szemer\u00e9di result establishes subquadratic growth, and monotonicity is axiomatized. The summary theorem combines these known results.",
+    "implications": "Resolution would reveal the fine structure of extremal graph theory thresholds, connecting to the triangle removal lemma and Tur\u00e1n-type problems. Understanding how the threshold changes with r is fundamental to the study of triangle distribution in dense graphs.",
     "openQuestions": [
-      "Does e(n, r+1) - e(n, r) → ∞ as n → ∞?",
-      "Does e(n, r+1) / e(n, r) → 1 as n → ∞?",
+      "Does e(n, r+1) - e(n, r) \u2192 \u221e as n \u2192 \u221e?",
+      "Does e(n, r+1) / e(n, r) \u2192 1 as n \u2192 \u221e?",
       "What are the exact asymptotics of e(n, r) for fixed r?"
     ]
   },
@@ -170,5 +170,39 @@
     "axiomCount": 7,
     "theoremCount": 2,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Share extremal graph-theoretic and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Share extremal graph-theoretic and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Share extremal graph-theoretic and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-59",
+      "relationship": "related",
+      "description": "Share extremal graph-theoretic and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-766",
+      "relationship": "related",
+      "description": "Share extremal graph-theoretic and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1075",
+    "erdos-1080",
+    "erdos-533",
+    "erdos-59",
+    "erdos-766"
+  ]
 }

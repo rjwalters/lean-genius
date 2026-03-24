@@ -1,8 +1,8 @@
 {
   "id": "erdos-822",
-  "title": "Erdős Problem #822: Positive Density of n + φ(n)",
+  "title": "Erd\u0151s Problem #822: Positive Density of n + \u03c6(n)",
   "slug": "erdos-822",
-  "description": "Does the set of integers expressible as n + φ(n) have positive lower density? Gabdullin, Iudelevich, and Luca proved this is true in 2024.",
+  "description": "Does the set of integers expressible as n + \u03c6(n) have positive lower density? Gabdullin, Iudelevich, and Luca proved this is true in 2024.",
   "meta": {
     "author": "Gabdullin, Iudelevich, Luca (2024)",
     "sourceUrl": "https://erdosproblems.com/822",
@@ -26,7 +26,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
-        "description": "Euler's totient function φ(n)",
+        "description": "Euler's totient function \u03c6(n)",
         "module": "Mathlib.Data.Nat.Totient"
       },
       {
@@ -41,9 +41,9 @@
       }
     ],
     "originalContributions": [
-      "Formal statement of Erdős Problem 822 in Lean 4",
+      "Formal statement of Erd\u0151s Problem 822 in Lean 4",
       "Concrete computational verification of small cases",
-      "Basic bounds on n + φ(n) values",
+      "Basic bounds on n + \u03c6(n) values",
       "Axiomatization of Gabdullin-Iudelevich-Luca density result",
       "Generalization to other arithmetic functions"
     ],
@@ -52,16 +52,16 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem 822 asks about the density of integers that can be written in the form n + φ(n), where φ is Euler's totient function. This question, posed by Erdős in 1974, connects to deep problems in analytic number theory about the distribution of values of multiplicative functions.\n\nThe totient function φ(n) counts the positive integers up to n that are relatively prime to n. For example, φ(6) = 2 since only 1 and 5 are coprime to 6. The function n + φ(n) combines n with its totient, and the question is whether \"enough\" integers can be represented this way.\n\nThis was resolved in 2024 by Gabdullin, Iudelevich, and Luca, who proved that the set {n + φ(n) : n ∈ ℕ} indeed has positive lower density. They also extended this result to other arithmetic functions including σ (sum of divisors), τ (divisor count), and ω (number of distinct prime factors).",
+    "historicalContext": "Erd\u0151s Problem 822 asks about the density of integers that can be written in the form n + \u03c6(n), where \u03c6 is Euler's totient function. This question, posed by Erd\u0151s in 1974, connects to deep problems in analytic number theory about the distribution of values of multiplicative functions.\n\nThe totient function \u03c6(n) counts the positive integers up to n that are relatively prime to n. For example, \u03c6(6) = 2 since only 1 and 5 are coprime to 6. The function n + \u03c6(n) combines n with its totient, and the question is whether \"enough\" integers can be represented this way.\n\nThis was resolved in 2024 by Gabdullin, Iudelevich, and Luca, who proved that the set {n + \u03c6(n) : n \u2208 \u2115} indeed has positive lower density. They also extended this result to other arithmetic functions including \u03c3 (sum of divisors), \u03c4 (divisor count), and \u03c9 (number of distinct prime factors).",
     "problemStatement": "Does the set of integers of the form $n + \\varphi(n)$ have positive (lower) density?\n\n$$\\text{Does } \\liminf_{N \\to \\infty} \\frac{|\\{k \\leq N : k = n + \\varphi(n) \\text{ for some } n\\}|}{N} > 0?$$\n\nThe answer is **yes**, proved by Gabdullin, Iudelevich, and Luca (2024).",
-    "text": "Does the set of integers expressible as n + φ(n) have positive lower density? Gabdullin, Iudelevich, and Luca proved this is true in 2024.",
-    "proofStrategy": "The formalization defines n + φ(n) using Mathlib's Nat.totient and captures the set of all values as a Set.range. Concrete examples are verified computationally via native_decide (e.g., 1+φ(1)=2, 3+φ(3)=5). The main density result is axiomatized since the full proof by Gabdullin-Iudelevich-Luca requires deep analytic number theory beyond current Mathlib. A generalization axiom captures that the same holds for other arithmetic functions.",
+    "text": "Does the set of integers expressible as n + \u03c6(n) have positive lower density? Gabdullin, Iudelevich, and Luca proved this is true in 2024.",
+    "proofStrategy": "The formalization defines n + \u03c6(n) using Mathlib's Nat.totient and captures the set of all values as a Set.range. Concrete examples are verified computationally via native_decide (e.g., 1+\u03c6(1)=2, 3+\u03c6(3)=5). The main density result is axiomatized since the full proof by Gabdullin-Iudelevich-Luca requires deep analytic number theory beyond current Mathlib. A generalization axiom captures that the same holds for other arithmetic functions.",
     "keyInsights": [
-      "**Euler's totient function:** φ(n) counts integers from 1 to n that are coprime to n. For prime p, φ(p) = p - 1.",
-      "**The function n + φ(n):** This always exceeds n and is at most 2n - 1 for n ≥ 2, providing natural bounds.",
-      "**Positive density:** A set S ⊆ ℕ has positive density if approximately a constant fraction of integers belong to S.",
-      "**Parity observation:** For even n ≥ 2, n + φ(n) is always even. For odd primes p, p + φ(p) = 2p-1 is odd. Both even and odd values appear.",
-      "**Related problems:** The same result holds for n + σ(n), n + τ(n), and n + ω(n), showing a general phenomenon."
+      "**Euler's totient function:** \u03c6(n) counts integers from 1 to n that are coprime to n. For prime p, \u03c6(p) = p - 1.",
+      "**The function n + \u03c6(n):** This always exceeds n and is at most 2n - 1 for n \u2265 2, providing natural bounds.",
+      "**Positive density:** A set S \u2286 \u2115 has positive density if approximately a constant fraction of integers belong to S.",
+      "**Parity observation:** For even n \u2265 2, n + \u03c6(n) is always even. For odd primes p, p + \u03c6(p) = 2p-1 is odd. Both even and odd values appear.",
+      "**Related problems:** The same result holds for n + \u03c3(n), n + \u03c4(n), and n + \u03c9(n), showing a general phenomenon."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -75,35 +75,35 @@
       "title": "Definitions",
       "startLine": 24,
       "endLine": 33,
-      "summary": "Definition of the function n + φ(n), the set of its values, and a counting function."
+      "summary": "Definition of the function n + \u03c6(n), the set of its values, and a counting function."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 35,
       "endLine": 64,
-      "summary": "Computational verification of specific values like 1+φ(1)=2, 2+φ(2)=3, etc."
+      "summary": "Computational verification of specific values like 1+\u03c6(1)=2, 2+\u03c6(2)=3, etc."
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 66,
       "endLine": 76,
-      "summary": "Lower bound n + φ(n) ≥ n and parity observation for large n."
+      "summary": "Lower bound n + \u03c6(n) \u2265 n and parity observation for large n."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 78,
       "endLine": 92,
-      "summary": "The axiom encoding the Gabdullin–Iudelevich–Luca positive density result."
+      "summary": "The axiom encoding the Gabdullin\u2013Iudelevich\u2013Luca positive density result."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "startLine": 94,
       "endLine": 106,
-      "summary": "Extension to other arithmetic functions (σ, τ)."
+      "summary": "Extension to other arithmetic functions (\u03c3, \u03c4)."
     },
     {
       "id": "summary",
@@ -114,12 +114,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem 822, which asks about the density of integers representable as n + φ(n). The affirmative answer, proved by Gabdullin, Iudelevich, and Luca in 2024, shows that a positive fraction of all integers can be written in this form.",
-    "implications": "**Theoretical Significance**: The resolution of this problem has implications for understanding the distribution of arithmetic functions.\n\nThe techniques developed connect to broader questions about how multiplicative functions behave on average. The same authors proved analogous results for other functions (σ, τ, ω), suggesting a unified phenomenon.",
+    "summary": "This formalization captures Erd\u0151s Problem 822, which asks about the density of integers representable as n + \u03c6(n). The affirmative answer, proved by Gabdullin, Iudelevich, and Luca in 2024, shows that a positive fraction of all integers can be written in this form.",
+    "implications": "**Theoretical Significance**: The resolution of this problem has implications for understanding the distribution of arithmetic functions.\n\nThe techniques developed connect to broader questions about how multiplicative functions behave on average. The same authors proved analogous results for other functions (\u03c3, \u03c4, \u03c9), suggesting a unified phenomenon.",
     "openQuestions": [
-      "What is the exact density of integers representable as n + φ(n)?",
+      "What is the exact density of integers representable as n + \u03c6(n)?",
       "Can the density be computed for n + f(n) for other arithmetic functions f?",
-      "What is the density of integers with exactly k representations as n + φ(n)?"
+      "What is the density of integers with exactly k representations as n + \u03c6(n)?"
     ]
   },
   "leanFile": {
@@ -136,5 +136,39 @@
     "axiomCount": 3,
     "theoremCount": 2,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Share totient-function, arithmetic-functions, and density themes"
+    },
+    {
+      "targetId": "erdos-415",
+      "relationship": "related",
+      "description": "Share totient-function, arithmetic-functions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-955",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1000",
+      "relationship": "related",
+      "description": "Share totient-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1003",
+      "relationship": "related",
+      "description": "Share totient-function and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1064",
+    "erdos-415",
+    "erdos-955",
+    "erdos-1000",
+    "erdos-1003"
+  ]
 }

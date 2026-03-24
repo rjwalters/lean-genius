@@ -1,10 +1,10 @@
 {
   "id": "erdos-319",
-  "title": "Erdős Problem #319: Maximum Irreducible Signed Unit-Fraction Sum",
+  "title": "Erd\u0151s Problem #319: Maximum Irreducible Signed Unit-Fraction Sum",
   "slug": "erdos-319",
-  "description": "Find max |A| for A ⊆ {1,...,N} with a signing δ : A → {±1} giving Σ δ(n)/n = 0 irreducibly. Known: |A| ≥ (1−1/e+o(1))N (Adenwalla/Croot). Open.",
+  "description": "Find max |A| for A \u2286 {1,...,N} with a signing \u03b4 : A \u2192 {\u00b11} giving \u03a3 \u03b4(n)/n = 0 irreducibly. Known: |A| \u2265 (1\u22121/e+o(1))N (Adenwalla/Croot). Open.",
   "meta": {
-    "author": "Erdős–Graham (1980)",
+    "author": "Erd\u0151s\u2013Graham (1980)",
     "sourceUrl": "https://erdosproblems.com/319",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos319Problem.lean",
@@ -40,13 +40,13 @@
       }
     ],
     "originalContributions": [
-      "Defined IsSigning: δ assigns ±1 to elements of A",
-      "Defined signedSum: Σ_{n ∈ A} δ(n)/n as a rational sum",
+      "Defined IsSigning: \u03b4 assigns \u00b11 to elements of A",
+      "Defined signedSum: \u03a3_{n \u2208 A} \u03b4(n)/n as a rational sum",
       "Defined IsIrreducibleZeroSum: sum vanishes but no proper subset vanishes",
-      "Defined maxIrreducibleSize c(N) as the supremum over A ⊆ {1,...,N}",
-      "Stated erdos_319_conjecture: c(N) ≥ (1−1/e−ε)N",
+      "Defined maxIrreducibleSize c(N) as the supremum over A \u2286 {1,...,N}",
+      "Stated erdos_319_conjecture: c(N) \u2265 (1\u22121/e\u2212\u03b5)N",
       "Stated Adenwalla lower bound using Croot's unit-fraction theorem",
-      "Stated trivial upper bound c(N) ≤ N",
+      "Stated trivial upper bound c(N) \u2264 N",
       "Axiomatised Croot's unit-fraction theorem for the construction",
       "Stated small example existence in {1,...,6}"
     ],
@@ -61,15 +61,15 @@
     "lineCount": 89
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* [ErGr80]. It asks for the largest subset $A$ of $\\{1,\\ldots,N\\}$ that supports an irreducible signed unit-fraction vanishing sum—a signing $\\delta : A \\to \\{\\pm 1\\}$ such that $\\sum_{n \\in A} \\delta(n)/n = 0$, but no proper nonempty subset of $A$ satisfies this.\n\nThe irreducibility condition is the key constraint: it means the vanishing is tight—removing any element breaks the zero sum. Without this condition, one could trivially achieve $|A| = N$ by combining independent zero sums. Irreducibility captures a notion of minimal rational dependence among the reciprocals $1/n$.\n\nAdenwalla achieved the best known lower bound $c(N) \\geq (1 - 1/e + o(1))N \\approx 0.632N$ using Croot's (2001) unit-fraction theorem. The construction takes $B \\subseteq [(1/e - o(1))N, N]$ with $\\sum_{b \\in B} 1/b = 1$ (which exists by Croot's result), then sets $A = B \\cup \\{1\\}$ with $\\delta(1) = +1$ and $\\delta(b) = -1$ for $b \\in B$, giving $\\sum \\delta(n)/n = 1 - 1 = 0$. The set $B$ has $|B| \\geq (1 - 1/e - o(1))N$ elements since all denominators are $\\geq (1/e)N$.\n\nThe gap between $(1 - 1/e)N \\approx 0.632N$ and the trivial upper bound $N$ remains open. The central question is whether $c(N) = (1 - o(1))N$ or whether there is a strict constant gap.\n\n**Status**: OPEN — The exact asymptotic constant is unknown.",
+    "historicalContext": "Erd\u0151s and Graham posed this problem in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* [ErGr80]. It asks for the largest subset $A$ of $\\{1,\\ldots,N\\}$ that supports an irreducible signed unit-fraction vanishing sum\u2014a signing $\\delta : A \\to \\{\\pm 1\\}$ such that $\\sum_{n \\in A} \\delta(n)/n = 0$, but no proper nonempty subset of $A$ satisfies this.\n\nThe irreducibility condition is the key constraint: it means the vanishing is tight\u2014removing any element breaks the zero sum. Without this condition, one could trivially achieve $|A| = N$ by combining independent zero sums. Irreducibility captures a notion of minimal rational dependence among the reciprocals $1/n$.\n\nAdenwalla achieved the best known lower bound $c(N) \\geq (1 - 1/e + o(1))N \\approx 0.632N$ using Croot's (2001) unit-fraction theorem. The construction takes $B \\subseteq [(1/e - o(1))N, N]$ with $\\sum_{b \\in B} 1/b = 1$ (which exists by Croot's result), then sets $A = B \\cup \\{1\\}$ with $\\delta(1) = +1$ and $\\delta(b) = -1$ for $b \\in B$, giving $\\sum \\delta(n)/n = 1 - 1 = 0$. The set $B$ has $|B| \\geq (1 - 1/e - o(1))N$ elements since all denominators are $\\geq (1/e)N$.\n\nThe gap between $(1 - 1/e)N \\approx 0.632N$ and the trivial upper bound $N$ remains open. The central question is whether $c(N) = (1 - o(1))N$ or whether there is a strict constant gap.\n\n**Status**: OPEN \u2014 The exact asymptotic constant is unknown.",
     "problemStatement": "**Problem (OPEN)**\n\nFind the maximum $c(N) = \\max |A|$ for $A \\subseteq \\{1,\\ldots,N\\}$ admitting $\\delta : A \\to \\{\\pm 1\\}$ with $\\sum_{n \\in A} \\delta(n)/n = 0$ and $\\sum_{n \\in A'} \\delta(n)/n \\neq 0$ for every non-empty proper subset $A' \\subsetneq A$.\n\n**Known Results:**\n- Lower bound: $c(N) \\geq (1 - 1/e + o(1))N$ (Adenwalla, using Croot 2001)\n- Upper bound: $c(N) \\leq N$ (trivial)\n\n**Open**: Determine the asymptotic constant. Is $c(N) = (1 - o(1))N$?",
-    "text": "Find max |A| for A ⊆ {1,...,N} with a signing δ : A → {±1} giving Σ δ(n)/n = 0 irreducibly. Known: |A| ≥ (1−1/e+o(1))N (Adenwalla/Croot). Open.",
-    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (90 lines) formalizes the problem with all results axiomatized:\n\n1. **Core definitions** (lines 26–46): `IsSigning A δ` asserts $\\delta(n) \\in \\{\\pm 1\\}$ for $n \\in A$. `signedSum A δ = \\sum_{n \\in A} \\delta(n)/n$ as a rational number via `Finset.sum`. `IsIrreducibleZeroSum A δ` combines signing, zero sum, and irreducibility (no proper nonempty subset sums to zero). `maxIrreducibleSize N` is the supremum of $|A|$ over `(Finset.Icc 1 N).powerset` filtered by existence of an irreducible zero sum.\n\n2. **Main conjecture** (lines 48–55): `erdos_319_conjecture` axiomatizes the lower bound $c(N) \\geq (1 - 1/e - \\varepsilon)N$ for large $N$, using `Real.exp 1` for the constant $e$.\n\n3. **Known results** (lines 57–77): `adenwalla_lower_bound` (same bound, duplicated for attribution), `trivial_upper_bound` ($c(N) \\leq N$), and `croot_unit_fraction_theorem` (every positive integer $\\leq N$ is a sum of distinct unit fractions from $\\{1,\\ldots,N\\}$).\n\n4. **Observations** (lines 79–90): `small_example` asserts existence of an irreducible zero sum in $\\{1,\\ldots,6\\}$.",
+    "text": "Find max |A| for A \u2286 {1,...,N} with a signing \u03b4 : A \u2192 {\u00b11} giving \u03a3 \u03b4(n)/n = 0 irreducibly. Known: |A| \u2265 (1\u22121/e+o(1))N (Adenwalla/Croot). Open.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (90 lines) formalizes the problem with all results axiomatized:\n\n1. **Core definitions** (lines 26\u201346): `IsSigning A \u03b4` asserts $\\delta(n) \\in \\{\\pm 1\\}$ for $n \\in A$. `signedSum A \u03b4 = \\sum_{n \\in A} \\delta(n)/n$ as a rational number via `Finset.sum`. `IsIrreducibleZeroSum A \u03b4` combines signing, zero sum, and irreducibility (no proper nonempty subset sums to zero). `maxIrreducibleSize N` is the supremum of $|A|$ over `(Finset.Icc 1 N).powerset` filtered by existence of an irreducible zero sum.\n\n2. **Main conjecture** (lines 48\u201355): `erdos_319_conjecture` axiomatizes the lower bound $c(N) \\geq (1 - 1/e - \\varepsilon)N$ for large $N$, using `Real.exp 1` for the constant $e$.\n\n3. **Known results** (lines 57\u201377): `adenwalla_lower_bound` (same bound, duplicated for attribution), `trivial_upper_bound` ($c(N) \\leq N$), and `croot_unit_fraction_theorem` (every positive integer $\\leq N$ is a sum of distinct unit fractions from $\\{1,\\ldots,N\\}$).\n\n4. **Observations** (lines 79\u201390): `small_example` asserts existence of an irreducible zero sum in $\\{1,\\ldots,6\\}$.",
     "keyInsights": [
       "The irreducibility condition captures minimal rational dependence: $\\sum \\delta(n)/n = 0$ holds but no proper subset achieves this, meaning the reciprocals $1/n$ for $n \\in A$ are minimally $\\mathbb{Q}$-dependent with the given signs",
       "Adenwalla's construction uses Croot's theorem to find $B \\subseteq [(1/e)N, N]$ with $\\sum 1/b = 1$, then $A = B \\cup \\{1\\}$ with opposite signs, achieving $|A| \\approx (1 - 1/e)N \\approx 0.632N$",
       "The constant $1 - 1/e$ arises because denominators must lie in $[(1/e)N, N]$ for the unit-fraction sum to work, leaving an interval of length $(1 - 1/e)N$ for the set $B$",
-      "Croot's (2001) theorem that every positive integer $\\leq N$ is a sum of distinct unit fractions from $\\{1,\\ldots,N\\}$ is a deep result in the theory of Egyptian fractions, connecting Problem #319 to the broader Erdős-Graham program",
+      "Croot's (2001) theorem that every positive integer $\\leq N$ is a sum of distinct unit fractions from $\\{1,\\ldots,N\\}$ is a deep result in the theory of Egyptian fractions, connecting Problem #319 to the broader Erd\u0151s-Graham program",
       "The trivial upper bound $c(N) \\leq N$ (since $A \\subseteq \\{1,\\ldots,N\\}$) and the gap to the lower bound $(1 - 1/e)N$ leaves room for improvement in either direction"
     ],
     "prerequisites": [
@@ -84,14 +84,14 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Module docstring describing the Erdős problem, its open status, and known partial results. Imports Mathlib for number theory and combinatorics infrastructure."
+      "summary": "Module docstring describing the Erd\u0151s problem, its open status, and known partial results. Imports Mathlib for number theory and combinatorics infrastructure."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 46,
-      "summary": "Defines `IsSigning A δ` ($\\delta(n) \\in \\{\\pm 1\\}$ for $n \\in A$), `signedSum A δ = \\sum_{n \\in A} \\delta(n)/n \\in \\mathbb{Q}$, `IsIrreducibleZeroSum A δ` (signing + zero sum + no proper nonempty zero-sum subset), and `maxIrreducibleSize N` as the supremum of $|A|$ over the powerset of $\\{1,\\ldots,N\\}$ filtered by existence of an irreducible zero sum."
+      "summary": "Defines `IsSigning A \u03b4` ($\\delta(n) \\in \\{\\pm 1\\}$ for $n \\in A$), `signedSum A \u03b4 = \\sum_{n \\in A} \\delta(n)/n \\in \\mathbb{Q}$, `IsIrreducibleZeroSum A \u03b4` (signing + zero sum + no proper nonempty zero-sum subset), and `maxIrreducibleSize N` as the supremum of $|A|$ over the powerset of $\\{1,\\ldots,N\\}$ filtered by existence of an irreducible zero sum."
     },
     {
       "id": "main-conjecture",
@@ -112,18 +112,18 @@
       "title": "Observations",
       "startLine": 79,
       "endLine": 89,
-      "summary": "Axiomatizes `small_example`: there exists an irreducible zero sum in $\\{1,\\ldots,6\\}$. Notes the connection to Egyptian fraction theory and the Erdős-Graham program on unit-fraction decompositions."
+      "summary": "Axiomatizes `small_example`: there exists an irreducible zero sum in $\\{1,\\ldots,6\\}$. Notes the connection to Egyptian fraction theory and the Erd\u0151s-Graham program on unit-fraction decompositions."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #319 with precise definitions of signing, signed unit-fraction sum, irreducibility, and the extremal function $c(N)$. The Adenwalla/Croot lower bound $(1 - 1/e + o(1))N$, the trivial upper bound $N$, and Croot's unit-fraction theorem are axiomatized. The exact asymptotic constant remains open.",
-    "implications": "1. **Egyptian Fraction Theory**: Resolving this problem would advance the Erdős-Graham program on unit-fraction decompositions, illuminating the structure of rational linear dependences among reciprocals\n\n**2. Signed Sum Structure**: The irreducibility condition captures a fundamental notion in linear algebra over $\\mathbb{Q}$: minimal dependence relations among the vectors $1/n$\n\n3. **Croot's Theorem Applications**: The connection to Croot's unit-fraction theorem demonstrates how deep results on Egyptian fractions can be leveraged for combinatorial optimization\n\n4. **Additive Combinatorics**: Understanding $c(N)$ relates to the broader question of how signed sums of structured sets (reciprocals) can be controlled.",
+    "summary": "This formalization captures Erd\u0151s Problem #319 with precise definitions of signing, signed unit-fraction sum, irreducibility, and the extremal function $c(N)$. The Adenwalla/Croot lower bound $(1 - 1/e + o(1))N$, the trivial upper bound $N$, and Croot's unit-fraction theorem are axiomatized. The exact asymptotic constant remains open.",
+    "implications": "1. **Egyptian Fraction Theory**: Resolving this problem would advance the Erd\u0151s-Graham program on unit-fraction decompositions, illuminating the structure of rational linear dependences among reciprocals\n\n**2. Signed Sum Structure**: The irreducibility condition captures a fundamental notion in linear algebra over $\\mathbb{Q}$: minimal dependence relations among the vectors $1/n$\n\n3. **Croot's Theorem Applications**: The connection to Croot's unit-fraction theorem demonstrates how deep results on Egyptian fractions can be leveraged for combinatorial optimization\n\n4. **Additive Combinatorics**: Understanding $c(N)$ relates to the broader question of how signed sums of structured sets (reciprocals) can be controlled.",
     "openQuestions": [
-      "Is c(N) = (1−o(1))N? Or is there a strict constant gap below N?",
+      "Is c(N) = (1\u2212o(1))N? Or is there a strict constant gap below N?",
       "What is the exact asymptotic constant for c(N)?",
-      "Can the Croot/Adenwalla construction be improved beyond (1−1/e)?",
+      "Can the Croot/Adenwalla construction be improved beyond (1\u22121/e)?",
       "What is the minimum |A| for an irreducible zero sum?",
-      "Does the problem change character for signed sums with target value ≠ 0?"
+      "Does the problem change character for signed sums with target value \u2260 0?"
     ]
   },
   "leanFile": {
@@ -143,7 +143,7 @@
   "references": [
     {
       "key": "ErGr80",
-      "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève.",
+      "citation": "Erd\u0151s, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Math\u00e9matique 28, Universit\u00e9 de Gen\u00e8ve.",
       "type": "book"
     },
     {
@@ -151,5 +151,39 @@
       "citation": "Croot, E.S. (2001). On a coloring conjecture about unit fractions. Annals of Mathematics, 157(2), 545-556.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Share combinatorial, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Share combinatorial, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1161",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-300",
+    "erdos-310",
+    "erdos-1005",
+    "erdos-1138",
+    "erdos-1161"
   ]
 }

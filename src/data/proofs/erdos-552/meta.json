@@ -1,10 +1,10 @@
 {
   "id": "erdos-552",
-  "title": "Erdős #552: Ramsey Number R(C₄, Sₙ)",
+  "title": "Erd\u0151s #552: Ramsey Number R(C\u2084, S\u2099)",
   "slug": "erdos-552",
-  "description": "Determine R(C₄, Sₙ) for the 4-cycle and star graph. Is R(C₄, Sₙ) ≤ n + √n - c for infinitely many n? Connected to prime gaps.",
+  "description": "Determine R(C\u2084, S\u2099) for the 4-cycle and star graph. Is R(C\u2084, S\u2099) \u2264 n + \u221an - c for infinitely many n? Connected to prime gaps.",
   "meta": {
-    "author": "Paul Erdős, S.A. Burr, R.J. Faudree, C.C. Rousseau, R.H. Schelp",
+    "author": "Paul Erd\u0151s, S.A. Burr, R.J. Faudree, C.C. Rousseau, R.H. Schelp",
     "sourceUrl": "https://erdosproblems.com/552",
     "date": "1989",
     "status": "formalized",
@@ -26,17 +26,17 @@
     "assumptions": "No axioms. 12 sorry(s) remain in the formalization."
   },
   "overview": {
-    "historicalContext": "This $100 Erdős problem was posed by Burr, Erdős, Faudree, Rousseau, and Schelp in 1989. It asks for the precise asymptotic behavior of R(C₄, Sₙ), the Ramsey number of the 4-cycle versus the star graph K_{1,n}. Parsons (1975) established the upper bound R(C₄, Sₙ) ≤ n + ⌈√n⌉ + 1 using the Kővári-Sós-Turán theorem, which bounds the number of edges in C₄-free graphs. Parsons also determined exact values when n is related to prime powers: R(C₄, S_{q²+1}) = n + q using the polarity graph of the projective plane PG(2,q), a remarkable C₄-free extremal graph with q²+q+1 vertices. BEFRS (1989) proved the lower bound R(C₄, Sₙ) ≥ n + √n - 6n^{11/40}, where the exponent 11/40 comes from Huxley's prime gap bound. The problem is deeply connected to analytic number theory: the exact value of R(C₄, Sₙ) depends on how close n is to q² for a prime power q, and finding such q requires prime gap estimates. Under Cramér's conjecture on prime gaps, the lower bound would improve to n + √n - n^{o(1)}, nearly closing the gap. All known exact values lie in {n + ⌈√n⌉, n + ⌈√n⌉ + 1}, a remarkably narrow range. The $100 prize question asks: for any c > 0, are there infinitely many n with R(C₄, Sₙ) ≤ n + √n - c?",
+    "historicalContext": "This $100 Erd\u0151s problem was posed by Burr, Erd\u0151s, Faudree, Rousseau, and Schelp in 1989. It asks for the precise asymptotic behavior of R(C\u2084, S\u2099), the Ramsey number of the 4-cycle versus the star graph K_{1,n}. Parsons (1975) established the upper bound R(C\u2084, S\u2099) \u2264 n + \u2308\u221an\u2309 + 1 using the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem, which bounds the number of edges in C\u2084-free graphs. Parsons also determined exact values when n is related to prime powers: R(C\u2084, S_{q\u00b2+1}) = n + q using the polarity graph of the projective plane PG(2,q), a remarkable C\u2084-free extremal graph with q\u00b2+q+1 vertices. BEFRS (1989) proved the lower bound R(C\u2084, S\u2099) \u2265 n + \u221an - 6n^{11/40}, where the exponent 11/40 comes from Huxley's prime gap bound. The problem is deeply connected to analytic number theory: the exact value of R(C\u2084, S\u2099) depends on how close n is to q\u00b2 for a prime power q, and finding such q requires prime gap estimates. Under Cram\u00e9r's conjecture on prime gaps, the lower bound would improve to n + \u221an - n^{o(1)}, nearly closing the gap. All known exact values lie in {n + \u2308\u221an\u2309, n + \u2308\u221an\u2309 + 1}, a remarkably narrow range. The $100 prize question asks: for any c > 0, are there infinitely many n with R(C\u2084, S\u2099) \u2264 n + \u221an - c?",
     "problemStatement": "Determine $R(C_4, S_n)$, where $C_4$ is the 4-cycle and $S_n = K_{1,n}$ is the star on $n+1$ vertices. In particular: for any $c > 0$, are there infinitely many $n$ with $R(C_4, S_n) \\leq n + \\sqrt{n} - c$?",
-    "text": "Determine R(C₄, Sₙ) for the 4-cycle and star graph. Is R(C₄, Sₙ) ≤ n + √n - c for infinitely many n? Connected to prime gaps.",
-    "proofStrategy": "The formalization defines the cycle graph $C_4$ and star graph $S_n = K_{1,n}$ using Mathlib's `SimpleGraph`, then defines the Ramsey number $R(C_4, S_n)$ via set infimum. Known bounds are formalized: Parsons's upper bound $n + \\lceil\\sqrt{n}\\rceil + 1$ and BEFRS's lower bound $n + \\sqrt{n} - 6n^{11/40}$, with their combination as asymptotic bounds. Exact values for $n = q^2 + 1$, $n = q^2$, and $n = q^2 - t$ (prime power $q$) use projective plane constructions. The Erdős question and its negation are formalized as propositions. The connection to prime gaps is captured through the primeGap function, Cramér's conjecture, and the conditional improvement theorem. The function $f(n) = R(C_4, S_n)$ is studied for monotonicity and step-size questions.",
+    "text": "Determine R(C\u2084, S\u2099) for the 4-cycle and star graph. Is R(C\u2084, S\u2099) \u2264 n + \u221an - c for infinitely many n? Connected to prime gaps.",
+    "proofStrategy": "The formalization defines the cycle graph $C_4$ and star graph $S_n = K_{1,n}$ using Mathlib's `SimpleGraph`, then defines the Ramsey number $R(C_4, S_n)$ via set infimum. Known bounds are formalized: Parsons's upper bound $n + \\lceil\\sqrt{n}\\rceil + 1$ and BEFRS's lower bound $n + \\sqrt{n} - 6n^{11/40}$, with their combination as asymptotic bounds. Exact values for $n = q^2 + 1$, $n = q^2$, and $n = q^2 - t$ (prime power $q$) use projective plane constructions. The Erd\u0151s question and its negation are formalized as propositions. The connection to prime gaps is captured through the primeGap function, Cram\u00e9r's conjecture, and the conditional improvement theorem. The function $f(n) = R(C_4, S_n)$ is studied for monotonicity and step-size questions.",
     "keyInsights": [
-      "The bounds $n + \\sqrt{n} - 6n^{11/40} \\leq R(C_4, S_n) \\leq n + \\lceil\\sqrt{n}\\rceil + 1$ leave an additive gap of $O(n^{11/40})$, which is $o(\\sqrt{n})$ — the leading term $n + \\sqrt{n}$ is determined",
+      "The bounds $n + \\sqrt{n} - 6n^{11/40} \\leq R(C_4, S_n) \\leq n + \\lceil\\sqrt{n}\\rceil + 1$ leave an additive gap of $O(n^{11/40})$, which is $o(\\sqrt{n})$ \u2014 the leading term $n + \\sqrt{n}$ is determined",
       "Exact values come from projective plane constructions: the polarity graph of PG(2,$q$) is a $C_4$-free graph on $q^2+q+1$ vertices achieving the extremal bound $\\operatorname{ex}(n, C_4) \\sim \\frac{1}{2}n^{3/2}$",
-      "The problem reduces to prime gap arithmetic: R(C₄, Sₙ) depends on how close √n is to a prime power, connecting Ramsey theory to analytic number theory",
-      "Under Cramér's conjecture (prime gaps $O((\\log p)^2)$), the lower bound improves to $n + \\sqrt{n} - n^\\varepsilon$ for any $\\varepsilon > 0$ — the gap becomes sub-polynomial",
-      "All known exact values are in $\\{n + \\lceil\\sqrt{n}\\rceil, n + \\lceil\\sqrt{n}\\rceil + 1\\}$ — a range of width 1, suggesting the true answer oscillates between two values depending on number-theoretic properties of $n$",
-      "The Erdős question ($\\$100$) asks whether $\\liminf_{n \\to \\infty}(R(C_4, S_n) - n - \\sqrt{n}) = -\\infty$, which would mean the smaller value $n + \\lceil\\sqrt{n}\\rceil$ occurs with $\\lceil\\sqrt{n}\\rceil$ arbitrarily close to $\\sqrt{n}$"
+      "The problem reduces to prime gap arithmetic: R(C\u2084, S\u2099) depends on how close \u221an is to a prime power, connecting Ramsey theory to analytic number theory",
+      "Under Cram\u00e9r's conjecture (prime gaps $O((\\log p)^2)$), the lower bound improves to $n + \\sqrt{n} - n^\\varepsilon$ for any $\\varepsilon > 0$ \u2014 the gap becomes sub-polynomial",
+      "All known exact values are in $\\{n + \\lceil\\sqrt{n}\\rceil, n + \\lceil\\sqrt{n}\\rceil + 1\\}$ \u2014 a range of width 1, suggesting the true answer oscillates between two values depending on number-theoretic properties of $n$",
+      "The Erd\u0151s question ($\\$100$) asks whether $\\liminf_{n \\to \\infty}(R(C_4, S_n) - n - \\sqrt{n}) = -\\infty$, which would mean the smaller value $n + \\lceil\\sqrt{n}\\rceil$ occurs with $\\lceil\\sqrt{n}\\rceil$ arbitrarily close to $\\sqrt{n}$"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -49,7 +49,7 @@
     {
       "id": "header",
       "title": "Problem Statement, Known Bounds, and Imports",
-      "summary": "Documentation header with problem statement, $100 prize, BEFRS/Parsons bounds, exact values for prime powers, Cramér connection, and Mathlib imports for SimpleGraph and real analysis",
+      "summary": "Documentation header with problem statement, $100 prize, BEFRS/Parsons bounds, exact values for prime powers, Cram\u00e9r connection, and Mathlib imports for SimpleGraph and real analysis",
       "startLine": 1,
       "endLine": 36
     },
@@ -70,42 +70,42 @@
     {
       "id": "bounds",
       "title": "Known Bounds: Parsons Upper and BEFRS Lower",
-      "summary": "parsons_upper_bound (1975): R ≤ n + ⌈√n⌉ + 1. befrs_lower_bound (1989): R ≥ n + √n - 6n^{11/40} via Filter.atTop. asymptotic_bounds combining both into R = n + √n + O(n^{11/40})",
+      "summary": "parsons_upper_bound (1975): R \u2264 n + \u2308\u221an\u2309 + 1. befrs_lower_bound (1989): R \u2265 n + \u221an - 6n^{11/40} via Filter.atTop. asymptotic_bounds combining both into R = n + \u221an + O(n^{11/40})",
       "startLine": 83,
       "endLine": 101
     },
     {
       "id": "exact",
       "title": "Exact Values for Prime Power Parameters",
-      "summary": "exact_value_q2_plus_1: R = n + q for n = q²+1. exact_value_q2: R = n + q + 1 for n = q². exact_value_q2_minus_t: R = q²-t+q+1 for 0 ≤ t ≤ q. All via projective plane constructions",
+      "summary": "exact_value_q2_plus_1: R = n + q for n = q\u00b2+1. exact_value_q2: R = n + q + 1 for n = q\u00b2. exact_value_q2_minus_t: R = q\u00b2-t+q+1 for 0 \u2264 t \u2264 q. All via projective plane constructions",
       "startLine": 103,
       "endLine": 119
     },
     {
       "id": "main-question",
-      "title": "The Erdős Question ($100 Prize)",
-      "summary": "ErdosQuestion: infinitely many n with R ≤ n + √n - c. ErdosConjecture: holds for ALL c > 0. ErdosConjectureNegation: eventual lower bound n + √n - c₀",
+      "title": "The Erd\u0151s Question ($100 Prize)",
+      "summary": "ErdosQuestion: infinitely many n with R \u2264 n + \u221an - c. ErdosConjecture: holds for ALL c > 0. ErdosConjectureNegation: eventual lower bound n + \u221an - c\u2080",
       "startLine": 121,
       "endLine": 134
     },
     {
       "id": "prime-gaps",
-      "title": "Prime Gap Connection and Cramér's Conjecture",
-      "summary": "primeGap function via sInf of primes exceeding p, CramerConjecture as O((log p)²), cramer_implies_better_bound: conditionally R ≥ n + √n - n^ε for any ε > 0",
+      "title": "Prime Gap Connection and Cram\u00e9r's Conjecture",
+      "summary": "primeGap function via sInf of primes exceeding p, CramerConjecture as O((log p)\u00b2), cramer_implies_better_bound: conditionally R \u2265 n + \u221an - n^\u03b5 for any \u03b5 > 0",
       "startLine": 136,
       "endLine": 153
     },
     {
       "id": "f-function",
       "title": "The Function f(n) = R(C_4, S_n)",
-      "summary": "f = R_C4_Sn convenience wrapper, ConsecutiveEqualQuestion (f(n+1) = f(n) infinitely often?), BoundedIncreaseQuestion (f(n+1) ≤ f(n) + 2?), f_eventually_increasing",
+      "summary": "f = R_C4_Sn convenience wrapper, ConsecutiveEqualQuestion (f(n+1) = f(n) infinitely often?), BoundedIncreaseQuestion (f(n+1) \u2264 f(n) + 2?), f_eventually_increasing",
       "startLine": 155,
       "endLine": 171
     },
     {
       "id": "constructions",
       "title": "Parsons Construction and Extremal Results",
-      "summary": "parsons_construction via PG(2,q) for prime q, polarityGraph definition (sorry), c4_minimum_degree Dirac-type condition, c4_star_extremal weaker bound R ≤ n + 2√n + 3",
+      "summary": "parsons_construction via PG(2,q) for prime q, polarityGraph definition (sorry), c4_minimum_degree Dirac-type condition, c4_star_extremal weaker bound R \u2264 n + 2\u221an + 3",
       "startLine": 173,
       "endLine": 197
     },
@@ -118,13 +118,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #552 on R(C₄, Sₙ) remains OPEN with a $100 prize. The 239-line formalization captures the tight bounds n + √n - 6n^{11/40} ≤ R ≤ n + ⌈√n⌉ + 1 (Parsons 1975, BEFRS 1989), exact values for n near prime power squares via projective plane constructions, the $100 prize question about whether R ≤ n + √n - c for infinitely many n, and the deep connection to prime gaps through Cramér's conjecture. The problem beautifully connects Ramsey theory, extremal graph theory (Kővári-Sós-Turán), finite geometry (projective planes), and analytic number theory (prime gaps).",
-    "implications": "**Theoretical Significance**: This problem exemplifies how Ramsey-theoretic questions can reduce to number-theoretic ones.\n\nThe polarity graph of PG(2,q) provides the extremal constructions, but the quality of these constructions depends on the distribution of prime powers — a fundamental question in number theory. The narrow gap between upper and lower bounds (width O(n^{11/40})) suggests that the exact answer involves subtle arithmetic properties of the parameter n.",
+    "summary": "Erd\u0151s Problem #552 on R(C\u2084, S\u2099) remains OPEN with a $100 prize. The 239-line formalization captures the tight bounds n + \u221an - 6n^{11/40} \u2264 R \u2264 n + \u2308\u221an\u2309 + 1 (Parsons 1975, BEFRS 1989), exact values for n near prime power squares via projective plane constructions, the $100 prize question about whether R \u2264 n + \u221an - c for infinitely many n, and the deep connection to prime gaps through Cram\u00e9r's conjecture. The problem beautifully connects Ramsey theory, extremal graph theory (K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n), finite geometry (projective planes), and analytic number theory (prime gaps).",
+    "implications": "**Theoretical Significance**: This problem exemplifies how Ramsey-theoretic questions can reduce to number-theoretic ones.\n\nThe polarity graph of PG(2,q) provides the extremal constructions, but the quality of these constructions depends on the distribution of prime powers \u2014 a fundamental question in number theory. The narrow gap between upper and lower bounds (width O(n^{11/40})) suggests that the exact answer involves subtle arithmetic properties of the parameter n.",
     "openQuestions": [
-      "For any c > 0, are there infinitely many n with R(C₄, Sₙ) ≤ n + √n - c? (The $100 Erdős prize question)",
-      "Does f(n+1) = f(n) infinitely often — can the star gain a leaf without changing the Ramsey number?",
-      "Is the answer to Erdős's question equivalent to some specific statement about prime gaps?",
-      "Can the BEFRS exponent 11/40 be improved unconditionally, without assuming Cramér's conjecture?"
+      "For any c > 0, are there infinitely many n with R(C\u2084, S\u2099) \u2264 n + \u221an - c? (The $100 Erd\u0151s prize question)",
+      "Does f(n+1) = f(n) infinitely often \u2014 can the star gain a leaf without changing the Ramsey number?",
+      "Is the answer to Erd\u0151s's question equivalent to some specific statement about prime gaps?",
+      "Can the BEFRS exponent 11/40 be improved unconditionally, without assuming Cram\u00e9r's conjecture?"
     ]
   },
   "leanFile": {
@@ -145,5 +145,39 @@
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 16
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1174",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1105",
+    "erdos-1169",
+    "erdos-1174"
+  ]
 }

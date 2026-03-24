@@ -2,9 +2,9 @@
   "id": "erdos-687",
   "title": "Covering Congruences and the Jacobsthal Function",
   "slug": "erdos-687",
-  "description": "Let Y(x) be the maximal y such that covering congruences for primes ≤ x cover [1,y]. Is Y(x) = o(x²)? $1,000 prize. Known: x·log x·... ≪ Y(x) ≪ x² (Iwaniec 1978, FGKMT 2018).",
+  "description": "Let Y(x) be the maximal y such that covering congruences for primes \u2264 x cover [1,y]. Is Y(x) = o(x\u00b2)? $1,000 prize. Known: x\u00b7log x\u00b7... \u226a Y(x) \u226a x\u00b2 (Iwaniec 1978, FGKMT 2018).",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/687",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos687Problem.lean",
@@ -26,15 +26,15 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #687 concerns the Jacobsthal function of the primorial, a central object in the theory of covering systems and prime gaps. Jacobsthal (1960) introduced g(n) as the largest gap between consecutive integers coprime to n. For the primorial P(x) = ∏_{p ≤ x} p, we have Y(x) = g(P(x)), connecting covering congruences to prime distribution. Iwaniec (1978) proved Y(x) ≪ x² using the Selberg sieve, a bound that has resisted improvement for nearly 50 years. Rankin (1938) gave the first non-trivial lower bound Y(x) ≫ x · log x · log log x · log log log log x / (log log log x)², which stood for decades. Ford, Green, Konyagin, Maynard, and Tao (2018), as part of their landmark work on large prime gaps, improved Rankin's bound by replacing the double-log denominator. Maier and Pomerance conjectured Y(x) ≪ x · (log x)^{2+o(1)}, which would nearly close the gap. Erdős offered $1,000 for proving Y(x) = o(x²), one of his largest prizes, reflecting the problem's depth and connection to the distribution of primes in arithmetic progressions, sieve methods, and the structure of smooth numbers.",
-    "problemStatement": "Is Y(x) = o(x²)? Is Y(x) ≪ x^{1+o(1)}? What is the true growth rate?",
-    "text": "Let Y(x) be the maximal y such that covering congruences for primes ≤ x cover [1,y]. Is Y(x) = o(x²)? $1,000 prize. Known: x·log x·... ≪ Y(x) ≪ x² (Iwaniec 1978, FGKMT 2018).",
-    "proofStrategy": "We formalize covering systems as functions assigning residue classes to primes ≤ x, define Y(x) via sSup of the achievable covering lengths, introduce the Jacobsthal function g(n) as sSup of maximal gaps, and state the equivalence Y(x) = g(primorial(x)). The $1,000 conjecture, Iwaniec's upper bound, the FGKMT lower bound, and the Maier–Pomerance conjecture are axiomatized. Structural properties (monotonicity, trivial lower bound) are proved from definitions.",
+    "historicalContext": "Erd\u0151s Problem #687 concerns the Jacobsthal function of the primorial, a central object in the theory of covering systems and prime gaps. Jacobsthal (1960) introduced g(n) as the largest gap between consecutive integers coprime to n. For the primorial P(x) = \u220f_{p \u2264 x} p, we have Y(x) = g(P(x)), connecting covering congruences to prime distribution. Iwaniec (1978) proved Y(x) \u226a x\u00b2 using the Selberg sieve, a bound that has resisted improvement for nearly 50 years. Rankin (1938) gave the first non-trivial lower bound Y(x) \u226b x \u00b7 log x \u00b7 log log x \u00b7 log log log log x / (log log log x)\u00b2, which stood for decades. Ford, Green, Konyagin, Maynard, and Tao (2018), as part of their landmark work on large prime gaps, improved Rankin's bound by replacing the double-log denominator. Maier and Pomerance conjectured Y(x) \u226a x \u00b7 (log x)^{2+o(1)}, which would nearly close the gap. Erd\u0151s offered $1,000 for proving Y(x) = o(x\u00b2), one of his largest prizes, reflecting the problem's depth and connection to the distribution of primes in arithmetic progressions, sieve methods, and the structure of smooth numbers.",
+    "problemStatement": "Is Y(x) = o(x\u00b2)? Is Y(x) \u226a x^{1+o(1)}? What is the true growth rate?",
+    "text": "Let Y(x) be the maximal y such that covering congruences for primes \u2264 x cover [1,y]. Is Y(x) = o(x\u00b2)? $1,000 prize. Known: x\u00b7log x\u00b7... \u226a Y(x) \u226a x\u00b2 (Iwaniec 1978, FGKMT 2018).",
+    "proofStrategy": "We formalize covering systems as functions assigning residue classes to primes \u2264 x, define Y(x) via sSup of the achievable covering lengths, introduce the Jacobsthal function g(n) as sSup of maximal gaps, and state the equivalence Y(x) = g(primorial(x)). The $1,000 conjecture, Iwaniec's upper bound, the FGKMT lower bound, and the Maier\u2013Pomerance conjecture are axiomatized. Structural properties (monotonicity, trivial lower bound) are proved from definitions.",
     "keyInsights": [
       "**Primorial connection**: $Y(x) = g(P(x))$ where $P(x) = \\prod_{p \\le x} p$ is the primorial, reducing the covering problem to the Jacobsthal function of a highly composite number",
-      "**Iwaniec's sieve bound (1978)**: $Y(x) \\ll x^2$ via the Selberg sieve — this uses the fact that the number of integers in $[1, y]$ not covered by any prime $p \\le x$ is $\\ge y \\prod_{p \\le x}(1 - 1/p) - O(x^2)$ by inclusion-exclusion",
-      "**FGKMT breakthrough (2018)**: $Y(x) \\gg x \\cdot (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, improving Rankin's 1938 bound. Their method uses Maynard–Tao weights from the proof of bounded gaps between primes",
-      "**Maier–Pomerance conjecture**: $Y(x) \\ll x \\cdot (\\log x)^{2+o(1)}$ — if true, the gap between upper and lower bounds would be only a polylogarithmic factor",
+      "**Iwaniec's sieve bound (1978)**: $Y(x) \\ll x^2$ via the Selberg sieve \u2014 this uses the fact that the number of integers in $[1, y]$ not covered by any prime $p \\le x$ is $\\ge y \\prod_{p \\le x}(1 - 1/p) - O(x^2)$ by inclusion-exclusion",
+      "**FGKMT breakthrough (2018)**: $Y(x) \\gg x \\cdot (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, improving Rankin's 1938 bound. Their method uses Maynard\u2013Tao weights from the proof of bounded gaps between primes",
+      "**Maier\u2013Pomerance conjecture**: $Y(x) \\ll x \\cdot (\\log x)^{2+o(1)}$ \u2014 if true, the gap between upper and lower bounds would be only a polylogarithmic factor",
       "**CRT periodicity**: By the Chinese Remainder Theorem, the covering pattern repeats modulo $P(x)$, so $Y(x) \\le P(x)$. The challenge is to show the actual maximum is much smaller"
     ],
     "prerequisites": [
@@ -96,7 +96,7 @@
       "title": "Part VII: Known Bounds",
       "startLine": 119,
       "endLine": 140,
-      "summary": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier–Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsilon}$."
+      "summary": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier\u2013Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsilon}$."
     },
     {
       "id": "trivial-bound",
@@ -107,12 +107,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #687 on covering congruences and the Jacobsthal function in 149 lines of Lean 4. The formalization captures Y(x) = g(primorial(x)), the $1,000 prize conjecture Y(x) = o(x²), Iwaniec's x² upper bound, the FGKMT lower bound, the Maier–Pomerance conjecture, and structural properties (monotonicity, trivial bounds). Two key properties are proved from definitions; five deep results are axiomatized.",
-    "implications": "Determining Y(x) would resolve fundamental questions about the distribution of primes in arithmetic progressions, the efficiency of sieve methods, and the structure of smooth numbers. The gap between x² and x · polylog(x) represents one of the largest open gaps in analytic number theory.",
+    "summary": "Formalizes Erd\u0151s Problem #687 on covering congruences and the Jacobsthal function in 149 lines of Lean 4. The formalization captures Y(x) = g(primorial(x)), the $1,000 prize conjecture Y(x) = o(x\u00b2), Iwaniec's x\u00b2 upper bound, the FGKMT lower bound, the Maier\u2013Pomerance conjecture, and structural properties (monotonicity, trivial bounds). Two key properties are proved from definitions; five deep results are axiomatized.",
+    "implications": "Determining Y(x) would resolve fundamental questions about the distribution of primes in arithmetic progressions, the efficiency of sieve methods, and the structure of smooth numbers. The gap between x\u00b2 and x \u00b7 polylog(x) represents one of the largest open gaps in analytic number theory.",
     "openQuestions": [
-      "Is Y(x) = o(x²)? ($1,000 prize) — even improving Iwaniec's x² to x^{2-δ} for any δ > 0 would be a breakthrough",
-      "Is the Maier–Pomerance conjecture Y(x) ≪ x(log x)^{2+o(1)} correct?",
-      "Can the FGKMT lower bound be improved further, perhaps to x · (log x)^{2-o(1)}?",
+      "Is Y(x) = o(x\u00b2)? ($1,000 prize) \u2014 even improving Iwaniec's x\u00b2 to x^{2-\u03b4} for any \u03b4 > 0 would be a breakthrough",
+      "Is the Maier\u2013Pomerance conjecture Y(x) \u226a x(log x)^{2+o(1)} correct?",
+      "Can the FGKMT lower bound be improved further, perhaps to x \u00b7 (log x)^{2-o(1)}?",
       "What is g(n) for n with many small prime factors beyond primorials?"
     ]
   },
@@ -131,5 +131,27 @@
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-688",
+      "relationship": "related",
+      "description": "Share number theory, sieve theory, and covering systems themes"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Share number theory and covering systems themes"
+    },
+    {
+      "targetId": "erdos-929",
+      "relationship": "related",
+      "description": "Share number theory and prime gaps themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-688",
+    "erdos-281",
+    "erdos-929"
+  ]
 }

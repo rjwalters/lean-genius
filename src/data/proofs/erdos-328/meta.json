@@ -1,10 +1,10 @@
 {
   "id": "erdos-328",
-  "title": "Erdős Problem #328: Partitioning Sets with Bounded Representation Function",
+  "title": "Erd\u0151s Problem #328: Partitioning Sets with Bounded Representation Function",
   "slug": "erdos-328",
-  "description": "Can sets A with bounded convolution r_A ≤ C be partitioned into pieces with strictly smaller convolution? DISPROVED: NO for all C (Nešetřil-Rödl 1985).",
+  "description": "Can sets A with bounded convolution r_A \u2264 C be partitioned into pieces with strictly smaller convolution? DISPROVED: NO for all C (Ne\u0161et\u0159il-R\u00f6dl 1985).",
   "meta": {
-    "author": "Paul Erdős, Donald Newman",
+    "author": "Paul Erd\u0151s, Donald Newman",
     "sourceUrl": "https://erdosproblems.com/328",
     "date": "1985",
     "status": "axiomatized",
@@ -50,20 +50,20 @@
     "originalContributions": [
       "representationFunction definition: r_A(n) counting ordered pairs summing to n",
       "rA definition: alternative representation function on Finsets",
-      "hasBoundedConvolution definition: r_A(n) ≤ C for all n",
-      "isSidonSet definition: all pairwise sums distinct (B₂ sets)",
+      "hasBoundedConvolution definition: r_A(n) \u2264 C for all n",
+      "isSidonSet definition: all pairwise sums distinct (B\u2082 sets)",
       "isBhSet definition: B_h sets generalization",
-      "sidon_bounded_convolution axiom: Sidon sets have r_A ≤ 2",
+      "sidon_bounded_convolution axiom: Sidon sets have r_A \u2264 2",
       "isPartition definition: formal partition of a set",
       "hasStrictlySmaller definition: partition pieces with r < C",
       "erdos_newman_question definition: formal statement of the conjecture",
-      "erdos_C3_counterexample axiom: Erdős (1980) case C = 3",
-      "erdos_C4_counterexample axiom: Erdős (1980) case C = 4",
+      "erdos_C3_counterexample axiom: Erd\u0151s (1980) case C = 3",
+      "erdos_C4_counterexample axiom: Erd\u0151s (1980) case C = 4",
       "nesetril_rodl_theorem axiom: complete negative answer for all C",
       "erdos_newman_disproved theorem: the conjecture is false",
       "nesetril_rodl_strong axiom: even allowing t to depend on A",
       "sidon_case axiom: even Sidon sets cannot be reduced",
-      "hasUniqueSums definition: r_A(n) ≤ 1 for all n",
+      "hasUniqueSums definition: r_A(n) \u2264 1 for all n",
       "unique_sums_hereditary axiom: unique sums closed under subsets",
       "isSumFree definition: sum-free sets",
       "density_bound axiom: density considerations for bounded convolution",
@@ -74,17 +74,17 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The representation function $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ is a central object in additive combinatorics, measuring how 'additively rich' a set is. Simon Sidon (1932) initiated the study of sets where all pairwise sums are distinct ($r_A \\leq 2$), now called Sidon or $B_2$ sets. Erdős and Turán (1941) proved the foundational upper bound $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets, launching a rich theory connecting additive number theory to combinatorics.\n\nProblem #328, posed by Erdős and Donald J. Newman (see [ErGr80, p.48]), asks whether bounded convolution ($r_A \\leq C$) can always be 'improved' by partitioning: can we split $A$ into $t(C)$ pieces each with $r_{A_i} < C$? Erdős (1980) [Er80e] first showed the answer is NO for $C=3,4$ and infinitely many other values. The complete resolution came from Jaroslav Nešetřil and Vojtěch Rödl (1985) [NeRo85], who proved the answer is NO for ALL $C \\geq 1$, using Ramsey-theoretic methods. Their result is even stronger: no partition works even when $t$ is allowed to depend on $A$ itself, not just on $C$. This reveals a fundamental rigidity in additive structure: the representation function cannot be reduced by any combinatorial decomposition.",
-    "problemStatement": "Suppose $A \\subseteq \\mathbb{N}$ and $C > 0$ such that $\\mathbf{1}_A * \\mathbf{1}_A(n) \\leq C$ for all $n \\in \\mathbb{N}$ (i.e., every integer has at most $C$ representations as a sum of two elements from $A$). Can $A$ be partitioned into $t = t(C)$ subsets $A_1, \\ldots, A_t$ such that $\\mathbf{1}_{A_i} * \\mathbf{1}_{A_i}(n) < C$ for all $1 \\leq i \\leq t$ and $n \\in \\mathbb{N}$?\n\n**Answer: NO** (Nešetřil-Rödl 1985). For every $C \\geq 1$, there exist sets $A$ with $r_A \\leq C$ that cannot be partitioned into ANY number of pieces with $r_{A_i} < C$.",
-    "text": "Can sets A with bounded convolution r_A ≤ C be partitioned into pieces with strictly smaller convolution? DISPROVED: NO for all C (Nešetřil-Rödl 1985).",
-    "proofStrategy": "The formalization defines the representation function $r_A(n)$, bounded convolution, Sidon/$B_h$ sets, and the partition question. Erdős's partial results for $C=3,4$ are axiomatized, followed by the full Nešetřil-Rödl theorem for all $C$. The proof of the disproof follows from the Nešetřil-Rödl theorem applied to the Erdős-Newman question. Special cases (Sidon sets, unique-sum sets) and density bounds ($|A \\cap [1,N]| \\leq C\\sqrt{N}+1$) round out the formalization.",
+    "historicalContext": "The representation function $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ is a central object in additive combinatorics, measuring how 'additively rich' a set is. Simon Sidon (1932) initiated the study of sets where all pairwise sums are distinct ($r_A \\leq 2$), now called Sidon or $B_2$ sets. Erd\u0151s and Tur\u00e1n (1941) proved the foundational upper bound $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets, launching a rich theory connecting additive number theory to combinatorics.\n\nProblem #328, posed by Erd\u0151s and Donald J. Newman (see [ErGr80, p.48]), asks whether bounded convolution ($r_A \\leq C$) can always be 'improved' by partitioning: can we split $A$ into $t(C)$ pieces each with $r_{A_i} < C$? Erd\u0151s (1980) [Er80e] first showed the answer is NO for $C=3,4$ and infinitely many other values. The complete resolution came from Jaroslav Ne\u0161et\u0159il and Vojt\u011bch R\u00f6dl (1985) [NeRo85], who proved the answer is NO for ALL $C \\geq 1$, using Ramsey-theoretic methods. Their result is even stronger: no partition works even when $t$ is allowed to depend on $A$ itself, not just on $C$. This reveals a fundamental rigidity in additive structure: the representation function cannot be reduced by any combinatorial decomposition.",
+    "problemStatement": "Suppose $A \\subseteq \\mathbb{N}$ and $C > 0$ such that $\\mathbf{1}_A * \\mathbf{1}_A(n) \\leq C$ for all $n \\in \\mathbb{N}$ (i.e., every integer has at most $C$ representations as a sum of two elements from $A$). Can $A$ be partitioned into $t = t(C)$ subsets $A_1, \\ldots, A_t$ such that $\\mathbf{1}_{A_i} * \\mathbf{1}_{A_i}(n) < C$ for all $1 \\leq i \\leq t$ and $n \\in \\mathbb{N}$?\n\n**Answer: NO** (Ne\u0161et\u0159il-R\u00f6dl 1985). For every $C \\geq 1$, there exist sets $A$ with $r_A \\leq C$ that cannot be partitioned into ANY number of pieces with $r_{A_i} < C$.",
+    "text": "Can sets A with bounded convolution r_A \u2264 C be partitioned into pieces with strictly smaller convolution? DISPROVED: NO for all C (Ne\u0161et\u0159il-R\u00f6dl 1985).",
+    "proofStrategy": "The formalization defines the representation function $r_A(n)$, bounded convolution, Sidon/$B_h$ sets, and the partition question. Erd\u0151s's partial results for $C=3,4$ are axiomatized, followed by the full Ne\u0161et\u0159il-R\u00f6dl theorem for all $C$. The proof of the disproof follows from the Ne\u0161et\u0159il-R\u00f6dl theorem applied to the Erd\u0151s-Newman question. Special cases (Sidon sets, unique-sum sets) and density bounds ($|A \\cap [1,N]| \\leq C\\sqrt{N}+1$) round out the formalization.",
     "keyInsights": [
       "**Representation function**: $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ measures additive richness; bounded $r_A$ characterizes 'thin' sets",
       "**Sidon sets as $C=2$**: Sidon ($B_2$) sets have $r_A \\leq 2$; even these cannot be partitioned into unique-sum sets ($r \\leq 1$)",
-      "**Ramsey obstruction**: The Nešetřil-Rödl proof views pairs summing to the same value as hyperedges; partition = coloring, and Ramsey theory forces monochromatic 'bad' configurations",
+      "**Ramsey obstruction**: The Ne\u0161et\u0159il-R\u00f6dl proof views pairs summing to the same value as hyperedges; partition = coloring, and Ramsey theory forces monochromatic 'bad' configurations",
       "**Strong form**: The negative answer holds even when $t$ is allowed to depend on $A$ (not just $C$), ruling out all partition-based strategies",
       "**Density bound**: Sets with $r_A \\leq C$ satisfy $|A \\cap [1,N]| = O(C\\sqrt{N})$, and the counterexamples achieve this bound",
-      "**Unique sums are hereditary**: Unlike bounded convolution, the property $r_A \\leq 1$ (unique sums) IS preserved by subsets—showing the partition obstruction is specific to $C \\geq 2$"
+      "**Unique sums are hereditary**: Unlike bounded convolution, the property $r_A \\leq 1$ (unique sums) IS preserved by subsets\u2014showing the partition obstruction is specific to $C \\geq 2$"
     ],
     "crossReferences": [
       {
@@ -104,7 +104,7 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Header documentation: Erdős-Newman question, Nešetřil-Rödl disproof, references to [ErGr80], [Er80e], [NeRo85]"
+      "summary": "Header documentation: Erd\u0151s-Newman question, Ne\u0161et\u0159il-R\u00f6dl disproof, references to [ErGr80], [Er80e], [NeRo85]"
     },
     {
       "id": "imports",
@@ -118,7 +118,7 @@
       "title": "Representation Function",
       "startLine": 34,
       "endLine": 58,
-      "summary": "Definitions of $r_A(n)$ via `representationFunction` (on `Set ℕ`) and `rA` (on `Finset ℕ`), plus `hasBoundedConvolution` requiring $r_A(n) \\leq C$ for all $n$"
+      "summary": "Definitions of $r_A(n)$ via `representationFunction` (on `Set \u2115`) and `rA` (on `Finset \u2115`), plus `hasBoundedConvolution` requiring $r_A(n) \\leq C$ for all $n$"
     },
     {
       "id": "sidon-sets",
@@ -136,17 +136,17 @@
     },
     {
       "id": "erdos-partial",
-      "title": "Erdős's Partial Results (1980)",
+      "title": "Erd\u0151s's Partial Results (1980)",
       "startLine": 116,
       "endLine": 139,
       "summary": "`erdos_C3_counterexample` and `erdos_C4_counterexample`: for $C=3$ and $C=4$, there exist bad sets with no valid partition"
     },
     {
       "id": "nesetril-rodl",
-      "title": "Nešetřil-Rödl Complete Solution (1985)",
+      "title": "Ne\u0161et\u0159il-R\u00f6dl Complete Solution (1985)",
       "startLine": 141,
       "endLine": 174,
-      "summary": "`nesetril_rodl_theorem` ($\\forall C \\geq 1$, counterexamples exist), `erdos_newman_disproved` ($\\neg$ Erdős-Newman), `nesetril_rodl_strong` (no partition works even with $t$ depending on $A$)"
+      "summary": "`nesetril_rodl_theorem` ($\\forall C \\geq 1$, counterexamples exist), `erdos_newman_disproved` ($\\neg$ Erd\u0151s-Newman), `nesetril_rodl_strong` (no partition works even with $t$ depending on $A$)"
     },
     {
       "id": "special-cases",
@@ -171,13 +171,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #328 is DISPROVED. Nešetřil and Rödl (1985) showed that for ALL values of C ≥ 1, there exist sets A with bounded convolution r_A ≤ C that cannot be partitioned into ANY number of pieces with strictly smaller convolution. This is a fundamental rigidity result: the additive structure captured by the representation function cannot be 'improved' through combinatorial decomposition.",
-    "implications": "**Theoretical Significance**: The result reveals that bounded representation is a robust, non-decomposable property in additive combinatorics.\n\nUnlike unique sums (r_A ≤ 1), which are hereditary under subsets, bounded convolution for C ≥ 2 resists partition-based reduction. This connects to broader themes in Ramsey theory about the inevitability of structure under coloring.",
+    "summary": "Erd\u0151s Problem #328 is DISPROVED. Ne\u0161et\u0159il and R\u00f6dl (1985) showed that for ALL values of C \u2265 1, there exist sets A with bounded convolution r_A \u2264 C that cannot be partitioned into ANY number of pieces with strictly smaller convolution. This is a fundamental rigidity result: the additive structure captured by the representation function cannot be 'improved' through combinatorial decomposition.",
+    "implications": "**Theoretical Significance**: The result reveals that bounded representation is a robust, non-decomposable property in additive combinatorics.\n\nUnlike unique sums (r_A \u2264 1), which are hereditary under subsets, bounded convolution for C \u2265 2 resists partition-based reduction. This connects to broader themes in Ramsey theory about the inevitability of structure under coloring.",
     "openQuestions": [
-      "What is the minimum size of a counterexample set A ⊆ [1,N] for each C, as a function of N and C?",
+      "What is the minimum size of a counterexample set A \u2286 [1,N] for each C, as a function of N and C?",
       "For C = 2 (Sidon sets), what is the largest t such that some Sidon set CAN be partitioned into t unique-sum pieces?",
-      "Does the analogous question for B_h sets (h ≥ 3) also have a negative answer?",
-      "What quantitative Ramsey bounds govern the Nešetřil-Rödl construction?",
+      "Does the analogous question for B_h sets (h \u2265 3) also have a negative answer?",
+      "What quantitative Ramsey bounds govern the Ne\u0161et\u0159il-R\u00f6dl construction?",
       "Can the counterexamples be made constructive, or are they inherently Ramsey-theoretic?"
     ]
   },
@@ -194,5 +194,39 @@
     "axiomCount": 9,
     "theoremCount": 1,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-360",
+      "relationship": "related",
+      "description": "Share partition, additive-combinatorial, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Share sidon-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-152",
+      "relationship": "related",
+      "description": "Share sidon-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Share sidon-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-154",
+      "relationship": "related",
+      "description": "Share sidon-sets and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-360",
+    "erdos-14",
+    "erdos-152",
+    "erdos-153",
+    "erdos-154"
+  ]
 }

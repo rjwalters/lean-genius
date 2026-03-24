@@ -1,10 +1,10 @@
 {
   "id": "erdos-103",
-  "title": "Erdős Problem #103: Incongruent Optimal Point Configurations",
+  "title": "Erd\u0151s Problem #103: Incongruent Optimal Point Configurations",
   "slug": "erdos-103",
-  "description": "Let h(n) count the number of incongruent sets of n points in ℝ² that minimize diameter with d(x,y) ≥ 1 for all distinct x,y. Is h(n) → ∞?",
+  "description": "Let h(n) count the number of incongruent sets of n points in \u211d\u00b2 that minimize diameter with d(x,y) \u2265 1 for all distinct x,y. Is h(n) \u2192 \u221e?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/103",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos103Problem.lean",
@@ -40,9 +40,9 @@
       }
     ],
     "originalContributions": [
-      "PointConfig definition: n points in ℝ²",
+      "PointConfig definition: n points in \u211d\u00b2",
       "pointDist definition: Euclidean distance",
-      "HasMinSeparation definition: all pairs at distance ≥ 1",
+      "HasMinSeparation definition: all pairs at distance \u2265 1",
       "diameter definition: max pairwise distance",
       "IsValidConfig definition: has minimum separation",
       "minDiameter definition: infimum over valid configs",
@@ -51,10 +51,10 @@
       "AreCongruent definition: related by isometry",
       "congruent_refl theorem: congruence is reflexive",
       "h function axiom: counts incongruent optimal configs",
-      "ErdosConjecture103 definition: h(n) → ∞",
-      "WeakConjecture definition: h(n) ≥ 2 eventually",
+      "ErdosConjecture103 definition: h(n) \u2192 \u221e",
+      "WeakConjecture definition: h(n) \u2265 2 eventually",
       "h_2, h_3 axioms: small case values",
-      "optimalPackingDensity definition: π/(2√3)",
+      "optimalPackingDensity definition: \u03c0/(2\u221a3)",
       "diameter_asymptotic axiom: relation to packing"
     ],
     "axiomCount": 7,
@@ -62,15 +62,15 @@
     "assumptions": "7 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in [Er94b] (1994). The question concerns the diversity of optimal point configurations in the plane.\n\nGiven n points with minimum pairwise separation 1, we seek configurations minimizing the diameter (largest distance). h(n) counts how many 'essentially different' (incongruent) optimal configurations exist.\n\nThe problem connects to classical circle packing - placing n non-overlapping unit circles in the smallest possible containing circle. The hexagonal lattice is optimal for large n (Thue-Minkowski).\n\nRelated to Erdős Problem #99. Even very weak versions of the conjecture remain open.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet h(n) count the number of incongruent sets of n points in ℝ² that minimize the diameter subject to d(x,y) ≥ 1 for all distinct x,y.\n\n**Question:** Is it true that h(n) → ∞ as n → ∞?\n\n**Constraints:**\n- Points must be separated by distance at least 1\n- We minimize the diameter (max pairwise distance)\n- Two configurations are congruent if related by rigid motion\n- h(n) counts equivalence classes under congruence",
-    "text": "Let h(n) count the number of incongruent sets of n points in ℝ² that minimize diameter with d(x,y) ≥ 1 for all distinct x,y. Is h(n) → ∞?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Point Configurations:** Define PointConfig as Fin n → ℝ × ℝ\n\n2. **Constraints:** HasMinSeparation requires all pairs at distance ≥ 1\n\n3. **Optimality:** IsOptimal means achieving minimum diameter\n\n4. **Congruence:** Define Isometry2D and AreCongruent relation\n\n5. **Counting:** Axiomatize h(n) as count of incongruent optimal configs\n\n6. **Conjecture:** ErdosConjecture103 states h(n) → ∞",
+    "historicalContext": "Erd\u0151s posed this problem in [Er94b] (1994). The question concerns the diversity of optimal point configurations in the plane.\n\nGiven n points with minimum pairwise separation 1, we seek configurations minimizing the diameter (largest distance). h(n) counts how many 'essentially different' (incongruent) optimal configurations exist.\n\nThe problem connects to classical circle packing - placing n non-overlapping unit circles in the smallest possible containing circle. The hexagonal lattice is optimal for large n (Thue-Minkowski).\n\nRelated to Erd\u0151s Problem #99. Even very weak versions of the conjecture remain open.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet h(n) count the number of incongruent sets of n points in \u211d\u00b2 that minimize the diameter subject to d(x,y) \u2265 1 for all distinct x,y.\n\n**Question:** Is it true that h(n) \u2192 \u221e as n \u2192 \u221e?\n\n**Constraints:**\n- Points must be separated by distance at least 1\n- We minimize the diameter (max pairwise distance)\n- Two configurations are congruent if related by rigid motion\n- h(n) counts equivalence classes under congruence",
+    "text": "Let h(n) count the number of incongruent sets of n points in \u211d\u00b2 that minimize diameter with d(x,y) \u2265 1 for all distinct x,y. Is h(n) \u2192 \u221e?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Configurations:** Define PointConfig as Fin n \u2192 \u211d \u00d7 \u211d\n\n2. **Constraints:** HasMinSeparation requires all pairs at distance \u2265 1\n\n3. **Optimality:** IsOptimal means achieving minimum diameter\n\n4. **Congruence:** Define Isometry2D and AreCongruent relation\n\n5. **Counting:** Axiomatize h(n) as count of incongruent optimal configs\n\n6. **Conjecture:** ErdosConjecture103 states h(n) \u2192 \u221e",
     "keyInsights": [
       "**Counting Problem:** Not about finding one optimal config, but counting all of them up to congruence",
-      "**Difficulty:** Even h(n) ≥ 2 for all large n is unknown",
+      "**Difficulty:** Even h(n) \u2265 2 for all large n is unknown",
       "**Small Cases:** h(2) = h(3) = 1 - unique configurations (line segment, equilateral triangle)",
-      "**Packing Connection:** Optimal diameter ≈ √(n/density) for hexagonal packing",
+      "**Packing Connection:** Optimal diameter \u2248 \u221a(n/density) for hexagonal packing",
       "**Hexagonal Lattice:** Thue-Minkowski shows hexagonal packing is asymptotically optimal"
     ],
     "prerequisites": [
@@ -137,67 +137,67 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #103 asks whether the count h(n) of incongruent optimal point configurations (minimizing diameter with separation ≥ 1) tends to infinity. This is a counting problem about the diversity of optimal geometric configurations.",
+    "summary": "Erd\u0151s Problem #103 asks whether the count h(n) of incongruent optimal point configurations (minimizing diameter with separation \u2265 1) tends to infinity. This is a counting problem about the diversity of optimal geometric configurations.",
     "implications": "Understanding h(n) would reveal whether optimal packings become increasingly diverse or eventually stabilize into a few canonical forms. A positive answer suggests rich geometric structure; if h(n) is bounded, there may be a universal limiting configuration.",
     "openQuestions": [
-      "Does h(n) → ∞ as n → ∞?",
-      "Is h(n) ≥ 2 for all sufficiently large n?",
-      "Are there infinitely many n with h(n) ≥ 2?",
+      "Does h(n) \u2192 \u221e as n \u2192 \u221e?",
+      "Is h(n) \u2265 2 for all sufficiently large n?",
+      "Are there infinitely many n with h(n) \u2265 2?",
       "What is the growth rate of h(n) if unbounded?",
       "How do optimal configurations transition as n increases?"
     ]
   },
   "crossReferences": [
     {
-      "target": "erdos-99",
       "relationship": "direct predecessor",
-      "description": "Erdős #99 asks whether minimal-diameter sets with separation ≥ 1 must contain a unit equilateral triangle for large n. Both problems study the structure of optimal-diameter point configurations and are closely related."
+      "description": "Erd\u0151s #99 asks whether minimal-diameter sets with separation \u2265 1 must contain a unit equilateral triangle for large n. Both problems study the structure of optimal-diameter point configurations and are closely related.",
+      "targetId": "erdos-99"
     },
     {
-      "target": "erdos-100",
       "relationship": "sibling problem",
-      "description": "Erdős #100 studies point sets in ℝ² with all pairwise distances ≥ 1 and distinct distances separated by ≥ 1. Both problems impose minimum-separation constraints and ask about diameter growth."
+      "description": "Erd\u0151s #100 studies point sets in \u211d\u00b2 with all pairwise distances \u2265 1 and distinct distances separated by \u2265 1. Both problems impose minimum-separation constraints and ask about diameter growth.",
+      "targetId": "erdos-100"
     },
     {
-      "target": "erdos-90",
       "relationship": "related problem",
-      "description": "The Unit Distance Problem (Erdős #90) asks for the maximum number of unit distances among n points in ℝ². The unit-distance graph structure underlies the hexagonal-lattice configurations central to #103."
+      "description": "The Unit Distance Problem (Erd\u0151s #90) asks for the maximum number of unit distances among n points in \u211d\u00b2. The unit-distance graph structure underlies the hexagonal-lattice configurations central to #103.",
+      "targetId": "erdos-90"
     },
     {
-      "target": "erdos-106",
       "relationship": "analogous packing problem",
-      "description": "Erdős #106 studies square packing with an optimization objective, asking how many incongruent packings achieve the optimum. Both #103 and #106 count optimal configurations up to congruence."
+      "description": "Erd\u0151s #106 studies square packing with an optimization objective, asking how many incongruent packings achieve the optimum. Both #103 and #106 count optimal configurations up to congruence.",
+      "targetId": "erdos-106"
     },
     {
-      "target": "kepler-conjecture",
       "relationship": "background result",
-      "description": "The Kepler Conjecture establishes that the face-centered cubic lattice maximizes sphere-packing density. The hexagonal lattice used in #103's asymptotic diameter estimates is the 2D analogue of this optimal packing."
+      "description": "The Kepler Conjecture establishes that the face-centered cubic lattice maximizes sphere-packing density. The hexagonal lattice used in #103's asymptotic diameter estimates is the 2D analogue of this optimal packing.",
+      "targetId": "kepler-conjecture"
     },
     {
-      "target": "erdos-104",
       "relationship": "related incidence problem",
-      "description": "Erdős #104 counts unit circles through ≥ 3 points from an n-point set. The unit-circle incidence structure is dual to the minimum-separation constraints in #103."
+      "description": "Erd\u0151s #104 counts unit circles through \u2265 3 points from an n-point set. The unit-circle incidence structure is dual to the minimum-separation constraints in #103.",
+      "targetId": "erdos-104"
     }
   ],
   "relatedProofs": [
     {
       "slug": "erdos-99",
-      "title": "Erdős Problem #99: Equilateral Triangles in Minimal Diameter Sets",
-      "relevance": "Directly related predecessor: both ask about structure of optimal-diameter point configurations with separation ≥ 1"
+      "title": "Erd\u0151s Problem #99: Equilateral Triangles in Minimal Diameter Sets",
+      "relevance": "Directly related predecessor: both ask about structure of optimal-diameter point configurations with separation \u2265 1"
     },
     {
       "slug": "erdos-100",
-      "title": "Erdős #100: Point Sets with Restricted Distances",
-      "relevance": "Sibling problem on diameter growth for point sets with minimum separation constraints in ℝ²"
+      "title": "Erd\u0151s #100: Point Sets with Restricted Distances",
+      "relevance": "Sibling problem on diameter growth for point sets with minimum separation constraints in \u211d\u00b2"
     },
     {
       "slug": "erdos-90",
-      "title": "Erdős Problem #90: The Unit Distance Problem",
+      "title": "Erd\u0151s Problem #90: The Unit Distance Problem",
       "relevance": "The unit-distance graph framework underlies hexagonal-lattice packing, the canonical optimal configuration"
     },
     {
       "slug": "erdos-106",
-      "title": "Erdős Problem #106: Square Packing in the Unit Square",
+      "title": "Erd\u0151s Problem #106: Square Packing in the Unit Square",
       "relevance": "Analogous counting-of-optimal-packings problem; both ask how many incongruent configurations achieve an extremal value"
     },
     {
@@ -210,12 +210,12 @@
     {
       "key": "Er94b",
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "Some of my favourite unsolved problems",
-      "venue": "A Tribute to Paul Erdős",
+      "venue": "A Tribute to Paul Erd\u0151s",
       "year": 1994,
-      "pages": "467–478",
+      "pages": "467\u2013478",
       "publisher": "Cambridge University Press",
       "note": "Original source posing Problem #103"
     },
@@ -224,11 +224,11 @@
       "authors": [
         "A. Thue"
       ],
-      "title": "Über die dichteste Zusammenstellung von kongruenten Kreisen in einer Ebene",
+      "title": "\u00dcber die dichteste Zusammenstellung von kongruenten Kreisen in einer Ebene",
       "venue": "Norske Vid. Selsk. Skr.",
       "year": 1910,
       "volume": "1",
-      "pages": "1–9",
+      "pages": "1\u20139",
       "note": "Proves hexagonal packing is densest arrangement of equal circles; underlies asymptotic diameter estimate"
     },
     {
@@ -242,7 +242,7 @@
       "venue": "Discrete Mathematics",
       "year": 1994,
       "volume": "129",
-      "pages": "195–199",
+      "pages": "195\u2013199",
       "note": "Studies minimum-diameter configurations with unit minimum separation; closely related to #103"
     },
     {

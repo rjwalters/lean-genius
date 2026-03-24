@@ -1,10 +1,10 @@
 {
   "id": "erdos-589",
-  "title": "Erdős Problem #589: Points in General Position",
+  "title": "Erd\u0151s Problem #589: Points in General Position",
   "slug": "erdos-589",
-  "description": "Let g(n) be the minimum guaranteed size of a general position subset in any n-point planar set with no 4 collinear. Erdős thought g(n) = Ω(n), but actually n^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1)).",
+  "description": "Let g(n) be the minimum guaranteed size of a general position subset in any n-point planar set with no 4 collinear. Erd\u0151s thought g(n) = \u03a9(n), but actually n^(1/2)\u00b7log n \u226a g(n) \u2264 n^(5/6+o(1)).",
   "meta": {
-    "author": "Erdős (origin), Füredi (1991), Furstenberg-Katznelson (1991), Balogh-Solymosi (2018)",
+    "author": "Erd\u0151s (origin), F\u00fcredi (1991), Furstenberg-Katznelson (1991), Balogh-Solymosi (2018)",
     "sourceUrl": "https://erdosproblems.com/589",
     "date": "~1980s",
     "status": "formalized",
@@ -28,16 +28,16 @@
     "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem asks about extracting subsets in general position (no 3 collinear) from sets in almost general position (no 4 collinear). Erdős originally believed linear growth was achievable, but this was disproved.\n\n**Timeline:**\n- **1991 (Füredi)**: Proved g(n) ≥ c·√n·log n and g(n) = o(n)\n- **1991 (Furstenberg-Katznelson)**: Density Hales-Jewett theorem implies o(n) upper bound\n- **2018 (Balogh-Solymosi)**: Proved g(n) ≤ n^(5/6+o(1)) using container method\n\nThe exact order of growth remains open, with a gap between exponents 1/2 and 5/6.",
-    "problemStatement": "**Problem:** Let g(n) be maximal such that in any set of n points in ℝ² with no four collinear, there exists a subset of g(n) points with no three collinear. Estimate g(n).\n\n**Terminology:**\n- General position = no 3 collinear\n- Almost general position = no 4 collinear\n\n**Erdős's Belief (WRONG):** g(n) = Ω(n)\n\n**Known Bounds:**\n- Lower: g(n) ≥ c·√n·log n (Füredi 1991)\n- Upper: g(n) ≤ n^(5/6+o(1)) (Balogh-Solymosi 2018)\n- Trivial: g(n) ≥ c·√n (greedy algorithm)\n\n**Status:** Partially resolved - bounds established but exact asymptotics unknown.",
-    "text": "Let g(n) be the minimum guaranteed size of a general position subset in any n-point planar set with no 4 collinear. Erdős thought g(n) = Ω(n), but actually n^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1)).",
-    "proofStrategy": "The formalization defines collinearity predicates, general and almost general position, and the function g(n). Erdős's false belief is stated and shown to contradict the density Hales-Jewett theorem. Füredi's 1991 bounds and Balogh-Solymosi's 2018 upper bound are axiomatized. The main summary theorem combines all results.",
+    "historicalContext": "This problem asks about extracting subsets in general position (no 3 collinear) from sets in almost general position (no 4 collinear). Erd\u0151s originally believed linear growth was achievable, but this was disproved.\n\n**Timeline:**\n- **1991 (F\u00fcredi)**: Proved g(n) \u2265 c\u00b7\u221an\u00b7log n and g(n) = o(n)\n- **1991 (Furstenberg-Katznelson)**: Density Hales-Jewett theorem implies o(n) upper bound\n- **2018 (Balogh-Solymosi)**: Proved g(n) \u2264 n^(5/6+o(1)) using container method\n\nThe exact order of growth remains open, with a gap between exponents 1/2 and 5/6.",
+    "problemStatement": "**Problem:** Let g(n) be maximal such that in any set of n points in \u211d\u00b2 with no four collinear, there exists a subset of g(n) points with no three collinear. Estimate g(n).\n\n**Terminology:**\n- General position = no 3 collinear\n- Almost general position = no 4 collinear\n\n**Erd\u0151s's Belief (WRONG):** g(n) = \u03a9(n)\n\n**Known Bounds:**\n- Lower: g(n) \u2265 c\u00b7\u221an\u00b7log n (F\u00fcredi 1991)\n- Upper: g(n) \u2264 n^(5/6+o(1)) (Balogh-Solymosi 2018)\n- Trivial: g(n) \u2265 c\u00b7\u221an (greedy algorithm)\n\n**Status:** Partially resolved - bounds established but exact asymptotics unknown.",
+    "text": "Let g(n) be the minimum guaranteed size of a general position subset in any n-point planar set with no 4 collinear. Erd\u0151s thought g(n) = \u03a9(n), but actually n^(1/2)\u00b7log n \u226a g(n) \u2264 n^(5/6+o(1)).",
+    "proofStrategy": "The formalization defines collinearity predicates, general and almost general position, and the function g(n). Erd\u0151s's false belief is stated and shown to contradict the density Hales-Jewett theorem. F\u00fcredi's 1991 bounds and Balogh-Solymosi's 2018 upper bound are axiomatized. The main summary theorem combines all results.",
     "keyInsights": [
-      "Erdős's linear growth belief was wrong - g(n) = o(n)",
+      "Erd\u0151s's linear growth belief was wrong - g(n) = o(n)",
       "Density Hales-Jewett theorem provides the key tool for o(n) upper bound",
       "Balogh-Solymosi used the container method - first application to discrete geometry",
       "Current gap: exponent between 1/2 and 5/6 is unknown",
-      "Greedy algorithm gives trivial √n lower bound by avoiding collinear triples"
+      "Greedy algorithm gives trivial \u221an lower bound by avoiding collinear triples"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -47,10 +47,10 @@
   "sections": [
     {
       "id": "erd-s-problem-589-points-in-ge",
-      "title": "Erdős Problem #589: Points in General Position",
+      "title": "Erd\u0151s Problem #589: Points in General Position",
       "startLine": 1,
       "endLine": 40,
-      "summary": "Erdős Problem #589: Points in General Position"
+      "summary": "Erd\u0151s Problem #589: Points in General Position"
     },
     {
       "id": "basic-definitions",
@@ -68,10 +68,10 @@
     },
     {
       "id": "erd-s-s-original-belief",
-      "title": "Erdős's Original Belief",
+      "title": "Erd\u0151s's Original Belief",
       "startLine": 108,
       "endLine": 128,
-      "summary": "Erdős's Original Belief"
+      "summary": "Erd\u0151s's Original Belief"
     },
     {
       "id": "the-trivial-lower-bound",
@@ -82,10 +82,10 @@
     },
     {
       "id": "f-redi-s-result-1991",
-      "title": "Füredi's Result (1991)",
+      "title": "F\u00fcredi's Result (1991)",
       "startLine": 156,
       "endLine": 188,
-      "summary": "Füredi's Result (1991)"
+      "summary": "F\u00fcredi's Result (1991)"
     },
     {
       "id": "density-hales-jewett-connectio",
@@ -124,13 +124,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #589 asks for the guaranteed size of a general position subset extractable from any planar point set with no 4 collinear. Erdős believed linear growth, but this was disproved. Current bounds: n^(1/2)·log n ≤ g(n) ≤ n^(5/6+o(1)). The exact order of growth remains open.",
+    "summary": "Erd\u0151s Problem #589 asks for the guaranteed size of a general position subset extractable from any planar point set with no 4 collinear. Erd\u0151s believed linear growth, but this was disproved. Current bounds: n^(1/2)\u00b7log n \u2264 g(n) \u2264 n^(5/6+o(1)). The exact order of growth remains open.",
     "implications": "**Theoretical Significance**: The problem connects discrete geometry to extremal combinatorics.\n\nThe density Hales-Jewett theorem and container method provide surprising connections. Balogh-Solymosi's paper was the first application of containers to discrete geometry.",
     "openQuestions": [
-      "What is the exact exponent α such that g(n) = Θ(n^α)?",
+      "What is the exact exponent \u03b1 such that g(n) = \u0398(n^\u03b1)?",
       "Is the Balogh-Solymosi bound n^(5/6) optimal?",
-      "What about the generalized problem g_{k,l}(n) for other k > l ≥ 3?",
-      "Can the lower bound be improved beyond √n·log n?"
+      "What about the generalized problem g_{k,l}(n) for other k > l \u2265 3?",
+      "Can the lower bound be improved beyond \u221an\u00b7log n?"
     ]
   },
   "leanFile": {
@@ -148,5 +148,39 @@
     "axiomCount": 6,
     "theoremCount": 7,
     "definitionCount": 9
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-862",
+      "relationship": "related",
+      "description": "Share container-method and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1070",
+      "relationship": "related",
+      "description": "Share discrete-geometry and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Share discrete-geometry and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-735",
+      "relationship": "related",
+      "description": "Share discrete-geometry and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-756",
+      "relationship": "related",
+      "description": "Share discrete-geometry and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-862",
+    "erdos-1070",
+    "erdos-1088",
+    "erdos-735",
+    "erdos-756"
+  ]
 }

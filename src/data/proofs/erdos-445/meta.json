@@ -1,8 +1,8 @@
 {
   "id": "erdos-445",
-  "title": "Erdős Problem #445: Multiplicative Inverses in Short Intervals",
+  "title": "Erd\u0151s Problem #445: Multiplicative Inverses in Short Intervals",
   "slug": "erdos-445",
-  "description": "For c > 1/2, can we find a,b ∈ (n, n+p^c) with ab ≡ 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c ∈ (1/2, 3/4] remains OPEN.",
+  "description": "For c > 1/2, can we find a,b \u2208 (n, n+p^c) with ab \u2261 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c \u2208 (1/2, 3/4] remains OPEN.",
   "meta": {
     "author": "Heath-Brown (2000), Heilbronn",
     "sourceUrl": "https://erdosproblems.com/445",
@@ -54,16 +54,16 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős asked whether for any c > 1/2, a sufficiently large prime p guarantees that every interval (n, n + p^c) contains a pair a, b with ab ≡ 1 (mod p). The heuristic reasoning is compelling: an interval of length L = p^c contains roughly L²/p = p^{2c-1} inverse pairs, which exceeds 1 exactly when c > 1/2.\n\nHeilbronn proved this for c sufficiently close to 1 in an unpublished result, establishing that the conjecture holds above some threshold c₀ < 1. The breakthrough came from Heath-Brown in 2000, who used Kloosterman sum estimates — particularly the Weil bound |K(m,n;p)| ≤ 2√p — combined with careful averaging arguments to push the threshold down to c > 3/4.\n\nThe gap c ∈ (1/2, 3/4] remains completely open. Closing this gap would likely require new estimates for exponential sums or entirely different counting methods. The problem connects to the broader theme of how multiplicative structure modulo primes distributes across short intervals, a central question in analytic number theory.",
+    "historicalContext": "Erd\u0151s asked whether for any c > 1/2, a sufficiently large prime p guarantees that every interval (n, n + p^c) contains a pair a, b with ab \u2261 1 (mod p). The heuristic reasoning is compelling: an interval of length L = p^c contains roughly L\u00b2/p = p^{2c-1} inverse pairs, which exceeds 1 exactly when c > 1/2.\n\nHeilbronn proved this for c sufficiently close to 1 in an unpublished result, establishing that the conjecture holds above some threshold c\u2080 < 1. The breakthrough came from Heath-Brown in 2000, who used Kloosterman sum estimates \u2014 particularly the Weil bound |K(m,n;p)| \u2264 2\u221ap \u2014 combined with careful averaging arguments to push the threshold down to c > 3/4.\n\nThe gap c \u2208 (1/2, 3/4] remains completely open. Closing this gap would likely require new estimates for exponential sums or entirely different counting methods. The problem connects to the broader theme of how multiplicative structure modulo primes distributes across short intervals, a central question in analytic number theory.",
     "problemStatement": "**Problem Statement (Open)**\n\nFor any $c > 1/2$, if $p$ is a sufficiently large prime, then for any $n \\geq 0$, there exist $a, b \\in (n, n + p^c)$ such that $ab \\equiv 1 \\pmod{p}$.\n\n**Known Results:**\n- **Heilbronn** (unpublished): True for $c$ sufficiently close to 1\n- **Heath-Brown** (2000): True for all $c > 3/4$\n\n**Status: OPEN** for $c \\in (1/2, 3/4]$.",
-    "text": "For c > 1/2, can we find a,b ∈ (n, n+p^c) with ab ≡ 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c ∈ (1/2, 3/4] remains OPEN.",
-    "proofStrategy": "The formalization defines HasInverse (ab ≡ 1 mod p) and HasInversePairInInterval for intervals of length p^c. The main conjecture and a stronger version (c = 1/2 exact threshold) are stated as Prop definitions. Heilbronn's result is axiomatized with an existential threshold, and Heath-Brown's c > 3/4 result is a separate axiom. Kloosterman sums are axiomatized with the Weil bound. Two theorems are proved: heath_brown_threshold (c₀ = 3/4) and current_knowledge (Heath-Brown + range inclusion). The summary combines both known results.",
+    "text": "For c > 1/2, can we find a,b \u2208 (n, n+p^c) with ab \u2261 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c \u2208 (1/2, 3/4] remains OPEN.",
+    "proofStrategy": "The formalization defines HasInverse (ab \u2261 1 mod p) and HasInversePairInInterval for intervals of length p^c. The main conjecture and a stronger version (c = 1/2 exact threshold) are stated as Prop definitions. Heilbronn's result is axiomatized with an existential threshold, and Heath-Brown's c > 3/4 result is a separate axiom. Kloosterman sums are axiomatized with the Weil bound. Two theorems are proved: heath_brown_threshold (c\u2080 = 3/4) and current_knowledge (Heath-Brown + range inclusion). The summary combines both known results.",
     "keyInsights": [
       "**Heuristic threshold at c = 1/2:** An interval of length p^c contains ~p^{2c-1} inverse pairs, exceeding 1 when c > 1/2",
-      "**Kloosterman sums are the key tool:** K(m,n;p) = Σₓ e^{2πi(mx+nx⁻¹)/p} detects inverse pairs in intervals",
-      "**Weil bound |K| ≤ 2√p:** This deep algebraic geometry result (proved via the Riemann hypothesis for curves) is the main input",
+      "**Kloosterman sums are the key tool:** K(m,n;p) = \u03a3\u2093 e^{2\u03c0i(mx+nx\u207b\u00b9)/p} detects inverse pairs in intervals",
+      "**Weil bound |K| \u2264 2\u221ap:** This deep algebraic geometry result (proved via the Riemann hypothesis for curves) is the main input",
       "**Heath-Brown (2000):** Combined Weil bound with averaging to prove c > 3/4, the current best result",
-      "**Gap c ∈ (1/2, 3/4] remains open:** New exponential sum techniques needed to close the gap"
+      "**Gap c \u2208 (1/2, 3/4] remains open:** New exponential sum techniques needed to close the gap"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -115,10 +115,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #445 is OPEN for c ∈ (1/2, 3/4]. It asks whether multiplicative inverse pairs exist in intervals of length p^c for c > 1/2. Heilbronn proved this for c close to 1, and Heath-Brown (2000) proved it for c > 3/4 using Kloosterman sums. The summary theorem combines both known results.",
+    "summary": "Erd\u0151s Problem #445 is OPEN for c \u2208 (1/2, 3/4]. It asks whether multiplicative inverse pairs exist in intervals of length p^c for c > 1/2. Heilbronn proved this for c close to 1, and Heath-Brown (2000) proved it for c > 3/4 using Kloosterman sums. The summary theorem combines both known results.",
     "implications": "A resolution would advance our understanding of multiplicative structure mod p in short intervals, connecting to exponential sum estimates and the distribution of inverses. The problem is representative of the broader challenge of converting heuristic counting arguments into rigorous proofs.",
     "openQuestions": [
-      "Does the conjecture hold for c ∈ (1/2, 3/4]?",
+      "Does the conjecture hold for c \u2208 (1/2, 3/4]?",
       "Is c = 1/2 the exact threshold?",
       "Can character sum methods improve on Kloosterman approaches?"
     ]
@@ -141,5 +141,39 @@
     "axiomCount": 5,
     "theoremCount": 3,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Share modular-arithmetic and number-theoretic themes"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "Share modular-arithmetic and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-by-3",
+      "relationship": "related",
+      "description": "Share modular-arithmetic and number-theoretic themes"
+    },
+    {
+      "targetId": "divisibility-truncation-general",
+      "relationship": "related",
+      "description": "Share modular-arithmetic and number-theoretic themes"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Share modular-arithmetic and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "chinese-remainder-constructive",
+    "chinese-remainder-non-coprime",
+    "divisibility-by-3",
+    "divisibility-truncation-general",
+    "elementary-quadratic-reciprocity"
+  ]
 }

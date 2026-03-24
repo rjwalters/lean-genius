@@ -1,10 +1,10 @@
 {
   "id": "erdos-201",
-  "title": "Erdős Problem #201: Arithmetic Progressions in Integer Sets",
+  "title": "Erd\u0151s Problem #201: Arithmetic Progressions in Integer Sets",
   "slug": "erdos-201",
-  "description": "Let G_k(N) be the minimum AP-free subset size guaranteed in any N-element integer set, and R_k(N) the maximum AP-free subset of {1,…,N}. Is lim R_3(N)/G_3(N) = 1?",
+  "description": "Let G_k(N) be the minimum AP-free subset size guaranteed in any N-element integer set, and R_k(N) the maximum AP-free subset of {1,\u2026,N}. Is lim R_3(N)/G_3(N) = 1?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/201",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos201Problem.lean",
@@ -12,7 +12,7 @@
       "erdos",
       "additive combinatorics",
       "arithmetic progressions",
-      "Szemerédi"
+      "Szemer\u00e9di"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -24,14 +24,14 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Riddell (1969) first investigated the function $G_k(N)$ — the guaranteed size of a $k$-AP-free subset in any $N$-element integer set. The natural comparison with $R_k(N)$ (the maximum AP-free subset of $\\{1, \\ldots, N\\}$, studied by Roth and later Szemerédi) reveals a subtle gap: $\\{1, \\ldots, N\\}$ is not always the worst case for AP avoidance. Komlós, Sulyok, and Szemerédi (1975) proved the fundamental result that $R_k(N) \\asymp G_k(N)$, showing the two functions have the same order of magnitude. Erdős then asked the sharper question: does the ratio $R_3(N)/G_3(N)$ tend to 1? This connects to the broader program of understanding how the structure of the ambient set affects AP density, a theme central to Szemerédi's theorem (1975) and the subsequent work of Gowers, Green–Tao, and Kelley–Meka on quantitative bounds for $R_3(N)$.",
+    "historicalContext": "Riddell (1969) first investigated the function $G_k(N)$ \u2014 the guaranteed size of a $k$-AP-free subset in any $N$-element integer set. The natural comparison with $R_k(N)$ (the maximum AP-free subset of $\\{1, \\ldots, N\\}$, studied by Roth and later Szemer\u00e9di) reveals a subtle gap: $\\{1, \\ldots, N\\}$ is not always the worst case for AP avoidance. Koml\u00f3s, Sulyok, and Szemer\u00e9di (1975) proved the fundamental result that $R_k(N) \\asymp G_k(N)$, showing the two functions have the same order of magnitude. Erd\u0151s then asked the sharper question: does the ratio $R_3(N)/G_3(N)$ tend to 1? This connects to the broader program of understanding how the structure of the ambient set affects AP density, a theme central to Szemer\u00e9di's theorem (1975) and the subsequent work of Gowers, Green\u2013Tao, and Kelley\u2013Meka on quantitative bounds for $R_3(N)$.",
     "problemStatement": "Let $G_k(N)$ denote the minimum size of a $k$-AP-free subset guaranteed in any set of $N$ integers, and $R_k(N)$ the maximum size of a $k$-AP-free subset of $\\{1, \\ldots, N\\}$. Is $\\lim_{N \\to \\infty} R_3(N)/G_3(N) = 1$?",
-    "text": "Let G_k(N) be the minimum AP-free subset size guaranteed in any N-element integer set, and R_k(N) the maximum AP-free subset of {1,…,N}. Is lim R_3(N)/G_3(N) = 1?",
+    "text": "Let G_k(N) be the minimum AP-free subset size guaranteed in any N-element integer set, and R_k(N) the maximum AP-free subset of {1,\u2026,N}. Is lim R_3(N)/G_3(N) = 1?",
     "proofStrategy": "The formalization defines $k$-term APs via `Fin k`-indexed arithmetic sequences, AP-free sets, $R_k(N)$ as a computable supremum over the powerset of Icc$\\,1\\,N$, and $G_k(N)$ axiomatically. Structural lemmas (AP transfer, subset inheritance) are proved. The KSS bound, concrete examples ($G_3(5) = 3 < 4 = R_3(5)$), monotonicity properties, and the main conjecture in $\\varepsilon$-$N_0$ form are all formalized.",
     "keyInsights": [
       "**Trivial bound with strict gap**: $G_k(N) \\leq R_k(N)$ always, but $G_3(5) = 3 < 4 = R_3(5)$ shows $\\{1, \\ldots, N\\}$ is not the worst case for 3-AP avoidance",
-      "**Komlós–Sulyok–Szemerédi (1975)**: $R_k(N) \\leq C(k) \\cdot G_k(N)$, establishing order-of-magnitude equivalence. The conjecture asks whether $C(3) \\to 1$",
-      "**Connection to Roth/Szemerédi bounds**: $R_3(N) = o(N)$ (Roth 1953) and recent Kelley–Meka improvements give $R_3(N) \\leq N/\\exp(c(\\log N)^{1/12})$, but these bounds on $R_3$ don't directly determine the ratio $R_3/G_3$",
+      "**Koml\u00f3s\u2013Sulyok\u2013Szemer\u00e9di (1975)**: $R_k(N) \\leq C(k) \\cdot G_k(N)$, establishing order-of-magnitude equivalence. The conjecture asks whether $C(3) \\to 1$",
+      "**Connection to Roth/Szemer\u00e9di bounds**: $R_3(N) = o(N)$ (Roth 1953) and recent Kelley\u2013Meka improvements give $R_3(N) \\leq N/\\exp(c(\\log N)^{1/12})$, but these bounds on $R_3$ don't directly determine the ratio $R_3/G_3$",
       "**Proved monotonicity**: $R_k(N)$ is monotone in $N$ (larger interval has more AP-free subsets) and anti-monotone in $k$ ($l$-AP-free implies $k$-AP-free for $k \\leq l$), both verified in Lean",
       "**$\\varepsilon$-$N_0$ formalization**: The conjecture uses $\\mathbb{Q}$ for the $(1 + \\varepsilon)$ bound, avoiding real analysis while precisely capturing the asymptotic ratio"
     ],
@@ -59,7 +59,7 @@
       "title": "Structural Lemmas (Proved)",
       "startLine": 42,
       "endLine": 57,
-      "summary": "AP transfer ($k \\leq l$ AP containment), AP-freeness inheritance ($k$-free $\\implies$ $l$-free), and subset closure — all proved in Lean."
+      "summary": "AP transfer ($k \\leq l$ AP containment), AP-freeness inheritance ($k$-free $\\implies$ $l$-free), and subset closure \u2014 all proved in Lean."
     },
     {
       "id": "rk-definition",
@@ -84,7 +84,7 @@
     },
     {
       "id": "kss-bound",
-      "title": "Komlós–Sulyok–Szemerédi Bound",
+      "title": "Koml\u00f3s\u2013Sulyok\u2013Szemer\u00e9di Bound",
       "startLine": 108,
       "endLine": 109,
       "summary": "$\\exists C > 0: R_k(N) \\leq C \\cdot G_k(N)$ for all $N$, establishing $R_k \\asymp G_k$ (1975)."
@@ -112,13 +112,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #201 asks whether the ratio $R_3(N)/G_3(N)$ tends to 1 — whether the interval $\\{1, \\ldots, N\\}$ is asymptotically the worst case for 3-AP-free subsets among all $N$-element integer sets. The KSS bound (1975) establishes order-of-magnitude equivalence, and the formalization includes several proved structural results (AP transfer, monotonicity, base cases).",
+    "summary": "Erd\u0151s Problem #201 asks whether the ratio $R_3(N)/G_3(N)$ tends to 1 \u2014 whether the interval $\\{1, \\ldots, N\\}$ is asymptotically the worst case for 3-AP-free subsets among all $N$-element integer sets. The KSS bound (1975) establishes order-of-magnitude equivalence, and the formalization includes several proved structural results (AP transfer, monotonicity, base cases).",
     "implications": "A positive answer would unify two fundamental measures in additive combinatorics, showing that the extremal behavior of AP-free sets is asymptotically determined by the simplest ambient set $\\{1, \\ldots, N\\}$. This would have implications for transfer principles in extremal combinatorics.",
     "openQuestions": [
       "Is $\\lim_{N \\to \\infty} R_3(N)/G_3(N) = 1$?",
       "What is the best explicit constant $C$ in the KSS bound $R_3(N) \\leq C \\cdot G_3(N)$?",
       "Does the analogous ratio converge to 1 for $k \\geq 4$?",
-      "Can the Kelley–Meka bounds on $R_3(N)$ be transferred to bounds on $G_3(N)$?"
+      "Can the Kelley\u2013Meka bounds on $R_3(N)$ be transferred to bounds on $G_3(N)$?"
     ]
   },
   "leanFile": {
@@ -134,5 +134,15 @@
     "axiomCount": 7,
     "theoremCount": 10,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1097",
+      "relationship": "related",
+      "description": "Share additive combinatorics and arithmetic progressions themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1097"
+  ]
 }

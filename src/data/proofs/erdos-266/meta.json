@@ -1,10 +1,10 @@
 {
   "id": "erdos-266",
-  "title": "Erdős Problem #266: Shifted Sums and Irrationality",
+  "title": "Erd\u0151s Problem #266: Shifted Sums and Irrationality",
   "slug": "erdos-266",
-  "description": "Stolarsky conjectured that for any convergent ∑1/aₙ, some shift t makes ∑1/(aₙ+t) irrational. Kovač-Tao (2024) disproved this: some sequences give rational sums for ALL rational shifts.",
+  "description": "Stolarsky conjectured that for any convergent \u22111/a\u2099, some shift t makes \u22111/(a\u2099+t) irrational. Kova\u010d-Tao (2024) disproved this: some sequences give rational sums for ALL rational shifts.",
   "meta": {
-    "author": "Kovač & Tao (2024)",
+    "author": "Kova\u010d & Tao (2024)",
     "sourceUrl": "https://erdosproblems.com/266",
     "date": "2024",
     "status": "formalized",
@@ -42,24 +42,24 @@
     ],
     "originalContributions": [
       "Formal statement of Stolarsky's conjecture in Lean 4",
-      "Statement of Kovač-Tao's disproof",
+      "Statement of Kova\u010d-Tao's disproof",
       "Statement of the stronger all-rationals result",
-      "Connection to Erdős #264 on irrationality sequences"
+      "Connection to Erd\u0151s #264 on irrationality sequences"
     ],
     "axiomCount": 2,
     "lineCount": 150,
     "assumptions": "2 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This conjecture is due to Kenneth Stolarsky, who asked whether shifting a convergent series by an integer could always produce irrationality. The intuition was appealing: surely among infinitely many shifts, at least one should 'break' any rationality pattern.\n\nThe problem is closely related to Erdős #264 about irrationality sequences. Both explore how robust irrationality is under additive perturbations.\n\nKovač and Tao's 2024 paper on Ahmes series resolved this and several related Erdős problems, providing a unified counterexample framework.",
-    "problemStatement": "**Stolarsky's Conjecture**: Let $a_n$ be a sequence of positive integers with $\\sum \\frac{1}{a_n}$ convergent. Then there exists some integer $t \\geq 1$ such that\n$$\\sum \\frac{1}{a_n + t}$$\nis irrational.\n\n**Answer**: FALSE — disproved by Kovač and Tao (2024).\n\n**Stronger Result**: There exists a sequence $a_n$ such that $\\sum \\frac{1}{a_n + t}$ is RATIONAL for ALL $t \\in \\mathbb{Q}$ (where $t \\neq -a_n$).",
-    "text": "Stolarsky conjectured that for any convergent ∑1/aₙ, some shift t makes ∑1/(aₙ+t) irrational. Kovač-Tao (2024) disproved this: some sequences give rational sums for ALL rational shifts.",
-    "proofStrategy": "We formalize:\n\n1. **Stolarsky's Conjecture**: The claim that some integer shift always produces irrationality\n\n2. **Kovač-Tao Disproof**: An axiom stating the conjecture is false — counterexamples exist\n\n3. **Stronger All-Rationals Result**: An axiom stating that some sequence gives rational sums for ALL rational shifts\n\nThe construction of the counterexample uses sophisticated techniques from Ahmes series theory (Egyptian fractions), which is beyond current Mathlib formalization.",
+    "historicalContext": "This conjecture is due to Kenneth Stolarsky, who asked whether shifting a convergent series by an integer could always produce irrationality. The intuition was appealing: surely among infinitely many shifts, at least one should 'break' any rationality pattern.\n\nThe problem is closely related to Erd\u0151s #264 about irrationality sequences. Both explore how robust irrationality is under additive perturbations.\n\nKova\u010d and Tao's 2024 paper on Ahmes series resolved this and several related Erd\u0151s problems, providing a unified counterexample framework.",
+    "problemStatement": "**Stolarsky's Conjecture**: Let $a_n$ be a sequence of positive integers with $\\sum \\frac{1}{a_n}$ convergent. Then there exists some integer $t \\geq 1$ such that\n$$\\sum \\frac{1}{a_n + t}$$\nis irrational.\n\n**Answer**: FALSE \u2014 disproved by Kova\u010d and Tao (2024).\n\n**Stronger Result**: There exists a sequence $a_n$ such that $\\sum \\frac{1}{a_n + t}$ is RATIONAL for ALL $t \\in \\mathbb{Q}$ (where $t \\neq -a_n$).",
+    "text": "Stolarsky conjectured that for any convergent \u22111/a\u2099, some shift t makes \u22111/(a\u2099+t) irrational. Kova\u010d-Tao (2024) disproved this: some sequences give rational sums for ALL rational shifts.",
+    "proofStrategy": "We formalize:\n\n1. **Stolarsky's Conjecture**: The claim that some integer shift always produces irrationality\n\n2. **Kova\u010d-Tao Disproof**: An axiom stating the conjecture is false \u2014 counterexamples exist\n\n3. **Stronger All-Rationals Result**: An axiom stating that some sequence gives rational sums for ALL rational shifts\n\nThe construction of the counterexample uses sophisticated techniques from Ahmes series theory (Egyptian fractions), which is beyond current Mathlib formalization.",
     "keyInsights": [
-      "**The intuition fails**: It seems natural that some shift should produce irrationality, but Kovač-Tao constructed explicit counterexamples.",
+      "**The intuition fails**: It seems natural that some shift should produce irrationality, but Kova\u010d-Tao constructed explicit counterexamples.",
       "**Stronger than expected**: Not only do integer shifts all give rational sums, but ALL rational shifts do too. This is a remarkable rigidity property.",
       "**Ahmes series connection**: The counterexample uses properties of Ahmes series (representations as sums of unit fractions), linking to ancient Egyptian mathematics.",
-      "**Related to #264**: Both problems ask about irrationality under additive perturbations. Kovač-Tao's paper resolved multiple Erdős problems with unified techniques.",
+      "**Related to #264**: Both problems ask about irrationality under additive perturbations. Kova\u010d-Tao's paper resolved multiple Erd\u0151s problems with unified techniques.",
       "**Existence vs. construction**: The proof shows counterexamples exist but the actual sequence is highly non-obvious and requires careful construction."
     ],
     "prerequisites": [
@@ -87,7 +87,7 @@
       "title": "Main Result",
       "startLine": 44,
       "endLine": 55,
-      "summary": "Kovač-Tao's disproof: the conjecture is false."
+      "summary": "Kova\u010d-Tao's disproof: the conjecture is false."
     },
     {
       "id": "stronger",
@@ -101,7 +101,7 @@
       "title": "Discussion and Relations",
       "startLine": 74,
       "endLine": 98,
-      "summary": "Understanding the counterexample and connections to Erdős #264."
+      "summary": "Understanding the counterexample and connections to Erd\u0151s #264."
     },
     {
       "id": "examples",
@@ -112,12 +112,12 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #266, Stolarsky's conjecture that some integer shift should make a convergent series irrational. Kovač and Tao (2024) disproved this and showed even stronger: some sequences give rational sums for ALL rational shifts. This demonstrates surprising rigidity in how series can avoid irrationality.",
+    "summary": "We formalize Erd\u0151s Problem #266, Stolarsky's conjecture that some integer shift should make a convergent series irrational. Kova\u010d and Tao (2024) disproved this and showed even stronger: some sequences give rational sums for ALL rational shifts. This demonstrates surprising rigidity in how series can avoid irrationality.",
     "implications": "**Theoretical Significance**: The result shows that irrationality is not as 'generic' as one might expect.\n\nEven with infinitely many choices of shift, a carefully constructed sequence can maintain rationality everywhere. This has implications for understanding the structure of Egyptian fractions and unit fraction representations.",
     "openQuestions": [
       "Can we characterize which sequences have the all-rationals property?",
       "What is the growth rate of the counterexample sequence?",
-      "Are there 'natural' sequences (like n² or prime-indexed) where some shift is irrational?"
+      "Are there 'natural' sequences (like n\u00b2 or prime-indexed) where some shift is irrational?"
     ]
   },
   "leanFile": {
@@ -139,5 +139,39 @@
     "axiomCount": 2,
     "theoremCount": 3,
     "definitionCount": 1
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Share irrationality and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Share irrationality and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1051",
+      "relationship": "related",
+      "description": "Share irrationality and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-249",
+      "relationship": "related",
+      "description": "Share irrationality and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-250",
+      "relationship": "related",
+      "description": "Share irrationality and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1049",
+    "erdos-1050",
+    "erdos-1051",
+    "erdos-249",
+    "erdos-250"
+  ]
 }

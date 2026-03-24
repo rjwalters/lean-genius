@@ -120,17 +120,11 @@
       "targetId": "erdos-1104",
       "relationship": "related",
       "description": "Both use the probabilistic method as the primary tool and ask whether probabilistic bounds can be improved to constants"
-    },
-    {
-      "targetId": "fano-plane",
-      "relationship": "foundation",
-      "description": "The Fano plane (order 2, the smallest projective plane) is a trivial case where C = 3 suffices"
     }
   ],
   "relatedProofs": [
     "erdos-664",
-    "erdos-1104",
-    "fano-plane"
+    "erdos-1104"
   ],
   "leanFile": {
     "imports": [

@@ -1,10 +1,10 @@
 {
   "id": "erdos-533",
-  "title": "Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs",
+  "title": "Erd\u0151s Problem #533: Triangle-Free Subsets in K\u2085-Free Dense Graphs",
   "slug": "erdos-533",
-  "description": "Must a K₅-free graph on n vertices with ≥ δn² edges contain a triangle-free subset of ≫ n vertices? True for δ > 1/16 (EHSSS). Fails for K₇ at δ = 1/4 (Erdős–Rogers). Open.",
+  "description": "Must a K\u2085-free graph on n vertices with \u2265 \u03b4n\u00b2 edges contain a triangle-free subset of \u226b n vertices? True for \u03b4 > 1/16 (EHSSS). Fails for K\u2087 at \u03b4 = 1/4 (Erd\u0151s\u2013Rogers). Open.",
   "meta": {
-    "author": "Erdős, Hajnal, Simonovits, Sós, Szemerédi",
+    "author": "Erd\u0151s, Hajnal, Simonovits, S\u00f3s, Szemer\u00e9di",
     "sourceUrl": "https://erdosproblems.com/533",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos533Problem.lean",
@@ -25,21 +25,21 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem lies at the intersection of extremal graph theory and Ramsey theory. Erdős and his collaborators investigated how the exclusion of a complete subgraph K_r forces structural properties in dense graphs. By Turán's theorem (1941), a K₅-free graph on n vertices has at most 3n²/8 edges. The deeper question is whether K₅-freeness, combined with sufficient density, forces the existence of large subgraphs with even stronger properties—specifically, triangle-freeness. Erdős, Hajnal, Simonovits, Sós, and Szemerédi (EHSSS) proved this for edge density δ > 1/16 using the Szemerédi regularity lemma. The result was shown to hold for all δ > 0 when K₅ is replaced by K₄. However, the Erdős–Rogers construction (1962) shows the result fails for K₇-free graphs at density 1/4, establishing a phase transition somewhere between K₄ and K₇. Problem 533 asks whether K₅ falls on the 'good' side of this transition.",
-    "problemStatement": "For every δ > 0, does every K₅-free graph on n vertices with at least δn² edges contain a triangle-free induced subgraph on Ω_δ(n) vertices?",
-    "text": "Must a K₅-free graph on n vertices with ≥ δn² edges contain a triangle-free subset of ≫ n vertices? True for δ > 1/16 (EHSSS). Fails for K₇ at δ = 1/4 (Erdős–Rogers). Open.",
-    "proofStrategy": "The formalization defines simple graphs via a symmetric irreflexive adjacency structure on Fin n, with cliques, triangle-freeness, and edge counting as derived predicates. The EHSSS partial result (δ > 1/16), the K₄-free analogue (all δ > 0), and the Erdős–Rogers K₇ counterexample are recorded as axioms. The full conjecture for K₅ and all δ > 0 is stated with the quantifier structure ∀ δ > 0, ∃ c > 0 such that every K₅-free graph with ≥ δn² edges has a triangle-free subset of size ≥ cn.",
+    "historicalContext": "This problem lies at the intersection of extremal graph theory and Ramsey theory. Erd\u0151s and his collaborators investigated how the exclusion of a complete subgraph K_r forces structural properties in dense graphs. By Tur\u00e1n's theorem (1941), a K\u2085-free graph on n vertices has at most 3n\u00b2/8 edges. The deeper question is whether K\u2085-freeness, combined with sufficient density, forces the existence of large subgraphs with even stronger properties\u2014specifically, triangle-freeness. Erd\u0151s, Hajnal, Simonovits, S\u00f3s, and Szemer\u00e9di (EHSSS) proved this for edge density \u03b4 > 1/16 using the Szemer\u00e9di regularity lemma. The result was shown to hold for all \u03b4 > 0 when K\u2085 is replaced by K\u2084. However, the Erd\u0151s\u2013Rogers construction (1962) shows the result fails for K\u2087-free graphs at density 1/4, establishing a phase transition somewhere between K\u2084 and K\u2087. Problem 533 asks whether K\u2085 falls on the 'good' side of this transition.",
+    "problemStatement": "For every \u03b4 > 0, does every K\u2085-free graph on n vertices with at least \u03b4n\u00b2 edges contain a triangle-free induced subgraph on \u03a9_\u03b4(n) vertices?",
+    "text": "Must a K\u2085-free graph on n vertices with \u2265 \u03b4n\u00b2 edges contain a triangle-free subset of \u226b n vertices? True for \u03b4 > 1/16 (EHSSS). Fails for K\u2087 at \u03b4 = 1/4 (Erd\u0151s\u2013Rogers). Open.",
+    "proofStrategy": "The formalization defines simple graphs via a symmetric irreflexive adjacency structure on Fin n, with cliques, triangle-freeness, and edge counting as derived predicates. The EHSSS partial result (\u03b4 > 1/16), the K\u2084-free analogue (all \u03b4 > 0), and the Erd\u0151s\u2013Rogers K\u2087 counterexample are recorded as axioms. The full conjecture for K\u2085 and all \u03b4 > 0 is stated with the quantifier structure \u2200 \u03b4 > 0, \u2203 c > 0 such that every K\u2085-free graph with \u2265 \u03b4n\u00b2 edges has a triangle-free subset of size \u2265 cn.",
     "keyInsights": [
-      "**Phase transition**: The result is true for K₄-free (all δ) but false for K₇-free (at δ = 1/4), making K₅ and K₆ the critical boundary cases",
-      "**Regularity method**: The EHSSS proof uses the Szemerédi regularity lemma—the density threshold δ > 1/16 is an artifact of the regularity approximation",
-      "**Turán bound constraint**: K₅-freeness limits density to δ ≤ 3/8 by Turán's theorem, so the problem lives in the range 0 < δ ≤ 3/8",
-      "**Blow-up obstruction**: The Erdős-Rogers K₇ counterexample uses iterated Ramsey blow-ups that force triangles in every large subset while avoiding K₇",
-      "**Linear vs sublinear**: The conjecture asks for a triangle-free subset of linear size Ω(n), not just ω(1)—a much stronger structural guarantee"
+      "**Phase transition**: The result is true for K\u2084-free (all \u03b4) but false for K\u2087-free (at \u03b4 = 1/4), making K\u2085 and K\u2086 the critical boundary cases",
+      "**Regularity method**: The EHSSS proof uses the Szemer\u00e9di regularity lemma\u2014the density threshold \u03b4 > 1/16 is an artifact of the regularity approximation",
+      "**Tur\u00e1n bound constraint**: K\u2085-freeness limits density to \u03b4 \u2264 3/8 by Tur\u00e1n's theorem, so the problem lives in the range 0 < \u03b4 \u2264 3/8",
+      "**Blow-up obstruction**: The Erd\u0151s-Rogers K\u2087 counterexample uses iterated Ramsey blow-ups that force triangles in every large subset while avoiding K\u2087",
+      "**Linear vs sublinear**: The conjecture asks for a triangle-free subset of linear size \u03a9(n), not just \u03c9(1)\u2014a much stronger structural guarantee"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Combinatorics (counting, extremal problems)",
-      "Extremal graph theory (Turán-type problems)",
+      "Extremal graph theory (Tur\u00e1n-type problems)",
       "Ramsey theory (partition regularity)"
     ]
   },
@@ -77,39 +77,39 @@
       "title": "EHSSS Partial Result",
       "startLine": 53,
       "endLine": 62,
-      "summary": "Records the δ > 1/16 result for K₅-free graphs with linear-size triangle-free subsets."
+      "summary": "Records the \u03b4 > 1/16 result for K\u2085-free graphs with linear-size triangle-free subsets."
     },
     {
       "id": "k4-free",
-      "title": "K₄-Free Case",
+      "title": "K\u2084-Free Case",
       "startLine": 64,
       "endLine": 70,
-      "summary": "Records that the result holds for all δ > 0 when K₄ is excluded instead of K₅."
+      "summary": "Records that the result holds for all \u03b4 > 0 when K\u2084 is excluded instead of K\u2085."
     },
     {
       "id": "erdos-rogers",
-      "title": "Erdős-Rogers Counterexample",
+      "title": "Erd\u0151s-Rogers Counterexample",
       "startLine": 72,
       "endLine": 79,
-      "summary": "Records the K₇-free counterexample showing the result fails at density 1/4."
+      "summary": "Records the K\u2087-free counterexample showing the result fails at density 1/4."
     },
     {
       "id": "conjecture",
       "title": "The Full Conjecture",
       "startLine": 81,
       "endLine": 91,
-      "summary": "States Problem 533: for all δ > 0, K₅-free dense graphs have linear-size triangle-free subsets."
+      "summary": "States Problem 533: for all \u03b4 > 0, K\u2085-free dense graphs have linear-size triangle-free subsets."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 533 tests whether K₅-freeness is strong enough to force large triangle-free subsets at all positive densities. The EHSSS result handles δ > 1/16, K₄-free graphs work for all δ, but K₇-free graphs fail at δ = 1/4. The problem asks whether K₅ lies on the 'good' side of this phase transition.",
-    "implications": "**Theoretical Significance**: Resolution would clarify the relationship between clique exclusion and structured subgraph extraction.\n\nAn affirmative answer would strengthen connections between the Szemerédi regularity lemma, Ramsey-Turán theory, and the Erdős-Hajnal conjecture. A negative answer would require novel dense graph constructions.",
+    "summary": "Erd\u0151s Problem 533 tests whether K\u2085-freeness is strong enough to force large triangle-free subsets at all positive densities. The EHSSS result handles \u03b4 > 1/16, K\u2084-free graphs work for all \u03b4, but K\u2087-free graphs fail at \u03b4 = 1/4. The problem asks whether K\u2085 lies on the 'good' side of this phase transition.",
+    "implications": "**Theoretical Significance**: Resolution would clarify the relationship between clique exclusion and structured subgraph extraction.\n\nAn affirmative answer would strengthen connections between the Szemer\u00e9di regularity lemma, Ramsey-Tur\u00e1n theory, and the Erd\u0151s-Hajnal conjecture. A negative answer would require novel dense graph constructions.",
     "openQuestions": [
-      "Does the result extend to all δ > 0 for K₅-free graphs?",
-      "What about K₆-free graphs — does the result hold for all δ > 0?",
-      "Can the EHSSS δ > 1/16 threshold be lowered for K₅-free graphs?",
-      "What is the optimal dependence of c(δ) on δ as δ → 0?",
-      "Is there a connection to the Erdős-Hajnal conjecture on polynomial-size cliques or independent sets?"
+      "Does the result extend to all \u03b4 > 0 for K\u2085-free graphs?",
+      "What about K\u2086-free graphs \u2014 does the result hold for all \u03b4 > 0?",
+      "Can the EHSSS \u03b4 > 1/16 threshold be lowered for K\u2085-free graphs?",
+      "What is the optimal dependence of c(\u03b4) on \u03b4 as \u03b4 \u2192 0?",
+      "Is there a connection to the Erd\u0151s-Hajnal conjecture on polynomial-size cliques or independent sets?"
     ]
   },
   "leanFile": {
@@ -127,11 +127,45 @@
     "definitionCount": 5
   },
   "references": [
-    "Erdős–Hajnal–Simonovits–Sós–Szemerédi: δ > 1/16 case",
-    "K₄-free case for all δ > 0",
-    "Erdős–Rogers: K₇-free counterexample at δ = 1/4 (1962)",
-    "Szemerédi regularity lemma",
-    "Turán's theorem",
+    "Erd\u0151s\u2013Hajnal\u2013Simonovits\u2013S\u00f3s\u2013Szemer\u00e9di: \u03b4 > 1/16 case",
+    "K\u2084-free case for all \u03b4 > 0",
+    "Erd\u0151s\u2013Rogers: K\u2087-free counterexample at \u03b4 = 1/4 (1962)",
+    "Szemer\u00e9di regularity lemma",
+    "Tur\u00e1n's theorem",
     "https://erdosproblems.com/533"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share combinatorial and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share combinatorial and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Share combinatorial and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Share combinatorial and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Share combinatorial and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1075",
+    "erdos-1080",
+    "erdos-1090"
   ]
 }

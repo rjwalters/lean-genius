@@ -1,10 +1,10 @@
 {
   "id": "erdos-1032",
-  "title": "Erdős Problem #1032: 4-Chromatic Critical Graphs with High Minimum Degree",
+  "title": "Erd\u0151s Problem #1032: 4-Chromatic Critical Graphs with High Minimum Degree",
   "slug": "erdos-1032",
-  "description": "Do there exist 4-chromatic critical graphs on n vertices with minimum degree linear in n? Dirac achieved δ > n/2 for k=6; Simonovits–Toft achieved δ ≫ n^{1/3} for k=4.",
+  "description": "Do there exist 4-chromatic critical graphs on n vertices with minimum degree linear in n? Dirac achieved \u03b4 > n/2 for k=6; Simonovits\u2013Toft achieved \u03b4 \u226b n^{1/3} for k=4.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1032",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1032Problem.lean",
@@ -41,11 +41,11 @@
     ],
     "originalContributions": [
       "Axiomatised graph properties: vertexCount, minDegree, chromaticNumber, edgeCount",
-      "Defined IsKChromaticCritical: χ(G) = k and every edge removal reduces χ",
-      "Stated Dirac's construction: 6-chromatic critical graphs with δ > n/2",
-      "Stated Simonovits–Toft: 4-chromatic critical graphs with δ ≫ n^{1/3}",
-      "Defined ToftConjecture: 4-chromatic critical graphs have ≥ (5/3+o(1))n edges",
-      "Defined ErdosProblem1032: existence of 4-chromatic critical graphs with linear δ",
+      "Defined IsKChromaticCritical: \u03c7(G) = k and every edge removal reduces \u03c7",
+      "Stated Dirac's construction: 6-chromatic critical graphs with \u03b4 > n/2",
+      "Stated Simonovits\u2013Toft: 4-chromatic critical graphs with \u03b4 \u226b n^{1/3}",
+      "Defined ToftConjecture: 4-chromatic critical graphs have \u2265 (5/3+o(1))n edges",
+      "Defined ErdosProblem1032: existence of 4-chromatic critical graphs with linear \u03b4",
       "Extended the question to 5-chromatic critical graphs (ErdosProblem1032_k5)"
     ],
     "axiomCount": 6,
@@ -53,15 +53,15 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem over 20 years before 1993, asking whether 4-chromatic critical graphs can have minimum degree proportional to the number of vertices. A graph G is k-chromatic critical if χ(G) = k and removing any edge reduces the chromatic number to k-1. These are the 'minimal' graphs requiring k colours.\n\nFor k = 6, Dirac constructed k-chromatic critical graphs achieving the optimal minimum degree δ > n/2. However, for k = 4 and k = 5, the situation is dramatically different and poorly understood. Simonovits and Toft achieved δ ≫ n^{1/3} for 4-chromatic critical graphs, but the gap between n^{1/3} and the desired linear bound n is enormous.\n\nToft conjectured that every 4-chromatic critical graph on n vertices has at least (5/3 + o(1))n edges. If true, this would provide important structural constraints on such graphs. The edge conjecture is related to but distinct from the minimum degree question — a graph can have many edges without having high minimum degree if the degree distribution is uneven.",
-    "problemStatement": "Do there exist 4-chromatic critical graphs on n vertices with minimum degree ≫ n?",
-    "text": "Do there exist 4-chromatic critical graphs on n vertices with minimum degree linear in n? Dirac achieved δ > n/2 for k=6; Simonovits–Toft achieved δ ≫ n^{1/3} for k=4.",
-    "proofStrategy": "The formalization axiomatises graph properties (vertex count, min degree, chromatic number, edges) and k-chromatic criticality. Dirac's 6-chromatic construction and Simonovits–Toft's 4-chromatic construction are stated. Toft's edge conjecture and the main problem (linear minimum degree for k=4) are formalized, along with an extension to k=5.",
+    "historicalContext": "Erd\u0151s posed this problem over 20 years before 1993, asking whether 4-chromatic critical graphs can have minimum degree proportional to the number of vertices. A graph G is k-chromatic critical if \u03c7(G) = k and removing any edge reduces the chromatic number to k-1. These are the 'minimal' graphs requiring k colours.\n\nFor k = 6, Dirac constructed k-chromatic critical graphs achieving the optimal minimum degree \u03b4 > n/2. However, for k = 4 and k = 5, the situation is dramatically different and poorly understood. Simonovits and Toft achieved \u03b4 \u226b n^{1/3} for 4-chromatic critical graphs, but the gap between n^{1/3} and the desired linear bound n is enormous.\n\nToft conjectured that every 4-chromatic critical graph on n vertices has at least (5/3 + o(1))n edges. If true, this would provide important structural constraints on such graphs. The edge conjecture is related to but distinct from the minimum degree question \u2014 a graph can have many edges without having high minimum degree if the degree distribution is uneven.",
+    "problemStatement": "Do there exist 4-chromatic critical graphs on n vertices with minimum degree \u226b n?",
+    "text": "Do there exist 4-chromatic critical graphs on n vertices with minimum degree linear in n? Dirac achieved \u03b4 > n/2 for k=6; Simonovits\u2013Toft achieved \u03b4 \u226b n^{1/3} for k=4.",
+    "proofStrategy": "The formalization axiomatises graph properties (vertex count, min degree, chromatic number, edges) and k-chromatic criticality. Dirac's 6-chromatic construction and Simonovits\u2013Toft's 4-chromatic construction are stated. Toft's edge conjecture and the main problem (linear minimum degree for k=4) are formalized, along with an extension to k=5.",
     "keyInsights": [
-      "**k-Chromatic Criticality**: χ(G) = k and every edge removal reduces χ — these are the 'tight' graphs requiring exactly k colours",
-      "**Dirac's Optimal Construction**: For k=6, 6-chromatic critical graphs with δ > n/2 exist, showing linear minimum degree is achievable for higher chromatic numbers",
-      "**Simonovits–Toft Gap**: For k=4, the best known is δ ≫ n^{1/3} — the gap between n^{1/3} and n is the central challenge",
-      "**Toft's Edge Conjecture**: Every 4-chromatic critical graph has ≥ (5/3+o(1))n edges, providing a structural constraint on the edge density",
+      "**k-Chromatic Criticality**: \u03c7(G) = k and every edge removal reduces \u03c7 \u2014 these are the 'tight' graphs requiring exactly k colours",
+      "**Dirac's Optimal Construction**: For k=6, 6-chromatic critical graphs with \u03b4 > n/2 exist, showing linear minimum degree is achievable for higher chromatic numbers",
+      "**Simonovits\u2013Toft Gap**: For k=4, the best known is \u03b4 \u226b n^{1/3} \u2014 the gap between n^{1/3} and n is the central challenge",
+      "**Toft's Edge Conjecture**: Every 4-chromatic critical graph has \u2265 (5/3+o(1))n edges, providing a structural constraint on the edge density",
       "**Low Chromatic Number Difficulty**: The problem is hardest for small k (4 and 5), where high-connectivity constructions are elusive"
     ],
     "prerequisites": [
@@ -75,28 +75,28 @@
       "title": "Graph Properties",
       "startLine": 27,
       "endLine": 46,
-      "summary": "Axiomatised vertexCount, minDegree, chromaticNumber, edgeCount. Defines IsKChromaticCritical as χ = k with edge-critical property."
+      "summary": "Axiomatised vertexCount, minDegree, chromaticNumber, edgeCount. Defines IsKChromaticCritical as \u03c7 = k with edge-critical property."
     },
     {
       "id": "header-setup",
       "title": "Module Header and Problem Context",
       "startLine": 1,
       "endLine": 27,
-      "summary": "Documents Erdős Problem #1032: do 4-chromatic critical graphs with linear minimum degree exist? Frames the problem between Dirac's k=6 result (δ > n/2) and Simonovits-Toft's k=4 result (δ ≫ n^{1/3}). Imports Mathlib's natural number, finset, rational, and tactic libraries."
+      "summary": "Documents Erd\u0151s Problem #1032: do 4-chromatic critical graphs with linear minimum degree exist? Frames the problem between Dirac's k=6 result (\u03b4 > n/2) and Simonovits-Toft's k=4 result (\u03b4 \u226b n^{1/3}). Imports Mathlib's natural number, finset, rational, and tactic libraries."
     },
     {
       "id": "known-constructions",
       "title": "Known Constructions",
       "startLine": 48,
       "endLine": 61,
-      "summary": "Dirac's 6-chromatic critical graphs with δ > n/2, and Simonovits–Toft's 4-chromatic critical graphs with δ ≫ n^{1/3}."
+      "summary": "Dirac's 6-chromatic critical graphs with \u03b4 > n/2, and Simonovits\u2013Toft's 4-chromatic critical graphs with \u03b4 \u226b n^{1/3}."
     },
     {
       "id": "toft-conjecture",
       "title": "Toft's Conjecture",
       "startLine": 63,
       "endLine": 70,
-      "summary": "Every 4-chromatic critical graph on n vertices has ≥ (5/3+o(1))n edges."
+      "summary": "Every 4-chromatic critical graph on n vertices has \u2265 (5/3+o(1))n edges."
     },
     {
       "id": "main-conjecture",
@@ -107,11 +107,11 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 1032, asking whether 4-chromatic critical graphs with linear minimum degree exist. The gap between Simonovits–Toft's n^{1/3} and the target linear bound frames the difficulty.",
-    "implications": "**Critical Graph Theory**: A $k$-chromatic critical graph is one where every proper subgraph has chromatic number less than $k$ — the 'minimal' graphs requiring $k$ colors. The question of whether 4-critical graphs can have arbitrarily high minimum degree connects to fundamental questions about the structure of color-critical graphs and the relationship between local connectivity and global chromatic properties.\n\n**Dirac's Theorem and the k ≥ 6 Threshold**: Dirac (1974) showed that for $k \\geq 6$, there exist $k$-critical graphs with minimum degree $k + \\lfloor (k-3)(k-4)/2 \\rfloor - 1$, which grows quadratically in $k$. The cases $k = 4$ and $k = 5$ remain open, and a positive answer for $k = 4$ would be the first step toward completing the picture.\n\nThe problem connects to Hadwiger's conjecture (every $k$-chromatic graph contains a $K_k$ minor), the Borodin-Kostochka conjecture (graphs with $\\chi = \\Delta \\geq 9$ contain $K_\\Delta$), and Reed's conjecture ($\\chi \\leq \\lceil(\\Delta + \\omega + 1)/2\\rceil$) — all of which concern the interplay between chromatic number and structural graph parameters.",
+    "summary": "The formalization captures Erd\u0151s Problem 1032, asking whether 4-chromatic critical graphs with linear minimum degree exist. The gap between Simonovits\u2013Toft's n^{1/3} and the target linear bound frames the difficulty.",
+    "implications": "**Critical Graph Theory**: A $k$-chromatic critical graph is one where every proper subgraph has chromatic number less than $k$ \u2014 the 'minimal' graphs requiring $k$ colors. The question of whether 4-critical graphs can have arbitrarily high minimum degree connects to fundamental questions about the structure of color-critical graphs and the relationship between local connectivity and global chromatic properties.\n\n**Dirac's Theorem and the k \u2265 6 Threshold**: Dirac (1974) showed that for $k \\geq 6$, there exist $k$-critical graphs with minimum degree $k + \\lfloor (k-3)(k-4)/2 \\rfloor - 1$, which grows quadratically in $k$. The cases $k = 4$ and $k = 5$ remain open, and a positive answer for $k = 4$ would be the first step toward completing the picture.\n\nThe problem connects to Hadwiger's conjecture (every $k$-chromatic graph contains a $K_k$ minor), the Borodin-Kostochka conjecture (graphs with $\\chi = \\Delta \\geq 9$ contain $K_\\Delta$), and Reed's conjecture ($\\chi \\leq \\lceil(\\Delta + \\omega + 1)/2\\rceil$) \u2014 all of which concern the interplay between chromatic number and structural graph parameters.",
     "openQuestions": [
-      "Do 4-chromatic critical graphs with δ ≫ n exist?",
-      "What about 5-chromatic critical graphs with linear δ?",
+      "Do 4-chromatic critical graphs with \u03b4 \u226b n exist?",
+      "What about 5-chromatic critical graphs with linear \u03b4?",
       "Is Toft's edge bound (5/3+o(1))n optimal?",
       "What structural properties force high minimum degree in critical graphs?",
       "Can probabilistic or algebraic constructions improve the n^{1/3} bound?"
@@ -119,46 +119,46 @@
   },
   "crossReferences": [
     {
-      "target": "erdos-58",
       "relationship": "related",
-      "description": "Chromatic number constrained by odd cycle structure — another Erdős problem linking chromatic number to graph structural properties, paralleling the critical graph angle"
+      "description": "Chromatic number constrained by odd cycle structure \u2014 another Erd\u0151s problem linking chromatic number to graph structural properties, paralleling the critical graph angle",
+      "targetId": "erdos-58"
     },
     {
-      "target": "erdos-108",
       "relationship": "related",
-      "description": "High chromatic subgraphs with large girth — directly related: asks for high-χ graphs with large girth, the dual challenge to critical graphs with high minimum degree"
+      "description": "High chromatic subgraphs with large girth \u2014 directly related: asks for high-\u03c7 graphs with large girth, the dual challenge to critical graphs with high minimum degree",
+      "targetId": "erdos-108"
     },
     {
-      "target": "erdos-1013",
       "relationship": "related",
-      "description": "Triangle-free chromatic threshold — explores how high chromatic number can be achieved with sparse local structure, closely related to minimum degree constraints in critical graphs"
+      "description": "Triangle-free chromatic threshold \u2014 explores how high chromatic number can be achieved with sparse local structure, closely related to minimum degree constraints in critical graphs",
+      "targetId": "erdos-1013"
     },
     {
-      "target": "erdos-1011",
       "relationship": "related",
-      "description": "Triangles in graphs with high chromatic number — examines edge density needed to force triangles when χ is high, complementing the minimum degree perspective of Problem 1032"
+      "description": "Triangles in graphs with high chromatic number \u2014 examines edge density needed to force triangles when \u03c7 is high, complementing the minimum degree perspective of Problem 1032",
+      "targetId": "erdos-1011"
     },
     {
-      "target": "erdos-1092",
       "relationship": "related",
-      "description": "Chromatic decomposition threshold — studies how many edges must be removed to reduce chromatic number, closely tied to edge-criticality which underlies k-chromatic critical graph theory"
+      "description": "Chromatic decomposition threshold \u2014 studies how many edges must be removed to reduce chromatic number, closely tied to edge-criticality which underlies k-chromatic critical graph theory",
+      "targetId": "erdos-1092"
     },
     {
-      "target": "four-color-theorem",
       "relationship": "related",
-      "description": "Four Color Theorem — the landmark result on planar graph chromatic number; 4-chromatic critical graphs are the irreducible obstacles to 3-coloring and connect directly to planarity questions"
+      "description": "Four Color Theorem \u2014 the landmark result on planar graph chromatic number; 4-chromatic critical graphs are the irreducible obstacles to 3-coloring and connect directly to planarity questions",
+      "targetId": "four-color-theorem"
     }
   ],
   "relatedProofs": [
     {
       "target": "erdos-1104",
       "relationship": "related",
-      "description": "Maximum chromatic number of triangle-free graphs — establishing χ = Θ(√(n/log n)) for triangle-free graphs; since 4-chromatic critical graphs are triangle-free (or nearly so in constructions), these results bound the chromatic number in the regime Erdős considers"
+      "description": "Maximum chromatic number of triangle-free graphs \u2014 establishing \u03c7 = \u0398(\u221a(n/log n)) for triangle-free graphs; since 4-chromatic critical graphs are triangle-free (or nearly so in constructions), these results bound the chromatic number in the regime Erd\u0151s considers"
     },
     {
       "target": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey's Theorem — guarantees monochromatic cliques in any coloring of large complete graphs; Ramsey-type arguments appear in probabilistic constructions of high-minimum-degree critical graphs"
+      "description": "Ramsey's Theorem \u2014 guarantees monochromatic cliques in any coloring of large complete graphs; Ramsey-type arguments appear in probabilistic constructions of high-minimum-degree critical graphs"
     }
   ],
   "references": [
@@ -170,9 +170,9 @@
       "venue": "Proceedings of the London Mathematical Society",
       "year": 1952,
       "volume": "s3-2",
-      "pages": "69–81",
+      "pages": "69\u201381",
       "doi": "10.1112/plms/s3-2.1.69",
-      "note": "Dirac's foundational work constructing k-chromatic critical graphs with minimum degree δ > n/2 for k = 6, the positive case referenced in Erdős Problem 1032"
+      "note": "Dirac's foundational work constructing k-chromatic critical graphs with minimum degree \u03b4 > n/2 for k = 6, the positive case referenced in Erd\u0151s Problem 1032"
     },
     {
       "authors": [
@@ -182,8 +182,8 @@
       "title": "On the structure of k-chromatic graphs and some related topics",
       "venue": "Proceedings of the British Combinatorial Conference",
       "year": 1973,
-      "pages": "169–175",
-      "note": "Simonovits and Toft's construction achieving minimum degree ≫ n^{1/3} for 4-chromatic critical graphs — the current best result for k = 4 motivating Erdős Problem 1032"
+      "pages": "169\u2013175",
+      "note": "Simonovits and Toft's construction achieving minimum degree \u226b n^{1/3} for 4-chromatic critical graphs \u2014 the current best result for k = 4 motivating Erd\u0151s Problem 1032"
     },
     {
       "authors": [
@@ -193,31 +193,31 @@
       "venue": "Studia Scientiarum Mathematicarum Hungarica",
       "year": 1970,
       "volume": "5",
-      "pages": "461–470",
-      "note": "Source of Toft's conjecture that every 4-chromatic critical graph on n vertices has ≥ (5/3 + o(1))n edges, formalized as ToftConjecture in the Lean file"
+      "pages": "461\u2013470",
+      "note": "Source of Toft's conjecture that every 4-chromatic critical graph on n vertices has \u2265 (5/3 + o(1))n edges, formalized as ToftConjecture in the Lean file"
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "A. Hajnal"
       ],
       "title": "On chromatic number of graphs and set-systems",
       "venue": "Acta Mathematica Hungarica",
       "year": 1966,
       "volume": "17",
-      "pages": "61–99",
+      "pages": "61\u201399",
       "doi": "10.1007/BF02020444",
-      "note": "Foundational work by Erdős and Hajnal on chromatic number, providing structural results on critical graphs and hypergraph coloring that inform the minimum degree problem"
+      "note": "Foundational work by Erd\u0151s and Hajnal on chromatic number, providing structural results on critical graphs and hypergraph coloring that inform the minimum degree problem"
     },
     {
       "authors": [
         "T. Gallai"
       ],
       "title": "Kritische Graphen I",
-      "venue": "Magyar Tudományos Akadémia Matematikai Kutató Intézetének Közleményei",
+      "venue": "Magyar Tudom\u00e1nyos Akad\u00e9mia Matematikai Kutat\u00f3 Int\u00e9zet\u00e9nek K\u00f6zlem\u00e9nyei",
       "year": 1963,
       "volume": "8",
-      "pages": "165–192",
+      "pages": "165\u2013192",
       "note": "Gallai's seminal paper on the structure of critical graphs, establishing key properties of k-chromatic critical graphs including degree bounds and decomposition theorems"
     }
   ],

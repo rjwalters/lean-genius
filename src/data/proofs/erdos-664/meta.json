@@ -1,10 +1,10 @@
 {
   "id": "erdos-664",
-  "title": "Erdős Problem #664: Blocking Sets with Bounded Intersection",
+  "title": "Erd\u0151s Problem #664: Blocking Sets with Bounded Intersection",
   "slug": "erdos-664",
-  "description": "For set families with |Aᵢ| > c√n and pairwise |Aᵢ ∩ Aⱼ| ≤ 1, must a blocker exist with O(1) intersection? DISPROVED by Alon using projective plane constructions.",
+  "description": "For set families with |A\u1d62| > c\u221an and pairwise |A\u1d62 \u2229 A\u2c7c| \u2264 1, must a blocker exist with O(1) intersection? DISPROVED by Alon using projective plane constructions.",
   "meta": {
-    "author": "Erdős (1981), Alon (disproof)",
+    "author": "Erd\u0151s (1981), Alon (disproof)",
     "sourceUrl": "https://erdosproblems.com/664",
     "date": "1981",
     "status": "axiomatized",
@@ -54,18 +54,18 @@
       }
     ],
     "originalContributions": [
-      "SetFamily: indexed collection of m finite subsets of [n] via Fin m → Finset (Fin n)",
-      "AllLargerThan: density condition |Aᵢ| > c√n with real-valued comparison",
-      "PairwiseSmallIntersection: near-linear condition |Aᵢ ∩ Aⱼ| ≤ 1 for i ≠ j",
+      "SetFamily: indexed collection of m finite subsets of [n] via Fin m \u2192 Finset (Fin n)",
+      "AllLargerThan: density condition |A\u1d62| > c\u221an with real-valued comparison",
+      "PairwiseSmallIntersection: near-linear condition |A\u1d62 \u2229 A\u2c7c| \u2264 1 for i \u2260 j",
       "NearLinearFamily: Lean structure bundling family with both properties",
       "IsBlocker/HasBoundedIntersection/IsGoodBlocker: transversal theory definitions",
       "ErdosQuestion664: formal statement with correct quantifier order (k depends on c, not n)",
-      "alon_disproof axiom: ¬ErdosQuestion664 (the answer is NO)",
+      "alon_disproof axiom: \u00acErdosQuestion664 (the answer is NO)",
       "projectivePlaneOrder and projective_plane_exists: PG(2,q) parameters",
-      "alon_construction axiom: explicit counterexample with Ω(log n) intersection",
+      "alon_construction axiom: explicit counterexample with \u03a9(log n) intersection",
       "IsBalancedBlockDesign: original 1981 formulation (still open)",
       "ErdosQuestion664_Original: balanced block design version",
-      "minimum_blocking_set_size: Bruen's bound q + √q + 1 for projective planes"
+      "minimum_blocking_set_size: Bruen's bound q + \u221aq + 1 for projective planes"
     ],
     "relatedProofs": [
       {
@@ -82,17 +82,17 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Origins: Erdős and Blocking Sets (1981)**\n\nErdős posed Problem #664 in [Er81] (1981), in his influential paper \"On the combinatorial problems I would most like to see solved.\" The question arose from the study of blocking sets in finite geometries and transversal theory: given a family of large sets with small pairwise intersections, can we always find a 'nice' transversal that hits each set without over-concentrating?\n\n**The Near-Linear Setting**\n\nThe hypothesis — $|A_i| > c\\sqrt{n}$ with $|A_i \\cap A_j| \\leq 1$ — defines a *near-linear* (or *almost disjoint*) set family. Such families arise naturally from lines in projective planes, where each line has $q+1 \\approx \\sqrt{n}$ points and any two lines meet in exactly one point. Erdős asked whether the near-linear structure is rigid enough to force the existence of a well-distributed transversal.\n\n**Alon's Disproof via Projective Planes**\n\nNils Alon disproved the conjecture using a probabilistic construction based on the Desarguesian projective plane $\\text{PG}(2,q)$. Starting with the $q^2+q+1$ lines of $\\text{PG}(2,q)$, Alon randomly retains each point on each line independently with probability $\\approx 2/5$. The thinned lines maintain: (1) size $\\approx (2/5)(q+1) > (2/5)\\sqrt{n}$; (2) pairwise intersection $\\leq 1$ (since thinning can only reduce intersections); and crucially (3) any transversal must concentrate $\\Omega(\\log n)$ points on at least one line, by a coupon-collector-type covering argument.\n\n**The Logarithmic Barrier**\n\nThe key quantitative result is that for any blocker $B$, there exists $j$ with $|B \\cap A_j| \\geq \\Omega(\\log n)$. Since $\\log n \\to \\infty$, no uniform constant $k = O_c(1)$ can bound all intersections — answering Erdős's question in the negative. The logarithmic growth is tight: the ESS (Erdős-Simonovits-Sós) construction for Problem #1159 shows that $O(\\log n)$-bounded blocking sets do exist in projective planes.\n\n**The Open Balanced Design Version**\n\nErdős's original 1981 formulation used balanced block designs (every pair in exactly one block) rather than general near-linear families. Since BBDs have strictly more structure, Alon's counterexample doesn't directly apply, and this version remains open. Alon conjectured that the BBD version is also false, but this has not been established.",
+    "historicalContext": "**Origins: Erd\u0151s and Blocking Sets (1981)**\n\nErd\u0151s posed Problem #664 in [Er81] (1981), in his influential paper \"On the combinatorial problems I would most like to see solved.\" The question arose from the study of blocking sets in finite geometries and transversal theory: given a family of large sets with small pairwise intersections, can we always find a 'nice' transversal that hits each set without over-concentrating?\n\n**The Near-Linear Setting**\n\nThe hypothesis \u2014 $|A_i| > c\\sqrt{n}$ with $|A_i \\cap A_j| \\leq 1$ \u2014 defines a *near-linear* (or *almost disjoint*) set family. Such families arise naturally from lines in projective planes, where each line has $q+1 \\approx \\sqrt{n}$ points and any two lines meet in exactly one point. Erd\u0151s asked whether the near-linear structure is rigid enough to force the existence of a well-distributed transversal.\n\n**Alon's Disproof via Projective Planes**\n\nNils Alon disproved the conjecture using a probabilistic construction based on the Desarguesian projective plane $\\text{PG}(2,q)$. Starting with the $q^2+q+1$ lines of $\\text{PG}(2,q)$, Alon randomly retains each point on each line independently with probability $\\approx 2/5$. The thinned lines maintain: (1) size $\\approx (2/5)(q+1) > (2/5)\\sqrt{n}$; (2) pairwise intersection $\\leq 1$ (since thinning can only reduce intersections); and crucially (3) any transversal must concentrate $\\Omega(\\log n)$ points on at least one line, by a coupon-collector-type covering argument.\n\n**The Logarithmic Barrier**\n\nThe key quantitative result is that for any blocker $B$, there exists $j$ with $|B \\cap A_j| \\geq \\Omega(\\log n)$. Since $\\log n \\to \\infty$, no uniform constant $k = O_c(1)$ can bound all intersections \u2014 answering Erd\u0151s's question in the negative. The logarithmic growth is tight: the ESS (Erd\u0151s-Simonovits-S\u00f3s) construction for Problem #1159 shows that $O(\\log n)$-bounded blocking sets do exist in projective planes.\n\n**The Open Balanced Design Version**\n\nErd\u0151s's original 1981 formulation used balanced block designs (every pair in exactly one block) rather than general near-linear families. Since BBDs have strictly more structure, Alon's counterexample doesn't directly apply, and this version remains open. Alon conjectured that the BBD version is also false, but this has not been established.",
     "problemStatement": "Let $c < 1$ be a constant and $A_1, \\ldots, A_m \\subseteq \\{1, \\ldots, n\\}$ with $|A_i| > c\\sqrt{n}$ and $|A_i \\cap A_j| \\leq 1$ for $i \\neq j$. Must there exist $B$ such that $B \\cap A_i \\neq \\emptyset$ and $|B \\cap A_i| = O_c(1)$ for all $i$?\n\n**Answer: NO.** For $n = q^2 + q + 1$ (large prime $q$), Alon constructs families where any blocker $B$ satisfies $|B \\cap A_j| \\geq \\Omega(\\log n)$ for some $j$.",
-    "text": "For set families with |Aᵢ| > c√n and pairwise |Aᵢ ∩ Aⱼ| ≤ 1, must a blocker exist with O(1) intersection? DISPROVED by Alon using projective plane constructions.",
-    "proofStrategy": "The formalization builds up in layers: (1) **Set family infrastructure** — `SetFamily`, `familySizes`, `AllLargerThan`, `PairwiseSmallIntersection`, and the `NearLinearFamily` structure bundling these conditions; (2) **Transversal theory** — `IsBlocker`, `HasBoundedIntersection`, `IsGoodBlocker` defining the desired objects; (3) **The formal question** — `ErdosQuestion664` with precise quantifier ordering ($k$ depends on $c$ but not $n$ or $m$); (4) **Alon's disproof** — `alon_disproof` (negation) and `alon_construction` (explicit counterexample) as axioms; (5) **The mechanism** — projective plane parameters, random thinning preservation, and the logarithmic lower bound explaining *why* the construction works; (6) **Original version** — `IsBalancedBlockDesign` and `ErdosQuestion664_Original` preserving the open BBD formulation.",
+    "text": "For set families with |A\u1d62| > c\u221an and pairwise |A\u1d62 \u2229 A\u2c7c| \u2264 1, must a blocker exist with O(1) intersection? DISPROVED by Alon using projective plane constructions.",
+    "proofStrategy": "The formalization builds up in layers: (1) **Set family infrastructure** \u2014 `SetFamily`, `familySizes`, `AllLargerThan`, `PairwiseSmallIntersection`, and the `NearLinearFamily` structure bundling these conditions; (2) **Transversal theory** \u2014 `IsBlocker`, `HasBoundedIntersection`, `IsGoodBlocker` defining the desired objects; (3) **The formal question** \u2014 `ErdosQuestion664` with precise quantifier ordering ($k$ depends on $c$ but not $n$ or $m$); (4) **Alon's disproof** \u2014 `alon_disproof` (negation) and `alon_construction` (explicit counterexample) as axioms; (5) **The mechanism** \u2014 projective plane parameters, random thinning preservation, and the logarithmic lower bound explaining *why* the construction works; (6) **Original version** \u2014 `IsBalancedBlockDesign` and `ErdosQuestion664_Original` preserving the open BBD formulation.",
     "keyInsights": [
-      "The **near-linear condition** ($|A_i \\cap A_j| \\leq 1$) is not strong enough to force well-distributed transversals — despite preventing any element from covering many sets simultaneously, the global covering structure can still force concentration",
+      "The **near-linear condition** ($|A_i \\cap A_j| \\leq 1$) is not strong enough to force well-distributed transversals \u2014 despite preventing any element from covering many sets simultaneously, the global covering structure can still force concentration",
       "**Projective planes provide the counterexample** because their symmetric structure ($q^2+q+1$ points, $q^2+q+1$ lines, $q+1$ points per line, $q+1$ lines per point) creates an unavoidable covering bottleneck: each point lies on only $q+1 \\approx \\sqrt{n}$ lines, so covering all $n$ lines forces $\\Omega(\\log n)$ concentration",
       "**Random thinning** is the key probabilistic tool: retaining each point with probability $p$ preserves the near-linear condition ($|A_i \\cap A_j|$ can only decrease) while maintaining the covering difficulty (the thinned family still has $\\approx n$ sets, each of size $\\approx p\\sqrt{n}$)",
       "The **logarithmic lower bound** $|B \\cap A_j| \\geq \\Omega(\\log n)$ is tight: the ESS construction for Problem #1159 achieves $O(\\log n)$-bounded blocking sets in projective planes, showing that $\\log n$ is the correct order of magnitude",
       "The **balanced block design version remains open**: BBDs impose the additional constraint that every pair of elements appears in exactly one block (not just $\\leq 1$), and this extra structure might be sufficient to force $O(1)$-bounded transversals",
-      "The constant $c = 2/5$ is not special — the construction works for any $c < 1/2$, with the barrier at $c = 1/2$ related to the random covering threshold where a random point subset begins to block all lines with high probability"
+      "The constant $c = 2/5$ is not special \u2014 the construction works for any $c < 1/2$, with the barrier at $c = 1/2$ related to the random covering threshold where a random point subset begins to block all lines with high probability"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -123,7 +123,7 @@
     },
     {
       "id": "erdos-question",
-      "title": "The Erdős Question",
+      "title": "The Erd\u0151s Question",
       "startLine": 83,
       "endLine": 99,
       "summary": "Formal statement $\\text{ErdosQuestion664}$: $\\forall c \\in (0,1),\\, \\exists k,\\, \\forall n,m \\geq 10,\\, \\forall \\mathcal{F},\\, \\exists B$ with $\\text{IsGoodBlocker}(\\mathcal{F}, B, k)$"
@@ -147,7 +147,7 @@
       "title": "Balanced Block Designs (Original Version)",
       "startLine": 168,
       "endLine": 186,
-      "summary": "Defines $\\text{IsBalancedBlockDesign}$ (every pair in exactly one block) and $\\text{ErdosQuestion664\\_Original}$ — the 1981 formulation that remains OPEN"
+      "summary": "Defines $\\text{IsBalancedBlockDesign}$ (every pair in exactly one block) and $\\text{ErdosQuestion664\\_Original}$ \u2014 the 1981 formulation that remains OPEN"
     },
     {
       "id": "finite-geometry",
@@ -179,7 +179,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #664, posed in 1981, asked whether near-linear set families (sets of size $> c\\sqrt{n}$ with pairwise intersection $\\leq 1$) always admit blocking sets with $O(1)$ intersection. Alon disproved this using random subsets of projective plane lines: for $n = q^2+q+1$, any blocker must have $\\Omega(\\log n)$ intersection with some set. The formalization captures the disproof as axioms, with the full construction mechanism (projective plane structure, random thinning, covering argument) explained through supporting axioms. The original balanced block design version remains open.",
+    "summary": "Erd\u0151s Problem #664, posed in 1981, asked whether near-linear set families (sets of size $> c\\sqrt{n}$ with pairwise intersection $\\leq 1$) always admit blocking sets with $O(1)$ intersection. Alon disproved this using random subsets of projective plane lines: for $n = q^2+q+1$, any blocker must have $\\Omega(\\log n)$ intersection with some set. The formalization captures the disproof as axioms, with the full construction mechanism (projective plane structure, random thinning, covering argument) explained through supporting axioms. The original balanced block design version remains open.",
     "implications": "**Theoretical Significance**: Alon's disproof reveals a fundamental asymmetry in transversal theory: the near-linear condition ($|A_i \\cap A_j| \\leq 1$) prevents *local* overlap but cannot prevent *global* concentration of transversals. The tight logarithmic bound ($\\Theta(\\log n)$) connects to covering theory and the coupon collector problem.\n\nThe projective plane construction bridges finite geometry and probabilistic combinatorics, and the unresolved BBD version tests whether the stronger design-theoretic structure ($\\lambda = 1$ BIBD) can overcome this limitation. Problem #1159 extends the question by asking whether $O(\\log n)$-bounded blocking sets always exist in projective planes (the ESS theorem confirms this for Desarguesian planes).",
     "openQuestions": [
       "Is the balanced block design version (ErdosQuestion664_Original) also false, as Alon conjectured?",
@@ -208,5 +208,39 @@
     "axiomCount": 10,
     "theoremCount": 4,
     "definitionCount": 18
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1159",
+      "relationship": "related",
+      "description": "Share finite-geometry, projective-planes, and blocking-sets themes"
+    },
+    {
+      "targetId": "erdos-166",
+      "relationship": "related",
+      "description": "Share finite-geometry, combinatorial, and probabilistic-method themes"
+    },
+    {
+      "targetId": "erdos-903",
+      "relationship": "related",
+      "description": "Share finite-geometry, projective-planes, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-21",
+      "relationship": "related",
+      "description": "Share projective-planes, combinatorial, and probabilistic-method themes"
+    },
+    {
+      "targetId": "erdos-665",
+      "relationship": "related",
+      "description": "Share projective-planes and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1159",
+    "erdos-166",
+    "erdos-903",
+    "erdos-21",
+    "erdos-665"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-1001",
-  "title": "Erdős #1001: Diophantine Approximation Density",
+  "title": "Erd\u0151s #1001: Diophantine Approximation Density",
   "slug": "erdos-1001",
-  "description": "Let S(N,A,c) measure α ∈ (0,1) with |α - x/y| < A/y² for some N ≤ y ≤ cN, gcd(x,y)=1. Does lim S(N,A,c) exist? YES (Kesten-Sós). Formula: f(A,c) = 12A log(c)/π² in EST regime.",
+  "description": "Let S(N,A,c) measure \u03b1 \u2208 (0,1) with |\u03b1 - x/y| < A/y\u00b2 for some N \u2264 y \u2264 cN, gcd(x,y)=1. Does lim S(N,A,c) exist? YES (Kesten-S\u00f3s). Formula: f(A,c) = 12A log(c)/\u03c0\u00b2 in EST regime.",
   "meta": {
-    "author": "Erdős-Szüsz-Turán, Kesten-Sós, Boca, Xiong-Zaharescu",
+    "author": "Erd\u0151s-Sz\u00fcsz-Tur\u00e1n, Kesten-S\u00f3s, Boca, Xiong-Zaharescu",
     "sourceUrl": "https://erdosproblems.com/1001",
     "date": "1958-2008",
     "status": "axiomatized",
@@ -25,7 +25,7 @@
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.volume",
-        "description": "Lebesgue measure on ℝ",
+        "description": "Lebesgue measure on \u211d",
         "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
       },
       {
@@ -45,20 +45,20 @@
       },
       {
         "theorem": "Real.pi",
-        "description": "The mathematical constant π",
+        "description": "The mathematical constant \u03c0",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ],
     "originalContributions": [
       "Formalization of isApproximable predicate for Diophantine approximation",
       "Definition of approximationSet and measure S(N,A,c)",
-      "Axiomatization of Erdős-Szüsz-Turán explicit formula",
-      "Axiomatization of Kesten-Sós limit existence theorem",
+      "Axiomatization of Erd\u0151s-Sz\u00fcsz-Tur\u00e1n explicit formula",
+      "Axiomatization of Kesten-S\u00f3s limit existence theorem",
       "Formalization of EST regime condition",
       "Connection to Farey fraction asymptotics"
     ],
     "axiomCount": 9,
-    "assumptions": "9 axiom declarations encoding results on the distribution of {nα} sequences: S_bounds, S_mono_A, S_mono_c (properties of the discrepancy functional S(N,A,c)), erdos_szusz_turan (Erdős-Szüsz-Turán 1958 theorem on bounded discrepancy), est_boundedness (boundedness condition), kesten_sos (Kesten's three-distance theorem connection), boca_theorem (Boca's continued fraction approach), xiong_zaharescu_theorem (Xiong-Zaharescu gap distribution result). These encode established results in the metric theory of continued fractions.",
+    "assumptions": "9 axiom declarations encoding results on the distribution of {n\u03b1} sequences: S_bounds, S_mono_A, S_mono_c (properties of the discrepancy functional S(N,A,c)), erdos_szusz_turan (Erd\u0151s-Sz\u00fcsz-Tur\u00e1n 1958 theorem on bounded discrepancy), est_boundedness (boundedness condition), kesten_sos (Kesten's three-distance theorem connection), boca_theorem (Boca's continued fraction approach), xiong_zaharescu_theorem (Xiong-Zaharescu gap distribution result). These encode established results in the metric theory of continued fractions.",
     "prerequisites": [
       "Diophantine approximation (Dirichlet's theorem, approximation quality)",
       "Lebesgue measure on the real line",
@@ -70,15 +70,15 @@
     "lineCount": 205
   },
   "overview": {
-    "historicalContext": "This problem originates in a 1958 paper by Erdős, Szüsz, and Turán, who studied the metric theory of Diophantine approximation — specifically, what fraction of real numbers $\\alpha \\in (0,1)$ can be well-approximated by rationals whose denominators lie in a prescribed range $[N, cN]$. They proved the explicit formula $f(A,c) = 12A\\log(c)/\\pi^2$ in a specific parameter regime, revealing a striking connection to the density of coprime pairs via Euler's formula $\\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$. The key advance came in 1966 when Harry Kesten and Vera T. Sós proved that the limit $\\lim_{N \\to \\infty} S(N,A,c)$ exists for all valid parameters, using ergodic-theoretic methods — a significant generalization since no explicit formula was needed. Later, Florin Boca (2008) gave an independent proof using the geometry of Farey fractions and their spacing statistics, while Xiong and Zaharescu (2006) provided yet another proof via continued fraction expansions. The problem illustrates a central theme in metric number theory: how measure-theoretic properties of approximation sets encode deep arithmetic structure.",
-    "problemStatement": "Let S(N,A,c) be the measure of α ∈ (0,1) such that |α - x/y| < A/y² for some N ≤ y ≤ cN with gcd(x,y) = 1. Does lim_{N→∞} S(N,A,c) = f(A,c) exist? What is its explicit form?",
-    "text": "Let S(N,A,c) measure α ∈ (0,1) with |α - x/y| < A/y² for some N ≤ y ≤ cN, gcd(x,y)=1. Does lim S(N,A,c) exist? YES (Kesten-Sós). Formula: f(A,c) = 12A log(c)/π² in EST regime.",
-    "proofStrategy": "We formalize the approximation set, measure S(N,A,c), the limiting function f(A,c), and the key results: EST explicit formula, Kesten-Sós existence, and the connection to Farey fractions explaining the π² denominator.",
+    "historicalContext": "This problem originates in a 1958 paper by Erd\u0151s, Sz\u00fcsz, and Tur\u00e1n, who studied the metric theory of Diophantine approximation \u2014 specifically, what fraction of real numbers $\\alpha \\in (0,1)$ can be well-approximated by rationals whose denominators lie in a prescribed range $[N, cN]$. They proved the explicit formula $f(A,c) = 12A\\log(c)/\\pi^2$ in a specific parameter regime, revealing a striking connection to the density of coprime pairs via Euler's formula $\\sum_{n=1}^\\infty 1/n^2 = \\pi^2/6$. The key advance came in 1966 when Harry Kesten and Vera T. S\u00f3s proved that the limit $\\lim_{N \\to \\infty} S(N,A,c)$ exists for all valid parameters, using ergodic-theoretic methods \u2014 a significant generalization since no explicit formula was needed. Later, Florin Boca (2008) gave an independent proof using the geometry of Farey fractions and their spacing statistics, while Xiong and Zaharescu (2006) provided yet another proof via continued fraction expansions. The problem illustrates a central theme in metric number theory: how measure-theoretic properties of approximation sets encode deep arithmetic structure.",
+    "problemStatement": "Let S(N,A,c) be the measure of \u03b1 \u2208 (0,1) such that |\u03b1 - x/y| < A/y\u00b2 for some N \u2264 y \u2264 cN with gcd(x,y) = 1. Does lim_{N\u2192\u221e} S(N,A,c) = f(A,c) exist? What is its explicit form?",
+    "text": "Let S(N,A,c) measure \u03b1 \u2208 (0,1) with |\u03b1 - x/y| < A/y\u00b2 for some N \u2264 y \u2264 cN, gcd(x,y)=1. Does lim S(N,A,c) exist? YES (Kesten-S\u00f3s). Formula: f(A,c) = 12A log(c)/\u03c0\u00b2 in EST regime.",
+    "proofStrategy": "We formalize the approximation set, measure S(N,A,c), the limiting function f(A,c), and the key results: EST explicit formula, Kesten-S\u00f3s existence, and the connection to Farey fractions explaining the \u03c0\u00b2 denominator.",
     "keyInsights": [
-      "The limit exists for all valid A, c (Kesten-Sós 1966)",
-      "Explicit formula: f(A,c) = 12A log(c)/π² when 0 < A < c/(1+c²)",
+      "The limit exists for all valid A, c (Kesten-S\u00f3s 1966)",
+      "Explicit formula: f(A,c) = 12A log(c)/\u03c0\u00b2 when 0 < A < c/(1+c\u00b2)",
       "When min(A,c) > 10, S stays bounded away from 0 and 1",
-      "The π² comes from Farey fraction asymptotics: |F_n| ~ 3n²/π²",
+      "The \u03c0\u00b2 comes from Farey fraction asymptotics: |F_n| ~ 3n\u00b2/\u03c0\u00b2",
       "Multiple proof methods: measure theory, Farey fractions, continued fractions"
     ],
     "prerequisites": [
@@ -108,13 +108,13 @@
     {
       "id": "limit-function",
       "title": "The Limit Function",
-      "summary": "Definition of f(A,c) = 12A log(c)/π² and limitExists",
+      "summary": "Definition of f(A,c) = 12A log(c)/\u03c0\u00b2 and limitExists",
       "startLine": 72,
       "endLine": 84
     },
     {
       "id": "est-result",
-      "title": "Erdős-Szüsz-Turán Result (1958)",
+      "title": "Erd\u0151s-Sz\u00fcsz-Tur\u00e1n Result (1958)",
       "summary": "Explicit formula in the EST regime",
       "startLine": 86,
       "endLine": 106
@@ -128,7 +128,7 @@
     },
     {
       "id": "kesten-sos",
-      "title": "Kesten-Sós Result (1966)",
+      "title": "Kesten-S\u00f3s Result (1966)",
       "summary": "Limit exists for all valid A, c",
       "startLine": 118,
       "endLine": 139
@@ -143,7 +143,7 @@
     {
       "id": "farey-connection",
       "title": "Connection to Farey Fractions",
-      "summary": "Why π² appears in the formula",
+      "summary": "Why \u03c0\u00b2 appears in the formula",
       "startLine": 159,
       "endLine": 177
     },
@@ -156,8 +156,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1001 on Diophantine approximation density. The limit lim S(N,A,c) exists (Kesten-Sós) with explicit formula f(A,c) = 12A log(c)/π² in the EST regime.",
-    "implications": "**Metric Number Theory**: The Erdős-Szüsz-Turán theorem connects the distribution of $\\{n\\alpha\\}$ sequences (where $\\alpha$ is irrational) to the continued fraction expansion of $\\alpha$, placing the problem at the intersection of metric number theory and ergodic theory. The three-distance theorem (Steinhaus 1957) shows that $N$ points $\\{n\\alpha\\}$ partition $[0,1)$ into at most 3 distinct gap lengths — the formalization explores quantitative refinements of this structure.\n\n**Connection to $\\pi^2$ and Coprime Density**: The appearance of $\\pi^2$ in asymptotic formulas reflects the probability that two random integers are coprime: $6/\\pi^2 = 1/\\zeta(2)$. This density governs the distribution of Farey fractions $p/q$ approximating $\\alpha$ and controls the gap statistics formalized here.\n\n**Applications**: Understanding the fine distribution of $\\{n\\alpha\\}$ has applications to numerical integration (quasi-Monte Carlo methods), crystallography (quasicrystals and Penrose tilings), and the theory of uniform distribution modulo 1 (Weyl's equidistribution theorem).",
+    "summary": "This formalization captures Erd\u0151s Problem #1001 on Diophantine approximation density. The limit lim S(N,A,c) exists (Kesten-S\u00f3s) with explicit formula f(A,c) = 12A log(c)/\u03c0\u00b2 in the EST regime.",
+    "implications": "**Metric Number Theory**: The Erd\u0151s-Sz\u00fcsz-Tur\u00e1n theorem connects the distribution of $\\{n\\alpha\\}$ sequences (where $\\alpha$ is irrational) to the continued fraction expansion of $\\alpha$, placing the problem at the intersection of metric number theory and ergodic theory. The three-distance theorem (Steinhaus 1957) shows that $N$ points $\\{n\\alpha\\}$ partition $[0,1)$ into at most 3 distinct gap lengths \u2014 the formalization explores quantitative refinements of this structure.\n\n**Connection to $\\pi^2$ and Coprime Density**: The appearance of $\\pi^2$ in asymptotic formulas reflects the probability that two random integers are coprime: $6/\\pi^2 = 1/\\zeta(2)$. This density governs the distribution of Farey fractions $p/q$ approximating $\\alpha$ and controls the gap statistics formalized here.\n\n**Applications**: Understanding the fine distribution of $\\{n\\alpha\\}$ has applications to numerical integration (quasi-Monte Carlo methods), crystallography (quasicrystals and Penrose tilings), and the theory of uniform distribution modulo 1 (Weyl's equidistribution theorem).",
     "openQuestions": [
       "What is the explicit formula for f(A,c) outside the EST regime?",
       "What is the rate of convergence of S(N,A,c) to f(A,c)?",
@@ -166,29 +166,29 @@
   },
   "crossReferences": [
     {
-      "id": "prime-reciprocal-divergence",
       "relationship": "related",
-      "description": "Both concern the distribution and density of number-theoretic objects; the divergence of prime reciprocals relates to the Euler product that produces the π² constant"
+      "description": "Both concern the distribution and density of number-theoretic objects; the divergence of prime reciprocals relates to the Euler product that produces the \u03c0\u00b2 constant",
+      "targetId": "prime-reciprocal-divergence"
     },
     {
-      "id": "infinitude-primes",
       "relationship": "related",
-      "description": "The density of coprime pairs (6/π²) underlying the EST formula depends on the distribution of primes via Euler's product formula"
+      "description": "The density of coprime pairs (6/\u03c0\u00b2) underlying the EST formula depends on the distribution of primes via Euler's product formula",
+      "targetId": "infinitude-primes"
     },
     {
-      "id": "lebesgue-measure",
       "relationship": "uses",
-      "description": "S(N,A,c) is defined as the Lebesgue measure of the approximation set, using MeasureTheory.volume"
+      "description": "S(N,A,c) is defined as the Lebesgue measure of the approximation set, using MeasureTheory.volume",
+      "targetId": "lebesgue-measure"
     },
     {
-      "id": "basel-problem",
       "relationship": "related",
-      "description": "The Basel problem's result ζ(2) = π²/6 directly explains the π² in the EST formula f(A,c) = 12A log(c)/π² via coprime pair density 6/π²"
+      "description": "The Basel problem's result \u03b6(2) = \u03c0\u00b2/6 directly explains the \u03c0\u00b2 in the EST formula f(A,c) = 12A log(c)/\u03c0\u00b2 via coprime pair density 6/\u03c0\u00b2",
+      "targetId": "basel-problem"
     },
     {
-      "id": "hurwitz-theorem",
       "relationship": "related",
-      "description": "Hurwitz's theorem gives the optimal constant 1/√5 for Diophantine approximation quality, providing context for the approximability threshold A/y² used here"
+      "description": "Hurwitz's theorem gives the optimal constant 1/\u221a5 for Diophantine approximation quality, providing context for the approximability threshold A/y\u00b2 used here",
+      "targetId": "hurwitz-theorem"
     }
   ],
   "relatedProofs": [

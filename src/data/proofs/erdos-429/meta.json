@@ -1,10 +1,10 @@
 {
   "id": "erdos-429",
-  "title": "Erdős Problem #429: Sparse Admissible Sets and Prime Shifts",
+  "title": "Erd\u0151s Problem #429: Sparse Admissible Sets and Prime Shifts",
   "slug": "erdos-429",
   "description": "Is sparsity + admissibility sufficient for a prime shift? Answer: NO (Weisenberg 2024 constructed arbitrarily sparse admissible sets with no prime shift).",
   "meta": {
-    "author": "Weisenberg (2024 disproof), Erdős-Graham (1980 problem)",
+    "author": "Weisenberg (2024 disproof), Erd\u0151s-Graham (1980 problem)",
     "sourceUrl": "https://erdosproblems.com/429",
     "date": "2024",
     "status": "axiomatized",
@@ -63,15 +63,15 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this question in their 1980 monograph (p. 85), asking whether sparsity combined with admissibility is sufficient to guarantee a prime shift. An admissible set A avoids at least one residue class mod p for every prime p, which means simple mod-p arguments cannot rule out the existence of n with all n + a prime. The Hardy-Littlewood prime tuples conjecture predicts that finite admissible sets should have infinitely many prime shifts.\n\nThe question was whether this extends to infinite but sparse sets: if A ⊆ ℕ has zero density and is admissible, must some shift n + A consist entirely of primes? This combines two conditions that each seem favorable: admissibility removes the obvious obstruction, and sparsity means fewer simultaneous primality constraints.\n\nWeisenberg (2024) resolved this decisively: NO. He constructed arbitrarily sparse admissible sets — even lacunary ones where consecutive term ratios grow without bound — for which no prime shift exists. The construction uses covering congruences: for each potential shift n, some element a ∈ A forces n + a to be divisible by a specific prime, and these primes collectively cover all possible shifts. This reveals a fundamental gap between the finite and infinite cases of the admissibility condition.",
+    "historicalContext": "Erd\u0151s and Graham posed this question in their 1980 monograph (p. 85), asking whether sparsity combined with admissibility is sufficient to guarantee a prime shift. An admissible set A avoids at least one residue class mod p for every prime p, which means simple mod-p arguments cannot rule out the existence of n with all n + a prime. The Hardy-Littlewood prime tuples conjecture predicts that finite admissible sets should have infinitely many prime shifts.\n\nThe question was whether this extends to infinite but sparse sets: if A \u2286 \u2115 has zero density and is admissible, must some shift n + A consist entirely of primes? This combines two conditions that each seem favorable: admissibility removes the obvious obstruction, and sparsity means fewer simultaneous primality constraints.\n\nWeisenberg (2024) resolved this decisively: NO. He constructed arbitrarily sparse admissible sets \u2014 even lacunary ones where consecutive term ratios grow without bound \u2014 for which no prime shift exists. The construction uses covering congruences: for each potential shift n, some element a \u2208 A forces n + a to be divisible by a specific prime, and these primes collectively cover all possible shifts. This reveals a fundamental gap between the finite and infinite cases of the admissibility condition.",
     "problemStatement": "Is it true that if $A \\subseteq \\mathbb{N}$ is sparse enough and does not cover all residue classes modulo $p$ for any prime $p$, then there exists some $n$ such that $n + a$ is prime for all $a \\in A$?\n\n**Answer: NO** (Weisenberg 2024)",
     "text": "Is sparsity + admissibility sufficient for a prime shift? Answer: NO (Weisenberg 2024 constructed arbitrarily sparse admissible sets with no prime shift).",
     "proofStrategy": "The formalization defines admissibility via residue class avoidance, proves the equivalence between admissibility and having avoided residues for each prime, and records Weisenberg's counterexample results as axioms. The disproof erdos_429_disproved is derived from weisenberg_theorem by contradiction. The summary packages the disproof, basic counterexample, and lacunary strengthening.",
     "keyInsights": [
-      "**Admissibility**: A set is admissible if for every prime p, at least one residue class mod p is not represented — this is the minimum necessary condition for a prime shift",
+      "**Admissibility**: A set is admissible if for every prime p, at least one residue class mod p is not represented \u2014 this is the minimum necessary condition for a prime shift",
       "**Necessity vs Sufficiency**: Admissibility is necessary for prime shifts (proved) but not sufficient even with extreme sparsity (Weisenberg's counterexample)",
-      "**Covering Congruences**: Weisenberg's construction ensures every potential shift n has some a ∈ A with n + a divisible by a specific prime, blocking all shifts simultaneously",
-      "**Lacunary Strengthening**: Even sets where consecutive ratios a_{n+1}/a_n → ∞ can fail, showing that no growth-rate condition rescues the conjecture",
+      "**Covering Congruences**: Weisenberg's construction ensures every potential shift n has some a \u2208 A with n + a divisible by a specific prime, blocking all shifts simultaneously",
+      "**Lacunary Strengthening**: Even sets where consecutive ratios a_{n+1}/a_n \u2192 \u221e can fail, showing that no growth-rate condition rescues the conjecture",
       "**Finite vs Infinite Gap**: The Hardy-Littlewood conjecture predicts infinitely many prime shifts for finite admissible tuples, but this breaks down completely in the infinite case"
     ],
     "prerequisites": [
@@ -103,7 +103,7 @@
     },
     {
       "id": "refutation",
-      "title": "The Erdős Conjecture and Its Refutation",
+      "title": "The Erd\u0151s Conjecture and Its Refutation",
       "startLine": 107,
       "endLine": 132,
       "summary": "ErdosConjecture429, Weisenberg's theorem, and the proved disproof"
@@ -124,7 +124,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #429 is DISPROVED. Weisenberg (2024) showed that even arbitrarily sparse admissible sets can fail to have any prime shift, by constructing explicit counterexamples using covering congruence techniques.",
+    "summary": "Erd\u0151s Problem #429 is DISPROVED. Weisenberg (2024) showed that even arbitrarily sparse admissible sets can fail to have any prime shift, by constructing explicit counterexamples using covering congruence techniques.",
     "implications": "**Theoretical Significance**: The result reveals a fundamental gap between finite and infinite admissible sets.\n\nWhile the Hardy-Littlewood conjecture predicts infinitely many prime shifts for finite admissible tuples, infinite admissible sets behave very differently even under extreme sparsity constraints. The technique of covering congruences provides a powerful obstruction mechanism.",
     "openQuestions": [
       "What additional conditions beyond admissibility guarantee a prime shift for infinite sets?",
@@ -148,5 +148,39 @@
     "axiomCount": 3,
     "theoremCount": 3,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Share number-theoretic, covering-systems, and prime number themes"
+    },
+    {
+      "targetId": "erdos-203",
+      "relationship": "related",
+      "description": "Share number-theoretic, covering-systems, and prime number themes"
+    },
+    {
+      "targetId": "erdos-273",
+      "relationship": "related",
+      "description": "Share number-theoretic, covering-systems, and prime number themes"
+    },
+    {
+      "targetId": "erdos-279",
+      "relationship": "related",
+      "description": "Share number-theoretic, covering-systems, and prime number themes"
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related",
+      "description": "Share number-theoretic, covering-systems, and prime number themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1113",
+    "erdos-203",
+    "erdos-273",
+    "erdos-279",
+    "erdos-9"
+  ]
 }

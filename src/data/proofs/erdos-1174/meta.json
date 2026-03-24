@@ -1,10 +1,10 @@
 {
   "id": "erdos-1174",
-  "title": "Erdős Problem #1174: Monochromatic Cliques from Edge Colorings",
+  "title": "Erd\u0151s Problem #1174: Monochromatic Cliques from Edge Colorings",
   "slug": "erdos-1174",
-  "description": "Does there exist a K₄-free graph such that every countable edge coloring contains a monochromatic triangle, and does the analogous infinite generalization hold?",
+  "description": "Does there exist a K\u2084-free graph such that every countable edge coloring contains a monochromatic triangle, and does the analogous infinite generalization hold?",
   "meta": {
-    "author": "Erdős & Hajnal",
+    "author": "Erd\u0151s & Hajnal",
     "sourceUrl": "https://erdosproblems.com/1174",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1174Problem.lean",
@@ -25,7 +25,7 @@
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
-        "description": "Graph adjacency, complete graph (⊤), and basic operations",
+        "description": "Graph adjacency, complete graph (\u22a4), and basic operations",
         "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
       },
       {
@@ -35,7 +35,7 @@
       },
       {
         "theorem": "Cardinal.Ordinal",
-        "description": "Aleph numbers (ℵ₀, ℵ₁) for infinite cardinalities",
+        "description": "Aleph numbers (\u2135\u2080, \u2135\u2081) for infinite cardinalities",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       }
     ],
@@ -58,16 +58,16 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1174 was posed by Erdős and Hajnal and sits at the intersection of Ramsey theory and set theory. The classical Ramsey theorem guarantees that any 2-coloring of the complete graph K_ω yields a monochromatic infinite clique. Problem 1174 asks what happens when we restrict the host graph—forbidding K₄ or K_{ℵ₁}—while allowing countably many colors rather than just two.\n\nThe problem has two parts: (a) asks for a K₄-free graph where every countable coloring forces a monochromatic triangle, and (b) asks for a K_{ℵ₁}-free graph where every countable coloring forces a monochromatic K_{ℵ₀}. The Nešetřil-Rödl theorem shows that for any fixed finite number k of colors, there exist K₄-free graphs with the partition property G → (3)²_k. The challenge in part (a) is extending this from finitely many to countably many colors simultaneously.\n\nShelah showed that graphs satisfying either property can consistently exist in certain models of ZFC. This means ZFC cannot disprove their existence, but whether ZFC can prove their existence remains open. The problem thus has a set-theoretic independence flavor, connecting combinatorial Ramsey theory with forcing and consistency results.",
-    "problemStatement": "Two related open questions: (a) Does there exist a K₄-free graph $G$ such that every edge coloring of $G$ with countably many colors contains a monochromatic triangle? (b) Does there exist a graph $G$ with no clique of cardinality $\\aleph_1$ such that every edge coloring with countably many colors contains a monochromatic clique of cardinality $\\aleph_0$?",
-    "text": "Does there exist a K₄-free graph such that every countable edge coloring contains a monochromatic triangle, and does the analogous infinite generalization hold?",
-    "proofStrategy": "The formalization defines the core graph-theoretic and set-theoretic concepts needed to state both parts precisely. Cliques, K₄-freeness, and cardinal-bounded clique-freeness are defined from first principles. The Erdős-Hajnal properties for both parts are captured as predicates on graphs. The Nešetřil-Rödl theorem (finite-color partition property for K₄-free graphs) and the infinite Ramsey theorem for 2 colors are axiomatized as context. A constructive proof shows the complete graph on ℕ is not K₄-free, demonstrating why the clique-freeness constraint is essential.",
+    "historicalContext": "Erd\u0151s Problem #1174 was posed by Erd\u0151s and Hajnal and sits at the intersection of Ramsey theory and set theory. The classical Ramsey theorem guarantees that any 2-coloring of the complete graph K_\u03c9 yields a monochromatic infinite clique. Problem 1174 asks what happens when we restrict the host graph\u2014forbidding K\u2084 or K_{\u2135\u2081}\u2014while allowing countably many colors rather than just two.\n\nThe problem has two parts: (a) asks for a K\u2084-free graph where every countable coloring forces a monochromatic triangle, and (b) asks for a K_{\u2135\u2081}-free graph where every countable coloring forces a monochromatic K_{\u2135\u2080}. The Ne\u0161et\u0159il-R\u00f6dl theorem shows that for any fixed finite number k of colors, there exist K\u2084-free graphs with the partition property G \u2192 (3)\u00b2_k. The challenge in part (a) is extending this from finitely many to countably many colors simultaneously.\n\nShelah showed that graphs satisfying either property can consistently exist in certain models of ZFC. This means ZFC cannot disprove their existence, but whether ZFC can prove their existence remains open. The problem thus has a set-theoretic independence flavor, connecting combinatorial Ramsey theory with forcing and consistency results.",
+    "problemStatement": "Two related open questions: (a) Does there exist a K\u2084-free graph $G$ such that every edge coloring of $G$ with countably many colors contains a monochromatic triangle? (b) Does there exist a graph $G$ with no clique of cardinality $\\aleph_1$ such that every edge coloring with countably many colors contains a monochromatic clique of cardinality $\\aleph_0$?",
+    "text": "Does there exist a K\u2084-free graph such that every countable edge coloring contains a monochromatic triangle, and does the analogous infinite generalization hold?",
+    "proofStrategy": "The formalization defines the core graph-theoretic and set-theoretic concepts needed to state both parts precisely. Cliques, K\u2084-freeness, and cardinal-bounded clique-freeness are defined from first principles. The Erd\u0151s-Hajnal properties for both parts are captured as predicates on graphs. The Ne\u0161et\u0159il-R\u00f6dl theorem (finite-color partition property for K\u2084-free graphs) and the infinite Ramsey theorem for 2 colors are axiomatized as context. A constructive proof shows the complete graph on \u2115 is not K\u2084-free, demonstrating why the clique-freeness constraint is essential.",
     "keyInsights": [
-      "**Finite vs. countable colors**: The Nešetřil-Rödl theorem handles any fixed number of colors, but the jump to countably many colors is a fundamentally different challenge. No finite compactness argument bridges this gap.",
-      "**Set-theoretic independence**: Shelah's consistency results show this problem cannot be resolved by a finite computation or a standard ZFC argument alone—the answer may depend on the set-theoretic universe.",
-      "**Partition calculus notation**: The arrow notation G → (k)²_c encodes the partition property: every c-coloring of edges of G contains a monochromatic k-clique. Problem 1174(a) asks for G → (3)²_ω with G being K₄-free.",
-      "**Why K₄-free matters**: K₄-free graphs can still be very triangle-rich (e.g., complete tripartite graphs K_{n,n,n}), but whether this local triangle density can be made globally Ramsey-forcing is the crux of the problem.",
-      "**Infinite generalization**: Part (b) lifts the question to infinite cardinals: replacing triangles with K_{ℵ₀} and K₄-freeness with K_{ℵ₁}-freeness yields a natural transfinite analog."
+      "**Finite vs. countable colors**: The Ne\u0161et\u0159il-R\u00f6dl theorem handles any fixed number of colors, but the jump to countably many colors is a fundamentally different challenge. No finite compactness argument bridges this gap.",
+      "**Set-theoretic independence**: Shelah's consistency results show this problem cannot be resolved by a finite computation or a standard ZFC argument alone\u2014the answer may depend on the set-theoretic universe.",
+      "**Partition calculus notation**: The arrow notation G \u2192 (k)\u00b2_c encodes the partition property: every c-coloring of edges of G contains a monochromatic k-clique. Problem 1174(a) asks for G \u2192 (3)\u00b2_\u03c9 with G being K\u2084-free.",
+      "**Why K\u2084-free matters**: K\u2084-free graphs can still be very triangle-rich (e.g., complete tripartite graphs K_{n,n,n}), but whether this local triangle density can be made globally Ramsey-forcing is the crux of the problem.",
+      "**Infinite generalization**: Part (b) lifts the question to infinite cardinals: replacing triangles with K_{\u2135\u2080} and K\u2084-freeness with K_{\u2135\u2081}-freeness yields a natural transfinite analog."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -88,42 +88,42 @@
     {
       "id": "definitions",
       "title": "Clique and Coloring Definitions",
-      "summary": "Definitions of cliques, K₄-freeness, cardinal clique-freeness, and symmetric coloring",
+      "summary": "Definitions of cliques, K\u2084-freeness, cardinal clique-freeness, and symmetric coloring",
       "startLine": 37,
       "endLine": 70
     },
     {
       "id": "part-a",
       "title": "The Finite Question (Part a)",
-      "summary": "Monochromatic triangle, Erdős-Hajnal finite property, and the formal statement of part (a)",
+      "summary": "Monochromatic triangle, Erd\u0151s-Hajnal finite property, and the formal statement of part (a)",
       "startLine": 72,
       "endLine": 105
     },
     {
       "id": "part-b",
       "title": "The Infinite Question (Part b)",
-      "summary": "Monochromatic ℵ₀-clique, Erdős-Hajnal infinite property, and the formal statement of part (b)",
+      "summary": "Monochromatic \u2135\u2080-clique, Erd\u0151s-Hajnal infinite property, and the formal statement of part (b)",
       "startLine": 107,
       "endLine": 141
     },
     {
       "id": "ramsey-context",
       "title": "Ramsey Theory Context",
-      "summary": "Infinite Ramsey theorem for 2 colors and proof that the complete graph is not K₄-free",
+      "summary": "Infinite Ramsey theorem for 2 colors and proof that the complete graph is not K\u2084-free",
       "startLine": 143,
       "endLine": 171
     },
     {
       "id": "partition-calculus",
       "title": "Partition Calculus Framework",
-      "summary": "Partition property definition and the Nešetřil-Rödl theorem for finite colors",
+      "summary": "Partition property definition and the Ne\u0161et\u0159il-R\u00f6dl theorem for finite colors",
       "startLine": 173,
       "endLine": 197
     },
     {
       "id": "consistency-observations",
       "title": "Consistency Results and Structural Observations",
-      "summary": "Shelah's consistency results and observations about triangle-rich K₄-free graphs",
+      "summary": "Shelah's consistency results and observations about triangle-rich K\u2084-free graphs",
       "startLine": 199,
       "endLine": 222
     },
@@ -136,12 +136,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures both parts of Erdős Problem #1174 in Lean 4, providing rigorous definitions for K₄-freeness, cardinal clique-freeness, and the Erdős-Hajnal partition properties. The Nešetřil-Rödl theorem and infinite Ramsey theorem provide context showing why the problem is nontrivial.",
-    "implications": "The problem reveals a deep connection between finite Ramsey theory (where partition properties for K₄-free graphs are well understood for fixed numbers of colors) and set-theoretic independence (where extending to countably many colors touches on forcing and consistency). Resolution would advance understanding of the boundary between combinatorics and set theory.",
+    "summary": "This formalization captures both parts of Erd\u0151s Problem #1174 in Lean 4, providing rigorous definitions for K\u2084-freeness, cardinal clique-freeness, and the Erd\u0151s-Hajnal partition properties. The Ne\u0161et\u0159il-R\u00f6dl theorem and infinite Ramsey theorem provide context showing why the problem is nontrivial.",
+    "implications": "The problem reveals a deep connection between finite Ramsey theory (where partition properties for K\u2084-free graphs are well understood for fixed numbers of colors) and set-theoretic independence (where extending to countably many colors touches on forcing and consistency). Resolution would advance understanding of the boundary between combinatorics and set theory.",
     "openQuestions": [
-      "Does ZFC prove the existence of a K₄-free graph where every countable edge coloring contains a monochromatic triangle?",
+      "Does ZFC prove the existence of a K\u2084-free graph where every countable edge coloring contains a monochromatic triangle?",
       "Is the answer to part (a) or (b) independent of ZFC, or can a constructive example be given?",
-      "What is the relationship between the finite-color partition strength of K₄-free graphs and the countable-color question?"
+      "What is the relationship between the finite-color partition strength of K\u2084-free graphs and the countable-color question?"
     ]
   },
   "leanFile": {
@@ -159,5 +159,39 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Share combinatorial, set-theoretic, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1176",
+      "relationship": "related",
+      "description": "Share combinatorial, set-theoretic, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Share combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1169",
+    "erdos-1176",
+    "erdos-1014",
+    "erdos-1030",
+    "erdos-1105"
+  ]
 }

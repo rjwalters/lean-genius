@@ -1,10 +1,10 @@
 {
   "id": "erdos-927",
-  "title": "Erdős Problem #927: Distinct Clique Sizes in Graphs",
+  "title": "Erd\u0151s Problem #927: Distinct Clique Sizes in Graphs",
   "slug": "erdos-927",
-  "description": "Let g(n) be the maximum number of distinct clique sizes in a graph on n vertices. Is g(n) = n - log₂n - log*(n) + O(1)? Answer: NO.",
+  "description": "Let g(n) be the maximum number of distinct clique sizes in a graph on n vertices. Is g(n) = n - log\u2082n - log*(n) + O(1)? Answer: NO.",
   "meta": {
-    "author": "Paul Erdős, J. Spencer, J. W. Moon, L. Moser",
+    "author": "Paul Erd\u0151s, J. Spencer, J. W. Moon, L. Moser",
     "sourceUrl": "https://erdosproblems.com/927",
     "date": "1971",
     "status": "axiomatized",
@@ -27,13 +27,13 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Moon and Moser (1965, Israel J. Math.) initiated the study of $g(n)$, the maximum number of distinct clique sizes in a graph on $n$ vertices. They proved $n - \\log_2 n - 2\\log\\log n < g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using Ramsey-theoretic arguments for the upper bound and explicit constructions for the lower bound. Erdős (1966, Israel J. Math.) sharpened the lower bound to $g(n) > n - \\log_2 n - \\log^*(n) - O(1)$ using the iterated logarithm $\\log^*$ — the number of times $\\log_2$ must be applied to reach below 1 — and conjectured this was tight: $g(n) = n - \\log_2 n - \\log^*(n) + O(1)$. Spencer (1971, Israel J. Math.) disproved the conjecture by showing $g(n) > n - \\log_2 n - O(1)$, eliminating the $\\log^*$ term entirely. Spencer's probabilistic construction showed that for large $n$, one can build graphs achieving $n - \\lfloor \\log_2 n \\rfloor - C$ distinct clique sizes for a universal constant $C$. The correct asymptotic is therefore $g(n) = n - \\log_2 n - \\Theta(1)$. The problem connects to Ramsey theory (the upper bound on $g(n)$ relates to unavoidable gaps in clique spectra) and extremal graph theory.",
+    "historicalContext": "Moon and Moser (1965, Israel J. Math.) initiated the study of $g(n)$, the maximum number of distinct clique sizes in a graph on $n$ vertices. They proved $n - \\log_2 n - 2\\log\\log n < g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ using Ramsey-theoretic arguments for the upper bound and explicit constructions for the lower bound. Erd\u0151s (1966, Israel J. Math.) sharpened the lower bound to $g(n) > n - \\log_2 n - \\log^*(n) - O(1)$ using the iterated logarithm $\\log^*$ \u2014 the number of times $\\log_2$ must be applied to reach below 1 \u2014 and conjectured this was tight: $g(n) = n - \\log_2 n - \\log^*(n) + O(1)$. Spencer (1971, Israel J. Math.) disproved the conjecture by showing $g(n) > n - \\log_2 n - O(1)$, eliminating the $\\log^*$ term entirely. Spencer's probabilistic construction showed that for large $n$, one can build graphs achieving $n - \\lfloor \\log_2 n \\rfloor - C$ distinct clique sizes for a universal constant $C$. The correct asymptotic is therefore $g(n) = n - \\log_2 n - \\Theta(1)$. The problem connects to Ramsey theory (the upper bound on $g(n)$ relates to unavoidable gaps in clique spectra) and extremal graph theory.",
     "problemStatement": "Let $g(n)$ be the maximum number of different sizes of cliques that can occur in a graph on $n$ vertices. Is it true that $g(n) = n - \\log_2 n - \\log^*(n) + O(1)$?",
-    "text": "Let g(n) be the maximum number of distinct clique sizes in a graph on n vertices. Is g(n) = n - log₂n - log*(n) + O(1)? Answer: NO.",
-    "proofStrategy": "The formalization defines cliques (`IsClique`), clique-of-size (`HasCliqueOfSize`), clique size sets (`cliqueSizes`), and the function $g(n)$ as a noncomputable supremum. It axiomatizes the Moon-Moser bounds ($n - \\log_2 n - 2\\log\\log n < g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$), Erdős's improved lower bound (involving $\\log^*$), and Spencer's theorem ($g(n) > n - \\log_2 n - C$). The conjecture and correct asymptotic are formalized as propositions. The proved theorem `erdos_927_summary` combines Spencer's theorem with the disproof of the conjecture. `singleton_is_clique` is proved directly.",
+    "text": "Let g(n) be the maximum number of distinct clique sizes in a graph on n vertices. Is g(n) = n - log\u2082n - log*(n) + O(1)? Answer: NO.",
+    "proofStrategy": "The formalization defines cliques (`IsClique`), clique-of-size (`HasCliqueOfSize`), clique size sets (`cliqueSizes`), and the function $g(n)$ as a noncomputable supremum. It axiomatizes the Moon-Moser bounds ($n - \\log_2 n - 2\\log\\log n < g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$), Erd\u0151s's improved lower bound (involving $\\log^*$), and Spencer's theorem ($g(n) > n - \\log_2 n - C$). The conjecture and correct asymptotic are formalized as propositions. The proved theorem `erdos_927_summary` combines Spencer's theorem with the disproof of the conjecture. `singleton_is_clique` is proved directly.",
     "keyInsights": [
       "**Moon-Moser bounds (1965)**: $n - \\log_2 n - 2\\log\\log n < g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$. The upper bound uses Ramsey-type arguments: in any graph, certain clique sizes must be missing.",
-      "**Iterated logarithm $\\log^*$**: Grows incredibly slowly — $\\log^*(2^{65536}) = 5$. Erdős expected this extremely slow function to appear in the asymptotic formula.",
+      "**Iterated logarithm $\\log^*$**: Grows incredibly slowly \u2014 $\\log^*(2^{65536}) = 5$. Erd\u0151s expected this extremely slow function to appear in the asymptotic formula.",
       "**Spencer's disproof (1971)**: Showed $g(n) > n - \\log_2 n - O(1)$, making the $\\log^*(n)$ term unnecessary. The gap between upper and lower bounds is just a constant.",
       "**Correct asymptotic**: $g(n) = n - \\log_2 n - \\Theta(1)$. The number of 'missing' clique sizes is $\\lfloor \\log_2 n \\rfloor + O(1)$, determined by the binary structure of $n$.",
       "**Ramsey connection**: The upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$ relates to the fact that any graph on $n$ vertices must have a monochromatic clique or independent set of size $\\sim \\log_2 n$, forcing certain clique sizes to coincide."
@@ -49,7 +49,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 37,
-      "summary": "Header documenting Erdős Problem #927 with references to Moon-Moser (1965), Erdős (1966), and Spencer (1971), all in Israel J. Math. Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Nat.Log`, and `Real.Basic`. Opens `Erdos927` namespace."
+      "summary": "Header documenting Erd\u0151s Problem #927 with references to Moon-Moser (1965), Erd\u0151s (1966), and Spencer (1971), all in Israel J. Math. Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Nat.Log`, and `Real.Basic`. Opens `Erdos927` namespace."
     },
     {
       "id": "definitions",
@@ -81,10 +81,10 @@
     },
     {
       "id": "erdos-conjecture",
-      "title": "Erdős's Conjecture (1966)",
+      "title": "Erd\u0151s's Conjecture (1966)",
       "startLine": 140,
       "endLine": 161,
-      "summary": "Axiomatizes Erdős's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$. Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$."
+      "summary": "Axiomatizes Erd\u0151s's improved lower bound $g(n) > n - \\log_2 n - \\log^*(n) - C$. Defines `ErdosConjecture` as $|g(n) - (n - \\log_2 n - \\log^*(n))| \\leq C$ for all $n \\geq 2$."
     },
     {
       "id": "spencer",
@@ -116,8 +116,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #927 is SOLVED. The conjecture $g(n) = n - \\log_2 n - \\log^*(n) + O(1)$ is FALSE. Spencer (1971) proved $g(n) > n - \\log_2 n - O(1)$, showing the iterated logarithm term is unnecessary. Combined with the Moon-Moser upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$, the correct asymptotic is $g(n) = n - \\log_2 n - \\Theta(1)$.",
-    "implications": "**Theoretical Significance**: Spencer's result shows that the iterated logarithm — despite appearing naturally in Erdős's analysis — plays no role in the asymptotic formula for distinct clique sizes.\n\nThe problem illustrates how extremely slow-growing functions ($\\log^*$) can be deceptive in combinatorial estimates. The Ramsey-theoretic connection suggests deeper structural reasons why $\\lfloor \\log_2 n \\rfloor$ clique sizes must be missing.",
+    "summary": "Erd\u0151s Problem #927 is SOLVED. The conjecture $g(n) = n - \\log_2 n - \\log^*(n) + O(1)$ is FALSE. Spencer (1971) proved $g(n) > n - \\log_2 n - O(1)$, showing the iterated logarithm term is unnecessary. Combined with the Moon-Moser upper bound $g(n) \\leq n - \\lfloor \\log_2 n \\rfloor$, the correct asymptotic is $g(n) = n - \\log_2 n - \\Theta(1)$.",
+    "implications": "**Theoretical Significance**: Spencer's result shows that the iterated logarithm \u2014 despite appearing naturally in Erd\u0151s's analysis \u2014 plays no role in the asymptotic formula for distinct clique sizes.\n\nThe problem illustrates how extremely slow-growing functions ($\\log^*$) can be deceptive in combinatorial estimates. The Ramsey-theoretic connection suggests deeper structural reasons why $\\lfloor \\log_2 n \\rfloor$ clique sizes must be missing.",
     "openQuestions": [
       "What is the exact constant $C$ in $g(n) = n - \\lfloor \\log_2 n \\rfloor - C$ for large $n$?",
       "What is the extremal graph structure achieving $g(n)$? Is it unique for large $n$?",
@@ -128,7 +128,12 @@
   "relatedProofs": [
     "erdos-775",
     "erdos-166",
-    "erdos-79"
+    "erdos-79",
+    "erdos-813",
+    "erdos-1012",
+    "erdos-1017",
+    "erdos-1018",
+    "erdos-1019"
   ],
   "leanFile": {
     "imports": [
@@ -143,5 +148,32 @@
     "axiomCount": 9,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-813",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and cliques themes"
+    },
+    {
+      "targetId": "erdos-1012",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1017",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1018",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1019",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and graph-theoretic themes"
+    }
+  ]
 }

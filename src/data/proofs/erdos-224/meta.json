@@ -1,10 +1,10 @@
 {
   "id": "erdos-224",
-  "title": "Erdős Problem #224: Obtuse Angles in Point Sets",
+  "title": "Erd\u0151s Problem #224: Obtuse Angles in Point Sets",
   "slug": "erdos-224",
-  "description": "Any 2^d + 1 points in ℝ^d contain three points forming an obtuse angle. SOLVED by Danzer-Grünbaum (1962). Hypercube is extremal.",
+  "description": "Any 2^d + 1 points in \u211d^d contain three points forming an obtuse angle. SOLVED by Danzer-Gr\u00fcnbaum (1962). Hypercube is extremal.",
   "meta": {
-    "author": "Danzer-Grünbaum (1962), Kuiper-Boerdijk (d=3)",
+    "author": "Danzer-Gr\u00fcnbaum (1962), Kuiper-Boerdijk (d=3)",
     "sourceUrl": "https://erdosproblems.com/224",
     "date": "1962",
     "status": "formalized",
@@ -28,7 +28,7 @@
     "relatedProblems": [
       {
         "id": "erdos-225",
-        "relation": "Erdős Problem #225 asks about the maximum number of right angles among n points in ℝ^d"
+        "relation": "Erd\u0151s Problem #225 asks about the maximum number of right angles among n points in \u211d^d"
       }
     ],
     "axiomCount": 7,
@@ -36,15 +36,15 @@
     "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in the context of discrete geometry, asking how many points in $\\mathbb{R}^d$ can avoid forming any obtuse angle. The question connects to the geometry of the hypercube: the $2^d$ vertices of $\\{0,1\\}^d$ form an obtuse-free set because all angles between triples of binary vectors are $\\leq 90°$ (specifically $60°$ or $90°$). For $d = 2$, any 5 points in the plane trivially contain an obtuse triple (via convex position arguments). For $d = 3$, Kuiper and Boerdijk proved the 9-point case independently. The general result was established by Ludwig Danzer and Branko Grünbaum in their 1962 paper in *Mathematische Zeitschrift*, resolving the problem for all dimensions. The proof uses induction on dimension with a projection argument, showing that $2^d + 1$ points must contain an obtuse triple. Erdős and Füredi (1983) later studied the related problem of the greatest angle among $n$ points, extending the analysis beyond the threshold case.",
-    "problemStatement": "If $A \\subseteq \\mathbb{R}^d$ is any set of $2^d + 1$ points, must some three points in $A$ determine an obtuse angle ($> 90°$)?",
-    "text": "Any 2^d + 1 points in ℝ^d contain three points forming an obtuse angle. SOLVED by Danzer-Grünbaum (1962). Hypercube is extremal.",
-    "proofStrategy": "The formalization defines $d$-dimensional Euclidean points as `Fin d → ℝ`, angles via $\\arccos$ of normalized inner products, and predicates for obtuse angles, obtuse triples, and obtuse-free sets. The main theorem (Danzer-Grünbaum) is axiomatized for all $d$. Special cases $d = 2$ and $d = 3$ are stated separately. The hypercube vertices $\\{0,1\\}^d$ are defined, and their obtuse-free property and extremality are axiomatized/proved. The pigeonhole argument over orthants is formalized as a key lemma.",
+    "historicalContext": "Erd\u0151s posed this problem in the context of discrete geometry, asking how many points in $\\mathbb{R}^d$ can avoid forming any obtuse angle. The question connects to the geometry of the hypercube: the $2^d$ vertices of $\\{0,1\\}^d$ form an obtuse-free set because all angles between triples of binary vectors are $\\leq 90\u00b0$ (specifically $60\u00b0$ or $90\u00b0$). For $d = 2$, any 5 points in the plane trivially contain an obtuse triple (via convex position arguments). For $d = 3$, Kuiper and Boerdijk proved the 9-point case independently. The general result was established by Ludwig Danzer and Branko Gr\u00fcnbaum in their 1962 paper in *Mathematische Zeitschrift*, resolving the problem for all dimensions. The proof uses induction on dimension with a projection argument, showing that $2^d + 1$ points must contain an obtuse triple. Erd\u0151s and F\u00fcredi (1983) later studied the related problem of the greatest angle among $n$ points, extending the analysis beyond the threshold case.",
+    "problemStatement": "If $A \\subseteq \\mathbb{R}^d$ is any set of $2^d + 1$ points, must some three points in $A$ determine an obtuse angle ($> 90\u00b0$)?",
+    "text": "Any 2^d + 1 points in \u211d^d contain three points forming an obtuse angle. SOLVED by Danzer-Gr\u00fcnbaum (1962). Hypercube is extremal.",
+    "proofStrategy": "The formalization defines $d$-dimensional Euclidean points as `Fin d \u2192 \u211d`, angles via $\\arccos$ of normalized inner products, and predicates for obtuse angles, obtuse triples, and obtuse-free sets. The main theorem (Danzer-Gr\u00fcnbaum) is axiomatized for all $d$. Special cases $d = 2$ and $d = 3$ are stated separately. The hypercube vertices $\\{0,1\\}^d$ are defined, and their obtuse-free property and extremality are axiomatized/proved. The pigeonhole argument over orthants is formalized as a key lemma.",
     "keyInsights": [
-      "**Hypercube extremality**: The $2^d$ vertices of $\\{0,1\\}^d$ have only $60°$ and $90°$ angles — all inner products $\\langle A-B, C-B\\rangle \\geq 0$ for binary vectors",
+      "**Hypercube extremality**: The $2^d$ vertices of $\\{0,1\\}^d$ have only $60\u00b0$ and $90\u00b0$ angles \u2014 all inner products $\\langle A-B, C-B\\rangle \\geq 0$ for binary vectors",
       "**Pigeonhole principle**: $\\mathbb{R}^d$ has $2^d$ coordinate orthants, so $2^d + 1$ points force two into the same orthant, creating geometric constraints",
-      "**Inductive proof**: Danzer-Grünbaum argued by induction on $d$, projecting points onto hyperplanes and analyzing how the extra coordinate forces obtuse angles",
-      "**Tight bound**: The threshold $2^d + 1$ is exact — $2^d$ obtuse-free points exist (hypercube) but $2^d + 1$ always force an obtuse triple",
+      "**Inductive proof**: Danzer-Gr\u00fcnbaum argued by induction on $d$, projecting points onto hyperplanes and analyzing how the extra coordinate forces obtuse angles",
+      "**Tight bound**: The threshold $2^d + 1$ is exact \u2014 $2^d$ obtuse-free points exist (hypercube) but $2^d + 1$ always force an obtuse triple",
       "**Inner product characterization**: Obtuse $\\Leftrightarrow$ negative dot product: $\\angle ABC > \\pi/2 \\iff \\langle A-B, C-B\\rangle < 0$"
     ],
     "prerequisites": [
@@ -98,21 +98,21 @@
     {
       "id": "hypercube-angles",
       "title": "Angles in the Hypercube",
-      "summary": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\pi/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60°$ and $90°$ angles occur.",
+      "summary": "Axiomatizes **hypercube_angle_classification**: $\\angle ABC \\leq \\pi/2$ for all distinct vertices $A, B, C \\in \\{0,1\\}^d$. Only $60\u00b0$ and $90\u00b0$ angles occur.",
       "startLine": 153,
       "endLine": 176
     },
     {
       "id": "why-2d-plus-1",
       "title": "Why 2^d + 1 Forces Obtuse",
-      "summary": "Axiomatizes **pigeonhole_orthants**: $2^d + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Grünbaum argument.",
+      "summary": "Axiomatizes **pigeonhole_orthants**: $2^d + 1$ points in $\\mathbb{R}^d$ force two into the same orthant. Sketches the Danzer-Gr\u00fcnbaum argument.",
       "startLine": 178,
       "endLine": 203
     },
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "Discusses connections to **acute sets** (all angles $< 90°$), **spherical codes**, and high-dimensional geometry phenomena.",
+      "summary": "Discusses connections to **acute sets** (all angles $< 90\u00b0$), **spherical codes**, and high-dimensional geometry phenomena.",
       "startLine": 205,
       "endLine": 228
     },
@@ -125,14 +125,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #224 was solved by Danzer and Grünbaum (1962): any $2^d + 1$ points in $\\mathbb{R}^d$ contain three forming an obtuse angle. The hypercube $\\{0,1\\}^d$ with $2^d$ vertices is the extremal obtuse-free configuration, making the bound tight. The formalization axiomatizes the main theorem and special cases, and proves extremality and the summary conjunction.",
-    "implications": "**Theoretical Significance**: The result reveals that the hypercube geometry is the unique obstruction to obtuse-freeness in high dimensions.\n\nThe exponential threshold $2^d$ connects discrete geometry to coding theory (spherical codes with angle constraints) and the combinatorics of the Boolean lattice. The Danzer-Grünbaum technique of induction via projection has become a standard tool in discrete geometry.",
+    "summary": "Erd\u0151s Problem #224 was solved by Danzer and Gr\u00fcnbaum (1962): any $2^d + 1$ points in $\\mathbb{R}^d$ contain three forming an obtuse angle. The hypercube $\\{0,1\\}^d$ with $2^d$ vertices is the extremal obtuse-free configuration, making the bound tight. The formalization axiomatizes the main theorem and special cases, and proves extremality and the summary conjunction.",
+    "implications": "**Theoretical Significance**: The result reveals that the hypercube geometry is the unique obstruction to obtuse-freeness in high dimensions.\n\nThe exponential threshold $2^d$ connects discrete geometry to coding theory (spherical codes with angle constraints) and the combinatorics of the Boolean lattice. The Danzer-Gr\u00fcnbaum technique of induction via projection has become a standard tool in discrete geometry.",
     "openQuestions": [
-      "What is the maximum size of an acute set (all angles strictly < 90°) in ℝ^d? (Known: between d+1 and 2d-1)",
+      "What is the maximum size of an acute set (all angles strictly < 90\u00b0) in \u211d^d? (Known: between d+1 and 2d-1)",
       "Are there other extremal obtuse-free configurations besides the hypercube (up to isometry)?",
-      "What is the maximum number of right angles (exactly 90°) among n points in ℝ^d?",
+      "What is the maximum number of right angles (exactly 90\u00b0) among n points in \u211d^d?",
       "How does the obtuse-free threshold change in non-Euclidean geometries (hyperbolic, spherical)?",
-      "Can the Danzer-Grünbaum proof be made constructive — given 2^d+1 points, efficiently find the obtuse triple?"
+      "Can the Danzer-Gr\u00fcnbaum proof be made constructive \u2014 given 2^d+1 points, efficiently find the obtuse triple?"
     ]
   },
   "leanFile": {
@@ -150,10 +150,44 @@
     "definitionCount": 7
   },
   "references": [
-    "Danzer, Grünbaum (1962): 'Über zwei Probleme bezüglich konvexer Körper von P. Erdős und von V. L. Klee', Mathematische Zeitschrift 79, 95–99",
-    "Erdős, Füredi (1983): 'The greatest angle among n points in the d-dimensional Euclidean space', Annals of Discrete Mathematics 17, 275–283",
-    "Kuiper, Boerdijk: Unpublished proof for d = 3 (9 points in ℝ³)",
+    "Danzer, Gr\u00fcnbaum (1962): '\u00dcber zwei Probleme bez\u00fcglich konvexer K\u00f6rper von P. Erd\u0151s und von V. L. Klee', Mathematische Zeitschrift 79, 95\u201399",
+    "Erd\u0151s, F\u00fcredi (1983): 'The greatest angle among n points in the d-dimensional Euclidean space', Annals of Discrete Mathematics 17, 275\u2013283",
+    "Kuiper, Boerdijk: Unpublished proof for d = 3 (9 points in \u211d\u00b3)",
     "Barvinok, Lee, Novik (2013): Acute sets and related problems in discrete geometry",
     "https://erdosproblems.com/224"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-504",
+      "relationship": "related",
+      "description": "Share angles, discrete-geometry, and geometric themes"
+    },
+    {
+      "targetId": "erdos-86",
+      "relationship": "related",
+      "description": "Share hypercube and extremal themes"
+    },
+    {
+      "targetId": "erdos-507",
+      "relationship": "related",
+      "description": "Share discrete-geometry and geometric themes"
+    },
+    {
+      "targetId": "erdos-605",
+      "relationship": "related",
+      "description": "Share discrete-geometry and geometric themes"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Share discrete-geometry and geometric themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-504",
+    "erdos-86",
+    "erdos-507",
+    "erdos-605",
+    "erdos-654"
   ]
 }

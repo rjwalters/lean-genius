@@ -1,10 +1,10 @@
 {
   "id": "erdos-932",
-  "title": "Erdős Problem #932: Smooth Numbers in Prime Gaps",
+  "title": "Erd\u0151s Problem #932: Smooth Numbers in Prime Gaps",
   "slug": "erdos-932",
   "description": "For infinitely many r, are there at least two integers in the prime gap (p_r, p_{r+1}) whose prime factors are all smaller than the gap size p_{r+1} - p_r?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/932",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos932Problem.lean",
@@ -25,15 +25,15 @@
     "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem connects two fundamental concepts in analytic number theory: the distribution of prime gaps and the density of smooth numbers. Erdős proved that the set of r for which even ONE smooth number exists in the gap (p_r, p_{r+1}) has natural density zero, showing such gaps are exceptionally rare.\n\nThe question asks whether infinitely many prime gaps contain at least TWO numbers that are smooth relative to the gap size. Since the density is zero, proving infinitude requires showing that these rare events occur unboundedly often — a type of argument common in analytic number theory.\n\nThe problem connects to the Dickman function ρ(u), which governs the density of y-smooth numbers up to x when y = x^{1/u}. The smooth number counting function Ψ(x,y) ∼ x·ρ(log x / log y) is well-understood asymptotically, but its behavior in short intervals (like prime gaps) remains subtle.",
+    "historicalContext": "This problem connects two fundamental concepts in analytic number theory: the distribution of prime gaps and the density of smooth numbers. Erd\u0151s proved that the set of r for which even ONE smooth number exists in the gap (p_r, p_{r+1}) has natural density zero, showing such gaps are exceptionally rare.\n\nThe question asks whether infinitely many prime gaps contain at least TWO numbers that are smooth relative to the gap size. Since the density is zero, proving infinitude requires showing that these rare events occur unboundedly often \u2014 a type of argument common in analytic number theory.\n\nThe problem connects to the Dickman function \u03c1(u), which governs the density of y-smooth numbers up to x when y = x^{1/u}. The smooth number counting function \u03a8(x,y) \u223c x\u00b7\u03c1(log x / log y) is well-understood asymptotically, but its behavior in short intervals (like prime gaps) remains subtle.",
     "problemStatement": "Let p_k denote the k-th prime. For infinitely many r, there are at least two integers n with p_r < n < p_{r+1} such that all prime factors of n are smaller than p_{r+1} - p_r (the gap size).",
     "text": "For infinitely many r, are there at least two integers in the prime gap (p_r, p_{r+1}) whose prime factors are all smaller than the gap size p_{r+1} - p_r?",
-    "proofStrategy": "The formalization defines B-smooth numbers via maxPrimeFactor, constructs the prime gap interval (p_r, p_{r+1}), and counts smooth numbers relative to gap size. The main conjecture and Erdős's density-zero result are stated as axioms. Concrete example r=3 (gap 7→11, smooth numbers 8=2³ and 9=3²) is verified.",
+    "proofStrategy": "The formalization defines B-smooth numbers via maxPrimeFactor, constructs the prime gap interval (p_r, p_{r+1}), and counts smooth numbers relative to gap size. The main conjecture and Erd\u0151s's density-zero result are stated as axioms. Concrete example r=3 (gap 7\u219211, smooth numbers 8=2\u00b3 and 9=3\u00b2) is verified.",
     "keyInsights": [
       "A number is B-smooth if all its prime factors are at most B; the condition requires (gap-size)-smoothness",
-      "Erdős proved the density of r with even ONE smooth number in the gap is 0 — such gaps are extremely rare",
-      "The gap from 7 to 11 (r=3) is a concrete example: 8=2³ and 9=3² are both 4-smooth",
-      "The Dickman function ρ(u) governs smooth number density: Ψ(x,y) ∼ x·ρ(log x/log y)",
+      "Erd\u0151s proved the density of r with even ONE smooth number in the gap is 0 \u2014 such gaps are extremely rare",
+      "The gap from 7 to 11 (r=3) is a concrete example: 8=2\u00b3 and 9=3\u00b2 are both 4-smooth",
+      "The Dickman function \u03c1(u) governs smooth number density: \u03a8(x,y) \u223c x\u00b7\u03c1(log x/log y)",
       "Proving infinitude from density zero is a common but difficult pattern in analytic number theory"
     ],
     "prerequisites": [
@@ -75,21 +75,21 @@
       "title": "Part V: The Main Conjecture (OPEN)",
       "startLine": 163,
       "endLine": 183,
-      "summary": "The Erdős conjecture: {r : smoothCount(r) ≥ 2} is infinite."
+      "summary": "The Erd\u0151s conjecture: {r : smoothCount(r) \u2265 2} is infinite."
     },
     {
       "id": "density-zero",
       "title": "Part VI: The Density-Zero Result (SOLVED)",
       "startLine": 185,
       "endLine": 218,
-      "summary": "Natural density definition and Erdős's result that density of r with smoothCount(r) ≥ 1 is 0."
+      "summary": "Natural density definition and Erd\u0151s's result that density of r with smoothCount(r) \u2265 1 is 0."
     },
     {
       "id": "examples",
       "title": "Part VII: Examples and Analysis",
       "startLine": 220,
       "endLine": 243,
-      "summary": "Concrete example: r=3 (gap 7→11) has smoothCount = 2 via 8=2³ and 9=3²."
+      "summary": "Concrete example: r=3 (gap 7\u219211) has smoothCount = 2 via 8=2\u00b3 and 9=3\u00b2."
     },
     {
       "id": "difficulty",
@@ -103,7 +103,7 @@
       "title": "Part IX: Smooth Number Distribution",
       "startLine": 264,
       "endLine": 284,
-      "summary": "Counting function Ψ(x,y), Dickman function, and monotonicity in the smoothness bound."
+      "summary": "Counting function \u03a8(x,y), Dickman function, and monotonicity in the smoothness bound."
     },
     {
       "id": "summary",
@@ -114,12 +114,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #932 asks whether infinitely many prime gaps contain at least two smooth numbers relative to the gap size. Erdős proved the weaker condition (one smooth number) has density 0, but the infinitude of gaps with two smooth numbers remains open. The gap from 7 to 11 provides a concrete example.",
+    "summary": "Erd\u0151s Problem #932 asks whether infinitely many prime gaps contain at least two smooth numbers relative to the gap size. Erd\u0151s proved the weaker condition (one smooth number) has density 0, but the infinitude of gaps with two smooth numbers remains open. The gap from 7 to 11 provides a concrete example.",
     "implications": "Resolution would illuminate the interplay between prime gap distribution and smooth number density in short intervals, connecting analytic number theory techniques with Dickman-type estimates.",
     "openQuestions": [
       "Are there infinitely many gaps with at least 2 smooth numbers?",
-      "What is the growth rate of the smallest r with smoothCount(r) ≥ 2?",
-      "How does the problem relate to the Cramér model of prime gaps?",
+      "What is the growth rate of the smallest r with smoothCount(r) \u2265 2?",
+      "How does the problem relate to the Cram\u00e9r model of prime gaps?",
       "Can sieve methods produce density-zero infinitude results?"
     ]
   },
@@ -141,5 +141,39 @@
     "axiomCount": 12,
     "theoremCount": 8,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1055",
+      "relationship": "related",
+      "description": "Share smooth-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-682",
+      "relationship": "related",
+      "description": "Share smooth-numbers, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-218",
+      "relationship": "related",
+      "description": "Share natural-density, prime-gaps, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1093",
+      "relationship": "related",
+      "description": "Share smooth-numbers and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1055",
+    "erdos-682",
+    "erdos-218",
+    "erdos-1065",
+    "erdos-1093"
+  ]
 }

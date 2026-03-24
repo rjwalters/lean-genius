@@ -1,10 +1,10 @@
 {
   "id": "erdos-1058",
-  "title": "Erdős Problem #1058: Prime Divisors of n!+1 Between Consecutive Primes",
+  "title": "Erd\u0151s Problem #1058: Prime Divisors of n!+1 Between Consecutive Primes",
   "slug": "erdos-1058",
   "description": "Are there only finitely many n in [p_{k-1}, p_k) such that the only primes dividing n!+1 are p_k and p_{k+1}? SOLVED: Luca (2001) proved the only solutions are n = 1, 2, 3, 4, 5.",
   "meta": {
-    "author": "Erdős, Stewart, Luca",
+    "author": "Erd\u0151s, Stewart, Luca",
     "sourceUrl": "https://erdosproblems.com/1058",
     "date": "2001",
     "status": "axiomatized",
@@ -37,9 +37,9 @@
     ],
     "originalContributions": [
       "prime_seq axiom: the n-th prime number",
-      "inPrimeInterval: n ∈ [p_{k-1}, p_k) predicate",
+      "inPrimeInterval: n \u2208 [p_{k-1}, p_k) predicate",
       "onlyTwoPrimesDivide: restricted factorization condition",
-      "satisfiesCondition: the full Erdős-Stewart condition",
+      "satisfiesCondition: the full Erd\u0151s-Stewart condition",
       "erdos_stewart_conjecture_true: finiteness (Luca 2001)",
       "luca_theorem: complete classification {1,2,3,4,5}",
       "Computational verification of n!+1 for n = 1,...,6",
@@ -50,16 +50,16 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "A conjecture of Erdős and Stewart, appearing as Problem A2 in Guy's 'Unsolved Problems in Number Theory'. The problem explores the rare phenomenon where n!+1 has very few prime factors, specifically only the next two consecutive primes after the interval containing n.\n\nFlorian Luca completely solved this in 2001, published in Mathematics of Computation. His proof combines factorial growth rate arguments with diophantine equation techniques to show that for n ≥ 6, n!+1 necessarily has additional prime factors beyond p_k and p_{k+1}.",
-    "problemStatement": "Let 2 = p₁ < p₂ < ... be the sequence of primes. Are there only finitely many n such that n ∈ [p_{k-1}, p_k) and the only primes dividing n!+1 are p_k and p_{k+1}?\n\n**Answer: YES** (Luca, 2001). The only solutions are n = 1, 2, 3, 4, 5.",
+    "historicalContext": "A conjecture of Erd\u0151s and Stewart, appearing as Problem A2 in Guy's 'Unsolved Problems in Number Theory'. The problem explores the rare phenomenon where n!+1 has very few prime factors, specifically only the next two consecutive primes after the interval containing n.\n\nFlorian Luca completely solved this in 2001, published in Mathematics of Computation. His proof combines factorial growth rate arguments with diophantine equation techniques to show that for n \u2265 6, n!+1 necessarily has additional prime factors beyond p_k and p_{k+1}.",
+    "problemStatement": "Let 2 = p\u2081 < p\u2082 < ... be the sequence of primes. Are there only finitely many n such that n \u2208 [p_{k-1}, p_k) and the only primes dividing n!+1 are p_k and p_{k+1}?\n\n**Answer: YES** (Luca, 2001). The only solutions are n = 1, 2, 3, 4, 5.",
     "text": "Are there only finitely many n in [p_{k-1}, p_k) such that the only primes dividing n!+1 are p_k and p_{k+1}? SOLVED: Luca (2001) proved the only solutions are n = 1, 2, 3, 4, 5.",
-    "proofStrategy": "The formalization defines the prime sequence, the interval condition, and the divisibility condition. Luca's theorem is axiomatized as the complete classification. We verify the small cases computationally: 1!+1=2, 2!+1=3, 3!+1=7, 4!+1=25=5², 5!+1=121=11², and 6!+1=721=7×103 (which fails the condition).",
+    "proofStrategy": "The formalization defines the prime sequence, the interval condition, and the divisibility condition. Luca's theorem is axiomatized as the complete classification. We verify the small cases computationally: 1!+1=2, 2!+1=3, 3!+1=7, 4!+1=25=5\u00b2, 5!+1=121=11\u00b2, and 6!+1=721=7\u00d7103 (which fails the condition).",
     "keyInsights": [
       "**Complete Classification:** Only n = 1, 2, 3, 4, 5 satisfy the condition",
       "**Factorial Growth:** n! grows super-exponentially, forcing many prime factors for large n",
-      "**Wilson's Theorem:** (p-1)! ≡ -1 (mod p) ensures p_k | (p_k-1)!+1",
-      "**Diophantine Methods:** Luca used growth bounds and diophantine equations to eliminate n ≥ 6",
-      "**Connection to Brocard:** Related to n!+1 = m², another famous open problem"
+      "**Wilson's Theorem:** (p-1)! \u2261 -1 (mod p) ensures p_k | (p_k-1)!+1",
+      "**Diophantine Methods:** Luca used growth bounds and diophantine equations to eliminate n \u2265 6",
+      "**Connection to Brocard:** Related to n!+1 = m\u00b2, another famous open problem"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -89,7 +89,7 @@
       "startLine": 90,
       "endLine": 113,
       "summary": "States the conjecture, Luca's proof, and complete classification",
-      "mathContext": "Erdős-Stewart conjecture: $\\{n : \\text{satisfiesCondition}(n)\\}$ is finite. Luca (2001) proved the complete classification: the set equals $\\{1, 2, 3, 4, 5\\}$. The proof uses factorial growth bounds to show $n! + 1$ has too many prime factors for $n \\geq 6$."
+      "mathContext": "Erd\u0151s-Stewart conjecture: $\\{n : \\text{satisfiesCondition}(n)\\}$ is finite. Luca (2001) proved the complete classification: the set equals $\\{1, 2, 3, 4, 5\\}$. The proof uses factorial growth bounds to show $n! + 1$ has too many prime factors for $n \\geq 6$."
     },
     {
       "id": "verification",
@@ -110,13 +110,13 @@
   ],
   "crossReferences": [
     {
-      "id": "wilsons-theorem",
       "relationship": "dependency",
-      "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) ensures p_k divides (p_k-1)!+1, providing the starting divisor that motivates the problem"
+      "description": "Wilson's theorem (p-1)! \u2261 -1 (mod p) ensures p_k divides (p_k-1)!+1, providing the starting divisor that motivates the problem",
+      "targetId": "wilsons-theorem"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1058 was SOLVED by Florian Luca in 2001. The answer is YES: there are only finitely many n satisfying the condition, and the complete list is n = 1, 2, 3, 4, 5. The proof uses growth rate arguments and diophantine techniques to show that for n ≥ 6, n!+1 necessarily has additional prime factors.",
+    "summary": "Erd\u0151s Problem #1058 was SOLVED by Florian Luca in 2001. The answer is YES: there are only finitely many n satisfying the condition, and the complete list is n = 1, 2, 3, 4, 5. The proof uses growth rate arguments and diophantine techniques to show that for n \u2265 6, n!+1 necessarily has additional prime factors.",
     "implications": "The result shows how quickly factorial growth overwhelms the possibility of having restricted prime factorizations. It connects Wilson's theorem, prime gaps, and factorial arithmetic in a beautiful way.",
     "openQuestions": [
       "Are there similar finiteness results for n! - 1?",

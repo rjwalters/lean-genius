@@ -1,10 +1,10 @@
 {
   "id": "erdos-972",
-  "title": "Erdős Problem #972: Primes p with Floor(pα) Also Prime",
+  "title": "Erd\u0151s Problem #972: Primes p with Floor(p\u03b1) Also Prime",
   "slug": "erdos-972",
-  "description": "For irrational α > 1, are there infinitely many primes p such that floor(pα) is also prime? An open problem of Erdős involving prime distribution under irrational scaling.",
+  "description": "For irrational \u03b1 > 1, are there infinitely many primes p such that floor(p\u03b1) is also prime? An open problem of Erd\u0151s involving prime distribution under irrational scaling.",
   "meta": {
-    "author": "Erdős Conjecture; Related: Vinogradov (1948)",
+    "author": "Erd\u0151s Conjecture; Related: Vinogradov (1948)",
     "sourceUrl": "https://erdosproblems.com/972",
     "date": "1965",
     "status": "formalized",
@@ -50,27 +50,27 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of the prime set {p prime : floor(αp) is prime}",
-      "Clear statement of the open conjecture for irrational α > 1",
+      "Formal definition of the prime set {p prime : floor(\u03b1p) is prime}",
+      "Clear statement of the open conjecture for irrational \u03b1 > 1",
       "Vinogradov's related result as an axiom with explanation of the distinction",
       "Golden ratio case study with irrationality",
-      "Verified examples for rational α values"
+      "Verified examples for rational \u03b1 values"
     ],
     "axiomCount": 1,
     "lineCount": 226,
     "assumptions": "1 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem asks about the intersection of prime number theory and the floor function applied to irrational scaling. Given an irrational α > 1, we scale each prime p by α, take the floor, and ask whether infinitely many such values are also prime.\n\nVinogradov (1948) proved that the sequence {pα} is uniformly distributed for every irrational α, which answers a related but distinct question: there are infinitely many primes of the form p = ⌊nα⌋ (primes obtained as floors of scaled integers). However, Problem #972 asks the 'converse': starting with primes p, are the floors ⌊pα⌋ also often prime?\n\nThe distinction is subtle but fundamental. Vinogradov's result concerns which integers n produce primes when scaled, while Erdős's question concerns what happens when we scale primes specifically.",
-    "problemStatement": "**Conjecture (Erdős)**: Let $\\alpha > 1$ be irrational. Are there infinitely many primes $p$ such that $\\lfloor p\\alpha \\rfloor$ is also prime?\n\n**Status**: OPEN\n\n**Related Result (Vinogradov 1948)**: The sequence $\\{p\\alpha\\}$ is uniformly distributed for irrational $\\alpha$. This implies infinitely many primes $p = \\lfloor n\\alpha \\rfloor$ exist, but this is a different question.",
-    "text": "For irrational α > 1, are there infinitely many primes p such that floor(pα) is also prime? An open problem of Erdős involving prime distribution under irrational scaling.",
-    "proofStrategy": "We formalize the open conjecture and related concepts:\n\n1. **Prime Set Definition**: Define primeSet(α) = {p prime : ⌊αp⌋ is prime}\n\n2. **Conjecture Statement**: For irrational α > 1, is primeSet(α) infinite?\n\n3. **Related Results**: State Vinogradov's theorem as an axiom, carefully explaining why it doesn't solve the original problem\n\n4. **Golden Ratio Case**: Study φ = (1+√5)/2 as a canonical example, proving it satisfies the hypotheses (α > 1, irrational)\n\n5. **Verified Examples**: Test the definition for specific rational α values to demonstrate behavior",
+    "historicalContext": "This problem asks about the intersection of prime number theory and the floor function applied to irrational scaling. Given an irrational \u03b1 > 1, we scale each prime p by \u03b1, take the floor, and ask whether infinitely many such values are also prime.\n\nVinogradov (1948) proved that the sequence {p\u03b1} is uniformly distributed for every irrational \u03b1, which answers a related but distinct question: there are infinitely many primes of the form p = \u230an\u03b1\u230b (primes obtained as floors of scaled integers). However, Problem #972 asks the 'converse': starting with primes p, are the floors \u230ap\u03b1\u230b also often prime?\n\nThe distinction is subtle but fundamental. Vinogradov's result concerns which integers n produce primes when scaled, while Erd\u0151s's question concerns what happens when we scale primes specifically.",
+    "problemStatement": "**Conjecture (Erd\u0151s)**: Let $\\alpha > 1$ be irrational. Are there infinitely many primes $p$ such that $\\lfloor p\\alpha \\rfloor$ is also prime?\n\n**Status**: OPEN\n\n**Related Result (Vinogradov 1948)**: The sequence $\\{p\\alpha\\}$ is uniformly distributed for irrational $\\alpha$. This implies infinitely many primes $p = \\lfloor n\\alpha \\rfloor$ exist, but this is a different question.",
+    "text": "For irrational \u03b1 > 1, are there infinitely many primes p such that floor(p\u03b1) is also prime? An open problem of Erd\u0151s involving prime distribution under irrational scaling.",
+    "proofStrategy": "We formalize the open conjecture and related concepts:\n\n1. **Prime Set Definition**: Define primeSet(\u03b1) = {p prime : \u230a\u03b1p\u230b is prime}\n\n2. **Conjecture Statement**: For irrational \u03b1 > 1, is primeSet(\u03b1) infinite?\n\n3. **Related Results**: State Vinogradov's theorem as an axiom, carefully explaining why it doesn't solve the original problem\n\n4. **Golden Ratio Case**: Study \u03c6 = (1+\u221a5)/2 as a canonical example, proving it satisfies the hypotheses (\u03b1 > 1, irrational)\n\n5. **Verified Examples**: Test the definition for specific rational \u03b1 values to demonstrate behavior",
     "keyInsights": [
-      "**Domain vs Range question**: Vinogradov asks which n give primes ⌊nα⌋ (infinitely many). Erdős asks which primes p have ⌊pα⌋ prime (unknown).",
-      "**Irrational scaling**: The restriction to irrational α is crucial - rational α would have periodic behavior that makes the question trivial or different.",
-      "**Floor function barrier**: The floor operation 'loses information' about α, making it hard to connect multiplicative properties of primes to their scaled images.",
-      "**Golden ratio**: φ is a natural test case due to its algebraic properties and connection to Fibonacci numbers.",
-      "**Density heuristic**: If primes have density ~1/log(n), then ⌊pα⌋ is prime with 'probability' ~1/log(pα) ≈ 1/log(p). Since Σ 1/log(p) diverges over primes, the heuristic predicts infinitely many — but making this rigorous requires controlling correlations between p and ⌊pα⌋."
+      "**Domain vs Range question**: Vinogradov asks which n give primes \u230an\u03b1\u230b (infinitely many). Erd\u0151s asks which primes p have \u230ap\u03b1\u230b prime (unknown).",
+      "**Irrational scaling**: The restriction to irrational \u03b1 is crucial - rational \u03b1 would have periodic behavior that makes the question trivial or different.",
+      "**Floor function barrier**: The floor operation 'loses information' about \u03b1, making it hard to connect multiplicative properties of primes to their scaled images.",
+      "**Golden ratio**: \u03c6 is a natural test case due to its algebraic properties and connection to Fibonacci numbers.",
+      "**Density heuristic**: If primes have density ~1/log(n), then \u230ap\u03b1\u230b is prime with 'probability' ~1/log(p\u03b1) \u2248 1/log(p). Since \u03a3 1/log(p) diverges over primes, the heuristic predicts infinitely many \u2014 but making this rigorous requires controlling correlations between p and \u230ap\u03b1\u230b."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -83,21 +83,21 @@
       "title": "Problem Statement",
       "startLine": 1,
       "endLine": 22,
-      "summary": "The Erdős conjecture on primes p with floor(pα) also prime"
+      "summary": "The Erd\u0151s conjecture on primes p with floor(p\u03b1) also prime"
     },
     {
       "id": "prime-set",
       "title": "The Prime Set Definition",
       "startLine": 30,
       "endLine": 49,
-      "summary": "Definition of primeSet(α) and equivalence with alternative formulation"
+      "summary": "Definition of primeSet(\u03b1) and equivalence with alternative formulation"
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 51,
       "endLine": 78,
-      "summary": "Special cases for α = 1 and α < 1"
+      "summary": "Special cases for \u03b1 = 1 and \u03b1 < 1"
     },
     {
       "id": "conjecture",
@@ -118,24 +118,24 @@
       "title": "Examples",
       "startLine": 145,
       "endLine": 189,
-      "summary": "Verified examples for specific α values"
+      "summary": "Verified examples for specific \u03b1 values"
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio Case",
       "startLine": 191,
       "endLine": 222,
-      "summary": "Study of φ = (1+√5)/2 as canonical test case"
+      "summary": "Study of \u03c6 = (1+\u221a5)/2 as canonical test case"
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #972, which asks whether for irrational α > 1, there are infinitely many primes p such that ⌊pα⌋ is also prime. We carefully distinguish this from Vinogradov's 1948 result on uniform distribution, which answers a related but different question about primes of the form ⌊nα⌋.",
+    "summary": "We formalize Erd\u0151s Problem #972, which asks whether for irrational \u03b1 > 1, there are infinitely many primes p such that \u230ap\u03b1\u230b is also prime. We carefully distinguish this from Vinogradov's 1948 result on uniform distribution, which answers a related but different question about primes of the form \u230an\u03b1\u230b.",
     "implications": "This problem connects prime distribution theory to Diophantine approximation. A positive answer would show that 'prime-preserving' behavior under irrational scaling is common, while a negative answer would reveal surprising rigidity in how primes interact with irrational multipliers.",
     "openQuestions": [
-      "Is primeSet(α) infinite for all irrational α > 1?",
-      "Are there specific irrational α for which we can prove the conjecture?",
-      "What is the density of primeSet(φ) among all primes?",
-      "Does the algebraic vs transcendental nature of α affect the answer?"
+      "Is primeSet(\u03b1) infinite for all irrational \u03b1 > 1?",
+      "Are there specific irrational \u03b1 for which we can prove the conjecture?",
+      "What is the density of primeSet(\u03c6) among all primes?",
+      "Does the algebraic vs transcendental nature of \u03b1 affect the answer?"
     ]
   },
   "leanFile": {
@@ -150,5 +150,39 @@
     "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1149",
+      "relationship": "related",
+      "description": "Share floor-function and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-354",
+      "relationship": "related",
+      "description": "Share floor-function and number-theoretic themes"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Share number-theoretic and prime number themes"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Share number-theoretic and prime number themes"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Share number-theoretic and prime number themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1149",
+    "erdos-354",
+    "bertrands-postulate",
+    "bounded-prime-gaps",
+    "dirichlets-theorem"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-1155",
-  "title": "Erdős Problem #1155: Triangle Removal Process",
+  "title": "Erd\u0151s Problem #1155: Triangle Removal Process",
   "slug": "erdos-1155",
-  "description": "Is it true that E[f(n)] ≍ n^{3/2} and f(n) ≪ n^{3/2} almost surely?",
+  "description": "Is it true that E[f(n)] \u224d n^{3/2} and f(n) \u226a n^{3/2} almost surely?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1155",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1155Problem.lean",
@@ -39,55 +39,55 @@
       "title": "Process Axiomatization",
       "startLine": 40,
       "endLine": 61,
-      "summary": "Axiomatizes f(n) = triangleRemovalEdges as ℕ → ℝ with basic bounds: f(n) ≥ 0 and f(n) ≤ n(n-1)/2."
+      "summary": "Axiomatizes f(n) = triangleRemovalEdges as \u2115 \u2192 \u211d with basic bounds: f(n) \u2265 0 and f(n) \u2264 n(n-1)/2."
     },
     {
       "id": "known-results",
       "title": "Known Results: Grable and BFL Bounds",
       "startLine": 63,
       "endLine": 85,
-      "summary": "Grable (1997): f(n) ≤ n^{7/4+ε} eventually. Bohman-Frieze-Lubetzky (2015): n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε} eventually, pinning the exponent to 3/2."
+      "summary": "Grable (1997): f(n) \u2264 n^{7/4+\u03b5} eventually. Bohman-Frieze-Lubetzky (2015): n^{3/2-\u03b5} \u2264 f(n) \u2264 n^{3/2+\u03b5} eventually, pinning the exponent to 3/2."
     },
     {
       "id": "conjecture",
-      "title": "Erdős Conjecture",
+      "title": "Erd\u0151s Conjecture",
       "startLine": 87,
       "endLine": 100,
-      "summary": "The open conjecture: ∃ c₁,c₂ > 0 such that c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} for large n. Stronger than BFL's sub-polynomial precision."
+      "summary": "The open conjecture: \u2203 c\u2081,c\u2082 > 0 such that c\u2081\u00b7n^{3/2} \u2264 f(n) \u2264 c\u2082\u00b7n^{3/2} for large n. Stronger than BFL's sub-polynomial precision."
     },
     {
       "id": "derived-results",
       "title": "Derived Theorems",
       "startLine": 102,
       "endLine": 143,
-      "summary": "Three proved theorems: BFL implies Grable (via exponent arithmetic), the conjecture implies Θ(n^{3/2}), and BFL exponent characterization combining upper and lower bounds."
+      "summary": "Three proved theorems: BFL implies Grable (via exponent arithmetic), the conjecture implies \u0398(n^{3/2}), and BFL exponent characterization combining upper and lower bounds."
     },
     {
       "id": "graph-basics",
       "title": "Graph-Theoretic Foundations",
       "startLine": 145,
       "endLine": 163,
-      "summary": "Defines IsTriangle, IsTriangleFree', proves equivalence with CliqueFree 3, and shows K_n has triangles for n ≥ 3. Two sorry placeholders."
+      "summary": "Defines IsTriangle, IsTriangleFree', proves equivalence with CliqueFree 3, and shows K_n has triangles for n \u2265 3. Two sorry placeholders."
     },
     {
       "id": "mantel",
       "title": "Mantel's Theorem and Trivial Bound",
       "startLine": 165,
       "endLine": 184,
-      "summary": "Axiomatizes Mantel's theorem (triangle-free ⇒ ≤ n²/4 edges) and derives the trivial upper bound f(n) ≤ n²/4. One sorry in connecting real-valued f(n) to integer counts."
+      "summary": "Axiomatizes Mantel's theorem (triangle-free \u21d2 \u2264 n\u00b2/4 edges) and derives the trivial upper bound f(n) \u2264 n\u00b2/4. One sorry in connecting real-valued f(n) to integer counts."
     }
   ],
   "overview": {
-    "historicalContext": "The triangle removal process was introduced as a natural random graph process: begin with the complete graph $K_n$, repeatedly select a triangle uniformly at random and delete all three of its edges, and continue until no triangles remain. The question of how many edges survive — formalized as $f(n)$ — connects to fundamental problems in probabilistic combinatorics and extremal graph theory. The first non-trivial bound was obtained by Grable (1997), who used the differential equations method to show $f(n) \\leq n^{7/4+o(1)}$. The differential equations method, pioneered by Wormald in the 1990s, approximates discrete random processes by continuous ODEs and shows concentration around the deterministic trajectory. The breakthrough came from Bohman, Frieze, and Lubetzky (2015), who proved $f(n) = n^{3/2+o(1)}$ almost surely by refining the tracking of the evolving graph's structure. Their analysis required controlling not just edge and triangle counts but the full neighborhood profile. Erdős's original conjecture asks for the stronger statement $\\mathbb{E}[f(n)] \\asymp n^{3/2}$ — that is, $f(n) = \\Theta(n^{3/2})$ without sub-polynomial corrections. This remains open: the BFL result allows factors like $\\sqrt{\\log n}$ hidden in the $o(1)$ exponent.",
+    "historicalContext": "The triangle removal process was introduced as a natural random graph process: begin with the complete graph $K_n$, repeatedly select a triangle uniformly at random and delete all three of its edges, and continue until no triangles remain. The question of how many edges survive \u2014 formalized as $f(n)$ \u2014 connects to fundamental problems in probabilistic combinatorics and extremal graph theory. The first non-trivial bound was obtained by Grable (1997), who used the differential equations method to show $f(n) \\leq n^{7/4+o(1)}$. The differential equations method, pioneered by Wormald in the 1990s, approximates discrete random processes by continuous ODEs and shows concentration around the deterministic trajectory. The breakthrough came from Bohman, Frieze, and Lubetzky (2015), who proved $f(n) = n^{3/2+o(1)}$ almost surely by refining the tracking of the evolving graph's structure. Their analysis required controlling not just edge and triangle counts but the full neighborhood profile. Erd\u0151s's original conjecture asks for the stronger statement $\\mathbb{E}[f(n)] \\asymp n^{3/2}$ \u2014 that is, $f(n) = \\Theta(n^{3/2})$ without sub-polynomial corrections. This remains open: the BFL result allows factors like $\\sqrt{\\log n}$ hidden in the $o(1)$ exponent.",
     "problemStatement": "Begin with the complete graph $K_n$. Repeatedly select a uniformly random triangle and delete all its edges until the graph is triangle-free. Let $f(n)$ denote the number of remaining edges. Is it true that $\\mathbb{E}[f(n)] \\asymp n^{3/2}$ and $f(n) \\ll n^{3/2}$ almost surely?",
-    "text": "Is it true that E[f(n)] ≍ n^{3/2} and f(n) ≪ n^{3/2} almost surely?",
-    "proofStrategy": "The formalization axiomatizes $f(n)$ as a function $\\mathbb{N} \\to \\mathbb{R}$ with basic bounds ($0 \\leq f(n) \\leq \\binom{n}{2}$), since fully formalizing the random process would require extensive measure theory. The key results — Grable's $n^{7/4+\\varepsilon}$ bound and both BFL bounds ($n^{3/2 \\pm \\varepsilon}$) — are stated as axioms using `∀ᶠ ... in atTop`. Three theorems are proved: BFL implies Grable (by exponent arithmetic), the conjecture implies $\\Theta(n^{3/2})$ (by definition), and BFL characterizes the exponent (combining upper and lower bounds). Mantel's theorem provides the trivial $n^2/4$ bound. Graph-theoretic foundations (triangles, triangle-freeness, complete graphs) are connected to Mathlib's API.",
+    "text": "Is it true that E[f(n)] \u224d n^{3/2} and f(n) \u226a n^{3/2} almost surely?",
+    "proofStrategy": "The formalization axiomatizes $f(n)$ as a function $\\mathbb{N} \\to \\mathbb{R}$ with basic bounds ($0 \\leq f(n) \\leq \\binom{n}{2}$), since fully formalizing the random process would require extensive measure theory. The key results \u2014 Grable's $n^{7/4+\\varepsilon}$ bound and both BFL bounds ($n^{3/2 \\pm \\varepsilon}$) \u2014 are stated as axioms using `\u2200\u1da0 ... in atTop`. Three theorems are proved: BFL implies Grable (by exponent arithmetic), the conjecture implies $\\Theta(n^{3/2})$ (by definition), and BFL characterizes the exponent (combining upper and lower bounds). Mantel's theorem provides the trivial $n^2/4$ bound. Graph-theoretic foundations (triangles, triangle-freeness, complete graphs) are connected to Mathlib's API.",
     "keyInsights": [
-      "The triangle removal process exhibits a phase transition: it runs for Θ(n^{3/2}) steps before the graph becomes triangle-free, because each step removes 3 edges from the ~n²/2 total, and the triangle density controls the rate",
-      "Grable's differential equations method (1997) tracks the ODE approximation of the triangle count t(i) as a function of step i, yielding the first bound f(n) ≤ n^{7/4+o(1)} — a factor n^{1/4} above the truth",
+      "The triangle removal process exhibits a phase transition: it runs for \u0398(n^{3/2}) steps before the graph becomes triangle-free, because each step removes 3 edges from the ~n\u00b2/2 total, and the triangle density controls the rate",
+      "Grable's differential equations method (1997) tracks the ODE approximation of the triangle count t(i) as a function of step i, yielding the first bound f(n) \u2264 n^{7/4+o(1)} \u2014 a factor n^{1/4} above the truth",
       "BFL (2015) achieved the tight exponent 3/2 by tracking the entire codegree distribution, not just aggregate statistics, using a sophisticated martingale concentration argument",
-      "The gap between n^{3/2+o(1)} (BFL) and Θ(n^{3/2}) (conjecture) is significant: the o(1) in the exponent could hide logarithmic factors, and determining whether such corrections exist requires understanding the final phase of the process when few triangles remain",
-      "The formalization demonstrates how Filter.Eventually (∀ᶠ in atTop) elegantly captures asymptotic statements in Lean 4, avoiding explicit N₀ bookkeeping"
+      "The gap between n^{3/2+o(1)} (BFL) and \u0398(n^{3/2}) (conjecture) is significant: the o(1) in the exponent could hide logarithmic factors, and determining whether such corrections exist requires understanding the final phase of the process when few triangles remain",
+      "The formalization demonstrates how Filter.Eventually (\u2200\u1da0 in atTop) elegantly captures asymptotic statements in Lean 4, avoiding explicit N\u2080 bookkeeping"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -98,11 +98,11 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures the triangle removal process problem (Erdős #1155) in Lean 4, axiomatizing the key function f(n) and the two main results: Grable's bound f(n) ≤ n^{7/4+o(1)} and BFL's tight exponent characterization f(n) = n^{3/2+o(1)}. Three derived theorems are proved, including the implication chain BFL ⇒ Grable and the exponent sandwich. The remaining open conjecture — whether f(n) = Θ(n^{3/2}) without sub-polynomial corrections — is stated as a Prop.",
+    "summary": "This formalization captures the triangle removal process problem (Erd\u0151s #1155) in Lean 4, axiomatizing the key function f(n) and the two main results: Grable's bound f(n) \u2264 n^{7/4+o(1)} and BFL's tight exponent characterization f(n) = n^{3/2+o(1)}. Three derived theorems are proved, including the implication chain BFL \u21d2 Grable and the exponent sandwich. The remaining open conjecture \u2014 whether f(n) = \u0398(n^{3/2}) without sub-polynomial corrections \u2014 is stated as a Prop.",
     "implications": "Resolving the conjecture would determine whether logarithmic corrections appear in the triangle removal process, with implications for understanding random greedy algorithms more broadly. The differential equations method and martingale techniques used in the proofs have become standard tools in probabilistic combinatorics, applicable to random hypergraph processes, random constraint satisfaction, and the analysis of randomized algorithms.",
     "openQuestions": [
-      "Does f(n) = Θ(n^{3/2}) hold exactly, or are there logarithmic corrections like f(n) ~ c·n^{3/2}·(log n)^α for some α ≠ 0?",
-      "What is the limiting distribution of f(n)/n^{3/2} — does it converge in distribution, and if so, to what?",
+      "Does f(n) = \u0398(n^{3/2}) hold exactly, or are there logarithmic corrections like f(n) ~ c\u00b7n^{3/2}\u00b7(log n)^\u03b1 for some \u03b1 \u2260 0?",
+      "What is the limiting distribution of f(n)/n^{3/2} \u2014 does it converge in distribution, and if so, to what?",
       "How does the process behave for K_r-removal (removing all edges of a random K_r instead of K_3)? The exponent should change with r",
       "Can the sorry placeholders (triangleFree_iff_cliqueFree3, complete_has_triangles, trivial_upper_bound) be filled using Mathlib's current API?"
     ]
@@ -129,11 +129,45 @@
     "definitionCount": 3
   },
   "references": [
-    "Erdős: original problem",
-    "Grable (1997): f(n) ≤ n^{7/4+o(1)} via differential equations method",
+    "Erd\u0151s: original problem",
+    "Grable (1997): f(n) \u2264 n^{7/4+o(1)} via differential equations method",
     "Bohman-Frieze-Lubetzky (2015): f(n) = n^{3/2+o(1)} almost surely",
-    "Mantel (1907): triangle-free graphs have at most ⌊n²/4⌋ edges",
-    "Turán (1941): generalization of Mantel to K_r-free graphs",
+    "Mantel (1907): triangle-free graphs have at most \u230an\u00b2/4\u230b edges",
+    "Tur\u00e1n (1941): generalization of Mantel to K_r-free graphs",
     "https://erdosproblems.com/1155"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Share hypergraph, combinatorial, and probabilistic themes"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Share combinatorial, probabilistic, and analytic themes"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Share combinatorial, probabilistic, and analytic themes"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "Share combinatorial, probabilistic, and analytic themes"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "Share combinatorial, probabilistic, and analytic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1179",
+    "erdos-1138",
+    "erdos-1166",
+    "prob-method-expectation",
+    "prob-method-second-moment"
   ]
 }

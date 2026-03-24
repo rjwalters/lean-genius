@@ -2,9 +2,9 @@
   "id": "erdos-1131",
   "title": "Minimizing Lagrange Interpolation Basis Polynomial Integrals",
   "slug": "erdos-1131",
-  "description": "For points x₁,...,xₙ ∈ [-1,1], what is the minimum of ∫ Σ |l_k(x)|² dx over all Lagrange basis configurations? Conjecture: min I = 2 - (1+o(1))/n. OPEN problem.",
+  "description": "For points x\u2081,...,x\u2099 \u2208 [-1,1], what is the minimum of \u222b \u03a3 |l_k(x)|\u00b2 dx over all Lagrange basis configurations? Conjecture: min I = 2 - (1+o(1))/n. OPEN problem.",
   "meta": {
-    "author": "Erdős, Szabados, Varma, Vértesi",
+    "author": "Erd\u0151s, Szabados, Varma, V\u00e9rtesi",
     "sourceUrl": "https://erdosproblems.com/1131",
     "date": "1994",
     "status": "axiomatized",
@@ -28,15 +28,15 @@
     "assumptions": "9 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem has roots in Fejér's 1932 work on optimal interpolation. Fejér proved that the zeros of the Legendre polynomial P_n minimize the maximum of the Lebesgue function Λ_n(x) = Σ|l_k(x)| over [-1,1]. Erdős naturally asked whether Legendre nodes also minimize the L² integral I = ∫Σ|l_k(x)|² dx. Szabados (1966, Acta Math. Acad. Sci. Hungar.) disproved this for n > 3, showing that slightly perturbed nodes give a smaller integral. Erdős then conjectured min I = 2 - (1+o(1))/n. The best bounds are due to Erdős, Szabados, Varma, and Vértesi (1994, Studia Sci. Math. Hungar.): they proved 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1). The upper bound comes from Legendre nodes (I = 2 - 2/(2n-1) for P_n zeros), while the lower bound uses the partition of unity and Cauchy-Schwarz. Turetskii (1940) initiated the study of Lebesgue constants for specific node systems, and Kilgore-de Boor-Pinkus (1978) proved the existence of optimal L∞ interpolation nodes — the L² analog remains open.",
-    "problemStatement": "For x₁,...,xₙ ∈ [-1,1], the Lagrange basis polynomials l_k(x) satisfy l_k(x_k)=1 and l_k(x_j)=0 for j≠k. Find the minimum of I = ∫_{-1}^{1} Σ_k |l_k(x)|² dx. Is min I = 2 - (1+o(1))/n?",
-    "text": "For points x₁,...,xₙ ∈ [-1,1], what is the minimum of ∫ Σ |l_k(x)|² dx over all Lagrange basis configurations? Conjecture: min I = 2 - (1+o(1))/n. OPEN problem.",
-    "proofStrategy": "The Lean formalization defines NodeConfig, AreDistinct, lagrangeBasis (as a finite product), and the objective functional I (axiomatized). Key properties — the cardinal basis conditions l_k(x_k) = 1 and l_k(x_j) = 0 — are stated as axioms. The Cauchy-Schwarz lower bound I ≥ 2/n is the main formalized result. Chebyshev nodes are defined and shown to achieve I ≈ 2 - c/n. The conjecture min I = 2 - (1+o(1))/n is stated as an axiom.",
+    "historicalContext": "This problem has roots in Fej\u00e9r's 1932 work on optimal interpolation. Fej\u00e9r proved that the zeros of the Legendre polynomial P_n minimize the maximum of the Lebesgue function \u039b_n(x) = \u03a3|l_k(x)| over [-1,1]. Erd\u0151s naturally asked whether Legendre nodes also minimize the L\u00b2 integral I = \u222b\u03a3|l_k(x)|\u00b2 dx. Szabados (1966, Acta Math. Acad. Sci. Hungar.) disproved this for n > 3, showing that slightly perturbed nodes give a smaller integral. Erd\u0151s then conjectured min I = 2 - (1+o(1))/n. The best bounds are due to Erd\u0151s, Szabados, Varma, and V\u00e9rtesi (1994, Studia Sci. Math. Hungar.): they proved 2 - O((log n)\u00b2/n) \u2264 min I \u2264 2 - 2/(2n-1). The upper bound comes from Legendre nodes (I = 2 - 2/(2n-1) for P_n zeros), while the lower bound uses the partition of unity and Cauchy-Schwarz. Turetskii (1940) initiated the study of Lebesgue constants for specific node systems, and Kilgore-de Boor-Pinkus (1978) proved the existence of optimal L\u221e interpolation nodes \u2014 the L\u00b2 analog remains open.",
+    "problemStatement": "For x\u2081,...,x\u2099 \u2208 [-1,1], the Lagrange basis polynomials l_k(x) satisfy l_k(x_k)=1 and l_k(x_j)=0 for j\u2260k. Find the minimum of I = \u222b_{-1}^{1} \u03a3_k |l_k(x)|\u00b2 dx. Is min I = 2 - (1+o(1))/n?",
+    "text": "For points x\u2081,...,x\u2099 \u2208 [-1,1], what is the minimum of \u222b \u03a3 |l_k(x)|\u00b2 dx over all Lagrange basis configurations? Conjecture: min I = 2 - (1+o(1))/n. OPEN problem.",
+    "proofStrategy": "The Lean formalization defines NodeConfig, AreDistinct, lagrangeBasis (as a finite product), and the objective functional I (axiomatized). Key properties \u2014 the cardinal basis conditions l_k(x_k) = 1 and l_k(x_j) = 0 \u2014 are stated as axioms. The Cauchy-Schwarz lower bound I \u2265 2/n is the main formalized result. Chebyshev nodes are defined and shown to achieve I \u2248 2 - c/n. The conjecture min I = 2 - (1+o(1))/n is stated as an axiom.",
     "keyInsights": [
       "**Partition of unity** $\\sum_k l_k(x) = 1$ gives the Cauchy-Schwarz bound $I \\ge 2/n$, but the true minimum is $\\approx 2 - 1/n \\gg 2/n$",
-      "**Fejér vs Erdős**: Legendre nodes minimize the $L^\\infty$ Lebesgue function but NOT the $L^2$ integral — Szabados (1966) disproved this for $n > 3$",
+      "**Fej\u00e9r vs Erd\u0151s**: Legendre nodes minimize the $L^\\infty$ Lebesgue function but NOT the $L^2$ integral \u2014 Szabados (1966) disproved this for $n > 3$",
       "**Logarithmic gap**: ESVV94 proved $2 - O((\\log n)^2/n) \\le \\min I \\le 2 - 2/(2n-1)$, leaving a $(\\log n)^2$ factor unresolved",
-      "**Chebyshev vs Legendre nodes**: Both give $I \\approx 2 - c/n$ but with different constants — neither is optimal for the $L^2$ problem",
+      "**Chebyshev vs Legendre nodes**: Both give $I \\approx 2 - c/n$ but with different constants \u2014 neither is optimal for the $L^2$ problem",
       "**Gram matrix trace**: $I = \\operatorname{tr}(G)$ where $G_{jk} = \\int l_j l_k \\, dx$ connects the problem to spectral theory of interpolation operators"
     ],
     "prerequisites": [
@@ -63,7 +63,7 @@
       "title": "The Objective Functional $I$",
       "startLine": 54,
       "endLine": 59,
-      "summary": "Axiomatizes $I(x_1,\\ldots,x_n) = \\int_{-1}^{1} \\sum_k |l_k(x)|^2 \\, dx$. The $L^2$ energy of the basis — equals the trace of the Gram matrix $G_{jk} = \\int l_j l_k \\, dx$."
+      "summary": "Axiomatizes $I(x_1,\\ldots,x_n) = \\int_{-1}^{1} \\sum_k |l_k(x)|^2 \\, dx$. The $L^2$ energy of the basis \u2014 equals the trace of the Gram matrix $G_{jk} = \\int l_j l_k \\, dx$."
     },
     {
       "id": "basis-properties",
@@ -91,7 +91,7 @@
       "title": "The Main Conjecture",
       "startLine": 128,
       "endLine": 140,
-      "summary": "Defines $\\min I_n = \\inf\\{I : \\text{nodes in } [-1,1]\\}$. Erdős's conjecture: $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for $n \\ge N_0(\\varepsilon)$, i.e., $\\min I = 2 - (1+o(1))/n$."
+      "summary": "Defines $\\min I_n = \\inf\\{I : \\text{nodes in } [-1,1]\\}$. Erd\u0151s's conjecture: $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for $n \\ge N_0(\\varepsilon)$, i.e., $\\min I = 2 - (1+o(1))/n$."
     },
     {
       "id": "main-theorem",
@@ -102,42 +102,45 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1131 asks for the minimum integral of squared Lagrange basis polynomials over [-1,1]. The problem connects interpolation theory, Lebesgue constants, and L² optimization. Known bounds: 2 - O((log n)²/n) ≤ min I ≤ 2 - 2/(2n-1), with the conjecture min I = 2 - (1+o(1))/n. Legendre nodes nearly achieve the minimum, but Szabados showed they are not optimal for n > 3. The logarithmic gap in the lower bound remains the key obstacle.",
-    "implications": "Resolving this conjecture would complete our understanding of optimal node placement in L² interpolation theory, with applications to numerical quadrature, spectral methods, and approximation theory. The distinction between L∞-optimal (Kilgore-de Boor-Pinkus) and L²-optimal nodes illuminates the geometry of polynomial spaces.",
+    "summary": "Erd\u0151s Problem #1131 asks for the minimum integral of squared Lagrange basis polynomials over [-1,1]. The problem connects interpolation theory, Lebesgue constants, and L\u00b2 optimization. Known bounds: 2 - O((log n)\u00b2/n) \u2264 min I \u2264 2 - 2/(2n-1), with the conjecture min I = 2 - (1+o(1))/n. Legendre nodes nearly achieve the minimum, but Szabados showed they are not optimal for n > 3. The logarithmic gap in the lower bound remains the key obstacle.",
+    "implications": "Resolving this conjecture would complete our understanding of optimal node placement in L\u00b2 interpolation theory, with applications to numerical quadrature, spectral methods, and approximation theory. The distinction between L\u221e-optimal (Kilgore-de Boor-Pinkus) and L\u00b2-optimal nodes illuminates the geometry of polynomial spaces.",
     "openQuestions": [
-      "Is min I = 2 - (1+o(1))/n? Can the (log n)² factor in the lower bound be removed?",
+      "Is min I = 2 - (1+o(1))/n? Can the (log n)\u00b2 factor in the lower bound be removed?",
       "What node configuration achieves the minimum for each n?",
       "Is the optimal node system unique (up to reflection)?",
-      "Does the Gram matrix G_{jk} = ∫l_j l_k dx have spectral structure that explains the minimum?",
-      "What is the L² analog of the Kilgore-de Boor-Pinkus characterization of L∞-optimal nodes?"
+      "Does the Gram matrix G_{jk} = \u222bl_j l_k dx have spectral structure that explains the minimum?",
+      "What is the L\u00b2 analog of the Kilgore-de Boor-Pinkus characterization of L\u221e-optimal nodes?"
     ]
   },
   "crossReferences": [
     {
-      "relationship": "The Cauchy-Schwarz inequality for integrals provides the key lower bound I >= 2/n via the partition of unity sum l_k = 1",
-      "targetId": "cauchy-schwarz-integral"
+      "relationship": "related",
+      "targetId": "cauchy-schwarz-integral",
+      "description": "The Cauchy-Schwarz inequality for integrals provides the key lower bound I >= 2/n via the partition of unity sum l_k = 1"
     },
     {
-      "relationship": "Fourier analysis connects to the spectral theory of the Gram matrix G_{jk} = int l_j l_k dx, whose trace equals I",
-      "targetId": "fourier-series"
+      "relationship": "related",
+      "targetId": "fourier-series",
+      "description": "Fourier analysis connects to the spectral theory of the Gram matrix G_{jk} = int l_j l_k dx, whose trace equals I"
     },
     {
-      "relationship": "Legendre polynomials provide the near-optimal node system for the L2 interpolation problem; their zeros achieve I = 2 - 2/(2n-1)",
-      "targetId": "legendre-partial"
+      "relationship": "related",
+      "targetId": "legendre-partial",
+      "description": "Legendre polynomials provide the near-optimal node system for the L2 interpolation problem; their zeros achieve I = 2 - 2/(2n-1)"
     }
   ],
   "references": [
     {
       "key": "Fe32",
-      "citation": "Fejér, L., Ann. Scuola Norm. Super. Pisa Cl. Sci. (2) (1932), 263-276."
+      "citation": "Fej\u00e9r, L., Ann. Scuola Norm. Super. Pisa Cl. Sci. (2) (1932), 263-276."
     },
     {
       "key": "Sz66",
-      "citation": "Szabados, J., On a problem of P. Erdős, Acta Math. Acad. Sci. Hungar. (1966), 155-157."
+      "citation": "Szabados, J., On a problem of P. Erd\u0151s, Acta Math. Acad. Sci. Hungar. (1966), 155-157."
     },
     {
       "key": "ESVV94",
-      "citation": "Erdős, P., Szabados, J., Varma, A. K., Vértesi, P., On an interpolation theoretical extremal problem, Studia Sci. Math. Hungar. (1994), 55-60."
+      "citation": "Erd\u0151s, P., Szabados, J., Varma, A. K., V\u00e9rtesi, P., On an interpolation theoretical extremal problem, Studia Sci. Math. Hungar. (1994), 55-60."
     }
   ],
   "leanFile": {

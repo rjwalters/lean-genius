@@ -1,8 +1,8 @@
 {
   "id": "erdos-1119",
-  "title": "Erdős Problem #1119: Families of Entire Functions with Cardinal Constraints",
+  "title": "Erd\u0151s Problem #1119: Families of Entire Functions with Cardinal Constraints",
   "slug": "erdos-1119",
-  "description": "If a family of entire functions has at most 𝔪 distinct values at each point, must the family have cardinality ≤ 𝔪? Answer: YES if 𝔪⁺ < 𝔠, INDEPENDENT of ZFC if 𝔪⁺ = 𝔠.",
+  "description": "If a family of entire functions has at most \ud835\udd2a distinct values at each point, must the family have cardinality \u2264 \ud835\udd2a? Answer: YES if \ud835\udd2a\u207a < \ud835\udd20, INDEPENDENT of ZFC if \ud835\udd2a\u207a = \ud835\udd20.",
   "meta": {
     "author": "Kumar-Shelah (2017), Schilhan-Weinert (2024)",
     "sourceUrl": "https://erdosproblems.com/1119",
@@ -28,12 +28,12 @@
     "mathlibDependencies": [
       {
         "theorem": "Cardinal.continuum",
-        "description": "The cardinality of the continuum 2^{ℵ₀}",
+        "description": "The cardinality of the continuum 2^{\u2135\u2080}",
         "module": "Mathlib.SetTheory.Cardinal.Continuum"
       },
       {
         "theorem": "Cardinal.aleph",
-        "description": "The aleph cardinals ℵ_α",
+        "description": "The aleph cardinals \u2135_\u03b1",
         "module": "Mathlib.SetTheory.Cardinal.Basic"
       },
       {
@@ -63,15 +63,15 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1119 generalizes Wetzel's 1963 question, which asked whether a family of entire functions with only countably many values at each point must itself be countable. Erdős solved Wetzel's problem in 1964 by showing the answer is equivalent to the negation of the Continuum Hypothesis: YES if 𝔠 > ℵ₁, but NO under CH. Problem #1119 extends this to arbitrary intermediate cardinals 𝔪 with ℵ₀ < 𝔪 < 𝔠.\n\nThe answer splits into two cases based on the cardinal successor 𝔪⁺. If 𝔪⁺ < 𝔠, the answer is YES — this was noted as 'easy to see' by Hayman (1974), using the identity theorem for entire functions (distinct entire functions agree on at most countably many points). The key insight is that a diagonalization argument over the value sets forces the family to be small.\n\nThe deep case occurs when 𝔪⁺ = 𝔠, particularly 𝔪 = ℵ₁ and 𝔠 = ℵ₂. Kumar and Shelah (2017) constructed a ZFC model where YES holds in this case, while Schilhan and Weinert (2024) constructed a different model where NO holds. Together, these results show the problem is independent of ZFC when 𝔪⁺ = 𝔠, completely resolving Erdős's question.",
-    "problemStatement": "**Problem Statement (Solved — Independent of ZFC)**\n\nLet $\\mathfrak{m}$ be an infinite cardinal with $\\aleph_0 < \\mathfrak{m} < \\mathfrak{c} = 2^{\\aleph_0}$. Let $\\{f_\\alpha\\}$ be a family of entire functions such that, for every $z_0 \\in \\mathbb{C}$, there are at most $\\mathfrak{m}$ distinct values of $f_\\alpha(z_0)$. Must $\\{f_\\alpha\\}$ have cardinality at most $\\mathfrak{m}$?\n\n**Answer:** YES if $\\mathfrak{m}^+ < \\mathfrak{c}$ (provable in ZFC). INDEPENDENT of ZFC if $\\mathfrak{m}^+ = \\mathfrak{c}$.",
-    "text": "If a family of entire functions has at most 𝔪 distinct values at each point, must the family have cardinality ≤ 𝔪? Answer: YES if 𝔪⁺ < 𝔠, INDEPENDENT of ZFC if 𝔪⁺ = 𝔠.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization axiomatizes entire functions (IsEntire) and defines Wetzel families via cardinality bounds on value sets. The original Wetzel problem (𝔪 = ℵ₀) is axiomatized via Erdős's 1964 result and its CH counterpart. The easy case (𝔪⁺ < 𝔠) is axiomatized following Hayman. The independence results are captured as structured axioms: Kumar-Shelah gives a model where the bound holds, Schilhan-Weinert gives one where it fails. The summary theorem combines the Erdős and Hayman results into a conjunction proved by exact ⟨...⟩.",
+    "historicalContext": "Erd\u0151s Problem #1119 generalizes Wetzel's 1963 question, which asked whether a family of entire functions with only countably many values at each point must itself be countable. Erd\u0151s solved Wetzel's problem in 1964 by showing the answer is equivalent to the negation of the Continuum Hypothesis: YES if \ud835\udd20 > \u2135\u2081, but NO under CH. Problem #1119 extends this to arbitrary intermediate cardinals \ud835\udd2a with \u2135\u2080 < \ud835\udd2a < \ud835\udd20.\n\nThe answer splits into two cases based on the cardinal successor \ud835\udd2a\u207a. If \ud835\udd2a\u207a < \ud835\udd20, the answer is YES \u2014 this was noted as 'easy to see' by Hayman (1974), using the identity theorem for entire functions (distinct entire functions agree on at most countably many points). The key insight is that a diagonalization argument over the value sets forces the family to be small.\n\nThe deep case occurs when \ud835\udd2a\u207a = \ud835\udd20, particularly \ud835\udd2a = \u2135\u2081 and \ud835\udd20 = \u2135\u2082. Kumar and Shelah (2017) constructed a ZFC model where YES holds in this case, while Schilhan and Weinert (2024) constructed a different model where NO holds. Together, these results show the problem is independent of ZFC when \ud835\udd2a\u207a = \ud835\udd20, completely resolving Erd\u0151s's question.",
+    "problemStatement": "**Problem Statement (Solved \u2014 Independent of ZFC)**\n\nLet $\\mathfrak{m}$ be an infinite cardinal with $\\aleph_0 < \\mathfrak{m} < \\mathfrak{c} = 2^{\\aleph_0}$. Let $\\{f_\\alpha\\}$ be a family of entire functions such that, for every $z_0 \\in \\mathbb{C}$, there are at most $\\mathfrak{m}$ distinct values of $f_\\alpha(z_0)$. Must $\\{f_\\alpha\\}$ have cardinality at most $\\mathfrak{m}$?\n\n**Answer:** YES if $\\mathfrak{m}^+ < \\mathfrak{c}$ (provable in ZFC). INDEPENDENT of ZFC if $\\mathfrak{m}^+ = \\mathfrak{c}$.",
+    "text": "If a family of entire functions has at most \ud835\udd2a distinct values at each point, must the family have cardinality \u2264 \ud835\udd2a? Answer: YES if \ud835\udd2a\u207a < \ud835\udd20, INDEPENDENT of ZFC if \ud835\udd2a\u207a = \ud835\udd20.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization axiomatizes entire functions (IsEntire) and defines Wetzel families via cardinality bounds on value sets. The original Wetzel problem (\ud835\udd2a = \u2135\u2080) is axiomatized via Erd\u0151s's 1964 result and its CH counterpart. The easy case (\ud835\udd2a\u207a < \ud835\udd20) is axiomatized following Hayman. The independence results are captured as structured axioms: Kumar-Shelah gives a model where the bound holds, Schilhan-Weinert gives one where it fails. The summary theorem combines the Erd\u0151s and Hayman results into a conjunction proved by exact \u27e8...\u27e9.",
     "keyInsights": [
-      "**Generalized Wetzel:** Problem #1119 extends Wetzel's ℵ₀ question to arbitrary intermediate cardinals 𝔪",
+      "**Generalized Wetzel:** Problem #1119 extends Wetzel's \u2135\u2080 question to arbitrary intermediate cardinals \ud835\udd2a",
       "**Identity Theorem is Key:** Distinct entire functions agree on at most countably many points, constraining value sets",
-      "**Easy Case (𝔪⁺ < 𝔠):** Diagonalization via the identity theorem forces |family| ≤ 𝔪",
-      "**Independence (𝔪⁺ = 𝔠):** Both YES (Kumar-Shelah 2017) and NO (Schilhan-Weinert 2024) are consistent with ZFC",
+      "**Easy Case (\ud835\udd2a\u207a < \ud835\udd20):** Diagonalization via the identity theorem forces |family| \u2264 \ud835\udd2a",
+      "**Independence (\ud835\udd2a\u207a = \ud835\udd20):** Both YES (Kumar-Shelah 2017) and NO (Schilhan-Weinert 2024) are consistent with ZFC",
       "**Complex Analysis Meets Set Theory:** The problem demonstrates a deep interplay between analytic and set-theoretic constraints"
     ],
     "prerequisites": [
@@ -89,21 +89,21 @@
     },
     {
       "id": "wetzel-problem",
-      "title": "The Original Wetzel Problem (Erdős 1964)",
+      "title": "The Original Wetzel Problem (Erd\u0151s 1964)",
       "summary": "WetzelProblem, erdos_1964_wetzel, erdos_1964_wetzel_ch",
       "startLine": 50,
       "endLine": 69
     },
     {
       "id": "easy-case",
-      "title": "The Easy Case (𝔪⁺ < 𝔠)",
+      "title": "The Easy Case (\ud835\udd2a\u207a < \ud835\udd20)",
       "summary": "succCard, easy_case axiom (Hayman 1974)",
       "startLine": 71,
       "endLine": 84
     },
     {
       "id": "undecidable-case",
-      "title": "The Undecidable Case (𝔪⁺ = 𝔠)",
+      "title": "The Undecidable Case (\ud835\udd2a\u207a = \ud835\udd20)",
       "summary": "SuccessorEqualsContinuum, kumar_shelah_2017, schilhan_weinert_2024",
       "startLine": 86,
       "endLine": 109
@@ -138,10 +138,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1119 is resolved: YES if 𝔪⁺ < 𝔠 (provable in ZFC via the identity theorem), INDEPENDENT of ZFC if 𝔪⁺ = 𝔠 (Kumar-Shelah 2017 and Schilhan-Weinert 2024 give models for both answers).",
-    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Complex Analysis ↔ Set Theory:** The identity theorem for entire functions creates a bridge between analytic constraints and cardinal arithmetic\n\n**2. Independence Phenomena:** Shows that natural questions about function families can be independent of ZFC, extending the CH paradigm\n\n3. **Successor Cardinal Boundary:** The sharp transition at 𝔪⁺ = 𝔠 reveals the exact threshold where set-theoretic independence emerges\n\n4. **Generalizing Wetzel:** Provides a complete generalization of Erdős's 1964 solution to Wetzel's problem.",
+    "summary": "Erd\u0151s Problem #1119 is resolved: YES if \ud835\udd2a\u207a < \ud835\udd20 (provable in ZFC via the identity theorem), INDEPENDENT of ZFC if \ud835\udd2a\u207a = \ud835\udd20 (Kumar-Shelah 2017 and Schilhan-Weinert 2024 give models for both answers).",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Complex Analysis \u2194 Set Theory:** The identity theorem for entire functions creates a bridge between analytic constraints and cardinal arithmetic\n\n**2. Independence Phenomena:** Shows that natural questions about function families can be independent of ZFC, extending the CH paradigm\n\n3. **Successor Cardinal Boundary:** The sharp transition at \ud835\udd2a\u207a = \ud835\udd20 reveals the exact threshold where set-theoretic independence emerges\n\n4. **Generalizing Wetzel:** Provides a complete generalization of Erd\u0151s's 1964 solution to Wetzel's problem.",
     "openQuestions": [
-      "What is the exact set-theoretic characterization of when YES holds in the 𝔪⁺ = 𝔠 case?",
+      "What is the exact set-theoretic characterization of when YES holds in the \ud835\udd2a\u207a = \ud835\udd20 case?",
       "Do large cardinal axioms settle the question?",
       "Are there other natural function classes where similar independence phenomena arise?",
       "What is the relationship between the Wetzel property and other cardinal characteristics of the continuum?"
@@ -149,52 +149,58 @@
   },
   "crossReferences": [
     {
-      "id": "continuum-hypothesis",
       "title": "Independence of the Continuum Hypothesis",
-      "relationship": "The Wetzel problem (𝔪 = ℵ₀ case of Problem #1119) is equivalent to the negation of CH; this entry formalizes CH independence, the foundational set-theoretic backdrop for the entire problem"
+      "relationship": "related",
+      "targetId": "continuum-hypothesis",
+      "description": "The Wetzel problem (\ud835\udd2a = \u2135\u2080 case of Problem #1119) is equivalent to the negation of CH; this entry formalizes CH independence, the foundational set-theoretic backdrop for the entire problem"
     },
     {
-      "id": "erdos-1118",
-      "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
-      "relationship": "A neighboring Erdős problem also concerning entire functions and analytic constraints; both problems probe how global analytic properties bound the size of function families"
+      "title": "Erd\u0151s Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
+      "relationship": "related",
+      "targetId": "erdos-1118",
+      "description": "A neighboring Erd\u0151s problem also concerning entire functions and analytic constraints; both problems probe how global analytic properties bound the size of function families"
     },
     {
-      "id": "cantor-diagonalization",
       "title": "Cantor's Diagonalization Theorem",
-      "relationship": "The diagonalization technique underlies the easy case (𝔪⁺ < 𝔠): one diagonalizes over value sets using the identity theorem to show the family is small"
+      "relationship": "related",
+      "targetId": "cantor-diagonalization",
+      "description": "The diagonalization technique underlies the easy case (\ud835\udd2a\u207a < \ud835\udd20): one diagonalizes over value sets using the identity theorem to show the family is small"
     },
     {
-      "id": "godel-incompleteness",
-      "title": "Gödel's First Incompleteness Theorem",
-      "relationship": "Both results demonstrate that natural mathematical statements can be undecidable; Problem #1119 is independent of ZFC when 𝔪⁺ = 𝔠, paralleling independence phenomena in logic"
+      "title": "G\u00f6del's First Incompleteness Theorem",
+      "relationship": "related",
+      "targetId": "godel-incompleteness",
+      "description": "Both results demonstrate that natural mathematical statements can be undecidable; Problem #1119 is independent of ZFC when \ud835\udd2a\u207a = \ud835\udd20, paralleling independence phenomena in logic"
     },
     {
-      "id": "fundamental-theorem-algebra",
       "title": "Fundamental Theorem of Algebra",
-      "relationship": "Shares the setting of complex analysis; entire functions are the natural extension of polynomials to ℂ, and the identity theorem (central to Problem #1119) is a fundamental tool of complex function theory"
+      "relationship": "related",
+      "targetId": "fundamental-theorem-algebra",
+      "description": "Shares the setting of complex analysis; entire functions are the natural extension of polynomials to \u2102, and the identity theorem (central to Problem #1119) is a fundamental tool of complex function theory"
     },
     {
-      "id": "parallel-postulate-independence",
       "title": "Independence of the Parallel Postulate",
-      "relationship": "A classical independence result: just as the parallel postulate is independent of the other Euclidean axioms, the Wetzel bound at 𝔪⁺ = 𝔠 is independent of ZFC, illustrating the same model-theoretic methodology"
+      "relationship": "related",
+      "targetId": "parallel-postulate-independence",
+      "description": "A classical independence result: just as the parallel postulate is independent of the other Euclidean axioms, the Wetzel bound at \ud835\udd2a\u207a = \ud835\udd20 is independent of ZFC, illustrating the same model-theoretic methodology"
     }
   ],
   "relatedProofs": [
     {
       "id": "continuum-hypothesis",
-      "description": "CH independence is the direct set-theoretic predecessor: Erdős 1964 showed the ℵ₀ Wetzel problem is equivalent to ¬CH"
+      "description": "CH independence is the direct set-theoretic predecessor: Erd\u0151s 1964 showed the \u2135\u2080 Wetzel problem is equivalent to \u00acCH"
     },
     {
       "id": "erdos-1118",
-      "description": "Companion Erdős problem on entire functions; shares the theme of analytic constraints bounding the size of function families"
+      "description": "Companion Erd\u0151s problem on entire functions; shares the theme of analytic constraints bounding the size of function families"
     },
     {
       "id": "cantor-diagonalization",
-      "description": "The diagonalization argument used in the easy case (𝔪⁺ < 𝔠) is a direct application of the technique Cantor introduced"
+      "description": "The diagonalization argument used in the easy case (\ud835\udd2a\u207a < \ud835\udd20) is a direct application of the technique Cantor introduced"
     },
     {
       "id": "godel-incompleteness",
-      "description": "Independence from ZFC is the decisive feature of Problem #1119 when 𝔪⁺ = 𝔠; Gödel's theorem provides the logical framework for understanding such independence results"
+      "description": "Independence from ZFC is the decisive feature of Problem #1119 when \ud835\udd2a\u207a = \ud835\udd20; G\u00f6del's theorem provides the logical framework for understanding such independence results"
     },
     {
       "id": "fundamental-theorem-algebra",
@@ -204,15 +210,15 @@
   "references": [
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "An interpolation problem associated with the continuum hypothesis",
       "journal": "Michigan Mathematical Journal",
       "volume": "11",
       "year": 1964,
-      "pages": "9–10",
+      "pages": "9\u201310",
       "doi": "10.1307/mmj/1028999028",
-      "note": "Original solution of the Wetzel problem (ℵ₀ case): shows the answer is equivalent to ¬CH"
+      "note": "Original solution of the Wetzel problem (\u2135\u2080 case): shows the answer is equivalent to \u00acCH"
     },
     {
       "authors": [
@@ -221,7 +227,7 @@
       "title": "Research Problems in Function Theory",
       "publisher": "Athlone Press",
       "year": 1967,
-      "note": "Contains Problem #1119 in the generalized form and the observation that 𝔪⁺ < 𝔠 implies YES"
+      "note": "Contains Problem #1119 in the generalized form and the observation that \ud835\udd2a\u207a < \ud835\udd20 implies YES"
     },
     {
       "authors": [
@@ -232,9 +238,9 @@
       "journal": "Advances in Mathematics",
       "volume": "321",
       "year": 2017,
-      "pages": "475–491",
+      "pages": "475\u2013491",
       "doi": "10.1016/j.aim.2017.09.022",
-      "note": "Constructs a ZFC model where YES holds when 𝔪⁺ = 𝔠"
+      "note": "Constructs a ZFC model where YES holds when \ud835\udd2a\u207a = \ud835\udd20"
     },
     {
       "authors": [
@@ -245,8 +251,8 @@
       "journal": "Fundamenta Mathematicae",
       "volume": "264",
       "year": 2024,
-      "pages": "1–35",
-      "note": "Constructs a ZFC model where NO holds when 𝔪⁺ = 𝔠, completing the independence proof"
+      "pages": "1\u201335",
+      "note": "Constructs a ZFC model where NO holds when \ud835\udd2a\u207a = \ud835\udd20, completing the independence proof"
     },
     {
       "authors": [

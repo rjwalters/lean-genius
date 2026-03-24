@@ -1,10 +1,10 @@
 {
   "id": "erdos-286",
-  "title": "Erdős Problem #286: Unit Fractions in Short Intervals",
+  "title": "Erd\u0151s Problem #286: Unit Fractions in Short Intervals",
   "slug": "erdos-286",
-  "description": "For k ≥ 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
+  "description": "For k \u2265 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
   "meta": {
-    "author": "Erdős–Graham (1980)",
+    "author": "Erd\u0151s\u2013Graham (1980)",
     "sourceUrl": "https://erdosproblems.com/286",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos286Problem.lean",
@@ -47,7 +47,7 @@
       "Proved example_k4: 1 = 1/2 + 1/4 + 1/5 + 1/20 in interval [2,20]",
       "Defined ErdosGrahamConstant = e - 1 with bounds 1.7 < (e-1) < 1.72",
       "Stated Croot's theorem and asymptotic optimality",
-      "Proved erdos_286: for all k ≥ 3, a representation exists",
+      "Proved erdos_286: for all k \u2265 3, a representation exists",
       "Stated representation_monotone for inductive construction",
       "Defined IsEgyptianFraction and proved equivalence with IsUnitFractionSum"
     ],
@@ -56,15 +56,15 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem originates from the landmark monograph 'Old and New Problems and Results in Combinatorial Number Theory' by Erdős and Graham (1980, p. 33). It asks whether 1 can be expressed as a sum of k distinct unit fractions 1/n₁ + ... + 1/nₖ where all denominators lie in a 'short' interval of width approximately (e-1)k.\n\nThe constant (e-1) ≈ 1.718 arises naturally: if one chooses denominators uniformly from an interval [a, a+w], the expected reciprocal sum is approximately (w/a)·(1/a) summed over the interval, and optimizing this leads to the exponential constant. The problem is a deep question about the combinatorial structure of Egyptian fractions under interval constraints.\n\nCroot (2001) proved the affirmative answer in his Acta Arithmetica paper 'On unit fractions with denominators in short intervals.' His proof uses the greedy algorithm with careful interval management. He also proved that the constant (e-1) is asymptotically optimal — one cannot do better than (e-1-ε)k for any ε > 0. The case k = 2 is impossible (1/a + 1/b = 1 with distinct positive integers has no solution), but k ≥ 3 always admits representations.",
-    "problemStatement": "Let k ≥ 2. Is it true that there exists an interval I of width (e-1+o(1))k and integers n₁ < ... < nₖ ∈ I such that 1 = 1/n₁ + ... + 1/nₖ?",
-    "text": "For k ≥ 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
-    "proofStrategy": "We formalize unit-fraction sums, interval representations, and the main problem. Concrete examples for k=3 and k=4 are proved. The Erdős-Graham constant (e-1) is defined with bounds. Croot's theorem and asymptotic optimality are stated. The main theorem erdos_286 combines the examples with Croot's theorem via representation_monotone to handle all k ≥ 3.",
+    "historicalContext": "This problem originates from the landmark monograph 'Old and New Problems and Results in Combinatorial Number Theory' by Erd\u0151s and Graham (1980, p. 33). It asks whether 1 can be expressed as a sum of k distinct unit fractions 1/n\u2081 + ... + 1/n\u2096 where all denominators lie in a 'short' interval of width approximately (e-1)k.\n\nThe constant (e-1) \u2248 1.718 arises naturally: if one chooses denominators uniformly from an interval [a, a+w], the expected reciprocal sum is approximately (w/a)\u00b7(1/a) summed over the interval, and optimizing this leads to the exponential constant. The problem is a deep question about the combinatorial structure of Egyptian fractions under interval constraints.\n\nCroot (2001) proved the affirmative answer in his Acta Arithmetica paper 'On unit fractions with denominators in short intervals.' His proof uses the greedy algorithm with careful interval management. He also proved that the constant (e-1) is asymptotically optimal \u2014 one cannot do better than (e-1-\u03b5)k for any \u03b5 > 0. The case k = 2 is impossible (1/a + 1/b = 1 with distinct positive integers has no solution), but k \u2265 3 always admits representations.",
+    "problemStatement": "Let k \u2265 2. Is it true that there exists an interval I of width (e-1+o(1))k and integers n\u2081 < ... < n\u2096 \u2208 I such that 1 = 1/n\u2081 + ... + 1/n\u2096?",
+    "text": "For k \u2265 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved yes; the constant (e-1) is optimal.",
+    "proofStrategy": "We formalize unit-fraction sums, interval representations, and the main problem. Concrete examples for k=3 and k=4 are proved. The Erd\u0151s-Graham constant (e-1) is defined with bounds. Croot's theorem and asymptotic optimality are stated. The main theorem erdos_286 combines the examples with Croot's theorem via representation_monotone to handle all k \u2265 3.",
     "keyInsights": [
-      "**Erdős-Graham Constant**: (e-1) ≈ 1.718 is the asymptotically optimal width coefficient — both achievable and unimprovable",
+      "**Erd\u0151s-Graham Constant**: (e-1) \u2248 1.718 is the asymptotically optimal width coefficient \u2014 both achievable and unimprovable",
       "**Concrete Examples**: 1 = 1/2 + 1/3 + 1/6 (k=3, width 4) and 1 = 1/2 + 1/4 + 1/5 + 1/20 (k=4, width 18) are proved in Lean",
-      "**k=2 Impossibility**: No two distinct positive integers have reciprocals summing to 1 — the problem starts at k=3",
-      "**Croot's Resolution**: For all sufficiently large k, width ≤ (e-1+ε)k suffices. Combined with monotonicity, this handles all k ≥ 3",
+      "**k=2 Impossibility**: No two distinct positive integers have reciprocals summing to 1 \u2014 the problem starts at k=3",
+      "**Croot's Resolution**: For all sufficiently large k, width \u2264 (e-1+\u03b5)k suffices. Combined with monotonicity, this handles all k \u2265 3",
       "**Egyptian Fraction Connection**: The problem belongs to the rich theory of Egyptian fractions, where representing rationals as sums of distinct unit fractions has a history going back to ancient Egypt"
     ],
     "prerequisites": [
@@ -113,7 +113,7 @@
       "title": "Croot's Theorem",
       "startLine": 134,
       "endLine": 196,
-      "summary": "Croot (2001): for large k, width ≤ (e-1+ε)k suffices. Proves erdos_286 for all k ≥ 3 via examples + monotonicity + Croot. States asymptotic optimality."
+      "summary": "Croot (2001): for large k, width \u2264 (e-1+\u03b5)k suffices. Proves erdos_286 for all k \u2265 3 via examples + monotonicity + Croot. States asymptotic optimality."
     },
     {
       "id": "related",
@@ -124,10 +124,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #286 is solved: for all k ≥ 3, 1 can be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k. The constant (e-1) is asymptotically optimal. Croot (2001) proved the key result.",
+    "summary": "Erd\u0151s Problem #286 is solved: for all k \u2265 3, 1 can be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k. The constant (e-1) is asymptotically optimal. Croot (2001) proved the key result.",
     "implications": "This connects Egyptian fraction theory to interval-constrained representations, showing that the constant e-1 governs the fundamental trade-off between the number of terms and the width of the denominator interval.",
     "openQuestions": [
-      "What is the smallest k for which width ≤ (e-1)k suffices?",
+      "What is the smallest k for which width \u2264 (e-1)k suffices?",
       "Can explicit constructions be given for all k (not just sufficiently large k)?",
       "What happens for other target sums besides 1?",
       "How does the problem change if denominators must lie in an arithmetic progression?",
@@ -147,5 +147,39 @@
     "axiomCount": 5,
     "theoremCount": 7,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-287",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-292",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-148",
+    "erdos-242",
+    "erdos-284",
+    "erdos-287",
+    "erdos-292"
+  ]
 }

@@ -4,7 +4,7 @@
   "slug": "picks-theorem-oq-03",
   "description": "Ehrhart polynomials generalize Pick's formula to higher dimensions: for a d-dimensional lattice polytope P, the lattice point count of nP is a polynomial of degree d in n. Verified on cubes, simplices, cross-polytopes (octahedra), and their products, with Ehrhart-Macdonald reciprocity, h*-vector palindromy, and reflexive polytope characterization.",
   "meta": {
-    "author": "Eugène Ehrhart (1962)",
+    "author": "Eug\u00e8ne Ehrhart (1962)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ehrhart_polynomial",
     "date": "1962",
     "status": "axiomatized",
@@ -43,24 +43,24 @@
       "h*-vector framework with Stanley nonnegativity theorem",
       "Cube and simplex reciprocity verified algebraically",
       "Complete dimensional hierarchy from d=0 to d=3",
-      "Product formula: L(P×Q, n) = L(P, n)·L(Q, n) proved for all cube dimensions",
+      "Product formula: L(P\u00d7Q, n) = L(P, n)\u00b7L(Q, n) proved for all cube dimensions",
       "Reciprocity-product compatibility: reciprocity is multiplicative over products",
       "Quasipolynomial structure for rational polytopes with period and evaluation",
       "Zonotope Ehrhart theory: centered cubes as translates of standard cubes",
       "Rectangle Ehrhart polynomial and Pick's formula for rectangles (proved algebraically)",
       "Eulerian numbers and h*-vector connection to d! for unit cubes",
       "Valuation property for lattice point counting on intervals",
-      "Cross-polytope (hyperoctahedron) Ehrhart theory: L_{β_d}(n) for d=1,2,3",
-      "Cross-polytope volume formula: vol(β_d) = 2^d/d! verified",
+      "Cross-polytope (hyperoctahedron) Ehrhart theory: L_{\u03b2_d}(n) for d=1,2,3",
+      "Cross-polytope volume formula: vol(\u03b2_d) = 2^d/d! verified",
       "Cross-polytope interior shift: L*(n) = L(n-1) proved for all dimensions",
       "Ehrhart-Macdonald reciprocity verified for cross-polytopes (d=1,2,3)",
       "Cross-polytope h*-vector palindromy proving reflexivity (Hibi theorem connection)",
-      "h*_{β_d}(z) = (1+z)^d: cross-polytope h*-polynomial is binomial (proved)",
+      "h*_{\u03b2_d}(z) = (1+z)^d: cross-polytope h*-polynomial is binomial (proved)",
       "Cube-cross-polytope duality: self-duality in 1D, divergence in 2D+ (proved)",
-      "Cross-polytope dimension recurrence: L_{β_d}(n) from L_{β_{d-1}} (proved)",
+      "Cross-polytope dimension recurrence: L_{\u03b2_d}(n) from L_{\u03b2_{d-1}} (proved)",
       "Monotonicity L(n+1) > L(n) for cross-polytopes (proved for d=1,2,3)",
-      "Boundary count pattern: B(β_d) = 2d vertices (proved for d=1,2,3)",
-      "Volume product formula: vol(β_d)·vol(□_d) = 4^d/d! (proved for all d)"
+      "Boundary count pattern: B(\u03b2_d) = 2d vertices (proved for d=1,2,3)",
+      "Volume product formula: vol(\u03b2_d)\u00b7vol(\u25a1_d) = 4^d/d! (proved for all d)"
     ],
     "dateAdded": "2026-03-06",
     "leanFile": {
@@ -87,15 +87,15 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Eugène Ehrhart (1906-2000) was a French mathematician who published his landmark theorem in 1962, showing that for any d-dimensional lattice polytope P and positive integer n, the number of lattice points in the dilated polytope nP is a polynomial of degree d in n. This polynomial, now called the Ehrhart polynomial, encodes deep geometric and combinatorial information about the polytope.\n\nEhrhart's theorem provides the correct higher-dimensional generalization of Pick's theorem (1899). While Pick's formula A = i + b/2 - 1 works beautifully in 2D, the Reeve tetrahedra show it cannot extend to 3D. Ehrhart theory explains why: in 2D the polynomial has 3 coefficients determined by 2 independent counts (i and b), but in 3D the polynomial has 4 coefficients while i and b provide only 2 equations.\n\nThe theory was further enriched by Macdonald's reciprocity theorem (1971), connecting interior and boundary counts through sign changes in the polynomial, and Stanley's nonnegativity theorem (1980) for h*-vectors.",
-    "problemStatement": "**Ehrhart's Theorem**: For a d-dimensional lattice polytope P and positive integer n, the number of lattice points in nP is given by a polynomial L(P, n) of degree d, with leading coefficient equal to the volume of P and constant term equal to 1.\n\n**Ehrhart-Macdonald Reciprocity**: The interior lattice point count satisfies L*(P, n) = (-1)^d · L(P, -n).\n\n**Open Question**: Formalize the full proof of Ehrhart's theorem from first principles, including the combinatorial topology needed for the inductive argument.",
+    "historicalContext": "Eug\u00e8ne Ehrhart (1906-2000) was a French mathematician who published his landmark theorem in 1962, showing that for any d-dimensional lattice polytope P and positive integer n, the number of lattice points in the dilated polytope nP is a polynomial of degree d in n. This polynomial, now called the Ehrhart polynomial, encodes deep geometric and combinatorial information about the polytope.\n\nEhrhart's theorem provides the correct higher-dimensional generalization of Pick's theorem (1899). While Pick's formula A = i + b/2 - 1 works beautifully in 2D, the Reeve tetrahedra show it cannot extend to 3D. Ehrhart theory explains why: in 2D the polynomial has 3 coefficients determined by 2 independent counts (i and b), but in 3D the polynomial has 4 coefficients while i and b provide only 2 equations.\n\nThe theory was further enriched by Macdonald's reciprocity theorem (1971), connecting interior and boundary counts through sign changes in the polynomial, and Stanley's nonnegativity theorem (1980) for h*-vectors.",
+    "problemStatement": "**Ehrhart's Theorem**: For a d-dimensional lattice polytope P and positive integer n, the number of lattice points in nP is given by a polynomial L(P, n) of degree d, with leading coefficient equal to the volume of P and constant term equal to 1.\n\n**Ehrhart-Macdonald Reciprocity**: The interior lattice point count satisfies L*(P, n) = (-1)^d \u00b7 L(P, -n).\n\n**Open Question**: Formalize the full proof of Ehrhart's theorem from first principles, including the combinatorial topology needed for the inductive argument.",
     "text": "Ehrhart polynomials generalize Pick's formula to higher dimensions: for a d-dimensional lattice polytope P, the lattice point count of nP is a polynomial of degree d in n. Verified on cubes, simplices, cross-polytopes (octahedra), and their products, with Ehrhart-Macdonald reciprocity, h*-vector palindromy, and reflexive polytope characterization.",
-    "proofStrategy": "We axiomatize lattice polytopes with their Ehrhart counting data and state Ehrhart's theorem and Macdonald reciprocity as axioms. The formalization then verifies the theory through extensive concrete examples: the unit cube L(t) = (t+1)³, the standard simplex L(t) = C(t+3,3), and the regular octahedron. We derive Pick's theorem as the d=2 specialization of Ehrhart theory, proving that the 2D Ehrhart polynomial L(t) = At² + (b/2)t + 1 yields A = i + b/2 - 1 when evaluated at t=1. The h*-vector framework provides an alternative encoding of Ehrhart data with Stanley's nonnegativity guaranteed by construction.",
+    "proofStrategy": "We axiomatize lattice polytopes with their Ehrhart counting data and state Ehrhart's theorem and Macdonald reciprocity as axioms. The formalization then verifies the theory through extensive concrete examples: the unit cube L(t) = (t+1)\u00b3, the standard simplex L(t) = C(t+3,3), and the regular octahedron. We derive Pick's theorem as the d=2 specialization of Ehrhart theory, proving that the 2D Ehrhart polynomial L(t) = At\u00b2 + (b/2)t + 1 yields A = i + b/2 - 1 when evaluated at t=1. The h*-vector framework provides an alternative encoding of Ehrhart data with Stanley's nonnegativity guaranteed by construction.",
     "keyInsights": [
-      "**Pick's theorem is Ehrhart in 2D**: The 2D Ehrhart polynomial L(t) = At² + (b/2)t + 1 evaluated at t=1 gives i+b = A + b/2 + 1, which rearranges to Pick's formula A = i + b/2 - 1",
+      "**Pick's theorem is Ehrhart in 2D**: The 2D Ehrhart polynomial L(t) = At\u00b2 + (b/2)t + 1 evaluated at t=1 gives i+b = A + b/2 + 1, which rearranges to Pick's formula A = i + b/2 - 1",
       "**Why Pick fails in 3D**: The Reeve tetrahedra have identical i=0 and b=4 but different volumes r/6, showing that 2 lattice counts cannot determine 4 polynomial coefficients",
-      "**Ehrhart-Macdonald reciprocity**: For the unit cube, L*(t) = (t-1)³ = (-1)³·L(-t), beautifully connecting interior counts to the original polynomial via sign changes",
-      "**h*-vectors encode volume**: The sum of h*-vector entries equals the normalized volume (d! · Vol), providing a combinatorial decomposition of volume",
+      "**Ehrhart-Macdonald reciprocity**: For the unit cube, L*(t) = (t-1)\u00b3 = (-1)\u00b3\u00b7L(-t), beautifully connecting interior counts to the original polynomial via sign changes",
+      "**h*-vectors encode volume**: The sum of h*-vector entries equals the normalized volume (d! \u00b7 Vol), providing a combinatorial decomposition of volume",
       "**Stanley nonnegativity**: All h*-vector entries are non-negative (proved by Stanley using commutative algebra), constraining which polynomials can be Ehrhart polynomials",
       "**Cross-polytope h*-polynomial is (1+z)^d**: The h*-vector of the d-dimensional cross-polytope consists of binomial coefficients C(d,k), making it the simplest possible palindromic h*-vector. This connects reflexive polytope theory to the binomial theorem",
       "**Interior shift property**: For cross-polytopes, L*(n) = L(n-1), meaning interior point counts of the n-th dilate equal total counts of the (n-1)-th dilate. This is a consequence of the cross-polytope being simplicial and reflexive"
@@ -118,21 +118,21 @@
       "title": "Ehrhart's Theorem",
       "startLine": 82,
       "endLine": 131,
-      "summary": "States Ehrhart's theorem: the lattice point count of nP agrees with a function L satisfying L(0) = 1 and L(n) = |nP ∩ ℤ^d| for positive n."
+      "summary": "States Ehrhart's theorem: the lattice point count of nP agrees with a function L satisfying L(0) = 1 and L(n) = |nP \u2229 \u2124^d| for positive n."
     },
     {
       "id": "reciprocity",
       "title": "Ehrhart-Macdonald Reciprocity",
       "startLine": 133,
       "endLine": 155,
-      "summary": "States Ehrhart-Macdonald reciprocity: L*(t) = (-1)^d · L(-t), connecting interior point counts to the Ehrhart polynomial via sign changes."
+      "summary": "States Ehrhart-Macdonald reciprocity: L*(t) = (-1)^d \u00b7 L(-t), connecting interior point counts to the Ehrhart polynomial via sign changes."
     },
     {
       "id": "unit-cube",
       "title": "Unit Cube Example",
       "startLine": 157,
       "endLine": 203,
-      "summary": "Defines unitCube3 and verifies L(t) = (t+1)³ at t = 0,1,2,3. Shows expanded form t³ + 3t² + 3t + 1."
+      "summary": "Defines unitCube3 and verifies L(t) = (t+1)\u00b3 at t = 0,1,2,3. Shows expanded form t\u00b3 + 3t\u00b2 + 3t + 1."
     },
     {
       "id": "simplex",
@@ -146,21 +146,21 @@
       "title": "Pick's Theorem as Ehrhart Specialization",
       "startLine": 256,
       "endLine": 345,
-      "summary": "Shows the 2D Ehrhart polynomial L(t) = At² + (b/2)t + 1 yields Pick's formula A = i + b/2 - 1 when evaluated at t=1."
+      "summary": "Shows the 2D Ehrhart polynomial L(t) = At\u00b2 + (b/2)t + 1 yields Pick's formula A = i + b/2 - 1 when evaluated at t=1."
     },
     {
       "id": "reeve-tetrahedra",
       "title": "Reeve Tetrahedra via Ehrhart Theory",
       "startLine": 347,
       "endLine": 426,
-      "summary": "Defines Reeve tetrahedra T_r with same i,b but different volumes. Shows L(T₁,t) ≠ L(T₂,t) despite L(T₁,1) = L(T₂,1)."
+      "summary": "Defines Reeve tetrahedra T_r with same i,b but different volumes. Shows L(T\u2081,t) \u2260 L(T\u2082,t) despite L(T\u2081,1) = L(T\u2082,1)."
     },
     {
       "id": "reciprocity-examples",
       "title": "Reciprocity Examples",
       "startLine": 428,
       "endLine": 500,
-      "summary": "Verifies Ehrhart-Macdonald reciprocity for the unit cube (L*(t) = (t-1)³) and standard simplex, with concrete interior point counts."
+      "summary": "Verifies Ehrhart-Macdonald reciprocity for the unit cube (L*(t) = (t-1)\u00b3) and standard simplex, with concrete interior point counts."
     },
     {
       "id": "octahedron",
@@ -189,7 +189,7 @@
       "startLine": 1,
       "endLine": 695,
       "file": "Proofs/PicksTheoremOQ03CrossPoly.lean",
-      "summary": "Complete Ehrhart theory for the cross-polytope (hyperoctahedron) family β_d in dimensions 1-3. Proves Ehrhart polynomials, Macdonald reciprocity, h*-vector palindromy (reflexivity), interior shift L*(n)=L(n-1), cube-cross duality, dimension recurrence, monotonicity, boundary counts, and the beautiful identity h*_{β_d}(z) = (1+z)^d connecting to the binomial theorem. 69 theorems, 0 sorries, 0 axioms."
+      "summary": "Complete Ehrhart theory for the cross-polytope (hyperoctahedron) family \u03b2_d in dimensions 1-3. Proves Ehrhart polynomials, Macdonald reciprocity, h*-vector palindromy (reflexivity), interior shift L*(n)=L(n-1), cube-cross duality, dimension recurrence, monotonicity, boundary counts, and the beautiful identity h*_{\u03b2_d}(z) = (1+z)^d connecting to the binomial theorem. 69 theorems, 0 sorries, 0 axioms."
     }
   ],
   "conclusion": {
@@ -204,14 +204,15 @@
   },
   "crossReferences": [
     {
-      "targetProofId": "picks-theorem",
-      "relationship": "Pick's theorem is the d=2 specialization of Ehrhart's theorem. This file derives Pick's formula from the 2D Ehrhart polynomial and explains why it fails in 3D.",
+      "relationship": "related",
       "sharedConcepts": [
         "lattice-points",
         "area",
         "volume",
         "discrete-geometry"
-      ]
+      ],
+      "targetId": "picks-theorem",
+      "description": "Pick's theorem is the d=2 specialization of Ehrhart's theorem. This file derives Pick's formula from the 2D Ehrhart polynomial and explains why it fails in 3D."
     }
   ],
   "leanFile": {

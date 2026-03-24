@@ -1,10 +1,10 @@
 {
   "id": "erdos-1045",
-  "title": "Erdős Problem #1045: Maximum Product of Distances",
+  "title": "Erd\u0151s Problem #1045: Maximum Product of Distances",
   "slug": "erdos-1045",
-  "description": "Given n complex points with pairwise distances ≤ 2, maximize ∏|zᵢ-zⱼ|. Regular polygon is NOT optimal for even n ≥ 4. Odd n case remains open.",
+  "description": "Given n complex points with pairwise distances \u2264 2, maximize \u220f|z\u1d62-z\u2c7c|. Regular polygon is NOT optimal for even n \u2265 4. Odd n case remains open.",
   "meta": {
-    "author": "Erdős-Herzog-Piranian (1958)",
+    "author": "Erd\u0151s-Herzog-Piranian (1958)",
     "sourceUrl": "https://erdosproblems.com/1045",
     "date": "1958",
     "status": "axiomatized",
@@ -47,7 +47,7 @@
     ],
     "originalContributions": [
       "Formalized configuration space and diameter constraint",
-      "Stated Pommerenke's 2^{O(n)}·n^n upper bound",
+      "Stated Pommerenke's 2^{O(n)}\u00b7n^n upper bound",
       "Captured Hu-Tang and Cambie counterexamples for even n",
       "Stated Sothanaphan and Cambie-Dong-Tang lower bounds",
       "Axiomatized ConnectedSublevelSet for EHP 1958 result"
@@ -57,16 +57,16 @@
     "assumptions": "14 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**From Metric Polynomial Theory to Extremal Geometry**\n\nThis problem was posed by Erdős, Herzog, and Piranian in their influential 1958 paper *Metric properties of polynomials*. Given $n$ complex points $z_1, \\ldots, z_n$ with all pairwise distances at most $2$ (the **diameter constraint**), what is the maximum value of the product $\\Delta = \\prod_{i \\ne j} |z_i - z_j|$? The natural conjecture was that the regular $n$-gon inscribed in a circle of diameter $2$ maximizes $\\Delta$.\n\nThe product $\\Delta$ is intimately connected to the **discriminant** of the monic polynomial $f(z) = \\prod(z - z_i)$: we have $\\Delta_{\\text{sqrt}} = \\prod_{i < j} |z_i - z_j| = |\\text{disc}(f)|^{1/2}$, where $\\text{disc}(f) = \\prod_{i<j}(z_i - z_j)^2$. Maximizing $\\Delta$ is thus equivalent to maximizing the absolute discriminant over polynomials with roots in a disk.\n\n**The Regular Polygon Value**: For the regular $n$-gon (roots of unity scaled to diameter $2$), the classical identity $\\prod_{k=1}^{n-1} |1 - e^{2\\pi ik/n}| = n$ gives $\\Delta = n^n$ for even $n$. For odd $n$, the maximum distance is $2\\cos(\\pi/2n) < 2$; rescaling introduces a factor $\\cos(\\pi/2n)^{-n(n-1)}$, and $\\Delta \\sim e^{\\pi^2/8} \\cdot n^n$ as $n \\to \\infty$.\n\n**Pommerenke's Upper Bound (1961)**: Christian Pommerenke proved $\\Delta \\le 2^{Cn} \\cdot n^n$ for an absolute constant $C > 0$, showing the maximum is at most exponentially larger than the regular polygon value. The proof uses potential theory and the transfinite diameter of the configuration.\n\n**The Breakthrough—Counterexamples for Even $n$**: The conjecture that the regular polygon is optimal was disproved in stages:\n\n1. **Hu and Tang** found explicit 4-point and 6-point configurations beating the square and hexagon. For $n = 4$, perturbing one pair of opposite vertices inward and the other outward increases $\\Delta$.\n\n2. **Cambie** generalized this to all even $n \\ge 4$: the regular polygon is NEVER optimal for even $n$. The proof exploits the fact that even-sided regular polygons have antipodal vertex pairs at maximum distance, creating a deformation mode along which $\\Delta$ can be increased.\n\n**Quantitative Improvements**: Recent work quantifies the gap between the regular polygon and the true optimum:\n- **Sothanaphan (2025)**: $\\liminf_{n \\text{ even}} \\text{MaxDelta}(n)/n^n \\ge 1.0378$\n- **Cambie, Dong, and Tang**: $\\liminf \\ge 1.304$ when $6 | n$, and $\\liminf \\ge 1.269$ for all even $n$\n\nThese constructions use sophisticated algebraic configurations related to cyclotomic fields.\n\n**The Odd Case—Still Open**: For odd $n$, no counterexample to regular-polygon optimality is known. The equilateral triangle ($n = 3$) is provably optimal. The absence of antipodal pairs in odd regular polygons may explain why they resist perturbation-based attacks.",
-    "problemStatement": "**Problem Statement**\n\nLet $z_1, \\ldots, z_n \\in \\mathbb{C}$ with $|z_i - z_j| \\le 2$ for all $i, j$. Define\n$$\\Delta(z_1, \\ldots, z_n) = \\prod_{i \\ne j} |z_i - z_j|$$\n\n**Question**: What is $\\max \\Delta$? Is it maximized by the regular $n$-gon?\n\n**Answer**:\n- For **even** $n \\ge 4$: Regular polygon is NOT optimal. $\\max \\Delta / n^n \\ge 1.269$ (Cambie–Dong–Tang).\n- For **odd** $n$: OPEN. The regular polygon may still be optimal.\n\n**Status**: OPEN (partially resolved)",
-    "text": "Given n complex points with pairwise distances ≤ 2, maximize ∏|zᵢ-zⱼ|. Regular polygon is NOT optimal for even n ≥ 4. Odd n case remains open.",
-    "proofStrategy": "**Formalization Architecture (~168 lines, 8 sections)**\n\nThe formalization captures the full state of knowledge:\n\n**Parts I–II — Setup (lines 36–70)**: Defines `Configuration`, `DiameterAtMost2`, `Delta`, `DeltaSqrt`, `RegularPolygon`. Axiomatizes `delta_regular_even` ($\\Delta = n^n$) and `delta_regular_odd` ($\\Delta = \\cos(\\pi/2n)^{-n(n-1)} \\cdot n^n$).\n\n**Part III — EHP (lines 72–85)**: Defines `polynomialFromRoots` and `ConnectedSublevelSet`. Axiomatizes `EHP_1958`: connected sublevel set implies $\\Delta < n^n$.\n\n**Part IV — Upper Bound (lines 87–92)**: Axiomatizes `pommerenke_1961`: $\\Delta \\le 2^{Cn} \\cdot n^n$.\n\n**Part V — Counterexamples (lines 94–109)**: Axiomatizes `hu_tang_n4`, `hu_tang_n6`, `cambie_even_not_optimal`.\n\n**Part VI — Lower Bounds (lines 111–130)**: Defines `MaxDelta`. Axiomatizes Sothanaphan and Cambie–Dong–Tang bounds.\n\n**Part VII — Odd Case (lines 132–146)**: Defines `RegularPolygonOptimalOdd` conjecture. Axiomatizes small cases ($n = 2, 3$).\n\n**Part VIII — Summary (lines 148–168)**: `erdos_1045_summary` combines Cambie's theorem with the quantitative lower bound.",
+    "historicalContext": "**From Metric Polynomial Theory to Extremal Geometry**\n\nThis problem was posed by Erd\u0151s, Herzog, and Piranian in their influential 1958 paper *Metric properties of polynomials*. Given $n$ complex points $z_1, \\ldots, z_n$ with all pairwise distances at most $2$ (the **diameter constraint**), what is the maximum value of the product $\\Delta = \\prod_{i \\ne j} |z_i - z_j|$? The natural conjecture was that the regular $n$-gon inscribed in a circle of diameter $2$ maximizes $\\Delta$.\n\nThe product $\\Delta$ is intimately connected to the **discriminant** of the monic polynomial $f(z) = \\prod(z - z_i)$: we have $\\Delta_{\\text{sqrt}} = \\prod_{i < j} |z_i - z_j| = |\\text{disc}(f)|^{1/2}$, where $\\text{disc}(f) = \\prod_{i<j}(z_i - z_j)^2$. Maximizing $\\Delta$ is thus equivalent to maximizing the absolute discriminant over polynomials with roots in a disk.\n\n**The Regular Polygon Value**: For the regular $n$-gon (roots of unity scaled to diameter $2$), the classical identity $\\prod_{k=1}^{n-1} |1 - e^{2\\pi ik/n}| = n$ gives $\\Delta = n^n$ for even $n$. For odd $n$, the maximum distance is $2\\cos(\\pi/2n) < 2$; rescaling introduces a factor $\\cos(\\pi/2n)^{-n(n-1)}$, and $\\Delta \\sim e^{\\pi^2/8} \\cdot n^n$ as $n \\to \\infty$.\n\n**Pommerenke's Upper Bound (1961)**: Christian Pommerenke proved $\\Delta \\le 2^{Cn} \\cdot n^n$ for an absolute constant $C > 0$, showing the maximum is at most exponentially larger than the regular polygon value. The proof uses potential theory and the transfinite diameter of the configuration.\n\n**The Breakthrough\u2014Counterexamples for Even $n$**: The conjecture that the regular polygon is optimal was disproved in stages:\n\n1. **Hu and Tang** found explicit 4-point and 6-point configurations beating the square and hexagon. For $n = 4$, perturbing one pair of opposite vertices inward and the other outward increases $\\Delta$.\n\n2. **Cambie** generalized this to all even $n \\ge 4$: the regular polygon is NEVER optimal for even $n$. The proof exploits the fact that even-sided regular polygons have antipodal vertex pairs at maximum distance, creating a deformation mode along which $\\Delta$ can be increased.\n\n**Quantitative Improvements**: Recent work quantifies the gap between the regular polygon and the true optimum:\n- **Sothanaphan (2025)**: $\\liminf_{n \\text{ even}} \\text{MaxDelta}(n)/n^n \\ge 1.0378$\n- **Cambie, Dong, and Tang**: $\\liminf \\ge 1.304$ when $6 | n$, and $\\liminf \\ge 1.269$ for all even $n$\n\nThese constructions use sophisticated algebraic configurations related to cyclotomic fields.\n\n**The Odd Case\u2014Still Open**: For odd $n$, no counterexample to regular-polygon optimality is known. The equilateral triangle ($n = 3$) is provably optimal. The absence of antipodal pairs in odd regular polygons may explain why they resist perturbation-based attacks.",
+    "problemStatement": "**Problem Statement**\n\nLet $z_1, \\ldots, z_n \\in \\mathbb{C}$ with $|z_i - z_j| \\le 2$ for all $i, j$. Define\n$$\\Delta(z_1, \\ldots, z_n) = \\prod_{i \\ne j} |z_i - z_j|$$\n\n**Question**: What is $\\max \\Delta$? Is it maximized by the regular $n$-gon?\n\n**Answer**:\n- For **even** $n \\ge 4$: Regular polygon is NOT optimal. $\\max \\Delta / n^n \\ge 1.269$ (Cambie\u2013Dong\u2013Tang).\n- For **odd** $n$: OPEN. The regular polygon may still be optimal.\n\n**Status**: OPEN (partially resolved)",
+    "text": "Given n complex points with pairwise distances \u2264 2, maximize \u220f|z\u1d62-z\u2c7c|. Regular polygon is NOT optimal for even n \u2265 4. Odd n case remains open.",
+    "proofStrategy": "**Formalization Architecture (~168 lines, 8 sections)**\n\nThe formalization captures the full state of knowledge:\n\n**Parts I\u2013II \u2014 Setup (lines 36\u201370)**: Defines `Configuration`, `DiameterAtMost2`, `Delta`, `DeltaSqrt`, `RegularPolygon`. Axiomatizes `delta_regular_even` ($\\Delta = n^n$) and `delta_regular_odd` ($\\Delta = \\cos(\\pi/2n)^{-n(n-1)} \\cdot n^n$).\n\n**Part III \u2014 EHP (lines 72\u201385)**: Defines `polynomialFromRoots` and `ConnectedSublevelSet`. Axiomatizes `EHP_1958`: connected sublevel set implies $\\Delta < n^n$.\n\n**Part IV \u2014 Upper Bound (lines 87\u201392)**: Axiomatizes `pommerenke_1961`: $\\Delta \\le 2^{Cn} \\cdot n^n$.\n\n**Part V \u2014 Counterexamples (lines 94\u2013109)**: Axiomatizes `hu_tang_n4`, `hu_tang_n6`, `cambie_even_not_optimal`.\n\n**Part VI \u2014 Lower Bounds (lines 111\u2013130)**: Defines `MaxDelta`. Axiomatizes Sothanaphan and Cambie\u2013Dong\u2013Tang bounds.\n\n**Part VII \u2014 Odd Case (lines 132\u2013146)**: Defines `RegularPolygonOptimalOdd` conjecture. Axiomatizes small cases ($n = 2, 3$).\n\n**Part VIII \u2014 Summary (lines 148\u2013168)**: `erdos_1045_summary` combines Cambie's theorem with the quantitative lower bound.",
     "keyInsights": [
       "**Discriminant connection**: $\\Delta = |\\text{disc}(f)|$ for the monic polynomial $f(z) = \\prod(z - z_i)$, connecting this geometric optimization to algebraic invariants. The Vandermonde determinant $\\prod_{i<j}(z_i - z_j)$ is a fundamental object in algebra, and maximizing its absolute value under geometric constraints links combinatorial geometry to algebraic number theory.",
-      "**Even/odd dichotomy**: The most striking feature. For even $n \\ge 4$, antipodal vertex pairs in the regular polygon create a 'soft direction' for increasing $\\Delta$. For odd $n$, no such pairs exist. This mirrors a pattern seen in other Erdős problems: parity plays a surprisingly deep role in extremal geometry.",
-      "**Quantitative gap $\\ge 27\\%$**: The Cambie–Dong–Tang lower bound $\\text{MaxDelta}(n)/n^n \\ge 1.269$ shows the regular polygon is not just barely suboptimal but substantially so. The constructions achieving this bound involve configurations with nontrivial algebraic structure.",
+      "**Even/odd dichotomy**: The most striking feature. For even $n \\ge 4$, antipodal vertex pairs in the regular polygon create a 'soft direction' for increasing $\\Delta$. For odd $n$, no such pairs exist. This mirrors a pattern seen in other Erd\u0151s problems: parity plays a surprisingly deep role in extremal geometry.",
+      "**Quantitative gap $\\ge 27\\%$**: The Cambie\u2013Dong\u2013Tang lower bound $\\text{MaxDelta}(n)/n^n \\ge 1.269$ shows the regular polygon is not just barely suboptimal but substantially so. The constructions achieving this bound involve configurations with nontrivial algebraic structure.",
       "**Potential theory framework**: Pommerenke's upper bound $\\Delta \\le 2^{Cn} \\cdot n^n$ uses the connection between $\\log \\Delta$ and the logarithmic energy $\\sum_{i \\ne j} \\log|z_i - z_j|$. The transfinite diameter of the disk provides the asymptotic envelope for the maximum.",
-      "**EHP–lemniscate connection**: The EHP 1958 result ($\\Delta < n^n$ when the sublevel set is connected) links this problem to #1044 on polynomial lemniscate boundary lengths. Both problems emerge from understanding how root geometry constrains polynomial level sets."
+      "**EHP\u2013lemniscate connection**: The EHP 1958 result ($\\Delta < n^n$ when the sublevel set is connected) links this problem to #1044 on polynomial lemniscate boundary lengths. Both problems emerge from understanding how root geometry constrains polynomial level sets."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -78,7 +78,7 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Configuration (Fin n → ℂ), DiameterAtMost2, Delta (ordered product), DeltaSqrt (unordered product)",
+      "summary": "Configuration (Fin n \u2192 \u2102), DiameterAtMost2, Delta (ordered product), DeltaSqrt (unordered product)",
       "startLine": 36,
       "endLine": 51
     },
@@ -91,88 +91,88 @@
     },
     {
       "id": "ehp-bound",
-      "title": "Erdős–Herzog–Piranian Bound (1958)",
-      "summary": "polynomialFromRoots, ConnectedSublevelSet, EHP_1958 (connected sublevel → Δ < n^n)",
+      "title": "Erd\u0151s\u2013Herzog\u2013Piranian Bound (1958)",
+      "summary": "polynomialFromRoots, ConnectedSublevelSet, EHP_1958 (connected sublevel \u2192 \u0394 < n^n)",
       "startLine": 72,
       "endLine": 85
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Upper Bound (1961)",
-      "summary": "pommerenke_1961: Δ ≤ 2^{Cn} · n^n",
+      "summary": "pommerenke_1961: \u0394 \u2264 2^{Cn} \u00b7 n^n",
       "startLine": 87,
       "endLine": 92
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples for Even n",
-      "summary": "hu_tang_n4, hu_tang_n6, cambie_even_not_optimal (all even n ≥ 4)",
+      "summary": "hu_tang_n4, hu_tang_n6, cambie_even_not_optimal (all even n \u2265 4)",
       "startLine": 94,
       "endLine": 109
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds for Even n",
-      "summary": "MaxDelta, sothanaphan_2025 (≥1.0378), cambie_dong_tang_6div (≥1.304), cambie_dong_tang_even (≥1.269)",
+      "summary": "MaxDelta, sothanaphan_2025 (\u22651.0378), cambie_dong_tang_6div (\u22651.304), cambie_dong_tang_even (\u22651.269)",
       "startLine": 111,
       "endLine": 130
     },
     {
       "id": "odd-and-small",
       "title": "Odd n and Small Cases",
-      "summary": "RegularPolygonOptimalOdd conjecture, optimal_n2 (Δ ≤ 4), regular_optimal_n3 (triangle optimal)",
+      "summary": "RegularPolygonOptimalOdd conjecture, optimal_n2 (\u0394 \u2264 4), regular_optimal_n3 (triangle optimal)",
       "startLine": 132,
       "endLine": 146
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_1045_summary: Cambie's theorem + Cambie–Dong–Tang lower bound via linarith",
+      "summary": "erdos_1045_summary: Cambie's theorem + Cambie\u2013Dong\u2013Tang lower bound via linarith",
       "startLine": 148,
       "endLine": 168
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1045 asks for the maximum product of pairwise distances among n complex points with diameter ≤ 2. For even n ≥ 4, the regular polygon is provably NOT optimal (Cambie), with the true maximum exceeding n^n by at least 27% (Cambie–Dong–Tang). For odd n, the regular polygon may still be optimal—this remains open. The formalization captures the complete state of knowledge in ~168 lines with 0 sorries.",
+    "summary": "Erd\u0151s Problem #1045 asks for the maximum product of pairwise distances among n complex points with diameter \u2264 2. For even n \u2265 4, the regular polygon is provably NOT optimal (Cambie), with the true maximum exceeding n^n by at least 27% (Cambie\u2013Dong\u2013Tang). For odd n, the regular polygon may still be optimal\u2014this remains open. The formalization captures the complete state of knowledge in ~168 lines with 0 sorries.",
     "implications": "1. **Extremal polynomial theory**: The problem connects the discriminant of polynomials (an algebraic invariant) to geometric optimization, bridging complex analysis and combinatorial geometry.\n\n**2. Parity phenomena in geometry**: The even/odd dichotomy reveals that parity of the number of points fundamentally affects the optimization landscape, an unexpected feature for a continuous geometric problem.\n\n3. **Potential theory and transfinite diameter**: The upper bounds use the connection between product of distances and logarithmic energy, a central object in potential theory with applications to approximation theory and random matrix theory.\n\n4. **Polynomial lemniscate theory**: Together with Problem #1044, this problem drives the study of metric properties of polynomial level sets, connecting to the broader theory of conformal mapping and capacity.",
     "openQuestions": [
-      "Is the regular polygon optimal for odd n? No counterexample is known for any odd n ≥ 5.",
-      "What is the exact maximum Δ for each even n? The optimal configurations are unknown even for n = 4.",
-      "What is the true value of liminf(max Δ / n^n) as n → ∞ (even n)? Current bounds: 1.269 ≤ liminf ≤ 2^C (exponential).",
+      "Is the regular polygon optimal for odd n? No counterexample is known for any odd n \u2265 5.",
+      "What is the exact maximum \u0394 for each even n? The optimal configurations are unknown even for n = 4.",
+      "What is the true value of liminf(max \u0394 / n^n) as n \u2192 \u221e (even n)? Current bounds: 1.269 \u2264 liminf \u2264 2^C (exponential).",
       "What is the structure of optimal configurations for even n? Are they related to algebraic configurations (roots of specific polynomials)?",
-      "Can the Pommerenke upper bound 2^{Cn} · n^n be improved? What is the sharp constant C?"
+      "Can the Pommerenke upper bound 2^{Cn} \u00b7 n^n be improved? What is the sharp constant C?"
     ]
   },
   "crossReferences": [
     {
-      "target": "erdos-1044",
       "relationship": "sibling",
-      "description": "Directly linked via the EHP 1958 result: the same paper that introduced the maximum-distance-product problem also studied the boundary length of polynomial lemniscates. The ConnectedSublevelSet axiom in #1045 is one side of the EHP correspondence formalized in #1044."
+      "description": "Directly linked via the EHP 1958 result: the same paper that introduced the maximum-distance-product problem also studied the boundary length of polynomial lemniscates. The ConnectedSublevelSet axiom in #1045 is one side of the EHP correspondence formalized in #1044.",
+      "targetId": "erdos-1044"
     },
     {
-      "target": "erdos-1046",
       "relationship": "sibling",
-      "description": "Pommerenke's 1959–1961 work spans both problems: his lemniscate containment theorem (|f(z)| < 1 inside a disk of radius 2) and his upper bound Δ ≤ 2^{Cn}·n^n for #1045 use the same potential-theory and transfinite-diameter techniques."
+      "description": "Pommerenke's 1959\u20131961 work spans both problems: his lemniscate containment theorem (|f(z)| < 1 inside a disk of radius 2) and his upper bound \u0394 \u2264 2^{Cn}\u00b7n^n for #1045 use the same potential-theory and transfinite-diameter techniques.",
+      "targetId": "erdos-1046"
     },
     {
-      "target": "erdos-1040",
       "relationship": "sibling",
-      "description": "The transfinite diameter of a point set is the key quantity bounding Δ from above. Problem #1040 asks whether the sublevel set measure μ(F) is determined by the transfinite diameter; the same object controls the Pommerenke upper bound exploited in #1045."
+      "description": "The transfinite diameter of a point set is the key quantity bounding \u0394 from above. Problem #1040 asks whether the sublevel set measure \u03bc(F) is determined by the transfinite diameter; the same object controls the Pommerenke upper bound exploited in #1045.",
+      "targetId": "erdos-1040"
     },
     {
-      "target": "erdos-1042",
       "relationship": "sibling",
-      "description": "The number of connected components of the lemniscate {|f(z)| < 1} is constrained by the root geometry—precisely the configuration studied in #1045. The Ghosh–Ramachandran 2024 solution to #1042 uses techniques from the same body of extremal polynomial theory."
+      "description": "The number of connected components of the lemniscate {|f(z)| < 1} is constrained by the root geometry\u2014precisely the configuration studied in #1045. The Ghosh\u2013Ramachandran 2024 solution to #1042 uses techniques from the same body of extremal polynomial theory.",
+      "targetId": "erdos-1042"
     },
     {
-      "target": "erdos-1047",
       "relationship": "sibling",
-      "description": "Convexity of lemniscate components (Problem #1047, disproved by Pommerenke 1961 and Goodman 1966) and maximizing distance products both concern how root placement deforms polynomial level sets. Pommerenke's counterexamples appear in both problem threads."
+      "description": "Convexity of lemniscate components (Problem #1047, disproved by Pommerenke 1961 and Goodman 1966) and maximizing distance products both concern how root placement deforms polynomial level sets. Pommerenke's counterexamples appear in both problem threads.",
+      "targetId": "erdos-1047"
     },
     {
-      "target": "isoperimetric-theorem",
       "relationship": "thematic",
-      "description": "Both problems ask: among all configurations satisfying a global geometric constraint (perimeter fixed / diameter ≤ 2), which shape is extremal? The isoperimetric theorem—circle maximizes area for fixed perimeter—is the prototype for the conjecture that the regular polygon maximizes Δ, and the same failure mode (optimal shape is not what intuition suggests for even n) echoes across extremal geometry."
+      "description": "Both problems ask: among all configurations satisfying a global geometric constraint (perimeter fixed / diameter \u2264 2), which shape is extremal? The isoperimetric theorem\u2014circle maximizes area for fixed perimeter\u2014is the prototype for the conjecture that the regular polygon maximizes \u0394, and the same failure mode (optimal shape is not what intuition suggests for even n) echoes across extremal geometry.",
+      "targetId": "isoperimetric-theorem"
     }
   ],
   "relatedProofs": [
@@ -184,7 +184,7 @@
     {
       "target": "erdos-1046",
       "relationship": "shared-technique",
-      "description": "Problem #1046 (Lemniscate Containment in a Disc) uses Pommerenke's potential-theory bound on the size of the sublevel set, which is the same framework used for the upper bound Δ ≤ 2^{Cn}·n^n in #1045."
+      "description": "Problem #1046 (Lemniscate Containment in a Disc) uses Pommerenke's potential-theory bound on the size of the sublevel set, which is the same framework used for the upper bound \u0394 \u2264 2^{Cn}\u00b7n^n in #1045."
     },
     {
       "target": "erdos-1043",
@@ -195,16 +195,16 @@
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "G. Herzog",
         "G. Piranian"
       ],
       "title": "Metric properties of polynomials",
-      "journal": "Journal d'Analyse Mathématique",
+      "journal": "Journal d'Analyse Math\u00e9matique",
       "year": 1958,
       "volume": 6,
-      "pages": "125–148",
-      "description": "The founding paper: introduces the problem of maximizing ∏|z_i - z_j| subject to diameter ≤ 2, proves EHP 1958 (connected sublevel set ⟹ Δ < n^n), and conjectures the regular polygon is optimal."
+      "pages": "125\u2013148",
+      "description": "The founding paper: introduces the problem of maximizing \u220f|z_i - z_j| subject to diameter \u2264 2, proves EHP 1958 (connected sublevel set \u27f9 \u0394 < n^n), and conjectures the regular polygon is optimal."
     },
     {
       "authors": [
@@ -215,17 +215,17 @@
       "year": 1961,
       "volume": 8,
       "issue": 2,
-      "pages": "97–115",
-      "description": "Proves the upper bound Δ ≤ 2^{Cn}·n^n using potential theory and transfinite diameter; also proves the projection bound (Problem #1043) and lemniscate containment results related to Problem #1046."
+      "pages": "97\u2013115",
+      "description": "Proves the upper bound \u0394 \u2264 2^{Cn}\u00b7n^n using potential theory and transfinite diameter; also proves the projection bound (Problem #1043) and lemniscate containment results related to Problem #1046."
     },
     {
       "authors": [
         "Siraphong Cambie"
       ],
-      "title": "Counterexamples for even n in the Erdős–Herzog–Piranian problem",
+      "title": "Counterexamples for even n in the Erd\u0151s\u2013Herzog\u2013Piranian problem",
       "year": 2023,
-      "note": "Proves that the regular n-gon is not optimal for all even n ≥ 4, generalizing the Hu–Tang n = 4, 6 counterexamples. Available at arXiv:2305.xxxxx.",
-      "description": "The key structural result captured in the formalization: establishes cambie_even_not_optimal for all even n ≥ 4 by analyzing deformation modes of antipodal vertex pairs."
+      "note": "Proves that the regular n-gon is not optimal for all even n \u2265 4, generalizing the Hu\u2013Tang n = 4, 6 counterexamples. Available at arXiv:2305.xxxxx.",
+      "description": "The key structural result captured in the formalization: establishes cambie_even_not_optimal for all even n \u2265 4 by analyzing deformation modes of antipodal vertex pairs."
     },
     {
       "authors": [
@@ -236,7 +236,7 @@
       "title": "Quantitative lower bounds for the maximum product of distances",
       "year": 2024,
       "note": "Preprint.",
-      "description": "Establishes liminf_{n even} MaxDelta(n)/n^n ≥ 1.304 when 6 | n and ≥ 1.269 for all even n, using algebraic configurations related to cyclotomic fields. These are the bounds axiomatized as cambie_dong_tang_even in the formalization."
+      "description": "Establishes liminf_{n even} MaxDelta(n)/n^n \u2265 1.304 when 6 | n and \u2265 1.269 for all even n, using algebraic configurations related to cyclotomic fields. These are the bounds axiomatized as cambie_dong_tang_even in the formalization."
     },
     {
       "authors": [
@@ -245,7 +245,7 @@
       "title": "On the maximum product of distances between complex points",
       "year": 2025,
       "note": "Preprint.",
-      "description": "Proves the earlier quantitative lower bound liminf_{n even} MaxDelta(n)/n^n ≥ 1.0378, a stepping stone toward the sharper Cambie–Dong–Tang bound. Axiomatized as sothanaphan_2025 in the formalization."
+      "description": "Proves the earlier quantitative lower bound liminf_{n even} MaxDelta(n)/n^n \u2265 1.0378, a stepping stone toward the sharper Cambie\u2013Dong\u2013Tang bound. Axiomatized as sothanaphan_2025 in the formalization."
     }
   ],
   "leanFile": {

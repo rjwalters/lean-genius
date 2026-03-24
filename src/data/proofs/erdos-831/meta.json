@@ -1,10 +1,10 @@
 {
   "id": "erdos-831",
-  "title": "Erdős Problem #831: Distinct Radii Circles Through Point Configurations",
+  "title": "Erd\u0151s Problem #831: Distinct Radii Circles Through Point Configurations",
   "slug": "erdos-831",
   "description": "Let h(n) be maximal such that any n points in general position have at least h(n) circles of distinct radii through triples. Estimate h(n). This problem remains OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/831",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos831Problem.lean",
@@ -24,7 +24,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space type for ℝ²",
+        "description": "Euclidean space type for \u211d\u00b2",
         "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
       },
       {
@@ -39,7 +39,7 @@
       }
     ],
     "originalContributions": [
-      "Point type alias for EuclideanSpace ℝ (Fin 2)",
+      "Point type alias for EuclideanSpace \u211d (Fin 2)",
       "PointTriple structure for distinct point triples",
       "areCollinear definition: three points on a line",
       "areConcyclic definition: four points on a circle",
@@ -48,8 +48,8 @@
       "allCircumradii definition: set of circumradii from point set",
       "countDistinctRadii definition: cardinality of distinct radii",
       "h function: minimum distinct radii over n-point configurations",
-      "h_upper_bound theorem: h(n) ≤ C(n,3)",
-      "h_four_lower axiom: h(4) ≥ 2",
+      "h_upper_bound theorem: h(n) \u2264 C(n,3)",
+      "h_four_lower axiom: h(4) \u2265 2",
       "erdos_831_conjecture axiom: possible asymptotics",
       "regular_polygon_not_general theorem",
       "erdos_831_summary theorem: known bounds"
@@ -59,16 +59,16 @@
     "assumptions": "6 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #831**\n\nThis geometric extremal problem was posed by Erdős in the 1970s and revisited in the 1990s, documented in [Er75h] and [Er92e].\n\n**Key History:**\n- Erdős asked about the minimum number of distinct circumradii from point configurations\n- Related to classical problems about point-line and point-circle incidences\n- Connects to the unit distance problem and orchard problem\n\n**Mathematical Setting:**\nGiven n points in general position (no three collinear, no four concyclic), each triple determines a unique circumcircle. The question is: over all such configurations, what is the minimum number of distinct radii among these circles?",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet h(n) be maximal such that in any n points in ℝ² (with no three on a line and no four on a circle) there are at least h(n) circles of different radii passing through three of the points. Estimate h(n).\n\n**Formal Statement:**\nh(n) = min_{S in general position, |S|=n} |{circumradius(p₁,p₂,p₃) : p₁,p₂,p₃ ∈ S}|\n\n**Answer: UNKNOWN**\n\nThe asymptotic behavior of h(n) is not determined. Possible behaviors: Θ(n), Θ(n^α), or Θ(n²).",
+    "historicalContext": "**Erd\u0151s Problem #831**\n\nThis geometric extremal problem was posed by Erd\u0151s in the 1970s and revisited in the 1990s, documented in [Er75h] and [Er92e].\n\n**Key History:**\n- Erd\u0151s asked about the minimum number of distinct circumradii from point configurations\n- Related to classical problems about point-line and point-circle incidences\n- Connects to the unit distance problem and orchard problem\n\n**Mathematical Setting:**\nGiven n points in general position (no three collinear, no four concyclic), each triple determines a unique circumcircle. The question is: over all such configurations, what is the minimum number of distinct radii among these circles?",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet h(n) be maximal such that in any n points in \u211d\u00b2 (with no three on a line and no four on a circle) there are at least h(n) circles of different radii passing through three of the points. Estimate h(n).\n\n**Formal Statement:**\nh(n) = min_{S in general position, |S|=n} |{circumradius(p\u2081,p\u2082,p\u2083) : p\u2081,p\u2082,p\u2083 \u2208 S}|\n\n**Answer: UNKNOWN**\n\nThe asymptotic behavior of h(n) is not determined. Possible behaviors: \u0398(n), \u0398(n^\u03b1), or \u0398(n\u00b2).",
     "text": "Let h(n) be maximal such that any n points in general position have at least h(n) circles of distinct radii through triples. Estimate h(n). This problem remains OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Geometric Foundations:** Define points in ℝ², collinearity, and concyclicity\n\n2. **General Position:** Formalize the constraint \"no 3 collinear, no 4 concyclic\"\n\n3. **Circumradius:** Define using the formula R = abc/(4·Area)\n\n4. **Counting Function:** Define h(n) as the minimum over configurations\n\n5. **Basic Bounds:**\n   - Upper bound: h(n) ≤ C(n,3)\n   - Lower bound: h(4) ≥ 2\n\n6. **Main Conjecture:** Axiomatize the open asymptotic question",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Geometric Foundations:** Define points in \u211d\u00b2, collinearity, and concyclicity\n\n2. **General Position:** Formalize the constraint \"no 3 collinear, no 4 concyclic\"\n\n3. **Circumradius:** Define using the formula R = abc/(4\u00b7Area)\n\n4. **Counting Function:** Define h(n) as the minimum over configurations\n\n5. **Basic Bounds:**\n   - Upper bound: h(n) \u2264 C(n,3)\n   - Lower bound: h(4) \u2265 2\n\n6. **Main Conjecture:** Axiomatize the open asymptotic question",
     "keyInsights": [
       "**General Position:** No 3 collinear ensures circumcircles exist; no 4 concyclic prevents radius repetition",
       "**Upper Bound:** At most C(n,3) = n(n-1)(n-2)/6 distinct radii (one per triple)",
-      "**h(4) ≥ 2:** If all 4 circumradii were equal, the 4 points would lie on a circle",
+      "**h(4) \u2265 2:** If all 4 circumradii were equal, the 4 points would lie on a circle",
       "**Regular Polygons Fail:** Points on a circle violate general position",
-      "**Asymptotic Mystery:** Whether h(n) grows like n, n^α, or n² is unknown",
+      "**Asymptotic Mystery:** Whether h(n) grows like n, n^\u03b1, or n\u00b2 is unknown",
       "**Related to #104 and #506:** Similar extremal flavor as orchard and unit distance problems"
     ],
     "prerequisites": [
@@ -152,11 +152,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #831 asks for the asymptotics of h(n), where h(n) is the minimum number of distinct circumradii achievable by n points in general position. The answer is UNKNOWN. We know h(3) = 1, h(4) ≥ 2, and h(n) ≤ C(n,3), but the exact growth rate remains open.",
+    "summary": "Erd\u0151s Problem #831 asks for the asymptotics of h(n), where h(n) is the minimum number of distinct circumradii achievable by n points in general position. The answer is UNKNOWN. We know h(3) = 1, h(4) \u2265 2, and h(n) \u2264 C(n,3), but the exact growth rate remains open.",
     "implications": "**Theoretical Significance**: **Discrete Geometry Connections**\n\n1. **Incidence Geometry:** Related to point-circle incidence problems\n\n2. **Extremal Combinatorics:** Finding configurations that minimize diversity\n\n**3. Unit Distance Problem:** Similar questions about repeated distances (#506)\n\n4. **Orchard Problem:** Similar questions about collinear triples (#104)\n\n5. **Algebraic Geometry:** Connections to algebraic curves through points.",
     "openQuestions": [
       "What is the exact asymptotic growth rate of h(n)?",
-      "Is h(n) = Θ(n), Θ(n^α) for some α, or Θ(n²)?",
+      "Is h(n) = \u0398(n), \u0398(n^\u03b1) for some \u03b1, or \u0398(n\u00b2)?",
       "What explicit constructions achieve h(n) for small n?",
       "How do similar problems behave in higher dimensions?",
       "What is the distribution of circumradii for random point sets?"
@@ -180,5 +180,39 @@
     "axiomCount": 6,
     "theoremCount": 5,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-217",
+      "relationship": "related",
+      "description": "Share extremal-geometry and geometric themes"
+    },
+    {
+      "targetId": "dissection-of-cubes",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Share geometric and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-217",
+    "dissection-of-cubes",
+    "erdos-1086",
+    "erdos-1090",
+    "erdos-1166"
+  ]
 }

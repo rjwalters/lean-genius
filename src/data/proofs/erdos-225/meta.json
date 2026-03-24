@@ -1,10 +1,10 @@
 {
   "id": "erdos-225",
-  "title": "L¹ Norm of Trigonometric Polynomials with Real Roots",
+  "title": "L\u00b9 Norm of Trigonometric Polynomials with Real Roots",
   "slug": "erdos-225",
-  "description": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4.",
+  "description": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L\u00b9 norm is at most 4.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/225",
     "date": "",
     "status": "axiomatized",
@@ -28,16 +28,16 @@
     "assumptions": "2 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
-    "historicalContext": "Erdős studied $L^1$ norms of trigonometric polynomials from the 1940s onward, publishing related results in 1940, 1957, and 1961. The specific conjecture — that $\\|f\\|_1 \\leq 4$ when all roots lie on the unit circle and $\\|f\\|_\\infty = 1$ — was listed by W.K. Hayman as Problem 4.20 in his influential 1974 survey *Research Problems in Function Theory*. The problem was solved independently: Saff and Sheil-Small (1973) proved it for polynomials with complex coefficients, and Kristiansen (1974) for real coefficients. The bound 4 is sharp. Notably, the automated proof search tool Aristotle discovered a formalization bug in this entry: constant polynomials vacuously satisfy the 'all roots on the unit circle' condition (having no roots), but have $L^1$ norm $2\\pi > 4$, contradicting the formalized statement. The mathematical theorem implicitly requires degree $\\geq 1$.",
+    "historicalContext": "Erd\u0151s studied $L^1$ norms of trigonometric polynomials from the 1940s onward, publishing related results in 1940, 1957, and 1961. The specific conjecture \u2014 that $\\|f\\|_1 \\leq 4$ when all roots lie on the unit circle and $\\|f\\|_\\infty = 1$ \u2014 was listed by W.K. Hayman as Problem 4.20 in his influential 1974 survey *Research Problems in Function Theory*. The problem was solved independently: Saff and Sheil-Small (1973) proved it for polynomials with complex coefficients, and Kristiansen (1974) for real coefficients. The bound 4 is sharp. Notably, the automated proof search tool Aristotle discovered a formalization bug in this entry: constant polynomials vacuously satisfy the 'all roots on the unit circle' condition (having no roots), but have $L^1$ norm $2\\pi > 4$, contradicting the formalized statement. The mathematical theorem implicitly requires degree $\\geq 1$.",
     "problemStatement": "Let $f(\\theta) = \\sum_{k=0}^{n} c_k e^{ik\\theta}$ be a trigonometric polynomial all of whose roots are real (i.e., lie on the unit circle), such that $\\max|f(\\theta)| = 1$. Then $\\int_0^{2\\pi} |f(\\theta)| \\, d\\theta \\leq 4$.",
-    "text": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4.",
-    "proofStrategy": "The formalization defines trigonometric polynomials as `Fin (n+1) → ℂ`, with evaluation via `Complex.exp`. The unit-circle-roots condition requires all roots of $P(z) = \\sum c_k z^k$ to satisfy $\\|z\\| = 1$. Norms use Mathlib's `iSup` and Bochner integration. The main theorem has a `sorry` due to the constant-polynomial formalization bug. Aristotle proved optimality and the supremum equivalence theorem.",
+    "text": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L\u00b9 norm is at most 4.",
+    "proofStrategy": "The formalization defines trigonometric polynomials as `Fin (n+1) \u2192 \u2102`, with evaluation via `Complex.exp`. The unit-circle-roots condition requires all roots of $P(z) = \\sum c_k z^k$ to satisfy $\\|z\\| = 1$. Norms use Mathlib's `iSup` and Bochner integration. The main theorem has a `sorry` due to the constant-polynomial formalization bug. Aristotle proved optimality and the supremum equivalence theorem.",
     "keyInsights": [
-      "**Terminological trap**: 'Real roots' means roots on the unit circle $|z| = 1$, not roots in $\\mathbb{R}$ — a common source of confusion in the literature",
+      "**Terminological trap**: 'Real roots' means roots on the unit circle $|z| = 1$, not roots in $\\mathbb{R}$ \u2014 a common source of confusion in the literature",
       "**Formalization bug found by Aristotle**: Constant polynomials vacuously satisfy `HasUnitCircleRoots` but have $L^1$ norm $= 2\\pi > 4$, requiring a degree $\\geq 1$ hypothesis",
       "**Sharp bound**: The constant 4 cannot be improved to $4 - \\varepsilon$ for any $\\varepsilon > 0$, as demonstrated by explicit extremal sequences",
-      "**Contrasting results**: Erdős #225 gives an $L^1$ **upper** bound of 4 for unit-circle-root polynomials, while Littlewood's conjecture (proved 1981) gives an $L^1$ **lower** bound of $C \\log n$ for unimodular polynomials",
-      "**Fejér–Riesz connection**: Non-negative trigonometric polynomials factor as $|g|^2$, linking the problem to spectral factorization theory"
+      "**Contrasting results**: Erd\u0151s #225 gives an $L^1$ **upper** bound of 4 for unit-circle-root polynomials, while Littlewood's conjecture (proved 1981) gives an $L^1$ **lower** bound of $C \\log n$ for unimodular polynomials",
+      "**Fej\u00e9r\u2013Riesz connection**: Non-negative trigonometric polynomials factor as $|g|^2$, linking the problem to spectral factorization theory"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -57,14 +57,14 @@
       "title": "Problem Statement and History",
       "startLine": 13,
       "endLine": 38,
-      "summary": "Docstring for Erdős Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$. Solved by Kristiansen (1974), Saff–Sheil-Small (1973). Hayman Problem 4.20."
+      "summary": "Docstring for Erd\u0151s Problem #225: $\\|f\\|_1 \\leq 4$ when all roots on $|z| = 1$ and $\\|f\\|_\\infty = 1$. Solved by Kristiansen (1974), Saff\u2013Sheil-Small (1973). Hayman Problem 4.20."
     },
     {
       "id": "trig-poly",
       "title": "Trigonometric Polynomials",
       "startLine": 40,
       "endLine": 56,
-      "summary": "Defines `TrigPoly n` as `Fin (n+1) → ℂ` and evaluation $f(\\theta) = \\sum c_k e^{ik\\theta}$ via `Complex.exp`."
+      "summary": "Defines `TrigPoly n` as `Fin (n+1) \u2192 \u2102` and evaluation $f(\\theta) = \\sum c_k e^{ik\\theta}$ via `Complex.exp`."
     },
     {
       "id": "unit-circle",
@@ -82,7 +82,7 @@
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem (Sorry — Bug)",
+      "title": "Main Theorem (Sorry \u2014 Bug)",
       "startLine": 88,
       "endLine": 108,
       "summary": "States $\\|f\\|_1 \\leq 4$ under unit-circle-roots and $\\|f\\|_\\infty = 1$. Contains `sorry` due to the constant-polynomial counterexample. Needs degree $\\geq 1$ hypothesis."
@@ -110,15 +110,15 @@
     },
     {
       "id": "related-results",
-      "title": "Related Results: Fejér–Riesz and Littlewood",
+      "title": "Related Results: Fej\u00e9r\u2013Riesz and Littlewood",
       "startLine": 191,
       "endLine": 241,
-      "summary": "Axiomatizes the Fejér–Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\log n$ for unimodular coefficients). Summary section reviews the solved status."
+      "summary": "Axiomatizes the Fej\u00e9r\u2013Riesz theorem ($f \\geq 0 \\Rightarrow f = |g|^2$) and Littlewood's lower bound ($\\|f\\|_1 \\geq C \\log n$ for unimodular coefficients). Summary section reviews the solved status."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #225 is **solved**: the bound $\\|f\\|_1 \\leq 4$ holds for trigonometric polynomials of degree $\\geq 1$ with all roots on the unit circle and $\\|f\\|_\\infty = 1$. The formalization captures definitions, norms, and related results. Aristotle proved optimality and the supremum equivalence, and discovered that the formalized statement needs a degree $\\geq 1$ hypothesis to exclude the constant-polynomial counterexample.",
-    "implications": "**Theoretical Significance**: The result reveals a deep connection between **root geometry** (all roots on $S^1$) and **integral norm bounds** ($\\|f\\|_1 \\leq 4$).\n\nThe unit-circle constraint dramatically restricts the polynomial's behavior: without it, $\\|f\\|_1$ can be arbitrarily large even with $\\|f\\|_\\infty = 1$. The Fejér–Riesz theorem provides a structural explanation via spectral factorization.",
+    "summary": "Erd\u0151s Problem #225 is **solved**: the bound $\\|f\\|_1 \\leq 4$ holds for trigonometric polynomials of degree $\\geq 1$ with all roots on the unit circle and $\\|f\\|_\\infty = 1$. The formalization captures definitions, norms, and related results. Aristotle proved optimality and the supremum equivalence, and discovered that the formalized statement needs a degree $\\geq 1$ hypothesis to exclude the constant-polynomial counterexample.",
+    "implications": "**Theoretical Significance**: The result reveals a deep connection between **root geometry** (all roots on $S^1$) and **integral norm bounds** ($\\|f\\|_1 \\leq 4$).\n\nThe unit-circle constraint dramatically restricts the polynomial's behavior: without it, $\\|f\\|_1$ can be arbitrarily large even with $\\|f\\|_\\infty = 1$. The Fej\u00e9r\u2013Riesz theorem provides a structural explanation via spectral factorization.",
     "openQuestions": [
       "What are the degree-$n$ extremal polynomials that maximize $\\|f\\|_1$ under the unit-circle-roots and $\\|f\\|_\\infty = 1$ constraints?",
       "Can the formalization be completed by adding the degree $\\geq 1$ hypothesis and proving the corrected main theorem in Lean?",
@@ -140,12 +140,28 @@
     "definitionCount": 7
   },
   "references": [
-    "Erdős (1940, 1957, 1961): early work on trigonometric polynomial norms",
-    "Saff–Sheil-Small (1973): proved for complex coefficients",
+    "Erd\u0151s (1940, 1957, 1961): early work on trigonometric polynomial norms",
+    "Saff\u2013Sheil-Small (1973): proved for complex coefficients",
     "Kristiansen (1974): proved for real coefficients",
     "Hayman (1974): Research Problems in Function Theory, Problem 4.20",
-    "McGehee–Pigno–Smith (1981): Littlewood's conjecture (related result)",
-    "Fejér–Riesz (1915): non-negative trig polynomials as |g|²",
+    "McGehee\u2013Pigno\u2013Smith (1981): Littlewood's conjecture (related result)",
+    "Fej\u00e9r\u2013Riesz (1915): non-negative trig polynomials as |g|\u00b2",
     "https://erdosproblems.com/225"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1150",
+      "relationship": "related",
+      "description": "Share analytic and unit-circle themes"
+    },
+    {
+      "targetId": "erdos-256",
+      "relationship": "related",
+      "description": "Share analytic and unit-circle themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1150",
+    "erdos-256"
   ]
 }

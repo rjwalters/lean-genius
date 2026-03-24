@@ -134,5 +134,39 @@
     "axiomCount": 12,
     "theoremCount": 1,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-412",
+      "relationship": "related",
+      "description": "Share dynamical-systems, number-theoretic, and iteration themes"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Share prime number and number-theoretic themes"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Share prime number and number-theoretic themes"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Share prime number and number-theoretic themes"
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Share prime number and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-412",
+    "bertrands-postulate",
+    "bounded-prime-gaps",
+    "dirichlets-theorem",
+    "elementary-quadratic-reciprocity"
+  ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "erdos-1150",
-  "title": "Erdős Problem #1150: Supremum of Littlewood Polynomials",
+  "title": "Erd\u0151s Problem #1150: Supremum of Littlewood Polynomials",
   "slug": "erdos-1150",
-  "description": "Does there exist c > 0 such that for all large n and all ±1 coefficient polynomials of degree n, max_{|z|=1} |P(z)| > (1+c)√n? Equivalently, do ultraflat Littlewood polynomials NOT exist?",
+  "description": "Does there exist c > 0 such that for all large n and all \u00b11 coefficient polynomials of degree n, max_{|z|=1} |P(z)| > (1+c)\u221an? Equivalently, do ultraflat Littlewood polynomials NOT exist?",
   "meta": {
     "author": "researcher-5",
     "sourceUrl": "https://erdosproblems.com/1150",
@@ -27,23 +27,23 @@
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Definition IsLittlewoodPolynomial, supNorm, IsUltraflat, Erdos1150Conjecture",
-      "Proved parseval_bound_pos (√(n+1) > 0)",
-      "Proved flat_does_not_imply_ultraflat (flat ≠ ultraflat)",
+      "Proved parseval_bound_pos (\u221a(n+1) > 0)",
+      "Proved flat_does_not_imply_ultraflat (flat \u2260 ultraflat)",
       "Proved erdos_1150_summary (Parseval + BBMST combined)",
-      "Axiom parseval_lower_bound (sup ≥ √(n+1))",
+      "Axiom parseval_lower_bound (sup \u2265 \u221a(n+1))",
       "Axiom conjecture_equiv_no_ultraflat (equivalence with no ultraflat)",
       "Axiom bbmst_flat (flat Littlewood polynomials exist)",
       "Axiom kahane_unimodular_ultraflat (ultraflat for unimodular coefficients)",
-      "Axiom rudin_shapiro_bound (concrete ≤ √(2n) family)"
+      "Axiom rudin_shapiro_bound (concrete \u2264 \u221a(2n) family)"
     ],
     "axiomCount": 5,
     "lineCount": 207,
     "assumptions": "5 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed Problem #1150 as part of his investigations into extremal properties of polynomials with restricted coefficients. The study of Littlewood polynomials — polynomials with all coefficients ±1 — dates to J.E. Littlewood's 1966 monograph, where he asked about the minimal sup norm on the unit circle. By Parseval's identity, every degree-$n$ Littlewood polynomial satisfies $\\max_{|z|=1}|P(z)| \\ge \\sqrt{n+1}$, since the $L^2$ norm equals $\\sqrt{n+1}$. The question is whether this can be improved by a multiplicative constant. Kahane's 1980 breakthrough showed that for general unimodular coefficients ($|a_k| = 1$, complex phases allowed), ultraflat polynomials exist — the sup norm can be made $(1+o(1))\\sqrt{n}$. This made the ±1 restriction the essential barrier. The problem gained renewed attention after Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (BBMST, 2019) proved flat Littlewood polynomials exist ($c_1\\sqrt{n} \\le |P(z)| \\le c_2\\sqrt{n}$), resolving Erdős Problem #228. But flat is weaker than ultraflat: the gap between 'bounded ratio' and 'ratio converging to 1' is precisely what Problem #1150 asks about. The Rudin-Shapiro polynomials, constructed recursively since the 1950s, provide the best explicit examples with sup norm at most $\\sqrt{2(n+1)}$.",
-    "problemStatement": "**Erdős Problem #1150** (OPEN): Does there exist $c > 0$ such that for all large $n$ and all polynomials $P$ of degree $n$ with coefficients $\\pm 1$:\n$$\\max_{|z|=1}|P(z)| > (1+c)\\sqrt{n}$$",
-    "text": "Does there exist c > 0 such that for all large n and all ±1 coefficient polynomials of degree n, max_{|z|=1} |P(z)| > (1+c)√n? Equivalently, do ultraflat Littlewood polynomials NOT exist?",
+    "historicalContext": "Erd\u0151s posed Problem #1150 as part of his investigations into extremal properties of polynomials with restricted coefficients. The study of Littlewood polynomials \u2014 polynomials with all coefficients \u00b11 \u2014 dates to J.E. Littlewood's 1966 monograph, where he asked about the minimal sup norm on the unit circle. By Parseval's identity, every degree-$n$ Littlewood polynomial satisfies $\\max_{|z|=1}|P(z)| \\ge \\sqrt{n+1}$, since the $L^2$ norm equals $\\sqrt{n+1}$. The question is whether this can be improved by a multiplicative constant. Kahane's 1980 breakthrough showed that for general unimodular coefficients ($|a_k| = 1$, complex phases allowed), ultraflat polynomials exist \u2014 the sup norm can be made $(1+o(1))\\sqrt{n}$. This made the \u00b11 restriction the essential barrier. The problem gained renewed attention after Balister, Bollob\u00e1s, Morris, Sahasrabudhe, and Tiba (BBMST, 2019) proved flat Littlewood polynomials exist ($c_1\\sqrt{n} \\le |P(z)| \\le c_2\\sqrt{n}$), resolving Erd\u0151s Problem #228. But flat is weaker than ultraflat: the gap between 'bounded ratio' and 'ratio converging to 1' is precisely what Problem #1150 asks about. The Rudin-Shapiro polynomials, constructed recursively since the 1950s, provide the best explicit examples with sup norm at most $\\sqrt{2(n+1)}$.",
+    "problemStatement": "**Erd\u0151s Problem #1150** (OPEN): Does there exist $c > 0$ such that for all large $n$ and all polynomials $P$ of degree $n$ with coefficients $\\pm 1$:\n$$\\max_{|z|=1}|P(z)| > (1+c)\\sqrt{n}$$",
+    "text": "Does there exist c > 0 such that for all large n and all \u00b11 coefficient polynomials of degree n, max_{|z|=1} |P(z)| > (1+c)\u221an? Equivalently, do ultraflat Littlewood polynomials NOT exist?",
     "proofStrategy": "1. **Definitions**: Formalize Littlewood polynomial ($a_k \\in \\{-1,+1\\}$), sup norm on unit circle, ultraflat sequence, and the main conjecture\n2. **Parseval bound**: State the trivial lower bound $\\|P\\|_\\infty \\ge \\sqrt{n+1}$ as an axiom and prove $\\sqrt{n+1} > 0$\n3. **Equivalence**: Axiomatize that the conjecture is equivalent to non-existence of ultraflat Littlewood sequences\n4. **Known results**: Axiomatize BBMST flat polynomials, Kahane unimodular ultraflat, and Rudin-Shapiro bounds\n5. **Gap analysis**: Prove that flat $\\not\\Rightarrow$ ultraflat and derive the BBMST upper bound consequence\n6. **Summary**: Package Parseval + BBMST as a combined theorem capturing the state of knowledge",
     "prerequisites": [
       "Harmonic analysis on the unit circle: Fourier coefficients, Parseval's identity, and L^2 norms",
@@ -53,8 +53,8 @@
     ],
     "keyInsights": [
       "**Flat vs ultraflat**: BBMST shows $c_1\\sqrt{n} \\le |P(z)| \\le c_2\\sqrt{n}$ (flat) but whether $c_2 \\to 1$ (ultraflat) is the crux of the open question. The gap between bounded ratio and converging ratio is where the problem lives.",
-      "**±1 vs unimodular**: Kahane's ultraflat result works for $|a_k| = 1$ but fails for $a_k = \\pm 1$. The continuous symmetry group $U(1)^{n+1}$ allows phase cancellation that the discrete group $\\{\\pm 1\\}^{n+1}$ cannot achieve.",
-      "**Parseval as floor**: $\\|P\\|_\\infty^2 \\ge \\int |P|^2 d\\theta/2\\pi = n+1$ by Parseval. Equality requires $|P|$ constant on the circle, but ±1 polynomials have real coefficients, forcing oscillation between higher and lower values.",
+      "**\u00b11 vs unimodular**: Kahane's ultraflat result works for $|a_k| = 1$ but fails for $a_k = \\pm 1$. The continuous symmetry group $U(1)^{n+1}$ allows phase cancellation that the discrete group $\\{\\pm 1\\}^{n+1}$ cannot achieve.",
+      "**Parseval as floor**: $\\|P\\|_\\infty^2 \\ge \\int |P|^2 d\\theta/2\\pi = n+1$ by Parseval. Equality requires $|P|$ constant on the circle, but \u00b11 polynomials have real coefficients, forcing oscillation between higher and lower values.",
       "**Rudin-Shapiro**: The recursive construction gives $\\|P_{RS}\\|_\\infty \\le \\sqrt{2(n+1)}$, showing the ratio $\\|P\\|_\\infty/\\sqrt{n}$ can be as low as $\\sqrt{2}$. This is the best known explicit bound.",
       "**Formalization strategy**: The 5 axioms encode deep results (Parseval, BBMST, Kahane, Rudin-Shapiro, equivalence) while the proved theorems handle logical consequences. This cleanly separates 'assumed hard results' from 'derived observations'."
     ]
@@ -72,21 +72,21 @@
       "title": "The Main Conjecture",
       "startLine": 48,
       "endLine": 62,
-      "summary": "States Erdos1150Conjecture as a Prop: ∃ c > 0 such that eventually all degree-n Littlewood polynomials satisfy supNorm P > (1+c)√n. Uses Lean's Filter.Eventually (∀ᶠ) for the 'for all large n' quantifier."
+      "summary": "States Erdos1150Conjecture as a Prop: \u2203 c > 0 such that eventually all degree-n Littlewood polynomials satisfy supNorm P > (1+c)\u221an. Uses Lean's Filter.Eventually (\u2200\u1da0) for the 'for all large n' quantifier."
     },
     {
       "id": "parseval",
       "title": "Parseval Lower Bound",
       "startLine": 64,
       "endLine": 81,
-      "summary": "The trivial bound ‖P‖∞ ≥ √(n+1) from Parseval's identity. Axiomatized as parseval_lower_bound. Also proves parseval_bound_pos: √(n+1) > 0 for n ≥ 1 using the positivity tactic."
+      "summary": "The trivial bound \u2016P\u2016\u221e \u2265 \u221a(n+1) from Parseval's identity. Axiomatized as parseval_lower_bound. Also proves parseval_bound_pos: \u221a(n+1) > 0 for n \u2265 1 using the positivity tactic."
     },
     {
       "id": "ultraflat-equivalence",
       "title": "Ultraflat Equivalence",
       "startLine": 83,
       "endLine": 100,
-      "summary": "Defines IsUltraflat (sequence of Littlewood polynomials with supNorm/√n → 1) and axiomatizes that the conjecture is equivalent to non-existence of such sequences."
+      "summary": "Defines IsUltraflat (sequence of Littlewood polynomials with supNorm/\u221an \u2192 1) and axiomatizes that the conjecture is equivalent to non-existence of such sequences."
     },
     {
       "id": "known-results",
@@ -107,7 +107,7 @@
       "title": "Rudin-Shapiro Bound",
       "startLine": 162,
       "endLine": 172,
-      "summary": "Axiomatizes the Rudin-Shapiro construction: for each k ≥ 1, a degree-(2^k - 1) Littlewood polynomial with sup norm at most √(2·2^k). Provides the best known explicit upper bound on minimal sup norm."
+      "summary": "Axiomatizes the Rudin-Shapiro construction: for each k \u2265 1, a degree-(2^k - 1) Littlewood polynomial with sup norm at most \u221a(2\u00b72^k). Provides the best known explicit upper bound on minimal sup norm."
     },
     {
       "id": "summary",
@@ -118,8 +118,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1150, an open question in extremal polynomial theory. The conjecture asks whether the sup norm of degree-$n$ Littlewood polynomials on the unit circle must exceed $(1+c)\\sqrt{n}$ for some universal $c > 0$ — equivalently, whether ultraflat Littlewood polynomials do not exist. All major known results are axiomatized: Parseval lower bound, BBMST flat polynomials (2019), Kahane unimodular ultraflat (1980), Rudin-Shapiro explicit bounds, and the equivalence with non-existence of ultraflat sequences. Three theorems are proved: positivity of the Parseval bound, logical non-implication of flat → ultraflat, and a combined summary of known results. Contains 1 sorry (routine supremum bound) and 5 axioms encoding deep results.",
-    "implications": "**Theoretical Significance**: A positive resolution (confirming the conjecture) would establish that the discrete structure of {-1,+1} coefficients imposes a fundamental rigidity on polynomial behavior on the unit circle — a qualitative separation from the continuous case |$a_k$| = 1.\n\nThis would connect to concentration of measure phenomena and Boolean function analysis. A negative resolution (constructing ultraflat ±1 polynomials) would be equally striking, requiring new techniques beyond BBMST's probabilistic approach.",
+    "summary": "This formalization captures Erd\u0151s Problem #1150, an open question in extremal polynomial theory. The conjecture asks whether the sup norm of degree-$n$ Littlewood polynomials on the unit circle must exceed $(1+c)\\sqrt{n}$ for some universal $c > 0$ \u2014 equivalently, whether ultraflat Littlewood polynomials do not exist. All major known results are axiomatized: Parseval lower bound, BBMST flat polynomials (2019), Kahane unimodular ultraflat (1980), Rudin-Shapiro explicit bounds, and the equivalence with non-existence of ultraflat sequences. Three theorems are proved: positivity of the Parseval bound, logical non-implication of flat \u2192 ultraflat, and a combined summary of known results. Contains 1 sorry (routine supremum bound) and 5 axioms encoding deep results.",
+    "implications": "**Theoretical Significance**: A positive resolution (confirming the conjecture) would establish that the discrete structure of {-1,+1} coefficients imposes a fundamental rigidity on polynomial behavior on the unit circle \u2014 a qualitative separation from the continuous case |$a_k$| = 1.\n\nThis would connect to concentration of measure phenomena and Boolean function analysis. A negative resolution (constructing ultraflat \u00b11 polynomials) would be equally striking, requiring new techniques beyond BBMST's probabilistic approach.",
     "openQuestions": [
       "Does the conjecture hold: is $\\inf_{P \\in \\mathcal{L}_n} \\|P\\|_\\infty / \\sqrt{n} > 1$ for all large $n$?",
       "What is the exact value of $\\liminf_{n \\to \\infty} \\inf_{P \\in \\mathcal{L}_n} \\|P\\|_\\infty / \\sqrt{n}$?",
@@ -133,15 +133,15 @@
       },
       {
         "proofId": "erdos-230",
-        "relationship": "Kahane proved ultraflat polynomials exist for unimodular coefficients, showing the ±1 restriction is essential for #1150."
+        "relationship": "Kahane proved ultraflat polynomials exist for unimodular coefficients, showing the \u00b11 restriction is essential for #1150."
       },
       {
         "proofId": "erdos-1149",
-        "relationship": "Another Erdős problem on polynomial coefficients and extremal behavior on the unit circle."
+        "relationship": "Another Erd\u0151s problem on polynomial coefficients and extremal behavior on the unit circle."
       },
       {
         "proofId": "erdos-1155",
-        "relationship": "Related Erdős problem on polynomials with restricted coefficient sets."
+        "relationship": "Related Erd\u0151s problem on polynomials with restricted coefficient sets."
       }
     ]
   },
@@ -159,5 +159,39 @@
     "axiomCount": 5,
     "theoremCount": 4,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-230",
+      "relationship": "related",
+      "description": "Share analytic, harmonic-analysis, and polynomial themes"
+    },
+    {
+      "targetId": "erdos-256",
+      "relationship": "related",
+      "description": "Share analytic, harmonic-analysis, and unit-circle themes"
+    },
+    {
+      "targetId": "erdos-1048",
+      "relationship": "related",
+      "description": "Share analytic and polynomial themes"
+    },
+    {
+      "targetId": "erdos-1114",
+      "relationship": "related",
+      "description": "Share analytic and polynomial themes"
+    },
+    {
+      "targetId": "erdos-1132",
+      "relationship": "related",
+      "description": "Share analytic and polynomial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-230",
+    "erdos-256",
+    "erdos-1048",
+    "erdos-1114",
+    "erdos-1132"
+  ]
 }

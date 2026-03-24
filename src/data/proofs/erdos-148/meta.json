@@ -167,5 +167,39 @@
     "axiomCount": 16,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-320",
+      "relationship": "related",
+      "description": "Share counting, Egyptian fraction, and unit-fractions themes"
+    },
+    {
+      "targetId": "erdos-297",
+      "relationship": "related",
+      "description": "Share counting, Egyptian fraction, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, unit-fractions, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-320",
+    "erdos-297",
+    "erdos-242",
+    "erdos-284",
+    "erdos-286"
+  ]
 }

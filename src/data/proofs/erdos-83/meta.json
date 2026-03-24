@@ -1,10 +1,10 @@
 {
   "id": "erdos-83",
-  "title": "Erdős Problem #83: Complete Intersection Theorem",
+  "title": "Erd\u0151s Problem #83: Complete Intersection Theorem",
   "slug": "erdos-83",
-  "description": "For 2n-subsets of [4n] with pairwise intersections ≥ 2, the maximum family size is ½(C(4n,2n) - C(2n,n)²). Proved by Ahlswede-Khachatrian (1997), winning the $500 Erdős prize.",
+  "description": "For 2n-subsets of [4n] with pairwise intersections \u2265 2, the maximum family size is \u00bd(C(4n,2n) - C(2n,n)\u00b2). Proved by Ahlswede-Khachatrian (1997), winning the $500 Erd\u0151s prize.",
   "meta": {
-    "author": "Erdős-Ko-Rado (1961 conjecture), Ahlswede-Khachatrian (1997 proof)",
+    "author": "Erd\u0151s-Ko-Rado (1961 conjecture), Ahlswede-Khachatrian (1997 proof)",
     "sourceUrl": "https://erdosproblems.com/83",
     "date": "1997",
     "status": "formalized",
@@ -55,13 +55,13 @@
     ],
     "originalContributions": [
       "groundSet: [m] as Finset.univ over Fin m",
-      "isKUniform: k-uniform family condition (∀ A ∈ F, A.card = k)",
-      "isTIntersecting: t-intersecting condition (∀ A B ∈ F, (A ∩ B).card ≥ t)",
+      "isKUniform: k-uniform family condition (\u2200 A \u2208 F, A.card = k)",
+      "isTIntersecting: t-intersecting condition (\u2200 A B \u2208 F, (A \u2229 B).card \u2265 t)",
       "isIntersecting: classical t=1 specialization",
       "erdos_ko_rado_bound: classical EKR theorem (axiom)",
       "ekrStarFamily: star construction achieving EKR bound",
       "erdos83Params, isValidErdos83Family: problem-specific definitions",
-      "erdos83Bound: the conjectured bound ½(C(4n,2n) - C(2n,n)²)",
+      "erdos83Bound: the conjectured bound \u00bd(C(4n,2n) - C(2n,n)\u00b2)",
       "erdos83Question: formal problem statement",
       "starLikeFamily: extremal construction (majority family)",
       "criticalRatio, akFamily: Ahlswede-Khachatrian framework",
@@ -74,7 +74,7 @@
     "crossReferences": [
       {
         "proofId": "erdos-857",
-        "relationship": "Both involve the EKR framework; #857 studies sunflowers (systems where every pair shares the same core), which is a structured special case of intersection constraints. The Erdős-Ko-Rado authors appear in both problems."
+        "relationship": "Both involve the EKR framework; #857 studies sunflowers (systems where every pair shares the same core), which is a structured special case of intersection constraints. The Erd\u0151s-Ko-Rado authors appear in both problems."
       },
       {
         "proofId": "erdos-644",
@@ -90,16 +90,16 @@
     "assumptions": "9 axiom(s) and 3 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #83: The Complete Intersection Theorem**\n\nThis problem represents one of the most celebrated successes in extremal set theory, bridging a 36-year gap from conjecture to proof.\n\n**The Erdős-Ko-Rado Foundation (1961):** Erdős, Ko, and Rado proved that for $k$-subsets of $[n]$ with $n \\geq 2k$, the largest *intersecting* family (every pair shares $\\geq 1$ element) has size $\\binom{n-1}{k-1}$. This launched the field of extremal set theory. The 'star' family $\\{A : x \\in A\\}$ achieves this bound.\n\n**The $t$-Intersecting Conjecture:** EKR naturally asked: what about $t$-intersecting families ($|A \\cap B| \\geq t$)? For the specific case of $2n$-subsets of $[4n]$ with $t = 2$, they conjectured the bound $\\frac{1}{2}(\\binom{4n}{2n} - \\binom{2n}{n}^2)$. Erdős attached a **\\$500 prize** — one of his larger prizes, reflecting the difficulty.\n\n**36 Years of Partial Progress:** Wilson (1984) proved the result for $t$ sufficiently large relative to $k$. Frankl (1978) developed the 'shifting' technique, solving many special cases. But the general problem resisted all approaches.\n\n**The Breakthrough (1997):** Ahlswede and Khachatrian proved the **Complete Intersection Theorem**, which determines the maximum $t$-intersecting $k$-uniform family on $[m]$ for *all* valid parameters $(m, k, t)$. Their proof introduced the 'pushing-pulling' technique, a two-directional generalization of Frankl's shifting that preserves the $t$-intersecting property.\n\n**The Key Innovation:** Classical shifting (replacing element $j$ with element $i < j$ if the result stays in the family) preserves $1$-intersecting but can destroy $t$-intersecting for $t \\geq 2$. Ahlswede-Khachatrian's pushing-pulling modifies pairs of elements simultaneously, maintaining the stronger intersection requirement.\n\n**Phase Transitions:** A remarkable feature of the AK theorem is that the extremal family changes structure at critical parameter values. The optimal family $\\mathcal{A}(r)$ consists of all $k$-subsets with $\\geq t+r$ elements from a fixed $(t+2r)$-set, where $r$ depends on $(m, k, t)$. As parameters vary, $r$ jumps — a discrete phase transition.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet $\\mathcal{F}$ be a family of subsets of $[4n]$ such that:\n- $|A| = 2n$ for all $A \\in \\mathcal{F}$ ($2n$-uniform)\n- $|A \\cap B| \\geq 2$ for all $A, B \\in \\mathcal{F}$ ($2$-intersecting)\n\nThen: $|\\mathcal{F}| \\leq \\frac{1}{2}\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$\n\n**Answer: PROVED** by Ahlswede and Khachatrian (1997)\n\nThe bound is achieved by the 'majority family': all $2n$-subsets containing $\\geq n+1$ elements from a fixed $2n$-set. The \\$500 Erdős prize was awarded.",
-    "text": "For 2n-subsets of [4n] with pairwise intersections ≥ 2, the maximum family size is ½(C(4n,2n) - C(2n,n)²). Proved by Ahlswede-Khachatrian (1997), winning the $500 Erdős prize.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions Layer:** `groundSet` ($[m]$ as `Fin m`), `isKUniform` ($k$-uniform families), `isTIntersecting` ($t$-intersecting property), `isIntersecting` ($t = 1$ special case).\n\n2. **EKR Background:** `erdos_ko_rado_bound` (classical EKR theorem, axiom), `ekrStarFamily` (star construction), `ekr_achieved` (tightness).\n\n3. **Problem Formulation:** `erdos83Params` ($(4n, 2n, 2)$), `isValidErdos83Family`, `erdos83Bound` ($\\frac{1}{2}(\\binom{4n}{2n} - \\binom{2n}{n}^2)$), `erdos83Question` (formal statement).\n\n4. **Extremal Construction:** `starLikeFamily` (majority family), verified valid and achieving the bound.\n\n5. **The Deep Theorem:** `criticalRatio`, `akFamily`, `ahlswede_khachatrian_theorem` (Complete Intersection Theorem, axiom) — the general result from which #83 follows.\n\n6. **Resolution:** `erdos83_from_ak` (parameter specialization), `erdos83_answer` (proved by applying AK), `erdos_83` (final theorem).\n\nThe formalization is axiom-based for the deep results (EKR bound, AK theorem), with the main theorem `erdos83_answer` proved by combining axioms with parameter verification via `linarith` and `norm_num`.",
+    "historicalContext": "**Erd\u0151s Problem #83: The Complete Intersection Theorem**\n\nThis problem represents one of the most celebrated successes in extremal set theory, bridging a 36-year gap from conjecture to proof.\n\n**The Erd\u0151s-Ko-Rado Foundation (1961):** Erd\u0151s, Ko, and Rado proved that for $k$-subsets of $[n]$ with $n \\geq 2k$, the largest *intersecting* family (every pair shares $\\geq 1$ element) has size $\\binom{n-1}{k-1}$. This launched the field of extremal set theory. The 'star' family $\\{A : x \\in A\\}$ achieves this bound.\n\n**The $t$-Intersecting Conjecture:** EKR naturally asked: what about $t$-intersecting families ($|A \\cap B| \\geq t$)? For the specific case of $2n$-subsets of $[4n]$ with $t = 2$, they conjectured the bound $\\frac{1}{2}(\\binom{4n}{2n} - \\binom{2n}{n}^2)$. Erd\u0151s attached a **\\$500 prize** \u2014 one of his larger prizes, reflecting the difficulty.\n\n**36 Years of Partial Progress:** Wilson (1984) proved the result for $t$ sufficiently large relative to $k$. Frankl (1978) developed the 'shifting' technique, solving many special cases. But the general problem resisted all approaches.\n\n**The Breakthrough (1997):** Ahlswede and Khachatrian proved the **Complete Intersection Theorem**, which determines the maximum $t$-intersecting $k$-uniform family on $[m]$ for *all* valid parameters $(m, k, t)$. Their proof introduced the 'pushing-pulling' technique, a two-directional generalization of Frankl's shifting that preserves the $t$-intersecting property.\n\n**The Key Innovation:** Classical shifting (replacing element $j$ with element $i < j$ if the result stays in the family) preserves $1$-intersecting but can destroy $t$-intersecting for $t \\geq 2$. Ahlswede-Khachatrian's pushing-pulling modifies pairs of elements simultaneously, maintaining the stronger intersection requirement.\n\n**Phase Transitions:** A remarkable feature of the AK theorem is that the extremal family changes structure at critical parameter values. The optimal family $\\mathcal{A}(r)$ consists of all $k$-subsets with $\\geq t+r$ elements from a fixed $(t+2r)$-set, where $r$ depends on $(m, k, t)$. As parameters vary, $r$ jumps \u2014 a discrete phase transition.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $\\mathcal{F}$ be a family of subsets of $[4n]$ such that:\n- $|A| = 2n$ for all $A \\in \\mathcal{F}$ ($2n$-uniform)\n- $|A \\cap B| \\geq 2$ for all $A, B \\in \\mathcal{F}$ ($2$-intersecting)\n\nThen: $|\\mathcal{F}| \\leq \\frac{1}{2}\\left(\\binom{4n}{2n} - \\binom{2n}{n}^2\\right)$\n\n**Answer: PROVED** by Ahlswede and Khachatrian (1997)\n\nThe bound is achieved by the 'majority family': all $2n$-subsets containing $\\geq n+1$ elements from a fixed $2n$-set. The \\$500 Erd\u0151s prize was awarded.",
+    "text": "For 2n-subsets of [4n] with pairwise intersections \u2265 2, the maximum family size is \u00bd(C(4n,2n) - C(2n,n)\u00b2). Proved by Ahlswede-Khachatrian (1997), winning the $500 Erd\u0151s prize.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions Layer:** `groundSet` ($[m]$ as `Fin m`), `isKUniform` ($k$-uniform families), `isTIntersecting` ($t$-intersecting property), `isIntersecting` ($t = 1$ special case).\n\n2. **EKR Background:** `erdos_ko_rado_bound` (classical EKR theorem, axiom), `ekrStarFamily` (star construction), `ekr_achieved` (tightness).\n\n3. **Problem Formulation:** `erdos83Params` ($(4n, 2n, 2)$), `isValidErdos83Family`, `erdos83Bound` ($\\frac{1}{2}(\\binom{4n}{2n} - \\binom{2n}{n}^2)$), `erdos83Question` (formal statement).\n\n4. **Extremal Construction:** `starLikeFamily` (majority family), verified valid and achieving the bound.\n\n5. **The Deep Theorem:** `criticalRatio`, `akFamily`, `ahlswede_khachatrian_theorem` (Complete Intersection Theorem, axiom) \u2014 the general result from which #83 follows.\n\n6. **Resolution:** `erdos83_from_ak` (parameter specialization), `erdos83_answer` (proved by applying AK), `erdos_83` (final theorem).\n\nThe formalization is axiom-based for the deep results (EKR bound, AK theorem), with the main theorem `erdos83_answer` proved by combining axioms with parameter verification via `linarith` and `norm_num`.",
     "keyInsights": [
       "**36-Year Gap:** From EKR's 1961 conjecture to AK's 1997 proof required fundamentally new techniques. The classical shifting method (Frankl 1978) handles $t = 1$ elegantly but breaks for $t \\geq 2$, explaining why partial results stalled for decades.",
       "**Pushing-Pulling Innovation:** Ahlswede-Khachatrian's key innovation was replacing single-element shifting with simultaneous two-element operations. This preserves the $t$-intersecting property while still converging to a canonical extremal family.",
-      "**Phase Transitions in Extremal Families:** The optimal $t$-intersecting family $\\mathcal{A}(r)$ depends on a critical ratio $r$. As parameters cross thresholds, the optimal family structure jumps discontinuously — a phenomenon analogous to phase transitions in statistical mechanics.",
+      "**Phase Transitions in Extremal Families:** The optimal $t$-intersecting family $\\mathcal{A}(r)$ depends on a critical ratio $r$. As parameters cross thresholds, the optimal family structure jumps discontinuously \u2014 a phenomenon analogous to phase transitions in statistical mechanics.",
       "**Majority Family Interpretation:** The extremal family for #83 consists of all $2n$-subsets that are 'majority' subsets of a fixed $2n$-set (containing $\\geq n+1$ of its elements). The $2$-intersection property follows from pigeonhole: two sets each containing $> n$ of $2n$ elements must overlap in $\\geq 2$.",
-      "**Complete Solution:** Unlike many Erdős problems that are solved only for specific parameters, the AK theorem resolves the maximum $t$-intersecting family for ALL valid $(m, k, t)$. This comprehensiveness is rare in extremal combinatorics.",
+      "**Complete Solution:** Unlike many Erd\u0151s problems that are solved only for specific parameters, the AK theorem resolves the maximum $t$-intersecting family for ALL valid $(m, k, t)$. This comprehensiveness is rare in extremal combinatorics.",
       "**Coding Theory Connection:** A $t$-intersecting $k$-uniform family on $[m]$ is equivalent to a constant-weight binary code of length $m$, weight $k$, and minimum 'agreement' $t$. The AK theorem thus determines optimal constant-weight codes under agreement constraints."
     ],
     "prerequisites": [
@@ -117,7 +117,7 @@
     },
     {
       "id": "ekr-background",
-      "title": "Erdős-Ko-Rado Background",
+      "title": "Erd\u0151s-Ko-Rado Background",
       "summary": "erdos_ko_rado_bound (classical EKR theorem, axiom), ekrStarFamily (star construction), ekr_achieved (tightness axiom)",
       "startLine": 70,
       "endLine": 95
@@ -132,7 +132,7 @@
     {
       "id": "conjectured-bound",
       "title": "The Conjectured Bound",
-      "summary": "erdos83Bound = ½(C(4n,2n) - C(2n,n)²), erdos83Question (formal problem statement)",
+      "summary": "erdos83Bound = \u00bd(C(4n,2n) - C(2n,n)\u00b2), erdos83Question (formal problem statement)",
       "startLine": 114,
       "endLine": 131
     },
@@ -152,7 +152,7 @@
     },
     {
       "id": "resolution",
-      "title": "Resolution of Erdős #83",
+      "title": "Resolution of Erd\u0151s #83",
       "summary": "erdos83_from_ak (parameter specialization), erdos83_answer (main theorem proved from AK), reducing the problem to a corollary of the Complete Intersection Theorem",
       "startLine": 190,
       "endLine": 213
@@ -160,7 +160,7 @@
     {
       "id": "bound-computation",
       "title": "Bound Computation",
-      "summary": "Small cases (n=1: bound 0, n=2: bound 20) and asymptotic growth (≈ ½C(4n,2n) for large n)",
+      "summary": "Small cases (n=1: bound 0, n=2: bound 20) and asymptotic growth (\u2248 \u00bdC(4n,2n) for large n)",
       "startLine": 215,
       "endLine": 233
     },
@@ -174,19 +174,19 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_83_summary (both directions: bound + tightness), erdos_83 (final theorem: erdos83Question holds for all n ≥ 1)",
+      "summary": "erdos_83_summary (both directions: bound + tightness), erdos_83 (final theorem: erdos83Question holds for all n \u2265 1)",
       "startLine": 260,
       "endLine": 289
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #83 asked for the maximum size of a family of $2n$-subsets of $[4n]$ with pairwise $2$-intersections. Erdős, Ko, and Rado conjectured the bound $\\frac{1}{2}(\\binom{4n}{2n} - \\binom{2n}{n}^2)$ in 1961 with a \\$500 prize. After 36 years, Ahlswede and Khachatrian (1997) proved the Complete Intersection Theorem, which determines the maximum $t$-intersecting $k$-uniform family on $[m]$ for all valid parameters. The formalization captures the full logical chain: EKR background, the AK theorem as an axiom, parameter specialization, and the proved main result with both the bound and its tightness.",
+    "summary": "Erd\u0151s Problem #83 asked for the maximum size of a family of $2n$-subsets of $[4n]$ with pairwise $2$-intersections. Erd\u0151s, Ko, and Rado conjectured the bound $\\frac{1}{2}(\\binom{4n}{2n} - \\binom{2n}{n}^2)$ in 1961 with a \\$500 prize. After 36 years, Ahlswede and Khachatrian (1997) proved the Complete Intersection Theorem, which determines the maximum $t$-intersecting $k$-uniform family on $[m]$ for all valid parameters. The formalization captures the full logical chain: EKR background, the AK theorem as an axiom, parameter specialization, and the proved main result with both the bound and its tightness.",
     "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Extremal Set Theory:** The AK theorem completes the EKR program for all $t$, resolving the central question of the field. It determines the extremal families explicitly, not just their sizes.\n\n2. **Coding Theory:** $t$-intersecting uniform families correspond to constant-weight codes with agreement constraints.\n\nThe AK theorem gives optimal code sizes for all parameters.\n\n3. **Combinatorial Optimization:** The phase transition structure (optimal families jump at critical ratios) connects to threshold phenomena in random structures and statistical mechanics.\n\n4. **Proof Techniques:** The pushing-pulling method has found applications beyond intersection theorems, influencing work on cross-intersecting families and multipartite problems.\n\n5. **Formalization Challenge:** A full proof of the AK theorem in Lean would be a significant formalization achievement, requiring the pushing-pulling machinery and careful case analysis across all parameter regimes.",
     "openQuestions": [
       "Full Lean formalization of the Ahlswede-Khachatrian theorem (currently axiomatized)",
       "Simplified proof of the Complete Intersection Theorem (current proof is technically demanding)",
       "Efficient algorithms for constructing optimal t-intersecting families",
-      "Extension to cross-intersecting families (F₁ and F₂ with |A ∩ B| ≥ t for A ∈ F₁, B ∈ F₂)",
+      "Extension to cross-intersecting families (F\u2081 and F\u2082 with |A \u2229 B| \u2265 t for A \u2208 F\u2081, B \u2208 F\u2082)",
       "Stability results: how close to optimal must a large t-intersecting family be to the AK family?"
     ]
   },
@@ -211,23 +211,57 @@
   "references": [
     {
       "key": "EKR61",
-      "citation": "Erdős, P., Ko, C., Rado, R., 'Intersection theorems for systems of finite sets,' Quart. J. Math. Oxford 12 (1961), 313–320.",
+      "citation": "Erd\u0151s, P., Ko, C., Rado, R., 'Intersection theorems for systems of finite sets,' Quart. J. Math. Oxford 12 (1961), 313\u2013320.",
       "type": "paper"
     },
     {
       "key": "AK97",
-      "citation": "Ahlswede, R., Khachatrian, L.H., 'The complete intersection theorem for systems of finite sets,' European J. Combin. 18 (1997), 125–136.",
+      "citation": "Ahlswede, R., Khachatrian, L.H., 'The complete intersection theorem for systems of finite sets,' European J. Combin. 18 (1997), 125\u2013136.",
       "type": "paper"
     },
     {
       "key": "Kat72",
-      "citation": "Katona, G.O.H., 'A simple proof of the Erdős-Ko-Rado theorem,' J. Combin. Theory Ser. B 13 (1972), 183–184.",
+      "citation": "Katona, G.O.H., 'A simple proof of the Erd\u0151s-Ko-Rado theorem,' J. Combin. Theory Ser. B 13 (1972), 183\u2013184.",
       "type": "paper"
     },
     {
       "key": "Fra87",
-      "citation": "Frankl, P., 'The shifting technique in extremal set theory,' in Surveys in Combinatorics (1987), London Math. Soc. Lecture Note Ser. 123, 81–110.",
+      "citation": "Frankl, P., 'The shifting technique in extremal set theory,' in Surveys in Combinatorics (1987), London Math. Soc. Lecture Note Ser. 123, 81\u2013110.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1023",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1025",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-183",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-20",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1023",
+    "erdos-1025",
+    "erdos-1086",
+    "erdos-183",
+    "erdos-20"
   ]
 }

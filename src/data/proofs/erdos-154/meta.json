@@ -1,10 +1,10 @@
 {
   "id": "erdos-154",
-  "title": "Erdős Problem #154: Distribution of Sidon Sumsets over Moduli",
+  "title": "Erd\u0151s Problem #154: Distribution of Sidon Sumsets over Moduli",
   "slug": "erdos-154",
-  "description": "For Sidon sets A ⊂ {1,...,N} with |A| ~ √N, must A+A be well-distributed over all small moduli? SOLVED: YES (Lindström 1998, Kolountzakis 1999).",
+  "description": "For Sidon sets A \u2282 {1,...,N} with |A| ~ \u221aN, must A+A be well-distributed over all small moduli? SOLVED: YES (Lindstr\u00f6m 1998, Kolountzakis 1999).",
   "meta": {
-    "author": "Lindström (1998), Kolountzakis (1999)",
+    "author": "Lindstr\u00f6m (1998), Kolountzakis (1999)",
     "sourceUrl": "https://erdosproblems.com/154",
     "date": "1999",
     "status": "axiomatized",
@@ -41,12 +41,12 @@
       }
     ],
     "originalContributions": [
-      "IsSidon: Sidon set (B₂ set) predicate — all pairwise sums distinct",
+      "IsSidon: Sidon set (B\u2082 set) predicate \u2014 all pairwise sums distinct",
       "sumset: sumset A+A via Finset.product and image",
-      "IsWellDistributed: ε-well-distribution modulo m",
-      "lindstrom_sidon_distribution: Lindström's 1998 theorem axiomatized",
+      "IsWellDistributed: \u03b5-well-distribution modulo m",
+      "lindstrom_sidon_distribution: Lindstr\u00f6m's 1998 theorem axiomatized",
       "sumset_distribution: sumset inherits distribution from Sidon property",
-      "even_odd_balance: m=2 case — even/odd balance of A+A",
+      "even_odd_balance: m=2 case \u2014 even/odd balance of A+A",
       "erdos_154: main theorem closing the problem"
     ],
     "axiomCount": 3,
@@ -54,14 +54,14 @@
     "assumptions": "3 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Sidon sets (also called $B_2$ sequences) were introduced by Simon Sidon in a 1932 letter to Erdős: a set $A$ of natural numbers such that all pairwise sums $a + b$ (with $a \\leq b$) are distinct. Erdős and Turán (1941) proved the fundamental upper bound $|A \\cap \\{1,\\ldots,N\\}| \\leq \\sqrt{N} + O(N^{1/4})$, and Singer (1938) had already shown this is tight via perfect difference sets from finite projective planes.\n\nProblem #154 asks about the distribution of the sumset $A + A$ over residue classes: for a Sidon set $A \\subset \\{1,\\ldots,N\\}$ of near-maximal size $|A| \\sim \\sqrt{N}$, must $A + A$ be well-distributed over all small moduli? In particular, must about half the elements of $A + A$ be even and half odd?\n\nBernt Lindström resolved the key ingredient in 1998, proving that near-maximal Sidon sets are themselves well-distributed over small moduli. His proof uses exponential sum techniques: for a Sidon set $A$, the fourth moment $\\sum |\\hat{1}_A(\\xi)|^4 \\leq (2|A| - 1)N$, which constrains the character sums $\\hat{1}_A(r/m)$ to be small for non-trivial characters. This forces uniform distribution of $A$ mod $m$.\n\nMihail Kolountzakis (1999) strengthened the quantitative bounds, extending the range of moduli for which distribution holds to $m \\leq N^{1/4-\\varepsilon}$. The result for $A + A$ then follows from the unique representation property of Sidon sets: since each element of $A + A$ has exactly one representation $a + b$ (up to order), the distribution of $A$ transfers to $A + A$ via a convolution argument.\n\nThe problem connects to broader themes in additive combinatorics, including the Freiman-Ruzsa theorem (small sumsets imply structure) and the study of pseudorandom properties of combinatorially defined sets.",
+    "historicalContext": "Sidon sets (also called $B_2$ sequences) were introduced by Simon Sidon in a 1932 letter to Erd\u0151s: a set $A$ of natural numbers such that all pairwise sums $a + b$ (with $a \\leq b$) are distinct. Erd\u0151s and Tur\u00e1n (1941) proved the fundamental upper bound $|A \\cap \\{1,\\ldots,N\\}| \\leq \\sqrt{N} + O(N^{1/4})$, and Singer (1938) had already shown this is tight via perfect difference sets from finite projective planes.\n\nProblem #154 asks about the distribution of the sumset $A + A$ over residue classes: for a Sidon set $A \\subset \\{1,\\ldots,N\\}$ of near-maximal size $|A| \\sim \\sqrt{N}$, must $A + A$ be well-distributed over all small moduli? In particular, must about half the elements of $A + A$ be even and half odd?\n\nBernt Lindstr\u00f6m resolved the key ingredient in 1998, proving that near-maximal Sidon sets are themselves well-distributed over small moduli. His proof uses exponential sum techniques: for a Sidon set $A$, the fourth moment $\\sum |\\hat{1}_A(\\xi)|^4 \\leq (2|A| - 1)N$, which constrains the character sums $\\hat{1}_A(r/m)$ to be small for non-trivial characters. This forces uniform distribution of $A$ mod $m$.\n\nMihail Kolountzakis (1999) strengthened the quantitative bounds, extending the range of moduli for which distribution holds to $m \\leq N^{1/4-\\varepsilon}$. The result for $A + A$ then follows from the unique representation property of Sidon sets: since each element of $A + A$ has exactly one representation $a + b$ (up to order), the distribution of $A$ transfers to $A + A$ via a convolution argument.\n\nThe problem connects to broader themes in additive combinatorics, including the Freiman-Ruzsa theorem (small sumsets imply structure) and the study of pseudorandom properties of combinatorially defined sets.",
     "problemStatement": "Let $A \\subset \\{1,\\ldots,N\\}$ be a Sidon set with $|A| \\sim N^{1/2}$.\n\n**Question:** Must $A+A$ be well-distributed over all small moduli? In particular, must about half the elements of $A+A$ be even and half odd?\n\n**Answer:** YES.\n\nFormally: for any Sidon $A \\subset \\{1,\\ldots,N\\}$, any $m \\geq 2$, and any $\\varepsilon > 0$, there exists $N_0$ such that $N \\geq N_0$ implies $A + A$ is $\\varepsilon$-well-distributed mod $m$: each residue class contains $\\frac{|A+A|}{m} \\pm \\varepsilon|A+A|$ elements.",
-    "text": "For Sidon sets A ⊂ {1,...,N} with |A| ~ √N, must A+A be well-distributed over all small moduli? SOLVED: YES (Lindström 1998, Kolountzakis 1999).",
-    "proofStrategy": "The Lean formalization proceeds in five parts:\n\n1. **Sidon sets** (`IsSidon`): Defined via the condition $a + b = c + d \\implies \\{a,b\\} = \\{c,d\\}$.\n2. **Sumset** (`sumset`): $A + A$ computed as `(A.product A).image (fun p => p.1 + p.2)`.\n3. **Well-distribution** (`IsWellDistributed`): Each residue class mod $m$ has $\\approx |S|/m$ elements within $\\varepsilon|S|$ tolerance.\n4. **Lindström's theorem** (`lindstrom_sidon_distribution`): Axiomatized — near-maximal Sidon sets are well-distributed mod small $m$.\n5. **Sumset distribution** (`sumset_distribution`): Axiomatized — the Sidon property transfers distribution from $A$ to $A + A$. The main theorem `erdos_154` packages this.",
+    "text": "For Sidon sets A \u2282 {1,...,N} with |A| ~ \u221aN, must A+A be well-distributed over all small moduli? SOLVED: YES (Lindstr\u00f6m 1998, Kolountzakis 1999).",
+    "proofStrategy": "The Lean formalization proceeds in five parts:\n\n1. **Sidon sets** (`IsSidon`): Defined via the condition $a + b = c + d \\implies \\{a,b\\} = \\{c,d\\}$.\n2. **Sumset** (`sumset`): $A + A$ computed as `(A.product A).image (fun p => p.1 + p.2)`.\n3. **Well-distribution** (`IsWellDistributed`): Each residue class mod $m$ has $\\approx |S|/m$ elements within $\\varepsilon|S|$ tolerance.\n4. **Lindstr\u00f6m's theorem** (`lindstrom_sidon_distribution`): Axiomatized \u2014 near-maximal Sidon sets are well-distributed mod small $m$.\n5. **Sumset distribution** (`sumset_distribution`): Axiomatized \u2014 the Sidon property transfers distribution from $A$ to $A + A$. The main theorem `erdos_154` packages this.",
     "keyInsights": [
       "**Sidon property forces regularity**: Despite having no additive structure (large doubling constant $|A+A|/|A| \\approx |A|/2$), near-maximal Sidon sets exhibit surprising pseudorandomness in their distribution over residue classes",
-      "**Exponential sum method**: Lindström's proof bounds the character sums $\\hat{1}_A(r/m) = \\sum_{a \\in A} e^{2\\pi i ra/m}$ using the fourth moment identity for Sidon sets: $\\sum_{\\xi} |\\hat{1}_A(\\xi)|^4 \\leq (2|A|-1)N$",
-      "**Unique representation transfers distribution**: For Sidon $A$, every $s \\in A+A$ has exactly one representation $s = a+b$ with $a \\leq b$, so the residue class of $s$ mod $m$ is determined by the pair $(a \\bmod m, b \\bmod m)$ — a convolution that preserves uniformity",
+      "**Exponential sum method**: Lindstr\u00f6m's proof bounds the character sums $\\hat{1}_A(r/m) = \\sum_{a \\in A} e^{2\\pi i ra/m}$ using the fourth moment identity for Sidon sets: $\\sum_{\\xi} |\\hat{1}_A(\\xi)|^4 \\leq (2|A|-1)N$",
+      "**Unique representation transfers distribution**: For Sidon $A$, every $s \\in A+A$ has exactly one representation $s = a+b$ with $a \\leq b$, so the residue class of $s$ mod $m$ is determined by the pair $(a \\bmod m, b \\bmod m)$ \u2014 a convolution that preserves uniformity",
       "**Even-odd balance as special case**: The $m = 2$ case is the most intuitive: if $A$ has $\\approx |A|/2$ even and odd elements, then $A+A$ has $\\approx |A+A|/2$ even sums ($\\text{even}+\\text{even}$ or $\\text{odd}+\\text{odd}$) and $\\approx |A+A|/2$ odd sums ($\\text{even}+\\text{odd}$)",
       "**Kolountzakis extension**: The distribution holds for moduli up to $m \\leq N^{1/4-\\varepsilon}$, not just fixed $m$, showing the pseudorandomness extends to non-constant moduli",
       "**Connection to Freiman-Ruzsa**: While the Freiman-Ruzsa theorem says small sumsets imply structure, this result shows that *large* sumsets (as in Sidon sets) imply pseudorandomness"
@@ -89,13 +89,13 @@
     {
       "id": "sumset-def",
       "title": "Sumset and Well-Distribution",
-      "summary": "Defines `sumset A` as $A + A = \\{a+b : a,b \\in A\\}$ via `Finset.product` and `image`. Defines `IsWellDistributed S m ε`: each residue class mod $m$ has $|S|/m \\pm \\varepsilon|S|$ elements.",
+      "summary": "Defines `sumset A` as $A + A = \\{a+b : a,b \\in A\\}$ via `Finset.product` and `image`. Defines `IsWellDistributed S m \u03b5`: each residue class mod $m$ has $|S|/m \\pm \\varepsilon|S|$ elements.",
       "startLine": 39,
       "endLine": 48
     },
     {
       "id": "lindstrom",
-      "title": "Lindström's Theorem (1998)",
+      "title": "Lindstr\u00f6m's Theorem (1998)",
       "summary": "Axiomatizes `lindstrom_sidon_distribution`: for Sidon $A \\subset \\{1,\\ldots,N\\}$, $\\forall m \\geq 2$, $\\forall \\varepsilon > 0$, $A$ is $\\varepsilon$-well-distributed mod $m$ for large $N$. Uses fourth moment bounds on character sums.",
       "startLine": 50,
       "endLine": 61
@@ -110,7 +110,7 @@
     {
       "id": "even-odd",
       "title": "Even-Odd Balance",
-      "summary": "Axiomatizes `even_odd_balance`: the $m = 2$ case. About half of $A+A$ is even ($\\binom{k}{2} + \\binom{|A|-k}{2}$ sums) and half odd ($k(|A|-k)$ sums), where $k \\approx |A|/2$ from Lindström.",
+      "summary": "Axiomatizes `even_odd_balance`: the $m = 2$ case. About half of $A+A$ is even ($\\binom{k}{2} + \\binom{|A|-k}{2}$ sums) and half odd ($k(|A|-k)$ sums), where $k \\approx |A|/2$ from Lindstr\u00f6m.",
       "startLine": 77,
       "endLine": 88
     },
@@ -123,11 +123,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #154 was SOLVED by Lindström (1998) and Kolountzakis (1999). For Sidon sets $A \\subset \\{1,\\ldots,N\\}$ with $|A| \\sim \\sqrt{N}$, the sumset $A+A$ is well-distributed over all small moduli — in particular, about half of $A+A$ is even and half is odd. The formalization captures all key results with 0 sorries, axiomatizing the exponential sum arguments.",
-    "implications": "**Additive Combinatorics**: The result reveals pseudorandom behavior in Sidon sets: despite lacking additive structure, they distribute uniformly over residue classes, connecting the Sidon property to equidistribution theory.\n\n**Fourier-Analytic Method**: Lindström's proof demonstrates the power of exponential sum techniques in additive combinatorics, bounding character sums via the fourth moment identity that characterizes Sidon sets.\n\n**Sumset Theory**: The unique representation property of Sidon sumsets enables a clean transfer of distribution from $A$ to $A+A$, illustrating how algebraic structure propagates through set operations.\n\n**Quantitative Bounds**: Kolountzakis's strengthening shows distribution holds for moduli up to $N^{1/4}$, raising the question of the optimal range.",
+    "summary": "Erd\u0151s Problem #154 was SOLVED by Lindstr\u00f6m (1998) and Kolountzakis (1999). For Sidon sets $A \\subset \\{1,\\ldots,N\\}$ with $|A| \\sim \\sqrt{N}$, the sumset $A+A$ is well-distributed over all small moduli \u2014 in particular, about half of $A+A$ is even and half is odd. The formalization captures all key results with 0 sorries, axiomatizing the exponential sum arguments.",
+    "implications": "**Additive Combinatorics**: The result reveals pseudorandom behavior in Sidon sets: despite lacking additive structure, they distribute uniformly over residue classes, connecting the Sidon property to equidistribution theory.\n\n**Fourier-Analytic Method**: Lindstr\u00f6m's proof demonstrates the power of exponential sum techniques in additive combinatorics, bounding character sums via the fourth moment identity that characterizes Sidon sets.\n\n**Sumset Theory**: The unique representation property of Sidon sumsets enables a clean transfer of distribution from $A$ to $A+A$, illustrating how algebraic structure propagates through set operations.\n\n**Quantitative Bounds**: Kolountzakis's strengthening shows distribution holds for moduli up to $N^{1/4}$, raising the question of the optimal range.",
     "openQuestions": [
       "What is the optimal range of moduli m for which distribution holds (is N^{1/4} tight)?",
-      "Can the error term O(√|A|) be improved for specific Sidon set constructions like Singer sets?",
+      "Can the error term O(\u221a|A|) be improved for specific Sidon set constructions like Singer sets?",
       "Does similar distribution hold for higher-order sumsets A+A+A of Sidon sets?",
       "What about distribution of Sidon sets in other abelian groups (Z/pZ, F_q)?",
       "Can the exponential sum approach be formalized constructively in Lean?"
@@ -136,7 +136,7 @@
   "relatedProblems": [
     {
       "id": "erdos-1",
-      "relationship": "Both concern Sidon sets (B₂ sequences); Problem #1 asks about the maximum size of Sidon sets"
+      "relationship": "Both concern Sidon sets (B\u2082 sequences); Problem #1 asks about the maximum size of Sidon sets"
     }
   ],
   "leanFile": {
@@ -154,7 +154,7 @@
   "references": [
     {
       "key": "Li98",
-      "citation": "Lindström, B., Well distribution of Sidon sets in residue classes, J. Number Theory 69 (1998), 197-200.",
+      "citation": "Lindstr\u00f6m, B., Well distribution of Sidon sets in residue classes, J. Number Theory 69 (1998), 197-200.",
       "type": "paper"
     },
     {
@@ -172,5 +172,39 @@
       "citation": "O'Bryant, K., A complete annotated bibliography of work related to Sidon sets, Electron. J. Combin. DS11 (2004).",
       "type": "survey"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Share sidon-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-152",
+      "relationship": "related",
+      "description": "Share sidon-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Share sidon-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-155",
+      "relationship": "related",
+      "description": "Share sidon-sets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-156",
+      "relationship": "related",
+      "description": "Share sidon-sets and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-14",
+    "erdos-152",
+    "erdos-153",
+    "erdos-155",
+    "erdos-156"
   ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-810",
-  "title": "Rainbow C₄ in Edge-Colored Dense Graphs",
+  "title": "Rainbow C\u2084 in Edge-Colored Dense Graphs",
   "slug": "erdos-810",
-  "description": "Does there exist ε > 0 such that for large n, some n-vertex graph with ≥ εn² edges can be n-colored so every C₄ is rainbow (4 distinct colors)? A problem of Burr, Erdős, Graham, and Sós.",
+  "description": "Does there exist \u03b5 > 0 such that for large n, some n-vertex graph with \u2265 \u03b5n\u00b2 edges can be n-colored so every C\u2084 is rainbow (4 distinct colors)? A problem of Burr, Erd\u0151s, Graham, and S\u00f3s.",
   "meta": {
-    "author": "Burr, Erdős, Graham, Sós",
+    "author": "Burr, Erd\u0151s, Graham, S\u00f3s",
     "sourceUrl": "https://erdosproblems.com/810",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos810Problem.lean",
@@ -47,12 +47,12 @@
       "EdgeColoringN: edge coloring with Fin n colors",
       "CycleFour: structure with 4 vertices, distinctness, and adjacency",
       "CycleFour.isRainbow: 4 edge colors form a 4-element Finset",
-      "IsRainbowC4Coloring: all C₄'s are rainbow",
-      "HasDenseRainbowC4: dense graph with rainbow-C₄ n-coloring",
+      "IsRainbowC4Coloring: all C\u2084's are rainbow",
+      "HasDenseRainbowC4: dense graph with rainbow-C\u2084 n-coloring",
       "ErdosProblem810: main conjecture via Filter.atTop",
-      "kovari_sos_turan_C4: C₄-free graphs have O(n^{3/2}) edges (axiom)",
-      "dense_graph_has_C4: Ω(n²) edges implies C₄ exists (axiom)",
-      "c4_free_vacuously_rainbow: proved C₄-free satisfies rainbow condition"
+      "kovari_sos_turan_C4: C\u2084-free graphs have O(n^{3/2}) edges (axiom)",
+      "dense_graph_has_C4: \u03a9(n\u00b2) edges implies C\u2084 exists (axiom)",
+      "c4_free_vacuously_rainbow: proved C\u2084-free satisfies rainbow condition"
     ],
     "crossReferences": [
       {
@@ -61,7 +61,7 @@
       },
       {
         "proofId": "erdos-811",
-        "relationship": "Related edge-coloring problem in the Erdős collection"
+        "relationship": "Related edge-coloring problem in the Erd\u0151s collection"
       },
       {
         "proofId": "erdos-129",
@@ -77,16 +77,16 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #810: Rainbow C₄ in Dense Edge-Colored Graphs**\n\nThis problem was posed by Burr, Erdős, Graham, and Sós [Er91] at the intersection of anti-Ramsey theory and extremal graph theory. Anti-Ramsey theory, initiated by Erdős, Simonovits, and Sós in 1975, studies the minimum number of colors needed to guarantee a *rainbow* copy of a fixed subgraph (one where all edges have distinct colors). Problem #810 reverses the question: can we *construct* dense graphs where every copy of $C_4$ is rainbow?\n\n**The Core Tension:** The Kővári-Sós-Turán theorem (1954) gives $\\text{ex}(n; C_4) = O(n^{3/2})$ — $C_4$-free graphs have at most $O(n^{3/2})$ edges. Since $n^{3/2} \\ll \\varepsilon n^2$ for any $\\varepsilon > 0$, $C_4$-free graphs are too sparse to achieve the required density. So any positive answer must involve graphs with *many* copies of $C_4$, but colored so that every one of them is rainbow.\n\n**Connection to Problem #809:** The related Problem #809 asks a similar question and is explicitly referenced. Both problems explore the same theme: what density-structure combinations are achievable under rainbow constraints on small subgraphs?\n\n**Why $n$ Colors?** Using $n$ colors for $n$ vertices connects the problem to proper edge coloring: by Vizing's theorem, every simple graph with maximum degree $\\Delta$ can be edge-colored with $\\Delta + 1$ colors. For dense graphs with $\\Theta(n^2)$ edges, the maximum degree is $\\Theta(n)$, so $n$ colors is a natural palette size.\n\nThis problem remains OPEN. No construction is known, and no impossibility proof has been found.",
-    "problemStatement": "Does there exist ε > 0 such that for sufficiently large n, there is a graph on n vertices with ≥ εn² edges whose edges can be colored with n colors so that every C₄ receives 4 distinct colors?",
-    "text": "Does there exist ε > 0 such that for large n, some n-vertex graph with ≥ εn² edges can be n-colored so every C₄ is rainbow (4 distinct colors)? A problem of Burr, Erdős, Graham, and Sós.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Coloring Framework:** `EdgeColoringN G` assigns `Fin n` colors to edges. This is a function taking a pair of adjacent vertices and their adjacency proof to a color.\n\n2. **C₄ as a Structure:** `CycleFour G` is a Lean structure with four vertices, a cardinality-4 proof for distinctness, and four adjacency proofs forming the cycle. `isRainbow` checks that the Finset of four edge colors has cardinality 4.\n\n3. **The Conjecture:** `ErdosProblem810` is a `Prop` (not an axiom), using `Filter.atTop` for the asymptotic quantifier. This is the correct formalization pattern for OPEN problems.\n\n4. **Known Results:** Two axioms capture the Kővári-Sós-Turán bound (ex($n; C_4$) = O($n^{3/2}$)) and its consequence (dense graphs must contain $C_4$'s).\n\n5. **Verified Result:** `c4_free_vacuously_rainbow` is a clean one-line proof that $C_4$-free graphs satisfy the rainbow condition vacuously.",
+    "historicalContext": "**Erd\u0151s Problem #810: Rainbow C\u2084 in Dense Edge-Colored Graphs**\n\nThis problem was posed by Burr, Erd\u0151s, Graham, and S\u00f3s [Er91] at the intersection of anti-Ramsey theory and extremal graph theory. Anti-Ramsey theory, initiated by Erd\u0151s, Simonovits, and S\u00f3s in 1975, studies the minimum number of colors needed to guarantee a *rainbow* copy of a fixed subgraph (one where all edges have distinct colors). Problem #810 reverses the question: can we *construct* dense graphs where every copy of $C_4$ is rainbow?\n\n**The Core Tension:** The K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem (1954) gives $\\text{ex}(n; C_4) = O(n^{3/2})$ \u2014 $C_4$-free graphs have at most $O(n^{3/2})$ edges. Since $n^{3/2} \\ll \\varepsilon n^2$ for any $\\varepsilon > 0$, $C_4$-free graphs are too sparse to achieve the required density. So any positive answer must involve graphs with *many* copies of $C_4$, but colored so that every one of them is rainbow.\n\n**Connection to Problem #809:** The related Problem #809 asks a similar question and is explicitly referenced. Both problems explore the same theme: what density-structure combinations are achievable under rainbow constraints on small subgraphs?\n\n**Why $n$ Colors?** Using $n$ colors for $n$ vertices connects the problem to proper edge coloring: by Vizing's theorem, every simple graph with maximum degree $\\Delta$ can be edge-colored with $\\Delta + 1$ colors. For dense graphs with $\\Theta(n^2)$ edges, the maximum degree is $\\Theta(n)$, so $n$ colors is a natural palette size.\n\nThis problem remains OPEN. No construction is known, and no impossibility proof has been found.",
+    "problemStatement": "Does there exist \u03b5 > 0 such that for sufficiently large n, there is a graph on n vertices with \u2265 \u03b5n\u00b2 edges whose edges can be colored with n colors so that every C\u2084 receives 4 distinct colors?",
+    "text": "Does there exist \u03b5 > 0 such that for large n, some n-vertex graph with \u2265 \u03b5n\u00b2 edges can be n-colored so every C\u2084 is rainbow (4 distinct colors)? A problem of Burr, Erd\u0151s, Graham, and S\u00f3s.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Edge Coloring Framework:** `EdgeColoringN G` assigns `Fin n` colors to edges. This is a function taking a pair of adjacent vertices and their adjacency proof to a color.\n\n2. **C\u2084 as a Structure:** `CycleFour G` is a Lean structure with four vertices, a cardinality-4 proof for distinctness, and four adjacency proofs forming the cycle. `isRainbow` checks that the Finset of four edge colors has cardinality 4.\n\n3. **The Conjecture:** `ErdosProblem810` is a `Prop` (not an axiom), using `Filter.atTop` for the asymptotic quantifier. This is the correct formalization pattern for OPEN problems.\n\n4. **Known Results:** Two axioms capture the K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n bound (ex($n; C_4$) = O($n^{3/2}$)) and its consequence (dense graphs must contain $C_4$'s).\n\n5. **Verified Result:** `c4_free_vacuously_rainbow` is a clean one-line proof that $C_4$-free graphs satisfy the rainbow condition vacuously.",
     "keyInsights": [
-      "**Density-Rainbow Tension:** $C_4$-free graphs satisfy the rainbow condition vacuously but have only $O(n^{3/2})$ edges. The problem requires $\\Theta(n^2)$ edges, forcing many $C_4$'s to exist — all of which must be rainbow under the coloring. This tension is the heart of the problem.",
-      "**Kővári-Sós-Turán as Obstacle:** Since $C_4 \\cong K_{2,2}$, the bipartite Turán theorem gives $\\text{ex}(n; C_4) \\leq \\frac{1}{2}(1 + \\sqrt{4n - 3}) \\approx n^{3/2}/\\sqrt{2}$. This $n^{3/2}$ bound is known to be tight up to constants (achieved by polarity graphs over finite fields).",
+      "**Density-Rainbow Tension:** $C_4$-free graphs satisfy the rainbow condition vacuously but have only $O(n^{3/2})$ edges. The problem requires $\\Theta(n^2)$ edges, forcing many $C_4$'s to exist \u2014 all of which must be rainbow under the coloring. This tension is the heart of the problem.",
+      "**K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n as Obstacle:** Since $C_4 \\cong K_{2,2}$, the bipartite Tur\u00e1n theorem gives $\\text{ex}(n; C_4) \\leq \\frac{1}{2}(1 + \\sqrt{4n - 3}) \\approx n^{3/2}/\\sqrt{2}$. This $n^{3/2}$ bound is known to be tight up to constants (achieved by polarity graphs over finite fields).",
       "**$n$-Color Palette:** Using exactly $n$ colors for $n$ vertices is a deliberate choice connecting to Vizing-type edge coloring theory. Fewer colors make the rainbow condition harder to satisfy; more colors make it easier.",
-      "**Vacuous Rainbow as Proof Pattern:** The theorem `c4_free_vacuously_rainbow` is proved by `fun C => False.elim (hfree C)` — a clean demonstration that the rainbow condition is only non-trivial for graphs containing $C_4$'s. This is a standard \"vacuous truth\" argument in Lean.",
-      "**Filter.atTop for Asymptotics:** The main conjecture uses `∀ᶠ n in Filter.atTop` to express 'for all sufficiently large $n$,' following Mathlib's conventions for asymptotic statements. This is more mathematically precise than ad hoc 'there exists $N_0$' formulations."
+      "**Vacuous Rainbow as Proof Pattern:** The theorem `c4_free_vacuously_rainbow` is proved by `fun C => False.elim (hfree C)` \u2014 a clean demonstration that the rainbow condition is only non-trivial for graphs containing $C_4$'s. This is a standard \"vacuous truth\" argument in Lean.",
+      "**Filter.atTop for Asymptotics:** The main conjecture uses `\u2200\u1da0 n in Filter.atTop` to express 'for all sufficiently large $n$,' following Mathlib's conventions for asymptotic statements. This is more mathematically precise than ad hoc 'there exists $N_0$' formulations."
     ],
     "prerequisites": [
       "Extremal graph theory: the Turan number ex(n; H) and the Kovari-Sos-Turan theorem bounding the number of edges in graphs avoiding complete bipartite subgraphs, especially ex(n; C_4) = O(n^{3/2})",
@@ -99,7 +99,7 @@
     {
       "id": "header-and-imports",
       "title": "Header and Imports",
-      "summary": "Problem documentation referencing Burr-Erdős-Graham-Sós and Problem #809; imports SimpleGraph, finite graph support, and tactics",
+      "summary": "Problem documentation referencing Burr-Erd\u0151s-Graham-S\u00f3s and Problem #809; imports SimpleGraph, finite graph support, and tactics",
       "startLine": 1,
       "endLine": 37
     },
@@ -112,42 +112,42 @@
     },
     {
       "id": "dense-rainbow",
-      "title": "Dense Graphs with Rainbow-C₄ Colorings",
-      "summary": "HasDenseRainbowC4 combines ≥ εn² edges with rainbow-C₄ n-coloring; existentially quantifies over both graph and coloring",
+      "title": "Dense Graphs with Rainbow-C\u2084 Colorings",
+      "summary": "HasDenseRainbowC4 combines \u2265 \u03b5n\u00b2 edges with rainbow-C\u2084 n-coloring; existentially quantifies over both graph and coloring",
       "startLine": 71,
       "endLine": 77
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture (OPEN)",
-      "summary": "ErdosProblem810 as a Prop using Filter.atTop: ∃ ε > 0 such that HasDenseRainbowC4 holds eventually",
+      "summary": "ErdosProblem810 as a Prop using Filter.atTop: \u2203 \u03b5 > 0 such that HasDenseRainbowC4 holds eventually",
       "startLine": 79,
       "endLine": 89
     },
     {
       "id": "known-results",
-      "title": "Known Results: Kővári-Sós-Turán",
-      "summary": "Axiomatizes ex(n; C₄) = O(n^{3/2}) and the consequence that Ω(n²) edges force C₄ existence",
+      "title": "Known Results: K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n",
+      "summary": "Axiomatizes ex(n; C\u2084) = O(n^{3/2}) and the consequence that \u03a9(n\u00b2) edges force C\u2084 existence",
       "startLine": 91,
       "endLine": 110
     },
     {
       "id": "structural",
       "title": "Structural Observation (Proved)",
-      "summary": "c4_free_vacuously_rainbow: one-line proof that C₄-free graphs satisfy IsRainbowC4Coloring for any coloring (vacuous truth)",
+      "summary": "c4_free_vacuously_rainbow: one-line proof that C\u2084-free graphs satisfy IsRainbowC4Coloring for any coloring (vacuous truth)",
       "startLine": 112,
       "endLine": 121
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #810 asks whether dense graphs ($\\geq \\varepsilon n^2$ edges) can be edge-colored with $n$ colors so that every $C_4$ is rainbow. The problem is OPEN. The formalization captures the density-rainbow tension using Kővári-Sós-Turán ($C_4$-free graphs are too sparse) and proves that $C_4$-free graphs vacuously satisfy the rainbow condition. The main conjecture is correctly stated as a `Prop` (not an axiom) since the problem is unresolved.",
-    "implications": "**Theoretical Significance**: **Potential Impact**\n\n1. **Anti-Ramsey Theory:** A resolution would advance the understanding of rainbow subgraph existence in dense settings, complementing the classical anti-Ramsey numbers which count colors needed to *force* rainbow copies.\n\n**2. Extremal Graph Theory:** The problem connects edge density to coloring structure in a novel way — not asking for the extremal number, but for the *colorability* of dense graphs under rainbow constraints.\n\n3. **Algebraic Constructions:** If the answer is yes, constructions might come from algebraic geometry: polarity graphs over finite fields achieve $\\text{ex}(n; C_4)$ and have rich algebraic structure that could control $C_4$ colorings.\n\n4. **Probabilistic Methods:** Random colorings of dense graphs could be analyzed to determine whether the rainbow condition holds with positive probability.",
+    "summary": "Erd\u0151s Problem #810 asks whether dense graphs ($\\geq \\varepsilon n^2$ edges) can be edge-colored with $n$ colors so that every $C_4$ is rainbow. The problem is OPEN. The formalization captures the density-rainbow tension using K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n ($C_4$-free graphs are too sparse) and proves that $C_4$-free graphs vacuously satisfy the rainbow condition. The main conjecture is correctly stated as a `Prop` (not an axiom) since the problem is unresolved.",
+    "implications": "**Theoretical Significance**: **Potential Impact**\n\n1. **Anti-Ramsey Theory:** A resolution would advance the understanding of rainbow subgraph existence in dense settings, complementing the classical anti-Ramsey numbers which count colors needed to *force* rainbow copies.\n\n**2. Extremal Graph Theory:** The problem connects edge density to coloring structure in a novel way \u2014 not asking for the extremal number, but for the *colorability* of dense graphs under rainbow constraints.\n\n3. **Algebraic Constructions:** If the answer is yes, constructions might come from algebraic geometry: polarity graphs over finite fields achieve $\\text{ex}(n; C_4)$ and have rich algebraic structure that could control $C_4$ colorings.\n\n4. **Probabilistic Methods:** Random colorings of dense graphs could be analyzed to determine whether the rainbow condition holds with positive probability.",
     "openQuestions": [
-      "Does such a graph and coloring exist for any ε > 0? This is the main open question.",
-      "What is the maximum achievable ε if the answer is yes? Could ε approach the complete graph density 1/2?",
+      "Does such a graph and coloring exist for any \u03b5 > 0? This is the main open question.",
+      "What is the maximum achievable \u03b5 if the answer is yes? Could \u03b5 approach the complete graph density 1/2?",
       "What happens with fewer colors (n/2 or n/3) or with more colors (2n)?",
-      "Can polarity graphs over finite fields (which are C₄-free and near-extremally dense) be augmented with C₄'s while maintaining a rainbow coloring?",
-      "Does the answer change if we replace C₄ with other small cycles (C₅, C₆) or with complete bipartite graphs?"
+      "Can polarity graphs over finite fields (which are C\u2084-free and near-extremally dense) be augmented with C\u2084's while maintaining a rainbow coloring?",
+      "Does the answer change if we replace C\u2084 with other small cycles (C\u2085, C\u2086) or with complete bipartite graphs?"
     ]
   },
   "leanFile": {
@@ -164,5 +164,39 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-129",
+      "relationship": "related",
+      "description": "Share edge-coloring, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-76",
+      "relationship": "related",
+      "description": "Share edge-coloring, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-149",
+      "relationship": "related",
+      "description": "Share edge-coloring and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1029",
+      "relationship": "related",
+      "description": "Share graph-theoretic and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-129",
+    "erdos-76",
+    "erdos-149",
+    "erdos-1014",
+    "erdos-1029"
+  ]
 }

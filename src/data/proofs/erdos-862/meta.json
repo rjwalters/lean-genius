@@ -1,10 +1,10 @@
 {
   "id": "erdos-862",
-  "title": "Erdős Problem #862: Maximal Sidon Subsets",
+  "title": "Erd\u0151s Problem #862: Maximal Sidon Subsets",
   "slug": "erdos-862",
-  "description": "Let A₁(N) be the number of maximal Sidon subsets of {1,...,N}. Is A₁(N) < 2^{o(N^{1/2})}? Is A₁(N) > 2^{N^c} for some c > 0? SOLVED: A₁(N) ≥ 2^{(0.16+o(1))√N} by Saxton-Thomason (2015).",
+  "description": "Let A\u2081(N) be the number of maximal Sidon subsets of {1,...,N}. Is A\u2081(N) < 2^{o(N^{1/2})}? Is A\u2081(N) > 2^{N^c} for some c > 0? SOLVED: A\u2081(N) \u2265 2^{(0.16+o(1))\u221aN} by Saxton-Thomason (2015).",
   "meta": {
-    "author": "Cameron-Erdős (1992), Saxton-Thomason (2015)",
+    "author": "Cameron-Erd\u0151s (1992), Saxton-Thomason (2015)",
     "sourceUrl": "https://erdosproblems.com/862",
     "date": "2015",
     "status": "axiomatized",
@@ -42,10 +42,10 @@
     "originalContributions": [
       "IsSidonSet: Sidon set predicate (all pairwise sums distinct)",
       "IsMaximalSidonSet: maximality predicate (no element can be added)",
-      "A₁(N) and A(N): counting functions for maximal and all Sidon subsets",
+      "A\u2081(N) and A(N): counting functions for maximal and all Sidon subsets",
       "CameronErdosQuestion1 and CameronErdosQuestion2: formal statements",
-      "saxton_thomason_lower_bound: A(N) ≥ 2^{(1.16+o(1))√N}",
-      "erdos_862_main: A₁(N) ≥ 2^{(0.16+o(1))√N}",
+      "saxton_thomason_lower_bound: A(N) \u2265 2^{(1.16+o(1))\u221aN}",
+      "erdos_862_main: A\u2081(N) \u2265 2^{(0.16+o(1))\u221aN}",
       "question2_positive and question1_negative: answers to both questions",
       "IsBhSet: B_h sequence generalization"
     ],
@@ -68,15 +68,15 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #862: Maximal Sidon Subsets**\n\nA **Sidon set** (B₂ sequence) is a set of integers where all pairwise sums $a + b$ are distinct. The concept was introduced by Simon Sidon in 1932 in a letter to Paul Erdős, asking how large a subset of $\\{1,\\ldots,N\\}$ can be while maintaining this property. Erdős and Pál Turán (1941) proved the foundational upper bound $f(N) \\leq \\sqrt{N} + O(N^{1/4})$, while constructions by Singer (1938) using perfect difference sets and by Erdős and Turán gave $f(N) \\geq (1-o(1))\\sqrt{N}$, establishing $f(N) \\sim \\sqrt{N}$.\n\nIn 1992, Peter Cameron and Paul Erdős shifted attention from the largest Sidon set to counting problems. They asked two questions about $A_1(N)$, the number of **maximal** Sidon subsets of $\\{1,\\ldots,N\\}$ (where \"maximal\" means no element can be added without creating a repeated sum): (Q1) Is $A_1(N) < 2^{o(\\sqrt{N})}$? (Q2) Is $A_1(N) > 2^{N^c}$ for some $c > 0$?\n\nThe breakthrough came from David Saxton and Andrew Thomason's 2015 paper \"Hypergraph containers\" (Inventiones Mathematicae, 201, 925–992), which developed a general method for counting independent sets in uniform hypergraphs. Applied to the Sidon hypergraph (where 4-element edges encode $a+b=c+d$ violations), they proved $A(N) \\geq 2^{(1.16+o(1))\\sqrt{N}}$ for the total number of Sidon sets. Since each maximal Sidon set of size $\\sim\\sqrt{N}$ has at most $2^{(1+o(1))\\sqrt{N}}$ Sidon subsets, dividing gives $A_1(N) \\geq 2^{(0.16+o(1))\\sqrt{N}}$.\n\nThis resolves both questions: Q2 is YES (since $0.16\\sqrt{N} > N^c$ for $c < 1/2$) and Q1 is NO (since $0.16\\sqrt{N}$ is not $o(\\sqrt{N})$). The hypergraph container method, developed simultaneously by Józef Balogh, Robert Morris, and Wojciech Samotij (2015), has since become one of the most influential tools in combinatorics.",
+    "historicalContext": "**Erd\u0151s Problem #862: Maximal Sidon Subsets**\n\nA **Sidon set** (B\u2082 sequence) is a set of integers where all pairwise sums $a + b$ are distinct. The concept was introduced by Simon Sidon in 1932 in a letter to Paul Erd\u0151s, asking how large a subset of $\\{1,\\ldots,N\\}$ can be while maintaining this property. Erd\u0151s and P\u00e1l Tur\u00e1n (1941) proved the foundational upper bound $f(N) \\leq \\sqrt{N} + O(N^{1/4})$, while constructions by Singer (1938) using perfect difference sets and by Erd\u0151s and Tur\u00e1n gave $f(N) \\geq (1-o(1))\\sqrt{N}$, establishing $f(N) \\sim \\sqrt{N}$.\n\nIn 1992, Peter Cameron and Paul Erd\u0151s shifted attention from the largest Sidon set to counting problems. They asked two questions about $A_1(N)$, the number of **maximal** Sidon subsets of $\\{1,\\ldots,N\\}$ (where \"maximal\" means no element can be added without creating a repeated sum): (Q1) Is $A_1(N) < 2^{o(\\sqrt{N})}$? (Q2) Is $A_1(N) > 2^{N^c}$ for some $c > 0$?\n\nThe breakthrough came from David Saxton and Andrew Thomason's 2015 paper \"Hypergraph containers\" (Inventiones Mathematicae, 201, 925\u2013992), which developed a general method for counting independent sets in uniform hypergraphs. Applied to the Sidon hypergraph (where 4-element edges encode $a+b=c+d$ violations), they proved $A(N) \\geq 2^{(1.16+o(1))\\sqrt{N}}$ for the total number of Sidon sets. Since each maximal Sidon set of size $\\sim\\sqrt{N}$ has at most $2^{(1+o(1))\\sqrt{N}}$ Sidon subsets, dividing gives $A_1(N) \\geq 2^{(0.16+o(1))\\sqrt{N}}$.\n\nThis resolves both questions: Q2 is YES (since $0.16\\sqrt{N} > N^c$ for $c < 1/2$) and Q1 is NO (since $0.16\\sqrt{N}$ is not $o(\\sqrt{N})$). The hypergraph container method, developed simultaneously by J\u00f3zef Balogh, Robert Morris, and Wojciech Samotij (2015), has since become one of the most influential tools in combinatorics.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $A_1(N)$ be the number of maximal Sidon subsets of $\\{1,\\ldots,N\\}$.\n\n**Question 1:** Is $A_1(N) < 2^{o(\\sqrt{N})}$? **Answer: NO.**\n\n**Question 2:** Is $A_1(N) > 2^{N^c}$ for some constant $c > 0$? **Answer: YES.**\n\n**Precise bound:** $A_1(N) \\geq 2^{(0.16+o(1))\\sqrt{N}}$ (Saxton-Thomason, 2015).",
-    "text": "Let A₁(N) be the number of maximal Sidon subsets of {1,...,N}. Is A₁(N) < 2^{o(N^{1/2})}? Is A₁(N) > 2^{N^c} for some c > 0? SOLVED: A₁(N) ≥ 2^{(0.16+o(1))√N} by Saxton-Thomason (2015).",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds up from basic definitions to the full resolution in five layers:\n\n1. **Sidon Machinery (Lines 43–70):** Defines `IsSidonSet` via the sum-distinctness condition $a+b = c+d \\implies \\{a,b\\} = \\{c,d\\}$, the interval $[N] = \\{1,\\ldots,N\\}$, and maximality as the inability to extend.\n\n2. **Counting Functions (Lines 64–70):** Defines $A_1(N)$ and $A(N)$ as cardinalities of filtered powersets, using Lean's `Finset.powerset` and `DecidablePred`.\n\n3. **Asymptotic Size (Lines 72–86):** Axiomatizes $f(N) \\sim \\sqrt{N}$ via both epsilon-delta and `Filter.Tendsto` formulations.\n\n4. **Saxton-Thomason Core (Lines 100–117):** Three axioms capturing the container method: the $2^{1.16\\sqrt{N}}$ lower bound on $A(N)$, the $2^{\\sqrt{N}}$ upper bound on subsets per maximal, and Zorn's lemma–type containment of every Sidon set in a maximal one.\n\n5. **Resolution (Lines 119–171):** Derives $A_1(N) \\geq 2^{0.16\\sqrt{N}}$ by division, answers both questions, and packages everything into `erdos_862_summary`.",
+    "text": "Let A\u2081(N) be the number of maximal Sidon subsets of {1,...,N}. Is A\u2081(N) < 2^{o(N^{1/2})}? Is A\u2081(N) > 2^{N^c} for some c > 0? SOLVED: A\u2081(N) \u2265 2^{(0.16+o(1))\u221aN} by Saxton-Thomason (2015).",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds up from basic definitions to the full resolution in five layers:\n\n1. **Sidon Machinery (Lines 43\u201370):** Defines `IsSidonSet` via the sum-distinctness condition $a+b = c+d \\implies \\{a,b\\} = \\{c,d\\}$, the interval $[N] = \\{1,\\ldots,N\\}$, and maximality as the inability to extend.\n\n2. **Counting Functions (Lines 64\u201370):** Defines $A_1(N)$ and $A(N)$ as cardinalities of filtered powersets, using Lean's `Finset.powerset` and `DecidablePred`.\n\n3. **Asymptotic Size (Lines 72\u201386):** Axiomatizes $f(N) \\sim \\sqrt{N}$ via both epsilon-delta and `Filter.Tendsto` formulations.\n\n4. **Saxton-Thomason Core (Lines 100\u2013117):** Three axioms capturing the container method: the $2^{1.16\\sqrt{N}}$ lower bound on $A(N)$, the $2^{\\sqrt{N}}$ upper bound on subsets per maximal, and Zorn's lemma\u2013type containment of every Sidon set in a maximal one.\n\n5. **Resolution (Lines 119\u2013171):** Derives $A_1(N) \\geq 2^{0.16\\sqrt{N}}$ by division, answers both questions, and packages everything into `erdos_862_summary`.",
     "keyInsights": [
       "**Hypergraph Container Method:** Sidon sets are independent sets in a 4-uniform hypergraph on $[N]$ where edges $\\{a,b,c,d\\}$ encode $a+b=c+d$. The container method shows that independent sets cluster inside a small number of \"containers,\" enabling precise counting of both total and maximal Sidon sets.",
       "**Division Argument:** The key insight is $A_1(N) \\geq A(N) / \\max_M |\\{S \\subseteq M : S \\text{ Sidon}\\}|$. Since every Sidon set lies in some maximal one (Zorn's lemma), the total count $A(N)$ is at most $A_1(N)$ times the max subsets per maximal. Plugging in $A(N) \\geq 2^{1.16\\sqrt{N}}$ and the bound $2^{(1+o(1))\\sqrt{N}}$ gives $A_1(N) \\geq 2^{0.16\\sqrt{N}}$.",
-      "**Sidon Size Bound:** The classical result $f(N) \\sim \\sqrt{N}$ (Erdős-Turán 1941, Singer 1938) is crucial: it means maximal Sidon sets have $\\sim\\sqrt{N}$ elements, so their powerset has $2^{\\sim\\sqrt{N}}$ subsets. Without this tight size estimate, the division argument would not yield a meaningful lower bound.",
-      "**Resolving Both Questions Simultaneously:** The bound $A_1(N) \\geq 2^{0.16\\sqrt{N}}$ is strong enough to answer both: Q2 (YES) because $0.16\\sqrt{N} > N^c$ for any $c < 1/2$, and Q1 (NO) because $0.16\\sqrt{N}$ is not $o(\\sqrt{N})$ — it is $\\Theta(\\sqrt{N})$.",
+      "**Sidon Size Bound:** The classical result $f(N) \\sim \\sqrt{N}$ (Erd\u0151s-Tur\u00e1n 1941, Singer 1938) is crucial: it means maximal Sidon sets have $\\sim\\sqrt{N}$ elements, so their powerset has $2^{\\sim\\sqrt{N}}$ subsets. Without this tight size estimate, the division argument would not yield a meaningful lower bound.",
+      "**Resolving Both Questions Simultaneously:** The bound $A_1(N) \\geq 2^{0.16\\sqrt{N}}$ is strong enough to answer both: Q2 (YES) because $0.16\\sqrt{N} > N^c$ for any $c < 1/2$, and Q1 (NO) because $0.16\\sqrt{N}$ is not $o(\\sqrt{N})$ \u2014 it is $\\Theta(\\sqrt{N})$.",
       "**B_h Generalization:** Sidon sets are $B_2$ sequences (h=2). The definition `IsBhSet h S` generalizes to $h$-wise sum distinctness. Counting maximal $B_h$ sets for $h \\geq 3$ remains open; the container method applies but the hypergraph structure becomes $(2h)$-uniform, and asymptotic bounds on $B_h$ set sizes are less precise."
     ],
     "prerequisites": [
@@ -115,7 +115,7 @@
     },
     {
       "id": "cameron-erdos-questions",
-      "title": "The Cameron-Erdős Questions",
+      "title": "The Cameron-Erd\u0151s Questions",
       "summary": "Formalizes Question 1 ($A_1(N) < 2^{c\\sqrt{N}}$ for all $c > 0$, i.e., $A_1(N) < 2^{o(\\sqrt{N})}$) and Question 2 ($A_1(N) > 2^{N^c}$ for some $c > 0$) as Lean propositions using real-valued exponents.",
       "startLine": 88,
       "endLine": 98
@@ -137,7 +137,7 @@
     {
       "id": "upper-bound",
       "title": "Upper Bound on $A_1(N)$",
-      "summary": "Axiomatizes $A_1(N) \\leq 2^{C\\sqrt{N}}$ for some constant $C > 0$, establishing that the growth is $2^{\\Theta(\\sqrt{N})}$ — exponential in $\\sqrt{N}$ with an undetermined constant in the exponent.",
+      "summary": "Axiomatizes $A_1(N) \\leq 2^{C\\sqrt{N}}$ for some constant $C > 0$, establishing that the growth is $2^{\\Theta(\\sqrt{N})}$ \u2014 exponential in $\\sqrt{N}$ with an undetermined constant in the exponent.",
       "startLine": 137,
       "endLine": 142
     },
@@ -157,7 +157,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #862 is completely resolved. The number of maximal Sidon subsets of $\\{1,\\ldots,N\\}$ satisfies $A_1(N) \\geq 2^{(0.16+o(1))\\sqrt{N}}$, answering Cameron and Erdős's Question 2 (YES) and Question 1 (NO). The formalization captures the Saxton-Thomason hypergraph container method through three axioms and derives the full resolution, including the $B_h$ generalization framework.",
+    "summary": "Erd\u0151s Problem #862 is completely resolved. The number of maximal Sidon subsets of $\\{1,\\ldots,N\\}$ satisfies $A_1(N) \\geq 2^{(0.16+o(1))\\sqrt{N}}$, answering Cameron and Erd\u0151s's Question 2 (YES) and Question 1 (NO). The formalization captures the Saxton-Thomason hypergraph container method through three axioms and derives the full resolution, including the $B_h$ generalization framework.",
     "implications": "**Theoretical Significance**: **Broader Mathematical Connections**\n\n1. **Hypergraph Container Method:** The Saxton-Thomason/Balogh-Morris-Samotij container method (2015) revolutionized combinatorics by providing a unified approach to counting independent sets in uniform hypergraphs. It has since resolved counting problems for sum-free sets, triangle-free graphs, Latin squares, and many other structures.\n\n2. **Additive Combinatorics:** Sidon sets are central objects in additive number theory.\n\nThe pairwise-sum-distinctness condition connects to the study of sumsets, Freiman's theorem, and the structure of sets with small doubling constant.\n\n3. **Coding Theory:** Sidon sets correspond to certain error-correcting codes. A Sidon set in $\\{1,\\ldots,N\\}$ defines a code where every codeword difference is unique, with applications to radar and wireless communication.\n\n4. **Perfect Difference Sets:** Singer's 1938 construction of Sidon sets via perfect difference sets in cyclic groups $\\mathbb{Z}_p$ (for prime $p$) achieves the near-optimal size $\\sqrt{N}$ and connects to finite geometry and projective planes.\n\n5. **Probabilistic Combinatorics:** Both the lower bound construction ($A(N) \\geq 2^{1.16\\sqrt{N}}$) and the upper bound on subsets per maximal set use probabilistic arguments, exemplifying the interplay between deterministic structure and randomness in modern combinatorics.",
     "openQuestions": [
       "Determine the exact constant $\\alpha$ such that $A_1(N) = 2^{(\\alpha+o(1))\\sqrt{N}}$: is it $\\alpha = 0.16$ or can the lower/upper bounds be tightened?",
@@ -186,5 +186,39 @@
     "axiomCount": 11,
     "theoremCount": 1,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-757",
+      "relationship": "related",
+      "description": "Share combinatorial, extremal-combinatorial, and sidon-sets themes"
+    },
+    {
+      "targetId": "erdos-1023",
+      "relationship": "related",
+      "description": "Share combinatorial and extremal-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1025",
+      "relationship": "related",
+      "description": "Share combinatorial and extremal-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1086",
+      "relationship": "related",
+      "description": "Share combinatorial and extremal-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Share combinatorial and sidon-sets themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-757",
+    "erdos-1023",
+    "erdos-1025",
+    "erdos-1086",
+    "erdos-153"
+  ]
 }

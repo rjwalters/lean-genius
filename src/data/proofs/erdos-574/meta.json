@@ -1,8 +1,8 @@
 {
   "id": "erdos-574",
-  "title": "Erdős Problem #574: Turán Number for Consecutive Cycle Pairs",
+  "title": "Erd\u0151s Problem #574: Tur\u00e1n Number for Consecutive Cycle Pairs",
   "slug": "erdos-574",
-  "description": "Is ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k} for k ≥ 2? Conjectured that forbidding C_{2k−1} in addition to C_{2k} does not change the extremal number asymptotically. Open.",
+  "description": "Is ex(n; {C_{2k\u22121}, C_{2k}}) = (1+o(1))\u00b7(n/2)^{1+1/k} for k \u2265 2? Conjectured that forbidding C_{2k\u22121} in addition to C_{2k} does not change the extremal number asymptotically. Open.",
   "meta": {
     "erdosNumber": 574,
     "status": "axiomatized",
@@ -21,12 +21,12 @@
       {
         "id": "erdos-573",
         "relationship": "specialization",
-        "description": "Problem #573 is the k=2 case: ex(n; {C₃, C₄}) ~ (n/2)^{3/2}"
+        "description": "Problem #573 is the k=2 case: ex(n; {C\u2083, C\u2084}) ~ (n/2)^{3/2}"
       },
       {
         "id": "erdos-575",
         "relationship": "generalization",
-        "description": "Problem #575 asks whether bipartite Turán numbers dominate for families containing a bipartite graph"
+        "description": "Problem #575 asks whether bipartite Tur\u00e1n numbers dominate for families containing a bipartite graph"
       },
       {
         "id": "erdos-113",
@@ -36,7 +36,7 @@
       {
         "id": "erdos-180",
         "relationship": "related",
-        "description": "Problem #180 on Turán numbers for graph families, the general framework for this problem"
+        "description": "Problem #180 on Tur\u00e1n numbers for graph families, the general framework for this problem"
       }
     ],
     "axiomCount": 4,
@@ -60,7 +60,7 @@
     },
     {
       "id": "main-conjecture",
-      "title": "Erdős–Simonovits Conjecture",
+      "title": "Erd\u0151s\u2013Simonovits Conjecture",
       "startLine": 54,
       "endLine": 61,
       "summary": "The central conjecture: for $k \\ge 2$, $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = (1+o(1)) \\cdot (n/2)^{1+1/k}$, formalized as a two-sided asymptotic bound with arbitrary $\\varepsilon > 0$."
@@ -70,7 +70,7 @@
       "title": "Known Results",
       "startLine": 63,
       "endLine": 84,
-      "summary": "Axiomatized known results: the even cycle Turán number $\\text{ex}(n; C_{2k}) = \\Theta(n^{1+1/k})$, the Bondy–Simonovits upper bound $\\text{ex}(n; C_{2k}) \\le c \\cdot n^{1+1/k}$, and the special case $k=2$ relating to Problem #573."
+      "summary": "Axiomatized known results: the even cycle Tur\u00e1n number $\\text{ex}(n; C_{2k}) = \\Theta(n^{1+1/k})$, the Bondy\u2013Simonovits upper bound $\\text{ex}(n; C_{2k}) \\le c \\cdot n^{1+1/k}$, and the special case $k=2$ relating to Problem #573."
     },
     {
       "id": "observations",
@@ -81,27 +81,27 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Simonovits formulated this conjecture in 1982 as part of their systematic study of extremal numbers for cycles. The question builds on a rich tradition beginning with Turán's 1941 theorem for complete graphs and extending through the Kővári–Sós–Turán theorem (1954) for bipartite Turán problems. The pivotal result framing this problem is the Bondy–Simonovits theorem (1974), which established that $\\text{ex}(n; C_{2k}) = O(n^{1+1/k})$. Matching lower bounds were obtained through algebraic constructions: Wenger (1991) and Lazebnik–Ustimenko–Woldar (1995) used incidence geometries of projective planes and generalized polygons to build dense $C_{2k}$-free graphs for $k = 2, 3, 5$. Critically, these algebraic constructions are bipartite and therefore automatically $C_{2k-1}$-free, providing evidence that the odd cycle exclusion imposes no additional asymptotic cost. For general $k$, the exact order of $\\text{ex}(n; C_{2k})$ remains unknown, making the consecutive pair problem even more challenging.",
+    "historicalContext": "Erd\u0151s and Simonovits formulated this conjecture in 1982 as part of their systematic study of extremal numbers for cycles. The question builds on a rich tradition beginning with Tur\u00e1n's 1941 theorem for complete graphs and extending through the K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n theorem (1954) for bipartite Tur\u00e1n problems. The pivotal result framing this problem is the Bondy\u2013Simonovits theorem (1974), which established that $\\text{ex}(n; C_{2k}) = O(n^{1+1/k})$. Matching lower bounds were obtained through algebraic constructions: Wenger (1991) and Lazebnik\u2013Ustimenko\u2013Woldar (1995) used incidence geometries of projective planes and generalized polygons to build dense $C_{2k}$-free graphs for $k = 2, 3, 5$. Critically, these algebraic constructions are bipartite and therefore automatically $C_{2k-1}$-free, providing evidence that the odd cycle exclusion imposes no additional asymptotic cost. For general $k$, the exact order of $\\text{ex}(n; C_{2k})$ remains unknown, making the consecutive pair problem even more challenging.",
     "problemStatement": "For $k \\ge 2$, prove that $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = (1+o(1)) \\cdot (n/2)^{1+1/k}$. That is, the maximum number of edges in a graph on $n$ vertices containing neither a $(2k-1)$-cycle nor a $2k$-cycle is asymptotically $(n/2)^{1+1/k}$, the same as for forbidding $C_{2k}$ alone.",
-    "text": "Is ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k} for k ≥ 2? Conjectured that forbidding C_{2k−1} in addition to C_{2k} does not change the extremal number asymptotically. Open.",
-    "proofStrategy": "The formalization defines a custom simple graph structure with cycle containment as an injective mapping from $\\text{Fin}\\,\\ell$ to vertices with successive adjacencies. The consecutive cycle-free predicate requires simultaneous avoidance of both $C_{2k-1}$ and $C_{2k}$. The main conjecture is stated in the $\\varepsilon$-$N_0$ form of asymptotic equivalence. Supporting axioms encode the Bondy–Simonovits upper bound and the even cycle Turán number, grounding the formalization in established extremal graph theory.",
+    "text": "Is ex(n; {C_{2k\u22121}, C_{2k}}) = (1+o(1))\u00b7(n/2)^{1+1/k} for k \u2265 2? Conjectured that forbidding C_{2k\u22121} in addition to C_{2k} does not change the extremal number asymptotically. Open.",
+    "proofStrategy": "The formalization defines a custom simple graph structure with cycle containment as an injective mapping from $\\text{Fin}\\,\\ell$ to vertices with successive adjacencies. The consecutive cycle-free predicate requires simultaneous avoidance of both $C_{2k-1}$ and $C_{2k}$. The main conjecture is stated in the $\\varepsilon$-$N_0$ form of asymptotic equivalence. Supporting axioms encode the Bondy\u2013Simonovits upper bound and the even cycle Tur\u00e1n number, grounding the formalization in established extremal graph theory.",
     "keyInsights": [
       "The conjecture is a precise quantitative claim: forbidding $C_{2k-1}$ alongside $C_{2k}$ incurs zero asymptotic cost, i.e., $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) \\sim \\text{ex}(n; C_{2k})$",
       "All known extremal constructions for the even cycle problem are bipartite (odd-girth infinity), so they automatically satisfy the consecutive pair constraint without any modification",
       "The asymptotic formulation $(1+o(1)) \\cdot (n/2)^{1+1/k}$ pins down both the exponent $1+1/k$ and the leading constant $1/2^{1+1/k}$, making this stronger than a mere $\\Theta$-bound",
       "For $k = 2, 3, 5$, the algebraic constructions from incidence graphs of generalized polygons match the upper bound, confirming the conjecture for these specific values",
-      "The problem connects to the Zarankiewicz problem: $z(m, n; s, t)$ bounds the edges in $K_{s,t}$-free bipartite graphs, and the even cycle Turán problem reduces to a Zarankiewicz-type question via the observation that $C_{2k}$-free implies $K_{k,k}$-free in the neighborhood graph",
+      "The problem connects to the Zarankiewicz problem: $z(m, n; s, t)$ bounds the edges in $K_{s,t}$-free bipartite graphs, and the even cycle Tur\u00e1n problem reduces to a Zarankiewicz-type question via the observation that $C_{2k}$-free implies $K_{k,k}$-free in the neighborhood graph",
       "Resolution of this problem would establish a rare instance where adding a forbidden subgraph does not change the extremal function, a phenomenon that has deep implications for the rationality of extremal growth rates"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #574 conjectures that the Turán number for the consecutive cycle pair $\\{C_{2k-1}, C_{2k}\\}$ is asymptotically identical to the even cycle Turán number $\\text{ex}(n; C_{2k})$. The formalization captures this in Lean 4 via an $\\varepsilon$-$N_0$ asymptotic statement, supported by axiomatized versions of the Bondy–Simonovits bound and related known results.",
-    "implications": "A positive resolution would establish that odd cycle avoidance is 'free' in the extremal setting for consecutive cycle pairs, confirming the optimality of bipartite algebraic constructions. It would also contribute to the broader program of classifying when $\\text{ex}(n; \\mathcal{F}) = \\text{ex}(n; F)$ for a family $\\mathcal{F}$ and a single member $F \\in \\mathcal{F}$, a central question in extremal graph theory connected to the Erdős–Simonovits supersaturation lemma.",
+    "summary": "Erd\u0151s Problem #574 conjectures that the Tur\u00e1n number for the consecutive cycle pair $\\{C_{2k-1}, C_{2k}\\}$ is asymptotically identical to the even cycle Tur\u00e1n number $\\text{ex}(n; C_{2k})$. The formalization captures this in Lean 4 via an $\\varepsilon$-$N_0$ asymptotic statement, supported by axiomatized versions of the Bondy\u2013Simonovits bound and related known results.",
+    "implications": "A positive resolution would establish that odd cycle avoidance is 'free' in the extremal setting for consecutive cycle pairs, confirming the optimality of bipartite algebraic constructions. It would also contribute to the broader program of classifying when $\\text{ex}(n; \\mathcal{F}) = \\text{ex}(n; F)$ for a family $\\mathcal{F}$ and a single member $F \\in \\mathcal{F}$, a central question in extremal graph theory connected to the Erd\u0151s\u2013Simonovits supersaturation lemma.",
     "openQuestions": [
       "Is $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = (1+o(1)) \\cdot (n/2)^{1+1/k}$ for all $k \\ge 2$?",
       "For which values of $k$ beyond 2, 3, 5 can the exact order of $\\text{ex}(n; C_{2k})$ be determined?",
@@ -110,11 +110,45 @@
     ]
   },
   "references": [
-    "Erdős & Simonovits (1982): original problem [ErSi82]",
+    "Erd\u0151s & Simonovits (1982): original problem [ErSi82]",
     "Bondy & Simonovits (1974): ex(n; C_{2k}) = O(n^{1+1/k})",
-    "Kővári–Sós–Turán (1954): Zarankiewicz problem upper bound",
+    "K\u0151v\u00e1ri\u2013S\u00f3s\u2013Tur\u00e1n (1954): Zarankiewicz problem upper bound",
     "Lazebnik, Ustimenko & Woldar (1995): algebraic constructions for k = 2, 3, 5",
     "Wenger (1991): explicit C_{2k}-free constructions via algebraic geometry",
     "https://erdosproblems.com/574"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1080",
+      "relationship": "related",
+      "description": "Share cycles, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-577",
+      "relationship": "related",
+      "description": "Share cycles, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-64",
+      "relationship": "related",
+      "description": "Share cycles, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-666",
+      "relationship": "related",
+      "description": "Share cycles, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-180",
+      "relationship": "related",
+      "description": "Share graph-theoretic, extremal graph-theoretic, and turan-number themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1080",
+    "erdos-577",
+    "erdos-64",
+    "erdos-666",
+    "erdos-180"
   ]
 }

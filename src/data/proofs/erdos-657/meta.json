@@ -1,10 +1,10 @@
 {
   "id": "erdos-657",
-  "title": "Erdős Problem #657: Isosceles-Free Point Sets and Distinct Distances",
+  "title": "Erd\u0151s Problem #657: Isosceles-Free Point Sets and Distinct Distances",
   "slug": "erdos-657",
-  "description": "If A ⊂ ℝ² is a set of n points with no isosceles triangles, must A determine at least f(n)·n distinct distances for some f(n) → ∞? PARTIALLY SOLVED: YES. Bounds: 2^{c(log n)^{1/9}} ≤ f(n) ≤ 2^{O(√log n)}.",
+  "description": "If A \u2282 \u211d\u00b2 is a set of n points with no isosceles triangles, must A determine at least f(n)\u00b7n distinct distances for some f(n) \u2192 \u221e? PARTIALLY SOLVED: YES. Bounds: 2^{c(log n)^{1/9}} \u2264 f(n) \u2264 2^{O(\u221alog n)}.",
   "meta": {
-    "author": "Erdős-Davies (1973), Dumitrescu (2008), Kelley-Meka (2023)",
+    "author": "Erd\u0151s-Davies (1973), Dumitrescu (2008), Kelley-Meka (2023)",
     "sourceUrl": "https://erdosproblems.com/657",
     "date": "1973",
     "status": "formalized",
@@ -43,29 +43,29 @@
       }
     ],
     "originalContributions": [
-      "Point2: points in ℝ²",
+      "Point2: points in \u211d\u00b2",
       "dist2: Euclidean distance function with symmetry and non-negativity proofs",
       "Triple: proof-carrying structure for three distinct points",
       "IsIsosceles, IsIsoscelesFree: isosceles definitions",
       "distanceSet, numDistinctDistances: distance counting via Finset.image",
       "f_ratio: the extremal function f(n) from the problem",
       "ErdosQuestion657, ErdosQuestion657': two equivalent formal problem statements",
-      "dumitrescu_lower_bound axiom: f(n) ≥ (log n)^c",
-      "dumitrescu_upper_bound axiom: f(n) ≤ 2^{O(√log n)} via Behrend construction",
-      "kelley_meka_lower_bound axiom: f(n) ≥ 2^{c(log n)^{1/9}} via 3-AP advances",
+      "dumitrescu_lower_bound axiom: f(n) \u2265 (log n)^c",
+      "dumitrescu_upper_bound axiom: f(n) \u2264 2^{O(\u221alog n)} via Behrend construction",
+      "kelley_meka_lower_bound axiom: f(n) \u2265 2^{c(log n)^{1/9}} via 3-AP advances",
       "Is3APFree: 3-AP-free sets and connection to isosceles avoidance",
-      "oneDimensional_equivalence: reduction from isosceles-free to 3-AP-free in ℝ",
+      "oneDimensional_equivalence: reduction from isosceles-free to 3-AP-free in \u211d",
       "straus_high_dimension: high-dimensional construction with only n-1 distances",
       "currentGap, refinedQuestion: formalization of the remaining open questions"
     ],
     "relatedProblems": [
       {
         "id": "erdos-135",
-        "relationship": "The Erdős distinct distances problem: every n-point set in ℝ² determines ≥ cn/√(log n) distinct distances (Guth-Katz 2015). Problem #657 asks the analogous question restricted to isosceles-free sets"
+        "relationship": "The Erd\u0151s distinct distances problem: every n-point set in \u211d\u00b2 determines \u2265 cn/\u221a(log n) distinct distances (Guth-Katz 2015). Problem #657 asks the analogous question restricted to isosceles-free sets"
       },
       {
         "id": "erdos-652",
-        "relationship": "Distance multiplicity spectrum problem — both study how structural constraints on point sets affect the number of distinct distances"
+        "relationship": "Distance multiplicity spectrum problem \u2014 both study how structural constraints on point sets affect the number of distinct distances"
       }
     ],
     "axiomCount": 16,
@@ -73,15 +73,15 @@
     "assumptions": "16 axiom(s) and 6 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #657: Isosceles-Free Point Sets and Distinct Distances**\n\n**Origin (1973):** Erdős and Davies formulated this problem in [Er73], asking about the relationship between avoiding isosceles triangles and forcing many distinct distances. A point set $A \\subset \\mathbb{R}^2$ is *isosceles-free* if for every triple $\\{p, q, r\\} \\subset A$, the distances $d(p,q), d(p,r), d(q,r)$ are all distinct.\n\n**The Central Question:** Define $f(n) = \\min\\{|\\Delta(A)|/n : A \\subset \\mathbb{R}^2,\\; |A| = n,\\; A \\text{ isosceles-free}\\}$. Is $f(n) \\to \\infty$? This asks whether the isosceles-free condition forces *superlinearly* many distinct distances.\n\n**The 3-AP Connection:** In one dimension, a set $A \\subset \\mathbb{R}$ is isosceles-free iff it is 3-AP-free (contains no three-term arithmetic progression $a, a+d, a+2d$). This connects the problem to Roth's theorem (1953) and the function $r_3(N)$ measuring the maximum size of a 3-AP-free subset of $\\{1, \\ldots, N\\}$.\n\n**Dumitrescu's Breakthrough (2008):** Adrian Dumitrescu established both directions: $(\\log n)^c \\le f(n) \\le 2^{O(\\sqrt{\\log n})}$. The lower bound answers Erdős's question affirmatively ($f(n) \\to \\infty$), while the upper bound uses **Behrend's construction** (1946) of large 3-AP-free sets to build isosceles-free point sets with few distances.\n\n**Kelley-Meka Revolution (2023):** Zander Kelley and Raghu Meka proved the breakthrough bound $r_3(N) \\le N/2^{c(\\log N)^{1/9}}$, dramatically improving all previous 3-AP bounds. Via the 3-AP connection, this translates to $f(n) \\ge 2^{c(\\log n)^{1/9}}$, a super-polylogarithmic lower bound. Bloom and Sisask further refined the constant.\n\n**Straus's Observation:** In high dimensions ($\\mathbb{R}^k$ with $2^k \\ge n$), isosceles-free $n$-point sets can have as few as $n - 1$ distances (using hypercube vertices). This shows the problem is intrinsically low-dimensional.",
-    "problemStatement": "**Problem Statement (Partially Solved)**\n\nIf A ⊂ ℝ² is a set of n points such that every subset of 3 points determines 3 distinct distances (i.e., A has no isosceles triangles), then A must determine at least f(n)·n distinct distances, for some f(n) → ∞?\n\n**Answer: YES** (f(n) → ∞ is confirmed)\n\n**Current Bounds:**\n- Lower: 2^{c(log n)^{1/9}} ≤ f(n) (Kelley-Meka/Bloom-Sisask 2023)\n- Upper: f(n) ≤ 2^{O(√log n)} (Dumitrescu 2008)\n\nThe exact growth rate of f(n) remains unknown.",
-    "text": "If A ⊂ ℝ² is a set of n points with no isosceles triangles, must A determine at least f(n)·n distinct distances for some f(n) → ∞? PARTIALLY SOLVED: YES. Bounds: 2^{c(log n)^{1/9}} ≤ f(n) ≤ 2^{O(√log n)}.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Point Geometry:** Define Point2, dist2 (Euclidean distance)\n\n2. **Isosceles-Free:** Triple structure, IsIsosceles, IsIsoscelesFree\n\n3. **Distance Counting:** distanceSet, numDistinctDistances\n\n4. **The Question:** ErdosQuestion657 (f(n) → ∞)\n\n5. **Dumitrescu Bounds:** Axiomatize lower ((log n)^c) and upper (2^{√log n})\n\n6. **Kelley-Meka:** Axiomatize 2^{(log n)^{1/9}} improvement\n\n7. **3-AP Connection:** Is3APFree, equivalence in ℝ\n\n8. **High Dimension:** Straus's construction with n-1 distances",
+    "historicalContext": "**Erd\u0151s Problem #657: Isosceles-Free Point Sets and Distinct Distances**\n\n**Origin (1973):** Erd\u0151s and Davies formulated this problem in [Er73], asking about the relationship between avoiding isosceles triangles and forcing many distinct distances. A point set $A \\subset \\mathbb{R}^2$ is *isosceles-free* if for every triple $\\{p, q, r\\} \\subset A$, the distances $d(p,q), d(p,r), d(q,r)$ are all distinct.\n\n**The Central Question:** Define $f(n) = \\min\\{|\\Delta(A)|/n : A \\subset \\mathbb{R}^2,\\; |A| = n,\\; A \\text{ isosceles-free}\\}$. Is $f(n) \\to \\infty$? This asks whether the isosceles-free condition forces *superlinearly* many distinct distances.\n\n**The 3-AP Connection:** In one dimension, a set $A \\subset \\mathbb{R}$ is isosceles-free iff it is 3-AP-free (contains no three-term arithmetic progression $a, a+d, a+2d$). This connects the problem to Roth's theorem (1953) and the function $r_3(N)$ measuring the maximum size of a 3-AP-free subset of $\\{1, \\ldots, N\\}$.\n\n**Dumitrescu's Breakthrough (2008):** Adrian Dumitrescu established both directions: $(\\log n)^c \\le f(n) \\le 2^{O(\\sqrt{\\log n})}$. The lower bound answers Erd\u0151s's question affirmatively ($f(n) \\to \\infty$), while the upper bound uses **Behrend's construction** (1946) of large 3-AP-free sets to build isosceles-free point sets with few distances.\n\n**Kelley-Meka Revolution (2023):** Zander Kelley and Raghu Meka proved the breakthrough bound $r_3(N) \\le N/2^{c(\\log N)^{1/9}}$, dramatically improving all previous 3-AP bounds. Via the 3-AP connection, this translates to $f(n) \\ge 2^{c(\\log n)^{1/9}}$, a super-polylogarithmic lower bound. Bloom and Sisask further refined the constant.\n\n**Straus's Observation:** In high dimensions ($\\mathbb{R}^k$ with $2^k \\ge n$), isosceles-free $n$-point sets can have as few as $n - 1$ distances (using hypercube vertices). This shows the problem is intrinsically low-dimensional.",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nIf A \u2282 \u211d\u00b2 is a set of n points such that every subset of 3 points determines 3 distinct distances (i.e., A has no isosceles triangles), then A must determine at least f(n)\u00b7n distinct distances, for some f(n) \u2192 \u221e?\n\n**Answer: YES** (f(n) \u2192 \u221e is confirmed)\n\n**Current Bounds:**\n- Lower: 2^{c(log n)^{1/9}} \u2264 f(n) (Kelley-Meka/Bloom-Sisask 2023)\n- Upper: f(n) \u2264 2^{O(\u221alog n)} (Dumitrescu 2008)\n\nThe exact growth rate of f(n) remains unknown.",
+    "text": "If A \u2282 \u211d\u00b2 is a set of n points with no isosceles triangles, must A determine at least f(n)\u00b7n distinct distances for some f(n) \u2192 \u221e? PARTIALLY SOLVED: YES. Bounds: 2^{c(log n)^{1/9}} \u2264 f(n) \u2264 2^{O(\u221alog n)}.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Point Geometry:** Define Point2, dist2 (Euclidean distance)\n\n2. **Isosceles-Free:** Triple structure, IsIsosceles, IsIsoscelesFree\n\n3. **Distance Counting:** distanceSet, numDistinctDistances\n\n4. **The Question:** ErdosQuestion657 (f(n) \u2192 \u221e)\n\n5. **Dumitrescu Bounds:** Axiomatize lower ((log n)^c) and upper (2^{\u221alog n})\n\n6. **Kelley-Meka:** Axiomatize 2^{(log n)^{1/9}} improvement\n\n7. **3-AP Connection:** Is3APFree, equivalence in \u211d\n\n8. **High Dimension:** Straus's construction with n-1 distances",
     "keyInsights": [
-      "**Isosceles-Free ↔ 3-AP-Free:** In $\\mathbb{R}$, a set is isosceles-free iff it is 3-AP-free, because $d(a,b) = d(b,c)$ iff $b - a = c - b$ iff $2b = a + c$. This reduction connects a geometric problem to one of the deepest areas of additive combinatorics",
+      "**Isosceles-Free \u2194 3-AP-Free:** In $\\mathbb{R}$, a set is isosceles-free iff it is 3-AP-free, because $d(a,b) = d(b,c)$ iff $b - a = c - b$ iff $2b = a + c$. This reduction connects a geometric problem to one of the deepest areas of additive combinatorics",
       "**Behrend's Upper Bound:** Dumitrescu's construction uses Behrend's (1946) 3-AP-free sets of size $N/2^{O(\\sqrt{\\log N})}$ in $\\{1, \\ldots, N\\}$, embedded on a line, giving isosceles-free sets with only $2^{O(\\sqrt{\\log n})} \\cdot n$ distinct distances",
       "**Kelley-Meka Breakthrough:** The 2023 bound $r_3(N) \\le N/2^{c(\\log N)^{1/9}}$ dramatically improved the lower bound on $f(n)$ from polylogarithmic to super-polylogarithmic: $f(n) \\ge 2^{c(\\log n)^{1/9}}$",
-      "**The Exponent Gap:** The current bounds $2^{(\\log n)^{1/9}} \\le f(n) \\le 2^{\\sqrt{\\log n}}$ have exponents $1/9$ vs $1/2$ — neither is believed tight, and the true growth rate of $f(n)$ remains a major open question",
+      "**The Exponent Gap:** The current bounds $2^{(\\log n)^{1/9}} \\le f(n) \\le 2^{\\sqrt{\\log n}}$ have exponents $1/9$ vs $1/2$ \u2014 neither is believed tight, and the true growth rate of $f(n)$ remains a major open question",
       "**Dimensional Threshold:** Straus showed that in $\\mathbb{R}^k$ with $2^k \\ge n$, isosceles-free sets can have only $n - 1$ distances (using hypercube vertices $\\{0,1\\}^k$), so the problem is nontrivial only in low dimensions"
     ],
     "prerequisites": [
@@ -120,7 +120,7 @@
     },
     {
       "id": "question",
-      "title": "The Erdős-Davies Question",
+      "title": "The Erd\u0151s-Davies Question",
       "startLine": 114,
       "endLine": 134,
       "summary": "Defines $f(n) = \\inf\\{|\\Delta(A)|/n\\}$ over isosceles-free $n$-point sets. Two equivalent formulations of the question: $\\forall M,\\; \\exists N$ (epsilon-delta) and $\\exists f$ with $\\texttt{Filter.Tendsto}$."
@@ -183,8 +183,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #657 asks whether isosceles-free point sets in $\\mathbb{R}^2$ must determine at least $f(n) \\cdot n$ distinct distances for some $f(n) \\to \\infty$. The answer is **YES**: Dumitrescu (2008) proved $f(n) \\ge (\\log n)^c$, and the Kelley-Meka breakthrough (2023) on 3-AP density improved this to $f(n) \\ge 2^{c(\\log n)^{1/9}}$. The upper bound $f(n) \\le 2^{O(\\sqrt{\\log n})}$ comes from Behrend-type constructions. The exact growth rate remains open.",
-    "implications": "1. **Additive Combinatorics Bridge:** The 3-AP connection means every advance on Roth-type bounds (one of the central topics in additive combinatorics) directly improves the lower bound on $f(n)$, making this problem a meeting point of geometry and number theory\n\n2. **Guth-Katz Context:** The general Erdős distinct distances conjecture (Problem #135) was resolved by Guth-Katz (2015) showing $|\\Delta(A)| \\ge cn/\\log n$ for all $n$-point sets.\n\nProblem #657 asks the analogous question restricted to isosceles-free sets, where the answer is $f(n) \\cdot n$ with $f(n) \\to \\infty$ — a stronger lower bound than the general case\n\n3. **Dimensional Sensitivity:** Straus's observation that high-dimensional isosceles-free sets can have only $n - 1$ distances shows the problem is fundamentally about the geometry of $\\mathbb{R}^2$, not a purely combinatorial phenomenon\n\n4. **Behrend's Construction:** The upper bound relies on one of the most important constructions in combinatorial number theory — large 3-AP-free subsets of $[N]$ of size $N/2^{O(\\sqrt{\\log N})}$.",
+    "summary": "Erd\u0151s Problem #657 asks whether isosceles-free point sets in $\\mathbb{R}^2$ must determine at least $f(n) \\cdot n$ distinct distances for some $f(n) \\to \\infty$. The answer is **YES**: Dumitrescu (2008) proved $f(n) \\ge (\\log n)^c$, and the Kelley-Meka breakthrough (2023) on 3-AP density improved this to $f(n) \\ge 2^{c(\\log n)^{1/9}}$. The upper bound $f(n) \\le 2^{O(\\sqrt{\\log n})}$ comes from Behrend-type constructions. The exact growth rate remains open.",
+    "implications": "1. **Additive Combinatorics Bridge:** The 3-AP connection means every advance on Roth-type bounds (one of the central topics in additive combinatorics) directly improves the lower bound on $f(n)$, making this problem a meeting point of geometry and number theory\n\n2. **Guth-Katz Context:** The general Erd\u0151s distinct distances conjecture (Problem #135) was resolved by Guth-Katz (2015) showing $|\\Delta(A)| \\ge cn/\\log n$ for all $n$-point sets.\n\nProblem #657 asks the analogous question restricted to isosceles-free sets, where the answer is $f(n) \\cdot n$ with $f(n) \\to \\infty$ \u2014 a stronger lower bound than the general case\n\n3. **Dimensional Sensitivity:** Straus's observation that high-dimensional isosceles-free sets can have only $n - 1$ distances shows the problem is fundamentally about the geometry of $\\mathbb{R}^2$, not a purely combinatorial phenomenon\n\n4. **Behrend's Construction:** The upper bound relies on one of the most important constructions in combinatorial number theory \u2014 large 3-AP-free subsets of $[N]$ of size $N/2^{O(\\sqrt{\\log N})}$.",
     "openQuestions": [
       "What is the true growth rate of $f(n)$? Is $f(n) = 2^{(\\log n)^\\theta}$ for some explicit $\\theta \\in (1/9, 1/2)$?",
       "Can the Kelley-Meka exponent $1/9$ be improved to match the Behrend exponent $1/2$?",
@@ -214,12 +214,12 @@
   "references": [
     {
       "key": "Er73",
-      "citation": "Erdős, P. and Davies, R. (1973). On a problem of Erdős and Moser. In: Problems and results on combinatorial number theory.",
+      "citation": "Erd\u0151s, P. and Davies, R. (1973). On a problem of Erd\u0151s and Moser. In: Problems and results on combinatorial number theory.",
       "type": "paper"
     },
     {
       "key": "Du08",
-      "citation": "Dumitrescu, A. (2008). On distinct distances and λ-free point sets. Discrete Mathematics, 308(24), 6533-6538.",
+      "citation": "Dumitrescu, A. (2008). On distinct distances and \u03bb-free point sets. Discrete Mathematics, 308(24), 6533-6538.",
       "type": "paper"
     },
     {
@@ -237,5 +237,39 @@
       "citation": "Behrend, F. (1946). On sets of integers which contain no three terms in arithmetical progression. Proceedings of the National Academy of Sciences, 32(12), 331-332.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-668",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric, distances, and geometric themes"
+    },
+    {
+      "targetId": "erdos-953",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric, distances, and geometric themes"
+    },
+    {
+      "targetId": "erdos-1071",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and geometric themes"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and distances themes"
+    },
+    {
+      "targetId": "erdos-214",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and geometric themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-668",
+    "erdos-953",
+    "erdos-1071",
+    "erdos-1087",
+    "erdos-214"
   ]
 }

@@ -151,5 +151,39 @@
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-728-factorial-divisibility",
+      "relationship": "related",
+      "description": "Share combinatorial, ai-solved, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1161",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Share combinatorial and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-728-factorial-divisibility",
+    "erdos-1005",
+    "erdos-1138",
+    "erdos-1161",
+    "erdos-13"
+  ]
 }

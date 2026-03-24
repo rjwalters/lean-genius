@@ -1,10 +1,10 @@
 {
   "id": "erdos-1133",
-  "title": "Erdős Problem #1133: Large Polynomial Interpolation Bound",
+  "title": "Erd\u0151s Problem #1133: Large Polynomial Interpolation Bound",
   "slug": "erdos-1133",
   "description": "For any C > 0, can one always choose target values y_i in [-1,1] for sample points x_i such that any low-degree polynomial approximating most points must exceed C somewhere in [-1,1]? OPEN.",
   "meta": {
-    "author": "Erdős (1967)",
+    "author": "Erd\u0151s (1967)",
     "sourceUrl": "https://erdosproblems.com/1133",
     "date": "1967",
     "status": "axiomatized",
@@ -53,7 +53,7 @@
       "ApproximatelyInterpolates definition: P passes through >= (1-epsilon)n points",
       "HasBoundedDegree definition: deg(P) < (1+epsilon)n",
       "ErdosConjecture1133 formal statement",
-      "erdos_related_result axiom: Erdős's weaker result about polynomial existence",
+      "erdos_related_result axiom: Erd\u0151s's weaker result about polynomial existence",
       "lagrange_interpolation axiom: existence and uniqueness",
       "lagrange_divergence axiom: divergence for uniform nodes",
       "chebyshevNodes definition: cos(pi(2k+1)/(2n))",
@@ -64,15 +64,15 @@
     "relatedProblems": [
       {
         "id": "erdos-1132",
-        "relationship": "Companion problem on Lebesgue functions for infinite node sequences: Bernstein's density theorem and Erdős lower bounds on interpolation divergence"
+        "relationship": "Companion problem on Lebesgue functions for infinite node sequences: Bernstein's density theorem and Erd\u0151s lower bounds on interpolation divergence"
       },
       {
         "id": "erdos-1130",
-        "relationship": "Lagrange basis function sums (Υ functional): min-max of Lebesgue functions on subintervals, solved by de Boor-Pinkus (1978) with Υ ≤ (2/π) log n + O(1)"
+        "relationship": "Lagrange basis function sums (\u03a5 functional): min-max of Lebesgue functions on subintervals, solved by de Boor-Pinkus (1978) with \u03a5 \u2264 (2/\u03c0) log n + O(1)"
       },
       {
         "id": "erdos-1131",
-        "relationship": "L² optimization of Lagrange basis polynomial integrals: min I = 2 - (1+o(1))/n (conjectured), involving Legendre polynomials and optimal node placement"
+        "relationship": "L\u00b2 optimization of Lagrange basis polynomial integrals: min I = 2 - (1+o(1))/n (conjectured), involving Legendre polynomials and optimal node placement"
       },
       {
         "id": "taylor-theorem",
@@ -84,11 +84,11 @@
       },
       {
         "id": "fundamental-theorem-algebra",
-        "relationship": "Structural: every polynomial factors into linear terms over ℂ; Lagrange basis polynomials ℓ_i(x) = Π_{j≠i}(x-x_j)/(x_i-x_j) use this factorization"
+        "relationship": "Structural: every polynomial factors into linear terms over \u2102; Lagrange basis polynomials \u2113_i(x) = \u03a0_{j\u2260i}(x-x_j)/(x_i-x_j) use this factorization"
       },
       {
         "id": "fourier-series",
-        "relationship": "Parallel theory: Fourier approximation is optimal in L² while polynomial interpolation is analyzed in L∞; both exhibit convergence-divergence phenomena (Carleson vs Faber)"
+        "relationship": "Parallel theory: Fourier approximation is optimal in L\u00b2 while polynomial interpolation is analyzed in L\u221e; both exhibit convergence-divergence phenomena (Carleson vs Faber)"
       }
     ],
     "axiomCount": 4,
@@ -96,17 +96,17 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Polynomial Interpolation: From Lagrange to Erdős**\n\nThe problem of polynomial interpolation — finding a polynomial passing through given points — dates to Lagrange (1795) and Newton. While the existence and uniqueness of the interpolating polynomial of degree < n through n points is elementary, the BEHAVIOR of this polynomial between the sample points is a deep and subtle question.\n\n**Runge's Phenomenon (1901)**\n\nCarl Runge discovered that polynomial interpolation of f(x) = 1/(1+25x²) on uniform nodes in [-1,1] diverges wildly near the endpoints. This showed that more sample points can make interpolation WORSE — a counterintuitive phenomenon that launched modern approximation theory.\n\n**The Lebesgue Constant**\n\nThe Lebesgue constant Λ_n = max_x Σ|ℓ_i(x)| measures the worst-case amplification of interpolation error. Faber (1914) proved that for ANY node sequence, Λ_n → ∞, meaning interpolation diverges for some continuous function. Chebyshev nodes achieve the minimal Λ_n = (2/π)log n + O(1).\n\n**Erdős's Contribution (1967)**\n\nIn his 1967 paper 'Problems and results on the convergence and divergence properties of the Lagrange interpolation polynomials,' Erdős posed Problem #1133 as a strengthening of the divergence phenomenon. He proved a weaker result: one can always FIND a polynomial bounded at sample points that explodes elsewhere. The conjecture asks whether one can CHOOSE target values to force this for ALL approximating polynomials — an adversarial strengthening that remains open after nearly 60 years.\n\n**Why It's Hard**\n\nThe difficulty is the quantifier reversal: proving existence (∃P with ‖P‖_∞ > C) is easier than proving universality (∀P satisfying constraints has ‖P‖_∞ > C). The latter requires a strategy for choosing y_i that simultaneously defeats all possible polynomials — an infinite-dimensional minimax problem.",
-    "problemStatement": "**Conjecture:** For any C > 0, there exists ε > 0 such that if n is sufficiently large: Given any x₁,...,xₙ ∈ [-1,1], one can choose y₁,...,yₙ ∈ [-1,1] such that if P is a polynomial of degree < (1+ε)n with P(xᵢ) = yᵢ for at least (1-ε)n many i, then max_{x ∈ [-1,1]} |P(x)| > C.\n\n**Status: OPEN** (since 1967)",
+    "historicalContext": "**Polynomial Interpolation: From Lagrange to Erd\u0151s**\n\nThe problem of polynomial interpolation \u2014 finding a polynomial passing through given points \u2014 dates to Lagrange (1795) and Newton. While the existence and uniqueness of the interpolating polynomial of degree < n through n points is elementary, the BEHAVIOR of this polynomial between the sample points is a deep and subtle question.\n\n**Runge's Phenomenon (1901)**\n\nCarl Runge discovered that polynomial interpolation of f(x) = 1/(1+25x\u00b2) on uniform nodes in [-1,1] diverges wildly near the endpoints. This showed that more sample points can make interpolation WORSE \u2014 a counterintuitive phenomenon that launched modern approximation theory.\n\n**The Lebesgue Constant**\n\nThe Lebesgue constant \u039b_n = max_x \u03a3|\u2113_i(x)| measures the worst-case amplification of interpolation error. Faber (1914) proved that for ANY node sequence, \u039b_n \u2192 \u221e, meaning interpolation diverges for some continuous function. Chebyshev nodes achieve the minimal \u039b_n = (2/\u03c0)log n + O(1).\n\n**Erd\u0151s's Contribution (1967)**\n\nIn his 1967 paper 'Problems and results on the convergence and divergence properties of the Lagrange interpolation polynomials,' Erd\u0151s posed Problem #1133 as a strengthening of the divergence phenomenon. He proved a weaker result: one can always FIND a polynomial bounded at sample points that explodes elsewhere. The conjecture asks whether one can CHOOSE target values to force this for ALL approximating polynomials \u2014 an adversarial strengthening that remains open after nearly 60 years.\n\n**Why It's Hard**\n\nThe difficulty is the quantifier reversal: proving existence (\u2203P with \u2016P\u2016_\u221e > C) is easier than proving universality (\u2200P satisfying constraints has \u2016P\u2016_\u221e > C). The latter requires a strategy for choosing y_i that simultaneously defeats all possible polynomials \u2014 an infinite-dimensional minimax problem.",
+    "problemStatement": "**Conjecture:** For any C > 0, there exists \u03b5 > 0 such that if n is sufficiently large: Given any x\u2081,...,x\u2099 \u2208 [-1,1], one can choose y\u2081,...,y\u2099 \u2208 [-1,1] such that if P is a polynomial of degree < (1+\u03b5)n with P(x\u1d62) = y\u1d62 for at least (1-\u03b5)n many i, then max_{x \u2208 [-1,1]} |P(x)| > C.\n\n**Status: OPEN** (since 1967)",
     "text": "For any C > 0, can one always choose target values y_i in [-1,1] for sample points x_i such that any low-degree polynomial approximating most points must exceed C somewhere in [-1,1]? OPEN.",
-    "proofStrategy": "**Formalization Structure**\n\nThe Lean file builds the problem in seven parts:\n\n1. **Basic definitions**: polyEval (P.eval x), maxNormOnInterval (sSup of |P(x)| on [-1,1]), SamplePoints and TargetValues as subtypes restricted to [-1,1]\n\n2. **Interpolation conditions**: ApproximatelyInterpolates (Finset S with |S| ≥ n - ⌊εn⌋ and P(x_i) = y_i on S), HasBoundedDegree (natDegree P < ⌊(1+ε)n⌋)\n\n3. **The conjecture**: ErdosConjecture1133 as a Prop with the full five-quantifier structure\n\n4. **Known weaker result**: erdos_related_result axiom — existence of polynomial bounded at sample points but large on [-1,1]\n\n5. **Lagrange theory**: lagrange_interpolation (existence and uniqueness), lagrange_divergence (divergence for uniform nodes)\n\n6. **Chebyshev connection**: chebyshevNodes definition (cos(π(2k+1)/(2n))), chebyshev_optimal axiom (bounded at Chebyshev nodes implies bounded everywhere)\n\n7. **Summary**: exact_interpolation_case proved from lagrange_interpolation, erdos_1133_summary wrapping it\n\n**What is Proved vs Axiomatized**\n\n- **Proved**: exact_interpolation_case (ε = 0 reduction to Lagrange), erdos_1133_summary\n- **Axiomatized**: erdos_related_result (Erdős's weaker theorem), lagrange_interpolation (existence/uniqueness), lagrange_divergence (Runge phenomenon), chebyshev_optimal (node optimality)\n- **Open**: ErdosConjecture1133 (formalized but neither proved nor disproved)",
+    "proofStrategy": "**Formalization Structure**\n\nThe Lean file builds the problem in seven parts:\n\n1. **Basic definitions**: polyEval (P.eval x), maxNormOnInterval (sSup of |P(x)| on [-1,1]), SamplePoints and TargetValues as subtypes restricted to [-1,1]\n\n2. **Interpolation conditions**: ApproximatelyInterpolates (Finset S with |S| \u2265 n - \u230a\u03b5n\u230b and P(x_i) = y_i on S), HasBoundedDegree (natDegree P < \u230a(1+\u03b5)n\u230b)\n\n3. **The conjecture**: ErdosConjecture1133 as a Prop with the full five-quantifier structure\n\n4. **Known weaker result**: erdos_related_result axiom \u2014 existence of polynomial bounded at sample points but large on [-1,1]\n\n5. **Lagrange theory**: lagrange_interpolation (existence and uniqueness), lagrange_divergence (divergence for uniform nodes)\n\n6. **Chebyshev connection**: chebyshevNodes definition (cos(\u03c0(2k+1)/(2n))), chebyshev_optimal axiom (bounded at Chebyshev nodes implies bounded everywhere)\n\n7. **Summary**: exact_interpolation_case proved from lagrange_interpolation, erdos_1133_summary wrapping it\n\n**What is Proved vs Axiomatized**\n\n- **Proved**: exact_interpolation_case (\u03b5 = 0 reduction to Lagrange), erdos_1133_summary\n- **Axiomatized**: erdos_related_result (Erd\u0151s's weaker theorem), lagrange_interpolation (existence/uniqueness), lagrange_divergence (Runge phenomenon), chebyshev_optimal (node optimality)\n- **Open**: ErdosConjecture1133 (formalized but neither proved nor disproved)",
     "keyInsights": [
-      "The adversarial quantifier structure ∃y ∀P is the core difficulty: choosing y_i that defeats ALL polynomials simultaneously requires a strategy immune to infinite-dimensional counterplay",
-      "For ε = 0 (exact interpolation), the problem reduces to: can we choose y_i so the Lagrange polynomial has large ‖·‖_∞? This is related to the Lebesgue constant Λ_n, but even this case is open",
-      "The (1+ε)n degree bound gives the polynomial ~2εn excess degrees of freedom beyond the (1-ε)n interpolation constraints — the conjecture claims this surplus cannot be used to control the norm",
-      "Chebyshev nodes give the smallest possible Lebesgue constant Λ_n = (2/π)log n + O(1), but they don't resolve the conjecture because the adversary can choose arbitrary (non-Chebyshev) nodes",
-      "Erdős's weaker result (∃P with ‖P‖_∞ > C) follows from the Runge-type divergence of interpolation, but strengthening ∃P to ∀P requires fundamentally different techniques",
-      "The problem has a game-theoretic interpretation: the 'target chooser' plays y_i to maximize min_P ‖P‖_∞, while nature plays x_i to minimize this quantity. The conjecture asserts the target chooser always wins"
+      "The adversarial quantifier structure \u2203y \u2200P is the core difficulty: choosing y_i that defeats ALL polynomials simultaneously requires a strategy immune to infinite-dimensional counterplay",
+      "For \u03b5 = 0 (exact interpolation), the problem reduces to: can we choose y_i so the Lagrange polynomial has large \u2016\u00b7\u2016_\u221e? This is related to the Lebesgue constant \u039b_n, but even this case is open",
+      "The (1+\u03b5)n degree bound gives the polynomial ~2\u03b5n excess degrees of freedom beyond the (1-\u03b5)n interpolation constraints \u2014 the conjecture claims this surplus cannot be used to control the norm",
+      "Chebyshev nodes give the smallest possible Lebesgue constant \u039b_n = (2/\u03c0)log n + O(1), but they don't resolve the conjecture because the adversary can choose arbitrary (non-Chebyshev) nodes",
+      "Erd\u0151s's weaker result (\u2203P with \u2016P\u2016_\u221e > C) follows from the Runge-type divergence of interpolation, but strengthening \u2203P to \u2200P requires fundamentally different techniques",
+      "The problem has a game-theoretic interpretation: the 'target chooser' plays y_i to maximize min_P \u2016P\u2016_\u221e, while nature plays x_i to minimize this quantity. The conjecture asserts the target chooser always wins"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -117,100 +117,106 @@
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "Defines polyEval (P.eval x wrapper), maxNormOnInterval (sSup of |P(x)| on [-1,1] — the Chebyshev/L∞ norm), SamplePoints n (functions Fin n → [-1,1] for sample locations), and TargetValues n (functions Fin n → [-1,1] for chosen values). These are the building blocks for the interpolation game.",
+      "summary": "Defines polyEval (P.eval x wrapper), maxNormOnInterval (sSup of |P(x)| on [-1,1] \u2014 the Chebyshev/L\u221e norm), SamplePoints n (functions Fin n \u2192 [-1,1] for sample locations), and TargetValues n (functions Fin n \u2192 [-1,1] for chosen values). These are the building blocks for the interpolation game.",
       "startLine": 46,
       "endLine": 73
     },
     {
       "id": "interpolation",
       "title": "Interpolation Conditions",
-      "summary": "Defines ApproximatelyInterpolates: ∃ S ⊆ Fin n with |S| ≥ n - ⌊εn⌋ and P(x_i) = y_i on S — the polynomial matches at least (1-ε)n points exactly. Defines HasBoundedDegree: natDegree P < ⌊(1+ε)n⌋. For ε = 0, these reduce to exact Lagrange interpolation of degree < n through all n points.",
+      "summary": "Defines ApproximatelyInterpolates: \u2203 S \u2286 Fin n with |S| \u2265 n - \u230a\u03b5n\u230b and P(x_i) = y_i on S \u2014 the polynomial matches at least (1-\u03b5)n points exactly. Defines HasBoundedDegree: natDegree P < \u230a(1+\u03b5)n\u230b. For \u03b5 = 0, these reduce to exact Lagrange interpolation of degree < n through all n points.",
       "startLine": 75,
       "endLine": 93
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture",
-      "summary": "ErdosConjecture1133 as a five-quantifier Lean Prop: ∀ C > 0, ∃ ε > 0, ∃ N, ∀ n ≥ N, ∀ x ∈ [-1,1]^n, ∃ y ∈ [-1,1]^n, ∀ P with bounded degree and approximate interpolation: ‖P‖_∞ > C. The adversarial ∃y∀P structure makes this a minimax problem. Status: OPEN since 1967.",
+      "title": "The Erd\u0151s Conjecture",
+      "summary": "ErdosConjecture1133 as a five-quantifier Lean Prop: \u2200 C > 0, \u2203 \u03b5 > 0, \u2203 N, \u2200 n \u2265 N, \u2200 x \u2208 [-1,1]^n, \u2203 y \u2208 [-1,1]^n, \u2200 P with bounded degree and approximate interpolation: \u2016P\u2016_\u221e > C. The adversarial \u2203y\u2200P structure makes this a minimax problem. Status: OPEN since 1967.",
       "startLine": 95,
       "endLine": 115
     },
     {
       "id": "related",
-      "title": "Related Result (Known by Erdős)",
-      "summary": "Axiomatizes Erdős's weaker existence theorem: for any C > 0, ∃ ε > 0 such that for large n and m = ⌊(1+ε)n⌋ sample points, ∃ P of degree ≤ n with |P(x_i)| ≤ 1 for all i yet ‖P‖_∞ > C. The key difference: this quantifies ∃P (finds one bad polynomial) while the conjecture quantifies ∀P (all polynomials matching y are bad).",
+      "title": "Related Result (Known by Erd\u0151s)",
+      "summary": "Axiomatizes Erd\u0151s's weaker existence theorem: for any C > 0, \u2203 \u03b5 > 0 such that for large n and m = \u230a(1+\u03b5)n\u230b sample points, \u2203 P of degree \u2264 n with |P(x_i)| \u2264 1 for all i yet \u2016P\u2016_\u221e > C. The key difference: this quantifies \u2203P (finds one bad polynomial) while the conjecture quantifies \u2200P (all polynomials matching y are bad).",
       "startLine": 117,
       "endLine": 137
     },
     {
       "id": "lagrange",
       "title": "Lagrange Interpolation Theory",
-      "summary": "Two axioms: lagrange_interpolation (∃! P of degree < n through n distinct points — the classical existence-uniqueness theorem) and lagrange_divergence (∃ f ∈ C[-1,1] such that Lagrange interpolation on uniform nodes diverges — Runge's phenomenon). The Lebesgue constant Λ_n → ∞ for ANY node sequence (Faber 1914).",
+      "summary": "Two axioms: lagrange_interpolation (\u2203! P of degree < n through n distinct points \u2014 the classical existence-uniqueness theorem) and lagrange_divergence (\u2203 f \u2208 C[-1,1] such that Lagrange interpolation on uniform nodes diverges \u2014 Runge's phenomenon). The Lebesgue constant \u039b_n \u2192 \u221e for ANY node sequence (Faber 1914).",
       "startLine": 139,
       "endLine": 162
     },
     {
       "id": "chebyshev",
       "title": "Chebyshev Connection",
-      "summary": "Defines chebyshevNodes(n, k) = cos(π(2k+1)/(2n)) — the roots of the Chebyshev polynomial T_n. Axiomatizes chebyshev_optimal: if deg P = n and |P(x_k)| ≤ 1 at all n+1 Chebyshev nodes, then ‖P‖_∞ ≤ 1. These nodes minimize the Lebesgue constant at (2/π)log n + O(1), but don't resolve the conjecture since the adversary chooses arbitrary nodes.",
+      "summary": "Defines chebyshevNodes(n, k) = cos(\u03c0(2k+1)/(2n)) \u2014 the roots of the Chebyshev polynomial T_n. Axiomatizes chebyshev_optimal: if deg P = n and |P(x_k)| \u2264 1 at all n+1 Chebyshev nodes, then \u2016P\u2016_\u221e \u2264 1. These nodes minimize the Lebesgue constant at (2/\u03c0)log n + O(1), but don't resolve the conjecture since the adversary chooses arbitrary nodes.",
       "startLine": 164,
       "endLine": 183
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
-      "summary": "exact_interpolation_case: for ε = 0, Lagrange gives the unique polynomial through all n points (proved from lagrange_interpolation via Classical.choose_spec). erdos_1133_summary wraps this as the main result. ErdosConjecture1133 remains OPEN — formalized as a Lean Prop but with no proof or disproof.",
+      "summary": "exact_interpolation_case: for \u03b5 = 0, Lagrange gives the unique polynomial through all n points (proved from lagrange_interpolation via Classical.choose_spec). erdos_1133_summary wraps this as the main result. ErdosConjecture1133 remains OPEN \u2014 formalized as a Lean Prop but with no proof or disproof.",
       "startLine": 185,
       "endLine": 218
     }
   ],
   "crossReferences": [
     {
-      "id": "erdos-1132",
-      "title": "Erdős Problem #1132",
-      "relationship": "Direct companion: studies Lebesgue functions for infinite node sequences and Bernstein's density theorem. Together #1132 and #1133 form Erdős's paired attack on interpolation divergence phenomena."
+      "title": "Erd\u0151s Problem #1132",
+      "relationship": "related",
+      "targetId": "erdos-1132",
+      "description": "Direct companion: studies Lebesgue functions for infinite node sequences and Bernstein's density theorem. Together #1132 and #1133 form Erd\u0151s's paired attack on interpolation divergence phenomena."
     },
     {
-      "id": "erdos-1130",
-      "title": "Erdős Problem #1130",
-      "relationship": "Studies the Υ functional (sums of Lagrange basis functions on subintervals), solved by de Boor–Pinkus (1978) with Υ ≤ (2/π) log n + O(1). The Lebesgue constant growth rate proved there underlies the divergence used in #1133."
+      "title": "Erd\u0151s Problem #1130",
+      "relationship": "related",
+      "targetId": "erdos-1130",
+      "description": "Studies the \u03a5 functional (sums of Lagrange basis functions on subintervals), solved by de Boor\u2013Pinkus (1978) with \u03a5 \u2264 (2/\u03c0) log n + O(1). The Lebesgue constant growth rate proved there underlies the divergence used in #1133."
     },
     {
-      "id": "erdos-1131",
-      "title": "Erdős Problem #1131",
-      "relationship": "L² optimization of Lagrange basis polynomial integrals — a parallel to #1133's L∞ perspective. Both problems ask how optimal node placement interacts with polynomial norm bounds in different function spaces."
+      "title": "Erd\u0151s Problem #1131",
+      "relationship": "related",
+      "targetId": "erdos-1131",
+      "description": "L\u00b2 optimization of Lagrange basis polynomial integrals \u2014 a parallel to #1133's L\u221e perspective. Both problems ask how optimal node placement interacts with polynomial norm bounds in different function spaces."
     },
     {
-      "id": "taylor-theorem",
       "title": "Taylor's Theorem",
-      "relationship": "Foundational: Taylor polynomial approximation with explicit remainder bounds underpins interpolation error analysis. The remainder formula via divided differences makes Taylor's theorem the algebraic backbone of Lagrange theory."
+      "relationship": "related",
+      "targetId": "taylor-theorem",
+      "description": "Foundational: Taylor polynomial approximation with explicit remainder bounds underpins interpolation error analysis. The remainder formula via divided differences makes Taylor's theorem the algebraic backbone of Lagrange theory."
     },
     {
-      "id": "mean-value-theorem",
       "title": "Mean Value Theorem",
-      "relationship": "The Lagrange interpolation remainder R_n(x) = f^(n)(ξ)/(n!) · Π(x − x_i) relies on the generalized MVT for higher derivatives. Bounding this remainder is central to controlling interpolation error on [-1,1]."
+      "relationship": "related",
+      "targetId": "mean-value-theorem",
+      "description": "The Lagrange interpolation remainder R_n(x) = f^(n)(\u03be)/(n!) \u00b7 \u03a0(x \u2212 x_i) relies on the generalized MVT for higher derivatives. Bounding this remainder is central to controlling interpolation error on [-1,1]."
     },
     {
-      "id": "fourier-series",
       "title": "Fourier Series",
-      "relationship": "Parallel theory: Fourier approximation is L²-optimal while polynomial interpolation is analyzed in L∞. Both exhibit convergence-divergence phenomena (Carleson's theorem vs Faber's theorem), making their comparison a cornerstone of modern approximation theory."
+      "relationship": "related",
+      "targetId": "fourier-series",
+      "description": "Parallel theory: Fourier approximation is L\u00b2-optimal while polynomial interpolation is analyzed in L\u221e. Both exhibit convergence-divergence phenomena (Carleson's theorem vs Faber's theorem), making their comparison a cornerstone of modern approximation theory."
     }
   ],
   "relatedProofs": [
     {
       "id": "erdos-1132",
       "similarity": "high",
-      "note": "Companion Erdős interpolation problem on Lebesgue functions; shares the Lagrange basis polynomial framework and Faber-type divergence arguments."
+      "note": "Companion Erd\u0151s interpolation problem on Lebesgue functions; shares the Lagrange basis polynomial framework and Faber-type divergence arguments."
     },
     {
       "id": "erdos-1130",
       "similarity": "high",
-      "note": "Studies the same Lagrange operator from a subinterval perspective; the Lebesgue constant bound (2/π) log n proved there is directly cited in the #1133 formalization."
+      "note": "Studies the same Lagrange operator from a subinterval perspective; the Lebesgue constant bound (2/\u03c0) log n proved there is directly cited in the #1133 formalization."
     },
     {
       "id": "erdos-1131",
       "similarity": "medium",
-      "note": "L² counterpart to #1133's L∞ analysis; both probe optimal node placement and polynomial norm bounds under different inner products."
+      "note": "L\u00b2 counterpart to #1133's L\u221e analysis; both probe optimal node placement and polynomial norm bounds under different inner products."
     },
     {
       "id": "fourier-series",
@@ -226,39 +232,39 @@
   "references": [
     {
       "authors": [
-        "P. Erdős"
+        "P. Erd\u0151s"
       ],
       "title": "Problems and results on the convergence and divergence properties of the Lagrange interpolation polynomials and some extremal problems",
       "venue": "Mathematica (Cluj)",
       "year": 1967,
       "volume": "9",
-      "pages": "65–73",
-      "note": "Primary source: Erdős poses Problem #1133 and proves the weaker existence result (∃P with large norm), which is formalized as the erdos_related_result axiom."
+      "pages": "65\u201373",
+      "note": "Primary source: Erd\u0151s poses Problem #1133 and proves the weaker existence result (\u2203P with large norm), which is formalized as the erdos_related_result axiom."
     },
     {
       "authors": [
         "G. Faber"
       ],
-      "title": "Über die interpolatorische Darstellung stetiger Funktionen",
+      "title": "\u00dcber die interpolatorische Darstellung stetiger Funktionen",
       "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung",
       "year": 1914,
       "volume": "23",
-      "pages": "192–210",
-      "note": "Proves that the Lebesgue constant Λ_n → ∞ for ANY node sequence — the fundamental obstruction theorem (lagrange_divergence axiom) underlying Problem #1133."
+      "pages": "192\u2013210",
+      "note": "Proves that the Lebesgue constant \u039b_n \u2192 \u221e for ANY node sequence \u2014 the fundamental obstruction theorem (lagrange_divergence axiom) underlying Problem #1133."
     },
     {
       "authors": [
         "C. de Boor",
         "A. Pinkus"
       ],
-      "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
+      "title": "Proof of the conjectures of Bernstein and Erd\u0151s concerning the optimal nodes for polynomial interpolation",
       "venue": "Journal of Approximation Theory",
       "year": 1978,
       "volume": "24",
       "issue": "4",
-      "pages": "289–303",
+      "pages": "289\u2013303",
       "doi": "10.1016/0021-9045(78)90014-X",
-      "note": "Resolves Erdős Problem #1130 (Υ functional); the Lebesgue constant bound (2/π) log n + O(1) proved here provides context for the Chebyshev node optimality used in #1133."
+      "note": "Resolves Erd\u0151s Problem #1130 (\u03a5 functional); the Lebesgue constant bound (2/\u03c0) log n + O(1) proved here provides context for the Chebyshev node optimality used in #1133."
     },
     {
       "authors": [
@@ -279,18 +285,18 @@
       "year": 1998,
       "edition": "2nd",
       "isbn": "978-0821813744",
-      "note": "Comprehensive treatment of polynomial approximation in L∞, including best approximation, equioscillation, and Haar spaces — the theoretical apparatus needed to attack the ∃y∀P quantifier structure of #1133."
+      "note": "Comprehensive treatment of polynomial approximation in L\u221e, including best approximation, equioscillation, and Haar spaces \u2014 the theoretical apparatus needed to attack the \u2203y\u2200P quantifier structure of #1133."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1133 asks whether one can always choose target values for polynomial interpolation that force any approximating polynomial to be large somewhere in [-1,1]. The problem remains OPEN since 1967. Erdős proved a weaker existence result (∃P with large norm) but the conjectured universal property (∀P matching chosen y has large norm) requires defeating all polynomials simultaneously — a qualitatively harder adversarial challenge.",
-    "implications": "1. **Interpolation Limits**: If true, the conjecture would establish a fundamental obstruction to controlling polynomial behavior through partial interpolation data — no matter how the sample points are placed, the 'target chooser' can always create irreconcilable constraints\n\n2. **Approximation Theory**: The conjecture connects to the Bernstein-Erdős theory of polynomial approximation. Bernstein's lethargy theorem shows that convergence rates for best polynomial approximation cannot be improved beyond certain thresholds; Problem #1133 asks about a different kind of limitation\n\n3. **Game Theory in Analysis**: The ∃y∀P structure makes this a minimax problem in infinite dimensions.\n\nVon Neumann's minimax theorem applies to convex-compact settings, but the polynomial constraint set is not obviously convex, making standard duality tools insufficient\n\n4. **Lebesgue Constant Theory**: For ε = 0, the conjecture asks whether max_y ‖L_n(y)‖_∞ → ∞ for all node sequences, where L_n is the Lagrange operator. Since ‖L_n‖ = Λ_n → ∞ (Faber), the operator norm diverges — but the conjecture needs divergence for specific y choices, not just worst-case f\n\n5. **Computational Aspects**: The problem suggests a potential algorithm: given nodes x_i, compute y_i that maximizes the minimum polynomial norm. If such algorithms could be made efficient, they would have applications in numerical stability analysis.",
+    "summary": "Erd\u0151s Problem #1133 asks whether one can always choose target values for polynomial interpolation that force any approximating polynomial to be large somewhere in [-1,1]. The problem remains OPEN since 1967. Erd\u0151s proved a weaker existence result (\u2203P with large norm) but the conjectured universal property (\u2200P matching chosen y has large norm) requires defeating all polynomials simultaneously \u2014 a qualitatively harder adversarial challenge.",
+    "implications": "1. **Interpolation Limits**: If true, the conjecture would establish a fundamental obstruction to controlling polynomial behavior through partial interpolation data \u2014 no matter how the sample points are placed, the 'target chooser' can always create irreconcilable constraints\n\n2. **Approximation Theory**: The conjecture connects to the Bernstein-Erd\u0151s theory of polynomial approximation. Bernstein's lethargy theorem shows that convergence rates for best polynomial approximation cannot be improved beyond certain thresholds; Problem #1133 asks about a different kind of limitation\n\n3. **Game Theory in Analysis**: The \u2203y\u2200P structure makes this a minimax problem in infinite dimensions.\n\nVon Neumann's minimax theorem applies to convex-compact settings, but the polynomial constraint set is not obviously convex, making standard duality tools insufficient\n\n4. **Lebesgue Constant Theory**: For \u03b5 = 0, the conjecture asks whether max_y \u2016L_n(y)\u2016_\u221e \u2192 \u221e for all node sequences, where L_n is the Lagrange operator. Since \u2016L_n\u2016 = \u039b_n \u2192 \u221e (Faber), the operator norm diverges \u2014 but the conjecture needs divergence for specific y choices, not just worst-case f\n\n5. **Computational Aspects**: The problem suggests a potential algorithm: given nodes x_i, compute y_i that maximizes the minimum polynomial norm. If such algorithms could be made efficient, they would have applications in numerical stability analysis.",
     "openQuestions": [
-      "Is the conjecture true for ε = 0 (exact interpolation, degree < n through all n points)? Erdős noted he could not prove even this special case.",
-      "What is the optimal ε(C) if the conjecture is true? Does ε → 0 as C → ∞, or is there a universal ε that works for all C?",
+      "Is the conjecture true for \u03b5 = 0 (exact interpolation, degree < n through all n points)? Erd\u0151s noted he could not prove even this special case.",
+      "What is the optimal \u03b5(C) if the conjecture is true? Does \u03b5 \u2192 0 as C \u2192 \u221e, or is there a universal \u03b5 that works for all C?",
       "Can the conjecture be proved for special node configurations (equispaced, Chebyshev-like, or random)?",
-      "Is there a probabilistic version: for random y_i ∈ [-1,1], does ‖P‖_∞ > C hold with high probability for any bounded-degree approximately-interpolating P?",
-      "What happens in higher dimensions — can the conjecture be extended to multivariate polynomial interpolation on [-1,1]^d?"
+      "Is there a probabilistic version: for random y_i \u2208 [-1,1], does \u2016P\u2016_\u221e > C hold with high probability for any bounded-degree approximately-interpolating P?",
+      "What happens in higher dimensions \u2014 can the conjecture be extended to multivariate polynomial interpolation on [-1,1]^d?"
     ]
   },
   "leanFile": {

@@ -1,8 +1,8 @@
 {
   "id": "erdos-946",
-  "title": "Erdős Problem #946: Consecutive Integers with Equal Divisor Count",
+  "title": "Erd\u0151s Problem #946: Consecutive Integers with Equal Divisor Count",
   "slug": "erdos-946",
-  "description": "Are there infinitely many n with τ(n) = τ(n+1)? Heath-Brown proved yes in 1984, with quantitative bounds by Hildebrand and Erdős-Pomerance-Sárközy.",
+  "description": "Are there infinitely many n with \u03c4(n) = \u03c4(n+1)? Heath-Brown proved yes in 1984, with quantitative bounds by Hildebrand and Erd\u0151s-Pomerance-S\u00e1rk\u00f6zy.",
   "meta": {
     "author": "Heath-Brown (1984)",
     "sourceUrl": "https://erdosproblems.com/946",
@@ -25,7 +25,7 @@
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.sigma",
-        "description": "Sum of divisors function σ_k(n)",
+        "description": "Sum of divisors function \u03c3_k(n)",
         "module": "Mathlib.NumberTheory.ArithmeticFunction"
       },
       {
@@ -40,8 +40,8 @@
       }
     ],
     "originalContributions": [
-      "Formal statement of Erdős Problem 946 in Lean 4",
-      "Definition using Mathlib's σ 0 for divisor count",
+      "Formal statement of Erd\u0151s Problem 946 in Lean 4",
+      "Definition using Mathlib's \u03c3 0 for divisor count",
       "Statements of quantitative bounds (Heath-Brown, Hildebrand, EPS)",
       "Computational verification of small examples"
     ],
@@ -50,16 +50,16 @@
     "assumptions": "2 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem 946 was posed by Erdős and Mirsky in 1952. The divisor function τ(n) counts how many positive integers divide n. The question asks whether consecutive integers can have the same number of divisors, and if so, whether this happens infinitely often.\n\nThe breakthrough came in 1981 when Claudia Spiro proved that τ(n) = τ(n + 5040) infinitely often. The number 5040 = 7! was chosen for its many divisors. Heath-Brown improved her method in 1984 to prove the case τ(n) = τ(n + 1).\n\nSubsequent work established quantitative bounds: the count of such n ≤ x lies between x/(log log x)³ and x/√(log log x). Tao and Teräväinen (2025) showed the true asymptotic is c·x/√(log log x) for almost all x.",
+    "historicalContext": "Erd\u0151s Problem 946 was posed by Erd\u0151s and Mirsky in 1952. The divisor function \u03c4(n) counts how many positive integers divide n. The question asks whether consecutive integers can have the same number of divisors, and if so, whether this happens infinitely often.\n\nThe breakthrough came in 1981 when Claudia Spiro proved that \u03c4(n) = \u03c4(n + 5040) infinitely often. The number 5040 = 7! was chosen for its many divisors. Heath-Brown improved her method in 1984 to prove the case \u03c4(n) = \u03c4(n + 1).\n\nSubsequent work established quantitative bounds: the count of such n \u2264 x lies between x/(log log x)\u00b3 and x/\u221a(log log x). Tao and Ter\u00e4v\u00e4inen (2025) showed the true asymptotic is c\u00b7x/\u221a(log log x) for almost all x.",
     "problemStatement": "Are there infinitely many $n$ such that $\\tau(n) = \\tau(n+1)$, where $\\tau$ is the divisor counting function?\n\n$$\\tau(n) = |\\{d \\in \\mathbb{N} : d | n\\}|$$\n\nThe answer is **yes**, proved by Heath-Brown (1984).",
-    "text": "Are there infinitely many n with τ(n) = τ(n+1)? Heath-Brown proved yes in 1984, with quantitative bounds by Hildebrand and Erdős-Pomerance-Sárközy.",
+    "text": "Are there infinitely many n with \u03c4(n) = \u03c4(n+1)? Heath-Brown proved yes in 1984, with quantitative bounds by Hildebrand and Erd\u0151s-Pomerance-S\u00e1rk\u00f6zy.",
     "proofStrategy": "Heath-Brown's proof builds on Spiro's approach:\n\n1. **Highly composite structure:** Use properties of numbers with many small prime factors.\n\n2. **Sieve methods:** Apply sieve techniques to find n where both n and n+1 have specific factorization properties.\n\n3. **Equidistribution:** Show that divisor counts are sufficiently \"spread out\" that coincidences must occur.\n\nOur formalization states the main result and quantitative bounds as axioms, with computational verification of small examples.",
     "keyInsights": [
-      "**Divisor function:** τ(n) = |{d : d|n}|. For n = p₁^a₁...pₖ^aₖ, we have τ(n) = (a₁+1)...(aₖ+1).",
+      "**Divisor function:** \u03c4(n) = |{d : d|n}|. For n = p\u2081^a\u2081...p\u2096^a\u2096, we have \u03c4(n) = (a\u2081+1)...(a\u2096+1).",
       "**5040 = 7!:** Spiro used this highly composite number because its many divisors create opportunities for coincidence.",
-      "**Asymptotic bounds:** The count lies between x/(log log x)³ and x/√(log log x).",
-      "**Related problem:** Problem 1003 asks the same for Euler's totient φ(n).",
-      "**Multiplicative structure**: Since τ(n) is multiplicative and consecutive integers n, n+1 are coprime, their divisor counts are determined independently — making equal values a genuinely 'random' coincidence whose frequency reflects deep distributional properties of τ."
+      "**Asymptotic bounds:** The count lies between x/(log log x)\u00b3 and x/\u221a(log log x).",
+      "**Related problem:** Problem 1003 asks the same for Euler's totient \u03c6(n).",
+      "**Multiplicative structure**: Since \u03c4(n) is multiplicative and consecutive integers n, n+1 are coprime, their divisor counts are determined independently \u2014 making equal values a genuinely 'random' coincidence whose frequency reflects deep distributional properties of \u03c4."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -72,21 +72,21 @@
       "title": "Definitions",
       "startLine": 53,
       "endLine": 62,
-      "summary": "τ(n) as σ 0 n and the set of n with τ(n) = τ(n+1)."
+      "summary": "\u03c4(n) as \u03c3 0 n and the set of n with \u03c4(n) = \u03c4(n+1)."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 64,
       "endLine": 91,
-      "summary": "Verified examples: τ(2) = τ(3) = 2, τ(14) = τ(15) = 4, τ(21) = τ(22) = 4."
+      "summary": "Verified examples: \u03c4(2) = \u03c4(3) = 2, \u03c4(14) = \u03c4(15) = 4, \u03c4(21) = \u03c4(22) = 4."
     },
     {
       "id": "counting",
       "title": "The Counting Function",
       "startLine": 93,
       "endLine": 97,
-      "summary": "Definition of the counting function for n ≤ x with equal consecutive divisors."
+      "summary": "Definition of the counting function for n \u2264 x with equal consecutive divisors."
     },
     {
       "id": "main-theorem",
@@ -104,12 +104,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem 946, which asks about consecutive integers with equal divisor counts. Heath-Brown's 1984 proof showed infinitely many such pairs exist. We formalize this and the quantitative bounds showing the count is roughly x/√(log log x).",
-    "implications": "**Theoretical Significance**: The resolution has implications for understanding arithmetic functions:\n\n1. **Divisor function distribution:** The function τ(n) varies enough that consecutive values often match.\n\n**2. Multiplicative functions:** Similar questions for φ, σ, and other functions.\n\n3. **Quantitative refinements:** Ongoing work by Tao-Teräväinen pins down the exact asymptotic.",
+    "summary": "This formalization captures Erd\u0151s Problem 946, which asks about consecutive integers with equal divisor counts. Heath-Brown's 1984 proof showed infinitely many such pairs exist. We formalize this and the quantitative bounds showing the count is roughly x/\u221a(log log x).",
+    "implications": "**Theoretical Significance**: The resolution has implications for understanding arithmetic functions:\n\n1. **Divisor function distribution:** The function \u03c4(n) varies enough that consecutive values often match.\n\n**2. Multiplicative functions:** Similar questions for \u03c6, \u03c3, and other functions.\n\n3. **Quantitative refinements:** Ongoing work by Tao-Ter\u00e4v\u00e4inen pins down the exact asymptotic.",
     "openQuestions": [
-      "What is the exact constant c in the asymptotic c·x/√(log log x)?",
-      "How long can runs of consecutive n with equal τ(n) be?",
-      "What about τ(n) = τ(n+2) or other gaps?"
+      "What is the exact constant c in the asymptotic c\u00b7x/\u221a(log log x)?",
+      "How long can runs of consecutive n with equal \u03c4(n) be?",
+      "What about \u03c4(n) = \u03c4(n+2) or other gaps?"
     ]
   },
   "leanFile": {
@@ -125,5 +125,39 @@
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-122",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, divisor-function, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-826",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, divisor-function, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-889",
+      "relationship": "related",
+      "description": "Share arithmetic-functions, consecutive-integers, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1061",
+      "relationship": "related",
+      "description": "Share arithmetic-functions and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Share arithmetic-functions and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-122",
+    "erdos-826",
+    "erdos-889",
+    "erdos-1061",
+    "erdos-1064"
+  ]
 }

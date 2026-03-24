@@ -1,10 +1,10 @@
 {
   "id": "erdos-196",
-  "title": "Erdős Problem #196: Monotone 4-Term APs in Permutations",
+  "title": "Erd\u0151s Problem #196: Monotone 4-Term APs in Permutations",
   "slug": "erdos-196",
-  "description": "Must every permutation of ℕ contain a monotone 4-term arithmetic progression? k=3: YES (DEGS 1977). k=4: OPEN. k=5: NO (DEGS 1977). LeSaulnier–Vijay (2011) showed odd-CD 4-APs are avoidable.",
+  "description": "Must every permutation of \u2115 contain a monotone 4-term arithmetic progression? k=3: YES (DEGS 1977). k=4: OPEN. k=5: NO (DEGS 1977). LeSaulnier\u2013Vijay (2011) showed odd-CD 4-APs are avoidable.",
   "meta": {
-    "author": "Erdős, Graham",
+    "author": "Erd\u0151s, Graham",
     "sourceUrl": "https://erdosproblems.com/196",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos196Problem.lean",
@@ -25,15 +25,15 @@
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Davis, Entringer, Graham, and Simmons (DEGS) initiated the study of monotone arithmetic progressions in permutations in their 1977 paper, proving that every permutation of $\\mathbb{N}$ contains a monotone 3-term AP and constructing one avoiding monotone 5-term APs. The $k = 4$ case was left as an open problem, later highlighted by Erdős and Graham in their 1979 and 1980 monographs on combinatorial number theory. The problem sat largely untouched until LeSaulnier and Vijay (2011) achieved the key structural reduction: they showed that monotone 4-APs with odd common difference can be avoided, reducing the conjecture to the even-CD case. This parity decomposition is the deepest known structural insight into the problem. The question connects to Szemerédi's theorem on APs in dense sets and to the Erdős–Szekeres theorem on monotone subsequences, though neither directly implies the result for permutations.",
+    "historicalContext": "Davis, Entringer, Graham, and Simmons (DEGS) initiated the study of monotone arithmetic progressions in permutations in their 1977 paper, proving that every permutation of $\\mathbb{N}$ contains a monotone 3-term AP and constructing one avoiding monotone 5-term APs. The $k = 4$ case was left as an open problem, later highlighted by Erd\u0151s and Graham in their 1979 and 1980 monographs on combinatorial number theory. The problem sat largely untouched until LeSaulnier and Vijay (2011) achieved the key structural reduction: they showed that monotone 4-APs with odd common difference can be avoided, reducing the conjecture to the even-CD case. This parity decomposition is the deepest known structural insight into the problem. The question connects to Szemer\u00e9di's theorem on APs in dense sets and to the Erd\u0151s\u2013Szekeres theorem on monotone subsequences, though neither directly implies the result for permutations.",
     "problemStatement": "Must every permutation of $\\mathbb{N}$ contain a monotone 4-term arithmetic progression? That is, must there exist indices $i_1 < i_2 < i_3 < i_4$ (or $i_1 > i_2 > i_3 > i_4$) such that $\\pi(i_1), \\pi(i_2), \\pi(i_3), \\pi(i_4)$ form a 4-AP?",
-    "text": "Must every permutation of ℕ contain a monotone 4-term arithmetic progression? k=3: YES (DEGS 1977). k=4: OPEN. k=5: NO (DEGS 1977). LeSaulnier–Vijay (2011) showed odd-CD 4-APs are avoidable.",
-    "proofStrategy": "The formalization uses `Perm := ℕ ≃ ℕ` for permutations and defines $k$-term APs via constant differences. Monotone APs require index monotonicity (increasing or decreasing). The DEGS results for $k = 3$ and $k = 5$ are axiomatized, and the $k = 4$ implication is proved in Lean. The LeSaulnier–Vijay parity reduction is formalized: odd/even CD definitions, the parity dichotomy theorem (proved), and the equivalence to even-CD forcing. Non-extendability constraints and the Erdős–Szekeres theorem provide structural context.",
+    "text": "Must every permutation of \u2115 contain a monotone 4-term arithmetic progression? k=3: YES (DEGS 1977). k=4: OPEN. k=5: NO (DEGS 1977). LeSaulnier\u2013Vijay (2011) showed odd-CD 4-APs are avoidable.",
+    "proofStrategy": "The formalization uses `Perm := \u2115 \u2243 \u2115` for permutations and defines $k$-term APs via constant differences. Monotone APs require index monotonicity (increasing or decreasing). The DEGS results for $k = 3$ and $k = 5$ are axiomatized, and the $k = 4$ implication is proved in Lean. The LeSaulnier\u2013Vijay parity reduction is formalized: odd/even CD definitions, the parity dichotomy theorem (proved), and the equivalence to even-CD forcing. Non-extendability constraints and the Erd\u0151s\u2013Szekeres theorem provide structural context.",
     "keyInsights": [
-      "**Critical threshold $k = 4$**: DEGS (1977) proved $k = 3$ exists in all permutations and $k = 5$ can be avoided — making $k = 4$ the sharp boundary between universality and avoidability",
-      "**LeSaulnier–Vijay parity reduction (2011)**: Odd-CD monotone 4-APs can be avoided, reducing the conjecture to showing even-CD 4-APs are unavoidable",
+      "**Critical threshold $k = 4$**: DEGS (1977) proved $k = 3$ exists in all permutations and $k = 5$ can be avoided \u2014 making $k = 4$ the sharp boundary between universality and avoidability",
+      "**LeSaulnier\u2013Vijay parity reduction (2011)**: Odd-CD monotone 4-APs can be avoided, reducing the conjecture to showing even-CD 4-APs are unavoidable",
       "**Non-extendability**: If no monotone 4-AP exists, every 3-AP forbids a specific value at all later monotone positions, creating cumulative constraints that may force a contradiction",
-      "**Erdős–Szekeres gap**: The theorem guarantees long monotone subsequences of length $\\Theta(\\sqrt{n})$ but provides no arithmetic structure — a monotone subsequence need not contain a 4-AP",
+      "**Erd\u0151s\u2013Szekeres gap**: The theorem guarantees long monotone subsequences of length $\\Theta(\\sqrt{n})$ but provides no arithmetic structure \u2014 a monotone subsequence need not contain a 4-AP",
       "**Proved implication**: The 4-AP conjecture implies the 3-AP theorem, verified in Lean by extracting three terms from a 4-AP and using `omega` for the arithmetic"
     ],
     "prerequisites": [
@@ -89,26 +89,26 @@
       "title": "Common Difference Parity Analysis",
       "startLine": 94,
       "endLine": 114,
-      "summary": "Odd/even CD definitions, LeSaulnier–Vijay odd-CD avoidance (2011), parity dichotomy (proved), and the structural equivalence to even-CD forcing."
+      "summary": "Odd/even CD definitions, LeSaulnier\u2013Vijay odd-CD avoidance (2011), parity dichotomy (proved), and the structural equivalence to even-CD forcing."
     },
     {
       "id": "non-extendability",
       "title": "Non-Extendability Constraints",
       "startLine": 128,
       "endLine": 134,
-      "summary": "If no 4-AP exists, each 3-AP forbids a value at all later monotone positions — accumulating constraints toward a contradiction."
+      "summary": "If no 4-AP exists, each 3-AP forbids a value at all later monotone positions \u2014 accumulating constraints toward a contradiction."
     },
     {
       "id": "erdos-szekeres",
-      "title": "Erdős–Szekeres Connection",
+      "title": "Erd\u0151s\u2013Szekeres Connection",
       "startLine": 138,
       "endLine": 145,
-      "summary": "Erdős–Szekeres (1935): $n > (r-1)(s-1) \\implies$ monotone subsequence of length $r$ or $s$. Gives long monotone subsequences but not APs."
+      "summary": "Erd\u0151s\u2013Szekeres (1935): $n > (r-1)(s-1) \\implies$ monotone subsequence of length $r$ or $s$. Gives long monotone subsequences but not APs."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #196 asks whether $k = 4$ is the sharp threshold for monotone APs in permutations of $\\mathbb{N}$. The DEGS (1977) results establish that $k = 3$ is universal and $k = 5$ is avoidable, while LeSaulnier–Vijay (2011) reduce the $k = 4$ conjecture to the even common difference case. The formalization includes a Lean proof of the 4-AP → 3-AP implication and the parity dichotomy theorem.",
-    "implications": "A positive resolution would complete the classification of which $k$ yield unavoidable monotone $k$-APs in permutations, establishing $k = 4$ as the exact boundary. This would connect to Szemerédi-type results for structured sequences and illuminate the role of parity in arithmetic combinatorics.",
+    "summary": "Erd\u0151s Problem #196 asks whether $k = 4$ is the sharp threshold for monotone APs in permutations of $\\mathbb{N}$. The DEGS (1977) results establish that $k = 3$ is universal and $k = 5$ is avoidable, while LeSaulnier\u2013Vijay (2011) reduce the $k = 4$ conjecture to the even common difference case. The formalization includes a Lean proof of the 4-AP \u2192 3-AP implication and the parity dichotomy theorem.",
+    "implications": "A positive resolution would complete the classification of which $k$ yield unavoidable monotone $k$-APs in permutations, establishing $k = 4$ as the exact boundary. This would connect to Szemer\u00e9di-type results for structured sequences and illuminate the role of parity in arithmetic combinatorics.",
     "openQuestions": [
       "Must every permutation of $\\mathbb{N}$ contain a monotone 4-term AP?",
       "Can even-CD monotone 4-APs be avoided in permutations of $\\mathbb{N}$?",
@@ -130,5 +130,15 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-34",
+      "relationship": "related",
+      "description": "Share combinatorial and permutations themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-34"
+  ]
 }

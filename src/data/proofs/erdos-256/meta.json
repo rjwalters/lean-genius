@@ -1,8 +1,8 @@
 {
   "id": "erdos-256",
-  "title": "Erdős Problem #256: Maxima of Products on the Unit Circle",
+  "title": "Erd\u0151s Problem #256: Maxima of Products on the Unit Circle",
   "slug": "erdos-256",
-  "description": "Is log f(n) ≫ n^c for some c > 0, where f(n) = min over all a₁ ≤ ... ≤ aₙ of max_{|z|=1} |∏(1-z^{aᵢ})|? NO - Belov-Konyagin (1996) proved log f(n) ≪ (log n)⁴.",
+  "description": "Is log f(n) \u226b n^c for some c > 0, where f(n) = min over all a\u2081 \u2264 ... \u2264 a\u2099 of max_{|z|=1} |\u220f(1-z^{a\u1d62})|? NO - Belov-Konyagin (1996) proved log f(n) \u226a (log n)\u2074.",
   "meta": {
     "author": "Belov-Konyagin (1996)",
     "sourceUrl": "https://erdosproblems.com/256",
@@ -47,16 +47,16 @@
       }
     ],
     "originalContributions": [
-      "productPoly definition ∏ᵢ (1 - z^{aᵢ})",
+      "productPoly definition \u220f\u1d62 (1 - z^{a\u1d62})",
       "maxOnUnitCircle definition",
       "f(n) definition as infimum over all sequences",
-      "ErdosQuestion256 statement: log f(n) ≫ n^c?",
-      "erdos_szekeres_lower axiom: f(n) > √(2n)",
+      "ErdosQuestion256 statement: log f(n) \u226b n^c?",
+      "erdos_szekeres_lower axiom: f(n) > \u221a(2n)",
       "erdos_szekeres_growth axiom: lim f(n)^{1/n} = 1",
-      "atkinson_bound axiom: log f(n) ≪ n^{1/2} log n",
-      "odlyzko_bound axiom: log f(n) ≪ n^{1/3} (log n)^{4/3}",
-      "belov_konyagin_bound axiom: log f(n) ≪ (log n)⁴",
-      "erdos_256_answer theorem: ¬ErdosQuestion256",
+      "atkinson_bound axiom: log f(n) \u226a n^{1/2} log n",
+      "odlyzko_bound axiom: log f(n) \u226a n^{1/3} (log n)^{4/3}",
+      "belov_konyagin_bound axiom: log f(n) \u226a (log n)\u2074",
+      "erdos_256_answer theorem: \u00acErdosQuestion256",
       "fDistinct definition for distinct exponents",
       "bourgain_chang_bound axiom for f*(n)",
       "chowlaMinimum definition (Problem #510 connection)",
@@ -69,22 +69,22 @@
       {
         "id": "erdos-510",
         "relationship": "directly-related",
-        "description": "The Chowla cosine problem — Atkinson showed log f*(n) ≤ C·M·log n when min cosine sum < −M, giving a direct bridge between the two problems"
+        "description": "The Chowla cosine problem \u2014 Atkinson showed log f*(n) \u2264 C\u00b7M\u00b7log n when min cosine sum < \u2212M, giving a direct bridge between the two problems"
       },
       {
         "id": "erdos-228",
         "relationship": "related",
-        "description": "Flat Littlewood polynomials: another problem about controlling polynomial values on the unit circle, with ±1 coefficients instead of product factors"
+        "description": "Flat Littlewood polynomials: another problem about controlling polynomial values on the unit circle, with \u00b11 coefficients instead of product factors"
       },
       {
         "id": "erdos-230",
         "relationship": "related",
-        "description": "Ultraflat unimodular polynomials on the unit circle — studies how uniformly bounded polynomial values on |z|=1 can be"
+        "description": "Ultraflat unimodular polynomials on the unit circle \u2014 studies how uniformly bounded polynomial values on |z|=1 can be"
       },
       {
         "id": "erdos-512",
         "relationship": "related",
-        "description": "Littlewood's conjecture on L¹ norms of exponential sums — another extremal problem about oscillatory sums on the circle"
+        "description": "Littlewood's conjecture on L\u00b9 norms of exponential sums \u2014 another extremal problem about oscillatory sums on the circle"
       }
     ],
     "axiomCount": 10,
@@ -99,14 +99,14 @@
     "assumptions": "10 axiom(s) and 2 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
-    "historicalContext": "This problem traces a 37-year arc through 20th-century harmonic analysis. Paul Erdős and George Szekeres introduced the function f(n) in 1959 in the Acad. Serbe Sci. Publ., proving the lower bound f(n) > √(2n) via a counting argument on roots of unity. Erdős himself obtained the first subexponential upper bound, showing log f(n) ≪ n^{1-c}. Frederick Atkinson improved this to n^{1/2} log n in 1961 using estimates on character sums. Andrew Odlyzko pushed the exponent further to n^{1/3}(log n)^{4/3} in 1982 with methods from analytic number theory. For two decades, the question remained: is the growth polynomial in n (as the upper bounds suggested) or could f(n) be even smaller? Alexander Belov and Sergei Konyagin settled this decisively in 1996 by constructing sequences of exponents for which the product maximum grows only polylogarithmically: log f(n) ≪ (log n)⁴. Their construction used sophisticated probabilistic and harmonic analysis techniques, answering Erdős's question in the negative. More recently, Jean Bourgain and Mei-Chu Chang (2018) studied the variant with distinct exponents, showing different but still subpolynomial behavior.",
-    "problemStatement": "**Question:** Let f(n) be the maximal value such that for every sequence a₁ ≤ ... ≤ aₙ ∈ ℕ, we have max_{|z|=1} |∏ᵢ(1-z^{aᵢ})| ≥ f(n). Is it true that log f(n) ≫ n^c for some c > 0?\n\n**Answer: NO** (Belov-Konyagin 1996)\n\nlog f(n) ≪ (log n)⁴, so f(n) grows only polylogarithmically.",
-    "text": "Is log f(n) ≫ n^c for some c > 0, where f(n) = min over all a₁ ≤ ... ≤ aₙ of max_{|z|=1} |∏(1-z^{aᵢ})|? NO - Belov-Konyagin (1996) proved log f(n) ≪ (log n)⁴.",
-    "proofStrategy": "The formalization proceeds in nine parts, building from definitions to the final answer:\n\n1. **Definitions:** `productPoly`, `maxOnUnitCircle`, and `f(n)` encode the inf-max optimization via Lean's `sSup` and `sInf` over sets of complex/real values.\n2. **Historical bounds:** Each milestone (Erdős-Szekeres 1959, Atkinson 1961, Odlyzko 1982) is axiomatized as an inequality on `f`.\n3. **The question:** `ErdosQuestion256` is a `Prop` asserting ∃ c > 0 with log f(n) ≥ C·n^c.\n4. **The answer:** The Belov-Konyagin bound log f(n) ≤ C·(log n)⁴ is axiomatized, and `erdos_256_answer : ¬ErdosQuestion256` follows because (log n)⁴ is eventually dominated by n^c for any c > 0.\n5. **Extensions:** The distinct-exponents variant `fDistinct` and the Chowla cosine connection (Problem #510) are formalized, showing the problem's wider context.\n6. **Properties:** The behavior of the product at roots of unity is captured in `product_at_root_of_unity`.\n\nThe architecture uses `axiom` for deep results (Belov-Konyagin, Erdős-Szekeres) and `theorem` for consequences derivable from them.",
+    "historicalContext": "This problem traces a 37-year arc through 20th-century harmonic analysis. Paul Erd\u0151s and George Szekeres introduced the function f(n) in 1959 in the Acad. Serbe Sci. Publ., proving the lower bound f(n) > \u221a(2n) via a counting argument on roots of unity. Erd\u0151s himself obtained the first subexponential upper bound, showing log f(n) \u226a n^{1-c}. Frederick Atkinson improved this to n^{1/2} log n in 1961 using estimates on character sums. Andrew Odlyzko pushed the exponent further to n^{1/3}(log n)^{4/3} in 1982 with methods from analytic number theory. For two decades, the question remained: is the growth polynomial in n (as the upper bounds suggested) or could f(n) be even smaller? Alexander Belov and Sergei Konyagin settled this decisively in 1996 by constructing sequences of exponents for which the product maximum grows only polylogarithmically: log f(n) \u226a (log n)\u2074. Their construction used sophisticated probabilistic and harmonic analysis techniques, answering Erd\u0151s's question in the negative. More recently, Jean Bourgain and Mei-Chu Chang (2018) studied the variant with distinct exponents, showing different but still subpolynomial behavior.",
+    "problemStatement": "**Question:** Let f(n) be the maximal value such that for every sequence a\u2081 \u2264 ... \u2264 a\u2099 \u2208 \u2115, we have max_{|z|=1} |\u220f\u1d62(1-z^{a\u1d62})| \u2265 f(n). Is it true that log f(n) \u226b n^c for some c > 0?\n\n**Answer: NO** (Belov-Konyagin 1996)\n\nlog f(n) \u226a (log n)\u2074, so f(n) grows only polylogarithmically.",
+    "text": "Is log f(n) \u226b n^c for some c > 0, where f(n) = min over all a\u2081 \u2264 ... \u2264 a\u2099 of max_{|z|=1} |\u220f(1-z^{a\u1d62})|? NO - Belov-Konyagin (1996) proved log f(n) \u226a (log n)\u2074.",
+    "proofStrategy": "The formalization proceeds in nine parts, building from definitions to the final answer:\n\n1. **Definitions:** `productPoly`, `maxOnUnitCircle`, and `f(n)` encode the inf-max optimization via Lean's `sSup` and `sInf` over sets of complex/real values.\n2. **Historical bounds:** Each milestone (Erd\u0151s-Szekeres 1959, Atkinson 1961, Odlyzko 1982) is axiomatized as an inequality on `f`.\n3. **The question:** `ErdosQuestion256` is a `Prop` asserting \u2203 c > 0 with log f(n) \u2265 C\u00b7n^c.\n4. **The answer:** The Belov-Konyagin bound log f(n) \u2264 C\u00b7(log n)\u2074 is axiomatized, and `erdos_256_answer : \u00acErdosQuestion256` follows because (log n)\u2074 is eventually dominated by n^c for any c > 0.\n5. **Extensions:** The distinct-exponents variant `fDistinct` and the Chowla cosine connection (Problem #510) are formalized, showing the problem's wider context.\n6. **Properties:** The behavior of the product at roots of unity is captured in `product_at_root_of_unity`.\n\nThe architecture uses `axiom` for deep results (Belov-Konyagin, Erd\u0151s-Szekeres) and `theorem` for consequences derivable from them.",
     "keyInsights": [
       "**Growth rate question:** The question is whether log f(n) grows polynomially in n or only polylogarithmically",
-      "**Timeline of bounds:** Upper bounds improved from n^{1-c} to n^{1/2} to n^{1/3} to (log n)⁴",
-      "**Belov-Konyagin breakthrough:** log f(n) ≪ (log n)⁴ is polynomial in log n, answering NO",
+      "**Timeline of bounds:** Upper bounds improved from n^{1-c} to n^{1/2} to n^{1/3} to (log n)\u2074",
+      "**Belov-Konyagin breakthrough:** log f(n) \u226a (log n)\u2074 is polynomial in log n, answering NO",
       "**Distinct case:** For distinct exponents, Bourgain-Chang (2018) gave different bounds",
       "**Chowla connection:** Related to cosine sum problem #510 via Atkinson's observation",
       "**Roots of unity:** Primitive roots provide key evaluation points"
@@ -130,7 +130,7 @@
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "summary": "Axiomatizes the historical bounds: Erdős-Szekeres $f(n) > \\sqrt{2n}$ (1959), Atkinson $\\log f(n) \\ll n^{1/2} \\log n$ (1961), Odlyzko $\\log f(n) \\ll n^{1/3}(\\log n)^{4/3}$ (1982). Also proves $\\lim f(n)^{1/n} = 1$.",
+      "summary": "Axiomatizes the historical bounds: Erd\u0151s-Szekeres $f(n) > \\sqrt{2n}$ (1959), Atkinson $\\log f(n) \\ll n^{1/2} \\log n$ (1961), Odlyzko $\\log f(n) \\ll n^{1/3}(\\log n)^{4/3}$ (1982). Also proves $\\lim f(n)^{1/n} = 1$.",
       "startLine": 66,
       "endLine": 103
     },
@@ -144,7 +144,7 @@
     {
       "id": "answer",
       "title": "The Answer",
-      "summary": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\log n)^4$ and proves `erdos_256_answer : ¬ErdosQuestion256` — the answer is NO, since $(\\log n)^4$ grows slower than $n^c$ for any $c > 0$.",
+      "summary": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\log n)^4$ and proves `erdos_256_answer : \u00acErdosQuestion256` \u2014 the answer is NO, since $(\\log n)^4$ grows slower than $n^c$ for any $c > 0$.",
       "startLine": 118,
       "endLine": 139
     },
@@ -158,7 +158,7 @@
     {
       "id": "chowla",
       "title": "Connection to Chowla Problem",
-      "summary": "Connects to Erdős Problem #510 via `chowlaMinimum`: the minimum of $|\\sum \\cos(a_i \\theta)|$ over $\\theta$. Atkinson observed these two minimax problems are related through the logarithm of the product.",
+      "summary": "Connects to Erd\u0151s Problem #510 via `chowlaMinimum`: the minimum of $|\\sum \\cos(a_i \\theta)|$ over $\\theta$. Atkinson observed these two minimax problems are related through the logarithm of the product.",
       "startLine": 160,
       "endLine": 178
     },
@@ -179,14 +179,14 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Packages the final result: `erdos_256` aliases `erdos_256_answer` (¬ErdosQuestion256), and `erdos_256_summary` combines the Belov-Konyagin upper bound with the Erdős-Szekeres lower bound into a single conjunction, providing a self-contained statement of what is known about $f(n)$.",
+      "summary": "Packages the final result: `erdos_256` aliases `erdos_256_answer` (\u00acErdosQuestion256), and `erdos_256_summary` combines the Belov-Konyagin upper bound with the Erd\u0151s-Szekeres lower bound into a single conjunction, providing a self-contained statement of what is known about $f(n)$.",
       "startLine": 227,
       "endLine": 262
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #256 asked whether log f(n) ≫ n^c for some c > 0, where f(n) measures the minimum achievable maximum of products ∏(1-z^{aᵢ}) on the unit circle. Belov and Konyagin (1996) proved the answer is NO: log f(n) ≪ (log n)⁴, meaning f(n) grows only polylogarithmically in n.",
-    "implications": "**Theoretical Significance**: **Analysis Connections:**\n\n1. **Unit circle dynamics:** Products of (1-z^a) have rich structure on |z|=1.\n\n**2. Harmonic analysis:** Connected to cosine sum problems and trigonometric polynomials.\n\n3. **Bounds gap:** True growth between (1/2)log n and (log n)⁴ remains open.\n\n4. **Distinct case:** Different behavior when exponents must be distinct.",
+    "summary": "Erd\u0151s Problem #256 asked whether log f(n) \u226b n^c for some c > 0, where f(n) measures the minimum achievable maximum of products \u220f(1-z^{a\u1d62}) on the unit circle. Belov and Konyagin (1996) proved the answer is NO: log f(n) \u226a (log n)\u2074, meaning f(n) grows only polylogarithmically in n.",
+    "implications": "**Theoretical Significance**: **Analysis Connections:**\n\n1. **Unit circle dynamics:** Products of (1-z^a) have rich structure on |z|=1.\n\n**2. Harmonic analysis:** Connected to cosine sum problems and trigonometric polynomials.\n\n3. **Bounds gap:** True growth between (1/2)log n and (log n)\u2074 remains open.\n\n4. **Distinct case:** Different behavior when exponents must be distinct.",
     "openQuestions": [
       "What is the exact growth rate of $\\log f(n)$? Known: between $\\frac{1}{2}\\log n$ and $(\\log n)^4$.",
       "Is $f(n) = \\exp(\\Theta((\\log n)^\\alpha))$ for some $1 \\leq \\alpha \\leq 4$?",
@@ -211,23 +211,51 @@
   "references": [
     {
       "key": "ES59",
-      "citation": "Erdős, P. and Szekeres, G., On the product ∏(1-z^{aᵢ}), Acad. Serbe Sci. Publ. Inst. Math. (1959). Initiated the study; proved f(n) > √(2n).",
+      "citation": "Erd\u0151s, P. and Szekeres, G., On the product \u220f(1-z^{a\u1d62}), Acad. Serbe Sci. Publ. Inst. Math. (1959). Initiated the study; proved f(n) > \u221a(2n).",
       "type": "paper"
     },
     {
       "key": "At61",
-      "citation": "Atkinson, F.V., On a problem of Erdős and Szekeres, Acta Sci. Math. (Szeged) (1961). Upper bound: log f(n) ≪ n^{1/2} log n.",
+      "citation": "Atkinson, F.V., On a problem of Erd\u0151s and Szekeres, Acta Sci. Math. (Szeged) (1961). Upper bound: log f(n) \u226a n^{1/2} log n.",
       "type": "paper"
     },
     {
       "key": "BK96",
-      "citation": "Belov, A.S. and Konyagin, S.V., On an Erdős-Szekeres problem (1996). Definitive answer: log f(n) ≪ (log n)⁴.",
+      "citation": "Belov, A.S. and Konyagin, S.V., On an Erd\u0151s-Szekeres problem (1996). Definitive answer: log f(n) \u226a (log n)\u2074.",
       "type": "paper"
     },
     {
       "key": "BC18",
-      "citation": "Bourgain, J. and Chang, M.-C., On a multilinear character sum of Burgess, Comptes Rendus Mathématique (2018). Bounds for distinct exponents case.",
+      "citation": "Bourgain, J. and Chang, M.-C., On a multilinear character sum of Burgess, Comptes Rendus Math\u00e9matique (2018). Bounds for distinct exponents case.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1150",
+      "relationship": "related",
+      "description": "Share analytic, harmonic-analysis, and unit-circle themes"
+    },
+    {
+      "targetId": "erdos-225",
+      "relationship": "related",
+      "description": "Share analytic and unit-circle themes"
+    },
+    {
+      "targetId": "erdos-230",
+      "relationship": "related",
+      "description": "Share analytic and harmonic-analysis themes"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "Share analytic and harmonic-analysis themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1150",
+    "erdos-225",
+    "erdos-230",
+    "fourier-series"
   ]
 }

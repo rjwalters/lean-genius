@@ -1,10 +1,10 @@
 {
   "id": "erdos-846",
-  "title": "Erdős Problem #846: Non-Trilinear Subsets of the Plane",
+  "title": "Erd\u0151s Problem #846: Non-Trilinear Subsets of the Plane",
   "slug": "erdos-846",
-  "description": "If every n-element subset of an infinite planar set A contains ≥ εn points in general position, must A be a finite union of sets with no three collinear? A problem of Erdős, Nešetřil, and Rödl.",
+  "description": "If every n-element subset of an infinite planar set A contains \u2265 \u03b5n points in general position, must A be a finite union of sets with no three collinear? A problem of Erd\u0151s, Ne\u0161et\u0159il, and R\u00f6dl.",
   "meta": {
-    "author": "Erdős, Nešetřil, Rödl",
+    "author": "Erd\u0151s, Ne\u0161et\u0159il, R\u00f6dl",
     "sourceUrl": "https://erdosproblems.com/846",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos846Problem.lean",
@@ -27,16 +27,16 @@
     "assumptions": "No axioms. 1 sorry(s) remain in the formalization."
   },
   "overview": {
-    "historicalContext": "**Erdős, Nešetřil, and Rödl** posed this problem in [Er92b], asking whether a density condition on non-collinearity implies a structural decomposition. The question belongs to the broader programme of **density-to-structure implications** in combinatorics: when does a quantitative property (every large piece has a proportional substructure) force a qualitative partition (the whole set splits into finitely many well-structured pieces)? Analogous questions appear throughout Ramsey theory—for instance, Szemerédi's regularity lemma converts density conditions on graphs into structural partitions. In the geometric setting, **Sylvester–Gallai** (1893/1944) showed that any finite set of points not all collinear determines a line through exactly two points, constraining the collinearity hypergraph. The Hales–Jewett density theorem and the density Hales–Jewett theorem provide further parallels. Problem 846 is closely related to Erdős Problems 774 and 847, which concern similar density-vs-structure questions for collinearity in the plane. The problem remains **open** as of 2026.",
-    "problemStatement": "Let A ⊂ ℝ² be an infinite set such that for some ε > 0, every finite subset B ⊆ A contains a non-collinear subset of size ≥ ε|B|. Must A be a finite union of sets, each with no three points collinear?",
-    "text": "If every n-element subset of an infinite planar set A contains ≥ εn points in general position, must A be a finite union of sets with no three collinear? A problem of Erdős, Nešetřil, and Rödl.",
-    "proofStrategy": "The formalization represents points as `Fin 2 → ℝ` and defines collinearity via the vanishing of the 2D cross product (equivalently, the 2×2 determinant). It builds up from basic structural lemmas (monotonicity, empty set, singleton, symmetry) through a fully proved finitary pigeonhole principle to the complete proof of the **easy direction**: every weakly non-trilinear set is ε-non-trilinear with ε = 1/k. The hard direction (the actual conjecture) is stated with `sorry`.",
+    "historicalContext": "**Erd\u0151s, Ne\u0161et\u0159il, and R\u00f6dl** posed this problem in [Er92b], asking whether a density condition on non-collinearity implies a structural decomposition. The question belongs to the broader programme of **density-to-structure implications** in combinatorics: when does a quantitative property (every large piece has a proportional substructure) force a qualitative partition (the whole set splits into finitely many well-structured pieces)? Analogous questions appear throughout Ramsey theory\u2014for instance, Szemer\u00e9di's regularity lemma converts density conditions on graphs into structural partitions. In the geometric setting, **Sylvester\u2013Gallai** (1893/1944) showed that any finite set of points not all collinear determines a line through exactly two points, constraining the collinearity hypergraph. The Hales\u2013Jewett density theorem and the density Hales\u2013Jewett theorem provide further parallels. Problem 846 is closely related to Erd\u0151s Problems 774 and 847, which concern similar density-vs-structure questions for collinearity in the plane. The problem remains **open** as of 2026.",
+    "problemStatement": "Let A \u2282 \u211d\u00b2 be an infinite set such that for some \u03b5 > 0, every finite subset B \u2286 A contains a non-collinear subset of size \u2265 \u03b5|B|. Must A be a finite union of sets, each with no three points collinear?",
+    "text": "If every n-element subset of an infinite planar set A contains \u2265 \u03b5n points in general position, must A be a finite union of sets with no three collinear? A problem of Erd\u0151s, Ne\u0161et\u0159il, and R\u00f6dl.",
+    "proofStrategy": "The formalization represents points as `Fin 2 \u2192 \u211d` and defines collinearity via the vanishing of the 2D cross product (equivalently, the 2\u00d72 determinant). It builds up from basic structural lemmas (monotonicity, empty set, singleton, symmetry) through a fully proved finitary pigeonhole principle to the complete proof of the **easy direction**: every weakly non-trilinear set is \u03b5-non-trilinear with \u03b5 = 1/k. The hard direction (the actual conjecture) is stated with `sorry`.",
     "keyInsights": [
       "**Collinearity via cross product**: three points $p, q, r \\in \\mathbb{R}^2$ are collinear iff $(q_0 - p_0)(r_1 - p_1) = (r_0 - p_0)(q_1 - p_1)$, the vanishing of the 2D cross product, avoiding affine geometry infrastructure",
       "**Density vs structure paradigm**: the $\\varepsilon$-non-trilinear condition is a density guarantee (a constant fraction of any finite piece is in general position), while weak non-trilinearity is a structural partition into finitely many non-collinear parts",
       "**Full pigeonhole proof**: the formalization includes a standalone ~20-line proof of the finitary pigeonhole principle via contradiction, using `Finset.card_biUnion` for fiber decomposition and `omega` for the final inequality",
       "**Easy direction fully proved**: a ~45-line proof that $A \\subseteq \\bigcup_{i=1}^k S_i$ with each $S_i$ non-collinear implies $A$ is $(1/k)$-non-trilinear, using `classical` choice for the assignment function and pigeonhole for fiber selection",
-      "**The hard direction is the open problem**: going from density ($\\varepsilon$-non-trilinear) to structure (finite union of non-collinear sets) requires fundamentally different techniques—the density condition provides local existence but not a global decomposition"
+      "**The hard direction is the open problem**: going from density ($\\varepsilon$-non-trilinear) to structure (finite union of non-collinear sets) requires fundamentally different techniques\u2014the density condition provides local existence but not a global decomposition"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -49,7 +49,7 @@
       "title": "Imports and Setup",
       "startLine": 15,
       "endLine": 20,
-      "summary": "Imports InnerProductSpace for ℝ², Finset for combinatorics, and standard tactics."
+      "summary": "Imports InnerProductSpace for \u211d\u00b2, Finset for combinatorics, and standard tactics."
     },
     {
       "id": "collinearity",
@@ -67,10 +67,10 @@
     },
     {
       "id": "eps-property",
-      "title": "ε-Non-Trilinear Property",
+      "title": "\u03b5-Non-Trilinear Property",
       "startLine": 34,
       "endLine": 41,
-      "summary": "Defines the density condition: every finite subset B has a non-collinear subset C with |C| ≥ ε|B|."
+      "summary": "Defines the density condition: every finite subset B has a non-collinear subset C with |C| \u2265 \u03b5|B|."
     },
     {
       "id": "weakly-non-trilinear",
@@ -88,39 +88,39 @@
     },
     {
       "id": "eps-results",
-      "title": "ε-Non-Trilinear Results (Fully Proved)",
+      "title": "\u03b5-Non-Trilinear Results (Fully Proved)",
       "startLine": 75,
       "endLine": 97,
-      "summary": "Proves non-trilinear sets are 1-non-trilinear and that ε-non-trilinearity is monotone in ε."
+      "summary": "Proves non-trilinear sets are 1-non-trilinear and that \u03b5-non-trilinearity is monotone in \u03b5."
     },
     {
       "id": "pigeonhole",
       "title": "Finitary Pigeonhole Principle (Fully Proved)",
       "startLine": 99,
       "endLine": 121,
-      "summary": "A standalone proof that some fiber of f : B → Fin k has |fiber| ≥ |B|/k, by contradiction."
+      "summary": "A standalone proof that some fiber of f : B \u2192 Fin k has |fiber| \u2265 |B|/k, by contradiction."
     },
     {
       "id": "easy-direction",
-      "title": "Easy Direction: Structure → Density (Fully Proved)",
+      "title": "Easy Direction: Structure \u2192 Density (Fully Proved)",
       "startLine": 123,
       "endLine": 177,
-      "summary": "The main proved theorem: if A ⊆ ⋃ᵢ Sᵢ with each Sᵢ non-trilinear, then A is (1/k)-non-trilinear."
+      "summary": "The main proved theorem: if A \u2286 \u22c3\u1d62 S\u1d62 with each S\u1d62 non-trilinear, then A is (1/k)-non-trilinear."
     },
     {
       "id": "conjecture",
-      "title": "The Erdős–Nešetřil–Rödl Conjecture (OPEN)",
+      "title": "The Erd\u0151s\u2013Ne\u0161et\u0159il\u2013R\u00f6dl Conjecture (OPEN)",
       "startLine": 179,
       "endLine": 199,
-      "summary": "States the open problem (density → structure) and its logically equivalent contrapositive."
+      "summary": "States the open problem (density \u2192 structure) and its logically equivalent contrapositive."
     }
   ],
   "conclusion": {
-    "summary": "This formalization achieves a complete proof of the easy direction of Erdős Problem 846 (weakly non-trilinear → ε-non-trilinear with ε = 1/k), including a standalone finitary pigeonhole principle. The hard direction—whether every infinite ε-non-trilinear set is a finite union of non-collinear sets—remains open since 1992.",
-    "implications": "Resolution would establish a fundamental connection between density and structural descriptions of geometric configurations. The density-to-structure paradigm appears throughout combinatorics (Szemerédi regularity, Ramsey theory), and a positive answer would add a geometric instance to this pattern.",
+    "summary": "This formalization achieves a complete proof of the easy direction of Erd\u0151s Problem 846 (weakly non-trilinear \u2192 \u03b5-non-trilinear with \u03b5 = 1/k), including a standalone finitary pigeonhole principle. The hard direction\u2014whether every infinite \u03b5-non-trilinear set is a finite union of non-collinear sets\u2014remains open since 1992.",
+    "implications": "Resolution would establish a fundamental connection between density and structural descriptions of geometric configurations. The density-to-structure paradigm appears throughout combinatorics (Szemer\u00e9di regularity, Ramsey theory), and a positive answer would add a geometric instance to this pattern.",
     "openQuestions": [
       "Does the conjecture hold even for sets lying on algebraic curves?",
-      "What is the minimum number of non-collinear sets needed in the decomposition as a function of ε?",
+      "What is the minimum number of non-collinear sets needed in the decomposition as a function of \u03b5?",
       "Does an analogous result hold in higher dimensions (no d+1 points on a hyperplane)?",
       "Can the contrapositive be leveraged: if A is not weakly non-trilinear, can one construct finite subsets with few points in general position?"
     ]
@@ -141,5 +141,39 @@
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 4
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-101",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and collinearity themes"
+    },
+    {
+      "targetId": "erdos-102",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and collinearity themes"
+    },
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-189",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-838",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and general-position themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-101",
+    "erdos-102",
+    "erdos-107",
+    "erdos-189",
+    "erdos-838"
+  ]
 }

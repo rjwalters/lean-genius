@@ -150,5 +150,39 @@
     "axiomCount": 15,
     "theoremCount": 44,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-980",
+      "relationship": "related",
+      "description": "Share power-residues and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-306",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-318",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-420",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-696",
+      "relationship": "related",
+      "description": "Share partially-solved and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-980",
+    "erdos-306",
+    "erdos-318",
+    "erdos-420",
+    "erdos-696"
+  ]
 }

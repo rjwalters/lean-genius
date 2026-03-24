@@ -1,8 +1,8 @@
 {
   "id": "erdos-469",
-  "title": "Erdős Problem #469: Primitive Pseudoperfect Numbers",
+  "title": "Erd\u0151s Problem #469: Primitive Pseudoperfect Numbers",
   "slug": "erdos-469",
-  "description": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does Σ_{n ∈ A} 1/n converge? OEIS A006036. Open.",
+  "description": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does \u03a3_{n \u2208 A} 1/n converge? OEIS A006036. Open.",
   "meta": {
     "erdosNumber": 469,
     "status": "axiomatized",
@@ -60,16 +60,16 @@
     }
   ],
   "overview": {
-    "historicalContext": "**Erdős Problem #469** concerns **primitive pseudoperfect numbers** (also called semiperfect numbers). A number $n$ is **pseudoperfect** if it equals the sum of a subset of its proper divisors. It is **primitive** pseudoperfect if no proper divisor of $n$ is pseudoperfect.\n\nThe sequence was studied by Erdős (1970) and Benkoski–Erdős (1974), beginning $6, 20, 28, 88, 104, 272, 304, 350, \\ldots$ (OEIS A006036). Every **perfect number** (where $\\sigma(n) = 2n$, meaning all proper divisors sum to $n$) is pseudoperfect. Since perfect numbers are the 'base case' of pseudoperfect, the first primitive pseudoperfect number is $6$ (the smallest perfect number). The problem asks whether the sum $\\sum_{n \\in A} 1/n$ over all primitive pseudoperfect numbers $A$ **converges**. This remains **open** as of 2025.",
-    "problemStatement": "Does the sum Σ_{n ∈ A} 1/n converge, where A is the set of primitive pseudoperfect numbers?",
-    "text": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does Σ_{n ∈ A} 1/n converge? OEIS A006036. Open.",
+    "historicalContext": "**Erd\u0151s Problem #469** concerns **primitive pseudoperfect numbers** (also called semiperfect numbers). A number $n$ is **pseudoperfect** if it equals the sum of a subset of its proper divisors. It is **primitive** pseudoperfect if no proper divisor of $n$ is pseudoperfect.\n\nThe sequence was studied by Erd\u0151s (1970) and Benkoski\u2013Erd\u0151s (1974), beginning $6, 20, 28, 88, 104, 272, 304, 350, \\ldots$ (OEIS A006036). Every **perfect number** (where $\\sigma(n) = 2n$, meaning all proper divisors sum to $n$) is pseudoperfect. Since perfect numbers are the 'base case' of pseudoperfect, the first primitive pseudoperfect number is $6$ (the smallest perfect number). The problem asks whether the sum $\\sum_{n \\in A} 1/n$ over all primitive pseudoperfect numbers $A$ **converges**. This remains **open** as of 2025.",
+    "problemStatement": "Does the sum \u03a3_{n \u2208 A} 1/n converge, where A is the set of primitive pseudoperfect numbers?",
+    "text": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does \u03a3_{n \u2208 A} 1/n converge? OEIS A006036. Open.",
     "proofStrategy": "We define IsPseudoperfect using Finset subsets of properDivisors, define primitivity by requiring no proper divisor to be pseudoperfect, and record basic structural results. The convergence question is formalized as a bounded partial sums condition.",
     "keyInsights": [
-      "Every perfect number (σ(n) = 2n) is pseudoperfect: the proper divisors sum to n",
+      "Every perfect number (\u03c3(n) = 2n) is pseudoperfect: the proper divisors sum to n",
       "6 is the smallest primitive pseudoperfect number (and the smallest perfect number)",
       "Multiples of pseudoperfect numbers are pseudoperfect, so primitivity is about divisor chains",
       "There are infinitely many primitive pseudoperfect numbers",
-      "The convergence of Σ 1/n over A would imply A has density 0 and is sparse"
+      "The convergence of \u03a3 1/n over A would imply A has density 0 and is sparse"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -77,19 +77,53 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #469 asks whether the sum of reciprocals of primitive pseudoperfect numbers converges. These are numbers expressible as sums of distinct proper divisors, with no proper divisor having this property. The problem connects divisor-sum arithmetic to analytic number theory.",
+    "summary": "Erd\u0151s Problem #469 asks whether the sum of reciprocals of primitive pseudoperfect numbers converges. These are numbers expressible as sums of distinct proper divisors, with no proper divisor having this property. The problem connects divisor-sum arithmetic to analytic number theory.",
     "implications": "Convergence would show primitive pseudoperfect numbers are extremely sparse, while divergence would indicate they are as common as primes (in reciprocal-sum terms).",
     "openQuestions": [
-      "Does Σ_{n ∈ A} 1/n converge?",
+      "Does \u03a3_{n \u2208 A} 1/n converge?",
       "What is the asymptotic density of primitive pseudoperfect numbers?",
       "Are all even perfect numbers primitive pseudoperfect?"
     ]
   },
   "references": [
-    "Erdős (1970), p.131",
-    "Benkoski–Erdős (1974), p.620",
-    "Erdős–Graham (1980), p.93",
+    "Erd\u0151s (1970), p.131",
+    "Benkoski\u2013Erd\u0151s (1974), p.620",
+    "Erd\u0151s\u2013Graham (1980), p.93",
     "OEIS A006036",
     "https://erdosproblems.com/469"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1099",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1100",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-204",
+      "relationship": "related",
+      "description": "Share divisors and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-1099",
+    "erdos-1100",
+    "erdos-144",
+    "erdos-204"
   ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-176",
-  "title": "Erdős Problem #176: Discrepancy of Arithmetic Progressions",
+  "title": "Erd\u0151s Problem #176: Discrepancy of Arithmetic Progressions",
   "slug": "erdos-176",
-  "description": "Find bounds for N(k,ℓ), the minimal N such that any ±1 coloring of {1,...,N} has a k-AP with discrepancy ≥ ℓ. Known: N(k,1) exactly; Open: N(k,2) ≤ C^k?",
+  "description": "Find bounds for N(k,\u2113), the minimal N such that any \u00b11 coloring of {1,...,N} has a k-AP with discrepancy \u2265 \u2113. Known: N(k,1) exactly; Open: N(k,2) \u2264 C^k?",
   "meta": {
-    "author": "Erdős-Graham (1980), Spencer (1973), Erdős (1963)",
+    "author": "Erd\u0151s-Graham (1980), Spencer (1973), Erd\u0151s (1963)",
     "sourceUrl": "https://erdosproblems.com/176",
     "date": "1963",
     "status": "formalized",
@@ -39,27 +39,27 @@
     ],
     "originalContributions": [
       "ArithProg definition: k-term arithmetic progression as Finset",
-      "Coloring definition: ±1 valued functions",
+      "Coloring definition: \u00b11 valued functions",
       "IsValidColoring definition: values in {-1, 1}",
       "APDiscrepancy definition: sum of coloring over AP",
-      "HasDiscrepancy definition: |sum| ≥ ℓ condition",
-      "SatisfiesNkl definition: N-property for N(k,ℓ)",
+      "HasDiscrepancy definition: |sum| \u2265 \u2113 condition",
+      "SatisfiesNkl definition: N-property for N(k,\u2113)",
       "Nkl definition: minimal N with the property",
       "vanDerWaerden definition: W(k) = N(k,k)",
       "spencer_1973 axiom: exact formula for N(k,1)",
       "erdos_1963_lower_bound axiom: exponential lower bounds",
-      "LinearDiscrepancyConjecture: N(k,ck) ≤ C^k?",
-      "Discrepancy2Conjecture: N(k,2) ≤ C^k?",
-      "SqrtDiscrepancyConjecture: N(k,√k) ≤ C^k?",
+      "LinearDiscrepancyConjecture: N(k,ck) \u2264 C^k?",
+      "Discrepancy2Conjecture: N(k,2) \u2264 C^k?",
+      "SqrtDiscrepancyConjecture: N(k,\u221ak) \u2264 C^k?",
       "Nk2_grows_superpolynomially axiom: N(k,2) grows faster than any polynomial",
-      "tao_erdos_discrepancy axiom: Erdős discrepancy conjecture (Tao 2015)",
+      "tao_erdos_discrepancy axiom: Erd\u0151s discrepancy conjecture (Tao 2015)",
       "szemeredi_theorem axiom: positive density sets contain arbitrarily long APs"
     ],
     "axiomCount": 8,
     "lineCount": 311,
     "references": [
       {
-        "title": "A note on a conjecture of Erdős",
+        "title": "A note on a conjecture of Erd\u0151s",
         "authors": "J. Spencer",
         "year": 1973,
         "venue": "Canadian Mathematical Bulletin",
@@ -68,31 +68,31 @@
       },
       {
         "title": "Old and new problems and results in combinatorial number theory",
-        "authors": "P. Erdős, R. L. Graham",
+        "authors": "P. Erd\u0151s, R. L. Graham",
         "year": 1980,
-        "venue": "L'Enseignement Mathématique, Monograph 28",
-        "description": "Poses the problem of bounding N(k,ℓ) and remarks that 'no decent bound' is known for N(k,2)"
+        "venue": "L'Enseignement Math\u00e9matique, Monograph 28",
+        "description": "Poses the problem of bounding N(k,\u2113) and remarks that 'no decent bound' is known for N(k,2)"
       },
       {
-        "title": "The Erdős discrepancy problem",
+        "title": "The Erd\u0151s discrepancy problem",
         "authors": "T. Tao",
         "year": 2016,
         "venue": "Discrete Analysis",
         "url": "https://doi.org/10.19086/da.609",
-        "description": "Proves the Erdős Discrepancy Conjecture: every infinite ±1 sequence has unbounded discrepancy on homogeneous APs"
+        "description": "Proves the Erd\u0151s Discrepancy Conjecture: every infinite \u00b11 sequence has unbounded discrepancy on homogeneous APs"
       }
     ],
     "assumptions": "8 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #176** concerns the discrepancy of ±1 colorings with respect to arithmetic progressions. This is a fundamental problem in Ramsey theory and combinatorial number theory.\n\n**Historical Development:**\n- **1963 (Erdős):** Proved exponential lower bounds N(k,ck) > (1+α_c)^k.\n- **1973 (Spencer):** Gave exact formula for N(k,1): if k = 2^t·m with m odd, then N(k,1) = 2^t(k-1) + 1.\n- **1980 (Erdős-Graham):** Stated that 'no decent bound' is known even for N(k,2).\n\nThe problem connects to van der Waerden numbers: when ℓ = k, N(k,k) equals the van der Waerden number W(k).",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet $N(k, \\ell)$ be the minimal $N$ such that for any $f:\\{1,\\ldots,N\\}\\to\\{-1,1\\}$, there exists a $k$-term arithmetic progression $P$ with $|\\sum_{n\\in P} f(n)| \\geq \\ell$.\n\n**Questions:**\n1. For any $c > 0$, is there $C > 1$ with $N(k, ck) \\leq C^k$?\n2. Is $N(k, 2) \\leq C^k$ for some $C$?\n3. Is $N(k, \\sqrt{k}) \\leq C^k$ for some $C$?\n\n**Known:**\n- $N(k,k) = W(k)$ (van der Waerden number)\n- $N(k,1)$ has exact formula (Spencer 1973)\n- $N(k,ck) > (1+\\alpha_c)^k$ (Erdős 1963)",
-    "text": "Find bounds for N(k,ℓ), the minimal N such that any ±1 coloring of {1,...,N} has a k-AP with discrepancy ≥ ℓ. Known: N(k,1) exactly; Open: N(k,2) ≤ C^k?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define arithmetic progressions, ±1 colorings, and discrepancy.\n\n2. **N(k,ℓ) Function:** Define the property SatisfiesNkl and the minimal Nkl.\n\n3. **Van der Waerden:** Connect N(k,k) to van der Waerden numbers.\n\n4. **Known Results:** Axiomatize Spencer's exact formula and Erdős's lower bounds.\n\n5. **Open Questions:** State the three main conjectures precisely.",
+    "historicalContext": "**Erd\u0151s Problem #176** concerns the discrepancy of \u00b11 colorings with respect to arithmetic progressions. This is a fundamental problem in Ramsey theory and combinatorial number theory.\n\n**Historical Development:**\n- **1963 (Erd\u0151s):** Proved exponential lower bounds N(k,ck) > (1+\u03b1_c)^k.\n- **1973 (Spencer):** Gave exact formula for N(k,1): if k = 2^t\u00b7m with m odd, then N(k,1) = 2^t(k-1) + 1.\n- **1980 (Erd\u0151s-Graham):** Stated that 'no decent bound' is known even for N(k,2).\n\nThe problem connects to van der Waerden numbers: when \u2113 = k, N(k,k) equals the van der Waerden number W(k).",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $N(k, \\ell)$ be the minimal $N$ such that for any $f:\\{1,\\ldots,N\\}\\to\\{-1,1\\}$, there exists a $k$-term arithmetic progression $P$ with $|\\sum_{n\\in P} f(n)| \\geq \\ell$.\n\n**Questions:**\n1. For any $c > 0$, is there $C > 1$ with $N(k, ck) \\leq C^k$?\n2. Is $N(k, 2) \\leq C^k$ for some $C$?\n3. Is $N(k, \\sqrt{k}) \\leq C^k$ for some $C$?\n\n**Known:**\n- $N(k,k) = W(k)$ (van der Waerden number)\n- $N(k,1)$ has exact formula (Spencer 1973)\n- $N(k,ck) > (1+\\alpha_c)^k$ (Erd\u0151s 1963)",
+    "text": "Find bounds for N(k,\u2113), the minimal N such that any \u00b11 coloring of {1,...,N} has a k-AP with discrepancy \u2265 \u2113. Known: N(k,1) exactly; Open: N(k,2) \u2264 C^k?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define arithmetic progressions, \u00b11 colorings, and discrepancy.\n\n2. **N(k,\u2113) Function:** Define the property SatisfiesNkl and the minimal Nkl.\n\n3. **Van der Waerden:** Connect N(k,k) to van der Waerden numbers.\n\n4. **Known Results:** Axiomatize Spencer's exact formula and Erd\u0151s's lower bounds.\n\n5. **Open Questions:** State the three main conjectures precisely.",
     "keyInsights": [
       "**Arithmetic Progressions:** Sets of the form {a, a+d, a+2d, ..., a+(k-1)d}.",
-      "**Discrepancy:** The sum Σ_{n∈P} f(n) measures how 'unbalanced' a coloring is on P.",
-      "**N(k,ℓ):** Minimal N guaranteeing some k-AP has discrepancy ≥ ℓ.",
+      "**Discrepancy:** The sum \u03a3_{n\u2208P} f(n) measures how 'unbalanced' a coloring is on P.",
+      "**N(k,\u2113):** Minimal N guaranteeing some k-AP has discrepancy \u2265 \u2113.",
       "**Van der Waerden:** N(k,k) = W(k); discrepancy k means monochromatic AP.",
       "**Spencer's Formula:** For N(k,1), the exact value depends on the 2-adic valuation of k.",
       "**Exponential Growth:** Both upper and lower bounds are expected to be exponential in k."
@@ -114,14 +114,14 @@
     {
       "id": "colorings",
       "title": "Colorings and Discrepancy",
-      "summary": "±1 colorings and AP discrepancy definitions",
+      "summary": "\u00b11 colorings and AP discrepancy definitions",
       "startLine": 73,
       "endLine": 103
     },
     {
       "id": "nkl-function",
-      "title": "The N(k,ℓ) Function",
-      "summary": "Definition of N(k,ℓ) and monotonicity",
+      "title": "The N(k,\u2113) Function",
+      "summary": "Definition of N(k,\u2113) and monotonicity",
       "startLine": 104,
       "endLine": 133
     },
@@ -141,7 +141,7 @@
     },
     {
       "id": "erdos-lower",
-      "title": "Erdős's Lower Bounds",
+      "title": "Erd\u0151s's Lower Bounds",
       "summary": "Exponential lower bounds and alpha_c function",
       "startLine": 184,
       "endLine": 215
@@ -156,7 +156,7 @@
     {
       "id": "connections",
       "title": "Related Problems",
-      "summary": "Connections to Erdős discrepancy and Szemerédi theorems",
+      "summary": "Connections to Erd\u0151s discrepancy and Szemer\u00e9di theorems",
       "startLine": 251,
       "endLine": 273
     },
@@ -169,12 +169,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #176 asks for bounds on N(k,ℓ), the minimal N guaranteeing any ±1 coloring has a k-AP with discrepancy ≥ ℓ. Spencer gave an exact formula for N(k,1), and Erdős proved exponential lower bounds. The main open questions concern whether exponential upper bounds exist for N(k,2), N(k,√k), and N(k,ck).",
-    "implications": "**Theoretical Significance**: **Implications for Combinatorics**\n\n1. **Discrepancy Theory:** Understanding N(k,ℓ) illuminates the limits of balancing colorings.\n\n**2. Ramsey Theory:** Connected to van der Waerden numbers and unavoidable patterns.\n\n3. **Ergodic Theory:** Related to uniformity of sequences and distributions.\n\n4. **Complexity:** The hardness of computing N(k,ℓ) relates to computational Ramsey theory.",
+    "summary": "Erd\u0151s Problem #176 asks for bounds on N(k,\u2113), the minimal N guaranteeing any \u00b11 coloring has a k-AP with discrepancy \u2265 \u2113. Spencer gave an exact formula for N(k,1), and Erd\u0151s proved exponential lower bounds. The main open questions concern whether exponential upper bounds exist for N(k,2), N(k,\u221ak), and N(k,ck).",
+    "implications": "**Theoretical Significance**: **Implications for Combinatorics**\n\n1. **Discrepancy Theory:** Understanding N(k,\u2113) illuminates the limits of balancing colorings.\n\n**2. Ramsey Theory:** Connected to van der Waerden numbers and unavoidable patterns.\n\n3. **Ergodic Theory:** Related to uniformity of sequences and distributions.\n\n4. **Complexity:** The hardness of computing N(k,\u2113) relates to computational Ramsey theory.",
     "openQuestions": [
-      "Is N(k, 2) ≤ C^k for some constant C?",
-      "Is N(k, √k) ≤ C^k?",
-      "For any c > 0, is N(k, ck) ≤ C^k for some C = C(c)?",
+      "Is N(k, 2) \u2264 C^k for some constant C?",
+      "Is N(k, \u221ak) \u2264 C^k?",
+      "For any c > 0, is N(k, ck) \u2264 C^k for some C = C(c)?",
       "What is the exact growth rate of N(k, 2)?",
       "Can probabilistic methods improve upper bounds?"
     ]
@@ -200,19 +200,22 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-177",
-      "title": "Erdős Problem #177: Discrepancy of Arithmetic Progressions",
-      "relationship": "Both concern discrepancy of colorings with respect to arithmetic progressions — #176 studies ±1 colorings, #177 addresses a closely related discrepancy formulation"
+      "title": "Erd\u0151s Problem #177: Discrepancy of Arithmetic Progressions",
+      "relationship": "related",
+      "targetId": "erdos-177",
+      "description": "Both concern discrepancy of colorings with respect to arithmetic progressions \u2014 #176 studies \u00b11 colorings, #177 addresses a closely related discrepancy formulation"
     },
     {
-      "id": "erdos-178",
-      "title": "Erdős Problem #178: Balancing Infinite Collections of Integer Sequences",
-      "relationship": "Both are discrepancy problems asking for balanced colorings; #176 balances APs while #178 balances arbitrary infinite sequence families"
+      "title": "Erd\u0151s Problem #178: Balancing Infinite Collections of Integer Sequences",
+      "relationship": "related",
+      "targetId": "erdos-178",
+      "description": "Both are discrepancy problems asking for balanced colorings; #176 balances APs while #178 balances arbitrary infinite sequence families"
     },
     {
-      "id": "szemeredi-theorem",
-      "title": "Szemerédi's Theorem (k=3 via Mathlib)",
-      "relationship": "Szemerédi's theorem on APs in dense sets is a fundamental companion result; the discrepancy problem #176 asks about ±1 balance on APs rather than AP existence"
+      "title": "Szemer\u00e9di's Theorem (k=3 via Mathlib)",
+      "relationship": "related",
+      "targetId": "szemeredi-theorem",
+      "description": "Szemer\u00e9di's theorem on APs in dense sets is a fundamental companion result; the discrepancy problem #176 asks about \u00b11 balance on APs rather than AP existence"
     }
   ]
 }

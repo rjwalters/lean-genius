@@ -1,10 +1,10 @@
 {
   "id": "erdos-885",
-  "title": "Erdős Problem #885: Common Factor Difference Sets",
+  "title": "Erd\u0151s Problem #885: Common Factor Difference Sets",
   "slug": "erdos-885",
-  "description": "For n ≥ 1, define D(n) = {|a - b| : n = ab}. For every k ≥ 1, do there exist integers N₁ < ... < Nₖ with |∩ᵢ D(Nᵢ)| ≥ k? Solved for k ≤ 4; OPEN for k ≥ 5.",
+  "description": "For n \u2265 1, define D(n) = {|a - b| : n = ab}. For every k \u2265 1, do there exist integers N\u2081 < ... < N\u2096 with |\u2229\u1d62 D(N\u1d62)| \u2265 k? Solved for k \u2264 4; OPEN for k \u2265 5.",
   "meta": {
-    "author": "Erdős-Rosenfeld (1997), Jiménez-Urroz (1999), Bremner (2019)",
+    "author": "Erd\u0151s-Rosenfeld (1997), Jim\u00e9nez-Urroz (1999), Bremner (2019)",
     "sourceUrl": "https://erdosproblems.com/885",
     "date": "1997",
     "status": "axiomatized",
@@ -43,9 +43,9 @@
     "originalContributions": [
       "Definition of factor difference sets D(n)",
       "Definition of k-common sets",
-      "Axiomatization of the Erdős-Rosenfeld conjecture",
+      "Axiomatization of the Erd\u0151s-Rosenfeld conjecture",
       "Solved cases: k = 2, 3, 4",
-      "Open case: k ≥ 5",
+      "Open case: k \u2265 5",
       "Connection to divisor structure",
       "Verified examples for D(6) and D(12)"
     ],
@@ -54,12 +54,12 @@
     "assumptions": "12 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The **factor difference set** D(n) was introduced by Erdős and Rosenfeld in 1997 to study the arithmetic structure of integers through their factorizations.\n\n**Definition**: D(n) = {|a - b| : n = ab}\n\nFor example:\n- D(12) = {11, 4, 1} from factorizations 1×12, 2×6, 3×4\n- D(6) = {5, 1} from factorizations 1×6, 2×3\n\n**Timeline of Results**:\n- 1997: Erdős-Rosenfeld prove k = 2\n- 1999: Jiménez-Urroz proves k = 3\n- 2019: Bremner proves k = 4\n- 2019+: k ≥ 5 remains OPEN\n\nThe difficulty increases exponentially with k because finding integers with large D(n) intersections requires coordinating many divisibility constraints.",
-    "problemStatement": "For integer $n \\geq 1$, define the **factor difference set** of $n$ by\n$$D(n) = \\{|a - b| : n = ab\\}$$\n\n**Erdős Problem #885**: Is it true that for every $k \\geq 1$, there exist integers $N_1 < \\cdots < N_k$ such that\n$$|\\bigcap_i D(N_i)| \\geq k?$$\n\n**Status by k**:\n- $k = 2$: SOLVED (Erdős-Rosenfeld 1997)\n- $k = 3$: SOLVED (Jiménez-Urroz 1999)\n- $k = 4$: SOLVED (Bremner 2019)\n- $k \\geq 5$: **OPEN**",
-    "text": "For n ≥ 1, define D(n) = {|a - b| : n = ab}. For every k ≥ 1, do there exist integers N₁ < ... < Nₖ with |∩ᵢ D(Nᵢ)| ≥ k? Solved for k ≤ 4; OPEN for k ≥ 5.",
-    "proofStrategy": "We formalize this problem by:\n\n1. **Factor difference set**: D(n) = {|a - b| : n = ab} as a set of natural numbers\n\n2. **k-common sets**: A Finset of k positive integers whose D(n) sets share ≥ k elements\n\n3. **Main conjecture**: For all k ≥ 1, a k-common set exists\n\n4. **Solved cases**: Axiomatize results for k = 2, 3, 4\n\n5. **Properties**: Connection to divisors, cardinality formulas, and examples\n\n6. **Verified computations**: Show specific elements in D(6) and D(12)",
+    "historicalContext": "The **factor difference set** D(n) was introduced by Erd\u0151s and Rosenfeld in 1997 to study the arithmetic structure of integers through their factorizations.\n\n**Definition**: D(n) = {|a - b| : n = ab}\n\nFor example:\n- D(12) = {11, 4, 1} from factorizations 1\u00d712, 2\u00d76, 3\u00d74\n- D(6) = {5, 1} from factorizations 1\u00d76, 2\u00d73\n\n**Timeline of Results**:\n- 1997: Erd\u0151s-Rosenfeld prove k = 2\n- 1999: Jim\u00e9nez-Urroz proves k = 3\n- 2019: Bremner proves k = 4\n- 2019+: k \u2265 5 remains OPEN\n\nThe difficulty increases exponentially with k because finding integers with large D(n) intersections requires coordinating many divisibility constraints.",
+    "problemStatement": "For integer $n \\geq 1$, define the **factor difference set** of $n$ by\n$$D(n) = \\{|a - b| : n = ab\\}$$\n\n**Erd\u0151s Problem #885**: Is it true that for every $k \\geq 1$, there exist integers $N_1 < \\cdots < N_k$ such that\n$$|\\bigcap_i D(N_i)| \\geq k?$$\n\n**Status by k**:\n- $k = 2$: SOLVED (Erd\u0151s-Rosenfeld 1997)\n- $k = 3$: SOLVED (Jim\u00e9nez-Urroz 1999)\n- $k = 4$: SOLVED (Bremner 2019)\n- $k \\geq 5$: **OPEN**",
+    "text": "For n \u2265 1, define D(n) = {|a - b| : n = ab}. For every k \u2265 1, do there exist integers N\u2081 < ... < N\u2096 with |\u2229\u1d62 D(N\u1d62)| \u2265 k? Solved for k \u2264 4; OPEN for k \u2265 5.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Factor difference set**: D(n) = {|a - b| : n = ab} as a set of natural numbers\n\n2. **k-common sets**: A Finset of k positive integers whose D(n) sets share \u2265 k elements\n\n3. **Main conjecture**: For all k \u2265 1, a k-common set exists\n\n4. **Solved cases**: Axiomatize results for k = 2, 3, 4\n\n5. **Properties**: Connection to divisors, cardinality formulas, and examples\n\n6. **Verified computations**: Show specific elements in D(6) and D(12)",
     "keyInsights": [
-      "**D(n) size**: |D(n)| = ⌈d(n)/2⌉ where d(n) is the number of divisors. Highly composite numbers have larger D(n).",
+      "**D(n) size**: |D(n)| = \u2308d(n)/2\u2309 where d(n) is the number of divisors. Highly composite numbers have larger D(n).",
       "**Why finding intersections is hard**: D(n) grows slowly (logarithmically in n), so finding k integers with k common differences requires careful construction.",
       "**The role of highly composite numbers**: Numbers like 12, 24, 60, 120 with many divisors are natural candidates for building k-common sets.",
       "**Computational barrier**: For k = 4, Bremner needed sophisticated search algorithms. For k = 5+, no construction is known.",
@@ -91,7 +91,7 @@
       "title": "Main Conjecture",
       "startLine": 69,
       "endLine": 80,
-      "summary": "Definition of k-common sets and the Erdős-Rosenfeld conjecture."
+      "summary": "Definition of k-common sets and the Erd\u0151s-Rosenfeld conjecture."
     },
     {
       "id": "solved",
@@ -102,10 +102,10 @@
     },
     {
       "id": "open",
-      "title": "The Open Case: k ≥ 5",
+      "title": "The Open Case: k \u2265 5",
       "startLine": 106,
       "endLine": 119,
-      "summary": "The conjecture remains open for all k ≥ 5."
+      "summary": "The conjecture remains open for all k \u2265 5."
     },
     {
       "id": "computational",
@@ -123,7 +123,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #885 about common factor difference sets. The problem asks whether for every k ≥ 1, there exist k integers whose factor difference sets share at least k elements. This has been proven for k ≤ 4 but remains OPEN for k ≥ 5.",
+    "summary": "We formalize Erd\u0151s Problem #885 about common factor difference sets. The problem asks whether for every k \u2265 1, there exist k integers whose factor difference sets share at least k elements. This has been proven for k \u2264 4 but remains OPEN for k \u2265 5.",
     "implications": "This problem connects to the multiplicative structure of integers. Understanding which factor differences can be shared across multiple integers illuminates the relationship between divisibility and arithmetic properties of factorizations.",
     "openQuestions": [
       "Does there exist a 5-common set? (The next unsolved case)",
@@ -147,5 +147,39 @@
     "axiomCount": 12,
     "theoremCount": 6,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-382",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-391",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-392",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-786",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-933",
+      "relationship": "related",
+      "description": "Share factorization and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-382",
+    "erdos-391",
+    "erdos-392",
+    "erdos-786",
+    "erdos-933"
+  ]
 }

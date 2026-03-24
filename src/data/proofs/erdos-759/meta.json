@@ -1,10 +1,10 @@
 {
   "id": "erdos-759",
-  "title": "Erdős Problem #759: Cochromatic Number on Surfaces",
+  "title": "Erd\u0151s Problem #759: Cochromatic Number on Surfaces",
   "slug": "erdos-759",
-  "description": "Determine the growth rate of z(S_n), the maximum cochromatic number on genus-n surfaces. Answer: z(S_n) ≍ √n / log n (Gimbel-Thomassen 1997).",
+  "description": "Determine the growth rate of z(S_n), the maximum cochromatic number on genus-n surfaces. Answer: z(S_n) \u224d \u221an / log n (Gimbel-Thomassen 1997).",
   "meta": {
-    "author": "Erdős, Gimbel (problem), Gimbel (1986), Gimbel-Thomassen (1997)",
+    "author": "Erd\u0151s, Gimbel (problem), Gimbel (1986), Gimbel-Thomassen (1997)",
     "sourceUrl": "https://erdosproblems.com/759",
     "date": "1997",
     "status": "axiomatized",
@@ -45,16 +45,16 @@
       "isClique, isIndependent, isCochromaticValid definitions",
       "isCochromaticColoring definition",
       "cochromaticNumber axiom: minimum cochromatic colors",
-      "cochromatic_le_chromatic axiom: ζ ≤ χ",
+      "cochromatic_le_chromatic axiom: \u03b6 \u2264 \u03c7",
       "OrientableSurface structure: genus-n surface",
       "sphere, torus definitions",
       "isEmbeddableOn definition: graph embedding on surface",
       "euler_formula_genus axiom: V - E + F = 2 - 2n",
       "maxCochromaticNumber axiom: z(S_n)",
       "erdos759Question: formal problem statement",
-      "gimbel_lower_bound axiom: z ≥ c · √n / log n",
-      "gimbel_upper_bound axiom: z ≤ C · √n",
-      "gimbel_thomassen_theorem axiom: z ≍ √n / log n",
+      "gimbel_lower_bound axiom: z \u2265 c \u00b7 \u221an / log n",
+      "gimbel_upper_bound axiom: z \u2264 C \u00b7 \u221an",
+      "gimbel_thomassen_theorem axiom: z \u224d \u221an / log n",
       "heawood_number, ringel_youngs axioms",
       "erdos_759 theorem: main result"
     ],
@@ -70,15 +70,15 @@
     "assumptions": "17 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #759, posed by Erdős and John Gimbel, asks for the growth rate of the maximum cochromatic number on orientable surfaces of genus $n$. The cochromatic number $\\zeta(G)$, introduced by Lesniak and Straight (1977), partitions vertices into classes that are each either a clique or an independent set — a natural generalization of chromatic coloring where classes must be independent. On orientable surfaces $S_n$ (connected sums of $n$ tori), graph embedding constraints from Euler's formula ($V - E + F = 2 - 2n$) limit the density of embeddable graphs, which in turn bounds their cochromatic number.\n\nGimbel (1986) established the initial bounds $c_1 \\sqrt{n}/\\log n \\leq z(S_n) \\leq c_2 \\sqrt{n}$ in his paper 'Three extremal problems in cochromatic theory'. The lower bound used probabilistic arguments to construct high-girth graphs embeddable on $S_n$ with large cochromatic number. Eleven years later, Gimbel and Carsten Thomassen (1997) closed the gap by proving $z(S_n) = \\Theta(\\sqrt{n}/\\log n)$ in 'Coloring graphs with fixed genus and girth' (Trans. Amer. Math. Soc.), showing the log factor in Gimbel's lower bound was essential. The contrast with the Heawood number $H(n) = \\Theta(\\sqrt{n})$ (maximum chromatic number on $S_n$, resolved by the Ringel-Youngs theorem in 1968) shows that cochromatic number grows more slowly by a factor of $\\log n$.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet ζ(G) be the cochromatic number: minimum colors where each class is a clique or independent set.\nLet z(S_n) = max ζ(G) over G embeddable on genus-n surface.\n\nDetermine the growth rate of z(S_n).\n\n**Answer**: z(S_n) ≍ √n / log n\n\nGimbel-Thomassen (1997) proved the upper bound matches Gimbel's 1986 lower bound.",
-    "text": "Determine the growth rate of z(S_n), the maximum cochromatic number on genus-n surfaces. Answer: z(S_n) ≍ √n / log n (Gimbel-Thomassen 1997).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Cochromatic Valid:** isCochromaticValid S = isClique S ∨ isIndependent S\n\n2. **Cochromatic Number:** cochromaticNumber G (axiomatized)\n\n3. **Surface Embedding:** OrientableSurface structure with genus\n\n4. **Key Results:**\n   - gimbel_lower_bound: z ≥ c · √n / log n\n   - gimbel_thomassen_theorem: z ≍ √n / log n",
+    "historicalContext": "Erd\u0151s Problem #759, posed by Erd\u0151s and John Gimbel, asks for the growth rate of the maximum cochromatic number on orientable surfaces of genus $n$. The cochromatic number $\\zeta(G)$, introduced by Lesniak and Straight (1977), partitions vertices into classes that are each either a clique or an independent set \u2014 a natural generalization of chromatic coloring where classes must be independent. On orientable surfaces $S_n$ (connected sums of $n$ tori), graph embedding constraints from Euler's formula ($V - E + F = 2 - 2n$) limit the density of embeddable graphs, which in turn bounds their cochromatic number.\n\nGimbel (1986) established the initial bounds $c_1 \\sqrt{n}/\\log n \\leq z(S_n) \\leq c_2 \\sqrt{n}$ in his paper 'Three extremal problems in cochromatic theory'. The lower bound used probabilistic arguments to construct high-girth graphs embeddable on $S_n$ with large cochromatic number. Eleven years later, Gimbel and Carsten Thomassen (1997) closed the gap by proving $z(S_n) = \\Theta(\\sqrt{n}/\\log n)$ in 'Coloring graphs with fixed genus and girth' (Trans. Amer. Math. Soc.), showing the log factor in Gimbel's lower bound was essential. The contrast with the Heawood number $H(n) = \\Theta(\\sqrt{n})$ (maximum chromatic number on $S_n$, resolved by the Ringel-Youngs theorem in 1968) shows that cochromatic number grows more slowly by a factor of $\\log n$.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet \u03b6(G) be the cochromatic number: minimum colors where each class is a clique or independent set.\nLet z(S_n) = max \u03b6(G) over G embeddable on genus-n surface.\n\nDetermine the growth rate of z(S_n).\n\n**Answer**: z(S_n) \u224d \u221an / log n\n\nGimbel-Thomassen (1997) proved the upper bound matches Gimbel's 1986 lower bound.",
+    "text": "Determine the growth rate of z(S_n), the maximum cochromatic number on genus-n surfaces. Answer: z(S_n) \u224d \u221an / log n (Gimbel-Thomassen 1997).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Cochromatic Valid:** isCochromaticValid S = isClique S \u2228 isIndependent S\n\n2. **Cochromatic Number:** cochromaticNumber G (axiomatized)\n\n3. **Surface Embedding:** OrientableSurface structure with genus\n\n4. **Key Results:**\n   - gimbel_lower_bound: z \u2265 c \u00b7 \u221an / log n\n   - gimbel_thomassen_theorem: z \u224d \u221an / log n",
     "keyInsights": [
-      "**Cochromatic vs Chromatic:** ζ(G) ≤ χ(G) always",
-      "**Gimbel's Gap:** Initial bounds had log n gap (√n vs √n/log n)",
+      "**Cochromatic vs Chromatic:** \u03b6(G) \u2264 \u03c7(G) always",
+      "**Gimbel's Gap:** Initial bounds had log n gap (\u221an vs \u221an/log n)",
       "**Gimbel-Thomassen:** Upper bound matches lower bound",
-      "**Heawood Connection:** Chromatic number on surfaces is Θ(√n)",
+      "**Heawood Connection:** Chromatic number on surfaces is \u0398(\u221an)",
       "**Girth Role:** High-girth graphs achieve lower bound",
       "**Planar Case:** z(S_0) is bounded (constant)"
     ],
@@ -102,7 +102,7 @@
     {
       "id": "cochromatic-number",
       "title": "Cochromatic Number",
-      "summary": "Axiomatizes cochromaticNumber G and proves ζ(G) ≤ χ(G): every chromatic coloring is cochromatic since independent sets are cochromatic-valid.",
+      "summary": "Axiomatizes cochromaticNumber G and proves \u03b6(G) \u2264 \u03c7(G): every chromatic coloring is cochromatic since independent sets are cochromatic-valid.",
       "startLine": 59,
       "endLine": 93,
       "mathContext": "$\\zeta(G) = \\min\\{k : V(G) = \\bigcup_{i=1}^k S_i, \\text{ each } S_i \\text{ is a clique or independent set}\\}$. Since independent sets are cochromatic-valid, $\\zeta(G) \\leq \\chi(G)$."
@@ -118,7 +118,7 @@
     {
       "id": "max-cochromatic",
       "title": "Maximum Cochromatic Number",
-      "summary": "Axiomatizes maxCochromaticNumber n = z(S_n) = max{ζ(G) : G embeddable on S_n}, with properties: the maximum is realized and bounds all embeddable graphs.",
+      "summary": "Axiomatizes maxCochromaticNumber n = z(S_n) = max{\u03b6(G) : G embeddable on S_n}, with properties: the maximum is realized and bounds all embeddable graphs.",
       "startLine": 131,
       "endLine": 151,
       "mathContext": "$z(S_n) = \\max\\{\\zeta(G) : G \\hookrightarrow S_n\\}$. The question is the growth rate of $z(S_n)$ as $n \\to \\infty$."
@@ -126,7 +126,7 @@
     {
       "id": "main-question",
       "title": "The Main Question",
-      "summary": "Formalizes erdos759Question: is z(S_n) = Θ(√n / log n)? Defines the growth rate question as existence of constants c₁, c₂ > 0 bounding z(S_n) between c₁√n/log n and c₂√n/log n.",
+      "summary": "Formalizes erdos759Question: is z(S_n) = \u0398(\u221an / log n)? Defines the growth rate question as existence of constants c\u2081, c\u2082 > 0 bounding z(S_n) between c\u2081\u221an/log n and c\u2082\u221an/log n.",
       "startLine": 153,
       "endLine": 176,
       "mathContext": "The $\\Theta$-notation question: $\\exists c_1, c_2 > 0, \\forall n \\geq 2: c_1 \\frac{\\sqrt{n}}{\\log n} \\leq z(S_n) \\leq c_2 \\frac{\\sqrt{n}}{\\log n}$."
@@ -134,7 +134,7 @@
     {
       "id": "gimbel-bounds",
       "title": "Gimbel's Initial Bounds (1986)",
-      "summary": "Axiomatizes gimbel_lower_bound (z ≥ c·√n/log n, via high-girth constructions) and gimbel_upper_bound (z ≤ C·√n, via Euler density constraints).",
+      "summary": "Axiomatizes gimbel_lower_bound (z \u2265 c\u00b7\u221an/log n, via high-girth constructions) and gimbel_upper_bound (z \u2264 C\u00b7\u221an, via Euler density constraints).",
       "startLine": 178,
       "endLine": 201,
       "mathContext": "Gimbel 1986: $c \\frac{\\sqrt{n}}{\\log n} \\leq z(S_n) \\leq C \\sqrt{n}$. The $\\log n$ gap between bounds was the key open question for 11 years."
@@ -142,7 +142,7 @@
     {
       "id": "gimbel-thomassen",
       "title": "Gimbel-Thomassen Resolution (1997)",
-      "summary": "Axiomatizes gimbel_thomassen_theorem: z(S_n) ≍ √n/log n. The tight upper bound proves the lower bound was correct. erdos759_answer derives the formal answer.",
+      "summary": "Axiomatizes gimbel_thomassen_theorem: z(S_n) \u224d \u221an/log n. The tight upper bound proves the lower bound was correct. erdos759_answer derives the formal answer.",
       "startLine": 203,
       "endLine": 224,
       "mathContext": "Gimbel-Thomassen improved the upper bound from $C\\sqrt{n}$ to $C\\frac{\\sqrt{n}}{\\log n}$, showing the $\\log n$ factor in Gimbel's lower bound is essential and not an artifact of the construction."
@@ -150,7 +150,7 @@
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "Axiomatizes heawood_number H(n) = ⌊(7+√(1+48n))/2⌋ (max chromatic on S_n), ringel_youngs (H(n) achieved by K_{H(n)}), and high_girth_cochromatic (girth affects cochromatic number).",
+      "summary": "Axiomatizes heawood_number H(n) = \u230a(7+\u221a(1+48n))/2\u230b (max chromatic on S_n), ringel_youngs (H(n) achieved by K_{H(n)}), and high_girth_cochromatic (girth affects cochromatic number).",
       "startLine": 226,
       "endLine": 260,
       "mathContext": "The Heawood number $H(n) = \\Theta(\\sqrt{n})$ gives max $\\chi$ on $S_n$. The $\\log n$ gap between $\\chi_{\\max} = \\Theta(\\sqrt{n})$ and $\\zeta_{\\max} = \\Theta(\\sqrt{n}/\\log n)$ quantifies how much more flexible cochromatic partitions are."
@@ -158,7 +158,7 @@
     {
       "id": "structure",
       "title": "Connection to Graph Structure",
-      "summary": "Axiomatizes growth_rate_intuition (why √n/log n: √n from Euler density, log n from girth) and planar_cochromatic_bounded (z(S_0) bounded by four-color theorem).",
+      "summary": "Axiomatizes growth_rate_intuition (why \u221an/log n: \u221an from Euler density, log n from girth) and planar_cochromatic_bounded (z(S_0) bounded by four-color theorem).",
       "startLine": 262,
       "endLine": 282,
       "mathContext": "The $\\sqrt{n}$ comes from Euler's formula bounding density on $S_n$. The $\\log n$ comes from the girth of extremal graphs: high-girth graphs on $S_n$ achieve the lower bound."
@@ -166,15 +166,15 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_759_summary packages all key results. erdos_759 theorem states the formal answer: z(S_n) = Θ(√n/log n). Problem is SOLVED.",
+      "summary": "erdos_759_summary packages all key results. erdos_759 theorem states the formal answer: z(S_n) = \u0398(\u221an/log n). Problem is SOLVED.",
       "startLine": 284,
       "endLine": 311,
       "mathContext": "The complete resolution: $z(S_n) \\asymp \\frac{\\sqrt{n}}{\\log n}$ (Gimbel 1986 lower bound + Gimbel-Thomassen 1997 upper bound). Formalized with 17 axioms encoding deep results from topological graph theory."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #759 asks for the growth rate of z(S_n), the maximum cochromatic number on genus-n surfaces. Gimbel (1986) showed √n/log n ≪ z(S_n) ≪ √n. Gimbel-Thomassen (1997) proved z(S_n) ≍ √n/log n, showing the lower bound is tight.",
-    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Chromatic vs Cochromatic:** Different growth rates (√n vs √n/log n)\n\n2. **Heawood Number:** Maximum chromatic number is Θ(√n)\n\n**3. Topological Graph Theory:** Surface embedding constraints\n\n4. **Girth:** High-girth graphs achieve extremal cochromatic numbers\n\n5. **Structural Graph Theory:** Relations between coloring variants.",
+    "summary": "Erd\u0151s Problem #759 asks for the growth rate of z(S_n), the maximum cochromatic number on genus-n surfaces. Gimbel (1986) showed \u221an/log n \u226a z(S_n) \u226a \u221an. Gimbel-Thomassen (1997) proved z(S_n) \u224d \u221an/log n, showing the lower bound is tight.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Chromatic vs Cochromatic:** Different growth rates (\u221an vs \u221an/log n)\n\n2. **Heawood Number:** Maximum chromatic number is \u0398(\u221an)\n\n**3. Topological Graph Theory:** Surface embedding constraints\n\n4. **Girth:** High-girth graphs achieve extremal cochromatic numbers\n\n5. **Structural Graph Theory:** Relations between coloring variants.",
     "openQuestions": [
       "Optimal constants in the growth rate",
       "Cochromatic number on non-orientable surfaces",
@@ -189,14 +189,14 @@
       "title": "Three extremal problems in cochromatic theory",
       "year": "1986",
       "venue": "Graphs and Combinatorics",
-      "note": "Established initial bounds: √n/log n ≤ z(S_n) ≤ √n"
+      "note": "Established initial bounds: \u221an/log n \u2264 z(S_n) \u2264 \u221an"
     },
     {
       "authors": "Gimbel, John; Thomassen, Carsten",
       "title": "Coloring graphs with fixed genus and girth",
       "year": "1997",
       "venue": "Transactions of the American Mathematical Society",
-      "note": "Proved z(S_n) ≍ √n/log n, resolving Problem #759"
+      "note": "Proved z(S_n) \u224d \u221an/log n, resolving Problem #759"
     },
     {
       "authors": "Ringel, Gerhard; Youngs, J. W. T.",
@@ -208,8 +208,9 @@
   ],
   "crossReferences": [
     {
-      "target": "erdos-760",
-      "context": "Consecutive Erdős problems — both concern graph parameters on surfaces"
+      "context": "Consecutive Erd\u0151s problems \u2014 both concern graph parameters on surfaces",
+      "targetId": "erdos-760",
+      "description": "Related entry"
     }
   ],
   "relatedProofs": [

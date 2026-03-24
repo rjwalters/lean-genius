@@ -1,10 +1,10 @@
 {
   "id": "erdos-131",
-  "title": "Erdős Problem #131: Non-Dividing Sets",
+  "title": "Erd\u0151s Problem #131: Non-Dividing Sets",
   "slug": "erdos-131",
-  "description": "Maximum size of A ⊆ {1,...,N} where no a ∈ A divides the sum of other elements. Original question (F(N) > N^{1/2-o(1)}?) resolved NO by Pham-Zakharov (2024). Exact growth rate remains open.",
+  "description": "Maximum size of A \u2286 {1,...,N} where no a \u2208 A divides the sum of other elements. Original question (F(N) > N^{1/2-o(1)}?) resolved NO by Pham-Zakharov (2024). Exact growth rate remains open.",
   "meta": {
-    "author": "Erdős (1975)",
+    "author": "Erd\u0151s (1975)",
     "sourceUrl": "https://erdosproblems.com/131",
     "date": "1975",
     "status": "formalized",
@@ -68,7 +68,7 @@
     "crossReferences": [
       {
         "proofId": "erdos-186",
-        "relationship": "Non-dividing implies non-averaging (verified); F(N) ≤ g(N) allows Pham-Zakharov bounds to transfer from Problem #186"
+        "relationship": "Non-dividing implies non-averaging (verified); F(N) \u2264 g(N) allows Pham-Zakharov bounds to transfer from Problem #186"
       },
       {
         "proofId": "subset-count",
@@ -80,13 +80,13 @@
     "assumptions": "No axioms. 5 sorry(s) remain in the formalization."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem around 1975, asking for the growth rate of the maximum non-dividing subset of $\\{1,\\ldots,N\\}$. He originally conjectured $F(N) < (\\log N)^{O(1)}$, i.e., that non-dividing sets must be extremely sparse. Straus dramatically disproved this by constructing non-dividing sets of size $\\exp(c\\sqrt{\\log N})$ with $c = \\sqrt{2/\\log 2} \\approx 1.699$, showing they are far denser than polylogarithmic. Erdős then asked the refined question: 'Is $F(N) > N^{1/2-o(1)}$?' This stood open for decades. Erdős, Lev, Rauzy, Sandor, and Sarkozy (ELRSS, 1999) proved the first strong upper bound $F(N) < 3\\sqrt{N} + 1$, and Csaba provided a polynomial lower bound $F(N) \\gg N^{1/5}$. The breakthrough came from Pham and Zakharov (2024), who proved $F(N) \\leq N^{1/4+o(1)}$ via a surprising connection: every non-dividing set is non-averaging (no element is the average of others), so upper bounds on non-averaging sets from additive combinatorics apply. Since $N^{1/4} < N^{1/2-\\varepsilon}$, the original question was answered NO. However, the exact growth rate remains open: the gap between $\\exp(c\\sqrt{\\log N})$ (subexponential lower bound from Straus) and $N^{1/4+o(1)}$ (polynomial upper bound from Pham-Zakharov) is enormous. Whether $F$ grows polynomially or subexponentially is completely unknown.",
+    "historicalContext": "Erd\u0151s posed this problem around 1975, asking for the growth rate of the maximum non-dividing subset of $\\{1,\\ldots,N\\}$. He originally conjectured $F(N) < (\\log N)^{O(1)}$, i.e., that non-dividing sets must be extremely sparse. Straus dramatically disproved this by constructing non-dividing sets of size $\\exp(c\\sqrt{\\log N})$ with $c = \\sqrt{2/\\log 2} \\approx 1.699$, showing they are far denser than polylogarithmic. Erd\u0151s then asked the refined question: 'Is $F(N) > N^{1/2-o(1)}$?' This stood open for decades. Erd\u0151s, Lev, Rauzy, Sandor, and Sarkozy (ELRSS, 1999) proved the first strong upper bound $F(N) < 3\\sqrt{N} + 1$, and Csaba provided a polynomial lower bound $F(N) \\gg N^{1/5}$. The breakthrough came from Pham and Zakharov (2024), who proved $F(N) \\leq N^{1/4+o(1)}$ via a surprising connection: every non-dividing set is non-averaging (no element is the average of others), so upper bounds on non-averaging sets from additive combinatorics apply. Since $N^{1/4} < N^{1/2-\\varepsilon}$, the original question was answered NO. However, the exact growth rate remains open: the gap between $\\exp(c\\sqrt{\\log N})$ (subexponential lower bound from Straus) and $N^{1/4+o(1)}$ (polynomial upper bound from Pham-Zakharov) is enormous. Whether $F$ grows polynomially or subexponentially is completely unknown.",
     "problemStatement": "Let $F(N)$ be the maximal size of $A \\subseteq \\{1, \\ldots, N\\}$ such that no $a \\in A$ divides the sum of any distinct elements of $A \\setminus \\{a\\}$. Estimate $F(N)$.\n\n**Original question:** Is $F(N) > N^{1/2-o(1)}$?\n**Answer:** NO (Pham-Zakharov 2024, via $F(N) \\leq N^{1/4+o(1)}$)\n\n**Remaining open:** What is the exact growth rate of $F(N)$?",
-    "text": "Maximum size of A ⊆ {1,...,N} where no a ∈ A divides the sum of other elements. Original question (F(N) > N^{1/2-o(1)}?) resolved NO by Pham-Zakharov (2024). Exact growth rate remains open.",
+    "text": "Maximum size of A \u2286 {1,...,N} where no a \u2208 A divides the sum of other elements. Original question (F(N) > N^{1/2-o(1)}?) resolved NO by Pham-Zakharov (2024). Exact growth rate remains open.",
     "proofStrategy": "The formalization takes a structural approach centered on the key implication non-dividing $\\implies$ non-averaging. The definitions `IsNonDividing` and `IsNonAveraging` are formalized using `Finset.erase`, `Finset.sum id`, and rational arithmetic (casting to $\\mathbb{Q}$ for averages). The extremal functions $F(N)$ and $g(N)$ are defined via `Finset.powerset` enumeration. The critical lemma `F_le_g` connects the two extremal functions, enabling the Pham-Zakharov bound transfer chain: $g(N) \\leq N^{1/4+o(1)} \\implies F(N) \\leq g(N) \\leq N^{1/4+o(1)}$. The upper bounds (ELRSS, Pham-Zakharov) and lower bounds (Csaba, Straus) are axiomatized. Small examples (singleton verified, $\\{2,3\\}$ partially verified) and the connection to OEIS A068063 ground the abstract theory.",
     "keyInsights": [
       "**Non-dividing $\\implies$ non-averaging:** If $a = \\text{avg}(S)$ then $\\sum S = a|S|$, so $a \\mid \\sum S$. This one-line observation connects two seemingly different extremal problems and is the engine behind the Pham-Zakharov resolution.",
-      "**Erdős's original conjecture spectacularly wrong:** He guessed $F(N) < (\\log N)^{O(1)}$, but Straus showed $F(N) > \\exp(c\\sqrt{\\log N})$, which is superpolynomial in $\\log N$. The intuition that divisibility constraints are very restrictive was correct qualitatively but wildly off quantitatively.",
+      "**Erd\u0151s's original conjecture spectacularly wrong:** He guessed $F(N) < (\\log N)^{O(1)}$, but Straus showed $F(N) > \\exp(c\\sqrt{\\log N})$, which is superpolynomial in $\\log N$. The intuition that divisibility constraints are very restrictive was correct qualitatively but wildly off quantitatively.",
       "**Subexponential-to-polynomial gap:** The current bounds $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$ span an immense range. The lower bound is slower than any $N^\\alpha$, the upper bound is polynomial. Whether $F$ is polynomial or 'truly intermediate' is wide open.",
       "**Bound transfer via set property hierarchy:** The chain $\\text{non-dividing} \\subseteq \\text{non-averaging} \\implies F(N) \\leq g(N)$ exemplifies how implications between combinatorial properties transfer extremal bounds. Pham-Zakharov's work was on non-averaging sets, not non-dividing ones.",
       "**ELRSS to Pham-Zakharov: exponent halved:** The upper bound exponent dropped from $1/2$ (ELRSS: $F < 3\\sqrt{N}+1$) to $1/4$ (Pham-Zakharov: $F \\leq N^{1/4+o(1)}$). This halving was enough to resolve the original question.",
@@ -139,7 +139,7 @@
       "title": "The Open Gap",
       "startLine": 132,
       "endLine": 152,
-      "summary": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false."
+      "summary": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erd\u0151s's original conjecture $F(N) < (\\log N)^{O(1)}$ was false."
     },
     {
       "id": "examples",
@@ -157,7 +157,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #131's original question 'Is $F(N) > N^{1/2-o(1)}$?' was answered NO by Pham-Zakharov (2024), who showed $F(N) \\leq N^{1/4+o(1)}$ via the connection to non-averaging sets. The formalization centers on this connection: non-dividing $\\implies$ non-averaging $\\implies F(N) \\leq g(N)$, enabling bound transfer. However, the exact growth rate remains wide open: the gap between the subexponential lower bound $\\exp(c\\sqrt{\\log N})$ (Straus) and the polynomial upper bound $N^{1/4+o(1)}$ (Pham-Zakharov) is enormous.",
+    "summary": "Erd\u0151s Problem #131's original question 'Is $F(N) > N^{1/2-o(1)}$?' was answered NO by Pham-Zakharov (2024), who showed $F(N) \\leq N^{1/4+o(1)}$ via the connection to non-averaging sets. The formalization centers on this connection: non-dividing $\\implies$ non-averaging $\\implies F(N) \\leq g(N)$, enabling bound transfer. However, the exact growth rate remains wide open: the gap between the subexponential lower bound $\\exp(c\\sqrt{\\log N})$ (Straus) and the polynomial upper bound $N^{1/4+o(1)}$ (Pham-Zakharov) is enormous.",
     "implications": "**Theoretical Significance**: The resolution demonstrates the power of recognizing structural implications between combinatorial properties.\n\nThe Pham-Zakharov breakthrough was about non-averaging sets, not non-dividing ones, yet the simple observation that non-dividing $\\implies$ non-averaging transferred the result. This paradigm applies broadly in extremal combinatorics: proving a containment $\\mathcal{P}_1 \\subseteq \\mathcal{P}_2$ between property classes allows upper bounds to flow from $\\mathcal{P}_2$ to $\\mathcal{P}_1$.",
     "openQuestions": [
       "Is $F(N)$ polynomial in $N$, i.e., does $F(N) = N^{\\theta+o(1)}$ for some $\\theta > 0$? Or does $F$ have genuinely intermediate (subexponential) growth?",
@@ -178,5 +178,39 @@
     "axiomCount": 0,
     "theoremCount": 27,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-13",
+      "relationship": "related",
+      "description": "Share divisibility, combinatorial, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-387",
+      "relationship": "related",
+      "description": "Share divisibility, combinatorial, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Share divisibility, combinatorial, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-635",
+      "relationship": "related",
+      "description": "Share divisibility, combinatorial, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-710",
+      "relationship": "related",
+      "description": "Share divisibility, combinatorial, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-13",
+    "erdos-387",
+    "erdos-400",
+    "erdos-635",
+    "erdos-710"
+  ]
 }

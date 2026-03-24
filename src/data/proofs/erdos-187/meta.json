@@ -1,11 +1,11 @@
 {
   "id": "erdos-187",
-  "title": "Erdős Problem #187: Arithmetic Progressions in 2-Colorings",
+  "title": "Erd\u0151s Problem #187: Arithmetic Progressions in 2-Colorings",
   "slug": "erdos-187",
-  "description": "Find optimal f(d) such that any 2-coloring of ℤ has a monochromatic AP of length f(d) with difference d for infinitely many d. Known: f(d) → ∞ (van der Waerden), f(d) ≤ (1+o(1))log₂ d (Beck). Open.",
+  "description": "Find optimal f(d) such that any 2-coloring of \u2124 has a monochromatic AP of length f(d) with difference d for infinitely many d. Known: f(d) \u2192 \u221e (van der Waerden), f(d) \u2264 (1+o(1))log\u2082 d (Beck). Open.",
   "meta": {
     "erdosNumber": 187,
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos187Problem.lean",
     "sourceUrl": "https://erdosproblems.com/187",
@@ -26,15 +26,15 @@
     "lineCount": 78
   },
   "overview": {
-    "historicalContext": "The problem of finding long monochromatic arithmetic progressions (APs) in 2-colorings of the integers has its roots in van der Waerden's 1927 theorem, which guarantees that any finite coloring of ℤ contains arbitrarily long monochromatic APs. Van der Waerden's original proof was non-constructive and gave tower-type bounds; Shelah (1988) later gave a primitive-recursive proof, but the quantitative bounds remain astronomical. Cohen and Erdős sharpened the question by fixing the common difference d: what is f(d), the maximum AP length that every 2-coloring must contain with difference d for infinitely many d? Erdős noted that the irrational rotation coloring χ(n) = ⌊√2 · n⌋ mod 2 limits monochromatic AP lengths, illustrating that Diophantine approximation governs the extremal colorings. The landmark result of Beck (1980) used discrepancy-theoretic methods to show f(d) ≤ (1+o(1))log₂ d — a striking logarithmic upper bound from probabilistic combinatorics. As of 2025, no lower bound beyond f(d) → ∞ (from van der Waerden) is known, making the gap between O(log d) and ω(1) the central open difficulty.",
-    "problemStatement": "Find the optimal function f(d) such that in any 2-coloring of ℤ, at least one color class contains a monochromatic arithmetic progression of length f(d) with common difference d, for infinitely many d.",
-    "text": "Find optimal f(d) such that any 2-coloring of ℤ has a monochromatic AP of length f(d) with difference d for infinitely many d. Known: f(d) → ∞ (van der Waerden), f(d) ≤ (1+o(1))log₂ d (Beck). Open.",
-    "proofStrategy": "The formalization axiomatizes 2-colorings (ℕ → Fin 2), monochromatic APs (IsMonoAP χ a d k), and the optimal bound function f(d). Known results — van der Waerden's growth guarantee, Beck's logarithmic upper bound, and Erdős's √2-coloring — are recorded as axioms. The conjecture that f(d) = Θ(log d) is stated as the open question. Key structural definitions include maxMonoAPLength (per-coloring AP bound) and optAPBound (the infimum over all colorings), encoding the minimax nature of f(d).",
+    "historicalContext": "The problem of finding long monochromatic arithmetic progressions (APs) in 2-colorings of the integers has its roots in van der Waerden's 1927 theorem, which guarantees that any finite coloring of \u2124 contains arbitrarily long monochromatic APs. Van der Waerden's original proof was non-constructive and gave tower-type bounds; Shelah (1988) later gave a primitive-recursive proof, but the quantitative bounds remain astronomical. Cohen and Erd\u0151s sharpened the question by fixing the common difference d: what is f(d), the maximum AP length that every 2-coloring must contain with difference d for infinitely many d? Erd\u0151s noted that the irrational rotation coloring \u03c7(n) = \u230a\u221a2 \u00b7 n\u230b mod 2 limits monochromatic AP lengths, illustrating that Diophantine approximation governs the extremal colorings. The landmark result of Beck (1980) used discrepancy-theoretic methods to show f(d) \u2264 (1+o(1))log\u2082 d \u2014 a striking logarithmic upper bound from probabilistic combinatorics. As of 2025, no lower bound beyond f(d) \u2192 \u221e (from van der Waerden) is known, making the gap between O(log d) and \u03c9(1) the central open difficulty.",
+    "problemStatement": "Find the optimal function f(d) such that in any 2-coloring of \u2124, at least one color class contains a monochromatic arithmetic progression of length f(d) with common difference d, for infinitely many d.",
+    "text": "Find optimal f(d) such that any 2-coloring of \u2124 has a monochromatic AP of length f(d) with difference d for infinitely many d. Known: f(d) \u2192 \u221e (van der Waerden), f(d) \u2264 (1+o(1))log\u2082 d (Beck). Open.",
+    "proofStrategy": "The formalization axiomatizes 2-colorings (\u2115 \u2192 Fin 2), monochromatic APs (IsMonoAP \u03c7 a d k), and the optimal bound function f(d). Known results \u2014 van der Waerden's growth guarantee, Beck's logarithmic upper bound, and Erd\u0151s's \u221a2-coloring \u2014 are recorded as axioms. The conjecture that f(d) = \u0398(log d) is stated as the open question. Key structural definitions include maxMonoAPLength (per-coloring AP bound) and optAPBound (the infimum over all colorings), encoding the minimax nature of f(d).",
     "keyInsights": [
-      "Van der Waerden's theorem (1927) guarantees f(d) → ∞ as d → ∞: any 2-coloring must contain arbitrarily long monochromatic APs with any fixed common difference d, but gives no quantitative rate",
-      "Beck's 1980 upper bound f(d) ≤ (1+o(1))log₂ d is proved by constructing a low-discrepancy 2-coloring; discrepancy theory measures how evenly a coloring distributes ±1 across all arithmetic progressions simultaneously",
-      "Erdős's √2-coloring χ(n) = ⌊√2 · n⌋ mod 2 exploits the equidistribution of {√2 · nd} mod 1 (Weyl's theorem); for any AP with difference d, the coloring oscillates rapidly, limiting monochromatic runs to O(d) — weaker than Beck but historically important",
-      "The function f(d) has a minimax structure: f(d) = inf_χ sup{k : ∃ a, IsMonoAP χ a d k for infinitely many d}; this makes it hard to control via standard density or probabilistic methods",
+      "Van der Waerden's theorem (1927) guarantees f(d) \u2192 \u221e as d \u2192 \u221e: any 2-coloring must contain arbitrarily long monochromatic APs with any fixed common difference d, but gives no quantitative rate",
+      "Beck's 1980 upper bound f(d) \u2264 (1+o(1))log\u2082 d is proved by constructing a low-discrepancy 2-coloring; discrepancy theory measures how evenly a coloring distributes \u00b11 across all arithmetic progressions simultaneously",
+      "Erd\u0151s's \u221a2-coloring \u03c7(n) = \u230a\u221a2 \u00b7 n\u230b mod 2 exploits the equidistribution of {\u221a2 \u00b7 nd} mod 1 (Weyl's theorem); for any AP with difference d, the coloring oscillates rapidly, limiting monochromatic runs to O(d) \u2014 weaker than Beck but historically important",
+      "The function f(d) has a minimax structure: f(d) = inf_\u03c7 sup{k : \u2203 a, IsMonoAP \u03c7 a d k for infinitely many d}; this makes it hard to control via standard density or probabilistic methods",
       "The problem connects Ramsey theory (guarantee of monochromatic patterns) to Diophantine approximation (quality of rational approximations to irrational numbers governs coloring behavior) and discrepancy theory (Fourier-analytic methods for bounding AP sums)"
     ],
     "prerequisites": [
@@ -47,52 +47,52 @@
       "title": "Module Header",
       "startLine": 1,
       "endLine": 21,
-      "summary": "Problem statement: find optimal f(d) for monochromatic APs in 2-colorings. Known: van der Waerden guarantees f(d) → ∞, Beck gives f(d) ≤ (1+o(1))log₂ d. Cites erdosproblems.com/187."
+      "summary": "Problem statement: find optimal f(d) for monochromatic APs in 2-colorings. Known: van der Waerden guarantees f(d) \u2192 \u221e, Beck gives f(d) \u2264 (1+o(1))log\u2082 d. Cites erdosproblems.com/187."
     },
     {
       "id": "definitions",
       "title": "Part I: Definitions",
       "startLine": 22,
       "endLine": 43,
-      "summary": "TwoColoring = ℕ → Fin 2. IsMonoAP χ a d k: {a, a+d, ..., a+(k-1)d} is monochromatic under χ. maxMonoAPLength χ d: longest monochromatic AP with difference d. optAPBound d = f(d): infimum over all 2-colorings."
+      "summary": "TwoColoring = \u2115 \u2192 Fin 2. IsMonoAP \u03c7 a d k: {a, a+d, ..., a+(k-1)d} is monochromatic under \u03c7. maxMonoAPLength \u03c7 d: longest monochromatic AP with difference d. optAPBound d = f(d): infimum over all 2-colorings."
     },
     {
       "id": "van-der-waerden",
       "title": "Part II: Van der Waerden's Theorem",
       "startLine": 45,
       "endLine": 51,
-      "summary": "Axiom: f(d) → ∞. Van der Waerden's theorem guarantees that every 2-coloring contains monochromatic APs of any length; as a consequence, f(d) is unbounded."
+      "summary": "Axiom: f(d) \u2192 \u221e. Van der Waerden's theorem guarantees that every 2-coloring contains monochromatic APs of any length; as a consequence, f(d) is unbounded."
     },
     {
       "id": "beck-bound",
       "title": "Part III: Beck's Upper Bound",
       "startLine": 53,
       "endLine": 59,
-      "summary": "Axiom: ∃ C, D₀, ∀ d ≥ D₀, f(d) ≤ C · (log₂ d + 1). Beck (1980) constructs a low-discrepancy 2-coloring limiting monochromatic AP length to O(log d)."
+      "summary": "Axiom: \u2203 C, D\u2080, \u2200 d \u2265 D\u2080, f(d) \u2264 C \u00b7 (log\u2082 d + 1). Beck (1980) constructs a low-discrepancy 2-coloring limiting monochromatic AP length to O(log d)."
     },
     {
       "id": "sqrt2-coloring",
-      "title": "Part IV: Erdős's √2-Coloring",
+      "title": "Part IV: Erd\u0151s's \u221a2-Coloring",
       "startLine": 61,
       "endLine": 66,
-      "summary": "Axiom: ∃ a Diophantine coloring achieving f(d) ≪ d. The coloring χ(n) = ⌊√2·n⌋ mod 2 uses equidistribution of {√2·nd} to limit monochromatic AP lengths."
+      "summary": "Axiom: \u2203 a Diophantine coloring achieving f(d) \u226a d. The coloring \u03c7(n) = \u230a\u221a2\u00b7n\u230b mod 2 uses equidistribution of {\u221a2\u00b7nd} to limit monochromatic AP lengths."
     },
     {
       "id": "open-question",
       "title": "Part V: The Open Question",
       "startLine": 68,
       "endLine": 78,
-      "summary": "ErdosProblem187: is f(d) = Θ(log d)? Formalized as existence of c, C, D₀ with c·log₂ d ≤ f(d) ≤ C·log₂ d for all d ≥ D₀. Upper bound known (Beck); lower bound open."
+      "summary": "ErdosProblem187: is f(d) = \u0398(log d)? Formalized as existence of c, C, D\u2080 with c\u00b7log\u2082 d \u2264 f(d) \u2264 C\u00b7log\u2082 d for all d \u2265 D\u2080. Upper bound known (Beck); lower bound open."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #187 asks for the exact asymptotic behavior of f(d), the optimal monochromatic AP length in 2-colorings with common difference d. Beck's bound gives f(d) = O(log d) via discrepancy theory, but a matching lower bound — showing every 2-coloring must have Ω(log d) length APs for infinitely many d — is completely open.",
-    "implications": "**Theoretical Significance**: Resolution of f(d) = Θ(log d) would establish a precise quantitative Ramsey theorem for arithmetic progressions with fixed common difference.\n\nA lower bound proof would require new techniques beyond van der Waerden's compactness argument — likely Fourier-analytic or probabilistic methods showing that any 2-coloring must have significant 'arithmetic structure' on some density-1 set of differences. A counterexample would require constructing a coloring beating Beck's bound, which seems unlikely but would revolutionize discrepancy theory for APs.",
+    "summary": "Erd\u0151s Problem #187 asks for the exact asymptotic behavior of f(d), the optimal monochromatic AP length in 2-colorings with common difference d. Beck's bound gives f(d) = O(log d) via discrepancy theory, but a matching lower bound \u2014 showing every 2-coloring must have \u03a9(log d) length APs for infinitely many d \u2014 is completely open.",
+    "implications": "**Theoretical Significance**: Resolution of f(d) = \u0398(log d) would establish a precise quantitative Ramsey theorem for arithmetic progressions with fixed common difference.\n\nA lower bound proof would require new techniques beyond van der Waerden's compactness argument \u2014 likely Fourier-analytic or probabilistic methods showing that any 2-coloring must have significant 'arithmetic structure' on some density-1 set of differences. A counterexample would require constructing a coloring beating Beck's bound, which seems unlikely but would revolutionize discrepancy theory for APs.",
     "openQuestions": [
-      "Is f(d) = Θ(log d)? The upper bound f(d) ≤ (1+o(1))log₂ d is known (Beck 1980), but no lower bound beyond f(d) → ∞ exists",
-      "Can Beck's constant (1+o(1)) be improved? Is f(d) ≤ (1/2+o(1))log₂ d achievable?",
-      "Does the √2-coloring (or any specific irrational rotation coloring) achieve the optimal f(d) = Θ(log d) behavior?",
-      "What is the connection to the Erdős discrepancy problem (which Tao resolved in 2015 for ±1 sequences on APs)?"
+      "Is f(d) = \u0398(log d)? The upper bound f(d) \u2264 (1+o(1))log\u2082 d is known (Beck 1980), but no lower bound beyond f(d) \u2192 \u221e exists",
+      "Can Beck's constant (1+o(1)) be improved? Is f(d) \u2264 (1/2+o(1))log\u2082 d achievable?",
+      "Does the \u221a2-coloring (or any specific irrational rotation coloring) achieve the optimal f(d) = \u0398(log d) behavior?",
+      "What is the connection to the Erd\u0151s discrepancy problem (which Tao resolved in 2015 for \u00b11 sequences on APs)?"
     ]
   },
   "leanFile": {
@@ -109,10 +109,44 @@
     "definitionCount": 2
   },
   "references": [
-    "Erdős (1973): original problem",
-    "Erdős–Graham (1980), p.17",
-    "Beck (1980): upper bound f(d) ≤ (1+o(1))log₂ d",
+    "Erd\u0151s (1973): original problem",
+    "Erd\u0151s\u2013Graham (1980), p.17",
+    "Beck (1980): upper bound f(d) \u2264 (1+o(1))log\u2082 d",
     "Cohen: original formulation",
     "https://erdosproblems.com/187"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-721",
+      "relationship": "related",
+      "description": "Share van-der-waerden, arithmetic progression, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-984",
+      "relationship": "related",
+      "description": "Share van-der-waerden, arithmetic progression, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Share van-der-waerden, arithmetic progression, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-160",
+      "relationship": "related",
+      "description": "Share van-der-waerden, arithmetic progression, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-169",
+      "relationship": "related",
+      "description": "Share van-der-waerden, arithmetic progression, and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-721",
+    "erdos-984",
+    "erdos-138",
+    "erdos-160",
+    "erdos-169"
   ]
 }

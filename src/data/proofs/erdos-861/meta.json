@@ -2,9 +2,9 @@
   "id": "erdos-861",
   "title": "Counting Sidon Sets",
   "slug": "erdos-861",
-  "description": "Let f(N) be the max Sidon subset size and A(N) the number of Sidon subsets of {1,...,N}. Is A(N)/2^{f(N)} → ∞? (Yes) Is A(N) = 2^{(1+o(1))f(N)}? (No)",
+  "description": "Let f(N) be the max Sidon subset size and A(N) the number of Sidon subsets of {1,...,N}. Is A(N)/2^{f(N)} \u2192 \u221e? (Yes) Is A(N) = 2^{(1+o(1))f(N)}? (No)",
   "meta": {
-    "author": "Paul Erdős, Peter Cameron",
+    "author": "Paul Erd\u0151s, Peter Cameron",
     "sourceUrl": "https://erdosproblems.com/861",
     "date": "",
     "status": "axiomatized",
@@ -46,7 +46,7 @@
     ],
     "originalContributions": [
       "Lean formalization of Sidon set definition",
-      "Formal statements of Cameron-Erdős questions",
+      "Formal statements of Cameron-Erd\u0151s questions",
       "Saxton-Thomason and KLRS bounds as axioms",
       "Proof that combined bounds hold"
     ],
@@ -56,15 +56,15 @@
     "lineCount": 255
   },
   "overview": {
-    "historicalContext": "This problem, posed by Cameron and Erdős, asks about counting Sidon sets (sets where all pairwise sums are distinct). It connects to additive combinatorics and the hypergraph container method. The problem appears as C9 in Guy's 'Unsolved Problems in Number Theory'. Sidon sets — also called B₂ sequences — were introduced by Simon Sidon in the 1930s in the context of Fourier analysis; Erdős and Turán proved in 1941 that the maximum Sidon subset of {1, …, N} has size ~√N, and constructions achieving this via Singer difference sets in finite fields were known by the 1940s. Cameron and Erdős posed their counting question in the early 1990s, anticipating that the exponential structure of 2^{f(N)} subsets would need to be understood more precisely. The 2015 resolution using the hypergraph container method of Balogh-Morris-Samotij and independently Saxton-Thomason represented a major breakthrough in counting sparse combinatorial structures.",
-    "problemStatement": "Let f(N) be the size of the largest Sidon subset of {1,...,N} and A(N) the number of Sidon subsets. Question 1: Is A(N)/2^{f(N)} → ∞? Question 2: Is A(N) = 2^{(1+o(1))f(N)}?",
+    "historicalContext": "This problem, posed by Cameron and Erd\u0151s, asks about counting Sidon sets (sets where all pairwise sums are distinct). It connects to additive combinatorics and the hypergraph container method. The problem appears as C9 in Guy's 'Unsolved Problems in Number Theory'. Sidon sets \u2014 also called B\u2082 sequences \u2014 were introduced by Simon Sidon in the 1930s in the context of Fourier analysis; Erd\u0151s and Tur\u00e1n proved in 1941 that the maximum Sidon subset of {1, \u2026, N} has size ~\u221aN, and constructions achieving this via Singer difference sets in finite fields were known by the 1940s. Cameron and Erd\u0151s posed their counting question in the early 1990s, anticipating that the exponential structure of 2^{f(N)} subsets would need to be understood more precisely. The 2015 resolution using the hypergraph container method of Balogh-Morris-Samotij and independently Saxton-Thomason represented a major breakthrough in counting sparse combinatorial structures.",
+    "problemStatement": "Let f(N) be the size of the largest Sidon subset of {1,...,N} and A(N) the number of Sidon subsets. Question 1: Is A(N)/2^{f(N)} \u2192 \u221e? Question 2: Is A(N) = 2^{(1+o(1))f(N)}?",
     "text": "Let f(N) be the max Sidon subset size and A(N) the number of Sidon subsets of {1,...,N}. Is A(N)/2^{f(N)} \u2192 \u221e? (Yes) Is A(N) = 2^{(1+o(1))f(N)}? (No)",
-    "proofStrategy": "The formalization defines Sidon sets and the counting functions, then states the Cameron-Erdős questions and their answers as axioms. The current best bounds (Saxton-Thomason lower, KLRS upper) are included.",
+    "proofStrategy": "The formalization defines Sidon sets and the counting functions, then states the Cameron-Erd\u0151s questions and their answers as axioms. The current best bounds (Saxton-Thomason lower, KLRS upper) are included.",
     "keyInsights": [
-      "A Sidon set (B₂ sequence) has all pairwise sums distinct: $a + b = c + d \\implies \\{a,b\\} = \\{c,d\\}$",
-      "The maximum Sidon subset of $\\{1,\\ldots,N\\}$ has size $f(N) \\sim \\sqrt{N}$ (Erdős-Turán 1941)",
-      "Question 1: YES — $A(N)/2^{f(N)} \\to \\infty$ (via Saxton-Thomason lower bound)",
-      "Question 2: NO — the exponent is between 1.16 and 6.442, not $1 + o(1)$",
+      "A Sidon set (B\u2082 sequence) has all pairwise sums distinct: $a + b = c + d \\implies \\{a,b\\} = \\{c,d\\}$",
+      "The maximum Sidon subset of $\\{1,\\ldots,N\\}$ has size $f(N) \\sim \\sqrt{N}$ (Erd\u0151s-Tur\u00e1n 1941)",
+      "Question 1: YES \u2014 $A(N)/2^{f(N)} \\to \\infty$ (via Saxton-Thomason lower bound)",
+      "Question 2: NO \u2014 the exponent is between 1.16 and 6.442, not $1 + o(1)$",
       "The hypergraph container method (Balogh-Morris-Samotij, Saxton-Thomason 2015) was the key breakthrough for counting sparse structures"
     ],
     "prerequisites": [
@@ -95,20 +95,20 @@
       "title": "Known Asymptotic",
       "startLine": 91,
       "endLine": 113,
-      "summary": "Erdős-Turán result f(N) ~ √N",
-      "mathContext": "$f(N) \\sim \\sqrt{N}$ as $N \\to \\infty$ (Erdős-Turán). The maximum Sidon subset of $\\{1, \\ldots, N\\}$ has $\\sim \\sqrt{N}$ elements."
+      "summary": "Erd\u0151s-Tur\u00e1n result f(N) ~ \u221aN",
+      "mathContext": "$f(N) \\sim \\sqrt{N}$ as $N \\to \\infty$ (Erd\u0151s-Tur\u00e1n). The maximum Sidon subset of $\\{1, \\ldots, N\\}$ has $\\sim \\sqrt{N}$ elements."
     },
     {
       "id": "question1",
-      "title": "Cameron-Erdős Question 1",
+      "title": "Cameron-Erd\u0151s Question 1",
       "startLine": 114,
       "endLine": 134,
-      "summary": "Is A(N)/2^{f(N)} → ∞? (Answer: Yes)",
+      "summary": "Is A(N)/2^{f(N)} \u2192 \u221e? (Answer: Yes)",
       "mathContext": "Q1: Is $A(N) / 2^{f(N)} \\to \\infty$? *YES*. The Saxton-Thomason bound $A(N) \\ge 2^{1.16 f(N)}$ implies $A(N)/2^{f(N)} \\ge 2^{0.16 f(N)} \\to \\infty$."
     },
     {
       "id": "question2",
-      "title": "Cameron-Erdős Question 2",
+      "title": "Cameron-Erd\u0151s Question 2",
       "startLine": 135,
       "endLine": 156,
       "summary": "Is A(N) = 2^{(1+o(1))f(N)}? (Answer: No)",
@@ -120,7 +120,7 @@
       "startLine": 157,
       "endLine": 196,
       "summary": "Saxton-Thomason lower and KLRS upper bounds",
-      "mathContext": "$2^{1.16 f(N)} \\le A(N) \\le 2^{6.442 f(N)}$ for large $N$. Lower: Saxton-Thomason (2015, hypergraph containers). Upper: Kohayakawa-Lee-Rödl-Samotij (2015)."
+      "mathContext": "$2^{1.16 f(N)} \\le A(N) \\le 2^{6.442 f(N)}$ for large $N$. Lower: Saxton-Thomason (2015, hypergraph containers). Upper: Kohayakawa-Lee-R\u00f6dl-Samotij (2015)."
     },
     {
       "id": "properties",
@@ -140,12 +140,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #861 (Cameron-Erdős problem on counting Sidon sets) is solved. Question 1 is answered YES (A(N)/2^{f(N)} → ∞). Question 2 is answered NO (the exponent is between 1.16 and 6.442, not 1+o(1)).",
+    "summary": "Erd\u0151s Problem #861 (Cameron-Erd\u0151s problem on counting Sidon sets) is solved. Question 1 is answered YES (A(N)/2^{f(N)} \u2192 \u221e). Question 2 is answered NO (the exponent is between 1.16 and 6.442, not 1+o(1)).",
     "implications": "The hypergraph container method (Saxton-Thomason) provides powerful tools for counting combinatorial structures. The gap between bounds [1.16, 6.442] remains to be tightened.",
     "openQuestions": [
       "What is the exact constant c such that A(N) = 2^{(c+o(1))f(N)}?",
       "Can the bounds be improved beyond [1.16, 6.442]?",
-      "Does f(N) = √N + O(N^ε) hold for all ε > 0?"
+      "Does f(N) = \u221aN + O(N^\u03b5) hold for all \u03b5 > 0?"
     ]
   },
   "leanFile": {
@@ -165,5 +165,39 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Share combinatorial, counting, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "related",
+      "description": "Share combinatorial and counting themes"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Share combinatorial and counting themes"
+    },
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Share combinatorial and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1112",
+      "relationship": "related",
+      "description": "Share combinatorial and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-748",
+    "ballot-problem",
+    "birthday-problem",
+    "erdos-109",
+    "erdos-1112"
+  ]
 }

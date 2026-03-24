@@ -1,10 +1,10 @@
 {
   "id": "erdos-866",
-  "title": "Erdős Problem #866: Pairwise Sums Threshold",
+  "title": "Erd\u0151s Problem #866: Pairwise Sums Threshold",
   "slug": "erdos-866",
-  "description": "For k ≥ 3, define g_k(N) as the minimal threshold such that A ⊆ {1,...,2N} with |A| ≥ N + g_k(N) contains all pairwise sums of some b₁,...,b_k. Known: g₃=2, g₄≤2032, g₅≍log N, g₆≍√N. General bounds have gaps.",
+  "description": "For k \u2265 3, define g_k(N) as the minimal threshold such that A \u2286 {1,...,2N} with |A| \u2265 N + g_k(N) contains all pairwise sums of some b\u2081,...,b_k. Known: g\u2083=2, g\u2084\u22642032, g\u2085\u224dlog N, g\u2086\u224d\u221aN. General bounds have gaps.",
   "meta": {
-    "author": "Choi, Erdős, Szemerédi",
+    "author": "Choi, Erd\u0151s, Szemer\u00e9di",
     "sourceUrl": "https://erdosproblems.com/866",
     "date": "1975",
     "mathlib_version": "4.15.0",
@@ -35,21 +35,21 @@
       },
       {
         "theorem": "Real.log",
-        "description": "Logarithm for g₅ bounds",
+        "description": "Logarithm for g\u2085 bounds",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
         "theorem": "Real.sqrt",
-        "description": "Square root for g₆ bounds",
+        "description": "Square root for g\u2086 bounds",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
     "originalContributions": [
-      "Formal definition of HasAllPairwiseSums and PairwiseSumCondition using Fin k → ℤ witnesses",
+      "Formal definition of HasAllPairwiseSums and PairwiseSumCondition using Fin k \u2192 \u2124 witnesses",
       "Threshold function g_k(N) via Nat.find with vacuous existence proof",
-      "Complete case analysis: g₃=2 (exact), g₄≤2032 (van Doorn), g₅≍log N, g₆≍√N",
+      "Complete case analysis: g\u2083=2 (exact), g\u2084\u22642032 (van Doorn), g\u2085\u224dlog N, g\u2086\u224d\u221aN",
       "General upper bound N^{1-2^{-k}} with upperExponent monotonicity",
-      "General lower bound N^{1-ε} for large k, with threshold_approaches_N corollary",
+      "General lower bound N^{1-\u03b5} for large k, with threshold_approaches_N corollary",
       "Odd numbers construction as fundamental extremal example",
       "Four open problems formalized as Lean propositions"
     ],
@@ -76,17 +76,17 @@
     "assumptions": "7 axiom(s) and 6 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #866 originates from the work of Choi, Erdős, and Szemerédi on sumsets and additive combinatorics, building on their unpublished manuscript 'On sums and products of integers.' The problem asks: how large must a subset A of {1,...,2N} be to guarantee that some k integers have all their pairwise sums in A?\n\nThe foundational observation is the odd numbers construction: the set {1, 3, 5, ..., 2N-1} has N elements but avoids all pairwise sums (since odd + odd = even). This shows the threshold must be at least 1 above N. For k=3, the exact answer is g₃(N) = 2, proved via a complementary pairs pigeonhole argument.\n\nThe most striking feature is the phase transition as k increases: g₃ = 2 (constant), g₄ ≤ 2032 (bounded constant, van Doorn), g₅ ≍ log N (logarithmic), g₆ ≍ √N (polynomial). The general upper bound g_k(N) ≪ N^{1-2^{-k}} (Choi–Erdős–Szemerédi) shows the exponent approaches 1 geometrically, while the lower bound g_k(N) > N^{1-ε} for large k shows the threshold eventually approaches N.\n\nThis growth rate transition—from constant through logarithmic and polynomial to nearly linear—is rare in combinatorics and reflects deep structural changes in the extremal problem. The gap between upper and lower bounds for intermediate and large k remains one of the central open questions in additive combinatorics.",
-    "problemStatement": "**Problem Statement**\n\nFor k ≥ 3, let g_k(N) be the minimal value such that if A ⊆ {1,...,2N} has |A| ≥ N + g_k(N), then there exist integers b₁,...,b_k such that all $\\binom{k}{2}$ pairwise sums b_i + b_j are in A (the b_i need not be in A).\n\n**Goal**: Estimate g_k(N) for all k.\n\n**Status**: PARTIALLY SOLVED\n- Small k (3,4,5,6): Well characterized\n- Large k: Gap between upper and lower bounds",
-    "text": "For k ≥ 3, define g_k(N) as the minimal threshold such that A ⊆ {1,...,2N} with |A| ≥ N + g_k(N) contains all pairwise sums of some b₁,...,b_k. Known: g₃=2, g₄≤2032, g₅≍log N, g₆≍√N. General bounds have gaps.",
-    "proofStrategy": "The formalization is organized into eleven parts:\n\n1. **Definitions**: Interval, HasAllPairwiseSums (using Fin k → ℤ), PairwiseSumCondition, and g via Nat.find\n2. **Case k=3**: g₃(N) = 2 exactly (axiom), with lower bound from odd numbers construction\n3. **Case k=4**: g₄(N) bounded (axiom), van Doorn's explicit g₄ ≤ 2032 (axiom)\n4. **Case k=5**: g₅(N) ≍ log N (axiom), lower bound extracted as corollary via `obtain`\n5. **Case k=6**: g₆(N) ≍ √N (axiom)\n6. **General upper**: g_k(N) ≪ N^{1-2^{-k}} with upperExponent monotonicity (sorry)\n7. **General lower**: g_k(N) > N^{1-ε} for large k (axiom), threshold_approaches_N (proved)\n8. **Odd numbers**: Extremal construction with cardinality (sorry) and avoidance (sorry) proofs\n9. **Summary table**: Four summary theorems directly referencing axioms\n10. **Open problems**: Four formalized as Lean Props\n11. **Main summary**: Conjunction of g₃ exact and g₄ bounded",
+    "historicalContext": "Erd\u0151s Problem #866 originates from the work of Choi, Erd\u0151s, and Szemer\u00e9di on sumsets and additive combinatorics, building on their unpublished manuscript 'On sums and products of integers.' The problem asks: how large must a subset A of {1,...,2N} be to guarantee that some k integers have all their pairwise sums in A?\n\nThe foundational observation is the odd numbers construction: the set {1, 3, 5, ..., 2N-1} has N elements but avoids all pairwise sums (since odd + odd = even). This shows the threshold must be at least 1 above N. For k=3, the exact answer is g\u2083(N) = 2, proved via a complementary pairs pigeonhole argument.\n\nThe most striking feature is the phase transition as k increases: g\u2083 = 2 (constant), g\u2084 \u2264 2032 (bounded constant, van Doorn), g\u2085 \u224d log N (logarithmic), g\u2086 \u224d \u221aN (polynomial). The general upper bound g_k(N) \u226a N^{1-2^{-k}} (Choi\u2013Erd\u0151s\u2013Szemer\u00e9di) shows the exponent approaches 1 geometrically, while the lower bound g_k(N) > N^{1-\u03b5} for large k shows the threshold eventually approaches N.\n\nThis growth rate transition\u2014from constant through logarithmic and polynomial to nearly linear\u2014is rare in combinatorics and reflects deep structural changes in the extremal problem. The gap between upper and lower bounds for intermediate and large k remains one of the central open questions in additive combinatorics.",
+    "problemStatement": "**Problem Statement**\n\nFor k \u2265 3, let g_k(N) be the minimal value such that if A \u2286 {1,...,2N} has |A| \u2265 N + g_k(N), then there exist integers b\u2081,...,b_k such that all $\\binom{k}{2}$ pairwise sums b_i + b_j are in A (the b_i need not be in A).\n\n**Goal**: Estimate g_k(N) for all k.\n\n**Status**: PARTIALLY SOLVED\n- Small k (3,4,5,6): Well characterized\n- Large k: Gap between upper and lower bounds",
+    "text": "For k \u2265 3, define g_k(N) as the minimal threshold such that A \u2286 {1,...,2N} with |A| \u2265 N + g_k(N) contains all pairwise sums of some b\u2081,...,b_k. Known: g\u2083=2, g\u2084\u22642032, g\u2085\u224dlog N, g\u2086\u224d\u221aN. General bounds have gaps.",
+    "proofStrategy": "The formalization is organized into eleven parts:\n\n1. **Definitions**: Interval, HasAllPairwiseSums (using Fin k \u2192 \u2124), PairwiseSumCondition, and g via Nat.find\n2. **Case k=3**: g\u2083(N) = 2 exactly (axiom), with lower bound from odd numbers construction\n3. **Case k=4**: g\u2084(N) bounded (axiom), van Doorn's explicit g\u2084 \u2264 2032 (axiom)\n4. **Case k=5**: g\u2085(N) \u224d log N (axiom), lower bound extracted as corollary via `obtain`\n5. **Case k=6**: g\u2086(N) \u224d \u221aN (axiom)\n6. **General upper**: g_k(N) \u226a N^{1-2^{-k}} with upperExponent monotonicity (sorry)\n7. **General lower**: g_k(N) > N^{1-\u03b5} for large k (axiom), threshold_approaches_N (proved)\n8. **Odd numbers**: Extremal construction with cardinality (sorry) and avoidance (sorry) proofs\n9. **Summary table**: Four summary theorems directly referencing axioms\n10. **Open problems**: Four formalized as Lean Props\n11. **Main summary**: Conjunction of g\u2083 exact and g\u2084 bounded",
     "keyInsights": [
-      "**Phase transition in growth rates**: The sequence constant → log → √N → N^{1-o(1)} as k increases from 3 to ∞ represents a rare and striking phenomenon in combinatorics. Each transition (k=4→5, k=5→6, finite→∞) requires fundamentally different techniques.",
-      "**The odd numbers construction is universal**: The set of odd integers in [2N] has exactly N elements and avoids ALL pairwise sum configurations (for any k), because two integers of the same parity sum to an even number. This single construction provides the base lower bound g_k(N) ≥ 1 for all k.",
-      "**Witnesses need not be in A**: The b_i are arbitrary integers whose pairwise sums land in A. Allowing b_i ∉ A and b_i < 0 (via Fin k → ℤ) is essential—the problem would be much harder if we required b_i ∈ A.",
-      "**The k=4 to k=5 transition is the sharpest**: g₄ = O(1) while g₅ = Θ(log N). Adding one more integer to the required pattern (4→5 witnesses, 6→10 pairwise sums) causes the threshold to jump from bounded to unbounded. This is the point where the combinatorial complexity qualitatively changes.",
-      "**The exponent 1-2^{-k} comes from induction**: The general upper bound proceeds by induction on k: given k-1 witnesses, the remaining density suffices to find the k-th. Each inductive step squares the deficiency (from N^α to N^{(1+α)/2}), giving the geometric approach to exponent 1.",
-      "**The gap between bounds is the main open problem**: For large k, the upper exponent 1-2^{-k} and lower exponent 1-ε don't match. Finding the true exponent α_k with g_k(N) = N^{α_k+o(1)} is the central challenge."
+      "**Phase transition in growth rates**: The sequence constant \u2192 log \u2192 \u221aN \u2192 N^{1-o(1)} as k increases from 3 to \u221e represents a rare and striking phenomenon in combinatorics. Each transition (k=4\u21925, k=5\u21926, finite\u2192\u221e) requires fundamentally different techniques.",
+      "**The odd numbers construction is universal**: The set of odd integers in [2N] has exactly N elements and avoids ALL pairwise sum configurations (for any k), because two integers of the same parity sum to an even number. This single construction provides the base lower bound g_k(N) \u2265 1 for all k.",
+      "**Witnesses need not be in A**: The b_i are arbitrary integers whose pairwise sums land in A. Allowing b_i \u2209 A and b_i < 0 (via Fin k \u2192 \u2124) is essential\u2014the problem would be much harder if we required b_i \u2208 A.",
+      "**The k=4 to k=5 transition is the sharpest**: g\u2084 = O(1) while g\u2085 = \u0398(log N). Adding one more integer to the required pattern (4\u21925 witnesses, 6\u219210 pairwise sums) causes the threshold to jump from bounded to unbounded. This is the point where the combinatorial complexity qualitatively changes.",
+      "**The exponent 1-2^{-k} comes from induction**: The general upper bound proceeds by induction on k: given k-1 witnesses, the remaining density suffices to find the k-th. Each inductive step squares the deficiency (from N^\u03b1 to N^{(1+\u03b1)/2}), giving the geometric approach to exponent 1.",
+      "**The gap between bounds is the main open problem**: For large k, the upper exponent 1-2^{-k} and lower exponent 1-\u03b5 don't match. Finding the true exponent \u03b1_k with g_k(N) = N^{\u03b1_k+o(1)} is the central challenge."
     ],
     "prerequisites": [
       "Additive combinatorics (sumsets, density)",
@@ -97,56 +97,56 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Defines Interval(N) = {1,...,2N}, HasAllPairwiseSums via Fin k → ℤ witnesses, PairwiseSumCondition as the universal threshold statement, and g(k,N) via Nat.find with a sorry for the vacuous existence argument.",
+      "summary": "Defines Interval(N) = {1,...,2N}, HasAllPairwiseSums via Fin k \u2192 \u2124 witnesses, PairwiseSumCondition as the universal threshold statement, and g(k,N) via Nat.find with a sorry for the vacuous existence argument.",
       "startLine": 41,
       "endLine": 65
     },
     {
       "id": "case-k3",
       "title": "Case k=3",
-      "summary": "Axiomatizes g₃(N) = 2 (Choi–Erdős–Szemerédi). The lower bound g₃ ≥ 2 from odd numbers has a sorry requiring the parity-pigeonhole argument that two of three integers share parity.",
+      "summary": "Axiomatizes g\u2083(N) = 2 (Choi\u2013Erd\u0151s\u2013Szemer\u00e9di). The lower bound g\u2083 \u2265 2 from odd numbers has a sorry requiring the parity-pigeonhole argument that two of three integers share parity.",
       "startLine": 67,
       "endLine": 81
     },
     {
       "id": "case-k4",
       "title": "Case k=4",
-      "summary": "Two axioms: g₄(N) ≤ C for an absolute constant (Choi–Erdős–Szemerédi), and the explicit g₄(N) ≤ 2032 (van Doorn). The surprising boundedness of g₄ contrasts sharply with the unbounded g₅.",
+      "summary": "Two axioms: g\u2084(N) \u2264 C for an absolute constant (Choi\u2013Erd\u0151s\u2013Szemer\u00e9di), and the explicit g\u2084(N) \u2264 2032 (van Doorn). The surprising boundedness of g\u2084 contrasts sharply with the unbounded g\u2085.",
       "startLine": 83,
       "endLine": 95
     },
     {
       "id": "case-k5",
       "title": "Case k=5",
-      "summary": "Axiomatizes g₅(N) ≍ log N with two-sided bounds. A corollary theorem extracts the lower bound via `obtain` from the axiom. The construction using odd numbers + powers of 2 is described but not formalized.",
+      "summary": "Axiomatizes g\u2085(N) \u224d log N with two-sided bounds. A corollary theorem extracts the lower bound via `obtain` from the axiom. The construction using odd numbers + powers of 2 is described but not formalized.",
       "startLine": 97,
       "endLine": 115
     },
     {
       "id": "case-k6",
       "title": "Case k=6",
-      "summary": "Axiomatizes g₆(N) ≍ √N, the first case with polynomial growth. The jump from Θ(log N) to Θ(√N) between k=5 and k=6 is one of the problem's most striking features.",
+      "summary": "Axiomatizes g\u2086(N) \u224d \u221aN, the first case with polynomial growth. The jump from \u0398(log N) to \u0398(\u221aN) between k=5 and k=6 is one of the problem's most striking features.",
       "startLine": 117,
       "endLine": 126
     },
     {
       "id": "general-upper",
       "title": "General Upper Bound",
-      "summary": "Axiomatizes g_k(N) ≪ N^{1-2^{-k}} for k ≥ 3. Defines upperExponent(k) = 1-2^{-k} and proves (with sorry) that it's strictly increasing. The exponent approaches 1 as k → ∞.",
+      "summary": "Axiomatizes g_k(N) \u226a N^{1-2^{-k}} for k \u2265 3. Defines upperExponent(k) = 1-2^{-k} and proves (with sorry) that it's strictly increasing. The exponent approaches 1 as k \u2192 \u221e.",
       "startLine": 128,
       "endLine": 150
     },
     {
       "id": "general-lower",
       "title": "General Lower Bound",
-      "summary": "Axiomatizes the lower bound g_k(N) > N^{1-ε} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain.",
+      "summary": "Axiomatizes the lower bound g_k(N) > N^{1-\u03b5} for large k. The theorem threshold_approaches_N (fully proved) shows g_k(N) > N^c for any c < 1 and large enough k, using linarith and obtain.",
       "startLine": 152,
       "endLine": 172
     },
     {
       "id": "odd-construction",
       "title": "Odd Numbers Construction",
-      "summary": "Defines oddNumbers(N) as odd integers in [2N]. Proves (with sorries) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd. Derives g₃(N) ≥ 1 as a corollary.",
+      "summary": "Defines oddNumbers(N) as odd integers in [2N]. Proves (with sorries) that |oddNumbers(N)| = N and that no triple of integers has all pairwise sums odd. Derives g\u2083(N) \u2265 1 as a corollary.",
       "startLine": 174,
       "endLine": 195
     },
@@ -160,25 +160,25 @@
     {
       "id": "open-problems",
       "title": "Open Problems",
-      "summary": "Four open problems formalized as Lean propositions: (1) g₄ exact value, (2) g₅ optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction.",
+      "summary": "Four open problems formalized as Lean propositions: (1) g\u2084 exact value, (2) g\u2085 optimal constants, (3) large k exponent gap, (4) extremal set structure. Each captures a genuine research direction.",
       "startLine": 217,
       "endLine": 248
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "The main summary theorem packages g₃(N) = 2 and g₄ bounded into a conjunction, proved by pairing the two axioms. A detailed docstring summarizes all known results, status, and significance.",
+      "summary": "The main summary theorem packages g\u2083(N) = 2 and g\u2084 bounded into a conjunction, proved by pairing the two axioms. A detailed docstring summarizes all known results, status, and significance.",
       "startLine": 250,
       "endLine": 274
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #866 on pairwise sums threshold functions, organizing the theory into case analysis (k=3,4,5,6), general bounds, extremal constructions, and open problems. The 6 sorries include the Nat.find existence argument, the g₃ lower bound (parity pigeonhole), odd numbers cardinality, odd numbers avoidance, the g₃ ≥ 1 corollary, and the upperExponent monotonicity. Two theorems are fully proved: g₅ lower bound extraction (via obtain from the axiom) and threshold_approaches_N (via linarith).",
-    "implications": "The problem reveals fundamental phase transitions in additive combinatorics: (1) the jump from bounded to unbounded threshold at k=4→5 shows a qualitative complexity barrier; (2) the growth rate hierarchy (constant → log → √N → N^{1-o(1)}) is exceptionally clean; (3) the gap between upper exponent 1-2^{-k} and lower exponent 1-ε for large k represents a major open frontier. The formalization demonstrates how Lean can cleanly separate exact results (g₃=2) from asymptotic bounds (g₅, g₆) and open questions, providing precise statements for future work.",
+    "summary": "This formalization captures Erd\u0151s Problem #866 on pairwise sums threshold functions, organizing the theory into case analysis (k=3,4,5,6), general bounds, extremal constructions, and open problems. The 6 sorries include the Nat.find existence argument, the g\u2083 lower bound (parity pigeonhole), odd numbers cardinality, odd numbers avoidance, the g\u2083 \u2265 1 corollary, and the upperExponent monotonicity. Two theorems are fully proved: g\u2085 lower bound extraction (via obtain from the axiom) and threshold_approaches_N (via linarith).",
+    "implications": "The problem reveals fundamental phase transitions in additive combinatorics: (1) the jump from bounded to unbounded threshold at k=4\u21925 shows a qualitative complexity barrier; (2) the growth rate hierarchy (constant \u2192 log \u2192 \u221aN \u2192 N^{1-o(1)}) is exceptionally clean; (3) the gap between upper exponent 1-2^{-k} and lower exponent 1-\u03b5 for large k represents a major open frontier. The formalization demonstrates how Lean can cleanly separate exact results (g\u2083=2) from asymptotic bounds (g\u2085, g\u2086) and open questions, providing precise statements for future work.",
     "openQuestions": [
-      "What is the exact value of g₄(N)? Is g₄(N) constant, and if so, what is the constant?",
-      "What are the optimal constants c₁, c₂ in g₅(N) ≍ log N? Does g₅(N)/log N converge?",
-      "Can the gap between N^{1-2^{-k}} and N^{1-ε} for large k be closed? What is the true exponent α_k?",
+      "What is the exact value of g\u2084(N)? Is g\u2084(N) constant, and if so, what is the constant?",
+      "What are the optimal constants c\u2081, c\u2082 in g\u2085(N) \u224d log N? Does g\u2085(N)/log N converge?",
+      "Can the gap between N^{1-2^{-k}} and N^{1-\u03b5} for large k be closed? What is the true exponent \u03b1_k?",
       "What is the structural characterization of extremal sets (maximum-size sets avoiding the pairwise sums condition)?",
       "Is there a unified proof technique that handles all values of k, or must each case use fundamentally different methods?"
     ]
@@ -201,5 +201,39 @@
     "axiomCount": 7,
     "theoremCount": 12,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Share sumsets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Share sumsets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1109",
+      "relationship": "related",
+      "description": "Share sumsets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1112",
+      "relationship": "related",
+      "description": "Share sumsets and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Share sumsets and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-109",
+    "erdos-1103",
+    "erdos-1109",
+    "erdos-1112",
+    "erdos-14"
+  ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "erdos-112",
-  "title": "Erdős Problem #112: Directed Ramsey — Independent Sets vs Transitive Tournaments",
+  "title": "Erd\u0151s Problem #112: Directed Ramsey \u2014 Independent Sets vs Transitive Tournaments",
   "slug": "erdos-112",
-  "description": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) ≤ k(n,m) ≤ R(n,m,m). Open.",
+  "description": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) \u2264 k(n,m) \u2264 R(n,m,m). Open.",
   "meta": {
     "erdosNumber": 112,
     "status": "axiomatized",
@@ -72,35 +72,35 @@
     },
     {
       "id": "larson-mitchell-bound",
-      "title": "Larson–Mitchell Quadratic Bound",
+      "title": "Larson\u2013Mitchell Quadratic Bound",
       "startLine": 78,
       "endLine": 81,
-      "summary": "States the Larson–Mitchell (1997) result: $k(n,3) \\leq n^2$ for all $n \\geq 1$. This quadratic bound for the special case $m=3$ (transitive triples) is significantly tighter than the exponential general bound and remains the best known for this case."
+      "summary": "States the Larson\u2013Mitchell (1997) result: $k(n,3) \\leq n^2$ for all $n \\geq 1$. This quadratic bound for the special case $m=3$ (transitive triples) is significantly tighter than the exponential general bound and remains the best known for this case."
     },
     {
       "id": "erdos-rado-upper",
-      "title": "Erdős–Rado Original Upper Bound",
+      "title": "Erd\u0151s\u2013Rado Original Upper Bound",
       "startLine": 83,
       "endLine": 88,
-      "summary": "Axiomatizes the 1967 Erdős–Rado upper bound: $k(n,m) \\leq \\frac{2^{m-1}(n-1)^m + n - 2}{2n - 3}$. This bound is exponential in $m$ but polynomial in $n$ for fixed $m$, providing the first non-trivial upper estimate for the directed Ramsey problem."
+      "summary": "Axiomatizes the 1967 Erd\u0151s\u2013Rado upper bound: $k(n,m) \\leq \\frac{2^{m-1}(n-1)^m + n - 2}{2n - 3}$. This bound is exponential in $m$ but polynomial in $n$ for fixed $m$, providing the first non-trivial upper estimate for the directed Ramsey problem."
     },
     {
       "id": "observations",
       "title": "Observations and Variants",
       "startLine": 90,
       "endLine": 102,
-      "summary": "Records two observations: (1) the Hunter–Steiner directed path variant, where replacing 'transitive tournament' with 'directed path' yields the exact answer $(n-1)(m-1)+1$; and (2) the connection to classical Ramsey theory showing $k(n,m) \\leq R(n,m)$ for undirected independent sets."
+      "summary": "Records two observations: (1) the Hunter\u2013Steiner directed path variant, where replacing 'transitive tournament' with 'directed path' yields the exact answer $(n-1)(m-1)+1$; and (2) the connection to classical Ramsey theory showing $k(n,m) \\leq R(n,m)$ for undirected independent sets."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Rado posed this problem in their landmark 1967 paper on partition relations, extending classical Ramsey theory into the directed setting. The question arose naturally from studying tournaments — complete directed graphs where every pair of vertices has exactly one directed edge — which had been studied extensively since the 1930s by König, Rédei, and others. Rédei's 1934 theorem that every tournament contains a Hamiltonian path hinted at rich structural properties in directed graphs. The function $k(n,m)$ generalizes the undirected Ramsey number $R(n,m)$ by replacing 'clique' with 'transitive tournament,' introducing the asymmetry of edge directions. Larson and Mitchell's 1997 quadratic bound $k(n,3) \\leq n^2$ for transitive triples was a breakthrough for the special case $m=3$. The problem connects to Dilworth's theorem (1950) on antichains in partial orders, since a transitive tournament on $m$ vertices corresponds to a chain of length $m$ in the partial order induced by the edges. Despite decades of work, the exact growth rate of $k(n,m)$ for general $n$ and $m$ remains open, making this one of the enduring questions in directed Ramsey theory.",
+    "historicalContext": "Erd\u0151s and Rado posed this problem in their landmark 1967 paper on partition relations, extending classical Ramsey theory into the directed setting. The question arose naturally from studying tournaments \u2014 complete directed graphs where every pair of vertices has exactly one directed edge \u2014 which had been studied extensively since the 1930s by K\u00f6nig, R\u00e9dei, and others. R\u00e9dei's 1934 theorem that every tournament contains a Hamiltonian path hinted at rich structural properties in directed graphs. The function $k(n,m)$ generalizes the undirected Ramsey number $R(n,m)$ by replacing 'clique' with 'transitive tournament,' introducing the asymmetry of edge directions. Larson and Mitchell's 1997 quadratic bound $k(n,3) \\leq n^2$ for transitive triples was a breakthrough for the special case $m=3$. The problem connects to Dilworth's theorem (1950) on antichains in partial orders, since a transitive tournament on $m$ vertices corresponds to a chain of length $m$ in the partial order induced by the edges. Despite decades of work, the exact growth rate of $k(n,m)$ for general $n$ and $m$ remains open, making this one of the enduring questions in directed Ramsey theory.",
     "problemStatement": "Determine $k(n,m)$, the minimum $k$ such that every directed graph on $k$ vertices contains an independent set of size $n$ or a transitive tournament of size $m$. Known bounds: $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$.",
-    "text": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) ≤ k(n,m) ≤ R(n,m,m). Open.",
-    "proofStrategy": "The formalization axiomatizes the directed Ramsey function $k(n,m)$ and states its defining property: every sufficiently large directed graph contains either an independent set of size $n$ or a transitive tournament of size $m$. Rather than attempting to compute $k(n,m)$ (which is open), the Lean file captures the known structural results as axioms — the Ramsey lower bound, Hunter's 3-color upper bound via $R(n,m,m)$, the Larson–Mitchell quadratic bound for $m=3$, and the original Erdős–Rado estimate. Each axiom faithfully represents a theorem from the literature, using Lean's type system to enforce the correct quantifier structure and hypothesis conditions.",
+    "text": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) \u2264 k(n,m) \u2264 R(n,m,m). Open.",
+    "proofStrategy": "The formalization axiomatizes the directed Ramsey function $k(n,m)$ and states its defining property: every sufficiently large directed graph contains either an independent set of size $n$ or a transitive tournament of size $m$. Rather than attempting to compute $k(n,m)$ (which is open), the Lean file captures the known structural results as axioms \u2014 the Ramsey lower bound, Hunter's 3-color upper bound via $R(n,m,m)$, the Larson\u2013Mitchell quadratic bound for $m=3$, and the original Erd\u0151s\u2013Rado estimate. Each axiom faithfully represents a theorem from the literature, using Lean's type system to enforce the correct quantifier structure and hypothesis conditions.",
     "keyInsights": [
       "**Ramsey number sandwich**: The bounds $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$ place the directed Ramsey number between the 2-color and 3-color undirected Ramsey numbers, reflecting how edge orientation adds exactly one 'color' of complexity",
       "**Transitive tournaments as linear orders**: A transitive tournament on $m$ vertices is equivalent to a total order, connecting this combinatorial problem to order theory and Dilworth's theorem on chain decompositions",
-      "**Quadratic vs exponential gap**: The Larson–Mitchell bound $k(n,3) \\leq n^2$ is quadratic in $n$, while the general Erdős–Rado bound $k(n,m) \\leq O(2^m \\cdot n^m)$ is exponential in $m$ — closing this gap for $m \\geq 4$ is the central open question",
+      "**Quadratic vs exponential gap**: The Larson\u2013Mitchell bound $k(n,3) \\leq n^2$ is quadratic in $n$, while the general Erd\u0151s\u2013Rado bound $k(n,m) \\leq O(2^m \\cdot n^m)$ is exponential in $m$ \u2014 closing this gap for $m \\geq 4$ is the central open question",
       "**Path variant has exact solution**: Replacing 'transitive tournament' with 'directed path' yields the exact answer $(n-1)(m-1)+1$, showing that the transitivity requirement is what makes the problem genuinely difficult",
       "**Irreflexivity suffices**: The formalization uses irreflexive relations rather than tournament-specific axioms, capturing the more general directed graph setting where non-edges (independent set vertices) and tournament structure coexist"
     ],
@@ -111,40 +111,40 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #112 — the directed Ramsey problem for independent sets versus transitive tournaments — by axiomatizing the function $k(n,m)$ and its known bounds in Lean 4. The formalization faithfully represents the Ramsey lower bound, Hunter's 3-color upper bound, the Larson–Mitchell quadratic estimate for $m=3$, and the original 1967 Erdős–Rado bound, providing a formal foundation for one of the central open problems in directed Ramsey theory.",
-    "implications": "Resolving the exact growth rate of $k(n,m)$ would bridge the gap between 2-color and 3-color Ramsey theory, with potential implications for tournament decomposition, partial order theory, and the Hales–Jewett theorem in higher dimensions. Progress on this problem could also advance understanding of the Erdős–Hajnal conjecture, which posits that tournaments avoiding a fixed subtournament have polynomial-size transitive subtournaments.",
+    "summary": "This formalization captures Erd\u0151s Problem #112 \u2014 the directed Ramsey problem for independent sets versus transitive tournaments \u2014 by axiomatizing the function $k(n,m)$ and its known bounds in Lean 4. The formalization faithfully represents the Ramsey lower bound, Hunter's 3-color upper bound, the Larson\u2013Mitchell quadratic estimate for $m=3$, and the original 1967 Erd\u0151s\u2013Rado bound, providing a formal foundation for one of the central open problems in directed Ramsey theory.",
+    "implications": "Resolving the exact growth rate of $k(n,m)$ would bridge the gap between 2-color and 3-color Ramsey theory, with potential implications for tournament decomposition, partial order theory, and the Hales\u2013Jewett theorem in higher dimensions. Progress on this problem could also advance understanding of the Erd\u0151s\u2013Hajnal conjecture, which posits that tournaments avoiding a fixed subtournament have polynomial-size transitive subtournaments.",
     "openQuestions": [
-      "Is $k(n,m)$ polynomial in $n$ for every fixed $m \\geq 4$, extending the Larson–Mitchell quadratic bound beyond $m=3$?",
-      "Can the Erdős–Rado upper bound $k(n,m) \\leq O(2^m n^m)$ be improved to a single-exponential bound in $m$?",
+      "Is $k(n,m)$ polynomial in $n$ for every fixed $m \\geq 4$, extending the Larson\u2013Mitchell quadratic bound beyond $m=3$?",
+      "Can the Erd\u0151s\u2013Rado upper bound $k(n,m) \\leq O(2^m n^m)$ be improved to a single-exponential bound in $m$?",
       "What are the exact values of $k(n,4)$ and $k(3,m)$ for small parameters?",
-      "Does the Erdős–Hajnal conjecture for tournaments yield improved bounds on $k(n,m)$ when the directed graph avoids certain induced subtournaments?"
+      "Does the Erd\u0151s\u2013Hajnal conjecture for tournaments yield improved bounds on $k(n,m)$ when the directed graph avoids certain induced subtournaments?"
     ]
   },
   "crossReferences": [
     {
-      "slug": "ramseys-theorem",
-      "title": "Ramsey's Theorem",
-      "relationship": "The classical Ramsey theorem provides the undirected foundation: $k(n,m) \\geq R(n,m)$ because any undirected 2-coloring can be oriented. Ramsey's theorem guarantees the existence of monochromatic cliques or independent sets that bound $k(n,m)$ from below."
+      "relationship": "related",
+      "description": "The classical Ramsey theorem provides the undirected foundation: $k(n,m) \\geq R(n,m)$ because any undirected 2-coloring can be oriented. Ramsey's theorem guarantees the existence of monochromatic cliques or independent sets that bound $k(n,m)$ from below.",
+      "targetId": "ramseys-theorem"
     },
     {
-      "slug": "erdos-61",
-      "title": "Erdős Problem #61: The Erdős–Hajnal Conjecture",
-      "relationship": "The Erdős–Hajnal conjecture posits that tournament families avoiding a fixed subtournament always contain polynomial-size transitive subtournaments. This would directly improve the upper bound on $k(n,m)$ for restricted graph families, replacing the exponential $R(n,m,m)$ ceiling with a polynomial one."
+      "relationship": "related",
+      "description": "The Erd\u0151s\u2013Hajnal conjecture posits that tournament families avoiding a fixed subtournament always contain polynomial-size transitive subtournaments. This would directly improve the upper bound on $k(n,m)$ for restricted graph families, replacing the exponential $R(n,m,m)$ ceiling with a polynomial one.",
+      "targetId": "erdos-61"
     },
     {
-      "slug": "erdos-902",
-      "title": "Erdős #902: Tournament Domination",
-      "relationship": "Both problems study structural properties of tournaments. Tournament domination results on kings and dominating sets illuminate local structure in directed graphs, complementing the global Ramsey-type guarantee that $k(n,m)$ provides."
+      "relationship": "related",
+      "description": "Both problems study structural properties of tournaments. Tournament domination results on kings and dominating sets illuminate local structure in directed graphs, complementing the global Ramsey-type guarantee that $k(n,m)$ provides.",
+      "targetId": "erdos-902"
     },
     {
-      "slug": "erdos-szekeres",
-      "title": "Erdős–Szekeres Theorem",
-      "relationship": "The Erdős–Szekeres theorem — guaranteeing a monotone subsequence of length $\\lceil\\sqrt{n-1}\\rceil+1$ in any sequence of $n$ distinct reals — is precisely the $k(n,m)$ problem for transitive tournaments in a linearly ordered structure. The exact answer $(n-1)(m-1)+1$ for directed paths mirrors the Erdős–Szekeres bound and shows the transitivity requirement is what separates the open from the solved case."
+      "relationship": "related",
+      "description": "The Erd\u0151s\u2013Szekeres theorem \u2014 guaranteeing a monotone subsequence of length $\\lceil\\sqrt{n-1}\\rceil+1$ in any sequence of $n$ distinct reals \u2014 is precisely the $k(n,m)$ problem for transitive tournaments in a linearly ordered structure. The exact answer $(n-1)(m-1)+1$ for directed paths mirrors the Erd\u0151s\u2013Szekeres bound and shows the transitivity requirement is what separates the open from the solved case.",
+      "targetId": "erdos-szekeres"
     },
     {
-      "slug": "erdos-1029",
-      "title": "Erdős Problem #1029: Ramsey Number Growth Rate",
-      "relationship": "The undirected Ramsey number growth rate is central to bounding $k(n,m)$, since $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$. Progress on the asymptotic growth of $R(n,n)$ directly tightens both endpoints of the sandwich inequality for the directed Ramsey number."
+      "relationship": "related",
+      "description": "The undirected Ramsey number growth rate is central to bounding $k(n,m)$, since $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$. Progress on the asymptotic growth of $R(n,n)$ directly tightens both endpoints of the sandwich inequality for the directed Ramsey number.",
+      "targetId": "erdos-1029"
     }
   ],
   "relatedProofs": [
@@ -155,7 +155,7 @@
     },
     {
       "slug": "erdos-szekeres",
-      "title": "Erdős–Szekeres Theorem",
+      "title": "Erd\u0151s\u2013Szekeres Theorem",
       "description": "Provides the exact answer to the directed path variant of Problem #112: any sequence of more than $(n-1)(m-1)$ distinct reals contains an increasing subsequence of length $m$ or a decreasing one of length $n$, which corresponds to a directed path rather than a transitive tournament."
     },
     {
@@ -167,7 +167,7 @@
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "R. Rado"
       ],
       "title": "Combinatorial theorems on classifications of subsets of a given set",
@@ -180,7 +180,7 @@
         "J. A. Larson",
         "W. J. Mitchell"
       ],
-      "title": "On a problem of Erdős and Rado",
+      "title": "On a problem of Erd\u0151s and Rado",
       "venue": "Annals of Pure and Applied Logic",
       "year": 1997,
       "note": "Proves the quadratic bound $k(n,3) \\leq n^2$ for transitive triples, the best known result for $m=3$"
@@ -205,17 +205,17 @@
     },
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "G. Szekeres"
       ],
       "title": "A combinatorial problem in geometry",
       "venue": "Compositio Mathematica",
       "year": 1935,
-      "note": "The Erdős–Szekeres theorem solves the directed path variant exactly as $(n-1)(m-1)+1$, establishing the baseline against which the open transitive tournament problem is measured"
+      "note": "The Erd\u0151s\u2013Szekeres theorem solves the directed path variant exactly as $(n-1)(m-1)+1$, establishing the baseline against which the open transitive tournament problem is measured"
     },
-    "Erdős–Rado (1967): original problem and upper bound",
-    "Larson–Mitchell (1997): k(n,3) ≤ n²",
-    "Hunter–Steiner: directed path variant",
+    "Erd\u0151s\u2013Rado (1967): original problem and upper bound",
+    "Larson\u2013Mitchell (1997): k(n,3) \u2264 n\u00b2",
+    "Hunter\u2013Steiner: directed path variant",
     "https://erdosproblems.com/112"
   ]
 }

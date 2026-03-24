@@ -1,10 +1,10 @@
 {
   "id": "erdos-969",
-  "title": "Erdős Problem #969: Error Term in Squarefree Integer Counting",
+  "title": "Erd\u0151s Problem #969: Error Term in Squarefree Integer Counting",
   "slug": "erdos-969",
-  "description": "Determine the order of magnitude of the error term E(x) in the asymptotic Q(x) = (6/π²)x + E(x), where Q(x) counts squarefree integers up to x.",
+  "description": "Determine the order of magnitude of the error term E(x) in the asymptotic Q(x) = (6/\u03c0\u00b2)x + E(x), where Q(x) counts squarefree integers up to x.",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Paul Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/969",
     "date": "",
     "status": "axiomatized",
@@ -26,16 +26,16 @@
     "assumptions": "9 axiom(s) and 1 sorry(s). Axioms encode mathematical hypotheses; sorries mark incomplete proofs."
   },
   "overview": {
-    "historicalContext": "This problem concerns the distribution of squarefree integers, which are integers not divisible by any perfect square greater than 1. The density of squarefree integers converges to 6/π² ≈ 0.6079, a beautiful fact connected to the Basel problem and ζ(2) = π²/6. The question of how the actual count Q(x) deviates from this asymptotic is intimately tied to some of the deepest problems in analytic number theory, including the Riemann Hypothesis. The problem has attracted work from Evelyn-Linfoot (1931), Walfisz (1963), and Liu (2016), but remains fundamentally open.",
-    "problemStatement": "Let Q(x) count the number of squarefree integers in [1, x]. Determine the order of magnitude of the error term E(x) in the asymptotic: Q(x) = (6/π²)x + E(x). Known bounds: x^(1/4) ≪ |E(x)| ≪ x^(1/2 - o(1)). Conjectured: E(x) ≍ x^(1/4).",
-    "text": "Determine the order of magnitude of the error term E(x) in the asymptotic Q(x) = (6/π²)x + E(x), where Q(x) counts squarefree integers up to x.",
-    "proofStrategy": "The formalization defines squarefree integers using Mathlib's Squarefree predicate, then constructs the counting function Q(x) and error term E(x). Key bounds are axiomatized: the elementary upper bound E(x) ≪ x^(1/2), Walfisz's improvement to x^(1/2 - o(1)}, and Evelyn-Linfoot's lower bound E(x) ≫ x^(1/4). The connection to the Riemann Hypothesis is formalized: proving E(x) ≪ x^(1/4+ε) would imply RH. Liu's conditional bound under RH is also stated.",
+    "historicalContext": "This problem concerns the distribution of squarefree integers, which are integers not divisible by any perfect square greater than 1. The density of squarefree integers converges to 6/\u03c0\u00b2 \u2248 0.6079, a beautiful fact connected to the Basel problem and \u03b6(2) = \u03c0\u00b2/6. The question of how the actual count Q(x) deviates from this asymptotic is intimately tied to some of the deepest problems in analytic number theory, including the Riemann Hypothesis. The problem has attracted work from Evelyn-Linfoot (1931), Walfisz (1963), and Liu (2016), but remains fundamentally open.",
+    "problemStatement": "Let Q(x) count the number of squarefree integers in [1, x]. Determine the order of magnitude of the error term E(x) in the asymptotic: Q(x) = (6/\u03c0\u00b2)x + E(x). Known bounds: x^(1/4) \u226a |E(x)| \u226a x^(1/2 - o(1)). Conjectured: E(x) \u224d x^(1/4).",
+    "text": "Determine the order of magnitude of the error term E(x) in the asymptotic Q(x) = (6/\u03c0\u00b2)x + E(x), where Q(x) counts squarefree integers up to x.",
+    "proofStrategy": "The formalization defines squarefree integers using Mathlib's Squarefree predicate, then constructs the counting function Q(x) and error term E(x). Key bounds are axiomatized: the elementary upper bound E(x) \u226a x^(1/2), Walfisz's improvement to x^(1/2 - o(1)}, and Evelyn-Linfoot's lower bound E(x) \u226b x^(1/4). The connection to the Riemann Hypothesis is formalized: proving E(x) \u226a x^(1/4+\u03b5) would imply RH. Liu's conditional bound under RH is also stated.",
     "keyInsights": [
-      "Squarefree density 6/π² = 1/ζ(2) connects to the Basel problem",
+      "Squarefree density 6/\u03c0\u00b2 = 1/\u03b6(2) connects to the Basel problem",
       "Lower bound x^(1/4) is believed to be the true order of magnitude",
-      "The Riemann Hypothesis would follow from proving E(x) ≪ x^(1/4)",
+      "The Riemann Hypothesis would follow from proving E(x) \u226a x^(1/4)",
       "Even under RH, the best known upper bound is only x^(11/35+o(1)}",
-      "The Möbius function provides the key counting formula via inclusion-exclusion"
+      "The M\u00f6bius function provides the key counting formula via inclusion-exclusion"
     ],
     "prerequisites": [
       "Combinatorics and number theory"
@@ -58,15 +58,15 @@
     },
     {
       "id": "asymptotic-density",
-      "title": "The Asymptotic Density 6/π²",
-      "summary": "The density of squarefree integers equals 1/ζ(2) = 6/π² ≈ 0.6079",
+      "title": "The Asymptotic Density 6/\u03c0\u00b2",
+      "summary": "The density of squarefree integers equals 1/\u03b6(2) = 6/\u03c0\u00b2 \u2248 0.6079",
       "startLine": 85,
       "endLine": 109
     },
     {
       "id": "error-term",
       "title": "The Error Term E(x)",
-      "summary": "Definition of E(x) = Q(x) - (6/π²)x, the central object of study",
+      "summary": "Definition of E(x) = Q(x) - (6/\u03c0\u00b2)x, the central object of study",
       "startLine": 111,
       "endLine": 124
     },
@@ -80,21 +80,21 @@
     {
       "id": "lower-bound",
       "title": "The Lower Bound",
-      "summary": "Evelyn-Linfoot (1931): E(x) ≫ x^(1/4), the conjectured true order",
+      "summary": "Evelyn-Linfoot (1931): E(x) \u226b x^(1/4), the conjectured true order",
       "startLine": 145,
       "endLine": 159
     },
     {
       "id": "riemann-connection",
       "title": "Connection to the Riemann Hypothesis",
-      "summary": "E(x) ≪ x^(1/4) implies RH; Liu's conditional bound under RH",
+      "summary": "E(x) \u226a x^(1/4) implies RH; Liu's conditional bound under RH",
       "startLine": 161,
       "endLine": 183
     },
     {
       "id": "mobius-function",
-      "title": "The Möbius Function Connection",
-      "summary": "Q(x) via Möbius inversion: Σ μ(d)⌊x/d²⌋",
+      "title": "The M\u00f6bius Function Connection",
+      "summary": "Q(x) via M\u00f6bius inversion: \u03a3 \u03bc(d)\u230ax/d\u00b2\u230b",
       "startLine": 185,
       "endLine": 205
     },
@@ -114,13 +114,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #969 asks for the true order of magnitude of E(x), the error term in the squarefree counting asymptotic. Despite substantial progress, we only know x^(1/4) ≪ |E(x)| ≪ x^(1/2 - o(1)}. The conjectured answer E(x) ≍ x^(1/4) remains unproven even under the Riemann Hypothesis.",
-    "implications": "**Theoretical Significance**: Resolution would have profound implications for analytic number theory.\n\nProving E(x) ≪ x^(1/4+ε) for all ε > 0 would establish the Riemann Hypothesis. The problem exemplifies how questions about integer counting connect to the deepest structures in complex analysis.",
+    "summary": "Erd\u0151s Problem #969 asks for the true order of magnitude of E(x), the error term in the squarefree counting asymptotic. Despite substantial progress, we only know x^(1/4) \u226a |E(x)| \u226a x^(1/2 - o(1)}. The conjectured answer E(x) \u224d x^(1/4) remains unproven even under the Riemann Hypothesis.",
+    "implications": "**Theoretical Significance**: Resolution would have profound implications for analytic number theory.\n\nProving E(x) \u226a x^(1/4+\u03b5) for all \u03b5 > 0 would establish the Riemann Hypothesis. The problem exemplifies how questions about integer counting connect to the deepest structures in complex analysis.",
     "openQuestions": [
-      "Is E(x) ≍ x^(1/4)?",
+      "Is E(x) \u224d x^(1/4)?",
       "Can the upper bound be improved unconditionally below x^(1/2 - c) for a fixed c?",
       "What is the optimal exponent under the Riemann Hypothesis?",
-      "Can zero-density estimates for ζ(s) give better E(x) bounds?"
+      "Can zero-density estimates for \u03b6(s) give better E(x) bounds?"
     ]
   },
   "leanFile": {
@@ -144,5 +144,21 @@
     "axiomCount": 9,
     "theoremCount": 11,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1102",
+      "relationship": "related",
+      "description": "Share squarefree and analytic-number-theory themes"
+    },
+    {
+      "targetId": "erdos-233",
+      "relationship": "related",
+      "description": "Share riemann-hypothesis and analytic-number-theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1102",
+    "erdos-233"
+  ]
 }

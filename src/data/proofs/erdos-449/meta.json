@@ -2,7 +2,7 @@
   "id": "erdos-449",
   "title": "Close Divisor Pairs",
   "slug": "erdos-449",
-  "description": "Erdős Problem #449 asks whether 'close' divisor pairs (d₁, d₂) with d₁ < d₂ < 2d₁ are rare compared to total divisors. Specifically: is r(n) < ε·τ(n) for almost all n? The answer is NO - for any K > 0, a positive density set has r(n) > K·τ(n).",
+  "description": "Erd\u0151s Problem #449 asks whether 'close' divisor pairs (d\u2081, d\u2082) with d\u2081 < d\u2082 < 2d\u2081 are rare compared to total divisors. Specifically: is r(n) < \u03b5\u00b7\u03c4(n) for almost all n? The answer is NO - for any K > 0, a positive density set has r(n) > K\u00b7\u03c4(n).",
   "meta": {
     "author": "Kevin Ford (observation)",
     "sourceUrl": "https://erdosproblems.com/449",
@@ -51,8 +51,8 @@
     ],
     "originalContributions": [
       "Lean formalization of close divisor pair counting function r(n)",
-      "Formal statement of the (false) Erdős conjecture using natural density",
-      "Key inequality from Cauchy-Schwarz: r(n) + τ(n) ≥ τ(n)²/τ⁺(n)",
+      "Formal statement of the (false) Erd\u0151s conjecture using natural density",
+      "Key inequality from Cauchy-Schwarz: r(n) + \u03c4(n) \u2265 \u03c4(n)\u00b2/\u03c4\u207a(n)",
       "Connection to Problem 448 formalized",
       "Concrete example calculations (n=12)"
     ],
@@ -62,17 +62,17 @@
     "assumptions": "6 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Close Divisor Pairs and Divisor Clustering**\n\nErdős Problem 449 belongs to the study of divisor statistics — how divisors of a 'typical' integer are distributed.  The problem asks whether divisors that are 'close' (within a multiplicative factor of 2) are rare compared to the total divisor count.\n\n**The Intuition Behind the Conjecture**\n\nErdős's intuition was based on the fact that for a 'generic' integer $n$, the $\\tau(n)$ divisors of $n$ are roughly uniformly distributed on a logarithmic scale from $1$ to $n$.  If divisors are spread over $\\sim \\log n$ dyadic intervals $[2^k, 2^{k+1})$ and $\\tau(n) \\sim (\\log n)^{\\log 2}$ (the typical order), most bins contain $O(1)$ divisors, making close pairs rare.  This reasoning is correct for 'most' integers but fails for a positive-density exceptional set.\n\n**Kevin Ford's Disproof**\n\nKevin Ford observed that the conjecture follows from, and is therefore disproved by, the negative answer to Problem 448.  Problem 448 asks whether $\\tau^+(n)/\\tau(n) \\to 1/2$ for almost all $n$, where $\\tau^+(n)$ counts divisors $d \\leq \\sqrt{n}$.  The answer is no: for any $C > 0$, a positive-density set of integers has $\\tau(n)/\\tau^+(n) > C$ — meaning almost all divisors exceed $\\sqrt{n}$.  Ford's key insight is the Cauchy-Schwarz inequality $r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$, which transforms the imbalance $\\tau/\\tau^+ \\gg 1$ into the bound $r(n) \\gg \\tau(n)$.\n\n**The Mechanism**\n\nWhen $\\tau(n)/\\tau^+(n)$ is large, most divisors of $n$ are concentrated in the range $(\\sqrt{n}, n]$.  These 'large' divisors must cluster in a narrow logarithmic range (the interval $(\\sqrt{n}, n]$ has logarithmic width $\\frac{1}{2}\\log n$, accommodating at most $\\frac{1}{2}\\log n / \\log 2$ dyadic bins).  By pigeonhole, many divisors share the same bin, creating abundant close pairs.  The Cauchy-Schwarz bound quantifies this pigeonhole argument.\n\n**Hall and Tenenbaum**\n\nThe theory of divisor distribution was extensively developed by Hall and Tenenbaum in their monograph *Divisors* (Cambridge, 1988).  Section 4.6 discusses the distribution of ratios $d_2/d_1$ among consecutive divisors, providing the framework in which Ford's observation operates.  The Erdős-Kac theorem (1940) shows that $\\log \\tau(n)$ is approximately normally distributed with mean $\\log 2 \\cdot \\log \\log n$, but the distribution of divisors *within* the divisor set requires finer tools.",
-    "problemStatement": "**Conjecture (Erdős, FALSE):** For every $\\varepsilon > 0$, $r(n) < \\varepsilon \\cdot \\tau(n)$ for almost all $n$.\n\n**Disproof (Ford):** For any $K > 0$, there exists $\\delta > 0$ such that $r(n) > K \\cdot \\tau(n)$ for a set of integers of lower density $\\geq \\delta$.\n\nHere $r(n) = |\\{(d_1, d_2) : d_1 \\mid n, d_2 \\mid n, d_1 < d_2 < 2d_1\\}|$ and $\\tau(n) = |\\{d : d \\mid n\\}|$.",
-    "text": "Erdős Problem #449 asks whether 'close' divisor pairs (d₁, d₂) with d₁ < d₂ < 2d₁ are rare compared to total divisors. Specifically: is r(n) < ε·τ(n) for almost all n? The answer is NO - for any K > 0, a positive density set has r(n) > K·τ(n).",
-    "proofStrategy": "**Formalization Strategy**\n\nThe formalization captures the conjecture, its disproof, and the key mechanism in seven parts:\n\n1. **Definitions (lines 48–72):** Define `tau n` = n.divisors.card, `closeDivisorPairs n` (filtered Cartesian product of divisors), `r n` = (closeDivisorPairs n).card, and `tauPlus n` (divisors $d$ with $d^2 \\leq n$).\n\n2. **Conjecture (lines 76–88):** State `ErdosConjecture449` using `Filter.Tendsto` with `Filter.atTop` and `nhds 0` for the natural density limit.\n\n3. **Disproof (lines 92–106):** Axiomatize `erdos_449_disproof` (for any $K$, positive density has $r > K\\tau$) and `erdos_449_false` ($\\neg$ErdosConjecture449).\n\n4. **Cauchy-Schwarz (lines 110–117):** Axiomatize the key inequality $r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$ as `cauchy_schwarz_divisors`.\n\n5. **Problem 448 Connection (lines 119–129):** Axiomatize `problem_448_consequence` — the imbalance $\\tau(n)^2/\\tau^+(n) \\geq (K+1)\\tau(n)$ holds on positive density.\n\n6. **Example (lines 133–142):** Concrete verification $\\tau(12) = 6$, $r(12) = 5$.\n\n7. **Summary (lines 162–174):** Theorem `erdos_449_summary` packaging the false conjecture and quantitative disproof, proved by pairing the two axioms.",
+    "historicalContext": "**Close Divisor Pairs and Divisor Clustering**\n\nErd\u0151s Problem 449 belongs to the study of divisor statistics \u2014 how divisors of a 'typical' integer are distributed.  The problem asks whether divisors that are 'close' (within a multiplicative factor of 2) are rare compared to the total divisor count.\n\n**The Intuition Behind the Conjecture**\n\nErd\u0151s's intuition was based on the fact that for a 'generic' integer $n$, the $\\tau(n)$ divisors of $n$ are roughly uniformly distributed on a logarithmic scale from $1$ to $n$.  If divisors are spread over $\\sim \\log n$ dyadic intervals $[2^k, 2^{k+1})$ and $\\tau(n) \\sim (\\log n)^{\\log 2}$ (the typical order), most bins contain $O(1)$ divisors, making close pairs rare.  This reasoning is correct for 'most' integers but fails for a positive-density exceptional set.\n\n**Kevin Ford's Disproof**\n\nKevin Ford observed that the conjecture follows from, and is therefore disproved by, the negative answer to Problem 448.  Problem 448 asks whether $\\tau^+(n)/\\tau(n) \\to 1/2$ for almost all $n$, where $\\tau^+(n)$ counts divisors $d \\leq \\sqrt{n}$.  The answer is no: for any $C > 0$, a positive-density set of integers has $\\tau(n)/\\tau^+(n) > C$ \u2014 meaning almost all divisors exceed $\\sqrt{n}$.  Ford's key insight is the Cauchy-Schwarz inequality $r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$, which transforms the imbalance $\\tau/\\tau^+ \\gg 1$ into the bound $r(n) \\gg \\tau(n)$.\n\n**The Mechanism**\n\nWhen $\\tau(n)/\\tau^+(n)$ is large, most divisors of $n$ are concentrated in the range $(\\sqrt{n}, n]$.  These 'large' divisors must cluster in a narrow logarithmic range (the interval $(\\sqrt{n}, n]$ has logarithmic width $\\frac{1}{2}\\log n$, accommodating at most $\\frac{1}{2}\\log n / \\log 2$ dyadic bins).  By pigeonhole, many divisors share the same bin, creating abundant close pairs.  The Cauchy-Schwarz bound quantifies this pigeonhole argument.\n\n**Hall and Tenenbaum**\n\nThe theory of divisor distribution was extensively developed by Hall and Tenenbaum in their monograph *Divisors* (Cambridge, 1988).  Section 4.6 discusses the distribution of ratios $d_2/d_1$ among consecutive divisors, providing the framework in which Ford's observation operates.  The Erd\u0151s-Kac theorem (1940) shows that $\\log \\tau(n)$ is approximately normally distributed with mean $\\log 2 \\cdot \\log \\log n$, but the distribution of divisors *within* the divisor set requires finer tools.",
+    "problemStatement": "**Conjecture (Erd\u0151s, FALSE):** For every $\\varepsilon > 0$, $r(n) < \\varepsilon \\cdot \\tau(n)$ for almost all $n$.\n\n**Disproof (Ford):** For any $K > 0$, there exists $\\delta > 0$ such that $r(n) > K \\cdot \\tau(n)$ for a set of integers of lower density $\\geq \\delta$.\n\nHere $r(n) = |\\{(d_1, d_2) : d_1 \\mid n, d_2 \\mid n, d_1 < d_2 < 2d_1\\}|$ and $\\tau(n) = |\\{d : d \\mid n\\}|$.",
+    "text": "Erd\u0151s Problem #449 asks whether 'close' divisor pairs (d\u2081, d\u2082) with d\u2081 < d\u2082 < 2d\u2081 are rare compared to total divisors. Specifically: is r(n) < \u03b5\u00b7\u03c4(n) for almost all n? The answer is NO - for any K > 0, a positive density set has r(n) > K\u00b7\u03c4(n).",
+    "proofStrategy": "**Formalization Strategy**\n\nThe formalization captures the conjecture, its disproof, and the key mechanism in seven parts:\n\n1. **Definitions (lines 48\u201372):** Define `tau n` = n.divisors.card, `closeDivisorPairs n` (filtered Cartesian product of divisors), `r n` = (closeDivisorPairs n).card, and `tauPlus n` (divisors $d$ with $d^2 \\leq n$).\n\n2. **Conjecture (lines 76\u201388):** State `ErdosConjecture449` using `Filter.Tendsto` with `Filter.atTop` and `nhds 0` for the natural density limit.\n\n3. **Disproof (lines 92\u2013106):** Axiomatize `erdos_449_disproof` (for any $K$, positive density has $r > K\\tau$) and `erdos_449_false` ($\\neg$ErdosConjecture449).\n\n4. **Cauchy-Schwarz (lines 110\u2013117):** Axiomatize the key inequality $r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$ as `cauchy_schwarz_divisors`.\n\n5. **Problem 448 Connection (lines 119\u2013129):** Axiomatize `problem_448_consequence` \u2014 the imbalance $\\tau(n)^2/\\tau^+(n) \\geq (K+1)\\tau(n)$ holds on positive density.\n\n6. **Example (lines 133\u2013142):** Concrete verification $\\tau(12) = 6$, $r(12) = 5$.\n\n7. **Summary (lines 162\u2013174):** Theorem `erdos_449_summary` packaging the false conjecture and quantitative disproof, proved by pairing the two axioms.",
     "keyInsights": [
-      "**Close Pairs Dominate, Not Vanish:** Contrary to Erdős's expectation, close divisor pairs can *exceed* any fixed multiple of $\\tau(n)$ on a positive-density set.  The ratio $r(n)/\\tau(n)$ is unbounded on positive density.",
+      "**Close Pairs Dominate, Not Vanish:** Contrary to Erd\u0151s's expectation, close divisor pairs can *exceed* any fixed multiple of $\\tau(n)$ on a positive-density set.  The ratio $r(n)/\\tau(n)$ is unbounded on positive density.",
       "**Cauchy-Schwarz as the Bridge:** The inequality $r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$ converts a statement about divisor imbalance ($\\tau/\\tau^+ \\gg 1$) into a statement about close pairs ($r \\gg \\tau$).  This is a dyadic pigeonhole argument quantified by Cauchy-Schwarz.",
-      "**Reduction to Problem 448:** Ford's observation is an elegant *problem reduction*: Problem 449 is logically weaker than Problem 448.  Disproving 448 automatically disproves 449.  This reveals the dependency structure among Erdős's problems on divisor statistics.",
+      "**Reduction to Problem 448:** Ford's observation is an elegant *problem reduction*: Problem 449 is logically weaker than Problem 448.  Disproving 448 automatically disproves 449.  This reveals the dependency structure among Erd\u0151s's problems on divisor statistics.",
       "**Divisor Clustering Mechanism:** When $\\tau^+(n) \\ll \\tau(n)$, most divisors of $n$ lie above $\\sqrt{n}$.  These large divisors are compressed into a narrower logarithmic range, forcing them into the same dyadic bins and creating abundant close pairs.",
       "**Typical vs Exceptional:** The conjecture is true for 'generic' integers (whose divisors spread across many dyadic bins) but fails on an exceptional set of positive density.  This illustrates a recurring theme in multiplicative number theory: 'typical' behavior does not capture the full picture.",
-      "**Zero Sorries:** The formalization has 0 sorries — all substantive results (Cauchy-Schwarz bound, Problem 448 consequence, disproof) are axiomatized, and the summary theorem is formally proved from these axioms."
+      "**Zero Sorries:** The formalization has 0 sorries \u2014 all substantive results (Cauchy-Schwarz bound, Problem 448 consequence, disproof) are axiomatized, and the summary theorem is formally proved from these axioms."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -91,11 +91,11 @@
     },
     {
       "id": "conjecture",
-      "title": "The (False) Erdős Conjecture",
+      "title": "The (False) Erd\u0151s Conjecture",
       "startLine": 74,
       "endLine": 88,
       "summary": "States `ErdosConjecture449` using `Filter.Tendsto` with `Filter.atTop` and `nhds 0`: for every $\\varepsilon > 0$, the natural density of $\\{n : r(n) \\geq \\varepsilon \\cdot \\tau(n)\\}$ is $0$.  Uses set-builder notation with real-valued coercions.",
-      "mathContext": "$\\forall \\varepsilon > 0: \\lim_{N \\to \\infty} \\frac{|\\{n \\le N : r(n) \\ge \\varepsilon \\cdot \\tau(n)\\}|}{N} = 0$. Erdős conjectured close divisor pairs are negligible for almost all $n$."
+      "mathContext": "$\\forall \\varepsilon > 0: \\lim_{N \\to \\infty} \\frac{|\\{n \\le N : r(n) \\ge \\varepsilon \\cdot \\tau(n)\\}|}{N} = 0$. Erd\u0151s conjectured close divisor pairs are negligible for almost all $n$."
     },
     {
       "id": "disproof",
@@ -134,19 +134,19 @@
       "title": "Summary",
       "startLine": 160,
       "endLine": 176,
-      "summary": "The theorem `erdos_449_summary` packages both results: $\\neg$ErdosConjecture449 and the quantitative bound.  Proved by `exact ⟨erdos_449_false, erdos_449_disproof⟩` — the only non-axiom result in the file, with 0 sorries.",
+      "summary": "The theorem `erdos_449_summary` packages both results: $\\neg$ErdosConjecture449 and the quantitative bound.  Proved by `exact \u27e8erdos_449_false, erdos_449_disproof\u27e9` \u2014 the only non-axiom result in the file, with 0 sorries.",
       "mathContext": "$\\neg\\text{ErdosConjecture449} \\wedge \\forall K > 0,\\, \\exists \\delta > 0: \\{n : r(n) > K \\cdot \\tau(n)\\}$ has lower density $\\ge \\delta$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #449 is DISPROVED.  The conjecture that close divisor pairs ($d_1 < d_2 < 2d_1$) are negligible for almost all $n$ is false.  Kevin Ford showed that for any $K > 0$, a positive-density set of $n$ has $r(n) > K \\cdot \\tau(n)$, using the Cauchy-Schwarz inequality $r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$ together with Problem 448's result that $\\tau^+(n)$ can be much smaller than $\\tau(n)$.",
-    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Divisor Clustering:** Close divisor pairs are fundamentally common, not rare.  This overturns the intuition that divisors of a 'typical' integer are well-separated on a logarithmic scale.\n\n2. **Problem 448 Dependency:** The disproof reveals that Problem 449 is logically subordinate to Problem 448 — the latter's negative answer immediately implies the former's.  This dependency structure illuminates the landscape of Erdős's divisor problems.\n\n**3. Multiplicative Function Theory:** The result has implications for understanding the fine structure of the divisor lattice.  When divisors cluster above $\\sqrt{n}$, the lattice of divisors has a 'top-heavy' structure with many close neighbors.\n\n4. **Smooth Number Connection:** Numbers with $\\tau^+(n) \\ll \\tau(n)$ are related to numbers whose prime factorization concentrates large primes.  This connects to the theory of smooth numbers and the Dickman function.\n\n5. **Hall-Tenenbaum Framework:** The result fits into the program of Hall and Tenenbaum (*Divisors*, 1988) studying the distribution of divisors on a logarithmic scale, specifically the clustering behavior measured by the 'anatomy of integers'.",
+    "summary": "Erd\u0151s Problem #449 is DISPROVED.  The conjecture that close divisor pairs ($d_1 < d_2 < 2d_1$) are negligible for almost all $n$ is false.  Kevin Ford showed that for any $K > 0$, a positive-density set of $n$ has $r(n) > K \\cdot \\tau(n)$, using the Cauchy-Schwarz inequality $r(n) + \\tau(n) \\geq \\tau(n)^2/\\tau^+(n)$ together with Problem 448's result that $\\tau^+(n)$ can be much smaller than $\\tau(n)$.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Divisor Clustering:** Close divisor pairs are fundamentally common, not rare.  This overturns the intuition that divisors of a 'typical' integer are well-separated on a logarithmic scale.\n\n2. **Problem 448 Dependency:** The disproof reveals that Problem 449 is logically subordinate to Problem 448 \u2014 the latter's negative answer immediately implies the former's.  This dependency structure illuminates the landscape of Erd\u0151s's divisor problems.\n\n**3. Multiplicative Function Theory:** The result has implications for understanding the fine structure of the divisor lattice.  When divisors cluster above $\\sqrt{n}$, the lattice of divisors has a 'top-heavy' structure with many close neighbors.\n\n4. **Smooth Number Connection:** Numbers with $\\tau^+(n) \\ll \\tau(n)$ are related to numbers whose prime factorization concentrates large primes.  This connects to the theory of smooth numbers and the Dickman function.\n\n5. **Hall-Tenenbaum Framework:** The result fits into the program of Hall and Tenenbaum (*Divisors*, 1988) studying the distribution of divisors on a logarithmic scale, specifically the clustering behavior measured by the 'anatomy of integers'.",
     "openQuestions": [
-      "What is the exact lower density of {n : r(n) > K·τ(n)} as a function of K?",
-      "How does r(n)/τ(n) behave for highly composite numbers (those maximizing τ(n))?",
-      "Can the Cauchy-Schwarz bound r(n) + τ(n) ≥ τ(n)²/τ⁺(n) be improved?",
-      "What is the distribution of r(n)/τ(n) on a logarithmic scale?",
-      "Is there a Turán-Kubilius type inequality for r(n)?"
+      "What is the exact lower density of {n : r(n) > K\u00b7\u03c4(n)} as a function of K?",
+      "How does r(n)/\u03c4(n) behave for highly composite numbers (those maximizing \u03c4(n))?",
+      "Can the Cauchy-Schwarz bound r(n) + \u03c4(n) \u2265 \u03c4(n)\u00b2/\u03c4\u207a(n) be improved?",
+      "What is the distribution of r(n)/\u03c4(n) on a logarithmic scale?",
+      "Is there a Tur\u00e1n-Kubilius type inequality for r(n)?"
     ]
   },
   "leanFile": {
@@ -167,5 +167,39 @@
     "axiomCount": 6,
     "theoremCount": 1,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-144",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-450",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-693",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-697",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-144",
+    "erdos-450",
+    "erdos-693",
+    "erdos-697"
+  ]
 }

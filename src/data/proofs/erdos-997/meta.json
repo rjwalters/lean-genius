@@ -1,8 +1,8 @@
 {
   "id": "erdos-997",
-  "title": "Erdős Problem #997: Well-Distributed Sequences and Primes",
+  "title": "Erd\u0151s Problem #997: Well-Distributed Sequences and Primes",
   "slug": "erdos-997",
-  "description": "Is it true that for every α, the sequence {αpₙ} of fractional parts of prime multiples is not well-distributed? The 2024 result by Champagne-Le-Liu-Wooley shows this holds for at least one irrational α.",
+  "description": "Is it true that for every \u03b1, the sequence {\u03b1p\u2099} of fractional parts of prime multiples is not well-distributed? The 2024 result by Champagne-Le-Liu-Wooley shows this holds for at least one irrational \u03b1.",
   "meta": {
     "author": "Champagne, Le, Liu, Wooley (2024 partial result)",
     "sourceUrl": "https://erdosproblems.com/997",
@@ -65,7 +65,7 @@
       "countInInterval: counting function for distribution",
       "WellDistributed predicate: Hlawka-Petersen notion",
       "primeSequence: nth prime function",
-      "primeMultipleSequence: {αpₙ} sequence",
+      "primeMultipleSequence: {\u03b1p\u2099} sequence",
       "Lacunary predicate: lacunary sequences",
       "erdos_lacunary_theorem: lacunary non-well-distribution",
       "CLLW_theorem: 2024 existence result",
@@ -79,16 +79,16 @@
     "assumptions": "11 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #997: Well-Distributed Sequences and Prime Multiples**\n\nThe concept of well-distributed sequences was introduced by Hlawka and Petersen in 1955, strengthening the classical notion of equidistribution. A sequence is well-distributed if it becomes uniformly distributed at a rate that is uniform over all starting points.\n\n**Erdős's Work:**\n- Erdős proved that for any lacunary sequence (nₖ), the sequence {αnₖ} is not well-distributed for almost all α\n- In 1964, he claimed to have proved existence of an irrational α for which {αpₙ} is not well-distributed\n- He retracted this claim in 1985, memorably writing \"The theorem is no doubt correct... but I never was able to reconstruct my 'proof' which perhaps never existed\"\n\n**2024 Breakthrough:**\nChampagne, Le, Liu, and Wooley proved that such an α does exist, validating Erdős's intuition after 60 years.\n\n**Current Status:**\nThe existence question is resolved, but Erdős's full problem—whether this holds for ALL α—remains open.",
+    "historicalContext": "**Erd\u0151s Problem #997: Well-Distributed Sequences and Prime Multiples**\n\nThe concept of well-distributed sequences was introduced by Hlawka and Petersen in 1955, strengthening the classical notion of equidistribution. A sequence is well-distributed if it becomes uniformly distributed at a rate that is uniform over all starting points.\n\n**Erd\u0151s's Work:**\n- Erd\u0151s proved that for any lacunary sequence (n\u2096), the sequence {\u03b1n\u2096} is not well-distributed for almost all \u03b1\n- In 1964, he claimed to have proved existence of an irrational \u03b1 for which {\u03b1p\u2099} is not well-distributed\n- He retracted this claim in 1985, memorably writing \"The theorem is no doubt correct... but I never was able to reconstruct my 'proof' which perhaps never existed\"\n\n**2024 Breakthrough:**\nChampagne, Le, Liu, and Wooley proved that such an \u03b1 does exist, validating Erd\u0151s's intuition after 60 years.\n\n**Current Status:**\nThe existence question is resolved, but Erd\u0151s's full problem\u2014whether this holds for ALL \u03b1\u2014remains open.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nCall a sequence $x_1, x_2, \\ldots \\in (0,1)$ **well-distributed** if for every $\\epsilon > 0$, when $k$ is sufficiently large:\n$$|\\#\\{n < m \\leq n+k : x_m \\in I\\} - |I| \\cdot k| < \\epsilon k$$\nfor all $n > 0$ and all intervals $I \\subseteq [0,1]$.\n\n**Question:** Is it true that for every $\\alpha$, the sequence $\\{\\alpha p_n\\}$ (fractional parts of $\\alpha$ times primes) is **not** well-distributed?\n\n**Known Results:**\n- Existence: YES, there exists such an $\\alpha$ (CLLW, 2024)\n- Universality: OPEN (does it hold for all $\\alpha$?)\n\n**Key Distinction:**\n- Well-distribution is strictly stronger than equidistribution\n- Vinogradov showed $\\{\\alpha p_n\\}$ IS equidistributed for irrational $\\alpha$\n- But equidistribution does not imply well-distribution",
-    "text": "Is it true that for every α, the sequence {αpₙ} of fractional parts of prime multiples is not well-distributed? The 2024 result by Champagne-Le-Liu-Wooley shows this holds for at least one irrational α.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Fractional Parts:** Define frac(x) = x - ⌊x⌋ and prove it lies in [0,1)\n\n2. **Well-Distribution:** Define the precise ε-k-n-I condition from Hlawka-Petersen\n\n3. **Prime Sequence:** Use Nat.nth to define the sequence of primes\n\n4. **Prime Multiples:** Define primeMultipleSequence(α) = n ↦ frac(α · pₙ)\n\n5. **Lacunary Sequences:** Define lacunary property and state Erdős's theorem for them\n\n6. **CLLW Theorem:** Axiomatize the 2024 existence result\n\n7. **Conjecture:** State Erdos997Conjecture as ∀α, ¬WellDistributed(primeMultipleSequence α)\n\n8. **Discrepancy:** Connect well-distribution to the discrepancy function",
+    "text": "Is it true that for every \u03b1, the sequence {\u03b1p\u2099} of fractional parts of prime multiples is not well-distributed? The 2024 result by Champagne-Le-Liu-Wooley shows this holds for at least one irrational \u03b1.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Fractional Parts:** Define frac(x) = x - \u230ax\u230b and prove it lies in [0,1)\n\n2. **Well-Distribution:** Define the precise \u03b5-k-n-I condition from Hlawka-Petersen\n\n3. **Prime Sequence:** Use Nat.nth to define the sequence of primes\n\n4. **Prime Multiples:** Define primeMultipleSequence(\u03b1) = n \u21a6 frac(\u03b1 \u00b7 p\u2099)\n\n5. **Lacunary Sequences:** Define lacunary property and state Erd\u0151s's theorem for them\n\n6. **CLLW Theorem:** Axiomatize the 2024 existence result\n\n7. **Conjecture:** State Erdos997Conjecture as \u2200\u03b1, \u00acWellDistributed(primeMultipleSequence \u03b1)\n\n8. **Discrepancy:** Connect well-distribution to the discrepancy function",
     "keyInsights": [
       "**Well vs Equidistribution:** Well-distribution requires uniform distribution to hold starting from any position n, not just from the beginning. This is strictly stronger.",
-      "**Primes Are Not Lacunary:** The ratio pₙ₊₁/pₙ → 1 by the prime number theorem, so primes don't satisfy the lacunary condition (ratio bounded away from 1).",
-      "**Erdős's Retraction:** Erdős's honesty in retracting his 1964 claim is notable—he admitted the proof 'perhaps never existed.'",
-      "**60 Years Later:** The CLLW 2024 paper resolved the existence question that Erdős had attempted, vindicating his intuition.",
-      "**Diophantine Connection:** The problem connects to how well α can be approximated by rationals with prime denominators."
+      "**Primes Are Not Lacunary:** The ratio p\u2099\u208a\u2081/p\u2099 \u2192 1 by the prime number theorem, so primes don't satisfy the lacunary condition (ratio bounded away from 1).",
+      "**Erd\u0151s's Retraction:** Erd\u0151s's honesty in retracting his 1964 claim is notable\u2014he admitted the proof 'perhaps never existed.'",
+      "**60 Years Later:** The CLLW 2024 paper resolved the existence question that Erd\u0151s had attempted, vindicating his intuition.",
+      "**Diophantine Connection:** The problem connects to how well \u03b1 can be approximated by rationals with prime denominators."
     ],
     "prerequisites": [
       "Equidistribution and well-distribution mod 1",
@@ -123,7 +123,7 @@
     {
       "id": "lacunary",
       "title": "Lacunary Sequences",
-      "summary": "Lacunary definition, Erdős's theorem for lacunary sequences",
+      "summary": "Lacunary definition, Erd\u0151s's theorem for lacunary sequences",
       "startLine": 144,
       "endLine": 177
     },
@@ -157,11 +157,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #997 asks whether the sequence {αpₙ} of fractional parts of prime multiples is non-well-distributed for ALL α. The 2024 result by Champagne-Le-Liu-Wooley shows existence of such an α, validating Erdős's retracted 1964 claim. The universal statement remains open.",
-    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Discrepancy Theory:** Well-distribution is equivalent to uniform discrepancy bounds across all starting points\n\n2. **Diophantine Approximation:** Connected to approximation of α by rationals with prime denominators\n\n**3. Prime Distribution:** The irregularity of prime gaps may force non-well-distribution regardless of α\n\n4. **Metric Number Theory:** The behavior for 'generic' α vs all α may differ\n\n5. **Equidistribution Theory:** Shows the gap between equidistribution and stronger uniformity conditions.",
+    "summary": "Erd\u0151s Problem #997 asks whether the sequence {\u03b1p\u2099} of fractional parts of prime multiples is non-well-distributed for ALL \u03b1. The 2024 result by Champagne-Le-Liu-Wooley shows existence of such an \u03b1, validating Erd\u0151s's retracted 1964 claim. The universal statement remains open.",
+    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Discrepancy Theory:** Well-distribution is equivalent to uniform discrepancy bounds across all starting points\n\n2. **Diophantine Approximation:** Connected to approximation of \u03b1 by rationals with prime denominators\n\n**3. Prime Distribution:** The irregularity of prime gaps may force non-well-distribution regardless of \u03b1\n\n4. **Metric Number Theory:** The behavior for 'generic' \u03b1 vs all \u03b1 may differ\n\n5. **Equidistribution Theory:** Shows the gap between equidistribution and stronger uniformity conditions.",
     "openQuestions": [
-      "Does the conjecture hold for all irrational α?",
-      "What is the Lebesgue measure of the set of α for which {αpₙ} is well-distributed?",
+      "Does the conjecture hold for all irrational \u03b1?",
+      "What is the Lebesgue measure of the set of \u03b1 for which {\u03b1p\u2099} is well-distributed?",
       "Can the CLLW construction be generalized to prove the universal statement?",
       "Is there a connection to the distribution of prime gaps?",
       "What about other subsequences of primes (e.g., primes in arithmetic progressions)?"
@@ -185,5 +185,39 @@
     "axiomCount": 11,
     "theoremCount": 5,
     "definitionCount": 11
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-998",
+      "relationship": "related",
+      "description": "Share equidistribution, discrepancy, and diophantine-approximation themes"
+    },
+    {
+      "targetId": "erdos-990",
+      "relationship": "related",
+      "description": "Share equidistribution, discrepancy, and analytic themes"
+    },
+    {
+      "targetId": "erdos-994",
+      "relationship": "related",
+      "description": "Share equidistribution, discrepancy, and analytic themes"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Share prime number, number-theoretic, and analytic themes"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Share prime number, number-theoretic, and analytic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-998",
+    "erdos-990",
+    "erdos-994",
+    "prime-number-theorem",
+    "prime-reciprocal-divergence"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-144",
-  "title": "Erdős Problem #144: Propinquity of Divisors",
+  "title": "Erd\u0151s Problem #144: Propinquity of Divisors",
   "slug": "erdos-144",
-  "description": "The density of integers with two divisors d₁ < d₂ < 2d₁ equals 1. SOLVED by Maier-Tenenbaum (1984). The threshold β* = log 3 - 1 separates density 1 from density 0.",
+  "description": "The density of integers with two divisors d\u2081 < d\u2082 < 2d\u2081 equals 1. SOLVED by Maier-Tenenbaum (1984). The threshold \u03b2* = log 3 - 1 separates density 1 from density 0.",
   "meta": {
-    "author": "Maier-Tenenbaum (1984), Erdős-Hall (1979)",
+    "author": "Maier-Tenenbaum (1984), Erd\u0151s-Hall (1979)",
     "sourceUrl": "https://erdosproblems.com/144",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos144Problem.lean",
@@ -41,14 +41,14 @@
       }
     ],
     "originalContributions": [
-      "naturalDensity definition via ε-N formulation",
+      "naturalDensity definition via \u03b5-N formulation",
       "hasCloseDivisors and hasCloseDivisorsC predicates",
       "erdos_144_conjecture and erdos_144_strong_conjecture statements",
       "maier_tenenbaum_theorem and maier_tenenbaum_strong axioms",
-      "criticalExponent: β* = log 3 - 1",
-      "hasRefinedCloseDivisors with (log n)^{-β} decay",
-      "erdos_hall_theorem: density 0 for β > β*",
-      "maier_tenenbaum_refined: density 1 for β < β*",
+      "criticalExponent: \u03b2* = log 3 - 1",
+      "hasRefinedCloseDivisors with (log n)^{-\u03b2} decay",
+      "erdos_hall_theorem: density 0 for \u03b2 > \u03b2*",
+      "maier_tenenbaum_refined: density 1 for \u03b2 < \u03b2*",
       "phase_transition theorem combining both results",
       "prime_powers_fail axiom",
       "Concrete examples: hasCloseDivisors 6, 12 (norm_num)",
@@ -59,16 +59,16 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1979, asking whether almost all integers have two divisors within a factor of 2 of each other. He initially claimed a proof in 1964 [Er64h], but retracted it in 1979 when an error was found. Together with Hall, Erdős proved the complementary result: for β > log 3 - 1, the density of integers with (β)-close divisors is 0.\n\nMaier and Tenenbaum completed the picture in 1984 [MaTe84], proving that the density of integers with close divisors (d₁ < d₂ < 2d₁) is indeed 1. They also proved the strong version: for any constant c > 1, the density of c-close divisors equals 1. This vindicated Erdős's original conjecture despite the flawed proof.\n\nThe refined version reveals a sharp phase transition at the critical exponent β* = log 3 - 1 ≈ 0.0986. For β < β*, density equals 1; for β > β*, density equals 0. Tenenbaum reportedly received $650 for the solution, exceeding the advertised $250 prize, likely because both the basic and strong versions were resolved.",
+    "historicalContext": "Erd\u0151s posed this problem in 1979, asking whether almost all integers have two divisors within a factor of 2 of each other. He initially claimed a proof in 1964 [Er64h], but retracted it in 1979 when an error was found. Together with Hall, Erd\u0151s proved the complementary result: for \u03b2 > log 3 - 1, the density of integers with (\u03b2)-close divisors is 0.\n\nMaier and Tenenbaum completed the picture in 1984 [MaTe84], proving that the density of integers with close divisors (d\u2081 < d\u2082 < 2d\u2081) is indeed 1. They also proved the strong version: for any constant c > 1, the density of c-close divisors equals 1. This vindicated Erd\u0151s's original conjecture despite the flawed proof.\n\nThe refined version reveals a sharp phase transition at the critical exponent \u03b2* = log 3 - 1 \u2248 0.0986. For \u03b2 < \u03b2*, density equals 1; for \u03b2 > \u03b2*, density equals 0. Tenenbaum reportedly received $650 for the solution, exceeding the advertised $250 prize, likely because both the basic and strong versions were resolved.",
     "problemStatement": "**Problem Statement (Solved)**\n\nDoes the density of integers $n$ having two divisors $d_1 < d_2 < 2d_1$ exist and equal 1?\n\n**Answer: YES** (Maier-Tenenbaum 1984)\n\nStronger: For any $c > 1$, the density of integers with $d_1 < d_2 < c \\cdot d_1$ also equals 1.\n\nRefined: The critical threshold is $\\beta^* = \\log 3 - 1$. For $d_2 < d_1(1 + (\\log n)^{-\\beta})$, density is 1 when $\\beta < \\beta^*$ and 0 when $\\beta > \\beta^*$.",
-    "text": "The density of integers with two divisors d₁ < d₂ < 2d₁ equals 1. SOLVED by Maier-Tenenbaum (1984). The threshold β* = log 3 - 1 separates density 1 from density 0.",
-    "proofStrategy": "The formalization defines natural density via ε-N limits, close divisor predicates for both the basic (c=2) and general (arbitrary c>1) versions, and the refined version with (log n)^{-β} decay. The four key results are axiomatized: Maier-Tenenbaum's basic and strong theorems, and the Erdős-Hall/Maier-Tenenbaum phase transition. The phase_transition theorem and erdos_144_summary theorem combine these axioms into proved conjunctions. Concrete examples (6 and 12 have close divisors) are verified by norm_num.",
+    "text": "The density of integers with two divisors d\u2081 < d\u2082 < 2d\u2081 equals 1. SOLVED by Maier-Tenenbaum (1984). The threshold \u03b2* = log 3 - 1 separates density 1 from density 0.",
+    "proofStrategy": "The formalization defines natural density via \u03b5-N limits, close divisor predicates for both the basic (c=2) and general (arbitrary c>1) versions, and the refined version with (log n)^{-\u03b2} decay. The four key results are axiomatized: Maier-Tenenbaum's basic and strong theorems, and the Erd\u0151s-Hall/Maier-Tenenbaum phase transition. The phase_transition theorem and erdos_144_summary theorem combine these axioms into proved conjunctions. Concrete examples (6 and 12 have close divisors) are verified by norm_num.",
     "keyInsights": [
-      "**Phase Transition:** The critical exponent β* = log 3 - 1 ≈ 0.0986 creates a sharp density dichotomy: density 1 below β*, density 0 above β*",
-      "**Prime Power Exception:** Prime powers p^k have no close divisors since consecutive divisors differ by factor p ≥ 2, but prime powers have density 0 in the integers",
-      "**Universality:** The result holds for all c > 1, not just c = 2 — divisor clustering is a robust phenomenon",
-      "**Erdős's Retraction:** The 1964 proof was flawed, but the conjecture was correct — a rare case of a retracted proof being vindicated",
-      "**Probabilistic Number Theory:** The Erdős-Kac theorem (ω(n) ∼ N(log log n, log log n)) underlies why most integers have many prime factors and hence clustered divisors"
+      "**Phase Transition:** The critical exponent \u03b2* = log 3 - 1 \u2248 0.0986 creates a sharp density dichotomy: density 1 below \u03b2*, density 0 above \u03b2*",
+      "**Prime Power Exception:** Prime powers p^k have no close divisors since consecutive divisors differ by factor p \u2265 2, but prime powers have density 0 in the integers",
+      "**Universality:** The result holds for all c > 1, not just c = 2 \u2014 divisor clustering is a robust phenomenon",
+      "**Erd\u0151s's Retraction:** The 1964 proof was flawed, but the conjecture was correct \u2014 a rare case of a retracted proof being vindicated",
+      "**Probabilistic Number Theory:** The Erd\u0151s-Kac theorem (\u03c9(n) \u223c N(log log n, log log n)) underlies why most integers have many prime factors and hence clustered divisors"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -93,7 +93,7 @@
     },
     {
       "id": "threshold",
-      "title": "The Threshold β = log 3 - 1",
+      "title": "The Threshold \u03b2 = log 3 - 1",
       "summary": "criticalExponent, hasRefinedCloseDivisors, erdos_hall_theorem, maier_tenenbaum_refined, phase_transition",
       "startLine": 87,
       "endLine": 123
@@ -114,11 +114,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #144 was SOLVED by Maier and Tenenbaum in 1984. The density of integers with close divisors equals 1, and this holds for any constant c > 1. The refined version reveals a phase transition at β* = log 3 - 1: density 1 for β < β* and density 0 for β > β*. The summary theorem packages all four main results as a conjunction.",
-    "implications": "The result shows that divisor clustering is a universal property of almost all integers, driven by the typical abundance of prime factors. The sharp phase transition at β* = log 3 - 1 provides a precise quantitative boundary for this phenomenon.",
+    "summary": "Erd\u0151s Problem #144 was SOLVED by Maier and Tenenbaum in 1984. The density of integers with close divisors equals 1, and this holds for any constant c > 1. The refined version reveals a phase transition at \u03b2* = log 3 - 1: density 1 for \u03b2 < \u03b2* and density 0 for \u03b2 > \u03b2*. The summary theorem packages all four main results as a conjunction.",
+    "implications": "The result shows that divisor clustering is a universal property of almost all integers, driven by the typical abundance of prime factors. The sharp phase transition at \u03b2* = log 3 - 1 provides a precise quantitative boundary for this phenomenon.",
     "openQuestions": [
       "What is the exact rate of convergence to density 1?",
-      "What happens at the critical threshold β = log 3 - 1 exactly?",
+      "What happens at the critical threshold \u03b2 = log 3 - 1 exactly?",
       "Can the techniques extend to other divisor proximity measures?"
     ]
   },
@@ -137,5 +137,39 @@
     "axiomCount": 5,
     "theoremCount": 2,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-449",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-450",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-693",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-697",
+      "relationship": "related",
+      "description": "Share divisors, density, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1054",
+    "erdos-449",
+    "erdos-450",
+    "erdos-693",
+    "erdos-697"
+  ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-388",
-  "title": "Erdős Problem #388: Products of Consecutive Integers",
+  "title": "Erd\u0151s Problem #388: Products of Consecutive Integers",
   "slug": "erdos-388",
-  "description": "Can one classify all solutions of ∏(m₁+i) = ∏(m₂+j) where k₁, k₂ > 3 and the blocks are disjoint? Erdős conjectured only finitely many solutions exist. Generalizes to proportional products a·∏(m₁+i) = b·∏(m₂+j).",
+  "description": "Can one classify all solutions of \u220f(m\u2081+i) = \u220f(m\u2082+j) where k\u2081, k\u2082 > 3 and the blocks are disjoint? Erd\u0151s conjectured only finitely many solutions exist. Generalizes to proportional products a\u00b7\u220f(m\u2081+i) = b\u00b7\u220f(m\u2082+j).",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/388",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos388Problem.lean",
@@ -30,16 +30,16 @@
     "assumptions": "4 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Paul Erdős posed this problem in the 1970s–1980s as part of his systematic investigation of Diophantine equations involving products of consecutive integers. The foundational result in this area is the Erdős–Selfridge theorem (1975, Illinois J. Math.), which proved that a product of two or more consecutive positive integers is never a perfect power — settling a conjecture that had been open since the 19th century (partial results by Obláth, 1956). Problem #388 asks the next natural question: when can two *disjoint* blocks of consecutive integers have the same product? The connection to factorials $(m+1) \\cdots (m+k) = (m+k)!/m!$ means this is equivalent to asking when two factorial ratios can be equal. The threshold $k > 3$ is essential because for small $k$, parametric families of solutions exist. The problem also connects to the Brocard–Ramanujan problem ($n! + 1 = m^2$) and to Erdős Problems #363 and #931 on related product identities.",
+    "historicalContext": "Paul Erd\u0151s posed this problem in the 1970s\u20131980s as part of his systematic investigation of Diophantine equations involving products of consecutive integers. The foundational result in this area is the Erd\u0151s\u2013Selfridge theorem (1975, Illinois J. Math.), which proved that a product of two or more consecutive positive integers is never a perfect power \u2014 settling a conjecture that had been open since the 19th century (partial results by Obl\u00e1th, 1956). Problem #388 asks the next natural question: when can two *disjoint* blocks of consecutive integers have the same product? The connection to factorials $(m+1) \\cdots (m+k) = (m+k)!/m!$ means this is equivalent to asking when two factorial ratios can be equal. The threshold $k > 3$ is essential because for small $k$, parametric families of solutions exist. The problem also connects to the Brocard\u2013Ramanujan problem ($n! + 1 = m^2$) and to Erd\u0151s Problems #363 and #931 on related product identities.",
     "problemStatement": "Are there only finitely many solutions to $\\prod_{i=1}^{k_1}(m_1+i) = \\prod_{j=1}^{k_2}(m_2+j)$ with $k_1, k_2 > 3$ and $m_1 + k_1 \\leq m_2$ (disjoint blocks)?",
-    "text": "Can one classify all solutions of ∏(m₁+i) = ∏(m₂+j) where k₁, k₂ > 3 and the blocks are disjoint? Erdős conjectured only finitely many solutions exist. Generalizes to proportional products a·∏(m₁+i) = b·∏(m₂+j).",
-    "proofStrategy": "We formalize the consecutive product $\\prod_{i=1}^k (m+i)$ via `Finset.Icc`, encode solutions as proof-carrying structures (with $k > 3$, disjointness, and product equality baked in), state the finiteness conjecture, generalize to proportional products $a \\cdot \\prod = b \\cdot \\prod$, and connect to the Erdős–Selfridge theorem and factorial identities.",
+    "text": "Can one classify all solutions of \u220f(m\u2081+i) = \u220f(m\u2082+j) where k\u2081, k\u2082 > 3 and the blocks are disjoint? Erd\u0151s conjectured only finitely many solutions exist. Generalizes to proportional products a\u00b7\u220f(m\u2081+i) = b\u00b7\u220f(m\u2082+j).",
+    "proofStrategy": "We formalize the consecutive product $\\prod_{i=1}^k (m+i)$ via `Finset.Icc`, encode solutions as proof-carrying structures (with $k > 3$, disjointness, and product equality baked in), state the finiteness conjecture, generalize to proportional products $a \\cdot \\prod = b \\cdot \\prod$, and connect to the Erd\u0151s\u2013Selfridge theorem and factorial identities.",
     "keyInsights": [
       "**Factorial ratio reformulation**: The equal-products equation $\\prod(m_1+i) = \\prod(m_2+j)$ is equivalent to $(m_1+k_1)!/m_1! = (m_2+k_2)!/m_2!$, transforming a combinatorial question into one about factorial ratios",
-      "**Erdős–Selfridge as motivation**: The 1975 proof that $\\prod_{i=1}^k (m+i) \\neq n^r$ uses $p$-adic valuations and Bertrand's postulate — similar techniques constrain equal-product solutions by showing that consecutive products have 'irregular' prime factorizations",
+      "**Erd\u0151s\u2013Selfridge as motivation**: The 1975 proof that $\\prod_{i=1}^k (m+i) \\neq n^r$ uses $p$-adic valuations and Bertrand's postulate \u2014 similar techniques constrain equal-product solutions by showing that consecutive products have 'irregular' prime factorizations",
       "**The $k > 3$ threshold is sharp**: For $k \\leq 3$, infinite parametric families of solutions exist (e.g., pairs of 2-element or 3-element blocks), but for $k > 3$ the growth rate of $\\prod(m+i) \\sim m^k$ makes coincidences increasingly unlikely",
-      "**Proportional generalization absorbs scaling**: Allowing $a \\cdot \\prod = b \\cdot \\prod$ with fixed $a, b$ generalizes the problem while maintaining finiteness — the rational factor $a/b$ can be absorbed into the prime factorization analysis",
-      "**Connection to Diophantine finiteness principles**: The conjecture is analogous to Faltings' theorem (finitely many rational points on high-genus curves) — the equal-products equation defines a Diophantine variety whose rational points should be finite for structural reasons"
+      "**Proportional generalization absorbs scaling**: Allowing $a \\cdot \\prod = b \\cdot \\prod$ with fixed $a, b$ generalizes the problem while maintaining finiteness \u2014 the rational factor $a/b$ can be absorbed into the prime factorization analysis",
+      "**Connection to Diophantine finiteness principles**: The conjecture is analogous to Faltings' theorem (finitely many rational points on high-genus curves) \u2014 the equal-products equation defines a Diophantine variety whose rational points should be finite for structural reasons"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -52,7 +52,7 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Module docstring with background on the Erdős–Selfridge theorem (1975) and the Brocard–Ramanujan problem. Imports Mathlib for `Nat.Factorial.Basic`, `Finset.LocallyFinite`, and tactics. Opens `Finset` and `BigOperators`."
+      "summary": "Module docstring with background on the Erd\u0151s\u2013Selfridge theorem (1975) and the Brocard\u2013Ramanujan problem. Imports Mathlib for `Nat.Factorial.Basic`, `Finset.LocallyFinite`, and tactics. Opens `Finset` and `BigOperators`."
     },
     {
       "id": "core-definitions",
@@ -77,7 +77,7 @@
     },
     {
       "id": "erdos-selfridge",
-      "title": "Erdős–Selfridge Theorem",
+      "title": "Erd\u0151s\u2013Selfridge Theorem",
       "startLine": 92,
       "endLine": 99,
       "summary": "Axiomatizes the 1975 result: $\\prod_{i=1}^k (m+i) \\neq n^r$ for $k \\geq 2, r \\geq 2, m \\geq 1$. No product of consecutive positive integers is a perfect power."
@@ -91,7 +91,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full structure of Erdős Problem #388: the equal-products equation for disjoint blocks of consecutive integers, the finiteness conjecture with the $k > 3$ threshold, the proportional generalization, and connections to the Erdős–Selfridge theorem (1975) and factorial arithmetic. The proof-carrying structure design ensures all constraints are verified at the type level.",
+    "summary": "This formalization captures the full structure of Erd\u0151s Problem #388: the equal-products equation for disjoint blocks of consecutive integers, the finiteness conjecture with the $k > 3$ threshold, the proportional generalization, and connections to the Erd\u0151s\u2013Selfridge theorem (1975) and factorial arithmetic. The proof-carrying structure design ensures all constraints are verified at the type level.",
     "implications": "Resolving the finiteness conjecture would advance understanding of Diophantine equations involving factorial-type products. It connects to the broader question of when multiplicative coincidences among integers force structural constraints, with implications for the abc conjecture and Diophantine approximation.",
     "openQuestions": [
       "Are there any non-trivial solutions with $k_1, k_2 > 3$ and disjoint blocks?",
@@ -117,11 +117,45 @@
     "definitionCount": 2
   },
   "references": [
-    "Erdős & Selfridge (1975): 'The product of consecutive integers is never a power', Illinois Journal of Mathematics 19, 292–301",
-    "Erdős (1976): problems on products of consecutive integers in several Erdős problem collections",
-    "Erdős & Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory'",
-    "Obláth (1956): early results on products of consecutive integers equaling perfect powers",
+    "Erd\u0151s & Selfridge (1975): 'The product of consecutive integers is never a power', Illinois Journal of Mathematics 19, 292\u2013301",
+    "Erd\u0151s (1976): problems on products of consecutive integers in several Erd\u0151s problem collections",
+    "Erd\u0151s & Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory'",
+    "Obl\u00e1th (1956): early results on products of consecutive integers equaling perfect powers",
     "Tijdeman (1992): survey of problems on products of consecutive integers",
     "https://erdosproblems.com/388"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-373",
+      "relationship": "related",
+      "description": "Share factorials, diophantine-equations, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-393",
+      "relationship": "related",
+      "description": "Share factorials, diophantine-equations, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-399",
+      "relationship": "related",
+      "description": "Share factorials, diophantine-equations, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-405",
+      "relationship": "related",
+      "description": "Share factorials, diophantine-equations, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-686",
+      "relationship": "related",
+      "description": "Share factorials, consecutive-integers, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-373",
+    "erdos-393",
+    "erdos-399",
+    "erdos-405",
+    "erdos-686"
   ]
 }

@@ -1,10 +1,10 @@
 {
   "id": "erdos-559",
-  "title": "Erdős Problem #559: Size Ramsey Numbers for Bounded Degree Graphs",
+  "title": "Erd\u0151s Problem #559: Size Ramsey Numbers for Bounded Degree Graphs",
   "slug": "erdos-559",
-  "description": "Does R̂(G) ≪_d n for bounded-degree graphs G? DISPROVED for d ≥ 3 by Rödl-Szemerédi (2000). The size Ramsey number R̂(G) is the minimum edges m such that some graph H with m edges is Ramsey for G.",
+  "description": "Does R\u0302(G) \u226a_d n for bounded-degree graphs G? DISPROVED for d \u2265 3 by R\u00f6dl-Szemer\u00e9di (2000). The size Ramsey number R\u0302(G) is the minimum edges m such that some graph H with m edges is Ramsey for G.",
   "meta": {
-    "author": "Beck, Erdős",
+    "author": "Beck, Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/559",
     "date": "1983",
     "status": "formalized",
@@ -25,13 +25,13 @@
     "assumptions": "No axioms. 10 sorry(s) remain in the formalization."
   },
   "overview": {
-    "historicalContext": "Beck posed this problem in 1983, motivated by his proof that the size Ramsey number of paths is linear: R̂(P_n) = O(n). He conjectured that the same linearity holds for all bounded-degree graphs: R̂(G) ≤ c_d · n when Δ(G) ≤ d. The conjecture was supported by positive results for increasingly general graph classes: Friedman and Pippenger (1987) proved it for all trees using expander graphs, and Haxell, Kohayakawa, and Luczak (1995) proved it for cycles, completing the picture for Δ ≤ 2. However, Rödl and Szemerédi (2000) dramatically disproved the conjecture for d = 3, constructing degree-3 graphs with R̂(G) ≥ cn(log n)^c using a probabilistic argument involving random 3-regular graphs. Tikhomirov (2022) strengthened this to R̂(G) ≥ cn · exp(c√(log n)), a bound that is superlinear but subpolynomial (n^{1+o(1)}). On the upper bound side, a sequence of improvements — Kohayakawa et al. (n^{5/3+o(1)}), Conlon-Nenadov-Trujić (n^{8/5}), and Draganić-Petrova (2022, n^{3/2+o(1)}) — has steadily reduced the exponent but a substantial gap remains between the lower bound n^{1+o(1)} and the upper bound n^{3/2+o(1)}.",
-    "problemStatement": "Let $\\hat{R}(G)$ denote the size Ramsey number: the minimal number of edges $m$ such that there exists a graph $H$ with $m$ edges that is Ramsey for $G$ (any 2-coloring of $H$'s edges contains a monochromatic copy of $G$). Conjecture (Beck/Erdős): If $G$ has $n$ vertices and maximum degree $d$, then $\\hat{R}(G) \\leq c_d n$ for some constant $c_d$ depending only on $d$.",
-    "text": "Does R̂(G) ≪_d n for bounded-degree graphs G? DISPROVED for d ≥ 3 by Rödl-Szemerédi (2000). The size Ramsey number R̂(G) is the minimum edges m such that some graph H with m edges is Ramsey for G.",
-    "proofStrategy": "The formalization defines `FiniteGraph` with adjacency, symmetry, looplessness, edge counting, degree, and maximum degree. The Ramsey property `IsRamseyFor` and size Ramsey number `sizeRamsey` are defined via `Nat.find`. The Beck-Erdős conjecture and its negation are stated, with `beck_erdos_conjecture_false` as the main theorem. Positive cases are formalized: `IsPath`, `IsTree`, `IsCycle` with linear bounds (Beck, Friedman-Pippenger, Haxell-Kohayakawa-Luczak). Counterexamples formalize the Rödl-Szemerédi and Tikhomirov lower bounds. Upper bounds capture the progression from $n^{5/3}$ to $n^{3/2}$. The open question about the exact growth rate is formalized as a proposition.",
+    "historicalContext": "Beck posed this problem in 1983, motivated by his proof that the size Ramsey number of paths is linear: R\u0302(P_n) = O(n). He conjectured that the same linearity holds for all bounded-degree graphs: R\u0302(G) \u2264 c_d \u00b7 n when \u0394(G) \u2264 d. The conjecture was supported by positive results for increasingly general graph classes: Friedman and Pippenger (1987) proved it for all trees using expander graphs, and Haxell, Kohayakawa, and Luczak (1995) proved it for cycles, completing the picture for \u0394 \u2264 2. However, R\u00f6dl and Szemer\u00e9di (2000) dramatically disproved the conjecture for d = 3, constructing degree-3 graphs with R\u0302(G) \u2265 cn(log n)^c using a probabilistic argument involving random 3-regular graphs. Tikhomirov (2022) strengthened this to R\u0302(G) \u2265 cn \u00b7 exp(c\u221a(log n)), a bound that is superlinear but subpolynomial (n^{1+o(1)}). On the upper bound side, a sequence of improvements \u2014 Kohayakawa et al. (n^{5/3+o(1)}), Conlon-Nenadov-Truji\u0107 (n^{8/5}), and Dragani\u0107-Petrova (2022, n^{3/2+o(1)}) \u2014 has steadily reduced the exponent but a substantial gap remains between the lower bound n^{1+o(1)} and the upper bound n^{3/2+o(1)}.",
+    "problemStatement": "Let $\\hat{R}(G)$ denote the size Ramsey number: the minimal number of edges $m$ such that there exists a graph $H$ with $m$ edges that is Ramsey for $G$ (any 2-coloring of $H$'s edges contains a monochromatic copy of $G$). Conjecture (Beck/Erd\u0151s): If $G$ has $n$ vertices and maximum degree $d$, then $\\hat{R}(G) \\leq c_d n$ for some constant $c_d$ depending only on $d$.",
+    "text": "Does R\u0302(G) \u226a_d n for bounded-degree graphs G? DISPROVED for d \u2265 3 by R\u00f6dl-Szemer\u00e9di (2000). The size Ramsey number R\u0302(G) is the minimum edges m such that some graph H with m edges is Ramsey for G.",
+    "proofStrategy": "The formalization defines `FiniteGraph` with adjacency, symmetry, looplessness, edge counting, degree, and maximum degree. The Ramsey property `IsRamseyFor` and size Ramsey number `sizeRamsey` are defined via `Nat.find`. The Beck-Erd\u0151s conjecture and its negation are stated, with `beck_erdos_conjecture_false` as the main theorem. Positive cases are formalized: `IsPath`, `IsTree`, `IsCycle` with linear bounds (Beck, Friedman-Pippenger, Haxell-Kohayakawa-Luczak). Counterexamples formalize the R\u00f6dl-Szemer\u00e9di and Tikhomirov lower bounds. Upper bounds capture the progression from $n^{5/3}$ to $n^{3/2}$. The open question about the exact growth rate is formalized as a proposition.",
     "keyInsights": [
-      "The conjecture HOLDS for $\\Delta \\leq 2$ (paths, trees, cycles all have $\\hat{R}(G) = O(n)$) but FAILS at $\\Delta = 3$ — the transition is sharp",
-      "Rödl-Szemerédi (2000) disproved the conjecture using random 3-regular graphs: their complex global structure forces any Ramsey host to have superlinear edges",
+      "The conjecture HOLDS for $\\Delta \\leq 2$ (paths, trees, cycles all have $\\hat{R}(G) = O(n)$) but FAILS at $\\Delta = 3$ \u2014 the transition is sharp",
+      "R\u00f6dl-Szemer\u00e9di (2000) disproved the conjecture using random 3-regular graphs: their complex global structure forces any Ramsey host to have superlinear edges",
       "Tikhomirov (2022) improved the lower bound to $n \\cdot \\exp(c\\sqrt{\\log n}) = n^{1+o(1)}$, which is superlinear but subpolynomial",
       "The upper bound progression $n^{5/3} \\to n^{8/5} \\to n^{3/2}$ uses increasingly refined sparse regularity methods, but the $n^{3/2}$ barrier seems hard to break",
       "The Friedman-Pippenger tree result uses a beautiful connection to expander graphs: good expanders with $O(n)$ edges contain every tree with $n$ vertices",
@@ -47,7 +47,7 @@
     {
       "id": "header",
       "title": "Problem Statement, Resolution, and References",
-      "summary": "Documentation header with Beck-Erdős conjecture, DISPROVED status, known positive/negative results, upper bound progression, and references to Beck, Rödl-Szemerédi, Tikhomirov, Draganić-Petrova",
+      "summary": "Documentation header with Beck-Erd\u0151s conjecture, DISPROVED status, known positive/negative results, upper bound progression, and references to Beck, R\u00f6dl-Szemer\u00e9di, Tikhomirov, Dragani\u0107-Petrova",
       "startLine": 1,
       "endLine": 46
     },
@@ -67,29 +67,29 @@
     },
     {
       "id": "conjecture",
-      "title": "Beck-Erdős Conjecture (DISPROVED)",
-      "summary": "beck_erdos_conjecture: R̂(G) ≤ c_d·n for Δ(G) ≤ d. beck_erdos_conjecture_false: negation proved by Rödl-Szemerédi (2000)",
+      "title": "Beck-Erd\u0151s Conjecture (DISPROVED)",
+      "summary": "beck_erdos_conjecture: R\u0302(G) \u2264 c_d\u00b7n for \u0394(G) \u2264 d. beck_erdos_conjecture_false: negation proved by R\u00f6dl-Szemer\u00e9di (2000)",
       "startLine": 94,
       "endLine": 109
     },
     {
       "id": "positive",
       "title": "Positive Results: Paths, Trees, Cycles",
-      "summary": "IsPath/IsTree/IsCycle definitions, beck_paths (1983), friedman_pippenger_trees (1987), haxell_kohayakawa_luczak_cycles (1995) — all proving R̂ = O(n)",
+      "summary": "IsPath/IsTree/IsCycle definitions, beck_paths (1983), friedman_pippenger_trees (1987), haxell_kohayakawa_luczak_cycles (1995) \u2014 all proving R\u0302 = O(n)",
       "startLine": 111,
       "endLine": 150
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples for Degree 3",
-      "summary": "rodl_szemeredi_counterexample: R̂(G) ≥ cn(log n)^c for d=3. tikhomirov_improved_lower_bound: R̂(G) ≥ cn·exp(c√(log n))",
+      "summary": "rodl_szemeredi_counterexample: R\u0302(G) \u2265 cn(log n)^c for d=3. tikhomirov_improved_lower_bound: R\u0302(G) \u2265 cn\u00b7exp(c\u221a(log n))",
       "startLine": 152,
       "endLine": 171
     },
     {
       "id": "upper-bounds",
-      "title": "Upper Bounds for Degree 3: n^{5/3} → n^{8/5} → n^{3/2}",
-      "summary": "kohayakawa_upper_bound n^{5/3+o(1)}, conlon_nenadov_trujic n^{8/5}, draganic_petrova_best n^{3/2+o(1)} (current best) — all via sparse regularity",
+      "title": "Upper Bounds for Degree 3: n^{5/3} \u2192 n^{8/5} \u2192 n^{3/2}",
+      "summary": "kohayakawa_upper_bound n^{5/3+o(1)}, conlon_nenadov_trujic n^{8/5}, draganic_petrova_best n^{3/2+o(1)} (current best) \u2014 all via sparse regularity",
       "startLine": 173,
       "endLine": 200
     },
@@ -102,13 +102,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #559 on size Ramsey numbers for bounded-degree graphs was DISPROVED for d ≥ 3 by Rödl-Szemerédi (2000). The 238-line formalization captures the full landscape: the conjecture and its negation, positive results for paths (Beck 1983), trees (Friedman-Pippenger 1987), and cycles (Haxell-Kohayakawa-Luczak 1995), counterexamples from Rödl-Szemerédi and Tikhomirov, and the upper bound progression from n^{5/3} to n^{3/2}. The sharp transition at Δ = 3 between linear and superlinear behavior is a fundamental phenomenon in size Ramsey theory.",
-    "implications": "**Theoretical Significance**: The disproof reveals that bounded degree alone does not guarantee linear size Ramsey numbers — global graph structure matters even when local structure is constrained.\n\nThe gap between n^{1+o(1)} and n^{3/2+o(1)} for degree-3 graphs highlights a fundamental limitation of current techniques: probabilistic lower bounds give barely-superlinear growth, while regularity-based upper bounds give polynomial growth. New methods are needed on both sides.",
+    "summary": "Erd\u0151s Problem #559 on size Ramsey numbers for bounded-degree graphs was DISPROVED for d \u2265 3 by R\u00f6dl-Szemer\u00e9di (2000). The 238-line formalization captures the full landscape: the conjecture and its negation, positive results for paths (Beck 1983), trees (Friedman-Pippenger 1987), and cycles (Haxell-Kohayakawa-Luczak 1995), counterexamples from R\u00f6dl-Szemer\u00e9di and Tikhomirov, and the upper bound progression from n^{5/3} to n^{3/2}. The sharp transition at \u0394 = 3 between linear and superlinear behavior is a fundamental phenomenon in size Ramsey theory.",
+    "implications": "**Theoretical Significance**: The disproof reveals that bounded degree alone does not guarantee linear size Ramsey numbers \u2014 global graph structure matters even when local structure is constrained.\n\nThe gap between n^{1+o(1)} and n^{3/2+o(1)} for degree-3 graphs highlights a fundamental limitation of current techniques: probabilistic lower bounds give barely-superlinear growth, while regularity-based upper bounds give polynomial growth. New methods are needed on both sides.",
     "openQuestions": [
-      "What is the true growth rate of R̂(G) for degree-3 graphs? Is it n^{1+o(1)} or n^{3/2} or something in between?",
-      "Can the gap between lower bound n·exp(c√(log n)) and upper bound n^{3/2+o(1)} be closed?",
+      "What is the true growth rate of R\u0302(G) for degree-3 graphs? Is it n^{1+o(1)} or n^{3/2} or something in between?",
+      "Can the gap between lower bound n\u00b7exp(c\u221a(log n)) and upper bound n^{3/2+o(1)} be closed?",
       "For which specific degree-3 graph families (beyond random regular graphs) is the size Ramsey number superlinear?",
-      "What happens at degree d = 2 beyond cycles — e.g., for unions of paths and cycles?"
+      "What happens at degree d = 2 beyond cycles \u2014 e.g., for unions of paths and cycles?"
     ]
   },
   "leanFile": {
@@ -121,5 +121,39 @@
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 10
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-183",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-547",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-565",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-615",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, graph-theoretic, and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-183",
+    "erdos-22",
+    "erdos-547",
+    "erdos-565",
+    "erdos-615"
+  ]
 }

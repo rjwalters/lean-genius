@@ -72,7 +72,7 @@
       "title": "Module Header and Problem Statement",
       "startLine": 1,
       "endLine": 24,
-      "summary": "Documents Erdős Problem #250: is Σ σ(n)/2^n irrational? Solved by Nesterenko (1996) who proved the stronger result that the sum is transcendental, as a corollary of algebraic independence of Ramanujan-Eisenstein series P(q), Q(q), R(q) at algebraic q. Imports Mathlib for arithmetic functions and analysis."
+      "summary": "Documents Erd\u0151s Problem #250: is \u03a3 \u03c3(n)/2^n irrational? Solved by Nesterenko (1996) who proved the stronger result that the sum is transcendental, as a corollary of algebraic independence of Ramanujan-Eisenstein series P(q), Q(q), R(q) at algebraic q. Imports Mathlib for arithmetic functions and analysis."
     },
     {
       "id": "background",
@@ -127,5 +127,39 @@
     "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 2
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Share transcendence, irrationality, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-262",
+      "relationship": "related",
+      "description": "Share transcendence, irrationality, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-68",
+      "relationship": "related",
+      "description": "Share transcendence, irrationality, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-247",
+      "relationship": "related",
+      "description": "Share transcendence and number-theoretic themes"
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "related",
+      "description": "Share transcendence and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1050",
+    "erdos-262",
+    "erdos-68",
+    "erdos-247",
+    "gelfond-schneider"
+  ]
 }

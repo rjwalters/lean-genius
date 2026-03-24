@@ -1,10 +1,10 @@
 {
   "id": "erdos-716",
-  "title": "Erdős Problem #716: The Ruzsa-Szemerédi (6,3) Problem",
+  "title": "Erd\u0151s Problem #716: The Ruzsa-Szemer\u00e9di (6,3) Problem",
   "slug": "erdos-716",
-  "description": "Let ℱ be the family of all 3-uniform hypergraphs with 6 vertices and 3 edges. Is ex₃(n, ℱ) = o(n²)? Equivalently, what is the maximum number of edges in a graph where every edge belongs to a unique triangle? Solved by Ruzsa-Szemerédi (1978).",
+  "description": "Let \u2131 be the family of all 3-uniform hypergraphs with 6 vertices and 3 edges. Is ex\u2083(n, \u2131) = o(n\u00b2)? Equivalently, what is the maximum number of edges in a graph where every edge belongs to a unique triangle? Solved by Ruzsa-Szemer\u00e9di (1978).",
   "meta": {
-    "author": "Ruzsa-Szemerédi",
+    "author": "Ruzsa-Szemer\u00e9di",
     "sourceUrl": "https://erdosproblems.com/716",
     "date": "1978",
     "status": "axiomatized",
@@ -27,16 +27,16 @@
     "lineCount": 265
   },
   "overview": {
-    "historicalContext": "This problem was conjectured by Brown, Erdős, and Sós in 1973 as part of their systematic study of extremal hypergraph problems. The (6,3)-problem sits within the broader Brown-Erdős-Sós conjecture (1973), which posits that f^(3)(n; k+3, k) = o(n²) for all k ≥ 3 — that is, k hyperedges spanning at most k+3 vertices must occur subquadratically often. The k=3 case (asking about 3 edges on 6 vertices) became known as the (6,3)-problem and was the first non-trivial case to be resolved.\n\nImre Ruzsa and Endre Szemerédi solved it in 1978 using Szemerédi's regularity lemma (published 1975), which partitions a graph's vertices into roughly equal parts with controlled edge densities between them. Their key tool was the Triangle Removal Lemma: a graph with few triangles (o(n³)) can be made triangle-free by removing few edges (o(n²)). Applying this to a cleverly constructed auxiliary graph gives the subquadratic bound. The tightness is established by Behrend's 1946 construction of large 3-AP-free sets, which Ruzsa translated into large (6,3)-free hypergraphs. The full Brown-Erdős-Sós conjecture was finally proved by Delcourt and Postle in 2024 using absorption methods.",
-    "problemStatement": "Let ℱ be the family of all 3-uniform hypergraphs with 6 vertices and 3 edges. Is it true that ex₃(n, ℱ) = o(n²)? That is, is the extremal number subquadratic?",
-    "text": "Let ℱ be the family of all 3-uniform hypergraphs with 6 vertices and 3 edges. Is ex₃(n, ℱ) = o(n²)? Equivalently, what is the maximum number of edges in a graph where every edge belongs to a unique triangle? Solved by Ruzsa-Szemerédi (1978).",
-    "proofStrategy": "Ruzsa and Szemerédi proved this using Szemerédi's regularity lemma. The key insight is the Triangle Removal Lemma: if a graph has few triangles (o(n³)), you can remove few edges (o(n²)) to make it triangle-free. For RS graphs, each triangle contributes a unique edge, giving the bound.",
+    "historicalContext": "This problem was conjectured by Brown, Erd\u0151s, and S\u00f3s in 1973 as part of their systematic study of extremal hypergraph problems. The (6,3)-problem sits within the broader Brown-Erd\u0151s-S\u00f3s conjecture (1973), which posits that f^(3)(n; k+3, k) = o(n\u00b2) for all k \u2265 3 \u2014 that is, k hyperedges spanning at most k+3 vertices must occur subquadratically often. The k=3 case (asking about 3 edges on 6 vertices) became known as the (6,3)-problem and was the first non-trivial case to be resolved.\n\nImre Ruzsa and Endre Szemer\u00e9di solved it in 1978 using Szemer\u00e9di's regularity lemma (published 1975), which partitions a graph's vertices into roughly equal parts with controlled edge densities between them. Their key tool was the Triangle Removal Lemma: a graph with few triangles (o(n\u00b3)) can be made triangle-free by removing few edges (o(n\u00b2)). Applying this to a cleverly constructed auxiliary graph gives the subquadratic bound. The tightness is established by Behrend's 1946 construction of large 3-AP-free sets, which Ruzsa translated into large (6,3)-free hypergraphs. The full Brown-Erd\u0151s-S\u00f3s conjecture was finally proved by Delcourt and Postle in 2024 using absorption methods.",
+    "problemStatement": "Let \u2131 be the family of all 3-uniform hypergraphs with 6 vertices and 3 edges. Is it true that ex\u2083(n, \u2131) = o(n\u00b2)? That is, is the extremal number subquadratic?",
+    "text": "Let \u2131 be the family of all 3-uniform hypergraphs with 6 vertices and 3 edges. Is ex\u2083(n, \u2131) = o(n\u00b2)? Equivalently, what is the maximum number of edges in a graph where every edge belongs to a unique triangle? Solved by Ruzsa-Szemer\u00e9di (1978).",
+    "proofStrategy": "Ruzsa and Szemer\u00e9di proved this using Szemer\u00e9di's regularity lemma. The key insight is the Triangle Removal Lemma: if a graph has few triangles (o(n\u00b3)), you can remove few edges (o(n\u00b2)) to make it triangle-free. For RS graphs, each triangle contributes a unique edge, giving the bound.",
     "keyInsights": [
       "The (6,3)-problem is equivalent to bounding edges in graphs where every edge belongs to a unique triangle",
-      "The Triangle Removal Lemma follows from Szemerédi's regularity lemma",
-      "The bounds are tight: ex₃(n; 6, 3) = n² · e^{±O(√log n)} using Behrend's construction",
+      "The Triangle Removal Lemma follows from Szemer\u00e9di's regularity lemma",
+      "The bounds are tight: ex\u2083(n; 6, 3) = n\u00b2 \u00b7 e^{\u00b1O(\u221alog n)} using Behrend's construction",
       "This result implies Roth's theorem on 3-term arithmetic progressions",
-      "The problem is a special case of the Brown-Erdős-Sós conjecture (now fully proved)"
+      "The problem is a special case of the Brown-Erd\u0151s-S\u00f3s conjecture (now fully proved)"
     ],
     "prerequisites": [
       "Elementary number theory and combinatorics",
@@ -54,7 +54,7 @@
     {
       "id": "extremal-numbers",
       "title": "Part II: Extremal Numbers",
-      "summary": "extremalHypergraph, ex63 definitions, trivial O(n²) bound",
+      "summary": "extremalHypergraph, ex63 definitions, trivial O(n\u00b2) bound",
       "startLine": 80,
       "endLine": 93
     },
@@ -68,7 +68,7 @@
     {
       "id": "main-theorem",
       "title": "Part IV: The Main Theorem",
-      "summary": "Ruzsa-Szemerédi theorem: ex₃(n; 6, 3) = o(n²). Tight bounds n² · e^{±c√(log n)}",
+      "summary": "Ruzsa-Szemer\u00e9di theorem: ex\u2083(n; 6, 3) = o(n\u00b2). Tight bounds n\u00b2 \u00b7 e^{\u00b1c\u221a(log n)}",
       "startLine": 116,
       "endLine": 142
     },
@@ -88,15 +88,15 @@
     },
     {
       "id": "bes-conjecture",
-      "title": "Part VII: The Brown-Erdős-Sós Conjecture",
+      "title": "Part VII: The Brown-Erd\u0151s-S\u00f3s Conjecture",
       "summary": "BES conjecture definition, k=3 is erdos-716, k=4 by Glock, general by Delcourt-Postle",
       "startLine": 198,
       "endLine": 220
     },
     {
       "id": "stronger-question",
-      "title": "Part VIII: Erdős's Stronger Question",
-      "summary": "f^(3)(n; k+3, k) ≍ n · r_{k-3}(n)? Ruzsa's lower bound for k = 6, 7, 8",
+      "title": "Part VIII: Erd\u0151s's Stronger Question",
+      "summary": "f^(3)(n; k+3, k) \u224d n \u00b7 r_{k-3}(n)? Ruzsa's lower bound for k = 6, 7, 8",
       "startLine": 222,
       "endLine": 240
     },
@@ -109,11 +109,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #716 was solved by Ruzsa and Szemerédi in 1978, proving that the maximum edges in a (6,3)-free 3-uniform hypergraph is subquadratic. The proof introduced the Triangle Removal Lemma, a fundamental tool in extremal graph theory.",
-    "implications": "**Theoretical Significance**: This result established deep connections between extremal combinatorics and additive number theory.\n\nIt implies Roth's theorem and is a key case of the Brown-Erdős-Sós conjecture. The techniques influenced property testing and communication complexity.",
+    "summary": "Erd\u0151s Problem #716 was solved by Ruzsa and Szemer\u00e9di in 1978, proving that the maximum edges in a (6,3)-free 3-uniform hypergraph is subquadratic. The proof introduced the Triangle Removal Lemma, a fundamental tool in extremal graph theory.",
+    "implications": "**Theoretical Significance**: This result established deep connections between extremal combinatorics and additive number theory.\n\nIt implies Roth's theorem and is a key case of the Brown-Erd\u0151s-S\u00f3s conjecture. The techniques influenced property testing and communication complexity.",
     "openQuestions": [
-      "What is the exact asymptotic constant in ex₃(n; 6, 3)?",
-      "Improve the bounds on the function between n²·e^{-c√log n} upper and lower bounds"
+      "What is the exact asymptotic constant in ex\u2083(n; 6, 3)?",
+      "Improve the bounds on the function between n\u00b2\u00b7e^{-c\u221alog n} upper and lower bounds"
     ]
   },
   "leanFile": {
@@ -134,5 +134,39 @@
     "axiomCount": 16,
     "theoremCount": 3,
     "definitionCount": 12
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1020",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and hypergraph-theory themes"
+    },
+    {
+      "targetId": "erdos-155",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-156",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-186",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-1020",
+    "erdos-155",
+    "erdos-156",
+    "erdos-186"
+  ]
 }

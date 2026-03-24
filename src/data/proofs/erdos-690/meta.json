@@ -2,9 +2,9 @@
   "id": "erdos-690",
   "title": "Unimodality of k-th Prime Factor Density",
   "slug": "erdos-690",
-  "description": "Is d_k(p), the density of integers whose k-th smallest prime factor is p, unimodal in p? Cambie: YES for k ≤ 3, NO for 4 ≤ k ≤ 20. Erdős expected NO.",
+  "description": "Is d_k(p), the density of integers whose k-th smallest prime factor is p, unimodal in p? Cambie: YES for k \u2264 3, NO for 4 \u2264 k \u2264 20. Erd\u0151s expected NO.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/690",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos690Problem.lean",
@@ -35,7 +35,7 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 19,
-      "summary": "Module docstring introducing Problem #690: is $d_k(p)$ unimodal in $p$? Cites Cambie's resolution (YES for $k \\le 3$, NO for $k \\ge 4$) and Erdős's observations on typical vs. modal $k$-th prime factors."
+      "summary": "Module docstring introducing Problem #690: is $d_k(p)$ unimodal in $p$? Cites Cambie's resolution (YES for $k \\le 3$, NO for $k \\ge 4$) and Erd\u0151s's observations on typical vs. modal $k$-th prime factors."
     },
     {
       "id": "imports",
@@ -53,21 +53,21 @@
     },
     {
       "id": "cambie-unimodal",
-      "title": "Cambie's Unimodality Results (k ≤ 3)",
+      "title": "Cambie's Unimodality Results (k \u2264 3)",
       "startLine": 53,
       "endLine": 63,
       "summary": "Cambie (2025) proved $d_k(p)$ is unimodal for $k = 1, 2, 3$. The $k = 1$ case is classical ($d_1$ is strictly decreasing); $k = 2, 3$ require delicate inclusion-exclusion analysis."
     },
     {
       "id": "cambie-non-unimodal",
-      "title": "Cambie's Non-Unimodality (k ≥ 4) and Answer",
+      "title": "Cambie's Non-Unimodality (k \u2265 4) and Answer",
       "startLine": 65,
       "endLine": 75,
-      "summary": "Cambie proved $d_k(p)$ is NOT unimodal for $4 \\le k \\le 20$, confirming Erdős's expectation. The answer to Problem #690 is **NO**: unimodality fails for $k = 4$, giving a concrete counterexample."
+      "summary": "Cambie proved $d_k(p)$ is NOT unimodal for $4 \\le k \\le 20$, confirming Erd\u0151s's expectation. The answer to Problem #690 is **NO**: unimodality fails for $k = 4$, giving a concrete counterexample."
     },
     {
       "id": "erdos-observations",
-      "title": "Erdős's Observations",
+      "title": "Erd\u0151s's Observations",
       "startLine": 81,
       "endLine": 99,
       "summary": "The typical $k$-th prime factor is $\\sim e^{e^k}$ (doubly exponential) while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ (singly exponential). The divisor analogue (non-unimodal) provided heuristic evidence."
@@ -88,15 +88,15 @@
     }
   ],
   "overview": {
-    "historicalContext": "Erdős posed this question in 1979 (paper Er79e) as part of his investigation into the distribution of prime factors. The background involves the Hardy-Ramanujan theorem (1917) that most integers have about log log n prime factors, and the Erdős-Kac theorem (1940) giving the Gaussian distribution of ω(n). Erdős observed that the typical k-th prime factor p_k(n) satisfies log log p_k(n) → k for almost all n, giving p_k(n) ~ exp(exp(k)) — a doubly exponential growth. However, the density d_k(p) peaks at a much smaller prime, around exp((1+o(1))k). This discrepancy between the typical value and the mode suggested subtle behavior. Erdős believed unimodality should fail for large k but could only prove the analogous result for divisors. The question remained open for over 45 years until Cambie (2025, arXiv:2501.10333) resolved it completely for k ≤ 20: unimodal for k ≤ 3, not unimodal for 4 ≤ k ≤ 20. The threshold at k = 3/4 is sharp, and the non-unimodality for k ≥ 4 is believed to persist for all larger k.",
+    "historicalContext": "Erd\u0151s posed this question in 1979 (paper Er79e) as part of his investigation into the distribution of prime factors. The background involves the Hardy-Ramanujan theorem (1917) that most integers have about log log n prime factors, and the Erd\u0151s-Kac theorem (1940) giving the Gaussian distribution of \u03c9(n). Erd\u0151s observed that the typical k-th prime factor p_k(n) satisfies log log p_k(n) \u2192 k for almost all n, giving p_k(n) ~ exp(exp(k)) \u2014 a doubly exponential growth. However, the density d_k(p) peaks at a much smaller prime, around exp((1+o(1))k). This discrepancy between the typical value and the mode suggested subtle behavior. Erd\u0151s believed unimodality should fail for large k but could only prove the analogous result for divisors. The question remained open for over 45 years until Cambie (2025, arXiv:2501.10333) resolved it completely for k \u2264 20: unimodal for k \u2264 3, not unimodal for 4 \u2264 k \u2264 20. The threshold at k = 3/4 is sharp, and the non-unimodality for k \u2265 4 is believed to persist for all larger k.",
     "problemStatement": "For fixed $k \\ge 1$, is the function $d_k(p) = \\lim_{N \\to \\infty} \\frac{1}{N}|\\{n \\le N : p_k(n) = p\\}|$ unimodal in the prime $p$? That is, does $d_k$ first increase then decrease along the prime sequence?",
-    "text": "Is d_k(p), the density of integers whose k-th smallest prime factor is p, unimodal in p? Cambie: YES for k ≤ 3, NO for 4 ≤ k ≤ 20. Erdős expected NO.",
-    "proofStrategy": "The formalization defines the k-th smallest prime factor using Mathlib's Nat.factors, axiomatizes the density function d_k(p) and unimodality on primes. Cambie's results are axiomatized for k ≤ 3 (unimodal) and 4 ≤ k ≤ 20 (not unimodal). The answer NO is proved formally from the k = 4 case. Erdős's observations on typical vs. modal behavior and the divisor analogue provide context.",
+    "text": "Is d_k(p), the density of integers whose k-th smallest prime factor is p, unimodal in p? Cambie: YES for k \u2264 3, NO for 4 \u2264 k \u2264 20. Erd\u0151s expected NO.",
+    "proofStrategy": "The formalization defines the k-th smallest prime factor using Mathlib's Nat.factors, axiomatizes the density function d_k(p) and unimodality on primes. Cambie's results are axiomatized for k \u2264 3 (unimodal) and 4 \u2264 k \u2264 20 (not unimodal). The answer NO is proved formally from the k = 4 case. Erd\u0151s's observations on typical vs. modal behavior and the divisor analogue provide context.",
     "keyInsights": [
       "**Sharp threshold at k = 3/4**: Cambie proved $d_k$ is unimodal for $k \\le 3$ and not unimodal for $k \\ge 4$, giving a clean phase transition in the regularity of prime factor densities",
-      "**Typical vs. modal discrepancy**: The typical $k$-th prime factor is $\\sim e^{e^k}$ while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ — a doubly-exponential vs. singly-exponential gap that explains the subtlety",
-      "**d₁ is explicitly computable**: $d_1(p) = (1/p)\\prod_{q<p}(1-1/q) \\sim e^{-\\gamma}/(p\\log p)$ by Mertens, giving a strictly decreasing (trivially unimodal) density",
-      "**Divisor analogue predicted the answer**: Erdős could prove non-unimodality for the $k$-th smallest divisor directly, providing strong heuristic evidence for the prime factor case",
+      "**Typical vs. modal discrepancy**: The typical $k$-th prime factor is $\\sim e^{e^k}$ while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ \u2014 a doubly-exponential vs. singly-exponential gap that explains the subtlety",
+      "**d\u2081 is explicitly computable**: $d_1(p) = (1/p)\\prod_{q<p}(1-1/q) \\sim e^{-\\gamma}/(p\\log p)$ by Mertens, giving a strictly decreasing (trivially unimodal) density",
+      "**Divisor analogue predicted the answer**: Erd\u0151s could prove non-unimodality for the $k$-th smallest divisor directly, providing strong heuristic evidence for the prime factor case",
       "**Interference causes non-unimodality**: For $k \\ge 4$, contributions from different prime combinations to $d_k(p)$ interfere, creating local minima that break the single-peaked shape"
     ],
     "prerequisites": [
@@ -107,12 +107,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #690 on the unimodality of k-th prime factor densities. Cambie's 2025 resolution gives a complete answer: YES for k ≤ 3, NO for k ≥ 4. The formalization includes the constructive proof that the answer is NO (via the k = 4 counterexample), Erdős's observations on typical vs. modal behavior, and explicit formulas for d₁.",
-    "implications": "The sharp threshold at k = 3/4 reveals a phase transition in the regularity of prime factor distributions. This connects to broader questions in probabilistic number theory about when additive-function statistics behave smoothly versus exhibiting oscillatory behavior, and to the Erdős-Kac philosophy of treating arithmetic functions as random variables.",
+    "summary": "Formalizes Erd\u0151s Problem #690 on the unimodality of k-th prime factor densities. Cambie's 2025 resolution gives a complete answer: YES for k \u2264 3, NO for k \u2265 4. The formalization includes the constructive proof that the answer is NO (via the k = 4 counterexample), Erd\u0151s's observations on typical vs. modal behavior, and explicit formulas for d\u2081.",
+    "implications": "The sharp threshold at k = 3/4 reveals a phase transition in the regularity of prime factor distributions. This connects to broader questions in probabilistic number theory about when additive-function statistics behave smoothly versus exhibiting oscillatory behavior, and to the Erd\u0151s-Kac philosophy of treating arithmetic functions as random variables.",
     "openQuestions": [
-      "Is d_k(p) non-unimodal for ALL k ≥ 4, or only for k ≤ 20 as Cambie verified?",
+      "Is d_k(p) non-unimodal for ALL k \u2265 4, or only for k \u2264 20 as Cambie verified?",
       "How many local maxima does d_k have for large k? Does the number of peaks grow with k?",
-      "What is the asymptotic shape of d_k(p) for large k — can it be described by a known distribution?",
+      "What is the asymptotic shape of d_k(p) for large k \u2014 can it be described by a known distribution?",
       "Is there a unified analytic explanation for the threshold at k = 3/4?"
     ]
   },
@@ -129,11 +129,45 @@
     "definitionCount": 3
   },
   "references": [
-    "Erdős (1979): Some unconventional problems in number theory (Er79e)",
+    "Erd\u0151s (1979): Some unconventional problems in number theory (Er79e)",
     "Cambie (2025): Unimodality of the k-th prime factor density, arXiv:2501.10333",
     "Hardy & Ramanujan (1917): The normal number of prime factors of a number n",
-    "Erdős & Kac (1940): The Gaussian law of errors in the theory of additive number theoretic functions",
+    "Erd\u0151s & Kac (1940): The Gaussian law of errors in the theory of additive number theoretic functions",
     "Mertens (1874): prime reciprocal sum asymptotics",
     "https://erdosproblems.com/690"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-538",
+      "relationship": "related",
+      "description": "Share prime factors and number theory themes"
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Share number theory and density themes"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Share number theory and density themes"
+    },
+    {
+      "targetId": "erdos-488",
+      "relationship": "related",
+      "description": "Share number theory and density themes"
+    },
+    {
+      "targetId": "erdos-49",
+      "relationship": "related",
+      "description": "Share number theory and analytic number theory themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-538",
+    "erdos-10",
+    "erdos-281",
+    "erdos-488",
+    "erdos-49"
   ]
 }

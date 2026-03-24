@@ -1,10 +1,10 @@
 {
   "id": "erdos-1086",
-  "title": "Erdős Problem #1086: Triangles of Equal Area",
+  "title": "Erd\u0151s Problem #1086: Triangles of Equal Area",
   "slug": "erdos-1086",
-  "description": "Let g(n) be the maximum number of triangles with the same area determined by n points in ℝ². Best bounds: n² log log n ≪ g(n) ≪ n^{20/9} (Erdős-Purdy 1971, Raz-Sharir 2017). The Erdős-Purdy conjecture predicts g(n) = Θ(n² polylog(n)). Higher-dimensional generalizations involve g_d^r(n) for r-simplices in ℝ^d. Status: OPEN.",
+  "description": "Let g(n) be the maximum number of triangles with the same area determined by n points in \u211d\u00b2. Best bounds: n\u00b2 log log n \u226a g(n) \u226a n^{20/9} (Erd\u0151s-Purdy 1971, Raz-Sharir 2017). The Erd\u0151s-Purdy conjecture predicts g(n) = \u0398(n\u00b2 polylog(n)). Higher-dimensional generalizations involve g_d^r(n) for r-simplices in \u211d^d. Status: OPEN.",
   "meta": {
-    "author": "Oppenheim (problem), Erdős-Purdy (1971), Pach-Sharir (1992), Dumitrescu-Sharir-Tóth (2009), Raz-Sharir (2017)",
+    "author": "Oppenheim (problem), Erd\u0151s-Purdy (1971), Pach-Sharir (1992), Dumitrescu-Sharir-T\u00f3th (2009), Raz-Sharir (2017)",
     "sourceUrl": "https://erdosproblems.com/1086",
     "date": "1971-2017",
     "status": "axiomatized",
@@ -27,7 +27,7 @@
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space ℝ² for point representation",
+        "description": "Euclidean space \u211d\u00b2 for point representation",
         "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
       },
       {
@@ -37,7 +37,7 @@
       },
       {
         "theorem": "Real.log",
-        "description": "Natural logarithm for lower bound n² log log n",
+        "description": "Natural logarithm for lower bound n\u00b2 log log n",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
@@ -50,10 +50,10 @@
       "Point2D, Triangle, triangleArea definitions using shoelace formula",
       "countTrianglesWithArea via Finset.powersetCard 3 filtering",
       "maxTrianglesWithSameArea and g(n) via sSup",
-      "lower_bound_erdos_purdy: n² log log n lower bound",
+      "lower_bound_erdos_purdy: n\u00b2 log log n lower bound",
       "upper_bound_erdos_purdy_1971: original n^{5/2} upper bound",
       "upper_bound_raz_sharir_2017: current best n^{20/9} upper bound",
-      "erdos_purdy_conjecture: Θ(n² polylog(n)) typed statement",
+      "erdos_purdy_conjecture: \u0398(n\u00b2 polylog(n)) typed statement",
       "g_dim axiom for higher-dimensional simplex generalization",
       "g2_is_g relating g_dim 2 2 to g",
       "Higher-dimensional bounds: g_3^2, g_6^2, Purdy g_4^2/g_5^2",
@@ -67,16 +67,16 @@
     "assumptions": "18 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1086: Triangles of Equal Area**\n\nOriginally posed by Oppenheim, this problem asks: given n points in the plane, how many triangles with the same area can they determine? The function g(n) measures this maximum.\n\n**Historical Development:**\n- **Oppenheim:** Posed the original question about equal-area triangles\n- **Erdős-Purdy (1971):** Established the first bounds: n² log log n ≪ g(n) ≪ n^{5/2}\n- **Pach-Sharir (1992):** Improved the upper bound using point-curve incidence techniques\n- **Dumitrescu-Sharir-Tóth (2009):** Further improvements to the upper bound\n- **Apfelbaum-Sharir (2010):** Continued refinements\n- **Raz-Sharir (2017):** Current best upper bound g(n) ≪ n^{20/9}\n\n**Key Connection:** The problem reduces to counting point-curve incidences. For a fixed base edge (A,B), the locus of points C giving a triangle of area α is a pair of parallel lines. The Szemerédi-Trotter incidence theorem is the main tool for upper bounds.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $g(n)$ be the maximum number of triangles with the same area that can be formed from $n$ points in $\\mathbb{R}^2$.\n\n**Known Bounds:**\n- Lower: $n^2 \\log \\log n \\ll g(n)$ (Erdős-Purdy 1971)\n- Upper: $g(n) \\ll n^{20/9}$ (Raz-Sharir 2017)\n- Exponent gap: $2$ vs $20/9 \\approx 2.222$\n\n**Conjecture:** $g(n) = \\Theta(n^2 \\operatorname{polylog}(n))$\n\n**Higher Dimensions:** $g_d^r(n)$ counts $r$-simplices of the same volume from $n$ points in $\\mathbb{R}^d$. The Oppenheim-Lenz construction gives $g_{2k+2}^k(n) \\geq c \\cdot n^{k+1}$.",
-    "text": "Let g(n) be the maximum number of triangles with the same area determined by n points in ℝ². Best bounds: n² log log n ≪ g(n) ≪ n^{20/9} (Erdős-Purdy 1971, Raz-Sharir 2017). The Erdős-Purdy conjecture predicts g(n) = Θ(n² polylog(n)). Higher-dimensional generalizations involve g_d^r(n) for r-simplices in ℝ^d. Status: OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Geometric Definitions (lines 38-69):**\n   - `Point2D`: points in ℝ² via `EuclideanSpace ℝ (Fin 2)`\n   - `triangleArea`: shoelace formula ½|x_A(y_B-y_C) + ...|\n   - `Triangle`: structure with distinctness proofs\n\n2. **Counting Function g(n) (lines 71-91):**\n   - `countTrianglesWithArea`: filter powersetCard 3 by area\n   - `maxTrianglesWithSameArea`: supremum over areas\n   - `g n`: supremum over all n-point configurations\n\n3. **Known Bounds (lines 93-118):**\n   - Lower: n² log log n (Erdős-Purdy)\n   - Upper: n^{5/2} (1971), n^{20/9} (2017)\n   - Conjecture: Θ(n² polylog(n))\n\n4. **Higher Dimensions (lines 120-161):**\n   - `g_dim d r n`: axiomatized generalization\n   - Bounds for d = 3, 4, 5, 6\n   - Oppenheim-Lenz construction\n\n5. **Incidence Geometry (lines 181-200):**\n   - `incidence_reduction`: triangle counting → point-line incidences\n   - `szemeredi_trotter_bound`: O(n^{2/3}m^{2/3} + n + m)\n\n6. **Summary (lines 202-233):**\n   - `erdos_1086_statement` and `erdos_1086_summary`: genuine theorems",
+    "historicalContext": "**Erd\u0151s Problem #1086: Triangles of Equal Area**\n\nOriginally posed by Oppenheim, this problem asks: given n points in the plane, how many triangles with the same area can they determine? The function g(n) measures this maximum.\n\n**Historical Development:**\n- **Oppenheim:** Posed the original question about equal-area triangles\n- **Erd\u0151s-Purdy (1971):** Established the first bounds: n\u00b2 log log n \u226a g(n) \u226a n^{5/2}\n- **Pach-Sharir (1992):** Improved the upper bound using point-curve incidence techniques\n- **Dumitrescu-Sharir-T\u00f3th (2009):** Further improvements to the upper bound\n- **Apfelbaum-Sharir (2010):** Continued refinements\n- **Raz-Sharir (2017):** Current best upper bound g(n) \u226a n^{20/9}\n\n**Key Connection:** The problem reduces to counting point-curve incidences. For a fixed base edge (A,B), the locus of points C giving a triangle of area \u03b1 is a pair of parallel lines. The Szemer\u00e9di-Trotter incidence theorem is the main tool for upper bounds.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $g(n)$ be the maximum number of triangles with the same area that can be formed from $n$ points in $\\mathbb{R}^2$.\n\n**Known Bounds:**\n- Lower: $n^2 \\log \\log n \\ll g(n)$ (Erd\u0151s-Purdy 1971)\n- Upper: $g(n) \\ll n^{20/9}$ (Raz-Sharir 2017)\n- Exponent gap: $2$ vs $20/9 \\approx 2.222$\n\n**Conjecture:** $g(n) = \\Theta(n^2 \\operatorname{polylog}(n))$\n\n**Higher Dimensions:** $g_d^r(n)$ counts $r$-simplices of the same volume from $n$ points in $\\mathbb{R}^d$. The Oppenheim-Lenz construction gives $g_{2k+2}^k(n) \\geq c \\cdot n^{k+1}$.",
+    "text": "Let g(n) be the maximum number of triangles with the same area determined by n points in \u211d\u00b2. Best bounds: n\u00b2 log log n \u226a g(n) \u226a n^{20/9} (Erd\u0151s-Purdy 1971, Raz-Sharir 2017). The Erd\u0151s-Purdy conjecture predicts g(n) = \u0398(n\u00b2 polylog(n)). Higher-dimensional generalizations involve g_d^r(n) for r-simplices in \u211d^d. Status: OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Geometric Definitions (lines 38-69):**\n   - `Point2D`: points in \u211d\u00b2 via `EuclideanSpace \u211d (Fin 2)`\n   - `triangleArea`: shoelace formula \u00bd|x_A(y_B-y_C) + ...|\n   - `Triangle`: structure with distinctness proofs\n\n2. **Counting Function g(n) (lines 71-91):**\n   - `countTrianglesWithArea`: filter powersetCard 3 by area\n   - `maxTrianglesWithSameArea`: supremum over areas\n   - `g n`: supremum over all n-point configurations\n\n3. **Known Bounds (lines 93-118):**\n   - Lower: n\u00b2 log log n (Erd\u0151s-Purdy)\n   - Upper: n^{5/2} (1971), n^{20/9} (2017)\n   - Conjecture: \u0398(n\u00b2 polylog(n))\n\n4. **Higher Dimensions (lines 120-161):**\n   - `g_dim d r n`: axiomatized generalization\n   - Bounds for d = 3, 4, 5, 6\n   - Oppenheim-Lenz construction\n\n5. **Incidence Geometry (lines 181-200):**\n   - `incidence_reduction`: triangle counting \u2192 point-line incidences\n   - `szemeredi_trotter_bound`: O(n^{2/3}m^{2/3} + n + m)\n\n6. **Summary (lines 202-233):**\n   - `erdos_1086_statement` and `erdos_1086_summary`: genuine theorems",
     "keyInsights": [
-      "**Incidence Reduction:** For fixed base edge AB and area α, point C lies on two lines parallel to AB — reducing triangle counting to point-line incidences",
-      "**Szemerédi-Trotter Tool:** The ST theorem bounding point-line incidences to O(n^{2/3}m^{2/3} + n + m) is the main technique for upper bounds",
-      "**Exponent Gap:** The current gap between exponent 2 (lower) and 20/9 ≈ 2.222 (upper) is the open problem — Erdős-Purdy conjecture the lower bound is closer to the truth",
-      "**Grid Construction:** A √n × √n integer grid gives g(n) ≥ n²/8, showing quadratic behavior is achievable",
-      "**Higher-Dimensional Richness:** The problem generalizes to simplices in ℝ^d with interesting dimension-dependent phenomena — the critical dimension 2k+2 for k-simplices",
+      "**Incidence Reduction:** For fixed base edge AB and area \u03b1, point C lies on two lines parallel to AB \u2014 reducing triangle counting to point-line incidences",
+      "**Szemer\u00e9di-Trotter Tool:** The ST theorem bounding point-line incidences to O(n^{2/3}m^{2/3} + n + m) is the main technique for upper bounds",
+      "**Exponent Gap:** The current gap between exponent 2 (lower) and 20/9 \u2248 2.222 (upper) is the open problem \u2014 Erd\u0151s-Purdy conjecture the lower bound is closer to the truth",
+      "**Grid Construction:** A \u221an \u00d7 \u221an integer grid gives g(n) \u2265 n\u00b2/8, showing quadratic behavior is achievable",
+      "**Higher-Dimensional Richness:** The problem generalizes to simplices in \u211d^d with interesting dimension-dependent phenomena \u2014 the critical dimension 2k+2 for k-simplices",
       "**Progressive Upper Bounds:** The upper exponent decreased from 5/2 (1971) to 20/9 (2017) over 46 years, approaching but not reaching the conjectured quadratic"
     ],
     "prerequisites": [
@@ -137,11 +137,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1086 asks to estimate g(n), the maximum number of equal-area triangles from n points in ℝ². The best bounds are n² log log n ≪ g(n) ≪ n^{20/9} (Erdős-Purdy 1971, Raz-Sharir 2017), with the Erdős-Purdy conjecture predicting Θ(n² polylog(n)). The problem connects to Szemerédi-Trotter incidence geometry and generalizes to higher-dimensional simplices. The formalization includes typed conjectures, incidence-based reductions, and genuine theorems combining the main bounds.",
-    "implications": "**Theoretical Significance**: **Connections to Combinatorial Geometry**\n\n1. **Incidence Geometry:** The problem is fundamentally about point-curve incidences — the Szemerédi-Trotter theorem and its generalizations are the main tools\n\n2. **Erdős Distinct Distances:** Related to the distinct distances problem (Erdős #184) — both concern extremal point configuration geometry\n\n**3. Algebraic Methods:** Recent upper bound improvements use polynomial partitioning (Guth-Katz framework) applied to the incidence formulation\n\n4. **Higher Dimensions:** The dimension 2k+2 threshold for k-simplices reveals a dimension-dependent phase transition in extremal geometry\n\n5. **Grid Extremality:** Integer lattice grids are conjectured to be near-extremal, as in many Erdős-type point configuration problems.",
+    "summary": "Erd\u0151s Problem #1086 asks to estimate g(n), the maximum number of equal-area triangles from n points in \u211d\u00b2. The best bounds are n\u00b2 log log n \u226a g(n) \u226a n^{20/9} (Erd\u0151s-Purdy 1971, Raz-Sharir 2017), with the Erd\u0151s-Purdy conjecture predicting \u0398(n\u00b2 polylog(n)). The problem connects to Szemer\u00e9di-Trotter incidence geometry and generalizes to higher-dimensional simplices. The formalization includes typed conjectures, incidence-based reductions, and genuine theorems combining the main bounds.",
+    "implications": "**Theoretical Significance**: **Connections to Combinatorial Geometry**\n\n1. **Incidence Geometry:** The problem is fundamentally about point-curve incidences \u2014 the Szemer\u00e9di-Trotter theorem and its generalizations are the main tools\n\n2. **Erd\u0151s Distinct Distances:** Related to the distinct distances problem (Erd\u0151s #184) \u2014 both concern extremal point configuration geometry\n\n**3. Algebraic Methods:** Recent upper bound improvements use polynomial partitioning (Guth-Katz framework) applied to the incidence formulation\n\n4. **Higher Dimensions:** The dimension 2k+2 threshold for k-simplices reveals a dimension-dependent phase transition in extremal geometry\n\n5. **Grid Extremality:** Integer lattice grids are conjectured to be near-extremal, as in many Erd\u0151s-type point configuration problems.",
     "openQuestions": [
       "Close the gap between exponents 2 and 20/9 for g(n)",
-      "Prove or disprove the Erdős-Purdy conjecture g(n) = Θ(n² polylog(n))",
+      "Prove or disprove the Erd\u0151s-Purdy conjecture g(n) = \u0398(n\u00b2 polylog(n))",
       "Improve the upper bound below n^{20/9}",
       "Determine exact values of g(n) for small n",
       "Find exact formulas for g_d^r(n) in higher dimensions"
@@ -149,34 +149,34 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-1069",
-      "title": "Erdős Problem #1069: Szemerédi-Trotter Theorem on k-Rich Lines",
-      "relationship": "The Szemerédi-Trotter theorem is the primary tool for the upper bound on g(n). Problem #1069 formalizes the k-rich lines variant of the same incidence theorem used in the incidence_reduction step here."
+      "relationship": "related",
+      "description": "The Szemer\u00e9di-Trotter theorem is the primary tool for the upper bound on g(n). Problem #1069 formalizes the k-rich lines variant of the same incidence theorem used in the incidence_reduction step here.",
+      "targetId": "erdos-1069"
     },
     {
-      "slug": "erdos-1085",
-      "title": "Erdős Problem #1085: The Unit Distance Problem",
-      "relationship": "The unit distance problem is the archetypal Erdős point-configuration problem in the plane. Both problems ask for the maximum number of a geometric pattern (unit distances vs. equal-area triangles) among n points, and both use Szemerédi-Trotter incidence bounds."
+      "relationship": "related",
+      "description": "The unit distance problem is the archetypal Erd\u0151s point-configuration problem in the plane. Both problems ask for the maximum number of a geometric pattern (unit distances vs. equal-area triangles) among n points, and both use Szemer\u00e9di-Trotter incidence bounds.",
+      "targetId": "erdos-1085"
     },
     {
-      "slug": "erdos-1082",
-      "title": "Erdős Problem #1082: Distinct Distances in General Position",
-      "relationship": "The Erdős distinct distances problem is the closest sibling to the equal-area triangles problem. The Guth-Katz polynomial partitioning framework that improved distinct distance bounds also influences the Raz-Sharir 2017 upper bound n^{20/9} for g(n)."
+      "relationship": "related",
+      "description": "The Erd\u0151s distinct distances problem is the closest sibling to the equal-area triangles problem. The Guth-Katz polynomial partitioning framework that improved distinct distance bounds also influences the Raz-Sharir 2017 upper bound n^{20/9} for g(n).",
+      "targetId": "erdos-1082"
     },
     {
-      "slug": "erdos-1084",
-      "title": "Erdős Problem #1084: Unit Distances Among Separated Points",
-      "relationship": "Studies unit distances under separation constraints in the plane, another extremal point-configuration problem sharing the same incidence-geometry toolkit and partially overlapping with the methods used for equal-area triangle bounds."
+      "relationship": "related",
+      "description": "Studies unit distances under separation constraints in the plane, another extremal point-configuration problem sharing the same incidence-geometry toolkit and partially overlapping with the methods used for equal-area triangle bounds.",
+      "targetId": "erdos-1084"
     },
     {
-      "slug": "erdos-102",
-      "title": "Erdős Problem #102: Maximum Collinear Points Forced by Many Rich Lines",
-      "relationship": "Concerns collinearity and rich-line configurations — exactly the dual perspective to the incidence_reduction argument in this problem, where equal-area triangles reduce to counting incidences between points and parallel-line pairs."
+      "relationship": "related",
+      "description": "Concerns collinearity and rich-line configurations \u2014 exactly the dual perspective to the incidence_reduction argument in this problem, where equal-area triangles reduce to counting incidences between points and parallel-line pairs.",
+      "targetId": "erdos-102"
     },
     {
-      "slug": "szemeredi-core",
-      "title": "Szemerédi Core Definitions",
-      "relationship": "Provides the foundational combinatorial framework underlying the Szemerédi-Trotter incidence bound cited as szemeredi_trotter_bound in this formalization."
+      "relationship": "related",
+      "description": "Provides the foundational combinatorial framework underlying the Szemer\u00e9di-Trotter incidence bound cited as szemeredi_trotter_bound in this formalization.",
+      "targetId": "szemeredi-core"
     }
   ],
   "relatedProofs": [
@@ -187,38 +187,38 @@
     },
     {
       "slug": "erdos-755",
-      "title": "Erdős Problem #755: Equilateral Triangles in ℝ⁶",
+      "title": "Erd\u0151s Problem #755: Equilateral Triangles in \u211d\u2076",
       "relationship": "Counts equilateral triangles (a specific area-constrained triangle family) in higher-dimensional space, directly paralleling the higher-dimensional g_d^r(n) generalizations formalized in the higher-dim section of this proof."
     },
     {
       "slug": "erdos-756",
-      "title": "Erdős Problem #756: Rich Distances in the Plane",
+      "title": "Erd\u0151s Problem #756: Rich Distances in the Plane",
       "relationship": "Studies rich distance distributions among n planar points; the 'rich' structure (many repeated values) is the same extremal phenomenon studied here for triangle areas, and many of the counting arguments are analogous."
     }
   ],
   "references": [
     {
       "authors": [
-        "P. Erdős",
+        "P. Erd\u0151s",
         "G. Purdy"
       ],
       "title": "Some extremal problems in geometry",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 1971,
       "volume": "10",
-      "pages": "246–252",
-      "note": "Establishes the original bounds n² log log n ≪ g(n) ≪ n^{5/2} and states the conjecture that g(n) = Θ(n² polylog(n))."
+      "pages": "246\u2013252",
+      "note": "Establishes the original bounds n\u00b2 log log n \u226a g(n) \u226a n^{5/2} and states the conjecture that g(n) = \u0398(n\u00b2 polylog(n))."
     },
     {
       "authors": [
-        "E. Szemerédi",
+        "E. Szemer\u00e9di",
         "W. T. Trotter Jr."
       ],
       "title": "Extremal problems in discrete geometry",
       "venue": "Combinatorica",
       "year": 1983,
       "volume": "3",
-      "pages": "381–392",
+      "pages": "381\u2013392",
       "note": "Proves the O(n^{2/3}m^{2/3} + n + m) point-line incidence bound that underlies all upper bounds for g(n) via the incidence_reduction argument."
     },
     {
@@ -230,7 +230,7 @@
       "venue": "Combinatorica",
       "year": 2017,
       "volume": "37",
-      "pages": "1221–1240",
+      "pages": "1221\u20131240",
       "note": "Establishes the current best upper bound g(n) = O(n^{20/9}) using polynomial partitioning and algebraic incidence methods."
     },
     {
@@ -242,20 +242,20 @@
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 1992,
       "volume": "59",
-      "pages": "12–22",
+      "pages": "12\u201322",
       "note": "Improves the upper bound from n^{5/2} using point-curve incidence techniques; introduces the incidence-reduction framework central to subsequent improvements."
     },
     {
       "authors": [
         "A. Dumitrescu",
         "M. Sharir",
-        "C. D. Tóth"
+        "C. D. T\u00f3th"
       ],
       "title": "Extremal problems on triangle areas in two and three dimensions",
       "venue": "Journal of Combinatorial Theory, Series A",
       "year": 2009,
       "volume": "116",
-      "pages": "1177–1198",
+      "pages": "1177\u20131198",
       "note": "Provides further upper bound improvements and treats the three-dimensional case g_3^2(n), directly covering the higher-dimensional bounds formalized in this proof."
     }
   ],

@@ -1,10 +1,10 @@
 {
   "id": "erdos-420",
-  "title": "Erdős Problem #420: Divisor Function Ratios for Factorials",
+  "title": "Erd\u0151s Problem #420: Divisor Function Ratios for Factorials",
   "slug": "erdos-420",
-  "description": "For F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!), study when F→∞ and when F is dense in (1,∞). Partially solved by EGIP96: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = ∞.",
+  "description": "For F(f,n) = \u03c4((n+\u230af(n)\u230b)!)/\u03c4(n!), study when F\u2192\u221e and when F is dense in (1,\u221e). Partially solved by EGIP96: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = \u221e.",
   "meta": {
-    "author": "Erdős-Graham-Ivić-Pomerance (1996)",
+    "author": "Erd\u0151s-Graham-Ivi\u0107-Pomerance (1996)",
     "sourceUrl": "https://erdosproblems.com/420",
     "date": "1996",
     "status": "axiomatized",
@@ -48,33 +48,33 @@
     ],
     "originalContributions": [
       "tau definition: divisor counting function",
-      "tauFactorial definition: τ(n!)",
-      "F definition: the ratio τ((n+k)!)/τ(n!)",
-      "sqrt_gives_infinity axiom: easy case f = √n",
+      "tauFactorial definition: \u03c4(n!)",
+      "F definition: the ratio \u03c4((n+k)!)/\u03c4(n!)",
+      "sqrt_gives_infinity axiom: easy case f = \u221an",
       "liminf_log_equals_one axiom: EGIP96 result",
       "four_ninths_gives_infinity axiom: EGIP96 result",
       "small_f_gives_one_almost_all axiom: almost all n result",
       "bounded_gaps_implies_limsup_infinity axiom: prime gap connection",
       "zhang_bounded_gaps axiom: Zhang's 2013 theorem",
       "bounded_gaps_consequence theorem: corollary of Zhang",
-      "cramer_implies_limit_infinity axiom: Cramér connection"
+      "cramer_implies_limit_infinity axiom: Cram\u00e9r connection"
     ],
     "axiomCount": 13,
     "lineCount": 310,
     "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Divisor Functions and Factorials**\n\nThis problem studies how the divisor function τ(n) = number of divisors of n behaves when applied to factorials. The ratio F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!) measures how much τ grows when we extend from n! to a slightly larger factorial.\n\n**Key Paper:**\nErdős, Graham, Ivić, and Pomerance (1996) established the fundamental bounds in their paper \"On the number of divisors of n!\". They showed that:\n- lim F(n^{1/2}, n) = ∞ (and n^{1/2} can be improved to n^{1/2-c})\n- liminf F(c log n, n) = 1 for any c > 0\n- lim F(n^{4/9}, n) = ∞\n\n**Connection to Prime Gaps:**\nVan Doorn noted that bounded prime gaps (now known to exist by Zhang's theorem) imply limsup F(g(n), n) = ∞ for any g(n) → ∞. Cramér's conjecture would give even stronger results.",
+    "historicalContext": "**Divisor Functions and Factorials**\n\nThis problem studies how the divisor function \u03c4(n) = number of divisors of n behaves when applied to factorials. The ratio F(f,n) = \u03c4((n+\u230af(n)\u230b)!)/\u03c4(n!) measures how much \u03c4 grows when we extend from n! to a slightly larger factorial.\n\n**Key Paper:**\nErd\u0151s, Graham, Ivi\u0107, and Pomerance (1996) established the fundamental bounds in their paper \"On the number of divisors of n!\". They showed that:\n- lim F(n^{1/2}, n) = \u221e (and n^{1/2} can be improved to n^{1/2-c})\n- liminf F(c log n, n) = 1 for any c > 0\n- lim F(n^{4/9}, n) = \u221e\n\n**Connection to Prime Gaps:**\nVan Doorn noted that bounded prime gaps (now known to exist by Zhang's theorem) imply limsup F(g(n), n) = \u221e for any g(n) \u2192 \u221e. Cram\u00e9r's conjecture would give even stronger results.",
     "problemStatement": "**The Problem (Partially Solved)**\n\nLet $\\tau(n)$ count the divisors of $n$ and define:\n$$F(f,n) = \\frac{\\tau((n+\\lfloor f(n)\\rfloor)!)}{\\tau(n!)}$$\n\n**Question 1:** Is $\\lim_{n\\to\\infty} F((\\log n)^C, n) = \\infty$ for large $C$?\n\n**Question 2:** Is $F(\\log n, n)$ everywhere dense in $(1,\\infty)$?\n\n**Question 3:** If $f(n) \\leq \\log n$ is monotonic with $f(n) \\to \\infty$, is $F(f,n)$ everywhere dense?\n\n**Known Results:**\n- $\\liminf F(c\\log n, n) = 1$ for any $c > 0$ (EGIP96)\n- $\\lim F(n^{4/9}, n) = \\infty$ (EGIP96)\n- If $f(n) = o((\\log n)^2)$, then $F(f,n) \\sim 1$ for almost all $n$",
-    "text": "For F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!), study when F→∞ and when F is dense in (1,∞). Partially solved by EGIP96: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = ∞.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Divisor Function:** Define τ using Mathlib's Nat.divisors.card\n\n2. **Factorial Divisors:** Define tauFactorial(n) = τ(n!)\n\n3. **The F Function:** Formalize F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!)\n\n4. **EGIP96 Results:** State key theorems as axioms:\n   - liminf behavior for logarithmic f\n   - limit behavior for polynomial f (n^{4/9})\n   - Almost-all behavior for small f\n\n5. **Prime Gap Connections:** Formalize Zhang's theorem and its implications for F\n\n6. **Axiom Justification:** Full proofs require analytic number theory beyond Mathlib scope.",
+    "text": "For F(f,n) = \u03c4((n+\u230af(n)\u230b)!)/\u03c4(n!), study when F\u2192\u221e and when F is dense in (1,\u221e). Partially solved by EGIP96: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = \u221e.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Divisor Function:** Define \u03c4 using Mathlib's Nat.divisors.card\n\n2. **Factorial Divisors:** Define tauFactorial(n) = \u03c4(n!)\n\n3. **The F Function:** Formalize F(f,n) = \u03c4((n+\u230af(n)\u230b)!)/\u03c4(n!)\n\n4. **EGIP96 Results:** State key theorems as axioms:\n   - liminf behavior for logarithmic f\n   - limit behavior for polynomial f (n^{4/9})\n   - Almost-all behavior for small f\n\n5. **Prime Gap Connections:** Formalize Zhang's theorem and its implications for F\n\n6. **Axiom Justification:** Full proofs require analytic number theory beyond Mathlib scope.",
     "keyInsights": [
-      "**Divisor Growth:** τ(n!) encodes prime factorization structure via Legendre's formula",
-      "**Threshold Behavior:** There's a transition between f where F→1 and f where F→∞",
+      "**Divisor Growth:** \u03c4(n!) encodes prime factorization structure via Legendre's formula",
+      "**Threshold Behavior:** There's a transition between f where F\u21921 and f where F\u2192\u221e",
       "**EGIP96 Gap:** The behavior between (log n)^C and n^{4/9} remains partially open",
       "**Prime Connection:** F behavior is intimately connected to prime gap distribution",
-      "**Zhang Consequence:** Bounded prime gaps imply limsup F(g(n), n) = ∞ for any g→∞",
-      "**Almost-All Results:** For small f = o((log n)²), F(f,n) ≈ 1 for almost all n"
+      "**Zhang Consequence:** Bounded prime gaps imply limsup F(g(n), n) = \u221e for any g\u2192\u221e",
+      "**Almost-All Results:** For small f = o((log n)\u00b2), F(f,n) \u2248 1 for almost all n"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -105,7 +105,7 @@
     },
     {
       "id": "easy-result",
-      "title": "Easy Result - F(√n, n) → ∞",
+      "title": "Easy Result - F(\u221an, n) \u2192 \u221e",
       "summary": "sqrt_gives_infinity, subhalf_exponent_works axioms",
       "startLine": 112,
       "endLine": 134
@@ -140,7 +140,7 @@
     },
     {
       "id": "legendre",
-      "title": "Legendre's Formula and τ(n!)",
+      "title": "Legendre's Formula and \u03c4(n!)",
       "summary": "tau_factorial_formula, legendre_exponent",
       "startLine": 284,
       "endLine": 302
@@ -154,13 +154,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #420 studies the ratio F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!) as a function of f. The EGIP96 paper established key results: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = ∞. The density question for F(log n, n) in (1,∞) remains open. The problem has deep connections to prime gap theory, with Zhang's bounded gaps theorem implying consequences for F.",
-    "implications": "**Theoretical Significance**: **Broader Impact**\n\n1. **Divisor Theory:** Advances understanding of how τ grows for factorials.\n\n**2. Prime Distribution:** F behavior encodes information about prime gaps.\n\n3. **Almost-All Results:** The density-0 exceptional set phenomenon appears frequently.\n\n4. **Connection to Cramér:** Resolution would shed light on prime gap conjectures.",
+    "summary": "Erd\u0151s Problem #420 studies the ratio F(f,n) = \u03c4((n+\u230af(n)\u230b)!)/\u03c4(n!) as a function of f. The EGIP96 paper established key results: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = \u221e. The density question for F(log n, n) in (1,\u221e) remains open. The problem has deep connections to prime gap theory, with Zhang's bounded gaps theorem implying consequences for F.",
+    "implications": "**Theoretical Significance**: **Broader Impact**\n\n1. **Divisor Theory:** Advances understanding of how \u03c4 grows for factorials.\n\n**2. Prime Distribution:** F behavior encodes information about prime gaps.\n\n3. **Almost-All Results:** The density-0 exceptional set phenomenon appears frequently.\n\n4. **Connection to Cram\u00e9r:** Resolution would shed light on prime gap conjectures.",
     "openQuestions": [
-      "Does lim F((log n)^C, n) = ∞ for some/all large C?",
-      "Is {F(log n, n) : n ∈ ℕ} dense in (1, ∞)?",
-      "For monotonic f ≤ log n with f → ∞, is F(f,n) dense?",
-      "Precise threshold f* where lim F(f*, n) first becomes ∞",
+      "Does lim F((log n)^C, n) = \u221e for some/all large C?",
+      "Is {F(log n, n) : n \u2208 \u2115} dense in (1, \u221e)?",
+      "For monotonic f \u2264 log n with f \u2192 \u221e, is F(f,n) dense?",
+      "Precise threshold f* where lim F(f*, n) first becomes \u221e",
       "Quantitative versions of almost-all results"
     ]
   },
@@ -183,5 +183,39 @@
     "axiomCount": 13,
     "theoremCount": 5,
     "definitionCount": 3
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-727",
+      "relationship": "related",
+      "description": "Share factorials, partially-solved, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Share factorials and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1058",
+      "relationship": "related",
+      "description": "Share factorials and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Share factorials and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Share factorials and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-727",
+    "erdos-1056",
+    "erdos-1058",
+    "erdos-1059",
+    "erdos-1072"
+  ]
 }

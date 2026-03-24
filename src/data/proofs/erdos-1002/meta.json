@@ -1,10 +1,10 @@
 {
   "id": "erdos-1002",
-  "title": "Erdős Problem #1002: Asymptotic Distribution of Weighted Fractional Sums",
+  "title": "Erd\u0151s Problem #1002: Asymptotic Distribution of Weighted Fractional Sums",
   "slug": "erdos-1002",
-  "description": "For 0 < α < 1, define f(α,n) = (1/log n) Σ (1/2 - {αk}). Does f(α,n) have an asymptotic distribution function? Kesten (1960) proved the two-parameter variant has Cauchy distribution, but the one-parameter case remains open.",
+  "description": "For 0 < \u03b1 < 1, define f(\u03b1,n) = (1/log n) \u03a3 (1/2 - {\u03b1k}). Does f(\u03b1,n) have an asymptotic distribution function? Kesten (1960) proved the two-parameter variant has Cauchy distribution, but the one-parameter case remains open.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1002",
     "date": "",
     "status": "formalized",
@@ -27,15 +27,15 @@
     "assumptions": "None. Formalized with 0 axioms and 0 sorries."
   },
   "overview": {
-    "historicalContext": "**Fractional Parts in Number Theory**\n\nThe study of fractional parts $\\{n\\alpha\\}$ for irrational $\\alpha$ is central to Diophantine approximation. Hermann Weyl's equidistribution theorem (1916) established that $\\{\\alpha\\}, \\{2\\alpha\\}, \\{3\\alpha\\}, \\ldots$ is uniformly distributed in $[0,1)$, a foundational result connecting number theory to ergodic theory.\n\n**Gauss and Continued Fractions**: Carl Friedrich Gauss studied the map $T(x) = \\{1/x\\}$ on $(0,1)$, discovering its invariant measure $d\\mu = dx/(\\log 2 \\cdot (1+x))$. The Gauss-Kuzmin theorem (Kuzmin 1928, Lévy 1929) describes the rate at which iterates of $T$ converge to this measure.\n\n**Erdős's Question**: Erdős asked whether $f(\\alpha, n) = \\frac{1}{\\log n}\\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ has an asymptotic distribution function — does the proportion of $\\alpha$ with $f(\\alpha, n) \\le c$ converge as $n \\to \\infty$?\n\n**Kesten's Breakthrough**: Harry Kesten (1960) proved the two-parameter variant $f(\\alpha, \\beta, n) = \\frac{1}{\\log n}\\sum(1/2 - \\{\\beta + \\alpha k\\})$ has a Cauchy limit distribution $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + 1/2$, using the ergodic properties of the natural extension of the Gauss map. The extra parameter $\\beta$ provides the independence needed for the ergodic argument. Fixing $\\beta = 0$ destroys this independence, and the one-parameter problem remains **OPEN**.",
-    "problemStatement": "**Problem Statement**\n\nFor any 0 < α < 1, define:\n$$f(\\alpha,n) = \\frac{1}{\\log n} \\sum_{1 \\leq k \\leq n} \\left(\\frac{1}{2} - \\{\\alpha k\\}\\right)$$\n\nDoes f(α,n) possess an asymptotic distribution function?\n\nMore precisely: Does there exist a non-decreasing function g with g(-∞) = 0, g(+∞) = 1, such that:\n$$\\lim_{n \\to \\infty} |\\{\\alpha \\in (0,1) : f(\\alpha,n) \\leq c\\}| = g(c)?$$\n\n**Status**: OPEN\n\n**Related Result**: Kesten (1960) proved that f(α,β,n) with an additional shift parameter β has Cauchy distribution g(c) = (1/π)arctan(ρc) + 1/2.",
-    "text": "For 0 < α < 1, define f(α,n) = (1/log n) Σ (1/2 - {αk}). Does f(α,n) have an asymptotic distribution function? Kesten (1960) proved the two-parameter variant has Cauchy distribution, but the one-parameter case remains open.",
-    "proofStrategy": "**Why This Problem is Difficult**\n\nThe key difficulty is the loss of independence when β = 0:\n\n1. **Two-Parameter Case**: Averaging over both α and β provides sufficient independence for ergodic methods.\n\n2. **One-Parameter Case**: With β = 0 fixed, the sequence {αk} for different k values has subtle correlations.\n\n3. **Continued Fractions**: The behavior of f(α,n) depends on the continued fraction expansion of α. Different Diophantine properties of α lead to different behaviors.\n\n4. **Dynamical Systems**: The problem connects to geodesic flows on modular surfaces, but the relevant ergodic theory is incomplete.\n\n**Potential Approaches**:\n- Study the joint distribution of (α, {α}, {2α}, ..., {nα})\n- Analyze the Fourier transform of the distribution\n- Use number-theoretic properties of continued fractions",
+    "historicalContext": "**Fractional Parts in Number Theory**\n\nThe study of fractional parts $\\{n\\alpha\\}$ for irrational $\\alpha$ is central to Diophantine approximation. Hermann Weyl's equidistribution theorem (1916) established that $\\{\\alpha\\}, \\{2\\alpha\\}, \\{3\\alpha\\}, \\ldots$ is uniformly distributed in $[0,1)$, a foundational result connecting number theory to ergodic theory.\n\n**Gauss and Continued Fractions**: Carl Friedrich Gauss studied the map $T(x) = \\{1/x\\}$ on $(0,1)$, discovering its invariant measure $d\\mu = dx/(\\log 2 \\cdot (1+x))$. The Gauss-Kuzmin theorem (Kuzmin 1928, L\u00e9vy 1929) describes the rate at which iterates of $T$ converge to this measure.\n\n**Erd\u0151s's Question**: Erd\u0151s asked whether $f(\\alpha, n) = \\frac{1}{\\log n}\\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ has an asymptotic distribution function \u2014 does the proportion of $\\alpha$ with $f(\\alpha, n) \\le c$ converge as $n \\to \\infty$?\n\n**Kesten's Breakthrough**: Harry Kesten (1960) proved the two-parameter variant $f(\\alpha, \\beta, n) = \\frac{1}{\\log n}\\sum(1/2 - \\{\\beta + \\alpha k\\})$ has a Cauchy limit distribution $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + 1/2$, using the ergodic properties of the natural extension of the Gauss map. The extra parameter $\\beta$ provides the independence needed for the ergodic argument. Fixing $\\beta = 0$ destroys this independence, and the one-parameter problem remains **OPEN**.",
+    "problemStatement": "**Problem Statement**\n\nFor any 0 < \u03b1 < 1, define:\n$$f(\\alpha,n) = \\frac{1}{\\log n} \\sum_{1 \\leq k \\leq n} \\left(\\frac{1}{2} - \\{\\alpha k\\}\\right)$$\n\nDoes f(\u03b1,n) possess an asymptotic distribution function?\n\nMore precisely: Does there exist a non-decreasing function g with g(-\u221e) = 0, g(+\u221e) = 1, such that:\n$$\\lim_{n \\to \\infty} |\\{\\alpha \\in (0,1) : f(\\alpha,n) \\leq c\\}| = g(c)?$$\n\n**Status**: OPEN\n\n**Related Result**: Kesten (1960) proved that f(\u03b1,\u03b2,n) with an additional shift parameter \u03b2 has Cauchy distribution g(c) = (1/\u03c0)arctan(\u03c1c) + 1/2.",
+    "text": "For 0 < \u03b1 < 1, define f(\u03b1,n) = (1/log n) \u03a3 (1/2 - {\u03b1k}). Does f(\u03b1,n) have an asymptotic distribution function? Kesten (1960) proved the two-parameter variant has Cauchy distribution, but the one-parameter case remains open.",
+    "proofStrategy": "**Why This Problem is Difficult**\n\nThe key difficulty is the loss of independence when \u03b2 = 0:\n\n1. **Two-Parameter Case**: Averaging over both \u03b1 and \u03b2 provides sufficient independence for ergodic methods.\n\n2. **One-Parameter Case**: With \u03b2 = 0 fixed, the sequence {\u03b1k} for different k values has subtle correlations.\n\n3. **Continued Fractions**: The behavior of f(\u03b1,n) depends on the continued fraction expansion of \u03b1. Different Diophantine properties of \u03b1 lead to different behaviors.\n\n4. **Dynamical Systems**: The problem connects to geodesic flows on modular surfaces, but the relevant ergodic theory is incomplete.\n\n**Potential Approaches**:\n- Study the joint distribution of (\u03b1, {\u03b1}, {2\u03b1}, ..., {n\u03b1})\n- Analyze the Fourier transform of the distribution\n- Use number-theoretic properties of continued fractions",
     "keyInsights": [
-      "**Weyl equidistribution**: $\\{\\alpha k\\}$ is equidistributed in $[0,1)$ for irrational $\\alpha$, so the inner sum grows sublinearly — the $\\log n$ normalization captures the precise scale",
+      "**Weyl equidistribution**: $\\{\\alpha k\\}$ is equidistributed in $[0,1)$ for irrational $\\alpha$, so the inner sum grows sublinearly \u2014 the $\\log n$ normalization captures the precise scale",
       "**Kesten's Cauchy limit**: The two-parameter variant $f(\\alpha, \\beta, n)$ converges to $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$ via ergodic properties of the Gauss map's natural extension",
       "**Loss of independence**: Fixing $\\beta = 0$ eliminates the averaging over the shift parameter that provides the crucial ergodic independence in Kesten's proof",
-      "**Continued fraction connection**: The behavior of $f(\\alpha, n)$ depends on $\\alpha$'s continued fraction partial quotients — large quotients cause large oscillations in the sum",
+      "**Continued fraction connection**: The behavior of $f(\\alpha, n)$ depends on $\\alpha$'s continued fraction partial quotients \u2014 large quotients cause large oscillations in the sum",
       "**Open status**: Neither the existence of a limiting distribution nor its form (Cauchy or otherwise) is known for the one-parameter case"
     ],
     "prerequisites": [
@@ -53,7 +53,7 @@
     },
     {
       "id": "weighted-sum",
-      "title": "The Weighted Sum f(α, n)",
+      "title": "The Weighted Sum f(\u03b1, n)",
       "summary": "$S(\\alpha, n) = \\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ and $f(\\alpha, n) = S(\\alpha, n)/\\log n$",
       "startLine": 39,
       "endLine": 1
@@ -116,62 +116,68 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1002 asks whether the weighted fractional part sum f(α,n) = (1/log n) Σ (1/2 - {αk}) has an asymptotic distribution function. While Kesten (1960) proved the two-parameter variant has Cauchy distribution, the one-parameter case (fixing β = 0) remains open. The difficulty lies in the loss of independence when the shift parameter is fixed.",
-    "implications": "1. **Diophantine Approximation**: Connects distribution theory to number-theoretic properties of real numbers\n\n**2. Ergodic Theory**: Relates to geodesic flows and mixing properties on modular surfaces\n\n3. **Probability Theory**: Tests limits of central limit theorem-type results for dependent sequences\n\n4. **Continued Fractions**: The answer may distinguish between different Diophantine types of α.",
+    "summary": "Erd\u0151s Problem #1002 asks whether the weighted fractional part sum f(\u03b1,n) = (1/log n) \u03a3 (1/2 - {\u03b1k}) has an asymptotic distribution function. While Kesten (1960) proved the two-parameter variant has Cauchy distribution, the one-parameter case (fixing \u03b2 = 0) remains open. The difficulty lies in the loss of independence when the shift parameter is fixed.",
+    "implications": "1. **Diophantine Approximation**: Connects distribution theory to number-theoretic properties of real numbers\n\n**2. Ergodic Theory**: Relates to geodesic flows and mixing properties on modular surfaces\n\n3. **Probability Theory**: Tests limits of central limit theorem-type results for dependent sequences\n\n4. **Continued Fractions**: The answer may distinguish between different Diophantine types of \u03b1.",
     "openQuestions": [
-      "Does f(α,n) have an asymptotic distribution for Lebesgue-almost all α?",
+      "Does f(\u03b1,n) have an asymptotic distribution for Lebesgue-almost all \u03b1?",
       "If a distribution exists, is it the same Cauchy distribution as Kesten's result?",
-      "How does the behavior depend on the continued fraction expansion of α?",
+      "How does the behavior depend on the continued fraction expansion of \u03b1?",
       "Can the problem be resolved for specific classes (quadratic irrationals, Liouville numbers)?",
       "What is the connection to the dynamics of the Gauss map?"
     ]
   },
   "crossReferences": [
     {
-      "target": "erdos-994",
-      "relationship": "Khintchine's equidistribution conjecture concerns whether (1/n)∑1_{kα∈E} → λ(E) for almost all α and ALL measurable E — the same tension between pointwise and averaged equidistribution that drives the difficulty in Problem #1002"
+      "relationship": "related",
+      "targetId": "erdos-994",
+      "description": "Khintchine's equidistribution conjecture concerns whether (1/n)\u22111_{k\u03b1\u2208E} \u2192 \u03bb(E) for almost all \u03b1 and ALL measurable E \u2014 the same tension between pointwise and averaged equidistribution that drives the difficulty in Problem #1002"
     },
     {
-      "target": "erdos-995",
-      "relationship": "Lacunary sequences and fractional parts: estimates of ∑f({αn_k}) for lacunary n_k share the same normalization scale and Diophantine dependence on α as the weighted sums in Problem #1002"
+      "relationship": "related",
+      "targetId": "erdos-995",
+      "description": "Lacunary sequences and fractional parts: estimates of \u2211f({\u03b1n_k}) for lacunary n_k share the same normalization scale and Diophantine dependence on \u03b1 as the weighted sums in Problem #1002"
     },
     {
-      "target": "erdos-1001",
-      "relationship": "Kesten and Sós appear in both problems — Problem #1001 records their result on Diophantine approximation density, providing context for Kesten's 1960 Cauchy-distribution theorem cited in Problem #1002"
+      "relationship": "related",
+      "targetId": "erdos-1001",
+      "description": "Kesten and S\u00f3s appear in both problems \u2014 Problem #1001 records their result on Diophantine approximation density, providing context for Kesten's 1960 Cauchy-distribution theorem cited in Problem #1002"
     },
     {
-      "target": "erdos-464",
-      "relationship": "Density of fractional parts along lacunary sequences: equidistribution and density questions for {θn_k} complement the distribution-function question for the running sum (1/log n)∑(1/2 − {αk})"
+      "relationship": "related",
+      "targetId": "erdos-464",
+      "description": "Density of fractional parts along lacunary sequences: equidistribution and density questions for {\u03b8n_k} complement the distribution-function question for the running sum (1/log n)\u2211(1/2 \u2212 {\u03b1k})"
     },
     {
-      "target": "erdos-492",
-      "relationship": "Schmidt's disproof of uniform distribution for generalized fractional parts illustrates how sensitive distribution questions for fractional-part sums are to the exact setup — directly relevant to whether fixing β = 0 destroys the Cauchy limit"
+      "relationship": "related",
+      "targetId": "erdos-492",
+      "description": "Schmidt's disproof of uniform distribution for generalized fractional parts illustrates how sensitive distribution questions for fractional-part sums are to the exact setup \u2014 directly relevant to whether fixing \u03b2 = 0 destroys the Cauchy limit"
     },
     {
-      "target": "laws-of-large-numbers",
-      "relationship": "The asymptotic distribution question for f(α,n) is an analogue of the LLN for strongly dependent sequences: Weyl equidistribution gives the almost-sure mean zero, but the fluctuation scale (1/log n) and limiting law require deeper ergodic input"
+      "relationship": "related",
+      "targetId": "laws-of-large-numbers",
+      "description": "The asymptotic distribution question for f(\u03b1,n) is an analogue of the LLN for strongly dependent sequences: Weyl equidistribution gives the almost-sure mean zero, but the fluctuation scale (1/log n) and limiting law require deeper ergodic input"
     }
   ],
   "relatedProofs": [
     {
       "target": "erdos-994",
-      "description": "Khintchine equidistribution conjecture — equidistribution of {kα} for all measurable sets, disproved by Marstrand 1970"
+      "description": "Khintchine equidistribution conjecture \u2014 equidistribution of {k\u03b1} for all measurable sets, disproved by Marstrand 1970"
     },
     {
       "target": "erdos-995",
-      "description": "Lacunary fractional-part sums with o(N √(log log N)) growth conjectured by Erdős"
+      "description": "Lacunary fractional-part sums with o(N \u221a(log log N)) growth conjectured by Erd\u0151s"
     },
     {
       "target": "erdos-1001",
-      "description": "Kesten–Sós theorem on Diophantine approximation density — background for Kesten's Cauchy result"
+      "description": "Kesten\u2013S\u00f3s theorem on Diophantine approximation density \u2014 background for Kesten's Cauchy result"
     },
     {
       "target": "erdos-464",
-      "description": "Lacunary sequences and density of {θn_k} — related equidistribution question for fractional parts"
+      "description": "Lacunary sequences and density of {\u03b8n_k} \u2014 related equidistribution question for fractional parts"
     },
     {
       "target": "erdos-492",
-      "description": "Uniform distribution of generalized fractional parts — Schmidt's disproof shows fragility of such results"
+      "description": "Uniform distribution of generalized fractional parts \u2014 Schmidt's disproof shows fragility of such results"
     }
   ],
   "references": [
@@ -179,23 +185,23 @@
       "authors": [
         "H. Kesten"
       ],
-      "title": "On a conjecture of Erdős and Szüsz related to uniform distribution mod 1",
+      "title": "On a conjecture of Erd\u0151s and Sz\u00fcsz related to uniform distribution mod 1",
       "venue": "Acta Arithmetica",
       "year": 1960,
       "volume": "5",
-      "pages": "369–380",
-      "notes": "Proves the two-parameter variant f(α,β,n) has Cauchy limit distribution using ergodic properties of the natural extension of the Gauss map; the foundational result for Problem #1002"
+      "pages": "369\u2013380",
+      "notes": "Proves the two-parameter variant f(\u03b1,\u03b2,n) has Cauchy limit distribution using ergodic properties of the natural extension of the Gauss map; the foundational result for Problem #1002"
     },
     {
       "authors": [
         "H. Weyl"
       ],
-      "title": "Über die Gleichverteilung von Zahlen mod. Eins",
+      "title": "\u00dcber die Gleichverteilung von Zahlen mod. Eins",
       "venue": "Mathematische Annalen",
       "year": 1916,
       "volume": "77",
-      "pages": "313–352",
-      "notes": "Weyl's equidistribution theorem: {kα} is uniformly distributed mod 1 for irrational α; the foundational result that justifies the log n normalization in f(α,n)"
+      "pages": "313\u2013352",
+      "notes": "Weyl's equidistribution theorem: {k\u03b1} is uniformly distributed mod 1 for irrational \u03b1; the foundational result that justifies the log n normalization in f(\u03b1,n)"
     },
     {
       "authors": [
@@ -205,7 +211,7 @@
       "venue": "Michigan Mathematical Journal",
       "year": 1988,
       "volume": "35",
-      "pages": "353–359",
+      "pages": "353\u2013359",
       "notes": "Ergodic and probabilistic framework for sums of weakly dependent sequences, directly relevant to the one-parameter case where the shift average is absent"
     },
     {
@@ -220,14 +226,14 @@
     {
       "authors": [
         "P. Liardet",
-        "P. Volný"
+        "P. Voln\u00fd"
       ],
       "title": "Sums of continuous and differentiable functions in dynamical systems",
       "venue": "Israel Journal of Mathematics",
       "year": 1997,
       "volume": "98",
-      "pages": "29–60",
-      "notes": "Studies asymptotic distributions of ergodic sums of functions on the circle, including the role of the Gauss map's natural extension — the dynamical framework underlying Kesten's proof and the open Problem #1002"
+      "pages": "29\u201360",
+      "notes": "Studies asymptotic distributions of ergodic sums of functions on the circle, including the role of the Gauss map's natural extension \u2014 the dynamical framework underlying Kesten's proof and the open Problem #1002"
     }
   ],
   "leanFile": {

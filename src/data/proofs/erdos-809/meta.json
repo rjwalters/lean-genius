@@ -1,10 +1,10 @@
 {
   "id": "erdos-809",
-  "title": "Erdős Problem #809: Rainbow Colorings of Odd Cycles",
+  "title": "Erd\u0151s Problem #809: Rainbow Colorings of Odd Cycles",
   "slug": "erdos-809",
-  "description": "For k≥3, define F_k(n) = min r s.t. some graph on n vertices with ⌊n²/4⌋+1 edges can be r-colored with all C_{2k+1} rainbow. Conjecture: F_k(n) ~ n²/8. Known: F_k(n) ≫ n². OPEN.",
+  "description": "For k\u22653, define F_k(n) = min r s.t. some graph on n vertices with \u230an\u00b2/4\u230b+1 edges can be r-colored with all C_{2k+1} rainbow. Conjecture: F_k(n) ~ n\u00b2/8. Known: F_k(n) \u226b n\u00b2. OPEN.",
   "meta": {
-    "author": "Burr, Erdős, Graham, Sós",
+    "author": "Burr, Erd\u0151s, Graham, S\u00f3s",
     "sourceUrl": "https://erdosproblems.com/809",
     "date": "1991",
     "status": "formalized",
@@ -44,9 +44,9 @@
       "Graph, edgeCount, turanThreshold, EdgeColoring definitions",
       "isRainbowOn definition via image cardinality",
       "Cycle structure with vertices, distinctness, adjacency",
-      "F axiom: F_k(n) axiomatized as ℕ → ℕ → ℕ",
+      "F axiom: F_k(n) axiomatized as \u2115 \u2192 \u2115 \u2192 \u2115",
       "mainConjecture and asymptoticEquivalence definitions",
-      "begs_lower_bound axiom: F_k(n) ≫ n²",
+      "begs_lower_bound axiom: F_k(n) \u226b n\u00b2",
       "quadratic_upper_bound axiom",
       "turan_odd_cycle axiom and threshold_significance theorem",
       "erdos_809_summary combining lower and upper bounds"
@@ -57,21 +57,21 @@
     "assumptions": "4 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #809**\n\nThis problem connects Turán-type extremal graph theory with rainbow (anti-Ramsey) coloring theory.\n\n**Key History:**\n- Erdős [Er91]: Original formulation of the problem\n- Burr, Erdős, Graham, Sós: Proved quadratic lower bound F_k(n) ≫ n²\n- Current status: OPEN — the exact asymptotic constant remains unknown\n\n**Mathematical Setting:**\nThe edge threshold ⌊n²/4⌋ + 1 is chosen to be just above the Turán number for bipartite graphs: by Turán's theorem, any graph with more than ⌊n²/4⌋ edges must contain odd cycles. The question asks how many colors are needed to make every such odd cycle rainbow (no repeated colors).\n\nThe conjecture F_k(n) ~ n²/8 predicts the leading constant is 1/8, exactly half the Turán threshold constant 1/4. This suggests a deep structural connection between graph density and chromatic properties. The companion Problem #810 addresses related constraints on rainbow colorings.",
-    "problemStatement": "**Problem Statement (Open)**\n\nFor $k \\geq 3$, define $F_k(n)$ as the minimal $r$ such that there exists a graph $G$ on $n$ vertices with $\\lfloor n^2/4 \\rfloor + 1$ edges whose edges can be $r$-colored so that every subgraph isomorphic to $C_{2k+1}$ is rainbow (no repeated colors).\n\n**Conjecture:** $F_k(n) \\sim n^2/8$\n\n**Known:** $F_k(n) \\gg n^2$ (Burr-Erdős-Graham-Sós quadratic lower bound)",
-    "text": "For k≥3, define F_k(n) = min r s.t. some graph on n vertices with ⌊n²/4⌋+1 edges can be r-colored with all C_{2k+1} rainbow. Conjecture: F_k(n) ~ n²/8. Known: F_k(n) ≫ n². OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Infrastructure:** Define SimpleGraph on Fin n with edge counting and Turán threshold\n\n2. **Coloring Framework:** Edge colorings as functions from edge sets to Fin r, rainbow property via image cardinality\n\n3. **Cycle Structure:** Formal definition of cycles with vertex distinctness and adjacency constraints\n\n4. **Axiomatization:** F_k(n) axiomatized as ℕ → ℕ → ℕ (existence proof would require sorry)\n\n5. **Conjecture Formalization:** Two equivalent asymptotic formulations (sandwich bounds and ratio convergence)\n\n6. **Known Bounds:** BEGS lower bound and trivial upper bound as axioms, combined in proved summary theorem",
+    "historicalContext": "**Erd\u0151s Problem #809**\n\nThis problem connects Tur\u00e1n-type extremal graph theory with rainbow (anti-Ramsey) coloring theory.\n\n**Key History:**\n- Erd\u0151s [Er91]: Original formulation of the problem\n- Burr, Erd\u0151s, Graham, S\u00f3s: Proved quadratic lower bound F_k(n) \u226b n\u00b2\n- Current status: OPEN \u2014 the exact asymptotic constant remains unknown\n\n**Mathematical Setting:**\nThe edge threshold \u230an\u00b2/4\u230b + 1 is chosen to be just above the Tur\u00e1n number for bipartite graphs: by Tur\u00e1n's theorem, any graph with more than \u230an\u00b2/4\u230b edges must contain odd cycles. The question asks how many colors are needed to make every such odd cycle rainbow (no repeated colors).\n\nThe conjecture F_k(n) ~ n\u00b2/8 predicts the leading constant is 1/8, exactly half the Tur\u00e1n threshold constant 1/4. This suggests a deep structural connection between graph density and chromatic properties. The companion Problem #810 addresses related constraints on rainbow colorings.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFor $k \\geq 3$, define $F_k(n)$ as the minimal $r$ such that there exists a graph $G$ on $n$ vertices with $\\lfloor n^2/4 \\rfloor + 1$ edges whose edges can be $r$-colored so that every subgraph isomorphic to $C_{2k+1}$ is rainbow (no repeated colors).\n\n**Conjecture:** $F_k(n) \\sim n^2/8$\n\n**Known:** $F_k(n) \\gg n^2$ (Burr-Erd\u0151s-Graham-S\u00f3s quadratic lower bound)",
+    "text": "For k\u22653, define F_k(n) = min r s.t. some graph on n vertices with \u230an\u00b2/4\u230b+1 edges can be r-colored with all C_{2k+1} rainbow. Conjecture: F_k(n) ~ n\u00b2/8. Known: F_k(n) \u226b n\u00b2. OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Infrastructure:** Define SimpleGraph on Fin n with edge counting and Tur\u00e1n threshold\n\n2. **Coloring Framework:** Edge colorings as functions from edge sets to Fin r, rainbow property via image cardinality\n\n3. **Cycle Structure:** Formal definition of cycles with vertex distinctness and adjacency constraints\n\n4. **Axiomatization:** F_k(n) axiomatized as \u2115 \u2192 \u2115 \u2192 \u2115 (existence proof would require sorry)\n\n5. **Conjecture Formalization:** Two equivalent asymptotic formulations (sandwich bounds and ratio convergence)\n\n6. **Known Bounds:** BEGS lower bound and trivial upper bound as axioms, combined in proved summary theorem",
     "keyInsights": [
-      "**Turán Threshold:** ⌊n²/4⌋ + 1 edges is the minimum to guarantee odd cycles in any graph",
-      "**Conjectured Constant:** F_k(n) ~ n²/8, where 1/8 is exactly half of the Turán constant 1/4",
-      "**Quadratic Growth:** Burr-Erdős-Graham-Sós proved F_k(n) ≫ n², settling the growth rate",
+      "**Tur\u00e1n Threshold:** \u230an\u00b2/4\u230b + 1 edges is the minimum to guarantee odd cycles in any graph",
+      "**Conjectured Constant:** F_k(n) ~ n\u00b2/8, where 1/8 is exactly half of the Tur\u00e1n constant 1/4",
+      "**Quadratic Growth:** Burr-Erd\u0151s-Graham-S\u00f3s proved F_k(n) \u226b n\u00b2, settling the growth rate",
       "**Anti-Ramsey Theory:** Rainbow colorings (no repeated colors) are dual to Ramsey-type monochromatic structures",
-      "**Open Gap:** The exact constant c in F_k(n) ~ c·n² is unknown — conjectured to be 1/8",
+      "**Open Gap:** The exact constant c in F_k(n) ~ c\u00b7n\u00b2 is unknown \u2014 conjectured to be 1/8",
       "**Companion Problem:** Problem #810 studies related rainbow constraints on the same graph class"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -80,7 +80,7 @@
       "title": "Basic Definitions",
       "startLine": 37,
       "endLine": 69,
-      "summary": "Graphs, edge counts, Turán threshold, edge colorings"
+      "summary": "Graphs, edge counts, Tur\u00e1n threshold, edge colorings"
     },
     {
       "id": "rainbow-property",
@@ -101,7 +101,7 @@
       "title": "The Conjecture",
       "startLine": 105,
       "endLine": 122,
-      "summary": "Main conjecture F_k(n) ~ n²/8 in two equivalent forms"
+      "summary": "Main conjecture F_k(n) ~ n\u00b2/8 in two equivalent forms"
     },
     {
       "id": "known-bounds",
@@ -112,10 +112,10 @@
     },
     {
       "id": "turan-context",
-      "title": "Turán's Theorem Context",
+      "title": "Tur\u00e1n's Theorem Context",
       "startLine": 142,
       "endLine": 161,
-      "summary": "Why ⌊n²/4⌋ + 1 edges and threshold_significance"
+      "summary": "Why \u230an\u00b2/4\u230b + 1 edges and threshold_significance"
     },
     {
       "id": "summary",
@@ -126,11 +126,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #809 remains OPEN. The conjecture F_k(n) ~ n²/8 is unresolved. Known: F_k(n) ≫ n² (Burr-Erdős-Graham-Sós).",
-    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Extremal Graph Theory:** Understanding F_k(n) reveals how graph density forces chromatic structure\n\n**2. Anti-Ramsey Theory:** The rainbow condition is dual to classical Ramsey monochromatic conditions\n\n3. **Turán Theory:** The 1/8 constant being half of 1/4 suggests a deep structural duality\n\n4. **Asymptotic Combinatorics:** Determining the exact constant would advance techniques for extremal coloring problems.",
+    "summary": "Erd\u0151s Problem #809 remains OPEN. The conjecture F_k(n) ~ n\u00b2/8 is unresolved. Known: F_k(n) \u226b n\u00b2 (Burr-Erd\u0151s-Graham-S\u00f3s).",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Extremal Graph Theory:** Understanding F_k(n) reveals how graph density forces chromatic structure\n\n**2. Anti-Ramsey Theory:** The rainbow condition is dual to classical Ramsey monochromatic conditions\n\n3. **Tur\u00e1n Theory:** The 1/8 constant being half of 1/4 suggests a deep structural duality\n\n4. **Asymptotic Combinatorics:** Determining the exact constant would advance techniques for extremal coloring problems.",
     "openQuestions": [
-      "Prove or disprove F_k(n) ~ n²/8",
-      "Determine the exact constant in F_k(n) = c·n² + o(n²)",
+      "Prove or disprove F_k(n) ~ n\u00b2/8",
+      "Determine the exact constant in F_k(n) = c\u00b7n\u00b2 + o(n\u00b2)",
       "Find explicit constructions achieving near-optimal colorings",
       "Understand the dependence on k"
     ]
@@ -150,5 +150,33 @@
     "axiomCount": 4,
     "theoremCount": 2,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-573",
+      "relationship": "related",
+      "description": "Share turan and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-904",
+      "relationship": "related",
+      "description": "Share turan and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-905",
+      "relationship": "related",
+      "description": "Share turan and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-569",
+      "relationship": "related",
+      "description": "Share odd-cycles and extremal graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-573",
+    "erdos-904",
+    "erdos-905",
+    "erdos-569"
+  ]
 }

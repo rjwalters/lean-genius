@@ -1,10 +1,10 @@
 {
   "id": "erdos-940",
-  "title": "Erdős #940: Sums of r-Powerful Numbers",
+  "title": "Erd\u0151s #940: Sums of r-Powerful Numbers",
   "slug": "erdos-940",
-  "description": "For r ≥ 3, does the set of integers expressible as sums of at most r r-powerful numbers have density 0? Partial results by Baker-Brüdern (1994) and Heath-Brown (1988).",
+  "description": "For r \u2265 3, does the set of integers expressible as sums of at most r r-powerful numbers have density 0? Partial results by Baker-Br\u00fcdern (1994) and Heath-Brown (1988).",
   "meta": {
-    "author": "Baker-Brüdern (1994), Heath-Brown (1988)",
+    "author": "Baker-Br\u00fcdern (1994), Heath-Brown (1988)",
     "sourceUrl": "https://erdosproblems.com/940",
     "date": "1976",
     "status": "formalized",
@@ -51,23 +51,23 @@
       "SumsOfPowerful: set of sums of at most k r-powerful numbers",
       "DiagonalSums: diagonal case SumsOfPowerful r r",
       "countingFunction, HasDensity, HasDensityZero: density framework",
-      "erdos_940_conjecture: main OPEN conjecture for r ≥ 3",
+      "erdos_940_conjecture: main OPEN conjecture for r \u2265 3",
       "baker_brudern_theorem: axiom for r = 2 density-0 result",
       "heath_brown_theorem: axiom for squarefull triples representation",
       "three_cubes_conjecture: OPEN special case",
-      "cubes_subset_cubefull: proved cubes ⊆ cubefull",
+      "cubes_subset_cubefull: proved cubes \u2286 cubefull",
       "status_summary: proved conjunction of known results"
     ],
     "crossReferences": [
       {
         "targetId": "erdos-941",
         "relationship": "companion",
-        "description": "Problem #941 focuses specifically on Heath-Brown's theorem that all large integers are sums of ≤3 squarefull numbers, which is axiomatized in this formalization"
+        "description": "Problem #941 focuses specifically on Heath-Brown's theorem that all large integers are sums of \u22643 squarefull numbers, which is axiomatized in this formalization"
       },
       {
         "targetId": "erdos-935",
         "relationship": "complementary",
-        "description": "Problem #935 examines the 'powerful part' (r-powerful component) of consecutive products, while #940 studies sums of r-powerful numbers — both probe the additive/multiplicative structure of powerful numbers"
+        "description": "Problem #935 examines the 'powerful part' (r-powerful component) of consecutive products, while #940 studies sums of r-powerful numbers \u2014 both probe the additive/multiplicative structure of powerful numbers"
       }
     ],
     "axiomCount": 2,
@@ -75,14 +75,14 @@
     "assumptions": "2 axiom(s) and 2 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #940: Density of Sums of r-Powerful Numbers**\n\nThis problem was posed by Erdős and Ivić, recorded in the 1986 Oberwolfach problem book, with roots in Erdős's 1976 paper on consecutive integers [Er76d]. It asks a fundamental question about the additive structure of powerful numbers.\n\n**Historical Timeline:**\n- 1976: Erdős claimed the $r = 2$ case was 'easy' and sketched a counting argument\n- 1986: Problem recorded in the Oberwolfach problem book (Erdős-Ivić)\n- 1986: Schinzel discovered an error in Erdős's original counting argument\n- 1988: Heath-Brown proved all large integers are sums of $\\le 3$ squarefull numbers (ternary quadratic forms)\n- 1994: Baker and Brüdern gave the first rigorous proof that sums of $\\le 2$ squarefull numbers have density 0\n\n**The Central Phenomenon:** There is a remarkable phase transition at 2-to-3 summands for squarefull numbers. With 2 summands, the representable set has density 0 (Baker-Brüdern). With 3 summands, all large integers are representable (Heath-Brown). The main conjecture asks whether a similar density-0 result holds for the diagonal case ($r$ summands of $r$-powerful numbers) when $r \\ge 3$.\n\n**Why is it hard?** The counting function for $r$-powerful numbers up to $N$ is $\\sim c_r N^{1/r}$. Naively, $r$ summands give $O(N^{r \\cdot 1/r}) = O(N)$ representations — exactly the boundary between sparse and dense! Proving $o(N)$ requires understanding cancellation in the overlap of different sum decompositions, which defeated Erdős's original approach.",
+    "historicalContext": "**Erd\u0151s Problem #940: Density of Sums of r-Powerful Numbers**\n\nThis problem was posed by Erd\u0151s and Ivi\u0107, recorded in the 1986 Oberwolfach problem book, with roots in Erd\u0151s's 1976 paper on consecutive integers [Er76d]. It asks a fundamental question about the additive structure of powerful numbers.\n\n**Historical Timeline:**\n- 1976: Erd\u0151s claimed the $r = 2$ case was 'easy' and sketched a counting argument\n- 1986: Problem recorded in the Oberwolfach problem book (Erd\u0151s-Ivi\u0107)\n- 1986: Schinzel discovered an error in Erd\u0151s's original counting argument\n- 1988: Heath-Brown proved all large integers are sums of $\\le 3$ squarefull numbers (ternary quadratic forms)\n- 1994: Baker and Br\u00fcdern gave the first rigorous proof that sums of $\\le 2$ squarefull numbers have density 0\n\n**The Central Phenomenon:** There is a remarkable phase transition at 2-to-3 summands for squarefull numbers. With 2 summands, the representable set has density 0 (Baker-Br\u00fcdern). With 3 summands, all large integers are representable (Heath-Brown). The main conjecture asks whether a similar density-0 result holds for the diagonal case ($r$ summands of $r$-powerful numbers) when $r \\ge 3$.\n\n**Why is it hard?** The counting function for $r$-powerful numbers up to $N$ is $\\sim c_r N^{1/r}$. Naively, $r$ summands give $O(N^{r \\cdot 1/r}) = O(N)$ representations \u2014 exactly the boundary between sparse and dense! Proving $o(N)$ requires understanding cancellation in the overlap of different sum decompositions, which defeated Erd\u0151s's original approach.",
     "problemStatement": "Let $r \\ge 3$. A number $n$ is $r$-powerful if $p \\mid n \\Rightarrow p^r \\mid n$ for every prime $p$. Does the set $\\{a_1 + \\cdots + a_k : k \\le r, \\text{each } a_i \\text{ is } r\\text{-powerful}\\}$ have natural density 0?",
-    "text": "For r ≥ 3, does the set of integers expressible as sums of at most r r-powerful numbers have density 0? Partial results by Baker-Brüdern (1994) and Heath-Brown (1988).",
-    "proofStrategy": "**Formalization Strategy**\n\n1. **r-Powerful Numbers:** `isPowerful r n` via primality and divisibility. Proved: $1$ is powerful, $0$ is not, $n^r$ is $r$-powerful.\n2. **Sums Framework:** `SumsOfPowerful r k` using `Multiset` for variable-length representations. `DiagonalSums r` for the diagonal case.\n3. **Density:** `countingFunction`, `HasDensity`, `HasDensityZero` using `Filter.Tendsto`.\n4. **Main Conjecture:** `erdos_940_conjecture` (OPEN for $r \\ge 3$).\n5. **Known Results:** Baker-Brüdern (axiom, $r = 2$), Heath-Brown (axiom, 3 summands).\n6. **Special Cases:** Three cubes conjecture, cubefull case, universal representation.\n7. **Examples:** Concrete proofs that 4 is squarefull, 8 is cubefull, 72 is squarefull.",
+    "text": "For r \u2265 3, does the set of integers expressible as sums of at most r r-powerful numbers have density 0? Partial results by Baker-Br\u00fcdern (1994) and Heath-Brown (1988).",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **r-Powerful Numbers:** `isPowerful r n` via primality and divisibility. Proved: $1$ is powerful, $0$ is not, $n^r$ is $r$-powerful.\n2. **Sums Framework:** `SumsOfPowerful r k` using `Multiset` for variable-length representations. `DiagonalSums r` for the diagonal case.\n3. **Density:** `countingFunction`, `HasDensity`, `HasDensityZero` using `Filter.Tendsto`.\n4. **Main Conjecture:** `erdos_940_conjecture` (OPEN for $r \\ge 3$).\n5. **Known Results:** Baker-Br\u00fcdern (axiom, $r = 2$), Heath-Brown (axiom, 3 summands).\n6. **Special Cases:** Three cubes conjecture, cubefull case, universal representation.\n7. **Examples:** Concrete proofs that 4 is squarefull, 8 is cubefull, 72 is squarefull.",
     "keyInsights": [
-      "**Phase transition at 2-to-3 summands**: For squarefull numbers, sums of $\\le 2$ have density 0 (Baker-Brüdern 1994) but sums of $\\le 3$ contain all large integers (Heath-Brown 1988). This sharp transition is the central phenomenon.",
-      "**Diagonal case is critical**: The conjecture concerns $r$ summands of $r$-powerful numbers (matching indices). The counting function gives $O(N)$ representations — exactly the boundary. Proving $o(N)$ requires cancellation analysis.",
-      "**Schinzel's correction**: Erdős's original counting argument had an error discovered by Schinzel. The overlap between different sum decompositions is more complex than initially thought, making the problem genuinely hard.",
+      "**Phase transition at 2-to-3 summands**: For squarefull numbers, sums of $\\le 2$ have density 0 (Baker-Br\u00fcdern 1994) but sums of $\\le 3$ contain all large integers (Heath-Brown 1988). This sharp transition is the central phenomenon.",
+      "**Diagonal case is critical**: The conjecture concerns $r$ summands of $r$-powerful numbers (matching indices). The counting function gives $O(N)$ representations \u2014 exactly the boundary. Proving $o(N)$ requires cancellation analysis.",
+      "**Schinzel's correction**: Erd\u0151s's original counting argument had an error discovered by Schinzel. The overlap between different sum decompositions is more complex than initially thought, making the problem genuinely hard.",
       "**Cubes as special case**: Perfect $r$-th powers are $r$-powerful (proved as `power_isPowerful`), so Waring-type problems are special cases. Even the 3 cubes density question is OPEN.",
       "**Counting function asymptotics**: The number of $r$-powerful integers $\\le N$ is $\\sim c_r N^{1/r}$ where $c_2 = \\zeta(3/2)/\\zeta(3) \\approx 2.173$. This sublinear growth drives the sparsity of sums."
     ],
@@ -125,7 +125,7 @@
     {
       "id": "squarefull",
       "title": "The Squarefull Case (r = 2)",
-      "summary": "Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Brüdern (1994) proved this 18 years after Erdős called it 'easy'.",
+      "summary": "Axiomatizes `baker_brudern_theorem`: $\\text{SumsOfPowerful}(2, 2)$ has density 0. Baker-Br\u00fcdern (1994) proved this 18 years after Erd\u0151s called it 'easy'.",
       "startLine": 144,
       "endLine": 159
     },
@@ -153,7 +153,7 @@
     {
       "id": "relationship",
       "title": "Relationship Between the Questions",
-      "summary": "Proves `status_summary`: Baker-Brüdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases.",
+      "summary": "Proves `status_summary`: Baker-Br\u00fcdern $\\wedge$ Heath-Brown in one line. Summarizes known vs open cases.",
       "startLine": 225,
       "endLine": 247
     },
@@ -167,20 +167,20 @@
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Defines connections to Erdős #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal).",
+      "summary": "Defines connections to Erd\u0151s #941 (Heath-Brown's theorem), #1081 (refined $r=2$), and #1107 ($r+1$ summands, off-diagonal).",
       "startLine": 282,
       "endLine": 294
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem #940 on density of sums of r-powerful numbers. The main conjecture (density 0 for r ≥ 3) remains OPEN. We formalize isPowerful, SumsOfPowerful, DiagonalSums, and the natural density framework. Known results are axiomatized: Baker-Brüdern (squarefull pairs, density 0) and Heath-Brown (squarefull triples, eventual coverage). Structural theorems (1 is powerful, n^r is powerful, cubes ⊆ cubefull) are proved. 2 sorries.",
-    "implications": "**Theoretical Significance**: **Connections to Number Theory**\n\n1. **Phase Transitions**: The 2-to-3 summand transition for squarefull numbers (density 0 vs density 1) is a prototype for threshold phenomena in additive number theory\n2. **Waring's Problem**: Since perfect powers are powerful, Waring-type results are special cases of powerful number sum problems\n**3. Counting Function Asymptotics**: The $c_r N^{1/r}$ growth of $r$-powerful numbers places sum problems at the critical density boundary\n4. **Analytic Methods**: Baker-Brüdern used exponential sums; Heath-Brown used quadratic forms — different tools for density vs representation\n5. **ABC Conjecture**: Powerful numbers connect to ABC through the radical; bounds on powerful number sums would follow from strong ABC-type results.",
+    "summary": "The formalization captures Erd\u0151s Problem #940 on density of sums of r-powerful numbers. The main conjecture (density 0 for r \u2265 3) remains OPEN. We formalize isPowerful, SumsOfPowerful, DiagonalSums, and the natural density framework. Known results are axiomatized: Baker-Br\u00fcdern (squarefull pairs, density 0) and Heath-Brown (squarefull triples, eventual coverage). Structural theorems (1 is powerful, n^r is powerful, cubes \u2286 cubefull) are proved. 2 sorries.",
+    "implications": "**Theoretical Significance**: **Connections to Number Theory**\n\n1. **Phase Transitions**: The 2-to-3 summand transition for squarefull numbers (density 0 vs density 1) is a prototype for threshold phenomena in additive number theory\n2. **Waring's Problem**: Since perfect powers are powerful, Waring-type results are special cases of powerful number sum problems\n**3. Counting Function Asymptotics**: The $c_r N^{1/r}$ growth of $r$-powerful numbers places sum problems at the critical density boundary\n4. **Analytic Methods**: Baker-Br\u00fcdern used exponential sums; Heath-Brown used quadratic forms \u2014 different tools for density vs representation\n5. **ABC Conjecture**: Powerful numbers connect to ABC through the radical; bounds on powerful number sums would follow from strong ABC-type results.",
     "openQuestions": [
-      "Does the set of sums of ≤ 3 cubes have density 0 (the r = 3 special case)?",
-      "For r ≥ 3, does DiagonalSums(r) have density 0 (the main conjecture)?",
-      "Is every sufficiently large integer a sum of ≤ r r-powerful numbers (diagonal representation)?",
-      "What is the exact threshold N₀ beyond which Heath-Brown's theorem holds for squarefull triples?",
-      "Can the Baker-Brüdern argument be extended to the r = 3 diagonal case using the circle method?"
+      "Does the set of sums of \u2264 3 cubes have density 0 (the r = 3 special case)?",
+      "For r \u2265 3, does DiagonalSums(r) have density 0 (the main conjecture)?",
+      "Is every sufficiently large integer a sum of \u2264 r r-powerful numbers (diagonal representation)?",
+      "What is the exact threshold N\u2080 beyond which Heath-Brown's theorem holds for squarefull triples?",
+      "Can the Baker-Br\u00fcdern argument be extended to the r = 3 diagonal case using the circle method?"
     ]
   },
   "leanFile": {
@@ -201,5 +201,39 @@
     "axiomCount": 2,
     "theoremCount": 10,
     "definitionCount": 15
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Share powerful-numbers, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-942",
+      "relationship": "related",
+      "description": "Share powerful-numbers, density, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1110",
+      "relationship": "related",
+      "description": "Share density, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-1136",
+      "relationship": "related",
+      "description": "Share density, number-theoretic, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-12",
+      "relationship": "related",
+      "description": "Share density, number-theoretic, and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1107",
+    "erdos-942",
+    "erdos-1110",
+    "erdos-1136",
+    "erdos-12"
+  ]
 }

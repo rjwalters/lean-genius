@@ -1,10 +1,10 @@
 {
   "id": "erdos-817",
-  "title": "Erdős Problem #817: Subset Sum Sets and Arithmetic Progressions",
+  "title": "Erd\u0151s Problem #817: Subset Sum Sets and Arithmetic Progressions",
   "slug": "erdos-817",
-  "description": "Given a set A ⊆ {1,...,N} of size n, the subset sum set ⟨A⟩ consists of all possible sums of subsets of A. How large must N be for ⟨A⟩ to avoid non-trivial 3-term arithmetic progressions? An open problem asking whether g₃(n) ≫ 3ⁿ.",
+  "description": "Given a set A \u2286 {1,...,N} of size n, the subset sum set \u27e8A\u27e9 consists of all possible sums of subsets of A. How large must N be for \u27e8A\u27e9 to avoid non-trivial 3-term arithmetic progressions? An open problem asking whether g\u2083(n) \u226b 3\u207f.",
   "meta": {
-    "author": "Erdős and Sárközy; Partial result proved",
+    "author": "Erd\u0151s and S\u00e1rk\u00f6zy; Partial result proved",
     "sourceUrl": "https://erdosproblems.com/817",
     "date": "1991",
     "status": "formalized",
@@ -51,26 +51,26 @@
     ],
     "originalContributions": [
       "Formal definition of k-AP-free sets",
-      "Definition of subset sum set ⟨A⟩",
+      "Definition of subset sum set \u27e8A\u27e9",
       "Statement of g_k(n) extremal function",
-      "Main conjecture: g₃(n) ≫ 3ⁿ",
-      "Erdős-Sárközy partial result as axiom",
-      "Connection to Szemerédi's theorem"
+      "Main conjecture: g\u2083(n) \u226b 3\u207f",
+      "Erd\u0151s-S\u00e1rk\u00f6zy partial result as axiom",
+      "Connection to Szemer\u00e9di's theorem"
     ],
     "axiomCount": 2,
     "lineCount": 239,
     "assumptions": "2 axiom(s) and 4 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem combines two fundamental concepts in additive combinatorics: subset sums and arithmetic progression avoidance. The subset sum set ⟨A⟩ of a finite set A is the collection of all possible sums formed by selecting subsets of A. This structure appears throughout number theory and combinatorics.\n\nErdős and Sárközy studied the function g_k(n): the minimal N such that {1,...,N} contains some n-element set A whose subset sums avoid non-trivial k-term arithmetic progressions. They proved that g₃(n) ≫ 3ⁿ/n^{O(1)}, establishing exponential growth up to polynomial factors.\n\nThe main conjecture asks whether the polynomial factor is necessary: is g₃(n) truly ≫ 3ⁿ? This remains open and connects to deep questions about the structure of subset sum sets and Szemerédi-type theorems.",
-    "problemStatement": "**Problem (Erdős)**: Let $k \\geq 3$ and define $g_k(n)$ to be the minimal $N$ such that $\\{1,\\ldots,N\\}$ contains some $A$ of size $|A|=n$ such that\n$$\\langle A \\rangle = \\left\\{\\sum_{a\\in A}\\epsilon_a a: \\epsilon_a \\in \\{0,1\\}\\right\\}$$\ncontains no non-trivial $k$-term arithmetic progression.\n\n**Question**: Is it true that $g_3(n) \\gg 3^n$?\n\n**Status**: OPEN\n\n**Partial Result** (Erdős-Sárközy): $g_3(n) \\gg 3^n / n^{O(1)}$",
-    "text": "Given a set A ⊆ {1,...,N} of size n, the subset sum set ⟨A⟩ consists of all possible sums of subsets of A. How large must N be for ⟨A⟩ to avoid non-trivial 3-term arithmetic progressions? An open problem asking whether g₃(n) ≫ 3ⁿ.",
-    "proofStrategy": "We formalize the problem and related concepts:\n\n1. **AP-Free Sets**: Define IsAPFreeOfLength k S to mean S contains no k-term arithmetic progression with positive common difference.\n\n2. **Subset Sums**: Define subsetSums A as the image of A.powerset under the sum function. Prove basic properties: 0 ∈ subsetSums A, and |subsetSums A| ≤ 2^|A|.\n\n3. **The Function g**: Define g(k,n) = inf{N : ∃ A ⊆ Icc 1 N with |A|=n and subsetSums A is k-AP-free}.\n\n4. **Main Conjecture**: State erdos817Conjecture as 3^n = O(g(3,n)).\n\n5. **Partial Result**: State Erdős-Sárközy's theorem as an axiom: 3^n/n^O = O(g(3,n)) for some O > 0.\n\n6. **Connection to Szemerédi**: Relate to the fact that dense sets must contain APs.",
+    "historicalContext": "This problem combines two fundamental concepts in additive combinatorics: subset sums and arithmetic progression avoidance. The subset sum set \u27e8A\u27e9 of a finite set A is the collection of all possible sums formed by selecting subsets of A. This structure appears throughout number theory and combinatorics.\n\nErd\u0151s and S\u00e1rk\u00f6zy studied the function g_k(n): the minimal N such that {1,...,N} contains some n-element set A whose subset sums avoid non-trivial k-term arithmetic progressions. They proved that g\u2083(n) \u226b 3\u207f/n^{O(1)}, establishing exponential growth up to polynomial factors.\n\nThe main conjecture asks whether the polynomial factor is necessary: is g\u2083(n) truly \u226b 3\u207f? This remains open and connects to deep questions about the structure of subset sum sets and Szemer\u00e9di-type theorems.",
+    "problemStatement": "**Problem (Erd\u0151s)**: Let $k \\geq 3$ and define $g_k(n)$ to be the minimal $N$ such that $\\{1,\\ldots,N\\}$ contains some $A$ of size $|A|=n$ such that\n$$\\langle A \\rangle = \\left\\{\\sum_{a\\in A}\\epsilon_a a: \\epsilon_a \\in \\{0,1\\}\\right\\}$$\ncontains no non-trivial $k$-term arithmetic progression.\n\n**Question**: Is it true that $g_3(n) \\gg 3^n$?\n\n**Status**: OPEN\n\n**Partial Result** (Erd\u0151s-S\u00e1rk\u00f6zy): $g_3(n) \\gg 3^n / n^{O(1)}$",
+    "text": "Given a set A \u2286 {1,...,N} of size n, the subset sum set \u27e8A\u27e9 consists of all possible sums of subsets of A. How large must N be for \u27e8A\u27e9 to avoid non-trivial 3-term arithmetic progressions? An open problem asking whether g\u2083(n) \u226b 3\u207f.",
+    "proofStrategy": "We formalize the problem and related concepts:\n\n1. **AP-Free Sets**: Define IsAPFreeOfLength k S to mean S contains no k-term arithmetic progression with positive common difference.\n\n2. **Subset Sums**: Define subsetSums A as the image of A.powerset under the sum function. Prove basic properties: 0 \u2208 subsetSums A, and |subsetSums A| \u2264 2^|A|.\n\n3. **The Function g**: Define g(k,n) = inf{N : \u2203 A \u2286 Icc 1 N with |A|=n and subsetSums A is k-AP-free}.\n\n4. **Main Conjecture**: State erdos817Conjecture as 3^n = O(g(3,n)).\n\n5. **Partial Result**: State Erd\u0151s-S\u00e1rk\u00f6zy's theorem as an axiom: 3^n/n^O = O(g(3,n)) for some O > 0.\n\n6. **Connection to Szemer\u00e9di**: Relate to the fact that dense sets must contain APs.",
     "keyInsights": [
-      "**Subset sum structure**: The set $\\langle A \\rangle$ has at most $2^n$ elements (one per subset). Its additive structure depends heavily on the choice of $A$ — geometric progressions give distinct sums while arithmetic progressions cause collisions.",
+      "**Subset sum structure**: The set $\\langle A \\rangle$ has at most $2^n$ elements (one per subset). Its additive structure depends heavily on the choice of $A$ \u2014 geometric progressions give distinct sums while arithmetic progressions cause collisions.",
       "**Exponential barrier**: The set $\\{1, 3, 9, \\ldots, 3^{n-1}\\}$ has $\\langle A \\rangle$ = {numbers in base 3 with digits 0 or 1}, which is 3-AP-free. This gives $g_3(n) \\leq 3^n$ and shows the conjecture is tight if true.",
       "**Density argument**: By Roth's theorem, any subset of $\\{1,\\ldots,M\\}$ of density $> c/\\log\\log M$ contains a 3-AP. Since $\\langle A \\rangle \\subseteq \\{0,\\ldots,nN\\}$ has $\\leq 2^n$ elements, AP-avoidance requires $2^n/(nN)$ to be small, forcing $N$ exponential in $n$.",
-      "**Polynomial gap**: The Erdős-Sárközy bound $g_3(n) \\gg 3^n/n^{O(1)}$ loses a polynomial factor. Closing this gap is the main open question — it requires understanding whether the polynomial correction reflects a genuine phenomenon or a limitation of current techniques.",
+      "**Polynomial gap**: The Erd\u0151s-S\u00e1rk\u00f6zy bound $g_3(n) \\gg 3^n/n^{O(1)}$ loses a polynomial factor. Closing this gap is the main open question \u2014 it requires understanding whether the polynomial correction reflects a genuine phenomenon or a limitation of current techniques.",
       "**Proved upper bound on max**: The theorem `max_subsetSums_le` rigorously bounds $\\max(\\langle A \\rangle) \\leq |A| \\cdot N$ for $A \\subseteq \\{1,\\ldots,N\\}$, using `Finset.sum_le_card_nsmul`. This is a key ingredient in the density heuristic."
     ],
     "prerequisites": [
@@ -112,14 +112,14 @@
       "title": "Main Conjecture (OPEN)",
       "startLine": 130,
       "endLine": 149,
-      "summary": "Statement of the open problem g₃(n) ≫ 3ⁿ"
+      "summary": "Statement of the open problem g\u2083(n) \u226b 3\u207f"
     },
     {
       "id": "partial",
-      "title": "Erdős-Sárközy Partial Result",
+      "title": "Erd\u0151s-S\u00e1rk\u00f6zy Partial Result",
       "startLine": 151,
       "endLine": 163,
-      "summary": "The known bound g₃(n) ≫ 3ⁿ/n^{O(1)}"
+      "summary": "The known bound g\u2083(n) \u226b 3\u207f/n^{O(1)}"
     },
     {
       "id": "properties",
@@ -133,7 +133,7 @@
       "title": "Small Cases",
       "startLine": 181,
       "endLine": 196,
-      "summary": "Values of g₃(1) and g₃(2)"
+      "summary": "Values of g\u2083(1) and g\u2083(2)"
     },
     {
       "id": "heuristic",
@@ -144,7 +144,7 @@
     },
     {
       "id": "szemeredi",
-      "title": "Connection to Szemerédi",
+      "title": "Connection to Szemer\u00e9di",
       "startLine": 226,
       "endLine": 239,
       "summary": "Relation to density-based AP results"
@@ -154,7 +154,7 @@
     {
       "proofId": "szemeredi-theorem",
       "relationship": "prerequisite",
-      "description": "Szemerédi's theorem (axiomatized here) provides the density bound that forces g_k(n) to grow exponentially"
+      "description": "Szemer\u00e9di's theorem (axiomatized here) provides the density bound that forces g_k(n) to grow exponentially"
     },
     {
       "proofId": "roth-theorem-k3",
@@ -173,13 +173,13 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #817, which asks about the extremal function g₃(n): the minimal N such that {1,...,N} contains an n-element set whose subset sums avoid 3-term arithmetic progressions. We define the key concepts (AP-free sets, subset sums, the g function), state the main conjecture g₃(n) ≫ 3ⁿ, and include the Erdős-Sárközy partial result g₃(n) ≫ 3ⁿ/n^{O(1)} as an axiom.",
+    "summary": "We formalize Erd\u0151s Problem #817, which asks about the extremal function g\u2083(n): the minimal N such that {1,...,N} contains an n-element set whose subset sums avoid 3-term arithmetic progressions. We define the key concepts (AP-free sets, subset sums, the g function), state the main conjecture g\u2083(n) \u226b 3\u207f, and include the Erd\u0151s-S\u00e1rk\u00f6zy partial result g\u2083(n) \u226b 3\u207f/n^{O(1)} as an axiom.",
     "implications": "**Theoretical Significance**: This problem connects extremal combinatorics to the structure of subset sums.\n\nA positive answer would show that avoiding APs in subset sum sets requires exponentially large universes. The techniques could apply to other questions about additive structure in combinatorial constructions.",
     "openQuestions": [
-      "Is g₃(n) ≫ 3ⁿ, or is there a polynomial correction factor?",
+      "Is g\u2083(n) \u226b 3\u207f, or is there a polynomial correction factor?",
       "What is the behavior of g_k(n) for larger k?",
-      "Can probabilistic methods improve the Erdős-Sárközy bound?",
-      "What is the exact value of g₃(n) for small n?"
+      "Can probabilistic methods improve the Erd\u0151s-S\u00e1rk\u00f6zy bound?",
+      "What is the exact value of g\u2083(n) for small n?"
     ]
   },
   "leanFile": {
@@ -196,5 +196,39 @@
     "axiomCount": 2,
     "theoremCount": 11,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, subset-sums, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-186",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial, arithmetic progression, and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-155",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-156",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and additive-combinatorial themes"
+    },
+    {
+      "targetId": "erdos-716",
+      "relationship": "related",
+      "description": "Share extremal-combinatorial and additive-combinatorial themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-186",
+    "erdos-155",
+    "erdos-156",
+    "erdos-716"
+  ]
 }

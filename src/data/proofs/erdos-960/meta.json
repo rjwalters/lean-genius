@@ -1,10 +1,10 @@
 {
   "id": "erdos-960",
-  "title": "Erdős Problem #960: Ordinary Lines and Collinear Ramsey Thresholds",
+  "title": "Erd\u0151s Problem #960: Ordinary Lines and Collinear Ramsey Thresholds",
   "slug": "erdos-960",
-  "description": "Given n points with no k collinear, determine the threshold f_{r,k}(n) of ordinary lines guaranteeing an r-point all-ordinary subset. Is f_{r,k}(n) = o(n²)? Turán bound: f ≤ (1-1/(r-1))n²/2+1. OPEN.",
+  "description": "Given n points with no k collinear, determine the threshold f_{r,k}(n) of ordinary lines guaranteeing an r-point all-ordinary subset. Is f_{r,k}(n) = o(n\u00b2)? Tur\u00e1n bound: f \u2264 (1-1/(r-1))n\u00b2/2+1. OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/960",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos960Problem.lean",
@@ -27,11 +27,11 @@
       "IsOrdinaryLine, ordinaryLineCount definitions",
       "AllOrdinary: every pair determines an ordinary line",
       "threshold(r,k,n) via sSup over configurations",
-      "ErdosConjecture960_littleo: f = o(n²) formal statement",
-      "ErdosConjecture960_linear: f ≪ n stronger form",
-      "turan_upper_bound (axiom): Turán bound over ℚ",
+      "ErdosConjecture960_littleo: f = o(n\u00b2) formal statement",
+      "ErdosConjecture960_linear: f \u226a n stronger form",
+      "turan_upper_bound (axiom): Tur\u00e1n bound over \u211a",
       "threshold_r2 (axiom): f_{2,k}(n) = 1",
-      "green_tao_ordinary_lines (axiom): ≥ n/2 for general position",
+      "green_tao_ordinary_lines (axiom): \u2265 n/2 for general position",
       "erdos_960_summary (proved): combines conjecture with r=2 case"
     ],
     "axiomCount": 1,
@@ -39,15 +39,15 @@
     "assumptions": "1 axiom(s) and 5 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #960 originates from Erdős's 1984 paper [Er84] and concerns the interplay between ordinary lines and Ramsey-type phenomena in discrete geometry. An ordinary line is one passing through exactly two points of a configuration. The Sylvester-Gallai theorem (1893) guarantees at least one ordinary line for any non-collinear finite point set, and the Green-Tao theorem (2013) strengthened this to at least n/2 ordinary lines when no three points are collinear.\n\nThe problem asks about a higher-order structure: given many ordinary lines, must there exist r points whose C(r,2) connecting lines are all ordinary? The threshold f_{r,k}(n) measures the minimum number of ordinary lines needed to force such an 'all-ordinary' r-subset, among n-point configurations with no k collinear. Turán's theorem from extremal graph theory provides an upper bound by viewing the ordinary line relation as a graph.\n\nThe central conjecture is that f_{r,k}(n) = o(n²), meaning the threshold grows subquadratically. The stronger form asks whether f_{r,k}(n) is actually linear in n. Both questions remain open. The problem connects discrete geometry, extremal graph theory, and Ramsey theory in a way that highlights how local structure (ordinary lines) constrains global combinatorial patterns.",
-    "problemStatement": "Let r, k ≥ 2 be fixed. For n points in ℝ² with no k collinear, define f_{r,k}(n) as the minimum number of ordinary lines that guarantees the existence of r points whose C(r,2) connecting lines are all ordinary. Is f_{r,k}(n) = o(n²)? Is f_{r,k}(n) ≪ n? Both questions remain OPEN.",
-    "text": "Given n points with no k collinear, determine the threshold f_{r,k}(n) of ordinary lines guaranteeing an r-point all-ordinary subset. Is f_{r,k}(n) = o(n²)? Turán bound: f ≤ (1-1/(r-1))n²/2+1. OPEN.",
-    "proofStrategy": "The formalization defines PointConfig, NoKCollinear, IsOrdinaryLine, AllOrdinary, and the threshold function via sSup. The main conjecture ErdosConjecture960_littleo is stated formally and axiomatized. The Turán upper bound is axiomatized over ℚ to avoid natural number underflow. Additional results include the trivial r=2 case, Green-Tao ordinary lines, and the Ramsey connection. The summary theorem combines the conjecture with the r=2 base case.",
+    "historicalContext": "Erd\u0151s Problem #960 originates from Erd\u0151s's 1984 paper [Er84] and concerns the interplay between ordinary lines and Ramsey-type phenomena in discrete geometry. An ordinary line is one passing through exactly two points of a configuration. The Sylvester-Gallai theorem (1893) guarantees at least one ordinary line for any non-collinear finite point set, and the Green-Tao theorem (2013) strengthened this to at least n/2 ordinary lines when no three points are collinear.\n\nThe problem asks about a higher-order structure: given many ordinary lines, must there exist r points whose C(r,2) connecting lines are all ordinary? The threshold f_{r,k}(n) measures the minimum number of ordinary lines needed to force such an 'all-ordinary' r-subset, among n-point configurations with no k collinear. Tur\u00e1n's theorem from extremal graph theory provides an upper bound by viewing the ordinary line relation as a graph.\n\nThe central conjecture is that f_{r,k}(n) = o(n\u00b2), meaning the threshold grows subquadratically. The stronger form asks whether f_{r,k}(n) is actually linear in n. Both questions remain open. The problem connects discrete geometry, extremal graph theory, and Ramsey theory in a way that highlights how local structure (ordinary lines) constrains global combinatorial patterns.",
+    "problemStatement": "Let r, k \u2265 2 be fixed. For n points in \u211d\u00b2 with no k collinear, define f_{r,k}(n) as the minimum number of ordinary lines that guarantees the existence of r points whose C(r,2) connecting lines are all ordinary. Is f_{r,k}(n) = o(n\u00b2)? Is f_{r,k}(n) \u226a n? Both questions remain OPEN.",
+    "text": "Given n points with no k collinear, determine the threshold f_{r,k}(n) of ordinary lines guaranteeing an r-point all-ordinary subset. Is f_{r,k}(n) = o(n\u00b2)? Tur\u00e1n bound: f \u2264 (1-1/(r-1))n\u00b2/2+1. OPEN.",
+    "proofStrategy": "The formalization defines PointConfig, NoKCollinear, IsOrdinaryLine, AllOrdinary, and the threshold function via sSup. The main conjecture ErdosConjecture960_littleo is stated formally and axiomatized. The Tur\u00e1n upper bound is axiomatized over \u211a to avoid natural number underflow. Additional results include the trivial r=2 case, Green-Tao ordinary lines, and the Ramsey connection. The summary theorem combines the conjecture with the r=2 base case.",
     "keyInsights": [
       "An ordinary line passes through exactly 2 points of the configuration",
       "The threshold f_{r,k}(n) is a Ramsey-type function counting when ordinary lines force all-ordinary subsets",
-      "Turán's theorem gives f_{r,k}(n) ≤ (1-1/(r-1))n²/2 + 1 by viewing ordinary lines as graph edges",
-      "Green-Tao (2013): any n points in general position have ≥ n/2 ordinary lines",
+      "Tur\u00e1n's theorem gives f_{r,k}(n) \u2264 (1-1/(r-1))n\u00b2/2 + 1 by viewing ordinary lines as graph edges",
+      "Green-Tao (2013): any n points in general position have \u2265 n/2 ordinary lines",
       "The conjecture asks for subquadratic or even linear growth of f_{r,k}(n)"
     ],
     "prerequisites": [
@@ -91,14 +91,14 @@
       "title": "Part V: The Main Conjecture",
       "startLine": 79,
       "endLine": 95,
-      "summary": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture."
+      "summary": "Defines ErdosConjecture960_littleo (f = o(n\u00b2)) and ErdosConjecture960_linear (f \u226a n). Axiom erdos_960_littleo_conjecture."
     },
     {
       "id": "turan-bound",
-      "title": "Part VI: Turán Upper Bound",
+      "title": "Part VI: Tur\u00e1n Upper Bound",
       "startLine": 97,
       "endLine": 109,
-      "summary": "Axioms: turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines)."
+      "summary": "Axioms: turan_upper_bound over \u211a (Tur\u00e1n's theorem), trivial_bound (at most C(n,2) lines)."
     },
     {
       "id": "connections",
@@ -116,11 +116,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #960 asks for the threshold of ordinary lines guaranteeing all-ordinary r-subsets in point configurations with no k collinear. Turán's theorem provides an upper bound, but whether the threshold is subquadratic or linear remains open.",
+    "summary": "Erd\u0151s Problem #960 asks for the threshold of ordinary lines guaranteeing all-ordinary r-subsets in point configurations with no k collinear. Tur\u00e1n's theorem provides an upper bound, but whether the threshold is subquadratic or linear remains open.",
     "implications": "Resolution would establish a new connection between discrete geometry and Ramsey-type phenomena, linking the local structure of ordinary lines to global combinatorial patterns in point configurations.",
     "openQuestions": [
-      "Is f_{r,k}(n) = o(n²)?",
-      "Is f_{r,k}(n) ≪ n (linear growth)?",
+      "Is f_{r,k}(n) = o(n\u00b2)?",
+      "Is f_{r,k}(n) \u226a n (linear growth)?",
       "What is the exact behavior for small r and k?",
       "How does the threshold relate to Sylvester-Gallai type results?"
     ]
@@ -138,5 +138,39 @@
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 7
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-189",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-223",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and extremal-problems themes"
+    },
+    {
+      "targetId": "erdos-668",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and extremal-problems themes"
+    },
+    {
+      "targetId": "erdos-846",
+      "relationship": "related",
+      "description": "Share combinatorial-geometric and Ramsey-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-107",
+    "erdos-189",
+    "erdos-223",
+    "erdos-668",
+    "erdos-846"
+  ]
 }

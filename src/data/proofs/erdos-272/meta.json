@@ -1,10 +1,10 @@
 {
   "id": "erdos-272",
-  "title": "Erdős Problem #272: Intersection Properties of Subsets",
+  "title": "Erd\u0151s Problem #272: Intersection Properties of Subsets",
   "slug": "erdos-272",
-  "description": "Maximum number of sets A_1,...,A_t ⊆ {1,...,N} with all pairwise intersections being non-empty arithmetic progressions. Answer: t ~ N²/2. Solved by Szabó (1999).",
+  "description": "Maximum number of sets A_1,...,A_t \u2286 {1,...,N} with all pairwise intersections being non-empty arithmetic progressions. Answer: t ~ N\u00b2/2. Solved by Szab\u00f3 (1999).",
   "meta": {
-    "author": "Szabó (1999), Simonovits-Sós (1981)",
+    "author": "Szab\u00f3 (1999), Simonovits-S\u00f3s (1981)",
     "sourceUrl": "https://erdosproblems.com/272",
     "date": "1999",
     "status": "axiomatized",
@@ -62,16 +62,16 @@
     "assumptions": "10 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "Erdős Problem #272 asks for the maximum number of subsets of {1,...,N} such that every pairwise intersection is a non-empty arithmetic progression. The problem was posed by Erdős and Graham, who conjectured that the optimal family consists of all arithmetic progressions passing through the middle element ⌊N/2⌋, giving approximately π²N²/24 sets.\n\nSimonovits and Sós (1981) made two key contributions: they proved the upper bound t = O(N²), establishing the quadratic growth rate, and they disproved the Erdős-Graham conjecture by showing that a simpler construction — all subsets of size ≤ 3 containing a fixed element — gives C(N-1,2) + 1 ≈ N²/2 sets, beating the π²N²/24 ≈ N²/2.4 from arithmetic progressions. The key insight is that any two sets of size ≤ 3 sharing a common element intersect in {k} (a singleton, which is trivially an AP).\n\nSzabó (1999) resolved the problem completely by determining the exact asymptotic: t = N²/2 + O(N^{5/3}(log N)³). He improved the lower bound to C(N,2) + ⌊(N-1)/4⌋ + 1 and conjectured that the exact answer is C(N,2) + O(N) and that every extremal family has a common element contained in all sets.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet $N \\geq 1$. What is the largest $t$ such that there exist $A_1, \\ldots, A_t \\subseteq \\{1,\\ldots,N\\}$ with $A_i \\cap A_j$ a non-empty arithmetic progression for all $i \\neq j$?\n\n**Answer (Szabó 1999):** $t = N^2/2 + O(N^{5/3}(\\log N)^3)$.\n\nThe Erdős-Graham conjecture (APs through $\\lfloor N/2 \\rfloor$ are optimal) is FALSE.",
-    "text": "Maximum number of sets A_1,...,A_t ⊆ {1,...,N} with all pairwise intersections being non-empty arithmetic progressions. Answer: t ~ N²/2. Solved by Szabó (1999).",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines arithmetic progressions via the ArithProg structure and proves constructively that singletons and pairs are APs. The AP-intersection property and maxAPFamily are defined, with maxAPFamily axiomatized as a function from ℕ to ℕ.\n\nThe main results are axiomatized: Simonovits-Sós upper/lower bounds (establishing t = Θ(N²)), the disproved Erdős-Graham conjecture, the small-sets construction with its count and AP property, and Szabó's main theorem with the leading constant 1/2.\n\nThe summary theorem combines the upper bound and Szabó's asymptotic into a single conjunction proved by exact ⟨...⟩.",
+    "historicalContext": "Erd\u0151s Problem #272 asks for the maximum number of subsets of {1,...,N} such that every pairwise intersection is a non-empty arithmetic progression. The problem was posed by Erd\u0151s and Graham, who conjectured that the optimal family consists of all arithmetic progressions passing through the middle element \u230aN/2\u230b, giving approximately \u03c0\u00b2N\u00b2/24 sets.\n\nSimonovits and S\u00f3s (1981) made two key contributions: they proved the upper bound t = O(N\u00b2), establishing the quadratic growth rate, and they disproved the Erd\u0151s-Graham conjecture by showing that a simpler construction \u2014 all subsets of size \u2264 3 containing a fixed element \u2014 gives C(N-1,2) + 1 \u2248 N\u00b2/2 sets, beating the \u03c0\u00b2N\u00b2/24 \u2248 N\u00b2/2.4 from arithmetic progressions. The key insight is that any two sets of size \u2264 3 sharing a common element intersect in {k} (a singleton, which is trivially an AP).\n\nSzab\u00f3 (1999) resolved the problem completely by determining the exact asymptotic: t = N\u00b2/2 + O(N^{5/3}(log N)\u00b3). He improved the lower bound to C(N,2) + \u230a(N-1)/4\u230b + 1 and conjectured that the exact answer is C(N,2) + O(N) and that every extremal family has a common element contained in all sets.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $N \\geq 1$. What is the largest $t$ such that there exist $A_1, \\ldots, A_t \\subseteq \\{1,\\ldots,N\\}$ with $A_i \\cap A_j$ a non-empty arithmetic progression for all $i \\neq j$?\n\n**Answer (Szab\u00f3 1999):** $t = N^2/2 + O(N^{5/3}(\\log N)^3)$.\n\nThe Erd\u0151s-Graham conjecture (APs through $\\lfloor N/2 \\rfloor$ are optimal) is FALSE.",
+    "text": "Maximum number of sets A_1,...,A_t \u2286 {1,...,N} with all pairwise intersections being non-empty arithmetic progressions. Answer: t ~ N\u00b2/2. Solved by Szab\u00f3 (1999).",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines arithmetic progressions via the ArithProg structure and proves constructively that singletons and pairs are APs. The AP-intersection property and maxAPFamily are defined, with maxAPFamily axiomatized as a function from \u2115 to \u2115.\n\nThe main results are axiomatized: Simonovits-S\u00f3s upper/lower bounds (establishing t = \u0398(N\u00b2)), the disproved Erd\u0151s-Graham conjecture, the small-sets construction with its count and AP property, and Szab\u00f3's main theorem with the leading constant 1/2.\n\nThe summary theorem combines the upper bound and Szab\u00f3's asymptotic into a single conjunction proved by exact \u27e8...\u27e9.",
     "keyInsights": [
-      "**Small Sets Beat APs:** Sets of size ≤ 3 through a fixed element give ~N²/2 sets, beating the ~N²/2.4 from APs through the middle",
-      "**Erdős-Graham Conjecture is False:** The optimal construction is NOT arithmetic progressions through a central element",
-      "**Singleton Intersections Suffice:** Two sets of size ≤ 3 sharing an element intersect in {k}, a trivial AP",
-      "**Asymptotic: N²/2:** Szabó (1999) proved t = N²/2 + O(N^{5/3}(log N)³) with leading constant exactly 1/2",
-      "**Common Element Conjecture:** Szabó conjectured that every extremal family shares a common element"
+      "**Small Sets Beat APs:** Sets of size \u2264 3 through a fixed element give ~N\u00b2/2 sets, beating the ~N\u00b2/2.4 from APs through the middle",
+      "**Erd\u0151s-Graham Conjecture is False:** The optimal construction is NOT arithmetic progressions through a central element",
+      "**Singleton Intersections Suffice:** Two sets of size \u2264 3 sharing an element intersect in {k}, a trivial AP",
+      "**Asymptotic: N\u00b2/2:** Szab\u00f3 (1999) proved t = N\u00b2/2 + O(N^{5/3}(log N)\u00b3) with leading constant exactly 1/2",
+      "**Common Element Conjecture:** Szab\u00f3 conjectured that every extremal family shares a common element"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -95,35 +95,35 @@
     },
     {
       "id": "simonovits-sos",
-      "title": "The Simonovits-Sós Bounds",
+      "title": "The Simonovits-S\u00f3s Bounds",
       "summary": "simonovits_sos_upper, simonovits_sos_lower axioms",
       "startLine": 84,
       "endLine": 92
     },
     {
       "id": "erdos-graham",
-      "title": "Erdős-Graham Conjecture (Disproved)",
+      "title": "Erd\u0151s-Graham Conjecture (Disproved)",
       "summary": "erdos_graham_conjecture_false axiom",
       "startLine": 94,
       "endLine": 110
     },
     {
       "id": "small-sets",
-      "title": "Simonovits-Sós Construction",
+      "title": "Simonovits-S\u00f3s Construction",
       "summary": "smallSetsThroughElement, small_sets_count, small_sets_has_AP",
       "startLine": 112,
       "endLine": 125
     },
     {
       "id": "szabo-theorem",
-      "title": "Szabó's Theorem (1999)",
+      "title": "Szab\u00f3's Theorem (1999)",
       "summary": "szabo_theorem, szabo_leading_constant",
       "startLine": 127,
       "endLine": 137
     },
     {
       "id": "szabo-refined",
-      "title": "Szabó's Refined Results",
+      "title": "Szab\u00f3's Refined Results",
       "summary": "szabo_lower_bound, szabo_common_element_conjecture",
       "startLine": 139,
       "endLine": 149
@@ -137,11 +137,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #272 was resolved by Szabó (1999): the maximum t is N²/2 + O(N^{5/3}(log N)³). The Erdős-Graham conjecture was disproved by Simonovits-Sós, who showed that small sets through a fixed element outperform APs through the middle.",
-    "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Extremal Set Theory:** Shows that intersection constraints on set families lead to precise quadratic bounds\n\n**2. Small Sets are Powerful:** The key insight that sets of size ≤ 3 beat structured APs was unexpected\n\n3. **Common Element Structure:** Szabó's conjecture suggests extremal families have a star-like structure\n\n4. **Arithmetic Progression Theory:** Connects the algebraic structure of APs to combinatorial optimization.",
+    "summary": "Erd\u0151s Problem #272 was resolved by Szab\u00f3 (1999): the maximum t is N\u00b2/2 + O(N^{5/3}(log N)\u00b3). The Erd\u0151s-Graham conjecture was disproved by Simonovits-S\u00f3s, who showed that small sets through a fixed element outperform APs through the middle.",
+    "implications": "**Theoretical Significance**: **Combinatorial Significance**\n\n1. **Extremal Set Theory:** Shows that intersection constraints on set families lead to precise quadratic bounds\n\n**2. Small Sets are Powerful:** The key insight that sets of size \u2264 3 beat structured APs was unexpected\n\n3. **Common Element Structure:** Szab\u00f3's conjecture suggests extremal families have a star-like structure\n\n4. **Arithmetic Progression Theory:** Connects the algebraic structure of APs to combinatorial optimization.",
     "openQuestions": [
-      "Is the exact answer t = C(N,2) + O(N)? (Szabó's conjecture)",
-      "Does every extremal family have a common element? (Szabó's structural conjecture)",
+      "Is the exact answer t = C(N,2) + O(N)? (Szab\u00f3's conjecture)",
+      "Does every extremal family have a common element? (Szab\u00f3's structural conjecture)",
       "What is the exact coefficient of the O(N) error term?",
       "Can similar bounds be obtained for k-term AP intersections?"
     ]
@@ -162,5 +162,39 @@
     "axiomCount": 10,
     "theoremCount": 3,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-139",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-177",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    },
+    {
+      "targetId": "erdos-194",
+      "relationship": "related",
+      "description": "Share combinatorial and arithmetic progression themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-138",
+    "erdos-139",
+    "erdos-176",
+    "erdos-177",
+    "erdos-194"
+  ]
 }

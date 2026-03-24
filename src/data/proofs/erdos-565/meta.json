@@ -1,10 +1,10 @@
 {
   "id": "erdos-565",
-  "title": "Erdős Problem #565: Induced Ramsey Numbers",
+  "title": "Erd\u0151s Problem #565: Induced Ramsey Numbers",
   "slug": "erdos-565",
-  "description": "Is R*(G) ≤ 2^{O(n)} for any graph G on n vertices, where R*(G) is the induced Ramsey number? SOLVED by Aragão, Campos, Dahia, Filipe, and Marciano (2025): YES!",
+  "description": "Is R*(G) \u2264 2^{O(n)} for any graph G on n vertices, where R*(G) is the induced Ramsey number? SOLVED by Arag\u00e3o, Campos, Dahia, Filipe, and Marciano (2025): YES!",
   "meta": {
-    "author": "Erdős-Rödl (proposed), Aragão et al. (solved)",
+    "author": "Erd\u0151s-R\u00f6dl (proposed), Arag\u00e3o et al. (solved)",
     "sourceUrl": "https://erdosproblems.com/565",
     "date": "2025",
     "status": "formalized",
@@ -46,9 +46,9 @@
       "Edge coloring formalization (Red/Blue)",
       "Induced Ramsey property definition",
       "Induced Ramsey number R*(G) definition",
-      "Existence theorem axiomatization (Deuber, EHP, Rödl)",
+      "Existence theorem axiomatization (Deuber, EHP, R\u00f6dl)",
       "Historical bounds: KPR (1998), CFS (2012)",
-      "Main theorem: Aragão et al. 2025 (2^{O(n)} bound)",
+      "Main theorem: Arag\u00e3o et al. 2025 (2^{O(n)} bound)",
       "Comparison with ordinary Ramsey numbers",
       "Lower bound showing tightness"
     ],
@@ -57,14 +57,14 @@
     "assumptions": "7 axiom(s) and 1 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdos Problem #565: Induced Ramsey Numbers**\n\n**The question:**\nFor a graph $G$ on $n$ vertices, define the induced Ramsey number $R^*(G)$ as the minimum $m$ such that some graph $H$ on $m$ vertices has the property that every 2-coloring of $H$'s edges yields a monochromatic *induced* copy of $G$. Is $R^*(G) \\le 2^{O(n)}$?\n\n**The induced constraint:**\nUnlike ordinary Ramsey numbers, where we seek any monochromatic copy of $G$ inside a complete graph $K_m$, induced Ramsey theory requires both edges AND non-edges to match. The host graph $H$ need not be complete, and the choice of $H$ is part of the optimization. This double constraint -- preserving adjacency AND non-adjacency -- makes the problem fundamentally harder.\n\n**Existence (1973-1975):**\nEven showing $R^*(G) < \\infty$ required deep work. Rödl (1973) proved it for bipartite graphs using a direct construction. Deuber (1975) and independently Erdős-Hajnal-Pósa (1975) proved the general case using partition calculus and the Hales-Jewett theorem. Nešetřil and Rödl later gave a cleaner proof via their partite construction lemma, which builds the host graph by carefully layering copies of $G$'s neighborhoods.\n\n**The quest for optimal bounds:**\n- **Kohayakawa-Prömel-Rödl (1998):** $R^*(G) \\le 2^{O(n(\\log n)^2)}$ using the sparse regularity lemma. They decomposed a carefully chosen random-like host into pseudorandom bipartite pairs and embedded $G$ using the regularity structure. The $(\\log n)^2$ overhead came from two nested applications of regularity.\n- **Fox-Sudakov (2008):** Gave an alternative proof of the KPR bound using dependent random choice, simplifying the argument but not improving the bound.\n- **Conlon-Fox-Sudakov (2012):** Eliminated one log factor to get $R^*(G) \\le 2^{O(n \\log n)}$. The key insight was that a single level of regularity suffices if the host graph is chosen more carefully via the Lovász Local Lemma.\n\n**The breakthrough (2025):**\nAragão, Campos, Dahia, Filipe, and Marciano proved $R^*(G) \\le 2^{O(n)}$, resolving the problem after 50+ years. Their proof introduced a 'graph-of-graphs' construction that avoids regularity methods entirely. Instead of embedding $G$ into a pseudorandom host, they build a host that directly encodes $G$'s structure at multiple scales, achieving the optimal exponential bound without logarithmic overhead.\n\n**Tightness:**\nRandom graphs $G(n, 1/2)$ satisfy $R^*(G) \\ge 2^{\\Omega(n)}$ with high probability, since any host must accommodate exponentially many distinct induced subgraph patterns. Thus $\\max_G R^*(G) = 2^{\\Theta(n)}$ and the bound is essentially optimal.",
-    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $R^*(G)$ be the induced Ramsey number: the minimal $m$ such that there exists a graph $H$ on $m$ vertices where any 2-coloring of $H$'s edges contains a monochromatic induced copy of $G$.\n\n**Question:** Is $R^*(G) \\le 2^{O(n)}$ for all graphs $G$ on $n$ vertices?\n\n**Solution (Aragão et al. 2025):**\nYES! There exists a constant $C > 0$ such that $R^*(G) \\le 2^{Cn}$ for all $n$-vertex graphs $G$.\n\nThis resolves a long-standing conjecture with a 50+ year history, establishing the optimal exponential growth rate for induced Ramsey numbers.",
-    "text": "Is R*(G) ≤ 2^{O(n)} for any graph G on n vertices, where R*(G) is the induced Ramsey number? SOLVED by Aragão, Campos, Dahia, Filipe, and Marciano (2025): YES!",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds the theory of induced Ramsey numbers in ten parts:\n\n1. **Graph basics (Part I):** Abbreviates `Graph V` for `SimpleGraph V` and defines `numVertices` via `Fintype.card`, establishing the finitary setting.\n\n2. **Induced subgraphs (Part II):** `IsInducedSubgraph G S G'` requires the biconditional $G'.\\text{Adj}\\, u\\, v \\iff G.\\text{Adj}\\, u\\, v$ for $u, v \\in S$. `ContainsInducedCopy H G` uses `Function.Embedding` ($V \\hookrightarrow W$) with the same biconditional.\n\n3. **Edge colorings (Part III):** Defines the `EdgeColor` inductive type (`Red | Blue`), `EdgeColoring G` as a function from edge witnesses (`Sym2 V` with adjacency proof) to colors, and `HasMonochromaticInducedCopy` requiring a single color, an embedding, the induced property, AND uniform coloring.\n\n4. **Induced Ramsey numbers (Part IV):** `HasInducedRamseyProperty H G` universally quantifies over all colorings. `inducedRamseyNumber n G` uses `sInf` over the set of valid sizes $m$, optimizing over both $m$ and the host $H$.\n\n5. **Existence (Part V):** Axiomatizes `induced_ramsey_exists` and derives `induced_ramsey_number_finite` (the defining set is nonempty) by destructuring the axiom.\n\n6. **Historical bounds (Part VI):** Three axioms capturing the progressive improvements: Rödl's bipartite bound $2^{O(n)}$, KPR's $2^{O(n(\\log n)^2)}$, and CFS's $2^{O(n \\log n)}$, each using `Real.rpow` and `Real.log`.\n\n7. **The solution (Part VII):** `aragao_et_al_theorem` axiom: $\\exists C > 0$ such that $R^*(G) \\le 2^{Cn}$ for all $n$-vertex $G$. `erdos_565_solution` follows immediately via `exact`.\n\n8. **Comparison (Part VIII):** Defines `ordinaryRamseyNumber` using `completeGraph` as host. `induced_ramsey_ge_ordinary` (with sorry) and `gap_can_be_large` axiom.\n\n9. **Lower bounds (Part IX):** `exponential_lower_bound` axiom and `bound_essentially_tight` combining upper and lower via pair construction.\n\n10. **Summary (Part X):** `erdos_565_summary` bundles both bounds into a single conjunction proved by `⟨aragao_et_al_theorem, exponential_lower_bound⟩`.",
+    "historicalContext": "**Erdos Problem #565: Induced Ramsey Numbers**\n\n**The question:**\nFor a graph $G$ on $n$ vertices, define the induced Ramsey number $R^*(G)$ as the minimum $m$ such that some graph $H$ on $m$ vertices has the property that every 2-coloring of $H$'s edges yields a monochromatic *induced* copy of $G$. Is $R^*(G) \\le 2^{O(n)}$?\n\n**The induced constraint:**\nUnlike ordinary Ramsey numbers, where we seek any monochromatic copy of $G$ inside a complete graph $K_m$, induced Ramsey theory requires both edges AND non-edges to match. The host graph $H$ need not be complete, and the choice of $H$ is part of the optimization. This double constraint -- preserving adjacency AND non-adjacency -- makes the problem fundamentally harder.\n\n**Existence (1973-1975):**\nEven showing $R^*(G) < \\infty$ required deep work. R\u00f6dl (1973) proved it for bipartite graphs using a direct construction. Deuber (1975) and independently Erd\u0151s-Hajnal-P\u00f3sa (1975) proved the general case using partition calculus and the Hales-Jewett theorem. Ne\u0161et\u0159il and R\u00f6dl later gave a cleaner proof via their partite construction lemma, which builds the host graph by carefully layering copies of $G$'s neighborhoods.\n\n**The quest for optimal bounds:**\n- **Kohayakawa-Pr\u00f6mel-R\u00f6dl (1998):** $R^*(G) \\le 2^{O(n(\\log n)^2)}$ using the sparse regularity lemma. They decomposed a carefully chosen random-like host into pseudorandom bipartite pairs and embedded $G$ using the regularity structure. The $(\\log n)^2$ overhead came from two nested applications of regularity.\n- **Fox-Sudakov (2008):** Gave an alternative proof of the KPR bound using dependent random choice, simplifying the argument but not improving the bound.\n- **Conlon-Fox-Sudakov (2012):** Eliminated one log factor to get $R^*(G) \\le 2^{O(n \\log n)}$. The key insight was that a single level of regularity suffices if the host graph is chosen more carefully via the Lov\u00e1sz Local Lemma.\n\n**The breakthrough (2025):**\nArag\u00e3o, Campos, Dahia, Filipe, and Marciano proved $R^*(G) \\le 2^{O(n)}$, resolving the problem after 50+ years. Their proof introduced a 'graph-of-graphs' construction that avoids regularity methods entirely. Instead of embedding $G$ into a pseudorandom host, they build a host that directly encodes $G$'s structure at multiple scales, achieving the optimal exponential bound without logarithmic overhead.\n\n**Tightness:**\nRandom graphs $G(n, 1/2)$ satisfy $R^*(G) \\ge 2^{\\Omega(n)}$ with high probability, since any host must accommodate exponentially many distinct induced subgraph patterns. Thus $\\max_G R^*(G) = 2^{\\Theta(n)}$ and the bound is essentially optimal.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $R^*(G)$ be the induced Ramsey number: the minimal $m$ such that there exists a graph $H$ on $m$ vertices where any 2-coloring of $H$'s edges contains a monochromatic induced copy of $G$.\n\n**Question:** Is $R^*(G) \\le 2^{O(n)}$ for all graphs $G$ on $n$ vertices?\n\n**Solution (Arag\u00e3o et al. 2025):**\nYES! There exists a constant $C > 0$ such that $R^*(G) \\le 2^{Cn}$ for all $n$-vertex graphs $G$.\n\nThis resolves a long-standing conjecture with a 50+ year history, establishing the optimal exponential growth rate for induced Ramsey numbers.",
+    "text": "Is R*(G) \u2264 2^{O(n)} for any graph G on n vertices, where R*(G) is the induced Ramsey number? SOLVED by Arag\u00e3o, Campos, Dahia, Filipe, and Marciano (2025): YES!",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds the theory of induced Ramsey numbers in ten parts:\n\n1. **Graph basics (Part I):** Abbreviates `Graph V` for `SimpleGraph V` and defines `numVertices` via `Fintype.card`, establishing the finitary setting.\n\n2. **Induced subgraphs (Part II):** `IsInducedSubgraph G S G'` requires the biconditional $G'.\\text{Adj}\\, u\\, v \\iff G.\\text{Adj}\\, u\\, v$ for $u, v \\in S$. `ContainsInducedCopy H G` uses `Function.Embedding` ($V \\hookrightarrow W$) with the same biconditional.\n\n3. **Edge colorings (Part III):** Defines the `EdgeColor` inductive type (`Red | Blue`), `EdgeColoring G` as a function from edge witnesses (`Sym2 V` with adjacency proof) to colors, and `HasMonochromaticInducedCopy` requiring a single color, an embedding, the induced property, AND uniform coloring.\n\n4. **Induced Ramsey numbers (Part IV):** `HasInducedRamseyProperty H G` universally quantifies over all colorings. `inducedRamseyNumber n G` uses `sInf` over the set of valid sizes $m$, optimizing over both $m$ and the host $H$.\n\n5. **Existence (Part V):** Axiomatizes `induced_ramsey_exists` and derives `induced_ramsey_number_finite` (the defining set is nonempty) by destructuring the axiom.\n\n6. **Historical bounds (Part VI):** Three axioms capturing the progressive improvements: R\u00f6dl's bipartite bound $2^{O(n)}$, KPR's $2^{O(n(\\log n)^2)}$, and CFS's $2^{O(n \\log n)}$, each using `Real.rpow` and `Real.log`.\n\n7. **The solution (Part VII):** `aragao_et_al_theorem` axiom: $\\exists C > 0$ such that $R^*(G) \\le 2^{Cn}$ for all $n$-vertex $G$. `erdos_565_solution` follows immediately via `exact`.\n\n8. **Comparison (Part VIII):** Defines `ordinaryRamseyNumber` using `completeGraph` as host. `induced_ramsey_ge_ordinary` (with sorry) and `gap_can_be_large` axiom.\n\n9. **Lower bounds (Part IX):** `exponential_lower_bound` axiom and `bound_essentially_tight` combining upper and lower via pair construction.\n\n10. **Summary (Part X):** `erdos_565_summary` bundles both bounds into a single conjunction proved by `\u27e8aragao_et_al_theorem, exponential_lower_bound\u27e9`.",
     "keyInsights": [
       "**The induced constraint changes everything:** In ordinary Ramsey theory, we embed $G$ into the complete graph $K_m$ and only need to find edges matching $G$'s edges. In induced Ramsey theory, we must also verify non-edges: for every non-edge $\\{u,v\\} \\notin E(G)$, the images $f(u), f(v)$ must be non-adjacent in $H$. This transforms a one-sided matching problem into a two-sided one, and the host graph $H$ can no longer be complete -- we must simultaneously design $H$ AND the embedding strategy.",
-      "**The host graph optimization:** Ordinary Ramsey numbers use $K_m$ as the universal host. For induced Ramsey, the choice of $H$ is part of the problem: $R^*(G) = \\min_m \\min_{H \\in \\mathcal{G}_m} [H \\xrightarrow{\\text{ind}} (G)_2]$. Different graphs $G$ may require structurally different hosts. The Nešetřil-Rödl partite construction builds $H$ by carefully layering copies of $G$'s neighborhood structure, but this produces hosts of superexponential size.",
-      "**The regularity barrier:** The KPR and CFS bounds both use regularity-type decompositions, which inherently introduce logarithmic factors. Regularity partitions a graph into $O(1/\\epsilon^{O(1)})$ parts, each of density $p \\pm \\epsilon$. To embed an $n$-vertex graph, we need $\\epsilon \\sim 1/\\text{poly}(n)$, giving parts of size $\\sim n^{O(1)}$ and host size $\\sim 2^{n \\cdot \\text{polylog}(n)}$. Aragão et al. bypassed this barrier entirely by avoiding regularity.",
+      "**The host graph optimization:** Ordinary Ramsey numbers use $K_m$ as the universal host. For induced Ramsey, the choice of $H$ is part of the problem: $R^*(G) = \\min_m \\min_{H \\in \\mathcal{G}_m} [H \\xrightarrow{\\text{ind}} (G)_2]$. Different graphs $G$ may require structurally different hosts. The Ne\u0161et\u0159il-R\u00f6dl partite construction builds $H$ by carefully layering copies of $G$'s neighborhood structure, but this produces hosts of superexponential size.",
+      "**The regularity barrier:** The KPR and CFS bounds both use regularity-type decompositions, which inherently introduce logarithmic factors. Regularity partitions a graph into $O(1/\\epsilon^{O(1)})$ parts, each of density $p \\pm \\epsilon$. To embed an $n$-vertex graph, we need $\\epsilon \\sim 1/\\text{poly}(n)$, giving parts of size $\\sim n^{O(1)}$ and host size $\\sim 2^{n \\cdot \\text{polylog}(n)}$. Arag\u00e3o et al. bypassed this barrier entirely by avoiding regularity.",
       "**Random graphs as worst case:** A random graph $G(n, 1/2)$ has roughly $2^{\\binom{n}{2}/2}$ possible adjacency patterns on any $n$-vertex subset. Any host $H$ that works for ALL such $G$ must contain induced copies of all possible $n$-vertex graphs. By a counting argument, this requires $|V(H)| \\ge 2^{\\Omega(n)}$. This establishes tightness of the $2^{O(n)}$ upper bound.",
       "**From existence to optimality in 50 years:** The timeline illustrates a common pattern in Ramsey theory: existence proofs (1970s) used non-constructive combinatorial arguments; first bounds (1990s) introduced regularity methods; improvements (2000s-2010s) refined probabilistic techniques; and the final optimal result (2025) required a fundamentally new construction bypassing all previous approaches."
     ],
@@ -106,20 +106,20 @@
     {
       "id": "existence",
       "title": "Part V: Existence of R*(G)",
-      "summary": "Axiomatizes `induced_ramsey_exists` (finiteness for all graphs, due to Deuber, EHP, and Rödl) and derives `induced_ramsey_number_finite` showing the defining set is nonempty by destructuring the existence axiom.",
+      "summary": "Axiomatizes `induced_ramsey_exists` (finiteness for all graphs, due to Deuber, EHP, and R\u00f6dl) and derives `induced_ramsey_number_finite` showing the defining set is nonempty by destructuring the existence axiom.",
       "startLine": 145,
       "endLine": 165
     },
     {
       "id": "historical-bounds",
       "title": "Part VI: Historical Bounds",
-      "summary": "Three axioms capturing progressive improvements: Rödl's bipartite $2^{O(n)}$ (1973, with `True` placeholder for bipartiteness), KPR's $2^{O(n(\\log n)^2)}$ (1998, sparse regularity), and CFS's $2^{O(n \\log n)}$ (2012, dependent random choice + Lovász Local Lemma). All use `Real.rpow` and `Real.log`.",
+      "summary": "Three axioms capturing progressive improvements: R\u00f6dl's bipartite $2^{O(n)}$ (1973, with `True` placeholder for bipartiteness), KPR's $2^{O(n(\\log n)^2)}$ (1998, sparse regularity), and CFS's $2^{O(n \\log n)}$ (2012, dependent random choice + Lov\u00e1sz Local Lemma). All use `Real.rpow` and `Real.log`.",
       "startLine": 166,
       "endLine": 198
     },
     {
       "id": "solution",
-      "title": "Part VII: The Solution - Aragão et al. (2025)",
+      "title": "Part VII: The Solution - Arag\u00e3o et al. (2025)",
       "summary": "Axiomatizes `aragao_et_al_theorem`: $\\exists C > 0$ with $R^*(G) \\le 2^{Cn}$ for all $n$-vertex $G$. The theorem `erdos_565_solution` follows by `exact aragao_et_al_theorem`, resolving the 50-year problem.",
       "startLine": 199,
       "endLine": 225
@@ -141,19 +141,19 @@
     {
       "id": "summary",
       "title": "Part X: Summary",
-      "summary": "Proves `erdos_565_summary` bundling the upper bound ($2^{O(n)}$, Aragão et al.) and lower bound ($2^{\\Omega(n)}$, random graphs) into a single conjunction via `⟨aragao_et_al_theorem, exponential_lower_bound⟩`, completely resolving Erdős Problem #565.",
+      "summary": "Proves `erdos_565_summary` bundling the upper bound ($2^{O(n)}$, Arag\u00e3o et al.) and lower bound ($2^{\\Omega(n)}$, random graphs) into a single conjunction via `\u27e8aragao_et_al_theorem, exponential_lower_bound\u27e9`, completely resolving Erd\u0151s Problem #565.",
       "startLine": 281,
       "endLine": 307
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #565 is completely resolved. The induced Ramsey number $R^*(G)$ -- the minimum host size guaranteeing a monochromatic induced copy of $G$ under any 2-coloring -- satisfies $R^*(G) = 2^{\\Theta(n)}$ in the worst case. The upper bound $R^*(G) \\le 2^{Cn}$ was proved by Aragão, Campos, Dahia, Filipe, and Marciano (2025), resolving a 50-year journey from existence proofs through quasi-polynomial bounds to the optimal exponential result. The formalization captures all major milestones with constructive proofs for the tightness and summary theorems.",
-    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Induced Ramsey theory completed:** The $2^{O(n)}$ bound closes the main quantitative question in induced Ramsey theory, showing that the induced constraint adds only a constant factor to the exponent compared to ordinary Ramsey numbers for some graph families\n\n2. **Beyond regularity:** The Aragão et al. proof demonstrates that the regularity-blow-up method, while powerful for asymptotic results, can be a bottleneck for optimal constants.\n\nTheir graph-of-graphs construction suggests new approaches for other extremal problems where regularity introduces unwanted logarithmic factors\n\n3. **Host graph design:** The optimization over host graphs $H$ (not just complete graphs) is a distinguishing feature of induced Ramsey theory. Understanding which hosts are optimal connects to the study of universal graphs and Ramsey multiplicity\n\n4. **Probabilistic tightness:** The lower bound from random graphs shows that $G(n, 1/2)$ is the hardest case, connecting to the broader theme that random objects are often extremal in combinatorics\n\n5. **Computational complexity:** The exponential bounds have implications for algorithmic Ramsey theory: finding induced monochromatic copies in 2-colored graphs is computationally hard, and the exponential host size is a barrier to efficient algorithms.",
+    "summary": "Erd\u0151s Problem #565 is completely resolved. The induced Ramsey number $R^*(G)$ -- the minimum host size guaranteeing a monochromatic induced copy of $G$ under any 2-coloring -- satisfies $R^*(G) = 2^{\\Theta(n)}$ in the worst case. The upper bound $R^*(G) \\le 2^{Cn}$ was proved by Arag\u00e3o, Campos, Dahia, Filipe, and Marciano (2025), resolving a 50-year journey from existence proofs through quasi-polynomial bounds to the optimal exponential result. The formalization captures all major milestones with constructive proofs for the tightness and summary theorems.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Induced Ramsey theory completed:** The $2^{O(n)}$ bound closes the main quantitative question in induced Ramsey theory, showing that the induced constraint adds only a constant factor to the exponent compared to ordinary Ramsey numbers for some graph families\n\n2. **Beyond regularity:** The Arag\u00e3o et al. proof demonstrates that the regularity-blow-up method, while powerful for asymptotic results, can be a bottleneck for optimal constants.\n\nTheir graph-of-graphs construction suggests new approaches for other extremal problems where regularity introduces unwanted logarithmic factors\n\n3. **Host graph design:** The optimization over host graphs $H$ (not just complete graphs) is a distinguishing feature of induced Ramsey theory. Understanding which hosts are optimal connects to the study of universal graphs and Ramsey multiplicity\n\n4. **Probabilistic tightness:** The lower bound from random graphs shows that $G(n, 1/2)$ is the hardest case, connecting to the broader theme that random objects are often extremal in combinatorics\n\n5. **Computational complexity:** The exponential bounds have implications for algorithmic Ramsey theory: finding induced monochromatic copies in 2-colored graphs is computationally hard, and the exponential host size is a barrier to efficient algorithms.",
     "openQuestions": [
       "What is the optimal constant $C$ in $R^*(G) \\le 2^{Cn}$? The current proof gives a large $C$; can it be reduced to match the lower bound constant?",
       "Can specific graph families (trees, planar graphs, sparse graphs) achieve polynomial induced Ramsey numbers $R^*(G) = \\text{poly}(n)$?",
       "What about $k$-color induced Ramsey numbers? Does $R^*_k(G) \\le 2^{O_k(n)}$ hold for $k \\ge 3$ colors?",
-      "Can the Aragão et al. proof be made constructive, yielding an explicit polynomial-time algorithm to construct the host graph $H$?"
+      "Can the Arag\u00e3o et al. proof be made constructive, yielding an explicit polynomial-time algorithm to construct the host graph $H$?"
     ]
   },
   "leanFile": {
@@ -175,5 +175,39 @@
     "axiomCount": 7,
     "theoremCount": 5,
     "definitionCount": 8
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-88",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, extremal-combinatorial, and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1036",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-620",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-636",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, graph-theoretic, and Ramsey-theoretic themes"
+    },
+    {
+      "targetId": "erdos-814",
+      "relationship": "related",
+      "description": "Share induced-subgraphs, extremal-combinatorial, and graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-88",
+    "erdos-1036",
+    "erdos-620",
+    "erdos-636",
+    "erdos-814"
+  ]
 }

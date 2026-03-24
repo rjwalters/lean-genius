@@ -1,6 +1,6 @@
 {
   "id": "erdos-1052",
-  "title": "Erdős #1052: Unitary Perfect Numbers",
+  "title": "Erd\u0151s #1052: Unitary Perfect Numbers",
   "slug": "erdos-1052",
   "description": "A unitary perfect number equals the sum of its proper unitary divisors (where d is unitary if gcd(d, n/d)=1). All unitary perfect numbers are even; finiteness is OPEN. Three examples verified by native_decide.",
   "meta": {
@@ -46,7 +46,7 @@
       }
     ],
     "originalContributions": [
-      "properUnitaryDivisors: Finset ℕ via Ico and filter",
+      "properUnitaryDivisors: Finset \u2115 via Ico and filter",
       "IsUnitaryPerfect with Decidable instance for native_decide",
       "one_mem_properUnitaryDivisors: basic membership proof",
       "odd_of_unitaryDivisor_of_odd: parity transfer via divisibility",
@@ -63,15 +63,15 @@
     "assumptions": "5 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1052: Unitary Perfect Numbers**\n\nA **unitary divisor** d of n satisfies gcd(d, n/d) = 1, meaning d and its complement share no common prime factors. A **unitary perfect number** equals the sum of its proper unitary divisors.\n\nWall (1972) found the fifth unitary perfect number. Only five are known: 6, 60, 90, 87360, and a 24-digit number discovered in 1975. It is conjectured there are only finitely many.\n\nThe evenness result follows from a factorization argument: for n = p₁^{a₁} · ... · pₖ^{aₖ}, the unitary divisor sum factors as σ*(n) = ∏(1 + pᵢ^{aᵢ}). If n were odd, every factor 1 + pᵢ^{aᵢ} would be even, making σ*(n) divisible by 2^k, but σ*(n) = 2n would require 2^{k-1} | n — contradicting oddness for k ≥ 2.",
-    "problemStatement": "**OPEN CONJECTURE**: Are there only finitely many unitary perfect numbers?\n\n**SOLVED**: All unitary perfect numbers are even.\n\nKnown unitary perfect numbers:\n- 6 = 2 · 3\n- 60 = 2² · 3 · 5\n- 90 = 2 · 3² · 5\n- 87360 = 2⁶ · 3 · 5 · 7 · 13\n- 146361946186458562560000 = 2¹⁸ · 3 · 5⁴ · 7 · 11 · 13 · 19 · 37 · 79 · 109 · 157 · 313",
+    "historicalContext": "**Erd\u0151s Problem #1052: Unitary Perfect Numbers**\n\nA **unitary divisor** d of n satisfies gcd(d, n/d) = 1, meaning d and its complement share no common prime factors. A **unitary perfect number** equals the sum of its proper unitary divisors.\n\nWall (1972) found the fifth unitary perfect number. Only five are known: 6, 60, 90, 87360, and a 24-digit number discovered in 1975. It is conjectured there are only finitely many.\n\nThe evenness result follows from a factorization argument: for n = p\u2081^{a\u2081} \u00b7 ... \u00b7 p\u2096^{a\u2096}, the unitary divisor sum factors as \u03c3*(n) = \u220f(1 + p\u1d62^{a\u1d62}). If n were odd, every factor 1 + p\u1d62^{a\u1d62} would be even, making \u03c3*(n) divisible by 2^k, but \u03c3*(n) = 2n would require 2^{k-1} | n \u2014 contradicting oddness for k \u2265 2.",
+    "problemStatement": "**OPEN CONJECTURE**: Are there only finitely many unitary perfect numbers?\n\n**SOLVED**: All unitary perfect numbers are even.\n\nKnown unitary perfect numbers:\n- 6 = 2 \u00b7 3\n- 60 = 2\u00b2 \u00b7 3 \u00b7 5\n- 90 = 2 \u00b7 3\u00b2 \u00b7 5\n- 87360 = 2\u2076 \u00b7 3 \u00b7 5 \u00b7 7 \u00b7 13\n- 146361946186458562560000 = 2\u00b9\u2078 \u00b7 3 \u00b7 5\u2074 \u00b7 7 \u00b7 11 \u00b7 13 \u00b7 19 \u00b7 37 \u00b7 79 \u00b7 109 \u00b7 157 \u00b7 313",
     "text": "A unitary perfect number equals the sum of its proper unitary divisors (where d is unitary if gcd(d, n/d)=1). All unitary perfect numbers are even; finiteness is OPEN. Three examples verified by native_decide.",
-    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides a complete framework in 196 lines:\n\n1. **Definitions (lines 30-37):** Define `properUnitaryDivisors` via `Finset.Ico 1 n |>.filter` and `IsUnitaryPerfect` as sum equality plus positivity. Derive `Decidable` instance for `native_decide`.\n\n2. **Basic Properties (lines 47-58):** Prove `one_mem_properUnitaryDivisors` (1 is always unitary) and `mem_properUnitaryDivisors` (membership characterization).\n\n3. **Parity (lines 61-98):** Prove `odd_of_unitaryDivisor_of_odd` (divisibility transfer) and `sum_odd_parity` (Finset induction: sum of odds is odd iff count is odd).\n\n4. **Structure (lines 104-129):** Prove `unitary_iff_no_common_prime` via `Nat.exists_prime_and_dvd`, `unitary_complement` via `Nat.div_div_self`, and define `unitaryDivisorSum`.\n\n5. **Main Theorem (lines 131-150):** Axiomatize `even_of_isUnitaryPerfect` with detailed proof sketch in comments using the product formula σ*(n) = ∏(1 + pᵢ^{aᵢ}).\n\n6. **Examples (lines 156-166):** Verify `isUnitaryPerfect_6`, `isUnitaryPerfect_60`, `isUnitaryPerfect_90` by `native_decide`.\n\n7. **Conjecture (lines 191-194):** State `erdos_1052_conjecture : { n | IsUnitaryPerfect n }.Finite`.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides a complete framework in 196 lines:\n\n1. **Definitions (lines 30-37):** Define `properUnitaryDivisors` via `Finset.Ico 1 n |>.filter` and `IsUnitaryPerfect` as sum equality plus positivity. Derive `Decidable` instance for `native_decide`.\n\n2. **Basic Properties (lines 47-58):** Prove `one_mem_properUnitaryDivisors` (1 is always unitary) and `mem_properUnitaryDivisors` (membership characterization).\n\n3. **Parity (lines 61-98):** Prove `odd_of_unitaryDivisor_of_odd` (divisibility transfer) and `sum_odd_parity` (Finset induction: sum of odds is odd iff count is odd).\n\n4. **Structure (lines 104-129):** Prove `unitary_iff_no_common_prime` via `Nat.exists_prime_and_dvd`, `unitary_complement` via `Nat.div_div_self`, and define `unitaryDivisorSum`.\n\n5. **Main Theorem (lines 131-150):** Axiomatize `even_of_isUnitaryPerfect` with detailed proof sketch in comments using the product formula \u03c3*(n) = \u220f(1 + p\u1d62^{a\u1d62}).\n\n6. **Examples (lines 156-166):** Verify `isUnitaryPerfect_6`, `isUnitaryPerfect_60`, `isUnitaryPerfect_90` by `native_decide`.\n\n7. **Conjecture (lines 191-194):** State `erdos_1052_conjecture : { n | IsUnitaryPerfect n }.Finite`.",
     "keyInsights": [
-      "**Decidable IsUnitaryPerfect**: The `Decidable` instance via `instDecidableAnd` enables `native_decide` proofs for concrete examples — the kernel evaluates the Finset computation and checks equality. This is the most elegant verification approach.",
-      "**Finset Induction for Parity**: The `sum_odd_parity` proof uses `Finset.induction` to show ∑(odd values) ≡ card (mod 2). Each induction step splits on whether adding an odd number flips the parity, using `Odd.add_even` and `Odd.add_odd`.",
+      "**Decidable IsUnitaryPerfect**: The `Decidable` instance via `instDecidableAnd` enables `native_decide` proofs for concrete examples \u2014 the kernel evaluates the Finset computation and checks equality. This is the most elegant verification approach.",
+      "**Finset Induction for Parity**: The `sum_odd_parity` proof uses `Finset.induction` to show \u2211(odd values) \u2261 card (mod 2). Each induction step splits on whether adding an odd number flips the parity, using `Odd.add_even` and `Odd.add_odd`.",
       "**Prime Characterization**: `unitary_iff_no_common_prime` uses `Nat.exists_prime_and_dvd` (every non-unit has a prime factor) to characterize coprimality. The forward direction uses divisibility of gcd; the reverse constructs a contradiction via prime factorization.",
-      "**Product Formula Argument**: The evenness proof (in comments) uses σ*(n) = ∏(1 + pᵢ^{aᵢ}) — a product over prime power components. For odd n, each factor is even, making σ* divisible by 2^ω(n), but σ* = 2n forces at most one factor of 2.",
+      "**Product Formula Argument**: The evenness proof (in comments) uses \u03c3*(n) = \u220f(1 + p\u1d62^{a\u1d62}) \u2014 a product over prime power components. For odd n, each factor is even, making \u03c3* divisible by 2^\u03c9(n), but \u03c3* = 2n forces at most one factor of 2.",
       "**Only 5 Known**: Despite computational searches to very large bounds, only 5 unitary perfect numbers are known. The conjecture of finiteness remains one of the accessible open problems in number theory."
     ],
     "prerequisites": [
@@ -92,19 +92,14 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-544",
       "relationship": "related-problem",
-      "description": "Erdős #544 concerns odd perfect numbers (σ(n) = 2n with standard divisors). Both problems ask about parity constraints on number-theoretic perfection conditions."
+      "description": "Erd\u0151s #544 concerns odd perfect numbers (\u03c3(n) = 2n with standard divisors). Both problems ask about parity constraints on number-theoretic perfection conditions.",
+      "targetId": "erdos-544"
     },
     {
-      "id": "erdos-987",
       "relationship": "uses-same-technique",
-      "description": "Both use Finset-based divisor computations with filter predicates and coprimality conditions, demonstrating the Finset API for number-theoretic problems."
-    },
-    {
-      "id": "euclid-euler",
-      "relationship": "related-problem",
-      "description": "Euclid-Euler characterizes even ordinary perfect numbers as 2^{p-1}(2^p-1) where 2^p-1 is Mersenne prime. No analogous characterization is known for unitary perfect numbers."
+      "description": "Both use Finset-based divisor computations with filter predicates and coprimality conditions, demonstrating the Finset API for number-theoretic problems.",
+      "targetId": "erdos-987"
     }
   ],
   "sections": [
@@ -113,14 +108,14 @@
       "title": "Core Definitions",
       "startLine": 26,
       "endLine": 41,
-      "summary": "Defines properUnitaryDivisors (n : ℕ) : Finset ℕ via Finset.Ico 1 n filtered by d ∣ n ∧ d.Coprime (n / d). Defines IsUnitaryPerfect as sum equality plus positivity. Derives Decidable instance for native_decide."
+      "summary": "Defines properUnitaryDivisors (n : \u2115) : Finset \u2115 via Finset.Ico 1 n filtered by d \u2223 n \u2227 d.Coprime (n / d). Defines IsUnitaryPerfect as sum equality plus positivity. Derives Decidable instance for native_decide."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 43,
       "endLine": 58,
-      "summary": "Proves one_mem_properUnitaryDivisors (1 is always unitary for n > 1) and mem_properUnitaryDivisors (membership ↔ characterization) using simp and omega."
+      "summary": "Proves one_mem_properUnitaryDivisors (1 is always unitary for n > 1) and mem_properUnitaryDivisors (membership \u2194 characterization) using simp and omega."
     },
     {
       "id": "parity-lemmas",
@@ -134,50 +129,49 @@
       "title": "Unitary Divisor Structure",
       "startLine": 100,
       "endLine": 129,
-      "summary": "Proves unitary_iff_no_common_prime (coprime ↔ no common prime divisor) via Nat.exists_prime_and_dvd. Proves unitary_complement via Nat.div_div_self and Coprime.symm. Defines unitaryDivisorSum."
+      "summary": "Proves unitary_iff_no_common_prime (coprime \u2194 no common prime divisor) via Nat.exists_prime_and_dvd. Proves unitary_complement via Nat.div_div_self and Coprime.symm. Defines unitaryDivisorSum."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Even Unitary Perfect Numbers",
       "startLine": 131,
       "endLine": 150,
-      "summary": "Axiomatizes even_of_isUnitaryPerfect with detailed proof sketch: σ*(n) = ∏(1 + pᵢ^aᵢ) factors, odd n makes all factors even, 2^ω(n) | 2n forces contradiction for k ≥ 2, k = 1 gives 1 = p^a impossible, k = 0 gives n = 1 not perfect."
+      "summary": "Axiomatizes even_of_isUnitaryPerfect with detailed proof sketch: \u03c3*(n) = \u220f(1 + p\u1d62^a\u1d62) factors, odd n makes all factors even, 2^\u03c9(n) | 2n forces contradiction for k \u2265 2, k = 1 gives 1 = p^a impossible, k = 0 gives n = 1 not perfect."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 152,
       "endLine": 166,
-      "summary": "Proves isUnitaryPerfect_6, isUnitaryPerfect_60, isUnitaryPerfect_90 by native_decide — the Lean kernel evaluates the Finset computation and checks sum = n."
+      "summary": "Proves isUnitaryPerfect_6, isUnitaryPerfect_60, isUnitaryPerfect_90 by native_decide \u2014 the Lean kernel evaluates the Finset computation and checks sum = n."
     },
     {
       "id": "further-properties",
       "title": "Further Properties",
       "startLine": 168,
       "endLine": 186,
-      "summary": "Axiomatizes unitaryDivisors_primePow (only 1 and p^k for prime powers), unitaryDivisorSum_mul_coprime (multiplicativity), and properUnitaryDivisors_pairing (d ↔ n/d pairing structure)."
+      "summary": "Axiomatizes unitaryDivisors_primePow (only 1 and p^k for prime powers), unitaryDivisorSum_mul_coprime (multiplicativity), and properUnitaryDivisors_pairing (d \u2194 n/d pairing structure)."
     },
     {
       "id": "conjecture",
       "title": "Open Conjecture",
       "startLine": 188,
       "endLine": 196,
-      "summary": "States erdos_1052_conjecture : { n : ℕ | IsUnitaryPerfect n }.Finite as an axiom — the OPEN finiteness conjecture."
+      "summary": "States erdos_1052_conjecture : { n : \u2115 | IsUnitaryPerfect n }.Finite as an axiom \u2014 the OPEN finiteness conjecture."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1052 is formalized with 8 proved theorems (including 3 verified examples via native_decide, Finset induction parity lemma, prime characterization of coprimality, and unitary complement symmetry), 4 axioms (evenness of unitary perfect numbers, prime power structure, multiplicativity, pairing, and the open finiteness conjecture), and 3 definitions. The main computational verification uses native_decide through a Decidable instance on IsUnitaryPerfect.",
-    "implications": "**Theoretical Significance**: **Significance for Number Theory**\n\n1. **Unitary Divisor Theory**: The unitary divisor structure provides a natural generalization of classical divisor theory. The multiplicativity σ*(mn) = σ*(m)σ*(n) for coprime m, n enables product formulas.\n\n**2. Parity Constraints**: The evenness proof illustrates how the factorization σ*(n) = ∏(1 + pᵢ^{aᵢ}) imposes strong arithmetic constraints. The argument generalizes to show unitary k-perfect numbers (σ*(n) = kn) have restricted prime structures.\n\n3. **Computational Verification**: The `native_decide` approach demonstrates Lean 4's ability to verify number-theoretic properties computationally, avoiding manual divisor enumeration.\n\n4. **Open Problems**: The finiteness conjecture remains one of the most accessible open problems in number theory, requiring only elementary methods but resisting resolution for 50+ years.",
+    "summary": "Erd\u0151s Problem #1052 is formalized with 8 proved theorems (including 3 verified examples via native_decide, Finset induction parity lemma, prime characterization of coprimality, and unitary complement symmetry), 4 axioms (evenness of unitary perfect numbers, prime power structure, multiplicativity, pairing, and the open finiteness conjecture), and 3 definitions. The main computational verification uses native_decide through a Decidable instance on IsUnitaryPerfect.",
+    "implications": "**Theoretical Significance**: **Significance for Number Theory**\n\n1. **Unitary Divisor Theory**: The unitary divisor structure provides a natural generalization of classical divisor theory. The multiplicativity \u03c3*(mn) = \u03c3*(m)\u03c3*(n) for coprime m, n enables product formulas.\n\n**2. Parity Constraints**: The evenness proof illustrates how the factorization \u03c3*(n) = \u220f(1 + p\u1d62^{a\u1d62}) imposes strong arithmetic constraints. The argument generalizes to show unitary k-perfect numbers (\u03c3*(n) = kn) have restricted prime structures.\n\n3. **Computational Verification**: The `native_decide` approach demonstrates Lean 4's ability to verify number-theoretic properties computationally, avoiding manual divisor enumeration.\n\n4. **Open Problems**: The finiteness conjecture remains one of the most accessible open problems in number theory, requiring only elementary methods but resisting resolution for 50+ years.",
     "openQuestions": [
       "Are there only finitely many unitary perfect numbers?",
       "Is there a sixth unitary perfect number?",
       "What constraints exist on the prime factorization of unitary perfect numbers?",
-      "Are there infinitely many odd abundant numbers (σ*(n) > 2n) that are squarefree?"
+      "Are there infinitely many odd abundant numbers (\u03c3*(n) > 2n) that are squarefree?"
     ]
   },
   "relatedProofs": [
     "erdos-544",
-    "erdos-987",
-    "euclid-euler"
+    "erdos-987"
   ]
 }

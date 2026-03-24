@@ -1,10 +1,10 @@
 {
   "id": "erdos-513",
-  "title": "Erdős Problem #513: Maximum Term of a Power Series",
+  "title": "Erd\u0151s Problem #513: Maximum Term of a Power Series",
   "slug": "erdos-513",
-  "description": "For transcendental entire f(z) = Σ aₙzⁿ, determine sup liminf_{r→∞} μ(r)/M(r) where μ(r) = max_n |aₙrⁿ| and M(r) = max_{|z|=r} |f(z)|. Known: value ∈ (1/2, 2/π - c]. Open.",
+  "description": "For transcendental entire f(z) = \u03a3 a\u2099z\u207f, determine sup liminf_{r\u2192\u221e} \u03bc(r)/M(r) where \u03bc(r) = max_n |a\u2099r\u207f| and M(r) = max_{|z|=r} |f(z)|. Known: value \u2208 (1/2, 2/\u03c0 - c]. Open.",
   "meta": {
-    "author": "Erdős (1961)",
+    "author": "Erd\u0151s (1961)",
     "sourceUrl": "https://erdosproblems.com/513",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos513Problem.lean",
@@ -25,29 +25,55 @@
     "dateAdded": "2026-02-10",
     "prerequisites": [
       "Complex analysis: entire functions, maximum modulus principle, power series",
-      "Wiman-Valiron theory: maximum term μ(r), central index, and their relation to M(r)",
+      "Wiman-Valiron theory: maximum term \u03bc(r), central index, and their relation to M(r)",
       "Lacunary series: gap series with controlled coefficient growth"
     ],
     "relatedProofs": [],
     "assumptions": "8 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "erdos-227",
+      "relationship": "related",
+      "description": "Share entire-functions, complex-analysis, and power-series themes"
+    },
+    {
+      "targetId": "erdos-1115",
+      "relationship": "related",
+      "description": "Share entire-functions and complex-analysis themes"
+    },
+    {
+      "targetId": "erdos-1116",
+      "relationship": "related",
+      "description": "Share entire-functions and complex-analysis themes"
+    },
+    {
+      "targetId": "erdos-1117",
+      "relationship": "related",
+      "description": "Share entire-functions and complex-analysis themes"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Share entire-functions and complex-analysis themes"
+    }
+  ],
   "overview": {
-    "historicalContext": "Erdős (1961) asked for the greatest possible value of $\\liminf_{r\\to\\infty} \\mu(r)/M(r)$ over all transcendental entire functions, where $\\mu(r) = \\max_n |a_n|r^n$ is the **maximum term** and $M(r) = \\max_{|z|=r}|f(z)|$ the **maximum modulus**. The problem sits at the heart of **Wiman–Valiron theory**, which systematically relates the dominant term to global growth.\n\nThe trivial bound $\\mu(r) \\leq M(r)$ (the maximum term never exceeds the maximum modulus) means the ratio always lies in $[0,1]$. For many standard functions (like $e^z$), the dominant term captures most of the maximum modulus as $r \\to \\infty$, giving $\\liminf \\mu(r)/M(r) = 1$. The question is how small this ratio can be forced to be.\n\nKövári (unpublished) showed via lacunary series constructions that the supremum exceeds $1/2$. Clunie and Hayman (1964, *J. Analyse Math.*) proved the sharp upper bound: the supremum is strictly less than $2/\\pi \\approx 0.6366$, where $2/\\pi$ arises as $\\frac{1}{\\pi}\\int_0^\\pi |\\cos\\theta|\\,d\\theta$ — the average value of $|\\cos\\theta|$. Gray and Shah (1963) provided additional intermediate bounds. The exact value in $(1/2, 2/\\pi)$ remains one of the outstanding open problems in classical complex analysis.",
+    "historicalContext": "Erd\u0151s (1961) asked for the greatest possible value of $\\liminf_{r\\to\\infty} \\mu(r)/M(r)$ over all transcendental entire functions, where $\\mu(r) = \\max_n |a_n|r^n$ is the **maximum term** and $M(r) = \\max_{|z|=r}|f(z)|$ the **maximum modulus**. The problem sits at the heart of **Wiman\u2013Valiron theory**, which systematically relates the dominant term to global growth.\n\nThe trivial bound $\\mu(r) \\leq M(r)$ (the maximum term never exceeds the maximum modulus) means the ratio always lies in $[0,1]$. For many standard functions (like $e^z$), the dominant term captures most of the maximum modulus as $r \\to \\infty$, giving $\\liminf \\mu(r)/M(r) = 1$. The question is how small this ratio can be forced to be.\n\nK\u00f6v\u00e1ri (unpublished) showed via lacunary series constructions that the supremum exceeds $1/2$. Clunie and Hayman (1964, *J. Analyse Math.*) proved the sharp upper bound: the supremum is strictly less than $2/\\pi \\approx 0.6366$, where $2/\\pi$ arises as $\\frac{1}{\\pi}\\int_0^\\pi |\\cos\\theta|\\,d\\theta$ \u2014 the average value of $|\\cos\\theta|$. Gray and Shah (1963) provided additional intermediate bounds. The exact value in $(1/2, 2/\\pi)$ remains one of the outstanding open problems in classical complex analysis.",
     "problemStatement": "Determine $\\sup_f \\liminf_{r\\to\\infty} \\frac{\\mu(r)}{M(r)}$ over all transcendental entire functions $f(z) = \\sum a_n z^n$, where $\\mu(r) = \\max_n |a_n|r^n$ and $M(r) = \\max_{|z|=r}|f(z)|$.",
-    "text": "For transcendental entire f(z) = Σ aₙzⁿ, determine sup liminf_{r→∞} μ(r)/M(r) where μ(r) = max_n |aₙrⁿ| and M(r) = max_{|z|=r} |f(z)|. Known: value ∈ (1/2, 2/π - c]. Open.",
+    "text": "For transcendental entire f(z) = \u03a3 a\u2099z\u207f, determine sup liminf_{r\u2192\u221e} \u03bc(r)/M(r) where \u03bc(r) = max_n |a\u2099r\u207f| and M(r) = max_{|z|=r} |f(z)|. Known: value \u2208 (1/2, 2/\u03c0 - c]. Open.",
     "proofStrategy": "The formalization axiomatizes `maxTerm` ($\\mu(r)$) and `maxModulus` ($M(r)$) as functions on transcendental entire functions, defines the ratio `termModulusRatio` constructively, and records the known bounds as axioms. Five structural theorems are proved from the axioms: the ratio lies in $[0,1]$, set membership, degenerate cases, and ratio-equals-quotient when $M(r) > 0$. The main conjecture (`erdos_513_exact_value`) asserts the existence of an exact supremum $L \\in (1/2, 2/\\pi)$.",
     "keyInsights": [
-      "μ(r) ≤ M(r) always holds by the maximum modulus principle, so the ratio lies in [0, 1]",
-      "Kövári proved the supremum exceeds 1/2 using lacunary series — gap series where the coefficients are nonzero only at rapidly increasing indices, causing the maximum term to dominate the sum",
-      "Clunie-Hayman (1964) showed the supremum is strictly less than 2/π ≈ 0.6366, where 2/π arises as the average of |cos θ| — a connection to the distribution of the argument of f(re^{iθ})",
-      "The gap between 1/2 and 2/π remains one of the most precise open intervals in classical analysis",
-      "The problem connects to the central index ν(r) (the n maximizing |aₙ|rⁿ) via Wiman-Valiron theory: when μ(r)/M(r) is large, the function f(z) is dominated by the single term aᵥ(r)zᵥ(r) near |z| = r",
-      "For lacunary series f(z) = Σ aₙ z^{n_k} with large gaps n_{k+1}/n_k → ∞, μ(r)/M(r) → 1 for most r, but the liminf can be forced down to any value > 1/2"
+      "\u03bc(r) \u2264 M(r) always holds by the maximum modulus principle, so the ratio lies in [0, 1]",
+      "K\u00f6v\u00e1ri proved the supremum exceeds 1/2 using lacunary series \u2014 gap series where the coefficients are nonzero only at rapidly increasing indices, causing the maximum term to dominate the sum",
+      "Clunie-Hayman (1964) showed the supremum is strictly less than 2/\u03c0 \u2248 0.6366, where 2/\u03c0 arises as the average of |cos \u03b8| \u2014 a connection to the distribution of the argument of f(re^{i\u03b8})",
+      "The gap between 1/2 and 2/\u03c0 remains one of the most precise open intervals in classical analysis",
+      "The problem connects to the central index \u03bd(r) (the n maximizing |a\u2099|r\u207f) via Wiman-Valiron theory: when \u03bc(r)/M(r) is large, the function f(z) is dominated by the single term a\u1d65(r)z\u1d65(r) near |z| = r",
+      "For lacunary series f(z) = \u03a3 a\u2099 z^{n_k} with large gaps n_{k+1}/n_k \u2192 \u221e, \u03bc(r)/M(r) \u2192 1 for most r, but the liminf can be forced down to any value > 1/2"
     ],
     "prerequisites": [
       "Complex analysis: entire functions, maximum modulus principle, power series",
-      "Wiman-Valiron theory: maximum term μ(r), central index, and their relation to M(r)",
+      "Wiman-Valiron theory: maximum term \u03bc(r), central index, and their relation to M(r)",
       "Lacunary series: gap series with controlled coefficient growth"
     ]
   },
@@ -57,7 +83,7 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 25,
-      "summary": "Problem overview, references to Erdős (1961), Kövári, Clunie-Hayman. Imports Mathlib.",
+      "summary": "Problem overview, references to Erd\u0151s (1961), K\u00f6v\u00e1ri, Clunie-Hayman. Imports Mathlib.",
       "mathContext": "Determine $\\sup_f \\liminf_{r\\to\\infty} \\mu(r)/M(r)$ over transcendental entire $f$. Known: value $\\in (1/2, 2/\\pi - c]$."
     },
     {
@@ -65,7 +91,7 @@
       "title": "Definitions",
       "startLine": 26,
       "endLine": 52,
-      "summary": "maxTerm (axiomatized μ(r)), maxModulus (axiomatized M(r)), termModulusRatio (μ/M), IsTranscendentalEntire.",
+      "summary": "maxTerm (axiomatized \u03bc(r)), maxModulus (axiomatized M(r)), termModulusRatio (\u03bc/M), IsTranscendentalEntire.",
       "mathContext": "$\\mu(r) = \\max_n |a_n|r^n$ (maximum term), $M(r) = \\max_{|z|=r}|f(z)|$ (maximum modulus). Ratio: $\\mu(r)/M(r) \\in [0,1]$."
     },
     {
@@ -73,7 +99,7 @@
       "title": "Known Results and Bounds",
       "startLine": 54,
       "endLine": 73,
-      "summary": "μ(r) ≤ M(r) (axiom), Kövári lower bound > 1/2, Clunie-Hayman upper bound ≤ 2/π - c.",
+      "summary": "\u03bc(r) \u2264 M(r) (axiom), K\u00f6v\u00e1ri lower bound > 1/2, Clunie-Hayman upper bound \u2264 2/\u03c0 - c.",
       "mathContext": "Bounds: $1/2 < \\sup_f \\liminf \\mu(r)/M(r) \\leq 2/\\pi - c$ where $c > 0$ (Clunie-Hayman 1964)."
     },
     {
@@ -89,18 +115,18 @@
       "title": "Formal Conjecture",
       "startLine": 122,
       "endLine": 151,
-      "summary": "erdos_513_exact_value: axiom asserting existence of exact supremum L ∈ (1/2, 2/π). Summary theorem packaging all known results.",
+      "summary": "erdos_513_exact_value: axiom asserting existence of exact supremum L \u2208 (1/2, 2/\u03c0). Summary theorem packaging all known results.",
       "mathContext": "$\\exists L \\in (1/2, 2/\\pi)$ such that $\\sup_f \\liminf_{r\\to\\infty} \\mu(r)/M(r) = L$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #513 is formalized in 151 lines with 8 axioms encoding the maximum term and modulus functions and their known bounds. Five structural theorems are proved. The exact supremum of liminf μ(r)/M(r) over transcendental entire functions lies in (1/2, 2/π) but remains unknown.",
-    "implications": "Resolution would clarify the fundamental relationship between the maximum term and maximum modulus of entire functions, connecting Wiman-Valiron theory to the distribution of the argument of f(re^{iθ}). The appearance of 2/π suggests a connection to harmonic analysis and Fourier coefficients.",
+    "summary": "Erd\u0151s Problem #513 is formalized in 151 lines with 8 axioms encoding the maximum term and modulus functions and their known bounds. Five structural theorems are proved. The exact supremum of liminf \u03bc(r)/M(r) over transcendental entire functions lies in (1/2, 2/\u03c0) but remains unknown.",
+    "implications": "Resolution would clarify the fundamental relationship between the maximum term and maximum modulus of entire functions, connecting Wiman-Valiron theory to the distribution of the argument of f(re^{i\u03b8}). The appearance of 2/\u03c0 suggests a connection to harmonic analysis and Fourier coefficients.",
     "openQuestions": [
-      "What is the exact value of sup liminf μ(r)/M(r)? The gap (1/2, 2/π) has not narrowed since 1964",
-      "Can the Clunie-Hayman upper bound 2/π - c be made explicit (i.e., determine c)?",
+      "What is the exact value of sup liminf \u03bc(r)/M(r)? The gap (1/2, 2/\u03c0) has not narrowed since 1964",
+      "Can the Clunie-Hayman upper bound 2/\u03c0 - c be made explicit (i.e., determine c)?",
       "What is the extremal function (if any) achieving the supremum? Is it a lacunary series?",
-      "Does the answer change if liminf is replaced by limsup? (Wiman's theorem gives μ(r)/M(r) → 1 along a sequence for any entire function)"
+      "Does the answer change if liminf is replaced by limsup? (Wiman's theorem gives \u03bc(r)/M(r) \u2192 1 along a sequence for any entire function)"
     ]
   },
   "leanFile": {
@@ -119,13 +145,20 @@
   "references": [
     {
       "key": "Er61",
-      "citation": "Erdős, P., Some unsolved problems, Michigan Math. J. 4 (1961), 249. Original formulation of Problem 513.",
+      "citation": "Erd\u0151s, P., Some unsolved problems, Michigan Math. J. 4 (1961), 249. Original formulation of Problem 513.",
       "type": "paper"
     },
     {
       "key": "CH64",
-      "citation": "Clunie, J. and Hayman, W.K., The maximum term of a power series, J. Analyse Math. 12 (1964), 143–186. Upper bound 2/π - c.",
+      "citation": "Clunie, J. and Hayman, W.K., The maximum term of a power series, J. Analyse Math. 12 (1964), 143\u2013186. Upper bound 2/\u03c0 - c.",
       "type": "paper"
     }
+  ],
+  "relatedProofs": [
+    "erdos-227",
+    "erdos-1115",
+    "erdos-1116",
+    "erdos-1117",
+    "erdos-1118"
   ]
 }

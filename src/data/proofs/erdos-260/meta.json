@@ -1,10 +1,10 @@
 {
   "id": "erdos-260",
-  "title": "Erdős Problem #260: Irrationality of Sparse Sequence Series",
+  "title": "Erd\u0151s Problem #260: Irrationality of Sparse Sequence Series",
   "slug": "erdos-260",
-  "description": "If a₁ < a₂ < ⋯ is increasing with aₙ/n → ∞, is ∑ aₙ/2^{aₙ} necessarily irrational?",
+  "description": "If a\u2081 < a\u2082 < \u22ef is increasing with a\u2099/n \u2192 \u221e, is \u2211 a\u2099/2^{a\u2099} necessarily irrational?",
   "meta": {
-    "author": "Erdős (1974)",
+    "author": "Erd\u0151s (1974)",
     "sourceUrl": "https://erdosproblems.com/260",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos260Problem.lean",
@@ -41,11 +41,11 @@
       }
     ],
     "originalContributions": [
-      "Defined IncreasingSeq, FastGrowth (aₙ/n → ∞), GapsToInfinity, SuperlogarithmicGrowth",
-      "Defined the series ∑ aₙ/2^{aₙ} with partial sums and convergence",
-      "Stated Erdős's gaps-to-infinity irrationality theorem",
+      "Defined IncreasingSeq, FastGrowth (a\u2099/n \u2192 \u221e), GapsToInfinity, SuperlogarithmicGrowth",
+      "Defined the series \u2211 a\u2099/2^{a\u2099} with partial sums and convergence",
+      "Stated Erd\u0151s's gaps-to-infinity irrationality theorem",
       "Stated superlogarithmic irrationality result",
-      "Developed the n² sequence as a concrete example",
+      "Developed the n\u00b2 sequence as a concrete example",
       "Stated the main conjecture: fast growth alone implies irrationality",
       "Proved convergence of the series under fast growth"
     ],
@@ -56,19 +56,19 @@
       },
       {
         "proofId": "erdos-257",
-        "relationship": "Irrationality of Lambert-type sums — closely related series irrationality problems from the same Erdős-Graham program."
+        "relationship": "Irrationality of Lambert-type sums \u2014 closely related series irrationality problems from the same Erd\u0151s-Graham program."
       },
       {
         "proofId": "erdos-251",
-        "relationship": "Irrationality of Σ pₙ/2ⁿ where pₙ is the n-th prime. Another instance of the 'when does a structured series have irrational sum?' question."
+        "relationship": "Irrationality of \u03a3 p\u2099/2\u207f where p\u2099 is the n-th prime. Another instance of the 'when does a structured series have irrational sum?' question."
       },
       {
         "proofId": "erdos-267",
-        "relationship": "Irrationality of Fibonacci reciprocal sums — a related question about arithmetic properties of structured series."
+        "relationship": "Irrationality of Fibonacci reciprocal sums \u2014 a related question about arithmetic properties of structured series."
       },
       {
         "proofId": "erdos-68",
-        "relationship": "Irrationality of factorial sums — one of Erdős's earliest irrationality problems, using related techniques."
+        "relationship": "Irrationality of factorial sums \u2014 one of Erd\u0151s's earliest irrationality problems, using related techniques."
       },
       {
         "proofId": "liouville-theorem",
@@ -80,15 +80,15 @@
     "assumptions": "1 axiom(s) and 5 sorry(s). See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "This problem originates from Erdős's 1974 work on irrationality of series [Er74b], further developed in the landmark monograph 'Old and New Problems and Results in Combinatorial Number Theory' with Graham [ErGr80]. It explores a fundamental question at the boundary of analysis and number theory: when does a lacunary (sparse) series produce an irrational sum?\n\nErdős proved that irrationality holds under the stronger condition that the gaps a_{n+1} − aₙ tend to infinity. He also showed irrationality when aₙ grows superlogarithmically, specifically when aₙ ≫ n√(log n · log log n). These partial results demonstrate that 'sufficiently fast' growth guarantees irrationality, but the full conjecture — that the mere condition aₙ/n → ∞ suffices — remains open.\n\nThe problem has an appealing simplicity: the series ∑ aₙ/2^{aₙ} converges absolutely for any increasing sequence (the terms decrease exponentially), so the question is purely about the arithmetic nature of the limit. Erdős and Graham speculated that even having limsup of the gaps being infinite might not suffice for irrationality, but no counterexample has been found. The problem connects to the theory of lacunary series, normal numbers, and the Lindemann-Weierstrass theorem.",
+    "historicalContext": "This problem originates from Erd\u0151s's 1974 work on irrationality of series [Er74b], further developed in the landmark monograph 'Old and New Problems and Results in Combinatorial Number Theory' with Graham [ErGr80]. It explores a fundamental question at the boundary of analysis and number theory: when does a lacunary (sparse) series produce an irrational sum?\n\nErd\u0151s proved that irrationality holds under the stronger condition that the gaps a_{n+1} \u2212 a\u2099 tend to infinity. He also showed irrationality when a\u2099 grows superlogarithmically, specifically when a\u2099 \u226b n\u221a(log n \u00b7 log log n). These partial results demonstrate that 'sufficiently fast' growth guarantees irrationality, but the full conjecture \u2014 that the mere condition a\u2099/n \u2192 \u221e suffices \u2014 remains open.\n\nThe problem has an appealing simplicity: the series \u2211 a\u2099/2^{a\u2099} converges absolutely for any increasing sequence (the terms decrease exponentially), so the question is purely about the arithmetic nature of the limit. Erd\u0151s and Graham speculated that even having limsup of the gaps being infinite might not suffice for irrationality, but no counterexample has been found. The problem connects to the theory of lacunary series, normal numbers, and the Lindemann-Weierstrass theorem.",
     "problemStatement": "Let $a_1 < a_2 < \\cdots$ be an increasing sequence of natural numbers with $a_n/n \\to \\infty$. Is the sum $\\sum_{n=1}^{\\infty} a_n / 2^{a_n}$ necessarily irrational?",
-    "text": "If a₁ < a₂ < ⋯ is increasing with aₙ/n → ∞, is ∑ aₙ/2^{aₙ} necessarily irrational?",
-    "proofStrategy": "We formalize several growth conditions on sequences: IncreasingSeq (strictly increasing), FastGrowth (aₙ/n → ∞), GapsToInfinity (gaps → ∞), and SuperlogarithmicGrowth. The series and its convergence are defined. Erdős's known partial results (irrationality under gaps-to-infinity and superlogarithmic growth) are stated as theorems with sorry. The sequence aₙ = n² is developed as a concrete example. The main conjecture is stated as an axiom.",
+    "text": "If a\u2081 < a\u2082 < \u22ef is increasing with a\u2099/n \u2192 \u221e, is \u2211 a\u2099/2^{a\u2099} necessarily irrational?",
+    "proofStrategy": "We formalize several growth conditions on sequences: IncreasingSeq (strictly increasing), FastGrowth (a\u2099/n \u2192 \u221e), GapsToInfinity (gaps \u2192 \u221e), and SuperlogarithmicGrowth. The series and its convergence are defined. Erd\u0151s's known partial results (irrationality under gaps-to-infinity and superlogarithmic growth) are stated as theorems with sorry. The sequence a\u2099 = n\u00b2 is developed as a concrete example. The main conjecture is stated as an axiom.",
     "keyInsights": [
-      "**Gaps-to-Infinity Theorem**: Erdős proved that if a_{n+1} − aₙ → ∞, the series is irrational. This uses approximation by rational numbers and gap separation",
-      "**Superlogarithmic Threshold**: Irrationality also holds for aₙ ≫ n√(log n · log log n), providing a quantitative growth threshold",
-      "**Square Sequence Example**: The sequence aₙ = n² has gaps 2n+1 → ∞, so its series ∑ n²/2^{n²} is irrational by the gaps theorem",
-      "**Counterexample Gap**: Erdős-Graham speculated that limsup(gaps) = ∞ alone may not suffice, but no counterexample exists — the problem's difficulty lies in this gap",
+      "**Gaps-to-Infinity Theorem**: Erd\u0151s proved that if a_{n+1} \u2212 a\u2099 \u2192 \u221e, the series is irrational. This uses approximation by rational numbers and gap separation",
+      "**Superlogarithmic Threshold**: Irrationality also holds for a\u2099 \u226b n\u221a(log n \u00b7 log log n), providing a quantitative growth threshold",
+      "**Square Sequence Example**: The sequence a\u2099 = n\u00b2 has gaps 2n+1 \u2192 \u221e, so its series \u2211 n\u00b2/2^{n\u00b2} is irrational by the gaps theorem",
+      "**Counterexample Gap**: Erd\u0151s-Graham speculated that limsup(gaps) = \u221e alone may not suffice, but no counterexample exists \u2014 the problem's difficulty lies in this gap",
       "**Lacunary Series**: The problem belongs to the rich theory of lacunary series, where sparsity of terms interacts with arithmetic properties of sums"
     ],
     "prerequisites": [
@@ -101,7 +101,7 @@
     {
       "id": "header-imports",
       "title": "Header and Imports",
-      "summary": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics.",
+      "summary": "Module docstring with problem statement, known results, Erd\u0151s-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics.",
       "startLine": 1,
       "endLine": 37
     },
@@ -122,7 +122,7 @@
     {
       "id": "known-results",
       "title": "Known Irrationality Results",
-      "summary": "Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture.",
+      "summary": "Erd\u0151s's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture.",
       "startLine": 80,
       "endLine": 99
     },
@@ -143,7 +143,7 @@
     {
       "id": "conjecture",
       "title": "Main Conjecture and Counterexample Specification",
-      "summary": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like.",
+      "summary": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erd\u0151s-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like.",
       "startLine": 154,
       "endLine": 179
     },
@@ -156,14 +156,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #260 asks whether the series ∑ aₙ/2^{aₙ} is irrational whenever aₙ/n → ∞. Erdős proved irrationality under the stronger conditions of gaps tending to infinity or superlogarithmic growth. The gap between these partial results and the full conjecture remains the central open question.",
+    "summary": "Erd\u0151s Problem #260 asks whether the series \u2211 a\u2099/2^{a\u2099} is irrational whenever a\u2099/n \u2192 \u221e. Erd\u0151s proved irrationality under the stronger conditions of gaps tending to infinity or superlogarithmic growth. The gap between these partial results and the full conjecture remains the central open question.",
     "implications": "A proof would establish that growth rate alone determines the arithmetic nature of these lacunary series. A counterexample would reveal subtle structure in rational-summing sparse sequences and would likely require innovative constructions in combinatorial number theory.",
     "openQuestions": [
       "Can the gaps-to-infinity condition be weakened to mere fast growth while preserving irrationality?",
       "Does there exist a sequence with unbounded but non-tending-to-infinity gaps that gives a rational sum?",
       "What is the minimal growth rate guaranteeing irrationality?",
       "Does the base 2 play a special role, or does the result hold for other bases?",
-      "Can methods from the theory of continued fractions or Padé approximants make progress?"
+      "Can methods from the theory of continued fractions or Pad\u00e9 approximants make progress?"
     ]
   },
   "leanFile": {
@@ -187,13 +187,47 @@
   "references": [
     {
       "key": "Er74b",
-      "citation": "Erdős, P., On the irrationality of certain series: problems and results, in: New Advances in Transcendence Theory (1974).",
+      "citation": "Erd\u0151s, P., On the irrationality of certain series: problems and results, in: New Advances in Transcendence Theory (1974).",
       "type": "paper"
     },
     {
       "key": "ErGr80",
-      "citation": "Erdős, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Mathématique, Geneva (1980).",
+      "citation": "Erd\u0151s, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Math\u00e9matique, Geneva (1980).",
       "type": "book"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-263",
+      "relationship": "related",
+      "description": "Share irrationality, sequence, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Share series, irrationality, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1050",
+      "relationship": "related",
+      "description": "Share series, irrationality, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-1051",
+      "relationship": "related",
+      "description": "Share series, irrationality, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-249",
+      "relationship": "related",
+      "description": "Share series, irrationality, and number-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-263",
+    "erdos-1049",
+    "erdos-1050",
+    "erdos-1051",
+    "erdos-249"
   ]
 }

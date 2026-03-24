@@ -1,10 +1,10 @@
 {
   "id": "erdos-742",
-  "title": "Erdős Problem #742: Maximum Edges in Minimal Diameter-2 Graphs",
+  "title": "Erd\u0151s Problem #742: Maximum Edges in Minimal Diameter-2 Graphs",
   "slug": "erdos-742",
-  "description": "Let G be a graph on n vertices with diameter 2, such that deleting any edge increases the diameter. Is it true that G has at most n²/4 edges? SOLVED by Füredi (1992): YES for sufficiently large n. The complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} shows this bound is tight.",
+  "description": "Let G be a graph on n vertices with diameter 2, such that deleting any edge increases the diameter. Is it true that G has at most n\u00b2/4 edges? SOLVED by F\u00fcredi (1992): YES for sufficiently large n. The complete bipartite graph K_{\u230an/2\u230b,\u2308n/2\u2309} shows this bound is tight.",
   "meta": {
-    "author": "Murty-Plesník (1979), Füredi (1992)",
+    "author": "Murty-Plesn\u00edk (1979), F\u00fcredi (1992)",
     "sourceUrl": "https://erdosproblems.com/742",
     "date": "1979",
     "status": "axiomatized",
@@ -52,32 +52,32 @@
       "deleteEdge: edge deletion operation",
       "IsCriticalEdge: edge critical for diameter",
       "IsMinimalDiameter2: minimal diameter-2 graph predicate",
-      "MurtyPlesnikBound: the n²/4 bound",
+      "MurtyPlesnikBound: the n\u00b2/4 bound",
       "furedi_theorem: the main result axiomatized",
       "bound_is_tight: extremal example exists",
       "IsDiameterCritical: general diameter-critical definition",
-      "balanced_bipartite_edges axiom: (n/2)*((n+1)/2) = n²/4"
+      "balanced_bipartite_edges axiom: (n/2)*((n+1)/2) = n\u00b2/4"
     ],
     "axiomCount": 7,
     "lineCount": 226,
     "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "The question of bounding edges in diameter-critical graphs originated with Ore in the 1960s, who asked whether minimal diameter-2 graphs can have more than $\\lfloor n^2/4 \\rfloor$ edges. The conjecture was independently formulated by Murty and Simon, then formally published by Murty and Plesník in 1979. In the same year, Caccetta and Häggkvist studied the broader class of diameter-critical graphs, proving partial results and establishing the connection to extremal graph theory. The breakthrough came in 1992 when Füredi proved the conjecture for sufficiently large $n$ using a combination of neighborhood analysis and counting arguments: each critical edge must have a 'private witness' pair whose only short path uses that edge, and the density of such witnesses constrains the total edge count. The bound $\\lfloor n^2/4 \\rfloor$ coincides with the Turán number $\\mathrm{ex}(n, K_3)$ (Mantel 1907), reflecting the fact that the extremal graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is both triangle-free and minimal diameter-2. This coincidence is not accidental — the bipartite structure forces diameter 2 while the balanced partition maximizes edge count by AM-GM.",
-    "problemStatement": "Let $G$ be a graph on $n$ vertices with diameter 2, such that deleting any edge increases the diameter. Is it true that $|E(G)| \\le \\lfloor n^2/4 \\rfloor$? **Answer: YES** for sufficiently large $n$ (Füredi 1992).",
-    "text": "Let G be a graph on n vertices with diameter 2, such that deleting any edge increases the diameter. Is it true that G has at most n²/4 edges? SOLVED by Füredi (1992): YES for sufficiently large n. The complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} shows this bound is tight.",
-    "proofStrategy": "The formalization builds from first principles: graph distance and diameter via `SimpleGraph.dist`, edge deletion preserving symmetry and irreflexivity, critical edge and minimal diameter-2 predicates. The Murty-Plesník bound $n^2/4$ is defined, the complete bipartite graph is shown to achieve it (axiomatized), and Füredi's theorem is axiomatized as the upper bound for large $n$. Two theorems are proved: `bound_is_tight` (the extremal construction exists) and `minimal_iff_critical` (equivalence of the specialized and general definitions). The main result `erdos_742` packages both directions.",
+    "historicalContext": "The question of bounding edges in diameter-critical graphs originated with Ore in the 1960s, who asked whether minimal diameter-2 graphs can have more than $\\lfloor n^2/4 \\rfloor$ edges. The conjecture was independently formulated by Murty and Simon, then formally published by Murty and Plesn\u00edk in 1979. In the same year, Caccetta and H\u00e4ggkvist studied the broader class of diameter-critical graphs, proving partial results and establishing the connection to extremal graph theory. The breakthrough came in 1992 when F\u00fcredi proved the conjecture for sufficiently large $n$ using a combination of neighborhood analysis and counting arguments: each critical edge must have a 'private witness' pair whose only short path uses that edge, and the density of such witnesses constrains the total edge count. The bound $\\lfloor n^2/4 \\rfloor$ coincides with the Tur\u00e1n number $\\mathrm{ex}(n, K_3)$ (Mantel 1907), reflecting the fact that the extremal graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is both triangle-free and minimal diameter-2. This coincidence is not accidental \u2014 the bipartite structure forces diameter 2 while the balanced partition maximizes edge count by AM-GM.",
+    "problemStatement": "Let $G$ be a graph on $n$ vertices with diameter 2, such that deleting any edge increases the diameter. Is it true that $|E(G)| \\le \\lfloor n^2/4 \\rfloor$? **Answer: YES** for sufficiently large $n$ (F\u00fcredi 1992).",
+    "text": "Let G be a graph on n vertices with diameter 2, such that deleting any edge increases the diameter. Is it true that G has at most n\u00b2/4 edges? SOLVED by F\u00fcredi (1992): YES for sufficiently large n. The complete bipartite graph K_{\u230an/2\u230b,\u2308n/2\u2309} shows this bound is tight.",
+    "proofStrategy": "The formalization builds from first principles: graph distance and diameter via `SimpleGraph.dist`, edge deletion preserving symmetry and irreflexivity, critical edge and minimal diameter-2 predicates. The Murty-Plesn\u00edk bound $n^2/4$ is defined, the complete bipartite graph is shown to achieve it (axiomatized), and F\u00fcredi's theorem is axiomatized as the upper bound for large $n$. Two theorems are proved: `bound_is_tight` (the extremal construction exists) and `minimal_iff_critical` (equivalence of the specialized and general definitions). The main result `erdos_742` packages both directions.",
     "keyInsights": [
-      "**Private witness argument**: each critical edge $uv$ must have a witness pair $(x,y)$ whose only path of length $\\le 2$ passes through $uv$ — counting these witnesses constrains the total edge count to $\\le n^2/4$",
-      "**Turán coincidence**: the bound $\\lfloor n^2/4 \\rfloor$ equals the Turán number $\\mathrm{ex}(n, K_3)$, and the extremal graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is the same — bipartiteness gives diameter 2 and triangle-freeness gives the edge count",
-      "**Edge-minimality vs vertex-minimality**: the problem asks about edge-minimal spanning subgraphs with diameter 2, not vertex-minimal subgraphs — this distinction is crucial and the formalization makes it explicit through `AllEdgesCritical`",
+      "**Private witness argument**: each critical edge $uv$ must have a witness pair $(x,y)$ whose only path of length $\\le 2$ passes through $uv$ \u2014 counting these witnesses constrains the total edge count to $\\le n^2/4$",
+      "**Tur\u00e1n coincidence**: the bound $\\lfloor n^2/4 \\rfloor$ equals the Tur\u00e1n number $\\mathrm{ex}(n, K_3)$, and the extremal graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is the same \u2014 bipartiteness gives diameter 2 and triangle-freeness gives the edge count",
+      "**Edge-minimality vs vertex-minimality**: the problem asks about edge-minimal spanning subgraphs with diameter 2, not vertex-minimal subgraphs \u2014 this distinction is crucial and the formalization makes it explicit through `AllEdgesCritical`",
       "**Balanced partition optimality**: among all complete bipartite graphs $K_{a,b}$ with $a+b = n$, the balanced partition maximizes $a \\cdot b$ by AM-GM, giving exactly $\\lfloor n^2/4 \\rfloor$ edges",
-      "**Generalization to higher diameter**: for diameter $d \\ge 3$, the extremal problem has fundamentally different answers — the formalization includes `IsDiameterCritical` as a framework for future work"
+      "**Generalization to higher diameter**: for diameter $d \\ge 3$, the extremal problem has fundamentally different answers \u2014 the formalization includes `IsDiameterCritical` as a framework for future work"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
       "Graph theory (vertices, edges, colorings)",
-      "Extremal graph theory (Turán-type problems)"
+      "Extremal graph theory (Tur\u00e1n-type problems)"
     ]
   },
   "sections": [
@@ -86,7 +86,7 @@
       "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 26,
-      "summary": "Module docstring introducing Erdős Problem #742: is $|E(G)| \\le n^2/4$ for minimal diameter-2 graphs? Cites Murty-Plesník (1979), Caccetta-Häggkvist (1979), and Füredi's (1992) resolution."
+      "summary": "Module docstring introducing Erd\u0151s Problem #742: is $|E(G)| \\le n^2/4$ for minimal diameter-2 graphs? Cites Murty-Plesn\u00edk (1979), Caccetta-H\u00e4ggkvist (1979), and F\u00fcredi's (1992) resolution."
     },
     {
       "id": "imports",
@@ -125,41 +125,41 @@
     },
     {
       "id": "furedi-theorem",
-      "title": "Füredi's Theorem",
+      "title": "F\u00fcredi's Theorem",
       "startLine": 116,
       "endLine": 140,
-      "summary": "Axiomatizes Füredi (1992): $\\exists N_0,\\; \\forall n \\ge N_0$, minimal diameter-2 graphs have $|E| \\le n^2/4$. Proves `bound_is_tight`: $\\forall n \\ge 2$, the bound is achieved by the balanced bipartite graph."
+      "summary": "Axiomatizes F\u00fcredi (1992): $\\exists N_0,\\; \\forall n \\ge N_0$, minimal diameter-2 graphs have $|E| \\le n^2/4$. Proves `bound_is_tight`: $\\forall n \\ge 2$, the bound is achieved by the balanced bipartite graph."
     },
     {
       "id": "history",
       "title": "Historical Context",
       "startLine": 142,
       "endLine": 158,
-      "summary": "Records the conjecture timeline (Ore → Murty-Simon → Murty-Plesník → Caccetta-Häggkvist → Füredi). Axiomatizes that Füredi's proof uses extremal methods."
+      "summary": "Records the conjecture timeline (Ore \u2192 Murty-Simon \u2192 Murty-Plesn\u00edk \u2192 Caccetta-H\u00e4ggkvist \u2192 F\u00fcredi). Axiomatizes that F\u00fcredi's proof uses extremal methods."
     },
     {
       "id": "related",
       "title": "Diameter-Critical Generalization",
       "startLine": 160,
       "endLine": 185,
-      "summary": "Defines `IsDiameterCritical G d` for general diameter $d$. Proves `minimal_iff_critical`: `IsMinimalDiameter2 G ↔ IsDiameterCritical G 2`. Axiomatizes existence of bounds for $d \\ge 3$."
+      "summary": "Defines `IsDiameterCritical G d` for general diameter $d$. Proves `minimal_iff_critical`: `IsMinimalDiameter2 G \u2194 IsDiameterCritical G 2`. Axiomatizes existence of bounds for $d \\ge 3$."
     },
     {
       "id": "summary",
       "title": "Main Theorem and Summary",
       "startLine": 187,
       "endLine": 226,
-      "summary": "Proves `erdos_742`: the conjunction of Füredi's upper bound and tightness. Defines answer and status strings. Includes `#check` commands for key definitions."
+      "summary": "Proves `erdos_742`: the conjunction of F\u00fcredi's upper bound and tightness. Defines answer and status strings. Includes `#check` commands for key definitions."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the complete resolution of Erdős Problem #742: minimal diameter-2 graphs have at most ⌊n²/4⌋ edges (Füredi 1992), with the balanced complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} achieving this bound. The formalization includes graph diameter infrastructure, edge deletion, critical edge predicates, the extremal construction, and a generalization to diameter-d-critical graphs with proved equivalence for d=2.",
-    "implications": "Füredi's resolution establishes the extremal theory of minimal diameter-2 graphs, confirming that the balanced complete bipartite graph is uniquely extremal. The coincidence with the Turán number ex(n, K₃) suggests deep connections between triangle-free extremal theory and diameter-critical structure.",
+    "summary": "Formalizes the complete resolution of Erd\u0151s Problem #742: minimal diameter-2 graphs have at most \u230an\u00b2/4\u230b edges (F\u00fcredi 1992), with the balanced complete bipartite graph K_{\u230an/2\u230b,\u2308n/2\u2309} achieving this bound. The formalization includes graph diameter infrastructure, edge deletion, critical edge predicates, the extremal construction, and a generalization to diameter-d-critical graphs with proved equivalence for d=2.",
+    "implications": "F\u00fcredi's resolution establishes the extremal theory of minimal diameter-2 graphs, confirming that the balanced complete bipartite graph is uniquely extremal. The coincidence with the Tur\u00e1n number ex(n, K\u2083) suggests deep connections between triangle-free extremal theory and diameter-critical structure.",
     "openQuestions": [
-      "What is the exact threshold N₀ in Füredi's theorem — for which small n does the bound fail?",
-      "For diameter d ≥ 3, what is the maximum number of edges in a diameter-d-critical graph on n vertices?",
-      "Is the balanced complete bipartite graph the unique extremal graph for large n, or are there other minimal diameter-2 graphs achieving ⌊n²/4⌋ edges?",
-      "Can Füredi's proof be simplified using modern tools like the dependent random choice method or the container method?"
+      "What is the exact threshold N\u2080 in F\u00fcredi's theorem \u2014 for which small n does the bound fail?",
+      "For diameter d \u2265 3, what is the maximum number of edges in a diameter-d-critical graph on n vertices?",
+      "Is the balanced complete bipartite graph the unique extremal graph for large n, or are there other minimal diameter-2 graphs achieving \u230an\u00b2/4\u230b edges?",
+      "Can F\u00fcredi's proof be simplified using modern tools like the dependent random choice method or the container method?"
     ]
   },
   "leanFile": {
@@ -181,12 +181,12 @@
   "references": [
     {
       "key": "CaHa79",
-      "citation": "Caccetta, L. and Häggkvist, R., On diameter critical graphs, Discrete Math. 28 (1979), 223-229.",
+      "citation": "Caccetta, L. and H\u00e4ggkvist, R., On diameter critical graphs, Discrete Math. 28 (1979), 223-229.",
       "type": "paper"
     },
     {
       "key": "Fu92",
-      "citation": "Füredi, Z., The maximum number of edges in a minimal graph of diameter 2, J. Graph Theory 16 (1992), 81-98.",
+      "citation": "F\u00fcredi, Z., The maximum number of edges in a minimal graph of diameter 2, J. Graph Theory 16 (1992), 81-98.",
       "type": "paper"
     },
     {
@@ -194,5 +194,39 @@
       "citation": "Mantel, W., Problem 28, Wiskundige Opgaven 10 (1907), 60-61.",
       "type": "paper"
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-619",
+      "relationship": "related",
+      "description": "Share diameter, graph-theoretic, and extremal graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-133",
+      "relationship": "related",
+      "description": "Share diameter and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-134",
+      "relationship": "related",
+      "description": "Share diameter and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-612",
+      "relationship": "related",
+      "description": "Share diameter and graph-theoretic themes"
+    },
+    {
+      "targetId": "erdos-618",
+      "relationship": "related",
+      "description": "Share diameter and graph-theoretic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-619",
+    "erdos-133",
+    "erdos-134",
+    "erdos-612",
+    "erdos-618"
   ]
 }

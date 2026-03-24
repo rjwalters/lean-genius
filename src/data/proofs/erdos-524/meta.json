@@ -1,10 +1,10 @@
 {
   "id": "erdos-524",
-  "title": "Erdős #524: Maximum of Random Sign Polynomials",
+  "title": "Erd\u0151s #524: Maximum of Random Sign Polynomials",
   "slug": "erdos-524",
-  "description": "Determine the correct order of magnitude of M_n(t) = max_{x∈[-1,1]} |Σ_{k≤n} (±1)·x^k| for a.e. t ∈ (0,1), where signs come from binary digits of t. Known: n^{1/2-ε} ≪ M_n ≪ √(n/log log n) i.o. OPEN.",
+  "description": "Determine the correct order of magnitude of M_n(t) = max_{x\u2208[-1,1]} |\u03a3_{k\u2264n} (\u00b11)\u00b7x^k| for a.e. t \u2208 (0,1), where signs come from binary digits of t. Known: n^{1/2-\u03b5} \u226a M_n \u226a \u221a(n/log log n) i.o. OPEN.",
   "meta": {
-    "author": "Erdős, Salem, Zygmund",
+    "author": "Erd\u0151s, Salem, Zygmund",
     "erdosNumber": 524,
     "status": "axiomatized",
     "tags": [
@@ -27,7 +27,7 @@
     "relatedProblems": [
       {
         "id": "erdos-510",
-        "relation": "Chowla's cosine problem: both involve extremal behavior of trigonometric/polynomial sums with ±1 coefficients; Sidon set optimality connects to random polynomial maxima"
+        "relation": "Chowla's cosine problem: both involve extremal behavior of trigonometric/polynomial sums with \u00b11 coefficients; Sidon set optimality connects to random polynomial maxima"
       },
       {
         "id": "erdos-50",
@@ -44,48 +44,48 @@
       "title": "Definitions",
       "startLine": 23,
       "endLine": 36,
-      "summary": "Defines **binaryDigit** (k-th binary digit of t mapped to ±1), **randSignPoly** (Rademacher polynomial Σ ε_k x^k), and **polyMax** (M_n(t) = sup over [-1,1] of |P_n|)."
+      "summary": "Defines **binaryDigit** (k-th binary digit of t mapped to \u00b11), **randSignPoly** (Rademacher polynomial \u03a3 \u03b5_k x^k), and **polyMax** (M_n(t) = sup over [-1,1] of |P_n|)."
     },
     {
       "id": "lower-bound",
-      "title": "Lower Bound (Erdős)",
+      "title": "Lower Bound (Erd\u0151s)",
       "startLine": 38,
       "endLine": 47,
-      "summary": "Axiom **erdos_lower_bound**: For every ε ∈ (0, 1/2), M_n/n^{1/2-ε} → ∞ a.e. The lower bound comes from evaluating at x=1 (random walk) and the law of the iterated logarithm."
+      "summary": "Axiom **erdos_lower_bound**: For every \u03b5 \u2208 (0, 1/2), M_n/n^{1/2-\u03b5} \u2192 \u221e a.e. The lower bound comes from evaluating at x=1 (random walk) and the law of the iterated logarithm."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound (Chung)",
       "startLine": 49,
       "endLine": 57,
-      "summary": "Axiom **chung_upper_bound**: ∃ C > 0, for a.e. t, i.o. n with M_n ≤ C√(n/log log n). An 'infinitely often' bound, not uniform — the log log n factor from LIL considerations."
+      "summary": "Axiom **chung_upper_bound**: \u2203 C > 0, for a.e. t, i.o. n with M_n \u2264 C\u221a(n/log log n). An 'infinitely often' bound, not uniform \u2014 the log log n factor from LIL considerations."
     },
     {
       "id": "comparison",
       "title": "Salem-Zygmund Comparison",
       "startLine": 59,
       "endLine": 70,
-      "summary": "Axiom **salem_zygmund_trigonometric**: Random trig polynomials have max Θ(√(n log n)) on [0,2π]. The algebraic polynomial case on [-1,1] differs due to endpoint concentration of monomials x^k."
+      "summary": "Axiom **salem_zygmund_trigonometric**: Random trig polynomials have max \u0398(\u221a(n log n)) on [0,2\u03c0]. The algebraic polynomial case on [-1,1] differs due to endpoint concentration of monomials x^k."
     },
     {
       "id": "main-problem",
       "title": "Main Open Problem",
       "startLine": 72,
       "endLine": 82,
-      "summary": "Axiom **erdos_524_order_of_magnitude**: ∃ f with M_n = Θ(f(n)) a.e. Conjectured f(n) = √n. The gap between n^{1/2-ε} and √(n/log log n) remains the frontier."
+      "summary": "Axiom **erdos_524_order_of_magnitude**: \u2203 f with M_n = \u0398(f(n)) a.e. Conjectured f(n) = \u221an. The gap between n^{1/2-\u03b5} and \u221a(n/log log n) remains the frontier."
     }
   ],
   "overview": {
-    "historicalContext": "Problem #524 originates from **Salem and Zygmund's** foundational work on random polynomials (1954) and appears in **Erdős's 1961 compilation** [Er61, p.253]. The question asks about the typical maximum of a polynomial on [-1,1] with random ±1 coefficients — a Rademacher polynomial. **Erdős** proved (unpublished) that the maximum grows at least as fast as n^{1/2-ε} for any ε > 0. **Chung** proved the infinitely-often upper bound √(n/log log n). The classical **Salem-Zygmund theorem** gives Θ(√(n log n)) for trigonometric polynomials, but the algebraic polynomial case is expected to differ because monomials x^k concentrate near the endpoints ±1.",
-    "problemStatement": "Determine the correct order of magnitude of M_n(t) = max_{x∈[-1,1]} |Σ_{k≤n} (-1)^{ε_k(t)} x^k| for almost all t ∈ (0,1), where ε_k(t) are the binary digits of t.",
-    "text": "Determine the correct order of magnitude of M_n(t) = max_{x∈[-1,1]} |Σ_{k≤n} (±1)·x^k| for a.e. t ∈ (0,1), where signs come from binary digits of t. Known: n^{1/2-ε} ≪ M_n ≪ √(n/log log n) i.o. OPEN.",
-    "proofStrategy": "The formalization defines binaryDigit via floor arithmetic, randSignPoly as a Finset.sum over Rademacher coefficients times monomials, and polyMax via sSup. Erdős's lower bound and Chung's i.o. upper bound are axiomatized with ∀ᵐ (Lebesgue a.e.) quantifiers. The Salem-Zygmund comparison for trigonometric polynomials is stated for context. The main open problem is axiomatized as existence of a Θ-function. The file has 0 sorries.",
+    "historicalContext": "Problem #524 originates from **Salem and Zygmund's** foundational work on random polynomials (1954) and appears in **Erd\u0151s's 1961 compilation** [Er61, p.253]. The question asks about the typical maximum of a polynomial on [-1,1] with random \u00b11 coefficients \u2014 a Rademacher polynomial. **Erd\u0151s** proved (unpublished) that the maximum grows at least as fast as n^{1/2-\u03b5} for any \u03b5 > 0. **Chung** proved the infinitely-often upper bound \u221a(n/log log n). The classical **Salem-Zygmund theorem** gives \u0398(\u221a(n log n)) for trigonometric polynomials, but the algebraic polynomial case is expected to differ because monomials x^k concentrate near the endpoints \u00b11.",
+    "problemStatement": "Determine the correct order of magnitude of M_n(t) = max_{x\u2208[-1,1]} |\u03a3_{k\u2264n} (-1)^{\u03b5_k(t)} x^k| for almost all t \u2208 (0,1), where \u03b5_k(t) are the binary digits of t.",
+    "text": "Determine the correct order of magnitude of M_n(t) = max_{x\u2208[-1,1]} |\u03a3_{k\u2264n} (\u00b11)\u00b7x^k| for a.e. t \u2208 (0,1), where signs come from binary digits of t. Known: n^{1/2-\u03b5} \u226a M_n \u226a \u221a(n/log log n) i.o. OPEN.",
+    "proofStrategy": "The formalization defines binaryDigit via floor arithmetic, randSignPoly as a Finset.sum over Rademacher coefficients times monomials, and polyMax via sSup. Erd\u0151s's lower bound and Chung's i.o. upper bound are axiomatized with \u2200\u1d50 (Lebesgue a.e.) quantifiers. The Salem-Zygmund comparison for trigonometric polynomials is stated for context. The main open problem is axiomatized as existence of a \u0398-function. The file has 0 sorries.",
     "keyInsights": [
-      "**Binary digits as Rademacher variables**: Under Lebesgue measure, the binary digits of t ∈ (0,1) are i.i.d. fair coin flips, making P_n a standard Rademacher polynomial",
-      "**Endpoint concentration**: Monomials x^k ≈ 1 near x = ±1, making the polynomial behave like a random walk at the endpoints — this is why the polynomial case differs from Salem-Zygmund",
-      "**LIL drives both bounds**: The law of the iterated logarithm governs |P_n(t,1)| ≈ √(2n log log n), providing both the lower bound (M_n ≥ |P_n(t,1)|) and the upper bound heuristic",
-      "**Narrow gap**: Both bounds are n^{1/2±o(1)}, so the true answer is 'very close to √n' — the open question is about the exact iterated logarithm correction",
-      "**Trigonometric vs algebraic**: Salem-Zygmund gives √(n log n) for trig polynomials; the conjectured √n for algebraic polynomials reflects the non-uniform covariance structure"
+      "**Binary digits as Rademacher variables**: Under Lebesgue measure, the binary digits of t \u2208 (0,1) are i.i.d. fair coin flips, making P_n a standard Rademacher polynomial",
+      "**Endpoint concentration**: Monomials x^k \u2248 1 near x = \u00b11, making the polynomial behave like a random walk at the endpoints \u2014 this is why the polynomial case differs from Salem-Zygmund",
+      "**LIL drives both bounds**: The law of the iterated logarithm governs |P_n(t,1)| \u2248 \u221a(2n log log n), providing both the lower bound (M_n \u2265 |P_n(t,1)|) and the upper bound heuristic",
+      "**Narrow gap**: Both bounds are n^{1/2\u00b1o(1)}, so the true answer is 'very close to \u221an' \u2014 the open question is about the exact iterated logarithm correction",
+      "**Trigonometric vs algebraic**: Salem-Zygmund gives \u221a(n log n) for trig polynomials; the conjectured \u221an for algebraic polynomials reflects the non-uniform covariance structure"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -94,13 +94,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #524 is OPEN. It asks for the precise order of magnitude of the maximum of random ±1 polynomials on [-1,1]. The known bounds (n^{1/2-ε} from below, √(n/log log n) i.o. from above) suggest the answer is close to √n, but the exact iterated logarithm correction remains unknown.",
+    "summary": "Erd\u0151s Problem #524 is OPEN. It asks for the precise order of magnitude of the maximum of random \u00b11 polynomials on [-1,1]. The known bounds (n^{1/2-\u03b5} from below, \u221a(n/log log n) i.o. from above) suggest the answer is close to \u221an, but the exact iterated logarithm correction remains unknown.",
     "implications": "Resolution would clarify the relationship between random polynomial maxima and random walk behavior, connecting to the Littlewood-Offord problem, flat polynomial theory, and the distribution of zeros of random analytic functions. It would also quantify how the monomial basis differs from the trigonometric basis for random coefficient problems.",
     "openQuestions": [
-      "Is M_n(t) = Θ(√n) for a.e. t, or does the law of the iterated logarithm contribute a correction factor?",
-      "Does a uniform upper bound M_n(t) ≤ C·f(n) hold for ALL large n (not just infinitely often)?",
-      "What is the distribution of M_n(t)/√n for fixed large n — does it converge to a non-degenerate limit?",
-      "Is the maximum typically attained near x = ±1 (where endpoint concentration suggests), or can interior critical points dominate?",
+      "Is M_n(t) = \u0398(\u221an) for a.e. t, or does the law of the iterated logarithm contribute a correction factor?",
+      "Does a uniform upper bound M_n(t) \u2264 C\u00b7f(n) hold for ALL large n (not just infinitely often)?",
+      "What is the distribution of M_n(t)/\u221an for fixed large n \u2014 does it converge to a non-degenerate limit?",
+      "Is the maximum typically attained near x = \u00b11 (where endpoint concentration suggests), or can interior critical points dominate?",
       "Can modern tools from Gaussian process theory (Talagrand's generic chaining) improve the bounds?"
     ]
   },
@@ -119,12 +119,46 @@
     "definitionCount": 3
   },
   "references": [
-    "Salem, R. and Zygmund, A. (1954): Maximum of random trigonometric polynomials — Θ(√(n log n)) on [0,2π]",
-    "Erdős, P. (unpublished): M_n(t)/n^{1/2-ε} → ∞ a.e. for every ε > 0",
-    "Chung, K.L.: M_n(t) ≤ C√(n/log log n) for infinitely many n, a.e.",
-    "Erdős, P. [Er61, p.253]: Original problem statement",
+    "Salem, R. and Zygmund, A. (1954): Maximum of random trigonometric polynomials \u2014 \u0398(\u221a(n log n)) on [0,2\u03c0]",
+    "Erd\u0151s, P. (unpublished): M_n(t)/n^{1/2-\u03b5} \u2192 \u221e a.e. for every \u03b5 > 0",
+    "Chung, K.L.: M_n(t) \u2264 C\u221a(n/log log n) for infinitely many n, a.e.",
+    "Erd\u0151s, P. [Er61, p.253]: Original problem statement",
     "Kac, M. (1943): On the average number of real roots of random polynomials",
     "Littlewood, J.E. and Offord, A.C. (1940s): On the number of real roots of random algebraic equations",
     "https://erdosproblems.com/524"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-523",
+      "relationship": "related",
+      "description": "Share probabilistic, analytic, and random-polynomials themes"
+    },
+    {
+      "targetId": "erdos-520",
+      "relationship": "related",
+      "description": "Share law-of-iterated-logarithm and probabilistic themes"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "Share probabilistic and analytic themes"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Share probabilistic and analytic themes"
+    },
+    {
+      "targetId": "erdos-1144",
+      "relationship": "related",
+      "description": "Share probabilistic and analytic themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-523",
+    "erdos-520",
+    "central-limit-theorem",
+    "erdos-1138",
+    "erdos-1144"
   ]
 }

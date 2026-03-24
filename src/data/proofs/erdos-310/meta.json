@@ -186,5 +186,39 @@
     "axiomCount": 6,
     "theoremCount": 12,
     "definitionCount": 6
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-292",
+      "relationship": "related",
+      "description": "Share density, Egyptian fraction, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-298",
+      "relationship": "related",
+      "description": "Share density, Egyptian fraction, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-299",
+      "relationship": "related",
+      "description": "Share density, Egyptian fraction, and number-theoretic themes"
+    },
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Share Egyptian fraction, number-theoretic, and combinatorial themes"
+    },
+    {
+      "targetId": "erdos-47",
+      "relationship": "related",
+      "description": "Share density, number-theoretic, and unit-fractions themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-292",
+    "erdos-298",
+    "erdos-299",
+    "erdos-300",
+    "erdos-47"
+  ]
 }

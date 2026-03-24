@@ -1,6 +1,6 @@
 {
   "id": "erdos-529",
-  "title": "Erdős Problem #529: Self-Avoiding Walk End-to-End Distance",
+  "title": "Erd\u0151s Problem #529: Self-Avoiding Walk End-to-End Distance",
   "slug": "erdos-529",
   "description": "Study the expected end-to-end distance d_k(n) of self-avoiding walks in Z^k. High dimensions (k >= 5) resolved with d_k(n) ~ sqrt(n). Lower dimensions remain open with conjectured anomalous exponents.",
   "meta": {
@@ -67,7 +67,7 @@
       "crossReferences": [
         {
           "proofId": "erdos-530",
-          "relationship": "Erdős #530 concerns the connective constant μ_k for SAW counts c_n ~ μ^n"
+          "relationship": "Erd\u0151s #530 concerns the connective constant \u03bc_k for SAW counts c_n ~ \u03bc^n"
         }
       ]
     },
@@ -81,25 +81,25 @@
       "SelfAvoidingWalk structure definition",
       "endToEndDistance axiom: Euclidean distance to endpoint",
       "expectedEndDistance axiom: d_k(n) formalization",
-      "criticalExponent function for dimension-dependent ν",
-      "meanField_exponent theorem: ν = 1/2 for k ≥ 5",
+      "criticalExponent function for dimension-dependent \u03bd",
+      "meanField_exponent theorem: \u03bd = 1/2 for k \u2265 5",
       "tendsTo axiom: asymptotic limit notation",
       "slade_high_dim axiom: original high-dimensional result",
-      "haraSlade_five_dim axiom: k ≥ 5 result",
+      "haraSlade_five_dim axiom: k \u2265 5 result",
       "high_dim_sqrt theorem: derives from Hara-Slade",
-      "question1 definition: d_2(n)/√n → ∞",
+      "question1 definition: d_2(n)/\u221an \u2192 \u221e",
       "duminilCopin_subBallistic axiom: d_2(n) = o(n)",
-      "conjecture_2d axiom: ν = 3/4 for 2D",
-      "conjecture_implies_question1 axiom: 2D conjecture → Question 1 YES",
-      "question2 definition: d_k(n) ≪ √n for k ≥ 3",
-      "conjecture_3d axiom: ν ≈ 0.588 for 3D",
+      "conjecture_2d axiom: \u03bd = 3/4 for 2D",
+      "conjecture_implies_question1 axiom: 2D conjecture \u2192 Question 1 YES",
+      "question2 definition: d_k(n) \u226a \u221an for k \u2265 3",
+      "conjecture_3d axiom: \u03bd \u2248 0.588 for 3D",
       "conjecture_4d axiom: logarithmic correction for 4D",
-      "question2_high_dim axiom: Question 2 true for k ≥ 5",
+      "question2_high_dim axiom: Question 2 true for k \u2265 5",
       "question2_false_3d axiom: conditional refutation for k = 3",
       "upperCriticalDimension = 4",
-      "below_critical axiom: ν > 1/2 for k < 4",
-      "above_critical axiom: ν = 1/2 for k > 4",
-      "at_critical axiom: ν = 1/2 at k = 4",
+      "below_critical axiom: \u03bd > 1/2 for k < 4",
+      "above_critical axiom: \u03bd = 1/2 for k > 4",
+      "at_critical axiom: \u03bd = 1/2 at k = 4",
       "floryExponent definition: 3/(d+2)",
       "flory_2d theorem: Flory gives 3/4",
       "flory_3d theorem: Flory gives 3/5",
@@ -111,16 +111,16 @@
     "assumptions": "13 axiom(s) encoding mathematical hypotheses. See the Lean source for details."
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #529: Self-Avoiding Walks**\n\nSelf-avoiding walks (SAWs) were first studied systematically by the chemist Paul Flory in 1949 as models for linear polymers in good solvents. Flory's mean-field prediction $\\nu = 3/(d+2)$ for the end-to-end distance exponent was remarkably accurate, setting the stage for decades of rigorous mathematical work.\n\nThe first rigorous high-dimensional result came from **Gordon Slade** (1987), who used the **lace expansion** — a perturbative technique introduced by Brydges and Spencer (1985) — to prove $d_k(n) \\sim D\\sqrt{n}$ for sufficiently large $k$. **Takashi Hara** and Slade (1991-92) refined this to all $k \\ge 5$, using computer-assisted bounds on the lace expansion coefficients. Their work established that mean-field behavior ($\\nu = 1/2$) holds above the upper critical dimension $d_c = 4$.\n\nThe low-dimensional case proved far more resistant. **Bernard Nienhuis** (1982) predicted $\\nu = 3/4$ in 2D using the exact solution of an O(n) loop model on the honeycomb lattice, and conformal field theory arguments connect 2D SAW to the SLE$_{8/3}$ process (Lawler, Schramm, Werner). The landmark result of **Hugo Duminil-Copin** and **Alan Hammond** (2013) proved $d_2(n) = o(n)$ (sub-ballistic growth) using a bridge decomposition argument, but the full Question 1 ($d_2(n)/\\sqrt{n} \\to \\infty$) remains open.\n\nThe definitive reference is the monograph *The Self-Avoiding Walk* by Madras and Slade (1993, 2nd ed. 2013). **Nathan Clisby** (2010) provided the most precise numerical estimates: $\\nu_3 \\approx 0.5876 \\pm 0.0002$.",
-    "problemStatement": "**Problem Statement (OPEN — partially resolved)**\n\nLet $d_k(n)$ be the expected distance from origin after $n$ steps of a self-avoiding walk on $\\mathbb{Z}^k$.\n\n**Question 1:** Is $\\lim_{n\\to\\infty} d_2(n)/\\sqrt{n} = \\infty$?\n\n**Question 2:** Is $d_k(n) \\ll \\sqrt{n}$ for $k \\geq 3$?\n\n**Known Results:**\n- $k \\geq 5$: $d_k(n) \\sim D\\sqrt{n}$ (PROVED, Hara-Slade)\n- $k = 2$: $d_2(n) = o(n)$ (PROVED, Duminil-Copin-Hammond)\n\n**Conjectures:**\n- $d_2(n) \\sim D \\cdot n^{3/4}$\n- $d_3(n) \\sim n^{\\nu}$ where $\\nu \\approx 0.588$\n- $d_4(n) \\sim D(\\log n)^{1/8}\\sqrt{n}$",
+    "historicalContext": "**Erd\u0151s Problem #529: Self-Avoiding Walks**\n\nSelf-avoiding walks (SAWs) were first studied systematically by the chemist Paul Flory in 1949 as models for linear polymers in good solvents. Flory's mean-field prediction $\\nu = 3/(d+2)$ for the end-to-end distance exponent was remarkably accurate, setting the stage for decades of rigorous mathematical work.\n\nThe first rigorous high-dimensional result came from **Gordon Slade** (1987), who used the **lace expansion** \u2014 a perturbative technique introduced by Brydges and Spencer (1985) \u2014 to prove $d_k(n) \\sim D\\sqrt{n}$ for sufficiently large $k$. **Takashi Hara** and Slade (1991-92) refined this to all $k \\ge 5$, using computer-assisted bounds on the lace expansion coefficients. Their work established that mean-field behavior ($\\nu = 1/2$) holds above the upper critical dimension $d_c = 4$.\n\nThe low-dimensional case proved far more resistant. **Bernard Nienhuis** (1982) predicted $\\nu = 3/4$ in 2D using the exact solution of an O(n) loop model on the honeycomb lattice, and conformal field theory arguments connect 2D SAW to the SLE$_{8/3}$ process (Lawler, Schramm, Werner). The landmark result of **Hugo Duminil-Copin** and **Alan Hammond** (2013) proved $d_2(n) = o(n)$ (sub-ballistic growth) using a bridge decomposition argument, but the full Question 1 ($d_2(n)/\\sqrt{n} \\to \\infty$) remains open.\n\nThe definitive reference is the monograph *The Self-Avoiding Walk* by Madras and Slade (1993, 2nd ed. 2013). **Nathan Clisby** (2010) provided the most precise numerical estimates: $\\nu_3 \\approx 0.5876 \\pm 0.0002$.",
+    "problemStatement": "**Problem Statement (OPEN \u2014 partially resolved)**\n\nLet $d_k(n)$ be the expected distance from origin after $n$ steps of a self-avoiding walk on $\\mathbb{Z}^k$.\n\n**Question 1:** Is $\\lim_{n\\to\\infty} d_2(n)/\\sqrt{n} = \\infty$?\n\n**Question 2:** Is $d_k(n) \\ll \\sqrt{n}$ for $k \\geq 3$?\n\n**Known Results:**\n- $k \\geq 5$: $d_k(n) \\sim D\\sqrt{n}$ (PROVED, Hara-Slade)\n- $k = 2$: $d_2(n) = o(n)$ (PROVED, Duminil-Copin-Hammond)\n\n**Conjectures:**\n- $d_2(n) \\sim D \\cdot n^{3/4}$\n- $d_3(n) \\sim n^{\\nu}$ where $\\nu \\approx 0.588$\n- $d_4(n) \\sim D(\\log n)^{1/8}\\sqrt{n}$",
     "text": "Study the expected end-to-end distance d_k(n) of self-avoiding walks in Z^k. High dimensions (k >= 5) resolved with d_k(n) ~ sqrt(n). Lower dimensions remain open with conjectured anomalous exponents.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **SAW Definition:** Structure for self-avoiding walks with step count and properties\n\n2. **Key Functions:**\n   - expectedEndDistance d_k(n): Expected end-to-end distance (axiom)\n   - criticalExponent ν_k: Dimension-dependent growth exponent\n   - floryExponent: Flory's prediction 3/(d+2)\n\n3. **Axioms for Results:**\n   - haraSlade_five_dim: High-dimensional √n behavior\n   - duminilCopin_subBallistic: 2D is sub-ballistic\n   - Conjectures for low dimensions\n   - question2_high_dim: Question 2 true for k ≥ 5\n\n4. **Critical Dimension:** d_c = 4 marks transition to mean-field",
+    "proofStrategy": "**Formalization Approach**\n\n1. **SAW Definition:** Structure for self-avoiding walks with step count and properties\n\n2. **Key Functions:**\n   - expectedEndDistance d_k(n): Expected end-to-end distance (axiom)\n   - criticalExponent \u03bd_k: Dimension-dependent growth exponent\n   - floryExponent: Flory's prediction 3/(d+2)\n\n3. **Axioms for Results:**\n   - haraSlade_five_dim: High-dimensional \u221an behavior\n   - duminilCopin_subBallistic: 2D is sub-ballistic\n   - Conjectures for low dimensions\n   - question2_high_dim: Question 2 true for k \u2265 5\n\n4. **Critical Dimension:** d_c = 4 marks transition to mean-field",
     "keyInsights": [
-      "**Critical Exponent ν:** SAW grows as n^ν; ν = 1/2 in high dimensions (like random walk), but ν > 1/2 in low dimensions (self-avoidance matters more)",
+      "**Critical Exponent \u03bd:** SAW grows as n^\u03bd; \u03bd = 1/2 in high dimensions (like random walk), but \u03bd > 1/2 in low dimensions (self-avoidance matters more)",
       "**Upper Critical Dimension:** d_c = 4 separates anomalous (d < 4) from mean-field (d > 4) behavior",
-      "**Flory's Approximation:** ν = 3/(d+2) gives remarkably good predictions: 3/4 for 2D, 3/5 for 3D",
-      "**Sub-Ballistic:** SAW in 2D grows slower than linearly but likely faster than √n",
-      "**Logarithmic Corrections:** At d = 4, the base exponent ν = 1/2 has a (log n)^{1/8} multiplicative correction"
+      "**Flory's Approximation:** \u03bd = 3/(d+2) gives remarkably good predictions: 3/4 for 2D, 3/5 for 3D",
+      "**Sub-Ballistic:** SAW in 2D grows slower than linearly but likely faster than \u221an",
+      "**Logarithmic Corrections:** At d = 4, the base exponent \u03bd = 1/2 has a (log n)^{1/8} multiplicative correction"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -193,11 +193,11 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #529 asks about the growth rate of self-avoiding walk end-to-end distance in various dimensions. For k ≥ 5, Hara and Slade proved d_k(n) ~ D√n. For k = 2, Duminil-Copin and Hammond proved d_2(n) = o(n). The conjectured behavior is d_2(n) ~ n^{3/4}, d_3(n) ~ n^{0.588}, and d_4(n) ~ (log n)^{1/8}√n. Question 2 is now believed FALSE for k = 3, 4.",
-    "implications": "**Theoretical Significance**: **Connections to Physics and Mathematics**\n\n1. **Polymer Physics:** SAW models linear polymers in good solvents\n\n2. **Critical Phenomena:** ν is a critical exponent analogous to magnetization\n\n**3. Conformal Field Theory:** 2D SAW connects to SLE (Schramm-Loewner Evolution)\n\n4. **Lace Expansion:** Technique developed by Brydges-Spencer used in proofs\n\n5. **Universality:** Critical exponents depend only on dimension, not lattice details.",
+    "summary": "Erd\u0151s Problem #529 asks about the growth rate of self-avoiding walk end-to-end distance in various dimensions. For k \u2265 5, Hara and Slade proved d_k(n) ~ D\u221an. For k = 2, Duminil-Copin and Hammond proved d_2(n) = o(n). The conjectured behavior is d_2(n) ~ n^{3/4}, d_3(n) ~ n^{0.588}, and d_4(n) ~ (log n)^{1/8}\u221an. Question 2 is now believed FALSE for k = 3, 4.",
+    "implications": "**Theoretical Significance**: **Connections to Physics and Mathematics**\n\n1. **Polymer Physics:** SAW models linear polymers in good solvents\n\n2. **Critical Phenomena:** \u03bd is a critical exponent analogous to magnetization\n\n**3. Conformal Field Theory:** 2D SAW connects to SLE (Schramm-Loewner Evolution)\n\n4. **Lace Expansion:** Technique developed by Brydges-Spencer used in proofs\n\n5. **Universality:** Critical exponents depend only on dimension, not lattice details.",
     "openQuestions": [
-      "Prove d_2(n) ~ n^{3/4} (rigorously establish ν = 3/4)",
-      "Determine exact value of ν in 3D",
+      "Prove d_2(n) ~ n^{3/4} (rigorously establish \u03bd = 3/4)",
+      "Determine exact value of \u03bd in 3D",
       "Prove or disprove logarithmic correction in 4D",
       "Understand crossover behavior near d = 4",
       "Extend results to other lattices (honeycomb, triangular)"
@@ -219,5 +219,21 @@
     "axiomCount": 13,
     "theoremCount": 6,
     "definitionCount": 5
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-528",
+      "relationship": "related",
+      "description": "Share self-avoiding-walks, probabilistic, and statistical-mechanics themes"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Share probabilistic and random-walks themes"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-528",
+    "erdos-1166"
+  ]
 }
