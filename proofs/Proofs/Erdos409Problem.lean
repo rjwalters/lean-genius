@@ -21,10 +21,7 @@ of n reaching a fixed prime?
 - <https://erdosproblems.com/409>
 -/
 
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Filter
 open scoped Nat
@@ -154,15 +151,65 @@ axiom erdos_409_density :
 
 /- ## Basic Properties -/
 
-/-- F(p) = 0 for primes p: already a prime, no iterations needed. -/
-axiom prime_zero_iterations :
-  ∀ p : ℕ, p.Prime → iterationsToFirst p = 0
+/-- Helper: totientIterate n 0 = n (zero iterations is identity). -/
+theorem totientIterate_zero (n : ℕ) : totientIterate n 0 = n := rfl
 
-/-- F(n) = 1 when φ(n) + 1 is prime.
-    For example, F(4) = 1 since φ(4) + 1 = 3. -/
-axiom one_iteration_criterion :
-  ∀ n : ℕ, n > 1 → (totientPlusOne n).Prime →
-    iterationsToFirst n = 1
+/-- Helper: totientIterate n 1 = totientPlusOne n. -/
+theorem totientIterate_one (n : ℕ) : totientIterate n 1 = totientPlusOne n := rfl
+
+/-- F(p) = 0 for primes p: already a prime, no iterations needed.
+    Proof: the set {k | ∀ j < k, ¬(iterate(p,j)).Prime} = {0} since
+    iterate(p, 0) = p is prime. So sSup {0} = 0. -/
+theorem prime_zero_iterations :
+    ∀ p : ℕ, p.Prime → iterationsToFirst p = 0 := by
+  intro p hp
+  unfold iterationsToFirst
+  simp only [add_zero]
+  -- Show S = {0}, then sSup {0} = 0
+  have hS_eq : {k : ℕ | ∀ j : ℕ, j < k → ¬(totientIterate p j).Prime} = {0} := by
+    ext k
+    simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+    constructor
+    · intro hk
+      by_contra hne
+      have hpos : 0 < k := Nat.pos_of_ne_zero hne
+      exact hk 0 hpos (by rw [totientIterate_zero]; exact hp)
+    · rintro rfl; intro j hj; omega
+  rw [hS_eq, csSup_singleton]
+
+/-- F(n) = 1 when n is composite and φ(n) + 1 is prime.
+    For example, F(4) = 1 since φ(4) + 1 = 3.
+    Note: requires ¬n.Prime since F(p) = 0 for primes.
+    Proof: the set is {0, 1} — 0 is always in, 1 is in because ¬n.Prime
+    means iterate(n,0) = n is not prime, and 2 is out because
+    iterate(n,1) = φ(n)+1 is prime. So sSup {0,1} = 1. -/
+theorem one_iteration_criterion :
+    ∀ n : ℕ, n > 1 → ¬n.Prime → (totientPlusOne n).Prime →
+      iterationsToFirst n = 1 := by
+  intro n hn hnp htot
+  unfold iterationsToFirst
+  simp only [add_zero]
+  -- Show S = {0, 1}, then sSup {0, 1} = 0 ⊔ 1 = 1
+  have hS_eq : {k : ℕ | ∀ j : ℕ, j < k → ¬(totientIterate n j).Prime} = {0, 1} := by
+    ext k
+    simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · intro hk
+      -- k can only be 0 or 1: if k ≥ 2, hk 1 contradicts htot
+      by_contra h
+      push_neg at h
+      obtain ⟨hne0, hne1⟩ := h
+      have hge2 : 2 ≤ k := by omega
+      exact hk 1 (by omega) (by rw [totientIterate_one]; exact htot)
+    · rintro (rfl | rfl)
+      · intro j hj; omega
+      · intro j hj
+        have : j = 0 := by omega
+        subst this
+        rw [totientIterate_zero]
+        exact hnp
+  rw [hS_eq, csSup_pair]
+  simp
 
 /-- φ(n) + 1 is odd for n ≥ 3 (since φ(n) is even for n ≥ 3).
     So φ(n) + 1 is odd, making it a candidate for primality.
@@ -182,11 +229,30 @@ theorem sigma_variant_question :
   ∀ n : ℕ, n > 1 → n.Prime →
     True := fun _ _ _ => trivial
 
-/-- The σ iteration can grow: σ(n) − 1 ≥ n for composite n > 1.
-    This makes the σ variant fundamentally different from the φ variant. -/
-axiom sigma_growing :
-  ∀ n : ℕ, n > 1 → ¬n.Prime →
-    n ≤ (n.divisors.sum id) - 1
+/-- The σ iteration can grow: σ(n) − 1 ≥ n for n > 1.
+    Since 1 and n are both divisors and 1 ≠ n (as n > 1),
+    σ(n) ≥ 1 + n, so σ(n) - 1 ≥ n. -/
+theorem sigma_growing :
+    ∀ n : ℕ, n > 1 → ¬n.Prime →
+      n ≤ (n.divisors.sum id) - 1 := by
+  intro n hn _hnp
+  -- σ(n) = n.divisors.sum id ≥ 1 + n since {1, n} ⊆ n.divisors
+  have h1_dvd : 1 ∈ n.divisors := Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
+  have hn_dvd : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  have h1n_ne : (1 : ℕ) ≠ n := by omega
+  have hpair : ({1, n} : Finset ℕ) ⊆ n.divisors := by
+    intro x hx
+    rcases Finset.mem_insert.mp hx with rfl | hx
+    · exact h1_dvd
+    · exact Finset.mem_singleton.mp hx ▸ hn_dvd
+  have hpair_sum : ({1, n} : Finset ℕ).sum id = 1 + n := by
+    rw [Finset.sum_insert (by rwa [Finset.mem_singleton])]
+    simp
+  have hge : n.divisors.sum id ≥ 1 + n := by
+    calc n.divisors.sum id ≥ ({1, n} : Finset ℕ).sum id :=
+            Finset.sum_le_sum_of_subset_of_nonneg hpair (fun _ _ _ => Nat.zero_le _)
+         _ = 1 + n := hpair_sum
+  omega
 
 /- ## Small Cases -/
 
