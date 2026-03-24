@@ -100,7 +100,7 @@
       "id": "lattice-path-foundations",
       "title": "Part 1: Lattice Path Foundations",
       "startLine": 49,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "LPath (List Bool), PathMN subtype with Fintype instance (via Vector equivalence), pathCount as binomial coefficient.",
       "mathContext": "$\\mathrm{PathMN}(m,n) \\cong \\{S \\subseteq \\mathrm{Fin}(m+n) : |S|=m\\}$, so $|\\mathrm{PathMN}(m,n)| = \\binom{m+n}{m}$"
     },
@@ -108,42 +108,42 @@
       "id": "non-intersection",
       "title": "Part 2: Column Entry and Non-Intersection",
       "startLine": 83,
-      "endLine": 108,
+      "endLine": 109,
       "summary": "northBeforeEast (recursive y-tracking), colEntry, colYRange, and NonIntersecting predicate via column-disjointness."
     },
     {
       "id": "r-tuple-infrastructure",
       "title": "Part 3: r-Tuple Infrastructure",
       "startLine": 110,
-      "endLine": 135,
+      "endLine": 136,
       "summary": "LGVConfig structure (sources/targets strictly monotone), PathTuple (dependent r-tuple), IsNonIntersecting (pairwise non-intersection)."
     },
     {
       "id": "path-weight-matrix",
       "title": "Part 4: Path Weight Matrix",
       "startLine": 137,
-      "endLine": 145,
+      "endLine": 146,
       "summary": "pathMatrix: r×r integer matrix M_{i,j} = C(m+(b_j-a_i), m) counting paths from source i to target j."
     },
     {
       "id": "permutation-path-tuples",
       "title": "Part 5: Permutation Path Tuples",
       "startLine": 147,
-      "endLine": 164,
+      "endLine": 165,
       "summary": "PermPathTuple (σ-indexed path tuples), signedPermCount (sign(σ) × product of binomial coefficients)."
     },
     {
       "id": "ni-tuple-count",
       "title": "Part 6: Non-Intersecting Tuple Count",
       "startLine": 166,
-      "endLine": 173,
+      "endLine": 174,
       "summary": "niTupleCount: cardinality of non-intersecting identity path tuples, the left-hand side of the LGV lemma."
     },
     {
       "id": "gv-involution",
       "title": "Part 7: Gessel-Viennot Involution Infrastructure",
       "startLine": 175,
-      "endLine": 263,
+      "endLine": 264,
       "summary": "swapTailsAt operation with length preservation, transposition sign theorem, firstNonFixed (smallest non-fixed point with minimality and upward-mapping proofs).",
       "mathContext": "$\\mathrm{sgn}((i\\;\\sigma(i)) \\cdot \\sigma) = -\\mathrm{sgn}(\\sigma)$; for $\\sigma \\neq \\mathrm{id}$, $\\mathrm{firstNonFixed}(\\sigma) < \\sigma(\\mathrm{firstNonFixed}(\\sigma))$"
     },
@@ -151,7 +151,7 @@
       "id": "algebraic-bridge",
       "title": "Parts 7b–7c: PathMN Cardinality and Algebraic Bridge",
       "startLine": 265,
-      "endLine": 316,
+      "endLine": 317,
       "summary": "pathMN_card (PROVED: C(m+n,m) via double induction + Pascal's rule + cons decomposition), permPathTuple_card (product factorization), det_pathMatrix_eq_signed_sum (det = Σ sign(σ)·|PermPathTuple(σ)|).",
       "mathContext": "$\\det M = \\sum_{\\sigma} \\mathrm{sgn}(\\sigma) \\prod_{i} \\binom{m+(b_{\\sigma(i)}-a_i)}{m}$"
     },
@@ -159,7 +159,7 @@
       "id": "lgv-lemma",
       "title": "Part 8: The r×r LGV Lemma",
       "startLine": 318,
-      "endLine": 353,
+      "endLine": 354,
       "summary": "gv_involution_cancellation (axiom: signed sum = NI count) and lgv_lemma_rxr (theorem: niTupleCount = det pathMatrix, proved in 2 lines from algebraic bridge + GV cancellation).",
       "mathContext": "$|\\{\\text{NI tuples}\\}| = \\det[\\binom{m+(b_j-a_i)}{m}]_{i,j=1}^r$"
     },
@@ -167,7 +167,7 @@
       "id": "corollaries",
       "title": "Parts 9–10: Corollaries and Applications",
       "startLine": 355,
-      "endLine": 403,
+      "endLine": 896,
       "summary": "Non-negativity of det, r=1 vacuous NI, and lgv_universality. Applications survey: Schur polynomials (Jacobi-Trudi), Catalan numbers, Aztec diamond tilings, plane partitions."
     }
   ],
