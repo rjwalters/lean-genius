@@ -46,17 +46,14 @@
       }
     ],
     "originalContributions": [
-      "Aleph hierarchy: ℵ_α < ℵ_(α+1) for all ordinals α",
-      "Aleph strict monotonicity and injectivity",
-      "ℵ₁ regularity and cofinality = ℵ₁ (uncountable cofinality)",
-      "Countable cardinal characterization: κ < ℵ₁ ↔ κ ≤ ℵ₀",
-      "Ordinal characterization: α < (ℵ₁).ord ↔ card(α) ≤ ℵ₀",
-      "ω₁ is not countable: ¬(card((ℵ₁).ord) ≤ ℵ₀)"
+      "Bridge formalization organizing Mathlib's cardinal/ordinal theorems into a coherent ω₁ property reference",
+      "Countable cardinal characterization: κ < ℵ₁ ↔ κ ≤ ℵ₀ (derived from aleph_succ + lt_succ_iff)",
+      "Ordinal characterization: α < (ℵ₁).ord ↔ card(α) ≤ ℵ₀ (composition of lt_ord + above)"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 130,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries."
+    "assumptions": "0 axioms, 0 sorries. Core results (aleph hierarchy, regularity, cofinality) derived from Mathlib's Cardinal.aleph_lt_aleph, isRegular_aleph_one, card_ord, and lt_ord."
   },
   "overview": {
     "historicalContext": "The ordinal $\\omega_1$ — the first uncountable ordinal — was introduced implicitly by Georg Cantor in his 1895 'Beiträge zur Begründung der transfiniten Mengenlehre'. Cantor established the existence of uncountable sets (1891) and the well-ordering of cardinals, but the systematic study of $\\omega_1$ and the aleph hierarchy ($\\aleph_0 < \\aleph_1 < \\aleph_2 < \\cdots$) was refined by Felix Hausdorff (1908) and later placed on rigorous axiomatic footing by von Neumann's ordinal construction. The concept of cofinality — how a limit ordinal is 'approached' by smaller ordinals — was developed by Hausdorff and became central to Easton's theorem and pcf theory. The regularity of $\\aleph_1$ (meaning $\\omega_1$ cannot be expressed as a supremum of countably many smaller ordinals) is a fundamental structural fact that distinguishes $\\aleph_1$ from singular cardinals like $\\aleph_\\omega$.",
