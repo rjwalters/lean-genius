@@ -29,11 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM ELIMINATED: representable_set_infinite proved via divisibility infrastructure. File now has 1 axiom (the open conjecture), 23 theorems, 292 lines. Added 13 new theorems including product divisibility chain and 2 new examples.",
+    "builtItems": [
+      "factor_dvd_consecutiveProduct: each factor divides the product",
+      "consecutiveProduct_dvd_of_pointwise: pointwise divisibility implies product divisibility",
+      "shifted_factor_dvd: divisibility at shifted indices",
+      "integer_ratio_at_multiples: product ratio is integer at multiples of P(n,k)",
+      "consecutiveProduct_ge_factorial: P(n,k) >= k!",
+      "ratioExpression_eq_nat_div: rational ratio equals natural quotient when divisible",
+      "consecutiveProduct_inj: injectivity from strict monotonicity",
+      "representable_set_infinite: PROVED (was axiom) — the key result",
+      "example_N3, example_N10: new verified examples"
+    ],
+    "insights": [
+      "representable_set_infinite proved: for fixed n,k, choosing m=n+t*P(n,k) gives infinitely many integer ratios",
+      "Key insight: (n+i)|P(n,k) for each factor, so shifting by multiples of P(n,k) preserves divisibility",
+      "consecutiveProduct is strictly monotone, so the quotient function is injective (distinct t give distinct values)",
+      "Axiom count reduced from 2 to 1 — only the open conjecture (erdos_686_conjecture) remains as axiom"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "The remaining axiom (erdos_686_conjecture) is the OPEN problem — cannot be proved",
+      "Could add more verified examples for specific N values",
+      "Could create Aristotle companion file for routine lemmas"
+    ],
     "markdown": "# Erdős #686 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan every integer $N\\geq 2$ be written as\\[N=\\frac{\\prod_{1\\leq i\\leq k}(m+i)}{\\prod_{1\\leq i\\leq k}(n+i)}\\]for some $k\\geq 2$ and $m\\geq n+k$?\n\n\n\nIf $n$ and $k$ are fixed then can one say anything about the set of integers so represented?\n\nSee also [677].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #677\n- Problem #685\n- Problem #687\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
