@@ -21,7 +21,7 @@ with a ≤ b, a, b ∈ A}. Two questions:
 - <https://erdosproblems.com/14>
 -/
 
-import Mathlib.Analysis.Asymptotics.Asymptotics
+import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
@@ -99,5 +99,10 @@ axiom sidon_set_non_unique (A : Set ℕ) :
   ∀ᶠ N in atTop, (nonUniqueSumCountInf A N : ℝ) ≥ (N : ℝ) / 2
 
 /-- The non-unique count is monotonically non-decreasing in N. -/
-axiom non_unique_monotone (A : Set ℕ) :
-  ∀ M N : ℕ, M ≤ N → nonUniqueSumCountInf A M ≤ nonUniqueSumCountInf A N
+theorem non_unique_monotone (A : Set ℕ) :
+    ∀ M N : ℕ, M ≤ N → nonUniqueSumCountInf A M ≤ nonUniqueSumCountInf A N := by
+  intro M N hMN
+  unfold nonUniqueSumCountInf
+  apply Set.ncard_le_ncard
+  · exact Set.diff_subset_diff_left (Set.Icc_subset_Icc_right hMN)
+  · exact (Set.finite_Icc 1 N).subset Set.diff_subset
