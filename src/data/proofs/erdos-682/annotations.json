@@ -30,7 +30,7 @@
       "startLine": 52,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "concept",
     "title": "nthPrime Axioms",
     "content": "**nthPrime n** axiomatizes the $n$-th prime function ($p_1 = 2, p_2 = 3, \\ldots$).\n\n`nthPrime_prime`: $p_n$ is prime for $n \\geq 1$.\n`nthPrime_monotone`: $m < n \\implies p_m < p_n$.",
     "mathContext": "By the Prime Number Theorem, $p_n \\sim n \\log n$. The monotonicity ensures consecutive primes $p_n, p_{n+1}$ define a well-ordered sequence of gaps. Mathlib does not provide a built-in $n$-th prime function, so it is axiomatized here.",
@@ -72,7 +72,7 @@
       "startLine": 70,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "concept",
     "title": "leastPrimeFactor_prime",
     "content": "**leastPrimeFactor_prime**: For $m > 1$, `leastPrimeFactor m` is prime.\n\n**Lean proof**: unfolds the definition and applies `Nat.minFac_prime`.",
     "mathContext": "This is a basic property ensuring the definition is well-typed. Mathlib's `Nat.minFac_prime` does the heavy lifting: for $m \\neq 1$, `minFac m` is always prime.",
@@ -113,7 +113,7 @@
       "startLine": 99,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "concept",
     "title": "one_rough_all",
     "content": "**one_rough_all**: Every $m \\geq 1$ is 1-rough. **Lean proof**: the smallest prime is 2 $\\geq$ 1.",
     "mathContext": "This base case confirms the definition is sensible. As $k$ increases, the set of $k$-rough numbers thins out: the density of $k$-rough numbers in $[1,N]$ is $\\sim e^{-\\gamma}/\\log k$.",
@@ -218,7 +218,7 @@
       "startLine": 164,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "concept",
     "title": "primorial and primorial_13",
     "content": "**primorial n** = $n\\# = \\prod_{p \\leq n} p$: the product of all primes up to $n$.\n\n**primorial_13**: $13\\# = 2 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 13 = 30030$.\n\nEvery integer in $[1, 30030]$ shares a prime factor with 30030.",
     "mathContext": "Primorials grow roughly as $e^n$ (by the PNT applied to $\\log n\\# = \\sum_{p \\leq n} \\log p \\sim n$). The key property: every integer $m$ with $1 \\leq m \\leq n\\#$ has $p(m) \\leq n$, since if $p(m) > n$ then $m$ is coprime to $n\\#$, which is impossible for $m \\leq n\\#$ (pigeonhole on residues).",
@@ -239,7 +239,7 @@
       "startLine": 172,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "concept",
     "title": "dickson_special_case",
     "content": "**dickson_special_case**: $\\forall N, \\exists d > N$ with both $2183 + 30030d$ and $2201 + 30030d$ prime.\n\nThis is a special case of Dickson's conjecture (1904), which predicts when finitely many linear forms are simultaneously prime.",
     "mathContext": "Dickson's conjecture generalizes the twin prime conjecture: given $a_i + b_i d$ ($i = 1, \\ldots, k$) with no fixed prime dividing $\\prod_i (a_i + b_i d)$ for all $d$, infinitely many $d$ make all forms prime. The special case $2183 + 30030d$, $2201 + 30030d$ satisfies the necessary condition because $\\gcd(30030, 2201-2183) = \\gcd(30030, 18)$ has no obstructing prime.",
@@ -260,7 +260,7 @@
       "startLine": 183,
       "endLine": 188
     },
-    "type": "technique",
+    "type": "concept",
     "title": "Erdős's Conditional Counterexample",
     "content": "**erdos_counterexample_condition**: If $p = 2183+30030d$ and $q = 2201+30030d$ are consecutive primes (gap 18), then every $m \\in (p, q)$ has $p(m) < 18$.\n\nThe key: $30030 = 13\\#$, so $m = 2184+30030d$ through $m = 2200+30030d$ are each divisible by one of $\\{2,3,5,7,11,13\\}$.",
     "mathContext": "The residues $2184, \\ldots, 2200$ modulo $\\{2,3,5,7,11,13\\}$ are checked to verify each has a small prime factor. This is a finite verification: there are only 17 integers to check, each against 6 primes. The Chinese Remainder Theorem ensures the residue pattern repeats with period $30030$.",
@@ -345,7 +345,7 @@
       "startLine": 232,
       "endLine": 234
     },
-    "type": "technique",
+    "type": "concept",
     "title": "gafni_tao_upper_bound",
     "content": "**gafni_tao_upper_bound** (Gafni-Tao 2025): $\\exists C > 0$ such that $\\forall X \\geq 3$:\n$$E(X) \\leq \\frac{CX}{(\\log X)^2}$$\n\nThis is the main quantitative result of arXiv:2508.06463.",
     "mathContext": "The proof uses a combination of sieve methods (Selberg sieve, Brun sieve) and estimates for smooth numbers in short intervals. The $(\\log X)^2$ decay comes from the product $\\prod_{p \\leq g_n}(1-1/p) \\approx e^{-\\gamma}/\\log(g_n)$ appearing twice: once for the gap probability and once for the rough number probability.",
@@ -367,7 +367,7 @@
       "startLine": 257,
       "endLine": 257
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos682_answer",
     "content": "**erdos682_answer**: `erdos682Question`\n\nThe answer to Erdős Problem #682 is **YES**: for almost all $n$, the prime gap $(p_n, p_{n+1})$ contains a $g_n$-rough number.\n\nDefined as `gafni_tao_main_theorem`.",
     "mathContext": "This theorem directly resolves the problem by citing the Gafni-Tao main theorem. The 'almost all' is in the sense of natural density: the proportion of exceptional $n \\leq X$ tends to 0.",
@@ -388,7 +388,7 @@
       "startLine": 267,
       "endLine": 273
     },
-    "type": "technique",
+    "type": "concept",
     "title": "exceptional_density_zero",
     "content": "**exceptional_density_zero**: $E(X)/X \\to 0$ as $X \\to \\infty$.\n\nFor any $\\varepsilon > 0$, eventually $E(X)/X < \\varepsilon$. The proof uses $C/(\\log X)^2 \\to 0$.",
     "mathContext": "The density implication is: if $E(X) \\leq CX/(\\log X)^2$, then $E(X)/X \\leq C/(\\log X)^2 \\to 0$. For large $X$, $C/(\\log X)^2 < \\varepsilon$. The `sorry` in the Lean proof handles the analytic step of finding $X$ large enough.",
@@ -409,7 +409,7 @@
       "startLine": 322,
       "endLine": 329
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_682_summary",
     "content": "**erdos_682_summary**: Packages both results as a conjunction:\n1. Gafni-Tao bound: $E(X) \\leq CX/(\\log X)^2$\n2. Affirmative answer: `erdos682Question`\n\nProved by `⟨gafni_tao_upper_bound, erdos682_answer⟩`.",
     "mathContext": "The summary captures both the quantitative bound (how many exceptions) and the qualitative answer (almost all satisfy the property). The Lean proof is complete, combining the two axiomatized results.",
@@ -429,7 +429,7 @@
       "startLine": 342,
       "endLine": 342
     },
-    "type": "technique",
+    "type": "concept",
     "title": "erdos_682",
     "content": "**erdos_682**: `erdos682Question`\n\nThe headline theorem: Erdős Problem #682 is **SOLVED** (YES). Defined as `erdos682_answer`.",
     "mathContext": "This is the clean, one-line main result. The full proof chain: `gafni_tao_main_theorem` → `erdos682_answer` → `erdos_682`. The problem was open since Erdős's work in the late 1970s and resolved by Gafni-Tao in 2025.",
