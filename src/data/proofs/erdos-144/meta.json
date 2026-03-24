@@ -122,6 +122,28 @@
       "Can the techniques extend to other divisor proximity measures?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The fundamental theorem of arithmetic (unique prime factorization) determines the divisor structure of integers. Erdős #144 studies the propinquity of consecutive divisors — how close divisors can be to each other — which is directly governed by the prime factorization pattern"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The distribution of primes governs the average behavior of divisor functions. The propinquity of divisors studied in Erdős #144 depends on the density of smooth numbers and the distribution of prime factors, both informed by PNT"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function counts integers coprime to $n$, complementing the divisor function $d(n)$ that counts divisors. Erdős #144 studies not just the count but the spacing of divisors — a finer structural question about the multiplicative structure of integers"
+    }
+  ],
+  "relatedProofs": [
+    "fundamental-arithmetic",
+    "prime-number-theorem",
+    "euler-totient"
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Basic",
