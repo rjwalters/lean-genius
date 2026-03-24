@@ -78,7 +78,7 @@ than 2 within the sublevel set {z : |f(z)| < 1} connecting two roots.
 
 This strengthens the Erdős-Herzog-Piranian lemma by requiring not just
 connectivity but a quantitative bound on path length. -/
-axiom erdos_1041_conjecture :
+def Erdos1041Conjecture : Prop :=
     ∀ (f : ℂ[X]) (n : ℕ),
       2 ≤ n →
       f.natDegree = n →

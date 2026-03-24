@@ -79,7 +79,7 @@ axiom largest_known_k :
 
     Formally: for any ε > 0, there exists N such that for all n ≥ N,
     if σ(n) = k·n, then k < ε · log(log n). -/
-axiom erdos_1053_conjecture :
+def Erdos1053Conjecture : Prop :=
     ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n k : ℕ, n ≥ N →
       IsKPerfect n k →
       (k : ℝ) < ε * Real.log (Real.log (n : ℝ))
