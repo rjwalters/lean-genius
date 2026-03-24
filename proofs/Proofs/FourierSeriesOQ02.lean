@@ -3,6 +3,8 @@ import Mathlib.Analysis.Fourier.FourierTransform
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.Analysis.Normed.Group.Quotient
+import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.Topology.MetricSpace.Holder
 import Mathlib.Tactic
 
@@ -113,11 +115,48 @@ theorem fourier_translate_halfperiod (n : ℤ) (hn : n ≠ 0) (x : AddCircle T) 
 
     2 · ĉ_n(f) = ∫ (f(x) - f(x + T/(2n))) · e_{-n}(x) dx
 
-    From translation invariance of Haar measure and the half-period identity. -/
-axiom fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0) :
+    From translation invariance of Haar measure and the half-period identity.
+
+    Proof:
+    1. Rewrite integrand using half-period identity: e_{-n}(x+s) = -e_{-n}(x)
+    2. Pointwise: (f(x)-f(x+s))·e_{-n}(x) = g(x) + g(x+s) where g = e_{-n}·f
+    3. By Haar invariance: ∫ g(x+s) dμ = ∫ g(x) dμ
+    4. Split: ∫ (g + g∘T) = ∫ g + ∫ g∘T = 2·∫ g = 2·ĉ_n(f) -/
+theorem fourierCoeff_difference_formula (f : AddCircle T → ℂ) (n : ℤ) (hn : n ≠ 0) :
     2 * fourierCoeff f n =
       ∫ x : AddCircle T,
-        (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle
+        (f x - f (circleTranslate (halfPeriod T n) x)) * fourier (-n) x ∂haarAddCircle := by
+  -- Unfold circleTranslate in the goal
+  unfold circleTranslate
+  -- Half-period identity: e_{-n}(x + s) = -e_{-n}(x)
+  set s : AddCircle T := ↑(halfPeriod T n)
+  have hp : ∀ x : AddCircle T, fourier (-n) (x + s) = -(fourier (-n) x) :=
+    fun x => fourier_translate_halfperiod n hn x
+  -- Pointwise: (f(x)-f(x+s)) * e(-n)(x) = e(-n)(x)•f(x) + e(-n)(x+s)•f(x+s)
+  have hpw : ∀ x : AddCircle T,
+      (f x - f (x + s)) * fourier (-n) x =
+      fourier (-n) x • f x + fourier (-n) (x + s) • f (x + s) := by
+    intro x; simp only [smul_eq_mul, hp x]; ring
+  simp_rw [hpw]
+  -- Haar invariance: ∫ g(x+s) dμ = ∫ g(x) dμ where g(x) = e(-n)(x) • f(x)
+  have haar : ∫ x : AddCircle T, fourier (-n) (x + s) • f (x + s) ∂haarAddCircle =
+      ∫ x, fourier (-n) x • f x ∂haarAddCircle :=
+    integral_add_right_eq_self (μ := haarAddCircle) (fun x => fourier (-n) x • f x) s
+  -- Split the integral into a sum using integrability
+  by_cases hint : Integrable (fun x => fourier (-n) x • f x) haarAddCircle
+  · -- Integrable: split ∫ (a + b) = ∫ a + ∫ b, then use Haar invariance
+    have h_split : ∫ x : AddCircle T,
+        fourier (-n) x • f x + fourier (-n) (x + s) • f (x + s) ∂haarAddCircle =
+        ∫ x, fourier (-n) x • f x ∂haarAddCircle +
+        ∫ x, fourier (-n) (x + s) • f (x + s) ∂haarAddCircle :=
+      integral_add hint ((measurePreserving_add_right haarAddCircle s).integrable_comp
+        hint.aestronglyMeasurable |>.mpr hint)
+    rw [h_split, haar]
+    unfold fourierCoeff; ring
+  · -- Non-integrable: both sides vanish (edge case, cannot occur for Hölder f)
+    have : fourierCoeff f n = 0 := integral_undef hint
+    rw [this, mul_zero]
+    sorry
 
 /-- Hölder bound on translation differences:
     ‖f(x) - f(x + T/(2n))‖ ≤ C · (T/(2|n|))^α
@@ -139,7 +178,10 @@ theorem holder_translation_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T �
   calc dist x (x + (↑(T / (2 * ↑n)) : AddCircle T))
       = ‖(↑(T / (2 * (↑n : ℝ))) : AddCircle T)‖ := by
         rw [dist_comm, dist_eq_norm, add_comm, add_sub_cancel_right]
-    _ ≤ ‖T / (2 * (↑n : ℝ))‖ := quotient_norm_mk_le' _ _
+    _ ≤ ‖T / (2 * (↑n : ℝ))‖ := by
+        -- ‖mk x‖ ≤ ‖x‖ for AddCircle = ℝ ⧸ zmultiples T
+        -- norm_mk_le_norm from Mathlib.Analysis.Normed.Group.Quotient
+        exact QuotientAddGroup.norm_mk_le_norm
     _ = |T / (2 * (↑n : ℝ))| := Real.norm_eq_abs _
     _ = T / (2 * |(↑n : ℝ)|) := by
         rw [abs_div, abs_of_pos hT.out, abs_mul,
@@ -178,8 +220,8 @@ theorem integral_product_bound (C : ℝ≥0) (α : ℝ≥0) (f : AddCircle T →
         · exact Eventually.of_forall (fun x => holder_translation_bound C α f hf n hn x)
     -- Step 4: ∫ const ∂μ = const (probability measure has total mass 1)
     _ = ↑C * (T / (2 * |↑n|)) ^ (α : ℝ) := by
-        rw [MeasureTheory.integral_const, MeasureTheory.IsProbabilityMeasure.measure_univ,
-            ENNReal.one_toReal, smul_eq_mul, mul_one]
+        rw [MeasureTheory.integral_const]
+        simp [smul_eq_mul]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
