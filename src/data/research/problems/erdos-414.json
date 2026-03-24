@@ -1,7 +1,7 @@
 {
   "slug": "erdos-414",
   "title": "Erdős #414",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-13T02:38:27.587Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,11 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 10 of 14 axioms proved (14→4). Remaining 4: erdos_414_conjecture (OPEN), single_eventual_orbit (equiv), h_upper (needs card bound), orbits_get_close (heuristic).",
+    "progressSummary": "AXIOM ELIMINATION: Proved single_eventual_orbit from erdos_414_conjecture (3→2 axioms). Added hOrbit_continuation lemma (orbit determinism). Remaining axioms: erdos_414_conjecture (open), orbits_get_close (heuristic).",
     "builtItems": [
       "Proved h_strictly_increasing, orbit_strictly_increasing, h_prime, h_one, h_two, h_three",
       "Proved orbit_1_start, orbit_3_merges_with_1 via native_decide",
-      "Proved orbit_linear_lower by induction, average_divisor_count trivially"
+      "Proved orbit_linear_lower by induction, average_divisor_count trivially",
+      "Proved hOrbit_continuation: orbit determinism (once merged, stay merged)",
+      "Proved single_eventual_orbit from erdos_414_conjecture via orbit of 1 as reference"
     ],
     "insights": [
       "10 of 14 axioms proved from definitions and Mathlib",
@@ -41,7 +43,9 @@
       "h_strictly_increasing: divisors_card_pos (1 is always a divisor)",
       "h_prime: Nat.Prime.divisors + Finset.card_pair",
       "Computed values (h_one/two/three, orbits) proved via native_decide",
-      "orbit_linear_lower: induction using h_strictly_increasing"
+      "orbit_linear_lower: induction using h_strictly_increasing",
+      "single_eventual_orbit is a formal consequence of erdos_414_conjecture + orbit determinism",
+      "Orbit continuation: hOrbit a (i+d) = hOrbit b (j+d) when hOrbit a i = hOrbit b j"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -61,16 +65,16 @@
     "mathlib": []
   },
   "started": "2026-01-13T02:38:27.587Z",
-  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "lastUpdate": "2026-03-23T07:50:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos414Problem.lean",
       "filename": "Erdos414Problem.lean",
-      "lineCount": 110,
-      "theoremCount": 0,
-      "axiomCount": 14,
+      "lineCount": 171,
+      "theoremCount": 13,
+      "axiomCount": 2,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,

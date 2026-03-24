@@ -20,7 +20,7 @@
     "erdosNumber": 1141,
     "erdosUrl": "https://erdosproblems.com/1141",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -86,7 +86,7 @@
       "id": "header",
       "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 19,
+      "endLine": 18,
       "summary": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the 10^10 search bound, and ChatGPT-Tang's density result."
     },
     {
@@ -100,56 +100,56 @@
       "id": "core-def",
       "title": "Core Definition",
       "startLine": 26,
-      "endLine": 44,
+      "endLine": 43,
       "summary": "Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation."
     },
     {
       "id": "positive-examples",
       "title": "Positive Examples (decide)",
       "startLine": 45,
-      "endLine": 70,
+      "endLine": 69,
       "summary": "Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
       "startLine": 71,
-      "endLine": 87,
+      "endLine": 86,
       "summary": "Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 88,
-      "endLine": 108,
+      "endLine": 107,
       "summary": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n ≥ 2 requires n-1 prime."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
       "startLine": 109,
-      "endLine": 115,
+      "endLine": 114,
       "summary": "Axiomatizes the open problem: for every N, there exists n ≥ N with IsErdos1141Good n (infinitude of good values)."
     },
     {
       "id": "large-examples",
       "title": "Large Verified Examples (native_decide)",
       "startLine": 116,
-      "endLine": 162,
+      "endLine": 161,
       "summary": "Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide."
     },
     {
       "id": "unified-verification",
       "title": "Unified Verification",
       "startLine": 163,
-      "endLine": 166,
+      "endLine": 165,
       "summary": "Single theorem verifying all 41 known OEIS A214583 values satisfy the property, via native_decide over the knownGoodValues list."
     },
     {
       "id": "classification",
       "title": "Complete Classification to n = 100",
       "startLine": 167,
-      "endLine": 181,
+      "endLine": 180,
       "summary": "Exhaustive classification: computes exactly which values in {0,...,100} satisfy IsErdos1141Good, yielding 24 good values. Proved by filtering Finset.range 101 and comparing to the explicit list."
     },
     {
