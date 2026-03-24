@@ -262,19 +262,52 @@ theorem fourierCoeff_lipschitz_decay (C : ℝ≥0) (f : AddCircle T → ℂ)
   simp only [NNReal.coe_one, Real.rpow_one] at h
   exact h
 
-/-- **Square-Summability for α > 1/2**: ‖ĉ_n‖ = O(1/|n|^α), so
-    ‖ĉ_n‖² = O(1/|n|^{2α}), and Σ 1/|n|^{2α} < ∞ when 2α > 1. -/
-axiom fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
+/-- Helper: lift a Hölder continuous function to L² via ContinuousMap.toLp.
+    Uses: Hölder (α > 0) → continuous → ContinuousMap → Lp element. -/
+private noncomputable def holderToLp {C : ℝ≥0} {α : ℝ≥0} {f : AddCircle T → ℂ}
+    (hf : IsHolderOnCircle C α f) (hα : 0 < α) :
+    Lp ℂ 2 (@haarAddCircle T hT) :=
+  ContinuousMap.toLp (α := AddCircle T) (E := ℂ) 2 (@haarAddCircle T hT) ℝ
+    ⟨f, holder_continuous hf hα⟩
+
+/-- Helper: fourierCoeff is unchanged by the ContinuousMap.toLp lift.
+    Proof: fourierCoeff is an integral, and ContinuousMap.toLp preserves
+    the function a.e. (ContinuousMap.coeFn_toLp). -/
+private theorem fourierCoeff_holderToLp {C : ℝ≥0} {α : ℝ≥0} {f : AddCircle T → ℂ}
+    (hf : IsHolderOnCircle C α f) (hα : 0 < α) (n : ℤ) :
+    fourierCoeff f n = fourierCoeff (↑↑(holderToLp hf hα)) n :=
+  integral_congr_ae ((ContinuousMap.coeFn_toLp (@haarAddCircle T hT)
+    (⟨f, holder_continuous hf hα⟩ : C(AddCircle T, ℂ))).symm.mono
+    fun x hx => congrArg (HSMul.hSMul (fourier (-n) x)) hx)
+
+/-- **Square-Summability for α > 1/2**: Follows from Parseval's theorem.
+    Hölder (α > 1/2) → continuous → L² → Parseval gives Σ‖ĉ_n‖² = ‖f‖² < ∞. -/
+theorem fourierCoeff_sq_summable_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f)
     (hα : (1 : ℝ) / 2 < (α : ℝ)) :
-    Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2)
+    Summable (fun n : ℤ => ‖fourierCoeff f n‖ ^ 2) := by
+  have hα_pos : (0 : ℝ≥0) < α := by
+    rw [← NNReal.coe_pos]; exact lt_trans (by norm_num : (0 : ℝ) < 1/2) hα
+  simp_rw [fourierCoeff_holderToLp hf hα_pos]
+  exact (hasSum_sq_fourierCoeff (holderToLp hf hα_pos)).summable
 
-/-- **Riemann-Lebesgue from Hölder**: ‖ĉ_n‖ = O(1/|n|^α) → 0.
-    Proof strategy: use fourierCoeff_holder_decay + squeeze theorem,
-    or use general Riemann-Lebesgue for L¹ (Hölder → continuous → integrable). -/
-axiom riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
+/-- **Riemann-Lebesgue from Hölder**: Hölder → L² → Parseval → ĉ_n → 0.
+    Uses: Σ‖ĉ_n‖² < ∞ ⟹ ‖ĉ_n‖² → 0 ⟹ ĉ_n → 0. -/
+theorem riemannLebesgue_of_holder (C : ℝ≥0) (α : ℝ≥0)
     (f : AddCircle T → ℂ) (hf : IsHolderOnCircle C α f) (hα : 0 < α) :
-    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0)
+    Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0) := by
+  -- Rewrite using Lp element
+  suffices Tendsto (fun n => fourierCoeff (↑↑(holderToLp hf hα)) n) cofinite (𝓝 0) by
+    exact this.congr fun n => (fourierCoeff_holderToLp hf hα n).symm
+  -- From Parseval: Σ‖ĉ_n‖² < ∞ → ‖ĉ_n‖² → 0 → ĉ_n → 0
+  have h_sq := (hasSum_sq_fourierCoeff (holderToLp hf hα)).summable.tendsto_cofinite_zero
+  rw [Metric.tendsto_nhds] at h_sq ⊢
+  intro ε hε
+  filter_upwards [h_sq (ε ^ 2) (by positivity)] with n hn
+  simp only [dist_zero_right] at hn ⊢
+  rw [Real.norm_of_nonneg (sq_nonneg _)] at hn
+  nlinarith [norm_nonneg (fourierCoeff (↑↑(holderToLp hf hα)) n),
+    sq_nonneg (‖fourierCoeff (↑↑(holderToLp hf hα)) n‖ - ε)]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
