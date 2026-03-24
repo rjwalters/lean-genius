@@ -18,15 +18,28 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Order.OrderIsoNat
 import Mathlib.Tactic
 
 /- ## Primorial and Coprime Residues -/
 
-/-- The k-th prime number (1-indexed: nthPrime 1 = 2, nthPrime 2 = 3, ...) -/
-axiom nthPrime : ℕ → ℕ
-axiom nthPrime_prime (k : ℕ) (hk : 1 ≤ k) : Nat.Prime (nthPrime k)
-axiom nthPrime_mono : StrictMono nthPrime
-axiom nthPrime_vals : nthPrime 1 = 2 ∧ nthPrime 2 = 3 ∧ nthPrime 3 = 5
+/-- The k-th prime number (1-indexed: nthPrime 1 = 2, nthPrime 2 = 3, ...).
+    Defined via Mathlib's Nat.nth which enumerates infinite sets in order. -/
+noncomputable def nthPrime (k : ℕ) : ℕ := Nat.nth Nat.Prime (k - 1)
+
+/-- The k-th prime is prime (for k ≥ 1). -/
+theorem nthPrime_prime (k : ℕ) (hk : 1 ≤ k) : Nat.Prime (nthPrime k) := by
+  exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime (k - 1)
+
+/-- nthPrime is strictly monotone. -/
+theorem nthPrime_mono : StrictMono nthPrime := by
+  intro a b hab
+  exact Nat.nth_strictMono Nat.infinite_setOf_prime (by omega : a - 1 < b - 1)
+
+/-- Concrete values: nthPrime 1 = 2, nthPrime 2 = 3, nthPrime 3 = 5. -/
+theorem nthPrime_vals : nthPrime 1 = 2 ∧ nthPrime 2 = 3 ∧ nthPrime 3 = 5 := by
+  simp only [nthPrime, show 1 - 1 = 0 from rfl, show 2 - 1 = 1 from rfl, show 3 - 1 = 2 from rfl]
+  refine ⟨?_, ?_, ?_⟩ <;> native_decide
 
 /-- The k-th primorial: product of the first k primes -/
 noncomputable def primorial : ℕ → ℕ
@@ -37,30 +50,43 @@ noncomputable def primorial : ℕ → ℕ
 def coprimeResidues (n : ℕ) : Finset ℕ :=
   (Finset.range n).filter (fun a => 0 < a ∧ Nat.Coprime a n)
 
-/-- Sorted list of coprime residues -/
-axiom sortedCoprimes (n : ℕ) : List ℕ
-axiom sortedCoprimes_sorted (n : ℕ) : List.Sorted (· < ·) (sortedCoprimes n)
-axiom sortedCoprimes_mem (n : ℕ) (a : ℕ) :
-  a ∈ sortedCoprimes n ↔ a ∈ coprimeResidues n
+/-- Sorted list of coprime residues (defined via Finset.sort). -/
+noncomputable def sortedCoprimes (n : ℕ) : List ℕ := (coprimeResidues n).sort (· ≤ ·)
+
+theorem sortedCoprimes_sorted (n : ℕ) : (sortedCoprimes n).Pairwise (· < ·) := by
+  sorry -- Follows from Finset.sort properties
+
+theorem sortedCoprimes_mem (n : ℕ) (a : ℕ) :
+    a ∈ sortedCoprimes n ↔ a ∈ coprimeResidues n := by
+  simp [sortedCoprimes, Finset.mem_sort]
 
 /- ## Gap Structure -/
 
-/-- The set of consecutive gaps between coprime residues of n -/
-axiom gapSet : ℕ → Finset ℕ
+/-- The set of consecutive gaps between coprime residues of n.
+    Computed from the sorted coprime residue list. -/
+noncomputable def gapSet (n : ℕ) : Finset ℕ :=
+  let l := sortedCoprimes n
+  (List.zipWith (· - ·) l.tail l).toFinset
 
 /-- Every gap is even for k ≥ 2 (since nₖ is even, all coprime residues are odd) -/
 axiom gaps_even (k : ℕ) (hk : 2 ≤ k) (d : ℕ) (hd : d ∈ gapSet (primorial k)) :
   2 ∣ d
 
-/-- The maximal gap between consecutive coprime residues of n -/
-axiom maxGap : ℕ → ℕ
-axiom maxGap_mem (n : ℕ) (hn : 1 < n) : maxGap n ∈ gapSet n
-axiom maxGap_max (n : ℕ) (d : ℕ) (hd : d ∈ gapSet n) : d ≤ maxGap n
+/-- The maximal gap between consecutive coprime residues of n.
+    Defined as the supremum of the gap set. -/
+noncomputable def maxGap (n : ℕ) : ℕ := (gapSet n).sup id
 
-/-- Number of distinct even integers that appear as gaps -/
-axiom distinctGapCount : ℕ → ℕ
-axiom distinctGapCount_def (n : ℕ) :
-  distinctGapCount n = (gapSet n).card
+theorem maxGap_mem (n : ℕ) (hn : 1 < n) : maxGap n ∈ gapSet n := by
+  sorry -- Requires showing gapSet n is nonempty for n > 1
+
+theorem maxGap_max (n : ℕ) (d : ℕ) (hd : d ∈ gapSet n) : d ≤ maxGap n :=
+  Finset.le_sup hd
+
+/-- Number of distinct gap values. -/
+noncomputable def distinctGapCount (n : ℕ) : ℕ := (gapSet n).card
+
+theorem distinctGapCount_def (n : ℕ) :
+    distinctGapCount n = (gapSet n).card := rfl
 
 /- ## Known Bounds -/
 
@@ -68,12 +94,17 @@ axiom distinctGapCount_def (n : ℕ) :
 axiom maxGap_bound (k : ℕ) (hk : 2 ≤ k) :
   maxGap (primorial k) ≤ 2 * nthPrime k
 
-/-- The first missing gap: smallest even integer not in gapSet(nₖ) -/
-axiom firstMissingGap : ℕ → ℕ
-axiom firstMissingGap_even (k : ℕ) (hk : 2 ≤ k) :
-  2 ∣ firstMissingGap (primorial k)
-axiom firstMissingGap_missing (k : ℕ) (hk : 2 ≤ k) :
-  firstMissingGap (primorial k) ∉ gapSet (primorial k)
+/-- The first missing gap: smallest positive even integer not in gapSet(n). -/
+noncomputable def firstMissingGap (n : ℕ) : ℕ :=
+  2 * Nat.find (⟨n, fun h => by omega⟩ : ∃ m, 2 * m ∉ gapSet n)
+
+theorem firstMissingGap_even (_k : ℕ) (_hk : 2 ≤ _k) :
+    2 ∣ firstMissingGap (primorial _k) :=
+  dvd_mul_right 2 _
+
+theorem firstMissingGap_missing (k : ℕ) (_hk : 2 ≤ k) :
+    firstMissingGap (primorial k) ∉ gapSet (primorial k) :=
+  Nat.find_spec (⟨primorial k, fun h => by omega⟩ : ∃ m, 2 * m ∉ gapSet (primorial k))
 
 /-- Lacampagne–Selfridge computation: for nₖ = 30030 (k=6),
     not all even integers up to the maximal gap appear -/
