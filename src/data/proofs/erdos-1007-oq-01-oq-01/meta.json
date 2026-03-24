@@ -1,0 +1,197 @@
+{
+  "id": "erdos-1007-oq-01-oq-01",
+  "title": "Is minEdges Monotone in d?",
+  "slug": "erdos-1007-oq-01-oq-01",
+  "description": "Investigates whether the function minEdges(d) — the minimum number of edges in a graph of dimension exactly d — is monotone (non-decreasing). Proves monotonicity for known values (d ≤ 5), establishes that the full conjecture reduces to consecutive monotonicity for d ≥ 5, and proves the key structural result that a deficiency bound δ(d) ≤ d implies monotonicity.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/1007",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1007OQ01OQ01.lean",
+    "tags": [
+      "erdos",
+      "graph-dimension",
+      "unit-distance",
+      "combinatorics",
+      "graph-theory",
+      "monotonicity",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient C(n,k).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule: C(n+1, k+1) = C(n, k+1) + C(n, k).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_le_choose",
+        "description": "Monotonicity of binomial coefficients: n ≤ m → C(n,k) ≤ C(m,k).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_two_right",
+        "description": "C(n,2) = n*(n-1)/2.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Abstract MinEdgesConstraints structure capturing all known constraints on the true minEdges function",
+      "Unconditional monotonicity for d ≤ 5: any function satisfying constraints is monotone on [0,5]",
+      "Equivalence: full monotonicity ↔ consecutive monotonicity (general ℕ-indexed fact)",
+      "Reduction theorem: monotonicity reduces to f(d) ≤ f(d+1) for d ≥ 5",
+      "Key structural result: deficiency bound δ(d) ≤ d implies monotonicity",
+      "Gap theorem: monotonicity holds unconditionally between far-apart values",
+      "Critical gap identification: f(5) ≤ f(6) iff f(6) ≥ 15",
+      "Optimality implies monotonicity (via deficiency bound, alternative proof)",
+      "Half-quadratic sufficient condition: f(d) ≥ C(d,2) implies monotonicity",
+      "Verified: known deficiency values all satisfy δ(d) ≤ d",
+      "Growth classification: d ≤ f(d) ≤ d(d+1)/2 for all d ≥ 1"
+    ],
+    "axiomCount": 0,
+    "lineCount": 388,
+    "assumptions": "0 axioms, 0 sorries. All 32 theorems fully proved.",
+    "mathlib_version": "4.26.0"
+  },
+  "sections": [
+    {
+      "id": "abstract-function",
+      "title": "Abstract Minimum Edges Function",
+      "summary": "Defines `knownMinEdges` recording the 6 known values (0,1,3,6,9,15) and `MinEdgesConstraints` structure capturing the properties any candidate for the true minEdges function must satisfy: agreement with known values, lower bound $d \\le f(d)$, and upper bound $f(d) \\le \\binom{d+1}{2}$.",
+      "startLine": 33,
+      "endLine": 72
+    },
+    {
+      "id": "known-monotonicity",
+      "title": "Monotonicity for Known Values",
+      "summary": "Proves unconditionally that any function satisfying the constraints is monotone on $[0, 5]$ via `interval_cases`. The known values 0, 1, 3, 6, 9, 15 are strictly increasing.",
+      "startLine": 76,
+      "endLine": 89
+    },
+    {
+      "id": "monotonicity-equivalences",
+      "title": "Monotonicity Equivalences",
+      "summary": "Proves two structural reductions: (1) full monotonicity $\\iff$ consecutive monotonicity $f(d) \\le f(d+1)$, by induction on $d_2 - d_1$; (2) for constrained functions, monotonicity reduces to $f(d) \\le f(d+1)$ for $d \\ge 5$ only.",
+      "startLine": 93,
+      "endLine": 116
+    },
+    {
+      "id": "deficiency-bound",
+      "title": "The Deficiency Bound",
+      "summary": "The central structural result: if the deficiency $\\delta(d) = \\binom{d+1}{2} - f(d) \\le d$ for all $d \\ge 1$, then $f$ is monotone. Proof: $f(d_1) \\le \\binom{d_1+1}{2} \\le \\binom{d_2}{2} \\le f(d_2)$ using Pascal's rule $\\binom{d+1}{2} - d = \\binom{d}{2}$.",
+      "startLine": 120,
+      "endLine": 175
+    },
+    {
+      "id": "gap-theorem",
+      "title": "Unconditional Gap Theorem",
+      "summary": "Proves that monotonicity holds unconditionally between values whose upper/lower bounds don't overlap: if $\\binom{d_1+1}{2} \\le d_2$, then $f(d_1) \\le f(d_2)$. Identifies the critical gap: $f(5) \\le f(6) \\iff f(6) \\ge 15$, with $6 \\le f(6) \\le 21$.",
+      "startLine": 179,
+      "endLine": 205
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences of Monotonicity",
+      "summary": "Shows monotonicity implies $f(d) \\ge 15$ for $d \\ge 5$, $f(d) \\ge 9$ for $d \\ge 4$, and $f(d) \\ge \\max(d, 15)$ for $d \\ge 5$ — giving a tighter lower bound than the unconditional $f(d) \\ge d$.",
+      "startLine": 209,
+      "endLine": 236
+    },
+    {
+      "id": "sufficient-conditions",
+      "title": "Sufficient Conditions",
+      "summary": "Proves two sufficient conditions beyond the general deficiency bound: (1) the complete graph optimality conjecture implies monotonicity (via zero deficiency for $d \\ne 4$); (2) the weaker condition $f(d) \\ge \\binom{d}{2}$ for all $d \\ge 2$ suffices.",
+      "startLine": 240,
+      "endLine": 290
+    },
+    {
+      "id": "growth-classification",
+      "title": "Growth Classification",
+      "summary": "Unconditional growth bracket: $d \\le f(d) \\le d(d+1)/2$ for all $d \\ge 1$, bounding growth between linear and quadratic. Verified quadratic sandwich $d^2/2 \\le f(d) \\le d^2$ for $d \\le 5$.",
+      "startLine": 294,
+      "endLine": 345
+    }
+  ],
+  "overview": {
+    "historicalContext": "The monotonicity of minEdges(d) — whether the minimum edge count for d-dimensional graphs is non-decreasing — is a natural open question arising from the study of graph dimension initiated by Erdős, Harary, and Tutte (1965). The known values minEdges(1)=1, minEdges(2)=3, minEdges(3)=6, minEdges(4)=9, minEdges(5)=15 are indeed monotone, with the d=4 anomaly (K_{3,3} beating K₅) creating the main tension point.",
+    "problemStatement": "Is the function minEdges(d) — the minimum number of edges in a graph of dimension exactly d — monotone (non-decreasing) in d? Equivalently, does every dimension d₂ graph need at least as many edges as the most efficient dimension d₁ graph, when d₁ ≤ d₂?",
+    "text": "Investigates the monotonicity of minEdges(d) using an abstract constraint framework. Proves unconditional monotonicity for known values, establishes structural reductions, and identifies the deficiency bound as the key sufficient condition.",
+    "proofStrategy": "The formalization introduces a `MinEdgesConstraints` structure abstracting over any candidate for the true minEdges function. This avoids dependence on placeholder values for d ≥ 6. The central result is the **deficiency bound theorem**: if δ(d) = C(d+1,2) - f(d) ≤ d for all d ≥ 1, then f is monotone. The proof chains three inequalities: f(d₁) ≤ C(d₁+1,2) (upper bound), C(d₁+1,2) ≤ C(d₂,2) (binomial monotonicity for d₁ < d₂), and C(d₂,2) ≤ f(d₂) (from deficiency bound + Pascal's rule).",
+    "keyInsights": [
+      "The **deficiency bound** δ(d) ≤ d is the simplest sufficient condition for monotonicity. It says the complete graph bound C(d+1,2) doesn't overshoot by more than d — satisfied by all known values including the d=4 anomaly (δ(4) = 1 ≤ 4).",
+      "**Monotonicity reduces to d ≥ 5**: Since known values are monotone, the full conjecture is equivalent to f(d) ≤ f(d+1) for all d ≥ 5.",
+      "The **critical gap** is at d = 5→6: we need f(6) ≥ 15 but only know 6 ≤ f(6) ≤ 21. If f(6) ≥ 15, the hardest case is resolved.",
+      "**Half-quadratic sufficiency**: If f(d) ≥ C(d,2) for all d ≥ 2, monotonicity follows — a condition much weaker than full optimality.",
+      "The **unconditional gap theorem** gives free monotonicity between far-apart values: when C(d₁+1,2) ≤ d₂, the bounds don't overlap."
+    ],
+    "prerequisites": [
+      "Combinatorics (binomial coefficients, monotonicity)",
+      "Graph theory (dimension, unit-distance embeddings)"
+    ]
+  },
+  "conclusion": {
+    "summary": "We establish a structural framework for the monotonicity question, proving it reduces to consecutive monotonicity for d ≥ 5, and identifying the deficiency bound δ(d) ≤ d as the key sufficient condition. All 32 theorems are fully proved with 0 axioms and 0 sorries.",
+    "implications": "The deficiency bound theorem provides a concrete target for proving monotonicity: show that the true minEdges function never drops more than d below C(d+1,2).\nThe reduction to d ≥ 5 narrows the problem to the unknown regime, separating it from the well-understood small cases.\nThe half-quadratic sufficient condition suggests that even a modest lower bound improvement (from d to C(d,2)) would resolve the conjecture.",
+    "openQuestions": [
+      "Does minEdges(6) ≥ 15? This is the critical gap for monotonicity.",
+      "Does the deficiency bound δ(d) ≤ d hold for all d ≥ 1?",
+      "Is there a graph-theoretic proof that removing edges from a minimal d-dimensional graph reduces the dimension?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 388,
+    "axiomCount": 0,
+    "theoremCount": 32,
+    "definitionCount": 5
+  },
+  "crossReferences": [
+    {
+      "relationship": "Direct parent: this OQ investigates the monotonicity conjecture stated in the parent OQ-01 formalization",
+      "targetId": "erdos-1007-oq-01"
+    },
+    {
+      "relationship": "Grandparent: original Erdős problem on minimum edges for dimension 4",
+      "targetId": "erdos-1007"
+    }
+  ],
+  "references": [
+    {
+      "authors": "P. Erdős, F. Harary, W. T. Tutte",
+      "title": "On the dimension of a graph",
+      "year": "1965",
+      "venue": "Mathematika, 12(2), 118–122",
+      "note": "Foundational paper defining graph dimension"
+    },
+    {
+      "authors": "J. House",
+      "title": "Graphs of dimension 4",
+      "year": "2013",
+      "venue": "Preprint",
+      "note": "Proved minEdges(4) = 9 (K_{3,3} uniquely optimal)"
+    },
+    {
+      "authors": "J. Chaffee, M. Noble",
+      "title": "The dimension of the unit distance graph",
+      "year": "2016",
+      "venue": "Preprint",
+      "note": "Proved minEdges(5) = 15"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1007",
+    "erdos-1007-oq-01"
+  ]
+}
