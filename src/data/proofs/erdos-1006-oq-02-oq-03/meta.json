@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent",
     "sourceUrl": "https://erdosproblems.com/1006",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1006OQ03.lean",
     "tags": [
       "erdos",
@@ -19,8 +19,8 @@
       "coloring",
       "research"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "formalized",
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Coloring",
@@ -65,7 +65,7 @@
     "dateAdded": "2026-02-24",
     "axiomCount": 0,
     "lineCount": 247,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 axioms, 1 sorry. See the Lean source for details.",
     "mathlib_version": "4.26.0"
   },
   "overview": {

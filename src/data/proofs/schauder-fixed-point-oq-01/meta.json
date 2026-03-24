@@ -7,7 +7,7 @@
     "author": "Juliusz Schauder (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Schauder_fixed-point_theorem",
     "date": "1930",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "topology",
       "fixed-point-theory",
@@ -15,8 +15,8 @@
       "convex-analysis",
       "open-question"
     ],
-    "badge": "verified",
-    "sorries": 0,
+    "badge": "formalized",
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "IsCompact.elim_finite_subcover_image",
@@ -42,7 +42,7 @@
     ],
     "dateAdded": "2026-03-06",
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 axioms, 3 sorries. See the Lean source for details.",
     "proofRepoPath": "Proofs/SchauderFixedPointOQ01.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 315
