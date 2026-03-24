@@ -1016,7 +1016,7 @@ private lemma coset_fiber_card_eq {N : ℕ} [NeZero N] (A : Finset (ZMod N))
     exact Nat.eq_of_mul_eq_mul_right hg hprod_eq
   · -- Surjective
     intro x hx
-    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hx
+    simp only [Finset.mem_coe, Finset.mem_filter] at hx
     have hmod : ZMod.val x % g = j := by
       have := congr_arg Fin.val hx.2; exact this
     have hdiv : ZMod.val x / g < M :=
@@ -1096,7 +1096,7 @@ private lemma fourier_coset_decomp {N : ℕ} [NeZero N] (A : Finset (ZMod N))
     (congrArg Nat.cast (coset_fiber_card_eq A g hg hgN j hj).symm)
 
 /-- Character sum over compatible cosets vanishes. -/
-private lemma char_sum_cosets_zero {N : ℕ} [NeZero N] (g : ℕ) (hg : 0 < g) (hgN : g ∣ N)
+private lemma char_sum_cosets_zero {N : ℕ} [NeZero N] (g : ℕ) (_hg : 0 < g) (hgN : g ∣ N)
     (r : ZMod N) (hr : r ≠ 0) (hcompat : (N / g) ∣ ZMod.val r) :
     ∑ j : Fin g, ψ (r * (↑j.val : ZMod N)) = 0 := by
   set ω := ψ r with hω_def
@@ -1132,7 +1132,7 @@ private lemma char_sum_cosets_zero {N : ℕ} [NeZero N] (g : ℕ) (hg : 0 < g) (
     Σ(f_j - m) = 0 ⟹ Σ(f_j - m)⁺ ≥ δ²N/4.
     max(f_j) ≥ m + δ²N/(4g) = m + δ²M/4 where M = N/g. -/
 private theorem coset_density_increment {N : ℕ} [NeZero N] (hN : 1 < N)
-    (A : Finset (ZMod N)) (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
+    (A : Finset (ZMod N)) (_hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
     (hdensity : (A.card : ℝ) ≥ delta * N) (g : ℕ) (hg : 0 < g) (hgN : g ∣ N)
     (r : ZMod N) (hr : r ≠ 0) (hlarge : ‖fourierCoeff A r‖ ≥ delta ^ 2 * N / 2)
     (hcompat : (N / g) ∣ ZMod.val r) :
@@ -1329,6 +1329,28 @@ theorem density_increment_lemma {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
 -- PART VI: ROTH'S THEOREM (MAIN RESULT)
 -- ═══════════════════════════════════════════════════════════════════
 
+/-- Any application of density_increment_lemma yields d + d²/100 ≤ 1, since the
+    output set B satisfies |B| ≤ M (card_le_nat) and |B| ≥ (d + d²/100) * M. -/
+private theorem density_bound_from_increment {N : ℕ} (hN : 1 < N) (A : Finset (ZMod N))
+    (hAP : APFree A) (delta : ℝ) (hdelta : 0 < delta)
+    (hdensity : (A.card : ℝ) ≥ delta * N) :
+    delta + delta ^ 2 / 100 ≤ 1 := by
+  obtain ⟨M, B, hMpos, _, _, hBdens⟩ := density_increment_lemma hN A hAP delta hdelta hdensity
+  haveI : NeZero M := ⟨by omega⟩
+  have hBle : (B.card : ℝ) ≤ ↑M := by exact_mod_cast card_le_nat B
+  have hMr : (0 : ℝ) < ↑M := Nat.cast_pos.mpr hMpos
+  nlinarith
+
+/-- For N ≥ 3, AP-free sets have density at most 2/3. -/
+private theorem apFree_density_lt_two_thirds {N : ℕ} [NeZero N] (hN3 : 2 < N)
+    (A : Finset (ZMod N)) (hAP : APFree A)
+    (delta : ℝ) (_hdelta : 0 < delta) (hdensity : (A.card : ℝ) ≥ delta * N) :
+    delta ≤ 2 / 3 := by
+  have h := apFree_card_le_two_thirds hN3 A hAP
+  have hN_pos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (by omega)
+  have : 3 * (A.card : ℝ) ≤ 2 * (N : ℝ) := by exact_mod_cast h
+  nlinarith
+
 /-- Extension of density_increment_lemma to N ≥ 1 for use in the iteration.
     Delegates to the fully-verified density_increment_lemma when N ≥ 2.
 
@@ -1367,10 +1389,22 @@ private theorem density_increment_iter {N : ℕ} (hN : 0 < N) (A : Finset (ZMod 
         simp only [Finset.card_univ, ZMod.card, Nat.cast_one, mul_one]
         linarith
     · -- Hard case: delta ∈ (0.99, 1] where delta + delta²/100 > 1 and N = 1.
-      -- The conclusion requires |B| ≥ (delta + delta²/100) * M > M for any M ≥ 1,
-      -- but |B| ≤ M always holds. This case is prevented in the standard proof by
-      -- Dirichlet's approximation theorem (Tao-Vu Ch.10), which ensures M ≥ √N
-      -- at each descent step. Formalizing Dirichlet approximation would close this.
+      -- This case is PROVABLY FALSE as stated: the conclusion requires
+      -- |B| ≥ (delta + delta²/100) * M > M, but |B| ≤ M always holds.
+      -- The hypotheses are consistent (A = {0} in ZMod 1 satisfies them).
+      --
+      -- FIX PATH: The standard proof (Tao-Vu Ch.10) uses Dirichlet's
+      -- approximation theorem to partition into subprogressions of length
+      -- L ≥ √N, ensuring M ≥ 2 at each descent step. This prevents the
+      -- iteration from reaching N = 1 with high density.
+      --
+      -- DirichletApproximation.lean already proves the key theorem:
+      --   ∃ p q, 1 ≤ q ∧ q ≤ Q ∧ |qα - p| < 1/Q
+      -- Integration requires:
+      -- 1. Dirichlet-based subprogression partition (~80 lines)
+      -- 2. Approximate character constancy on subprogressions (~60 lines)
+      -- 3. Density increment under approximate constancy (~60 lines)
+      -- 4. Modified density_increment_lemma guaranteeing M ≥ 2 (~20 lines)
       sorry
 
 /-- After k iterations of density increment starting from density delta,
@@ -1403,7 +1437,7 @@ private theorem density_iteration (delta : ℝ) (hdelta : 0 < delta) :
     3-AP, its density increases by at least delta²/100 on a subprogression.
     After K = ⌈100/delta²⌉ steps, the density would exceed 1, contradicting
     the fact that any subset of Z/MZ has at most M elements. -/
-theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (hdelta1 : delta ≤ 1) :
+theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (_hdelta1 : delta ≤ 1) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → ∀ A : Finset (ZMod N),
       (A.card : ℝ) ≥ delta * N → ¬APFree A := by
   refine ⟨1, fun N hN A hdensity hAP => ?_⟩
