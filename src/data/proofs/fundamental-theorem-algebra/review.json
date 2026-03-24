@@ -97,21 +97,21 @@
       "priority": "high",
       "target": "enricher",
       "description": "Rewrite overview.text to use actual theorem names from the Lean source (fundamental_theorem_of_algebra, no_roots_implies_constant, splits_over_complex, card_roots_eq_degree, monic_prod_roots, quadratic_has_root). Remove all references to non-existent names (fta_exists_root, polynomial_splits_over_complex, polynomial_factors_completely, fta_degree_two, fta_linear).",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-2",
       "priority": "medium",
       "target": "enricher",
       "description": "Fix leanFile.theoremCount from 4 to 6. Fix section line numbers to match current Lean source. Fix annotation ranges for ann-monic-factorization (should be 144-155) and ann-quadratic-case (should be 174-208 or removed in favor of ann-quadratic-theorem).",
-      "status": "open"
+      "status": "partial"
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "enricher",
       "description": "Revise originalContributions list to match the honest framing in the assumptions field. Either rename to 'contributions' or add qualifiers acknowledging that card_roots_eq_degree and monic_prod_roots are Mathlib wrappers. Keep no_roots_implies_constant and quadratic_has_root as the items with genuine original proof work.",
-      "status": "open"
+      "status": "resolved"
     },
     {
       "id": "ai-4",
