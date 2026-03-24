@@ -231,22 +231,22 @@
         "E. W. Cheney"
       ],
       "title": "A theorem on interpolation in Haar subspaces",
-      "journal": "Aequationes Mathematicae",
-      "year": 1976,
+      "year": "1976",
       "volume": "14",
       "pages": "391–400",
-      "description": "First proof of the existence of optimal interpolation nodes (Kilgore-Cheney existence theorem); the key compactness argument establishing that a minimizer of Λ exists in [-1,1]^n."
+      "description": "First proof of the existence of optimal interpolation nodes (Kilgore-Cheney existence theorem); the key compactness argument establishing that a minimizer of Λ exists in [-1,1]^n.",
+      "venue": "Aequationes Mathematicae"
     },
     {
       "authors": [
         "T. Kilgore"
       ],
       "title": "A characterization of the Lagrange interpolating projection with minimal Tchebycheff norm",
-      "journal": "Journal of Approximation Theory",
-      "year": 1977,
+      "year": "1977",
       "volume": "24",
       "pages": "273–288",
-      "description": "Proves the equal-height characterization: optimal nodes equalize the local maxima of the Lebesgue function on consecutive subintervals (equioscillation theorem)."
+      "description": "Proves the equal-height characterization: optimal nodes equalize the local maxima of the Lebesgue function on consecutive subintervals (equioscillation theorem).",
+      "venue": "Journal of Approximation Theory"
     },
     {
       "authors": [
@@ -254,33 +254,33 @@
         "A. Pinkus"
       ],
       "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
-      "journal": "Journal of Approximation Theory",
-      "year": 1978,
+      "year": "1978",
       "volume": "24",
       "pages": "289–303",
-      "description": "Proves uniqueness of the canonical minimizer and resolves both the Bernstein and Erdős conjectures on optimal interpolation nodes; the source for the uniqueness axiom in the Lean formalization."
+      "description": "Proves uniqueness of the canonical minimizer and resolves both the Bernstein and Erdős conjectures on optimal interpolation nodes; the source for the uniqueness axiom in the Lean formalization.",
+      "venue": "Journal of Approximation Theory"
     },
     {
       "authors": [
         "G. Faber"
       ],
       "title": "Über die interpolatorische Darstellung stetiger Funktionen",
-      "journal": "Jahresbericht der Deutschen Mathematiker-Vereinigung",
-      "year": 1914,
+      "year": "1914",
       "volume": "23",
       "pages": "192–210",
-      "description": "The foundational 1914 result showing that no sequence of interpolation nodes can keep Λ_n bounded; establishes Λ_n → ∞ for every node sequence, the starting point for the logarithmic lower bound."
+      "description": "The foundational 1914 result showing that no sequence of interpolation nodes can keep Λ_n bounded; establishes Λ_n → ∞ for every node sequence, the starting point for the logarithmic lower bound.",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung"
     },
     {
       "authors": [
         "P. Erdős"
       ],
       "title": "Problems and results on the theory of interpolation II",
-      "journal": "Acta Mathematica Academiae Scientiarum Hungaricae",
-      "year": 1961,
+      "year": "1961",
       "volume": "12",
       "pages": "235–244",
-      "description": "Erdős establishes the sharp lower bound Λ ≥ (2/π) log n - O(1) and conjectures the equal-height characterization of optimal nodes, posing the problem that Kilgore and de Boor–Pinkus later solved."
+      "description": "Erdős establishes the sharp lower bound Λ ≥ (2/π) log n - O(1) and conjectures the equal-height characterization of optimal nodes, posing the problem that Kilgore and de Boor–Pinkus later solved.",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae"
     }
   ],
   "leanFile": {

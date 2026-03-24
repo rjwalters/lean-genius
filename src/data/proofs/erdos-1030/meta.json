@@ -235,31 +235,31 @@
       "key": "BEFS1989",
       "citation": "Burr, S.A., Erdős, P., Faudree, R.J., and Schelp, R.H. (1989). On the difference between consecutive Ramsey numbers. Utilitas Math., 35, 115–118.",
       "type": "paper",
-      "relevance": "Primary source: proves R(k+1,k) - R(k,k) ≥ 2k - 5, directly resolving Erdős Problem #1030."
+      "note": "Primary source: proves R(k+1,k) - R(k,k) ≥ 2k - 5, directly resolving Erdős Problem #1030."
     },
     {
       "key": "ErdosSzekeres1935",
       "citation": "Erdős, P. and Szekeres, G. (1935). A combinatorial problem in geometry. Compositio Mathematica, 2, 463–470.",
       "type": "paper",
-      "relevance": "Establishes the recursive bound R(k,ℓ) ≤ R(k-1,ℓ) + R(k,ℓ-1) and the binomial upper bound, giving the denominator control needed in the ratio analysis."
+      "note": "Establishes the recursive bound R(k,ℓ) ≤ R(k-1,ℓ) + R(k,ℓ-1) and the binomial upper bound, giving the denominator control needed in the ratio analysis."
     },
     {
       "key": "Erdos1947",
       "citation": "Erdős, P. (1947). Some remarks on the theory of graphs. Bulletin of the American Mathematical Society, 53, 292–294.",
       "type": "paper",
-      "relevance": "First use of the probabilistic method; proves R(k,k) ≥ 2^{k/2}, establishing the exponential lower bound on diagonal Ramsey numbers central to the ratio argument."
+      "note": "First use of the probabilistic method; proves R(k,k) ≥ 2^{k/2}, establishing the exponential lower bound on diagonal Ramsey numbers central to the ratio argument."
     },
     {
       "key": "GrahamRothschildSpencer1990",
       "citation": "Graham, R.L., Rothschild, B.L., and Spencer, J.H. (1990). Ramsey Theory, 2nd ed. Wiley-Interscience, New York.",
       "type": "book",
-      "relevance": "Comprehensive reference on Ramsey theory including diagonal and off-diagonal Ramsey number bounds, exact small values, and growth rate results."
+      "note": "Comprehensive reference on Ramsey theory including diagonal and off-diagonal Ramsey number bounds, exact small values, and growth rate results."
     },
     {
       "key": "Conlon2009",
       "citation": "Conlon, D. (2009). A new upper bound for diagonal Ramsey numbers. Annals of Mathematics, 170(2), 941–960.",
       "type": "paper",
-      "relevance": "Improves the upper bound on R(k,k) beyond the classical Erdős–Szekeres bound; sharper bounds on R(k,k) tighten the ratio analysis of #1030."
+      "note": "Improves the upper bound on R(k,k) beyond the classical Erdős–Szekeres bound; sharper bounds on R(k,k) tighten the ratio analysis of #1030."
     }
   ],
   "leanFile": {
