@@ -150,13 +150,66 @@ This is the crucial bridge to Erdős #89 (Guth-Katz).
 -/
 
 /--
+Every element of pairwiseDistances is a positive integer (from hasIntegerDistances).
+-/
+private lemma pairwiseDistances_integer (S : Finset (EuclideanSpace ℝ (Fin 2)))
+    (hint : hasIntegerDistances S) (d : ℝ) (hd : d ∈ pairwiseDistances S) :
+    ∃ k : ℕ, k ≥ 1 ∧ d = ↑k := by
+  unfold pairwiseDistances at hd
+  rw [Finset.mem_filter] at hd
+  obtain ⟨hmem, _⟩ := hd
+  rw [Finset.mem_image] at hmem
+  obtain ⟨⟨a, b⟩, hab, rfl⟩ := hmem
+  rw [Finset.mem_offDiag] at hab
+  exact hint a hab.1 b hab.2.1 hab.2.2
+
+/--
 For integer distance sets, every distance is a positive integer,
 so the set of distinct distances is contained in {1, 2, ..., ⌊diam⌋}.
 Hence #distinct distances ≤ diam.
+
+Proof: Map each distance d to ⌊d⌋₊ - 1 ∈ range(⌊diam⌋₊). This is injective
+(since d is a natural number cast) and lands in range(⌊diam⌋₊). So
+|pairwiseDistances| ≤ ⌊diam⌋₊ ≤ diam.
 -/
-axiom distinctDistances_le_diam (S : Finset (EuclideanSpace ℝ (Fin 2)))
+theorem distinctDistances_le_diam (S : Finset (EuclideanSpace ℝ (Fin 2)))
     (hint : hasIntegerDistances S) (h2 : S.card ≥ 2) :
-    (numDistinctDistances S : ℝ) ≤ diam S
+    (numDistinctDistances S : ℝ) ≤ diam S := by
+  unfold numDistinctDistances
+  by_cases hne : (pairwiseDistances S).Nonempty
+  · -- Each distance is a positive integer ≤ diam, so map d ↦ ⌊d⌋₊ - 1 into range(⌊diam⌋₊)
+    set D := ⌊diam S⌋₊ with hD_def
+    -- Prove |pairwiseDistances| ≤ D via injection into range D
+    suffices hcard : (pairwiseDistances S).card ≤ (Finset.range D).card by
+      rw [Finset.card_range] at hcard
+      calc ((pairwiseDistances S).card : ℝ) ≤ (D : ℝ) := by exact_mod_cast hcard
+        _ ≤ diam S := Nat.floor_le (diam_nonneg S)
+    apply Finset.card_le_card_of_injOn (fun d : ℝ => ⌊d⌋₊ - 1)
+    · -- MapsTo: ⌊d⌋₊ - 1 ∈ range D for each d ∈ pairwiseDistances
+      intro d hd
+      simp only [Finset.mem_coe] at hd ⊢
+      show ⌊d⌋₊ - 1 ∈ Finset.range D
+      rw [Finset.mem_range]
+      obtain ⟨k, hk_ge, hk_eq⟩ := pairwiseDistances_integer S hint d hd
+      have hd_nat : ⌊d⌋₊ = k := by rw [hk_eq]; simp [Nat.floor_natCast]
+      rw [hd_nat]
+      have hk_le : k ≤ D := by
+        apply Nat.le_floor
+        show (k : ℝ) ≤ diam S
+        rw [← hk_eq]; unfold diam; rw [dif_pos hne]; exact Finset.le_max' _ d hd
+      omega
+    · -- InjOn: the map is injective on natural-valued reals
+      intro d₁ hd₁ d₂ hd₂ h
+      simp only [Finset.mem_coe] at hd₁ hd₂
+      obtain ⟨k₁, hk₁_ge, rfl⟩ := pairwiseDistances_integer S hint d₁ hd₁
+      obtain ⟨k₂, hk₂_ge, rfl⟩ := pairwiseDistances_integer S hint d₂ hd₂
+      -- h : (fun d => ⌊d⌋₊ - 1) ↑k₁ = (fun d => ⌊d⌋₊ - 1) ↑k₂
+      dsimp at h
+      simp only [Nat.floor_natCast] at h
+      exact_mod_cast show k₁ = k₂ by omega
+  · -- pairwiseDistances S is empty
+    rw [Finset.not_nonempty_iff_eq_empty.mp hne, Finset.card_empty]
+    simp; exact diam_nonneg S
 
 /-
 ## Known Lower Bounds

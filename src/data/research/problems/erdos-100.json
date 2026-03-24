@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-23T19:00:00Z",
-    "iteration": 2,
-    "focus": "Full formalization completed with Guth-Katz connection",
+    "since": "2026-03-23T02:00:00Z",
+    "iteration": 3,
+    "focus": "Proved distinctDistances_le_diam: axiom→theorem (5→4 axioms). Key bridge lemma now fully verified.",
     "blockers": [],
-    "nextAction": "Prove diam_ge_one sorry, or submit to Aristotle",
+    "nextAction": "Remaining 4 axioms are deep external results (Kanold, Guth-Katz, Piepmeyer, Erdős-Anning)",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full 354-line formalization from empty stub. 8 theorems, 9 definitions, 6 axioms, 1 sorry. Key theorem diam_ge_n_over_log_n proved (conditional on axiomatized Guth-Katz). Piepmeyer counterexample formalized.",
+    "progressSummary": "PROGRESS: Proved distinctDistances_le_diam (was axiom). This is the key bridge connecting distinct distances to diameter. Proof uses injection d↦⌊d⌋₊-1 into range(⌊diam⌋₊), exploiting that distances are positive integers. Also added pairwiseDistances_integer helper.",
     "builtItems": [
       "dist, dist_symm, dist_nonneg in Erdos100Problem.lean:38-53",
       "hasIntegerDistances, pairwiseDistances, numDistinctDistances in Erdos100Problem.lean:66-79",
@@ -38,7 +38,9 @@
       "diam_ge_n_over_log_n (PROVED, conditional on Guth-Katz) in Erdos100Problem.lean:216-234",
       "piepmeyer_ratio_bound, strong_conjecture_fails_at_9 (PROVED) in Erdos100Problem.lean:257-273",
       "conjecture_implies_kanold (PROVED) in Erdos100Problem.lean:308-325",
-      "IsCollinear, erdos_anning_theorem (axiom) in Erdos100Problem.lean:284-298"
+      "IsCollinear, erdos_anning_theorem (axiom) in Erdos100Problem.lean:284-298",
+      "pairwiseDistances_integer: extracts integer value from each pairwise distance",
+      "distinctDistances_le_diam (PROVED, was axiom): #distinct distances ≤ diam via injection"
     ],
     "insights": [
       "Key bridge: integer distances => distinct distances subset of {1,...,floor(diam)} => #distinct_dists <= diam",
@@ -46,16 +48,18 @@
       "Piepmeyer 9-point construction disproves strong conjecture (diam >= n-1) at n=9",
       "Erdos-Anning theorem: infinite integer distance sets must be collinear (finite case fundamentally different)",
       "Gap between n/log n (known) and n (conjectured) is the central open question",
-      "diam_ge_one proof hit heartbeat timeout due to Finset.offDiag operations - left as sorry for Aristotle"
+      "diam_ge_one proof hit heartbeat timeout due to Finset.offDiag operations - left as sorry for Aristotle",
+      "distinctDistances_le_diam proof: map d↦⌊d⌋₊-1 sends distinct positive-integer distances into range(⌊diam⌋₊), so |distances| ≤ ⌊diam⌋₊ ≤ diam",
+      "Nat.le_floor is the key bridge: (k:ℝ)≤x implies k≤⌊x⌋₊",
+      "The h2 (card ≥ 2) hypothesis is actually unused in the proof - the result holds for any set with the integer distance property"
     ],
     "mathlibGaps": [
       "No Finset.offDiag_nonempty lemma found in Mathlib",
       "Finset.one_lt_card extraction + offDiag membership causes heartbeat timeouts"
     ],
     "nextSteps": [
-      "Prove diam_ge_one (trivial bound) - may need set_option maxHeartbeats or alternative approach",
-      "Create Aristotle companion file for diam_ge_one sorry",
-      "Consider proving distinctDistances_le_diam (currently axiom, may be provable from definitions)"
+      "Remaining 4 axioms (Kanold, Guth-Katz, Piepmeyer, Erdős-Anning) are deep external results",
+      "Consider removing unused h2 parameter from distinctDistances_le_diam for generality"
     ]
   },
   "tags": [
