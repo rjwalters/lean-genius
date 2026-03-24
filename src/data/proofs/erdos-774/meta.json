@@ -83,7 +83,7 @@
       "summary": "IsDissociated, IsDissociatedSet, HasUniqueSubsetSums, equivalence theorem",
       "startLine": 41,
       "endLine": 70,
-      "mathContext": "IsDissociated, IsDissociatedSet, HasUniqueSubsetSums, equivalence theorem"
+      "mathContext": "$A \\subset \\mathbb{N}$ is **dissociated** if $\\sum_{n \\in X} n \\neq \\sum_{m \\in Y} m$ for all finite $X, Y \\subseteq A$ with $X \\neq Y$. Equivalently: no nontrivial signed subset sums to zero."
     },
     {
       "id": "examples",
@@ -91,7 +91,7 @@
       "summary": "Powers of 2, powers of any base, lacunary sequences",
       "startLine": 71,
       "endLine": 96,
-      "mathContext": "Powers of 2, powers of any base, lacunary sequences"
+      "mathContext": "$\\{2^k : k \\geq 0\\}$ is dissociated (binary representation uniqueness). More generally, $\\{b^k\\}$ for $b \\geq 2$ and lacunary sequences $a_{n+1}/a_n \\geq 2$ are dissociated."
     },
     {
       "id": "proportionately-dissociated",
@@ -99,7 +99,7 @@
       "summary": "IsProportionatelyDissociated definition, dissociated implies proportionately",
       "startLine": 97,
       "endLine": 123,
-      "mathContext": "IsProportionatelyDissociated definition, dissociated implies proportionately"
+      "mathContext": "$A$ is **proportionately dissociated** if $\\exists c > 0$: every finite $B \\subseteq A$ contains a dissociated subset of size $\\geq c|B|$."
     },
     {
       "id": "sidon-harmonic",
@@ -107,7 +107,7 @@
       "summary": "IsSidonHarmonic, Pisier's theorem connecting to proportionately dissociated",
       "startLine": 124,
       "endLine": 141,
-      "mathContext": "IsSidonHarmonic, Pisier's theorem connecting to proportionately dissociated"
+      "mathContext": "Pisier (1983): $\\Lambda$ is Sidon (harmonic) $\\Leftrightarrow$ $\\Lambda$ is proportionately dissociated."
     },
     {
       "id": "sidon-additive",
@@ -115,7 +115,7 @@
       "summary": "IsSidonAdditive, relationship to dissociated sets",
       "startLine": 142,
       "endLine": 159,
-      "mathContext": "IsSidonAdditive, relationship to dissociated sets"
+      "mathContext": "$A$ is Sidon (additive) if $a+b=c+d$ implies $\\{a,b\\}=\\{c,d\\}$. Sidon (additive) $\\Rightarrow$ dissociated."
     },
     {
       "id": "union-decomposition",
@@ -123,7 +123,7 @@
       "summary": "IsFiniteUnionDissociated, finite_union_is_proportionately",
       "startLine": 160,
       "endLine": 172,
-      "mathContext": "IsFiniteUnionDissociated, finite_union_is_proportionately"
+      "mathContext": "$A = D_1 \\cup \\cdots \\cup D_k$ with each $D_i$ dissociated $\\Rightarrow$ $A$ proportionately dissociated (pigeonhole)."
     },
     {
       "id": "main-conjecture",
@@ -131,7 +131,7 @@
       "summary": "ErdosConjecture774 formal statement, Alon-Erdős conjecture",
       "startLine": 173,
       "endLine": 185,
-      "mathContext": "ErdosConjecture774 formal statement, Alon-Erdős conjecture"
+      "mathContext": "**Erdős #774 (OPEN)**: Does proportionately dissociated $\\Rightarrow$ finite union of dissociated? Alon-Erdős conjecture: NO."
     },
     {
       "id": "sidon-analogue",
@@ -139,7 +139,7 @@
       "summary": "IsProportionatelySidon, SidonAnalogue, Nešetřil-Rödl-Sales theorem, NRS construction",
       "startLine": 186,
       "endLine": 218,
-      "mathContext": "IsProportionatelySidon, SidonAnalogue, Nešetřil-Rödl-Sales theorem, NRS construction"
+      "mathContext": "NRS (2024): $\\exists$ proportionately Sidon set that is NOT a finite union of Sidon sets. Strong evidence #774 also has answer NO."
     },
     {
       "id": "connections",
@@ -147,7 +147,7 @@
       "summary": "Implications between Sidon and dissociated notions",
       "startLine": 219,
       "endLine": 231,
-      "mathContext": "Implications between Sidon and dissociated notions"
+      "mathContext": "Chain: Sidon (additive) $\\Rightarrow$ dissociated $\\Rightarrow$ prop. dissociated $\\Leftrightarrow$ Sidon (harmonic). Question: does the second arrow reverse under finite unions?"
     },
     {
       "id": "bounds",
@@ -155,7 +155,7 @@
       "summary": "maxDissociatedSize, Θ(log n) bound",
       "startLine": 232,
       "endLine": 246,
-      "mathContext": "maxDissociatedSize, Θ(log n) bound"
+      "mathContext": "Max dissociated subset of $\\{1,\\ldots,n\\}$ has size $\\Theta(\\log n)$: powers of 2 give $\\lfloor \\log_2 n \\rfloor + 1$ elements."
     },
     {
       "id": "summary",
@@ -163,7 +163,7 @@
       "summary": "erdos_774_summary theorem combining finite_union_is_proportionately and NRS",
       "startLine": 247,
       "endLine": 260,
-      "mathContext": "erdos_774_summary theorem combining finite_union_is_proportionately and NRS"
+      "mathContext": "Main: finite union of dissociated $\\Rightarrow$ proportionately dissociated (proved), converse OPEN (conjectured false by Alon-Erdős). NRS resolving Sidon analogue negatively is strongest evidence."
     }
   ],
   "conclusion": {
