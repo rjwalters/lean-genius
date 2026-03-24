@@ -275,6 +275,26 @@
       "id": "taylor-theorem",
       "relationship": "foundational",
       "description": "The geometric series $\\sum r^k = 1/(1-r)$ is the Taylor expansion of $f(r) = (1-r)^{-1}$ at $r = 0$. Taylor's theorem guarantees that any analytic function has a power series expansion, with the geometric series being the prototypical example — its radius of convergence $|r| < 1$ is determined by the nearest singularity at $r = 1$"
+    },
+    {
+      "id": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity $e^{i\\pi} + 1 = 0$ connects the exponential series $e^z = \\sum z^k/k!$ (which converges for all $z$) to"
+    },
+    {
+      "id": "leibniz-pi",
+      "relationship": "related",
+      "description": "The Leibniz formula $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ arises from integrating the geometric series: $\\int_0^1 \\frac{1}{1+"
+    },
+    {
+      "id": "e-transcendental",
+      "relationship": "related",
+      "description": "The exponential function $e^x = \\sum x^k/k!$ and the geometric series $1/(1-x) = \\sum x^k$ are the two most fundamental "
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "extends",
+      "description": "Euler's proof that $\\sum 1/p$ diverges over primes uses the Euler product $\\zeta(s) = \\prod_p (1 - p^{-s})^{-1}$, where "
     }
   ],
   "leanFile": {

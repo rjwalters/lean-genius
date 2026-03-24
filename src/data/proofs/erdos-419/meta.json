@@ -279,6 +279,21 @@
       "id": "stirling-formula",
       "relationship": "related-problem",
       "description": "Stirling gives log(n!) ~ n log n; the asymptotics log τ(n!) ~ n log n / log log n involve an extra log log n factor from the prime structure of n!."
+    },
+    {
+      "id": "erdos-400",
+      "relationship": "related-problem",
+      "description": "Both study divisibility and growth properties of factorial-related quantities, exploring how the rich prime factorizatio"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "uses-result",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions guarantees infinitely many n+1 = pk for each fixed k, ensuring "
+    },
+    {
+      "id": "prime-number-theorem",
+      "relationship": "related-problem",
+      "description": "The prime number theorem underlies the density estimates for primes p with n+1 = pk, and Mertens' theorem (a consequence"
     }
   ],
   "references": [

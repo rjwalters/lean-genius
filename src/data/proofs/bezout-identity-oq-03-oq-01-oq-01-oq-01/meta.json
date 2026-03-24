@@ -188,6 +188,21 @@
       "id": "chinese-remainder-non-coprime-oq-02",
       "relationship": "related",
       "description": "The non-coprime CRT for Euclidean domains with the ideal bridge IsCoprime ↔ Ideal.span coprime."
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "Constructive CRT providing an explicit solution algorithm for simultaneous congruences, complementing the abstract isomo"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m,n$ is a direct corollary of the integer CRT"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The CRT underlies the proof of quadratic reciprocity via Gauss sums: decomposing $\\mathbb{Z}/p\\mathbb{Z}$-computations t"
     }
   ],
   "leanFile": {

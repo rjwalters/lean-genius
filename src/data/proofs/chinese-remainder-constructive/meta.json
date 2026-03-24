@@ -262,6 +262,31 @@
       "id": "wilsons-theorem",
       "relationship": "related",
       "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ uses the structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$, while CRT decomposes $("
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "CRT is used in proofs of quadratic reciprocity: the Jacobi symbol $(a/mn) = (a/m)(a/n)$ follows from the CRT decompositi"
+    },
+    {
+      "id": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The CRT decomposition $\\mathbb{Z}/n\\mathbb{Z} \\cong \\prod \\mathbb{Z}/p_i^{a_i}\\mathbb{Z}$ (where $n = \\prod p_i^{a_i}$) "
+    },
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "extended-by",
+      "description": "The non-coprime CRT generalizes: $x \\equiv a \\pmod{m}, x \\equiv b \\pmod{n}$ has a solution iff $\\gcd(m,n) \\mid (a-b)$, a"
+    },
+    {
+      "id": "fermat-two-squares",
+      "relationship": "related",
+      "description": "CRT is used in Cornacchia's algorithm for finding the two-square representation $p = a^2+b^2$: compute $r \\equiv \\sqrt{-"
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "CRT's multiplicativity result $\\phi(mn) = \\phi(m)\\phi(n)$ (for coprime $m,n$) generalizes to all multiplicative function"
     }
   ],
   "references": [

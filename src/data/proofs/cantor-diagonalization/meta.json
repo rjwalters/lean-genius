@@ -262,6 +262,41 @@
       "id": "schroeder-bernstein",
       "relationship": "complementary",
       "description": "The Schröder-Bernstein theorem (injections in both directions imply bijection) provides the positive tool for establishing cardinality equalities, while Cantor's diagonal argument provides the negative tool for establishing strict inequalities. Together they form the complete toolkit for comparing infinite cardinalities."
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "thematic",
+      "description": "Both are existence proofs via contradiction: Euclid shows no finite list contains all primes (construct p₁···pₙ + 1), Ca"
+    },
+    {
+      "id": "cantor-diagonalization-oq-01",
+      "relationship": "extended-by",
+      "description": "Explores the Continuum Hypothesis — whether there exists a cardinality strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|"
+    },
+    {
+      "id": "cantor-diagonalization-oq-02",
+      "relationship": "extended-by",
+      "description": "Establishes the cardinality of the set of countable ordinals $\\omega_1$, extending the diagonal argument's study of card"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both belong to the impossibility proof tradition: Cantor proves no enumeration captures all reals (1891), Abel-Ruffini p"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "thematic",
+      "description": "Both prove existence of 'unreachable' quantities: $\\sqrt{2} \\notin \\mathbb{Q}$ (irrationals exist) is the earliest impos"
+    },
+    {
+      "id": "hilbert-10",
+      "relationship": "related",
+      "description": "Matiyasevich's theorem uses the diagonal argument's undecidability legacy: the halting problem (proved undecidable via d"
+    },
+    {
+      "id": "russell-1-plus-1",
+      "relationship": "related",
+      "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and Cantor's diagonal argument share the same logical structure: define an "
     }
   ],
   "alternativeInterpretation": {

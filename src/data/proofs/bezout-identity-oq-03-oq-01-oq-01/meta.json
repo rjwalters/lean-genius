@@ -189,6 +189,11 @@
       "id": "primitive-roots",
       "relationship": "related",
       "description": "Primitive roots modulo primes: $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic. The CRT decomposes $(\\mathbb{Z}/n\\mathbb{Z})^* \\cong \\prod (\\mathbb{Z}/p_i^{a_i}\\mathbb{Z})^*$, reducing unit group structure to prime power components."
+    },
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "Generalizes the CRT to non-coprime moduli: when $\\gcd(m,n) > 1$, the system $x \\equiv a \\pmod{m}$, $x \\equiv b \\pmod{n}$"
     }
   ],
   "leanFile": {

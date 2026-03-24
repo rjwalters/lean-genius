@@ -277,6 +277,21 @@
       "id": "szemeredi-theorem",
       "relationship": "related",
       "description": "Szemeredi's theorem (dense sets contain arbitrarily long APs) and Sidon theory represent dual aspects of additive combinatorics: Szemeredi limits how unstructured a dense set can be, while Sidon theory limits how dense an unstructured set can be"
+    },
+    {
+      "id": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The probabilistic method shows random Sidon sets achieve density N^(1/2), near-optimal. This provides the comparison ben"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The bijection orderedPairsLt_card_via_choose uses C(n,2) = n(n-1)/2 via Finset.card_powersetCard. This binomial coeffici"
+    },
+    {
+      "id": "partition-theorem",
+      "relationship": "related",
+      "description": "Each element of the sumset A+A of a Sidon set has a unique representation a+b with a <= b — a partition-like uniqueness "
     }
   ]
 }

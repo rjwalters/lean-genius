@@ -180,6 +180,11 @@
       "id": "kepler-conjecture",
       "relationship": "related",
       "description": "The Kepler Conjecture (Hales 1998) determines the densest sphere packing in ℝ³. While sphere packing asks how efficiently spheres can fill space, circle covering asks how efficiently a single sphere can cover a connected configuration. Both problems concern the geometry of spherical/circular configurations in ℝⁿ and extend naturally to higher dimensions, where the Goodman-Goodman theorem also holds for balls."
+    },
+    {
+      "id": "area-of-circle",
+      "relationship": "foundational",
+      "description": "The Area of a Circle formalizes basic circle geometry (radius, area, circumference) in Lean. The Goodman-Goodman theorem"
     }
   ],
   "references": [

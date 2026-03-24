@@ -257,6 +257,31 @@
       "id": "inverse-galois",
       "relationship": "related",
       "description": "Comprehensive Galois group realizations (S₃, A₅, D₄, etc.) — the inverse direction of the Galois correspondence. Where this file asks 'what constraints does the Galois group impose?', inverse Galois asks 'which groups arise as Galois groups?'"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both use Galois group structure to derive impossibility results: Abel-Ruffini shows non-solvable Galois groups block rad"
+    },
+    {
+      "id": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The tower law [L:F] = [L:K]·[K:F] — the multiplicativity of field extension degrees, a consequence of Lagrange's theorem"
+    },
+    {
+      "id": "sqrt2-irrational",
+      "relationship": "complementary",
+      "description": "The irrationality of $\\sqrt{2}$ is the simplest instance of the constructibility framework: $\\text{Gal}(x^2 - 2/\\mathbb{"
+    },
+    {
+      "id": "nth-root-irrational",
+      "relationship": "related",
+      "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ produces a degree-$n$ extension $[\\mathbb{Q}(\\sqrt[n]{m}):\\"
+    },
+    {
+      "id": "factor-remainder-theorem",
+      "relationship": "foundational",
+      "description": "The factor theorem ($\\alpha$ is a root of $p(x)$ iff $(x - \\alpha) \\mid p(x)$) underpins the crucial step `minpoly.dvd`:"
     }
   ],
   "leanFile": {

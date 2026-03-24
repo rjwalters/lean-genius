@@ -217,6 +217,21 @@
       "id": "euler-totient",
       "relationship": "related",
       "description": "Both involve fundamental multiplicative arithmetic functions: $\\tau(n)$ and its generalizations $d_A(n)$ count divisors, while $\\phi(n)$ counts coprime residues. The multiplicativity property $f(mn) = f(m)f(n)$ for $\\gcd(m,n)=1$ is key to both"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The extremal construction uses products of primes from A with optimized exponents. The infinitude of primes guarantees a"
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers are extremal for the sum-of-divisors function $\\sigma(n) = 2n$. The generalized divisor function $\\tau_A"
+    },
+    {
+      "id": "erdos-413",
+      "relationship": "related",
+      "description": "Erdős #413 studies barriers for $\\omega(n)$ (distinct prime factor count). The generalized divisor function $\\tau_A(n)$ "
     }
   ],
   "leanFile": {

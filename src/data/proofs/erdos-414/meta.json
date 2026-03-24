@@ -201,6 +201,31 @@
       "id": "prime-number-theorem",
       "relationship": "foundational",
       "description": "The PNT controls prime distribution governing tau(n); the Dirichlet divisor problem provides the average-case behavior of h(n) = n + tau(n)"
+    },
+    {
+      "id": "euler-totient",
+      "relationship": "related",
+      "description": "Both involve fundamental multiplicative arithmetic functions: $\\tau(n)$ counts all divisors while Euler's $\\phi(n)$ coun"
+    },
+    {
+      "id": "erdos-415",
+      "relationship": "related",
+      "description": "Erdős #415 studies ordering patterns in $\\varphi(n)$. Both $\\tau$ and $\\varphi$ are multiplicative functions whose local"
+    },
+    {
+      "id": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers satisfy $\\sigma(n) = 2n$, making them fixed points of the iteration $n \\mapsto \\sigma(n) - n$. The open "
+    },
+    {
+      "id": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The average of $\\tau(n)$ over $[1, N]$ is $\\sim \\log N$ (Dirichlet's divisor problem), so the iteration $h(n) = n + \\tau"
+    },
+    {
+      "id": "riemann-hypothesis",
+      "relationship": "thematic",
+      "description": "The Riemann Hypothesis controls the error term in the Dirichlet divisor problem ($\\sum_{n \\leq N} \\tau(n) = N\\log N + O("
     }
   ],
   "conclusion": {

@@ -359,6 +359,26 @@
       "id": "schauder-fixed-point",
       "relationship": "foundational",
       "description": "Schauder's fixed point theorem is used in PDE existence proofs: weak solutions to Navier-Stokes are constructed via Galerkin approximation and compactness arguments, where Schauder-type fixed points guarantee existence of approximate solutions"
+    },
+    {
+      "id": "navier-stokes-oq-01",
+      "relationship": "extended-by",
+      "description": "Extension exploring additional aspects of the Navier-Stokes regularity theory"
+    },
+    {
+      "id": "navier-stokes-oq-02",
+      "relationship": "extended-by",
+      "description": "Extension exploring further directions in the Navier-Stokes formalization"
+    },
+    {
+      "id": "lebesgue-measure",
+      "relationship": "foundational",
+      "description": "The Lebesgue integral underlies all energy estimates in the Navier-Stokes analysis: enstrophy $E = \\int|\\omega|^2$, pali"
+    },
+    {
+      "id": "fourier-series",
+      "relationship": "foundational",
+      "description": "Fourier analysis is central to the spectral gap arguments: the Faber-Krahn inequality $\\lambda_1 \\geq \\pi^2/(4R^2)$ rela"
     }
   ],
   "leanFile": {

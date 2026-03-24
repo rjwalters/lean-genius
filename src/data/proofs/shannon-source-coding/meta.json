@@ -197,6 +197,21 @@
       "id": "birthday-problem",
       "relationship": "related",
       "description": "Both use probabilistic counting arguments involving exponential growth: the birthday problem counts collisions among $2^"
+    },
+    {
+      "id": "central-limit-theorem",
+      "relationship": "foundational",
+      "description": "The AEP that underlies source coding is an information-theoretic law of large numbers: $-\\frac{1}{n}\\log p(X_1^n) \\to H("
+    },
+    {
+      "id": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $\\log n! \\approx n\\log n - n$ underpins the typical set counting argument: the number of sequen"
+    },
+    {
+      "id": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The multinomial coefficient $\\binom{n}{k_1, \\ldots, k_m}$ counts sequences of a given type — the method of types (Csiszá"
     }
   ],
   "leanFile": {

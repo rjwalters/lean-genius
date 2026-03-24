@@ -207,6 +207,31 @@
       "id": "prime-number-theorem",
       "relationship": "extended-by",
       "description": "PNT ($\\pi(x) \\sim x/\\ln x$) is the quantitative refinement of the infinitude of primes. Dirichlet's theorem is the equidistribution refinement: primes are not only infinite but spread uniformly across coprime residue classes. PNT for arithmetic progressions ($\\pi(x; q, a) \\sim x/(\\varphi(q) \\ln x)$) combines both, proved via Dirichlet L-functions"
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Both are foundational results in algebraic number theory. Dirichlet's theorem uses characters mod $q$ to detect primes i"
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "Zhang's bounded prime gaps proof requires the Bombieri-Vinogradov theorem, which is a mean-value estimate for the error "
+    },
+    {
+      "id": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Euler's proof that $\\sum 1/p$ diverges was the prototype for Dirichlet's method: Dirichlet showed $\\sum_{p \\equiv a \\pmo"
+    },
+    {
+      "id": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber (every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field) provides the class field th"
+    },
+    {
+      "id": "hilbert-9-reciprocity",
+      "relationship": "extends",
+      "description": "Hilbert's 9th problem asks for the most general reciprocity law in algebraic number fields. Dirichlet's theorem is the f"
     }
   ],
   "leanFile": {

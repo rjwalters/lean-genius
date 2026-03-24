@@ -397,6 +397,41 @@
       "id": "erdos-1010",
       "relationship": "related",
       "description": "Triangle supersaturation counts triangles in graphs with more than Turán-many edges. The triangle removal process starts from the complete graph (maximum supersaturation) and greedily reduces triangles to zero — the edge count at termination is governed by the rate of triangle depletion, connecting supersaturation bounds to the removal process dynamics"
+    },
+    {
+      "id": "erdos-1104",
+      "relationship": "related",
+      "description": "Maximum chromatic number of triangle-free graphs: the terminal graph of the triangle removal process is triangle-free, s"
+    },
+    {
+      "id": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem on arithmetic progressions in dense sets is a cornerstone of additive combinatorics. The triangle re"
+    },
+    {
+      "id": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "The triangle removal lemma — a key consequence of Szemerédi regularity — states that graphs with o(n³) triangles can be "
+    },
+    {
+      "id": "szemeredi-counting",
+      "relationship": "related",
+      "description": "Szemerédi's counting lemma quantifies triangle density in ε-regular triples: if (A, B, C) are pairwise ε-regular with ed"
+    },
+    {
+      "id": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The alteration method (Erdős 1963) constructs combinatorial objects by starting with a random structure and modifying it"
+    },
+    {
+      "id": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The Lovász Local Lemma provides bounds on the probability that no 'bad event' occurs when events have limited dependency"
+    },
+    {
+      "id": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The second moment method bounds P(X > 0) via E[X]²/E[X²], providing concentration for the triangle count during the remo"
     }
   ]
 }

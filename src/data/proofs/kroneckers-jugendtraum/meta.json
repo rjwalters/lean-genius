@@ -228,6 +228,26 @@
       "id": "euler-totient",
       "relationship": "Cyclotomic Fields",
       "description": "Euler's totient function φ(n) gives the degree [ℚ(ζₙ):ℚ] = φ(n) and the order of the Galois group (ℤ/nℤ)×, both proved in the formalization."
+    },
+    {
+      "id": "inverse-galois",
+      "relationship": "Galois Theory",
+      "description": "The Inverse Galois Problem asks which groups appear as Galois groups over ℚ. Kronecker-Weber completely answers this for"
+    },
+    {
+      "id": "fermats-last-theorem",
+      "relationship": "Cyclotomic Fields",
+      "description": "Kummer's approach to Fermat's Last Theorem used cyclotomic fields ℚ(ζₚ) and their arithmetic, the same fields that are c"
+    },
+    {
+      "id": "abel-ruffini",
+      "relationship": "Galois Theory",
+      "description": "Abel-Ruffini uses the non-solvability of S₅ to show general quintics are not solvable by radicals. Kronecker-Weber uses "
+    },
+    {
+      "id": "primitive-roots",
+      "relationship": "Cyclotomic Fields",
+      "description": "Primitive roots modulo primes are closely related to generators of cyclic Galois groups Gal(ℚ(ζₚ)/ℚ) ≅ (ℤ/pℤ)×, which is"
     }
   ],
   "references": [

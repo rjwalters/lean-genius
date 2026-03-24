@@ -192,6 +192,11 @@
       "id": "euler-totient",
       "relationship": "related",
       "description": "Euler's totient function $\\varphi(d)$ counts invertible elements in $\\mathbb{Z}/d\\mathbb{Z}$. The osculator $c$ is the multiplicative inverse of 10 mod $d$, which exists iff $\\gcd(10, d) = 1$ — a condition guaranteed by Euler's theorem: $10^{\\varphi(d)} \\equiv 1 \\pmod{d}$"
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "CRT provides an alternative approach to osculator construction: for composite $d = d_1 d_2$ with $\\gcd(d_1, d_2) = 1$, t"
     }
   ],
   "leanFile": {
