@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-03",
   "title": "Computational Complexity of Finding the Minimal Polynomial",
   "slug": "cayley-hamilton-minpoly-oq-03",
-  "description": "Formalizes the Krylov method for computing the minimal polynomial of a matrix: the sequence v, Mv, M\u00b2v, ... becomes linearly dependent within deg(\u03bc_M) \u2264 n steps, giving an O(n\u00b3) algorithm. Proves the Krylov recurrence, annihilation theorem, and dimension bounds.",
+  "description": "Formalizes the Krylov method for computing the minimal polynomial of a matrix: the sequence v, Mv, M²v, ... becomes linearly dependent within deg(μ_M) ≤ n steps, giving an O(n³) algorithm. Proves the Krylov recurrence, annihilation theorem, and dimension bounds.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)#Computation",
@@ -19,7 +19,7 @@
       "research"
     ],
     "badge": "formalized",
-    "sorries": 3,
+    "sorries": 8,
     "mathlibDependencies": [
       {
         "theorem": "minpoly.monic",
@@ -49,11 +49,11 @@
     ],
     "originalContributions": [
       "Krylov sequence definition: krylovVec M v k = (M^k).mulVec v",
-      "Krylov recurrence: krylovVec M v (k+1) = M.mulVec (krylovVec M v k), enabling O(n\u00b2)-per-step computation",
-      "Minimal polynomial annihilates every vector: \u03bc_M(M)\u00b7v = 0",
-      "Krylov termination: {v, Mv, ..., M^d\u00b7v} are dependent where d = deg(\u03bc_M)",
-      "Krylov dimension bound: at most deg(\u03bc_M) linearly independent Krylov vectors",
-      "Overall complexity bound: deg(\u03bc_M) \u2264 n, giving O(n\u00b3) total field operations",
+      "Krylov recurrence: krylovVec M v (k+1) = M.mulVec (krylovVec M v k), enabling O(n²)-per-step computation",
+      "Minimal polynomial annihilates every vector: μ_M(M)·v = 0",
+      "Krylov termination: {v, Mv, ..., M^d·v} are dependent where d = deg(μ_M)",
+      "Krylov dimension bound: at most deg(μ_M) linearly independent Krylov vectors",
+      "Overall complexity bound: deg(μ_M) ≤ n, giving O(n³) total field operations",
       "Nonderogatory optimality: cyclic vector produces exactly n independent Krylov vectors",
       "Krylov subspace M-invariance: M maps Krylov vectors to Krylov vectors"
     ],
@@ -149,8 +149,8 @@
       "summary": "Proves the Krylov subspace is M-invariant and establishes the O(n^2) recurrence for efficient computation."
     }
   ],
-  "overview": "The minimal polynomial of an n\u00d7n matrix M over a field K can be computed in O(n\u00b3) field operations using the Krylov method. Starting from any vector v, compute the sequence v, Mv, M\u00b2v, ...; when M^d\u00b7v first becomes a linear combination of the previous vectors, d equals the degree of v's annihilating polynomial (which divides \u03bc_M). Since d \u2264 deg(\u03bc_M) \u2264 n, at most n matrix-vector products (each O(n\u00b2)) suffice. This formalization defines Krylov sequences, proves the recurrence relation enabling efficient computation, establishes termination via the minimal polynomial, and bounds the iteration count. For nonderogatory matrices (\u03bc_M = \u03c7_M), a single cyclic vector's Krylov sequence extracts the full minimal polynomial.",
-  "conclusion": "The Krylov method provides an O(n\u00b3) algorithm for computing the minimal polynomial, with the key structural insight that polynomial evaluation at a matrix distributes through the Krylov sequence. The formalization establishes 9 proved results including the recurrence, annihilation, and dimension bounds, with 3 sorries in the polynomial-to-Krylov expansion chain suitable for Aristotle proof search.",
+  "overview": "The minimal polynomial of an n×n matrix M over a field K can be computed in O(n³) field operations using the Krylov method. Starting from any vector v, compute the sequence v, Mv, M²v, ...; when M^d·v first becomes a linear combination of the previous vectors, d equals the degree of v's annihilating polynomial (which divides μ_M). Since d ≤ deg(μ_M) ≤ n, at most n matrix-vector products (each O(n²)) suffice. This formalization defines Krylov sequences, proves the recurrence relation enabling efficient computation, establishes termination via the minimal polynomial, and bounds the iteration count. For nonderogatory matrices (μ_M = χ_M), a single cyclic vector's Krylov sequence extracts the full minimal polynomial.",
+  "conclusion": "The Krylov method provides an O(n³) algorithm for computing the minimal polynomial, with the key structural insight that polynomial evaluation at a matrix distributes through the Krylov sequence. The formalization establishes 9 proved results including the recurrence, annihilation, and dimension bounds, with 3 sorries in the polynomial-to-Krylov expansion chain suitable for Aristotle proof search.",
   "references": [
     {
       "type": "paper",
@@ -169,7 +169,7 @@
     },
     {
       "type": "textbook",
-      "citation": "Horn & Johnson, 'Matrix Analysis' (2013), \u00a73.3",
+      "citation": "Horn & Johnson, 'Matrix Analysis' (2013), §3.3",
       "relevance": "Standard reference for minimal polynomial theory and Krylov methods"
     }
   ],
